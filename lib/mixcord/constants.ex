@@ -1,4 +1,4 @@
-defmodule Discord.Rest.Constants do
+defmodule Mixcord.Constants do
     def base_url(),                                         do: "https://discordapp.com/api/v6"
     def gateway(),                                          do: "/gateway"
 
@@ -15,9 +15,9 @@ defmodule Discord.Rest.Constants do
     def guilds(),                                           do: "/guilds"
     def guild(guild_id),                                    do: "/guilds/#{guild_id}"
     def guild_channels(guild_id),                           do: "/guilds/#{guild_id}/channels"
+    def guild_members(guild_id),                            do: "/guilds/#{guild_id}/members/"
     def guild_member(guild_id, user_id),                    do: "/guilds/#{guild_id}/members/#{user_id}"
-    def guild_members(guild_id, user_id),                   do: "/guilds/#{guild_id}/members/"
-    def guild_bans(guild_id, user_id),                      do: "/guilds/#{guild_id}/bans"
+    def guild_bans(guild_id),                               do: "/guilds/#{guild_id}/bans"
     def guild_ban(guild_id, user_id),                       do: "/guilds/#{guild_id}/ban/#{user_id}"
     def guild_roles(guild_id),                              do: "/guilds/#{guild_id}/roles"
     def guild_role(guild_id, role_id),                      do: "/guilds/#{guild_id}/roles/#{role_id}"
@@ -41,7 +41,7 @@ defmodule Discord.Rest.Constants do
     def regions(),                                          do: "/voice/regions"
 
     def channel_permissions(chanID),                        do: "/channels/#{chanID}/permissions"
-    def channels(channel_id),                               do: "/channels"
+    def channels(),                                         do: "/channels"
     def channel_call_ring(channel_id),                      do: "/channels/#{channel_id}/call/ring"
     def group_recipient(group_id, user_id),                 do: "/channels/#{group_id}/recipients/#{user_id}"
     def guild_me_nick(guild_id),                            do: "/guilds/#{guild_id}/members/@me/nick"
