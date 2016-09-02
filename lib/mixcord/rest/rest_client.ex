@@ -1,5 +1,7 @@
-defmodule Mixcord.Rest_Client do
+defmodule Mixcord.RestClient do
     alias Mixcord.Constants
+    alias Mixcord.Constructs.Message
+    alias Mixcord.Constructs.User
     alias Mixcord.Rest
 
     def init(token) do
@@ -12,16 +14,16 @@ defmodule Mixcord.Rest_Client do
             {:error, message: message} ->
                 {:error, message: message}
             {:ok, body: body} ->
-                {:ok, message: Poison.decode!(~s(body), as: %Message{})}
+                {:ok, message: Poison.decode!(body, as: %Message{author: %User{}})}
         end
 
     end
 
     def request(type, url, body, options \\ []) do
-        format_response Rest.request(type, url, body, [{"Authorization", "Bot #{token}"}], options)
+        format_response(Rest.request(type, url, body, [{"Authorization", "Bot #{token}"}], options))
     end
 
-    def format_response(response) do
+    defp format_response(response) do
         case response do
             {:error, %HTTPoison.Error{reason: reason}} ->
                 {:error, message: reason}

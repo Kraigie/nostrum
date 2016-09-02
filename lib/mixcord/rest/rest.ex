@@ -16,8 +16,7 @@ defmodule Mixcord.Rest do
         [{"content-type", "application/json"} | headers]
     end
 
-    def process_response_body(body) do
+    defp process_response_body(body) do
         body
-        |> Poison.decode!
     end
 end
