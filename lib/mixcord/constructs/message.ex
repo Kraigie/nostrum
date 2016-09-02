@@ -1,4 +1,5 @@
-defmodule Mixcord.Message do
+defmodule Mixcord.Constructs.Message do
+    @derive [Poison.Encoder]
     defstruct [
         :attachments,
         :author,
