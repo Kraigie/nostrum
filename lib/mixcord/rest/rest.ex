@@ -1,4 +1,6 @@
 defmodule Mixcord.Rest do
+  @moduledoc false
+  
   use HTTPoison.Base
   alias Mixcord.Constants
 

@@ -18,18 +18,21 @@ defmodule Mixcord.RestClient do
   @doc """
   Sends `content` to a channel identified with `channel_id`.
   `tts` is an optional parameter that dictates whether the message should be played over text to speech.
+
+  Returns `{:ok, Mixcord.Constructs.Message}` if successful. `{:error, reason}` otherwise.
   """
+  @spec create_message(String.t, String.t, boolean) :: {:error, String.t} | {:ok, Mixcord.Constructs.Message.t}
   def create_message(channel_id, content, tts \\ false) do
     case request(:post, Constants.channel_messages(channel_id), %{"content" => content, "tts" => tts}) do
       {:error, message: message} ->
-        {:error, message: message}
+        {:error, message}
       {:ok, body: body} ->
-        {:ok, message: Poison.decode!(body, as: %Message{author: %User{}})}
+        {:ok, Poison.decode!(body, as: %Message{author: %User{}})}
         #https://github.com/devinus/poison/issues/32#issuecomment-172021478
     end
   end
 
-  def request(type, url, body, options \\ []) do
+  defp request(type, url, body, options \\ []) do
     format_response(Rest.request(type, url, body, [{"Authorization", "Bot #{token}"}], options))
   end
 
@@ -44,6 +47,9 @@ defmodule Mixcord.RestClient do
     end
   end
 
+  @doc """
+  Returns the token of the bot
+  """
   def token() do
     Agent.get(:token, &(&1))
   end
