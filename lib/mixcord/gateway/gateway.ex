@@ -1,3 +1,3 @@
-defmodule Discord.Gateway do
-    
+defmodule Mixcord.Shard do
+
 end
