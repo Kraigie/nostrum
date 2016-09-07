@@ -10,7 +10,7 @@ defmodule Mixcord.Rest do
     body
     |> Poison.encode!
   end
-  
+
   defp process_request_headers(headers) do
     [{"User-Agent", "DiscordBot (test, test)"} | headers]
     [{"content-type", "application/json"} | headers]
