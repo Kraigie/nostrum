@@ -10,14 +10,16 @@ defmodule Mixcord.RestClient do
   @doc """
   Starts the rest client and initializes the agent containing your API `token`.
   """
-  @spec token(String.t) :: nil
+  @spec init(String.t) :: nil
   def init(token) do
     HTTPoison.start
     Agent.start(fn -> token end, name: :token)
   end
 
   @doc """
-  Sends `content` to the channel identified with `channel_id`.
+  Send a message to a channel.
+
+  Send `content` to the channel identified with `channel_id`.
   `tts` is an optional parameter that dictates whether the message should be played over text to speech.
 
   Returns `{:ok, Mixcord.Constructs.Message}` if successful. `{:error, reason}` otherwise.
@@ -33,6 +35,40 @@ defmodule Mixcord.RestClient do
     end
   end
 
+  @doc """
+  Edit a message.
+
+  Edit a message with the given `content`. Message to edit is specified by `channel_id` and `message_id`.
+
+  Returns `{:ok, Mixcord.Constructs.Message}` if successful. `{:error, reason}` otherwise.
+  """
+  @spec edit_message(String.t, String.t, String.t) :: {:error, String.t} | {:ok, Mixcord.Constructs.Message.t}
+  def edit_message(channel_id, message_id, content) do
+    case request(:patch, Constants.channel_message(channel_id, message_id), %{"content" => content}) do
+      {:error, message: message} ->
+        {:error, message}
+      {:ok, body: body} ->
+        {:ok, Poison.decode!(body, as: %Message{author: %User{}})}
+    end
+  end
+
+  @doc """
+  Delete a message.
+
+  Delete a message specified by `channel_id` and `message_id`.
+
+  Returns `{:ok}` if successful. `{:error, reason}` otherwise.
+  """
+  @spec delete_message(String.t, String.t) :: {:error, String.t} | {:ok}
+  def delete_message(channel_id, message_id) do
+    case request(:delete, Constants.channel_message(channel_id, message_id), %{}) do
+      {:error, message: message} ->
+        {:error, message}
+      {:ok} ->
+        {:ok}
+    end
+  end
+
   defp request(type, url, body, options \\ []) do
     format_response(Rest.request(type, url, body, [{"Authorization", "Bot #{token}"}], options))
   end
@@ -43,13 +79,15 @@ defmodule Mixcord.RestClient do
         {:error, message: reason}
       {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
         {:ok, body: body}
+      {:ok, %HTTPoison.Response{status_code: 204}} ->
+        {:ok}
       {:ok, %HTTPoison.Response{status_code: status_code, body: body}} ->
         {:error, status_code: status_code, message: body}
     end
   end
 
   @doc """
-  Returns the token of the bot
+  Returns the token of the bot.
   """
   def token() do
     Agent.get(:token, &(&1))
