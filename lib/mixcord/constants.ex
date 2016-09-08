@@ -1,4 +1,5 @@
 defmodule Mixcord.Constants do
+  @moduledoc false
   def base_url(),                                         do: "https://discordapp.com/api/v6"
   def gateway(),                                          do: "/gateway"
 
