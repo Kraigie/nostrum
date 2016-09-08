@@ -1,4 +1,8 @@
 defmodule Mixcord.Constructs.Message do
+  @moduledoc """
+  Struct representing a Discord message and various helper functions.
+  """
+
   @derive [Poison.Encoder]
   defstruct [
     :attachments,

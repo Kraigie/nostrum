@@ -2,6 +2,7 @@ defmodule Mixcord.RestClient do
   @moduledoc """
   Interface for Discord's rest API.
   """
+  
   alias Mixcord.Constants
   alias Mixcord.Constructs.Message
   alias Mixcord.Constructs.User
