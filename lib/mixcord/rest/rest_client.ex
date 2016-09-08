@@ -8,15 +8,16 @@ defmodule Mixcord.RestClient do
   alias Mixcord.Rest
 
   @doc """
-  Starts the rest client and initializes the agent containing your API token.
+  Starts the rest client and initializes the agent containing your API `token`.
   """
+  @spec token(String.t) :: nil
   def init(token) do
     HTTPoison.start
     Agent.start(fn -> token end, name: :token)
   end
 
   @doc """
-  Sends `content` to a channel identified with `channel_id`.
+  Sends `content` to the channel identified with `channel_id`.
   `tts` is an optional parameter that dictates whether the message should be played over text to speech.
 
   Returns `{:ok, Mixcord.Constructs.Message}` if successful. `{:error, reason}` otherwise.
