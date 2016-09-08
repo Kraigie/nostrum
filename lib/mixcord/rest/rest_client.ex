@@ -3,6 +3,11 @@ defmodule Mixcord.RestClient do
   Interface for Discord's rest API.
   """
 
+  #TODO:  Bangify - use a macro for it? For ! methods, wrap regular message and pattern match on results from them.
+  #       If error, throw error, if not, return whatver is after :ok
+  #       http://elixir-lang.org/docs/v1.0/elixir/Enum.html#fetch!/2
+  #       http://elixir-lang.org/docs/v1.0/elixir/Enum.html#fetch/2
+
   alias Mixcord.Constants
   alias Mixcord.Constructs.Message
   alias Mixcord.Constructs.User
@@ -31,7 +36,7 @@ defmodule Mixcord.RestClient do
       {:error, message: message} ->
         {:error, message}
       {:ok, body: body} ->
-        {:ok, Poison.decode!(body, as: %Message{author: %User{}})}
+        {:ok, Poison.decode!(body, as: %Message{author: %User{}, mentions: [%User{}]})}
         #https://github.com/devinus/poison/issues/32#issuecomment-172021478
     end
   end
