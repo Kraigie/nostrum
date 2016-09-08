@@ -2,7 +2,7 @@ defmodule Mixcord.RestClient do
   @moduledoc """
   Interface for Discord's rest API.
   """
-  
+
   alias Mixcord.Constants
   alias Mixcord.Constructs.Message
   alias Mixcord.Constructs.User
@@ -90,6 +90,7 @@ defmodule Mixcord.RestClient do
   @doc """
   Returns the token of the bot.
   """
+  @spec token() :: String.t
   def token() do
     Agent.get(:token, &(&1))
   end
