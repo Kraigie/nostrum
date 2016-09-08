@@ -7,6 +7,18 @@ defmodule Mixcord.Constructs.User do
   A `member` has everything that a `user` has, but also additional information on a per guild basis. This includes things like a `nickname` and a list of `roles`.
   """
 
+  @doc """
+  Defines the User struct.
+
+  * :id - *Integer*. User's id.
+  * :username - *String*. User's username.
+  * :discriminator - *String*. User's 4-digit discord-tag.
+  * :avatar - *String*. User's avatar hash.
+  * :bot - *Boolean*. Whether the user is a bot.
+  * :mfa_enabled - *Boolean*. Whether the user has two factor enabled.
+  * :verified - *Boolean*. Whether the email on the account has been verified.
+  * :email - *String*. User's email.
+  """
   @derive [Poison.Encoder]
   defstruct [
     :id,
