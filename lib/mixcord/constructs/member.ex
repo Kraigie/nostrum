@@ -11,7 +11,7 @@ defmodule Mixcord.Constructs.Member do
   Defines the Member struct.
 
   * :user - *Struct*. A `Mixcord.Constructs.User` struct.
-  * :nick - *String*. Users guild nickname (if one is set).
+  * :nick - *?String*. Users guild nickname (if one is set).
   * :roles - *List*. A list of `Mixcord.Constructs.Role` ids.
   * :joined_at - *Data*. Date the user joined the guild.
   * :deaf - *Boolean*. If the user is deafened.
