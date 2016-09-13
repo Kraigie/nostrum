@@ -1,7 +1,15 @@
 defmodule Mixcord.Constructs.Guild do
   @moduledoc """
   Struct representing a Discord guild and various helper functions.
+
+  ## List properties
+  The guild struct contains multiple lists, including members and roles among others.
+  These lists should not be relied upon to be accurate.
+  They're only guaranteed to be accurate immediately following a GUILD_CREATE event.
   """
+
+  #TODO:  Decide if we want recreate the struct when things like members are changed.
+  #       In this way they will always be up to date.
 
   @doc """
   Defines the Guild struct.
