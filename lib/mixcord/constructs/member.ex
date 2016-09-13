@@ -10,6 +10,7 @@ defmodule Mixcord.Constructs.Member do
   @doc """
   Defines the Member struct.
 
+  * :guild_id - *String*. Id of the guild the member is a part of.
   * :user - *Struct*. A `Mixcord.Constructs.User` struct.
   * :nick - *?String*. Users guild nickname (if one is set).
   * :roles - *List*. A list of `Mixcord.Constructs.Role` ids.
@@ -19,6 +20,7 @@ defmodule Mixcord.Constructs.Member do
   """
   @derive [Poison.Encoder]
   defstruct [
+    :guild_id,
     :user,
     :nick,
     :roles,

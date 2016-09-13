@@ -10,7 +10,7 @@ defmodule Mixcord.Constructs.User do
   @doc """
   Defines the User struct.
 
-  * :id - *Integer*. User's id.
+  * :id - *String*. User's id.
   * :username - *String*. User's username.
   * :discriminator - *String*. User's 4-digit discord-tag.
   * :avatar - *String*. User's avatar hash.
