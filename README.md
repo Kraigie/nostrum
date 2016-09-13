@@ -1,6 +1,8 @@
 # Mixcord
 
-Mixcord is a wrapper for the Discord API made in [Elixir](http://elixir-lang.org/). 
+Mixcord is a wrapper for the Discord API made in [Elixir](http://elixir-lang.org/).
+
+This is more of a project for me to learn Elixir than it is to be used widely. Feel free to contribute.
 
 ## Installation
 
