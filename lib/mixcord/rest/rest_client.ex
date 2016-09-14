@@ -52,7 +52,10 @@ defmodule Mixcord.RestClient do
   """
   @spec create_message!(String.t, String.t, boolean) :: no_return | Mixcord.Constructs.Message.t
   def create_message!(channel_id, content, tts \\ false) do
-    bangify(request(:post, Constants.channel_messages(channel_id), %{content: content, tts: tts}))
+    request(:post, Constants.channel_messages(channel_id), %{content: content, tts: tts})
+    |> bangify
+    |> Poison.decode!(as: %Message{author: %User{}, mentions: [%User{}]})
+
   end
 
   @doc """
@@ -110,8 +113,8 @@ defmodule Mixcord.RestClient do
     case to_bang do
       {:error, status_code: code, message: message} ->
         raise(Mixcord.Errors.ApiError, status_code: code, message: message)
-      {:ok, message} ->
-        message
+      {:ok, body: body} ->
+        body
       {:ok} ->
         {:ok}
     end
