@@ -47,10 +47,11 @@ defmodule Mixcord.RestClient do
   Send `content` to the channel identified with `channel_id`.
   `tts` is an optional parameter that dictates whether the message should be played over text to speech.
 
-  Returns `Mixcord.Constructs.Message` if successful. `{:error, %{status_code: status_code, message: message}}` otherwise.
+  Raises `Mixcord.Errors.ApiError` if error occurs while making the rest call.
+  Returns `Mixcord.Constructs.Message` if successful.
   """
   @spec create_message!(String.t, String.t, boolean) :: no_return | Mixcord.Constructs.Message.t
-  def create_message(channel_id, content, tts \\ false) do
+  def create_message!(channel_id, content, tts \\ false) do
     bangify(request(:post, Constants.channel_messages(channel_id), %{content: content, tts: tts}))
   end
 
