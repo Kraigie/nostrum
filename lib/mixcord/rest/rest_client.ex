@@ -92,6 +92,17 @@ defmodule Mixcord.RestClient do
     end
   end
 
+  defp bangify(to_bang) do
+    case to_bang do
+      {:error, status_code: code, message: message} ->
+        raise(Mixcord.Errors.ApiError, status_code: code, message: message)
+      {:ok, message} ->
+        message
+      {:ok} ->
+        nil
+    end
+  end
+
   @doc """
   Returns the token of the bot.
   """
