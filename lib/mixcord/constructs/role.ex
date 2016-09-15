@@ -17,13 +17,13 @@ defmodule Mixcord.Constructs.Role do
   """
   @derive [Poison.Encoder]
   defstruct [
-    :id
-    :name
-    :color
-    :hoist
-    :position
-    :permissions
-    :managed
-    :mentionable
+    :id,
+    :name,
+    :color,
+    :hoist,
+    :position,
+    :permissions,
+    :managed,
+    :mentionable,
   ]
 end
