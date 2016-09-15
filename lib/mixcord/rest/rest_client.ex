@@ -2,12 +2,7 @@ defmodule Mixcord.RestClient do
   @moduledoc """
   Interface for Discord's rest API.
   """
-
-  #TODO:  Bangify - use a macro for it? For ! methods, wrap regular message and pattern match on results from them.
-  #       If error, throw error, if not, return whatver is after :ok
-  #       http://elixir-lang.org/docs/v1.0/elixir/Enum.html#fetch!/2
-  #       http://elixir-lang.org/docs/v1.0/elixir/Enum.html#fetch/2
-
+  
   alias Mixcord.Constants
   alias Mixcord.Constructs.Message
   alias Mixcord.Constructs.User
@@ -52,10 +47,9 @@ defmodule Mixcord.RestClient do
   """
   @spec create_message!(String.t, String.t, boolean) :: no_return | Mixcord.Constructs.Message.t
   def create_message!(channel_id, content, tts \\ false) do
-    request(:post, Constants.channel_messages(channel_id), %{content: content, tts: tts})
+    create_message(channel_id, content, tts)
     |> bangify
     |> Poison.decode!(as: %Message{author: %User{}, mentions: [%User{}]})
-
   end
 
   @doc """
@@ -76,6 +70,21 @@ defmodule Mixcord.RestClient do
   end
 
   @doc """
+  Edit a message.
+
+  Edit a message with the given `content`. Message to edit is specified by `channel_id` and `message_id`.
+
+  Raises `Mixcord.Errors.ApiError` if error occurs while making the rest call.
+  Returns `Mixcord.Constructs.Message` if successful.
+  """
+  @spec edit_message!(String.t, String.t, String.t) :: {:error, Map.t} | {:ok, Mixcord.Constructs.Message.t}
+  def edit_message!(channel_id, message_id, content) do
+    edit_message(channel_id, message_id, content)
+    |> bangify
+    |> Poison.decode!(as: %Message{author: %User{}, mentions: [%User{}]})
+  end
+
+  @doc """
   Delete a message.
 
   Delete a message specified by `channel_id` and `message_id`.
@@ -90,6 +99,20 @@ defmodule Mixcord.RestClient do
       {:ok} ->
         {:ok}
     end
+  end
+
+  @doc """
+  Delete a message.
+
+  Delete a message specified by `channel_id` and `message_id`.
+
+  Raises `Mixcord.Errors.ApiError` if error occurs while making the rest call.
+  Returns {:ok} if successful.
+  """
+  @spec delete_message!(String.t, String.t) :: {:error, Map.t} | {:ok}
+  def delete_message!(channel_id, message_id) do
+    delete_message(channel_id, message_id)
+    |> bangify
   end
 
   defp request(type, url, body, options \\ []) do
@@ -111,7 +134,7 @@ defmodule Mixcord.RestClient do
 
   defp bangify(to_bang) do
     case to_bang do
-      {:error, status_code: code, message: message} ->
+      {:error, %{status_code: code, message: message}} ->
         raise(Mixcord.Errors.ApiError, status_code: code, message: message)
       {:ok, body: body} ->
         body
