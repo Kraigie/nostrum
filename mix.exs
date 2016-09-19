@@ -30,7 +30,8 @@ defmodule Mixcord.Mixfile do
     [
       {:httpoison, "~> 0.9.0"},
       {:poison, "~> 2.0"},
-      {:ex_doc, "~> 0.12", only: :dev}
+      {:ex_doc, "~> 0.12", only: :dev},
+      {:websocket_client, "~> 1.1"}
     ]
   end
 end
