@@ -2,7 +2,7 @@ defmodule Mixcord.RestClient do
   @moduledoc """
   Interface for Discord's rest API.
   """
-  
+
   alias Mixcord.Constants
   alias Mixcord.Constructs.Message
   alias Mixcord.Constructs.User
@@ -57,7 +57,7 @@ defmodule Mixcord.RestClient do
 
   Edit a message with the given `content`. Message to edit is specified by `channel_id` and `message_id`.
 
-  Returns `{:ok, Mixcord.Constructs.Message}` if successful. `{:error, %{status_code: status_code, message: message}}` otherwise.
+  Returns the edited `{:ok, Mixcord.Constructs.Message}` if successful. `{:error, %{status_code: status_code, message: message}}` otherwise.
   """
   @spec edit_message(String.t, String.t, String.t) :: {:error, Map.t} | {:ok, Mixcord.Constructs.Message.t}
   def edit_message(channel_id, message_id, content) do
@@ -75,7 +75,7 @@ defmodule Mixcord.RestClient do
   Edit a message with the given `content`. Message to edit is specified by `channel_id` and `message_id`.
 
   Raises `Mixcord.Errors.ApiError` if error occurs while making the rest call.
-  Returns `Mixcord.Constructs.Message` if successful.
+  Returns the edited `Mixcord.Constructs.Message` if successful.
   """
   @spec edit_message!(String.t, String.t, String.t) :: {:error, Map.t} | {:ok, Mixcord.Constructs.Message.t}
   def edit_message!(channel_id, message_id, content) do
