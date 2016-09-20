@@ -4,9 +4,19 @@ defmodule Mixcord.Shard do
   #TODO: Struct?
   #TODO: Docs
 
-  def start_link(state_map) do
+  #hide sharding
+  def start_link(token, caller) do
     :crypto.start
     :ssl.start
+    state_map = Map.new([token: token, shard_num: 1, caller: caller])
+    :websocket_client.start_link('wss://echo.websocket.org', __MODULE__, state_map)
+  end
+
+  #expose sharding
+  def start_link(token, caller, shard_num) do
+    :crypto.start
+    :ssl.start
+    state_map = Map.new([token: token, shard_num: shard_num, caller: caller])
     :websocket_client.start_link('wss://echo.websocket.org', __MODULE__, state_map)
   end
 
@@ -17,7 +27,7 @@ defmodule Mixcord.Shard do
   @doc false
   def websocket_handle({:binary, payload}, state, state_map) do
     case payload do
-      IO.inspect(payload) #state_map.handler.do_something(msg) to run users commands
+      _ -> IO.inspect(payload) #state_map.caller.do_something(msg) to run users commands
     end
 
     {:ok, state_map}
@@ -36,6 +46,7 @@ defmodule Mixcord.Shard do
   @doc false
   def onconnect(ws_req, state) do
     #identify :websocket_client.cast(self, {:text, "message"})
+    IO.inspect("CONNECTED")
     {:ok, state}
   end
 
