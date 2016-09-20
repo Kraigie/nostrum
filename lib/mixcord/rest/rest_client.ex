@@ -1,4 +1,4 @@
-defmodule Mixcord.RestClient do
+defmodule Mixcord.Rest.Client do
   @moduledoc """
   Interface for Discord's rest API.
   """
