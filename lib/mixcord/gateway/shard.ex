@@ -1,49 +1,58 @@
-defmodule Mixcord.Gateway do
+defmodule Mixcord.Shard do
   @behaviour :websocket_client
-  @moduledoc false
 
+  #TODO: Struct?
+  #TODO: Docs
 
-  #get websocket calls
-  #@behaviour
-
-  #start link, notify and call things, user will implement receivinmg the genevents
-  def start_link do
+  def start_link(state_map) do
     :crypto.start
     :ssl.start
-    IO.puts "STARTED"
-    :websocket_client.start_link('wss://echo.websocket.org', __MODULE__, [])
+    :websocket_client.start_link('wss://echo.websocket.org', __MODULE__, state_map)
   end
 
-  def init(conn_state) do
-    IO.puts "INITED"
-    {:once, 2}
+  def status_update(new_status) do
+    send(self, {:status_update, new_status})
   end
 
-  def onconnect(arg0, state) do
-    IO.puts "CONNECTED"
-    :websocket_client.cast(self, {:text, "message"})
+  @doc false
+  def websocket_handle({:binary, payload}, state, state_map) do
+    case payload do
+      IO.inspect(payload) #state_map.handler.do_something(msg) to run users commands
+    end
+
+    {:ok, state_map}
+  end
+
+  @doc false
+  def send_heartbeat(time) do
+    Process.send_after(self, :heartbeat, time)
+  end
+
+  @doc false
+  def init(state_map) do
+    {:once, state_map}
+  end
+
+  @doc false
+  def onconnect(ws_req, state) do
+    #identify :websocket_client.cast(self, {:text, "message"})
     {:ok, state}
   end
 
+  @doc false
   def ondisconnect(reason, state) do
     {:ok}
   end
 
-  def websocket_info(any, arg1, state) do
-    IO.puts "INFO"
-    {:ok}
-  end
-
-  def websocket_handle(something, conn_state, state) do
-    IO.inspect(something)
+  @doc false
+  def websocket_info({:status_update, new_status}, ws_req, state) do
+    #TODO: Flesh this out
+    :websocket_client.cast(self, {new_status})
     {:ok, state}
   end
 
-  def websocket_terminate(arg0, arg1, state) do
+  @doc false
+  def websocket_terminate(close_info, ws_req, state) do
     {:ok}
-  end
-
-  def send_heartbeat(time) do
-    Process.send_after(self, :heartbeat, time)
   end
 end
