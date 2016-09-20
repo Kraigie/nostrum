@@ -10,8 +10,8 @@ defmodule Mixcord.Shard do
     :websocket_client.start_link('wss://echo.websocket.org', __MODULE__, state_map)
   end
 
-  def status_update(new_status) do
-    send(self, {:status_update, new_status})
+  def status_update(pid, new_status) do
+    send(pid, {:status_update, new_status})
   end
 
   @doc false
