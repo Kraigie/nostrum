@@ -1,4 +1,10 @@
 defmodule Mixcord.Shard do
+  @moduledoc """
+  """
+
+  alias Mixcord.Constants
+  alias Mixcord.Rest.Client
+
   @behaviour :websocket_client
 
   #TODO: Struct?
@@ -6,18 +12,17 @@ defmodule Mixcord.Shard do
 
   #hide sharding
   def start_link(token, caller) do
-    :crypto.start
-    :ssl.start
-    state_map = Map.new([token: token, shard_num: 1, caller: caller])
-    :websocket_client.start_link('wss://echo.websocket.org', __MODULE__, state_map)
+    start_link(token, caller, 1)
   end
 
   #expose sharding
   def start_link(token, caller, shard_num) do
+    gateway = get_gateway()
+
     :crypto.start
     :ssl.start
     state_map = Map.new([token: token, shard_num: shard_num, caller: caller])
-    :websocket_client.start_link('wss://echo.websocket.org', __MODULE__, state_map)
+    :websocket_client.start_link(gateway, __MODULE__, state_map)
   end
 
   def status_update(pid, new_status) do

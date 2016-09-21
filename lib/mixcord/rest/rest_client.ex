@@ -115,6 +115,7 @@ defmodule Mixcord.Rest.Client do
     |> bangify
   end
 
+  @doc false
   def request(type, url, body, options \\ []) do
     format_response(Rest.request(type, url, body, [{"Authorization", "Bot #{token}"}], options))
   end
