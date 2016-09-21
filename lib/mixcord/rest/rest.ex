@@ -1,6 +1,6 @@
 defmodule Mixcord.Rest do
   @moduledoc false
-  
+
   use HTTPoison.Base
   alias Mixcord.Constants
 
@@ -9,8 +9,12 @@ defmodule Mixcord.Rest do
   end
 
   defp process_request_body(body) do
-    body
-    |> Poison.encode!
+    case body do
+      "" ->
+        ""
+      _ ->
+        Poison.encode!(body)
+    end
   end
 
   defp process_request_headers(headers) do
