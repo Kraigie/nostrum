@@ -20,7 +20,7 @@ defmodule Mixcord.Shard do
     :crypto.start
     :ssl.start
     state_map = Map.new([token: token, shard_num: shard_num, caller: caller])
-    :websocket_client.start_link(gateway(), __MODULE__, state_map)
+    :websocket_client.start_link(gateway() , __MODULE__, state_map)
   end
 
   def status_update(pid, new_status) do
@@ -28,7 +28,7 @@ defmodule Mixcord.Shard do
   end
 
   @doc false
-  def websocket_handle({:binary, payload}, state, state_map) do
+  def websocket_handle({:binary, payload}, _state, state_map) do
     case payload do
       _ -> IO.inspect(payload) #state_map.caller.do_something(msg) to run users commands
     end
@@ -47,26 +47,26 @@ defmodule Mixcord.Shard do
   end
 
   @doc false
-  def onconnect(ws_req, state) do
+  def onconnect(_ws_req, state_map) do
     #identify :websocket_client.cast(self, {:text, "message"})
     IO.inspect("CONNECTED")
-    {:ok, state}
+    {:ok, state_map}
   end
 
   @doc false
-  def ondisconnect(reason, state) do
+  def ondisconnect(_reason, _state) do
     {:ok}
   end
 
   @doc false
-  def websocket_info({:status_update, new_status}, ws_req, state) do
+  def websocket_info({:status_update, new_status}, _ws_req, state) do
     #TODO: Flesh this out
     :websocket_client.cast(self, {new_status})
     {:ok, state}
   end
 
   @doc false
-  def websocket_terminate(close_info, ws_req, state) do
+  def websocket_terminate(_close_info, _ws_req, _state) do
     {:ok}
   end
 
