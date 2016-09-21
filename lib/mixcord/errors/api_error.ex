@@ -5,4 +5,5 @@ defmodule Mixcord.Errors.ApiError do
     msg = "Status Code: #{status_code}: " <> message
     %__MODULE__{message: msg}
   end
+  
 end

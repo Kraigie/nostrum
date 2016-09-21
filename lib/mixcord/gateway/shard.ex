@@ -71,4 +71,5 @@ defmodule Mixcord.Shard do
   def websocket_terminate(close_info, ws_req, state) do
     {:ok}
   end
+  
 end

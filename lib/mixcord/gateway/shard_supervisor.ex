@@ -20,4 +20,5 @@ defmodule Mixcord.Shard.Supervisor do
     #TODO: Add shard struct to map here with PID
     worker(Mixcord.Shard, [caller: caller, shard_num: shard_num, token: token], [id: shard_num])
   end
+  
 end

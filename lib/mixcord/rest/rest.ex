@@ -25,4 +25,5 @@ defmodule Mixcord.Rest do
   defp process_response_body(body) do
     body
   end
+  
 end
