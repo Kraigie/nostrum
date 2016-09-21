@@ -28,9 +28,9 @@ defmodule Mixcord.Shard do
   end
 
   @doc false
-  def websocket_handle({:binary, payload}, _state, state_map) do
-    case payload do
-      _ -> IO.inspect(payload) #state_map.caller.do_something(msg) to run users commands
+  def websocket_handle(any, _state, state_map) do
+    case any do
+      _ -> IO.inspect(any) #state_map.caller.do_something(msg) to run users commands
     end
 
     {:ok, state_map}
@@ -54,8 +54,8 @@ defmodule Mixcord.Shard do
   end
 
   @doc false
-  def ondisconnect(_reason, _state) do
-    {:ok}
+  def ondisconnect(reason, state) do
+    {:close, reason, state}
   end
 
   @doc false
@@ -67,7 +67,7 @@ defmodule Mixcord.Shard do
 
   @doc false
   def websocket_terminate(_close_info, _ws_req, _state) do
-    {:ok}
+    :ok
   end
 
   @doc false
@@ -90,7 +90,8 @@ defmodule Mixcord.Shard do
         raise(Mixcord.Errors.ApiError, status_code: status_code, message: message)
       {:ok, body: body} ->
         body = Poison.decode!(body)
-        gateway_url = body["url"]
+        gateway_url = body["url"] <> "?encoding=etf&v=6"
+          |> to_charlist
     end
   end
 
