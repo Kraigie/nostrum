@@ -17,12 +17,10 @@ defmodule Mixcord.Shard do
 
   #expose sharding
   def start_link(token, caller, shard_num) do
-    gateway = get_gateway()
-
     :crypto.start
     :ssl.start
     state_map = Map.new([token: token, shard_num: shard_num, caller: caller])
-    :websocket_client.start_link(gateway, __MODULE__, state_map)
+    :websocket_client.start_link(gateway(), __MODULE__, state_map)
   end
 
   def status_update(pid, new_status) do
@@ -71,5 +69,29 @@ defmodule Mixcord.Shard do
   def websocket_terminate(close_info, ws_req, state) do
     {:ok}
   end
-  
+
+  @doc false
+  def gateway do
+    if Enum.member?(:ets.all, :gateway_url) do
+      url = :ets.lookup(:gateway_url, "url")
+        |> List.first
+      url["url"]
+    else
+      :ets.new(:gateway_url, [:named_table])
+      new_url = get_new_gateway_url()
+      :ets.insert(:gateway_url, {"url", new_url})
+      new_url
+    end
+  end
+
+  defp get_new_gateway_url do
+    case Client.request(:get, Constants.gateway, "") do
+      {:error, status_code: status_code, message: message} ->
+        raise(Mixcord.Errors.ApiError, status_code: status_code, message: message)
+      {:ok, body: body} ->
+        body = Poison.decode!(body)
+        gateway_url = body["url"]
+    end
+  end
+
 end
