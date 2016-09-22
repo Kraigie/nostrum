@@ -10,8 +10,8 @@ defmodule Mixcord.Shard.Helpers do
   end
 
   def handle_event(payload) do
-    case payload.t do
-      "READY" ->
+    case to_string(payload.t) do
+       "READY" ->
         IO.inspect "READY"
       "GUILD_CREATE" ->
         IO.inspect "GUILD CREATED"
