@@ -47,22 +47,32 @@ defmodule Mixcord.Constants do
   def group_recipient(group_id, user_id),                 do: "/channels/#{group_id}/recipients/#{user_id}"
   def guild_me_nick(guild_id),                            do: "/guilds/#{guild_id}/members/@me/nick"
 
-  def opcode(event) do
-    case event do
-      "EVENT" -> 0
-      "HEARTBEAT" -> 1
-      "IDENTIFY" -> 2
-      "STATUS_UPDATE" -> 3
-      "VOICE_STATE_UPDATE" -> 4
-      "VOICE_SERVER_PING" -> 5
-      "RESUME" -> 6
-      "RECONNECT" -> 7
-      "GET_GUILD_MEMBERS" -> 8
-      "INVALID_SESSION" -> 9
-      "HELLO" -> 10
-      "HEARTBEAT_ACK" -> 11
-      "SYNC_GUILD" -> 12
-      "SYNC_CALL" -> 13
-    end
+  def opcodes do
+    %{
+      "EVENT" => 0,
+      "HEARTBEAT" => 1,
+      "IDENTIFY" => 2,
+      "STATUS_UPDATE" => 3,
+      "VOICE_STATUS_UPDATE" => 4,
+      "VOICE_SERVER_PING" => 5,
+      "RESUME" => 6,
+      "RECONNECT" => 7,
+      "GET_GUILD_MEMBER" => 8,
+      "INVALID_SESSION" => 9,
+      "HELLO" => 10,
+      "HEARTBEAT_ACK" => 11,
+      "SYNC_GUILD" => 12,
+      "SYNC_CALL" => 13
+    }
   end
+
+  def opcode_from_name(event) do
+    opcodes[event]
+  end
+
+  def name_from_opcode(opcode) do
+    {k, _} = Enum.find(opcodes, fn({_, v}) -> v == opcode end)
+    k
+  end
+
 end
