@@ -9,12 +9,39 @@ defmodule Mixcord.Shard.Helpers do
     send(pid, {:status_update, new_status})
   end
 
-  def handle_event do
-
+  def handle_event(payload) do
+    case payload.t do
+      "READY" ->
+        IO.inspect "READY"
+      "GUILD_CREATE" ->
+        IO.inspect "GUILD CREATED"
+    end
   end
 
-  def identify do
+  def identity_payload(state_map) do
+    data = %{
+      "token" => state_map.token,
+      "properties" => %{
+        "$os" => "",
+        "$browser" => "",
+        "$device" => "",
+        "$referrer" => "",
+        "$referring_domain" => ""
+      },
+      "compress" => false,
+      "large_threshold" => 250
+    }
+    build_payload(Constants.opcode_from_name("IDENTIFY"), data)
+  end
 
+  def heartbeat_payload(sequence) do
+    build_payload(Constants.opcode_from_name("HEARTBEAT"), sequence)
+  end
+
+  @doc false
+  def build_payload(opcode, data, event \\ nil, seq \\ nil) do
+    %{"op" => opcode, "d" => data, "s" => seq, "t" => event}
+      |> :erlang.term_to_binary
   end
 
   @doc false
@@ -23,20 +50,12 @@ defmodule Mixcord.Shard.Helpers do
   end
 
   @doc false
-  def build_payload(opcode, data) do
-    %{op: opcode, d: data}
-      |> :erlang.term_to_binary
-  end
-
-  @doc false
   def gateway do
     if Enum.member?(:ets.all, :gateway_url) do
-      IO.inspect "FOUND OLD GATEWAY"
       url = :ets.lookup(:gateway_url, "url")
         |> List.first
       url["url"]
     else
-      IO.inspect "GETTING NEW GATEWAY"
       :ets.new(:gateway_url, [:named_table])
       new_url = get_new_gateway_url()
       :ets.insert(:gateway_url, {"url", new_url})

@@ -21,15 +21,14 @@ defmodule Mixcord.Shard do
 
   def websocket_handle({:binary, payload}, _state, state_map) do
     payload = :erlang.binary_to_term(payload)
-
     case Constants.name_from_opcode payload.op do
-      "EVENT" ->
-        handle_event()
+      "DISPATCH" ->
+        handle_event(payload)
       "HELLO" ->
         heartbeat(self, payload.d.heartbeat_interval)
-        identify()
+        :websocket_client.cast(self, {:binary, identity_payload(state_map)})
       "HEARTBEAT_ACK" ->
-        IO.inspect "BEAT ACK"
+
       #state_map.caller.do_something(msg) to run users commands
     end
 
@@ -46,7 +45,6 @@ defmodule Mixcord.Shard do
   end
 
   def ondisconnect(reason, state_map) do
-    IO.inspect(reason)
     {:close, reason, state_map}
   end
 
@@ -57,12 +55,13 @@ defmodule Mixcord.Shard do
   end
 
   def websocket_info({:heartbeat, interval}, _ws_req, state_map) do
-    :websocket_client.cast(self, {:binary, build_payload(Constants.opcode_from_name("HEARTBEAT"), state_map.seq)})
+    :websocket_client.cast(self, {:binary, heartbeat_payload(state_map.seq)})
     heartbeat(self, interval)
     {:ok, state_map}
   end
 
-  def websocket_terminate(_close_info, _ws_req, _state_map) do
+  def websocket_terminate(reason, ws_req, state_map) do
+    #SO TRIGGERED I CANT GET END EVENT CODES
     :ok
   end
 

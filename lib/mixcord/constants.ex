@@ -49,7 +49,7 @@ defmodule Mixcord.Constants do
 
   def opcodes do
     %{
-      "EVENT" => 0,
+      "DISPATCH" => 0,
       "HEARTBEAT" => 1,
       "IDENTIFY" => 2,
       "STATUS_UPDATE" => 3,
