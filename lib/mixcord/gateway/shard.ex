@@ -24,14 +24,13 @@ defmodule Mixcord.Shard do
     case Constants.name_from_opcode payload.op do
       "DISPATCH" ->
         handle_event(payload)
+        #state_map.caller.handle_event({event, payload}, other, stuff) to run users commands
       "HELLO" ->
-        #TODO: Check for resume 
+        #TODO: Check for resume
         heartbeat(self, payload.d.heartbeat_interval)
         :websocket_client.cast(self, {:binary, identity_payload(state_map)})
       "HEARTBEAT_ACK" ->
         IO.inspect "GOT ACK"
-
-      #state_map.caller.do_something(msg) to run users commands
     end
 
     #TODO: Find somewhere else to do this probably
