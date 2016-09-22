@@ -15,7 +15,7 @@ defmodule Mixcord.Shard do
   def start_link(token, caller, shard_num) do
     :crypto.start
     :ssl.start
-    state_map = Map.new([token: token, shard_num: shard_num, caller: caller])
+    state_map = Map.new([token: token, shard_num: shard_num, caller: caller, seq: nil])
     :websocket_client.start_link(gateway() , __MODULE__, state_map)
   end
 
@@ -26,7 +26,10 @@ defmodule Mixcord.Shard do
       "EVENT" ->
         handle_event()
       "HELLO" ->
+        heartbeat(self, payload.d.heartbeat_interval)
         identify()
+      "HEARTBEAT_ACK" ->
+        IO.inspect "BEAT ACK"
       #state_map.caller.do_something(msg) to run users commands
     end
 
@@ -42,17 +45,24 @@ defmodule Mixcord.Shard do
     {:ok, state_map}
   end
 
-  def ondisconnect(reason, state) do
-    {:close, reason, state}
+  def ondisconnect(reason, state_map) do
+    IO.inspect(reason)
+    {:close, reason, state_map}
   end
 
-  def websocket_info({:status_update, new_status}, _ws_req, state) do
+  def websocket_info({:status_update, new_status}, _ws_req, state_map) do
     #TODO: Flesh this out
     :websocket_client.cast(self, {new_status})
-    {:ok, state}
+    {:ok, state_map}
   end
 
-  def websocket_terminate(_close_info, _ws_req, _state) do
+  def websocket_info({:heartbeat, interval}, _ws_req, state_map) do
+    :websocket_client.cast(self, {:binary, build_payload(Constants.opcode_from_name("HEARTBEAT"), state_map.seq)})
+    heartbeat(self, interval)
+    {:ok, state_map}
+  end
+
+  def websocket_terminate(_close_info, _ws_req, _state_map) do
     :ok
   end
 

@@ -14,12 +14,18 @@ defmodule Mixcord.Shard.Helpers do
   end
 
   def identify do
-    
+
   end
 
   @doc false
-  def send_heartbeat(time) do
-    Process.send_after(self, :heartbeat, time)
+  def heartbeat(pid, interval) do
+    Process.send_after(pid, {:heartbeat, interval}, interval)
+  end
+
+  @doc false
+  def build_payload(opcode, data) do
+    %{op: opcode, d: data}
+      |> :erlang.term_to_binary
   end
 
   @doc false
