@@ -15,7 +15,7 @@ defmodule Mixcord.Shard do
   def start_link(token, caller, shard_num) do
     :crypto.start
     :ssl.start
-    state_map = Map.new([token: token, shard_num: shard_num, caller: caller, seq: nil])
+    state_map = Map.new([token: token, shard_num: shard_num, caller: caller, seq: nil, reconnect_attempts: 0])
     :websocket_client.start_link(gateway() , __MODULE__, state_map)
   end
 
@@ -25,14 +25,17 @@ defmodule Mixcord.Shard do
       "DISPATCH" ->
         handle_event(payload)
       "HELLO" ->
+        #TODO: Check for resume 
         heartbeat(self, payload.d.heartbeat_interval)
         :websocket_client.cast(self, {:binary, identity_payload(state_map)})
       "HEARTBEAT_ACK" ->
+        IO.inspect "GOT ACK"
 
       #state_map.caller.do_something(msg) to run users commands
     end
 
-    {:ok, state_map}
+    #TODO: Find somewhere else to do this probably
+    {:ok, %{state_map | reconnect_attempts: 0}}
   end
 
   def init(state_map) do
@@ -40,12 +43,18 @@ defmodule Mixcord.Shard do
   end
 
   def onconnect(_ws_req, state_map) do
-    #identify :websocket_client.cast(self, {:text, "message"})
     {:ok, state_map}
   end
 
   def ondisconnect(reason, state_map) do
-    {:close, reason, state_map}
+    if state_map.reconnect_attempts > 2 do
+      {:close, reason, state_map}
+    end
+
+    :timer.sleep(15000)
+    attempts = state_map.reconnect_attempts + 1
+    IO.inspect "RECONNECT ATTEMPT NUMBER #{attempts}"
+    {:reconnect, %{state_map | reconnect_attempts: attempts}}
   end
 
   def websocket_info({:status_update, new_status}, _ws_req, state_map) do
@@ -60,8 +69,9 @@ defmodule Mixcord.Shard do
     {:ok, state_map}
   end
 
-  def websocket_terminate(reason, ws_req, state_map) do
+  def websocket_terminate(reason, _ws_req, _state_map) do
     #SO TRIGGERED I CANT GET END EVENT CODES
+    IO.inspect "WS TERMINATED BECAUSE: #{reason}"
     :ok
   end
 
