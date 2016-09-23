@@ -48,12 +48,12 @@ defmodule Mixcord.Shard do
   def ondisconnect(reason, state_map) do
     if state_map.reconnect_attempts > 2 do
       {:close, reason, state_map}
+    else
+      :timer.sleep(15000)
+      attempts = state_map.reconnect_attempts + 1
+      IO.inspect "RECONNECT ATTEMPT NUMBER #{attempts}"
+      {:reconnect, %{state_map | reconnect_attempts: attempts}}
     end
-
-    :timer.sleep(15000)
-    attempts = state_map.reconnect_attempts + 1
-    IO.inspect "RECONNECT ATTEMPT NUMBER #{attempts}"
-    {:reconnect, %{state_map | reconnect_attempts: attempts}}
   end
 
   def websocket_info({:status_update, new_status}, _ws_req, state_map) do
