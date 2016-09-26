@@ -7,7 +7,7 @@ defmodule Mixcord.Errors.ApiError do
   end
 
   def exception(status_code: status_code, message: message) when is_binary(message) do
-    msg = "ERROR: #{status_code} #{to_string(message)}"
+    msg = "ERROR: #{status_code} #{message}"
     %__MODULE__{message: msg}
   end
 
