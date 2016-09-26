@@ -5,8 +5,9 @@ defmodule Mixcord.Shard.Helpers do
   alias Mixcord.Constants
   alias Mixcord.Rest.Client
 
-  def status_update(pid, new_status) do
-    send(pid, {:status_update, new_status})
+  def status_update(pid, {idle, game}) do
+    json = Poison.encode!(%{game: %{name: game}})
+    send(pid, {:status_update, json})
   end
 
   def handle_event(payload) do

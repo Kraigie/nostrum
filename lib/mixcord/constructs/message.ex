@@ -39,8 +39,4 @@ defmodule Mixcord.Constructs.Message do
     :tts,
     :type,
   ]
-
-  def get_member do
-
-  end
 end

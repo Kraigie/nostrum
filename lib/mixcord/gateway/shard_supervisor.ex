@@ -1,12 +1,14 @@
 defmodule Mixcord.Shard.Supervisor do
   use Supervisor
+  alias Mixcord.Shard.Helpers
 
   def start_link(token, caller, num_shards \\ 1) do
-    Supervisor.start_link(__MODULE__, [token: token, caller: caller, num_shards: num_shards])
+    Supervisor.start_link(__MODULE__, [token: token, caller: caller, num_shards: num_shards], name: ShardSupervisor)
   end
 
-  def update_status(_status) do
-    #for shard in shard cache, shard.updateStatus(cache.pid, status)
+  def update_status(idle, game) do
+    children = Supervisor.which_children(ShardSupervisor)
+    Enum.map(children, fn {_id, pid, _type, _modules} -> Helpers.status_update(pid, {idle, game}) end)
   end
 
   @doc false
