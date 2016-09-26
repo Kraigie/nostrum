@@ -11,14 +11,14 @@ defmodule Mixcord.Shard.Supervisor do
 
   @doc false
   def init(options) do
-    children = for i <- 1..options[:num_shards], do: create_worker(i, options[:caller], options[:token])
+    children = for i <- 1..options[:num_shards], do: create_worker(options[:token], options[:caller], i)
     supervise(children, strategy: :one_for_one)
   end
 
   @doc false
   def create_worker(shard_num, caller, token) do
     #TODO: Add shard struct to map here with PID
-    worker(Mixcord.Shard, [caller: caller, shard_num: shard_num, token: token], [id: shard_num])
+    worker(Mixcord.Shard, [token: token, caller: caller, shard_num: shard_num], [id: shard_num])
   end
 
 end
