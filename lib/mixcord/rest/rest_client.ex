@@ -4,8 +4,7 @@ defmodule Mixcord.Rest.Client do
   """
 
   alias Mixcord.Constants
-  alias Mixcord.Constructs.Message
-  alias Mixcord.Constructs.User
+  alias Mixcord.Constructs.{Message, User}
   alias Mixcord.Rest
 
   @doc """
