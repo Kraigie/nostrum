@@ -1,9 +1,9 @@
 defmodule Mixcord.Caches.Helpers do
-  def member_from_id(id) do
+  def member_from_id(_id) do
 
   end
 
-  def server_from_msg(id) do
+  def server_from_msg(_id) do
 
   end
 end
