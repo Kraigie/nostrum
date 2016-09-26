@@ -22,9 +22,9 @@ defmodule Mixcord.Shard.Helpers do
     data = %{
       "token" => state_map.token,
       "properties" => %{
-        "$os" => "",
-        "$browser" => "",
-        "$device" => "",
+        "$os" => "Elixir",
+        "$browser" => "Mixcord",
+        "$device" => "Mixcord",
         "$referrer" => "",
         "$referring_domain" => ""
       },
