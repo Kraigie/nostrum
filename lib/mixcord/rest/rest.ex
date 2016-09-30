@@ -18,7 +18,7 @@ defmodule Mixcord.Rest do
   end
 
   defp process_request_headers(headers) do
-    [{"User-Agent", "DiscordBot (https://github.com/kraigie/mixcord, 0.0.0)"} | headers]
+    [{"User-Agent", "DiscordBot (https://github.com/kraigie/mixcord, #{Mixcord.Mixfile.project[:version]})"} | headers]
     [{"content-type", "application/json"} | headers]
   end
 
