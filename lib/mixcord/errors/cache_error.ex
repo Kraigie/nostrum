@@ -1,4 +1,4 @@
-defmodule Mixcord.Errors.CahceError do
+defmodule Mixcord.Errors.CacheError do
   defexception [:message]
 
   def exception() do

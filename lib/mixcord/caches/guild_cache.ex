@@ -12,13 +12,19 @@ defmodule Mixcord.Caches.Guilds do
   def lookup(id) do
     GenServer.call(Guilds, {:lookup, id})
   end
-  #TODO: Bangify
+
   def lookup!(id) do
     GenServer.call(Guilds, {:lookup, id})
+    |> bangify_find
   end
 
   def search(fun) do
     GenServer.call(Guilds, {:search, fun})
+  end
+
+  def search!(fun) do
+    GenServer.call(Guilds, {:search, fun})
+    |> bangify_find
   end
 
   def create(guild) do
@@ -43,6 +49,15 @@ defmodule Mixcord.Caches.Guilds do
 
   def handle_call({:search, fun}, _from, state) do
     {:reply, Enum.find(state, fun)}
+  end
+
+  def bangify_find(to_bang) do
+    case to_bang do
+      nil ->
+        raise(Mixcord.Errors.CacheError)
+      ret ->
+        ret
+    end
   end
 
 end
