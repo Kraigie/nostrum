@@ -1,6 +1,8 @@
 defmodule Mixcord.Caches.Guilds do
   use GenServer
 
+  #TODO: Length\Update?
+
   def start_link do
     GenServer.start_link(__MODULE__, [], name: Guilds)
   end
@@ -40,15 +42,15 @@ defmodule Mixcord.Caches.Guilds do
   end
 
   def handle_call(:all, _from, state) do
-    {:reply, state}
+    {:reply, state, state}
   end
 
   def handle_call({:lookup, id}, _from, state) do
-    {:reply, Enum.find(state, fn guild -> guild.id == id end)}
+    {:reply, Enum.find(state, fn guild -> guild.id == id end), state}
   end
 
   def handle_call({:search, fun}, _from, state) do
-    {:reply, Enum.find(state, fun)}
+    {:reply, Enum.find(state, fun), state}
   end
 
   def bangify_find(to_bang) do
