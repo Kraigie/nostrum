@@ -23,12 +23,12 @@ defmodule Mixcord.Shard do
     payload = :erlang.binary_to_term(payload)
     case Constants.name_from_opcode payload.op do
       "DISPATCH" ->
-        handle_event(payload)
+        handle_event(payload, state_map)
         #state_map.caller.handle_event({event, payload}, other, stuff) to run users commands
       "HELLO" ->
         #TODO: Check for resume
         heartbeat(self, payload.d.heartbeat_interval)
-        :websocket_client.cast(self, {:binary, identity_payload(state_map)})
+        identify(self, state_map)
       "HEARTBEAT_ACK" ->
         IO.inspect "GOT ACK"
     end

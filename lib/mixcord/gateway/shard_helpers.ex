@@ -10,7 +10,7 @@ defmodule Mixcord.Shard.Helpers do
     send(pid, {:status_update, json})
   end
 
-  def handle_event(payload) do
+  def handle_event(payload, state_map) do
     case to_string(payload.t) do
        "READY" ->
         IO.inspect "READY"
@@ -43,6 +43,11 @@ defmodule Mixcord.Shard.Helpers do
   def build_payload(opcode, data, event \\ nil, seq \\ nil) do
     %{"op" => opcode, "d" => data, "s" => seq, "t" => event}
       |> :erlang.term_to_binary
+  end
+
+  @doc false
+  def identify(pid, state) do
+    :websocket_client.cast(pid, {:binary, identity_payload(state)})
   end
 
   @doc false
