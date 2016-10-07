@@ -40,7 +40,7 @@
       #
       checks: [
         {Credo.Check.Consistency.ExceptionNames},
-        {Credo.Check.Consistency.LineEndings},
+        {Credo.Check.Consistency.LineEndings, false},
         {Credo.Check.Consistency.SpaceAroundOperators},
         {Credo.Check.Consistency.SpaceInParentheses},
         {Credo.Check.Consistency.TabsOrSpaces},
@@ -71,7 +71,7 @@
         {Credo.Check.Readability.ParenthesesInCondition},
         {Credo.Check.Readability.PredicateFunctionNames},
         {Credo.Check.Readability.TrailingBlankLine},
-        {Credo.Check.Readability.TrailingWhiteSpace},
+        {Credo.Check.Readability.TrailingWhiteSpace, false},
         {Credo.Check.Readability.VariableNames},
 
         {Credo.Check.Refactor.ABCSize},
@@ -79,7 +79,7 @@
         {Credo.Check.Refactor.CondStatements},
         {Credo.Check.Refactor.FunctionArity},
         {Credo.Check.Refactor.MatchInCondition},
-        {Credo.Check.Refactor.PipeChainStart},
+        {Credo.Check.Refactor.PipeChainStart, false},
         {Credo.Check.Refactor.CyclomaticComplexity},
         {Credo.Check.Refactor.NegatedConditionsInUnless},
         {Credo.Check.Refactor.NegatedConditionsWithElse},
