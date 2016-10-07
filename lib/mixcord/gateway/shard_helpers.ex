@@ -6,10 +6,11 @@ defmodule Mixcord.Shard.Helpers do
   alias Mixcord.Rest.Client
 
   def status_update(pid, {idle, game}) do
-    json = Poison.encode!(%{game: %{name: game}})
-    send(pid, {:status_update, json})
+    status_json = Poison.encode!(%{game: %{name: game}})
+    send(pid, {:status_update, status_json})
   end
 
+  @doc false
   def handle_event(payload, state_map) do
     case to_string(payload.t) do
        "READY" ->
@@ -19,6 +20,12 @@ defmodule Mixcord.Shard.Helpers do
     end
   end
 
+  @doc false
+  def heartbeat_payload(sequence) do
+    build_payload(Constants.opcode_from_name("HEARTBEAT"), sequence)
+  end
+
+  @doc false
   def identity_payload(state_map) do
     data = %{
       "token" => state_map.token,
@@ -35,8 +42,9 @@ defmodule Mixcord.Shard.Helpers do
     build_payload(Constants.opcode_from_name("IDENTIFY"), data)
   end
 
-  def heartbeat_payload(sequence) do
-    build_payload(Constants.opcode_from_name("HEARTBEAT"), sequence)
+  @doc false
+  def status_update_payload(json) do
+    build_payload(Constants.opcode_from_name("STATUS_UPDATE"), json)
   end
 
   @doc false
@@ -46,13 +54,13 @@ defmodule Mixcord.Shard.Helpers do
   end
 
   @doc false
-  def identify(pid, state) do
-    :websocket_client.cast(pid, {:binary, identity_payload(state)})
+  def heartbeat(pid, interval) do
+    Process.send_after(pid, {:heartbeat, interval}, interval)
   end
 
   @doc false
-  def heartbeat(pid, interval) do
-    Process.send_after(pid, {:heartbeat, interval}, interval)
+  def identify(pid, state) do
+    :websocket_client.cast(pid, {:binary, identity_payload(state)})
   end
 
   @doc false

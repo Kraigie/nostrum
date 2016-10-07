@@ -56,9 +56,9 @@ defmodule Mixcord.Shard do
     end
   end
 
-  def websocket_info({:status_update, new_status}, _ws_req, state_map) do
+  def websocket_info({:status_update, new_status_json}, _ws_req, state_map) do
     #TODO: Flesh this out
-    :websocket_client.cast(self, {new_status})
+    :websocket_client.cast(self, status_update_payload(new_status_json))
     {:ok, state_map}
   end
 
