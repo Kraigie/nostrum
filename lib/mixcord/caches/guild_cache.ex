@@ -29,11 +29,23 @@ defmodule Mixcord.Caches.Guilds do
     |> bangify_find
   end
 
+  @doc false
   def create(guild) do
     GenServer.call(Guilds, {:create, guild})
   end
 
+  @doc false
+  def create!(guild) do
+    GenServer.call(Guilds, {:create, guild})
+  end
+
+  @doc false
   def remove(guild) do
+    GenServer.call(Guilds, {:remove, guild})
+  end
+
+  @doc false
+  def remove!(guild) do
     GenServer.call(Guilds, {:remove, guild})
   end
 
@@ -51,6 +63,16 @@ defmodule Mixcord.Caches.Guilds do
 
   def handle_call({:search, fun}, _from, state) do
     {:reply, Enum.find(state, fun), state}
+  end
+
+  def handle_call({:create, guild}, _from, state) do
+
+    {:noreply, state}
+  end
+
+  def handle_call({:remove, guild}, _from, state) do
+    
+    {:noreply, state}
   end
 
   def bangify_find(to_bang) do
