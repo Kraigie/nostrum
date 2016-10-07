@@ -1,4 +1,7 @@
 defmodule Mixcord.Errors.CacheError do
+  @moduledoc """
+  """
+
   defexception [:message]
 
   def exception() do

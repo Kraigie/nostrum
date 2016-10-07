@@ -116,7 +116,7 @@ defmodule Mixcord.Rest.Client do
 
   @doc false
   def request(type, url, body, options \\ []) do
-    format_response(Rest.request(type, url, body, [{"Authorization", "Bot #{token}"}], options))
+    format_response(Rest.request(type, url, body, [{"Authorization", "Bot #{get_token}"}], options))
   end
 
   defp format_response(response) do
@@ -146,8 +146,8 @@ defmodule Mixcord.Rest.Client do
   @doc """
   Returns the token of the bot.
   """
-  @spec token() :: String.t
-  def token() do
+  @spec get_token() :: String.t
+  def get_token() do
     Agent.get(:token, &(&1))
   end
 

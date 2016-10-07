@@ -30,7 +30,7 @@ defmodule Mixcord.Shard do
         heartbeat(self, payload.d.heartbeat_interval)
         identify(self)
       "HEARTBEAT_ACK" ->
-        IO.inspect "GOT ACK"
+        :noop
     end
 
     #TODO: Find somewhere else to do this probably
@@ -66,16 +66,17 @@ defmodule Mixcord.Shard do
     if state_map.reconnect_attempts > 2 do
       {:close, reason, state_map}
     else
-      :timer.sleep(15000)
+      :timer.sleep(15_000)
       attempts = state_map.reconnect_attempts + 1
-      IO.inspect "RECONNECT ATTEMPT NUMBER #{attempts}"
+      #TODO: Log these - logger? Don't forget one in websocket_terminate method
+      #IO.inspect "RECONNECT ATTEMPT NUMBER #{attempts}"
       {:reconnect, %{state_map | reconnect_attempts: attempts}}
     end
   end
 
   def websocket_terminate(reason, _ws_req, _state_map) do
     #SO TRIGGERED I CANT GET END EVENT CODES
-    IO.inspect "WS TERMINATED BECAUSE: #{reason}"
+    #IO.inspect "WS TERMINATED BECAUSE: #{reason}"
     :ok
   end
 

@@ -1,4 +1,7 @@
 defmodule Mixcord.Shard.Supervisor do
+  @moduledoc """
+  """
+
   use Supervisor
   alias Mixcord.Shard.Helpers
 

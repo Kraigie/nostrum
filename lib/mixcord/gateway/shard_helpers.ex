@@ -15,9 +15,9 @@ defmodule Mixcord.Shard.Helpers do
     #state_map.caller.handle_event({event, payload}, other, stuff) to run users commands
     case to_string(payload.t) do
        "READY" ->
-        IO.inspect "READY"
+        :noop
       "GUILD_CREATE" ->
-        IO.inspect "GUILD CREATED"
+        :noop
     end
   end
 

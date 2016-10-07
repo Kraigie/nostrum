@@ -1,4 +1,7 @@
 defmodule Mixcord.Errors.ApiError do
+  @moduledoc """
+  """
+
   defexception [:message]
 
   def exception(status_code: status_code, message: message) when is_atom(message) do
