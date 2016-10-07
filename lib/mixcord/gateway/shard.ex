@@ -23,18 +23,35 @@ defmodule Mixcord.Shard do
     payload = :erlang.binary_to_term(payload)
     case Constants.name_from_opcode payload.op do
       "DISPATCH" ->
+        #TODO: Task.Async this?
         handle_event(payload, state_map)
-        #state_map.caller.handle_event({event, payload}, other, stuff) to run users commands
       "HELLO" ->
         #TODO: Check for resume
         heartbeat(self, payload.d.heartbeat_interval)
-        identify(self, state_map)
+        identify(self)
       "HEARTBEAT_ACK" ->
         IO.inspect "GOT ACK"
     end
 
     #TODO: Find somewhere else to do this probably
     {:ok, %{state_map | reconnect_attempts: 0}}
+  end
+
+  def websocket_info({:status_update, new_status_json}, _ws_req, state_map) do
+    #TODO: Flesh this out - Idle time?
+    :websocket_client.cast(self, {:binary, status_update_payload(new_status_json)})
+    {:ok, state_map}
+  end
+
+  def websocket_info({:heartbeat, interval}, _ws_req, state_map) do
+    :websocket_client.cast(self, {:binary, heartbeat_payload(state_map.seq)})
+    heartbeat(self, interval)
+    {:ok, state_map}
+  end
+
+  def websocket_info(:identify, _ws_req, state_map) do
+    :websocket_client.cast(self, {:binary, identity_payload(state_map)})
+    {:ok, state_map}
   end
 
   def init(state_map) do
@@ -54,18 +71,6 @@ defmodule Mixcord.Shard do
       IO.inspect "RECONNECT ATTEMPT NUMBER #{attempts}"
       {:reconnect, %{state_map | reconnect_attempts: attempts}}
     end
-  end
-
-  def websocket_info({:status_update, new_status_json}, _ws_req, state_map) do
-    #TODO: Flesh this out
-    :websocket_client.cast(self, status_update_payload(new_status_json))
-    {:ok, state_map}
-  end
-
-  def websocket_info({:heartbeat, interval}, _ws_req, state_map) do
-    :websocket_client.cast(self, {:binary, heartbeat_payload(state_map.seq)})
-    heartbeat(self, interval)
-    {:ok, state_map}
   end
 
   def websocket_terminate(reason, _ws_req, _state_map) do

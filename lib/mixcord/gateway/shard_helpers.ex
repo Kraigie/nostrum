@@ -12,6 +12,7 @@ defmodule Mixcord.Shard.Helpers do
 
   @doc false
   def handle_event(payload, state_map) do
+    #state_map.caller.handle_event({event, payload}, other, stuff) to run users commands
     case to_string(payload.t) do
        "READY" ->
         IO.inspect "READY"
@@ -59,8 +60,8 @@ defmodule Mixcord.Shard.Helpers do
   end
 
   @doc false
-  def identify(pid, state) do
-    :websocket_client.cast(pid, {:binary, identity_payload(state)})
+  def identify(pid) do
+    send(pid, :identify)
   end
 
   @doc false
