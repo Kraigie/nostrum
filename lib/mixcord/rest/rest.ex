@@ -1,6 +1,8 @@
 defmodule Mixcord.Rest do
   @moduledoc false
 
+  @version Mixcord.Mixfile.project[:version]
+
   use HTTPoison.Base
   alias Mixcord.Constants
 
@@ -18,7 +20,7 @@ defmodule Mixcord.Rest do
   end
 
   defp process_request_headers(headers) do
-    [{"User-Agent", "DiscordBot (https://github.com/kraigie/mixcord, #{Mixcord.Mixfile.project[:version]})"} | headers]
+    [{"User-Agent", "DiscordBot (https://github.com/kraigie/mixcord, #{@version})"} | headers]
     [{"content-type", "application/json"} | headers]
   end
 
