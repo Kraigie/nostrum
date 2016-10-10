@@ -15,7 +15,15 @@ defmodule Mixcord.Shard do
   def start_link(token, caller, shard_num) do
     :crypto.start
     :ssl.start
-    state_map = Map.new([token: token, shard_num: shard_num, caller: caller, seq: nil, reconnect_attempts: 0])
+    state_map = %{
+      token: token,
+      shard_num: shard_num,
+      caller: caller,
+      seq: nil,
+      reconnect_attempts: 0,
+      last_heartbeat: 0,
+      last_heartbeat_intervals: [] #TODO: Fill this with 0's
+    }
     :websocket_client.start_link(gateway() , __MODULE__, state_map)
   end
 
@@ -30,6 +38,10 @@ defmodule Mixcord.Shard do
         heartbeat(self, payload.d.heartbeat_interval)
         identify(self)
       "HEARTBEAT_ACK" ->
+        heartbeat_intervals = state_map.heartbeat_intervals
+          |> List.delete_at(-1)
+          |> List.insert_at(0, state_map.last_heartbeat - DateTime.utc_now)
+        state_map = %{state_map | last_heartbeat_intervals: heartbeat_intervals}
         :noop
     end
 
@@ -44,6 +56,7 @@ defmodule Mixcord.Shard do
   end
 
   def websocket_info({:heartbeat, interval}, _ws_req, state_map) do
+    state_map = %{state_map | last_heartbeat: DateTime.utc_now}
     :websocket_client.cast(self, {:binary, heartbeat_payload(state_map.seq)})
     heartbeat(self, interval)
     {:ok, state_map}
