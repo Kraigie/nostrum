@@ -1,4 +1,4 @@
-defmodule Mixcord.Caches.Helpers do
+defmodule Mixcord.Cache.Helpers do
   @moduledoc """
   """
 

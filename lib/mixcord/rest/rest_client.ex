@@ -4,7 +4,7 @@ defmodule Mixcord.Rest.Client do
   """
 
   alias Mixcord.Constants
-  alias Mixcord.Structs.{Message, User}
+  alias Mixcord.Struct.{Message, User}
   alias Mixcord.Rest
 
   @doc """
@@ -135,7 +135,7 @@ defmodule Mixcord.Rest.Client do
   defp bangify(to_bang) do
     case to_bang do
       {:error, %{status_code: code, message: message}} ->
-        raise(Mixcord.Errors.ApiError, status_code: code, message: message)
+        raise(Mixcord.Error.ApiError, status_code: code, message: message)
       {:ok, body: body} ->
         body
       {:ok} ->

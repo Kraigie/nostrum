@@ -18,7 +18,7 @@ defmodule Mixcord.Shard.Helpers do
       :READY ->
         :noop
       :GUILD_CREATE ->
-        Mixcord.Caches.Guilds.create!(payload.d)
+        Mixcord.Cache.Guilds.create!(payload.d)
       :MESSAGE_CREATE ->
         :noop
       _ ->
@@ -86,7 +86,7 @@ defmodule Mixcord.Shard.Helpers do
   defp get_new_gateway_url do
     case Client.request(:get, Constants.gateway, "") do
       {:error, status_code: status_code, message: message} ->
-        raise(Mixcord.Errors.ApiError, status_code: status_code, message: message)
+        raise(Mixcord.Error.ApiError, status_code: status_code, message: message)
       {:ok, body: body} ->
         body = Poison.decode!(body)
         gateway_url = body["url"] <> "?encoding=etf&v=6"
@@ -94,6 +94,7 @@ defmodule Mixcord.Shard.Helpers do
     end
   end
 
+  @doc false
   def now do
     DateTime.utc_now
       |> DateTime.to_unix(:milliseconds)

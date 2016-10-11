@@ -1,4 +1,4 @@
-defmodule Mixcord.Caches.Guilds do
+defmodule Mixcord.Cache.Guilds do
   @moduledoc """
   """
 
@@ -69,7 +69,7 @@ defmodule Mixcord.Caches.Guilds do
   def bangify_find(to_bang) do
     case to_bang do
       nil ->
-        raise(Mixcord.Errors.CacheError)
+        raise(Mixcord.Error.CacheError)
       ret ->
         ret
     end

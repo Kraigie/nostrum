@@ -1,4 +1,4 @@
-defmodule Mixcord.Errors.ApiError do
+defmodule Mixcord.Error.ApiError do
   @moduledoc """
   """
 

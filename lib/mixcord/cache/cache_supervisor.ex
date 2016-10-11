@@ -1,4 +1,4 @@
-defmodule Mixcord.Caches.Supervisor do
+defmodule Mixcord.Cache.Supervisor do
   @moduledoc false
 
   use Supervisor

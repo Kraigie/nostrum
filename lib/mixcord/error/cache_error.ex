@@ -1,4 +1,4 @@
-defmodule Mixcord.Errors.CacheError do
+defmodule Mixcord.Error.CacheError do
   @moduledoc """
   """
 
