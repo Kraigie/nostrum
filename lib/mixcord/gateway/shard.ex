@@ -23,7 +23,7 @@ defmodule Mixcord.Shard do
       seq: nil,
       reconnect_attempts: 0,
       last_heartbeat: 0,
-      last_heartbeat_intervals: Enum.map(1..10, fn _ -> 0 end)
+      heartbeat_intervals: Enum.map(1..10, fn _ -> 0 end)
     }
     :websocket_client.start_link(gateway() , __MODULE__, state_map)
   end
@@ -45,7 +45,7 @@ defmodule Mixcord.Shard do
           heartbeat_intervals = state_map.heartbeat_intervals
             |> List.delete_at(-1)
             |> List.insert_at(0, state_map.last_heartbeat - DateTime.utc_now)
-          %{state_map | last_heartbeat_intervals: heartbeat_intervals}
+          %{state_map | heartbeat_intervals: heartbeat_intervals}
     end
 
     #TODO: Find somewhere else to do this probably
@@ -59,10 +59,11 @@ defmodule Mixcord.Shard do
   end
 
   def websocket_info({:heartbeat, interval}, _ws_req, state_map) do
-    state_map = %{state_map | last_heartbeat: DateTime.utc_now}
+    now = DateTime.utc_now
+      |> DateTime.to_unix()
     :websocket_client.cast(self, {:binary, heartbeat_payload(state_map.seq)})
     heartbeat(self, interval)
-    {:ok, state_map}
+    {:ok, %{state_map | last_heartbeat: now}}
   end
 
   def websocket_info(:identify, _ws_req, state_map) do
