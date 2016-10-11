@@ -4,6 +4,7 @@ defmodule Mixcord.Shard.Helpers do
 
   alias Mixcord.Constants
   alias Mixcord.Rest.Client
+  require Logger
 
   def status_update(pid, {idle, game}) do
     status_json = Poison.encode!(%{game: %{name: game}})
@@ -12,11 +13,14 @@ defmodule Mixcord.Shard.Helpers do
 
   @doc false
   def handle_event(payload, state_map) do
+    Logger.debug inspect(payload)
     #state_map.caller.handle_event({event, payload}, other, stuff) to run users commands
     case to_string(payload.t) do
        "READY" ->
         :noop
       "GUILD_CREATE" ->
+        :noop
+      "MESSAGE_CREATE" ->
         :noop
     end
   end
@@ -31,7 +35,7 @@ defmodule Mixcord.Shard.Helpers do
     data = %{
       "token" => state_map.token,
       "properties" => %{
-        "$os" => "Elixir",
+        "$os" => "Linux",
         "$browser" => "Mixcord",
         "$device" => "Mixcord",
         "$referrer" => "",
