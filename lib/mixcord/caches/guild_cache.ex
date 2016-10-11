@@ -33,23 +33,13 @@ defmodule Mixcord.Caches.Guilds do
   end
 
   @doc false
-  def create(guild) do
-    GenServer.call(Guilds, {:create, guild})
-  end
-
-  @doc false
   def create!(guild) do
-    GenServer.call(Guilds, {:create, guild})
-  end
-
-  @doc false
-  def remove(guild) do
-    GenServer.call(Guilds, {:remove, guild})
+    GenServer.cast(Guilds, {:create, guild})
   end
 
   @doc false
   def remove!(guild) do
-    GenServer.call(Guilds, {:remove, guild})
+    GenServer.cast(Guilds, {:remove, guild})
   end
 
   def init(_args) do
@@ -68,13 +58,11 @@ defmodule Mixcord.Caches.Guilds do
     {:reply, Enum.find(state, fun), state}
   end
 
-  def handle_call({:create, guild}, _from, state) do
-
-    {:noreply, state}
+  def handle_cast({:create, guild}, state) do
+    {:noreply, state ++ guild}
   end
 
-  def handle_call({:remove, guild}, _from, state) do
-
+  def handle_cast({:remove, guild}, state) do
     {:noreply, state}
   end
 
