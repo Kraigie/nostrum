@@ -22,7 +22,7 @@ defmodule Mixcord.Shard do
       seq: nil,
       reconnect_attempts: 0,
       last_heartbeat: 0,
-      last_heartbeat_intervals: [] #TODO: Fill this with 0's
+      last_heartbeat_intervals: Enum.map(1..10, fn _ -> 0 end)
     }
     :websocket_client.start_link(gateway() , __MODULE__, state_map)
   end
