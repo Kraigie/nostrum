@@ -7,12 +7,6 @@ defmodule Mixcord.Shard do
 
   @behaviour :websocket_client
 
-  #hide sharding
-  def start_link(token, caller) do
-    start_link(token, caller, 1)
-  end
-
-  #expose sharding
   def start_link(token, caller, shard_num) do
     :crypto.start
     :ssl.start
