@@ -94,4 +94,9 @@ defmodule Mixcord.Shard.Helpers do
     end
   end
 
+  def now do
+    DateTime.utc_now
+      |> DateTime.to_unix(:milliseconds)
+  end
+
 end
