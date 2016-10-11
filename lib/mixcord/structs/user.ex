@@ -1,4 +1,4 @@
-defmodule Mixcord.Constructs.User do
+defmodule Mixcord.Structs.User do
   @moduledoc """
   Struct representing a Discord user and various helper functions.
 

@@ -1,4 +1,4 @@
-defmodule Mixcord.Constructs.Role do
+defmodule Mixcord.Structs.Role do
   @moduledoc """
   Struct representing a Discord role and various helper functions.
   """

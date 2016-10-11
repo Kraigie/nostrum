@@ -1,4 +1,4 @@
-defmodule Mixcord.Constructs.VoiceChannel do
+defmodule Mixcord.Structs.VoiceChannel do
   @moduledoc """
   Struct representing a Discord voice channel and various helper functions.
   """

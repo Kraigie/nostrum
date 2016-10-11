@@ -1,4 +1,4 @@
-defmodule Mixcord.Constructs.Message do
+defmodule Mixcord.Structs.Message do
   @moduledoc """
   Struct representing a Discord message and various helper functions.
   """
