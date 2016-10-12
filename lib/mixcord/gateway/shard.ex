@@ -19,7 +19,7 @@ defmodule Mixcord.Shard do
       case Constants.name_from_opcode payload.op do
         "DISPATCH" ->
           #TODO: Task.Async this?
-          handle_event(payload, state_map)
+          handle_dispatch(payload, state_map)
           %{state_map | reconnect_attempts: 0}
         "HELLO" ->
           #TODO: Check for resume
