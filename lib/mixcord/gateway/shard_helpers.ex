@@ -4,6 +4,7 @@ defmodule Mixcord.Shard.Helpers do
 
   alias Mixcord.Constants
   alias Mixcord.Rest.Client
+  alias Mixcord.Shard.Dispatch
   require Logger
 
   def status_update(pid, {idle, game}) do
@@ -14,16 +15,7 @@ defmodule Mixcord.Shard.Helpers do
   @doc false
   def handle_event(payload, state_map) do
     Logger.debug payload.t
-    case payload.t do
-      :READY ->
-        :noop
-      :GUILD_CREATE ->
-        Mixcord.Cache.Guilds.create!(payload.d)
-      :MESSAGE_CREATE ->
-        :noop
-      _ ->
-        :noop
-    end
+    Dispatch.handle_event(payload.t)
     state_map.caller.handle_event({payload.t, payload.d}, state_map)
   end
 

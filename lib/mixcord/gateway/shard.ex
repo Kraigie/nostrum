@@ -67,7 +67,7 @@ defmodule Mixcord.Shard do
     cond do
       state_map.reconnect_attempts > 2 ->
         {:close, reason, state_map}
-      true ->
+      :else ->
         :timer.sleep(15_000)
         Logger.debug "RECONNECT ATTEMPT NUMBER #{state_map.reconnect_attempts + 1}"
         {:reconnect, %{state_map | reconnect_attempts: state_map.reconnect_attempts + 1}}
