@@ -7,11 +7,6 @@ defmodule Mixcord.Rest.Client do
   alias Mixcord.Struct.{Message, User}
   alias Mixcord.Rest
 
-  @doc false
-  def init(token) do
-    Agent.start(fn -> token end, name: :token)
-  end
-
   @doc """
   Send a message to a channel.
 
@@ -112,7 +107,7 @@ defmodule Mixcord.Rest.Client do
 
   @doc false
   def request(type, url, body, options \\ []) do
-    format_response(Rest.request(type, url, body, [{"Authorization", "Bot #{Application.get_env(:mixcord, :token)}"}], options))
+    format_response(Rest.request(type, url, body, [{"Authorization", "Bot #{get_token}"}], options))
   end
 
   defp format_response(response) do
@@ -144,7 +139,7 @@ defmodule Mixcord.Rest.Client do
   """
   @spec get_token() :: String.t
   def get_token() do
-    Agent.get(:token, &(&1))
+    Application.get_env(:mixcord, :token)
   end
 
 end

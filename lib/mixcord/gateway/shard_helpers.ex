@@ -7,12 +7,12 @@ defmodule Mixcord.Shard.Helpers do
   require Logger
 
   def status_update(pid, {idle, game}) do
-    status_json = Poison.encode!(%{game: %{name: game}})
+    status_json = Poison.encode!(%{game: %{name: game}, idle: idle})
     send(pid, {:status_update, status_json})
   end
 
   @doc false
-  def handle_event(payload, state_map) do
+  def handle_event(payload, _state_map) do
     #state_map.caller.handle_event({event, payload}, other, stuff) to run users commands
     case payload.t do
       :READY ->
@@ -84,14 +84,16 @@ defmodule Mixcord.Shard.Helpers do
   end
 
   defp get_new_gateway_url do
-    case Client.request(:get, Constants.gateway, "") do
-      {:error, status_code: status_code, message: message} ->
-        raise(Mixcord.Error.ApiError, status_code: status_code, message: message)
-      {:ok, body: body} ->
-        body = Poison.decode!(body)
-        gateway_url = body["url"] <> "?encoding=etf&v=6"
-          |> to_charlist
-    end
+    gateway_url =
+      case Client.request(:get, Constants.gateway, "") do
+        {:error, status_code: status_code, message: message} ->
+          raise(Mixcord.Error.ApiError, status_code: status_code, message: message)
+        {:ok, body: body} ->
+          body = Poison.decode!(body)
+          body["url"] <> "?encoding=etf&v=6"
+            |> to_charlist
+      end
+    gateway_url
   end
 
   @doc false

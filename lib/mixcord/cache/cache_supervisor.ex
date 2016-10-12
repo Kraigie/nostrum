@@ -7,7 +7,7 @@ defmodule Mixcord.Cache.Supervisor do
     Supervisor.start_link(__MODULE__, [], name: CacheSupervisor)
   end
 
-  def init(options) do
+  def init(_args) do
     children = [
       worker(Mixcord.Caches.Guilds, [])
     ]

@@ -62,7 +62,7 @@ defmodule Mixcord.Cache.Guilds do
     {:noreply, state ++ guild}
   end
 
-  def handle_cast({:remove, guild}, state) do
+  def handle_cast({:remove, _guild}, state) do
     {:noreply, state}
   end
 

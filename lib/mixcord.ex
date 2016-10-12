@@ -2,9 +2,21 @@ defmodule Mixcord do
   @moduledoc """
   """
 
-  def start_link(token, shard, blah) do
-    Mixcord.Cache.Supervisor.start_link
-    Mixcord.Shard.Supervisor.start_link("", "ME", 1)
+  use Application
+
+  def start(_, _) do
+    import Supervisor.Spec
+
+    token = Application.get_env(:mixcord, :token)
+    caller = Application.get_env(:mixcord, :caller)
+    num_shards = Application.get_env(:mixcord, :num_shards)
+
+    children = [
+      supervisor(Mixcord.Cache.Supervisor, []),
+      supervisor(Mixcord.Shard.Supervisor, [token, caller, num_shards])
+    ]
+
+    supervise(children, strategy: :one_for_one)
   end
 
 end
