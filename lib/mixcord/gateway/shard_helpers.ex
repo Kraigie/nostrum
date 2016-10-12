@@ -12,8 +12,7 @@ defmodule Mixcord.Shard.Helpers do
   end
 
   @doc false
-  def handle_event(payload, _state_map) do
-    #state_map.caller.handle_event({event, payload}, other, stuff) to run users commands
+  def handle_event(payload, state_map) do
     Logger.debug payload.t
     case payload.t do
       :READY ->
@@ -25,6 +24,7 @@ defmodule Mixcord.Shard.Helpers do
       _ ->
         :noop
     end
+    state_map.caller.handle_event({payload.t, payload.d}, state_map)
   end
 
   @doc false
