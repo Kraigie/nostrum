@@ -21,9 +21,9 @@ defmodule Mixcord.Shard.Supervisor do
   end
 
   @doc false
-  def create_worker(shard_num, caller, token) do
+  def create_worker(token, caller, shard_num) do
     #TODO: Add shard struct to map here with PID
-    worker(Mixcord.Shard, [token: token, caller: caller, shard_num: shard_num], [id: shard_num])
+    worker(Mixcord.Shard, [token, caller, shard_num], [id: shard_num])
   end
 
 end

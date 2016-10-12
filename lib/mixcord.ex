@@ -16,7 +16,7 @@ defmodule Mixcord do
       supervisor(Mixcord.Shard.Supervisor, [token, caller, num_shards])
     ]
 
-    supervise(children, strategy: :one_for_one)
+    Supervisor.start_link(children, strategy: :one_for_one)
   end
 
 end

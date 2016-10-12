@@ -28,3 +28,8 @@ use Mix.Config
 # here (which is why it is important to import them last).
 #
 #     import_config "#{Mix.env}.exs"
+
+
+config :mixcord, token: "Example"
+config :mixcord, caller: Mixcord
+config :mixcord, num_shards: 1

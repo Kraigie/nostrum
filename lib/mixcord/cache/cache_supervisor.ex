@@ -9,7 +9,7 @@ defmodule Mixcord.Cache.Supervisor do
 
   def init(_args) do
     children = [
-      worker(Mixcord.Caches.Guilds, [])
+      worker(Mixcord.Cache.Guilds, [])
     ]
 
     supervise(children, strategy: :one_for_one)
