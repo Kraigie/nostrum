@@ -5,7 +5,6 @@ defmodule Mixcord.Shard.Helpers do
   alias Mixcord.Constants
   alias Mixcord.Rest.Client
   alias Mixcord.Shard.Dispatch
-  require Logger
 
   def status_update(pid, {idle, game}) do
     status_json = Poison.encode!(%{game: %{name: game}, idle: idle})
@@ -14,14 +13,8 @@ defmodule Mixcord.Shard.Helpers do
 
   @doc false
   def handle_dispatch(payload, state_map) do
-    Logger.debug payload.t
     Dispatch.handle_event(payload.t)
     state_map.caller.handle_event({payload.t, payload.d}, state_map)
-  end
-
-  @doc false
-  def heartbeat_payload(sequence) do
-    build_payload(Constants.opcode_from_name("HEARTBEAT"), sequence)
   end
 
   @doc false
@@ -35,6 +28,16 @@ defmodule Mixcord.Shard.Helpers do
       last_heartbeat: 0,
       heartbeat_intervals: Enum.map(1..10, fn _ -> 0 end)
     }
+  end
+
+  @doc false
+  def empty_cache do
+    Mixcord.Cache.Supervisor.empty_cache
+  end
+
+  @doc false
+  def heartbeat_payload(sequence) do
+    build_payload(Constants.opcode_from_name("HEARTBEAT"), sequence)
   end
 
   @doc false

@@ -1,6 +1,7 @@
 defmodule Mixcord.Shard.Dispatch do
-  @moduledoc """
-  """
+  @moduledoc false
+
+  require Logger
 
   def handle_event(payload) do
     Logger.debug payload.t
@@ -66,7 +67,6 @@ defmodule Mixcord.Shard.Dispatch do
       _ ->
         Logger.warn "UNHANDLED GATEWAY DISPATCH EVENT TYPE: #{payload.t}"
     end
-    state_map.caller.handle_event({payload.t, payload.d}, state_map)
   end
 
 end

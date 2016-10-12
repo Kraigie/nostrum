@@ -10,7 +10,7 @@ defmodule Mixcord.Shard do
   def start_link(token, caller, shard_num) do
     :crypto.start
     :ssl.start
-    :websocket_client.start_link(gateway, __MODULE__, state_map(token, caller, shard_num)
+    :websocket_client.start_link(gateway, __MODULE__, state_map(token, caller, shard_num))
   end
 
   def websocket_handle({:binary, payload}, _state, state_map) do

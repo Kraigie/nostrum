@@ -10,8 +10,9 @@ defmodule Mixcord.Shard.Supervisor do
   end
 
   def update_status(idle, game) do
-    children = Supervisor.which_children(ShardSupervisor)
-    Enum.map(children, fn {_id, pid, _type, _modules} -> Helpers.status_update(pid, {idle, game}) end)
+    ShardSupervisor
+      |> Supervisor.which_children
+      |> Enum.map(fn {_id, pid, _type, _modules} -> Helpers.status_update(pid, {idle, game}) end)
   end
 
   @doc false

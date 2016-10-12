@@ -3,8 +3,14 @@ defmodule Mixcord.Cache.Supervisor do
 
   use Supervisor
 
-  def start_link() do
+  def start_link do
     Supervisor.start_link(__MODULE__, [], name: CacheSupervisor)
+  end
+
+  def empty_cache do
+    CacheSupervisor
+      |> Supervisor.which_children
+      |> Enum.map(fn {_id, pid, _type, _modules} -> Supervisor.restart_child(CacheSupervisor, pid) end)
   end
 
   def init(_args) do
