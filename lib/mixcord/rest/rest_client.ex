@@ -7,12 +7,8 @@ defmodule Mixcord.Rest.Client do
   alias Mixcord.Struct.{Message, User}
   alias Mixcord.Rest
 
-  @doc """
-  Starts the rest client and initializes the agent containing your API `token`.
-  """
-  @spec init(String.t) :: nil
+  @doc false
   def init(token) do
-    HTTPoison.start
     Agent.start(fn -> token end, name: :token)
   end
 
@@ -116,7 +112,7 @@ defmodule Mixcord.Rest.Client do
 
   @doc false
   def request(type, url, body, options \\ []) do
-    format_response(Rest.request(type, url, body, [{"Authorization", "Bot #{get_token}"}], options))
+    format_response(Rest.request(type, url, body, [{"Authorization", "Bot #{Application.get_env(:mixcord, :token)}"}], options))
   end
 
   defp format_response(response) do
