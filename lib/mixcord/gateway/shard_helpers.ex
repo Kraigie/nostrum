@@ -14,6 +14,7 @@ defmodule Mixcord.Shard.Helpers do
   @doc false
   def handle_event(payload, _state_map) do
     #state_map.caller.handle_event({event, payload}, other, stuff) to run users commands
+    Logger.debug payload.t
     case payload.t do
       :READY ->
         :noop
@@ -72,9 +73,10 @@ defmodule Mixcord.Shard.Helpers do
   @doc false
   def gateway do
     if Enum.member?(:ets.all, :gateway_url) do
-      url = :ets.lookup(:gateway_url, "url")
+      res = :ets.lookup(:gateway_url, "url")
         |> List.first
-      url["url"]
+      {_, url} = res
+      url
     else
       :ets.new(:gateway_url, [:named_table])
       new_url = get_new_gateway_url()
@@ -93,7 +95,6 @@ defmodule Mixcord.Shard.Helpers do
           body["url"] <> "?encoding=etf&v=6"
             |> to_charlist
       end
-    gateway_url
   end
 
   @doc false

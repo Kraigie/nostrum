@@ -19,17 +19,17 @@ defmodule Mixcord.Shard do
       last_heartbeat: 0,
       heartbeat_intervals: Enum.map(1..10, fn _ -> 0 end)
     }
-    :websocket_client.start_link(gateway() , __MODULE__, state_map)
+    :websocket_client.start_link(gateway, __MODULE__, state_map)
   end
 
   def websocket_handle({:binary, payload}, _state, state_map) do
     payload = :erlang.binary_to_term(payload)
-    case Constants.name_from_opcode payload.op do
-      state_map =
+    new_state =
+      case Constants.name_from_opcode payload.op do
         "DISPATCH" ->
           #TODO: Task.Async this?
           handle_event(payload, state_map)
-          state_map
+          %{state_map | reconnect_attempts: 0}
         "HELLO" ->
           #TODO: Check for resume
           heartbeat(self, payload.d.heartbeat_interval)
@@ -40,10 +40,8 @@ defmodule Mixcord.Shard do
             |> List.delete_at(-1)
             |> List.insert_at(0, state_map.last_heartbeat - now())
           %{state_map | heartbeat_intervals: heartbeat_intervals}
-    end
-
-    #TODO: Find somewhere else to do this probably
-    {:ok, %{state_map | reconnect_attempts: 0}}
+      end
+    {:ok, new_state}
   end
 
   def websocket_info({:status_update, new_status_json}, _ws_req, state_map) do
@@ -74,20 +72,20 @@ defmodule Mixcord.Shard do
   end
 
   def ondisconnect(reason, state_map) do
-    if state_map.reconnect_attempts > 2 do
-      {:close, reason, state_map}
-    else
-      :timer.sleep(15_000)
-      attempts = state_map.reconnect_attempts + 1
-      #TODO: Log these - logger? Don't forget one in websocket_terminate method
-      Logger.debug "RECONNECT ATTEMPT NUMBER #{attempts}"
-      {:reconnect, %{state_map | reconnect_attempts: attempts}}
+    Logger.debug "WS DISCONNECTED BECAUSE: #{inspect reason}"
+    cond do
+      state_map.reconnect_attempts > 2 ->
+        {:close, reason, state_map}
+      true ->
+        :timer.sleep(15_000)
+        Logger.debug "RECONNECT ATTEMPT NUMBER #{state_map.reconnect_attempts + 1}"
+        {:reconnect, %{state_map | reconnect_attempts: state_map.reconnect_attempts + 1}}
     end
   end
 
   def websocket_terminate(reason, _ws_req, _state_map) do
     #SO TRIGGERED I CANT GET END EVENT CODES
-    Logger.debug "WS TERMINATED BECAUSE: #{reason}"
+    Logger.debug "WS TERMINATED BECAUSE: #{inspect reason}"
     :ok
   end
 
