@@ -10,16 +10,7 @@ defmodule Mixcord.Shard do
   def start_link(token, caller, shard_num) do
     :crypto.start
     :ssl.start
-    state_map = %{
-      token: token,
-      shard_num: shard_num,
-      caller: caller,
-      seq: nil,
-      reconnect_attempts: 0,
-      last_heartbeat: 0,
-      heartbeat_intervals: Enum.map(1..10, fn _ -> 0 end)
-    }
-    :websocket_client.start_link(gateway, __MODULE__, state_map)
+    :websocket_client.start_link(gateway, __MODULE__, state_map(token, caller, shard_num)
   end
 
   def websocket_handle({:binary, payload}, _state, state_map) do

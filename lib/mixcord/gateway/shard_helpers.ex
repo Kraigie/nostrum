@@ -33,6 +33,19 @@ defmodule Mixcord.Shard.Helpers do
   end
 
   @doc false
+  def state_map(token, caller, shard_num) do
+    state_map = %{
+      token: token,
+      caller: caller,
+      shard_num: shard_num,
+      seq: nil,
+      reconnect_attempts: 0,
+      last_heartbeat: 0,
+      heartbeat_intervals: Enum.map(1..10, fn _ -> 0 end)
+    }
+  end
+
+  @doc false
   def identity_payload(state_map) do
     data = %{
       "token" => state_map.token,
