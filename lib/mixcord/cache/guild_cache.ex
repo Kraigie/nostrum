@@ -10,6 +10,10 @@ defmodule Mixcord.Cache.Guilds do
     GenServer.start_link(__MODULE__, [], name: Guilds)
   end
 
+  def init(_args) do
+    {:ok, []}
+  end
+
   def all() do
     GenServer.call(Guilds, :all)
   end
@@ -40,10 +44,6 @@ defmodule Mixcord.Cache.Guilds do
   @doc false
   def remove!(guild) do
     GenServer.cast(Guilds, {:remove, guild})
-  end
-
-  def init(_args) do
-    {:ok, []}
   end
 
   def handle_call(:all, _from, state) do

@@ -13,7 +13,7 @@ defmodule Mixcord.Shard.Helpers do
 
   @doc false
   def handle_dispatch(payload, state_map) do
-    Dispatch.handle_event(payload.t)
+    Dispatch.handle_event(payload)
     state_map.caller.handle_event({payload.t, payload.d}, state_map)
   end
 

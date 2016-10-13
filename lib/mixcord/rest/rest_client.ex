@@ -6,6 +6,7 @@ defmodule Mixcord.Rest.Client do
   alias Mixcord.Constants
   alias Mixcord.Struct.{Message, User}
   alias Mixcord.Rest
+  alias Mixcord.Rest.Ratelimiter
 
   @doc """
   Send a message to a channel.
@@ -106,10 +107,21 @@ defmodule Mixcord.Rest.Client do
   end
 
   @doc false
-  def request(method, url, body, options \\ []) do
+  def request(method, route, body, options \\ []) do
+    Ratelimiter.handle_possible_ratelimit(route)
     method
-      |> Rest.request(url, body, [], options)
+      |> Rest.request(route, body, [], options)
+      |> check_for_ratelimit(route)
       |> format_response
+  end
+
+  defp check_for_ratelimit(response, route) do
+    with %HTTPoison.Response{headers: headers} <- response,
+       limit = headers |> List.keyfind("X-RateLimit-Limit", 0) |> Tuple.to_list |> List.last,
+       remaining = headers |> List.keyfind("X-RateLimit-Remaining", 0) |> Tuple.to_list |> List.last,
+       reset = headers |> List.keyfind("X-RateLimit-Reset", 0) |> Tuple.to_list |> List.last,
+       do: {:ok, Ratelimiter.create_bucket(route, limit, remaining, reset)}
+    response
   end
 
   defp format_response(response) do

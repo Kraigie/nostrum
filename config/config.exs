@@ -30,6 +30,6 @@ use Mix.Config
 #     import_config "#{Mix.env}.exs"
 
 
-config :mixcord, token: "Example"
+config :mixcord, token: ""
 config :mixcord, caller: Mixcord
 config :mixcord, num_shards: 1
