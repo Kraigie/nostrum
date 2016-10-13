@@ -106,8 +106,10 @@ defmodule Mixcord.Rest.Client do
   end
 
   @doc false
-  def request(type, url, body, options \\ []) do
-    format_response(Rest.request(type, url, body, [{"Authorization", "Bot #{get_token}"}], options))
+  def request(method, url, body, options \\ []) do
+    method
+      |> Rest.request(url, body, [], options)
+      |> format_response
   end
 
   defp format_response(response) do

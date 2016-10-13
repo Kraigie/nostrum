@@ -2,6 +2,7 @@ defmodule Mixcord.Rest do
   @moduledoc false
 
   @version Mixcord.Mixfile.project[:version]
+  @token Application.get_env(:mixcord, :token)
 
   use HTTPoison.Base
   alias Mixcord.Constants
@@ -22,6 +23,7 @@ defmodule Mixcord.Rest do
   defp process_request_headers(headers) do
     [{"User-Agent", "DiscordBot (https://github.com/kraigie/mixcord, #{@version})"} | headers]
     [{"content-type", "application/json"} | headers]
+    [{"Authorization", "Bot #{@token}"} | headers]
   end
 
   defp process_response_body(body) do
