@@ -74,13 +74,13 @@
         {Credo.Check.Readability.TrailingWhiteSpace, false},
         {Credo.Check.Readability.VariableNames},
 
-        {Credo.Check.Refactor.ABCSize},
+        {Credo.Check.Refactor.ABCSize, false},
         # {Credo.Check.Refactor.CaseTrivialMatches}, # deprecated in 0.4.0
         {Credo.Check.Refactor.CondStatements},
         {Credo.Check.Refactor.FunctionArity},
         {Credo.Check.Refactor.MatchInCondition},
         {Credo.Check.Refactor.PipeChainStart, false},
-        {Credo.Check.Refactor.CyclomaticComplexity},
+        {Credo.Check.Refactor.CyclomaticComplexity, false},
         {Credo.Check.Refactor.NegatedConditionsInUnless},
         {Credo.Check.Refactor.NegatedConditionsWithElse},
         {Credo.Check.Refactor.Nesting},
