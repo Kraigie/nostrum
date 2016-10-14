@@ -58,19 +58,18 @@ defmodule Mixcord.Shard do
   end
 
   def onconnect(_ws_req, state_map) do
-    Logger.debug "CONNECTED ON #{state_map.shard_num}"
+    Logger.debug "SHARD #{state_map.shard_num} CONNECTED"
     {:ok, state_map}
   end
 
   def ondisconnect(reason, state_map) do
     Logger.debug "WS DISCONNECTED BECAUSE: #{inspect reason}"
-    cond do
-      state_map.reconnect_attempts > 2 ->
-        {:close, reason, state_map}
-      :else ->
-        :timer.sleep(15_000)
-        Logger.debug "RECONNECT ATTEMPT NUMBER #{state_map.reconnect_attempts + 1}"
-        {:reconnect, %{state_map | reconnect_attempts: state_map.reconnect_attempts + 1}}
+    if state_map.reconnect_attempts > 2 do
+      {:close, reason, state_map}
+    else
+      :timer.sleep(15_000)
+      Logger.debug "RECONNECT ATTEMPT NUMBER #{state_map.reconnect_attempts + 1}"
+      {:reconnect, %{state_map | reconnect_attempts: state_map.reconnect_attempts + 1}}
     end
   end
 

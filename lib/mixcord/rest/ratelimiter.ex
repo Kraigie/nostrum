@@ -1,7 +1,6 @@
 defmodule Mixcord.Rest.Ratelimiter do
   @moduledoc false
 
-  use GenServer
 
   #Mixcord.Rest.Ratelimiter.create_bucket("TEST", 5, 5, 999)
 
@@ -11,7 +10,6 @@ defmodule Mixcord.Rest.Ratelimiter do
   end
 
   def init(_args) do
-    :ets.new(:ratelimit_buckets, [:set, :public, :named_table])
     {:ok, []}
   end
 
@@ -32,7 +30,8 @@ defmodule Mixcord.Rest.Ratelimiter do
   end
 
   def handle_possible_ratelimit(route) do
-    GenServer.call(Ratelimiter, {:check_limit, route}, :infinity)
+    #GenServer.call(Ratelimiter, {:check_limit, route}, :infinity)
+    :ok
   end
 
   def wait_for_limit(route, reset, from, state) do

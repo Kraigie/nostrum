@@ -80,29 +80,23 @@ defmodule Mixcord.Shard.Helpers do
 
   @doc false
   def gateway do
-    if Enum.member?(:ets.all, :gateway_url) do
-      res = :ets.lookup(:gateway_url, "url")
-        |> List.first
-      {_, url} = res
-      url
-    else
-      :ets.new(:gateway_url, [:named_table])
-      new_url = get_new_gateway_url()
-      :ets.insert(:gateway_url, {"url", new_url})
-      new_url
+    case :ets.lookup(:gateway_url, "url") do
+      [] -> get_new_gateway_url
+      [{"url", url}] -> url
     end
   end
 
   defp get_new_gateway_url do
-    gateway_url =
-      case Client.request(:get, Constants.gateway, "") do
-        {:error, status_code: status_code, message: message} ->
-          raise(Mixcord.Error.ApiError, status_code: status_code, message: message)
-        {:ok, body: body} ->
-          body = Poison.decode!(body)
-          body["url"] <> "?encoding=etf&v=6"
-            |> to_charlist
-      end
+    case Client.request(:get, Constants.gateway, "") do
+      {:error, status_code: status_code, message: message} ->
+        raise(Mixcord.Error.ApiError, status_code: status_code, message: message)
+      {:ok, body: body} ->
+        body = Poison.decode!(body)
+        url = body["url"] <> "?encoding=etf&v=6"
+          |> to_charlist
+        :ets.insert(:gateway_url, {"url", url})
+        url
+    end
   end
 
   @doc false
