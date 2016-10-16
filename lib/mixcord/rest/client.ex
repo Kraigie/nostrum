@@ -40,7 +40,6 @@ defmodule Mixcord.Rest.Client do
   def create_message!(channel_id, content, tts \\ false) do
     create_message(channel_id, content, tts)
     |> bangify
-    |> Poison.decode!(as: %Message{author: %User{}, mentions: [%User{}]})
   end
 
   @doc """
@@ -72,7 +71,6 @@ defmodule Mixcord.Rest.Client do
   def edit_message!(channel_id, message_id, content) do
     edit_message(channel_id, message_id, content)
     |> bangify
-    |> Poison.decode!(as: %Message{author: %User{}, mentions: [%User{}]})
   end
 
   @doc """
@@ -108,20 +106,70 @@ defmodule Mixcord.Rest.Client do
 
   @doc false
   def request(method, route, body, options \\ []) do
-    Ratelimiter.handle_possible_ratelimit(route)
+    route
+      |> Ratelimiter.get_ratelimit_timeout
+      |> IO.inspect
+      |> wait_timeout(method)
+
+    "GLOBAL"
+      |> Ratelimiter.get_ratelimit_timeout
+      |> IO.inspect
+      |> wait_timeout(method)
+
     method
       |> Rest.request(route, body, [], options)
-      |> check_for_ratelimit(route)
+      |> handle_ratelimit_headers(route)
+      |> handle_global_ratelimit()
       |> format_response
   end
 
-  defp check_for_ratelimit(response, route) do
-    with %HTTPoison.Response{headers: headers} <- response,
-       limit = headers |> List.keyfind("X-RateLimit-Limit", 0) |> Tuple.to_list |> List.last,
-       remaining = headers |> List.keyfind("X-RateLimit-Remaining", 0) |> Tuple.to_list |> List.last,
-       reset = headers |> List.keyfind("X-RateLimit-Reset", 0) |> Tuple.to_list |> List.last,
-       do: {:ok, Ratelimiter.create_bucket(route, limit, remaining, reset)}
+  def wait_timeout(0, method), do: :ok
+  def wait_timeout(timeout, method) do
+    IO.inspect("ABOUT TO SLEEP")
+    Process.sleep(timeout)
+
+    wait_time = Ratelimiter.get_ratelimit_timeout(method)
+    wait_timeout(wait_time, method)
+  end
+
+  defp handle_global_ratelimit(response) do
+    {:ok, %HTTPoison.Response{body: body, headers: headers}} = response
+    IO.inspect Poison.decode!(body)
+
+    global_limit = headers |> List.keyfind("X-RateLimit-Global", 0)
+    global_limit = global_limit || false
+
+    if global_limit do
+      retry = headers |> List.keyfind("Retry-After", 0) |> value_from_rltuple |> String.to_integer
+      Ratelimiter.create_bucket("GLOBAL", 0, 0, Mixcord.Shard.Helpers.now + retry)
+    end
+
     response
+  end
+
+  defp handle_ratelimit_headers(response, route) do
+    {:ok,%HTTPoison.Response{headers: headers}} = response
+
+    limit = headers |> List.keyfind("X-RateLimit-Limit", 0) |> value_from_rltuple
+    remaining = headers |> List.keyfind("X-RateLimit-Remaining", 0) |> value_from_rltuple
+    reset = headers |> List.keyfind("X-RateLimit-Reset", 0) |> value_from_rltuple
+
+    if limit && remaining && reset do
+      Ratelimiter.create_bucket(route, limit, remaining, reset * 1000)
+    end
+
+    response
+  end
+
+  defp value_from_rltuple(tuple) do
+    if not is_nil(tuple) do
+      tuple
+        |> Tuple.to_list
+        |> List.last
+        |> String.to_integer
+    else
+      nil
+    end
   end
 
   defp format_response(response) do
@@ -141,7 +189,7 @@ defmodule Mixcord.Rest.Client do
     case to_bang do
       {:error, %{status_code: code, message: message}} ->
         raise(Mixcord.Error.ApiError, status_code: code, message: message)
-      {:ok, body: body} ->
+      {:ok, body} ->
         body
       {:ok} ->
         {:ok}
