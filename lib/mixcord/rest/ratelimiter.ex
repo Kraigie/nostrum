@@ -23,16 +23,17 @@ defmodule Mixcord.Rest.Ratelimiter do
     case lookup_bucket(route) do
       [] ->
         0
-      [{route, limit, remaining, reset}] when remaining == 0 ->
+      [{route, _limit, remaining, reset}] when remaining == 0 ->
         update_bucket(route, remaining - 1)
         wait_time = reset - Mixcord.Shard.Helpers.now
+
         if wait_time <= 0 do
           delete_bucket(route)
           0
         else
           wait_time
         end
-      [{route, limit, remaining, reset}] ->
+      [{route, _limit, remaining, _reset}] ->
         update_bucket(route, remaining - 1)
         0
     end
