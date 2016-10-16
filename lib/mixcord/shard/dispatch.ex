@@ -5,6 +5,7 @@ defmodule Mixcord.Shard.Dispatch do
 
   def handle_event(payload) do
     Logger.debug payload.t
+
     case payload.t do
       :CHANNEL_CREATE ->
         :noop
