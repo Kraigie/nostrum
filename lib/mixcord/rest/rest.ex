@@ -21,9 +21,9 @@ defmodule Mixcord.Rest do
   end
 
   defp process_request_headers(headers) do
-    [{"User-Agent", "DiscordBot (https://github.com/kraigie/mixcord, #{@version})"} | headers]
-    [{"content-type", "application/json"} | headers]
-    [{"Authorization", "Bot #{@token}"} | headers]
+    headers = [{"User-Agent", "DiscordBot (https://github.com/kraigie/mixcord, #{@version})"} | headers]
+    headers = [{"content-type", "application/json"} | headers]
+    headers = [{"Authorization", "Bot #{@token}"} | headers]
   end
 
   defp process_response_body(body) do
