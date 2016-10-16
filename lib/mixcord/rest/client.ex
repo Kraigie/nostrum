@@ -121,7 +121,7 @@ defmodule Mixcord.Rest.Client do
       |> format_response
   end
 
-  def wait_timeout(0, method), do: :ok
+  def wait_timeout(0, _method), do: :ok
   def wait_timeout(timeout, method) do
     Process.sleep(timeout)
 
@@ -130,7 +130,7 @@ defmodule Mixcord.Rest.Client do
   end
 
   defp handle_global_ratelimit(response) do
-    {:ok, %HTTPoison.Response{body: body, headers: headers}} = response
+    {:ok, %HTTPoison.Response{headers: headers}} = response
 
     global_limit = headers |> List.keyfind("X-RateLimit-Global", 0)
     global_limit = global_limit || false

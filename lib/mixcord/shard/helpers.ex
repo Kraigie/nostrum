@@ -19,7 +19,7 @@ defmodule Mixcord.Shard.Helpers do
 
   @doc false
   def state_map(token, caller, shard_num) do
-    state_map = %{
+    state = %{
       token: token,
       caller: caller,
       shard_num: shard_num,
@@ -28,6 +28,7 @@ defmodule Mixcord.Shard.Helpers do
       last_heartbeat: 0,
       heartbeat_intervals: Enum.map(1..10, fn _ -> 0 end)
     }
+    state
   end
 
   @doc false
@@ -96,7 +97,7 @@ defmodule Mixcord.Shard.Helpers do
         url = body["url"] <> "?encoding=etf&v=6"
           |> to_charlist
         :ets.insert(:gateway_url, {"url", url})
-        
+
         url
     end
   end
