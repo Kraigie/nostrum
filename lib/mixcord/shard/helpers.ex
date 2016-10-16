@@ -92,9 +92,11 @@ defmodule Mixcord.Shard.Helpers do
         raise(Mixcord.Error.ApiError, status_code: status_code, message: message)
       {:ok, body: body} ->
         body = Poison.decode!(body)
+
         url = body["url"] <> "?encoding=etf&v=6"
           |> to_charlist
         :ets.insert(:gateway_url, {"url", url})
+        
         url
     end
   end

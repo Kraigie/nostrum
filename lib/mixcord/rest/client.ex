@@ -108,12 +108,10 @@ defmodule Mixcord.Rest.Client do
   def request(method, route, body, options \\ []) do
     route
       |> Ratelimiter.get_ratelimit_timeout
-      |> IO.inspect
       |> wait_timeout(method)
 
     "GLOBAL"
       |> Ratelimiter.get_ratelimit_timeout
-      |> IO.inspect
       |> wait_timeout(method)
 
     method
@@ -125,7 +123,6 @@ defmodule Mixcord.Rest.Client do
 
   def wait_timeout(0, method), do: :ok
   def wait_timeout(timeout, method) do
-    IO.inspect("ABOUT TO SLEEP")
     Process.sleep(timeout)
 
     wait_time = Ratelimiter.get_ratelimit_timeout(method)
@@ -134,7 +131,6 @@ defmodule Mixcord.Rest.Client do
 
   defp handle_global_ratelimit(response) do
     {:ok, %HTTPoison.Response{body: body, headers: headers}} = response
-    IO.inspect Poison.decode!(body)
 
     global_limit = headers |> List.keyfind("X-RateLimit-Global", 0)
     global_limit = global_limit || false

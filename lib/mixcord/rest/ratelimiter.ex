@@ -20,7 +20,7 @@ defmodule Mixcord.Rest.Ratelimiter do
   end
 
   def get_ratelimit_timeout(route) do
-    case IO.inspect lookup_bucket(route) do
+    case lookup_bucket(route) do
       [] ->
         0
       [{route, limit, remaining, reset}] when remaining == 0 ->

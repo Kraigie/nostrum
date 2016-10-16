@@ -26,6 +26,7 @@ defmodule Mixcord do
     :ets.new(:gateway_url, [:set, :public, :named_table])
   end
 
+  # allows us to run mixcord as a standalone
   def handle_event(_data, _state), do: :ok
 
 end
