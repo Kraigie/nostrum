@@ -6,6 +6,8 @@ defmodule Mixcord.Shard.Helpers do
   alias Mixcord.Rest.Client
   alias Mixcord.Shard.Dispatch
 
+  @num_shards Application.get_env(:mixcord, :num_shards)
+
   def status_update(pid, {idle, game}) do
     status_json = Poison.encode!(%{game: %{name: game}, idle: idle})
     send(pid, {:status_update, status_json})
@@ -24,6 +26,7 @@ defmodule Mixcord.Shard.Helpers do
       caller: caller,
       shard_num: shard_num,
       seq: nil,
+      session: nil,
       reconnect_attempts: 0,
       last_heartbeat: 0,
       heartbeat_intervals: Enum.map(1..10, fn _ -> 0 end)
@@ -38,7 +41,7 @@ defmodule Mixcord.Shard.Helpers do
 
   @doc false
   def heartbeat_payload(sequence) do
-    build_payload(Constants.opcode_from_name("HEARTBEAT"), sequence)
+    build_payload(Constants.opcode_from_name("HEARTBEAT"), nil, sequence)
   end
 
   @doc false
@@ -53,7 +56,8 @@ defmodule Mixcord.Shard.Helpers do
         "$referring_domain" => ""
       },
       "compress" => false,
-      "large_threshold" => 250
+      "large_threshold" => 250,
+      "shard" => [state_map.shard_num, @num_shards]
     }
     build_payload(Constants.opcode_from_name("IDENTIFY"), data)
   end
