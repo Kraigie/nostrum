@@ -30,3 +30,51 @@ defmodule Mixcord do
   def handle_event(_data, _state), do: :ok
 
 end
+
+defmodule Test do
+  use GenServer
+  def start_link do
+    GenServer.start_link(__MODULE__, [], name: TEST)
+  end
+
+  def add() do
+    GenServer.call(TEST, :add, :infinity)
+  end
+
+  def testing2() do
+    GenServer.call(TEST, :OTHER, :infinity)
+  end
+
+  def handle_call(:TEST, _from, state) do
+    Process.sleep(3000)
+    IO.inspect("DONE SLEEPING")
+    {:reply, "GOT IT", state}
+  end
+
+  def handle_call(:add, from, state) do
+    get_ratelimit_time
+    if rate_limit_time do
+      Process.send_after(self, {ratelimit_over}, ratelimit_time)
+    end
+
+    make_rest_call
+    update_ratelimits
+
+    GenServer.reply(from, from_rest_call)
+
+    {:noreply, state}
+  end
+
+  def handle_info({:test, message, from}, state) do
+    IO.inspect("HANDLING INFO")
+    GenServer.reply(from, message)
+    {:noreply, state}
+  end
+
+  def handle_call(:OTHER, from, state) do
+    IO.inspect(from)
+    IO.inspect("DOING OTHER")
+    Process.send_after(self, {:test, "HELLO WORLD", from}, 3000)
+    {:noreply, state}
+  end
+end
