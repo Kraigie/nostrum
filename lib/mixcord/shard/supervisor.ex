@@ -3,7 +3,7 @@ defmodule Mixcord.Shard.Supervisor do
   """
 
   use Supervisor
-  alias Mixcord.Shard.Helpers
+  alias Mixcord.Shard
 
   def start_link(token, caller, num_shards \\ 1) do
     Supervisor.start_link(__MODULE__, [token: token, caller: caller, num_shards: num_shards], name: Shard.Supervisor)
@@ -12,7 +12,7 @@ defmodule Mixcord.Shard.Supervisor do
   def update_status(idle, game) do
     Shard.Supervisor
       |> Supervisor.which_children
-      |> Enum.map(fn {_id, pid, _type, _modules} -> Helpers.status_update(pid, {idle, game}) end)
+      |> Enum.map(fn {_id, pid, _type, _modules} -> Shard.update_status(pid, {idle, game}) end)
   end
 
   @doc false
@@ -23,8 +23,8 @@ defmodule Mixcord.Shard.Supervisor do
 
   @doc false
   def create_worker(token, caller, shard_num) do
-    #TODO: Add shard struct to map here with PID
-    worker(Mixcord.Shard, [token, caller, shard_num], [id: shard_num])
+    # TODO: Add shard struct to map here with PID
+    worker(Shard, [token, caller, shard_num], [id: shard_num])
   end
 
 end

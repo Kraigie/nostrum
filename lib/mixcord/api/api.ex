@@ -1,12 +1,13 @@
-defmodule Mixcord.Rest.Client do
+defmodule Mixcord.Api do
   @moduledoc """
   Interface for Discord's rest API.
   """
-
+  
+  alias Mixcord.Api.Base
+  alias Mixcord.Api.Ratelimiter
   alias Mixcord.Constants
   alias Mixcord.Struct.{Message, User}
-  alias Mixcord.Rest
-  alias Mixcord.Rest.Ratelimiter
+  alias Mixcord.Util
 
   @doc """
   Send a message to a channel.
@@ -115,7 +116,7 @@ defmodule Mixcord.Rest.Client do
       |> wait_timeout(method)
 
     method
-      |> Rest.request(route, body, [], options)
+      |> Base.request(route, body, [], options)
       |> handle_ratelimit_headers(route)
       |> handle_global_ratelimit()
       |> format_response
@@ -137,7 +138,7 @@ defmodule Mixcord.Rest.Client do
 
     if global_limit do
       retry = headers |> List.keyfind("Retry-After", 0) |> value_from_rltuple |> String.to_integer
-      Ratelimiter.create_bucket("GLOBAL", 0, 0, Mixcord.Shard.Helpers.now + retry)
+      Ratelimiter.create_bucket("GLOBAL", 0, 0, Util.now() + retry)
     end
 
     response

@@ -1,11 +1,11 @@
-defmodule Mixcord.Cache.Guilds do
+defmodule Mixcord.Cache.Guild do
   @moduledoc """
   """
 
   use GenServer
 
-  #TODO: Length\Update?
-  #TODO: https://www.djm.org.uk/posts/elixir-keyword-lists-function-parameters/
+  # TODO: Length\Update?
+  # TODO: https://www.djm.org.uk/posts/elixir-keyword-lists-function-parameters/
 
   def start_link do
     GenServer.start_link(__MODULE__, [], name: Guilds)

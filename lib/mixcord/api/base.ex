@@ -1,4 +1,4 @@
-defmodule Mixcord.Rest do
+defmodule Mixcord.Api.Base do
   @moduledoc false
 
   @version Mixcord.Mixfile.project[:version]

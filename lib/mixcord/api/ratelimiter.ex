@@ -1,7 +1,7 @@
-defmodule Mixcord.Rest.Ratelimiter do
+defmodule Mixcord.Api.Ratelimiter do
   @moduledoc false
 
-  #Mixcord.Rest.Ratelimiter.create_bucket("TEST", 5, 5, 999)
+  alias Mixcord.Util
 
   def create_bucket(route, limit, remaining, reset) do
     :ets.insert(:ratelimit_buckets, {route, limit, remaining, reset})
@@ -25,7 +25,7 @@ defmodule Mixcord.Rest.Ratelimiter do
         0
       [{route, _limit, remaining, reset}] when remaining == 0 ->
         update_bucket(route, remaining - 1)
-        wait_time = reset - Mixcord.Shard.Helpers.now
+        wait_time = reset - Util.now()
 
         if wait_time <= 0 do
           delete_bucket(route)

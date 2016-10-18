@@ -1,12 +1,13 @@
 defmodule Mixcord.Shard do
   @moduledoc false
 
-  import Mixcord.Shard.Helpers
-  alias Mixcord.Constants
-  require Logger
-
   @behaviour :websocket_client
-  @num_shards Application.get_env(:mixcord, :num_shards)
+
+  alias Mixcord.Shard.Event
+  alias Mixcord.Shard.Payload
+  alias Mixcord.Constants
+  alias Mixcord.Util
+  require Logger
 
   def start_link(token, caller, shard_num) do
     :crypto.start
@@ -14,65 +15,38 @@ defmodule Mixcord.Shard do
     # This makes the supervisor spawn a shard worker ever 5 seconds. This only occurs on ShardSupervisor start.
     # If an individual shard fails, it will be restarted immediately.
     # TODO: Queue reconnects/check this better
-    if @num_shards > 1, do: Process.sleep(5000)
-    :websocket_client.start_link(gateway, __MODULE__, state_map(token, caller, shard_num))
+    if Util.num_shards > 1, do: Process.sleep(5000)
+    :websocket_client.start_link(Util.gateway, __MODULE__, Payload.state_map(token, caller, shard_num))
   end
 
   def websocket_handle({:binary, payload}, _state, state) do
     payload = :erlang.binary_to_term(payload)
-    new_state =
-      case Constants.name_from_opcode payload.op do
-        "DISPATCH" ->
-          #TODO: Task.start this?
-          handle_dispatch(payload, state)
-          state =
-            if payload.t == :READY do
-              %{state | session: payload.d.session_id}
-            else
-              state
-            end
+    new_state = Constants.atom_from_opcode(payload.op)
+      |> Event.handle(payload, state)
 
-          %{state | reconnect_attempts: 0}
-        "HEARTBEAT" ->
-          Logger.debug "GOT HEARTBEAT PING"
-          :websocket_client.cast(self, {:binary, heartbeat_payload(state.seq)})
-          state
-        "HEARTBEAT_ACK" ->
-          heartbeat_intervals = state.heartbeat_intervals
-            |> List.delete_at(-1)
-            |> List.insert_at(0, state.last_heartbeat - now())
-          %{state | heartbeat_intervals: heartbeat_intervals}
-        "HELLO" ->
-          #TODO: Check for resume if session is set, build resume packet and send - will also need to restart heartbeat
-          heartbeat(self, payload.d.heartbeat_interval)
-          identify(self)
-          state
-        "INVALID_SESSION" ->
-          Logger.debug "INVALID_SESSION"
-          identify(self)
-          state
-        "RECONNECT" ->
-          Logger.debug "RECONNECT"
-          state
-      end
     {:ok, %{new_state | seq: payload.s}}
   end
 
+  def update_status(pid, {idle, game}) do
+    status_json = Poison.encode!(%{game: %{name: game}, idle: idle})
+    send(pid, {:status_update, status_json})
+  end
+
   def websocket_info({:status_update, new_status_json}, _ws_req, state) do
-    #TODO: Flesh this out - Idle time?
-    :websocket_client.cast(self, {:binary, status_update_payload(new_status_json)})
+    # TODO: Flesh this out - Idle time?
+    :websocket_client.cast(self, {:binary, Payload.status_update_payload(new_status_json)})
     {:ok, state}
   end
 
   def websocket_info({:heartbeat, interval}, _ws_req, state) do
-    now = now()
-    :websocket_client.cast(self, {:binary, heartbeat_payload(state.seq)})
-    heartbeat(self, interval)
+    now = Util.now()
+    :websocket_client.cast(self, {:binary, Payload.heartbeat_payload(state.seq)})
+    Event.heartbeat(self, interval)
     {:ok, %{state | last_heartbeat: now}}
   end
 
   def websocket_info(:identify, _ws_req, state) do
-    :websocket_client.cast(self, {:binary, identity_payload(state)})
+    :websocket_client.cast(self, {:binary, Payload.identity_payload(state)})
     {:ok, state}
   end
 

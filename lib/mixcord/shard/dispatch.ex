@@ -3,9 +3,9 @@ defmodule Mixcord.Shard.Dispatch do
 
   require Logger
 
-  def handle_event(payload) do
+  def handle(payload, state) do
     Logger.debug payload.t
-
+    # TODO: LOWER CASE THESE
     case payload.t do
       :CHANNEL_CREATE ->
         :noop
@@ -18,7 +18,7 @@ defmodule Mixcord.Shard.Dispatch do
       :BUILD_BAN_REMOVE ->
         :noop
       :GUILD_CREATE ->
-        Mixcord.Cache.Guilds.create!(payload.d)
+        Mixcord.Cache.Guild.create!(payload.d)
       :GUILD_DELETE ->
         :noop
       :GUILD_EMOJI_UPDATE ->
@@ -68,6 +68,8 @@ defmodule Mixcord.Shard.Dispatch do
       _ ->
         Logger.warn "UNHANDLED GATEWAY DISPATCH EVENT TYPE: #{payload.t}"
     end
+
+    state.caller.handle_event({payload.t, payload.d}, state)
   end
 
 end
