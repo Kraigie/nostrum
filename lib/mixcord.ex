@@ -37,19 +37,44 @@ defmodule Test do
     GenServer.start_link(__MODULE__, [], name: TEST)
   end
 
-  def add() do
-    GenServer.call(TEST, :add, :infinity)
+  def add(num) do
+    IO.inspect("CALLING ADD")
+    GenServer.call(TEST, {:add, num}, :infinity)
   end
 
-  def testing2() do
-    GenServer.call(TEST, :OTHER, :infinity)
+  def handle_call({:add, num}, from, state) do
+    IO.inspect("HANDLING ADD FOR #{num}")
+    #check ratelimit
+    if num == 1 do
+      #not ratelimited
+      IO.inspect("sleeping to simulate api call")
+      Process.sleep(3000)
+      #update ratelimits
+      GenServer.reply(from, "api response")
+    else
+      #ratelimited
+      Task.start(fn -> wait_for_timeout(10000) end)
+    end
+
+
+    {:noreply, state}
   end
 
+  def wait_for_timeout(time) do
+    IO.inspect("ABOUT TO SLEEP")
+    Process.sleep(time)
+    IO.inspect("CALLING ADD FROM WAIT TIMEOUT")
+    GenServer.call(TEST, {:add, 1}, :infinity)
+  end
+
+
+  """
   def handle_call(:TEST, _from, state) do
     Process.sleep(3000)
     IO.inspect("DONE SLEEPING")
     {:reply, "GOT IT", state}
   end
+
 
   def handle_call(:add, from, state) do
     get_ratelimit_time
@@ -65,6 +90,7 @@ defmodule Test do
     {:noreply, state}
   end
 
+
   def handle_info({:test, message, from}, state) do
     IO.inspect("HANDLING INFO")
     GenServer.reply(from, message)
@@ -77,4 +103,5 @@ defmodule Test do
     Process.send_after(self, {:test, "HELLO WORLD", from}, 3000)
     {:noreply, state}
   end
+  """
 end
