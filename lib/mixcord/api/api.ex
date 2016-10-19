@@ -2,12 +2,10 @@ defmodule Mixcord.Api do
   @moduledoc """
   Interface for Discord's rest API.
   """
-  
-  alias Mixcord.Api.Base
-  alias Mixcord.Api.Ratelimiter
+
   alias Mixcord.Constants
   alias Mixcord.Struct.{Message, User}
-  alias Mixcord.Util
+  import Mixcord.Api.Ratelimiter
 
   @doc """
   Send a message to a channel.
@@ -103,83 +101,6 @@ defmodule Mixcord.Api do
   def delete_message!(channel_id, message_id) do
     delete_message(channel_id, message_id)
     |> bangify
-  end
-
-  @doc false
-  def request(method, route, body, options \\ []) do
-    route
-      |> Ratelimiter.get_ratelimit_timeout
-      |> wait_timeout(method)
-
-    "GLOBAL"
-      |> Ratelimiter.get_ratelimit_timeout
-      |> wait_timeout(method)
-
-    method
-      |> Base.request(route, body, [], options)
-      |> handle_ratelimit_headers(route)
-      |> handle_global_ratelimit()
-      |> format_response
-  end
-
-  def wait_timeout(0, _method), do: :ok
-  def wait_timeout(timeout, method) do
-    Process.sleep(timeout)
-
-    wait_time = Ratelimiter.get_ratelimit_timeout(method)
-    wait_timeout(wait_time, method)
-  end
-
-  defp handle_global_ratelimit(response) do
-    {:ok, %HTTPoison.Response{headers: headers}} = response
-
-    global_limit = headers |> List.keyfind("X-RateLimit-Global", 0)
-    global_limit = global_limit || false
-
-    if global_limit do
-      retry = headers |> List.keyfind("Retry-After", 0) |> value_from_rltuple |> String.to_integer
-      Ratelimiter.create_bucket("GLOBAL", 0, 0, Util.now() + retry)
-    end
-
-    response
-  end
-
-  defp handle_ratelimit_headers(response, route) do
-    {:ok,%HTTPoison.Response{headers: headers}} = response
-
-    limit = headers |> List.keyfind("X-RateLimit-Limit", 0) |> value_from_rltuple
-    remaining = headers |> List.keyfind("X-RateLimit-Remaining", 0) |> value_from_rltuple
-    reset = headers |> List.keyfind("X-RateLimit-Reset", 0) |> value_from_rltuple
-
-    if limit && remaining && reset do
-      Ratelimiter.create_bucket(route, limit, remaining, reset * 1000)
-    end
-
-    response
-  end
-
-  defp value_from_rltuple(tuple) do
-    if not is_nil(tuple) do
-      tuple
-        |> Tuple.to_list
-        |> List.last
-        |> String.to_integer
-    else
-      nil
-    end
-  end
-
-  defp format_response(response) do
-    case response do
-      {:error, %HTTPoison.Error{reason: reason}} ->
-        {:error, status_code: nil, message: reason}
-      {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
-        {:ok, body: body}
-      {:ok, %HTTPoison.Response{status_code: 204}} ->
-        {:ok}
-      {:ok, %HTTPoison.Response{status_code: status_code, body: body}} ->
-        {:error, status_code: status_code, message: body}
-    end
   end
 
   defp bangify(to_bang) do

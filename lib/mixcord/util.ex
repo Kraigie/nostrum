@@ -1,6 +1,8 @@
 defmodule Mixcord.Util do
+  @moduledoc """
+  """
 
-  alias Mixcord.Api
+  alias Mixcord.Api.Ratelimiter
   alias Mixcord.Constants
 
   @doc false
@@ -26,7 +28,7 @@ defmodule Mixcord.Util do
   end
 
   defp get_new_gateway_url do
-    case Api.request(:get, Constants.gateway, "") do
+    case Ratelimiter.request(:get, Constants.gateway, "") do
       {:error, status_code: status_code, message: message} ->
         raise(Mixcord.Error.ApiError, status_code: status_code, message: message)
       {:ok, body: body} ->
