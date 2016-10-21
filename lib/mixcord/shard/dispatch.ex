@@ -1,5 +1,29 @@
 defmodule Mixcord.Shard.Dispatch do
   @moduledoc """
+  Handles events from Discord's WS connection.
+
+  All events received are handled in their own task. Any handlers you define will
+  be run synchronously after the lib handles the event.
+
+  To define your own event define a function like `handle_event/2`.
+  The first parameter is a `tuple` containing the event type as an `atom` and the
+  payload of the event as a `map`. The second parameter is the current `state` of the shard
+  on which the event was received.
+
+  ```elixir
+  import Mixcord.Api, only: [message_create: 2]
+
+  def handle_event({:message_create, message}, _state) do
+    case message.content do
+      "PONG" ->
+        create_message(message.channel_id, "PING")
+      "PING" ->
+        create_message(message.channel_id, "PONG")
+      _ ->
+        create_message(message.channel_id, "I copy and pasted this code")
+    end
+  end
+  ```
   """
 
   require Logger

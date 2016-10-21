@@ -1,6 +1,6 @@
 defmodule Mixcord do
   @moduledoc """
-  How to use this lib
+  How to use Mixcord.
 
   ## API
   Api functionality can be found in the `Mixcord.Api` module. Ratelimit is handled

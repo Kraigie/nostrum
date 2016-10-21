@@ -1,5 +1,15 @@
 defmodule Mixcord.Cache.Guild do
   @moduledoc """
+  Cache for guilds.
+
+  The ETS table name associated with the Guild Cache is `:guilds`. Besides the
+  methods provided below you can call any other ETS methods on the table.
+  ```elixir
+  iex> info = :ets.info(:guilds)
+  [..., heir: :none, name: :guilds, size: 1, ...]
+  iex> size = info[:size]
+  1
+  ```
   """
 
   use GenServer
