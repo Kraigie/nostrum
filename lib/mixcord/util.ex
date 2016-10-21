@@ -1,11 +1,9 @@
 defmodule Mixcord.Util do
-  @moduledoc """
-  """
+  @moduledoc false
 
   alias Mixcord.Api.Ratelimiter
   alias Mixcord.Constants
 
-  @doc false
   def empty_cache do
     Mixcord.Cache.Supervisor.empty_cache
   end
@@ -19,7 +17,6 @@ defmodule Mixcord.Util do
     Application.get_env(:mixcord, :num_shards)
   end
 
-  @doc false
   def gateway do
     case :ets.lookup(:gateway_url, "url") do
       [] -> get_new_gateway_url

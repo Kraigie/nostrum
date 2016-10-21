@@ -1,6 +1,5 @@
 defmodule Mixcord.Api.Ratelimiter do
-  @moduledoc """
-  """
+  @moduledoc false
 
   use GenServer
 
@@ -12,7 +11,6 @@ defmodule Mixcord.Api.Ratelimiter do
     GenServer.start_link(__MODULE__, [], name: Ratelimiter)
   end
 
-  @doc false
   def request(method, route, body, options \\ []) do
     request = %{
       method: method,
