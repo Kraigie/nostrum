@@ -1,7 +1,7 @@
 defmodule Mixcord.Api.Ratelimiter do
   @moduledoc """
   """
-  
+
   use GenServer
 
   alias Mixcord.Api.Base
@@ -46,28 +46,34 @@ defmodule Mixcord.Api.Ratelimiter do
   end
 
   defp handle_global_ratelimit(response) do
-    {:ok, %HTTPoison.Response{headers: headers}} = response
+    case response do
+      {:ok, %HTTPoison.Response{headers: headers}} ->
+        global_limit = headers |> List.keyfind("X-RateLimit-Global", 0)
+        global_limit = global_limit || false
 
-    global_limit = headers |> List.keyfind("X-RateLimit-Global", 0)
-    global_limit = global_limit || false
-
-    if global_limit do
-      retry = headers |> List.keyfind("Retry-After", 0) |> value_from_rltuple |> String.to_integer
-      Bucket.create_bucket("GLOBAL", 0, 0, Util.now() + retry)
+        if global_limit do
+          retry = headers |> List.keyfind("Retry-After", 0) |> value_from_rltuple |> String.to_integer
+          Bucket.create_bucket("GLOBAL", 0, 0, Util.now() + retry)
+        end
+      _ ->
+        response
     end
 
     response
   end
 
   defp handle_ratelimit_headers(response, route) do
-    {:ok,%HTTPoison.Response{headers: headers}} = response
+    case response do
+      {:ok, %HTTPoison.Response{headers: headers}} ->
+        limit = headers |> List.keyfind("X-RateLimit-Limit", 0) |> value_from_rltuple
+        remaining = headers |> List.keyfind("X-RateLimit-Remaining", 0) |> value_from_rltuple
+        reset = headers |> List.keyfind("X-RateLimit-Reset", 0) |> value_from_rltuple
 
-    limit = headers |> List.keyfind("X-RateLimit-Limit", 0) |> value_from_rltuple
-    remaining = headers |> List.keyfind("X-RateLimit-Remaining", 0) |> value_from_rltuple
-    reset = headers |> List.keyfind("X-RateLimit-Reset", 0) |> value_from_rltuple
-
-    if limit && remaining && reset do
-      Bucket.create_bucket(route, limit, remaining, reset * 1000)
+        if limit && remaining && reset do
+          Bucket.create_bucket(route, limit, remaining, reset * 1000)
+        end
+      _ ->
+        response
     end
 
     response
