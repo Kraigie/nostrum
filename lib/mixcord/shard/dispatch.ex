@@ -12,9 +12,9 @@ defmodule Mixcord.Shard.Dispatch do
 
   ## Example
   ```elixir
-  import Mixcord.Api, only: [message_create: 2]
+  import Mixcord.Api, only: [create_message: 2]
 
-  def handle_event({:message_create, message}, _state) do
+  def handle_event({:MESSAGE_CREATE, message}, _state) do
     case message.content do
       "PONG" ->
         create_message(message.channel_id, "PING")
@@ -31,71 +31,68 @@ defmodule Mixcord.Shard.Dispatch do
 
   def handle(payload, state) do
     Logger.debug payload.t
-    # TODO: LOWER CASE THESE
-    case payload.t do
-      :CHANNEL_CREATE ->
-        :noop
-      :CHANNEL_DELETE ->
-        :noop
-      :CHANNEL_UPDATE ->
-        :noop
-      :GUILD_BAN_ADD ->
-        :noop
-      :BUILD_BAN_REMOVE ->
-        :noop
-      :GUILD_CREATE ->
-        Mixcord.Cache.Guild.create(payload.d)
-      :GUILD_DELETE ->
-        Mixcord.Cache.Guild.remove(payload.d.id)
-      :GUILD_EMOJI_UPDATE ->
-        :noop
-      :GUILD_INTEGRATIONS_UPDATE ->
-        :noop
-      :GUILD_MEMBER_ADD ->
-        :noop
-      :GUILD_MEMBER_CHUNK ->
-        :noop
-      :GUILD_MEMBER_REMOVE ->
-        :noop
-      :GUILD_MEMBER_UPDATE ->
-        :noop
-      :GUILD_ROLE_CREATE ->
-        :noop
-      :GUILD_ROLE_DELETE ->
-        :noop
-      :GUILD_ROLE_UPDATE ->
-        :noop
-      :GUILD_UPDATE ->
-        :noop
-      :MESSAGE_CREATE ->
-        :noop
-      :MESSAGE_DELETE ->
-        :noop
-      :MESSAGE_DELETE_BULK ->
-        :noop
-      :MESSAGE_UPDATE ->
-        :noop
-      :PRESENCE_UPDATE ->
-        :noop
-      :READY ->
-        :noop
-      :RESUMED ->
-        :noop
-      :TYPING_START ->
-        :noop
-      :USER_SETTINGS_UPDATE ->
-        :noop
-      :USER_UPDATE ->
-        :noop
-      :VOICE_STATE_UPDATE ->
-        :noop
-      :VOICE_SERVER_UPDATE ->
-        :noop
-      _ ->
-        Logger.warn "UNHANDLED GATEWAY DISPATCH EVENT TYPE: #{payload.t}"
-    end
-
+    handle_event({payload.t payload.d}, state)
     state.caller.handle_event({payload.t, payload.d}, state)
   end
+
+  def handle_event({:CHANNEL_CREATE, payload}, state), do: :noop
+
+  def handle_event({:CHANNEL_DELETE, payload}, state), do: :noop
+
+  def handle_event({:CHANNEL_UPDATE, payload}, state), do: :noop
+
+  def handle_event({:GUILD_BAN_ADD, payload}, state), do: :noop
+
+  def handle_event({:BUILD_BAN_REMOVE, payload}, state), do: :noop
+
+  def handle_event({:GUILD_CREATE, payload}, state), do: Mixcord.Cache.Guild.create(payload.d)
+
+  def handle_event({:GUILD_DELETE, payload}, state), do: Mixcord.Cache.Guild.remove(payload.d.id)
+
+  def handle_event({:GUILD_EMOJI_UPDATE, payload}, state), do: :noop
+
+  def handle_event({:GUILD_INTEGRATIONS_UPDATE, payload}, state), do: :noop
+
+  def handle_event({:GUILD_MEMBER_ADD, payload}, state), do: :noop
+
+  def handle_event({:GUILD_MEMBER_CHUNK, payload}, state), do: :noop
+
+  def handle_event({:GUILD_MEMBER_REMOVE, payload}, state), do: :noop
+
+  def handle_event({:GUILD_MEMBER_UPDATE, payload}, state), do: :noop
+
+  def handle_event({:GUILD_ROLE_CREATE, payload}, state), do: :noop
+
+  def handle_event({:GUILD_ROLE_DELETE, payload}, state), do: :noop
+
+  def handle_event({:GUILD_ROLE_UPDATE, payload}, state), do: :noop
+
+  def handle_event({:GUILD_UPDATE, payload}, state), do: :noop
+
+  def handle_event({:MESSAGE_CREATE, payload}, state), do: :noop
+
+  def handle_event({:MESSAGE_DELETE, payload}, state), do: :noop
+
+  def handle_event({:MESSAGE_DELETE_BULK, payload}, state), do: :noop
+
+  def handle_event({:MESSAGE_UPDATE, payload}, state), do: :noop
+
+  def handle_event({:PRESENCE_UPDATE, payload}, state), do: :noop
+
+  def handle_event({:READY, payload}, state), do: :noop
+
+  def handle_event({:RESUMED, payload}, state), do: :noop
+
+  def handle_event({:TYPING_START, payload}, state), do: :noop
+
+  def handle_event({:USER_SETTINGS_UPDATE, payload}, state), do: :noop
+
+  def handle_event({:USER_UPDATE, payload}, state), do: :noop
+
+  def handle_event({:VOICE_STATE_UPDATE, payload}, state), do: :noop
+
+  def handle_event({:VOICE_SERVER_UPDATE, payload}, state), do: :noop
+
+  def handle_event({event, payload}, state), do: Logger.warn "UNHANDLED GATEWAY DISPATCH EVENT TYPE: #{event}"
 
 end
