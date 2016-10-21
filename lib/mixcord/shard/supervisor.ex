@@ -1,6 +1,5 @@
 defmodule Mixcord.Shard.Supervisor do
-  @moduledoc """
-  """
+  @moduledoc false
 
   use Supervisor
   alias Mixcord.Shard

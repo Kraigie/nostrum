@@ -1,5 +1,6 @@
 defmodule Mixcord.Shard.Dispatch do
-  @moduledoc false
+  @moduledoc """
+  """
 
   require Logger
 
