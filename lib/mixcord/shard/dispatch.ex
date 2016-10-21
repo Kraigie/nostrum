@@ -10,6 +10,7 @@ defmodule Mixcord.Shard.Dispatch do
   payload of the event as a `map`. The second parameter is the current `state` of the shard
   on which the event was received.
 
+  ## Example
   ```elixir
   import Mixcord.Api, only: [message_create: 2]
 
