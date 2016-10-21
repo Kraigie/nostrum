@@ -11,6 +11,10 @@ defmodule Mixcord do
     caller = Application.get_env(:mixcord, :caller)
     num_shards = Application.get_env(:mixcord, :num_shards)
 
+    if !token, do: raise "Please supply a token"
+    if !caller, do: raise "Please supply a caller"
+    num_shards = if !num_shards, do: 1, else: num_shards
+
     setup_ets_tables
 
     children = [
