@@ -16,14 +16,15 @@ defmodule Mixcord.Cache.Guild do
   end
 
   def get(id: id), do: GenServer.call(Guilds, {:get, id: id})
+  def get(channel_id: channel_id), do: GenServer.call(Guilds, {:get, channel: channel_id})
+
   def get!(id: id) do
-    GenServer.call(Guilds, {:get, id})
+    get(id: id)
       |> bangify_find
   end
 
-  def get(channel_id: channel), do: GenServer.call(Guilds, {:get, channel: channel})
-  def get!(channel_id: channel) do
-    GenServer.call(Guilds, {:get, channel})
+  def get!(channel_id: channel_id) do
+    get(channel_id: channel_id)
       |> bangify_find
   end
 
@@ -39,8 +40,8 @@ defmodule Mixcord.Cache.Guild do
   end
 
   @doc false
-  def remove(guild) do
-    GenServer.cast(Guilds, {:remove, guild})
+  def remove(id: id) do
+    GenServer.cast(Guilds, {:remove, id: id})
   end
 
   def handle_call(:all, _from, state) do
@@ -51,9 +52,8 @@ defmodule Mixcord.Cache.Guild do
     {:reply, Enum.find(state, fn guild -> guild.id == id end), state}
   end
 
-  def handle_call({:get, channel: channel}, _from, state) do
-    # {:reply, Enum.find(state, fn guild -> )
-    # get_in?
+  def handle_call({:get, channel_id: channel_id}, _from, state) do
+    {:reply, Enum.find(state, fn guild -> guild.id == channel_id end), state}
   end
 
   def handle_call({:search, fun}, _from, state) do
@@ -64,8 +64,8 @@ defmodule Mixcord.Cache.Guild do
     {:noreply, state ++ guild}
   end
 
-  def handle_cast({:remove, _guild}, state) do
-    {:noreply, state}
+  def handle_cast({:remove, id}, state) do
+    {:noreply, Enum.filter(state, fn guild -> guild.id == id end)}
   end
 
   def bangify_find(to_bang) do

@@ -18,9 +18,9 @@ defmodule Mixcord.Shard.Dispatch do
       :BUILD_BAN_REMOVE ->
         :noop
       :GUILD_CREATE ->
-        Mixcord.Cache.Guild.create!(payload.d)
+        Mixcord.Cache.Guild.create(payload.d)
       :GUILD_DELETE ->
-        :noop
+        Mixcord.Cache.Guild.remove(payload.d.id)
       :GUILD_EMOJI_UPDATE ->
         :noop
       :GUILD_INTEGRATIONS_UPDATE ->
