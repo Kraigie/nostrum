@@ -50,12 +50,12 @@ defmodule Mixcord.Cache.Guild do
     GenServer.cast(Guilds, {:remove, id: id})
   end
 
-  defp handle_cast({:create, guild}, state) do
+  def handle_cast({:create, guild}, state) do
     :ets.insert(:guilds, {guild.id, guild})
     {:noreply, state}
   end
 
-  defp handle_cast({:remove, id}, state) do
+  def handle_cast({:remove, id}, state) do
     :ets.delete(:guilds, {id})
     {:noreply, state}
   end
