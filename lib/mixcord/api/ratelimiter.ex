@@ -11,7 +11,7 @@ defmodule Mixcord.Api.Ratelimiter do
     GenServer.start_link(__MODULE__, [], name: Ratelimiter)
   end
 
-  def request(method, route, body, options \\ []) do
+  def request(method, route, body \\ "", options \\ []) do
     request = %{
       method: method,
       route: route,
@@ -91,13 +91,13 @@ defmodule Mixcord.Api.Ratelimiter do
   defp format_response(response) do
     case response do
       {:error, %HTTPoison.Error{reason: reason}} ->
-        {:error, status_code: nil, message: reason}
+        {:error, %{status_code: nil, message: reason}}
       {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
-        {:ok, body: body}
+        {:ok, Poison.decode!(body)}
       {:ok, %HTTPoison.Response{status_code: 204}} ->
         {:ok}
       {:ok, %HTTPoison.Response{status_code: status_code, body: body}} ->
-        {:error, status_code: status_code, message: body}
+        {:error, %{status_code: status_code, message: body}}
     end
   end
 
