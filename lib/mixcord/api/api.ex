@@ -3,6 +3,8 @@ defmodule Mixcord.Api do
   Interface for Discord's rest API.
   """
 
+  # TODO: Upload file
+
   alias Mixcord.Constants
   alias Mixcord.Struct.{Message, User}
   import Mixcord.Api.Ratelimiter
@@ -17,13 +19,7 @@ defmodule Mixcord.Api do
   """
   @spec create_message(String.t, String.t, boolean) :: {:error, Map.t} | {:ok, Mixcord.Constructs.Message.t}
   def create_message(channel_id, content, tts \\ false) do
-    case request(:post, Constants.channel_messages(channel_id), %{content: content, tts: tts}) do
-      {:error, status_code: status_code, message: message} ->
-        {:error, %{status_code: status_code, message: message}}
-      {:ok, body: body} ->
-        {:ok, Poison.decode!(body, as: %Message{author: %User{}, mentions: [%User{}]})}
-        #https://github.com/devinus/poison/issues/32#issuecomment-172021478
-    end
+    request(:post, Constants.channel_messages(channel_id), %{content: content, tts: tts})
   end
 
   @doc """
@@ -50,12 +46,7 @@ defmodule Mixcord.Api do
   """
   @spec edit_message(String.t, String.t, String.t) :: {:error, Map.t} | {:ok, Mixcord.Constructs.Message.t}
   def edit_message(channel_id, message_id, content) do
-    case request(:patch, Constants.channel_message(channel_id, message_id), %{content: content}) do
-      {:error, status_code: status_code, message: message} ->
-        {:error, %{status_code: status_code, message: message}}
-      {:ok, body: body} ->
-        {:ok, Poison.decode!(body, as: %Message{author: %User{}})}
-    end
+    request(:patch, Constants.channel_message(channel_id, message_id), %{content: content})
   end
 
   @doc """
@@ -81,12 +72,7 @@ defmodule Mixcord.Api do
   """
   @spec delete_message(String.t, String.t) :: {:error, Map.t} | {:ok}
   def delete_message(channel_id, message_id) do
-    case request(:delete, Constants.channel_message(channel_id, message_id), %{}) do
-      {:error, status_code: status_code, message: message} ->
-        {:error, %{status_code: status_code, message: message}}
-      {:ok} ->
-        {:ok}
-    end
+    request(:delete, Constants.channel_message(channel_id, message_id))
   end
 
   @doc """
@@ -103,7 +89,59 @@ defmodule Mixcord.Api do
     |> bangify
   end
 
-  defp bangify(to_bang) do
+  def get_channel(channel_id) do
+    request(:get, Constants.channel(channel_id))
+  end
+
+  def edit_channel(channel_id, options) do
+    request(:patch, Constants.channel(channel_id), options)
+  end
+
+  def delete_channel(channel_id) do
+    request(:delete, Constants.channel(channel_id))
+  end
+
+  def get_channel_messages(channel_id, options) do
+    request(:get, Constants.channel_messages(channel_id), options)
+  end
+
+  def get_channel_message(channel_id, message_id) do
+    request(:get, Constants.channel_message(channel_id, message_id))
+  end
+
+  def bulk_delete_messages(channel_id) do
+    request(:delete, Constants.channel_bulk_delete(channel_id))
+  end
+
+  def edit_channel_permissions(channel_id, overwrite_id) do
+    request(:put, Constants.channel_permission(channel_id, overwrite_id))
+  end
+
+  def delete_channel_permissions(channel_id, overwrite_id) do
+    request(:delete, Constants.channel_permission(channel_id, overwrite_id))
+  end
+
+  def get_channel_invites(channel_id) do
+    request(:get, Constants.channel_invites(channel_id))
+  end
+
+  def create_channel_invite(channel_id, options \\ %{}) do
+    request(:post, Constants.channel_invites(channel_id))
+  end
+
+  def start_typing(channel_id) do
+    request(:post, Constants.channel_typing(channel_id))
+  end
+
+  def add_pinned_message(channel_id, message_id) do
+    request(:get, Constants.channel_pin(channel_id, message_id))
+  end
+
+  def delete_pinned_message(channel_id, message_id) do
+    request(:delete, Constants.channel_pin(channel_id, message_id))
+  end
+
+  def bangify(to_bang) do
     case to_bang do
       {:error, %{status_code: code, message: message}} ->
         raise(Mixcord.Error.ApiError, status_code: code, message: message)

@@ -28,8 +28,7 @@ defmodule Mixcord.Util do
     case Ratelimiter.request(:get, Constants.gateway, "") do
       {:error, status_code: status_code, message: message} ->
         raise(Mixcord.Error.ApiError, status_code: status_code, message: message)
-      {:ok, body: body} ->
-        body = Poison.decode!(body)
+      {:ok, body} ->
 
         url = body["url"] <> "?encoding=etf&v=6"
           |> to_charlist
