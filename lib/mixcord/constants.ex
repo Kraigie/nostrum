@@ -1,6 +1,6 @@
 defmodule Mixcord.Constants do
   @moduledoc false
-  
+
   def base_url(),                                         do: "https://discordapp.com/api/v6"
   def gateway(),                                          do: "/gateway"
 
@@ -8,7 +8,7 @@ defmodule Mixcord.Constants do
   def channel_messages(channel_id),                       do: "/channels/#{channel_id}/messages"
   def channel_message(channel_id, message_id),            do: "/channels/#{channel_id}/messages/#{message_id}"
   def channel_bulk_delete(channel_id),                    do: "/channels/#{channel_id}/messages/bulk_delete"
-  def channel_permission(chanID, overwrite_id),           do: "/channels/#{chanID}/permissions/#{overwrite_id}"
+  def channel_permission(channel_id, overwrite_id),       do: "/channels/#{channel_id}/permissions/#{overwrite_id}"
   def channel_invites(channel_id),                        do: "/channels/#{channel_id}/invites"
   def channel_typing(channel_id),                         do: "/channels/#{channel_id}/typing"
   def channel_pins(channel_id),                           do: "/channels/#{channel_id}/pins"
