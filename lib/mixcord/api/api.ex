@@ -9,15 +9,28 @@ defmodule Mixcord.Api do
   alias Mixcord.Struct.{Message, User}
   import Mixcord.Api.Ratelimiter
 
+  @typedoc """
+  Represents a failed response from the API. This occurs when hackney or HTTPoison fail,
+  or when the API doesn't respond with a `200` or `204`.
+
+  The map is structured as follows:
+    * status_code
+      * `nil` if HTTPoison or Hackney throws an error.
+      * Status code of response otherwise.
+    * message
+      * Error message of response.
+  """
+  @type error_map :: {:error, Map.t}
+
   @doc """
   Send a message to a channel.
 
   Send `content` to the channel identified with `channel_id`.
   `tts` is an optional parameter that dictates whether the message should be played over text to speech.
 
-  Returns `{:ok, Mixcord.Constructs.Message}` if successful. `{:error, %{status_code: status_code, message: message}}` otherwise.
+  Returns `{:ok, Mixcord.Struct.Message}` if successful. `{:error, %{status_code: status_code, message: message}}` otherwise.
   """
-  @spec create_message(String.t, String.t, boolean) :: {:error, Map.t} | {:ok, Mixcord.Constructs.Message.t}
+  @spec create_message(String.t, String.t, boolean) :: error_map | {:ok, Mixcord.Struct.Message.t}
   def create_message(channel_id, content, tts \\ false) do
     request(:post, Constants.channel_messages(channel_id), %{content: content, tts: tts})
   end
@@ -28,10 +41,10 @@ defmodule Mixcord.Api do
   Send `content` to the channel identified with `channel_id`.
   `tts` is an optional parameter that dictates whether the message should be played over text to speech.
 
-  Raises `Mixcord.Errors.ApiError` if error occurs while making the rest call.
-  Returns `Mixcord.Constructs.Message` if successful.
+  Raises `Mixcord.Error.ApiError` if error occurs while making the rest call.
+  Returns `Mixcord.Struct.Message` if successful.
   """
-  @spec create_message!(String.t, String.t, boolean) :: no_return | Mixcord.Constructs.Message.t
+  @spec create_message!(String.t, String.t, boolean) :: no_return | Mixcord.Struct.Message.t
   def create_message!(channel_id, content, tts \\ false) do
     create_message(channel_id, content, tts)
     |> bangify
@@ -42,9 +55,9 @@ defmodule Mixcord.Api do
 
   Edit a message with the given `content`. Message to edit is specified by `channel_id` and `message_id`.
 
-  Returns the edited `{:ok, Mixcord.Constructs.Message}` if successful. `{:error, %{status_code: status_code, message: message}}` otherwise.
+  Returns the edited `{:ok, Mixcord.Struct.Message}` if successful. `{:error, %{status_code: status_code, message: message}}` otherwise.
   """
-  @spec edit_message(String.t, String.t, String.t) :: {:error, Map.t} | {:ok, Mixcord.Constructs.Message.t}
+  @spec edit_message(String.t, String.t, String.t) :: error_map | {:ok, Mixcord.Struct.Message.t}
   def edit_message(channel_id, message_id, content) do
     request(:patch, Constants.channel_message(channel_id, message_id), %{content: content})
   end
@@ -54,10 +67,10 @@ defmodule Mixcord.Api do
 
   Edit a message with the given `content`. Message to edit is specified by `channel_id` and `message_id`.
 
-  Raises `Mixcord.Errors.ApiError` if error occurs while making the rest call.
-  Returns the edited `Mixcord.Constructs.Message` if successful.
+  Raises `Mixcord.Error.ApiError` if error occurs while making the rest call.
+  Returns the edited `Mixcord.Struct.Message` if successful.
   """
-  @spec edit_message!(String.t, String.t, String.t) :: {:error, Map.t} | {:ok, Mixcord.Constructs.Message.t}
+  @spec edit_message!(String.t, String.t, String.t) :: no_return | {:ok, Mixcord.Struct.Message.t}
   def edit_message!(channel_id, message_id, content) do
     edit_message(channel_id, message_id, content)
     |> bangify
@@ -70,7 +83,7 @@ defmodule Mixcord.Api do
 
   Returns `{:ok}` if successful. `{:error, %{status_code: status_code, message: message}}` otherwise.
   """
-  @spec delete_message(String.t, String.t) :: {:error, Map.t} | {:ok}
+  @spec delete_message(String.t, String.t) :: error_map | {:ok}
   def delete_message(channel_id, message_id) do
     request(:delete, Constants.channel_message(channel_id, message_id))
   end
@@ -80,10 +93,10 @@ defmodule Mixcord.Api do
 
   Delete a message specified by `channel_id` and `message_id`.
 
-  Raises `Mixcord.Errors.ApiError` if error occurs while making the rest call.
+  Raises `Mixcord.Error.ApiError` if error occurs while making the rest call.
   Returns {:ok} if successful.
   """
-  @spec delete_message!(String.t, String.t) :: {:error, Map.t} | {:ok}
+  @spec delete_message!(String.t, String.t) :: no_return | {:ok}
   def delete_message!(channel_id, message_id) do
     delete_message(channel_id, message_id)
     |> bangify
@@ -129,14 +142,36 @@ defmodule Mixcord.Api do
     request(:post, Constants.channel_invites(channel_id))
   end
 
+  @doc """
+  Triggers the typing indicator.
+
+  Triggers the typing indicator in the channel specified by `channel_id`.
+  The typing indicator lasts for about 8 seconds and then automatically stops.
+
+  Returns `{:ok}` if successful. `{:error, %{status_code: status_code, message: message}}` otherwise.
+  """
   def start_typing(channel_id) do
     request(:post, Constants.channel_typing(channel_id))
   end
 
+  @doc """
+  Pins a message.
+
+  Pins the message specified by `message_id` in the channel specified by `channel_id`.
+
+  Returns `{:ok}` if successful. `{:error, %{status_code: status_code, message: message}}` otherwise.
+  """
   def add_pinned_message(channel_id, message_id) do
     request(:get, Constants.channel_pin(channel_id, message_id))
   end
 
+  @doc """
+  Unpins a message.
+
+  Unpins the message specified by `message_id` in the channel specified by `channel_id`.
+
+  Returns `{:ok}` if successful. `{:error, %{status_code: status_code, message: message}}` otherwise.
+  """
   def delete_pinned_message(channel_id, message_id) do
     request(:delete, Constants.channel_pin(channel_id, message_id))
   end
