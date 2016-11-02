@@ -46,8 +46,17 @@ defmodule Mixcord.Cache.Guild do
   end
 
   @doc false
-  def remove(id: id) do
-    GenServer.cast(Guilds, {:remove, id: id})
+  def remove(guild_id) do
+    GenServer.cast(Guilds, {:remove, guild_id})
+  end
+
+  @doc false
+  def update(guild_id: guild_id, updated_guild: updated_guild) do
+    GenServer.update(Guilds, {:update, guild_id, updated_guild: updated_guild})
+  end
+
+  def update(guild_id: guild_id, properties: properties) do
+    GenServer.update(Guilds, {:update, guild_id, properties: properties})
   end
 
   def handle_cast({:create, guild}, state) do
@@ -56,8 +65,15 @@ defmodule Mixcord.Cache.Guild do
   end
 
   def handle_cast({:remove, id}, state) do
-    :ets.delete(:guilds, {id})
+    :ets.delete(:guilds, id)
     {:noreply, state}
+  end
+
+  def handle_cast({:update, guild_id, updated_guild: updated_guild}), do: :ets.update_element(:guilds, guild_id, updated_guild)
+  def handle_cast({:update, guild_id, properties: guild_props}) do
+    old_guild = get!(id: guild_id)
+    new_guild = Map.merge(old_guild, guild_props)
+    :ets.insert(:guilds, {guild_id, guild_props})
   end
 
   defp bangify_find(to_bang) do
