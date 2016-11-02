@@ -11,7 +11,7 @@ defmodule Mixcord.Api do
 
   @typedoc """
   Represents a failed response from the API. This occurs when hackney or HTTPoison fail,
-  or when the API doesn't respond with a `200` or `204`.
+  or when the API doesn't respond with `200` or `204`.
 
   The map is structured as follows:
     * status_code
