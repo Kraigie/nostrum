@@ -6,7 +6,6 @@ defmodule Mixcord.Api do
   # TODO: Upload file
 
   alias Mixcord.Constants
-  alias Mixcord.Struct.{Message, User}
   import Mixcord.Api.Ratelimiter
 
   @typedoc """
@@ -184,7 +183,7 @@ defmodule Mixcord.Api do
   end
 
   def create_channel_invite(channel_id, options \\ %{}) do
-    request(:post, Constants.channel_invites(channel_id))
+    request(:post, Constants.channel_invites(channel_id), options)
   end
 
   def create_channel_invite!(channel_id, options \\ %{}) do
