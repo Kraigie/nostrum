@@ -47,7 +47,7 @@ defmodule Mixcord.Shard.Dispatch do
 
   def handle_event({:GUILD_CREATE, payload}, state), do: Mixcord.Cache.Guild.create(payload)
 
-  def handle_event({:GUILD_DELETE, payload}, state), do: Mixcord.Cache.Guild.remove(payload.id)
+  def handle_event({:GUILD_DELETE, payload}, state), do: Mixcord.Cache.Guild.delete(payload.id)
 
   def handle_event({:GUILD_EMOJI_UPDATE, payload}, state), do: :noop
 

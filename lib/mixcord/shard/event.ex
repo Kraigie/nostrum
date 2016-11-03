@@ -56,12 +56,10 @@ defmodule Mixcord.Shard.Event do
     state
   end
 
-  @doc false
   def heartbeat(pid, interval) do
     Process.send_after(pid, {:heartbeat, interval}, interval)
   end
 
-  @doc false
   def identify(pid) do
     send(pid, :identify)
   end

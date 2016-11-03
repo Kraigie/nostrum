@@ -17,6 +17,7 @@ defmodule Mixcord.Cache.Guild do
   use GenServer
 
   # TODO: Length\Update?
+  # TODO: Move roles\members to seperate cache?
 
   def start_link do
     GenServer.start_link(__MODULE__, [], name: Guilds)
@@ -41,39 +42,106 @@ defmodule Mixcord.Cache.Guild do
   end
 
   @doc false
-  def create(guild) do
-    GenServer.cast(Guilds, {:create, guild})
-  end
+  def create(guild), do: GenServer.cast(Guilds, {:create, guild.id, guild: guild})
 
   @doc false
-  def remove(guild_id) do
-    GenServer.cast(Guilds, {:remove, guild_id})
-  end
+  def update(guild), do: GenServer.cast(Guilds, {:update, guild.id, guild: guild})
 
   @doc false
-  def update(guild_id: guild_id, updated_guild: updated_guild) do
-    GenServer.update(Guilds, {:update, guild_id, updated_guild: updated_guild})
-  end
+  def delete(guild_id), do: GenServer.cast(Guilds, {:delete, guild_id: guild_id})
 
-  def update(guild_id: guild_id, properties: properties) do
-    GenServer.update(Guilds, {:update, guild_id, properties: properties})
-  end
+  @doc false
+  def emoji_update(guild_id, emojis), do: GenServer.cast(Guilds, {:update, guild_id, emojis: emojis})
 
-  def handle_cast({:create, guild}, state) do
-    :ets.insert(:guilds, {guild.id, guild})
+  @doc false
+  def member_add(guild_id, member), do: GenServer.cast(Guilds, {:create, guild_id, member: member})
+
+  @doc false
+  def member_update(guild_id, user, roles), do: GenServer.cast(Guilds, {:update, guild_id, user: user, roles: roles})
+
+  @doc false
+  def member_remove(guild_id, user), do: GenServer.cast(Guilds, {:delete, guild_id, member: user})
+
+  @doc false
+  def role_create(guild_id, role), do: GenServer.cast(Guilds, {:create, guild_id, role: role})
+
+  @doc false
+  def role_update(guild_id, role), do: GenServer.cast(Guilds, {:update, guild_id, role: role})
+
+  @doc false
+  def role_delete(guild_id, role_id), do: GenServer.cast(Guilds, {:delete, guild_id, role_id: role_id})
+
+  def handle_cast({:create, guild_id, guild: guild}, state) do
+    :ets.insert(:guilds, {guild_id, guild})
     {:noreply, state}
   end
 
-  def handle_cast({:remove, id}, state) do
+  def handle_cast({:create, guild_id, member: member}, state) do
+    guild = get!(id: guild_id)
+    new_members = [member | guild.members]
+    :ets.insert(:guilds, {guild_id, %{guild | members: new_members}})
+    {:noreply, state}
+  end
+
+  def handle_cast({:create, guild_id, role: role}, state) do
+    guild = get!(id: guild_id)
+    new_roles = [role | guild.roles]
+    :ets.insert(:guilds, {guild_id, %{guild | roles: new_roles}})
+    {:noreply, state}
+  end
+
+  def handle_cast({:update, guild_id, guild: guild}, state) do
+    :ets.update_element(:guilds, guild_id, guild)
+    {:noreply, state}
+  end
+
+  def handle_cast({:update, guild_id, emojis: emojis}, state) do
+    guild = get!(id: guild_id)
+    :ets.insert(:guilds, {guild_id, %{guild | emojis: emojis}})
+    {:noreply, state}
+  end
+
+  def handle_cast({:update, guild_id, user: user, roles: roles}, state) do
+    guild = get!(id: guild_id)
+    member_index = Enum.find_index(guild.members, fn member -> member.user.id == user.id end)
+    members = List.update_at(guild.members, member_index,
+      fn member ->
+        %{member | user: user, roles: roles}
+      end)
+    :ets.insert(:guilds, {guild_id, %{guild | members: members}})
+    {:noreply, state}
+  end
+
+  def handle_cast({:update, guild_id, role: role}, state) do
+    guild = get!(id: guild_id)
+    role_index = Enum.find_index(guild.roles, fn g_role -> g_role.id == role.id end)
+    roles = List.update_at(guild.roles, role_index,
+      fn g_role ->
+        role
+      end)
+    :ets.insert(:guilds, {guild_id, %{guild | roles: roles}})
+    {:noreply, state}
+  end
+
+  def handle_cast({:delete, guild: id}, state) do
     :ets.delete(:guilds, id)
     {:noreply, state}
   end
 
-  def handle_cast({:update, guild_id, updated_guild: updated_guild}), do: :ets.update_element(:guilds, guild_id, updated_guild)
-  def handle_cast({:update, guild_id, properties: guild_props}) do
-    old_guild = get!(id: guild_id)
-    new_guild = Map.merge(old_guild, guild_props)
-    :ets.insert(:guilds, {guild_id, guild_props})
+  def handle_cast({:delete, guild_id, member: user}, state) do
+    guild = get!(id: guild_id)
+    member_index = Enum.find_index(guild.members, fn member -> member.user.id == user.id end)
+    members = List.delete_at(guild.members, member_index)
+    :ets.insert(:guilds, {guild_id, %{guild | members: members}})
+    {:noreply, state}
+  end
+
+  def handle_cast({:delete, guild_id, role_id: role_id}, state) do
+    guild = get!(id: guild_id)
+    role_index = Enum.find_index(guild.roles, fn g_role -> g_role.id == role_id end)
+    roles = List.delete_at(guild.roles, role_index)
+    :ets.insert(:guilds, {guild_id, %{guild | roles: roles}})
+    {:noreply, state}
   end
 
   defp bangify_find(to_bang) do
