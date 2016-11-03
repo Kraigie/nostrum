@@ -51,6 +51,11 @@ defmodule Mixcord.Shard.Event do
     state
   end
 
+  def handle(event, _payload, state) do
+    Logger.warn "UNHANDLED GATEWAY EVENT #{event}"
+    state
+  end
+
   @doc false
   def heartbeat(pid, interval) do
     Process.send_after(pid, {:heartbeat, interval}, interval)
