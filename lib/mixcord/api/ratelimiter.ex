@@ -76,15 +76,12 @@ defmodule Mixcord.Api.Ratelimiter do
     response
   end
 
+  defp value_from_rltuple(tuple) when is_nil(tuple), do: nil
   defp value_from_rltuple(tuple) do
-    if not is_nil(tuple) do
       tuple
-        |> Tuple.to_list
-        |> List.last
-        |> String.to_integer
-    else
-      nil
-    end
+      |> Tuple.to_list
+      |> List.last
+      |> String.to_integer
   end
 
   defp format_response(response) do
