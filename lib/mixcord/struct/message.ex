@@ -8,7 +8,7 @@ defmodule Mixcord.Struct.Message do
 
   * :id - *String*. Id of the message.
   * :channel_id - *String*. Id of the channel the message was sent in.
-  * :author -	*Struct*. A `Mixcord.Constructs.User` struct.
+  * :author - *Struct*. A `Mixcord.Constructs.User` struct.
   * :content - *String*. Contents of the message.
   * :timestamp - *Date*. When this message was sent.
   * :edited_timestamp - *?Date*. When this message was edited (or null if never).
