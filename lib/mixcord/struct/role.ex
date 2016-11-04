@@ -6,7 +6,7 @@ defmodule Mixcord.Struct.Role do
   @doc """
   Defines the Role struct.
 
-  * :id -	*String*. Id of the role.
+  * :id - *String*. Id of the role.
   * :name - *String*. Name of the role.
   * :color - *Integer*. Integer representation of hexadecimal color code.
   * :hoist - *Boolean*. If the role is pinned in the user listing.
