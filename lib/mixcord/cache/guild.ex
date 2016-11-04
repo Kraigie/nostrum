@@ -116,7 +116,7 @@ defmodule Mixcord.Cache.Guild do
     guild = get!(id: guild_id)
     role_index = Enum.find_index(guild.roles, fn g_role -> g_role.id == role.id end)
     roles = List.update_at(guild.roles, role_index,
-      fn g_role ->
+      fn _ ->
         role
       end)
     :ets.insert(:guilds, {guild_id, %{guild | roles: roles}})
