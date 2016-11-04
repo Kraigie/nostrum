@@ -1,8 +1,7 @@
 defmodule Mixcord.Shard.Event do
   @moduledoc false
 
-  alias Mixcord.Shard.Dispatch
-  alias Mixcord.Shard.Payload
+  alias Mixcord.Shard.{Dispatch, Payload}
   alias Mixcord.Util
   require Logger
 

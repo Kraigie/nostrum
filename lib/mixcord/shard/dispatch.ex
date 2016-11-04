@@ -26,7 +26,8 @@ defmodule Mixcord.Shard.Dispatch do
   end
   ```
   """
-
+  
+  alias Mixcord.Cache.{Guild}
   require Logger
 
   def handle(payload, state) do

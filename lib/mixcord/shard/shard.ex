@@ -3,8 +3,7 @@ defmodule Mixcord.Shard do
 
   @behaviour :websocket_client
 
-  alias Mixcord.Shard.Event
-  alias Mixcord.Shard.Payload
+  alias Mixcord.Shard.{Event, Payload}
   alias Mixcord.Constants
   alias Mixcord.Util
   require Logger

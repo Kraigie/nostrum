@@ -3,8 +3,7 @@ defmodule Mixcord.Api.Ratelimiter do
 
   use GenServer
 
-  alias Mixcord.Api.Base
-  alias Mixcord.Api.Bucket
+  alias Mixcord.Api.{Base, Bucket}
   alias Mixcord.Util
 
   def start_link do
