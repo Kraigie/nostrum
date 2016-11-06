@@ -7,9 +7,9 @@ defmodule Mixcord.Cache.Guild do
 
   ## Example
   ```elixir
-  iex> info = :ets.info(:guilds)
+  info = :ets.info(:guilds)
   [..., heir: :none, name: :guilds, size: 1, ...]
-  iex> size = info[:size]
+  size = info[:size]
   1
   ```
   """
