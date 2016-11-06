@@ -266,6 +266,34 @@ defmodule Mixcord.Api do
     |> bangify
   end
 
+  def get_guild(guild_id) do
+    request(:get, Constants.guild(guild_id))
+  end
+
+  def edit_guild(guild_id, options) do
+    request(:patch, Constants.guild(guild_id), options)
+  end
+
+  def delete_guild(guild_id) do
+    request(:delete, Constants.guild(guild_id))
+  end
+
+  def create_channel(guild_id, options) do
+    request(:post, Constants.guild_channels(guild_id), options)
+  end
+
+  def modify_channel_position(guild_id, options) do
+    request(:patch, Constants.guild_channels(guild_id), options)
+  end
+
+  def get_member(guild_id, user_id) do
+    request(:get, Constants.guild_member(guild_id, user_id))
+  end
+
+  def guild_members(guild_id, options) do
+    request(:get, Constants.guild_members(guild_id), options)
+  end
+
   def bangify(to_bang) do
     case to_bang do
       {:error, %{status_code: code, message: message}} ->
