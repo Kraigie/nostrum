@@ -50,7 +50,7 @@ defmodule Mixcord.Shard.Dispatch do
 
   def handle_event({:GUILD_UPDATE, payload}, state), do: Guild.update(payload)
 
-  def handle_event({:GUILD_DELETE, payload}, state), do:Guild.delete(payload.id)
+  def handle_event({:GUILD_DELETE, payload}, state), do: Guild.delete(payload.id)
 
   def handle_event({:GUILD_EMOJI_UPDATE, payload}, state), do: :noop
 
