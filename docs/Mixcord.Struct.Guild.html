@@ -4,9 +4,9 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="ExDoc v0.13.0">
-    <title>Mixcord.Shard – mixcord v0.1.0</title>
-    <link rel="stylesheet" href="dist/app-9c1e3d5aa2.css" />
+    <meta name="generator" content="ExDoc v0.14.3">
+    <title>Mixcord.Struct.Guild – mixcord v0.1.0</title>
+    <link rel="stylesheet" href="dist/app-091c05798a.css" />
     
     <script src="dist/sidebar_items.js"></script>
   </head>
@@ -50,9 +50,8 @@
 
     
   </ul>
-
+  <div class="gradient"></div>
   <ul id="full-list" class="sidebar-fullList"></ul>
-  <div class="sidebar-noResults"></div>
 </section>
 
 <section class="content">
@@ -62,14 +61,15 @@
 
       <h1>
         <small class="visible-xs">mixcord v0.1.0</small>
-        Mixcord.Shard
+        Mixcord.Struct.Guild
         
         
       </h1>
 
       
-        <section id="moduledoc" class="docstring">
-          
+        <section id="moduledoc">
+          <p>Struct representing a Discord guild and various helper functions.</p>
+
         </section>
       
 
@@ -90,20 +90,11 @@
     </h2>
     <div class="summary-row">
   <div class="summary-signature">
-    <a href="#start_link/2">start_link(token, caller)</a>
+    <a href="#__struct__/0">__struct__()</a>
   </div>
   
+    <div class="summary-synopsis"><p>Defines the Guild struct</p>
 </div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#start_link/3">start_link(token, caller, shard_num)</a>
-  </div>
-  
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#status_update/2">status_update(pid, new_status)</a>
-  </div>
   
 </div>
 
@@ -127,46 +118,70 @@
             </a>
             Functions
           </h1>
-          <div class="detail" id="start_link/2">
+          <div class="detail" id="__struct__/0">
+  
   <div class="detail-header">
-    <a href="#start_link/2" class="detail-link" title="Link to this function">
+    <a href="#__struct__/0" class="detail-link" title="Link to this function">
       <i class="icon-link"></i>
     </a>
-    <span class="signature">start_link(token, caller)</span>
+    <span class="signature">__struct__()</span>
+    
     
     
   </div>
-  
   <section class="docstring">
-    
-  </section>
-</div>
-<div class="detail" id="start_link/3">
-  <div class="detail-header">
-    <a href="#start_link/3" class="detail-link" title="Link to this function">
-      <i class="icon-link"></i>
-    </a>
-    <span class="signature">start_link(token, caller, shard_num)</span>
-    
-    
-  </div>
-  
-  <section class="docstring">
-    
-  </section>
-</div>
-<div class="detail" id="status_update/2">
-  <div class="detail-header">
-    <a href="#status_update/2" class="detail-link" title="Link to this function">
-      <i class="icon-link"></i>
-    </a>
-    <span class="signature">status_update(pid, new_status)</span>
-    
-    
-  </div>
-  
-  <section class="docstring">
-    
+    <p>Defines the Guild struct.</p>
+<ul>
+<li>:id - <em>String</em>. The guild’s id.
+</li>
+<li>:name - <em>String</em>. The guild’s name.
+</li>
+<li>:icon - <em>String</em>. Hash of guild’s icon.
+</li>
+<li>:splash - <em>String</em>. Hash of guild’s splash.
+</li>
+<li>:owner_id - <em>String</em>. Id of the guild owner.
+</li>
+<li>:region - <em>String</em>. Id of the voice region.
+</li>
+<li>:afk_channel_id - <em>String</em>. Id of the guild’s afk channel.
+</li>
+<li>:afk_timeout - <em>Integer</em>. How long someone must be afk before being moved.
+</li>
+<li>:embed_enabled - <em>Boolean</em>. Is this guild embeddable.
+</li>
+<li>:embed_channel_id - <em>String</em>. Id of the embedded channel.
+</li>
+<li>:verification_level - <em>Integer</em>. Level of verification.
+</li>
+<li>:default_message_notifications - <em>Integer</em>. Default message notification level.
+</li>
+<li>:roles - <em>List</em>. List of <code class="inline">Mixcord.Constructs.Role</code> structs.
+</li>
+<li>:emojis - <em>List</em>. List of <a href="https://discordapp.com/developers/docs/resources/guild#emoji-object">emojis</a> as maps.
+</li>
+<li>:features - <em>List</em>. List of guild features.
+</li>
+<li>:mfa_level - <em>Integer</em>. Required MFA level of the guild.
+</li>
+<li>:joined_at  - <em>Date</em>. Date the user joined the guild at.
+</li>
+<li>:large  - <em>Boolean</em>. Whether the guild is considered “large”.
+</li>
+<li>:unavailable  - <em>Boolean</em>. Whether the guild is available.
+</li>
+<li>:member_count - <em>Integer</em>. Total number of members in the guild.
+</li>
+<li>:voice_states  - <em>List</em>. List of <a href="https://discordapp.com/developers/docs/resources/voice#voice-state-object">voice states</a> as maps.
+</li>
+<li>:members  - <em>List</em>. List of <code class="inline">Mixcord.Constructs.Member</code> structs.
+</li>
+<li>:channels  - <em>List</em>. List of <code class="inline">Mixcord.Constructs.Channel</code> structs.
+</li>
+<li>:presences  - <em>List</em>. List of simple presence maps.
+</li>
+</ul>
+
   </section>
 </div>
 
@@ -180,7 +195,7 @@
         <p>
           <span class="line">
             Built using
-            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" rel="help" target="_blank">ExDoc</a> (v0.13.0),
+            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" rel="help" target="_blank">ExDoc</a> (v0.14.3),
           </span>
           <span class="line">
             designed by
@@ -193,7 +208,7 @@
   </div>
 </section>
 </div>
-  <script src="dist/app-21f1a20b9e.js"></script>
+  <script src="dist/app-574613960f.js"></script>
   </body>
 </html>
 

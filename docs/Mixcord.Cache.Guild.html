@@ -4,13 +4,13 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="ExDoc v0.13.0">
-    <title>Mixcord.Errors.ApiError – mixcord v0.1.0</title>
-    <link rel="stylesheet" href="dist/app-9c1e3d5aa2.css" />
+    <meta name="generator" content="ExDoc v0.14.3">
+    <title>Mixcord.Cache.Guild – mixcord v0.1.0</title>
+    <link rel="stylesheet" href="dist/app-091c05798a.css" />
     
     <script src="dist/sidebar_items.js"></script>
   </head>
-  <body data-type="exceptions">
+  <body data-type="modules">
     <script>if(localStorage.getItem('night-mode')) document.body.className += ' night-mode';</script>
 
     <div class="main">
@@ -50,9 +50,8 @@
 
     
   </ul>
-
+  <div class="gradient"></div>
   <ul id="full-list" class="sidebar-fullList"></ul>
-  <div class="sidebar-noResults"></div>
 </section>
 
 <section class="content">
@@ -62,13 +61,27 @@
 
       <h1>
         <small class="visible-xs">mixcord v0.1.0</small>
-        Mixcord.Errors.ApiError
-        
-          <small>exception</small>
+        Mixcord.Cache.Guild
         
         
       </h1>
 
+      
+        <section id="moduledoc">
+          <p>Cache for guilds.</p>
+<p>The ETS table name associated with the Guild Cache is <code class="inline">:guilds</code>. Besides the
+methods provided below you can call any other ETS methods on the table.</p>
+<h2 id="module-example" class="section-heading">
+  <a href="#module-example" class="hover-link"><i class="icon-link"></i></a>
+  Example
+</h2>
+
+<pre><code class="elixir">info = :ets.info(:guilds)
+[..., heir: :none, name: :guilds, size: 1, ...]
+size = info[:size]
+1</code></pre>
+
+        </section>
       
 
       
@@ -88,20 +101,20 @@
     </h2>
     <div class="summary-row">
   <div class="summary-signature">
-    <a href="#exception/1">exception(msg)</a>
+    <a href="#get/1">get(list)</a>
   </div>
-  
-    <div class="summary-synopsis"><p>Callback implementation for <code class="inline">c:Exception.exception/1</code></p>
-</div>
   
 </div>
 <div class="summary-row">
   <div class="summary-signature">
-    <a href="#message/1">message(exception)</a>
+    <a href="#get!/1">get!(list)</a>
   </div>
   
-    <div class="summary-synopsis"><p>Callback implementation for <code class="inline">c:Exception.message/1</code></p>
 </div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#start_link/0">start_link()</a>
+  </div>
   
 </div>
 
@@ -125,54 +138,49 @@
             </a>
             Functions
           </h1>
-          <div class="detail" id="exception/1">
+          <div class="detail" id="get/1">
+  
   <div class="detail-header">
-    <a href="#exception/1" class="detail-link" title="Link to this function">
+    <a href="#get/1" class="detail-link" title="Link to this function">
       <i class="icon-link"></i>
     </a>
-    <span class="signature">exception(msg)</span>
+    <span class="signature">get(list)</span>
+    
     
     
   </div>
-  
-    <div class="specs">
-      <h4 class="specs-title">Specs</h4>
-      <div class="specs-list">
-        
-          <pre><code class="elixir">exception(<a href="http://elixir-lang.org/docs/stable/elixir/String.html#t:t/0">String.t</a>) :: <a href="http://elixir-lang.org/docs/stable/elixir/Exception.html#t:t/0">Exception.t</a></code></pre>
-        
-          <pre><code class="elixir">exception(<a href="http://elixir-lang.org/docs/stable/elixir/Keyword.html#t:t/0">Keyword.t</a>) :: <a href="http://elixir-lang.org/docs/stable/elixir/Exception.html#t:t/0">Exception.t</a></code></pre>
-        
-      </div>
-    </div>
-  
   <section class="docstring">
-    <p>Callback implementation for <code class="inline">c:Exception.exception/1</code>.</p>
-
+    
   </section>
 </div>
-<div class="detail" id="message/1">
+<div class="detail" id="get!/1">
+  
   <div class="detail-header">
-    <a href="#message/1" class="detail-link" title="Link to this function">
+    <a href="#get!/1" class="detail-link" title="Link to this function">
       <i class="icon-link"></i>
     </a>
-    <span class="signature">message(exception)</span>
+    <span class="signature">get!(list)</span>
+    
     
     
   </div>
-  
-    <div class="specs">
-      <h4 class="specs-title">Specs</h4>
-      <div class="specs-list">
-        
-          <pre><code class="elixir">message(<a href="http://elixir-lang.org/docs/stable/elixir/Exception.html#t:t/0">Exception.t</a>) :: <a href="http://elixir-lang.org/docs/stable/elixir/String.html#t:t/0">String.t</a></code></pre>
-        
-      </div>
-    </div>
-  
   <section class="docstring">
-    <p>Callback implementation for <code class="inline">c:Exception.message/1</code>.</p>
-
+    
+  </section>
+</div>
+<div class="detail" id="start_link/0">
+  
+  <div class="detail-header">
+    <a href="#start_link/0" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">start_link()</span>
+    
+    
+    
+  </div>
+  <section class="docstring">
+    
   </section>
 </div>
 
@@ -186,7 +194,7 @@
         <p>
           <span class="line">
             Built using
-            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" rel="help" target="_blank">ExDoc</a> (v0.13.0),
+            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" rel="help" target="_blank">ExDoc</a> (v0.14.3),
           </span>
           <span class="line">
             designed by
@@ -199,7 +207,7 @@
   </div>
 </section>
 </div>
-  <script src="dist/app-21f1a20b9e.js"></script>
+  <script src="dist/app-574613960f.js"></script>
   </body>
 </html>
 

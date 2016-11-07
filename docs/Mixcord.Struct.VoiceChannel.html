@@ -4,9 +4,9 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="ExDoc v0.13.0">
-    <title>Mixcord.Constructs.Member – mixcord v0.1.0</title>
-    <link rel="stylesheet" href="dist/app-9c1e3d5aa2.css" />
+    <meta name="generator" content="ExDoc v0.14.3">
+    <title>Mixcord.Struct.VoiceChannel – mixcord v0.1.0</title>
+    <link rel="stylesheet" href="dist/app-091c05798a.css" />
     
     <script src="dist/sidebar_items.js"></script>
   </head>
@@ -50,9 +50,8 @@
 
     
   </ul>
-
+  <div class="gradient"></div>
   <ul id="full-list" class="sidebar-fullList"></ul>
-  <div class="sidebar-noResults"></div>
 </section>
 
 <section class="content">
@@ -62,21 +61,14 @@
 
       <h1>
         <small class="visible-xs">mixcord v0.1.0</small>
-        Mixcord.Constructs.Member
+        Mixcord.Struct.VoiceChannel
         
         
       </h1>
 
       
-        <section id="moduledoc" class="docstring">
-          <p>Struct representing a Discord guild member and various helper functions.</p>
-<h2 id="module-user-vs-member" class="section-heading">
-  <a href="#module-user-vs-member" class="hover-link"><i class="icon-link"></i></a>
-  User vs. Member
-</h2>
-
-<p>A <code class="inline">user</code> contains only general information about that user such as a <code class="inline">username</code> and an <code class="inline">avatar</code>.
-A <code class="inline">member</code> has everything that a <code class="inline">user</code> has, but also additional information on a per guild basis. This includes things like a <code class="inline">nickname</code> and a list of <code class="inline">roles</code>.</p>
+        <section id="moduledoc">
+          <p>Struct representing a Discord voice channel and various helper functions.</p>
 
         </section>
       
@@ -101,7 +93,7 @@ A <code class="inline">member</code> has everything that a <code class="inline">
     <a href="#__struct__/0">__struct__()</a>
   </div>
   
-    <div class="summary-synopsis"><p>Defines the Member struct</p>
+    <div class="summary-synopsis"><p>Defines the Voice Channel struct</p>
 </div>
   
 </div>
@@ -127,6 +119,7 @@ A <code class="inline">member</code> has everything that a <code class="inline">
             Functions
           </h1>
           <div class="detail" id="__struct__/0">
+  
   <div class="detail-header">
     <a href="#__struct__/0" class="detail-link" title="Link to this function">
       <i class="icon-link"></i>
@@ -134,24 +127,28 @@ A <code class="inline">member</code> has everything that a <code class="inline">
     <span class="signature">__struct__()</span>
     
     
+    
   </div>
-  
   <section class="docstring">
-    <p>Defines the Member struct.</p>
+    <p>Defines the Voice Channel struct.</p>
 <ul>
-<li>:guild_id - <em>String</em>. Id of the guild the member is a part of.
+<li>:id - <em>String</em>. The channel’s id.
 </li>
-<li>:user - <em>Struct</em>. A <a href="Mixcord.Constructs.User.html"><code class="inline">Mixcord.Constructs.User</code></a> struct.
+<li>:guild_id - <em>String</em>. Id of the channel’s guild.
 </li>
-<li>:nick - <em>?String</em>. Users guild nickname (if one is set).
+<li>:name - <em>String</em>. Name of the channel
 </li>
-<li>:roles - <em>List</em>. A list of <a href="Mixcord.Constructs.Role.html"><code class="inline">Mixcord.Constructs.Role</code></a> ids.
+<li>:type - <em>String</em>. <code class="inline">Text</code> or <code class="inline">Voice</code>
 </li>
-<li>:joined_at - <em>Data</em>. Date the user joined the guild.
+<li>:position - <em>Integer</em>. Ordering position of the channel
 </li>
-<li>:deaf - <em>Boolean</em>. If the user is deafened.
+<li>:is_private - <em>Boolean</em>. If channel is a DM
 </li>
-<li>:mute - <em>Boolean</em>. If the user is muted.
+<li>:permission_overwrites - <em>List</em>. List of <a href="https://discordapp.com/developers/docs/resources/channel#overwrite-object">overwrite</a> objects as maps
+</li>
+<li>:bitrate - <em>Integer</em>. Bitrate of the voice channel.
+</li>
+<li>:user_limit - <em>Integer</em>. User limit of the voice channel.
 </li>
 </ul>
 
@@ -168,7 +165,7 @@ A <code class="inline">member</code> has everything that a <code class="inline">
         <p>
           <span class="line">
             Built using
-            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" rel="help" target="_blank">ExDoc</a> (v0.13.0),
+            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" rel="help" target="_blank">ExDoc</a> (v0.14.3),
           </span>
           <span class="line">
             designed by
@@ -181,7 +178,7 @@ A <code class="inline">member</code> has everything that a <code class="inline">
   </div>
 </section>
 </div>
-  <script src="dist/app-21f1a20b9e.js"></script>
+  <script src="dist/app-574613960f.js"></script>
   </body>
 </html>
 

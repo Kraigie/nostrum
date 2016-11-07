@@ -4,9 +4,9 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="ExDoc v0.13.0">
-    <title>Mixcord.Shard.Supervisor – mixcord v0.1.0</title>
-    <link rel="stylesheet" href="dist/app-9c1e3d5aa2.css" />
+    <meta name="generator" content="ExDoc v0.14.3">
+    <title>Mixcord.Struct.User – mixcord v0.1.0</title>
+    <link rel="stylesheet" href="dist/app-091c05798a.css" />
     
     <script src="dist/sidebar_items.js"></script>
   </head>
@@ -50,9 +50,8 @@
 
     
   </ul>
-
+  <div class="gradient"></div>
   <ul id="full-list" class="sidebar-fullList"></ul>
-  <div class="sidebar-noResults"></div>
 </section>
 
 <section class="content">
@@ -62,11 +61,23 @@
 
       <h1>
         <small class="visible-xs">mixcord v0.1.0</small>
-        Mixcord.Shard.Supervisor
+        Mixcord.Struct.User
         
         
       </h1>
 
+      
+        <section id="moduledoc">
+          <p>Struct representing a Discord user and various helper functions.</p>
+<h2 id="module-user-vs-member" class="section-heading">
+  <a href="#module-user-vs-member" class="hover-link"><i class="icon-link"></i></a>
+  User vs. Member
+</h2>
+
+<p>A <code class="inline">user</code> contains only general information about that user such as a <code class="inline">username</code> and an <code class="inline">avatar</code>.
+A <code class="inline">member</code> has everything that a <code class="inline">user</code> has, but also additional information on a per guild basis. This includes things like a <code class="inline">nickname</code> and a list of <code class="inline">roles</code>.</p>
+
+        </section>
       
 
       
@@ -86,14 +97,11 @@
     </h2>
     <div class="summary-row">
   <div class="summary-signature">
-    <a href="#start_link/3">start_link(token, caller, num_shards \\ 1)</a>
+    <a href="#__struct__/0">__struct__()</a>
   </div>
   
+    <div class="summary-synopsis"><p>Defines the User struct</p>
 </div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#update_status/1">update_status(status)</a>
-  </div>
   
 </div>
 
@@ -117,32 +125,38 @@
             </a>
             Functions
           </h1>
-          <div class="detail" id="start_link/3">
+          <div class="detail" id="__struct__/0">
+  
   <div class="detail-header">
-    <a href="#start_link/3" class="detail-link" title="Link to this function">
+    <a href="#__struct__/0" class="detail-link" title="Link to this function">
       <i class="icon-link"></i>
     </a>
-    <span class="signature">start_link(token, caller, num_shards \\ 1)</span>
+    <span class="signature">__struct__()</span>
+    
     
     
   </div>
-  
   <section class="docstring">
-    
-  </section>
-</div>
-<div class="detail" id="update_status/1">
-  <div class="detail-header">
-    <a href="#update_status/1" class="detail-link" title="Link to this function">
-      <i class="icon-link"></i>
-    </a>
-    <span class="signature">update_status(status)</span>
-    
-    
-  </div>
-  
-  <section class="docstring">
-    
+    <p>Defines the User struct.</p>
+<ul>
+<li>:id - <em>String</em>. User’s id.
+</li>
+<li>:username - <em>String</em>. User’s username.
+</li>
+<li>:discriminator - <em>String</em>. User’s 4-digit discord-tag.
+</li>
+<li>:avatar - <em>String</em>. User’s avatar hash.
+</li>
+<li>:bot - <em>Boolean</em>. Whether the user is a bot.
+</li>
+<li>:mfa_enabled - <em>Boolean</em>. Whether the user has two factor enabled.
+</li>
+<li>:verified - <em>Boolean</em>. Whether the email on the account has been verified.
+</li>
+<li>:email - <em>String</em>. User’s email.
+</li>
+</ul>
+
   </section>
 </div>
 
@@ -156,7 +170,7 @@
         <p>
           <span class="line">
             Built using
-            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" rel="help" target="_blank">ExDoc</a> (v0.13.0),
+            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" rel="help" target="_blank">ExDoc</a> (v0.14.3),
           </span>
           <span class="line">
             designed by
@@ -169,7 +183,7 @@
   </div>
 </section>
 </div>
-  <script src="dist/app-21f1a20b9e.js"></script>
+  <script src="dist/app-574613960f.js"></script>
   </body>
 </html>
 

@@ -4,9 +4,9 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="ExDoc v0.13.0">
-    <title>Mixcord.Constructs.Message – mixcord v0.1.0</title>
-    <link rel="stylesheet" href="dist/app-9c1e3d5aa2.css" />
+    <meta name="generator" content="ExDoc v0.14.3">
+    <title>Mixcord.Struct.Member – mixcord v0.1.0</title>
+    <link rel="stylesheet" href="dist/app-091c05798a.css" />
     
     <script src="dist/sidebar_items.js"></script>
   </head>
@@ -50,9 +50,8 @@
 
     
   </ul>
-
+  <div class="gradient"></div>
   <ul id="full-list" class="sidebar-fullList"></ul>
-  <div class="sidebar-noResults"></div>
 </section>
 
 <section class="content">
@@ -62,14 +61,21 @@
 
       <h1>
         <small class="visible-xs">mixcord v0.1.0</small>
-        Mixcord.Constructs.Message
+        Mixcord.Struct.Member
         
         
       </h1>
 
       
-        <section id="moduledoc" class="docstring">
-          <p>Struct representing a Discord message and various helper functions.</p>
+        <section id="moduledoc">
+          <p>Struct representing a Discord guild member and various helper functions.</p>
+<h2 id="module-user-vs-member" class="section-heading">
+  <a href="#module-user-vs-member" class="hover-link"><i class="icon-link"></i></a>
+  User vs. Member
+</h2>
+
+<p>A <code class="inline">user</code> contains only general information about that user such as a <code class="inline">username</code> and an <code class="inline">avatar</code>.
+A <code class="inline">member</code> has everything that a <code class="inline">user</code> has, but also additional information on a per guild basis. This includes things like a <code class="inline">nickname</code> and a list of <code class="inline">roles</code>.</p>
 
         </section>
       
@@ -94,14 +100,8 @@
     <a href="#__struct__/0">__struct__()</a>
   </div>
   
-    <div class="summary-synopsis"><p>Defines the Message struct</p>
+    <div class="summary-synopsis"><p>Defines the Member struct</p>
 </div>
-  
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#get_member/0">get_member()</a>
-  </div>
   
 </div>
 
@@ -126,6 +126,7 @@
             Functions
           </h1>
           <div class="detail" id="__struct__/0">
+  
   <div class="detail-header">
     <a href="#__struct__/0" class="detail-link" title="Link to this function">
       <i class="icon-link"></i>
@@ -133,55 +134,27 @@
     <span class="signature">__struct__()</span>
     
     
+    
   </div>
-  
   <section class="docstring">
-    <p>Defines the Message struct.</p>
+    <p>Defines the Member struct.</p>
 <ul>
-<li>:id - <em>String</em>. Id of the message.
+<li>:guild_id - <em>String</em>. Id of the guild the member is a part of.
 </li>
-<li>:channel_id - <em>String</em>. Id of the channel the message was sent in.
+<li>:user - <em>Struct</em>. A <code class="inline">Mixcord.Constructs.User</code> struct.
 </li>
-<li>:author - <em>Struct</em>. A <a href="Mixcord.Constructs.User.html"><code class="inline">Mixcord.Constructs.User</code></a> struct.
+<li>:nick - <em>?String</em>. Users guild nickname (if one is set).
 </li>
-<li>:content - <em>String</em>. Contents of the message.
+<li>:roles - <em>List</em>. A list of <code class="inline">Mixcord.Constructs.Role</code> ids.
 </li>
-<li>:timestamp - <em>Date</em>. When this message was sent.
+<li>:joined_at - <em>Data</em>. Date the user joined the guild.
 </li>
-<li>:edited_timestamp - <em>?Date</em>. When this message was edited (or null if never).
+<li>:deaf - <em>Boolean</em>. If the user is deafened.
 </li>
-<li>:tts - <em>Boolean</em>. Whether this was a TTS message.
-</li>
-<li>:mention_everyone -   <em>Boolean</em>.  Whether this message mentions everyone.
-</li>
-<li>:mentions -   <em>List</em>. A list of <a href="Mixcord.Constructs.User.html"><code class="inline">Mixcord.Constructs.User</code></a> structs mentioned in the message.
-</li>
-<li>:mention_roles - <em>List</em>. A list of <a href="Mixcord.Constructs.Role.html"><code class="inline">Mixcord.Constructs.Role</code></a> structs mentioned in this message.
-</li>
-<li>:attachments - <em>List</em>. A list of <a href="https://discordapp.com/developers/docs/resources/channel#attachment-object">attached files</a> as maps.
-</li>
-<li>:embeds - <em>List</em>. A list of <a href="https://discordapp.com/developers/docs/resources/channel#embed-object">embedded content</a> as maps.
-</li>
-<li>:nonce -  <em>?String</em>.  Used for validating a message was sent.
-</li>
-<li>:pinned - <em>Boolean</em>. Whether this message is pinned.
+<li>:mute - <em>Boolean</em>. If the user is muted.
 </li>
 </ul>
 
-  </section>
-</div>
-<div class="detail" id="get_member/0">
-  <div class="detail-header">
-    <a href="#get_member/0" class="detail-link" title="Link to this function">
-      <i class="icon-link"></i>
-    </a>
-    <span class="signature">get_member()</span>
-    
-    
-  </div>
-  
-  <section class="docstring">
-    
   </section>
 </div>
 
@@ -195,7 +168,7 @@
         <p>
           <span class="line">
             Built using
-            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" rel="help" target="_blank">ExDoc</a> (v0.13.0),
+            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" rel="help" target="_blank">ExDoc</a> (v0.14.3),
           </span>
           <span class="line">
             designed by
@@ -208,7 +181,7 @@
   </div>
 </section>
 </div>
-  <script src="dist/app-21f1a20b9e.js"></script>
+  <script src="dist/app-574613960f.js"></script>
   </body>
 </html>
 
