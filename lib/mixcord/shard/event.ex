@@ -7,7 +7,7 @@ defmodule Mixcord.Shard.Event do
 
   def handle(:dispatch, payload, state) do
     # TODO: Task.start this? - when ratelimiter is implmented 100%
-    Dispatch.handle(payload, state)
+    Task.start(fn -> Dispatch.handle(payload, state) end)
 
     state =
       if payload.t == :READY do
