@@ -36,66 +36,67 @@ defmodule Mixcord.Shard.Dispatch do
     state.caller.handle_event({payload.t, payload.d}, state)
   end
 
-  def handle_event({:CHANNEL_CREATE, payload}, state), do: :noop
+  def handle_event({:CHANNEL_CREATE, p}, state), do: :noop
 
-  def handle_event({:CHANNEL_DELETE, payload}, state), do: :noop
+  def handle_event({:CHANNEL_DELETE, p}, state), do: :noop
 
-  def handle_event({:CHANNEL_UPDATE, payload}, state), do: :noop
+  def handle_event({:CHANNEL_UPDATE, p}, state), do: :noop
 
-  def handle_event({:GUILD_BAN_ADD, payload}, state), do: :noop
+  def handle_event({:GUILD_BAN_ADD, p}, state), do: :noop
 
-  def handle_event({:BUILD_BAN_REMOVE, payload}, state), do: :noop
+  def handle_event({:BUILD_BAN_REMOVE, p}, state), do: :noop
 
-  def handle_event({:GUILD_CREATE, payload}, state), do: Guild.create(payload)
+  def handle_event({:GUILD_CREATE, p}, state), do: Guild.create(p)
 
-  def handle_event({:GUILD_UPDATE, payload}, state), do: Guild.update(payload)
+  def handle_event({:GUILD_UPDATE, p}, state), do: Guild.update(p)
 
-  def handle_event({:GUILD_DELETE, payload}, state), do: Guild.delete(payload.id)
+  def handle_event({:GUILD_DELETE, p}, state), do: Guild.delete(p.id)
 
-  def handle_event({:GUILD_EMOJI_UPDATE, payload}, state), do: :noop
+  def handle_event({:GUILD_EMOJIS_UPDATE, p}, state), do: Guild.emoji_update(p.guild_id, p.emojis)
 
-  def handle_event({:GUILD_INTEGRATIONS_UPDATE, payload}, state), do: :noop
+  def handle_event({:GUILD_INTEGRATIONS_UPDATE, p}, state), do: :noop
 
-  def handle_event({:GUILD_MEMBER_ADD, payload}, state), do: :noop
+  def handle_event({:GUILD_MEMBER_ADD, p}, state), do: Guild.member_add(p.guild_id, p)
 
-  def handle_event({:GUILD_MEMBER_CHUNK, payload}, state), do: :noop
+  def handle_event({:GUILD_MEMBER_CHUNK, p}, state) do
+    p.members
+      |> Enum.map(fn member -> Guild.member_add(p.guild_id, member) end)
+  end
 
-  def handle_event({:GUILD_MEMBER_REMOVE, payload}, state), do: :noop
+  def handle_event({:GUILD_MEMBER_REMOVE, p}, state), do: Guild.member_remove(p.guild_id, p.user)
 
-  def handle_event({:GUILD_MEMBER_UPDATE, payload}, state), do: :noop
+  def handle_event({:GUILD_MEMBER_UPDATE, p}, state), do: Guild.member_update(p.guild_id, p.user, p.roles)
 
-  def handle_event({:GUILD_ROLE_CREATE, payload}, state), do: :noop
+  def handle_event({:GUILD_ROLE_CREATE, p}, state), do: Guild.role_create(p.guild_id, p.role)
 
-  def handle_event({:GUILD_ROLE_DELETE, payload}, state), do: :noop
+  def handle_event({:GUILD_ROLE_DELETE, p}, state), do: Guild.role_delete(p.guild_id, p.role_id)
 
-  def handle_event({:GUILD_ROLE_UPDATE, payload}, state), do: :noop
+  def handle_event({:GUILD_ROLE_UPDATE, p}, state), do: Guild.role_update(p.guild_id, p.role)
 
-  def handle_event({:GUILD_UPDATE, payload}, state), do: :noop
+  def handle_event({:MESSAGE_CREATE, p}, state), do: :noop
 
-  def handle_event({:MESSAGE_CREATE, payload}, state), do: :noop
+  def handle_event({:MESSAGE_DELETE, p}, state), do: :noop
 
-  def handle_event({:MESSAGE_DELETE, payload}, state), do: :noop
+  def handle_event({:MESSAGE_DELETE_BULK, p}, state), do: :noop
 
-  def handle_event({:MESSAGE_DELETE_BULK, payload}, state), do: :noop
+  def handle_event({:MESSAGE_UPDATE, p}, state), do: :noop
 
-  def handle_event({:MESSAGE_UPDATE, payload}, state), do: :noop
+  def handle_event({:PRESENCE_UPDATE, p}, state), do: :noop
 
-  def handle_event({:PRESENCE_UPDATE, payload}, state), do: :noop
+  def handle_event({:READY, p}, state), do: :noop
 
-  def handle_event({:READY, payload}, state), do: :noop
+  def handle_event({:RESUMED, p}, state), do: :noop
 
-  def handle_event({:RESUMED, payload}, state), do: :noop
+  def handle_event({:TYPING_START, p}, state), do: :noop
 
-  def handle_event({:TYPING_START, payload}, state), do: :noop
+  def handle_event({:USER_SETTINGS_UPDATE, p}, state), do: :noop
 
-  def handle_event({:USER_SETTINGS_UPDATE, payload}, state), do: :noop
+  def handle_event({:USER_UPDATE, p}, state), do: :noop
 
-  def handle_event({:USER_UPDATE, payload}, state), do: :noop
+  def handle_event({:VOICE_STATE_UPDATE, p}, state), do: :noop
 
-  def handle_event({:VOICE_STATE_UPDATE, payload}, state), do: :noop
+  def handle_event({:VOICE_SERVER_UPDATE, p}, state), do: :noop
 
-  def handle_event({:VOICE_SERVER_UPDATE, payload}, state), do: :noop
-
-  def handle_event({event, payload}, state), do: Logger.warn "UNHANDLED GATEWAY DISPATCH EVENT TYPE: #{event}"
+  def handle_event({event, p}, state), do: Logger.warn "UNHANDLED GATEWAY DISPATCH EVENT TYPE: #{event}"
 
 end
