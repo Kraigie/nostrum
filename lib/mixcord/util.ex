@@ -38,4 +38,19 @@ defmodule Mixcord.Util do
     end
   end
 
+  def string_atom_map(term) do
+    cond do
+      is_map(term) -> for {key, value} <- term, into: %{}, do: {maybe_to_atom(key), string_atom_map(value)}
+      is_list(term) -> Enum.map(term, fn item -> string_atom_map(item) end)
+      true -> term
+    end
+  end
+
+  def maybe_to_atom(token) do
+    cond do
+      is_atom(token) -> token
+      true -> String.to_atom(token)
+    end
+  end
+
 end

@@ -28,10 +28,13 @@ defmodule Mixcord.Shard.Dispatch do
   """
 
   alias Mixcord.Cache.{Guild}
+  alias Mixcord.Util
   require Logger
 
   def handle(payload, state) do
     Logger.debug payload.t
+    # TODO: STOP DOING THIS. WHY DISCORD WHYYYYYYYYYYYYYYYYYYYYY
+    payload = Util.string_atom_map(payload)
     handle_event({payload.t, payload.d}, state)
     state.caller.handle_event({payload.t, payload.d}, state)
   end
