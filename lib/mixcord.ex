@@ -3,18 +3,18 @@ defmodule Mixcord do
   How to use Mixcord.
 
   ## API
-  Api functionality can be found in the `Mixcord.Api` module. Ratelimit is handled
+  Api functionality can be found in the `Mixcord.Api` module. Ratelimiting is handled
   by the lib.
 
   ### A note about Strings and Ints
-  Currently, anything dealing with the REST api will have its `id` as a string.
-  This includes sending payloads as well as the returned payloads.
+  Currently, responses from the REST api will have `id` fields as `string`.
+  Everything received from the WS connection will have `id` fields as `int`.
 
-  Everything received from the WS connection will have and int `id`. You should convert
-  id's to ints when interacting with any of the Caches. I'm open to suggestions
-  for how this should be handled going forward.
+  If you're processing a response from the API and trying to access something in the cache
+  based off of an `id` in the response, you will need to conver it to an `int` using
+  `String.to_integer/1`. I'm open to suggestions for how this should be handled going forward.
 
-  ## State
+  ## State/Cache
   Mixcord provides a number of GenServers which interface with ETS tables.
   These tables are updated based on events from the WS connection.
 

@@ -74,17 +74,17 @@
   API
 </h2>
 
-<p>Api functionality can be found in the <a href="Mixcord.Api.html"><code class="inline">Mixcord.Api</code></a> module. Ratelimit is handled
+<p>Api functionality can be found in the <a href="Mixcord.Api.html"><code class="inline">Mixcord.Api</code></a> module. Ratelimiting is handled
 by the lib.</p>
 <h3>A note about Strings and Ints</h3>
-<p>Currently, anything dealing with the REST api will have its <code class="inline">id</code> as a string.
-This includes sending payloads as well as the returned payloads.</p>
-<p>Everything received from the WS connection will have and int <code class="inline">id</code>. You should convert
-id’s to ints when interacting with any of the Caches. I’m open to suggestions
-for how this should be handled going forward.</p>
-<h2 id="module-state" class="section-heading">
-  <a href="#module-state" class="hover-link"><i class="icon-link"></i></a>
-  State
+<p>Currently, responses from the REST api will have <code class="inline">id</code> fields as <code class="inline">string</code>.
+Everything received from the WS connection will have <code class="inline">id</code> fields as <code class="inline">int</code>.</p>
+<p>If you’re processing a response from the API and trying to access something in the cache
+based off of an <code class="inline">id</code> in the response, you will need to conver it to an <code class="inline">int</code> using
+<a href="http://elixir-lang.org/docs/stable/elixir/String.html#to_integer/1"><code class="inline">String.to_integer/1</code></a>. I’m open to suggestions for how this should be handled going forward.</p>
+<h2 id="module-state-cache" class="section-heading">
+  <a href="#module-state-cache" class="hover-link"><i class="icon-link"></i></a>
+  State/Cache
 </h2>
 
 <p>Mixcord provides a number of GenServers which interface with ETS tables.
