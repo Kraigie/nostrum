@@ -59,7 +59,7 @@ defmodule Mixcord.Shard do
   end
 
   def ondisconnect(reason, state) do
-    Logger.debug "WS DISCONNECTED BECAUSE: #{inspect reason}"
+    Logger.warn "WS DISCONNECTED BECAUSE: #{inspect reason}"
     Logger.debug "STATE ON CLOSE: #{inspect state}"
     if state.reconnect_attempts > 3 do
       {:close, reason, state}

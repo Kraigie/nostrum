@@ -2,13 +2,15 @@ defmodule Mixcord.Mixfile do
   use Mix.Project
 
   def project do
-    [app: :mixcord,
-    version: "0.1.0",
-    elixir: "~> 1.3",
-    build_embedded: Mix.env == :prod,
-    start_permanent: Mix.env == :prod,
-    deps: deps(),
-    docs: docs()]
+    [
+      app: :mixcord,
+      version: "0.1.0",
+      elixir: "~> 1.3",
+      build_embedded: Mix.env == :prod,
+      start_permanent: Mix.env == :prod,
+      deps: deps(),
+      docs: docs()
+    ]
   end
 
   # Configuration for the OTP application
@@ -22,7 +24,9 @@ defmodule Mixcord.Mixfile do
   end
 
   def docs do
-    [output: "docs"]
+    [
+      output: "docs"
+    ]
   end
 
   # Dependencies can be Hex packages:
