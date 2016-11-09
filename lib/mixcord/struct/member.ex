@@ -1,6 +1,6 @@
 defmodule Mixcord.Struct.Member do
   @moduledoc """
-  Struct representing a Discord guild member and various helper functions.
+  Struct representing a Discord guild member.
 
   ## User vs. Member
   A `user` contains only general information about that user such as a `username` and an `avatar`.
@@ -10,13 +10,13 @@ defmodule Mixcord.Struct.Member do
   @doc """
   Defines the Member struct.
 
-  * :guild_id - *String*. Id of the guild the member is a part of.
-  * :user - *Struct*. A `Mixcord.Constructs.User` struct.
-  * :nick - *?String*. Users guild nickname (if one is set).
-  * :roles - *List*. A list of `Mixcord.Constructs.Role` ids.
-  * :joined_at - *Data*. Date the user joined the guild.
-  * :deaf - *Boolean*. If the user is deafened.
-  * :mute - *Boolean*. If the user is muted.
+  * `:guild_id` - *String*. Id of the guild the member is a part of.
+  * `:user` - *Struct*. A `Mixcord.Struct.User` struct.
+  * `:nick` - *?String*. Users guild nickname (if one is set).
+  * `:roles` - *List*. A list of `Mixcord.Struct.Role` ids.
+  * `:joined_at` - *Data*. Date the user joined the guild.
+  * `:deaf` - *Boolean*. If the user is deafened.
+  * `:mute` - *Boolean*. If the user is muted.
   """
   @derive [Poison.Encoder]
   defstruct [

@@ -1,20 +1,20 @@
 defmodule Mixcord.Struct.VoiceChannel do
   @moduledoc """
-  Struct representing a Discord voice channel and various helper functions.
+  Struct representing a Discord voice channel.
   """
 
   @doc """
   Defines the Voice Channel struct.
 
-  * :id - *String*. The channel's id.
-  * :guild_id - *String*. Id of the channel's guild.
-  * :name - *String*. Name of the channel
-  * :type - *String*. `Text` or `Voice`
-  * :position - *Integer*. Ordering position of the channel
-  * :is_private - *Boolean*. If channel is a DM
-  * :permission_overwrites - *List*. List of [overwrite](https://discordapp.com/developers/docs/resources/channel#overwrite-object) objects as maps
-  * :bitrate - *Integer*. Bitrate of the voice channel.
-  * :user_limit - *Integer*. User limit of the voice channel.
+  * `:id` - *String*. The channel's id.
+  * `:guild_id` - *String*. Id of the channel's guild.
+  * `:name` - *String*. Name of the channel
+  * `:type` - *String*. `Text` or `Voice`
+  * `:position` - *Integer*. Ordering position of the channel
+  * `:is_private` - *Boolean*. If channel is a DM
+  * `:permission_overwrites` - *List*. List of [overwrite](https://discordapp.com/developers/docs/resources/channel#overwrite-object) objects as maps
+  * `:bitrate` - *Integer*. Bitrate of the voice channel.
+  * `:user_limit` - *Integer*. User limit of the voice channel.
   """
   @derive [Poison.Encoder]
   defstruct [

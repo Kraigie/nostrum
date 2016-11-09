@@ -1,6 +1,6 @@
 defmodule Mixcord.Struct.User do
   @moduledoc """
-  Struct representing a Discord user and various helper functions.
+  Struct representing a Discord user.
 
   ## User vs. Member
   A `user` contains only general information about that user such as a `username` and an `avatar`.
@@ -10,14 +10,14 @@ defmodule Mixcord.Struct.User do
   @doc """
   Defines the User struct.
 
-  * :id - *String*. User's id.
-  * :username - *String*. User's username.
-  * :discriminator - *String*. User's 4-digit discord-tag.
-  * :avatar - *String*. User's avatar hash.
-  * :bot - *Boolean*. Whether the user is a bot.
-  * :mfa_enabled - *Boolean*. Whether the user has two factor enabled.
-  * :verified - *Boolean*. Whether the email on the account has been verified.
-  * :email - *String*. User's email.
+  * `:id` - *String*. User's id.
+  * `:username` - *String*. User's username.
+  * `:discriminator` - *String*. User's 4-digit discord-tag.
+  * `:avatar` - *String*. User's avatar hash.
+  * `:bot` - *Boolean*. Whether the user is a bot.
+  * `:mfa_enabled` - *Boolean*. Whether the user has two factor enabled.
+  * `:verified` - *Boolean*. Whether the email on the account has been verified.
+  * `:email` - *String*. User's email.
   """
   @derive [Poison.Encoder]
   defstruct [

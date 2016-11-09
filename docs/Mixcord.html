@@ -76,140 +76,46 @@
 
 <p>Api functionality can be found in the <a href="Mixcord.Api.html"><code class="inline">Mixcord.Api</code></a> module. Ratelimiting is handled
 by the lib.</p>
-<h3>A note about Strings and Ints</h3>
+<h4>A note about Strings and Ints</h4>
 <p>Currently, responses from the REST api will have <code class="inline">id</code> fields as <code class="inline">string</code>.
 Everything received from the WS connection will have <code class="inline">id</code> fields as <code class="inline">int</code>.</p>
 <p>If you’re processing a response from the API and trying to access something in the cache
 based off of an <code class="inline">id</code> in the response, you will need to conver it to an <code class="inline">int</code> using
 <a href="http://elixir-lang.org/docs/stable/elixir/String.html#to_integer/1"><code class="inline">String.to_integer/1</code></a>. I’m open to suggestions for how this should be handled going forward.</p>
+<h2 id="module-structs" class="section-heading">
+  <a href="#module-structs" class="hover-link"><i class="icon-link"></i></a>
+  Structs
+</h2>
+
+<p>Mixcord implements a series of <code class="inline">structs</code> that hold infomration about Discord objects.</p>
 <h2 id="module-state-cache" class="section-heading">
   <a href="#module-state-cache" class="hover-link"><i class="icon-link"></i></a>
   State/Cache
 </h2>
 
-<p>Mixcord provides a number of GenServers which interface with ETS tables.
+<p>Mixcord provides a number of GenServers which interface with ETS tables to implement a caching system.
 These tables are updated based on events from the WS connection.</p>
 <p>The ETS tables are named so you can interact with them using any default ETS methods.
-To find tables names, please see the relevant docs for that cache.
-<em>Read operations should be the only operations performed on the ETS tables by the user.</em></p>
-<p>See any of the Cache modules for default methods provided by the lib.</p>
+(<em>Note: Read operations should be the only operations performed on the ETS tables by the user.</em>)
+To find tables names, please see the relevant docs for that cache.</p>
+<p>See any of the Cache modules for default methods provided by the lib; e.g.
+<code class="inline">Guild</code> information can be found at <a href="Mixcord.Cache.Guild.html"><code class="inline">Mixcord.Cache.Guild</code></a></p>
 <h2 id="module-events" class="section-heading">
   <a href="#module-events" class="hover-link"><i class="icon-link"></i></a>
   Events
 </h2>
 
 <p>Mixcord currently handles events to keep track of state. To implement your own
-behaviour you should define at least one method called <a href="#handle_event/2"><code class="inline">handle_event/2</code></a>. See the
+behaviour you should define at least one method called <code class="inline">handle_event/2</code>. See the
 <a href="Mixcord.Shard.Dispatch.html"><code class="inline">Mixcord.Shard.Dispatch</code></a> module for more information.</p>
 
         </section>
       
 
       
-        <section id="summary" class="details-list">
-          <h1 class="section-heading">
-            <a class="hover-link" href="#summary">
-              <i class="icon-link"></i>
-            </a>
-            Summary
-          </h1>
-          
-
-          
-  <div class="summary-functions summary">
-    <h2>
-      <a href="#functions">Functions</a>
-    </h2>
-    <div class="summary-row">
-  <div class="summary-signature">
-    <a href="#handle_event/2">handle_event(data, state)</a>
-  </div>
-  
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#setup_ets_tables/0">setup_ets_tables()</a>
-  </div>
-  
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#start/2">start(, )</a>
-  </div>
-  
-    <div class="summary-synopsis"><p>Callback implementation for <a href="http://elixir-lang.org/docs/stable/elixir/Application.html#c:start/2"><code class="inline">Application.start/2</code></a></p>
-</div>
-  
-</div>
-
-  </div>
-
-
-          
-
-          
-
-        </section>
-      
 
       
 
-      
-        <section id="functions" class="details-list">
-          <h1 class="section-heading">
-            <a class="hover-link" href="#functions">
-              <i class="icon-link"></i>
-            </a>
-            Functions
-          </h1>
-          <div class="detail" id="handle_event/2">
-  
-  <div class="detail-header">
-    <a href="#handle_event/2" class="detail-link" title="Link to this function">
-      <i class="icon-link"></i>
-    </a>
-    <span class="signature">handle_event(data, state)</span>
-    
-    
-    
-  </div>
-  <section class="docstring">
-    
-  </section>
-</div>
-<div class="detail" id="setup_ets_tables/0">
-  
-  <div class="detail-header">
-    <a href="#setup_ets_tables/0" class="detail-link" title="Link to this function">
-      <i class="icon-link"></i>
-    </a>
-    <span class="signature">setup_ets_tables()</span>
-    
-    
-    
-  </div>
-  <section class="docstring">
-    
-  </section>
-</div>
-<div class="detail" id="start/2">
-  
-  <div class="detail-header">
-    <a href="#start/2" class="detail-link" title="Link to this function">
-      <i class="icon-link"></i>
-    </a>
-    <span class="signature">start(, )</span>
-    
-    
-    
-  </div>
-  <section class="docstring">
-    <p>Callback implementation for <a href="http://elixir-lang.org/docs/stable/elixir/Application.html#c:start/2"><code class="inline">Application.start/2</code></a>.</p>
-
-  </section>
-</div>
-
-        </section>
       
 
       
