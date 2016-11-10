@@ -89,11 +89,11 @@ defmodule Mixcord.Api.Ratelimiter do
       {:error, %HTTPoison.Error{reason: reason}} ->
         {:error, %{status_code: nil, message: reason}}
       {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
-        {:ok, Poison.decode!(body)}
+        {:ok, body}
       {:ok, %HTTPoison.Response{status_code: 204}} ->
         {:ok}
       {:ok, %HTTPoison.Response{status_code: status_code, body: body}} ->
-        {:error, %{status_code: status_code, message: body}}
+        {:error, %{status_code: status_code, message: Poison.decode!(body)}}
     end
   end
 

@@ -29,6 +29,7 @@ defmodule Mixcord.Util do
       {:error, status_code: status_code, message: message} ->
         raise(Mixcord.Error.ApiError, status_code: status_code, message: message)
       {:ok, body} ->
+        body = Poison.decode!(body)
 
         url = body["url"] <> "?encoding=etf&v=6"
           |> to_charlist

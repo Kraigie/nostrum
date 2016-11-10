@@ -9,7 +9,8 @@ defmodule Mixcord.Error.ApiError do
       * `nil` if HTTPoison or Hackney throws an error.
       * Status code of response otherwise.
     * message
-      * Error message of response.
+      * Error message of response. If the error is from the Discord API,
+      this will be a map containing the keys `code` and `message` as strings.
   """
 
   defexception [:message]
@@ -21,6 +22,11 @@ defmodule Mixcord.Error.ApiError do
 
   def exception(status_code: status_code, message: message) when is_binary(message) do
     msg = "ERROR: #{status_code} #{message}"
+    %__MODULE__{message: msg}
+  end
+
+  def exception(status_code: status_code, message: resp) when is_map(resp) do
+    msg = "ERROR: #{status_code} #{resp["message"]} #{resp["code"]}"
     %__MODULE__{message: msg}
   end
 
