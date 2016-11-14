@@ -1,4 +1,4 @@
-defmodule Mixcord.Struct.Member do
+defmodule Mixcord.Map.Member do
   @moduledoc """
   Struct representing a Discord guild member.
 
@@ -8,12 +8,12 @@ defmodule Mixcord.Struct.Member do
   """
 
   @doc """
-  Defines the Member struct.
+  Represents a Discord Member.
 
   * `:guild_id` - *String*. Id of the guild the member is a part of.
-  * `:user` - *Struct*. A `Mixcord.Struct.User` struct.
+  * `:user` - *Struct*. A `Mixcord.Map.User` struct.
   * `:nick` - *?String*. Users guild nickname (if one is set).
-  * `:roles` - *List*. A list of `Mixcord.Struct.Role` ids.
+  * `:roles` - *List*. A list of `Mixcord.Map.Role` ids.
   * `:joined_at` - *Data*. Date the user joined the guild.
   * `:deaf` - *Boolean*. If the user is deafened.
   * `:mute` - *Boolean*. If the user is muted.

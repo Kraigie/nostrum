@@ -1,10 +1,10 @@
-defmodule Mixcord.Struct.TextChannel do
+defmodule Mixcord.Map.TextChannel do
   @moduledoc """
   Struct representing a Discord text channel.
   """
 
   @doc """
-  Defines the Text Channel struct.
+  Represents a Discord Text Channel.
 
   * `:id` - *String*. The channel's id.
   * `:guild_id` - *String*. Id of the channel's guild.

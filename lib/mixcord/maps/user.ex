@@ -1,4 +1,4 @@
-defmodule Mixcord.Struct.User do
+defmodule Mixcord.Map.User do
   @moduledoc """
   Struct representing a Discord user.
 
@@ -8,7 +8,7 @@ defmodule Mixcord.Struct.User do
   """
 
   @doc """
-  Defines the User struct.
+  Represents a Discord User.
 
   * `:id` - *String*. User's id.
   * `:username` - *String*. User's username.

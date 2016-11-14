@@ -1,10 +1,10 @@
-defmodule Mixcord.Struct.VoiceChannel do
+defmodule Mixcord.Map.VoiceChannel do
   @moduledoc """
   Struct representing a Discord voice channel.
   """
 
   @doc """
-  Defines the Voice Channel struct.
+  Represents a Discord Voice Channel.
 
   * `:id` - *String*. The channel's id.
   * `:guild_id` - *String*. Id of the channel's guild.

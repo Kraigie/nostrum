@@ -1,10 +1,10 @@
-defmodule Mixcord.Struct.Role do
+defmodule Mixcord.Map.Role do
   @moduledoc """
   Struct representing a Discord role.
   """
 
   @doc """
-  Defines the Role struct.
+  Represents a Discord Role.
 
   * `:id` - *String*. Id of the role.
   * `:name` - *String*. Name of the role.

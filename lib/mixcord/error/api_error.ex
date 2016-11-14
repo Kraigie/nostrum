@@ -3,15 +3,27 @@ defmodule Mixcord.Error.ApiError do
   Represents a failed response from the API.
 
   This occurs when hackney or HTTPoison fail, or when the API doesn't respond with `200` or `204`.
+  """
 
-  Represented as a map that is structred as follows:
+  @typedoc """
+  Map representing the error returned by an API call.
+
     * status_code
       * `nil` if HTTPoison or Hackney throws an error.
       * Status code of response otherwise.
     * message
       * Error message of response. If the error is from the Discord API,
-      this will be a map containing the keys `code` and `message` as strings.
+        this will be a map containing the keys `code` and `message` as strings.
   """
+  @type t :: %{
+    status_code: integer | nil,
+    message: String.t | message_map
+  }
+
+  @type message_map :: %{
+    code: String.t,
+    message: String.t
+  }
 
   defexception [:message]
 

@@ -72,24 +72,6 @@
         <section id="moduledoc">
           <p>Represents a failed response from the API.</p>
 <p>This occurs when hackney or HTTPoison fail, or when the API doesn’t respond with <code class="inline">200</code> or <code class="inline">204</code>.</p>
-<p>Represented as a map that is structred as follows:</p>
-<ul>
-<li><p>status_code</p>
-<ul>
-<li><code class="inline">nil</code> if HTTPoison or Hackney throws an error.
-</li>
-<li>Status code of response otherwise.
-</li>
-</ul>
-</li>
-<li><p>message</p>
-<ul>
-<li>Error message of response. If the error is from the Discord API,
-this will be a map containing the keys <code class="inline">code</code> and <code class="inline">message</code> as strings.
-</li>
-</ul>
-</li>
-</ul>
 
         </section>
       
@@ -103,6 +85,28 @@ this will be a map containing the keys <code class="inline">code</code> and <cod
             Summary
           </h1>
           
+  <div class="summary-types summary">
+    <h2>
+      <a href="#types">Types</a>
+    </h2>
+    <div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:message_map/0">message_map()</a>
+  </div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:t/0">t()</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Map representing the error returned by an API call</p>
+</div>
+  
+</div>
+
+  </div>
+
 
           
   <div class="summary-functions summary">
@@ -138,6 +142,78 @@ this will be a map containing the keys <code class="inline">code</code> and <cod
         </section>
       
 
+      
+        <section id="types" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#types">
+              <i class="icon-link"></i>
+            </a>
+            Types
+          </h1>
+          <div class="types-list">
+            <div class="detail" id="t:message_map/0">
+  
+  <div class="detail-header">
+    <a href="#t:message_map/0" class="detail-link" title="Link to this type">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">message_map()</span>
+    
+    
+    
+      <div class="specs">
+        
+          <pre><a href="#t:message_map/0">message_map</a> :: %{code: <a href="http://elixir-lang.org/docs/stable/elixir/String.html#t:t/0">String.t</a>, message: <a href="http://elixir-lang.org/docs/stable/elixir/String.html#t:t/0">String.t</a>}</pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    
+  </section>
+</div>
+<div class="detail" id="t:t/0">
+  
+  <div class="detail-header">
+    <a href="#t:t/0" class="detail-link" title="Link to this type">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">t()</span>
+    
+    
+    
+      <div class="specs">
+        
+          <pre><a href="#t:t/0">t</a> :: %{status_code: integer | nil, message: <a href="http://elixir-lang.org/docs/stable/elixir/String.html#t:t/0">String.t</a> | <a href="#t:message_map/0">message_map</a>}</pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>Map representing the error returned by an API call.</p>
+<ul>
+<li><p>status_code</p>
+<ul>
+<li><code class="inline">nil</code> if HTTPoison or Hackney throws an error.
+</li>
+<li>Status code of response otherwise.
+</li>
+</ul>
+</li>
+<li><p>message</p>
+<ul>
+<li>Error message of response. If the error is from the Discord API,
+  this will be a map containing the keys <code class="inline">code</code> and <code class="inline">message</code> as strings.
+</li>
+</ul>
+</li>
+</ul>
+
+  </section>
+</div>
+
+          </div>
+        </section>
       
 
       

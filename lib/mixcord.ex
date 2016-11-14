@@ -15,7 +15,7 @@ defmodule Mixcord do
   `String.to_integer/1`. I'm open to suggestions for how this should be handled going forward.
 
   ## Structs
-  Mixcord implements a series of `structs` that hold infomration about Discord objects.
+  Mixcord implements a series of `maps` that hold infomration about Discord objects.
 
   ## State/Cache
   Mixcord provides a number of GenServers which interface with ETS tables to implement a caching system.
