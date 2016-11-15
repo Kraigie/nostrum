@@ -60,7 +60,7 @@ defmodule Mixcord.Shard.Dispatch do
 
   def handle_event({:GUILD_MEMBER_ADD, p}, state), do: Guild.member_add(p.guild_id, p)
 
-  def handle_event({:GUILD_MEMBER_CHUNK, p}, state) do
+  def handle_event({:GUILD_MEMBERS_CHUNK, p}, state) do
     p.members
       |> Enum.map(fn member -> Guild.member_add(p.guild_id, member) end)
   end

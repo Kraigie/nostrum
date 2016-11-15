@@ -9,7 +9,7 @@ defmodule Mixcord.Map.Guild do
   @typedoc "The guild's id"
   @type id :: integer
 
-  @typedoc "TThe name of the guild."
+  @typedoc "The name of the guild."
   @type name :: String.t
   @type icon :: String.t
   @type splash :: String.test
