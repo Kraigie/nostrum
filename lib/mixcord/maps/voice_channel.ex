@@ -6,8 +6,8 @@ defmodule Mixcord.Map.VoiceChannel do
   @doc """
   Represents a Discord Voice Channel.
 
-  * `:id` - *String*. The channel's id.
-  * `:guild_id` - *String*. Id of the channel's guild.
+  * `:id` - *Integer*. The channel's id.
+  * `:guild_id` - *Integer*. Id of the channel's guild.
   * `:name` - *String*. Name of the channel
   * `:type` - *String*. `Text` or `Voice`
   * `:position` - *Integer*. Ordering position of the channel

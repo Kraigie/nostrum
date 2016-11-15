@@ -6,7 +6,7 @@ defmodule Mixcord.Map.Role do
   @doc """
   Represents a Discord Role.
 
-  * `:id` - *String*. Id of the role.
+  * `:id` - *Integer*. Id of the role.
   * `:name` - *String*. Name of the role.
   * `:color` - *Integer*. Integer representation of hexadecimal color code.
   * `:hoist` - *Boolean*. If the role is pinned in the user listing.

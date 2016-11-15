@@ -6,15 +6,15 @@ defmodule Mixcord.Map.TextChannel do
   @doc """
   Represents a Discord Text Channel.
 
-  * `:id` - *String*. The channel's id.
-  * `:guild_id` - *String*. Id of the channel's guild.
+  * `:id` - *Integer*. The channel's id.
+  * `:guild_id` - *Integer*. Id of the channel's guild.
   * `:name` - *String*. Name of the channel
   * `:type` - *String*. `Text` or `Voice`
   * `:position` - *Integer*. Ordering position of the channel
   * `:is_private` - *Boolean*. If channel is a DM
   * `:permission_overwrites` - *List*. List of [overwrite](https://discordapp.com/developers/docs/resources/channel#overwrite-object) objects as maps
   * `:topic` - *String*. Current channel topic.
-  * `:last_message_id` - *String*. Id of the last message sent in the channel
+  * `:last_message_id` - *Integer*. Id of the last message sent in the channel
   """
   @derive [Poison.Encoder]
   defstruct [

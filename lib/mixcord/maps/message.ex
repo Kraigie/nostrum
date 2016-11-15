@@ -3,11 +3,30 @@ defmodule Mixcord.Map.Message do
   Struct representing a Discord message.
   """
 
+  alias Mixcord.Map.{Role, User}
+
+  @type id :: integer
+  @type channel_id :: integer
+  @type author :: User.t
+  @type content :: String.t
+  @type timestamp :: String.t
+  @type edited_timestamp :: String.t
+  @type tts :: boolean
+  @type mention_everyone :: boolean
+  @type mentions :: list(User.t)
+  @type mention_roles :: list(Role.t)
+  @type attachments :: list(Map.t)
+  @type embeds :: list(Map.t)
+  @type nonce :: String.t
+  @type pinned :: boolean
+
+  @type t :: Map.t
+
   @doc """
   Represents a Discord Message.
 
-  * `:id` - *String*. Id of the message.
-  * `:channel_id` - *String*. Id of the channel the message was sent in.
+  * `:id` - *Integer*. Id of the message.
+  * `:channel_id` - *Integer*. Id of the channel the message was sent in.
   * `:author` - *Struct*. A `Mixcord.Map.User` struct.
   * `:content` - *String*. Contents of the message.
   * `:timestamp` - *Date*. When this message was sent.

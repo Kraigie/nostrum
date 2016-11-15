@@ -3,8 +3,9 @@ defmodule Mixcord.Map.Guild do
   Struct representing a Discord guild.
   """
 
-  alias Mixcord.Map.{TextChannel, Member, Role}
+  alias Mixcord.Map.{Member, TextChannel, Role}
 
+  # TODO: Typedocs for all :>
   @typedoc """
   The guild's id.
   """

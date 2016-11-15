@@ -10,7 +10,7 @@ defmodule Mixcord.Map.User do
   @doc """
   Represents a Discord User.
 
-  * `:id` - *String*. User's id.
+  * `:id` - *Integer*. User's id.
   * `:username` - *String*. User's username.
   * `:discriminator` - *String*. User's 4-digit discord-tag.
   * `:avatar` - *String*. User's avatar hash.
