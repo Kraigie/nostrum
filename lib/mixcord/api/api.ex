@@ -294,9 +294,101 @@ defmodule Mixcord.Api do
     request(:get, Constants.guild_member(guild_id, user_id))
   end
 
+# TODO: Change or remove option paramter from functions that are not JSON
+
   def guild_members(guild_id, options) do
     request(:get, Constants.guild_members(guild_id), options)
   end
+
+  def add_member(guild_id, user_id, options) do
+    request(:put, Constants.guild_member(guild_id, user_id), options)
+  end
+
+  def modify_member(guild_id, user_id, options) do
+    request(:patch, Constants.guild_member(guild_id, user_id), options)
+  end
+
+  def remove_member(guild_id, user_id) do
+    request(:remove, Constants.guild_member(guild_id, user_id))
+  end
+
+  def get_guild_bans(guild_id) do
+    request(:get, Constants.guild_bans(guild_id))
+  end
+
+  def create_guild_ban(guild_id, user_id, options) do
+    request(:put, Constants.guild_ban(guild_id, user_id), options)
+  end
+
+  def remove_guild_ban(guild_id, user_id) do
+    request(:remove, Constants.guild_ban(guild_id, user_id))
+  end
+
+  def get_guild_roles(guild_id) do
+    request(:get, Constants.guild_roles(guild_id))
+  end
+
+  def create_guild_roles(guild_id) do
+    request(:post, Constants.guild_roles(guild_id))
+  end
+
+  def batch_modify_guild_roles(guild_id, options) do
+    request(:patch, Constants.guild_roles(guild_id), options)
+  end
+
+  def modify_guild_roles(guild_id, role_id, options) do
+    request(:patch, Constants.guild_role(guild_id, role_id), options)
+  end
+
+  def delete_guild_role(guild_id, role_id) do
+    request(:delete, Constants.guild_role(guild_id, role_id))
+  end
+
+  def get_guild_prune(guild_id, options) do
+    request(:get, Constants.guild_prune(guild_id), options)
+  end
+
+  def begin_guild_prune(guild_id, options) do
+    request(:post, Constants.guild_prune(guild_id), options)
+  end
+
+  def get_voice_region(guild_id) do
+    request(:get, Constants.guild_voice_regions(guild_id))
+  end
+
+  def get_guild_invites(guild_id) do
+    request(:get, Constants.guild_invites(guild_id))
+  end
+
+  def get_guild_integrations(guild_id) do
+    request(:get, Constants.guild_integrations(guild_id))
+  end
+
+  def create_guild_integrations(guild_id, options) do
+    request(:post, Constants.guild_integrations(guild_id), options)
+  end
+
+  def modify_guild_integrations(guild_id, integration_id, options) do
+    request(:patch, Constants.guild_integration(guild_id, integration_id), options)
+  end
+
+  def delete_guild_integrations(guild_id, integration_id) do
+    request(:delete, Constants.guild_integration(guild_id, integration_id))
+  end
+
+  def sync_guild_integrations(guild_id, integration_id) do
+    request(:post, Constants.guild_integration_sync(guild_id, integration_id))
+  end
+
+  def get_guild_embed(guild_id) do
+    request(:get, Constants.guild_embed(guild_id))
+  end
+
+  def modify_guild_embed(guild_id) do
+    request(:patch, Constants.guild_embed(guild_id))
+  end
+
+
 
   def bangify(to_bang) do
     case to_bang do
