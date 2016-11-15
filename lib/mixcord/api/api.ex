@@ -294,8 +294,7 @@ defmodule Mixcord.Api do
     request(:get, Constants.guild_member(guild_id, user_id))
   end
 
-# TODO: Change or remove option paramter from functions that are not JSON
-
+  # TODO: Change or remove option paramter from functions that are not JSON
   def guild_members(guild_id, options) do
     request(:get, Constants.guild_members(guild_id), options)
   end
