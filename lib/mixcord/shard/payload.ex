@@ -4,7 +4,7 @@ defmodule Mixcord.Shard.Payload do
   alias Mixcord.Constants
   alias Mixcord.Util
 
-  def state_map(token, caller, shard_num) do
+  def state_map(token, caller, shard_num, pid) do
     %{
       token: token,
       caller: caller,
@@ -13,6 +13,7 @@ defmodule Mixcord.Shard.Payload do
       session: nil,
       reconnect_attempts: 0,
       last_heartbeat: 0,
+      shard_pid: pid,
       heartbeat_intervals: Enum.map(1..10, fn _ -> 0 end)
     }
   end

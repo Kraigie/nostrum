@@ -6,7 +6,6 @@ defmodule Mixcord.Shard.Event do
   require Logger
 
   def handle(:dispatch, payload, state) do
-    # TODO: Task.start this? - when ratelimiter is implmented 100%
     Task.start(fn -> Dispatch.handle(payload, state) end)
 
     state =
@@ -20,7 +19,7 @@ defmodule Mixcord.Shard.Event do
   end
 
   def handle(:heartbeat, _payload, state) do
-    Logger.debug "GOT HEARTBEAT PING"
+    Logger.debug "HEARTBEAT PING"
     :websocket_client.cast(self, {:binary, Payload.heartbeat_payload(state.seq)})
     state
   end

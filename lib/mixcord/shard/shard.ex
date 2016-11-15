@@ -15,7 +15,7 @@ defmodule Mixcord.Shard do
     # If an individual shard fails, it will be restarted immediately.
     # TODO: Queue reconnects/check this better
     if Util.num_shards > 1, do: Process.sleep(5000)
-    :websocket_client.start_link(Util.gateway, __MODULE__, Payload.state_map(token, caller, shard_num))
+    :websocket_client.start_link(Util.gateway, __MODULE__, Payload.state_map(token, caller, shard_num, self))
   end
 
   def websocket_handle({:binary, payload}, _state, state) do
