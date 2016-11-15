@@ -3,31 +3,34 @@ defmodule Mixcord.Map.Guild do
   Struct representing a Discord guild.
   """
 
-  alias Mixcord.Map.{Channel, Member, Role}
+  alias Mixcord.Map.{TextChannel, Member, Role}
 
+  @typedoc """
+  The guild's id.
+  """
   @type id :: integer
   @type name :: String.t
   @type icon :: String.t
   @type splash :: String.test
   @type owner_id :: integer
   @type region :: String.t
-  @type afk_channel_id :: integer,
-  @type afk_timeout :: integer,
-  @type embed_enabled :: boolean,
-  @type embed_channel_id :: integer,
-  @type verification_level :: integer,
-  @type default_message_notifications :: integer,
-  @type emojis :: list(Map.t),
-  @type roles :: list(Role.t),
-  @type features :: list(Map.t),
-  @type mfa_level :: integer,
-  @type joined_at :: String.t,
-  @type large :: boolean,
-  @type unavailable :: boolean,
-  @type member_count :: integer,
-  @type voice_states :: list(Map.t),
-  @type members :: list(Member.t),
-  @type channels :: list(Channel.t),
+  @type afk_channel_id :: integer
+  @type afk_timeout :: integer
+  @type embed_enabled :: boolean
+  @type embed_channel_id :: integer
+  @type verification_level :: integer
+  @type default_message_notifications :: integer
+  @type emojis :: list(Map.t)
+  @type roles :: list(Role.t)
+  @type features :: list(Map.t)
+  @type mfa_level :: integer
+  @type joined_at :: String.t
+  @type large :: boolean
+  @type unavailable :: boolean
+  @type member_count :: integer
+  @type voice_states :: list(Map.t)
+  @type members :: list(Member.t)
+  @type channels :: list(TextChannel.t)
   @type presences :: list(Map.t)
 
   @type t :: Map.t
@@ -35,7 +38,6 @@ defmodule Mixcord.Map.Guild do
   @doc """
   Represents a Discord Guild.
 
-  * `:id` - *Integer*. The guild's id.
   * `:name` - *String*. The guild's name.
   * `:icon` - *String*. Hash of guild's icon.
   * `:splash` - *String*. Hash of guild's splash.
