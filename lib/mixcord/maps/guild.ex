@@ -3,19 +3,41 @@ defmodule Mixcord.Map.Guild do
   Struct representing a Discord guild.
   """
 
-  alias Mixcord.Map.{Channel}
+  alias Mixcord.Map.{TextChannel, Member, Role}
 
+  @typedoc """
+  The guild's id.
+  """
   @type id :: integer
   @type name :: String.t
   @type icon :: String.t
-  @type message :: %{
-    :id => integer
-  }
+  @type splash :: String.test
+  @type owner_id :: integer
+  @type region :: String.t
+  @type afk_channel_id :: integer
+  @type afk_timeout :: integer
+  @type embed_enabled :: boolean
+  @type embed_channel_id :: integer
+  @type verification_level :: integer
+  @type default_message_notifications :: integer
+  @type emojis :: list(Map.t)
+  @type roles :: list(Role.t)
+  @type features :: list(Map.t)
+  @type mfa_level :: integer
+  @type joined_at :: String.t
+  @type large :: boolean
+  @type unavailable :: boolean
+  @type member_count :: integer
+  @type voice_states :: list(Map.t)
+  @type members :: list(Member.t)
+  @type channels :: list(TextChannel.t)
+  @type presences :: list(Map.t)
+
+  @type t :: Map.t
 
   @doc """
   Represents a Discord Guild.
 
-  * `:id` - *Integer*. The guild's id.
   * `:name` - *String*. The guild's name.
   * `:icon` - *String*. Hash of guild's icon.
   * `:splash` - *String*. Hash of guild's splash.
@@ -31,7 +53,7 @@ defmodule Mixcord.Map.Guild do
   * `:emojis` - *List*. List of [emojis](https://discordapp.com/developers/docs/resources/guild#emoji-object) as maps.
   * `:features` - *List*. List of guild features.
   * `:mfa_level` - *Integer*. Required MFA level of the guild.
-  * `:joined_at ` - *Date*. Date the user joined the guild at.
+  * `:joined_at` - *Date*. Date the user joined the guild at.
   * `:large ` - *Boolean*. Whether the guild is considered "large".
   * `:unavailable ` - *Boolean*. Whether the guild is available.
   * `:member_count` - *Integer*. Total number of members in the guild.
@@ -41,21 +63,6 @@ defmodule Mixcord.Map.Guild do
   * `:presences ` - *List*. List of simple presence maps.
   """
   @derive [Poison.Encoder]
-  @type t :: %__MODULE__{
-    id: integer,
-    name: String.t,
-    icon: String.t,
-    splash: String.t,
-    owner_id: integer,
-    region: String.t,
-    afk_channel_id: integer,
-    afk_timeout: integer,
-    embed_enabled: boolean,
-    embed_channel_id: integer,
-    verification_level: integer,
-    default_message_notifications: integer,
-    roles: list
-  }
   defstruct [
     :id,
     :name,

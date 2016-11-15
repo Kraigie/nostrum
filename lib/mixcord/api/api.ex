@@ -387,8 +387,6 @@ defmodule Mixcord.Api do
     request(:patch, Constants.guild_embed(guild_id))
   end
 
-
-
   def bangify(to_bang) do
     case to_bang do
       {:error, %{status_code: code, message: message}} ->
