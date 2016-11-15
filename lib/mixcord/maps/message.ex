@@ -41,9 +41,6 @@ defmodule Mixcord.Map.Message do
   * `:pinned` - *Boolean*. Whether this message is pinned.
   """
   @derive [Poison.Encoder]
-  @type t :: %__MODULE__{
-    id: integer
-  }
   defstruct [
     :attachments,
     :author,

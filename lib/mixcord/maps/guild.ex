@@ -6,10 +6,10 @@ defmodule Mixcord.Map.Guild do
   alias Mixcord.Map.{Member, TextChannel, Role}
 
   # TODO: Typedocs for all :>
-  @typedoc """
-  The guild's id.
-  """
+  @typedoc "The guild's id"
   @type id :: integer
+
+  @typedoc "TThe name of the guild."
   @type name :: String.t
   @type icon :: String.t
   @type splash :: String.test
