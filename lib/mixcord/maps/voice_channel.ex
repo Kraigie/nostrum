@@ -2,6 +2,34 @@ defmodule Mixcord.Map.VoiceChannel do
   @moduledoc """
   Struct representing a Discord voice channel.
   """
+  @typedoc "The channe's id"
+  @Type id :: integer
+
+  @typedoc "The id of the channel's guild"
+  @Type guild_id :: integer
+
+  @typedoc "The name of the channel"
+  @Type name :: String.t
+
+  @typedoc "The type of channel: 'Text' or 'Voice'"
+  @Type type :: String.t
+
+  @typedoc "The ordered position of the channel"
+  @Type position :: integer
+
+  @typedoc "Whether the channel is private"
+  @Type is_private :: boolean
+
+  @typedoc "The list of overwrites"
+  @Type permission_overwrites :: list(Map.t)
+
+  @typedoc "The bitrate of the voice channel"
+  @Type bitrate :: integer
+
+  @typedoc "The user limit of the voice channel"
+  @Type user_limit :: integer
+
+  @Type t :: Map.t
 
   @doc """
   Represents a Discord Voice Channel.

@@ -3,13 +3,28 @@ defmodule Mixcord.Map.Role do
   Struct representing a Discord role.
   """
 
+  @typedoc "The id of the role"
   @Type id :: integer
+
+  @typedoc "The name of the role"
   @Type name :: String.t
+
+  @typedoc "The hexadecimal color code"
   @Type color :: integer
+
+  @typedoc "Whether the role is pinned in the user listing"
   @Type hoist :: boolean
+
+  @typedoc "The position of the role"
   @Type position :: integer
+
+  @typedoc "The permission bit set"
   @Type permissions :: integer
+
+  @typedoc "Whether the role is managed by an integration"
   @Type managed :: boolean
+
+  @typedoc "Whether the role is mentionable"
   @Type mentionable :: boolean
 
   @Type t :: Map.t

@@ -7,13 +7,28 @@ defmodule Mixcord.Map.User do
   A `member` has everything that a `user` has, but also additional information on a per guild basis. This includes things like a `nickname` and a list of `roles`.
   """
 
+  @typedoc "The user's id"
   @Type id :: integer
+
+  @typedoc "The user's username"
   @Type username :: String.t
+
+  @typedoc "The user's 4--digit discord-tag"
   @Type discriminator :: String.t
+
+  @typedoc "User's avatar hash"
   @Type avatar :: String.t
+
+  @typedoc "Whether the user is a bot"
   @Type bot :: boolean
+
+  @typedoc "Whether the user has two factor enabled"
   @Type mfa_enabled :: boolean
+
+  @typedoc "Whether the email on the account has been verified"
   @Type verified :: boolean
+
+  @typedoc "The user's email"
   @Type email :: String.t
 
   @Type t :: Map.t

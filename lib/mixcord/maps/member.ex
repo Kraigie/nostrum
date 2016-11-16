@@ -9,12 +9,25 @@ defmodule Mixcord.Map.Member do
 
   alias Mixcord.Map.{Role, User}
 
+  @typedoc "Id of the guild the member is part of"
   @type guild_id :: integer
+
+  @typedoc "The user struct"
   @type user :: User.t
+
+  @typedoc "The nickname of the user"
   @type nick :: String.t | nil
+
+  @typedoc "A list of role ids"
   @type roles :: list(Role.t)
+
+  @typedoc "Date the user joined the guild"
   @type joined_at :: String.t
+
+  @typedoc "Whether the user is deafened"
   @type deaf :: boolean
+
+  @typedoc "Whether the user is muted"
   @type mute :: boolean
 
   @type t :: Map.t
