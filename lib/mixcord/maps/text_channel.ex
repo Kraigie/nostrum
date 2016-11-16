@@ -3,14 +3,31 @@ defmodule Mixcord.Map.TextChannel do
   Struct representing a Discord text channel.
   """
 
+  @typedoc "The channe's id"
   @type id :: integer
+
+  @typedoc "The id of the channel's guild"
   @type guild_id :: integer
+
+  @typedoc "The name of the channel"
   @type name :: String.t
+
+  @typedoc "The type of channel: 'Text' or 'Voice'"
   @type type :: String.t
+
+  @typedoc "The ordered position of the channel"
   @type position :: integer
+
+  @typedoc "Whether the channel is private"
   @type is_private :: boolean
+
+  @typedoc "The list of overwrites"
   @type permission_overwrites :: list(Map.t)
+
+  @typedoc "Current channel topic"
   @type topic :: String.t
+
+  @typedoc "Id of the last message sent"
   @type last_message_id :: integer
 
   @type t :: Map.t
