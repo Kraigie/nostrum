@@ -3,17 +3,17 @@ defmodule Mixcord.Map.TextChannel do
   Struct representing a Discord text channel.
   """
 
-  @Type id :: integer
-  @Type guild_id :: integer
-  @Type name :: String.t
-  @Type type :: String.t
-  @Type position :: integer
-  @Type is_private :: boolean
-  @Type permission_overwrites :: list(Map.t)
-  @Type topic :: String.t
-  @Type last_message_id :: integer
+  @type id :: integer
+  @type guild_id :: integer
+  @type name :: String.t
+  @type type :: String.t
+  @type position :: integer
+  @type is_private :: boolean
+  @type permission_overwrites :: list(Map.t)
+  @type topic :: String.t
+  @type last_message_id :: integer
 
-  @Type t :: Map.t
+  @type t :: Map.t
 
   @doc """
   Represents a Discord Text Channel.
