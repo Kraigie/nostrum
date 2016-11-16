@@ -11,27 +11,71 @@ defmodule Mixcord.Map.Guild do
 
   @typedoc "The name of the guild."
   @type name :: String.t
+
+  @typedoc "The hash of the guild's icon"
   @type icon :: String.t
+
+  @typedoc "The hash of the guild's splash"
   @type splash :: String.test
+
+  @typedoc "The id of the guild owner"
   @type owner_id :: integer
+
+  @typedoc "The id of the voice region"
   @type region :: String.t
+
+  @typedoc "The id of the guild's afk channel"
   @type afk_channel_id :: integer
+
+  @typedoc "The time someone must be afk before being moved"
   @type afk_timeout :: integer
+
+  @typedoc "Whether the guild is emeddable"
   @type embed_enabled :: boolean
+
+  @typedoc "The id of the embedded channel"
   @type embed_channel_id :: integer
+
+  @typedoc "The level of verification"
   @type verification_level :: integer
+
+  @typedoc "Level of verification"
   @type default_message_notifications :: integer
+
+  @typedoc "List of emojis as maps"
   @type emojis :: list(Map.t)
+
+  @typedoc "List of roles"
   @type roles :: list(Role.t)
+
+  @typedoc "List of guild features"
   @type features :: list(Map.t)
+
+  @typedoc "Required MFA level of the guild"
   @type mfa_level :: integer
+
+  @typedoc "Date the user joined the guild at"
   @type joined_at :: String.t
+
+  @typedoc "Whether the guild is considered 'large'"
   @type large :: boolean
+
+  @typedoc "Whether the guild is avaliable"
   @type unavailable :: boolean
+
+  @typedoc "Total number of members in the guild"
   @type member_count :: integer
+
+  @typedoc "List of voice states as maps"
   @type voice_states :: list(Map.t)
+
+  @typedoc "List of members"
   @type members :: list(Member.t)
+
+  @typedoc "List of channels"
   @type channels :: list(TextChannel.t)
+
+  @typedoc "List of simple presence maps"
   @type presences :: list(Map.t)
 
   @type t :: Map.t

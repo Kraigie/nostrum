@@ -7,6 +7,17 @@ defmodule Mixcord.Map.User do
   A `member` has everything that a `user` has, but also additional information on a per guild basis. This includes things like a `nickname` and a list of `roles`.
   """
 
+  @Type id :: integer
+  @Type username :: String.t
+  @Type discriminator :: String.t
+  @Type avatar :: String.t
+  @Type bot :: boolean
+  @Type mfa_enabled :: boolean
+  @Type verified :: boolean
+  @Type email :: String.t
+
+  @Type t :: Map.t
+
   @doc """
   Represents a Discord User.
 
