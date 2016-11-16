@@ -3,6 +3,17 @@ defmodule Mixcord.Map.Role do
   Struct representing a Discord role.
   """
 
+  @Type id :: integer
+  @Type name :: String.t
+  @Type color :: integer
+  @Type hoist :: boolean
+  @Type position :: integer
+  @Type permissions :: integer
+  @Type managed :: boolean
+  @Type mentionable :: boolean
+
+  @Type t :: Map.t
+
   @doc """
   Represents a Discord Role.
 
