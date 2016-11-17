@@ -3,19 +3,19 @@ defmodule Mixcord.Api.Bucket do
 
   alias Mixcord.Util
 
-  def create_bucket(route, limit, remaining, reset) do
-    :ets.insert(:ratelimit_buckets, {route, limit, remaining, reset})
+  def create_bucket(route, remaining, retry_after) do
+    :ets.insert(:ratelimit_buckets, {route, remaining, retry_after})
   end
 
   def lookup_bucket(route) do
-    route_time = :ets.lookup(:ratelimit_buckets, route)
-    global_time = :ets.lookup(:ratelimit_buckets, "GLOBAL")
+    IO.inspect route_time = :ets.lookup(:ratelimit_buckets, route)
+    IO.inspect global_time = :ets.lookup(:ratelimit_buckets, "GLOBAL")
 
     Enum.max([route_time, global_time])
   end
 
   def update_bucket(route, remaining) do
-    :ets.update_element(:ratelimit_buckets, route, {3, remaining})
+    :ets.update_element(:ratelimit_buckets, route, {2, remaining})
   end
 
   def delete_bucket(route) do
@@ -26,17 +26,11 @@ defmodule Mixcord.Api.Bucket do
     case lookup_bucket(route) do
       [] ->
         nil
-      [{route, _limit, remaining, reset}] when remaining <= 0 ->
+      [{route, remaining, retry_after}] when remaining <= 0 ->
         update_bucket(route, remaining - 1)
-        wait_time = reset - Util.now()
-
-        if wait_time <= 0 do
-          delete_bucket(route)
-          nil
-        else
-          wait_time
-        end
-      [{route, _limit, remaining, _reset}] ->
+        delete_bucket(route)
+        retry_after * 1000
+      [{route, remaining, _retry_after}] ->
         update_bucket(route, remaining - 1)
         nil
     end

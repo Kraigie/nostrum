@@ -9,16 +9,6 @@ defmodule Mixcord.Api.Ratelimiter do
     GenServer.start_link(__MODULE__, [], name: Ratelimiter)
   end
 
-  def request(method, route, body \\ "", options \\ []) do
-    request = %{
-      method: method,
-      route: route,
-      body: body,
-      options: options
-    }
-    GenServer.call(Ratelimiter, {:queue, request, nil}, :infinity)
-  end
-
   def handle_call({:queue, request, original_from}, from, state) do
     retry_time = request.route
       |> Bucket.get_ratelimit_timeout
@@ -27,8 +17,7 @@ defmodule Mixcord.Api.Ratelimiter do
     else
       response = request.method
         |> Base.request(request.route, request.body, [], request.options)
-        |> handle_ratelimit_headers(request.route)
-        |> handle_global_ratelimit()
+        |> handle_headers(request.route)
         |> format_response
       GenServer.reply(original_from || from, response)
     end
@@ -36,52 +25,50 @@ defmodule Mixcord.Api.Ratelimiter do
     {:noreply, state}
   end
 
+  def handle_headers({:ok, %HTTPoison.Response{headers: headers}} = response, route) do
+    remaining = headers |> List.keyfind("X-RateLimit-Remaining", 0) |> value_from_rltuple
+    reset = headers |> List.keyfind("X-RateLimit-Reset", 0) |> value_from_rltuple
+    retry_after = headers |> List.keyfind("Retry-After", 0) |> value_from_rltuple
+    origin_timestamp = headers
+      |> List.keyfind("Date", 0)
+      |> value_from_rltuple
+      |> date_string_to_unix
+    IO.inspect(remaining)
+    update_buckets(route, remaining, reset, retry_after, origin_timestamp)
+    response
+  end
+
+  def update_buckets(route, remaining, reset, retry_after, origin_timestamp) when is_nil(retry_after) and not is_nil(remaining) do
+    IO.inspect "HERE"
+    Bucket.create_bucket(route, remaining, reset - origin_timestamp)
+  end
+
+  def update_buckets(route, remaining, reset, retry_after, origin_timestamp) when not is_nil(retry_after) do
+    IO.inspect "THERE"
+    Bucket.create_bucket("GLOBAL", 0, Float.ceil(retry_after / 1000) |> Kernel.round)
+  end
+
+  def update_buckets(_route, _remaining, _reset, _retry_after, _origin_timestamp), do: nil
+
   def wait_for_timeout(request, timeout, from) do
-    Process.sleep(timeout + 1000)
+    Process.sleep(timeout + 500) # Small wait for sanity sake
     GenServer.call(Ratelimiter, {:queue, request, from}, :infinity)
   end
 
-  defp handle_global_ratelimit(response) do
-    case response do
-      {:ok, %HTTPoison.Response{headers: headers}} ->
-        global_limit = headers |> List.keyfind("X-RateLimit-Global", 0)
-        global_limit = global_limit || false
-
-        if global_limit do
-          retry = headers |> List.keyfind("Retry-After", 0) |> value_from_rltuple |> String.to_integer
-          Bucket.create_bucket("GLOBAL", 0, 0, Util.now() + retry)
-        end
-      _ ->
-        response
-    end
-
-    response
+  def date_string_to_unix(header) do
+    header
+      |> String.to_charlist
+      |> :httpd_util.convert_request_date
+      |> erl_datetime_to_timestamp
   end
 
-  defp handle_ratelimit_headers(response, route) do
-    case response do
-      {:ok, %HTTPoison.Response{headers: headers}} ->
-        limit = headers |> List.keyfind("X-RateLimit-Limit", 0) |> value_from_rltuple
-        remaining = headers |> List.keyfind("X-RateLimit-Remaining", 0) |> value_from_rltuple
-        reset = headers |> List.keyfind("X-RateLimit-Reset", 0) |> value_from_rltuple
-
-        if limit && remaining && reset do
-          Bucket.create_bucket(route, limit, remaining, reset * 1000)
-        end
-      _ ->
-        response
-    end
-
-    response
+  defp erl_datetime_to_timestamp(datetime) do
+    :calendar.datetime_to_gregorian_seconds(datetime) - 62167219200
   end
 
   defp value_from_rltuple(tuple) when is_nil(tuple), do: nil
-  defp value_from_rltuple(tuple) do
-      tuple
-      |> Tuple.to_list
-      |> List.last
-      |> String.to_integer
-  end
+  defp value_from_rltuple({"Date", v}), do: v
+  defp value_from_rltuple({k, v}), do: String.to_integer v
 
   defp format_response(response) do
     case response do
