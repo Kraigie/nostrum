@@ -6,6 +6,7 @@ defmodule Mixcord.Api do
   # TODO: Upload file
 
   alias Mixcord.Constants
+  alias Mixcord.Shard
 
   @typedoc """
   Represents a failed response from the API.
@@ -13,6 +14,16 @@ defmodule Mixcord.Api do
   This occurs when hackney or HTTPoison fail, or when the API doesn't respond with `200` or `204`.
   """
   @type error :: {:error, Mixcord.Error.ApiError.t}
+
+  def update_stats(pid, _status, game) when not is_map(game) and not is_pid(pid), do: raise "ERROR: Invalid game map or shard pid #{inspect game} #{inspect pid}"
+  def update_status(pid, status, game) do
+    Shard.update_status(pid, status, game)
+  end
+
+  def update_stats(_status, game) when not is_map(game), do: raise "ERROR: Invalid game map #{inspect game}"
+  def update_stats(status, game) when is_map(game) do
+    Shard.Supervisor.update_status(status, game)
+  end
 
   @doc """
   Send a message to a channel.

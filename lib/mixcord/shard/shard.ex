@@ -26,8 +26,8 @@ defmodule Mixcord.Shard do
     {:ok, %{new_state | seq: payload.s}}
   end
 
-  def update_status(pid, {idle, game}) do
-    status_json = Poison.encode!(%{game: %{name: game}, idle: idle})
+  def update_status(pid, status, game) do
+    status_json = Poison.encode!(%{game: %{name: game}, idle: status})
     send(pid, {:status_update, status_json})
   end
 
