@@ -34,6 +34,7 @@ defmodule Mixcord.Shard.Dispatch do
   def handle(payload, state) do
     Logger.debug payload.t
     payload = Util.safe_atom_map(payload)
+    # TODO: https://github.com/elixir-lang/gen_stage/blob/master/examples/gen_event.exs
     handle_event({payload.t, payload.d}, state)
     state.caller.handle_event({payload.t, payload.d}, state)
   end
