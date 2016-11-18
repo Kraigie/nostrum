@@ -26,6 +26,7 @@ defmodule Mixcord.Api.Ratelimiter do
   end
 
   def handle_headers({:ok, %HTTPoison.Response{headers: headers}} = response, route) do
+    global_limit = headers |> List.keyfind("X-RateLimit-Global", 0)
     remaining = headers |> List.keyfind("X-RateLimit-Remaining", 0) |> value_from_rltuple
     reset = headers |> List.keyfind("X-RateLimit-Reset", 0) |> value_from_rltuple
     retry_after = headers |> List.keyfind("Retry-After", 0) |> value_from_rltuple
@@ -33,24 +34,27 @@ defmodule Mixcord.Api.Ratelimiter do
       |> List.keyfind("Date", 0)
       |> value_from_rltuple
       |> date_string_to_unix
-    IO.inspect(remaining)
-    update_buckets(route, remaining, reset, retry_after, origin_timestamp)
+    latency = abs(origin_timestamp - Util.now)
+
+    if global_limit do
+      update_global_bucket(route, remaining, retry_after, latency)
+    end
+
+    update_bucket(route, remaining, reset, latency)
     response
   end
 
-  def update_buckets(route, remaining, reset, retry_after, origin_timestamp) when is_nil(retry_after) and not is_nil(remaining) do
-    IO.inspect "HERE"
-    Bucket.create_bucket(route, remaining, reset - origin_timestamp)
+  def update_bucket(_route, remaining, _time, _latency) when is_nil(remaining), do: nil
+  def update_bucket(route, remaining, reset_time, latency) do
+    Bucket.create_bucket(route, remaining, reset_time * 1000, latency)
   end
 
-  def update_buckets(route, remaining, reset, retry_after, origin_timestamp) when not is_nil(retry_after) do
-    IO.inspect "THERE"
-    Bucket.create_bucket("GLOBAL", 0, Float.ceil(retry_after / 1000) |> Kernel.round)
+  def update_global_bucket(_route, _remaining, retry_after, latency) do
+    Bucket.create_bucket("GLOBAL", 0, retry_after + Util.now, latency)
   end
-
-  def update_buckets(_route, _remaining, _reset, _retry_after, _origin_timestamp), do: nil
 
   def wait_for_timeout(request, timeout, from) do
+    IO.inspect("ABOUT TO WAIT #{timeout}")
     Process.sleep(timeout + 500) # Small wait for sanity sake
     GenServer.call(Ratelimiter, {:queue, request, from}, :infinity)
   end
@@ -63,12 +67,12 @@ defmodule Mixcord.Api.Ratelimiter do
   end
 
   defp erl_datetime_to_timestamp(datetime) do
-    :calendar.datetime_to_gregorian_seconds(datetime) - 62167219200
+    (:calendar.datetime_to_gregorian_seconds(datetime) - 62167219200) * 1000
   end
 
   defp value_from_rltuple(tuple) when is_nil(tuple), do: nil
   defp value_from_rltuple({"Date", v}), do: v
-  defp value_from_rltuple({k, v}), do: String.to_integer v
+  defp value_from_rltuple({_k, v}), do: String.to_integer v
 
   defp format_response(response) do
     case response do

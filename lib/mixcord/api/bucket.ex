@@ -3,8 +3,8 @@ defmodule Mixcord.Api.Bucket do
 
   alias Mixcord.Util
 
-  def create_bucket(route, remaining, retry_after) do
-    :ets.insert(:ratelimit_buckets, {route, remaining, retry_after})
+  def create_bucket(route, remaining, reset_time, latency) do
+    :ets.insert(:ratelimit_buckets, {route, remaining, reset_time, latency})
   end
 
   def lookup_bucket(route) do
@@ -26,11 +26,16 @@ defmodule Mixcord.Api.Bucket do
     case lookup_bucket(route) do
       [] ->
         nil
-      [{route, remaining, retry_after}] when remaining <= 0 ->
+      [{route, remaining, reset_time, latency}] when remaining <= 0 ->
         update_bucket(route, remaining - 1)
-        delete_bucket(route)
-        retry_after * 1000
-      [{route, remaining, _retry_after}] ->
+        wait_time = reset_time - Util.now + latency
+        if wait_time <= 0 do
+          delete_bucket(route)
+          nil
+        else
+          wait_time
+        end
+      [{route, remaining, _reset_time, latency}] ->
         update_bucket(route, remaining - 1)
         nil
     end

@@ -6,7 +6,6 @@ defmodule Mixcord.Api do
   # TODO: Upload file
 
   alias Mixcord.Constants
-  import Mixcord.Api.Ratelimiter
 
   @typedoc """
   Represents a failed response from the API.
