@@ -54,7 +54,6 @@ defmodule Mixcord.Api.Ratelimiter do
   end
 
   def wait_for_timeout(request, timeout, from) do
-    IO.inspect("ABOUT TO WAIT #{timeout}")
     Process.sleep(timeout + 500) # Small wait for sanity sake
     GenServer.call(Ratelimiter, {:queue, request, from}, :infinity)
   end
