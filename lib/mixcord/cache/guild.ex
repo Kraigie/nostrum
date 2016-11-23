@@ -15,7 +15,7 @@ defmodule Mixcord.Cache.Guild do
   """
 
   use GenServer
-  alias Mixcord.Map.{Guild}
+  alias Mixcord.Util
 
   @doc false
   def start_link do
@@ -34,12 +34,12 @@ defmodule Mixcord.Cache.Guild do
 
   def get!(id: id) do
     get(id: id)
-      |> bangify_find
+      |> Util.bangify_find
   end
 
   def get!(message: message) do
     get(message: message)
-      |> bangify_find
+      |> Util.bangify_find
   end
 
   @doc false
@@ -80,14 +80,14 @@ defmodule Mixcord.Cache.Guild do
   def handle_cast({:create, guild_id, member: member}, state) do
     guild = get!(id: guild_id)
     new_members = [member | guild.members]
-    :ets.insert(:guilds, {guild_id, %Guild{guild | members: new_members}})
+    :ets.insert(:guilds, {guild_id, %{guild | members: new_members}})
     {:noreply, state}
   end
 
   def handle_cast({:create, guild_id, role: role}, state) do
     guild = get!(id: guild_id)
     new_roles = [role | guild.roles]
-    :ets.insert(:guilds, {guild_id, %Guild{guild | roles: new_roles}})
+    :ets.insert(:guilds, {guild_id, %{guild | roles: new_roles}})
     {:noreply, state}
   end
 
@@ -98,7 +98,7 @@ defmodule Mixcord.Cache.Guild do
 
   def handle_cast({:update, guild_id, emojis: emojis}, state) do
     guild = get!(id: guild_id)
-    :ets.insert(:guilds, {guild_id, %Guild{guild | emojis: emojis}})
+    :ets.insert(:guilds, {guild_id, %{guild | emojis: emojis}})
     {:noreply, state}
   end
 
@@ -109,7 +109,7 @@ defmodule Mixcord.Cache.Guild do
       fn member ->
         %{member | user: user, roles: roles}
       end)
-    :ets.insert(:guilds, {guild_id, %Guild{guild | members: members}})
+    :ets.insert(:guilds, {guild_id, %{guild | members: members}})
     {:noreply, state}
   end
 
@@ -120,7 +120,7 @@ defmodule Mixcord.Cache.Guild do
       fn _ ->
         role
       end)
-    :ets.insert(:guilds, {guild_id, %Guild{guild | roles: roles}})
+    :ets.insert(:guilds, {guild_id, %{guild | roles: roles}})
     {:noreply, state}
   end
 
@@ -133,7 +133,7 @@ defmodule Mixcord.Cache.Guild do
     guild = get!(id: guild_id)
     member_index = Enum.find_index(guild.members, fn member -> member.user.id == user.id end)
     members = List.delete_at(guild.members, member_index)
-    :ets.insert(:guilds, {guild_id, %Guild{guild | members: members}})
+    :ets.insert(:guilds, {guild_id, %{guild | members: members}})
     {:noreply, state}
   end
 
@@ -141,17 +141,8 @@ defmodule Mixcord.Cache.Guild do
     guild = get!(id: guild_id)
     role_index = Enum.find_index(guild.roles, fn g_role -> g_role.id == role_id end)
     roles = List.delete_at(guild.roles, role_index)
-    :ets.insert(:guilds, {guild_id, %Guild{guild | roles: roles}})
+    :ets.insert(:guilds, {guild_id, %{guild | roles: roles}})
     {:noreply, state}
-  end
-
-  defp bangify_find(to_bang) do
-    case to_bang do
-      nil ->
-        raise(Mixcord.Error.CacheError)
-      ret ->
-        ret
-    end
   end
 
 end

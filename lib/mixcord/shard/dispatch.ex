@@ -27,7 +27,7 @@ defmodule Mixcord.Shard.Dispatch do
   ```
   """
 
-  alias Mixcord.Cache.{Guild}
+  alias Mixcord.Cache.{Channel, Guild}
   alias Mixcord.Util
   require Logger
 
@@ -39,11 +39,11 @@ defmodule Mixcord.Shard.Dispatch do
     state.caller.handle_event({payload.t, payload.d}, state)
   end
 
-  def handle_event({:CHANNEL_CREATE, p}, state), do: :noop
+  def handle_event({:CHANNEL_CREATE, p}, state), do: Channel.create(p)
 
-  def handle_event({:CHANNEL_DELETE, p}, state), do: :noop
+  def handle_event({:CHANNEL_DELETE, p}, state), do: Channel.delete(p)
 
-  def handle_event({:CHANNEL_UPDATE, p}, state), do: :noop
+  def handle_event({:CHANNEL_UPDATE, p}, state), do: Channel.update(p)
 
   def handle_event({:GUILD_BAN_ADD, p}, state), do: :noop
 
