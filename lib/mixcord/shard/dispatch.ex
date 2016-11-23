@@ -27,7 +27,7 @@ defmodule Mixcord.Shard.Dispatch do
   ```
   """
 
-  alias Mixcord.Cache.{Channel, Guild}
+  alias Mixcord.Cache.{Channel, Guild, User}
   alias Mixcord.Util
   require Logger
 
