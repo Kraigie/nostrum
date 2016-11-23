@@ -42,8 +42,24 @@ defmodule Mixcord.Shard.Payload do
   end
 
   @doc false
-  def status_update_payload(json) do
-    build_payload(Constants.opcode_from_name("STATUS_UPDATE"), json)
+  def status_update_payload(idle_since, game) do
+    data = %{
+      "idle_since": idle_since,
+      "game": %{
+        "name": game.name
+      }
+    }
+    build_payload(Constants.opcode_from_name("STATUS_UPDATE"), game)
+  end
+
+  @doc false
+  def request_members_payload(guild_id, limit) do
+    data = %{
+      "guild_id": guild_id,
+      "query": "",
+      "limit": limit
+    }
+    build_payload(Constants.opcode_from_name("REQUEST_GUILD_MEMBERS"), data)
   end
 
   @doc false

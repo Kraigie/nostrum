@@ -58,7 +58,7 @@ defmodule Mixcord.Constants do
       "VOICE_SERVER_PING" => 5,
       "RESUME" => 6,
       "RECONNECT" => 7,
-      "GET_GUILD_MEMBER" => 8,
+      "REQUEST_GUILD_MEMBERS" => 8,
       "INVALID_SESSION" => 9,
       "HELLO" => 10,
       "HEARTBEAT_ACK" => 11,

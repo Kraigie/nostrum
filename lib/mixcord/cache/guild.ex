@@ -15,6 +15,7 @@ defmodule Mixcord.Cache.Guild do
   """
 
   use GenServer
+  alias Mixcord.Shard
   alias Mixcord.Util
 
   @doc false
@@ -42,8 +43,16 @@ defmodule Mixcord.Cache.Guild do
       |> Util.bangify_find
   end
 
+  # TODO: Turn all these casts into calls
   @doc false
-  def create(guild), do: GenServer.cast(Guilds, {:create, guild.id, guild: guild})
+  def create(guild) do
+    GenServer.cast(Guilds, {:create, guild.id, guild: guild})
+  end
+
+  def create(guild, shard_pid) do
+    create(guild)
+    Shard.request_guild_members(shard_pid, guild.id)
+  end
 
   @doc false
   def update(guild), do: GenServer.cast(Guilds, {:update, guild.id, guild: guild})
@@ -55,7 +64,10 @@ defmodule Mixcord.Cache.Guild do
   def emoji_update(guild_id, emojis), do: GenServer.cast(Guilds, {:update, guild_id, emojis: emojis})
 
   @doc false
-  def member_add(guild_id, member), do: GenServer.cast(Guilds, {:create, guild_id, member: member})
+  def member_add(guild_id, member) do
+     GenServer.cast(Guilds, {:create, guild_id, member: member})
+     GenServer.cast(Users, {:create, member.user.id, user: member.user})
+  end
 
   @doc false
   def member_update(guild_id, user, roles), do: GenServer.cast(Guilds, {:update, guild_id, user: user, roles: roles})

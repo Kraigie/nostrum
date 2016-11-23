@@ -27,13 +27,25 @@ defmodule Mixcord.Shard do
   end
 
   def update_status(pid, status, game) do
-    status_json = Poison.encode!(%{game: %{name: game}, idle: status})
-    send(pid, {:status_update, status_json})
+    # TODO: Handle this properly
+    idle_since = status
+    payload = Payload.status_update_payload(idle_since, game)
+    send(pid, {:status_update, payload})
   end
 
-  def websocket_info({:status_update, new_status_json}, _ws_req, state) do
+  def request_guild_members(pid, guild_id, limit \\ 0) do
+    payload = Payload.request_members_payload(guild_id, limit)
+    send(pid, {:request_guild_members, payload});
+  end
+
+  def websocket_info({:request_guild_members, payload}, _ws_req, state) do
+    :websocket_client.cast(self, {:binary, payload})
+    {:ok, state}
+  end
+
+  def websocket_info({:status_update, payload}, _ws_req, state) do
     # TODO: Flesh this out - Idle time?
-    :websocket_client.cast(self, {:binary, Payload.status_update_payload(new_status_json)})
+    :websocket_client.cast(self, {:binary, payload})
     {:ok, state}
   end
 

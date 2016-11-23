@@ -49,7 +49,13 @@ defmodule Mixcord.Shard.Dispatch do
 
   def handle_event({:BUILD_BAN_REMOVE, p}, state), do: :noop
 
-  def handle_event({:GUILD_CREATE, p}, state), do: Guild.create(p)
+  def handle_event({:GUILD_CREATE, p}, state) do
+    if p.member_count < 250 do
+      Guild.create(p)
+    else
+      Guild.create(p, state.shard_pid)
+    end
+  end
 
   def handle_event({:GUILD_UPDATE, p}, state), do: Guild.update(p)
 
@@ -63,7 +69,7 @@ defmodule Mixcord.Shard.Dispatch do
 
   def handle_event({:GUILD_MEMBERS_CHUNK, p}, state) do
     p.members
-      |> Enum.map(fn member -> Guild.member_add(p.guild_id, member) end)
+      |> Enum.each(fn member -> Guild.member_add(p.guild_id, member) end)
   end
 
   def handle_event({:GUILD_MEMBER_REMOVE, p}, state), do: Guild.member_remove(p.guild_id, p.user)
@@ -86,7 +92,12 @@ defmodule Mixcord.Shard.Dispatch do
 
   def handle_event({:PRESENCE_UPDATE, p}, state), do: :noop
 
-  def handle_event({:READY, p}, state), do: :noop
+  def handle_event({:READY, p}, state) do
+    p.private_channels
+      |> Enum.each(fn dm_channel -> Channel.create(dm_channel) end)
+    p.guilds
+      |> Enum.each(fn guild -> Guild.create(guild) end)
+  end
 
   def handle_event({:RESUMED, p}, state), do: :noop
 
@@ -94,7 +105,7 @@ defmodule Mixcord.Shard.Dispatch do
 
   def handle_event({:USER_SETTINGS_UPDATE, p}, state), do: :noop
 
-  def handle_event({:USER_UPDATE, p}, state), do: :noop
+  def handle_event({:USER_UPDATE, p}, state), do: User.update(p)
 
   def handle_event({:VOICE_STATE_UPDATE, p}, state), do: :noop
 

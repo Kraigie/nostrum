@@ -8,7 +8,7 @@ defmodule Mixcord.Cache.Channel do
   ## Example
   ```elixir
   info = :ets.info(:channels)
-  [..., heir: :none, name: :guilds, size: 1, ...]
+  [..., heir: :none, name: :channels, size: 1, ...]
   size = info[:size]
   1
   ```
