@@ -8,8 +8,8 @@ defmodule Mixcord.Api.Bucket do
   end
 
   def lookup_bucket(route) do
-    IO.inspect route_time = :ets.lookup(:ratelimit_buckets, route)
-    IO.inspect global_time = :ets.lookup(:ratelimit_buckets, "GLOBAL")
+    route_time = :ets.lookup(:ratelimit_buckets, route)
+    global_time = :ets.lookup(:ratelimit_buckets, "GLOBAL")
 
     Enum.max([route_time, global_time])
   end

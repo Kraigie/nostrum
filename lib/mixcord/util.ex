@@ -17,6 +17,15 @@ defmodule Mixcord.Util do
     Application.get_env(:mixcord, :num_shards)
   end
 
+  def bangify_find(to_bang) do
+    case to_bang do
+      nil ->
+        raise(Mixcord.Error.CacheError)
+      ret ->
+        ret
+    end
+  end
+
   def gateway do
     case :ets.lookup(:gateway_url, "url") do
       [] -> get_new_gateway_url
