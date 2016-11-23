@@ -15,6 +15,7 @@ defmodule Mixcord.Cache.Guild do
   """
 
   use GenServer
+  alias Mixcord.Cache.{Channel, User}
   alias Mixcord.Shard
   alias Mixcord.Util
 
@@ -47,6 +48,12 @@ defmodule Mixcord.Cache.Guild do
   @doc false
   def create(guild) do
     GenServer.cast(Guilds, {:create, guild.id, guild: guild})
+    if not guild.unavailable do
+      guild.members
+        |> Enum.each(fn member -> User.create(member.user) end)
+      guild.channels
+        |> Enum.each(fn channel -> Channel.create(channel) end)
+    end
   end
 
   def create(guild, shard_pid) do
@@ -66,7 +73,7 @@ defmodule Mixcord.Cache.Guild do
   @doc false
   def member_add(guild_id, member) do
      GenServer.cast(Guilds, {:create, guild_id, member: member})
-     GenServer.cast(Users, {:create, member.user.id, user: member.user})
+     User.create(member.user)
   end
 
   @doc false

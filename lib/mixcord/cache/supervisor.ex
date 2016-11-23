@@ -15,7 +15,9 @@ defmodule Mixcord.Cache.Supervisor do
 
   def init(_args) do
     children = [
-      worker(Mixcord.Cache.Guild, [])
+      worker(Mixcord.Cache.Guild, []),
+      worker(Mixcord.Cache.Channel, []),
+      worker(Mixcord.Cache.User, [])
     ]
 
     supervise(children, strategy: :one_for_one)
