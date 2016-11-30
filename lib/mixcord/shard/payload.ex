@@ -20,13 +20,13 @@ defmodule Mixcord.Shard.Payload do
 
   @doc false
   def heartbeat_payload(sequence) do
-    build_payload(Constants.opcode_from_name("HEARTBEAT"), nil, sequence)
+    build_payload(Constants.opcode_from_name("HEARTBEAT"), sequence)
   end
 
   @doc false
-  def identity_payload(state_map) do
+  def identity_payload(state) do
     data = %{
-      "token" => state_map.token,
+      "token" => state.token,
       "properties" => %{
         "$os" => "Linux",
         "$browser" => "Mixcord",
@@ -36,9 +36,19 @@ defmodule Mixcord.Shard.Payload do
       },
       "compress" => false,
       "large_threshold" => 250,
-      "shard" => [state_map.shard_num, Util.num_shards]
+      "shard" => [state.shard_num, Util.num_shards]
     }
     build_payload(Constants.opcode_from_name("IDENTIFY"), data)
+  end
+
+  @doc false
+  def resume_payload(state) do
+    data = %{
+      "token" => state.token,
+      "session_id" => state.session,
+      "seq" => state.seq
+    }
+    build_payload(Constants.opcode_from_name("RESUME"), data)
   end
 
   @doc false
@@ -49,7 +59,7 @@ defmodule Mixcord.Shard.Payload do
         "name": game.name
       }
     }
-    build_payload(Constants.opcode_from_name("STATUS_UPDATE"), game)
+    build_payload(Constants.opcode_from_name("STATUS_UPDATE"), data)
   end
 
   @doc false
@@ -63,8 +73,8 @@ defmodule Mixcord.Shard.Payload do
   end
 
   @doc false
-  def build_payload(opcode, data, event \\ nil, seq \\ nil) do
-    %{"op" => opcode, "d" => data, "s" => seq, "t" => event}
+  def build_payload(opcode, data) do
+    %{"op" => opcode, "d" => data}
       |> :erlang.term_to_binary
   end
 

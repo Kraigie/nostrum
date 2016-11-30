@@ -25,6 +25,7 @@ defmodule Mixcord.Shard.Event do
   end
 
   def handle(:heartbeat_ack, _payload, state) do
+    Logger.debug "HEARTBEAT_ACK"
     heartbeat_intervals = state.heartbeat_intervals
     |> List.delete_at(-1)
     |> List.insert_at(0, Util.now() - state.last_heartbeat)
@@ -32,9 +33,16 @@ defmodule Mixcord.Shard.Event do
   end
 
   def handle(:hello, payload, state) do
-    # TODO: Check for resume if session is set, build resume packet and send - will also need to restart heartbeat
+    if session_exists?(state) do
+      resume(self)
+    else
+      identify(self)
+    end
+
+    # TODO: Remove duplicate heartbeat after resuming (or any other :hello messages).
+    # Likely want to move heartbeat to its own process that we can kill. Will need a process per shard.
+    # Will need to store heartbeat interval?
     heartbeat(self, payload.d.heartbeat_interval)
-    identify(self)
     state
   end
 
@@ -60,6 +68,14 @@ defmodule Mixcord.Shard.Event do
 
   def identify(pid) do
     send(pid, :identify)
+  end
+
+  def resume(pid) do
+    send(pid, :resume)
+  end
+
+  def session_exists?(state) do
+    not is_nil(state.session)
   end
 
 end

@@ -61,6 +61,11 @@ defmodule Mixcord.Shard do
     {:ok, state}
   end
 
+  def websocket_info(:resume, _ws_req, state) do
+    :websocket_client.cast(self, {:binary, Payload.resume_payload(state)})
+    {:ok, state}
+  end
+
   def init(state) do
     {:once, state}
   end
