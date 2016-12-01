@@ -56,13 +56,9 @@ defmodule Mixcord.Util do
     end
   end
 
-  def maybe_to_atom(token) do
-    cond do
-      is_atom(token) -> token
-      true -> String.to_atom(token)
-      # TODO: FINISH THE MAPS CRAIG
-      # true -> String.to_existing_atom(token)
-    end
-  end
+  def maybe_to_atom(token) when is_atom(token), do: token
+  # TODO: FINISH THE MAPS CRAIG
+  # true -> String.to_existing_atom(token)
+  def maybe_to_atom(token), do: String.to_atom(token)
 
 end

@@ -46,7 +46,7 @@ defmodule Mixcord do
 
     if !token, do: raise "Please supply a token"
     if !caller, do: raise "Please supply a caller"
-    num_shards = if !num_shards, do: 1, else: num_shards
+    num_shards = if num_shards, do: num_shards, else: 1
 
     setup_ets_tables
 

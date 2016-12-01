@@ -66,7 +66,7 @@ defmodule Mixcord.Api.Ratelimiter do
   end
 
   defp erl_datetime_to_timestamp(datetime) do
-    (:calendar.datetime_to_gregorian_seconds(datetime) - 62167219200) * 1000
+    (:calendar.datetime_to_gregorian_seconds(datetime) - 62_167_219_200) * 1000
   end
 
   defp value_from_rltuple(tuple) when is_nil(tuple), do: nil
