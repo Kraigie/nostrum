@@ -35,7 +35,7 @@ defmodule Mixcord.Api.Bucket do
         else
           wait_time
         end
-      [{route, remaining, _reset_time, latency}] ->
+      [{route, remaining, _reset_time, _latency}] ->
         update_bucket(route, remaining - 1)
         nil
     end
