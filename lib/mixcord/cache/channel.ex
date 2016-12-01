@@ -15,7 +15,6 @@ defmodule Mixcord.Cache.Channel do
   """
 
   use GenServer
-  alias Mixcord.Map.{TextChannel, VoiceChannel}
   alias Mixcord.Util
 
   @type channel :: Mixcord.Map.TextChannel.t | Mixcord.Map.VoiceChannel.t
