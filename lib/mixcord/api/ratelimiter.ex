@@ -11,13 +11,14 @@ defmodule Mixcord.Api.Ratelimiter do
 
   def handle_call({:queue, request, original_from}, from, state) do
     retry_time = request.route
+      |> major_parameter
       |> Bucket.get_ratelimit_timeout
     if retry_time do
       Task.start(fn -> wait_for_timeout(request, retry_time, original_from || from) end)
     else
       response = request.method
         |> Base.request(request.route, request.body, [], request.options)
-        |> handle_headers(request.route)
+        |> handle_headers(major_parameter(request.route))
         |> format_response
       GenServer.reply(original_from || from, response)
     end
@@ -37,10 +38,11 @@ defmodule Mixcord.Api.Ratelimiter do
     latency = abs(origin_timestamp - Util.now)
 
     if global_limit do
-      update_global_bucket(route, remaining, retry_after, latency)
+      update_global_bucket(route, 0, retry_after, latency)
+    else
+      update_bucket(route, remaining, reset, latency)
     end
 
-    update_bucket(route, remaining, reset, latency)
     response
   end
 
@@ -72,6 +74,13 @@ defmodule Mixcord.Api.Ratelimiter do
   defp value_from_rltuple(tuple) when is_nil(tuple), do: nil
   defp value_from_rltuple({"Date", v}), do: v
   defp value_from_rltuple({_k, v}), do: String.to_integer v
+
+  defp major_parameter(route) do
+    case Regex.run(~r/\/(channels|guilds)\/([0-9]{15,})+/i, route) do
+      [match, _route, _major_param] -> match
+      nil -> route
+    end
+  end
 
   defp format_response(response) do
     case response do
