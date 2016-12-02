@@ -4,6 +4,7 @@ defmodule Mixcord.Api.Ratelimiter do
   use GenServer
   alias Mixcord.Api.{Base, Bucket}
   alias Mixcord.Util
+  require Logger
 
   def start_link do
     GenServer.start_link(__MODULE__, [], name: Ratelimiter)
@@ -56,6 +57,7 @@ defmodule Mixcord.Api.Ratelimiter do
   end
 
   def wait_for_timeout(request, timeout, from) do
+    Logger.debug "RATELIMITER: Waiting #{timeout} to process request with route #{request.route}"
     Process.sleep(timeout + 500) # Small wait for sanity sake
     GenServer.call(Ratelimiter, {:queue, request, from}, :infinity)
   end

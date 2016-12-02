@@ -5,5 +5,6 @@ config :mixcord,
   caller: Mixcord,
   num_shards: 1
 
-# config :logger,
-#   compile_time_purge_level: :info
+config :logger,
+  level: :warn
+
