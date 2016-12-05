@@ -232,6 +232,15 @@ defmodule Mixcord.Api do
     |> bangify
   end
 
+  def get_pinned_messages(channel_id) do
+    request(:get, Constants.channel_pins(channel_id))
+  end
+
+  def get_pinned_messages!(channel_id) do
+    get_pinned_messages(channel_id)
+    |> bangify
+  end
+
   @doc """
   Pins a message.
 
@@ -240,7 +249,7 @@ defmodule Mixcord.Api do
   Returns `{:ok}` if successful. `error` otherwise.
   """
   def add_pinned_message(channel_id, message_id) do
-    request(:get, Constants.channel_pin(channel_id, message_id))
+    request(:put, Constants.channel_pin(channel_id, message_id))
   end
 
   @doc """

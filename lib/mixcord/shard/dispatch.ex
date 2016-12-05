@@ -45,6 +45,10 @@ defmodule Mixcord.Shard.Dispatch do
 
   def handle_event({:CHANNEL_UPDATE, p}, _state), do: Channel.update(p)
 
+  def handle_event({:CHANNEL_PINS_ACK, p}, _state), do: :noop
+
+  def handle_event({:CHANNELS_PINS_UPDATe, p}, _state), do: :noop
+
   def handle_event({:GUILD_BAN_ADD, _p}, _state), do: :noop
 
   def handle_event({:BUILD_BAN_REMOVE, _p}, _state), do: :noop
