@@ -15,6 +15,15 @@ defmodule Mixcord.Api do
   """
   @type error :: {:error, Mixcord.Error.ApiError.t}
 
+  @typedoc """
+  Represents a tuple used to locate messages.
+
+  The first element of the tuple is an atom.
+  The second element will be a message_id as an integer.
+  The tuple can also be empty to search from the most recent message in the channel
+  """
+  @type locator :: {:before, Integer.t} | {:after, Integer.t} | {:around, Integer.t} | {}
+
   def update_status(pid, _status, game) when not is_map(game) and not is_pid(pid), do: raise "ERROR: Invalid game map or shard pid #{inspect game} #{inspect pid}"
   def update_status(pid, status, game) do
     Shard.update_status(pid, status, game)
@@ -33,7 +42,7 @@ defmodule Mixcord.Api do
 
   Returns `{:ok, Mixcord.Map.Message}` if successful. `error` otherwise.
   """
-  @spec create_message(String.t, String.t, boolean) :: error | {:ok, Mixcord.Map.Message.t}
+  @spec create_message(Integer.t, String.t, boolean) :: error | {:ok, Mixcord.Map.Message.t}
   def create_message(channel_id, content, tts \\ false) do
     case request(:post, Constants.channel_messages(channel_id), %{content: content, tts: tts}) do
       {:ok, body} ->
@@ -52,7 +61,7 @@ defmodule Mixcord.Api do
   Raises `Mixcord.Error.ApiError` if error occurs while making the rest call.
   Returns `Mixcord.Map.Message` if successful.
   """
-  @spec create_message!(String.t, String.t, boolean) :: no_return | Mixcord.Map.Message.t
+  @spec create_message!(Integer.t, String.t, boolean) :: no_return | Mixcord.Map.Message.t
   def create_message!(channel_id, content, tts \\ false) do
     create_message(channel_id, content, tts)
     |> bangify
@@ -65,7 +74,7 @@ defmodule Mixcord.Api do
 
   Returns the edited `{:ok, Mixcord.Map.Message}` if successful. `error` otherwise.
   """
-  @spec edit_message(String.t, String.t, String.t) :: error | {:ok, Mixcord.Map.Message.t}
+  @spec edit_message(Integer.t, Integer.t, String.t) :: error | {:ok, Mixcord.Map.Message.t}
   def edit_message(channel_id, message_id, content) do
     case request(:patch, Constants.channel_message(channel_id, message_id), %{content: content}) do
       {:ok, body} ->
@@ -83,7 +92,7 @@ defmodule Mixcord.Api do
   Raises `Mixcord.Error.ApiError` if error occurs while making the rest call.
   Returns the edited `Mixcord.Map.Message` if successful.
   """
-  @spec edit_message!(String.t, String.t, String.t) :: no_return | {:ok, Mixcord.Map.Message.t}
+  @spec edit_message!(Integer.t, Integer.t, String.t) :: no_return | {:ok, Mixcord.Map.Message.t}
   def edit_message!(channel_id, message_id, content) do
     edit_message(channel_id, message_id, content)
     |> bangify
@@ -96,7 +105,7 @@ defmodule Mixcord.Api do
 
   Returns `{:ok}` if successful. `error` otherwise.
   """
-  @spec delete_message(String.t, String.t) :: error | {:ok}
+  @spec delete_message(Integer.t, Integer.t) :: error | {:ok}
   def delete_message(channel_id, message_id) do
     request(:delete, Constants.channel_message(channel_id, message_id))
   end
@@ -109,7 +118,7 @@ defmodule Mixcord.Api do
   Raises `Mixcord.Error.ApiError` if error occurs while making the rest call.
   Returns {:ok} if successful.
   """
-  @spec delete_message!(String.t, String.t) :: no_return | {:ok}
+  @spec delete_message!(String.t, Integer.t) :: no_return | {:ok}
   def delete_message!(channel_id, message_id) do
     delete_message(channel_id, message_id)
     |> bangify
@@ -142,12 +151,48 @@ defmodule Mixcord.Api do
     |> bangify
   end
 
-  def get_channel_messages(channel_id, options) do
-    request(:get, Constants.channel_messages(channel_id), options)
+  @doc """
+  Retrieve messages from a channel.
+
+  Retrieves `limit` number of messages from the channel with id `channel_id`.
+  `locator` is a tuple indicating what messages you want to retrieve.
+
+  Returns `{:ok, [Mixcord.Map.Message]}` if successful. `error` otherwise.
+  """
+  @spec get_channel_messages(Integer.t, Integer.t, locator) :: error | {:ok, [Mixcord.Map.Message.t]}
+  def get_channel_messages(channel_id, limit, locator) when limit < 100 do
+    case locator do
+      {:before, message_id} ->
+        request(:get, Constants.channel_messages(channel_id), "", params: [{:limit, limit}, {:before, message_id}])
+      {:after, message_id} ->
+        request(:get, Constants.channel_messages(channel_id), %{limit: limit, after: message_id})
+      {:around, message_id} ->
+        request(:get, Constants.channel_messages(channel_id), %{limit: limit, around: message_id})
+      {} ->
+        request(:get, Constants.channel_messages(channel_id), "", params: [{:limit, limit}])
+    end
   end
 
-  def get_channel_messages!(channel_id, options) do
-    get_channel_messages(channel_id, options)
+  @doc false
+  def get_channel_messages(channel_id, limit, locator) do
+    get_messages_sync(channel_id, limit, [], locator)
+  end
+
+  defp get_messages_sync(channel_id, limit, messages, locator) when limit < 100 do
+    {:ok, new_messages} = get_channel_messages(channel_id, limit, locator)
+    messages ++ new_messages
+  end
+
+  defp get_messages_sync(channel_id, limit, messages, locator) do
+    {:ok, new_messages} = get_channel_messages(channel_id, limit, locator)
+    limit = limit - messages
+    last_message = List.last(new_messages)
+    locator = put_elem(locator, 1, last_message.id)
+    get_messages_sync(channel_id, limit, messages ++ new_messages, locator)
+  end
+
+  def get_channel_messages!(channel_id, limit, locator) do
+    get_channel_messages(channel_id, limit, locator)
     |> bangify
   end
 
@@ -413,6 +458,7 @@ defmodule Mixcord.Api do
       body: body,
       options: options
     }
+
     GenServer.call(Ratelimiter, {:queue, request, nil}, :infinity)
   end
 
