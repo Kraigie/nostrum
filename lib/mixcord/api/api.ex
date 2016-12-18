@@ -162,65 +162,52 @@ defmodule Mixcord.Api do
   Retrieve messages from a channel.
 
   Retrieves `limit` number of messages from the channel with id `channel_id`.
-
   `locator` is a tuple indicating what messages you want to retrieve.
 
   Returns `{:ok, [Mixcord.Map.Message]}` if successful. `error` otherwise.
   """
   @spec get_channel_messages(Integer.t, limit, locator) :: error | {:ok, [Mixcord.Map.Message.t]}
-  def get_channel_messages(channel_id, limit, locator) when limit <= 100 do
-    response =
+  def get_channel_messages(channel_id, limit, locator) do
+    get_messages_sync(channel_id, limit, [], locator)
+  end
+
+  defp get_messages_sync(channel_id, limit, messages, locator) when limit <= 100 do
+    case get_channel_messages_call(channel_id, limit, locator) do
+      {:ok, new_messages} -> {:ok, messages ++ new_messages}
+      other -> other
+    end
+  end
+
+  defp get_messages_sync(channel_id, limit, messages, locator) do
+    case get_channel_messages_call(channel_id, 100, locator) do
+      {:error, message} -> {:error, message}
+      {:ok, []} -> {:ok, messages}
+      {:ok, new_messages} ->
+        new_limit = get_new_limit(limit, length(new_messages))
+        new_locator = get_new_locator(locator, List.last(new_messages))
+        get_messages_sync(channel_id, new_limit, messages ++ new_messages, new_locator)
+    end
+  end
+
+  defp get_new_locator({}, last_message), do: {:before, last_message.id}
+  defp get_new_locator(locator, last_message), do: put_elem(locator, 1, last_message.id)
+
+  defp get_new_limit(:infinity, _new_message_count), do: :infinity
+  defp get_new_limit(limit, message_count), do: limit - message_count
+
+  # We're decoding the response at each call to catch any errors
+  def get_channel_messages_call(channel_id, limit, locator) do
+    qs_params =
       case locator do
-        {:before, message_id} ->
-          request(:get, Constants.channel_messages(channel_id), "", params: [{:limit, limit}, {:before, message_id}])
-        {:after, message_id} ->
-          request(:get, Constants.channel_messages(channel_id), "", params: [{:limit, limit}, {:after, message_id}])
-        {:around, message_id} ->
-          request(:get, Constants.channel_messages(channel_id), "", params: [{:limit, limit}, {:around, message_id}])
-        {} ->
-          request(:get, Constants.channel_messages(channel_id), "", params: [{:limit, limit}])
+        {} -> [{:limit, limit}]
+        non_empty_locator -> [{:limit, limit}, non_empty_locator]
       end
+    response = request(:get, Constants.channel_messages(channel_id), "", params: qs_params)
     case response do
       {:ok, body} ->
         {:ok, Poison.decode!(body, as: [%Mixcord.Map.Message{}])}
       other ->
         other
-    end
-  end
-
-  @doc false
-  def get_channel_messages(channel_id, limit, locator) do
-    get_messages_sync(channel_id, limit, [], locator)
-  end
-
-  # no more messages
-  defp get_messages_sync(_channel_id, limit, messages, _locator) when limit == 0 do
-    {:ok, messages}
-  end
-
-  defp get_messages_sync(channel_id, limit, messages, locator) when limit <= 100 do
-    {:ok, new_messages} = get_channel_messages(channel_id, limit, locator)
-    {:ok, messages ++ new_messages}
-  end
-
-  # TODO: refactor ecks dee
-  defp get_messages_sync(channel_id, limit, messages, locator) do
-    {:ok, new_messages} = get_channel_messages(channel_id, 100, locator)
-    IO.inspect(limit)
-    limit =
-      case limit do
-        :infinity -> 100
-        num -> num - length(new_messages)
-      end
-    case List.last(new_messages) do
-      nil -> get_messages_sync(channel_id, 0, messages ++ new_messages, locator)
-      last_message ->
-        locator =
-          case locator do
-            {} -> {:before, last_message.id}
-            loc -> put_elem(loc, 1, last_message.id)
-          end
-        get_messages_sync(channel_id, limit, messages ++ new_messages, locator)
     end
   end
 

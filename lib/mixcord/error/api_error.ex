@@ -41,7 +41,7 @@ defmodule Mixcord.Error.ApiError do
   end
 
   def exception(status_code: status_code, message: resp) when is_map(resp) do
-    msg = "ERROR: #{status_code} #{resp["message"]} #{resp["code"]}"
+    msg = "ERROR: #{status_code} #{inspect resp}"
     %__MODULE__{message: msg}
   end
 
