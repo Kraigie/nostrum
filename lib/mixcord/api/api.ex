@@ -38,13 +38,26 @@ defmodule Mixcord.Api do
   Send a message to a channel.
 
   Send `content` to the channel identified with `channel_id`.
+  Content can be either a binary containing the message you want to send or a `Mixcord.Map.Embed` map.
+  
   `tts` is an optional parameter that dictates whether the message should be played over text to speech.
 
   Returns `{:ok, Mixcord.Map.Message}` if successful. `error` otherwise.
   """
   @spec create_message(Integer.t, String.t, boolean) :: error | {:ok, Mixcord.Map.Message.t}
-  def create_message(channel_id, content, tts \\ false) do
+  def create_message(channel_id, content, tts \\ false)
+  def create_message(channel_id, content, tts) when is_binary(content) do
     case request(:post, Constants.channel_messages(channel_id), %{content: content, tts: tts}) do
+      {:ok, body} ->
+        {:ok, Poison.decode!(body, as: %Mixcord.Map.Message{})}
+      other ->
+        other
+    end
+  end
+
+  @spec create_message(Integer.t, Map.t, boolean) :: error | {:ok, Mixcord.Map.Message.t}
+  def create_message(channel_id, content, tts) when is_map(content) do
+    case request(:post, Constants.channel_messages(channel_id), %{embed: content, tts: tts}) do
       {:ok, body} ->
         {:ok, Poison.decode!(body, as: %Mixcord.Map.Message{})}
       other ->
