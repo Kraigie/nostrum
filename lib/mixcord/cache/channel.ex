@@ -1,17 +1,6 @@
 defmodule Mixcord.Cache.Channel do
   @moduledoc """
   Cache for channels.
-
-  The ETS table name associated with the Channel Cache is `:channels`. Besides the
-  methods provided below you can call any other ETS methods on the table.
-
-  ## Example
-  ```elixir
-  info = :ets.info(:channels)
-  [..., heir: :none, name: :channels, size: 1, ...]
-  size = info[:size]
-  1
-  ```
   """
 
   use GenServer
@@ -21,45 +10,47 @@ defmodule Mixcord.Cache.Channel do
 
   @doc false
   def start_link do
-    GenServer.start_link(__MODULE__, [], name: Channels)
+    GenServer.start_link(__MODULE__, %{}, name: Channels)
   end
 
-  def init(_args) do
-    :ets.new(:channels, [:set, :public, :named_table])
-    {:ok, []}
+  def init(state) do
+    {:ok, state}
   end
 
   @spec get(id: integer) :: channel
   @spec get(message: Mixcord.Map.Message.t) :: channel
-  def get(id: id), do: :ets.lookup_element(:channels, id, 2)
+  def get(id: id), do: GenServer.call(Channels, {:get, id})
   def get!(id: id) do
     get(id: id)
       |> Util.bangify_find
   end
 
+  @doc false
+  def create(channel), do: GenServer.call(Channels, {:create, channel.id, channel})
 
   @doc false
-  def create(channel), do: GenServer.cast(Channels, {:create, channel.id, channel: channel})
+  def update(channel), do: GenServer.call(Channels, {:update, channel.id, channel})
 
   @doc false
-  def update(channel), do: GenServer.cast(Channels, {:update, channel.id, channel: channel})
+  def delete(channel), do: GenServer.call(Channels, {:delete, channel.id})
 
-  @doc false
-  def delete(channel), do: GenServer.cast(Channels, {:delete, channel_id: channel.id})
-
-  def handle_cast({:create, channel_id, channel: channel}, state) do
-    :ets.insert(:channels, {channel_id, channel})
-    {:noreply, state}
+  # I'm willing to abuse `from` here to provide `async` searching if this turns out to be slow
+  def handle_call({:get, id}, _from, state) do
+    {:reply, Map.get(state, id), state}
   end
 
-  def handle_cast({:update, channel_id, channel: channel}, state) do
-    :ets.update_element(:channels, channel_id, channel)
-    {:noreply, state}
+  def handle_call({:create, id, channel}, _from, state) do
+    {:reply, channel, Map.put(state, id, channel)}
   end
 
-  def handle_cast({:delete, channel_id: id}, state) do
-    :ets.delete(:channels, id)
-    {:noreply, state}
+  def handle_call({:update, id, channel}, _from, state) do
+    {old_channel, new_state} = Map.pop(state, id)
+    {:reply, {old_channel, channel}, Map.put(new_state, id, channel)}
+  end
+
+  def handle_call({:delete, id}, _from, state) do
+    {old_channel, new_state} = Map.pop(state, id)
+    {:reply, old_channel, new_state}
   end
 
 end

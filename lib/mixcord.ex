@@ -18,12 +18,8 @@ defmodule Mixcord do
   Mixcord implements a series of `maps` that hold infomration about Discord objects.
 
   ## State/Cache
-  Mixcord provides a number of GenServers which interface with ETS tables to implement a caching system.
+  Mixcord provides a number of GenServers to maintain state.
   These tables are updated based on events from the WS connection.
-
-  The ETS tables are named so you can interact with them using any default ETS methods.
-  (*Note: Read operations should be the only operations performed on the ETS tables by the user.*)
-  To find tables names, please see the relevant docs for that cache.
 
   See any of the Cache modules for default methods provided by the lib; e.g.
   `Guild` information can be found at `Mixcord.Cache.Guild`

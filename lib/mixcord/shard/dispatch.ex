@@ -78,7 +78,8 @@ defmodule Mixcord.Shard.Dispatch do
 
   def handle_event({:GUILD_MEMBER_REMOVE, p}, _state), do: Guild.member_remove(p.guild_id, p.user)
 
-  def handle_event({:GUILD_MEMBER_UPDATE, p}, _state), do: Guild.member_update(p.guild_id, p.user, p.roles)
+  # What is this even??
+  def handle_event({:GUILD_MEMBER_UPDATE, p}, _state), do: Guild.member_update(p.guild_id, p.user, p.nick, p.roles)
 
   def handle_event({:GUILD_ROLE_CREATE, p}, _state), do: Guild.role_create(p.guild_id, p.role)
 
