@@ -20,7 +20,7 @@ defmodule Mixcord.Cache.User do
   def get(id: id), do: GenServer.call(Users, {:get, id})
   def get!(id: id) do
     get(id: id)
-      |> Util.bangify_find
+      |> Util.bangify_find(id, __MODULE__)
   end
 
 

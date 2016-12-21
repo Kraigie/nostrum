@@ -22,7 +22,7 @@ defmodule Mixcord.Cache.Channel do
   def get(id: id), do: GenServer.call(Channels, {:get, id})
   def get!(id: id) do
     get(id: id)
-      |> Util.bangify_find
+      |> Util.bangify_find(id, __MODULE__)
   end
 
   @doc false

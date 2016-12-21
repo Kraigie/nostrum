@@ -17,10 +17,10 @@ defmodule Mixcord.Util do
     Application.get_env(:mixcord, :num_shards)
   end
 
-  def bangify_find(to_bang) do
+  def bangify_find(to_bang, find, cache_name) do
     case to_bang do
       nil ->
-        raise(Mixcord.Error.CacheError)
+        raise(Mixcord.Error.CacheError, finding: find, cache_name: cache_name)
       ret ->
         ret
     end
