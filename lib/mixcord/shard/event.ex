@@ -6,7 +6,8 @@ defmodule Mixcord.Shard.Event do
   require Logger
 
   def handle(:dispatch, payload, state) do
-    Task.start(fn -> Dispatch.handle(payload, state) end)
+    # TODO: Task.start this after gen_stage is finished
+    Dispatch.handle(payload, state)
 
     state =
       if payload.t == :READY do

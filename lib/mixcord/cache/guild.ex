@@ -34,14 +34,13 @@ defmodule Mixcord.Cache.Guild do
 
   @doc false
   def create(guild) do
-    new_guild = GenServer.call(Guilds, {:create, :guild, guild.id, guild})
-    if not guild.unavailable do
+    guild = GenServer.call(Guilds, {:create, :guild, guild.id, guild})
+    if not Map.has_key?(guild, :unavailable) or not guild.unavailable do
       guild.members
         |> Enum.each(fn member -> User.create(member.user) end)
       guild.channels
         |> Enum.each(fn channel -> Channel.create(channel) end)
     end
-    new_guild
   end
 
   def create(guild, shard_pid) do
@@ -87,23 +86,23 @@ defmodule Mixcord.Cache.Guild do
     {:reply, guild, Map.put(state, id, guild)}
   end
 
-  def handle_call({:update, :guild, id, guild}, state) do
+  def handle_call({:update, :guild, id, guild}, _from, state) do
     {old_guild, new_state} = Map.pop(state, id)
     {:reply, {old_guild, guild}, Map.put(new_state, id, guild)}
   end
 
-  def handle_call({:delete, :guild, id}, state) do
+  def handle_call({:delete, :guild, id}, _from, state) do
     {old_guild, new_state} = Map.pop(state, id)
     {:reply, old_guild, new_state}
   end
 
-  def handle_call({:create, :member, guild_id, member}, state) do
+  def handle_call({:create, :member, guild_id, member}, _from, state) do
     guild = Map.get(state, guild_id)
     new_members = [member | guild.members]
     {:reply, member, Map.put(state, guild_id, %{guild | members: new_members})}
   end
 
-  def handle_call({:update, :member, guild_id, user, roles}, state) do
+  def handle_call({:update, :member, guild_id, user, roles}, _from, state) do
     guild = Map.get(state, guild_id)
     member_index = Enum.find_index(guild.members, fn member ->
       member.user.id == user.id
@@ -111,7 +110,7 @@ defmodule Mixcord.Cache.Guild do
     old_member =
       case Enum.fetch(state, member_index) do
         {:ok, old_member} -> old_member
-        :error -> %{user: %{}, roles: %{}}
+        :error -> %{user: %{}, roles: []}
       end
     new_members = List.update_at(guild.members, member_index, fn member ->
       %{member | user: user, roles: roles}
@@ -122,7 +121,7 @@ defmodule Mixcord.Cache.Guild do
     {:reply, {old_member, %{old_member | user: user, roles: roles}}, new_state}
   end
 
-  def handle_call({:delete, :member, guild_id, user}, state) do
+  def handle_call({:delete, :member, guild_id, user}, _from, state) do
     guild = Map.get(state, guild_id)
     member_index = Enum.find_index(guild.members, fn member -> member.user.id == user.id end)
     deleted_member =
@@ -137,13 +136,13 @@ defmodule Mixcord.Cache.Guild do
     {:reply, deleted_member, new_state}
   end
 
-  def handle_call({:create, :role, guild_id, role}, state) do
+  def handle_call({:create, :role, guild_id, role}, _from, state) do
     guild = Map.get(state, guild_id)
     new_roles = [role | guild.roles]
     {:reply, role, Map.put(state, guild_id, %{guild | roles: new_roles})}
   end
 
-  def handle_call({:update, :role, guild_id, role}, state) do
+  def handle_call({:update, :role, guild_id, role}, _from, state) do
     guild = Map.get(state, guild_id)
     role_index = Enum.find_index(guild.roles, fn g_role -> g_role.id == role.id end)
     old_role =
@@ -161,7 +160,7 @@ defmodule Mixcord.Cache.Guild do
     {:reply, {old_role, role}, new_state}
   end
 
-  def handle_call({:delete, :role, guild_id, role_id}, state) do
+  def handle_call({:delete, :role, guild_id, role_id}, _from, state) do
     guild = Map.get(state, guild_id)
     role_index = Enum.find_index(guild.roles, fn g_role -> g_role.id == role_id end)
     old_role =
@@ -176,7 +175,7 @@ defmodule Mixcord.Cache.Guild do
     {:reply, old_role, new_state}
   end
 
-  def handle_call({:update, :emoji, guild_id, emojis}, state) do
+  def handle_call({:update, :emoji, guild_id, emojis}, _from, state) do
     guild = Map.get(state, guild_id)
     old_emojis = guild.emojis
     new_state = Map.update(state, guild_id, %{}, fn guild ->
