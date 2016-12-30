@@ -35,8 +35,10 @@ defmodule Mixcord.Shard.Event do
 
   def handle(:hello, payload, state) do
     if session_exists?(state) do
+      Logger.debug "RESUMING"
       resume(self)
     else
+      Logger.debug "IDENTIFYING"
       identify(self)
     end
 
