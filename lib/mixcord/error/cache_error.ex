@@ -1,6 +1,9 @@
 defmodule Mixcord.Error.CacheError do
   @moduledoc """
   Represents an error when interacting with the cache.
+
+  This occurs likely because a specified item could not be found in the cache.
+  This should only occur when using the banged cache methods.
   """
 
   defexception [:message]
