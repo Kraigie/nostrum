@@ -35,15 +35,13 @@ defmodule Mixcord.Util do
 
   defp get_new_gateway_url do
     case Api.request(:get, Constants.gateway, "") do
-      {:error, status_code: status_code, message: message} ->
-        raise(Mixcord.Error.ApiError, status_code: status_code, message: message)
+      {:error, %{status_code: code, message: message}} ->
+        raise(Mixcord.Error.ApiError, status_code: code, message: message)
       {:ok, body} ->
         body = Poison.decode!(body)
-
         url = body["url"] <> "?encoding=etf&v=6"
           |> to_charlist
         :ets.insert(:gateway_url, {"url", url})
-
         url
     end
   end

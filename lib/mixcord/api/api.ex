@@ -46,7 +46,7 @@ defmodule Mixcord.Api do
 
   Send `content` to the channel identified with `channel_id`.
   Content can be either a binary containing the message you want to send or a `Mixcord.Map.Embed` map.
-  
+
   `tts` is an optional parameter that dictates whether the message should be played over text to speech.
 
   Returns `{:ok, Mixcord.Map.Message}` if successful. `error` otherwise.
@@ -491,7 +491,6 @@ defmodule Mixcord.Api do
       body: body,
       options: options
     }
-
     GenServer.call(Ratelimiter, {:queue, request, nil}, :infinity)
   end
 
