@@ -44,7 +44,7 @@ defmodule Mixcord.Mixfile do
       {:poison, "~> 3.0"},
       {:ex_doc, "~> 0.12", only: :dev},
       {:credo, "~> 0.4", only: [:dev, :test]},
-      {:websocket_client, "~> 1.2"}
+      {:websocket_client, git: "https://github.com/Kraigie/websocket_client.git"}
     ]
   end
 end
