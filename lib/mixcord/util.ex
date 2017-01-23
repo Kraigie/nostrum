@@ -28,7 +28,7 @@ defmodule Mixcord.Util do
 
   def gateway do
     case :ets.lookup(:gateway_url, "url") do
-      [] -> get_new_gateway_url
+      [] -> get_new_gateway_url()
       [{"url", url}] -> url
     end
   end

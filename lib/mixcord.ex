@@ -44,7 +44,7 @@ defmodule Mixcord do
     if !caller, do: raise "Please supply a caller"
     num_shards = if num_shards, do: num_shards, else: 1
 
-    setup_ets_tables
+    setup_ets_tables()
 
     children = [
       worker(Mixcord.Api.Ratelimiter, []),

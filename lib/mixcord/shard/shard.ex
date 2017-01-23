@@ -15,7 +15,7 @@ defmodule Mixcord.Shard do
     # If an individual shard fails, it will be restarted immediately.
     # TODO: Queue reconnects/check this better
     if Util.num_shards > 1, do: Process.sleep(5000)
-    :websocket_client.start_link(Util.gateway, __MODULE__, Payload.state_map(token, caller, shard_num, self))
+    :websocket_client.start_link(Util.gateway, __MODULE__, Payload.state_map(token, caller, shard_num, self()))
   end
 
   def websocket_handle({:binary, payload}, _state, state) do
@@ -39,30 +39,30 @@ defmodule Mixcord.Shard do
   end
 
   def websocket_info({:request_guild_members, payload}, _ws_req, state) do
-    :websocket_client.cast(self, {:binary, payload})
+    :websocket_client.cast(self(), {:binary, payload})
     {:ok, state}
   end
 
   def websocket_info({:status_update, payload}, _ws_req, state) do
     # TODO: Flesh this out - Idle time?
-    :websocket_client.cast(self, {:binary, payload})
+    :websocket_client.cast(self(), {:binary, payload})
     {:ok, state}
   end
 
   def websocket_info({:heartbeat, interval}, _ws_req, state) do
     now = Util.now()
-    :websocket_client.cast(self, {:binary, Payload.heartbeat_payload(state.seq)})
-    Event.heartbeat(self, interval)
+    :websocket_client.cast(self(), {:binary, Payload.heartbeat_payload(state.seq)})
+    Event.heartbeat(self(), interval)
     {:ok, %{state | last_heartbeat: now}}
   end
 
   def websocket_info(:identify, _ws_req, state) do
-    :websocket_client.cast(self, {:binary, Payload.identity_payload(state)})
+    :websocket_client.cast(self(), {:binary, Payload.identity_payload(state)})
     {:ok, state}
   end
 
   def websocket_info(:resume, _ws_req, state) do
-    :websocket_client.cast(self, {:binary, Payload.resume_payload(state)})
+    :websocket_client.cast(self(), {:binary, Payload.resume_payload(state)})
     {:ok, state}
   end
 

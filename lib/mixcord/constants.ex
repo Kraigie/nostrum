@@ -69,11 +69,11 @@ defmodule Mixcord.Constants do
   end
 
   def opcode_from_name(event) do
-    opcodes[event]
+    opcodes()[event]
   end
 
   def atom_from_opcode(opcode) do
-    {k, _} = Enum.find(opcodes, fn({_, v}) -> v == opcode end)
+    {k, _} = Enum.find(opcodes(), fn({_, v}) -> v == opcode end)
     k |> String.downcase |> String.to_atom
   end
 

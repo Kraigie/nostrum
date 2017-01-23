@@ -21,7 +21,7 @@ defmodule Mixcord.Shard.Event do
 
   def handle(:heartbeat, _payload, state) do
     Logger.debug "HEARTBEAT PING"
-    :websocket_client.cast(self, {:binary, Payload.heartbeat_payload(state.seq)})
+    :websocket_client.cast(self(), {:binary, Payload.heartbeat_payload(state.seq)})
     state
   end
 
@@ -36,22 +36,22 @@ defmodule Mixcord.Shard.Event do
   def handle(:hello, payload, state) do
     if session_exists?(state) do
       Logger.debug "RESUMING"
-      resume(self)
+      resume(self())
     else
       Logger.debug "IDENTIFYING"
-      identify(self)
+      identify(self())
     end
 
     # TODO: Remove duplicate heartbeat after resuming (or any other :hello messages).
     # Likely want to move heartbeat to its own process that we can kill. Will need a process per shard.
     # Will need to store heartbeat interval?
-    heartbeat(self, payload.d.heartbeat_interval)
+    heartbeat(self(), payload.d.heartbeat_interval)
     state
   end
 
   def handle(:invalid_session, _payload, state) do
     Logger.debug "INVALID_SESSION"
-    identify(self)
+    identify(self())
     state
   end
 

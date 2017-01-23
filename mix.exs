@@ -18,7 +18,7 @@ defmodule Mixcord.Mixfile do
   # Type "mix help compile.app" for more information
   def application do
     [
-      applications: [:httpoison, :logger],
+      extra_applications: [:logger],
       mod: {Mixcord, []}
     ]
   end

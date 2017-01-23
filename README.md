@@ -2,7 +2,7 @@
 
 Mixcord is a wrapper for the Discord API made in [Elixir](http://elixir-lang.org/).
 
-Mixcord currently supports the latest stable release of Elixir, v. 1.3.4.
+Mixcord currently supports the latest stable release of Elixir, v. 1.4
 
 **No attempts will be made to support older versions of Elixir**. You can expect Mixcord to be updated beside Elixir for the forseeable future.
 
