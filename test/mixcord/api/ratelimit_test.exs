@@ -3,21 +3,25 @@ defmodule RatelimitTest do
 
   @test_channel 179679229036724225
 
-  test "one route no 429 sync" do
+  test "one route sync no 429" do
     result = Enum.map(1..10, fn x -> Mixcord.Api.create_message!(@test_channel, "#{x}") end)
     assert Enum.all?(result, fn x -> elem(x, 0) == :ok end) == true
   end
 
-  test "one route no 429 async" do
-    result = Enum.map(1..10, fn x -> Task.start(fn -> Mixcord.Api.create_message!(@test_channel, "#{x}") end) end)
-    assert Enum.all?(result, fn x -> elem(x, 0) == :ok end) == true
+  test "one route async no 429" do
+    responses =
+      1..10
+      |> Task.async_stream(&Mixcord.Api.create_message!(@test_channel, "#{&1}"))
+      |> Enum.to_list()
+
+    assert Enum.all?(responses, fn x -> elem(x, 0) == :ok end) == true
   end
 
-  test "multi route no 429 sync" do
-
+  test "multi route sync no 429" do
+    
   end
 
-  test "multi route no 429 async" do
+  test "multi route async no 429" do
 
   end
 end

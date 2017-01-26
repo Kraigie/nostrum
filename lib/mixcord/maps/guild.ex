@@ -16,7 +16,7 @@ defmodule Mixcord.Map.Guild do
   @type icon :: String.t
 
   @typedoc "The hash of the guild's splash"
-  @type splash :: String.test
+  @type splash :: String.t
 
   @typedoc "The id of the guild owner"
   @type owner_id :: integer

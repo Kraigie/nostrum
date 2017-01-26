@@ -88,7 +88,6 @@ defmodule Mixcord.Shard do
   end
 
   def websocket_terminate(reason, _ws_req, _state) do
-    #SO TRIGGERED I CANT GET END EVENT CODES
     Logger.debug "WS TERMINATED BECAUSE: #{inspect reason}"
     :ok
   end
