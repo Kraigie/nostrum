@@ -4,11 +4,11 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="ExDoc v0.14.3">
+    <meta name="generator" content="ExDoc v0.14.5">
     <title>Mixcord.Api – mixcord v0.1.0</title>
     <link rel="stylesheet" href="dist/app-091c05798a.css" />
     
-    <script src="dist/sidebar_items.js"></script>
+    <script src="dist/sidebar_items-912fb2124f.js"></script>
   </head>
   <body data-type="modules">
     <script>if(localStorage.getItem('night-mode')) document.body.className += ' night-mode';</script>
@@ -92,6 +92,24 @@
   </div>
   
     <div class="summary-synopsis"><p>Represents a failed response from the API</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:limit/0">limit()</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Represents a limit used to retrieve messages</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:locator/0">locator()</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Represents a tuple used to locate messages</p>
 </div>
   
 </div>
@@ -376,13 +394,22 @@
 </div>
 <div class="summary-row">
   <div class="summary-signature">
-    <a href="#get_channel_messages/2">get_channel_messages(channel_id, options)</a>
+    <a href="#get_channel_messages/3">get_channel_messages(channel_id, limit, locator)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Retrieve messages from a channel</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#get_channel_messages!/3">get_channel_messages!(channel_id, limit, locator)</a>
   </div>
   
 </div>
 <div class="summary-row">
   <div class="summary-signature">
-    <a href="#get_channel_messages!/2">get_channel_messages!(channel_id, options)</a>
+    <a href="#get_channel_messages_call/3">get_channel_messages_call(channel_id, limit, locator)</a>
   </div>
   
 </div>
@@ -431,6 +458,18 @@
 <div class="summary-row">
   <div class="summary-signature">
     <a href="#get_member/2">get_member(guild_id, user_id)</a>
+  </div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#get_pinned_messages/1">get_pinned_messages(channel_id)</a>
+  </div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#get_pinned_messages!/1">get_pinned_messages!(channel_id)</a>
   </div>
   
 </div>
@@ -529,13 +568,7 @@
 </div>
 <div class="summary-row">
   <div class="summary-signature">
-    <a href="#update_stats/2">update_stats(status, game)</a>
-  </div>
-  
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#update_stats/3">update_stats(pid, status, game)</a>
+    <a href="#update_status/2">update_status(status, game)</a>
   </div>
   
 </div>
@@ -577,7 +610,7 @@
     
       <div class="specs">
         
-          <pre><a href="#t:error/0">error</a> :: {:error, <a href="Mixcord.Error.ApiError.html#t:t/0">Mixcord.Error.ApiError.t</a>}</pre>
+          <pre>error() :: {:error, <a href="Mixcord.Error.ApiError.html#t:t/0">Mixcord.Error.ApiError.t</a>}</pre>
         
       </div>
     
@@ -585,6 +618,58 @@
   <section class="docstring">
     <p>Represents a failed response from the API.</p>
 <p>This occurs when hackney or HTTPoison fail, or when the API doesn’t respond with <code class="inline">200</code> or <code class="inline">204</code>.</p>
+
+  </section>
+</div>
+<div class="detail" id="t:limit/0">
+  
+  <div class="detail-header">
+    <a href="#t:limit/0" class="detail-link" title="Link to this type">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">limit()</span>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>limit() :: <a href="https://hexdocs.pm/elixir/Integer.html#t:t/0">Integer.t</a> | :infinity</pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>Represents a limit used to retrieve messages.</p>
+<p>Integer number of messages, or :infinity to retrieve all messages.</p>
+
+  </section>
+</div>
+<div class="detail" id="t:locator/0">
+  
+  <div class="detail-header">
+    <a href="#t:locator/0" class="detail-link" title="Link to this type">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">locator()</span>
+    
+    
+    
+      <div class="specs">
+        
+          <pre><a href="#t:locator/0">locator</a> ::
+  {:before, <a href="https://hexdocs.pm/elixir/Integer.html#t:t/0">Integer.t</a>} |
+  {:after, <a href="https://hexdocs.pm/elixir/Integer.html#t:t/0">Integer.t</a>} |
+  {:around, <a href="https://hexdocs.pm/elixir/Integer.html#t:t/0">Integer.t</a>} |
+  {}</pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>Represents a tuple used to locate messages.</p>
+<p>The first element of the tuple is an atom.
+The second element will be a message_id as an integer.
+The tuple can also be empty to search from the most recent message in the channel</p>
 
   </section>
 </div>
@@ -836,7 +921,11 @@ Returns {:ok} if successful.</p>
     
       <div class="specs">
         
-          <pre>create_message(<a href="http://elixir-lang.org/docs/stable/elixir/String.html#t:t/0">String.t</a>, <a href="http://elixir-lang.org/docs/stable/elixir/String.html#t:t/0">String.t</a>, boolean) ::
+          <pre>create_message(<a href="https://hexdocs.pm/elixir/Integer.html#t:t/0">Integer.t</a>, <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>, boolean) ::
+  <a href="#t:error/0">error</a> |
+  {:ok, <a href="Mixcord.Map.Message.html#t:t/0">Mixcord.Map.Message.t</a>}</pre>
+        
+          <pre>create_message(<a href="https://hexdocs.pm/elixir/Integer.html#t:t/0">Integer.t</a>, <a href="https://hexdocs.pm/elixir/Map.html#t:t/0">Map.t</a>, boolean) ::
   <a href="#t:error/0">error</a> |
   {:ok, <a href="Mixcord.Map.Message.html#t:t/0">Mixcord.Map.Message.t</a>}</pre>
         
@@ -846,7 +935,8 @@ Returns {:ok} if successful.</p>
   <section class="docstring">
     <p>Send a message to a channel.</p>
 <p>Send <code class="inline">content</code> to the channel identified with <code class="inline">channel_id</code>.
-<code class="inline">tts</code> is an optional parameter that dictates whether the message should be played over text to speech.</p>
+Content can be either a binary containing the message you want to send or a <code class="inline">Mixcord.Map.Embed</code> map.</p>
+<p><code class="inline">tts</code> is an optional parameter that dictates whether the message should be played over text to speech.</p>
 <p>Returns <code class="inline">{:ok, Mixcord.Map.Message}</code> if successful. <code class="inline">error</code> otherwise.</p>
 
   </section>
@@ -865,7 +955,7 @@ Returns {:ok} if successful.</p>
     
       <div class="specs">
         
-          <pre>create_message!(<a href="http://elixir-lang.org/docs/stable/elixir/String.html#t:t/0">String.t</a>, <a href="http://elixir-lang.org/docs/stable/elixir/String.html#t:t/0">String.t</a>, boolean) ::
+          <pre>create_message!(<a href="https://hexdocs.pm/elixir/Integer.html#t:t/0">Integer.t</a>, <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>, boolean) ::
   no_return |
   <a href="Mixcord.Map.Message.html#t:t/0">Mixcord.Map.Message.t</a></pre>
         
@@ -998,7 +1088,7 @@ Returns <a href="Mixcord.Map.Message.html"><code class="inline">Mixcord.Map.Mess
     
       <div class="specs">
         
-          <pre>delete_message(<a href="http://elixir-lang.org/docs/stable/elixir/String.html#t:t/0">String.t</a>, <a href="http://elixir-lang.org/docs/stable/elixir/String.html#t:t/0">String.t</a>) :: <a href="#t:error/0">error</a> | {:ok}</pre>
+          <pre>delete_message(<a href="https://hexdocs.pm/elixir/Integer.html#t:t/0">Integer.t</a>, <a href="https://hexdocs.pm/elixir/Integer.html#t:t/0">Integer.t</a>) :: <a href="#t:error/0">error</a> | {:ok}</pre>
         
       </div>
     
@@ -1022,7 +1112,7 @@ Returns <a href="Mixcord.Map.Message.html"><code class="inline">Mixcord.Map.Mess
     
       <div class="specs">
         
-          <pre>delete_message!(<a href="http://elixir-lang.org/docs/stable/elixir/String.html#t:t/0">String.t</a>, <a href="http://elixir-lang.org/docs/stable/elixir/String.html#t:t/0">String.t</a>) :: no_return | {:ok}</pre>
+          <pre>delete_message!(<a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>, <a href="https://hexdocs.pm/elixir/Integer.html#t:t/0">Integer.t</a>) :: no_return | {:ok}</pre>
         
       </div>
     
@@ -1159,7 +1249,7 @@ Returns {:ok} if successful.</p>
     
       <div class="specs">
         
-          <pre>edit_message(<a href="http://elixir-lang.org/docs/stable/elixir/String.html#t:t/0">String.t</a>, <a href="http://elixir-lang.org/docs/stable/elixir/String.html#t:t/0">String.t</a>, <a href="http://elixir-lang.org/docs/stable/elixir/String.html#t:t/0">String.t</a>) ::
+          <pre>edit_message(<a href="https://hexdocs.pm/elixir/Integer.html#t:t/0">Integer.t</a>, <a href="https://hexdocs.pm/elixir/Integer.html#t:t/0">Integer.t</a>, <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>) ::
   <a href="#t:error/0">error</a> |
   {:ok, <a href="Mixcord.Map.Message.html#t:t/0">Mixcord.Map.Message.t</a>}</pre>
         
@@ -1185,7 +1275,7 @@ Returns {:ok} if successful.</p>
     
       <div class="specs">
         
-          <pre>edit_message!(<a href="http://elixir-lang.org/docs/stable/elixir/String.html#t:t/0">String.t</a>, <a href="http://elixir-lang.org/docs/stable/elixir/String.html#t:t/0">String.t</a>, <a href="http://elixir-lang.org/docs/stable/elixir/String.html#t:t/0">String.t</a>) ::
+          <pre>edit_message!(<a href="https://hexdocs.pm/elixir/Integer.html#t:t/0">Integer.t</a>, <a href="https://hexdocs.pm/elixir/Integer.html#t:t/0">Integer.t</a>, <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>) ::
   no_return |
   {:ok, <a href="Mixcord.Map.Message.html#t:t/0">Mixcord.Map.Message.t</a>}</pre>
         
@@ -1290,13 +1380,40 @@ Returns the edited <a href="Mixcord.Map.Message.html"><code class="inline">Mixco
     
   </section>
 </div>
-<div class="detail" id="get_channel_messages/2">
+<div class="detail" id="get_channel_messages/3">
   
   <div class="detail-header">
-    <a href="#get_channel_messages/2" class="detail-link" title="Link to this function">
+    <a href="#get_channel_messages/3" class="detail-link" title="Link to this function">
       <i class="icon-link"></i>
     </a>
-    <span class="signature">get_channel_messages(channel_id, options)</span>
+    <span class="signature">get_channel_messages(channel_id, limit, locator)</span>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>get_channel_messages(<a href="https://hexdocs.pm/elixir/Integer.html#t:t/0">Integer.t</a>, <a href="#t:limit/0">limit</a>, <a href="#t:locator/0">locator</a>) ::
+  <a href="#t:error/0">error</a> |
+  {:ok, [<a href="Mixcord.Map.Message.html#t:t/0">Mixcord.Map.Message.t</a>]}</pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>Retrieve messages from a channel.</p>
+<p>Retrieves <code class="inline">limit</code> number of messages from the channel with id <code class="inline">channel_id</code>.
+<code class="inline">locator</code> is a tuple indicating what messages you want to retrieve.</p>
+<p>Returns <code class="inline">{:ok, [Mixcord.Map.Message]}</code> if successful. <code class="inline">error</code> otherwise.</p>
+
+  </section>
+</div>
+<div class="detail" id="get_channel_messages!/3">
+  
+  <div class="detail-header">
+    <a href="#get_channel_messages!/3" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">get_channel_messages!(channel_id, limit, locator)</span>
     
     
     
@@ -1305,13 +1422,13 @@ Returns the edited <a href="Mixcord.Map.Message.html"><code class="inline">Mixco
     
   </section>
 </div>
-<div class="detail" id="get_channel_messages!/2">
+<div class="detail" id="get_channel_messages_call/3">
   
   <div class="detail-header">
-    <a href="#get_channel_messages!/2" class="detail-link" title="Link to this function">
+    <a href="#get_channel_messages_call/3" class="detail-link" title="Link to this function">
       <i class="icon-link"></i>
     </a>
-    <span class="signature">get_channel_messages!(channel_id, options)</span>
+    <span class="signature">get_channel_messages_call(channel_id, limit, locator)</span>
     
     
     
@@ -1440,6 +1557,36 @@ Returns the edited <a href="Mixcord.Map.Message.html"><code class="inline">Mixco
     
   </section>
 </div>
+<div class="detail" id="get_pinned_messages/1">
+  
+  <div class="detail-header">
+    <a href="#get_pinned_messages/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">get_pinned_messages(channel_id)</span>
+    
+    
+    
+  </div>
+  <section class="docstring">
+    
+  </section>
+</div>
+<div class="detail" id="get_pinned_messages!/1">
+  
+  <div class="detail-header">
+    <a href="#get_pinned_messages!/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">get_pinned_messages!(channel_id)</span>
+    
+    
+    
+  </div>
+  <section class="docstring">
+    
+  </section>
+</div>
 <div class="detail" id="get_token/0">
   
   <div class="detail-header">
@@ -1452,7 +1599,7 @@ Returns the edited <a href="Mixcord.Map.Message.html"><code class="inline">Mixco
     
       <div class="specs">
         
-          <pre>get_token :: <a href="http://elixir-lang.org/docs/stable/elixir/String.html#t:t/0">String.t</a></pre>
+          <pre>get_token() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a></pre>
         
       </div>
     
@@ -1670,28 +1817,13 @@ Returns {:ok} if successful.</p>
     
   </section>
 </div>
-<div class="detail" id="update_stats/2">
+<div class="detail" id="update_status/2">
   
   <div class="detail-header">
-    <a href="#update_stats/2" class="detail-link" title="Link to this function">
+    <a href="#update_status/2" class="detail-link" title="Link to this function">
       <i class="icon-link"></i>
     </a>
-    <span class="signature">update_stats(status, game)</span>
-    
-    
-    
-  </div>
-  <section class="docstring">
-    
-  </section>
-</div>
-<div class="detail" id="update_stats/3">
-  
-  <div class="detail-header">
-    <a href="#update_stats/3" class="detail-link" title="Link to this function">
-      <i class="icon-link"></i>
-    </a>
-    <span class="signature">update_stats(pid, status, game)</span>
+    <span class="signature">update_status(status, game)</span>
     
     
     
@@ -1726,7 +1858,7 @@ Returns {:ok} if successful.</p>
         <p>
           <span class="line">
             Built using
-            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" rel="help" target="_blank">ExDoc</a> (v0.14.3),
+            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" rel="help" target="_blank">ExDoc</a> (v0.14.5),
           </span>
           <span class="line">
             designed by
@@ -1739,7 +1871,7 @@ Returns {:ok} if successful.</p>
   </div>
 </section>
 </div>
-  <script src="dist/app-574613960f.js"></script>
+  <script src="dist/app-4aef34ad5f.js"></script>
   </body>
 </html>
 

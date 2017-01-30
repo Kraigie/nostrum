@@ -78,7 +78,9 @@ defmodule Mixcord.Map.Guild do
   @typedoc "List of simple presence maps"
   @type presences :: list(Map.t)
 
-  @type t :: Map.t
+  @type t :: %__MODULE__{
+    id: id
+  }
 
   @doc """
   Represents a Discord Guild.
