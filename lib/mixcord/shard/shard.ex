@@ -22,8 +22,7 @@ defmodule Mixcord.Shard do
     payload = :erlang.binary_to_term(payload)
     new_state = Constants.atom_from_opcode(payload.op)
       |> Event.handle(payload, state)
-
-    {:ok, %{new_state | seq: payload.s}}
+    {:ok, %{new_state | seq: payload.s || state.seq}}
   end
 
   def update_status(pid, status, game) do

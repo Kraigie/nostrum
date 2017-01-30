@@ -40,12 +40,13 @@ defmodule Mixcord.Shard.Event do
     else
       Logger.debug "IDENTIFYING"
       identify(self())
+
+      # TODO: Remove duplicate heartbeat after resuming (or any other :hello messages).
+      # Likely want to move heartbeat to its own process that we can kill. Will need a process per shard?
+      # Will need to store heartbeat interval?
+      heartbeat(self(), payload.d.heartbeat_interval)
     end
 
-    # TODO: Remove duplicate heartbeat after resuming (or any other :hello messages).
-    # Likely want to move heartbeat to its own process that we can kill. Will need a process per shard.
-    # Will need to store heartbeat interval?
-    heartbeat(self(), payload.d.heartbeat_interval)
     state
   end
 
