@@ -4,6 +4,8 @@ defmodule Mixcord.Shard.Payload do
   alias Mixcord.Constants
   alias Mixcord.Util
 
+  @large_threshold 250
+
   def state_map(token, caller, shard_num, pid) do
     %{
       token: token,
@@ -35,7 +37,7 @@ defmodule Mixcord.Shard.Payload do
         "$referring_domain" => ""
       },
       "compress" => false,
-      "large_threshold" => 250,
+      "large_threshold" => @large_threshold,
       "shard" => [state.shard_num, Util.num_shards]
     }
     build_payload(Constants.opcode_from_name("IDENTIFY"), data)

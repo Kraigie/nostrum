@@ -31,6 +31,8 @@ defmodule Mixcord.Shard.Dispatch do
   alias Mixcord.Util
   require Logger
 
+  @large_threshold 250
+
   def handle(payload, state) do
     Logger.debug payload.t
     payload = Util.safe_atom_map(payload)
@@ -54,7 +56,7 @@ defmodule Mixcord.Shard.Dispatch do
   def handle_event({:BUILD_BAN_REMOVE, _p}, _state), do: :noop
 
   def handle_event({:GUILD_CREATE, p}, state) do
-    if p.member_count < 250 do
+    if p.member_count < @large_threshold do
       Guild.create(p)
     else
       Guild.create(p, state.shard_pid)

@@ -6,6 +6,9 @@ defmodule Mixcord.Api.Ratelimiter do
   alias Mixcord.Util
   require Logger
 
+  @gregorian_epoch 62_167_219_200
+  @sanity_wait 500
+
   def start_link do
     GenServer.start_link(__MODULE__, [], name: Ratelimiter)
   end
@@ -58,7 +61,7 @@ defmodule Mixcord.Api.Ratelimiter do
 
   def wait_for_timeout(request, timeout, from) do
     Logger.debug "RATELIMITER: Waiting #{timeout}ms to process request with route #{request.route}"
-    Process.sleep(timeout + 500) # Small wait for sanity sake
+    Process.sleep(timeout + @sanity_wait) # Small wait for sanity sake
     GenServer.call(Ratelimiter, {:queue, request, from}, :infinity)
   end
 
@@ -70,7 +73,7 @@ defmodule Mixcord.Api.Ratelimiter do
   end
 
   defp erl_datetime_to_timestamp(datetime) do
-    (:calendar.datetime_to_gregorian_seconds(datetime) - 62_167_219_200) * 1000
+    (:calendar.datetime_to_gregorian_seconds(datetime) - @gregorian_epoch) * 1000
   end
 
   defp value_from_rltuple(tuple) when is_nil(tuple), do: nil
