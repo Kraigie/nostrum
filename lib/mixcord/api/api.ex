@@ -16,6 +16,13 @@ defmodule Mixcord.Api do
   @type error :: {:error, Mixcord.Error.ApiError.t}
 
   @typedoc """
+  Represents a limit used to retrieve messages.
+
+  Integer number of messages, or :infinity to retrieve all messages.
+  """
+  @type limit :: Integer.t | :infinity
+
+  @typedoc """
   Represents a tuple used to locate messages.
 
   The first element of the tuple is an atom.
@@ -25,19 +32,34 @@ defmodule Mixcord.Api do
   @type locator :: {:before, Integer.t} | {:after, Integer.t} | {:around, Integer.t} | {}
 
   @typedoc """
-  Represents a limit used to retrieve messages.
+  Represents different statuses the bot can have.
 
-  Integer number of messages, or :infinity to retrieve all messages.
+  `:dnd` - Red circle.
+  `:idle` - Yellow circle.
+  `:online` - Green circle.
+  `invisible` - The bot will appear offline.
   """
-  @type limit :: Integer.t | :infinity
+  @type status :: :dnd | :idle | :online | :invisible
 
-  def update_status(pid, _status, game) when not is_map(game) and not is_pid(pid), do: raise "ERROR: Invalid game map or shard pid #{inspect game} #{inspect pid}"
+  @doc """
+  Updates the status of the bot for a certain shard.
+
+  `pid` is the pid of the shard whose status you want to update. To update the status for all shards see `Mixcord.Api.update_status/2`
+  `status` is an atom that describes the status of the bot. See `Mixcord.Api.status.t` for available options.
+  `game` is the text that will display 'playing' status of the game. This is the text below the bot's name in the sidebar. Empty string will clear.
+  """
+  @spec update_status(Pid.t, status, String.t) :: no_return
   def update_status(pid, status, game) do
-    Shard.update_status(pid, status, game)
+    Shard.update_status(pid, to_string(status), game)
   end
 
-  def update_status(_status, game) when not is_map(game), do: raise "ERROR: Invalid game map #{inspect game}"
-  def update_status(status, game) when is_map(game) do
+  @doc """
+  Updates the status of the bot for all shards.
+
+  For more information see `Mixcord.Api.update_status/3`
+  """
+  @spec update_status(status, String.t) :: no_return
+  def update_status(status, game) do
     Shard.Supervisor.update_status(status, game)
   end
 

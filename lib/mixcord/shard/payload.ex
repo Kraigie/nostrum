@@ -6,6 +6,7 @@ defmodule Mixcord.Shard.Payload do
 
   @large_threshold 250
 
+  @doc false
   def state_map(token, caller, shard_num, pid) do
     %{
       token: token,
@@ -54,11 +55,13 @@ defmodule Mixcord.Shard.Payload do
   end
 
   @doc false
-  def status_update_payload(idle_since, game) do
+  def status_update_payload(idle_since, game, status, afk) do
     data = %{
-      "idle_since": idle_since,
-      "game": %{
-        "name": game.name
+      "since" => idle_since,
+      "afk" => afk,
+      "status" => status,
+      "game" => %{
+        "name" => game
       }
     }
     build_payload(Constants.opcode_from_name("STATUS_UPDATE"), data)
@@ -67,9 +70,9 @@ defmodule Mixcord.Shard.Payload do
   @doc false
   def request_members_payload(guild_id, limit) do
     data = %{
-      "guild_id": guild_id,
-      "query": "",
-      "limit": limit
+      "guild_id" => guild_id,
+      "query" => "",
+      "limit" => limit
     }
     build_payload(Constants.opcode_from_name("REQUEST_GUILD_MEMBERS"), data)
   end

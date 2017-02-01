@@ -28,9 +28,14 @@ defmodule Mixcord.Shard do
   end
 
   def update_status(pid, status, game) do
-    # TODO: Handle this properly
-    idle_since = status
-    payload = Payload.status_update_payload(idle_since, game)
+    {idle_since, afk} =
+      case status do
+        "idle" ->
+          {Util.now(), true}
+        _ ->
+          {0, false}
+      end
+    payload = Payload.status_update_payload(idle_since, game, status, afk)
     send(pid, {:status_update, payload})
   end
 
