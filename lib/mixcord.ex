@@ -42,14 +42,14 @@ defmodule Mixcord do
 
     if !token, do: raise "Please supply a token"
     if !caller, do: raise "Please supply a caller"
-    num_shards = if num_shards, do: num_shards, else: 1
+    actual_num_shards = if num_shards, do: num_shards, else: 1
 
     setup_ets_tables()
 
     children = [
       worker(Mixcord.Api.Ratelimiter, []),
       supervisor(Mixcord.Cache.Supervisor, []),
-      supervisor(Mixcord.Shard.Supervisor, [token, caller, num_shards])
+      supervisor(Mixcord.Shard.Supervisor, [token, caller, actual_num_shards])
     ]
 
     Supervisor.start_link(children, strategy: :one_for_one)

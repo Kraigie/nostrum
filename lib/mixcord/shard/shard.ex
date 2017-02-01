@@ -4,8 +4,7 @@ defmodule Mixcord.Shard do
   @behaviour :websocket_client
 
   alias Mixcord.Shard.{Event, Payload}
-  alias Mixcord.Constants
-  alias Mixcord.Util
+  alias Mixcord.{Constants, Util}
   require Logger
 
   @connect_wait 5000
@@ -50,7 +49,6 @@ defmodule Mixcord.Shard do
   end
 
   def websocket_info({:status_update, payload}, _ws_req, state) do
-    # TODO: Flesh this out - Idle time?
     :websocket_client.cast(self(), {:binary, payload})
     {:ok, state}
   end

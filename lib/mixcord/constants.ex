@@ -2,8 +2,8 @@ defmodule Mixcord.Constants do
   @moduledoc false
 
   # TODO: https://gist.github.com/SinisterRectus/9518f3e7d0d1ccb4335b2a0d389c30b0
-  def base_url(),                                         do: "https://discordapp.com/api/v6"
-  def gateway(),                                          do: "/gateway"
+  def base_url,                                           do: "https://discordapp.com/api/v6"
+  def gateway,                                            do: "/gateway"
 
   def channel(channel_id),                                do: "/channels/#{channel_id}"
   def channel_messages(channel_id),                       do: "/channels/#{channel_id}/messages"
@@ -15,7 +15,7 @@ defmodule Mixcord.Constants do
   def channel_pins(channel_id),                           do: "/channels/#{channel_id}/pins"
   def channel_pin(channel_id, message_id),                do: "/channels/#{channel_id}/pins/#{message_id}"
 
-  def guilds(),                                           do: "/guilds"
+  def guilds,                                             do: "/guilds"
   def guild(guild_id),                                    do: "/guilds/#{guild_id}"
   def guild_channels(guild_id),                           do: "/guilds/#{guild_id}/channels"
   def guild_members(guild_id),                            do: "/guilds/#{guild_id}/members/"
@@ -34,17 +34,17 @@ defmodule Mixcord.Constants do
 
   def user(user_id),                                      do: "/users/#{user_id}"
 
-  def me(),                                               do: "/users/@me"
-  def me_guilds(),                                        do: "/users/@me/guilds"
+  def me,                                                 do: "/users/@me"
+  def me_guilds,                                          do: "/users/@me/guilds"
   def me_guild(guild_id),                                 do: "/users/@me/guilds/#{guild_id}"
-  def me_channels(),                                      do: "/users/@me/channels"
-  def me_connections(),                                   do: "/users/@me/connections"
+  def me_channels,                                        do: "/users/@me/channels"
+  def me_connections,                                     do: "/users/@me/connections"
 
   def invite(invite_code),                                do: "/invites/#{invite_code}"
-  def regions(),                                          do: "/voice/regions"
+  def regions,                                            do: "/voice/regions"
 
   def channel_permissions(chanID),                        do: "/channels/#{chanID}/permissions"
-  def channels(),                                         do: "/channels"
+  def channels,                                           do: "/channels"
   def channel_call_ring(channel_id),                      do: "/channels/#{channel_id}/call/ring"
   def group_recipient(group_id, user_id),                 do: "/channels/#{group_id}/recipients/#{user_id}"
   def guild_me_nick(guild_id),                            do: "/guilds/#{guild_id}/members/@me/nick"

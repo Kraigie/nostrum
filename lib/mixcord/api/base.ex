@@ -21,10 +21,10 @@ defmodule Mixcord.Api.Base do
   end
 
   defp process_request_headers(headers) do
-    headers = [{"User-Agent", "DiscordBot (https://github.com/kraigie/mixcord, #{@version})"} | headers]
-    headers = [{"content-type", "application/json"} | headers]
-    headers = [{"Authorization", "Bot #{@token}"} | headers]
-    headers
+    user_agent = [{"User-Agent", "DiscordBot (https://github.com/kraigie/mixcord, #{@version})"} | headers]
+    content_type = [{"content-type", "application/json"} | user_agent]
+    auth = [{"Authorization", "Bot #{@token}"} | content_type]
+    auth
   end
 
   defp process_response_body(body) do

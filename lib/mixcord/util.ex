@@ -1,8 +1,7 @@
 defmodule Mixcord.Util do
   @moduledoc false
 
-  alias Mixcord.Api
-  alias Mixcord.Constants
+  alias Mixcord.{Api, Constants}
 
   def empty_cache do
     Mixcord.Cache.Supervisor.empty_cache

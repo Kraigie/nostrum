@@ -5,8 +5,7 @@ defmodule Mixcord.Cache.Guild do
 
   use GenServer
   alias Mixcord.Cache.{Channel, User}
-  alias Mixcord.Shard
-  alias Mixcord.Util
+  alias Mixcord.{Shard, Util}
 
   @doc false
   def start_link do

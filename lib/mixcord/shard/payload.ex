@@ -1,8 +1,7 @@
 defmodule Mixcord.Shard.Payload do
   @moduledoc false
 
-  alias Mixcord.Constants
-  alias Mixcord.Util
+  alias Mixcord.{Constants, Util}
 
   @large_threshold 250
 

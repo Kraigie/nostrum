@@ -5,8 +5,7 @@ defmodule Mixcord.Api do
 
   # TODO: Upload file
 
-  alias Mixcord.Constants
-  alias Mixcord.Shard
+  alias Mixcord.{Constants, Shard}
 
   @typedoc """
   Represents a failed response from the API.
@@ -531,7 +530,7 @@ defmodule Mixcord.Api do
   Returns the token of the bot.
   """
   @spec get_token() :: String.t
-  def get_token() do
+  def get_token do
     Application.get_env(:mixcord, :token)
   end
 
