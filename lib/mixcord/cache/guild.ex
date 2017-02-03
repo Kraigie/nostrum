@@ -12,6 +12,7 @@ defmodule Mixcord.Cache.Guild do
     GenServer.start_link(__MODULE__, %{}, name: Guilds)
   end
 
+  # TODO: Saving process state? http://crypt.codemancers.com/posts/2016-01-24-understanding-exit-signals-in-erlang-slash-elixir/
   def init(state) do
     {:ok, state}
   end
