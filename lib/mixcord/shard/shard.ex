@@ -85,7 +85,7 @@ defmodule Mixcord.Shard do
     if state.reconnect_attempts > 3 do
       {:close, reason, state}
     else
-      :timer.sleep(5000)
+      :timer.sleep(5000 * :math.pow(1.5, state.reconnect_attempts))
       Logger.debug "RECONNECT ATTEMPT NUMBER #{state.reconnect_attempts + 1}"
       {:reconnect, %{state | reconnect_attempts: state.reconnect_attempts + 1}}
     end
