@@ -113,6 +113,15 @@
 </div>
   
 </div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:status/0">status()</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Represents different statuses the bot can have</p>
+</div>
+  
+</div>
 
   </div>
 
@@ -571,11 +580,17 @@
     <a href="#update_status/2">update_status(status, game)</a>
   </div>
   
+    <div class="summary-synopsis"><p>Updates the status of the bot for all shards</p>
+</div>
+  
 </div>
 <div class="summary-row">
   <div class="summary-signature">
     <a href="#update_status/3">update_status(pid, status, game)</a>
   </div>
+  
+    <div class="summary-synopsis"><p>Updates the status of the bot for a certain shard</p>
+</div>
   
 </div>
 
@@ -670,6 +685,32 @@
 <p>The first element of the tuple is an atom.
 The second element will be a message_id as an integer.
 The tuple can also be empty to search from the most recent message in the channel</p>
+
+  </section>
+</div>
+<div class="detail" id="t:status/0">
+  
+  <div class="detail-header">
+    <a href="#t:status/0" class="detail-link" title="Link to this type">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">status()</span>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>status() :: :dnd | :idle | :online | :invisible</pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>Represents different statuses the bot can have.</p>
+<p><code class="inline">:dnd</code> - Red circle.
+<code class="inline">:idle</code> - Yellow circle.
+<code class="inline">:online</code> - Green circle.
+<code class="inline">invisible</code> - The bot will appear offline.</p>
 
   </section>
 </div>
@@ -1827,9 +1868,17 @@ Returns {:ok} if successful.</p>
     
     
     
+      <div class="specs">
+        
+          <pre>update_status(<a href="#t:status/0">status</a>, <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>) :: no_return</pre>
+        
+      </div>
+    
   </div>
   <section class="docstring">
-    
+    <p>Updates the status of the bot for all shards.</p>
+<p>For more information see <a href="Mixcord.Api.html#update_status/3"><code class="inline">Mixcord.Api.update_status/3</code></a></p>
+
   </section>
 </div>
 <div class="detail" id="update_status/3">
@@ -1842,9 +1891,19 @@ Returns {:ok} if successful.</p>
     
     
     
+      <div class="specs">
+        
+          <pre>update_status(Pid.t, <a href="#t:status/0">status</a>, <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>) :: no_return</pre>
+        
+      </div>
+    
   </div>
   <section class="docstring">
-    
+    <p>Updates the status of the bot for a certain shard.</p>
+<p><code class="inline">pid</code> is the pid of the shard whose status you want to update. To update the status for all shards see <a href="Mixcord.Api.html#update_status/2"><code class="inline">Mixcord.Api.update_status/2</code></a>
+<code class="inline">status</code> is an atom that describes the status of the bot. See <code class="inline">Mixcord.Api.status.t</code> for available options.
+<code class="inline">game</code> is the text that will display ‘playing’ status of the game. This is the text below the bot’s name in the sidebar. Empty string will clear.</p>
+
   </section>
 </div>
 
