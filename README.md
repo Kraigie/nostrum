@@ -2,11 +2,9 @@
 
 Mixcord is a wrapper for the Discord API made in [Elixir](http://elixir-lang.org/).
 
-Mixcord currently supports the latest stable release of Elixir, v. 1.4
+Mixcord currently supports the latest stable release of Elixir, v. 1.4. You can expect Mixcord to be updated beside Elixir for the forseeable future.
 
-**No attempts will be made to support older versions of Elixir**. You can expect Mixcord to be updated beside Elixir for the forseeable future.
-
-Mixcord is currently undergoing rapid development. Breaking changes should be expected to be made with every commit up until a stable version is released.
+Breaking changes should be expected to be made with every commit up until a stable version is released.
 We'll be loosely following [semver](http://semver.org/) when a stable branch is released.
 
 ## Documentation
@@ -18,15 +16,16 @@ Stable documentation doesn't exist yet. :^)
 
 Mixcord is not currently available on Hex and will not be available until the requirements outlined [here](https://github.com/Kraigie/mixcord/projects/1) are complete.
 
-The indev version of Mixcord can be installed as:
+Mixcord can be installed as:
 
   1. Add `mixcord` to your list of dependencies in `mix.exs`:
 
-    ```elixir
-    def deps do
-      [{:mixcord, git: "https://github.com/Kraigie/mixcord.git"}]
-    end
-    ```
+      Indev
+      ```elixir
+      def deps do
+        [{:mixcord, git: "https://github.com/Kraigie/mixcord.git"}]
+      end
+      ```
 
   2. Ensure `mixcord` is started before your application:
 
@@ -40,8 +39,8 @@ The indev version of Mixcord can be installed as:
     ```elixir
       config :mixcord,
         token: "YOUR_API_TOKEN_HERE",
-        caller: Module.Where.You.Define.Your.Handlers, <- This will likely be changed to be macro oriented soonish
-        num_shards: # of shards you want to use <- This will be changed very soon
+        caller: Module.Where.You.Define.Your.Handlers, # This will soon be changed to use GenStage to dispatch events.
+        num_shards: Integer.t # In the future this will be changed to automatically detect the correct number of shards.
     ```
 
 To update your version of Mixcord simply run `mix deps.update mixcord`

@@ -5,17 +5,16 @@ defmodule Mixcord.Mixfile do
     [
       app: :mixcord,
       version: "0.1.0",
-      elixir: "~> 1.3",
+      elixir: "~> 1.4",
       build_embedded: Mix.env == :prod,
       start_permanent: Mix.env == :prod,
+      description: "An elixir Discord library",
+      package: package(),
       deps: deps(),
       docs: docs()
     ]
   end
 
-  # Configuration for the OTP application
-  #
-  # Type "mix help compile.app" for more information
   def application do
     [
       extra_applications: [:logger],
@@ -29,20 +28,21 @@ defmodule Mixcord.Mixfile do
     ]
   end
 
-  # Dependencies can be Hex packages:
-  #
-  #   {:mydep, "~> 0.3.0"}
-  #
-  # Or git/path repositories:
-  #
-  #   {:mydep, git: "https://github.com/elixir-lang/mydep.git", tag: "0.1.0"}
-  #
-  # Type "mix help deps" for more examples and options
+  def package do
+    [
+      name: :mixcord,
+      licenses: ["MIT"],
+      maintainers: ["Craig Dazey"],
+      links: %{"GitHub" => "https://github.com/Kraigie/mixcord/",
+              "Docs" => "https://kraigie.github.io/mixcord/"}
+    ]
+  end
+
   defp deps do
     [
       {:httpoison, "~> 0.9"},
       {:poison, "~> 3.0"},
-      {:ex_doc, "~> 0.12", only: :dev},
+      {:ex_doc, "~> 0.14", only: :dev},
       {:credo, "~> 0.4", only: [:dev, :test]},
       {:websocket_client, git: "https://github.com/Kraigie/websocket_client.git"}
     ]
