@@ -6,7 +6,7 @@ defmodule Mixcord.Cache.Channel do
   use GenServer
   alias Mixcord.Util
 
-  @type channel :: Mixcord.Map.TextChannel.t | Mixcord.Map.VoiceChannel.t
+  @type channel :: Mixcord.Struct.TextChannel.t | Mixcord.Struct.VoiceChannel.t
 
   @doc false
   def start_link do
@@ -18,7 +18,7 @@ defmodule Mixcord.Cache.Channel do
   end
 
   @spec get(id: integer) :: channel
-  @spec get(message: Mixcord.Map.Message.t) :: channel
+  @spec get(message: Mixcord.Struct.Message.t) :: channel
   def get(id: id), do: GenServer.call(Channels, {:get, id})
   def get!(id: id) do
     get(id: id)

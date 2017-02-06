@@ -1,4 +1,4 @@
-defmodule Mixcord.Map.VoiceChannel do
+defmodule Mixcord.Struct.VoiceChannel do
   @moduledoc """
   Struct representing a Discord voice channel.
   """
@@ -29,21 +29,18 @@ defmodule Mixcord.Map.VoiceChannel do
   @typedoc "The user limit of the voice channel"
   @type user_limit :: integer
 
-  @type t :: Map.t
+  @type t :: %__MODULE__{
+    id: id,
+    guild_id: guild_id,
+    name: name,
+    type: type,
+    position: position,
+    is_private: is_private,
+    permission_overwrites: permission_overwrites,
+    bitrate: bitrate,
+    user_limit: user_limit
+  }
 
-  @doc """
-  Represents a Discord Voice Channel.
-
-  * `:id` - *Integer*. The channel's id.
-  * `:guild_id` - *Integer*. Id of the channel's guild.
-  * `:name` - *String*. Name of the channel
-  * `:type` - *String*. `Text` or `Voice`
-  * `:position` - *Integer*. Ordering position of the channel
-  * `:is_private` - *Boolean*. If channel is a DM
-  * `:permission_overwrites` - *List*. List of [overwrite](https://discordapp.com/developers/docs/resources/channel#overwrite-object) objects as maps
-  * `:bitrate` - *Integer*. Bitrate of the voice channel.
-  * `:user_limit` - *Integer*. User limit of the voice channel.
-  """
   @derive [Poison.Encoder]
   defstruct [
     :id,

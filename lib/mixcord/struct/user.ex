@@ -1,4 +1,4 @@
-defmodule Mixcord.Map.User do
+defmodule Mixcord.Struct.User do
   @moduledoc """
   Struct representing a Discord user.
 
@@ -31,20 +31,17 @@ defmodule Mixcord.Map.User do
   @typedoc "The user's email"
   @type email :: String.t
 
-  @type t :: Map.t
+  @type t :: %__MODULE__{
+    id: id,
+    username: username,
+    discriminator: discriminator,
+    avatar: avatar,
+    bot: bot,
+    mfa_enabled: mfa_enabled,
+    verified: verified,
+    email: email,
+  }
 
-  @doc """
-  Represents a Discord User.
-
-  * `:id` - *Integer*. User's id.
-  * `:username` - *String*. User's username.
-  * `:discriminator` - *String*. User's 4-digit discord-tag.
-  * `:avatar` - *String*. User's avatar hash.
-  * `:bot` - *Boolean*. Whether the user is a bot.
-  * `:mfa_enabled` - *Boolean*. Whether the user has two factor enabled.
-  * `:verified` - *Boolean*. Whether the email on the account has been verified.
-  * `:email` - *String*. User's email.
-  """
   @derive [Poison.Encoder]
   defstruct [
     :id,

@@ -1,9 +1,9 @@
-defmodule Mixcord.Map.Guild do
+defmodule Mixcord.Struct.Guild do
   @moduledoc """
   Struct representing a Discord guild.
   """
 
-  alias Mixcord.Map.{Member, TextChannel, Role}
+  alias Mixcord.Struct.{Member, TextChannel, Role}
 
   # TODO: Typedocs for all :>
   @typedoc "The guild's id"
@@ -79,36 +79,32 @@ defmodule Mixcord.Map.Guild do
   @type presences :: list(Map.t)
 
   @type t :: %__MODULE__{
-    id: id
+    id: id,
+    name: name,
+    icon: icon,
+    splash: splash,
+    owner_id: owner_id,
+    region: region,
+    afk_channel_id: afk_channel_id,
+    afk_timeout: afk_timeout,
+    embed_enabled: embed_enabled,
+    embed_channel_id: embed_channel_id,
+    verification_level: verification_level,
+    default_message_notifications: default_message_notifications,
+    roles: roles,
+    emojis: emojis,
+    features: features,
+    mfa_level: mfa_level,
+    joined_at: joined_at,
+    large: large,
+    unavailable: unavailable,
+    member_count: member_count,
+    voice_states: voice_states,
+    members: members,
+    presences: presences,
+    channels: channels
   }
 
-  @doc """
-  Represents a Discord Guild.
-
-  * `:name` - *String*. The guild's name.
-  * `:icon` - *String*. Hash of guild's icon.
-  * `:splash` - *String*. Hash of guild's splash.
-  * `:owner_id` - *Integer*. Id of the guild owner.
-  * `:region` - *String*. Id of the voice region.
-  * `:afk_channel_id` - *Integer*. Id of the guild's afk channel.
-  * `:afk_timeout` - *Integer*. How long someone must be afk before being moved.
-  * `:embed_enabled` - *Boolean*. Is this guild embeddable.
-  * `:embed_channel_id` - *Integer*. Id of the embedded channel.
-  * `:verification_level` - *Integer*. Level of verification.
-  * `:default_message_notifications` - *Integer*. Default message notification level.
-  * `:roles` - *List*. List of `Mixcord.Map.Role` maps.
-  * `:emojis` - *List*. List of [emojis](https://discordapp.com/developers/docs/resources/guild#emoji-object) as maps.
-  * `:features` - *List*. List of guild features.
-  * `:mfa_level` - *Integer*. Required MFA level of the guild.
-  * `:joined_at` - *Date*. Date the user joined the guild at.
-  * `:large ` - *Boolean*. Whether the guild is considered "large".
-  * `:unavailable ` - *Boolean*. Whether the guild is available.
-  * `:member_count` - *Integer*. Total number of members in the guild.
-  * `:voice_states ` - *List*. List of [voice states](https://discordapp.com/developers/docs/resources/voice#voice-state-object) as maps.
-  * `:members ` - *List*. List of `Mixcord.Map.Member` maps.
-  * `:channels ` - *List*. List of `Mixcord.Map.Channel` maps.
-  * `:presences ` - *List*. List of simple presence maps.
-  """
   @derive [Poison.Encoder]
   defstruct [
     :id,

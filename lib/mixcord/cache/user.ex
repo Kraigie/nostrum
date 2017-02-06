@@ -15,8 +15,8 @@ defmodule Mixcord.Cache.User do
     {:ok, state}
   end
 
-  @spec get(id: integer) :: Mixcord.Map.User.t
-  @spec get(message: Mixcord.Map.Message.t) :: Mixcord.Map.User.t
+  @spec get(id: integer) :: Mixcord.Struct.User.t
+  @spec get(message: Mixcord.Struct.Message.t) :: Mixcord.Struct.User.t
   def get(id: id), do: GenServer.call(Users, {:get, id})
   def get!(id: id) do
     get(id: id)

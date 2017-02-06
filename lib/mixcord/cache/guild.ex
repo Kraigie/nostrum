@@ -17,8 +17,8 @@ defmodule Mixcord.Cache.Guild do
     {:ok, state}
   end
 
-  @spec get(id: integer) :: Mixcord.Map.Guild.t
-  @spec get(message: Mixcord.Map.Message.t) :: Mixcord.Map.Guild.t
+  @spec get(id: integer) :: Mixcord.Struct.Guild.t
+  @spec get(message: Mixcord.Struct.Message.t) :: Mixcord.Struct.Guild.t
   def get(id: id), do: GenServer.call(Guilds, {:get, :guild, id})
   def get(message: message), do: get(id: message.channel.guild_id)
 

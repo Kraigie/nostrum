@@ -66,28 +66,28 @@ defmodule Mixcord.Api do
   Send a message to a channel.
 
   Send `content` to the channel identified with `channel_id`.
-  Content can be either a binary containing the message you want to send or a `Mixcord.Map.Embed` map.
+  Content can be either a binary containing the message you want to send or a `Mixcord.Struct.Embed` map.
 
   `tts` is an optional parameter that dictates whether the message should be played over text to speech.
 
-  Returns `{:ok, Mixcord.Map.Message}` if successful. `error` otherwise.
+  Returns `{:ok, Mixcord.Struct.Message}` if successful. `error` otherwise.
   """
-  @spec create_message(Integer.t, String.t, boolean) :: error | {:ok, Mixcord.Map.Message.t}
+  @spec create_message(Integer.t, String.t, boolean) :: error | {:ok, Mixcord.Struct.Message.t}
   def create_message(channel_id, content, tts \\ false)
   def create_message(channel_id, content, tts) when is_binary(content) do
     case request(:post, Constants.channel_messages(channel_id), %{content: content, tts: tts}) do
       {:ok, body} ->
-        {:ok, Poison.decode!(body, as: %Mixcord.Map.Message{})}
+        {:ok, Poison.decode!(body, as: %Mixcord.Struct.Message{})}
       other ->
         other
     end
   end
 
-  @spec create_message(Integer.t, Map.t, boolean) :: error | {:ok, Mixcord.Map.Message.t}
+  @spec create_message(Integer.t, Map.t, boolean) :: error | {:ok, Mixcord.Struct.Message.t}
   def create_message(channel_id, content, tts) when is_map(content) do
     case request(:post, Constants.channel_messages(channel_id), %{embed: content, tts: tts}) do
       {:ok, body} ->
-        {:ok, Poison.decode!(body, as: %Mixcord.Map.Message{})}
+        {:ok, Poison.decode!(body, as: %Mixcord.Struct.Message{})}
       other ->
         other
     end
@@ -100,9 +100,9 @@ defmodule Mixcord.Api do
   `tts` is an optional parameter that dictates whether the message should be played over text to speech.
 
   Raises `Mixcord.Error.ApiError` if error occurs while making the rest call.
-  Returns `Mixcord.Map.Message` if successful.
+  Returns `Mixcord.Struct.Message` if successful.
   """
-  @spec create_message!(Integer.t, String.t, boolean) :: no_return | Mixcord.Map.Message.t
+  @spec create_message!(Integer.t, String.t, boolean) :: no_return | Mixcord.Struct.Message.t
   def create_message!(channel_id, content, tts \\ false) do
     create_message(channel_id, content, tts)
     |> bangify
@@ -113,13 +113,13 @@ defmodule Mixcord.Api do
 
   Edit a message with the given `content`. Message to edit is specified by `channel_id` and `message_id`.
 
-  Returns the edited `{:ok, Mixcord.Map.Message}` if successful. `error` otherwise.
+  Returns the edited `{:ok, Mixcord.Struct.Message}` if successful. `error` otherwise.
   """
-  @spec edit_message(Integer.t, Integer.t, String.t) :: error | {:ok, Mixcord.Map.Message.t}
+  @spec edit_message(Integer.t, Integer.t, String.t) :: error | {:ok, Mixcord.Struct.Message.t}
   def edit_message(channel_id, message_id, content) do
     case request(:patch, Constants.channel_message(channel_id, message_id), %{content: content}) do
       {:ok, body} ->
-        {:ok, Poison.decode!(body, as: %Mixcord.Map.Message{})}
+        {:ok, Poison.decode!(body, as: %Mixcord.Struct.Message{})}
       other ->
         other
     end
@@ -131,9 +131,9 @@ defmodule Mixcord.Api do
   Edit a message with the given `content`. Message to edit is specified by `channel_id` and `message_id`.
 
   Raises `Mixcord.Error.ApiError` if error occurs while making the rest call.
-  Returns the edited `Mixcord.Map.Message` if successful.
+  Returns the edited `Mixcord.Struct.Message` if successful.
   """
-  @spec edit_message!(Integer.t, Integer.t, String.t) :: no_return | {:ok, Mixcord.Map.Message.t}
+  @spec edit_message!(Integer.t, Integer.t, String.t) :: no_return | {:ok, Mixcord.Struct.Message.t}
   def edit_message!(channel_id, message_id, content) do
     edit_message(channel_id, message_id, content)
     |> bangify
@@ -198,9 +198,9 @@ defmodule Mixcord.Api do
   Retrieves `limit` number of messages from the channel with id `channel_id`.
   `locator` is a tuple indicating what messages you want to retrieve.
 
-  Returns `{:ok, [Mixcord.Map.Message]}` if successful. `error` otherwise.
+  Returns `{:ok, [Mixcord.Struct.Message]}` if successful. `error` otherwise.
   """
-  @spec get_channel_messages(Integer.t, limit, locator) :: error | {:ok, [Mixcord.Map.Message.t]}
+  @spec get_channel_messages(Integer.t, limit, locator) :: error | {:ok, [Mixcord.Struct.Message.t]}
   def get_channel_messages(channel_id, limit, locator) do
     get_messages_sync(channel_id, limit, [], locator)
   end
@@ -239,7 +239,7 @@ defmodule Mixcord.Api do
     response = request(:get, Constants.channel_messages(channel_id), "", params: qs_params)
     case response do
       {:ok, body} ->
-        {:ok, Poison.decode!(body, as: [%Mixcord.Map.Message{}])}
+        {:ok, Poison.decode!(body, as: [%Mixcord.Struct.Message{}])}
       other ->
         other
     end

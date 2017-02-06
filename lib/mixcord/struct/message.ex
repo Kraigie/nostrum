@@ -1,9 +1,9 @@
-defmodule Mixcord.Map.Message do
+defmodule Mixcord.Struct.Message do
   @moduledoc """
   Struct representing a Discord message.
   """
 
-  alias Mixcord.Map.{Role, User}
+  alias Mixcord.Struct.{Role, User}
 
   @typedoc "The id of the message"
   @type id :: integer
@@ -47,26 +47,27 @@ defmodule Mixcord.Map.Message do
   @typedoc "Whether this message is pinned"
   @type pinned :: boolean
 
-  @type t :: Map.t
+  @typedoc "Message type"
+  @type type :: Integer.test
 
-  @doc """
-  Represents a Discord Message.
+  @type t :: %__MODULE__{
+    attachments: attachments,
+    author: author,
+    channel_id: channel_id,
+    content: content,
+    edited_timestamp: edited_timestamp,
+    embeds: embeds,
+    id: id,
+    mention_everyone: mention_everyone,
+    mention_roles: mention_roles,
+    mentions: mentions,
+    nonce: nonce,
+    pinned: pinned,
+    timestamp: timestamp,
+    tts: tts,
+    type: type
+  }
 
-  * `:id` - *Integer*. Id of the message.
-  * `:channel_id` - *Integer*. Id of the channel the message was sent in.
-  * `:author` - *Struct*. A `Mixcord.Map.User` struct.
-  * `:content` - *String*. Contents of the message.
-  * `:timestamp` - *Date*. When this message was sent.
-  * `:edited_timestamp` - *?Date*. When this message was edited (or null if never).
-  * `:tts` - *Boolean*. Whether this was a TTS message.
-  * `:mention_everyone` - *Boolean*. Whether this message mentions everyone.
-  * `:mentions` - *List*. A list of `Mixcord.Map.User` maps mentioned in the message.
-  * `:mention_roles` - *List*. A list of `Mixcord.Map.Role` maps mentioned in this message.
-  * `:attachments` - *List*. A list of [attached files](https://discordapp.com/developers/docs/resources/channel#attachment-object) as maps.
-  * `:embeds` - *List*. A list of [embedded content](https://discordapp.com/developers/docs/resources/channel#embed-object) as maps.
-  * `:nonce` - *?String*. Used for validating a message was sent.
-  * `:pinned` - *Boolean*. Whether this message is pinned.
-  """
   @derive [Poison.Encoder]
   defstruct [
     :attachments,
