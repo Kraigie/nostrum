@@ -105,8 +105,7 @@ defmodule Mixcord.Util do
   def maybe_to_atom(token) do
     try do
       # TODO: FINISH THE MAPS CRAIG
-      String.to_atom(token)
-      # String.to_existing_atom(token)
+      String.to_existing_atom(token)
     rescue
       error ->
         Logger.warn "Converting string to non-existing atom: #{token}"
