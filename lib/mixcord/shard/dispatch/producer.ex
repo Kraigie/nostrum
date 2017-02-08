@@ -1,6 +1,16 @@
 defmodule Mixcord.Shard.Dispatch.Producer do
   @moduledoc """
-  Gen Stage dispatch producer
+  Gen Stage dispatch producer.
+
+  # Consuming Gateway Events
+  To handle events, Mixcord uses a GenStage implementation. GenStage is "new" with
+  Elixir version 1.4, expanding on the old functionality of GenEvent.
+
+  Mixcord defines the `producer` in the GenStage design. To consume the events you must
+  create at least one `consumer` process that is linked to Mixcord's producer.
+
+  It is generally recommended that you spawn a consumer per core. To find this
+  number you can use `System.schedulers_online/0`.
   """
 
   use GenStage
@@ -36,27 +46,5 @@ defmodule Mixcord.Shard.Dispatch.Producer do
     else
       _ -> {:noreply, Enum.reverse(events), {queue, demand}}
     end
-  end
-end
-
-defmodule DummyConsumer do
-
-  use GenStage
-  require Logger
-
-  def start_link() do
-    GenStage.start_link(__MODULE__, :ok)
-  end
-
-  def init(:ok) do
-    {:consumer, :ok, subscribe_to: [Mixcord.Shard.Dispatch.Producer]}
-  end
-
-  def handle_events(events, _from, state) do
-    for event <- events do
-      {{event_name, _payload}, _state} = event
-      Logger.debug "User would process event #{event_name} here on pid #{inspect self()}"
-    end
-    {:noreply, [], state}
   end
 end

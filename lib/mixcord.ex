@@ -4,18 +4,16 @@ defmodule Mixcord do
 
   ## API
   Api functionality can be found in the `Mixcord.Api` module. Ratelimiting is handled
-  by the lib.
-
-  #### A note about Strings and Ints
-  Currently, responses from the REST api will have `id` fields as `string`.
-  Everything received from the WS connection will have `id` fields as `int`.
-
-  If you're processing a response from the API and trying to access something in the cache
-  based off of an `id` in the response, you will need to conver it to an `int` using
-  `String.to_integer/1`. I'm open to suggestions for how this should be handled going forward.
+  internally by the lib.
 
   ## Structs
-  Mixcord implements a series of `maps` that hold infomration about Discord objects.
+  Mixcord uses structs when appropriate to pass around objects from Discord. In some
+  instances, such as the cache and dispatch event handles, Discord's objects will be
+  represented as maps. It will be made clear when this is the case using `@spec`
+  specifications.
+
+  In some cases, the struct modules will include helper functions for interacting
+  with the struct. See `Mixcord.Struct.Emoji.format_custom_emoji/2` for an example.
 
   ## State/Cache
   Mixcord provides a number of GenServers to maintain state.
@@ -24,10 +22,10 @@ defmodule Mixcord do
   See any of the Cache modules for default methods provided by the lib; e.g.
   `Guild` information can be found at `Mixcord.Cache.Guild`
 
-  ## Events
-  Mixcord currently handles events to keep track of state. To implement your own
-  behaviour you should define at least one method called `handle_event/2`. See the
-  `Mixcord.Shard.Dispatch` module for more information.
+  ## Event Handling
+  Mixcord currently uses a GenStage implementation to handle dispatching events
+  from the WS connection. See `Mixcord.Shard.Dispatch.Producer` for information
+  on how to consume these events.
   """
 
   use Application
@@ -67,19 +65,4 @@ defmodule Mixcord do
     :ets.new(:gateway_url, [:set, :public, :named_table])
   end
 
-end
-
-defmodule Dummy do
-  def start do
-    import Supervisor.Spec
-
-    children = [
-      worker(DummyConsumer, [], id: 1),
-      worker(DummyConsumer, [], id: 2),
-      worker(DummyConsumer, [], id: 3),
-      worker(DummyConsumer, [], id: 4)
-    ]
-
-    Supervisor.start_link(children, strategy: :one_for_one)
-  end
 end
