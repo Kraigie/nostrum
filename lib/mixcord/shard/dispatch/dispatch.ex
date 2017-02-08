@@ -36,9 +36,7 @@ defmodule Mixcord.Shard.Dispatch do
   def handle(payload, state) do
     Logger.debug payload.t
     payload = Util.safe_atom_map(payload)
-    # TODO: https://github.com/elixir-lang/gen_stage/blob/master/examples/gen_event.exs
-    from_handle = handle_event({payload.t, payload.d}, state)
-    state.caller.handle_event({payload.t, from_handle}, state)
+    handle_event({payload.t, payload.d}, state)
   end
 
   def handle_event({:CHANNEL_CREATE, p}, _state), do: Channel.create(p)
@@ -61,6 +59,7 @@ defmodule Mixcord.Shard.Dispatch do
     else
       Guild.create(p, state.shard_pid)
     end
+    p
   end
 
   def handle_event({:GUILD_UPDATE, p}, _state), do: Guild.update(p)
@@ -76,6 +75,7 @@ defmodule Mixcord.Shard.Dispatch do
   def handle_event({:GUILD_MEMBERS_CHUNK, p}, _state) do
     p.members
       |> Enum.each(fn member -> Guild.member_add(p.guild_id, member) end)
+    p
   end
 
   def handle_event({:GUILD_MEMBER_REMOVE, p}, _state), do: Guild.member_remove(p.guild_id, p.user)
@@ -104,6 +104,7 @@ defmodule Mixcord.Shard.Dispatch do
       |> Enum.each(fn dm_channel -> Channel.create(dm_channel) end)
     p.guilds
       |> Enum.each(fn guild -> Guild.create(guild) end)
+    p
   end
 
   def handle_event({:RESUMED, p}, _state), do: p

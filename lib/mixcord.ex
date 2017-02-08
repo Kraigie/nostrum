@@ -52,7 +52,13 @@ defmodule Mixcord do
       supervisor(Mixcord.Shard.Supervisor, [token, caller, actual_num_shards])
     ]
 
-    Supervisor.start_link(children, strategy: :one_for_one)
+    supervisor = Supervisor.start_link(children, strategy: :one_for_one)
+
+    if Application.get_env(:mixcord, :dev, nil) do
+      Dummy.start
+    end
+
+    supervisor
   end
 
   @doc false
@@ -61,8 +67,19 @@ defmodule Mixcord do
     :ets.new(:gateway_url, [:set, :public, :named_table])
   end
 
-  # allows us to run mixcord as a standalone
-  @doc false
-  def handle_event(_data, _state), do: :ok
+end
 
+defmodule Dummy do
+  def start do
+    import Supervisor.Spec
+
+    children = [
+      worker(DummyConsumer, [], id: 1),
+      worker(DummyConsumer, [], id: 2),
+      worker(DummyConsumer, [], id: 3),
+      worker(DummyConsumer, [], id: 4)
+    ]
+
+    Supervisor.start_link(children, strategy: :one_for_one)
+  end
 end

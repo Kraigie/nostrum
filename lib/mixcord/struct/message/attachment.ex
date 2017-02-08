@@ -13,10 +13,10 @@ defmodule Mixcord.Struct.Attachment do
   @type size :: integer
 
   @typedoc "Source url of the file"
-  @type url :: string
+  @type url :: String.t
 
   @typedoc "Proxy url of the file"
-  @type proxy_url :: string
+  @type proxy_url :: String.t
 
   @typedoc "Height of the file (if image)"
   @type height :: integer | nil

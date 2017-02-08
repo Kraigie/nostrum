@@ -107,10 +107,20 @@ defmodule Mixcord.Util do
       # TODO: FINISH THE MAPS CRAIG
       String.to_existing_atom(token)
     rescue
-      error ->
+      _ ->
         Logger.warn "Converting string to non-existing atom: #{token}"
         String.to_atom(token)
     end
+  end
+
+  @doc """
+  Since we're being sacrilegious amd converting strings to atoms from the WS, there will be some
+  atoms that we see that aren't defined in any Discord structs. This method mainly serves as a
+  means to define those atoms once so the user isn't warned about them in the
+  `Mixcord.Util.maybe_to_atom/1` function when they are in fact harmless.
+  """
+  def unused_atoms do
+    [recipients: "Ready payload"]
   end
 
 end
