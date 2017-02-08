@@ -1,6 +1,45 @@
 defmodule Mixcord.Api do
   @moduledoc """
   Interface for Discord's rest API.
+
+  By default all methods in this module are ran synchronously. If you wish to
+  have async rest operations I recommend you execute these functions inside of a
+  task.
+
+  **Examples**
+  ```Elixir
+  # Async Task
+  t = Task.async fn ->
+    Mixcord.Api.get_channel_messages(12345678912345, :infinity, {})
+  end
+  messages = Task.await t
+
+  # A lot of times we don't care about the return value of the function
+  Task.start fn ->
+    messages = ["in", "the", "end", "it", "doesn't", "even", "matter"]
+    Enum.each messages, &Mixcord.Api.create_message!(12345678912345, &1)
+  end
+  ```
+
+  #### A note about Strings and Ints
+  Currently, responses from the REST api will have `id` fields as `string`.
+  Everything received from the WS connection will have `id` fields as `int`.
+
+  If you're processing a response from the API and trying to access something in the cache
+  based off of an `id` in the response, you will need to conver it to an `int` using
+  `String.to_integer/1`. I'm open to suggestions for how this should be handled going forward.
+
+  **Example**
+  ```Elixir
+  messages = Mixcord.Api.get_pinned_messages!(12345678912345)
+
+  authors =
+    Enum.map messages, fn msg ->
+      author_id = String.to_integer(msg.author.id)
+      Mixcord.Cache.User.get!(id: author_id)
+    end
+  ```
+
   """
 
   # TODO: Upload file
@@ -72,7 +111,7 @@ defmodule Mixcord.Api do
 
   Returns `{:ok, Mixcord.Struct.Message}` if successful. `error` otherwise.
   """
-  @spec create_message(Integer.t, String.t, boolean) :: error | {:ok, Mixcord.Struct.Message.t}
+  @spec create_message(Integer.t, String.t | Map.t, boolean) :: error | {:ok, Mixcord.Struct.Message.t}
   def create_message(channel_id, content, tts \\ false)
   def create_message(channel_id, content, tts) when is_binary(content) do
     case request(:post, Constants.channel_messages(channel_id), %{content: content, tts: tts}) do
@@ -83,7 +122,6 @@ defmodule Mixcord.Api do
     end
   end
 
-  @spec create_message(Integer.t, Map.t, boolean) :: error | {:ok, Mixcord.Struct.Message.t}
   def create_message(channel_id, content, tts) when is_map(content) do
     case request(:post, Constants.channel_messages(channel_id), %{embed: content, tts: tts}) do
       {:ok, body} ->
@@ -312,6 +350,7 @@ defmodule Mixcord.Api do
 
   Returns `{:ok}` if successful. `error` otherwise.
   """
+  @spec start_typing(Integer.t) :: error | {:ok}
   def start_typing(channel_id) do
     request(:post, Constants.channel_typing(channel_id))
   end
@@ -326,15 +365,37 @@ defmodule Mixcord.Api do
   Raises `Mixcord.Error.ApiError` if error occurs while making the rest call.
   Returns {:ok} if successful.
   """
+  @spec start_typing!(Integer.t) :: no_return | {:ok}
   def start_typing!(channel_id) do
     start_typing(channel_id)
     |> bangify
   end
 
+  @doc """
+  Gets all pinned messages.
+
+  Retrieves all pinned messages for the channel specified by `channel_id`.
+
+  Returns {:ok, [Mixcord.Struct.Message.t]} if successful. `error` otherwise.
+  """
+  @spec get_pinned_messages(Integer.t) :: error | {:ok, [Mixcord.Struct.Message.t]}
   def get_pinned_messages(channel_id) do
-    request(:get, Constants.channel_pins(channel_id))
+    case request(:get, Constants.channel_pins(channel_id)) do
+      {:ok, body} ->
+        {:ok, Poison.decode!(body, as: [%Mixcord.Struct.Message{}])}
+      other ->
+        other
+    end
   end
 
+  @doc """
+  Gets all pinned messages.
+
+  Retrieves all pinned messages for the channel specified by `channel_id`.
+
+  Returns [Mixcord.Struct.Message.t] if successful. `error` otherwise.
+  """
+  @spec get_pinned_messages!(Integer.t) :: no_return | [Mixcord.Struct.Message.t]
   def get_pinned_messages!(channel_id) do
     get_pinned_messages(channel_id)
     |> bangify
@@ -347,6 +408,7 @@ defmodule Mixcord.Api do
 
   Returns `{:ok}` if successful. `error` otherwise.
   """
+  @spec add_pinned_message(Integer.t, Integer.t) :: error | {:ok}
   def add_pinned_message(channel_id, message_id) do
     request(:put, Constants.channel_pin(channel_id, message_id))
   end
@@ -359,6 +421,7 @@ defmodule Mixcord.Api do
   Raises `Mixcord.Error.ApiError` if error occurs while making the rest call.
   Returns {:ok} if successful.
   """
+  @spec add_pinned_message!(Integer.t, Integer.t) :: no_return | {:ok}
   def add_pinned_message!(channel_id, message_id) do
     add_pinned_message(channel_id, message_id)
     |> bangify
@@ -371,6 +434,7 @@ defmodule Mixcord.Api do
 
   Returns `{:ok}` if successful. `error` otherwise.
   """
+  @spec delete_pinned_message(Integer.t, Integer.t) :: error | {:ok}
   def delete_pinned_message(channel_id, message_id) do
     request(:delete, Constants.channel_pin(channel_id, message_id))
   end
@@ -383,13 +447,41 @@ defmodule Mixcord.Api do
   Raises `Mixcord.Error.ApiError` if error occurs while making the rest call.
   Returns {:ok} if successful.
   """
+  @spec delete_pinned_message!(Integer.t, Integer.t) :: no_return | {:ok}
   def delete_pinned_message!(channel_id, message_id) do
     delete_pinned_message(channel_id, message_id)
     |> bangify
   end
 
+  @doc """
+  Gets a guild using the REST api
+
+  Retrieves a guild with specified `guild_id`.
+
+  Returns {:ok, Mixcord.Struct.Guild.t} if successful, `error` otherwise.
+  """
+  @spec get_guild(Integer.t) :: error | {:ok, Mixcord.Struct.Guild.t}
   def get_guild(guild_id) do
-    request(:get, Constants.guild(guild_id))
+    case request(:get, Constants.guild(guild_id)) do
+      {:ok, body} ->
+        {:ok, Poison.decode!(body, as: %Mixcord.Struct.Guild{})}
+      other ->
+        other
+    end
+  end
+
+  @doc """
+    Gets a guild using the REST api
+
+    Retrieves a guild with specified `guild_id`.
+
+    Raises `Mixcord.Error.ApiError` if error occurs while making the rest call.
+    Returns `Mixcord.Struct.Guild.t` if successful.
+  """
+  @spec get_guild!(Integer.t) :: no_return | Mixcord.Struct.Guild.t
+  def get_guild!(guild_id) do
+    get_guild(guild_id)
+    |> bangify
   end
 
   def edit_guild(guild_id, options) do

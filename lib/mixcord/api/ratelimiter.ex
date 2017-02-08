@@ -13,6 +13,11 @@ defmodule Mixcord.Api.Ratelimiter do
     GenServer.start_link(__MODULE__, [], name: Ratelimiter)
   end
 
+  @doc false
+  def empty_buckets do
+    :ets.delete_all_objects(:ratelimit_buckets)
+  end
+
   def handle_call({:queue, request, original_from}, from, state) do
     retry_time = request.route
       |> major_parameter
