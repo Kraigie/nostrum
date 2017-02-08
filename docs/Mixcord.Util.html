@@ -8,7 +8,7 @@
     <title>Mixcord.Util – mixcord v0.1.0</title>
     <link rel="stylesheet" href="dist/app-091c05798a.css" />
     
-    <script src="dist/sidebar_items-912fb2124f.js"></script>
+    <script src="dist/sidebar_items-5d71beca3c.js"></script>
   </head>
   <body data-type="modules">
     <script>if(localStorage.getItem('night-mode')) document.body.className += ' night-mode';</script>
@@ -139,6 +139,18 @@
   </div>
   
     <div class="summary-synopsis"><p>Converts a map into an atom-keyed map</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#unused_atoms/0">unused_atoms()</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Since we’re being sacrilegious amd converting strings to atoms from the WS, there will be some
+atoms that we see that aren’t defined in any Discord structs. This method mainly serves as a
+means to define those atoms once so the user isn’t warned about them in the
+<code class="inline">Mixcord.Util.maybe_to_atom/1</code> function when they are in fact harmless</p>
 </div>
   
 </div>
@@ -301,6 +313,25 @@ in your config.</p>
 creating a new atom while displaying a warning. The idea here is that we should be able to see
 if any results from Discord are giving variable keys. Since we <em>will</em> define all
 types of objects returned by Discord, the amount of new atoms created <em>SHOULD</em> be 0. 👀</p>
+
+  </section>
+</div>
+<div class="detail" id="unused_atoms/0">
+  
+  <div class="detail-header">
+    <a href="#unused_atoms/0" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">unused_atoms()</span>
+    
+    
+    
+  </div>
+  <section class="docstring">
+    <p>Since we’re being sacrilegious amd converting strings to atoms from the WS, there will be some
+atoms that we see that aren’t defined in any Discord structs. This method mainly serves as a
+means to define those atoms once so the user isn’t warned about them in the
+<code class="inline">Mixcord.Util.maybe_to_atom/1</code> function when they are in fact harmless.</p>
 
   </section>
 </div>

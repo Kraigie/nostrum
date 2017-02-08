@@ -5,7 +5,7 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="ExDoc v0.14.5">
-    <title>Mixcord.Cache.User – mixcord v0.1.0</title>
+    <title>Mixcord.Struct.Emoji – mixcord v0.1.0</title>
     <link rel="stylesheet" href="dist/app-091c05798a.css" />
     
     <script src="dist/sidebar_items-5d71beca3c.js"></script>
@@ -61,14 +61,14 @@
 
       <h1>
         <small class="visible-xs">mixcord v0.1.0</small>
-        Mixcord.Cache.User
+        Mixcord.Struct.Emoji
         
         
       </h1>
 
       
         <section id="moduledoc">
-          <p>Cache for channels.</p>
+          <p>Struct representing a Discord emoji.</p>
 
         </section>
       
@@ -82,6 +82,37 @@
             Summary
           </h1>
           
+  <div class="summary-types summary">
+    <h2>
+      <a href="#types">Types</a>
+    </h2>
+    <div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:id/0">id()</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Id of the emoji</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:name/0">name()</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Name of the emoji</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:t/0">t()</a>
+  </div>
+  
+</div>
+
+  </div>
+
 
           
   <div class="summary-functions summary">
@@ -90,14 +121,11 @@
     </h2>
     <div class="summary-row">
   <div class="summary-signature">
-    <a href="#get/1">get(list)</a>
+    <a href="#format_custom_emoji/2">format_custom_emoji(name, id)</a>
   </div>
   
+    <div class="summary-synopsis"><p>Formats a custom emoji for use in a Discord message</p>
 </div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#get!/1">get!(list)</a>
-  </div>
   
 </div>
 
@@ -112,6 +140,83 @@
       
 
       
+        <section id="types" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#types">
+              <i class="icon-link"></i>
+            </a>
+            Types
+          </h1>
+          <div class="types-list">
+            <div class="detail" id="t:id/0">
+  
+  <div class="detail-header">
+    <a href="#t:id/0" class="detail-link" title="Link to this type">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">id()</span>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>id() :: integer</pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>Id of the emoji</p>
+
+  </section>
+</div>
+<div class="detail" id="t:name/0">
+  
+  <div class="detail-header">
+    <a href="#t:name/0" class="detail-link" title="Link to this type">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">name()</span>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>name() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a></pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>Name of the emoji</p>
+
+  </section>
+</div>
+<div class="detail" id="t:t/0">
+  
+  <div class="detail-header">
+    <a href="#t:t/0" class="detail-link" title="Link to this type">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">t()</span>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>t() :: %Mixcord.Struct.Emoji{id: <a href="#t:id/0">id</a>, name: <a href="#t:name/0">name</a>}</pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    
+  </section>
+</div>
+
+          </div>
+        </section>
+      
 
       
         <section id="functions" class="details-list">
@@ -121,42 +226,26 @@
             </a>
             Functions
           </h1>
-          <div class="detail" id="get/1">
+          <div class="detail" id="format_custom_emoji/2">
   
   <div class="detail-header">
-    <a href="#get/1" class="detail-link" title="Link to this function">
+    <a href="#format_custom_emoji/2" class="detail-link" title="Link to this function">
       <i class="icon-link"></i>
     </a>
-    <span class="signature">get(list)</span>
+    <span class="signature">format_custom_emoji(name, id)</span>
     
     
     
       <div class="specs">
         
-          <pre>get([{:id, integer}]) :: <a href="Mixcord.Struct.User.html#t:t/0">Mixcord.Struct.User.t</a></pre>
-        
-          <pre>get([{:message, <a href="Mixcord.Struct.Message.html#t:t/0">Mixcord.Struct.Message.t</a>}]) :: <a href="Mixcord.Struct.User.html#t:t/0">Mixcord.Struct.User.t</a></pre>
+          <pre>format_custom_emoji(<a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>, <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a> | <a href="https://hexdocs.pm/elixir/Integer.html#t:t/0">Integer.t</a>) :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a></pre>
         
       </div>
     
   </div>
   <section class="docstring">
-    
-  </section>
-</div>
-<div class="detail" id="get!/1">
-  
-  <div class="detail-header">
-    <a href="#get!/1" class="detail-link" title="Link to this function">
-      <i class="icon-link"></i>
-    </a>
-    <span class="signature">get!(list)</span>
-    
-    
-    
-  </div>
-  <section class="docstring">
-    
+    <p>Formats a custom emoji for use in a Discord message.</p>
+
   </section>
 </div>
 

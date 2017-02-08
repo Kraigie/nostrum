@@ -5,7 +5,7 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="ExDoc v0.14.5">
-    <title>Mixcord.Cache.User – mixcord v0.1.0</title>
+    <title>Mixcord.Struct.Reaction – mixcord v0.1.0</title>
     <link rel="stylesheet" href="dist/app-091c05798a.css" />
     
     <script src="dist/sidebar_items-5d71beca3c.js"></script>
@@ -61,14 +61,14 @@
 
       <h1>
         <small class="visible-xs">mixcord v0.1.0</small>
-        Mixcord.Cache.User
+        Mixcord.Struct.Reaction
         
         
       </h1>
 
       
         <section id="moduledoc">
-          <p>Cache for channels.</p>
+          <p>Struct representing a Discord message reaction.</p>
 
         </section>
       
@@ -82,27 +82,48 @@
             Summary
           </h1>
           
-
-          
-  <div class="summary-functions summary">
+  <div class="summary-types summary">
     <h2>
-      <a href="#functions">Functions</a>
+      <a href="#types">Types</a>
     </h2>
     <div class="summary-row">
   <div class="summary-signature">
-    <a href="#get/1">get(list)</a>
+    <a href="#t:count/0">count()</a>
   </div>
+  
+    <div class="summary-synopsis"><p>Times this emoji has been used to react</p>
+</div>
   
 </div>
 <div class="summary-row">
   <div class="summary-signature">
-    <a href="#get!/1">get!(list)</a>
+    <a href="#t:emoji/0">emoji()</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Emoji information</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:me/0">me()</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Whether the current user is the one who reacted</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:t/0">t()</a>
   </div>
   
 </div>
 
   </div>
 
+
+          
 
           
 
@@ -112,30 +133,93 @@
       
 
       
-
-      
-        <section id="functions" class="details-list">
+        <section id="types" class="details-list">
           <h1 class="section-heading">
-            <a class="hover-link" href="#functions">
+            <a class="hover-link" href="#types">
               <i class="icon-link"></i>
             </a>
-            Functions
+            Types
           </h1>
-          <div class="detail" id="get/1">
+          <div class="types-list">
+            <div class="detail" id="t:count/0">
   
   <div class="detail-header">
-    <a href="#get/1" class="detail-link" title="Link to this function">
+    <a href="#t:count/0" class="detail-link" title="Link to this type">
       <i class="icon-link"></i>
     </a>
-    <span class="signature">get(list)</span>
+    <span class="signature">count()</span>
     
     
     
       <div class="specs">
         
-          <pre>get([{:id, integer}]) :: <a href="Mixcord.Struct.User.html#t:t/0">Mixcord.Struct.User.t</a></pre>
+          <pre>count() :: integer</pre>
         
-          <pre>get([{:message, <a href="Mixcord.Struct.Message.html#t:t/0">Mixcord.Struct.Message.t</a>}]) :: <a href="Mixcord.Struct.User.html#t:t/0">Mixcord.Struct.User.t</a></pre>
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>Times this emoji has been used to react</p>
+
+  </section>
+</div>
+<div class="detail" id="t:emoji/0">
+  
+  <div class="detail-header">
+    <a href="#t:emoji/0" class="detail-link" title="Link to this type">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">emoji()</span>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>emoji() :: Emoji.t</pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>Emoji information</p>
+
+  </section>
+</div>
+<div class="detail" id="t:me/0">
+  
+  <div class="detail-header">
+    <a href="#t:me/0" class="detail-link" title="Link to this type">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">me()</span>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>me() :: boolean</pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>Whether the current user is the one who reacted</p>
+
+  </section>
+</div>
+<div class="detail" id="t:t/0">
+  
+  <div class="detail-header">
+    <a href="#t:t/0" class="detail-link" title="Link to this type">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">t()</span>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>t() :: %Mixcord.Struct.Reaction{count: <a href="#t:count/0">count</a>, emoji: <a href="#t:emoji/0">emoji</a>, me: <a href="#t:me/0">me</a>}</pre>
         
       </div>
     
@@ -144,23 +228,11 @@
     
   </section>
 </div>
-<div class="detail" id="get!/1">
-  
-  <div class="detail-header">
-    <a href="#get!/1" class="detail-link" title="Link to this function">
-      <i class="icon-link"></i>
-    </a>
-    <span class="signature">get!(list)</span>
-    
-    
-    
-  </div>
-  <section class="docstring">
-    
-  </section>
-</div>
 
+          </div>
         </section>
+      
+
       
 
       

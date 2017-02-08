@@ -4,11 +4,11 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="ExDoc v0.14.3">
-    <title>Mixcord.Map.Member – mixcord v0.1.0</title>
+    <meta name="generator" content="ExDoc v0.14.5">
+    <title>Mixcord.Struct.Member – mixcord v0.1.0</title>
     <link rel="stylesheet" href="dist/app-091c05798a.css" />
     
-    <script src="dist/sidebar_items.js"></script>
+    <script src="dist/sidebar_items-5d71beca3c.js"></script>
   </head>
   <body data-type="modules">
     <script>if(localStorage.getItem('night-mode')) document.body.className += ' night-mode';</script>
@@ -61,7 +61,7 @@
 
       <h1>
         <small class="visible-xs">mixcord v0.1.0</small>
-        Mixcord.Map.Member
+        Mixcord.Struct.Member
         
         
       </h1>
@@ -89,24 +89,84 @@ A <code class="inline">member</code> has everything that a <code class="inline">
             Summary
           </h1>
           
-
-          
-  <div class="summary-functions summary">
+  <div class="summary-types summary">
     <h2>
-      <a href="#functions">Functions</a>
+      <a href="#types">Types</a>
     </h2>
     <div class="summary-row">
   <div class="summary-signature">
-    <a href="#__struct__/0">__struct__()</a>
+    <a href="#t:deaf/0">deaf()</a>
   </div>
   
-    <div class="summary-synopsis"><p>Represents a Discord Member</p>
+    <div class="summary-synopsis"><p>Whether the user is deafened</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:guild_id/0">guild_id()</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Id of the guild the member is part of</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:joined_at/0">joined_at()</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Date the user joined the guild</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:mute/0">mute()</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Whether the user is muted</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:nick/0">nick()</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>The nickname of the user</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:roles/0">roles()</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>A list of role ids</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:t/0">t()</a>
+  </div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:user/0">user()</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>The user struct</p>
 </div>
   
 </div>
 
   </div>
 
+
+          
 
           
 
@@ -116,49 +176,194 @@ A <code class="inline">member</code> has everything that a <code class="inline">
       
 
       
-
-      
-        <section id="functions" class="details-list">
+        <section id="types" class="details-list">
           <h1 class="section-heading">
-            <a class="hover-link" href="#functions">
+            <a class="hover-link" href="#types">
               <i class="icon-link"></i>
             </a>
-            Functions
+            Types
           </h1>
-          <div class="detail" id="__struct__/0">
+          <div class="types-list">
+            <div class="detail" id="t:deaf/0">
   
   <div class="detail-header">
-    <a href="#__struct__/0" class="detail-link" title="Link to this function">
+    <a href="#t:deaf/0" class="detail-link" title="Link to this type">
       <i class="icon-link"></i>
     </a>
-    <span class="signature">__struct__()</span>
+    <span class="signature">deaf()</span>
     
     
+    
+      <div class="specs">
+        
+          <pre>deaf() :: boolean</pre>
+        
+      </div>
     
   </div>
   <section class="docstring">
-    <p>Represents a Discord Member.</p>
-<ul>
-<li><code class="inline">:guild_id</code> - <em>String</em>. Id of the guild the member is a part of.
-</li>
-<li><code class="inline">:user</code> - <em>Struct</em>. A <a href="Mixcord.Map.User.html"><code class="inline">Mixcord.Map.User</code></a> struct.
-</li>
-<li><code class="inline">:nick</code> - <em>?String</em>. Users guild nickname (if one is set).
-</li>
-<li><code class="inline">:roles</code> - <em>List</em>. A list of <a href="Mixcord.Map.Role.html"><code class="inline">Mixcord.Map.Role</code></a> ids.
-</li>
-<li><code class="inline">:joined_at</code> - <em>Data</em>. Date the user joined the guild.
-</li>
-<li><code class="inline">:deaf</code> - <em>Boolean</em>. If the user is deafened.
-</li>
-<li><code class="inline">:mute</code> - <em>Boolean</em>. If the user is muted.
-</li>
-</ul>
+    <p>Whether the user is deafened</p>
+
+  </section>
+</div>
+<div class="detail" id="t:guild_id/0">
+  
+  <div class="detail-header">
+    <a href="#t:guild_id/0" class="detail-link" title="Link to this type">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">guild_id()</span>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>guild_id() :: integer</pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>Id of the guild the member is part of</p>
+
+  </section>
+</div>
+<div class="detail" id="t:joined_at/0">
+  
+  <div class="detail-header">
+    <a href="#t:joined_at/0" class="detail-link" title="Link to this type">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">joined_at()</span>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>joined_at() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a></pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>Date the user joined the guild</p>
+
+  </section>
+</div>
+<div class="detail" id="t:mute/0">
+  
+  <div class="detail-header">
+    <a href="#t:mute/0" class="detail-link" title="Link to this type">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">mute()</span>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>mute() :: boolean</pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>Whether the user is muted</p>
+
+  </section>
+</div>
+<div class="detail" id="t:nick/0">
+  
+  <div class="detail-header">
+    <a href="#t:nick/0" class="detail-link" title="Link to this type">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">nick()</span>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>nick() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a> | nil</pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>The nickname of the user</p>
+
+  </section>
+</div>
+<div class="detail" id="t:roles/0">
+  
+  <div class="detail-header">
+    <a href="#t:roles/0" class="detail-link" title="Link to this type">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">roles()</span>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>roles() :: [<a href="Mixcord.Struct.Role.html#t:t/0">Mixcord.Struct.Role.t</a>]</pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>A list of role ids</p>
+
+  </section>
+</div>
+<div class="detail" id="t:t/0">
+  
+  <div class="detail-header">
+    <a href="#t:t/0" class="detail-link" title="Link to this type">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">t()</span>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>t() :: %Mixcord.Struct.Member{deaf: <a href="#t:deaf/0">deaf</a>, guild_id: <a href="#t:guild_id/0">guild_id</a>, joined_at: <a href="#t:joined_at/0">joined_at</a>, mute: <a href="#t:mute/0">mute</a>, nick: <a href="#t:nick/0">nick</a>, roles: <a href="#t:roles/0">roles</a>, user: <a href="#t:user/0">user</a>}</pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    
+  </section>
+</div>
+<div class="detail" id="t:user/0">
+  
+  <div class="detail-header">
+    <a href="#t:user/0" class="detail-link" title="Link to this type">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">user()</span>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>user() :: <a href="Mixcord.Struct.User.html#t:t/0">Mixcord.Struct.User.t</a></pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>The user struct</p>
 
   </section>
 </div>
 
+          </div>
         </section>
+      
+
       
 
       
@@ -168,7 +373,7 @@ A <code class="inline">member</code> has everything that a <code class="inline">
         <p>
           <span class="line">
             Built using
-            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" rel="help" target="_blank">ExDoc</a> (v0.14.3),
+            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" rel="help" target="_blank">ExDoc</a> (v0.14.5),
           </span>
           <span class="line">
             designed by
@@ -181,7 +386,7 @@ A <code class="inline">member</code> has everything that a <code class="inline">
   </div>
 </section>
 </div>
-  <script src="dist/app-574613960f.js"></script>
+  <script src="dist/app-4aef34ad5f.js"></script>
   </body>
 </html>
 

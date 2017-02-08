@@ -4,11 +4,11 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="ExDoc v0.14.3">
-    <title>Mixcord.Map.TextChannel – mixcord v0.1.0</title>
+    <meta name="generator" content="ExDoc v0.14.5">
+    <title>Mixcord.Struct.TextChannel – mixcord v0.1.0</title>
     <link rel="stylesheet" href="dist/app-091c05798a.css" />
     
-    <script src="dist/sidebar_items.js"></script>
+    <script src="dist/sidebar_items-5d71beca3c.js"></script>
   </head>
   <body data-type="modules">
     <script>if(localStorage.getItem('night-mode')) document.body.className += ' night-mode';</script>
@@ -61,7 +61,7 @@
 
       <h1>
         <small class="visible-xs">mixcord v0.1.0</small>
-        Mixcord.Map.TextChannel
+        Mixcord.Struct.TextChannel
         
         
       </h1>
@@ -82,24 +82,102 @@
             Summary
           </h1>
           
-
-          
-  <div class="summary-functions summary">
+  <div class="summary-types summary">
     <h2>
-      <a href="#functions">Functions</a>
+      <a href="#types">Types</a>
     </h2>
     <div class="summary-row">
   <div class="summary-signature">
-    <a href="#__struct__/0">__struct__()</a>
+    <a href="#t:guild_id/0">guild_id()</a>
   </div>
   
-    <div class="summary-synopsis"><p>Represents a Discord Text Channel</p>
+    <div class="summary-synopsis"><p>The id of the channel’s guild</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:id/0">id()</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>The channe’s id</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:is_private/0">is_private()</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Whether the channel is private</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:last_message_id/0">last_message_id()</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Id of the last message sent</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:name/0">name()</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>The name of the channel</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:permission_overwrites/0">permission_overwrites()</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>The list of overwrites</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:position/0">position()</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>The ordered position of the channel</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:t/0">t()</a>
+  </div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:topic/0">topic()</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Current channel topic</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:type/0">type()</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>The type of channel: ‘Text’ or ‘Voice’</p>
 </div>
   
 </div>
 
   </div>
 
+
+          
 
           
 
@@ -109,53 +187,238 @@
       
 
       
-
-      
-        <section id="functions" class="details-list">
+        <section id="types" class="details-list">
           <h1 class="section-heading">
-            <a class="hover-link" href="#functions">
+            <a class="hover-link" href="#types">
               <i class="icon-link"></i>
             </a>
-            Functions
+            Types
           </h1>
-          <div class="detail" id="__struct__/0">
+          <div class="types-list">
+            <div class="detail" id="t:guild_id/0">
   
   <div class="detail-header">
-    <a href="#__struct__/0" class="detail-link" title="Link to this function">
+    <a href="#t:guild_id/0" class="detail-link" title="Link to this type">
       <i class="icon-link"></i>
     </a>
-    <span class="signature">__struct__()</span>
+    <span class="signature">guild_id()</span>
     
     
+    
+      <div class="specs">
+        
+          <pre>guild_id() :: integer</pre>
+        
+      </div>
     
   </div>
   <section class="docstring">
-    <p>Represents a Discord Text Channel.</p>
-<ul>
-<li><code class="inline">:id</code> - <em>String</em>. The channel’s id.
-</li>
-<li><code class="inline">:guild_id</code> - <em>String</em>. Id of the channel’s guild.
-</li>
-<li><code class="inline">:name</code> - <em>String</em>. Name of the channel
-</li>
-<li><code class="inline">:type</code> - <em>String</em>. <code class="inline">Text</code> or <code class="inline">Voice</code>
-</li>
-<li><code class="inline">:position</code> - <em>Integer</em>. Ordering position of the channel
-</li>
-<li><code class="inline">:is_private</code> - <em>Boolean</em>. If channel is a DM
-</li>
-<li><code class="inline">:permission_overwrites</code> - <em>List</em>. List of <a href="https://discordapp.com/developers/docs/resources/channel#overwrite-object">overwrite</a> objects as maps
-</li>
-<li><code class="inline">:topic</code> - <em>String</em>. Current channel topic.
-</li>
-<li><code class="inline">:last_message_id</code> - <em>String</em>. Id of the last message sent in the channel
-</li>
-</ul>
+    <p>The id of the channel’s guild</p>
+
+  </section>
+</div>
+<div class="detail" id="t:id/0">
+  
+  <div class="detail-header">
+    <a href="#t:id/0" class="detail-link" title="Link to this type">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">id()</span>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>id() :: integer</pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>The channe’s id</p>
+
+  </section>
+</div>
+<div class="detail" id="t:is_private/0">
+  
+  <div class="detail-header">
+    <a href="#t:is_private/0" class="detail-link" title="Link to this type">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">is_private()</span>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>is_private() :: boolean</pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>Whether the channel is private</p>
+
+  </section>
+</div>
+<div class="detail" id="t:last_message_id/0">
+  
+  <div class="detail-header">
+    <a href="#t:last_message_id/0" class="detail-link" title="Link to this type">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">last_message_id()</span>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>last_message_id() :: integer</pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>Id of the last message sent</p>
+
+  </section>
+</div>
+<div class="detail" id="t:name/0">
+  
+  <div class="detail-header">
+    <a href="#t:name/0" class="detail-link" title="Link to this type">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">name()</span>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>name() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a></pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>The name of the channel</p>
+
+  </section>
+</div>
+<div class="detail" id="t:permission_overwrites/0">
+  
+  <div class="detail-header">
+    <a href="#t:permission_overwrites/0" class="detail-link" title="Link to this type">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">permission_overwrites()</span>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>permission_overwrites() :: [<a href="https://hexdocs.pm/elixir/Map.html#t:t/0">Map.t</a>]</pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>The list of overwrites</p>
+
+  </section>
+</div>
+<div class="detail" id="t:position/0">
+  
+  <div class="detail-header">
+    <a href="#t:position/0" class="detail-link" title="Link to this type">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">position()</span>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>position() :: integer</pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>The ordered position of the channel</p>
+
+  </section>
+</div>
+<div class="detail" id="t:t/0">
+  
+  <div class="detail-header">
+    <a href="#t:t/0" class="detail-link" title="Link to this type">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">t()</span>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>t() :: %Mixcord.Struct.TextChannel{guild_id: <a href="#t:guild_id/0">guild_id</a>, id: <a href="#t:id/0">id</a>, is_private: <a href="#t:is_private/0">is_private</a>, last_message_id: <a href="#t:last_message_id/0">last_message_id</a>, name: <a href="#t:name/0">name</a>, permission_overwrites: <a href="#t:permission_overwrites/0">permission_overwrites</a>, position: <a href="#t:position/0">position</a>, topic: <a href="#t:topic/0">topic</a>, type: <a href="#t:type/0">type</a>}</pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    
+  </section>
+</div>
+<div class="detail" id="t:topic/0">
+  
+  <div class="detail-header">
+    <a href="#t:topic/0" class="detail-link" title="Link to this type">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">topic()</span>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>topic() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a></pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>Current channel topic</p>
+
+  </section>
+</div>
+<div class="detail" id="t:type/0">
+  
+  <div class="detail-header">
+    <a href="#t:type/0" class="detail-link" title="Link to this type">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">type()</span>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>type() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a></pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>The type of channel: ‘Text’ or ‘Voice’</p>
 
   </section>
 </div>
 
+          </div>
         </section>
+      
+
       
 
       
@@ -165,7 +428,7 @@
         <p>
           <span class="line">
             Built using
-            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" rel="help" target="_blank">ExDoc</a> (v0.14.3),
+            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" rel="help" target="_blank">ExDoc</a> (v0.14.5),
           </span>
           <span class="line">
             designed by
@@ -178,7 +441,7 @@
   </div>
 </section>
 </div>
-  <script src="dist/app-574613960f.js"></script>
+  <script src="dist/app-4aef34ad5f.js"></script>
   </body>
 </html>
 

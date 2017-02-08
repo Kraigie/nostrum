@@ -5,7 +5,7 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="ExDoc v0.14.5">
-    <title>Mixcord.Cache.User – mixcord v0.1.0</title>
+    <title>Mixcord.Struct.Overwrite – mixcord v0.1.0</title>
     <link rel="stylesheet" href="dist/app-091c05798a.css" />
     
     <script src="dist/sidebar_items-5d71beca3c.js"></script>
@@ -61,14 +61,14 @@
 
       <h1>
         <small class="visible-xs">mixcord v0.1.0</small>
-        Mixcord.Cache.User
+        Mixcord.Struct.Overwrite
         
         
       </h1>
 
       
         <section id="moduledoc">
-          <p>Cache for channels.</p>
+          <p>Struct representing a Discord overwrite.</p>
 
         </section>
       
@@ -82,27 +82,57 @@
             Summary
           </h1>
           
-
-          
-  <div class="summary-functions summary">
+  <div class="summary-types summary">
     <h2>
-      <a href="#functions">Functions</a>
+      <a href="#types">Types</a>
     </h2>
     <div class="summary-row">
   <div class="summary-signature">
-    <a href="#get/1">get(list)</a>
+    <a href="#t:allow/0">allow()</a>
   </div>
+  
+    <div class="summary-synopsis"><p>Permission bit set</p>
+</div>
   
 </div>
 <div class="summary-row">
   <div class="summary-signature">
-    <a href="#get!/1">get!(list)</a>
+    <a href="#t:deny/0">deny()</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Permission but set</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:id/0">id()</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Role or User id</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:name/0">name()</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Either ‘role’ or ‘member’</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:t/0">t()</a>
   </div>
   
 </div>
 
   </div>
 
+
+          
 
           
 
@@ -112,30 +142,115 @@
       
 
       
-
-      
-        <section id="functions" class="details-list">
+        <section id="types" class="details-list">
           <h1 class="section-heading">
-            <a class="hover-link" href="#functions">
+            <a class="hover-link" href="#types">
               <i class="icon-link"></i>
             </a>
-            Functions
+            Types
           </h1>
-          <div class="detail" id="get/1">
+          <div class="types-list">
+            <div class="detail" id="t:allow/0">
   
   <div class="detail-header">
-    <a href="#get/1" class="detail-link" title="Link to this function">
+    <a href="#t:allow/0" class="detail-link" title="Link to this type">
       <i class="icon-link"></i>
     </a>
-    <span class="signature">get(list)</span>
+    <span class="signature">allow()</span>
     
     
     
       <div class="specs">
         
-          <pre>get([{:id, integer}]) :: <a href="Mixcord.Struct.User.html#t:t/0">Mixcord.Struct.User.t</a></pre>
+          <pre>allow() :: integer</pre>
         
-          <pre>get([{:message, <a href="Mixcord.Struct.Message.html#t:t/0">Mixcord.Struct.Message.t</a>}]) :: <a href="Mixcord.Struct.User.html#t:t/0">Mixcord.Struct.User.t</a></pre>
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>Permission bit set</p>
+
+  </section>
+</div>
+<div class="detail" id="t:deny/0">
+  
+  <div class="detail-header">
+    <a href="#t:deny/0" class="detail-link" title="Link to this type">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">deny()</span>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>deny() :: integer</pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>Permission but set</p>
+
+  </section>
+</div>
+<div class="detail" id="t:id/0">
+  
+  <div class="detail-header">
+    <a href="#t:id/0" class="detail-link" title="Link to this type">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">id()</span>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>id() :: integer</pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>Role or User id</p>
+
+  </section>
+</div>
+<div class="detail" id="t:name/0">
+  
+  <div class="detail-header">
+    <a href="#t:name/0" class="detail-link" title="Link to this type">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">name()</span>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>name() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a></pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>Either ‘role’ or ‘member’</p>
+
+  </section>
+</div>
+<div class="detail" id="t:t/0">
+  
+  <div class="detail-header">
+    <a href="#t:t/0" class="detail-link" title="Link to this type">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">t()</span>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>t() :: %Mixcord.Struct.Overwrite{allow: <a href="#t:allow/0">allow</a>, deny: <a href="#t:deny/0">deny</a>, id: <a href="#t:id/0">id</a>, name: <a href="#t:name/0">name</a>}</pre>
         
       </div>
     
@@ -144,23 +259,11 @@
     
   </section>
 </div>
-<div class="detail" id="get!/1">
-  
-  <div class="detail-header">
-    <a href="#get!/1" class="detail-link" title="Link to this function">
-      <i class="icon-link"></i>
-    </a>
-    <span class="signature">get!(list)</span>
-    
-    
-    
-  </div>
-  <section class="docstring">
-    
-  </section>
-</div>
 
+          </div>
         </section>
+      
+
       
 
       

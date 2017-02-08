@@ -8,7 +8,7 @@
     <title>Mixcord – mixcord v0.1.0</title>
     <link rel="stylesheet" href="dist/app-091c05798a.css" />
     
-    <script src="dist/sidebar_items-912fb2124f.js"></script>
+    <script src="dist/sidebar_items-5d71beca3c.js"></script>
   </head>
   <body data-type="modules">
     <script>if(localStorage.getItem('night-mode')) document.body.className += ' night-mode';</script>
@@ -75,19 +75,18 @@
 </h2>
 
 <p>Api functionality can be found in the <a href="Mixcord.Api.html"><code class="inline">Mixcord.Api</code></a> module. Ratelimiting is handled
-by the lib.</p>
-<h4>A note about Strings and Ints</h4>
-<p>Currently, responses from the REST api will have <code class="inline">id</code> fields as <code class="inline">string</code>.
-Everything received from the WS connection will have <code class="inline">id</code> fields as <code class="inline">int</code>.</p>
-<p>If you’re processing a response from the API and trying to access something in the cache
-based off of an <code class="inline">id</code> in the response, you will need to conver it to an <code class="inline">int</code> using
-<a href="https://hexdocs.pm/elixir/String.html#to_integer/1"><code class="inline">String.to_integer/1</code></a>. I’m open to suggestions for how this should be handled going forward.</p>
+internally by the lib.</p>
 <h2 id="module-structs" class="section-heading">
   <a href="#module-structs" class="hover-link"><i class="icon-link"></i></a>
   Structs
 </h2>
 
-<p>Mixcord implements a series of <code class="inline">maps</code> that hold infomration about Discord objects.</p>
+<p>Mixcord uses structs when appropriate to pass around objects from Discord. In some
+instances, such as the cache and dispatch event handles, Discord’s objects will be
+represented as maps. It will be made clear when this is the case using <code class="inline">@spec</code>
+specifications.</p>
+<p>In some cases, the struct modules will include helper functions for interacting
+with the struct. See <a href="Mixcord.Struct.Emoji.html#format_custom_emoji/2"><code class="inline">Mixcord.Struct.Emoji.format_custom_emoji/2</code></a> for an example.</p>
 <h2 id="module-state-cache" class="section-heading">
   <a href="#module-state-cache" class="hover-link"><i class="icon-link"></i></a>
   State/Cache
@@ -97,14 +96,14 @@ based off of an <code class="inline">id</code> in the response, you will need to
 These tables are updated based on events from the WS connection.</p>
 <p>See any of the Cache modules for default methods provided by the lib; e.g.
 <code class="inline">Guild</code> information can be found at <a href="Mixcord.Cache.Guild.html"><code class="inline">Mixcord.Cache.Guild</code></a></p>
-<h2 id="module-events" class="section-heading">
-  <a href="#module-events" class="hover-link"><i class="icon-link"></i></a>
-  Events
+<h2 id="module-event-handling" class="section-heading">
+  <a href="#module-event-handling" class="hover-link"><i class="icon-link"></i></a>
+  Event Handling
 </h2>
 
-<p>Mixcord currently handles events to keep track of state. To implement your own
-behaviour you should define at least one method called <code class="inline">handle_event/2</code>. See the
-<a href="Mixcord.Shard.Dispatch.html"><code class="inline">Mixcord.Shard.Dispatch</code></a> module for more information.</p>
+<p>Mixcord currently uses a GenStage implementation to handle dispatching events
+from the WS connection. See <a href="Mixcord.Shard.Dispatch.Producer.html"><code class="inline">Mixcord.Shard.Dispatch.Producer</code></a> for information
+on how to consume these events.</p>
 
         </section>
       
