@@ -13,7 +13,7 @@ defmodule Dummy do
   end
 end
 
-defmodule Mixcord.Shard.Dispatch.Consumer.Events do
+defmodule Mixcord.Producer.Events do
   @moduledoc """
   Defines the events you can handle in a consumer.
   """
@@ -27,39 +27,39 @@ defmodule Mixcord.Shard.Dispatch.Consumer.Events do
   @type from :: {pid, tag :: term}
 
   @type ws_state :: state
-  @type state :: term
+  @type state :: Map.t
 
   @type channel_create :: {:CHANNEL_CREATE, Mixcord.Struct.Channel.t}
   @type channel_delete :: {:CHANNEL_DELETE, Mixcord.Struct.Channel.t}
   @type channel_update :: {:CHANNEL_UPDATE, old_channel :: Mixcord.Struct.Channel.t, new_channel :: Mixcord.Struct.Channel.t}
-  @type channel_pins_ack :: no_return
-  @type channel_pins_update :: no_return
-  @type guild_ban_add :: no_return
-  @type build_ban_remove :: no_return
-  @type guild_create :: {:GUILD_CREATE, old_guild :: Mixcord.Struct.Guild.t}
-  @type guild_update :: no_return
-  @type guild_delete :: no_return
-  @type guild_emojis_update :: no_return
-  @type guild_integrations_update ::no_return
-  @type guild_member_add :: no_return
-  @type guild_members_chunk :: no_return
-  @type guild_member_remove :: no_return
-  @type guild_member_update :: no_return
-  @type guild_role_create :: no_return
-  @type guild_role_delete :: no_return
-  @type guild_role_update :: no_return
-  @type message_create :: no_return
-  @type message_delete :: no_return
-  @type message_delete_bulk :: no_return
-  @type message_update :: no_return
-  @type presence_update :: no_return
-  @type ready :: no_return
-  @type resumed :: no_return
-  @type typing_start :: no_return
+  @type channel_pins_ack :: {:CHANNEL_PINS_ACK, Map.t}
+  @type channel_pins_update :: {:CHANNEL_PINS_UPDATE, Map.t}
+  @type guild_ban_add :: {:GUILD_BAN_ADD, Mixcord.Struct.User.t}
+  @type build_ban_remove :: {:GUILD_BAN_REMOVE, Mixcord.Struct.User.t}
+  @type guild_create :: {:GUILD_CREATE, new_guild :: Mixcord.Struct.Guild.t}
+  @type guild_update :: {:GUILD_CREATE, old_guild :: Mixcord.Struct.Guild.t, new_guild :: Mixcord.Struct.Guild.t}
+  @type guild_delete :: {:GUILD_DELETE, old_guild :: Mixcord.Struct.Guild.t}
+  @type guild_emojis_update :: {:GUILD_EMOJIS_UPDATE, old_emojis :: [Mixcord.Struct.Emoji],  new_emojis :: [Mixcord.Struct.Emoji]}
+  @type guild_integrations_update :: {:GUILD_INTEGERATIONS_UPDATE, Map.t}
+  @type guild_member_add :: {:GUILD_MEMBER_ADD, new_member :: Mixcord.Struct.Member.t}
+  @type guild_members_chunk :: {:GUILD_MEMBERS_CHUNK, Map.t}
+  @type guild_member_remove :: {:GUILD_MEMBER_REMOVE, old_member :: Mixcord.Struct.Member.t}
+  @type guild_member_update :: {:GUILD_MEMBER_UPDATE, old_member :: Mixcord.Struct.Member.t, new_member :: Mixcord.Struct.Member.t}
+  @type guild_role_create :: {:GUILD_ROLE_CREATE, new_role :: Mixcord.Struct.Role.t}
+  @type guild_role_delete :: {:GUILD_ROLE_DELETE, old_role :: Mixcord.Struct.Role.t}
+  @type guild_role_update :: {:GUILD_ROLE_UPDATE, old_role :: Mixcord.Struct.Role.t, new_role :: Mixcord.Struct.Role.t}
+  @type message_create :: {:MESSAGE_CREATE, message :: Mixcord.Struct.Message.t}
+  @type message_delete :: {:MESSAGE_DELETE, message :: Mixcord.Struct.Message.t}
+  @type message_delete_bulk :: {:MESSAGE_DELETE_BULK, updated_messages :: [Mixcord.Struct.Message.t]}
+  @type message_update :: {:MESSAGE_UPDATE, updated_message :: Mixcord.Struct.Message.t}
+  @type presence_update :: {:PRESENCE_UPDATE, Map.t}
+  @type ready :: {:READY, Map.t}
+  @type resumed :: {:RESUMED, Map.t}
+  @type typing_start :: {:TYPING_START, Map.t}
   @type user_settings_update :: no_return
-  @type user_update :: no_return
-  @type voice_state_update :: no_return
-  @type voice_server_update :: no_return
+  @type user_update :: {:USER_UPDATE, old_user :: Mixcord.Struct.User.t, new_user :: Mixcord.Struct.User.t}
+  @type voice_state_update :: {:VOICE_STATE_UPDATE, Map.t}
+  @type voice_server_update :: {:VOICE_SERVER_UPDATE, Map.t}
 
   @type event :: channel_create |
     channel_delete |

@@ -597,6 +597,54 @@ defmodule Mixcord.Api do
     request(:patch, Constants.guild_embed(guild_id))
   end
 
+  def get_invite(invite_code) do
+    request(:get, Constants.invite(invite_code))
+  end
+
+  def delete_invite(invite_code) do
+    request(:delete, Constants.invite(invite_code))
+  end
+
+  def accept_invite(invite_code) do
+    request(:post, Constants.invite(invite_code))
+  end
+
+  def get_user(user_id) do
+    request(:get, Constants.user(user_id))
+  end
+
+  def get_current_user do
+    request(:get, Constants.me)
+  end
+
+  def modify_current_user() do
+     request(:patch, Constants.me)
+  end
+
+  def get_current_users_guilds() do
+    request(:get, Constants.me_guilds)
+  end
+
+  def leave_guild(guild_id) do
+    request(:delete, Constants.me_guild(guild_id))
+  end
+
+  def get_user_dms do
+    request(:get, Constants.me_channels)
+  end
+
+  def create_dm do
+    request(:post, Constants.me_channels)
+  end
+
+  def get_user_connections do
+    request(:get, Constants.me_connections)
+  end
+
+  def list_voice_regions do
+    request(:get, Constants.regions)
+  end
+
   def request(method, route, body \\ "", options \\ []) do
     request = %{
       method: method,
