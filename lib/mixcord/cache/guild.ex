@@ -115,7 +115,7 @@ defmodule Mixcord.Cache.Guild do
     new_members = List.update_at(guild.members, member_index, fn member ->
       %{member | user: user, roles: roles}
     end)
-    new_state = Map.update(state, guild_id, %{}, fn guild ->
+    new_state = Map.update(state, guild_id, [], fn guild ->
       %{guild | members: new_members}
     end)
     {:reply, {old_member, %{old_member | user: user, roles: roles}}, new_state}
@@ -130,7 +130,7 @@ defmodule Mixcord.Cache.Guild do
         :error -> %{}
       end
     members = List.delete_at(guild.members, member_index)
-    new_state = Map.update(state, guild_id, %{}, fn guild ->
+    new_state = Map.update(state, guild_id, [], fn guild ->
       %{guild | members: members}
     end)
     {:reply, deleted_member, new_state}
@@ -154,7 +154,7 @@ defmodule Mixcord.Cache.Guild do
       fn _ ->
         role
       end)
-      new_state = Map.update(state, guild_id, %{}, fn guild ->
+      new_state = Map.update(state, guild_id, [], fn guild ->
         %{guild | roles: roles}
       end)
     {:reply, {old_role, role}, new_state}
@@ -169,7 +169,7 @@ defmodule Mixcord.Cache.Guild do
         :error -> %{}
       end
     roles = List.delete_at(guild.roles, role_index)
-    new_state = Map.update(state, guild_id, %{}, fn guild ->
+    new_state = Map.update(state, guild_id, [], fn guild ->
       %{guild | roles: roles}
     end)
     {:reply, old_role, new_state}
@@ -178,7 +178,7 @@ defmodule Mixcord.Cache.Guild do
   def handle_call({:update, :emoji, guild_id, emojis}, _from, state) do
     guild = Map.get(state, guild_id)
     old_emojis = guild.emojis
-    new_state = Map.update(state, guild_id, %{}, fn guild ->
+    new_state = Map.update(state, guild_id, [], fn guild ->
       %{guild | emojis: emojis}
     end)
     {:reply, {old_emojis, emojis}, new_state}
