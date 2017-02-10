@@ -32,12 +32,12 @@ defmodule Mixcord.Constants do
   def guild_integration_sync(guild_id, integration_id),   do: "/guilds/#{guild_id}/integrations/#{integration_id}/sync"
   def guild_embed(guild_id),                              do: "/guilds/#{guild_id}/embed"
 
-  def webhooks_guild(guild_id),                           do: "/guilds/{guild.id}/webhooks"
-  def webhook_channel(channel_id),                        do: "/channels/{channel.id}/webhooks"
-  def webhooks(webhook_id),                               do: "/webhooks/{webhook.id}"
-  def webhook_token(webhook_id, token),                   do: "/webhooks/{webhook.id}/{webhook.token}"
-  def webhook_git(webhook_id, token),                     do: "/webhooks/{webhook.id}/{webhook.token}/github"
-  def webhook_slack(webhook_id, token),                   do: "/webhooks/{webhook.id}/{webhook.token}/slack"
+  def webhooks_guild(guild_id),                           do: "/guilds/#{guild_id}/webhooks"
+  def webhook_channel(channel_id),                        do: "/channels/#{channel_id}/webhooks"
+  def webhooks(webhook_id),                               do: "/webhooks/#{webhook_id}"
+  def webhook_token(webhook_id, webhook_token),           do: "/webhooks/#{webhook_id}/#{webhook_token}"
+  def webhook_git(webhook_id, webhook_token),             do: "/webhooks/#{webhook_id}/#{webhook_token}/github"
+  def webhook_slack(webhook_id, webhook_token),           do: "/webhooks/#{webhook_id}/#{webhook_token}/slack"
 
   def user(user_id),                                      do: "/users/#{user_id}"
 
