@@ -1,4 +1,10 @@
+_ = """
+      This module exists primarily for documentation/testing purposes
+    """
+
 defmodule Dummy do
+  @moduledoc false
+
   def start do
     import Supervisor.Spec
 
@@ -16,6 +22,18 @@ end
 defmodule Mixcord.Producer.Events do
   @moduledoc """
   Defines the events you can handle in a consumer.
+
+  # Consuming Gateway Events
+  To handle events, Mixcord uses a GenStage implementation. GenStage is "new" with
+  Elixir version 1.4, expanding on the old functionality of GenEvent.
+
+  Mixcord defines the `producer` in the GenStage design. To consume the events you must
+  create at least one `consumer` process that is linked to Mixcord's producer. For
+  an example of this behaviour please see
+  [here](https://github.com/Kraigie/mixcord/blob/84502606f570d27dd4450d95a88a796839369bfb/examples/event_consumer.ex).
+
+  It is generally recommended that you spawn a consumer per core. To find this
+  number you can use `System.schedulers_online/0`.
   """
 
   @typedoc """
@@ -26,7 +44,14 @@ defmodule Mixcord.Producer.Events do
   """
   @type from :: {pid, tag :: term}
 
-  @type ws_state :: state
+  @typedoc """
+  The state of the websocket connection for the shard the event occured on.
+  """
+  @type ws_state :: Map.t
+
+  @typedoc """
+  The state of the consumer process.
+  """
   @type state :: Map.t
 
   @type channel_create :: {:CHANNEL_CREATE, Mixcord.Struct.Channel.t}
@@ -93,10 +118,21 @@ defmodule Mixcord.Producer.Events do
     voice_state_update |
     voice_server_update
 
+  @doc """
+  This is the callback you must implement to handle events.
+
+  `Event` is the event name as an atom, and `ws_state` is the current state of
+  the websocket that the event was received on. For more information on this please
+  see `Mixcord.Shard.Payload.state_map.t`.
+
+  `from` is the process information of the producer from which the demand was received.
+  `state` is the internal state of your consumer.
+  """
   @callback handle_event({event, ws_state}, from, state) :: {:noreply, [], state}
 end
 
 defmodule DummyConsumer do
+  @moduledoc false
 
   use GenStage
   require Logger

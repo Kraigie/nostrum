@@ -1,11 +1,28 @@
 defmodule Mixcord.Shard.Payload do
-  @moduledoc false
+  @moduledoc """
+  Specifies maps to be used for WS payloads.. and also the state map.
+  """
 
   alias Mixcord.{Constants, Util}
 
   @large_threshold 250
 
-  @doc false
+  @typedoc """
+  The state map contained and maintained in each websocket process.
+
+  Keys
+   * `token` - The token of the bot.
+   * `caller` - **DEPRECATED**
+   * `shard_num` - The shard number container this state.
+   * `seq` - Current seq number of the websocket.
+   * `session` - Current session of the websocket.
+   * `reconnect_attempts` - Current number of reconnect attempts.
+   * `last_heartbeat` - The time of the last heartbeat.
+   * `shard_pid` - Pid of the shard containing this state.
+   * `heartbeat_intervals` - List of last ten heartbeat intervals, from hearbeat send to ack.
+  """
+  @type state_map :: Map.t
+
   def state_map(token, caller, shard_num, pid) do
     %{
       token: token,
