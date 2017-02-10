@@ -9,14 +9,14 @@ defmodule Mixcord.Shard do
 
   @connect_wait 5000
 
-  def start_link(token, caller, shard_num) do
+  def start_link(token, shard_num) do
     :crypto.start
     :ssl.start
     # This makes the supervisor spawn a shard worker ever 5 seconds. This only occurs on ShardSupervisor start.
     # If an individual shard fails, it will be restarted immediately.
     # TODO: Queue reconnects/check this better
     if Util.num_shards > 1, do: Process.sleep(@connect_wait)
-    :websocket_client.start_link(Util.gateway, __MODULE__, Payload.state_map(token, caller, shard_num, self()))
+    :websocket_client.start_link(Util.gateway, __MODULE__, Payload.state_map(token, shard_num, self()))
   end
 
   def websocket_handle({:binary, payload}, _state, state) do

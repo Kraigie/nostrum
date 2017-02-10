@@ -4,8 +4,8 @@ defmodule Mixcord.Shard.Supervisor do
   use Supervisor
   alias Mixcord.Shard
 
-  def start_link(token, caller, num_shards \\ 1) do
-    Supervisor.start_link(__MODULE__, [token: token, caller: caller, num_shards: num_shards], name: Shard.Supervisor)
+  def start_link(token, num_shards \\ 1) do
+    Supervisor.start_link(__MODULE__, [token: token, num_shards: num_shards], name: Shard.Supervisor)
   end
 
   def update_status(status, game) do
@@ -16,15 +16,15 @@ defmodule Mixcord.Shard.Supervisor do
 
   @doc false
   def init(options) do
-    children = for i <- 0..options[:num_shards] - 1, do: create_worker(options[:token], options[:caller], i)
+    children = for i <- 0..options[:num_shards] - 1, do: create_worker(options[:token], i)
     children = children ++ [worker(Mixcord.Shard.Dispatch.Producer, [])]
     supervise(children, strategy: :one_for_one)
   end
 
   @doc false
-  def create_worker(token, caller, shard_num) do
+  def create_worker(token, shard_num) do
     # TODO: Add shard struct to map here with PID
-    worker(Shard, [token, caller, shard_num], [id: shard_num])
+    worker(Shard, [token, shard_num], [id: shard_num])
   end
 
 end

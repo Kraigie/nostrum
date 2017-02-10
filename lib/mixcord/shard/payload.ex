@@ -12,7 +12,6 @@ defmodule Mixcord.Shard.Payload do
 
   Keys
    * `token` - The token of the bot.
-   * `caller` - **DEPRECATED**
    * `shard_num` - The shard number container this state.
    * `seq` - Current seq number of the websocket.
    * `session` - Current session of the websocket.
@@ -23,10 +22,9 @@ defmodule Mixcord.Shard.Payload do
   """
   @type state_map :: Map.t
 
-  def state_map(token, caller, shard_num, pid) do
+  def state_map(token, shard_num, pid) do
     %{
       token: token,
-      caller: caller,
       shard_num: shard_num,
       seq: nil,
       session: nil,

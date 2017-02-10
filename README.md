@@ -39,8 +39,14 @@ Mixcord can be installed as:
     ```elixir
       config :mixcord,
         token: "YOUR_API_TOKEN_HERE",
-        caller: Module.Where.You.Define.Your.Handlers, # This will soon be changed to use GenStage to dispatch events.
-        num_shards: Integer.t # In the future this will be changed to automatically detect the correct number of shards.
+        num_shards: Integer.t # In the future this will be changed to optionally automatically detect the correct number of shards.
+    ```
+
+    By default the library will throw out a lot of debug information. If you
+    want to ignore this information, change the logging level of logger.
+    ```elixir
+      config :logger,
+        level: :warn
     ```
 
 To update your version of Mixcord simply run `mix deps.update mixcord`

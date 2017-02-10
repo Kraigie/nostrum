@@ -35,11 +35,9 @@ defmodule Mixcord do
     import Supervisor.Spec
 
     token = Application.get_env(:mixcord, :token)
-    caller = Application.get_env(:mixcord, :caller)
     num_shards = Application.get_env(:mixcord, :num_shards)
 
     if !token, do: raise "Please supply a token"
-    if !caller, do: raise "Please supply a caller"
     actual_num_shards = if num_shards, do: num_shards, else: 1
 
     setup_ets_tables()
@@ -47,7 +45,7 @@ defmodule Mixcord do
     children = [
       worker(Mixcord.Api.Ratelimiter, []),
       supervisor(Mixcord.Cache.Supervisor, []),
-      supervisor(Mixcord.Shard.Supervisor, [token, caller, actual_num_shards])
+      supervisor(Mixcord.Shard.Supervisor, [token, actual_num_shards])
     ]
 
     supervisor = Supervisor.start_link(children, strategy: :one_for_one)
