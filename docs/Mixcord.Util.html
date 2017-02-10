@@ -6,9 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="ExDoc v0.14.5">
     <title>Mixcord.Util – mixcord v0.1.0</title>
-    <link rel="stylesheet" href="dist/app-091c05798a.css" />
+    <link rel="stylesheet" href="dist/app-a07cea761b.css" />
     
-    <script src="dist/sidebar_items-5d71beca3c.js"></script>
+    <script src="dist/sidebar_items-9ec3887d0b.js"></script>
   </head>
   <body data-type="modules">
     <script>if(localStorage.getItem('night-mode')) document.body.className += ' night-mode';</script>
@@ -108,6 +108,15 @@
 </div>
 <div class="summary-row">
   <div class="summary-signature">
+    <a href="#maybe_to_atom/1">maybe_to_atom(token)</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Attempts to convert a string to an atom</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
     <a href="#now/0">now()</a>
   </div>
   
@@ -147,10 +156,10 @@
     <a href="#unused_atoms/0">unused_atoms()</a>
   </div>
   
-    <div class="summary-synopsis"><p>Since we’re being sacrilegious amd converting strings to atoms from the WS, there will be some
+    <div class="summary-synopsis"><p>Since we’re being sacrilegious and converting strings to atoms from the WS, there will be some
 atoms that we see that aren’t defined in any Discord structs. This method mainly serves as a
 means to define those atoms once so the user isn’t warned about them in the
-<code class="inline">Mixcord.Util.maybe_to_atom/1</code> function when they are in fact harmless</p>
+<a href="Mixcord.Util.html#maybe_to_atom/1"><code class="inline">Mixcord.Util.maybe_to_atom/1</code></a> function when they are in fact harmless</p>
 </div>
   
 </div>
@@ -218,6 +227,29 @@ means to define those atoms once so the user isn’t warned about them in the
     <p>Returns the gateway url for current websocket connections.</p>
 <p>If by chance no gateway connection has been made, will fetch the url to use and store it
 for future use.</p>
+
+  </section>
+</div>
+<div class="detail" id="maybe_to_atom/1">
+  
+  <div class="detail-header">
+    <a href="#maybe_to_atom/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">maybe_to_atom(token)</span>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>maybe_to_atom(atom | <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>) :: atom</pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>Attempts to convert a string to an atom.</p>
+<p>If atom does not currently exist, will warn that we’re doing an unsafe conversion.</p>
 
   </section>
 </div>
@@ -308,7 +340,7 @@ in your config.</p>
   </div>
   <section class="docstring">
     <p>Converts a map into an atom-keyed map.</p>
-<p>Given a map with variable type keys, returns the same map with all keys at <code class="inline">atoms</code>.</p>
+<p>Given a map with variable type keys, returns the same map with all keys as <code class="inline">atoms</code>.</p>
 <p>This function will attempt to convert keys to an existing atom, and if that fails will default to
 creating a new atom while displaying a warning. The idea here is that we should be able to see
 if any results from Discord are giving variable keys. Since we <em>will</em> define all
@@ -328,10 +360,10 @@ types of objects returned by Discord, the amount of new atoms created <em>SHOULD
     
   </div>
   <section class="docstring">
-    <p>Since we’re being sacrilegious amd converting strings to atoms from the WS, there will be some
+    <p>Since we’re being sacrilegious and converting strings to atoms from the WS, there will be some
 atoms that we see that aren’t defined in any Discord structs. This method mainly serves as a
 means to define those atoms once so the user isn’t warned about them in the
-<code class="inline">Mixcord.Util.maybe_to_atom/1</code> function when they are in fact harmless.</p>
+<a href="Mixcord.Util.html#maybe_to_atom/1"><code class="inline">Mixcord.Util.maybe_to_atom/1</code></a> function when they are in fact harmless.</p>
 
   </section>
 </div>

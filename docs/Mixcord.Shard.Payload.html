@@ -5,10 +5,10 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="ExDoc v0.14.5">
-    <title>Mixcord.Shard.Dispatch – mixcord v0.1.0</title>
-    <link rel="stylesheet" href="dist/app-091c05798a.css" />
+    <title>Mixcord.Shard.Payload – mixcord v0.1.0</title>
+    <link rel="stylesheet" href="dist/app-a07cea761b.css" />
     
-    <script src="dist/sidebar_items-5d71beca3c.js"></script>
+    <script src="dist/sidebar_items-9ec3887d0b.js"></script>
   </head>
   <body data-type="modules">
     <script>if(localStorage.getItem('night-mode')) document.body.className += ' night-mode';</script>
@@ -61,37 +61,14 @@
 
       <h1>
         <small class="visible-xs">mixcord v0.1.0</small>
-        Mixcord.Shard.Dispatch
+        Mixcord.Shard.Payload
         
         
       </h1>
 
       
         <section id="moduledoc">
-          <p>Handles events from Discord’s WS connection.</p>
-<p>All events received are handled in their own task. Any handlers you define will
-be run synchronously after the lib handles the event.</p>
-<p>To define your own event define a function like <a href="#handle_event/2"><code class="inline">handle_event/2</code></a>.
-The first parameter is a <code class="inline">tuple</code> containing the event type as an <code class="inline">atom</code> and the
-payload of the event as a <code class="inline">map</code>. The second parameter is the current <code class="inline">state</code> of the shard
-on which the event was received.</p>
-<h2 id="module-example" class="section-heading">
-  <a href="#module-example" class="hover-link"><i class="icon-link"></i></a>
-  Example
-</h2>
-
-<pre><code class="elixir">import Mixcord.Api, only: [create_message: 2]
-
-def handle_event({:MESSAGE_CREATE, message}, _state) do
-  case message.content do
-    &quot;PONG&quot; -&gt;
-      create_message(message.channel_id, &quot;PING&quot;)
-    &quot;PING&quot; -&gt;
-      create_message(message.channel_id, &quot;PONG&quot;)
-    _ -&gt;
-      create_message(message.channel_id, &quot;I copy and pasted this code&quot;)
-  end
-end</code></pre>
+          <p>Specifies maps to be used for WS payloads.. and also the state map.</p>
 
         </section>
       
@@ -105,6 +82,22 @@ end</code></pre>
             Summary
           </h1>
           
+  <div class="summary-types summary">
+    <h2>
+      <a href="#types">Types</a>
+    </h2>
+    <div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:state_map/0">state_map()</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>The state map contained and maintained in each websocket process</p>
+</div>
+  
+</div>
+
+  </div>
+
 
           
   <div class="summary-functions summary">
@@ -113,13 +106,7 @@ end</code></pre>
     </h2>
     <div class="summary-row">
   <div class="summary-signature">
-    <a href="#handle/2">handle(payload, state)</a>
-  </div>
-  
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#handle_event/2">handle_event(arg, state)</a>
+    <a href="#state_map/4">state_map(token, caller, shard_num, pid)</a>
   </div>
   
 </div>
@@ -135,6 +122,61 @@ end</code></pre>
       
 
       
+        <section id="types" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#types">
+              <i class="icon-link"></i>
+            </a>
+            Types
+          </h1>
+          <div class="types-list">
+            <div class="detail" id="t:state_map/0">
+  
+  <div class="detail-header">
+    <a href="#t:state_map/0" class="detail-link" title="Link to this type">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">state_map()</span>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>state_map() :: <a href="https://hexdocs.pm/elixir/Map.html#t:t/0">Map.t</a></pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>The state map contained and maintained in each websocket process.</p>
+<p>Keys</p>
+<ul>
+<li><code class="inline">token</code> - The token of the bot.
+</li>
+<li><code class="inline">caller</code> - <strong>DEPRECATED</strong>
+</li>
+<li><code class="inline">shard_num</code> - The shard number container this state.
+</li>
+<li><code class="inline">seq</code> - Current seq number of the websocket.
+</li>
+<li><code class="inline">session</code> - Current session of the websocket.
+</li>
+<li><code class="inline">reconnect_attempts</code> - Current number of reconnect attempts.
+</li>
+<li><code class="inline">last_heartbeat</code> - The time of the last heartbeat.
+</li>
+<li><code class="inline">shard_pid</code> - Pid of the shard containing this state.
+</li>
+<li><code class="inline">heartbeat_intervals</code> - List of last ten heartbeat intervals, from hearbeat send to ack.
+</li>
+</ul>
+
+  </section>
+</div>
+
+          </div>
+        </section>
+      
 
       
         <section id="functions" class="details-list">
@@ -144,28 +186,13 @@ end</code></pre>
             </a>
             Functions
           </h1>
-          <div class="detail" id="handle/2">
+          <div class="detail" id="state_map/4">
   
   <div class="detail-header">
-    <a href="#handle/2" class="detail-link" title="Link to this function">
+    <a href="#state_map/4" class="detail-link" title="Link to this function">
       <i class="icon-link"></i>
     </a>
-    <span class="signature">handle(payload, state)</span>
-    
-    
-    
-  </div>
-  <section class="docstring">
-    
-  </section>
-</div>
-<div class="detail" id="handle_event/2">
-  
-  <div class="detail-header">
-    <a href="#handle_event/2" class="detail-link" title="Link to this function">
-      <i class="icon-link"></i>
-    </a>
-    <span class="signature">handle_event(arg, state)</span>
+    <span class="signature">state_map(token, caller, shard_num, pid)</span>
     
     
     

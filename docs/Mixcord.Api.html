@@ -6,9 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="ExDoc v0.14.5">
     <title>Mixcord.Api – mixcord v0.1.0</title>
-    <link rel="stylesheet" href="dist/app-091c05798a.css" />
+    <link rel="stylesheet" href="dist/app-a07cea761b.css" />
     
-    <script src="dist/sidebar_items-5d71beca3c.js"></script>
+    <script src="dist/sidebar_items-9ec3887d0b.js"></script>
   </head>
   <body data-type="modules">
     <script>if(localStorage.getItem('night-mode')) document.body.className += ' night-mode';</script>
@@ -162,6 +162,12 @@ authors =
     </h2>
     <div class="summary-row">
   <div class="summary-signature">
+    <a href="#accept_invite/1">accept_invite(invite_code)</a>
+  </div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
     <a href="#add_member/3">add_member(guild_id, user_id, options)</a>
   </div>
   
@@ -229,6 +235,12 @@ authors =
 <div class="summary-row">
   <div class="summary-signature">
     <a href="#create_channel_invite!/2">create_channel_invite!(channel_id, options \\ %{})</a>
+  </div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#create_dm/0">create_dm()</a>
   </div>
   
 </div>
@@ -307,6 +319,12 @@ authors =
 <div class="summary-row">
   <div class="summary-signature">
     <a href="#delete_guild_role/2">delete_guild_role(guild_id, role_id)</a>
+  </div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#delete_invite/1">delete_invite(invite_code)</a>
   </div>
   
 </div>
@@ -453,6 +471,18 @@ authors =
 </div>
 <div class="summary-row">
   <div class="summary-signature">
+    <a href="#get_current_user/0">get_current_user()</a>
+  </div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#get_current_users_guilds/0">get_current_users_guilds()</a>
+  </div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
     <a href="#get_guild/1">get_guild(guild_id)</a>
   </div>
   
@@ -507,6 +537,12 @@ authors =
 </div>
 <div class="summary-row">
   <div class="summary-signature">
+    <a href="#get_invite/1">get_invite(invite_code)</a>
+  </div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
     <a href="#get_member/2">get_member(guild_id, user_id)</a>
   </div>
   
@@ -540,6 +576,24 @@ authors =
 </div>
 <div class="summary-row">
   <div class="summary-signature">
+    <a href="#get_user/1">get_user(user_id)</a>
+  </div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#get_user_connections/0">get_user_connections()</a>
+  </div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#get_user_dms/0">get_user_dms()</a>
+  </div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
     <a href="#get_voice_region/1">get_voice_region(guild_id)</a>
   </div>
   
@@ -552,7 +606,25 @@ authors =
 </div>
 <div class="summary-row">
   <div class="summary-signature">
+    <a href="#leave_guild/1">leave_guild(guild_id)</a>
+  </div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#list_voice_regions/0">list_voice_regions()</a>
+  </div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
     <a href="#modify_channel_position/2">modify_channel_position(guild_id, options)</a>
+  </div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#modify_current_user/0">modify_current_user()</a>
   </div>
   
 </div>
@@ -754,10 +826,16 @@ The tuple can also be empty to search from the most recent message in the channe
   </div>
   <section class="docstring">
     <p>Represents different statuses the bot can have.</p>
-<p><code class="inline">:dnd</code> - Red circle.
-<code class="inline">:idle</code> - Yellow circle.
-<code class="inline">:online</code> - Green circle.
-<code class="inline">invisible</code> - The bot will appear offline.</p>
+<ul>
+<li><code class="inline">:dnd</code> - Red circle.
+</li>
+<li><code class="inline">:idle</code> - Yellow circle.
+</li>
+<li><code class="inline">:online</code> - Green circle.
+</li>
+<li><code class="inline">invisible</code> - The bot will appear offline.
+</li>
+</ul>
 
   </section>
 </div>
@@ -774,7 +852,22 @@ The tuple can also be empty to search from the most recent message in the channe
             </a>
             Functions
           </h1>
-          <div class="detail" id="add_member/3">
+          <div class="detail" id="accept_invite/1">
+  
+  <div class="detail-header">
+    <a href="#accept_invite/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">accept_invite(invite_code)</span>
+    
+    
+    
+  </div>
+  <section class="docstring">
+    
+  </section>
+</div>
+<div class="detail" id="add_member/3">
   
   <div class="detail-header">
     <a href="#add_member/3" class="detail-link" title="Link to this function">
@@ -954,6 +1047,21 @@ Returns {:ok} if successful.</p>
       <i class="icon-link"></i>
     </a>
     <span class="signature">create_channel_invite!(channel_id, options \\ %{})</span>
+    
+    
+    
+  </div>
+  <section class="docstring">
+    
+  </section>
+</div>
+<div class="detail" id="create_dm/0">
+  
+  <div class="detail-header">
+    <a href="#create_dm/0" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">create_dm()</span>
     
     
     
@@ -1164,6 +1272,21 @@ Returns <a href="Mixcord.Struct.Message.html"><code class="inline">Mixcord.Struc
       <i class="icon-link"></i>
     </a>
     <span class="signature">delete_guild_role(guild_id, role_id)</span>
+    
+    
+    
+  </div>
+  <section class="docstring">
+    
+  </section>
+</div>
+<div class="detail" id="delete_invite/1">
+  
+  <div class="detail-header">
+    <a href="#delete_invite/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">delete_invite(invite_code)</span>
     
     
     
@@ -1547,6 +1670,36 @@ Returns the edited <a href="Mixcord.Struct.Message.html"><code class="inline">Mi
     
   </section>
 </div>
+<div class="detail" id="get_current_user/0">
+  
+  <div class="detail-header">
+    <a href="#get_current_user/0" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">get_current_user()</span>
+    
+    
+    
+  </div>
+  <section class="docstring">
+    
+  </section>
+</div>
+<div class="detail" id="get_current_users_guilds/0">
+  
+  <div class="detail-header">
+    <a href="#get_current_users_guilds/0" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">get_current_users_guilds()</span>
+    
+    
+    
+  </div>
+  <section class="docstring">
+    
+  </section>
+</div>
 <div class="detail" id="get_guild/1">
   
   <div class="detail-header">
@@ -1686,6 +1839,21 @@ Returns the edited <a href="Mixcord.Struct.Message.html"><code class="inline">Mi
     
   </section>
 </div>
+<div class="detail" id="get_invite/1">
+  
+  <div class="detail-header">
+    <a href="#get_invite/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">get_invite(invite_code)</span>
+    
+    
+    
+  </div>
+  <section class="docstring">
+    
+  </section>
+</div>
 <div class="detail" id="get_member/2">
   
   <div class="detail-header">
@@ -1775,6 +1943,51 @@ Returns the edited <a href="Mixcord.Struct.Message.html"><code class="inline">Mi
 
   </section>
 </div>
+<div class="detail" id="get_user/1">
+  
+  <div class="detail-header">
+    <a href="#get_user/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">get_user(user_id)</span>
+    
+    
+    
+  </div>
+  <section class="docstring">
+    
+  </section>
+</div>
+<div class="detail" id="get_user_connections/0">
+  
+  <div class="detail-header">
+    <a href="#get_user_connections/0" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">get_user_connections()</span>
+    
+    
+    
+  </div>
+  <section class="docstring">
+    
+  </section>
+</div>
+<div class="detail" id="get_user_dms/0">
+  
+  <div class="detail-header">
+    <a href="#get_user_dms/0" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">get_user_dms()</span>
+    
+    
+    
+  </div>
+  <section class="docstring">
+    
+  </section>
+</div>
 <div class="detail" id="get_voice_region/1">
   
   <div class="detail-header">
@@ -1805,6 +2018,36 @@ Returns the edited <a href="Mixcord.Struct.Message.html"><code class="inline">Mi
     
   </section>
 </div>
+<div class="detail" id="leave_guild/1">
+  
+  <div class="detail-header">
+    <a href="#leave_guild/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">leave_guild(guild_id)</span>
+    
+    
+    
+  </div>
+  <section class="docstring">
+    
+  </section>
+</div>
+<div class="detail" id="list_voice_regions/0">
+  
+  <div class="detail-header">
+    <a href="#list_voice_regions/0" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">list_voice_regions()</span>
+    
+    
+    
+  </div>
+  <section class="docstring">
+    
+  </section>
+</div>
 <div class="detail" id="modify_channel_position/2">
   
   <div class="detail-header">
@@ -1812,6 +2055,21 @@ Returns the edited <a href="Mixcord.Struct.Message.html"><code class="inline">Mi
       <i class="icon-link"></i>
     </a>
     <span class="signature">modify_channel_position(guild_id, options)</span>
+    
+    
+    
+  </div>
+  <section class="docstring">
+    
+  </section>
+</div>
+<div class="detail" id="modify_current_user/0">
+  
+  <div class="detail-header">
+    <a href="#modify_current_user/0" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">modify_current_user()</span>
     
     
     

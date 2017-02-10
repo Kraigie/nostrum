@@ -5,10 +5,10 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="ExDoc v0.14.5">
-    <title>Mixcord.Shard.Dispatch.Consumer.Events – mixcord v0.1.0</title>
-    <link rel="stylesheet" href="dist/app-091c05798a.css" />
+    <title>Mixcord.Producer.Events – mixcord v0.1.0</title>
+    <link rel="stylesheet" href="dist/app-a07cea761b.css" />
     
-    <script src="dist/sidebar_items-5d71beca3c.js"></script>
+    <script src="dist/sidebar_items-9ec3887d0b.js"></script>
   </head>
   <body data-type="modules">
     <script>if(localStorage.getItem('night-mode')) document.body.className += ' night-mode';</script>
@@ -61,7 +61,7 @@
 
       <h1>
         <small class="visible-xs">mixcord v0.1.0</small>
-        Mixcord.Shard.Dispatch.Consumer.Events
+        Mixcord.Producer.Events
         
           <small>behaviour</small>
         
@@ -71,6 +71,15 @@
       
         <section id="moduledoc">
           <p>Defines the events you can handle in a consumer.</p>
+<h1>Consuming Gateway Events</h1>
+<p>To handle events, Mixcord uses a GenStage implementation. GenStage is “new” with
+Elixir version 1.4, expanding on the old functionality of GenEvent.</p>
+<p>Mixcord defines the <code class="inline">producer</code> in the GenStage design. To consume the events you must
+create at least one <code class="inline">consumer</code> process that is linked to Mixcord’s producer. For
+an example of this behaviour please see
+<a href="https://github.com/Kraigie/mixcord/blob/84502606f570d27dd4450d95a88a796839369bfb/examples/event_consumer.ex">here</a>.</p>
+<p>It is generally recommended that you spawn a consumer per core. To find this
+number you can use <a href="https://hexdocs.pm/elixir/System.html#schedulers_online/0"><code class="inline">System.schedulers_online/0</code></a>.</p>
 
         </section>
       
@@ -264,6 +273,9 @@
     <a href="#t:state/0">state()</a>
   </div>
   
+    <div class="summary-synopsis"><p>The state of the consumer process</p>
+</div>
+  
 </div>
 <div class="summary-row">
   <div class="summary-signature">
@@ -300,6 +312,9 @@
     <a href="#t:ws_state/0">ws_state()</a>
   </div>
   
+    <div class="summary-synopsis"><p>The state of the websocket connection for the shard the event occured on</p>
+</div>
+  
 </div>
 
   </div>
@@ -318,6 +333,9 @@
   <div class="summary-signature">
     <a href="#c:handle_event/3">handle_event({}, from, state)</a>
   </div>
+  
+    <div class="summary-synopsis"><p>This is the callback you must implement to handle events</p>
+</div>
   
 </div>
 
@@ -348,7 +366,7 @@
     
       <div class="specs">
         
-          <pre>build_ban_remove() :: no_return</pre>
+          <pre>build_ban_remove() :: {:GUILD_BAN_REMOVE, <a href="Mixcord.Struct.User.html#t:t/0">Mixcord.Struct.User.t</a>}</pre>
         
       </div>
     
@@ -411,7 +429,7 @@
     
       <div class="specs">
         
-          <pre>channel_pins_ack() :: no_return</pre>
+          <pre>channel_pins_ack() :: {:CHANNEL_PINS_ACK, <a href="https://hexdocs.pm/elixir/Map.html#t:t/0">Map.t</a>}</pre>
         
       </div>
     
@@ -432,7 +450,7 @@
     
       <div class="specs">
         
-          <pre>channel_pins_update() :: no_return</pre>
+          <pre>channel_pins_update() :: {:CHANNEL_PINS_UPDATE, <a href="https://hexdocs.pm/elixir/Map.html#t:t/0">Map.t</a>}</pre>
         
       </div>
     
@@ -550,7 +568,7 @@ call.</p>
     
       <div class="specs">
         
-          <pre>guild_ban_add() :: no_return</pre>
+          <pre>guild_ban_add() :: {:GUILD_BAN_ADD, <a href="Mixcord.Struct.User.html#t:t/0">Mixcord.Struct.User.t</a>}</pre>
         
       </div>
     
@@ -571,7 +589,7 @@ call.</p>
     
       <div class="specs">
         
-          <pre>guild_create() :: {:GUILD_CREATE, old_guild :: <a href="Mixcord.Struct.Guild.html#t:t/0">Mixcord.Struct.Guild.t</a>}</pre>
+          <pre>guild_create() :: {:GUILD_CREATE, new_guild :: <a href="Mixcord.Struct.Guild.html#t:t/0">Mixcord.Struct.Guild.t</a>}</pre>
         
       </div>
     
@@ -592,7 +610,7 @@ call.</p>
     
       <div class="specs">
         
-          <pre>guild_delete() :: no_return</pre>
+          <pre>guild_delete() :: {:GUILD_DELETE, old_guild :: <a href="Mixcord.Struct.Guild.html#t:t/0">Mixcord.Struct.Guild.t</a>}</pre>
         
       </div>
     
@@ -613,7 +631,7 @@ call.</p>
     
       <div class="specs">
         
-          <pre>guild_emojis_update() :: no_return</pre>
+          <pre>guild_emojis_update() :: {:GUILD_EMOJIS_UPDATE, old_emojis :: [Mixcord.Struct.Emoji], new_emojis :: [Mixcord.Struct.Emoji]}</pre>
         
       </div>
     
@@ -634,7 +652,7 @@ call.</p>
     
       <div class="specs">
         
-          <pre>guild_integrations_update() :: no_return</pre>
+          <pre>guild_integrations_update() :: {:GUILD_INTEGERATIONS_UPDATE, <a href="https://hexdocs.pm/elixir/Map.html#t:t/0">Map.t</a>}</pre>
         
       </div>
     
@@ -655,7 +673,7 @@ call.</p>
     
       <div class="specs">
         
-          <pre>guild_member_add() :: no_return</pre>
+          <pre>guild_member_add() :: {:GUILD_MEMBER_ADD, new_member :: <a href="Mixcord.Struct.Member.html#t:t/0">Mixcord.Struct.Member.t</a>}</pre>
         
       </div>
     
@@ -676,7 +694,7 @@ call.</p>
     
       <div class="specs">
         
-          <pre>guild_member_remove() :: no_return</pre>
+          <pre>guild_member_remove() :: {:GUILD_MEMBER_REMOVE, old_member :: <a href="Mixcord.Struct.Member.html#t:t/0">Mixcord.Struct.Member.t</a>}</pre>
         
       </div>
     
@@ -697,7 +715,7 @@ call.</p>
     
       <div class="specs">
         
-          <pre>guild_member_update() :: no_return</pre>
+          <pre>guild_member_update() :: {:GUILD_MEMBER_UPDATE, old_member :: <a href="Mixcord.Struct.Member.html#t:t/0">Mixcord.Struct.Member.t</a>, new_member :: <a href="Mixcord.Struct.Member.html#t:t/0">Mixcord.Struct.Member.t</a>}</pre>
         
       </div>
     
@@ -718,7 +736,7 @@ call.</p>
     
       <div class="specs">
         
-          <pre>guild_members_chunk() :: no_return</pre>
+          <pre>guild_members_chunk() :: {:GUILD_MEMBERS_CHUNK, <a href="https://hexdocs.pm/elixir/Map.html#t:t/0">Map.t</a>}</pre>
         
       </div>
     
@@ -739,7 +757,7 @@ call.</p>
     
       <div class="specs">
         
-          <pre>guild_role_create() :: no_return</pre>
+          <pre>guild_role_create() :: {:GUILD_ROLE_CREATE, new_role :: <a href="Mixcord.Struct.Role.html#t:t/0">Mixcord.Struct.Role.t</a>}</pre>
         
       </div>
     
@@ -760,7 +778,7 @@ call.</p>
     
       <div class="specs">
         
-          <pre>guild_role_delete() :: no_return</pre>
+          <pre>guild_role_delete() :: {:GUILD_ROLE_DELETE, old_role :: <a href="Mixcord.Struct.Role.html#t:t/0">Mixcord.Struct.Role.t</a>}</pre>
         
       </div>
     
@@ -781,7 +799,7 @@ call.</p>
     
       <div class="specs">
         
-          <pre>guild_role_update() :: no_return</pre>
+          <pre>guild_role_update() :: {:GUILD_ROLE_UPDATE, old_role :: <a href="Mixcord.Struct.Role.html#t:t/0">Mixcord.Struct.Role.t</a>, new_role :: <a href="Mixcord.Struct.Role.html#t:t/0">Mixcord.Struct.Role.t</a>}</pre>
         
       </div>
     
@@ -802,7 +820,7 @@ call.</p>
     
       <div class="specs">
         
-          <pre>guild_update() :: no_return</pre>
+          <pre>guild_update() :: {:GUILD_CREATE, old_guild :: <a href="Mixcord.Struct.Guild.html#t:t/0">Mixcord.Struct.Guild.t</a>, new_guild :: <a href="Mixcord.Struct.Guild.html#t:t/0">Mixcord.Struct.Guild.t</a>}</pre>
         
       </div>
     
@@ -823,7 +841,7 @@ call.</p>
     
       <div class="specs">
         
-          <pre>message_create() :: no_return</pre>
+          <pre>message_create() :: {:MESSAGE_CREATE, message :: <a href="Mixcord.Struct.Message.html#t:t/0">Mixcord.Struct.Message.t</a>}</pre>
         
       </div>
     
@@ -844,7 +862,7 @@ call.</p>
     
       <div class="specs">
         
-          <pre>message_delete() :: no_return</pre>
+          <pre>message_delete() :: {:MESSAGE_DELETE, message :: <a href="Mixcord.Struct.Message.html#t:t/0">Mixcord.Struct.Message.t</a>}</pre>
         
       </div>
     
@@ -865,7 +883,7 @@ call.</p>
     
       <div class="specs">
         
-          <pre>message_delete_bulk() :: no_return</pre>
+          <pre>message_delete_bulk() :: {:MESSAGE_DELETE_BULK, updated_messages :: [<a href="Mixcord.Struct.Message.html#t:t/0">Mixcord.Struct.Message.t</a>]}</pre>
         
       </div>
     
@@ -886,7 +904,7 @@ call.</p>
     
       <div class="specs">
         
-          <pre>message_update() :: no_return</pre>
+          <pre>message_update() :: {:MESSAGE_UPDATE, updated_message :: <a href="Mixcord.Struct.Message.html#t:t/0">Mixcord.Struct.Message.t</a>}</pre>
         
       </div>
     
@@ -907,7 +925,7 @@ call.</p>
     
       <div class="specs">
         
-          <pre>presence_update() :: no_return</pre>
+          <pre>presence_update() :: {:PRESENCE_UPDATE, <a href="https://hexdocs.pm/elixir/Map.html#t:t/0">Map.t</a>}</pre>
         
       </div>
     
@@ -928,7 +946,7 @@ call.</p>
     
       <div class="specs">
         
-          <pre>ready() :: no_return</pre>
+          <pre>ready() :: {:READY, <a href="https://hexdocs.pm/elixir/Map.html#t:t/0">Map.t</a>}</pre>
         
       </div>
     
@@ -949,7 +967,7 @@ call.</p>
     
       <div class="specs">
         
-          <pre>resumed() :: no_return</pre>
+          <pre>resumed() :: {:RESUMED, <a href="https://hexdocs.pm/elixir/Map.html#t:t/0">Map.t</a>}</pre>
         
       </div>
     
@@ -970,13 +988,14 @@ call.</p>
     
       <div class="specs">
         
-          <pre>state() :: term</pre>
+          <pre>state() :: <a href="https://hexdocs.pm/elixir/Map.html#t:t/0">Map.t</a></pre>
         
       </div>
     
   </div>
   <section class="docstring">
-    
+    <p>The state of the consumer process.</p>
+
   </section>
 </div>
 <div class="detail" id="t:typing_start/0">
@@ -991,7 +1010,7 @@ call.</p>
     
       <div class="specs">
         
-          <pre>typing_start() :: no_return</pre>
+          <pre>typing_start() :: {:TYPING_START, <a href="https://hexdocs.pm/elixir/Map.html#t:t/0">Map.t</a>}</pre>
         
       </div>
     
@@ -1033,7 +1052,7 @@ call.</p>
     
       <div class="specs">
         
-          <pre>user_update() :: no_return</pre>
+          <pre>user_update() :: {:USER_UPDATE, old_user :: <a href="Mixcord.Struct.User.html#t:t/0">Mixcord.Struct.User.t</a>, new_user :: <a href="Mixcord.Struct.User.html#t:t/0">Mixcord.Struct.User.t</a>}</pre>
         
       </div>
     
@@ -1054,7 +1073,7 @@ call.</p>
     
       <div class="specs">
         
-          <pre>voice_server_update() :: no_return</pre>
+          <pre>voice_server_update() :: {:VOICE_SERVER_UPDATE, <a href="https://hexdocs.pm/elixir/Map.html#t:t/0">Map.t</a>}</pre>
         
       </div>
     
@@ -1075,7 +1094,7 @@ call.</p>
     
       <div class="specs">
         
-          <pre>voice_state_update() :: no_return</pre>
+          <pre>voice_state_update() :: {:VOICE_STATE_UPDATE, <a href="https://hexdocs.pm/elixir/Map.html#t:t/0">Map.t</a>}</pre>
         
       </div>
     
@@ -1096,13 +1115,14 @@ call.</p>
     
       <div class="specs">
         
-          <pre>ws_state() :: <a href="#t:state/0">state</a></pre>
+          <pre>ws_state() :: <a href="https://hexdocs.pm/elixir/Map.html#t:t/0">Map.t</a></pre>
         
       </div>
     
   </div>
   <section class="docstring">
-    
+    <p>The state of the websocket connection for the shard the event occured on.</p>
+
   </section>
 </div>
 
@@ -1140,7 +1160,13 @@ call.</p>
     
   </div>
   <section class="docstring">
-    
+    <p>This is the callback you must implement to handle events.</p>
+<p><code class="inline">Event</code> is the event name as an atom, and <code class="inline">ws_state</code> is the current state of
+the websocket that the event was received on. For more information on this please
+see <code class="inline">Mixcord.Shard.Payload.state_map.t</code>.</p>
+<p><code class="inline">from</code> is the process information of the producer from which the demand was received.
+<code class="inline">state</code> is the internal state of your consumer.</p>
+
   </section>
 </div>
 
