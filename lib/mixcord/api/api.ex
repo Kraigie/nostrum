@@ -72,10 +72,10 @@ defmodule Mixcord.Api do
   @typedoc """
   Represents different statuses the bot can have.
 
-  `:dnd` - Red circle.
-  `:idle` - Yellow circle.
-  `:online` - Green circle.
-  `invisible` - The bot will appear offline.
+   * `:dnd` - Red circle.
+   * `:idle` - Yellow circle.
+   * `:online` - Green circle.
+   * `invisible` - The bot will appear offline.
   """
   @type status :: :dnd | :idle | :online | :invisible
 

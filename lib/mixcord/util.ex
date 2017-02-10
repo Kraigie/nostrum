@@ -84,7 +84,7 @@ defmodule Mixcord.Util do
   @doc """
   Converts a map into an atom-keyed map.
 
-  Given a map with variable type keys, returns the same map with all keys at `atoms`.
+  Given a map with variable type keys, returns the same map with all keys as `atoms`.
 
   This function will attempt to convert keys to an existing atom, and if that fails will default to
   creating a new atom while displaying a warning. The idea here is that we should be able to see
@@ -100,7 +100,12 @@ defmodule Mixcord.Util do
     end
   end
 
-  @doc false
+  @doc """
+  Attempts to convert a string to an atom.
+
+  If atom does not currently exist, will warn that we're doing an unsafe conversion.
+  """
+  @spec maybe_to_atom(atom | String.t) :: atom
   def maybe_to_atom(token) when is_atom(token), do: token
   def maybe_to_atom(token) do
     try do
@@ -114,7 +119,7 @@ defmodule Mixcord.Util do
   end
 
   @doc """
-  Since we're being sacrilegious amd converting strings to atoms from the WS, there will be some
+  Since we're being sacrilegious and converting strings to atoms from the WS, there will be some
   atoms that we see that aren't defined in any Discord structs. This method mainly serves as a
   means to define those atoms once so the user isn't warned about them in the
   `Mixcord.Util.maybe_to_atom/1` function when they are in fact harmless.
