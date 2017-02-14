@@ -3,6 +3,9 @@ defmodule Mixcord.Struct.TextChannel do
   Struct representing a Discord text channel.
   """
 
+  alias Mixcord.Struct.Overwrite
+  alias Mixcord.Util
+
   @typedoc "The channe's id"
   @type id :: integer
 
@@ -22,7 +25,7 @@ defmodule Mixcord.Struct.TextChannel do
   @type is_private :: boolean
 
   @typedoc "The list of overwrites"
-  @type permission_overwrites :: list(Map.t)
+  @type permission_overwrites :: list(Overwrite.t)
 
   @typedoc "Current channel topic"
   @type topic :: String.t
@@ -54,4 +57,11 @@ defmodule Mixcord.Struct.TextChannel do
     :topic,
     :last_message_id
   ]
+
+  @doc false
+  def to_struct(map) do
+    new = map
+    |> Map.update(:permission_overwrites, %{}, &Util.list_to_struct_list(&1, Overwrite))
+    struct(__MODULE__, new)
+  end
 end

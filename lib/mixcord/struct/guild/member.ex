@@ -8,6 +8,7 @@ defmodule Mixcord.Struct.Member do
   """
 
   alias Mixcord.Struct.{Role, User}
+  alias Mixcord.Util
 
   @typedoc "Id of the guild the member is part of"
   @type guild_id :: integer
@@ -50,4 +51,12 @@ defmodule Mixcord.Struct.Member do
     :deaf,
     :mute
   ]
+
+  @doc false
+  def to_struct(map) do
+    new = map
+    |> Map.update(:user, %{}, &User.to_struct(&1))
+    |> Map.update(:roles, %{}, &Util.list_to_struct_list(&1, Role))
+    struct(__MODULE__, new)
+  end
 end

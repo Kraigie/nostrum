@@ -31,4 +31,9 @@ defmodule Mixcord.Struct.DMChannel do
     :recipient,
     :last_message_id
   ]
+
+  @doc false
+  def to_struct(map) do
+    struct(__MODULE__, map)
+  end
 end

@@ -32,6 +32,11 @@ defmodule Mixcord.Util do
       |> DateTime.to_iso8601
   end
 
+  @doc false
+  def list_to_struct_list(list, struct) do
+    Enum.map(list, &struct.to_struct(&1))
+  end
+
   @doc """
   Returns the number of shards.
 

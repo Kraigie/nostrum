@@ -29,4 +29,8 @@ defmodule Mixcord.Struct.Overwrite do
     :allow,
     :deny
   ]
+
+  def to_struct(map) do
+    struct(__MODULE__, map)
+  end
 end

@@ -3,7 +3,8 @@ defmodule Mixcord.Struct.Guild do
   Struct representing a Discord guild.
   """
 
-  alias Mixcord.Struct.{Member, TextChannel, Role}
+  alias Mixcord.Struct.{Member, TextChannel, Role, Emoji}
+  alias Mixcord.Util
 
   # TODO: Typedocs for all :>
   @typedoc "The guild's id"
@@ -132,4 +133,13 @@ defmodule Mixcord.Struct.Guild do
     :presences,
     :channels
   ]
+
+  def to_struct(map) do
+    new = map
+    |> Map.update(:emojis, %{}, &Util.list_to_struct_list(&1, Emoji))
+    |> Map.update(:roles, %{}, &Util.list_to_struct_list(&1, Role))
+    |> Map.update(:members, %{}, &Util.list_to_struct_list(&1, Member))
+    |> Map.update(:channels, %{}, &Util.list_to_struct_list(&1, Channel))
+    struct(__MODULE__, new)
+  end
 end

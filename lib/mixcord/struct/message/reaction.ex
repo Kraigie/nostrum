@@ -24,4 +24,9 @@ defmodule Mixcord.Struct.Reaction do
     :me,
     :emoji
   ]
+
+  @doc false
+  def to_struct(map) do
+    struct(__MODULE__, map)
+  end
 end

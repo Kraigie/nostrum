@@ -53,4 +53,9 @@ defmodule Mixcord.Struct.User do
     :verified,
     :email,
   ]
+
+  @doc false
+  def to_struct(map) do
+    struct(__MODULE__, map)
+  end
 end

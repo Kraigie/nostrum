@@ -3,7 +3,8 @@ defmodule Mixcord.Struct.Message do
   Struct representing a Discord message.
   """
 
-  alias Mixcord.Struct.{Role, User}
+  alias Mixcord.Struct.{Attachment, Role, User}
+  alias Mixcord.Util
 
   @typedoc "The id of the message"
   @type id :: integer
@@ -36,7 +37,7 @@ defmodule Mixcord.Struct.Message do
   @type mention_roles :: list(Role.t)
 
   @typedoc "List of attached files in the message"
-  @type attachments :: list(Map.t)
+  @type attachments :: list(Attachment.t)
 
   @typedoc "List of embedded content in the message"
   @type embeds :: list(Map.t)
@@ -86,4 +87,14 @@ defmodule Mixcord.Struct.Message do
     :tts,
     :type,
   ]
+
+  @doc false
+  def to_struct(map) do
+    new = map
+    |> Map.update(:author, %{}, &User.to_struct(&1))
+    |> Map.update(:attachments, %{}, &Util.list_to_struct_list(&1, Attachment))
+    |> Map.update(:mentions, %{}, &Util.list_to_struct_list(&1, User))
+    |> Map.update(:mention_roles, %{}, &Util.list_to_struct_list(&1, Role))
+    struct(__MODULE__, new)
+  end
 end
