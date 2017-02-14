@@ -12,6 +12,9 @@ defmodule Mixcord.Cache.User do
   end
 
   def init(state) do
+    :ets.new(:channels, [:set, :public, :named_table])
+    # :ets.insert(:test, p |> Enum.to_list |> List.to_tuple)
+    # o |> Tuple.to_list |> Enum.into(%{})
     {:ok, state}
   end
 
