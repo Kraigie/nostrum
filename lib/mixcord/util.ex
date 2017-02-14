@@ -113,14 +113,12 @@ defmodule Mixcord.Util do
   @spec maybe_to_atom(atom | String.t) :: atom
   def maybe_to_atom(token) when is_atom(token), do: token
   def maybe_to_atom(token) do
-    try do
-      # TODO: FINISH THE MAPS CRAIG
-      String.to_existing_atom(token)
-    rescue
-      _ ->
-        Logger.warn "Converting string to non-existing atom: #{token}"
-        String.to_atom(token)
-    end
+    # TODO: FINISH THE MAPS CRAIG
+    String.to_existing_atom(token)
+  rescue
+    _ ->
+      Logger.warn "Converting string to non-existing atom: #{token}"
+      String.to_atom(token)
   end
 
   @doc """

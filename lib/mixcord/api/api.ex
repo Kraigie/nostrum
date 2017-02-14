@@ -1,5 +1,5 @@
 defmodule Mixcord.Api do
-  @moduledoc """
+  @moduledoc ~S"""
   Interface for Discord's rest API.
 
   By default all methods in this module are ran synchronously. If you wish to
@@ -617,11 +617,11 @@ defmodule Mixcord.Api do
     request(:get, Constants.me)
   end
 
-  def modify_current_user() do
+  def modify_current_user do
      request(:patch, Constants.me)
   end
 
-  def get_current_users_guilds() do
+  def get_current_users_guilds do
     request(:get, Constants.me_guilds)
   end
 

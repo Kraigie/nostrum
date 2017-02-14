@@ -137,7 +137,7 @@ defmodule DummyConsumer do
   use GenStage
   require Logger
 
-  def start_link() do
+  def start_link do
     GenStage.start_link(__MODULE__, :ok)
   end
 
