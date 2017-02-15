@@ -8,18 +8,24 @@ defmodule Mixcord.Cache.Guild do
   alias Mixcord.{Shard, Util}
 
   @doc false
-  def start_link do
-    GenServer.start_link(__MODULE__, %{}, name: Guilds)
+  def start_link() do
+    IO.inspect "IN HERE"
+    GenServer.start_link(__MODULE__, [])
   end
 
-  # TODO: Saving process state? http://crypt.codemancers.com/posts/2016-01-24-understanding-exit-signals-in-erlang-slash-elixir/
-  def init(state) do
-    {:ok, state}
+  def init() do
+    IO.inspect "IN IT HERE"
+    case Registry.register(Guild.Registry, 1, 2) do
+      {:ok, _pid} ->
+        {:ok, []}
+      {:error, error} ->
+        {:stop, error}
+    end
   end
 
   @spec get(id: integer) :: Mixcord.Struct.Guild.t
   @spec get(message: Mixcord.Struct.Message.t) :: Mixcord.Struct.Guild.t
-  def get(id: id), do: GenServer.call(Guilds, {:get, :guild, id})
+  def get(id: id), do: :ok #GenServer.call(Guilds, {:get, :guild, id})
   def get(message: message), do: get(id: message.channel.guild_id)
 
   def get!(id: id) do
@@ -34,13 +40,14 @@ defmodule Mixcord.Cache.Guild do
 
   @doc false
   def create(guild) do
-    guild = GenServer.call(Guilds, {:create, :guild, guild.id, guild})
-    if not Map.has_key?(guild, :unavailable) or not guild.unavailable do
-      guild.members
-        |> Enum.each(fn member -> User.create(member.user) end)
-      guild.channels
-        |> Enum.each(fn channel -> Channel.create(channel) end)
-    end
+    Mixcord.Cache.Guild.Supervisor.add_guild(guild.id, guild)
+    guild = :ok #GenServer.call(Guilds, {:create, :guild, guild.id, guild})
+    #if not Map.has_key?(guild, :unavailable) or not guild.unavailable do
+      #guild.members
+      #  |> Enum.each(fn member -> User.create(member.user) end)
+      #guild.channels
+      #  |> Enum.each(fn channel -> Channel.create(channel) end)
+    #end
   end
 
   def create(guild, shard_pid) do
@@ -49,34 +56,34 @@ defmodule Mixcord.Cache.Guild do
   end
 
   @doc false
-  def update(guild), do: GenServer.call(Guilds, {:update, :guild, guild.id, guild})
+  def update(guild), do: :ok #GenServer.call(Guilds, {:update, :guild, guild.id, guild})
 
   @doc false
-  def delete(guild_id), do: GenServer.call(Guilds, {:delete, :guild, guild_id})
+  def delete(guild_id), do: :ok #GenServer.call(Guilds, {:delete, :guild, guild_id})
 
   @doc false
   def member_add(guild_id, member) do
-     GenServer.call(Guilds, {:create, :member, guild_id, member})
+     :ok #GenServer.call(Guilds, {:create, :member, guild_id, member})
      User.create(member.user)
   end
 
   @doc false
-  def member_update(guild_id, user, _nick, roles), do: GenServer.call(Guilds, {:update, :member, guild_id, user, roles})
+  def member_update(guild_id, user, _nick, roles), do: :ok #GenServer.call(Guilds, {:update, :member, guild_id, user, roles})
 
   @doc false
-  def member_remove(guild_id, user), do: GenServer.call(Guilds, {:delete, :member, guild_id, user})
+  def member_remove(guild_id, user), do: :ok #GenServer.call(Guilds, {:delete, :member, guild_id, user})
 
   @doc false
-  def role_create(guild_id, role), do: GenServer.call(Guilds, {:create, :role, guild_id, role})
+  def role_create(guild_id, role), do: :ok #GenServer.call(Guilds, {:create, :role, guild_id, role})
 
   @doc false
-  def role_update(guild_id, role), do: GenServer.call(Guilds, {:update, :role, guild_id, role})
+  def role_update(guild_id, role), do: :ok #GenServer.call(Guilds, {:update, :role, guild_id, role})
 
   @doc false
-  def role_delete(guild_id, role_id), do: GenServer.call(Guilds, {:delete, :role, guild_id, role_id})
+  def role_delete(guild_id, role_id), do: :ok #GenServer.call(Guilds, {:delete, :role, guild_id, role_id})
 
   @doc false
-  def emoji_update(guild_id, emojis), do: GenServer.call(Guilds, {:update, :emoji, guild_id, emojis})
+  def emoji_update(guild_id, emojis), do: :ok #GenServer.call(Guilds, {:update, :emoji, guild_id, emojis})
 
   def handle_call({:get, :guild, id}, _from, state) do
     {:reply, Map.get(state, id), state}

@@ -15,7 +15,8 @@ defmodule Mixcord.Cache.Supervisor do
 
   def init(_args) do
     children = [
-      worker(Mixcord.Cache.Guild, []),
+      supervisor(Registry, [:unique, Guild.Registry]),
+      supervisor(Mixcord.Cache.Guild.Supervisor, []),
       worker(Mixcord.Cache.Channel, []),
       worker(Mixcord.Cache.User, [])
     ]
