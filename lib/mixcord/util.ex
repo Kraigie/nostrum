@@ -51,10 +51,10 @@ defmodule Mixcord.Util do
   @doc false
   def bangify_find(to_bang, find, cache_name) do
     case to_bang do
-      nil ->
+      {:ok, res} ->
+        res
+      {:error} ->
         raise(Mixcord.Error.CacheError, finding: find, cache_name: cache_name)
-      ret ->
-        ret
     end
   end
 

@@ -1,9 +1,21 @@
 defmodule Mixcord.Cache.User do
   @moduledoc """
-  Cache for channels.
+  Cache for users.
+
+  The ETS table name associated with the User Cache is `:users`. Besides the
+  methods provided below you can call any other ETS methods on the table.
+
+  **Example**
+  ```elixir
+  info = :ets.info(:users)
+  [..., heir: :none, name: :users, size: 1, ...]
+  size = info[:size]
+  1
+  ```
   """
 
   use GenServer
+  alias Mixcord.Struct.User
   alias Mixcord.Util
 
   @doc false
@@ -11,16 +23,41 @@ defmodule Mixcord.Cache.User do
     GenServer.start_link(__MODULE__, %{}, name: Users)
   end
 
+  @doc false
   def init(state) do
-    :ets.new(:channels, [:set, :public, :named_table])
-    # :ets.insert(:test, p |> Enum.to_list |> List.to_tuple)
-    # o |> Tuple.to_list |> Enum.into(%{})
+    :ets.new(:users, [:set, :public, :named_table])
     {:ok, state}
   end
 
-  @spec get(id: integer) :: Mixcord.Struct.User.t
-  @spec get(message: Mixcord.Struct.Message.t) :: Mixcord.Struct.User.t
-  def get(id: id), do: GenServer.call(Users, {:get, id})
+  @doc ~s"""
+  Retrieves a user from the cache.
+
+  `get/1` requires a keyword list as its only argument.
+
+  Returns {:ok, Mixcord.Struct.User.t} if found, {:error} otherwise.
+
+  **Example**
+  ```elixir
+  case Mixcord.Cache.User.get(id: 1111222233334444) do
+    {:ok, user} ->
+      "We found " <> user.username
+    {:error} ->
+      "No es bueno"
+  end
+  ```
+  """
+  @spec get(id: integer) :: {:ok, Mixcord.Struct.User.t} | {:error}
+  def get(id: id), do: lookup_as_struct(id)
+
+  @doc """
+  Retrieves a user from the cache.
+
+  See `get/1` for use and examples.
+
+  Returns `Mixcord.Struct.User.t` if found.
+  Raises `Mixcord.Error.CahceError` if not found.
+  """
+  @spec get!(id: integer) :: Mixcord.Struct.User.t | no_return
   def get!(id: id) do
     get(id: id)
       |> Util.bangify_find(id, __MODULE__)
@@ -36,22 +73,44 @@ defmodule Mixcord.Cache.User do
   @doc false
   def delete(user), do: GenServer.call(Users, {:delete, user.id})
 
-  def handle_call({:get, id}, _from, state) do
-    {:reply, Map.get(state, id), state}
-  end
-
   def handle_call({:create, id, user}, _from, state) do
-    {:reply, user, Map.put(state, id, user)}
+    :ets.insert(:users, insert(id, user))
+    {:reply, User.to_struct(user), state}
   end
 
   def handle_call({:update, id, user}, _from, state) do
-    {old_user, new_state} = Map.pop(state, id)
-    {:reply, {old_user, user}, Map.put(new_state, id, user)}
+    to_update = get(id: id)
+    :ets.insert(:users, insert(id, user))
+    {:reply, {to_update, User.to_struct(user)}, state}
   end
 
   def handle_call({:delete, id}, _from, state) do
-    {old_channel, new_state} = Map.pop(state, id)
-    {:reply, old_channel, new_state}
+    to_delete = get!(id: id)
+    :ets.delete(:users, {:id, id})
+    {:reply, to_delete, state}
+  end
+
+  @doc false
+  def insert(id, map) do
+    map
+    |> Enum.to_list
+    |> List.insert_at(0, {:id, id})
+    |> List.to_tuple
+  end
+
+  @doc false
+  def lookup_as_struct(id) do
+    case :ets.lookup(:users, {:id, id}) do
+      [] ->
+        {:error}
+      [other] ->
+        lookup =
+          other
+          |> Tuple.to_list
+          |> Enum.into(%{})
+          |> User.to_struct
+        {:ok, lookup}
+    end
   end
 
 end
