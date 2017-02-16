@@ -3,8 +3,6 @@ defmodule Mixcord.Struct.UnavailableGuild do
   Struct representing an unavailable Discord guild.
   """
 
-  alias Mixcord.Util
-
   @typedoc "The guild's id"
   @type id :: integer
 

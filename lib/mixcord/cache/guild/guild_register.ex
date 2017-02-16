@@ -24,7 +24,6 @@ defmodule Mixcord.Cache.Guild.GuildRegister do
   end
 
   # TODO: Refactor this nasty code and potentially move
-  @doc false
   def create_guild_process!(id, guild) do
     case Supervisor.start_child(GuildSupervisor, create_worker_spec(id, guild)) do
       {:error, {:already_started, pid}} ->
@@ -41,11 +40,9 @@ defmodule Mixcord.Cache.Guild.GuildRegister do
     Spec.worker(GuildServer, [id, guild], id: id)
   end
 
-  @doc """
-  When attempting to start a guild, if the guild is already created, check to see
-  if it's unavailable, and if it is replace it with the new guild payload.
-  """
-  defp handle_guild_unavailability!(pid, guild) do
+  def handle_guild_unavailability!(pid, guild) do
+    # When attempting to start a guild, if the guild is already created, check to see
+    # if it's unavailable, and if it is replace it with the new guild payload.
     if GuildServer.unavailable?(pid) do
       GuildServer.make_guild_available(pid, guild)
     else

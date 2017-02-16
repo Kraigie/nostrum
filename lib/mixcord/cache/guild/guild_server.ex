@@ -1,6 +1,6 @@
 defmodule Mixcord.Cache.Guild.GuildServer do
   @moduledoc """
-  Cache for guilds.
+  Module for interacting with Guild Servers.
   """
 
   use GenServer
@@ -8,7 +8,6 @@ defmodule Mixcord.Cache.Guild.GuildServer do
   alias Mixcord.Cache.Guild.GuildRegister
   alias Mixcord.Struct.{Guild}
   alias Mixcord.{Shard, Util}
-  alias Supervisor.Spec
   require Logger
 
   @doc false
@@ -33,7 +32,7 @@ defmodule Mixcord.Cache.Guild.GuildServer do
   def get(id: id) do
     case GuildRegister.lookup(id) do
       {:ok, pid} ->
-        GenServer.call(pid, {:get, :guild, id})
+        {:ok, GenServer.call(pid, {:get, :guild})}
       error ->
         error
     end
@@ -42,7 +41,7 @@ defmodule Mixcord.Cache.Guild.GuildServer do
   def get(message: message) do
     case GuildRegister.lookup(message.channel.guild_id) do
       {:ok, pid} ->
-        GenServer.call(pid, {:get, :guild, message.channel.guild_id})
+        {:ok, GenServer.call(pid, {:get, :guild, message.channel.guild_id})}
       error ->
         error
     end
@@ -141,7 +140,7 @@ defmodule Mixcord.Cache.Guild.GuildServer do
     GenServer.call(pid, {:update, :emoji, guild_id, emojis})
   end
 
-  def handle_call({:replace, guild}, _from, state) do
+  def handle_call({:replace, guild}, _from, _state) do
     {:reply, Guild.to_struct(guild), guild}
   end
 
@@ -149,8 +148,8 @@ defmodule Mixcord.Cache.Guild.GuildServer do
     {:reply, state.unavailable, state}
   end
 
-  def handle_call({:get, :guild, id}, _from, state) do
-    {:reply, Map.get(state, id), state}
+  def handle_call({:get, :guild}, _from, state) do
+    {:reply, Guild.to_struct(state), state}
   end
 
   def handle_call({:create, :guild, id, guild}, _from, state) do

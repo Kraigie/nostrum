@@ -7,8 +7,7 @@ defmodule Mixcord.Struct.Member do
   A `member` has everything that a `user` has, but also additional information on a per guild basis. This includes things like a `nickname` and a list of `roles`.
   """
 
-  alias Mixcord.Struct.{Role, User}
-  alias Mixcord.Util
+  alias Mixcord.Struct.User
 
   @typedoc "Id of the guild the member is part of"
   @type guild_id :: integer

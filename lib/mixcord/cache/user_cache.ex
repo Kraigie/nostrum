@@ -34,19 +34,19 @@ defmodule Mixcord.Cache.UserCache do
 
   `get/1` requires a keyword list as its only argument.
 
-  Returns {:ok, Mixcord.Struct.User.t} if found, {:error, String.t} otherwise.
+  Returns {:ok, Mixcord.Struct.User.t} if found, {:error, atom} otherwise.
 
   **Example**
   ```elixir
   case Mixcord.Cache.User.get(id: 1111222233334444) do
     {:ok, user} ->
       "We found " <> user.username
-    {:error} ->
+    {:error, _reason} ->
       "No es bueno"
   end
   ```
   """
-  @spec get(id: integer) :: {:ok, Mixcord.Struct.User.t} | {:error, String.t}
+  @spec get(id: integer) :: {:ok, Mixcord.Struct.User.t} | {:error, atom}
   def get(id: id), do: lookup_as_struct(id)
 
   @doc """
