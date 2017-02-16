@@ -55,6 +55,7 @@ defmodule Mixcord.Struct.User do
   ]
 
   @doc false
+  def to_struct(%{__struct__: _} = map), do: map
   def to_struct(map) do
     struct(__MODULE__, map)
   end

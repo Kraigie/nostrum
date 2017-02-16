@@ -3,7 +3,7 @@ defmodule Mixcord.Struct.Guild do
   Struct representing a Discord guild.
   """
 
-  alias Mixcord.Struct.{Member, TextChannel, Role, Emoji}
+  alias Mixcord.Struct.{Member, Channel, Role, Emoji, UnavailableGuild}
   alias Mixcord.Util
 
   # TODO: Typedocs for all :>
@@ -74,7 +74,7 @@ defmodule Mixcord.Struct.Guild do
   @type members :: list(Member.t)
 
   @typedoc "List of channels"
-  @type channels :: list(TextChannel.t)
+  @type channels :: list(Channel.t)
 
   @typedoc "List of simple presence maps"
   @type presences :: list(Map.t)
@@ -134,12 +134,12 @@ defmodule Mixcord.Struct.Guild do
     :channels
   ]
 
+  def to_struct(%{unavailable: true} = map), do: UnavailableGuild.to_struct(map)
   def to_struct(map) do
     new = map
     |> Map.update(:emojis, %{}, &Util.list_to_struct_list(&1, Emoji))
     |> Map.update(:roles, %{}, &Util.list_to_struct_list(&1, Role))
     |> Map.update(:members, %{}, &Util.list_to_struct_list(&1, Member))
-    # TODO: Create proper channels
     |> Map.update(:channels, %{}, &Util.list_to_struct_list(&1, Channel))
     struct(__MODULE__, new)
   end

@@ -48,23 +48,27 @@ defmodule Mixcord.Cache.Guild do
   # TODO: Refactor this nasty code
   @doc false
   def create_guild_process!(id, guild) do
-    case Supervisor.start_child(Guild.Supervisor, Spec.worker(__MODULE__, [id, guild], id: id)) do
+    case Supervisor.start_child(Guild.Supervisor, create_worker_spec(id, guild)) do
       {:error, {:already_started, pid}} ->
-        handle_guild_unavailability(pid, guild)
+        handle_guild_unavailability!(pid, guild)
       {:error, reason} ->
         raise(Mixcord.Error.CacheError,
           "Could not start a new guild process with id #{id}, reason: #{inspect reason}")
       other ->
         # TODO: Struct here
-        guild
+        Struct.Guild.to_struct(guild)
     end
+  end
+
+  def create_worker_spec(id, guild) do
+    Spec.worker(__MODULE__, [id, guild], id: id)
   end
 
   @doc """
   When attempting to start a guild, if the guild is already created, check to see
   if it's unavailable, and if it is replace it with the new guild payload.
   """
-  defp handle_guild_unavailability(pid, guild) do
+  defp handle_guild_unavailability!(pid, guild) do
     if unavailable?(pid) do
       update_guild(pid, guild)
     else
@@ -85,8 +89,7 @@ defmodule Mixcord.Cache.Guild do
   end
 
   def handle_call({:replace, guild}, _from, state) do
-    # TODO: Struct here
-    {:reply, guild, guild}
+    {:reply, Struct.Guild.to_struct(guild), guild}
   end
 
   @spec get(id: integer) :: Mixcord.Struct.Guild.t

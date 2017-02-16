@@ -34,7 +34,7 @@ defmodule Mixcord.Cache.User do
 
   `get/1` requires a keyword list as its only argument.
 
-  Returns {:ok, Mixcord.Struct.User.t} if found, {:error} otherwise.
+  Returns {:ok, Mixcord.Struct.User.t} if found, {:error, String.t} otherwise.
 
   **Example**
   ```elixir
@@ -46,7 +46,7 @@ defmodule Mixcord.Cache.User do
   end
   ```
   """
-  @spec get(id: integer) :: {:ok, Mixcord.Struct.User.t} | {:error}
+  @spec get(id: integer) :: {:ok, Mixcord.Struct.User.t} | {:error, String.t}
   def get(id: id), do: lookup_as_struct(id)
 
   @doc """
@@ -93,16 +93,20 @@ defmodule Mixcord.Cache.User do
   @doc false
   def insert(id, map) do
     map
-    |> Enum.to_list
+    |> remove_struct_key
+    |> Map.to_list
     |> List.insert_at(0, {:id, id})
     |> List.to_tuple
   end
+
+  def remove_struct_key(%{__struct__: _} = map), do: Map.delete(map, :__struct__)
+  def remove_struct_key(map), do: map
 
   @doc false
   def lookup_as_struct(id) do
     case :ets.lookup(:users, {:id, id}) do
       [] ->
-        {:error}
+        {:error, :user_not_found}
       [other] ->
         lookup =
           other

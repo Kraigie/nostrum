@@ -46,7 +46,7 @@ defmodule Mixcord.Shard.Payload do
     data = %{
       "token" => state.token,
       "properties" => %{
-        "$os" => os <> " " <> name,
+        "$os" => Atom.to_string(os) <> " " <> Atom.to_string(name),
         "$browser" => "Mixcord",
         "$device" => "Mixcord",
         "$referrer" => "",
