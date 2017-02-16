@@ -55,7 +55,6 @@ defmodule Mixcord.Cache.Guild do
         raise(Mixcord.Error.CacheError,
           "Could not start a new guild process with id #{id}, reason: #{inspect reason}")
       other ->
-        # TODO: Struct here
         Struct.Guild.to_struct(guild)
     end
   end
