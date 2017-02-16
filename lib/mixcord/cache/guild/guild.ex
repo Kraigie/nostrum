@@ -4,6 +4,7 @@ defmodule Mixcord.Cache.Guild do
   """
 
   use GenServer
+  alias Mixcord.Cache
   alias Mixcord.Cache.{Channel, User}
   alias Mixcord.Struct
   alias Mixcord.{Shard, Util}
@@ -27,9 +28,36 @@ defmodule Mixcord.Cache.Guild do
     end
   end
 
+  @spec get(id: integer, pid: pid) :: Mixcord.Struct.Guild.t
+  @spec get(message: Mixcord.Struct.Message.t, pid: pid) :: Mixcord.Struct.Guild.t
+  def get(id: id, pid: pid), do: GenServer.call(pid, {:get, :guild, id})
+  def get(message: message, pid: pid), do: get(id: message.channel.guild_id, pid: pid)
+
+  def get!(id: id, pid: pid) do
+    get(id: id, pid: pid)
+      |> Util.bangify_find(id, __MODULE__)
+  end
+
+  def get!(message: message, pid: pid) do
+    get(message: message, pid: pid)
+      |> Util.bangify_find(message, __MODULE__)
+  end
+
+  def unavailable?(pid), do: GenServer.call(pid, {:unavailable})
+
+  def handle_call({:unavailable}, _from, state) do
+    {:reply, state.unavailable, state}
+  end
+
+  def update_guild(pid, guild), do: GenServer.call(pid, {:replace, guild})
+
+  def handle_call({:replace, guild}, _from, state) do
+    {:reply, Struct.Guild.to_struct(guild), guild}
+  end
+
   @doc false
   def create(guild) do
-    new_guild = create_guild_process!(guild.id, guild)
+    new_guild = Cache.Guild.Registry.create_guild_process!(guild.id, guild)
     if not Map.has_key?(new_guild, :unavailable) or not new_guild.unavailable do
       new_guild.members
       |> Enum.each(fn member -> User.create(member.user) end)
@@ -45,96 +73,41 @@ defmodule Mixcord.Cache.Guild do
     Shard.request_guild_members(shard_pid, guild.id)
   end
 
-  # TODO: Refactor this nasty code
   @doc false
-  def create_guild_process!(id, guild) do
-    case Supervisor.start_child(Guild.Supervisor, create_worker_spec(id, guild)) do
-      {:error, {:already_started, pid}} ->
-        handle_guild_unavailability!(pid, guild)
-      {:error, reason} ->
-        raise(Mixcord.Error.CacheError,
-          "Could not start a new guild process with id #{id}, reason: #{inspect reason}")
-      other ->
-        Struct.Guild.to_struct(guild)
-    end
-  end
-
-  def create_worker_spec(id, guild) do
-    Spec.worker(__MODULE__, [id, guild], id: id)
-  end
-
-  @doc """
-  When attempting to start a guild, if the guild is already created, check to see
-  if it's unavailable, and if it is replace it with the new guild payload.
-  """
-  defp handle_guild_unavailability!(pid, guild) do
-    if unavailable?(pid) do
-      update_guild(pid, guild)
-    else
-      raise(Mixcord.Error.CacheError, "Attempted to create a child with an id that already exists")
-    end
-  end
-
-  def unavailable?(pid) do
-    GenServer.call(pid, {:unavailable})
-  end
-
-  def update_guild(pid, guild) do
-    GenServer.call(pid, {:replace, guild})
-  end
-
-  def handle_call({:unavailable}, _from, state) do
-    {:reply, state.unavailable, state}
-  end
-
-  def handle_call({:replace, guild}, _from, state) do
-    {:reply, Struct.Guild.to_struct(guild), guild}
-  end
-
-  @spec get(id: integer) :: Mixcord.Struct.Guild.t
-  @spec get(message: Mixcord.Struct.Message.t) :: Mixcord.Struct.Guild.t
-  def get(id: id), do: :ok #GenServer.call(Guilds, {:get, :guild, id})
-  def get(message: message), do: get(id: message.channel.guild_id)
-
-  def get!(id: id) do
-    get(id: id)
-      |> Util.bangify_find(id, __MODULE__)
-  end
-
-  def get!(message: message) do
-    get(message: message)
-      |> Util.bangify_find(message, __MODULE__)
-  end
+  def update(pid, guild), do: GenServer.call(pid, {:update, :guild, guild.id, guild})
 
   @doc false
-  def update(guild), do: :ok #GenServer.call(Guilds, {:update, :guild, guild.id, guild})
+  def delete(pid, guild_id), do: GenServer.call(pid, {:delete, :guild, guild_id})
 
   @doc false
-  def delete(guild_id), do: :ok #GenServer.call(Guilds, {:delete, :guild, guild_id})
-
-  @doc false
-  def member_add(guild_id, member) do
-     :ok #GenServer.call(Guilds, {:create, :member, guild_id, member})
+  def member_add(pid, guild_id, member) do
+     GenServer.call(pid, {:create, :member, guild_id, member})
      User.create(member.user)
   end
 
   @doc false
-  def member_update(guild_id, user, _nick, roles), do: :ok #GenServer.call(Guilds, {:update, :member, guild_id, user, roles})
+  def member_update(pid, guild_id, user, _nick, roles),
+    do: GenServer.call(pid, {:update, :member, guild_id, user, roles})
 
   @doc false
-  def member_remove(guild_id, user), do: :ok #GenServer.call(Guilds, {:delete, :member, guild_id, user})
+  def member_remove(pid, guild_id, user),
+    do: GenServer.call(pid, {:delete, :member, guild_id, user})
 
   @doc false
-  def role_create(guild_id, role), do: :ok #GenServer.call(Guilds, {:create, :role, guild_id, role})
+  def role_create(pid, guild_id, role),
+    do: GenServer.call(pid, {:create, :role, guild_id, role})
 
   @doc false
-  def role_update(guild_id, role), do: :ok #GenServer.call(Guilds, {:update, :role, guild_id, role})
+  def role_update(pid, guild_id, role),
+    do: GenServer.call(pid, {:update, :role, guild_id, role})
 
   @doc false
-  def role_delete(guild_id, role_id), do: :ok #GenServer.call(Guilds, {:delete, :role, guild_id, role_id})
+  def role_delete(pid, guild_id, role_id),
+    do: GenServer.call(pid, {:delete, :role, guild_id, role_id})
 
   @doc false
-  def emoji_update(guild_id, emojis), do: :ok #GenServer.call(Guilds, {:update, :emoji, guild_id, emojis})
+  def emoji_update(pid, guild_id, emojis),
+    do: GenServer.call(pid, {:update, :emoji, guild_id, emojis})
 
   def handle_call({:get, :guild, id}, _from, state) do
     {:reply, Map.get(state, id), state}
