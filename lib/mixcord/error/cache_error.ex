@@ -13,4 +13,8 @@ defmodule Mixcord.Error.CacheError do
     %__MODULE__{message: msg}
   end
 
+  def exception(msg) do
+    %__MODULE__{message: msg} 
+  end
+
 end

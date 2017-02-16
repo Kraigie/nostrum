@@ -5,22 +5,88 @@ defmodule Mixcord.Cache.Guild do
 
   use GenServer
   alias Mixcord.Cache.{Channel, User}
+  alias Mixcord.Struct
   alias Mixcord.{Shard, Util}
+  alias Supervisor.Spec
+  require Logger
 
   @doc false
-  def start_link() do
-    IO.inspect "IN HERE"
-    GenServer.start_link(__MODULE__, [])
+  def start_link(id, guild) do
+    GenServer.start_link(__MODULE__, [id, guild])
   end
 
-  def init() do
-    IO.inspect "IN IT HERE"
-    case Registry.register(Guild.Registry, 1, 2) do
+  @doc false
+  def init([id, guild]) do
+    case Registry.register(Guild.Registry, id, self()) do
       {:ok, _pid} ->
-        {:ok, []}
+        {:ok, guild}
+      {:error, {:already_started, _pid}} ->
+        {:ok, guild}
       {:error, error} ->
         {:stop, error}
     end
+  end
+
+  @doc false
+  def create(guild) do
+    new_guild = create_guild_process!(guild.id, guild)
+    if not Map.has_key?(new_guild, :unavailable) or not new_guild.unavailable do
+      new_guild.members
+      |> Enum.each(fn member -> User.create(member.user) end)
+      new_guild.channels
+      |> Enum.each(fn channel -> Channel.create(channel) end)
+    end
+    new_guild
+  end
+
+  @doc false
+  def create(guild, shard_pid) do
+    create(guild)
+    Shard.request_guild_members(shard_pid, guild.id)
+  end
+
+  # TODO: Refactor this nasty code
+  @doc false
+  def create_guild_process!(id, guild) do
+    case Supervisor.start_child(Guild.Supervisor, Spec.worker(__MODULE__, [id, guild], id: id)) do
+      {:error, {:already_started, pid}} ->
+        handle_guild_unavailability(pid, guild)
+      {:error, reason} ->
+        raise(Mixcord.Error.CacheError,
+          "Could not start a new guild process with id #{id}, reason: #{inspect reason}")
+      other ->
+        # TODO: Struct here
+        guild
+    end
+  end
+
+  @doc """
+  When attempting to start a guild, if the guild is already created, check to see
+  if it's unavailable, and if it is replace it with the new guild payload.
+  """
+  defp handle_guild_unavailability(pid, guild) do
+    if unavailable?(pid) do
+      update_guild(pid, guild)
+    else
+      raise(Mixcord.Error.CacheError, "Attempted to create a child with an id that already exists")
+    end
+  end
+
+  def unavailable?(pid) do
+    GenServer.call(pid, {:unavailable})
+  end
+
+  def update_guild(pid, guild) do
+    GenServer.call(pid, {:replace, guild})
+  end
+
+  def handle_call({:unavailable}, _from, state) do
+    {:reply, state.unavailable, state}
+  end
+
+  def handle_call({:replace, guild}, _from, state) do
+    # TODO: Struct here
+    {:reply, guild, guild}
   end
 
   @spec get(id: integer) :: Mixcord.Struct.Guild.t
@@ -36,23 +102,6 @@ defmodule Mixcord.Cache.Guild do
   def get!(message: message) do
     get(message: message)
       |> Util.bangify_find(message, __MODULE__)
-  end
-
-  @doc false
-  def create(guild) do
-    Mixcord.Cache.Guild.Supervisor.add_guild(guild.id, guild)
-    guild = :ok #GenServer.call(Guilds, {:create, :guild, guild.id, guild})
-    #if not Map.has_key?(guild, :unavailable) or not guild.unavailable do
-      #guild.members
-      #  |> Enum.each(fn member -> User.create(member.user) end)
-      #guild.channels
-      #  |> Enum.each(fn channel -> Channel.create(channel) end)
-    #end
-  end
-
-  def create(guild, shard_pid) do
-    create(guild)
-    Shard.request_guild_members(shard_pid, guild.id)
   end
 
   @doc false

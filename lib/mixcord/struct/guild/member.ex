@@ -20,7 +20,7 @@ defmodule Mixcord.Struct.Member do
   @type nick :: String.t | nil
 
   @typedoc "A list of role ids"
-  @type roles :: list(Role.t)
+  @type roles :: list(Integer.t)
 
   @typedoc "Date the user joined the guild"
   @type joined_at :: String.t
@@ -56,7 +56,6 @@ defmodule Mixcord.Struct.Member do
   def to_struct(map) do
     new = map
     |> Map.update(:user, %{}, &User.to_struct(&1))
-    |> Map.update(:roles, %{}, &Util.list_to_struct_list(&1, Role))
     struct(__MODULE__, new)
   end
 end

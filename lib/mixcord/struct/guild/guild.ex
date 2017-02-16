@@ -139,6 +139,7 @@ defmodule Mixcord.Struct.Guild do
     |> Map.update(:emojis, %{}, &Util.list_to_struct_list(&1, Emoji))
     |> Map.update(:roles, %{}, &Util.list_to_struct_list(&1, Role))
     |> Map.update(:members, %{}, &Util.list_to_struct_list(&1, Member))
+    # TODO: Create proper channels
     |> Map.update(:channels, %{}, &Util.list_to_struct_list(&1, Channel))
     struct(__MODULE__, new)
   end
