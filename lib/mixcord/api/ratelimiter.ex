@@ -35,6 +35,7 @@ defmodule Mixcord.Api.Ratelimiter do
     {:noreply, state}
   end
 
+  def handle_headers({:error, reason}, _route), do: {:error, reason}
   def handle_headers({:ok, %HTTPoison.Response{headers: headers}} = response, route) do
     global_limit = headers |> List.keyfind("X-RateLimit-Global", 0)
     remaining = headers |> List.keyfind("X-RateLimit-Remaining", 0) |> value_from_rltuple

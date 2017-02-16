@@ -42,10 +42,11 @@ defmodule Mixcord.Shard.Payload do
 
   @doc false
   def identity_payload(state) do
+    {os, name} = :os.type
     data = %{
       "token" => state.token,
       "properties" => %{
-        "$os" => "Linux",
+        "$os" => os <> " " <> name,
         "$browser" => "Mixcord",
         "$device" => "Mixcord",
         "$referrer" => "",
