@@ -44,7 +44,9 @@ defmodule Mixcord.Api do
 
   # TODO: Upload file
 
-  alias Mixcord.{Constants, Shard}
+  alias Mixcord.Constants
+  alias Mixcord.Shard
+  alias Mixcord.Shard.ShardSupervisor
 
   @typedoc """
   Represents a failed response from the API.
@@ -98,7 +100,7 @@ defmodule Mixcord.Api do
   """
   @spec update_status(status, String.t) :: no_return
   def update_status(status, game) do
-    Shard.Supervisor.update_status(status, game)
+    ShardSupervisor.update_status(status, game)
   end
 
   @doc """

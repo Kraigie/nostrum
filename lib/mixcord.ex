@@ -44,8 +44,8 @@ defmodule Mixcord do
 
     children = [
       worker(Mixcord.Api.Ratelimiter, []),
-      supervisor(Mixcord.Cache.Supervisor, []),
-      supervisor(Mixcord.Shard.Supervisor, [token, actual_num_shards])
+      supervisor(Mixcord.Cache.CacheSupervisor, []),
+      supervisor(Mixcord.Shard.ShardSupervisor, [token, actual_num_shards])
     ]
 
     supervisor = Supervisor.start_link(children, strategy: :one_for_one)

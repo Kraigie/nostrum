@@ -1,10 +1,10 @@
-defmodule Mixcord.Cache.Guild.Supervisor do
+defmodule Mixcord.Cache.Guild.GuildSupervisor do
   @moduledoc false
 
   use Supervisor
 
   def start_link do
-    Supervisor.start_link(__MODULE__, [], name: Guild.Supervisor)
+    Supervisor.start_link(__MODULE__, [], name: GuildSupervisor)
   end
 
   def init(_args) do

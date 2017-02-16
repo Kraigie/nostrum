@@ -1,10 +1,10 @@
-defmodule Mixcord.Cache.Supervisor do
+defmodule Mixcord.Cache.CacheSupervisor do
   @moduledoc false
 
   use Supervisor
 
   def start_link do
-    Supervisor.start_link(__MODULE__, [], name: Cache.Supervisor)
+    Supervisor.start_link(__MODULE__, [], name: CacheSupervisor)
   end
 
   def empty_cache do
@@ -15,10 +15,10 @@ defmodule Mixcord.Cache.Supervisor do
 
   def init(_args) do
     children = [
-      supervisor(Registry, [:unique, Guild.Registry]),
-      supervisor(Mixcord.Cache.Guild.Supervisor, []),
-      worker(Mixcord.Cache.Channel, []),
-      worker(Mixcord.Cache.User, [])
+      supervisor(Registry, [:unique, GuildRegistry]),
+      supervisor(Mixcord.Cache.Guild.GuildSupervisor, []),
+      worker(Mixcord.Cache.ChannelCache, []),
+      worker(Mixcord.Cache.UserCache, [])
     ]
 
     supervise(children, strategy: :one_for_one)

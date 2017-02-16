@@ -11,7 +11,7 @@ defmodule Mixcord.Util do
   """
   @spec empty_cache() :: no_return
   def empty_cache do
-    Mixcord.Cache.Supervisor.empty_cache
+    Mixcord.Cache.CacheSupervisor.empty_cache
   end
 
   @doc """
@@ -54,6 +54,8 @@ defmodule Mixcord.Util do
       {:ok, res} ->
         res
       {:error} ->
+        raise(Mixcord.Error.CacheError, finding: find, cache_name: cache_name)
+      {:error, _other} ->
         raise(Mixcord.Error.CacheError, finding: find, cache_name: cache_name)
     end
   end

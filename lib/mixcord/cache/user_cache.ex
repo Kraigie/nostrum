@@ -1,4 +1,4 @@
-defmodule Mixcord.Cache.User do
+defmodule Mixcord.Cache.UserCache do
   @moduledoc """
   Cache for users.
 
@@ -20,7 +20,7 @@ defmodule Mixcord.Cache.User do
 
   @doc false
   def start_link do
-    GenServer.start_link(__MODULE__, %{}, name: Users)
+    GenServer.start_link(__MODULE__, %{}, name: UserCache)
   end
 
   @doc false
@@ -65,13 +65,13 @@ defmodule Mixcord.Cache.User do
 
 
   @doc false
-  def create(user), do: GenServer.call(Users, {:create, user.id, user})
+  def create(user), do: GenServer.call(UserCache, {:create, user.id, user})
 
   @doc false
-  def update(user), do: GenServer.call(Users, {:update, user.id, user})
+  def update(user), do: GenServer.call(UserCache, {:update, user.id, user})
 
   @doc false
-  def delete(user), do: GenServer.call(Users, {:delete, user.id})
+  def delete(user), do: GenServer.call(UserCache, {:delete, user.id})
 
   def handle_call({:create, id, user}, _from, state) do
     :ets.insert(:users, insert(id, user))

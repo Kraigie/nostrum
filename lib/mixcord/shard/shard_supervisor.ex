@@ -1,11 +1,11 @@
-defmodule Mixcord.Shard.Supervisor do
+defmodule Mixcord.Shard.ShardSupervisor do
   @moduledoc false
 
   use Supervisor
   alias Mixcord.Shard
 
   def start_link(token, num_shards \\ 1) do
-    Supervisor.start_link(__MODULE__, [token: token, num_shards: num_shards], name: Shard.Supervisor)
+    Supervisor.start_link(__MODULE__, [token: token, num_shards: num_shards], name: ShardSupervisor)
   end
 
   def update_status(status, game) do
