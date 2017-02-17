@@ -30,6 +30,7 @@ defmodule Mixcord.Struct.Emoji do
   end
 
   @doc false
+  def to_struct(list) when is_list(list), do: list |> Enum.map(&to_struct(&1))
   def to_struct(map) do
     struct(__MODULE__, map)
   end

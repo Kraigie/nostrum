@@ -81,13 +81,13 @@ defmodule Mixcord.Cache.UserCache do
   def handle_call({:update, id, user}, _from, state) do
     to_update = get(id: id)
     :ets.insert(:users, insert(id, user))
-    {:reply, {to_update, User.to_struct(user)}, state}
+    {:reply, {User.to_struct(to_update), User.to_struct(user)}, state}
   end
 
   def handle_call({:delete, id}, _from, state) do
     to_delete = get!(id: id)
     :ets.delete(:users, {:id, id})
-    {:reply, to_delete, state}
+    {:reply, User.to_struct(to_delete), state}
   end
 
   @doc false

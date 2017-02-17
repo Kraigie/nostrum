@@ -6,7 +6,7 @@ defmodule Mixcord.Cache.Guild.GuildServer do
   use GenServer
   alias Mixcord.Cache.{ChannelCache, UserCache}
   alias Mixcord.Cache.Guild.GuildRegister
-  alias Mixcord.Struct.{Guild}
+  alias Mixcord.Struct.{Emoji, Guild, Member, Role}
   alias Mixcord.{Shard, Util}
   require Logger
 
@@ -94,7 +94,9 @@ defmodule Mixcord.Cache.Guild.GuildServer do
   @doc false
   def delete(guild_id) do
     pid = GuildRegister.lookup!(guild_id)
-    GenServer.call(pid, {:delete, :guild})
+    guild = GenServer.call(pid, {:delete, :guild})
+    Process.exit(pid, :guild_deleted)
+    guild
   end
 
   @doc false
@@ -153,17 +155,16 @@ defmodule Mixcord.Cache.Guild.GuildServer do
   end
 
   def handle_call({:update, :guild, guild}, _from, state) do
-    {:reply, {state, guild}, guild}
+    {:reply, {Guild.to_struct(state), Guild.to_struct(guild)}, guild}
   end
 
   def handle_call({:delete, :guild}, _from, state) do
-    # TODO: DESTROY ME
-    {:reply, %{}}
+    {:reply, Guild.to_struct(state)}
   end
 
   def handle_call({:create, :member, member}, _from, state) do
     new_members = [member | state.members]
-    {:reply, member, %{state | members: new_members}}
+    {:reply, Member.to_struct(member), %{state | members: new_members}}
   end
 
   def handle_call({:update, :member, user, roles}, _from, state) do
@@ -179,7 +180,7 @@ defmodule Mixcord.Cache.Guild.GuildServer do
       %{member | user: user, roles: roles}
     end)
 
-    {:reply, {old_member, %{old_member | user: user, roles: roles}}, %{state | members: new_members}}
+    {:reply, {Member.to_struct(old_member), Member.to_struct(%{old_member | user: user, roles: roles})}, %{state | members: new_members}}
   end
 
   def handle_call({:delete, :member, user}, _from, state) do
@@ -190,12 +191,12 @@ defmodule Mixcord.Cache.Guild.GuildServer do
         :error -> %{}
       end
     members = List.delete_at(state.members, member_index)
-    {:reply, deleted_member, %{state | members: members}}
+    {:reply, Member.to_struct(deleted_member), %{state | members: members}}
   end
 
   def handle_call({:create, :role, role}, _from, state) do
     new_roles = [role | state.roles]
-    {:reply, role, %{state | roles: new_roles}}
+    {:reply, Role.to_struct(role), %{state | roles: new_roles}}
   end
 
   def handle_call({:update, :role, guild_id, role}, _from, state) do
@@ -209,7 +210,7 @@ defmodule Mixcord.Cache.Guild.GuildServer do
       fn _ ->
         role
       end)
-    {:reply, {old_role, role}, %{state | roles: roles}}
+    {:reply, {Role.to_struct(old_role), Role.to_struct(role)}, %{state | roles: roles}}
   end
 
   def handle_call({:delete, :role, role_id}, _from, state) do
@@ -220,12 +221,12 @@ defmodule Mixcord.Cache.Guild.GuildServer do
         :error -> %{}
       end
     roles = List.delete_at(state.roles, role_index)
-    {:reply, old_role, %{state | roles: roles}}
+    {:reply, Role.to_struct(old_role), %{state | roles: roles}}
   end
 
   def handle_call({:update, :emoji, emojis}, _from, state) do
     old_emojis = state.emojis
-    {:reply, {old_emojis, emojis}, %{state | emojis: emojis}}
+    {:reply, {Emoji.to_struct(old_emojis), Emoji.to_struct(emojis)}, %{state | emojis: emojis}}
   end
 
 end
