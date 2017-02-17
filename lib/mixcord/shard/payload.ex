@@ -18,6 +18,7 @@ defmodule Mixcord.Shard.Payload do
    * `reconnect_attempts` - Current number of reconnect attempts.
    * `last_heartbeat` - The time of the last heartbeat.
    * `shard_pid` - Pid of the shard containing this state.
+   * `producer_pid` - Pid of the producer attached to this shard
    * `heartbeat_intervals` - List of last ten heartbeat intervals, from hearbeat send to ack.
   """
   @type state_map :: Map.t
@@ -31,6 +32,7 @@ defmodule Mixcord.Shard.Payload do
       reconnect_attempts: 0,
       last_heartbeat: 0,
       shard_pid: pid,
+      producer_pid: nil,
       heartbeat_intervals: Enum.map(1..10, fn _ -> 0 end)
     }
   end

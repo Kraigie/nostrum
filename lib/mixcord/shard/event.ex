@@ -6,7 +6,8 @@ defmodule Mixcord.Shard.Event do
   require Logger
 
   def handle(:dispatch, payload, state) do
-    Dispatch.Producer.notify(payload, state)
+    [{pid, _id}] = Registry.lookup(ProducerRegistry, state.shard_num)
+    Dispatch.Producer.notify(pid, payload, state)
 
     state =
       if payload.t == :READY do

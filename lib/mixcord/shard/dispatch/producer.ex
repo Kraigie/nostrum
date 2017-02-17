@@ -4,16 +4,17 @@ defmodule Mixcord.Shard.Dispatch.Producer do
   use GenStage
   alias Mixcord.Shard.Dispatch
 
-  def start_link do
-    GenStage.start_link(__MODULE__, :ok, name: __MODULE__)
+  def start_link(id) do
+    GenStage.start_link(__MODULE__, id)
   end
 
-  def init(:ok) do
+  def init(id) do
+    Registry.register(ProducerRegistry, id, id)
     {:producer, {:queue.new, 0}, dispatcher: GenStage.DemandDispatcher}
   end
 
-  def notify(payload, state) do
-    GenStage.cast(__MODULE__, {:notify, payload, state})
+  def notify(pid, payload, state) do
+    GenStage.cast(pid, {:notify, payload, state})
   end
 
   def handle_cast({:notify, payload, state}, {queue, demand}) do

@@ -4,10 +4,11 @@ defmodule Mixcord.Shard do
   @behaviour :websocket_client
 
   alias Mixcord.Shard.{Event, Payload}
+  alias Mixcord.Shard.Dispatch.Producer
   alias Mixcord.{Constants, Util}
   require Logger
 
-  @connect_wait 5000
+  @connect_wait 5500
 
   def start_link(token, shard_num) do
     :crypto.start
@@ -17,6 +18,16 @@ defmodule Mixcord.Shard do
     # TODO: Queue reconnects/check this better
     if Util.num_shards > 1, do: Process.sleep(@connect_wait)
     :websocket_client.start_link(Util.gateway, __MODULE__, Payload.state_map(token, shard_num, self()))
+  end
+
+  def init(state) do
+    {:ok, pid} = Producer.start_link(state.shard_num)
+    {:once, %{state | producer_pid: pid}}
+  end
+
+  def onconnect(_ws_req, state) do
+    Logger.debug "SHARD #{state.shard_num} CONNECTED"
+    {:ok, state}
   end
 
   def websocket_handle({:binary, payload}, _state, state) do
@@ -67,15 +78,6 @@ defmodule Mixcord.Shard do
 
   def websocket_info(:resume, _ws_req, state) do
     :websocket_client.cast(self(), {:binary, Payload.resume_payload(state)})
-    {:ok, state}
-  end
-
-  def init(state) do
-    {:once, state}
-  end
-
-  def onconnect(_ws_req, state) do
-    Logger.debug "SHARD #{state.shard_num} CONNECTED"
     {:ok, state}
   end
 

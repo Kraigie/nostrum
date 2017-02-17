@@ -117,18 +117,6 @@ defmodule Mixcord.Producer.Events do
     user_update |
     voice_state_update |
     voice_server_update
-
-  @doc """
-  This is the callback you must implement to handle events.
-
-  `Event` is the event name as an atom, and `ws_state` is the current state of
-  the websocket that the event was received on. For more information on this please
-  see `Mixcord.Shard.Payload.state_map.t`.
-
-  `from` is the process information of the producer from which the demand was received.
-  `state` is the internal state of your consumer.
-  """
-  @callback handle_event({event, ws_state}, from, state) :: {:noreply, [], state}
 end
 
 defmodule DummyConsumer do
