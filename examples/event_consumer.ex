@@ -10,39 +10,20 @@ defmodule ExampleSupervisor do
 end
 
 defmodule ExampleConsumer do
+  use Mixcord.Shard.Dispatch.Consumer
+  require Logger
 
-  use GenStage
-  alias Mixcord.Api
-
-  def start_link() do
-    GenStage.start_link(__MODULE__, :ok)
+  def start_link do
+    Consumer.start_link(__MODULE__)
   end
 
-  # Subscribe to Mixcord's event dispatcher upon startup
-  def init(:ok) do
-    {:consumer, :ok, subscribe_to: [Mixcord.Shard.Dispatch.Producer]}
-  end
-
-  def handle_events(events, _from, state) do
-    for event <- events do
-      with
-        {{event_info}, state} <- event,
-        {event_name, _payload} <- event_info
-        # Just handling message_create
-        {:MESSAGE_CREATE, msg, _state} <- event_info
-      do
-        handle_message_create(msg)
-      else
-        Logger.info "Not handling event #{event_name}"
+  def handle_event({{:MESSAGE_CREATE, msg}, ws_state}, state) do
+    def handle_message_create(msg) do
+      case msg.content do
+        <<"!" :: binary, "ping" :: binary>> ->
+          Api.create_message(msg.channel.id, "I copy and pasted this code")
       end
     end
-    {:noreply, [], state}
-  end
-
-  def handle_message_create(msg) do
-    case msg.content do
-      <<"!" :: binary, "ping" :: binary>> ->
-        Api.create_message(msg.channel.id, "I copy and pasted this code")
-    end
+    {:ok, state}
   end
 end
