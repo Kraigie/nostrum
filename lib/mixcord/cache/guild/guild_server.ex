@@ -195,7 +195,7 @@ defmodule Mixcord.Cache.Guild.GuildServer do
     {:reply, Role.to_struct(role), %{state | roles: new_roles}}
   end
 
-  def handle_call({:update, :role, guild_id, role}, _from, state) do
+  def handle_call({:update, :role, role}, _from, state) do
     role_index = Enum.find_index(state.roles, fn g_role -> g_role.id == role.id end)
     old_role =
       case Enum.fetch(state, role_index) do

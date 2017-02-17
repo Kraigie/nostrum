@@ -2,7 +2,7 @@ defmodule Mixcord.Cache.Guild.GuildRegister do
   @moduledoc false
 
   alias Mixcord.Cache.Guild.GuildServer
-  alias Mixcord.Struct
+  alias Mixcord.Struct.Guild
   alias Supervisor.Spec
 
   def lookup(id) do
@@ -29,12 +29,12 @@ defmodule Mixcord.Cache.Guild.GuildRegister do
       {:error, {:already_started, pid}} ->
         handle_guild_unavailability!(pid, guild)
       {:error, {:already_registered, pid}} ->
-        handle_guild_unavailability!(pid, guild)        
+        handle_guild_unavailability!(pid, guild)
       {:error, reason} ->
         raise(Mixcord.Error.CacheError,
           "Could not start a new guild process with id #{id}, reason: #{inspect reason}")
       {:ok, _pid} ->
-        Struct.Guild.to_struct(guild)
+        Guild.to_struct(guild)
     end
   end
 

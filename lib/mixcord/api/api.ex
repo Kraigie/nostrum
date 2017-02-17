@@ -44,8 +44,7 @@ defmodule Mixcord.Api do
 
   # TODO: Upload file
 
-  alias Mixcord.Constants
-  alias Mixcord.Shard
+  alias Mixcord.{Constants, Shard}
   alias Mixcord.Shard.ShardSupervisor
 
   @typedoc """

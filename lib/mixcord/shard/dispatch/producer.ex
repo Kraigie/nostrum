@@ -22,7 +22,11 @@ defmodule Mixcord.Shard.Dispatch.Producer do
 
   def handle_cast({:notify, payload, state}, {queue, demand}) do
     from_dispatch = Dispatch.handle(payload, state)
-    dispatch_events(:queue.in({{payload.t, from_dispatch}, state}, queue), demand, [])
+    dispatch_events(:queue.in(build_event(payload.t, from_dispatch, state), queue), demand, [])
+  end
+
+  def build_event(payload_name, event_info, state) do
+    {{payload_name, event_info}, state}
   end
 
   def handle_demand(incoming_demand, {queue, demand}) do

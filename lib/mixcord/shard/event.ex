@@ -1,13 +1,14 @@
 defmodule Mixcord.Shard.Event do
   @moduledoc false
 
-  alias Mixcord.Shard.{Dispatch, Payload}
+  alias Mixcord.Shard.Payload
+  alias Mixcord.Shard.Dispatch.Producer
   alias Mixcord.Util
   require Logger
 
   def handle(:dispatch, payload, state) do
     [{pid, _id}] = Registry.lookup(ProducerRegistry, state.shard_num)
-    Dispatch.Producer.notify(pid, payload, state)
+    Producer.notify(pid, payload, state)
 
     state =
       if payload.t == :READY do

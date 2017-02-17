@@ -4,6 +4,7 @@ defmodule Mixcord.Util do
   """
 
   alias Mixcord.{Api, Constants}
+  alias Mixcord.Cache.CacheSupervisor
   require Logger
 
   @doc """
@@ -11,7 +12,7 @@ defmodule Mixcord.Util do
   """
   @spec empty_cache() :: no_return
   def empty_cache do
-    Mixcord.Cache.CacheSupervisor.empty_cache
+    CacheSupervisor.empty_cache
   end
 
   @doc """
