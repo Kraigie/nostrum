@@ -25,9 +25,11 @@ defmodule Mixcord.Cache.Guild.GuildRegister do
 
   # TODO: Refactor this nasty code and potentially move
   def create_guild_process!(id, guild) do
-    case Supervisor.start_child(GuildSupervisor, create_worker_spec(id, guild)) do
+    case Supervisor.start_child(GuildSupervisor, [id, guild]) do
       {:error, {:already_started, pid}} ->
         handle_guild_unavailability!(pid, guild)
+      {:error, {:already_registered, pid}} ->
+        handle_guild_unavailability!(pid, guild)        
       {:error, reason} ->
         raise(Mixcord.Error.CacheError,
           "Could not start a new guild process with id #{id}, reason: #{inspect reason}")

@@ -20,8 +20,6 @@ defmodule Mixcord.Cache.Guild.GuildServer do
     case Registry.register(GuildRegistry, id, self()) do
       {:ok, _pid} ->
         {:ok, guild}
-      {:error, {:already_started, _pid}} ->
-        {:ok, guild}
       {:error, error} ->
         {:stop, error}
     end
@@ -94,9 +92,7 @@ defmodule Mixcord.Cache.Guild.GuildServer do
   @doc false
   def delete(guild_id) do
     pid = GuildRegister.lookup!(guild_id)
-    guild = GenServer.call(pid, {:delete, :guild})
-    Process.exit(pid, :guild_deleted)
-    guild
+    GenServer.call(pid, {:delete, :guild})
   end
 
   @doc false
@@ -159,7 +155,7 @@ defmodule Mixcord.Cache.Guild.GuildServer do
   end
 
   def handle_call({:delete, :guild}, _from, state) do
-    {:reply, Guild.to_struct(state)}
+    {:stop, :normal, Guild.to_struct(state), %{}}
   end
 
   def handle_call({:create, :member, member}, _from, state) do
