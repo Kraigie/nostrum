@@ -34,7 +34,11 @@ defmodule Mixcord.Shard.Dispatch.Consumer do
 
   def init(state) do
     # TODO: Attach to all producers
-    {:consumer, state, subscribe_to: [Mixcord.Shard.Dispatch.Producer]}
+    producers = ProducerRegistry
+    |> Registry.lookup(:pids)
+    |> Enum.map(fn {pid, value} -> pid end)
+
+    {:consumer, state, subscribe_to: producers}
   end
 
   def handle_events(events, _from, %{mod: mod, state: their_state} = state) do

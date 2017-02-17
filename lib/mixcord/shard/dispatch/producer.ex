@@ -9,6 +9,9 @@ defmodule Mixcord.Shard.Dispatch.Producer do
   end
 
   def init(id) do
+    # Store list of pids for consumers to connect to
+    Registry.register(ProducerRegistry, :pids, id)
+    # Store shard_num to dispatch events to shards' producer
     Registry.register(ProducerRegistry, id, id)
     {:producer, {:queue.new, 0}, dispatcher: GenStage.DemandDispatcher}
   end

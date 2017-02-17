@@ -121,6 +121,20 @@ end
 
 defmodule DummyConsumer do
   @moduledoc false
+  use Mixcord.Shard.Dispatch.Consumer
+  require Logger
+
+  def start_link do
+    Mixcord.Shard.Dispatch.Consumer.start_link(__MODULE__)
+  end
+
+  def handle_event(event, state) do
+    {:ok, state}
+  end
+end
+
+defmodule DummyConsumerOld do
+  @moduledoc false
 
   use GenStage
   require Logger
