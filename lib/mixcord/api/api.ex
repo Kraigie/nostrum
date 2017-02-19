@@ -100,19 +100,19 @@ defmodule Mixcord.Api do
     ShardSupervisor.update_status(status, game)
   end
 
-  @doc """
+  @doc ~S"""
   Send a message to a channel.
 
   Send `content` to the channel identified with `channel_id`.
   Content is a binary containing the message you want to send.
   For embeds or file uploads, content should be a keyword list.
 
+  `tts` is an optional parameter that dictates whether the message should be played over text to speech.
+
   **Example**
   ```Elixir
   Mixcord.Api.create_message(1111111111111, [content: "my os rules", file: ~S"C:\i\use\windows"])
   ```
-
-  `tts` is an optional parameter that dictates whether the message should be played over text to speech.
 
   Returns `{:ok, Mixcord.Struct.Message}` if successful. `error` otherwise.
   """
@@ -120,7 +120,7 @@ defmodule Mixcord.Api do
   def create_message(channel_id, content, tts \\ false)
 
   # Sending regular messages
-  @spec create_message(Integer.t, String.t, boolean) :: error | {:ok, Mixcord.Struct.Message.t}
+  @spec create_message(Integer.t, String.t | [content: String.t, embed: Mixcord.Struct.Embed] | [content: String.t, file: String.t], boolean) :: error | {:ok, Mixcord.Struct.Message.t}
   def create_message(channel_id, content, tts) when is_binary(content) do
     case request(:post, Constants.channel_messages(channel_id), %{content: content, tts: tts}) do
       {:ok, body} ->
@@ -131,7 +131,6 @@ defmodule Mixcord.Api do
   end
 
   # Embeds
-  @spec create_message(Integer.t, [content: String.t, embed: Mixcord.Struct.Embed], boolean) :: error | {:ok, Mixcord.Struct.Message.t}
   def create_message(channel_id, [content: content, embed: embed], tts) when is_map(content) do
     case request(:post, Constants.channel_messages(channel_id), %{content: content, embed: embed, tts: tts}) do
       {:ok, body} ->
@@ -142,7 +141,6 @@ defmodule Mixcord.Api do
   end
 
   # Files
-  @spec create_message(Integer.t, [content: String.t, file: String.t], boolean) :: error | {:ok, Mixcord.Struct.Message.t}
   def create_message(channel_id, [file_name: content, file: file], tts) do
     case request_multipart(:post, Constants.channel_messages(channel_id), %{content: content, file: file}) do
       {:ok, body} ->

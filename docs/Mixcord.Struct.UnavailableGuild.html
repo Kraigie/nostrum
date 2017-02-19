@@ -5,12 +5,12 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="ExDoc v0.14.5">
-    <title>Mixcord.Error.ApiError – Elixir v0.1.0</title>
+    <title>Mixcord.Struct.UnavailableGuild – Elixir v0.1.0</title>
     <link rel="stylesheet" href="dist/app-a07cea761b.css" />
     
     <script src="dist/sidebar_items-80967f34ca.js"></script>
   </head>
-  <body data-type="exceptions">
+  <body data-type="modules">
     <script>if(localStorage.getItem('night-mode')) document.body.className += ' night-mode';</script>
 
     <div class="main">
@@ -61,12 +61,10 @@
 
       <h1>
         <small class="visible-xs">Elixir v0.1.0</small>
-        Mixcord.Error.ApiError
-        
-          <small>exception</small>
+        Mixcord.Struct.UnavailableGuild
         
         
-          <a href="https://github.com/kraigie/mixcord/blob/master/lib/mixcord/error/api_error.ex#L1" title="View Source" class="view-source" rel="help">
+          <a href="https://github.com/kraigie/mixcord/blob/master/lib/mixcord/struct/guild/unavailable_guild.ex#L1" title="View Source" class="view-source" rel="help">
             <i class="icon-code"></i>
           </a>
         
@@ -74,9 +72,7 @@
 
       
         <section id="moduledoc">
-          <p>Represents a failed response from the API.</p>
-<p>This occurs when hackney or HTTPoison fail, or when the API doesn’t respond with <code class="inline">200</code> or <code class="inline">204</code>.
-This should only occur when using the banged API methods.</p>
+          <p>Struct representing an unavailable Discord guild.</p>
 
         </section>
       
@@ -96,8 +92,11 @@ This should only occur when using the banged API methods.</p>
     </h2>
     <div class="summary-row">
   <div class="summary-signature">
-    <a href="#t:message_map/0">message_map()</a>
+    <a href="#t:id/0">id()</a>
   </div>
+  
+    <div class="summary-synopsis"><p>The guild’s id</p>
+</div>
   
 </div>
 <div class="summary-row">
@@ -105,7 +104,13 @@ This should only occur when using the banged API methods.</p>
     <a href="#t:t/0">t()</a>
   </div>
   
-    <div class="summary-synopsis"><p>Map representing the error returned by an API call</p>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:unavailable/0">unavailable()</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Whether the guild is avaliable</p>
 </div>
   
 </div>
@@ -120,20 +125,8 @@ This should only occur when using the banged API methods.</p>
     </h2>
     <div class="summary-row">
   <div class="summary-signature">
-    <a href="#exception/1">exception(msg)</a>
+    <a href="#to_struct/1">to_struct(map)</a>
   </div>
-  
-    <div class="summary-synopsis"><p>Callback implementation for <a href="https://hexdocs.pm/elixir/Exception.html#c:exception/1"><code class="inline">Exception.exception/1</code></a></p>
-</div>
-  
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#message/1">message(exception)</a>
-  </div>
-  
-    <div class="summary-synopsis"><p>Callback implementation for <a href="https://hexdocs.pm/elixir/Exception.html#c:message/1"><code class="inline">Exception.message/1</code></a></p>
-</div>
   
 </div>
 
@@ -156,15 +149,15 @@ This should only occur when using the banged API methods.</p>
             Types
           </h1>
           <div class="types-list">
-            <div class="detail" id="t:message_map/0">
+            <div class="detail" id="t:id/0">
   
   <div class="detail-header">
-    <a href="#t:message_map/0" class="detail-link" title="Link to this type">
+    <a href="#t:id/0" class="detail-link" title="Link to this type">
       <i class="icon-link"></i>
     </a>
-    <span class="signature">message_map()</span>
+    <span class="signature">id()</span>
     
-      <a href="https://github.com/kraigie/mixcord/blob/master/lib/mixcord/error/api_error.ex#L24" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/mixcord/blob/master/lib/mixcord/struct/guild/unavailable_guild.ex#L7" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -172,13 +165,14 @@ This should only occur when using the banged API methods.</p>
     
       <div class="specs">
         
-          <pre>message_map() :: %{code: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>, message: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>}</pre>
+          <pre>id() :: integer</pre>
         
       </div>
     
   </div>
   <section class="docstring">
-    
+    <p>The guild’s id</p>
+
   </section>
 </div>
 <div class="detail" id="t:t/0">
@@ -189,7 +183,7 @@ This should only occur when using the banged API methods.</p>
     </a>
     <span class="signature">t()</span>
     
-      <a href="https://github.com/kraigie/mixcord/blob/master/lib/mixcord/error/api_error.ex#L19" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/mixcord/blob/master/lib/mixcord/struct/guild/unavailable_guild.ex#L12" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -197,30 +191,38 @@ This should only occur when using the banged API methods.</p>
     
       <div class="specs">
         
-          <pre>t() :: %{status_code: integer | nil, message: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a> | <a href="#t:message_map/0">message_map</a>}</pre>
+          <pre>t() :: %Mixcord.Struct.UnavailableGuild{id: <a href="#t:id/0">id</a>, unavailable: <a href="#t:unavailable/0">unavailable</a>}</pre>
         
       </div>
     
   </div>
   <section class="docstring">
-    <p>Map representing the error returned by an API call.</p>
-<ul>
-<li><p>status_code</p>
-<ul>
-<li><code class="inline">nil</code> if HTTPoison or Hackney throws an error.
-</li>
-<li>Status code of response otherwise.
-</li>
-</ul>
-</li>
-<li><p>message</p>
-<ul>
-<li>Error message of response. If the error is from the Discord API,
-  this will be a map containing the keys <code class="inline">code</code> and <code class="inline">message</code> as strings.
-</li>
-</ul>
-</li>
-</ul>
+    
+  </section>
+</div>
+<div class="detail" id="t:unavailable/0">
+  
+  <div class="detail-header">
+    <a href="#t:unavailable/0" class="detail-link" title="Link to this type">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">unavailable()</span>
+    
+      <a href="https://github.com/kraigie/mixcord/blob/master/lib/mixcord/struct/guild/unavailable_guild.ex#L10" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>unavailable() :: boolean</pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>Whether the guild is avaliable</p>
 
   </section>
 </div>
@@ -237,58 +239,23 @@ This should only occur when using the banged API methods.</p>
             </a>
             Functions
           </h1>
-          <div class="detail" id="exception/1">
+          <div class="detail" id="to_struct/1">
   
   <div class="detail-header">
-    <a href="#exception/1" class="detail-link" title="Link to this function">
+    <a href="#to_struct/1" class="detail-link" title="Link to this function">
       <i class="icon-link"></i>
     </a>
-    <span class="signature">exception(msg)</span>
+    <span class="signature">to_struct(map)</span>
     
-      <a href="https://github.com/kraigie/mixcord/blob/master/lib/mixcord/error/api_error.ex#L34" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/mixcord/blob/master/lib/mixcord/struct/guild/unavailable_guild.ex#L23" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
     
     
-      <div class="specs">
-        
-          <pre>exception(<a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>) :: <a href="https://hexdocs.pm/elixir/Exception.html#t:t/0">Exception.t</a></pre>
-        
-          <pre>exception(<a href="https://hexdocs.pm/elixir/Keyword.html#t:t/0">Keyword.t</a>) :: <a href="https://hexdocs.pm/elixir/Exception.html#t:t/0">Exception.t</a></pre>
-        
-      </div>
-    
   </div>
   <section class="docstring">
-    <p>Callback implementation for <a href="https://hexdocs.pm/elixir/Exception.html#c:exception/1"><code class="inline">Exception.exception/1</code></a>.</p>
-
-  </section>
-</div>
-<div class="detail" id="message/1">
-  
-  <div class="detail-header">
-    <a href="#message/1" class="detail-link" title="Link to this function">
-      <i class="icon-link"></i>
-    </a>
-    <span class="signature">message(exception)</span>
     
-      <a href="https://github.com/kraigie/mixcord/blob/master/lib/mixcord/error/api_error.ex#L32" class="view-source" rel="help" title="View Source">
-       <i class="icon-code"></i>
-     </a>
-    
-    
-    
-      <div class="specs">
-        
-          <pre>message(<a href="https://hexdocs.pm/elixir/Exception.html#t:t/0">Exception.t</a>) :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a></pre>
-        
-      </div>
-    
-  </div>
-  <section class="docstring">
-    <p>Callback implementation for <a href="https://hexdocs.pm/elixir/Exception.html#c:message/1"><code class="inline">Exception.message/1</code></a>.</p>
-
   </section>
 </div>
 

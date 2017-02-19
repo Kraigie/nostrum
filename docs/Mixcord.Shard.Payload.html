@@ -5,10 +5,10 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="ExDoc v0.14.5">
-    <title>Mixcord.Shard.Payload – mixcord v0.1.0</title>
+    <title>Mixcord.Shard.Payload – Elixir v0.1.0</title>
     <link rel="stylesheet" href="dist/app-a07cea761b.css" />
     
-    <script src="dist/sidebar_items-9ec3887d0b.js"></script>
+    <script src="dist/sidebar_items-80967f34ca.js"></script>
   </head>
   <body data-type="modules">
     <script>if(localStorage.getItem('night-mode')) document.body.className += ' night-mode';</script>
@@ -23,7 +23,7 @@
   <a href="api-reference.html" class="sidebar-projectLink">
     <div class="sidebar-projectDetails">
       <h1 class="sidebar-projectName">
-        mixcord
+        Elixir
       </h1>
       <h2 class="sidebar-projectVersion">
         v0.1.0
@@ -60,9 +60,13 @@
 
 
       <h1>
-        <small class="visible-xs">mixcord v0.1.0</small>
+        <small class="visible-xs">Elixir v0.1.0</small>
         Mixcord.Shard.Payload
         
+        
+          <a href="https://github.com/kraigie/mixcord/blob/master/lib/mixcord/shard/payload.ex#L1" title="View Source" class="view-source" rel="help">
+            <i class="icon-code"></i>
+          </a>
         
       </h1>
 
@@ -106,7 +110,7 @@
     </h2>
     <div class="summary-row">
   <div class="summary-signature">
-    <a href="#state_map/4">state_map(token, caller, shard_num, pid)</a>
+    <a href="#state_map/3">state_map(token, shard_num, pid)</a>
   </div>
   
 </div>
@@ -138,6 +142,10 @@
     </a>
     <span class="signature">state_map()</span>
     
+      <a href="https://github.com/kraigie/mixcord/blob/master/lib/mixcord/shard/payload.ex#L24" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
     
     
       <div class="specs">
@@ -153,8 +161,6 @@
 <ul>
 <li><code class="inline">token</code> - The token of the bot.
 </li>
-<li><code class="inline">caller</code> - <strong>DEPRECATED</strong>
-</li>
 <li><code class="inline">shard_num</code> - The shard number container this state.
 </li>
 <li><code class="inline">seq</code> - Current seq number of the websocket.
@@ -166,6 +172,8 @@
 <li><code class="inline">last_heartbeat</code> - The time of the last heartbeat.
 </li>
 <li><code class="inline">shard_pid</code> - Pid of the shard containing this state.
+</li>
+<li><code class="inline">producer_pid</code> - Pid of the producer attached to this shard
 </li>
 <li><code class="inline">heartbeat_intervals</code> - List of last ten heartbeat intervals, from hearbeat send to ack.
 </li>
@@ -186,13 +194,17 @@
             </a>
             Functions
           </h1>
-          <div class="detail" id="state_map/4">
+          <div class="detail" id="state_map/3">
   
   <div class="detail-header">
-    <a href="#state_map/4" class="detail-link" title="Link to this function">
+    <a href="#state_map/3" class="detail-link" title="Link to this function">
       <i class="icon-link"></i>
     </a>
-    <span class="signature">state_map(token, caller, shard_num, pid)</span>
+    <span class="signature">state_map(token, shard_num, pid)</span>
+    
+      <a href="https://github.com/kraigie/mixcord/blob/master/lib/mixcord/shard/payload.ex#L26" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
     
     
     

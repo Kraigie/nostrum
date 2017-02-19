@@ -10,6 +10,9 @@ defmodule Mixcord.Mixfile do
       start_permanent: Mix.env == :prod,
       description: "An elixir Discord library",
       package: package(),
+      name: "Elixir",
+      source_url: "https://github.com/kraigie/mixcord",
+      homepage_url: "https://github.com/kraigie/mixcord",
       deps: deps(),
       docs: docs()
     ]

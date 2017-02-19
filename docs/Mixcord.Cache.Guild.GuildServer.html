@@ -5,12 +5,12 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="ExDoc v0.14.5">
-    <title>Mixcord.Error.CacheError – Elixir v0.1.0</title>
+    <title>Mixcord.Cache.Guild.GuildServer – Elixir v0.1.0</title>
     <link rel="stylesheet" href="dist/app-a07cea761b.css" />
     
     <script src="dist/sidebar_items-80967f34ca.js"></script>
   </head>
-  <body data-type="exceptions">
+  <body data-type="modules">
     <script>if(localStorage.getItem('night-mode')) document.body.className += ' night-mode';</script>
 
     <div class="main">
@@ -61,12 +61,10 @@
 
       <h1>
         <small class="visible-xs">Elixir v0.1.0</small>
-        Mixcord.Error.CacheError
-        
-          <small>exception</small>
+        Mixcord.Cache.Guild.GuildServer
         
         
-          <a href="https://github.com/kraigie/mixcord/blob/master/lib/mixcord/error/cache_error.ex#L1" title="View Source" class="view-source" rel="help">
+          <a href="https://github.com/kraigie/mixcord/blob/master/lib/mixcord/cache/guild/guild_server.ex#L1" title="View Source" class="view-source" rel="help">
             <i class="icon-code"></i>
           </a>
         
@@ -74,9 +72,7 @@
 
       
         <section id="moduledoc">
-          <p>Represents an error when interacting with the cache.</p>
-<p>This occurs likely because a specified item could not be found in the cache.
-This should only occur when using the banged cache methods.</p>
+          <p>Module for interacting with Guild Servers.</p>
 
         </section>
       
@@ -98,20 +94,20 @@ This should only occur when using the banged cache methods.</p>
     </h2>
     <div class="summary-row">
   <div class="summary-signature">
-    <a href="#exception/1">exception(msg)</a>
+    <a href="#call/2">call(id, request)</a>
   </div>
-  
-    <div class="summary-synopsis"><p>Callback implementation for <a href="https://hexdocs.pm/elixir/Exception.html#c:exception/1"><code class="inline">Exception.exception/1</code></a></p>
-</div>
   
 </div>
 <div class="summary-row">
   <div class="summary-signature">
-    <a href="#message/1">message(exception)</a>
+    <a href="#get/1">get(list)</a>
   </div>
   
-    <div class="summary-synopsis"><p>Callback implementation for <a href="https://hexdocs.pm/elixir/Exception.html#c:message/1"><code class="inline">Exception.message/1</code></a></p>
 </div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#get!/1">get!(list)</a>
+  </div>
   
 </div>
 
@@ -135,43 +131,34 @@ This should only occur when using the banged cache methods.</p>
             </a>
             Functions
           </h1>
-          <div class="detail" id="exception/1">
+          <div class="detail" id="call/2">
   
   <div class="detail-header">
-    <a href="#exception/1" class="detail-link" title="Link to this function">
+    <a href="#call/2" class="detail-link" title="Link to this function">
       <i class="icon-link"></i>
     </a>
-    <span class="signature">exception(msg)</span>
+    <span class="signature">call(id, request)</span>
     
-      <a href="https://github.com/kraigie/mixcord/blob/master/lib/mixcord/error/cache_error.ex#L11" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/mixcord/blob/master/lib/mixcord/cache/guild/guild_server.ex#L59" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
     
     
-      <div class="specs">
-        
-          <pre>exception(<a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>) :: <a href="https://hexdocs.pm/elixir/Exception.html#t:t/0">Exception.t</a></pre>
-        
-          <pre>exception(<a href="https://hexdocs.pm/elixir/Keyword.html#t:t/0">Keyword.t</a>) :: <a href="https://hexdocs.pm/elixir/Exception.html#t:t/0">Exception.t</a></pre>
-        
-      </div>
-    
   </div>
   <section class="docstring">
-    <p>Callback implementation for <a href="https://hexdocs.pm/elixir/Exception.html#c:exception/1"><code class="inline">Exception.exception/1</code></a>.</p>
-
+    
   </section>
 </div>
-<div class="detail" id="message/1">
+<div class="detail" id="get/1">
   
   <div class="detail-header">
-    <a href="#message/1" class="detail-link" title="Link to this function">
+    <a href="#get/1" class="detail-link" title="Link to this function">
       <i class="icon-link"></i>
     </a>
-    <span class="signature">message(exception)</span>
+    <span class="signature">get(list)</span>
     
-      <a href="https://github.com/kraigie/mixcord/blob/master/lib/mixcord/error/cache_error.ex#L9" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/mixcord/blob/master/lib/mixcord/cache/guild/guild_server.ex#L31" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -179,14 +166,34 @@ This should only occur when using the banged cache methods.</p>
     
       <div class="specs">
         
-          <pre>message(<a href="https://hexdocs.pm/elixir/Exception.html#t:t/0">Exception.t</a>) :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a></pre>
+          <pre>get([{:id, integer}]) :: <a href="Mixcord.Struct.Guild.html#t:t/0">Mixcord.Struct.Guild.t</a></pre>
+        
+          <pre>get([{:message, <a href="Mixcord.Struct.Message.html#t:t/0">Mixcord.Struct.Message.t</a>}]) :: <a href="Mixcord.Struct.Guild.html#t:t/0">Mixcord.Struct.Guild.t</a></pre>
         
       </div>
     
   </div>
   <section class="docstring">
-    <p>Callback implementation for <a href="https://hexdocs.pm/elixir/Exception.html#c:message/1"><code class="inline">Exception.message/1</code></a>.</p>
-
+    
+  </section>
+</div>
+<div class="detail" id="get!/1">
+  
+  <div class="detail-header">
+    <a href="#get!/1" class="detail-link" title="Link to this function">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">get!(list)</span>
+    
+      <a href="https://github.com/kraigie/mixcord/blob/master/lib/mixcord/cache/guild/guild_server.ex#L49" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+  </div>
+  <section class="docstring">
+    
   </section>
 </div>
 
