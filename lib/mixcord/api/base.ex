@@ -15,6 +15,8 @@ defmodule Mixcord.Api.Base do
     case body do
       "" ->
         ""
+      {:multipart, other} ->
+        body
       _ ->
         Poison.encode!(body)
     end
@@ -22,8 +24,7 @@ defmodule Mixcord.Api.Base do
 
   defp process_request_headers(headers) do
     user_agent = [{"User-Agent", "DiscordBot (https://github.com/kraigie/mixcord, #{@version})"} | headers]
-    content_type = [{"content-type", "application/json"} | user_agent]
-    auth = [{"Authorization", "Bot #{@token}"} | content_type]
+    auth = [{"Authorization", "Bot #{@token}"} | user_agent]
     auth
   end
 

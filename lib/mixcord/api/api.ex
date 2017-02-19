@@ -42,8 +42,6 @@ defmodule Mixcord.Api do
 
   """
 
-  # TODO: Upload file
-
   alias Mixcord.{Constants, Shard}
   alias Mixcord.Shard.ShardSupervisor
 
@@ -106,14 +104,23 @@ defmodule Mixcord.Api do
   Send a message to a channel.
 
   Send `content` to the channel identified with `channel_id`.
-  Content can be either a binary containing the message you want to send or a `Mixcord.Struct.Embed` map.
+  Content is a binary containing the message you want to send.
+  For embeds or file uploads, content should be a keyword list.
+
+  **Example**
+  ```Elixir
+  Mixcord.Api.create_message(1111111111111, [content: "my os rules", file: ~S"C:\i\use\windows"])
+  ```
 
   `tts` is an optional parameter that dictates whether the message should be played over text to speech.
 
   Returns `{:ok, Mixcord.Struct.Message}` if successful. `error` otherwise.
   """
-  @spec create_message(Integer.t, String.t | Map.t, boolean) :: error | {:ok, Mixcord.Struct.Message.t}
+  @spec create_message(Integer.t, String.t, boolean) :: error | {:ok, Mixcord.Struct.Message.t}
   def create_message(channel_id, content, tts \\ false)
+
+  # Sending regular messages
+  @spec create_message(Integer.t, String.t, boolean) :: error | {:ok, Mixcord.Struct.Message.t}
   def create_message(channel_id, content, tts) when is_binary(content) do
     case request(:post, Constants.channel_messages(channel_id), %{content: content, tts: tts}) do
       {:ok, body} ->
@@ -123,8 +130,21 @@ defmodule Mixcord.Api do
     end
   end
 
-  def create_message(channel_id, content, tts) when is_map(content) do
-    case request(:post, Constants.channel_messages(channel_id), %{embed: content, tts: tts}) do
+  # Embeds
+  @spec create_message(Integer.t, [content: String.t, embed: Mixcord.Struct.Embed], boolean) :: error | {:ok, Mixcord.Struct.Message.t}
+  def create_message(channel_id, [content: content, embed: embed], tts) when is_map(content) do
+    case request(:post, Constants.channel_messages(channel_id), %{content: content, embed: embed, tts: tts}) do
+      {:ok, body} ->
+        {:ok, Poison.decode!(body, as: %Mixcord.Struct.Message{})}
+      other ->
+        other
+    end
+  end
+
+  # Files
+  @spec create_message(Integer.t, [content: String.t, file: String.t], boolean) :: error | {:ok, Mixcord.Struct.Message.t}
+  def create_message(channel_id, [file_name: content, file: file], tts) do
+    case request_multipart(:post, Constants.channel_messages(channel_id), %{content: content, file: file}) do
       {:ok, body} ->
         {:ok, Poison.decode!(body, as: %Mixcord.Struct.Message{})}
       other ->
@@ -646,12 +666,26 @@ defmodule Mixcord.Api do
     request(:get, Constants.regions)
   end
 
+  # HTTPosion defaults to `""` for an empty body, so it's safe to do so here
   def request(method, route, body \\ "", options \\ []) do
     request = %{
       method: method,
       route: route,
       body: body,
-      options: options
+      options: options,
+      headers: [{"content-type", "application/json"}]
+    }
+    GenServer.call(Ratelimiter, {:queue, request, nil}, :infinity)
+  end
+
+  def request_multipart(method, route, body \\ "", options \\ []) do
+    request = %{
+      method: method,
+      route: route,
+      # Hello hackney documentation :^)
+      body: {:multipart, [{"content", body.content}, {:file, body.file}]},
+      options: options,
+      headers: [{"content-type", "multipart/form-data"}]
     }
     GenServer.call(Ratelimiter, {:queue, request, nil}, :infinity)
   end

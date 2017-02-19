@@ -26,7 +26,7 @@ defmodule Mixcord.Api.Ratelimiter do
       Task.start(fn -> wait_for_timeout(request, retry_time, original_from || from) end)
     else
       response = request.method
-        |> Base.request(request.route, request.body, [], request.options)
+        |> Base.request(request.route, request.body, request.headers, request.options)
         |> handle_headers(major_parameter(request.route))
         |> format_response
       GenServer.reply(original_from || from, response)
