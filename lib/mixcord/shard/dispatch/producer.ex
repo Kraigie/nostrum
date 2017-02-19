@@ -3,6 +3,7 @@ defmodule Mixcord.Shard.Dispatch.Producer do
 
   use GenStage
   alias Mixcord.Shard.Dispatch
+  require Logger
 
   def start_link(id) do
     GenStage.start_link(__MODULE__, id)
@@ -21,12 +22,16 @@ defmodule Mixcord.Shard.Dispatch.Producer do
   end
 
   def handle_cast({:notify, payload, state}, {queue, demand}) do
-    from_dispatch = Dispatch.handle(payload, state)
-    dispatch_events(:queue.in(build_event(payload.t, from_dispatch, state), queue), demand, [])
+    case Dispatch.handle(payload, state) do
+      {:ok, from_dispatch} ->
+        dispatch_events(:queue.in(build_event(payload.t, from_dispatch, state), queue), demand, [])
+      {:error, reason} ->
+        Logger.debug "Error handling dispatch, #{inspect reason}"
+    end
   end
 
-  def build_event(payload_name, event_info, state) do
-    {{payload_name, event_info}, state}
+  def build_event(payload_name, from_dispatch, ws_state) do
+    {payload_name, from_dispatch, ws_state}
   end
 
   def handle_demand(incoming_demand, {queue, demand}) do

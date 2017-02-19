@@ -21,6 +21,7 @@ defmodule Mixcord.Cache.Guild.GuildServer do
       {:ok, _pid} ->
         {:ok, guild}
       {:error, error} ->
+        # Causes start_link to return {:error, reason}
         {:stop, error}
     end
   end
@@ -55,99 +56,78 @@ defmodule Mixcord.Cache.Guild.GuildServer do
       |> Util.bangify_find(message, __MODULE__)
   end
 
-  @doc false
-  def unavailable?(pid) do
-    GenServer.call(pid, {:unavailable})
+  def call(id, request) do
+    with \
+      {:ok, pid} <- GuildRegister.lookup(id),
+      res <- GenServer.call(pid, request),
+    # res will be a tuple
+    do: {:ok, res}
   end
 
-  @doc false
-  def make_guild_available(pid, guild) do
-    GenServer.call(pid, {:replace, guild})
+  def create(%{unavailable: true} = guild) do
+    :ets.insert(:unavailable_guilds, {guild.id, guild})
   end
 
   @doc false
   def create(guild) do
-    new_guild = GuildRegister.create_guild_process!(guild.id, guild)
-    if not Map.has_key?(new_guild, :unavailable) or not new_guild.unavailable do
-      new_guild.members
-      |> Enum.each(fn member -> UserCache.create(member.user) end)
-      new_guild.channels
-      |> Enum.each(fn channel -> ChannelCache.create(channel) end)
-    end
-    new_guild
+    # This returns {:ok, guild} or {:error reason}
+    GuildRegister.create_guild_process(guild.id, guild)
   end
 
   @doc false
   def create(guild, shard_pid) do
-    create(guild)
     Shard.request_guild_members(shard_pid, guild.id)
+    create(guild)
   end
 
   @doc false
   def update(guild) do
-    pid = GuildRegister.lookup!(guild.id)
-    GenServer.call(pid, {:update, :guild, guild})
+    call(guild.id, {:update, :guild, guild})
   end
 
   @doc false
   def delete(guild_id) do
-    pid = GuildRegister.lookup!(guild_id)
-    GenServer.call(pid, {:delete, :guild})
+    call(guild_id, {:delete, :guild})
   end
 
   @doc false
   def member_add(guild_id, member) do
-    pid = GuildRegister.lookup!(guild_id)
-    GenServer.call(pid, {:create, :member, member})
     UserCache.create(member.user)
+    call(guild_id, {:create, :member, member})
   end
 
   @doc false
   def member_update(guild_id, user, _nick, roles) do
-    pid = GuildRegister.lookup!(guild_id)
-    GenServer.call(pid, {:update, :member, user, roles})
+    call(guild_id, {:update, :member, user, roles})
   end
 
   @doc false
   def member_remove(guild_id, user) do
-    pid = GuildRegister.lookup!(guild_id)
-    GenServer.call(pid, {:delete, :member, user})
+    call(guild_id, {:delete, :member, user})
   end
 
   @doc false
   def role_create(guild_id, role) do
-    pid = GuildRegister.lookup!(guild_id)
-    GenServer.call(pid, {:create, :role, role})
+    call(guild_id, {:create, :role, role})
   end
 
   @doc false
   def role_update(guild_id, role) do
-    pid = GuildRegister.lookup!(guild_id)
-    GenServer.call(pid, {:update, :role, role})
+    call(guild_id, {:update, :role, role})
   end
 
   @doc false
   def role_delete(guild_id, role_id) do
-    pid = GuildRegister.lookup!(guild_id)
-    GenServer.call(pid, {:delete, :role, role_id})
+    call(guild_id, {:delete, :role, role_id})
   end
 
   @doc false
   def emoji_update(guild_id, emojis) do
-    pid = GuildRegister.lookup!(guild_id)
-    GenServer.call(pid, {:update, :emoji, emojis})
-  end
-
-  def handle_call({:replace, guild}, _from, _state) do
-    {:reply, Guild.to_struct(guild), guild}
-  end
-
-  def handle_call({:unavailable}, _from, state) do
-    {:reply, state.unavailable, state}
+    call(guild_id, {:update, :emoji, emojis})
   end
 
   def handle_call({:get, :guild}, _from, state) do
-    {:reply, Guild.to_struct(state), state}
+    {:reply, {Guild.to_struct(state)}, state}
   end
 
   def handle_call({:update, :guild, guild}, _from, state) do
@@ -160,7 +140,7 @@ defmodule Mixcord.Cache.Guild.GuildServer do
 
   def handle_call({:create, :member, member}, _from, state) do
     new_members = [member | state.members]
-    {:reply, Member.to_struct(member), %{state | members: new_members}}
+    {:reply, {Member.to_struct(member)}, %{state | members: new_members}}
   end
 
   def handle_call({:update, :member, user, roles}, _from, state) do
@@ -187,12 +167,12 @@ defmodule Mixcord.Cache.Guild.GuildServer do
         :error -> %{}
       end
     members = List.delete_at(state.members, member_index)
-    {:reply, Member.to_struct(deleted_member), %{state | members: members}}
+    {:reply, {Member.to_struct(deleted_member)}, %{state | members: members}}
   end
 
   def handle_call({:create, :role, role}, _from, state) do
     new_roles = [role | state.roles]
-    {:reply, Role.to_struct(role), %{state | roles: new_roles}}
+    {:reply, {Role.to_struct(role)}, %{state | roles: new_roles}}
   end
 
   def handle_call({:update, :role, role}, _from, state) do
@@ -217,7 +197,7 @@ defmodule Mixcord.Cache.Guild.GuildServer do
         :error -> %{}
       end
     roles = List.delete_at(state.roles, role_index)
-    {:reply, Role.to_struct(old_role), %{state | roles: roles}}
+    {:reply, {Role.to_struct(old_role)}, %{state | roles: roles}}
   end
 
   def handle_call({:update, :emoji, emojis}, _from, state) do

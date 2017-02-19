@@ -61,6 +61,7 @@ defmodule Mixcord do
   def setup_ets_tables do
     :ets.new(:ratelimit_buckets, [:set, :public, :named_table])
     :ets.new(:gateway_url, [:set, :public, :named_table])
+    :ets.new(:unavailable_guilds, [:set, :public, :named_table])
   end
 
 end

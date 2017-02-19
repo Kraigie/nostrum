@@ -8,12 +8,8 @@ defmodule Dummy do
   def start do
     import Supervisor.Spec
 
-    children = [
-      worker(DummyConsumer, [], id: 1),
-      worker(DummyConsumer, [], id: 2),
-      worker(DummyConsumer, [], id: 3),
-      worker(DummyConsumer, [], id: 4)
-    ]
+    # List comprehension creates a consumer per cpu core
+    children = for i <- 1..System.schedulers_online, do: worker(DummyConsumer, [], id: i)
 
     Supervisor.start_link(children, strategy: :one_for_one)
   end
@@ -28,7 +24,8 @@ defmodule DummyConsumer do
     Consumer.start_link(__MODULE__)
   end
 
-  def handle_event(_event) do
+  def handle_event({event_name, {things}, ws_state}, state) do
+    IO.inspect event_name
     {:ok, %{}}
   end
 end

@@ -3,16 +3,27 @@ defmodule Mixcord.Shard.Dispatch do
 
   alias Mixcord.Cache.{ChannelCache, UserCache}
   alias Mixcord.Cache.Guild.GuildServer
-  alias Mixcord.Util
   require Logger
 
   @large_threshold 250
 
+  @defp """
+  Should return {:ok, {event_info}} or {:error, reason}.
+
+  Event info is what we want to send to the consumer, so in the case of a
+  message_create it would be {:ok, {message}
+
+  Cache methods are expected to return proper tuples, other methods should return
+  structs and let the wrap method put them into the proper format for the
+  producer to handle
+  """
   def handle(payload, state) do
     Logger.debug payload.t
-    payload = Util.safe_atom_map(payload)
-    handle_event({payload.t, payload.d}, state)
+    wrap(handle_event({payload.t, payload.d}, state))
   end
+
+  def wrap(res) when is_tuple(res), do: res
+  def wrap(res), do: {:ok, {res}}
 
   def handle_event({:CHANNEL_CREATE, p}, _state), do: ChannelCache.create(p)
 
@@ -29,12 +40,18 @@ defmodule Mixcord.Shard.Dispatch do
   def handle_event({:BUILD_BAN_REMOVE, p}, _state), do: p
 
   def handle_event({:GUILD_CREATE, p}, state) do
+    if not Map.has_key?(p, :unavailable) or not p.unavailable do
+      p.members
+      |> Enum.each(fn member -> UserCache.create(member.user) end)
+      p.channels
+      |> Enum.each(fn channel -> ChannelCache.create(channel) end)
+    end
+
     if p.member_count < @large_threshold do
       GuildServer.create(p)
     else
       GuildServer.create(p, state.shard_pid)
     end
-    p
   end
 
   def handle_event({:GUILD_UPDATE, p}, _state), do: GuildServer.update(p)

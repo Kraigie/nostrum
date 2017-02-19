@@ -10,7 +10,7 @@ defmodule Mixcord.Cache.Guild.GuildRegister do
       [{pid, _}] ->
         {:ok, pid}
       [] ->
-        {:error, :id_not_found}
+        {:error, :id_not_found_on_guild_lookup}
     end
   end
 
@@ -23,33 +23,18 @@ defmodule Mixcord.Cache.Guild.GuildRegister do
     end
   end
 
-  # TODO: Refactor this nasty code and potentially move
-  def create_guild_process!(id, guild) do
+  def create_guild_process(id, guild) do
     case Supervisor.start_child(GuildSupervisor, [id, guild]) do
-      {:error, {:already_started, pid}} ->
-        handle_guild_unavailability!(pid, guild)
-      {:error, {:already_registered, pid}} ->
-        handle_guild_unavailability!(pid, guild)
-      {:error, reason} ->
-        raise(Mixcord.Error.CacheError,
-          "Could not start a new guild process with id #{id}, reason: #{inspect reason}")
       {:ok, _pid} ->
-        Guild.to_struct(guild)
+        # Expected to return a tuple as all other methods do in the GuildServer module
+        # This must return a similar structure to GuildServer.call
+        {:ok, {Guild.to_struct(guild)}}
+      other ->
+        other
     end
   end
 
   def create_worker_spec(id, guild) do
     Spec.worker(GuildServer, [id, guild], id: id)
   end
-
-  def handle_guild_unavailability!(pid, guild) do
-    # When attempting to start a guild, if the guild is already created, check to see
-    # if it's unavailable, and if it is replace it with the new guild payload.
-    if GuildServer.unavailable?(pid) do
-      GuildServer.make_guild_available(pid, guild)
-    else
-      raise(Mixcord.Error.CacheError, "Attempted to create a child with an id that already exists")
-    end
-  end
-
 end

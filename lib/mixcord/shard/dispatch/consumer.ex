@@ -28,7 +28,7 @@ defmodule Mixcord.Shard.Dispatch.Consumer do
   `from` is the process information of the producer from which the demand was received.
   `state` is the internal state of your consumer.
   """
-  @callback handle_event({event, ws_state}, state) :: {:ok, Map.t}
+  @callback handle_event(event, state) :: {:ok, Map.t}
 
   @typedoc """
   Tuple describing the client of a call request.
@@ -48,37 +48,37 @@ defmodule Mixcord.Shard.Dispatch.Consumer do
   """
   @type state :: Map.t
 
-  @type channel_create :: {:CHANNEL_CREATE, Mixcord.Struct.Channel.t}
-  @type channel_delete :: {:CHANNEL_DELETE, Mixcord.Struct.Channel.t}
-  @type channel_update :: {:CHANNEL_UPDATE, old_channel :: Mixcord.Struct.Channel.t, new_channel :: Mixcord.Struct.Channel.t}
-  @type channel_pins_ack :: {:CHANNEL_PINS_ACK, Map.t}
-  @type channel_pins_update :: {:CHANNEL_PINS_UPDATE, Map.t}
-  @type guild_ban_add :: {:GUILD_BAN_ADD, Mixcord.Struct.User.t}
-  @type build_ban_remove :: {:GUILD_BAN_REMOVE, Mixcord.Struct.User.t}
-  @type guild_create :: {:GUILD_CREATE, new_guild :: Mixcord.Struct.Guild.t}
-  @type guild_update :: {:GUILD_CREATE, old_guild :: Mixcord.Struct.Guild.t, new_guild :: Mixcord.Struct.Guild.t}
-  @type guild_delete :: {:GUILD_DELETE, old_guild :: Mixcord.Struct.Guild.t}
-  @type guild_emojis_update :: {:GUILD_EMOJIS_UPDATE, old_emojis :: [Mixcord.Struct.Emoji],  new_emojis :: [Mixcord.Struct.Emoji]}
-  @type guild_integrations_update :: {:GUILD_INTEGERATIONS_UPDATE, Map.t}
-  @type guild_member_add :: {:GUILD_MEMBER_ADD, new_member :: Mixcord.Struct.Member.t}
-  @type guild_members_chunk :: {:GUILD_MEMBERS_CHUNK, Map.t}
-  @type guild_member_remove :: {:GUILD_MEMBER_REMOVE, old_member :: Mixcord.Struct.Member.t}
-  @type guild_member_update :: {:GUILD_MEMBER_UPDATE, old_member :: Mixcord.Struct.Member.t, new_member :: Mixcord.Struct.Member.t}
-  @type guild_role_create :: {:GUILD_ROLE_CREATE, new_role :: Mixcord.Struct.Role.t}
-  @type guild_role_delete :: {:GUILD_ROLE_DELETE, old_role :: Mixcord.Struct.Role.t}
-  @type guild_role_update :: {:GUILD_ROLE_UPDATE, old_role :: Mixcord.Struct.Role.t, new_role :: Mixcord.Struct.Role.t}
-  @type message_create :: {:MESSAGE_CREATE, message :: Mixcord.Struct.Message.t}
-  @type message_delete :: {:MESSAGE_DELETE, message :: Mixcord.Struct.Message.t}
-  @type message_delete_bulk :: {:MESSAGE_DELETE_BULK, updated_messages :: [Mixcord.Struct.Message.t]}
-  @type message_update :: {:MESSAGE_UPDATE, updated_message :: Mixcord.Struct.Message.t}
-  @type presence_update :: {:PRESENCE_UPDATE, Map.t}
-  @type ready :: {:READY, Map.t}
-  @type resumed :: {:RESUMED, Map.t}
-  @type typing_start :: {:TYPING_START, Map.t}
+  @type channel_create :: {:CHANNEL_CREATE, {Mixcord.Struct.Channel.t}, ws_state}
+  @type channel_delete :: {:CHANNEL_DELETE, {Mixcord.Struct.Channel.t}, ws_state}
+  @type channel_update :: {:CHANNEL_UPDATE, {old_channel :: Mixcord.Struct.Channel.t, new_channel :: Mixcord.Struct.Channel.t}, ws_state}
+  @type channel_pins_ack :: {:CHANNEL_PINS_ACK, {Map.t}, ws_state}
+  @type channel_pins_update :: {:CHANNEL_PINS_UPDATE, {Map.t}, ws_state}
+  @type guild_ban_add :: {:GUILD_BAN_ADD, {Mixcord.Struct.User.t}, ws_state}
+  @type build_ban_remove :: {:GUILD_BAN_REMOVE, {Mixcord.Struct.User.t}, ws_state}
+  @type guild_create :: {:GUILD_CREATE, {new_guild :: Mixcord.Struct.Guild.t}, ws_state}
+  @type guild_update :: {:GUILD_CREATE, {old_guild :: Mixcord.Struct.Guild.t, new_guild :: Mixcord.Struct.Guild.t}, ws_state}
+  @type guild_delete :: {:GUILD_DELETE, {old_guild :: Mixcord.Struct.Guild.t}, ws_state}
+  @type guild_emojis_update :: {:GUILD_EMOJIS_UPDATE, {old_emojis :: [Mixcord.Struct.Emoji.t],  new_emojis :: [Mixcord.Struct.Emoji.t]}, ws_state}
+  @type guild_integrations_update :: {:GUILD_INTEGERATIONS_UPDATE, {Map.t}, ws_state}
+  @type guild_member_add :: {:GUILD_MEMBER_ADD, {new_member :: Mixcord.Struct.Member.t}, ws_state}
+  @type guild_members_chunk :: {:GUILD_MEMBERS_CHUNK, {Map.t}, ws_state}
+  @type guild_member_remove :: {:GUILD_MEMBER_REMOVE, {old_member :: Mixcord.Struct.Member.t}, ws_state}
+  @type guild_member_update :: {:GUILD_MEMBER_UPDATE, {old_member :: Mixcord.Struct.Member.t, new_member :: Mixcord.Struct.Member.t}, ws_state}
+  @type guild_role_create :: {:GUILD_ROLE_CREATE, {new_role :: Mixcord.Struct.Role.t}, ws_state}
+  @type guild_role_delete :: {:GUILD_ROLE_DELETE, {old_role :: Mixcord.Struct.Role.t}, ws_state}
+  @type guild_role_update :: {:GUILD_ROLE_UPDATE, {old_role :: Mixcord.Struct.Role.t, new_role :: Mixcord.Struct.Role.t}, ws_state}
+  @type message_create :: {:MESSAGE_CREATE, {message :: Mixcord.Struct.Message.t}, ws_state}
+  @type message_delete :: {:MESSAGE_DELETE, {message :: Mixcord.Struct.Message.t}, ws_state}
+  @type message_delete_bulk :: {:MESSAGE_DELETE_BULK, {updated_messages :: [Mixcord.Struct.Message.t]}, ws_state}
+  @type message_update :: {:MESSAGE_UPDATE, {updated_message :: Mixcord.Struct.Message.t}, ws_state}
+  @type presence_update :: {:PRESENCE_UPDATE, {Map.t}, ws_state}
+  @type ready :: {:READY, {Map.t}, ws_state}
+  @type resumed :: {:RESUMED, {Map.t}, ws_state}
+  @type typing_start :: {:TYPING_START, {Map.t}, ws_state}
   @type user_settings_update :: no_return
-  @type user_update :: {:USER_UPDATE, old_user :: Mixcord.Struct.User.t, new_user :: Mixcord.Struct.User.t}
-  @type voice_state_update :: {:VOICE_STATE_UPDATE, Map.t}
-  @type voice_server_update :: {:VOICE_SERVER_UPDATE, Map.t}
+  @type user_update :: {:USER_UPDATE, {old_user :: Mixcord.Struct.User.t, new_user :: Mixcord.Struct.User.t}, ws_state}
+  @type voice_state_update :: {:VOICE_STATE_UPDATE, {Map.t}, ws_state}
+  @type voice_server_update :: {:VOICE_SERVER_UPDATE, {Map.t}, ws_state}
 
   @type event :: channel_create |
     channel_delete |
@@ -131,7 +131,6 @@ defmodule Mixcord.Shard.Dispatch.Consumer do
   end
 
   def init(state) do
-    # TODO: Attach to all producers
     producers = ProducerRegistry
     |> Registry.lookup(:pids)
     |> Enum.map(fn {pid, _value} -> pid end)

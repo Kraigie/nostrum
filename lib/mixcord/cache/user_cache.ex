@@ -63,31 +63,59 @@ defmodule Mixcord.Cache.UserCache do
       |> Util.bangify_find(id, __MODULE__)
   end
 
+  @doc false
+  def create(user) do
+    case GenServer.call(UserCache, {:create, user.id, user}) do
+      {res} ->
+        {:ok, {res}}
+      error ->
+        error
+    end
+  end
 
   @doc false
-  def create(user), do: GenServer.call(UserCache, {:create, user.id, user})
+  def update(user) do
+    case GenServer.call(UserCache, {:update, user.id, user}) do
+      {res} ->
+        {:ok, {res}}
+      error ->
+        error
+    end
+  end
 
   @doc false
-  def update(user), do: GenServer.call(UserCache, {:update, user.id, user})
-
-  @doc false
-  def delete(user), do: GenServer.call(UserCache, {:delete, user.id})
+  def delete(user) do
+    case GenServer.call(UserCache, {:delete, user.id}) do
+      {res} ->
+        {:ok, {res}}
+      error ->
+        error
+    end
+  end
 
   def handle_call({:create, id, user}, _from, state) do
     :ets.insert(:users, insert(id, user))
-    {:reply, User.to_struct(user), state}
+    {:reply, {User.to_struct(user)}, state}
   end
 
   def handle_call({:update, id, user}, _from, state) do
-    to_update = get(id: id)
-    :ets.insert(:users, insert(id, user))
-    {:reply, {User.to_struct(to_update), User.to_struct(user)}, state}
+    case :ets.lookup(:users, {:id, id}) do
+      [] ->
+        {:error, :user_not_found}
+      [lookup] ->
+        :ets.insert(:users, insert(id, user))
+        {:reply, {lookup_to_struct(lookup), User.to_struct(user)}, state}
+    end
   end
 
   def handle_call({:delete, id}, _from, state) do
-    to_delete = get!(id: id)
-    :ets.delete(:users, {:id, id})
-    {:reply, User.to_struct(to_delete), state}
+    case :ets.lookup(:users, {:id, id}) do
+      [] ->
+        {:error, :user_not_found}
+      [lookup] ->
+        :ets.delete(:users, {:id, id})
+        {:reply, {lookup_to_struct(lookup)}, state}
+    end
   end
 
   @doc false
@@ -101,6 +129,11 @@ defmodule Mixcord.Cache.UserCache do
 
   def remove_struct_key(%{__struct__: _} = map), do: Map.delete(map, :__struct__)
   def remove_struct_key(map), do: map
+
+  @doc false
+  def lookup_to_struct(map) do
+    map |> Tuple.to_list |> Enum.into(%{}) |> User.to_struct
+  end
 
   @doc false
   def lookup_as_struct(id) do

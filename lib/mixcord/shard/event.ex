@@ -8,6 +8,7 @@ defmodule Mixcord.Shard.Event do
 
   def handle(:dispatch, payload, state) do
     [{pid, _id}] = Registry.lookup(ProducerRegistry, state.shard_num)
+    payload = Util.safe_atom_map(payload)
     Producer.notify(pid, payload, state)
 
     state =
