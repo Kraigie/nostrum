@@ -142,7 +142,7 @@ defmodule Mixcord.Api do
 
   # Files
   def create_message(channel_id, [file_name: content, file: file], tts) do
-    case request_multipart(:post, Constants.channel_messages(channel_id), %{content: content, file: file}) do
+    case request_multipart(:post, Constants.channel_messages(channel_id), %{content: content, file: file, tts: tts}) do
       {:ok, body} ->
         {:ok, Poison.decode!(body, as: %Mixcord.Struct.Message{})}
       other ->
@@ -681,7 +681,7 @@ defmodule Mixcord.Api do
       method: method,
       route: route,
       # Hello hackney documentation :^)
-      body: {:multipart, [{"content", body.content}, {:file, body.file}]},
+      body: {:multipart, [{"content", body.content}, {:file, body.file}, {"tts", body.tts}]},
       options: options,
       headers: [{"content-type", "multipart/form-data"}]
     }

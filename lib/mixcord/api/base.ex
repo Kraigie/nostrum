@@ -15,7 +15,7 @@ defmodule Mixcord.Api.Base do
     case body do
       "" ->
         ""
-      {:multipart, other} ->
+      {:multipart, _} ->
         body
       _ ->
         Poison.encode!(body)

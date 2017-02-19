@@ -4,7 +4,6 @@ defmodule Mixcord.Cache.Guild.GuildServer do
   """
 
   use GenServer
-  alias Mixcord.Cache.{ChannelCache, UserCache}
   alias Mixcord.Cache.Guild.GuildRegister
   alias Mixcord.Struct.{Emoji, Guild, Member, Role}
   alias Mixcord.{Shard, Util}
@@ -92,7 +91,6 @@ defmodule Mixcord.Cache.Guild.GuildServer do
 
   @doc false
   def member_add(guild_id, member) do
-    UserCache.create(member.user)
     call(guild_id, {:create, :member, member})
   end
 

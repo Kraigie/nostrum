@@ -26,9 +26,8 @@ defmodule Mixcord.Error.ApiError do
     message: String.t
   }
 
-  # TODO: Don't use just message, use status_code too, will need to define something else
-  # in here, as well as return that from the exception methods
-  # See Here: https://github.com/edgurgel/httpoison/blob/108a298984a2b814f77f98de08d61e7ac46fdc65/lib/httpoison.ex#L40
+  # https://github.com/edgurgel/httpoison/blob/108a298984a2b814f77f98de08d61e7ac46fdc65/lib/httpoison.ex#L40
+  # https://hexdocs.pm/elixir/Kernel.html#defexception/1
   defexception [:message]
 
   def exception(status_code: status_code, message: message) when is_atom(message) do

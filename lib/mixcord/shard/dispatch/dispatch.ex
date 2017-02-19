@@ -7,7 +7,7 @@ defmodule Mixcord.Shard.Dispatch do
 
   @large_threshold 250
 
-  @defp """
+  _ = """
   Should return {:ok, {event_info}} or {:error, reason}.
 
   Event info is what we want to send to the consumer, so in the case of a
@@ -62,7 +62,10 @@ defmodule Mixcord.Shard.Dispatch do
 
   def handle_event({:GUILD_INTEGRATIONS_UPDATE, p}, _state), do: p
 
-  def handle_event({:GUILD_MEMBER_ADD, p}, _state), do: GuildServer.member_add(p.guild_id, p)
+  def handle_event({:GUILD_MEMBER_ADD, p}, _state) do
+    UserCache.create(p.user)
+    GuildServer.member_add(p.guild_id, p)
+  end
 
   def handle_event({:GUILD_MEMBERS_CHUNK, p}, _state) do
     p.members

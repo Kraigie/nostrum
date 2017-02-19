@@ -116,7 +116,6 @@ defmodule Mixcord.Util do
   @spec maybe_to_atom(atom | String.t) :: atom
   def maybe_to_atom(token) when is_atom(token), do: token
   def maybe_to_atom(token) do
-    # TODO: FINISH THE MAPS CRAIG
     String.to_existing_atom(token)
   rescue
     _ ->

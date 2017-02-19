@@ -16,7 +16,6 @@ defmodule Mixcord.Shard.Dispatch.Consumer do
   """
 
   use GenStage
-  alias Mixcord.Producer
 
   @doc """
   Callback used to handle events.
@@ -139,12 +138,14 @@ defmodule Mixcord.Shard.Dispatch.Consumer do
   end
 
   def handle_events(events, _from, %{mod: mod, state: their_state} = state) do
-    for event <- events do
-      # TODO: Put user state in our state
-      {:ok, _their_state_ret} = mod.handle_event(event, their_state)
-    end
-    {:noreply, [], state}
-    # {:noreply, [], %{state | state: their_state_ret}}
+    their_new_state = do_event(mod, events, their_state)
+    {:noreply, [], %{state | state: their_new_state}}
+  end
+
+  def do_event(_mod, [], state), do: state
+  def do_event(mod, [event | events], state) do
+    {:ok, their_state_ret} = mod.handle_event(event, state)
+    do_event(mod, events, their_state_ret)
   end
 
 end

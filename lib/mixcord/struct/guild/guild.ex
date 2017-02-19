@@ -6,7 +6,6 @@ defmodule Mixcord.Struct.Guild do
   alias Mixcord.Struct.{Member, Channel, Role, Emoji, UnavailableGuild}
   alias Mixcord.Util
 
-  # TODO: Typedocs for all :>
   @typedoc "The guild's id"
   @type id :: integer
 
