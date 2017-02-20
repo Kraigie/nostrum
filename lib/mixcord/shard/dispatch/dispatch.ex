@@ -92,6 +92,10 @@ defmodule Mixcord.Shard.Dispatch do
 
   def handle_event({:MESSAGE_UPDATE, p}, _state), do: p
 
+  def handle_event({:MESSAGE_REACTION_ADD, p}, _state), do: p
+
+  def handle_event({:MESSAGE_REACTION_REMOVE, p}, _state), do: p
+
   def handle_event({:PRESENCE_UPDATE, p}, _state), do: p
 
   def handle_event({:READY, p}, _state) do
@@ -114,6 +118,8 @@ defmodule Mixcord.Shard.Dispatch do
 
   def handle_event({:VOICE_SERVER_UPDATE, p}, _state), do: p
 
-  def handle_event({event, _p}, _state), do: Logger.warn "UNHANDLED GATEWAY DISPATCH EVENT TYPE: #{event}"
-
+  def handle_event({event, p}, _state) do
+    Logger.warn "UNHANDLED GATEWAY DISPATCH EVENT TYPE: #{event}, #{inspect p}"
+    p
+  end
 end

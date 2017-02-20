@@ -184,6 +184,8 @@ defmodule Mixcord.Cache.Guild.GuildServer do
       fn _ ->
         role
       end)
+      IO.inspect old_role
+      IO.inspect role
     {:reply, {Role.to_struct(old_role), Role.to_struct(role)}, %{state | roles: roles}}
   end
 

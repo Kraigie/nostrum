@@ -27,6 +27,7 @@ defmodule Mixcord.Shard.Dispatch.Producer do
         dispatch_events(:queue.in(build_event(payload.t, from_dispatch, state), queue), demand, [])
       {:error, reason} ->
         Logger.debug "Error handling dispatch, #{inspect reason}"
+        {:noreply, [{:error, reason}], {queue, demand}}
     end
   end
 

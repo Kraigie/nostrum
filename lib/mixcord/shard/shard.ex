@@ -21,6 +21,7 @@ defmodule Mixcord.Shard do
   end
 
   def init(state) do
+    # TODO: producer should be under a supervisor, currently crashes shard when it crashes
     {:ok, pid} = Producer.start_link(state.shard_num)
     {:once, %{state | producer_pid: pid}}
   end

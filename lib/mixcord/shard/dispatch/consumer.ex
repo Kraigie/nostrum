@@ -70,6 +70,8 @@ defmodule Mixcord.Shard.Dispatch.Consumer do
   @type message_delete :: {:MESSAGE_DELETE, {message :: Mixcord.Struct.Message.t}, ws_state}
   @type message_delete_bulk :: {:MESSAGE_DELETE_BULK, {updated_messages :: [Mixcord.Struct.Message.t]}, ws_state}
   @type message_update :: {:MESSAGE_UPDATE, {updated_message :: Mixcord.Struct.Message.t}, ws_state}
+  @type message_reaction_add :: {:MESSAGE_REACTION_ADD, Map.t}
+  @type message_reaction_remove :: {:MESSAGE_REACTION_REMOVE, Map.t}
   @type presence_update :: {:PRESENCE_UPDATE, {Map.t}, ws_state}
   @type ready :: {:READY, {Map.t}, ws_state}
   @type resumed :: {:RESUMED, {Map.t}, ws_state}
@@ -102,6 +104,8 @@ defmodule Mixcord.Shard.Dispatch.Consumer do
     message_delete |
     message_delete_bulk |
     message_update |
+    message_reaction_add |
+    message_reaction_remove |
     presence_update |
     ready |
     resumed |

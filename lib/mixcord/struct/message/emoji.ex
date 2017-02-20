@@ -9,6 +9,14 @@ defmodule Mixcord.Struct.Emoji do
   @typedoc "Name of the emoji"
   @type name :: String.t
 
+  @typedoc """
+  Custom emoji string to be used with API
+
+  Some API endpoints take an `emoji`.
+  The emoji should be structured as `"id:name"`.
+  """
+  @type custom_emoji :: String.t
+
   @type t :: %__MODULE__{
     id: id,
     name: name

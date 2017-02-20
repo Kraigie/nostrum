@@ -116,11 +116,12 @@ defmodule Mixcord.Api do
 
   Returns `{:ok, Mixcord.Struct.Message}` if successful. `error` otherwise.
   """
-  @spec create_message(Integer.t, String.t, boolean) :: error | {:ok, Mixcord.Struct.Message.t}
+  @spec create_message(Integer.t, String.t
+                      | [content: String.t, embed: Mixcord.Struct.Embed]
+                      | [content: String.t, file: String.t], boolean) :: error | {:ok, Mixcord.Struct.Message.t}
   def create_message(channel_id, content, tts \\ false)
 
   # Sending regular messages
-  @spec create_message(Integer.t, String.t | [content: String.t, embed: Mixcord.Struct.Embed] | [content: String.t, file: String.t], boolean) :: error | {:ok, Mixcord.Struct.Message.t}
   def create_message(channel_id, content, tts) when is_binary(content) do
     case request(:post, Constants.channel_messages(channel_id), %{content: content, tts: tts}) do
       {:ok, body} ->
@@ -220,6 +221,81 @@ defmodule Mixcord.Api do
   def delete_message!(channel_id, message_id) do
     delete_message(channel_id, message_id)
     |> bangify
+  end
+
+  @doc ~S"""
+  Create a rection for a message.
+
+  Creates a reaction using an `emoji` for the message specified by `message_id` and
+  `channel_id`. `emoji` can be a `Mixcord.Struct.Emoji.custom_emoji.t` or a
+  base 16 unicode emoji string.
+
+  **Example**
+  ```Elixir
+  Mixcord.Api.create_reaction(123123123123, 321321321321, "\xF0\x9F\x98\x81")
+  ```
+
+  Returns `{:ok}` if successful, `{:error, reason}` otherwise.
+  """
+  @spec create_reaction(Integer.t, Integer.t, String.t | Mixcord.Struct.Emoji.custom_emoji) :: error | {:ok}
+  def create_reaction(channel_id, message_id, emoji) do
+    request(:put, Constants.channel_reaction_me(channel_id, message_id, emoji))
+  end
+
+  @doc """
+  Deletes a rection made by the user.
+
+  Reaction to delete is specified by
+  `channel_id`, `message_id`, and `emoji`.
+
+  Returns `{:ok}` if successful, `{:error, reason}` otherwise.
+  """
+  @spec create_reaction(Integer.t, Integer.t, String.t | Mixcord.Struct.Emoji.custom_emoji) :: error | {:ok}
+  def delete_own_reaction(channel_id, message_id, emoji) do
+    request(:delete, Constants.channel_reaction_me(channel_id, message_id, emoji))
+  end
+
+  @doc """
+  Deletes a rection from a message.
+
+  Reaction to delete is specified by
+  `channel_id`, `message_id`, `emoji`, and `user_id`.
+
+  Returns `{:ok}` if successful, `{:error, reason}` otherwise.
+  """
+  @spec delete_reaction(Integer.t, Integer.t, String.t | Mixcord.Struct.Emoji.custom_emoji, Integer.t) :: error | {:ok}
+  def delete_reaction(channel_id, message_id, emoji, user_id) do
+    request(:delete, Constants.channel_reaction(channel_id, message_id, emoji, user_id))
+  end
+
+  @doc """
+  Gets all users who reacted with an emoji.
+
+  Retrieves a list of users who have reacted with an emoji.
+
+  Returns `{:ok, [Mixcord.Struct.User]}` if successful, `{:error, reason}` otherwise.
+  """
+  @spec get_reactions(Integer.t, Integer.t, String.t | Mixcord.Struct.Emoji.custom_emoji) :: error | {:ok, [Mixcord.Struct.User]}
+  def get_reactions(channel_id, message_id, emoji) do
+    case request(:get, Constants.channel_reactions_get(channel_id, message_id, emoji)) do
+      {:ok, body} ->
+        {:ok, Poison.decode!(body)}
+      other ->
+        other
+    end
+  end
+
+  @doc """
+  Deletes all reactions from a message.
+
+  Reaction to delete is specified by
+  `channel_id`, `message_id`, and `emoji`.
+
+  Returns `{:ok}` if successful, `{:error, reason}` otherwise.
+  """
+  @spec delete_all_reactions(Integer.t, Integer.t) :: error | {:ok}
+  def delete_all_reactions(channel_id, message_id) do
+    request(:delete, Constants.channel_reactions_delete(channel_id, message_id))
   end
 
   def get_channel(channel_id) do
