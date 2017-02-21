@@ -25,11 +25,17 @@ defmodule Mixcord.Shard.Dispatch do
   def wrap(res) when is_tuple(res), do: res
   def wrap(res), do: {:ok, {res}}
 
-  def handle_event({:CHANNEL_CREATE, p}, _state), do: ChannelCache.create(p)
+  def handle_event({:CHANNEL_CREATE, p}, _state) do
+    GuildServer.channel_create(p.guild_id, p)
+  end
 
-  def handle_event({:CHANNEL_DELETE, p}, _state), do: ChannelCache.delete(p)
+  def handle_event({:CHANNEL_DELETE, p}, _state) do
+    GuildServer.channel_delete(p.guild_id, p.id)
+  end
 
-  def handle_event({:CHANNEL_UPDATE, p}, _state), do: ChannelCache.update(p)
+  def handle_event({:CHANNEL_UPDATE, p}, _state) do
+    GuildServer.channel_update(p.guild_id, p)
+  end
 
   def handle_event({:CHANNEL_PINS_ACK, p}, _state), do: p
 
@@ -43,8 +49,6 @@ defmodule Mixcord.Shard.Dispatch do
     if not Map.has_key?(p, :unavailable) or not p.unavailable do
       p.members
       |> Enum.each(fn member -> UserCache.create(member.user) end)
-      p.channels
-      |> Enum.each(fn channel -> ChannelCache.create(channel) end)
     end
 
     if p.member_count < @large_threshold do

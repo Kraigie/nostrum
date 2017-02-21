@@ -5,7 +5,7 @@ defmodule Mixcord.Cache.Guild.GuildServer do
 
   use GenServer
   alias Mixcord.Cache.Guild.GuildRegister
-  alias Mixcord.Struct.{Emoji, Guild, Member, Role}
+  alias Mixcord.Struct.{Channel, Emoji, Guild, Member, Role}
   alias Mixcord.{Shard, Util}
   require Logger
 
@@ -105,6 +105,21 @@ defmodule Mixcord.Cache.Guild.GuildServer do
   end
 
   @doc false
+  def channel_create(guild_id, channel) do
+    call(guild_id, {:create, :channel, channel})
+  end
+
+  @doc false
+  def channel_update(guild_id, channel) do
+    call(guild_id, {:update, :channel, channel})
+  end
+
+  @doc false
+  def channel_delete(guild_id, channel_id) do
+    call(guild_id, {:delete, :channel, channel_id})
+  end
+
+  @doc false
   def role_create(guild_id, role) do
     call(guild_id, {:create, :role, role})
   end
@@ -166,6 +181,36 @@ defmodule Mixcord.Cache.Guild.GuildServer do
       end
     members = List.delete_at(state.members, member_index)
     {:reply, {Member.to_struct(deleted_member)}, %{state | members: members}}
+  end
+
+  def handle_call({:create, :channel, channel}, _from, state) do
+    new_channels = [channel | state.channels]
+    {:reply, {Channel.to_struct(channel)}, %{state | channels: new_channels}}
+  end
+
+  def handle_call({:update, :channel, channel}, _from, state) do
+    channel_index = Enum.find_index(state.channels, fn g_channel -> g_channel.id == channel.id end)
+    old_channel =
+      case Enum.fetch(state.channels, channel_index) do
+        {:ok, channel} -> channel
+        :error -> %{}
+      end
+    channels = List.update_at(state.channels, channel_index,
+      fn _ ->
+        channel
+      end)
+    {:reply, {Channel.to_struct(old_channel), Channel.to_struct(channel)}, %{state | channels: channels}}
+  end
+
+  def handle_call({:delete, :channel, channel_id}, _from, state) do
+    role_index = Enum.find_index(state.channels, fn g_channel -> g_channel.id == channel_id end)
+    old_channel =
+      case Enum.fetch(state.channels, role_index) do
+        {:ok, channel} -> channel
+        :error -> %{}
+      end
+    channels = List.delete_at(state.channels, role_index)
+    {:reply, {Channel.to_struct(old_channel)}, %{state | channels: channels}}
   end
 
   def handle_call({:create, :role, role}, _from, state) do
