@@ -176,7 +176,7 @@ defmodule Mixcord.Cache.Guild.GuildServer do
   def handle_call({:update, :role, role}, _from, state) do
     role_index = Enum.find_index(state.roles, fn g_role -> g_role.id == role.id end)
     old_role =
-      case Enum.fetch(state, role_index) do
+      case Enum.fetch(state.roles, role_index) do
         {:ok, role} -> role
         :error -> %{}
       end
@@ -184,15 +184,13 @@ defmodule Mixcord.Cache.Guild.GuildServer do
       fn _ ->
         role
       end)
-      IO.inspect old_role
-      IO.inspect role
     {:reply, {Role.to_struct(old_role), Role.to_struct(role)}, %{state | roles: roles}}
   end
 
   def handle_call({:delete, :role, role_id}, _from, state) do
     role_index = Enum.find_index(state.roles, fn g_role -> g_role.id == role_id end)
     old_role =
-      case Enum.fetch(state, role_index) do
+      case Enum.fetch(state.roles, role_index) do
         {:ok, role} -> role
         :error -> %{}
       end

@@ -4,7 +4,7 @@ defmodule Mixcord.Shard.Dispatch.ProducerSupervisor do
   use Supervisor
   alias Mixcord.Shard.Dispatch.Producer
 
-  def start_link(id) do
+  def start_link() do
     Supervisor.start_link(__MODULE__, [])
   end
 

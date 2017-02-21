@@ -49,12 +49,10 @@ defmodule Mixcord do
     ]
 
     if Application.get_env(:mixcord, :dev, nil) do
-      children = children ++ [supervisor(Dummy, [])]
+      Supervisor.start_link(children ++ [supervisor(Dummy, [])], strategy: :one_for_one)
+    else
+      Supervisor.start_link(children, strategy: :one_for_one)
     end
-
-    supervisor = Supervisor.start_link(children, strategy: :one_for_one)
-
-    supervisor
   end
 
   @doc false

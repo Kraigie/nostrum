@@ -4,7 +4,7 @@ defmodule Mixcord.Shard do
   @behaviour :websocket_client
 
   alias Mixcord.Shard.{Event, Payload}
-  alias Mixcord.Shard.Dispatch.{Producer, ProducerSupervisor}
+  alias Mixcord.Shard.Dispatch.ProducerSupervisor
   alias Mixcord.{Constants, Util}
   require Logger
 
@@ -20,7 +20,7 @@ defmodule Mixcord.Shard do
 
   def init(state) do
     with \
-      {:ok, supervisor} = ProducerSupervisor.start_link(state.shard_num),
+      {:ok, supervisor} = ProducerSupervisor.start_link(),
       {:ok, child_pid} = ProducerSupervisor.start_producer(supervisor, state.shard_num)
     do
       {:once, %{state | producer_pid: child_pid}}

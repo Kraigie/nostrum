@@ -24,8 +24,8 @@ defmodule DummyConsumer do
     Consumer.start_link(__MODULE__)
   end
 
-  def handle_event({event_name, {_things}, _ws_state}, _state) do
-    Logger.debug "Use would handle #{event_name} here"
+  def handle_event({event_name, _, _}, _) do
+    Logger.debug "User would handle #{event_name} here"
     {:ok, %{}}
   end
 end

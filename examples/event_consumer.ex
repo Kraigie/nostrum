@@ -11,6 +11,7 @@ end
 
 defmodule ExampleConsumer do
   use Mixcord.Shard.Dispatch.Consumer
+  alias Mixcord.Api
   require Logger
 
   def start_link do
@@ -18,12 +19,17 @@ defmodule ExampleConsumer do
   end
 
   def handle_event({:MESSAGE_CREATE, {msg}, ws_state}, state) do
-    def handle_message_create(msg) do
-      case msg.content do
-        <<"!" :: binary, "ping" :: binary>> ->
-          Api.create_message(msg.channel.id, "I copy and pasted this code")
-      end
+    case msg.content do
+      <<"!" :: binary, "ping" :: binary>> ->
+        Api.create_message(msg.channel.id, "I copy and pasted this code")
+      _ ->
+        :ignore
     end
+
+    {:ok, state}
+  end
+
+  def handle_event(_, state) do
     {:ok, state}
   end
 end
