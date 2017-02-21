@@ -18,7 +18,7 @@ defmodule Mixcord.Shard.ShardSupervisor do
   def init(options) do
     children = for i <- 0..options[:num_shards] - 1, do: create_worker(options[:token], i)
     with_registry = [supervisor(Registry, [:duplicate, ProducerRegistry])] ++ children
-    supervise(with_registry, strategy: :one_for_one)
+    supervise(with_registry, strategy: :one_for_one, max_restarts: 3, max_seconds: 60)
   end
 
   @doc false

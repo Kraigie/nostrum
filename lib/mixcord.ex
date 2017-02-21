@@ -48,11 +48,11 @@ defmodule Mixcord do
       supervisor(Mixcord.Shard.ShardSupervisor, [token, actual_num_shards])
     ]
 
-    supervisor = Supervisor.start_link(children, strategy: :one_for_one)
-
     if Application.get_env(:mixcord, :dev, nil) do
-      Dummy.start
+      children = children ++ [supervisor(Dummy, [])]
     end
+
+    supervisor = Supervisor.start_link(children, strategy: :one_for_one)
 
     supervisor
   end

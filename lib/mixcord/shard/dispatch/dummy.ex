@@ -5,7 +5,7 @@ _ = """
 defmodule Dummy do
   @moduledoc false
 
-  def start do
+  def start_link do
     import Supervisor.Spec
 
     # List comprehension creates a consumer per cpu core

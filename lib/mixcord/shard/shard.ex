@@ -4,7 +4,7 @@ defmodule Mixcord.Shard do
   @behaviour :websocket_client
 
   alias Mixcord.Shard.{Event, Payload}
-  alias Mixcord.Shard.Dispatch.Producer
+  alias Mixcord.Shard.Dispatch.{Producer, ProducerSupervisor}
   alias Mixcord.{Constants, Util}
   require Logger
 
@@ -13,17 +13,18 @@ defmodule Mixcord.Shard do
   def start_link(token, shard_num) do
     :crypto.start
     :ssl.start
-    # This makes the supervisor spawn a shard worker ever 5 seconds. This only occurs on ShardSupervisor start.
-    # If an individual shard fails, it will be restarted immediately.
     # TODO: Queue reconnects/check this better
     if Util.num_shards > 1, do: Process.sleep(@connect_wait)
     :websocket_client.start_link(Util.gateway, __MODULE__, Payload.state_map(token, shard_num, self()))
   end
 
   def init(state) do
-    # TODO: producer should be under a supervisor, currently crashes shard when it crashes
-    {:ok, pid} = Producer.start_link(state.shard_num)
-    {:once, %{state | producer_pid: pid}}
+    with \
+      {:ok, supervisor} = ProducerSupervisor.start_link(state.shard_num),
+      {:ok, child_pid} = ProducerSupervisor.start_producer(supervisor, state.shard_num)
+    do
+      {:once, %{state | producer_pid: child_pid}}
+    end
   end
 
   def onconnect(_ws_req, state) do
