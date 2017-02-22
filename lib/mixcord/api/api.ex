@@ -39,7 +39,6 @@ defmodule Mixcord.Api do
       Mixcord.Cache.User.get!(id: author_id)
     end
   ```
-
   """
 
   alias Mixcord.{Constants, Shard}
@@ -298,28 +297,92 @@ defmodule Mixcord.Api do
     request(:delete, Constants.channel_reactions_delete(channel_id, message_id))
   end
 
+  @doc """
+  Get a channel.
+
+  Gets a channel specified by `id`.
+  """
+  @spec get_channel(Integer.t) :: error | {:ok, Mixcord.Struct.Channel.t}
   def get_channel(channel_id) do
-    request(:get, Constants.channel(channel_id))
+    case request(:get, Constants.channel(channel_id)) do
+      {:ok, body} ->
+        {:ok, Poison.decode!(body)}
+      other ->
+        other
+    end
   end
 
+  @doc """
+  Get a channel.
+
+  Gets a channel specified by `id`.
+
+  Raises `Mixcord.Error.ApiError` if error occurs while making the rest call.
+  """
+  @spec get_channel!(Integer.t) :: no_return | Mixcord.Struct.Channel.t
   def get_channel!(channel_id) do
     get_channel(channel_id)
     |> bangify
   end
 
+  @doc """
+  Edit a channel.
+
+  Edits a channel with `options`
+
+  `options` is a kwl with the following optional keys:
+   * `name` - New name of the channel.
+   * `position` - Position of the channel.
+   * `topic` - Topic of the channel. *Text Channels only*
+   * `bitrate` - Bitrate of the voice channel. *Voice Channels only*
+   * `user_limit` - User limit of the channel. 0 for no limit. *Voice Channels only*
+  """
+  @spec edit_channel(Integer.t, [
+      name: String.t,
+      position: Integer.t,
+      topic: String.t,
+      bitrate: String.t,
+      user_limit: Integer.t
+    ]) :: error | {:ok, Mixcord.Struct.Channel.t}
   def edit_channel(channel_id, options) do
     request(:patch, Constants.channel(channel_id), options)
   end
 
+  @doc """
+  Edit a channel.
+
+  See `edit_channel/2` for parameters.
+
+  Raises `Mixcord.Error.ApiError` if error occurs while making the rest call.
+  """
+  @spec edit_channel!(Integer.t, [
+      name: String.t,
+      position: Integer.t,
+      topic: String.t,
+      bitrate: String.t,
+      user_limit: Integer.t
+    ]) :: error | {:ok, Mixcord.Struct.Channel.t}
   def edit_channel!(channel_id, options) do
     edit_channel(channel_id, options)
     |> bangify
   end
 
+  @doc """
+  Delete a channel.
+
+  Channel to delete is specified by `channel_id`.
+  """
+  @spec delete_channel(Integer.t) :: error | {:ok, Mixcord.Struct.Channel.t}
   def delete_channel(channel_id) do
     request(:delete, Constants.channel(channel_id))
   end
 
+  @doc """
+  Delete a channel.
+
+  Raises `Mixcord.Error.ApiError` if error occurs while making the rest call.
+  """
+  @spec delete_channel!(Integer.t) :: no_return | Mixcord.Struct.Channel.t
   def delete_channel!(channel_id) do
     delete_channel(channel_id)
     |> bangify
@@ -378,6 +441,14 @@ defmodule Mixcord.Api do
     end
   end
 
+  @doc """
+  Retrieve messages from a channel.
+
+  See `get_channel_message/3` for usage.
+
+  Raises `Mixcord.Error.ApiError` if error occurs while making the rest call.
+  """
+  @spec get_channel_messages!(Integer.t, limit, locator) :: no_return | [Mixcord.Struct.Message.t]
   def get_channel_messages!(channel_id, limit, locator) do
     get_channel_messages(channel_id, limit, locator)
     |> bangify
