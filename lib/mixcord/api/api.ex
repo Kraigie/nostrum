@@ -345,7 +345,12 @@ defmodule Mixcord.Api do
       user_limit: Integer.t
     ]) :: error | {:ok, Mixcord.Struct.Channel.t}
   def edit_channel(channel_id, options) do
-    request(:patch, Constants.channel(channel_id), options)
+    case request(:patch, Constants.channel(channel_id), options) do
+      {:ok, body} ->
+        {:ok, Poison.decode!(body)}
+      other ->
+        other
+    end
   end
 
   @doc """
@@ -374,7 +379,12 @@ defmodule Mixcord.Api do
   """
   @spec delete_channel(Integer.t) :: error | {:ok, Mixcord.Struct.Channel.t}
   def delete_channel(channel_id) do
-    request(:delete, Constants.channel(channel_id))
+    case request(:delete, Constants.channel(channel_id)) do
+      {:ok, body} ->
+        {:ok, Poison.decode!(body)}
+      other ->
+        other
+    end
   end
 
   @doc """
@@ -454,30 +464,88 @@ defmodule Mixcord.Api do
     |> bangify
   end
 
+  @doc """
+  Retrieves a message from a channel.
+
+  Message to retrieve is specified by `message_id` and `channel_id`.
+  """
+  @spec get_channel_message(Integer.t, Integer.t) :: error | {:ok, Mixcord.Struct.Message.t}
   def get_channel_message(channel_id, message_id) do
-    request(:get, Constants.channel_message(channel_id, message_id))
+    case request(:get, Constants.channel_message(channel_id, message_id)) do
+      {:ok, body} ->
+        {:ok, Poison.decode!(body)}
+      other ->
+        other
+    end
   end
 
+  @doc """
+  Retrieves a message from a channel.
+
+  Raises `Mixcord.Error.ApiError` if error occurs while making the rest call.
+  """
+  @spec get_channel_message!(Integer.t, Integer.t) :: no_return | Mixcord.Struct.Message.t
   def get_channel_message!(channel_id, message_id) do
     get_channel_message(channel_id, message_id)
     |> bangify
   end
 
-  def bulk_delete_messages(channel_id) do
-    request(:delete, Constants.channel_bulk_delete(channel_id))
+  @doc """
+  Deletes multiple messages from a channel.
+
+  `messages` is a list of `Mixcord.Struct.Message.id` that you wish to delete.
+  """
+  @spec bulk_delete_messages(Integer.t, [Mixcord.Struct.Message.id]) :: error | {:ok}
+  def bulk_delete_messages(channel_id, messages) do
+    request(:delete, Constants.channel_bulk_delete(channel_id), %{messages: messages})
   end
 
-  def bulk_delete_messages!(channel_id) do
-    bulk_delete_messages(channel_id)
+  @doc """
+  Deletes multiple messages from a channel.
+
+  See `bulk_delete_messages/2` for more info.
+
+  Raises `Mixcord.Error.ApiError` if error occurs while making the rest call.
+  """
+  @spec bulk_delete_messages(Integer.t, [Mixcord.Struct.Message.id]) :: no_return | {:ok}
+  def bulk_delete_messages!(channel_id, messages) do
+    bulk_delete_messages(channel_id, messages)
     |> bangify
   end
 
-  def edit_channel_permissions(channel_id, overwrite_id) do
-    request(:put, Constants.channel_permission(channel_id, overwrite_id))
+  @doc """
+  Edit the permission overwrites for a user or role.
+
+  Role or user to overwrite is specified by `channel_id` and `overwrite_id`.
+
+  `permission_info` is a kwl with the following required keys:
+   * `allow` - Bitwise value of allowed permissions.
+   * `deny` - Bitwise value of denied permissions.
+   * `type` - `member` if editing a user, `role` if editing a role.
+  """
+  @spec edit_channel_permissions(Integer.t, Integer.t, [
+      allow: Integer.t,
+      deny: Integer.t,
+      type: String.t
+    ]) :: error | {:ok}
+  def edit_channel_permissions(channel_id, overwrite_id, permission_info) do
+    request(:put, Constants.channel_permission(channel_id, overwrite_id), permission_info)
   end
 
-  def edit_channel_permissions!(channel_id, overwrite_id) do
-    edit_channel_permissions(channel_id, overwrite_id)
+  @doc """
+  Edit the permission overwrites for a user or role.
+
+  See `edit_channel_permissions/2` for more info.
+
+  Raises `Mixcord.Error.ApiError` if error occurs while making the rest call.
+  """
+  @spec edit_channel_permissions!(Integer.t, Integer.t, [
+      allow: Integer.t,
+      deny: Integer.t,
+      type: String.t
+    ]) :: no_return | {:ok}
+  def edit_channel_permissions!(channel_id, overwrite_id, permission_info) do
+    edit_channel_permissions(channel_id, overwrite_id, permission_info)
     |> bangify
   end
 

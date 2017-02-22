@@ -115,7 +115,6 @@ defmodule Mixcord.Shard.Dispatch.Consumer do
     voice_state_update |
     voice_server_update
 
-
   defmacro __using__(_) do
     quote location: :keep do
       @behaviour Mixcord.Shard.Dispatch.Consumer
@@ -133,6 +132,7 @@ defmodule Mixcord.Shard.Dispatch.Consumer do
     GenStage.start_link(__MODULE__, %{mod: mod, state: %{}})
   end
 
+  @doc false
   def init(state) do
     producers = ProducerRegistry
     |> Registry.lookup(:pids)
@@ -141,13 +141,14 @@ defmodule Mixcord.Shard.Dispatch.Consumer do
     {:consumer, state, subscribe_to: producers}
   end
 
+  @doc false
   def handle_events(events, _from, %{mod: mod, state: their_state} = state) do
     their_new_state = do_event(mod, events, their_state)
     {:noreply, [], %{state | state: their_new_state}}
   end
 
-  def do_event(_mod, [], state), do: state
-  def do_event(mod, [event | events], state) do
+  defp do_event(_mod, [], state), do: state
+  defp do_event(mod, [event | events], state) do
     {:ok, their_state_ret} = mod.handle_event(event, state)
     do_event(mod, events, their_state_ret)
   end
