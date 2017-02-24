@@ -1,32 +1,5 @@
 defmodule Mixcord do
-  @moduledoc """
-  How to use Mixcord.
-
-  ## API
-  Api functionality can be found in the `Mixcord.Api` module. Ratelimiting is handled
-  internally by the lib.
-
-  ## Structs
-  Mixcord uses structs when appropriate to pass around objects from Discord. In some
-  instances, such as the cache and dispatch event handles, Discord's objects will be
-  represented as maps. It will be made clear when this is the case using `@spec`
-  specifications.
-
-  In some cases, the struct modules will include helper functions for interacting
-  with the struct. See `Mixcord.Struct.Emoji.format_custom_emoji/2` for an example.
-
-  ## State/Cache
-  Mixcord provides a number of GenServers to maintain state.
-  These tables are updated based on events from the WS connection.
-
-  See any of the Cache modules for default methods provided by the lib; e.g.
-  `Guild` information can be found at `Mixcord.Cache.Guild`
-
-  ## Event Handling
-  Mixcord currently uses a GenStage implementation to handle dispatching events
-  from the WS connection. See `Mixcord.Shard.Dispatch.Consumer` for information
-  on how to consume these events.
-  """
+  @moduledoc false
 
   use Application
 

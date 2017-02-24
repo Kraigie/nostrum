@@ -4,6 +4,7 @@ defmodule Mixcord.Shard.Event do
   alias Mixcord.Shard.Payload
   alias Mixcord.Shard.Dispatch.Producer
   alias Mixcord.Util
+  
   require Logger
 
   def handle(:dispatch, payload, state) do

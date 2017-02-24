@@ -3,7 +3,9 @@ defmodule Mixcord.Struct.Message do
   Struct representing a Discord message.
   """
 
-  alias Mixcord.Struct.{Attachment, Role, User}
+  alias Mixcord.Struct.Guild.Role
+  alias Mixcord.Struct.Message.Attachment
+  alias Mixcord.Struct.User
   alias Mixcord.Util
 
   @typedoc "The id of the message"

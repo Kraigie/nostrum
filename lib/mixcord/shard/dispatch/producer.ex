@@ -2,7 +2,9 @@ defmodule Mixcord.Shard.Dispatch.Producer do
   @moduledoc false
 
   use GenStage
+
   alias Mixcord.Shard.Dispatch
+  
   require Logger
 
   def start_link(id) do

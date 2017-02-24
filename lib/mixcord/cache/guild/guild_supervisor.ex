@@ -2,6 +2,7 @@ defmodule Mixcord.Cache.Guild.GuildSupervisor do
   @moduledoc false
 
   use Supervisor
+  
   alias Mixcord.Cache.Guild.GuildServer
 
   def start_link do

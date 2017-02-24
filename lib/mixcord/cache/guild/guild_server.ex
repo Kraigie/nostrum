@@ -4,9 +4,12 @@ defmodule Mixcord.Cache.Guild.GuildServer do
   """
 
   use GenServer
+
   alias Mixcord.Cache.Guild.GuildRegister
-  alias Mixcord.Struct.{Channel, Emoji, Guild, Member, Role}
+  alias Mixcord.Struct.Guild.{Member, Role}
+  alias Mixcord.Struct.{Channel, Emoji, Guild}
   alias Mixcord.{Shard, Util}
+  
   require Logger
 
   @doc false

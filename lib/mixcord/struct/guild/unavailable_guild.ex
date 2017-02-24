@@ -1,4 +1,4 @@
-defmodule Mixcord.Struct.UnavailableGuild do
+defmodule Mixcord.Struct.Guild.UnavailableGuild do
   @moduledoc """
   Struct representing an unavailable Discord guild.
   """

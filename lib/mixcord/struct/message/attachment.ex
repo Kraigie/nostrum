@@ -1,4 +1,4 @@
-defmodule Mixcord.Struct.Attachment do
+defmodule Mixcord.Struct.Message.Attachment do
   @moduledoc """
   Struct representing a Discord message attachment.
   """

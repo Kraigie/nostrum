@@ -15,6 +15,7 @@ defmodule Mixcord.Cache.UserCache do
   """
 
   use GenServer
+  
   alias Mixcord.Struct.User
   alias Mixcord.Util
 

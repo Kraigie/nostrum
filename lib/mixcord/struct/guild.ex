@@ -3,7 +3,8 @@ defmodule Mixcord.Struct.Guild do
   Struct representing a Discord guild.
   """
 
-  alias Mixcord.Struct.{Member, Channel, Role, Emoji, UnavailableGuild}
+  alias Mixcord.Struct.{Channel, Emoji}
+  alias Mixcord.Struct.Guild.{Member, Role, UnavailableGuild}
   alias Mixcord.Util
 
   @typedoc "The guild's id"

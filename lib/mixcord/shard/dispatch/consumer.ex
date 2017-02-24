@@ -57,15 +57,15 @@ defmodule Mixcord.Shard.Dispatch.Consumer do
   @type guild_create :: {:GUILD_CREATE, {new_guild :: Mixcord.Struct.Guild.t}, ws_state}
   @type guild_update :: {:GUILD_CREATE, {old_guild :: Mixcord.Struct.Guild.t, new_guild :: Mixcord.Struct.Guild.t}, ws_state}
   @type guild_delete :: {:GUILD_DELETE, {old_guild :: Mixcord.Struct.Guild.t}, ws_state}
-  @type guild_emojis_update :: {:GUILD_EMOJIS_UPDATE, {old_emojis :: [Mixcord.Struct.Emoji.t],  new_emojis :: [Mixcord.Struct.Emoji.t]}, ws_state}
+  @type guild_emojis_update :: {:GUILD_EMOJIS_UPDATE, {old_emojis :: [Mixcord.Struct.Message.Emoji.t],  new_emojis :: [Mixcord.Struct.Message.Emoji.t]}, ws_state}
   @type guild_integrations_update :: {:GUILD_INTEGERATIONS_UPDATE, {Map.t}, ws_state}
-  @type guild_member_add :: {:GUILD_MEMBER_ADD, {new_member :: Mixcord.Struct.Member.t}, ws_state}
+  @type guild_member_add :: {:GUILD_MEMBER_ADD, {new_member :: Mixcord.Struct.Guild.Member.t}, ws_state}
   @type guild_members_chunk :: {:GUILD_MEMBERS_CHUNK, {Map.t}, ws_state}
-  @type guild_member_remove :: {:GUILD_MEMBER_REMOVE, {old_member :: Mixcord.Struct.Member.t}, ws_state}
-  @type guild_member_update :: {:GUILD_MEMBER_UPDATE, {old_member :: Mixcord.Struct.Member.t, new_member :: Mixcord.Struct.Member.t}, ws_state}
-  @type guild_role_create :: {:GUILD_ROLE_CREATE, {new_role :: Mixcord.Struct.Role.t}, ws_state}
-  @type guild_role_delete :: {:GUILD_ROLE_DELETE, {old_role :: Mixcord.Struct.Role.t}, ws_state}
-  @type guild_role_update :: {:GUILD_ROLE_UPDATE, {old_role :: Mixcord.Struct.Role.t, new_role :: Mixcord.Struct.Role.t}, ws_state}
+  @type guild_member_remove :: {:GUILD_MEMBER_REMOVE, {old_member :: Mixcord.Struct.Guild.Member.t}, ws_state}
+  @type guild_member_update :: {:GUILD_MEMBER_UPDATE, {old_member :: Mixcord.Struct.Guild.Member.t, new_member :: Mixcord.Struct.Guild.Member.t}, ws_state}
+  @type guild_role_create :: {:GUILD_ROLE_CREATE, {new_role :: Mixcord.Struct.Guild.Role.t}, ws_state}
+  @type guild_role_delete :: {:GUILD_ROLE_DELETE, {old_role :: Mixcord.Struct.Guild.Role.t}, ws_state}
+  @type guild_role_update :: {:GUILD_ROLE_UPDATE, {old_role :: Mixcord.Struct.Guild.Role.t, new_role :: Mixcord.Struct.Guild.Role.t}, ws_state}
   @type message_create :: {:MESSAGE_CREATE, {message :: Mixcord.Struct.Message.t}, ws_state}
   @type message_delete :: {:MESSAGE_DELETE, {message :: Mixcord.Struct.Message.t}, ws_state}
   @type message_delete_bulk :: {:MESSAGE_DELETE_BULK, {updated_messages :: [Mixcord.Struct.Message.t]}, ws_state}

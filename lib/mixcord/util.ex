@@ -5,6 +5,7 @@ defmodule Mixcord.Util do
 
   alias Mixcord.{Api, Constants}
   alias Mixcord.Cache.CacheSupervisor
+  
   require Logger
 
   @doc """

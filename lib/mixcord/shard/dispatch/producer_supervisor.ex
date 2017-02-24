@@ -2,9 +2,10 @@ defmodule Mixcord.Shard.Dispatch.ProducerSupervisor do
   @moduledoc false
 
   use Supervisor
+  
   alias Mixcord.Shard.Dispatch.Producer
 
-  def start_link() do
+  def start_link do
     Supervisor.start_link(__MODULE__, [])
   end
 

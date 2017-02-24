@@ -1,6 +1,6 @@
-defmodule Mixcord.Struct.Channel.TextChannel do
+defmodule Mixcord.Struct.Guild.VoiceChannel do
   @moduledoc """
-  Struct representing a Discord text channel.
+  Struct representing a Discord voice channel.
   """
 
   alias Mixcord.Struct.Overwrite
@@ -27,11 +27,11 @@ defmodule Mixcord.Struct.Channel.TextChannel do
   @typedoc "The list of overwrites"
   @type permission_overwrites :: list(Overwrite.t)
 
-  @typedoc "Current channel topic"
-  @type topic :: String.t
+  @typedoc "The bitrate of the voice channel"
+  @type bitrate :: integer
 
-  @typedoc "Id of the last message sent"
-  @type last_message_id :: integer
+  @typedoc "The user limit of the voice channel"
+  @type user_limit :: integer
 
   @type t :: %__MODULE__{
     id: id,
@@ -41,8 +41,8 @@ defmodule Mixcord.Struct.Channel.TextChannel do
     position: position,
     is_private: is_private,
     permission_overwrites: permission_overwrites,
-    topic: topic,
-    last_message_id: last_message_id
+    bitrate: bitrate,
+    user_limit: user_limit
   }
 
   @derive [Poison.Encoder]
@@ -54,8 +54,8 @@ defmodule Mixcord.Struct.Channel.TextChannel do
     :position,
     :is_private,
     :permission_overwrites,
-    :topic,
-    :last_message_id
+    :bitrate,
+    :user_limit
   ]
 
   @doc false

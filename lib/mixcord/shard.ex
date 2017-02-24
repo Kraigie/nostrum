@@ -6,6 +6,7 @@ defmodule Mixcord.Shard do
   alias Mixcord.Shard.{Event, Payload}
   alias Mixcord.Shard.Dispatch.ProducerSupervisor
   alias Mixcord.{Constants, Util}
+  
   require Logger
 
   @connect_wait 5500

@@ -5,6 +5,7 @@ defmodule Mixcord.Api.Base do
   @token Application.get_env(:mixcord, :token)
 
   use HTTPoison.Base
+  
   alias Mixcord.Constants
 
   defp process_url(url) do

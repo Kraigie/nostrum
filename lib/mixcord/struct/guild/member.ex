@@ -1,4 +1,4 @@
-defmodule Mixcord.Struct.Member do
+defmodule Mixcord.Struct.Guild.Member do
   @moduledoc """
   Struct representing a Discord guild member.
 
