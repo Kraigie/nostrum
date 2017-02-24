@@ -3,7 +3,7 @@ defmodule Mixcord.Struct.Channel do
   Functions to help work with different channel types.
   """
 
-  alias Mixcord.Struct.{DMChannel, TextChannel, VoiceChannel}
+  alias Mixcord.Struct.Channel.{DMChannel, TextChannel, VoiceChannel}
 
   @type t :: DMChannel.t | TestChannel.t | VoiceChannel.t
 

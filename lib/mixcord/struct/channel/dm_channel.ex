@@ -1,4 +1,4 @@
-defmodule Mixcord.Struct.DMChannel do
+defmodule Mixcord.Struct.Channel.DMChannel do
   @moduledoc """
   Struct representing a Discord direct message channel.
   """

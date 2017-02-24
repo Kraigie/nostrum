@@ -6,7 +6,7 @@ defmodule Mixcord.Cache.ChannelCache do
   use GenServer
   alias Mixcord.Util
 
-  @type channel :: Mixcord.Struct.TextChannel.t | Mixcord.Struct.VoiceChannel.t
+  @type channel :: Mixcord.Struct.Channel.TextChannel.t | Mixcord.Struct.Channel.VoiceChannel.t
 
   @doc false
   def start_link do
