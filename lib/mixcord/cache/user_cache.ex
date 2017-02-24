@@ -25,7 +25,6 @@ defmodule Mixcord.Cache.UserCache do
 
   @doc false
   def init(state) do
-    :ets.new(:users, [:set, :public, :named_table])
     {:ok, state}
   end
 
