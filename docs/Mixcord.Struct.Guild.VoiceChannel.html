@@ -5,10 +5,10 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="ExDoc v0.14.5">
-    <title>Mixcord.Struct.Channel.TextChannel – Elixir v0.1.0</title>
+    <title>Mixcord.Struct.Guild.VoiceChannel – Elixir v0.1.0</title>
     <link rel="stylesheet" href="dist/app-a07cea761b.css" />
     
-    <script src="dist/sidebar_items-80967f34ca.js"></script>
+    <script src="dist/sidebar_items-2ec3f39228.js"></script>
   </head>
   <body data-type="modules">
     <script>if(localStorage.getItem('night-mode')) document.body.className += ' night-mode';</script>
@@ -20,7 +20,7 @@
 <section class="sidebar">
 
   
-  <a href="api-reference.html" class="sidebar-projectLink">
+  <a href="intro.html" class="sidebar-projectLink">
     <div class="sidebar-projectDetails">
       <h1 class="sidebar-projectName">
         Elixir
@@ -61,10 +61,10 @@
 
       <h1>
         <small class="visible-xs">Elixir v0.1.0</small>
-        Mixcord.Struct.Channel.TextChannel
+        Mixcord.Struct.Guild.VoiceChannel
         
         
-          <a href="https://github.com/kraigie/mixcord/blob/master/lib/mixcord/struct/channel/text_channel.ex#L1" title="View Source" class="view-source" rel="help">
+          <a href="https://github.com/kraigie/mixcord/blob/master/lib/mixcord/struct/guild/voice_channel.ex#L1" title="View Source" class="view-source" rel="help">
             <i class="icon-code"></i>
           </a>
         
@@ -72,7 +72,7 @@
 
       
         <section id="moduledoc">
-          <p>Struct representing a Discord text channel.</p>
+          <p>Struct representing a Discord voice channel.</p>
 
         </section>
       
@@ -91,6 +91,15 @@
       <a href="#types">Types</a>
     </h2>
     <div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:bitrate/0">bitrate()</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>The bitrate of the voice channel</p>
+</div>
+  
+</div>
+<div class="summary-row">
   <div class="summary-signature">
     <a href="#t:guild_id/0">guild_id()</a>
   </div>
@@ -114,15 +123,6 @@
   </div>
   
     <div class="summary-synopsis"><p>Whether the channel is private</p>
-</div>
-  
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#t:last_message_id/0">last_message_id()</a>
-  </div>
-  
-    <div class="summary-synopsis"><p>Id of the last message sent</p>
 </div>
   
 </div>
@@ -161,19 +161,19 @@
 </div>
 <div class="summary-row">
   <div class="summary-signature">
-    <a href="#t:topic/0">topic()</a>
+    <a href="#t:type/0">type()</a>
   </div>
   
-    <div class="summary-synopsis"><p>Current channel topic</p>
+    <div class="summary-synopsis"><p>The type of channel: ‘Text’ or ‘Voice’</p>
 </div>
   
 </div>
 <div class="summary-row">
   <div class="summary-signature">
-    <a href="#t:type/0">type()</a>
+    <a href="#t:user_limit/0">user_limit()</a>
   </div>
   
-    <div class="summary-synopsis"><p>The type of channel: ‘Text’ or ‘Voice’</p>
+    <div class="summary-synopsis"><p>The user limit of the voice channel</p>
 </div>
   
 </div>
@@ -199,7 +199,33 @@
             Types
           </h1>
           <div class="types-list">
-            <div class="detail" id="t:guild_id/0">
+            <div class="detail" id="t:bitrate/0">
+  
+  <div class="detail-header">
+    <a href="#t:bitrate/0" class="detail-link" title="Link to this type">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">bitrate()</span>
+    
+      <a href="https://github.com/kraigie/mixcord/blob/master/lib/mixcord/struct/guild/voice_channel.ex#L31" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>bitrate() :: integer</pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>The bitrate of the voice channel</p>
+
+  </section>
+</div>
+<div class="detail" id="t:guild_id/0">
   
   <div class="detail-header">
     <a href="#t:guild_id/0" class="detail-link" title="Link to this type">
@@ -207,7 +233,7 @@
     </a>
     <span class="signature">guild_id()</span>
     
-      <a href="https://github.com/kraigie/mixcord/blob/master/lib/mixcord/struct/channel/text_channel.ex#L13" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/mixcord/blob/master/lib/mixcord/struct/guild/voice_channel.ex#L13" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -233,7 +259,7 @@
     </a>
     <span class="signature">id()</span>
     
-      <a href="https://github.com/kraigie/mixcord/blob/master/lib/mixcord/struct/channel/text_channel.ex#L10" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/mixcord/blob/master/lib/mixcord/struct/guild/voice_channel.ex#L10" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -259,7 +285,7 @@
     </a>
     <span class="signature">is_private()</span>
     
-      <a href="https://github.com/kraigie/mixcord/blob/master/lib/mixcord/struct/channel/text_channel.ex#L25" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/mixcord/blob/master/lib/mixcord/struct/guild/voice_channel.ex#L25" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -277,32 +303,6 @@
 
   </section>
 </div>
-<div class="detail" id="t:last_message_id/0">
-  
-  <div class="detail-header">
-    <a href="#t:last_message_id/0" class="detail-link" title="Link to this type">
-      <i class="icon-link"></i>
-    </a>
-    <span class="signature">last_message_id()</span>
-    
-      <a href="https://github.com/kraigie/mixcord/blob/master/lib/mixcord/struct/channel/text_channel.ex#L34" class="view-source" rel="help" title="View Source">
-       <i class="icon-code"></i>
-     </a>
-    
-    
-    
-      <div class="specs">
-        
-          <pre>last_message_id() :: integer</pre>
-        
-      </div>
-    
-  </div>
-  <section class="docstring">
-    <p>Id of the last message sent</p>
-
-  </section>
-</div>
 <div class="detail" id="t:name/0">
   
   <div class="detail-header">
@@ -311,7 +311,7 @@
     </a>
     <span class="signature">name()</span>
     
-      <a href="https://github.com/kraigie/mixcord/blob/master/lib/mixcord/struct/channel/text_channel.ex#L16" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/mixcord/blob/master/lib/mixcord/struct/guild/voice_channel.ex#L16" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -337,7 +337,7 @@
     </a>
     <span class="signature">permission_overwrites()</span>
     
-      <a href="https://github.com/kraigie/mixcord/blob/master/lib/mixcord/struct/channel/text_channel.ex#L28" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/mixcord/blob/master/lib/mixcord/struct/guild/voice_channel.ex#L28" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -363,7 +363,7 @@
     </a>
     <span class="signature">position()</span>
     
-      <a href="https://github.com/kraigie/mixcord/blob/master/lib/mixcord/struct/channel/text_channel.ex#L22" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/mixcord/blob/master/lib/mixcord/struct/guild/voice_channel.ex#L22" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -389,7 +389,7 @@
     </a>
     <span class="signature">t()</span>
     
-      <a href="https://github.com/kraigie/mixcord/blob/master/lib/mixcord/struct/channel/text_channel.ex#L36" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/mixcord/blob/master/lib/mixcord/struct/guild/voice_channel.ex#L36" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -397,39 +397,13 @@
     
       <div class="specs">
         
-          <pre>t() :: %Mixcord.Struct.Channel.TextChannel{guild_id: <a href="#t:guild_id/0">guild_id</a>, id: <a href="#t:id/0">id</a>, is_private: <a href="#t:is_private/0">is_private</a>, last_message_id: <a href="#t:last_message_id/0">last_message_id</a>, name: <a href="#t:name/0">name</a>, permission_overwrites: <a href="#t:permission_overwrites/0">permission_overwrites</a>, position: <a href="#t:position/0">position</a>, topic: <a href="#t:topic/0">topic</a>, type: <a href="#t:type/0">type</a>}</pre>
+          <pre>t() :: %Mixcord.Struct.Guild.VoiceChannel{bitrate: <a href="#t:bitrate/0">bitrate</a>, guild_id: <a href="#t:guild_id/0">guild_id</a>, id: <a href="#t:id/0">id</a>, is_private: <a href="#t:is_private/0">is_private</a>, name: <a href="#t:name/0">name</a>, permission_overwrites: <a href="#t:permission_overwrites/0">permission_overwrites</a>, position: <a href="#t:position/0">position</a>, type: <a href="#t:type/0">type</a>, user_limit: <a href="#t:user_limit/0">user_limit</a>}</pre>
         
       </div>
     
   </div>
   <section class="docstring">
     
-  </section>
-</div>
-<div class="detail" id="t:topic/0">
-  
-  <div class="detail-header">
-    <a href="#t:topic/0" class="detail-link" title="Link to this type">
-      <i class="icon-link"></i>
-    </a>
-    <span class="signature">topic()</span>
-    
-      <a href="https://github.com/kraigie/mixcord/blob/master/lib/mixcord/struct/channel/text_channel.ex#L31" class="view-source" rel="help" title="View Source">
-       <i class="icon-code"></i>
-     </a>
-    
-    
-    
-      <div class="specs">
-        
-          <pre>topic() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a></pre>
-        
-      </div>
-    
-  </div>
-  <section class="docstring">
-    <p>Current channel topic</p>
-
   </section>
 </div>
 <div class="detail" id="t:type/0">
@@ -440,7 +414,7 @@
     </a>
     <span class="signature">type()</span>
     
-      <a href="https://github.com/kraigie/mixcord/blob/master/lib/mixcord/struct/channel/text_channel.ex#L19" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/mixcord/blob/master/lib/mixcord/struct/guild/voice_channel.ex#L19" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -455,6 +429,32 @@
   </div>
   <section class="docstring">
     <p>The type of channel: ‘Text’ or ‘Voice’</p>
+
+  </section>
+</div>
+<div class="detail" id="t:user_limit/0">
+  
+  <div class="detail-header">
+    <a href="#t:user_limit/0" class="detail-link" title="Link to this type">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">user_limit()</span>
+    
+      <a href="https://github.com/kraigie/mixcord/blob/master/lib/mixcord/struct/guild/voice_channel.ex#L34" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>user_limit() :: integer</pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>The user limit of the voice channel</p>
 
   </section>
 </div>

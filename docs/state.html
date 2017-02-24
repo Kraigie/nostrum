@@ -1,26 +1,26 @@
-    <!DOCTYPE html>
+<!DOCTYPE html>
 <html>
   <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="ExDoc v0.14.5">
-    <title>Mixcord – Elixir v0.1.0</title>
+    <title>State – Elixir v0.1.0</title>
     <link rel="stylesheet" href="dist/app-a07cea761b.css" />
     
-    <script src="dist/sidebar_items-80967f34ca.js"></script>
+    <script src="dist/sidebar_items-2ec3f39228.js"></script>
   </head>
-  <body data-type="modules">
+  <body data-type="extras">
     <script>if(localStorage.getItem('night-mode')) document.body.className += ' night-mode';</script>
 
-    <div class="main">
+<div class="main">
 <button class="sidebar-toggle">
   <i class="icon-menu"></i>
 </button>
 <section class="sidebar">
 
   
-  <a href="api-reference.html" class="sidebar-projectLink">
+  <a href="intro.html" class="sidebar-projectLink">
     <div class="sidebar-projectDetails">
       <h1 class="sidebar-projectName">
         Elixir
@@ -59,29 +59,13 @@
     <div id="content" class="content-inner">
 
 
-      <h1>
-        <small class="visible-xs">Elixir v0.1.0</small>
-        Mixcord
-        
-        
-          <a href="https://github.com/kraigie/mixcord/blob/master/lib/mixcord.ex#L1" title="View Source" class="view-source" rel="help">
-            <i class="icon-code"></i>
-          </a>
-        
-      </h1>
-
-      
-        <section id="moduledoc">
-          <p>How to use Mixcord.</p>
-<h2 id="module-api" class="section-heading">
-  <a href="#module-api" class="hover-link"><i class="icon-link"></i></a>
-  API
-</h2>
-
-<p>Api functionality can be found in the <a href="Mixcord.Api.html"><code class="inline">Mixcord.Api</code></a> module. Ratelimiting is handled
-internally by the lib.</p>
-<h2 id="module-structs" class="section-heading">
-  <a href="#module-structs" class="hover-link"><i class="icon-link"></i></a>
+<h1>State</h1>
+<p>Mixcord provides a number of GenServers to maintain state.
+These tables are updated based on events from the WS connection.</p>
+<p>See any of the Cache modules for default methods provided by the lib; e.g.
+<code class="inline">Guild</code> information can be found at <code class="inline">Mixcord.Cache.Guild</code></p>
+<h2 id="structs" class="section-heading">
+  <a href="#structs" class="hover-link"><i class="icon-link"></i></a>
   Structs
 </h2>
 
@@ -91,37 +75,8 @@ represented as maps. It will be made clear when this is the case using <code cla
 specifications.</p>
 <p>In some cases, the struct modules will include helper functions for interacting
 with the struct. See <a href="Mixcord.Struct.Emoji.html#format_custom_emoji/2"><code class="inline">Mixcord.Struct.Emoji.format_custom_emoji/2</code></a> for an example.</p>
-<h2 id="module-state-cache" class="section-heading">
-  <a href="#module-state-cache" class="hover-link"><i class="icon-link"></i></a>
-  State/Cache
-</h2>
 
-<p>Mixcord provides a number of GenServers to maintain state.
-These tables are updated based on events from the WS connection.</p>
-<p>See any of the Cache modules for default methods provided by the lib; e.g.
-<code class="inline">Guild</code> information can be found at <code class="inline">Mixcord.Cache.Guild</code></p>
-<h2 id="module-event-handling" class="section-heading">
-  <a href="#module-event-handling" class="hover-link"><i class="icon-link"></i></a>
-  Event Handling
-</h2>
-
-<p>Mixcord currently uses a GenStage implementation to handle dispatching events
-from the WS connection. See <a href="Mixcord.Shard.Dispatch.Consumer.html"><code class="inline">Mixcord.Shard.Dispatch.Consumer</code></a> for information
-on how to consume these events.</p>
-
-        </section>
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-          <footer class="footer">
+      <footer class="footer">
         <p>
           <span class="line">
             Built using

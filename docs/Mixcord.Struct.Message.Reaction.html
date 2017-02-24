@@ -5,7 +5,7 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="ExDoc v0.14.5">
-    <title>Mixcord.Cache.UserCache – Elixir v0.1.0</title>
+    <title>Mixcord.Struct.Message.Reaction – Elixir v0.1.0</title>
     <link rel="stylesheet" href="dist/app-a07cea761b.css" />
     
     <script src="dist/sidebar_items-2ec3f39228.js"></script>
@@ -61,10 +61,10 @@
 
       <h1>
         <small class="visible-xs">Elixir v0.1.0</small>
-        Mixcord.Cache.UserCache
+        Mixcord.Struct.Message.Reaction
         
         
-          <a href="https://github.com/kraigie/mixcord/blob/master/lib/mixcord/cache/user_cache.ex#L1" title="View Source" class="view-source" rel="help">
+          <a href="https://github.com/kraigie/mixcord/blob/master/lib/mixcord/struct/message/reaction.ex#L1" title="View Source" class="view-source" rel="help">
             <i class="icon-code"></i>
           </a>
         
@@ -72,14 +72,7 @@
 
       
         <section id="moduledoc">
-          <p>Cache for users.</p>
-<p>The ETS table name associated with the User Cache is <code class="inline">:users</code>. Besides the
-methods provided below you can call any other ETS methods on the table.</p>
-<p><strong>Example</strong></p>
-<pre><code class="elixir">info = :ets.info(:users)
-[..., heir: :none, name: :users, size: 1, ...]
-size = info[:size]
-1</code></pre>
+          <p>Struct representing a Discord message reaction.</p>
 
         </section>
       
@@ -93,39 +86,48 @@ size = info[:size]
             Summary
           </h1>
           
-
-          
-  <div class="summary-functions summary">
+  <div class="summary-types summary">
     <h2>
-      <a href="#functions">Functions</a>
+      <a href="#types">Types</a>
     </h2>
     <div class="summary-row">
   <div class="summary-signature">
-    <a href="#get/1">get(list)</a>
+    <a href="#t:count/0">count()</a>
   </div>
   
-    <div class="summary-synopsis"><p>Retrieves a user from the cache</p>
+    <div class="summary-synopsis"><p>Times this emoji has been used to react</p>
 </div>
   
 </div>
 <div class="summary-row">
   <div class="summary-signature">
-    <a href="#get!/1">get!(list)</a>
+    <a href="#t:emoji/0">emoji()</a>
   </div>
   
-    <div class="summary-synopsis"><p>Retrieves a user from the cache</p>
+    <div class="summary-synopsis"><p>Emoji information</p>
 </div>
   
 </div>
 <div class="summary-row">
   <div class="summary-signature">
-    <a href="#remove_struct_key/1">remove_struct_key(map)</a>
+    <a href="#t:me/0">me()</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>Whether the current user is the one who reacted</p>
+</div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:t/0">t()</a>
   </div>
   
 </div>
 
   </div>
 
+
+          
 
           
 
@@ -135,24 +137,23 @@ size = info[:size]
       
 
       
-
-      
-        <section id="functions" class="details-list">
+        <section id="types" class="details-list">
           <h1 class="section-heading">
-            <a class="hover-link" href="#functions">
+            <a class="hover-link" href="#types">
               <i class="icon-link"></i>
             </a>
-            Functions
+            Types
           </h1>
-          <div class="detail" id="get/1">
+          <div class="types-list">
+            <div class="detail" id="t:count/0">
   
   <div class="detail-header">
-    <a href="#get/1" class="detail-link" title="Link to this function">
+    <a href="#t:count/0" class="detail-link" title="Link to this type">
       <i class="icon-link"></i>
     </a>
-    <span class="signature">get(list)</span>
+    <span class="signature">count()</span>
     
-      <a href="https://github.com/kraigie/mixcord/blob/master/lib/mixcord/cache/user_cache.ex#L50" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/mixcord/blob/master/lib/mixcord/struct/message/reaction.ex#L7" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -160,36 +161,25 @@ size = info[:size]
     
       <div class="specs">
         
-          <pre>get([{:id, integer}]) ::
-  {:ok, <a href="Mixcord.Struct.User.html#t:t/0">Mixcord.Struct.User.t</a>} |
-  {:error, atom}</pre>
+          <pre>count() :: integer</pre>
         
       </div>
     
   </div>
   <section class="docstring">
-    <p>Retrieves a user from the cache.</p>
-<p><a href="#get/1"><code class="inline">get/1</code></a> requires a keyword list as its only argument.</p>
-<p>Returns {:ok, Mixcord.Struct.User.t} if found, {:error, atom} otherwise.</p>
-<p><strong>Example</strong></p>
-<pre><code class="elixir">case Mixcord.Cache.User.get(id: 1111222233334444) do
-  {:ok, user} -&gt;
-    &quot;We found &quot; &lt;&gt; user.username
-  {:error, _reason} -&gt;
-    &quot;No es bueno&quot;
-end</code></pre>
+    <p>Times this emoji has been used to react</p>
 
   </section>
 </div>
-<div class="detail" id="get!/1">
+<div class="detail" id="t:emoji/0">
   
   <div class="detail-header">
-    <a href="#get!/1" class="detail-link" title="Link to this function">
+    <a href="#t:emoji/0" class="detail-link" title="Link to this type">
       <i class="icon-link"></i>
     </a>
-    <span class="signature">get!(list)</span>
+    <span class="signature">emoji()</span>
     
-      <a href="https://github.com/kraigie/mixcord/blob/master/lib/mixcord/cache/user_cache.ex#L61" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/mixcord/blob/master/lib/mixcord/struct/message/reaction.ex#L13" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -197,32 +187,61 @@ end</code></pre>
     
       <div class="specs">
         
-          <pre>get!([{:id, integer}]) :: <a href="Mixcord.Struct.User.html#t:t/0">Mixcord.Struct.User.t</a> | no_return</pre>
+          <pre>emoji() :: Emoji.t</pre>
         
       </div>
     
   </div>
   <section class="docstring">
-    <p>Retrieves a user from the cache.</p>
-<p>See <a href="#get/1"><code class="inline">get/1</code></a> for use and examples.</p>
-<p>Returns <code class="inline">Mixcord.Struct.User.t</code> if found.
-Raises <code class="inline">Mixcord.Error.CahceError</code> if not found.</p>
+    <p>Emoji information</p>
 
   </section>
 </div>
-<div class="detail" id="remove_struct_key/1">
+<div class="detail" id="t:me/0">
   
   <div class="detail-header">
-    <a href="#remove_struct_key/1" class="detail-link" title="Link to this function">
+    <a href="#t:me/0" class="detail-link" title="Link to this type">
       <i class="icon-link"></i>
     </a>
-    <span class="signature">remove_struct_key(map)</span>
+    <span class="signature">me()</span>
     
-      <a href="https://github.com/kraigie/mixcord/blob/master/lib/mixcord/cache/user_cache.ex#L130" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/mixcord/blob/master/lib/mixcord/struct/message/reaction.ex#L10" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
     
+    
+      <div class="specs">
+        
+          <pre>me() :: boolean</pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>Whether the current user is the one who reacted</p>
+
+  </section>
+</div>
+<div class="detail" id="t:t/0">
+  
+  <div class="detail-header">
+    <a href="#t:t/0" class="detail-link" title="Link to this type">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">t()</span>
+    
+      <a href="https://github.com/kraigie/mixcord/blob/master/lib/mixcord/struct/message/reaction.ex#L15" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>t() :: %Mixcord.Struct.Message.Reaction{count: <a href="#t:count/0">count</a>, emoji: <a href="#t:emoji/0">emoji</a>, me: <a href="#t:me/0">me</a>}</pre>
+        
+      </div>
     
   </div>
   <section class="docstring">
@@ -230,7 +249,10 @@ Raises <code class="inline">Mixcord.Error.CahceError</code> if not found.</p>
   </section>
 </div>
 
+          </div>
         </section>
+      
+
       
 
       

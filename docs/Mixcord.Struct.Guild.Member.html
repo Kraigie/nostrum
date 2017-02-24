@@ -5,10 +5,10 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="ExDoc v0.14.5">
-    <title>Mixcord.Struct.Guild.Role – Elixir v0.1.0</title>
+    <title>Mixcord.Struct.Guild.Member – Elixir v0.1.0</title>
     <link rel="stylesheet" href="dist/app-a07cea761b.css" />
     
-    <script src="dist/sidebar_items-80967f34ca.js"></script>
+    <script src="dist/sidebar_items-2ec3f39228.js"></script>
   </head>
   <body data-type="modules">
     <script>if(localStorage.getItem('night-mode')) document.body.className += ' night-mode';</script>
@@ -20,7 +20,7 @@
 <section class="sidebar">
 
   
-  <a href="api-reference.html" class="sidebar-projectLink">
+  <a href="intro.html" class="sidebar-projectLink">
     <div class="sidebar-projectDetails">
       <h1 class="sidebar-projectName">
         Elixir
@@ -61,10 +61,10 @@
 
       <h1>
         <small class="visible-xs">Elixir v0.1.0</small>
-        Mixcord.Struct.Guild.Role
+        Mixcord.Struct.Guild.Member
         
         
-          <a href="https://github.com/kraigie/mixcord/blob/master/lib/mixcord/struct/guild/role.ex#L1" title="View Source" class="view-source" rel="help">
+          <a href="https://github.com/kraigie/mixcord/blob/master/lib/mixcord/struct/guild/member.ex#L1" title="View Source" class="view-source" rel="help">
             <i class="icon-code"></i>
           </a>
         
@@ -72,7 +72,14 @@
 
       
         <section id="moduledoc">
-          <p>Struct representing a Discord role.</p>
+          <p>Struct representing a Discord guild member.</p>
+<h2 id="module-user-vs-member" class="section-heading">
+  <a href="#module-user-vs-member" class="hover-link"><i class="icon-link"></i></a>
+  User vs. Member
+</h2>
+
+<p>A <code class="inline">user</code> contains only general information about that user such as a <code class="inline">username</code> and an <code class="inline">avatar</code>.
+A <code class="inline">member</code> has everything that a <code class="inline">user</code> has, but also additional information on a per guild basis. This includes things like a <code class="inline">nickname</code> and a list of <code class="inline">roles</code>.</p>
 
         </section>
       
@@ -92,73 +99,55 @@
     </h2>
     <div class="summary-row">
   <div class="summary-signature">
-    <a href="#t:color/0">color()</a>
+    <a href="#t:deaf/0">deaf()</a>
   </div>
   
-    <div class="summary-synopsis"><p>The hexadecimal color code</p>
+    <div class="summary-synopsis"><p>Whether the user is deafened</p>
 </div>
   
 </div>
 <div class="summary-row">
   <div class="summary-signature">
-    <a href="#t:hoist/0">hoist()</a>
+    <a href="#t:guild_id/0">guild_id()</a>
   </div>
   
-    <div class="summary-synopsis"><p>Whether the role is pinned in the user listing</p>
+    <div class="summary-synopsis"><p>Id of the guild the member is part of</p>
 </div>
   
 </div>
 <div class="summary-row">
   <div class="summary-signature">
-    <a href="#t:id/0">id()</a>
+    <a href="#t:joined_at/0">joined_at()</a>
   </div>
   
-    <div class="summary-synopsis"><p>The id of the role</p>
+    <div class="summary-synopsis"><p>Date the user joined the guild</p>
 </div>
   
 </div>
 <div class="summary-row">
   <div class="summary-signature">
-    <a href="#t:managed/0">managed()</a>
+    <a href="#t:mute/0">mute()</a>
   </div>
   
-    <div class="summary-synopsis"><p>Whether the role is managed by an integration</p>
+    <div class="summary-synopsis"><p>Whether the user is muted</p>
 </div>
   
 </div>
 <div class="summary-row">
   <div class="summary-signature">
-    <a href="#t:mentionable/0">mentionable()</a>
+    <a href="#t:nick/0">nick()</a>
   </div>
   
-    <div class="summary-synopsis"><p>Whether the role is mentionable</p>
+    <div class="summary-synopsis"><p>The nickname of the user</p>
 </div>
   
 </div>
 <div class="summary-row">
   <div class="summary-signature">
-    <a href="#t:name/0">name()</a>
+    <a href="#t:roles/0">roles()</a>
   </div>
   
-    <div class="summary-synopsis"><p>The name of the role</p>
-</div>
-  
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#t:permissions/0">permissions()</a>
-  </div>
-  
-    <div class="summary-synopsis"><p>The permission bit set</p>
-</div>
-  
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#t:position/0">position()</a>
-  </div>
-  
-    <div class="summary-synopsis"><p>The position of the role</p>
+    <div class="summary-synopsis"><p>A list of role ids</p>
 </div>
   
 </div>
@@ -166,6 +155,15 @@
   <div class="summary-signature">
     <a href="#t:t/0">t()</a>
   </div>
+  
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:user/0">user()</a>
+  </div>
+  
+    <div class="summary-synopsis"><p>The user struct</p>
+</div>
   
 </div>
 
@@ -190,15 +188,15 @@
             Types
           </h1>
           <div class="types-list">
-            <div class="detail" id="t:color/0">
+            <div class="detail" id="t:deaf/0">
   
   <div class="detail-header">
-    <a href="#t:color/0" class="detail-link" title="Link to this type">
+    <a href="#t:deaf/0" class="detail-link" title="Link to this type">
       <i class="icon-link"></i>
     </a>
-    <span class="signature">color()</span>
+    <span class="signature">deaf()</span>
     
-      <a href="https://github.com/kraigie/mixcord/blob/master/lib/mixcord/struct/guild/role.ex#L13" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/mixcord/blob/master/lib/mixcord/struct/guild/member.ex#L28" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -206,25 +204,25 @@
     
       <div class="specs">
         
-          <pre>color() :: integer</pre>
+          <pre>deaf() :: boolean</pre>
         
       </div>
     
   </div>
   <section class="docstring">
-    <p>The hexadecimal color code</p>
+    <p>Whether the user is deafened</p>
 
   </section>
 </div>
-<div class="detail" id="t:hoist/0">
+<div class="detail" id="t:guild_id/0">
   
   <div class="detail-header">
-    <a href="#t:hoist/0" class="detail-link" title="Link to this type">
+    <a href="#t:guild_id/0" class="detail-link" title="Link to this type">
       <i class="icon-link"></i>
     </a>
-    <span class="signature">hoist()</span>
+    <span class="signature">guild_id()</span>
     
-      <a href="https://github.com/kraigie/mixcord/blob/master/lib/mixcord/struct/guild/role.ex#L16" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/mixcord/blob/master/lib/mixcord/struct/guild/member.ex#L13" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -232,25 +230,25 @@
     
       <div class="specs">
         
-          <pre>hoist() :: boolean</pre>
+          <pre>guild_id() :: integer</pre>
         
       </div>
     
   </div>
   <section class="docstring">
-    <p>Whether the role is pinned in the user listing</p>
+    <p>Id of the guild the member is part of</p>
 
   </section>
 </div>
-<div class="detail" id="t:id/0">
+<div class="detail" id="t:joined_at/0">
   
   <div class="detail-header">
-    <a href="#t:id/0" class="detail-link" title="Link to this type">
+    <a href="#t:joined_at/0" class="detail-link" title="Link to this type">
       <i class="icon-link"></i>
     </a>
-    <span class="signature">id()</span>
+    <span class="signature">joined_at()</span>
     
-      <a href="https://github.com/kraigie/mixcord/blob/master/lib/mixcord/struct/guild/role.ex#L7" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/mixcord/blob/master/lib/mixcord/struct/guild/member.ex#L25" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -258,25 +256,25 @@
     
       <div class="specs">
         
-          <pre>id() :: integer</pre>
+          <pre>joined_at() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a></pre>
         
       </div>
     
   </div>
   <section class="docstring">
-    <p>The id of the role</p>
+    <p>Date the user joined the guild</p>
 
   </section>
 </div>
-<div class="detail" id="t:managed/0">
+<div class="detail" id="t:mute/0">
   
   <div class="detail-header">
-    <a href="#t:managed/0" class="detail-link" title="Link to this type">
+    <a href="#t:mute/0" class="detail-link" title="Link to this type">
       <i class="icon-link"></i>
     </a>
-    <span class="signature">managed()</span>
+    <span class="signature">mute()</span>
     
-      <a href="https://github.com/kraigie/mixcord/blob/master/lib/mixcord/struct/guild/role.ex#L25" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/mixcord/blob/master/lib/mixcord/struct/guild/member.ex#L31" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -284,25 +282,25 @@
     
       <div class="specs">
         
-          <pre>managed() :: boolean</pre>
+          <pre>mute() :: boolean</pre>
         
       </div>
     
   </div>
   <section class="docstring">
-    <p>Whether the role is managed by an integration</p>
+    <p>Whether the user is muted</p>
 
   </section>
 </div>
-<div class="detail" id="t:mentionable/0">
+<div class="detail" id="t:nick/0">
   
   <div class="detail-header">
-    <a href="#t:mentionable/0" class="detail-link" title="Link to this type">
+    <a href="#t:nick/0" class="detail-link" title="Link to this type">
       <i class="icon-link"></i>
     </a>
-    <span class="signature">mentionable()</span>
+    <span class="signature">nick()</span>
     
-      <a href="https://github.com/kraigie/mixcord/blob/master/lib/mixcord/struct/guild/role.ex#L28" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/mixcord/blob/master/lib/mixcord/struct/guild/member.ex#L19" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -310,25 +308,25 @@
     
       <div class="specs">
         
-          <pre>mentionable() :: boolean</pre>
+          <pre>nick() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a> | nil</pre>
         
       </div>
     
   </div>
   <section class="docstring">
-    <p>Whether the role is mentionable</p>
+    <p>The nickname of the user</p>
 
   </section>
 </div>
-<div class="detail" id="t:name/0">
+<div class="detail" id="t:roles/0">
   
   <div class="detail-header">
-    <a href="#t:name/0" class="detail-link" title="Link to this type">
+    <a href="#t:roles/0" class="detail-link" title="Link to this type">
       <i class="icon-link"></i>
     </a>
-    <span class="signature">name()</span>
+    <span class="signature">roles()</span>
     
-      <a href="https://github.com/kraigie/mixcord/blob/master/lib/mixcord/struct/guild/role.ex#L10" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/mixcord/blob/master/lib/mixcord/struct/guild/member.ex#L22" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -336,65 +334,13 @@
     
       <div class="specs">
         
-          <pre>name() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a></pre>
+          <pre>roles() :: [<a href="https://hexdocs.pm/elixir/Integer.html#t:t/0">Integer.t</a>]</pre>
         
       </div>
     
   </div>
   <section class="docstring">
-    <p>The name of the role</p>
-
-  </section>
-</div>
-<div class="detail" id="t:permissions/0">
-  
-  <div class="detail-header">
-    <a href="#t:permissions/0" class="detail-link" title="Link to this type">
-      <i class="icon-link"></i>
-    </a>
-    <span class="signature">permissions()</span>
-    
-      <a href="https://github.com/kraigie/mixcord/blob/master/lib/mixcord/struct/guild/role.ex#L22" class="view-source" rel="help" title="View Source">
-       <i class="icon-code"></i>
-     </a>
-    
-    
-    
-      <div class="specs">
-        
-          <pre>permissions() :: integer</pre>
-        
-      </div>
-    
-  </div>
-  <section class="docstring">
-    <p>The permission bit set</p>
-
-  </section>
-</div>
-<div class="detail" id="t:position/0">
-  
-  <div class="detail-header">
-    <a href="#t:position/0" class="detail-link" title="Link to this type">
-      <i class="icon-link"></i>
-    </a>
-    <span class="signature">position()</span>
-    
-      <a href="https://github.com/kraigie/mixcord/blob/master/lib/mixcord/struct/guild/role.ex#L19" class="view-source" rel="help" title="View Source">
-       <i class="icon-code"></i>
-     </a>
-    
-    
-    
-      <div class="specs">
-        
-          <pre>position() :: integer</pre>
-        
-      </div>
-    
-  </div>
-  <section class="docstring">
-    <p>The position of the role</p>
+    <p>A list of role ids</p>
 
   </section>
 </div>
@@ -406,7 +352,7 @@
     </a>
     <span class="signature">t()</span>
     
-      <a href="https://github.com/kraigie/mixcord/blob/master/lib/mixcord/struct/guild/role.ex#L30" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/mixcord/blob/master/lib/mixcord/struct/guild/member.ex#L33" class="view-source" rel="help" title="View Source">
        <i class="icon-code"></i>
      </a>
     
@@ -414,13 +360,39 @@
     
       <div class="specs">
         
-          <pre>t() :: %Mixcord.Struct.Guild.Role{color: <a href="#t:color/0">color</a>, hoist: <a href="#t:hoist/0">hoist</a>, id: <a href="#t:id/0">id</a>, managed: <a href="#t:managed/0">managed</a>, mentionable: <a href="#t:mentionable/0">mentionable</a>, name: <a href="#t:name/0">name</a>, permissions: <a href="#t:permissions/0">permissions</a>, position: <a href="#t:position/0">position</a>}</pre>
+          <pre>t() :: %Mixcord.Struct.Guild.Member{deaf: <a href="#t:deaf/0">deaf</a>, guild_id: <a href="#t:guild_id/0">guild_id</a>, joined_at: <a href="#t:joined_at/0">joined_at</a>, mute: <a href="#t:mute/0">mute</a>, nick: <a href="#t:nick/0">nick</a>, roles: <a href="#t:roles/0">roles</a>, user: <a href="#t:user/0">user</a>}</pre>
         
       </div>
     
   </div>
   <section class="docstring">
     
+  </section>
+</div>
+<div class="detail" id="t:user/0">
+  
+  <div class="detail-header">
+    <a href="#t:user/0" class="detail-link" title="Link to this type">
+      <i class="icon-link"></i>
+    </a>
+    <span class="signature">user()</span>
+    
+      <a href="https://github.com/kraigie/mixcord/blob/master/lib/mixcord/struct/guild/member.ex#L16" class="view-source" rel="help" title="View Source">
+       <i class="icon-code"></i>
+     </a>
+    
+    
+    
+      <div class="specs">
+        
+          <pre>user() :: <a href="Mixcord.Struct.User.html#t:t/0">Mixcord.Struct.User.t</a></pre>
+        
+      </div>
+    
+  </div>
+  <section class="docstring">
+    <p>The user struct</p>
+
   </section>
 </div>
 
