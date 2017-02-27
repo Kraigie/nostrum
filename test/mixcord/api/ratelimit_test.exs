@@ -5,7 +5,6 @@ defmodule RatelimitTest do
   @test_guild 179679229036724225
 
   setup do
-    Mixcord.Api.Ratelimiter.empty_buckets
     :ok
   end
 
@@ -21,7 +20,7 @@ defmodule RatelimitTest do
       1..10
       |> Task.async_stream(&Mixcord.Api.create_message(@test_channel, "#{&1}"), timeout: 15000)
       |> Enum.to_list()
-    assert Enum.all?(responses, fn x -> elem(x, 0) == :ok end) == true
+    assert Enum.all?(responses, fn {_, {k, _}} -> k == :ok end) == true
   end
 
   _ = """
