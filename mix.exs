@@ -29,7 +29,6 @@ defmodule Mixcord.Mixfile do
   # https://github.com/nerves-project/nerves/tree/master/docs
   def docs do
     [
-      output: "docs",
       main: "intro",
       extras: [
         "docs/static/Intro.md",
