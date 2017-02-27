@@ -3,7 +3,7 @@ defmodule Mixcord.Shard.Dispatch do
 
   alias Mixcord.Cache.{ChannelCache, UserCache}
   alias Mixcord.Cache.Guild.GuildServer
-  
+
   require Logger
 
   @large_threshold 250

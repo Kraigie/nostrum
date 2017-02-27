@@ -27,7 +27,7 @@ defmodule Mixcord.Shard.Dispatch.Consumer do
   `from` is the process information of the producer from which the demand was received.
   `state` is the internal state of your consumer.
   """
-  @callback handle_event(event, state) :: {:ok, Map.t}
+  @callback handle_event(event, state) :: {:ok, map}
 
   @typedoc """
   Tuple describing the client of a call request.
@@ -40,27 +40,27 @@ defmodule Mixcord.Shard.Dispatch.Consumer do
   @typedoc """
   The state of the websocket connection for the shard the event occured on.
   """
-  @type ws_state :: Map.t
+  @type ws_state :: map
 
   @typedoc """
   The state of the consumer process.
   """
-  @type state :: Map.t
+  @type state :: map
 
   @type channel_create :: {:CHANNEL_CREATE, {Mixcord.Struct.Channel.t}, ws_state}
   @type channel_delete :: {:CHANNEL_DELETE, {Mixcord.Struct.Channel.t}, ws_state}
   @type channel_update :: {:CHANNEL_UPDATE, {old_channel :: Mixcord.Struct.Channel.t, new_channel :: Mixcord.Struct.Channel.t}, ws_state}
-  @type channel_pins_ack :: {:CHANNEL_PINS_ACK, {Map.t}, ws_state}
-  @type channel_pins_update :: {:CHANNEL_PINS_UPDATE, {Map.t}, ws_state}
+  @type channel_pins_ack :: {:CHANNEL_PINS_ACK, {map}, ws_state}
+  @type channel_pins_update :: {:CHANNEL_PINS_UPDATE, {map}, ws_state}
   @type guild_ban_add :: {:GUILD_BAN_ADD, {Mixcord.Struct.User.t}, ws_state}
   @type build_ban_remove :: {:GUILD_BAN_REMOVE, {Mixcord.Struct.User.t}, ws_state}
   @type guild_create :: {:GUILD_CREATE, {new_guild :: Mixcord.Struct.Guild.t}, ws_state}
   @type guild_update :: {:GUILD_CREATE, {old_guild :: Mixcord.Struct.Guild.t, new_guild :: Mixcord.Struct.Guild.t}, ws_state}
   @type guild_delete :: {:GUILD_DELETE, {old_guild :: Mixcord.Struct.Guild.t}, ws_state}
   @type guild_emojis_update :: {:GUILD_EMOJIS_UPDATE, {old_emojis :: [Mixcord.Struct.Message.Emoji.t],  new_emojis :: [Mixcord.Struct.Message.Emoji.t]}, ws_state}
-  @type guild_integrations_update :: {:GUILD_INTEGERATIONS_UPDATE, {Map.t}, ws_state}
+  @type guild_integrations_update :: {:GUILD_INTEGERATIONS_UPDATE, {map}, ws_state}
   @type guild_member_add :: {:GUILD_MEMBER_ADD, {new_member :: Mixcord.Struct.Guild.Member.t}, ws_state}
-  @type guild_members_chunk :: {:GUILD_MEMBERS_CHUNK, {Map.t}, ws_state}
+  @type guild_members_chunk :: {:GUILD_MEMBERS_CHUNK, {map}, ws_state}
   @type guild_member_remove :: {:GUILD_MEMBER_REMOVE, {old_member :: Mixcord.Struct.Guild.Member.t}, ws_state}
   @type guild_member_update :: {:GUILD_MEMBER_UPDATE, {old_member :: Mixcord.Struct.Guild.Member.t, new_member :: Mixcord.Struct.Guild.Member.t}, ws_state}
   @type guild_role_create :: {:GUILD_ROLE_CREATE, {new_role :: Mixcord.Struct.Guild.Role.t}, ws_state}
@@ -70,16 +70,16 @@ defmodule Mixcord.Shard.Dispatch.Consumer do
   @type message_delete :: {:MESSAGE_DELETE, {message :: Mixcord.Struct.Message.t}, ws_state}
   @type message_delete_bulk :: {:MESSAGE_DELETE_BULK, {updated_messages :: [Mixcord.Struct.Message.t]}, ws_state}
   @type message_update :: {:MESSAGE_UPDATE, {updated_message :: Mixcord.Struct.Message.t}, ws_state}
-  @type message_reaction_add :: {:MESSAGE_REACTION_ADD, Map.t}
-  @type message_reaction_remove :: {:MESSAGE_REACTION_REMOVE, Map.t}
-  @type presence_update :: {:PRESENCE_UPDATE, {Map.t}, ws_state}
-  @type ready :: {:READY, {Map.t}, ws_state}
-  @type resumed :: {:RESUMED, {Map.t}, ws_state}
-  @type typing_start :: {:TYPING_START, {Map.t}, ws_state}
+  @type message_reaction_add :: {:MESSAGE_REACTION_ADD, map}
+  @type message_reaction_remove :: {:MESSAGE_REACTION_REMOVE, map}
+  @type presence_update :: {:PRESENCE_UPDATE, {map}, ws_state}
+  @type ready :: {:READY, {map}, ws_state}
+  @type resumed :: {:RESUMED, {map}, ws_state}
+  @type typing_start :: {:TYPING_START, {map}, ws_state}
   @type user_settings_update :: no_return
   @type user_update :: {:USER_UPDATE, {old_user :: Mixcord.Struct.User.t, new_user :: Mixcord.Struct.User.t}, ws_state}
-  @type voice_state_update :: {:VOICE_STATE_UPDATE, {Map.t}, ws_state}
-  @type voice_server_update :: {:VOICE_SERVER_UPDATE, {Map.t}, ws_state}
+  @type voice_state_update :: {:VOICE_STATE_UPDATE, {map}, ws_state}
+  @type voice_server_update :: {:VOICE_SERVER_UPDATE, {map}, ws_state}
 
   @type event :: channel_create |
     channel_delete |

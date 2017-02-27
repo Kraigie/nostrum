@@ -42,7 +42,7 @@ defmodule Mixcord.Struct.Message do
   @type attachments :: list(Attachment.t)
 
   @typedoc "List of embedded content in the message"
-  @type embeds :: list(Map.t)
+  @type embeds :: list(map)
 
   @typedoc "Validates if a message was sent"
   @type nonce :: String.t
@@ -51,7 +51,7 @@ defmodule Mixcord.Struct.Message do
   @type pinned :: boolean
 
   @typedoc "Message type"
-  @type type :: Integer.test
+  @type type :: integer
 
   @type t :: %__MODULE__{
     attachments: attachments,

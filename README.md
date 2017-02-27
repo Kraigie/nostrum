@@ -39,7 +39,7 @@ Mixcord can be installed as:
     ```elixir
       config :mixcord,
         token: "YOUR_API_TOKEN_HERE",
-        num_shards: Integer.t # In the future this will be changed to optionally automatically detect the correct number of shards.
+        num_shards: integer # In the future this will be changed to optionally automatically detect the correct number of shards.
     ```
 
     By default the library will throw out a lot of debug information. If you

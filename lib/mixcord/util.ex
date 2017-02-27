@@ -19,7 +19,7 @@ defmodule Mixcord.Util do
   @doc """
   Returns the number of milliseconds since unix epoch.
   """
-  @spec now() :: Integer.t
+  @spec now() :: integer
   def now do
     DateTime.utc_now
       |> DateTime.to_unix(:milliseconds)
@@ -45,7 +45,7 @@ defmodule Mixcord.Util do
   This is not the number of currently active shards, but the number of shards specified
   in your config.
   """
-  @spec num_shards() :: Integer.t
+  @spec num_shards() :: integer
   def num_shards do
     Application.get_env(:mixcord, :num_shards)
   end
@@ -100,7 +100,7 @@ defmodule Mixcord.Util do
   if any results from Discord are giving variable keys. Since we *will* define all
   types of objects returned by Discord, the amount of new atoms created *SHOULD* be 0. 👀
   """
-  @spec safe_atom_map(Map.t) :: Map.t
+  @spec safe_atom_map(map) :: map
   def safe_atom_map(term) do
     cond do
       is_map(term) -> for {key, value} <- term, into: %{}, do: {maybe_to_atom(key), safe_atom_map(value)}

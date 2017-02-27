@@ -56,7 +56,7 @@ defmodule Mixcord.Api do
 
   Integer number of messages, or :infinity to retrieve all messages.
   """
-  @type limit :: Integer.t | :infinity
+  @type limit :: integer | :infinity
 
   @typedoc """
   Represents a tuple used to locate messages.
@@ -65,7 +65,7 @@ defmodule Mixcord.Api do
   The second element will be a message_id as an integer.
   The tuple can also be empty to search from the most recent message in the channel
   """
-  @type locator :: {:before, Integer.t} | {:after, Integer.t} | {:around, Integer.t} | {}
+  @type locator :: {:before, integer} | {:after, integer} | {:around, integer} | {}
 
   @typedoc """
   Represents different statuses the bot can have.
@@ -84,7 +84,7 @@ defmodule Mixcord.Api do
   `status` is an atom that describes the status of the bot. See `Mixcord.Api.status.t` for available options.
   `game` is the text that will display 'playing' status of the game. This is the text below the bot's name in the sidebar. Empty string will clear.
   """
-  @spec update_status(Pid.t, status, String.t) :: no_return
+  @spec update_status(pid, status, String.t) :: no_return
   def update_status(pid, status, game) do
     Shard.update_status(pid, to_string(status), game)
   end
@@ -115,7 +115,7 @@ defmodule Mixcord.Api do
 
   Returns `{:ok, Mixcord.Struct.Message}` if successful. `error` otherwise.
   """
-  @spec create_message(Integer.t, String.t
+  @spec create_message(integer, String.t
                       | [content: String.t, embed: Mixcord.Struct.Embed]
                       | [content: String.t, file: String.t], boolean) :: error | {:ok, Mixcord.Struct.Message.t}
   def create_message(channel_id, content, tts \\ false)
@@ -159,7 +159,7 @@ defmodule Mixcord.Api do
   Raises `Mixcord.Error.ApiError` if error occurs while making the rest call.
   Returns `Mixcord.Struct.Message` if successful.
   """
-  @spec create_message!(Integer.t, String.t, boolean) :: no_return | Mixcord.Struct.Message.t
+  @spec create_message!(integer, String.t, boolean) :: no_return | Mixcord.Struct.Message.t
   def create_message!(channel_id, content, tts \\ false) do
     create_message(channel_id, content, tts)
     |> bangify
@@ -172,7 +172,7 @@ defmodule Mixcord.Api do
 
   Returns the edited `{:ok, Mixcord.Struct.Message}` if successful. `error` otherwise.
   """
-  @spec edit_message(Integer.t, Integer.t, String.t) :: error | {:ok, Mixcord.Struct.Message.t}
+  @spec edit_message(integer, integer, String.t) :: error | {:ok, Mixcord.Struct.Message.t}
   def edit_message(channel_id, message_id, content) do
     case request(:patch, Constants.channel_message(channel_id, message_id), %{content: content}) do
       {:ok, body} ->
@@ -190,7 +190,7 @@ defmodule Mixcord.Api do
   Raises `Mixcord.Error.ApiError` if error occurs while making the rest call.
   Returns the edited `Mixcord.Struct.Message` if successful.
   """
-  @spec edit_message!(Integer.t, Integer.t, String.t) :: no_return | {:ok, Mixcord.Struct.Message.t}
+  @spec edit_message!(integer, integer, String.t) :: no_return | {:ok, Mixcord.Struct.Message.t}
   def edit_message!(channel_id, message_id, content) do
     edit_message(channel_id, message_id, content)
     |> bangify
@@ -203,7 +203,7 @@ defmodule Mixcord.Api do
 
   Returns `{:ok}` if successful. `error` otherwise.
   """
-  @spec delete_message(Integer.t, Integer.t) :: error | {:ok}
+  @spec delete_message(integer, integer) :: error | {:ok}
   def delete_message(channel_id, message_id) do
     request(:delete, Constants.channel_message(channel_id, message_id))
   end
@@ -216,7 +216,7 @@ defmodule Mixcord.Api do
   Raises `Mixcord.Error.ApiError` if error occurs while making the rest call.
   Returns {:ok} if successful.
   """
-  @spec delete_message!(String.t, Integer.t) :: no_return | {:ok}
+  @spec delete_message!(String.t, integer) :: no_return | {:ok}
   def delete_message!(channel_id, message_id) do
     delete_message(channel_id, message_id)
     |> bangify
@@ -236,7 +236,7 @@ defmodule Mixcord.Api do
 
   Returns `{:ok}` if successful, `{:error, reason}` otherwise.
   """
-  @spec create_reaction(Integer.t, Integer.t, String.t | Mixcord.Struct.Emoji.custom_emoji) :: error | {:ok}
+  @spec create_reaction(integer, integer, String.t | Mixcord.Struct.Emoji.custom_emoji) :: error | {:ok}
   def create_reaction(channel_id, message_id, emoji) do
     request(:put, Constants.channel_reaction_me(channel_id, message_id, emoji))
   end
@@ -249,7 +249,7 @@ defmodule Mixcord.Api do
 
   Returns `{:ok}` if successful, `{:error, reason}` otherwise.
   """
-  @spec create_reaction(Integer.t, Integer.t, String.t | Mixcord.Struct.Emoji.custom_emoji) :: error | {:ok}
+  @spec create_reaction(integer, integer, String.t | Mixcord.Struct.Emoji.custom_emoji) :: error | {:ok}
   def delete_own_reaction(channel_id, message_id, emoji) do
     request(:delete, Constants.channel_reaction_me(channel_id, message_id, emoji))
   end
@@ -262,7 +262,7 @@ defmodule Mixcord.Api do
 
   Returns `{:ok}` if successful, `{:error, reason}` otherwise.
   """
-  @spec delete_reaction(Integer.t, Integer.t, String.t | Mixcord.Struct.Emoji.custom_emoji, Integer.t) :: error | {:ok}
+  @spec delete_reaction(integer, integer, String.t | Mixcord.Struct.Emoji.custom_emoji, integer) :: error | {:ok}
   def delete_reaction(channel_id, message_id, emoji, user_id) do
     request(:delete, Constants.channel_reaction(channel_id, message_id, emoji, user_id))
   end
@@ -274,7 +274,7 @@ defmodule Mixcord.Api do
 
   Returns `{:ok, [Mixcord.Struct.User]}` if successful, `{:error, reason}` otherwise.
   """
-  @spec get_reactions(Integer.t, Integer.t, String.t | Mixcord.Struct.Emoji.custom_emoji) :: error | {:ok, [Mixcord.Struct.User]}
+  @spec get_reactions(integer, integer, String.t | Mixcord.Struct.Emoji.custom_emoji) :: error | {:ok, [Mixcord.Struct.User]}
   def get_reactions(channel_id, message_id, emoji) do
     case request(:get, Constants.channel_reactions_get(channel_id, message_id, emoji)) do
       {:ok, body} ->
@@ -292,7 +292,7 @@ defmodule Mixcord.Api do
 
   Returns `{:ok}` if successful, `{:error, reason}` otherwise.
   """
-  @spec delete_all_reactions(Integer.t, Integer.t) :: error | {:ok}
+  @spec delete_all_reactions(integer, integer) :: error | {:ok}
   def delete_all_reactions(channel_id, message_id) do
     request(:delete, Constants.channel_reactions_delete(channel_id, message_id))
   end
@@ -302,7 +302,7 @@ defmodule Mixcord.Api do
 
   Gets a channel specified by `id`.
   """
-  @spec get_channel(Integer.t) :: error | {:ok, Mixcord.Struct.Channel.t}
+  @spec get_channel(integer) :: error | {:ok, Mixcord.Struct.Channel.t}
   def get_channel(channel_id) do
     case request(:get, Constants.channel(channel_id)) do
       {:ok, body} ->
@@ -319,7 +319,7 @@ defmodule Mixcord.Api do
 
   Raises `Mixcord.Error.ApiError` if error occurs while making the rest call.
   """
-  @spec get_channel!(Integer.t) :: no_return | Mixcord.Struct.Channel.t
+  @spec get_channel!(integer) :: no_return | Mixcord.Struct.Channel.t
   def get_channel!(channel_id) do
     get_channel(channel_id)
     |> bangify
@@ -337,12 +337,12 @@ defmodule Mixcord.Api do
    * `bitrate` - Bitrate of the voice channel. *Voice Channels only*
    * `user_limit` - User limit of the channel. 0 for no limit. *Voice Channels only*
   """
-  @spec edit_channel(Integer.t, [
+  @spec edit_channel(integer, [
       name: String.t,
-      position: Integer.t,
+      position: integer,
       topic: String.t,
       bitrate: String.t,
-      user_limit: Integer.t
+      user_limit: integer
     ]) :: error | {:ok, Mixcord.Struct.Channel.t}
   def edit_channel(channel_id, options) do
     case request(:patch, Constants.channel(channel_id), options) do
@@ -360,12 +360,12 @@ defmodule Mixcord.Api do
 
   Raises `Mixcord.Error.ApiError` if error occurs while making the rest call.
   """
-  @spec edit_channel!(Integer.t, [
+  @spec edit_channel!(integer, [
       name: String.t,
-      position: Integer.t,
+      position: integer,
       topic: String.t,
       bitrate: String.t,
-      user_limit: Integer.t
+      user_limit: integer
     ]) :: error | {:ok, Mixcord.Struct.Channel.t}
   def edit_channel!(channel_id, options) do
     edit_channel(channel_id, options)
@@ -377,7 +377,7 @@ defmodule Mixcord.Api do
 
   Channel to delete is specified by `channel_id`.
   """
-  @spec delete_channel(Integer.t) :: error | {:ok, Mixcord.Struct.Channel.t}
+  @spec delete_channel(integer) :: error | {:ok, Mixcord.Struct.Channel.t}
   def delete_channel(channel_id) do
     case request(:delete, Constants.channel(channel_id)) do
       {:ok, body} ->
@@ -392,7 +392,7 @@ defmodule Mixcord.Api do
 
   Raises `Mixcord.Error.ApiError` if error occurs while making the rest call.
   """
-  @spec delete_channel!(Integer.t) :: no_return | Mixcord.Struct.Channel.t
+  @spec delete_channel!(integer) :: no_return | Mixcord.Struct.Channel.t
   def delete_channel!(channel_id) do
     delete_channel(channel_id)
     |> bangify
@@ -406,7 +406,7 @@ defmodule Mixcord.Api do
 
   Returns `{:ok, [Mixcord.Struct.Message]}` if successful. `error` otherwise.
   """
-  @spec get_channel_messages(Integer.t, limit, locator) :: error | {:ok, [Mixcord.Struct.Message.t]}
+  @spec get_channel_messages(integer, limit, locator) :: error | {:ok, [Mixcord.Struct.Message.t]}
   def get_channel_messages(channel_id, limit, locator) do
     get_messages_sync(channel_id, limit, [], locator)
   end
@@ -458,7 +458,7 @@ defmodule Mixcord.Api do
 
   Raises `Mixcord.Error.ApiError` if error occurs while making the rest call.
   """
-  @spec get_channel_messages!(Integer.t, limit, locator) :: no_return | [Mixcord.Struct.Message.t]
+  @spec get_channel_messages!(integer, limit, locator) :: no_return | [Mixcord.Struct.Message.t]
   def get_channel_messages!(channel_id, limit, locator) do
     get_channel_messages(channel_id, limit, locator)
     |> bangify
@@ -469,7 +469,7 @@ defmodule Mixcord.Api do
 
   Message to retrieve is specified by `message_id` and `channel_id`.
   """
-  @spec get_channel_message(Integer.t, Integer.t) :: error | {:ok, Mixcord.Struct.Message.t}
+  @spec get_channel_message(integer, integer) :: error | {:ok, Mixcord.Struct.Message.t}
   def get_channel_message(channel_id, message_id) do
     case request(:get, Constants.channel_message(channel_id, message_id)) do
       {:ok, body} ->
@@ -484,7 +484,7 @@ defmodule Mixcord.Api do
 
   Raises `Mixcord.Error.ApiError` if error occurs while making the rest call.
   """
-  @spec get_channel_message!(Integer.t, Integer.t) :: no_return | Mixcord.Struct.Message.t
+  @spec get_channel_message!(integer, integer) :: no_return | Mixcord.Struct.Message.t
   def get_channel_message!(channel_id, message_id) do
     get_channel_message(channel_id, message_id)
     |> bangify
@@ -495,7 +495,7 @@ defmodule Mixcord.Api do
 
   `messages` is a list of `Mixcord.Struct.Message.id` that you wish to delete.
   """
-  @spec bulk_delete_messages(Integer.t, [Mixcord.Struct.Message.id]) :: error | {:ok}
+  @spec bulk_delete_messages(integer, [Mixcord.Struct.Message.id]) :: error | {:ok}
   def bulk_delete_messages(channel_id, messages) do
     request(:delete, Constants.channel_bulk_delete(channel_id), %{messages: messages})
   end
@@ -507,7 +507,7 @@ defmodule Mixcord.Api do
 
   Raises `Mixcord.Error.ApiError` if error occurs while making the rest call.
   """
-  @spec bulk_delete_messages(Integer.t, [Mixcord.Struct.Message.id]) :: no_return | {:ok}
+  @spec bulk_delete_messages(integer, [Mixcord.Struct.Message.id]) :: no_return | {:ok}
   def bulk_delete_messages!(channel_id, messages) do
     bulk_delete_messages(channel_id, messages)
     |> bangify
@@ -523,9 +523,9 @@ defmodule Mixcord.Api do
    * `deny` - Bitwise value of denied permissions.
    * `type` - `member` if editing a user, `role` if editing a role.
   """
-  @spec edit_channel_permissions(Integer.t, Integer.t, [
-      allow: Integer.t,
-      deny: Integer.t,
+  @spec edit_channel_permissions(integer, integer, [
+      allow: integer,
+      deny: integer,
       type: String.t
     ]) :: error | {:ok}
   def edit_channel_permissions(channel_id, overwrite_id, permission_info) do
@@ -539,9 +539,9 @@ defmodule Mixcord.Api do
 
   Raises `Mixcord.Error.ApiError` if error occurs while making the rest call.
   """
-  @spec edit_channel_permissions!(Integer.t, Integer.t, [
-      allow: Integer.t,
-      deny: Integer.t,
+  @spec edit_channel_permissions!(integer, integer, [
+      allow: integer,
+      deny: integer,
       type: String.t
     ]) :: no_return | {:ok}
   def edit_channel_permissions!(channel_id, overwrite_id, permission_info) do
@@ -584,7 +584,7 @@ defmodule Mixcord.Api do
 
   Returns `{:ok}` if successful. `error` otherwise.
   """
-  @spec start_typing(Integer.t) :: error | {:ok}
+  @spec start_typing(integer) :: error | {:ok}
   def start_typing(channel_id) do
     request(:post, Constants.channel_typing(channel_id))
   end
@@ -599,7 +599,7 @@ defmodule Mixcord.Api do
   Raises `Mixcord.Error.ApiError` if error occurs while making the rest call.
   Returns {:ok} if successful.
   """
-  @spec start_typing!(Integer.t) :: no_return | {:ok}
+  @spec start_typing!(integer) :: no_return | {:ok}
   def start_typing!(channel_id) do
     start_typing(channel_id)
     |> bangify
@@ -612,7 +612,7 @@ defmodule Mixcord.Api do
 
   Returns {:ok, [Mixcord.Struct.Message.t]} if successful. `error` otherwise.
   """
-  @spec get_pinned_messages(Integer.t) :: error | {:ok, [Mixcord.Struct.Message.t]}
+  @spec get_pinned_messages(integer) :: error | {:ok, [Mixcord.Struct.Message.t]}
   def get_pinned_messages(channel_id) do
     case request(:get, Constants.channel_pins(channel_id)) do
       {:ok, body} ->
@@ -629,7 +629,7 @@ defmodule Mixcord.Api do
 
   Returns [Mixcord.Struct.Message.t] if successful. `error` otherwise.
   """
-  @spec get_pinned_messages!(Integer.t) :: no_return | [Mixcord.Struct.Message.t]
+  @spec get_pinned_messages!(integer) :: no_return | [Mixcord.Struct.Message.t]
   def get_pinned_messages!(channel_id) do
     get_pinned_messages(channel_id)
     |> bangify
@@ -642,7 +642,7 @@ defmodule Mixcord.Api do
 
   Returns `{:ok}` if successful. `error` otherwise.
   """
-  @spec add_pinned_message(Integer.t, Integer.t) :: error | {:ok}
+  @spec add_pinned_message(integer, integer) :: error | {:ok}
   def add_pinned_message(channel_id, message_id) do
     request(:put, Constants.channel_pin(channel_id, message_id))
   end
@@ -655,7 +655,7 @@ defmodule Mixcord.Api do
   Raises `Mixcord.Error.ApiError` if error occurs while making the rest call.
   Returns {:ok} if successful.
   """
-  @spec add_pinned_message!(Integer.t, Integer.t) :: no_return | {:ok}
+  @spec add_pinned_message!(integer, integer) :: no_return | {:ok}
   def add_pinned_message!(channel_id, message_id) do
     add_pinned_message(channel_id, message_id)
     |> bangify
@@ -668,7 +668,7 @@ defmodule Mixcord.Api do
 
   Returns `{:ok}` if successful. `error` otherwise.
   """
-  @spec delete_pinned_message(Integer.t, Integer.t) :: error | {:ok}
+  @spec delete_pinned_message(integer, integer) :: error | {:ok}
   def delete_pinned_message(channel_id, message_id) do
     request(:delete, Constants.channel_pin(channel_id, message_id))
   end
@@ -681,7 +681,7 @@ defmodule Mixcord.Api do
   Raises `Mixcord.Error.ApiError` if error occurs while making the rest call.
   Returns {:ok} if successful.
   """
-  @spec delete_pinned_message!(Integer.t, Integer.t) :: no_return | {:ok}
+  @spec delete_pinned_message!(integer, integer) :: no_return | {:ok}
   def delete_pinned_message!(channel_id, message_id) do
     delete_pinned_message(channel_id, message_id)
     |> bangify
@@ -694,7 +694,7 @@ defmodule Mixcord.Api do
 
   Returns {:ok, Mixcord.Struct.Guild.t} if successful, `error` otherwise.
   """
-  @spec get_guild(Integer.t) :: error | {:ok, Mixcord.Struct.Guild.t}
+  @spec get_guild(integer) :: error | {:ok, Mixcord.Struct.Guild.t}
   def get_guild(guild_id) do
     case request(:get, Constants.guild(guild_id)) do
       {:ok, body} ->
@@ -712,7 +712,7 @@ defmodule Mixcord.Api do
     Raises `Mixcord.Error.ApiError` if error occurs while making the rest call.
     Returns `Mixcord.Struct.Guild.t` if successful.
   """
-  @spec get_guild!(Integer.t) :: no_return | Mixcord.Struct.Guild.t
+  @spec get_guild!(integer) :: no_return | Mixcord.Struct.Guild.t
   def get_guild!(guild_id) do
     get_guild(guild_id)
     |> bangify

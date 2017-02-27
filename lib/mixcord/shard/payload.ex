@@ -21,7 +21,7 @@ defmodule Mixcord.Shard.Payload do
    * `producer_pid` - Pid of the producer attached to this shard
    * `heartbeat_intervals` - List of last ten heartbeat intervals, from hearbeat send to ack.
   """
-  @type state_map :: Map.t
+  @type state_map :: map
 
   def state_map(token, shard_num, pid) do
     %{

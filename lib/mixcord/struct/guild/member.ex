@@ -19,7 +19,7 @@ defmodule Mixcord.Struct.Guild.Member do
   @type nick :: String.t | nil
 
   @typedoc "A list of role ids"
-  @type roles :: list(Integer.t)
+  @type roles :: list(integer)
 
   @typedoc "Date the user joined the guild"
   @type joined_at :: String.t

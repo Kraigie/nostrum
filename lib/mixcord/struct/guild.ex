@@ -44,13 +44,13 @@ defmodule Mixcord.Struct.Guild do
   @type default_message_notifications :: integer
 
   @typedoc "List of emojis as maps"
-  @type emojis :: list(Map.t)
+  @type emojis :: list(map)
 
   @typedoc "List of roles"
   @type roles :: list(Role.t)
 
   @typedoc "List of guild features"
-  @type features :: list(Map.t)
+  @type features :: list(map)
 
   @typedoc "Required MFA level of the guild"
   @type mfa_level :: integer
@@ -68,7 +68,7 @@ defmodule Mixcord.Struct.Guild do
   @type member_count :: integer
 
   @typedoc "List of voice states as maps"
-  @type voice_states :: list(Map.t)
+  @type voice_states :: list(map)
 
   @typedoc "List of members"
   @type members :: list(Member.t)
@@ -77,7 +77,7 @@ defmodule Mixcord.Struct.Guild do
   @type channels :: list(Channel.t)
 
   @typedoc "List of simple presence maps"
-  @type presences :: list(Map.t)
+  @type presences :: list(map)
 
   @type t :: %__MODULE__{
     id: id,
