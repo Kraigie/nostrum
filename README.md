@@ -1,55 +1,79 @@
 # Mixcord
 
-Mixcord is a wrapper for the Discord API made in [Elixir](http://elixir-lang.org/).
+An [Elixir](http://elixir-lang.org/) library for the Discord API.
 
-Mixcord currently supports the latest stable release of Elixir, v. 1.4. You can expect Mixcord to be updated beside Elixir for the forseeable future.
-
-Breaking changes should be expected to be made with every commit up until a stable version is released.
-We'll be loosely following [semver](http://semver.org/) when a stable branch is released.
-
-## Documentation
-Indev documentation can be found [here](https://kraigie.github.io/mixcord/).
-
-Stable documentation doesn't exist yet. :^)
+It is highly recommended to check out the
+[documentation](https://kraigie.github.io/mixcord/) first. It includes all of the
+information listed here and more.
 
 ## Installation
+ 1. First add Mixcord as a dependency:
 
-Mixcord is not currently available on Hex and will not be available until the requirements outlined [here](https://github.com/Kraigie/mixcord/projects/1) are complete.
+ **Dev**
+```Elixir
+def deps do
+  [{:mixcord, git: "https://github.com/Kraigie/mixcord.git"}]
+end
+```
 
-Mixcord can be installed as:
+  **Stable**
+```elixir
+def deps do
+  [{:mixcord, "~> 1.0"]
+end
+```
 
-  1. Add `mixcord` to your list of dependencies in `mix.exs`:
+ 2. Ensure Mixcord is started before your application:
+```elixir
+def application do
+  [applications: [:mixcord]]
+end
+```
 
-      Indev
-      ```elixir
-      def deps do
-        [{:mixcord, git: "https://github.com/Kraigie/mixcord.git"}]
-      end
-      ```
+ 3. Lastly, edit or create your config file:
+The file should be located at `/config/config.exs`. To run Mixcord you need the
+following two fields:
+```Elixir
+config :mixcord,
+  token: 666, # The token of your bot as a string
+  num_shards: 2 # The number of shards you want to run your bot under.
+```
 
-  2. Ensure `mixcord` is started before your application:
+For more information about the differences between dev and stable as well as
+additional config parameters, please see the
+[documentation](https://kraigie.github.io/mixcord/).
 
-    ```elixir
-    def application do
-      [applications: [:mixcord]]
+## Example Usage
+```Elixir
+defmodule ExampleConsumer do
+  use Mixcord.Shard.Dispatch.Consumer
+  alias Mixcord.Api
+
+  def start_link do
+    Consumer.start_link(__MODULE__)
+  end
+
+  def handle_event({:MESSAGE_CREATE, {msg}, _ws_state}, state) do
+    case msg.content do
+      "ping!" ->
+        Api.create_message(msg.channel.id, "I copy and pasted this code")
+      _ ->
+        :ignore
     end
-    ```
 
-  3. Create/edit your `config.exs` file to include the following information:
-    ```elixir
-      config :mixcord,
-        token: "YOUR_API_TOKEN_HERE",
-        num_shards: integer # In the future this will be changed to optionally automatically detect the correct number of shards.
-    ```
+    {:ok, state}
+  end
 
-    By default the library will throw out a lot of debug information. If you
-    want to ignore this information, change the logging level of logger.
-    ```elixir
-      config :logger,
-        level: :warn
-    ```
+  # Default event handler, if you don't include this, your consumer WILL crash if
+  # you don't have a method definition for each event type.
+  def handle_event(_, state) do
+    {:ok, state}
+  end
+end
+```
 
-To update your version of Mixcord simply run `mix deps.update mixcord`
+## Contributing
+TODO
 
-## Example
-A simple example bot can be found [here](https://github.com/Kraigie/mixbot)
+## License
+[MIT](https://opensource.org/licenses/MIT)

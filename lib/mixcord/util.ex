@@ -5,7 +5,7 @@ defmodule Mixcord.Util do
 
   alias Mixcord.{Api, Constants}
   alias Mixcord.Cache.CacheSupervisor
-  
+
   require Logger
 
   @doc """
@@ -131,7 +131,7 @@ defmodule Mixcord.Util do
   `Mixcord.Util.maybe_to_atom/1` function when they are in fact harmless.
   """
   def unused_atoms do
-    [recipients: "Ready payload"]
+    [recipients: "Ready", require_colons: "Ready", last_message_id: "Ready"]
   end
 
 end

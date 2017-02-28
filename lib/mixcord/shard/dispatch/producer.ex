@@ -4,7 +4,7 @@ defmodule Mixcord.Shard.Dispatch.Producer do
   use GenStage
 
   alias Mixcord.Shard.Dispatch
-  
+
   require Logger
 
   def start_link(id) do
