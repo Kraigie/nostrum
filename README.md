@@ -7,30 +7,31 @@ It is highly recommended to check out the
 information listed here and more.
 
 ## Installation
- 1. First add Mixcord as a dependency:
+Add Mixcord as a dependency:
 
- **Dev**
+ *Dev*
 ```Elixir
 def deps do
   [{:mixcord, git: "https://github.com/Kraigie/mixcord.git"}]
 end
 ```
 
-  **Stable**
+ *Stable*
 ```elixir
 def deps do
   [{:mixcord, "~> 1.0"]
 end
 ```
 
- 2. Ensure Mixcord is started before your application:
+Ensure Mixcord is started before your application:
 ```elixir
 def application do
   [applications: [:mixcord]]
 end
 ```
 
- 3. Lastly, edit or create your config file:
+Edit or create your config file:
+
 The file should be located at `/config/config.exs`. To run Mixcord you need the
 following two fields:
 ```Elixir

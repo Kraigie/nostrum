@@ -53,30 +53,31 @@ anymore. Seeing as you can't have a package on Hex with a git dependency, the st
 version will not have close codes until the current implementation is tested and
 released on its own, or the maintainer of the fork decides to come back to life.
 
- 1. First add Mixcord as a dependency:
+Add Mixcord as a dependency:
 
- **Dev**
+ *Dev*
 ```Elixir
 def deps do
   [{:mixcord, git: "https://github.com/Kraigie/mixcord.git"}]
 end
 ```
 
-  **Stable**
+ *Stable*
 ```Elixir
 def deps do
   [{:mixcord, "~> 1.0"]
 end
 ```
 
- 2. Ensure Mixcord is started before your application:
+Ensure Mixcord is started before your application:
 ```
 def application do
   [applications: [:mixcord]]
 end
 ```
 
- 3. Lastly, edit or create your config file:
+Edit or create your config file:
+
 The file should be located at `/config/config.exs`. To run Mixcord you need the
 following two fields:
 ```Elixir
