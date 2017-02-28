@@ -549,31 +549,53 @@ defmodule Mixcord.Api do
     |> bangify
   end
 
+  @doc """
+  Delete a channel permission for a user or role.
+
+  Role or user overwrite to delete is specified by `channel_id` and `overwrite_id`.
+  """
+  @spec delete_channel_permissions(integer, integer) :: error | {:ok}
   def delete_channel_permissions(channel_id, overwrite_id) do
     request(:delete, Constants.channel_permission(channel_id, overwrite_id))
   end
 
-  def delete_channel_permissions!(channel_id, overwrite_id) do
-    delete_channel_permissions(channel_id, overwrite_id)
-    |> bangify
-  end
+  @doc """
+  Gets a list of invites for a channel.
 
+  Channel to get invites for is specified by `channel_id`
+  """
+  @spec get_channel_invites(integer) :: error | {:ok, [Mixcord.Struct.Invite]}
   def get_channel_invites(channel_id) do
-    request(:get, Constants.channel_invites(channel_id))
+    case request(:get, Constants.channel_invites(channel_id)) do
+      {:ok, body} ->
+        {:ok, Poison.decode!(body)}
+      other ->
+        other
+    end
   end
 
-  def get_channel_invites!(channel_id) do
-    get_channel_invites(channel_id)
-    |> bangify
-  end
+  @doc """
+  Creates an invite for a channel.
 
+  `options` is a kwl with the following optional keys:
+   * `max_age` - Duration of invite in seconds before expiry, or 0 for never
+   * `max_uses` - Max number of uses or 0 for unlimited.
+   * `temporary` - Whether the invite should grant temporary membership.
+   * `unique` - Used when creating unique one time use invites.
+  """
+  @spec create_channel_invite(integer, [
+      max_age: integer,
+      max_uses: integer,
+      temporary: boolean,
+      unique: boolean
+    ]) :: error | {:ok, Mixcord.Struct.Invite}
   def create_channel_invite(channel_id, options \\ %{}) do
-    request(:post, Constants.channel_invites(channel_id), options)
-  end
-
-  def create_channel_invite!(channel_id, options \\ %{}) do
-    create_channel_invite(channel_id, options)
-    |> bangify
+    case request(:post, Constants.channel_invites(channel_id), options) do
+      {:ok, body} ->
+        {:ok, Poison.decode!(body)}
+      other ->
+        other
+    end
   end
 
   @doc """
@@ -705,12 +727,12 @@ defmodule Mixcord.Api do
   end
 
   @doc """
-    Gets a guild using the REST api
+  Gets a guild using the REST api
 
-    Retrieves a guild with specified `guild_id`.
+  Retrieves a guild with specified `guild_id`.
 
-    Raises `Mixcord.Error.ApiError` if error occurs while making the rest call.
-    Returns `Mixcord.Struct.Guild.t` if successful.
+  Raises `Mixcord.Error.ApiError` if error occurs while making the rest call.
+  Returns `Mixcord.Struct.Guild.t` if successful.
   """
   @spec get_guild!(integer) :: no_return | Mixcord.Struct.Guild.t
   def get_guild!(guild_id) do
