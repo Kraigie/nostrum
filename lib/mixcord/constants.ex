@@ -1,7 +1,7 @@
 defmodule Mixcord.Constants do
   @moduledoc false
 
-  # TODO: https://gist.github.com/SinisterRectus/9518f3e7d0d1ccb4335b2a0d389c30b0
+  # REFERENCE: https://gist.github.com/SinisterRectus/9518f3e7d0d1ccb4335b2a0d389c30b0
   def base_url,                                                   do: "https://discordapp.com/api/v6"
   def gateway,                                                    do: "/gateway"
 

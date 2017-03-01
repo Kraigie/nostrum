@@ -24,6 +24,7 @@ defmodule Mixcord.Shard do
       {:ok, supervisor} = ProducerSupervisor.start_link(),
       {:ok, child_pid} = ProducerSupervisor.start_producer(supervisor, state.shard_num)
     do
+      :ets.insert(:shard_pid_num, {state.shard_num, self()})
       {:once, %{state | producer_pid: child_pid}}
     end
   end

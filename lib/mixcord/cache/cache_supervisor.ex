@@ -15,7 +15,7 @@ defmodule Mixcord.Cache.CacheSupervisor do
 
   def init(_args) do
     children = [
-      # TODO: If shard dies, should guilds die also? An attempt will be made to restart them
+      # REVIEW: If shard dies, should guilds die also? An attempt will be made to restart them
       supervisor(Registry, [:unique, GuildRegistry]),
       supervisor(Mixcord.Cache.Guild.GuildSupervisor, []),
       worker(Mixcord.Cache.ChannelCache, []),

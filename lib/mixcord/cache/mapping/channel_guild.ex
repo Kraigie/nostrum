@@ -6,6 +6,10 @@ defmodule Mixcord.Cache.Mapping.ChannelGuild do
   belongs to. This mapping is an ETS table that stores this information.
   """
 
+  @doc """
+  Gets a `guild_id` from a `channel_id`.
+  """
+  @spec get_guild(integer) :: integer
   def get_guild(channel_id) do
     :ets.lookup_element(:channel_guild_map, channel_id, 2)
   end

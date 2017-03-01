@@ -2,7 +2,7 @@ defmodule Mixcord.Shard.ShardSupervisor do
   @moduledoc false
 
   use Supervisor
-  
+
   alias Mixcord.Shard
 
   def start_link(token, num_shards \\ 1) do
@@ -24,7 +24,6 @@ defmodule Mixcord.Shard.ShardSupervisor do
 
   @doc false
   def create_worker(token, shard_num) do
-    # TODO: Add shard struct to map here with PID
     worker(Shard, [token, shard_num], [id: shard_num])
   end
 

@@ -124,7 +124,7 @@ defmodule Mixcord.Struct.Guild do
     :emojis,
     :features,
     :mfa_level,
-    :joined_at, # TODO: How is this being calculated? I imagine it's a string, maybe we can parse it?
+    :joined_at, # REVIEW: How is this being calculated? I imagine it's a string, maybe we can parse it?
     :large,
     :unavailable,
     :member_count,
