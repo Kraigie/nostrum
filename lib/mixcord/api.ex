@@ -564,7 +564,7 @@ defmodule Mixcord.Api do
 
   Channel to get invites for is specified by `channel_id`
   """
-  @spec get_channel_invites(integer) :: error | {:ok, [Mixcord.Struct.Invite]}
+  @spec get_channel_invites(integer) :: error | {:ok, [Mixcord.Struct.Invite.t]}
   def get_channel_invites(channel_id) do
     case request(:get, Constants.channel_invites(channel_id)) do
       {:ok, body} ->
@@ -588,7 +588,7 @@ defmodule Mixcord.Api do
       max_uses: integer,
       temporary: boolean,
       unique: boolean
-    ]) :: error | {:ok, Mixcord.Struct.Invite}
+    ]) :: error | {:ok, Mixcord.Struct.Invite.t}
   def create_channel_invite(channel_id, options \\ %{}) do
     case request(:post, Constants.channel_invites(channel_id), options) do
       {:ok, body} ->
@@ -825,80 +825,275 @@ defmodule Mixcord.Api do
     request(:get, Constants.guild_invites(guild_id))
   end
 
+  @doc """
+  Gets a list of guild integerations.
+
+  Guild to get integrations for is specified by `guild_id`.
+  """
+  @spec get_guild_integrations(integer) :: error | {:ok, [Mixcord.Struct.Guild.Integration.t]}
   def get_guild_integrations(guild_id) do
     request(:get, Constants.guild_integrations(guild_id))
   end
 
+  @doc """
+  Creates a new guild integeration.
+
+  Guild to create integration with is specified by `guild_id`.
+
+  `options` is a map with the following requires keys:
+   * `type` - Integration type.
+   * `id` - Integeration id.
+  """
+  @spec create_guild_integrations(integer, %{
+      type: String.t,
+      id: integer
+    }) :: error | {:ok}
   def create_guild_integrations(guild_id, options) do
     request(:post, Constants.guild_integrations(guild_id), options)
   end
 
+  @doc """
+  Changes the settings and behaviours for a guild integeration.
+
+  Integration to modify is specified by `guild_id` and `integeration_id`.
+
+  `options` is a map with the following keys:
+   * `expire_behavior` - Expiry behavior.
+   * `expire_grace_period` - Period where the integration will ignore elapsed subs.
+   * `enable_emoticons` - Whether emoticons should be synced.
+  """
+  @spec modify_guild_integrations(integer, integer, %{
+      expire_behaviour: integer,
+      expire_grace_period: integer,
+      enable_emoticons: boolean
+    }) :: error | {:ok}
   def modify_guild_integrations(guild_id, integration_id, options) do
     request(:patch, Constants.guild_integration(guild_id, integration_id), options)
   end
 
+  @doc """
+  Deletes a guild integeration.
+
+  Integration to delete is specified by `guild_id` and `integeration_id`.
+  """
+  @spec delete_guild_integrations(integer, integer) :: error | {:ok}
   def delete_guild_integrations(guild_id, integration_id) do
     request(:delete, Constants.guild_integration(guild_id, integration_id))
   end
 
+  @doc """
+  Syncs a guild integration.
+
+  Integration to sync is specified by `guild_id` and `integeration_id`.
+  """
+  @spec sync_guild_integrations(integer, integer) :: error | {:ok}
   def sync_guild_integrations(guild_id, integration_id) do
     request(:post, Constants.guild_integration_sync(guild_id, integration_id))
   end
 
+  @doc """
+  Gets a guild embed.
+  """
+  @spec get_guild_embed(integer) :: error | {:ok, map}
   def get_guild_embed(guild_id) do
     request(:get, Constants.guild_embed(guild_id))
   end
 
-  def modify_guild_embed(guild_id) do
-    request(:patch, Constants.guild_embed(guild_id))
+  @doc """
+  Modifies a guild imbed.
+  """
+  @spec modify_guild_embed(integer, map) :: error | {:ok, map}
+  def modify_guild_embed(guild_id, options) do
+    case request(:patch, Constants.guild_embed(guild_id), options) do
+      {:ok, body} ->
+        {:ok, Poison.decode!(body)}
+      other ->
+        other
+    end
   end
 
+  @doc """
+  Gets an invite.
+
+  Invite to get is specified by `invite_code`.
+  """
+  @spec get_invite(integer) :: error | {:ok, Mixcord.Struct.Invite.t}
   def get_invite(invite_code) do
-    request(:get, Constants.invite(invite_code))
+    case request(:get, Constants.invite(invite_code)) do
+      {:ok, body} ->
+        {:ok, Poison.decode!(body)}
+      other ->
+        other
+    end
   end
 
+  @doc """
+  Deletes an invite.
+
+  Invite to delete is specified by `invite_code`.
+  """
+  @spec delete_invite(integer) :: error | {:ok, Mixcord.Struct.Invite.t}
   def delete_invite(invite_code) do
-    request(:delete, Constants.invite(invite_code))
+    case request(:delete, Constants.invite(invite_code)) do
+      {:ok, body} ->
+        {:ok, Poison.decode!(body)}
+      other ->
+        other
+    end
   end
 
+  @doc """
+  Accepts an invite.
+
+  Not available to bot accounts. Invite to accept is specified by `invite_code`.
+  """
+  @spec accept_invite(integer) :: error | {:ok, Mixcord.Struct.Invite.t}
   def accept_invite(invite_code) do
     request(:post, Constants.invite(invite_code))
   end
 
+  @doc """
+  Gets a user.
+
+  User to get is specified by `user_id`.
+  """
+  @spec get_user(integer) :: error | {:ok, Mixcord.Sturct.User.t}
   def get_user(user_id) do
     request(:get, Constants.user(user_id))
   end
 
+  @doc """
+  Gets info on the current user.
+  """
+  @spec get_current_user() :: error | {:ok, Mixcord.Struct.User.t}
   def get_current_user do
-    request(:get, Constants.me)
+    case request(:get, Constants.me) do
+      {:ok, body} ->
+        {:ok, Poison.decode!(body)}
+      other ->
+        other
+    end
   end
 
-  def modify_current_user do
-     request(:patch, Constants.me)
+  @doc """
+  Changes the username or avatar of the current user.
+
+  **Example**
+  ```Elixir
+  avatar = %{avatar: "data:image/jpeg;base64," <> "YXl5IGJieSB1IGx1a2luIDQgc3VtIGZ1az8="}
+  {:ok, user} = Mixcord.Api.modify_current_user(avatar)
+  ```
+
+  `options` is a map with the following optional keys:
+   * `username` - New username.
+   * `avatar` - Base64 encoded image data, prepended with `data:image/jpeg;base64,`
+  """
+  def modify_current_user(options) do
+    case request(:patch, Constants.me, options) do
+      {:ok, body} ->
+        {:ok, Poison.decode!(body)}
+      other ->
+        other
+    end
   end
 
-  def get_current_users_guilds do
-    request(:get, Constants.me_guilds)
+  @doc """
+  Gets a list of guilds the user is currently in.
+
+  `options` is a map with the following optional keys:
+   * `before` - Get guilds before this ID.
+   * `after` - Get guilds after this ID.
+   * `limit` - Max number of guilds to return.
+  """
+  @spec get_current_users_guilds(%{
+    before: integer,
+    after: integer,
+    limit: integer
+    }) :: error | {:ok, [Mixcord.Struct.Guild.t]}
+  def get_current_users_guilds(options) do
+    case request(:get, Constants.me_guilds, options) do
+      {:ok, body} ->
+        {:ok, Poison.decode!(body)}
+      other ->
+        other
+    end
   end
 
+  @doc """
+  Leaves a guild.
+
+  Guild to leave is specified by `guild_id`.
+  """
+  @spec leave_guild(integer) :: error | {:ok}
   def leave_guild(guild_id) do
     request(:delete, Constants.me_guild(guild_id))
   end
 
+  @doc """
+  Gets a list of user DM channels.
+  """
+  @spec get_user_dms() :: error | {:ok, [Mixcord.Struct.DMChannel.t]}
   def get_user_dms do
-    request(:get, Constants.me_channels)
+    case request(:get, Constants.me_channels) do
+      {:ok, body} ->
+        {:ok, Poison.decode!(body)}
+      other ->
+        other
+    end
   end
 
-  def create_dm do
-    request(:post, Constants.me_channels)
+  @doc """
+  Creates a new DM channel.
+
+  Opens a DM channel with the user specified by `user_id`.
+  """
+  @spec create_dm(integer) :: error | {:ok, Mixcord.Struct.DMChannel.t}
+  def create_dm(user_id) do
+    case request(:post, Constants.me_channels, %{recipient_id: user_id}) do
+      {:ok, body} ->
+        {:ok, Poison.decode!(body)}
+      other ->
+        other
+    end
   end
 
+    @doc """
+    Creates a new group DM channel.
+    """
+    @spec create_group_dm([String.t], map) :: error | {:ok, Mixcord.Struct.DMChannel.t}
+    def create_group_dm(access_tokens, nicks) do
+      case request(:post, Constants.me_channels, %{access_tokens: access_tokens, nicks: nicks}) do
+        {:ok, body} ->
+          {:ok, Poison.decode!(body)}
+        other ->
+          other
+      end
+    end
+
+  @doc """
+  Gets a list of user connections.
+  """
+  @spec get_user_connections() :: error | {:ok, Mixcord.Struct.User.Connection.t}
   def get_user_connections do
-    request(:get, Constants.me_connections)
+    case request(:get, Constants.me_connections) do
+      {:ok, body} ->
+        {:ok, Poison.decode!(body)}
+      other ->
+        other
+    end
   end
 
+  @doc """
+  Gets a list of voice regions.
+  """
+  @spec list_voice_regions() :: error | {:ok, [Mixcord.Struct.VoiceRegion.t]}
   def list_voice_regions do
-    request(:get, Constants.regions)
+    case request(:get, Constants.regions) do
+      {:ok, body} ->
+        {:ok, Poison.decode!(body)}
+      other ->
+        other
+    end
   end
 
   # HTTPosion defaults to `""` for an empty body, so it's safe to do so here
