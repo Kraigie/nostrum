@@ -11,12 +11,6 @@ events it is up to you to define the `consumer` of the GenStage life cycle.
 To see the documentation on implementing that consumer, please see
 `Mixcord.Shard.Dispatch.Consumer`.
 
-## Implementation Details
-The following information will define the general procedure of dispatching events.
-
-If you disagree with anything listed below or would like to offer a suggestion on
-how it can be improved, please feel free to voice your opinion.
-
 ## Why GenStage?
 From the GenStage docs:
 > GenStage is a specification for exchanging events between producers and consumers.
@@ -32,6 +26,12 @@ scenes, but abstracts away dispatching the data and providing back-pressure.
 
 With the GenStage approach we have an OTP implementation of our required behaviour
 that gives us separate maintainable parts with back-pressure.
+
+## Implementation Details
+The following information will define the general procedure of dispatching events.
+
+If you disagree with anything listed below or would like to offer a suggestion on
+how it can be improved, please feel free to voice your opinion.
 
 ### Shard
 Every shard in the Mixcord application is ran as its own process. These shards

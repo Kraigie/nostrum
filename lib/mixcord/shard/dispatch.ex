@@ -61,6 +61,7 @@ defmodule Mixcord.Shard.Dispatch do
       |> Enum.each(fn member -> UserCache.create(member.user) end)
     end
 
+    :ets.insert(:guild_shard_map, {p.id, state.shard_num})
     Enum.each(p.channels, fn channel ->
       :ets.insert(:channel_guild_map, {channel.id, p.id})
     end)
@@ -75,8 +76,10 @@ defmodule Mixcord.Shard.Dispatch do
   def handle_event({:GUILD_UPDATE, p}, _state),
     do: GuildServer.update(p)
 
-  def handle_event({:GUILD_DELETE, p}, _state),
-    do: GuildServer.delete(p.id)
+  def handle_event({:GUILD_DELETE, p}, _state) do
+    :ets.delete(:guild_shard_map, p.id)
+    GuildServer.delete(p.id)
+  end
 
   def handle_event({:GUILD_EMOJIS_UPDATE, p}, _state),
     do: GuildServer.emoji_update(p.guild_id, p.emojis)

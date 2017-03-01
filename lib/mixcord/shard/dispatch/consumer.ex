@@ -20,11 +20,33 @@ defmodule Mixcord.Shard.Dispatch.Consumer do
   @doc """
   Callback used to handle events.
 
-  `Event` is the event name as an atom, and `ws_state` is the current state of
+  ### Event
+  `event` is a tuple describing the event. The tuple will include information in
+  the following format:
+  ```Elixir
+  {event_name, {event_payload(s)}, ws_state}
+  ```
+
+  For example, a message create will look like this
+  ```Elixir
+  {:MESSAGE_CREATE, {Mixcord.Struct.Message.t}, ws_state}
+  ```
+
+  In some cases there will be multiple payloads when something is updated, so as
+  to include the new and the old versions. In the event of there being two payloads,
+  the old payload will always be first, followed by the new payload.
+  ```Elixir
+  {:CHANNEL_UPDATE, {old :: Mixcord.Struct.Channel.t, new :: Mixcord.Struct.Channel.t}, ws_state}
+  ```
+
+  For a full listing of events, please see `Mixcord.Shard.Dispatch.Consumer.event`.
+
+  ### Websocket State
+  `ws_state` is the current state of
   the websocket that the event was received on. For more information on this please
   see `Mixcord.Shard.Payload.state_map.t`.
 
-  `from` is the process information of the producer from which the demand was received.
+  ### State
   `state` is the internal state of your consumer.
   """
   @callback handle_event(event, state) :: {:ok, map}
