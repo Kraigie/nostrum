@@ -15,7 +15,7 @@ defmodule Mixcord.Cache.UserCache do
   """
 
   use GenServer
-  
+
   alias Mixcord.Struct.User
   alias Mixcord.Util
 
@@ -46,7 +46,7 @@ defmodule Mixcord.Cache.UserCache do
   end
   ```
   """
-  @spec get(id: integer) :: {:ok, Mixcord.Struct.User.t} | {:error, atom}
+  @spec get(id: integer) :: {:error, atom} | {:ok, Mixcord.Struct.User.t}
   def get(id: id), do: lookup_as_struct(id)
 
   @doc """
@@ -57,7 +57,7 @@ defmodule Mixcord.Cache.UserCache do
   Returns `Mixcord.Struct.User.t` if found.
   Raises `Mixcord.Error.CahceError` if not found.
   """
-  @spec get!(id: integer) :: Mixcord.Struct.User.t | no_return
+  @spec get!(id: integer) :: no_return | Mixcord.Struct.User.t
   def get!(id: id) do
     get(id: id)
       |> Util.bangify_find(id, __MODULE__)

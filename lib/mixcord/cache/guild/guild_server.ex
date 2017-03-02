@@ -9,7 +9,7 @@ defmodule Mixcord.Cache.Guild.GuildServer do
   alias Mixcord.Struct.Guild.{Member, Role}
   alias Mixcord.Struct.{Channel, Emoji, Guild}
   alias Mixcord.{Shard, Util}
-  
+
   require Logger
 
   @doc false
@@ -28,8 +28,21 @@ defmodule Mixcord.Cache.Guild.GuildServer do
     end
   end
 
-  @spec get(id: integer) :: Mixcord.Struct.Guild.t
-  @spec get(message: Mixcord.Struct.Message.t) :: Mixcord.Struct.Guild.t
+  @doc ~S"""
+  Retrieves a guild from the cache.
+
+  Returns {:ok, `Mixcord.Struct.Guild.t`} if found, {:error, reason} otherwise.
+
+  **Example**
+  ```Elixir
+  case Mixcord.Cache.Guild.GuildServer.get(id: 1234567891234789) do
+    {:ok, guild} -> "Guild has #{length(guild.members)} members"
+    {:error, _reason} -> "Guild is MIA"
+  end
+  ```
+  """
+  @spec get([id: integer] | [message: Mixcord.Struct.Message.t]) ::
+  {:error, atom} | {:ok, Mixcord.Struct.Guild.t}
   def get(id: id) do
     case GuildRegister.lookup(id) do
       {:ok, pid} ->
@@ -58,6 +71,7 @@ defmodule Mixcord.Cache.Guild.GuildServer do
       |> Util.bangify_find(message, __MODULE__)
   end
 
+  @doc false
   def call(id, request) do
     with \
       {:ok, pid} <- GuildRegister.lookup(id),
@@ -66,6 +80,7 @@ defmodule Mixcord.Cache.Guild.GuildServer do
     do: {:ok, res}
   end
 
+  @doc false
   def create(%{unavailable: true} = guild) do
     :ets.insert(:unavailable_guilds, {guild.id, guild})
   end

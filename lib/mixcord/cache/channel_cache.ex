@@ -4,7 +4,7 @@ defmodule Mixcord.Cache.ChannelCache do
   """
 
   use GenServer
-  
+
   alias Mixcord.Util
 
   @type channel :: Mixcord.Struct.Channel.TextChannel.t | Mixcord.Struct.Channel.VoiceChannel.t
@@ -27,13 +27,16 @@ defmodule Mixcord.Cache.ChannelCache do
   end
 
   @doc false
-  def create(channel), do: {:ok, GenServer.call(ChannelCache, {:create, channel.id, channel})}
+  def create(channel),
+    do: {:ok, GenServer.call(ChannelCache, {:create, channel.id, channel})}
 
   @doc false
-  def update(channel), do: {:ok, GenServer.call(ChannelCache, {:update, channel.id, channel})}
+  def update(channel),
+    do: {:ok, GenServer.call(ChannelCache, {:update, channel.id, channel})}
 
   @doc false
-  def delete(channel), do: {:ok, GenServer.call(ChannelCache, {:delete, channel.id})}
+  def delete(channel),
+    do: {:ok, GenServer.call(ChannelCache, {:delete, channel.id})}
 
   # I'm willing to abuse `from` here to provide `async` searching if this turns out to be slow
   def handle_call({:get, id}, _from, state) do
