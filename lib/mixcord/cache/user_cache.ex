@@ -93,8 +93,18 @@ defmodule Mixcord.Cache.UserCache do
     end
   end
 
-  def handle_call({:create, id, user}, _from, state) do
+  def handle_call({:create, id, %{bot: _} = user}, _from, state) do
     :ets.insert(:users, insert(id, user))
+    {:reply, {User.to_struct(user)}, state}
+  end
+
+  def handle_call({:create, id, user}, _from, state) do
+    # We don't always get the `bot` key, so we'll force it in here.
+    # This allows us to lookup ets table by element as they're all guaranteed to
+    # be there.
+    # REVIEW: While, arbitrary, this looks to be deterministic.
+    # Relevant docs: http://erlang.org/doc/man/maps.html#to_list-1
+    :ets.insert(:users, insert(id, Map.put(user, :bot, false)))
     {:reply, {User.to_struct(user)}, state}
   end
 
@@ -123,6 +133,7 @@ defmodule Mixcord.Cache.UserCache do
     map
     |> remove_struct_key
     |> Map.to_list
+    # We'll have id key twice; Isn't an issue and allows us to have `id` as key.
     |> List.insert_at(0, {:id, id})
     |> List.to_tuple
   end

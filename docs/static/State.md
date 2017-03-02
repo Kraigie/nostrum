@@ -18,22 +18,18 @@ Please see `Mixcord.Cache.Guild.GuildServer` for more information on interacting
 guilds.
 
 ## Channels
-Channels are all stored in a single map in a single `GenServer`.
+DM channels are all stored in a single map in a single `GenServer`. Guild channels
+are stored in their respective guilds.
 
-Channels aren't important enought to have their own process per channel, and the
+Channels aren't important enough to have their own process per channel, and the
 current implementation is not done well, in the future this will likely be moved
 to an ETS backed cache like users are, but the interface will remain the same.
 
 Please see `Mixcord.Cache.ChannelCache` for more information on interacting with
-channels.
+channels. Though they're stored in different places, the interface hides that fact.
 
 ## Users
 Users are all stored in an ETS table, keyed off of their id.
-
-Not all fields are present in the User ETS table, so it is therefore unsafe to
-try and look up specific elements using `:ets.lookup_element/3`. This could be
-remedied by converting to a struct first, but it's currently unclear whether this
-tradeoff is worth it.
 
 To see the name of the ETS table associated with the user cache, and examples of
 interacting with it both directly and through the provided abstractions, please
