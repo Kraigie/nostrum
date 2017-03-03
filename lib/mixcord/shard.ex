@@ -12,8 +12,6 @@ defmodule Mixcord.Shard do
   @connect_wait 5500
 
   def start_link(token, shard_num) do
-    :crypto.start
-    :ssl.start
     # TODO: Queue reconnects/check this better
     if Util.num_shards > 1, do: Process.sleep(@connect_wait)
     :websocket_client.start_link(Util.gateway, __MODULE__, Payload.state_map(token, shard_num, self()))

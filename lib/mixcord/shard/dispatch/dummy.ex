@@ -17,7 +17,7 @@ end
 
 defmodule DummyConsumer do
   @moduledoc false
-  use Mixcord.Shard.Dispatch.Consumer
+  use Mixcord.Consumer
   require Logger
 
   def start_link do

@@ -9,7 +9,7 @@ implementation to handle dispatching events from the WS connection. To handle
 events it is up to you to define the `consumer` of the GenStage life cycle.
 
 To see the documentation on implementing that consumer, please see
-`Mixcord.Shard.Dispatch.Consumer`.
+`Mixcord.Consumer`.
 
 ## Why GenStage?
 From the GenStage docs:

@@ -47,7 +47,7 @@ additional config parameters, please see the
 ## Example Usage
 ```Elixir
 defmodule ExampleConsumer do
-  use Mixcord.Shard.Dispatch.Consumer
+  use Mixcord.Consumer
   alias Mixcord.Api
 
   def start_link do

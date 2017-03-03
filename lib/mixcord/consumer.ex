@@ -1,4 +1,4 @@
-defmodule Mixcord.Shard.Dispatch.Consumer do
+defmodule Mixcord.Consumer do
   @moduledoc """
   Consumer process for gateway event handling.
 
@@ -39,7 +39,7 @@ defmodule Mixcord.Shard.Dispatch.Consumer do
   {:CHANNEL_UPDATE, {old :: Mixcord.Struct.Channel.t, new :: Mixcord.Struct.Channel.t}, ws_state}
   ```
 
-  For a full listing of events, please see `Mixcord.Shard.Dispatch.Consumer.event`.
+  For a full listing of events, please see `Mixcord.Consumer.event`.
 
   ### Websocket State
   `ws_state` is the current state of
@@ -139,8 +139,8 @@ defmodule Mixcord.Shard.Dispatch.Consumer do
 
   defmacro __using__(_) do
     quote location: :keep do
-      @behaviour Mixcord.Shard.Dispatch.Consumer
-      alias Mixcord.Shard.Dispatch.Consumer
+      @behaviour Mixcord.Consumer
+      alias Mixcord.Consumer
 
       def handle_event(_event, state) do
         {:ok, state}

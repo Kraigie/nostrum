@@ -11,7 +11,7 @@ end
 
 defmodule ExampleConsumer do
 
-  use Mixcord.Shard.Dispatch.Consumer
+  use Mixcord.Consumer
 
   alias Mixcord.Api
 
