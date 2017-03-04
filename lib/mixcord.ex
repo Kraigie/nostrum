@@ -17,6 +17,7 @@ defmodule Mixcord do
 
     children = [
       worker(Mixcord.Api.Ratelimiter, []),
+      worker(Mixcord.Shard.Connector, []),
       supervisor(Mixcord.Cache.CacheSupervisor, []),
       supervisor(Mixcord.Shard.ShardSupervisor, [token, actual_num_shards])
     ]

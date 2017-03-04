@@ -6,15 +6,15 @@ defmodule Mixcord.Shard.ShardSupervisor do
   alias Mixcord.Shard
 
   def start_link(token, num_shards \\ 1) do
-        :crypto.start
-        :ssl.start
+    :crypto.start
+    :ssl.start
     Supervisor.start_link(__MODULE__, [token: token, num_shards: num_shards], name: ShardSupervisor)
   end
 
   def update_status(status, game) do
     Shard.Supervisor
-      |> Supervisor.which_children
-      |> Enum.map(fn {_id, pid, _type, _modules} -> Shard.update_status(pid, status, game) end)
+    |> Supervisor.which_children
+    |> Enum.map(fn {_id, pid, _type, _modules} -> Shard.update_status(pid, status, game) end)
   end
 
   @doc false

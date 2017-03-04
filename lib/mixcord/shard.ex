@@ -3,17 +3,14 @@ defmodule Mixcord.Shard do
 
   @behaviour :websocket_client
 
-  alias Mixcord.Shard.{Event, Payload}
+  alias Mixcord.Shard.{Connector, Event, Payload}
   alias Mixcord.Shard.Dispatch.ProducerSupervisor
   alias Mixcord.{Constants, Util}
 
   require Logger
 
-  @connect_wait 5500
-
   def start_link(token, shard_num) do
-    # TODO: Queue reconnects/check this better
-    if Util.num_shards > 1, do: Process.sleep(@connect_wait)
+    Connector.block_until_connect()
     :websocket_client.start_link(Util.gateway, __MODULE__, Payload.state_map(token, shard_num, self()))
   end
 
