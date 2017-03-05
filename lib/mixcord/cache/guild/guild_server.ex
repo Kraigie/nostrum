@@ -63,12 +63,12 @@ defmodule Nostrum.Cache.Guild.GuildServer do
 
   def get!(id: id) do
     get(id: id)
-      |> Util.bangify_find(id, __MODULE__)
+    |> Util.bangify_find(id, __MODULE__)
   end
 
   def get!(message: message) do
     get(message: message)
-      |> Util.bangify_find(message, __MODULE__)
+    |> Util.bangify_find(message, __MODULE__)
   end
 
   @doc false

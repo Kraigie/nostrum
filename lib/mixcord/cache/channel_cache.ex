@@ -23,7 +23,7 @@ defmodule Nostrum.Cache.ChannelCache do
   def get(id: id), do: GenServer.call(ChannelCache, {:get, id})
   def get!(id: id) do
     get(id: id)
-      |> Util.bangify_find(id, __MODULE__)
+    |> Util.bangify_find(id, __MODULE__)
   end
 
   @doc false

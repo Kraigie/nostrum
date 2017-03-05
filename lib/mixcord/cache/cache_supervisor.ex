@@ -9,8 +9,8 @@ defmodule Nostrum.Cache.CacheSupervisor do
 
   def empty_cache do
     Cache.Supervisor
-      |> Supervisor.which_children
-      |> Enum.map(fn {_id, pid, _type, _modules} -> Supervisor.restart_child(Cache.Supervisor, pid) end)
+    |> Supervisor.which_children
+    |> Enum.map(fn {_id, pid, _type, _modules} -> Supervisor.restart_child(Cache.Supervisor, pid) end)
   end
 
   def init(_args) do

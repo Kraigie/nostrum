@@ -226,12 +226,13 @@ defmodule Nostrum.Api do
   Create a rection for a message.
 
   Creates a reaction using an `emoji` for the message specified by `message_id` and
-  `channel_id`. `emoji` can be a `Nostrum.Struct.Emoji.custom_emoji.t` or a
-  base 16 unicode emoji string.
+  `channel_id`. `emoji` can be a `Nostrum.Struct.Emoji.custom_emoji.t`, a
+  base 16 unicode emoji string, or a uri encoded string.
 
   **Example**
   ```Elixir
   Nostrum.Api.create_reaction(123123123123, 321321321321, "\xF0\x9F\x98\x81")
+  Nostrum.Api.create_reaction(123123123123, 321321321321, URI.encode("\u2b50"))
   ```
 
   Returns `{:ok}` if successful, `{:error, reason}` otherwise.
@@ -494,7 +495,10 @@ defmodule Nostrum.Api do
   Deletes multiple messages from a channel.
 
   `messages` is a list of `Nostrum.Struct.Message.id` that you wish to delete.
+
+  This method can only delete messages sent within the last two weeks.
   """
+  # TODO: Fiter older messages internally
   @spec bulk_delete_messages(integer, [Nostrum.Struct.Message.id]) :: error | {:ok}
   def bulk_delete_messages(channel_id, messages) do
     request(:delete, Constants.channel_bulk_delete(channel_id), %{messages: messages})

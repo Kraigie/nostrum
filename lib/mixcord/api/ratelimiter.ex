@@ -5,7 +5,7 @@ defmodule Nostrum.Api.Ratelimiter do
 
   alias Nostrum.Api.{Base, Bucket}
   alias Nostrum.Util
-  
+
   require Logger
 
   @gregorian_epoch 62_167_219_200
@@ -28,9 +28,10 @@ defmodule Nostrum.Api.Ratelimiter do
       Task.start(fn -> wait_for_timeout(request, retry_time, original_from || from) end)
     else
       response = request.method
-        |> Base.request(request.route, request.body, request.headers, request.options)
-        |> handle_headers(major_parameter(request.route))
-        |> format_response
+      |> Base.request(request.route, request.body, request.headers, request.options)
+      |> handle_headers(major_parameter(request.route))
+      |> format_response
+
       GenServer.reply(original_from || from, response)
     end
 
@@ -43,10 +44,12 @@ defmodule Nostrum.Api.Ratelimiter do
     remaining = headers |> List.keyfind("X-RateLimit-Remaining", 0) |> value_from_rltuple
     reset = headers |> List.keyfind("X-RateLimit-Reset", 0) |> value_from_rltuple
     retry_after = headers |> List.keyfind("Retry-After", 0) |> value_from_rltuple
+
     origin_timestamp = headers
-      |> List.keyfind("Date", 0)
-      |> value_from_rltuple
-      |> date_string_to_unix
+    |> List.keyfind("Date", 0)
+    |> value_from_rltuple
+    |> date_string_to_unix
+
     latency = abs(origin_timestamp - Util.now)
 
     if global_limit do
@@ -75,9 +78,9 @@ defmodule Nostrum.Api.Ratelimiter do
 
   def date_string_to_unix(header) do
     header
-      |> String.to_charlist
-      |> :httpd_util.convert_request_date
-      |> erl_datetime_to_timestamp
+    |> String.to_charlist
+    |> :httpd_util.convert_request_date
+    |> erl_datetime_to_timestamp
   end
 
   defp erl_datetime_to_timestamp(datetime) do

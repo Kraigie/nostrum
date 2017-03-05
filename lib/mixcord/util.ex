@@ -22,7 +22,7 @@ defmodule Nostrum.Util do
   @spec now() :: integer
   def now do
     DateTime.utc_now
-      |> DateTime.to_unix(:milliseconds)
+    |> DateTime.to_unix(:milliseconds)
   end
 
   @doc """
@@ -31,7 +31,7 @@ defmodule Nostrum.Util do
   @spec now_iso() :: String.t
   def now_iso do
     DateTime.utc_now
-      |> DateTime.to_iso8601
+    |> DateTime.to_iso8601
   end
 
   @doc false
@@ -83,8 +83,10 @@ defmodule Nostrum.Util do
         raise(Nostrum.Error.ApiError, status_code: code, message: message)
       {:ok, body} ->
         body = Poison.decode!(body)
+
         url = body["url"] <> "?encoding=etf&v=6"
-          |> to_charlist
+        |> to_charlist
+        
         :ets.insert(:gateway_url, {"url", url})
         url
     end
@@ -120,7 +122,7 @@ defmodule Nostrum.Util do
     String.to_existing_atom(token)
   rescue
     _ ->
-      Logger.warn "Converting string to non-existing atom: #{token}"
+      Logger.debug "Converting string to non-existing atom: #{token}"
       String.to_atom(token)
   end
 
