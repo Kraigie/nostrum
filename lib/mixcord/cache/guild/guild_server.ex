@@ -179,7 +179,7 @@ defmodule Nostrum.Cache.Guild.GuildServer do
       member.user.id == user.id
     end)
     old_member =
-      case Enum.fetch(state.members, member_index) do
+      case Enum.fetch(state.members, member_index || length(state.members) + 1) do
         {:ok, old_member} -> old_member
         :error -> %{user: %{}, roles: []}
       end
@@ -193,7 +193,7 @@ defmodule Nostrum.Cache.Guild.GuildServer do
   def handle_call({:delete, :member, user}, _from, state) do
     member_index = Enum.find_index(state.members, fn member -> member.user.id == user.id end)
     deleted_member =
-      case Enum.fetch(state.members, member_index) do
+      case Enum.fetch(state.members, member_index || length(state.members) + 1) do
         {:ok, deleted_member} -> deleted_member
         :error -> %{}
       end
@@ -209,7 +209,7 @@ defmodule Nostrum.Cache.Guild.GuildServer do
   def handle_call({:update, :channel, channel}, _from, state) do
     channel_index = Enum.find_index(state.channels, fn g_channel -> g_channel.id == channel.id end)
     old_channel =
-      case Enum.fetch(state.channels, channel_index) do
+      case Enum.fetch(state.channels, channel_index || length(state.channels) + 1) do
         {:ok, channel} -> channel
         :error -> %{}
       end
@@ -221,13 +221,13 @@ defmodule Nostrum.Cache.Guild.GuildServer do
   end
 
   def handle_call({:delete, :channel, channel_id}, _from, state) do
-    role_index = Enum.find_index(state.channels, fn g_channel -> g_channel.id == channel_id end)
+    channel_index = Enum.find_index(state.channels, fn g_channel -> g_channel.id == channel_id end)
     old_channel =
-      case Enum.fetch(state.channels, role_index) do
+      case Enum.fetch(state.channels, channel_index || length(state.channels) + 1) do
         {:ok, channel} -> channel
         :error -> %{}
       end
-    channels = List.delete_at(state.channels, role_index)
+    channels = List.delete_at(state.channels, channel_index)
     {:reply, {Channel.to_struct(old_channel)}, %{state | channels: channels}}
   end
 
@@ -239,7 +239,7 @@ defmodule Nostrum.Cache.Guild.GuildServer do
   def handle_call({:update, :role, role}, _from, state) do
     role_index = Enum.find_index(state.roles, fn g_role -> g_role.id == role.id end)
     old_role =
-      case Enum.fetch(state.roles, role_index) do
+      case Enum.fetch(state.roles, role_index || length(state.roles) + 1) do
         {:ok, role} -> role
         :error -> %{}
       end
@@ -253,7 +253,7 @@ defmodule Nostrum.Cache.Guild.GuildServer do
   def handle_call({:delete, :role, role_id}, _from, state) do
     role_index = Enum.find_index(state.roles, fn g_role -> g_role.id == role_id end)
     old_role =
-      case Enum.fetch(state.roles, role_index) do
+      case Enum.fetch(state.roles, role_index || length(state.roles) + 1) do
         {:ok, role} -> role
         :error -> %{}
       end
