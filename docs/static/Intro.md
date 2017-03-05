@@ -9,9 +9,9 @@ to break these parts into smaller logical pieces.
 To see documentation about a specific part of the library, please visit one of
 the following -
 
- * [API](API.md) - Methods to interact with the RESTful API (and some other goodies).
- * [State](State.md) - `Caches` that hold the state of Discord that your bot can see.
- * [Events](Events.md) - How you can handle real time events that your bot can see.
+ * [API](API.html) - Methods to interact with the RESTful API (and some other goodies).
+ * [State](State.html) - `Caches` that hold the state of Discord that your bot can see.
+ * [Events](Events.html) - How you can handle real time events that your bot can see.
 
 ### Why Elixir?
 From the Elixir website -
