@@ -1,10 +1,10 @@
-defmodule Mixcord.Struct.Channel do
+defmodule Nostrum.Struct.Channel do
   @moduledoc """
   Functions to help work with different channel types.
   """
 
-  alias Mixcord.Struct.DMChannel
-  alias Mixcord.Struct.Guild.{TextChannel, VoiceChannel}
+  alias Nostrum.Struct.DMChannel
+  alias Nostrum.Struct.Guild.{TextChannel, VoiceChannel}
 
   @type t :: DMChannel.t | TestChannel.t | VoiceChannel.t
 

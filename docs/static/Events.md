@@ -4,12 +4,12 @@ sent from Discord over a websocket connection. By defining an event handler for
 an event, when something like a message is created or a channel is deleted, your
 application can perform an action as a result of that event.
 
-Mixcord currently uses a [GenStage](https://github.com/elixir-lang/gen_stage)
+Nostrum currently uses a [GenStage](https://github.com/elixir-lang/gen_stage)
 implementation to handle dispatching events from the WS connection. To handle
 events it is up to you to define the `consumer` of the GenStage life cycle.
 
 To see the documentation on implementing that consumer, please see
-`Mixcord.Consumer`.
+`Nostrum.Consumer`.
 
 ## Why GenStage?
 From the GenStage docs:
@@ -34,7 +34,7 @@ If you disagree with anything listed below or would like to offer a suggestion o
 how it can be improved, please feel free to voice your opinion.
 
 ### Shard
-Every shard in the Mixcord application is ran as its own process. These shards
+Every shard in the Nostrum application is ran as its own process. These shards
 are all run under the same supervisor. As part of the setup for each shard, it
 creates its own producer under a supervisor.
 
@@ -43,7 +43,7 @@ As events are sent to the shard, the following happens:
  the producer.
 
  2. If the event is a `Dispatch`, the payload is converted to a an atom-keyed map.
- This is done because over ETF (which Mixcord uses), map keys are sometimes
+ This is done because over ETF (which Nostrum uses), map keys are sometimes
  binaries and sometimes strings, making it a real headache. Additionally, with
  atom keys, we can use the `Map.key` notation. This is normally considered unsafe
  but a warning will be emitted if a key is unsafely converted to an atom. In this
@@ -69,7 +69,7 @@ dispatching the events.
 The consumer is implemented by the user. They can spawn any number of consumers
 which will in turn request events from the producers created by each shard.
 
-Mixcord wraps the GenStage module to provide a simpler interface for event handling.
+Nostrum wraps the GenStage module to provide a simpler interface for event handling.
 One of the benefits to this approach is that we can abstract away the manual linking
 of producer to consumer. Additionally, in the future if we had a reason for a
 `producer-consumer` it would be trivial to implement without breaking user code.

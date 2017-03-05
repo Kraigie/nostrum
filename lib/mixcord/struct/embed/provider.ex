@@ -1,4 +1,4 @@
-defmodule Mixcord.Struct.Embed.Provider do
+defmodule Nostrum.Struct.Embed.Provider do
   @moduledoc """
   Struct representing a Discord embed provider.
   """

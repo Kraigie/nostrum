@@ -1,4 +1,4 @@
-defmodule Mixcord.Struct.Emoji do
+defmodule Nostrum.Struct.Emoji do
   @moduledoc """
   Struct representing a Discord emoji.
   """

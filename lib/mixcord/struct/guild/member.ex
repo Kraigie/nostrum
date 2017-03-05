@@ -1,4 +1,4 @@
-defmodule Mixcord.Struct.Guild.Member do
+defmodule Nostrum.Struct.Guild.Member do
   @moduledoc """
   Struct representing a Discord guild member.
 
@@ -7,7 +7,7 @@ defmodule Mixcord.Struct.Guild.Member do
   A `member` has everything that a `user` has, but also additional information on a per guild basis. This includes things like a `nickname` and a list of `roles`.
   """
 
-  alias Mixcord.Struct.User
+  alias Nostrum.Struct.User
 
   @typedoc "Id of the guild the member is part of"
   @type guild_id :: integer

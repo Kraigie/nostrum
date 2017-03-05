@@ -1,11 +1,11 @@
-defmodule Mixcord.Shard do
+defmodule Nostrum.Shard do
   @moduledoc false
 
   @behaviour :websocket_client
 
-  alias Mixcord.Shard.{Connector, Event, Payload}
-  alias Mixcord.Shard.Dispatch.ProducerSupervisor
-  alias Mixcord.{Constants, Util}
+  alias Nostrum.Shard.{Connector, Event, Payload}
+  alias Nostrum.Shard.Dispatch.ProducerSupervisor
+  alias Nostrum.{Constants, Util}
 
   require Logger
 

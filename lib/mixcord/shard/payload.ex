@@ -1,9 +1,9 @@
-defmodule Mixcord.Shard.Payload do
+defmodule Nostrum.Shard.Payload do
   @moduledoc """
   Specifies maps to be used for WS payloads.. and also the state map.
   """
 
-  alias Mixcord.{Constants, Util}
+  alias Nostrum.{Constants, Util}
 
   @large_threshold 250
 
@@ -49,8 +49,8 @@ defmodule Mixcord.Shard.Payload do
       "token" => state.token,
       "properties" => %{
         "$os" => Atom.to_string(os) <> " " <> Atom.to_string(name),
-        "$browser" => "Mixcord",
-        "$device" => "Mixcord",
+        "$browser" => "Nostrum",
+        "$device" => "Nostrum",
         "$referrer" => "",
         "$referring_domain" => ""
       },

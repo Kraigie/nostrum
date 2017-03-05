@@ -1,4 +1,4 @@
-defmodule MixcordTest do
+defmodule NostrumTest do
   use ExUnit.Case
-  doctest Mixcord
+  doctest Nostrum
 end

@@ -1,4 +1,4 @@
-defmodule Mixcord.Cache.Mapping.ShardPidNum do
+defmodule Nostrum.Cache.Mapping.ShardPidNum do
   @moduledoc """
   Simple mapping of shard pid to num
   """

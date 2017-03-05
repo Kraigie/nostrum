@@ -1,8 +1,8 @@
-defmodule Mixcord.Cache.Guild.GuildRegister do
+defmodule Nostrum.Cache.Guild.GuildRegister do
   @moduledoc false
 
-  alias Mixcord.Cache.Guild.GuildServer
-  alias Mixcord.Struct.Guild
+  alias Nostrum.Cache.Guild.GuildServer
+  alias Nostrum.Struct.Guild
   alias Supervisor.Spec
 
   def lookup(id) do
@@ -19,7 +19,7 @@ defmodule Mixcord.Cache.Guild.GuildRegister do
       [{pid, _}] ->
         pid
       [] ->
-        raise(Mixcord.Error.CacheError, "No entry in guild registry for id #{id}")
+        raise(Nostrum.Error.CacheError, "No entry in guild registry for id #{id}")
     end
   end
 

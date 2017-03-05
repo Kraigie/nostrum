@@ -1,3 +1,3 @@
-defmodule Mixcord.Struct.Invite.Channel do
+defmodule Nostrum.Struct.Invite.Channel do
 
 end

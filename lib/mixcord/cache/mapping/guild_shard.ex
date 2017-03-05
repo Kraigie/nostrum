@@ -1,4 +1,4 @@
-defmodule Mixcord.Cache.Mapping.GuildShard do
+defmodule Nostrum.Cache.Mapping.GuildShard do
   @moduledoc """
   Mapping of guild -> shard relationships.
 

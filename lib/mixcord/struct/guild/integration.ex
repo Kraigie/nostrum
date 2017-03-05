@@ -1,3 +1,3 @@
-defmodule Mixcord.Struct.Guild.Integration do
+defmodule Nostrum.Struct.Guild.Integration do
 
 end

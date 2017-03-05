@@ -1,10 +1,10 @@
-defmodule Mixcord.Util do
+defmodule Nostrum.Util do
   @moduledoc """
   Utility functions
   """
 
-  alias Mixcord.{Api, Constants}
-  alias Mixcord.Cache.CacheSupervisor
+  alias Nostrum.{Api, Constants}
+  alias Nostrum.Cache.CacheSupervisor
 
   require Logger
 
@@ -47,7 +47,7 @@ defmodule Mixcord.Util do
   """
   @spec num_shards() :: integer
   def num_shards do
-    Application.get_env(:mixcord, :num_shards)
+    Application.get_env(:nostrum, :num_shards)
   end
 
   @doc false
@@ -56,9 +56,9 @@ defmodule Mixcord.Util do
       {:ok, res} ->
         res
       {:error} ->
-        raise(Mixcord.Error.CacheError, finding: find, cache_name: cache_name)
+        raise(Nostrum.Error.CacheError, finding: find, cache_name: cache_name)
       {:error, _other} ->
-        raise(Mixcord.Error.CacheError, finding: find, cache_name: cache_name)
+        raise(Nostrum.Error.CacheError, finding: find, cache_name: cache_name)
     end
   end
 
@@ -80,7 +80,7 @@ defmodule Mixcord.Util do
   defp get_new_gateway_url do
     case Api.request(:get, Constants.gateway, "") do
       {:error, %{status_code: code, message: message}} ->
-        raise(Mixcord.Error.ApiError, status_code: code, message: message)
+        raise(Nostrum.Error.ApiError, status_code: code, message: message)
       {:ok, body} ->
         body = Poison.decode!(body)
         url = body["url"] <> "?encoding=etf&v=6"
@@ -128,7 +128,7 @@ defmodule Mixcord.Util do
   Since we're being sacrilegious and converting strings to atoms from the WS, there will be some
   atoms that we see that aren't defined in any Discord structs. This method mainly serves as a
   means to define those atoms once so the user isn't warned about them in the
-  `Mixcord.Util.maybe_to_atom/1` function when they are in fact harmless.
+  `Nostrum.Util.maybe_to_atom/1` function when they are in fact harmless.
   """
   def unused_atoms do
     [recipients: "Ready", require_colons: "Ready", last_message_id: "Ready"]

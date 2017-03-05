@@ -1,9 +1,9 @@
-defmodule Mixcord.Struct.DMChannel do
+defmodule Nostrum.Struct.DMChannel do
   @moduledoc """
   Struct representing a Discord direct message channel.
   """
 
-  alias Mixcord.Struct.User
+  alias Nostrum.Struct.User
 
   @typedoc "The channel's id"
   @type id :: integer

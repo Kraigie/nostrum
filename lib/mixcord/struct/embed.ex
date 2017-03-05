@@ -1,11 +1,11 @@
-defmodule Mixcord.Struct.Embed do
+defmodule Nostrum.Struct.Embed do
   @moduledoc """
   Struct representing a Discord embed.
   """
 
-  alias Mixcord.Struct.Embed.{Author, Field, Footer, Image,
+  alias Nostrum.Struct.Embed.{Author, Field, Footer, Image,
     Provider, Thumbnail, Video}
-  alias Mixcord.Util
+  alias Nostrum.Util
 
   @typedoc "Title of the embed"
   @type title :: String.t

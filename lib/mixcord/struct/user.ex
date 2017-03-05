@@ -1,4 +1,4 @@
-defmodule Mixcord.Struct.User do
+defmodule Nostrum.Struct.User do
   @moduledoc """
   Struct representing a Discord user.
 

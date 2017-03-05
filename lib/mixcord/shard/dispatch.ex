@@ -1,8 +1,8 @@
-defmodule Mixcord.Shard.Dispatch do
+defmodule Nostrum.Shard.Dispatch do
   @moduledoc false
 
-  alias Mixcord.Cache.{ChannelCache, UserCache}
-  alias Mixcord.Cache.Guild.GuildServer
+  alias Nostrum.Cache.{ChannelCache, UserCache}
+  alias Nostrum.Cache.Guild.GuildServer
 
   require Logger
 

@@ -1,10 +1,10 @@
-defmodule Mixcord.Api.Ratelimiter do
+defmodule Nostrum.Api.Ratelimiter do
   @moduledoc false
 
   use GenServer
 
-  alias Mixcord.Api.{Base, Bucket}
-  alias Mixcord.Util
+  alias Nostrum.Api.{Base, Bucket}
+  alias Nostrum.Util
   
   require Logger
 

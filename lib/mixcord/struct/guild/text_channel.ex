@@ -1,10 +1,10 @@
-defmodule Mixcord.Struct.Guild.TextChannel do
+defmodule Nostrum.Struct.Guild.TextChannel do
   @moduledoc """
   Struct representing a Discord text channel.
   """
 
-  alias Mixcord.Struct.Overwrite
-  alias Mixcord.Util
+  alias Nostrum.Struct.Overwrite
+  alias Nostrum.Util
 
   @typedoc "The channe's id"
   @type id :: integer

@@ -1,4 +1,4 @@
-defmodule Mixcord.Struct.Embed.Footer do
+defmodule Nostrum.Struct.Embed.Footer do
   @moduledoc """
   Struct representing a Discord embed footer.
   """

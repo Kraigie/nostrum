@@ -1,12 +1,12 @@
-defmodule Mixcord.Api.Base do
+defmodule Nostrum.Api.Base do
   @moduledoc false
 
-  @version Mixcord.Mixfile.project[:version]
-  @token Application.get_env(:mixcord, :token)
+  @version Nostrum.Mixfile.project[:version]
+  @token Application.get_env(:nostrum, :token)
 
   use HTTPoison.Base
 
-  alias Mixcord.Constants
+  alias Nostrum.Constants
 
   defp process_url(url) do
     Constants.base_url <> url
@@ -22,7 +22,7 @@ defmodule Mixcord.Api.Base do
     do: Poison.encode!(body)
 
   defp process_request_headers(headers) do
-    user_agent = [{"User-Agent", "DiscordBot (https://github.com/kraigie/mixcord, #{@version})"} | headers]
+    user_agent = [{"User-Agent", "DiscordBot (https://github.com/kraigie/nostrum, #{@version})"} | headers]
     auth = [{"Authorization", "Bot #{@token}"} | user_agent]
     auth
   end

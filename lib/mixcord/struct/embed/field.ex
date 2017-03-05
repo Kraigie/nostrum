@@ -1,4 +1,4 @@
-defmodule Mixcord.Struct.Embed.Field do
+defmodule Nostrum.Struct.Embed.Field do
   @moduledoc """
   Struct representing a Discord embed field.
   """

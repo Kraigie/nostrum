@@ -1,9 +1,9 @@
-defmodule Mixcord.Mixfile do
+defmodule Nostrum.Mixfile do
   use Mix.Project
 
   def project do
     [
-      app: :mixcord,
+      app: :nostrum,
       version: "0.1.0",
       elixir: "~> 1.4",
       build_embedded: Mix.env == :prod,
@@ -11,8 +11,8 @@ defmodule Mixcord.Mixfile do
       description: "An elixir Discord library",
       package: package(),
       name: "Elixir",
-      source_url: "https://github.com/kraigie/mixcord",
-      homepage_url: "https://github.com/kraigie/mixcord",
+      source_url: "https://github.com/kraigie/nostrum",
+      homepage_url: "https://github.com/kraigie/nostrum",
       deps: deps(),
       docs: docs()
     ]
@@ -21,7 +21,7 @@ defmodule Mixcord.Mixfile do
   def application do
     [
       extra_applications: [:logger],
-      mod: {Mixcord, []}
+      mod: {Nostrum, []}
     ]
   end
 
@@ -41,11 +41,11 @@ defmodule Mixcord.Mixfile do
 
   def package do
     [
-      name: :mixcord,
+      name: :nostrum,
       licenses: ["MIT"],
       maintainers: ["Craig Dazey"],
-      links: %{"GitHub" => "https://github.com/Kraigie/mixcord/",
-              "Docs" => "https://kraigie.github.io/mixcord/"}
+      links: %{"GitHub" => "https://github.com/Kraigie/nostrum/",
+              "Docs" => "https://kraigie.github.io/nostrum/"}
     ]
   end
 

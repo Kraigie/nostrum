@@ -1,4 +1,4 @@
-defmodule Mixcord.Cache.CacheSupervisor do
+defmodule Nostrum.Cache.CacheSupervisor do
   @moduledoc false
 
   use Supervisor
@@ -17,9 +17,9 @@ defmodule Mixcord.Cache.CacheSupervisor do
     children = [
       # REVIEW: If shard dies, should guilds die also? An attempt will be made to restart them
       supervisor(Registry, [:unique, GuildRegistry]),
-      supervisor(Mixcord.Cache.Guild.GuildSupervisor, []),
-      worker(Mixcord.Cache.ChannelCache, []),
-      worker(Mixcord.Cache.UserCache, [])
+      supervisor(Nostrum.Cache.Guild.GuildSupervisor, []),
+      worker(Nostrum.Cache.ChannelCache, []),
+      worker(Nostrum.Cache.UserCache, [])
     ]
 
     supervise(children, strategy: :one_for_one)

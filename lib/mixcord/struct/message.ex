@@ -1,12 +1,12 @@
-defmodule Mixcord.Struct.Message do
+defmodule Nostrum.Struct.Message do
   @moduledoc """
   Struct representing a Discord message.
   """
 
-  alias Mixcord.Struct.Guild.Role
-  alias Mixcord.Struct.Message.Attachment
-  alias Mixcord.Struct.User
-  alias Mixcord.Util
+  alias Nostrum.Struct.Guild.Role
+  alias Nostrum.Struct.Message.Attachment
+  alias Nostrum.Struct.User
+  alias Nostrum.Util
 
   @typedoc "The id of the message"
   @type id :: integer

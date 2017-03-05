@@ -1,9 +1,9 @@
-defmodule Mixcord.Shard.Connector do
+defmodule Nostrum.Shard.Connector do
   @moduledoc false
 
   use GenServer
 
-  alias Mixcord.Util
+  alias Nostrum.Util
 
   require Logger
 

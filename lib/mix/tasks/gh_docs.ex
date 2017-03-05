@@ -1,7 +1,7 @@
 defmodule Mix.Tasks.GhDocs do
   use Mix.Task
 
-  @remote_push_url "https://github.com/Kraigie/mixcord"
+  @remote_push_url "https://github.com/Kraigie/nostrum"
 
   defp run!(command) do
     if Mix.shell.cmd(command) != 0 do

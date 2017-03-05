@@ -1,4 +1,4 @@
-defmodule Mixcord.Struct.Message.Reaction do
+defmodule Nostrum.Struct.Message.Reaction do
   @moduledoc """
   Struct representing a Discord message reaction.
   """

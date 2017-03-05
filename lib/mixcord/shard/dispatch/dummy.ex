@@ -17,7 +17,7 @@ end
 
 defmodule DummyConsumer do
   @moduledoc false
-  use Mixcord.Consumer
+  use Nostrum.Consumer
   require Logger
 
   def start_link do
@@ -41,7 +41,7 @@ defmodule DummyConsumerOld do
   end
 
   def init(:ok) do
-    {:consumer, :ok, subscribe_to: [Mixcord.Shard.Dispatch.Producer]}
+    {:consumer, :ok, subscribe_to: [Nostrum.Shard.Dispatch.Producer]}
   end
 
   def handle_events(events, _from, state) do

@@ -1,4 +1,4 @@
-defmodule Mixcord do
+defmodule Nostrum do
   @moduledoc false
 
   use Application
@@ -7,8 +7,8 @@ defmodule Mixcord do
   def start(_, _) do
     import Supervisor.Spec
 
-    token = Application.get_env(:mixcord, :token)
-    num_shards = Application.get_env(:mixcord, :num_shards)
+    token = Application.get_env(:nostrum, :token)
+    num_shards = Application.get_env(:nostrum, :num_shards)
 
     if !token, do: raise "Please supply a token"
     actual_num_shards = if num_shards, do: num_shards, else: 1
@@ -16,13 +16,13 @@ defmodule Mixcord do
     setup_ets_tables()
 
     children = [
-      worker(Mixcord.Api.Ratelimiter, []),
-      worker(Mixcord.Shard.Connector, []),
-      supervisor(Mixcord.Cache.CacheSupervisor, []),
-      supervisor(Mixcord.Shard.ShardSupervisor, [token, actual_num_shards])
+      worker(Nostrum.Api.Ratelimiter, []),
+      worker(Nostrum.Shard.Connector, []),
+      supervisor(Nostrum.Cache.CacheSupervisor, []),
+      supervisor(Nostrum.Shard.ShardSupervisor, [token, actual_num_shards])
     ]
 
-    if Application.get_env(:mixcord, :dev, nil) do
+    if Application.get_env(:nostrum, :dev, nil) do
       Supervisor.start_link(children ++ [supervisor(Dummy, [])], strategy: :one_for_one)
     else
       Supervisor.start_link(children, strategy: :one_for_one)

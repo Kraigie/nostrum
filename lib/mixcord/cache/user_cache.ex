@@ -1,4 +1,4 @@
-defmodule Mixcord.Cache.UserCache do
+defmodule Nostrum.Cache.UserCache do
   @moduledoc """
   Cache for users.
 
@@ -16,8 +16,8 @@ defmodule Mixcord.Cache.UserCache do
 
   use GenServer
 
-  alias Mixcord.Struct.User
-  alias Mixcord.Util
+  alias Nostrum.Struct.User
+  alias Nostrum.Util
 
   @doc false
   def start_link do
@@ -34,11 +34,11 @@ defmodule Mixcord.Cache.UserCache do
 
   `get/1` requires a keyword list as its only argument.
 
-  Returns {:ok, Mixcord.Struct.User.t} if found, {:error, atom} otherwise.
+  Returns {:ok, Nostrum.Struct.User.t} if found, {:error, atom} otherwise.
 
   **Example**
   ```elixir
-  case Mixcord.Cache.User.get(id: 1111222233334444) do
+  case Nostrum.Cache.User.get(id: 1111222233334444) do
     {:ok, user} ->
       "We found " <> user.username
     {:error, _reason} ->
@@ -46,7 +46,7 @@ defmodule Mixcord.Cache.UserCache do
   end
   ```
   """
-  @spec get(id: integer) :: {:error, atom} | {:ok, Mixcord.Struct.User.t}
+  @spec get(id: integer) :: {:error, atom} | {:ok, Nostrum.Struct.User.t}
   def get(id: id), do: lookup_as_struct(id)
 
   @doc """
@@ -54,10 +54,10 @@ defmodule Mixcord.Cache.UserCache do
 
   See `get/1` for use and examples.
 
-  Returns `Mixcord.Struct.User.t` if found.
-  Raises `Mixcord.Error.CahceError` if not found.
+  Returns `Nostrum.Struct.User.t` if found.
+  Raises `Nostrum.Error.CahceError` if not found.
   """
-  @spec get!(id: integer) :: no_return | Mixcord.Struct.User.t
+  @spec get!(id: integer) :: no_return | Nostrum.Struct.User.t
   def get!(id: id) do
     get(id: id)
       |> Util.bangify_find(id, __MODULE__)

@@ -1,13 +1,13 @@
-defmodule Mixcord.Cache.ChannelCache do
+defmodule Nostrum.Cache.ChannelCache do
   @moduledoc """
   Cache for ChannelCache.
   """
 
   use GenServer
 
-  alias Mixcord.Util
+  alias Nostrum.Util
 
-  @type channel :: Mixcord.Struct.Channel.TextChannel.t | Mixcord.Struct.Channel.VoiceChannel.t
+  @type channel :: Nostrum.Struct.Channel.TextChannel.t | Nostrum.Struct.Channel.VoiceChannel.t
 
   @doc false
   def start_link do
@@ -19,7 +19,7 @@ defmodule Mixcord.Cache.ChannelCache do
   end
 
   @spec get(id: integer) :: channel
-  @spec get(message: Mixcord.Struct.Message.t) :: channel
+  @spec get(message: Nostrum.Struct.Message.t) :: channel
   def get(id: id), do: GenServer.call(ChannelCache, {:get, id})
   def get!(id: id) do
     get(id: id)

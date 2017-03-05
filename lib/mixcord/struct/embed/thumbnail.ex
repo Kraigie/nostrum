@@ -1,4 +1,4 @@
-defmodule Mixcord.Struct.Embed.Thumbnail do
+defmodule Nostrum.Struct.Embed.Thumbnail do
   @moduledoc """
   Struct representing a Discord embed thumbnail.
   """

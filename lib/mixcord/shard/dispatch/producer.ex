@@ -1,9 +1,9 @@
-defmodule Mixcord.Shard.Dispatch.Producer do
+defmodule Nostrum.Shard.Dispatch.Producer do
   @moduledoc false
 
   use GenStage
 
-  alias Mixcord.Shard.Dispatch
+  alias Nostrum.Shard.Dispatch
 
   require Logger
 

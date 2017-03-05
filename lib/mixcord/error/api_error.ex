@@ -1,4 +1,4 @@
-defmodule Mixcord.Error.ApiError do
+defmodule Nostrum.Error.ApiError do
   @moduledoc """
   Represents a failed response from the API.
 

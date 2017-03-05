@@ -1,4 +1,4 @@
-defmodule Mixcord.Constants do
+defmodule Nostrum.Constants do
   @moduledoc false
 
   # REFERENCE: https://gist.github.com/SinisterRectus/9518f3e7d0d1ccb4335b2a0d389c30b0

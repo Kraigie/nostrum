@@ -1,4 +1,4 @@
-defmodule Mixcord.Struct.Embed.Author do
+defmodule Nostrum.Struct.Embed.Author do
   @moduledoc """
   Struct representing a Discord embed author.
   """

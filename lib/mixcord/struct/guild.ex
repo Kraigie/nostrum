@@ -1,11 +1,11 @@
-defmodule Mixcord.Struct.Guild do
+defmodule Nostrum.Struct.Guild do
   @moduledoc """
   Struct representing a Discord guild.
   """
 
-  alias Mixcord.Struct.{Channel, Emoji}
-  alias Mixcord.Struct.Guild.{Member, Role, UnavailableGuild}
-  alias Mixcord.Util
+  alias Nostrum.Struct.{Channel, Emoji}
+  alias Nostrum.Struct.Guild.{Member, Role, UnavailableGuild}
+  alias Nostrum.Util
 
   @typedoc "The guild's id"
   @type id :: integer

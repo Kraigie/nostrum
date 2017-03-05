@@ -1,15 +1,15 @@
-defmodule Mixcord.Consumer do
+defmodule Nostrum.Consumer do
   @moduledoc """
   Consumer process for gateway event handling.
 
   # Consuming Gateway Events
-  To handle events, Mixcord uses a GenStage implementation. GenStage is "new" with
+  To handle events, Nostrum uses a GenStage implementation. GenStage is "new" with
   Elixir version 1.4, expanding on the old functionality of GenEvent.
 
-  Mixcord defines the `producer` in the GenStage design. To consume the events you must
+  Nostrum defines the `producer` in the GenStage design. To consume the events you must
   create at least one `consumer` process. For
   an example of this behaviour please see
-  [here](https://github.com/Kraigie/mixcord/blob/84502606f570d27dd4450d95a88a796839369bfb/examples/event_consumer.ex).
+  [here](https://github.com/Kraigie/nostrum/blob/84502606f570d27dd4450d95a88a796839369bfb/examples/event_consumer.ex).
 
   It is generally recommended that you spawn a consumer per core. To find this
   number you can use `System.schedulers_online/0`.
@@ -29,22 +29,22 @@ defmodule Mixcord.Consumer do
 
   For example, a message create will look like this
   ```Elixir
-  {:MESSAGE_CREATE, {Mixcord.Struct.Message.t}, ws_state}
+  {:MESSAGE_CREATE, {Nostrum.Struct.Message.t}, ws_state}
   ```
 
   In some cases there will be multiple payloads when something is updated, so as
   to include the new and the old versions. In the event of there being two payloads,
   the old payload will always be first, followed by the new payload.
   ```Elixir
-  {:CHANNEL_UPDATE, {old :: Mixcord.Struct.Channel.t, new :: Mixcord.Struct.Channel.t}, ws_state}
+  {:CHANNEL_UPDATE, {old :: Nostrum.Struct.Channel.t, new :: Nostrum.Struct.Channel.t}, ws_state}
   ```
 
-  For a full listing of events, please see `Mixcord.Consumer.event`.
+  For a full listing of events, please see `Nostrum.Consumer.event`.
 
   ### Websocket State
   `ws_state` is the current state of
   the websocket that the event was received on. For more information on this please
-  see `Mixcord.Shard.Payload.state_map.t`.
+  see `Nostrum.Shard.Payload.state_map.t`.
 
   ### State
   `state` is the internal state of your consumer.
@@ -69,29 +69,29 @@ defmodule Mixcord.Consumer do
   """
   @type state :: map
 
-  @type channel_create :: {:CHANNEL_CREATE, {Mixcord.Struct.Channel.t}, ws_state}
-  @type channel_delete :: {:CHANNEL_DELETE, {Mixcord.Struct.Channel.t}, ws_state}
-  @type channel_update :: {:CHANNEL_UPDATE, {old_channel :: Mixcord.Struct.Channel.t, new_channel :: Mixcord.Struct.Channel.t}, ws_state}
+  @type channel_create :: {:CHANNEL_CREATE, {Nostrum.Struct.Channel.t}, ws_state}
+  @type channel_delete :: {:CHANNEL_DELETE, {Nostrum.Struct.Channel.t}, ws_state}
+  @type channel_update :: {:CHANNEL_UPDATE, {old_channel :: Nostrum.Struct.Channel.t, new_channel :: Nostrum.Struct.Channel.t}, ws_state}
   @type channel_pins_ack :: {:CHANNEL_PINS_ACK, {map}, ws_state}
   @type channel_pins_update :: {:CHANNEL_PINS_UPDATE, {map}, ws_state}
-  @type guild_ban_add :: {:GUILD_BAN_ADD, {Mixcord.Struct.User.t}, ws_state}
-  @type build_ban_remove :: {:GUILD_BAN_REMOVE, {Mixcord.Struct.User.t}, ws_state}
-  @type guild_create :: {:GUILD_CREATE, {new_guild :: Mixcord.Struct.Guild.t}, ws_state}
-  @type guild_update :: {:GUILD_CREATE, {old_guild :: Mixcord.Struct.Guild.t, new_guild :: Mixcord.Struct.Guild.t}, ws_state}
-  @type guild_delete :: {:GUILD_DELETE, {old_guild :: Mixcord.Struct.Guild.t}, ws_state}
-  @type guild_emojis_update :: {:GUILD_EMOJIS_UPDATE, {old_emojis :: [Mixcord.Struct.Message.Emoji.t],  new_emojis :: [Mixcord.Struct.Message.Emoji.t]}, ws_state}
+  @type guild_ban_add :: {:GUILD_BAN_ADD, {Nostrum.Struct.User.t}, ws_state}
+  @type build_ban_remove :: {:GUILD_BAN_REMOVE, {Nostrum.Struct.User.t}, ws_state}
+  @type guild_create :: {:GUILD_CREATE, {new_guild :: Nostrum.Struct.Guild.t}, ws_state}
+  @type guild_update :: {:GUILD_CREATE, {old_guild :: Nostrum.Struct.Guild.t, new_guild :: Nostrum.Struct.Guild.t}, ws_state}
+  @type guild_delete :: {:GUILD_DELETE, {old_guild :: Nostrum.Struct.Guild.t}, ws_state}
+  @type guild_emojis_update :: {:GUILD_EMOJIS_UPDATE, {old_emojis :: [Nostrum.Struct.Message.Emoji.t],  new_emojis :: [Nostrum.Struct.Message.Emoji.t]}, ws_state}
   @type guild_integrations_update :: {:GUILD_INTEGERATIONS_UPDATE, {map}, ws_state}
-  @type guild_member_add :: {:GUILD_MEMBER_ADD, {new_member :: Mixcord.Struct.Guild.Member.t}, ws_state}
+  @type guild_member_add :: {:GUILD_MEMBER_ADD, {new_member :: Nostrum.Struct.Guild.Member.t}, ws_state}
   @type guild_members_chunk :: {:GUILD_MEMBERS_CHUNK, {map}, ws_state}
-  @type guild_member_remove :: {:GUILD_MEMBER_REMOVE, {old_member :: Mixcord.Struct.Guild.Member.t}, ws_state}
-  @type guild_member_update :: {:GUILD_MEMBER_UPDATE, {old_member :: Mixcord.Struct.Guild.Member.t, new_member :: Mixcord.Struct.Guild.Member.t}, ws_state}
-  @type guild_role_create :: {:GUILD_ROLE_CREATE, {new_role :: Mixcord.Struct.Guild.Role.t}, ws_state}
-  @type guild_role_delete :: {:GUILD_ROLE_DELETE, {old_role :: Mixcord.Struct.Guild.Role.t}, ws_state}
-  @type guild_role_update :: {:GUILD_ROLE_UPDATE, {old_role :: Mixcord.Struct.Guild.Role.t, new_role :: Mixcord.Struct.Guild.Role.t}, ws_state}
-  @type message_create :: {:MESSAGE_CREATE, {message :: Mixcord.Struct.Message.t}, ws_state}
-  @type message_delete :: {:MESSAGE_DELETE, {message :: Mixcord.Struct.Message.t}, ws_state}
-  @type message_delete_bulk :: {:MESSAGE_DELETE_BULK, {updated_messages :: [Mixcord.Struct.Message.t]}, ws_state}
-  @type message_update :: {:MESSAGE_UPDATE, {updated_message :: Mixcord.Struct.Message.t}, ws_state}
+  @type guild_member_remove :: {:GUILD_MEMBER_REMOVE, {old_member :: Nostrum.Struct.Guild.Member.t}, ws_state}
+  @type guild_member_update :: {:GUILD_MEMBER_UPDATE, {old_member :: Nostrum.Struct.Guild.Member.t, new_member :: Nostrum.Struct.Guild.Member.t}, ws_state}
+  @type guild_role_create :: {:GUILD_ROLE_CREATE, {new_role :: Nostrum.Struct.Guild.Role.t}, ws_state}
+  @type guild_role_delete :: {:GUILD_ROLE_DELETE, {old_role :: Nostrum.Struct.Guild.Role.t}, ws_state}
+  @type guild_role_update :: {:GUILD_ROLE_UPDATE, {old_role :: Nostrum.Struct.Guild.Role.t, new_role :: Nostrum.Struct.Guild.Role.t}, ws_state}
+  @type message_create :: {:MESSAGE_CREATE, {message :: Nostrum.Struct.Message.t}, ws_state}
+  @type message_delete :: {:MESSAGE_DELETE, {message :: Nostrum.Struct.Message.t}, ws_state}
+  @type message_delete_bulk :: {:MESSAGE_DELETE_BULK, {updated_messages :: [Nostrum.Struct.Message.t]}, ws_state}
+  @type message_update :: {:MESSAGE_UPDATE, {updated_message :: Nostrum.Struct.Message.t}, ws_state}
   @type message_reaction_add :: {:MESSAGE_REACTION_ADD, map}
   @type message_reaction_remove :: {:MESSAGE_REACTION_REMOVE, map}
   @type presence_update :: {:PRESENCE_UPDATE, {map}, ws_state}
@@ -99,7 +99,7 @@ defmodule Mixcord.Consumer do
   @type resumed :: {:RESUMED, {map}, ws_state}
   @type typing_start :: {:TYPING_START, {map}, ws_state}
   @type user_settings_update :: no_return
-  @type user_update :: {:USER_UPDATE, {old_user :: Mixcord.Struct.User.t, new_user :: Mixcord.Struct.User.t}, ws_state}
+  @type user_update :: {:USER_UPDATE, {old_user :: Nostrum.Struct.User.t, new_user :: Nostrum.Struct.User.t}, ws_state}
   @type voice_state_update :: {:VOICE_STATE_UPDATE, {map}, ws_state}
   @type voice_server_update :: {:VOICE_SERVER_UPDATE, {map}, ws_state}
 
@@ -139,8 +139,8 @@ defmodule Mixcord.Consumer do
 
   defmacro __using__(_) do
     quote location: :keep do
-      @behaviour Mixcord.Consumer
-      alias Mixcord.Consumer
+      @behaviour Nostrum.Consumer
+      alias Nostrum.Consumer
 
       def handle_event(_event, state) do
         {:ok, state}

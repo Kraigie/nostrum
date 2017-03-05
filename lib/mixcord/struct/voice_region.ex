@@ -1,3 +1,3 @@
-defmodule Mixcord.Struct.VoiceRegion do
+defmodule Nostrum.Struct.VoiceRegion do
 
 end

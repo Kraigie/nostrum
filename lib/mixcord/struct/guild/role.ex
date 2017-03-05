@@ -1,4 +1,4 @@
-defmodule Mixcord.Struct.Guild.Role do
+defmodule Nostrum.Struct.Guild.Role do
   @moduledoc """
   Struct representing a Discord role.
   """

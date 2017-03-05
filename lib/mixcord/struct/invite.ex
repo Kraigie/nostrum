@@ -1,10 +1,10 @@
-defmodule Mixcord.Struct.Invite do
+defmodule Nostrum.Struct.Invite do
   @moduledoc """
   Struct representing a Discord invite.
   """
 
-  alias Mixcord.Struct.Invite.{Channel, Guild}
-  alias Mixcord.Struct.User
+  alias Nostrum.Struct.Invite.{Channel, Guild}
+  alias Nostrum.Struct.User
 
   @typedoc "Invite code"
   @type code :: String.t

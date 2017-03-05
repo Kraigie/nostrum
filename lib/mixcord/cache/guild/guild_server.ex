@@ -1,14 +1,14 @@
-defmodule Mixcord.Cache.Guild.GuildServer do
+defmodule Nostrum.Cache.Guild.GuildServer do
   @moduledoc """
   Module for interacting with Guild Servers.
   """
 
   use GenServer
 
-  alias Mixcord.Cache.Guild.GuildRegister
-  alias Mixcord.Struct.Guild.{Member, Role}
-  alias Mixcord.Struct.{Channel, Emoji, Guild}
-  alias Mixcord.{Shard, Util}
+  alias Nostrum.Cache.Guild.GuildRegister
+  alias Nostrum.Struct.Guild.{Member, Role}
+  alias Nostrum.Struct.{Channel, Emoji, Guild}
+  alias Nostrum.{Shard, Util}
 
   require Logger
 
@@ -31,18 +31,18 @@ defmodule Mixcord.Cache.Guild.GuildServer do
   @doc ~S"""
   Retrieves a guild from the cache.
 
-  Returns {:ok, `Mixcord.Struct.Guild.t`} if found, {:error, reason} otherwise.
+  Returns {:ok, `Nostrum.Struct.Guild.t`} if found, {:error, reason} otherwise.
 
   **Example**
   ```Elixir
-  case Mixcord.Cache.Guild.GuildServer.get(id: 1234567891234789) do
+  case Nostrum.Cache.Guild.GuildServer.get(id: 1234567891234789) do
     {:ok, guild} -> "Guild has #{length(guild.members)} members"
     {:error, _reason} -> "Guild is MIA"
   end
   ```
   """
-  @spec get([id: integer] | [message: Mixcord.Struct.Message.t]) ::
-  {:error, atom} | {:ok, Mixcord.Struct.Guild.t}
+  @spec get([id: integer] | [message: Nostrum.Struct.Message.t]) ::
+  {:error, atom} | {:ok, Nostrum.Struct.Guild.t}
   def get(id: id) do
     case GuildRegister.lookup(id) do
       {:ok, pid} ->

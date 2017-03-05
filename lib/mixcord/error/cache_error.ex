@@ -1,4 +1,4 @@
-defmodule Mixcord.Error.CacheError do
+defmodule Nostrum.Error.CacheError do
   @moduledoc """
   Represents an error when interacting with the cache.
 

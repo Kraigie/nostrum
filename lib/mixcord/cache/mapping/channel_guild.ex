@@ -1,4 +1,4 @@
-defmodule Mixcord.Cache.Mapping.ChannelGuild do
+defmodule Nostrum.Cache.Mapping.ChannelGuild do
   @moduledoc """
   Mapping of channel -> guild relationships.
 

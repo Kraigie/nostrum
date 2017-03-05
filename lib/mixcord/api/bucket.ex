@@ -1,7 +1,7 @@
-defmodule Mixcord.Api.Bucket do
+defmodule Nostrum.Api.Bucket do
   @moduledoc false
 
-  alias Mixcord.Util
+  alias Nostrum.Util
 
   def create_bucket(route, remaining, reset_time, latency) do
     :ets.insert(:ratelimit_buckets, {route, remaining, reset_time, latency})

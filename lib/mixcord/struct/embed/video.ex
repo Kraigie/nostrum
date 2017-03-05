@@ -1,4 +1,4 @@
-defmodule Mixcord.Struct.Embed.Video do
+defmodule Nostrum.Struct.Embed.Video do
   @moduledoc """
   Struct representing a Discord embed video.
   """

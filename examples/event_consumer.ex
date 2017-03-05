@@ -11,9 +11,9 @@ end
 
 defmodule ExampleConsumer do
 
-  use Mixcord.Consumer
+  use Nostrum.Consumer
 
-  alias Mixcord.Api
+  alias Nostrum.Api
 
   require Logger
 

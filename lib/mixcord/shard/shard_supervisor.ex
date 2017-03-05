@@ -1,9 +1,9 @@
-defmodule Mixcord.Shard.ShardSupervisor do
+defmodule Nostrum.Shard.ShardSupervisor do
   @moduledoc false
 
   use Supervisor
 
-  alias Mixcord.Shard
+  alias Nostrum.Shard
 
   def start_link(token, num_shards \\ 1) do
     :crypto.start

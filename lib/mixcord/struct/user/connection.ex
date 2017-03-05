@@ -1,3 +1,3 @@
-defmodule Mixcord.Struct.User.Connection do
+defmodule Nostrum.Struct.User.Connection do
 
 end

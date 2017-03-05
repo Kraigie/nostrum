@@ -1,54 +1,54 @@
-# Mixcord
+# Nostrum
 
 An [Elixir](http://elixir-lang.org/) library for the Discord API.
 
 It is highly recommended to check out the
-[documentation](https://kraigie.github.io/mixcord/) first. It includes all of the
+[documentation](https://kraigie.github.io/nostrum/) first. It includes all of the
 information listed here and more.
 
 ## Installation
-Add Mixcord as a dependency:
+Add Nostrum as a dependency:
 
  *Dev*
 ```Elixir
 def deps do
-  [{:mixcord, git: "https://github.com/Kraigie/mixcord.git"}]
+  [{:nostrum, git: "https://github.com/Kraigie/nostrum.git"}]
 end
 ```
 
  *Stable*
 ```elixir
 def deps do
-  [{:mixcord, "~> 1.0"]
+  [{:nostrum, "~> 1.0"]
 end
 ```
 
-Ensure Mixcord is started before your application:
+Ensure Nostrum is started before your application:
 ```elixir
 def application do
-  [applications: [:mixcord]]
+  [applications: [:nostrum]]
 end
 ```
 
 Edit or create your config file:
 
-The file should be located at `/config/config.exs`. To run Mixcord you need the
+The file should be located at `/config/config.exs`. To run Nostrum you need the
 following two fields:
 ```Elixir
-config :mixcord,
+config :nostrum,
   token: 666, # The token of your bot as a string
   num_shards: 2 # The number of shards you want to run your bot under.
 ```
 
 For more information about the differences between dev and stable as well as
 additional config parameters, please see the
-[documentation](https://kraigie.github.io/mixcord/).
+[documentation](https://kraigie.github.io/nostrum/).
 
 ## Example Usage
 ```Elixir
 defmodule ExampleConsumer do
-  use Mixcord.Consumer
-  alias Mixcord.Api
+  use Nostrum.Consumer
+  alias Nostrum.Api
 
   def start_link do
     Consumer.start_link(__MODULE__)

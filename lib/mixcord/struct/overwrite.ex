@@ -1,4 +1,4 @@
-defmodule Mixcord.Struct.Overwrite do
+defmodule Nostrum.Struct.Overwrite do
   @moduledoc """
   Struct representing a Discord overwrite.
   """
