@@ -975,7 +975,7 @@ defmodule Nostrum.Api do
     end
   end
 
-  @doc """
+  @doc ~S"""
   Changes the username or avatar of the current user.
 
   **Example**

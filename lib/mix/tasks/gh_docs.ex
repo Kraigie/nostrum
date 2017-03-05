@@ -1,4 +1,8 @@
 defmodule Mix.Tasks.GhDocs do
+  @moduledoc """
+  Task that pushes docs to gh-pages branch on Discord. 
+  """
+
   use Mix.Task
 
   @remote_push_url "https://github.com/Kraigie/nostrum"
