@@ -41,8 +41,11 @@ defmodule Nostrum.Api do
   ```
   """
 
+  use Bitwise
+
   alias Nostrum.{Constants, Shard}
   alias Nostrum.Shard.ShardSupervisor
+  alias Nostrum.Util
 
   @typedoc """
   Represents a failed response from the API.
@@ -497,11 +500,22 @@ defmodule Nostrum.Api do
   `messages` is a list of `Nostrum.Struct.Message.id` that you wish to delete.
 
   This method can only delete messages sent within the last two weeks.
+  `Filter` is an optional parameter that specifies whether messages sent over
+  two weeks ago should be filtered out; defaults to `true`.
   """
-  # TODO: Fiter older messages internally
-  @spec bulk_delete_messages(integer, [Nostrum.Struct.Message.id]) :: error | {:ok}
-  def bulk_delete_messages(channel_id, messages) do
-    request(:delete, Constants.channel_bulk_delete(channel_id), %{messages: messages})
+  @spec bulk_delete_messages(integer, [Nostrum.Struct.Message.id], boolean) :: error | {:ok}
+  def bulk_delete_messages(channel_id, messages, filter \\ true)
+  def bulk_delete_messages(channel_id, messages, false), do:
+    request(:post, Constants.channel_bulk_delete(channel_id), %{messages: messages})
+  def bulk_delete_messages(channel_id, messages, true) do
+    filter_before =
+      ((Util.now() - 14 * 24 * 60 * 60) * 1000 - 1_420_070_400_000) <<< 22
+
+    filtered_messages = Enum.filter(messages, fn message_id ->
+      message_id > filter_before
+    end)
+
+    request(:post, Constants.channel_bulk_delete(channel_id), %{messages: filtered_messages})
   end
 
   @doc """
@@ -511,9 +525,9 @@ defmodule Nostrum.Api do
 
   Raises `Nostrum.Error.ApiError` if error occurs while making the rest call.
   """
-  @spec bulk_delete_messages(integer, [Nostrum.Struct.Message.id]) :: no_return | {:ok}
-  def bulk_delete_messages!(channel_id, messages) do
-    bulk_delete_messages(channel_id, messages)
+  @spec bulk_delete_messages!(integer, [Nostrum.Struct.Message.id], boolean) :: no_return | {:ok}
+  def bulk_delete_messages!(channel_id, messages, filter \\ true) do
+    bulk_delete_messages(channel_id, messages, filter)
     |> bangify
   end
 
