@@ -21,7 +21,7 @@ An earlier implementation sent the dispatch events from the websocket directly t
 user defined handlers inside of a task. This was okay, but it made handling the
 events internally a bit difficult as we would either need to block the main shard
 process or daisy chain tasks together. We could use a simple GenServer approach,
-but at that point, why not just use GenStage? GenStage users GenServer behind the
+but at that point, why not just use GenStage? GenStage uses GenServer behind the
 scenes, but abstracts away dispatching the data and providing back-pressure.
 
 With the GenStage approach we have an OTP implementation of our required behaviour
@@ -39,7 +39,7 @@ are all run under the same supervisor. As part of the setup for each shard, it
 creates its own producer under a supervisor.
 
 As events are sent to the shard, the following happens:
- 1. Shard looks to see what type of event it is, only dispatch events are send to
+ 1. Shard looks to see what type of event it is, only dispatch events are sent to
  the producer.
 
  2. If the event is a `Dispatch`, the payload is converted to a an atom-keyed map.
