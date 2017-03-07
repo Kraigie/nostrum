@@ -42,7 +42,7 @@ As events are sent to the shard, the following happens:
  1. Shard looks to see what type of event it is, only dispatch events are sent to
  the producer.
 
- 2. If the event is a `Dispatch`, the payload is converted to a an atom-keyed map.
+ 2. If the event is a `Dispatch`, the payload is converted to an atom-keyed map.
  This is done because over ETF (which Nostrum uses), map keys are sometimes
  binaries and sometimes strings, making it a real headache. Additionally, with
  atom keys, we can use the `Map.key` notation. This is normally considered unsafe
