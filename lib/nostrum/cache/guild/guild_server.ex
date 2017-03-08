@@ -41,7 +41,7 @@ defmodule Nostrum.Cache.Guild.GuildServer do
   end
   ```
   """
-  @spec get([id: integer] | [message: Nostrum.Struct.Message.t]) ::
+  @spec get(id: integer | Nostrum.Struct.Message.t) ::
   {:error, atom} | {:ok, Nostrum.Struct.Guild.t}
   def get(id: id) do
     case GuildRegister.lookup(id) do
@@ -52,8 +52,12 @@ defmodule Nostrum.Cache.Guild.GuildServer do
     end
   end
 
-  def get(message: message) do
-    case GuildRegister.lookup(message.channel.guild_id) do
+  def get(%Nostrum.Struct.Message{channel_id: channel_id}) do
+    case \
+      channel_id
+      |> Nostrum.Cache.Mapping.ChannelGuild
+      |> GuildRegister.lookup
+    do
       {:ok, pid} ->
         {:ok, GenServer.call(pid, {:get, :guild})}
       error ->

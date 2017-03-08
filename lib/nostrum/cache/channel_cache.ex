@@ -18,9 +18,14 @@ defmodule Nostrum.Cache.ChannelCache do
     {:ok, state}
   end
 
-  @spec get(id: integer) :: channel
-  @spec get(message: Nostrum.Struct.Message.t) :: channel
+  @doc ~S"""
+  Retrieves a channel from the cache.
+  """
+  # TODO: Change to DM only cache or handle getting channels from guild processes.
+  @spec get(id: integer | Nostrum.Struct.Message.t) :: channel
   def get(id: id), do: GenServer.call(ChannelCache, {:get, id})
+  def get(%Nostrum.Struct.Message{channel_id: channel_id}), do: get(id: channel_id)
+
   def get!(id: id) do
     get(id: id)
     |> Util.bangify_find(id, __MODULE__)
