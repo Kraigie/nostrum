@@ -758,89 +758,433 @@ defmodule Nostrum.Api do
     |> bangify
   end
 
+  @doc """
+  Modify a guild's settings.
+
+  `options` is a map with the following optional keys:
+   * `name` - Guild name.
+   * `region` - Guild voice region id.
+   * `verification_level` - Guild verification level.
+   * `default_message_notifications` - Notifications setting.
+   * `afk_channel_id` - Id for afk channel.
+   * `afk_timeout` - Afk timeout in seconds.
+   * `icon` - Base64 encoded 128x128 jpeg image for guild icon.
+   * `owner_id` - User id to transfer guild ownership to.
+   * `splash` - Base64 encoded 128x128 jpeg image for guild splash.
+  """
+  @spec edit_guild(integer, %{
+      name: String.t,
+      region: String.t,
+      verification_level: integer,
+      default_message_notifications: boolean,
+      afk_channel_id: integer,
+      afk_timeout: integer,
+      icon: String.t,
+      owner_id: integer,
+      splash: String.t
+    }) :: error | {:ok, Nostrum.Struct.Guild.t}
   def edit_guild(guild_id, options) do
-    request(:patch, Constants.guild(guild_id), options)
+    case request(:patch, Constants.guild(guild_id), options) do
+      {:ok, body} ->
+        {:ok, Poison.decode!(body)}
+      other ->
+        other
+    end
   end
 
+  @doc """
+  Deletes a guild.
+
+  Guild to delete specified by `guild_id`.
+  """
+  @spec delete_guild(integer) :: error | {:ok}
   def delete_guild(guild_id) do
     request(:delete, Constants.guild(guild_id))
   end
 
+  @doc """
+  Gets a list of channels.
+
+  Guild to get channels for is specified by `guild_id`.
+  """
+  @spec get_channels(integer) :: error | {:ok, Nostrum.Struct.Channel.t}
+  def get_channels(guild_id) do
+    case request(:get, Constants.guild_channels(guild_id)) do
+      {:ok, body} ->
+        {:ok, Poison.decode!(body)}
+      other ->
+        other
+    end
+  end
+
+  @doc """
+  Creates a channel.
+
+  Guild to create channel in is specifed by `guild_id`.
+
+  `options` is a map with the following optional keys (except for name):
+   * `name` - Channel name.
+   * `type` - Channel type.
+   * `bitrate` - Bitrate if creating voice channel.
+   * `user_limit` - User limit if creating voice channel.
+   * `permission_overwrites` - Array of permission overwrites.
+  """
+  @spec create_channel(integer, %{
+      name: String.t,
+      type: String.t,
+      bitrate: integer,
+      user_limit: integer,
+      permission_overwrites: [Nostrum.Struct.Overwrite.t]
+    }) :: error | {:ok, Nostrum.Struct.Channel.t}
   def create_channel(guild_id, options) do
-    request(:post, Constants.guild_channels(guild_id), options)
+    case request(:post, Constants.guild_channels(guild_id), options) do
+      {:ok, body} ->
+        {:ok, Poison.decode!(body)}
+      other ->
+        other
+    end
   end
 
+  @doc """
+  Reorders a guild's channels.
+
+  Guild to modify channels for is specified by `guild_id`.
+
+  `options` is a list of maps with the following keys:
+   * `id` - Id of the channel.
+   * `position` - Sorting position of the channel.
+  """
+  @spec modify_channel_position(integer, [%{
+      id: integer,
+      position: integer
+    }]) :: error | {:ok, [Nostrum.Struct.Guild.Channel.t]}
   def modify_channel_position(guild_id, options) do
-    request(:patch, Constants.guild_channels(guild_id), options)
+    case request(:patch, Constants.guild_channels(guild_id), options) do
+      {:ok, body} ->
+        {:ok, Poison.decode!(body)}
+      other ->
+        other
+    end
   end
 
+  @doc """
+  Gets a guild member.
+
+  Member to get is specified by `guild_id` and `user_id`.
+  """
+  @spec get_member(integer, integer) :: error | {:ok, Nostrum.Struct.Guild.Member.t}
   def get_member(guild_id, user_id) do
-    request(:get, Constants.guild_member(guild_id, user_id))
+    case request(:get, Constants.guild_member(guild_id, user_id)) do
+      {:ok, body} ->
+        {:ok, Poison.decode!(body)}
+      other ->
+        other
+    end
   end
 
-  # REVIEW: Change or remove option paramter from functions that are not JSON
-  def guild_members(guild_id, options) do
-    request(:get, Constants.guild_members(guild_id), options)
+  @doc """
+  Gets a list of guild members.
+
+  Guild to get members for is specified by `guild_id`.
+
+  `options` is a keyword list with the following optional keys:
+   * limit - Max number of members to return (1-1000).
+   * after - Highest user id of the previous page.
+  """
+  @spec get_guild_members(integer, [
+      limit: 1..1000,
+      after: integer
+    ]) :: error | {:ok, [Nostrum.Struct.Guild.Member.t]}
+  def get_guild_members(guild_id, options) do
+    case request(:get, Constants.guild_members(guild_id), options) do
+      {:ok, body} ->
+        {:ok, Poison.decode!(body)}
+      other ->
+        other
+    end
   end
 
+  @doc """
+  Adds a member to a guild.
+
+  Member to add is specified by `guild_id` and `user_id`
+
+  `options` is a map with the following option keys:
+   * `nick` - Users nickname.
+   * `roles` - Array of roles to give member.
+   * `mute` - If the user should be muted.
+   * `deaf` - If the user should be deafaned.
+   * `channel_id` - Id of the channel to move the user to.
+  """
+  @spec add_member(integer, integer, %{
+      nick: String.t,
+      roles: [integer],
+      mute: boolean,
+      deaf: boolean,
+      channel_id: integer
+    }) :: error | {:ok, Nostrum.Struct.Guild.Member.t}
   def add_member(guild_id, user_id, options) do
-    request(:put, Constants.guild_member(guild_id, user_id), options)
+    case request(:put, Constants.guild_member(guild_id, user_id), options) do
+      {:ok, body} ->
+        {:ok, Poison.decode!(body)}
+      other ->
+        other
+    end
   end
 
+  @doc """
+  Modifies a guild member.
+
+  Member to modify is specified by `guild_id` and `user_id`
+
+  `options` is a map with the following option keys:
+   * `nick` - Users nickname.
+   * `roles` - Array of roles to give member.
+   * `mute` - If the user should be muted.
+   * `deaf` - If the user should be deafaned.
+   * `channel_id` - Id of the channel to move the user to.
+  """
+  @spec modify_member(integer, integer, %{
+      nick: String.t,
+      roles: [integer],
+      mute: boolean,
+      deaf: boolean,
+      channel_id: integer
+    }) :: error | {:ok, Nostrum.Struct.Guild.Member.t}
   def modify_member(guild_id, user_id, options) do
     request(:patch, Constants.guild_member(guild_id, user_id), options)
   end
 
+  @doc """
+  Adds a role to a member.
+
+  Role to add is specified by `role_id`.
+  User to add role to is specified by `guild_id` and `user_id`.
+  """
+  @spec add_guild_member_role(integer, integer, integer) :: error | {:ok}
+  def add_guild_member_role(guild_id, user_id, role_id) do
+    request(:put, Constants.guild_member_role(guild_id, user_id, role_id))
+  end
+
+  @doc """
+  Removes a role from a member.
+
+  Role to remove is specified by `role_id`.
+  User to remove role from is specified by `guild_id` and `user_id`.
+  """
+  @spec remove_guild_member_role(integer, integer, integer) :: error | {:ok}
+  def remove_guild_member_role(guild_id, user_id, role_id) do
+    request(:delete, Constants.guild_member_role(guild_id, user_id, role_id))
+  end
+
+  @doc """
+  Removes a memeber from a guild.
+
+  Member to remove is specified by `guild_id` and `user_id`.
+  """
+  @spec remove_member(integer, integer) :: error | {:ok}
   def remove_member(guild_id, user_id) do
-    request(:remove, Constants.guild_member(guild_id, user_id))
+    request(:delete, Constants.guild_member(guild_id, user_id))
   end
 
+  @doc """
+  Gets a list of users banend from a guild.
+
+  Guild to get bans for is specified by `guild_id`.
+  """
+  @spec get_guild_bans(integer) :: error | {:ok, [Nostrum.Struct.User.t]}
   def get_guild_bans(guild_id) do
-    request(:get, Constants.guild_bans(guild_id))
+    case request(:get, Constants.guild_bans(guild_id)) do
+      {:ok, body} ->
+        {:ok, Poison.decode!(body)}
+      other ->
+        other
+    end
   end
 
-  def create_guild_ban(guild_id, user_id, options) do
-    request(:put, Constants.guild_ban(guild_id, user_id), options)
+  @doc """
+  Bans a user from a guild.
+
+  User to delete is specified by `guild_id` and `user_id`.
+  """
+  @spec create_guild_ban(integer, integer, integer) :: error | {:ok}
+  def create_guild_ban(guild_id, user_id, days_to_delete) do
+    request(:put, Constants.guild_ban(guild_id, user_id), %{"delete-message-days": days_to_delete})
   end
 
+  @doc """
+  Removes a ban for a user.
+
+  User to unban is specified by `guild_id` and `user_id`.
+  """
+  @spec remove_guild_ban(integer, integer) :: error | {:ok}
   def remove_guild_ban(guild_id, user_id) do
     request(:remove, Constants.guild_ban(guild_id, user_id))
   end
 
+  @doc """
+  Gets a guild's roles.
+
+  Guild to get roles for is specified by `guild_id`.
+  """
+  @spec get_guild_roles(integer) :: error | {:ok, Nostrum.Struct.Guild.Role.t}
   def get_guild_roles(guild_id) do
-    request(:get, Constants.guild_roles(guild_id))
+    case request(:get, Constants.guild_roles(guild_id)) do
+      {:ok, body} ->
+        {:ok, Poison.decode!(body)}
+      other ->
+        other
+    end
   end
 
-  def create_guild_roles(guild_id) do
-    request(:post, Constants.guild_roles(guild_id))
+  @doc """
+  Creates a guild role.
+
+  Guild to create guild for is specified by `guild_id`.
+
+  `options` is a map with the following optional keys:
+   * `name` - Name of the role.
+   * `permissions` - Bitwise of the enabled/disabled permissions.
+   * `color` - RGB color value.
+   * `hoist` - Whether the role should be displayed seperately in the sidebar.
+   * `mentionable` - Whether the role should be mentionable.
+  """
+  @spec create_guild_role(integer, [
+      name: String.t,
+      permissions: integer,
+      color: integer,
+      hoist: boolean,
+      mentionable: boolean
+    ]) :: error | {:ok, Nostrum.Struct.Guild.Role.t}
+  def create_guild_role(guild_id, options) do
+    case request(:post, Constants.guild_roles(guild_id), options) do
+      {:ok, body} ->
+        {:ok, Poison.decode!(body)}
+      other ->
+        other
+    end
   end
 
-  def batch_modify_guild_roles(guild_id, options) do
-    request(:patch, Constants.guild_roles(guild_id), options)
+  @doc """
+  Reorders a guild's roles.
+
+  Guild to modify roles for is specified by `guild_id`.
+
+  `options` is a list of maps with the following keys:
+   * `id` - Id of the role.
+   * `position` - Sorting position of the role.
+  """
+  @spec modify_guild_role_positions(integer, [%{
+      id: integer,
+      position: integer
+    }]) :: error | {:ok, [Nostrum.Struct.Guild.Role.t]}
+  def modify_guild_role_positions(guild_id, options) do
+    case request(:patch, Constants.guild_roles(guild_id), options) do
+      {:ok, body} ->
+        {:ok, Poison.decode!(body)}
+      other ->
+        other
+    end
   end
 
-  def modify_guild_roles(guild_id, role_id, options) do
-    request(:patch, Constants.guild_role(guild_id, role_id), options)
+  @doc """
+  Modifies a guild role.
+
+  Role to modify specified by `guild_id` and `role_id`.
+
+  `options` is a keyword list with the following optional keys:
+   * `name` - Name of the role.
+   * `permissions` - Bitwise of the enabled/disabled permissions.
+   * `color` - RGB color value.
+   * `hoist` - Whether the role should be displayed seperately in the sidebar.
+   * `mentionable` - Whether the role should be mentionable.
+  """
+  @spec modify_guild_role(integer, integer, [
+      name: String.t,
+      permissions: integer,
+      color: integer,
+      hoist: boolean,
+      mentionable: boolean
+    ]) :: error | {:ok, Nostrum.Struct.Guild.Role.t}
+  def modify_guild_role(guild_id, role_id, options) do
+    case request(:patch, Constants.guild_role(guild_id, role_id), options) do
+      {:ok, body} ->
+        {:ok, Poison.decode!(body)}
+      other ->
+        other
+    end
   end
 
+  @doc """
+  Deletes a guild role.
+
+  Role to delte is specified by `guild_id` and `role_id`
+  """
+  @spec delete_guild_role(integer, integer) :: error | {:ok}
   def delete_guild_role(guild_id, role_id) do
     request(:delete, Constants.guild_role(guild_id, role_id))
   end
 
+  @doc """
+  Gets the number of members that would be removed in a prune.
+
+  Guild to get prune number for is specified by guild_id.
+  Days is that number of days to count prune for.
+  """
+  @spec get_guild_prune(integer, integer) :: error | {:ok, %{pruned: integer}}
   def get_guild_prune(guild_id, options) do
-    request(:get, Constants.guild_prune(guild_id), options)
+    case request(:get, Constants.guild_prune(guild_id), options) do
+      {:ok, body} ->
+        {:ok, Poison.decode!(body)}
+      other ->
+        other
+    end
   end
 
-  def begin_guild_prune(guild_id, options) do
-    request(:post, Constants.guild_prune(guild_id), options)
+  @doc """
+  Begins a guild prune.
+
+  Guild to number is specified by guild_id.
+  Days is that number of days to count prune for.
+  """
+  @spec begin_guild_prune(integer, integer) :: error | {:ok, %{pruned: integer}}
+  def begin_guild_prune(guild_id, days) do
+    case request(:post, Constants.guild_prune(guild_id), "", params: [days: days]) do
+      {:ok, body} ->
+        {:ok, Poison.decode!(body)}
+      other ->
+        other
+    end
   end
 
+  @doc """
+  Gets a list of voice regions for the guild.
+
+  Guild to get voice regions for is specified by `guild_id`.
+  """
+  @spec get_voice_region(integer) :: error | {:ok, [Nostrum.Struct.VoiceRegion.t]}
   def get_voice_region(guild_id) do
-    request(:get, Constants.guild_voice_regions(guild_id))
+    case request(:get, Constants.guild_voice_regions(guild_id)) do
+      {:ok, body} ->
+        {:ok, Poison.decode!(body)}
+      other ->
+        other
+    end
   end
 
+  @doc """
+  Gets a list of invites for a guild.
+
+  Guilds to get voice regions for is specified by `guild_id`.
+  """
+  @spec get_guild_invites(integer) :: error | {:ok, [Nostrum.Struct.Invite.t]}
   def get_guild_invites(guild_id) do
-    request(:get, Constants.guild_invites(guild_id))
+    case request(:get, Constants.guild_invites(guild_id)) do
+      {:ok, body} ->
+        {:ok, Poison.decode!(body)}
+      other ->
+        other
+    end
   end
 
   @doc """
@@ -850,7 +1194,12 @@ defmodule Nostrum.Api do
   """
   @spec get_guild_integrations(integer) :: error | {:ok, [Nostrum.Struct.Guild.Integration.t]}
   def get_guild_integrations(guild_id) do
-    request(:get, Constants.guild_integrations(guild_id))
+    case request(:get, Constants.guild_integrations(guild_id)) do
+      {:ok, body} ->
+        {:ok, Poison.decode!(body)}
+      other ->
+        other
+    end
   end
 
   @doc """
