@@ -34,3 +34,17 @@ Users are all stored in an ETS table, keyed off of their id.
 To see the name of the ETS table associated with the user cache, and examples of
 interacting with it both directly and through the provided abstractions, please
 see `Nostrum.Cache.UserCache`.
+
+## Mappings
+There are some use cases where given a `channel_id` or `guild_id` we may want to
+find the `guild` or `shard` that the `id` belongs to. For this purpose Nostrum
+stores these types of relations in ETS tables.
+
+The following mappings exists.
+```Elixir
+guild_channel_id -> guild_id
+guild_id -> shard_num
+shard_num_num -> shard_pid
+```
+
+Please see `Nostrum.Cache.Mapping.ChannelGuild` for one such map.
