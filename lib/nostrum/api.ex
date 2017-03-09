@@ -44,6 +44,7 @@ defmodule Nostrum.Api do
   use Bitwise
 
   alias Nostrum.{Constants, Shard}
+  alias Nostrum.Struct.Guild.TextChannel
   alias Nostrum.Shard.ShardSupervisor
   alias Nostrum.Util
 
@@ -105,22 +106,28 @@ defmodule Nostrum.Api do
   @doc ~S"""
   Send a message to a channel.
 
-  Send `content` to the channel identified with `channel_id`.
-  Content is a binary containing the message you want to send.
-  For embeds or file uploads, content should be a keyword list.
+  ## Parameters
+    - `channel_id`: Id of the channel to send the message to.
+    - `content`: String, embed, or file to send to the channel.
+    - `tts`: Whether the message should be read over text to speech.
 
-  `tts` is an optional parameter that dictates whether the message should be played over text to speech.
-
-  **Example**
+  ## Example
   ```Elixir
   Nostrum.Api.create_message(1111111111111, [content: "my os rules", file: ~S"C:\i\use\windows"])
   ```
-
-  Returns `{:ok, Nostrum.Struct.Message}` if successful. `error` otherwise.
   """
-  @spec create_message(integer, String.t
-                      | [content: String.t, embed: Nostrum.Struct.Embed]
-                      | [content: String.t, file: String.t], boolean) :: error | {:ok, Nostrum.Struct.Message.t}
+  @spec create_message(TextChannel.id, String.t, boolean)
+    :: error | {:ok, Nostrum.Struct.Message.t}
+  @spec create_message(TextChannel.id, [
+      content: String.t,
+      embed: Nostrum.Struct.Embed.t
+    ], boolean)
+    :: error | {:ok, Nostrum.Struct.Message.t}
+  @spec create_message(TextChannel.id, [
+      content: String.t,
+      file: String.t
+    ], boolean)
+    :: error | {:ok, Nostrum.Struct.Message.t}
   def create_message(channel_id, content, tts \\ false)
 
   # Sending regular messages
