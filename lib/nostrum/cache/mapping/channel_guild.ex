@@ -11,7 +11,10 @@ defmodule Nostrum.Cache.Mapping.ChannelGuild do
   """
   @spec get_guild(integer) :: integer
   def get_guild(channel_id) do
-    :ets.lookup_element(:channel_guild_map, channel_id, 2)
+    case :ets.lookup(:channel_guild_map, channel_id) do
+      [{_channel_id, guild_id}] -> {:ok, guild_id}
+      [] -> {:error, :id_not_found}
+    end
   end
 
 end

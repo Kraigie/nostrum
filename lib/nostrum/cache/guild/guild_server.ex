@@ -14,6 +14,7 @@ defmodule Nostrum.Cache.Guild.GuildServer do
   require Logger
 
   @doc false
+  # REVIEW: If a guild server crashes, it will be restarted with its initial state.
   def start_link(id, guild) do
     GenServer.start_link(__MODULE__, [id, guild])
   end
@@ -42,7 +43,7 @@ defmodule Nostrum.Cache.Guild.GuildServer do
   end
   ```
   """
-  @spec get(id: integer | Nostrum.Struct.Message.t) ::
+  @spec get([id: integer] | [channel_id: integer] | Nostrum.Struct.Message.t) ::
   {:error, atom} | {:ok, Nostrum.Struct.Guild.t}
   def get(id: id) do
     case GuildRegister.lookup(id) do
@@ -50,6 +51,15 @@ defmodule Nostrum.Cache.Guild.GuildServer do
         {:ok, GenServer.call(pid, {:get, :guild})}
       error ->
         error
+    end
+  end
+
+  def get(channel_id: channel_id) do
+    with \
+      {:ok, guild_id} <- ChannelGuild.get_guild(channel_id),
+      {:ok, guild_pid} <- GuildRegister.lookup(guild_id)
+    do
+      {:ok, GenServer.call(guild_pid, {:get, :guild})}
     end
   end
 

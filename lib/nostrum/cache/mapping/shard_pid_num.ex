@@ -8,7 +8,10 @@ defmodule Nostrum.Cache.Mapping.ShardPidNum do
   """
   @spec get_pid(integer) :: no_return | pid
   def get_pid(shard_num) do
-    :ets.lookup_element(:shard_pid_num, shard_num, 2)
+    case :ets.lookup(:shard_pid_num, shard_num) do
+      [{_shard_num, shard_pid}] -> {:ok, shard_pid}
+      [] -> {:error, :id_not_found}
+    end
   end
 
 end

@@ -9,6 +9,7 @@ defmodule Nostrum.Struct.Channel do
   @type t :: DMChannel.t | TestChannel.t | VoiceChannel.t
 
   def to_struct(%{is_private: true} = map), do: DMChannel.to_struct(map)
+  def to_struct(%{recipients: _} = map), do: DMChannel.to_struct(map)
   def to_struct(%{topic: _} = map), do: TextChannel.to_struct(map)
   def to_struct(%{bitrate: _} = map), do: VoiceChannel.to_struct(map)
 end
