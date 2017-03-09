@@ -173,8 +173,10 @@ defmodule Nostrum.Consumer do
 
   defp do_event(_mod, [], state), do: state
   defp do_event(mod, [event | events], state) do
-    {:ok, their_state_ret} = mod.handle_event(event, state)
-    do_event(mod, events, their_state_ret)
+    case mod.handle_event(event, state) do
+      {:ok, their_state_ret} -> do_event(mod, events, their_state_ret)
+      other -> raise(Nostrum.Error.ConsumerError, found: other)
+    end
   end
 
 end
