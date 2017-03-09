@@ -55,7 +55,7 @@ defmodule Nostrum.Cache.Guild.GuildServer do
   def get(%Nostrum.Struct.Message{channel_id: channel_id}) do
     case \
       channel_id
-      |> Nostrum.Cache.Mapping.ChannelGuild
+      |> Nostrum.Cache.Mapping.ChannelGuild.get_guild
       |> GuildRegister.lookup
     do
       {:ok, pid} ->
