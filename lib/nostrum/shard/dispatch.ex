@@ -3,168 +3,168 @@ defmodule Nostrum.Shard.Dispatch do
 
   alias Nostrum.Cache.{ChannelCache, UserCache}
   alias Nostrum.Cache.Guild.GuildServer
+  alias Nostrum.Shard
+  alias Nostrum.Shard.Dispatch.Producer
+  alias Nostrum.Struct.Guild.UnavailableGuild
 
   require Logger
 
   @large_threshold 250
 
-  _ = """
-  Should return {:ok, {event_info}} or {:error, reason}.
-
-  Event info is what we want to send to the consumer, so in the case of a
-  message_create it would be {:ok, {message}
-
-  Cache methods are expected to return proper tuples, other methods should return
-  structs and let the wrap method put them into the proper format for the
-  producer to handle
-  """
-  def handle(payload, state) do
+  def handle(pid, payload, state) do
     Logger.debug payload.t
-    wrap(handle_event({payload.t, payload.d}, state))
+    handle_event(payload.t, payload.d, state, pid)
   end
 
-  def wrap(res) when is_tuple(res), do: res
-  def wrap(res), do: {:ok, {res}}
+  def handle_event(:CHANNEL_CREATE = event, %{is_private: true} = p, state, pid) do
+    Producer.notify(pid, {event, ChannelCache.create(p)}, state)
+  end
 
-  def handle_event({:CHANNEL_CREATE, %{is_private: true} = p}, _state),
-    do: ChannelCache.create(p)
-  def handle_event({:CHANNEL_CREATE, p}, _state) do
+  def handle_event(:CHANNEL_CREATE = event, p, state, pid) do
     :ets.insert(:channel_guild_map, {p.id, p.guild_id})
-    GuildServer.channel_create(p.guild_id, p)
+    Producer.notify(pid, {event, GuildServer.channel_create(p.guild_id, p)}, state)
   end
 
-  def handle_event({:CHANNEL_DELETE, %{is_private: true} = p}, _state),
-    do: ChannelCache.delete(p)
-  def handle_event({:CHANNEL_DELETE, p}, _state) do
+  def handle_event(:CHANNEL_DELETE = event, %{is_private: true} = p, state, pid) do
+    Producer.notify(pid, {event, ChannelCache.delete(p)}, state)
+  end
+
+  def handle_event(:CHANNEL_DELETE = event, p, state, pid) do
     :ets.delete(:channel_guild_map, p.id)
-    GuildServer.channel_delete(p.guild_id, p.id)
+    Producer.notify(pid, {event, GuildServer.channel_delete(p.guild_id, p.id)}, state)
   end
 
-  def handle_event({:CHANNEL_UPDATE, p}, _state),
-    do: GuildServer.channel_update(p.guild_id, p)
+  def handle_event(:CHANNEL_UPDATE = event, p, state, pid) do
+    Producer.notify(pid, {event, GuildServer.channel_update(p.guild_id, p)}, state)
+  end
 
-  def handle_event({:CHANNEL_PINS_ACK, p}, _state),
-    do: p
+  def handle_event(:CHANNEL_PINS_ACK = event, p, state, pid),
+    do: Producer.notify(pid, {event, p}, state)
 
-  def handle_event({:CHANNEL_PINS_UPDATE, p}, _state),
-    do: p
+  def handle_event(:CHANNEL_PINS_UPDATE = event, p, state, pid),
+    do: Producer.notify(pid, {event, p}, state)
 
-  def handle_event({:GUILD_BAN_ADD, p}, _state),
-    do: p
+  def handle_event(:GUILD_BAN_ADD = event, p, state, pid),
+    do: Producer.notify(pid, {event, p}, state)
 
-  def handle_event({:BUILD_BAN_REMOVE, p}, _state),
-    do: p
+  def handle_event(:BUILD_BAN_REMOVE = event, p, state, pid),
+    do: Producer.notify(pid, {event, p}, state)
 
-  def handle_event({:GUILD_CREATE, p}, state) do
-    if not Map.has_key?(p, :unavailable) or not p.unavailable do
-      p.members
-      |> Enum.each(fn member -> UserCache.create(member.user) end)
-    end
+  def handle_event(:GUILD_CREATE, %{unavailable: true} = guild, state, pid) do
+    :ets.insert(:unavailable_guilds, {guild.id, guild})
+    Producer.notify(pid, {:GUILD_UNAVAILABLE, UnavailableGuild.to_struct(guild)}, state)
+  end
+
+  def handle_event(:GUILD_CREATE = event, p, state, pid) do
+    p.members
+    |> Enum.each(fn member -> UserCache.create(member.user) end)
 
     :ets.insert(:guild_shard_map, {p.id, state.shard_num})
     Enum.each(p.channels, fn channel ->
       :ets.insert(:channel_guild_map, {channel.id, p.id})
     end)
 
-    if p.member_count < @large_threshold do
-      GuildServer.create(p)
-    else
-      GuildServer.create(p, state.shard_pid)
+    if p.member_count >= @large_threshold do
+      Shard.request_guild_members(state.shard_pid, p.id)
+    end
+
+    case GuildServer.create(p) do
+      {:error, reason} -> Logger.warn "Failed to create new guild process: #{inspect reason}"
+      ok -> Producer.notify(pid, {event, ok}, state)
     end
   end
 
-  def handle_event({:GUILD_UPDATE, p}, _state),
-    do: GuildServer.update(p)
+  def handle_event(:GUILD_UPDATE = event, p, state, pid),
+    do: Producer.notify(pid, {event, GuildServer.update(p)}, state)
 
-  def handle_event({:GUILD_DELETE, p}, _state) do
+  def handle_event(:GUILD_DELETE = event, p, state, pid) do
     :ets.delete(:guild_shard_map, p.id)
-    GuildServer.delete(p.id)
+    Producer.notify(pid, {event, GuildServer.delete(p.id)}, state)
   end
 
-  def handle_event({:GUILD_EMOJIS_UPDATE, p}, _state),
-    do: GuildServer.emoji_update(p.guild_id, p.emojis)
+  def handle_event(:GUILD_EMOJIS_UPDATE = event, p, state, pid),
+    do: Producer.notify(pid, {event, GuildServer.emoji_update(p.guild_id, p.emojis)}, state)
 
-  def handle_event({:GUILD_INTEGRATIONS_UPDATE, p}, _state),
-    do: p
+  def handle_event(:GUILD_INTEGRATIONS_UPDATE = event, p, state, pid),
+    do: Producer.notify(pid, {event, p}, state)
 
-  def handle_event({:GUILD_MEMBER_ADD, p}, _state) do
+  def handle_event(:GUILD_MEMBER_ADD = event, p, state, pid) do
     UserCache.create(p.user)
-    GuildServer.member_add(p.guild_id, p)
+    Producer.notify(pid, {event, GuildServer.member_add(p.guild_id, p)}, state)
   end
 
-  def handle_event({:GUILD_MEMBERS_CHUNK, p}, _state) do
+  def handle_event(:GUILD_MEMBERS_CHUNK = event, p, state, pid) do
     p.members
       |> Enum.each(fn member ->
         UserCache.create(p.user)
         GuildServer.member_add(p.guild_id, member)
       end)
-    p
+    Producer.notify(pid, {event, p}, state)
   end
 
-  def handle_event({:GUILD_MEMBER_REMOVE, p}, _state),
-    do: GuildServer.member_remove(p.guild_id, p.user)
+  def handle_event(:GUILD_MEMBER_REMOVE = event, p, state, pid),
+    do: Producer.notify(pid, {event, GuildServer.member_remove(p.guild_id, p.user)}, state)
 
-  # What is this even??
-  def handle_event({:GUILD_MEMBER_UPDATE, p}, _state),
-    do: GuildServer.member_update(p.guild_id, p.user, p.nick, p.roles)
+  def handle_event(:GUILD_MEMBER_UPDATE = event, p, state, pid),
+    do: Producer.notify(pid, {event, GuildServer.member_update(p.guild_id, p.user, p.nick, p.roles)}, state)
 
-  def handle_event({:GUILD_ROLE_CREATE, p}, _state),
-    do: GuildServer.role_create(p.guild_id, p.role)
+  def handle_event(:GUILD_ROLE_CREATE = event, p, state, pid),
+    do: Producer.notify(pid, {event, GuildServer.role_create(p.guild_id, p.role)}, state)
 
-  def handle_event({:GUILD_ROLE_DELETE, p}, _state),
-    do: GuildServer.role_delete(p.guild_id, p.role_id)
+  def handle_event(:GUILD_ROLE_DELETE = event, p, state, pid),
+    do: Producer.notify(pid, {event, GuildServer.role_delete(p.guild_id, p.role_id)}, state)
 
-  def handle_event({:GUILD_ROLE_UPDATE, p}, _state),
-    do: GuildServer.role_update(p.guild_id, p.role)
+  def handle_event(:GUILD_ROLE_UPDATE = event, p, state, pid),
+    do: Producer.notify(pid, {event, GuildServer.role_update(p.guild_id, p.role)}, state)
 
-  def handle_event({:MESSAGE_CREATE, p}, _state),
-    do: p
+  def handle_event(:MESSAGE_CREATE = event, p, state, pid),
+    do: Producer.notify(pid, {event, p}, state)
 
-  def handle_event({:MESSAGE_DELETE, p}, _state),
-    do: p
+  def handle_event(:MESSAGE_DELETE = event, p, state, pid),
+    do: Producer.notify(pid, {event, p}, state)
 
-  def handle_event({:MESSAGE_DELETE_BULK, p}, _state),
-    do: p
+  def handle_event(:MESSAGE_DELETE_BULK = event, p, state, pid),
+    do: Producer.notify(pid, {event, p}, state)
 
-  def handle_event({:MESSAGE_UPDATE, p}, _state),
-    do: p
+  def handle_event(:MESSAGE_UPDATE = event, p, state, pid),
+    do: Producer.notify(pid, {event, p}, state)
 
-  def handle_event({:MESSAGE_REACTION_ADD, p}, _state),
-    do: p
+  def handle_event(:MESSAGE_REACTION_ADD = event, p, state, pid),
+    do: Producer.notify(pid, {event, p}, state)
 
-  def handle_event({:MESSAGE_REACTION_REMOVE, p}, _state),
-    do: p
+  def handle_event(:MESSAGE_REACTION_REMOVE = event, p, state, pid),
+    do: Producer.notify(pid, {event, p}, state)
 
-  def handle_event({:PRESENCE_UPDATE, p}, _state),
-    do: p
+  def handle_event(:PRESENCE_UPDATE = event, p, state, pid),
+    do: Producer.notify(pid, {event, p}, state)
 
-  def handle_event({:READY, p}, _state) do
+  def handle_event(:READY = event, p, state, pid) do
     p.private_channels
       |> Enum.each(fn dm_channel -> ChannelCache.create(dm_channel) end)
     p.guilds
-      |> Enum.each(fn guild -> GuildServer.create(guild) end)
-    p
+      |> Enum.each(fn guild -> handle_event(:GUILD_CREATE, guild, state, pid) end)
+    Producer.notify(pid, {event, p}, state)
   end
 
-  def handle_event({:RESUMED, p}, _state),
-    do: p
+  def handle_event(:RESUMED = event, p, state, pid),
+    do: Producer.notify(pid, {event, p}, state)
 
-  def handle_event({:TYPING_START, p}, _state),
-    do: p
+  def handle_event(:TYPING_START = event, p, state, pid),
+    do: Producer.notify(pid, {event, p}, state)
 
-  def handle_event({:USER_SETTINGS_UPDATE, p}, _state),
-    do: p
+  def handle_event(:USER_SETTINGS_UPDATE = event, p, state, pid),
+    do: Producer.notify(pid, {event, p}, state)
 
-  def handle_event({:USER_UPDATE, p}, _state),
-    do: UserCache.update(p)
+  def handle_event(:USER_UPDATE = event, p, state, pid),
+    do: Producer.notify(pid, {event, UserCache.update(p)}, state)
 
-  def handle_event({:VOICE_STATE_UPDATE, p}, _state),
-    do: p
+  def handle_event(:VOICE_STATE_UPDATE = event, p, state, pid),
+    do: Producer.notify(pid, {event, p}, state)
 
-  def handle_event({:VOICE_SERVER_UPDATE, p}, _state),
-    do: p
+  def handle_event(:VOICE_SERVER_UPDATE = event, p, state, pid),
+    do: Producer.notify(pid, {event, p}, state)
 
-  def handle_event({event, p}, _state) do
+  def handle_event(event, p, _state, _pid) do
     Logger.warn "UNHANDLED GATEWAY DISPATCH EVENT TYPE: #{event}, #{inspect p}"
     p
   end

@@ -21,7 +21,8 @@ defmodule Nostrum.Shard.ShardSupervisor do
   def init(options) do
     children = for i <- 0..options[:num_shards] - 1, do: create_worker(options[:token], i)
     with_registry = [supervisor(Registry, [:duplicate, ProducerRegistry])] ++ children
-    supervise(with_registry, strategy: :one_for_one, max_restarts: 3, max_seconds: 60)
+    with_task_supervisor = [supervisor(Task.Supervisor, [[name: DispatchTaskSupervisor]])] ++ with_registry
+    supervise(with_task_supervisor, strategy: :one_for_one, max_restarts: 3, max_seconds: 60)
   end
 
   @doc false

@@ -1,8 +1,7 @@
 defmodule Nostrum.Shard.Event do
   @moduledoc false
 
-  alias Nostrum.Shard.Payload
-  alias Nostrum.Shard.Dispatch.Producer
+  alias Nostrum.Shard.{Dispatch, Payload}
   alias Nostrum.Util
 
   require Logger
@@ -10,7 +9,10 @@ defmodule Nostrum.Shard.Event do
   def handle(:dispatch, payload, state) do
     [{pid, _id}] = Registry.lookup(ProducerRegistry, state.shard_num)
     payload = Util.safe_atom_map(payload)
-    Producer.notify(pid, payload, state)
+
+    Task.Supervisor.start_child(DispatchTaskSupervisor, fn ->
+      Dispatch.handle(pid, payload, state)
+    end)
 
     state =
       if payload.t == :READY do

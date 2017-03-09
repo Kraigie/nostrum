@@ -5,6 +5,7 @@ defmodule Nostrum.Cache.Me do
 
   use GenServer
 
+  alias Nostrum.Api
   alias Nostrum.Struct.User
 
   def start_link do
@@ -14,7 +15,7 @@ defmodule Nostrum.Cache.Me do
   def init(_) do
     # Returns {:error, reason} if this fails, acting as a simple check for
     # correct tokens
-    Nostrum.Api.get_current_user()
+    Api.get_current_user()
   end
 
   @doc """

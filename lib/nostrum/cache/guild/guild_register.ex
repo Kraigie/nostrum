@@ -26,9 +26,7 @@ defmodule Nostrum.Cache.Guild.GuildRegister do
   def create_guild_process(id, guild) do
     case Supervisor.start_child(GuildSupervisor, [id, guild]) do
       {:ok, _pid} ->
-        # Expected to return a tuple as all other methods do in the GuildServer module
-        # This must return a similar structure to GuildServer.call
-        {:ok, {Guild.to_struct(guild)}}
+        Guild.to_struct(guild)
       other ->
         other
     end

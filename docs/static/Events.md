@@ -46,23 +46,22 @@ As events are sent to the shard, the following happens:
  This is done because over ETF (which Nostrum uses), map keys are sometimes
  binaries and sometimes strings, making it a real headache. Additionally, with
  atom keys, we can use the `Map.key` notation. This is normally considered unsafe
- but a warning will be emitted if a key is unsafely converted to an atom. In this
- way we can ensure that our atom table is not growing unbounded.
+ but a debug messages will be emitted if a key is unsafely converted to an atom.
+ In this way we can ensure that our atom table is not growing unbounded.
 
- 3. The payload is then sent to the producer.
+ 3. The payload is then sent to the relevant cache to update its state inside of
+ a supervised task.
+
+ 4. The cache sends the curated payload information to the producer. In the case
+ of updates, the cache will sometimes send two payloads back, the old and the
+ new payload, for comparison purposes. In general, the payload will often match
+ the payload described by the official Discord API documentation.
 
 ### Producer
-The producer is responsible for handling the events internally, as well as
-dispatching the events.
+The producer is responsible for queuing up events to dispatch, as well as
+dispatching these events.
 
- 1. The producer sends the event to the relevant cache to update its state.
-
- 2. The cache sends back the curated payload information. In the case of updates,
- the cache will sometimes send two payloads back, the old and the new payload,
- for comparison purposes. In general, the payload will often match the payload
- described by the official Discord API documentation.
-
- 3. The producer takes the payload(s) and puts them into a queue of events to send
+ 1. The producer takes the payload(s) and puts them into a queue of events to send
  to a consumer.
 
 ### Consumer

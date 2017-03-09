@@ -65,37 +65,22 @@ defmodule Nostrum.Cache.UserCache do
 
   @doc false
   def create(user) do
-    case GenServer.call(UserCache, {:create, user.id, user}) do
-      {res} ->
-        {:ok, {res}}
-      error ->
-        error
-    end
+    GenServer.call(UserCache, {:create, user.id, user})
   end
 
   @doc false
   def update(user) do
-    case GenServer.call(UserCache, {:update, user.id, user}) do
-      {res} ->
-        {:ok, {res}}
-      error ->
-        error
-    end
+    GenServer.call(UserCache, {:update, user.id, user})
   end
 
   @doc false
   def delete(user) do
-    case GenServer.call(UserCache, {:delete, user.id}) do
-      {res} ->
-        {:ok, {res}}
-      error ->
-        error
-    end
+    GenServer.call(UserCache, {:delete, user.id})
   end
 
   def handle_call({:create, id, %{bot: _} = user}, _from, state) do
     :ets.insert(:users, insert(id, user))
-    {:reply, {User.to_struct(user)}, state}
+    {:reply, User.to_struct(user), state}
   end
 
   def handle_call({:create, id, user}, _from, state) do
@@ -105,7 +90,7 @@ defmodule Nostrum.Cache.UserCache do
     # REVIEW: While, arbitrary, this looks to be deterministic.
     # Relevant docs: http://erlang.org/doc/man/maps.html#to_list-1
     :ets.insert(:users, insert(id, Map.put(user, :bot, false)))
-    {:reply, {User.to_struct(user)}, state}
+    {:reply, User.to_struct(user), state}
   end
 
   def handle_call({:update, id, user}, _from, state) do
@@ -124,7 +109,7 @@ defmodule Nostrum.Cache.UserCache do
         {:error, :user_not_found}
       [lookup] ->
         :ets.delete(:users, {:id, id})
-        {:reply, {lookup_to_struct(lookup)}, state}
+        {:reply, lookup_to_struct(lookup), state}
     end
   end
 

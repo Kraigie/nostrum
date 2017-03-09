@@ -6,9 +6,10 @@ defmodule Nostrum.Cache.Guild.GuildServer do
   use GenServer
 
   alias Nostrum.Cache.Guild.GuildRegister
+  alias Nostrum.Cache.Mapping.ChannelGuild
   alias Nostrum.Struct.Guild.{Member, Role}
   alias Nostrum.Struct.{Channel, Emoji, Guild}
-  alias Nostrum.{Shard, Util}
+  alias Nostrum.Util
 
   require Logger
 
@@ -55,7 +56,7 @@ defmodule Nostrum.Cache.Guild.GuildServer do
   def get(%Nostrum.Struct.Message{channel_id: channel_id}) do
     case \
       channel_id
-      |> Nostrum.Cache.Mapping.ChannelGuild.get_guild
+      |> ChannelGuild.get_guild
       |> GuildRegister.lookup
     do
       {:ok, pid} ->
@@ -80,25 +81,13 @@ defmodule Nostrum.Cache.Guild.GuildServer do
     with \
       {:ok, pid} <- GuildRegister.lookup(id),
       res <- GenServer.call(pid, request),
-    # res will be a tuple
-    do: {:ok, res}
-  end
-
-  @doc false
-  def create(%{unavailable: true} = guild) do
-    :ets.insert(:unavailable_guilds, {guild.id, guild})
+    do: res
   end
 
   @doc false
   def create(guild) do
     # This returns {:ok, guild} or {:error reason}
     GuildRegister.create_guild_process(guild.id, guild)
-  end
-
-  @doc false
-  def create(guild, shard_pid) do
-    Shard.request_guild_members(shard_pid, guild.id)
-    create(guild)
   end
 
   @doc false
@@ -162,7 +151,7 @@ defmodule Nostrum.Cache.Guild.GuildServer do
   end
 
   def handle_call({:get, :guild}, _from, state) do
-    {:reply, {Guild.to_struct(state)}, state}
+    {:reply, Guild.to_struct(state), state}
   end
 
   def handle_call({:update, :guild, guild}, _from, state) do
@@ -175,7 +164,7 @@ defmodule Nostrum.Cache.Guild.GuildServer do
 
   def handle_call({:create, :member, member}, _from, state) do
     new_members = [member | state.members]
-    {:reply, {Member.to_struct(member)}, %{state | members: new_members}}
+    {:reply, Member.to_struct(member), %{state | members: new_members}}
   end
 
   def handle_call({:update, :member, user, roles}, _from, state) do
@@ -202,12 +191,12 @@ defmodule Nostrum.Cache.Guild.GuildServer do
         :error -> %{}
       end
     members = List.delete_at(state.members, member_index)
-    {:reply, {Member.to_struct(deleted_member)}, %{state | members: members}}
+    {:reply, Member.to_struct(deleted_member), %{state | members: members}}
   end
 
   def handle_call({:create, :channel, channel}, _from, state) do
     new_channels = [channel | state.channels]
-    {:reply, {Channel.to_struct(channel)}, %{state | channels: new_channels}}
+    {:reply, Channel.to_struct(channel), %{state | channels: new_channels}}
   end
 
   def handle_call({:update, :channel, channel}, _from, state) do
@@ -232,12 +221,12 @@ defmodule Nostrum.Cache.Guild.GuildServer do
         :error -> %{}
       end
     channels = List.delete_at(state.channels, channel_index)
-    {:reply, {Channel.to_struct(old_channel)}, %{state | channels: channels}}
+    {:reply, Channel.to_struct(old_channel), %{state | channels: channels}}
   end
 
   def handle_call({:create, :role, role}, _from, state) do
     new_roles = [role | state.roles]
-    {:reply, {Role.to_struct(role)}, %{state | roles: new_roles}}
+    {:reply, Role.to_struct(role), %{state | roles: new_roles}}
   end
 
   def handle_call({:update, :role, role}, _from, state) do
@@ -262,7 +251,7 @@ defmodule Nostrum.Cache.Guild.GuildServer do
         :error -> %{}
       end
     roles = List.delete_at(state.roles, role_index)
-    {:reply, {Role.to_struct(old_role)}, %{state | roles: roles}}
+    {:reply, Role.to_struct(old_role), %{state | roles: roles}}
   end
 
   def handle_call({:update, :emoji, emojis}, _from, state) do

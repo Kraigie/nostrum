@@ -77,6 +77,7 @@ defmodule Nostrum.Consumer do
   @type guild_ban_add :: {:GUILD_BAN_ADD, {Nostrum.Struct.User.t}, ws_state}
   @type build_ban_remove :: {:GUILD_BAN_REMOVE, {Nostrum.Struct.User.t}, ws_state}
   @type guild_create :: {:GUILD_CREATE, {new_guild :: Nostrum.Struct.Guild.t}, ws_state}
+  @type guild_unavailable :: {:GUILD_UNAVAILABLE, {unavailable_guild :: Nostrum.Struct.Guild.UnavailableGuild.t}, ws_state}
   @type guild_update :: {:GUILD_CREATE, {old_guild :: Nostrum.Struct.Guild.t, new_guild :: Nostrum.Struct.Guild.t}, ws_state}
   @type guild_delete :: {:GUILD_DELETE, {old_guild :: Nostrum.Struct.Guild.t}, ws_state}
   @type guild_emojis_update :: {:GUILD_EMOJIS_UPDATE, {old_emojis :: [Nostrum.Struct.Message.Emoji.t],  new_emojis :: [Nostrum.Struct.Message.Emoji.t]}, ws_state}
@@ -111,6 +112,7 @@ defmodule Nostrum.Consumer do
     guild_ban_add |
     build_ban_remove |
     guild_create |
+    guild_unavailable |
     guild_update |
     guild_delete |
     guild_emojis_update |

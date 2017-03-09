@@ -33,15 +33,15 @@ defmodule Nostrum.Cache.ChannelCache do
 
   @doc false
   def create(channel),
-    do: {:ok, GenServer.call(ChannelCache, {:create, channel.id, channel})}
+    do: GenServer.call(ChannelCache, {:create, channel.id, channel})
 
   @doc false
   def update(channel),
-    do: {:ok, GenServer.call(ChannelCache, {:update, channel.id, channel})}
+    do: GenServer.call(ChannelCache, {:update, channel.id, channel})
 
   @doc false
   def delete(channel),
-    do: {:ok, GenServer.call(ChannelCache, {:delete, channel.id})}
+    do: GenServer.call(ChannelCache, {:delete, channel.id})
 
   # I'm willing to abuse `from` here to provide `async` searching if this turns out to be slow
   def handle_call({:get, id}, _from, state) do

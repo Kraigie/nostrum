@@ -3,8 +3,6 @@ defmodule Nostrum.Shard.Dispatch.Producer do
 
   use GenStage
 
-  alias Nostrum.Shard.Dispatch
-
   require Logger
 
   def start_link(id) do
@@ -23,18 +21,15 @@ defmodule Nostrum.Shard.Dispatch.Producer do
     GenStage.cast(pid, {:notify, payload, state})
   end
 
-  def handle_cast({:notify, payload, state}, {queue, demand}) do
-    case Dispatch.handle(payload, state) do
-      {:ok, from_dispatch} ->
-        dispatch_events(:queue.in(build_event(payload.t, from_dispatch, state), queue), demand, [])
-      {:error, reason} ->
-        Logger.warn "Error handling dispatch, #{inspect reason}"
-        {:noreply, [{:error, reason}], {queue, demand}}
-    end
+  def payload_to_tuple(payload) when is_tuple(payload), do: payload
+  def payload_to_tuple(payload), do: {payload}
+
+  def build_event(event_name, event_payload, ws_state) do
+    {event_name, payload_to_tuple(event_payload), ws_state}
   end
 
-  def build_event(payload_name, from_dispatch, ws_state) do
-    {payload_name, from_dispatch, ws_state}
+  def handle_cast({:notify, {event, payload}, state}, {queue, demand}) do
+    dispatch_events(:queue.in(build_event(event, payload, state), queue), demand, [])
   end
 
   def handle_demand(incoming_demand, {queue, demand}) do
