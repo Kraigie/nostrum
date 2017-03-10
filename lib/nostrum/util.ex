@@ -47,9 +47,11 @@ defmodule Nostrum.Util do
   """
   @spec num_shards() :: integer
   def num_shards do
-    with :auto <- Application.get_env(:nostrum, :num_shards),
-      {_url, shards} <- gateway(),
-    do: shards
+    num =
+      with :auto <- Application.get_env(:nostrum, :num_shards),
+        {_url, shards} <- gateway(),
+        do: shards
+    if num == nil, do: 1, else: num
   end
 
   @doc false
