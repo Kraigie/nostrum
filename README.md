@@ -25,13 +25,6 @@ def deps do
 end
 ```
 
-Ensure Nostrum is started before your application:
-```elixir
-def application do
-  [applications: [:nostrum]]
-end
-```
-
 Edit or create your config file:
 
 The file should be located at `/config/config.exs`. To run Nostrum you need the
