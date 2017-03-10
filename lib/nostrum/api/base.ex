@@ -2,7 +2,6 @@ defmodule Nostrum.Api.Base do
   @moduledoc false
 
   @version Nostrum.Mixfile.project[:version]
-  @token Application.get_env(:nostrum, :token)
 
   use HTTPoison.Base
 
@@ -23,7 +22,7 @@ defmodule Nostrum.Api.Base do
 
   defp process_request_headers(headers) do
     user_agent = [{"User-Agent", "DiscordBot (https://github.com/kraigie/nostrum, #{@version})"} | headers]
-    auth = [{"Authorization", "Bot #{@token}"} | user_agent]
+    auth = [{"Authorization", "Bot #{Application.get_env(:nostrum, :token)}"} | user_agent]
     auth
   end
 

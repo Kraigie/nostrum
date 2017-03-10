@@ -21,7 +21,7 @@ end
  Stable documentation can be found [here](https://hexdocs.pm/nostrum/)
 ```elixir
 def deps do
-  [{:nostrum, "~> 0.1"]
+  [{:nostrum, "~> 0.1"}]
 end
 ```
 
