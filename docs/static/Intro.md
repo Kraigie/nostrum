@@ -83,10 +83,11 @@ following two fields:
 ```Elixir
 config :nostrum,
   token: 666, # The token of your bot as a string
-  num_shards: 2 # The number of shards you want to run your bot under.
+  num_shards: 2 # The number of shards you want to run your bot under, or :auto.
 ```
 If you don't know what `num_shards` is or don't have your bot on a lot of guilds
-you can omit the field and it will default to 1.
+you can omit the field and it will default to 1. You can also set this option to
+`:auto` and Nostrum will automatically get the recommended number of shards.
 
 You can include a third field `dev` which is a `boolean`. This is added to enable
 Nostrum to be run completely stand alone for development purposes. By default,

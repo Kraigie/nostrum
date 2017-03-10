@@ -37,7 +37,7 @@ following two fields:
 ```Elixir
 config :nostrum,
   token: 666, # The token of your bot as a string
-  num_shards: 2 # The number of shards you want to run your bot under.
+  num_shards: 2 # The number of shards you want to run your bot under, or :auto.
 ```
 
 For more information about the differences between dev and stable as well as

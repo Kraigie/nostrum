@@ -9,9 +9,9 @@ defmodule Nostrum.Shard do
 
   require Logger
 
-  def start_link(token, shard_num) do
+  def start_link(gateway, token, shard_num) do
     Connector.block_until_connect()
-    :websocket_client.start_link(Util.gateway, __MODULE__, Payload.state_map(token, shard_num, self()))
+    :websocket_client.start_link(gateway, __MODULE__, Payload.state_map(token, shard_num, self()))
   end
 
   def init(state) do

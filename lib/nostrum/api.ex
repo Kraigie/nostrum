@@ -1685,8 +1685,8 @@ defmodule Nostrum.Api do
     - `webhook_id` - Id of webhook to delete.
     - `webhook_token` - Token of the webhook to delete.
   """
-  @spec execute_slack_webook(Webhook.id, Webhook.token, wait \\ false) :: error | {:ok}
-  def execute_slack_webhook(webhook_id, webhook_token) do
+  @spec execute_slack_webhook(Webhook.id, Webhook.token, boolean) :: error | {:ok}
+  def execute_slack_webhook(webhook_id, webhook_token, wait \\ false) do
     request(:post, Constants.webhook_slack(webhook_id, webhook_token), params: [wait: wait])
   end
 
@@ -1697,8 +1697,8 @@ defmodule Nostrum.Api do
     - `webhook_id` - Id of webhook to delete.
     - `webhook_token` - Token of the webhook to delete.
   """
-  @spec execute_git_webook(Webhook.id, Webhook.token, wait \\ false) :: error | {:ok}
-  def execute_git_webhook(webhook_id, webhook_token) do
+  @spec execute_git_webhook(Webhook.id, Webhook.token, boolean) :: error | {:ok}
+  def execute_git_webhook(webhook_id, webhook_token, wait \\ false) do
     request(:post, Constants.webhook_git(webhook_id, webhook_token), params: [wait: wait])
   end
 

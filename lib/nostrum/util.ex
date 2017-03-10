@@ -47,7 +47,9 @@ defmodule Nostrum.Util do
   """
   @spec num_shards() :: integer
   def num_shards do
-    Application.get_env(:nostrum, :num_shards)
+    with :auto <- Application.get_env(:nostrum, :num_shards),
+      {_url, shards} <- gateway(),
+    do: shards
   end
 
   @doc false
@@ -72,13 +74,13 @@ defmodule Nostrum.Util do
   def gateway do
     case :ets.lookup(:gateway_url, "url") do
       [] -> get_new_gateway_url()
-      [{"url", url}] -> url
+      [{"url", url, shards}] -> {url, shards}
     end
   end
 
   @doc false
   defp get_new_gateway_url do
-    case Api.request(:get, Constants.gateway, "") do
+    case Api.request(:get, Constants.gateway_bot, "") do
       {:error, %{status_code: code, message: message}} ->
         raise(Nostrum.Error.ApiError, status_code: code, message: message)
       {:ok, body} ->
@@ -86,9 +88,10 @@ defmodule Nostrum.Util do
 
         url = body["url"] <> "?encoding=etf&v=6"
         |> to_charlist
-        
-        :ets.insert(:gateway_url, {"url", url})
-        url
+        shards = body["shards"]
+
+        :ets.insert(:gateway_url, {"url", url, shards})
+        {url, shards}
     end
   end
 

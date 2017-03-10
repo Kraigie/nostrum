@@ -3,12 +3,25 @@ defmodule Nostrum.Shard.ShardSupervisor do
 
   use Supervisor
 
-  alias Nostrum.Shard
+  alias Nostrum.{Shard, Util}
 
-  def start_link(token, num_shards \\ 1) do
+  require Logger
+
+  def start_link(token, :auto) do
     :crypto.start
     :ssl.start
-    Supervisor.start_link(__MODULE__, [token: token, num_shards: num_shards], name: ShardSupervisor)
+    {url, shards} = Util.gateway()
+    Supervisor.start_link(__MODULE__, [url: url,token: token, num_shards: shards], name: ShardSupervisor)
+  end
+
+  def start_link(token, num_shards) do
+    :crypto.start
+    :ssl.start
+    {url, shards} = Util.gateway()
+    if num_shards != shards, do: Logger.warn "Specified #{num_shards} shards " <>
+    "when the recommended number is #{shards}. Consider using the num_shard: " <>
+    ":auto option in your Nostrum config."
+    Supervisor.start_link(__MODULE__, [url: url, token: token, num_shards: num_shards], name: ShardSupervisor)
   end
 
   def update_status(status, game) do
@@ -19,15 +32,18 @@ defmodule Nostrum.Shard.ShardSupervisor do
 
   @doc false
   def init(options) do
-    children = for i <- 0..options[:num_shards] - 1, do: create_worker(options[:token], i)
-    with_registry = [supervisor(Registry, [:duplicate, ProducerRegistry])] ++ children
-    with_task_supervisor = [supervisor(Task.Supervisor, [[name: DispatchTaskSupervisor]])] ++ with_registry
+    children = for i <- 0..options[:num_shards] - 1,
+      do: create_worker(options[:url], options[:token], i)
+    with_registry =
+      [supervisor(Registry, [:duplicate, ProducerRegistry])] ++ children
+    with_task_supervisor =
+      [supervisor(Task.Supervisor, [[name: DispatchTaskSupervisor]])] ++ with_registry
     supervise(with_task_supervisor, strategy: :one_for_one, max_restarts: 3, max_seconds: 60)
   end
 
   @doc false
-  def create_worker(token, shard_num) do
-    worker(Shard, [token, shard_num], [id: shard_num])
+  def create_worker(gateway, token, shard_num) do
+    worker(Shard, [gateway, token, shard_num], [id: shard_num])
   end
 
 end

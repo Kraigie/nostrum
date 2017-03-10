@@ -4,6 +4,7 @@ defmodule Nostrum.Constants do
   # REFERENCE: https://gist.github.com/SinisterRectus/9518f3e7d0d1ccb4335b2a0d389c30b0
   def base_url,                                                   do: "https://discordapp.com/api/v6"
   def gateway,                                                    do: "/gateway"
+  def gateway_bot,                                                do: "/gateway/bot"
 
   def channel(channel_id),                                        do: "/channels/#{channel_id}"
   def channel_messages(channel_id),                               do: "/channels/#{channel_id}/messages"
