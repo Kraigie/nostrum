@@ -101,7 +101,7 @@ Nostrum takes advantage of `:debug`, `:warn`, and `:info`.
 
 ### Example Bot
 A very simple example bot can be found
-[here](https://github.com/Kraigie/nostrum/blob/master/examples/event_consumer.ex).
+[here](https://github.com/Kraigie/nostrum/blob/a655b8bea1c96777ea6ec729493625b147899081/examples/event_consumer.ex).
 
 A more complex bot can be found
 [here](https://github.com/Kraigie/mark-hoff).

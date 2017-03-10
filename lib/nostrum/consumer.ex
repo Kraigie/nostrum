@@ -9,7 +9,7 @@ defmodule Nostrum.Consumer do
   Nostrum defines the `producer` in the GenStage design. To consume the events you must
   create at least one `consumer` process. For
   an example of this behaviour please see
-  [here](https://github.com/Kraigie/nostrum/blob/84502606f570d27dd4450d95a88a796839369bfb/examples/event_consumer.ex).
+  [here](https://github.com/Kraigie/nostrum/blob/a655b8bea1c96777ea6ec729493625b147899081/examples/event_consumer.ex).
 
   It is generally recommended that you spawn a consumer per core. To find this
   number you can use `System.schedulers_online/0`.

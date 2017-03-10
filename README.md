@@ -40,6 +40,10 @@ additional config parameters, please see the
 [documentation](https://kraigie.github.io/nostrum/).
 
 ## Example Usage
+The below module needs to be started in some fashion to capture events. See
+[here](https://github.com/Kraigie/nostrum/blob/a655b8bea1c96777ea6ec729493625b147899081/examples/event_consumer.ex)
+for a full example.
+
 ```Elixir
 defmodule ExampleConsumer do
   use Nostrum.Consumer
@@ -52,7 +56,7 @@ defmodule ExampleConsumer do
   def handle_event({:MESSAGE_CREATE, {msg}, _ws_state}, state) do
     case msg.content do
       "ping!" ->
-        Api.create_message(msg.channel.id, "I copy and pasted this code")
+        Api.create_message(msg.channel_id, "I copy and pasted this code")
       _ ->
         :ignore
     end
@@ -66,6 +70,12 @@ defmodule ExampleConsumer do
     {:ok, state}
   end
 end
+```
+
+Although it's not recommended, you could start it from `iex`.
+```Elixir
+  iex()> ExampleConsumer.start
+  {:ok, #PID<0.208.0>}
 ```
 
 ## Contributing
