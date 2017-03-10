@@ -44,6 +44,7 @@ defmodule Nostrum.Api do
   use Bitwise
 
   alias Nostrum.{Constants, Shard}
+  alias Nostrum.Struct.{Embed, Guild, Webhook}
   alias Nostrum.Struct.Guild.TextChannel
   alias Nostrum.Shard.ShardSupervisor
   alias Nostrum.Util
@@ -107,9 +108,9 @@ defmodule Nostrum.Api do
   Send a message to a channel.
 
   ## Parameters
-    - `channel_id`: Id of the channel to send the message to.
-    - `content`: String, embed, or file to send to the channel.
-    - `tts`: Whether the message should be read over text to speech.
+    - `channel_id` - Id of the channel to send the message to.
+    - `content` - String, embed, or file to send to the channel.
+    - `tts` - Whether the message should be read over text to speech.
 
   ## Example
   ```Elixir
@@ -1468,6 +1469,237 @@ defmodule Nostrum.Api do
       other ->
         other
     end
+  end
+
+  @doc """
+  Creates a webhook.
+
+  ## Parameters
+    - `channel_id` - Id of the channel to send the message to.
+    - `args` - Map with the following **required** keys:
+      - `name` - Name of the webhook.
+      - `avatar` - Base64 128x128 jpeg image for the default avatar.
+  """
+  @spec create_webhook(TextChannel.id, %{
+      name: String.t,
+      avatar: String.t
+    }) :: error | {:ok, Nostrum.Struct.Webhook.t}
+  def create_webhook(channel_id, args) do
+    case request(:post, Constants.webhooks_channel(channel_id), args) do
+      {:ok, body} ->
+        {:ok, Poison.decode!(body)}
+      other ->
+        other
+    end
+  end
+
+  @doc """
+  Gets a list of webook for a channel.
+
+  ## Parameters
+    - `channel_id` - Channel to get webhooks for.
+  """
+  @spec get_channel_webhooks(TextChannel.id)
+    :: error | {:ok, [Nostrum.Struct.Webhook.t]}
+  def get_channel_webhooks(channel_id) do
+    case request(:get, Constants.webhooks_channel(channel_id)) do
+      {:ok, body} ->
+        {:ok, Poison.decode!(body)}
+      other ->
+        other
+    end
+  end
+
+  @doc """
+  Gets a list of webooks for a guild.
+
+  ## Parameters
+    - `guild_id` - Guild to get webhooks for.
+  """
+  @spec get_guild_webhooks(Guild.id) :: error | {:ok, [Nostrum.Struct.Webhook.t]}
+  def get_guild_webhooks(guild_id) do
+    case request(:get, Constants.webhooks_guild(guild_id)) do
+      {:ok, body} ->
+        {:ok, Poison.decode!(body)}
+      other ->
+        other
+    end
+  end
+
+  @doc """
+  Gets a webhook by id.
+
+  ## Parameters
+    - `webhook_id` - Id of webhook to get.
+  """
+  @spec get_webhook(Webhook.id) :: error | {:ok, Nostrum.Struct.Webhook.t}
+  def get_webhook(webhook_id) do
+    case request(:get, Constants.webhook(webhook_id)) do
+      {:ok, body} ->
+        {:ok, Poison.decode!(body)}
+      other ->
+        other
+    end
+  end
+
+  @doc """
+  Gets a webhook by id and token.
+
+  This method is exactly like `get_webhook/1` but does not require
+  authentication.
+
+  ## Parameters
+    - `webhook_id` - Id of webhook to get.
+    - `webhook_token` - Token of the webhook to get.
+  """
+  @spec get_webhook_with_token(Webhook.id, Webhook.token) :: error | {:ok, Nostrum.Struct.Webhook.t}
+  def get_webhook_with_token(webhook_id, webhook_token) do
+    case request(:get, Constants.webhook_token(webhook_id, webhook_token)) do
+      {:ok, body} ->
+        {:ok, Poison.decode!(body)}
+      other ->
+        other
+    end
+  end
+
+  @doc """
+  Modifies a webhook.
+
+  ## Parameters
+    - `webhook_id` - Id of the webhook to modify.
+    - `args` - Map with the following *optional* keys:
+      - `name` - Name of the webhook.
+      - `avatar` - Base64 128x128 jpeg image for the default avatar.
+  """
+  @spec modify_webhook(Webhook.id, %{
+      name: String.t,
+      avatar: String.t
+    }) :: error | {:ok, Nostrum.Struct.Webhook.t}
+  def modify_webhook(webhook_id, args) do
+    case request(:patch, Constants.webhook(webhook_id), args) do
+      {:ok, body} ->
+        {:ok, Poison.decode!(body)}
+      other ->
+        other
+    end
+  end
+
+  @doc """
+  Modifies a webhook with a token.
+
+  This method is exactly like `modify_webhook/1` but does not require
+  authentication.
+
+  ## Parameters
+    - `webhook_id` - Id of the webhook to modify.
+    - `webhook_token` - Token of the webhook to get.
+    - `args` - Map with the following *optional* keys:
+      - `name` - Name of the webhook.
+      - `avatar` - Base64 128x128 jpeg image for the default avatar.
+  """
+  @spec modify_webhook_with_token(Webhook.id, Webhook.token, %{
+      name: String.t,
+      avatar: String.t
+    }) :: error | {:ok, Nostrum.Struct.Webhook.t}
+  def modify_webhook_with_token(webhook_id, webhook_token, args) do
+    case request(:patch, Constants.webhook_token(webhook_id, webhook_token), args) do
+      {:ok, body} ->
+        {:ok, Poison.decode!(body)}
+      other ->
+        other
+    end
+  end
+
+  @doc """
+  Deletes a webhook.
+
+  ## Parameters
+    - `webhook_id` - Id of webhook to delete.
+    - `webhook_token` - Token of the webhook to delete.
+  """
+  @spec delete_webhook(Webhook.id) :: error | {:ok}
+  def delete_webhook(webhook_id) do
+    request(:delete, Constants.webhook(webhook_id))
+  end
+
+  @doc """
+  Executes a webhook.
+
+  ## Parameters
+  - `webhook_id` - Id of webhook to delete.
+  - `webhook_token` - Token of the webhook to delete.
+  - `args` - Map with the following required keys:
+    - `content` - Message content.
+    - `file` - File to send.
+    - `embeds` - Embed to send.
+    - `username` - Overrides the default name of the webhook.
+    - `avatar_url` - Overrides the default avatar of the webhook.
+    - `tts` - Whether the message should be read over text to speech.
+  - `wait` - Whether to return an error or not. Defaults to `false`.
+
+  Only one of `content`, `file` or `embed` should be supplied in the `args` parameter.
+  """
+  @spec execute_webhook(Webhook.id, Webhook.token, %{
+      content: String.t,
+      username: String.t,
+      avatar_url: String.t,
+      tts: boolean,
+      file: String.t,
+      embeds: Embed.t
+    }, boolean) :: error | {:ok}
+  def execute_webhook(webhook_id, webhook_token, args, wait \\ false)
+  def execute_webhook(webhook_id, webhook_token, %{file: _} = args, wait) do
+    case \
+    request_multipart(
+      :post,
+      Constants.webhook_token(webhook_id, webhook_token),
+      args,
+      params: [wait: wait]
+    ) do
+      {:ok, body} ->
+        {:ok, Poison.decode!(body)}
+      other ->
+        other
+    end
+  end
+
+  def execute_webhook(webhook_id, webhook_token, %{content: _} = args, wait) do
+    case \
+    request(
+      :post,
+      Constants.webhook_token(webhook_id, webhook_token),
+      args,
+      params: [wait: wait]
+    ) do
+      {:ok, body} ->
+        {:ok, Poison.decode!(body)}
+      other ->
+        other
+    end
+  end
+
+  @doc """
+  Executes a slack webhook.
+
+  ## Parameters
+    - `webhook_id` - Id of webhook to delete.
+    - `webhook_token` - Token of the webhook to delete.
+  """
+  @spec execute_slack_webook(Webhook.id, Webhook.token, wait \\ false) :: error | {:ok}
+  def execute_slack_webhook(webhook_id, webhook_token) do
+    request(:post, Constants.webhook_slack(webhook_id, webhook_token), params: [wait: wait])
+  end
+
+  @doc """
+  Executes a git webhook.
+
+  ## Parameters
+    - `webhook_id` - Id of webhook to delete.
+    - `webhook_token` - Token of the webhook to delete.
+  """
+  @spec execute_git_webook(Webhook.id, Webhook.token, wait \\ false) :: error | {:ok}
+  def execute_git_webhook(webhook_id, webhook_token) do
+    request(:post, Constants.webhook_git(webhook_id, webhook_token), params: [wait: wait])
   end
 
   # HTTPosion defaults to `""` for an empty body, so it's safe to do so here
