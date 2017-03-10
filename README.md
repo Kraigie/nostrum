@@ -19,7 +19,7 @@ end
  *Stable*
 ```elixir
 def deps do
-  [{:nostrum, "~> 1.0"]
+  [{:nostrum, "~> 0.1"]
 end
 ```
 
