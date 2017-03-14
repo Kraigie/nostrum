@@ -46,12 +46,8 @@ defmodule Nostrum.Cache.Guild.GuildServer do
   @spec get([id: integer] | [channel_id: integer] | Nostrum.Struct.Message.t) ::
   {:error, atom} | {:ok, Nostrum.Struct.Guild.t}
   def get(id: id) do
-    case GuildRegister.lookup(id) do
-      {:ok, pid} ->
-        {:ok, GenServer.call(pid, {:get, :guild})}
-      error ->
-        error
-    end
+    with {:ok, pid} <- GuildRegister.lookup(id),
+    do: {:ok, GenServer.call(pid, {:get, :guild})}
   end
 
   def get(channel_id: channel_id) do
@@ -64,16 +60,7 @@ defmodule Nostrum.Cache.Guild.GuildServer do
   end
 
   def get(%Nostrum.Struct.Message{channel_id: channel_id}) do
-    case \
-      channel_id
-      |> ChannelGuild.get_guild
-      |> GuildRegister.lookup
-    do
-      {:ok, pid} ->
-        {:ok, GenServer.call(pid, {:get, :guild})}
-      error ->
-        error
-    end
+    get(channel_id: channel_id)
   end
 
   def get!(id: id) do
@@ -88,10 +75,8 @@ defmodule Nostrum.Cache.Guild.GuildServer do
 
   @doc false
   def call(id, request) do
-    with \
-      {:ok, pid} <- GuildRegister.lookup(id),
-      res <- GenServer.call(pid, request),
-    do: res
+    with {:ok, pid} <- GuildRegister.lookup(id),
+    do: GenServer.call(pid, request)
   end
 
   @doc false

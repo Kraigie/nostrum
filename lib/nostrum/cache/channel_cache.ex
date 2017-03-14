@@ -74,9 +74,9 @@ defmodule Nostrum.Cache.ChannelCache do
     {:reply, ret_to_struct(old_channel), new_state}
   end
 
-  # Handle error case when id not found
+  # Handle error case when id not found, from the get method
   def ret_to_struct({:error, _} = error), do: error
-  # When fetching from a guild, the channel will already be a struct.
+  # When fetching from a guild, the channel will already be a struct
   def ret_to_struct(%{__struct__: _} = channel), do: channel
   def ret_to_struct({old, new}), do: {Channel.to_struct(old), Channel.to_struct(new)}
   def ret_to_struct(channel), do: Channel.to_struct(channel)

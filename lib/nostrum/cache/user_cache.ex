@@ -96,7 +96,7 @@ defmodule Nostrum.Cache.UserCache do
   def handle_call({:update, id, user}, _from, state) do
     case :ets.lookup(:users, {:id, id}) do
       [] ->
-        {:error, :user_not_found}
+        {:reply, {:error, :user_not_found}, state}
       [lookup] ->
         :ets.insert(:users, insert(id, user))
         {:reply, {lookup_to_struct(lookup), User.to_struct(user)}, state}
@@ -106,7 +106,7 @@ defmodule Nostrum.Cache.UserCache do
   def handle_call({:delete, id}, _from, state) do
     case :ets.lookup(:users, {:id, id}) do
       [] ->
-        {:error, :user_not_found}
+        {:reply, {:error, :user_not_found}, state}
       [lookup] ->
         :ets.delete(:users, {:id, id})
         {:reply, lookup_to_struct(lookup), state}
@@ -137,11 +137,7 @@ defmodule Nostrum.Cache.UserCache do
       [] ->
         {:error, :user_not_found}
       [other] ->
-        lookup =
-          other
-          |> Tuple.to_list
-          |> Enum.into(%{})
-          |> User.to_struct
+        lookup = lookup_to_struct(other)
         {:ok, lookup}
     end
   end
