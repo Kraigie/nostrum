@@ -44,7 +44,7 @@ defmodule Nostrum.Api do
   use Bitwise
 
   alias Nostrum.{Constants, Shard}
-  alias Nostrum.Struct.{Embed, Guild, Webhook}
+  alias Nostrum.Struct.{Embed, Guild, User, Webhook}
   alias Nostrum.Struct.Guild.TextChannel
   alias Nostrum.Shard.ShardSupervisor
   alias Nostrum.Util
@@ -1344,7 +1344,7 @@ defmodule Nostrum.Api do
   def get_current_user do
     case request(:get, Constants.me) do
       {:ok, body} ->
-        {:ok, Poison.decode!(body)}
+        {:ok, Poison.decode!(body, as: %User{})}
       other ->
         other
     end
