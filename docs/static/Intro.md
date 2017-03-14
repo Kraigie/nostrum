@@ -18,7 +18,7 @@ From the Elixir website -
 > Elixir is a dynamic, functional language designed for building scalable and
 maintainable applications.
 
->Elixir leverages the Erlang VM, known for running low-latency, distributed and
+> Elixir leverages the Erlang VM, known for running low-latency, distributed and
 fault-tolerant systems, while also being successfully used in web development
 and the embedded software domain.
 
@@ -82,11 +82,14 @@ If you don't know what `num_shards` is or don't have your bot on a lot of guilds
 you can omit the field and it will default to 1. You can also set this option to
 `:auto` and Nostrum will automatically get the recommended number of shards.
 
-You can include a third field `dev` which is a `boolean`. This is added to enable
-Nostrum to be run completely stand alone for development purposes. By default,
-`true` will cause Nostrum to spawn its own event consumers. If you have the dev
-flag set to true while running Nostrum alongside your application some of your
-events will be consumed.
+The following fields are also supported:
+
+ - `dev` - This is added to enable Nostrum to be run completely stand alone for
+ development purposes. Defaults to false. `true` will cause Nostrum to spawn its
+ own event consumers. If you have the dev flag set to true while running Nostrum
+ alongside your application some of your events will be consumed.
+ - `log_full_events` - This will log the full payload received over the websocket.
+ This is included primarily for debugging and testing purposes. Defaults to false.
 
 By default, Nostrum logs a lot of data using `Logger`. If you want to ignore
 Logger debug data, include the following:

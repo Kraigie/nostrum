@@ -18,7 +18,7 @@ defmodule Nostrum.Shard.Dispatch.Producer do
   end
 
   # Handle any errors from cache methods
-  def notify(pid, {event, {:error, reason}}, state),
+  def notify(_pid, {event, {:error, reason}}, _state),
     do: Logger.warn("ERROR PROCESSING #{inspect event}: #{inspect reason}")
   def notify(pid, payload, state) do
     GenStage.cast(pid, {:notify, payload, state})

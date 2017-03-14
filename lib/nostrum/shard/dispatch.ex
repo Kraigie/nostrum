@@ -13,6 +13,11 @@ defmodule Nostrum.Shard.Dispatch do
 
   def handle(pid, payload, state) do
     Logger.debug payload.t
+
+    log? = Application.get_env(:nostrum, :log_full_events)
+    # Inspect for pretty print
+    if log?, do: IO.inspect payload.d
+
     handle_event(payload.t, payload.d, state, pid)
   end
 
