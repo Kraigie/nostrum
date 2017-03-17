@@ -16,7 +16,7 @@ defmodule Nostrum.Shard.Dispatch do
 
     log? = Application.get_env(:nostrum, :log_full_events)
     # Inspect for pretty print
-    if log?, do: IO.inspect payload.d
+    if log?, do: Logger.info inspect payload.d, pretty: true
 
     handle_event(payload.t, payload.d, state, pid)
   end
