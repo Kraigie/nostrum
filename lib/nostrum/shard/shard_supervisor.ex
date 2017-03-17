@@ -18,8 +18,8 @@ defmodule Nostrum.Shard.ShardSupervisor do
     :crypto.start
     :ssl.start
     {url, shards} = Util.gateway()
-    if num_shards != shards, do: Logger.warn "Specified #{num_shards} shards " <>
-    "when the recommended number is #{shards}. Consider using the num_shard: " <>
+    if num_shards != shards, do: Logger.info "Specified #{num_shards} shards " <>
+    "when the recommended number is #{shards}. Consider using the num_shards: " <>
     ":auto option in your Nostrum config."
     Supervisor.start_link(__MODULE__, [url: url, token: token, num_shards: num_shards], name: ShardSupervisor)
   end

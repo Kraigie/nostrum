@@ -101,7 +101,7 @@ defmodule Nostrum.Shard.Dispatch do
   def handle_event(:GUILD_MEMBERS_CHUNK = event, p, state, pid) do
     p.members
       |> Enum.each(fn member ->
-        UserCache.create(p.user)
+        UserCache.create(member.user)
         GuildServer.member_add(p.guild_id, member)
       end)
     Producer.notify(pid, {event, p}, state)
@@ -138,6 +138,9 @@ defmodule Nostrum.Shard.Dispatch do
     do: Producer.notify(pid, {event, p}, state)
 
   def handle_event(:MESSAGE_REACTION_REMOVE = event, p, state, pid),
+    do: Producer.notify(pid, {event, p}, state)
+
+  def handle_event(:MESSAGE_ACK = event, p, state, pid),
     do: Producer.notify(pid, {event, p}, state)
 
   def handle_event(:PRESENCE_UPDATE = event, p, state, pid),

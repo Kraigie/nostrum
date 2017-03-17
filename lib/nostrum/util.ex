@@ -80,9 +80,15 @@ defmodule Nostrum.Util do
     end
   end
 
-  @doc false
-  defp get_new_gateway_url do
-    case Api.request(:get, Constants.gateway_bot, "") do
+  defp execute_gateway_request(true),
+    do: Api.request(:get, Constants.gateway, "")
+  defp execute_gateway_request(nil),
+    do: Api.request(:get, Constants.gateway_bot, "")
+  defp execute_gateway_request(false),
+    do: Api.request(:get, Constants.gateway_bot, "")
+
+  defp get_new_gateway_url() do
+    case execute_gateway_request(Application.get_env(:nostrum, :self_bot)) do
       {:error, %{status_code: code, message: message}} ->
         raise(Nostrum.Error.ApiError, status_code: code, message: message)
       {:ok, body} ->
@@ -90,7 +96,7 @@ defmodule Nostrum.Util do
 
         url = body["url"] <> "?encoding=etf&v=6"
         |> to_charlist
-        shards = body["shards"]
+        shards = if body["shards"], do: body["shards"], else: 1
 
         :ets.insert(:gateway_url, {"url", url, shards})
         {url, shards}
@@ -138,7 +144,18 @@ defmodule Nostrum.Util do
   `Nostrum.Util.maybe_to_atom/1` function when they are in fact harmless.
   """
   def unused_atoms do
-    [recipients: "Ready", require_colons: "Ready", last_message_id: "Ready"]
+    [
+      recipients: "Ready", require_colons: "Ready", last_message_id: "Ready",
+      friend_sync: "Self", visibility: "Self", channel_overrides: "Self",
+      message_notifications: "Self", muted: "Self", mobile_push: "Self",
+      suppress_everyone: "Self", convert_emoticons: "Self",
+      detect_platform_accounts: "Self", developer_mode: "Self",
+      enable_tts_command: "Self", friend_source_flags: "Self",
+      guild_positions: "Self", inline_attachment_media: "Self",
+      inline_embed_media: "Self", locale: "Self", message_display_compact: "Self",
+      render_embeds: "Self", render_reactions: "Self", restricted_guilds: "Self",
+      show_current_game: "Self", theme: "Self",
+    ]
   end
 
 end

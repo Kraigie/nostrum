@@ -11,15 +11,16 @@ defmodule Nostrum.Shard do
 
   def start_link(gateway, token, shard_num) do
     Connector.block_until_connect()
-    :websocket_client.start_link(gateway, __MODULE__, Payload.state_map(token, shard_num, self()))
+    :websocket_client.start_link(gateway, __MODULE__, [t: token, s: shard_num])
   end
 
-  def init(state) do
+  def init(t: token, s: shard_num) do
     with \
       {:ok, supervisor} <- ProducerSupervisor.start_link(),
-      {:ok, child_pid} <- ProducerSupervisor.start_producer(supervisor, state.shard_num)
+      {:ok, child_pid} <- ProducerSupervisor.start_producer(supervisor, shard_num)
     do
-      :ets.insert(:shard_pid_num, {state.shard_num, self()})
+      :ets.insert(:shard_pid_num, {shard_num, self()})
+      state = Payload.state_map(token, shard_num, self())
       {:once, %{state | producer_pid: child_pid}}
     end
   end

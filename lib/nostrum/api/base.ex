@@ -22,8 +22,10 @@ defmodule Nostrum.Api.Base do
 
   defp process_request_headers(headers) do
     user_agent = [{"User-Agent", "DiscordBot (https://github.com/kraigie/nostrum, #{@version})"} | headers]
-    auth = [{"Authorization", "Bot #{Application.get_env(:nostrum, :token)}"} | user_agent]
-    auth
+    token = Application.get_env(:nostrum, :token)
+    possible_bot_token = if Application.get_env(:nostrum, :self_bot),
+      do: token, else: "Bot " <> token
+    [{"Authorization", possible_bot_token} | user_agent]
   end
 
   defp process_response_body(body) do
