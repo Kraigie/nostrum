@@ -78,7 +78,7 @@ defmodule Nostrum.Api do
     - `:dnd` - Red circle.
     - `:idle` - Yellow circle.
     - `:online` - Green circle.
-    - `invisible` - The bot will appear offline.
+    - `:invisible` - The bot will appear offline.
   """
   @type status :: :dnd | :idle | :online | :invisible
 
@@ -128,10 +128,10 @@ defmodule Nostrum.Api do
   end
 
   # Embeds
-  @spec create_message(TextChannel.id, %{
+  @spec create_message(TextChannel.id, [
     content: String.t,
     embed: Embed.t
-  }, boolean) :: error | {:ok, Message.t}
+  ], boolean) :: error | {:ok, Message.t}
   def create_message(channel_id, [content: c, embed: e], tts) when is_map(c) do
     request(:post, Constants.channel_messages(channel_id), %{content: c, embed: e, tts: tts})
     |> handle(Message)
