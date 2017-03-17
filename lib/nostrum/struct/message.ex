@@ -91,6 +91,15 @@ defmodule Nostrum.Struct.Message do
   ]
 
   @doc false
+  def p_encode do
+    %__MODULE__{
+      author: User.p_encode,
+      mentions: [User.p_encode],
+      mention_roles: [User.p_encode]
+    }
+  end
+
+  @doc false
   def to_struct(map) do
     new = map
     |> Map.update(:author, %{}, &User.to_struct(&1))

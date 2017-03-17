@@ -44,7 +44,7 @@ defmodule Nostrum.Api do
   use Bitwise
 
   alias Nostrum.{Constants, Shard}
-  alias Nostrum.Struct.{Embed, Guild, User, Webhook}
+  alias Nostrum.Struct.{Embed, Guild, Message, User, Webhook}
   alias Nostrum.Struct.Guild.TextChannel
   alias Nostrum.Shard.ShardSupervisor
   alias Nostrum.Util
@@ -75,19 +75,20 @@ defmodule Nostrum.Api do
   @typedoc """
   Represents different statuses the bot can have.
 
-   * `:dnd` - Red circle.
-   * `:idle` - Yellow circle.
-   * `:online` - Green circle.
-   * `invisible` - The bot will appear offline.
+    - `:dnd` - Red circle.
+    - `:idle` - Yellow circle.
+    - `:online` - Green circle.
+    - `invisible` - The bot will appear offline.
   """
   @type status :: :dnd | :idle | :online | :invisible
 
   @doc """
   Updates the status of the bot for a certain shard.
 
-  `pid` is the pid of the shard whose status you want to update. To update the status for all shards see `Nostrum.Api.update_status/2`
-  `status` is an atom that describes the status of the bot. See `Nostrum.Api.status.t` for available options.
-  `game` is the text that will display 'playing' status of the game. This is the text below the bot's name in the sidebar. Empty string will clear.
+  ## Parameters
+    - `pid` - Pid of the shard.
+    - `status` - Status of the bot.
+    - `game` - The 'playing' text of the bot. Empty will clear.
   """
   @spec update_status(pid, status, String.t) :: no_return
   def update_status(pid, status, game) do
@@ -97,7 +98,7 @@ defmodule Nostrum.Api do
   @doc """
   Updates the status of the bot for all shards.
 
-  For more information see `Nostrum.Api.update_status/3`
+  See `update_status/3` for usage.
   """
   @spec update_status(status, String.t) :: no_return
   def update_status(status, game) do
@@ -109,7 +110,7 @@ defmodule Nostrum.Api do
 
   ## Parameters
     - `channel_id` - Id of the channel to send the message to.
-    - `content` - String, embed, or file to send to the channel.
+    - `content` - One of string, embed, or file to send to the channel. See specs for info.
     - `tts` - Whether the message should be read over text to speech.
 
   ## Example
@@ -117,60 +118,44 @@ defmodule Nostrum.Api do
   Nostrum.Api.create_message(1111111111111, [content: "my os rules", file: ~S"C:\i\use\windows"])
   ```
   """
-  @spec create_message(TextChannel.id, String.t, boolean)
-    :: error | {:ok, Nostrum.Struct.Message.t}
-  @spec create_message(TextChannel.id, [
-      content: String.t,
-      embed: Nostrum.Struct.Embed.t
-    ], boolean)
-    :: error | {:ok, Nostrum.Struct.Message.t}
-  @spec create_message(TextChannel.id, [
-      content: String.t,
-      file: String.t
-    ], boolean)
-    :: error | {:ok, Nostrum.Struct.Message.t}
+  @spec create_message(TextChannel.id, String.t, boolean) :: error | {:ok, Message.t}
   def create_message(channel_id, content, tts \\ false)
 
   # Sending regular messages
   def create_message(channel_id, content, tts) when is_binary(content) do
-    case request(:post, Constants.channel_messages(channel_id), %{content: content, tts: tts}) do
-      {:ok, body} ->
-        {:ok, Poison.decode!(body, as: %Nostrum.Struct.Message{})}
-      other ->
-        other
-    end
+    request(:post, Constants.channel_messages(channel_id), %{content: content,tts: tts})
+    |> handle(Message)
   end
 
   # Embeds
-  def create_message(channel_id, [content: content, embed: embed], tts) when is_map(content) do
-    case request(:post, Constants.channel_messages(channel_id), %{content: content, embed: embed, tts: tts}) do
-      {:ok, body} ->
-        {:ok, Poison.decode!(body, as: %Nostrum.Struct.Message{})}
-      other ->
-        other
-    end
+  @spec create_message(TextChannel.id, %{
+    content: String.t,
+    embed: Embed.t
+  }, boolean) :: error | {:ok, Message.t}
+  def create_message(channel_id, [content: c, embed: e], tts) when is_map(c) do
+    request(:post, Constants.channel_messages(channel_id), %{content: c, embed: e, tts: tts})
+    |> handle(Message)
   end
 
   # Files
-  def create_message(channel_id, [file_name: content, file: file], tts) do
-    case request_multipart(:post, Constants.channel_messages(channel_id), %{content: content, file: file, tts: tts}) do
-      {:ok, body} ->
-        {:ok, Poison.decode!(body, as: %Nostrum.Struct.Message{})}
-      other ->
-        other
-    end
+  @spec create_message(TextChannel.id, [
+      content: String.t,
+      file: String.t
+    ], boolean)
+    :: error | {:ok, Message.t}
+  def create_message(channel_id, [file_name: c, file: f], tts) do
+    request_multipart(:post, Constants.channel_messages(channel_id), %{content: c, file: f, tts: tts})
+    |> handle(Message)
   end
 
   @doc """
   Send a message to a channel.
 
-  Send `content` to the channel identified with `channel_id`.
-  `tts` is an optional parameter that dictates whether the message should be played over text to speech.
+  See `create_message/3` for usage.
 
   Raises `Nostrum.Error.ApiError` if error occurs while making the rest call.
-  Returns `Nostrum.Struct.Message` if successful.
   """
-  @spec create_message!(integer, String.t, boolean) :: no_return | Nostrum.Struct.Message.t
+  @spec create_message!(TextChannel.id, String.t, boolean) :: no_return | Message.t
   def create_message!(channel_id, content, tts \\ false) do
     create_message(channel_id, content, tts)
     |> bangify
@@ -179,29 +164,50 @@ defmodule Nostrum.Api do
   @doc """
   Edit a message.
 
-  Edit a message with the given `content`. Message to edit is specified by `channel_id` and `message_id`.
-
-  Returns the edited `{:ok, Nostrum.Struct.Message}` if successful. `error` otherwise.
+  ## Parameters
+    - `message` - Message to edit.
+    - `content` - New content of the message.
   """
-  @spec edit_message(integer, integer, String.t) :: error | {:ok, Nostrum.Struct.Message.t}
-  def edit_message(channel_id, message_id, content) do
-    case request(:patch, Constants.channel_message(channel_id, message_id), %{content: content}) do
-      {:ok, body} ->
-        {:ok, Poison.decode!(body, as: %Nostrum.Struct.Message{})}
-      other ->
-        other
-    end
+  @spec edit_message(Message.t, String.t) :: error | {:ok, Message.t}
+  def edit_message(%Message{id: id, channel_id: c_id}, content) do
+    edit_message(c_id, id, content)
   end
 
   @doc """
   Edit a message.
 
-  Edit a message with the given `content`. Message to edit is specified by `channel_id` and `message_id`.
+  ## Parameters
+    - `channel_id` - Id of the channel the message is in.
+    - `message_id` - Id of the message to edit.
+    - `content` - New content of the message.
+  """
+  @spec edit_message(TextChannel.id, Message.id, String.t) :: error | {:ok, Message.t}
+  def edit_message(channel_id, message_id, content) do
+    request(:patch, Constants.channel_message(channel_id, message_id), %{content: content})
+    |> handle(Message)
+  end
+
+  @doc """
+  Edit a message.
+
+  See `edit_message/2` for usage.
 
   Raises `Nostrum.Error.ApiError` if error occurs while making the rest call.
-  Returns the edited `Nostrum.Struct.Message` if successful.
   """
-  @spec edit_message!(integer, integer, String.t) :: no_return | {:ok, Nostrum.Struct.Message.t}
+  @spec edit_message!(Message.t, String.t) :: error | {:ok, Message.t}
+  def edit_message!(%Message{id: id, channel_id: c_id}, content) do
+    edit_message(c_id, id, content)
+    |> bangify
+  end
+
+  @doc """
+  Edit a message.
+
+  See `edit_message/3` for usage.
+
+  Raises `Nostrum.Error.ApiError` if error occurs while making the rest call.
+  """
+  @spec edit_message!(TextChannel.id, Message.id, String.t) :: no_return | {:ok, Message.t}
   def edit_message!(channel_id, message_id, content) do
     edit_message(channel_id, message_id, content)
     |> bangify
@@ -210,11 +216,22 @@ defmodule Nostrum.Api do
   @doc """
   Delete a message.
 
-  Delete a message specified by `channel_id` and `message_id`.
-
-  Returns `{:ok}` if successful. `error` otherwise.
+  ## Parameters
+    - `message` - Message to delete.
   """
-  @spec delete_message(integer, integer) :: error | {:ok}
+  @spec delete_message(Message.t) :: error | {:ok}
+  def delete_message(%Message{id: id, channel_id: c_id}) do
+    delete_message(c_id, id)
+  end
+
+  @doc """
+  Delete a message.
+
+  ## Parameters
+    - `channel_id` - Id of the channel the message is in.
+    - `message_id` - Id of the message to delete.
+  """
+  @spec delete_message(TextChannel.id, Message.id) :: error | {:ok}
   def delete_message(channel_id, message_id) do
     request(:delete, Constants.channel_message(channel_id, message_id))
   end
@@ -222,12 +239,24 @@ defmodule Nostrum.Api do
   @doc """
   Delete a message.
 
-  Delete a message specified by `channel_id` and `message_id`.
+  See `delete_message/1` for usage.
 
   Raises `Nostrum.Error.ApiError` if error occurs while making the rest call.
-  Returns {:ok} if successful.
   """
-  @spec delete_message!(String.t, integer) :: no_return | {:ok}
+  @spec delete_message!(Message.t) :: error | {:ok}
+  def delete_message!(%Message{id: id, channel_id: c_id}) do
+    delete_message(c_id, id)
+    |> bangify
+  end
+
+  @doc """
+  Delete a message.
+
+  See `delete_message/2` for usage.
+
+  Raises `Nostrum.Error.ApiError` if error occurs while making the rest call.
+  """
+  @spec delete_message!(TextChannel.id, Message.id) :: no_return | {:ok}
   def delete_message!(channel_id, message_id) do
     delete_message(channel_id, message_id)
     |> bangify
@@ -418,8 +447,8 @@ defmodule Nostrum.Api do
 
   Returns `{:ok, [Nostrum.Struct.Message]}` if successful. `error` otherwise.
   """
-  @spec get_channel_messages(integer, limit, locator) :: error | {:ok, [Nostrum.Struct.Message.t]}
-  def get_channel_messages(channel_id, limit, locator) do
+  @spec get_channel_messages(integer, limit, locator) :: error | {:ok, [Message.t]}
+  def get_channel_messages(channel_id, limit, locator \\ {}) do
     get_messages_sync(channel_id, limit, [], locator)
   end
 
@@ -470,7 +499,7 @@ defmodule Nostrum.Api do
 
   Raises `Nostrum.Error.ApiError` if error occurs while making the rest call.
   """
-  @spec get_channel_messages!(integer, limit, locator) :: no_return | [Nostrum.Struct.Message.t]
+  @spec get_channel_messages!(integer, limit, locator) :: no_return | [Message.t]
   def get_channel_messages!(channel_id, limit, locator) do
     get_channel_messages(channel_id, limit, locator)
     |> bangify
@@ -481,7 +510,7 @@ defmodule Nostrum.Api do
 
   Message to retrieve is specified by `message_id` and `channel_id`.
   """
-  @spec get_channel_message(integer, integer) :: error | {:ok, Nostrum.Struct.Message.t}
+  @spec get_channel_message(integer, integer) :: error | {:ok, Message.t}
   def get_channel_message(channel_id, message_id) do
     case request(:get, Constants.channel_message(channel_id, message_id)) do
       {:ok, body} ->
@@ -496,7 +525,7 @@ defmodule Nostrum.Api do
 
   Raises `Nostrum.Error.ApiError` if error occurs while making the rest call.
   """
-  @spec get_channel_message!(integer, integer) :: no_return | Nostrum.Struct.Message.t
+  @spec get_channel_message!(integer, integer) :: no_return | Message.t
   def get_channel_message!(channel_id, message_id) do
     get_channel_message(channel_id, message_id)
     |> bangify
@@ -658,9 +687,9 @@ defmodule Nostrum.Api do
 
   Retrieves all pinned messages for the channel specified by `channel_id`.
 
-  Returns {:ok, [Nostrum.Struct.Message.t]} if successful. `error` otherwise.
+  Returns {:ok, [Message.t]} if successful. `error` otherwise.
   """
-  @spec get_pinned_messages(integer) :: error | {:ok, [Nostrum.Struct.Message.t]}
+  @spec get_pinned_messages(integer) :: error | {:ok, [Message.t]}
   def get_pinned_messages(channel_id) do
     case request(:get, Constants.channel_pins(channel_id)) do
       {:ok, body} ->
@@ -675,9 +704,9 @@ defmodule Nostrum.Api do
 
   Retrieves all pinned messages for the channel specified by `channel_id`.
 
-  Returns [Nostrum.Struct.Message.t] if successful. `error` otherwise.
+  Returns [Message.t] if successful. `error` otherwise.
   """
-  @spec get_pinned_messages!(integer) :: no_return | [Nostrum.Struct.Message.t]
+  @spec get_pinned_messages!(integer) :: no_return | [Message.t]
   def get_pinned_messages!(channel_id) do
     get_pinned_messages(channel_id)
     |> bangify
@@ -1702,6 +1731,12 @@ defmodule Nostrum.Api do
     request(:post, Constants.webhook_git(webhook_id, webhook_token), params: [wait: wait])
   end
 
+  @doc false
+  def handle(payload, as) do
+    with {:ok, body} <- payload,
+    do: {:ok, Poison.decode!(body, as: apply(as, :p_encode, []))}
+  end
+
   # HTTPosion defaults to `""` for an empty body, so it's safe to do so here
   def request(method, route, body \\ "", options \\ []) do
     request = %{
@@ -1726,6 +1761,7 @@ defmodule Nostrum.Api do
     GenServer.call(Ratelimiter, {:queue, request, nil}, :infinity)
   end
 
+  @doc false
   def bangify(to_bang) do
     case to_bang do
       {:error, %{status_code: code, message: message}} ->

@@ -55,6 +55,11 @@ defmodule Nostrum.Struct.User do
   ]
 
   @doc false
+  def p_encode do
+    %__MODULE__{}
+  end
+
+  @doc false
   def to_struct(%{__struct__: _} = map), do: map
   def to_struct(map) do
     struct(__MODULE__, map)
