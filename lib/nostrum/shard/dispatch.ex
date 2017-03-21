@@ -100,10 +100,10 @@ defmodule Nostrum.Shard.Dispatch do
 
   def handle_event(:GUILD_MEMBERS_CHUNK = event, p, state, pid) do
     p.members
-      |> Enum.each(fn member ->
-        UserCache.create(member.user)
-        GuildServer.member_add(p.guild_id, member)
-      end)
+    |> Enum.each(fn member ->
+      UserCache.create(member.user)
+      GuildServer.member_add(p.guild_id, member)
+    end)
     Producer.notify(pid, {event, p}, state)
   end
 
@@ -148,9 +148,11 @@ defmodule Nostrum.Shard.Dispatch do
 
   def handle_event(:READY = event, p, state, pid) do
     p.private_channels
-      |> Enum.each(fn dm_channel -> ChannelCache.create(dm_channel) end)
+    |> Enum.each(fn dm_channel -> ChannelCache.create(dm_channel) end)
+
     p.guilds
-      |> Enum.each(fn guild -> handle_event(:GUILD_CREATE, guild, state, pid) end)
+    |> Enum.each(fn guild -> handle_event(:GUILD_CREATE, guild, state, pid) end)
+
     Producer.notify(pid, {event, p}, state)
   end
 

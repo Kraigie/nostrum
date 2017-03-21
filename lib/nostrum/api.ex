@@ -139,10 +139,9 @@ defmodule Nostrum.Api do
 
   # Files
   @spec create_message(TextChannel.id, [
-      content: String.t,
-      file: String.t
-    ], boolean)
-    :: error | {:ok, Message.t}
+    content: String.t,
+    file: String.t
+  ], boolean) :: error | {:ok, Message.t}
   def create_message(channel_id, [file_name: c, file: f], tts) do
     request_multipart(:post, Constants.channel_messages(channel_id), %{content: c, file: f, tts: tts})
     |> handle(Message)
@@ -442,12 +441,12 @@ defmodule Nostrum.Api do
   @doc """
   Retrieve messages from a channel.
 
-  Retrieves `limit` number of messages from the channel with id `channel_id`.
-  `locator` is a tuple indicating what messages you want to retrieve.
-
-  Returns `{:ok, [Nostrum.Struct.Message]}` if successful. `error` otherwise.
+  ## Parameters
+    - `channel_id` - Id of the channel to get messages from.
+    - `limit` - Number of messages to get.
+    - `locator` - tuple indicating what messages you want to retrieve.
   """
-  @spec get_channel_messages(integer, limit, locator) :: error | {:ok, [Message.t]}
+  @spec get_channel_messages(TextChannel.id, limit, locator) :: error | {:ok, [Message.t]}
   def get_channel_messages(channel_id, limit, locator \\ {}) do
     get_messages_sync(channel_id, limit, [], locator)
   end
@@ -477,19 +476,15 @@ defmodule Nostrum.Api do
   defp get_new_limit(limit, message_count), do: limit - message_count
 
   # We're decoding the response at each call to catch any errors
+  @doc false
   def get_channel_messages_call(channel_id, limit, locator) do
     qs_params =
       case locator do
         {} -> [{:limit, limit}]
         non_empty_locator -> [{:limit, limit}, non_empty_locator]
       end
-    response = request(:get, Constants.channel_messages(channel_id), "", params: qs_params)
-    case response do
-      {:ok, body} ->
-        {:ok, Poison.decode!(body, as: [%Nostrum.Struct.Message{}])}
-      other ->
-        other
-    end
+    request(:get, Constants.channel_messages(channel_id), "", params: qs_params)
+    |> handle([Message])
   end
 
   @doc """
@@ -1732,6 +1727,11 @@ defmodule Nostrum.Api do
   end
 
   @doc false
+  def handle(payload, [as]) do
+    with {:ok, body} <- payload,
+    do: {:ok, Poison.decode!(body, as: [apply(as, :p_encode, [])])}
+  end
+
   def handle(payload, as) do
     with {:ok, body} <- payload,
     do: {:ok, Poison.decode!(body, as: apply(as, :p_encode, []))}

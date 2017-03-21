@@ -79,6 +79,13 @@ defmodule Nostrum.Struct.Embed do
     :fields
   ]
 
+  # TODO: Jump down the rabbit hole
+  def p_encode do
+    %__MODULE__{
+
+    }
+  end
+
   @doc false
   def to_struct(map) do
     new = map

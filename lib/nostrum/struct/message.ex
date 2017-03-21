@@ -5,7 +5,7 @@ defmodule Nostrum.Struct.Message do
 
   alias Nostrum.Struct.Guild.Role
   alias Nostrum.Struct.Message.Attachment
-  alias Nostrum.Struct.User
+  alias Nostrum.Struct.{Embed, User}
   alias Nostrum.Util
 
   @typedoc "The id of the message"
@@ -95,7 +95,8 @@ defmodule Nostrum.Struct.Message do
     %__MODULE__{
       author: User.p_encode,
       mentions: [User.p_encode],
-      mention_roles: [User.p_encode]
+      mention_roles: [User.p_encode],
+      embeds: [Embed.p_encode]
     }
   end
 
@@ -106,6 +107,7 @@ defmodule Nostrum.Struct.Message do
     |> Map.update(:attachments, %{}, &Util.list_to_struct_list(&1, Attachment))
     |> Map.update(:mentions, %{}, &Util.list_to_struct_list(&1, User))
     |> Map.update(:mention_roles, %{}, &Util.list_to_struct_list(&1, Role))
+    |> Map.update(:embeds, %{}, &Util.list_to_struct_list(&1, Embed))
     struct(__MODULE__, new)
   end
 end
