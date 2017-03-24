@@ -50,6 +50,13 @@ defmodule Nostrum.Api do
   alias Nostrum.Util
 
   @typedoc """
+  Represents a message's content in the context of creating a message using the Api.
+  """
+  @type message_content :: String.t |
+                   [content: String.t, embed: Embed.t] |
+                   [content: String.t, file: String.t]
+
+  @typedoc """
   Represents a failed response from the API.
 
   This occurs when hackney or HTTPoison fail, or when the API doesn't respond with `200` or `204`.
@@ -110,16 +117,24 @@ defmodule Nostrum.Api do
 
   ## Parameters
     - `channel_id` - Id of the channel to send the message to.
-    - `content` - One of string, embed, or file to send to the channel. See specs for info.
+    - `content` - One of string, embed, or file to send to the channel.
+    See `t:message_content/0` for more info.
     - `tts` - Whether the message should be read over text to speech.
+
+  For the `channel_id` parameter, you can pass in a `Nostrum.Struct.Message`
+  struct, and it will pull the id from there.
 
   ## Example
   ```Elixir
   Nostrum.Api.create_message(1111111111111, [content: "my os rules", file: ~S"C:\i\use\windows"])
   ```
   """
-  @spec create_message(TextChannel.id, String.t, boolean) :: error | {:ok, Message.t}
+  @spec create_message(Message.t, message_content, boolean) :: error | {:ok, Message.t}
+  @spec create_message(TextChannel.id, message_content, boolean) :: error | {:ok, Message.t}
   def create_message(channel_id, content, tts \\ false)
+
+  def create_message(%Message{channel_id: id}, content, tts) when is_binary(content),
+    do: create_message(id, content, tts)
 
   # Sending regular messages
   def create_message(channel_id, content, tts) when is_binary(content) do
@@ -128,20 +143,12 @@ defmodule Nostrum.Api do
   end
 
   # Embeds
-  @spec create_message(TextChannel.id, [
-    content: String.t,
-    embed: Embed.t
-  ], boolean) :: error | {:ok, Message.t}
   def create_message(channel_id, [content: c, embed: e], tts) when is_map(c) do
     request(:post, Constants.channel_messages(channel_id), %{content: c, embed: e, tts: tts})
     |> handle(Message)
   end
 
   # Files
-  @spec create_message(TextChannel.id, [
-    content: String.t,
-    file: String.t
-  ], boolean) :: error | {:ok, Message.t}
   def create_message(channel_id, [file_name: c, file: f], tts) do
     request_multipart(:post, Constants.channel_messages(channel_id), %{content: c, file: f, tts: tts})
     |> handle(Message)
@@ -154,7 +161,7 @@ defmodule Nostrum.Api do
 
   Raises `Nostrum.Error.ApiError` if error occurs while making the rest call.
   """
-  @spec create_message!(TextChannel.id, String.t, boolean) :: no_return | Message.t
+  @spec create_message!(TextChannel.id, message_content, boolean) :: no_return | Message.t
   def create_message!(channel_id, content, tts \\ false) do
     create_message(channel_id, content, tts)
     |> bangify
