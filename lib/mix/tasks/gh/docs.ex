@@ -1,6 +1,6 @@
-defmodule Mix.Tasks.GhDocs do
+defmodule Mix.Tasks.Gh.Docs do
   @moduledoc """
-  Task that pushes docs to gh-pages branch on Discord. 
+  Task that pushes docs to gh-pages branch on Discord.
   """
 
   use Mix.Task
