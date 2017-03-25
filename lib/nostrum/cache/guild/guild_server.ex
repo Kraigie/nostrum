@@ -13,6 +13,143 @@ defmodule Nostrum.Cache.Guild.GuildServer do
 
   require Logger
 
+  @typedoc """
+  Represents different ways to search for a guild.
+
+  ## Examples
+    - Search by `t:Nostrum.Struct.Guild.id/0`
+    ```Elixir
+    GuildServer.get(id: 666666666666666)
+    ```
+    - Search by `t:Nostrum.Struct.Guild.TextChannel.id/0`
+    ```Elixir
+    GuildServer.get(channel_id: 314159265358979)
+    ```
+    - Search via `Nostrum.Struct.Message`
+    ```Elixir
+    msg = Nostrum.Api.create_message!(1618033988731, "Drake confirmed British")
+    GuildServer.get(msg)
+    ```
+  """
+  @type search_criteria :: [id: integer] |
+                           [channel_id: integer] |
+                           Nostrum.Struct.Message.t
+
+  @doc ~S"""
+  Retrieves a guild from the cache.
+
+  ## Parameters
+    - `search_criteria` - The criteria used to search. See `t:search_criteria/0` for more info.
+
+  ## Example
+  ```Elixir
+  case Nostrum.Cache.Guild.GuildServer.get(id: 1234567891234789) do
+    {:ok, guild} -> "Guild has #{length(guild.members)} members"
+    {:error, _reason} -> "Guild is MIA"
+  end
+  ```
+  """
+  @spec get(search_criteria) :: {:error, reason :: atom} | {:ok, Nostrum.Struct.Guild.t}
+  def get(search_criteria)
+  def get(id: id) do
+    with {:ok, pid} <- GuildRegister.lookup(id),
+    do: {:ok, GenServer.call(pid, {:get})}
+  end
+
+  def get(channel_id: channel_id) do
+    with \
+      {:ok, guild_id} <- ChannelGuild.get_guild(channel_id),
+      {:ok, guild_pid} <- GuildRegister.lookup(guild_id)
+    do
+      {:ok, GenServer.call(guild_pid, {:get})}
+    end
+  end
+
+  def get(%Nostrum.Struct.Message{channel_id: channel_id}) do
+    get(channel_id: String.to_integer(channel_id))
+  end
+
+  @doc ~S"""
+  Retrieves a guild from the cache.
+
+  See `Nostrum.Cache.Guild.GuildServer.get/1` for usage.
+
+  Raises `Nostrum.Error.CacheError` if unable to find the guild.
+  """
+  @spec get!(search_criteria) :: no_return | {Nostrum.Struct.Guild.t}
+  def get!(search_criteria) do
+    get(search_criteria)
+    |> Util.bangify_find(search_criteria, __MODULE__)
+  end
+
+  # REVIEW: Should key be part of the keyword list? For now we have
+  # to encapsulate the id: _id in brackets
+  @doc ~S"""
+  Retrieves a value from a guild in the cache.
+
+  This method should be preferred over the `Nostrum.Cache.Guild.GuildServer.get/1`
+  method in the event that you need only one kv pair from the guild.
+
+  ## Parameters
+    - `search_criteria` - The criteria used to search. See `t:search_criteria/0` for more info.
+    - `key` - The key to search for. See `Nostrum.Struct.Guild` for available keys.
+
+  ## Example
+  ```Elixir
+  case Nostrum.Cache.Guild.Guildserver.get_value([id: 69696969696969], :name) do
+    {:ok, sick_guild_name} -> "#{sick_guild_name} is sick"
+    {:error, reason} -> "Whatchu' searchin' for fam?"
+  end
+  ```
+  """
+  @spec get_value(search_criteria, key :: atom) :: {:error, reason :: atom} |
+                                                   {:ok, term}
+  def get_value(search_criteria, key)
+  def get_value([id: id], key) when is_atom(key) do
+    with {:ok, pid} <- GuildRegister.lookup(id),
+    do: {:ok, GenServer.call(pid, {:get_value, key})} |> check_missing_key
+  end
+
+  def get_value([channel_id: channel_id], key) when is_atom(key) do
+    with \
+      {:ok, guild_id} <- ChannelGuild.get_guild(channel_id),
+      {:ok, guild_pid} <- GuildRegister.lookup(guild_id)
+    do
+      {:ok, GenServer.call(guild_pid, {:get_value, key})}
+      |> check_missing_key
+    end
+  end
+
+  def get_value(%Nostrum.Struct.Message{channel_id: channel_id}, key) do
+    get_value([channel_id: String.to_integer(channel_id)], key)
+  end
+
+  @doc """
+  Retrieves a value from a guild in the cache.
+
+  See `Nostrum.Cache.Guild.GuildServer.get_value!/2` for usage.
+
+  Raises `Nostrum.Error.CacheError` if unable to find the guild or key.
+  """
+  @spec get_value!(search_criteria, key :: atom) :: no_return | term
+  def get_value!(search_critera, key) do
+    get_value(search_critera, key)
+    |> bangify_key_search(key)
+  end
+
+  @doc false
+  def check_missing_key({:ok, nil}), do: {:error, :key_not_found}
+  def check_missing_key(ok), do: ok
+
+  # REVIEW: Can/should we handle cache errors in a better way?
+  @doc false
+  def bangify_key_search({:error, :key_not_found}, key),
+    do: raise(Nostrum.Error.CacheError, key: key, cache_name: __MODULE__)
+  def bangify_key_search({:error, reason}, _key),
+    do: raise(Nostrum.Error.CacheError, "ERROR: #{inspect reason}")
+  def bangify_key_search({:ok, val}, _key),
+    do: val
+
   @doc false
   # REVIEW: If a guild server crashes, it will be restarted with its initial state.
   def start_link(id, guild) do
@@ -30,49 +167,6 @@ defmodule Nostrum.Cache.Guild.GuildServer do
     end
   end
 
-  @doc ~S"""
-  Retrieves a guild from the cache.
-
-  Returns {:ok, `Nostrum.Struct.Guild.t`} if found, {:error, reason} otherwise.
-
-  **Example**
-  ```Elixir
-  case Nostrum.Cache.Guild.GuildServer.get(id: 1234567891234789) do
-    {:ok, guild} -> "Guild has #{length(guild.members)} members"
-    {:error, _reason} -> "Guild is MIA"
-  end
-  ```
-  """
-  @spec get([id: integer] | [channel_id: integer] | Nostrum.Struct.Message.t) ::
-  {:error, atom} | {:ok, Nostrum.Struct.Guild.t}
-  def get(id: id) do
-    with {:ok, pid} <- GuildRegister.lookup(id),
-    do: {:ok, GenServer.call(pid, {:get, :guild})}
-  end
-
-  def get(channel_id: channel_id) do
-    with \
-      {:ok, guild_id} <- ChannelGuild.get_guild(channel_id),
-      {:ok, guild_pid} <- GuildRegister.lookup(guild_id)
-    do
-      {:ok, GenServer.call(guild_pid, {:get, :guild})}
-    end
-  end
-
-  def get(%Nostrum.Struct.Message{channel_id: channel_id}) do
-    get(channel_id: channel_id)
-  end
-
-  def get!(id: id) do
-    get(id: id)
-    |> Util.bangify_find(id, __MODULE__)
-  end
-
-  def get!(message: message) do
-    get(message: message)
-    |> Util.bangify_find(message, __MODULE__)
-  end
-
   @doc false
   def call(id, request) do
     with {:ok, pid} <- GuildRegister.lookup(id),
@@ -87,12 +181,12 @@ defmodule Nostrum.Cache.Guild.GuildServer do
 
   @doc false
   def update(guild) do
-    call(guild.id, {:update, :guild, guild})
+    call(guild.id, {:update, guild})
   end
 
   @doc false
   def delete(guild_id) do
-    call(guild_id, {:delete, :guild})
+    call(guild_id, {:delete})
   end
 
   @doc false
@@ -145,15 +239,19 @@ defmodule Nostrum.Cache.Guild.GuildServer do
     call(guild_id, {:update, :emoji, emojis})
   end
 
-  def handle_call({:get, :guild}, _from, state) do
+  def handle_call({:get}, _from, state) do
     {:reply, Guild.to_struct(state), state}
   end
 
-  def handle_call({:update, :guild, guild}, _from, state) do
+  def handle_call({:get_value, key}, _from, state) do
+    {:reply, Map.get(state, key), state}
+  end
+
+  def handle_call({:update, guild}, _from, state) do
     {:reply, {Guild.to_struct(state), Guild.to_struct(guild)}, guild}
   end
 
-  def handle_call({:delete, :guild}, _from, state) do
+  def handle_call({:delete}, _from, state) do
     {:stop, :normal, Guild.to_struct(state), %{}}
   end
 
