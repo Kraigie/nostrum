@@ -35,6 +35,61 @@ defmodule Nostrum.Cache.Guild.GuildServer do
                            [channel_id: integer] |
                            Nostrum.Struct.Message.t
 
+  @typedoc """
+  Represents different ways to get a value from a guild.
+
+  Same as `t:search_criteria/0`, but takes an additional key parameter.
+  Keys can be found in `Nostrum.Struct.Guild`
+  """
+  @type search_criteria_with_key :: [id: integer, key: key :: atom] |
+                                    [channel_id: integer, key: key :: atom]
+
+  @doc """
+  Retrieves a stream of all guilds.
+
+  This will introduce a very large binary into the caller process. Consider
+  running this method inside its own task.
+
+  If you just need to get a specific key, consider using
+  `all_from_key/1`
+
+  ## Example
+  ```Elixir
+  Nostrum.Cache.Guild.GuildServer.all
+  |> Enum.take_every(3)
+  |> D3L3T3_GU1LD
+  ```
+  """
+  @spec all() :: Enumerable.t
+  def all do
+    Supervisor.which_children(GuildSupervisor)
+    |> Stream.map(fn {_, pid, _, _} -> pid end)
+    |> Task.async_stream(&GenServer.call(&1, {:get}))
+    |> Stream.map(fn {:ok, term} -> term end)
+  end
+
+  @doc """
+  Retrieves a stream of values from all guilds.
+
+  ## Parameter
+    - `key` - Value to get from all guilds.
+
+  ## Example
+  ```Elixir
+  names =
+  Nostrum.Cache.GuildServer.all_from_key(:name)
+  |> Enum.filter(&is_weeb?)
+  |> D3L3T3_GU1LD5
+  ```
+  """
+  @spec all_from_key(key :: atom) :: Enumerable.t
+  def all_from_key(key) when is_atom(key) do
+    Supervisor.which_children(GuildSupervisor)
+    |> Stream.map(fn {_, pid, _, _} -> pid end)
+    |> Task.async_stream(&GenServer.call(&1, {:get_value, key}))
+    |> Stream.map(fn {:ok, term} -> term end)
+  end
+
   @doc ~S"""
   Retrieves a guild from the cache.
 
@@ -87,16 +142,15 @@ defmodule Nostrum.Cache.Guild.GuildServer do
   @doc ~S"""
   Retrieves a value from a guild in the cache.
 
-  This method should be preferred over the `Nostrum.Cache.Guild.GuildServer.get/1`
+  This method should be preferred over the `get/1`
   method in the event that you need only one kv pair from the guild.
 
   ## Parameters
     - `search_criteria` - The criteria used to search. See `t:search_criteria/0` for more info.
-    - `key` - The key to search for. See `Nostrum.Struct.Guild` for available keys.
 
   ## Example
   ```Elixir
-  case Nostrum.Cache.Guild.Guildserver.get_value([id: 69696969696969], :name) do
+  case Nostrum.Cache.Guild.Guildserver.get_value(id: 69696969696969, key: :name) do
     {:ok, sick_guild_name} -> "#{sick_guild_name} is sick"
     {:error, reason} -> "Whatchu' searchin' for fam?"
   end
@@ -104,13 +158,13 @@ defmodule Nostrum.Cache.Guild.GuildServer do
   """
   @spec get_value(search_criteria, key :: atom) :: {:error, reason :: atom} |
                                                    {:ok, term}
-  def get_value(search_criteria, key)
-  def get_value([id: id], key) when is_atom(key) do
+  def get_value(search_criteria_with_key)
+  def get_value(id: id, key: key) when is_atom(key) do
     with {:ok, pid} <- GuildRegister.lookup(id),
     do: {:ok, GenServer.call(pid, {:get_value, key})} |> check_missing_key
   end
 
-  def get_value([channel_id: channel_id], key) when is_atom(key) do
+  def get_value(channel_id: channel_id, key: key) when is_atom(key) do
     with \
       {:ok, guild_id} <- ChannelGuild.get_guild(channel_id),
       {:ok, guild_pid} <- GuildRegister.lookup(guild_id)
@@ -120,6 +174,8 @@ defmodule Nostrum.Cache.Guild.GuildServer do
     end
   end
 
+  @spec get_value(Nostrum.Struct.Message.t, key :: atom) :: {:error, reason :: atom} |
+                                                            {:ok, term}
   def get_value(%Nostrum.Struct.Message{channel_id: channel_id}, key) do
     get_value([channel_id: String.to_integer(channel_id)], key)
   end
