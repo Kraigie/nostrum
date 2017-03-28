@@ -15,7 +15,7 @@ defmodule Nostrum.Api.Base do
     do: ""
   defp process_request_body({:multipart, _} = body),
     do: body
-  defp process_request_body(body) when is_list(body),
+  defp process_request_body(body) when Keyword.keyword?(body),
     do: Enum.into(body, %{}) |> Poison.encode!(body)
   defp process_request_body(body),
     do: Poison.encode!(body)
