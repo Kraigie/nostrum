@@ -30,10 +30,10 @@ defmodule Nostrum.Shard.Payload do
       seq: nil,
       session: nil,
       reconnect_attempts: 0,
-      last_heartbeat: 0,
       shard_pid: pid,
       producer_pid: nil,
-      heartbeat_intervals: Enum.map(1..10, fn _ -> 0 end)
+      heartbeat_ack: false,
+      heartbeat_task: nil
     }
   end
 

@@ -35,7 +35,7 @@ defmodule Nostrum.Shard.Event do
     heartbeat_intervals = state.heartbeat_intervals
     |> List.delete_at(-1)
     |> List.insert_at(0, Util.now() - state.last_heartbeat)
-    %{state | heartbeat_intervals: heartbeat_intervals}
+    %{state | heartbeat_ack: true}
   end
 
   def handle(:hello, payload, state) do
@@ -45,11 +45,11 @@ defmodule Nostrum.Shard.Event do
     else
       Logger.debug "IDENTIFYING"
       identify(self())
-
-      heartbeat(self(), payload.d.heartbeat_interval)
     end
 
-    state
+    heartbeat_task = Task.async(fn -> heartbeat(self(), payload.d.heartbeat_interval) end)
+
+    %{state | heartbeat_task: heartbeat_task}
   end
 
   def handle(:invalid_session, _payload, state) do
@@ -69,7 +69,8 @@ defmodule Nostrum.Shard.Event do
   end
 
   def heartbeat(pid, interval) do
-    Process.send_after(pid, {:heartbeat, interval}, interval)
+    Process.sleep(interval)
+    send(pid, :heartbeat)
   end
 
   def identify(pid) do
