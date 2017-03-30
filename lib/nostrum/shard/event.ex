@@ -32,9 +32,6 @@ defmodule Nostrum.Shard.Event do
 
   def handle(:heartbeat_ack, _payload, state) do
     Logger.debug "HEARTBEAT_ACK"
-    heartbeat_intervals = state.heartbeat_intervals
-    |> List.delete_at(-1)
-    |> List.insert_at(0, Util.now() - state.last_heartbeat)
     %{state | heartbeat_ack: true}
   end
 
