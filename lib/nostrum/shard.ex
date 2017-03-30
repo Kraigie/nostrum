@@ -91,7 +91,7 @@ defmodule Nostrum.Shard do
     state =
       if state.heartbeat_task do
         Task.shutdown(state.heartbeat_task)
-        state = %{state | heartbeat_task: nil}
+        %{state | heartbeat_task: nil}
       end
 
     if state.reconnect_attempts > 3 do
