@@ -19,7 +19,8 @@ defmodule Nostrum.Shard.Payload do
    * `last_heartbeat` - The time of the last heartbeat.
    * `shard_pid` - Pid of the shard containing this state.
    * `producer_pid` - Pid of the producer attached to this shard
-   * `heartbeat_intervals` - List of last ten heartbeat intervals, from hearbeat send to ack.
+   * `heartbeat_ack` - Wether we received a heartbeack_ack or no (initialized to true).
+   * `heartbeat_task` The Task struct of the heartbeat task.
   """
   @type state_map :: map
 
@@ -30,10 +31,10 @@ defmodule Nostrum.Shard.Payload do
       seq: nil,
       session: nil,
       reconnect_attempts: 0,
-      last_heartbeat: 0,
       shard_pid: pid,
       producer_pid: nil,
-      heartbeat_intervals: Enum.map(1..10, fn _ -> 0 end)
+      heartbeat_ack: true,
+      heartbeat_task: nil
     }
   end
 
