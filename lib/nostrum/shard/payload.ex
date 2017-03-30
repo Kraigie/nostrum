@@ -32,7 +32,7 @@ defmodule Nostrum.Shard.Payload do
       reconnect_attempts: 0,
       shard_pid: pid,
       producer_pid: nil,
-      heartbeat_ack: false,
+      heartbeat_ack: true,
       heartbeat_task: nil
     }
   end
