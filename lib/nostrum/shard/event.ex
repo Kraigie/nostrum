@@ -44,7 +44,8 @@ defmodule Nostrum.Shard.Event do
       identify(self())
     end
 
-    heartbeat_task = Task.async(fn -> heartbeat(self(), payload.d.heartbeat_interval) end)
+    pid = self()
+    heartbeat_task = Task.async(fn -> heartbeat(pid, payload.d.heartbeat_interval) end)
 
     %{state | heartbeat_task: heartbeat_task}
   end
@@ -68,6 +69,7 @@ defmodule Nostrum.Shard.Event do
   def heartbeat(pid, interval) do
     Process.sleep(interval)
     send(pid, :heartbeat)
+    heartbeat(pid, interval)
   end
 
   def identify(pid) do
