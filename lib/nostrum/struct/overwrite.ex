@@ -30,6 +30,10 @@ defmodule Nostrum.Struct.Overwrite do
     :deny
   ]
 
+  def p_encode do
+    %__MODULE__{}
+  end
+
   def to_struct(map) do
     struct(__MODULE__, map)
   end

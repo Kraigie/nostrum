@@ -3,8 +3,8 @@ defmodule Nostrum.Struct.Guild do
   Struct representing a Discord guild.
   """
 
-  alias Nostrum.Struct.{Channel, Emoji}
-  alias Nostrum.Struct.Guild.{Member, Role, UnavailableGuild}
+  alias Nostrum.Struct.Emoji
+  alias Nostrum.Struct.Guild.{Channel, Member, Role, UnavailableGuild}
   alias Nostrum.Util
 
   @typedoc "The guild's id"
@@ -133,6 +133,16 @@ defmodule Nostrum.Struct.Guild do
     :presences,
     :channels
   ]
+
+  @doc false
+  def p_encode do
+    %__MODULE__{
+      emojis: [Emoji.p_encode],
+      roles: [Role.p_encode],
+      members: [Member.p_encode],
+      channels: [Channel.p_encode]
+    }
+  end
 
   def to_struct(%{unavailable: true} = map), do: UnavailableGuild.to_struct(map)
   def to_struct(map) do

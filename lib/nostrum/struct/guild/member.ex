@@ -52,6 +52,13 @@ defmodule Nostrum.Struct.Guild.Member do
   ]
 
   @doc false
+  def p_encode do
+    %__MODULE__{
+      user: User.p_encode
+    }
+  end
+
+  @doc false
   def to_struct(map) do
     new = map
     |> Map.update(:user, %{}, &User.to_struct(&1))

@@ -36,7 +36,7 @@ defmodule Nostrum.Consumer do
   to include the new and the old versions. In the event of there being two payloads,
   the old payload will always be first, followed by the new payload.
   ```Elixir
-  {:CHANNEL_UPDATE, {old :: Nostrum.Struct.Channel.t, new :: Nostrum.Struct.Channel.t}, ws_state}
+  {:USER_UPDATE, {old_user :: Nostrum.Struct.User.t, new_user :: Nostrum.Struct.User.t}, ws_state}
   ```
 
   For a full listing of events, please see `Nostrum.Consumer.event`.
@@ -69,9 +69,14 @@ defmodule Nostrum.Consumer do
   """
   @type state :: map
 
-  @type channel_create :: {:CHANNEL_CREATE, {Nostrum.Struct.Channel.t}, ws_state}
-  @type channel_delete :: {:CHANNEL_DELETE, {Nostrum.Struct.Channel.t}, ws_state}
-  @type channel_update :: {:CHANNEL_UPDATE, {old_channel :: Nostrum.Struct.Channel.t, new_channel :: Nostrum.Struct.Channel.t}, ws_state}
+  @typedoc """
+  The two different types of channels - Guild channels and DM channels.
+  """
+  @type channel :: Nostrum.Struct.Guild.Channel.t | Nostrum.Struct.DMChannel.t
+
+  @type channel_create :: {:CHANNEL_CREATE, {channel}, ws_state}
+  @type channel_delete :: {:CHANNEL_DELETE, {channel}, ws_state}
+  @type channel_update :: {:CHANNEL_UPDATE, {old_channel :: channel, new_channel :: channel}, ws_state}
   @type channel_pins_ack :: {:CHANNEL_PINS_ACK, {map}, ws_state}
   @type channel_pins_update :: {:CHANNEL_PINS_UPDATE, {map}, ws_state}
   @type guild_ban_add :: {:GUILD_BAN_ADD, {Nostrum.Struct.User.t}, ws_state}
@@ -131,7 +136,7 @@ defmodule Nostrum.Consumer do
     message_update |
     message_reaction_add |
     message_reaction_remove |
-    message_ack | 
+    message_ack |
     presence_update |
     ready |
     resumed |

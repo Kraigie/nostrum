@@ -28,6 +28,10 @@ defmodule Nostrum.Struct.Emoji do
     :name
   ]
 
+  def p_encode do
+    %__MODULE__{}
+  end
+
   @doc """
   Formats a custom emoji for use in a Discord message.
   """

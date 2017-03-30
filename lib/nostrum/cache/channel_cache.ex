@@ -6,10 +6,11 @@ defmodule Nostrum.Cache.ChannelCache do
   use GenServer
 
   alias Nostrum.Cache.Guild.GuildServer
-  alias Nostrum.Struct.Channel
+  alias Nostrum.Struct.Guild.Channel
+  alias Nostrum.Struct.DMChannel
   alias Nostrum.Util
 
-  @type channel :: Nostrum.Struct.Channel.TextChannel.t | Nostrum.Struct.Channel.VoiceChannel.t
+  @type channel :: Channel.t | DMChannel.t
 
   @doc false
   def start_link do

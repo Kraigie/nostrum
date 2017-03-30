@@ -1,6 +1,6 @@
-defmodule Nostrum.Struct.Guild.TextChannel do
+defmodule Nostrum.Struct.Guild.Channel do
   @moduledoc """
-  Struct representing a Discord text channel.
+  Struct representing a Discord guild channel.
   """
 
   alias Nostrum.Struct.Overwrite
@@ -27,11 +27,17 @@ defmodule Nostrum.Struct.Guild.TextChannel do
   @typedoc "The list of overwrites"
   @type permission_overwrites :: list(Overwrite.t)
 
-  @typedoc "Current channel topic"
-  @type topic :: String.t
+  @typedoc "Current channel topic, `nil` if voice channel"
+  @type topic :: String.t | nil
 
-  @typedoc "Id of the last message sent"
-  @type last_message_id :: integer
+  @typedoc "Id of the last message sent, `nil` if voice channel"
+  @type last_message_id :: integer | nil
+
+  @typedoc "The bitrate of the voice channel, `nil` if text channel"
+  @type bitrate :: integer | nil
+
+  @typedoc "The user limit of the voice channel, `nil` if text channel"
+  @type user_limit :: integer | nil
 
   @type t :: %__MODULE__{
     id: id,
@@ -42,7 +48,9 @@ defmodule Nostrum.Struct.Guild.TextChannel do
     is_private: is_private,
     permission_overwrites: permission_overwrites,
     topic: topic,
-    last_message_id: last_message_id
+    last_message_id: last_message_id,
+    bitrate: bitrate,
+    user_limit: user_limit
   }
 
   @derive [Poison.Encoder]
@@ -55,8 +63,16 @@ defmodule Nostrum.Struct.Guild.TextChannel do
     :is_private,
     :permission_overwrites,
     :topic,
-    :last_message_id
+    :last_message_id,
+    :bitrate,
+    :user_limit
   ]
+
+  def p_encode do
+    %__MODULE__{
+      permission_overwrites: [Overwrite.p_encode]
+    }
+  end
 
   @doc false
   def to_struct(map) do
@@ -64,4 +80,5 @@ defmodule Nostrum.Struct.Guild.TextChannel do
     |> Map.update(:permission_overwrites, %{}, &Util.list_to_struct_list(&1, Overwrite))
     struct(__MODULE__, new)
   end
+
 end

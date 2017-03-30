@@ -45,7 +45,7 @@ defmodule Nostrum.Api do
 
   alias Nostrum.{Constants, Shard}
   alias Nostrum.Struct.{Embed, Guild, Message, User, Webhook}
-  alias Nostrum.Struct.Guild.TextChannel
+  alias Nostrum.Struct.Guild.{Member, Channel}
   alias Nostrum.Shard.ShardSupervisor
   alias Nostrum.Util
 
@@ -130,7 +130,7 @@ defmodule Nostrum.Api do
   ```
   """
   @spec create_message(Message.t, message_content, boolean) :: error | {:ok, Message.t}
-  @spec create_message(TextChannel.id, message_content, boolean) :: error | {:ok, Message.t}
+  @spec create_message(Channel.id, message_content, boolean) :: error | {:ok, Message.t}
   def create_message(channel_id, content, tts \\ false)
 
   def create_message(%Message{channel_id: id}, content, tts) when is_binary(content),
@@ -161,7 +161,7 @@ defmodule Nostrum.Api do
 
   Raises `Nostrum.Error.ApiError` if error occurs while making the rest call.
   """
-  @spec create_message!(TextChannel.id, message_content, boolean) :: no_return | Message.t
+  @spec create_message!(Channel.id, message_content, boolean) :: no_return | Message.t
   def create_message!(channel_id, content, tts \\ false) do
     create_message(channel_id, content, tts)
     |> bangify
@@ -187,7 +187,7 @@ defmodule Nostrum.Api do
     - `message_id` - Id of the message to edit.
     - `content` - New content of the message.
   """
-  @spec edit_message(TextChannel.id, Message.id, String.t) :: error | {:ok, Message.t}
+  @spec edit_message(Channel.id, Message.id, String.t) :: error | {:ok, Message.t}
   def edit_message(channel_id, message_id, content) do
     request(:patch, Constants.channel_message(channel_id, message_id), %{content: content})
     |> handle(Message)
@@ -213,7 +213,7 @@ defmodule Nostrum.Api do
 
   Raises `Nostrum.Error.ApiError` if error occurs while making the rest call.
   """
-  @spec edit_message!(TextChannel.id, Message.id, String.t) :: no_return | {:ok, Message.t}
+  @spec edit_message!(Channel.id, Message.id, String.t) :: no_return | {:ok, Message.t}
   def edit_message!(channel_id, message_id, content) do
     edit_message(channel_id, message_id, content)
     |> bangify
@@ -237,7 +237,7 @@ defmodule Nostrum.Api do
     - `channel_id` - Id of the channel the message is in.
     - `message_id` - Id of the message to delete.
   """
-  @spec delete_message(TextChannel.id, Message.id) :: error | {:ok}
+  @spec delete_message(Channel.id, Message.id) :: error | {:ok}
   def delete_message(channel_id, message_id) do
     request(:delete, Constants.channel_message(channel_id, message_id))
   end
@@ -262,7 +262,7 @@ defmodule Nostrum.Api do
 
   Raises `Nostrum.Error.ApiError` if error occurs while making the rest call.
   """
-  @spec delete_message!(TextChannel.id, Message.id) :: no_return | {:ok}
+  @spec delete_message!(Channel.id, Message.id) :: no_return | {:ok}
   def delete_message!(channel_id, message_id) do
     delete_message(channel_id, message_id)
     |> bangify
@@ -453,7 +453,7 @@ defmodule Nostrum.Api do
     - `limit` - Number of messages to get.
     - `locator` - tuple indicating what messages you want to retrieve.
   """
-  @spec get_channel_messages(TextChannel.id, limit, locator) :: error | {:ok, [Message.t]}
+  @spec get_channel_messages(Channel.id, limit, locator) :: error | {:ok, [Message.t]}
   def get_channel_messages(channel_id, limit, locator \\ {}) do
     get_messages_sync(channel_id, limit, [], locator)
   end
@@ -924,23 +924,19 @@ defmodule Nostrum.Api do
   @doc """
   Gets a list of guild members.
 
-  Guild to get members for is specified by `guild_id`.
-
-  `options` is a keyword list with the following optional keys:
-   * limit - Max number of members to return (1-1000).
-   * after - Highest user id of the previous page.
+  ## Parameters
+  `guild_id` - Guild to get members.
+  `options` - Map with the following *optional* keys:
+    - `limit` - Max number of members to return (1-1000)
+    - `after` - Highest user id of the previous page.
   """
-  @spec get_guild_members(integer, [
-      limit: 1..1000,
-      after: integer
-    ]) :: error | {:ok, [Nostrum.Struct.Guild.Member.t]}
+  @spec get_guild_members(Guild.id, %{
+    limit: 1..1000,
+    after: integer
+  }) :: error | {:ok, [Nostrum.Struct.Guild.Member.t]}
   def get_guild_members(guild_id, options) do
-    case request(:get, Constants.guild_members(guild_id), options) do
-      {:ok, body} ->
-        {:ok, Poison.decode!(body)}
-      other ->
-        other
-    end
+    request(:get, Constants.guild_members(guild_id), options)
+    |> handle(Member)
   end
 
   @doc """
@@ -1511,7 +1507,7 @@ defmodule Nostrum.Api do
       - `name` - Name of the webhook.
       - `avatar` - Base64 128x128 jpeg image for the default avatar.
   """
-  @spec create_webhook(TextChannel.id, %{
+  @spec create_webhook(Channel.id, %{
       name: String.t,
       avatar: String.t
     }) :: error | {:ok, Nostrum.Struct.Webhook.t}
@@ -1530,7 +1526,7 @@ defmodule Nostrum.Api do
   ## Parameters
     - `channel_id` - Channel to get webhooks for.
   """
-  @spec get_channel_webhooks(TextChannel.id)
+  @spec get_channel_webhooks(Channel.id)
     :: error | {:ok, [Nostrum.Struct.Webhook.t]}
   def get_channel_webhooks(channel_id) do
     case request(:get, Constants.webhooks_channel(channel_id)) do
