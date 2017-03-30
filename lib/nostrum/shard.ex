@@ -88,7 +88,9 @@ defmodule Nostrum.Shard do
     Logger.warn "WS DISCONNECTED BECAUSE: #{inspect reason}"
     Logger.debug "STATE ON CLOSE: #{inspect state}"
 
-    Task.shutdown(state.heartbeat_task)
+    if state.heartbeat_task do
+      Task.shutdown(state.heartbeat_task)
+    end
 
     if state.reconnect_attempts > 3 do
       {:close, reason, state}
