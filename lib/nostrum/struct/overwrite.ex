@@ -30,6 +30,7 @@ defmodule Nostrum.Struct.Overwrite do
     :deny
   ]
 
+  @doc false
   def p_encode do
     %__MODULE__{}
   end

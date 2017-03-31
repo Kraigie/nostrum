@@ -50,6 +50,7 @@ defmodule Nostrum.Struct.Guild.Role do
     :mentionable
   ]
 
+  @doc false
   def p_encode do
     %__MODULE__{}
   end

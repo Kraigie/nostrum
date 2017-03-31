@@ -28,6 +28,7 @@ defmodule Nostrum.Struct.Emoji do
     :name
   ]
 
+  @doc false
   def p_encode do
     %__MODULE__{}
   end
