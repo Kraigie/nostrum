@@ -65,10 +65,14 @@ defmodule Nostrum.Shard do
   end
 
   def websocket_info({:heartbeat, interval}, _ws_req, state) do
-    now = Util.now()
-    :websocket_client.cast(self(), {:binary, Payload.heartbeat_payload(state.seq)})
-    Event.heartbeat(self(), interval)
-    {:ok, %{state | last_heartbeat: now}}
+    if state.heartbeat_ack do
+      :websocket_client.cast(self(), {:binary, Payload.heartbeat_payload(state.seq)})
+      Event.heartbeat(self(), interval)
+      {:ok, %{state | heartbeat_ack: false}}
+    else
+      Logger.warn "HEARTBEAT_ACK not received in time. Disconnecting..."
+      {:close, "", state}
+    end
   end
 
   def websocket_info(:identify, _ws_req, state) do
@@ -84,10 +88,11 @@ defmodule Nostrum.Shard do
   def ondisconnect(reason, state) do
     Logger.warn "WS DISCONNECTED BECAUSE: #{inspect reason}"
     Logger.debug "STATE ON CLOSE: #{inspect state}"
+
     if state.reconnect_attempts > 3 do
       {:close, reason, state}
     else
-      :timer.sleep(5000 * round :math.pow(1.5, state.reconnect_attempts))
+      Process.sleep(5000 * round :math.pow(1.5, state.reconnect_attempts))
       Logger.debug "RECONNECT ATTEMPT NUMBER #{state.reconnect_attempts + 1}"
       {:reconnect, %{state | reconnect_attempts: state.reconnect_attempts + 1}}
     end
