@@ -45,7 +45,7 @@ defmodule Nostrum.Api do
 
   alias Nostrum.{Constants, Shard}
   alias Nostrum.Struct.{Embed, Guild, Message, User, Webhook}
-  alias Nostrum.Struct.Guild.{Member, Channel}
+  alias Nostrum.Struct.Guild.{Member, Channel, Role}
   alias Nostrum.Shard.ShardSupervisor
   alias Nostrum.Util
 
@@ -53,8 +53,8 @@ defmodule Nostrum.Api do
   Represents a message's content in the context of creating a message using the Api.
   """
   @type message_content :: String.t |
-                   [content: String.t, embed: Embed.t] |
-                   [content: String.t, file: String.t]
+                           [content: String.t, embed: Embed.t] |
+                           [content: String.t, file: String.t]
 
   @typedoc """
   Represents a failed response from the API.
@@ -77,7 +77,10 @@ defmodule Nostrum.Api do
   The second element will be a message_id as an integer.
   The tuple can also be empty to search from the most recent message in the channel
   """
-  @type locator :: {:before, integer} | {:after, integer} | {:around, integer} | {}
+  @type locator :: {:before, integer} |
+                   {:after, integer} |
+                   {:around, integer} |
+                   {}
 
   @typedoc """
   Represents different statuses the bot can have.
@@ -1125,29 +1128,26 @@ defmodule Nostrum.Api do
   @doc """
   Modifies a guild role.
 
-  Role to modify specified by `guild_id` and `role_id`.
-
-  `options` is a keyword list with the following optional keys:
-   * `name` - Name of the role.
-   * `permissions` - Bitwise of the enabled/disabled permissions.
-   * `color` - RGB color value.
-   * `hoist` - Whether the role should be displayed seperately in the sidebar.
-   * `mentionable` - Whether the role should be mentionable.
+  ## Parameter
+  `guild_id` - Guild to modify role for.
+  `role_id` - Role to modify.
+  `options` - Map with the following *optional* keys:
+    - `name` - Name of the role.
+    - `permissions` - Bitwise of the enabled/disabled permissions.
+    - `color` - RGB color value.
+    - `hoist` - Whether the role should be displayed seperately in the sidebar.
+    - `mentionable` - Whether the role should be mentionable.
   """
-  @spec modify_guild_role(integer, integer, [
+  @spec modify_guild_role(Guild.id, Role.id, %{
       name: String.t,
       permissions: integer,
       color: integer,
       hoist: boolean,
       mentionable: boolean
-    ]) :: error | {:ok, Nostrum.Struct.Guild.Role.t}
+  }) :: error | {:ok, Nostrum.Struct.Guild.Role.t}
   def modify_guild_role(guild_id, role_id, options) do
-    case request(:patch, Constants.guild_role(guild_id, role_id), options) do
-      {:ok, body} ->
-        {:ok, Poison.decode!(body)}
-      other ->
-        other
-    end
+    request(:patch, Constants.guild_role(guild_id, role_id), options)
+    |> handle(Role)
   end
 
   @doc """
