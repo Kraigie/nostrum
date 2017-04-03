@@ -24,18 +24,31 @@ defmodule Nostrum.Api.Ratelimiter do
     retry_time = request.route
       |> major_parameter
       |> Bucket.get_ratelimit_timeout
-    if retry_time do
-      Task.start(fn -> wait_for_timeout(request, retry_time, original_from || from) end)
-    else
-      response = request.method
-      |> Base.request(request.route, request.body, request.headers, request.options)
-      |> handle_headers(major_parameter(request.route))
-      |> format_response
 
-      GenServer.reply(original_from || from, response)
+    case retry_time do
+      # No wait time, delegate to task
+      nil ->
+        Task.start(fn ->
+          GenServer.reply(original_from || from, do_request(request))
+        end)
+      # No rl data, block requests until rl data obtained
+      :none ->
+        GenServer.reply(original_from || from, do_request(request))
+      # Wait time found, delegate to task to retry
+      time ->
+        Task.start(fn ->
+          wait_for_timeout(request, time, original_from || from)
+        end)
     end
 
     {:noreply, state}
+  end
+
+  def do_request(request) do
+    request.method
+    |> Base.request(request.route, request.body, request.headers, request.options)
+    |> handle_headers(major_parameter(request.route))
+    |> format_response
   end
 
   def handle_headers({:error, reason}, _route), do: {:error, reason}

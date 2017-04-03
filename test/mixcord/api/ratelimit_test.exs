@@ -30,7 +30,7 @@ defmodule RatelimitTest do
 
   The fifth batch will be blocked until the first batch that when through finishes.
   So, we should expect to see the 5th guild after the 4th pinned message, and
-  this is the case.
+  this is the case. We could set the concurrency manually, but it's a cool example.
   """
   test "multi route async no 429" do
     responses =
@@ -50,11 +50,11 @@ defmodule RatelimitTest do
           do
             :ok
           else
-            f -> {:not_ok}
+            _ -> {:not_ok}
           end
         end,
         timeout: 20000)
       |> Enum.to_list()
-    assert Enum.all?(responses, fn {k, v} -> v == :ok end) == true
+    assert Enum.all?(responses, fn {_k, v} -> v == :ok end) == true
   end
 end

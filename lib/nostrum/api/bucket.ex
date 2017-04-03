@@ -25,7 +25,7 @@ defmodule Nostrum.Api.Bucket do
   def get_ratelimit_timeout(route) do
     case lookup_bucket(route) do
       [] ->
-        nil
+        :none
       [{route, remaining, reset_time, latency}] when remaining <= 0 ->
         update_bucket(route, remaining - 1)
         wait_time = reset_time - Util.now + latency
