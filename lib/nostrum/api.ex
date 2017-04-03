@@ -141,7 +141,7 @@ defmodule Nostrum.Api do
 
   # Sending regular messages
   def create_message(channel_id, content, tts) when is_binary(content) do
-    request(:post, Constants.channel_messages(channel_id), %{content: content,tts: tts})
+    request(:post, Constants.channel_messages(channel_id), %{content: content, tts: tts})
     |> handle(Message)
   end
 

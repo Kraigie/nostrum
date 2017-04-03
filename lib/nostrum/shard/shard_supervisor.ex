@@ -11,7 +11,7 @@ defmodule Nostrum.Shard.ShardSupervisor do
     :crypto.start
     :ssl.start
     {url, shards} = Util.gateway()
-    Supervisor.start_link(__MODULE__, [url: url,token: token, num_shards: shards], name: ShardSupervisor)
+    Supervisor.start_link(__MODULE__, [url: url, token: token, num_shards: shards], name: ShardSupervisor)
   end
 
   def start_link(token, num_shards) do

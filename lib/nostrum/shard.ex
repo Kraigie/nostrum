@@ -51,7 +51,7 @@ defmodule Nostrum.Shard do
 
   def request_guild_members(pid, guild_id, limit \\ 0) do
     payload = Payload.request_members_payload(guild_id, limit)
-    send(pid, {:request_guild_members, payload});
+    send(pid, {:request_guild_members, payload})
   end
 
   def websocket_info({:request_guild_members, payload}, _ws_req, state) do
