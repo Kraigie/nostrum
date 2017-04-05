@@ -40,7 +40,7 @@ defmodule Nostrum.Constants do
 
   def webhooks_guild(guild_id),                                   do: "/guilds/#{guild_id}/webhooks"
   def webhooks_channel(channel_id),                               do: "/channels/#{channel_id}/webhooks"
-  def webhook(webhook_id),                                       do: "/webhooks/#{webhook_id}"
+  def webhook(webhook_id),                                        do: "/webhooks/#{webhook_id}"
   def webhook_token(webhook_id, webhook_token),                   do: "/webhooks/#{webhook_id}/#{webhook_token}"
   def webhook_git(webhook_id, webhook_token),                     do: "/webhooks/#{webhook_id}/#{webhook_token}/github"
   def webhook_slack(webhook_id, webhook_token),                   do: "/webhooks/#{webhook_id}/#{webhook_token}/slack"

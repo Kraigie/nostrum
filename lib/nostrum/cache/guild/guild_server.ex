@@ -33,7 +33,7 @@ defmodule Nostrum.Cache.Guild.GuildServer do
   """
   @type search_criteria :: [id: integer] |
                            [channel_id: integer] |
-                           Nostrum.Struct.Message.t
+                           [message: Nostrum.Struct.Message.t]
 
   @typedoc """
   Represents different ways to get a value from a guild.
@@ -42,7 +42,8 @@ defmodule Nostrum.Cache.Guild.GuildServer do
   Keys can be found in `Nostrum.Struct.Guild`
   """
   @type search_criteria_with_key :: [id: integer, key: key :: atom] |
-                                    [channel_id: integer, key: key :: atom]
+                                    [channel_id: integer, key: key :: atom] |
+                                    [message: Nostrum.Struct.Message.t, key: key :: atom]
 
   @doc """
   Retrieves a stream of all guilds.
@@ -120,7 +121,7 @@ defmodule Nostrum.Cache.Guild.GuildServer do
     end
   end
 
-  def get(%Nostrum.Struct.Message{channel_id: channel_id}) do
+  def get(message: %Nostrum.Struct.Message{channel_id: channel_id}) do
     get(channel_id: String.to_integer(channel_id))
   end
 
@@ -146,7 +147,8 @@ defmodule Nostrum.Cache.Guild.GuildServer do
   method in the event that you need only one kv pair from the guild.
 
   ## Parameters
-    - `search_criteria` - The criteria used to search. See `t:search_criteria/0` for more info.
+    - `search_criteria_with_key` - The criteria used to search. See
+    `t:search_criteria_with_key/0` for more info.
 
   ## Example
   ```Elixir
@@ -156,8 +158,8 @@ defmodule Nostrum.Cache.Guild.GuildServer do
   end
   ```
   """
-  @spec get_value(search_criteria, key :: atom) :: {:error, reason :: atom} |
-                                                   {:ok, term}
+  @spec get_value(search_criteria_with_key) :: {:error, reason :: atom} |
+                                               {:ok, term}
   def get_value(search_criteria_with_key)
   def get_value(id: id, key: key) when is_atom(key) do
     with {:ok, pid} <- GuildRegister.lookup(id),
@@ -174,10 +176,8 @@ defmodule Nostrum.Cache.Guild.GuildServer do
     end
   end
 
-  @spec get_value(Nostrum.Struct.Message.t, key :: atom) :: {:error, reason :: atom} |
-                                                            {:ok, term}
-  def get_value(%Nostrum.Struct.Message{channel_id: channel_id}, key) do
-    get_value([channel_id: String.to_integer(channel_id)], key)
+  def get_value(message: %Nostrum.Struct.Message{channel_id: c_id}, key: k) do
+    get_value(channel_id: String.to_integer(c_id), key: k)
   end
 
   @doc """
@@ -187,24 +187,47 @@ defmodule Nostrum.Cache.Guild.GuildServer do
 
   Raises `Nostrum.Error.CacheError` if unable to find the guild or key.
   """
-  @spec get_value!(search_criteria, key :: atom) :: no_return | term
-  def get_value!(search_critera, key) do
-    get_value(search_critera, key)
-    |> bangify_key_search(key)
+  @spec get_value!(search_criteria_with_key) :: no_return | term
+  def get_value!(search_critera_with_key) do
+    get_value(search_critera_with_key)
+    |> bangify_key_search(search_critera_with_key[:key])
   end
 
-  @doc false
-  def check_missing_key({:ok, nil}), do: {:error, :key_not_found}
-  def check_missing_key(ok), do: ok
+  defp check_missing_key({:ok, nil}), do: {:error, :key_not_found}
+  defp check_missing_key(ok), do: ok
 
   # REVIEW: Can/should we handle cache errors in a better way?
-  @doc false
-  def bangify_key_search({:error, :key_not_found}, key),
+  defp bangify_key_search({:error, :key_not_found}, key),
     do: raise(Nostrum.Error.CacheError, key: key, cache_name: __MODULE__)
-  def bangify_key_search({:error, reason}, _key),
+  defp bangify_key_search({:error, reason}, _key),
     do: raise(Nostrum.Error.CacheError, "ERROR: #{inspect reason}")
-  def bangify_key_search({:ok, val}, _key),
+  defp bangify_key_search({:ok, val}, _key),
     do: val
+
+  def transform(id: id, transform: tf) do
+    with {:ok, pid} <- GuildRegister.lookup(id),
+    do: {:ok, GenServer.call(pid, {:transform, tf})}
+  end
+
+  def transform(channel_id: c_id, transform: tf) do
+    with \
+      {:ok, guild_id} <- ChannelGuild.get_guild(c_id),
+      {:ok, guild_pid} <- GuildRegister.lookup(guild_id)
+    do
+      {:ok, GenServer.call(guild_pid, {:transform, tf})}
+    end
+  end
+
+  def transform(message: %Nostrum.Struct.Message{channel_id: c_id}, transform: tf) do
+    transform(channel_id: c_id, transform: tf)
+  end
+
+  def transform_all(transform) do
+    Supervisor.which_children(GuildSupervisor)
+    |> Stream.map(fn {_, pid, _, _} -> pid end)
+    |> Task.async_stream(&GenServer.call(&1, {:transform, transform}))
+    |> Stream.map(fn {:ok, term} -> term end)
+  end
 
   @doc false
   # REVIEW: If a guild server crashes, it will be restarted with its initial state.
@@ -301,6 +324,10 @@ defmodule Nostrum.Cache.Guild.GuildServer do
 
   def handle_call({:get_value, key}, _from, state) do
     {:reply, Map.get(state, key), state}
+  end
+
+  def handle_call({:transform, tf}, _from, state) do
+    {:reply, tf.(state), state}
   end
 
   def handle_call({:update, guild}, _from, state) do
