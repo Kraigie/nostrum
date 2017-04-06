@@ -45,6 +45,23 @@ defmodule Nostrum.Cache.Guild.GuildServer do
                                     [channel_id: integer, key: key :: atom] |
                                     [message: Nostrum.Struct.Message.t, key: key :: atom]
 
+  @typedoc """
+  Transform for a guild.
+
+  The function is passed a `Nostrum.Struct.Guild.t` struct.
+  """
+  @type transform :: (Guild.t -> term)
+
+  @typedoc """
+  Represents different ways to transform a guild.
+
+  Same as `t:search_criteria/0`, but takes an additional transform parameter.
+  See `transform/1` for an example.
+  """
+  @type search_criteria_with_transform :: [id: integer, transform: transform] |
+                                          [channel_id: integer, transform: transform] |
+                                          [message: Nostrum.Struct.Message.t, transform: transform]
+
   @doc """
   Retrieves a stream of all guilds.
 
@@ -52,7 +69,7 @@ defmodule Nostrum.Cache.Guild.GuildServer do
   running this method inside its own task.
 
   If you just need to get a specific key, consider using
-  `all_from_key/1`
+  `get_value_all/1`
 
   ## Example
   ```Elixir
@@ -63,10 +80,7 @@ defmodule Nostrum.Cache.Guild.GuildServer do
   """
   @spec all() :: Enumerable.t
   def all do
-    Supervisor.which_children(GuildSupervisor)
-    |> Stream.map(fn {_, pid, _, _} -> pid end)
-    |> Task.async_stream(&GenServer.call(&1, {:get}))
-    |> Stream.map(fn {:ok, term} -> term end)
+    transform_all(&(&1))
   end
 
   @doc """
@@ -78,17 +92,14 @@ defmodule Nostrum.Cache.Guild.GuildServer do
   ## Example
   ```Elixir
   names =
-  Nostrum.Cache.GuildServer.all_from_key(:name)
+  Nostrum.Cache.GuildServer.get_value_from_all(:name)
   |> Enum.filter(&is_weeb?)
   |> D3L3T3_GU1LD5
   ```
   """
-  @spec all_from_key(key :: atom) :: Enumerable.t
-  def all_from_key(key) when is_atom(key) do
-    Supervisor.which_children(GuildSupervisor)
-    |> Stream.map(fn {_, pid, _, _} -> pid end)
-    |> Task.async_stream(&GenServer.call(&1, {:get_value, key}))
-    |> Stream.map(fn {:ok, term} -> term end)
+  @spec get_value_from_all(key :: atom) :: Enumerable.t
+  def get_value_from_all(key) when is_atom(key) do
+    transform_all(&Map.get(&1, key))
   end
 
   @doc ~S"""
@@ -106,23 +117,8 @@ defmodule Nostrum.Cache.Guild.GuildServer do
   ```
   """
   @spec get(search_criteria) :: {:error, reason :: atom} | {:ok, Nostrum.Struct.Guild.t}
-  def get(search_criteria)
-  def get(id: id) do
-    with {:ok, pid} <- GuildRegister.lookup(id),
-    do: {:ok, GenServer.call(pid, {:get})}
-  end
-
-  def get(channel_id: channel_id) do
-    with \
-      {:ok, guild_id} <- ChannelGuild.get_guild(channel_id),
-      {:ok, guild_pid} <- GuildRegister.lookup(guild_id)
-    do
-      {:ok, GenServer.call(guild_pid, {:get})}
-    end
-  end
-
-  def get(message: %Nostrum.Struct.Message{channel_id: channel_id}) do
-    get(channel_id: String.to_integer(channel_id))
+  def get(search_criteria) do
+    transform(search_criteria ++ [transform: &(&1)])
   end
 
   @doc ~S"""
@@ -138,8 +134,6 @@ defmodule Nostrum.Cache.Guild.GuildServer do
     |> Util.bangify_find(search_criteria, __MODULE__)
   end
 
-  # REVIEW: Should key be part of the keyword list? For now we have
-  # to encapsulate the id: _id in brackets
   @doc ~S"""
   Retrieves a value from a guild in the cache.
 
@@ -160,24 +154,17 @@ defmodule Nostrum.Cache.Guild.GuildServer do
   """
   @spec get_value(search_criteria_with_key) :: {:error, reason :: atom} |
                                                {:ok, term}
-  def get_value(search_criteria_with_key)
-  def get_value(id: id, key: key) when is_atom(key) do
-    with {:ok, pid} <- GuildRegister.lookup(id),
-    do: {:ok, GenServer.call(pid, {:get_value, key})} |> check_missing_key
+  def get_value(id: id, key: k) when is_atom(k) do
+    transform(id: id, transform: &Map.get(&1, k)) |> check_missing_key
   end
 
-  def get_value(channel_id: channel_id, key: key) when is_atom(key) do
-    with \
-      {:ok, guild_id} <- ChannelGuild.get_guild(channel_id),
-      {:ok, guild_pid} <- GuildRegister.lookup(guild_id)
-    do
-      {:ok, GenServer.call(guild_pid, {:get_value, key})}
-      |> check_missing_key
-    end
+  def get_value(channel_id: c_id, key: k) when is_atom(k) do
+    transform(channel_id: c_id, transform: &Map.get(&1, k)) |> check_missing_key
   end
 
   def get_value(message: %Nostrum.Struct.Message{channel_id: c_id}, key: k) do
-    get_value(channel_id: String.to_integer(c_id), key: k)
+    c_id_int = String.to_integer(c_id)
+    transform(channel_id: c_id_int, transform: &Map.get(&1, k)) |> check_missing_key
   end
 
   @doc """
@@ -204,6 +191,28 @@ defmodule Nostrum.Cache.Guild.GuildServer do
   defp bangify_key_search({:ok, val}, _key),
     do: val
 
+  @doc """
+  Retrieves a transformed guild from the cache.
+
+  Returns the result of applying a given fun to the guild specified by the search
+  criteria.
+
+  This transform does not modify the cache and is performed entirely server side.
+  This means that if you somehow cause an error to be thrown, the receiving guild
+  process will die. The benefit is not "copying" guild binaries between
+  processes which can be very big.
+
+  ## Parameters
+    - `search_criteria_with_transform` - The criteria used to search. See
+    `t:search_criteria_with_transform/0` for more info.
+
+  ## Example
+  ```Elixir
+  tf = fn guild -> Enum.any?(guild.members, &(Map.get(&1, :nick) == "The year is 20XX")) end
+  {:ok, plays_fox?} = Nostrum.Cache.Guild.GuildServer.transform(id: 123, transform: tf)
+  ```
+  """
+  @spec transform(search_criteria_with_transform) :: {:ok, term}
   def transform(id: id, transform: tf) do
     with {:ok, pid} <- GuildRegister.lookup(id),
     do: {:ok, GenServer.call(pid, {:transform, tf})}
@@ -222,6 +231,15 @@ defmodule Nostrum.Cache.Guild.GuildServer do
     transform(channel_id: c_id, transform: tf)
   end
 
+  @doc """
+  Retrieves a stream of transformed guild values from the cache.
+
+  Returns a stream of as the result of calling `transform` on every guild in the
+  cache.
+
+  See `transform/1` for usage.
+  """
+  @spec transform_all(transform) :: Enumerable.t
   def transform_all(transform) do
     Supervisor.which_children(GuildSupervisor)
     |> Stream.map(fn {_, pid, _, _} -> pid end)
@@ -316,14 +334,6 @@ defmodule Nostrum.Cache.Guild.GuildServer do
   @doc false
   def emoji_update(guild_id, emojis) do
     call(guild_id, {:update, :emoji, emojis})
-  end
-
-  def handle_call({:get}, _from, state) do
-    {:reply, Guild.to_struct(state), state}
-  end
-
-  def handle_call({:get_value, key}, _from, state) do
-    {:reply, Map.get(state, key), state}
   end
 
   def handle_call({:transform, tf}, _from, state) do
