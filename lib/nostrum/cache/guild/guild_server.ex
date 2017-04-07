@@ -292,8 +292,8 @@ defmodule Nostrum.Cache.Guild.GuildServer do
   end
 
   @doc false
-  def member_update(guild_id, user, _nick, roles) do
-    call(guild_id, {:update, :member, user, roles})
+  def member_update(guild_id, user, nick, roles) do
+    call(guild_id, {:update, :member, user, nick, roles})
   end
 
   @doc false
@@ -353,7 +353,7 @@ defmodule Nostrum.Cache.Guild.GuildServer do
     {:reply, Member.to_struct(member), %{state | members: new_members}}
   end
 
-  def handle_call({:update, :member, user, roles}, _from, state) do
+  def handle_call({:update, :member, user, nick, roles}, _from, state) do
     member_index = Enum.find_index(state.members, fn member ->
       member.user.id == user.id
     end)
@@ -363,10 +363,10 @@ defmodule Nostrum.Cache.Guild.GuildServer do
         :error -> %{user: %{}, roles: []}
       end
     new_members = List.update_at(state.members, member_index, fn member ->
-      %{member | user: user, roles: roles}
+      %{member | user: user, nick: nick, roles: roles}
     end)
 
-    {:reply, {Member.to_struct(old_member), Member.to_struct(%{old_member | user: user, roles: roles})}, %{state | members: new_members}}
+    {:reply, {Member.to_struct(old_member), Member.to_struct(%{old_member | user: user, nick: nick, roles: roles})}, %{state | members: new_members}}
   end
 
   def handle_call({:delete, :member, user}, _from, state) do
