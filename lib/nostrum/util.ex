@@ -8,6 +8,50 @@ defmodule Nostrum.Util do
 
   require Logger
 
+  # REVIEW: Include struct definitions?
+  # TODO: Improve interface
+  @moduledoc """
+  First pass simplificaiton of defining Discord structs.
+
+  ## Example
+  ``` Elixir
+  Nostrum.Util.nostrum_struct(%{
+    author: User,
+    mentions: [User],
+    mention_roles: [User],
+    embeds: [Embed]
+  })
+  ```
+  """
+  defmacro nostrum_struct(body) do
+    quote do
+      def p_encode do
+        encoded = for {k, v} <- unquote(body), into: %{} do
+          IO.inspect {k, v}
+          case v do
+            [v] -> {k, [v.p_encode]}
+            v -> {k, v.p_encode}
+          end
+        end
+        struct(__ENV__.module, encoded)
+      end
+
+      def to_struct(map) do
+        alias Nostrum.Util
+        new_map =
+          for {k, v} <- unquote(body), into: %{} do
+            IO.inspect k
+            IO.inspect v
+            case v do
+              [v] -> {k, Util.list_to_struct_list(Map.get(map, k), v)}
+              v -> {k, apply(v, :to_struct, [Map.get(map, k)])}
+            end
+          end
+        struct(__ENV__.module, new_map)
+      end
+    end
+  end
+
   @doc """
   Empties all caches.
   """
