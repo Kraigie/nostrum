@@ -10,7 +10,7 @@ defmodule Nostrum.Util do
 
   # REVIEW: Include struct definitions?
   # TODO: Improve interface
-  @moduledoc """
+  @doc """
   First pass simplificaiton of defining Discord structs.
 
   ## Example
@@ -27,7 +27,6 @@ defmodule Nostrum.Util do
     quote do
       def p_encode do
         encoded = for {k, v} <- unquote(body), into: %{} do
-          IO.inspect {k, v}
           case v do
             [v] -> {k, [v.p_encode]}
             v -> {k, v.p_encode}
@@ -40,8 +39,6 @@ defmodule Nostrum.Util do
         alias Nostrum.Util
         new_map =
           for {k, v} <- unquote(body), into: %{} do
-            IO.inspect k
-            IO.inspect v
             case v do
               [v] -> {k, Util.list_to_struct_list(Map.get(map, k), v)}
               v -> {k, apply(v, :to_struct, [Map.get(map, k)])}
