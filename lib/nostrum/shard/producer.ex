@@ -1,4 +1,4 @@
-defmodule Nostrum.Shard.Dispatch.Producer do
+defmodule Nostrum.Shard.Producer do
   @moduledoc false
 
   use GenStage

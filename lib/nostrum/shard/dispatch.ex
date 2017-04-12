@@ -4,7 +4,7 @@ defmodule Nostrum.Shard.Dispatch do
   alias Nostrum.Cache.{ChannelCache, UserCache}
   alias Nostrum.Cache.Guild.GuildServer
   alias Nostrum.Shard
-  alias Nostrum.Shard.Dispatch.Producer
+  alias Nostrum.Shard.Producer
   alias Nostrum.Struct.Guild.UnavailableGuild
 
   require Logger

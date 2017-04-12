@@ -6,7 +6,7 @@ defmodule Nostrum.Shard.Event do
 
   require Logger
 
-  def handle(:dispatch, payload, state) do
+  def handle(:dispatch, payload, _conn, state) do
     [{pid, _id}] = Registry.lookup(ProducerRegistry, state.shard_num)
     payload = Util.safe_atom_map(payload)
 
@@ -14,70 +14,70 @@ defmodule Nostrum.Shard.Event do
       Dispatch.handle(pid, payload, state)
     end)
 
-    state =
-      if payload.t == :READY do
-        %{state | session: payload.d.session_id}
-      else
-        state
-      end
-
-      %{state | reconnect_attempts: 0}
+    if payload.t == :READY do
+      %{state | session: payload.d.session_id}
+    else
+      state
+    end
   end
 
-  def handle(:heartbeat, _payload, state) do
+  def handle(:heartbeat, _payload, conn, state) do
     Logger.debug "HEARTBEAT PING"
-    :websocket_client.cast(self(), {:binary, Payload.heartbeat_payload(state.seq)})
+    gun_send(conn, Payload.heartbeat_payload(state.seq))
     state
   end
 
-  def handle(:heartbeat_ack, _payload, state) do
+  def handle(:heartbeat_ack, _payload, _conn, state) do
     Logger.debug "HEARTBEAT_ACK"
     %{state | heartbeat_ack: true}
   end
 
-  def handle(:hello, payload, state) do
+  def handle(:hello, payload, conn, state) do
     if session_exists?(state) do
       Logger.debug "RESUMING"
-      resume(self())
+      resume(conn, state)
     else
       Logger.debug "IDENTIFYING"
-      identify(self())
-      heartbeat(self(), payload.d.heartbeat_interval)
+      identify(conn, state)
+      heartbeat(conn, payload.d.heartbeat_interval)
     end
 
     state
   end
 
-  def handle(:invalid_session, _payload, state) do
+  def handle(:invalid_session, _payload, conn, state) do
     Logger.debug "INVALID_SESSION"
-    identify(self())
+    identify(conn, state)
     state
   end
 
-  def handle(:reconnect, _payload, state) do
+  def handle(:reconnect, _payload, _conn, state) do
     Logger.debug "RECONNECT"
     state
   end
 
-  def handle(event, _payload, state) do
+  def handle(event, _payload, _conn, state) do
     Logger.warn "UNHANDLED GATEWAY EVENT #{event}"
     state
   end
 
-  def heartbeat(pid, interval) do
-    Process.send_after(pid, {:heartbeat, interval}, interval)
+  def heartbeat(conn, interval) do
+    Process.send_after(self(), {:heartbeat, interval, conn}, interval)
   end
 
-  def identify(pid) do
-    send(pid, :identify)
+  def identify(conn, state) do
+    gun_send(conn, Payload.identity_payload(state))
   end
 
-  def resume(pid) do
-    send(pid, :resume)
+  def resume(conn, state) do
+    gun_send(conn, Payload.resume_payload(state))
   end
 
   def session_exists?(state) do
     not is_nil(state.session)
   end
 
+  def gun_send(conn, payload) do
+    :gun.ws_send(conn, {:binary, payload})
+  end
 end

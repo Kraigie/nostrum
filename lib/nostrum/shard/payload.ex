@@ -1,50 +1,22 @@
 defmodule Nostrum.Shard.Payload do
   @moduledoc """
-  Specifies maps to be used for WS payloads.. and also the state map.
+  Specifies maps to be used for WS payloads.
   """
 
   alias Nostrum.{Constants, Util}
 
   @large_threshold 250
 
-  @typedoc """
-  The state map contained and maintained in each websocket process.
-
-  Keys
-   * `token` - The token of the bot.
-   * `shard_num` - The shard number container this state.
-   * `seq` - Current seq number of the websocket.
-   * `session` - Current session of the websocket.
-   * `reconnect_attempts` - Current number of reconnect attempts.
-   * `last_heartbeat` - The time of the last heartbeat.
-   * `shard_pid` - Pid of the shard containing this state.
-   * `producer_pid` - Pid of the producer attached to this shard.
-   * `heartbeat_ack` - Whether we received a heartbeack_ack or not (initialized to true).
-  """
-  @type state_map :: map
-
-  def state_map(token, shard_num, pid) do
-    %{
-      token: token,
-      shard_num: shard_num,
-      seq: nil,
-      session: nil,
-      reconnect_attempts: 0,
-      shard_pid: pid,
-      producer_pid: nil,
-      heartbeat_ack: true
-    }
-  end
-
   @doc false
   def heartbeat_payload(sequence) do
-    build_payload(Constants.opcode_from_name("HEARTBEAT"), sequence)
+    sequence
+    |> build_payload("HEARTBEAT")
   end
 
   @doc false
   def identity_payload(state) do
     {os, name} = :os.type
-    data = %{
+    %{
       "token" => state.token,
       "properties" => %{
         "$os" => Atom.to_string(os) <> " " <> Atom.to_string(name),
@@ -56,47 +28,42 @@ defmodule Nostrum.Shard.Payload do
       "compress" => false,
       "large_threshold" => @large_threshold,
       "shard" => [state.shard_num, Util.num_shards]
-    }
-    build_payload(Constants.opcode_from_name("IDENTIFY"), data)
+    } |> build_payload("IDENTIFY")
   end
 
   @doc false
   def resume_payload(state) do
-    data = %{
+    %{
       "token" => state.token,
       "session_id" => state.session,
       "seq" => state.seq
-    }
-    build_payload(Constants.opcode_from_name("RESUME"), data)
+    } |> build_payload("RESUME")
   end
 
   @doc false
   def status_update_payload(idle_since, game, status, afk) do
-    data = %{
+    %{
       "since" => idle_since,
       "afk" => afk,
       "status" => status,
       "game" => %{
         "name" => game
       }
-    }
-    build_payload(Constants.opcode_from_name("STATUS_UPDATE"), data)
+    } |> build_payload("STATUS_UPDATE")
   end
 
   @doc false
   def request_members_payload(guild_id, limit) do
-    data = %{
+    %{
       "guild_id" => guild_id,
       "query" => "",
       "limit" => limit
-    }
-    build_payload(Constants.opcode_from_name("REQUEST_GUILD_MEMBERS"), data)
+    } |> build_payload("REQUEST_GUILD_MEMBERS")
   end
 
-  @doc false
-  def build_payload(opcode, data) do
-    %{"op" => opcode, "d" => data}
-      |> :erlang.term_to_binary
+  defp build_payload(data, opcode_name) do
+    opcode = Constants.opcode_from_name(opcode_name)
+    %{"op" => opcode, "d" => data} |> :erlang.term_to_binary
   end
 
 end

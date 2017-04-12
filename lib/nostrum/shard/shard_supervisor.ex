@@ -8,15 +8,11 @@ defmodule Nostrum.Shard.ShardSupervisor do
   require Logger
 
   def start_link(token, :auto) do
-    :crypto.start
-    :ssl.start
     {url, shards} = Util.gateway()
     Supervisor.start_link(__MODULE__, [url: url, token: token, num_shards: shards], name: ShardSupervisor)
   end
 
   def start_link(token, num_shards) do
-    :crypto.start
-    :ssl.start
     {url, shards} = Util.gateway()
     if num_shards != shards, do: Logger.info "Specified #{num_shards} shards " <>
     "when the recommended number is #{shards}. Consider using the num_shards: " <>
@@ -25,8 +21,9 @@ defmodule Nostrum.Shard.ShardSupervisor do
   end
 
   def update_status(status, game) do
-    Shard.Supervisor
+    ShardSupervisor
     |> Supervisor.which_children
+    |> Enum.filter(fn {_id, _pid, _type, [modules]} -> modules == Nostrum.Shard end)
     |> Enum.map(fn {_id, pid, _type, _modules} -> Shard.update_status(pid, status, game) end)
   end
 

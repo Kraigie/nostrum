@@ -40,7 +40,6 @@ defmodule Nostrum do
     :ets.new(:users, [:set, :public, :named_table])
     :ets.new(:guild_shard_map, [:set, :public, :named_table])
     :ets.new(:channel_guild_map, [:set, :public, :named_table])
-    :ets.new(:shard_pid_num, [:set, :public, :named_table])
   end
 
 end

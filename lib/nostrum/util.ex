@@ -135,8 +135,7 @@ defmodule Nostrum.Util do
       {:ok, body} ->
         body = Poison.decode!(body)
 
-        url = body["url"] <> "?encoding=etf&v=6"
-        |> to_charlist
+        url = body["url"]
         shards = if body["shards"], do: body["shards"], else: 1
 
         :ets.insert(:gateway_url, {"url", url, shards})
