@@ -26,7 +26,7 @@ defmodule Nostrum.Cache.Guild.GuildRegister do
   def create_guild_process(id, guild) do
     case Supervisor.start_child(GuildSupervisor, [id, guild]) do
       {:ok, _pid} ->
-        Guild.to_struct(guild)
+        guild
       other ->
         other
     end
