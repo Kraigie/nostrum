@@ -2,7 +2,6 @@ defmodule Nostrum.Cache.Guild.GuildRegister do
   @moduledoc false
 
   alias Nostrum.Cache.Guild.GuildServer
-  alias Nostrum.Struct.Guild
   alias Supervisor.Spec
 
   def lookup(id) do

@@ -7,8 +7,7 @@ defmodule Nostrum.Cache.Guild.GuildServer do
 
   alias Nostrum.Cache.Guild.GuildRegister
   alias Nostrum.Cache.Mapping.ChannelGuild
-  alias Nostrum.Struct.Guild.{Channel, Member, Role}
-  alias Nostrum.Struct.{Emoji, Guild}
+  alias Nostrum.Struct.Guild
   alias Nostrum.Util
 
   require Logger

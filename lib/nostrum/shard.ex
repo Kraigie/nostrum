@@ -3,9 +3,8 @@ defmodule Nostrum.Shard do
 
   use GenServer
 
-  alias Nostrum.Constants
+  alias Nostrum.{Constants, Util}
   alias Nostrum.Shard.{Connector, Event, Payload, Producer}
-  alias Nostrum.Util
 
   require Logger
 
