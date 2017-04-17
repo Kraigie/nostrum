@@ -9,7 +9,8 @@ defmodule Dummy do
     import Supervisor.Spec
 
     # List comprehension creates a consumer per cpu core
-    children = for i <- 1..System.schedulers_online, do: worker(DummyConsumer, [], id: i)
+    #children = for i <- 1..System.schedulers_online, do: worker(DummyConsumer, [], id: i)
+    children = [worker(DummyConsumerSupervisor, [])]
 
     Supervisor.start_link(children, strategy: :one_for_one)
   end
@@ -30,25 +31,15 @@ defmodule DummyConsumer do
   end
 end
 
-defmodule DummyConsumerOld do
-  @moduledoc false
-
-  use GenStage
+defmodule DummyConsumerSupervisor do
+  use Nostrum.TaskedConsumer
   require Logger
 
   def start_link do
-    GenStage.start_link(__MODULE__, :ok)
+    TaskedConsumer.start_link(__MODULE__)
   end
 
-  def init(:ok) do
-    {:consumer, :ok, subscribe_to: [Nostrum.Shard.Dispatch.Producer]}
-  end
-
-  def handle_events(events, _from, state) do
-    for event <- events do
-      {{event_name, _payload}, _state} = event
-      Logger.debug "User would process event #{event_name} here on pid #{inspect self()}"
-    end
-    {:noreply, [], state}
+  def handle_event({event_name, _, _}) do
+    Logger.debug "User would handle #{event_name} here"
   end
 end

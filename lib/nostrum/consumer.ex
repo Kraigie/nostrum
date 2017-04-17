@@ -6,13 +6,14 @@ defmodule Nostrum.Consumer do
   To handle events, Nostrum uses a GenStage implementation. GenStage is "new" with
   Elixir version 1.4, expanding on the old functionality of GenEvent.
 
-  Nostrum defines the `producer` in the GenStage design. To consume the events you must
-  create at least one `consumer` process. For
-  an example of this behaviour please see
-  [here](https://github.com/Kraigie/nostrum/blob/a655b8bea1c96777ea6ec729493625b147899081/examples/event_consumer.ex).
+  Nostrum defines the `producer` in the GenStage design. To consume the events
+  you must create at least one `consumer` process. It is generally recommended
+  that you spawn a consumer per core. To find this number you can use
+  `System.schedulers_online/0`.
 
-  It is generally recommended that you spawn a consumer per core. To find this
-  number you can use `System.schedulers_online/0`.
+  ## Example
+  An example consumer can be found
+  [here](https://github.com/Kraigie/nostrum/blob/master/examples/event_consumer.ex).
   """
 
   use GenStage

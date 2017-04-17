@@ -10,7 +10,6 @@ defmodule ExampleSupervisor do
 end
 
 defmodule ExampleConsumer do
-
   use Nostrum.Consumer
 
   alias Nostrum.Api
