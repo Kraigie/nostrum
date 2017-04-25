@@ -111,7 +111,7 @@ defmodule Nostrum.Shard.Dispatch do
     do: Producer.notify(pid, {event, GuildServer.member_remove(p.guild_id, p.user)}, state)
 
   def handle_event(:GUILD_MEMBER_UPDATE = event, p, state, pid),
-    do: Producer.notify(pid, {event, GuildServer.member_update(p.guild_id, p.user, p.nick, p.roles)}, state)
+    do: Producer.notify(pid, {event, GuildServer.member_update(p.guild_id, p)}, state)
 
   def handle_event(:GUILD_ROLE_CREATE = event, p, state, pid),
     do: Producer.notify(pid, {event, GuildServer.role_create(p.guild_id, p.role)}, state)

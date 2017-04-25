@@ -291,8 +291,8 @@ defmodule Nostrum.Cache.Guild.GuildServer do
   end
 
   @doc false
-  def member_update(guild_id, user, nick, roles) do
-    call(guild_id, {:update, :member, user, nick, roles})
+  def member_update(guild_id, member) do
+    call(guild_id, {:update, :member, member})
   end
 
   @doc false
@@ -352,20 +352,18 @@ defmodule Nostrum.Cache.Guild.GuildServer do
     {:reply, member, %{state | members: new_members}}
   end
 
-  def handle_call({:update, :member, user, nick, roles}, _from, state) do
+  def handle_call({:update, :member, new_partial_member}, _from, state) do
     member_index = Enum.find_index(state.members, fn member ->
-      member.user.id == user.id
+      member.user.id == new_partial_member.user.id
     end)
     old_member =
       case Enum.fetch(state.members, member_index || length(state.members) + 1) do
         {:ok, old_member} -> old_member
         :error -> %{user: %{}, roles: []}
       end
-    new_members = List.update_at(state.members, member_index, fn member ->
-      %{member | user: user, nick: nick, roles: roles}
-    end)
-
-    {:reply, {old_member, %{old_member | user: user, nick: nick, roles: roles}}, %{state | members: new_members}}
+    new_member = Map.merge(old_member, new_partial_member)
+    new_members = List.replace_at(state.members, member_index, new_member)
+    {:reply, {old_member, new_member}, %{state | members: new_members}}
   end
 
   def handle_call({:delete, :member, user}, _from, state) do

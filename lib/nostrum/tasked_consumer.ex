@@ -26,7 +26,7 @@ defmodule Nostrum.TaskedConsumer do
   defmacro __using__(_) do
     quote location: :keep do
       alias Nostrum.TaskedConsumer
-      @behaviour Nostrum.ConsumerSupervisor
+      @behaviour Nostrum.TaskedConsumer
 
       def handle_event(_event) do
         :ok
