@@ -146,7 +146,7 @@ defmodule Nostrum.Api do
   end
 
   # Embeds
-  def create_message(channel_id, [content: c, embed: e], tts) when do
+  def create_message(channel_id, [content: c, embed: e], tts) do
     request(:post, Constants.channel_messages(channel_id), %{content: c, embed: e, tts: tts})
     |> handle(Message)
   end
