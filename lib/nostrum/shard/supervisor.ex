@@ -1,9 +1,11 @@
-defmodule Nostrum.Shard.ShardSupervisor do
+defmodule Nostrum.Shard.Supervisor do
   @moduledoc false
 
   use Supervisor
 
-  alias Nostrum.{Shard, Util}
+  alias Nostrum.Util
+  alias Nostrum.Shard
+  alias Nostrum.Shard.Session
 
   require Logger
 
@@ -24,7 +26,7 @@ defmodule Nostrum.Shard.ShardSupervisor do
     ShardSupervisor
     |> Supervisor.which_children
     |> Enum.filter(fn {_id, _pid, _type, [modules]} -> modules == Nostrum.Shard end)
-    |> Enum.map(fn {_id, pid, _type, _modules} -> Shard.update_status(pid, status, game) end)
+    |> Enum.map(fn {_id, pid, _type, _modules} -> Session.update_status(pid, status, game) end)
   end
 
   @doc false
@@ -32,10 +34,8 @@ defmodule Nostrum.Shard.ShardSupervisor do
     children = for i <- 0..options[:num_shards] - 1,
       do: create_worker(options[:url], options[:token], i)
     with_registry =
-      [supervisor(Registry, [:duplicate, ProducerRegistry])] ++ children
-    with_task_supervisor =
-      [supervisor(Task.Supervisor, [[name: DispatchTaskSupervisor]])] ++ with_registry
-    supervise(with_task_supervisor, strategy: :one_for_one, max_restarts: 3, max_seconds: 60)
+      [supervisor(Registry, [:duplicate, CacheStageRegistry])] ++ children
+    supervise(with_registry, strategy: :one_for_one, max_restarts: 3, max_seconds: 60)
   end
 
   @doc false

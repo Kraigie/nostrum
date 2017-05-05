@@ -1,18 +1,16 @@
 defmodule Nostrum.Shard.Event do
   @moduledoc false
 
-  alias Nostrum.Shard.{Dispatch, Payload}
+  alias Nostrum.Shard.Payload
+  alias Nostrum.Shard.Stage.Producer
   alias Nostrum.Util
 
   require Logger
 
   def handle(:dispatch, payload, _conn, state) do
-    [{pid, _id}] = Registry.lookup(ProducerRegistry, state.shard_num)
     payload = Util.safe_atom_map(payload)
 
-    Task.Supervisor.start_child(DispatchTaskSupervisor, fn ->
-      Dispatch.handle(pid, payload, state)
-    end)
+    Producer.notify(state.producer_pid, payload, state)
 
     if payload.t == :READY do
       %{state | session: payload.d.session_id}

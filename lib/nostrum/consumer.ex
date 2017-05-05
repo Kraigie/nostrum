@@ -166,9 +166,10 @@ defmodule Nostrum.Consumer do
 
   @doc false
   def init(state) do
-    producers = ProducerRegistry
-    |> Registry.lookup(:pids)
-    |> Enum.map(fn {pid, _value} -> pid end)
+    producers =
+      CacheStageRegistry
+      |> Registry.lookup(:pids)
+      |> Enum.map(fn {pid, _value} -> pid end)
 
     {:consumer, state, subscribe_to: producers}
   end

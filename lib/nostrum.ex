@@ -22,7 +22,7 @@ defmodule Nostrum do
       worker(Nostrum.Api.Ratelimiter, []),
       worker(Nostrum.Shard.Connector, []),
       supervisor(Nostrum.Cache.CacheSupervisor, []),
-      supervisor(Nostrum.Shard.ShardSupervisor, [token, actual_num_shards])
+      supervisor(Nostrum.Shard.Supervisor, [token, actual_num_shards])
     ]
 
     if Application.get_env(:nostrum, :dev, nil) do

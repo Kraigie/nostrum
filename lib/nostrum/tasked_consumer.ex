@@ -49,7 +49,7 @@ defmodule Nostrum.TaskedConsumer do
   @doc false
   def init([mod]) do
     producers =
-      ProducerRegistry
+      CacheStageRegistry
       |> Registry.lookup(:pids)
       |> Enum.map(fn {pid, _value} -> pid end)
 

@@ -43,10 +43,10 @@ defmodule Nostrum.Api do
 
   use Bitwise
 
-  alias Nostrum.{Constants, Shard}
+  alias Nostrum.Constants
   alias Nostrum.Struct.{Embed, Guild, Message, User, Webhook}
   alias Nostrum.Struct.Guild.{Member, Channel, Role}
-  alias Nostrum.Shard.ShardSupervisor
+  alias Nostrum.Shard.{Supervisor, Session}
   alias Nostrum.Util
 
   @typedoc """
@@ -102,7 +102,7 @@ defmodule Nostrum.Api do
   """
   @spec update_status(pid, status, String.t) :: no_return
   def update_status(pid, status, game) do
-    Shard.update_status(pid, to_string(status), game)
+    Session.update_status(pid, to_string(status), game)
   end
 
   @doc """
@@ -112,7 +112,7 @@ defmodule Nostrum.Api do
   """
   @spec update_status(status, String.t) :: no_return
   def update_status(status, game) do
-    ShardSupervisor.update_status(status, game)
+    Supervisor.update_status(status, game)
   end
 
   @doc ~S"""
