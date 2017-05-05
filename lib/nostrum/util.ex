@@ -4,7 +4,6 @@ defmodule Nostrum.Util do
   """
 
   alias Nostrum.{Api, Constants}
-  alias Nostrum.Cache.CacheSupervisor
 
   require Logger
 
@@ -48,14 +47,6 @@ defmodule Nostrum.Util do
         struct(__ENV__.module, new_map)
       end
     end
-  end
-
-  @doc """
-  Empties all caches.
-  """
-  @spec empty_cache() :: no_return
-  def empty_cache do
-    CacheSupervisor.empty_cache
   end
 
   @doc """

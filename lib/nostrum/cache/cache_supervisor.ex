@@ -7,12 +7,6 @@ defmodule Nostrum.Cache.CacheSupervisor do
     Supervisor.start_link(__MODULE__, [], name: CacheSupervisor)
   end
 
-  def empty_cache do
-    Cache.Supervisor
-    |> Supervisor.which_children
-    |> Enum.map(fn {_id, pid, _type, _modules} -> Supervisor.restart_child(Cache.Supervisor, pid) end)
-  end
-
   def init(_args) do
     children = [
       # REVIEW: If shard dies, should guilds die also? An attempt will be made to restart them
