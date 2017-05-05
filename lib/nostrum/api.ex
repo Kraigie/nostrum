@@ -43,11 +43,10 @@ defmodule Nostrum.Api do
 
   use Bitwise
 
-  alias Nostrum.Constants
+  alias Nostrum.{Constants, Util}
   alias Nostrum.Struct.{Embed, Guild, Message, User, Webhook}
   alias Nostrum.Struct.Guild.{Member, Channel, Role}
   alias Nostrum.Shard.{Supervisor, Session}
-  alias Nostrum.Util
 
   @typedoc """
   Represents a message's content in the context of creating a message using the Api.

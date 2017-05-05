@@ -190,7 +190,7 @@ defmodule Nostrum.Cache.Guild.GuildServer do
   defp bangify_key_search({:ok, val}, _key),
     do: val
 
-  @doc """
+  @doc ~S"""
   Retrieves a transformed guild from the cache.
 
   Returns the result of applying a given fun to the guild specified by the search

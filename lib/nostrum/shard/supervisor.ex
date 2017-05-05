@@ -3,8 +3,7 @@ defmodule Nostrum.Shard.Supervisor do
 
   use Supervisor
 
-  alias Nostrum.Util
-  alias Nostrum.Shard
+  alias Nostrum.{Shard, Util}
   alias Nostrum.Shard.Session
 
   require Logger
