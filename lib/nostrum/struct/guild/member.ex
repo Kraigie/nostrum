@@ -9,9 +9,6 @@ defmodule Nostrum.Struct.Guild.Member do
 
   alias Nostrum.Struct.User
 
-  @typedoc "Id of the guild the member is part of"
-  @type guild_id :: integer
-
   @typedoc "The user struct"
   @type user :: User.t
 
@@ -31,7 +28,6 @@ defmodule Nostrum.Struct.Guild.Member do
   @type mute :: boolean
 
   @type t :: %__MODULE__{
-    guild_id: guild_id,
     user: user,
     nick: nick,
     roles: roles,
@@ -42,7 +38,6 @@ defmodule Nostrum.Struct.Guild.Member do
 
   @derive [Poison.Encoder]
   defstruct [
-    :guild_id,
     :user,
     :nick,
     :roles,

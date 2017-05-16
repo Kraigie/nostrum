@@ -80,22 +80,22 @@ defmodule Nostrum.Consumer do
   @type channel_update :: {:CHANNEL_UPDATE, {old_channel :: channel, new_channel :: channel}, ws_state}
   @type channel_pins_ack :: {:CHANNEL_PINS_ACK, {map}, ws_state}
   @type channel_pins_update :: {:CHANNEL_PINS_UPDATE, {map}, ws_state}
-  @type guild_ban_add :: {:GUILD_BAN_ADD, {Nostrum.Struct.User.t}, ws_state}
-  @type guild_ban_remove :: {:GUILD_BAN_REMOVE, {Nostrum.Struct.User.t}, ws_state}
+  @type guild_ban_add :: {:GUILD_BAN_ADD, {guild_id :: integer, Nostrum.Struct.User.t}, ws_state}
+  @type guild_ban_remove :: {:GUILD_BAN_REMOVE, {guild_id :: integer, Nostrum.Struct.User.t}, ws_state}
   @type guild_create :: {:GUILD_CREATE, {new_guild :: Nostrum.Struct.Guild.t}, ws_state}
   @type guild_available :: {:GUILD_AVAILABLE, {new_guild :: Nostrum.Struct.Guild.t}, ws_state}
   @type guild_unavailable :: {:GUILD_UNAVAILABLE, {unavailable_guild :: Nostrum.Struct.Guild.UnavailableGuild.t}, ws_state}
   @type guild_update :: {:GUILD_CREATE, {old_guild :: Nostrum.Struct.Guild.t, new_guild :: Nostrum.Struct.Guild.t}, ws_state}
-  @type guild_delete :: {:GUILD_DELETE, {old_guild :: Nostrum.Struct.Guild.t}, ws_state}
-  @type guild_emojis_update :: {:GUILD_EMOJIS_UPDATE, {old_emojis :: [Nostrum.Struct.Message.Emoji.t],  new_emojis :: [Nostrum.Struct.Message.Emoji.t]}, ws_state}
+  @type guild_delete :: {:GUILD_DELETE, {old_guild :: Nostrum.Struct.Guild.t, unavailable :: boolean}, ws_state}
+  @type guild_emojis_update :: {:GUILD_EMOJIS_UPDATE, {guild_id :: integer, old_emojis :: [Nostrum.Struct.Message.Emoji.t],  new_emojis :: [Nostrum.Struct.Message.Emoji.t]}, ws_state}
   @type guild_integrations_update :: {:GUILD_INTEGERATIONS_UPDATE, {map}, ws_state}
-  @type guild_member_add :: {:GUILD_MEMBER_ADD, {new_member :: Nostrum.Struct.Guild.Member.t}, ws_state}
+  @type guild_member_add :: {:GUILD_MEMBER_ADD, {guild_id :: integer, new_member :: Nostrum.Struct.Guild.Member.t}, ws_state}
   @type guild_members_chunk :: {:GUILD_MEMBERS_CHUNK, {map}, ws_state}
-  @type guild_member_remove :: {:GUILD_MEMBER_REMOVE, {old_member :: Nostrum.Struct.Guild.Member.t}, ws_state}
-  @type guild_member_update :: {:GUILD_MEMBER_UPDATE, {old_member :: Nostrum.Struct.Guild.Member.t, new_member :: Nostrum.Struct.Guild.Member.t}, ws_state}
-  @type guild_role_create :: {:GUILD_ROLE_CREATE, {new_role :: Nostrum.Struct.Guild.Role.t}, ws_state}
-  @type guild_role_delete :: {:GUILD_ROLE_DELETE, {old_role :: Nostrum.Struct.Guild.Role.t}, ws_state}
-  @type guild_role_update :: {:GUILD_ROLE_UPDATE, {old_role :: Nostrum.Struct.Guild.Role.t, new_role :: Nostrum.Struct.Guild.Role.t}, ws_state}
+  @type guild_member_remove :: {:GUILD_MEMBER_REMOVE, {guild_id :: integer, old_member :: Nostrum.Struct.Guild.Member.t}, ws_state}
+  @type guild_member_update :: {:GUILD_MEMBER_UPDATE, {guild_id :: integer, old_member :: Nostrum.Struct.Guild.Member.t, new_member :: Nostrum.Struct.Guild.Member.t}, ws_state}
+  @type guild_role_create :: {:GUILD_ROLE_CREATE, {nguild_id :: integer, new_role :: Nostrum.Struct.Guild.Role.t}, ws_state}
+  @type guild_role_delete :: {:GUILD_ROLE_DELETE, {guild_id :: integer, old_role :: Nostrum.Struct.Guild.Role.t}, ws_state}
+  @type guild_role_update :: {:GUILD_ROLE_UPDATE, {guild_id :: integer, old_role :: Nostrum.Struct.Guild.Role.t, new_role :: Nostrum.Struct.Guild.Role.t}, ws_state}
   @type message_create :: {:MESSAGE_CREATE, {message :: Nostrum.Struct.Message.t}, ws_state}
   @type message_delete :: {:MESSAGE_DELETE, {message :: Nostrum.Struct.Message.t}, ws_state}
   @type message_delete_bulk :: {:MESSAGE_DELETE_BULK, {updated_messages :: [Nostrum.Struct.Message.t]}, ws_state}

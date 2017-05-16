@@ -16,8 +16,17 @@ defmodule Nostrum.Shard.Dispatch do
     log? = Application.get_env(:nostrum, :log_full_events)
     if log?, do: Logger.info inspect payload.d, pretty: true
 
-    handle_event(payload.t, payload.d, state)
+    payload.t
+    |> handle_event(payload.d, state)
+    |> format_event
   end
+
+  defp format_event(events) when is_list(events),
+    do: for event <- events, do: format_event(event)
+  defp format_event({name, event_info, state} = event) when is_tuple(event_info),
+    do: event
+  defp format_event({name, event_info, state}),
+    do: {name, {event_info}, state}
 
   def handle_event(:CHANNEL_CREATE = event, %{is_private: true} = p, state) do
     {event, ChannelCache.create(p), state}
@@ -48,10 +57,10 @@ defmodule Nostrum.Shard.Dispatch do
     do: {event, p, state}
 
   def handle_event(:GUILD_BAN_ADD = event, p, state),
-    do: {event, p, state}
+    do: {event, {p.guild_id, p}, state}
 
   def handle_event(:BUILD_BAN_REMOVE = event, p, state),
-    do: {event, p, state}
+    do: {event, {p.guild_id, p}, state}
 
   def handle_event(:GUILD_CREATE, %{unavailable: true} = guild, state) do
     :ets.insert(:unavailable_guilds, {guild.id, guild})
@@ -89,7 +98,7 @@ defmodule Nostrum.Shard.Dispatch do
 
   def handle_event(:GUILD_DELETE = event, p, state) do
     :ets.delete(:guild_shard_map, p.id)
-    {event, GuildServer.delete(p.id), state}
+    {event, {GuildServer.delete(p.id), p.unavailable}, state}
   end
 
   def handle_event(:GUILD_EMOJIS_UPDATE = event, p, state),
