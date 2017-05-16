@@ -23,10 +23,17 @@ defmodule Nostrum.Shard.Dispatch do
 
   defp format_event(events) when is_list(events),
     do: for event <- events, do: format_event(event)
-  defp format_event({name, event_info, state} = event) when is_tuple(event_info),
+  defp format_event({_name, event_info, _state} = event) when is_tuple(event_info),
     do: event
   defp format_event({name, event_info, state}),
     do: {name, {event_info}, state}
+
+  defp check_new_or_unavailable(guild_id) do
+    case :ets.lookup(:unavailable_guilds, guild_id) do
+      [] -> :GUILD_CREATE
+      [_] -> :GUILD_AVAILABLE
+    end
+  end
 
   def handle_event(:CHANNEL_CREATE = event, %{is_private: true} = p, state) do
     {event, ChannelCache.create(p), state}
@@ -83,13 +90,6 @@ defmodule Nostrum.Shard.Dispatch do
     case GuildServer.create(p) do
       {:error, reason} -> Logger.warn "Failed to create new guild process: #{inspect reason}"
       ok -> {check_new_or_unavailable(p.id), ok, state}
-    end
-  end
-
-  defp check_new_or_unavailable(guild_id) do
-    case :ets.lookup(:unavailable_guilds, guild_id) do
-      [] -> :GUILD_CREATE
-      [id] -> :GUILD_AVAILABLE
     end
   end
 
