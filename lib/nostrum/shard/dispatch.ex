@@ -168,7 +168,7 @@ defmodule Nostrum.Shard.Dispatch do
       p.guilds
       |> Enum.map(fn guild -> handle_event(:GUILD_CREATE, guild, state) end)
 
-    ready_guilds ++ [{event, p, state}]
+    [{event, p, state}] ++ ready_guilds
   end
 
   def handle_event(:RESUMED = event, p, state),
