@@ -4,7 +4,6 @@ defmodule Nostrum.Shard.Dispatch do
   alias Nostrum.Cache.{ChannelCache, UserCache}
   alias Nostrum.Cache.Guild.GuildServer
   alias Nostrum.Shard.Session
-  alias Nostrum.Shard.Stage.Producer
   alias Nostrum.Struct.Guild.UnavailableGuild
 
   require Logger
@@ -59,7 +58,7 @@ defmodule Nostrum.Shard.Dispatch do
     {:GUILD_UNAVAILABLE, UnavailableGuild.to_struct(guild), state}
   end
 
-  def handle_event(:GUILD_CREATE = event, p, state) do
+  def handle_event(:GUILD_CREATE, p, state) do
     p.members
     |> Enum.each(fn member -> UserCache.create(member.user) end)
 
@@ -74,7 +73,14 @@ defmodule Nostrum.Shard.Dispatch do
 
     case GuildServer.create(p) do
       {:error, reason} -> Logger.warn "Failed to create new guild process: #{inspect reason}"
-      ok -> {event, ok, state}
+      ok -> {check_new_or_unavailable(p.id), ok, state}
+    end
+  end
+
+  defp check_new_or_unavailable(guild_id) do
+    case :ets.lookup(:unavailable_guilds, guild_id) do
+      [] -> :GUILD_CREATE
+      [id] -> :GUILD_AVAILABLE
     end
   end
 
@@ -149,10 +155,11 @@ defmodule Nostrum.Shard.Dispatch do
     p.private_channels
     |> Enum.each(fn dm_channel -> ChannelCache.create(dm_channel) end)
 
-    p.guilds
-    |> Enum.each(fn guild -> handle_event(:GUILD_CREATE, guild, state) end)
+    ready_guilds =
+      p.guilds
+      |> Enum.map(fn guild -> handle_event(:GUILD_CREATE, guild, state) end)
 
-    {event, p, state}
+    ready_guilds ++ [{event, p, state}]
   end
 
   def handle_event(:RESUMED = event, p, state),

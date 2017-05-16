@@ -17,7 +17,10 @@ defmodule Nostrum.Shard.Stage.Cache do
   end
 
   def handle_events(events, _from, state) do
-    events = Enum.map(events, &Dispatch.handle/1)
-    {:noreply, events, state}
+    flat_processed_events =
+      events
+      |> Enum.map(&Dispatch.handle/1)
+      |> List.flatten
+    {:noreply, flat_processed_events, state}
   end
 end
