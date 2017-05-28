@@ -27,6 +27,8 @@ defmodule Nostrum.Shard.Dispatch do
     do: event
   defp format_event({name, event_info, state}),
     do: {name, {event_info}, state}
+  defp format_event(:noop),
+    do: :noop
 
   defp check_new_or_unavailable(guild_id) do
     case :ets.lookup(:unavailable_guilds, guild_id) do
@@ -44,15 +46,15 @@ defmodule Nostrum.Shard.Dispatch do
     {event, GuildServer.channel_create(p.guild_id, p), state}
   end
 
-  def handle_event(:CHANNEL_CREATE = event, p, state) do
+  def handle_event(:CHANNEL_CREATE, _p, _state) do
     :noop # Ignore group channels
   end
 
-  def handle_event(:CHANNEL_DELETE = event, %{is_private: true} = p, state) do
+  def handle_event(:CHANNEL_DELETE = event, %{type: 1} = p, state) do
     {event, ChannelCache.delete(p), state}
   end
 
-  def handle_event(:CHANNEL_DELETE = event, p, state) do
+  def handle_event(:CHANNEL_DELETE = event, %{type: t} = p, state) when t in [0, 2] do
     :ets.delete(:channel_guild_map, p.id)
     {event, GuildServer.channel_delete(p.guild_id, p.id), state}
   end
