@@ -8,8 +8,8 @@ defmodule Nostrum.Struct.DMChannel do
   @typedoc "The channel's id"
   @type id :: integer
 
-  @typedoc "Whether the channel is private"
-  @type is_private :: boolean
+  @typedoc "Type of the channel"
+  @type type :: integer
 
   @typedoc "The recipient of the message"
   @type recipient :: User.t
@@ -19,7 +19,7 @@ defmodule Nostrum.Struct.DMChannel do
 
   @type t :: %__MODULE__{
     id: id,
-    is_private: is_private,
+    type: type,
     recipient: recipient,
     last_message_id: last_message_id
   }
@@ -27,7 +27,7 @@ defmodule Nostrum.Struct.DMChannel do
   @derive [Poison.Encoder]
   defstruct [
     :id,
-    :is_private,
+    :type,
     :recipient,
     :last_message_id
   ]

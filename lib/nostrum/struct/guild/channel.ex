@@ -15,8 +15,8 @@ defmodule Nostrum.Struct.Guild.Channel do
   @typedoc "The name of the channel"
   @type name :: String.t
 
-  @typedoc "The type of channel: 'Text' or 'Voice'"
-  @type type :: String.t
+  @typedoc "The type of the channel"
+  @type type :: Intger
 
   @typedoc "The ordered position of the channel"
   @type position :: integer

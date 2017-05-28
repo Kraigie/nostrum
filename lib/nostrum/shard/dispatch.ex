@@ -35,13 +35,17 @@ defmodule Nostrum.Shard.Dispatch do
     end
   end
 
-  def handle_event(:CHANNEL_CREATE = event, %{is_private: true} = p, state) do
+  def handle_event(:CHANNEL_CREATE = event, %{type: 1} = p, state) do
     {event, ChannelCache.create(p), state}
   end
 
-  def handle_event(:CHANNEL_CREATE = event, p, state) do
+  def handle_event(:CHANNEL_CREATE = event, %{type: t} = p, state) when t in [0, 2] do
     :ets.insert(:channel_guild_map, {p.id, p.guild_id})
     {event, GuildServer.channel_create(p.guild_id, p), state}
+  end
+
+  def handle_event(:CHANNEL_CREATE = event, p, state) do
+    :noop # Ignore group channels
   end
 
   def handle_event(:CHANNEL_DELETE = event, %{is_private: true} = p, state) do
