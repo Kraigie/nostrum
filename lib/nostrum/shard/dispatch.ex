@@ -63,6 +63,10 @@ defmodule Nostrum.Shard.Dispatch do
     {event, GuildServer.channel_update(p.guild_id, p), state}
   end
 
+  def handle_event(:CHANNEL_DELETE, _p, _state) do
+    :noop # Ignore group channels
+  end
+
   def handle_event(:CHANNEL_PINS_ACK = event, p, state),
     do: {event, p, state}
 
