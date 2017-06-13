@@ -162,8 +162,8 @@ defmodule Nostrum.Consumer do
     end
   end
 
-  def start_link(mod) do
-    GenStage.start_link(__MODULE__, %{mod: mod, state: %{}})
+  def start_link(mod, state) do
+    GenStage.start_link(__MODULE__, %{mod: mod, state: state})
   end
 
   @doc false

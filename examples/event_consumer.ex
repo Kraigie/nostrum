@@ -17,7 +17,7 @@ defmodule ExampleConsumer do
   require Logger
 
   def start_link do
-    Consumer.start_link(__MODULE__)
+    Consumer.start_link(__MODULE__, :state)
   end
 
   def handle_event({:MESSAGE_CREATE, {msg}, ws_state}, state) do

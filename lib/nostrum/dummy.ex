@@ -22,7 +22,7 @@ defmodule DummyConsumer do
   require Logger
 
   def start_link do
-    Consumer.start_link(__MODULE__)
+    Consumer.start_link(__MODULE__, [])
   end
 
   def handle_event({event_name, _, _}, _) do
