@@ -60,6 +60,7 @@ defmodule Nostrum.Struct.User do
   end
 
   @doc false
+  # TODO: Necessary?
   def to_struct(%{__struct__: _} = map), do: map
   def to_struct(map) do
     struct(__MODULE__, map)
