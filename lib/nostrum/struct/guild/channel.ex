@@ -21,9 +21,6 @@ defmodule Nostrum.Struct.Guild.Channel do
   @typedoc "The ordered position of the channel"
   @type position :: integer
 
-  @typedoc "Whether the channel is private"
-  @type is_private :: boolean
-
   @typedoc "The list of overwrites"
   @type permission_overwrites :: list(Overwrite.t)
 
@@ -45,7 +42,6 @@ defmodule Nostrum.Struct.Guild.Channel do
     name: name,
     type: type,
     position: position,
-    is_private: is_private,
     permission_overwrites: permission_overwrites,
     topic: topic,
     last_message_id: last_message_id,
@@ -60,7 +56,6 @@ defmodule Nostrum.Struct.Guild.Channel do
     :name,
     :type,
     :position,
-    :is_private,
     :permission_overwrites,
     :topic,
     :last_message_id,
