@@ -198,7 +198,6 @@ defmodule Nostrum.Shard.Dispatch do
     Producer.notify(pid, {event, p}, state)
   end
 
-
   def handle_event(:VOICE_SERVER_UPDATE = event, p, state),
     do: {event, p, state}
 
