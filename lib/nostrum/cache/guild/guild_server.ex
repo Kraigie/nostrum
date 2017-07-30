@@ -334,6 +334,11 @@ defmodule Nostrum.Cache.Guild.GuildServer do
   def emoji_update(guild_id, emojis) do
     call(guild_id, {:update, :emoji, guild_id, emojis})
   end
+  
+  @doc false
+  def voice_state_update(guild_id, voice_state) do
+    call(guild_id, {:update, :voice_state, voice_state})
+  end
 
   def handle_call({:transform, tf}, _from, state) do
     {:reply, tf.(state), state}
@@ -442,4 +447,15 @@ defmodule Nostrum.Cache.Guild.GuildServer do
     {:reply, {guild_id, old_emojis, emojis}, %{state | emojis: emojis}}
   end
 
+  def handle_call({:update, :voice_state, voice_state}, _from, state) do
+    new_voice_states =
+      [
+        voice_state |
+        state.voice_states
+        |> Enum.reject(fn(map) -> map.user_id == voice_state.user_id end)
+      ]
+    new_state = state |> Map.replace(:voice_states, new_voice_states)
+
+    {:reply, {Guild.to_struct(state), Guild.to_struct(new_state)}, new_state}
+  end
 end
