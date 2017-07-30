@@ -455,6 +455,6 @@ defmodule Nostrum.Cache.Guild.GuildServer do
         state.voice_states
         |> Enum.reject(fn(map) -> map.user_id == voice_state.user_id end)
       ]
-    {:reply, {guild_id, old_voice_states, new_voice_states}, %{state | voice_states: new_voice_state}}
+    {:reply, {guild_id, old_voice_states, new_voice_states}, %{state | voice_states: new_voice_states}}
   end
 end
