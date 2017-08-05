@@ -109,7 +109,7 @@ defmodule Nostrum.Consumer do
   @type typing_start :: {:TYPING_START, {map}, ws_state}
   @type user_settings_update :: no_return
   @type user_update :: {:USER_UPDATE, {old_user :: Nostrum.Struct.User.t, new_user :: Nostrum.Struct.User.t}, ws_state}
-  @type voice_state_update :: {:VOICE_STATE_UPDATE, {map}, ws_state}
+  @type voice_state_update :: {:VOICE_STATE_UPDATE, {Nostrum.Struct.VoiceState.t}, ws_state}
   @type voice_server_update :: {:VOICE_SERVER_UPDATE, {map}, ws_state}
 
   @type event :: channel_create |
