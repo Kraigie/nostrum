@@ -108,7 +108,7 @@ defmodule Nostrum.Shard.Dispatch do
 
   def handle_event(:GUILD_DELETE = event, p, state) do
     :ets.delete(:guild_shard_map, p.id)
-    {event, {GuildServer.delete(p.id), p.unavailable}, state}
+    {event, {GuildServer.delete(p.id), Map.get(p, :unavailable, false)}, state}
   end
 
   def handle_event(:GUILD_EMOJIS_UPDATE = event, p, state),
