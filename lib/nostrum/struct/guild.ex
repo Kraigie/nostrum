@@ -5,6 +5,7 @@ defmodule Nostrum.Struct.Guild do
 
   alias Nostrum.Struct.Emoji
   alias Nostrum.Struct.Guild.{Channel, Member, Role, UnavailableGuild}
+  alias Nostrum.Struct.VoiceState
   alias Nostrum.Util
 
   @typedoc "The guild's id"
@@ -68,7 +69,7 @@ defmodule Nostrum.Struct.Guild do
   @type member_count :: integer
 
   @typedoc "List of voice states as maps"
-  @type voice_states :: list(map)
+  @type voice_states :: list(VoiceState.t)
 
   @typedoc "List of members"
   @type members :: list(Member.t)
@@ -140,7 +141,8 @@ defmodule Nostrum.Struct.Guild do
       emojis: [Emoji.p_encode],
       roles: [Role.p_encode],
       members: [Member.p_encode],
-      channels: [Channel.p_encode]
+      channels: [Channel.p_encode],
+      voice_states: [VoiceState.p_encode]
     }
   end
 
@@ -151,6 +153,7 @@ defmodule Nostrum.Struct.Guild do
     |> Map.update(:roles, %{}, &Util.list_to_struct_list(&1, Role))
     |> Map.update(:members, %{}, &Util.list_to_struct_list(&1, Member))
     |> Map.update(:channels, %{}, &Util.list_to_struct_list(&1, Channel))
+    |> Map.update(:voice_states, %{}, &Util.list_to_struct_list(&1, VoiceState))
     struct(__MODULE__, new)
   end
 end

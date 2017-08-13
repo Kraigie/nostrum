@@ -62,6 +62,11 @@ defmodule Nostrum.Struct.VoiceState do
     :suppress
   ]
 
+  @doc false
+  def p_encode do
+    %__MODULE__{}
+  end
+
   def to_struct(map) do
     struct(__MODULE__, map)
   end
