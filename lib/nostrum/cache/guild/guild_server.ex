@@ -448,11 +448,11 @@ defmodule Nostrum.Cache.Guild.GuildServer do
   end
 
   def handle_call({:update, :voice_state, guild_id, voice_state}, _from, state) do
-    old_voice_states = state.voice_states
+    old_voice_states = state |> Map.get(:voice_states, [])
     new_voice_states =
       [
         voice_state |
-        state.voice_states
+        old_voice_states
         |> Enum.reject(fn(map) -> map.user_id == voice_state.user_id end)
       ]
     {:reply, {guild_id, old_voice_states, new_voice_states}, %{state | voice_states: new_voice_states}}
