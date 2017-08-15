@@ -36,7 +36,7 @@ defmodule Nostrum.Struct.DMChannel do
   @doc false
   def to_struct(map) do
     new = map
-    |> Map.update(:recipients, %{}, &Util.list_to_struct_list(&1, User))
+    |> Map.update(:recipients, [], &Util.list_to_struct_list(&1, User))
     struct(__MODULE__, new)
   end
 end
