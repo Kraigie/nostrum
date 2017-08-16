@@ -147,10 +147,10 @@ defmodule Nostrum.Struct.Guild do
   def to_struct(%{unavailable: true} = map), do: UnavailableGuild.to_struct(map)
   def to_struct(map) do
     new = map
-    |> Map.update(:emojis, %{}, &Util.list_to_struct_list(&1, Emoji))
-    |> Map.update(:roles, %{}, &Util.list_to_struct_list(&1, Role))
-    |> Map.update(:members, %{}, &Util.list_to_struct_list(&1, Member))
-    |> Map.update(:channels, %{}, &Util.list_to_struct_list(&1, Channel))
+    |> Map.update(:emojis, [], &Util.list_to_struct_list(&1, Emoji))
+    |> Map.update(:roles, [], &Util.list_to_struct_list(&1, Role))
+    |> Map.update(:members, [], &Util.list_to_struct_list(&1, Member))
+    |> Map.update(:channels, [], &Util.list_to_struct_list(&1, Channel))
     struct(__MODULE__, new)
   end
 end

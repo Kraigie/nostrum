@@ -72,7 +72,7 @@ defmodule Nostrum.Struct.Guild.Channel do
   @doc false
   def to_struct(map) do
     new = map
-    |> Map.update(:permission_overwrites, %{}, &Util.list_to_struct_list(&1, Overwrite))
+    |> Map.update(:permission_overwrites, [], &Util.list_to_struct_list(&1, Overwrite))
     struct(__MODULE__, new)
   end
 
