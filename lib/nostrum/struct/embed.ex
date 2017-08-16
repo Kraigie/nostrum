@@ -95,7 +95,7 @@ defmodule Nostrum.Struct.Embed do
     |> Map.update(:video, %{}, &Video.to_struct(&1))
     |> Map.update(:provider, %{}, &Provider.to_struct(&1))
     |> Map.update(:author, %{}, &Author.to_struct(&1))
-    |> Map.update(:fields, %{}, &Util.list_to_struct_list(&1, Field))
+    |> Map.update(:fields, [], &Util.list_to_struct_list(&1, Field))
     struct(__MODULE__, new)
   end
 end

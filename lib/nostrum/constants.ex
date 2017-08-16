@@ -23,7 +23,7 @@ defmodule Nostrum.Constants do
   def guilds,                                                     do: "/guilds"
   def guild(guild_id),                                            do: "/guilds/#{guild_id}"
   def guild_channels(guild_id),                                   do: "/guilds/#{guild_id}/channels"
-  def guild_members(guild_id),                                    do: "/guilds/#{guild_id}/members/"
+  def guild_members(guild_id),                                    do: "/guilds/#{guild_id}/members"
   def guild_member(guild_id, user_id),                            do: "/guilds/#{guild_id}/members/#{user_id}"
   def guild_member_role(guild_id, user_id, role_id),              do: "/guilds/#{guild_id}/members/#{user_id}/roles/#{role_id}"
   def guild_bans(guild_id),                                       do: "/guilds/#{guild_id}/bans"

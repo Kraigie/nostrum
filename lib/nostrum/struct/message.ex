@@ -104,10 +104,10 @@ defmodule Nostrum.Struct.Message do
   def to_struct(map) do
     new = map
     |> Map.update(:author, %{}, &User.to_struct(&1))
-    |> Map.update(:attachments, %{}, &Util.list_to_struct_list(&1, Attachment))
-    |> Map.update(:mentions, %{}, &Util.list_to_struct_list(&1, User))
-    |> Map.update(:mention_roles, %{}, &Util.list_to_struct_list(&1, Role))
-    |> Map.update(:embeds, %{}, &Util.list_to_struct_list(&1, Embed))
+    |> Map.update(:attachments, [], &Util.list_to_struct_list(&1, Attachment))
+    |> Map.update(:mentions, [], &Util.list_to_struct_list(&1, User))
+    |> Map.update(:mention_roles, [], &Util.list_to_struct_list(&1, Role))
+    |> Map.update(:embeds, [], &Util.list_to_struct_list(&1, Embed))
     struct(__MODULE__, new)
   end
 end

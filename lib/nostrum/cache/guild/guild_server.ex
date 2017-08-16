@@ -344,20 +344,21 @@ defmodule Nostrum.Cache.Guild.GuildServer do
     {:reply, tf.(state), state}
   end
 
-  def handle_call({:update, guild}, _from, state) do
+  def handle_call({:update, guild}, _from, %Guild{} = state) do
+    guild = guild |> Guild.to_struct()
     {:reply, {state, guild}, guild}
   end
 
-  def handle_call({:delete}, _from, state) do
+  def handle_call({:delete}, _from, %Guild{} = state) do
     {:stop, :normal, state, %{}}
   end
 
-  def handle_call({:create, :member, guild_id, member}, _from, state) do
-    new_members = [member | state.members]
+  def handle_call({:create, :member, guild_id, member}, _from, %Guild{} = state) do
+    new_members = [member |> Guild.Member.to_struct() | state.members]
     {:reply, {guild_id, member}, %{state | members: new_members}}
   end
 
-  def handle_call({:update, :member, guild_id, new_partial_member}, _from, state) do
+  def handle_call({:update, :member, guild_id, new_partial_member}, _from, %Guild{} = state) do
     member_index = Enum.find_index(state.members, fn member ->
       member.user.id == new_partial_member.user.id
     end)
@@ -366,12 +367,12 @@ defmodule Nostrum.Cache.Guild.GuildServer do
         {:ok, old_member} -> old_member
         :error -> %{user: %{}, roles: []}
       end
-    new_member = Map.merge(old_member, new_partial_member)
+    new_member = Map.merge(old_member, new_partial_member) |> Guild.Member.to_struct()
     new_members = List.replace_at(state.members, member_index, new_member)
     {:reply, {guild_id, old_member, new_member}, %{state | members: new_members}}
   end
 
-  def handle_call({:delete, :member, guild_id, user}, _from, state) do
+  def handle_call({:delete, :member, guild_id, user}, _from, %Guild{} = state) do
     member_index = Enum.find_index(state.members, fn member -> member.user.id == user.id end)
     deleted_member =
       case Enum.fetch(state.members, member_index || length(state.members) + 1) do
@@ -382,12 +383,12 @@ defmodule Nostrum.Cache.Guild.GuildServer do
     {:reply, {guild_id, deleted_member}, %{state | members: members}}
   end
 
-  def handle_call({:create, :channel, channel}, _from, state) do
-    new_channels = [channel | state.channels]
+  def handle_call({:create, :channel, channel}, _from, %Guild{} = state) do
+    new_channels = [channel |> Guild.Channel.to_struct() | state.channels]
     {:reply, channel, %{state | channels: new_channels}}
   end
 
-  def handle_call({:update, :channel, channel}, _from, state) do
+  def handle_call({:update, :channel, channel}, _from, %Guild{} = state) do
     channel_index = Enum.find_index(state.channels, fn g_channel -> g_channel.id == channel.id end)
     old_channel =
       case Enum.fetch(state.channels, channel_index || length(state.channels) + 1) do
@@ -396,12 +397,12 @@ defmodule Nostrum.Cache.Guild.GuildServer do
       end
     channels = List.update_at(state.channels, channel_index,
       fn _ ->
-        channel
+        channel |> Guild.Channel.to_struct()
       end)
     {:reply, {old_channel, channel}, %{state | channels: channels}}
   end
 
-  def handle_call({:delete, :channel, channel_id}, _from, state) do
+  def handle_call({:delete, :channel, channel_id}, _from, %Guild{} = state) do
     channel_index = Enum.find_index(state.channels, fn g_channel -> g_channel.id == channel_id end)
     old_channel =
       case Enum.fetch(state.channels, channel_index || length(state.channels) + 1) do
@@ -412,12 +413,12 @@ defmodule Nostrum.Cache.Guild.GuildServer do
     {:reply, old_channel, %{state | channels: channels}}
   end
 
-  def handle_call({:create, :role, guild_id, role}, _from, state) do
-    new_roles = [role | state.roles]
+  def handle_call({:create, :role, guild_id, role}, _from, %Guild{} = state) do
+    new_roles = [role |> Guild.Role.to_struct() | state.roles]
     {:reply, {guild_id, role}, %{state | roles: new_roles}}
   end
 
-  def handle_call({:update, :role, guild_id, role}, _from, state) do
+  def handle_call({:update, :role, guild_id, role}, _from, %Guild{} = state) do
     role_index = Enum.find_index(state.roles, fn g_role -> g_role.id == role.id end)
     old_role =
       case Enum.fetch(state.roles, role_index || length(state.roles) + 1) do
@@ -426,12 +427,12 @@ defmodule Nostrum.Cache.Guild.GuildServer do
       end
     roles = List.update_at(state.roles, role_index,
       fn _ ->
-        role
+        role |> Guild.Role.to_struct()
       end)
     {:reply, {guild_id, old_role, role}, %{state | roles: roles}}
   end
 
-  def handle_call({:delete, :role, guild_id, role_id}, _from, state) do
+  def handle_call({:delete, :role, guild_id, role_id}, _from, %Guild{} = state) do
     role_index = Enum.find_index(state.roles, fn g_role -> g_role.id == role_id end)
     old_role =
       case Enum.fetch(state.roles, role_index || length(state.roles) + 1) do
@@ -442,7 +443,7 @@ defmodule Nostrum.Cache.Guild.GuildServer do
     {:reply, {guild_id, old_role}, %{state | roles: roles}}
   end
 
-  def handle_call({:update, :emoji, guild_id, emojis}, _from, state) do
+  def handle_call({:update, :emoji, guild_id, emojis}, _from, %Guild{} = state) do
     old_emojis = state.emojis
     {:reply, {guild_id, old_emojis, emojis}, %{state | emojis: emojis}}
   end
