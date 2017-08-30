@@ -76,7 +76,7 @@ defmodule Nostrum.Shard.Dispatch do
   def handle_event(:GUILD_BAN_ADD = event, p, state),
     do: {event, {p.guild_id, p}, state}
 
-  def handle_event(:BUILD_BAN_REMOVE = event, p, state),
+  def handle_event(:GUILD_BAN_REMOVE = event, p, state),
     do: {event, {p.guild_id, p}, state}
 
   def handle_event(:GUILD_CREATE, %{unavailable: true} = guild, state) do
