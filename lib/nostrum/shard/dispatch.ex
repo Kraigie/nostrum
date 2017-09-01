@@ -85,25 +85,25 @@ defmodule Nostrum.Shard.Dispatch do
   end
 
   def handle_event(:GUILD_CREATE, p, state) do
-    p.members
-    |> Enum.each(fn member -> UserCache.create(member.user) end)
-
-    :ets.insert(:guild_shard_map, {p.id, state.shard_num})
-    Enum.each(p.channels, fn channel ->
-      :ets.insert(:channel_guild_map, {channel.id, p.id})
-    end)
-
-    if p.member_count >= @large_threshold do
-      Session.request_guild_members(state.shard_pid, p.id)
-    end
-    
     updated = p.channels 
               |> Enum.map(fn channel -> Map.put(channel, :guild_id, p.id) end)
     new_guild = %{p | channels: updated}
 
+    new_guild.members
+    |> Enum.each(fn member -> UserCache.create(member.user) end)
+
+    :ets.insert(:guild_shard_map, {new_guild.id, state.shard_num})
+    Enum.each(new_guild.channels, fn channel ->
+      :ets.insert(:channel_guild_map, {channel.id, new_guild.id})
+    end)
+
+    if new_guild.member_count >= @large_threshold do
+      Session.request_guild_members(state.shard_pid, new_guild.id)
+    end
+
     case GuildServer.create(new_guild) do
       {:error, reason} -> Logger.warn "Failed to create new guild process: #{inspect reason}"
-      ok -> {check_new_or_unavailable(p.id), ok, state}
+      ok -> {check_new_or_unavailable(new_guild.id), ok, state}
     end
   end
 
