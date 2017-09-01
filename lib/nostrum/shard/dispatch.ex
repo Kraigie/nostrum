@@ -96,8 +96,12 @@ defmodule Nostrum.Shard.Dispatch do
     if p.member_count >= @large_threshold do
       Session.request_guild_members(state.shard_pid, p.id)
     end
+    
+    updated = p.channels 
+              |> Enum.map(fn channel -> Map.put(channel, :guild_id, p.id) end)
+    new_guild = %{p | channels: updated}
 
-    case GuildServer.create(p) do
+    case GuildServer.create(new_guild) do
       {:error, reason} -> Logger.warn "Failed to create new guild process: #{inspect reason}"
       ok -> {check_new_or_unavailable(p.id), ok, state}
     end
