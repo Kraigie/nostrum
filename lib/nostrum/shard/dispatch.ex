@@ -85,8 +85,9 @@ defmodule Nostrum.Shard.Dispatch do
   end
 
   def handle_event(:GUILD_CREATE, p, state) do
-    updated = p.channels 
-              |> Enum.map(fn channel -> Map.put(channel, :guild_id, p.id) end)
+    updated = 
+      p.channels 
+      |> Enum.map(fn channel -> Map.put(channel, :guild_id, p.id) end)
     new_guild = %{p | channels: updated}
 
     new_guild.members
