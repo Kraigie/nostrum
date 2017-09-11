@@ -937,8 +937,8 @@ defmodule Nostrum.Api do
     after: integer
   }) :: error | {:ok, [Nostrum.Struct.Guild.Member.t]}
   def get_guild_members(guild_id, options) do
-    request(:get, Constants.guild_members(guild_id), options)
-    |> handle(Member)
+    request(:get, Constants.guild_members(guild_id), "", params: options)
+    |> handle([Member])
   end
 
   @doc """
