@@ -98,20 +98,23 @@ defmodule Nostrum.Api do
     - `pid` - Pid of the shard.
     - `status` - Status of the bot.
     - `game` - The 'playing' text of the bot. Empty will clear.
+    - `streaming` - URL of twitch.tv stream
   """
-  @spec update_status(pid, status, String.t) :: no_return
-  def update_status(pid, status, game) do
-    Session.update_status(pid, to_string(status), game)
+  @spec update_status(pid, status, String.t) :: :ok
+  def update_shard_status(pid, status, game, stream \\ nil) do
+    Session.update_status(pid, to_string(status), game, stream)
+    :ok
   end
 
   @doc """
   Updates the status of the bot for all shards.
 
-  See `update_status/3` for usage.
+  See `update_shard_status/3` for usage.
   """
-  @spec update_status(status, String.t) :: no_return
-  def update_status(status, game) do
-    Supervisor.update_status(status, game)
+  @spec update_status(status, String.t) :: :ok
+  def update_status(status, game, stream \\ nil) do
+    Supervisor.update_status(status, game, stream)
+    :ok
   end
 
   @doc ~S"""

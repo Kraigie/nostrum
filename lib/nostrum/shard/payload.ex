@@ -41,13 +41,29 @@ defmodule Nostrum.Shard.Payload do
   end
 
   @doc false
-  def status_update_payload(idle_since, game, status, afk) do
+  # No stream
+  def status_update_payload(idle_since, game, status, afk, nil) do
     %{
       "since" => idle_since,
       "afk" => afk,
       "status" => status,
       "game" => %{
-        "name" => game
+        "name" => game,
+        "type" => 0
+      }
+    } |> build_payload("STATUS_UPDATE")
+  end
+
+  @doc false
+  def status_update_payload(idle_since, game, status, afk, stream) do
+    %{
+      "since" => idle_since,
+      "afk" => afk,
+      "status" => status,
+      "game" => %{
+        "name" => game,
+        "type" => 1,
+        "url" => stream
       }
     } |> build_payload("STATUS_UPDATE")
   end
