@@ -1728,7 +1728,20 @@ defmodule Nostrum.Api do
     request(:post, Constants.webhook_git(webhook_id, webhook_token), params: [wait: wait])
   end
 
+  def get_application_information do
+    request(:get, Constants.application_information)
+    |> handle
+  end
+
   @doc false
+  def handle({:ok, body}) do
+    {:ok, Poison.decode!(body)}
+  end
+
+  def handle(other) do
+    other
+  end
+
   def handle(payload, [as]) do
     with {:ok, body} <- payload,
     do: {:ok, Poison.decode!(body, as: [apply(as, :p_encode, [])])}
