@@ -1404,7 +1404,7 @@ defmodule Nostrum.Api do
   @doc """
   Gets a list of guilds the user is currently in.
 
-  `options` is a map with the following optional keys:
+  `options` is an optional map with the following optional keys:
    * `before` - Get guilds before this ID.
    * `after` - Get guilds after this ID.
    * `limit` - Max number of guilds to return.
@@ -1414,8 +1414,8 @@ defmodule Nostrum.Api do
     after: integer,
     limit: integer
     }) :: error | {:ok, [Nostrum.Struct.Guild.t]}
-  def get_current_users_guilds(options) do
-    case request(:get, Constants.me_guilds, options) do
+  def get_current_users_guilds(options \\ %{}) do
+    case request(:get, Constants.me_guilds, "", params: options) do
       {:ok, body} ->
         {:ok, Poison.decode!(body)}
       other ->
