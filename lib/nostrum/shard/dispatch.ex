@@ -204,7 +204,7 @@ defmodule Nostrum.Shard.Dispatch do
   def handle_event(:VOICE_SERVER_UPDATE = event, p, state),
     do: {event, p, state}
 
-  def handle_event(event, p, _state, _pid) do
+  def handle_event(event, p, _state) do
     Logger.warn "UNHANDLED GATEWAY DISPATCH EVENT TYPE: #{event}, #{inspect p}"
     p
   end
