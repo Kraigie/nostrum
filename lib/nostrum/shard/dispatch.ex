@@ -129,9 +129,9 @@ defmodule Nostrum.Shard.Dispatch do
 
   def handle_event(:GUILD_MEMBERS_CHUNK = event, p, state) do
     p.members
-    |> Enum.each(fn member ->
+    |> Task.async_stream(fn member -> 
       UserCache.create(member.user)
-      GuildServer.member_add(p.guild_id, member)
+      GuildServer.member_chunk(p.guild_id, member)
     end)
     {event, p, state}
   end

@@ -269,6 +269,11 @@ defmodule Nostrum.Cache.Guild.GuildServer do
     do: GenServer.call(pid, request)
   end
 
+  def cast(id, request) do
+    with {:ok, pid} <- GuildRegister.lookup(id),
+    do: GenServer.cast(pid, request)
+  end
+
   @doc false
   def create(guild) do
     # This returns {:ok, guild} or {:error reason}
@@ -298,6 +303,10 @@ defmodule Nostrum.Cache.Guild.GuildServer do
   @doc false
   def member_remove(guild_id, user) do
     call(guild_id, {:delete, :member, guild_id, user})
+  end
+
+  def member_chunk(guild_id, user) do
+    cast(guild_id, {:chunk, :member, user})
   end
 
   @doc false
@@ -440,6 +449,11 @@ defmodule Nostrum.Cache.Guild.GuildServer do
   def handle_call({:update, :emoji, guild_id, emojis}, _from, state) do
     old_emojis = state.emojis
     {:reply, {guild_id, old_emojis, emojis}, %{state | emojis: emojis}}
+  end
+
+  def handle_cast({:member, :chunk, member}, state) do
+    new_members = [member | state.members]
+    {:noreply, %{state | members: new_members}}
   end
 
 end
