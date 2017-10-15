@@ -111,6 +111,7 @@ defmodule Nostrum.Consumer do
   @type user_update :: {:USER_UPDATE, {old_user :: Nostrum.Struct.User.t, new_user :: Nostrum.Struct.User.t}, ws_state}
   @type voice_state_update :: {:VOICE_STATE_UPDATE, {map}, ws_state}
   @type voice_server_update :: {:VOICE_SERVER_UPDATE, {map}, ws_state}
+  @type webhooks_update :: {:WEBHOOKS_UPDATE, {webhook :: Nostrum.Struct.Webhook.t}, ws_state}
 
   @type event :: channel_create |
     channel_delete |
@@ -147,7 +148,8 @@ defmodule Nostrum.Consumer do
     user_settings_update |
     user_update |
     voice_state_update |
-    voice_server_update
+    voice_server_update |
+    webhooks_update
 
   defmacro __using__(_) do
     quote location: :keep do
