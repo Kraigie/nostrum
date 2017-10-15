@@ -102,6 +102,7 @@ defmodule Nostrum.Consumer do
   @type message_update :: {:MESSAGE_UPDATE, {updated_message :: Nostrum.Struct.Message.t}, ws_state}
   @type message_reaction_add :: {:MESSAGE_REACTION_ADD, map}
   @type message_reaction_remove :: {:MESSAGE_REACTION_REMOVE, map}
+  @type message_reaction_remove_all :: {:MESSAGE_REACTION_REMOVE_ALL, map}
   @type message_ack :: {:MESSAGE_ACK, map}
   @type presence_update :: {:PRESENCE_UPDATE, {map}, ws_state}
   @type ready :: {:READY, {map}, ws_state}
@@ -140,6 +141,7 @@ defmodule Nostrum.Consumer do
     message_update |
     message_reaction_add |
     message_reaction_remove |
+    message_reaction_remove_all |
     message_ack |
     presence_update |
     ready |
