@@ -100,10 +100,10 @@ defmodule Nostrum.Consumer do
   @type message_delete :: {:MESSAGE_DELETE, {message :: Nostrum.Struct.Message.t}, ws_state}
   @type message_delete_bulk :: {:MESSAGE_DELETE_BULK, {updated_messages :: [Nostrum.Struct.Message.t]}, ws_state}
   @type message_update :: {:MESSAGE_UPDATE, {updated_message :: Nostrum.Struct.Message.t}, ws_state}
-  @type message_reaction_add :: {:MESSAGE_REACTION_ADD, map}
-  @type message_reaction_remove :: {:MESSAGE_REACTION_REMOVE, map}
-  @type message_reaction_remove_all :: {:MESSAGE_REACTION_REMOVE_ALL, map}
-  @type message_ack :: {:MESSAGE_ACK, map}
+  @type message_reaction_add :: {:MESSAGE_REACTION_ADD, {map}, ws_state}
+  @type message_reaction_remove :: {:MESSAGE_REACTION_REMOVE, {map}, ws_state}
+  @type message_reaction_remove_all :: {:MESSAGE_REACTION_REMOVE_ALL, {map}, ws_state}
+  @type message_ack :: {:MESSAGE_ACK, {map}, ws_state}
   @type presence_update :: {:PRESENCE_UPDATE, {map}, ws_state}
   @type ready :: {:READY, {map}, ws_state}
   @type resumed :: {:RESUMED, {map}, ws_state}
@@ -112,7 +112,7 @@ defmodule Nostrum.Consumer do
   @type user_update :: {:USER_UPDATE, {old_user :: Nostrum.Struct.User.t, new_user :: Nostrum.Struct.User.t}, ws_state}
   @type voice_state_update :: {:VOICE_STATE_UPDATE, {map}, ws_state}
   @type voice_server_update :: {:VOICE_SERVER_UPDATE, {map}, ws_state}
-  @type webhooks_update :: {:WEBHOOKS_UPDATE, {webhook :: Nostrum.Struct.Webhook.t}, ws_state}
+  @type webhooks_update :: {:WEBHOOKS_UPDATE, {map}, ws_state}
 
   @type event :: channel_create |
     channel_delete |
