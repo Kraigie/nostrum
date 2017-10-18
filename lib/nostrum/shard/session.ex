@@ -97,7 +97,8 @@ defmodule Nostrum.Shard.Session do
       payload = 
         state.zlib_ctx
         |> :zlib.inflate(new_buffer)
-        |> Enum.into(<<>>)
+        |> List.flatten
+        |> Enum.join
         |> :erlang.binary_to_term
 
       new_state =
