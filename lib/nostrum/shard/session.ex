@@ -26,7 +26,7 @@ defmodule Nostrum.Shard.Session do
   """
   @type state_map :: map
 
-  @gateway_qs '/?encoding=etf&v=6'
+  @gateway_qs '/?compress=zlib-stream&encoding=etf&v=6'
 
   def update_status(pid, status, game, stream) do
     {idle_since, afk} =
@@ -59,11 +59,14 @@ defmodule Nostrum.Shard.Session do
       |> Regex.replace(g, "")
       |> to_charlist
 
+    zlib_ctx = :zlib.open()
+    :zlib.inflateInit(zlib_ctx)
+
     case await_connect(erl_gw) do
       {:error, reason} ->
         {:stop, reason}
       {:ok, conn} ->
-        {:ok, state_map(t, s, self(), producer_pid, conn, erl_gw)}
+        {:ok, state_map(t, s, self(), producer_pid, conn, erl_gw, zlib_ctx)}
     end
   end
 
@@ -83,16 +86,35 @@ defmodule Nostrum.Shard.Session do
   end
 
   def handle_info({:gun_ws, conn, {:binary, frame}}, state) do
-    payload = :erlang.binary_to_term(frame)
-    new_state =
-      Constants.atom_from_opcode(payload.op)
-      |> Event.handle(payload, conn, state)
+    new_buffer = state.zlib_buffer <> frame
 
-    {:noreply, %{new_state | seq: payload.s || state.seq}}
+    z_end = 
+      frame
+      |> :binary.bin_to_list
+      |> Enum.take(-4)
+
+    if z_end == [0, 0, 0xFF, 0xFF] do
+      payload = 
+        state.zlib_ctx
+        |> :zlib.inflate(new_buffer)
+        |> Enum.into(<<>>)
+        |> :erlang.binary_to_term
+
+      new_state =
+        payload.op
+        |> Constants.atom_from_opcode
+        |> Event.handle(payload, conn, state)
+
+      {:noreply, %{new_state | seq: payload.s || state.seq, zlib_buffer: <<>>}}
+    else
+      {:noreply, %{state | zlib_buffer: new_buffer}}
+    end
   end
 
   def handle_info({:gun_ws, _conn, {:close, code, message}}, state) do
     Logger.warn "websocket closing: #{code} #{message}"
+    :zlib.inflateEnd(state.zlib_ctx)
+    :zlib.close(state.zlib_ctx)
     {:noreply, state}
   end
 
@@ -141,7 +163,7 @@ defmodule Nostrum.Shard.Session do
     {:noreply, state}
   end
 
-  def state_map(token, shard_num, shard_pid, producer_pid, gun_pid, gw) do
+  def state_map(token, shard_num, shard_pid, producer_pid, gun_pid, gw, zlib_ctx) do
     %{
       token: token,
       shard_num: shard_num,
@@ -152,7 +174,9 @@ defmodule Nostrum.Shard.Session do
       producer_pid: producer_pid,
       heartbeat_ack: true,
       gun_pid: gun_pid,
-      gateway: gw
+      gateway: gw,
+      zlib_ctx: zlib_ctx,
+      zlib_buffer: <<>>
     }
   end
 end
