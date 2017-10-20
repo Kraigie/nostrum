@@ -4,7 +4,8 @@ defmodule Nostrum.Shard.Dispatch do
   alias Nostrum.Cache.{ChannelCache, UserCache}
   alias Nostrum.Cache.Guild.GuildServer
   alias Nostrum.Shard.Session
-  alias Nostrum.Struct.Guild.UnavailableGuild
+  alias Nostrum.Struct.Guild
+  alias Nostrum.Struct.Guild.{Channel, Member, Role, UnavailableGuild}
 
   require Logger
 
@@ -43,11 +44,12 @@ defmodule Nostrum.Shard.Dispatch do
 
   def handle_event(:CHANNEL_CREATE = event, %{type: t} = p, state) when t in [0, 2] do
     :ets.insert(:channel_guild_map, {p.id, p.guild_id})
-    {event, GuildServer.channel_create(p.guild_id, p), state}
+    {event, GuildServer.channel_create(p.guild_id, Channel.to_struct(p)), state}
   end
 
+  # Ignore group channels
   def handle_event(:CHANNEL_CREATE, _p, _state) do
-    :noop # Ignore group channels
+    :noop
   end
 
   def handle_event(:CHANNEL_DELETE = event, %{type: 1} = p, state) do
@@ -60,7 +62,7 @@ defmodule Nostrum.Shard.Dispatch do
   end
 
   def handle_event(:CHANNEL_UPDATE = event, p, state) do
-    {event, GuildServer.channel_update(p.guild_id, p), state}
+    {event, GuildServer.channel_update(p.guild_id, Channel.to_struct(p)), state}
   end
 
   def handle_event(:CHANNEL_DELETE, _p, _state) do
@@ -102,8 +104,10 @@ defmodule Nostrum.Shard.Dispatch do
       Session.request_guild_members(state.shard_pid, new_guild.id)
     end
 
-    case GuildServer.create(new_guild) do
-      {:error, reason} -> Logger.warn "Failed to create new guild process: #{inspect reason}"
+    case new_guild |> Guild.to_struct |> GuildServer.create do
+      {:error, reason} -> 
+        Logger.warn "Failed to create new guild process: #{inspect reason}"
+        :noop
       ok -> {check_new_or_unavailable(new_guild.id), ok, state}
     end
   end
@@ -124,14 +128,14 @@ defmodule Nostrum.Shard.Dispatch do
 
   def handle_event(:GUILD_MEMBER_ADD = event, p, state) do
     UserCache.create(p.user)
-    {event, GuildServer.member_add(p.guild_id, p), state}
+    {event, GuildServer.member_add(p.guild_id, Member.to_struct(p)), state}
   end
 
   def handle_event(:GUILD_MEMBERS_CHUNK = event, p, state) do
     p.members
     |> Task.async_stream(fn member -> 
       UserCache.create(member.user)
-      GuildServer.member_chunk(p.guild_id, member)
+      GuildServer.member_chunk(p.guild_id, Member.to_struct(member))
     end)
     {event, p, state}
   end
@@ -143,7 +147,7 @@ defmodule Nostrum.Shard.Dispatch do
     do: {event, GuildServer.member_update(p.guild_id, p), state}
 
   def handle_event(:GUILD_ROLE_CREATE = event, p, state),
-    do: {event, GuildServer.role_create(p.guild_id, p.role), state}
+    do: {event, GuildServer.role_create(p.guild_id, Role.to_struct(p.role)), state}
 
   def handle_event(:GUILD_ROLE_DELETE = event, p, state),
     do: {event, GuildServer.role_delete(p.guild_id, p.role_id), state}

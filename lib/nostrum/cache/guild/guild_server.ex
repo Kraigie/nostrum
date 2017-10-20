@@ -277,7 +277,7 @@ defmodule Nostrum.Cache.Guild.GuildServer do
   @doc false
   def create(guild) do
     # This returns {:ok, guild} or {:error reason}
-    GuildRegister.create_guild_process(guild.id, Guild.to_struct(guild))
+    GuildRegister.create_guild_process(guild.id, guild)
   end
 
   @doc false
