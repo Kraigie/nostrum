@@ -4,8 +4,8 @@ defmodule Nostrum.Struct.Guild do
   """
 
   alias Nostrum.Struct.Emoji
-  alias Nostrum.Struct.Guild.{Channel, Member, Role, UnavailableGuild}
-  alias Nostrum.Util
+  alias Nostrum.Struct.Guild.{Channel, Member, Role}
+  require Nostrum.Util
 
   @typedoc "The guild's id"
   @type id :: integer
@@ -46,8 +46,8 @@ defmodule Nostrum.Struct.Guild do
   @typedoc "List of emojis as maps"
   @type emojis :: list(map)
 
-  @typedoc "List of roles"
-  @type roles :: list(Role.t)
+  @typedoc "List of roles, indexed by `t:Nostrum.Struct.Guild.Role.id/0`"
+  @type roles :: map
 
   @typedoc "List of guild features"
   @type features :: list(map)
@@ -70,11 +70,11 @@ defmodule Nostrum.Struct.Guild do
   @typedoc "List of voice states as maps"
   @type voice_states :: list(map)
 
-  @typedoc "List of members"
-  @type members :: list(Member.t)
+  @typedoc "List of members, indexed by `t:Nostrum.Struct.User.id/0`"
+  @type members :: map
 
-  @typedoc "List of channels"
-  @type channels :: list(Channel.t)
+  @typedoc "List of channels, indexed by `t:Nostrum.Struct.Guild.Channel.id/0`"
+  @type channels :: map
 
   @typedoc "List of simple presence maps"
   @type presences :: list(map)
@@ -106,51 +106,30 @@ defmodule Nostrum.Struct.Guild do
     channels: channels
   }
 
-  @derive [Poison.Encoder]
-  defstruct [
-    :id,
-    :name,
-    :icon,
-    :splash,
-    :owner_id,
-    :region,
-    :afk_channel_id,
-    :afk_timeout,
-    :embed_enabled,
-    :embed_channel_id,
-    :verification_level,
-    :default_message_notifications,
-    :roles,
-    :emojis,
-    :features,
-    :mfa_level,
-    :joined_at, # REVIEW: How is this being calculated? I imagine it's a string, maybe we can parse it?
-    :large,
-    :unavailable,
-    :member_count,
-    :voice_states,
-    :members,
-    :presences,
-    :channels
-  ]
-
-  @doc false
-  def p_encode do
-    %__MODULE__{
-      emojis: [Emoji.p_encode],
-      roles: [Role.p_encode],
-      members: [Member.p_encode],
-      channels: [Channel.p_encode]
-    }
-  end
-
-  def to_struct(%{unavailable: true} = map), do: UnavailableGuild.to_struct(map)
-  def to_struct(map) do
-    new = map
-    |> Map.update(:emojis, %{}, &Util.list_to_struct_list(&1, Emoji))
-    |> Map.update(:roles, %{}, &Util.list_to_struct_list(&1, Role))
-    |> Map.update(:members, %{}, &Util.list_to_struct_list(&1, Member))
-    |> Map.update(:channels, %{}, &Util.list_to_struct_list(&1, Channel))
-    struct(__MODULE__, new)
-  end
+  Nostrum.Util.nostrum_struct(%{
+    id: nil,
+    name: nil,
+    icon: nil,
+    splash: nil,
+    owner_id: nil,
+    region: nil,
+    afk_channel_id: nil,
+    afk_timeout: nil,
+    embed_enabled: nil,
+    embed_channel_id: nil,
+    verification_level: nil,
+    default_message_notifications: nil,
+    roles: [Role],
+    emojis: [Emoji],
+    features: nil,
+    mfa_level: nil,
+    joined_at: nil, # REVIEW: How is this being calculated? I imagine it's a string, maybe we can parse it?
+    large: nil,
+    unavailable: nil,
+    member_count: nil,
+    voice_states: nil,
+    members: [Member],
+    presences: nil,
+    channels: [Channel]
+  })
 end

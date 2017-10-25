@@ -280,6 +280,23 @@ defmodule Nostrum.Cache.Guild.GuildServer do
     GuildRegister.create_guild_process(guild.id, guild)
   end
 
+  def index_guild(guild) do
+    # Index roles, members, and channels by their respective ids
+    # Delegated to tasks so as to not replicate the guild process repeatedly
+    tasks =
+      for {key, index_by} <- [roles: [:id], members: [:user, :id], channels: [:id]] do
+        Task.async(fn -> 
+          Util.index_by_key(guild[key], key, index_by)
+        end)
+      end
+
+    results = for {_t, {:ok, {k, v}}} <- Task.yield_many(tasks), into: %{} do
+      {k, v}
+    end
+
+    Map.merge(guild, results)
+  end
+
   @doc false
   def update(guild) do
     call(guild.id, {:update, guild})
@@ -349,101 +366,64 @@ defmodule Nostrum.Cache.Guild.GuildServer do
   end
 
   def handle_call({:update, guild}, _from, state) do
-    {:reply, {state, guild}, guild}
+    new_guild = Map.merge(state, guild)
+    {:reply, {state, new_guild}, new_guild}
   end
 
   def handle_call({:delete}, _from, state) do
     {:stop, :normal, state, %{}}
   end
 
+  # TODO: Handle missing keys
   def handle_call({:create, :member, guild_id, member}, _from, state) do
-    new_members = [member | state.members]
+    new_members = Map.put(state.members, member.user.id, member)
     {:reply, {guild_id, member}, %{state | members: new_members}}
   end
 
   def handle_call({:update, :member, guild_id, new_partial_member}, _from, state) do
-    member_index = Enum.find_index(state.members, fn member ->
-      member.user.id == new_partial_member.user.id
-    end)
-    old_member =
-      case Enum.fetch(state.members, member_index || length(state.members) + 1) do
-        {:ok, old_member} -> old_member
-        :error -> %{user: %{}, roles: []}
-      end
+    old_member = state.members[new_partial_member.user.id]
     new_member = Map.merge(old_member, new_partial_member)
-    new_members = List.replace_at(state.members, member_index, new_member)
+    new_members = Map.put(state.members, new_partial_member.user.id, new_member)
     {:reply, {guild_id, old_member, new_member}, %{state | members: new_members}}
   end
 
   def handle_call({:delete, :member, guild_id, user}, _from, state) do
-    member_index = Enum.find_index(state.members, fn member -> member.user.id == user.id end)
-    deleted_member =
-      case Enum.fetch(state.members, member_index || length(state.members) + 1) do
-        {:ok, deleted_member} -> deleted_member
-        :error -> %{}
-      end
-    members = List.delete_at(state.members, member_index)
-    {:reply, {guild_id, deleted_member}, %{state | members: members}}
+    {deleted_member, new_members} = Map.pop(state.members, user.id)
+    {:reply, {guild_id, deleted_member}, %{state | members: new_members}}
   end
 
   def handle_call({:create, :channel, channel}, _from, state) do
-    new_channels = [channel | state.channels]
+    new_channels = Map.put(state.channels, channel.id, channel)
     {:reply, channel, %{state | channels: new_channels}}
   end
 
   def handle_call({:update, :channel, channel}, _from, state) do
-    channel_index = Enum.find_index(state.channels, fn g_channel -> g_channel.id == channel.id end)
-    old_channel =
-      case Enum.fetch(state.channels, channel_index || length(state.channels) + 1) do
-        {:ok, channel} -> channel
-        :error -> %{}
-      end
-    channels = List.update_at(state.channels, channel_index,
-      fn _ ->
-        channel
-      end)
-    {:reply, {old_channel, channel}, %{state | channels: channels}}
+    old_channel = state.channels[channel.id]
+    new_channel = Map.merge(old_channel, channel)
+    new_channels = Map.put(state.channels, channel.id, new_channel)
+    {:reply, {old_channel, new_channel}, %{state | channels: new_channels}}
   end
 
   def handle_call({:delete, :channel, channel_id}, _from, state) do
-    channel_index = Enum.find_index(state.channels, fn g_channel -> g_channel.id == channel_id end)
-    old_channel =
-      case Enum.fetch(state.channels, channel_index || length(state.channels) + 1) do
-        {:ok, channel} -> channel
-        :error -> %{}
-      end
-    channels = List.delete_at(state.channels, channel_index)
-    {:reply, old_channel, %{state | channels: channels}}
+    {deleted_channel, new_channels} = Map.pop(state.channels, channel_id)
+    {:reply, deleted_channel, %{state | channels: new_channels}}
   end
 
   def handle_call({:create, :role, guild_id, role}, _from, state) do
-    new_roles = [role | state.roles]
+    new_roles = Map.put(state.roles, role.id, role)
     {:reply, {guild_id, role}, %{state | roles: new_roles}}
   end
 
   def handle_call({:update, :role, guild_id, role}, _from, state) do
-    role_index = Enum.find_index(state.roles, fn g_role -> g_role.id == role.id end)
-    old_role =
-      case Enum.fetch(state.roles, role_index || length(state.roles) + 1) do
-        {:ok, role} -> role
-        :error -> %{}
-      end
-    roles = List.update_at(state.roles, role_index,
-      fn _ ->
-        role
-      end)
-    {:reply, {guild_id, old_role, role}, %{state | roles: roles}}
+    old_role = state.roles[role.id]
+    new_role = Map.merge(old_role, role)
+    new_roles = Map.put(state.roles, role.id, new_role)
+    {:reply, {guild_id, old_role, new_role}, %{state | roles: new_roles}}
   end
 
   def handle_call({:delete, :role, guild_id, role_id}, _from, state) do
-    role_index = Enum.find_index(state.roles, fn g_role -> g_role.id == role_id end)
-    old_role =
-      case Enum.fetch(state.roles, role_index || length(state.roles) + 1) do
-        {:ok, role} -> role
-        :error -> %{}
-      end
-    roles = List.delete_at(state.roles, role_index)
-    {:reply, {guild_id, old_role}, %{state | roles: roles}}
+    {delete_role, new_roles} = Map.pop(state.roles, role_id)
+    {:reply, {guild_id, delete_role}, %{state | roles: new_roles}}
   end
 
   def handle_call({:update, :emoji, guild_id, emojis}, _from, state) do
@@ -452,7 +432,7 @@ defmodule Nostrum.Cache.Guild.GuildServer do
   end
 
   def handle_cast({:member, :chunk, member}, state) do
-    new_members = [member | state.members]
+    new_members = Map.put(state.members, member.user.id, member)
     {:noreply, %{state | members: new_members}}
   end
 

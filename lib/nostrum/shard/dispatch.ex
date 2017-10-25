@@ -87,28 +87,35 @@ defmodule Nostrum.Shard.Dispatch do
   end
 
   def handle_event(:GUILD_CREATE, p, state) do
-    updated = 
+    # Ensures every channel will have an associated guild_id
+    channels_with_guild_id = 
       p.channels 
       |> Enum.map(fn channel -> Map.put(channel, :guild_id, p.id) end)
-    new_guild = %{p | channels: updated}
+    guild = %{p | channels: channels_with_guild_id}
 
-    new_guild.members
+    guild.members
     |> Enum.each(fn member -> UserCache.create(member.user) end)
 
-    :ets.insert(:guild_shard_map, {new_guild.id, state.shard_num})
-    Enum.each(new_guild.channels, fn channel ->
-      :ets.insert(:channel_guild_map, {channel.id, new_guild.id})
+    :ets.insert(:guild_shard_map, {guild.id, state.shard_num})
+    Enum.each(guild.channels, fn channel ->
+      :ets.insert(:channel_guild_map, {channel.id, guild.id})
     end)
 
-    if new_guild.member_count >= @large_threshold do
-      Session.request_guild_members(state.shard_pid, new_guild.id)
+    if guild.member_count >= @large_threshold do
+      Session.request_guild_members(state.shard_pid, guild.id)
     end
 
-    case new_guild |> Guild.to_struct |> GuildServer.create do
+    res = 
+      guild
+      |> GuildServer.index_guild
+      |> Guild.to_struct
+      |> GuildServer.create
+
+    case res do
       {:error, reason} -> 
         Logger.warn "Failed to create new guild process: #{inspect reason}"
         :noop
-      ok -> {check_new_or_unavailable(new_guild.id), ok, state}
+      {:ok, g} -> {check_new_or_unavailable(g.id), {g}, state}
     end
   end
 

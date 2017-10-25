@@ -12,12 +12,12 @@ defmodule Nostrum.Util do
 
   ## Example
   ``` Elixir
-  Nostrum.Util.nostrum_struct([
+  Nostrum.Util.nostrum_struct(%{
     author: User,
     mentions: [User],
     mention_roles: [User],
     embeds: [Embed]
-  ])
+  })
   ```
   """
   defmacro nostrum_struct(body) do
@@ -38,9 +38,10 @@ defmodule Nostrum.Util do
       def to_struct(map) do
         alias Nostrum.Util
         new_map =
-          for {k, v} <- unquote(body), v != nil, into: %{} do
+          for {k, v} <- unquote(body), into: %{} do
             case v do
-              [v] -> {k, Util.list_to_struct_list(Map.get(map, k), v)}
+              nil -> {k, Map.get(map, k)}
+              [v] -> {k, Util.enum_to_struct(Map.get(map, k), v)}
               v -> {k, apply(v, :to_struct, [Map.get(map, k)])}
             end
           end
@@ -68,8 +69,22 @@ defmodule Nostrum.Util do
   end
 
   @doc false
-  def list_to_struct_list(list, struct) do
+  def list_to_struct_list(list, struct) when is_list(list) do
     Enum.map(list, &struct.to_struct(&1))
+  end
+
+  def enum_to_struct(nil, _struct), do: nil
+  def enum_to_struct(enum, struct) when is_list(enum), do: Enum.map(enum, &struct.to_struct(&1))
+  def enum_to_struct(enum, struct) when is_map(enum) do
+    for {k, v} <- enum, into: %{} do
+      {k, struct.to_struct(v)}
+    end
+  end
+
+  @doc false
+  def index_by_key(nil, key, _index_by), do: {key, %{}}
+  def index_by_key(list, key, index_by) do
+    {key, Enum.into(list, %{}, &({get_in(&1, index_by), &1}))}
   end
 
   @doc """

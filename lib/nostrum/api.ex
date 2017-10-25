@@ -44,6 +44,7 @@ defmodule Nostrum.Api do
   use Bitwise
 
   alias Nostrum.{Constants, Util}
+  alias Nostrum.Cache.Guild.GuildServer
   alias Nostrum.Struct.{Embed, Guild, Message, User, Webhook}
   alias Nostrum.Struct.Guild.{Member, Channel, Role}
   alias Nostrum.Shard.{Supervisor, Session}
@@ -780,12 +781,8 @@ defmodule Nostrum.Api do
   """
   @spec get_guild(integer) :: error | {:ok, Nostrum.Struct.Guild.t}
   def get_guild(guild_id) do
-    case request(:get, Constants.guild(guild_id)) do
-      {:ok, body} ->
-        {:ok, Poison.decode!(body, as: %Nostrum.Struct.Guild{})}
-      other ->
-        other
-    end
+    request(:get, Constants.guild(guild_id))
+    |> handle(Guild)
   end
 
   @doc """
@@ -1737,12 +1734,15 @@ defmodule Nostrum.Api do
   end
 
   @doc false
-  def handle({:ok, body}) do
-    {:ok, Poison.decode!(body)}
-  end
+  def handle({:ok, body}), do: {:ok, Poison.decode!(body)}
+  def handle(other), do: other
 
-  def handle(other) do
-    other
+  def handle(payload, Guild) do
+    with {:ok, body} <- payload do
+      map = Poison.decode!(body)
+      atom_map = Util.safe_atom_map(map)
+      {:ok, GuildServer.index_guild(atom_map)}
+    end
   end
 
   def handle(payload, [as]) do
