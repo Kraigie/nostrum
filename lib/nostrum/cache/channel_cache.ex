@@ -79,6 +79,6 @@ defmodule Nostrum.Cache.ChannelCache do
   # TODO: Put into structs before storing
   def ret_to_struct(%{__struct__: _} = channel), do: {:ok, channel}
   def ret_to_struct({old, new}), do: {Channel.to_struct(old), Channel.to_struct(new)}
-  def ret_to_struct(channel), do: DMChannel.to_struct(channel)
+  def ret_to_struct(channel), do: {:ok, DMChannel.to_struct(channel)}
 
 end
