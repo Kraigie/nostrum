@@ -6,7 +6,7 @@ defmodule Nostrum.Struct.Guild.Channel do
   alias Nostrum.Struct.Overwrite
   alias Nostrum.Util
 
-  @typedoc "The channe's id"
+  @typedoc "The channel's id"
   @type id :: integer
 
   @typedoc "The id of the channel's guild"
