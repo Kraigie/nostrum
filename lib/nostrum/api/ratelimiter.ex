@@ -21,7 +21,8 @@ defmodule Nostrum.Api.Ratelimiter do
   end
 
   def handle_call({:queue, request, original_from}, from, state) do
-    retry_time = request.route
+    retry_time = 
+      request.route
       |> major_parameter
       |> Bucket.get_ratelimit_timeout
 
@@ -84,7 +85,7 @@ defmodule Nostrum.Api.Ratelimiter do
   end
 
   def wait_for_timeout(request, timeout, from) do
-    Logger.debug "RATELIMITER: Waiting #{timeout}ms to process request with route #{request.route}"
+    Logger.info "RATELIMITER: Waiting #{timeout}ms to process request with route #{request.route}"
     Process.sleep(timeout + @sanity_wait) # Small wait for sanity sake
     GenServer.call(Ratelimiter, {:queue, request, from}, :infinity)
   end

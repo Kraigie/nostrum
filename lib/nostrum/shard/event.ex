@@ -10,6 +10,7 @@ defmodule Nostrum.Shard.Event do
   def handle(:dispatch, payload, _conn, state) do
     payload = Util.safe_atom_map(payload)
 
+    Logger.debug payload.t
     Producer.notify(state.producer_pid, payload, state)
 
     if payload.t == :READY do
@@ -20,22 +21,22 @@ defmodule Nostrum.Shard.Event do
   end
 
   def handle(:heartbeat, _payload, conn, state) do
-    Logger.debug "HEARTBEAT PING"
+    Logger.info "HEARTBEAT PING"
     gun_send(conn, Payload.heartbeat_payload(state.seq))
     state
   end
 
   def handle(:heartbeat_ack, _payload, _conn, state) do
-    Logger.debug "HEARTBEAT_ACK"
+    Logger.info "HEARTBEAT_ACK"
     %{state | heartbeat_ack: true}
   end
 
   def handle(:hello, payload, conn, state) do
     if session_exists?(state) do
-      Logger.debug "RESUMING"
+      Logger.info "RESUMING"
       resume(conn, state)
     else
-      Logger.debug "IDENTIFYING"
+      Logger.info "IDENTIFYING"
       identify(conn, state)
       heartbeat(conn, payload.d.heartbeat_interval)
     end
@@ -44,13 +45,13 @@ defmodule Nostrum.Shard.Event do
   end
 
   def handle(:invalid_session, _payload, conn, state) do
-    Logger.debug "INVALID_SESSION"
+    Logger.info "INVALID_SESSION"
     identify(conn, state)
     state
   end
 
   def handle(:reconnect, _payload, _conn, state) do
-    Logger.debug "RECONNECT"
+    Logger.info "RECONNECT"
     state
   end
 

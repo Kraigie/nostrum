@@ -51,6 +51,8 @@ defmodule Nostrum.Shard.Session do
   end
 
   def init(%{gw: g, shard_num: s, token: t}) do
+    Logger.metadata(shard: s)
+
     {:ok, producer_pid} = Producer.start_link()
     Cache.start_link(producer_pid)
 
@@ -127,7 +129,7 @@ defmodule Nostrum.Shard.Session do
   end
 
   def handle_info({:gun_down, _conn, :ws, :closed, _maybe_processed, _open_streams}, state) do
-    Logger.debug "websocket closed, attempting reconnect"
+    Logger.info "websocket closed, attempting reconnect"
     {:noreply, state}
   end
 

@@ -29,7 +29,7 @@ defmodule Nostrum.Shard.Connector do
   def wait(time, state) when time >= @wait_time,
     do: {:reply, :ok, %{state | last_connect: Util.now()}}
   def wait(time, state) do
-    Logger.debug "WAITING #{@wait_time - time} BEFORE NEXT SHARD CONNECT"
+    Logger.info "WAITING #{@wait_time - time} BEFORE NEXT SHARD CONNECT"
     Process.sleep(@wait_time - time)
     {:reply, :ok, %{state | last_connect: Util.now()}}
   end
