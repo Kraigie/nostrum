@@ -100,6 +100,15 @@ config :logger,
   level: :warn
 ```
 
+Nostrum exposes the following metadata fields through logger:
+ - `shard` - Id of the shard on which the event occured
+
+To enable this metadata, logger can be configured as such:
+```Elixir
+config :logger, :console,
+  metadata: [:shard]
+```  
+
 For more information on how this works, please see the Logger
 [documentation](https://hexdocs.pm/logger/Logger.html#module-levels)
 Nostrum takes advantage of `:debug`, `:warn`, and `:info`.
