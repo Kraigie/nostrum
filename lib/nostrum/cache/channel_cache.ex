@@ -54,9 +54,7 @@ defmodule Nostrum.Cache.ChannelCache do
         nil <- Map.get(state, id),
         {:ok, guild} <- GuildServer.get(channel_id: id)
       do
-        Enum.find(guild.channels, fn channel ->
-          channel.id == id
-        end)
+        Map.get(guild.channels, id)
       end
     {:reply, ret_to_struct(ret), state}
   end
