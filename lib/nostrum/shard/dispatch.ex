@@ -12,7 +12,7 @@ defmodule Nostrum.Shard.Dispatch do
   @large_threshold 250
 
   def handle({payload, state}) do
-    Logger.debug payload.t
+    Logger.info payload.t
 
     log? = Application.get_env(:nostrum, :log_full_events)
     if log?, do: Logger.info inspect payload.d, pretty: true
