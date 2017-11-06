@@ -54,7 +54,7 @@ defmodule Nostrum.Shard.Session do
     Logger.metadata(shard: s)
 
     {:ok, producer_pid} = Producer.start_link()
-    Cache.start_link(producer_pid)
+    if !Application.get_env(:nostrum, :custom_consumer), do: Cache.start_link(producer_pid)
 
     erl_gw =
       ~r/wss:\/\//

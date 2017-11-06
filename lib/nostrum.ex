@@ -34,7 +34,6 @@ defmodule Nostrum do
 
   @doc false
   def setup_ets_tables do
-    :ets.new(:ratelimit_buckets, [:set, :public, :named_table])
     :ets.new(:gateway_url, [:set, :public, :named_table])
     :ets.new(:unavailable_guilds, [:set, :public, :named_table])
     :ets.new(:users, [:set, :public, :named_table])

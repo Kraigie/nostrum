@@ -35,7 +35,10 @@ defmodule Nostrum.Shard.Supervisor do
     children = for i <- 0..options[:num_shards] - 1,
       do: create_worker(options[:url], options[:token], i)
     with_registry =
-      [supervisor(Registry, [:duplicate, CacheStageRegistry])] ++ children
+      [
+        supervisor(Registry, [:duplicate, ProducerStageRegistry], id: 1),
+        supervisor(Registry, [:duplicate, CacheStageRegistry], id: 2)
+      ] ++ children
     supervise(with_registry, strategy: :one_for_one, max_restarts: 3, max_seconds: 60)
   end
 

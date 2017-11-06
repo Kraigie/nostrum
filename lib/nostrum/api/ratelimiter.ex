@@ -12,6 +12,7 @@ defmodule Nostrum.Api.Ratelimiter do
   @sanity_wait 500
 
   def start_link do
+    :ets.new(:ratelimit_buckets, [:set, :public, :named_table])
     GenServer.start_link(__MODULE__, [], name: Ratelimiter)
   end
 
@@ -59,10 +60,11 @@ defmodule Nostrum.Api.Ratelimiter do
     reset = headers |> List.keyfind("X-RateLimit-Reset", 0) |> value_from_rltuple
     retry_after = headers |> List.keyfind("Retry-After", 0) |> value_from_rltuple
 
-    origin_timestamp = headers
-    |> List.keyfind("Date", 0)
-    |> value_from_rltuple
-    |> date_string_to_unix
+    origin_timestamp = 
+      headers
+      |> List.keyfind("Date", 0)
+      |> value_from_rltuple
+      |> date_string_to_unix
 
     latency = abs(origin_timestamp - Util.now)
 

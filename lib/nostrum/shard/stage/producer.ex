@@ -10,6 +10,7 @@ defmodule Nostrum.Shard.Stage.Producer do
   end
 
   def init(_) do
+    Registry.register(ProducerStageRegistry, :pids, self())
     {:producer, {:queue.new, 0}, dispatcher: GenStage.DemandDispatcher}
   end
 
