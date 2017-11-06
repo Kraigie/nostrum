@@ -61,10 +61,10 @@ defmodule Nostrum.Api.Ratelimiter do
     retry_after = headers |> List.keyfind("Retry-After", 0) |> value_from_rltuple
 
     origin_timestamp = 
-    headers
-    |> List.keyfind("Date", 0)
-    |> value_from_rltuple
-    |> date_string_to_unix
+      headers
+      |> List.keyfind("Date", 0)
+      |> value_from_rltuple
+      |> date_string_to_unix
 
     latency = abs(origin_timestamp - Util.now)
 
