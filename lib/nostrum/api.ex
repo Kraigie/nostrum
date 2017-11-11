@@ -1363,6 +1363,12 @@ defmodule Nostrum.Api do
     request(:get, Constants.user(user_id))
   end
 
+  @spec get_user!(integer) :: no_return | Nostrum.Struct.User.t
+  def get_user!(user_id) do
+    get_user(user_id)
+    |> bangify
+  end
+
   @doc """
   Gets info on the current user.
   """
