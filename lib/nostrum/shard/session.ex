@@ -28,7 +28,7 @@ defmodule Nostrum.Shard.Session do
 
   @gateway_qs '/?compress=zlib-stream&encoding=etf&v=6'
 
-  def update_status(pid, status, {game, stream}, type) do
+  def update_status(pid, status, game, stream, type) do
     {idle_since, afk} =
       case status do
         "idle" ->
@@ -36,7 +36,7 @@ defmodule Nostrum.Shard.Session do
         _ ->
           {0, false}
       end
-    payload = Payload.status_update_payload(idle_since, {game, stream}, status, afk, type)
+    payload = Payload.status_update_payload(idle_since, game, stream, status, afk, type)
     send(pid, {:status_update, payload})
   end
 

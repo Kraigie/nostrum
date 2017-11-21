@@ -21,13 +21,13 @@ defmodule Nostrum.Shard.Supervisor do
     Supervisor.start_link(__MODULE__, [url: url, token: token, num_shards: num_shards], name: ShardSupervisor)
   end
 
-  def update_status(status, {game, stream}, type) do
+  def update_status(status, game, stream, type) do
     ShardSupervisor
     |> Supervisor.which_children
     |> Enum.filter(fn {_id, _pid, _type, [modules]} -> modules == Nostrum.Shard end)
     |> Enum.map(fn {_id, pid, _type, _modules} -> Supervisor.which_children(pid) end)
     |> List.flatten
-    |> Enum.map(fn {_id, pid, _type, _modules} -> Session.update_status(pid, status, {game, stream}, type) end)
+    |> Enum.map(fn {_id, pid, _type, _modules} -> Session.update_status(pid, status, game, stream, type) end)
   end
 
   @doc false
