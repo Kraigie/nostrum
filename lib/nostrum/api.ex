@@ -99,12 +99,12 @@ defmodule Nostrum.Api do
     - `pid` - Pid of the shard.
     - `status` - Status of the bot.
     - `game` - The 'playing' text of the bot. Empty will clear.
-    - `type` - The type of status to show.
-    - `streaming` - URL of twitch.tv stream
+    - `type` - The type of status to show. 0 (Playing) | 1 (Streaming) | 2 (Listening) | 3 (Watching)
+    - `stream` - URL of twitch.tv stream
   """
-  @spec update_status(pid, status, String.t) :: :ok
+  @spec update_shard_status(pid, status, String.t, integer, String.t) :: :ok
   def update_shard_status(pid, status, game, type \\ 0, stream \\ nil) do
-    Session.update_status(pid, to_string(status), {game, stream}, type)
+    Session.update_status(pid, to_string(status), game, stream, type)
     :ok
   end
 
@@ -113,9 +113,9 @@ defmodule Nostrum.Api do
 
   See `update_shard_status/4` for usage.
   """
-  @spec update_status(status, String.t) :: :ok
+  @spec update_status(status, String.t, integer, String.t) :: :ok
   def update_status(status, game, type \\ 0, stream \\ nil) do
-    Supervisor.update_status(status, {game, stream}, type)
+    Supervisor.update_status(status, game, stream, type)
     :ok
   end
 
