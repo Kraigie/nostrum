@@ -12,6 +12,7 @@ the following -
  * [API](api.html) - Methods to interact with the RESTful API (and some other goodies).
  * [State](state.html) - `Caches` that hold the state of Discord that your bot can see.
  * [Events](events.html) - How you can handle real time events that your bot can see.
+ * [Custom Consumers](consumers.html) - Information on defining custom consumer processes.
 
 ### Why Elixir?
 From the Elixir website -
@@ -92,6 +93,10 @@ The following fields are also supported:
  application some of your events will be consumed. Defaults to `false`.
  - `log_full_events` - This will log the full payload received over the websocket.
  This is included primarily for debugging and testing purposes. Defaults to `false`.
+ - `custom_consumer` - For use when creating custom consumer processes. This disables
+ all caching done internally, in lieu of sending dispatch events to the processes
+ you specify. For more information see [creating custom consumers](consumers.html).
+ Defaults to `false`.
 
 By default, Nostrum logs a lot of data using `Logger`. If you want to ignore
 Logger debug data, include the following:

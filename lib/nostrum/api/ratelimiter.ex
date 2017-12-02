@@ -1,5 +1,8 @@
 defmodule Nostrum.Api.Ratelimiter do
-  @moduledoc false
+  @moduledoc """
+  Ratelimit implimentation specific to Discord's API.
+  Only to be used when starting in a rest-only manner.
+  """
 
   use GenServer
 
@@ -8,15 +11,29 @@ defmodule Nostrum.Api.Ratelimiter do
 
   require Logger
 
+  @typedoc """
+  Return values of start functions.
+  """
+  @type on_start :: {:ok, pid} |
+                    :ignore |
+                    {:error, {:already_started, pid} | term}
+
   @gregorian_epoch 62_167_219_200
   @sanity_wait 500
 
+  @doc """
+  Starts the ratelimiter.
+  """
+  @spec start_link() :: on_start
   def start_link do
     :ets.new(:ratelimit_buckets, [:set, :public, :named_table])
     GenServer.start_link(__MODULE__, [], name: Ratelimiter)
   end
 
-  @doc false
+  @doc """
+  Empties all buckets, voiding any saved ratelimit values.
+  """
+  @spec empty_buckets() :: :ok
   def empty_buckets do
     :ets.delete_all_objects(:ratelimit_buckets)
   end
@@ -46,15 +63,15 @@ defmodule Nostrum.Api.Ratelimiter do
     {:noreply, state}
   end
 
-  def do_request(request) do
+  defp do_request(request) do
     request.method
     |> Base.request(request.route, request.body, request.headers, request.options)
     |> handle_headers(major_parameter(request.route))
     |> format_response
   end
 
-  def handle_headers({:error, reason}, _route), do: {:error, reason}
-  def handle_headers({:ok, %HTTPoison.Response{headers: headers}} = response, route) do
+  defp handle_headers({:error, reason}, _route), do: {:error, reason}
+  defp handle_headers({:ok, %HTTPoison.Response{headers: headers}} = response, route) do
     global_limit = headers |> List.keyfind("X-RateLimit-Global", 0)
     remaining = headers |> List.keyfind("X-RateLimit-Remaining", 0) |> value_from_rltuple
     reset = headers |> List.keyfind("X-RateLimit-Reset", 0) |> value_from_rltuple
@@ -77,22 +94,22 @@ defmodule Nostrum.Api.Ratelimiter do
     response
   end
 
-  def update_bucket(_route, remaining, _time, _latency) when is_nil(remaining), do: nil
-  def update_bucket(route, remaining, reset_time, latency) do
+  defp update_bucket(_route, remaining, _time, _latency) when is_nil(remaining), do: nil
+  defp update_bucket(route, remaining, reset_time, latency) do
     Bucket.create_bucket(route, remaining, reset_time * 1000, latency)
   end
 
-  def update_global_bucket(_route, _remaining, retry_after, latency) do
+  defp update_global_bucket(_route, _remaining, retry_after, latency) do
     Bucket.create_bucket("GLOBAL", 0, retry_after + Util.now, latency)
   end
 
-  def wait_for_timeout(request, timeout, from) do
+  defp wait_for_timeout(request, timeout, from) do
     Logger.info "RATELIMITER: Waiting #{timeout}ms to process request with route #{request.route}"
     Process.sleep(timeout + @sanity_wait) # Small wait for sanity sake
     GenServer.call(Ratelimiter, {:queue, request, from}, :infinity)
   end
 
-  def date_string_to_unix(header) do
+  defp date_string_to_unix(header) do
     header
     |> String.to_charlist
     |> :httpd_util.convert_request_date

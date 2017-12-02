@@ -60,3 +60,8 @@ The ratelimiter at a high level works something like this:
   to try the call again after a specified time stored from previous calls.
  3. If the request goes through, the headers are processed to see if a block
  should be instantiated for that endpoint.
+
+## Rest Only
+If you only want to use the REST portion of the provided API, the only process
+needed is the ratelimiter. This can be manually started by calling
+`Nostrum.Api.Ratelimiter.start_link/0`.

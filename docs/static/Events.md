@@ -8,7 +8,7 @@ Nostrum currently uses a [GenStage](https://github.com/elixir-lang/gen_stage)
 implementation to handle dispatching events from the WS connection. To handle
 events it is up to you to define the `consumer` of the GenStage life cycle.
 
-To see the documentation on implementing that consumer, please see
+To see the documentation on using one of provided consumers, please see
 `Nostrum.Consumer`.
 
 ## Why GenStage?
@@ -70,7 +70,6 @@ which will in turn request events from the producers created by each shard.
 
 Nostrum wraps the GenStage module to provide a simpler interface for event handling.
 One of the benefits to this approach is that we can abstract away the manual linking
-of producer to consumer. Additionally, in the future if we had a reason for a
-`producer-consumer` it would be trivial to implement without breaking user code.
+of producer to consumer.
 
- 1. As events come into the consumer, they're passed to the user defined handlers.
+For creating your own custom consumers, please see [here](consumers.html).
