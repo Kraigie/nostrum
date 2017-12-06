@@ -130,6 +130,8 @@ defmodule Nostrum.Shard.Session do
 
   def handle_info({:gun_down, _conn, :ws, :closed, _maybe_processed, _open_streams}, state) do
     Logger.info "websocket closed, attempting reconnect"
+    :zlib.inflateEnd(state.zlib_ctx)
+    :zlib.close(state.zlib_ctx)
     {:noreply, state}
   end
 
