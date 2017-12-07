@@ -13,12 +13,12 @@ defmodule Nostrum.Cache.ChannelCache do
   @type channel :: Channel.t | DMChannel.t
 
   @doc false
-  def start_link do
-    GenServer.start_link(__MODULE__, %{}, name: ChannelCache)
+  def start_link([]) do
+    GenServer.start_link(__MODULE__, [], name: ChannelCache)
   end
 
-  def init(state) do
-    {:ok, state}
+  def init([]) do
+    {:ok, []}
   end
 
   @doc ~S"""

@@ -30,8 +30,5 @@ defmodule Nostrum.Cache.Guild.GuildRegister do
         other
     end
   end
-
-  def create_worker_spec(id, guild) do
-    Spec.worker(GuildServer, [id, guild], id: id)
-  end
+  
 end

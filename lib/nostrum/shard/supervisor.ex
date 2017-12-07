@@ -8,12 +8,12 @@ defmodule Nostrum.Shard.Supervisor do
 
   require Logger
 
-  def start_link(token, :auto) do
+  def start_link([token, :auto]) do
     {url, shards} = Util.gateway()
     Supervisor.start_link(__MODULE__, [url: url, token: token, num_shards: shards], name: ShardSupervisor)
   end
 
-  def start_link(token, num_shards) do
+  def start_link([token, num_shards]) do
     {url, shards} = Util.gateway()
     if num_shards != shards, do: Logger.info "Specified #{num_shards} shards " <>
     "when the recommended number is #{shards}. Consider using the num_shards: " <>

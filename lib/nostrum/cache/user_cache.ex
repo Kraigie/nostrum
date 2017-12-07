@@ -20,13 +20,13 @@ defmodule Nostrum.Cache.UserCache do
   alias Nostrum.Util
 
   @doc false
-  def start_link do
-    GenServer.start_link(__MODULE__, %{}, name: UserCache)
+  def start_link([]) do
+    GenServer.start_link(__MODULE__, [], name: UserCache)
   end
 
   @doc false
-  def init(state) do
-    {:ok, state}
+  def init([]) do
+    {:ok, []}
   end
 
   @doc ~s"""

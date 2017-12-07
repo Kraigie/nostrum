@@ -24,10 +24,14 @@ defmodule Nostrum.Api.Ratelimiter do
   @doc """
   Starts the ratelimiter.
   """
-  @spec start_link() :: on_start
-  def start_link do
-    :ets.new(:ratelimit_buckets, [:set, :public, :named_table])
+  @spec start_link([]) :: on_start
+  def start_link([]) do
     GenServer.start_link(__MODULE__, [], name: Ratelimiter)
+  end
+
+  def init([]) do
+    :ets.new(:ratelimit_buckets, [:set, :public, :named_table])
+    {:ok, []}
   end
 
   @doc """

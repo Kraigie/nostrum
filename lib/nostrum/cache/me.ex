@@ -8,11 +8,11 @@ defmodule Nostrum.Cache.Me do
   alias Nostrum.Api
   alias Nostrum.Struct.User
 
-  def start_link do
-    GenServer.start_link(__MODULE__, %{}, name: Me)
+  def start_link([]) do
+    GenServer.start_link(__MODULE__, [], name: Me)
   end
 
-  def init(_) do
+  def init([]) do
     # Returns {:error, reason} if this fails, acting as a simple check for
     # correct tokens
     with {:ok, user} <- Api.get_current_user(),

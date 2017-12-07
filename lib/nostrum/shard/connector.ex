@@ -9,7 +9,7 @@ defmodule Nostrum.Shard.Connector do
 
   @wait_time 5500
 
-  def start_link do
+  def start_link([]) do
     GenServer.start_link(__MODULE__, %{last_connect: 0}, name: ShardConnectionManager)
   end
 

@@ -3,7 +3,7 @@ defmodule Nostrum.Cache.Guild.GuildServer do
   Module for interacting with Guild Servers.
   """
 
-  use GenServer
+  use GenServer, restart: :transient
 
   alias Nostrum.Cache.Guild.GuildRegister
   alias Nostrum.Cache.Mapping.ChannelGuild
@@ -261,6 +261,11 @@ defmodule Nostrum.Cache.Guild.GuildServer do
         # Causes start_link to return {:error, reason}
         {:stop, error}
     end
+  end
+
+  @doc false
+  def child_spec do
+    Supervisor.child_spec(__MODULE__, start: {__MODULE__, :start_link, []})
   end
 
   @doc false

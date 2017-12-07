@@ -5,14 +5,12 @@ defmodule Nostrum.Cache.Guild.GuildSupervisor do
   
   alias Nostrum.Cache.Guild.GuildServer
 
-  def start_link do
+  def start_link([]) do
     Supervisor.start_link(__MODULE__, [], name: GuildSupervisor)
   end
 
-  def init(_args) do
-    children = [
-      worker(GuildServer, [], restart: :transient)
-    ]
-    supervise(children, strategy: :simple_one_for_one)
+  def init([]) do
+    Supervisor.init([GuildServer.child_spec], strategy: :simple_one_for_one)
   end
+
 end

@@ -3,21 +3,21 @@ defmodule Nostrum.Cache.CacheSupervisor do
 
   use Supervisor
 
-  def start_link do
+  def start_link([]) do
     Supervisor.start_link(__MODULE__, [], name: CacheSupervisor)
   end
 
-  def init(_args) do
+  def init([]) do
     children = [
       # REVIEW: If shard dies, should guilds die also? An attempt will be made to restart them
-      supervisor(Registry, [:unique, GuildRegistry]),
-      supervisor(Nostrum.Cache.Guild.GuildSupervisor, []),
-      worker(Nostrum.Cache.Me, []),
-      worker(Nostrum.Cache.ChannelCache, []),
-      worker(Nostrum.Cache.UserCache, [])
+      {Registry, keys: :unique, name: GuildRegistry},
+      Nostrum.Cache.Guild.GuildSupervisor,
+      Nostrum.Cache.Me,
+      Nostrum.Cache.ChannelCache,
+      Nostrum.Cache.UserCache
     ]
 
-    supervise(children, strategy: :one_for_one)
+    Supervisor.init(children, strategy: :one_for_one)
   end
 
 end

@@ -19,10 +19,10 @@ defmodule Nostrum do
     setup_ets_tables()
 
     children = [
-      worker(Nostrum.Api.Ratelimiter, []),
-      worker(Nostrum.Shard.Connector, []),
-      supervisor(Nostrum.Cache.CacheSupervisor, []),
-      supervisor(Nostrum.Shard.Supervisor, [token, actual_num_shards])
+      Nostrum.Api.Ratelimiter,
+      Nostrum.Shard.Connector,
+      Nostrum.Cache.CacheSupervisor,
+      {Nostrum.Shard.Supervisor, [token, actual_num_shards]}
     ]
 
     if Application.get_env(:nostrum, :dev, nil) do
