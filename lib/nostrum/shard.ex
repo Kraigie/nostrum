@@ -16,10 +16,10 @@ defmodule Nostrum.Shard do
 
   def init(options) do
     children = [
-      worker(Session, [options])
+      {Session, [options]}
       # TODO: Add per shard ratelimiter
       # TODO: Add per shard cache
     ]
-    supervise(children, strategy: :one_for_all, max_restarts: 3, max_seconds: 60)
+    Supervisor.init(children, strategy: :one_for_all, max_restarts: 3, max_seconds: 60)
   end
 end

@@ -32,6 +32,7 @@ defmodule Nostrum.Shard.Supervisor do
 
   @doc false
   def init(options) do
+    # TODO: Move this to new spec scheme
     children = for i <- 0..options[:num_shards] - 1,
       do: create_worker(options[:url], options[:token], i)
     with_registry =

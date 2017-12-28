@@ -46,7 +46,7 @@ defmodule Nostrum.Shard.Session do
     send(pid, {:request_guild_members, payload})
   end
 
-  def start_link(args) do
+  def start_link([args]) do
     GenServer.start_link(__MODULE__, args)
   end
 

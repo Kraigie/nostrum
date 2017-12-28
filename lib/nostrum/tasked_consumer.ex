@@ -25,14 +25,19 @@ defmodule Nostrum.TaskedConsumer do
 
   defmacro __using__(_) do
     quote location: :keep do
-      alias Nostrum.TaskedConsumer
       @behaviour Nostrum.TaskedConsumer
+
+      use Task
+
+      alias Nostrum.TaskedConsumer
 
       def handle_event(_event) do
         :ok
       end
 
-      def start_link(event) do
+      # REVIEW: Work around appending arguments (not possible? first line here: 
+      # https://hexdocs.pm/gen_stage/ConsumerSupervisor.html#c:init/1)
+      def start_link([], event) do
         Task.start_link fn ->
           __MODULE__.handle_event(event)
         end
@@ -54,7 +59,7 @@ defmodule Nostrum.TaskedConsumer do
       |> Enum.map(fn {pid, _value} -> pid end)
 
     children = [
-      worker(mod, [], restart: :temporary)
+      Supervisor.child_spec(mod, [])
     ]
 
     {:ok, children, strategy: :one_for_one, subscribe_to: producers}
