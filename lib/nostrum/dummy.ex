@@ -19,6 +19,7 @@ end
 defmodule DummyConsumer do
   @moduledoc false
   use Nostrum.Consumer
+
   require Logger
 
   def start_link do
@@ -33,10 +34,15 @@ end
 
 defmodule DummyConsumerSupervisor do
   use Nostrum.TaskedConsumer
+
   require Logger
 
   def start_link do
     TaskedConsumer.start_link(__MODULE__)
+  end
+
+  def handle_event({:MESSAGE_CREATE, {message}, _}) do
+    Logger.debug "Message received: #{inspect message.content}"
   end
 
   def handle_event({event_name, _, _}) do
