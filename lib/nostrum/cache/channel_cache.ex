@@ -18,7 +18,7 @@ defmodule Nostrum.Cache.ChannelCache do
   end
 
   def init([]) do
-    {:ok, []}
+    {:ok, %{}}
   end
 
   @doc ~S"""
