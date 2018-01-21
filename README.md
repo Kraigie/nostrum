@@ -13,16 +13,6 @@ released with the most up to date Elixir version (1.5.1 as of the time of this w
 
 In the meantime it is recommended you use the version hosted here on GitHub.
 
-### OTP 20
-If you're running Elixir version 1.4.5 and up, it is now fully OTP 20 compatible.
-This means in order to run your bot, you will need the Gun 2.0 rc, as the latest release
-is for OTP 19 and will not run on OTP 20.
-
-To use OTP 20, add the following to your mix.exs file:
-```Elixir
-{:gun, git: "https://github.com/ninenines/gun.git", ref: "dd1bfe4d6f9fb277781d922aa8bbb5648b3e6756", override: true},
-```
-
 *Thanks PixeL!*
 
 ## Installation
