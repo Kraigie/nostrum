@@ -54,7 +54,7 @@ defmodule Nostrum.Api do
   """
   @type message_content :: String.t |
                            [content: String.t, embed: Embed.t] |
-                           [content: String.t, file: String.t]
+                           [file_name: String.t, file: String.t]
 
   @typedoc """
   Represents a failed response from the API.
