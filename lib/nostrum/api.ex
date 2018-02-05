@@ -54,7 +54,7 @@ defmodule Nostrum.Api do
   """
   @type message_content :: String.t |
                            [content: String.t, embed: Embed.t] |
-                           [content: String.t, file: String.t]
+                           [file_name: String.t, file: String.t]
 
   @typedoc """
   Represents a failed response from the API.
@@ -1779,7 +1779,14 @@ defmodule Nostrum.Api do
       method: method,
       route: route,
       # Hello hackney documentation :^)
-      body: {:multipart, [{"content", body.content}, {:file, body.file}, {"tts", body.tts}]},
+      body: {:multipart, [
+        {
+          :file,
+          body.file,
+          {"form-data", [{"filename", body.content}]},
+          [{"tts", body.tts}]
+        }
+      ]},
       options: options,
       headers: [{"content-type", "multipart/form-data"}]
     }
