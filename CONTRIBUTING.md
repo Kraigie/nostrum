@@ -36,4 +36,4 @@ mix credo --strict
 If there are any warnings please handle them to the best of your ability. If you're
 unsure of what anything means, feel free to ask or consult the credo docs. As of the
 time of this writing, there are multiple non-warning issues that still need to be
-addressed.
+addressed, but those are much lower priority.
