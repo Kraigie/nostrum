@@ -17,8 +17,17 @@ defmodule RatelimitTest do
   @tag disabled: true
   test "one route async no 429" do
     responses =
-      1..10
-      |> Task.async_stream(&Nostrum.Api.create_message(@test_channel, "#{&1}"), timeout: 15000)
+      1..11
+      |> Task.async_stream(&Nostrum.Api.create_message(@test_channel, "#{&1}"), timeout: 50000)
+      |> Enum.to_list()
+    assert Enum.all?(responses, fn {_, {k, _}} -> k == :ok end) == true
+  end
+
+  @tag disabled: true
+  test "one route async no 429 pins" do
+    responses =
+      1..5
+      |> Task.async_stream(fn _ -> Nostrum.Api.get_pinned_messages(@test_channel) end, timeout: 50000)
       |> Enum.to_list()
     assert Enum.all?(responses, fn {_, {k, _}} -> k == :ok end) == true
   end
@@ -32,28 +41,24 @@ defmodule RatelimitTest do
   So, we should expect to see the 5th guild after the 4th pinned message, and
   this is the case. We could set the concurrency manually, but it's a cool example.
   """
+  @tag disabled: false
   test "multi route async no 429" do
     responses =
-      1..5 #
+      1..5
       |> Task.async_stream(
         fn x ->
-            # This guy should be peachy
           with {:ok, _ } <- Nostrum.Api.get_guild(@test_guild),
-            IO.inspect("After guild #{x}"),
-            # These should block each other after the second iteration
             {:ok, _} <- Nostrum.Api.create_message(@test_channel, "#{x}"),
-            IO.inspect("After message create #{x}"),
             {:ok} <- Nostrum.Api.start_typing(@test_channel),
-            IO.inspect("After typing start #{x}"),
-            {:ok, _} <- Nostrum.Api.get_pinned_messages(@test_channel),
-            IO.inspect("After get pinned #{x}")
+            {:ok, _} <- Nostrum.Api.get_pinned_messages(@test_channel)
           do
             :ok
           else
-            _ -> {:not_ok}
+            o -> 
+              {:not_ok}
           end
         end,
-        timeout: 20000)
+        timeout: 50000)
       |> Enum.to_list()
     assert Enum.all?(responses, fn {_k, v} -> v == :ok end) == true
   end
