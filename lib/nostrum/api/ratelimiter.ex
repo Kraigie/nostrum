@@ -49,15 +49,10 @@ defmodule Nostrum.Api.Ratelimiter do
       |> Bucket.get_ratelimit_timeout
 
     case retry_time do
-      # No wait time, delegate to task
-      nil ->
-        Task.start(fn ->
-          GenServer.reply(original_from || from, do_request(request))
-        end)
-      # No rl data, block requests until rl data obtained
-      :none ->
+      :now ->
         GenServer.reply(original_from || from, do_request(request))
-      # Wait time found, delegate to task to retry
+      time when time < 0 ->
+        GenServer.reply(original_from || from, do_request(request))
       time ->
         Task.start(fn ->
           wait_for_timeout(request, time, original_from || from)
@@ -89,22 +84,18 @@ defmodule Nostrum.Api.Ratelimiter do
 
     latency = abs(origin_timestamp - Util.now)
 
-    if global_limit do
-      update_global_bucket(route, 0, retry_after, latency)
-    else
-      update_bucket(route, remaining, reset, latency)
-    end
-
+    if global_limit, do: update_global_bucket(route, 0, retry_after, latency)
+    if reset, do: update_bucket(route, remaining, reset, latency)
+    
     response
   end
 
-  defp update_bucket(_route, remaining, _time, _latency) when is_nil(remaining), do: nil
   defp update_bucket(route, remaining, reset_time, latency) do
-    Bucket.create_bucket(route, remaining, reset_time * 1000, latency)
+    Bucket.update_bucket(route, remaining, reset_time * 1000, latency)
   end
 
   defp update_global_bucket(_route, _remaining, retry_after, latency) do
-    Bucket.create_bucket("GLOBAL", 0, retry_after + Util.now, latency)
+    Bucket.update_bucket("GLOBAL", 0, retry_after + Util.now, latency)
   end
 
   defp wait_for_timeout(request, timeout, from) do

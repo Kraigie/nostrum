@@ -1,9 +1,6 @@
 defmodule Nostrum.Cache.Guild.GuildRegister do
   @moduledoc false
 
-  alias Nostrum.Cache.Guild.GuildServer
-  alias Supervisor.Spec
-
   def lookup(id) do
     case Registry.lookup(GuildRegistry, id) do
       [{pid, _}] ->

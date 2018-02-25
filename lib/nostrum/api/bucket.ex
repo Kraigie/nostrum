@@ -3,7 +3,7 @@ defmodule Nostrum.Api.Bucket do
 
   alias Nostrum.Util
 
-  def create_bucket(route, remaining, reset_time, latency) do
+  def update_bucket(route, remaining, reset_time, latency) do
     :ets.insert(:ratelimit_buckets, {route, remaining, reset_time, latency})
   end
 
@@ -11,10 +11,15 @@ defmodule Nostrum.Api.Bucket do
     route_time = :ets.lookup(:ratelimit_buckets, route)
     global_time = :ets.lookup(:ratelimit_buckets, "GLOBAL")
 
-    Enum.max([route_time, global_time])
+    Enum.max_by([route_time, global_time], fn info ->
+      case info do
+        [] -> -1
+        [{_route, _remaining, reset_time, _latency}] -> reset_time
+      end
+    end)
   end
 
-  def update_bucket(route, remaining) do
+  def update_remaining(route, remaining) do
     :ets.update_element(:ratelimit_buckets, route, {2, remaining})
   end
 
@@ -25,19 +30,12 @@ defmodule Nostrum.Api.Bucket do
   def get_ratelimit_timeout(route) do
     case lookup_bucket(route) do
       [] ->
-        :none
-      [{route, remaining, reset_time, latency}] when remaining <= 0 ->
-        update_bucket(route, remaining - 1)
-        wait_time = reset_time - Util.now + latency
-        if wait_time <= 0 do
-          delete_bucket(route)
-          nil
-        else
-          wait_time
-        end
-      [{route, remaining, _reset_time, _latency}] ->
-        update_bucket(route, remaining - 1)
-        nil
+        :now
+      [{route, remaining, _reset_time, _latency}] when remaining > 0 ->
+        update_remaining(route, remaining - 1)
+        :now
+      [{_route, _remaining, reset_time, latency}] ->
+        reset_time - Util.now + latency
     end
   end
 
