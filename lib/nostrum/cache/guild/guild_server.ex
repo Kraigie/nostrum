@@ -386,7 +386,7 @@ defmodule Nostrum.Cache.Guild.GuildServer do
   end
 
   def handle_call({:update, :member, guild_id, new_partial_member}, _from, state) do
-    old_member = state.members[new_partial_member.user.id]
+    old_member = Map.get(state.members, new_partial_member.user.id, %{})
     new_member = Map.merge(old_member, new_partial_member)
     new_members = Map.put(state.members, new_partial_member.user.id, new_member)
     {:reply, {guild_id, old_member, new_member}, %{state | members: new_members}}
