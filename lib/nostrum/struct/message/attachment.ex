@@ -3,8 +3,21 @@ defmodule Nostrum.Struct.Message.Attachment do
   Struct representing a Discord message attachment.
   """
 
+  alias Nostrum.Struct.Snowflake
+  alias Nostrum.Util
+
+  defstruct [
+    :id,
+    :filename,
+    :size,
+    :url,
+    :proxy_url,
+    :height,
+    :width
+  ]
+
   @typedoc "Attachment id"
-  @type id :: integer
+  @type id :: Snowflake.t
 
   @typedoc "Name of attached file"
   @type filename :: String.t
@@ -34,19 +47,9 @@ defmodule Nostrum.Struct.Message.Attachment do
     width: width
   }
 
-  @derive [Poison.Encoder]
-  defstruct [
-    :id,
-    :filename,
-    :size,
-    :url,
-    :proxy_url,
-    :height,
-    :width
-  ]
-
   @doc false
   def to_struct(map) do
-    struct(__MODULE__, map)
+    struct(__MODULE__, Util.safe_atom_map(map))
+    |> Map.update(:id, nil, &Snowflake.cast!/1)
   end
 end
