@@ -324,18 +324,34 @@ defmodule Nostrum.Api do
   @doc """
   Gets all users who reacted with an emoji.
 
-  Retrieves a list of users who have reacted with an emoji.
-
-  Returns `{:ok, [Nostrum.Struct.User]}` if successful, `{:error, reason}` otherwise.
+  If the request was successful, this function returns `{:ok, users}`, where 
+  `users` is a list of `Nostrum.Struct.User`. Otherwise, this function 
+  returns `{:error, reason}`.
   """
-  @spec get_reactions(integer, integer, String.t | Nostrum.Struct.Emoji.custom_emoji) :: error | {:ok, [Nostrum.Struct.User]}
+  @spec get_reactions(Channel.id, Message.id, String.t | Emoji.custom_emoji) :: error | {:ok, [User.t]}
   def get_reactions(channel_id, message_id, emoji) do
     case request(:get, Constants.channel_reactions_get(channel_id, message_id, emoji)) do
       {:ok, body} ->
-        {:ok, Poison.decode!(body)}
+        users =
+          body 
+          |> Poison.decode!() 
+          |> Enum.map(fn user_dto -> 
+            User.to_struct(user_dto) 
+          end) 
+         
+        {:ok, users}
       other ->
         other
     end
+  end
+
+  @doc """
+  Same as `get_reactions/3`, but raises `Nostrum.Error.ApiError` in case of failure.
+  """
+  @spec get_reactions!(Channel.id, Message.id, String.t | Emoji.custom_emoji) :: no_return | [User.t]
+  def get_reactions!(channel_id, message_id, emoji) do
+    get_reactions(channel_id, message_id, emoji)
+    |> bangify
   end
 
   @doc """
@@ -1355,16 +1371,30 @@ defmodule Nostrum.Api do
   end
 
   @doc """
-  Gets a user.
+  Gets a user by its `user_id`.
 
-  User to get is specified by `user_id`.
+  If the request is successful, this function returns `{:ok, user}`, where 
+  `user` is a `Nostrum.Struct.User`. Otherwise, returns `{:error, reason}`.
   """
-  @spec get_user(integer) :: error | {:ok, Nostrum.Sturct.User.t}
+  @spec get_user(User.id) :: error | {:ok, User.t}
   def get_user(user_id) do
-    request(:get, Constants.user(user_id))
+    case request(:get, Constants.user(user_id)) do 
+      {:ok, body} -> 
+        user =  
+          body 
+          |> Poison.decode!() 
+          |> User.to_struct() 
+ 
+        {:ok, user} 
+      other -> 
+        other 
+    end 
   end
 
-  @spec get_user!(integer) :: no_return | Nostrum.Struct.User.t
+  @doc """
+  Same as `get_user/1`, but raises `Nostrum.Error.ApiError` in case of failure.
+  """
+  @spec get_user!(User.id) :: no_return | User.t
   def get_user!(user_id) do
     get_user(user_id)
     |> bangify
@@ -1372,37 +1402,78 @@ defmodule Nostrum.Api do
 
   @doc """
   Gets info on the current user.
+
+  If nostrum's caching is enabled, it is recommended to use `Nostrum.Cache.Me.get/0` 
+  instead of this function. This is because sending out an API request is much slower 
+  than pulling from our cache.
+
+  If the request is successful, this function returns `{:ok, user}`, where 
+  `user` is nostrum's `Nostrum.Struct.User`. Otherwise, returns `{:error, reason}`.
   """
-  @spec get_current_user() :: error | {:ok, Nostrum.Struct.User.t}
+  @spec get_current_user() :: error | {:ok, User.t}
   def get_current_user do
     case request(:get, Constants.me) do
       {:ok, body} ->
-        {:ok, Poison.decode!(body, as: %User{})}
+        user =  
+          body 
+          |> Poison.decode!() 
+          |> User.to_struct() 
+ 
+        {:ok, user}
       other ->
         other
     end
   end
 
+  @doc """
+  Same as `get_current_user/0`, but raises `Nostrum.Error.ApiError` in case of failure.
+  """
+  @spec get_current_user!() :: no_return | User.t
+  def get_current_user! do
+    get_current_user()
+    |> bangify
+  end
+
   @doc ~S"""
   Changes the username or avatar of the current user.
 
-  **Example**
-  ```Elixir
-  avatar = %{avatar: "data:image/jpeg;base64," <> "YXl5IGJieSB1IGx1a2luIDQgc3VtIGZ1az8="}
-  {:ok, user} = Nostrum.Api.modify_current_user(avatar)
-  ```
+  ## Params 
+ 
+  The following params are optional: 
+ 
+    * `:username` (string) - new username
+    * `:avatar` (string) - the user's avatar as [avatar data](https://discordapp.com/developers/docs/resources/user#avatar-data)
+ 
+  ## Examples 
 
-  `options` is a map with the following optional keys:
-   * `username` - New username.
-   * `avatar` - Base64 encoded image data, prepended with `data:image/jpeg;base64,`
+      iex> Nostrum.Api.modify_current_user(avatar: "data:image/jpeg;base64,YXl5IGJieSB1IGx1a2luIDQgc3VtIGZ1az8=") 
+      {:ok, %Nostrum.Struct.User{}}
   """
-  def modify_current_user(options) do
-    case request(:patch, Constants.me, options) do
+  @spec modify_current_user(keyword | map) :: error | {:ok, User.t}
+  def modify_current_user(params)
+  def modify_current_user(params) when is_list(params), do: modify_current_user(Map.new(params))
+
+  def modify_current_user(%{} = params) do
+    case request(:patch, Constants.me, params) do
       {:ok, body} ->
-        {:ok, Poison.decode!(body)}
+        user =  
+          body 
+          |> Poison.decode!() 
+          |> User.to_struct() 
+ 
+        {:ok, user}
       other ->
         other
     end
+  end
+
+  @doc """
+  Same as `modify_current_user/3`, but raises `Nostrum.Error.ApiError` in case of failure.
+  """
+  @spec modify_current_user!(keyword | map) :: no_return | User.t
+  def modify_current_user!(params) do
+    modify_current_user(params)
+    |> bangify()
   end
 
   @doc """
