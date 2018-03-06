@@ -1382,7 +1382,10 @@ defmodule Nostrum.Api do
     end 
   end
 
-  @spec get_user!(integer) :: no_return | Nostrum.Struct.User.t
+  @doc """
+  Same as `get_user/1`, but raises `Nostrum.Error.ApiError` in case of failure.
+  """
+  @spec get_user!(User.id) :: no_return | User.t
   def get_user!(user_id) do
     get_user(user_id)
     |> bangify
