@@ -1402,12 +1402,24 @@ defmodule Nostrum.Api do
 
   @doc """
   Gets info on the current user.
+
+  If nostrum's caching is enabled, it is recommended to use `Nostrum.Cache.Me.get/0` 
+  instead of this function. This is because sending out an API request is much slower 
+  than pulling from our cache.
+
+  If the request is successful, this function returns `{:ok, user}`, where 
+  `user` is nostrum's `Nostrum.Struct.User`. Otherwise, returns `{:error, reason}`.
   """
-  @spec get_current_user() :: error | {:ok, Nostrum.Struct.User.t}
+  @spec get_current_user() :: error | {:ok, User.t}
   def get_current_user do
     case request(:get, Constants.me) do
       {:ok, body} ->
-        {:ok, Poison.decode!(body, as: %User{})}
+        user =  
+          body 
+          |> Poison.decode!() 
+          |> User.to_struct() 
+ 
+        {:ok, user}
       other ->
         other
     end
