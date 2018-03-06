@@ -1468,6 +1468,15 @@ defmodule Nostrum.Api do
   end
 
   @doc """
+  Same as `modify_current_user/3`, but raises `Nostrum.Error.ApiError` in case of failure.
+  """
+  @spec modify_current_user!(keyword | map) :: no_return | User.t
+  def modify_current_user!(params) do
+    modify_current_user(params)
+    |> bangify()
+  end
+
+  @doc """
   Gets a list of guilds the user is currently in.
 
   `options` is an optional map with the following optional keys:
