@@ -1362,13 +1362,24 @@ defmodule Nostrum.Api do
   end
 
   @doc """
-  Gets a user.
+  Gets a user by its `user_id`.
 
-  User to get is specified by `user_id`.
+  If the request is successful, this function returns `{:ok, user}`, where 
+  `user` is a `Nostrum.Struct.User` struct. Otherwise, returns `{:error, reason}`.
   """
-  @spec get_user(integer) :: error | {:ok, Nostrum.Sturct.User.t}
+  @spec get_user(User.id) :: error | {:ok, User.t}
   def get_user(user_id) do
-    request(:get, Constants.user(user_id))
+    case request(:get, Constants.user(user_id)) do 
+      {:ok, body} -> 
+        user =  
+          body 
+          |> Poison.decode!() 
+          |> User.to_struct() 
+ 
+        {:ok, user} 
+      other -> 
+        other 
+    end 
   end
 
   @spec get_user!(integer) :: no_return | Nostrum.Struct.User.t
