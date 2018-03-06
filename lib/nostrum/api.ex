@@ -324,15 +324,22 @@ defmodule Nostrum.Api do
   @doc """
   Gets all users who reacted with an emoji.
 
-  Retrieves a list of users who have reacted with an emoji.
-
-  Returns `{:ok, [Nostrum.Struct.User]}` if successful, `{:error, reason}` otherwise.
+  If the request was successful, this function returns `{:ok, users}`, where 
+  `users` is a list of `Nostrum.Struct.User` structs. Otherwise, this function 
+  returns `{:error, reason}`.
   """
-  @spec get_reactions(integer, integer, String.t | Nostrum.Struct.Emoji.custom_emoji) :: error | {:ok, [Nostrum.Struct.User]}
+  @spec get_reactions(Channel.id, Message.id, String.t | Emoji.custom_emoji) :: error | {:ok, [User.t]}
   def get_reactions(channel_id, message_id, emoji) do
     case request(:get, Constants.channel_reactions_get(channel_id, message_id, emoji)) do
       {:ok, body} ->
-        {:ok, Poison.decode!(body)}
+        users =
+          body 
+          |> Poison.decode!() 
+          |> Enum.map(fn user_dto -> 
+            User.to_struct(user_dto) 
+          end) 
+         
+        {:ok, users}
       other ->
         other
     end
