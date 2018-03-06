@@ -5,7 +5,7 @@ defmodule Nostrum.Struct.SnowflakeTest do
 
   require Nostrum.Struct.Snowflake
 
-  test "cast: if string is given, then return snowflake" do
+  test "cast/1: if string is given, then return snowflake" do
     given = "4384931048190393"
     expected = {:ok, 4384931048190393}
 
@@ -14,7 +14,7 @@ defmodule Nostrum.Struct.SnowflakeTest do
     assert ^expected = observed
   end
 
-  test "cast: if integer is given, then return snowflake" do
+  test "cast/1: if integer is given, then return snowflake" do
     given = 4384931048190393
     expected = {:ok, 4384931048190393}
 
@@ -23,7 +23,7 @@ defmodule Nostrum.Struct.SnowflakeTest do
     assert ^expected = observed
   end
 
-  test "cast: if nil is given, then return nil" do
+  test "cast/1: if nil is given, then return nil" do
     given = nil
     expected = {:ok, nil}
 
@@ -32,7 +32,7 @@ defmodule Nostrum.Struct.SnowflakeTest do
     assert ^expected = observed
   end
 
-  test "cast: if non-convertible is given, then return :error" do
+  test "cast/1: if non-convertible is given, then return :error" do
     given = true
     expected = :error
 
@@ -41,7 +41,7 @@ defmodule Nostrum.Struct.SnowflakeTest do
     assert ^expected = observed
   end
 
-  test "dump: if snowflake is given, then return snowflake as string" do
+  test "dump/1: if snowflake is given, then return snowflake as string" do
     given = 4314103984319043
     expected = "4314103984319043"
 
@@ -50,7 +50,7 @@ defmodule Nostrum.Struct.SnowflakeTest do
     assert ^expected = observed
   end
 
-  test "dump: if non-snowflake is given, then raise exception" do
+  test "dump/1: if non-snowflake is given, then raise exception" do
     given = :not_snowflake
 
     assert_raise(ArgumentError, fn ->
@@ -58,7 +58,7 @@ defmodule Nostrum.Struct.SnowflakeTest do
     end)
   end
 
-  test "is_snowflake: if snowflake is given, return true" do
+  test "is_snowflake/1: if snowflake is given, return true" do
     given = 4314831498137
     expected = true
 
@@ -67,7 +67,7 @@ defmodule Nostrum.Struct.SnowflakeTest do
     assert expected === observed
   end
   
-  test "is_snowflake: if snowflake is given, return false" do
+  test "is_snowflake/1: if snowflake is given, return false" do
     given = "4314831498137"
     expected = false
 
