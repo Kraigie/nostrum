@@ -1425,6 +1425,15 @@ defmodule Nostrum.Api do
     end
   end
 
+  @doc """
+  Same as `get_current_user/0`, but raises `Nostrum.Error.ApiError` in case of failure.
+  """
+  @spec get_current_user!() :: no_return | User.t
+  def get_current_user! do
+    get_current_user()
+    |> bangify
+  end
+
   @doc ~S"""
   Changes the username or avatar of the current user.
 
