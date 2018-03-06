@@ -1437,20 +1437,31 @@ defmodule Nostrum.Api do
   @doc ~S"""
   Changes the username or avatar of the current user.
 
-  **Example**
-  ```Elixir
-  avatar = %{avatar: "data:image/jpeg;base64," <> "YXl5IGJieSB1IGx1a2luIDQgc3VtIGZ1az8="}
-  {:ok, user} = Nostrum.Api.modify_current_user(avatar)
-  ```
+  ## Params 
+ 
+  The following params are optional: 
+ 
+    * `:username` (string) - new username
+    * `:avatar` (string) - the user's avatar as [avatar data](https://discordapp.com/developers/docs/resources/user#avatar-data)
+ 
+  ## Examples 
 
-  `options` is a map with the following optional keys:
-   * `username` - New username.
-   * `avatar` - Base64 encoded image data, prepended with `data:image/jpeg;base64,`
+      iex> Nostrum.Api.modify_current_user(avatar: "data:image/jpeg;base64,YXl5IGJieSB1IGx1a2luIDQgc3VtIGZ1az8=") 
+      {:ok, %Nostrum.Struct.User{}}
   """
-  def modify_current_user(options) do
-    case request(:patch, Constants.me, options) do
+  @spec modify_current_user(keyword | map) :: error | {:ok, User.t}
+  def modify_current_user(params)
+  def modify_current_user(params) when is_list(params), do: modify_current_user(Map.new(params))
+
+  def modify_current_user(%{} = params) do
+    case request(:patch, Constants.me, params) do
       {:ok, body} ->
-        {:ok, Poison.decode!(body)}
+        user =  
+          body 
+          |> Poison.decode!() 
+          |> User.to_struct() 
+ 
+        {:ok, user}
       other ->
         other
     end
