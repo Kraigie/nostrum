@@ -7,8 +7,22 @@ defmodule Nostrum.Struct.User do
   A `member` has everything that a `user` has, but also additional information on a per guild basis. This includes things like a `nickname` and a list of `roles`.
   """
 
+  alias Nostrum.Struct.Snowflake
+  alias Nostrum.Util
+
+  defstruct [
+    :id,
+    :username,
+    :discriminator,
+    :avatar,
+    :bot,
+    :mfa_enabled,
+    :verified,
+    :email,
+  ]
+
   @typedoc "The user's id"
-  @type id :: integer
+  @type id :: Snowflake.t
 
   @typedoc "The user's username"
   @type username :: String.t
@@ -17,19 +31,19 @@ defmodule Nostrum.Struct.User do
   @type discriminator :: String.t
 
   @typedoc "User's avatar hash"
-  @type avatar :: String.t
+  @type avatar :: String.t | nil
 
   @typedoc "Whether the user is a bot"
-  @type bot :: boolean
+  @type bot :: boolean | nil
 
   @typedoc "Whether the user has two factor enabled"
-  @type mfa_enabled :: boolean
+  @type mfa_enabled :: boolean | nil
 
   @typedoc "Whether the email on the account has been verified"
-  @type verified :: boolean
+  @type verified :: boolean | nil
 
   @typedoc "The user's email"
-  @type email :: String.t
+  @type email :: String.t | nil
 
   @type t :: %__MODULE__{
     id: id,
@@ -42,27 +56,14 @@ defmodule Nostrum.Struct.User do
     email: email,
   }
 
-  @derive [Poison.Encoder]
-  defstruct [
-    :id,
-    :username,
-    :discriminator,
-    :avatar,
-    :bot,
-    :mfa_enabled,
-    :verified,
-    :email,
-  ]
-
   @doc false
   def p_encode do
     %__MODULE__{}
   end
 
   @doc false
-  # TODO: Necessary?
-  def to_struct(%{__struct__: _} = map), do: map
   def to_struct(map) do
-    struct(__MODULE__, map)
+    struct(__MODULE__, Util.safe_atom_map(map))
+    |> Map.update(:id, nil, &Snowflake.cast!/1)
   end
 end
