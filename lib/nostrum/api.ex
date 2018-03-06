@@ -346,6 +346,15 @@ defmodule Nostrum.Api do
   end
 
   @doc """
+  Same as `get_reactions/3`, but raises `Nostrum.Error.ApiError` in case of failure.
+  """
+  @spec get_reactions!(Channel.id, Message.id, String.t | Emoji.custom_emoji) :: no_return | [User.t]
+  def get_reactions!(channel_id, message_id, emoji) do
+    get_reactions(channel_id, message_id, emoji)
+    |> bangify
+  end
+
+  @doc """
   Deletes all reactions from a message.
 
   Reaction to delete is specified by
