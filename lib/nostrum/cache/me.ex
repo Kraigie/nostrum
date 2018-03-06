@@ -16,7 +16,7 @@ defmodule Nostrum.Cache.Me do
     # Returns {:error, reason} if this fails, acting as a simple check for
     # correct tokens
     with {:ok, user} <- Api.get_current_user(),
-    do: {:ok, %{user | id: String.to_integer(user.id)}}
+    do: {:ok, %{user | id: user.id}}
   end
 
   @doc """
