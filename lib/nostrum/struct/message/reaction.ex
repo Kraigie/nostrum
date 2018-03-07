@@ -3,6 +3,15 @@ defmodule Nostrum.Struct.Message.Reaction do
   Struct representing a Discord message reaction.
   """
 
+  alias Nostrum.Struct.Emoji
+  alias Nostrum.Util
+
+  defstruct [
+    :count,
+    :me,
+    :emoji
+  ]
+
   @typedoc "Times this emoji has been used to react"
   @type count :: integer
 
@@ -18,15 +27,9 @@ defmodule Nostrum.Struct.Message.Reaction do
     emoji: emoji,
   }
 
-  @derive [Poison.Encoder]
-  defstruct [
-    :count,
-    :me,
-    :emoji
-  ]
-
   @doc false
   def to_struct(map) do
-    struct(__MODULE__, map)
+    struct(__MODULE__, Util.safe_atom_map(map))
+    |> Map.update(:emoji, nil, &Emoji.to_struct/1)
   end
 end
