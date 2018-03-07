@@ -353,13 +353,19 @@ defmodule Nostrum.Api do
   def delete_reaction(channel_id, message_id, emoji, user_id), do: delete_user_reaction(channel_id, message_id, emoji, user_id)
 
   @doc """
-  Gets all users who reacted with an emoji.
+  Gets all users who reacted with an `emoji`.
+
+  Parameter `emoji` can be any of the following:
+
+    * A `t:Nostrum.Struct.Emoji.emoji_api_name/0`.
+    * A base 16 unicode emoji string.
+    * A URI encoded string.
 
   If the request was successful, this function returns `{:ok, users}`, where 
   `users` is a list of `Nostrum.Struct.User`. Otherwise, this function 
   returns `{:error, reason}`.
   """
-  @spec get_reactions(Channel.id, Message.id, String.t | Emoji.custom_emoji) :: error | {:ok, [User.t]}
+  @spec get_reactions(Channel.id, Message.id, String.t | Emoji.emoji_api_name) :: error | {:ok, [User.t]}
   def get_reactions(channel_id, message_id, emoji) do
     case request(:get, Constants.channel_reactions_get(channel_id, message_id, emoji)) do
       {:ok, body} ->
