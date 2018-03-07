@@ -204,6 +204,22 @@ defmodule Nostrum.Util do
       String.to_atom(token)
   end
 
+  # Casts a map, list of maps, or nil into a struct of `module`.
+  @doc false
+  @spec cast_struct(map | [map] | nil, module) :: map
+  def cast_struct(value, module)
+  def cast_struct(nil, _module), do: nil
+
+  def cast_struct(list, module) when is_list(list) do
+    Enum.map(list, fn value -> cast_struct(value, module) end)
+  end
+
+  def cast_struct(%{} = map, module) do
+    module.to_struct(map)
+  end
+
+  def cast_struct(_, _), do: raise ArgumentError, "Invalid `value` for `cast_struct/1`"
+
   @doc """
   Since we're being sacrilegious and converting strings to atoms from the WS, there will be some
   atoms that we see that aren't defined in any Discord structs. This method mainly serves as a
