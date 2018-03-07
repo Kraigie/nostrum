@@ -305,14 +305,22 @@ defmodule Nostrum.Api do
   end
 
   @doc """
-  Deletes a rection made by the user.
+  Deletes a reaction made by the user.
 
-  Reaction to delete is specified by
-  `channel_id`, `message_id`, and `emoji`.
+  Parameter `emoji` can be any of the following:
 
-  Returns `{:ok}` if successful, `{:error, reason}` otherwise.
+    * A `t:Nostrum.Struct.Emoji.emoji_api_name/0`.
+    * A base 16 unicode emoji string.
+    * A URI encoded string.
+
+  ## Examples
+
+      iex> Nostrum.Api.delete_own_reaction(123123123123, 321321321321, "\xF0\x9F\x98\x81")
+      {:ok}
+      iex> Nostrum.Api.delete_own_reaction(123123123123, 321321321321, URI.encode("\u2b50"))
+      {:ok}
   """
-  @spec create_reaction(integer, integer, String.t | Nostrum.Struct.Emoji.custom_emoji) :: error | {:ok}
+  @spec delete_own_reaction(Channel.id, Message.id, String.t | Emoji.emoji_api_name) :: error | {:ok}
   def delete_own_reaction(channel_id, message_id, emoji) do
     request(:delete, Constants.channel_reaction_me(channel_id, message_id, emoji))
   end
