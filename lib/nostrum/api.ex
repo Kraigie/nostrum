@@ -45,7 +45,7 @@ defmodule Nostrum.Api do
 
   alias Nostrum.{Constants, Util}
   alias Nostrum.Cache.Guild.GuildServer
-  alias Nostrum.Struct.{Embed, Guild, Message, User, Webhook}
+  alias Nostrum.Struct.{Embed, Emoji, Guild, Message, User, Webhook}
   alias Nostrum.Struct.Guild.{Member, Channel, Role}
   alias Nostrum.Shard.{Supervisor, Session}
 
@@ -1839,6 +1839,33 @@ defmodule Nostrum.Api do
   @spec execute_git_webhook(Webhook.id, Webhook.token, boolean) :: error | {:ok}
   def execute_git_webhook(webhook_id, webhook_token, wait \\ false) do
     request(:post, Constants.webhook_git(webhook_id, webhook_token), params: [wait: wait])
+  end
+
+  @doc """
+  Deletes another user's reaction from a message
+
+  Parameter `emoji` can be any of the following:
+
+    * A `t:Nostrum.Struct.Emoji.emoji_api_name/0`.
+    * A base 16 unicode emoji string.
+    * A URI encoded string.
+
+  ## Permissions
+
+  This function requires that the nostrum user have the following permissions:
+
+    * `MANAGE_MESSAGES`
+
+  ## Examples
+
+      iex> Nostrum.Api.delete_user_reaction(351194183568195585, 417954134373957633, "\xF0\x9F\x98\x81", 177888205536886784)
+      {:ok}
+      iex> Nostrum.Api.delete_user_reaction(351194183568195585, 417954134373957633, URI.encode("\u2b50"), 177888205536886784)
+      {:ok}
+  """
+  @spec delete_user_reaction(Channel.id, Message.id, String.t | Emoji.emoji_api_name, User.id) :: error | {:ok}
+  def delete_user_reaction(channel_id, message_id, emoji, user_id) do
+    request(:delete, Constants.channel_reaction(channel_id, message_id, emoji, user_id))
   end
 
   def get_application_information do
