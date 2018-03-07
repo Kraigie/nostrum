@@ -276,21 +276,30 @@ defmodule Nostrum.Api do
   end
 
   @doc ~S"""
-  Create a rection for a message.
+  Create a reaction for a message.
 
-  Creates a reaction using an `emoji` for the message specified by `message_id` and
-  `channel_id`. `emoji` can be a `Nostrum.Struct.Emoji.custom_emoji.t`, a
-  base 16 unicode emoji string, or a uri encoded string.
 
-  **Example**
-  ```Elixir
-  Nostrum.Api.create_reaction(123123123123, 321321321321, "\xF0\x9F\x98\x81")
-  Nostrum.Api.create_reaction(123123123123, 321321321321, URI.encode("\u2b50"))
-  ```
+  Parameter `emoji` can be any of the following:
 
-  Returns `{:ok}` if successful, `{:error, reason}` otherwise.
+    * A `t:Nostrum.Struct.Emoji.emoji_api_name/0`.
+    * A base 16 unicode emoji string.
+    * A URI encoded string.
+
+  ## Permissions
+
+  This function requires that the nostrum user have the following permissions:
+
+    * `READ_MESSAGE_HISTORY`
+    * `ADD_REACTIONS` (if adding a new reaction)
+
+  ## Examples
+
+      iex> Nostrum.Api.create_reaction(123123123123, 321321321321, "\xF0\x9F\x98\x81")
+      {:ok}
+      iex> Nostrum.Api.create_reaction(123123123123, 321321321321, URI.encode("\u2b50"))
+      {:ok}
   """
-  @spec create_reaction(integer, integer, String.t | Nostrum.Struct.Emoji.custom_emoji) :: error | {:ok}
+  @spec create_reaction(Channel.id, Message.id, String.t | Emoji.emoji_api_name) :: error | {:ok}
   def create_reaction(channel_id, message_id, emoji) do
     request(:put, Constants.channel_reaction_me(channel_id, message_id, emoji))
   end
