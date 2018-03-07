@@ -344,17 +344,13 @@ defmodule Nostrum.Api do
   end
 
   @doc """
-  Deletes a rection from a message.
-
-  Reaction to delete is specified by
-  `channel_id`, `message_id`, `emoji`, and `user_id`.
-
-  Returns `{:ok}` if successful, `{:error, reason}` otherwise.
+  DEPRECATED
+  
+  Same as `delete_user_reaction/4`.
   """
-  @spec delete_reaction(integer, integer, String.t | Nostrum.Struct.Emoji.custom_emoji, integer) :: error | {:ok}
-  def delete_reaction(channel_id, message_id, emoji, user_id) do
-    request(:delete, Constants.channel_reaction(channel_id, message_id, emoji, user_id))
-  end
+  @deprecated "Use `delete_user_reaction/4` instead"
+  @spec delete_reaction(Channel.id, Message.id, String.t | Emoji.emoji_api_name, User.id) :: error | {:ok}
+  def delete_reaction(channel_id, message_id, emoji, user_id), do: delete_user_reaction(channel_id, message_id, emoji, user_id)
 
   @doc """
   Gets all users who reacted with an emoji.
