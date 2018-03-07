@@ -335,6 +335,15 @@ defmodule Nostrum.Api do
   end
 
   @doc """
+  Same as `delete_own_reaction/3`, but raises `Nostrum.Error.ApiError` in case of failure.
+  """
+  @spec delete_own_reaction!(Channel.id, Message.id, String.t | Emoji.emoji_api_name) :: no_return | {:ok}
+  def delete_own_reaction!(channel_id, message_id, emoji) do
+    delete_own_reaction(channel_id, message_id, emoji)
+    |> bangify()
+  end
+
+  @doc """
   Deletes a rection from a message.
 
   Reaction to delete is specified by
