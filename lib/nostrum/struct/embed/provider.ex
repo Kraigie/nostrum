@@ -3,24 +3,26 @@ defmodule Nostrum.Struct.Embed.Provider do
   Struct representing a Discord embed provider.
   """
 
+  alias Nostrum.Util
+
+  defstruct [
+    :name,
+    :url
+  ]
+
   @typedoc "Name of the provider"
-  @type name :: String.t
+  @type name :: String.t | nil
 
   @typedoc "URL of provider"
-  @type url :: String.t
+  @type url :: String.t | nil
 
   @type t :: %__MODULE__{
     name: name,
     url: url
   }
 
-  @derive [Poison.Encoder]
-  defstruct [
-    :name,
-    :url
-  ]
-
+  @doc false
   def to_struct(map) do
-    struct(__MODULE__, map)
+    struct(__MODULE__, Util.safe_atom_map(map))
   end
 end
