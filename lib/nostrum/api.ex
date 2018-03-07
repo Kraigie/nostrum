@@ -305,6 +305,15 @@ defmodule Nostrum.Api do
   end
 
   @doc """
+  Same as `create_reaction/3`, but raises `Nostrum.Error.ApiError` in case of failure.
+  """
+  @spec create_reaction!(Channel.id, Message.id, String.t | Emoji.emoji_api_name) :: no_return | {:ok}
+  def create_reaction!(channel_id, message_id, emoji) do
+    create_reaction(channel_id, message_id, emoji)
+    |> bangify()
+  end
+
+  @doc """
   Deletes a reaction made by the user.
 
   Parameter `emoji` can be any of the following:
