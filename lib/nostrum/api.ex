@@ -1868,6 +1868,15 @@ defmodule Nostrum.Api do
     request(:delete, Constants.channel_reaction(channel_id, message_id, emoji, user_id))
   end
 
+  @doc """
+  Same as `delete_user_reaction/4`, but raises `Nostrum.Error.ApiError` in case of failure.
+  """
+  @spec delete_user_reaction!(Channel.id, Message.id, String.t | Emoji.emoji_api_name, User.id) :: no_return | {:ok}
+  def delete_user_reaction!(channel_id, message_id, emoji, user_id) do
+    delete_user_reaction(channel_id, message_id, emoji, user_id)
+    |> bangify()
+  end
+
   def get_application_information do
     request(:get, Constants.application_information)
     |> handle
