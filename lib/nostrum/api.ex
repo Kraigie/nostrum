@@ -188,13 +188,9 @@ defmodule Nostrum.Api do
   end
 
   @doc """
-  Send a message to a channel.
-
-  See `create_message/3` for usage.
-
-  Raises `Nostrum.Error.ApiError` if error occurs while making the rest call.
+  Same as `create_message/3`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
-  @spec create_message!(Channel.id, message_content, boolean) :: no_return | Message.t
+  @spec create_message!(Channel.id | Message.t, message_content, boolean) :: no_return | Message.t
   def create_message!(channel_id, content, tts \\ false) do
     create_message(channel_id, content, tts)
     |> bangify
