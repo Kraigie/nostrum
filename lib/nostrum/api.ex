@@ -218,8 +218,17 @@ defmodule Nostrum.Api do
   """
   @spec edit_message(Channel.id, Message.id, String.t) :: error | {:ok, Message.t}
   def edit_message(channel_id, message_id, content) do
-    request(:patch, Constants.channel_message(channel_id, message_id), %{content: content})
-    |> handle(Message)
+    case request(:patch, Constants.channel_message(channel_id, message_id), %{content: content}) do 
+      {:ok, body} -> 
+        message =  
+          body 
+          |> Poison.decode!() 
+          |> Util.cast({:struct, Message})
+ 
+        {:ok, message} 
+      other -> 
+        other 
+    end
   end
 
   @doc """
