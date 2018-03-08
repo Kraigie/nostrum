@@ -220,6 +220,30 @@ defmodule Nostrum.Util do
 
   def cast_struct(_, _), do: raise ArgumentError, "Invalid `value` for `cast_struct/1`"
 
+  # Generic casting function
+  @doc false
+  @spec cast(term, term | {:list, term} | {:struct, term}) :: term
+  def cast(value, type)
+  def cast(nil, {:list, _}), do: []
+  def cast(nil, _type), do: nil
+
+  def cast(values, {:list, type}) when is_list(values) do
+    Enum.map(values, fn value ->
+      cast(value, type)
+    end)
+  end
+
+  def cast(value, {:struct, module}) when is_map(value) do
+    module.to_struct(value)
+  end
+
+  def cast(value, module) do
+    case module.cast(value) do
+      {:ok, result} -> result
+      _ -> value
+    end
+  end
+
   @doc """
   Since we're being sacrilegious and converting strings to atoms from the WS, there will be some
   atoms that we see that aren't defined in any Discord structs. This method mainly serves as a
