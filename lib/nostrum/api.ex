@@ -136,8 +136,7 @@ defmodule Nostrum.Api do
   Nostrum.Api.create_message(1111111111111, [content: "my os rules", file: ~S"C:\i\use\windows"])
   ```
   """
-  @spec create_message(Message.t, message_content, boolean) :: error | {:ok, Message.t}
-  @spec create_message(Channel.id, message_content, boolean) :: error | {:ok, Message.t}
+  @spec create_message(Channel.id | Message.t, message_content, boolean) :: error | {:ok, Message.t}
   def create_message(channel_id, content, tts \\ false)
 
   def create_message(%Message{channel_id: id}, content, tts) when is_binary(content),
@@ -145,20 +144,47 @@ defmodule Nostrum.Api do
 
   # Sending regular messages
   def create_message(channel_id, content, tts) when is_binary(content) do
-    request(:post, Constants.channel_messages(channel_id), %{content: content, tts: tts})
-    |> handle(Message)
+    case request(:post, Constants.channel_messages(channel_id), %{content: content, tts: tts}) do 
+      {:ok, body} -> 
+        message = 
+          body
+          |> Poison.decode!()
+          |> Util.cast({:struct, Message})
+ 
+        {:ok, message}
+      other -> 
+        other
+    end
   end
 
   # Embeds
   def create_message(channel_id, [content: c, embed: e], tts) do
-    request(:post, Constants.channel_messages(channel_id), %{content: c, embed: e, tts: tts})
-    |> handle(Message)
+    case request(:post, Constants.channel_messages(channel_id), %{content: c, embed: e, tts: tts}) do 
+      {:ok, body} -> 
+        message = 
+          body
+          |> Poison.decode!()
+          |> Util.cast({:struct, Message})
+ 
+        {:ok, message} 
+      other -> 
+        other
+    end
   end
 
   # Files
   def create_message(channel_id, [file_name: c, file: f], tts) do
-    request_multipart(:post, Constants.channel_messages(channel_id), %{content: c, file: f, tts: tts})
-    |> handle(Message)
+    case request_multipart(:post, Constants.channel_messages(channel_id), %{content: c, file: f, tts: tts}) do
+      {:ok, body} -> 
+        message = 
+          body
+          |> Poison.decode!()
+          |> Util.cast({:struct, Message})
+ 
+        {:ok, message}
+      other -> 
+        other
+    end
   end
 
   @doc """
