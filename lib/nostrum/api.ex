@@ -1865,6 +1865,15 @@ defmodule Nostrum.Api do
     |> handle_request_with_decode({:struct, Member})
   end
 
+  @doc """
+  Same as `get_guild_member/2`, but raises `Nostrum.Error.ApiError` in case of failure.
+  """
+  @spec get_guild_member!(Guild.id, User.id) :: no_return | Member.t
+  def get_guild_member!(guild_id, user_id) do
+    get_guild_member(guild_id, user_id)
+    |> bangify
+  end
+
   def get_application_information do
     request(:get, Constants.application_information)
     |> handle
