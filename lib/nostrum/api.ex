@@ -973,6 +973,8 @@ defmodule Nostrum.Api do
   end
 
   @doc """
+  DEPRECATED
+
   Adds a member to a guild.
 
   Member to add is specified by `guild_id` and `user_id`
@@ -984,6 +986,7 @@ defmodule Nostrum.Api do
    * `deaf` - If the user should be deafaned.
    * `channel_id` - Id of the channel to move the user to.
   """
+  @deprecated "Use `add_guild_member/3` instead"
   @spec add_member(integer, integer, %{
       nick: String.t,
       roles: [integer],
