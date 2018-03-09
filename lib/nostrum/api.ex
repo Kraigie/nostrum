@@ -1945,6 +1945,15 @@ defmodule Nostrum.Api do
     |> handle_request_with_decode({:struct, Member})
   end
 
+  @doc """
+  Same as `add_guild_member/3`, but raises `Nostrum.Error.ApiError` in case of failure.
+  """
+  @spec add_guild_member!(Guild.id, User.id, keyword | map) :: no_return | Member.t 
+  def add_guild_member!(guild_id, user_id, params) do
+    add_guild_member(guild_id, user_id, params)
+    |> bangify()
+  end
+
   def get_application_information do
     request(:get, Constants.application_information)
     |> handle
