@@ -1927,14 +1927,14 @@ defmodule Nostrum.Api do
     * `:roles` (list of `t:Nostrum.Struct.Guild.Role.id/0`) - array of role ids the member is assigned
     * `:mute` (boolean) - if the user is muted
     * `:deaf` (boolean) - if the user is deafened
-    * `:channel_id` (integer) - id of channel to move user to (if they are connected to voice)
+    * `:channel_id` (`t:Nostrum.Struct.Guild.Channel.id/0`) - id of channel to move user to (if they are connected to voice)
  
   ## Examples
  
       iex> Nostrum.Api.modify_guild_member(41771983423143937, 41771983423143937, nick: "Nostrum")
       {:ok}
   """
-  @spec modify_guild_member(integer, integer, keyword | map) :: error | {:ok}
+  @spec modify_guild_member(Guild.id, User.id, keyword | map) :: error | {:ok}
   def modify_guild_member(guild_id, user_id, params \\ [])
   def modify_guild_member(guild_id, user_id, params) when is_list(params), 
     do: modify_guild_member(guild_id, user_id, Map.new(params))
@@ -1946,7 +1946,7 @@ defmodule Nostrum.Api do
   @doc """
   Same as `modify_guild_member/3`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
-  @spec modify_guild_member!(integer, integer, keyword | map) :: no_return | {:ok}
+  @spec modify_guild_member!(Guild.id, User.id, keyword | map) :: no_return | {:ok}
   def modify_guild_member!(guild_id, user_id, params \\ []) do
     modify_guild_member(guild_id, user_id, params)
     |> bangify()
