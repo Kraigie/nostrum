@@ -248,11 +248,7 @@ defmodule Nostrum.Api do
   end
 
   @doc """
-  Delete a message.
-
-  See `delete_message/2` for usage.
-
-  Raises `Nostrum.Error.ApiError` if error occurs while making the rest call.
+  Same as `delete_message/2`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
   @spec delete_message!(Channel.id, Message.id) :: no_return | {:ok}
   def delete_message!(channel_id, message_id) do
