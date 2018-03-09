@@ -138,54 +138,20 @@ defmodule Nostrum.Api do
   """
   @spec create_message(Channel.id | Message.t, message_content, boolean) :: error | {:ok, Message.t}
   def create_message(channel_id, content, tts \\ false)
-
   def create_message(%Message{channel_id: id}, content, tts) when is_binary(content),
     do: create_message(id, content, tts)
-
+  
   # Sending regular messages
-  def create_message(channel_id, content, tts) when is_binary(content) do
-    case request(:post, Constants.channel_messages(channel_id), %{content: content, tts: tts}) do 
-      {:ok, body} -> 
-        message = 
-          body
-          |> Poison.decode!()
-          |> Util.cast({:struct, Message})
- 
-        {:ok, message}
-      other -> 
-        other
-    end
-  end
+  def create_message(channel_id, content, tts) when is_binary(content), 
+    do: do_create_message(channel_id, %{content: content, tts: tts})
 
   # Embeds
-  def create_message(channel_id, [content: c, embed: e], tts) do
-    case request(:post, Constants.channel_messages(channel_id), %{content: c, embed: e, tts: tts}) do 
-      {:ok, body} -> 
-        message = 
-          body
-          |> Poison.decode!()
-          |> Util.cast({:struct, Message})
- 
-        {:ok, message} 
-      other -> 
-        other
-    end
-  end
-
+  def create_message(channel_id, [content: c, embed: e], tts), 
+    do: do_create_message(channel_id, %{content: c, embed: e, tts: tts})
+  
   # Files
-  def create_message(channel_id, [file_name: c, file: f], tts) do
-    case request_multipart(:post, Constants.channel_messages(channel_id), %{content: c, file: f, tts: tts}) do
-      {:ok, body} -> 
-        message = 
-          body
-          |> Poison.decode!()
-          |> Util.cast({:struct, Message})
- 
-        {:ok, message}
-      other -> 
-        other
-    end
-  end
+  def create_message(channel_id, [file_name: c, file: f], tts), 
+    do: do_create_message(channel_id, %{content: c, file: f, tts: tts})
 
   @doc """
   Same as `create_message/3`, but raises `Nostrum.Error.ApiError` in case of failure.
@@ -1988,4 +1954,48 @@ defmodule Nostrum.Api do
     Application.get_env(:nostrum, :token)
   end
 
+  defp do_create_message(channel_id, params)
+  defp do_create_message(channel_id, params) when is_list(params), do: do_create_message(channel_id, Map.new(params))
+  
+  defp do_create_message(channel_id, %{file: file_path} = params) do
+    payload_json = 
+      params
+      |> Map.delete(:file)
+      |> Poison.encode!()
+
+    multipart = [
+      {:file, file_path},
+      {"payload_json", payload_json}
+    ]
+
+    request = %{
+      method: :post,
+      route: Constants.channel_messages(channel_id),
+      body: {:multipart, multipart},
+      options: [],
+      headers: [
+        {"content-type", "multipart/form-data"}
+      ]
+    }
+
+    GenServer.call(Ratelimiter, {:queue, request, nil}, :infinity)
+    |> handle_request_with_decode({:struct, Message})
+  end
+
+  defp do_create_message(channel_id, %{} = params) do
+    request(:post, Constants.channel_messages(channel_id), params)
+    |> handle_request_with_decode({:struct, Message})
+  end
+
+  defp handle_request_with_decode(response, type)
+  defp handle_request_with_decode({:error, _} = error, _type), do: error
+
+  defp handle_request_with_decode({:ok, body}, type) do
+    convert = 
+      body
+      |> Poison.decode!()
+      |> Util.cast(type)
+
+    {:ok, convert}
+  end  
 end
