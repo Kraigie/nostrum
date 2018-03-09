@@ -198,11 +198,7 @@ defmodule Nostrum.Api do
   end
 
   @doc """
-  Edit a message.
-
-  See `edit_message/2` for usage.
-
-  Raises `Nostrum.Error.ApiError` if error occurs while making the rest call.
+  Same as `edit_message/2`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
   @spec edit_message!(Message.t, String.t) :: error | {:ok, Message.t}
   def edit_message!(%Message{id: id, channel_id: c_id}, content) do
