@@ -1007,11 +1007,8 @@ defmodule Nostrum.Api do
     request(:delete, Constants.guild_member_role(guild_id, user_id, role_id))
   end
 
-  @doc """
-  Removes a memeber from a guild.
-
-  Member to remove is specified by `guild_id` and `user_id`.
-  """
+  @doc false
+  @deprecated "Use `remove_guild_member/2` instead"
   @spec remove_member(integer, integer) :: error | {:ok}
   def remove_member(guild_id, user_id) do
     request(:delete, Constants.guild_member(guild_id, user_id))
