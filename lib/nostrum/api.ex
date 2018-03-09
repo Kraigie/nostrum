@@ -1061,6 +1061,15 @@ defmodule Nostrum.Api do
   end
 
   @doc """
+  Same as `get_guild_roles/1`, but raises `Nostrum.Error.ApiError` in case of failure.
+  """
+  @spec get_guild_roles!(Guild.id) :: no_return | [Role.t]
+  def get_guild_roles!(guild_id) do
+    get_guild_roles(guild_id)
+    |> bangify()
+  end
+
+  @doc """
   Creates a guild role.
 
   Guild to create guild for is specified by `guild_id`.
