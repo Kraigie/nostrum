@@ -1900,6 +1900,15 @@ defmodule Nostrum.Api do
     |> handle_request_with_decode({:list, {:struct, Member}})
   end
 
+  @doc """
+  Same as `list_guild_members/2`, but raises `Nostrum.Error.ApiError` in case of failure.
+  """
+  @spec list_guild_members!(Guild.id, keyword | map) :: no_return | [Member.t]
+  def list_guild_members!(guild_id, params) do
+    list_guild_members(guild_id, params)
+    |> bangify()
+  end
+
   def get_application_information do
     request(:get, Constants.application_information)
     |> handle
