@@ -730,12 +730,8 @@ defmodule Nostrum.Api do
   """
   @spec get_pinned_messages(integer) :: error | {:ok, [Message.t]}
   def get_pinned_messages(channel_id) do
-    case request(:get, Constants.channel_pins(channel_id)) do
-      {:ok, body} ->
-        {:ok, Poison.decode!(body, as: [%Nostrum.Struct.Message{}])}
-      other ->
-        other
-    end
+    request(:get, Constants.channel_pins(channel_id))
+    |> handle_request_with_decode({:list, {:struct, Message}})
   end
 
   @doc """
