@@ -1952,6 +1952,19 @@ defmodule Nostrum.Api do
     |> bangify()
   end
 
+  @doc """
+  Removes a member from a guild.
+
+  ## Examples
+
+      iex> Nostrum.Api.remove_guild_member(41771983423143937, 41771983423143937) 
+      {:ok}
+  """
+  @spec remove_guild_member(Guild.id, User.id) :: error | {:ok}
+  def remove_guild_member(guild_id, user_id) do
+    request(:delete, Constants.guild_member(guild_id, user_id))
+  end
+
   def get_application_information do
     request(:get, Constants.application_information)
     |> handle
