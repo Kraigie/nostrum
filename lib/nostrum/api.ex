@@ -1897,7 +1897,7 @@ defmodule Nostrum.Api do
       {:ok, [%Nostrum.Struct.Guild.Member{}]}
   """
   @spec list_guild_members(Guild.id, keyword | map) :: error | {:ok, [Member.t]}
-  def list_guild_members(guild_id, params)
+  def list_guild_members(guild_id, params \\ [])
   def list_guild_members(guild_id, params) when is_list(params), 
     do: list_guild_members(guild_id, Map.new(params))
   
@@ -1910,7 +1910,7 @@ defmodule Nostrum.Api do
   Same as `list_guild_members/2`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
   @spec list_guild_members!(Guild.id, keyword | map) :: no_return | [Member.t]
-  def list_guild_members!(guild_id, params) do
+  def list_guild_members!(guild_id, params \\ []) do
     list_guild_members(guild_id, params)
     |> bangify()
   end
