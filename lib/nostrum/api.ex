@@ -1054,14 +1054,10 @@ defmodule Nostrum.Api do
 
   Guild to get roles for is specified by `guild_id`.
   """
-  @spec get_guild_roles(integer) :: error | {:ok, Nostrum.Struct.Guild.Role.t}
+  @spec get_guild_roles(Guild.id) :: error | {:ok, [Role.t]}
   def get_guild_roles(guild_id) do
-    case request(:get, Constants.guild_roles(guild_id)) do
-      {:ok, body} ->
-        {:ok, Poison.decode!(body)}
-      other ->
-        other
-    end
+    request(:get, Constants.guild_roles(guild_id))
+    |> handle_request_with_decode({:list, {:struct, Role}})
   end
 
   @doc """
