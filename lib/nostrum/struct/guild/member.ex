@@ -2,12 +2,32 @@ defmodule Nostrum.Struct.Guild.Member do
   @moduledoc """
   Struct representing a Discord guild member.
 
+  A `Nostrum.Struct.Guild.Member` is represented internally by a `%Nostrum.Struct.Guild.Member{}`  
+  struct. It stores information regarding a `Nostrum.Struct.User`'s properties pertaining to a  
+  specific `Nostrum.Struct.Guild`.
+ 
+  Keep in mind that a `Nostrum.Struct.Guild.Member` has no knowledge of its respective  
+  `Nostrum.Struct.Guild`. Thus, it is the lib user's responsibility to ensure that its  
+  relationship is not lost.
+
   ## User vs. Member
+
   A `user` contains only general information about that user such as a `username` and an `avatar`.
   A `member` has everything that a `user` has, but also additional information on a per guild basis. This includes things like a `nickname` and a list of `roles`.
   """
 
+  alias Nostrum.Struct.Snowflake
   alias Nostrum.Struct.User
+  alias Nostrum.Util
+
+  defstruct [
+    :user,
+    :nick,
+    :joined_at,
+    :deaf,
+    :mute,
+    roles: []
+  ]
 
   @typedoc "The user struct"
   @type user :: User.t
@@ -16,7 +36,7 @@ defmodule Nostrum.Struct.Guild.Member do
   @type nick :: String.t | nil
 
   @typedoc "A list of role ids"
-  @type roles :: list(integer)
+  @type roles :: [Snowflake.t]
 
   @typedoc "Date the user joined the guild"
   @type joined_at :: String.t
@@ -36,16 +56,6 @@ defmodule Nostrum.Struct.Guild.Member do
     mute: mute
   }
 
-  @derive [Poison.Encoder]
-  defstruct [
-    :user,
-    :nick,
-    :roles,
-    :joined_at,
-    :deaf,
-    :mute
-  ]
-
   @doc false
   def p_encode do
     %__MODULE__{
@@ -55,8 +65,8 @@ defmodule Nostrum.Struct.Guild.Member do
 
   @doc false
   def to_struct(map) do
-    new = map
-    |> Map.update(:user, %{}, &User.to_struct(&1))
-    struct(__MODULE__, new)
+    struct(__MODULE__, Util.safe_atom_map(map))
+    |> Map.update(:user, nil, &Util.cast(&1, {:struct, User}))
+    |> Map.update(:roles, [], &Util.cast(&1, {:list, Snowflake}))
   end
 end
