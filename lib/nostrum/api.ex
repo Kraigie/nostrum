@@ -1965,6 +1965,15 @@ defmodule Nostrum.Api do
     request(:delete, Constants.guild_member(guild_id, user_id))
   end
 
+  @doc """
+  Same as `remove_guild_member/3`, but raises `Nostrum.Error.ApiError` in case of failure.
+  """
+  @spec remove_guild_member!(Guild.id, User.id) :: no_return | {:ok}
+  def remove_guild_member!(guild_id, user_id) do
+    remove_guild_member(guild_id, user_id)
+    |> bangify()
+  end
+
   def get_application_information do
     request(:get, Constants.application_information)
     |> handle
