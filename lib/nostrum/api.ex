@@ -1875,6 +1875,31 @@ defmodule Nostrum.Api do
     |> bangify
   end
 
+  @doc """
+  Gets a list of members from a guild specified by `guild_id`.
+
+  ## Request Params
+
+  The following params are optional: 
+ 
+    * `:limit` (integer) - max number of members to return (1-1000) (default: 1) 
+    * `:after` (integer) - the highest user id in the previous page (default: 0)
+ 
+  ## Examples
+ 
+      iex> Nostrum.Api.list_guild_members(41771983423143937, limit: 1) 
+      {:ok, [%Nostrum.Struct.Guild.Member{}]}
+  """
+  @spec list_guild_members(Guild.id, keyword | map) :: error | {:ok, [Member.t]}
+  def list_guild_members(guild_id, params)
+  def list_guild_members(guild_id, params) when is_list(params), 
+    do: list_guild_members(guild_id, Map.new(params))
+  
+  def list_guild_members(guild_id, %{} = params) do
+    request(:get, Constants.guild_members(guild_id), "", params: params)
+    |> handle_request_with_decode({:list, {:struct, Member}})
+  end
+
   def get_application_information do
     request(:get, Constants.application_information)
     |> handle
