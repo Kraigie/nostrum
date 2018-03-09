@@ -936,10 +936,11 @@ defmodule Nostrum.Api do
   end
 
   @doc """
-  Gets a guild member.
+  DEPRECATED
 
-  Member to get is specified by `guild_id` and `user_id`.
+  Same as `get_guild_member/2`.
   """
+  @deprecated "Use `get_guild_member/2` instead"
   @spec get_member(integer, integer) :: error | {:ok, Nostrum.Struct.Guild.Member.t}
   def get_member(guild_id, user_id) do
     case request(:get, Constants.guild_member(guild_id, user_id)) do
