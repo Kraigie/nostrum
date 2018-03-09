@@ -532,7 +532,7 @@ defmodule Nostrum.Api do
         non_empty_locator -> [{:limit, limit}, non_empty_locator]
       end
     request(:get, Constants.channel_messages(channel_id), "", params: qs_params)
-    |> handle([Message])
+    |> handle_request_with_decode({:list, {:struct, Message}})
   end
 
   @doc """
