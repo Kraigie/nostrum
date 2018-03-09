@@ -952,6 +952,8 @@ defmodule Nostrum.Api do
   end
 
   @doc """
+  DEPRECATED
+
   Gets a list of guild members.
 
   ## Parameters
@@ -960,6 +962,7 @@ defmodule Nostrum.Api do
     - `limit` - Max number of members to return (1-1000)
     - `after` - Highest user id of the previous page.
   """
+  @deprecated "Use `list_guild_members/2` instead"
   @spec get_guild_members(Guild.id, %{
     limit: 1..1000,
     after: integer
