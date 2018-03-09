@@ -324,11 +324,7 @@ defmodule Nostrum.Api do
     |> bangify()
   end
 
-  @doc """
-  DEPRECATED
-  
-  Same as `delete_user_reaction/4`.
-  """
+  @doc false
   @deprecated "Use `delete_user_reaction/4` instead"
   @spec delete_reaction(Channel.id, Message.id, String.t | Emoji.emoji_api_name, User.id) :: error | {:ok}
   def delete_reaction(channel_id, message_id, emoji, user_id), do: delete_user_reaction(channel_id, message_id, emoji, user_id)
@@ -935,11 +931,7 @@ defmodule Nostrum.Api do
     end
   end
 
-  @doc """
-  DEPRECATED
-
-  Same as `get_guild_member/2`.
-  """
+  @doc false
   @deprecated "Use `get_guild_member/2` instead"
   @spec get_member(integer, integer) :: error | {:ok, Nostrum.Struct.Guild.Member.t}
   def get_member(guild_id, user_id) do
@@ -951,17 +943,7 @@ defmodule Nostrum.Api do
     end
   end
 
-  @doc """
-  DEPRECATED
-
-  Gets a list of guild members.
-
-  ## Parameters
-  `guild_id` - Guild to get members.
-  `options` - Map with the following *optional* keys:
-    - `limit` - Max number of members to return (1-1000)
-    - `after` - Highest user id of the previous page.
-  """
+  @doc false
   @deprecated "Use `list_guild_members/2` instead"
   @spec get_guild_members(Guild.id, %{
     limit: 1..1000,
@@ -972,20 +954,7 @@ defmodule Nostrum.Api do
     |> handle([Member])
   end
 
-  @doc """
-  DEPRECATED
-
-  Adds a member to a guild.
-
-  Member to add is specified by `guild_id` and `user_id`
-
-  `options` is a map with the following option keys:
-   * `nick` - Users nickname.
-   * `roles` - Array of roles to give member.
-   * `mute` - If the user should be muted.
-   * `deaf` - If the user should be deafaned.
-   * `channel_id` - Id of the channel to move the user to.
-  """
+  @doc false
   @deprecated "Use `add_guild_member/3` instead"
   @spec add_member(integer, integer, %{
       nick: String.t,
