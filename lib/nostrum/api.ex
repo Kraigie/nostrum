@@ -1957,6 +1957,33 @@ defmodule Nostrum.Api do
     |> bangify()
   end
 
+  @doc """
+  Modify attributes of a guild member.
+ 
+  ## Request Params
+ 
+  The following params are optional:
+ 
+    * `:nick` (string) - value to set users nickname to
+    * `:roles` (list of `t:Nostrum.Struct.Guild.Role.id/0`) - array of role ids the member is assigned
+    * `:mute` (boolean) - if the user is muted
+    * `:deaf` (boolean) - if the user is deafened
+    * `:channel_id` (integer) - id of channel to move user to (if they are connected to voice)
+ 
+  ## Examples
+ 
+      iex> Nostrum.Api.modify_guild_member(41771983423143937, 41771983423143937, nick: "Nostrum")
+      {:ok}
+  """
+  @spec modify_guild_member(integer, integer, keyword | map) :: error | {:ok}
+  def modify_guild_member(guild_id, user_id, params \\ [])
+  def modify_guild_member(guild_id, user_id, params) when is_list(params), 
+    do: modify_guild_member(guild_id, user_id, Map.new(params))
+  
+  def modify_guild_member(guild_id, user_id, %{} = params) do
+    request(:patch, Constants.guild_member(guild_id, user_id), params)
+  end
+
   def get_application_information do
     request(:get, Constants.application_information)
     |> handle
