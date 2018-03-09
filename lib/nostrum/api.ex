@@ -555,12 +555,8 @@ defmodule Nostrum.Api do
   """
   @spec get_channel_message(integer, integer) :: error | {:ok, Message.t}
   def get_channel_message(channel_id, message_id) do
-    case request(:get, Constants.channel_message(channel_id, message_id)) do
-      {:ok, body} ->
-        {:ok, Poison.decode!(body)}
-      other ->
-        other
-    end
+    request(:get, Constants.channel_message(channel_id, message_id))
+    |> handle_request_with_decode({:struct, Message})
   end
 
   @doc """
