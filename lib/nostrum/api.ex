@@ -1912,6 +1912,39 @@ defmodule Nostrum.Api do
     |> bangify()
   end
 
+  @doc """
+  Adds a user to a guild. 
+ 
+  The user's oauth2 access token is required for this function to work. 
+ 
+  ## Request Params
+ 
+  The following params are required: 
+ 
+    * `:access_token` (string) - the user's oauth2 access token 
+ 
+  The following params are optional: 
+ 
+    * `:nick` (string) - value to set users nickname to 
+    * `:roles` (list of `t:Nostrum.Struct.Guild.Role.id/0`) - array of role ids the member is assigned 
+    * `:mute` (boolean) - if the user is muted
+    * `:deaf` (boolean) - if the user is deafened 
+ 
+  ## Examples 
+ 
+      iex> Nostrum.Api.add_guild_member(41771983423143937, 41771983423143937, access_token: "6qrZcUqja7812RVdnEKjpzOL4CvHBFG", nick: "nostrum", roles: [431849301, 431809431]) 
+      {:ok, %Nostrum.Struct.Guild.Member{}}
+  """
+  @spec add_guild_member(Guild.id, User.id, keyword | map) :: error | {:ok, Member.t} 
+  def add_guild_member(guild_id, user_id, params) 
+  def add_guild_member(guild_id, user_id, params) when is_list(params), 
+    do: add_guild_member(guild_id, user_id, Map.new(params))
+  
+  def add_guild_member(guild_id, user_id, %{} = params) do 
+    request(:put, Constants.guild_member(guild_id, user_id), params)
+    |> handle_request_with_decode({:struct, Member})
+  end
+
   def get_application_information do
     request(:get, Constants.application_information)
     |> handle
