@@ -1003,18 +1003,8 @@ defmodule Nostrum.Api do
     end
   end
 
-  @doc """
-  Modifies a guild member.
-
-  Member to modify is specified by `guild_id` and `user_id`
-
-  `options` is a map with the following option keys:
-   * `nick` - Users nickname.
-   * `roles` - Array of roles to give member.
-   * `mute` - If the user should be muted.
-   * `deaf` - If the user should be deafaned.
-   * `channel_id` - Id of the channel to move the user to.
-  """
+  @doc false
+  @deprecated "Use `modify_guild_member/3` instead"
   @spec modify_member(integer, integer, %{
       nick: String.t,
       roles: [integer],
