@@ -1852,6 +1852,19 @@ defmodule Nostrum.Api do
     |> bangify()
   end
 
+  @doc """
+  Gets a guild member by its `guild_id` and `user_id`.
+
+  If the request was successful, this function returns `{:ok, member}`, where 
+  `member` is a `Nostrum.Struct.Guild.Member`. Otherwise, this function 
+  returns `{:error, reason}`.
+  """
+  @spec get_guild_member(Guild.id, User.id) :: error | {:ok, Member.t}
+  def get_guild_member(guild_id, user_id) do
+    request(:get, Constants.guild_member(guild_id, user_id))
+    |> handle_request_with_decode({:struct, Member})
+  end
+
   def get_application_information do
     request(:get, Constants.application_information)
     |> handle
