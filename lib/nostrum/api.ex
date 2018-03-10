@@ -1561,18 +1561,21 @@ defmodule Nostrum.Api do
     |> bangify()
   end
 
-    @doc """
-    Creates a new group DM channel.
-    """
-    @spec create_group_dm([String.t], map) :: error | {:ok, Nostrum.Struct.DMChannel.t}
-    def create_group_dm(access_tokens, nicks) do
-      case request(:post, Constants.me_channels, %{access_tokens: access_tokens, nicks: nicks}) do
-        {:ok, body} ->
-          {:ok, Poison.decode!(body)}
-        other ->
-          other
-      end
-    end
+  @doc """ 
+  Creates a new group DM channel. 
+ 
+  Access tokens are required for this function to work.
+ 
+  ## Examples 
+ 
+      Nostrum.Api.create_group_dm(["6qrZcUqja7812RVdnEKjpzOL4CvHBFG"], %{41771983423143937 => "My Nickname"})
+      
+  """ 
+  @spec create_group_dm([String.t], map) :: error | {:ok, Channel.t()} 
+  def create_group_dm(access_tokens, nicks) do 
+    request(:post, Constants.me_channels, %{access_tokens: access_tokens, nicks: nicks})
+    |> handle_request_with_decode({:struct, Channel})
+  end
 
   @doc """
   Gets a list of user connections.
