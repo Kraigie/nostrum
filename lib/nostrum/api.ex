@@ -1132,6 +1132,18 @@ defmodule Nostrum.Api do
   end
 
   @doc """
+  Same as `modify_guild_role_positions/2`, but raises `Nostrum.Error.ApiError` in case of failure.
+  """
+  @spec modify_guild_role_positions!(Guild.id, [%{
+    id: integer,
+    position: integer
+  }]) :: no_return | [Role.t]
+  def modify_guild_role_positions!(guild_id, params) do
+    modify_guild_role_positions(guild_id, params)
+    |> bangify()
+  end
+
+  @doc """
   Modifies a guild role.
 
   ## Parameter
