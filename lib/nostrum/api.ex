@@ -45,8 +45,9 @@ defmodule Nostrum.Api do
 
   alias Nostrum.{Constants, Util}
   alias Nostrum.Cache.Guild.GuildServer
+  alias Nostrum.Struct.Channel
   alias Nostrum.Struct.{Embed, Emoji, Guild, Message, User, Webhook}
-  alias Nostrum.Struct.Guild.{Member, Channel, Role}
+  alias Nostrum.Struct.Guild.{Member, Role}
   alias Nostrum.Shard.{Supervisor, Session}
 
   @typedoc """
@@ -1988,7 +1989,7 @@ defmodule Nostrum.Api do
     * `:roles` (list of `t:Nostrum.Struct.Guild.Role.id/0`) - array of role ids the member is assigned
     * `:mute` (boolean) - if the user is muted
     * `:deaf` (boolean) - if the user is deafened
-    * `:channel_id` (`t:Nostrum.Struct.Guild.Channel.id/0`) - id of channel to move user to (if they are connected to voice)
+    * `:channel_id` (`t:Nostrum.Struct.Channel.id/0`) - id of channel to move user to (if they are connected to voice)
  
   ## Examples
  
@@ -2060,7 +2061,7 @@ defmodule Nostrum.Api do
     * `:topic` (string) (GUILD_TEXT only) - 0-1024 character channel topic 
     * `:bitrate` (integer) (GUILD_VOICE only) - the bitrate (in bits) of the voice channel; 8000 to 96000 (128000 for VIP servers)
     * `:user_limit` (integer) (GUILD_VOICE only) - the user limit of the voice channel; 0 refers to no limit, 1 to 99 refers to a user limit 
-    * `:parent_id` (`t:Nostrum.Struct.Guild.Channel.id/0`) (GUILD_TEXT, GUILD_VOICE only) - id of the new parent category for a channel
+    * `:parent_id` (`t:Nostrum.Struct.Channel.id/0`) (GUILD_TEXT, GUILD_VOICE only) - id of the new parent category for a channel
  
   ## Examples
  
@@ -2120,11 +2121,11 @@ defmodule Nostrum.Api do
  
   The following params are optional: 
  
-    * `:type` (integer) - the type of channel (See `Nostrum.Struct.Guild.Channel`) 
+    * `:type` (integer) - the type of channel (See `Nostrum.Struct.Channel`) 
     * `:bitrate` (integer) - the bitrate (in bits) of the voice channel (voice only) 
     * `:user_limit` (integer) - the user limit of the voice channel (voice only) 
     * `:permission_overwrites` (list of `t:Nostrum.Struct.Overwrite.t/0`) - the channel's permission overwrites 
-    * `:parent_id` (`t:Nostrum.Struct.Guild.Channel.id/0`) - id of the parent category for a channel 
+    * `:parent_id` (`t:Nostrum.Struct.Channel.id/0`) - id of the parent category for a channel 
     * `:nsfw` (boolean) - if the channel is nsfw
  
   ## Examples

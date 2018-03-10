@@ -1,8 +1,8 @@
-defmodule Nostrum.Struct.Guild.Channel do
+defmodule Nostrum.Struct.Channel do
   @moduledoc """
   Struct representing a Discord channel.
  
-  A `Nostrum.Struct.Guild.Channel` represents all 7 types of channels. Each 
+  A `Nostrum.Struct.Channel` represents all 7 types of channels. Each 
   channel has a field `:type` with any of the following values:
  
     * `0` - GUILD_TEXT
@@ -20,7 +20,7 @@ defmodule Nostrum.Struct.Guild.Channel do
   guilds. A guild text channel can be identified via pattern matching its `:type` field:
  
       {:ok, channel} = Nostrum.Api.get_channel(41771983423143933)
-      %Nostrum.Struct.Guild.Channel{type: 0} = channel
+      %Nostrum.Struct.Channel{type: 0} = channel
  
   They have the following guaranteed fields:
  
@@ -41,7 +41,7 @@ defmodule Nostrum.Struct.Guild.Channel do
   DM channel can be identified via pattern matching its `:type` field:
  
       {:ok, channel} = Nostrum.Api.create_dm(177888205536886784)
-      %Nostrum.Struct.Guild.Channel{type: 1} = channel
+      %Nostrum.Struct.Channel{type: 1} = channel
  
   They have the following guaranteed fields:
  
@@ -56,7 +56,7 @@ defmodule Nostrum.Struct.Guild.Channel do
   A guild voice channel can be identified via pattern matching its `:type` field:
  
       {:ok, channel} = Nostrum.Api.get_channel(41771983423143933)
-      %Nostrum.Struct.Guild.Channel{type: 2} = channel
+      %Nostrum.Struct.Channel{type: 2} = channel
  
   They have the following guaranteed fields:
  
@@ -77,7 +77,7 @@ defmodule Nostrum.Struct.Guild.Channel do
   together. A group DM channel can be identified via pattern matching its `:type` field:
  
       {:ok, channel} = Nostrum.Api.create_group_dm(["6qrZcUqja7812RVdnEKjpzOL4CvHBFG"], %{})
-      %Nostrum.Struct.Guild.Channel{type: 3} = channel
+      %Nostrum.Struct.Channel{type: 3} = channel
  
   They have the following guaranteed fields:
  
@@ -96,7 +96,7 @@ defmodule Nostrum.Struct.Guild.Channel do
   A channel category can be identified via pattern matching its `:type` field:
  
       {:ok, channel} = Nostrum.Api.get_channel(41771983423143933)
-      %Nostrum.Struct.Guild.Channel{type: 4} = channel
+      %Nostrum.Struct.Channel{type: 4} = channel
  
   They have the following guaranteed fields:
  

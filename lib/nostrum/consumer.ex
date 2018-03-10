@@ -73,7 +73,7 @@ defmodule Nostrum.Consumer do
   @typedoc """
   The two different types of channels - Guild channels and DM channels.
   """
-  @type channel :: Nostrum.Struct.Guild.Channel.t
+  @type channel :: Nostrum.Struct.Channel.t
 
   @type channel_create :: {:CHANNEL_CREATE, {channel}, ws_state}
   @type channel_delete :: {:CHANNEL_DELETE, {channel}, ws_state}

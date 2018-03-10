@@ -6,7 +6,7 @@ defmodule Nostrum.Cache.ChannelCache do
   use GenServer
 
   alias Nostrum.Cache.Guild.GuildServer
-  alias Nostrum.Struct.Guild.Channel
+  alias Nostrum.Struct.Channel
   alias Nostrum.Util
 
   @type channel :: Channel.t
