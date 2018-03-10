@@ -2058,6 +2058,20 @@ defmodule Nostrum.Api do
     |> bangify()
   end
 
+  @doc """ 
+  Gets a list of guild channels from guild of id `guild_id`. 
+ 
+  ## Examples
+ 
+      Nostrum.Api.get_guild_channels(41771983423143933)
+
+  """ 
+  @spec get_guild_channels(Guild.id()) :: error | {:ok, [Channel.t()]} 
+  def get_guild_channels(guild_id) do
+    request(:get, Constants.guild_channels(guild_id))
+    |> handle_request_with_decode({:list, {:struct, Channel}})
+  end 
+
   def get_application_information do
     request(:get, Constants.application_information)
     |> handle
