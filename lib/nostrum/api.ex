@@ -1555,7 +1555,7 @@ defmodule Nostrum.Api do
   @doc """
   Same as `create_dm/0`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
-  @spec create_dm!(User.id()) :: error | {:ok, Channel.t()}
+  @spec create_dm!(User.id()) :: no_return | Channel.t()
   def create_dm!(user_id) do
     create_dm(user_id)
     |> bangify()
@@ -1575,6 +1575,15 @@ defmodule Nostrum.Api do
   def create_group_dm(access_tokens, nicks) do 
     request(:post, Constants.me_channels, %{access_tokens: access_tokens, nicks: nicks})
     |> handle_request_with_decode({:struct, Channel})
+  end
+
+  @doc """
+  Same as `create_group_dm/2`, but raises `Nostrum.Error.ApiError` in case of failure.
+  """
+  @spec create_group_dm!([String.t], map) :: no_return | Channel.t() 
+  def create_group_dm!(access_tokens, nicks) do
+    create_group_dm(access_tokens, nicks)
+    |> bangify()
   end
 
   @doc """
