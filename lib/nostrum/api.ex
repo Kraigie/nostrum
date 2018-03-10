@@ -907,26 +907,26 @@ defmodule Nostrum.Api do
     end
   end
 
-  @doc """
-  Reorders a guild's channels.
-
-  Guild to modify channels for is specified by `guild_id`.
-
-  `options` is a list of maps with the following keys:
-   * `id` - Id of the channel.
-   * `position` - Sorting position of the channel.
-  """
-  @spec modify_channel_position(integer, [%{
-      id: integer,
-      position: integer
-    }]) :: error | {:ok, [Nostrum.Struct.Guild.Channel.t]}
-  def modify_channel_position(guild_id, options) do
-    case request(:patch, Constants.guild_channels(guild_id), options) do
-      {:ok, body} ->
-        {:ok, Poison.decode!(body)}
-      other ->
-        other
-    end
+  @doc """ 
+  Modify the positions of a set of channels for the guild. 
+ 
+  ## Request Params
+ 
+  Unlike other request params, this function's params accepts a list of maps.
+   
+  Each of these maps require the following keys: 
+   
+    * `:id` (integer) - channel id 
+    * `:position` (integer) - sorting position of the channel 
+ 
+  ## Examples 
+ 
+      Nostrum.Api.modify_guild_channel_positions(41771983423143937, [%{id: 41771983423143936, position: 2}])
+      
+  """ 
+  @spec modify_guild_channel_positions(Guild.id(), [map]) :: error | {:ok}
+  def modify_guild_channel_positions(guild_id, params) when is_list(params) do
+    request(:patch, Constants.guild_channels(guild_id), params)
   end
 
   @doc false
