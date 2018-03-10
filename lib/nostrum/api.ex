@@ -1145,27 +1145,31 @@ defmodule Nostrum.Api do
 
   @doc """
   Modifies a guild role.
+  
+  ## Request Params 
+ 
+  The following keys are optional: 
+ 
+    * `:name` (string) - name of the role. 
+    - `:permissions` (integer) - bitwise of the enabled/disabled permissions. 
+    - `:color` (integer) - RGB color value. 
+    - `:hoist` (boolean) - whether the role should be displayed seperately in the sidebar. 
+    - `:mentionable` (boolean) - whether the role should be mentionable. 
+ 
+  ## Examples 
+ 
+      Nostrum.Api.modify_guild_role(41771983423143937, 41771983423143936, hoist: false)
 
-  ## Parameter
-  `guild_id` - Guild to modify role for.
-  `role_id` - Role to modify.
-  `options` - Map with the following *optional* keys:
-    - `name` - Name of the role.
-    - `permissions` - Bitwise of the enabled/disabled permissions.
-    - `color` - RGB color value.
-    - `hoist` - Whether the role should be displayed seperately in the sidebar.
-    - `mentionable` - Whether the role should be mentionable.
-  """
-  @spec modify_guild_role(Guild.id, Role.id, %{
-      name: String.t,
-      permissions: integer,
-      color: integer,
-      hoist: boolean,
-      mentionable: boolean
-  }) :: error | {:ok, Nostrum.Struct.Guild.Role.t}
-  def modify_guild_role(guild_id, role_id, options) do
-    request(:patch, Constants.guild_role(guild_id, role_id), options)
-    |> handle(Role)
+      Nostrum.Api.modify_guild_role(41771983423143937, 41771983423143936, %{hoist: false})
+  """ 
+  @spec modify_guild_role(Guild.id, Role.id, keyword | map) :: error | {:ok, Role.t}
+  def modify_guild_role(guild_id, role_id, params)
+  def modify_guild_role(guild_id, role_id, params) when is_list(params), 
+    do: modify_guild_role(guild_id, role_id, Map.new(params))
+
+  def modify_guild_role(guild_id, role_id, %{} = params) do
+    request(:patch, Constants.guild_role(guild_id, role_id), params)
+    |> handle_request_with_decode({:struct, Role})
   end
 
   @doc """
