@@ -877,6 +877,8 @@ defmodule Nostrum.Api do
   end
 
   @doc """
+  DEPRECATED
+
   Creates a channel.
 
   Guild to create channel in is specifed by `guild_id`.
@@ -888,6 +890,7 @@ defmodule Nostrum.Api do
    * `user_limit` - User limit if creating voice channel.
    * `permission_overwrites` - Array of permission overwrites.
   """
+  @deprecated "Use `create_guild_channel/2` instead"
   @spec create_channel(integer, %{
       name: String.t,
       type: String.t,
