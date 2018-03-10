@@ -1100,23 +1100,26 @@ defmodule Nostrum.Api do
   @doc """
   Reorders a guild's roles.
 
-  Guild to modify roles for is specified by `guild_id`.
-
-  `options` is a list of maps with the following keys:
-   * `id` - Id of the role.
-   * `position` - Sorting position of the role.
+  ## Request Params
+ 
+  Unlike other params, this function's params accepts a list of maps. Each of these 
+  maps require the following keys:
+  
+    * `:id` (integer) - role
+    * `:position` (integer) - sorting position of the role
+ 
+  ## Examples
+ 
+      Nostrum.Api.modify_guild_role_positions(41771983423143937, [%{id: 41771983423143936, position: 2}])
+  
   """
-  @spec modify_guild_role_positions(integer, [%{
+  @spec modify_guild_role_positions(Guild.id, [%{
       id: integer,
       position: integer
-    }]) :: error | {:ok, [Nostrum.Struct.Guild.Role.t]}
-  def modify_guild_role_positions(guild_id, options) do
-    case request(:patch, Constants.guild_roles(guild_id), options) do
-      {:ok, body} ->
-        {:ok, Poison.decode!(body)}
-      other ->
-        other
-    end
+    }]) :: error | {:ok, [Role.t]}
+  def modify_guild_role_positions(guild_id, params) do
+    request(:patch, Constants.guild_roles(guild_id), params)
+    |> handle_request_with_decode({:list, {:struct, Role}})
   end
 
   @doc """
