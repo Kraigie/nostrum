@@ -859,10 +859,13 @@ defmodule Nostrum.Api do
   end
 
   @doc """
+  DEPRECATED
+
   Gets a list of channels.
 
   Guild to get channels for is specified by `guild_id`.
   """
+  @deprecated "Use `get_guild_channels/1` instead"
   @spec get_channels(integer) :: error | {:ok, Nostrum.Struct.Channel.t}
   def get_channels(guild_id) do
     case request(:get, Constants.guild_channels(guild_id)) do
@@ -2070,7 +2073,7 @@ defmodule Nostrum.Api do
   def get_guild_channels(guild_id) do
     request(:get, Constants.guild_channels(guild_id))
     |> handle_request_with_decode({:list, {:struct, Channel}})
-  end 
+  end
 
   @doc """
   Same as `get_guild_channels/1`, but raises `Nostrum.Error.ApiError` in case of failure.
