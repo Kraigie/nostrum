@@ -1552,6 +1552,15 @@ defmodule Nostrum.Api do
     |> handle_request_with_decode({:struct, Channel})
   end
 
+  @doc """
+  Same as `create_dm/0`, but raises `Nostrum.Error.ApiError` in case of failure.
+  """
+  @spec create_dm!(User.id()) :: error | {:ok, Channel.t()}
+  def create_dm!(user_id) do
+    create_dm(user_id)
+    |> bangify()
+  end
+
     @doc """
     Creates a new group DM channel.
     """
