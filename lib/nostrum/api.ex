@@ -402,6 +402,8 @@ defmodule Nostrum.Api do
   end
 
   @doc """
+  DEPRECATED
+
   Edit a channel.
 
   Edits a channel with `options`
@@ -413,6 +415,7 @@ defmodule Nostrum.Api do
    * `bitrate` - Bitrate of the voice channel. *Voice Channels only*
    * `user_limit` - User limit of the channel. 0 for no limit. *Voice Channels only*
   """
+  @deprecated "Use `modify_channel/2` instead"
   @spec edit_channel(integer, [
       name: String.t,
       position: integer,
