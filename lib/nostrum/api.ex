@@ -1098,6 +1098,15 @@ defmodule Nostrum.Api do
   end
 
   @doc """
+  Same as `create_guild_role/2`, but raises `Nostrum.Error.ApiError` in case of failure.
+  """
+  @spec create_guild_role!(Guild.id, keyword | map) :: no_return | Role.t
+  def create_guild_role!(guild_id, params) do
+    create_guild_role(guild_id, params)
+    |> bangify()
+  end
+
+  @doc """
   Reorders a guild's roles.
 
   ## Request Params
