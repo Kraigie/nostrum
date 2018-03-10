@@ -2007,6 +2007,48 @@ defmodule Nostrum.Api do
     |> bangify()
   end
 
+  @doc """
+  Modify a guild channel's settings.
+ 
+  Can modify the following types of channels: 
+ 
+    * `0` - GUILD_TEXT
+    * `2` - GUILD_VOICE
+    * `4` - GUILD_CATEGORY
+ 
+  ## Params
+ 
+  All params are optional.
+ 
+  The following params can be used with all guild channel types:
+ 
+    * `:name` (string) - 2-100 character channel name
+    * `:position` (integer) - the position of the channel in the left-hand listing
+    * `:permission_overwrites` (list of `t:Nostrum.Struct.Overwrite.t/0`) - channel or category-specific permissions
+ 
+  The following params are limited to a specific type of channel:
+ 
+    * `:nsfw` (boolean) (GUILD_TEXT only) - if the channel is nsfw 
+    * `:topic` (string) (GUILD_TEXT only) - 0-1024 character channel topic 
+    * `:bitrate` (integer) (GUILD_VOICE only) - the bitrate (in bits) of the voice channel; 8000 to 96000 (128000 for VIP servers)
+    * `:user_limit` (integer) (GUILD_VOICE only) - the user limit of the voice channel; 0 refers to no limit, 1 to 99 refers to a user limit 
+    * `:parent_id` (`t:Nostrum.Struct.Guild.Channel.id/0`) (GUILD_TEXT, GUILD_VOICE only) - id of the new parent category for a channel
+ 
+  ## Examples
+ 
+      Nostrum.Api.modify_channel(41771983423143933, name: "elixir-nostrum", topic: "nostrum discussion")
+
+  """
+  @spec modify_channel(Channel.id(), keyword | map) :: error | {:ok, Channel.t()}
+  def modify_channel(channel_id, params)
+  def modify_channel(channel_id, params) when is_list(params), 
+    do: modify_channel(channel_id, Enum.into(params, %{}))
+
+  def modify_channel(channel_id, %{} = params) do
+    request(:patch, Constants.channel(channel_id), params)
+    |> handle_request_with_decode({:struct, Channel})
+  end
+
   def get_application_information do
     request(:get, Constants.application_information)
     |> handle
