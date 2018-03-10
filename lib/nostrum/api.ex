@@ -1533,6 +1533,15 @@ defmodule Nostrum.Api do
   end
 
   @doc """
+  Same as `get_user_dms/0`, but raises `Nostrum.Error.ApiError` in case of failure.
+  """
+  @spec get_user_dms!() :: no_return | [Channel.t()]
+  def get_user_dms! do
+    get_user_dms()
+    |> bangify()
+  end
+
+  @doc """
   Creates a new DM channel.
 
   Opens a DM channel with the user specified by `user_id`.
