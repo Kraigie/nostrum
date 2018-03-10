@@ -386,14 +386,10 @@ defmodule Nostrum.Api do
 
   Gets a channel specified by `id`.
   """
-  @spec get_channel(integer) :: error | {:ok, Nostrum.Struct.Channel.t}
+  @spec get_channel(Channel.id) :: error | {:ok, Channel.t}
   def get_channel(channel_id) do
-    case request(:get, Constants.channel(channel_id)) do
-      {:ok, body} ->
-        {:ok, Poison.decode!(body)}
-      other ->
-        other
-    end
+    request(:get, Constants.channel(channel_id))
+    |> handle_request_with_decode({:struct, Channel})
   end
 
   @doc """
