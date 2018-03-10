@@ -1184,9 +1184,11 @@ defmodule Nostrum.Api do
   @doc """
   Deletes a guild role.
 
-  Role to delte is specified by `guild_id` and `role_id`
+  ## Examples 
+ 
+      Nostrum.Api.delete_guild_role(41771983423143937, 41771983423143936)
   """
-  @spec delete_guild_role(integer, integer) :: error | {:ok}
+  @spec delete_guild_role(Guild.id, Role.id) :: error | {:ok}
   def delete_guild_role(guild_id, role_id) do
     request(:delete, Constants.guild_role(guild_id, role_id))
   end
