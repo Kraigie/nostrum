@@ -1173,6 +1173,15 @@ defmodule Nostrum.Api do
   end
 
   @doc """
+  Same as `modify_guild_role/3`, but raises `Nostrum.Error.ApiError` in case of failure.
+  """
+  @spec modify_guild_role!(Guild.id, Role.id, keyword | map) :: no_return | Role.t
+  def modify_guild_role!(guild_id, role_id, params) do
+    modify_guild_role(guild_id, role_id, params)
+    |> bangify()
+  end
+
+  @doc """
   Deletes a guild role.
 
   Role to delte is specified by `guild_id` and `role_id`
