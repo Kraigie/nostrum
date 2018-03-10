@@ -922,7 +922,7 @@ defmodule Nostrum.Api do
   ## Examples 
  
       Nostrum.Api.modify_guild_channel_positions(41771983423143937, [%{id: 41771983423143936, position: 2}])
-      
+
   """ 
   @spec modify_guild_channel_positions(Guild.id(), [map]) :: error | {:ok}
   def modify_guild_channel_positions(guild_id, params) when is_list(params) do
@@ -1526,14 +1526,10 @@ defmodule Nostrum.Api do
   @doc """
   Gets a list of user DM channels.
   """
-  @spec get_user_dms() :: error | {:ok, [Nostrum.Struct.DMChannel.t]}
+  @spec get_user_dms() :: error | {:ok, [Channel.t()]}
   def get_user_dms do
-    case request(:get, Constants.me_channels) do
-      {:ok, body} ->
-        {:ok, Poison.decode!(body)}
-      other ->
-        other
-    end
+    request(:get, Constants.me_channels)
+    |> handle_request_with_decode({:list, {:struct, Channel}})
   end
 
   @doc """
