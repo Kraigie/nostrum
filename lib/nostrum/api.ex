@@ -466,11 +466,9 @@ defmodule Nostrum.Api do
   end
 
   @doc """
-  Delete a channel.
-
-  Raises `Nostrum.Error.ApiError` if error occurs while making the rest call.
+  Same as `delete_channel/1`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
-  @spec delete_channel!(integer) :: no_return | Nostrum.Struct.Channel.t
+  @spec delete_channel!(Channel.id()) :: no_return | Channel.t()
   def delete_channel!(channel_id) do
     delete_channel(channel_id)
     |> bangify
