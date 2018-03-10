@@ -2049,6 +2049,15 @@ defmodule Nostrum.Api do
     |> handle_request_with_decode({:struct, Channel})
   end
 
+  @doc """
+  Same as `modify_channel/2`, but raises `Nostrum.Error.ApiError` in case of failure.
+  """
+  @spec modify_channel!(Channel.id(), keyword | map) :: no_return | Channel.t()
+  def modify_channel!(channel_id, params) do
+    modify_channel(channel_id, params)
+    |> bangify()
+  end
+
   def get_application_information do
     request(:get, Constants.application_information)
     |> handle
