@@ -132,6 +132,8 @@ defmodule Nostrum.Api.Ratelimiter do
         {:error, %{status_code: nil, message: reason}}
       {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
         {:ok, body}
+      {:ok, %HTTPoison.Response{status_code: 201, body: body}} -> 
+        {:ok, body}
       {:ok, %HTTPoison.Response{status_code: 204}} ->
         {:ok}
       {:ok, %HTTPoison.Response{status_code: status_code, body: body}} ->
