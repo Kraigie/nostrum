@@ -2117,6 +2117,15 @@ defmodule Nostrum.Api do
     |> handle_request_with_decode({:struct, Channel})
   end
 
+  @doc """
+  Same as `create_guild_channel/2`, but raises `Nostrum.Error.ApiError` in case of failure.
+  """
+  @spec create_guild_channel!(Guild.id(), keyword | map) :: no_return | Channel.t()
+  def create_guild_channel!(guild_id, params) do
+    create_guild_channel(guild_id, params)
+    |> bangify()
+  end
+
   def get_application_information do
     request(:get, Constants.application_information)
     |> handle
