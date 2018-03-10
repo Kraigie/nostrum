@@ -1072,29 +1072,29 @@ defmodule Nostrum.Api do
   @doc """
   Creates a guild role.
 
-  Guild to create guild for is specified by `guild_id`.
-
-  `options` is a map with the following optional keys:
-   * `name` - Name of the role.
-   * `permissions` - Bitwise of the enabled/disabled permissions.
-   * `color` - RGB color value.
-   * `hoist` - Whether the role should be displayed seperately in the sidebar.
-   * `mentionable` - Whether the role should be mentionable.
+  ## Request Params
+ 
+  The following params are optional:
+ 
+    * `:name` (string) - name of the role (default: "new role")
+    * `:permissions` (integer) - bitwise of the enabled/disabled permissions (default: @everyone perms)
+    * `:color` (integer) - RGB color value (default: 0)
+    * `:hoist` (boolean) - whether the role should be displayed separately in the sidebar (default: false)
+    * `:mentionable` (boolean) - whether the role should be mentionable (default: false)
+ 
+  ## Examples
+ 
+      iex> Nostrum.Api.create_guild_role(41771983423143937, name: "nostrum-club", hoist: true)
+      {:ok, %Nostrum.Struct.Guild.Role{}}
   """
-  @spec create_guild_role(integer, [
-      name: String.t,
-      permissions: integer,
-      color: integer,
-      hoist: boolean,
-      mentionable: boolean
-    ]) :: error | {:ok, Nostrum.Struct.Guild.Role.t}
-  def create_guild_role(guild_id, options) do
-    case request(:post, Constants.guild_roles(guild_id), options) do
-      {:ok, body} ->
-        {:ok, Poison.decode!(body)}
-      other ->
-        other
-    end
+  @spec create_guild_role(Guild.id, keyword | map) :: error | {:ok, Role.t}
+  def create_guild_role(guild_id, params)
+  def create_guild_role(guild_id, params) when is_list(params),
+    do: create_guild_role(guild_id, Map.new(params))
+  
+  def create_guild_role(guild_id, %{} = params) do
+    request(:post, Constants.guild_roles(guild_id), params)
+    |> handle_request_with_decode({:struct, Role})
   end
 
   @doc """
