@@ -459,14 +459,10 @@ defmodule Nostrum.Api do
 
   Channel to delete is specified by `channel_id`.
   """
-  @spec delete_channel(integer) :: error | {:ok, Nostrum.Struct.Channel.t}
+  @spec delete_channel(Channel.id()) :: error | {:ok, Channel.t()}
   def delete_channel(channel_id) do
-    case request(:delete, Constants.channel(channel_id)) do
-      {:ok, body} ->
-        {:ok, Poison.decode!(body)}
-      other ->
-        other
-    end
+    request(:delete, Constants.channel(channel_id))
+    |> handle_request_with_decode({:struct, Channel})
   end
 
   @doc """
