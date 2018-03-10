@@ -433,12 +433,15 @@ defmodule Nostrum.Api do
   end
 
   @doc """
+  DEPRECATED
+
   Edit a channel.
 
   See `edit_channel/2` for parameters.
 
   Raises `Nostrum.Error.ApiError` if error occurs while making the rest call.
   """
+  @deprecated "Use `edit_channel!/2` instead"
   @spec edit_channel!(integer, [
       name: String.t,
       position: integer,
