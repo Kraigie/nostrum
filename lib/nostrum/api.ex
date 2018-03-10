@@ -1546,14 +1546,10 @@ defmodule Nostrum.Api do
 
   Opens a DM channel with the user specified by `user_id`.
   """
-  @spec create_dm(integer) :: error | {:ok, Nostrum.Struct.DMChannel.t}
+  @spec create_dm(User.id()) :: error | {:ok, Channel.t()}
   def create_dm(user_id) do
-    case request(:post, Constants.me_channels, %{recipient_id: user_id}) do
-      {:ok, body} ->
-        {:ok, Poison.decode!(body)}
-      other ->
-        other
-    end
+    request(:post, Constants.me_channels, %{recipient_id: user_id})
+    |> handle_request_with_decode({:struct, Channel})
   end
 
     @doc """
