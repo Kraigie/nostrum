@@ -2084,6 +2084,39 @@ defmodule Nostrum.Api do
     |> bangify()
   end
 
+  @doc """ 
+  Creates a channel in a guild of id `guild_id`. 
+ 
+  ## Request Params
+ 
+  The following params are required: 
+ 
+    * `:name` (string) - channel name (2-100 characters)
+ 
+  The following params are optional: 
+ 
+    * `:type` (integer) - the type of channel (See `Nostrum.Struct.Guild.Channel`) 
+    * `:bitrate` (integer) - the bitrate (in bits) of the voice channel (voice only) 
+    * `:user_limit` (integer) - the user limit of the voice channel (voice only) 
+    * `:permission_overwrites` (list of `t:Nostrum.Struct.Overwrite.t/0`) - the channel's permission overwrites 
+    * `:parent_id` (`t:Nostrum.Struct.Guild.Channel.id/0`) - id of the parent category for a channel 
+    * `:nsfw` (boolean) - if the channel is nsfw
+ 
+  ## Examples
+ 
+      Nostrum.Api.create_guild_channel(41771984817263543, name: "elixir-nostrum", type: 0, nsfw: false) 
+
+  """ 
+  @spec create_guild_channel(Guild.id(), keyword | map) :: error | {:ok, Channel.t()}
+  def create_guild_channel(guild_id, params)
+  def create_guild_channel(guild_id, params) when is_list(params), 
+    do: create_guild_channel(guild_id, Map.new(params))
+  
+  def create_guild_channel(guild_id, %{} = params) do 
+    request(:post, Constants.guild_channels(guild_id), params)
+    |> handle_request_with_decode({:struct, Channel})
+  end
+
   def get_application_information do
     request(:get, Constants.application_information)
     |> handle
