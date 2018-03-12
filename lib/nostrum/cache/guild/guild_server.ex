@@ -8,6 +8,7 @@ defmodule Nostrum.Cache.Guild.GuildServer do
   alias Nostrum.Cache.Guild.GuildRegister
   alias Nostrum.Cache.Mapping.ChannelGuild
   alias Nostrum.Struct.Guild
+  alias Nostrum.Struct.Guild.{Channel, Member, Role}
   alias Nostrum.Util
 
   require Logger
@@ -386,7 +387,7 @@ defmodule Nostrum.Cache.Guild.GuildServer do
   end
 
   def handle_call({:update, :member, guild_id, new_partial_member}, _from, state) do
-    old_member = state.members[new_partial_member.user.id]
+    old_member = Map.get(state.members, new_partial_member.user.id, %Member{})
     new_member = Map.merge(old_member, new_partial_member)
     new_members = Map.put(state.members, new_partial_member.user.id, new_member)
     {:reply, {guild_id, old_member, new_member}, %{state | members: new_members}}
@@ -403,7 +404,7 @@ defmodule Nostrum.Cache.Guild.GuildServer do
   end
 
   def handle_call({:update, :channel, channel}, _from, state) do
-    old_channel = state.channels[channel.id]
+    old_channel = Map.get(state.channels, channel.id, %Channel{})
     new_channel = Map.merge(old_channel, channel)
     new_channels = Map.put(state.channels, channel.id, new_channel)
     {:reply, {old_channel, new_channel}, %{state | channels: new_channels}}
@@ -420,7 +421,7 @@ defmodule Nostrum.Cache.Guild.GuildServer do
   end
 
   def handle_call({:update, :role, guild_id, role}, _from, state) do
-    old_role = state.roles[role.id]
+    old_role = Map.get(state.roles, role.id, %Role{})
     new_role = Map.merge(old_role, role)
     new_roles = Map.put(state.roles, role.id, new_role)
     {:reply, {guild_id, old_role, new_role}, %{state | roles: new_roles}}
