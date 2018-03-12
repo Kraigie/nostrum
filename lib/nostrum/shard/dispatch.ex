@@ -106,7 +106,6 @@ defmodule Nostrum.Shard.Dispatch do
 
     res = 
       guild
-      |> GuildServer.index_guild
       |> Guild.to_struct
       |> GuildServer.create
 
