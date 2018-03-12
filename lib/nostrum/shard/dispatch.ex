@@ -4,8 +4,9 @@ defmodule Nostrum.Shard.Dispatch do
   alias Nostrum.Cache.{ChannelCache, UserCache}
   alias Nostrum.Cache.Guild.GuildServer
   alias Nostrum.Shard.Session
+  alias Nostrum.Struct.Channel
   alias Nostrum.Struct.Guild
-  alias Nostrum.Struct.Guild.{Channel, Member, Role, UnavailableGuild}
+  alias Nostrum.Struct.Guild.{Member, Role, UnavailableGuild}
 
   require Logger
 
@@ -105,7 +106,6 @@ defmodule Nostrum.Shard.Dispatch do
 
     res = 
       guild
-      |> GuildServer.index_guild
       |> Guild.to_struct
       |> GuildServer.create
 

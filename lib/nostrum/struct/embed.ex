@@ -1,6 +1,17 @@
 defmodule Nostrum.Struct.Embed do
   @moduledoc """
   Struct representing a Discord embed.
+
+  A `Nostrum.Struct.Embed` is a form of formatting used to make message content 
+  look more nice.
+
+  Unlike other kinds of discord objects, all `Nostrum.Struct.Embed` fields are optional. This includes 
+  their children objects, such as `Nostrum.Struct.Embed.Author`, `Nostrum.Struct.Embed.Provider`, etc. 
+  Thus, nostrum has one condition for a `Nostrum.Struct.Embed` to be valid:
+
+    * Any `Nostrum.Struct.Embed` and its children must have at least one non-nil value
+
+  Breaking this condition means that discord will reject any embeds nostrum sends through the API.
   """
 
   alias Nostrum.Struct.Embed.{Author, Field, Footer, Image,
@@ -8,40 +19,40 @@ defmodule Nostrum.Struct.Embed do
   alias Nostrum.Util
 
   @typedoc "Title of the embed"
-  @type title :: String.t
+  @type title :: String.t | nil
 
   @typedoc "Type of the embed"
   @type type :: String.t
 
   @typedoc "Description of the embed"
-  @type description :: String.t
+  @type description :: String.t | nil
 
   @typedoc "Url of the embed"
-  @type url :: String.t
+  @type url :: String.t | nil
 
   @typedoc "Timestamp of embed content"
-  @type timestamp :: String.t
+  @type timestamp :: String.t | nil
 
   @typedoc "Color code of the embed"
-  @type color :: Integer.t
+  @type color :: integer | nil
 
   @typedoc "Footer information"
-  @type footer :: Footer.t
+  @type footer :: Footer.t | nil
 
   @typedoc "Image information"
-  @type image :: Image.t
+  @type image :: Image.t | nil
 
   @typedoc "Thumbnail information"
-  @type thumbnail :: Thumbnail.t
+  @type thumbnail :: Thumbnail.t | nil
 
   @typedoc "Video information"
-  @type video :: Video.t
+  @type video :: Video.t | nil
 
   @typedoc "Provider information"
-  @type provider :: Provider.t
+  @type provider :: Provider.t | nil
 
   @typedoc "Author information"
-  @type author :: Author.t
+  @type author :: Author.t | nil
 
   @typedoc "Fields information"
   @type fields :: [Field.t]
@@ -76,7 +87,7 @@ defmodule Nostrum.Struct.Embed do
     :video,
     :provider,
     :author,
-    :fields
+    fields: []
   ]
 
   # TODO: Jump down the rabbit hole
@@ -88,14 +99,13 @@ defmodule Nostrum.Struct.Embed do
 
   @doc false
   def to_struct(map) do
-    new = map
-    |> Map.update(:footer, %{}, &Footer.to_struct(&1))
-    |> Map.update(:image, %{}, &Image.to_struct(&1))
-    |> Map.update(:thumbnail, %{}, &Thumbnail.to_struct(&1))
-    |> Map.update(:video, %{}, &Video.to_struct(&1))
-    |> Map.update(:provider, %{}, &Provider.to_struct(&1))
-    |> Map.update(:author, %{}, &Author.to_struct(&1))
-    |> Map.update(:fields, %{}, &Util.list_to_struct_list(&1, Field))
-    struct(__MODULE__, new)
+    struct(__MODULE__, Util.safe_atom_map(map))
+    |> Map.update(:footer, nil, &Util.cast_struct(&1, Footer))
+    |> Map.update(:image, nil, &Util.cast_struct(&1, Image))
+    |> Map.update(:thumbnail, nil, &Util.cast_struct(&1, Thumbnail))
+    |> Map.update(:video, nil, &Util.cast_struct(&1, Video))
+    |> Map.update(:provider, nil, &Util.cast_struct(&1, Provider))
+    |> Map.update(:author, nil, &Util.cast_struct(&1, Author))
+    |> Map.update(:fields, [], &Util.cast_struct(&1, Field))
   end
 end

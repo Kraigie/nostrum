@@ -45,8 +45,9 @@ defmodule Nostrum.Api do
 
   alias Nostrum.{Constants, Util}
   alias Nostrum.Cache.Guild.GuildServer
-  alias Nostrum.Struct.{Embed, Guild, Message, User, Webhook}
-  alias Nostrum.Struct.Guild.{Member, Channel, Role}
+  alias Nostrum.Struct.Channel
+  alias Nostrum.Struct.{Embed, Emoji, Guild, Message, User, Webhook}
+  alias Nostrum.Struct.Guild.{Member, Role}
   alias Nostrum.Shard.{Supervisor, Session}
 
   @typedoc """
@@ -136,39 +137,27 @@ defmodule Nostrum.Api do
   Nostrum.Api.create_message(1111111111111, [content: "my os rules", file: ~S"C:\i\use\windows"])
   ```
   """
-  @spec create_message(Message.t, message_content, boolean) :: error | {:ok, Message.t}
-  @spec create_message(Channel.id, message_content, boolean) :: error | {:ok, Message.t}
+  @spec create_message(Channel.id | Message.t, message_content, boolean) :: error | {:ok, Message.t}
   def create_message(channel_id, content, tts \\ false)
-
   def create_message(%Message{channel_id: id}, content, tts) when is_binary(content),
     do: create_message(id, content, tts)
-
+  
   # Sending regular messages
-  def create_message(channel_id, content, tts) when is_binary(content) do
-    request(:post, Constants.channel_messages(channel_id), %{content: content, tts: tts})
-    |> handle(Message)
-  end
+  def create_message(channel_id, content, tts) when is_binary(content), 
+    do: do_create_message(channel_id, %{content: content, tts: tts})
 
   # Embeds
-  def create_message(channel_id, [content: c, embed: e], tts) do
-    request(:post, Constants.channel_messages(channel_id), %{content: c, embed: e, tts: tts})
-    |> handle(Message)
-  end
-
+  def create_message(channel_id, [content: c, embed: e], tts), 
+    do: do_create_message(channel_id, %{content: c, embed: e, tts: tts})
+  
   # Files
-  def create_message(channel_id, [file_name: c, file: f], tts) do
-    request_multipart(:post, Constants.channel_messages(channel_id), %{content: c, file: f, tts: tts})
-    |> handle(Message)
-  end
+  def create_message(channel_id, [file_name: c, file: f], tts), 
+    do: do_create_message(channel_id, %{content: c, file: f, tts: tts})
 
   @doc """
-  Send a message to a channel.
-
-  See `create_message/3` for usage.
-
-  Raises `Nostrum.Error.ApiError` if error occurs while making the rest call.
+  Same as `create_message/3`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
-  @spec create_message!(Channel.id, message_content, boolean) :: no_return | Message.t
+  @spec create_message!(Channel.id | Message.t, message_content, boolean) :: no_return | Message.t
   def create_message!(channel_id, content, tts \\ false) do
     create_message(channel_id, content, tts)
     |> bangify
@@ -196,16 +185,21 @@ defmodule Nostrum.Api do
   """
   @spec edit_message(Channel.id, Message.id, String.t) :: error | {:ok, Message.t}
   def edit_message(channel_id, message_id, content) do
-    request(:patch, Constants.channel_message(channel_id, message_id), %{content: content})
-    |> handle(Message)
+    case request(:patch, Constants.channel_message(channel_id, message_id), %{content: content}) do 
+      {:ok, body} -> 
+        message =  
+          body 
+          |> Poison.decode!() 
+          |> Util.cast({:struct, Message})
+ 
+        {:ok, message} 
+      other -> 
+        other 
+    end
   end
 
   @doc """
-  Edit a message.
-
-  See `edit_message/2` for usage.
-
-  Raises `Nostrum.Error.ApiError` if error occurs while making the rest call.
+  Same as `edit_message/2`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
   @spec edit_message!(Message.t, String.t) :: error | {:ok, Message.t}
   def edit_message!(%Message{id: id, channel_id: c_id}, content) do
@@ -214,11 +208,7 @@ defmodule Nostrum.Api do
   end
 
   @doc """
-  Edit a message.
-
-  See `edit_message/3` for usage.
-
-  Raises `Nostrum.Error.ApiError` if error occurs while making the rest call.
+  Same as `edit_message/3`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
   @spec edit_message!(Channel.id, Message.id, String.t) :: no_return | {:ok, Message.t}
   def edit_message!(channel_id, message_id, content) do
@@ -250,24 +240,16 @@ defmodule Nostrum.Api do
   end
 
   @doc """
-  Delete a message.
-
-  See `delete_message/1` for usage.
-
-  Raises `Nostrum.Error.ApiError` if error occurs while making the rest call.
+  Same as `delete_message/1`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
-  @spec delete_message!(Message.t) :: error | {:ok}
+  @spec delete_message!(Message.t) :: no_return | {:ok}
   def delete_message!(%Message{id: id, channel_id: c_id}) do
     delete_message(c_id, id)
     |> bangify
   end
 
   @doc """
-  Delete a message.
-
-  See `delete_message/2` for usage.
-
-  Raises `Nostrum.Error.ApiError` if error occurs while making the rest call.
+  Same as `delete_message/2`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
   @spec delete_message!(Channel.id, Message.id) :: no_return | {:ok}
   def delete_message!(channel_id, message_id) do
@@ -276,66 +258,115 @@ defmodule Nostrum.Api do
   end
 
   @doc ~S"""
-  Create a rection for a message.
+  Create a reaction for a message.
 
-  Creates a reaction using an `emoji` for the message specified by `message_id` and
-  `channel_id`. `emoji` can be a `Nostrum.Struct.Emoji.custom_emoji.t`, a
-  base 16 unicode emoji string, or a uri encoded string.
 
-  **Example**
-  ```Elixir
-  Nostrum.Api.create_reaction(123123123123, 321321321321, "\xF0\x9F\x98\x81")
-  Nostrum.Api.create_reaction(123123123123, 321321321321, URI.encode("\u2b50"))
-  ```
+  Parameter `emoji` can be any of the following:
 
-  Returns `{:ok}` if successful, `{:error, reason}` otherwise.
+    * A `t:Nostrum.Struct.Emoji.emoji_api_name/0`.
+    * A base 16 unicode emoji string.
+    * A URI encoded string.
+
+  ## Permissions
+
+  This function requires that the nostrum user have the following permissions:
+
+    * `READ_MESSAGE_HISTORY`
+    * `ADD_REACTIONS` (if adding a new reaction)
+
+  ## Examples
+
+      iex> Nostrum.Api.create_reaction(123123123123, 321321321321, "\xF0\x9F\x98\x81")
+      {:ok}
+      iex> Nostrum.Api.create_reaction(123123123123, 321321321321, URI.encode("\u2b50"))
+      {:ok}
   """
-  @spec create_reaction(integer, integer, String.t | Nostrum.Struct.Emoji.custom_emoji) :: error | {:ok}
+  @spec create_reaction(Channel.id, Message.id, String.t | Emoji.emoji_api_name) :: error | {:ok}
   def create_reaction(channel_id, message_id, emoji) do
     request(:put, Constants.channel_reaction_me(channel_id, message_id, emoji))
   end
 
   @doc """
-  Deletes a rection made by the user.
-
-  Reaction to delete is specified by
-  `channel_id`, `message_id`, and `emoji`.
-
-  Returns `{:ok}` if successful, `{:error, reason}` otherwise.
+  Same as `create_reaction/3`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
-  @spec create_reaction(integer, integer, String.t | Nostrum.Struct.Emoji.custom_emoji) :: error | {:ok}
+  @spec create_reaction!(Channel.id, Message.id, String.t | Emoji.emoji_api_name) :: no_return | {:ok}
+  def create_reaction!(channel_id, message_id, emoji) do
+    create_reaction(channel_id, message_id, emoji)
+    |> bangify()
+  end
+
+  @doc """
+  Deletes a reaction made by the user.
+
+  Parameter `emoji` can be any of the following:
+
+    * A `t:Nostrum.Struct.Emoji.emoji_api_name/0`.
+    * A base 16 unicode emoji string.
+    * A URI encoded string.
+
+  ## Examples
+
+      iex> Nostrum.Api.delete_own_reaction(123123123123, 321321321321, "\xF0\x9F\x98\x81")
+      {:ok}
+      iex> Nostrum.Api.delete_own_reaction(123123123123, 321321321321, URI.encode("\u2b50"))
+      {:ok}
+  """
+  @spec delete_own_reaction(Channel.id, Message.id, String.t | Emoji.emoji_api_name) :: error | {:ok}
   def delete_own_reaction(channel_id, message_id, emoji) do
     request(:delete, Constants.channel_reaction_me(channel_id, message_id, emoji))
   end
 
   @doc """
-  Deletes a rection from a message.
-
-  Reaction to delete is specified by
-  `channel_id`, `message_id`, `emoji`, and `user_id`.
-
-  Returns `{:ok}` if successful, `{:error, reason}` otherwise.
+  Same as `delete_own_reaction/3`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
-  @spec delete_reaction(integer, integer, String.t | Nostrum.Struct.Emoji.custom_emoji, integer) :: error | {:ok}
-  def delete_reaction(channel_id, message_id, emoji, user_id) do
-    request(:delete, Constants.channel_reaction(channel_id, message_id, emoji, user_id))
+  @spec delete_own_reaction!(Channel.id, Message.id, String.t | Emoji.emoji_api_name) :: no_return | {:ok}
+  def delete_own_reaction!(channel_id, message_id, emoji) do
+    delete_own_reaction(channel_id, message_id, emoji)
+    |> bangify()
   end
 
+  @doc false
+  @deprecated "Use `delete_user_reaction/4` instead"
+  @spec delete_reaction(Channel.id, Message.id, String.t | Emoji.emoji_api_name, User.id) :: error | {:ok}
+  def delete_reaction(channel_id, message_id, emoji, user_id), do: delete_user_reaction(channel_id, message_id, emoji, user_id)
+
   @doc """
-  Gets all users who reacted with an emoji.
+  Gets all users who reacted with an `emoji`.
 
-  Retrieves a list of users who have reacted with an emoji.
+  Parameter `emoji` can be any of the following:
 
-  Returns `{:ok, [Nostrum.Struct.User]}` if successful, `{:error, reason}` otherwise.
+    * A `t:Nostrum.Struct.Emoji.emoji_api_name/0`.
+    * A base 16 unicode emoji string.
+    * A URI encoded string.
+
+  If the request was successful, this function returns `{:ok, users}`, where 
+  `users` is a list of `Nostrum.Struct.User`. Otherwise, this function 
+  returns `{:error, reason}`.
   """
-  @spec get_reactions(integer, integer, String.t | Nostrum.Struct.Emoji.custom_emoji) :: error | {:ok, [Nostrum.Struct.User]}
+  @spec get_reactions(Channel.id, Message.id, String.t | Emoji.emoji_api_name) :: error | {:ok, [User.t]}
   def get_reactions(channel_id, message_id, emoji) do
     case request(:get, Constants.channel_reactions_get(channel_id, message_id, emoji)) do
       {:ok, body} ->
-        {:ok, Poison.decode!(body)}
+        users =
+          body 
+          |> Poison.decode!() 
+          |> Enum.map(fn user_dto -> 
+            User.to_struct(user_dto) 
+          end) 
+         
+        {:ok, users}
       other ->
         other
     end
+  end
+
+  @doc """
+  Same as `get_reactions/3`, but raises `Nostrum.Error.ApiError` in case of failure.
+  """
+  @spec get_reactions!(Channel.id, Message.id, String.t | Emoji.custom_emoji) :: no_return | [User.t]
+  def get_reactions!(channel_id, message_id, emoji) do
+    get_reactions(channel_id, message_id, emoji)
+    |> bangify
   end
 
   @doc """
@@ -356,30 +387,24 @@ defmodule Nostrum.Api do
 
   Gets a channel specified by `id`.
   """
-  @spec get_channel(integer) :: error | {:ok, Nostrum.Struct.Channel.t}
+  @spec get_channel(Channel.id) :: error | {:ok, Channel.t}
   def get_channel(channel_id) do
-    case request(:get, Constants.channel(channel_id)) do
-      {:ok, body} ->
-        {:ok, Poison.decode!(body)}
-      other ->
-        other
-    end
+    request(:get, Constants.channel(channel_id))
+    |> handle_request_with_decode({:struct, Channel})
   end
 
   @doc """
-  Get a channel.
-
-  Gets a channel specified by `id`.
-
-  Raises `Nostrum.Error.ApiError` if error occurs while making the rest call.
+  Same as `get_channel/1`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
-  @spec get_channel!(integer) :: no_return | Nostrum.Struct.Channel.t
+  @spec get_channel!(Channel.id) :: no_return | Channel.t
   def get_channel!(channel_id) do
     get_channel(channel_id)
     |> bangify
   end
 
   @doc """
+  DEPRECATED
+
   Edit a channel.
 
   Edits a channel with `options`
@@ -391,6 +416,7 @@ defmodule Nostrum.Api do
    * `bitrate` - Bitrate of the voice channel. *Voice Channels only*
    * `user_limit` - User limit of the channel. 0 for no limit. *Voice Channels only*
   """
+  @deprecated "Use `modify_channel/2` instead"
   @spec edit_channel(integer, [
       name: String.t,
       position: integer,
@@ -408,12 +434,15 @@ defmodule Nostrum.Api do
   end
 
   @doc """
+  DEPRECATED
+
   Edit a channel.
 
   See `edit_channel/2` for parameters.
 
   Raises `Nostrum.Error.ApiError` if error occurs while making the rest call.
   """
+  @deprecated "Use `edit_channel!/2` instead"
   @spec edit_channel!(integer, [
       name: String.t,
       position: integer,
@@ -431,22 +460,16 @@ defmodule Nostrum.Api do
 
   Channel to delete is specified by `channel_id`.
   """
-  @spec delete_channel(integer) :: error | {:ok, Nostrum.Struct.Channel.t}
+  @spec delete_channel(Channel.id()) :: error | {:ok, Channel.t()}
   def delete_channel(channel_id) do
-    case request(:delete, Constants.channel(channel_id)) do
-      {:ok, body} ->
-        {:ok, Poison.decode!(body)}
-      other ->
-        other
-    end
+    request(:delete, Constants.channel(channel_id))
+    |> handle_request_with_decode({:struct, Channel})
   end
 
   @doc """
-  Delete a channel.
-
-  Raises `Nostrum.Error.ApiError` if error occurs while making the rest call.
+  Same as `delete_channel/1`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
-  @spec delete_channel!(integer) :: no_return | Nostrum.Struct.Channel.t
+  @spec delete_channel!(Channel.id()) :: no_return | Channel.t()
   def delete_channel!(channel_id) do
     delete_channel(channel_id)
     |> bangify
@@ -498,7 +521,7 @@ defmodule Nostrum.Api do
         non_empty_locator -> [{:limit, limit}, non_empty_locator]
       end
     request(:get, Constants.channel_messages(channel_id), "", params: qs_params)
-    |> handle([Message])
+    |> handle_request_with_decode({:list, {:struct, Message}})
   end
 
   @doc """
@@ -521,12 +544,8 @@ defmodule Nostrum.Api do
   """
   @spec get_channel_message(integer, integer) :: error | {:ok, Message.t}
   def get_channel_message(channel_id, message_id) do
-    case request(:get, Constants.channel_message(channel_id, message_id)) do
-      {:ok, body} ->
-        {:ok, Poison.decode!(body)}
-      other ->
-        other
-    end
+    request(:get, Constants.channel_message(channel_id, message_id))
+    |> handle_request_with_decode({:struct, Message})
   end
 
   @doc """
@@ -700,12 +719,8 @@ defmodule Nostrum.Api do
   """
   @spec get_pinned_messages(integer) :: error | {:ok, [Message.t]}
   def get_pinned_messages(channel_id) do
-    case request(:get, Constants.channel_pins(channel_id)) do
-      {:ok, body} ->
-        {:ok, Poison.decode!(body, as: [%Nostrum.Struct.Message{}])}
-      other ->
-        other
-    end
+    request(:get, Constants.channel_pins(channel_id))
+    |> handle_request_with_decode({:list, {:struct, Message}})
   end
 
   @doc """
@@ -845,10 +860,13 @@ defmodule Nostrum.Api do
   end
 
   @doc """
+  DEPRECATED
+
   Gets a list of channels.
 
   Guild to get channels for is specified by `guild_id`.
   """
+  @deprecated "Use `get_guild_channels/1` instead"
   @spec get_channels(integer) :: error | {:ok, Nostrum.Struct.Channel.t}
   def get_channels(guild_id) do
     case request(:get, Constants.guild_channels(guild_id)) do
@@ -860,6 +878,8 @@ defmodule Nostrum.Api do
   end
 
   @doc """
+  DEPRECATED
+
   Creates a channel.
 
   Guild to create channel in is specifed by `guild_id`.
@@ -871,6 +891,7 @@ defmodule Nostrum.Api do
    * `user_limit` - User limit if creating voice channel.
    * `permission_overwrites` - Array of permission overwrites.
   """
+  @deprecated "Use `create_guild_channel/2` instead"
   @spec create_channel(integer, %{
       name: String.t,
       type: String.t,
@@ -887,33 +908,30 @@ defmodule Nostrum.Api do
     end
   end
 
-  @doc """
-  Reorders a guild's channels.
+  @doc """ 
+  Modify the positions of a set of channels for the guild. 
+ 
+  ## Request Params
+ 
+  Unlike other request params, this function's params accepts a list of maps.
+   
+  Each of these maps require the following keys: 
+   
+    * `:id` (integer) - channel id 
+    * `:position` (integer) - sorting position of the channel 
+ 
+  ## Examples 
+ 
+      Nostrum.Api.modify_guild_channel_positions(41771983423143937, [%{id: 41771983423143936, position: 2}])
 
-  Guild to modify channels for is specified by `guild_id`.
-
-  `options` is a list of maps with the following keys:
-   * `id` - Id of the channel.
-   * `position` - Sorting position of the channel.
-  """
-  @spec modify_channel_position(integer, [%{
-      id: integer,
-      position: integer
-    }]) :: error | {:ok, [Nostrum.Struct.Guild.Channel.t]}
-  def modify_channel_position(guild_id, options) do
-    case request(:patch, Constants.guild_channels(guild_id), options) do
-      {:ok, body} ->
-        {:ok, Poison.decode!(body)}
-      other ->
-        other
-    end
+  """ 
+  @spec modify_guild_channel_positions(Guild.id(), [map]) :: error | {:ok}
+  def modify_guild_channel_positions(guild_id, params) when is_list(params) do
+    request(:patch, Constants.guild_channels(guild_id), params)
   end
 
-  @doc """
-  Gets a guild member.
-
-  Member to get is specified by `guild_id` and `user_id`.
-  """
+  @doc false
+  @deprecated "Use `get_guild_member/2` instead"
   @spec get_member(integer, integer) :: error | {:ok, Nostrum.Struct.Guild.Member.t}
   def get_member(guild_id, user_id) do
     case request(:get, Constants.guild_member(guild_id, user_id)) do
@@ -924,15 +942,8 @@ defmodule Nostrum.Api do
     end
   end
 
-  @doc """
-  Gets a list of guild members.
-
-  ## Parameters
-  `guild_id` - Guild to get members.
-  `options` - Map with the following *optional* keys:
-    - `limit` - Max number of members to return (1-1000)
-    - `after` - Highest user id of the previous page.
-  """
+  @doc false
+  @deprecated "Use `list_guild_members/2` instead"
   @spec get_guild_members(Guild.id, %{
     limit: 1..1000,
     after: integer
@@ -942,18 +953,8 @@ defmodule Nostrum.Api do
     |> handle([Member])
   end
 
-  @doc """
-  Adds a member to a guild.
-
-  Member to add is specified by `guild_id` and `user_id`
-
-  `options` is a map with the following option keys:
-   * `nick` - Users nickname.
-   * `roles` - Array of roles to give member.
-   * `mute` - If the user should be muted.
-   * `deaf` - If the user should be deafaned.
-   * `channel_id` - Id of the channel to move the user to.
-  """
+  @doc false
+  @deprecated "Use `add_guild_member/3` instead"
   @spec add_member(integer, integer, %{
       nick: String.t,
       roles: [integer],
@@ -970,18 +971,8 @@ defmodule Nostrum.Api do
     end
   end
 
-  @doc """
-  Modifies a guild member.
-
-  Member to modify is specified by `guild_id` and `user_id`
-
-  `options` is a map with the following option keys:
-   * `nick` - Users nickname.
-   * `roles` - Array of roles to give member.
-   * `mute` - If the user should be muted.
-   * `deaf` - If the user should be deafaned.
-   * `channel_id` - Id of the channel to move the user to.
-  """
+  @doc false
+  @deprecated "Use `modify_guild_member/3` instead"
   @spec modify_member(integer, integer, %{
       nick: String.t,
       roles: [integer],
@@ -1015,11 +1006,8 @@ defmodule Nostrum.Api do
     request(:delete, Constants.guild_member_role(guild_id, user_id, role_id))
   end
 
-  @doc """
-  Removes a memeber from a guild.
-
-  Member to remove is specified by `guild_id` and `user_id`.
-  """
+  @doc false
+  @deprecated "Use `remove_guild_member/2` instead"
   @spec remove_member(integer, integer) :: error | {:ok}
   def remove_member(guild_id, user_id) do
     request(:delete, Constants.guild_member(guild_id, user_id))
@@ -1065,97 +1053,141 @@ defmodule Nostrum.Api do
 
   Guild to get roles for is specified by `guild_id`.
   """
-  @spec get_guild_roles(integer) :: error | {:ok, Nostrum.Struct.Guild.Role.t}
+  @spec get_guild_roles(Guild.id) :: error | {:ok, [Role.t]}
   def get_guild_roles(guild_id) do
-    case request(:get, Constants.guild_roles(guild_id)) do
-      {:ok, body} ->
-        {:ok, Poison.decode!(body)}
-      other ->
-        other
-    end
+    request(:get, Constants.guild_roles(guild_id))
+    |> handle_request_with_decode({:list, {:struct, Role}})
+  end
+
+  @doc """
+  Same as `get_guild_roles/1`, but raises `Nostrum.Error.ApiError` in case of failure.
+  """
+  @spec get_guild_roles!(Guild.id) :: no_return | [Role.t]
+  def get_guild_roles!(guild_id) do
+    get_guild_roles(guild_id)
+    |> bangify()
   end
 
   @doc """
   Creates a guild role.
 
-  Guild to create guild for is specified by `guild_id`.
-
-  `options` is a map with the following optional keys:
-   * `name` - Name of the role.
-   * `permissions` - Bitwise of the enabled/disabled permissions.
-   * `color` - RGB color value.
-   * `hoist` - Whether the role should be displayed seperately in the sidebar.
-   * `mentionable` - Whether the role should be mentionable.
+  ## Request Params
+ 
+  The following params are optional:
+ 
+    * `:name` (string) - name of the role (default: "new role")
+    * `:permissions` (integer) - bitwise of the enabled/disabled permissions (default: @everyone perms)
+    * `:color` (integer) - RGB color value (default: 0)
+    * `:hoist` (boolean) - whether the role should be displayed separately in the sidebar (default: false)
+    * `:mentionable` (boolean) - whether the role should be mentionable (default: false)
+ 
+  ## Examples
+ 
+      iex> Nostrum.Api.create_guild_role(41771983423143937, name: "nostrum-club", hoist: true)
+      {:ok, %Nostrum.Struct.Guild.Role{}}
   """
-  @spec create_guild_role(integer, [
-      name: String.t,
-      permissions: integer,
-      color: integer,
-      hoist: boolean,
-      mentionable: boolean
-    ]) :: error | {:ok, Nostrum.Struct.Guild.Role.t}
-  def create_guild_role(guild_id, options) do
-    case request(:post, Constants.guild_roles(guild_id), options) do
-      {:ok, body} ->
-        {:ok, Poison.decode!(body)}
-      other ->
-        other
-    end
+  @spec create_guild_role(Guild.id, keyword | map) :: error | {:ok, Role.t}
+  def create_guild_role(guild_id, params)
+  def create_guild_role(guild_id, params) when is_list(params),
+    do: create_guild_role(guild_id, Map.new(params))
+  
+  def create_guild_role(guild_id, %{} = params) do
+    request(:post, Constants.guild_roles(guild_id), params)
+    |> handle_request_with_decode({:struct, Role})
+  end
+
+  @doc """
+  Same as `create_guild_role/2`, but raises `Nostrum.Error.ApiError` in case of failure.
+  """
+  @spec create_guild_role!(Guild.id, keyword | map) :: no_return | Role.t
+  def create_guild_role!(guild_id, params) do
+    create_guild_role(guild_id, params)
+    |> bangify()
   end
 
   @doc """
   Reorders a guild's roles.
 
-  Guild to modify roles for is specified by `guild_id`.
-
-  `options` is a list of maps with the following keys:
-   * `id` - Id of the role.
-   * `position` - Sorting position of the role.
+  ## Request Params
+ 
+  Unlike other params, this function's params accepts a list of maps. Each of these 
+  maps require the following keys:
+  
+    * `:id` (integer) - role
+    * `:position` (integer) - sorting position of the role
+ 
+  ## Examples
+ 
+      Nostrum.Api.modify_guild_role_positions(41771983423143937, [%{id: 41771983423143936, position: 2}])
+  
   """
-  @spec modify_guild_role_positions(integer, [%{
+  @spec modify_guild_role_positions(Guild.id, [%{
       id: integer,
       position: integer
-    }]) :: error | {:ok, [Nostrum.Struct.Guild.Role.t]}
-  def modify_guild_role_positions(guild_id, options) do
-    case request(:patch, Constants.guild_roles(guild_id), options) do
-      {:ok, body} ->
-        {:ok, Poison.decode!(body)}
-      other ->
-        other
-    end
+    }]) :: error | {:ok, [Role.t]}
+  def modify_guild_role_positions(guild_id, params) do
+    request(:patch, Constants.guild_roles(guild_id), params)
+    |> handle_request_with_decode({:list, {:struct, Role}})
+  end
+
+  @doc """
+  Same as `modify_guild_role_positions/2`, but raises `Nostrum.Error.ApiError` in case of failure.
+  """
+  @spec modify_guild_role_positions!(Guild.id, [%{
+    id: integer,
+    position: integer
+  }]) :: no_return | [Role.t]
+  def modify_guild_role_positions!(guild_id, params) do
+    modify_guild_role_positions(guild_id, params)
+    |> bangify()
   end
 
   @doc """
   Modifies a guild role.
+  
+  ## Request Params 
+ 
+  The following keys are optional: 
+ 
+    * `:name` (string) - name of the role. 
+    - `:permissions` (integer) - bitwise of the enabled/disabled permissions. 
+    - `:color` (integer) - RGB color value. 
+    - `:hoist` (boolean) - whether the role should be displayed seperately in the sidebar. 
+    - `:mentionable` (boolean) - whether the role should be mentionable. 
+ 
+  ## Examples 
+ 
+      Nostrum.Api.modify_guild_role(41771983423143937, 41771983423143936, hoist: false)
 
-  ## Parameter
-  `guild_id` - Guild to modify role for.
-  `role_id` - Role to modify.
-  `options` - Map with the following *optional* keys:
-    - `name` - Name of the role.
-    - `permissions` - Bitwise of the enabled/disabled permissions.
-    - `color` - RGB color value.
-    - `hoist` - Whether the role should be displayed seperately in the sidebar.
-    - `mentionable` - Whether the role should be mentionable.
+      Nostrum.Api.modify_guild_role(41771983423143937, 41771983423143936, %{hoist: false})
+  """ 
+  @spec modify_guild_role(Guild.id, Role.id, keyword | map) :: error | {:ok, Role.t}
+  def modify_guild_role(guild_id, role_id, params)
+  def modify_guild_role(guild_id, role_id, params) when is_list(params), 
+    do: modify_guild_role(guild_id, role_id, Map.new(params))
+
+  def modify_guild_role(guild_id, role_id, %{} = params) do
+    request(:patch, Constants.guild_role(guild_id, role_id), params)
+    |> handle_request_with_decode({:struct, Role})
+  end
+
+  @doc """
+  Same as `modify_guild_role/3`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
-  @spec modify_guild_role(Guild.id, Role.id, %{
-      name: String.t,
-      permissions: integer,
-      color: integer,
-      hoist: boolean,
-      mentionable: boolean
-  }) :: error | {:ok, Nostrum.Struct.Guild.Role.t}
-  def modify_guild_role(guild_id, role_id, options) do
-    request(:patch, Constants.guild_role(guild_id, role_id), options)
-    |> handle(Role)
+  @spec modify_guild_role!(Guild.id, Role.id, keyword | map) :: no_return | Role.t
+  def modify_guild_role!(guild_id, role_id, params) do
+    modify_guild_role(guild_id, role_id, params)
+    |> bangify()
   end
 
   @doc """
   Deletes a guild role.
 
-  Role to delte is specified by `guild_id` and `role_id`
+  ## Examples 
+ 
+      Nostrum.Api.delete_guild_role(41771983423143937, 41771983423143936)
   """
-  @spec delete_guild_role(integer, integer) :: error | {:ok}
+  @spec delete_guild_role(Guild.id, Role.id) :: error | {:ok}
   def delete_guild_role(guild_id, role_id) do
     request(:delete, Constants.guild_role(guild_id, role_id))
   end
@@ -1355,16 +1387,30 @@ defmodule Nostrum.Api do
   end
 
   @doc """
-  Gets a user.
+  Gets a user by its `user_id`.
 
-  User to get is specified by `user_id`.
+  If the request is successful, this function returns `{:ok, user}`, where 
+  `user` is a `Nostrum.Struct.User`. Otherwise, returns `{:error, reason}`.
   """
-  @spec get_user(integer) :: error | {:ok, Nostrum.Sturct.User.t}
+  @spec get_user(User.id) :: error | {:ok, User.t}
   def get_user(user_id) do
-    request(:get, Constants.user(user_id))
+    case request(:get, Constants.user(user_id)) do 
+      {:ok, body} -> 
+        user =  
+          body 
+          |> Poison.decode!() 
+          |> User.to_struct() 
+ 
+        {:ok, user} 
+      other -> 
+        other 
+    end 
   end
 
-  @spec get_user!(integer) :: no_return | Nostrum.Struct.User.t
+  @doc """
+  Same as `get_user/1`, but raises `Nostrum.Error.ApiError` in case of failure.
+  """
+  @spec get_user!(User.id) :: no_return | User.t
   def get_user!(user_id) do
     get_user(user_id)
     |> bangify
@@ -1372,37 +1418,78 @@ defmodule Nostrum.Api do
 
   @doc """
   Gets info on the current user.
+
+  If nostrum's caching is enabled, it is recommended to use `Nostrum.Cache.Me.get/0` 
+  instead of this function. This is because sending out an API request is much slower 
+  than pulling from our cache.
+
+  If the request is successful, this function returns `{:ok, user}`, where 
+  `user` is nostrum's `Nostrum.Struct.User`. Otherwise, returns `{:error, reason}`.
   """
-  @spec get_current_user() :: error | {:ok, Nostrum.Struct.User.t}
+  @spec get_current_user() :: error | {:ok, User.t}
   def get_current_user do
     case request(:get, Constants.me) do
       {:ok, body} ->
-        {:ok, Poison.decode!(body, as: %User{})}
+        user =  
+          body 
+          |> Poison.decode!() 
+          |> User.to_struct() 
+ 
+        {:ok, user}
       other ->
         other
     end
   end
 
+  @doc """
+  Same as `get_current_user/0`, but raises `Nostrum.Error.ApiError` in case of failure.
+  """
+  @spec get_current_user!() :: no_return | User.t
+  def get_current_user! do
+    get_current_user()
+    |> bangify
+  end
+
   @doc ~S"""
   Changes the username or avatar of the current user.
 
-  **Example**
-  ```Elixir
-  avatar = %{avatar: "data:image/jpeg;base64," <> "YXl5IGJieSB1IGx1a2luIDQgc3VtIGZ1az8="}
-  {:ok, user} = Nostrum.Api.modify_current_user(avatar)
-  ```
+  ## Params 
+ 
+  The following params are optional: 
+ 
+    * `:username` (string) - new username
+    * `:avatar` (string) - the user's avatar as [avatar data](https://discordapp.com/developers/docs/resources/user#avatar-data)
+ 
+  ## Examples 
 
-  `options` is a map with the following optional keys:
-   * `username` - New username.
-   * `avatar` - Base64 encoded image data, prepended with `data:image/jpeg;base64,`
+      iex> Nostrum.Api.modify_current_user(avatar: "data:image/jpeg;base64,YXl5IGJieSB1IGx1a2luIDQgc3VtIGZ1az8=") 
+      {:ok, %Nostrum.Struct.User{}}
   """
-  def modify_current_user(options) do
-    case request(:patch, Constants.me, options) do
+  @spec modify_current_user(keyword | map) :: error | {:ok, User.t}
+  def modify_current_user(params)
+  def modify_current_user(params) when is_list(params), do: modify_current_user(Map.new(params))
+
+  def modify_current_user(%{} = params) do
+    case request(:patch, Constants.me, params) do
       {:ok, body} ->
-        {:ok, Poison.decode!(body)}
+        user =  
+          body 
+          |> Poison.decode!() 
+          |> User.to_struct() 
+ 
+        {:ok, user}
       other ->
         other
     end
+  end
+
+  @doc """
+  Same as `modify_current_user/3`, but raises `Nostrum.Error.ApiError` in case of failure.
+  """
+  @spec modify_current_user!(keyword | map) :: no_return | User.t
+  def modify_current_user!(params) do
+    modify_current_user(params)
+    |> bangify()
   end
 
   @doc """
@@ -1440,14 +1527,19 @@ defmodule Nostrum.Api do
   @doc """
   Gets a list of user DM channels.
   """
-  @spec get_user_dms() :: error | {:ok, [Nostrum.Struct.DMChannel.t]}
+  @spec get_user_dms() :: error | {:ok, [Channel.t()]}
   def get_user_dms do
-    case request(:get, Constants.me_channels) do
-      {:ok, body} ->
-        {:ok, Poison.decode!(body)}
-      other ->
-        other
-    end
+    request(:get, Constants.me_channels)
+    |> handle_request_with_decode({:list, {:struct, Channel}})
+  end
+
+  @doc """
+  Same as `get_user_dms/0`, but raises `Nostrum.Error.ApiError` in case of failure.
+  """
+  @spec get_user_dms!() :: no_return | [Channel.t()]
+  def get_user_dms! do
+    get_user_dms()
+    |> bangify()
   end
 
   @doc """
@@ -1455,28 +1547,45 @@ defmodule Nostrum.Api do
 
   Opens a DM channel with the user specified by `user_id`.
   """
-  @spec create_dm(integer) :: error | {:ok, Nostrum.Struct.DMChannel.t}
+  @spec create_dm(User.id()) :: error | {:ok, Channel.t()}
   def create_dm(user_id) do
-    case request(:post, Constants.me_channels, %{recipient_id: user_id}) do
-      {:ok, body} ->
-        {:ok, Poison.decode!(body)}
-      other ->
-        other
-    end
+    request(:post, Constants.me_channels, %{recipient_id: user_id})
+    |> handle_request_with_decode({:struct, Channel})
   end
 
-    @doc """
-    Creates a new group DM channel.
-    """
-    @spec create_group_dm([String.t], map) :: error | {:ok, Nostrum.Struct.DMChannel.t}
-    def create_group_dm(access_tokens, nicks) do
-      case request(:post, Constants.me_channels, %{access_tokens: access_tokens, nicks: nicks}) do
-        {:ok, body} ->
-          {:ok, Poison.decode!(body)}
-        other ->
-          other
-      end
-    end
+  @doc """
+  Same as `create_dm/0`, but raises `Nostrum.Error.ApiError` in case of failure.
+  """
+  @spec create_dm!(User.id()) :: no_return | Channel.t()
+  def create_dm!(user_id) do
+    create_dm(user_id)
+    |> bangify()
+  end
+
+  @doc """ 
+  Creates a new group DM channel. 
+ 
+  Access tokens are required for this function to work.
+ 
+  ## Examples 
+ 
+      Nostrum.Api.create_group_dm(["6qrZcUqja7812RVdnEKjpzOL4CvHBFG"], %{41771983423143937 => "My Nickname"})
+      
+  """ 
+  @spec create_group_dm([String.t], map) :: error | {:ok, Channel.t()} 
+  def create_group_dm(access_tokens, nicks) do 
+    request(:post, Constants.me_channels, %{access_tokens: access_tokens, nicks: nicks})
+    |> handle_request_with_decode({:struct, Channel})
+  end
+
+  @doc """
+  Same as `create_group_dm/2`, but raises `Nostrum.Error.ApiError` in case of failure.
+  """
+  @spec create_group_dm!([String.t], map) :: no_return | Channel.t() 
+  def create_group_dm!(access_tokens, nicks) do
+    create_group_dm(access_tokens, nicks)
+    |> bangify()
+  end
 
   @doc """
   Gets a list of user connections.
@@ -1735,6 +1844,314 @@ defmodule Nostrum.Api do
     request(:post, Constants.webhook_git(webhook_id, webhook_token), params: [wait: wait])
   end
 
+  @doc """
+  Deletes another user's reaction from a message
+
+  Parameter `emoji` can be any of the following:
+
+    * A `t:Nostrum.Struct.Emoji.emoji_api_name/0`.
+    * A base 16 unicode emoji string.
+    * A URI encoded string.
+
+  ## Permissions
+
+  This function requires that the nostrum user have the following permissions:
+
+    * `MANAGE_MESSAGES`
+
+  ## Examples
+
+      iex> Nostrum.Api.delete_user_reaction(351194183568195585, 417954134373957633, "\xF0\x9F\x98\x81", 177888205536886784)
+      {:ok}
+      iex> Nostrum.Api.delete_user_reaction(351194183568195585, 417954134373957633, URI.encode("\u2b50"), 177888205536886784)
+      {:ok}
+  """
+  @spec delete_user_reaction(Channel.id, Message.id, String.t | Emoji.emoji_api_name, User.id) :: error | {:ok}
+  def delete_user_reaction(channel_id, message_id, emoji, user_id) do
+    request(:delete, Constants.channel_reaction(channel_id, message_id, emoji, user_id))
+  end
+
+  @doc """
+  Same as `delete_user_reaction/4`, but raises `Nostrum.Error.ApiError` in case of failure.
+  """
+  @spec delete_user_reaction!(Channel.id, Message.id, String.t | Emoji.emoji_api_name, User.id) :: no_return | {:ok}
+  def delete_user_reaction!(channel_id, message_id, emoji, user_id) do
+    delete_user_reaction(channel_id, message_id, emoji, user_id)
+    |> bangify()
+  end
+
+  @doc """
+  Gets a guild member by its `guild_id` and `user_id`.
+
+  If the request was successful, this function returns `{:ok, member}`, where 
+  `member` is a `Nostrum.Struct.Guild.Member`. Otherwise, this function 
+  returns `{:error, reason}`.
+  """
+  @spec get_guild_member(Guild.id, User.id) :: error | {:ok, Member.t}
+  def get_guild_member(guild_id, user_id) do
+    request(:get, Constants.guild_member(guild_id, user_id))
+    |> handle_request_with_decode({:struct, Member})
+  end
+
+  @doc """
+  Same as `get_guild_member/2`, but raises `Nostrum.Error.ApiError` in case of failure.
+  """
+  @spec get_guild_member!(Guild.id, User.id) :: no_return | Member.t
+  def get_guild_member!(guild_id, user_id) do
+    get_guild_member(guild_id, user_id)
+    |> bangify
+  end
+
+  @doc """
+  Gets a list of members from a guild specified by `guild_id`.
+
+  ## Request Params
+
+  The following params are optional: 
+ 
+    * `:limit` (integer) - max number of members to return (1-1000) (default: 1) 
+    * `:after` (integer) - the highest user id in the previous page (default: 0)
+ 
+  ## Examples
+ 
+      iex> Nostrum.Api.list_guild_members(41771983423143937, limit: 1) 
+      {:ok, [%Nostrum.Struct.Guild.Member{}]}
+  """
+  @spec list_guild_members(Guild.id, keyword | map) :: error | {:ok, [Member.t]}
+  def list_guild_members(guild_id, params \\ [])
+  def list_guild_members(guild_id, params) when is_list(params), 
+    do: list_guild_members(guild_id, Map.new(params))
+  
+  def list_guild_members(guild_id, %{} = params) do
+    request(:get, Constants.guild_members(guild_id), "", params: params)
+    |> handle_request_with_decode({:list, {:struct, Member}})
+  end
+
+  @doc """
+  Same as `list_guild_members/2`, but raises `Nostrum.Error.ApiError` in case of failure.
+  """
+  @spec list_guild_members!(Guild.id, keyword | map) :: no_return | [Member.t]
+  def list_guild_members!(guild_id, params \\ []) do
+    list_guild_members(guild_id, params)
+    |> bangify()
+  end
+
+  @doc """
+  Adds a user to a guild. 
+ 
+  The user's oauth2 access token is required for this function to work. 
+ 
+  ## Request Params
+ 
+  The following params are required: 
+ 
+    * `:access_token` (string) - the user's oauth2 access token 
+ 
+  The following params are optional: 
+ 
+    * `:nick` (string) - value to set users nickname to 
+    * `:roles` (list of `t:Nostrum.Struct.Guild.Role.id/0`) - array of role ids the member is assigned 
+    * `:mute` (boolean) - if the user is muted
+    * `:deaf` (boolean) - if the user is deafened 
+ 
+  ## Examples 
+ 
+      iex> Nostrum.Api.add_guild_member(41771983423143937, 41771983423143937, access_token: "6qrZcUqja7812RVdnEKjpzOL4CvHBFG", nick: "nostrum", roles: [431849301, 431809431]) 
+      {:ok, %Nostrum.Struct.Guild.Member{}}
+  """
+  @spec add_guild_member(Guild.id, User.id, keyword | map) :: error | {:ok, Member.t} 
+  def add_guild_member(guild_id, user_id, params) 
+  def add_guild_member(guild_id, user_id, params) when is_list(params), 
+    do: add_guild_member(guild_id, user_id, Map.new(params))
+  
+  def add_guild_member(guild_id, user_id, %{} = params) do 
+    request(:put, Constants.guild_member(guild_id, user_id), params)
+    |> handle_request_with_decode({:struct, Member})
+  end
+
+  @doc """
+  Same as `add_guild_member/3`, but raises `Nostrum.Error.ApiError` in case of failure.
+  """
+  @spec add_guild_member!(Guild.id, User.id, keyword | map) :: no_return | Member.t 
+  def add_guild_member!(guild_id, user_id, params) do
+    add_guild_member(guild_id, user_id, params)
+    |> bangify()
+  end
+
+  @doc """
+  Modify attributes of a guild member.
+ 
+  ## Request Params
+ 
+  The following params are optional:
+ 
+    * `:nick` (string) - value to set users nickname to
+    * `:roles` (list of `t:Nostrum.Struct.Guild.Role.id/0`) - array of role ids the member is assigned
+    * `:mute` (boolean) - if the user is muted
+    * `:deaf` (boolean) - if the user is deafened
+    * `:channel_id` (`t:Nostrum.Struct.Channel.id/0`) - id of channel to move user to (if they are connected to voice)
+ 
+  ## Examples
+ 
+      iex> Nostrum.Api.modify_guild_member(41771983423143937, 41771983423143937, nick: "Nostrum")
+      {:ok}
+  """
+  @spec modify_guild_member(Guild.id, User.id, keyword | map) :: error | {:ok}
+  def modify_guild_member(guild_id, user_id, params \\ [])
+  def modify_guild_member(guild_id, user_id, params) when is_list(params), 
+    do: modify_guild_member(guild_id, user_id, Map.new(params))
+  
+  def modify_guild_member(guild_id, user_id, %{} = params) do
+    request(:patch, Constants.guild_member(guild_id, user_id), params)
+  end
+
+  @doc """
+  Same as `modify_guild_member/3`, but raises `Nostrum.Error.ApiError` in case of failure.
+  """
+  @spec modify_guild_member!(Guild.id, User.id, keyword | map) :: no_return | {:ok}
+  def modify_guild_member!(guild_id, user_id, params \\ []) do
+    modify_guild_member(guild_id, user_id, params)
+    |> bangify()
+  end
+
+  @doc """
+  Removes a member from a guild.
+
+  ## Examples
+
+      iex> Nostrum.Api.remove_guild_member(41771983423143937, 41771983423143937) 
+      {:ok}
+  """
+  @spec remove_guild_member(Guild.id, User.id) :: error | {:ok}
+  def remove_guild_member(guild_id, user_id) do
+    request(:delete, Constants.guild_member(guild_id, user_id))
+  end
+
+  @doc """
+  Same as `remove_guild_member/3`, but raises `Nostrum.Error.ApiError` in case of failure.
+  """
+  @spec remove_guild_member!(Guild.id, User.id) :: no_return | {:ok}
+  def remove_guild_member!(guild_id, user_id) do
+    remove_guild_member(guild_id, user_id)
+    |> bangify()
+  end
+
+  @doc """
+  Modify a guild channel's settings.
+ 
+  Can modify the following types of channels: 
+ 
+    * `0` - GUILD_TEXT
+    * `2` - GUILD_VOICE
+    * `4` - GUILD_CATEGORY
+ 
+  ## Params
+ 
+  All params are optional.
+ 
+  The following params can be used with all guild channel types:
+ 
+    * `:name` (string) - 2-100 character channel name
+    * `:position` (integer) - the position of the channel in the left-hand listing
+    * `:permission_overwrites` (list of `t:Nostrum.Struct.Overwrite.t/0`) - channel or category-specific permissions
+ 
+  The following params are limited to a specific type of channel:
+ 
+    * `:nsfw` (boolean) (GUILD_TEXT only) - if the channel is nsfw 
+    * `:topic` (string) (GUILD_TEXT only) - 0-1024 character channel topic 
+    * `:bitrate` (integer) (GUILD_VOICE only) - the bitrate (in bits) of the voice channel; 8000 to 96000 (128000 for VIP servers)
+    * `:user_limit` (integer) (GUILD_VOICE only) - the user limit of the voice channel; 0 refers to no limit, 1 to 99 refers to a user limit 
+    * `:parent_id` (`t:Nostrum.Struct.Channel.id/0`) (GUILD_TEXT, GUILD_VOICE only) - id of the new parent category for a channel
+ 
+  ## Examples
+ 
+      Nostrum.Api.modify_channel(41771983423143933, name: "elixir-nostrum", topic: "nostrum discussion")
+
+  """
+  @spec modify_channel(Channel.id(), keyword | map) :: error | {:ok, Channel.t()}
+  def modify_channel(channel_id, params)
+  def modify_channel(channel_id, params) when is_list(params), 
+    do: modify_channel(channel_id, Enum.into(params, %{}))
+
+  def modify_channel(channel_id, %{} = params) do
+    request(:patch, Constants.channel(channel_id), params)
+    |> handle_request_with_decode({:struct, Channel})
+  end
+
+  @doc """
+  Same as `modify_channel/2`, but raises `Nostrum.Error.ApiError` in case of failure.
+  """
+  @spec modify_channel!(Channel.id(), keyword | map) :: no_return | Channel.t()
+  def modify_channel!(channel_id, params) do
+    modify_channel(channel_id, params)
+    |> bangify()
+  end
+
+  @doc """ 
+  Gets a list of guild channels from guild of id `guild_id`. 
+ 
+  ## Examples
+ 
+      Nostrum.Api.get_guild_channels(41771983423143933)
+
+  """ 
+  @spec get_guild_channels(Guild.id()) :: error | {:ok, [Channel.t()]} 
+  def get_guild_channels(guild_id) do
+    request(:get, Constants.guild_channels(guild_id))
+    |> handle_request_with_decode({:list, {:struct, Channel}})
+  end
+
+  @doc """
+  Same as `get_guild_channels/1`, but raises `Nostrum.Error.ApiError` in case of failure.
+  """
+  @spec get_guild_channels!(Guild.id()) :: no_return | [Channel.t()]
+  def get_guild_channels!(guild_id) do
+    get_guild_channels(guild_id)
+    |> bangify()
+  end
+
+  @doc """ 
+  Creates a channel in a guild of id `guild_id`. 
+ 
+  ## Request Params
+ 
+  The following params are required: 
+ 
+    * `:name` (string) - channel name (2-100 characters)
+ 
+  The following params are optional: 
+ 
+    * `:type` (integer) - the type of channel (See `Nostrum.Struct.Channel`) 
+    * `:bitrate` (integer) - the bitrate (in bits) of the voice channel (voice only) 
+    * `:user_limit` (integer) - the user limit of the voice channel (voice only) 
+    * `:permission_overwrites` (list of `t:Nostrum.Struct.Overwrite.t/0`) - the channel's permission overwrites 
+    * `:parent_id` (`t:Nostrum.Struct.Channel.id/0`) - id of the parent category for a channel 
+    * `:nsfw` (boolean) - if the channel is nsfw
+ 
+  ## Examples
+ 
+      Nostrum.Api.create_guild_channel(41771984817263543, name: "elixir-nostrum", type: 0, nsfw: false) 
+
+  """ 
+  @spec create_guild_channel(Guild.id(), keyword | map) :: error | {:ok, Channel.t()}
+  def create_guild_channel(guild_id, params)
+  def create_guild_channel(guild_id, params) when is_list(params), 
+    do: create_guild_channel(guild_id, Map.new(params))
+  
+  def create_guild_channel(guild_id, %{} = params) do 
+    request(:post, Constants.guild_channels(guild_id), params)
+    |> handle_request_with_decode({:struct, Channel})
+  end
+
+  @doc """
+  Same as `create_guild_channel/2`, but raises `Nostrum.Error.ApiError` in case of failure.
+  """
+  @spec create_guild_channel!(Guild.id(), keyword | map) :: no_return | Channel.t()
+  def create_guild_channel!(guild_id, params) do
+    create_guild_channel(guild_id, params)
+    |> bangify()
+  end
+
   def get_application_information do
     request(:get, Constants.application_information)
     |> handle
@@ -1813,4 +2230,48 @@ defmodule Nostrum.Api do
     Application.get_env(:nostrum, :token)
   end
 
+  defp do_create_message(channel_id, params)
+  defp do_create_message(channel_id, params) when is_list(params), do: do_create_message(channel_id, Map.new(params))
+  
+  defp do_create_message(channel_id, %{file: file_path} = params) do
+    payload_json = 
+      params
+      |> Map.delete(:file)
+      |> Poison.encode!()
+
+    multipart = [
+      {:file, file_path},
+      {"payload_json", payload_json}
+    ]
+
+    request = %{
+      method: :post,
+      route: Constants.channel_messages(channel_id),
+      body: {:multipart, multipart},
+      options: [],
+      headers: [
+        {"content-type", "multipart/form-data"}
+      ]
+    }
+
+    GenServer.call(Ratelimiter, {:queue, request, nil}, :infinity)
+    |> handle_request_with_decode({:struct, Message})
+  end
+
+  defp do_create_message(channel_id, %{} = params) do
+    request(:post, Constants.channel_messages(channel_id), params)
+    |> handle_request_with_decode({:struct, Message})
+  end
+
+  defp handle_request_with_decode(response, type)
+  defp handle_request_with_decode({:error, _} = error, _type), do: error
+
+  defp handle_request_with_decode({:ok, body}, type) do
+    convert = 
+      body
+      |> Poison.decode!()
+      |> Util.cast(type)
+
+    {:ok, convert}
+  end  
 end

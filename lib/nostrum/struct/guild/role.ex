@@ -3,8 +3,22 @@ defmodule Nostrum.Struct.Guild.Role do
   Struct representing a Discord role.
   """
 
+  alias Nostrum.Struct.Snowflake
+  alias Nostrum.Util
+
+  defstruct [
+    :id,
+    :name,
+    :color,
+    :hoist,
+    :position,
+    :permissions,
+    :managed,
+    :mentionable
+  ]
+
   @typedoc "The id of the role"
-  @type id :: integer
+  @type id :: Snowflake.t
 
   @typedoc "The name of the role"
   @type name :: String.t
@@ -38,18 +52,6 @@ defmodule Nostrum.Struct.Guild.Role do
     mentionable: mentionable
   }
 
-  @derive [Poison.Encoder]
-  defstruct [
-    :id,
-    :name,
-    :color,
-    :hoist,
-    :position,
-    :permissions,
-    :managed,
-    :mentionable
-  ]
-
   @doc false
   def p_encode do
     %__MODULE__{}
@@ -57,6 +59,7 @@ defmodule Nostrum.Struct.Guild.Role do
 
   @doc false
   def to_struct(map) do
-    struct(__MODULE__, map)
+    struct(__MODULE__, Util.safe_atom_map(map))
+    |> Map.update(:id, nil, &Util.cast(&1, Snowflake))
   end
 end
