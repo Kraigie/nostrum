@@ -63,7 +63,11 @@ defmodule Nostrum.Struct.User do
 
   @doc false
   def to_struct(map) do
-    struct(__MODULE__, Util.safe_atom_map(map))
-    |> Map.update(:id, nil, &Snowflake.cast!/1)
+    new = 
+      map 
+      |> Map.new(fn {k, v} -> {Util.maybe_to_atom(k), v} end) 
+      |> Map.update(:id, nil, &Util.cast(&1, Snowflake))
+
+    struct(__MODULE__, new)
   end
 end
