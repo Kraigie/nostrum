@@ -330,19 +330,8 @@ defmodule Nostrum.Api do
   """
   @spec get_reactions(Channel.id, Message.id, String.t | Emoji.custom_emoji) :: error | {:ok, [User.t]}
   def get_reactions(channel_id, message_id, emoji) do
-    case request(:get, Constants.channel_reactions_get(channel_id, message_id, emoji)) do
-      {:ok, body} ->
-        users =
-          body 
-          |> Poison.decode!() 
-          |> Enum.map(fn user_dto -> 
-            User.to_struct(user_dto) 
-          end) 
-         
-        {:ok, users}
-      other ->
-        other
-    end
+    request(:get, Constants.channel_reactions_get(channel_id, message_id, emoji))
+    |> handle_request_with_decode({:list, {:struct, User}})
   end
 
   @doc """
@@ -1378,17 +1367,8 @@ defmodule Nostrum.Api do
   """
   @spec get_user(User.id) :: error | {:ok, User.t}
   def get_user(user_id) do
-    case request(:get, Constants.user(user_id)) do 
-      {:ok, body} -> 
-        user =  
-          body 
-          |> Poison.decode!() 
-          |> User.to_struct() 
- 
-        {:ok, user} 
-      other -> 
-        other 
-    end 
+    request(:get, Constants.user(user_id))
+    |> handle_request_with_decode({:struct, User})
   end
 
   @doc """
@@ -1412,17 +1392,8 @@ defmodule Nostrum.Api do
   """
   @spec get_current_user() :: error | {:ok, User.t}
   def get_current_user do
-    case request(:get, Constants.me) do
-      {:ok, body} ->
-        user =  
-          body 
-          |> Poison.decode!() 
-          |> User.to_struct() 
- 
-        {:ok, user}
-      other ->
-        other
-    end
+    request(:get, Constants.me)
+    |> handle_request_with_decode({:struct, User})
   end
 
   @doc """
@@ -1454,17 +1425,8 @@ defmodule Nostrum.Api do
   def modify_current_user(params) when is_list(params), do: modify_current_user(Map.new(params))
 
   def modify_current_user(%{} = params) do
-    case request(:patch, Constants.me, params) do
-      {:ok, body} ->
-        user =  
-          body 
-          |> Poison.decode!() 
-          |> User.to_struct() 
- 
-        {:ok, user}
-      other ->
-        other
-    end
+    request(:patch, Constants.me, params)
+    |> handle_request_with_decode({:struct, User})
   end
 
   @doc """
@@ -1884,4 +1846,15 @@ defmodule Nostrum.Api do
     Application.get_env(:nostrum, :token)
   end
 
+  defp handle_request_with_decode(response, type) 
+  defp handle_request_with_decode({:error, _} = error, _type), do: error 
+ 
+  defp handle_request_with_decode({:ok, body}, type) do 
+    convert =  
+      body 
+      |> Poison.decode!()
+      |> Util.cast(type)
+ 
+    {:ok, convert}
+  end
 end
