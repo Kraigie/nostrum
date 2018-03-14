@@ -1360,7 +1360,7 @@ defmodule Nostrum.Api do
   end
 
   @doc """
-  Gets a user by its `user_id`.
+  Gets a user by its `t:Nostrum.Struct.User.id/0`.
 
   If the request is successful, this function returns `{:ok, user}`, where 
   `user` is a `Nostrum.Struct.User`. Otherwise, returns `{:error, reason}`.
@@ -1435,7 +1435,7 @@ defmodule Nostrum.Api do
   @spec modify_current_user!(keyword | map) :: no_return | User.t
   def modify_current_user!(params) do
     modify_current_user(params)
-    |> bangify()
+    |> bangify
   end
 
   @doc """
@@ -1852,7 +1852,7 @@ defmodule Nostrum.Api do
   defp handle_request_with_decode({:ok, body}, type) do 
     convert =  
       body 
-      |> Poison.decode!()
+      |> Poison.decode!
       |> Util.cast(type)
  
     {:ok, convert}
