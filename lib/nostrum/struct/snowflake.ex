@@ -1,17 +1,22 @@
 defmodule Nostrum.Struct.Snowflake do
   @moduledoc """
   Functions that work on Snowflakes.
-
-  Snowflakes are 64-bit unsigned integers used to represent discord 
-  object ids. In JSON, they are typically represented as strings due 
-  to some languages not being able to represent such a large number.
-  
-  Nostrum represents snowflakes as integers since Elixir allows us 
-  to represent large integers.
   """
 
+  @typedoc """
+  The type that represents snowflakes in JSON.
+
+  In JSON, Snowflakes are typically represented as strings due 
+  to some languages not being able to represent such a large number.
+  """
   @type external_snowflake :: String.t
 
+  @typedoc """
+  The snowflake type.
+
+  Snowflakes are 64-bit unsigned integers used to represent discord 
+  object ids.
+  """
   @type t :: integer
 
   @doc """

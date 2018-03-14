@@ -204,7 +204,7 @@ defmodule Nostrum.Util do
       String.to_atom(token)
   end
 
-   # Generic casting function
+  # Generic casting function
   @doc false
   @spec cast(term, module | {:list, term} | {:struct, term} | {:index, term, [atom]}) :: term
   def cast(value, type)
