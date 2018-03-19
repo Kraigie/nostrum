@@ -17,12 +17,37 @@ defmodule Nostrum.Struct.Emoji do
     :roles
   ]
 
-  @typedoc """
+  @typedoc ~S"""
   Emoji string to be used with the Discord API.
 
-  Some API endpoints take an `emoji`. This `emoji` string should be structured as `"id:name"`.
+  Some API endpoints take an `emoji`. If it is a custom emoji, it must be 
+  structured as `"id:name"`. If it is an unicode emoji, it can be structured 
+  as any of the following: 
 
-  Alternatively, the `to_api_name/1` function will convert a `Nostrum.Struct.Emoji` to this string.
+    * `"name"`
+    * A base 16 unicode emoji string.
+    * A URI encoded string.
+
+  We suggest library users to use the `to_api_name/1` function to get a 
+  `Nostrum.Struct.Emoji`'s emoji api name.
+
+  ## Examples
+
+  ```Elixir
+  # Custom Emojis
+  "nostrum:431890438091489"
+
+  # Unicode Emojis
+  "≡ƒæì"
+  "\xF0\x9F\x98\x81"
+  URI.encode("\u2b50")
+
+  # All Emojis
+  emoji = %Nostrum.Struct.Emoji{id: 43819043108, name: "foxbot"}
+  Nostrum.Struct.Emoji.to_api_name(emoji)
+  "foxbot:43819043108"
+  ```
+
   """
   @type emoji_api_name :: String.t
 
@@ -38,7 +63,7 @@ defmodule Nostrum.Struct.Emoji do
   @typedoc "User that created this emoji"
   @type user :: User.t | nil
 
-  @typedoc "Whether this emoji must be wrapped in colons "
+  @typedoc "Whether this emoji must be wrapped in colons"
   @type require_colons :: boolean | nil
 
   @typedoc "Whether this emoji is managed"
@@ -59,22 +84,43 @@ defmodule Nostrum.Struct.Emoji do
 
   @doc """
   Formats an emoji struct into its respective markdown.
+
+  ## Examples
+
+  ```Elixir
+  emoji = %Nostrum.Struct.Emoji{id: 43819043108, name: "foxbot"}
+
+  md = Nostrum.Struct.Emoji.to_markdown(emoji)
+  "<:foxbot:43819043108>"
+
+  Nostrum.Api.create_message!(4318940318049, "Sending some text with this emoji #{md}")
+  ```
   """
   @spec to_markdown(t) :: String.t
   def to_markdown(emoji)
-  def to_markdown(%__MODULE__{id: nil, name: name}), do: name
-  def to_markdown(%__MODULE__{animated: true, id: id, name: name}), do: "<a:#{name}:#{id}>"
-  def to_markdown(%__MODULE__{id: id, name: name}), do: "<:#{name}:#{id}>"
+  def to_markdown(%{id: nil, name: name}), do: name
+  def to_markdown(%{animated: true, id: id, name: name}), do: "<a:#{name}:#{id}>"
+  def to_markdown(%{id: id, name: name}), do: "<:#{name}:#{id}>"
 
   @doc """
-  Formats an emoji struct into its api name.
+  Formats an emoji struct into its `t:Nostrum.Struct.Emoji.emoji_api_name/0`.
 
-  An emoji's api name is used to represent emojis in Discord API calls.
+  ## Examples
+
+  ```Elixir
+  emoji = %Nostrum.Struct.Emoji{id: 43819043108, name: "foxbot"}
+
+  api_name = Nostrum.Struct.Emoji.to_api_name(emoji)
+  "foxbot:43819043108"
+
+  Nostrum.Api.create_reaction(471635274857, 47361625345554, api_name)
+  {:ok}
+  ```
   """
   @spec to_api_name(t) :: emoji_api_name
   def to_api_name(emoji)
-  def to_api_name(%__MODULE__{id: nil, name: name}), do: name
-  def to_api_name(%__MODULE__{id: id, name: name}), do: "#{name}:#{id}"
+  def to_api_name(%{id: nil, name: name}), do: name
+  def to_api_name(%{id: id, name: name}), do: "#{name}:#{id}"
 
   @doc false
   def p_encode do
