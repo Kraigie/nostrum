@@ -18,6 +18,7 @@ defmodule Nostrum.Api.Ratelimiter do
                     :ignore |
                     {:error, {:already_started, pid} | term}
 
+  @major_parameters ["channels", "guilds", "webhooks"]
   @gregorian_epoch 62_167_219_200
   @sanity_wait 500
 
@@ -43,9 +44,9 @@ defmodule Nostrum.Api.Ratelimiter do
   end
 
   def handle_call({:queue, request, original_from}, from, state) do
-    retry_time = 
+    retry_time =
       request.route
-      |> major_parameter
+      |> get_endpoint(request.method)
       |> Bucket.get_ratelimit_timeout
 
     case retry_time do
@@ -65,7 +66,7 @@ defmodule Nostrum.Api.Ratelimiter do
   defp do_request(request) do
     request.method
     |> Base.request(request.route, request.body, request.headers, request.options)
-    |> handle_headers(major_parameter(request.route))
+    |> handle_headers(get_endpoint(request.route, request.method))
     |> format_response
   end
 
@@ -76,7 +77,7 @@ defmodule Nostrum.Api.Ratelimiter do
     reset = headers |> List.keyfind("X-RateLimit-Reset", 0) |> value_from_rltuple
     retry_after = headers |> List.keyfind("Retry-After", 0) |> value_from_rltuple
 
-    origin_timestamp = 
+    origin_timestamp =
       headers
       |> List.keyfind("Date", 0)
       |> value_from_rltuple
@@ -86,7 +87,7 @@ defmodule Nostrum.Api.Ratelimiter do
 
     if global_limit, do: update_global_bucket(route, 0, retry_after, latency)
     if reset, do: update_bucket(route, remaining, reset, latency)
-    
+
     response
   end
 
@@ -100,7 +101,7 @@ defmodule Nostrum.Api.Ratelimiter do
 
   defp wait_for_timeout(request, timeout, from) do
     Logger.info "RATELIMITER: Waiting #{timeout}ms to process request with route #{request.route}"
-    Process.sleep(timeout + @sanity_wait) # Small wait for sanity sake
+    Process.sleep(timeout + @sanity_wait)
     GenServer.call(Ratelimiter, {:queue, request, from}, :infinity)
   end
 
@@ -119,10 +120,24 @@ defmodule Nostrum.Api.Ratelimiter do
   defp value_from_rltuple({"Date", v}), do: v
   defp value_from_rltuple({_k, v}), do: String.to_integer v
 
-  defp major_parameter(route) do
-    case Regex.run(~r/\/(channels|guilds)\/([0-9]{15,})+/i, route) do
-      [match, _route, _major_param] -> match
-      nil -> route
+  @doc """
+  Retrieves a proper ratelimit endpoint from a given route and url.
+  """
+  @spec get_endpoint(String.t, atom) :: String.t
+  def get_endpoint(route, method) do
+    endpoint = Regex.replace(~r/\/([a-z-]+)\/(?:[0-9]{17,19})/i, route, fn capture, param ->
+      case param do
+        param when param in @major_parameters ->
+          capture
+        param ->
+          "/#{param}/_id"
+      end
+    end)
+
+    if String.ends_with?(endpoint, "/messages/_id") and method == :delete do
+      "delete:" <> endpoint
+    else
+      endpoint
     end
   end
 
