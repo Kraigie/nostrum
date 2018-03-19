@@ -46,6 +46,7 @@ defmodule Nostrum.Api do
   alias Nostrum.{Constants, Util}
   alias Nostrum.Cache.Guild.GuildServer
   alias Nostrum.Struct.{Embed, Guild, Message, User, Webhook}
+  alias Nostrum.Struct.Emoji
   alias Nostrum.Struct.Guild.{Member, Channel, Role}
   alias Nostrum.Shard.{Supervisor, Session}
 
@@ -276,49 +277,101 @@ defmodule Nostrum.Api do
   end
 
   @doc ~S"""
-  Create a rection for a message.
+  Creates a reaction for a message.
 
-  Creates a reaction using an `emoji` for the message specified by `message_id` and
-  `channel_id`. `emoji` can be a `Nostrum.Struct.Emoji.custom_emoji.t`, a
-  base 16 unicode emoji string, or a uri encoded string.
+  Parameter `emoji` can be any of the following:
 
-  **Example**
-  ```Elixir
-  Nostrum.Api.create_reaction(123123123123, 321321321321, "\xF0\x9F\x98\x81")
-  Nostrum.Api.create_reaction(123123123123, 321321321321, URI.encode("\u2b50"))
-  ```
+    * A `t:Nostrum.Struct.Emoji.emoji_api_name/0`.
+    * A base 16 unicode emoji string.
+    * A URI encoded string.
 
-  Returns `{:ok}` if successful, `{:error, reason}` otherwise.
+  If the request was successful, this function returns `{:ok}`. Otherwise, 
+  this function returns `{:error, reason}`.
+
+  ## Examples
+
+      Nostrum.Api.create_reaction(123123123123, 321321321321, "\xF0\x9F\x98\x81")
+
+      Nostrum.Api.create_reaction(123123123123, 321321321321, URI.encode("\u2b50"))
   """
-  @spec create_reaction(integer, integer, String.t | Nostrum.Struct.Emoji.custom_emoji) :: error | {:ok}
+  @spec create_reaction(Channel.id, Message.id, String.t | Emoji.emoji_api_name) :: error | {:ok}
   def create_reaction(channel_id, message_id, emoji) do
     request(:put, Constants.channel_reaction_me(channel_id, message_id, emoji))
   end
 
   @doc """
-  Deletes a rection made by the user.
-
-  Reaction to delete is specified by
-  `channel_id`, `message_id`, and `emoji`.
-
-  Returns `{:ok}` if successful, `{:error, reason}` otherwise.
+  Same as `create_reaction/3`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
-  @spec create_reaction(integer, integer, String.t | Nostrum.Struct.Emoji.custom_emoji) :: error | {:ok}
+  @spec create_reaction!(Channel.id, Message.id, String.t | Emoji.emoji_api_name) :: no_return | {:ok}
+  def create_reaction!(channel_id, message_id, emoji) do
+    create_reaction(channel_id, message_id, emoji)
+    |> bangify
+  end
+
+  @doc ~S"""
+  Deletes a reaction made by the user.
+
+  Parameter `emoji` can be any of the following:
+
+    * A `t:Nostrum.Struct.Emoji.emoji_api_name/0`.
+    * A base 16 unicode emoji string.
+    * A URI encoded string.
+
+  If the request was successful, this function returns `{:ok}`. Otherwise, 
+  this function returns `{:error, reason}`.
+
+  ## Examples
+
+      Nostrum.Api.delete_own_reaction(123123123123, 321321321321, "\xF0\x9F\x98\x81")
+      
+      Nostrum.Api.delete_own_reaction(123123123123, 321321321321, URI.encode("\u2b50"))
+      
+  """
+  @spec delete_own_reaction(Channel.id, Message.id, String.t | Emoji.emoji_api_name) :: error | {:ok}
   def delete_own_reaction(channel_id, message_id, emoji) do
     request(:delete, Constants.channel_reaction_me(channel_id, message_id, emoji))
   end
 
-  @doc """
-  Deletes a rection from a message.
-
-  Reaction to delete is specified by
-  `channel_id`, `message_id`, `emoji`, and `user_id`.
-
-  Returns `{:ok}` if successful, `{:error, reason}` otherwise.
+  @doc ~S"""
+  Same as `delete_own_reaction/3`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
-  @spec delete_reaction(integer, integer, String.t | Nostrum.Struct.Emoji.custom_emoji, integer) :: error | {:ok}
+  @spec delete_own_reaction!(Channel.id, Message.id, String.t | Emoji.emoji_api_name) :: no_return | {:ok}
+  def delete_own_reaction!(channel_id, message_id, emoji) do
+    delete_own_reaction(channel_id, message_id, emoji)
+    |> bangify()
+  end
+
+  @doc ~S"""
+  Deletes another user's reaction from a message
+
+  Parameter `emoji` can be any of the following:
+
+    * A `t:Nostrum.Struct.Emoji.emoji_api_name/0`.
+    * A base 16 unicode emoji string.
+    * A URI encoded string.
+
+  If the request was successful, this function returns `{:ok}`. Otherwise, 
+  this function returns `{:error, reason}`.
+
+  ## Examples
+
+      Nostrum.Api.delete_reaction(351194183568195585, 417954134373957633, "\xF0\x9F\x98\x81", 177888205536886784)
+      
+      Nostrum.Api.delete_reaction(351194183568195585, 417954134373957633, URI.encode("\u2b50"), 177888205536886784)
+      
+  """
+  @spec delete_reaction(Channel.id, Message.id, String.t | Emoji.emoji_api_name, User.id) :: error | {:ok}
   def delete_reaction(channel_id, message_id, emoji, user_id) do
     request(:delete, Constants.channel_reaction(channel_id, message_id, emoji, user_id))
+  end
+
+  @doc ~S"""
+  Same as `delete_reaction/4`, but raises `Nostrum.Error.ApiError` in case of failure.
+  """
+  @spec delete_reaction!(Channel.id, Message.id, String.t | Emoji.emoji_api_name, User.id) :: no_return | {:ok}
+  def delete_reaction!(channel_id, message_id, emoji, user_id) do
+    delete_reaction(channel_id, message_id, emoji, user_id)
+    |> bangify
   end
 
   @doc """
@@ -328,7 +381,7 @@ defmodule Nostrum.Api do
   `users` is a list of `Nostrum.Struct.User`. Otherwise, this function 
   returns `{:error, reason}`.
   """
-  @spec get_reactions(Channel.id, Message.id, String.t | Emoji.custom_emoji) :: error | {:ok, [User.t]}
+  @spec get_reactions(Channel.id, Message.id, String.t | Emoji.emoji_api_name) :: error | {:ok, [User.t]}
   def get_reactions(channel_id, message_id, emoji) do
     request(:get, Constants.channel_reactions_get(channel_id, message_id, emoji))
     |> handle_request_with_decode({:list, {:struct, User}})
@@ -337,7 +390,7 @@ defmodule Nostrum.Api do
   @doc """
   Same as `get_reactions/3`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
-  @spec get_reactions!(Channel.id, Message.id, String.t | Emoji.custom_emoji) :: no_return | [User.t]
+  @spec get_reactions!(Channel.id, Message.id, String.t | Emoji.emoji_api_name) :: no_return | [User.t]
   def get_reactions!(channel_id, message_id, emoji) do
     get_reactions(channel_id, message_id, emoji)
     |> bangify
