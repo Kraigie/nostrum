@@ -831,6 +831,153 @@ defmodule Nostrum.Api do
     |> bangify
   end
 
+  @doc ~S"""
+  Gets a list of emojis for a given guild.
+
+  If the request is successful, this function returns `{:ok, emojis}`, where 
+  `emojis` is a list of `Nostrum.Struct.Emoji`. Otherwise, returns `{:error, reason}`.
+  """
+  @spec list_guild_emojis(Guild.id) :: error | {:ok, [Emoji.t]}
+  def list_guild_emojis(guild_id) do
+    request(:get, Constants.guild_emojis(guild_id))
+    |> handle_request_with_decode({:list, {:struct, Emoji}})
+  end
+
+  @doc ~S"""
+  Same as `list_guild_emojis/1`, but raises `Nostrum.Error.ApiError` in case of failure.
+  """
+  @spec list_guild_emojis!(Guild.id) :: no_return | [Emoji.t]
+  def list_guild_emojis!(guild_id) do
+    list_guild_emojis(guild_id)
+    |> bangify
+  end
+
+  @doc ~S"""
+  Gets an emoji for the given guild and emoji ids.
+
+  If the request is successful, this function returns `{:ok, emoji}`, where 
+  `emoji` is a `Nostrum.Struct.Emoji`. Otherwise, returns `{:error, reason}`.
+  """
+  @spec get_guild_emoji(Guild.id, Emoji.id) :: error | {:ok, Emoji.t}
+  def get_guild_emoji(guild_id, emoji_id) do
+    request(:get, Constants.guild_emoji(guild_id, emoji_id))
+    |> handle_request_with_decode({:struct, Emoji})
+  end
+
+  @doc ~S"""
+  Same as `get_guild_emoji/2`, but raises `Nostrum.Error.ApiError` in case of failure.
+  """
+  @spec get_guild_emoji!(Guild.id, Emoji.id) :: no_return | Emoji.t
+  def get_guild_emoji!(guild_id, emoji_id) do
+    get_guild_emoji(guild_id, emoji_id)
+    |> bangify
+  end
+
+  @doc ~S"""
+  Creates a new emoji for the given guild.
+
+  ## Request Params
+ 
+  The following params are required: 
+ 
+    * `:name` (string) - name of the emoji
+    * `:image` (base64 data URI) - the 128x128 emoji image. Maximum size of 256kb
+  
+  The following params are optional:
+
+    * `:roles` (list of `t:Nostrum.Struct.Snowflake.t/0`) - roles for which this emoji will be whitelisted
+
+  ## Return Values
+
+  If the request is successful, this function returns `{:ok, emoji}`, where 
+  `emoji` is a `Nostrum.Struct.Emoji`. Otherwise, returns `{:error, reason}`.
+
+  ## Examples
+
+  ```Elixir
+  image = "data:image/png;base64,YXl5IGJieSB1IGx1a2luIDQgc3VtIGZ1az8="
+
+  Nostrum.Api.create_guild_emoji(43189401384091, name: "nostrum", image: image, roles: [])
+  ```
+  """
+  @spec create_guild_emoji(Guild.id, keyword | map) :: error | {:ok, Emoji.t}
+  def create_guild_emoji(guild_id, params)
+  def create_guild_emoji(guild_id, params) when is_list(params), 
+    do: create_guild_emoji(guild_id, Map.new(params))
+
+  def create_guild_emoji(guild_id, %{} = params) do
+    request(:post, Constants.guild_emojis(guild_id), params)
+    |> handle_request_with_decode({:struct, Emoji})
+  end
+
+  @doc ~S"""
+  Same as `create_guild_emoji/2`, but raises `Nostrum.Error.ApiError` in case of failure.
+  """
+  @spec create_guild_emoji!(Guild.id, keyword | map) :: no_return | Emoji.t
+  def create_guild_emoji!(guild_id, params) do
+    create_guild_emoji(guild_id, params)
+    |> bangify
+  end
+
+  @doc ~S"""
+  Modify the given emoji.
+
+  ## Request Params
+
+  The following params are optional:
+
+    * `:name` (string) - name of the emoji
+    * `:roles` (list of `t:Nostrum.Struct.Snowflake.t/0`) - roles to which this emoji will be whitelisted
+
+  ## Return Values
+
+  If the request is successful, this function returns `{:ok, emoji}`, where 
+  `emoji` is a `Nostrum.Struct.Emoji`. Otherwise, returns `{:error, reason}`.
+
+  ## Examples
+
+  ```Elixir
+  Nostrum.Api.modify_guild_emoji(43189401384091, 4314301984301, name: "elixir", roles: [])
+  ```
+  """
+  @spec modify_guild_emoji(Guild.id, Emoji.id, keyword | map) :: error | {:ok, Emoji.t}
+  def modify_guild_emoji(guild_id, emoji_id, params \\ %{})
+  def modify_guild_emoji(guild_id, emoji_id, params) when is_list(params), 
+    do: modify_guild_emoji(guild_id, emoji_id, Map.new(params))
+
+  def modify_guild_emoji(guild_id, emoji_id, %{} = params) do
+    request(:patch, Constants.guild_emoji(guild_id, emoji_id), params)
+    |> handle_request_with_decode({:struct, Emoji})
+  end
+
+  @doc ~S"""
+  Same as `modify_guild_emoji/3`, but raises `Nostrum.Error.ApiError` in case of failure.
+  """
+  @spec modify_guild_emoji!(Guild.id, Emoji.id, keyword | map) :: no_return | Emoji.t
+  def modify_guild_emoji!(guild_id, emoji_id, params) do
+    modify_guild_emoji(guild_id, emoji_id, params)
+    |> bangify
+  end
+
+  @doc ~S"""
+  Deletes the given emoji.
+
+  If the request is successful, this function returns `{:ok}`. 
+  Otherwise, returns `{:error, reason}`.
+  """
+  @spec delete_guild_emoji(Guild.id, Emoji.id) :: error | {:ok}
+  def delete_guild_emoji(guild_id, emoji_id), 
+    do: request(:delete, Constants.guild_emoji(guild_id, emoji_id))
+
+  @doc ~S"""
+  Same as `delete_guild_emoji/2`, but raises `Nostrum.Error.ApiError` in case of failure.
+  """
+  @spec delete_guild_emoji!(Guild.id, Emoji.id) :: no_return | {:ok}
+  def delete_guild_emoji!(guild_id, emoji_id) do
+    delete_guild_emoji(guild_id, emoji_id)
+    |> bangify
+  end
+
   @doc """
   Gets a guild using the REST api
 

@@ -37,6 +37,8 @@ defmodule Nostrum.Constants do
   def guild_integration(guild_id, integration_id),                do: "/guilds/#{guild_id}/integrations/#{integration_id}"
   def guild_integration_sync(guild_id, integration_id),           do: "/guilds/#{guild_id}/integrations/#{integration_id}/sync"
   def guild_embed(guild_id),                                      do: "/guilds/#{guild_id}/embed"
+  def guild_emojis(guild_id),                                     do: "/guilds/#{guild_id}/emojis"
+  def guild_emoji(guild_id, emoji_id),                            do: "/guilds/#{guild_id}/emojis/#{emoji_id}"
 
   def webhooks_guild(guild_id),                                   do: "/guilds/#{guild_id}/webhooks"
   def webhooks_channel(channel_id),                               do: "/channels/#{channel_id}/webhooks"
