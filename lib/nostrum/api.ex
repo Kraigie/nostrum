@@ -346,17 +346,17 @@ defmodule Nostrum.Api do
 
   See `create_reaction/3` for similar examples.
   """
-  @spec delete_reaction(Channel.id, Message.id, Emoji.emoji_api_name, User.id) :: error | {:ok}
-  def delete_reaction(channel_id, message_id, emoji, user_id) do
+  @spec delete_user_reaction(Channel.id, Message.id, Emoji.emoji_api_name, User.id) :: error | {:ok}
+  def delete_user_reaction(channel_id, message_id, emoji, user_id) do
     request(:delete, Constants.channel_reaction(channel_id, message_id, emoji, user_id))
   end
 
   @doc ~S"""
-  Same as `delete_reaction/4`, but raises `Nostrum.Error.ApiError` in case of failure.
+  Same as `delete_user_reaction/4`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
-  @spec delete_reaction!(Channel.id, Message.id, Emoji.emoji_api_name, User.id) :: no_return | {:ok}
-  def delete_reaction!(channel_id, message_id, emoji, user_id) do
-    delete_reaction(channel_id, message_id, emoji, user_id)
+  @spec delete_user_reaction!(Channel.id, Message.id, Emoji.emoji_api_name, User.id) :: no_return | {:ok}
+  def delete_user_reaction!(channel_id, message_id, emoji, user_id) do
+    delete_user_reaction(channel_id, message_id, emoji, user_id)
     |> bangify
   end
 
