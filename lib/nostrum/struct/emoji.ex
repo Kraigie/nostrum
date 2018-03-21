@@ -90,17 +90,17 @@ defmodule Nostrum.Struct.Emoji do
   ```Elixir
   emoji = %Nostrum.Struct.Emoji{id: 43819043108, name: "foxbot"}
 
-  Nostrum.Struct.Emoji.to_markdown(emoji)
+  Nostrum.Struct.Emoji.format(emoji)
   "<:foxbot:43819043108>"
 
-  Nostrum.Api.create_message!(4318940318049, "Sending some text with this emoji #{Nostrum.Struct.Emoji.to_markdown(emoji)}")
+  Nostrum.Api.create_message!(4318940318049, "Sending some text with this emoji #{Nostrum.Struct.Emoji.format(emoji)}")
   ```
   """
-  @spec to_markdown(t) :: String.t
-  def to_markdown(emoji)
-  def to_markdown(%{id: nil, name: name}), do: name
-  def to_markdown(%{animated: true, id: id, name: name}), do: "<a:#{name}:#{id}>"
-  def to_markdown(%{id: id, name: name}), do: "<:#{name}:#{id}>"
+  @spec format(t) :: String.t
+  def format(emoji)
+  def format(%__MODULE__{id: nil, name: name}), do: name
+  def format(%__MODULE__{animated: true, id: id, name: name}), do: "<a:#{name}:#{id}>"
+  def format(%__MODULE__{id: id, name: name}), do: "<:#{name}:#{id}>"
 
   @doc ~S"""
   Formats an emoji struct into its `t:Nostrum.Struct.Emoji.emoji_api_name/0`.
@@ -119,8 +119,8 @@ defmodule Nostrum.Struct.Emoji do
   """
   @spec to_api_name(t) :: emoji_api_name
   def to_api_name(emoji)
-  def to_api_name(%{id: nil, name: name}), do: name
-  def to_api_name(%{id: id, name: name}), do: "#{name}:#{id}"
+  def to_api_name(%__MODULE__{id: nil, name: name}), do: name
+  def to_api_name(%__MODULE__{id: id, name: name}), do: "#{name}:#{id}"
 
   @doc false
   def p_encode do
