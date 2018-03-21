@@ -1,6 +1,23 @@
 defmodule Nostrum.Struct.Emoji do
-  @moduledoc """
+  @moduledoc ~S"""
   Struct representing a Discord emoji.
+
+  ## Using Emojis in Messages
+
+  A `Nostrum.Struct.Emoji` can be used in message content using the `String.Chars` 
+  protocol or `format_mention/1`. We highly recommend using the `String.Chars` protocol 
+  instead of the latter.
+
+  ```Elixir
+  emoji = %Nostrum.Struct.Emoji{id: 43819043108, name: "foxbot"}
+
+  Nostrum.Api.create_message!(189098431762321, "#{emoji}")
+  Nostrum.Api.create_message!(189098431762321, "#{Nostrum.Struct.Emoji.format_mention(emoji)}")
+  ```
+
+  ## Using Emojis in the Api
+
+  See `t:Nostrum.Struct.Emoji.emoji_api_name/0`.
   """
 
   alias Nostrum.Struct.Snowflake
@@ -28,7 +45,7 @@ defmodule Nostrum.Struct.Emoji do
     * A base 16 unicode emoji string.
     * A URI encoded string.
 
-  We suggest library users to use the `to_api_name/1` function to get a 
+  We suggest library users to use the `get_api_name/1` function to get a 
   `Nostrum.Struct.Emoji`'s emoji api name.
 
   ## Examples
@@ -44,7 +61,7 @@ defmodule Nostrum.Struct.Emoji do
 
   # All Emojis
   emoji = %Nostrum.Struct.Emoji{id: 43819043108, name: "foxbot"}
-  Nostrum.Struct.Emoji.to_api_name(emoji)
+  Nostrum.Struct.Emoji.get_api_name(emoji)
   "foxbot:43819043108"
   ```
 
@@ -83,24 +100,28 @@ defmodule Nostrum.Struct.Emoji do
   }
 
   @doc ~S"""
-  Formats an emoji struct into its respective markdown.
+  Formats an emoji struct into an emoji mention.
+
+  Because `Nostrum.Struct.Emoji` implements the `String.Chars` protocol, we 
+  recommend nostrum users to use `String.Chars` instead of this function.
+  See `Nostrum.Struct.Emoji` for more information.
 
   ## Examples
 
   ```Elixir
   emoji = %Nostrum.Struct.Emoji{id: 43819043108, name: "foxbot"}
 
-  Nostrum.Struct.Emoji.format(emoji)
+  Nostrum.Struct.Emoji.format_mention(emoji)
   "<:foxbot:43819043108>"
 
-  Nostrum.Api.create_message!(4318940318049, "Sending some text with this emoji #{Nostrum.Struct.Emoji.format(emoji)}")
+  Nostrum.Api.create_message!(4318940318049, "Sending some text with this emoji #{Nostrum.Struct.Emoji.format_mention(emoji)}")
   ```
   """
-  @spec format(t) :: String.t
-  def format(emoji)
-  def format(%__MODULE__{id: nil, name: name}), do: name
-  def format(%__MODULE__{animated: true, id: id, name: name}), do: "<a:#{name}:#{id}>"
-  def format(%__MODULE__{id: id, name: name}), do: "<:#{name}:#{id}>"
+  @spec format_mention(t) :: String.t
+  def format_mention(emoji)
+  def format_mention(%__MODULE__{id: nil, name: name}), do: name
+  def format_mention(%__MODULE__{animated: true, id: id, name: name}), do: "<a:#{name}:#{id}>"
+  def format_mention(%__MODULE__{id: id, name: name}), do: "<:#{name}:#{id}>"
 
   @doc ~S"""
   Formats an emoji struct into its `t:Nostrum.Struct.Emoji.emoji_api_name/0`.
@@ -110,17 +131,17 @@ defmodule Nostrum.Struct.Emoji do
   ```Elixir
   emoji = %Nostrum.Struct.Emoji{id: 43819043108, name: "foxbot"}
 
-  api_name = Nostrum.Struct.Emoji.to_api_name(emoji)
+  api_name = Nostrum.Struct.Emoji.get_api_name(emoji)
   "foxbot:43819043108"
 
   Nostrum.Api.create_reaction(471635274857, 47361625345554, api_name)
   {:ok}
   ```
   """
-  @spec to_api_name(t) :: emoji_api_name
-  def to_api_name(emoji)
-  def to_api_name(%__MODULE__{id: nil, name: name}), do: name
-  def to_api_name(%__MODULE__{id: id, name: name}), do: "#{name}:#{id}"
+  @spec get_api_name(t) :: emoji_api_name
+  def get_api_name(emoji)
+  def get_api_name(%__MODULE__{id: nil, name: name}), do: name
+  def get_api_name(%__MODULE__{id: id, name: name}), do: "#{name}:#{id}"
 
   @doc false
   def p_encode do
@@ -137,5 +158,13 @@ defmodule Nostrum.Struct.Emoji do
       |> Map.update(:user, nil, &Util.cast(&1, {:struct, User}))
 
     struct(__MODULE__, new)
+  end
+end
+
+defimpl String.Chars, for: Nostrum.Struct.Emoji do
+  alias Nostrum.Struct.Emoji
+
+  def to_string(emoji) do
+    Emoji.format_mention(emoji)
   end
 end
