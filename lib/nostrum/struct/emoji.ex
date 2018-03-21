@@ -82,7 +82,7 @@ defmodule Nostrum.Struct.Emoji do
     animated: animated
   }
 
-  @doc """
+  @doc ~S"""
   Formats an emoji struct into its respective markdown.
 
   ## Examples
@@ -90,10 +90,10 @@ defmodule Nostrum.Struct.Emoji do
   ```Elixir
   emoji = %Nostrum.Struct.Emoji{id: 43819043108, name: "foxbot"}
 
-  md = Nostrum.Struct.Emoji.to_markdown(emoji)
+  Nostrum.Struct.Emoji.to_markdown(emoji)
   "<:foxbot:43819043108>"
 
-  Nostrum.Api.create_message!(4318940318049, "Sending some text with this emoji #{md}")
+  Nostrum.Api.create_message!(4318940318049, "Sending some text with this emoji #{Nostrum.Struct.Emoji.to_markdown(emoji)}")
   ```
   """
   @spec to_markdown(t) :: String.t
@@ -102,7 +102,7 @@ defmodule Nostrum.Struct.Emoji do
   def to_markdown(%{animated: true, id: id, name: name}), do: "<a:#{name}:#{id}>"
   def to_markdown(%{id: id, name: name}), do: "<:#{name}:#{id}>"
 
-  @doc """
+  @doc ~S"""
   Formats an emoji struct into its `t:Nostrum.Struct.Emoji.emoji_api_name/0`.
 
   ## Examples
@@ -125,15 +125,6 @@ defmodule Nostrum.Struct.Emoji do
   @doc false
   def p_encode do
     %__MODULE__{}
-  end
-
-  @doc """
-  Formats a custom emoji for use in a Discord message.
-  """
-  @spec format_custom_emoji(String.t, String.t | integer) :: String.t
-  def format_custom_emoji(name, id) when is_binary(id), do: "<:" <> name <> ":" <> id <> ">"
-  def format_custom_emoji(name, id) do
-    "<:" <> name <> ":" <> to_string(id) <> ">"
   end
 
   @doc false
