@@ -876,16 +876,14 @@ defmodule Nostrum.Api do
   @doc ~S"""
   Creates a new emoji for the given guild.
 
-  ## Request Params
- 
-  The following params are required: 
+  ## Options 
  
     * `:name` (string) - name of the emoji
     * `:image` (base64 data URI) - the 128x128 emoji image. Maximum size of 256kb
-  
-  The following params are optional:
-
     * `:roles` (list of `t:Nostrum.Struct.Snowflake.t/0`) - roles for which this emoji will be whitelisted
+    (default: [])
+
+  `:name` and `:image` are always required.
 
   ## Return Values
 
@@ -901,12 +899,12 @@ defmodule Nostrum.Api do
   ```
   """
   @spec create_guild_emoji(Guild.id, keyword | map) :: error | {:ok, Emoji.t}
-  def create_guild_emoji(guild_id, params)
-  def create_guild_emoji(guild_id, params) when is_list(params), 
-    do: create_guild_emoji(guild_id, Map.new(params))
+  def create_guild_emoji(guild_id, options)
+  def create_guild_emoji(guild_id, options) when is_list(options), 
+    do: create_guild_emoji(guild_id, Map.new(options))
 
-  def create_guild_emoji(guild_id, %{} = params) do
-    request(:post, Constants.guild_emojis(guild_id), params)
+  def create_guild_emoji(guild_id, %{} = options) do
+    request(:post, Constants.guild_emojis(guild_id), options)
     |> handle_request_with_decode({:struct, Emoji})
   end
 
@@ -922,9 +920,7 @@ defmodule Nostrum.Api do
   @doc ~S"""
   Modify the given emoji.
 
-  ## Request Params
-
-  The following params are optional:
+  ## Options
 
     * `:name` (string) - name of the emoji
     * `:roles` (list of `t:Nostrum.Struct.Snowflake.t/0`) - roles to which this emoji will be whitelisted
@@ -941,12 +937,12 @@ defmodule Nostrum.Api do
   ```
   """
   @spec modify_guild_emoji(Guild.id, Emoji.id, keyword | map) :: error | {:ok, Emoji.t}
-  def modify_guild_emoji(guild_id, emoji_id, params \\ %{})
-  def modify_guild_emoji(guild_id, emoji_id, params) when is_list(params), 
-    do: modify_guild_emoji(guild_id, emoji_id, Map.new(params))
+  def modify_guild_emoji(guild_id, emoji_id, options \\ %{})
+  def modify_guild_emoji(guild_id, emoji_id, options) when is_list(options), 
+    do: modify_guild_emoji(guild_id, emoji_id, Map.new(options))
 
-  def modify_guild_emoji(guild_id, emoji_id, %{} = params) do
-    request(:patch, Constants.guild_emoji(guild_id, emoji_id), params)
+  def modify_guild_emoji(guild_id, emoji_id, %{} = options) do
+    request(:patch, Constants.guild_emoji(guild_id, emoji_id), options)
     |> handle_request_with_decode({:struct, Emoji})
   end
 
@@ -954,8 +950,8 @@ defmodule Nostrum.Api do
   Same as `modify_guild_emoji/3`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
   @spec modify_guild_emoji!(Guild.id, Emoji.id, keyword | map) :: no_return | Emoji.t
-  def modify_guild_emoji!(guild_id, emoji_id, params) do
-    modify_guild_emoji(guild_id, emoji_id, params)
+  def modify_guild_emoji!(guild_id, emoji_id, options) do
+    modify_guild_emoji(guild_id, emoji_id, options)
     |> bangify
   end
 
@@ -1608,9 +1604,7 @@ defmodule Nostrum.Api do
   @doc ~S"""
   Changes the username or avatar of the current user.
 
-  ## Params 
- 
-  The following params are optional: 
+  ## Options 
  
     * `:username` (string) - new username
     * `:avatar` (string) - the user's avatar as [avatar data](https://discordapp.com/developers/docs/resources/user#avatar-data)
@@ -1622,11 +1616,12 @@ defmodule Nostrum.Api do
   ```
   """
   @spec modify_current_user(keyword | map) :: error | {:ok, User.t}
-  def modify_current_user(params)
-  def modify_current_user(params) when is_list(params), do: modify_current_user(Map.new(params))
+  def modify_current_user(options)
+  def modify_current_user(options) when is_list(options), 
+    do: modify_current_user(Map.new(options))
 
-  def modify_current_user(%{} = params) do
-    request(:patch, Constants.me, params)
+  def modify_current_user(%{} = options) do
+    request(:patch, Constants.me, options)
     |> handle_request_with_decode({:struct, User})
   end
 
@@ -1634,8 +1629,8 @@ defmodule Nostrum.Api do
   Same as `modify_current_user/3`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
   @spec modify_current_user!(keyword | map) :: no_return | User.t
-  def modify_current_user!(params) do
-    modify_current_user(params)
+  def modify_current_user!(options) do
+    modify_current_user(options)
     |> bangify
   end
 
