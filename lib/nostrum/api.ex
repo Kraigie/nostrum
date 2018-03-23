@@ -93,6 +93,19 @@ defmodule Nostrum.Api do
   """
   @type status :: :dnd | :idle | :online | :invisible
 
+  @typedoc """
+  Represents an emoji for interacting with reaction endpoints.
+  """
+  @type emoji :: Emoji.t | Emoji.emoji_api_name
+
+  @typedoc """
+  Represents optional parameters for Api functions.
+
+  Each function has documentation regarding what parameters it 
+  supports or needs.
+  """
+  @type options :: keyword | map
+
   @doc """
   Updates the status of the bot for a certain shard.
 
@@ -279,8 +292,12 @@ defmodule Nostrum.Api do
   @doc ~S"""
   Creates a reaction for a message.
 
-  If the request was successful, this function returns `{:ok}`. Otherwise, 
-  this function returns `{:error, reason}`.
+  This endpoint requires the `VIEW_CHANNEL` and `READ_MESSAGE_HISTORY` 
+  permissions. Additionally, if nobody else has reacted to the message with 
+  the `emoji`, this endpoint requires the `ADD_REACTIONS` permission. It 
+  fires the `MESSAGE_REACTION_ADD` event.
+
+  If successful, returns `{:ok}`. Otherwise, returns `t:Nostrum.Api.error/0`.
 
   ## Examples
 
@@ -298,7 +315,7 @@ defmodule Nostrum.Api do
 
   For other emoji string examples, see `t:Nostrum.Struct.Emoji.emoji_api_name/0`.
   """
-  @spec create_reaction(Channel.id, Message.id, Emoji.t | Emoji.emoji_api_name) :: error | {:ok}
+  @spec create_reaction(Channel.id, Message.id, emoji) :: error | {:ok}
   def create_reaction(channel_id, message_id, emoji)
   def create_reaction(channel_id, message_id, %Emoji{} = emoji), 
     do: create_reaction(channel_id, message_id, Emoji.get_api_name(emoji))
@@ -307,24 +324,26 @@ defmodule Nostrum.Api do
     request(:put, Constants.channel_reaction_me(channel_id, message_id, emoji_api_name))
   end
 
-  @doc """
+  @doc ~S"""
   Same as `create_reaction/3`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
-  @spec create_reaction!(Channel.id, Message.id, Emoji.t | Emoji.emoji_api_name) :: no_return | {:ok}
+  @spec create_reaction!(Channel.id, Message.id, emoji) :: no_return | {:ok}
   def create_reaction!(channel_id, message_id, emoji) do
     create_reaction(channel_id, message_id, emoji)
     |> bangify
   end
 
   @doc ~S"""
-  Deletes a reaction made by the user.
+  Deletes a reaction the current user has made for the message.
 
-  If the request was successful, this function returns `{:ok}`. Otherwise, 
-  this function returns `{:error, reason}`.
+  This endpoint requires the `VIEW_CHANNEL` and `READ_MESSAGE_HISTORY` 
+  permissions. This endpoint fires the `MESSAGE_REACTION_REMOVE` event.
+
+  If successful, returns `{:ok}`. Otherwise, returns `t:Nostrum.Api.error/0`.
 
   See `create_reaction/3` for similar examples.
   """
-  @spec delete_own_reaction(Channel.id, Message.id, Emoji.t | Emoji.emoji_api_name) :: error | {:ok}
+  @spec delete_own_reaction(Channel.id, Message.id, emoji) :: error | {:ok}
   def delete_own_reaction(channel_id, message_id, emoji)
   def delete_own_reaction(channel_id, message_id, %Emoji{} = emoji), 
     do: delete_own_reaction(channel_id, message_id, Emoji.get_api_name(emoji))
@@ -336,21 +355,23 @@ defmodule Nostrum.Api do
   @doc ~S"""
   Same as `delete_own_reaction/3`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
-  @spec delete_own_reaction!(Channel.id, Message.id, Emoji.t | Emoji.emoji_api_name) :: no_return | {:ok}
+  @spec delete_own_reaction!(Channel.id, Message.id, emoji) :: no_return | {:ok}
   def delete_own_reaction!(channel_id, message_id, emoji) do
     delete_own_reaction(channel_id, message_id, emoji)
     |> bangify
   end
 
   @doc ~S"""
-  Deletes another user's reaction from a message
+  Deletes another user's reaction from a message.
 
-  If the request was successful, this function returns `{:ok}`. Otherwise, 
-  this function returns `{:error, reason}`.
+  This endpoint requires the `VIEW_CHANNEL`, `READ_MESSAGE_HISTORY`, and 
+  `MANAGE_MESSAGES` permissions. It fires the `MESSAGE_REACTION_REMOVE` event.
+  
+  If successful, returns `{:ok}`. Otherwise, returns `t:Nostrum.Api.error/0`.
 
   See `create_reaction/3` for similar examples.
   """
-  @spec delete_user_reaction(Channel.id, Message.id, Emoji.t | Emoji.emoji_api_name, User.id) :: error | {:ok}
+  @spec delete_user_reaction(Channel.id, Message.id, emoji, User.id) :: error | {:ok}
   def delete_user_reaction(channel_id, message_id, emoji, user_id)
   def delete_user_reaction(channel_id, message_id, %Emoji{} = emoji, user_id), 
     do: delete_user_reaction(channel_id, message_id, Emoji.get_api_name(emoji), user_id)
@@ -362,22 +383,22 @@ defmodule Nostrum.Api do
   @doc ~S"""
   Same as `delete_user_reaction/4`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
-  @spec delete_user_reaction!(Channel.id, Message.id, Emoji.t | Emoji.emoji_api_name, User.id) :: no_return | {:ok}
+  @spec delete_user_reaction!(Channel.id, Message.id, emoji, User.id) :: no_return | {:ok}
   def delete_user_reaction!(channel_id, message_id, emoji, user_id) do
     delete_user_reaction(channel_id, message_id, emoji, user_id)
     |> bangify
   end
 
-  @doc """
+  @doc ~S"""
   Gets all users who reacted with an emoji.
 
-  If the request was successful, this function returns `{:ok, users}`, where 
-  `users` is a list of `Nostrum.Struct.User`. Otherwise, this function 
-  returns `{:error, reason}`.
+  This endpoint requires the `VIEW_CHANNEL` and `READ_MESSAGE_HISTORY` permissions.
+
+  If successful, returns `{:ok, users}`. Otherwise, returns `t:Nostrum.Api.error/0`.
 
   See `create_reaction/3` for similar examples.
   """
-  @spec get_reactions(Channel.id, Message.id, Emoji.t | Emoji.emoji_api_name) :: error | {:ok, [User.t]}
+  @spec get_reactions(Channel.id, Message.id, emoji) :: error | {:ok, [User.t]}
   def get_reactions(channel_id, message_id, emoji)
   def get_reactions(channel_id, message_id, %Emoji{} = emoji), 
     do: get_reactions(channel_id, message_id, Emoji.get_api_name(emoji))
@@ -387,26 +408,35 @@ defmodule Nostrum.Api do
     |> handle_request_with_decode({:list, {:struct, User}})
   end
 
-  @doc """
+  @doc ~S"""
   Same as `get_reactions/3`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
-  @spec get_reactions!(Channel.id, Message.id, Emoji.t | Emoji.emoji_api_name) :: no_return | [User.t]
+  @spec get_reactions!(Channel.id, Message.id, emoji) :: no_return | [User.t]
   def get_reactions!(channel_id, message_id, emoji) do
     get_reactions(channel_id, message_id, emoji)
     |> bangify
   end
 
-  @doc """
+  @doc ~S"""
   Deletes all reactions from a message.
 
-  Reaction to delete is specified by
-  `channel_id`, `message_id`, and `emoji`.
+  This endpoint requires the `VIEW_CHANNEL`, `READ_MESSAGE_HISTORY`, and 
+  `MANAGE_MESSAGES` permissions. It fires the `MESSAGE_REACTION_REMOVE_ALL` event.
 
-  Returns `{:ok}` if successful, `{:error, reason}` otherwise.
+  If successful, returns `{:ok}`. Otherwise, return `t:Nostrum.Api.error/0`.
   """
-  @spec delete_all_reactions(integer, integer) :: error | {:ok}
+  @spec delete_all_reactions(Channel.id, Message.id) :: error | {:ok}
   def delete_all_reactions(channel_id, message_id) do
     request(:delete, Constants.channel_reactions_delete(channel_id, message_id))
+  end
+
+  @doc ~S"""
+  Same as `delete_all_reactions/2`, but raises `Nostrum.Error.ApiError` in case of failure.
+  """
+  @spec delete_all_reactions!(Channel.id, Message.id) :: no_return | {:ok}
+  def delete_all_reactions!(channel_id, message_id) do
+    delete_all_reactions(channel_id, message_id)
+    |> bangify
   end
 
   @doc """
@@ -834,8 +864,9 @@ defmodule Nostrum.Api do
   @doc ~S"""
   Gets a list of emojis for a given guild.
 
-  If the request is successful, this function returns `{:ok, emojis}`, where 
-  `emojis` is a list of `Nostrum.Struct.Emoji`. Otherwise, returns `{:error, reason}`.
+  This endpoint requires the `MANAGE_EMOJIS` permission.
+
+  If successful, returns `{:ok, emojis}`. Otherwise, returns `t:Nostrum.Api.error/0`.
   """
   @spec list_guild_emojis(Guild.id) :: error | {:ok, [Emoji.t]}
   def list_guild_emojis(guild_id) do
@@ -855,8 +886,9 @@ defmodule Nostrum.Api do
   @doc ~S"""
   Gets an emoji for the given guild and emoji ids.
 
-  If the request is successful, this function returns `{:ok, emoji}`, where 
-  `emoji` is a `Nostrum.Struct.Emoji`. Otherwise, returns `{:error, reason}`.
+  This endpoint requires the `MANAGE_EMOJIS` permission.
+
+  If successful, returns `{:ok, emoji}`. Otherwise, returns `t:Nostrum.Api.error/0`.
   """
   @spec get_guild_emoji(Guild.id, Emoji.id) :: error | {:ok, Emoji.t}
   def get_guild_emoji(guild_id, emoji_id) do
@@ -876,19 +908,19 @@ defmodule Nostrum.Api do
   @doc ~S"""
   Creates a new emoji for the given guild.
 
-  ## Options 
- 
+  This endpoint requires the `MANAGE_EMOJIS` permission. It fires a 
+  `GUILD_EMOJIS_UPDATE` event.
+
+  If successful, returns `{:ok, emoji}`. Otherwise, returns `t:Nostrum.Api.error/0`.
+
+  ## Options
+
     * `:name` (string) - name of the emoji
     * `:image` (base64 data URI) - the 128x128 emoji image. Maximum size of 256kb
     * `:roles` (list of `t:Nostrum.Struct.Snowflake.t/0`) - roles for which this emoji will be whitelisted
     (default: [])
 
   `:name` and `:image` are always required.
-
-  ## Return Values
-
-  If the request is successful, this function returns `{:ok, emoji}`, where 
-  `emoji` is a `Nostrum.Struct.Emoji`. Otherwise, returns `{:error, reason}`.
 
   ## Examples
 
@@ -898,7 +930,7 @@ defmodule Nostrum.Api do
   Nostrum.Api.create_guild_emoji(43189401384091, name: "nostrum", image: image, roles: [])
   ```
   """
-  @spec create_guild_emoji(Guild.id, keyword | map) :: error | {:ok, Emoji.t}
+  @spec create_guild_emoji(Guild.id, options) :: error | {:ok, Emoji.t}
   def create_guild_emoji(guild_id, options)
   def create_guild_emoji(guild_id, options) when is_list(options), 
     do: create_guild_emoji(guild_id, Map.new(options))
@@ -911,7 +943,7 @@ defmodule Nostrum.Api do
   @doc ~S"""
   Same as `create_guild_emoji/2`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
-  @spec create_guild_emoji!(Guild.id, keyword | map) :: no_return | Emoji.t
+  @spec create_guild_emoji!(Guild.id, options) :: no_return | Emoji.t
   def create_guild_emoji!(guild_id, params) do
     create_guild_emoji(guild_id, params)
     |> bangify
@@ -920,15 +952,15 @@ defmodule Nostrum.Api do
   @doc ~S"""
   Modify the given emoji.
 
+  This endpoint requires the `MANAGE_EMOJIS` permission. It fires a 
+  `GUILD_EMOJIS_UPDATE` event.
+
+  If successful, returns `{:ok, emoji}`. Otherwise, returns `t:Nostrum.Api.error/0`.
+
   ## Options
 
     * `:name` (string) - name of the emoji
     * `:roles` (list of `t:Nostrum.Struct.Snowflake.t/0`) - roles to which this emoji will be whitelisted
-
-  ## Return Values
-
-  If the request is successful, this function returns `{:ok, emoji}`, where 
-  `emoji` is a `Nostrum.Struct.Emoji`. Otherwise, returns `{:error, reason}`.
 
   ## Examples
 
@@ -936,7 +968,7 @@ defmodule Nostrum.Api do
   Nostrum.Api.modify_guild_emoji(43189401384091, 4314301984301, name: "elixir", roles: [])
   ```
   """
-  @spec modify_guild_emoji(Guild.id, Emoji.id, keyword | map) :: error | {:ok, Emoji.t}
+  @spec modify_guild_emoji(Guild.id, Emoji.id, options) :: error | {:ok, Emoji.t}
   def modify_guild_emoji(guild_id, emoji_id, options \\ %{})
   def modify_guild_emoji(guild_id, emoji_id, options) when is_list(options), 
     do: modify_guild_emoji(guild_id, emoji_id, Map.new(options))
@@ -949,7 +981,7 @@ defmodule Nostrum.Api do
   @doc ~S"""
   Same as `modify_guild_emoji/3`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
-  @spec modify_guild_emoji!(Guild.id, Emoji.id, keyword | map) :: no_return | Emoji.t
+  @spec modify_guild_emoji!(Guild.id, Emoji.id, options) :: no_return | Emoji.t
   def modify_guild_emoji!(guild_id, emoji_id, options) do
     modify_guild_emoji(guild_id, emoji_id, options)
     |> bangify
@@ -958,8 +990,10 @@ defmodule Nostrum.Api do
   @doc ~S"""
   Deletes the given emoji.
 
-  If the request is successful, this function returns `{:ok}`. 
-  Otherwise, returns `{:error, reason}`.
+  This endpoint requires the `MANAGE_EMOJIS` permission. It fires a 
+  `GUILD_EMOJIS_UPDATE` event.
+
+  If successful, returns `{:ok}`. Otherwise, returns `t:Nostrum.Api.error/0`.
   """
   @spec delete_guild_emoji(Guild.id, Emoji.id) :: error | {:ok}
   def delete_guild_emoji(guild_id, emoji_id), 

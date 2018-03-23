@@ -34,6 +34,10 @@ defmodule Nostrum.Struct.Emoji do
     :roles
   ]
 
+  defimpl String.Chars do
+    def to_string(emoji), do: @for.format_mention(emoji)
+  end
+
   @typedoc ~S"""
   Emoji string to be used with the Discord API.
 
@@ -158,13 +162,5 @@ defmodule Nostrum.Struct.Emoji do
       |> Map.update(:user, nil, &Util.cast(&1, {:struct, User}))
 
     struct(__MODULE__, new)
-  end
-end
-
-defimpl String.Chars, for: Nostrum.Struct.Emoji do
-  alias Nostrum.Struct.Emoji
-
-  def to_string(emoji) do
-    Emoji.format_mention(emoji)
   end
 end
