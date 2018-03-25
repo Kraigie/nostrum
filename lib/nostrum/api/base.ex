@@ -8,7 +8,7 @@ defmodule Nostrum.Api.Base do
   alias Nostrum.Constants
 
   defp process_url(url) do
-    Constants.base_url <> url
+    URI.encode(Constants.base_url <> url)
   end
 
   defp process_request_body(""),
