@@ -101,7 +101,7 @@ defmodule Nostrum.Api do
   @typedoc """
   Represents optional parameters for Api functions.
 
-  Each function has documentation regarding what parameters it 
+  Each function has documentation regarding what parameters it
   supports or needs.
   """
   @type options :: keyword | map
@@ -292,10 +292,10 @@ defmodule Nostrum.Api do
   @doc ~S"""
   Creates a reaction for a message.
 
-  This endpoint requires the `VIEW_CHANNEL` and `READ_MESSAGE_HISTORY` 
-  permissions. Additionally, if nobody else has reacted to the message with 
-  the `emoji`, this endpoint requires the `ADD_REACTIONS` permission. It 
-  fires the `MESSAGE_REACTION_ADD` event.
+  This endpoint requires the `VIEW_CHANNEL` and `READ_MESSAGE_HISTORY`
+  permissions. Additionally, if nobody else has reacted to the message with
+  the `emoji`, this endpoint requires the `ADD_REACTIONS` permission. It
+  fires a `t:Nostrum.Consumer.message_reaction_add/0` event.
 
   If successful, returns `{:ok}`. Otherwise, returns `t:Nostrum.Api.error/0`.
 
@@ -309,15 +309,13 @@ defmodule Nostrum.Api do
   # Using a base 16 emoji string.
   Nostrum.Api.create_reaction(123123123123, 321321321321, "\xF0\x9F\x98\x81")
 
-  # Using a URI encoded emoji string.
-  Nostrum.Api.create_reaction(123123123123, 321321321321, URI.encode("\u2b50"))
   ```
 
   For other emoji string examples, see `t:Nostrum.Struct.Emoji.emoji_api_name/0`.
   """
   @spec create_reaction(Channel.id, Message.id, emoji) :: error | {:ok}
   def create_reaction(channel_id, message_id, emoji)
-  def create_reaction(channel_id, message_id, %Emoji{} = emoji), 
+  def create_reaction(channel_id, message_id, %Emoji{} = emoji),
     do: create_reaction(channel_id, message_id, Emoji.get_api_name(emoji))
 
   def create_reaction(channel_id, message_id, emoji_api_name) do
@@ -336,8 +334,8 @@ defmodule Nostrum.Api do
   @doc ~S"""
   Deletes a reaction the current user has made for the message.
 
-  This endpoint requires the `VIEW_CHANNEL` and `READ_MESSAGE_HISTORY` 
-  permissions. This endpoint fires the `MESSAGE_REACTION_REMOVE` event.
+  This endpoint requires the `VIEW_CHANNEL` and `READ_MESSAGE_HISTORY`
+  permissions. It fires a `t:Nostrum.Consumer.message_reaction_remove/0` event.
 
   If successful, returns `{:ok}`. Otherwise, returns `t:Nostrum.Api.error/0`.
 
@@ -345,9 +343,9 @@ defmodule Nostrum.Api do
   """
   @spec delete_own_reaction(Channel.id, Message.id, emoji) :: error | {:ok}
   def delete_own_reaction(channel_id, message_id, emoji)
-  def delete_own_reaction(channel_id, message_id, %Emoji{} = emoji), 
+  def delete_own_reaction(channel_id, message_id, %Emoji{} = emoji),
     do: delete_own_reaction(channel_id, message_id, Emoji.get_api_name(emoji))
-  
+
   def delete_own_reaction(channel_id, message_id, emoji_api_name) do
     request(:delete, Constants.channel_reaction_me(channel_id, message_id, emoji_api_name))
   end
@@ -364,16 +362,16 @@ defmodule Nostrum.Api do
   @doc ~S"""
   Deletes another user's reaction from a message.
 
-  This endpoint requires the `VIEW_CHANNEL`, `READ_MESSAGE_HISTORY`, and 
-  `MANAGE_MESSAGES` permissions. It fires the `MESSAGE_REACTION_REMOVE` event.
-  
+  This endpoint requires the `VIEW_CHANNEL`, `READ_MESSAGE_HISTORY`, and
+  `MANAGE_MESSAGES` permissions. It fires a `t:Nostrum.Consumer.message_reaction_remove/0` event.
+
   If successful, returns `{:ok}`. Otherwise, returns `t:Nostrum.Api.error/0`.
 
   See `create_reaction/3` for similar examples.
   """
   @spec delete_user_reaction(Channel.id, Message.id, emoji, User.id) :: error | {:ok}
   def delete_user_reaction(channel_id, message_id, emoji, user_id)
-  def delete_user_reaction(channel_id, message_id, %Emoji{} = emoji, user_id), 
+  def delete_user_reaction(channel_id, message_id, %Emoji{} = emoji, user_id),
     do: delete_user_reaction(channel_id, message_id, Emoji.get_api_name(emoji), user_id)
 
   def delete_user_reaction(channel_id, message_id, emoji_api_name, user_id) do
@@ -400,9 +398,9 @@ defmodule Nostrum.Api do
   """
   @spec get_reactions(Channel.id, Message.id, emoji) :: error | {:ok, [User.t]}
   def get_reactions(channel_id, message_id, emoji)
-  def get_reactions(channel_id, message_id, %Emoji{} = emoji), 
+  def get_reactions(channel_id, message_id, %Emoji{} = emoji),
     do: get_reactions(channel_id, message_id, Emoji.get_api_name(emoji))
-  
+
   def get_reactions(channel_id, message_id, emoji_api_name) do
     request(:get, Constants.channel_reactions_get(channel_id, message_id, emoji_api_name))
     |> handle_request_with_decode({:list, {:struct, User}})
@@ -420,8 +418,8 @@ defmodule Nostrum.Api do
   @doc ~S"""
   Deletes all reactions from a message.
 
-  This endpoint requires the `VIEW_CHANNEL`, `READ_MESSAGE_HISTORY`, and 
-  `MANAGE_MESSAGES` permissions. It fires the `MESSAGE_REACTION_REMOVE_ALL` event.
+  This endpoint requires the `VIEW_CHANNEL`, `READ_MESSAGE_HISTORY`, and
+  `MANAGE_MESSAGES` permissions. It fires a `t:Nostrum.Consumer.message_reaction_remove_all/0` event.
 
   If successful, returns `{:ok}`. Otherwise, return `t:Nostrum.Api.error/0`.
   """
@@ -908,8 +906,8 @@ defmodule Nostrum.Api do
   @doc ~S"""
   Creates a new emoji for the given guild.
 
-  This endpoint requires the `MANAGE_EMOJIS` permission. It fires a 
-  `GUILD_EMOJIS_UPDATE` event.
+  This endpoint requires the `MANAGE_EMOJIS` permission. It fires a
+  `t:Nostrum.Consumer.guild_emojis_update/0` event.
 
   If successful, returns `{:ok, emoji}`. Otherwise, returns `t:Nostrum.Api.error/0`.
 
@@ -932,7 +930,7 @@ defmodule Nostrum.Api do
   """
   @spec create_guild_emoji(Guild.id, options) :: error | {:ok, Emoji.t}
   def create_guild_emoji(guild_id, options)
-  def create_guild_emoji(guild_id, options) when is_list(options), 
+  def create_guild_emoji(guild_id, options) when is_list(options),
     do: create_guild_emoji(guild_id, Map.new(options))
 
   def create_guild_emoji(guild_id, %{} = options) do
@@ -952,8 +950,8 @@ defmodule Nostrum.Api do
   @doc ~S"""
   Modify the given emoji.
 
-  This endpoint requires the `MANAGE_EMOJIS` permission. It fires a 
-  `GUILD_EMOJIS_UPDATE` event.
+  This endpoint requires the `MANAGE_EMOJIS` permission. It fires a
+  `t:Nostrum.Consumer.guild_emojis_update/0` event.
 
   If successful, returns `{:ok, emoji}`. Otherwise, returns `t:Nostrum.Api.error/0`.
 
@@ -970,7 +968,7 @@ defmodule Nostrum.Api do
   """
   @spec modify_guild_emoji(Guild.id, Emoji.id, options) :: error | {:ok, Emoji.t}
   def modify_guild_emoji(guild_id, emoji_id, options \\ %{})
-  def modify_guild_emoji(guild_id, emoji_id, options) when is_list(options), 
+  def modify_guild_emoji(guild_id, emoji_id, options) when is_list(options),
     do: modify_guild_emoji(guild_id, emoji_id, Map.new(options))
 
   def modify_guild_emoji(guild_id, emoji_id, %{} = options) do
@@ -990,13 +988,13 @@ defmodule Nostrum.Api do
   @doc ~S"""
   Deletes the given emoji.
 
-  This endpoint requires the `MANAGE_EMOJIS` permission. It fires a 
-  `GUILD_EMOJIS_UPDATE` event.
+  This endpoint requires the `MANAGE_EMOJIS` permission. It fires a
+  `t:Nostrum.Consumer.guild_emojis_update/0` event.
 
   If successful, returns `{:ok}`. Otherwise, returns `t:Nostrum.Api.error/0`.
   """
   @spec delete_guild_emoji(Guild.id, Emoji.id) :: error | {:ok}
-  def delete_guild_emoji(guild_id, emoji_id), 
+  def delete_guild_emoji(guild_id, emoji_id),
     do: request(:delete, Constants.guild_emoji(guild_id, emoji_id))
 
   @doc ~S"""
@@ -1592,7 +1590,7 @@ defmodule Nostrum.Api do
   @doc """
   Gets a user by its `t:Nostrum.Struct.User.id/0`.
 
-  If the request is successful, this function returns `{:ok, user}`, where 
+  If the request is successful, this function returns `{:ok, user}`, where
   `user` is a `Nostrum.Struct.User`. Otherwise, returns `{:error, reason}`.
   """
   @spec get_user(User.id) :: error | {:ok, User.t}
@@ -1613,11 +1611,11 @@ defmodule Nostrum.Api do
   @doc """
   Gets info on the current user.
 
-  If nostrum's caching is enabled, it is recommended to use `Nostrum.Cache.Me.get/0` 
-  instead of this function. This is because sending out an API request is much slower 
+  If nostrum's caching is enabled, it is recommended to use `Nostrum.Cache.Me.get/0`
+  instead of this function. This is because sending out an API request is much slower
   than pulling from our cache.
 
-  If the request is successful, this function returns `{:ok, user}`, where 
+  If the request is successful, this function returns `{:ok, user}`, where
   `user` is nostrum's `Nostrum.Struct.User`. Otherwise, returns `{:error, reason}`.
   """
   @spec get_current_user() :: error | {:ok, User.t}
@@ -1638,20 +1636,20 @@ defmodule Nostrum.Api do
   @doc ~S"""
   Changes the username or avatar of the current user.
 
-  ## Options 
- 
+  ## Options
+
     * `:username` (string) - new username
     * `:avatar` (string) - the user's avatar as [avatar data](https://discordapp.com/developers/docs/resources/user#avatar-data)
- 
-  ## Examples 
+
+  ## Examples
 
   ```Elixir
-  Nostrum.Api.modify_current_user(avatar: "data:image/jpeg;base64,YXl5IGJieSB1IGx1a2luIDQgc3VtIGZ1az8=") 
+  Nostrum.Api.modify_current_user(avatar: "data:image/jpeg;base64,YXl5IGJieSB1IGx1a2luIDQgc3VtIGZ1az8=")
   ```
   """
   @spec modify_current_user(keyword | map) :: error | {:ok, User.t}
   def modify_current_user(options)
-  def modify_current_user(options) when is_list(options), 
+  def modify_current_user(options) when is_list(options),
     do: modify_current_user(Map.new(options))
 
   def modify_current_user(%{} = options) do
@@ -2076,15 +2074,15 @@ defmodule Nostrum.Api do
     Application.get_env(:nostrum, :token)
   end
 
-  defp handle_request_with_decode(response, type) 
-  defp handle_request_with_decode({:error, _} = error, _type), do: error 
- 
-  defp handle_request_with_decode({:ok, body}, type) do 
-    convert =  
-      body 
+  defp handle_request_with_decode(response, type)
+  defp handle_request_with_decode({:error, _} = error, _type), do: error
+
+  defp handle_request_with_decode({:ok, body}, type) do
+    convert =
+      body
       |> Poison.decode!
       |> Util.cast(type)
- 
+
     {:ok, convert}
   end
 end

@@ -258,11 +258,11 @@ defmodule Nostrum.Util do
     ]
   end
 
-  @spec struct_get_in(map, [atom]) :: term 
-  defp struct_get_in(value, keys) 
-  defp struct_get_in(value, []), do: value 
- 
-  defp struct_get_in(value, [key | rest]) do 
-    struct_get_in(Map.fetch!(value, key), rest) 
+  @spec struct_get_in(map, [atom]) :: term
+  defp struct_get_in(value, keys)
+  defp struct_get_in(value, []), do: value
+
+  defp struct_get_in(value, [key | rest]) do
+    struct_get_in(Map.fetch!(value, key), rest)
   end
 end
