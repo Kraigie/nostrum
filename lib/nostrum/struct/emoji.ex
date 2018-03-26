@@ -4,8 +4,8 @@ defmodule Nostrum.Struct.Emoji do
 
   ## Using Emojis in Messages
 
-  A `Nostrum.Struct.Emoji` can be used in message content using the `String.Chars` 
-  protocol or `format_mention/1`. We highly recommend using the `String.Chars` protocol 
+  A `Nostrum.Struct.Emoji` can be used in message content using the `String.Chars`
+  protocol or `format_mention/1`. We highly recommend using the `String.Chars` protocol
   instead of the latter.
 
   ```Elixir
@@ -41,15 +41,14 @@ defmodule Nostrum.Struct.Emoji do
   @typedoc ~S"""
   Emoji string to be used with the Discord API.
 
-  Some API endpoints take an `emoji`. If it is a custom emoji, it must be 
-  structured as `"id:name"`. If it is an unicode emoji, it can be structured 
-  as any of the following: 
+  Some API endpoints take an `emoji`. If it is a custom emoji, it must be
+  structured as `"id:name"`. If it is an unicode emoji, it can be structured
+  as any of the following:
 
     * `"name"`
     * A base 16 unicode emoji string.
-    * A URI encoded string.
 
-  We suggest library users to use the `get_api_name/1` function to get a 
+  We suggest library users to use the `get_api_name/1` function to get a
   `Nostrum.Struct.Emoji`'s emoji api name.
 
   ## Examples
@@ -61,7 +60,7 @@ defmodule Nostrum.Struct.Emoji do
   # Unicode Emojis
   "≡ƒæì"
   "\xF0\x9F\x98\x81"
-  URI.encode("\u2b50")
+  "\u2b50"
 
   # All Emojis
   emoji = %Nostrum.Struct.Emoji{id: 43819043108, name: "foxbot"}
@@ -106,7 +105,7 @@ defmodule Nostrum.Struct.Emoji do
   @doc ~S"""
   Formats an emoji struct into an emoji mention.
 
-  Because `Nostrum.Struct.Emoji` implements the `String.Chars` protocol, we 
+  Because `Nostrum.Struct.Emoji` implements the `String.Chars` protocol, we
   recommend nostrum users to use `String.Chars` instead of this function.
   See `Nostrum.Struct.Emoji` for more information.
 
