@@ -6,8 +6,8 @@ defmodule Nostrum.Mixfile do
       app: :nostrum,
       version: "0.3.0",
       elixir: "~> 1.4",
-      build_embedded: Mix.env == :prod,
-      start_permanent: Mix.env == :prod,
+      build_embedded: Mix.env() == :prod,
+      start_permanent: Mix.env() == :prod,
       description: "An elixir Discord library",
       package: package(),
       name: "Elixir",
@@ -45,8 +45,10 @@ defmodule Nostrum.Mixfile do
       name: :nostrum,
       licenses: ["MIT"],
       maintainers: ["Craig Dazey"],
-      links: %{"GitHub" => "https://github.com/Kraigie/nostrum/",
-              "Docs" => "https://kraigie.github.io/nostrum/"}
+      links: %{
+        "GitHub" => "https://github.com/Kraigie/nostrum/",
+        "Docs" => "https://kraigie.github.io/nostrum/"
+      }
     ]
   end
 
