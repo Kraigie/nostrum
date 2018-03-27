@@ -10,7 +10,7 @@ defmodule Nostrum.Cache.ChannelCache do
   alias Nostrum.Struct.DMChannel
   alias Nostrum.Util
 
-  @type channel :: Channel.t | DMChannel.t
+  @type channel :: Channel.t() | DMChannel.t()
 
   @doc false
   def start_link([]) do
@@ -27,7 +27,7 @@ defmodule Nostrum.Cache.ChannelCache do
   Internally, the ChannelCache process only stores DMChannel references. To get
   channel information, a call is made to a `Nostrum.Cache.Guild.GuildServer`.
   """
-  @spec get(id: integer | Nostrum.Struct.Message.t) :: {:error, atom} | {:ok, channel}
+  @spec get(id: integer | Nostrum.Struct.Message.t()) :: {:error, atom} | {:ok, channel}
   def get(id: id), do: GenServer.call(ChannelCache, {:get, id})
   def get(%Nostrum.Struct.Message{channel_id: channel_id}), do: get(id: channel_id)
 
@@ -37,25 +37,21 @@ defmodule Nostrum.Cache.ChannelCache do
   end
 
   @doc false
-  def create(channel),
-    do: GenServer.call(ChannelCache, {:create, channel.id, channel})
+  def create(channel), do: GenServer.call(ChannelCache, {:create, channel.id, channel})
 
   @doc false
-  def update(channel),
-    do: GenServer.call(ChannelCache, {:update, channel.id, channel})
+  def update(channel), do: GenServer.call(ChannelCache, {:update, channel.id, channel})
 
   @doc false
-  def delete(channel),
-    do: GenServer.call(ChannelCache, {:delete, channel.id})
+  def delete(channel), do: GenServer.call(ChannelCache, {:delete, channel.id})
 
   def handle_call({:get, id}, _from, state) do
     ret =
-      with \
-        nil <- Map.get(state, id),
-        {:ok, guild} <- GuildServer.get(channel_id: id)
-      do
+      with nil <- Map.get(state, id),
+           {:ok, guild} <- GuildServer.get(channel_id: id) do
         Map.get(guild.channels, id)
       end
+
     {:reply, ret_to_struct(ret), state}
   end
 
@@ -80,5 +76,4 @@ defmodule Nostrum.Cache.ChannelCache do
   def ret_to_struct(%{__struct__: _} = channel), do: {:ok, channel}
   def ret_to_struct({old, new}), do: {Channel.to_struct(old), Channel.to_struct(new)}
   def ret_to_struct(channel), do: {:ok, DMChannel.to_struct(channel)}
-
 end

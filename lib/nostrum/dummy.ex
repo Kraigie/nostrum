@@ -1,6 +1,6 @@
 _ = """
-      This module exists primarily for documentation/testing purposes
-    """
+  This module exists primarily for documentation/testing purposes
+"""
 
 defmodule Dummy do
   @moduledoc false
@@ -9,7 +9,7 @@ defmodule Dummy do
     import Supervisor.Spec
 
     # List comprehension creates a consumer per cpu core
-    #children = for i <- 1..System.schedulers_online, do: worker(DummyConsumer, [], id: i)
+    # children = for i <- 1..System.schedulers_online, do: worker(DummyConsumer, [], id: i)
     children = [worker(DummyConsumerSupervisor, [])]
 
     Supervisor.start_link(children, strategy: :one_for_one)
@@ -27,7 +27,7 @@ defmodule DummyConsumer do
   end
 
   def handle_event({event_name, _, _}, _) do
-    Logger.debug "User would handle #{event_name} here"
+    Logger.debug("User would handle #{event_name} here")
     {:ok, %{}}
   end
 end
@@ -42,10 +42,10 @@ defmodule DummyConsumerSupervisor do
   end
 
   def handle_event({:MESSAGE_CREATE, {message}, _}) do
-    Logger.debug "Message received: #{inspect message.content}"
+    Logger.debug("Message received: #{inspect(message.content)}")
   end
 
   def handle_event({event_name, _, _}) do
-    Logger.debug "User would handle #{event_name} here"
+    Logger.debug("User would handle #{event_name} here")
   end
 end

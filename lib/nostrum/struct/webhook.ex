@@ -6,16 +6,16 @@ defmodule Nostrum.Struct.Webhook do
   alias Nostrum.Struct.User
 
   @typedoc "Id of the webhook"
-  @type id :: String.t
+  @type id :: String.t()
 
   @typedoc "Guild the webhook is for"
-  @type guild_id :: Guild.t
+  @type guild_id :: Guild.t()
 
   @typedoc "Channel the webhook is for"
-  @type channel_id :: Channel.t
+  @type channel_id :: Channel.t()
 
   @typedoc "User who created the webhook"
-  @type user :: User.t
+  @type user :: User.t()
 
   @typedoc "Default name of the webhook"
   @type name :: integer
@@ -27,14 +27,14 @@ defmodule Nostrum.Struct.Webhook do
   @type token :: integer
 
   @type t :: %__MODULE__{
-    id: id,
-    guild_id: guild_id,
-    channel_id: channel_id,
-    user: user,
-    name: name,
-    avatar: avatar,
-    token: token
-  }
+          id: id,
+          guild_id: guild_id,
+          channel_id: channel_id,
+          user: user,
+          name: name,
+          avatar: avatar,
+          token: token
+        }
 
   @derive [Poison.Encoder]
   defstruct [
@@ -49,8 +49,10 @@ defmodule Nostrum.Struct.Webhook do
 
   @doc false
   def to_struct(map) do
-    new = map
-    |> Map.update(:user, %{}, &User.to_struct(&1))
+    new =
+      map
+      |> Map.update(:user, %{}, &User.to_struct(&1))
+
     struct(__MODULE__, new)
   end
 end

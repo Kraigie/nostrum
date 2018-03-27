@@ -7,16 +7,16 @@ defmodule Nostrum.Struct.Invite.Channel do
   @type id :: integer
 
   @typedoc "Name of the channel"
-  @type name :: String.t
+  @type name :: String.t()
 
   @typedoc "Type of channel"
-  @type type :: String.t
+  @type type :: String.t()
 
   @type t :: %__MODULE__{
-    id: id,
-    name: name,
-    type: type
-  }
+          id: id,
+          name: name,
+          type: type
+        }
 
   @derive [Poison.Encoder]
   defstruct [

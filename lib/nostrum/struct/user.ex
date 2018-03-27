@@ -18,20 +18,20 @@ defmodule Nostrum.Struct.User do
     :bot,
     :mfa_enabled,
     :verified,
-    :email,
+    :email
   ]
 
   @typedoc "The user's id"
-  @type id :: Snowflake.t
+  @type id :: Snowflake.t()
 
   @typedoc "The user's username"
-  @type username :: String.t
+  @type username :: String.t()
 
   @typedoc "The user's 4--digit discord-tag"
-  @type discriminator :: String.t
+  @type discriminator :: String.t()
 
   @typedoc "User's avatar hash"
-  @type avatar :: String.t | nil
+  @type avatar :: String.t() | nil
 
   @typedoc "Whether the user is a bot"
   @type bot :: boolean | nil
@@ -43,18 +43,18 @@ defmodule Nostrum.Struct.User do
   @type verified :: boolean | nil
 
   @typedoc "The user's email"
-  @type email :: String.t | nil
+  @type email :: String.t() | nil
 
   @type t :: %__MODULE__{
-    id: id,
-    username: username,
-    discriminator: discriminator,
-    avatar: avatar,
-    bot: bot,
-    mfa_enabled: mfa_enabled,
-    verified: verified,
-    email: email,
-  }
+          id: id,
+          username: username,
+          discriminator: discriminator,
+          avatar: avatar,
+          bot: bot,
+          mfa_enabled: mfa_enabled,
+          verified: verified,
+          email: email
+        }
 
   @doc false
   def p_encode do
@@ -63,9 +63,9 @@ defmodule Nostrum.Struct.User do
 
   @doc false
   def to_struct(map) do
-    new = 
-      map 
-      |> Map.new(fn {k, v} -> {Util.maybe_to_atom(k), v} end) 
+    new =
+      map
+      |> Map.new(fn {k, v} -> {Util.maybe_to_atom(k), v} end)
       |> Map.update(:id, nil, &Util.cast(&1, Snowflake))
 
     struct(__MODULE__, new)

@@ -14,16 +14,16 @@ defmodule Nostrum.Struct.Message do
   @type channel_id :: integer
 
   @typedoc "The user struct of the author"
-  @type author :: User.t
+  @type author :: User.t()
 
   @typedoc "The content of the message"
-  @type content :: String.t
+  @type content :: String.t()
 
   @typedoc "When the message was sent"
-  @type timestamp :: String.t
+  @type timestamp :: String.t()
 
   @typedoc "When the message was edited"
-  @type edited_timestamp :: String.t | nil
+  @type edited_timestamp :: String.t() | nil
 
   @typedoc "Whether this was a TTS message"
   @type tts :: boolean
@@ -32,19 +32,19 @@ defmodule Nostrum.Struct.Message do
   @type mention_everyone :: boolean
 
   @typedoc "List of users mentioned in the message"
-  @type mentions :: list(User.t)
+  @type mentions :: list(User.t())
 
   @typedoc "List of roles ids mentioned in the message"
   @type mention_roles :: list(integer)
 
   @typedoc "List of attached files in the message"
-  @type attachments :: list(Attachment.t)
+  @type attachments :: list(Attachment.t())
 
   @typedoc "List of embedded content in the message"
   @type embeds :: list(map)
 
   @typedoc "Validates if a message was sent"
-  @type nonce :: String.t
+  @type nonce :: String.t()
 
   @typedoc "Whether this message is pinned"
   @type pinned :: boolean
@@ -53,22 +53,22 @@ defmodule Nostrum.Struct.Message do
   @type type :: integer
 
   @type t :: %__MODULE__{
-    attachments: attachments,
-    author: author,
-    channel_id: channel_id,
-    content: content,
-    edited_timestamp: edited_timestamp,
-    embeds: embeds,
-    id: id,
-    mention_everyone: mention_everyone,
-    mention_roles: mention_roles,
-    mentions: mentions,
-    nonce: nonce,
-    pinned: pinned,
-    timestamp: timestamp,
-    tts: tts,
-    type: type
-  }
+          attachments: attachments,
+          author: author,
+          channel_id: channel_id,
+          content: content,
+          edited_timestamp: edited_timestamp,
+          embeds: embeds,
+          id: id,
+          mention_everyone: mention_everyone,
+          mention_roles: mention_roles,
+          mentions: mentions,
+          nonce: nonce,
+          pinned: pinned,
+          timestamp: timestamp,
+          tts: tts,
+          type: type
+        }
 
   @derive [Poison.Encoder]
   defstruct [
@@ -86,25 +86,27 @@ defmodule Nostrum.Struct.Message do
     :pinned,
     :timestamp,
     :tts,
-    :type,
+    :type
   ]
 
   @doc false
   def p_encode do
     %__MODULE__{
-      author: User.p_encode,
-      mentions: [User.p_encode],
-      embeds: [Embed.p_encode]
+      author: User.p_encode(),
+      mentions: [User.p_encode()],
+      embeds: [Embed.p_encode()]
     }
   end
 
   @doc false
   def to_struct(map) do
-    new = map
-    |> Map.update(:author, %{}, &User.to_struct(&1))
-    |> Map.update(:attachments, %{}, &Util.list_to_struct_list(&1, Attachment))
-    |> Map.update(:mentions, %{}, &Util.list_to_struct_list(&1, User))
-    |> Map.update(:embeds, %{}, &Util.list_to_struct_list(&1, Embed))
+    new =
+      map
+      |> Map.update(:author, %{}, &User.to_struct(&1))
+      |> Map.update(:attachments, %{}, &Util.list_to_struct_list(&1, Attachment))
+      |> Map.update(:mentions, %{}, &Util.list_to_struct_list(&1, User))
+      |> Map.update(:embeds, %{}, &Util.list_to_struct_list(&1, Embed))
+
     struct(__MODULE__, new)
   end
 end

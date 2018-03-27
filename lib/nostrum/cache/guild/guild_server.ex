@@ -31,9 +31,10 @@ defmodule Nostrum.Cache.Guild.GuildServer do
     GuildServer.get(msg)
     ```
   """
-  @type search_criteria :: [id: integer] |
-                           [channel_id: integer] |
-                           [message: Nostrum.Struct.Message.t]
+  @type search_criteria ::
+          [id: integer]
+          | [channel_id: integer]
+          | [message: Nostrum.Struct.Message.t()]
 
   @typedoc """
   Represents different ways to get a value from a guild.
@@ -41,16 +42,17 @@ defmodule Nostrum.Cache.Guild.GuildServer do
   Same as `t:search_criteria/0`, but takes an additional key parameter.
   Keys can be found in `Nostrum.Struct.Guild`
   """
-  @type search_criteria_with_key :: [id: integer, key: key :: atom] |
-                                    [channel_id: integer, key: key :: atom] |
-                                    [message: Nostrum.Struct.Message.t, key: key :: atom]
+  @type search_criteria_with_key ::
+          [id: integer, key: key :: atom]
+          | [channel_id: integer, key: key :: atom]
+          | [message: Nostrum.Struct.Message.t(), key: key :: atom]
 
   @typedoc """
   Transform for a guild.
 
   The function is passed a `Nostrum.Struct.Guild.t` struct.
   """
-  @type transform :: (Guild.t -> term)
+  @type transform :: (Guild.t() -> term)
 
   @typedoc """
   Represents different ways to transform a guild.
@@ -58,9 +60,10 @@ defmodule Nostrum.Cache.Guild.GuildServer do
   Same as `t:search_criteria/0`, but takes an additional transform parameter.
   See `transform/1` for an example.
   """
-  @type search_criteria_with_transform :: [id: integer, transform: transform] |
-                                          [channel_id: integer, transform: transform] |
-                                          [message: Nostrum.Struct.Message.t, transform: transform]
+  @type search_criteria_with_transform ::
+          [id: integer, transform: transform]
+          | [channel_id: integer, transform: transform]
+          | [message: Nostrum.Struct.Message.t(), transform: transform]
 
   @doc """
   Retrieves a stream of all guilds.
@@ -78,9 +81,9 @@ defmodule Nostrum.Cache.Guild.GuildServer do
   |> D3L3T3_GU1LD
   ```
   """
-  @spec all() :: Enumerable.t
+  @spec all() :: Enumerable.t()
   def all do
-    transform_all(&(&1))
+    transform_all(& &1)
   end
 
   @doc """
@@ -97,7 +100,7 @@ defmodule Nostrum.Cache.Guild.GuildServer do
   |> D3L3T3_GU1LD5
   ```
   """
-  @spec get_value_from_all(key :: atom) :: Enumerable.t
+  @spec get_value_from_all(key :: atom) :: Enumerable.t()
   def get_value_from_all(key) when is_atom(key) do
     transform_all(&Map.get(&1, key))
   end
@@ -116,9 +119,9 @@ defmodule Nostrum.Cache.Guild.GuildServer do
   end
   ```
   """
-  @spec get(search_criteria) :: {:error, reason :: atom} | {:ok, Nostrum.Struct.Guild.t}
+  @spec get(search_criteria) :: {:error, reason :: atom} | {:ok, Nostrum.Struct.Guild.t()}
   def get(search_criteria) do
-    transform(search_criteria ++ [transform: &(&1)])
+    transform(search_criteria ++ [transform: & &1])
   end
 
   @doc ~S"""
@@ -128,7 +131,7 @@ defmodule Nostrum.Cache.Guild.GuildServer do
 
   Raises `Nostrum.Error.CacheError` if unable to find the guild.
   """
-  @spec get!(search_criteria) :: no_return | {Nostrum.Struct.Guild.t}
+  @spec get!(search_criteria) :: no_return | {Nostrum.Struct.Guild.t()}
   def get!(search_criteria) do
     get(search_criteria)
     |> Util.bangify_find(search_criteria, __MODULE__)
@@ -152,8 +155,9 @@ defmodule Nostrum.Cache.Guild.GuildServer do
   end
   ```
   """
-  @spec get_value(search_criteria_with_key) :: {:error, reason :: atom} |
-                                               {:ok, term}
+  @spec get_value(search_criteria_with_key) ::
+          {:error, reason :: atom}
+          | {:ok, term}
   def get_value(id: id, key: k) when is_atom(k) do
     transform(id: id, transform: &Map.get(&1, k)) |> check_missing_key
   end
@@ -186,10 +190,11 @@ defmodule Nostrum.Cache.Guild.GuildServer do
   # REVIEW: Can/should we handle cache errors in a better way?
   defp bangify_key_search({:error, :key_not_found}, key),
     do: raise(Nostrum.Error.CacheError, key: key, cache_name: __MODULE__)
+
   defp bangify_key_search({:error, reason}, _key),
-    do: raise(Nostrum.Error.CacheError, "ERROR: #{inspect reason}")
-  defp bangify_key_search({:ok, val}, _key),
-    do: val
+    do: raise(Nostrum.Error.CacheError, "ERROR: #{inspect(reason)}")
+
+  defp bangify_key_search({:ok, val}, _key), do: val
 
   @doc ~S"""
   Retrieves a transformed guild from the cache.
@@ -214,15 +219,12 @@ defmodule Nostrum.Cache.Guild.GuildServer do
   """
   @spec transform(search_criteria_with_transform) :: {:ok, term}
   def transform(id: id, transform: tf) do
-    with {:ok, pid} <- GuildRegister.lookup(id),
-    do: {:ok, GenServer.call(pid, {:transform, tf})}
+    with {:ok, pid} <- GuildRegister.lookup(id), do: {:ok, GenServer.call(pid, {:transform, tf})}
   end
 
   def transform(channel_id: c_id, transform: tf) do
-    with \
-      {:ok, guild_id} <- ChannelGuild.get_guild(c_id),
-      {:ok, guild_pid} <- GuildRegister.lookup(guild_id)
-    do
+    with {:ok, guild_id} <- ChannelGuild.get_guild(c_id),
+         {:ok, guild_pid} <- GuildRegister.lookup(guild_id) do
       {:ok, GenServer.call(guild_pid, {:transform, tf})}
     end
   end
@@ -239,7 +241,7 @@ defmodule Nostrum.Cache.Guild.GuildServer do
 
   See `transform/1` for usage.
   """
-  @spec transform_all(transform) :: Enumerable.t
+  @spec transform_all(transform) :: Enumerable.t()
   def transform_all(transform) do
     Supervisor.which_children(GuildSupervisor)
     |> Stream.map(fn {_, pid, _, _} -> pid end)
@@ -258,6 +260,7 @@ defmodule Nostrum.Cache.Guild.GuildServer do
     case Registry.register(GuildRegistry, id, self()) do
       {:ok, _pid} ->
         {:ok, guild}
+
       {:error, error} ->
         # Causes start_link to return {:error, reason}
         {:stop, error}
@@ -271,13 +274,11 @@ defmodule Nostrum.Cache.Guild.GuildServer do
 
   @doc false
   def call(id, request) do
-    with {:ok, pid} <- GuildRegister.lookup(id),
-    do: GenServer.call(pid, request)
+    with {:ok, pid} <- GuildRegister.lookup(id), do: GenServer.call(pid, request)
   end
 
   def cast(id, request) do
-    with {:ok, pid} <- GuildRegister.lookup(id),
-    do: GenServer.cast(pid, request)
+    with {:ok, pid} <- GuildRegister.lookup(id), do: GenServer.cast(pid, request)
   end
 
   @doc false
@@ -296,9 +297,10 @@ defmodule Nostrum.Cache.Guild.GuildServer do
         end)
       end
 
-    results = for {_t, {:ok, {k, v}}} <- Task.yield_many(tasks), into: %{} do
-      {k, v}
-    end
+    results =
+      for {_t, {:ok, {k, v}}} <- Task.yield_many(tasks), into: %{} do
+        {k, v}
+      end
 
     Map.merge(guild, results)
   end
@@ -374,7 +376,7 @@ defmodule Nostrum.Cache.Guild.GuildServer do
   def handle_call({:update, guild}, _from, state) do
     new_guild =
       state
-      |> Map.from_struct
+      |> Map.from_struct()
       |> Map.merge(guild)
 
     new_guild_struct = struct(Guild, new_guild)
@@ -447,5 +449,4 @@ defmodule Nostrum.Cache.Guild.GuildServer do
     new_members = Map.put(state.members, member.user.id, member)
     {:noreply, %{state | members: new_members}}
   end
-
 end

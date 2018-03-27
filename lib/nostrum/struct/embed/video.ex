@@ -4,7 +4,7 @@ defmodule Nostrum.Struct.Embed.Video do
   """
 
   @typedoc "Source URL of the video"
-  @type url :: String.t
+  @type url :: String.t()
 
   @typedoc "Height of the video"
   @type height :: integer
@@ -13,10 +13,10 @@ defmodule Nostrum.Struct.Embed.Video do
   @type width :: integer
 
   @type t :: %__MODULE__{
-    url: url,
-    height: height,
-    width: width
-  }
+          url: url,
+          height: height,
+          width: width
+        }
 
   @derive [Poison.Encoder]
   defstruct [

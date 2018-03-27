@@ -13,5 +13,4 @@ defmodule Nostrum.Cache.Mapping.ShardPidNum do
       [] -> {:error, :id_not_found}
     end
   end
-
 end

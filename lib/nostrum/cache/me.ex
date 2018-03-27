@@ -15,14 +15,13 @@ defmodule Nostrum.Cache.Me do
   def init([]) do
     # Returns {:error, reason} if this fails, acting as a simple check for
     # correct tokens
-    with {:ok, user} <- Api.get_current_user(),
-    do: {:ok, %{user | id: user.id}}
+    with {:ok, user} <- Api.get_current_user(), do: {:ok, %{user | id: user.id}}
   end
 
   @doc """
   Retrieves the current user state.
   """
-  @spec get() :: User.t | map
+  @spec get() :: User.t() | map
   def get do
     GenServer.call(Me, {:get})
   end

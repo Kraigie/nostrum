@@ -13,17 +13,17 @@ defmodule Nostrum.Struct.DMChannel do
   @type type :: integer
 
   @typedoc "The recipients of the message"
-  @type recipients :: list(User.t)
+  @type recipients :: list(User.t())
 
   @typedoc "Id of the last message sent, should always be true for DMs"
   @type last_message_id :: integer
 
   @type t :: %__MODULE__{
-    id: id,
-    type: type,
-    recipients: recipients,
-    last_message_id: last_message_id
-  }
+          id: id,
+          type: type,
+          recipients: recipients,
+          last_message_id: last_message_id
+        }
 
   @derive [Poison.Encoder]
   defstruct [
@@ -35,8 +35,10 @@ defmodule Nostrum.Struct.DMChannel do
 
   @doc false
   def to_struct(map) do
-    new = map
-    |> Map.update(:recipients, %{}, &Util.list_to_struct_list(&1, User))
+    new =
+      map
+      |> Map.update(:recipients, %{}, &Util.list_to_struct_list(&1, User))
+
     struct(__MODULE__, new)
   end
 end

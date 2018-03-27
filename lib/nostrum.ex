@@ -10,11 +10,11 @@ defmodule Nostrum do
     token = Application.get_env(:nostrum, :token)
     num_shards = Application.get_env(:nostrum, :num_shards)
 
-    if !token, do: raise "Please supply a token"
+    if !token, do: raise("Please supply a token")
     corrected_num_shards = if num_shards, do: num_shards, else: 1
 
-    actual_num_shards = if Application.get_env(:nostrum, :self_bot),
-      do: 1, else: corrected_num_shards
+    actual_num_shards =
+      if Application.get_env(:nostrum, :self_bot), do: 1, else: corrected_num_shards
 
     setup_ets_tables()
 
@@ -40,5 +40,4 @@ defmodule Nostrum do
     :ets.new(:guild_shard_map, [:set, :public, :named_table])
     :ets.new(:channel_guild_map, [:set, :public, :named_table])
   end
-
 end

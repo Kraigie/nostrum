@@ -16,5 +16,4 @@ defmodule Nostrum.Cache.Mapping.ChannelGuild do
       [] -> {:error, :id_not_found}
     end
   end
-
 end

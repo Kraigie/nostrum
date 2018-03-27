@@ -4,15 +4,15 @@ defmodule Nostrum.Struct.Embed.Provider do
   """
 
   @typedoc "Name of the provider"
-  @type name :: String.t
+  @type name :: String.t()
 
   @typedoc "URL of provider"
-  @type url :: String.t
+  @type url :: String.t()
 
   @type t :: %__MODULE__{
-    name: name,
-    url: url
-  }
+          name: name,
+          url: url
+        }
 
   @derive [Poison.Encoder]
   defstruct [

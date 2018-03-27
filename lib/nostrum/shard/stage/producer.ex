@@ -11,7 +11,7 @@ defmodule Nostrum.Shard.Stage.Producer do
 
   def init(_) do
     Registry.register(ProducerStageRegistry, :pids, self())
-    {:producer, {:queue.new, 0}, dispatcher: GenStage.DemandDispatcher}
+    {:producer, {:queue.new(), 0}, dispatcher: GenStage.DemandDispatcher}
   end
 
   def notify(pid, payload, state) do
@@ -27,10 +27,9 @@ defmodule Nostrum.Shard.Stage.Producer do
   end
 
   def dispatch_events(queue, demand, events) do
-    with d when
-      d > 0 <- demand,
-      {{:value, payload}, queue} <- :queue.out(queue)
-    do
+    with d
+         when d > 0 <- demand,
+         {{:value, payload}, queue} <- :queue.out(queue) do
       dispatch_events(queue, demand - 1, [payload | events])
     else
       _ -> {:noreply, Enum.reverse(events), {queue, demand}}

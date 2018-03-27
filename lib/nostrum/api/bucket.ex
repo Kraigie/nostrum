@@ -31,12 +31,13 @@ defmodule Nostrum.Api.Bucket do
     case lookup_bucket(route) do
       [] ->
         :now
+
       [{route, remaining, _reset_time, _latency}] when remaining > 0 ->
         update_remaining(route, remaining - 1)
         :now
+
       [{_route, _remaining, reset_time, latency}] ->
-        reset_time - Util.now + latency
+        reset_time - Util.now() + latency
     end
   end
-
 end

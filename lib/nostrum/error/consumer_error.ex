@@ -9,12 +9,11 @@ defmodule Nostrum.Error.ConsumerError do
   defexception [:message]
 
   def exception(found: finding) do
-    msg = "Expected {:ok, state}, received: #{inspect finding}"
+    msg = "Expected {:ok, state}, received: #{inspect(finding)}"
     %__MODULE__{message: msg}
   end
 
   def exception(msg) do
     %__MODULE__{message: msg}
   end
-
 end

@@ -4,19 +4,19 @@ defmodule Nostrum.Struct.Embed.Field do
   """
 
   @typedoc "Name of the field"
-  @type name :: String.t
+  @type name :: String.t()
 
   @typedoc "Value of the field"
-  @type value :: String.t
+  @type value :: String.t()
 
   @typedoc "Whether the field should display as inline"
   @type inline :: boolean
 
   @type t :: %__MODULE__{
-    name: name,
-    value: value,
-    inline: inline
-  }
+          name: name,
+          value: value,
+          inline: inline
+        }
 
   @derive [Poison.Encoder]
   defstruct [

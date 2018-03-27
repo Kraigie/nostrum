@@ -10,13 +10,13 @@ defmodule Nostrum.Struct.Message.Reaction do
   @type me :: boolean
 
   @typedoc "Emoji information"
-  @type emoji :: Emoji.t
+  @type emoji :: Emoji.t()
 
   @type t :: %__MODULE__{
-    count: count,
-    me: me,
-    emoji: emoji,
-  }
+          count: count,
+          me: me,
+          emoji: emoji
+        }
 
   @derive [Poison.Encoder]
   defstruct [

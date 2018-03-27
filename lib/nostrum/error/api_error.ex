@@ -17,14 +17,14 @@ defmodule Nostrum.Error.ApiError do
         this will be a map containing the keys `code` and `message` as strings.
   """
   @type t :: %{
-    status_code: integer | nil,
-    message: String.t | message_map
-  }
+          status_code: integer | nil,
+          message: String.t() | message_map
+        }
 
   @type message_map :: %{
-    code: String.t,
-    message: String.t
-  }
+          code: String.t(),
+          message: String.t()
+        }
 
   # https://github.com/edgurgel/httpoison/blob/108a298984a2b814f77f98de08d61e7ac46fdc65/lib/httpoison.ex#L40
   # https://hexdocs.pm/elixir/Kernel.html#defexception/1
@@ -41,8 +41,7 @@ defmodule Nostrum.Error.ApiError do
   end
 
   def exception(status_code: status_code, message: resp) when is_map(resp) do
-    msg = "ERROR: #{status_code} #{inspect resp}"
+    msg = "ERROR: #{status_code} #{inspect(resp)}"
     %__MODULE__{message: msg}
   end
-
 end

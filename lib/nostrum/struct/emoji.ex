@@ -69,19 +69,19 @@ defmodule Nostrum.Struct.Emoji do
   ```
 
   """
-  @type emoji_api_name :: String.t
+  @type emoji_api_name :: String.t()
 
   @typedoc "Id of the emoji"
-  @type id :: Snowflake.t | nil
+  @type id :: Snowflake.t() | nil
 
   @typedoc "Name of the emoji"
-  @type name :: String.t
+  @type name :: String.t()
 
   @typedoc "Roles this emoji is whitelisted to"
-  @type roles :: [Snowflake.t] | nil
+  @type roles :: [Snowflake.t()] | nil
 
   @typedoc "User that created this emoji"
-  @type user :: User.t | nil
+  @type user :: User.t() | nil
 
   @typedoc "Whether this emoji must be wrapped in colons"
   @type require_colons :: boolean | nil
@@ -93,14 +93,14 @@ defmodule Nostrum.Struct.Emoji do
   @type animated :: boolean | nil
 
   @type t :: %__MODULE__{
-    id: id,
-    name: name,
-    roles: roles,
-    user: user,
-    require_colons: require_colons,
-    managed: managed,
-    animated: animated
-  }
+          id: id,
+          name: name,
+          roles: roles,
+          user: user,
+          require_colons: require_colons,
+          managed: managed,
+          animated: animated
+        }
 
   @doc ~S"""
   Formats an emoji struct into an emoji mention.
@@ -120,7 +120,7 @@ defmodule Nostrum.Struct.Emoji do
   Nostrum.Api.create_message!(4318940318049, "Sending some text with this emoji #{Nostrum.Struct.Emoji.format_mention(emoji)}")
   ```
   """
-  @spec format_mention(t) :: String.t
+  @spec format_mention(t) :: String.t()
   def format_mention(emoji)
   def format_mention(%__MODULE__{id: nil, name: name}), do: name
   def format_mention(%__MODULE__{animated: true, id: id, name: name}), do: "<a:#{name}:#{id}>"

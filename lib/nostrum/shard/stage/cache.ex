@@ -21,13 +21,14 @@ defmodule Nostrum.Shard.Stage.Cache do
       events
       |> Task.async_stream(&Dispatch.handle/1)
       |> Stream.map(fn {:ok, ret} -> ret end)
-      |> Enum.to_list
-      |> List.flatten
+      |> Enum.to_list()
+      |> List.flatten()
       |> remove_noop
+
     {:noreply, flat_processed_events, state}
   end
 
   defp remove_noop(events) do
-    Enum.filter(events, fn event -> event != :noop end) 
+    Enum.filter(events, fn event -> event != :noop end)
   end
 end

@@ -11,19 +11,19 @@ defmodule Nostrum.Struct.Guild do
   @type id :: integer
 
   @typedoc "The name of the guild."
-  @type name :: String.t
+  @type name :: String.t()
 
   @typedoc "The hash of the guild's icon"
-  @type icon :: String.t
+  @type icon :: String.t()
 
   @typedoc "The hash of the guild's splash"
-  @type splash :: String.t
+  @type splash :: String.t()
 
   @typedoc "The id of the guild owner"
   @type owner_id :: integer
 
   @typedoc "The id of the voice region"
-  @type region :: String.t
+  @type region :: String.t()
 
   @typedoc "The id of the guild's afk channel"
   @type afk_channel_id :: integer
@@ -56,7 +56,7 @@ defmodule Nostrum.Struct.Guild do
   @type mfa_level :: integer
 
   @typedoc "Date the user joined the guild at"
-  @type joined_at :: String.t
+  @type joined_at :: String.t()
 
   @typedoc "Whether the guild is considered 'large'"
   @type large :: boolean
@@ -80,31 +80,31 @@ defmodule Nostrum.Struct.Guild do
   @type presences :: list(map)
 
   @type t :: %__MODULE__{
-    id: id,
-    name: name,
-    icon: icon,
-    splash: splash,
-    owner_id: owner_id,
-    region: region,
-    afk_channel_id: afk_channel_id,
-    afk_timeout: afk_timeout,
-    embed_enabled: embed_enabled,
-    embed_channel_id: embed_channel_id,
-    verification_level: verification_level,
-    default_message_notifications: default_message_notifications,
-    roles: roles,
-    emojis: emojis,
-    features: features,
-    mfa_level: mfa_level,
-    joined_at: joined_at,
-    large: large,
-    unavailable: unavailable,
-    member_count: member_count,
-    voice_states: voice_states,
-    members: members,
-    presences: presences,
-    channels: channels
-  }
+          id: id,
+          name: name,
+          icon: icon,
+          splash: splash,
+          owner_id: owner_id,
+          region: region,
+          afk_channel_id: afk_channel_id,
+          afk_timeout: afk_timeout,
+          embed_enabled: embed_enabled,
+          embed_channel_id: embed_channel_id,
+          verification_level: verification_level,
+          default_message_notifications: default_message_notifications,
+          roles: roles,
+          emojis: emojis,
+          features: features,
+          mfa_level: mfa_level,
+          joined_at: joined_at,
+          large: large,
+          unavailable: unavailable,
+          member_count: member_count,
+          voice_states: voice_states,
+          members: members,
+          presences: presences,
+          channels: channels
+        }
 
   Nostrum.Util.nostrum_struct(%{
     id: nil,
@@ -123,7 +123,8 @@ defmodule Nostrum.Struct.Guild do
     emojis: [Emoji],
     features: nil,
     mfa_level: nil,
-    joined_at: nil, # REVIEW: How is this being calculated? I imagine it's a string, maybe we can parse it?
+    # REVIEW: How is this being calculated? I imagine it's a string, maybe we can parse it?
+    joined_at: nil,
     large: nil,
     unavailable: nil,
     member_count: nil,

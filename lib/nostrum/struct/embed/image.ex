@@ -4,10 +4,10 @@ defmodule Nostrum.Struct.Embed.Image do
   """
 
   @typedoc "Image text"
-  @type url :: String.t
+  @type url :: String.t()
 
   @typedoc "URL of image icon"
-  @type proxy_url :: String.t
+  @type proxy_url :: String.t()
 
   @typedoc "Height of the image"
   @type height :: integer
@@ -16,11 +16,11 @@ defmodule Nostrum.Struct.Embed.Image do
   @type width :: integer
 
   @type t :: %__MODULE__{
-    url: url,
-    proxy_url: proxy_url,
-    height: height,
-    width: width
-  }
+          url: url,
+          proxy_url: proxy_url,
+          height: height,
+          width: width
+        }
 
   @derive [Poison.Encoder]
   defstruct [

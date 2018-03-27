@@ -10,16 +10,16 @@ defmodule Nostrum.Struct.Guild.Member do
   alias Nostrum.Struct.User
 
   @typedoc "The user struct"
-  @type user :: User.t
+  @type user :: User.t()
 
   @typedoc "The nickname of the user"
-  @type nick :: String.t | nil
+  @type nick :: String.t() | nil
 
   @typedoc "A list of role ids"
   @type roles :: list(integer)
 
   @typedoc "Date the user joined the guild"
-  @type joined_at :: String.t
+  @type joined_at :: String.t()
 
   @typedoc "Whether the user is deafened"
   @type deaf :: boolean
@@ -28,13 +28,13 @@ defmodule Nostrum.Struct.Guild.Member do
   @type mute :: boolean
 
   @type t :: %__MODULE__{
-    user: user,
-    nick: nick,
-    roles: roles,
-    joined_at: joined_at,
-    deaf: deaf,
-    mute: mute
-  }
+          user: user,
+          nick: nick,
+          roles: roles,
+          joined_at: joined_at,
+          deaf: deaf,
+          mute: mute
+        }
 
   @derive [Poison.Encoder]
   defstruct [
@@ -49,14 +49,16 @@ defmodule Nostrum.Struct.Guild.Member do
   @doc false
   def p_encode do
     %__MODULE__{
-      user: User.p_encode
+      user: User.p_encode()
     }
   end
 
   @doc false
   def to_struct(map) do
-    new = map
-    |> Map.update(:user, %{}, &User.to_struct(&1))
+    new =
+      map
+      |> Map.update(:user, %{}, &User.to_struct(&1))
+
     struct(__MODULE__, new)
   end
 end

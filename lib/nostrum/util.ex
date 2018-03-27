@@ -46,17 +46,20 @@ defmodule Nostrum.Util do
       defstruct Map.keys(unquote(body))
 
       def p_encode do
-        encoded = for {k, v} <- unquote(body), v != nil, into: %{} do
-          case v do
-            [v] -> {k, [v.p_encode]}
-            v -> {k, v.p_encode}
+        encoded =
+          for {k, v} <- unquote(body), v != nil, into: %{} do
+            case v do
+              [v] -> {k, [v.p_encode]}
+              v -> {k, v.p_encode}
+            end
           end
-        end
+
         struct(__ENV__.module, encoded)
       end
 
       def to_struct(map) do
         alias Nostrum.Util
+
         new_map =
           for {k, v} <- unquote(body), into: %{} do
             case v do
@@ -65,6 +68,7 @@ defmodule Nostrum.Util do
               v -> {k, apply(v, :to_struct, [Map.get(map, k)])}
             end
           end
+
         struct(__ENV__.module, new_map)
       end
     end
@@ -75,17 +79,17 @@ defmodule Nostrum.Util do
   """
   @spec now() :: integer
   def now do
-    DateTime.utc_now
+    DateTime.utc_now()
     |> DateTime.to_unix(:milliseconds)
   end
 
   @doc """
   Returns the current date as an ISO formatted string.
   """
-  @spec now_iso() :: String.t
+  @spec now_iso() :: String.t()
   def now_iso do
-    DateTime.utc_now
-    |> DateTime.to_iso8601
+    DateTime.utc_now()
+    |> DateTime.to_iso8601()
   end
 
   @doc false
@@ -95,6 +99,7 @@ defmodule Nostrum.Util do
 
   def enum_to_struct(nil, _struct), do: nil
   def enum_to_struct(enum, struct) when is_list(enum), do: Enum.map(enum, &struct.to_struct(&1))
+
   def enum_to_struct(enum, struct) when is_map(enum) do
     for {k, v} <- enum, into: %{} do
       {k, struct.to_struct(v)}
@@ -103,8 +108,9 @@ defmodule Nostrum.Util do
 
   @doc false
   def index_by_key(nil, key, _index_by), do: {key, %{}}
+
   def index_by_key(list, key, index_by) do
-    {key, Enum.into(list, %{}, &({get_in(&1, index_by), &1}))}
+    {key, Enum.into(list, %{}, &{get_in(&1, index_by), &1})}
   end
 
   @doc """
@@ -117,8 +123,9 @@ defmodule Nostrum.Util do
   def num_shards do
     num =
       with :auto <- Application.get_env(:nostrum, :num_shards),
-        {_url, shards} <- gateway(),
-        do: shards
+           {_url, shards} <- gateway(),
+           do: shards
+
     if num == nil, do: 1, else: num
   end
 
@@ -127,8 +134,10 @@ defmodule Nostrum.Util do
     case to_bang do
       {:ok, res} ->
         res
+
       {:error} ->
         raise(Nostrum.Error.CacheError, finding: find, cache_name: cache_name)
+
       {:error, _other} ->
         raise(Nostrum.Error.CacheError, finding: find, cache_name: cache_name)
     end
@@ -140,7 +149,7 @@ defmodule Nostrum.Util do
   If by chance no gateway connection has been made, will fetch the url to use and store it
   for future use.
   """
-  @spec gateway() :: String.t
+  @spec gateway() :: String.t()
   def gateway do
     case :ets.lookup(:gateway_url, "url") do
       [] -> get_new_gateway_url()
@@ -148,17 +157,15 @@ defmodule Nostrum.Util do
     end
   end
 
-  defp execute_gateway_request(true),
-    do: Api.request(:get, Constants.gateway, "")
-  defp execute_gateway_request(nil),
-    do: Api.request(:get, Constants.gateway_bot, "")
-  defp execute_gateway_request(false),
-    do: Api.request(:get, Constants.gateway_bot, "")
+  defp execute_gateway_request(true), do: Api.request(:get, Constants.gateway(), "")
+  defp execute_gateway_request(nil), do: Api.request(:get, Constants.gateway_bot(), "")
+  defp execute_gateway_request(false), do: Api.request(:get, Constants.gateway_bot(), "")
 
   defp get_new_gateway_url do
     case execute_gateway_request(Application.get_env(:nostrum, :self_bot)) do
       {:error, %{status_code: code, message: message}} ->
         raise(Nostrum.Error.ApiError, status_code: code, message: message)
+
       {:ok, body} ->
         body = Poison.decode!(body)
 
@@ -183,9 +190,14 @@ defmodule Nostrum.Util do
   @spec safe_atom_map(map) :: map
   def safe_atom_map(term) do
     cond do
-      is_map(term) -> for {key, value} <- term, into: %{}, do: {maybe_to_atom(key), safe_atom_map(value)}
-      is_list(term) -> Enum.map(term, fn item -> safe_atom_map(item) end)
-      true -> term
+      is_map(term) ->
+        for {key, value} <- term, into: %{}, do: {maybe_to_atom(key), safe_atom_map(value)}
+
+      is_list(term) ->
+        Enum.map(term, fn item -> safe_atom_map(item) end)
+
+      true ->
+        term
     end
   end
 
@@ -194,13 +206,14 @@ defmodule Nostrum.Util do
 
   If atom does not currently exist, will warn that we're doing an unsafe conversion.
   """
-  @spec maybe_to_atom(atom | String.t) :: atom
+  @spec maybe_to_atom(atom | String.t()) :: atom
   def maybe_to_atom(token) when is_atom(token), do: token
+
   def maybe_to_atom(token) do
     String.to_existing_atom(token)
   rescue
     _ ->
-      Logger.debug "Converting string to non-existing atom: #{token}"
+      Logger.debug("Converting string to non-existing atom: #{token}")
       String.to_atom(token)
   end
 
@@ -245,16 +258,31 @@ defmodule Nostrum.Util do
   """
   def unused_atoms do
     [
-      recipients: "Ready", require_colons: "Ready", last_message_id: "Ready",
-      friend_sync: "Self", visibility: "Self", channel_overrides: "Self",
-      message_notifications: "Self", muted: "Self", mobile_push: "Self",
-      suppress_everyone: "Self", convert_emoticons: "Self",
-      detect_platform_accounts: "Self", developer_mode: "Self",
-      enable_tts_command: "Self", friend_source_flags: "Self",
-      guild_positions: "Self", inline_attachment_media: "Self",
-      inline_embed_media: "Self", locale: "Self", message_display_compact: "Self",
-      render_embeds: "Self", render_reactions: "Self", restricted_guilds: "Self",
-      show_current_game: "Self", theme: "Self",
+      recipients: "Ready",
+      require_colons: "Ready",
+      last_message_id: "Ready",
+      friend_sync: "Self",
+      visibility: "Self",
+      channel_overrides: "Self",
+      message_notifications: "Self",
+      muted: "Self",
+      mobile_push: "Self",
+      suppress_everyone: "Self",
+      convert_emoticons: "Self",
+      detect_platform_accounts: "Self",
+      developer_mode: "Self",
+      enable_tts_command: "Self",
+      friend_source_flags: "Self",
+      guild_positions: "Self",
+      inline_attachment_media: "Self",
+      inline_embed_media: "Self",
+      locale: "Self",
+      message_display_compact: "Self",
+      render_embeds: "Self",
+      render_reactions: "Self",
+      restricted_guilds: "Self",
+      show_current_game: "Self",
+      theme: "Self"
     ]
   end
 

@@ -7,16 +7,16 @@ defmodule Nostrum.Struct.Invite do
   alias Nostrum.Struct.User
 
   @typedoc "Invite code"
-  @type code :: String.t
+  @type code :: String.t()
 
   @typedoc "Guild the invite is for"
-  @type guild :: Guild.t
+  @type guild :: Guild.t()
 
   @typedoc "Channel the invite is for"
-  @type channel :: Channel.t
+  @type channel :: Channel.t()
 
   @typedoc "User who created the invite"
-  @type inviter :: User.t
+  @type inviter :: User.t()
 
   @typedoc "Number of times this invite has been used"
   @type uses :: integer
@@ -31,23 +31,23 @@ defmodule Nostrum.Struct.Invite do
   @type temporary :: boolean
 
   @typedoc "When the invite was created"
-  @type created_at :: String.t
+  @type created_at :: String.t()
 
   @typedoc "Whether the invite is revoked"
   @type revoked :: boolean
 
   @type t :: %__MODULE__{
-    code: code,
-    guild: guild,
-    channel: channel,
-    inviter: inviter,
-    uses: uses,
-    max_uses: max_uses,
-    max_age: max_age,
-    temporary: temporary,
-    created_at: created_at,
-    revoked: revoked
-  }
+          code: code,
+          guild: guild,
+          channel: channel,
+          inviter: inviter,
+          uses: uses,
+          max_uses: max_uses,
+          max_age: max_age,
+          temporary: temporary,
+          created_at: created_at,
+          revoked: revoked
+        }
 
   @derive [Poison.Encoder]
   defstruct [
@@ -65,10 +65,12 @@ defmodule Nostrum.Struct.Invite do
 
   @doc false
   def to_struct(map) do
-    new = map
-    |> Map.update(:guild, %{}, &Guild.to_struct(&1))
-    |> Map.update(:channel, %{}, &Channel.to_struct(&1))
-    |> Map.update(:inviter, %{}, &User.to_struct(&1))
+    new =
+      map
+      |> Map.update(:guild, %{}, &Guild.to_struct(&1))
+      |> Map.update(:channel, %{}, &Channel.to_struct(&1))
+      |> Map.update(:inviter, %{}, &User.to_struct(&1))
+
     struct(__MODULE__, new)
   end
 end

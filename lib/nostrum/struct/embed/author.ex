@@ -4,23 +4,23 @@ defmodule Nostrum.Struct.Embed.Author do
   """
 
   @typedoc "Name of the author"
-  @type name :: String.t
+  @type name :: String.t()
 
   @typedoc "URL of the author"
-  @type url :: String.t
+  @type url :: String.t()
 
   @typedoc "URL of the author icon"
-  @type icon_url :: String.t
+  @type icon_url :: String.t()
 
   @typedoc "Proxied URL of author icon"
-  @type proxy_icon_url :: String.t
+  @type proxy_icon_url :: String.t()
 
   @type t :: %__MODULE__{
-    name: name,
-    url: url,
-    icon_url: icon_url,
-    proxy_icon_url: proxy_icon_url
-  }
+          name: name,
+          url: url,
+          icon_url: icon_url,
+          proxy_icon_url: proxy_icon_url
+        }
 
   @derive [Poison.Encoder]
   defstruct [

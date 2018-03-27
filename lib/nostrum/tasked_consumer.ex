@@ -21,7 +21,7 @@ defmodule Nostrum.TaskedConsumer do
 
   use ConsumerSupervisor
 
-  @callback handle_event(Nostrum.Consumer.event) :: any
+  @callback handle_event(Nostrum.Consumer.event()) :: any
 
   defmacro __using__(_) do
     quote location: :keep do
@@ -38,12 +38,12 @@ defmodule Nostrum.TaskedConsumer do
       # REVIEW: Work around appending arguments (not possible? first line here: 
       # https://hexdocs.pm/gen_stage/ConsumerSupervisor.html#c:init/1)
       def start_link([], event) do
-        Task.start_link fn ->
+        Task.start_link(fn ->
           __MODULE__.handle_event(event)
-        end
+        end)
       end
 
-      defoverridable [handle_event: 1]
+      defoverridable handle_event: 1
     end
   end
 

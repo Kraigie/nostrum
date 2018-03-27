@@ -7,7 +7,7 @@ defmodule Nostrum.Struct.Guild.Role do
   @type id :: integer
 
   @typedoc "The name of the role"
-  @type name :: String.t
+  @type name :: String.t()
 
   @typedoc "The hexadecimal color code"
   @type color :: integer
@@ -28,15 +28,15 @@ defmodule Nostrum.Struct.Guild.Role do
   @type mentionable :: boolean
 
   @type t :: %__MODULE__{
-    id: id,
-    name: name,
-    color: color,
-    hoist: hoist,
-    position: position,
-    permissions: permissions,
-    managed: managed,
-    mentionable: mentionable
-  }
+          id: id,
+          name: name,
+          color: color,
+          hoist: hoist,
+          position: position,
+          permissions: permissions,
+          managed: managed,
+          mentionable: mentionable
+        }
 
   @derive [Poison.Encoder]
   defstruct [

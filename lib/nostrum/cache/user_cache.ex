@@ -46,7 +46,7 @@ defmodule Nostrum.Cache.UserCache do
   end
   ```
   """
-  @spec get(id: integer) :: {:error, atom} | {:ok, Nostrum.Struct.User.t}
+  @spec get(id: integer) :: {:error, atom} | {:ok, Nostrum.Struct.User.t()}
   def get(id: id), do: lookup_as_struct(id)
 
   @doc """
@@ -57,7 +57,7 @@ defmodule Nostrum.Cache.UserCache do
   Returns `Nostrum.Struct.User.t` if found.
   Raises `Nostrum.Error.CahceError` if not found.
   """
-  @spec get!(id: integer) :: no_return | Nostrum.Struct.User.t
+  @spec get!(id: integer) :: no_return | Nostrum.Struct.User.t()
   def get!(id: id) do
     get(id: id)
     |> Util.bangify_find(id, __MODULE__)
@@ -97,6 +97,7 @@ defmodule Nostrum.Cache.UserCache do
     case :ets.lookup(:users, {:id, id}) do
       [] ->
         {:reply, {:error, :user_not_found}, state}
+
       [lookup] ->
         :ets.insert(:users, insert(id, user))
         {:reply, {lookup_to_struct(lookup), User.to_struct(user)}, state}
@@ -107,6 +108,7 @@ defmodule Nostrum.Cache.UserCache do
     case :ets.lookup(:users, {:id, id}) do
       [] ->
         {:reply, {:error, :user_not_found}, state}
+
       [lookup] ->
         :ets.delete(:users, {:id, id})
         {:reply, lookup_to_struct(lookup), state}
@@ -117,10 +119,10 @@ defmodule Nostrum.Cache.UserCache do
   def insert(id, map) do
     map
     |> remove_struct_key
-    |> Map.to_list
+    |> Map.to_list()
     # We'll have id key twice; Isn't an issue and allows us to have `id` as key.
     |> List.insert_at(0, {:id, id})
-    |> List.to_tuple
+    |> List.to_tuple()
   end
 
   def remove_struct_key(%{__struct__: _} = map), do: Map.delete(map, :__struct__)
@@ -128,7 +130,7 @@ defmodule Nostrum.Cache.UserCache do
 
   @doc false
   def lookup_to_struct(map) do
-    map |> Tuple.to_list |> Enum.into(%{}) |> User.to_struct
+    map |> Tuple.to_list() |> Enum.into(%{}) |> User.to_struct()
   end
 
   @doc false
@@ -136,10 +138,10 @@ defmodule Nostrum.Cache.UserCache do
     case :ets.lookup(:users, {:id, id}) do
       [] ->
         {:error, :user_not_found}
+
       [other] ->
         lookup = lookup_to_struct(other)
         {:ok, lookup}
     end
   end
-
 end

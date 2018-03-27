@@ -9,7 +9,7 @@ defmodule Nostrum.Struct.Snowflake do
   In JSON, Snowflakes are typically represented as strings due 
   to some languages not being able to represent such a large number.
   """
-  @type external_snowflake :: String.t
+  @type external_snowflake :: String.t()
 
   @typedoc """
   The snowflake type.
@@ -61,7 +61,5 @@ defmodule Nostrum.Struct.Snowflake do
   """
   @spec dump(t) :: external_snowflake
   def dump(snowflake) when is_snowflake(snowflake), do: to_string(snowflake)
-  def dump(_), do: raise ArgumentError, "Was not given a snowflake"
-
-  
+  def dump(_), do: raise(ArgumentError, "Was not given a snowflake")
 end

@@ -10,9 +10,9 @@ defmodule Nostrum.Struct.Guild.UnavailableGuild do
   @type unavailable :: boolean
 
   @type t :: %__MODULE__{
-    id: id,
-    unavailable: unavailable
-  }
+          id: id,
+          unavailable: unavailable
+        }
 
   @derive [Poison.Encoder]
   defstruct [

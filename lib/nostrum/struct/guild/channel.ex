@@ -13,7 +13,7 @@ defmodule Nostrum.Struct.Guild.Channel do
   @type guild_id :: integer
 
   @typedoc "The name of the channel"
-  @type name :: String.t
+  @type name :: String.t()
 
   @typedoc "The type of the channel"
   @type type :: Intger
@@ -22,10 +22,10 @@ defmodule Nostrum.Struct.Guild.Channel do
   @type position :: integer
 
   @typedoc "The list of overwrites"
-  @type permission_overwrites :: list(Overwrite.t)
+  @type permission_overwrites :: list(Overwrite.t())
 
   @typedoc "Current channel topic, `nil` if voice channel"
-  @type topic :: String.t | nil
+  @type topic :: String.t() | nil
 
   @typedoc "Id of the last message sent, `nil` if voice channel"
   @type last_message_id :: integer | nil
@@ -37,17 +37,17 @@ defmodule Nostrum.Struct.Guild.Channel do
   @type user_limit :: integer | nil
 
   @type t :: %__MODULE__{
-    id: id,
-    guild_id: guild_id,
-    name: name,
-    type: type,
-    position: position,
-    permission_overwrites: permission_overwrites,
-    topic: topic,
-    last_message_id: last_message_id,
-    bitrate: bitrate,
-    user_limit: user_limit
-  }
+          id: id,
+          guild_id: guild_id,
+          name: name,
+          type: type,
+          position: position,
+          permission_overwrites: permission_overwrites,
+          topic: topic,
+          last_message_id: last_message_id,
+          bitrate: bitrate,
+          user_limit: user_limit
+        }
 
   @derive [Poison.Encoder]
   defstruct [
@@ -65,15 +65,16 @@ defmodule Nostrum.Struct.Guild.Channel do
 
   def p_encode do
     %__MODULE__{
-      permission_overwrites: [Overwrite.p_encode]
+      permission_overwrites: [Overwrite.p_encode()]
     }
   end
 
   @doc false
   def to_struct(map) do
-    new = map
-    |> Map.update(:permission_overwrites, %{}, &Util.list_to_struct_list(&1, Overwrite))
+    new =
+      map
+      |> Map.update(:permission_overwrites, %{}, &Util.list_to_struct_list(&1, Overwrite))
+
     struct(__MODULE__, new)
   end
-
 end

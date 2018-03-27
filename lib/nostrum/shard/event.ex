@@ -10,7 +10,7 @@ defmodule Nostrum.Shard.Event do
   def handle(:dispatch, payload, _conn, state) do
     payload = Util.safe_atom_map(payload)
 
-    Logger.debug payload.t
+    Logger.debug(payload.t)
     Producer.notify(state.producer_pid, payload, state)
 
     if payload.t == :READY do
@@ -21,22 +21,22 @@ defmodule Nostrum.Shard.Event do
   end
 
   def handle(:heartbeat, _payload, conn, state) do
-    Logger.info "HEARTBEAT PING"
+    Logger.info("HEARTBEAT PING")
     gun_send(conn, Payload.heartbeat_payload(state.seq))
     state
   end
 
   def handle(:heartbeat_ack, _payload, _conn, state) do
-    Logger.info "HEARTBEAT_ACK"
+    Logger.info("HEARTBEAT_ACK")
     %{state | heartbeat_ack: true}
   end
 
   def handle(:hello, payload, conn, state) do
     if session_exists?(state) do
-      Logger.info "RESUMING"
+      Logger.info("RESUMING")
       resume(conn, state)
     else
-      Logger.info "IDENTIFYING"
+      Logger.info("IDENTIFYING")
       identify(conn, state)
       heartbeat(conn, payload.d.heartbeat_interval)
     end
@@ -45,18 +45,18 @@ defmodule Nostrum.Shard.Event do
   end
 
   def handle(:invalid_session, _payload, conn, state) do
-    Logger.info "INVALID_SESSION"
+    Logger.info("INVALID_SESSION")
     identify(conn, state)
     state
   end
 
   def handle(:reconnect, _payload, _conn, state) do
-    Logger.info "RECONNECT"
+    Logger.info("RECONNECT")
     state
   end
 
   def handle(event, _payload, _conn, state) do
-    Logger.warn "UNHANDLED GATEWAY EVENT #{event}"
+    Logger.warn("UNHANDLED GATEWAY EVENT #{event}")
     state
   end
 

@@ -15,7 +15,8 @@ defmodule Nostrum.Shard.Payload do
 
   @doc false
   def identity_payload(state) do
-    {os, name} = :os.type
+    {os, name} = :os.type()
+
     %{
       "token" => state.token,
       "properties" => %{
@@ -27,8 +28,9 @@ defmodule Nostrum.Shard.Payload do
       },
       "compress" => false,
       "large_threshold" => @large_threshold,
-      "shard" => [state.shard_num, Util.num_shards]
-    } |> build_payload("IDENTIFY")
+      "shard" => [state.shard_num, Util.num_shards()]
+    }
+    |> build_payload("IDENTIFY")
   end
 
   @doc false
@@ -37,7 +39,8 @@ defmodule Nostrum.Shard.Payload do
       "token" => state.token,
       "session_id" => state.session,
       "seq" => state.seq
-    } |> build_payload("RESUME")
+    }
+    |> build_payload("RESUME")
   end
 
   @doc false
@@ -51,7 +54,8 @@ defmodule Nostrum.Shard.Payload do
         "type" => type,
         "url" => stream
       }
-    } |> build_payload("STATUS_UPDATE")
+    }
+    |> build_payload("STATUS_UPDATE")
   end
 
   @doc false
@@ -60,12 +64,12 @@ defmodule Nostrum.Shard.Payload do
       "guild_id" => guild_id,
       "query" => "",
       "limit" => limit
-    } |> build_payload("REQUEST_GUILD_MEMBERS")
+    }
+    |> build_payload("REQUEST_GUILD_MEMBERS")
   end
 
   defp build_payload(data, opcode_name) do
     opcode = Constants.opcode_from_name(opcode_name)
-    %{"op" => opcode, "d" => data} |> :erlang.term_to_binary
+    %{"op" => opcode, "d" => data} |> :erlang.term_to_binary()
   end
-
 end

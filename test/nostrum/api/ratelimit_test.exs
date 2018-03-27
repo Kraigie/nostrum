@@ -1,11 +1,11 @@
 defmodule Nostrum.Api.RatelimitTest do
   use ExUnit.Case, async: true
 
-  @test_channel 179679229036724225
-  @test_guild 179679229036724225
-  @test_message 424789811463847941
-  @test_user 89918932789497856
-  @test_users [89918932789497856, 259856429450526720]
+  @test_channel 179_679_229_036_724_225
+  @test_guild 179_679_229_036_724_225
+  @test_message 424_789_811_463_847_941
+  @test_user 89_918_932_789_497_856
+  @test_users [89_918_932_789_497_856, 259_856_429_450_526_720]
 
   setup do
     :ok
@@ -14,7 +14,11 @@ defmodule Nostrum.Api.RatelimitTest do
   test "endpoint with major parameter" do
     expected = "/channels/#{@test_channel}/messages/_id"
 
-    result = Nostrum.Api.Ratelimiter.get_endpoint("/channels/#{@test_channel}/messages/#{@test_message}", :get)
+    result =
+      Nostrum.Api.Ratelimiter.get_endpoint(
+        "/channels/#{@test_channel}/messages/#{@test_message}",
+        :get
+      )
 
     assert result == expected
   end
@@ -22,7 +26,11 @@ defmodule Nostrum.Api.RatelimitTest do
   test "message delete endpoint" do
     expected = "delete:/channels/#{@test_channel}/messages/_id"
 
-    result = Nostrum.Api.Ratelimiter.get_endpoint("/channels/#{@test_channel}/messages/#{@test_message}", :delete)
+    result =
+      Nostrum.Api.Ratelimiter.get_endpoint(
+        "/channels/#{@test_channel}/messages/#{@test_message}",
+        :delete
+      )
 
     assert result == expected
   end
@@ -38,22 +46,24 @@ defmodule Nostrum.Api.RatelimitTest do
   @tag disabled: true
   test "non-major parameter async no 429" do
     [first, second] = @test_users
+
     responses =
       1..2
       |> Task.async_stream(
         fn _ ->
           with {:ok, _} <- Nostrum.Api.get_user(first),
-            {:ok, _} <- Nostrum.Api.get_user(second)
-          do
+               {:ok, _} <- Nostrum.Api.get_user(second) do
             :ok
           else
             o ->
-              IO.inspect o
+              IO.inspect(o)
               {:not_ok}
           end
         end,
-        timeout: 50000)
+        timeout: 50000
+      )
       |> Enum.to_list()
+
     assert Enum.all?(responses, fn {_k, v} -> v == :ok end) == true
   end
 
@@ -69,6 +79,7 @@ defmodule Nostrum.Api.RatelimitTest do
       1..11
       |> Task.async_stream(&Nostrum.Api.create_message(@test_channel, "#{&1}"), timeout: 50000)
       |> Enum.to_list()
+
     assert Enum.all?(responses, fn {_, {k, _}} -> k == :ok end) == true
   end
 
@@ -76,8 +87,12 @@ defmodule Nostrum.Api.RatelimitTest do
   test "one route async no 429 pins" do
     responses =
       1..5
-      |> Task.async_stream(fn _ -> Nostrum.Api.get_pinned_messages(@test_channel) end, timeout: 50000)
+      |> Task.async_stream(
+        fn _ -> Nostrum.Api.get_pinned_messages(@test_channel) end,
+        timeout: 50000
+      )
       |> Enum.to_list()
+
     assert Enum.all?(responses, fn {_, {k, _}} -> k == :ok end) == true
   end
 
@@ -90,6 +105,7 @@ defmodule Nostrum.Api.RatelimitTest do
   So, we should expect to see the 5th guild after the 4th pinned message, and
   this is the case. We could set the concurrency manually, but it's a cool example.
   """
+
   @tag disabled: true
   test "multi route async no 429" do
     responses =
@@ -97,18 +113,19 @@ defmodule Nostrum.Api.RatelimitTest do
       |> Task.async_stream(
         fn x ->
           with {:ok, _} <- Nostrum.Api.get_guild(@test_guild),
-            {:ok, _} <- Nostrum.Api.create_message(@test_channel, "#{x}"),
-            {:ok, _} <- Nostrum.Api.get_channel_message(@test_channel, @test_message),
-            {:ok} <- Nostrum.Api.start_typing(@test_channel)
-          do
+               {:ok, _} <- Nostrum.Api.create_message(@test_channel, "#{x}"),
+               {:ok, _} <- Nostrum.Api.get_channel_message(@test_channel, @test_message),
+               {:ok} <- Nostrum.Api.start_typing(@test_channel) do
             :ok
           else
             _ ->
               {:not_ok}
           end
         end,
-        timeout: 50000)
+        timeout: 50000
+      )
       |> Enum.to_list()
+
     assert Enum.all?(responses, fn {_k, v} -> v == :ok end) == true
   end
 end

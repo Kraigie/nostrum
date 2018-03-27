@@ -7,7 +7,7 @@ defmodule Nostrum.Struct.Overwrite do
   @type id :: integer
 
   @typedoc "Either 'role' or 'member'"
-  @type name :: String.t
+  @type name :: String.t()
 
   @typedoc "Permission bit set"
   @type allow :: integer
@@ -16,11 +16,11 @@ defmodule Nostrum.Struct.Overwrite do
   @type deny :: integer
 
   @type t :: %__MODULE__{
-    id: id,
-    name: name,
-    allow: allow,
-    deny: deny
-  }
+          id: id,
+          name: name,
+          allow: allow,
+          deny: deny
+        }
 
   @derive [Poison.Encoder]
   defstruct [

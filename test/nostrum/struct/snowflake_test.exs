@@ -7,7 +7,7 @@ defmodule Nostrum.Struct.SnowflakeTest do
 
   test "cast/1: if string is given, then return snowflake" do
     given = "4384931048190393"
-    expected = {:ok, 4384931048190393}
+    expected = {:ok, 4_384_931_048_190_393}
 
     observed = Snowflake.cast(given)
 
@@ -15,8 +15,8 @@ defmodule Nostrum.Struct.SnowflakeTest do
   end
 
   test "cast/1: if integer is given, then return snowflake" do
-    given = 4384931048190393
-    expected = {:ok, 4384931048190393}
+    given = 4_384_931_048_190_393
+    expected = {:ok, 4_384_931_048_190_393}
 
     observed = Snowflake.cast(given)
 
@@ -42,7 +42,7 @@ defmodule Nostrum.Struct.SnowflakeTest do
   end
 
   test "dump/1: if snowflake is given, then return snowflake as string" do
-    given = 4314103984319043
+    given = 4_314_103_984_319_043
     expected = "4314103984319043"
 
     observed = Snowflake.dump(given)
@@ -59,14 +59,14 @@ defmodule Nostrum.Struct.SnowflakeTest do
   end
 
   test "is_snowflake/1: if snowflake is given, return true" do
-    given = 4314831498137
+    given = 4_314_831_498_137
     expected = true
 
     observed = Snowflake.is_snowflake(given)
 
     assert expected === observed
   end
-  
+
   test "is_snowflake/1: if snowflake is given, return false" do
     given = "4314831498137"
     expected = false

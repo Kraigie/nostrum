@@ -7,20 +7,20 @@ defmodule Nostrum.Struct.Invite.Guild do
   @type id :: integer
 
   @typedoc "Name of the guild"
-  @type name :: String.t
+  @type name :: String.t()
 
   @typedoc "Hash of the guild splash"
-  @type splash :: String.t
+  @type splash :: String.t()
 
   @typedoc "Hash of the guild icon"
-  @type icon :: String.t
+  @type icon :: String.t()
 
   @type t :: %__MODULE__{
-    id: id,
-    name: name,
-    splash: splash,
-    icon: icon
-  }
+          id: id,
+          name: name,
+          splash: splash,
+          icon: icon
+        }
 
   @derive [Poison.Encoder]
   defstruct [
