@@ -50,7 +50,7 @@ additional config parameters, please see the
 
 ## Example Usage
 The below module needs to be started in some fashion to capture events. See
-[here](https://github.com/Kraigie/nostrum/blob/a655b8bea1c96777ea6ec729493625b147899081/examples/event_consumer.ex)
+[here](https://github.com/Kraigie/nostrum/blob/master/examples/event_consumer_supervisor.ex)
 for a full example.
 
 ```Elixir
