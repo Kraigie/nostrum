@@ -291,7 +291,7 @@ defmodule Nostrum.Cache.Guild.GuildServer do
     # Delegated to tasks so as to not replicate the guild process repeatedly
     tasks =
       for {key, index_by} <- [roles: [:id], members: [:user, :id], channels: [:id]] do
-        Task.async(fn -> 
+        Task.async(fn ->
           Util.index_by_key(guild[key], key, index_by)
         end)
       end
@@ -372,8 +372,14 @@ defmodule Nostrum.Cache.Guild.GuildServer do
   end
 
   def handle_call({:update, guild}, _from, state) do
-    new_guild = Map.merge(state, guild)
-    {:reply, {state, new_guild}, new_guild}
+    new_guild =
+      state
+      |> Map.from_struct
+      |> Map.merge(guild)
+
+    new_guild_struct = struct(Guild, new_guild)
+
+    {:reply, {state, new_guild_struct}, new_guild_struct}
   end
 
   def handle_call({:delete}, _from, state) do
