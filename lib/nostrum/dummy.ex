@@ -10,7 +10,7 @@ defmodule Dummy do
 
     # List comprehension creates a consumer per cpu core
     # children = for i <- 1..System.schedulers_online, do: worker(DummyConsumer, [], id: i)
-    children = [worker(DummyConsumerSupervisor, [])]
+    children = [worker(DummyConsumer, [])]
 
     Supervisor.start_link(children, strategy: :one_for_one)
   end
@@ -23,22 +23,7 @@ defmodule DummyConsumer do
   require Logger
 
   def start_link do
-    Consumer.start_link(__MODULE__, [])
-  end
-
-  def handle_event({event_name, _, _}, _) do
-    Logger.debug("User would handle #{event_name} here")
-    {:ok, %{}}
-  end
-end
-
-defmodule DummyConsumerSupervisor do
-  use Nostrum.TaskedConsumer
-
-  require Logger
-
-  def start_link do
-    TaskedConsumer.start_link(__MODULE__)
+    Consumer.start_link(__MODULE__)
   end
 
   def handle_event({:MESSAGE_CREATE, {message}, _}) do

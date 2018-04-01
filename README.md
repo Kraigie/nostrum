@@ -9,7 +9,7 @@ information listed here and more.
 ## Foreword
 The version of this library hosted on Hex is severely outdated. Once the dependency
 [gun](https://github.com/ninenines/gun) has a 2.0 release, a new package will be
-released with the most up to date Elixir version (1.5.1 as of the time of this writing).
+released with the most up to date Elixir version (1.6.4 as of the time of this writing).
 
 In the meantime it is recommended you use the version hosted here on GitHub.
 
@@ -50,33 +50,32 @@ additional config parameters, please see the
 
 ## Example Usage
 The below module needs to be started in some fashion to capture events. See
-[here](https://github.com/Kraigie/nostrum/blob/master/examples/event_consumer_supervisor.ex)
+[here](https://github.com/Kraigie/nostrum/blob/master/examples/event_consumer.ex)
 for a full example.
 
 ```Elixir
 defmodule ExampleConsumer do
   use Nostrum.Consumer
+
   alias Nostrum.Api
 
   def start_link do
     Consumer.start_link(__MODULE__)
   end
 
-  def handle_event({:MESSAGE_CREATE, {msg}, _ws_state}, state) do
+  def handle_event({:MESSAGE_CREATE, {msg}, _ws_state}) do
     case msg.content do
       "ping!" ->
         Api.create_message(msg.channel_id, "I copy and pasted this code")
       _ ->
         :ignore
     end
-
-    {:ok, state}
   end
 
   # Default event handler, if you don't include this, your consumer WILL crash if
   # you don't have a method definition for each event type.
-  def handle_event(_, state) do
-    {:ok, state}
+  def handle_event(_event) do
+    :noop
   end
 end
 ```

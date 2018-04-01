@@ -1,11 +1,10 @@
 ## Consumers
-Nostrum uses GenStage for event dispatching. Two different types of consumers
-are provided by the library - `Nostrum.Consumer`, and `Nostrum.TaskedConsumer`.
-These provided processes abstract most of the "work" of defining consumers away
-from the user. With these consumers everything is handled including maintaing all
-of the internal caches.
+Nostrum uses GenStage for event dispatching. A consumer is provided by the
+library in the form of `Nostrum.Consumer`. This provided process abstracts most
+of the "work" of defining consumers away from the user. With this consumer
+everything is handled including maintaining all of the internal caches.
 
-That said, it is still possible to define your own consumers, bypassing maintaing
+That said, it is still possible to define your own consumers, bypassing maintaining
 state within the lib itself.
 
 ## Implementing Custom Consumers

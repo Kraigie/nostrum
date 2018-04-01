@@ -3,25 +3,27 @@ defmodule Nostrum.Consumer do
   Consumer process for gateway event handling.
 
   # Consuming Gateway Events
-  To handle events, Nostrum uses a GenStage implementation. GenStage is "new" with
-  Elixir version 1.4, expanding on the old functionality of GenEvent.
+  To handle events, Nostrum uses a GenStage implementation.
 
-  Nostrum defines the `producer` in the GenStage design. To consume the events
-  you must create at least one `consumer` process. It is generally recommended
-  that you spawn a consumer per core. To find this number you can use
-  `System.schedulers_online/0`.
+  Nostrum defines the `producer` and `producer_consumer` in the GenStage design.
+  To consume the events you must create at least one `consumer` process. It is
+  generally recommended that you spawn a consumer per core. To find this number
+  you can use `System.schedulers_online/0`.
+
+  Nostrum uses a ConsumerSupervisor to dispatch events, meaning your handlers
+  will each be ran in their own seperate task.
 
   ## Example
   An example consumer can be found
   [here](https://github.com/Kraigie/nostrum/blob/master/examples/event_consumer.ex).
   """
 
-  use GenStage
+  use ConsumerSupervisor
 
   @doc """
   Callback used to handle events.
 
-  ### Event
+  ## Event
   `event` is a tuple describing the event. The tuple will include information in
   the following format:
   ```Elixir
@@ -42,15 +44,11 @@ defmodule Nostrum.Consumer do
 
   For a full listing of events, please see `Nostrum.Consumer.event`.
 
-  ### Websocket State
-  `ws_state` is the current state of
-  the websocket that the event was received on. For more information on this please
-  see `Nostrum.Shard.Payload.state_map.t`.
-
-  ### State
-  `state` is the internal state of your consumer.
+  ## Example
+  An example consumer can be found
+  [here](https://github.com/Kraigie/nostrum/blob/master/examples/event_consumer.ex).
   """
-  @callback handle_event(event, state) :: {:ok, map}
+  @callback handle_event(event) :: any
 
   @typedoc """
   Tuple describing the client of a call request.
@@ -61,7 +59,8 @@ defmodule Nostrum.Consumer do
   @type from :: {pid, tag :: term}
 
   @typedoc """
-  The state of the websocket connection for the shard the event occured on.
+  The state of the websocket connection for the shard the event occured on. For
+  more information on this please see `Nostrum.Shard.Payload.state_map.t`.
   """
   @type ws_state :: map
 
@@ -114,7 +113,7 @@ defmodule Nostrum.Consumer do
            {guild_id :: integer, old_member :: Nostrum.Struct.Guild.Member.t(),
             new_member :: Nostrum.Struct.Guild.Member.t()}, ws_state}
   @type guild_role_create ::
-          {:GUILD_ROLE_CREATE, {nguild_id :: integer, new_role :: Nostrum.Struct.Guild.Role.t()},
+          {:GUILD_ROLE_CREATE, {guild_id :: integer, new_role :: Nostrum.Struct.Guild.Role.t()},
            ws_state}
   @type guild_role_delete ::
           {:GUILD_ROLE_DELETE, {guild_id :: integer, old_role :: Nostrum.Struct.Guild.Role.t()},
@@ -188,42 +187,42 @@ defmodule Nostrum.Consumer do
   defmacro __using__(_) do
     quote location: :keep do
       @behaviour Nostrum.Consumer
+
+      use Task
+
       alias Nostrum.Consumer
 
-      def handle_event(_event, state) do
-        {:ok, state}
+      def handle_event(_event) do
+        :ok
       end
 
-      defoverridable handle_event: 2
+      # REVIEW: Work around appending arguments (not possible? first line here:
+      # https://hexdocs.pm/gen_stage/ConsumerSupervisor.html#c:init/1)
+      def start_link([], event) do
+        Task.start_link(fn ->
+          __MODULE__.handle_event(event)
+        end)
+      end
+
+      defoverridable handle_event: 1
     end
   end
 
-  def start_link(mod, state) do
-    GenStage.start_link(__MODULE__, %{mod: mod, state: state})
+  def start_link(mod) do
+    ConsumerSupervisor.start_link(__MODULE__, [mod])
   end
 
   @doc false
-  def init(state) do
+  def init([mod]) do
     producers =
       CacheStageRegistry
       |> Registry.lookup(:pids)
       |> Enum.map(fn {pid, _value} -> pid end)
 
-    {:consumer, state, subscribe_to: producers}
-  end
+    children = [
+      Supervisor.child_spec(mod, [])
+    ]
 
-  @doc false
-  def handle_events(events, _from, %{mod: mod, state: their_state} = state) do
-    their_new_state = do_event(mod, events, their_state)
-    {:noreply, [], %{state | state: their_new_state}}
-  end
-
-  defp do_event(_mod, [], state), do: state
-
-  defp do_event(mod, [event | events], state) do
-    case mod.handle_event(event, state) do
-      {:ok, their_state_ret} -> do_event(mod, events, their_state_ret)
-      other -> raise(Nostrum.Error.ConsumerError, found: other)
-    end
+    {:ok, children, strategy: :one_for_one, subscribe_to: producers}
   end
 end

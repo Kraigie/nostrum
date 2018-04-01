@@ -1,9 +1,8 @@
 defmodule ExampleSupervisor do
-  def start do
+  def start_link do
     import Supervisor.Spec
 
-    # List comprehension creates a consumer per cpu core
-    children = for i <- 1..System.schedulers_online, do: worker(ExampleConsumer, [], id: i)
+    children = [worker(ExampleConsumer, [])]
 
     Supervisor.start_link(children, strategy: :one_for_one)
   end
@@ -14,28 +13,29 @@ defmodule ExampleConsumer do
 
   alias Nostrum.Api
 
-  require Logger
-
   def start_link do
-    Consumer.start_link(__MODULE__, :state)
+    Consumer.start_link(__MODULE__)
   end
 
-  def handle_event({:MESSAGE_CREATE, {msg}, ws_state}, state) do
+  def handle_event({:MESSAGE_CREATE, {msg}, _ws_state}) do
     case msg.content do
-      # In general, you don't want to match using the binary notation, but I'm
-      # doing it here to be explicit
-      <<"!" :: binary, "ping" :: binary>> ->
-        Api.create_message(msg.channel_id, "I copy and pasted this code")
+      "!sleep" ->
+         Api.create_message(msg.channel_id, "Going to sleep...")
+         # This won't stop other events from being handled.
+         Process.sleep(3000)
+      "!ping" ->
+        Api.create_message(msg.channel_id, "pyongyang!")
+      "!raise" ->
+        # This won't crash the entire Consumer.
+        raise "No problems here!"
       _ ->
-        :ignore
+       :ignore
     end
-
-    {:ok, state}
   end
 
   # Default event handler, if you don't include this, your consumer WILL crash if
   # you don't have a method definition for each event type.
-  def handle_event(_, state) do
-    {:ok, state}
+  def handle_event(_event) do
+    :noop
   end
 end
