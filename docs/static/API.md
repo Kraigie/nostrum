@@ -29,11 +29,6 @@ msg = Nostrum.Api.create_message!(179679229036724225, "456")
 Nostrum.Api.create_message!(123, "eat my shorts api")
 ```
 
-*Note:* Running banged methods inside of your consumer process runs the risk of
-crashing it. It is recommended to run these functions inside a supervised
-task, both for error handling and for reasons described in the `Nostrum.Api`
-documentation.
-
 ## Helpers
 When appropriate, some helpers are defined to make interacting with the API simpler.
 An example of this is `Nostrum.Api.get_channel_messages/3`. By default this endpoint
@@ -64,4 +59,5 @@ The ratelimiter at a high level works something like this:
 ## Rest Only
 If you only want to use the REST portion of the provided API, the only process
 needed is the ratelimiter. This can be manually started by calling
-`Nostrum.Api.Ratelimiter.start_link/0`.
+`Nostrum.Api.Ratelimiter.start_link/0`. If you don't want to start Nostrum you
+can add `runtime: false` to the dependency options.

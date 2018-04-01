@@ -11,7 +11,7 @@ The version of this library hosted on Hex is severely outdated. Once the depende
 [gun](https://github.com/ninenines/gun) has a 2.0 release, a new package will be
 released with the most up to date Elixir version (1.6.4 as of the time of this writing).
 
-In the meantime it is recommended you use the version hosted here on GitHub.
+In the meantime it is recommended you use the version hosted on GitHub.
 
 *Thanks PixeL!*
 

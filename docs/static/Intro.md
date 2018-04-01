@@ -45,14 +45,11 @@ There are two versions of Nostrum, a stable version released on Hex and a dev
 version on GitHub. The dev version will be more up to date but will likely
 have more errors.
 
-When choosing whether to use dev or stable, there is one important distinction
-to keep in mind. The WS lib that Nostrum uses does not support giving proper
-close codes on WS disconnects. A fork is maintained (a fork of a fork of a fork)
-that has been monkey patched to allow the proper sending of close codes.
-Unfortunately, it doesn't seem like the original fork's author maintains the project
-anymore. Seeing as you can't have a package on Hex with a git dependency, the stable
-version will not have close codes until the current implementation is tested and
-released on its own, or the maintainer of the fork decides to come back to life.
+The version of this library hosted on Hex is severely outdated. Once the dependency
+[gun](https://github.com/ninenines/gun) has a 2.0 release, a new package will be
+released with the most up to date Elixir version (1.6.4 as of the time of this writing).
+
+In the meantime it is recommended you use the version hosted on GitHub.
 
 Add Nostrum as a dependency:
 
