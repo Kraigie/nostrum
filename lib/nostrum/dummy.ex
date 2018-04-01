@@ -24,10 +24,10 @@ defmodule DummyConsumer do
   end
 
   def handle_event({:MESSAGE_CREATE, {message}, _}) do
-    Logger.debug("Message received: #{inspect(message.content)}")
+    Logger.debug(fn -> "Message received: #{inspect(message.content)}" end)
   end
 
   def handle_event({event_name, _, _}) do
-    Logger.debug("User would handle #{event_name} here")
+    Logger.debug(fn -> "User would handle #{event_name} here" end)
   end
 end
