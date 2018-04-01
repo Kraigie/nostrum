@@ -80,7 +80,7 @@ defmodule ExampleConsumer do
 end
 ```
 
-Although it's not recommended, you could start it from `iex`.
+Although it's recommended to run under a supervisor, you could start it from `iex`.
 ```Elixir
   iex()> ExampleConsumer.start
   {:ok, #PID<0.208.0>}

@@ -7,7 +7,6 @@ defmodule Dummy do
 
   def start_link do
     # List comprehension creates a consumer per cpu core
-    # children = for i <- 1..System.schedulers_online, do: worker(DummyConsumer, [], id: i)
     children = [DummyConsumer]
 
     Supervisor.start_link(children, strategy: :one_for_one)

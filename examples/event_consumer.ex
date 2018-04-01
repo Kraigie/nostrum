@@ -2,7 +2,7 @@ defmodule ExampleSupervisor do
   def start_link do
     import Supervisor.Spec
 
-    children = [worker(ExampleConsumer, [])]
+    children = [ExampleConsumer]
 
     Supervisor.start_link(children, strategy: :one_for_one)
   end
