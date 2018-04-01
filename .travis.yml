@@ -1,0 +1,10 @@
+language: elixir
+
+elixir:
+  - '1.6.4'
+otp_release: '20.3'
+
+# TODO: Add mix test to CI
+script:
+  - mix credo
+  - mix format --check-formatted
