@@ -184,7 +184,7 @@ defmodule Nostrum.Consumer do
           | voice_server_update
           | webhooks_update
 
-  defmacro __using__(_) do
+  defmacro __using__(opts) do
     quote location: :keep do
       @behaviour Nostrum.Consumer
 
@@ -196,33 +196,46 @@ defmodule Nostrum.Consumer do
         :ok
       end
 
-      # REVIEW: Work around appending arguments (not possible? first line here:
-      # https://hexdocs.pm/gen_stage/ConsumerSupervisor.html#c:init/1)
-      def start_link([], event) do
+      def start_link(event) do
         Task.start_link(fn ->
           __MODULE__.handle_event(event)
         end)
       end
 
-      defoverridable handle_event: 1
+      def child_spec(_arg) do
+        spec = %{
+          id: __MODULE__,
+          start: {__MODULE__, :start_link, []}
+        }
+
+        # Default to temporary restart as permanent isn't allowed.
+        # https://github.com/elixir-lang/gen_stage/commit/2b269accba8b8cb0a71333f55e3bd9ce893b40d4
+        opts =
+          [restart: :temporary]
+          |> Keyword.merge(unquote(Macro.escape(opts)))
+
+        Supervisor.child_spec(spec, opts)
+      end
+
+      defoverridable handle_event: 1, child_spec: 1
     end
   end
 
   def start_link(mod) do
-    ConsumerSupervisor.start_link(__MODULE__, [mod])
+    ConsumerSupervisor.start_link(__MODULE__, mod)
   end
 
   @doc false
-  def init([mod]) do
+  def init(mod) do
     producers =
       CacheStageRegistry
       |> Registry.lookup(:pids)
       |> Enum.map(fn {pid, _value} -> pid end)
 
     children = [
-      Supervisor.child_spec(mod, [])
+      mod
     ]
 
-    {:ok, children, strategy: :one_for_one, subscribe_to: producers}
+    ConsumerSupervisor.init(children, strategy: :one_for_one, subscribe_to: producers)
   end
 end
