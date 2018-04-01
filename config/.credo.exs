@@ -17,7 +17,7 @@
 
         {Credo.Check.Design.AliasUsage, priority: :low},
         {Credo.Check.Design.DuplicatedCode, excluded_macros: []},
-        {Credo.Check.Design.TagTODO, exit_status: 2},
+        {Credo.Check.Design.TagTODO, exit_status: 0},
         {Credo.Check.Design.TagFIXME},
 
         {Credo.Check.Readability.FunctionNames},
@@ -32,12 +32,12 @@
         {Credo.Check.Readability.TrailingWhiteSpace, false},
         {Credo.Check.Readability.VariableNames},
 
-        {Credo.Check.Refactor.ABCSize},
+        {Credo.Check.Refactor.ABCSize, false},
         {Credo.Check.Refactor.CondStatements},
         {Credo.Check.Refactor.FunctionArity},
         {Credo.Check.Refactor.MatchInCondition},
         {Credo.Check.Refactor.PipeChainStart, false},
-        {Credo.Check.Refactor.CyclomaticComplexity},
+        {Credo.Check.Refactor.CyclomaticComplexity, false},
         {Credo.Check.Refactor.NegatedConditionsInUnless},
         {Credo.Check.Refactor.NegatedConditionsWithElse},
         {Credo.Check.Refactor.Nesting},
