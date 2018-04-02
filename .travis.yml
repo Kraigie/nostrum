@@ -9,3 +9,13 @@ script:
   - mix credo
   - mix format --check-formatted
   - mix test --no-start
+  - mix docs
+
+deploy:
+  provider: pages
+  skip-cleanup: true
+  github-token: $GITHUB_TOKEN
+  keep-history: false
+  local-dir: doc
+  on:
+    branch: master
