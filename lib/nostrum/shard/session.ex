@@ -26,7 +26,9 @@ defmodule Nostrum.Shard.Session do
   """
   @type state_map :: map
 
-  @gateway_qs '/?compress=zlib-stream&encoding=etf&v=6'
+  @gateway_qs if Application.get_env(:nostrum, :zlib_stream, false),
+                do: '/?compress=zlib-stream&encoding=etf&v=6',
+                else: '/?encoding=etf&v=6'
 
   def update_status(pid, status, game, stream, type) do
     {idle_since, afk} =
@@ -62,15 +64,23 @@ defmodule Nostrum.Shard.Session do
       |> Regex.replace(g, "")
       |> to_charlist
 
-    zlib_ctx = :zlib.open()
-    :zlib.inflateInit(zlib_ctx)
+    zlib_ctx =
+      if use_zlib_stream?() do
+        zlib_ctx = :zlib.open()
+        :zlib.inflateInit(zlib_ctx)
+        zlib_ctx
+      end
 
     case await_connect(erl_gw) do
       {:error, reason} ->
         {:stop, reason}
 
       {:ok, conn} ->
-        {:ok, state_map(t, s, self(), producer_pid, conn, erl_gw, zlib_ctx)}
+        if use_zlib_stream?() do
+          {:ok, state_map(t, s, self(), producer_pid, conn, erl_gw, zlib_ctx)}
+        else
+          {:ok, state_map(t, s, self(), producer_pid, conn, erl_gw)}
+        end
     end
   end
 
@@ -89,7 +99,7 @@ defmodule Nostrum.Shard.Session do
     {:noreply, %{state | heartbeat_ack: true}}
   end
 
-  def handle_info({:gun_ws, conn, {:binary, frame}}, state) do
+  def handle_info({:gun_ws, conn, {:binary, frame}}, %{zlib_ctx: _} = state) do
     new_buffer = state.zlib_buffer <> frame
 
     z_end =
@@ -116,10 +126,26 @@ defmodule Nostrum.Shard.Session do
     end
   end
 
-  def handle_info({:gun_ws, _conn, {:close, code, message}}, state) do
+  def handle_info({:gun_ws, conn, {:binary, frame}}, state) do
+    payload = :erlang.binary_to_term(frame)
+
+    new_state =
+      payload.op
+      |> Constants.atom_from_opcode()
+      |> Event.handle(payload, conn, state)
+
+    {:noreply, %{new_state | seq: payload.s || state.seq}}
+  end
+
+  def handle_info({:gun_ws, _conn, {:close, code, message}}, %{zlib_ctx: _} = state) do
     Logger.warn("websocket closing: #{code} #{message}")
     :zlib.inflateEnd(state.zlib_ctx)
     :zlib.close(state.zlib_ctx)
+    {:noreply, state}
+  end
+
+  def handle_info({:gun_ws, _conn, {:close, code, message}}, state) do
+    Logger.warn("websocket closing: #{code} #{message}")
     {:noreply, state}
   end
 
@@ -130,10 +156,18 @@ defmodule Nostrum.Shard.Session do
     {:noreply, %{state | gun_pid: conn}}
   end
 
-  def handle_info({:gun_down, _conn, :ws, :closed, _maybe_processed, _open_streams}, state) do
+  def handle_info(
+        {:gun_down, _conn, :ws, :closed, _maybe_processed, _open_streams},
+        %{zlib_ctx: _} = state
+      ) do
     Logger.info("websocket closed, attempting reconnect")
     :zlib.inflateEnd(state.zlib_ctx)
     :zlib.close(state.zlib_ctx)
+    {:noreply, state}
+  end
+
+  def handle_info({:gun_down, _conn, :ws, :closed, _maybe_processed, _open_streams}, state) do
+    Logger.info("websocket closed, attempting reconnect")
     {:noreply, state}
   end
 
@@ -185,5 +219,24 @@ defmodule Nostrum.Shard.Session do
       zlib_ctx: zlib_ctx,
       zlib_buffer: <<>>
     }
+  end
+
+  def state_map(token, shard_num, shard_pid, producer_pid, gun_pid, gw) do
+    %{
+      token: token,
+      shard_num: shard_num,
+      seq: nil,
+      session: nil,
+      reconnect_attempts: 0,
+      shard_pid: shard_pid,
+      producer_pid: producer_pid,
+      heartbeat_ack: true,
+      gun_pid: gun_pid,
+      gateway: gw
+    }
+  end
+
+  def use_zlib_stream? do
+    Application.get_env(:nostrum, :zlib_stream, false)
   end
 end

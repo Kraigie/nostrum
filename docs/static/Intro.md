@@ -94,6 +94,10 @@ The following fields are also supported:
  all caching done internally, in lieu of sending dispatch events to the processes
  you specify. For more information see [creating custom consumers](consumers.html).
  Defaults to `false`.
+ - `zlib_stream` - This will enable the gateway connections to use zlib streaming.
+ This will generally decrease CPU usage and increase the amount of data transferred.
+ Not currently recommended for those that may experience drops in internet connectivity.
+ Defaults to `false`.
 
 By default, Nostrum logs a lot of data using `Logger`. If you want to ignore
 Logger debug data, include the following:
