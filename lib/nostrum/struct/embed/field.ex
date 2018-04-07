@@ -3,6 +3,24 @@ defmodule Nostrum.Struct.Embed.Field do
   Struct representing a Discord embed field.
   """
 
+  alias Nostrum.Util
+
+  defstruct [
+    :name,
+    :value,
+    :inline
+  ]
+
+  defimpl Poison.Encoder do
+    def encode(field, options) do
+      field
+      |> Map.from_struct()
+      |> Enum.filter(fn {_, v} -> v != nil end)
+      |> Map.new()
+      |> Poison.Encoder.encode(options)
+    end
+  end
+
   @typedoc "Name of the field"
   @type name :: String.t()
 
@@ -10,7 +28,7 @@ defmodule Nostrum.Struct.Embed.Field do
   @type value :: String.t()
 
   @typedoc "Whether the field should display as inline"
-  @type inline :: boolean
+  @type inline :: boolean | nil
 
   @type t :: %__MODULE__{
           name: name,
@@ -18,14 +36,10 @@ defmodule Nostrum.Struct.Embed.Field do
           inline: inline
         }
 
-  @derive [Poison.Encoder]
-  defstruct [
-    :name,
-    :value,
-    :inline
-  ]
-
+  @doc false
   def to_struct(map) do
-    struct(__MODULE__, map)
+    new = Map.new(map, fn {k, v} -> {Util.maybe_to_atom(k), v} end)
+
+    struct(__MODULE__, new)
   end
 end

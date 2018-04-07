@@ -3,14 +3,32 @@ defmodule Nostrum.Struct.Embed.Video do
   Struct representing a Discord embed video.
   """
 
+  alias Nostrum.Util
+
+  defstruct [
+    :url,
+    :height,
+    :width
+  ]
+
+  defimpl Poison.Encoder do
+    def encode(video, options) do
+      video
+      |> Map.from_struct()
+      |> Enum.filter(fn {_, v} -> v != nil end)
+      |> Map.new()
+      |> Poison.Encoder.encode(options)
+    end
+  end
+
   @typedoc "Source URL of the video"
-  @type url :: String.t()
+  @type url :: String.t() | nil
 
   @typedoc "Height of the video"
-  @type height :: integer
+  @type height :: integer | nil
 
   @typedoc "Width of the video"
-  @type width :: integer
+  @type width :: integer | nil
 
   @type t :: %__MODULE__{
           url: url,
@@ -18,14 +36,10 @@ defmodule Nostrum.Struct.Embed.Video do
           width: width
         }
 
-  @derive [Poison.Encoder]
-  defstruct [
-    :url,
-    :height,
-    :width
-  ]
-
+  @doc false
   def to_struct(map) do
-    struct(__MODULE__, map)
+    new = Map.new(map, fn {k, v} -> {Util.maybe_to_atom(k), v} end)
+
+    struct(__MODULE__, new)
   end
 end
