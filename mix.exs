@@ -30,12 +30,31 @@ defmodule Nostrum.Mixfile do
   def docs do
     [
       main: "intro",
-      extras: [
-        "docs/static/Intro.md",
-        "docs/static/API.md",
-        "docs/static/State.md",
-        "docs/static/Events.md",
-        "docs/static/Consumers.md"
+      extras: extras(),
+      groups_for_modules: groups_for_modules()
+    ]
+  end
+
+  def extras do
+    [
+      "docs/static/Intro.md",
+      "docs/static/API.md",
+      "docs/static/State.md",
+      "docs/static/Events.md",
+      "docs/static/Consumers.md"
+    ]
+  end
+
+  def groups_for_modules do
+    [
+      Api: [
+        ~r/Nostrum.Api/
+      ],
+      Cache: [
+        ~r/Nostrum.Cache/
+      ],
+      Structs: [
+        ~r/Nostrum.Struct/
       ]
     ]
   end

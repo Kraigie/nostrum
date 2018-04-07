@@ -1,7 +1,5 @@
 defmodule Nostrum.Shard.Payload do
-  @moduledoc """
-  Specifies maps to be used for WS payloads.
-  """
+  @moduledoc false
 
   alias Nostrum.{Constants, Util}
 
