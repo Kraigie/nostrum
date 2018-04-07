@@ -3,17 +3,36 @@ defmodule Nostrum.Struct.Embed.Image do
   Struct representing a Discord embed image.
   """
 
+  alias Nostrum.Util
+
+  defstruct [
+    :url,
+    :proxy_url,
+    :height,
+    :width
+  ]
+
+  defimpl Poison.Encoder do
+    def encode(image, options) do
+      image
+      |> Map.from_struct()
+      |> Enum.filter(fn {_, v} -> v != nil end)
+      |> Map.new()
+      |> Poison.Encoder.encode(options)
+    end
+  end
+
   @typedoc "Image text"
-  @type url :: String.t()
+  @type url :: String.t() | nil
 
   @typedoc "URL of image icon"
-  @type proxy_url :: String.t()
+  @type proxy_url :: String.t() | nil
 
   @typedoc "Height of the image"
-  @type height :: integer
+  @type height :: integer | nil
 
   @typedoc "Width of the image"
-  @type width :: integer
+  @type width :: integer | nil
 
   @type t :: %__MODULE__{
           url: url,
@@ -22,15 +41,10 @@ defmodule Nostrum.Struct.Embed.Image do
           width: width
         }
 
-  @derive [Poison.Encoder]
-  defstruct [
-    :url,
-    :proxy_url,
-    :height,
-    :width
-  ]
-
+  @doc false
   def to_struct(map) do
-    struct(__MODULE__, map)
+    new = Map.new(map, fn {k, v} -> {Util.maybe_to_atom(k), v} end)
+
+    struct(__MODULE__, new)
   end
 end
