@@ -261,6 +261,7 @@ defmodule Nostrum.Struct.Embed do
   end
 
   # TODO: Jump down the rabbit hole
+  @doc false
   def p_encode do
     %__MODULE__{}
   end
