@@ -1,6 +1,41 @@
 defmodule Nostrum.Struct.Embed do
-  @moduledoc """
-  Struct representing a Discord embed.
+  @moduledoc ~S"""
+  Functions that work on Discord embeds.
+
+  ## Building Embeds
+
+  `Nostrum.Struct.Embed`s can be built using this module's "builder functions":
+
+  ```Elixir
+  import Nostrum.Struct.Embed
+
+  embed =
+    %Nostrum.Struct.Embed{}
+    |> put_title("craig")
+    |> put_description("nostrum")
+    |> put_url("https://google.com/")
+    |> put_timestamp("2016-05-05T21:04:13.203Z")
+    |> put_color(431_948)
+    |> add_field("Field 1", "Test")
+    |> add_field("Field 2", "More test", true)
+  ```
+
+  Alternatively, it is possible to build `Nostrum.Struct.Embed`s using standard map syntax.
+  However, we recommend sticking to the aforementioned "builder functions".
+
+  ```Elixir
+  embed = %Nostrum.Struct.Embed{
+    title: "craig",
+    description: "nostrum",
+    url: "https://google.com/",
+    timestamp: "2016-05-05T21:04:13.203Z",
+    color: 431_948,
+    fields: [
+      %Nostrum.Struct.Embed.Field{name: "Field 1", value: "Test"},
+      %Nostrum.Struct.Embed.Field{name: "Field 2", value: "More test", inline: true}
+    ]
+  }
+  ```
   """
 
   alias Nostrum.Struct.Embed.{Author, Field, Footer, Image, Provider, Thumbnail, Video}
