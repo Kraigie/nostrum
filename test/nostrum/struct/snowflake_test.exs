@@ -3,76 +3,75 @@ defmodule Nostrum.Struct.SnowflakeTest do
 
   alias Nostrum.Struct.Snowflake
 
-  require Nostrum.Struct.Snowflake
+  require Snowflake
 
-  test "cast/1: if string is given, then return snowflake" do
-    given = "4384931048190393"
-    expected = {:ok, 4_384_931_048_190_393}
+  describe "Snowflake.cast/1" do
+    test "if string is given, then return snowflake" do
+      expected = {:ok, 4_384_931_048_190_393}
+      observed = Snowflake.cast("4384931048190393")
 
-    observed = Snowflake.cast(given)
+      assert observed === expected
+    end
 
-    assert ^expected = observed
+    test "if integer is given, then return snowflake" do
+      expected = {:ok, 4_384_931_048_190_393}
+      observed = Snowflake.cast(4_384_931_048_190_393)
+
+      assert observed === expected
+    end
+
+    test "if nil is given, then return nil" do
+      observed = Snowflake.cast(nil)
+      expected = {:ok, nil}
+
+      assert observed === expected
+    end
+
+    test "if non-convertible is given, then return :error" do
+      observed = Snowflake.cast(true)
+      expected = :error
+
+      assert observed === expected
+    end
   end
 
-  test "cast/1: if integer is given, then return snowflake" do
-    given = 4_384_931_048_190_393
-    expected = {:ok, 4_384_931_048_190_393}
+  describe "Snowflake.dump/1" do
+    test "if snowflake is given, then return snowflake as string" do
+      observed = Snowflake.dump(4_314_103_984_319_043)
+      expected = "4314103984319043"
 
-    observed = Snowflake.cast(given)
+      assert observed === expected
+    end
 
-    assert ^expected = observed
+    test "if non-snowflake is given, then raise exception" do
+      assert_raise(ArgumentError, fn ->
+        Snowflake.dump(:not_snowflake)
+      end)
+    end
   end
 
-  test "cast/1: if nil is given, then return nil" do
-    given = nil
-    expected = {:ok, nil}
+  describe "Snowflake.is_snowflake/1" do
+    test "if snowflake is given, return true" do
+      expected = true
+      observed = Snowflake.is_snowflake(4_314_831_498_137)
 
-    observed = Snowflake.cast(given)
+      assert expected === observed
+    end
 
-    assert ^expected = observed
+    test "if snowflake is given, return false" do
+      expected = false
+      observed = Snowflake.is_snowflake("4314831498137")
+
+      assert expected === observed
+    end
   end
 
-  test "cast/1: if non-convertible is given, then return :error" do
-    given = true
-    expected = :error
+  describe "Snowflake.timestamp/1" do
+    test "if snowflake is given, return the correct timestamp" do
+      {:ok, expected, _} = DateTime.from_iso8601("2016-05-05T21:04:13.203Z")
+      observed = Snowflake.timestamp(177_888_205_536_886_784)
 
-    observed = Snowflake.cast(given)
-
-    assert ^expected = observed
-  end
-
-  test "dump/1: if snowflake is given, then return snowflake as string" do
-    given = 4_314_103_984_319_043
-    expected = "4314103984319043"
-
-    observed = Snowflake.dump(given)
-
-    assert ^expected = observed
-  end
-
-  test "dump/1: if non-snowflake is given, then raise exception" do
-    given = :not_snowflake
-
-    assert_raise(ArgumentError, fn ->
-      Snowflake.dump(given)
-    end)
-  end
-
-  test "is_snowflake/1: if snowflake is given, return true" do
-    given = 4_314_831_498_137
-    expected = true
-
-    observed = Snowflake.is_snowflake(given)
-
-    assert expected === observed
-  end
-
-  test "is_snowflake/1: if snowflake is given, return false" do
-    given = "4314831498137"
-    expected = false
-
-    observed = Snowflake.is_snowflake(given)
-
-    assert expected === observed
+      assert expected === observed
+    end
   end
 end

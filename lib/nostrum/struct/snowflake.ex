@@ -6,7 +6,7 @@ defmodule Nostrum.Struct.Snowflake do
   @typedoc """
   The type that represents snowflakes in JSON.
 
-  In JSON, Snowflakes are typically represented as strings due 
+  In JSON, Snowflakes are typically represented as strings due
   to some languages not being able to represent such a large number.
   """
   @type external_snowflake :: String.t()
@@ -14,7 +14,7 @@ defmodule Nostrum.Struct.Snowflake do
   @typedoc """
   The snowflake type.
 
-  Snowflakes are 64-bit unsigned integers used to represent discord 
+  Snowflakes are 64-bit unsigned integers used to represent discord
   object ids.
   """
   @type t :: integer
@@ -62,4 +62,16 @@ defmodule Nostrum.Struct.Snowflake do
   @spec dump(t) :: external_snowflake
   def dump(snowflake) when is_snowflake(snowflake), do: to_string(snowflake)
   def dump(_), do: raise(ArgumentError, "Was not given a snowflake")
+
+  @doc """
+  Returns the timestamp of the snowflake.
+  """
+  @spec timestamp(t) :: DateTime.t()
+  def timestamp(snowflake) when is_snowflake(snowflake) do
+    use Bitwise
+
+    time_elapsed_ms = (snowflake >>> 22) + 1_420_070_400_000
+
+    DateTime.from_unix!(time_elapsed_ms, :milliseconds)
+  end
 end
