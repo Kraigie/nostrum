@@ -87,6 +87,144 @@ defmodule Nostrum.Struct.Embed do
           fields: fields
         }
 
+  @doc ~S"""
+  Puts the given `value` under `:title` in `embed`.
+  """
+  @spec put_title(t, title) :: t
+  def put_title(%__MODULE__{} = embed, value) do
+    %__MODULE__{embed | title: value}
+  end
+
+  @doc false
+  @spec put_type(t, type) :: t
+  def put_type(%__MODULE__{} = embed, value) do
+    %__MODULE__{embed | type: value}
+  end
+
+  @doc ~S"""
+  Puts the given `value` under `:description` in `embed`.
+  """
+  @spec put_description(t, description) :: t
+  def put_description(%__MODULE__{} = embed, value) do
+    %__MODULE__{embed | description: value}
+  end
+
+  @doc ~S"""
+  Puts the given `value` under `:url` in `embed`.
+  """
+  @spec put_url(t, url) :: t
+  def put_url(%__MODULE__{} = embed, value) do
+    %__MODULE__{embed | url: value}
+  end
+
+  @doc ~S"""
+  Puts the given `value` under `:timestamp` in `embed`.
+  """
+  @spec put_timestamp(t, timestamp) :: t
+  def put_timestamp(%__MODULE__{} = embed, value) do
+    %__MODULE__{embed | timestamp: value}
+  end
+
+  @doc ~S"""
+  Puts the given `value` under `:color` in `embed`.
+  """
+  @spec put_color(t, color) :: t
+  def put_color(%__MODULE__{} = embed, value) do
+    %__MODULE__{embed | color: value}
+  end
+
+  @doc ~S"""
+  Puts a `Nostrum.Struct.Embed.Footer` under `:footer` in `embed`.
+  """
+  @spec put_footer(t, Footer.text(), Footer.icon_url()) :: t
+  def put_footer(%__MODULE__{} = embed, text, icon_url) do
+    footer = %Footer{
+      text: text,
+      icon_url: icon_url
+    }
+
+    %__MODULE__{embed | footer: footer}
+  end
+
+  @doc ~S"""
+  Puts a `Nostrum.Struct.Embed.Image` under `:image` in `embed`.
+  """
+  @spec put_image(t, Image.url()) :: t
+  def put_image(%__MODULE__{} = embed, url) do
+    image = %Image{
+      url: url
+    }
+
+    %__MODULE__{embed | image: image}
+  end
+
+  @doc ~S"""
+  Puts a `Nostrum.Struct.Embed.Thumbnail` under `:thumbnail` in `embed`.
+  """
+  @spec put_thumbnail(t, Thumbnail.url()) :: t
+  def put_thumbnail(%__MODULE__{} = embed, url) do
+    thumbnail = %Thumbnail{
+      url: url
+    }
+
+    %__MODULE__{embed | thumbnail: thumbnail}
+  end
+
+  @doc false
+  @spec put_video(t, Video.url()) :: t
+  def put_video(%__MODULE__{} = embed, url) do
+    video = %Video{
+      url: url
+    }
+
+    %__MODULE__{embed | video: video}
+  end
+
+  @doc false
+  @spec put_provider(t, Provider.name(), Provider.url()) :: t
+  def put_provider(%__MODULE__{} = embed, name, url) do
+    provider = %Provider{
+      name: name,
+      url: url
+    }
+
+    %__MODULE__{embed | provider: provider}
+  end
+
+  @doc ~S"""
+  Puts a `Nostrum.Struct.Embed.Author` under `:author` in `embed`.
+  """
+  @spec put_author(t, Author.name(), Author.url(), Author.icon_url()) :: t
+  def put_author(%__MODULE__{} = embed, name, url, icon_url) do
+    author = %Author{
+      name: name,
+      url: url,
+      icon_url: icon_url
+    }
+
+    %__MODULE__{embed | author: author}
+  end
+
+  @doc ~S"""
+  Adds a `Nostrum.Struct.Embed.Field` under `:fields` in `embed`.
+  """
+  @spec add_field(t, Field.name(), Field.value(), Field.inline()) :: t
+  def add_field(embed, name, value, inline \\ nil)
+
+  def add_field(%__MODULE__{fields: fields} = embed, name, value, inline) when is_list(fields) do
+    field = %Field{
+      name: name,
+      value: value,
+      inline: inline
+    }
+
+    %__MODULE__{embed | fields: fields ++ [field]}
+  end
+
+  def add_field(embed, name, value, inline) do
+    add_field(%__MODULE__{embed | fields: []}, name, value, inline)
+  end
+
   # TODO: Jump down the rabbit hole
   def p_encode do
     %__MODULE__{}
