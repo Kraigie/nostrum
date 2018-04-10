@@ -66,10 +66,10 @@ defmodule Nostrum.Struct.SnowflakeTest do
     end
   end
 
-  describe "Snowflake.timestamp/1" do
+  describe "Snowflake.creation_time/1" do
     test "if snowflake is given, return the correct timestamp" do
       {:ok, expected, _} = DateTime.from_iso8601("2016-05-05T21:04:13.203Z")
-      observed = Snowflake.timestamp(177_888_205_536_886_784)
+      observed = Snowflake.creation_time(177_888_205_536_886_784)
 
       assert expected === observed
     end

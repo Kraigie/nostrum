@@ -64,10 +64,10 @@ defmodule Nostrum.Struct.Snowflake do
   def dump(_), do: raise(ArgumentError, "Was not given a snowflake")
 
   @doc """
-  Returns the timestamp of the snowflake.
+  Returns the creation time of the snowflake.
   """
-  @spec timestamp(t) :: DateTime.t()
-  def timestamp(snowflake) when is_snowflake(snowflake) do
+  @spec creation_time(t) :: DateTime.t()
+  def creation_time(snowflake) when is_snowflake(snowflake) do
     use Bitwise
 
     time_elapsed_ms = (snowflake >>> 22) + 1_420_070_400_000
