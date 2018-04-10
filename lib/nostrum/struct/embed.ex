@@ -4,7 +4,7 @@ defmodule Nostrum.Struct.Embed do
 
   ## Building Embeds
 
-  `Nostrum.Struct.Embed`s can be built using this module's "builder functions":
+  `Nostrum.Struct.Embed`s can be built using this module's builder functions:
 
   ```Elixir
   import Nostrum.Struct.Embed
@@ -21,7 +21,7 @@ defmodule Nostrum.Struct.Embed do
   ```
 
   Alternatively, it is possible to build `Nostrum.Struct.Embed`s using standard map syntax.
-  However, we recommend sticking to the aforementioned "builder functions".
+  However, we recommend sticking to the aforementioned builder functions.
 
   ```Elixir
   embed = %Nostrum.Struct.Embed{
