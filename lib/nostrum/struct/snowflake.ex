@@ -23,9 +23,7 @@ defmodule Nostrum.Struct.Snowflake do
   Returns `true` if `term` is a snowflake; otherwise returns `false`
   """
   defguard is_snowflake(term)
-    when is_integer(term)
-    and term >= 0
-    and term <= 0xFFFFFFFFFFFFFFFF
+           when is_integer(term) and term >= 0 and term <= 0xFFFFFFFFFFFFFFFF
 
   @doc """
   Attempts to convert a term into a snowflake.
@@ -45,7 +43,7 @@ defmodule Nostrum.Struct.Snowflake do
   def cast(_), do: :error
 
   @doc """
-  Same as `cast/1`, except it raises an `ArgumentException` on failure.
+  Same as `cast/1`, except it raises an `ArgumentError` on failure.
   """
   @spec cast!(term) :: t | nil | no_return
   def cast!(value) do
@@ -60,7 +58,6 @@ defmodule Nostrum.Struct.Snowflake do
   """
   @spec dump(t) :: external_snowflake
   def dump(snowflake) when is_snowflake(snowflake), do: to_string(snowflake)
-  def dump(_), do: raise(ArgumentError, "Was not given a snowflake")
 
   @doc """
   Returns the creation time of the snowflake.
