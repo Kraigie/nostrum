@@ -16,12 +16,11 @@ defmodule Nostrum.Struct.Embed do
     |> put_url("https://google.com/")
     |> put_timestamp("2016-05-05T21:04:13.203Z")
     |> put_color(431_948)
-    |> add_field("Field 1", "Test")
-    |> add_field("Field 2", "More test", true)
+    |> put_field("Field 1", "Test")
+    |> put_field("Field 2", "More test", true)
   ```
 
-  Alternatively, it is possible to build `Nostrum.Struct.Embed`s using standard map syntax.
-  However, we recommend sticking to the aforementioned builder functions.
+  Alternatively, `Nostrum.Struct.Embed`s can be built using standard map syntax.
 
   ```Elixir
   embed = %Nostrum.Struct.Embed{
@@ -243,10 +242,10 @@ defmodule Nostrum.Struct.Embed do
   @doc ~S"""
   Adds a `Nostrum.Struct.Embed.Field` under `:fields` in `embed`.
   """
-  @spec add_field(t, Field.name(), Field.value(), Field.inline()) :: t
-  def add_field(embed, name, value, inline \\ nil)
+  @spec put_field(t, Field.name(), Field.value(), Field.inline()) :: t
+  def put_field(embed, name, value, inline \\ nil)
 
-  def add_field(%__MODULE__{fields: fields} = embed, name, value, inline) when is_list(fields) do
+  def put_field(%__MODULE__{fields: fields} = embed, name, value, inline) when is_list(fields) do
     field = %Field{
       name: name,
       value: value,
@@ -256,8 +255,8 @@ defmodule Nostrum.Struct.Embed do
     %__MODULE__{embed | fields: fields ++ [field]}
   end
 
-  def add_field(embed, name, value, inline) do
-    add_field(%__MODULE__{embed | fields: []}, name, value, inline)
+  def put_field(embed, name, value, inline) do
+    put_field(%__MODULE__{embed | fields: []}, name, value, inline)
   end
 
   # TODO: Jump down the rabbit hole

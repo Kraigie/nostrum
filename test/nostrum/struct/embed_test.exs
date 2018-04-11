@@ -29,8 +29,8 @@ defmodule Nostrum.Struct.EmbedTest do
         |> put_url("https://google.com/")
         |> put_timestamp("2016-05-05T21:04:13.203Z")
         |> put_color(431_948)
-        |> add_field("Field 1", "Test")
-        |> add_field("Field 2", "More test", true)
+        |> put_field("Field 1", "Test")
+        |> put_field("Field 2", "More test", true)
 
       assert expected === observed
     end
