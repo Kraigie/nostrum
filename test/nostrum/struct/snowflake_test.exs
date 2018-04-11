@@ -42,12 +42,6 @@ defmodule Nostrum.Struct.SnowflakeTest do
 
       assert observed === expected
     end
-
-    test "if non-snowflake is given, then raise exception" do
-      assert_raise(ArgumentError, fn ->
-        Snowflake.dump(:not_snowflake)
-      end)
-    end
   end
 
   describe "Snowflake.is_snowflake/1" do
