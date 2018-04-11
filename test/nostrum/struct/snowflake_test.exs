@@ -51,14 +51,21 @@ defmodule Nostrum.Struct.SnowflakeTest do
   end
 
   describe "Snowflake.is_snowflake/1" do
-    test "if snowflake is given, return true" do
-      expected = true
-      observed = Snowflake.is_snowflake(4_314_831_498_137)
+    test "if given a number greater than uint64 max, return false" do
+      expected = false
+      observed = Snowflake.is_snowflake(0xFFFFFFFFFFFFFFFF + 1)
 
       assert expected === observed
     end
 
-    test "if snowflake is given, return false" do
+    test "if given a negative integer, return false" do
+      expected = false
+      observed = Snowflake.is_snowflake(-4_314_831_498_137)
+
+      assert expected === observed
+    end
+
+    test "if non-integer is given, return false" do
       expected = false
       observed = Snowflake.is_snowflake("4314831498137")
 

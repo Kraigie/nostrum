@@ -22,11 +22,10 @@ defmodule Nostrum.Struct.Snowflake do
   @doc """
   Returns `true` if `term` is a snowflake; otherwise returns `false`
   """
-  defmacro is_snowflake(term) do
-    quote do
-      is_integer(unquote(term))
-    end
-  end
+  defguard is_snowflake(term)
+    when is_integer(term)
+    and term >= 0
+    and term <= 0xFFFFFFFFFFFFFFFF
 
   @doc """
   Attempts to convert a term into a snowflake.
