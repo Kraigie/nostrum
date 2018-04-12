@@ -43,6 +43,8 @@ defmodule Nostrum.Api do
 
   use Bitwise
 
+  import Nostrum.Struct.Snowflake, only: [is_snowflake: 1]
+
   alias Nostrum.{Constants, Util}
   alias Nostrum.Cache.Guild.GuildServer
   alias Nostrum.Struct.{Embed, Guild, Message, User, Webhook}
@@ -136,145 +138,206 @@ defmodule Nostrum.Api do
   end
 
   @doc ~S"""
-  Send a message to a channel.
+  Posts a message to a guild text or DM channel.
 
-  ## Parameters
-    - `channel_id` - Id of the channel to send the message to.
-    - `content` - One of string, embed, or file to send to the channel.
-    See `t:message_content/0` for more info.
-    - `tts` - Whether the message should be read over text to speech.
+  This endpoint requires the `VIEW_CHANNEL` and `SEND_MESSAGES` permissions. It
+  may situationally need the `SEND_MESSAGES_TTS` permission. It fires the
+  `t:Nostrum.Consumer.message_create/0` event.
 
-  For the `channel_id` parameter, you can pass in a `Nostrum.Struct.Message`
-  struct, and it will pull the id from there.
+  If successful, returns `{:ok, message}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
 
-  ## Example
+  ## Options
+
+    * `:content` (string) - the message contents (up to 2000 characters)
+    * `:nonce` (`t:Nostrum.Struct.Snowflake.t/0`) - a nonce that can be used for
+    optimistic message sending
+    * `:tts` (boolean) - true if this is a TTS message
+    * `:file` (`t:Path.t/0`) - the path of the file being sent
+    * `:embed` (`t:Nostrum.Struct.Embed.t/0`) - embedded rich content
+
+    At least one of the following is required: `:content`, `:file`, `:embed`.
+
+  ## Examples
+
   ```Elixir
-  Nostrum.Api.create_message(1111111111111, [content: "my os rules", file: ~S"C:\i\use\windows"])
+  Nostrum.Api.create_message(43189401384091, content: "hello world!")
+
+  import Nostrum.Struct.Embed
+  embed =
+    %Nostrum.Struct.Embed{}
+    |> put_title("embed")
+    |> put_description("new desc")
+  Nostrum.Api.create_message(43189401384091, embed: embed)
+
+  Nostrum.Api.create_message(43189401384091, file: "/path/to/file.txt")
+
+  Nostrum.Api.create_message(43189401384091, content: "hello world!", embed: embed, file: "/path/to/file.txt")
   ```
   """
-  @spec create_message(Message.t(), message_content, boolean) :: error | {:ok, Message.t()}
-  @spec create_message(Channel.id(), message_content, boolean) :: error | {:ok, Message.t()}
-  def create_message(channel_id, content, tts \\ false)
+  @spec create_message(Channel.id(), options) :: error | {:ok, Message.t()}
+  def create_message(channel_id, options)
 
-  def create_message(%Message{channel_id: id}, content, tts) when is_binary(content),
-    do: create_message(id, content, tts)
+  def create_message(channel_id, options) when is_list(options),
+    do: create_message(channel_id, Map.new(options))
 
-  # Sending regular messages
-  def create_message(channel_id, content, tts) when is_binary(content) do
-    request(:post, Constants.channel_messages(channel_id), %{content: content, tts: tts})
-    |> handle(Message)
+  def create_message(channel_id, options) when is_snowflake(channel_id) do
+    case options do
+      %{file: _} -> create_message_with_multipart(channel_id, options)
+      %{} -> create_message_with_json(channel_id, options)
+    end
   end
 
-  # Embeds
-  def create_message(channel_id, [content: c, embed: e], tts) do
-    request(:post, Constants.channel_messages(channel_id), %{content: c, embed: e, tts: tts})
-    |> handle(Message)
+  defp create_message_with_multipart(channel_id, %{file: file_path} = options) do
+    payload_json =
+      options
+      |> Map.delete(:file)
+      |> Poison.encode!()
+
+    multipart = [
+      {:file, file_path},
+      {"payload_json", payload_json}
+    ]
+
+    request = %{
+      method: :post,
+      route: Constants.channel_messages(channel_id),
+      body: {:multipart, multipart},
+      options: [],
+      headers: [
+        {"content-type", "multipart/form-data"}
+      ]
+    }
+
+    GenServer.call(Ratelimiter, {:queue, request, nil}, :infinity)
+    |> handle_request_with_decode({:struct, Message})
   end
 
-  # Files
-  def create_message(channel_id, [file_name: c, file: f], tts) do
-    request_multipart(:post, Constants.channel_messages(channel_id), %{
-      content: c,
-      file: f,
-      tts: tts
-    })
-    |> handle(Message)
+  defp create_message_with_json(channel_id, options) do
+    request(:post, Constants.channel_messages(channel_id), options)
+    |> handle_request_with_decode({:struct, Message})
   end
 
-  @doc """
-  Send a message to a channel.
-
-  See `create_message/3` for usage.
-
-  Raises `Nostrum.Error.ApiError` if error occurs while making the rest call.
+  @doc ~S"""
+  Same as `create_message/2`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
-  @spec create_message!(Channel.id(), message_content, boolean) :: no_return | Message.t()
-  def create_message!(channel_id, content, tts \\ false) do
-    create_message(channel_id, content, tts)
+  @spec create_message!(Channel.id(), options) :: no_return | Message.t()
+  def create_message!(channel_id, options) do
+    create_message(channel_id, options)
     |> bangify
   end
 
-  @doc """
-  Edit a message.
-
-  ## Parameters
-    - `message` - Message to edit.
-    - `content` - New content of the message.
+  @doc ~S"""
+  Same as `create_message/2`, but takes a `Nostrum.Struct.Message` instead of a channel_id.
   """
-  @spec edit_message(Message.t(), String.t()) :: error | {:ok, Message.t()}
-  def edit_message(%Message{id: id, channel_id: c_id}, content) do
-    edit_message(c_id, id, content)
+  @spec reply_to_message(Message.t(), options) :: error | {:ok, Message.t()}
+  def reply_to_message(%Message{} = message, options) do
+    create_message(message.channel_id, options)
   end
 
-  @doc """
-  Edit a message.
-
-  ## Parameters
-    - `channel_id` - Id of the channel the message is in.
-    - `message_id` - Id of the message to edit.
-    - `content` - New content of the message.
+  @doc ~S"""
+  Same as `reply_to_message/2`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
-  @spec edit_message(Channel.id(), Message.id(), String.t()) :: error | {:ok, Message.t()}
-  def edit_message(channel_id, message_id, content) do
-    request(:patch, Constants.channel_message(channel_id, message_id), %{content: content})
-    |> handle(Message)
-  end
-
-  @doc """
-  Edit a message.
-
-  See `edit_message/2` for usage.
-
-  Raises `Nostrum.Error.ApiError` if error occurs while making the rest call.
-  """
-  @spec edit_message!(Message.t(), String.t()) :: error | {:ok, Message.t()}
-  def edit_message!(%Message{id: id, channel_id: c_id}, content) do
-    edit_message(c_id, id, content)
+  @spec reply_to_message!(Message.t(), options) :: no_return | Message.t()
+  def reply_to_message!(message, options) do
+    reply_to_message(message, options)
     |> bangify
   end
 
-  @doc """
-  Edit a message.
+  @doc ~S"""
+  Edits a previously sent message in a channel.
 
-  See `edit_message/3` for usage.
+  This endpoint requires the `VIEW_CHANNEL` permission. It fires the
+  `t:Nostrum.Consumer.message_update/0` event.
 
-  Raises `Nostrum.Error.ApiError` if error occurs while making the rest call.
+  If successful, returns `{:ok, message}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
+
+  ## Options
+
+    * `:content` (string) - the message contents (up to 2000 characters)
+    * `:embed` (`t:Nostrum.Struct.Embed.t/0`) - embedded rich content
+
+  ## Examples
+
+  ```Elixir
+  Nostrum.Api.edit_message(43189401384091, 1894013840914098, content: "hello world!")
+
+  import Nostrum.Struct.Embed
+  embed =
+    %Nostrum.Struct.Embed{}
+    |> put_title("embed")
+    |> put_description("new desc")
+  Nostrum.Api.edit_message(43189401384091, 1894013840914098, embed: embed)
+
+  Nostrum.Api.edit_message(43189401384091, 1894013840914098, content: "hello world!", embed: embed)
+  ```
   """
-  @spec edit_message!(Channel.id(), Message.id(), String.t()) :: no_return | {:ok, Message.t()}
-  def edit_message!(channel_id, message_id, content) do
-    edit_message(channel_id, message_id, content)
+  @spec edit_message(Channel.id(), Message.id(), options) :: error | {:ok, Message.t()}
+  def edit_message(channel_id, message_id, options)
+  def edit_message(channel_id, message_id, options) when is_list(options), do:
+    edit_message(channel_id, message_id, Map.new(options))
+
+  def edit_message(channel_id, message_id, %{} = options) when is_snowflake(channel_id) and is_snowflake(message_id) do
+    request(:patch, Constants.channel_message(channel_id, message_id), options)
+    |> handle_request_with_decode({:struct, Message})
+  end
+
+  @doc ~S"""
+  Same as `edit_message/3`, but raises `Nostrum.Error.ApiError` in case of failure.
+  """
+  @spec edit_message!(Channel.id(), Message.id(), options) :: no_return | Message.t()
+  def edit_message!(channel_id, message_id, options) do
+    edit_message(channel_id, message_id, options)
     |> bangify
   end
 
-  @doc """
-  Delete a message.
+  @doc ~S"""
+  Same as `edit_message/3`, but takes a `Nostrum.Struct.Message` instead of a
+  `channel_id` and `message_id`.
+  """
+  @spec edit_message(Message.t(), options) :: error | {:ok, Message.t()}
+  def edit_message(%Message{id: id, channel_id: c_id}, options) do
+    edit_message(c_id, id, options)
+  end
 
-  ## Parameters
-    - `message` - Message to delete.
+  @doc ~S"""
+  Same as `edit_message/2`, but raises `Nostrum.Error.ApiError` in case of failure.
+  """
+  @spec edit_message!(Message.t(), options) :: no_return | Message.t()
+  def edit_message!(message, options) do
+    edit_message(message, options)
+    |> bangify
+  end
+
+  @doc ~S"""
+  Same as `delete_message/2`, but takes a `Nostrum.Struct.Message`.
   """
   @spec delete_message(Message.t()) :: error | {:ok}
   def delete_message(%Message{id: id, channel_id: c_id}) do
     delete_message(c_id, id)
   end
 
-  @doc """
-  Delete a message.
+  @doc ~S"""
+  Deletes a message.
 
-  ## Parameters
-    - `channel_id` - Id of the channel the message is in.
-    - `message_id` - Id of the message to delete.
+  This endpoint requires the 'VIEW_CHANNEL' and 'MANAGE_MESSAGES' permission. It
+  fires the `MESSAGE_DELETE` event.
+
+  If successful, returns `{:ok}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
+
+  ## Examples
+
+  ```Elixir
+  Nostrum.Api.delete_message(43189401384091, 43189401384091)
+  ```
   """
   @spec delete_message(Channel.id(), Message.id()) :: error | {:ok}
-  def delete_message(channel_id, message_id) do
+  def delete_message(channel_id, message_id)
+      when is_snowflake(channel_id) and is_snowflake(message_id) do
     request(:delete, Constants.channel_message(channel_id, message_id))
   end
 
-  @doc """
-  Delete a message.
-
-  See `delete_message/1` for usage.
-
-  Raises `Nostrum.Error.ApiError` if error occurs while making the rest call.
+  @doc ~S"""
+  Same as `delete_message/1`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
   @spec delete_message!(Message.t()) :: error | {:ok}
   def delete_message!(%Message{id: id, channel_id: c_id}) do
@@ -282,12 +345,8 @@ defmodule Nostrum.Api do
     |> bangify
   end
 
-  @doc """
-  Delete a message.
-
-  See `delete_message/2` for usage.
-
-  Raises `Nostrum.Error.ApiError` if error occurs while making the rest call.
+  @doc ~S"""
+  Same as `delete_message/2`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
   @spec delete_message!(Channel.id(), Message.id()) :: no_return | {:ok}
   def delete_message!(channel_id, message_id) do
@@ -553,16 +612,23 @@ defmodule Nostrum.Api do
     |> bangify
   end
 
-  @doc """
-  Retrieve messages from a channel.
+  @doc ~S"""
+  Retrives a channel's messages around a `locator` up to a `limit`.
 
-  ## Parameters
-    - `channel_id` - Id of the channel to get messages from.
-    - `limit` - Number of messages to get.
-    - `locator` - tuple indicating what messages you want to retrieve.
+  This endpoint requires the 'VIEW_CHANNEL' permission. If the current user
+  is missing the 'READ_MESSAGE_HISTORY' permission, then this function will
+  return no messages.
+
+  If successful, returns `{:ok, messages}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
+
+  ## Examples
+
+  ```Elixir
+  Nostrum.Api.get_channel_messages(43189401384091, 5, {:before 130230401384})
+  ```
   """
   @spec get_channel_messages(Channel.id(), limit, locator) :: error | {:ok, [Message.t()]}
-  def get_channel_messages(channel_id, limit, locator \\ {}) do
+  def get_channel_messages(channel_id, limit, locator \\ {}) when is_snowflake(channel_id) do
     get_messages_sync(channel_id, limit, [], locator)
   end
 
@@ -604,44 +670,42 @@ defmodule Nostrum.Api do
       end
 
     request(:get, Constants.channel_messages(channel_id), "", params: qs_params)
-    |> handle([Message])
+    |> handle_request_with_decode({:list, {:struct, Message}})
   end
 
-  @doc """
-  Retrieve messages from a channel.
-
-  See `get_channel_message/3` for usage.
-
-  Raises `Nostrum.Error.ApiError` if error occurs while making the rest call.
+  @doc ~S"""
+  Same as `get_channel_messages/3`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
-  @spec get_channel_messages!(integer, limit, locator) :: no_return | [Message.t()]
+  @spec get_channel_messages!(Channel.id(), limit, locator) :: no_return | [Message.t()]
   def get_channel_messages!(channel_id, limit, locator) do
     get_channel_messages(channel_id, limit, locator)
     |> bangify
   end
 
-  @doc """
+  @doc ~S"""
   Retrieves a message from a channel.
 
-  Message to retrieve is specified by `message_id` and `channel_id`.
-  """
-  @spec get_channel_message(integer, integer) :: error | {:ok, Message.t()}
-  def get_channel_message(channel_id, message_id) do
-    case request(:get, Constants.channel_message(channel_id, message_id)) do
-      {:ok, body} ->
-        {:ok, Poison.decode!(body)}
+  This endpoint requires the 'VIEW_CHANNEL' and 'READ_MESSAGE_HISTORY' permissions.
 
-      other ->
-        other
-    end
+  If successful, returns `{:ok, message}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
+
+  ## Examples
+
+  ```Elixir
+  Nostrum.Api.get_channel_message(43189401384091, 198238475613443)
+  ```
+  """
+  @spec get_channel_message(Channel.id(), Message.id()) :: error | {:ok, Message.t()}
+  def get_channel_message(channel_id, message_id)
+      when is_snowflake(channel_id) and is_snowflake(message_id) do
+    request(:get, Constants.channel_message(channel_id, message_id))
+    |> handle_request_with_decode({:struct, Message})
   end
 
-  @doc """
-  Retrieves a message from a channel.
-
-  Raises `Nostrum.Error.ApiError` if error occurs while making the rest call.
+  @doc ~S"""
+  Same as `get_channel_message/2`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
-  @spec get_channel_message!(integer, integer) :: no_return | Message.t()
+  @spec get_channel_message!(Channel.id(), Message.id()) :: no_return | Message.t()
   def get_channel_message!(channel_id, message_id) do
     get_channel_message(channel_id, message_id)
     |> bangify
@@ -807,86 +871,87 @@ defmodule Nostrum.Api do
     |> bangify
   end
 
-  @doc """
-  Gets all pinned messages.
+  @doc ~S"""
+  Retrieves all pinned messages from a channel.
 
-  Retrieves all pinned messages for the channel specified by `channel_id`.
+  This endpoint requires the 'VIEW_CHANNEL' and 'READ_MESSAGE_HISTORY' permissions.
 
-  Returns {:ok, [Message.t]} if successful. `error` otherwise.
+  If successful, returns `{:ok, messages}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
+
+  ## Examples
+
+  ```Elixir
+  Nostrum.Api.get_pinned_messages(43189401384091)
+  ```
   """
-  @spec get_pinned_messages(integer) :: error | {:ok, [Message.t()]}
-  def get_pinned_messages(channel_id) do
-    case request(:get, Constants.channel_pins(channel_id)) do
-      {:ok, body} ->
-        {:ok, Poison.decode!(body, as: [%Nostrum.Struct.Message{}])}
-
-      other ->
-        other
-    end
+  @spec get_pinned_messages(Channel.id()) :: error | {:ok, [Message.t()]}
+  def get_pinned_messages(channel_id) when is_snowflake(channel_id) do
+    request(:get, Constants.channel_pins(channel_id))
+    |> handle_request_with_decode({:list, {:struct, Message}})
   end
 
-  @doc """
-  Gets all pinned messages.
-
-  Retrieves all pinned messages for the channel specified by `channel_id`.
-
-  Returns [Message.t] if successful. `error` otherwise.
+  @doc ~S"""
+  Same as `get_pinned_messages/1`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
-  @spec get_pinned_messages!(integer) :: no_return | [Message.t()]
+  @spec get_pinned_messages!(Channel.id()) :: no_return | [Message.t()]
   def get_pinned_messages!(channel_id) do
     get_pinned_messages(channel_id)
     |> bangify
   end
 
-  @doc """
-  Pins a message.
+  @doc ~S"""
+  Pins a message in a channel.
 
-  Pins the message specified by `message_id` in the channel specified by `channel_id`.
+  This endpoint requires the 'VIEW_CHANNEL', 'READ_MESSAGE_HISTORY', and
+  'MANAGE_MESSAGES' permissions. It fires the
+  `t:Nostrum.Consumer.message_update/0` and
+  `t:Nostrum.Consumer.channel_pins_update/0` events.
 
-  Returns `{:ok}` if successful. `error` otherwise.
+  If successful, returns `{:ok}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
+
+  ## Examples
+
+  ```Elixir
+  Nostrum.Api.add_pinned_channel_message(43189401384091, 18743893102394)
+  ```
   """
-  @spec add_pinned_message(integer, integer) :: error | {:ok}
-  def add_pinned_message(channel_id, message_id) do
+  @spec add_pinned_channel_message(Channel.id(), Message.id()) :: error | {:ok}
+  def add_pinned_channel_message(channel_id, message_id)
+      when is_snowflake(channel_id) and is_snowflake(message_id) do
     request(:put, Constants.channel_pin(channel_id, message_id))
   end
 
-  @doc """
-  Pins a message.
-
-  Pins the message specified by `message_id` in the channel specified by `channel_id`.
-
-  Raises `Nostrum.Error.ApiError` if error occurs while making the rest call.
-  Returns {:ok} if successful.
+  @doc ~S"""
+  Same as `add_pinned_channel_message/2`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
-  @spec add_pinned_message!(integer, integer) :: no_return | {:ok}
-  def add_pinned_message!(channel_id, message_id) do
-    add_pinned_message(channel_id, message_id)
+  @spec add_pinned_channel_message!(Channel.id(), Message.id()) :: no_return | {:ok}
+  def add_pinned_channel_message!(channel_id, message_id) do
+    add_pinned_channel_message(channel_id, message_id)
     |> bangify
   end
 
   @doc """
-  Unpins a message.
+  Unpins a message in a channel.
 
-  Unpins the message specified by `message_id` in the channel specified by `channel_id`.
+  This endpoint requires the 'VIEW_CHANNEL', 'READ_MESSAGE_HISTORY', and
+  'MANAGE_MESSAGES' permissions. It fires the
+  `t:Nostrum.Consumer.message_update/0` and
+  `t:Nostrum.Consumer.channel_pins_update/0` events.
 
   Returns `{:ok}` if successful. `error` otherwise.
   """
-  @spec delete_pinned_message(integer, integer) :: error | {:ok}
-  def delete_pinned_message(channel_id, message_id) do
+  @spec delete_pinned_channel_message(Channel.id(), Message.id()) :: error | {:ok}
+  def delete_pinned_channel_message(channel_id, message_id)
+      when is_snowflake(channel_id) and is_snowflake(message_id) do
     request(:delete, Constants.channel_pin(channel_id, message_id))
   end
 
-  @doc """
-  Unpins a message.
-
-  Unpins the message specified by `message_id` in the channel specified by `channel_id`.
-
-  Raises `Nostrum.Error.ApiError` if error occurs while making the rest call.
-  Returns {:ok} if successful.
+  @doc ~S"""
+  Same as `delete_pinned_channel_message/2`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
-  @spec delete_pinned_message!(integer, integer) :: no_return | {:ok}
-  def delete_pinned_message!(channel_id, message_id) do
-    delete_pinned_message(channel_id, message_id)
+  @spec delete_pinned_channel_message!(Channel.id(), Message.id()) :: no_return | {:ok}
+  def delete_pinned_channel_message!(channel_id, message_id) do
+    delete_pinned_channel_message(channel_id, message_id)
     |> bangify
   end
 
