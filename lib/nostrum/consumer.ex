@@ -20,6 +20,8 @@ defmodule Nostrum.Consumer do
 
   use ConsumerSupervisor
 
+  alias Nostrum.Shard.Stage.Cache
+
   @doc """
   Callback used to handle events.
 
@@ -208,10 +210,10 @@ defmodule Nostrum.Consumer do
           start: {__MODULE__, :start_link, []}
         }
 
-        # Default to temporary restart as permanent isn't allowed.
+        # Default to transient restart as permanent isn't allowed.
         # https://github.com/elixir-lang/gen_stage/commit/2b269accba8b8cb0a71333f55e3bd9ce893b40d4
         opts =
-          [restart: :temporary]
+          [restart: :transient]
           |> Keyword.merge(unquote(Macro.escape(opts)))
 
         Supervisor.child_spec(spec, opts)
@@ -227,15 +229,8 @@ defmodule Nostrum.Consumer do
 
   @doc false
   def init(mod) do
-    producers =
-      CacheStageRegistry
-      |> Registry.lookup(:pids)
-      |> Enum.map(fn {pid, _value} -> pid end)
+    children = [mod]
 
-    children = [
-      mod
-    ]
-
-    ConsumerSupervisor.init(children, strategy: :one_for_one, subscribe_to: producers)
+    ConsumerSupervisor.init(children, strategy: :one_for_one, subscribe_to: [Cache])
   end
 end

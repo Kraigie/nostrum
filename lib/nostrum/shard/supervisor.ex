@@ -5,6 +5,7 @@ defmodule Nostrum.Shard.Supervisor do
 
   alias Nostrum.{Shard, Util}
   alias Nostrum.Shard.Session
+  alias Nostrum.Shard.Stage.{Cache, Producer}
 
   require Logger
 
@@ -49,21 +50,27 @@ defmodule Nostrum.Shard.Supervisor do
 
   @doc false
   def init(options) do
-    # TODO: Move this to new spec scheme
     children =
-      for i <- 0..(options[:num_shards] - 1), do: create_worker(options[:url], options[:token], i)
-
-    with_registry =
       [
-        supervisor(Registry, [:duplicate, ProducerStageRegistry], id: 1),
-        supervisor(Registry, [:duplicate, CacheStageRegistry], id: 2)
-      ] ++ children
+        Producer,
+        Cache
+      ] ++
+        for i <- 0..(options[:num_shards] - 1),
+            do: create_worker(options[:url], options[:token], i)
 
-    supervise(with_registry, strategy: :one_for_one, max_restarts: 3, max_seconds: 60)
+    Supervisor.init(children, strategy: :one_for_one, max_restarts: 3, max_seconds: 60)
   end
 
   @doc false
   def create_worker(gateway, token, shard_num) do
-    worker(Shard, [gateway, token, shard_num], id: shard_num)
+    Supervisor.child_spec(
+      {Shard,
+       %{
+         gw: gateway,
+         token: token,
+         shard_num: shard_num
+       }},
+      id: shard_num
+    )
   end
 end

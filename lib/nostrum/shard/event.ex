@@ -11,7 +11,7 @@ defmodule Nostrum.Shard.Event do
     payload = Util.safe_atom_map(payload)
 
     Logger.debug(payload.t)
-    Producer.notify(state.producer_pid, payload, state)
+    Producer.notify(Producer, payload, state)
 
     if payload.t == :READY do
       %{state | session: payload.d.session_id}

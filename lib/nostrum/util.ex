@@ -4,6 +4,7 @@ defmodule Nostrum.Util do
   """
 
   alias Nostrum.{Api, Constants}
+  alias Nostrum.Shard.Stage.Producer
 
   require Logger
 
@@ -22,9 +23,7 @@ defmodule Nostrum.Util do
   """
   @spec producers() :: list(pid)
   def producers do
-    ProducerStageRegistry
-    |> Registry.lookup(:pids)
-    |> Enum.map(fn {pid, _value} -> pid end)
+    Producer
   end
 
   @doc """

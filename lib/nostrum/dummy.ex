@@ -6,10 +6,14 @@ defmodule Dummy do
   @moduledoc false
 
   def start_link do
-    # List comprehension creates a consumer per cpu core
-    children = [DummyConsumer]
+    children = for i <- 0..1, do: create_worker(i)
 
     Supervisor.start_link(children, strategy: :one_for_one)
+  end
+
+  @doc false
+  def create_worker(id) do
+    Supervisor.child_spec({DummyConsumer, []}, id: id)
   end
 end
 

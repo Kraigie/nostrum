@@ -5,7 +5,6 @@ defmodule Nostrum.Shard.Session do
 
   alias Nostrum.{Constants, Util}
   alias Nostrum.Shard.{Connector, Event, Payload}
-  alias Nostrum.Shard.Stage.{Cache, Producer}
 
   require Logger
 
@@ -56,9 +55,6 @@ defmodule Nostrum.Shard.Session do
   def init(%{gw: g, shard_num: s, token: t}) do
     Logger.metadata(shard: s)
 
-    {:ok, producer_pid} = Producer.start_link()
-    if !Application.get_env(:nostrum, :custom_consumer), do: Cache.start_link(producer_pid)
-
     erl_gw =
       ~r/wss:\/\//
       |> Regex.replace(g, "")
@@ -67,7 +63,7 @@ defmodule Nostrum.Shard.Session do
     zlib_ctx =
       if use_zlib_stream?() do
         zlib_ctx = :zlib.open()
-        :zlib.inflateInit(zlib_ctx)
+        :zlib.inflateInit(zlib_ctx, 0)
         zlib_ctx
       end
 
@@ -77,9 +73,9 @@ defmodule Nostrum.Shard.Session do
 
       {:ok, conn} ->
         if use_zlib_stream?() do
-          {:ok, state_map(t, s, self(), producer_pid, conn, erl_gw, zlib_ctx)}
+          {:ok, state_map(t, s, self(), conn, erl_gw, zlib_ctx)}
         else
-          {:ok, state_map(t, s, self(), producer_pid, conn, erl_gw)}
+          {:ok, state_map(t, s, self(), conn, erl_gw)}
         end
     end
   end
@@ -139,9 +135,7 @@ defmodule Nostrum.Shard.Session do
 
   def handle_info({:gun_ws, _conn, {:close, code, message}}, %{zlib_ctx: _} = state) do
     Logger.warn("websocket closing: #{code} #{message}")
-    :zlib.inflateEnd(state.zlib_ctx)
-    :zlib.close(state.zlib_ctx)
-    {:noreply, state}
+    {:noreply, %{state | zlib_buffer: <<>>}}
   end
 
   def handle_info({:gun_ws, _conn, {:close, code, message}}, state) do
@@ -161,18 +155,21 @@ defmodule Nostrum.Shard.Session do
         %{zlib_ctx: _} = state
       ) do
     Logger.info("websocket closed, attempting reconnect")
-    :zlib.inflateEnd(state.zlib_ctx)
-    :zlib.close(state.zlib_ctx)
-    {:noreply, state}
+    :zlib.inflateReset(state.zlib_ctx)
+    {:noreply, %{state | zlib_buffer: <<>>}}
   end
 
   def handle_info({:gun_down, _conn, :ws, :closed, _maybe_processed, _open_streams}, state) do
     Logger.info("websocket closed, attempting reconnect")
-    {:noreply, state}
+    {:noreply, %{state | zlib_buffer: <<>>}}
   end
 
-  def handle_info({:DOWN, _m_ref, :process, _conn, :normal}, state) do
-    Logger.warn("websocket caller received DOWN, attempting reconnect")
+  def handle_info({:DOWN, _m_ref, :process, _conn, reason}, state) do
+    Logger.warn(fn ->
+      "websocket caller received DOWN with reason #{inspect(reason)}, attempting reconnect"
+    end)
+
+    :zlib.inflateReset(state.zlib_ctx)
     {:ok, conn} = await_connect(state.gateway)
     {:noreply, %{state | gun_pid: conn}}
   end
@@ -204,7 +201,7 @@ defmodule Nostrum.Shard.Session do
     {:noreply, state}
   end
 
-  def state_map(token, shard_num, shard_pid, producer_pid, gun_pid, gw, zlib_ctx) do
+  def state_map(token, shard_num, shard_pid, gun_pid, gw, zlib_ctx) do
     %{
       token: token,
       shard_num: shard_num,
@@ -212,7 +209,6 @@ defmodule Nostrum.Shard.Session do
       session: nil,
       reconnect_attempts: 0,
       shard_pid: shard_pid,
-      producer_pid: producer_pid,
       heartbeat_ack: true,
       gun_pid: gun_pid,
       gateway: gw,
@@ -221,7 +217,7 @@ defmodule Nostrum.Shard.Session do
     }
   end
 
-  def state_map(token, shard_num, shard_pid, producer_pid, gun_pid, gw) do
+  def state_map(token, shard_num, shard_pid, gun_pid, gw) do
     %{
       token: token,
       shard_num: shard_num,
@@ -229,7 +225,6 @@ defmodule Nostrum.Shard.Session do
       session: nil,
       reconnect_attempts: 0,
       shard_pid: shard_pid,
-      producer_pid: producer_pid,
       heartbeat_ack: true,
       gun_pid: gun_pid,
       gateway: gw

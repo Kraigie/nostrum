@@ -5,12 +5,11 @@ defmodule Nostrum.Shard.Stage.Producer do
 
   require Logger
 
-  def start_link do
-    GenStage.start_link(__MODULE__, [])
+  def start_link(opts) do
+    GenStage.start_link(__MODULE__, opts, name: __MODULE__)
   end
 
-  def init(_) do
-    Registry.register(ProducerStageRegistry, :pids, self())
+  def init(_opts) do
     {:producer, {:queue.new(), 0}, dispatcher: GenStage.DemandDispatcher}
   end
 
