@@ -4,7 +4,7 @@ defmodule Nostrum.Shard.Session do
   use GenServer
 
   alias Nostrum.{Constants, Util}
-  alias Nostrum.Shard.{Connector, Event, Payload}
+  alias Nostrum.Shard.{Connector, Event, Heartbeat, Payload}
 
   require Logger
 
@@ -55,6 +55,8 @@ defmodule Nostrum.Shard.Session do
   def init(%{gw: g, shard_num: s, token: t}) do
     Logger.metadata(shard: s)
 
+    {:ok, heartbeat_pid} = Heartbeat.start_link()
+
     erl_gw =
       ~r/wss:\/\//
       |> Regex.replace(g, "")
@@ -72,10 +74,12 @@ defmodule Nostrum.Shard.Session do
         {:stop, reason}
 
       {:ok, conn} ->
+        Heartbeat.update_gun_onwer(heartbeat_pid, self())
+
         if use_zlib_stream?() do
-          {:ok, state_map(t, s, self(), conn, erl_gw, zlib_ctx)}
+          {:ok, state_map(t, s, self(), heartbeat_pid, conn, erl_gw, zlib_ctx)}
         else
-          {:ok, state_map(t, s, self(), conn, erl_gw)}
+          {:ok, state_map(t, s, self(), heartbeat_pid, conn, erl_gw)}
         end
     end
   end
@@ -92,7 +96,8 @@ defmodule Nostrum.Shard.Session do
   end
 
   def handle_info({:gun_ws_upgrade, _conn, :ok, _headers}, state) do
-    {:noreply, %{state | heartbeat_ack: true}}
+    Heartbeat.ack(state.heartbeat_pid)
+    {:noreply, state}
   end
 
   def handle_info({:gun_ws, conn, {:binary, frame}}, %{zlib_ctx: _} = state) do
@@ -116,7 +121,10 @@ defmodule Nostrum.Shard.Session do
         |> Constants.atom_from_opcode()
         |> Event.handle(payload, conn, state)
 
-      {:noreply, %{new_state | seq: payload.s || state.seq, zlib_buffer: <<>>}}
+      seq = payload.s || state.seq
+      Heartbeat.update_sequence(state.heartbeat_pid, seq)
+
+      {:noreply, %{new_state | seq: seq, zlib_buffer: <<>>}}
     else
       {:noreply, %{state | zlib_buffer: new_buffer}}
     end
@@ -169,21 +177,10 @@ defmodule Nostrum.Shard.Session do
       "websocket caller received DOWN with reason #{inspect(reason)}, attempting reconnect"
     end)
 
+    Process.exit(state.heartbeat_pid, :kill)
     :zlib.inflateReset(state.zlib_ctx)
     {:ok, conn} = await_connect(state.gateway)
     {:noreply, %{state | gun_pid: conn}}
-  end
-
-  def handle_info({:heartbeat, interval, conn}, %{heartbeat_ack: true} = state) do
-    Event.gun_send(conn, Payload.heartbeat_payload(state.seq))
-    Event.heartbeat(conn, interval)
-    {:noreply, %{state | heartbeat_ack: false}}
-  end
-
-  def handle_info({:heartbeat, _interval, conn}, state) do
-    Logger.warn("HEARTBEAT_ACK not received in time, disconnecting")
-    :gun.shutdown(conn)
-    {:noreply, state}
   end
 
   def handle_info({:status_update, status}, state) do
@@ -196,12 +193,22 @@ defmodule Nostrum.Shard.Session do
     {:noreply, state}
   end
 
+  def handle_info({:send_heartbeat, seq}, state) do
+    Event.gun_send(state.gun_pid, Payload.heartbeat_payload(seq))
+    {:noreply, state}
+  end
+
+  def handle_info(:force_disconnect, state) do
+    :gun.shutdown(state.gun_pid)
+    {:noreply, state}
+  end
+
   def handle_info(m, state) do
     Logger.warn("Unhandled websocket message: #{inspect(m)}")
     {:noreply, state}
   end
 
-  def state_map(token, shard_num, shard_pid, gun_pid, gw, zlib_ctx) do
+  def state_map(token, shard_num, shard_pid, heartbeat_pid, gun_pid, gw, zlib_ctx) do
     %{
       token: token,
       shard_num: shard_num,
@@ -209,7 +216,7 @@ defmodule Nostrum.Shard.Session do
       session: nil,
       reconnect_attempts: 0,
       shard_pid: shard_pid,
-      heartbeat_ack: true,
+      heartbeat_pid: heartbeat_pid,
       gun_pid: gun_pid,
       gateway: gw,
       zlib_ctx: zlib_ctx,
@@ -217,7 +224,7 @@ defmodule Nostrum.Shard.Session do
     }
   end
 
-  def state_map(token, shard_num, shard_pid, gun_pid, gw) do
+  def state_map(token, shard_num, shard_pid, heartbeat_pid, gun_pid, gw) do
     %{
       token: token,
       shard_num: shard_num,
@@ -225,7 +232,7 @@ defmodule Nostrum.Shard.Session do
       session: nil,
       reconnect_attempts: 0,
       shard_pid: shard_pid,
-      heartbeat_ack: true,
+      heartbeat_pid: heartbeat_pid,
       gun_pid: gun_pid,
       gateway: gw
     }

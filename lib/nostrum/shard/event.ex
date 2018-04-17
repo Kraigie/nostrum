@@ -1,7 +1,7 @@
 defmodule Nostrum.Shard.Event do
   @moduledoc false
 
-  alias Nostrum.Shard.Payload
+  alias Nostrum.Shard.{Heartbeat, Payload}
   alias Nostrum.Shard.Stage.Producer
   alias Nostrum.Util
 
@@ -20,25 +20,27 @@ defmodule Nostrum.Shard.Event do
     end
   end
 
-  def handle(:heartbeat, _payload, conn, state) do
+  def handle(:heartbeat, _payload, _conn, state) do
     Logger.info("HEARTBEAT PING")
-    gun_send(conn, Payload.heartbeat_payload(state.seq))
+    Heartbeat.send_heartbeat(state.gun_pid, state.seq)
     state
   end
 
   def handle(:heartbeat_ack, _payload, _conn, state) do
     Logger.info("HEARTBEAT_ACK")
-    %{state | heartbeat_ack: true}
+    Heartbeat.ack(state.heartbeat_pid)
+    state
   end
 
   def handle(:hello, payload, conn, state) do
+    Heartbeat.start_loop(state.heartbeat_pid, payload.d.heartbeat_interval)
+
     if session_exists?(state) do
       Logger.info("RESUMING")
       resume(conn, state)
     else
       Logger.info("IDENTIFYING")
       identify(conn, state)
-      heartbeat(conn, payload.d.heartbeat_interval)
     end
 
     state
@@ -58,10 +60,6 @@ defmodule Nostrum.Shard.Event do
   def handle(event, _payload, _conn, state) do
     Logger.warn("UNHANDLED GATEWAY EVENT #{event}")
     state
-  end
-
-  def heartbeat(conn, interval) do
-    Process.send_after(self(), {:heartbeat, interval, conn}, interval)
   end
 
   def identify(conn, state) do
