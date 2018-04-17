@@ -101,32 +101,29 @@ defmodule Nostrum.Shard.Session do
   end
 
   def handle_info({:gun_ws, conn, {:binary, frame}}, %{zlib_ctx: _} = state) do
-    new_buffer = state.zlib_buffer <> frame
+    buffer = state.zlib_buffer <> frame
+    buffer_head_size = byte_size(buffer) - 4
 
-    z_end =
-      frame
-      |> :binary.bin_to_list()
-      |> Enum.take(-4)
+    case buffer do
+      <<_::bytes-size(buffer_head_size), 0, 0, 0xFF, 0xFF>> ->
+        payload =
+          state.zlib_ctx
+          |> :zlib.inflate(buffer)
+          |> :erlang.iolist_to_binary()
+          |> :erlang.binary_to_term()
 
-    if z_end == [0, 0, 0xFF, 0xFF] do
-      payload =
-        state.zlib_ctx
-        |> :zlib.inflate(new_buffer)
-        |> List.flatten()
-        |> Enum.join()
-        |> :erlang.binary_to_term()
+        new_state =
+          payload.op
+          |> Constants.atom_from_opcode()
+          |> Event.handle(payload, conn, state)
 
-      new_state =
-        payload.op
-        |> Constants.atom_from_opcode()
-        |> Event.handle(payload, conn, state)
+        seq = payload.s || state.seq
+        Heartbeat.update_sequence(state.heartbeat_pid, seq)
 
-      seq = payload.s || state.seq
-      Heartbeat.update_sequence(state.heartbeat_pid, seq)
+        {:noreply, %{new_state | seq: seq, zlib_buffer: <<>>}}
 
-      {:noreply, %{new_state | seq: seq, zlib_buffer: <<>>}}
-    else
-      {:noreply, %{state | zlib_buffer: new_buffer}}
+      _ ->
+        {:noreply, %{state | zlib_buffer: buffer}}
     end
   end
 
