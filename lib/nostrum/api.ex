@@ -53,14 +53,6 @@ defmodule Nostrum.Api do
   alias Nostrum.Shard.{Supervisor, Session}
 
   @typedoc """
-  Represents a message's content in the context of creating a message using the Api.
-  """
-  @type message_content ::
-          String.t()
-          | [content: String.t(), embed: Embed.t()]
-          | [file_name: String.t(), file: String.t()]
-
-  @typedoc """
   Represents a failed response from the API.
 
   This occurs when hackney or HTTPoison fail, or when the API doesn't respond with `200` or `204`.
@@ -174,16 +166,19 @@ defmodule Nostrum.Api do
   Nostrum.Api.create_message(43189401384091, content: "hello world!", embed: embed, file: "/path/to/file.txt")
   ```
   """
-  @spec create_message(Channel.id(), options) :: error | {:ok, Message.t()}
+  @spec create_message(Channel.id() | Message.t(), options) :: error | {:ok, Message.t()}
   def create_message(channel_id, options)
+
+  def create_message(%Message{} = message, options),
+    do: create_message(message.channel_id, options)
 
   def create_message(channel_id, options) when is_list(options),
     do: create_message(channel_id, Map.new(options))
 
-  def create_message(channel_id, options) when is_snowflake(channel_id) do
+  def create_message(channel_id, %{} = options) when is_snowflake(channel_id) do
     case options do
       %{file: _} -> create_message_with_multipart(channel_id, options)
-      %{} -> create_message_with_json(channel_id, options)
+      _ -> create_message_with_json(channel_id, options)
     end
   end
 
@@ -220,26 +215,9 @@ defmodule Nostrum.Api do
   @doc ~S"""
   Same as `create_message/2`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
-  @spec create_message!(Channel.id(), options) :: no_return | Message.t()
+  @spec create_message!(Channel.id() | Message.t(), options) :: no_return | Message.t()
   def create_message!(channel_id, options) do
     create_message(channel_id, options)
-    |> bangify
-  end
-
-  @doc ~S"""
-  Same as `create_message/2`, but takes a `Nostrum.Struct.Message` instead of a channel_id.
-  """
-  @spec reply_to_message(Message.t(), options) :: error | {:ok, Message.t()}
-  def reply_to_message(%Message{} = message, options) do
-    create_message(message.channel_id, options)
-  end
-
-  @doc ~S"""
-  Same as `reply_to_message/2`, but raises `Nostrum.Error.ApiError` in case of failure.
-  """
-  @spec reply_to_message!(Message.t(), options) :: no_return | Message.t()
-  def reply_to_message!(message, options) do
-    reply_to_message(message, options)
     |> bangify
   end
 
@@ -273,10 +251,12 @@ defmodule Nostrum.Api do
   """
   @spec edit_message(Channel.id(), Message.id(), options) :: error | {:ok, Message.t()}
   def edit_message(channel_id, message_id, options)
-  def edit_message(channel_id, message_id, options) when is_list(options), do:
-    edit_message(channel_id, message_id, Map.new(options))
 
-  def edit_message(channel_id, message_id, %{} = options) when is_snowflake(channel_id) and is_snowflake(message_id) do
+  def edit_message(channel_id, message_id, options) when is_list(options),
+    do: edit_message(channel_id, message_id, Map.new(options))
+
+  def edit_message(channel_id, message_id, %{} = options)
+      when is_snowflake(channel_id) and is_snowflake(message_id) do
     request(:patch, Constants.channel_message(channel_id, message_id), options)
     |> handle_request_with_decode({:struct, Message})
   end
