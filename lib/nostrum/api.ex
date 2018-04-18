@@ -1286,33 +1286,58 @@ defmodule Nostrum.Api do
     |> bangify
   end
 
-  @doc """
-  Adds a member to a guild.
+  @doc ~S"""
+  Puts a user in a guild.
 
-  Member to add is specified by `guild_id` and `user_id`
+  This endpoint fires the `t:Nostrum.Consumer.guild_member_add/0` event.
+  It requires the `CREATE_INSTANT_INVITE` permissions. Additionally, it
+  situationally requires the `MANAGE_NICKNAMES`, `MANAGE_ROLES`,
+  `MUTE_MEMBERS`, and `DEAFEN_MEMBERS` permissions.
 
-  `options` is a map with the following option keys:
-   * `nick` - Users nickname.
-   * `roles` - Array of roles to give member.
-   * `mute` - If the user should be muted.
-   * `deaf` - If the user should be deafaned.
-   * `channel_id` - Id of the channel to move the user to.
+  If successful, returns `{:ok, member}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
+
+  ## Options
+
+    * `:access_token` (string) - the user's oauth2 access token
+    * `:nick` (string) - value to set users nickname to
+    * `:roles` (list of `t:Nostrum.Struct.Guild.Role.id/0`) - array of role ids the member is assigned
+    * `:mute` (boolean) - if the user is muted
+    * `:deaf` (boolean) - if the user is deafened
+
+  `:access_token` is always required.
+
+  ## Examples
+
+  ```Elixir
+  Nostrum.Api.add_guild_member(
+    41771983423143937,
+    18374719829378473,
+    access_token: "6qrZcUqja7812RVdnEKjpzOL4CvHBFG",
+    nick: "nostrum",
+    roles: [431849301, 913809431]
+  )
+  ```
+  ```
   """
-  @spec add_member(integer, integer, %{
-          nick: String.t(),
-          roles: [integer],
-          mute: boolean,
-          deaf: boolean,
-          channel_id: integer
-        }) :: error | {:ok, Nostrum.Struct.Guild.Member.t()}
-  def add_member(guild_id, user_id, options) do
-    case request(:put, Constants.guild_member(guild_id, user_id), options) do
-      {:ok, body} ->
-        {:ok, Poison.decode!(body)}
+  @spec add_guild_member(Guild.id(), User.id(), options) :: error | {:ok, Member.t()}
+  def add_guild_member(guild_id, user_id, options)
 
-      other ->
-        other
-    end
+  def add_guild_member(guild_id, user_id, options) when is_list(options),
+    do: add_guild_member(guild_id, user_id, Map.new(options))
+
+  def add_guild_member(guild_id, user_id, %{} = options)
+      when is_snowflake(guild_id) and is_snowflake(user_id) do
+    request(:put, Constants.guild_member(guild_id, user_id), options)
+    |> handle_request_with_decode({:struct, Member})
+  end
+
+  @doc """
+  Same as `add_guild_member/3`, but raises `Nostrum.Error.ApiError` in case of failure.
+  """
+  @spec add_guild_member!(Guild.id(), User.id(), options) :: no_return | Member.t()
+  def add_guild_member!(guild_id, user_id, options) do
+    add_guild_member(guild_id, user_id, options)
+    |> bangify
   end
 
   @doc """
