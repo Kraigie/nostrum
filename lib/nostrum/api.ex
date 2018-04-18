@@ -1407,13 +1407,33 @@ defmodule Nostrum.Api do
   end
 
   @doc """
-  Removes a memeber from a guild.
+  Removes a member from a guild.
 
-  Member to remove is specified by `guild_id` and `user_id`.
+  This event requires the `KICK_MEMBERS` permission. It fires a
+  `t:Nostrum.Consumer.guild_member_remove/0` event.
+
+  If successful, returns `{:ok}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
+
+  ## Examples
+
+  ```Elixir
+  Nostrum.Api.remove_guild_member(1453827904102291, 18739485766253)
+  {:ok}
+  ```
   """
-  @spec remove_member(integer, integer) :: error | {:ok}
-  def remove_member(guild_id, user_id) do
+  @spec remove_guild_member(Guild.id(), User.id()) :: error | {:ok}
+  def remove_guild_member(guild_id, user_id)
+      when is_snowflake(guild_id) and is_snowflake(user_id) do
     request(:delete, Constants.guild_member(guild_id, user_id))
+  end
+
+  @doc """
+  Same as `remove_guild_member/2`, but raises `Nostrum.Error.ApiError` in case of failure.
+  """
+  @spec remove_guild_member!(Guild.id(), User.id()) :: no_return | {:ok}
+  def remove_guild_member!(guild_id, user_id) do
+    remove_guild_member(guild_id, user_id)
+    |> bangify
   end
 
   @doc """
