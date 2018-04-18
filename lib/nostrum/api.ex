@@ -1253,21 +1253,37 @@ defmodule Nostrum.Api do
   end
 
   @doc """
-  Gets a list of guild members.
+  Gets a list of a guild's members.
 
-  ## Parameters
-  `guild_id` - Guild to get members.
-  `options` - Map with the following *optional* keys:
-    - `limit` - Max number of members to return (1-1000)
-    - `after` - Highest user id of the previous page.
+  ## Options
+
+    * `:limit` (integer) - max number of members to return (1-1000) (default: 1)
+    * `:after` (`t:Nostrum.Struct.User.id/0`) - the highest user id in the previous page (default: 0)
+
+  ## Examples
+
+  ```Elixir
+  Nostrum.Api.list_guild_members(41771983423143937, limit: 1)
+  ```
   """
-  @spec get_guild_members(Guild.id(), %{
-          limit: 1..1000,
-          after: integer
-        }) :: error | {:ok, [Nostrum.Struct.Guild.Member.t()]}
-  def get_guild_members(guild_id, options) do
+  @spec list_guild_members(Guild.id(), options) :: error | {:ok, [Member.t()]}
+  def list_guild_members(guild_id, options \\ %{})
+
+  def list_guild_members(guild_id, options) when is_list(options),
+    do: list_guild_members(guild_id, Map.new(options))
+
+  def list_guild_members(guild_id, %{} = options) when is_snowflake(guild_id) do
     request(:get, Constants.guild_members(guild_id), "", params: options)
-    |> handle([Member])
+    |> handle_request_with_decode({:list, {:struct, Member}})
+  end
+
+  @doc """
+  Same as `list_guild_members/2`, but raises `Nostrum.Error.ApiError` in case of failure.
+  """
+  @spec list_guild_members!(Guild.id(), options) :: no_return | [Member.t()]
+  def list_guild_members!(guild_id, options \\ %{}) do
+    list_guild_members(guild_id, options)
+    |> bangify
   end
 
   @doc """
