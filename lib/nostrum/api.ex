@@ -1229,17 +1229,27 @@ defmodule Nostrum.Api do
   @doc """
   Gets a guild member.
 
-  Member to get is specified by `guild_id` and `user_id`.
-  """
-  @spec get_member(integer, integer) :: error | {:ok, Nostrum.Struct.Guild.Member.t()}
-  def get_member(guild_id, user_id) do
-    case request(:get, Constants.guild_member(guild_id, user_id)) do
-      {:ok, body} ->
-        {:ok, Poison.decode!(body)}
+  If successful, returns `{:ok, guild}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
 
-      other ->
-        other
-    end
+  ## Examples
+
+  ```Elixir
+  Nostrum.Api.get_guild_member(4019283754613, 184937267485)
+  ```
+  """
+  @spec get_guild_member(Guild.id(), User.id()) :: error | {:ok, Member.t()}
+  def get_guild_member(guild_id, user_id) when is_snowflake(guild_id) and is_snowflake(user_id) do
+    request(:get, Constants.guild_member(guild_id, user_id))
+    |> handle_request_with_decode({:struct, Member})
+  end
+
+  @doc """
+  Same as `get_guild_member/2`, but raises `Nostrum.Error.ApiError` in case of failure.
+  """
+  @spec get_guild_member!(Guild.id(), User.id()) :: no_return | Member.t()
+  def get_guild_member!(guild_id, user_id) do
+    get_guild_member(guild_id, user_id)
+    |> bangify
   end
 
   @doc """
