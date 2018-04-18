@@ -1340,27 +1340,48 @@ defmodule Nostrum.Api do
     |> bangify
   end
 
-  @doc """
-  Modifies a guild member.
+  @doc ~S"""
+  Modifies a guild member's attributes.
 
-  Member to modify is specified by `guild_id` and `user_id`
+  This endpoint fires the `t:Nostrum.Consumer.guild_member_update/0` event.
+  It situationally requires the `MANAGE_NICKNAMES`, `MANAGE_ROLES`,
+  `MUTE_MEMBERS`, `DEAFEN_MEMBERS`, and `MOVE_MEMBERS` permissions.
 
-  `options` is a map with the following option keys:
-   * `nick` - Users nickname.
-   * `roles` - Array of roles to give member.
-   * `mute` - If the user should be muted.
-   * `deaf` - If the user should be deafaned.
-   * `channel_id` - Id of the channel to move the user to.
+  If successful, returns `{:ok,}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
+
+  ## Options
+
+    * `:nick` (string) - value to set users nickname to
+    * `:roles` (list of `t:Nostrum.Struct.Snowflake.t/0`) - array of role ids the member is assigned
+    * `:mute` (boolean) - if the user is muted
+    * `:deaf` (boolean) - if the user is deafened
+    * `:channel_id` (`t:Nostrum.Struct.Snowflake.t/0`) - id of channel to move user to (if they are connected to voice)
+
+  ## Examples
+
+  ```Elixir
+  Nostrum.Api.modify_guild_member(41771983423143937, 637162356451, nick: "Nostrum")
+  {:ok}
+  ```
   """
-  @spec modify_member(integer, integer, %{
-          nick: String.t(),
-          roles: [integer],
-          mute: boolean,
-          deaf: boolean,
-          channel_id: integer
-        }) :: error | {:ok, Nostrum.Struct.Guild.Member.t()}
-  def modify_member(guild_id, user_id, options) do
+  @spec modify_guild_member(Guild.id(), User.id(), options) :: error | {:ok}
+  def modify_guild_member(guild_id, user_id, options \\ %{})
+
+  def modify_guild_member(guild_id, user_id, options) when is_list(options),
+    do: modify_guild_member(guild_id, user_id, Map.new(options))
+
+  def modify_guild_member(guild_id, user_id, %{} = options)
+      when is_snowflake(guild_id) and is_snowflake(user_id) do
     request(:patch, Constants.guild_member(guild_id, user_id), options)
+  end
+
+  @doc """
+  Same as `modify_guild_member/3`, but raises `Nostrum.Error.ApiError` in case of failure.
+  """
+  @spec modify_guild_member!(Guild.id(), User.id(), options) :: error | {:ok}
+  def modify_guild_member!(guild_id, user_id, options \\ %{}) do
+    modify_guild_member(guild_id, user_id, options)
+    |> bangify
   end
 
   @doc """
