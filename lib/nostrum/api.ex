@@ -1229,7 +1229,7 @@ defmodule Nostrum.Api do
   @doc """
   Gets a guild member.
 
-  If successful, returns `{:ok, guild}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
+  If successful, returns `{:ok, member}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
 
   ## Examples
 
@@ -1255,10 +1255,12 @@ defmodule Nostrum.Api do
   @doc """
   Gets a list of a guild's members.
 
+  If successful, returns `{:ok, members}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
+
   ## Options
 
     * `:limit` (integer) - max number of members to return (1-1000) (default: 1)
-    * `:after` (`t:Nostrum.Struct.User.id/0`) - the highest user id in the previous page (default: 0)
+    * `:after` (`t:Nostrum.Struct.Snowflake.t/0`) - the highest user id in the previous page (default: 0)
 
   ## Examples
 
@@ -1290,7 +1292,7 @@ defmodule Nostrum.Api do
   Puts a user in a guild.
 
   This endpoint fires the `t:Nostrum.Consumer.guild_member_add/0` event.
-  It requires the `CREATE_INSTANT_INVITE` permissions. Additionally, it
+  It requires the `CREATE_INSTANT_INVITE` permission. Additionally, it
   situationally requires the `MANAGE_NICKNAMES`, `MANAGE_ROLES`,
   `MUTE_MEMBERS`, and `DEAFEN_MEMBERS` permissions.
 
@@ -1347,7 +1349,7 @@ defmodule Nostrum.Api do
   It situationally requires the `MANAGE_NICKNAMES`, `MANAGE_ROLES`,
   `MUTE_MEMBERS`, `DEAFEN_MEMBERS`, and `MOVE_MEMBERS` permissions.
 
-  If successful, returns `{:ok,}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
+  If successful, returns `{:ok}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
 
   ## Options
 
