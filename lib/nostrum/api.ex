@@ -1229,87 +1229,161 @@ defmodule Nostrum.Api do
   @doc """
   Gets a guild member.
 
-  Member to get is specified by `guild_id` and `user_id`.
-  """
-  @spec get_member(integer, integer) :: error | {:ok, Nostrum.Struct.Guild.Member.t()}
-  def get_member(guild_id, user_id) do
-    case request(:get, Constants.guild_member(guild_id, user_id)) do
-      {:ok, body} ->
-        {:ok, Poison.decode!(body)}
+  If successful, returns `{:ok, member}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
 
-      other ->
-        other
-    end
+  ## Examples
+
+  ```Elixir
+  Nostrum.Api.get_guild_member(4019283754613, 184937267485)
+  ```
+  """
+  @spec get_guild_member(Guild.id(), User.id()) :: error | {:ok, Member.t()}
+  def get_guild_member(guild_id, user_id) when is_snowflake(guild_id) and is_snowflake(user_id) do
+    request(:get, Constants.guild_member(guild_id, user_id))
+    |> handle_request_with_decode({:struct, Member})
   end
 
   @doc """
-  Gets a list of guild members.
-
-  ## Parameters
-  `guild_id` - Guild to get members.
-  `options` - Map with the following *optional* keys:
-    - `limit` - Max number of members to return (1-1000)
-    - `after` - Highest user id of the previous page.
+  Same as `get_guild_member/2`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
-  @spec get_guild_members(Guild.id(), %{
-          limit: 1..1000,
-          after: integer
-        }) :: error | {:ok, [Nostrum.Struct.Guild.Member.t()]}
-  def get_guild_members(guild_id, options) do
+  @spec get_guild_member!(Guild.id(), User.id()) :: no_return | Member.t()
+  def get_guild_member!(guild_id, user_id) do
+    get_guild_member(guild_id, user_id)
+    |> bangify
+  end
+
+  @doc """
+  Gets a list of a guild's members.
+
+  If successful, returns `{:ok, members}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
+
+  ## Options
+
+    * `:limit` (integer) - max number of members to return (1-1000) (default: 1)
+    * `:after` (`t:Nostrum.Struct.User.id/0`) - the highest user id in the previous page (default: 0)
+
+  ## Examples
+
+  ```Elixir
+  Nostrum.Api.list_guild_members(41771983423143937, limit: 1)
+  ```
+  """
+  @spec list_guild_members(Guild.id(), options) :: error | {:ok, [Member.t()]}
+  def list_guild_members(guild_id, options \\ %{})
+
+  def list_guild_members(guild_id, options) when is_list(options),
+    do: list_guild_members(guild_id, Map.new(options))
+
+  def list_guild_members(guild_id, %{} = options) when is_snowflake(guild_id) do
     request(:get, Constants.guild_members(guild_id), "", params: options)
-    |> handle([Member])
+    |> handle_request_with_decode({:list, {:struct, Member}})
   end
 
   @doc """
-  Adds a member to a guild.
-
-  Member to add is specified by `guild_id` and `user_id`
-
-  `options` is a map with the following option keys:
-   * `nick` - Users nickname.
-   * `roles` - Array of roles to give member.
-   * `mute` - If the user should be muted.
-   * `deaf` - If the user should be deafaned.
-   * `channel_id` - Id of the channel to move the user to.
+  Same as `list_guild_members/2`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
-  @spec add_member(integer, integer, %{
-          nick: String.t(),
-          roles: [integer],
-          mute: boolean,
-          deaf: boolean,
-          channel_id: integer
-        }) :: error | {:ok, Nostrum.Struct.Guild.Member.t()}
-  def add_member(guild_id, user_id, options) do
-    case request(:put, Constants.guild_member(guild_id, user_id), options) do
-      {:ok, body} ->
-        {:ok, Poison.decode!(body)}
+  @spec list_guild_members!(Guild.id(), options) :: no_return | [Member.t()]
+  def list_guild_members!(guild_id, options \\ %{}) do
+    list_guild_members(guild_id, options)
+    |> bangify
+  end
 
-      other ->
-        other
-    end
+  @doc ~S"""
+  Puts a user in a guild.
+
+  This endpoint fires the `t:Nostrum.Consumer.guild_member_add/0` event.
+  It requires the `CREATE_INSTANT_INVITE` permission. Additionally, it
+  situationally requires the `MANAGE_NICKNAMES`, `MANAGE_ROLES`,
+  `MUTE_MEMBERS`, and `DEAFEN_MEMBERS` permissions.
+
+  If successful, returns `{:ok, member}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
+
+  ## Options
+
+    * `:access_token` (string) - the user's oauth2 access token
+    * `:nick` (string) - value to set users nickname to
+    * `:roles` (list of `t:Nostrum.Struct.Guild.Role.id/0`) - array of role ids the member is assigned
+    * `:mute` (boolean) - if the user is muted
+    * `:deaf` (boolean) - if the user is deafened
+
+  `:access_token` is always required.
+
+  ## Examples
+
+  ```Elixir
+  Nostrum.Api.add_guild_member(
+    41771983423143937,
+    18374719829378473,
+    access_token: "6qrZcUqja7812RVdnEKjpzOL4CvHBFG",
+    nick: "nostrum",
+    roles: [431849301, 913809431]
+  )
+  ```
+  ```
+  """
+  @spec add_guild_member(Guild.id(), User.id(), options) :: error | {:ok, Member.t()}
+  def add_guild_member(guild_id, user_id, options)
+
+  def add_guild_member(guild_id, user_id, options) when is_list(options),
+    do: add_guild_member(guild_id, user_id, Map.new(options))
+
+  def add_guild_member(guild_id, user_id, %{} = options)
+      when is_snowflake(guild_id) and is_snowflake(user_id) do
+    request(:put, Constants.guild_member(guild_id, user_id), options)
+    |> handle_request_with_decode({:struct, Member})
   end
 
   @doc """
-  Modifies a guild member.
-
-  Member to modify is specified by `guild_id` and `user_id`
-
-  `options` is a map with the following option keys:
-   * `nick` - Users nickname.
-   * `roles` - Array of roles to give member.
-   * `mute` - If the user should be muted.
-   * `deaf` - If the user should be deafaned.
-   * `channel_id` - Id of the channel to move the user to.
+  Same as `add_guild_member/3`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
-  @spec modify_member(integer, integer, %{
-          nick: String.t(),
-          roles: [integer],
-          mute: boolean,
-          deaf: boolean,
-          channel_id: integer
-        }) :: error | {:ok, Nostrum.Struct.Guild.Member.t()}
-  def modify_member(guild_id, user_id, options) do
+  @spec add_guild_member!(Guild.id(), User.id(), options) :: no_return | Member.t()
+  def add_guild_member!(guild_id, user_id, options) do
+    add_guild_member(guild_id, user_id, options)
+    |> bangify
+  end
+
+  @doc ~S"""
+  Modifies a guild member's attributes.
+
+  This endpoint fires the `t:Nostrum.Consumer.guild_member_update/0` event.
+  It situationally requires the `MANAGE_NICKNAMES`, `MANAGE_ROLES`,
+  `MUTE_MEMBERS`, `DEAFEN_MEMBERS`, and `MOVE_MEMBERS` permissions.
+
+  If successful, returns `{:ok}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
+
+  ## Options
+
+    * `:nick` (string) - value to set users nickname to
+    * `:roles` (list of `t:Nostrum.Struct.Snowflake.t/0`) - array of role ids the member is assigned
+    * `:mute` (boolean) - if the user is muted
+    * `:deaf` (boolean) - if the user is deafened
+    * `:channel_id` (`t:Nostrum.Struct.Snowflake.t/0`) - id of channel to move user to (if they are connected to voice)
+
+  ## Examples
+
+  ```Elixir
+  Nostrum.Api.modify_guild_member(41771983423143937, 637162356451, nick: "Nostrum")
+  {:ok}
+  ```
+  """
+  @spec modify_guild_member(Guild.id(), User.id(), options) :: error | {:ok}
+  def modify_guild_member(guild_id, user_id, options \\ %{})
+
+  def modify_guild_member(guild_id, user_id, options) when is_list(options),
+    do: modify_guild_member(guild_id, user_id, Map.new(options))
+
+  def modify_guild_member(guild_id, user_id, %{} = options)
+      when is_snowflake(guild_id) and is_snowflake(user_id) do
     request(:patch, Constants.guild_member(guild_id, user_id), options)
+  end
+
+  @doc """
+  Same as `modify_guild_member/3`, but raises `Nostrum.Error.ApiError` in case of failure.
+  """
+  @spec modify_guild_member!(Guild.id(), User.id(), options) :: error | {:ok}
+  def modify_guild_member!(guild_id, user_id, options \\ %{}) do
+    modify_guild_member(guild_id, user_id, options)
+    |> bangify
   end
 
   @doc """
@@ -1335,13 +1409,33 @@ defmodule Nostrum.Api do
   end
 
   @doc """
-  Removes a memeber from a guild.
+  Removes a member from a guild.
 
-  Member to remove is specified by `guild_id` and `user_id`.
+  This event requires the `KICK_MEMBERS` permission. It fires a
+  `t:Nostrum.Consumer.guild_member_remove/0` event.
+
+  If successful, returns `{:ok}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
+
+  ## Examples
+
+  ```Elixir
+  Nostrum.Api.remove_guild_member(1453827904102291, 18739485766253)
+  {:ok}
+  ```
   """
-  @spec remove_member(integer, integer) :: error | {:ok}
-  def remove_member(guild_id, user_id) do
+  @spec remove_guild_member(Guild.id(), User.id()) :: error | {:ok}
+  def remove_guild_member(guild_id, user_id)
+      when is_snowflake(guild_id) and is_snowflake(user_id) do
     request(:delete, Constants.guild_member(guild_id, user_id))
+  end
+
+  @doc """
+  Same as `remove_guild_member/2`, but raises `Nostrum.Error.ApiError` in case of failure.
+  """
+  @spec remove_guild_member!(Guild.id(), User.id()) :: no_return | {:ok}
+  def remove_guild_member!(guild_id, user_id) do
+    remove_guild_member(guild_id, user_id)
+    |> bangify
   end
 
   @doc """
