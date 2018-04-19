@@ -1260,7 +1260,7 @@ defmodule Nostrum.Api do
   ## Options
 
     * `:limit` (integer) - max number of members to return (1-1000) (default: 1)
-    * `:after` (`t:Nostrum.Struct.Snowflake.t/0`) - the highest user id in the previous page (default: 0)
+    * `:after` (`t:Nostrum.Struct.User.id/0`) - the highest user id in the previous page (default: 0)
 
   ## Examples
 
