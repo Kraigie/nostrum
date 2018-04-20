@@ -1503,31 +1503,43 @@ defmodule Nostrum.Api do
   @doc """
   Creates a guild role.
 
-  Guild to create guild for is specified by `guild_id`.
+  This endpoint requires the `MANAGE_ROLES` permission. It fires a
+  `t:Nostrum.Consumer.guild_role_create/0` event.
 
-  `options` is a map with the following optional keys:
-   * `name` - Name of the role.
-   * `permissions` - Bitwise of the enabled/disabled permissions.
-   * `color` - RGB color value.
-   * `hoist` - Whether the role should be displayed seperately in the sidebar.
-   * `mentionable` - Whether the role should be mentionable.
+  If successful, returns `{:ok, role}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
+
+  ## Options
+
+    * `:name` (string) - name of the role (default: "new role")
+    * `:permissions` (integer) - bitwise of the enabled/disabled permissions (default: @everyone perms)
+    * `:color` (integer) - RGB color value (default: 0)
+    * `:hoist` (boolean) - whether the role should be displayed separately in the sidebar (default: false)
+    * `:mentionable` (boolean) - whether the role should be mentionable (default: false)
+
+  ## Examples
+
+  ```Elixir
+  Nostrum.Api.create_guild_role(41771983423143937, name: "nostrum-club", hoist: true)
+  ```
   """
-  @spec create_guild_role(
-          integer,
-          name: String.t(),
-          permissions: integer,
-          color: integer,
-          hoist: boolean,
-          mentionable: boolean
-        ) :: error | {:ok, Nostrum.Struct.Guild.Role.t()}
-  def create_guild_role(guild_id, options) do
-    case request(:post, Constants.guild_roles(guild_id), options) do
-      {:ok, body} ->
-        {:ok, Poison.decode!(body)}
+  @spec create_guild_role(Guild.id(), options) :: error | {:ok, Role.t()}
+  def create_guild_role(guild_id, options)
 
-      other ->
-        other
-    end
+  def create_guild_role(guild_id, options) when is_list(options),
+    do: create_guild_role(guild_id, Map.new(options))
+
+  def create_guild_role(guild_id, %{} = options) when is_snowflake(guild_id) do
+    request(:post, Constants.guild_roles(guild_id), options)
+    |> handle_request_with_decode({:struct, Role})
+  end
+
+  @doc ~S"""
+  Same as `create_guild_role/2`, but raises `Nostrum.Error.ApiError` in case of failure.
+  """
+  @spec create_guild_role!(Guild.id(), options) :: no_return | Role.t()
+  def create_guild_role!(guild_id, options) do
+    create_guild_role(guild_id, options)
+    |> bangify
   end
 
   @doc """
