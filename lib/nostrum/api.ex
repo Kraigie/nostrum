@@ -1545,26 +1545,35 @@ defmodule Nostrum.Api do
   @doc """
   Reorders a guild's roles.
 
-  Guild to modify roles for is specified by `guild_id`.
+  This endpoint requires the `MANAGE_ROLES` permission. It fires multiple
+  `t:Nostrum.Consumer.guild_role_update/0` events.
 
-  `options` is a list of maps with the following keys:
-   * `id` - Id of the role.
-   * `position` - Sorting position of the role.
+  If successful, returns `{:ok, roles}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
+
+  `positions` is a list of maps that each map a role id with a position.
+
+  ## Examples
+
+  ```Elixir
+  Nostrum.Api.modify_guild_role_positions(41771983423143937, [%{id: 41771983423143936, position: 2}])
+  ```
   """
-  @spec modify_guild_role_positions(integer, [
-          %{
-            id: integer,
-            position: integer
-          }
-        ]) :: error | {:ok, [Nostrum.Struct.Guild.Role.t()]}
-  def modify_guild_role_positions(guild_id, options) do
-    case request(:patch, Constants.guild_roles(guild_id), options) do
-      {:ok, body} ->
-        {:ok, Poison.decode!(body)}
+  @spec modify_guild_role_positions(Guild.id(), [%{id: Role.id(), position: integer}]) ::
+          error | {:ok, [Role.t()]}
+  def modify_guild_role_positions(guild_id, positions)
+      when is_snowflake(guild_id) and is_list(positions) do
+    request(:patch, Constants.guild_roles(guild_id), positions)
+    |> handle_request_with_decode({:list, {:struct, Role}})
+  end
 
-      other ->
-        other
-    end
+  @doc ~S"""
+  Same as `modify_guild_role_positions/2`, but raises `Nostrum.Error.ApiError` in case of failure.
+  """
+  @spec modify_guild_role_positions!(Guild.id(), [%{id: Role.id(), position: integer}]) ::
+          no_return | [Role.t()]
+  def modify_guild_role_positions!(guild_id, positions) do
+    modify_guild_role_positions(guild_id, positions)
+    |> bangify
   end
 
   @doc """
