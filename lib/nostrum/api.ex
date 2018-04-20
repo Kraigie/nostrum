@@ -1579,26 +1579,44 @@ defmodule Nostrum.Api do
   @doc """
   Modifies a guild role.
 
-  ## Parameter
-  `guild_id` - Guild to modify role for.
-  `role_id` - Role to modify.
-  `options` - Map with the following *optional* keys:
-    - `name` - Name of the role.
-    - `permissions` - Bitwise of the enabled/disabled permissions.
-    - `color` - RGB color value.
-    - `hoist` - Whether the role should be displayed seperately in the sidebar.
-    - `mentionable` - Whether the role should be mentionable.
+  This endpoint requires the `MANAGE_ROLES` permission. It fires a
+  `t:Nostrum.Consumer.guild_role_update/0` event.
+
+  If successful, returns `{:ok, role}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
+
+  ## Options
+
+    * `:name` (string) - name of the role
+    * `:permissions` (integer) - bitwise of the enabled/disabled permissions
+    * `:color` (integer) - RGB color value (default: 0)
+    * `:hoist` (boolean) - whether the role should be displayed separately in the sidebar
+    * `:mentionable` (boolean) - whether the role should be mentionable
+
+  ## Examples
+
+  ```Elixir
+  Nostrum.Api.modify_guild_role(41771983423143937, 392817238471936, hoist: false, name: "foo-bar")
+  ```
   """
-  @spec modify_guild_role(Guild.id(), Role.id(), %{
-          name: String.t(),
-          permissions: integer,
-          color: integer,
-          hoist: boolean,
-          mentionable: boolean
-        }) :: error | {:ok, Nostrum.Struct.Guild.Role.t()}
-  def modify_guild_role(guild_id, role_id, options) do
+  @spec modify_guild_role(Guild.id(), Role.id(), options) :: error | {:ok, Role.t()}
+  def modify_guild_role(guild_id, role_id, options)
+
+  def modify_guild_role(guild_id, role_id, options) when is_list(options),
+    do: modify_guild_role(guild_id, role_id, Map.new(options))
+
+  def modify_guild_role(guild_id, role_id, %{} = options)
+      when is_snowflake(guild_id) and is_snowflake(role_id) do
     request(:patch, Constants.guild_role(guild_id, role_id), options)
-    |> handle(Role)
+    |> handle_request_with_decode({:struct, Role})
+  end
+
+  @doc ~S"""
+  Same as `modify_guild_role/3`, but raises `Nostrum.Error.ApiError` in case of failure.
+  """
+  @spec modify_guild_role!(Guild.id(), Role.id(), options) :: no_return | Role.t()
+  def modify_guild_role!(guild_id, role_id, options) do
+    modify_guild_role(guild_id, role_id, options)
+    |> bangify
   end
 
   @doc """
