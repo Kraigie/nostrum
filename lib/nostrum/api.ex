@@ -1474,20 +1474,30 @@ defmodule Nostrum.Api do
     request(:remove, Constants.guild_ban(guild_id, user_id))
   end
 
-  @doc """
+  @doc ~S"""
   Gets a guild's roles.
 
-  Guild to get roles for is specified by `guild_id`.
-  """
-  @spec get_guild_roles(integer) :: error | {:ok, Nostrum.Struct.Guild.Role.t()}
-  def get_guild_roles(guild_id) do
-    case request(:get, Constants.guild_roles(guild_id)) do
-      {:ok, body} ->
-        {:ok, Poison.decode!(body)}
+  If successful, returns `{:ok, roles}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
 
-      other ->
-        other
-    end
+  ## Examples
+
+  ```Elixir
+  Nostrum.Api.get_guild_roles(147362948571673)
+  ```
+  """
+  @spec get_guild_roles(Guild.id()) :: error | {:ok, [Role.t()]}
+  def get_guild_roles(guild_id) when is_snowflake(guild_id) do
+    request(:get, Constants.guild_roles(guild_id))
+    |> handle_request_with_decode({:list, {:struct, Role}})
+  end
+
+  @doc ~S"""
+  Same as `get_guild_roles/1`, but raises `Nostrum.Error.ApiError` in case of failure.
+  """
+  @spec get_guild_roles!(Guild.id()) :: no_return | [Role.t()]
+  def get_guild_roles!(guild_id) do
+    get_guild_roles(guild_id)
+    |> bangify
   end
 
   @doc """
