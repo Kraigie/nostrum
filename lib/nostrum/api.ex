@@ -1619,14 +1619,32 @@ defmodule Nostrum.Api do
     |> bangify
   end
 
-  @doc """
-  Deletes a guild role.
+  @doc ~S"""
+  Deletes a role from a guild.
 
-  Role to delte is specified by `guild_id` and `role_id`
+  This endpoint requires the `MANAGE_ROLES` permission. It fires a
+  `t:Nostrum.Consumer.guild_role_delete/0` event.
+
+  If successful, returns `{:ok}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
+
+  ## Examples
+
+  ```Elixir
+  Nostrum.Api.modify_guild_role(41771983423143937, 392817238471936)
+  ```
   """
-  @spec delete_guild_role(integer, integer) :: error | {:ok}
-  def delete_guild_role(guild_id, role_id) do
+  @spec delete_guild_role(Guild.id(), Role.id()) :: error | {:ok}
+  def delete_guild_role(guild_id, role_id) when is_snowflake(guild_id) and is_snowflake(role_id) do
     request(:delete, Constants.guild_role(guild_id, role_id))
+  end
+
+  @doc ~S"""
+  Same as `delete_guild_role/2`, but raises `Nostrum.Error.ApiError` in case of failure.
+  """
+  @spec delete_guild_role!(Guild.id(), Role.id()) :: no_return | {:ok}
+  def delete_guild_role!(guild_id, role_id) do
+    delete_guild_role(guild_id, role_id)
+    |> bangify
   end
 
   @doc """
