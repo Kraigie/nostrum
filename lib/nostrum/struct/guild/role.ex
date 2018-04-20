@@ -1,10 +1,39 @@
 defmodule Nostrum.Struct.Guild.Role do
-  @moduledoc """
+  @moduledoc ~S"""
   Struct representing a Discord role.
+
+  ## Using Roles in Messages
+
+  A `Nostrum.Struct.Guild.Role` can be used in message content using the `String.Chars`
+  protocol.
+
+  ```Elixir
+  role = %Nostrum.Struct.Role{id: 43819043108}
+
+  Nostrum.Api.create_message!(189098431762321, "#{role}")
+  ```
   """
 
+  alias Nostrum.Struct.Snowflake
+  alias Nostrum.Util
+
+  defstruct [
+    :id,
+    :name,
+    :color,
+    :hoist,
+    :position,
+    :permissions,
+    :managed,
+    :mentionable
+  ]
+
+  defimpl String.Chars do
+    def to_string(role), do: "<@&#{role.id}>"
+  end
+
   @typedoc "The id of the role"
-  @type id :: integer
+  @type id :: Snowflake.t()
 
   @typedoc "The name of the role"
   @type name :: String.t()
@@ -38,18 +67,6 @@ defmodule Nostrum.Struct.Guild.Role do
           mentionable: mentionable
         }
 
-  @derive [Poison.Encoder]
-  defstruct [
-    :id,
-    :name,
-    :color,
-    :hoist,
-    :position,
-    :permissions,
-    :managed,
-    :mentionable
-  ]
-
   @doc false
   def p_encode do
     %__MODULE__{}
@@ -57,6 +74,11 @@ defmodule Nostrum.Struct.Guild.Role do
 
   @doc false
   def to_struct(map) do
-    struct(__MODULE__, map)
+    new =
+      map
+      |> Map.new(fn {k, v} -> {Util.maybe_to_atom(k), v} end)
+      |> Map.update(:id, nil, &Util.cast(&1, Snowflake))
+
+    struct(__MODULE__, new)
   end
 end
