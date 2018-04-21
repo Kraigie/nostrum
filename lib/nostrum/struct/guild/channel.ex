@@ -214,7 +214,7 @@ defmodule Nostrum.Struct.Guild.Channel do
           | channel_category
 
   @doc ~S"""
-  Formats an `Nostrum.Struct.Guild.Channel` into a mention.
+  Formats a `Nostrum.Struct.Guild.Channel` into a mention.
 
   ## Examples
 
