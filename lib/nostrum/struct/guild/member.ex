@@ -1,18 +1,24 @@
 defmodule Nostrum.Struct.Guild.Member do
-  @moduledoc """
+  @moduledoc ~S"""
   Struct representing a Discord guild member.
 
-  A `Nostrum.Struct.Guild.Member` is represented internally by a `%Nostrum.Struct.Guild.Member{}`
-  struct. It stores information regarding a `Nostrum.Struct.User`'s properties pertaining to a
-  specific `Nostrum.Struct.Guild`.
+  A `Nostrum.Struct.Guild.Member` stores a `Nostrum.Struct.User`'s properties
+  pertaining to a specific `Nostrum.Struct.Guild`.
 
-  Keep in mind that a `Nostrum.Struct.Guild.Member` has no knowledge of its respective
-  `Nostrum.Struct.Guild`. Thus, it is the lib user's responsibility to ensure that its
-  relationship is not lost.
+  ## Using Members in Messages
 
-  ## User vs. Member
-  A `user` contains only general information about that user such as a `username` and an `avatar`.
-  A `member` has everything that a `user` has, but also additional information on a per guild basis. This includes things like a `nickname` and a list of `roles`.
+  A `Nostrum.Struct.Guild.Member` can be used in message content using the `String.Chars`
+  protocol or `mention/1`.
+
+  ```Elixir
+  member = %Nostrum.Struct.Guild.Member{user: Nostrum.Struct.User{id: 120571255635181568}}
+  Nostrum.Api.create_message!(184046599834435585, "#{member}")
+  %Nostrum.Struct.Message{}
+
+  member = %Nostrum.Struct.Guild.Member{user: Nostrum.Struct.User{id: 89918932789497856}}
+  Nostrum.Api.create_message!(280085880452939778, "#{Nostrum.Struct.Guild.Member.mention(member)}")
+  %Nostrum.Struct.Message{}
+  ```
   """
 
   alias Nostrum.Struct.Snowflake
@@ -27,6 +33,10 @@ defmodule Nostrum.Struct.Guild.Member do
     :deaf,
     :mute
   ]
+
+  defimpl String.Chars do
+    def to_string(member), do: @for.mention(member)
+  end
 
   @typedoc "The user struct"
   @type user :: User.t()
@@ -54,6 +64,20 @@ defmodule Nostrum.Struct.Guild.Member do
           deaf: deaf,
           mute: mute
         }
+
+  @doc ~S"""
+  Formats an `Nostrum.Struct.Guild.Member` into a mention.
+
+  ## Examples
+
+  ```Elixir
+  iex> member = %Nostrum.Struct.Guild.Member{user: %Nostrum.Struct.User{id: 177888205536886784}}
+  ...> Nostrum.Struct.Guild.Member.mention(member)
+  "<@177888205536886784>"
+  ```
+  """
+  @spec mention(t) :: String.t()
+  def mention(%__MODULE__{user: user}), do: User.mention(user)
 
   @doc false
   def p_encode do
