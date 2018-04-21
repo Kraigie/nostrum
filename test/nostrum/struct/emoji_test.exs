@@ -7,7 +7,7 @@ defmodule Nostrum.Struct.EmojiTest do
 
   describe "String.Chars" do
     test "matches `mention/1`" do
-      emoji = %Emoji{id: 436885297037312001, name: "tealixir"}
+      emoji = %Emoji{id: 436_885_297_037_312_001, name: "tealixir"}
 
       assert(to_string(emoji) === Emoji.mention(emoji))
     end

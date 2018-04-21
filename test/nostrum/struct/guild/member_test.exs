@@ -8,7 +8,7 @@ defmodule Nostrum.Struct.MemberTest do
 
   describe "mention/1" do
     test "matches `Nostrum.Struct.User.mention/1`" do
-      member = %Member{user: %User{id: 150061853001777154}}
+      member = %Member{user: %User{id: 150_061_853_001_777_154}}
 
       assert(Member.mention(member) === User.mention(member.user))
     end
@@ -16,7 +16,7 @@ defmodule Nostrum.Struct.MemberTest do
 
   describe "String.Chars" do
     test "matches `mention/1`" do
-      member = %Member{user: %User{id: 150061853001777154}}
+      member = %Member{user: %User{id: 150_061_853_001_777_154}}
 
       assert(to_string(member) === Member.mention(member))
     end

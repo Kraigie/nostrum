@@ -7,7 +7,7 @@ defmodule Nostrum.Struct.UserTest do
 
   describe "String.Chars" do
     test "matches `mention/1`" do
-      user = %User{id: 150061853001777154}
+      user = %User{id: 150_061_853_001_777_154}
 
       assert(to_string(user) === User.mention(user))
     end
