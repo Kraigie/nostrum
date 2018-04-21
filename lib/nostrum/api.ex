@@ -570,28 +570,33 @@ defmodule Nostrum.Api do
     |> bangify
   end
 
-  @doc """
-  Delete a channel.
+  @doc ~S"""
+  Deletes a channel.
 
-  Channel to delete is specified by `channel_id`.
+  This endpoint requires the `MANAGE_CHANNELS` permission. It fires a
+  `t:Nostrum.Consumer.channel_delete/0`. If a `t:Nostrum.Struct.Guild.Channel.channel_category/0`
+  is deleted, then a `t:Nostrum.Consumer.channel_update/0` event will fire
+  for each channel under the category.
+
+  If successful, returns `{:ok, channel}`. Otherwise, returns `t:Nostrum.Api.error/0`.
+
+  ## Examples
+
+  ```Elixir
+  Nostrum.Api.delete_channel(421533712753360896)
+  {:ok, %Nostrum.Struct.Guild.Channel{id: 421533712753360896}}
+  ```
   """
-  @spec delete_channel(integer) :: error | {:ok, Nostrum.Struct.Channel.t()}
-  def delete_channel(channel_id) do
-    case request(:delete, Constants.channel(channel_id)) do
-      {:ok, body} ->
-        {:ok, Poison.decode!(body)}
-
-      other ->
-        other
-    end
+  @spec delete_channel(Channel.id()) :: error | {:ok, Channel.t()}
+  def delete_channel(channel_id) when is_snowflake(channel_id) do
+    request(:delete, Constants.channel(channel_id))
+    |> handle_request_with_decode({:struct, Channel})
   end
 
-  @doc """
-  Delete a channel.
-
-  Raises `Nostrum.Error.ApiError` if error occurs while making the rest call.
+  @doc ~S"""
+  Same as `delete_channel/1`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
-  @spec delete_channel!(integer) :: no_return | Nostrum.Struct.Channel.t()
+  @spec delete_channel!(Channel.id()) :: no_return | Channel.t()
   def delete_channel!(channel_id) do
     delete_channel(channel_id)
     |> bangify
