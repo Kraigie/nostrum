@@ -2,9 +2,9 @@ defmodule Nostrum.Struct.Guild.Role do
   @moduledoc ~S"""
   Struct representing a Discord role.
 
-  ## Using Roles in Messages
+  ## Mentioning Roles in Messages
 
-  A `Nostrum.Struct.Guild.Role` can be used in message content using the `String.Chars`
+  A `Nostrum.Struct.Guild.Role` can be mentioned in message content using the `String.Chars`
   protocol or `mention/1`.
 
   ```Elixir
