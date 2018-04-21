@@ -66,7 +66,7 @@ defmodule Nostrum.Struct.Guild.Member do
         }
 
   @doc ~S"""
-  Formats an `Nostrum.Struct.Guild.Member` into a mention.
+  Formats a `Nostrum.Struct.Guild.Member` into a mention.
 
   ## Examples
 
