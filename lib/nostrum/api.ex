@@ -1194,32 +1194,51 @@ defmodule Nostrum.Api do
   end
 
   @doc """
-  Creates a channel.
+  Creates a channel for a guild.
 
-  Guild to create channel in is specifed by `guild_id`.
+  This endpoint requires the `MANAGE_CHANNELS` permission. It fires a
+  `t:Nostrum.Consumer.channel_create/0` event.
 
-  `options` is a map with the following optional keys (except for name):
-   * `name` - Channel name.
-   * `type` - Channel type.
-   * `bitrate` - Bitrate if creating voice channel.
-   * `user_limit` - User limit if creating voice channel.
-   * `permission_overwrites` - Array of permission overwrites.
+  If successful, returns `{:ok, channel}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
+
+  ## Options
+
+    * `:name` (string) - channel name (2-100 characters)
+    * `:type` (integer) - the type of channel (See `Nostrum.Struct.Guild.Channel`)
+    * `:topic` (string) - channel topic (0-1024 characters)
+    * `:bitrate` (integer) - the bitrate (in bits) of the voice channel (voice only)
+    * `:user_limit` (integer) - the user limit of the voice channel (voice only)
+    * `:permission_overwrites` (list of `t:Nostrum.Struct.Overwrite.t/0`) - the channel's permission overwrites
+    * `:parent_id` (`t:Nostrum.Struct.Guild.Channel.id/0`) - id of the parent category for a channel
+    * `:nsfw` (boolean) - if the channel is nsfw
+
+  `:name` is always required.
+
+  ## Examples
+
+  ```Elixir
+  Nostrum.Api.create_guild_channel(81384788765712384, name: "elixir-nostrum", topic: "craig's domain")
+  {:ok, %Nostrum.Struct.Guild.Channel{id: 81384788765712384}}
+  ```
   """
-  @spec create_channel(integer, %{
-          name: String.t(),
-          type: String.t(),
-          bitrate: integer,
-          user_limit: integer,
-          permission_overwrites: [Nostrum.Struct.Overwrite.t()]
-        }) :: error | {:ok, Nostrum.Struct.Channel.t()}
-  def create_channel(guild_id, options) do
-    case request(:post, Constants.guild_channels(guild_id), options) do
-      {:ok, body} ->
-        {:ok, Poison.decode!(body)}
+  @spec create_guild_channel(Guild.id(), options) :: error | {:ok, Channel.t()}
+  def create_guild_channel(guild_id, options)
 
-      other ->
-        other
-    end
+  def create_guild_channel(guild_id, options) when is_list(options),
+    do: create_guild_channel(guild_id, Map.new(options))
+
+  def create_guild_channel(guild_id, %{} = options) when is_snowflake(guild_id) do
+    request(:post, Constants.guild_channels(guild_id), options)
+    |> handle_request_with_decode({:struct, Channel})
+  end
+
+  @doc ~S"""
+  Same as `create_guild_channel/2`, but raises `Nostrum.Error.ApiError` in case of failure.
+  """
+  @spec create_guild_channel!(Guild.id(), options) :: no_return | Channel.t()
+  def create_guild_channel!(guild_id, options) do
+    create_guild_channel(guild_id, options)
+    |> bangify
   end
 
   @doc """
