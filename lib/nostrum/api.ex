@@ -1945,17 +1945,30 @@ defmodule Nostrum.Api do
   end
 
   @doc """
-  Gets a list of user DM channels.
-  """
-  @spec get_user_dms() :: error | {:ok, [Nostrum.Struct.DMChannel.t()]}
-  def get_user_dms do
-    case request(:get, Constants.me_channels()) do
-      {:ok, body} ->
-        {:ok, Poison.decode!(body)}
+  Gets a list of our user's DM channels.
 
-      other ->
-        other
-    end
+  If successful, returns `{:ok, dm_channels}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
+
+  ## Examples
+
+  ```Elixir
+  Nostrum.Api.get_user_dms()
+  {:ok, [%Nostrum.Struct.Guild.Channel{} | _]}
+  ```
+  """
+  @spec get_user_dms() :: error | {:ok, [Channel.dm_channel()]}
+  def get_user_dms do
+    request(:get, Constants.me_channels())
+    |> handle_request_with_decode({:list, {:struct, Channel}})
+  end
+
+  @doc ~S"""
+  Same as `get_user_dms/0`, but raises `Nostrum.Error.ApiError` in case of failure.
+  """
+  @spec get_user_dms!() :: no_return | [Channel.dm_channel()]
+  def get_user_dms! do
+    get_user_dms()
+    |> bangify
   end
 
   @doc """
