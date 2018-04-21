@@ -514,52 +514,59 @@ defmodule Nostrum.Api do
   end
 
   @doc """
-  Edit a channel.
+  Modifies a channel's settings.
 
-  Edits a channel with `options`
+  Can modify a `t:Nostrum.Struct.Guild.Channel.guild_text_channel/0`,
+  `t:Nostrum.Struct.Guild.Channel.guild_voice_channel/0`, or
+  `t:Nostrum.Struct.Guild.Channel.channel_category/0`.
 
-  `options` is a kwl with the following optional keys:
-   * `name` - New name of the channel.
-   * `position` - Position of the channel.
-   * `topic` - Topic of the channel. *Text Channels only*
-   * `bitrate` - Bitrate of the voice channel. *Voice Channels only*
-   * `user_limit` - User limit of the channel. 0 for no limit. *Voice Channels only*
+  This endpoint requires the `MANAGE_CHANNEL` permission. It fires a
+  `t:Nostrum.Consumer.channel_update/0` event.
+
+  If successful, returns `{:ok, channel}`. Otherwise, returns `t:Nostrum.Api.error/0`.
+
+  ## Options
+
+    * `:name` (string) - 2-100 character channel name
+    * `:position` (integer) - the position of the channel in the left-hand listing
+    * `:topic` (string) (GUILD_TEXT only) - 0-1024 character channel topic
+    * `:nsfw` (boolean) (GUILD_TEXT only) - if the channel is nsfw
+    * `:bitrate` (integer) (GUILD_VOICE only) - the bitrate (in bits) of the voice
+    channel; 8000 to 96000 (128000 for VIP servers)
+    * `:user_limit` (integer) (GUILD_VOICE only) - the user limit of the voice
+    channel; 0 refers to no limit, 1 to 99 refers to a user limit
+    * `:permission_overwrites` (list of `t:Nostrum.Struct.Overwrite.t/0`) - channel
+    or category-specific permissions
+    * `:parent_id` (`t:Nostrum.Struct.Guild.Channel.id/0`) (GUILD_TEXT, GUILD_VOICE only) -
+    id of the new parent category for a channel
+
+  ## Examples
+
+  ```Elixir
+  Nostrum.Api.modify_channel(41771983423143933, name: "elixir-nostrum", topic: "nostrum discussion")
+  {:ok, %Nostrum.Struct.Guild.Channel{id: 41771983423143933, name: "elixir-nostrum", topic: "nostrum discussion"}}
+
+  Nostrum.Api.modify_channel(41771983423143933)
+  {:ok, %Nostrum.Struct.Guild.Channel{id: 41771983423143933}}
+  ```
   """
-  @spec edit_channel(
-          integer,
-          name: String.t(),
-          position: integer,
-          topic: String.t(),
-          bitrate: String.t(),
-          user_limit: integer
-        ) :: error | {:ok, Nostrum.Struct.Channel.t()}
-  def edit_channel(channel_id, options) do
-    case request(:patch, Constants.channel(channel_id), options) do
-      {:ok, body} ->
-        {:ok, Poison.decode!(body)}
+  @spec modify_channel(Channel.id(), options) :: error | {:ok, Channel.t()}
+  def modify_channel(channel_id, options)
 
-      other ->
-        other
-    end
+  def modify_channel(channel_id, options) when is_list(options),
+    do: modify_channel(channel_id, Map.new(options))
+
+  def modify_channel(channel_id, %{} = options) when is_snowflake(channel_id) do
+    request(:patch, Constants.channel(channel_id), options)
+    |> handle_request_with_decode({:struct, Channel})
   end
 
-  @doc """
-  Edit a channel.
-
-  See `edit_channel/2` for parameters.
-
-  Raises `Nostrum.Error.ApiError` if error occurs while making the rest call.
+  @doc ~S"""
+  Same as `modify_channel/2`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
-  @spec edit_channel!(
-          integer,
-          name: String.t(),
-          position: integer,
-          topic: String.t(),
-          bitrate: String.t(),
-          user_limit: integer
-        ) :: error | {:ok, Nostrum.Struct.Channel.t()}
-  def edit_channel!(channel_id, options) do
-    edit_channel(channel_id, options)
+  @spec modify_channel!(Channel.id(), options) :: no_return | Channel.t()
+  def modify_channel!(channel_id, options) do
+    modify_channel(channel_id, options)
     |> bangify
   end
 
