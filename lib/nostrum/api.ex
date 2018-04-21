@@ -1500,7 +1500,7 @@ defmodule Nostrum.Api do
     |> bangify
   end
 
-  @doc """
+  @doc ~S"""
   Creates a guild role.
 
   This endpoint requires the `MANAGE_ROLES` permission. It fires a
@@ -1542,7 +1542,7 @@ defmodule Nostrum.Api do
     |> bangify
   end
 
-  @doc """
+  @doc ~S"""
   Reorders a guild's roles.
 
   This endpoint requires the `MANAGE_ROLES` permission. It fires multiple
@@ -1576,7 +1576,7 @@ defmodule Nostrum.Api do
     |> bangify
   end
 
-  @doc """
+  @doc ~S"""
   Modifies a guild role.
 
   This endpoint requires the `MANAGE_ROLES` permission. It fires a
@@ -1630,11 +1630,12 @@ defmodule Nostrum.Api do
   ## Examples
 
   ```Elixir
-  Nostrum.Api.modify_guild_role(41771983423143937, 392817238471936)
+  Nostrum.Api.delete_guild_role(41771983423143937, 392817238471936)
   ```
   """
   @spec delete_guild_role(Guild.id(), Role.id()) :: error | {:ok}
-  def delete_guild_role(guild_id, role_id) when is_snowflake(guild_id) and is_snowflake(role_id) do
+  def delete_guild_role(guild_id, role_id)
+      when is_snowflake(guild_id) and is_snowflake(role_id) do
     request(:delete, Constants.guild_role(guild_id, role_id))
   end
 

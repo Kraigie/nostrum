@@ -5,12 +5,16 @@ defmodule Nostrum.Struct.Guild.Role do
   ## Using Roles in Messages
 
   A `Nostrum.Struct.Guild.Role` can be used in message content using the `String.Chars`
-  protocol.
+  protocol or `mention/1`.
 
   ```Elixir
-  role = %Nostrum.Struct.Role{id: 43819043108}
+  role = %Nostrum.Struct.Guild.Role{id: 431886897539973131}
+  Nostrum.Api.create_message!(184046599834435585, "#{role}")
+  %Nostrum.Struct.Message{}
 
-  Nostrum.Api.create_message!(189098431762321, "#{role}")
+  role = %Nostrum.Struct.Guild.Role{id: 431884023535632398}
+  Nostrum.Api.create_message!(280085880452939778, "#{Nostrum.Struct.Guild.Role.mention(role)}")
+  %Nostrum.Struct.Message{}
   ```
   """
 
@@ -29,7 +33,7 @@ defmodule Nostrum.Struct.Guild.Role do
   ]
 
   defimpl String.Chars do
-    def to_string(role), do: "<@&#{role.id}>"
+    def to_string(role), do: @for.mention(role)
   end
 
   @typedoc "The id of the role"
@@ -66,6 +70,20 @@ defmodule Nostrum.Struct.Guild.Role do
           managed: managed,
           mentionable: mentionable
         }
+
+  @doc ~S"""
+  Formats an `Nostrum.Struct.Role` into a mention.
+
+  ## Examples
+
+  ```Elixir
+  iex> role = %Nostrum.Struct.Guild.Role{id: 431886639627763722}
+  ...> Nostrum.Struct.Guild.Role.mention(role)
+  "<@&431886639627763722>"
+  ```
+  """
+  @spec mention(t) :: String.t()
+  def mention(%__MODULE__{id: id}), do: "<@&#{id}>"
 
   @doc false
   def p_encode do
