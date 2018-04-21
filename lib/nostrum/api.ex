@@ -487,29 +487,27 @@ defmodule Nostrum.Api do
   end
 
   @doc """
-  Get a channel.
+  Gets a channel.
 
-  Gets a channel specified by `id`.
+  If successful, returns `{:ok, channel}`. Otherwise, returns `t:Nostrum.Api.error/0`.
+
+  ## Examples
+
+  ```Elixir
+  Nostrum.Api.get_channel(381889573426429952)
+  {:ok, %Nostrum.Struct.Guild.Channel{id: 381889573426429952}}
+  ```
   """
-  @spec get_channel(integer) :: error | {:ok, Nostrum.Struct.Channel.t()}
-  def get_channel(channel_id) do
-    case request(:get, Constants.channel(channel_id)) do
-      {:ok, body} ->
-        {:ok, Poison.decode!(body)}
-
-      other ->
-        other
-    end
+  @spec get_channel(Channel.id()) :: error | {:ok, Channel.t()}
+  def get_channel(channel_id) when is_snowflake(channel_id) do
+    request(:get, Constants.channel(channel_id))
+    |> handle_request_with_decode({:struct, Channel})
   end
 
-  @doc """
-  Get a channel.
-
-  Gets a channel specified by `id`.
-
-  Raises `Nostrum.Error.ApiError` if error occurs while making the rest call.
+  @doc ~S"""
+  Same as `get_channel/1`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
-  @spec get_channel!(integer) :: no_return | Nostrum.Struct.Channel.t()
+  @spec get_channel!(Channel.id()) :: no_return | Channel.t()
   def get_channel!(channel_id) do
     get_channel(channel_id)
     |> bangify
