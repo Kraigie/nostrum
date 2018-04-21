@@ -65,7 +65,7 @@ defmodule Nostrum.Shard.Session do
     zlib_ctx =
       if use_zlib_stream?() do
         zlib_ctx = :zlib.open()
-        :zlib.inflateInit(zlib_ctx, 0)
+        :zlib.inflateInit(zlib_ctx)
         zlib_ctx
       end
 
