@@ -1166,20 +1166,31 @@ defmodule Nostrum.Api do
     request(:delete, Constants.guild(guild_id))
   end
 
-  @doc """
-  Gets a list of channels.
+  @doc ~S"""
+  Gets a list of guild channels.
 
-  Guild to get channels for is specified by `guild_id`.
+  If successful, returns `{:ok, channels}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
+
+  ## Examples
+
+  ```Elixir
+  Nostrum.Api.get_guild_channels(81384788765712384)
+  {:ok, [%Nostrum.Struct.Guild.Channel{}]}
+  ```
   """
-  @spec get_channels(integer) :: error | {:ok, Nostrum.Struct.Channel.t()}
-  def get_channels(guild_id) do
-    case request(:get, Constants.guild_channels(guild_id)) do
-      {:ok, body} ->
-        {:ok, Poison.decode!(body)}
+  @spec get_guild_channels(Guild.id()) :: error | {:ok, [Channel.t()]}
+  def get_guild_channels(guild_id) when is_snowflake(guild_id) do
+    request(:get, Constants.guild_channels(guild_id))
+    |> handle_request_with_decode({:list, {:struct, Channel}})
+  end
 
-      other ->
-        other
-    end
+  @doc ~S"""
+  Same as `get_guild_channels/1`, but raises `Nostrum.Error.ApiError` in case of failure.
+  """
+  @spec get_guild_channels!(Guild.id()) :: no_return | [Channel.t()]
+  def get_guild_channels!(guild_id) do
+    get_guild_channels(guild_id)
+    |> bangify
   end
 
   @doc """
