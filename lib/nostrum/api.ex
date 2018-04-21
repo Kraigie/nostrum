@@ -1244,26 +1244,35 @@ defmodule Nostrum.Api do
   @doc """
   Reorders a guild's channels.
 
-  Guild to modify channels for is specified by `guild_id`.
+  This endpoint requires the `MANAGE_CHANNELS` permission. It fires multiple
+  `t:Nostrum.Consumer.channel_update/0` events.
 
-  `options` is a list of maps with the following keys:
-   * `id` - Id of the channel.
-   * `position` - Sorting position of the channel.
+  If successful, returns `{:ok, roles}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
+
+  `positions` is a list of maps that each map a channel id with a position.
+
+  ## Examples
+
+  ```Elixir
+  Nostrum.Api.modify_guild_channel_positions(279093381723062272, [%{id: 351500354581692420, position: 2}])
+  {:ok}
+  ```
   """
-  @spec modify_channel_position(integer, [
-          %{
-            id: integer,
-            position: integer
-          }
-        ]) :: error | {:ok, [Nostrum.Struct.Guild.Channel.t()]}
-  def modify_channel_position(guild_id, options) do
-    case request(:patch, Constants.guild_channels(guild_id), options) do
-      {:ok, body} ->
-        {:ok, Poison.decode!(body)}
+  @spec modify_guild_channel_positions(Guild.id(), [%{id: integer, position: integer}]) ::
+          error | {:ok}
+  def modify_guild_channel_positions(guild_id, positions)
+      when is_snowflake(guild_id) and is_list(positions) do
+    request(:patch, Constants.guild_channels(guild_id), positions)
+  end
 
-      other ->
-        other
-    end
+  @doc ~S"""
+  Same as `modify_guild_channel_positions/2`, but raises `Nostrum.Error.ApiError` in case of failure.
+  """
+  @spec modify_guild_channel_positions!(Guild.id(), [%{id: integer, position: integer}]) ::
+          no_return | {:ok}
+  def modify_guild_channel_positions!(guild_id, positions) do
+    modify_guild_channel_positions(guild_id, positions)
+    |> bangify
   end
 
   @doc """
