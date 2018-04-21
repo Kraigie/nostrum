@@ -2,19 +2,19 @@ defmodule Nostrum.Struct.Emoji do
   @moduledoc ~S"""
   Struct representing a Discord emoji.
 
-  ## Using Emojis in Messages
+  ## Mentioning Emojis in Messages
 
-  A `Nostrum.Struct.Emoji` can be used in message content using the `String.Chars`
+  A `Nostrum.Struct.Emoji` can be mentioned in message content using the `String.Chars`
   protocol or `mention/1`.
 
   ```Elixir
   emoji = %Nostrum.Struct.Emoji{id: 437093487582642177, name: "foxbot"}
   Nostrum.Api.create_message!(184046599834435585, "#{emoji}")
-  %Nostrum.Struct.Message{}
+  %Nostrum.Struct.Message{content: "<:foxbot:437093487582642177>"}
 
   emoji = %Nostrum.Struct.Emoji{id: 436885297037312001, name: "tealixir"}
   Nostrum.Api.create_message!(280085880452939778, "#{Nostrum.Struct.Emoji.mention(emoji)}")
-  %Nostrum.Struct.Message{}
+  %Nostrum.Struct.Message{content: "<:tealixir:436885297037312001>"}
   ```
 
   ## Using Emojis in the Api
@@ -117,9 +117,17 @@ defmodule Nostrum.Struct.Emoji do
   ## Examples
 
   ```Elixir
+  iex> emoji = %Nostrum.Struct.Emoji{name: "≡ƒæì"}
+  ...> Nostrum.Struct.Emoji.mention(emoji)
+  "≡ƒæì"
+
   iex> emoji = %Nostrum.Struct.Emoji{id: 436885297037312001, name: "tealixir"}
   ...> Nostrum.Struct.Emoji.mention(emoji)
   "<:tealixir:436885297037312001>"
+
+  iex> emoji = %Nostrum.Struct.Emoji{id: 437016804309860372, name: "blobseizure", animated: true}
+  ...> Nostrum.Struct.Emoji.mention(emoji)
+  "<a:blobseizure:437016804309860372>"
   ```
   """
   @spec mention(t) :: String.t()
@@ -134,6 +142,10 @@ defmodule Nostrum.Struct.Emoji do
   ## Examples
 
   ```Elixir
+  iex> emoji = %Nostrum.Struct.Emoji{name: "Γ¡É"}
+  ...> Nostrum.Struct.Emoji.api_name(emoji)
+  "Γ¡É"
+
   iex> emoji = %Nostrum.Struct.Emoji{id: 437093487582642177, name: "foxbot"}
   ...> Nostrum.Struct.Emoji.api_name(emoji)
   "foxbot:437093487582642177"

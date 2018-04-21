@@ -5,19 +5,19 @@ defmodule Nostrum.Struct.Guild.Member do
   A `Nostrum.Struct.Guild.Member` stores a `Nostrum.Struct.User`'s properties
   pertaining to a specific `Nostrum.Struct.Guild`.
 
-  ## Using Members in Messages
+  ## Mentioning Members in Messages
 
-  A `Nostrum.Struct.Guild.Member` can be used in message content using the `String.Chars`
+  A `Nostrum.Struct.Guild.Member` can be mentioned in message content using the `String.Chars`
   protocol or `mention/1`.
 
   ```Elixir
   member = %Nostrum.Struct.Guild.Member{user: Nostrum.Struct.User{id: 120571255635181568}}
   Nostrum.Api.create_message!(184046599834435585, "#{member}")
-  %Nostrum.Struct.Message{}
+  %Nostrum.Struct.Message{content: "<@120571255635181568>"}
 
   member = %Nostrum.Struct.Guild.Member{user: Nostrum.Struct.User{id: 89918932789497856}}
   Nostrum.Api.create_message!(280085880452939778, "#{Nostrum.Struct.Guild.Member.mention(member)}")
-  %Nostrum.Struct.Message{}
+  %Nostrum.Struct.Message{content: "<@89918932789497856>"}
   ```
   """
 
