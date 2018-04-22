@@ -74,6 +74,9 @@ defmodule Nostrum.Cache.ChannelCache do
   # When fetching from a guild, the channel will already be a struct
   # TODO: Put into structs before storing
   def ret_to_struct(%{__struct__: _} = channel), do: {:ok, channel}
-  def ret_to_struct({old, new}), do: {Util.cast(old, {:struct, Channel}), Util.cast(new, {:struct, Channel})}
+
+  def ret_to_struct({old, new}),
+    do: {Util.cast(old, {:struct, Channel}), Util.cast(new, {:struct, Channel})}
+
   def ret_to_struct(channel), do: {:ok, Util.cast(channel, {:struct, Channel})}
 end
