@@ -487,10 +487,10 @@ defmodule Nostrum.Api do
     |> bangify
   end
 
-  @doc """
+  @doc ~S"""
   Gets a channel.
 
-  If successful, returns `{:ok, channel}`. Otherwise, returns `t:Nostrum.Api.error/0`.
+  If successful, returns `{:ok, channel}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
 
   ## Examples
 
@@ -514,31 +514,32 @@ defmodule Nostrum.Api do
     |> bangify
   end
 
-  @doc """
+  @doc ~S"""
   Modifies a channel's settings.
 
-  Can modify a `t:Nostrum.Struct.Channel.guild_text_channel/0`,
-  `t:Nostrum.Struct.Channel.guild_voice_channel/0`, or
-  `t:Nostrum.Struct.Channel.channel_category/0`.
+  If a `t:Nostrum.Struct.Channel.guild_channel/0` is being modified, this
+  endpoint requires the `MANAGE_CHANNEL` permission. It fires a
+  `t:Nostrum.Consumer.channel_update/0` event. If a
+  `t:Nostrum.Struct.Channel.channel_category/0` is being modified, then this
+  endpoint fires multiple `t:Nostrum.Consumer.channel_update/0` events.
 
-  This endpoint requires the `MANAGE_CHANNEL` permission. It fires a
-  `t:Nostrum.Consumer.channel_update/0` event.
-
-  If successful, returns `{:ok, channel}`. Otherwise, returns `t:Nostrum.Api.error/0`.
+  If successful, returns `{:ok, channel}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
 
   ## Options
 
     * `:name` (string) - 2-100 character channel name
     * `:position` (integer) - the position of the channel in the left-hand listing
-    * `:topic` (string) (GUILD_TEXT only) - 0-1024 character channel topic
-    * `:nsfw` (boolean) (GUILD_TEXT only) - if the channel is nsfw
-    * `:bitrate` (integer) (GUILD_VOICE only) - the bitrate (in bits) of the voice
-    channel; 8000 to 96000 (128000 for VIP servers)
-    * `:user_limit` (integer) (GUILD_VOICE only) - the user limit of the voice
-    channel; 0 refers to no limit, 1 to 99 refers to a user limit
+    * `:topic` (string) (`t:Nostrum.Struct.Channel.text_channel/0` only) -
+    0-1024 character channel topic
+    * `:nsfw` (boolean) (`t:Nostrum.Struct.Channel.text_channel/0` only) -
+    if the channel is nsfw
+    * `:bitrate` (integer) (`t:Nostrum.Struct.Channel.voice_channel/0` only) -
+    the bitrate (in bits) of the voice channel; 8000 to 96000 (128000 for VIP servers)
+    * `:user_limit` (integer) (`t:Nostrum.Struct.Channel.voice_channel/0` only) -
+    the user limit of the voice channel; 0 refers to no limit, 1 to 99 refers to a user limit
     * `:permission_overwrites` (list of `t:Nostrum.Struct.Overwrite.t/0`) - channel
     or category-specific permissions
-    * `:parent_id` (`t:Nostrum.Struct.Channel.id/0`) (GUILD_TEXT, GUILD_VOICE only) -
+    * `:parent_id` (`t:Nostrum.Struct.Channel.id/0`) (`t:Nostrum.Struct.Channel.guild_channel/0` only) -
     id of the new parent category for a channel
 
   ## Examples
@@ -574,12 +575,13 @@ defmodule Nostrum.Api do
   @doc ~S"""
   Deletes a channel.
 
-  This endpoint requires the `MANAGE_CHANNELS` permission. It fires a
+  If deleting a `t:Nostrum.Struct.Channel.guild_channel/0`, this endpoint requires
+  the `MANAGE_CHANNELS` permission. It fires a
   `t:Nostrum.Consumer.channel_delete/0`. If a `t:Nostrum.Struct.Channel.channel_category/0`
   is deleted, then a `t:Nostrum.Consumer.channel_update/0` event will fire
   for each channel under the category.
 
-  If successful, returns `{:ok, channel}`. Otherwise, returns `t:Nostrum.Api.error/0`.
+  If successful, returns `{:ok, channel}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
 
   ## Examples
 
@@ -1176,10 +1178,10 @@ defmodule Nostrum.Api do
 
   ```Elixir
   Nostrum.Api.get_guild_channels(81384788765712384)
-  {:ok, [%Nostrum.Struct.Channel{}]}
+  {:ok, [%Nostrum.Struct.Channel{} | _]}
   ```
   """
-  @spec get_guild_channels(Guild.id()) :: error | {:ok, [Channel.t()]}
+  @spec get_guild_channels(Guild.id()) :: error | {:ok, [Channel.guild_channel()]}
   def get_guild_channels(guild_id) when is_snowflake(guild_id) do
     request(:get, Constants.guild_channels(guild_id))
     |> handle_request_with_decode({:list, {:struct, Channel}})
@@ -1188,7 +1190,7 @@ defmodule Nostrum.Api do
   @doc ~S"""
   Same as `get_guild_channels/1`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
-  @spec get_guild_channels!(Guild.id()) :: no_return | [Channel.t()]
+  @spec get_guild_channels!(Guild.id()) :: no_return | [Channel.guild_channel()]
   def get_guild_channels!(guild_id) do
     get_guild_channels(guild_id)
     |> bangify
@@ -1222,7 +1224,7 @@ defmodule Nostrum.Api do
   {:ok, %Nostrum.Struct.Channel{id: 81384788765712384}}
   ```
   """
-  @spec create_guild_channel(Guild.id(), options) :: error | {:ok, Channel.t()}
+  @spec create_guild_channel(Guild.id(), options) :: error | {:ok, Channel.guild_channel()}
   def create_guild_channel(guild_id, options)
 
   def create_guild_channel(guild_id, options) when is_list(options),
@@ -1236,7 +1238,7 @@ defmodule Nostrum.Api do
   @doc ~S"""
   Same as `create_guild_channel/2`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
-  @spec create_guild_channel!(Guild.id(), options) :: no_return | Channel.t()
+  @spec create_guild_channel!(Guild.id(), options) :: no_return | Channel.guild_channel()
   def create_guild_channel!(guild_id, options) do
     create_guild_channel(guild_id, options)
     |> bangify
@@ -1248,7 +1250,7 @@ defmodule Nostrum.Api do
   This endpoint requires the `MANAGE_CHANNELS` permission. It fires multiple
   `t:Nostrum.Consumer.channel_update/0` events.
 
-  If successful, returns `{:ok, roles}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
+  If successful, returns `{:ok, channels}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
 
   `positions` is a list of maps that each map a channel id with a position.
 
@@ -2002,7 +2004,7 @@ defmodule Nostrum.Api do
   @doc """
   Creates a new group DM channel.
 
-  If successful, returns `{:ok, dm_channel}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
+  If successful, returns `{:ok, group_dm_channel}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
 
   `access_tokens` are user oauth2 tokens. `nicks` is a map that maps a user id
   to a nickname.
@@ -2021,6 +2023,9 @@ defmodule Nostrum.Api do
     |> handle_request_with_decode({:struct, Channel})
   end
 
+  @doc ~S"""
+  Same as `create_group_dm/2`, but raises `Nostrum.Error.ApiError` in case of failure.
+  """
   @spec create_group_dm!([String.t()], %{optional(User.id()) => String.t()}) ::
           no_return | Channel.group_dm_channel()
   def create_group_dm!(access_tokens, nicks) do

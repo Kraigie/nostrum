@@ -207,6 +207,18 @@ defmodule Nostrum.Struct.Channel do
           last_pin_timestamp: nil
         }
 
+  @type guild_channel ::
+          guild_text_channel
+          | guild_voice_channel
+          | channel_category
+
+  @type text_channel ::
+          guild_text_channel
+          | dm_channel
+          | group_dm_channel
+
+  @type voice_channel :: guild_voice_channel
+
   @type t ::
           guild_text_channel
           | dm_channel
