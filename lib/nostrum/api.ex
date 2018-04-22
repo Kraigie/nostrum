@@ -1971,20 +1971,31 @@ defmodule Nostrum.Api do
     |> bangify
   end
 
-  @doc """
-  Creates a new DM channel.
+  @doc ~S"""
+  Create a new DM channel with a user.
 
-  Opens a DM channel with the user specified by `user_id`.
+  If successful, returns `{:ok, dm_channel}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
+
+  ## Examples
+
+  ```Elixir
+  Nostrum.Api.create_dm(150061853001777154)
+  {:ok, %Nostrum.Struct.Guild.Channel{type: 1}}
+  ```
   """
-  @spec create_dm(integer) :: error | {:ok, Nostrum.Struct.DMChannel.t()}
-  def create_dm(user_id) do
-    case request(:post, Constants.me_channels(), %{recipient_id: user_id}) do
-      {:ok, body} ->
-        {:ok, Poison.decode!(body)}
+  @spec create_dm(User.id()) :: error | {:ok, Channel.dm_channel()}
+  def create_dm(user_id) when is_snowflake(user_id) do
+    request(:post, Constants.me_channels(), %{recipient_id: user_id})
+    |> handle_request_with_decode({:struct, Channel})
+  end
 
-      other ->
-        other
-    end
+  @doc ~S"""
+  Same as `create_dm/1`, but raises `Nostrum.Error.ApiError` in case of failure.
+  """
+  @spec create_dm!(User.id()) :: no_return | Channel.dm_channel()
+  def create_dm!(user_id) do
+    create_dm(user_id)
+    |> bangify
   end
 
   @doc """
