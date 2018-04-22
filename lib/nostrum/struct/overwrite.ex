@@ -3,7 +3,9 @@ defmodule Nostrum.Struct.Overwrite do
   Struct representing a Discord overwrite.
   """
 
+  alias Nostrum.Struct.Guild.Role
   alias Nostrum.Struct.Snowflake
+  alias Nostrum.Struct.User
   alias Nostrum.Util
 
   defstruct [
@@ -14,7 +16,7 @@ defmodule Nostrum.Struct.Overwrite do
   ]
 
   @typedoc "Role or User id"
-  @type id :: Snowflake.t()
+  @type id :: Role.id() | User.id()
 
   @typedoc "Either 'role' or 'member'"
   @type name :: String.t()

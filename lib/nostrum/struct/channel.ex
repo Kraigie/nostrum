@@ -107,6 +107,9 @@ defmodule Nostrum.Struct.Channel do
   @typedoc "When the last pinned message was pinned"
   @type last_pin_timestamp :: String.t() | nil
 
+  @typedoc """
+  A `Nostrum.Struct.Channel` that represents a text channel in a guild.
+  """
   @type guild_text_channel :: %__MODULE__{
           id: id,
           type: 0,
@@ -127,6 +130,9 @@ defmodule Nostrum.Struct.Channel do
           last_pin_timestamp: last_pin_timestamp
         }
 
+  @typedoc """
+  A `Nostrum.Struct.Channel` that represents a DM channel.
+  """
   @type dm_channel :: %__MODULE__{
           id: id,
           type: 1,
@@ -147,6 +153,9 @@ defmodule Nostrum.Struct.Channel do
           last_pin_timestamp: nil
         }
 
+  @typedoc """
+  A `Nostrum.Struct.Channel` that represents a voice channel in a guild.
+  """
   @type guild_voice_channel :: %__MODULE__{
           id: id,
           type: 2,
@@ -167,6 +176,9 @@ defmodule Nostrum.Struct.Channel do
           last_pin_timestamp: nil
         }
 
+  @typedoc """
+  A `Nostrum.Struct.Channel` that represents a group DM channel.
+  """
   @type group_dm_channel :: %__MODULE__{
           id: id,
           type: 3,
@@ -187,6 +199,9 @@ defmodule Nostrum.Struct.Channel do
           last_pin_timestamp: nil
         }
 
+  @typedoc """
+  A `Nostrum.Struct.Channel` that represents a channel category in a guild.
+  """
   @type channel_category :: %__MODULE__{
           id: id,
           type: 4,
@@ -207,16 +222,25 @@ defmodule Nostrum.Struct.Channel do
           last_pin_timestamp: nil
         }
 
+  @typedoc """
+  A `Nostrum.Struct.Channel` that represents a channel in a guild.
+  """
   @type guild_channel ::
           guild_text_channel
           | guild_voice_channel
           | channel_category
 
+  @typedoc """
+  A `Nostrum.Struct.Channel` that represents a text channel.
+  """
   @type text_channel ::
           guild_text_channel
           | dm_channel
           | group_dm_channel
 
+  @typedoc """
+  A `Nostrum.Struct.Channel` that represents a voice channel.
+  """
   @type voice_channel :: guild_voice_channel
 
   @type t ::

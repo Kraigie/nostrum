@@ -1178,7 +1178,7 @@ defmodule Nostrum.Api do
 
   ```Elixir
   Nostrum.Api.get_guild_channels(81384788765712384)
-  {:ok, [%Nostrum.Struct.Channel{} | _]}
+  {:ok, [%Nostrum.Struct.Channel{guild_id: 81384788765712384} | _]}
   ```
   """
   @spec get_guild_channels(Guild.id()) :: error | {:ok, [Channel.guild_channel()]}
