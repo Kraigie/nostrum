@@ -1,5 +1,7 @@
 # Nostrum
 
+[![Build Status](https://travis-ci.org/Kraigie/nostrum.svg?branch=master)](https://travis-ci.org/Kraigie/nostrum)
+
 An [Elixir](http://elixir-lang.org/) library for the Discord API.
 
 It is highly recommended to check out the

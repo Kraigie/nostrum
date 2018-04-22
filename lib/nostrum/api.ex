@@ -1526,110 +1526,178 @@ defmodule Nostrum.Api do
     request(:remove, Constants.guild_ban(guild_id, user_id))
   end
 
-  @doc """
+  @doc ~S"""
   Gets a guild's roles.
 
-  Guild to get roles for is specified by `guild_id`.
-  """
-  @spec get_guild_roles(integer) :: error | {:ok, Nostrum.Struct.Guild.Role.t()}
-  def get_guild_roles(guild_id) do
-    case request(:get, Constants.guild_roles(guild_id)) do
-      {:ok, body} ->
-        {:ok, Poison.decode!(body)}
+  If successful, returns `{:ok, roles}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
 
-      other ->
-        other
-    end
+  ## Examples
+
+  ```Elixir
+  Nostrum.Api.get_guild_roles(147362948571673)
+  ```
+  """
+  @spec get_guild_roles(Guild.id()) :: error | {:ok, [Role.t()]}
+  def get_guild_roles(guild_id) when is_snowflake(guild_id) do
+    request(:get, Constants.guild_roles(guild_id))
+    |> handle_request_with_decode({:list, {:struct, Role}})
   end
 
-  @doc """
+  @doc ~S"""
+  Same as `get_guild_roles/1`, but raises `Nostrum.Error.ApiError` in case of failure.
+  """
+  @spec get_guild_roles!(Guild.id()) :: no_return | [Role.t()]
+  def get_guild_roles!(guild_id) do
+    get_guild_roles(guild_id)
+    |> bangify
+  end
+
+  @doc ~S"""
   Creates a guild role.
 
-  Guild to create guild for is specified by `guild_id`.
+  This endpoint requires the `MANAGE_ROLES` permission. It fires a
+  `t:Nostrum.Consumer.guild_role_create/0` event.
 
-  `options` is a map with the following optional keys:
-   * `name` - Name of the role.
-   * `permissions` - Bitwise of the enabled/disabled permissions.
-   * `color` - RGB color value.
-   * `hoist` - Whether the role should be displayed seperately in the sidebar.
-   * `mentionable` - Whether the role should be mentionable.
+  If successful, returns `{:ok, role}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
+
+  ## Options
+
+    * `:name` (string) - name of the role (default: "new role")
+    * `:permissions` (integer) - bitwise of the enabled/disabled permissions (default: @everyone perms)
+    * `:color` (integer) - RGB color value (default: 0)
+    * `:hoist` (boolean) - whether the role should be displayed separately in the sidebar (default: false)
+    * `:mentionable` (boolean) - whether the role should be mentionable (default: false)
+
+  ## Examples
+
+  ```Elixir
+  Nostrum.Api.create_guild_role(41771983423143937, name: "nostrum-club", hoist: true)
+  ```
   """
-  @spec create_guild_role(
-          integer,
-          name: String.t(),
-          permissions: integer,
-          color: integer,
-          hoist: boolean,
-          mentionable: boolean
-        ) :: error | {:ok, Nostrum.Struct.Guild.Role.t()}
-  def create_guild_role(guild_id, options) do
-    case request(:post, Constants.guild_roles(guild_id), options) do
-      {:ok, body} ->
-        {:ok, Poison.decode!(body)}
+  @spec create_guild_role(Guild.id(), options) :: error | {:ok, Role.t()}
+  def create_guild_role(guild_id, options)
 
-      other ->
-        other
-    end
+  def create_guild_role(guild_id, options) when is_list(options),
+    do: create_guild_role(guild_id, Map.new(options))
+
+  def create_guild_role(guild_id, %{} = options) when is_snowflake(guild_id) do
+    request(:post, Constants.guild_roles(guild_id), options)
+    |> handle_request_with_decode({:struct, Role})
   end
 
-  @doc """
+  @doc ~S"""
+  Same as `create_guild_role/2`, but raises `Nostrum.Error.ApiError` in case of failure.
+  """
+  @spec create_guild_role!(Guild.id(), options) :: no_return | Role.t()
+  def create_guild_role!(guild_id, options) do
+    create_guild_role(guild_id, options)
+    |> bangify
+  end
+
+  @doc ~S"""
   Reorders a guild's roles.
 
-  Guild to modify roles for is specified by `guild_id`.
+  This endpoint requires the `MANAGE_ROLES` permission. It fires multiple
+  `t:Nostrum.Consumer.guild_role_update/0` events.
 
-  `options` is a list of maps with the following keys:
-   * `id` - Id of the role.
-   * `position` - Sorting position of the role.
+  If successful, returns `{:ok, roles}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
+
+  `positions` is a list of maps that each map a role id with a position.
+
+  ## Examples
+
+  ```Elixir
+  Nostrum.Api.modify_guild_role_positions(41771983423143937, [%{id: 41771983423143936, position: 2}])
+  ```
   """
-  @spec modify_guild_role_positions(integer, [
-          %{
-            id: integer,
-            position: integer
-          }
-        ]) :: error | {:ok, [Nostrum.Struct.Guild.Role.t()]}
-  def modify_guild_role_positions(guild_id, options) do
-    case request(:patch, Constants.guild_roles(guild_id), options) do
-      {:ok, body} ->
-        {:ok, Poison.decode!(body)}
-
-      other ->
-        other
-    end
+  @spec modify_guild_role_positions(Guild.id(), [%{id: Role.id(), position: integer}]) ::
+          error | {:ok, [Role.t()]}
+  def modify_guild_role_positions(guild_id, positions)
+      when is_snowflake(guild_id) and is_list(positions) do
+    request(:patch, Constants.guild_roles(guild_id), positions)
+    |> handle_request_with_decode({:list, {:struct, Role}})
   end
 
-  @doc """
+  @doc ~S"""
+  Same as `modify_guild_role_positions/2`, but raises `Nostrum.Error.ApiError` in case of failure.
+  """
+  @spec modify_guild_role_positions!(Guild.id(), [%{id: Role.id(), position: integer}]) ::
+          no_return | [Role.t()]
+  def modify_guild_role_positions!(guild_id, positions) do
+    modify_guild_role_positions(guild_id, positions)
+    |> bangify
+  end
+
+  @doc ~S"""
   Modifies a guild role.
 
-  ## Parameter
-  `guild_id` - Guild to modify role for.
-  `role_id` - Role to modify.
-  `options` - Map with the following *optional* keys:
-    - `name` - Name of the role.
-    - `permissions` - Bitwise of the enabled/disabled permissions.
-    - `color` - RGB color value.
-    - `hoist` - Whether the role should be displayed seperately in the sidebar.
-    - `mentionable` - Whether the role should be mentionable.
+  This endpoint requires the `MANAGE_ROLES` permission. It fires a
+  `t:Nostrum.Consumer.guild_role_update/0` event.
+
+  If successful, returns `{:ok, role}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
+
+  ## Options
+
+    * `:name` (string) - name of the role
+    * `:permissions` (integer) - bitwise of the enabled/disabled permissions
+    * `:color` (integer) - RGB color value (default: 0)
+    * `:hoist` (boolean) - whether the role should be displayed separately in the sidebar
+    * `:mentionable` (boolean) - whether the role should be mentionable
+
+  ## Examples
+
+  ```Elixir
+  Nostrum.Api.modify_guild_role(41771983423143937, 392817238471936, hoist: false, name: "foo-bar")
+  ```
   """
-  @spec modify_guild_role(Guild.id(), Role.id(), %{
-          name: String.t(),
-          permissions: integer,
-          color: integer,
-          hoist: boolean,
-          mentionable: boolean
-        }) :: error | {:ok, Nostrum.Struct.Guild.Role.t()}
-  def modify_guild_role(guild_id, role_id, options) do
+  @spec modify_guild_role(Guild.id(), Role.id(), options) :: error | {:ok, Role.t()}
+  def modify_guild_role(guild_id, role_id, options)
+
+  def modify_guild_role(guild_id, role_id, options) when is_list(options),
+    do: modify_guild_role(guild_id, role_id, Map.new(options))
+
+  def modify_guild_role(guild_id, role_id, %{} = options)
+      when is_snowflake(guild_id) and is_snowflake(role_id) do
     request(:patch, Constants.guild_role(guild_id, role_id), options)
-    |> handle(Role)
+    |> handle_request_with_decode({:struct, Role})
   end
 
-  @doc """
-  Deletes a guild role.
-
-  Role to delte is specified by `guild_id` and `role_id`
+  @doc ~S"""
+  Same as `modify_guild_role/3`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
-  @spec delete_guild_role(integer, integer) :: error | {:ok}
-  def delete_guild_role(guild_id, role_id) do
+  @spec modify_guild_role!(Guild.id(), Role.id(), options) :: no_return | Role.t()
+  def modify_guild_role!(guild_id, role_id, options) do
+    modify_guild_role(guild_id, role_id, options)
+    |> bangify
+  end
+
+  @doc ~S"""
+  Deletes a role from a guild.
+
+  This endpoint requires the `MANAGE_ROLES` permission. It fires a
+  `t:Nostrum.Consumer.guild_role_delete/0` event.
+
+  If successful, returns `{:ok}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
+
+  ## Examples
+
+  ```Elixir
+  Nostrum.Api.delete_guild_role(41771983423143937, 392817238471936)
+  ```
+  """
+  @spec delete_guild_role(Guild.id(), Role.id()) :: error | {:ok}
+  def delete_guild_role(guild_id, role_id)
+      when is_snowflake(guild_id) and is_snowflake(role_id) do
     request(:delete, Constants.guild_role(guild_id, role_id))
+  end
+
+  @doc ~S"""
+  Same as `delete_guild_role/2`, but raises `Nostrum.Error.ApiError` in case of failure.
+  """
+  @spec delete_guild_role!(Guild.id(), Role.id()) :: no_return | {:ok}
+  def delete_guild_role!(guild_id, role_id) do
+    delete_guild_role(guild_id, role_id)
+    |> bangify
   end
 
   @doc """

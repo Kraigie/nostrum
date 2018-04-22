@@ -1,10 +1,43 @@
 defmodule Nostrum.Struct.Guild.Role do
-  @moduledoc """
+  @moduledoc ~S"""
   Struct representing a Discord role.
+
+  ## Mentioning Roles in Messages
+
+  A `Nostrum.Struct.Guild.Role` can be mentioned in message content using the `String.Chars`
+  protocol or `mention/1`.
+
+  ```Elixir
+  role = %Nostrum.Struct.Guild.Role{id: 431886897539973131}
+  Nostrum.Api.create_message!(184046599834435585, "#{role}")
+  %Nostrum.Struct.Message{}
+
+  role = %Nostrum.Struct.Guild.Role{id: 431884023535632398}
+  Nostrum.Api.create_message!(280085880452939778, "#{Nostrum.Struct.Guild.Role.mention(role)}")
+  %Nostrum.Struct.Message{}
+  ```
   """
 
+  alias Nostrum.Struct.Snowflake
+  alias Nostrum.Util
+
+  defstruct [
+    :id,
+    :name,
+    :color,
+    :hoist,
+    :position,
+    :permissions,
+    :managed,
+    :mentionable
+  ]
+
+  defimpl String.Chars do
+    def to_string(role), do: @for.mention(role)
+  end
+
   @typedoc "The id of the role"
-  @type id :: integer
+  @type id :: Snowflake.t()
 
   @typedoc "The name of the role"
   @type name :: String.t()
@@ -38,17 +71,19 @@ defmodule Nostrum.Struct.Guild.Role do
           mentionable: mentionable
         }
 
-  @derive [Poison.Encoder]
-  defstruct [
-    :id,
-    :name,
-    :color,
-    :hoist,
-    :position,
-    :permissions,
-    :managed,
-    :mentionable
-  ]
+  @doc ~S"""
+  Formats an `Nostrum.Struct.Role` into a mention.
+
+  ## Examples
+
+  ```Elixir
+  iex> role = %Nostrum.Struct.Guild.Role{id: 431886639627763722}
+  ...> Nostrum.Struct.Guild.Role.mention(role)
+  "<@&431886639627763722>"
+  ```
+  """
+  @spec mention(t) :: String.t()
+  def mention(%__MODULE__{id: id}), do: "<@&#{id}>"
 
   @doc false
   def p_encode do
@@ -57,6 +92,11 @@ defmodule Nostrum.Struct.Guild.Role do
 
   @doc false
   def to_struct(map) do
-    struct(__MODULE__, map)
+    new =
+      map
+      |> Map.new(fn {k, v} -> {Util.maybe_to_atom(k), v} end)
+      |> Map.update(:id, nil, &Util.cast(&1, Snowflake))
+
+    struct(__MODULE__, new)
   end
 end
