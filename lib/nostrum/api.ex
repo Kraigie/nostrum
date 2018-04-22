@@ -48,8 +48,9 @@ defmodule Nostrum.Api do
   alias Nostrum.{Constants, Util}
   alias Nostrum.Cache.Guild.GuildServer
   alias Nostrum.Struct.{Embed, Guild, Message, User, Webhook}
+  alias Nostrum.Struct.Channel
   alias Nostrum.Struct.Emoji
-  alias Nostrum.Struct.Guild.{Member, Channel, Role}
+  alias Nostrum.Struct.Guild.{Member, Role}
   alias Nostrum.Shard.{Supervisor, Session}
 
   @typedoc """
@@ -495,7 +496,7 @@ defmodule Nostrum.Api do
 
   ```Elixir
   Nostrum.Api.get_channel(381889573426429952)
-  {:ok, %Nostrum.Struct.Guild.Channel{id: 381889573426429952}}
+  {:ok, %Nostrum.Struct.Channel{id: 381889573426429952}}
   ```
   """
   @spec get_channel(Channel.id()) :: error | {:ok, Channel.t()}
@@ -516,9 +517,9 @@ defmodule Nostrum.Api do
   @doc """
   Modifies a channel's settings.
 
-  Can modify a `t:Nostrum.Struct.Guild.Channel.guild_text_channel/0`,
-  `t:Nostrum.Struct.Guild.Channel.guild_voice_channel/0`, or
-  `t:Nostrum.Struct.Guild.Channel.channel_category/0`.
+  Can modify a `t:Nostrum.Struct.Channel.guild_text_channel/0`,
+  `t:Nostrum.Struct.Channel.guild_voice_channel/0`, or
+  `t:Nostrum.Struct.Channel.channel_category/0`.
 
   This endpoint requires the `MANAGE_CHANNEL` permission. It fires a
   `t:Nostrum.Consumer.channel_update/0` event.
@@ -537,17 +538,17 @@ defmodule Nostrum.Api do
     channel; 0 refers to no limit, 1 to 99 refers to a user limit
     * `:permission_overwrites` (list of `t:Nostrum.Struct.Overwrite.t/0`) - channel
     or category-specific permissions
-    * `:parent_id` (`t:Nostrum.Struct.Guild.Channel.id/0`) (GUILD_TEXT, GUILD_VOICE only) -
+    * `:parent_id` (`t:Nostrum.Struct.Channel.id/0`) (GUILD_TEXT, GUILD_VOICE only) -
     id of the new parent category for a channel
 
   ## Examples
 
   ```Elixir
   Nostrum.Api.modify_channel(41771983423143933, name: "elixir-nostrum", topic: "nostrum discussion")
-  {:ok, %Nostrum.Struct.Guild.Channel{id: 41771983423143933, name: "elixir-nostrum", topic: "nostrum discussion"}}
+  {:ok, %Nostrum.Struct.Channel{id: 41771983423143933, name: "elixir-nostrum", topic: "nostrum discussion"}}
 
   Nostrum.Api.modify_channel(41771983423143933)
-  {:ok, %Nostrum.Struct.Guild.Channel{id: 41771983423143933}}
+  {:ok, %Nostrum.Struct.Channel{id: 41771983423143933}}
   ```
   """
   @spec modify_channel(Channel.id(), options) :: error | {:ok, Channel.t()}
@@ -574,7 +575,7 @@ defmodule Nostrum.Api do
   Deletes a channel.
 
   This endpoint requires the `MANAGE_CHANNELS` permission. It fires a
-  `t:Nostrum.Consumer.channel_delete/0`. If a `t:Nostrum.Struct.Guild.Channel.channel_category/0`
+  `t:Nostrum.Consumer.channel_delete/0`. If a `t:Nostrum.Struct.Channel.channel_category/0`
   is deleted, then a `t:Nostrum.Consumer.channel_update/0` event will fire
   for each channel under the category.
 
@@ -584,7 +585,7 @@ defmodule Nostrum.Api do
 
   ```Elixir
   Nostrum.Api.delete_channel(421533712753360896)
-  {:ok, %Nostrum.Struct.Guild.Channel{id: 421533712753360896}}
+  {:ok, %Nostrum.Struct.Channel{id: 421533712753360896}}
   ```
   """
   @spec delete_channel(Channel.id()) :: error | {:ok, Channel.t()}
@@ -1175,7 +1176,7 @@ defmodule Nostrum.Api do
 
   ```Elixir
   Nostrum.Api.get_guild_channels(81384788765712384)
-  {:ok, [%Nostrum.Struct.Guild.Channel{}]}
+  {:ok, [%Nostrum.Struct.Channel{}]}
   ```
   """
   @spec get_guild_channels(Guild.id()) :: error | {:ok, [Channel.t()]}
@@ -1204,12 +1205,12 @@ defmodule Nostrum.Api do
   ## Options
 
     * `:name` (string) - channel name (2-100 characters)
-    * `:type` (integer) - the type of channel (See `Nostrum.Struct.Guild.Channel`)
+    * `:type` (integer) - the type of channel (See `Nostrum.Struct.Channel`)
     * `:topic` (string) - channel topic (0-1024 characters)
     * `:bitrate` (integer) - the bitrate (in bits) of the voice channel (voice only)
     * `:user_limit` (integer) - the user limit of the voice channel (voice only)
     * `:permission_overwrites` (list of `t:Nostrum.Struct.Overwrite.t/0`) - the channel's permission overwrites
-    * `:parent_id` (`t:Nostrum.Struct.Guild.Channel.id/0`) - id of the parent category for a channel
+    * `:parent_id` (`t:Nostrum.Struct.Channel.id/0`) - id of the parent category for a channel
     * `:nsfw` (boolean) - if the channel is nsfw
 
   `:name` is always required.
@@ -1218,7 +1219,7 @@ defmodule Nostrum.Api do
 
   ```Elixir
   Nostrum.Api.create_guild_channel(81384788765712384, name: "elixir-nostrum", topic: "craig's domain")
-  {:ok, %Nostrum.Struct.Guild.Channel{id: 81384788765712384}}
+  {:ok, %Nostrum.Struct.Channel{id: 81384788765712384}}
   ```
   """
   @spec create_guild_channel(Guild.id(), options) :: error | {:ok, Channel.t()}
@@ -1953,7 +1954,7 @@ defmodule Nostrum.Api do
 
   ```Elixir
   Nostrum.Api.get_user_dms()
-  {:ok, [%Nostrum.Struct.Guild.Channel{} | _]}
+  {:ok, [%Nostrum.Struct.Channel{} | _]}
   ```
   """
   @spec get_user_dms() :: error | {:ok, [Channel.dm_channel()]}
@@ -1980,7 +1981,7 @@ defmodule Nostrum.Api do
 
   ```Elixir
   Nostrum.Api.create_dm(150061853001777154)
-  {:ok, %Nostrum.Struct.Guild.Channel{type: 1}}
+  {:ok, %Nostrum.Struct.Channel{type: 1}}
   ```
   """
   @spec create_dm(User.id()) :: error | {:ok, Channel.dm_channel()}
@@ -2010,7 +2011,7 @@ defmodule Nostrum.Api do
 
   ```Elixir
   Nostrum.Api.create_group_dm(["6qrZcUqja7812RVdnEKjpzOL4CvHBFG"], %{41771983423143937 => "My Nickname"})
-  {:ok, %Nostrum.Struct.Guild.Channel{type: 3}}
+  {:ok, %Nostrum.Struct.Channel{type: 3}}
   ```
   """
   @spec create_group_dm([String.t()], %{optional(User.id()) => String.t()}) ::

@@ -1,8 +1,8 @@
-defmodule Nostrum.Struct.Guild.Channel do
+defmodule Nostrum.Struct.Channel do
   @moduledoc ~S"""
   Struct representing a Discord guild channel.
 
-  A `Nostrum.Struct.Guild.Channel` represents all 5 types of channels. Each
+  A `Nostrum.Struct.Channel` represents all 5 types of channels. Each
   channel has a field `:type` with any of the following values:
 
     * `0` - GUILD_TEXT
@@ -16,16 +16,16 @@ defmodule Nostrum.Struct.Guild.Channel do
 
   ## Mentioning Channels in Messages
 
-  A `Nostrum.Struct.Guild.Channel` can be mentioned in message content using the `String.Chars`
+  A `Nostrum.Struct.Channel` can be mentioned in message content using the `String.Chars`
   protocol or `mention/1`.
 
   ```Elixir
-  channel = %Nostrum.Struct.Guild.Channel{id: 381889573426429952}
+  channel = %Nostrum.Struct.Channel{id: 381889573426429952}
   Nostrum.Api.create_message!(184046599834435585, "#{channel}")
   %Nostrum.Struct.Message{content: "<#381889573426429952>"}
 
-  channel = %Nostrum.Struct.Guild.Channel{id: 280085880452939778}
-  Nostrum.Api.create_message!(280085880452939778, "#{Nostrum.Struct.Guild.Channel.mention(channel)}")
+  channel = %Nostrum.Struct.Channel{id: 280085880452939778}
+  Nostrum.Api.create_message!(280085880452939778, "#{Nostrum.Struct.Channel.mention(channel)}")
   %Nostrum.Struct.Message{content: "<#280085880452939778>"}
   ```
   """
@@ -215,13 +215,13 @@ defmodule Nostrum.Struct.Guild.Channel do
           | channel_category
 
   @doc ~S"""
-  Formats a `Nostrum.Struct.Guild.Channel` into a mention.
+  Formats a `Nostrum.Struct.Channel` into a mention.
 
   ## Examples
 
   ```Elixir
-  iex> channel = %Nostrum.Struct.Guild.Channel{id: 381889573426429952}
-  ...> Nostrum.Struct.Guild.Channel.mention(channel)
+  iex> channel = %Nostrum.Struct.Channel{id: 381889573426429952}
+  ...> Nostrum.Struct.Channel.mention(channel)
   "<#381889573426429952>"
   ```
   """
