@@ -2000,16 +2000,31 @@ defmodule Nostrum.Api do
 
   @doc """
   Creates a new group DM channel.
-  """
-  @spec create_group_dm([String.t()], map) :: error | {:ok, Nostrum.Struct.DMChannel.t()}
-  def create_group_dm(access_tokens, nicks) do
-    case request(:post, Constants.me_channels(), %{access_tokens: access_tokens, nicks: nicks}) do
-      {:ok, body} ->
-        {:ok, Poison.decode!(body)}
 
-      other ->
-        other
-    end
+  If successful, returns `{:ok, dm_channel}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
+
+  `access_tokens` are user oauth2 tokens. `nicks` is a map that maps a user id
+  to a nickname.
+
+  ## Examples
+
+  ```Elixir
+  Nostrum.Api.create_group_dm(["6qrZcUqja7812RVdnEKjpzOL4CvHBFG"], %{41771983423143937 => "My Nickname"})
+  {:ok, %Nostrum.Struct.Guild.Channel{type: 3}}
+  ```
+  """
+  @spec create_group_dm([String.t()], %{optional(User.id()) => String.t()}) ::
+          error | {:ok, Channel.group_dm_channel()}
+  def create_group_dm(access_tokens, nicks) when is_list(access_tokens) and is_map(nicks) do
+    request(:post, Constants.me_channels(), %{access_tokens: access_tokens, nicks: nicks})
+    |> handle_request_with_decode({:struct, Channel})
+  end
+
+  @spec create_group_dm!([String.t()], %{optional(User.id()) => String.t()}) ::
+          no_return | Channel.group_dm_channel()
+  def create_group_dm!(access_tokens, nicks) do
+    create_group_dm(access_tokens, nicks)
+    |> bangify
   end
 
   @doc """
