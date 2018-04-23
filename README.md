@@ -1,6 +1,7 @@
 # Nostrum
 
 [![Build Status](https://travis-ci.org/Kraigie/nostrum.svg?branch=master)](https://travis-ci.org/Kraigie/nostrum)
+[![Join Discord](https://img.shields.io/badge/discord-join-7289DA.svg)](https://discord.gg/2Bgn8nW)
 
 An [Elixir](http://elixir-lang.org/) library for the Discord API.
 
@@ -87,6 +88,12 @@ Although it's recommended to run under a supervisor, you could start it from `ie
   iex()> ExampleConsumer.start
   {:ok, #PID<0.208.0>}
 ```
+
+## Getting Help
+
+If you need help, visit `#elixir-nostrum` on the unofficial Discord API guild!
+
+[![Discord API](https://discordapp.com/api/guilds/81384788765712384/embed.png?style=banner3)](https://discord.gg/2Bgn8nW)
 
 ## Contributing
 TODO
