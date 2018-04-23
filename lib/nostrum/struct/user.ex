@@ -1,6 +1,21 @@
 defmodule Nostrum.Struct.User do
-  @moduledoc """
+  @moduledoc ~S"""
   Struct representing a Discord user.
+
+  ## Mentioning Users in Messages
+
+  A `Nostrum.Struct.User` can be mentioned in message content using the `String.Chars`
+  protocol or `mention/1`.
+
+  ```Elixir
+  user = %Nostrum.Struct.User{id: 120571255635181568}
+  Nostrum.Api.create_message!(184046599834435585, "#{user}")
+  %Nostrum.Struct.Message{content: "<@120571255635181568>"}
+
+  user = %Nostrum.Struct.User{id: 89918932789497856}
+  Nostrum.Api.create_message!(280085880452939778, "#{Nostrum.Struct.User.mention(user)}")
+  %Nostrum.Struct.Message{content: "<@89918932789497856>"}
+  ```
 
   ## User vs. Member
   A `user` contains only general information about that user such as a `username` and an `avatar`.
@@ -20,6 +35,10 @@ defmodule Nostrum.Struct.User do
     :verified,
     :email
   ]
+
+  defimpl String.Chars do
+    def to_string(user), do: @for.mention(user)
+  end
 
   @typedoc "The user's id"
   @type id :: Snowflake.t()
@@ -55,6 +74,20 @@ defmodule Nostrum.Struct.User do
           verified: verified,
           email: email
         }
+
+  @doc ~S"""
+  Formats an `Nostrum.Struct.User` into a mention.
+
+  ## Examples
+
+  ```Elixir
+  iex> user = %Nostrum.Struct.User{id: 177888205536886784}
+  ...> Nostrum.Struct.User.mention(user)
+  "<@177888205536886784>"
+  ```
+  """
+  @spec mention(t) :: String.t()
+  def mention(%__MODULE__{id: id}), do: "<@#{id}>"
 
   @doc false
   def p_encode do

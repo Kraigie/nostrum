@@ -33,6 +33,10 @@ defmodule Nostrum.Shard.Heartbeat do
     send(pid, {:loop, interval})
   end
 
+  def cancel_timer(pid) do
+    send(pid, :cancel)
+  end
+
   def init(_opts) do
     {:ok, %{pid: nil, seq: 0, ack_received: true, timer: nil}}
   end
@@ -58,6 +62,11 @@ defmodule Nostrum.Shard.Heartbeat do
   def handle_info({:loop, _interval}, %{ack_received: false} = state) do
     Logger.warn("HEARTBEAT_ACK not received in time, disconnecting")
     force_disconnect(state.pid)
+    {:noreply, state}
+  end
+
+  def handle_info(:cancel, state) do
+    if state.timer, do: Process.cancel_timer(state.timer)
     {:noreply, state}
   end
 end

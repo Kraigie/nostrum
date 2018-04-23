@@ -93,7 +93,7 @@ defmodule Nostrum.Api do
   @typedoc """
   Represents an emoji for interacting with reaction endpoints.
   """
-  @type emoji :: Emoji.t() | Emoji.emoji_api_name()
+  @type emoji :: Emoji.t() | Emoji.api_name()
 
   @typedoc """
   Represents optional parameters for Api functions.
@@ -357,13 +357,13 @@ defmodule Nostrum.Api do
 
   ```
 
-  For other emoji string examples, see `t:Nostrum.Struct.Emoji.emoji_api_name/0`.
+  For other emoji string examples, see `t:Nostrum.Struct.Emoji.api_name/0`.
   """
   @spec create_reaction(Channel.id(), Message.id(), emoji) :: error | {:ok}
   def create_reaction(channel_id, message_id, emoji)
 
   def create_reaction(channel_id, message_id, %Emoji{} = emoji),
-    do: create_reaction(channel_id, message_id, Emoji.get_api_name(emoji))
+    do: create_reaction(channel_id, message_id, Emoji.api_name(emoji))
 
   def create_reaction(channel_id, message_id, emoji_api_name) do
     request(:put, Constants.channel_reaction_me(channel_id, message_id, emoji_api_name))
@@ -392,7 +392,7 @@ defmodule Nostrum.Api do
   def delete_own_reaction(channel_id, message_id, emoji)
 
   def delete_own_reaction(channel_id, message_id, %Emoji{} = emoji),
-    do: delete_own_reaction(channel_id, message_id, Emoji.get_api_name(emoji))
+    do: delete_own_reaction(channel_id, message_id, Emoji.api_name(emoji))
 
   def delete_own_reaction(channel_id, message_id, emoji_api_name) do
     request(:delete, Constants.channel_reaction_me(channel_id, message_id, emoji_api_name))
@@ -421,7 +421,7 @@ defmodule Nostrum.Api do
   def delete_user_reaction(channel_id, message_id, emoji, user_id)
 
   def delete_user_reaction(channel_id, message_id, %Emoji{} = emoji, user_id),
-    do: delete_user_reaction(channel_id, message_id, Emoji.get_api_name(emoji), user_id)
+    do: delete_user_reaction(channel_id, message_id, Emoji.api_name(emoji), user_id)
 
   def delete_user_reaction(channel_id, message_id, emoji_api_name, user_id) do
     request(:delete, Constants.channel_reaction(channel_id, message_id, emoji_api_name, user_id))
@@ -449,7 +449,7 @@ defmodule Nostrum.Api do
   def get_reactions(channel_id, message_id, emoji)
 
   def get_reactions(channel_id, message_id, %Emoji{} = emoji),
-    do: get_reactions(channel_id, message_id, Emoji.get_api_name(emoji))
+    do: get_reactions(channel_id, message_id, Emoji.api_name(emoji))
 
   def get_reactions(channel_id, message_id, emoji_api_name) do
     request(:get, Constants.channel_reactions_get(channel_id, message_id, emoji_api_name))

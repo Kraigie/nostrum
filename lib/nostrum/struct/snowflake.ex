@@ -17,25 +17,60 @@ defmodule Nostrum.Struct.Snowflake do
   Snowflakes are 64-bit unsigned integers used to represent discord
   object ids.
   """
-  @type t :: integer
+  @type t :: 0..0xFFFFFFFFFFFFFFFF
 
-  @doc """
-  Returns `true` if `term` is a snowflake; otherwise returns `false`
+  @doc ~S"""
+  Returns `true` if `term` is a snowflake; otherwise returns `false`.
+
+  ## Examples
+
+  ```Elixir
+  iex> Nostrum.Struct.Snowflake.is_snowflake(89918932789497856)
+  true
+
+  iex> Nostrum.Struct.Snowflake.is_snowflake(-1)
+  false
+
+  iex> Nostrum.Struct.Snowflake.is_snowflake(0xFFFFFFFFFFFFFFFF + 1)
+  false
+
+  iex> Nostrum.Struct.Snowflake.is_snowflake("117789813427535878")
+  false
+  ```
   """
   defguard is_snowflake(term)
-           when is_integer(term) and term >= 0 and term <= 0xFFFFFFFFFFFFFFFF
+           when is_integer(term) and term in 0..0xFFFFFFFFFFFFFFFF
 
-  @doc """
+  @doc ~S"""
   Attempts to convert a term into a snowflake.
+
+  ## Examples
+
+  ```Elixir
+  iex> Nostrum.Struct.Snowflake.cast(200317799350927360)
+  {:ok, 200317799350927360}
+
+  iex> Nostrum.Struct.Snowflake.cast("200317799350927360")
+  {:ok, 200317799350927360}
+
+  iex> Nostrum.Struct.Snowflake.cast(nil)
+  {:ok, nil}
+
+  iex> Nostrum.Struct.Snowflake.cast(true)
+  :error
+
+  iex> Nostrum.Struct.Snowflake.cast(-1)
+  :error
+  ```
   """
   @spec cast(term) :: {:ok, t | nil} | :error
   def cast(value)
   def cast(nil), do: {:ok, nil}
-  def cast(value) when is_integer(value), do: {:ok, value}
+  def cast(value) when is_snowflake(value), do: {:ok, value}
 
   def cast(value) when is_binary(value) do
     case Integer.parse(value) do
-      {snowflake, _} -> {:ok, snowflake}
+      {snowflake, _} -> cast(snowflake)
       _ -> :error
     end
   end
@@ -53,14 +88,28 @@ defmodule Nostrum.Struct.Snowflake do
     end
   end
 
-  @doc """
+  @doc ~S"""
   Convert a snowflake into its external representation.
+
+  ## Examples
+
+  ```Elixir
+  iex> Nostrum.Struct.Snowflake.dump(109112383011581952)
+  "109112383011581952"
+  ```
   """
   @spec dump(t) :: external_snowflake
   def dump(snowflake) when is_snowflake(snowflake), do: to_string(snowflake)
 
-  @doc """
+  @doc ~S"""
   Returns the creation time of the snowflake.
+
+  ## Examples
+
+  ```Elixir
+  iex> Snowflake.creation_time(177888205536886784)
+  #DateTime<2016-05-05 21:04:13.203Z>
+  ```
   """
   @spec creation_time(t) :: DateTime.t()
   def creation_time(snowflake) when is_snowflake(snowflake) do

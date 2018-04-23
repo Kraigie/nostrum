@@ -33,6 +33,7 @@ defmodule Nostrum.Shard.Event do
   end
 
   def handle(:hello, payload, conn, state) do
+    Heartbeat.cancel_timer(state.heartbeat_pid)
     Heartbeat.start_loop(state.heartbeat_pid, payload.d.heartbeat_interval)
 
     if session_exists?(state) do
