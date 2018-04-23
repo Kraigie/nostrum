@@ -1,6 +1,8 @@
 defmodule Nostrum.Cache.Guild.GuildRegister do
   @moduledoc false
 
+  alias Nostrum.Cache.Guild.GuildServer
+
   def lookup(id) do
     case Registry.lookup(GuildRegistry, id) do
       [{pid, _}] ->
@@ -25,6 +27,9 @@ defmodule Nostrum.Cache.Guild.GuildRegister do
     case Supervisor.start_child(GuildSupervisor, [id, guild]) do
       {:ok, _pid} ->
         {:ok, guild}
+
+      {:error, {:already_registered, _pid}} ->
+        GuildServer.get(id: id)
 
       other ->
         other
