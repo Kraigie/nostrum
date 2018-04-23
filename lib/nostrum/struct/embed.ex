@@ -4,26 +4,22 @@ defmodule Nostrum.Struct.Embed do
 
   ## Building Embeds
 
-  `Nostrum.Struct.Embed`s can be built using this module's builder functions:
+  `Nostrum.Struct.Embed`s can be built using this module's builder functions
+  or standard `Map` syntax:
 
   ```Elixir
-  import Nostrum.Struct.Embed
-
-  embed =
-    %Nostrum.Struct.Embed{}
-    |> put_title("craig")
-    |> put_description("nostrum")
-    |> put_url("https://google.com/")
-    |> put_timestamp("2016-05-05T21:04:13.203Z")
-    |> put_color(431_948)
-    |> put_field("Field 1", "Test")
-    |> put_field("Field 2", "More test", true)
-  ```
-
-  Alternatively, `Nostrum.Struct.Embed`s can be built using standard map syntax.
-
-  ```Elixir
-  embed = %Nostrum.Struct.Embed{
+  iex> import Nostrum.Struct.Embed
+  ...> embed =
+  ...>   %Nostrum.Struct.Embed{}
+  ...>   |> put_title("craig")
+  ...>   |> put_description("nostrum")
+  ...>   |> put_url("https://google.com/")
+  ...>   |> put_timestamp("2016-05-05T21:04:13.203Z")
+  ...>   |> put_color(431_948)
+  ...>   |> put_field("Field 1", "Test")
+  ...>   |> put_field("Field 2", "More test", true)
+  ...> embed
+  %Nostrum.Struct.Embed{
     title: "craig",
     description: "nostrum",
     url: "https://google.com/",
@@ -123,6 +119,14 @@ defmodule Nostrum.Struct.Embed do
 
   @doc ~S"""
   Puts the given `value` under `:title` in `embed`.
+
+  ## Examples
+
+  ```Elixir
+  iex> embed = %Nostrum.Struct.Embed{}
+  ...> Nostrum.Struct.Embed.put_title(embed, "nostrum")
+  %Nostrum.Struct.Embed{title: "nostrum"}
+  ```
   """
   @spec put_title(t, title) :: t
   def put_title(%__MODULE__{} = embed, value) do
@@ -137,6 +141,14 @@ defmodule Nostrum.Struct.Embed do
 
   @doc ~S"""
   Puts the given `value` under `:description` in `embed`.
+
+  ## Examples
+
+  ```Elixir
+  iex> embed = %Nostrum.Struct.Embed{}
+  ...> Nostrum.Struct.Embed.put_description(embed, "An elixir library for the discord API.")
+  %Nostrum.Struct.Embed{description: "An elixir library for the discord API."}
+  ```
   """
   @spec put_description(t, description) :: t
   def put_description(%__MODULE__{} = embed, value) do
@@ -145,6 +157,14 @@ defmodule Nostrum.Struct.Embed do
 
   @doc ~S"""
   Puts the given `value` under `:url` in `embed`.
+
+  ## Examples
+
+  ```Elixir
+  iex> embed = %Nostrum.Struct.Embed{}
+  ...> Nostrum.Struct.Embed.put_url(embed, "https://github.com/Kraigie/nostrum")
+  %Nostrum.Struct.Embed{url: "https://github.com/Kraigie/nostrum"}
+  ```
   """
   @spec put_url(t, url) :: t
   def put_url(%__MODULE__{} = embed, value) do
@@ -153,6 +173,14 @@ defmodule Nostrum.Struct.Embed do
 
   @doc ~S"""
   Puts the given `value` under `:timestamp` in `embed`.
+
+  ## Examples
+
+  ```elixir
+  iex> embed = %Nostrum.Struct.Embed{}
+  ...> Nostrum.Struct.Embed.put_timestamp(embed, "2018-04-21T17:33:51.893000Z")
+  %Nostrum.Struct.Embed{timestamp: "2018-04-21T17:33:51.893000Z"}
+  ```
   """
   @spec put_timestamp(t, timestamp) :: t
   def put_timestamp(%__MODULE__{} = embed, value) do
@@ -161,6 +189,14 @@ defmodule Nostrum.Struct.Embed do
 
   @doc ~S"""
   Puts the given `value` under `:color` in `embed`.
+
+  ## Examples
+
+  ```Elixir
+  iex> embed = %Nostrum.Struct.Embed{}
+  ...> Nostrum.Struct.Embed.put_color(embed, 431948)
+  %Nostrum.Struct.Embed{color: 431948}
+  ```
   """
   @spec put_color(t, color) :: t
   def put_color(%__MODULE__{} = embed, value) do
@@ -169,6 +205,28 @@ defmodule Nostrum.Struct.Embed do
 
   @doc ~S"""
   Puts a `Nostrum.Struct.Embed.Footer` under `:footer` in `embed`.
+
+  ## Examples
+
+  ```Elixir
+  iex> embed = %Nostrum.Struct.Embed{}
+  ...> Nostrum.Struct.Embed.put_footer(embed, "Discord API", nil)
+  %Nostrum.Struct.Embed{
+    footer: %Nostrum.Struct.Embed.Footer{
+      text: "Discord API",
+      icon_url: nil
+    }
+  }
+
+  iex> embed = %Nostrum.Struct.Embed{}
+  ...> Nostrum.Struct.Embed.put_footer(embed, "nostrum footer", "https://discordapp.com/assets/53ef346458017da2062aca5c7955946b.svg")
+  %Nostrum.Struct.Embed{
+    footer: %Nostrum.Struct.Embed.Footer{
+      text: "nostrum footer",
+      icon_url: "https://discordapp.com/assets/53ef346458017da2062aca5c7955946b.svg"
+    }
+  }
+  ```
   """
   @spec put_footer(t, Footer.text(), Footer.icon_url()) :: t
   def put_footer(%__MODULE__{} = embed, text, icon_url) do
@@ -182,6 +240,18 @@ defmodule Nostrum.Struct.Embed do
 
   @doc ~S"""
   Puts a `Nostrum.Struct.Embed.Image` under `:image` in `embed`.
+
+  ## Examples
+
+  ```Elixir
+  iex> embed = %Nostrum.Struct.Embed{}
+  ...> Nostrum.Struct.Embed.put_image(embed, "https://discordapp.com/assets/af92e60c16b7019f34a467383b31490a.svg")
+  %Nostrum.Struct.Embed{
+    image: %Nostrum.Struct.Embed.Image{
+      url: "https://discordapp.com/assets/af92e60c16b7019f34a467383b31490a.svg"
+    }
+  }
+  ```
   """
   @spec put_image(t, Image.url()) :: t
   def put_image(%__MODULE__{} = embed, url) do
@@ -194,6 +264,18 @@ defmodule Nostrum.Struct.Embed do
 
   @doc ~S"""
   Puts a `Nostrum.Struct.Embed.Thumbnail` under `:thumbnail` in `embed`.
+
+  ## Examples
+
+  ```Elixir
+  iex> embed = %Nostrum.Struct.Embed{}
+  ...> Nostrum.Struct.Embed.put_thumbnail(embed, "https://discordapp.com/assets/af92e60c16b7019f34a467383b31490a.svg")
+  %Nostrum.Struct.Embed{
+    thumbnail: %Nostrum.Struct.Embed.Thumbnail{
+      url: "https://discordapp.com/assets/af92e60c16b7019f34a467383b31490a.svg"
+    }
+  }
+  ```
   """
   @spec put_thumbnail(t, Thumbnail.url()) :: t
   def put_thumbnail(%__MODULE__{} = embed, url) do
@@ -227,6 +309,20 @@ defmodule Nostrum.Struct.Embed do
 
   @doc ~S"""
   Puts a `Nostrum.Struct.Embed.Author` under `:author` in `embed`.
+
+  ## Examples
+
+  ```Elixir
+  iex> embed = %Nostrum.Struct.Embed{}
+  ...> Nostrum.Struct.Embed.put_author(embed, "skippi", "https://github.com/skippi", nil)
+  %Nostrum.Struct.Embed{
+    author: %Nostrum.Struct.Embed.Author{
+      name: "skippi",
+      url: "https://github.com/skippi",
+      icon_url: nil
+    }
+  }
+  ```
   """
   @spec put_author(t, Author.name(), Author.url(), Author.icon_url()) :: t
   def put_author(%__MODULE__{} = embed, name, url, icon_url) do
@@ -241,6 +337,31 @@ defmodule Nostrum.Struct.Embed do
 
   @doc ~S"""
   Adds a `Nostrum.Struct.Embed.Field` under `:fields` in `embed`.
+
+  ## Examples
+
+  ```Elixir
+  iex> embed = %Nostrum.Struct.Embed{}
+  ...> Nostrum.Struct.Embed.put_field(embed, "First User", "b1nzy")
+  %Nostrum.Struct.Embed{
+    fields: [
+      %Nostrum.Struct.Embed.Field{name: "First User", value: "b1nzy"}
+    ]
+  }
+
+  iex> embed = %Nostrum.Struct.Embed{
+  ...>   fields: [
+  ...>     %Nostrum.Struct.Embed.Field{name: "First User", value: "b1nzy"}
+  ...>   ]
+  ...> }
+  ...> Nostrum.Struct.Embed.put_field(embed, "Second User", "Danny")
+  %Nostrum.Struct.Embed{
+    fields: [
+      %Nostrum.Struct.Embed.Field{name: "First User", value: "b1nzy"},
+      %Nostrum.Struct.Embed.Field{name: "Second User", value: "Danny"}
+    ]
+  }
+  ```
   """
   @spec put_field(t, Field.name(), Field.value(), Field.inline()) :: t
   def put_field(embed, name, value, inline \\ nil)
