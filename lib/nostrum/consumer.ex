@@ -21,6 +21,7 @@ defmodule Nostrum.Consumer do
   use ConsumerSupervisor
 
   alias Nostrum.Shard.Stage.Cache
+  alias Nostrum.Struct.Channel
 
   @doc """
   Callback used to handle events.
@@ -71,15 +72,10 @@ defmodule Nostrum.Consumer do
   """
   @type state :: map
 
-  @typedoc """
-  The two different types of channels - Guild channels and DM channels.
-  """
-  @type channel :: Nostrum.Struct.Channel.t()
-
-  @type channel_create :: {:CHANNEL_CREATE, {channel}, ws_state}
-  @type channel_delete :: {:CHANNEL_DELETE, {channel}, ws_state}
+  @type channel_create :: {:CHANNEL_CREATE, {Channel.t()}, ws_state}
+  @type channel_delete :: {:CHANNEL_DELETE, {Channel.t()}, ws_state}
   @type channel_update ::
-          {:CHANNEL_UPDATE, {old_channel :: channel, new_channel :: channel}, ws_state}
+          {:CHANNEL_UPDATE, {old_channel :: Channel.t(), new_channel :: Channel.t()}, ws_state}
   @type channel_pins_ack :: {:CHANNEL_PINS_ACK, {map}, ws_state}
   @type channel_pins_update :: {:CHANNEL_PINS_UPDATE, {map}, ws_state}
   @type guild_ban_add ::

@@ -9,8 +9,6 @@ defmodule Nostrum.Cache.ChannelCache do
   alias Nostrum.Struct.Channel
   alias Nostrum.Util
 
-  @type channel :: Channel.t()
-
   @doc false
   def start_link([]) do
     GenServer.start_link(__MODULE__, [], name: ChannelCache)
@@ -27,7 +25,7 @@ defmodule Nostrum.Cache.ChannelCache do
   `t:Nostrum.Struct.Channel.dm_channel/0` references. To get channel
   information, a call is made to a `Nostrum.Cache.Guild.GuildServer`.
   """
-  @spec get(id: integer | Nostrum.Struct.Message.t()) :: {:error, atom} | {:ok, channel}
+  @spec get(id: integer | Nostrum.Struct.Message.t()) :: {:error, atom} | {:ok, Channel.t()}
   def get(id: id), do: GenServer.call(ChannelCache, {:get, id})
   def get(%Nostrum.Struct.Message{channel_id: channel_id}), do: get(id: channel_id)
 
