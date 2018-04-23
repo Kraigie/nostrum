@@ -537,8 +537,8 @@ defmodule Nostrum.Api do
     the bitrate (in bits) of the voice channel; 8000 to 96000 (128000 for VIP servers)
     * `:user_limit` (integer) (`t:Nostrum.Struct.Channel.voice_channel/0` only) -
     the user limit of the voice channel; 0 refers to no limit, 1 to 99 refers to a user limit
-    * `:permission_overwrites` (list of `t:Nostrum.Struct.Overwrite.t/0`) - channel
-    or category-specific permissions
+    * `:permission_overwrites` (list of `t:Nostrum.Struct.Overwrite.t/0` or equivalent map) -
+    channel or category-specific permissions
     * `:parent_id` (`t:Nostrum.Struct.Channel.id/0`) (`t:Nostrum.Struct.Channel.guild_channel/0` only) -
     id of the new parent category for a channel
 
@@ -1211,7 +1211,8 @@ defmodule Nostrum.Api do
     * `:topic` (string) - channel topic (0-1024 characters)
     * `:bitrate` (integer) - the bitrate (in bits) of the voice channel (voice only)
     * `:user_limit` (integer) - the user limit of the voice channel (voice only)
-    * `:permission_overwrites` (list of `t:Nostrum.Struct.Overwrite.t/0`) - the channel's permission overwrites
+    * `:permission_overwrites` (list of `t:Nostrum.Struct.Overwrite.t/0` or equivalent map) -
+    the channel's permission overwrites
     * `:parent_id` (`t:Nostrum.Struct.Channel.id/0`) - id of the parent category for a channel
     * `:nsfw` (boolean) - if the channel is nsfw
 
@@ -1221,7 +1222,7 @@ defmodule Nostrum.Api do
 
   ```Elixir
   Nostrum.Api.create_guild_channel(81384788765712384, name: "elixir-nostrum", topic: "craig's domain")
-  {:ok, %Nostrum.Struct.Channel{id: 81384788765712384}}
+  {:ok, %Nostrum.Struct.Channel{guild_id: 81384788765712384}}
   ```
   """
   @spec create_guild_channel(Guild.id(), options) :: error | {:ok, Channel.guild_channel()}
@@ -2024,7 +2025,7 @@ defmodule Nostrum.Api do
 
   ```Elixir
   Nostrum.Api.get_user_dms()
-  {:ok, [%Nostrum.Struct.Channel{} | _]}
+  {:ok, [%Nostrum.Struct.Channel{type: 1} | _]}
   ```
   """
   @spec get_user_dms() :: error | {:ok, [Channel.dm_channel()]}

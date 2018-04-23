@@ -9,7 +9,7 @@ defmodule Nostrum.Cache.ChannelCache do
   alias Nostrum.Struct.Channel
   alias Nostrum.Util
 
-  @type channel :: Channel.dm_channel()
+  @type channel :: Channel.t()
 
   @doc false
   def start_link([]) do

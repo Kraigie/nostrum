@@ -16,7 +16,7 @@ defmodule Nostrum.Struct.Overwrite do
   ]
 
   @typedoc "Role or User id"
-  @type id :: Role.id() | User.id()
+  @type id :: Snowflake.t()
 
   @typedoc "Either 'role' or 'member'"
   @type name :: String.t()
