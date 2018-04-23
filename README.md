@@ -91,7 +91,7 @@ Although it's recommended to run under a supervisor, you could start it from `ie
 
 ## Getting Help
 
-If you need help, visit `#elixir-nostrum` on the unofficial Discord API guild!
+If you need help, visit `#elixir_nostrum` on the unofficial Discord API guild!
 
 [![Discord API](https://discordapp.com/api/guilds/81384788765712384/embed.png?style=banner3)](https://discord.gg/2Bgn8nW)
 
