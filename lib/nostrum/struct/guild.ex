@@ -4,7 +4,8 @@ defmodule Nostrum.Struct.Guild do
   """
 
   alias Nostrum.Struct.Emoji
-  alias Nostrum.Struct.Guild.{Channel, Member, Role}
+  alias Nostrum.Struct.Channel
+  alias Nostrum.Struct.Guild.{Member, Role}
   require Nostrum.Util
 
   @typedoc "The guild's id"
@@ -73,7 +74,7 @@ defmodule Nostrum.Struct.Guild do
   @typedoc "List of members, indexed by `t:Nostrum.Struct.User.id/0`"
   @type members :: map
 
-  @typedoc "List of channels, indexed by `t:Nostrum.Struct.Guild.Channel.id/0`"
+  @typedoc "List of channels, indexed by `t:Nostrum.Struct.Channel.id/0`"
   @type channels :: map
 
   @typedoc "List of simple presence maps"

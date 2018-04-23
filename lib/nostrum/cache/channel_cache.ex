@@ -6,11 +6,8 @@ defmodule Nostrum.Cache.ChannelCache do
   use GenServer
 
   alias Nostrum.Cache.Guild.GuildServer
-  alias Nostrum.Struct.Guild.Channel
-  alias Nostrum.Struct.DMChannel
+  alias Nostrum.Struct.Channel
   alias Nostrum.Util
-
-  @type channel :: Channel.t() | DMChannel.t()
 
   @doc false
   def start_link([]) do
@@ -24,10 +21,11 @@ defmodule Nostrum.Cache.ChannelCache do
   @doc ~S"""
   Retrieves a channel from the cache.
 
-  Internally, the ChannelCache process only stores DMChannel references. To get
-  channel information, a call is made to a `Nostrum.Cache.Guild.GuildServer`.
+  Internally, the ChannelCache process only stores
+  `t:Nostrum.Struct.Channel.dm_channel/0` references. To get channel
+  information, a call is made to a `Nostrum.Cache.Guild.GuildServer`.
   """
-  @spec get(id: integer | Nostrum.Struct.Message.t()) :: {:error, atom} | {:ok, channel}
+  @spec get(id: integer | Nostrum.Struct.Message.t()) :: {:error, atom} | {:ok, Channel.t()}
   def get(id: id), do: GenServer.call(ChannelCache, {:get, id})
   def get(%Nostrum.Struct.Message{channel_id: channel_id}), do: get(id: channel_id)
 
@@ -74,6 +72,9 @@ defmodule Nostrum.Cache.ChannelCache do
   # When fetching from a guild, the channel will already be a struct
   # TODO: Put into structs before storing
   def ret_to_struct(%{__struct__: _} = channel), do: {:ok, channel}
-  def ret_to_struct({old, new}), do: {Channel.to_struct(old), Channel.to_struct(new)}
-  def ret_to_struct(channel), do: {:ok, DMChannel.to_struct(channel)}
+
+  def ret_to_struct({old, new}),
+    do: {Util.cast(old, {:struct, Channel}), Util.cast(new, {:struct, Channel})}
+
+  def ret_to_struct(channel), do: {:ok, Util.cast(channel, {:struct, Channel})}
 end
