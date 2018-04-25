@@ -45,11 +45,7 @@ defmodule Nostrum.Consumer do
   {:USER_UPDATE, {old_user :: Nostrum.Struct.User.t, new_user :: Nostrum.Struct.User.t}, ws_state}
   ```
 
-  For a full listing of events, please see `Nostrum.Consumer.event`.
-
-  ## Example
-  An example consumer can be found
-  [here](https://github.com/Kraigie/nostrum/blob/master/examples/event_consumer.ex).
+  For a full listing of events, please see `t:Nostrum.Consumer.event/0`.
   """
   @callback handle_event(event) :: any
 
@@ -62,15 +58,23 @@ defmodule Nostrum.Consumer do
   @type from :: {pid, tag :: term}
 
   @typedoc """
-  The state of the websocket connection for the shard the event occured on. For
-  more information on this please see `Nostrum.Shard.Payload.state_map.t`.
+  State snapshot for the websocket-controlling process that the event occured on.
+
+  It contains the following keys:
+  * `:token` (string) - the token of your bot
+  * `:shard_num` (string) - the shard number
+  * `:seq` (integer) - sequence number of the last event
+  * `:session` (integer) - the session id
+  * `:shard_pid` (pid) - pid of the shard containing this state
+  * `:heartbeat_pid` (pid) - pid of this shard's heartbeat process
+  * `:gun_pid` (pid) - pid of the gun WS connection
+  * `:gateway` (string) - gateway URL
+  * `:last_heartbeat_send` (`t:DateTime.t/0` | nil) - the time the last heartbeat was sent
+  * `:last_heartbeat_ack` (`t:DateTime.t/0` | nil) - the time the last heartbeat was acknowledged
+  * `:zlib_ctx` (ref | nil) - reference to the current zlib context
+  * `:zlib_buffer` (string | nil) - current zlib_buffer
   """
   @type ws_state :: map
-
-  @typedoc """
-  The state of the consumer process.
-  """
-  @type state :: map
 
   @type channel_create :: {:CHANNEL_CREATE, {Channel.t()}, ws_state}
   @type channel_delete :: {:CHANNEL_DELETE, {Channel.t()}, ws_state}

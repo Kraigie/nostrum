@@ -29,7 +29,7 @@ defmodule Nostrum.Shard.Event do
   def handle(:heartbeat_ack, _payload, _conn, state) do
     Logger.info("HEARTBEAT_ACK")
     Heartbeat.ack(state.heartbeat_pid)
-    state
+    %{state | last_heartbeat_ack: DateTime.utc_now()}
   end
 
   def handle(:hello, payload, conn, state) do

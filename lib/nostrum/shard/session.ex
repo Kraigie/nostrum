@@ -8,23 +8,6 @@ defmodule Nostrum.Shard.Session do
 
   require Logger
 
-  @typedoc """
-  The state map maintained by each websocket process.
-
-  Keys
-   * `token` - The token of the bot.
-   * `shard_num` - The shard number container this state.
-   * `seq` - Current seq number of the websocket.
-   * `session` - Current session of the websocket.
-   * `reconnect_attempts` - Current number of reconnect attempts.
-   * `last_heartbeat` - The time of the last heartbeat.
-   * `shard_pid` - Pid of the shard containing this state.
-   * `producer_pid` - Pid of the producer attached to this shard.
-   * `heartbeat_ack` - Whether we received a heartbeack_ack or not (initialized to true).
-   * `gun_pid` - Pid of the WS connection process.
-  """
-  @type state_map :: map
-
   @gateway_qs if Application.get_env(:nostrum, :zlib_stream, false),
                 do: '/?compress=zlib-stream&encoding=etf&v=6',
                 else: '/?encoding=etf&v=6'
@@ -77,9 +60,37 @@ defmodule Nostrum.Shard.Session do
         Heartbeat.update_gun_onwer(heartbeat_pid, self())
 
         if use_zlib_stream?() do
-          {:ok, state_map(t, s, self(), heartbeat_pid, conn, erl_gw, zlib_ctx)}
+          state = %{
+            token: t,
+            shard_num: s,
+            seq: nil,
+            session: nil,
+            shard_pid: self(),
+            heartbeat_pid: heartbeat_pid,
+            gun_pid: conn,
+            gateway: erl_gw,
+            last_heartbeat_send: nil,
+            last_heartbeat_ack: nil,
+            zlib_ctx: zlib_ctx,
+            zlib_buffer: <<>>
+          }
+
+          {:ok, state}
         else
-          {:ok, state_map(t, s, self(), heartbeat_pid, conn, erl_gw)}
+          state = %{
+            token: t,
+            shard_num: s,
+            seq: nil,
+            session: nil,
+            shard_pid: self(),
+            heartbeat_pid: heartbeat_pid,
+            gun_pid: conn,
+            gateway: erl_gw,
+            last_heartbeat_send: nil,
+            last_heartbeat_ack: nil
+          }
+
+          {:ok, state}
         end
     end
   end
@@ -192,7 +203,7 @@ defmodule Nostrum.Shard.Session do
 
   def handle_info({:send_heartbeat, seq}, state) do
     Event.gun_send(state.gun_pid, Payload.heartbeat_payload(seq))
-    {:noreply, state}
+    {:noreply, %{state | last_heartbeat_send: DateTime.utc_now()}}
   end
 
   def handle_info(:force_disconnect, state) do
@@ -203,36 +214,6 @@ defmodule Nostrum.Shard.Session do
   def handle_info(m, state) do
     Logger.warn("Unhandled websocket message: #{inspect(m)}")
     {:noreply, state}
-  end
-
-  def state_map(token, shard_num, shard_pid, heartbeat_pid, gun_pid, gw, zlib_ctx) do
-    %{
-      token: token,
-      shard_num: shard_num,
-      seq: nil,
-      session: nil,
-      reconnect_attempts: 0,
-      shard_pid: shard_pid,
-      heartbeat_pid: heartbeat_pid,
-      gun_pid: gun_pid,
-      gateway: gw,
-      zlib_ctx: zlib_ctx,
-      zlib_buffer: <<>>
-    }
-  end
-
-  def state_map(token, shard_num, shard_pid, heartbeat_pid, gun_pid, gw) do
-    %{
-      token: token,
-      shard_num: shard_num,
-      seq: nil,
-      session: nil,
-      reconnect_attempts: 0,
-      shard_pid: shard_pid,
-      heartbeat_pid: heartbeat_pid,
-      gun_pid: gun_pid,
-      gateway: gw
-    }
   end
 
   def use_zlib_stream? do
