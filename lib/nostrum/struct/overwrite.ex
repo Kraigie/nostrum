@@ -3,9 +3,7 @@ defmodule Nostrum.Struct.Overwrite do
   Struct representing a Discord overwrite.
   """
 
-  alias Nostrum.Struct.Guild.Role
   alias Nostrum.Struct.Snowflake
-  alias Nostrum.Struct.User
   alias Nostrum.Util
 
   defstruct [
@@ -24,7 +22,7 @@ defmodule Nostrum.Struct.Overwrite do
   @typedoc "Permission bit set"
   @type allow :: integer
 
-  @typedoc "Permission but set"
+  @typedoc "Permission bit set"
   @type deny :: integer
 
   @type t :: %__MODULE__{
