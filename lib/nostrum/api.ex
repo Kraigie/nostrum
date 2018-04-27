@@ -720,11 +720,9 @@ defmodule Nostrum.Api do
     do: request(:post, Constants.channel_bulk_delete(channel_id), %{messages: messages})
 
   def bulk_delete_messages(channel_id, messages, true) do
-    filter_before = ((Util.now() - 14 * 24 * 60 * 60) * 1000 - 1_420_070_400_000) <<< 22
-
     filtered_messages =
       Enum.filter(messages, fn message_id ->
-        message_id > filter_before
+        (message_id >>> 22) + 1_420_070_400_000 > Util.now() - 14 * 24 * 60 * 60 * 1000
       end)
 
     request(:post, Constants.channel_bulk_delete(channel_id), %{messages: filtered_messages})
