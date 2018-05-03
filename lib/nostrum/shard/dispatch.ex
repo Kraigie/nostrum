@@ -98,7 +98,7 @@ defmodule Nostrum.Shard.Dispatch do
     end)
 
     if guild.member_count >= @large_threshold do
-      Session.request_guild_members(state.shard_pid, guild.id)
+      Session.request_guild_members(state.conn_pid, guild.id)
     end
 
     res =

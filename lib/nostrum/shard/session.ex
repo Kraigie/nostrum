@@ -21,12 +21,12 @@ defmodule Nostrum.Shard.Session do
       end
 
     payload = Payload.status_update_payload(idle_since, game, stream, status, afk, type)
-    send(pid, {:status_update, payload})
+    WebSockex.cast(pid, {:status_update, payload})
   end
 
   def request_guild_members(pid, guild_id, limit \\ 0) do
     payload = Payload.request_members_payload(guild_id, limit)
-    send(pid, {:request_guild_members, payload})
+    WebSockex.cast(pid, {:request_guild_members, payload})
   end
 
   def start_link([gateway, shard_num]) do
@@ -34,7 +34,6 @@ defmodule Nostrum.Shard.Session do
       shard_num: shard_num,
       seq: nil,
       session: nil,
-      shard_pid: self(),
       conn: nil,
       conn_pid: nil,
       gateway: gateway <> @gateway_qs,
@@ -80,6 +79,14 @@ defmodule Nostrum.Shard.Session do
       new_state ->
         {:ok, new_state}
     end
+  end
+
+  def handle_cast({:status_update, payload}, state) do
+    {:reply, {:binary, payload}, state}
+  end
+
+  def handle_cast({:request_guild_members, payload}, state) do
+    {:reply, {:binary, payload}, state}
   end
 
   def handle_cast({:heartbeat, _interval}, %{heartbeat_ack: false} = state) do
