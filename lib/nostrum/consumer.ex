@@ -61,20 +61,21 @@ defmodule Nostrum.Consumer do
   State snapshot for the websocket-controlling process that the event occured on.
 
   It contains the following keys:
-  * `:token` (string) - the token of your bot
   * `:shard_num` (string) - the shard number
-  * `:seq` (integer) - sequence number of the last event
-  * `:session` (integer) - the session id
+  * `:seq` (integer | nil) - sequence number of the last event
+  * `:session` (integer | nil) - the session id
   * `:shard_pid` (pid) - pid of the shard containing this state
-  * `:heartbeat_pid` (pid) - pid of this shard's heartbeat process
-  * `:gun_pid` (pid) - pid of the gun WS connection
+  * `:conn` (map) - websockex connection state map
+  * `:conn_pid` (pid) - pid of the connection process
   * `:gateway` (string) - gateway URL
   * `:last_heartbeat_send` (`t:DateTime.t/0`) - the time the last heartbeat was sent, if a
   heartbeat hasn't been sent it will be the time the websocket process was started
   * `:last_heartbeat_ack` (`t:DateTime.t/0` | nil) - the time the last heartbeat was acknowledged,
   will be nil if a heartbeat hasn't been ACK'd yet
+  * `:heartbeat_ack` (boolean) - whether or not the last hearbeat sent was ack'd
+  * `:heatbeat_interval` (integer | nil) - interval at which heartbeats are sent
+  * `:heartbeat_process` (pid | nil) - pid responsible for triggering next heartbeat send
   * `:zlib_ctx` (ref | nil) - reference to the current zlib context
-  * `:zlib_buffer` (string | nil) - current zlib_buffer
   """
   @type ws_state :: map
 
