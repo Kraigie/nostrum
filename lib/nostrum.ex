@@ -7,10 +7,9 @@ defmodule Nostrum do
   def start(_, _) do
     import Supervisor.Spec
 
-    token = Application.get_env(:nostrum, :token)
-    num_shards = Application.get_env(:nostrum, :num_shards)
+    if !Application.get_env(:nostrum, :token), do: raise("Please supply a token")
 
-    if !token, do: raise("Please supply a token")
+    num_shards = Application.get_env(:nostrum, :num_shards)
     corrected_num_shards = if num_shards, do: num_shards, else: 1
 
     actual_num_shards =
@@ -22,7 +21,7 @@ defmodule Nostrum do
       Nostrum.Api.Ratelimiter,
       Nostrum.Shard.Connector,
       Nostrum.Cache.CacheSupervisor,
-      {Nostrum.Shard.Supervisor, [token, actual_num_shards]}
+      {Nostrum.Shard.Supervisor, actual_num_shards}
     ]
 
     if Application.get_env(:nostrum, :dev, nil) do

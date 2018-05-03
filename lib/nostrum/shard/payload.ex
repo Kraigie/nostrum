@@ -16,7 +16,7 @@ defmodule Nostrum.Shard.Payload do
     {os, name} = :os.type()
 
     %{
-      "token" => state.token,
+      "token" => Application.get_env(:nostrum, :token),
       "properties" => %{
         "$os" => Atom.to_string(os) <> " " <> Atom.to_string(name),
         "$browser" => "Nostrum",

@@ -9,17 +9,17 @@ defmodule Nostrum.Shard.Supervisor do
 
   require Logger
 
-  def start_link([token, :auto]) do
+  def start_link(:auto) do
     {url, shards} = Util.gateway()
 
     Supervisor.start_link(
       __MODULE__,
-      [url, token, shards],
+      [url, shards],
       name: ShardSupervisor
     )
   end
 
-  def start_link([token, num_shards]) do
+  def start_link(num_shards) do
     {url, shards} = Util.gateway()
 
     if num_shards != shards,
@@ -32,7 +32,7 @@ defmodule Nostrum.Shard.Supervisor do
 
     Supervisor.start_link(
       __MODULE__,
-      [url, token, num_shards],
+      [url, num_shards],
       name: ShardSupervisor
     )
   end
@@ -49,20 +49,20 @@ defmodule Nostrum.Shard.Supervisor do
   end
 
   @doc false
-  def init([url, token, num_shards]) do
+  def init([url, num_shards]) do
     children =
       [
         Producer,
         Cache
-      ] ++ for i <- 0..(num_shards - 1), do: create_worker(url, token, i)
+      ] ++ for i <- 0..(num_shards - 1), do: create_worker(url, i)
 
     Supervisor.init(children, strategy: :one_for_one, max_restarts: 3, max_seconds: 60)
   end
 
   @doc false
-  def create_worker(gateway, token, shard_num) do
+  def create_worker(gateway, shard_num) do
     Supervisor.child_spec(
-      {Shard, [gateway, shard_num, token]},
+      {Shard, [gateway, shard_num]},
       id: shard_num
     )
   end

@@ -29,9 +29,8 @@ defmodule Nostrum.Shard.Session do
     send(pid, {:request_guild_members, payload})
   end
 
-  def start_link([gateway, shard_num, token]) do
+  def start_link([gateway, shard_num]) do
     state = %{
-      token: token,
       shard_num: shard_num,
       seq: nil,
       session: nil,

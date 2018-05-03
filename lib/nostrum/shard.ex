@@ -5,7 +5,7 @@ defmodule Nostrum.Shard do
 
   alias Nostrum.Shard.Session
 
-  def start_link([_, shard_num, _] = opts) do
+  def start_link([_, shard_num] = opts) do
     Supervisor.start_link(__MODULE__, opts, name: :"Shard-#{shard_num}")
   end
 
