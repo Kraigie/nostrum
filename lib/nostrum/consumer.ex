@@ -69,8 +69,10 @@ defmodule Nostrum.Consumer do
   * `:heartbeat_pid` (pid) - pid of this shard's heartbeat process
   * `:gun_pid` (pid) - pid of the gun WS connection
   * `:gateway` (string) - gateway URL
-  * `:last_heartbeat_send` (`t:DateTime.t/0` | nil) - the time the last heartbeat was sent
-  * `:last_heartbeat_ack` (`t:DateTime.t/0` | nil) - the time the last heartbeat was acknowledged
+  * `:last_heartbeat_send` (`t:DateTime.t/0`) - the time the last heartbeat was sent, if a
+  heartbeat hasn't been sent it will be the time the websocket process was started
+  * `:last_heartbeat_ack` (`t:DateTime.t/0` | nil) - the time the last heartbeat was acknowledged,
+  will be nil if a heartbeat hasn't been ACK'd yet
   * `:zlib_ctx` (ref | nil) - reference to the current zlib context
   * `:zlib_buffer` (string | nil) - current zlib_buffer
   """
