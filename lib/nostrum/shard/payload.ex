@@ -34,7 +34,7 @@ defmodule Nostrum.Shard.Payload do
   @doc false
   def resume_payload(state) do
     %{
-      "token" => state.token,
+      "token" => Application.get_env(:nostrum, :token),
       "session_id" => state.session,
       "seq" => state.seq
     }
