@@ -38,7 +38,7 @@ defmodule Nostrum.Shard.Session do
       shard_pid: self(),
       conn: nil,
       conn_pid: nil,
-      gateway: gateway,
+      gateway: gateway <> @gateway_qs,
       last_heartbeat_send: nil,
       last_heartbeat_ack: DateTime.utc_now(),
       heartbeat_ack: true,
