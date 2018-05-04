@@ -55,7 +55,7 @@ defmodule Nostrum.Shard.Session do
     zlib_ctx = :zlib.open()
     :zlib.inflateInit(zlib_ctx)
 
-    {:ok, %{state | conn: conn, conn_pid: self(), zlib_ctx: zlib_ctx}}
+    {:ok, %{state | conn: conn, conn_pid: self(), zlib_ctx: zlib_ctx, heartbeat_ack: true, heartbeat_process: nil}}
   end
 
   def handle_frame({:binary, frame}, state) do
