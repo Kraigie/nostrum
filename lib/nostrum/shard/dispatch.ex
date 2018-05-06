@@ -7,6 +7,7 @@ defmodule Nostrum.Shard.Dispatch do
   alias Nostrum.Struct.Channel
   alias Nostrum.Struct.Guild
   alias Nostrum.Struct.Guild.{Member, Role, UnavailableGuild}
+  alias Nostrum.Util
 
   require Logger
 
@@ -101,13 +102,9 @@ defmodule Nostrum.Shard.Dispatch do
       Session.request_guild_members(state.conn_pid, guild.id)
     end
 
-    res =
-      guild
-      |> GuildServer.index_guild()
-      |> Guild.to_struct()
-      |> GuildServer.create()
+    guild = Util.cast(guild, {:struct, Guild})
 
-    case res do
+    case GuildServer.create(guild) do
       {:error, reason} ->
         Logger.warn("Failed to create new guild process: #{inspect(reason)}")
         :noop

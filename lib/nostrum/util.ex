@@ -218,23 +218,13 @@ defmodule Nostrum.Util do
 
   # Generic casting function
   @doc false
-  @spec cast(term, module | {:list, term} | {:struct, term} | {:index, term, [atom]}) :: term
+  @spec cast(term, module | {:list, term} | {:struct, term}) :: term
   def cast(value, type)
-  def cast(nil, {:list, _}), do: []
   def cast(nil, _type), do: nil
 
   def cast(values, {:list, type}) when is_list(values) do
     Enum.map(values, fn value ->
       cast(value, type)
-    end)
-  end
-
-  # This takes `value` list and casts it into a map of type indexed by `index_by`.
-  def cast(value, {:index, type, index_by}) when is_list(value) do
-    new_list = cast(value, {:list, type})
-
-    Map.new(new_list, fn item ->
-      {struct_get_in(item, index_by), item}
     end)
   end
 
@@ -283,13 +273,5 @@ defmodule Nostrum.Util do
       show_current_game: "Self",
       theme: "Self"
     ]
-  end
-
-  @spec struct_get_in(map, [atom]) :: term
-  defp struct_get_in(value, keys)
-  defp struct_get_in(value, []), do: value
-
-  defp struct_get_in(value, [key | rest]) do
-    struct_get_in(Map.fetch!(value, key), rest)
   end
 end
