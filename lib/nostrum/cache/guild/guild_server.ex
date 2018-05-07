@@ -7,9 +7,7 @@ defmodule Nostrum.Cache.Guild.GuildServer do
 
   alias Nostrum.Cache.Guild.GuildRegister
   alias Nostrum.Cache.Mapping.ChannelGuild
-  alias Nostrum.Struct.Channel
   alias Nostrum.Struct.Guild
-  alias Nostrum.Struct.Guild.{Member, Role}
   alias Nostrum.Util
 
   require Logger
@@ -391,12 +389,18 @@ defmodule Nostrum.Cache.Guild.GuildServer do
 
   # TODO: Handle missing keys
   def handle_call({:create, :member, guild_id, member}, _from, state) do
-    {new_members, _, member} = members_upsert(state.members, member)
+    {new_members, _, member} =
+      list_upsert_when(state.members, member, fn m -> m.user.id === member.user.id end)
+
     {:reply, {guild_id, member}, %{state | members: new_members}}
   end
 
   def handle_call({:update, :member, guild_id, new_partial_member}, _from, state) do
-    {new_members, old_member, new_member} = members_upsert(state.members, new_partial_member)
+    {new_members, old_member, new_member} =
+      list_upsert_when(state.members, new_partial_member, fn m ->
+        m.user.id === new_partial_member.user.id
+      end)
+
     {:reply, {guild_id, old_member, new_member}, %{state | members: new_members}}
   end
 
@@ -408,12 +412,16 @@ defmodule Nostrum.Cache.Guild.GuildServer do
   end
 
   def handle_call({:create, :channel, channel}, _from, state) do
-    {new_channels, _, channel} = channels_upsert(state.channels, channel)
+    {new_channels, _, channel} =
+      list_upsert_when(state.channels, channel, fn c -> c.id === channel.id end)
+
     {:reply, channel, %{state | channels: new_channels}}
   end
 
   def handle_call({:update, :channel, channel}, _from, state) do
-    {new_channels, old_channel, new_channel} = channels_upsert(state.channels, channel)
+    {new_channels, old_channel, new_channel} =
+      list_upsert_when(state.channels, channel, fn c -> c.id === channel.id end)
+
     {:reply, {old_channel, new_channel}, %{state | channels: new_channels}}
   end
 
@@ -425,12 +433,14 @@ defmodule Nostrum.Cache.Guild.GuildServer do
   end
 
   def handle_call({:create, :role, guild_id, role}, _from, state) do
-    {new_roles, _, role} = roles_upsert(state.roles, role)
+    {new_roles, _, role} = list_upsert_when(state.roles, role, fn r -> r.id === role.id end)
     {:reply, {guild_id, role}, %{state | roles: new_roles}}
   end
 
   def handle_call({:update, :role, guild_id, role}, _from, state) do
-    {new_roles, old_role, new_role} = roles_upsert(state.roles, role)
+    {new_roles, old_role, new_role} =
+      list_upsert_when(state.roles, role, fn r -> r.id === role.id end)
+
     {:reply, {guild_id, old_role, new_role}, %{state | roles: new_roles}}
   end
 
@@ -445,61 +455,31 @@ defmodule Nostrum.Cache.Guild.GuildServer do
   end
 
   def handle_cast({:member, :chunk, member}, state) do
-    {new_members, _, _} = members_upsert(state.members, member)
+    {new_members, _, _} =
+      list_upsert_when(state.members, member, fn m -> m.user.id === member.user.id end)
+
     {:noreply, %{state | members: new_members}}
   end
 
-  @spec members_upsert([Member.t()], Member.t(), [Member.t()]) ::
-          {[Member.t()], old :: Member.t() | nil, new :: Member.t()}
-  defp members_upsert(members, value, acc \\ [])
+  @spec list_upsert_when([struct], struct, (struct -> boolean), [struct]) ::
+          {[struct], old :: struct | nil, new :: struct}
+  defp list_upsert_when(list, value, fun, acc \\ [])
 
-  defp members_upsert([], value, acc) do
+  defp list_upsert_when([], value, _, acc) do
     {acc ++ [value], nil, value}
   end
 
-  defp members_upsert([member | members], value, acc) do
-    if member.user.id === value.user.id do
-      new_member = Map.merge(member, value)
-      new_members = acc ++ [new_member | members]
-      {new_members, member, new_member}
+  defp list_upsert_when([head | list], value, fun, acc) do
+    if fun.(head) do
+      new_head =
+        Map.merge(head, value, fn
+          _k, v1, nil -> v1
+          _k, _v1, v2 -> v2
+        end)
+
+      {acc ++ [new_head | list], head, new_head}
     else
-      members_upsert(members, value, acc ++ [member])
-    end
-  end
-
-  @spec channels_upsert([Channel.t()], Channel.t(), [Channel.t()]) ::
-          {[Channel.t()], old :: Channel.t() | nil, new :: Channel.t()}
-  defp channels_upsert(channels, values, channels_acc \\ [])
-
-  defp channels_upsert([], value, acc) do
-    {acc ++ [value], nil, value}
-  end
-
-  defp channels_upsert([channel | channels], value, acc) do
-    if channel.id === value.id do
-      new_channel = Map.merge(channel, value)
-      new_channels = acc ++ [new_channel | channels]
-      {new_channels, channel, new_channel}
-    else
-      channels_upsert(channels, value, acc ++ [channel])
-    end
-  end
-
-  @spec roles_upsert([Role.t()], Role.t(), [Role.t()]) ::
-          {[Role.t()], old :: Role.t() | nil, new :: Role.t()}
-  defp roles_upsert(roles, value, acc \\ [])
-
-  defp roles_upsert([], value, acc) do
-    {acc ++ [value], nil, value}
-  end
-
-  defp roles_upsert([role | roles], value, acc) do
-    if role.id === value.id do
-      new_role = Map.merge(role, value)
-      new_roles = acc ++ [new_role | roles]
-      {new_roles, role, new_role}
-    else
-      roles_upsert(roles, value, acc ++ [role])
+      list_upsert_when(list, value, fun, acc ++ [head])
     end
   end
 
