@@ -1095,28 +1095,28 @@ defmodule Nostrum.Api do
     |> bangify
   end
 
-  @doc """
-  Gets a guild using the REST api
+  @doc ~S"""
+  Gets a guild.
 
-  Retrieves a guild with specified `guild_id`.
+  If successful, returns `{:ok, guild}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
 
-  Returns {:ok, Nostrum.Struct.Guild.t} if successful, `error` otherwise.
+  ## Examples
+
+  ```Elixir
+  Nostrum.Api.get_guild(81384788765712384)
+  {:ok, %Nostrum.Struct.Guild{id: 81384788765712384}}
+  ```
   """
-  @spec get_guild(integer) :: error | {:ok, Nostrum.Struct.Guild.t()}
-  def get_guild(guild_id) do
+  @spec get_guild(Guild.id()) :: error | {:ok, Guild.t()}
+  def get_guild(guild_id) when is_snowflake(guild_id) do
     request(:get, Constants.guild(guild_id))
-    |> handle(Guild)
+    |> handle_request_with_decode({:struct, Guild})
   end
 
   @doc """
-  Gets a guild using the REST api
-
-  Retrieves a guild with specified `guild_id`.
-
-  Raises `Nostrum.Error.ApiError` if error occurs while making the rest call.
-  Returns `Nostrum.Struct.Guild.t` if successful.
+  Same as `get_guild/1`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
-  @spec get_guild!(integer) :: no_return | Nostrum.Struct.Guild.t()
+  @spec get_guild!(Guild.id()) :: no_return | Guild.t()
   def get_guild!(guild_id) do
     get_guild(guild_id)
     |> bangify
