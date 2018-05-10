@@ -3,30 +3,39 @@ defmodule Nostrum.Cache.Me do
   Simple cache that stores information for the current user.
   """
 
-  use GenServer
+  use Agent
 
-  alias Nostrum.Api
   alias Nostrum.Struct.User
 
   def start_link([]) do
-    GenServer.start_link(__MODULE__, [], name: Me)
+    Agent.start_link(fn -> nil end, name: __MODULE__)
   end
 
-  def init([]) do
-    # Returns {:error, reason} if this fails, acting as a simple check for
-    # correct tokens
-    with {:ok, user} <- Api.get_current_user(), do: {:ok, %{user | id: user.id}}
-  end
-
-  @doc """
-  Retrieves the current user state.
+  @doc ~S"""
+  Returns the current user's state.
   """
-  @spec get() :: User.t() | map
+  @spec get() :: User.t() | nil
   def get do
-    GenServer.call(Me, {:get})
+    Agent.get(__MODULE__, fn user -> user end)
   end
 
-  def handle_call({:get}, _from, state) do
-    {:reply, state, state}
+  @doc false
+  @spec put(User.t()) :: :ok
+  def put(%User{} = user) do
+    Agent.update(__MODULE__, fn _ -> user end)
+  end
+
+  @doc false
+  @spec update(map) :: :ok
+  def update(%{} = values) do
+    Agent.update(__MODULE__, fn state ->
+      struct(state, values)
+    end)
+  end
+
+  @doc false
+  @spec delete() :: :ok
+  def delete do
+    Agent.update(__MODULE__, fn _ -> nil end)
   end
 end
