@@ -38,7 +38,7 @@ defmodule Nostrum.Cache.UserCache do
 
   **Example**
   ```elixir
-  case Nostrum.Cache.User.get(id: 1111222233334444) do
+  case Nostrum.Cache.UserCache.get(id: 1111222233334444) do
     {:ok, user} ->
       "We found " <> user.username
     {:error, _reason} ->
