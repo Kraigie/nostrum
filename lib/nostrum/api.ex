@@ -1123,38 +1123,82 @@ defmodule Nostrum.Api do
   end
 
   @doc """
-  Modify a guild's settings.
+  Modifies a guild's settings.
 
-  `options` is a map with the following optional keys:
-   * `name` - Guild name.
-   * `region` - Guild voice region id.
-   * `verification_level` - Guild verification level.
-   * `default_message_notifications` - Notifications setting.
-   * `afk_channel_id` - Id for afk channel.
-   * `afk_timeout` - Afk timeout in seconds.
-   * `icon` - Base64 encoded 128x128 jpeg image for guild icon.
-   * `owner_id` - User id to transfer guild ownership to.
-   * `splash` - Base64 encoded 128x128 jpeg image for guild splash.
+  This endpoint requires the `MANAGE_GUILD` permission. It fires the
+  `t:Nostrum.Consumer.guild_update/0` event.
+
+  If successful, returns `{:ok, guild}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
+
+  ## Options
+
+    * `:name` (string) - guild name
+    * `:region` (string) - guild voice region id
+    * `:verification_level` (integer) - verification level
+    * `:default_message_notifications` (integer) - default message
+    notification level
+    * `:explicit_content_filter` (integer) - explicit content filter level
+    * `:afk_channel_id` (`t:Nostrum.Struct.Snowflake.t/0`) - id for afk channel
+    * `:afk_timeout` (integer) - afk timeout in seconds
+    * `:icon` (base64 data URI) - 128x128 jpeg image for the guild icon
+    * `:owner_id` (`t:Nostrum.Struct.Snowflake.t/0`) - user id to transfer
+    guild ownership to (must be owner)
+    * `:splash` (base64 data URI) - 128x128 jpeg image for the guild splash
+    (VIP only)
+    * `:system_channel_id` (`t:Nostrum.Struct.Snowflake.t/0`) - the id of the
+    channel to which system messages are sent
+
+  ## Examples
+
+  ```Elixir
+  Nostrum.Api.modify_guild(81384788765712384, name: "Elixir Guild")
+  {:ok, %Nostrum.Struct.Channel{id: 81384788765712384, name: "Elixir Guild"}}
+
+  Nostrum.Api.modify_channel(81384788765712384)
+  {:ok, %Nostrum.Struct.Channel{id: 81384788765712384}}
+  ```
   """
-  @spec edit_guild(integer, %{
-          name: String.t(),
-          region: String.t(),
-          verification_level: integer,
-          default_message_notifications: boolean,
-          afk_channel_id: integer,
-          afk_timeout: integer,
-          icon: String.t(),
-          owner_id: integer,
-          splash: String.t()
-        }) :: error | {:ok, Nostrum.Struct.Guild.t()}
-  def edit_guild(guild_id, options) do
-    case request(:patch, Constants.guild(guild_id), options) do
-      {:ok, body} ->
-        {:ok, Poison.decode!(body)}
+  @spec modify_guild(Guild.id(), options) :: error | {:ok, Guild.t()}
+  def modify_guild(guild_id, options)
 
-      other ->
-        other
+  def modify_guild(guild_id, options) when is_list(options),
+    do: modify_guild(guild_id, Map.new(options))
+
+  def modify_guild(guild_id, %{} = options) when is_snowflake(guild_id) do
+    validate_modify_guild_options!(options)
+
+    request(:patch, Constants.guild(guild_id), options)
+    |> handle_request_with_decode({:struct, Guild})
+  end
+
+  defp validate_modify_guild_options!(options) do
+    valid_option_names = [
+      :name,
+      :region,
+      :verification_level,
+      :default_message_notifications,
+      :explicit_content_filter,
+      :afk_channel_id,
+      :afk_timeout,
+      :icon,
+      :owner_id,
+      :splash,
+      :system_channel_id
+    ]
+
+    case Enum.reject(options, fn {k, _} -> k in valid_option_names end) do
+      [] -> :ok
+      invalid_options -> raise ArgumentError, "invalid options #{inspect(invalid_options)}"
     end
+  end
+
+  @doc """
+  Same as `modify_guild/2`, but raises `Nostrum.Error.ApiError` in case of failure.
+  """
+  @spec modify_guild!(Guild.id(), options) :: no_return | Guild.t()
+  def modify_guild!(guild_id, options) do
+    modify_guild(guild_id, options)
+    |> bangify
   end
 
   @doc """
