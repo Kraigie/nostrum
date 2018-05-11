@@ -5,7 +5,7 @@ defmodule Nostrum.Cache.ChannelCache do
 
   use GenServer
 
-  alias Nostrum.Cache.Guild.GuildServer
+  alias Nostrum.Cache.GuildCache
   alias Nostrum.Struct.Channel
   alias Nostrum.Util
 
@@ -46,8 +46,8 @@ defmodule Nostrum.Cache.ChannelCache do
   def handle_call({:get, id}, _from, state) do
     ret =
       with nil <- Map.get(state, id),
-           {:ok, guild} <- GuildServer.get(channel_id: id) do
-        Map.get(guild.channels, id)
+           {:ok, guild} <- GuildCache.get_by(channel_id: id) do
+        Enum.find(guild.channels, fn c -> c.id === id end)
       end
 
     {:reply, ret_to_struct(ret), state}
