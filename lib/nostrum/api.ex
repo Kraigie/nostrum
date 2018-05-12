@@ -1190,14 +1190,38 @@ defmodule Nostrum.Api do
     |> bangify
   end
 
-  @doc """
+  @doc ~S"""
   Deletes a guild.
 
-  Guild to delete specified by `guild_id`.
+  This endpoint requires that the current user is the owner of the guild.
+  It fires the `t:Nostrum.Consumer.guild_delete/0` event.
+
+  If successful, returns `{:ok}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
+
+  ## Examples
+
+  ```Elixir
+  Nostrum.Api.delete_guild(81384788765712384)
+  {:ok}
+  ```
   """
-  @spec delete_guild(integer) :: error | {:ok}
+  @spec delete_guild(Guild.id()) :: error | {:ok}
+  def delete_guild(guild_id)
+
+  def delete_guild(guild_id) when not is_snowflake(guild_id),
+    do: raise(ArgumentError, "expected guild_id, got: #{inspect(guild_id)}")
+
   def delete_guild(guild_id) do
     request(:delete, Constants.guild(guild_id))
+  end
+
+  @doc ~S"""
+  Same as `delete_guild/1`, but raises `Nostrum.Error.ApiError` in case of failure.
+  """
+  @spec delete_guild!(Guild.id()) :: no_return | {:ok}
+  def delete_guild!(guild_id) do
+    delete_guild(guild_id)
+    |> bangify
   end
 
   @doc ~S"""
