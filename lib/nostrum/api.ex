@@ -103,6 +103,8 @@ defmodule Nostrum.Api do
   """
   @type options :: keyword | map
 
+  defguardp is_options(term) when is_map(term) or is_list(term)
+
   @doc """
   Updates the status of the bot for a certain shard.
 
@@ -1108,7 +1110,12 @@ defmodule Nostrum.Api do
   ```
   """
   @spec get_guild(Guild.id()) :: error | {:ok, Guild.t()}
-  def get_guild(guild_id) when is_snowflake(guild_id) do
+  def get_guild(guild_id)
+
+  def get_guild(guild_id) when not is_snowflake(guild_id),
+    do: raise(ArgumentError, "expected guild_id, got: #{inspect(guild_id)}")
+
+  def get_guild(guild_id) do
     request(:get, Constants.guild(guild_id))
     |> handle_request_with_decode({:struct, Guild})
   end
@@ -1161,35 +1168,17 @@ defmodule Nostrum.Api do
   @spec modify_guild(Guild.id(), options) :: error | {:ok, Guild.t()}
   def modify_guild(guild_id, options)
 
-  def modify_guild(guild_id, options) when is_list(options),
-    do: modify_guild(guild_id, Map.new(options))
+  def modify_guild(guild_id, _) when not is_snowflake(guild_id),
+    do: raise(ArgumentError, "expected guild_id, got: #{inspect(guild_id)}")
 
-  def modify_guild(guild_id, %{} = options) when is_snowflake(guild_id) do
-    validate_modify_guild_options!(options)
+  def modify_guild(_, options) when not is_options(options),
+    do: raise(ArgumentError, "expected options, got: #{inspect(options)}")
+
+  def modify_guild(guild_id, options) do
+    options = Map.new(options)
 
     request(:patch, Constants.guild(guild_id), options)
     |> handle_request_with_decode({:struct, Guild})
-  end
-
-  defp validate_modify_guild_options!(options) do
-    valid_option_names = [
-      :name,
-      :region,
-      :verification_level,
-      :default_message_notifications,
-      :explicit_content_filter,
-      :afk_channel_id,
-      :afk_timeout,
-      :icon,
-      :owner_id,
-      :splash,
-      :system_channel_id
-    ]
-
-    case Enum.reject(options, fn {k, _} -> k in valid_option_names end) do
-      [] -> :ok
-      invalid_options -> raise ArgumentError, "invalid options #{inspect(invalid_options)}"
-    end
   end
 
   @doc """
