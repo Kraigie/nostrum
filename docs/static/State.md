@@ -14,7 +14,7 @@ Each guild is ran in its own `GenServer` process, all of which are ran under a
 supervisor. Behind the scenes, Nostrum uses the `Registry` module to
 map guild ids to a `pid` to allow for lookup.
 
-Please see `Nostrum.Cache.Guild.GuildServer` for more information on interacting with
+Please see `Nostrum.Cache.GuildCache` for more information on interacting with
 guilds.
 
 ## Channels

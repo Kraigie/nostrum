@@ -40,7 +40,7 @@ defmodule ExampleConsumer do
            Api.get_user(user_id),
            {:ok, channel} <- Nostrum.Cache.ChannelCache.get(id: msg.channel_id),
            Api.get_channel(msg.channel_id),
-           {:ok, guild} <- Nostrum.Cache.Guild.GuildServer.get(id: channel.guild_id),
+           {:ok, guild} <- Nostrum.Cache.GuildCache.get(channel.guild_id),
            Api.get_guild(channel.guild_id) do
         Api.create_message!(
           msg.channel_id,

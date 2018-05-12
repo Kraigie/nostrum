@@ -28,7 +28,7 @@ defmodule Nostrum.Cache.GuildCache do
   defguardp is_selector(term) when is_function(term, 1)
 
   @doc """
-  Retrives all `Nostrum.Struct.Guild` from the cache.
+  Retrives all `Nostrum.Struct.Guild` from the cache as a stream.
   """
   @spec all() :: Enum.t()
   def all, do: select_all(fn guild -> guild end)

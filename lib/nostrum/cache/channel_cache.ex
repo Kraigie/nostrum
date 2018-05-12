@@ -23,7 +23,7 @@ defmodule Nostrum.Cache.ChannelCache do
 
   Internally, the ChannelCache process only stores
   `t:Nostrum.Struct.Channel.dm_channel/0` references. To get channel
-  information, a call is made to a `Nostrum.Cache.Guild.GuildServer`.
+  information, a call is made to a `Nostrum.Cache.GuildCache`.
   """
   @spec get(id: integer | Nostrum.Struct.Message.t()) :: {:error, atom} | {:ok, Channel.t()}
   def get(id: id), do: GenServer.call(ChannelCache, {:get, id})
