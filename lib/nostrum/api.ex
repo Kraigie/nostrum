@@ -1757,20 +1757,42 @@ defmodule Nostrum.Api do
   end
 
   @doc """
-  Gets the number of members that would be removed in a prune.
+  Gets the number of members that would be removed in a prune given `days`.
 
-  Guild to get prune number for is specified by guild_id.
-  Days is that number of days to count prune for.
+  This endpoint requires the `KICK_MEMBERS` permission.
+
+  If successful, returns `{:ok, %{pruned: pruned}}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
+
+  ## Examples
+
+  ```Elixir
+  Nostrum.Api.get_guild_prune_count(81384788765712384, 1)
+  {:ok, []}
+  ```
   """
-  @spec get_guild_prune(integer, integer) :: error | {:ok, %{pruned: integer}}
-  def get_guild_prune(guild_id, options) do
-    case request(:get, Constants.guild_prune(guild_id), options) do
-      {:ok, body} ->
-        {:ok, Poison.decode!(body)}
+  @spec get_guild_prune_count(Guild.id(), 1..30) :: error | {:ok, %{pruned: integer}}
+  def get_guild_prune_count(guild_id, days)
 
-      other ->
-        other
+  def get_guild_prune_count(guild_id, _) when not is_snowflake(guild_id),
+    do: raise(ArgumentError, "expected snowflake for `guild_id`, got: #{inspect(guild_id)}")
+
+  def get_guild_prune_count(_, days) when not days in 1..30,
+    do: raise(ArgumentError, "expected integer in 1..30 for `days`, got: #{inspect(days)}")
+
+  def get_guild_prune_count(guild_id, days) do
+    case request(:get, Constants.guild_prune(guild_id), "", params: %{days: days}) do
+      {:ok, body} -> {:ok, Poison.decode!(body) |> Util.safe_atom_map()}
+      other -> other
     end
+  end
+
+  @doc ~S"""
+  Same as `get_guild_prune_count/2`, but raises `Nostrum.Error.ApiError` in case of failure.
+  """
+  @spec get_guild_prune_count!(Guild.id(), pos_integer) :: no_return | %{pruned: integer}
+  def get_guild_prune_count!(guild_id, days) do
+    get_guild_prune_count(guild_id, days)
+    |> bangify
   end
 
   @doc """
