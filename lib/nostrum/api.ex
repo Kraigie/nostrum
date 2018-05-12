@@ -1789,7 +1789,7 @@ defmodule Nostrum.Api do
   @doc ~S"""
   Same as `get_guild_prune_count/2`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
-  @spec get_guild_prune_count!(Guild.id(), pos_integer) :: no_return | %{pruned: integer}
+  @spec get_guild_prune_count!(Guild.id(), 1..30) :: no_return | %{pruned: integer}
   def get_guild_prune_count!(guild_id, days) do
     get_guild_prune_count(guild_id, days)
     |> bangify
