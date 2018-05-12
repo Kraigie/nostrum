@@ -1776,7 +1776,7 @@ defmodule Nostrum.Api do
   def get_guild_prune_count(guild_id, _) when not is_snowflake(guild_id),
     do: raise(ArgumentError, "expected snowflake for `guild_id`, got: #{inspect(guild_id)}")
 
-  def get_guild_prune_count(_, days) when not days in 1..30,
+  def get_guild_prune_count(_, days) when not (days in 1..30),
     do: raise(ArgumentError, "expected integer in 1..30 for `days`, got: #{inspect(days)}")
 
   def get_guild_prune_count(guild_id, days) do
@@ -1816,7 +1816,7 @@ defmodule Nostrum.Api do
   def begin_guild_prune(guild_id, _) when not is_snowflake(guild_id),
     do: raise(ArgumentError, "expected snowflake for `guild_id`, got: #{inspect(guild_id)}")
 
-  def begin_guild_prune(_, days) when not days in 1..30,
+  def begin_guild_prune(_, days) when not (days in 1..30),
     do: raise(ArgumentError, "expected integer in 1..30 for `days`, got: #{inspect(days)}")
 
   def begin_guild_prune(guild_id, days) do
