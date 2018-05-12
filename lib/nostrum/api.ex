@@ -1767,7 +1767,7 @@ defmodule Nostrum.Api do
 
   ```Elixir
   Nostrum.Api.get_guild_prune_count(81384788765712384, 1)
-  {:ok, []}
+  {:ok, %{pruned: 0}}
   ```
   """
   @spec get_guild_prune_count(Guild.id(), 1..30) :: error | {:ok, %{pruned: integer}}
@@ -1780,7 +1780,7 @@ defmodule Nostrum.Api do
     do: raise(ArgumentError, "expected integer in 1..30 for `days`, got: #{inspect(days)}")
 
   def get_guild_prune_count(guild_id, days) do
-    case request(:get, Constants.guild_prune(guild_id), "", params: %{days: days}) do
+    case request(:get, Constants.guild_prune(guild_id), "", params: [days: days]) do
       {:ok, body} -> {:ok, Poison.decode!(body) |> Util.safe_atom_map()}
       other -> other
     end
@@ -1796,20 +1796,43 @@ defmodule Nostrum.Api do
   end
 
   @doc """
-  Begins a guild prune.
+  Begins a guild prune to prune members within `days`.
 
-  Guild to number is specified by guild_id.
-  Days is that number of days to count prune for.
+  This endpoint requires the `KICK_MEMBERS` permission. It fires multiple
+  `t:Nostrum.Consumer.guild_member_remove/0` events.
+
+  If successful, returns `{:ok, %{pruned: pruned}}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
+
+  ## Examples
+
+  ```Elixir
+  Nostrum.Api.begin_guild_prune(81384788765712384, 1)
+  {:ok, %{pruned: 0}}
+  ```
   """
-  @spec begin_guild_prune(integer, integer) :: error | {:ok, %{pruned: integer}}
+  @spec begin_guild_prune(Guild.id(), 1..30) :: error | {:ok, %{pruned: integer}}
+  def begin_guild_prune(guild_id, days)
+
+  def begin_guild_prune(guild_id, _) when not is_snowflake(guild_id),
+    do: raise(ArgumentError, "expected snowflake for `guild_id`, got: #{inspect(guild_id)}")
+
+  def begin_guild_prune(_, days) when not days in 1..30,
+    do: raise(ArgumentError, "expected integer in 1..30 for `days`, got: #{inspect(days)}")
+
   def begin_guild_prune(guild_id, days) do
     case request(:post, Constants.guild_prune(guild_id), "", params: [days: days]) do
-      {:ok, body} ->
-        {:ok, Poison.decode!(body)}
-
-      other ->
-        other
+      {:ok, body} -> {:ok, Poison.decode!(body) |> Util.safe_atom_map()}
+      other -> other
     end
+  end
+
+  @doc ~S"""
+  Same as `begin_guild_prune/2`, but raises `Nostrum.Error.ApiError` in case of failure.
+  """
+  @spec begin_guild_prune!(Guild.id(), 1..30) :: no_return | %{pruned: integer}
+  def begin_guild_prune!(guild_id, days) do
+    begin_guild_prune(guild_id, days)
+    |> bangify
   end
 
   @doc """
