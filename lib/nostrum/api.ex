@@ -1706,8 +1706,8 @@ defmodule Nostrum.Api do
   Days is that number of days to count prune for.
   """
   @spec get_guild_prune(integer, integer) :: error | {:ok, %{pruned: integer}}
-  def get_guild_prune(guild_id, options) do
-    case request(:get, Constants.guild_prune(guild_id), options) do
+  def get_guild_prune(guild_id, days) do
+    case request(:get, Constants.guild_prune(guild_id), "", params: [days: days]) do
       {:ok, body} ->
         {:ok, Poison.decode!(body)}
 
