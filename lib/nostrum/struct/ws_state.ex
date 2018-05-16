@@ -50,7 +50,7 @@ defmodule Nostrum.Struct.WSState do
   The time the last heartbeat was acknowledged, will be nil if a heartbeat
   hasn't been ACK'd yet
   """
-  @type last_heartbeat_ack :: DateTime.t()
+  @type last_heartbeat_ack :: DateTime.t() | nil
 
   @typedoc "Whether or not the last hearbeat sent was ACK'd"
   @type heartbeat_ack :: boolean
