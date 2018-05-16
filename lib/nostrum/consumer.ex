@@ -68,7 +68,8 @@ defmodule Nostrum.Consumer do
   @type guild_ban_remove ::
           {:GUILD_BAN_REMOVE, {guild_id :: integer, Nostrum.Struct.User.t()}, WSState.t()}
   @type guild_create :: {:GUILD_CREATE, {new_guild :: Nostrum.Struct.Guild.t()}, WSState.t()}
-  @type guild_available :: {:GUILD_AVAILABLE, {new_guild :: Nostrum.Struct.Guild.t()}, WSState.t()}
+  @type guild_available ::
+          {:GUILD_AVAILABLE, {new_guild :: Nostrum.Struct.Guild.t()}, WSState.t()}
   @type guild_unavailable ::
           {:GUILD_UNAVAILABLE, {unavailable_guild :: Nostrum.Struct.Guild.UnavailableGuild.t()},
            WSState.t()}
@@ -122,7 +123,8 @@ defmodule Nostrum.Consumer do
   @type user_settings_update :: no_return
   @type user_update ::
           {:USER_UPDATE,
-           {old_user :: Nostrum.Struct.User.t(), new_user :: Nostrum.Struct.User.t()}, WSState.t()}
+           {old_user :: Nostrum.Struct.User.t(), new_user :: Nostrum.Struct.User.t()},
+           WSState.t()}
   @type voice_state_update :: {:VOICE_STATE_UPDATE, {map}, WSState.t()}
   @type voice_server_update :: {:VOICE_SERVER_UPDATE, {map}, WSState.t()}
   @type webhooks_update :: {:WEBHOOKS_UPDATE, {map}, WSState.t()}
