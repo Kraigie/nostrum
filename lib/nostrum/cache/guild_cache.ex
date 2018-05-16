@@ -39,10 +39,7 @@ defmodule Nostrum.Cache.GuildCache do
   @spec select_all(selector) :: Enum.t()
   def select_all(selector)
 
-  def select_all(selector) when not is_selector(selector),
-    do: raise(ArgumentError, "expected selector, got #{inspect(selector)}")
-
-  def select_all(selector) do
+  def select_all(selector) when is_selector(selector) do
     Supervisor.which_children(GuildSupervisor)
     |> Stream.map(fn {_, pid, _, _} -> pid end)
     |> Task.async_stream(fn pid -> GenServer.call(pid, {:select, selector}) end)
@@ -148,20 +145,18 @@ defmodule Nostrum.Cache.GuildCache do
   @spec select_by(clauses, selector) :: {:ok, any} | {:error, reason}
   def select_by(clauses, selector)
 
-  def select_by(_, selector) when not is_selector(selector),
-    do: raise(ArgumentError, "expected selector, got #{inspect(selector)}")
-
-  def select_by(clauses, selector) when is_list(clauses),
+  def select_by(clauses, selector) when is_list(clauses) and is_selector(selector),
     do: select_by(Map.new(clauses), selector)
 
-  def select_by(%{id: id}, selector) when is_snowflake(id) do
+  def select_by(%{id: id}, selector) when is_snowflake(id) and is_selector(selector) do
     case GuildServer.select(id, selector) do
       {:error, _} = error -> error
       guild -> {:ok, guild}
     end
   end
 
-  def select_by(%{channel_id: channel_id}, selector) when is_snowflake(channel_id) do
+  def select_by(%{channel_id: channel_id}, selector)
+      when is_snowflake(channel_id) and is_selector(selector) do
     case ChannelGuild.get_guild(channel_id) do
       {:ok, guild_id} -> select_by(%{id: guild_id}, selector)
       {:error, _} = error -> error
@@ -171,9 +166,6 @@ defmodule Nostrum.Cache.GuildCache do
   def select_by(%{message: %Message{channel_id: channel_id}}, selector) do
     select_by(%{channel_id: channel_id}, selector)
   end
-
-  def select_by(clauses, _),
-    do: raise(ArgumentError, "expected clauses, got: #{inspect(clauses)}")
 
   @doc ~S"""
   Same as `select_by/2`, but raises `Nostrum.Error.CacheError` in case of failure.

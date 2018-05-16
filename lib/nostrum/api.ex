@@ -1161,13 +1161,8 @@ defmodule Nostrum.Api do
   @spec modify_guild(Guild.id(), options) :: error | {:ok, Guild.rest_guild()}
   def modify_guild(guild_id, options \\ [])
 
-  def modify_guild(guild_id, options) when is_list(options) do
-    if Keyword.keyword?(options) do
-      modify_guild(guild_id, Map.new(options))
-    else
-      raise(ArgumentError, "expected keyword list for `options`, got: #{inspect(options)}")
-    end
-  end
+  def modify_guild(guild_id, options) when is_list(options),
+    do: modify_guild(guild_id, Map.new(options))
 
   def modify_guild(guild_id, options) when is_snowflake(guild_id) and is_map(options) do
     options = Map.new(options)
@@ -2082,13 +2077,8 @@ defmodule Nostrum.Api do
   @spec get_current_user_guilds(options) :: error | {:ok, [Guild.user_guild()]}
   def get_current_user_guilds(options \\ [])
 
-  def get_current_user_guilds(options) when is_list(options) do
-    if Keyword.keyword?(options) do
-      get_current_user_guilds(Map.new(options))
-    else
-      raise(ArgumentError, "expected keyword list for `options`, got: #{inspect(options)}")
-    end
-  end
+  def get_current_user_guilds(options) when is_list(options),
+    do: get_current_user_guilds(Map.new(options))
 
   def get_current_user_guilds(options) when is_map(options) do
     request(:get, Constants.me_guilds(), "", params: options)
