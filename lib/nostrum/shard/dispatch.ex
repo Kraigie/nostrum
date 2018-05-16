@@ -2,11 +2,14 @@ defmodule Nostrum.Shard.Dispatch do
   @moduledoc false
 
   alias Nostrum.Cache.{ChannelCache, UserCache}
+  alias Nostrum.Cache.Me
   alias Nostrum.Cache.Guild.GuildServer
   alias Nostrum.Shard.Session
   alias Nostrum.Struct.Channel
   alias Nostrum.Struct.Guild
   alias Nostrum.Struct.Guild.{Member, Role, UnavailableGuild}
+  alias Nostrum.Struct.User
+  alias Nostrum.Util
 
   require Logger
 
@@ -101,13 +104,9 @@ defmodule Nostrum.Shard.Dispatch do
       Session.request_guild_members(state.conn_pid, guild.id)
     end
 
-    res =
-      guild
-      |> GuildServer.index_guild()
-      |> Guild.to_struct()
-      |> GuildServer.create()
+    guild = Util.cast(guild, {:struct, Guild})
 
-    case res do
+    case GuildServer.create(guild) do
       {:error, reason} ->
         Logger.warn("Failed to create new guild process: #{inspect(reason)}")
         :noop
@@ -185,6 +184,9 @@ defmodule Nostrum.Shard.Dispatch do
       p.guilds
       |> Enum.map(fn guild -> handle_event(:GUILD_CREATE, guild, state) end)
 
+    current_user = Util.cast(p.user, {:struct, User})
+    Me.put(current_user)
+
     [{event, p, state}] ++ ready_guilds
   end
 
@@ -194,7 +196,13 @@ defmodule Nostrum.Shard.Dispatch do
 
   def handle_event(:USER_SETTINGS_UPDATE = event, p, state), do: {event, p, state}
 
-  def handle_event(:USER_UPDATE = event, p, state), do: {event, UserCache.update(p), state}
+  def handle_event(:USER_UPDATE = event, p, state) do
+    if Me.get().id === p.id do
+      Me.update(p)
+    end
+
+    {event, UserCache.update(p), state}
+  end
 
   def handle_event(:VOICE_STATE_UPDATE = event, p, state), do: {event, p, state}
 

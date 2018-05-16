@@ -3,84 +3,183 @@ defmodule Nostrum.Struct.Guild do
   Struct representing a Discord guild.
   """
 
-  alias Nostrum.Struct.Emoji
   alias Nostrum.Struct.Channel
-  alias Nostrum.Struct.Guild.{Member, Role}
-  require Nostrum.Util
+  alias Nostrum.Struct.Emoji
+  alias Nostrum.Struct.Guild.Member
+  alias Nostrum.Struct.Guild.Role
+  alias Nostrum.Struct.Snowflake
+  alias Nostrum.Util
+
+  defstruct [
+    :id,
+    :name,
+    :icon,
+    :splash,
+    :owner_id,
+    :region,
+    :afk_channel_id,
+    :afk_timeout,
+    :embed_enabled,
+    :embed_channel_id,
+    :verification_level,
+    :default_message_notifications,
+    :explicit_content_filter,
+    :roles,
+    :emojis,
+    :features,
+    :mfa_level,
+    :application_id,
+    :widget_enabled,
+    :widget_channel_id,
+    :system_channel_id,
+    :joined_at,
+    :large,
+    :unavailable,
+    :member_count,
+    :voice_states,
+    :members,
+    :channels,
+    :presences
+  ]
 
   @typedoc "The guild's id"
-  @type id :: integer
+  @type id :: Snowflake.t()
 
   @typedoc "The name of the guild."
   @type name :: String.t()
 
   @typedoc "The hash of the guild's icon"
-  @type icon :: String.t()
+  @type icon :: String.t() | nil
 
   @typedoc "The hash of the guild's splash"
-  @type splash :: String.t()
+  @type splash :: String.t() | nil
 
   @typedoc "The id of the guild owner"
-  @type owner_id :: integer
+  @type owner_id :: Snowflake.t()
 
   @typedoc "The id of the voice region"
   @type region :: String.t()
 
   @typedoc "The id of the guild's afk channel"
-  @type afk_channel_id :: integer
+  @type afk_channel_id :: Snowflake.t() | nil
 
   @typedoc "The time someone must be afk before being moved"
   @type afk_timeout :: integer
 
   @typedoc "Whether the guild is emeddable"
-  @type embed_enabled :: boolean
+  @type embed_enabled :: boolean | nil
 
   @typedoc "The id of the embedded channel"
-  @type embed_channel_id :: integer
+  @type embed_channel_id :: Snowflake.t() | nil
 
   @typedoc "The level of verification"
   @type verification_level :: integer
 
-  @typedoc "Level of verification"
+  @typedoc """
+  Default message notifications level.
+  """
   @type default_message_notifications :: integer
 
-  @typedoc "List of emojis as maps"
-  @type emojis :: list(map)
+  @typedoc """
+  Explicit content filter level.
+  """
+  @type explicit_content_filter :: integer
 
-  @typedoc "List of roles, indexed by `t:Nostrum.Struct.Guild.Role.id/0`"
-  @type roles :: map
+  @typedoc "List of roles"
+  @type roles :: [Role.t()]
+
+  @typedoc "List of emojis"
+  @type emojis :: [Emoji.t()]
 
   @typedoc "List of guild features"
-  @type features :: list(map)
+  @type features :: [String.t()]
 
   @typedoc "Required MFA level of the guild"
   @type mfa_level :: integer
 
-  @typedoc "Date the user joined the guild at"
-  @type joined_at :: String.t()
+  @typedoc """
+  Application id of the guild creator if it is bot created.
+  """
+  @type application_id :: Snowflake.t() | nil
+
+  @typedoc """
+  Whether or not the server widget is enabled.
+  """
+  @type widget_enabled :: boolean | nil
+
+  @typedoc """
+  The channel id for the server widget.
+  """
+  @type widget_channel_id :: Snowflake.t()
+
+  @typedoc """
+  The id of the channel to which system messages are sent.
+  """
+  @type system_channel_id :: Snowflake.t() | nil
+
+  @typedoc "Date the guild was created"
+  @type joined_at :: String.t() | nil
 
   @typedoc "Whether the guild is considered 'large'"
-  @type large :: boolean
+  @type large :: boolean | nil
 
   @typedoc "Whether the guild is avaliable"
-  @type unavailable :: boolean
+  @type unavailable :: boolean | nil
 
   @typedoc "Total number of members in the guild"
-  @type member_count :: integer
+  @type member_count :: integer | nil
 
   @typedoc "List of voice states as maps"
-  @type voice_states :: list(map)
+  @type voice_states :: list(map) | nil
 
-  @typedoc "List of members, indexed by `t:Nostrum.Struct.User.id/0`"
-  @type members :: map
+  @typedoc "List of members"
+  @type members :: [Member.t()] | nil
 
-  @typedoc "List of channels, indexed by `t:Nostrum.Struct.Channel.id/0`"
-  @type channels :: map
+  @typedoc "List of channels"
+  @type channels :: [Channel.t()] | nil
 
   @typedoc "List of simple presence maps"
-  @type presences :: list(map)
+  @type presences :: [map]
 
-  @type t :: %__MODULE__{
+  @typedoc """
+  A `Nostrum.Struct.Guild` that is sent on user-specific rest endpoints.
+  """
+  @type user_guild :: %__MODULE__{
+          id: id,
+          name: name,
+          icon: icon,
+          splash: nil,
+          owner_id: nil,
+          region: nil,
+          afk_channel_id: nil,
+          afk_timeout: nil,
+          embed_enabled: nil,
+          embed_channel_id: nil,
+          verification_level: nil,
+          default_message_notifications: nil,
+          explicit_content_filter: nil,
+          roles: nil,
+          emojis: nil,
+          features: nil,
+          mfa_level: nil,
+          application_id: nil,
+          widget_enabled: nil,
+          widget_channel_id: nil,
+          system_channel_id: nil,
+          joined_at: nil,
+          large: nil,
+          unavailable: nil,
+          member_count: nil,
+          voice_states: nil,
+          members: nil,
+          channels: nil,
+          presences: nil
+        }
+
+  @typedoc """
+  A `Nostrum.Struct.Guild` that is sent on guild-specific rest endpoints.
+  """
+  @type rest_guild :: %__MODULE__{
           id: id,
           name: name,
           icon: icon,
@@ -93,45 +192,122 @@ defmodule Nostrum.Struct.Guild do
           embed_channel_id: embed_channel_id,
           verification_level: verification_level,
           default_message_notifications: default_message_notifications,
+          explicit_content_filter: explicit_content_filter,
           roles: roles,
           emojis: emojis,
           features: features,
           mfa_level: mfa_level,
+          application_id: application_id,
+          widget_enabled: widget_enabled,
+          widget_channel_id: widget_channel_id,
+          system_channel_id: system_channel_id,
+          joined_at: nil,
+          large: nil,
+          unavailable: nil,
+          member_count: nil,
+          voice_states: nil,
+          members: nil,
+          channels: nil,
+          presences: nil
+        }
+
+  @typedoc """
+  A `Nostrum.Struct.Guild` that is unavailable.
+  """
+  @type unavailable_guild :: %__MODULE__{
+          id: id,
+          name: nil,
+          icon: nil,
+          splash: nil,
+          owner_id: nil,
+          region: nil,
+          afk_channel_id: nil,
+          afk_timeout: nil,
+          embed_enabled: nil,
+          embed_channel_id: nil,
+          verification_level: nil,
+          default_message_notifications: nil,
+          explicit_content_filter: nil,
+          roles: nil,
+          emojis: nil,
+          features: nil,
+          mfa_level: nil,
+          application_id: nil,
+          widget_enabled: nil,
+          widget_channel_id: nil,
+          system_channel_id: nil,
+          joined_at: nil,
+          large: nil,
+          unavailable: true,
+          member_count: nil,
+          voice_states: nil,
+          members: nil,
+          channels: nil,
+          presences: nil
+        }
+
+  @typedoc """
+  A `Nostrum.Struct.Guild` that is fully available.
+  """
+  @type available_guild :: %__MODULE__{
+          id: id,
+          name: name,
+          icon: icon,
+          splash: splash,
+          owner_id: owner_id,
+          region: region,
+          afk_channel_id: afk_channel_id,
+          afk_timeout: afk_timeout,
+          embed_enabled: embed_enabled,
+          embed_channel_id: embed_channel_id,
+          verification_level: verification_level,
+          default_message_notifications: default_message_notifications,
+          explicit_content_filter: explicit_content_filter,
+          roles: roles,
+          emojis: emojis,
+          features: features,
+          mfa_level: mfa_level,
+          application_id: application_id,
+          widget_enabled: widget_enabled,
+          widget_channel_id: widget_channel_id,
+          system_channel_id: system_channel_id,
           joined_at: joined_at,
           large: large,
-          unavailable: unavailable,
+          unavailable: false,
           member_count: member_count,
           voice_states: voice_states,
           members: members,
-          presences: presences,
-          channels: channels
+          channels: channels,
+          presences: presences
         }
 
-  Nostrum.Util.nostrum_struct(%{
-    id: nil,
-    name: nil,
-    icon: nil,
-    splash: nil,
-    owner_id: nil,
-    region: nil,
-    afk_channel_id: nil,
-    afk_timeout: nil,
-    embed_enabled: nil,
-    embed_channel_id: nil,
-    verification_level: nil,
-    default_message_notifications: nil,
-    roles: [Role],
-    emojis: [Emoji],
-    features: nil,
-    mfa_level: nil,
-    # REVIEW: How is this being calculated? I imagine it's a string, maybe we can parse it?
-    joined_at: nil,
-    large: nil,
-    unavailable: nil,
-    member_count: nil,
-    voice_states: nil,
-    members: [Member],
-    presences: nil,
-    channels: [Channel]
-  })
+  @type t ::
+          available_guild
+          | unavailable_guild
+          | rest_guild
+          | user_guild
+
+  @doc false
+  def p_encode do
+    %__MODULE__{}
+  end
+
+  @doc false
+  def to_struct(map) do
+    new =
+      map
+      |> Map.new(fn {k, v} -> {Util.maybe_to_atom(k), v} end)
+      |> Map.update(:id, nil, &Util.cast(&1, Snowflake))
+      |> Map.update(:owner_id, nil, &Util.cast(&1, Snowflake))
+      |> Map.update(:afk_channel_id, nil, &Util.cast(&1, Snowflake))
+      |> Map.update(:roles, nil, &Util.cast(&1, {:list, {:struct, Role}}))
+      |> Map.update(:emojis, nil, &Util.cast(&1, {:list, {:struct, Emoji}}))
+      |> Map.update(:application_id, nil, &Util.cast(&1, Snowflake))
+      |> Map.update(:widget_channel_id, nil, &Util.cast(&1, Snowflake))
+      |> Map.update(:system_channel_id, nil, &Util.cast(&1, Snowflake))
+      |> Map.update(:members, nil, &Util.cast(&1, {:list, {:struct, Member}}))
+      |> Map.update(:channels, nil, &Util.cast(&1, {:list, {:struct, Channel}}))
+
+    struct(__MODULE__, new)
+  end
 end

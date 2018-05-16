@@ -9,7 +9,7 @@ defmodule Nostrum.Cache.Mapping.GuildShard do
   @doc """
   Gets the a shard num from a `guild_id`.
   """
-  @spec get_shard(integer) :: integer
+  @spec get_shard(Guild.id()) :: {:ok, integer} | {:error, :id_not_found}
   def get_shard(guild_id) do
     :ets.lookup_element(:guild_shard_map, guild_id, 2)
 

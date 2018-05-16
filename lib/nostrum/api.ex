@@ -1095,76 +1095,118 @@ defmodule Nostrum.Api do
     |> bangify
   end
 
-  @doc """
-  Gets a guild using the REST api
+  @doc ~S"""
+  Gets a guild.
 
-  Retrieves a guild with specified `guild_id`.
+  If successful, returns `{:ok, guild}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
 
-  Returns {:ok, Nostrum.Struct.Guild.t} if successful, `error` otherwise.
+  ## Examples
+
+  ```Elixir
+  Nostrum.Api.get_guild(81384788765712384)
+  {:ok, %Nostrum.Struct.Guild{id: 81384788765712384}}
+  ```
   """
-  @spec get_guild(integer) :: error | {:ok, Nostrum.Struct.Guild.t()}
-  def get_guild(guild_id) do
+  @spec get_guild(Guild.id()) :: error | {:ok, Guild.rest_guild()}
+  def get_guild(guild_id) when is_snowflake(guild_id) do
     request(:get, Constants.guild(guild_id))
-    |> handle(Guild)
+    |> handle_request_with_decode({:struct, Guild})
   end
 
   @doc """
-  Gets a guild using the REST api
-
-  Retrieves a guild with specified `guild_id`.
-
-  Raises `Nostrum.Error.ApiError` if error occurs while making the rest call.
-  Returns `Nostrum.Struct.Guild.t` if successful.
+  Same as `get_guild/1`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
-  @spec get_guild!(integer) :: no_return | Nostrum.Struct.Guild.t()
+  @spec get_guild!(Guild.id()) :: no_return | Guild.rest_guild()
   def get_guild!(guild_id) do
     get_guild(guild_id)
     |> bangify
   end
 
   @doc """
-  Modify a guild's settings.
+  Modifies a guild's settings.
 
-  `options` is a map with the following optional keys:
-   * `name` - Guild name.
-   * `region` - Guild voice region id.
-   * `verification_level` - Guild verification level.
-   * `default_message_notifications` - Notifications setting.
-   * `afk_channel_id` - Id for afk channel.
-   * `afk_timeout` - Afk timeout in seconds.
-   * `icon` - Base64 encoded 128x128 jpeg image for guild icon.
-   * `owner_id` - User id to transfer guild ownership to.
-   * `splash` - Base64 encoded 128x128 jpeg image for guild splash.
+  This endpoint requires the `MANAGE_GUILD` permission. It fires the
+  `t:Nostrum.Consumer.guild_update/0` event.
+
+  If successful, returns `{:ok, guild}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
+
+  ## Options
+
+    * `:name` (string) - guild name
+    * `:region` (string) - guild voice region id
+    * `:verification_level` (integer) - verification level
+    * `:default_message_notifications` (integer) - default message
+    notification level
+    * `:explicit_content_filter` (integer) - explicit content filter level
+    * `:afk_channel_id` (`t:Nostrum.Struct.Snowflake.t/0`) - id for afk channel
+    * `:afk_timeout` (integer) - afk timeout in seconds
+    * `:icon` (base64 data URI) - 128x128 jpeg image for the guild icon
+    * `:owner_id` (`t:Nostrum.Struct.Snowflake.t/0`) - user id to transfer
+    guild ownership to (must be owner)
+    * `:splash` (base64 data URI) - 128x128 jpeg image for the guild splash
+    (VIP only)
+    * `:system_channel_id` (`t:Nostrum.Struct.Snowflake.t/0`) - the id of the
+    channel to which system messages are sent
+
+  ## Examples
+
+  ```Elixir
+  Nostrum.Api.modify_guild(81384788765712384, name: "Elixir Guild")
+  {:ok, %Nostrum.Struct.Channel{id: 81384788765712384, name: "Elixir Guild"}}
+
+  Nostrum.Api.modify_channel(81384788765712384)
+  {:ok, %Nostrum.Struct.Channel{id: 81384788765712384}}
+  ```
   """
-  @spec edit_guild(integer, %{
-          name: String.t(),
-          region: String.t(),
-          verification_level: integer,
-          default_message_notifications: boolean,
-          afk_channel_id: integer,
-          afk_timeout: integer,
-          icon: String.t(),
-          owner_id: integer,
-          splash: String.t()
-        }) :: error | {:ok, Nostrum.Struct.Guild.t()}
-  def edit_guild(guild_id, options) do
-    case request(:patch, Constants.guild(guild_id), options) do
-      {:ok, body} ->
-        {:ok, Poison.decode!(body)}
+  @spec modify_guild(Guild.id(), options) :: error | {:ok, Guild.rest_guild()}
+  def modify_guild(guild_id, options \\ [])
 
-      other ->
-        other
-    end
+  def modify_guild(guild_id, options) when is_list(options),
+    do: modify_guild(guild_id, Map.new(options))
+
+  def modify_guild(guild_id, options) when is_snowflake(guild_id) and is_map(options) do
+    options = Map.new(options)
+
+    request(:patch, Constants.guild(guild_id), options)
+    |> handle_request_with_decode({:struct, Guild})
   end
 
   @doc """
+  Same as `modify_guild/2`, but raises `Nostrum.Error.ApiError` in case of failure.
+  """
+  @spec modify_guild!(Guild.id(), options) :: no_return | Guild.rest_guild()
+  def modify_guild!(guild_id, options \\ []) do
+    modify_guild(guild_id, options)
+    |> bangify
+  end
+
+  @doc ~S"""
   Deletes a guild.
 
-  Guild to delete specified by `guild_id`.
+  This endpoint requires that the current user is the owner of the guild.
+  It fires the `t:Nostrum.Consumer.guild_delete/0` event.
+
+  If successful, returns `{:ok}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
+
+  ## Examples
+
+  ```Elixir
+  Nostrum.Api.delete_guild(81384788765712384)
+  {:ok}
+  ```
   """
-  @spec delete_guild(integer) :: error | {:ok}
-  def delete_guild(guild_id) do
+  @spec delete_guild(Guild.id()) :: error | {:ok}
+  def delete_guild(guild_id) when is_snowflake(guild_id) do
     request(:delete, Constants.guild(guild_id))
+  end
+
+  @doc ~S"""
+  Same as `delete_guild/1`, but raises `Nostrum.Error.ApiError` in case of failure.
+  """
+  @spec delete_guild!(Guild.id()) :: no_return | {:ok}
+  def delete_guild!(guild_id) do
+    delete_guild(guild_id)
+    |> bangify
   end
 
   @doc ~S"""
@@ -1700,37 +1742,66 @@ defmodule Nostrum.Api do
   end
 
   @doc """
-  Gets the number of members that would be removed in a prune.
+  Gets the number of members that would be removed in a prune given `days`.
 
-  Guild to get prune number for is specified by guild_id.
-  Days is that number of days to count prune for.
+  This endpoint requires the `KICK_MEMBERS` permission.
+
+  If successful, returns `{:ok, %{pruned: pruned}}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
+
+  ## Examples
+
+  ```Elixir
+  Nostrum.Api.get_guild_prune_count(81384788765712384, 1)
+  {:ok, %{pruned: 0}}
+  ```
   """
-  @spec get_guild_prune(integer, integer) :: error | {:ok, %{pruned: integer}}
-  def get_guild_prune(guild_id, days) do
+  @spec get_guild_prune_count(Guild.id(), 1..30) :: error | {:ok, %{pruned: integer}}
+  def get_guild_prune_count(guild_id, days) when is_snowflake(guild_id) and days in 1..30 do
     case request(:get, Constants.guild_prune(guild_id), "", params: [days: days]) do
-      {:ok, body} ->
-        {:ok, Poison.decode!(body)}
-
-      other ->
-        other
+      {:ok, body} -> {:ok, Poison.decode!(body) |> Util.safe_atom_map()}
+      other -> other
     end
   end
 
-  @doc """
-  Begins a guild prune.
-
-  Guild to number is specified by guild_id.
-  Days is that number of days to count prune for.
+  @doc ~S"""
+  Same as `get_guild_prune_count/2`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
-  @spec begin_guild_prune(integer, integer) :: error | {:ok, %{pruned: integer}}
-  def begin_guild_prune(guild_id, days) do
-    case request(:post, Constants.guild_prune(guild_id), "", params: [days: days]) do
-      {:ok, body} ->
-        {:ok, Poison.decode!(body)}
+  @spec get_guild_prune_count!(Guild.id(), 1..30) :: no_return | %{pruned: integer}
+  def get_guild_prune_count!(guild_id, days) do
+    get_guild_prune_count(guild_id, days)
+    |> bangify
+  end
 
-      other ->
-        other
+  @doc """
+  Begins a guild prune to prune members within `days`.
+
+  This endpoint requires the `KICK_MEMBERS` permission. It fires multiple
+  `t:Nostrum.Consumer.guild_member_remove/0` events.
+
+  If successful, returns `{:ok, %{pruned: pruned}}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
+
+  ## Examples
+
+  ```Elixir
+  Nostrum.Api.begin_guild_prune(81384788765712384, 1)
+  {:ok, %{pruned: 0}}
+  ```
+  """
+  @spec begin_guild_prune(Guild.id(), 1..30) :: error | {:ok, %{pruned: integer}}
+  def begin_guild_prune(guild_id, days) when is_snowflake(guild_id) and days in 1..30 do
+    case request(:post, Constants.guild_prune(guild_id), "", params: [days: days]) do
+      {:ok, body} -> {:ok, Poison.decode!(body) |> Util.safe_atom_map()}
+      other -> other
     end
+  end
+
+  @doc ~S"""
+  Same as `begin_guild_prune/2`, but raises `Nostrum.Error.ApiError` in case of failure.
+  """
+  @spec begin_guild_prune!(Guild.id(), 1..30) :: no_return | %{pruned: integer}
+  def begin_guild_prune!(guild_id, days) do
+    begin_guild_prune(guild_id, days)
+    |> bangify
   end
 
   @doc """
@@ -1984,24 +2055,43 @@ defmodule Nostrum.Api do
   @doc """
   Gets a list of guilds the user is currently in.
 
-  `options` is an optional map with the following optional keys:
-   * `before` - Get guilds before this ID.
-   * `after` - Get guilds after this ID.
-   * `limit` - Max number of guilds to return.
-  """
-  @spec get_current_users_guilds(%{
-          before: integer,
-          after: integer,
-          limit: integer
-        }) :: error | {:ok, [Nostrum.Struct.Guild.t()]}
-  def get_current_users_guilds(options \\ %{}) do
-    case request(:get, Constants.me_guilds(), "", params: options) do
-      {:ok, body} ->
-        {:ok, Poison.decode!(body)}
+  This endpoint requires the `guilds` OAuth2 scope.
 
-      other ->
-        other
-    end
+  If successful, returns `{:ok, guilds}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
+
+  ## Options
+
+    * `:before` (`t:Nostrum.Struct.Snowflake.t/0`) - get guilds before this
+    guild ID
+    * `:after` (`t:Nostrum.Struct.Snowflake.t/0`) - get guilds after this guild
+    ID
+    * `:limit` (integer) - max number of guilds to return (1-100)
+
+  ## Examples
+
+  ```Elixir
+  iex> Nostrum.Api.get_current_user_guilds(limit: 1)
+  {:ok, [%Nostrum.Struct.Guild{}]}
+  ```
+  """
+  @spec get_current_user_guilds(options) :: error | {:ok, [Guild.user_guild()]}
+  def get_current_user_guilds(options \\ [])
+
+  def get_current_user_guilds(options) when is_list(options),
+    do: get_current_user_guilds(Map.new(options))
+
+  def get_current_user_guilds(options) when is_map(options) do
+    request(:get, Constants.me_guilds(), "", params: options)
+    |> handle_request_with_decode({:struct, Guild})
+  end
+
+  @doc ~S"""
+  Same as `get_current_user_guilds/1`, but raises `Nostrum.Error.ApiError` in case of failure.
+  """
+  @spec get_current_user_guilds!(options) :: no_return | [Guild.user_guild()]
+  def get_current_user_guilds!(options \\ []) do
+    get_current_user_guilds(options)
+    |> bangify
   end
 
   @doc """

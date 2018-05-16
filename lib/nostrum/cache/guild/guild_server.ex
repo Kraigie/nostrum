@@ -1,254 +1,13 @@
 defmodule Nostrum.Cache.Guild.GuildServer do
-  @moduledoc """
-  Module for interacting with Guild Servers.
-  """
+  @moduledoc false
 
   use GenServer, restart: :transient
 
   alias Nostrum.Cache.Guild.GuildRegister
-  alias Nostrum.Cache.Mapping.ChannelGuild
-  alias Nostrum.Struct.Channel
   alias Nostrum.Struct.Guild
-  alias Nostrum.Struct.Guild.{Member, Role}
   alias Nostrum.Util
 
   require Logger
-
-  @typedoc """
-  Represents different ways to search for a guild.
-
-  ## Examples
-    - Search by `t:Nostrum.Struct.Guild.id/0`
-    ```Elixir
-    GuildServer.get(id: 666666666666666)
-    ```
-    - Search by `t:Nostrum.Struct.Guild.TextChannel.id/0`
-    ```Elixir
-    GuildServer.get(channel_id: 314159265358979)
-    ```
-    - Search via `Nostrum.Struct.Message`
-    ```Elixir
-    msg = Nostrum.Api.create_message!(1618033988731, "Drake confirmed British")
-    GuildServer.get(msg)
-    ```
-  """
-  @type search_criteria ::
-          [id: integer]
-          | [channel_id: integer]
-          | [message: Nostrum.Struct.Message.t()]
-
-  @typedoc """
-  Represents different ways to get a value from a guild.
-
-  Same as `t:search_criteria/0`, but takes an additional key parameter.
-  Keys can be found in `Nostrum.Struct.Guild`
-  """
-  @type search_criteria_with_key ::
-          [id: integer, key: key :: atom]
-          | [channel_id: integer, key: key :: atom]
-          | [message: Nostrum.Struct.Message.t(), key: key :: atom]
-
-  @typedoc """
-  Transform for a guild.
-
-  The function is passed a `Nostrum.Struct.Guild.t` struct.
-  """
-  @type transform :: (Guild.t() -> term)
-
-  @typedoc """
-  Represents different ways to transform a guild.
-
-  Same as `t:search_criteria/0`, but takes an additional transform parameter.
-  See `transform/1` for an example.
-  """
-  @type search_criteria_with_transform ::
-          [id: integer, transform: transform]
-          | [channel_id: integer, transform: transform]
-          | [message: Nostrum.Struct.Message.t(), transform: transform]
-
-  @doc """
-  Retrieves a stream of all guilds.
-
-  This will introduce a very large binary into the caller process. Consider
-  running this method inside its own task.
-
-  If you just need to get a specific key, consider using
-  `get_value_all/1`
-
-  ## Example
-  ```Elixir
-  Nostrum.Cache.Guild.GuildServer.all
-  |> Enum.take_every(3)
-  |> D3L3T3_GU1LD
-  ```
-  """
-  @spec all() :: Enumerable.t()
-  def all do
-    transform_all(& &1)
-  end
-
-  @doc """
-  Retrieves a stream of values from all guilds.
-
-  ## Parameter
-    - `key` - Value to get from all guilds.
-
-  ## Example
-  ```Elixir
-  names =
-  Nostrum.Cache.GuildServer.get_value_from_all(:name)
-  |> Enum.filter(&is_weeb?)
-  |> D3L3T3_GU1LD5
-  ```
-  """
-  @spec get_value_from_all(key :: atom) :: Enumerable.t()
-  def get_value_from_all(key) when is_atom(key) do
-    transform_all(&Map.get(&1, key))
-  end
-
-  @doc ~S"""
-  Retrieves a guild from the cache.
-
-  ## Parameters
-    - `search_criteria` - The criteria used to search. See `t:search_criteria/0` for more info.
-
-  ## Example
-  ```Elixir
-  case Nostrum.Cache.Guild.GuildServer.get(id: 1234567891234789) do
-    {:ok, guild} -> "Guild has #{length(guild.members)} members"
-    {:error, _reason} -> "Guild is MIA"
-  end
-  ```
-  """
-  @spec get(search_criteria) :: {:error, reason :: atom} | {:ok, Nostrum.Struct.Guild.t()}
-  def get(search_criteria) do
-    transform(search_criteria ++ [transform: & &1])
-  end
-
-  @doc ~S"""
-  Retrieves a guild from the cache.
-
-  See `Nostrum.Cache.Guild.GuildServer.get/1` for usage.
-
-  Raises `Nostrum.Error.CacheError` if unable to find the guild.
-  """
-  @spec get!(search_criteria) :: no_return | {Nostrum.Struct.Guild.t()}
-  def get!(search_criteria) do
-    get(search_criteria)
-    |> Util.bangify_find(search_criteria, __MODULE__)
-  end
-
-  @doc ~S"""
-  Retrieves a value from a guild in the cache.
-
-  This method should be preferred over the `get/1`
-  method in the event that you need only one kv pair from the guild.
-
-  ## Parameters
-    - `search_criteria_with_key` - The criteria used to search. See
-    `t:search_criteria_with_key/0` for more info.
-
-  ## Example
-  ```Elixir
-  case Nostrum.Cache.Guild.Guildserver.get_value(id: 69696969696969, key: :name) do
-    {:ok, sick_guild_name} -> "#{sick_guild_name} is sick"
-    {:error, reason} -> "Whatchu' searchin' for fam?"
-  end
-  ```
-  """
-  @spec get_value(search_criteria_with_key) ::
-          {:error, reason :: atom}
-          | {:ok, term}
-  def get_value(id: id, key: k) when is_atom(k) do
-    transform(id: id, transform: &Map.get(&1, k)) |> check_missing_key
-  end
-
-  def get_value(channel_id: c_id, key: k) when is_atom(k) do
-    transform(channel_id: c_id, transform: &Map.get(&1, k)) |> check_missing_key
-  end
-
-  def get_value(message: %Nostrum.Struct.Message{channel_id: c_id}, key: k) do
-    c_id_int = String.to_integer(c_id)
-    transform(channel_id: c_id_int, transform: &Map.get(&1, k)) |> check_missing_key
-  end
-
-  @doc """
-  Retrieves a value from a guild in the cache.
-
-  See `Nostrum.Cache.Guild.GuildServer.get_value!/2` for usage.
-
-  Raises `Nostrum.Error.CacheError` if unable to find the guild or key.
-  """
-  @spec get_value!(search_criteria_with_key) :: no_return | term
-  def get_value!(search_critera_with_key) do
-    get_value(search_critera_with_key)
-    |> bangify_key_search(search_critera_with_key[:key])
-  end
-
-  defp check_missing_key({:ok, nil}), do: {:error, :key_not_found}
-  defp check_missing_key(ok), do: ok
-
-  # REVIEW: Can/should we handle cache errors in a better way?
-  defp bangify_key_search({:error, :key_not_found}, key),
-    do: raise(Nostrum.Error.CacheError, key: key, cache_name: __MODULE__)
-
-  defp bangify_key_search({:error, reason}, _key),
-    do: raise(Nostrum.Error.CacheError, "ERROR: #{inspect(reason)}")
-
-  defp bangify_key_search({:ok, val}, _key), do: val
-
-  @doc ~S"""
-  Retrieves a transformed guild from the cache.
-
-  Returns the result of applying a given fun to the guild specified by the search
-  criteria.
-
-  This transform does not modify the cache and is performed entirely server side.
-  This means that if you somehow cause an error to be thrown, the receiving guild
-  process will die. The benefit is not "copying" guild binaries between
-  processes which can be very big.
-
-  ## Parameters
-    - `search_criteria_with_transform` - The criteria used to search. See
-    `t:search_criteria_with_transform/0` for more info.
-
-  ## Example
-  ```Elixir
-  tf = fn guild -> Enum.any?(guild.members, &(Map.get(&1, :nick) == "The year is 20XX")) end
-  {:ok, plays_fox?} = Nostrum.Cache.Guild.GuildServer.transform(id: 123, transform: tf)
-  ```
-  """
-  @spec transform(search_criteria_with_transform) :: {:ok, term}
-  def transform(id: id, transform: tf) do
-    with {:ok, pid} <- GuildRegister.lookup(id), do: {:ok, GenServer.call(pid, {:transform, tf})}
-  end
-
-  def transform(channel_id: c_id, transform: tf) do
-    with {:ok, guild_id} <- ChannelGuild.get_guild(c_id),
-         {:ok, guild_pid} <- GuildRegister.lookup(guild_id) do
-      {:ok, GenServer.call(guild_pid, {:transform, tf})}
-    end
-  end
-
-  def transform(message: %Nostrum.Struct.Message{channel_id: c_id}, transform: tf) do
-    transform(channel_id: c_id, transform: tf)
-  end
-
-  @doc """
-  Retrieves a stream of transformed guild values from the cache.
-
-  Returns a stream of as the result of calling `transform` on every guild in the
-  cache.
-
-  See `transform/1` for usage.
-  """
-  @spec transform_all(transform) :: Enumerable.t()
-  def transform_all(transform) do
-    Supervisor.which_children(GuildSupervisor)
-    |> Stream.map(fn {_, pid, _, _} -> pid end)
-    |> Task.async_stream(&GenServer.call(&1, {:transform, transform}))
-    |> Stream.map(fn {:ok, term} -> term end)
-  end
 
   @doc false
   # REVIEW: If a guild server crashes, it will be restarted with its initial state.
@@ -311,6 +70,13 @@ defmodule Nostrum.Cache.Guild.GuildServer do
     call(guild.id, {:update, guild})
   end
 
+  # Uses a selector function to select certain fields from the guild state.
+  @doc false
+  @spec select(Guild.id(), (Guild.t() -> any)) :: any
+  def select(guild_id, fun) do
+    call(guild_id, {:select, fun})
+  end
+
   @doc false
   def delete(guild_id) do
     call(guild_id, {:delete})
@@ -370,8 +136,8 @@ defmodule Nostrum.Cache.Guild.GuildServer do
     call(guild_id, {:update, :emoji, guild_id, emojis})
   end
 
-  def handle_call({:transform, tf}, _from, state) do
-    {:reply, tf.(state), state}
+  def handle_call({:select, fun}, _from, state) do
+    {:reply, fun.(state), state}
   end
 
   def handle_call({:update, guild}, _from, state) do
@@ -391,54 +157,64 @@ defmodule Nostrum.Cache.Guild.GuildServer do
 
   # TODO: Handle missing keys
   def handle_call({:create, :member, guild_id, member}, _from, state) do
-    new_members = Map.put(state.members, member.user.id, member)
+    {new_members, _, member} =
+      list_upsert_when(state.members, member, fn m -> m.user.id === member.user.id end)
+
     {:reply, {guild_id, member}, %{state | members: new_members}}
   end
 
   def handle_call({:update, :member, guild_id, new_partial_member}, _from, state) do
-    old_member = Map.get(state.members, new_partial_member.user.id, %Member{})
-    new_member = Map.merge(old_member, new_partial_member)
-    new_members = Map.put(state.members, new_partial_member.user.id, new_member)
+    {new_members, old_member, new_member} =
+      list_upsert_when(state.members, new_partial_member, fn m ->
+        m.user.id === new_partial_member.user.id
+      end)
+
     {:reply, {guild_id, old_member, new_member}, %{state | members: new_members}}
   end
 
   def handle_call({:delete, :member, guild_id, user}, _from, state) do
-    {deleted_member, new_members} = Map.pop(state.members, user.id)
+    {new_members, deleted_member} =
+      list_delete_when(state.members, fn m -> m.user.id === user.id end)
+
     {:reply, {guild_id, deleted_member}, %{state | members: new_members}}
   end
 
   def handle_call({:create, :channel, channel}, _from, state) do
-    new_channels = Map.put(state.channels, channel.id, channel)
+    {new_channels, _, channel} =
+      list_upsert_when(state.channels, channel, fn c -> c.id === channel.id end)
+
     {:reply, channel, %{state | channels: new_channels}}
   end
 
   def handle_call({:update, :channel, channel}, _from, state) do
-    old_channel = Map.get(state.channels, channel.id, %Channel{})
-    new_channel = Map.merge(old_channel, channel)
-    new_channels = Map.put(state.channels, channel.id, new_channel)
+    {new_channels, old_channel, new_channel} =
+      list_upsert_when(state.channels, channel, fn c -> c.id === channel.id end)
+
     {:reply, {old_channel, new_channel}, %{state | channels: new_channels}}
   end
 
   def handle_call({:delete, :channel, channel_id}, _from, state) do
-    {deleted_channel, new_channels} = Map.pop(state.channels, channel_id)
+    {new_channels, deleted_channel} =
+      list_delete_when(state.channels, fn c -> c.id === channel_id end)
+
     {:reply, deleted_channel, %{state | channels: new_channels}}
   end
 
   def handle_call({:create, :role, guild_id, role}, _from, state) do
-    new_roles = Map.put(state.roles, role.id, role)
+    {new_roles, _, role} = list_upsert_when(state.roles, role, fn r -> r.id === role.id end)
     {:reply, {guild_id, role}, %{state | roles: new_roles}}
   end
 
   def handle_call({:update, :role, guild_id, role}, _from, state) do
-    old_role = Map.get(state.roles, role.id, %Role{})
-    new_role = Map.merge(old_role, role)
-    new_roles = Map.put(state.roles, role.id, new_role)
+    {new_roles, old_role, new_role} =
+      list_upsert_when(state.roles, role, fn r -> r.id === role.id end)
+
     {:reply, {guild_id, old_role, new_role}, %{state | roles: new_roles}}
   end
 
   def handle_call({:delete, :role, guild_id, role_id}, _from, state) do
-    {delete_role, new_roles} = Map.pop(state.roles, role_id)
-    {:reply, {guild_id, delete_role}, %{state | roles: new_roles}}
+    {new_roles, deleted_role} = list_delete_when(state.roles, fn r -> r.id === role_id end)
+    {:reply, {guild_id, deleted_role}, %{state | roles: new_roles}}
   end
 
   def handle_call({:update, :emoji, guild_id, emojis}, _from, state) do
@@ -447,7 +223,44 @@ defmodule Nostrum.Cache.Guild.GuildServer do
   end
 
   def handle_cast({:member, :chunk, member}, state) do
-    new_members = Map.put(state.members, member.user.id, member)
+    {new_members, _, _} =
+      list_upsert_when(state.members, member, fn m -> m.user.id === member.user.id end)
+
     {:noreply, %{state | members: new_members}}
+  end
+
+  @spec list_upsert_when([struct], struct, (struct -> boolean), [struct]) ::
+          {[struct], old :: struct | nil, new :: struct}
+  defp list_upsert_when(list, value, fun, acc \\ [])
+
+  defp list_upsert_when([], value, _, acc) do
+    {acc ++ [value], nil, value}
+  end
+
+  defp list_upsert_when([head | list], value, fun, acc) do
+    if fun.(head) do
+      new_head =
+        Map.merge(head, value, fn
+          _k, v1, nil -> v1
+          _k, _v1, v2 -> v2
+        end)
+
+      {acc ++ [new_head | list], head, new_head}
+    else
+      list_upsert_when(list, value, fun, acc ++ [head])
+    end
+  end
+
+  @spec list_delete_when(list, (any -> boolean), list) :: {list, deleted_item :: any | nil}
+  defp list_delete_when(list, id, acc \\ [])
+
+  defp list_delete_when([], _, acc), do: {acc, nil}
+
+  defp list_delete_when([head | list], fun, acc) do
+    if fun.(head) do
+      {acc ++ list, head}
+    else
+      list_delete_when(list, fun, acc ++ [head])
+    end
   end
 end

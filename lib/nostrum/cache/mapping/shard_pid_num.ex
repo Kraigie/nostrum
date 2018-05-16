@@ -6,7 +6,7 @@ defmodule Nostrum.Cache.Mapping.ShardPidNum do
   @doc """
   Gets the a shard pid from a shard number.
   """
-  @spec get_pid(integer) :: no_return | pid
+  @spec get_pid(integer) :: {:ok, pid} | {:error, :id_not_found}
   def get_pid(shard_num) do
     case :ets.lookup(:shard_pid_num, shard_num) do
       [{_shard_num, shard_pid}] -> {:ok, shard_pid}
