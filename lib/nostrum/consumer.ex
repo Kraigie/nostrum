@@ -22,6 +22,7 @@ defmodule Nostrum.Consumer do
 
   alias Nostrum.Shard.Stage.Cache
   alias Nostrum.Struct.Channel
+  alias Nostrum.Struct.WSState
 
   @doc """
   Callback used to handle events.
@@ -59,25 +60,8 @@ defmodule Nostrum.Consumer do
 
   @typedoc """
   State snapshot for the websocket-controlling process that the event occured on.
-
-  It contains the following keys:
-  * `:shard_num` (string) - the shard number
-  * `:seq` (integer | nil) - sequence number of the last event
-  * `:session` (integer | nil) - the session id
-  * `:shard_pid` (pid) - pid of the shard containing this state
-  * `:conn` (map) - websockex connection state map
-  * `:conn_pid` (pid) - pid of the connection process
-  * `:gateway` (string) - gateway URL
-  * `:last_heartbeat_send` (`t:DateTime.t/0`) - the time the last heartbeat was sent, if a
-  heartbeat hasn't been sent it will be the time the websocket process was started
-  * `:last_heartbeat_ack` (`t:DateTime.t/0` | nil) - the time the last heartbeat was acknowledged,
-  will be nil if a heartbeat hasn't been ACK'd yet
-  * `:heartbeat_ack` (boolean) - whether or not the last hearbeat sent was ack'd
-  * `:heatbeat_interval` (integer | nil) - interval at which heartbeats are sent
-  * `:heartbeat_process` (pid | nil) - pid responsible for triggering next heartbeat send
-  * `:zlib_ctx` (ref | nil) - reference to the current zlib context
   """
-  @type ws_state :: map
+  @type ws_state :: WSState
 
   @type channel_create :: {:CHANNEL_CREATE, {Channel.t()}, ws_state}
   @type channel_delete :: {:CHANNEL_DELETE, {Channel.t()}, ws_state}
