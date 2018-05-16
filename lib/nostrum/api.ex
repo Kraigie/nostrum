@@ -2500,7 +2500,7 @@ defmodule Nostrum.Api do
     GenServer.call(Ratelimiter, {:queue, request, nil}, :infinity)
   end
 
-  def request_multipart(method, route, body \\ "", options \\ []) do
+  def request_multipart(method, route, body, options \\ []) do
     request = %{
       method: method,
       route: route,
