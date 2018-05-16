@@ -21,8 +21,7 @@ defmodule Nostrum.Consumer do
   use ConsumerSupervisor
 
   alias Nostrum.Shard.Stage.Cache
-  alias Nostrum.Struct.Channel
-  alias Nostrum.Struct.WSState
+  alias Nostrum.Struct.{Channel, WSState}
 
   @doc """
   Callback used to handle events.
