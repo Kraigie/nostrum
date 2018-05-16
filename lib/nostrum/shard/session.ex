@@ -5,6 +5,7 @@ defmodule Nostrum.Shard.Session do
 
   alias Nostrum.{Constants, Util}
   alias Nostrum.Shard.{Connector, Event, Payload}
+  alias Nostrum.Struct.WSState
 
   require Logger
 
@@ -30,7 +31,7 @@ defmodule Nostrum.Shard.Session do
   end
 
   def start_link([gateway, shard_num]) do
-    state = %{
+    state = %WSState{
       shard_num: shard_num,
       seq: nil,
       session: nil,
