@@ -1110,12 +1110,7 @@ defmodule Nostrum.Api do
   ```
   """
   @spec get_guild(Guild.id()) :: error | {:ok, Guild.t()}
-  def get_guild(guild_id)
-
-  def get_guild(guild_id) when not is_snowflake(guild_id),
-    do: raise(ArgumentError, "expected guild_id, got: #{inspect(guild_id)}")
-
-  def get_guild(guild_id) do
+  def get_guild(guild_id) when is_snowflake(guild_id) do
     request(:get, Constants.guild(guild_id))
     |> handle_request_with_decode({:struct, Guild})
   end
@@ -1166,15 +1161,17 @@ defmodule Nostrum.Api do
   ```
   """
   @spec modify_guild(Guild.id(), options) :: error | {:ok, Guild.t()}
-  def modify_guild(guild_id, options)
+  def modify_guild(guild_id, options \\ [])
 
-  def modify_guild(guild_id, _) when not is_snowflake(guild_id),
-    do: raise(ArgumentError, "expected guild_id, got: #{inspect(guild_id)}")
+  def modify_guild(guild_id, options) when is_list(options) do
+    if Keyword.keyword?(options) do
+      modify_guild(guild_id, Map.new(options))
+    else
+      raise(ArgumentError, "expected keyword list for `options`, got: #{inspect(options)}")
+    end
+  end
 
-  def modify_guild(_, options) when not is_options(options),
-    do: raise(ArgumentError, "expected options, got: #{inspect(options)}")
-
-  def modify_guild(guild_id, options) do
+  def modify_guild(guild_id, options) when is_snowflake(guild_id) and is_map(options) do
     options = Map.new(options)
 
     request(:patch, Constants.guild(guild_id), options)
@@ -1185,7 +1182,7 @@ defmodule Nostrum.Api do
   Same as `modify_guild/2`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
   @spec modify_guild!(Guild.id(), options) :: no_return | Guild.t()
-  def modify_guild!(guild_id, options) do
+  def modify_guild!(guild_id, options \\ []) do
     modify_guild(guild_id, options)
     |> bangify
   end
@@ -1206,12 +1203,7 @@ defmodule Nostrum.Api do
   ```
   """
   @spec delete_guild(Guild.id()) :: error | {:ok}
-  def delete_guild(guild_id)
-
-  def delete_guild(guild_id) when not is_snowflake(guild_id),
-    do: raise(ArgumentError, "expected guild_id, got: #{inspect(guild_id)}")
-
-  def delete_guild(guild_id) do
+  def delete_guild(guild_id) when is_snowflake(guild_id) do
     request(:delete, Constants.guild(guild_id))
   end
 
@@ -1771,15 +1763,7 @@ defmodule Nostrum.Api do
   ```
   """
   @spec get_guild_prune_count(Guild.id(), 1..30) :: error | {:ok, %{pruned: integer}}
-  def get_guild_prune_count(guild_id, days)
-
-  def get_guild_prune_count(guild_id, _) when not is_snowflake(guild_id),
-    do: raise(ArgumentError, "expected snowflake for `guild_id`, got: #{inspect(guild_id)}")
-
-  def get_guild_prune_count(_, days) when not (days in 1..30),
-    do: raise(ArgumentError, "expected integer in 1..30 for `days`, got: #{inspect(days)}")
-
-  def get_guild_prune_count(guild_id, days) do
+  def get_guild_prune_count(guild_id, days) when is_snowflake(guild_id) and days in 1..30 do
     case request(:get, Constants.guild_prune(guild_id), "", params: [days: days]) do
       {:ok, body} -> {:ok, Poison.decode!(body) |> Util.safe_atom_map()}
       other -> other
@@ -1811,15 +1795,7 @@ defmodule Nostrum.Api do
   ```
   """
   @spec begin_guild_prune(Guild.id(), 1..30) :: error | {:ok, %{pruned: integer}}
-  def begin_guild_prune(guild_id, days)
-
-  def begin_guild_prune(guild_id, _) when not is_snowflake(guild_id),
-    do: raise(ArgumentError, "expected snowflake for `guild_id`, got: #{inspect(guild_id)}")
-
-  def begin_guild_prune(_, days) when not (days in 1..30),
-    do: raise(ArgumentError, "expected integer in 1..30 for `days`, got: #{inspect(days)}")
-
-  def begin_guild_prune(guild_id, days) do
+  def begin_guild_prune(guild_id, days) when is_snowflake(guild_id) and days in 1..30 do
     case request(:post, Constants.guild_prune(guild_id), "", params: [days: days]) do
       {:ok, body} -> {:ok, Poison.decode!(body) |> Util.safe_atom_map()}
       other -> other
