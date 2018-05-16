@@ -819,10 +819,10 @@ defmodule Nostrum.Api do
   """
   @spec create_channel_invite(
           integer,
-          max_age: integer,
-          max_uses: integer,
-          temporary: boolean,
-          unique: boolean
+          %{optional(:max_age) => integer,
+          optional(:max_uses) => integer,
+          optional(:temporary) => boolean,
+          optional(:unique) => boolean}
         ) :: error | {:ok, Nostrum.Struct.Invite.t()}
   def create_channel_invite(channel_id, options \\ %{}) do
     case request(:post, Constants.channel_invites(channel_id), options) do
