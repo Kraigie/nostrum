@@ -141,7 +141,115 @@ defmodule Nostrum.Struct.Guild do
   @typedoc "List of simple presence maps"
   @type presences :: [map]
 
-  @type t :: %__MODULE__{
+  @typedoc """
+  A `Nostrum.Struct.Guild` that is sent on user-specific rest endpoints.
+  """
+  @type user_guild :: %__MODULE__{
+          id: id,
+          name: name,
+          icon: icon,
+          splash: nil,
+          owner_id: nil,
+          region: nil,
+          afk_channel_id: nil,
+          afk_timeout: nil,
+          embed_enabled: nil,
+          embed_channel_id: nil,
+          verification_level: nil,
+          default_message_notifications: nil,
+          explicit_content_filter: nil,
+          roles: nil,
+          emojis: nil,
+          features: nil,
+          mfa_level: nil,
+          application_id: nil,
+          widget_enabled: nil,
+          widget_channel_id: nil,
+          system_channel_id: nil,
+          joined_at: nil,
+          large: nil,
+          unavailable: nil,
+          member_count: nil,
+          voice_states: nil,
+          members: nil,
+          channels: nil,
+          presences: nil
+        }
+
+  @typedoc """
+  A `Nostrum.Struct.Guild` that is sent on guild-specific rest endpoints.
+  """
+  @type rest_guild :: %__MODULE__{
+          id: id,
+          name: name,
+          icon: icon,
+          splash: splash,
+          owner_id: owner_id,
+          region: region,
+          afk_channel_id: afk_channel_id,
+          afk_timeout: afk_timeout,
+          embed_enabled: embed_enabled,
+          embed_channel_id: embed_channel_id,
+          verification_level: verification_level,
+          default_message_notifications: default_message_notifications,
+          explicit_content_filter: explicit_content_filter,
+          roles: roles,
+          emojis: emojis,
+          features: features,
+          mfa_level: mfa_level,
+          application_id: application_id,
+          widget_enabled: widget_enabled,
+          widget_channel_id: widget_channel_id,
+          system_channel_id: system_channel_id,
+          joined_at: nil,
+          large: nil,
+          unavailable: nil,
+          member_count: nil,
+          voice_states: nil,
+          members: nil,
+          channels: nil,
+          presences: nil
+        }
+
+  @typedoc """
+  A `Nostrum.Struct.Guild` that is unavailable.
+  """
+  @type unavailable_guild :: %__MODULE__{
+          id: id,
+          name: nil,
+          icon: nil,
+          splash: nil,
+          owner_id: nil,
+          region: nil,
+          afk_channel_id: nil,
+          afk_timeout: nil,
+          embed_enabled: nil,
+          embed_channel_id: nil,
+          verification_level: nil,
+          default_message_notifications: nil,
+          explicit_content_filter: nil,
+          roles: nil,
+          emojis: nil,
+          features: nil,
+          mfa_level: nil,
+          application_id: nil,
+          widget_enabled: nil,
+          widget_channel_id: nil,
+          system_channel_id: nil,
+          joined_at: nil,
+          large: nil,
+          unavailable: true,
+          member_count: nil,
+          voice_states: nil,
+          members: nil,
+          channels: nil,
+          presences: nil
+        }
+
+  @typedoc """
+  A `Nostrum.Struct.Guild` that is fully available.
+  """
+  @type available_guild :: %__MODULE__{
           id: id,
           name: name,
           icon: icon,
@@ -165,13 +273,19 @@ defmodule Nostrum.Struct.Guild do
           system_channel_id: system_channel_id,
           joined_at: joined_at,
           large: large,
-          unavailable: unavailable,
+          unavailable: false,
           member_count: member_count,
           voice_states: voice_states,
           members: members,
           channels: channels,
           presences: presences
         }
+
+  @type t ::
+          available_guild
+          | unavailable_guild
+          | rest_guild
+          | user_guild
 
   @doc false
   def p_encode do

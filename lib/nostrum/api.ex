@@ -2086,24 +2086,48 @@ defmodule Nostrum.Api do
   @doc """
   Gets a list of guilds the user is currently in.
 
-  `options` is an optional map with the following optional keys:
-   * `before` - Get guilds before this ID.
-   * `after` - Get guilds after this ID.
-   * `limit` - Max number of guilds to return.
-  """
-  @spec get_current_users_guilds(%{
-          before: integer,
-          after: integer,
-          limit: integer
-        }) :: error | {:ok, [Nostrum.Struct.Guild.t()]}
-  def get_current_users_guilds(options \\ %{}) do
-    case request(:get, Constants.me_guilds(), "", params: options) do
-      {:ok, body} ->
-        {:ok, Poison.decode!(body)}
+  This endpoint requires the `guilds` OAuth2 scope.
 
-      other ->
-        other
+  If successful, returns `{:ok, guilds}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
+
+  ## Options
+
+    * `:before` (`t:Nostrum.Struct.Snowflake.t/0`) - get guilds before this
+    guild ID
+    * `:after` (`t:Nostrum.Struct.Snowflake.t/0`) - get guilds after this guild
+    ID
+    * `:limit` (integer) - max number of guilds to return (1-100)
+
+  ## Examples
+
+  ```Elixir
+  iex> Nostrum.Api.get_current_user_guilds(limit: 1)
+  {:ok, [%Nostrum.Struct.Guild{}]}
+  ```
+  """
+  @spec get_current_user_guilds(options) :: error | {:ok, [Guild.user_guild()]}
+  def get_current_user_guilds(options \\ [])
+
+  def get_current_user_guilds(options) when is_list(options) do
+    if Keyword.keyword?(options) do
+      get_current_user_guilds(Map.new(options))
+    else
+      raise(ArgumentError, "expected keyword list for `options`, got: #{inspect(options)}")
     end
+  end
+
+  def get_current_user_guilds(options) when is_map(options) do
+    request(:get, Constants.me_guilds(), "", params: options)
+    |> handle_request_with_decode({:struct, Guild})
+  end
+
+  @doc ~S"""
+  Same as `get_current_user_guilds/1`, but raises `Nostrum.Error.ApiError` in case of failure.
+  """
+  @spec get_current_user_guilds!(options) :: no_return | [Guild.user_guild()]
+  def get_current_user_guilds!(options \\ []) do
+    get_current_user_guilds(options)
+    |> bangify
   end
 
   @doc """
