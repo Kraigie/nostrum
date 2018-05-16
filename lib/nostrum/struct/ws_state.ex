@@ -63,4 +63,20 @@ defmodule Nostrum.Struct.WSState do
 
   @typedoc "Reference to the current zlib context"
   @type zlib_ctx :: reference | nil
+
+  @type t :: %__MODULE__{
+          shard_num: shard_num,
+          seq: seq,
+          session: session,
+          shard_pid: shard_pid,
+          conn: conn,
+          conn_pid: conn_pid,
+          gateway: gateway,
+          last_heartbeat_send: last_heartbeat_send,
+          last_heartbeat_ack: last_heartbeat_ack,
+          heartbeat_ack: heartbeat_ack,
+          heartbeat_interval: heartbeat_interval,
+          heartbeat_process: heartbeat_process,
+          zlib_ctx: zlib_ctx
+        }
 end
