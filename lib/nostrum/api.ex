@@ -103,8 +103,6 @@ defmodule Nostrum.Api do
   """
   @type options :: keyword | map
 
-  defguardp is_options(term) when is_map(term) or is_list(term)
-
   @doc """
   Updates the status of the bot for a certain shard.
 
@@ -1109,7 +1107,7 @@ defmodule Nostrum.Api do
   {:ok, %Nostrum.Struct.Guild{id: 81384788765712384}}
   ```
   """
-  @spec get_guild(Guild.id()) :: error | {:ok, Guild.t()}
+  @spec get_guild(Guild.id()) :: error | {:ok, Guild.rest_guild()}
   def get_guild(guild_id) when is_snowflake(guild_id) do
     request(:get, Constants.guild(guild_id))
     |> handle_request_with_decode({:struct, Guild})
@@ -1118,7 +1116,7 @@ defmodule Nostrum.Api do
   @doc """
   Same as `get_guild/1`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
-  @spec get_guild!(Guild.id()) :: no_return | Guild.t()
+  @spec get_guild!(Guild.id()) :: no_return | Guild.rest_guild()
   def get_guild!(guild_id) do
     get_guild(guild_id)
     |> bangify
@@ -1160,7 +1158,7 @@ defmodule Nostrum.Api do
   {:ok, %Nostrum.Struct.Channel{id: 81384788765712384}}
   ```
   """
-  @spec modify_guild(Guild.id(), options) :: error | {:ok, Guild.t()}
+  @spec modify_guild(Guild.id(), options) :: error | {:ok, Guild.rest_guild()}
   def modify_guild(guild_id, options \\ [])
 
   def modify_guild(guild_id, options) when is_list(options) do
@@ -1181,7 +1179,7 @@ defmodule Nostrum.Api do
   @doc """
   Same as `modify_guild/2`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
-  @spec modify_guild!(Guild.id(), options) :: no_return | Guild.t()
+  @spec modify_guild!(Guild.id(), options) :: no_return | Guild.rest_guild()
   def modify_guild!(guild_id, options \\ []) do
     modify_guild(guild_id, options)
     |> bangify
