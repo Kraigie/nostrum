@@ -12,7 +12,7 @@ defmodule Nostrum.Cache.Guild.GuildServer do
   @doc false
   # REVIEW: If a guild server crashes, it will be restarted with its initial state.
   def start_link(id, guild) do
-    GenServer.start_link(__MODULE__, [id, guild])
+    GenServer.start_link(__MODULE__, [id, guild], name: :"#{guild.name}")
   end
 
   @doc false
@@ -136,6 +136,10 @@ defmodule Nostrum.Cache.Guild.GuildServer do
     call(guild_id, {:update, :emoji, guild_id, emojis})
   end
 
+  def presence_update(guild_id, presence) do
+    call(guild_id, {:update, :presence, guild_id, presence})
+  end
+
   def handle_call({:select, fun}, _from, state) do
     {:reply, fun.(state), state}
   end
@@ -220,6 +224,22 @@ defmodule Nostrum.Cache.Guild.GuildServer do
   def handle_call({:update, :emoji, guild_id, emojis}, _from, state) do
     old_emojis = state.emojis
     {:reply, {guild_id, old_emojis, emojis}, %{state | emojis: emojis}}
+  end
+
+  def handle_call({:update, :presence, guild_id, presence}, _from, state) do
+    index = Enum.find_index(state.presences, fn p -> p.user.id == presence.user.id end)
+
+    {old_presence, old_presences} =
+      if index, do: List.pop_at(state.presences, index), else: {%{}, state.presences}
+
+    new_presence =
+      old_presence
+      |> Map.put(:game, presence.game)
+      |> Map.put(:status, presence.status)
+      |> Map.put(:user, presence.user)
+
+    new_presences = [new_presence | old_presences]
+    {:reply, {guild_id, old_presence, new_presence}, %{state | presences: new_presences}}
   end
 
   def handle_cast({:member, :chunk, member}, state) do

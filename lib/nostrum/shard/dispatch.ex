@@ -27,6 +27,8 @@ defmodule Nostrum.Shard.Dispatch do
   defp format_event(events) when is_list(events),
     do: for(event <- events, do: format_event(event))
 
+  # Handles the case of not finding users in the user cache
+  defp format_event({_name, :noop, _state}), do: :noop
   defp format_event({_name, event_info, _state} = event) when is_tuple(event_info), do: event
   defp format_event({name, event_info, state}), do: {name, {event_info}, state}
   defp format_event(:noop), do: :noop
@@ -174,7 +176,12 @@ defmodule Nostrum.Shard.Dispatch do
 
   def handle_event(:MESSAGE_ACK = event, p, state), do: {event, p, state}
 
-  def handle_event(:PRESENCE_UPDATE = event, p, state), do: {event, p, state}
+  def handle_event(:PRESENCE_UPDATE = event, p, state) do
+    [
+      {event, GuildServer.presence_update(p.guild_id, p), state}
+      | [handle_event(:USER_UPDATE, p.user, state)]
+    ]
+  end
 
   def handle_event(:READY = event, p, state) do
     p.private_channels

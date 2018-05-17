@@ -96,18 +96,23 @@ defmodule Nostrum.Cache.UserCache do
   def handle_call({:update, id, user}, _from, state) do
     case :ets.lookup(:users, {:id, id}) do
       [] ->
-        {:reply, {:error, :user_not_found}, state}
+        {:reply, :noop, state}
 
       [lookup] ->
-        :ets.insert(:users, insert(id, user))
-        {:reply, {lookup_to_struct(lookup), User.to_struct(user)}, state}
+        u = lookup_to_map(lookup)
+        new_user = Map.merge(u, user)
+        :ets.insert(:users, insert(id, new_user))
+
+        if u == new_user,
+          do: {:reply, :noop, state},
+          else: {:reply, {User.to_struct(u), User.to_struct(new_user)}, state}
     end
   end
 
   def handle_call({:delete, id}, _from, state) do
     case :ets.lookup(:users, {:id, id}) do
       [] ->
-        {:reply, {:error, :user_not_found}, state}
+        {:reply, :noop, state}
 
       [lookup] ->
         :ets.delete(:users, {:id, id})
@@ -130,7 +135,11 @@ defmodule Nostrum.Cache.UserCache do
 
   @doc false
   def lookup_to_struct(map) do
-    map |> Tuple.to_list() |> Enum.into(%{}) |> User.to_struct()
+    map |> lookup_to_map |> User.to_struct()
+  end
+
+  def lookup_to_map(map) do
+    map |> Tuple.to_list() |> Enum.into(%{})
   end
 
   @doc false

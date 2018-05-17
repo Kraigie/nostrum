@@ -116,7 +116,9 @@ defmodule Nostrum.Consumer do
   @type message_reaction_remove :: {:MESSAGE_REACTION_REMOVE, {map}, WSState.t()}
   @type message_reaction_remove_all :: {:MESSAGE_REACTION_REMOVE_ALL, {map}, WSState.t()}
   @type message_ack :: {:MESSAGE_ACK, {map}, WSState.t()}
-  @type presence_update :: {:PRESENCE_UPDATE, {map}, WSState.t()}
+  @type presence_update ::
+          {:PRESENCE_UPDATE,
+           {guild_id :: integer, old_presence :: map | nil, new_presence :: map}, WSState.t()}
   @type ready :: {:READY, {map}, WSState.t()}
   @type resumed :: {:RESUMED, {map}, WSState.t()}
   @type typing_start :: {:TYPING_START, {map}, WSState.t()}
