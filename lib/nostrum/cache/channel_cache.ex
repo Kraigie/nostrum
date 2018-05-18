@@ -29,10 +29,13 @@ defmodule Nostrum.Cache.ChannelCache do
   def get(id: id), do: GenServer.call(ChannelCache, {:get, id})
   def get(%Nostrum.Struct.Message{channel_id: channel_id}), do: get(id: channel_id)
 
+  @spec get!(id: integer | Nostrum.Struct.Message.t()) :: no_return | Channel.t()
   def get!(id: id) do
     get(id: id)
     |> Util.bangify_find(id, __MODULE__)
   end
+
+  def get!(%Nostrum.Struct.Message{channel_id: channel_id}), do: get!(id: channel_id)
 
   @doc false
   def create(channel), do: GenServer.call(ChannelCache, {:create, channel.id, channel})
