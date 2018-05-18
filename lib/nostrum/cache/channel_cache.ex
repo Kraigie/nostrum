@@ -31,6 +31,7 @@ defmodule Nostrum.Cache.ChannelCache do
 
   @spec get!(integer | Nostrum.Struct.Message.t()) :: no_return | Channel.t()
   def get!(%Nostrum.Struct.Message{channel_id: channel_id}), do: get!(channel_id)
+
   def get!(id) do
     get(id)
     |> Util.bangify_find(id, __MODULE__)
