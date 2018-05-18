@@ -25,11 +25,11 @@ defmodule Nostrum.Cache.ChannelCache do
   `t:Nostrum.Struct.Channel.dm_channel/0` references. To get channel
   information, a call is made to a `Nostrum.Cache.GuildCache`.
   """
-  @spec get(integer | Nostrum.Struct.Message.t()) :: {:error, atom} | {:ok, Channel.t()}
+  @spec get(Channel.id() | Nostrum.Struct.Message.t()) :: {:error, atom} | {:ok, Channel.t()}
   def get(%Nostrum.Struct.Message{channel_id: channel_id}), do: get(channel_id)
   def get(id), do: GenServer.call(ChannelCache, {:get, id})
 
-  @spec get!(integer | Nostrum.Struct.Message.t()) :: no_return | Channel.t()
+  @spec get!(Channel.id() | Nostrum.Struct.Message.t()) :: no_return | Channel.t()
   def get!(%Nostrum.Struct.Message{channel_id: channel_id}), do: get!(channel_id)
 
   def get!(id) do
