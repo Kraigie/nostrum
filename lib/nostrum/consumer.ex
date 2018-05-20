@@ -49,13 +49,19 @@ defmodule Nostrum.Consumer do
   """
   @callback handle_event(event) :: any
 
-  @typedoc """
-  Tuple describing the client of a call request.
+  @type options :: [option] | []
 
-  `pid` is the PID of the caller and `tag` is a unique term used to identify the
-  call.
+  @typedoc """
+  General process options.
+
+  The `subscribe_to` option should only be set if you want to use your own producer or producer consumer.
   """
-  @type from :: {pid, tag :: term}
+  @type option ::
+          {:registry, atom()}
+          | {:name, Supervisor.name()}
+          | {:max_restarts, non_neg_integer()}
+          | {:max_seconds, non_neg_integer()}
+          | {:subscribe_to, [GenStage.stage() | {GenStage.stage(), keyword()}]}
 
   @type channel_create :: {:CHANNEL_CREATE, {Channel.t()}, WSState.t()}
   @type channel_delete :: {:CHANNEL_DELETE, {Channel.t()}, WSState.t()}
@@ -175,13 +181,7 @@ defmodule Nostrum.Consumer do
     quote location: :keep do
       @behaviour Nostrum.Consumer
 
-      use Task
-
       alias Nostrum.Consumer
-
-      def handle_event(_event) do
-        :ok
-      end
 
       def start_link(event) do
         Task.start_link(fn ->
@@ -195,27 +195,47 @@ defmodule Nostrum.Consumer do
           start: {__MODULE__, :start_link, []}
         }
 
-        # Default to transient restart as permanent isn't allowed.
-        # https://github.com/elixir-lang/gen_stage/commit/2b269accba8b8cb0a71333f55e3bd9ce893b40d4
-        opts =
-          [restart: :transient]
-          |> Keyword.merge(unquote(Macro.escape(opts)))
+        Supervisor.child_spec(spec, unquote(Macro.escape(opts)))
+      end
 
-        Supervisor.child_spec(spec, opts)
+      def handle_event(_event) do
+        :ok
       end
 
       defoverridable handle_event: 1, child_spec: 1
     end
   end
 
-  def start_link(mod) do
-    ConsumerSupervisor.start_link(__MODULE__, mod)
+  @doc ~S"""
+  Starts a consumer process.
+
+  `mod` is the name of the module where you define your event callbacks, which should probably be
+  the current module which you can get with `__MODULE__`.
+
+  `options` is a list of general process options. See `t:Nostrum.Consumer.options/0` for more info.
+  """
+  @spec start_link(module, options) :: Supervisor.on_start()
+  def start_link(mod, options \\ [])
+
+  def start_link(mod, [name: name] = options) do
+    ConsumerSupervisor.start_link(__MODULE__, [mod, Keyword.drop(options, [:name])], name: name)
   end
 
-  @doc false
-  def init(mod) do
-    children = [mod]
+  def start_link(mod, options), do: ConsumerSupervisor.start_link(__MODULE__, [mod, options])
 
-    ConsumerSupervisor.init(children, strategy: :one_for_one, subscribe_to: [Cache])
+  @doc false
+  def init([mod, opt]) do
+    default = [strategy: :one_for_one, subscribe_to: [Cache]]
+
+    ConsumerSupervisor.init(
+      [
+        %{
+          id: mod,
+          start: {mod, :start_link, []},
+          restart: :transient
+        }
+      ],
+      Keyword.merge(default, opt)
+    )
   end
 end

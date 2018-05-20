@@ -7,7 +7,6 @@ defmodule Dummy do
 
   def start_link do
     children = for i <- 0..1, do: create_worker(i)
-
     Supervisor.start_link(children, strategy: :one_for_one)
   end
 
