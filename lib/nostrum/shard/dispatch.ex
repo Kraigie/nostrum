@@ -5,10 +5,8 @@ defmodule Nostrum.Shard.Dispatch do
   alias Nostrum.Cache.Me
   alias Nostrum.Cache.Guild.GuildServer
   alias Nostrum.Shard.Session
-  alias Nostrum.Struct.Channel
-  alias Nostrum.Struct.Guild
+  alias Nostrum.Struct.{Channel, Guild, Message, User}
   alias Nostrum.Struct.Guild.{Member, Role, UnavailableGuild}
-  alias Nostrum.Struct.User
   alias Nostrum.Util
 
   require Logger
@@ -160,7 +158,7 @@ defmodule Nostrum.Shard.Dispatch do
   def handle_event(:GUILD_ROLE_UPDATE = event, p, state),
     do: {event, GuildServer.role_update(p.guild_id, p.role), state}
 
-  def handle_event(:MESSAGE_CREATE = event, p, state), do: {event, p, state}
+  def handle_event(:MESSAGE_CREATE = event, p, state), do: {event, Message.to_struct(p), state}
 
   def handle_event(:MESSAGE_DELETE = event, p, state), do: {event, p, state}
 
