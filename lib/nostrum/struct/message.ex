@@ -22,6 +22,7 @@ defmodule Nostrum.Struct.Message do
     :edited_timestamp,
     :embeds,
     :id,
+    :guild_id,
     :mention_everyone,
     :mention_roles,
     :mentions,
@@ -36,6 +37,9 @@ defmodule Nostrum.Struct.Message do
 
   @typedoc "The id of the message"
   @type id :: Snowflake.t()
+
+  @typedoc "The id of the guild"
+  @type guild_id :: Snowflake.t() | nil
 
   @typedoc "The id of the channel"
   @type channel_id :: Snowflake.t()
@@ -111,6 +115,7 @@ defmodule Nostrum.Struct.Message do
           edited_timestamp: edited_timestamp,
           embeds: embeds,
           id: id,
+          guild_id: guild_id,
           mention_everyone: mention_everyone,
           mention_roles: mention_roles,
           mentions: mentions,
@@ -138,6 +143,7 @@ defmodule Nostrum.Struct.Message do
       map
       |> Map.new(fn {k, v} -> {Util.maybe_to_atom(k), v} end)
       |> Map.update(:id, nil, &Util.cast(&1, Snowflake))
+      |> Map.update(:guild_id, nil, &Util.cast(&1, Snowflake))
       |> Map.update(:channel_id, nil, &Util.cast(&1, Snowflake))
       |> Map.update(:author, nil, &Util.cast(&1, {:struct, User}))
       |> Map.update(:mentions, nil, &Util.cast(&1, {:list, {:struct, User}}))
