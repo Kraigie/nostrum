@@ -18,6 +18,8 @@ defmodule Nostrum.Cache.UserCache do
 
   alias Nostrum.Struct.User
   alias Nostrum.Util
+  
+  import Nostrum.Struct.Snowflake, only: [is_snowflake: 1]
 
   @doc false
   def start_link([]) do
@@ -44,8 +46,8 @@ defmodule Nostrum.Cache.UserCache do
   end
   ```
   """
-  @spec get(User.id()) :: {:error, atom} | {:ok, Nostrum.Struct.User.t()}
-  def get(id), do: lookup_as_struct(id)
+  @spec get(User.id()) :: {:error, atom} | {:ok, User.t()}
+  def get(id) when is_snowflake(id), do: lookup_as_struct(id)
 
   @doc """
   Retrieves a user from the cache by id.
@@ -55,8 +57,8 @@ defmodule Nostrum.Cache.UserCache do
   Returns `Nostrum.Struct.User.t` if found.
   Raises `Nostrum.Error.CahceError` if not found.
   """
-  @spec get!(User.id()) :: no_return | Nostrum.Struct.User.t()
-  def get!(id), do: get(id) |> Util.bangify_find(id, __MODULE__)
+  @spec get!(User.id()) :: no_return | User.t()
+  def get!(id) when is_snowflake(id), do: id |> get |> Util.bangify_find(id, __MODULE__)
 
   @doc false
   def create(user) do
