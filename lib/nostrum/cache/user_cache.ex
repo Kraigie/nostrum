@@ -18,7 +18,7 @@ defmodule Nostrum.Cache.UserCache do
 
   alias Nostrum.Struct.User
   alias Nostrum.Util
-  
+
   import Nostrum.Struct.Snowflake, only: [is_snowflake: 1]
 
   @doc false
