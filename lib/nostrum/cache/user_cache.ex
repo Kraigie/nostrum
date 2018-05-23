@@ -19,6 +19,8 @@ defmodule Nostrum.Cache.UserCache do
   alias Nostrum.Struct.User
   alias Nostrum.Util
 
+  import Nostrum.Struct.Snowflake, only: [is_snowflake: 1]
+
   @doc false
   def start_link([]) do
     GenServer.start_link(__MODULE__, [], name: UserCache)
@@ -30,15 +32,13 @@ defmodule Nostrum.Cache.UserCache do
   end
 
   @doc ~s"""
-  Retrieves a user from the cache.
-
-  `get/1` requires a keyword list as its only argument.
+  Retrieves a user from the cache by id.
 
   Returns {:ok, Nostrum.Struct.User.t} if found, {:error, atom} otherwise.
 
   **Example**
   ```elixir
-  case Nostrum.Cache.UserCache.get(id: 1111222233334444) do
+  case Nostrum.Cache.UserCache.get(1111222233334444) do
     {:ok, user} ->
       "We found " <> user.username
     {:error, _reason} ->
@@ -46,22 +46,19 @@ defmodule Nostrum.Cache.UserCache do
   end
   ```
   """
-  @spec get(id: integer) :: {:error, atom} | {:ok, Nostrum.Struct.User.t()}
-  def get(id: id), do: lookup_as_struct(id)
+  @spec get(User.id()) :: {:error, atom} | {:ok, User.t()}
+  def get(id) when is_snowflake(id), do: lookup_as_struct(id)
 
   @doc """
-  Retrieves a user from the cache.
+  Retrieves a user from the cache by id.
 
   See `get/1` for use and examples.
 
   Returns `Nostrum.Struct.User.t` if found.
   Raises `Nostrum.Error.CahceError` if not found.
   """
-  @spec get!(id: integer) :: no_return | Nostrum.Struct.User.t()
-  def get!(id: id) do
-    get(id: id)
-    |> Util.bangify_find(id, __MODULE__)
-  end
+  @spec get!(User.id()) :: no_return | User.t()
+  def get!(id) when is_snowflake(id), do: id |> get |> Util.bangify_find(id, __MODULE__)
 
   @doc false
   def create(user) do
