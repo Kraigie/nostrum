@@ -20,7 +20,7 @@ defmodule Nostrum.Api.Base do
       {"User-Agent", "DiscordBot (https://github.com/kraigie/nostrum, #{@version})"} | headers
     ]
 
-    token = Application.get_env(:nostrum, :token)
+    token = "Bot " <> Application.get_env(:nostrum, :token)
 
     [{"Authorization", token} | user_agent]
   end
