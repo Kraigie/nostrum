@@ -183,6 +183,9 @@ defmodule Nostrum.Api do
     end
   end
 
+  def create_message(channel_id, content) when is_snowflake(channel_id) and is_binary(content),
+    do: create_message_with_json(channel_id, %{content: content})
+
   defp create_message_with_multipart(channel_id, %{file: file_path} = options) do
     payload_json =
       options
@@ -259,6 +262,12 @@ defmodule Nostrum.Api do
   def edit_message(channel_id, message_id, %{} = options)
       when is_snowflake(channel_id) and is_snowflake(message_id) do
     request(:patch, Constants.channel_message(channel_id, message_id), options)
+    |> handle_request_with_decode({:struct, Message})
+  end
+
+  def edit_message(channel_id, message_id, content)
+      when is_snowflake(channel_id) and is_snowflake(message_id) and is_binary(content) do
+    request(:patch, Constants.channel_message(channel_id, message_id), %{content: content})
     |> handle_request_with_decode({:struct, Message})
   end
 
