@@ -12,9 +12,7 @@ defmodule Nostrum.Cache.CacheSupervisor do
       # REVIEW: If shard dies, should guilds die also? An attempt will be made to restart them
       {Registry, keys: :unique, name: GuildRegistry},
       Nostrum.Cache.Guild.GuildSupervisor,
-      Nostrum.Cache.Me,
-      Nostrum.Cache.ChannelCache,
-      Nostrum.Cache.UserCache
+      Nostrum.Cache.Me
     ]
 
     Supervisor.init(children, strategy: :one_for_one)

@@ -5,7 +5,7 @@ defmodule Nostrum.Cache.UserCache do
   The ETS table name associated with the User Cache is `:users`. Besides the
   methods provided below you can call any other ETS methods on the table.
 
-  **Example**
+  ## Example
   ```elixir
   info = :ets.info(:users)
   [..., heir: :none, name: :users, size: 1, ...]
@@ -14,29 +14,17 @@ defmodule Nostrum.Cache.UserCache do
   ```
   """
 
-  use GenServer
-
   alias Nostrum.Struct.User
   alias Nostrum.Util
 
   import Nostrum.Struct.Snowflake, only: [is_snowflake: 1]
 
-  @doc false
-  def start_link([]) do
-    GenServer.start_link(__MODULE__, [], name: UserCache)
-  end
-
-  @doc false
-  def init([]) do
-    {:ok, []}
-  end
-
   @doc ~s"""
   Retrieves a user from the cache by id.
 
-  Returns {:ok, Nostrum.Struct.User.t} if found, {:error, atom} otherwise.
+  If successful, returns `{:ok, user}`. Otherwise, returns `{:error, reason}`.
 
-  **Example**
+  ## Example
   ```elixir
   case Nostrum.Cache.UserCache.get(1111222233334444) do
     {:ok, user} ->
@@ -47,107 +35,61 @@ defmodule Nostrum.Cache.UserCache do
   ```
   """
   @spec get(User.id()) :: {:error, atom} | {:ok, User.t()}
-  def get(id) when is_snowflake(id), do: lookup_as_struct(id)
+  def get(id) when is_snowflake(id) do
+    case lookup(id) do
+      {:ok, user} -> {:ok, User.to_struct(user)}
+      error -> error
+    end
+  end
 
   @doc """
-  Retrieves a user from the cache by id.
-
-  See `get/1` for use and examples.
-
-  Returns `Nostrum.Struct.User.t` if found.
-  Raises `Nostrum.Error.CahceError` if not found.
+  Same as `get/1`, but raises `Nostrum.Error.CacheError` in case of a failure.
   """
   @spec get!(User.id()) :: no_return | User.t()
   def get!(id) when is_snowflake(id), do: id |> get |> Util.bangify_find(id, __MODULE__)
 
   @doc false
+  @spec create(map) :: User.t()
   def create(user) do
-    GenServer.call(UserCache, {:create, user.id, user})
+    :ets.insert(:users, {user.id, user})
+    User.to_struct(user)
   end
 
   @doc false
-  def update(user) do
-    GenServer.call(UserCache, {:update, user.id, user})
-  end
-
-  @doc false
-  def delete(user) do
-    GenServer.call(UserCache, {:delete, user.id})
-  end
-
-  def handle_call({:create, id, %{bot: _} = user}, _from, state) do
-    :ets.insert(:users, insert(id, user))
-    {:reply, User.to_struct(user), state}
-  end
-
-  def handle_call({:create, id, user}, _from, state) do
-    # We don't always get the `bot` key, so we'll force it in here.
-    # This allows us to lookup ets table by element as they're all guaranteed to
-    # be there.
-    # REVIEW: While, arbitrary, this looks to be deterministic.
-    # Relevant docs: http://erlang.org/doc/man/maps.html#to_list-1
-    :ets.insert(:users, insert(id, Map.put(user, :bot, false)))
-    {:reply, User.to_struct(user), state}
-  end
-
-  def handle_call({:update, id, user}, _from, state) do
-    case :ets.lookup(:users, {:id, id}) do
-      [] ->
-        {:reply, :noop, state}
-
-      [lookup] ->
-        u = lookup_to_map(lookup)
-        new_user = Map.merge(u, user)
-        :ets.insert(:users, insert(id, new_user))
-
-        if u == new_user,
-          do: {:reply, :noop, state},
-          else: {:reply, {User.to_struct(u), User.to_struct(new_user)}, state}
-    end
-  end
-
-  def handle_call({:delete, id}, _from, state) do
-    case :ets.lookup(:users, {:id, id}) do
-      [] ->
-        {:reply, :noop, state}
-
-      [lookup] ->
-        :ets.delete(:users, {:id, id})
-        {:reply, lookup_to_struct(lookup), state}
+  @spec update(map) :: :noop | {User.t(), User.t()}
+  def update(info) do
+    with {:ok, u} <- lookup(info.id),
+         new_user = Map.merge(u, info),
+         false <- u == new_user do
+      :ets.insert(:users, {new_user.id, new_user})
+      {User.to_struct(u), User.to_struct(new_user)}
+    else
+      _ -> :noop
     end
   end
 
   @doc false
-  def insert(id, map) do
-    map
-    |> remove_struct_key
-    |> Map.to_list()
-    # We'll have id key twice; Isn't an issue and allows us to have `id` as key.
-    |> List.insert_at(0, {:id, id})
-    |> List.to_tuple()
-  end
+  @spec delete(User.id()) :: :noop | User.t()
+  def delete(id) do
+    case lookup(id) do
+      {:ok, user} ->
+        :ets.delete(:users, id)
+        User.to_struct(user)
 
-  def remove_struct_key(%{__struct__: _} = map), do: Map.delete(map, :__struct__)
-  def remove_struct_key(map), do: map
-
-  @doc false
-  def lookup_to_struct(map) do
-    map |> lookup_to_map |> User.to_struct()
-  end
-
-  def lookup_to_map(map) do
-    map |> Tuple.to_list() |> Enum.into(%{})
+      _ ->
+        :noop
+    end
   end
 
   @doc false
-  def lookup_as_struct(id) do
-    case :ets.lookup(:users, {:id, id}) do
+  @spec lookup(User.id()) :: {:error, :user_not_found} | {:ok, map}
+  def lookup(id) do
+    case :ets.lookup(:users, id) do
       [] ->
         {:error, :user_not_found}
 
-      [other] ->
-        lookup = lookup_to_struct(other)
-        {:ok, lookup}
+      [{^id, user}] ->
+        {:ok, user}
     end
   end
 end
