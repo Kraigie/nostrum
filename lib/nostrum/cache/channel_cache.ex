@@ -56,12 +56,14 @@ defmodule Nostrum.Cache.ChannelCache do
   def get!(%Nostrum.Struct.Message{channel_id: channel_id}), do: get!(channel_id)
   def get!(id) when is_snowflake(id), do: id |> get |> Util.bangify_find(id, __MODULE__)
 
+  @doc false
   @spec create(map) :: Channel.t()
   def create(channel) do
     :ets.insert(:channels, {channel.id, channel})
     convert(channel)
   end
 
+  @doc false
   @spec update(Channel.id()) :: :noop | {Channel.t(), Channel.t()}
   def update(channel) do
     case lookup(channel.id) do
@@ -73,6 +75,7 @@ defmodule Nostrum.Cache.ChannelCache do
     end
   end
 
+  @doc false
   @spec delete(Channel.id()) :: :noop | Channel.t()
   def delete(id) do
     case lookup(id) do
@@ -99,6 +102,7 @@ defmodule Nostrum.Cache.ChannelCache do
     end
   end
 
+  @doc false
   def convert(%{__struct__: _} = struct), do: struct
   def convert(map), do: Channel.to_struct(map)
 end
