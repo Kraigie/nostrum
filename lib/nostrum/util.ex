@@ -156,12 +156,8 @@ defmodule Nostrum.Util do
     end
   end
 
-  defp execute_gateway_request(true), do: Api.request(:get, Constants.gateway(), "")
-  defp execute_gateway_request(nil), do: Api.request(:get, Constants.gateway_bot(), "")
-  defp execute_gateway_request(false), do: Api.request(:get, Constants.gateway_bot(), "")
-
   defp get_new_gateway_url do
-    case execute_gateway_request(Application.get_env(:nostrum, :self_bot)) do
+    case Api.request(:get, Constants.gateway_bot(), "") do
       {:error, %{status_code: code, message: message}} ->
         raise(Nostrum.Error.ApiError, status_code: code, message: message)
 

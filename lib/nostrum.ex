@@ -12,16 +12,13 @@ defmodule Nostrum do
     num_shards = Application.get_env(:nostrum, :num_shards)
     corrected_num_shards = if num_shards, do: num_shards, else: 1
 
-    actual_num_shards =
-      if Application.get_env(:nostrum, :self_bot), do: 1, else: corrected_num_shards
-
     setup_ets_tables()
 
     children = [
       Nostrum.Api.Ratelimiter,
       Nostrum.Shard.Connector,
       Nostrum.Cache.CacheSupervisor,
-      {Nostrum.Shard.Supervisor, actual_num_shards}
+      {Nostrum.Shard.Supervisor, corrected_num_shards}
     ]
 
     if Application.get_env(:nostrum, :dev, nil) do

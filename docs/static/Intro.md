@@ -82,8 +82,6 @@ you can omit the field and it will default to 1. You can also set this option to
 
 The following fields are also supported:
 
- - `self_bot` - Runs the bot as a self bot. If you don't know what this is, then
- don't set it, or set it to `false`. Defaults to `false`.
  - `dev` - This is added to enable Nostrum to be run completely stand alone for
  development purposes. `true` will cause Nostrum to spawn its own event consumers.
  If you have the dev flag set to true while running Nostrum alongside your
