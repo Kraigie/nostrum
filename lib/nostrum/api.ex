@@ -137,6 +137,8 @@ defmodule Nostrum.Api do
   may situationally need the `SEND_MESSAGES_TTS` permission. It fires the
   `t:Nostrum.Consumer.message_create/0` event.
 
+  If `options` is a string, `options` will be used as the message's content.
+
   If successful, returns `{:ok, message}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
 
   ## Options
@@ -155,6 +157,8 @@ defmodule Nostrum.Api do
   ```Elixir
   Nostrum.Api.create_message(43189401384091, content: "hello world!")
 
+  Nostrum.Api.create_message(43189401384091, "hello world!")
+
   import Nostrum.Struct.Embed
   embed =
     %Nostrum.Struct.Embed{}
@@ -167,7 +171,8 @@ defmodule Nostrum.Api do
   Nostrum.Api.create_message(43189401384091, content: "hello world!", embed: embed, file: "/path/to/file.txt")
   ```
   """
-  @spec create_message(Channel.id() | Message.t(), options) :: error | {:ok, Message.t()}
+  @spec create_message(Channel.id() | Message.t(), options | String.t()) ::
+          error | {:ok, Message.t()}
   def create_message(channel_id, options)
 
   def create_message(%Message{} = message, options),
@@ -231,6 +236,8 @@ defmodule Nostrum.Api do
   This endpoint requires the `VIEW_CHANNEL` permission. It fires the
   `t:Nostrum.Consumer.message_update/0` event.
 
+  If `options` is a string, `options` will be used as the message's content.
+
   If successful, returns `{:ok, message}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
 
   ## Options
@@ -243,6 +250,8 @@ defmodule Nostrum.Api do
   ```Elixir
   Nostrum.Api.edit_message(43189401384091, 1894013840914098, content: "hello world!")
 
+  Nostrum.Api.edit_message(43189401384091, 1894013840914098, "hello world!")
+
   import Nostrum.Struct.Embed
   embed =
     %Nostrum.Struct.Embed{}
@@ -253,7 +262,8 @@ defmodule Nostrum.Api do
   Nostrum.Api.edit_message(43189401384091, 1894013840914098, content: "hello world!", embed: embed)
   ```
   """
-  @spec edit_message(Channel.id(), Message.id(), options) :: error | {:ok, Message.t()}
+  @spec edit_message(Channel.id(), Message.id(), options | String.t()) ::
+          error | {:ok, Message.t()}
   def edit_message(channel_id, message_id, options)
 
   def edit_message(channel_id, message_id, options) when is_list(options),
