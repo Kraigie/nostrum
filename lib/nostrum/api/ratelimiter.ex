@@ -39,7 +39,7 @@ defmodule Nostrum.Api.Ratelimiter do
   @doc """
   Empties all buckets, voiding any saved ratelimit values.
   """
-  @spec empty_buckets() :: :ok
+  @spec empty_buckets() :: true
   def empty_buckets do
     :ets.delete_all_objects(:ratelimit_buckets)
   end

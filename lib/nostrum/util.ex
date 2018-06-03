@@ -21,7 +21,7 @@ defmodule Nostrum.Util do
   end
   ```
   """
-  @spec producers() :: list(pid)
+  @spec producers() :: Producer
   def producers do
     Producer
   end
@@ -148,7 +148,7 @@ defmodule Nostrum.Util do
   If by chance no gateway connection has been made, will fetch the url to use and store it
   for future use.
   """
-  @spec gateway() :: String.t()
+  @spec gateway() :: {String.t(), integer}
   def gateway do
     case :ets.lookup(:gateway_url, "url") do
       [] -> get_new_gateway_url()
