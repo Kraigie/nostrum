@@ -3,74 +3,68 @@ defmodule Nostrum.Struct.Invite do
   Struct representing a Discord invite.
   """
 
-  alias Nostrum.Struct.Invite.{Channel, Guild}
-  alias Nostrum.Struct.User
+  alias Nostrum.Struct.Channel
+  alias Nostrum.Struct.Guild
+  alias Nostrum.Struct.Invite.Metadata
+  alias Nostrum.Util
 
-  @typedoc "Invite code"
+  defstruct [
+    :code,
+    :guild,
+    :channel,
+    :metadata
+  ]
+
+  @typedoc """
+  The invite code (unique ID).
+  """
   @type code :: String.t()
 
-  @typedoc "Guild the invite is for"
+  @typedoc """
+  The guild this invite is for.
+  """
   @type guild :: Guild.t()
 
-  @typedoc "Channel the invite is for"
+  @typedoc """
+  The channel this invite is for.
+  """
   @type channel :: Channel.t()
 
-  @typedoc "User who created the invite"
-  @type inviter :: User.t()
+  @typedoc """
+  The extra metadata this invite contains.
 
-  @typedoc "Number of times this invite has been used"
-  @type uses :: integer
-
-  @typedoc "Number of times this invite can be used"
-  @type max_uses :: integer
-
-  @typedoc "Duration in seconds after which the invite expires"
-  @type max_age :: integer
-
-  @typedoc "Whether the invite gives temporary membership"
-  @type temporary :: boolean
-
-  @typedoc "When the invite was created"
-  @type created_at :: String.t()
-
-  @typedoc "Whether the invite is revoked"
-  @type revoked :: boolean
+  This field is `nil` unless this invite is returned by
+  `Nostrum.Api.get_channel_invites/1`.
+  """
+  @type metadata :: Metadata.t() | nil
 
   @type t :: %__MODULE__{
           code: code,
           guild: guild,
           channel: channel,
-          inviter: inviter,
-          uses: uses,
-          max_uses: max_uses,
-          max_age: max_age,
-          temporary: temporary,
-          created_at: created_at,
-          revoked: revoked
+          metadata: metadata
         }
-
-  @derive [Poison.Encoder]
-  defstruct [
-    :code,
-    :guild,
-    :channel,
-    :inviter,
-    :uses,
-    :max_uses,
-    :max_age,
-    :temporary,
-    :created_at,
-    :revoked
-  ]
 
   @doc false
   def to_struct(map) do
-    new =
-      map
-      |> Map.update(:guild, %{}, &Guild.to_struct(&1))
-      |> Map.update(:channel, %{}, &Channel.to_struct(&1))
-      |> Map.update(:inviter, %{}, &User.to_struct(&1))
+    atom_map = map |> Map.new(fn {k, v} -> {Util.maybe_to_atom(k), v} end)
 
-    struct(__MODULE__, new)
+    invite =
+      struct(__MODULE__, atom_map)
+      |> Map.update(:guild, nil, &Util.cast(&1, {:struct, Guild}))
+      |> Map.update(:channel, nil, &Util.cast(&1, {:struct, Channel}))
+      |> cast_metadata(atom_map)
+
+    invite
+  end
+
+  defp cast_metadata(invite, map) do
+    metadata_keys = [:inviter, :uses, :max_uses, :max_age, :temporary, :created_at, :revoked]
+
+    if Enum.any?(map, fn {k, _} -> Enum.member?(metadata_keys, k) end) do
+      %{invite | metadata: Util.cast(map, {:struct, Metadata})}
+    else
+      invite
+    end
   end
 end
