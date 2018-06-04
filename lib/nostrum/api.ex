@@ -2021,16 +2021,6 @@ defmodule Nostrum.Api do
   end
 
   @doc """
-  Accepts an invite.
-
-  Not available to bot accounts. Invite to accept is specified by `invite_code`.
-  """
-  @spec accept_invite(integer) :: error | {:ok, Nostrum.Struct.Invite.t()}
-  def accept_invite(invite_code) do
-    request(:post, Constants.invite(invite_code))
-  end
-
-  @doc """
   Gets a user by its `t:Nostrum.Struct.User.id/0`.
 
   If the request is successful, this function returns `{:ok, user}`, where
