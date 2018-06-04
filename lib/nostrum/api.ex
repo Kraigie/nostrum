@@ -827,7 +827,7 @@ defmodule Nostrum.Api do
   {:ok, [%Nostrum.Struct.Invite{} | _]}
   ```
   """
-  @spec get_channel_invites(Channel.id()) :: error | {:ok, [Invite.t()]}
+  @spec get_channel_invites(Channel.id()) :: error | {:ok, [Invite.detailed_invite()]}
   def get_channel_invites(channel_id) when is_snowflake(channel_id) do
     request(:get, Constants.channel_invites(channel_id))
     |> handle_request_with_decode({:list, {:struct, Invite}})
@@ -836,7 +836,7 @@ defmodule Nostrum.Api do
   @doc ~S"""
   Same as `get_channel_invites/1`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
-  @spec get_channel_invites!(Channel.id()) :: no_return | [Invite.t()]
+  @spec get_channel_invites!(Channel.id()) :: no_return | [Invite.detailed_invite()]
   def get_channel_invites!(channel_id) do
     get_channel_invites(channel_id)
     |> bangify
@@ -870,7 +870,7 @@ defmodule Nostrum.Api do
   {:ok, %Nostrum.Struct.Invite{}}
   ```
   """
-  @spec create_channel_invite(Channel.id(), options) :: error | {:ok, Invite.t()}
+  @spec create_channel_invite(Channel.id(), options) :: error | {:ok, Invite.detailed_invite()}
   def create_channel_invite(channel_id, options \\ [])
 
   def create_channel_invite(channel_id, options) when is_list(options),
@@ -885,7 +885,7 @@ defmodule Nostrum.Api do
   @doc ~S"""
   Same as `create_channel_invite/2`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
-  @spec create_channel_invite!(Channel.id(), options) :: no_return | Invite.t()
+  @spec create_channel_invite!(Channel.id(), options) :: no_return | Invite.detailed_invite()
   def create_channel_invite!(channel_id, options \\ []) do
     create_channel_invite(channel_id, options)
     |> bangify
@@ -2000,7 +2000,7 @@ defmodule Nostrum.Api do
   {:ok, %Nostrum.Struct.Invite{code: "zsjUsC"}}
   ```
   """
-  @spec get_invite(Invite.code()) :: error | {:ok, Invite.t()}
+  @spec get_invite(Invite.code()) :: error | {:ok, Invite.simple_invite()}
   def get_invite(invite_code) when is_binary(invite_code) do
     request(:get, Constants.invite(invite_code))
     |> handle_request_with_decode({:struct, Invite})
@@ -2009,7 +2009,7 @@ defmodule Nostrum.Api do
   @doc ~S"""
   Same as `get_invite/1`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
-  @spec get_invite!(Invite.code()) :: no_return | Invite.t()
+  @spec get_invite!(Invite.code()) :: no_return | Invite.simple_invite()
   def get_invite!(invite_code) do
     get_invite(invite_code)
     |> bangify
@@ -2028,7 +2028,7 @@ defmodule Nostrum.Api do
   {:ok, %Nostrum.Struct.Invite{code: "zsjUsC"}}
   ```
   """
-  @spec delete_invite(Invite.code()) :: error | {:ok, Invite.t()}
+  @spec delete_invite(Invite.code()) :: error | {:ok, Invite.simple_invite()}
   def delete_invite(invite_code) when is_binary(invite_code) do
     request(:delete, Constants.invite(invite_code))
     |> handle_request_with_decode({:struct, Invite})
@@ -2037,7 +2037,7 @@ defmodule Nostrum.Api do
   @doc ~S"""
   Same as `delete_invite/1`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
-  @spec delete_invite!(Invite.code()) :: no_return | Invite.t()
+  @spec delete_invite!(Invite.code()) :: no_return | Invite.simple_invite()
   def delete_invite!(invite_code) do
     delete_invite(invite_code)
     |> bangify

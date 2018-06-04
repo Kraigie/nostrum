@@ -43,14 +43,25 @@ defmodule Nostrum.Struct.Invite do
   This field is `nil` unless this invite is returned by
   `Nostrum.Api.get_channel_invites/1`.
   """
-  @type metadata :: Metadata.t() | nil
+  @type metadata :: Metadata.t()
 
-  @type t :: %__MODULE__{
+  @type simple_invite :: %__MODULE__{
           code: code,
           guild: guild,
           channel: channel,
+          inviter: inviter,
+          metadata: nil
+        }
+
+  @type detailed_invite :: %__MODULE__{
+          code: code,
+          guild: guild,
+          channel: channel,
+          inviter: inviter,
           metadata: metadata
         }
+
+  @type t :: simple_invite | detailed_invite
 
   @doc false
   def to_struct(map) do
