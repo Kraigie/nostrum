@@ -2031,6 +2031,8 @@ defmodule Nostrum.Api do
   @doc ~S"""
   Deletes an invite by its `invite_code`.
 
+  This endpoint requires the `MANAGE_CHANNELS` permission.
+
   If successful, returns `{:ok, invite}`. Otherwise, returns a
   `t:Nostrum.Api.error/0`.
 

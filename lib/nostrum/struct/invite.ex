@@ -45,6 +45,9 @@ defmodule Nostrum.Struct.Invite do
   """
   @type metadata :: Metadata.t()
 
+  @typedoc """
+  An invite without metadata.
+  """
   @type simple_invite :: %__MODULE__{
           code: code,
           guild: guild,
@@ -53,6 +56,9 @@ defmodule Nostrum.Struct.Invite do
           metadata: nil
         }
 
+  @typedoc """
+  An invite with metadata.
+  """
   @type detailed_invite :: %__MODULE__{
           code: code,
           guild: guild,
