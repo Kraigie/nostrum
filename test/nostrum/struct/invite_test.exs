@@ -4,7 +4,6 @@ defmodule Nostrum.Struct.InviteTest do
   alias Nostrum.Struct.Channel
   alias Nostrum.Struct.Guild
   alias Nostrum.Struct.Invite
-  alias Nostrum.Struct.Invite.Metadata
   alias Nostrum.Struct.User
   alias Nostrum.Util
 
@@ -66,41 +65,6 @@ defmodule Nostrum.Struct.InviteTest do
       expected = context.etf_invite["inviter"] |> Util.cast({:struct, User})
 
       assert(expected === context.invite.inviter)
-    end
-
-    test "decodes metadata correctly", context do
-      expected = context.etf_invite |> Util.cast({:struct, Metadata})
-
-      assert(expected === context.invite.metadata)
-    end
-
-    test "decodes metadata `nil` when no metadata" do
-      etf_invite = %{
-        "code" => "0vCdhLbwjZZTWZLD",
-        "guild" => %{
-          "id" => "165176875973476352",
-          "name" => "CS:GO Fraggers Only",
-          "splash" => nil,
-          "icon" => nil
-        },
-        "channel" => %{
-          "id" => "165176875973476352",
-          "name" => "illuminati",
-          "type" => 0
-        },
-        "inviter" => %{
-          "id" => "80351110224678912",
-          "username" => "Nelly",
-          "discriminator" => "1337",
-          "avatar" => "8342729096ea3675442027381ff50dfe",
-          "verified" => true,
-          "email" => "nelly@discordapp.com"
-        }
-      }
-
-      invite = Invite.to_struct(etf_invite)
-
-      assert(nil === invite.metadata)
     end
   end
 end

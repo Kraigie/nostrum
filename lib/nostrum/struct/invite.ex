@@ -5,7 +5,6 @@ defmodule Nostrum.Struct.Invite do
 
   alias Nostrum.Struct.Channel
   alias Nostrum.Struct.Guild
-  alias Nostrum.Struct.Invite.Metadata
   alias Nostrum.Struct.User
   alias Nostrum.Util
 
@@ -14,7 +13,12 @@ defmodule Nostrum.Struct.Invite do
     :guild,
     :channel,
     :inviter,
-    :metadata
+    :uses,
+    :max_uses,
+    :max_age,
+    :temporary,
+    :created_at,
+    :revoked
   ]
 
   @typedoc """
@@ -38,12 +42,34 @@ defmodule Nostrum.Struct.Invite do
   @type inviter :: User.t()
 
   @typedoc """
-  The extra metadata this invite contains.
-
-  This field is `nil` unless this invite is returned by
-  `Nostrum.Api.get_channel_invites/1`.
+  Number of times this invite has been used.
   """
-  @type metadata :: Metadata.t()
+  @type uses :: integer
+
+  @typedoc """
+  Max number of times this invite can be used.
+  """
+  @type max_uses :: integer
+
+  @typedoc """
+  Duration (in seconds) after which the invite expires.
+  """
+  @type max_age :: integer
+
+  @typedoc """
+  Whether this invite only grants temporary membership.
+  """
+  @type temporary :: boolean
+
+  @typedoc """
+  When this invite was created.
+  """
+  @type created_at :: String.t()
+
+  @typedoc """
+  Whether this invite is revoked.
+  """
+  @type revoked :: boolean
 
   @typedoc """
   An invite without metadata.
@@ -53,7 +79,12 @@ defmodule Nostrum.Struct.Invite do
           guild: guild,
           channel: channel,
           inviter: inviter,
-          metadata: nil
+          uses: nil,
+          max_uses: nil,
+          max_age: nil,
+          temporary: nil,
+          created_at: nil,
+          revoked: nil
         }
 
   @typedoc """
@@ -64,7 +95,12 @@ defmodule Nostrum.Struct.Invite do
           guild: guild,
           channel: channel,
           inviter: inviter,
-          metadata: metadata
+          uses: uses,
+          max_uses: max_uses,
+          max_age: max_age,
+          temporary: temporary,
+          created_at: created_at,
+          revoked: revoked
         }
 
   @type t :: simple_invite | detailed_invite
@@ -78,16 +114,5 @@ defmodule Nostrum.Struct.Invite do
     |> Map.update(:guild, nil, &Util.cast(&1, {:struct, Guild}))
     |> Map.update(:channel, nil, &Util.cast(&1, {:struct, Channel}))
     |> Map.update(:inviter, nil, &Util.cast(&1, {:struct, User}))
-    |> cast_metadata(atom_map)
-  end
-
-  defp cast_metadata(invite, map) do
-    metadata_keys = [:uses, :max_uses, :max_age, :temporary, :created_at, :revoked]
-
-    if Enum.any?(map, fn {k, _} -> Enum.member?(metadata_keys, k) end) do
-      %{invite | metadata: Util.cast(map, {:struct, Metadata})}
-    else
-      invite
-    end
   end
 end
