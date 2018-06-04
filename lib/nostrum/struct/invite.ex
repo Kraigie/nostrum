@@ -67,7 +67,7 @@ defmodule Nostrum.Struct.Invite do
   end
 
   defp cast_metadata(invite, map) do
-    metadata_keys = [:inviter, :uses, :max_uses, :max_age, :temporary, :created_at, :revoked]
+    metadata_keys = [:uses, :max_uses, :max_age, :temporary, :created_at, :revoked]
 
     if Enum.any?(map, fn {k, _} -> Enum.member?(metadata_keys, k) end) do
       %{invite | metadata: Util.cast(map, {:struct, Metadata})}

@@ -73,5 +73,34 @@ defmodule Nostrum.Struct.InviteTest do
 
       assert(expected === context.invite.metadata)
     end
+
+    test "decodes metadata `nil` when no metadata" do
+      etf_invite = %{
+        "code" => "0vCdhLbwjZZTWZLD",
+        "guild" => %{
+          "id" => "165176875973476352",
+          "name" => "CS:GO Fraggers Only",
+          "splash" => nil,
+          "icon" => nil
+        },
+        "channel" => %{
+          "id" => "165176875973476352",
+          "name" => "illuminati",
+          "type" => 0
+        },
+        "inviter" => %{
+          "id" => "80351110224678912",
+          "username" => "Nelly",
+          "discriminator" => "1337",
+          "avatar" => "8342729096ea3675442027381ff50dfe",
+          "verified" => true,
+          "email" => "nelly@discordapp.com"
+        }
+      }
+
+      invite = Invite.to_struct(etf_invite)
+
+      assert(nil === invite.metadata)
+    end
   end
 end
