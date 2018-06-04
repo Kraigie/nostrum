@@ -51,6 +51,7 @@ defmodule Nostrum.Api do
   alias Nostrum.Struct.Channel
   alias Nostrum.Struct.Emoji
   alias Nostrum.Struct.Guild.{Member, Role}
+  alias Nostrum.Struct.Invite
   alias Nostrum.Shard.{Supervisor, Session}
 
   @typedoc """
@@ -1949,20 +1950,32 @@ defmodule Nostrum.Api do
     end
   end
 
-  @doc """
-  Gets an invite.
+  @doc ~S"""
+  Gets an invite by its `invite_code`.
 
-  Invite to get is specified by `invite_code`.
+  If successful, returns `{:ok, invite}`. Otherwise, returns a
+  `t:Nostrum.Api.error/0`.
+
+  ## Examples
+
+  ```Elixir
+  Nostrum.Api.get_invite("zsjUsC")
+  {:ok, %Nostrum.Struct.Invite{code: "zsjUsC"}}
+  ```
   """
-  @spec get_invite(integer) :: error | {:ok, Nostrum.Struct.Invite.t()}
-  def get_invite(invite_code) do
-    case request(:get, Constants.invite(invite_code)) do
-      {:ok, body} ->
-        {:ok, Poison.decode!(body)}
+  @spec get_invite(Invite.code()) :: error | {:ok, Invite.t()}
+  def get_invite(invite_code) when is_binary(invite_code) do
+    request(:get, Constants.invite(invite_code))
+    |> handle_request_with_decode({:struct, Invite})
+  end
 
-      other ->
-        other
-    end
+  @doc ~S"""
+  Same as `get_invite/1`, but raises `Nostrum.Error.ApiError` in case of failure.
+  """
+  @spec get_invite!(Invite.code()) :: error | {:ok, Invite.t()}
+  def get_invite!(invite_code) do
+    get_invite(invite_code)
+    |> bangify
   end
 
   @doc """
