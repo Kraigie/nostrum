@@ -812,20 +812,34 @@ defmodule Nostrum.Api do
     request(:delete, Constants.channel_permission(channel_id, overwrite_id))
   end
 
-  @doc """
+  @doc ~S"""
   Gets a list of invites for a channel.
 
-  Channel to get invites for is specified by `channel_id`
-  """
-  @spec get_channel_invites(integer) :: error | {:ok, [Nostrum.Struct.Invite.t()]}
-  def get_channel_invites(channel_id) do
-    case request(:get, Constants.channel_invites(channel_id)) do
-      {:ok, body} ->
-        {:ok, Poison.decode!(body)}
+  This endpoint requires the 'VIEW_CHANNEL' and 'MANAGE_CHANNELS' permissions.
 
-      other ->
-        other
-    end
+  If successful, returns `{:ok, invite}`. Otherwise, returns a
+  `t:Nostrum.Api.error/0`.
+
+  ## Examples
+
+  ```Elixir
+  Nostrum.Api.get_channel_invites(43189401384091)
+  {:ok, [%Nostrum.Struct.Invite{} | _]}
+  ```
+  """
+  @spec get_channel_invites(Channel.id()) :: error | {:ok, [Invite.t()]}
+  def get_channel_invites(channel_id) when is_snowflake(channel_id) do
+    request(:get, Constants.channel_invites(channel_id))
+    |> handle_request_with_decode({:list, {:struct, Invite}})
+  end
+
+  @doc ~S"""
+  Same as `get_channel_invites/1`, but raises `Nostrum.Error.ApiError` in case of failure.
+  """
+  @spec get_channel_invites!(Channel.id()) :: no_return | [Invite.t()]
+  def get_channel_invites!(channel_id) do
+    get_channel_invites(channel_id)
+    |> bangify
   end
 
   @doc """
