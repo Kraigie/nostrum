@@ -47,11 +47,8 @@ defmodule Nostrum.Api do
 
   alias Nostrum.{Constants, Util}
   alias Nostrum.Cache.Guild.GuildServer
-  alias Nostrum.Struct.{Embed, Guild, Message, User, Webhook}
-  alias Nostrum.Struct.Channel
-  alias Nostrum.Struct.Emoji
+  alias Nostrum.Struct.{Channel, Embed, Emoji, Guild, Invite, Message, User, Webhook}
   alias Nostrum.Struct.Guild.{Member, Role}
-  alias Nostrum.Struct.Invite
   alias Nostrum.Shard.{Supervisor, Session}
 
   @typedoc """

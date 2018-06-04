@@ -73,14 +73,12 @@ defmodule Nostrum.Struct.Invite do
   def to_struct(map) do
     atom_map = map |> Map.new(fn {k, v} -> {Util.maybe_to_atom(k), v} end)
 
-    invite =
-      struct(__MODULE__, atom_map)
-      |> Map.update(:guild, nil, &Util.cast(&1, {:struct, Guild}))
-      |> Map.update(:channel, nil, &Util.cast(&1, {:struct, Channel}))
-      |> Map.update(:inviter, nil, &Util.cast(&1, {:struct, User}))
-      |> cast_metadata(atom_map)
-
-    invite
+    __MODULE__
+    |> struct(atom_map)
+    |> Map.update(:guild, nil, &Util.cast(&1, {:struct, Guild}))
+    |> Map.update(:channel, nil, &Util.cast(&1, {:struct, Channel}))
+    |> Map.update(:inviter, nil, &Util.cast(&1, {:struct, User}))
+    |> cast_metadata(atom_map)
   end
 
   defp cast_metadata(invite, map) do

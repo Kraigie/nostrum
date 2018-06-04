@@ -2,8 +2,6 @@ defmodule Nostrum.Struct.Invite.MetadataTest do
   use ExUnit.Case, async: true
 
   alias Nostrum.Struct.Invite.Metadata
-  alias Nostrum.Struct.User
-  alias Nostrum.Util
 
   doctest Metadata
 
