@@ -34,11 +34,5 @@ defmodule Nostrum.Struct.Invite.MetadataTest do
     test "decodes to `t:Metadata.t/0`", context do
       assert(%Metadata{} = context.metadata)
     end
-
-    test "decodes inviter correctly", context do
-      expected = context.etf_metadata["inviter"] |> Util.cast({:struct, User})
-
-      assert(expected === context.metadata.inviter)
-    end
   end
 end

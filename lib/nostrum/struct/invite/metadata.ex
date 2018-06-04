@@ -7,7 +7,6 @@ defmodule Nostrum.Struct.Invite.Metadata do
   alias Nostrum.Util
 
   defstruct [
-    :inviter,
     :uses,
     :max_uses,
     :max_age,
@@ -15,11 +14,6 @@ defmodule Nostrum.Struct.Invite.Metadata do
     :created_at,
     :revoked
   ]
-
-  @typedoc """
-  User who created the invite.
-  """
-  @type inviter :: User.t()
 
   @typedoc """
   Number of times this invite has been used.
@@ -52,7 +46,6 @@ defmodule Nostrum.Struct.Invite.Metadata do
   @type revoked :: boolean
 
   @type t :: %__MODULE__{
-          inviter: inviter,
           uses: uses,
           max_uses: max_uses,
           max_age: max_age,

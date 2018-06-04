@@ -46,6 +46,10 @@ defmodule Nostrum.Struct.InviteTest do
       {:ok, %{etf_invite: etf_invite, invite: invite}}
     end
 
+    test "decodes to `t:Invite.t/0`", context do
+      assert(%Invite{} = context.invite)
+    end
+
     test "decodes guild correctly", context do
       expected = context.etf_invite["guild"] |> Util.cast({:struct, Guild})
 
@@ -56,6 +60,12 @@ defmodule Nostrum.Struct.InviteTest do
       expected = context.etf_invite["channel"] |> Util.cast({:struct, Channel})
 
       assert(expected === context.invite.channel)
+    end
+
+    test "decodes inviter correctly", context do
+      expected = context.etf_invite["inviter"] |> Util.cast({:struct, User})
+
+      assert(expected === context.invite.inviter)
     end
 
     test "decodes metadata correctly", context do

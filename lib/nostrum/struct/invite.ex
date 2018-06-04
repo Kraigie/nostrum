@@ -6,12 +6,14 @@ defmodule Nostrum.Struct.Invite do
   alias Nostrum.Struct.Channel
   alias Nostrum.Struct.Guild
   alias Nostrum.Struct.Invite.Metadata
+  alias Nostrum.Struct.User
   alias Nostrum.Util
 
   defstruct [
     :code,
     :guild,
     :channel,
+    :inviter,
     :metadata
   ]
 
@@ -29,6 +31,11 @@ defmodule Nostrum.Struct.Invite do
   The channel this invite is for.
   """
   @type channel :: Channel.t()
+
+  @typedoc """
+  The user who created this invite.
+  """
+  @type inviter :: User.t()
 
   @typedoc """
   The extra metadata this invite contains.
@@ -53,6 +60,7 @@ defmodule Nostrum.Struct.Invite do
       struct(__MODULE__, atom_map)
       |> Map.update(:guild, nil, &Util.cast(&1, {:struct, Guild}))
       |> Map.update(:channel, nil, &Util.cast(&1, {:struct, Channel}))
+      |> Map.update(:inviter, nil, &Util.cast(&1, {:struct, User}))
       |> cast_metadata(atom_map)
 
     invite
