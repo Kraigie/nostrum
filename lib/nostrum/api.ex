@@ -1877,20 +1877,33 @@ defmodule Nostrum.Api do
     end
   end
 
-  @doc """
+  @doc ~S"""
   Gets a list of invites for a guild.
 
-  Guilds to get voice regions for is specified by `guild_id`.
-  """
-  @spec get_guild_invites(integer) :: error | {:ok, [Nostrum.Struct.Invite.t()]}
-  def get_guild_invites(guild_id) do
-    case request(:get, Constants.guild_invites(guild_id)) do
-      {:ok, body} ->
-        {:ok, Poison.decode!(body)}
+  This endpoint requires the `MANAGE_GUILD` permission.
 
-      other ->
-        other
-    end
+  If successful, returns `{:ok, invites}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
+
+  ## Examples
+
+  ```Elixir
+  Nostrum.Api.get_guild_invites(81384788765712384)
+  {:ok, [%Nostrum.Struct.Invite{} | _]}
+  ```
+  """
+  @spec get_guild_invites(Guild.id()) :: error | {:ok, [Invite.detailed_invite()]}
+  def get_guild_invites(guild_id) when is_snowflake(guild_id) do
+    request(:get, Constants.guild_invites(guild_id))
+    |> handle_request_with_decode({:list, {:struct, Invite}})
+  end
+
+  @doc ~S"""
+  Same as `get_guild_invites/1`, but raises `Nostrum.Error.ApiError` in case of failure.
+  """
+  @spec get_guild_invites!(Guild.id()) :: no_return | [Invite.detailed_invite()]
+  def get_guild_invites!(guild_id) do
+    get_guild_invites(guild_id)
+    |> bangify
   end
 
   @doc """
