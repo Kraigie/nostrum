@@ -1972,26 +1972,38 @@ defmodule Nostrum.Api do
   @doc ~S"""
   Same as `get_invite/1`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
-  @spec get_invite!(Invite.code()) :: error | {:ok, Invite.t()}
+  @spec get_invite!(Invite.code()) :: no_return | Invite.t()
   def get_invite!(invite_code) do
     get_invite(invite_code)
     |> bangify
   end
 
-  @doc """
-  Deletes an invite.
+  @doc ~S"""
+  Deletes an invite by its `invite_code`.
 
-  Invite to delete is specified by `invite_code`.
+  If successful, returns `{:ok, invite}`. Otherwise, returns a
+  `t:Nostrum.Api.error/0`.
+
+  ## Examples
+
+  ```Elixir
+  Nostrum.Api.delete_invite("zsjUsC")
+  {:ok, %Nostrum.Struct.Invite{code: "zsjUsC"}}
+  ```
   """
-  @spec delete_invite(integer) :: error | {:ok, Nostrum.Struct.Invite.t()}
-  def delete_invite(invite_code) do
-    case request(:delete, Constants.invite(invite_code)) do
-      {:ok, body} ->
-        {:ok, Poison.decode!(body)}
+  @spec delete_invite(Invite.code()) :: error | {:ok, Invite.t()}
+  def delete_invite(invite_code) when is_binary(invite_code) do
+    request(:delete, Constants.invite(invite_code))
+    |> handle_request_with_decode({:struct, Invite})
+  end
 
-      other ->
-        other
-    end
+  @doc ~S"""
+  Same as `delete_invite/1`, but raises `Nostrum.Error.ApiError` in case of failure.
+  """
+  @spec delete_invite!(Invite.code()) :: no_return | Invite.t()
+  def delete_invite!(invite_code) do
+    delete_invite(invite_code)
+    |> bangify
   end
 
   @doc """
