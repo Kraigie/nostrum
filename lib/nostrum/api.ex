@@ -842,30 +842,53 @@ defmodule Nostrum.Api do
     |> bangify
   end
 
-  @doc """
-  Creates an invite for a channel.
+  @doc ~S"""
+  Creates an invite for a guild channel.
 
-  `options` is a kwl with the following optional keys:
-   * `max_age` - Duration of invite in seconds before expiry, or 0 for never
-   * `max_uses` - Max number of uses or 0 for unlimited.
-   * `temporary` - Whether the invite should grant temporary membership.
-   * `unique` - Used when creating unique one time use invites.
+  This endpoint requires the `CREATE_INSTANT_INVITE` permission.
+
+  If successful, returns `{:ok, invite}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
+
+  ## Options
+
+    * `:max_age` (integer) - duration of invite in seconds before expiry, or 0 for never.
+      (default: `86400`)
+    * `:max_uses` (integer) - max number of uses or 0 for unlimited.
+      (default: `0`)
+    * `:temporary` (boolean) - Whether the invite should grant temporary
+      membership. (default: `false`)
+    * `:unique` (boolean) - used when creating unique one time use invites.
+      (default: `false`)
+
+  ## Examples
+
+  ```Elixir
+  Nostrum.Api.create_channel_invite(41771983423143933)
+  {:ok, Nostrum.Struct.Invite{}}
+
+  Nostrum.Api.create_channel_invite(41771983423143933, max_uses: 20)
+  {:ok, %Nostrum.Struct.Invite{}}
+  ```
   """
-  @spec create_channel_invite(
-          integer,
-          max_age: integer,
-          max_uses: integer,
-          temporary: boolean,
-          unique: boolean
-        ) :: error | {:ok, Nostrum.Struct.Invite.t()}
-  def create_channel_invite(channel_id, options \\ %{}) do
-    case request(:post, Constants.channel_invites(channel_id), options) do
-      {:ok, body} ->
-        {:ok, Poison.decode!(body)}
+  @spec create_channel_invite(Channel.id(), options) :: error | {:ok, Invite.t()}
+  def create_channel_invite(channel_id, options \\ [])
 
-      other ->
-        other
-    end
+  def create_channel_invite(channel_id, options) when is_list(options),
+    do: create_channel_invite(channel_id, Map.new(options))
+
+  def create_channel_invite(channel_id, options)
+      when is_snowflake(channel_id) and is_map(options) do
+    request(:post, Constants.channel_invites(channel_id), options)
+    |> handle_request_with_decode({:struct, Invite})
+  end
+
+  @doc ~S"""
+  Same as `create_channel_invite/2`, but raises `Nostrum.Error.ApiError` in case of failure.
+  """
+  @spec create_channel_invite!(Channel.id(), options) :: no_return | Invite.t()
+  def create_channel_invite!(channel_id, options \\ []) do
+    create_channel_invite(channel_id, options)
+    |> bangify
   end
 
   @doc """
