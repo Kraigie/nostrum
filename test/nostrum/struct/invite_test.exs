@@ -12,7 +12,7 @@ defmodule Nostrum.Struct.InviteTest do
 
   describe "Invite.to_struct/1" do
     setup do
-      external_invite = %{
+      etf_invite = %{
         "code" => "0vCdhLbwjZZTWZLD",
         "guild" => %{
           "id" => "165176875973476352",
@@ -25,7 +25,14 @@ defmodule Nostrum.Struct.InviteTest do
           "name" => "illuminati",
           "type" => 0
         },
-        "inviter" => {},
+        "inviter" => %{
+          "id" => "80351110224678912",
+          "username" => "Nelly",
+          "discriminator" => "1337",
+          "avatar" => "8342729096ea3675442027381ff50dfe",
+          "verified" => true,
+          "email" => "nelly@discordapp.com"
+        },
         "uses" => 0,
         "max_uses" => 0,
         "max_age" => 0,
@@ -34,51 +41,27 @@ defmodule Nostrum.Struct.InviteTest do
         "revoked" => false
       }
 
-      invite = Invite.to_struct(external_invite)
+      invite = Invite.to_struct(etf_invite)
 
-      {:ok, %{external_invite: external_invite, invite: invite}}
+      {:ok, %{etf_invite: etf_invite, invite: invite}}
     end
 
-    test "decodes guild correctly", %{invite: invite} do
-      expected = %Guild{
-        id: 165_176_875_973_476_352,
-        name: "CS:GO Fraggers Only",
-        splash: nil,
-        icon: nil
-      }
+    test "decodes guild correctly", context do
+      expected = context.etf_invite["guild"] |> Util.cast({:struct, Guild})
 
-      assert(^expected = invite.guild)
+      assert(expected === context.invite.guild)
     end
 
-    test "decodes channel correctly", %{invite: invite} do
-      expected = %Channel{
-        id: 165_176_875_973_476_352,
-        name: "illuminati",
-        type: 0
-      }
+    test "decodes channel correctly", context do
+      expected = context.etf_invite["channel"] |> Util.cast({:struct, Channel})
 
-      assert(^expected = invite.channel)
+      assert(expected === context.invite.channel)
     end
 
     test "decodes metadata correctly", context do
-      expected = %Metadata{
-        inviter: %User{
-          id: 80_351_110_224_678_912,
-          username: "Nelly",
-          discriminator: "1337",
-          avatar: "8342729096ea3675442027381ff50dfe",
-          verified: true,
-          email: "nelly@discordapp.com"
-        },
-        uses: 0,
-        max_uses: 0,
-        max_age: 0,
-        temporary: false,
-        created_at: "2016-03-31T19:15:39.954000+00:00",
-        revoked: false
-      }
+      expected = context.etf_invite |> Util.cast({:struct, Metadata})
 
-      assert(^expected = invite.metadata)
+      assert(expected === context.invite.metadata)
     end
   end
 end
