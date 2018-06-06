@@ -3,53 +3,11 @@ defmodule Nostrum.Struct.Invite do
   Struct representing a Discord invite.
   """
 
-  alias Nostrum.Struct.Invite.{Channel, Guild}
+  alias Nostrum.Struct.Channel
+  alias Nostrum.Struct.Guild
   alias Nostrum.Struct.User
+  alias Nostrum.Util
 
-  @typedoc "Invite code"
-  @type code :: String.t()
-
-  @typedoc "Guild the invite is for"
-  @type guild :: Guild.t()
-
-  @typedoc "Channel the invite is for"
-  @type channel :: Channel.t()
-
-  @typedoc "User who created the invite"
-  @type inviter :: User.t()
-
-  @typedoc "Number of times this invite has been used"
-  @type uses :: integer
-
-  @typedoc "Number of times this invite can be used"
-  @type max_uses :: integer
-
-  @typedoc "Duration in seconds after which the invite expires"
-  @type max_age :: integer
-
-  @typedoc "Whether the invite gives temporary membership"
-  @type temporary :: boolean
-
-  @typedoc "When the invite was created"
-  @type created_at :: String.t()
-
-  @typedoc "Whether the invite is revoked"
-  @type revoked :: boolean
-
-  @type t :: %__MODULE__{
-          code: code,
-          guild: guild,
-          channel: channel,
-          inviter: inviter,
-          uses: uses,
-          max_uses: max_uses,
-          max_age: max_age,
-          temporary: temporary,
-          created_at: created_at,
-          revoked: revoked
-        }
-
-  @derive [Poison.Encoder]
   defstruct [
     :code,
     :guild,
@@ -63,14 +21,98 @@ defmodule Nostrum.Struct.Invite do
     :revoked
   ]
 
+  @typedoc """
+  The invite code (unique ID).
+  """
+  @type code :: String.t()
+
+  @typedoc """
+  The guild this invite is for.
+  """
+  @type guild :: Guild.t()
+
+  @typedoc """
+  The channel this invite is for.
+  """
+  @type channel :: Channel.t()
+
+  @typedoc """
+  The user who created this invite.
+  """
+  @type inviter :: User.t()
+
+  @typedoc """
+  Number of times this invite has been used.
+  """
+  @type uses :: integer
+
+  @typedoc """
+  Max number of times this invite can be used.
+  """
+  @type max_uses :: integer
+
+  @typedoc """
+  Duration (in seconds) after which the invite expires.
+  """
+  @type max_age :: integer
+
+  @typedoc """
+  Whether this invite only grants temporary membership.
+  """
+  @type temporary :: boolean
+
+  @typedoc """
+  When this invite was created.
+  """
+  @type created_at :: String.t()
+
+  @typedoc """
+  Whether this invite is revoked.
+  """
+  @type revoked :: boolean
+
+  @typedoc """
+  An invite without metadata.
+  """
+  @type simple_invite :: %__MODULE__{
+          code: code,
+          guild: guild,
+          channel: channel,
+          inviter: inviter,
+          uses: nil,
+          max_uses: nil,
+          max_age: nil,
+          temporary: nil,
+          created_at: nil,
+          revoked: nil
+        }
+
+  @typedoc """
+  An invite with metadata.
+  """
+  @type detailed_invite :: %__MODULE__{
+          code: code,
+          guild: guild,
+          channel: channel,
+          inviter: inviter,
+          uses: uses,
+          max_uses: max_uses,
+          max_age: max_age,
+          temporary: temporary,
+          created_at: created_at,
+          revoked: revoked
+        }
+
+  @type t :: simple_invite | detailed_invite
+
   @doc false
   def to_struct(map) do
-    new =
-      map
-      |> Map.update(:guild, %{}, &Guild.to_struct(&1))
-      |> Map.update(:channel, %{}, &Channel.to_struct(&1))
-      |> Map.update(:inviter, %{}, &User.to_struct(&1))
+    atom_map = map |> Map.new(fn {k, v} -> {Util.maybe_to_atom(k), v} end)
 
-    struct(__MODULE__, new)
+    __MODULE__
+    |> struct(atom_map)
+    |> Map.update(:guild, nil, &Util.cast(&1, {:struct, Guild}))
+    |> Map.update(:channel, nil, &Util.cast(&1, {:struct, Channel}))
+    |> Map.update(:inviter, nil, &Util.cast(&1, {:struct, User}))
   end
 end

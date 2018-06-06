@@ -47,9 +47,7 @@ defmodule Nostrum.Api do
 
   alias Nostrum.{Constants, Util}
   alias Nostrum.Cache.Guild.GuildServer
-  alias Nostrum.Struct.{Embed, Guild, Message, User, Webhook}
-  alias Nostrum.Struct.Channel
-  alias Nostrum.Struct.Emoji
+  alias Nostrum.Struct.{Channel, Embed, Emoji, Guild, Invite, Message, User, Webhook}
   alias Nostrum.Struct.Guild.{Member, Role}
   alias Nostrum.Shard.{Supervisor, Session}
 
@@ -811,46 +809,83 @@ defmodule Nostrum.Api do
     request(:delete, Constants.channel_permission(channel_id, overwrite_id))
   end
 
-  @doc """
+  @doc ~S"""
   Gets a list of invites for a channel.
 
-  Channel to get invites for is specified by `channel_id`
-  """
-  @spec get_channel_invites(integer) :: error | {:ok, [Nostrum.Struct.Invite.t()]}
-  def get_channel_invites(channel_id) do
-    case request(:get, Constants.channel_invites(channel_id)) do
-      {:ok, body} ->
-        {:ok, Poison.decode!(body)}
+  This endpoint requires the 'VIEW_CHANNEL' and 'MANAGE_CHANNELS' permissions.
 
-      other ->
-        other
-    end
+  If successful, returns `{:ok, invite}`. Otherwise, returns a
+  `t:Nostrum.Api.error/0`.
+
+  ## Examples
+
+  ```Elixir
+  Nostrum.Api.get_channel_invites(43189401384091)
+  {:ok, [%Nostrum.Struct.Invite{} | _]}
+  ```
+  """
+  @spec get_channel_invites(Channel.id()) :: error | {:ok, [Invite.detailed_invite()]}
+  def get_channel_invites(channel_id) when is_snowflake(channel_id) do
+    request(:get, Constants.channel_invites(channel_id))
+    |> handle_request_with_decode({:list, {:struct, Invite}})
   end
 
-  @doc """
-  Creates an invite for a channel.
-
-  `options` is a kwl with the following optional keys:
-   * `max_age` - Duration of invite in seconds before expiry, or 0 for never
-   * `max_uses` - Max number of uses or 0 for unlimited.
-   * `temporary` - Whether the invite should grant temporary membership.
-   * `unique` - Used when creating unique one time use invites.
+  @doc ~S"""
+  Same as `get_channel_invites/1`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
-  @spec create_channel_invite(
-          integer,
-          max_age: integer,
-          max_uses: integer,
-          temporary: boolean,
-          unique: boolean
-        ) :: error | {:ok, Nostrum.Struct.Invite.t()}
-  def create_channel_invite(channel_id, options \\ %{}) do
-    case request(:post, Constants.channel_invites(channel_id), options) do
-      {:ok, body} ->
-        {:ok, Poison.decode!(body)}
+  @spec get_channel_invites!(Channel.id()) :: no_return | [Invite.detailed_invite()]
+  def get_channel_invites!(channel_id) do
+    get_channel_invites(channel_id)
+    |> bangify
+  end
 
-      other ->
-        other
-    end
+  @doc ~S"""
+  Creates an invite for a guild channel.
+
+  This endpoint requires the `CREATE_INSTANT_INVITE` permission.
+
+  If successful, returns `{:ok, invite}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
+
+  ## Options
+
+    * `:max_age` (integer) - duration of invite in seconds before expiry, or 0 for never.
+      (default: `86400`)
+    * `:max_uses` (integer) - max number of uses or 0 for unlimited.
+      (default: `0`)
+    * `:temporary` (boolean) - Whether the invite should grant temporary
+      membership. (default: `false`)
+    * `:unique` (boolean) - used when creating unique one time use invites.
+      (default: `false`)
+
+  ## Examples
+
+  ```Elixir
+  Nostrum.Api.create_channel_invite(41771983423143933)
+  {:ok, Nostrum.Struct.Invite{}}
+
+  Nostrum.Api.create_channel_invite(41771983423143933, max_uses: 20)
+  {:ok, %Nostrum.Struct.Invite{}}
+  ```
+  """
+  @spec create_channel_invite(Channel.id(), options) :: error | {:ok, Invite.detailed_invite()}
+  def create_channel_invite(channel_id, options \\ [])
+
+  def create_channel_invite(channel_id, options) when is_list(options),
+    do: create_channel_invite(channel_id, Map.new(options))
+
+  def create_channel_invite(channel_id, options)
+      when is_snowflake(channel_id) and is_map(options) do
+    request(:post, Constants.channel_invites(channel_id), options)
+    |> handle_request_with_decode({:struct, Invite})
+  end
+
+  @doc ~S"""
+  Same as `create_channel_invite/2`, but raises `Nostrum.Error.ApiError` in case of failure.
+  """
+  @spec create_channel_invite!(Channel.id(), options) :: no_return | Invite.detailed_invite()
+  def create_channel_invite!(channel_id, options \\ []) do
+    create_channel_invite(channel_id, options)
+    |> bangify
   end
 
   @doc """
@@ -1839,20 +1874,33 @@ defmodule Nostrum.Api do
     end
   end
 
-  @doc """
+  @doc ~S"""
   Gets a list of invites for a guild.
 
-  Guilds to get voice regions for is specified by `guild_id`.
-  """
-  @spec get_guild_invites(integer) :: error | {:ok, [Nostrum.Struct.Invite.t()]}
-  def get_guild_invites(guild_id) do
-    case request(:get, Constants.guild_invites(guild_id)) do
-      {:ok, body} ->
-        {:ok, Poison.decode!(body)}
+  This endpoint requires the `MANAGE_GUILD` permission.
 
-      other ->
-        other
-    end
+  If successful, returns `{:ok, invites}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
+
+  ## Examples
+
+  ```Elixir
+  Nostrum.Api.get_guild_invites(81384788765712384)
+  {:ok, [%Nostrum.Struct.Invite{} | _]}
+  ```
+  """
+  @spec get_guild_invites(Guild.id()) :: error | {:ok, [Invite.detailed_invite()]}
+  def get_guild_invites(guild_id) when is_snowflake(guild_id) do
+    request(:get, Constants.guild_invites(guild_id))
+    |> handle_request_with_decode({:list, {:struct, Invite}})
+  end
+
+  @doc ~S"""
+  Same as `get_guild_invites/1`, but raises `Nostrum.Error.ApiError` in case of failure.
+  """
+  @spec get_guild_invites!(Guild.id()) :: no_return | [Invite.detailed_invite()]
+  def get_guild_invites!(guild_id) do
+    get_guild_invites(guild_id)
+    |> bangify
   end
 
   @doc """
@@ -1949,46 +1997,62 @@ defmodule Nostrum.Api do
     end
   end
 
-  @doc """
-  Gets an invite.
+  @doc ~S"""
+  Gets an invite by its `invite_code`.
 
-  Invite to get is specified by `invite_code`.
+  If successful, returns `{:ok, invite}`. Otherwise, returns a
+  `t:Nostrum.Api.error/0`.
+
+  ## Examples
+
+  ```Elixir
+  Nostrum.Api.get_invite("zsjUsC")
+  {:ok, %Nostrum.Struct.Invite{code: "zsjUsC"}}
+  ```
   """
-  @spec get_invite(integer) :: error | {:ok, Nostrum.Struct.Invite.t()}
-  def get_invite(invite_code) do
-    case request(:get, Constants.invite(invite_code)) do
-      {:ok, body} ->
-        {:ok, Poison.decode!(body)}
-
-      other ->
-        other
-    end
+  @spec get_invite(Invite.code()) :: error | {:ok, Invite.simple_invite()}
+  def get_invite(invite_code) when is_binary(invite_code) do
+    request(:get, Constants.invite(invite_code))
+    |> handle_request_with_decode({:struct, Invite})
   end
 
-  @doc """
-  Deletes an invite.
-
-  Invite to delete is specified by `invite_code`.
+  @doc ~S"""
+  Same as `get_invite/1`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
-  @spec delete_invite(integer) :: error | {:ok, Nostrum.Struct.Invite.t()}
-  def delete_invite(invite_code) do
-    case request(:delete, Constants.invite(invite_code)) do
-      {:ok, body} ->
-        {:ok, Poison.decode!(body)}
-
-      other ->
-        other
-    end
+  @spec get_invite!(Invite.code()) :: no_return | Invite.simple_invite()
+  def get_invite!(invite_code) do
+    get_invite(invite_code)
+    |> bangify
   end
 
-  @doc """
-  Accepts an invite.
+  @doc ~S"""
+  Deletes an invite by its `invite_code`.
 
-  Not available to bot accounts. Invite to accept is specified by `invite_code`.
+  This endpoint requires the `MANAGE_CHANNELS` permission.
+
+  If successful, returns `{:ok, invite}`. Otherwise, returns a
+  `t:Nostrum.Api.error/0`.
+
+  ## Examples
+
+  ```Elixir
+  Nostrum.Api.delete_invite("zsjUsC")
+  {:ok, %Nostrum.Struct.Invite{code: "zsjUsC"}}
+  ```
   """
-  @spec accept_invite(integer) :: error | {:ok, Nostrum.Struct.Invite.t()}
-  def accept_invite(invite_code) do
-    request(:post, Constants.invite(invite_code))
+  @spec delete_invite(Invite.code()) :: error | {:ok, Invite.simple_invite()}
+  def delete_invite(invite_code) when is_binary(invite_code) do
+    request(:delete, Constants.invite(invite_code))
+    |> handle_request_with_decode({:struct, Invite})
+  end
+
+  @doc ~S"""
+  Same as `delete_invite/1`, but raises `Nostrum.Error.ApiError` in case of failure.
+  """
+  @spec delete_invite!(Invite.code()) :: no_return | Invite.simple_invite()
+  def delete_invite!(invite_code) do
+    delete_invite(invite_code)
+    |> bangify
   end
 
   @doc """
