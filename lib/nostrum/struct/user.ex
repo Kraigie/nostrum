@@ -121,7 +121,6 @@ defmodule Nostrum.Struct.User do
   def avatar_url(%__MODULE__{id: id, avatar: avatar}, image_format),
     do: "https://cdn.discordapp.com/avatars/#{id}/#{avatar}.#{image_format}"
 
-
   @doc """
   Returns a user's `:username` and `:discriminator` separated by a hashtag.
 
