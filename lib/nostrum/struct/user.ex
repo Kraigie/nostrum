@@ -105,18 +105,22 @@ defmodule Nostrum.Struct.User do
   "https://cdn.discordapp.com/avatars/80351110224678912/8342729096ea3675442027381ff50dfe.png"
 
   iex> user = %Nostrum.Struct.User{avatar: nil,
-  ...>                             discriminator: "9999"}
+  ...>                             discriminator: "1337"}
   iex> Nostrum.Struct.User.avatar_url(user)
-  "https://cdn.discordapp.com/embed/avatars/9999.webp"
-  iex> Nostrum.Struct.User.avatar_url(user, "png")
-  "https://cdn.discordapp.com/embed/avatars/9999.png"
+  "https://cdn.discordapp.com/embed/avatars/2.png"
   ```
   """
   @spec avatar_url(t, String.t()) :: String.t()
   def avatar_url(user, image_format \\ "webp")
 
-  def avatar_url(%__MODULE__{avatar: nil, discriminator: disc}, image_format),
-    do: "https://cdn.discordapp.com/embed/avatars/#{disc}.#{image_format}"
+  def avatar_url(%__MODULE__{avatar: nil, discriminator: disc}, _) do
+    image_name =
+      disc
+      |> String.to_integer()
+      |> rem(5)
+
+    "https://cdn.discordapp.com/embed/avatars/#{image_name}.png"
+  end
 
   def avatar_url(%__MODULE__{id: id, avatar: avatar}, image_format),
     do: "https://cdn.discordapp.com/avatars/#{id}/#{avatar}.#{image_format}"
