@@ -105,7 +105,7 @@ defmodule Nostrum.Struct.User do
   "https://cdn.discordapp.com/avatars/80351110224678912/8342729096ea3675442027381ff50dfe.png"
 
   iex> user = %Nostrum.Struct.User{avatar: nil,
-  ...>                             discriminator: 9999}
+  ...>                             discriminator: "9999"}
   iex> Nostrum.Struct.User.avatar_url(user)
   "https://cdn.discordapp.com/embed/avatars/9999.webp"
   iex> Nostrum.Struct.User.avatar_url(user, "png")
