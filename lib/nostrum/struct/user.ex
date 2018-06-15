@@ -121,6 +121,23 @@ defmodule Nostrum.Struct.User do
   def avatar_url(%__MODULE__{id: id, avatar: avatar}, image_format),
     do: "https://cdn.discordapp.com/avatars/#{id}/#{avatar}.#{image_format}"
 
+
+  @doc """
+  Returns a user's `:username` and `:discriminator` separated by a hashtag.
+
+  ## Examples
+
+  ```Elixir
+  iex> user = %Nostrum.Struct.User{username: "b1nzy",
+  ...>                             discriminator: "0852"}
+  iex> Nostrum.Struct.User.full_name(user)
+  "b1nzy#0852"
+  ```
+  """
+  @spec full_name(t) :: String.t()
+  def full_name(%__MODULE__{username: username, discriminator: disc}),
+    do: "#{username}##{disc}"
+
   @doc false
   def p_encode do
     %__MODULE__{}
