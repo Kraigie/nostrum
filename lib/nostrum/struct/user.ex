@@ -23,7 +23,9 @@ defmodule Nostrum.Struct.User do
   """
 
   alias Nostrum.Struct.Snowflake
-  alias Nostrum.Util
+  alias Nostrum.{Util, Constants}
+
+  use HTTPoison.Base
 
   defstruct [
     :id,
@@ -121,11 +123,11 @@ defmodule Nostrum.Struct.User do
       |> String.to_integer()
       |> rem(5)
 
-    "https://cdn.discordapp.com/embed/avatars/#{image_name}.png"
+    URI.encode(Constants.cdn_url() <> Constants.cdn_embed_avatar(image_name))
   end
 
   def avatar_url(%__MODULE__{id: id, avatar: avatar}, image_format),
-    do: "https://cdn.discordapp.com/avatars/#{id}/#{avatar}.#{image_format}"
+    do: URI.encode(Constants.cdn_url() <> Constants.cdn_avatar(id, avatar, image_format))
 
   @doc """
   Returns a user's `:username` and `:discriminator` separated by a hashtag.
