@@ -287,6 +287,31 @@ defmodule Nostrum.Struct.Guild do
           | rest_guild
           | user_guild
 
+  @doc ~S"""
+  Returns the URL of a guild's icon, or `nil` if there is no icon.
+
+  ## Examples
+
+  ```Elixir
+  iex> guild = %Nostrum.Struct.Guild{icon: "86e39f7ae3307e811784e2ffd11a7310",
+  ...>                               id: 41771983423143937}
+  iex> Nostrum.Struct.Guild.icon_url(guild)
+  "https://cdn.discordapp.com/icons/41771983423143937/86e39f7ae3307e811784e2ffd11a7310.webp"
+  iex> Nostrum.Struct.Guild.icon_url(guild, "png")
+  "https://cdn.discordapp.com/icons/41771983423143937/86e39f7ae3307e811784e2ffd11a7310.png"
+
+  iex> guild = %Nostrum.Struct.Guild{icon: nil}
+  iex> Nostrum.Struct.Guild.icon_url(guild)
+  nil
+  ```
+  """
+  @spec icon_url(t, String.t()) :: String.t() | nil
+  def icon_url(guild, image_format \\ "webp")
+  def icon_url(%__MODULE__{icon: nil}, _), do: nil
+
+  def icon_url(%__MODULE__{icon: icon, id: id}, image_format),
+    do: "https://cdn.discordapp.com/icons/#{id}/#{icon}.#{image_format}"
+
   @doc false
   def p_encode do
     %__MODULE__{}
