@@ -290,6 +290,8 @@ defmodule Nostrum.Struct.Guild do
   @doc ~S"""
   Returns the URL of a guild's icon, or `nil` if there is no icon.
 
+  Supported image formats are PNG, JPEG, and WebP.
+
   ## Examples
 
   ```Elixir
@@ -314,6 +316,8 @@ defmodule Nostrum.Struct.Guild do
 
   @doc ~S"""
   Returns the URL of a guild's splash, or `nil` if there is no splash.
+
+  Supported image formats are PNG, JPEG, and WebP.
 
   ## Examples
 
