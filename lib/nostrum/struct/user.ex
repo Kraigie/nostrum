@@ -25,8 +25,6 @@ defmodule Nostrum.Struct.User do
   alias Nostrum.Struct.Snowflake
   alias Nostrum.{Util, Constants}
 
-  use HTTPoison.Base
-
   defstruct [
     :id,
     :username,
