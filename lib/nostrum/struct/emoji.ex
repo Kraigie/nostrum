@@ -156,6 +156,36 @@ defmodule Nostrum.Struct.Emoji do
   def api_name(%__MODULE__{id: nil, name: name}), do: name
   def api_name(%__MODULE__{id: id, name: name}), do: "#{name}:#{id}"
 
+  @doc """
+  Returns the url of a custom emoji's image. If the emoji is not a custom one,
+  returns `nil`.
+
+  ## Examples
+
+  ```Elixir
+  iex> emoji = %Nostrum.Struct.Emoji{id: 450225070569291776}
+  iex> Nostrum.Struct.Emoji.image_url(emoji)
+  "https://cdn.discordapp.com/emojis/450225070569291776.png"
+
+  iex> emoji = %Nostrum.Struct.Emoji{id: 406140226998894614, animated: true}
+  iex> Nostrum.Struct.Emoji.image_url(emoji)
+  "https://cdn.discordapp.com/emojis/406140226998894614.gif"
+
+  iex> emoji = %Nostrum.Struct.Emoji{id: nil, name: "Γ¡É"}
+  iex> Nostrum.Struct.Emoji.image_url(emoji)
+  nil
+  ```
+  """
+  @spec image_url(t) :: String.t() | nil
+  def image_url(emoji)
+  def image_url(%__MODULE__{id: nil}), do: nil
+
+  def image_url(%__MODULE__{animated: true, id: id}),
+    do: "https://cdn.discordapp.com/emojis/#{id}.gif"
+
+  def image_url(%__MODULE__{id: id}),
+    do: "https://cdn.discordapp.com/emojis/#{id}.png"
+
   @doc false
   def p_encode do
     %__MODULE__{}
