@@ -312,6 +312,31 @@ defmodule Nostrum.Struct.Guild do
   def icon_url(%__MODULE__{icon: icon, id: id}, image_format),
     do: "https://cdn.discordapp.com/icons/#{id}/#{icon}.#{image_format}"
 
+  @doc ~S"""
+  Returns the URL of a guild's splash, or `nil` if there is no splash.
+
+  ## Examples
+
+  ```Elixir
+  iex> guild = %Nostrum.Struct.Guild{splash: "86e39f7ae3307e811784e2ffd11a7310",
+  ...>                               id: 41771983423143937}
+  iex> Nostrum.Struct.Guild.splash_url(guild)
+  "https://cdn.discordapp.com/splashes/41771983423143937/86e39f7ae3307e811784e2ffd11a7310.webp"
+  iex> Nostrum.Struct.Guild.splash_url(guild, "png")
+  "https://cdn.discordapp.com/splashes/41771983423143937/86e39f7ae3307e811784e2ffd11a7310.png"
+
+  iex> guild = %Nostrum.Struct.Guild{splash: nil}
+  iex> Nostrum.Struct.Guild.splash_url(guild)
+  nil
+  ```
+  """
+  @spec splash_url(t, String.t()) :: String.t() | nil
+  def splash_url(guild, image_format \\ "webp")
+  def splash_url(%__MODULE__{splash: nil}, _), do: nil
+
+  def splash_url(%__MODULE__{splash: splash, id: id}, image_format),
+    do: "https://cdn.discordapp.com/splashes/#{id}/#{splash}.#{image_format}"
+
   @doc false
   def p_encode do
     %__MODULE__{}
