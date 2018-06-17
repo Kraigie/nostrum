@@ -8,7 +8,7 @@ defmodule Nostrum.Struct.Guild do
   alias Nostrum.Struct.Guild.Member
   alias Nostrum.Struct.Guild.Role
   alias Nostrum.Struct.Snowflake
-  alias Nostrum.Util
+  alias Nostrum.{Constants, Util}
 
   defstruct [
     :id,
@@ -286,6 +286,60 @@ defmodule Nostrum.Struct.Guild do
           | unavailable_guild
           | rest_guild
           | user_guild
+
+  @doc ~S"""
+  Returns the URL of a guild's icon, or `nil` if there is no icon.
+
+  Supported image formats are PNG, JPEG, and WebP.
+
+  ## Examples
+
+  ```Elixir
+  iex> guild = %Nostrum.Struct.Guild{icon: "86e39f7ae3307e811784e2ffd11a7310",
+  ...>                               id: 41771983423143937}
+  iex> Nostrum.Struct.Guild.icon_url(guild)
+  "https://cdn.discordapp.com/icons/41771983423143937/86e39f7ae3307e811784e2ffd11a7310.webp"
+  iex> Nostrum.Struct.Guild.icon_url(guild, "png")
+  "https://cdn.discordapp.com/icons/41771983423143937/86e39f7ae3307e811784e2ffd11a7310.png"
+
+  iex> guild = %Nostrum.Struct.Guild{icon: nil}
+  iex> Nostrum.Struct.Guild.icon_url(guild)
+  nil
+  ```
+  """
+  @spec icon_url(t, String.t()) :: String.t() | nil
+  def icon_url(guild, image_format \\ "webp")
+  def icon_url(%__MODULE__{icon: nil}, _), do: nil
+
+  def icon_url(%__MODULE__{icon: icon, id: id}, image_format),
+    do: URI.encode(Constants.cdn_url() <> Constants.cdn_icon(id, icon, image_format))
+
+  @doc ~S"""
+  Returns the URL of a guild's splash, or `nil` if there is no splash.
+
+  Supported image formats are PNG, JPEG, and WebP.
+
+  ## Examples
+
+  ```Elixir
+  iex> guild = %Nostrum.Struct.Guild{splash: "86e39f7ae3307e811784e2ffd11a7310",
+  ...>                               id: 41771983423143937}
+  iex> Nostrum.Struct.Guild.splash_url(guild)
+  "https://cdn.discordapp.com/splashes/41771983423143937/86e39f7ae3307e811784e2ffd11a7310.webp"
+  iex> Nostrum.Struct.Guild.splash_url(guild, "png")
+  "https://cdn.discordapp.com/splashes/41771983423143937/86e39f7ae3307e811784e2ffd11a7310.png"
+
+  iex> guild = %Nostrum.Struct.Guild{splash: nil}
+  iex> Nostrum.Struct.Guild.splash_url(guild)
+  nil
+  ```
+  """
+  @spec splash_url(t, String.t()) :: String.t() | nil
+  def splash_url(guild, image_format \\ "webp")
+  def splash_url(%__MODULE__{splash: nil}, _), do: nil
+
+  def splash_url(%__MODULE__{splash: splash, id: id}, image_format),
+    do: URI.encode(Constants.cdn_url() <> Constants.cdn_splash(id, splash, image_format))
 
   @doc false
   def p_encode do
