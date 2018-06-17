@@ -21,6 +21,8 @@ defmodule Nostrum.Struct.Guild.Member do
   ```
   """
 
+  alias Nostrum.Struct.Guild
+  alias Nostrum.Struct.Permission
   alias Nostrum.Struct.Snowflake
   alias Nostrum.Struct.User
   alias Nostrum.Util
@@ -78,6 +80,35 @@ defmodule Nostrum.Struct.Guild.Member do
   """
   @spec mention(t) :: String.t()
   def mention(%__MODULE__{user: user}), do: User.mention(user)
+
+  @spec guild_permissions(t, Guild.t()) :: Permission.permission_set()
+  def guild_permissions(member, guild)
+
+  def guild_permissions(%__MODULE__{user: %{id: user_id}}, %Guild{owner_id: owner_id})
+      when user_id === owner_id,
+      do: Permission.all()
+
+  def guild_permissions(%__MODULE__{} = member, %Guild{} = guild) do
+    use Bitwise
+
+    everyone_role_id = guild.id
+    member_role_ids = member.roles ++ [everyone_role_id]
+
+    member_permissions =
+      member_role_ids
+      |> Enum.map(&Enum.find(guild.roles, fn role -> role.id === &1 end))
+      |> Enum.filter(&match?(nil, &1))
+      |> Enum.reduce(0, fn role, bitset_acc ->
+        bitset_acc ||| role.permissions
+      end)
+      |> Permission.from_bitset()
+
+    if MapSet.member?(member_permissions, :administrator) do
+      Permission.all()
+    else
+      member_permissions
+    end
+  end
 
   @doc false
   def p_encode do
