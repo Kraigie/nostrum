@@ -42,12 +42,43 @@ defmodule Nostrum.Struct.Permission do
 
   @type permission_set :: MapSet.t(t)
 
+  @permission_to_bitvalue_map %{
+    create_instant_invite: 0x00000001,
+    kick_members: 0x00000002,
+    ban_members: 0x00000004,
+    administrator: 0x00000008,
+    manage_channels: 0x00000010,
+    manage_guild: 0x00000020,
+    add_reactions: 0x00000040,
+    view_audit_log: 0x00000080,
+    view_channel: 0x00000400,
+    send_messages: 0x00000800,
+    send_tts_messages: 0x00001000,
+    manage_messages: 0x00002000,
+    embed_links: 0x00004000,
+    attach_files: 0x00008000,
+    read_message_history: 0x00010000,
+    mention_everyone: 0x00020000,
+    use_external_emojis: 0x00040000,
+    connect: 0x00100000,
+    speak: 0x00200000,
+    mute_members: 0x00400000,
+    deafen_members: 0x00800000,
+    move_members: 0x01000000,
+    use_vad: 0x02000000,
+    change_nickname: 0x04000000,
+    manage_nicknames: 0x08000000,
+    manage_roles: 0x10000000,
+    manage_webhooks: 0x20000000,
+    manage_emojis: 0x40000000
+  }
+
   @doc """
   Returns a permission set containing all permissions.
   """
   @spec all() :: permission_set
   def all do
-    permission_to_bitvalue_map()
+    @permission_to_bitvalue_map
     |> Enum.map(fn {perm, _} -> perm end)
     |> MapSet.new()
   end
@@ -70,7 +101,7 @@ defmodule Nostrum.Struct.Permission do
   """
   @spec from_bitset(integer) :: permission_set
   def from_bitset(bitset) do
-    Enum.reduce(permission_to_bitvalue_map(), [], fn {perm, bitvalue}, acc ->
+    Enum.reduce(@permission_to_bitvalue_map, [], fn {perm, bitvalue}, acc ->
       if band(bitset, bitvalue) == bitvalue do
         acc ++ [perm]
       else
@@ -78,38 +109,5 @@ defmodule Nostrum.Struct.Permission do
       end
     end)
     |> MapSet.new()
-  end
-
-  defp permission_to_bitvalue_map do
-    %{
-      create_instant_invite: 0x00000001,
-      kick_members: 0x00000002,
-      ban_members: 0x00000004,
-      administrator: 0x00000008,
-      manage_channels: 0x00000010,
-      manage_guild: 0x00000020,
-      add_reactions: 0x00000040,
-      view_audit_log: 0x00000080,
-      view_channel: 0x00000400,
-      send_messages: 0x00000800,
-      send_tts_messages: 0x00001000,
-      manage_messages: 0x00002000,
-      embed_links: 0x00004000,
-      attach_files: 0x00008000,
-      read_message_history: 0x00010000,
-      mention_everyone: 0x00020000,
-      use_external_emojis: 0x00040000,
-      connect: 0x00100000,
-      speak: 0x00200000,
-      mute_members: 0x00400000,
-      deafen_members: 0x00800000,
-      move_members: 0x01000000,
-      use_vad: 0x02000000,
-      change_nickname: 0x04000000,
-      manage_nicknames: 0x08000000,
-      manage_roles: 0x10000000,
-      manage_webhooks: 0x20000000,
-      manage_emojis: 0x40000000
-    }
   end
 end
