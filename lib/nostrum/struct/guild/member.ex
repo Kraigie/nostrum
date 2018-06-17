@@ -21,10 +21,7 @@ defmodule Nostrum.Struct.Guild.Member do
   ```
   """
 
-  alias Nostrum.Struct.Guild
-  alias Nostrum.Struct.Permission
-  alias Nostrum.Struct.Snowflake
-  alias Nostrum.Struct.User
+  alias Nostrum.Struct.{Guild, Permission, Snowflake, User}
   alias Nostrum.Util
 
   defstruct [
