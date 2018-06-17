@@ -117,7 +117,7 @@ defmodule Nostrum.Struct.Guild do
   """
   @type system_channel_id :: Snowflake.t() | nil
 
-  @typedoc "Date the guild was created"
+  @typedoc "Date the bot user joined the guild"
   @type joined_at :: String.t() | nil
 
   @typedoc "Whether the guild is considered 'large'"

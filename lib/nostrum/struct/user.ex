@@ -23,7 +23,7 @@ defmodule Nostrum.Struct.User do
   """
 
   alias Nostrum.Struct.Snowflake
-  alias Nostrum.Util
+  alias Nostrum.{Util, Constants}
 
   defstruct [
     :id,
@@ -88,6 +88,60 @@ defmodule Nostrum.Struct.User do
   """
   @spec mention(t) :: String.t()
   def mention(%__MODULE__{id: id}), do: "<@#{id}>"
+
+  @doc """
+  Returns the URL of a user's display avatar.
+
+  If `:avatar` is `nil`, the default avatar url is returned.
+
+  Supported image formats are PNG, JPEG, GIF, WebP, and GIF.
+
+  ## Examples
+
+  ```Elixir
+  iex> user = %Nostrum.Struct.User{avatar: "8342729096ea3675442027381ff50dfe",
+  ...>                             id: 80351110224678912}
+  iex> Nostrum.Struct.User.avatar_url(user)
+  "https://cdn.discordapp.com/avatars/80351110224678912/8342729096ea3675442027381ff50dfe.webp"
+  iex> Nostrum.Struct.User.avatar_url(user, "png")
+  "https://cdn.discordapp.com/avatars/80351110224678912/8342729096ea3675442027381ff50dfe.png"
+
+  iex> user = %Nostrum.Struct.User{avatar: nil,
+  ...>                             discriminator: "1337"}
+  iex> Nostrum.Struct.User.avatar_url(user)
+  "https://cdn.discordapp.com/embed/avatars/2.png"
+  ```
+  """
+  @spec avatar_url(t, String.t()) :: String.t()
+  def avatar_url(user, image_format \\ "webp")
+
+  def avatar_url(%__MODULE__{avatar: nil, discriminator: disc}, _) do
+    image_name =
+      disc
+      |> String.to_integer()
+      |> rem(5)
+
+    URI.encode(Constants.cdn_url() <> Constants.cdn_embed_avatar(image_name))
+  end
+
+  def avatar_url(%__MODULE__{id: id, avatar: avatar}, image_format),
+    do: URI.encode(Constants.cdn_url() <> Constants.cdn_avatar(id, avatar, image_format))
+
+  @doc """
+  Returns a user's `:username` and `:discriminator` separated by a hashtag.
+
+  ## Examples
+
+  ```Elixir
+  iex> user = %Nostrum.Struct.User{username: "b1nzy",
+  ...>                             discriminator: "0852"}
+  iex> Nostrum.Struct.User.full_name(user)
+  "b1nzy#0852"
+  ```
+  """
+  @spec full_name(t) :: String.t()
+  def full_name(%__MODULE__{username: username, discriminator: disc}),
+    do: "#{username}##{disc}"
 
   @doc false
   def p_encode do
