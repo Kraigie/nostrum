@@ -1,4 +1,25 @@
 defmodule Nostrum.Struct.Permission do
+  @moduledoc """
+  Functions that work on permissions.
+
+  Some functions return permission sets. Permission sets are `MapSet`s with
+  atoms representing permissions. You can use the `MapSet` module to check for
+  permissions, as follows:
+
+  ```Elixir
+  alias Nostrum.Cache.GuildCache
+  alias Nostrum.Struct.Guild.Member
+
+  guild = GuildCache.get!(279093381723062272)
+  member = Enum.find(guild.members, & &1.id === 177888205536886784)
+  member_perms = Member.guild_permissions(member, guild)
+
+  if MapSet.member?(member_perms, :administrator) do
+    IO.puts("This user has the administrator permission.")
+  end
+  ```
+  """
+
   use Bitwise
 
   @type general_permission ::
