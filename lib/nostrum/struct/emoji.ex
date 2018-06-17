@@ -37,7 +37,7 @@ defmodule Nostrum.Struct.Emoji do
 
   alias Nostrum.Struct.Snowflake
   alias Nostrum.Struct.User
-  alias Nostrum.Util
+  alias Nostrum.{Constants, Util}
 
   defstruct [
     :id,
@@ -181,10 +181,10 @@ defmodule Nostrum.Struct.Emoji do
   def image_url(%__MODULE__{id: nil}), do: nil
 
   def image_url(%__MODULE__{animated: true, id: id}),
-    do: "https://cdn.discordapp.com/emojis/#{id}.gif"
+    do: URI.encode(Constants.cdn_url() <> Constants.cdn_emoji(id, "gif"))
 
   def image_url(%__MODULE__{id: id}),
-    do: "https://cdn.discordapp.com/emojis/#{id}.png"
+    do: URI.encode(Constants.cdn_url() <> Constants.cdn_emoji(id, "png"))
 
   @doc false
   def p_encode do
