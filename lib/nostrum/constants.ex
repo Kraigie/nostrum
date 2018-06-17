@@ -2,7 +2,8 @@ defmodule Nostrum.Constants do
   @moduledoc false
 
   # REFERENCE: https://gist.github.com/SinisterRectus/9518f3e7d0d1ccb4335b2a0d389c30b0
-  def base_url, do: Application.get_env(:nostrum, :api_url, "https://discordapp.com/api/v6")
+  def base_url, do: "https://discordapp.com/api/v6"
+  def cdn_url, do: "https://cdn.discordapp.com"
   def gateway, do: "/gateway"
   def gateway_bot, do: "/gateway/bot"
 
@@ -91,6 +92,9 @@ defmodule Nostrum.Constants do
   def channel_call_ring(channel_id), do: "/channels/#{channel_id}/call/ring"
   def group_recipient(group_id, user_id), do: "/channels/#{group_id}/recipients/#{user_id}"
   def guild_me_nick(guild_id), do: "/guilds/#{guild_id}/members/@me/nick"
+
+  def cdn_avatar(id, avatar, image_format), do: "/avatars/#{id}/#{avatar}.#{image_format}"
+  def cdn_embed_avatar(image_name), do: "/embed/avatars/#{image_name}.png"
 
   def opcodes do
     %{
