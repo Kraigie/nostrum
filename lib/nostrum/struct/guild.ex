@@ -8,7 +8,7 @@ defmodule Nostrum.Struct.Guild do
   alias Nostrum.Struct.Guild.Member
   alias Nostrum.Struct.Guild.Role
   alias Nostrum.Struct.Snowflake
-  alias Nostrum.Util
+  alias Nostrum.{Constants, Util}
 
   defstruct [
     :id,
@@ -312,7 +312,7 @@ defmodule Nostrum.Struct.Guild do
   def icon_url(%__MODULE__{icon: nil}, _), do: nil
 
   def icon_url(%__MODULE__{icon: icon, id: id}, image_format),
-    do: "https://cdn.discordapp.com/icons/#{id}/#{icon}.#{image_format}"
+    do: URI.encode(Constants.cdn_url() <> Constants.cdn_icon(id, icon, image_format))
 
   @doc ~S"""
   Returns the URL of a guild's splash, or `nil` if there is no splash.
@@ -339,7 +339,7 @@ defmodule Nostrum.Struct.Guild do
   def splash_url(%__MODULE__{splash: nil}, _), do: nil
 
   def splash_url(%__MODULE__{splash: splash, id: id}, image_format),
-    do: "https://cdn.discordapp.com/splashes/#{id}/#{splash}.#{image_format}"
+    do: URI.encode(Constants.cdn_url() <> Constants.cdn_splash(id, splash, image_format))
 
   @doc false
   def p_encode do
