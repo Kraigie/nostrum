@@ -103,7 +103,7 @@ defmodule Nostrum.Struct.Permission do
   def from_bitset(bitset) do
     Enum.reduce(@permission_to_bitvalue_map, [], fn {perm, bitvalue}, acc ->
       if band(bitset, bitvalue) == bitvalue do
-        acc ++ [perm]
+        [perm | acc]
       else
         acc
       end
