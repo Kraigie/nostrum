@@ -95,6 +95,7 @@ defmodule Nostrum.Constants do
 
   def cdn_avatar(id, avatar, image_format), do: "/avatars/#{id}/#{avatar}.#{image_format}"
   def cdn_embed_avatar(image_name), do: "/embed/avatars/#{image_name}.png"
+  def cdn_emoji(id, image_format), do: "/emojis/#{id}.#{image_format}"
   def cdn_icon(id, icon, image_format), do: "/icons/#{id}/#{icon}.#{image_format}"
   def cdn_splash(id, splash, image_format), do: "/splashes/#{id}/#{splash}.#{image_format}"
 
