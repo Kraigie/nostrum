@@ -117,9 +117,7 @@ defmodule Nostrum.Struct.Permission do
   """
   @spec all() :: permission_set
   def all do
-    @permission_to_bitvalue_map
-    |> Enum.map(fn {perm, _} -> perm end)
-    |> MapSet.new()
+    MapSet.new(@permission_list)
   end
 
   @doc """
