@@ -78,6 +78,18 @@ defmodule Nostrum.Struct.Guild.Member do
   @spec mention(t) :: String.t()
   def mention(%__MODULE__{user: user}), do: User.mention(user)
 
+  @doc """
+  Returns a member's guild permissions.
+
+  ## Examples
+
+  ```Elixir
+  guild = Nostrum.Cache.GuildCache.get!(279093381723062272)
+  member = Enum.find(guild.members, & &1.id === 177888205536886784)
+  Nostrum.Struct.Guild.Member.guild_permissions(member, guild)
+  #=> #MapSet<[:administrator]>
+  ```
+  """
   @spec guild_permissions(t, Guild.t()) :: Permission.permission_set()
   def guild_permissions(member, guild)
 
