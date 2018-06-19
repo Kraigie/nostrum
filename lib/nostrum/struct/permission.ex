@@ -94,6 +94,23 @@ defmodule Nostrum.Struct.Permission do
     manage_emojis: 0x40000000
   }
 
+  @permission_list Map.keys(@permission_to_bitvalue_map)
+
+  @doc """
+  Returns `true` if `term` is a permission; otherwise returns `false`.
+
+  ## Examples
+
+  ```Elixir
+  iex> Nostrum.Struct.Permission.is_permission(:administrator)
+  true
+
+  iex> Nostrum.Struct.Permission.is_permission(:not_a_permission)
+  false
+  ```
+  """
+  defguard is_permission(term) when is_atom(term) and term in @permission_list
+
   @doc """
   Returns a permission set containing all permissions.
   """

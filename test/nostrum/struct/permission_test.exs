@@ -3,5 +3,7 @@ defmodule Nostrum.Struct.PermissionTest do
 
   alias Nostrum.Struct.Permission
 
+  require Permission
+
   doctest Permission
 end
