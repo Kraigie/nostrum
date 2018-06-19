@@ -22,6 +22,7 @@ defmodule Nostrum.Struct.Permission do
 
   use Bitwise
 
+  @type bitset :: integer
   @type general_permission ::
           :create_instant_invite
           | :kick_members
@@ -137,7 +138,7 @@ defmodule Nostrum.Struct.Permission do
   #MapSet<[]>
   ```
   """
-  @spec from_bitset(integer) :: permission_set
+  @spec from_bitset(bitset) :: permission_set
   def from_bitset(bitset) do
     Enum.reduce(@permission_to_bitvalue_map, [], fn {perm, bitvalue}, acc ->
       if band(bitset, bitvalue) == bitvalue do
@@ -160,7 +161,7 @@ defmodule Nostrum.Struct.Permission do
   2146958591
   ```
   """
-  @spec to_bitset(permission_set) :: integer
+  @spec to_bitset(permission_set) :: bitset
   def to_bitset(permission_set) do
     Enum.reduce(permission_set, 0, fn perm, acc ->
       acc ||| @permission_to_bitvalue_map[perm]
