@@ -151,20 +151,28 @@ defmodule Nostrum.Struct.Permission do
   end
 
   @doc """
-  Converts the given permission set to a bitset.
+  Converts the given permission or permission set to a bitset.
 
   ## Examples
 
   ```Elixir
-  iex> Nostrum.Struct.Permission.all
-  ...> |> Nostrum.Struct.Permission.to_bitset()
-  2146958591
+  iex> Nostrum.Struct.Permission.to_bitset(:administrator)
+  8
+
+  iex> perm_set = MapSet.new([:administrator, :create_invite_invite])
+  iex> Nostrum.Struct.Permission.to_bitset(perm_set)
+  9
   ```
   """
+  @spec to_bitset(t) :: bitset
+  def to_bitset(permission) when is_permission(permission) do
+    @permission_to_bitvalue_map[permission]
+  end
+
   @spec to_bitset(permission_set) :: bitset
-  def to_bitset(permission_set) do
+  def to_bitset(%MapSet{} = permission_set) do
     Enum.reduce(permission_set, 0, fn perm, acc ->
-      acc ||| @permission_to_bitvalue_map[perm]
+      acc ||| to_bitset(perm)
     end)
   end
 end
