@@ -26,6 +26,15 @@ defmodule Nostrum.Struct.MemberTest do
 
       assert(result === Permission.all())
     end
+
+    test "returns all perms if owner" do
+      member = %Member{user: %User{id: 200}}
+      guild = %Guild{owner_id: 200}
+
+      result = Member.guild_permissions(member, guild)
+
+      assert(result === Permission.all())
+    end
   end
 
   describe "String.Chars" do
