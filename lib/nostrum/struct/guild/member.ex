@@ -106,7 +106,7 @@ defmodule Nostrum.Struct.Guild.Member do
     member_permissions =
       member_role_ids
       |> Enum.map(&Enum.find(guild.roles, fn role -> role.id === &1 end))
-      |> Enum.filter(&!match?(nil, &1))
+      |> Enum.filter(&(!match?(nil, &1)))
       |> Enum.reduce(0, fn role, bitset_acc ->
         bitset_acc ||| role.permissions
       end)
