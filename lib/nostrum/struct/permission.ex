@@ -157,7 +157,7 @@ defmodule Nostrum.Struct.Permission do
   iex> Nostrum.Struct.Permission.to_bitset(:administrator)
   8
 
-  iex> perm_set = MapSet.new([:administrator, :create_invite_invite])
+  iex> perm_set = MapSet.new([:administrator, :create_instant_invite])
   iex> Nostrum.Struct.Permission.to_bitset(perm_set)
   9
   ```
