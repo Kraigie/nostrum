@@ -35,6 +35,19 @@ defmodule Nostrum.Struct.MemberTest do
 
       assert(result === Permission.all())
     end
+
+    test "returns permissions otherwise" do
+      member = %Member{roles: [10]}
+      role_perms = MapSet.new([:create_instant_invite, :manage_guild])
+      role = %Role{id: 10, permissions: Permission.to_bitset(role_perms)}
+      guild = %Guild{
+        roles: [role]
+      }
+
+      result = Member.guild_permissions(member, guild)
+
+      assert(result === Permission.from_bitset(0x00000021))
+    end
   end
 
   describe "String.Chars" do
