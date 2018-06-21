@@ -259,13 +259,17 @@ defmodule Nostrum.Cache.Guild.GuildServer do
 
   defp list_upsert_when([head | list], value, fun, acc) do
     if fun.(head) do
-      new_head =
-        Map.merge(head, value, fn
+      {popped, new_head} =
+        head
+        |> Map.merge(value, fn
           _k, v1, nil -> v1
           _k, _v1, v2 -> v2
         end)
+        |> Map.pop(:__struct__)
 
-      {acc ++ [new_head | list], head, new_head}
+      struct_head = apply(popped, :to_struct, [new_head])
+
+      {acc ++ [struct_head | list], head, struct_head}
     else
       list_upsert_when(list, value, fun, acc ++ [head])
     end
