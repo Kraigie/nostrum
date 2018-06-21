@@ -1618,7 +1618,7 @@ defmodule Nostrum.Api do
   """
   @spec remove_guild_ban(integer, integer) :: error | {:ok}
   def remove_guild_ban(guild_id, user_id) do
-    request(:remove, Constants.guild_ban(guild_id, user_id))
+    request(:delete, Constants.guild_ban(guild_id, user_id))
   end
 
   @doc ~S"""
