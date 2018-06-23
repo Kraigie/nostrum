@@ -21,8 +21,10 @@ defmodule Nostrum.Struct.Guild.Member do
   ```
   """
 
-  alias Nostrum.Struct.{Guild, Permission, Snowflake, User}
+  alias Nostrum.Struct.{Channel, Guild, Permission, Snowflake, User}
   alias Nostrum.Util
+
+  require Logger
 
   defstruct [
     :user,
@@ -116,6 +118,51 @@ defmodule Nostrum.Struct.Guild.Member do
       Permission.all()
     else
       member_permissions
+    end
+  end
+
+  @doc """
+  Returns a member's permissions in a guild channel, based on its `Nostrum.Struct.Overwrite`s.
+
+  ## Examples
+
+  ```Elixir
+  guild = Nostrum.Cache.GuildCache.get!(279093381723062272)
+  member = Enum.find(guild.members, & &1.id === 177888205536886784)
+  channel_id = 381889573426429952
+  Nostrum.Struct.Guild.Member.guild_channel_permissions(member, guild, channel_id)
+  #=> #MapSet<[:manage_messages]>
+  ```
+  """
+  @spec guild_channel_permissions(t, Guild.t(), Channel.id()) :: Permission.permission_set()
+  def guild_channel_permissions(%__MODULE__{} = member, guild, channel_id) do
+    use Bitwise
+
+    guild_perms = guild_permissions(member, guild)
+
+    if MapSet.member?(guild_perms, :administrator) do
+      Permission.all()
+    else
+      channel = Enum.find(guild.channels, &(&1.id == channel_id))
+
+      everyone_role_id = guild.id
+      role_ids = [everyone_role_id | member.roles]
+      overwrite_ids = role_ids ++ [member.user.id]
+
+      {allow, deny} =
+        channel.permission_overwrites
+        |> Enum.filter(&(&1.id in overwrite_ids))
+        |> Enum.map(fn overwrite -> {overwrite.allow, overwrite.deny} end)
+        |> Enum.map(fn {allow, deny} ->
+          {Permission.from_bitset(allow), Permission.from_bitset(deny)}
+        end)
+        |> Enum.reduce(fn {allow, deny}, {acc_allow, acc_deny} ->
+          {MapSet.union(acc_allow, allow), MapSet.difference(acc_deny, deny)}
+        end)
+
+      guild_perms
+      |> MapSet.difference(deny)
+      |> MapSet.union(allow)
     end
   end
 
