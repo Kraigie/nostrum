@@ -122,31 +122,43 @@ defmodule Nostrum.Struct.Permission do
   end
 
   @doc """
-  Converts the given bitset to a permission set.
+  Converts the given bit to a permission.
+
+  ## Examples
+
+  ```Elixir
+  iex> Nostrum.Struct.Permission.from_bit(0x04000000)
+  :change_nickname
+  ```
+  """
+  @spec from_bit(bit) :: t
+  def from_bit(bit) do
+    {perm, _} = Enum.find(@permission_to_bitvalue_map, fn {_, perm_bit} -> perm_bit === bit end)
+    perm
+  end
+
+  @doc """
+  Converts the given bitset to a liist of permissions.
 
   ## Examples
 
   ```Elixir
   iex> Nostrum.Struct.Permission.from_bitset(0x04000000)
-  #MapSet<[:change_nickname]>
+  [:change_nickname]
 
   iex> Nostrum.Struct.Permission.from_bitset(0x08000002)
-  #MapSet<[:kick_members, :manage_nicknames]>
+  [:kick_members, :manage_nicknames]
 
   iex> Nostrum.Struct.Permission.from_bitset(0)
-  #MapSet<[]>
+  []
   ```
   """
-  @spec from_bitset(bitset) :: permission_set
+  @spec from_bitset(bitset) :: [t]
   def from_bitset(bitset) do
-    Enum.reduce(@permission_to_bitvalue_map, [], fn {perm, bitvalue}, acc ->
-      if band(bitset, bitvalue) == bitvalue do
-        [perm | acc]
-      else
-        acc
-      end
-    end)
-    |> MapSet.new()
+    0..53
+    |> Enum.map(fn index -> 0x1 <<< index end)
+    |> Enum.filter(fn mask -> (bitset &&& mask) === mask end)
+    |> Enum.map(fn bit -> from_bit(bit) end)
   end
 
   @doc """

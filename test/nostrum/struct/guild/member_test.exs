@@ -42,7 +42,7 @@ defmodule Nostrum.Struct.MemberTest do
 
     test "returns permissions otherwise" do
       member = %Member{roles: [10]}
-      role_perms = MapSet.new([:create_instant_invite, :manage_guild])
+      role_perms = [:create_instant_invite, :manage_guild]
       role = %Role{id: 10, permissions: Permission.to_bitset(role_perms)}
 
       guild = %Guild{

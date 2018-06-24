@@ -89,10 +89,10 @@ defmodule Nostrum.Struct.Guild.Member do
   guild = Nostrum.Cache.GuildCache.get!(279093381723062272)
   member = Enum.find(guild.members, & &1.id === 177888205536886784)
   Nostrum.Struct.Guild.Member.guild_permissions(member, guild)
-  #=> #MapSet<[:administrator]>
+  #=> [:administrator]
   ```
   """
-  @spec guild_permissions(t, Guild.t()) :: Permission.permission_set()
+  @spec guild_permissions(t, Guild.t()) :: [Permission.t()]
   def guild_permissions(member, guild)
 
   def guild_permissions(%__MODULE__{user: %{id: user_id}}, %Guild{owner_id: owner_id})
@@ -114,7 +114,7 @@ defmodule Nostrum.Struct.Guild.Member do
       end)
       |> Permission.from_bitset()
 
-    if MapSet.member?(member_permissions, :administrator) do
+    if Enum.member?(member_permissions, :administrator) do
       Permission.all()
     else
       member_permissions
@@ -131,16 +131,16 @@ defmodule Nostrum.Struct.Guild.Member do
   member = Enum.find(guild.members, & &1.id === 177888205536886784)
   channel_id = 381889573426429952
   Nostrum.Struct.Guild.Member.guild_channel_permissions(member, guild, channel_id)
-  #=> #MapSet<[:manage_messages]>
+  #=> [:manage_messages]
   ```
   """
-  @spec guild_channel_permissions(t, Guild.t(), Channel.id()) :: Permission.permission_set()
+  @spec guild_channel_permissions(t, Guild.t(), Channel.id()) :: [Permission.t()]
   def guild_channel_permissions(%__MODULE__{} = member, guild, channel_id) do
     use Bitwise
 
     guild_perms = guild_permissions(member, guild)
 
-    if MapSet.member?(guild_perms, :administrator) do
+    if Enum.member?(guild_perms, :administrator) do
       Permission.all()
     else
       channel = Enum.find(guild.channels, &(&1.id == channel_id))
@@ -153,16 +153,17 @@ defmodule Nostrum.Struct.Guild.Member do
         channel.permission_overwrites
         |> Enum.filter(&(&1.id in overwrite_ids))
         |> Enum.map(fn overwrite -> {overwrite.allow, overwrite.deny} end)
-        |> Enum.map(fn {allow, deny} ->
-          {Permission.from_bitset(allow), Permission.from_bitset(deny)}
-        end)
-        |> Enum.reduce(fn {allow, deny}, {acc_allow, acc_deny} ->
-          {MapSet.union(acc_allow, allow), MapSet.difference(acc_deny, deny)}
+        |> Enum.reduce(fn {allow, deny}, {allow_acc, deny_acc} ->
+          {allow_acc ||| allow, deny_acc ||| deny}
         end)
 
+      allow_perms = allow |> Permission.from_bitset()
+      deny_perms = deny |> Permission.from_bitset()
+
       guild_perms
-      |> MapSet.difference(deny)
-      |> MapSet.union(allow)
+      |> Enum.reject(&(&1 in deny_perms))
+      |> Enum.concat(allow_perms)
+      |> Enum.dedup()
     end
   end
 
