@@ -1,13 +1,8 @@
 defmodule Nostrum.Struct.MemberTest do
   use ExUnit.Case, async: true
 
-  alias Nostrum.Struct.Channel
-  alias Nostrum.Struct.Guild
-  alias Nostrum.Struct.Guild.Member
-  alias Nostrum.Struct.Guild.Role
-  alias Nostrum.Struct.Permission
-  alias Nostrum.Struct.User
-  alias Nostrum.Struct.Overwrite
+  alias Nostrum.Struct.{Channel, Guild, Permission, User, Overwrite}
+  alias Nostrum.Struct.Guild.{Member, Role}
 
   require Logger
 
