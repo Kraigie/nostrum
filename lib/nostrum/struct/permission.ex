@@ -37,7 +37,6 @@ defmodule Nostrum.Struct.Permission do
           | :manage_roles
           | :manage_webhooks
           | :manage_emojis
-
   @type text_permission ::
           :add_reactions
           | :send_messages
@@ -48,7 +47,6 @@ defmodule Nostrum.Struct.Permission do
           | :read_message_history
           | :mention_everyone
           | :use_external_emojis
-
   @type voice_permission ::
           :connect
           | :speak
@@ -56,7 +54,6 @@ defmodule Nostrum.Struct.Permission do
           | :deafen_members
           | :move_members
           | :use_vad
-
   @type t ::
           general_permission
           | text_permission
@@ -182,8 +179,7 @@ defmodule Nostrum.Struct.Permission do
   @spec to_bitset(Enum.t()) :: bitset
   def to_bitset(permissions) do
     permissions
-    |> Enum.reduce(0, fn perm, acc ->
-      acc ||| to_bit(perm)
-    end)
+    |> Enum.map(&to_bit(&1))
+    |> Enum.reduce(fn bit, acc -> acc ||| bit end)
   end
 end
