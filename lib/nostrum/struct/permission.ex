@@ -2,9 +2,8 @@ defmodule Nostrum.Struct.Permission do
   @moduledoc """
   Functions that work on permissions.
 
-  Some functions return permission sets. Permission sets are `MapSet`s with
-  atoms representing permissions. You can use the `MapSet` module to check for
-  permissions, as follows:
+  Some functions return a list of permissions. You can use enumerable functions
+  to work with permissions:
 
   ```Elixir
   alias Nostrum.Cache.GuildCache
@@ -14,7 +13,7 @@ defmodule Nostrum.Struct.Permission do
   member = Enum.find(guild.members, & &1.id === 177888205536886784)
   member_perms = Member.guild_permissions(member, guild)
 
-  if MapSet.member?(member_perms, :administrator) do
+  if :administrator in member_perms do
     IO.puts("This user has the administrator permission.")
   end
   ```
@@ -23,7 +22,7 @@ defmodule Nostrum.Struct.Permission do
   use Bitwise
 
   @type bit :: non_neg_integer
-  @type bitset :: integer
+  @type bitset :: non_neg_integer
   @type general_permission ::
           :create_instant_invite
           | :kick_members
@@ -62,8 +61,6 @@ defmodule Nostrum.Struct.Permission do
           general_permission
           | text_permission
           | voice_permission
-
-  @type permission_set :: MapSet.t(t)
 
   @permission_to_bitvalue_map %{
     create_instant_invite: 0x00000001,
