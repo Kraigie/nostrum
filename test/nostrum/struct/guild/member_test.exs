@@ -24,7 +24,7 @@ defmodule Nostrum.Struct.MemberTest do
   describe "guild_permissions/2" do
     test "returns all perms if admin" do
       member = %Member{roles: [10]}
-      guild = %Guild{roles: [%Role{id: 10, permissions: Permission.to_bitset(:administrator)}]}
+      guild = %Guild{roles: [%Role{id: 10, permissions: Permission.to_bitset([:administrator])}]}
 
       result = Member.guild_permissions(member, guild)
 

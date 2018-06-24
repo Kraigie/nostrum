@@ -22,6 +22,7 @@ defmodule Nostrum.Struct.Permission do
 
   use Bitwise
 
+  @type bit :: non_neg_integer
   @type bitset :: integer
   @type general_permission ::
           :create_instant_invite
@@ -149,28 +150,33 @@ defmodule Nostrum.Struct.Permission do
   end
 
   @doc """
-  Converts the given permission or permission set to a bitset.
+  Converts the given permission to a bit.
 
   ## Examples
 
   ```Elixir
-  iex> Nostrum.Struct.Permission.to_bitset(:administrator)
+  iex> Nostrum.Struct.Permission.to_bit(:administrator)
   8
+  ```
+  """
+  @spec to_bit(t) :: bit
+  def to_bit(permission), do: @permission_to_bitvalue_map[permission]
 
-  iex> perm_set = MapSet.new([:administrator, :create_instant_invite])
-  iex> Nostrum.Struct.Permission.to_bitset(perm_set)
+  @doc """
+  Converts the given enumerable of permissions to a bitset.
+
+  ## Examples
+
+  ```Elixir
+  iex> Nostrum.Struct.Permission.to_bitset([:administrator, :create_instant_invite])
   9
   ```
   """
-  @spec to_bitset(t) :: bitset
-  def to_bitset(permission) when is_permission(permission) do
-    @permission_to_bitvalue_map[permission]
-  end
-
-  @spec to_bitset(permission_set) :: bitset
-  def to_bitset(%MapSet{} = permission_set) do
-    Enum.reduce(permission_set, 0, fn perm, acc ->
-      acc ||| to_bitset(perm)
+  @spec to_bitset(Enum.t()) :: bitset
+  def to_bitset(permissions) do
+    permissions
+    |> Enum.reduce(0, fn perm, acc ->
+      acc ||| to_bit(perm)
     end)
   end
 end
