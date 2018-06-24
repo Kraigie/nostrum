@@ -59,7 +59,7 @@ defmodule Nostrum.Struct.Permission do
           | text_permission
           | voice_permission
 
-  @permission_to_bitvalue_map %{
+  @permission_to_bit_map %{
     create_instant_invite: 0x00000001,
     kick_members: 0x00000002,
     ban_members: 0x00000004,
@@ -89,8 +89,8 @@ defmodule Nostrum.Struct.Permission do
     manage_webhooks: 0x20000000,
     manage_emojis: 0x40000000
   }
-
-  @permission_list Map.keys(@permission_to_bitvalue_map)
+  @bit_to_permission_map Map.new(@permission_to_bit_map, fn {k, v} -> {v, k} end)
+  @permission_list Map.keys(@permission_to_bit_map)
 
   @doc """
   Returns `true` if `term` is a permission; otherwise returns `false`.
@@ -124,10 +124,7 @@ defmodule Nostrum.Struct.Permission do
   ```
   """
   @spec from_bit(bit) :: t
-  def from_bit(bit) do
-    {perm, _} = Enum.find(@permission_to_bitvalue_map, fn {_, perm_bit} -> perm_bit === bit end)
-    perm
-  end
+  def from_bit(bit), do: @bit_to_permission_map[bit]
 
   @doc """
   Converts the given bitset to a liist of permissions.
@@ -164,7 +161,7 @@ defmodule Nostrum.Struct.Permission do
   ```
   """
   @spec to_bit(t) :: bit
-  def to_bit(permission), do: @permission_to_bitvalue_map[permission]
+  def to_bit(permission), do: @permission_to_bit_map[permission]
 
   @doc """
   Converts the given enumerable of permissions to a bitset.
