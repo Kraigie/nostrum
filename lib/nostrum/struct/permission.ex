@@ -114,12 +114,10 @@ defmodule Nostrum.Struct.Permission do
   defguard is_permission(term) when is_atom(term) and term in @permission_list
 
   @doc """
-  Returns a permission set containing all permissions.
+  Returns a list of all permissions.
   """
-  @spec all() :: permission_set
-  def all do
-    MapSet.new(@permission_list)
-  end
+  @spec all() :: [t]
+  def all, do: @permission_list
 
   @doc """
   Converts the given bit to a permission.
