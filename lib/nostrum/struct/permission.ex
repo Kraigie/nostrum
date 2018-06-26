@@ -21,8 +21,16 @@ defmodule Nostrum.Struct.Permission do
 
   use Bitwise
 
+  @typedoc """
+  Represents a single permission as a bitvalue.
+  """
   @type bit :: non_neg_integer
+
+  @typedoc """
+  Represents a set of permissions as a bitvalue.
+  """
   @type bitset :: non_neg_integer
+
   @type general_permission ::
           :create_instant_invite
           | :kick_members
