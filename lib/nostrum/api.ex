@@ -756,9 +756,9 @@ defmodule Nostrum.Api do
   end
 
   @spec send_chunked_delete(
-    Nostrum.Struct.Snowflake.t(),
-    [Nostrum.Struct.Message.id()]
-  ) :: error | {:ok}
+          Nostrum.Struct.Snowflake.t(),
+          [Nostrum.Struct.Message.id()]
+        ) :: error | {:ok}
   def send_chunked_delete(channel_id, messages) do
     messages
     |> Enum.chunk_every(100)
