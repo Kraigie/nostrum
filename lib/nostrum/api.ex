@@ -732,6 +732,9 @@ defmodule Nostrum.Api do
   Deletes multiple messages from a channel.
 
   `messages` is a list of `Nostrum.Struct.Message.id` that you wish to delete.
+  When given more than 100 messages, this function will chunk the given message
+  list into blocks of 100 and send them off to the API. It will stop deleting
+  on the first error that occurs.
 
   This method can only delete messages sent within the last two weeks.
   `Filter` is an optional parameter that specifies whether messages sent over
