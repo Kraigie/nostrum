@@ -101,6 +101,40 @@ defmodule Nostrum.Struct.Snowflake do
   @spec dump(t) :: external_snowflake
   def dump(snowflake) when is_snowflake(snowflake), do: to_string(snowflake)
 
+  @doc """
+  Converts the given `datetime` into a snowflake.
+
+  If `datetime` occured before the discord epoch, the function will return a
+  snowflake of `0`.
+
+  The converted snowflake's last 22 bits will be zeroed out due to missing data.
+
+  ## Examples
+
+  ```Elixir
+  iex> {:ok, dt, _} = DateTime.from_iso8601("2016-05-05T21:04:13.203Z")
+  iex> Nostrum.Struct.Snowflake.from_datetime(dt)
+  177888205536755712
+
+  iex> {:ok, dt, _} = DateTime.from_iso8601("1998-12-25T00:00:00.000Z")
+  iex> Nostrum.Struct.Snowflake.from_datetime(dt)
+  0
+  ```
+  """
+  @spec from_datetime(DateTime.t()) :: t
+  def from_datetime(%DateTime{} = datetime) do
+    use Bitwise
+
+    unix_time_ms = datetime |> DateTime.to_unix(:milliseconds)
+    discord_time_ms = unix_time_ms - 1_420_070_400_000
+
+    if discord_time_ms >= 0 do
+      (discord_time_ms <<< 22)
+    else
+      0
+    end
+  end
+
   @doc ~S"""
   Returns the creation time of the snowflake.
 
