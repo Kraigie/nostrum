@@ -741,7 +741,7 @@ defmodule Nostrum.Api do
   def bulk_delete_messages(channel_id, messages, filter \\ true)
 
   def bulk_delete_messages(channel_id, messages, false),
-    do: request(:post, Constants.channel_bulk_delete(channel_id), %{messages: messages})
+    do: send_chunked_delete(channel_id, messages)
 
   def bulk_delete_messages(channel_id, messages, true) do
     filtered_messages =
@@ -749,7 +749,24 @@ defmodule Nostrum.Api do
         (message_id >>> 22) + 1_420_070_400_000 > Util.now() - 14 * 24 * 60 * 60 * 1000
       end)
 
-    request(:post, Constants.channel_bulk_delete(channel_id), %{messages: filtered_messages})
+    send_chunked_delete(channel_id, filtered_messages)
+  end
+
+  @spec send_chunked_delete(
+    Nostrum.Struct.Snowflake.t(),
+    [Nostrum.Struct.Message.id()]
+  ) :: error | {:ok}
+  def send_chunked_delete(channel_id, messages) do
+    messages
+    |> Enum.chunk_every(100)
+    |> Stream.map(fn message_chunk ->
+      request(
+        :post,
+        Constants.channel_bulk_delete(channel_id),
+        %{messages: message_chunk}
+      )
+    end)
+    |> Enum.find({:ok}, &match?({:error, _}, &1))
   end
 
   @doc """
