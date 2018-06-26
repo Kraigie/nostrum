@@ -19,6 +19,8 @@ defmodule Nostrum.Struct.Snowflake do
   """
   @type t :: 0..0xFFFFFFFFFFFFFFFF
 
+  @discord_epoch 1_420_070_400_000
+
   @doc ~S"""
   Returns `true` if `term` is a snowflake; otherwise returns `false`.
 
@@ -126,10 +128,10 @@ defmodule Nostrum.Struct.Snowflake do
     use Bitwise
 
     unix_time_ms = datetime |> DateTime.to_unix(:milliseconds)
-    discord_time_ms = unix_time_ms - 1_420_070_400_000
+    discord_time_ms = unix_time_ms - @discord_epoch
 
     if discord_time_ms >= 0 do
-      (discord_time_ms <<< 22)
+      discord_time_ms <<< 22
     else
       0
     end
@@ -149,7 +151,7 @@ defmodule Nostrum.Struct.Snowflake do
   def creation_time(snowflake) when is_snowflake(snowflake) do
     use Bitwise
 
-    time_elapsed_ms = (snowflake >>> 22) + 1_420_070_400_000
+    time_elapsed_ms = (snowflake >>> 22) + @discord_epoch
 
     DateTime.from_unix!(time_elapsed_ms, :milliseconds)
   end
