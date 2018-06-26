@@ -124,18 +124,46 @@ defmodule Nostrum.Struct.Permission do
   @doc """
   Converts the given bit to a permission.
 
+  This function returns `:error` if `bit` does not map to a permission.
+
   ## Examples
 
   ```Elixir
   iex> Nostrum.Struct.Permission.from_bit(0x04000000)
-  :change_nickname
+  {:ok, :change_nickname}
+
+  iex> Nostrum.Struct.Permission.from_bit(0)
+  :error
   ```
   """
-  @spec from_bit(bit) :: t
-  def from_bit(bit), do: @bit_to_permission_map[bit]
+  @spec from_bit(bit) :: {:ok, t} | :error
+  def from_bit(bit) do
+    Map.fetch(@bit_to_permission_map, bit)
+  end
 
   @doc """
-  Converts the given bitset to a liist of permissions.
+  Same as `from_bit/1`, but raises `ArgumentError` in case of failure.
+
+  ## Examples
+
+  ```Elixir
+  iex> Nostrum.Struct.Permission.from_bit!(0x04000000)
+  :change_nickname
+
+  iex> Nostrum.Struct.Permission.from_bit!(0)
+  ** (ArgumentError) expected a valid bit, got: `0`
+  ```
+  """
+  @spec from_bit!(bit) :: t
+  def from_bit!(bit) do
+    case from_bit(bit) do
+      {:ok, perm} -> perm
+      :error -> raise(ArgumentError, "expected a valid bit, got: `#{inspect(bit)}`")
+    end
+  end
+
+  @doc """
+  Converts the given bitset to a list of permissions.
 
   ## Examples
 
@@ -156,6 +184,8 @@ defmodule Nostrum.Struct.Permission do
     |> Enum.map(fn index -> 0x1 <<< index end)
     |> Enum.filter(fn mask -> (bitset &&& mask) === mask end)
     |> Enum.map(fn bit -> from_bit(bit) end)
+    |> Enum.filter(fn result -> result != :error end)
+    |> Enum.map(fn {:ok, perm} -> perm end)
   end
 
   @doc """
