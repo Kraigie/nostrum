@@ -181,7 +181,7 @@ defmodule Nostrum.Struct.Permission do
   9
   ```
   """
-  @spec to_bitset(Enum.t()) :: bitset
+  @spec to_bitset(Enum.t(t)) :: bitset
   def to_bitset(permissions) do
     permissions
     |> Enum.map(&to_bit(&1))
