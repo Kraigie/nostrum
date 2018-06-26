@@ -4,8 +4,6 @@ defmodule Nostrum.Struct.MemberTest do
   alias Nostrum.Struct.{Channel, Guild, Permission, User, Overwrite}
   alias Nostrum.Struct.Guild.{Member, Role}
 
-  require Logger
-
   doctest Member
 
   describe "mention/1" do

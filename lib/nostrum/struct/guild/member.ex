@@ -24,8 +24,6 @@ defmodule Nostrum.Struct.Guild.Member do
   alias Nostrum.Struct.{Channel, Guild, Permission, Snowflake, User}
   alias Nostrum.Util
 
-  require Logger
-
   defstruct [
     :user,
     :nick,
