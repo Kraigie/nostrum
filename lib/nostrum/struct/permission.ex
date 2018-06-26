@@ -161,7 +161,7 @@ defmodule Nostrum.Struct.Permission do
   ```
   """
   @spec to_bit(t) :: bit
-  def to_bit(permission), do: @permission_to_bit_map[permission]
+  def to_bit(permission) when is_permission(permission), do: @permission_to_bit_map[permission]
 
   @doc """
   Converts the given enumerable of permissions to a bitset.
