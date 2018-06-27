@@ -212,11 +212,11 @@ defmodule Nostrum.Api do
     |> handle_request_with_decode({:struct, Message})
   end
 
-  def create_multipart(path) when is_binary(path) do
+  defp create_multipart(path) when is_binary(path) do
     {:file, path}
   end
 
-  def create_multipart(%{name: name, body: body}) do
+  defp create_multipart(%{name: name, body: body}) do
     {"file", body, {"form-data", [{"name", "file"}, {"filename", name}]},
      [{"Content-Type", "multipart/form-data"}]}
   end
