@@ -145,7 +145,10 @@ defmodule Nostrum.Api do
     * `:nonce` (`t:Nostrum.Struct.Snowflake.t/0`) - a nonce that can be used for
     optimistic message sending
     * `:tts` (boolean) - true if this is a TTS message
-    * `:file` (`t:Path.t/0`) - the path of the file being sent
+    * `:file` (`t:Path.t/0` | map) - the path of the file being sent, or a map with the following keys
+    if sending a binary from memory
+      * `:name` (string) - the name of the file
+      * `:body` (string) - binary you wish to send
     * `:embed` (`t:Nostrum.Struct.Embed.t/0`) - embedded rich content
 
     At least one of the following is required: `:content`, `:file`, `:embed`.
@@ -189,21 +192,16 @@ defmodule Nostrum.Api do
   def create_message(channel_id, content) when is_snowflake(channel_id) and is_binary(content),
     do: create_message_with_json(channel_id, %{content: content})
 
-  defp create_message_with_multipart(channel_id, %{file: file_path} = options) do
+  defp create_message_with_multipart(channel_id, %{file: file} = options) do
     payload_json =
       options
       |> Map.delete(:file)
       |> Poison.encode!()
 
-    multipart = [
-      {:file, file_path},
-      {"payload_json", payload_json}
-    ]
-
     request = %{
       method: :post,
       route: Constants.channel_messages(channel_id),
-      body: {:multipart, multipart},
+      body: {:multipart, [create_multipart(file), {"payload_json", payload_json}]},
       options: [],
       headers: [
         {"content-type", "multipart/form-data"}
@@ -212,6 +210,15 @@ defmodule Nostrum.Api do
 
     GenServer.call(Ratelimiter, {:queue, request, nil}, :infinity)
     |> handle_request_with_decode({:struct, Message})
+  end
+
+  def create_multipart(path) when is_binary(path) do
+    {:file, path}
+  end
+
+  def create_multipart(%{name: name, body: body}) do
+    {"file", body, {"form-data", [{"name", "file"}, {"filename", name}]},
+     [{"Content-Type", "multipart/form-data"}]}
   end
 
   defp create_message_with_json(channel_id, options) do
