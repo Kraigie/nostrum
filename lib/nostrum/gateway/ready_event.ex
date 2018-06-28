@@ -18,7 +18,7 @@ defmodule Nostrum.Gateway.ReadyEvent do
 
     @spec new({term, term}) :: Keyword.t()
     def new(pair)
-    def new({k, v}) when not is_binary(k), do: new({"#{k}", v})
+    def new({k, v}) when not is_binary(k), do: new({to_string(k), v})
     def new({"v", v}), do: [v: v]
     def new({"user", user}), do: [user: Util.cast(user, {:struct, User})]
     def new({"guilds", guilds}), do: [guilds: Util.cast(guilds, {:list, {:struct, Guild}})]
