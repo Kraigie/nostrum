@@ -110,7 +110,7 @@ defmodule Nostrum.Struct.Guild.Member do
       |> Enum.reduce(0, fn role, bitset_acc ->
         bitset_acc ||| role.permissions
       end)
-      |> Permission.from_bitset()
+      |> Permission.from_bitset!()
 
     if Enum.member?(member_permissions, :administrator) do
       Permission.all()
@@ -155,8 +155,8 @@ defmodule Nostrum.Struct.Guild.Member do
           {allow_acc ||| allow, deny_acc ||| deny}
         end)
 
-      allow_perms = allow |> Permission.from_bitset()
-      deny_perms = deny |> Permission.from_bitset()
+      allow_perms = allow |> Permission.from_bitset!()
+      deny_perms = deny |> Permission.from_bitset!()
 
       guild_perms
       |> Enum.reject(&(&1 in deny_perms))
