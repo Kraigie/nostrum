@@ -750,7 +750,7 @@ defmodule Nostrum.Api do
 
   def bulk_delete_messages(channel_id, messages, true) do
     messages
-    |> Enum.filter(fn message_id ->
+    |> Stream.filter(fn message_id ->
       (message_id >>> 22) + 1_420_070_400_000 > Util.now() - 14 * 24 * 60 * 60 * 1000
     end)
     |> send_chunked_delete(channel_id)
