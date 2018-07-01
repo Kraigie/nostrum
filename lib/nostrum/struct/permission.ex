@@ -197,6 +197,7 @@ defmodule Nostrum.Struct.Permission do
     case errors do
       [] ->
         {:ok, successes |> Enum.map(fn {:ok, perm} -> perm end)}
+
       errors ->
         {:error, errors |> Enum.map(fn {:error, bit} -> bit end)}
     end
@@ -214,8 +215,11 @@ defmodule Nostrum.Struct.Permission do
   @spec from_bitset!(bitset) :: [t] | no_return
   def from_bitset!(bitset) do
     case from_bitset(bitset) do
-      {:ok, perms} -> perms
-      {:error, invalid_bits} -> raise(ArgumentError, "got a bitset with invalid bits `#{inspect(invalid_bits)}`")
+      {:ok, perms} ->
+        perms
+
+      {:error, invalid_bits} ->
+        raise(ArgumentError, "got a bitset with invalid bits `#{inspect(invalid_bits)}`")
     end
   end
 
