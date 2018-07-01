@@ -3,6 +3,8 @@ defmodule Nostrum.Struct.Snowflake do
   Functions that work on Snowflakes.
   """
 
+  alias Nostrum.Constants
+
   @typedoc """
   The type that represents snowflakes in JSON.
 
@@ -18,8 +20,6 @@ defmodule Nostrum.Struct.Snowflake do
   object ids.
   """
   @type t :: 0..0xFFFFFFFFFFFFFFFF
-
-  @discord_epoch 1_420_070_400_000
 
   @doc ~S"""
   Returns `true` if `term` is a snowflake; otherwise returns `false`.
@@ -128,7 +128,7 @@ defmodule Nostrum.Struct.Snowflake do
     use Bitwise
 
     unix_time_ms = DateTime.to_unix(datetime, :milliseconds)
-    discord_time_ms = unix_time_ms - @discord_epoch
+    discord_time_ms = unix_time_ms - Constants.discord_epoch()
 
     if discord_time_ms >= 0 do
       {:ok, discord_time_ms <<< 22}
@@ -162,7 +162,7 @@ defmodule Nostrum.Struct.Snowflake do
   def creation_time(snowflake) when is_snowflake(snowflake) do
     use Bitwise
 
-    time_elapsed_ms = (snowflake >>> 22) + @discord_epoch
+    time_elapsed_ms = (snowflake >>> 22) + Constants.discord_epoch()
 
     DateTime.from_unix!(time_elapsed_ms, :milliseconds)
   end
