@@ -106,8 +106,8 @@ defmodule Nostrum.Struct.Snowflake do
   @doc """
   Converts the given `datetime` into a snowflake.
 
-  If `datetime` occured before the discord epoch, the function will return a
-  snowflake of `0`.
+  If `datetime` occured before the discord epoch, the function will return
+  `:error`.
 
   The converted snowflake's last 22 bits will be zeroed out due to missing data.
 
@@ -116,14 +116,14 @@ defmodule Nostrum.Struct.Snowflake do
   ```Elixir
   iex> {:ok, dt, _} = DateTime.from_iso8601("2016-05-05T21:04:13.203Z")
   iex> Nostrum.Struct.Snowflake.from_datetime(dt)
-  177888205536755712
+  {:ok, 177888205536755712}
 
   iex> {:ok, dt, _} = DateTime.from_iso8601("1998-12-25T00:00:00.000Z")
   iex> Nostrum.Struct.Snowflake.from_datetime(dt)
-  0
+  :error
   ```
   """
-  @spec from_datetime(DateTime.t()) :: t
+  @spec from_datetime(DateTime.t()) :: {:ok, t} | :error
   def from_datetime(%DateTime{} = datetime) do
     use Bitwise
 
@@ -131,9 +131,20 @@ defmodule Nostrum.Struct.Snowflake do
     discord_time_ms = unix_time_ms - @discord_epoch
 
     if discord_time_ms >= 0 do
-      discord_time_ms <<< 22
+      {:ok, discord_time_ms <<< 22}
     else
-      0
+      :error
+    end
+  end
+
+  @doc """
+  Same as `from_datetime/1`, except it raises an `ArgumentError` on failure.
+  """
+  @spec from_datetime!(DateTime.t()) :: t | no_return
+  def from_datetime!(datetime) do
+    case from_datetime(datetime) do
+      {:ok, snowflake} -> snowflake
+      :error -> raise(ArgumentError, "invalid datetime #{inspect(datetime)}")
     end
   end
 
