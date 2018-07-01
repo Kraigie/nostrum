@@ -158,12 +158,13 @@ defmodule Nostrum.Struct.Snowflake do
   #DateTime<2016-05-05 21:04:13.203Z>
   ```
   """
-  @spec creation_time(t) :: DateTime.t()
+  @spec creation_time(t) :: DateTime.t() | no_return
   def creation_time(snowflake) when is_snowflake(snowflake) do
     use Bitwise
 
     time_elapsed_ms = (snowflake >>> 22) + Constants.discord_epoch()
 
-    DateTime.from_unix!(time_elapsed_ms, :milliseconds)
+    {:ok, datetime} = DateTime.from_unix(time_elapsed_ms, :milliseconds)
+    datetime
   end
 end
