@@ -158,7 +158,7 @@ defmodule Nostrum.Struct.Snowflake do
   #DateTime<2016-05-05 21:04:13.203Z>
   ```
   """
-  @spec creation_time(t) :: DateTime.t() | no_return
+  @spec creation_time(t) :: DateTime.t()
   def creation_time(snowflake) when is_snowflake(snowflake) do
     use Bitwise
 
