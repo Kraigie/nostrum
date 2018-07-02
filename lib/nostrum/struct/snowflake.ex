@@ -154,7 +154,7 @@ defmodule Nostrum.Struct.Snowflake do
   ## Examples
 
   ```Elixir
-  iex> Snowflake.creation_time(177888205536886784)
+  iex> Nostrum.Struct.Snowflake.creation_time(177888205536886784)
   #DateTime<2016-05-05 21:04:13.203Z>
   ```
   """
