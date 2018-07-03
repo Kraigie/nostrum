@@ -749,10 +749,17 @@ defmodule Nostrum.Api do
     do: send_chunked_delete(messages, channel_id)
 
   def bulk_delete_messages(channel_id, messages, true) do
+    alias Nostrum.Struct.Snowflake
+
+    snowflake_two_weeks_ago =
+      DateTime.utc_now()
+      |> DateTime.to_unix()
+      |> Kernel.-(60 * 60 * 24 * 14)
+      |> DateTime.from_unix!()
+      |> Snowflake.from_datetime!()
+
     messages
-    |> Stream.filter(fn message_id ->
-      (message_id >>> 22) + 1_420_070_400_000 > Util.now() - 14 * 24 * 60 * 60 * 1000
-    end)
+    |> Stream.filter(&(&1 > snowflake_two_weeks_ago))
     |> send_chunked_delete(channel_id)
   end
 
