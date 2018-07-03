@@ -3,6 +3,8 @@ defmodule Nostrum.Struct.Snowflake do
   Functions that work on Snowflakes.
   """
 
+  alias Nostrum.Constants
+
   @typedoc """
   The type that represents snowflakes in JSON.
 
@@ -101,13 +103,58 @@ defmodule Nostrum.Struct.Snowflake do
   @spec dump(t) :: external_snowflake
   def dump(snowflake) when is_snowflake(snowflake), do: to_string(snowflake)
 
+  @doc """
+  Converts the given `datetime` into a snowflake.
+
+  If `datetime` occured before the discord epoch, the function will return
+  `:error`.
+
+  The converted snowflake's last 22 bits will be zeroed out due to missing data.
+
+  ## Examples
+
+  ```Elixir
+  iex> {:ok, dt, _} = DateTime.from_iso8601("2016-05-05T21:04:13.203Z")
+  iex> Nostrum.Struct.Snowflake.from_datetime(dt)
+  {:ok, 177888205536755712}
+
+  iex> {:ok, dt, _} = DateTime.from_iso8601("1998-12-25T00:00:00.000Z")
+  iex> Nostrum.Struct.Snowflake.from_datetime(dt)
+  :error
+  ```
+  """
+  @spec from_datetime(DateTime.t()) :: {:ok, t} | :error
+  def from_datetime(%DateTime{} = datetime) do
+    use Bitwise
+
+    unix_time_ms = DateTime.to_unix(datetime, :milliseconds)
+    discord_time_ms = unix_time_ms - Constants.discord_epoch()
+
+    if discord_time_ms >= 0 do
+      {:ok, discord_time_ms <<< 22}
+    else
+      :error
+    end
+  end
+
+  @doc """
+  Same as `from_datetime/1`, except it raises an `ArgumentError` on failure.
+  """
+  @spec from_datetime!(DateTime.t()) :: t | no_return
+  def from_datetime!(datetime) do
+    case from_datetime(datetime) do
+      {:ok, snowflake} -> snowflake
+      :error -> raise(ArgumentError, "invalid datetime #{inspect(datetime)}")
+    end
+  end
+
   @doc ~S"""
   Returns the creation time of the snowflake.
 
   ## Examples
 
   ```Elixir
-  iex> Snowflake.creation_time(177888205536886784)
+  iex> Nostrum.Struct.Snowflake.creation_time(177888205536886784)
   #DateTime<2016-05-05 21:04:13.203Z>
   ```
   """
@@ -115,8 +162,9 @@ defmodule Nostrum.Struct.Snowflake do
   def creation_time(snowflake) when is_snowflake(snowflake) do
     use Bitwise
 
-    time_elapsed_ms = (snowflake >>> 22) + 1_420_070_400_000
+    time_elapsed_ms = (snowflake >>> 22) + Constants.discord_epoch()
 
-    DateTime.from_unix!(time_elapsed_ms, :milliseconds)
+    {:ok, datetime} = DateTime.from_unix(time_elapsed_ms, :milliseconds)
+    datetime
   end
 end
