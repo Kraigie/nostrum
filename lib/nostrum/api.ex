@@ -732,6 +732,11 @@ defmodule Nostrum.Api do
   Deletes multiple messages from a channel.
 
   `messages` is a list of `Nostrum.Struct.Message.id` that you wish to delete.
+  When given more than 100 messages, this function will chunk the given message
+  list into blocks of 100 and send them off to the API. It will stop deleting
+  on the first error that occurs. Keep in mind that deleting thousands of
+  messages will take a pretty long time and it may be proper to just delete
+  the channel you want to bulk delete in and recreate it.
 
   This method can only delete messages sent within the last two weeks.
   `Filter` is an optional parameter that specifies whether messages sent over
@@ -741,15 +746,39 @@ defmodule Nostrum.Api do
   def bulk_delete_messages(channel_id, messages, filter \\ true)
 
   def bulk_delete_messages(channel_id, messages, false),
-    do: request(:post, Constants.channel_bulk_delete(channel_id), %{messages: messages})
+    do: send_chunked_delete(messages, channel_id)
 
   def bulk_delete_messages(channel_id, messages, true) do
-    filtered_messages =
-      Enum.filter(messages, fn message_id ->
-        (message_id >>> 22) + 1_420_070_400_000 > Util.now() - 14 * 24 * 60 * 60 * 1000
-      end)
+    alias Nostrum.Struct.Snowflake
 
-    request(:post, Constants.channel_bulk_delete(channel_id), %{messages: filtered_messages})
+    snowflake_two_weeks_ago =
+      DateTime.utc_now()
+      |> DateTime.to_unix()
+      # 60 seconds * 60 * 24 * 14 = 14 days / 2 weeks
+      |> Kernel.-(60 * 60 * 24 * 14)
+      |> DateTime.from_unix!()
+      |> Snowflake.from_datetime!()
+
+    messages
+    |> Stream.filter(&(&1 > snowflake_two_weeks_ago))
+    |> send_chunked_delete(channel_id)
+  end
+
+  @spec send_chunked_delete(
+          [Nostrum.Struct.Message.id()],
+          Nostrum.Struct.Snowflake.t()
+        ) :: error | {:ok}
+  defp send_chunked_delete(messages, channel_id) do
+    messages
+    |> Stream.chunk_every(100)
+    |> Stream.map(fn message_chunk ->
+      request(
+        :post,
+        Constants.channel_bulk_delete(channel_id),
+        %{messages: message_chunk}
+      )
+    end)
+    |> Enum.find({:ok}, &match?({:error, _}, &1))
   end
 
   @doc """
