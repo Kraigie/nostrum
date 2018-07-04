@@ -10,9 +10,9 @@ It is highly recommended to check out the
 information listed here and more.
 
 ## Foreword
-The version of this library hosted on Hex is severely outdated. Once the dependency
-[gun](https://github.com/ninenines/gun) has a 2.0 release, a new package will be
-released with the most up to date Elixir version (1.6.4 as of the time of this writing).
+The version of this library hosted on Hex is severely outdated. Once most of the open issues are
+addressed, and some issues are worked out in Websockex, a new package will be release with the most
+up to date Elixir version.
 
 In the meantime it is recommended you use the version hosted on GitHub.
 
@@ -92,9 +92,6 @@ Although it's recommended to run under a supervisor, you could start it from `ie
 If you need help, visit `#elixir_nostrum` on the unofficial Discord API guild!
 
 [![Discord API](https://discordapp.com/api/guilds/81384788765712384/embed.png?style=banner3)](https://discord.gg/2Bgn8nW)
-
-## Contributing
-TODO
 
 ## License
 [MIT](https://opensource.org/licenses/MIT)
