@@ -754,6 +754,7 @@ defmodule Nostrum.Api do
     snowflake_two_weeks_ago =
       DateTime.utc_now()
       |> DateTime.to_unix()
+      # 60 seconds * 60 * 24 * 14 = 14 days / 2 weeks
       |> Kernel.-(60 * 60 * 24 * 14)
       |> DateTime.from_unix!()
       |> Snowflake.from_datetime!()
