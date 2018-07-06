@@ -5,6 +5,7 @@ defmodule Nostrum.Cache.Guild.GuildServer do
 
   alias Nostrum.Cache.Guild.GuildRegister
   alias Nostrum.Struct.Guild
+  alias Nostrum.Struct.Guild.Member
   alias Nostrum.Util
 
   require Logger
@@ -168,10 +169,23 @@ defmodule Nostrum.Cache.Guild.GuildServer do
   end
 
   def handle_call({:update, :member, guild_id, new_partial_member}, _from, state) do
-    {new_members, old_member, new_member} =
-      list_upsert_when(state.members, new_partial_member, fn m ->
-        m.user.id === new_partial_member.user.id
-      end)
+    new_fields =
+      new_partial_member
+      |> Util.cast({:struct, Member})
+      |> Map.from_struct()
+      |> Enum.filter(fn {k, _} -> k in Map.keys(new_partial_member) end)
+
+    {target_members, rest_members} =
+      state.members
+      |> Enum.split_with(&(&1.user.id === new_fields[:user].id))
+
+    {old_member, new_member} =
+      case target_members do
+        [] -> {nil, struct(Member, new_fields)}
+        [old_member | _] -> {old_member, struct(old_member, new_fields)}
+      end
+
+    new_members = [new_member | rest_members]
 
     {:reply, {guild_id, old_member, new_member}, %{state | members: new_members}}
   end
