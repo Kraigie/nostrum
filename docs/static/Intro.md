@@ -88,6 +88,8 @@ The following fields are also supported:
  application some of your events will be consumed. Defaults to `false`.
  - `log_full_events` - This will log the full payload received over the websocket.
  This is included primarily for debugging and testing purposes. Defaults to `false`.
+ - `log_dispatch_events` - This will log dispatch events as they are received from the gateway.
+ This is included primarily for debugging and testing purposes. Defaults to `false`. 
  - `custom_consumer` - For use when creating custom consumer processes. This disables
  all caching done internally, in lieu of sending dispatch events to the processes
  you specify. For more information see [creating custom consumers](consumers.html).
