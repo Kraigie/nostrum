@@ -8,7 +8,7 @@ defmodule Nostrum.Struct.Overwrite do
 
   defstruct [
     :id,
-    :name,
+    :type,
     :allow,
     :deny
   ]
@@ -17,7 +17,7 @@ defmodule Nostrum.Struct.Overwrite do
   @type id :: Snowflake.t()
 
   @typedoc "Either 'role' or 'member'"
-  @type name :: String.t()
+  @type type :: String.t()
 
   @typedoc "Permission bit set"
   @type allow :: integer
@@ -27,7 +27,7 @@ defmodule Nostrum.Struct.Overwrite do
 
   @type t :: %__MODULE__{
           id: id,
-          name: name,
+          type: type,
           allow: allow,
           deny: deny
         }
