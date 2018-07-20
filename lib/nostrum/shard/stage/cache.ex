@@ -27,5 +27,4 @@ defmodule Nostrum.Shard.Stage.Cache do
 
     {:noreply, flat_processed_events, state}
   end
-
 end

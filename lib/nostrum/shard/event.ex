@@ -33,8 +33,7 @@ defmodule Nostrum.Shard.Event do
   def handle(:hello, payload, state) do
     state = %{state | heartbeat_interval: payload.d.heartbeat_interval}
 
-    if !state.heartbeat_process,
-      do: WebSockex.cast(state.conn_pid, {:heartbeat, state.heartbeat_interval})
+    WebSockex.cast(state.conn_pid, :heartbeat)
 
     if session_exists?(state) do
       Logger.info("RESUMING")

@@ -15,7 +15,7 @@ defmodule Nostrum.Struct.WSState do
     :last_heartbeat_ack,
     :heartbeat_ack,
     :heartbeat_interval,
-    :heartbeat_process,
+    :heartbeat_ref,
     :zlib_ctx
   ]
 
@@ -58,8 +58,8 @@ defmodule Nostrum.Struct.WSState do
   @typedoc "Interval at which heartbeats are sent"
   @type heartbeat_interval :: integer | nil
 
-  @typedoc "PID responsible for triggering next heartbeat send"
-  @type heartbeat_process :: pid | nil
+  @typedoc "Time ref for the heartbeat"
+  @type heartbeat_ref :: integer | nil
 
   @typedoc "Reference to the current zlib context"
   @type zlib_ctx :: reference | nil
@@ -76,7 +76,7 @@ defmodule Nostrum.Struct.WSState do
           last_heartbeat_ack: last_heartbeat_ack,
           heartbeat_ack: heartbeat_ack,
           heartbeat_interval: heartbeat_interval,
-          heartbeat_process: heartbeat_process,
+          heartbeat_ref: heartbeat_ref,
           zlib_ctx: zlib_ctx
         }
 end

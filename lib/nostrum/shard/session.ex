@@ -33,17 +33,9 @@ defmodule Nostrum.Shard.Session do
   def start_link([gateway, shard_num]) do
     state = %WSState{
       shard_num: shard_num,
-      seq: nil,
-      session: nil,
-      conn: nil,
-      conn_pid: nil,
       gateway: gateway <> @gateway_qs,
-      last_heartbeat_send: nil,
       last_heartbeat_ack: DateTime.utc_now(),
-      heartbeat_ack: true,
-      heartbeat_interval: nil,
-      heartbeat_process: nil,
-      zlib_ctx: nil
+      heartbeat_ack: true
     }
 
     Connector.block_until_connect()
@@ -62,8 +54,7 @@ defmodule Nostrum.Shard.Session do
        | conn: conn,
          conn_pid: self(),
          zlib_ctx: zlib_ctx,
-         heartbeat_ack: true,
-         heartbeat_process: nil
+         heartbeat_ack: true
      }}
   end
 
@@ -98,33 +89,25 @@ defmodule Nostrum.Shard.Session do
     {:reply, {:binary, payload}, state}
   end
 
-  def handle_cast({:heartbeat, _interval}, %{heartbeat_ack: false} = state) do
+  def handle_cast(:heartbeat, %{heartbeat_ack: false} = state) do
     Logger.warn("heartbeat_ack not received in time, disconnecting")
     {:close, state}
   end
 
-  def handle_cast({:heartbeat, interval}, state) do
-    caller = self()
-
-    heartbeat_process =
-      spawn_link(fn ->
-        Process.sleep(interval)
-        WebSockex.cast(caller, {:heartbeat, interval})
-      end)
+  def handle_cast(:heartbeat, state) do
+    {:ok, ref} =
+      :timer.apply_after(state.heartbeat_interval, WebSockex, :cast, [state.conn_pid, :heartbeat])
 
     {:reply, {:binary, Payload.heartbeat_payload(state.seq)},
-     %{
-       state
-       | heartbeat_ack: false,
-         last_heartbeat_send: DateTime.utc_now(),
-         heartbeat_process: heartbeat_process
-     }}
+     %{state | heartbeat_ref: ref, heartbeat_ack: false, last_heartbeat_send: DateTime.utc_now()}}
   end
 
   def handle_disconnect(%{reason: reason}, state) when is_tuple(reason) do
     Logger.warn(fn ->
       "websocket disconnected with reason #{inspect(reason)}, attempting reconnect"
     end)
+
+    :timer.cancel(state.heartbeat_ref)
 
     {:reconnect, state}
   end
@@ -134,10 +117,14 @@ defmodule Nostrum.Shard.Session do
       "websocket errored with reason #{inspect(reason)}, attempting reconnect"
     end)
 
+    :timer.cancel(state.heartbeat_ref)
+
     {:reconnect, state}
   end
 
-  def terminate(reason, _state) do
+  def terminate(reason, state) do
+    :timer.cancel(state.heartbeat_ref)
+
     Logger.warn(fn ->
       "websocket closed with reason #{inspect(reason)}"
     end)
