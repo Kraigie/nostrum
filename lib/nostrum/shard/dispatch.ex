@@ -100,7 +100,8 @@ defmodule Nostrum.Shard.Dispatch do
       :ets.insert(:channel_guild_map, {channel.id, guild.id})
     end)
 
-    if guild.member_count >= @large_threshold do
+    if guild.member_count >= @large_threshold and
+         Application.get_env(:nostrum, :request_guild_members, false) do
       Session.request_guild_members(state.conn_pid, guild.id)
     end
 

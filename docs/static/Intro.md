@@ -94,6 +94,9 @@ The following fields are also supported:
  all caching done internally, in lieu of sending dispatch events to the processes
  you specify. For more information see [creating custom consumers](consumers.html).
  Defaults to `false`.
+ - `request_guild_members` - This will perform member chunking to retrieve a complete list of
+ members for all guilds. This will increase start up time and memory usage by quite a bit.
+ Defaults to `false`.
 
 By default, Nostrum logs a lot of data using `Logger`. If you want to ignore
 Logger debug data, include the following:
