@@ -1,7 +1,7 @@
 defmodule Nostrum.Shard.Dispatch do
   @moduledoc false
 
-  alias Nostrum.Cache.{ChannelCache, UserCache}
+  alias Nostrum.Cache.{ChannelCache, PresenceCache, UserCache}
   alias Nostrum.Cache.Me
   alias Nostrum.Cache.Guild.GuildServer
   alias Nostrum.Shard.Session
@@ -104,6 +104,9 @@ defmodule Nostrum.Shard.Dispatch do
       Session.request_guild_members(state.conn_pid, guild.id)
     end
 
+    {presences, guild} = Map.pop(guild, :presences, [])
+    PresenceCache.bulk_create(guild.id, presences)
+
     guild = Util.cast(guild, {:struct, Guild})
 
     case GuildServer.create(guild) do
@@ -176,7 +179,7 @@ defmodule Nostrum.Shard.Dispatch do
 
   def handle_event(:PRESENCE_UPDATE = event, p, state) do
     [
-      {event, GuildServer.presence_update(p.guild_id, p), state}
+      {event, PresenceCache.update(p), state}
       | [handle_event(:USER_UPDATE, p.user, state)]
     ]
   end

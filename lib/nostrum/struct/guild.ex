@@ -38,8 +38,7 @@ defmodule Nostrum.Struct.Guild do
     :member_count,
     :voice_states,
     :members,
-    :channels,
-    :presences
+    :channels
   ]
 
   @typedoc "The guild's id"
@@ -138,9 +137,6 @@ defmodule Nostrum.Struct.Guild do
   @typedoc "List of channels"
   @type channels :: [Channel.t()] | nil
 
-  @typedoc "List of simple presence maps"
-  @type presences :: [map]
-
   @typedoc """
   A `Nostrum.Struct.Guild` that is sent on user-specific rest endpoints.
   """
@@ -172,8 +168,7 @@ defmodule Nostrum.Struct.Guild do
           member_count: nil,
           voice_states: nil,
           members: nil,
-          channels: nil,
-          presences: nil
+          channels: nil
         }
 
   @typedoc """
@@ -207,8 +202,7 @@ defmodule Nostrum.Struct.Guild do
           member_count: nil,
           voice_states: nil,
           members: nil,
-          channels: nil,
-          presences: nil
+          channels: nil
         }
 
   @typedoc """
@@ -242,8 +236,7 @@ defmodule Nostrum.Struct.Guild do
           member_count: nil,
           voice_states: nil,
           members: nil,
-          channels: nil,
-          presences: nil
+          channels: nil
         }
 
   @typedoc """
@@ -277,8 +270,7 @@ defmodule Nostrum.Struct.Guild do
           member_count: member_count,
           voice_states: voice_states,
           members: members,
-          channels: channels,
-          presences: presences
+          channels: channels
         }
 
   @type t ::
