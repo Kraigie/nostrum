@@ -19,12 +19,10 @@ defmodule Nostrum.Shard.Stage.Cache do
   def handle_events(events, _from, state) do
     flat_processed_events =
       events
-      |> Task.async_stream(&Dispatch.handle/1)
-      |> Stream.map(fn {:ok, ret} -> ret end)
-      |> Enum.to_list()
+      |> Enum.map(&Dispatch.handle/1)
       |> List.flatten()
       |> Enum.filter(fn event -> event != :noop end)
 
-    {:noreply, flat_processed_events, state}
+    {:noreply, flat_processed_events, state, :hibernate}
   end
 end
