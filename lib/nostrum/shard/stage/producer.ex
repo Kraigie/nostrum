@@ -31,7 +31,7 @@ defmodule Nostrum.Shard.Stage.Producer do
          {{:value, payload}, queue} <- :queue.out(queue) do
       dispatch_events(queue, demand - 1, [payload | events])
     else
-      _ -> {:noreply, Enum.reverse(events), {queue, demand}}
+      _ -> {:noreply, Enum.reverse(events), {queue, demand}, :hibernate}
     end
   end
 end

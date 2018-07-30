@@ -138,7 +138,7 @@ defmodule Nostrum.Cache.Guild.GuildServer do
   end
 
   def handle_call({:select, fun}, _from, state) do
-    {:reply, fun.(state), state}
+    {:reply, fun.(state), state, :hibernate}
   end
 
   def handle_call({:update, guild}, _from, state) do
@@ -149,7 +149,7 @@ defmodule Nostrum.Cache.Guild.GuildServer do
 
     new_guild_struct = struct(Guild, new_guild)
 
-    {:reply, {state, new_guild_struct}, new_guild_struct}
+    {:reply, {state, new_guild_struct}, new_guild_struct, :hibernate}
   end
 
   def handle_call({:delete}, _from, state) do
@@ -161,7 +161,7 @@ defmodule Nostrum.Cache.Guild.GuildServer do
       list_upsert_when(state.members, member, fn m -> m.user.id === member.user.id end)
 
     {:reply, {guild_id, member},
-     %{state | members: new_members, member_count: state.member_count + 1}}
+     %{state | members: new_members, member_count: state.member_count + 1}, :hibernate}
   end
 
   def handle_call({:update, :member, guild_id, new_partial_member}, _from, state) do
@@ -183,7 +183,7 @@ defmodule Nostrum.Cache.Guild.GuildServer do
 
     new_members = [new_member | rest_members]
 
-    {:reply, {guild_id, old_member, new_member}, %{state | members: new_members}}
+    {:reply, {guild_id, old_member, new_member}, %{state | members: new_members}, :hibernate}
   end
 
   def handle_call({:delete, :member, guild_id, user}, _from, state) do
@@ -191,57 +191,57 @@ defmodule Nostrum.Cache.Guild.GuildServer do
       list_delete_when(state.members, fn m -> m.user.id === user.id end)
 
     {:reply, {guild_id, deleted_member},
-     %{state | members: new_members, member_count: state.member_count - 1}}
+     %{state | members: new_members, member_count: state.member_count - 1}, :hibernate}
   end
 
   def handle_call({:create, :channel, channel}, _from, state) do
     {new_channels, _, channel} =
       list_upsert_when(state.channels, channel, fn c -> c.id === channel.id end)
 
-    {:reply, channel, %{state | channels: new_channels}}
+    {:reply, channel, %{state | channels: new_channels}, :hibernate}
   end
 
   def handle_call({:update, :channel, channel}, _from, state) do
     {new_channels, old_channel, new_channel} =
       list_upsert_when(state.channels, channel, fn c -> c.id === channel.id end)
 
-    {:reply, {old_channel, new_channel}, %{state | channels: new_channels}}
+    {:reply, {old_channel, new_channel}, %{state | channels: new_channels}, :hibernate}
   end
 
   def handle_call({:delete, :channel, channel_id}, _from, state) do
     {new_channels, deleted_channel} =
       list_delete_when(state.channels, fn c -> c.id === channel_id end)
 
-    {:reply, deleted_channel, %{state | channels: new_channels}}
+    {:reply, deleted_channel, %{state | channels: new_channels}, :hibernate}
   end
 
   def handle_call({:create, :role, guild_id, role}, _from, state) do
     {new_roles, _, role} = list_upsert_when(state.roles, role, fn r -> r.id === role.id end)
-    {:reply, {guild_id, role}, %{state | roles: new_roles}}
+    {:reply, {guild_id, role}, %{state | roles: new_roles}, :hibernate}
   end
 
   def handle_call({:update, :role, guild_id, role}, _from, state) do
     {new_roles, old_role, new_role} =
       list_upsert_when(state.roles, role, fn r -> r.id === role.id end)
 
-    {:reply, {guild_id, old_role, new_role}, %{state | roles: new_roles}}
+    {:reply, {guild_id, old_role, new_role}, %{state | roles: new_roles}, :hibernate}
   end
 
   def handle_call({:delete, :role, guild_id, role_id}, _from, state) do
     {new_roles, deleted_role} = list_delete_when(state.roles, fn r -> r.id === role_id end)
-    {:reply, {guild_id, deleted_role}, %{state | roles: new_roles}}
+    {:reply, {guild_id, deleted_role}, %{state | roles: new_roles}, :hibernate}
   end
 
   def handle_call({:update, :emoji, guild_id, emojis}, _from, state) do
     old_emojis = state.emojis
-    {:reply, {guild_id, old_emojis, emojis}, %{state | emojis: emojis}}
+    {:reply, {guild_id, old_emojis, emojis}, %{state | emojis: emojis}, :hibernate}
   end
 
   def handle_cast({:member, :chunk, member}, state) do
     {new_members, _, _} =
       list_upsert_when(state.members, member, fn m -> m.user.id === member.user.id end)
 
-    {:noreply, %{state | members: new_members}}
+    {:noreply, %{state | members: new_members}, :hibernate}
   end
 
   @spec list_upsert_when([struct], struct, (struct -> boolean), [struct]) ::
