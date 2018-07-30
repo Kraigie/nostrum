@@ -160,12 +160,12 @@ defmodule Nostrum.Cache.Guild.GuildServer do
     {:stop, :normal, state, %{}}
   end
 
-  # TODO: Handle missing keys
   def handle_call({:create, :member, guild_id, member}, _from, state) do
     {new_members, _, member} =
       list_upsert_when(state.members, member, fn m -> m.user.id === member.user.id end)
 
-    {:reply, {guild_id, member}, %{state | members: new_members}}
+    {:reply, {guild_id, member},
+     %{state | members: new_members, member_count: state.member_count + 1}}
   end
 
   def handle_call({:update, :member, guild_id, new_partial_member}, _from, state) do
@@ -194,7 +194,8 @@ defmodule Nostrum.Cache.Guild.GuildServer do
     {new_members, deleted_member} =
       list_delete_when(state.members, fn m -> m.user.id === user.id end)
 
-    {:reply, {guild_id, deleted_member}, %{state | members: new_members}}
+    {:reply, {guild_id, deleted_member},
+     %{state | members: new_members, member_count: state.member_count - 1}}
   end
 
   def handle_call({:create, :channel, channel}, _from, state) do
