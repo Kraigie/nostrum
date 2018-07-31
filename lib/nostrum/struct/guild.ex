@@ -346,13 +346,13 @@ defmodule Nostrum.Struct.Guild do
       |> Map.update(:id, nil, &Util.cast(&1, Snowflake))
       |> Map.update(:owner_id, nil, &Util.cast(&1, Snowflake))
       |> Map.update(:afk_channel_id, nil, &Util.cast(&1, Snowflake))
-      |> Map.update(:roles, nil, &Util.cast(&1, {:list, {:struct, Role}}))
+      |> Map.update(:roles, nil, &Util.cast(&1, {:index, [:id], {:struct, Role}}))
       |> Map.update(:emojis, nil, &Util.cast(&1, {:list, {:struct, Emoji}}))
       |> Map.update(:application_id, nil, &Util.cast(&1, Snowflake))
       |> Map.update(:widget_channel_id, nil, &Util.cast(&1, Snowflake))
       |> Map.update(:system_channel_id, nil, &Util.cast(&1, Snowflake))
-      |> Map.update(:members, nil, &Util.cast(&1, {:list, {:struct, Member}}))
-      |> Map.update(:channels, nil, &Util.cast(&1, {:list, {:struct, Channel}}))
+      |> Map.update(:members, nil, &Util.cast(&1, {:index, [:user, :id], {:struct, Member}}))
+      |> Map.update(:channels, nil, &Util.cast(&1, {:index, [:id], {:struct, Channel}}))
 
     struct(__MODULE__, new)
   end

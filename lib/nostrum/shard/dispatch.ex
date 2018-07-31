@@ -5,8 +5,8 @@ defmodule Nostrum.Shard.Dispatch do
   alias Nostrum.Cache.Me
   alias Nostrum.Cache.Guild.GuildServer
   alias Nostrum.Shard.Session
-  alias Nostrum.Struct.{Channel, Guild, Message, User}
-  alias Nostrum.Struct.Guild.{Member, Role, UnavailableGuild}
+  alias Nostrum.Struct.{Guild, Message, User}
+  alias Nostrum.Struct.Guild.{Member, UnavailableGuild}
   alias Nostrum.Util
 
   require Logger
@@ -44,7 +44,7 @@ defmodule Nostrum.Shard.Dispatch do
 
   def handle_event(:CHANNEL_CREATE = event, %{type: t} = p, state) when t in [0, 2] do
     :ets.insert(:channel_guild_map, {p.id, p.guild_id})
-    {event, GuildServer.channel_create(p.guild_id, Channel.to_struct(p)), state}
+    {event, GuildServer.channel_create(p.guild_id, p), state}
   end
 
   # Ignore group channels
@@ -134,7 +134,7 @@ defmodule Nostrum.Shard.Dispatch do
 
   def handle_event(:GUILD_MEMBER_ADD = event, p, state) do
     UserCache.create(p.user)
-    {event, GuildServer.member_add(p.guild_id, Member.to_struct(p)), state}
+    {event, GuildServer.member_add(p.guild_id, p), state}
   end
 
   def handle_event(:GUILD_MEMBERS_CHUNK = event, p, state) do
@@ -154,7 +154,7 @@ defmodule Nostrum.Shard.Dispatch do
     do: {event, GuildServer.member_update(p.guild_id, p), state}
 
   def handle_event(:GUILD_ROLE_CREATE = event, p, state),
-    do: {event, GuildServer.role_create(p.guild_id, Role.to_struct(p.role)), state}
+    do: {event, GuildServer.role_create(p.guild_id, p.role), state}
 
   def handle_event(:GUILD_ROLE_DELETE = event, p, state),
     do: {event, GuildServer.role_delete(p.guild_id, p.role_id), state}
@@ -179,6 +179,14 @@ defmodule Nostrum.Shard.Dispatch do
   def handle_event(:MESSAGE_ACK = event, p, state), do: {event, p, state}
 
   def handle_event(:PRESENCE_UPDATE = event, p, state) do
+    member = %{
+      user: p.user,
+      roles: Map.get(p, :roles, []),
+      nick: Map.get(p, :nick, nil)
+    }
+
+    GuildServer.member_add_from_presence(p.guild_id, member)
+
     [
       {event, PresenceCache.update(p), state}
       | [handle_event(:USER_UPDATE, p.user, state)]

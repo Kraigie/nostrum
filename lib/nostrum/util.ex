@@ -105,13 +105,6 @@ defmodule Nostrum.Util do
     end
   end
 
-  @doc false
-  def index_by_key(nil, key, _index_by), do: {key, %{}}
-
-  def index_by_key(list, key, index_by) do
-    {key, Enum.into(list, %{}, &{get_in(&1, index_by), &1})}
-  end
-
   @doc """
   Returns the number of shards.
 
@@ -214,7 +207,7 @@ defmodule Nostrum.Util do
 
   # Generic casting function
   @doc false
-  @spec cast(term, module | {:list, term} | {:struct, term}) :: term
+  @spec cast(term, module | {:list, term} | {:struct, term} | {:index, [term], term}) :: term
   def cast(value, type)
   def cast(nil, _type), do: nil
 
@@ -222,6 +215,12 @@ defmodule Nostrum.Util do
     Enum.map(values, fn value ->
       cast(value, type)
     end)
+  end
+
+  def cast(values, {:index, index_by, type}) when is_list(values) do
+    values
+    |> Enum.map(&{get_in(&1, index_by), cast(&1, type)})
+    |> Enum.into(%{})
   end
 
   def cast(value, {:struct, module}) when is_map(value) do

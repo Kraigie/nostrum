@@ -46,7 +46,6 @@ defmodule Nostrum.Api do
   import Nostrum.Struct.Snowflake, only: [is_snowflake: 1]
 
   alias Nostrum.{Constants, Util}
-  alias Nostrum.Cache.Guild.GuildServer
   alias Nostrum.Struct.{Channel, Embed, Emoji, Guild, Invite, Message, User, Webhook}
   alias Nostrum.Struct.Guild.{Member, Role}
   alias Nostrum.Shard.{Supervisor, Session}
@@ -2582,28 +2581,13 @@ defmodule Nostrum.Api do
   end
 
   def get_application_information do
-    request(:get, Constants.application_information())
-    |> handle
-  end
+    case request(:get, Constants.application_information()) do
+      {:ok, body} ->
+        {:ok, Poison.decode!(body)}
 
-  @doc false
-  def handle({:ok, body}), do: {:ok, Poison.decode!(body)}
-  def handle(other), do: other
-
-  def handle(payload, Guild) do
-    with {:ok, body} <- payload do
-      map = Poison.decode!(body)
-      atom_map = Util.safe_atom_map(map)
-      {:ok, GuildServer.index_guild(atom_map)}
+      other ->
+        other
     end
-  end
-
-  def handle(payload, [as]) do
-    with {:ok, body} <- payload, do: {:ok, Poison.decode!(body, as: [apply(as, :p_encode, [])])}
-  end
-
-  def handle(payload, as) do
-    with {:ok, body} <- payload, do: {:ok, Poison.decode!(body, as: apply(as, :p_encode, []))}
   end
 
   # HTTPosion defaults to `""` for an empty body, so it's safe to do so here

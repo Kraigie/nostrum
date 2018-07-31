@@ -4,8 +4,8 @@ defmodule Nostrum.Cache.Guild.GuildServer do
   use GenServer, restart: :transient
 
   alias Nostrum.Cache.Guild.GuildRegister
-  alias Nostrum.Struct.Guild
-  alias Nostrum.Struct.Guild.Member
+  alias Nostrum.Struct.{Channel, Guild}
+  alias Nostrum.Struct.Guild.{Member, Role}
   alias Nostrum.Util
 
   require Logger
@@ -43,27 +43,9 @@ defmodule Nostrum.Cache.Guild.GuildServer do
   end
 
   @doc false
+  @spec create(Guild.t()) :: {:ok, Guild.t()} | {:error, term}
   def create(guild) do
-    # This returns {:ok, guild} or {:error reason}
     GuildRegister.create_guild_process(guild.id, guild)
-  end
-
-  def index_guild(guild) do
-    # Index roles, members, and channels by their respective ids
-    # Delegated to tasks so as to not replicate the guild process repeatedly
-    tasks =
-      for {key, index_by} <- [roles: [:id], members: [:user, :id], channels: [:id]] do
-        Task.async(fn ->
-          Util.index_by_key(guild[key], key, index_by)
-        end)
-      end
-
-    results =
-      for {_t, {:ok, {k, v}}} <- Task.yield_many(tasks), into: %{} do
-        {k, v}
-      end
-
-    Map.merge(guild, results)
   end
 
   @doc false
@@ -86,6 +68,11 @@ defmodule Nostrum.Cache.Guild.GuildServer do
   @doc false
   def member_add(guild_id, member) do
     call(guild_id, {:create, :member, guild_id, member})
+  end
+
+  @doc false
+  def member_add_from_presence(guild_id, member) do
+    cast(guild_id, {:create, :member, member})
   end
 
   @doc false
@@ -146,90 +133,71 @@ defmodule Nostrum.Cache.Guild.GuildServer do
       state
       |> Map.from_struct()
       |> Map.merge(guild)
+      |> Util.cast({:struct, Member})
 
-    new_guild_struct = struct(Guild, new_guild)
-
-    {:reply, {state, new_guild_struct}, new_guild_struct, :hibernate}
+    {:reply, {state, new_guild}, new_guild, :hibernate}
   end
 
   def handle_call({:delete}, _from, state) do
     {:stop, :normal, state, %{}}
   end
 
-  def handle_call({:create, :member, guild_id, member}, _from, state) do
-    {new_members, _, member} =
-      list_upsert_when(state.members, member, fn m -> m.user.id === member.user.id end)
+  def handle_call(
+        {:create, :member, guild_id, %{user: id} = member},
+        _from,
+        %{members: members} = state
+      ) do
+    {_old, new, new_map} = upsert(members, id, member, Member)
 
-    {:reply, {guild_id, member},
-     %{state | members: new_members, member_count: state.member_count + 1}, :hibernate}
+    {:reply, {guild_id, new}, %{state | members: new_map, member_count: state.member_count + 1},
+     :hibernate}
   end
 
-  def handle_call({:update, :member, guild_id, new_partial_member}, _from, state) do
-    new_fields =
-      new_partial_member
-      |> Util.cast({:struct, Member})
-      |> Map.from_struct()
-      |> Enum.filter(fn {k, _} -> k in Map.keys(new_partial_member) end)
-
-    {target_members, rest_members} =
-      state.members
-      |> Enum.split_with(&(&1.user.id === new_fields[:user].id))
-
-    {old_member, new_member} =
-      case target_members do
-        [] -> {nil, struct(Member, new_fields)}
-        [old_member | _] -> {old_member, struct(old_member, new_fields)}
-      end
-
-    new_members = [new_member | rest_members]
-
-    {:reply, {guild_id, old_member, new_member}, %{state | members: new_members}, :hibernate}
+  def handle_call(
+        {:update, :member, guild_id, %{user: id} = partial_member},
+        _from,
+        %{members: members} = state
+      ) do
+    {old, new, new_map} = upsert(members, id, partial_member, Member)
+    {:reply, {guild_id, old, new}, %{state | members: new_map}, :hibernate}
   end
 
-  def handle_call({:delete, :member, guild_id, user}, _from, state) do
-    {new_members, deleted_member} =
-      list_delete_when(state.members, fn m -> m.user.id === user.id end)
-
-    {:reply, {guild_id, deleted_member},
-     %{state | members: new_members, member_count: state.member_count - 1}, :hibernate}
+  def handle_call({:delete, :member, guild_id, %{id: id}}, _from, %{members: members} = state) do
+    {popped, new} = Map.pop(members, id)
+    ret = if popped, do: {guild_id, popped}, else: :noop
+    {:reply, ret, %{state | members: new, member_count: state.member_count - 1}, :hibernate}
   end
 
-  def handle_call({:create, :channel, channel}, _from, state) do
-    {new_channels, _, channel} =
-      list_upsert_when(state.channels, channel, fn c -> c.id === channel.id end)
-
-    {:reply, channel, %{state | channels: new_channels}, :hibernate}
+  def handle_call({:create, :channel, %{id: id} = channel}, _from, %{channels: channels} = state) do
+    {_old, new, new_map} = upsert(channels, id, channel, Channel)
+    {:reply, new, %{state | channels: new_map}, :hibernate}
   end
 
-  def handle_call({:update, :channel, channel}, _from, state) do
-    {new_channels, old_channel, new_channel} =
-      list_upsert_when(state.channels, channel, fn c -> c.id === channel.id end)
-
-    {:reply, {old_channel, new_channel}, %{state | channels: new_channels}, :hibernate}
+  def handle_call({:update, :channel, %{id: id} = channel}, _from, %{channels: channels} = state) do
+    {old, new, new_map} = upsert(channels, id, channel, Channel)
+    {:reply, {old, new}, %{state | channels: new_map}, :hibernate}
   end
 
-  def handle_call({:delete, :channel, channel_id}, _from, state) do
-    {new_channels, deleted_channel} =
-      list_delete_when(state.channels, fn c -> c.id === channel_id end)
-
-    {:reply, deleted_channel, %{state | channels: new_channels}, :hibernate}
+  def handle_call({:delete, :channel, channel_id}, _from, %{channels: channels} = state) do
+    {popped, new} = Map.pop(channels, channel_id)
+    ret = if popped, do: popped, else: :noop
+    {:reply, ret, %{state | channels: new}, :hibernate}
   end
 
-  def handle_call({:create, :role, guild_id, role}, _from, state) do
-    {new_roles, _, role} = list_upsert_when(state.roles, role, fn r -> r.id === role.id end)
-    {:reply, {guild_id, role}, %{state | roles: new_roles}, :hibernate}
+  def handle_call({:create, :role, guild_id, %{id: id} = role}, _from, %{roles: roles} = state) do
+    {_old, new, new_map} = upsert(roles, id, role, Role)
+    {:reply, {guild_id, new}, %{state | roles: new_map}, :hibernate}
   end
 
-  def handle_call({:update, :role, guild_id, role}, _from, state) do
-    {new_roles, old_role, new_role} =
-      list_upsert_when(state.roles, role, fn r -> r.id === role.id end)
-
-    {:reply, {guild_id, old_role, new_role}, %{state | roles: new_roles}, :hibernate}
+  def handle_call({:update, :role, guild_id, %{id: id} = role}, _from, %{roles: roles} = state) do
+    {old, new, new_map} = upsert(roles, id, role, Role)
+    {:reply, {guild_id, old, new}, %{state | roles: new_map}, :hibernate}
   end
 
-  def handle_call({:delete, :role, guild_id, role_id}, _from, state) do
-    {new_roles, deleted_role} = list_delete_when(state.roles, fn r -> r.id === role_id end)
-    {:reply, {guild_id, deleted_role}, %{state | roles: new_roles}, :hibernate}
+  def handle_call({:delete, :role, guild_id, role_id}, _from, %{roles: roles} = state) do
+    {popped, new} = Map.pop(roles, role_id)
+    ret = if popped, do: {guild_id, popped}, else: :noop
+    {:reply, ret, %{state | roles: new}, :hibernate}
   end
 
   def handle_call({:update, :emoji, guild_id, emojis}, _from, state) do
@@ -237,49 +205,37 @@ defmodule Nostrum.Cache.Guild.GuildServer do
     {:reply, {guild_id, old_emojis, emojis}, %{state | emojis: emojis}, :hibernate}
   end
 
-  def handle_cast({:member, :chunk, member}, state) do
-    {new_members, _, _} =
-      list_upsert_when(state.members, member, fn m -> m.user.id === member.user.id end)
+  def handle_cast({:create, :member, %{user: id} = member}, %{members: members} = state) do
+    {:noreply, %{state | members: Map.put(members, id, member)}}
+  end
+
+  def handle_cast({:member, :chunk, new_members}, %{members: members} = state) do
+    new_members =
+      Enum.reduce(new_members, members, fn m, acc ->
+        Map.put(acc, m.id, Util.cast(m, {:struct, Member}))
+      end)
 
     {:noreply, %{state | members: new_members}, :hibernate}
   end
 
-  @spec list_upsert_when([struct], struct, (struct -> boolean), [struct]) ::
-          {[struct], old :: struct | nil, new :: struct}
-  defp list_upsert_when(list, value, fun, acc \\ [])
+  @spec upsert(%{required(Snowflake.t()) => struct}, Snowflake.t(), Map.t(), atom) ::
+          {struct | nil, struct, %{required(Snowflake.t()) => struct}}
+  defp upsert(map, key, new, struct) do
+    if Map.has_key?(map, key) do
+      old = Map.get(map, key)
 
-  defp list_upsert_when([], value, _, acc) do
-    {acc ++ [value], nil, value}
-  end
+      new =
+        old
+        |> Map.from_struct()
+        |> Map.merge(new)
+        |> Util.cast({:struct, struct})
 
-  defp list_upsert_when([head | list], value, fun, acc) do
-    if fun.(head) do
-      {popped, new_head} =
-        head
-        |> Map.merge(value, fn
-          _k, v1, nil -> v1
-          _k, _v1, v2 -> v2
-        end)
-        |> Map.pop(:__struct__)
+      new_map = Map.put(map, key, new)
 
-      struct_head = apply(popped, :to_struct, [new_head])
-
-      {acc ++ [struct_head | list], head, struct_head}
+      {old, new, new_map}
     else
-      list_upsert_when(list, value, fun, acc ++ [head])
-    end
-  end
-
-  @spec list_delete_when(list, (any -> boolean), list) :: {list, deleted_item :: any | nil}
-  defp list_delete_when(list, id, acc \\ [])
-
-  defp list_delete_when([], _, acc), do: {acc, nil}
-
-  defp list_delete_when([head | list], fun, acc) do
-    if fun.(head) do
-      {acc ++ list, head}
-    else
-      list_delete_when(list, fun, acc ++ [head])
+      new = Util.cast(new, {:struct, struct})
+      {nil, new, Map.put(map, key, new)}
     end
   end
 end

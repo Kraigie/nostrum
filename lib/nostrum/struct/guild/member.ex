@@ -46,14 +46,23 @@ defmodule Nostrum.Struct.Guild.Member do
   @typedoc "A list of role ids"
   @type roles :: [Snowflake.t()]
 
-  @typedoc "Date the user joined the guild"
-  @type joined_at :: String.t()
+  @typedoc """
+  Date the user joined the guild.
+  If you dont request offline guild members this field will be `nil` for any members that come online.
+  """
+  @type joined_at :: String.t() | nil
 
-  @typedoc "Whether the user is deafened"
-  @type deaf :: boolean
+  @typedoc """
+  Whether the user is deafened.
+  If you dont request offline guild members this field will be `nil` for any members that come online.
+  """
+  @type deaf :: boolean | nil
 
-  @typedoc "Whether the user is muted"
-  @type mute :: boolean
+  @typedoc """
+  Whether the user is muted.
+  If you dont request offline guild members this field will be `nil` for any members that come online.
+  """
+  @type mute :: boolean | nil
 
   @type t :: %__MODULE__{
           user: user,
