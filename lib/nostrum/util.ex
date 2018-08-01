@@ -235,6 +235,12 @@ defmodule Nostrum.Util do
     end
   end
 
+  @doc false
+  @spec fullsweep_after() :: non_neg_integer
+  def fullsweep_after do
+    {:fullsweep_after, Application.get_env(:nostrum, :fullsweep_after_default, :erlang.system_info(:fullsweep_after) |> elem(1))}
+  end
+
   @doc """
   Since we're being sacrilegious and converting strings to atoms from the WS, there will be some
   atoms that we see that aren't defined in any Discord structs. This method mainly serves as a

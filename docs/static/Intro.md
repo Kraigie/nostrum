@@ -97,6 +97,13 @@ The following fields are also supported:
  - `request_guild_members` - This will perform member chunking to retrieve a complete list of
  members for all guilds. This will increase start up time and memory usage by quite a bit.
  Defaults to `false`.
+ - `fullsweep_after_default` - Sets the `fullsweep_after` flag for processes that can have
+ irregularly high memory usage due to Discord payloads. This options will dramatically reduce the
+ amount of memory used by some processes at the cost of increased CPU usage. This is useful if
+ you're running your application under a memory constrained environment. This comes at the cost
+ of increased CPU usage. By default, this option will only affect some processes. You can set
+ this flag for *all* processes using environment variables or by [setting the system flag yourself](http://erlang.org/doc/man/erlang.html#system_flag-2).
+ Defaults to whatever your system recommends, which is probably `65535`.
 
 By default, Nostrum logs a lot of data using `Logger`. If you want to ignore
 Logger debug data, include the following:

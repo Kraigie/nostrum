@@ -22,6 +22,7 @@ defmodule Nostrum.Consumer do
 
   alias Nostrum.Shard.Stage.Cache
   alias Nostrum.Struct.{Channel, WSState}
+  alias Nostrum.Util
 
   @doc """
   Callback used to handle events.
@@ -218,10 +219,10 @@ defmodule Nostrum.Consumer do
   def start_link(mod, options \\ [])
 
   def start_link(mod, [name: name] = options) do
-    ConsumerSupervisor.start_link(__MODULE__, [mod, Keyword.drop(options, [:name])], name: name)
+    ConsumerSupervisor.start_link(__MODULE__, [mod, Keyword.drop(options, [:name])], name: name, spawn_opt: [Util.fullsweep_after()])
   end
 
-  def start_link(mod, options), do: ConsumerSupervisor.start_link(__MODULE__, [mod, options])
+  def start_link(mod, options), do: ConsumerSupervisor.start_link(__MODULE__, [mod, options], spawn_opt: [Util.fullsweep_after()])
 
   @doc false
   def init([mod, opt]) do
