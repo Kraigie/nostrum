@@ -10,7 +10,7 @@ defmodule Nostrum.Struct.Permission do
   alias Nostrum.Struct.Guild.Member
 
   guild = GuildCache.get!(279093381723062272)
-  member = Enum.find(guild.members, & &1.id === 177888205536886784)
+  member = Map.get(guild.members, 177888205536886784)
   member_perms = Member.guild_permissions(member, guild)
 
   if :administrator in member_perms do

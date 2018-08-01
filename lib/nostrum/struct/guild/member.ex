@@ -94,7 +94,7 @@ defmodule Nostrum.Struct.Guild.Member do
 
   ```Elixir
   guild = Nostrum.Cache.GuildCache.get!(279093381723062272)
-  member = Enum.find(guild.members, & &1.id === 177888205536886784)
+  member = Map.get(guild.members, 177888205536886784)
   Nostrum.Struct.Guild.Member.guild_permissions(member, guild)
   #=> [:administrator]
   ```
@@ -114,7 +114,7 @@ defmodule Nostrum.Struct.Guild.Member do
 
     member_permissions =
       member_role_ids
-      |> Enum.map(&Enum.find(guild.roles, fn role -> role.id === &1 end))
+      |> Enum.map(&Map.get(guild.roles, &1))
       |> Enum.filter(&(!match?(nil, &1)))
       |> Enum.reduce(0, fn role, bitset_acc ->
         bitset_acc ||| role.permissions
@@ -135,7 +135,7 @@ defmodule Nostrum.Struct.Guild.Member do
 
   ```Elixir
   guild = Nostrum.Cache.GuildCache.get!(279093381723062272)
-  member = Enum.find(guild.members, & &1.id === 177888205536886784)
+  member = Map.get(guild.members, 177888205536886784)
   channel_id = 381889573426429952
   Nostrum.Struct.Guild.Member.guild_channel_permissions(member, guild, channel_id)
   #=> [:manage_messages]
@@ -150,7 +150,7 @@ defmodule Nostrum.Struct.Guild.Member do
     if Enum.member?(guild_perms, :administrator) do
       Permission.all()
     else
-      channel = Enum.find(guild.channels, &(&1.id == channel_id))
+      channel = Map.get(guild.channels, channel_id)
 
       everyone_role_id = guild.id
       role_ids = [everyone_role_id | member.roles]
