@@ -5,6 +5,7 @@ defmodule Nostrum.Util do
 
   alias Nostrum.{Api, Constants}
   alias Nostrum.Shard.Stage.Producer
+  alias Nostrum.Struct.Snowflake
 
   require Logger
 
@@ -219,7 +220,7 @@ defmodule Nostrum.Util do
 
   def cast(values, {:index, index_by, type}) when is_list(values) do
     values
-    |> Enum.map(&{get_in(&1, index_by), cast(&1, type)})
+    |> Enum.map(&{&1 |> get_in(index_by) |> cast(Snowflake), cast(&1, type)})
     |> Enum.into(%{})
   end
 

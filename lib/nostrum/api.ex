@@ -1627,13 +1627,8 @@ defmodule Nostrum.Api do
   """
   @spec get_guild_bans(integer) :: error | {:ok, [Nostrum.Struct.User.t()]}
   def get_guild_bans(guild_id) do
-    case request(:get, Constants.guild_bans(guild_id)) do
-      {:ok, body} ->
-        {:ok, Poison.decode!(body)}
-
-      other ->
-        other
-    end
+    request(:get, Constants.guild_bans(guild_id))
+    |> handle_request_with_decode
   end
 
   @doc """
@@ -1846,10 +1841,8 @@ defmodule Nostrum.Api do
   """
   @spec get_guild_prune_count(Guild.id(), 1..30) :: error | {:ok, %{pruned: integer}}
   def get_guild_prune_count(guild_id, days) when is_snowflake(guild_id) and days in 1..30 do
-    case request(:get, Constants.guild_prune(guild_id), "", params: [days: days]) do
-      {:ok, body} -> {:ok, Poison.decode!(body) |> Util.safe_atom_map()}
-      other -> other
-    end
+    request(:get, Constants.guild_prune(guild_id), "", params: [days: days])
+    |> handle_request_with_decode
   end
 
   @doc ~S"""
@@ -1878,10 +1871,8 @@ defmodule Nostrum.Api do
   """
   @spec begin_guild_prune(Guild.id(), 1..30) :: error | {:ok, %{pruned: integer}}
   def begin_guild_prune(guild_id, days) when is_snowflake(guild_id) and days in 1..30 do
-    case request(:post, Constants.guild_prune(guild_id), "", params: [days: days]) do
-      {:ok, body} -> {:ok, Poison.decode!(body) |> Util.safe_atom_map()}
-      other -> other
-    end
+    request(:post, Constants.guild_prune(guild_id), "", params: [days: days])
+    |> handle_request_with_decode
   end
 
   @doc ~S"""
@@ -1900,13 +1891,8 @@ defmodule Nostrum.Api do
   """
   @spec get_voice_region(integer) :: error | {:ok, [Nostrum.Struct.VoiceRegion.t()]}
   def get_voice_region(guild_id) do
-    case request(:get, Constants.guild_voice_regions(guild_id)) do
-      {:ok, body} ->
-        {:ok, Poison.decode!(body)}
-
-      other ->
-        other
-    end
+    request(:get, Constants.guild_voice_regions(guild_id))
+    |> handle_request_with_decode
   end
 
   @doc ~S"""
@@ -1945,13 +1931,8 @@ defmodule Nostrum.Api do
   """
   @spec get_guild_integrations(integer) :: error | {:ok, [Nostrum.Struct.Guild.Integration.t()]}
   def get_guild_integrations(guild_id) do
-    case request(:get, Constants.guild_integrations(guild_id)) do
-      {:ok, body} ->
-        {:ok, Poison.decode!(body)}
-
-      other ->
-        other
-    end
+    request(:get, Constants.guild_integrations(guild_id))
+    |> handle_request_with_decode
   end
 
   @doc """
@@ -2023,13 +2004,8 @@ defmodule Nostrum.Api do
   """
   @spec modify_guild_embed(integer, map) :: error | {:ok, map}
   def modify_guild_embed(guild_id, options) do
-    case request(:patch, Constants.guild_embed(guild_id), options) do
-      {:ok, body} ->
-        {:ok, Poison.decode!(body)}
-
-      other ->
-        other
-    end
+    request(:patch, Constants.guild_embed(guild_id), options)
+    |> handle_request_with_decode
   end
 
   @doc ~S"""
@@ -2313,13 +2289,8 @@ defmodule Nostrum.Api do
   """
   @spec get_user_connections() :: error | {:ok, Nostrum.Struct.User.Connection.t()}
   def get_user_connections do
-    case request(:get, Constants.me_connections()) do
-      {:ok, body} ->
-        {:ok, Poison.decode!(body)}
-
-      other ->
-        other
-    end
+    request(:get, Constants.me_connections())
+    |> handle_request_with_decode
   end
 
   @doc """
@@ -2327,13 +2298,8 @@ defmodule Nostrum.Api do
   """
   @spec list_voice_regions() :: error | {:ok, [Nostrum.Struct.VoiceRegion.t()]}
   def list_voice_regions do
-    case request(:get, Constants.regions()) do
-      {:ok, body} ->
-        {:ok, Poison.decode!(body)}
-
-      other ->
-        other
-    end
+    request(:get, Constants.regions())
+    |> handle_request_with_decode
   end
 
   @doc """
@@ -2350,13 +2316,8 @@ defmodule Nostrum.Api do
           avatar: String.t()
         }) :: error | {:ok, Nostrum.Struct.Webhook.t()}
   def create_webhook(channel_id, args) do
-    case request(:post, Constants.webhooks_channel(channel_id), args) do
-      {:ok, body} ->
-        {:ok, Poison.decode!(body)}
-
-      other ->
-        other
-    end
+    request(:post, Constants.webhooks_channel(channel_id), args)
+    |> handle_request_with_decode
   end
 
   @doc """
@@ -2367,13 +2328,8 @@ defmodule Nostrum.Api do
   """
   @spec get_channel_webhooks(Channel.id()) :: error | {:ok, [Nostrum.Struct.Webhook.t()]}
   def get_channel_webhooks(channel_id) do
-    case request(:get, Constants.webhooks_channel(channel_id)) do
-      {:ok, body} ->
-        {:ok, Poison.decode!(body)}
-
-      other ->
-        other
-    end
+    request(:get, Constants.webhooks_channel(channel_id))
+    |> handle_request_with_decode
   end
 
   @doc """
@@ -2384,13 +2340,8 @@ defmodule Nostrum.Api do
   """
   @spec get_guild_webhooks(Guild.id()) :: error | {:ok, [Nostrum.Struct.Webhook.t()]}
   def get_guild_webhooks(guild_id) do
-    case request(:get, Constants.webhooks_guild(guild_id)) do
-      {:ok, body} ->
-        {:ok, Poison.decode!(body)}
-
-      other ->
-        other
-    end
+    request(:get, Constants.webhooks_guild(guild_id))
+    |> handle_request_with_decode
   end
 
   @doc """
@@ -2401,13 +2352,8 @@ defmodule Nostrum.Api do
   """
   @spec get_webhook(Webhook.id()) :: error | {:ok, Nostrum.Struct.Webhook.t()}
   def get_webhook(webhook_id) do
-    case request(:get, Constants.webhook(webhook_id)) do
-      {:ok, body} ->
-        {:ok, Poison.decode!(body)}
-
-      other ->
-        other
-    end
+    request(:get, Constants.webhook(webhook_id))
+    |> handle_request_with_decode
   end
 
   @doc """
@@ -2423,13 +2369,8 @@ defmodule Nostrum.Api do
   @spec get_webhook_with_token(Webhook.id(), Webhook.token()) ::
           error | {:ok, Nostrum.Struct.Webhook.t()}
   def get_webhook_with_token(webhook_id, webhook_token) do
-    case request(:get, Constants.webhook_token(webhook_id, webhook_token)) do
-      {:ok, body} ->
-        {:ok, Poison.decode!(body)}
-
-      other ->
-        other
-    end
+    request(:get, Constants.webhook_token(webhook_id, webhook_token))
+    |> handle_request_with_decode
   end
 
   @doc """
@@ -2446,13 +2387,8 @@ defmodule Nostrum.Api do
           avatar: String.t()
         }) :: error | {:ok, Nostrum.Struct.Webhook.t()}
   def modify_webhook(webhook_id, args) do
-    case request(:patch, Constants.webhook(webhook_id), args) do
-      {:ok, body} ->
-        {:ok, Poison.decode!(body)}
-
-      other ->
-        other
-    end
+    request(:patch, Constants.webhook(webhook_id), args)
+    |> handle_request_with_decode
   end
 
   @doc """
@@ -2473,13 +2409,8 @@ defmodule Nostrum.Api do
           avatar: String.t()
         }) :: error | {:ok, Nostrum.Struct.Webhook.t()}
   def modify_webhook_with_token(webhook_id, webhook_token, args) do
-    case request(:patch, Constants.webhook_token(webhook_id, webhook_token), args) do
-      {:ok, body} ->
-        {:ok, Poison.decode!(body)}
-
-      other ->
-        other
-    end
+    request(:patch, Constants.webhook_token(webhook_id, webhook_token), args)
+    |> handle_request_with_decode
   end
 
   @doc """
@@ -2527,33 +2458,23 @@ defmodule Nostrum.Api do
   def execute_webhook(webhook_id, webhook_token, args, wait \\ false)
 
   def execute_webhook(webhook_id, webhook_token, %{file: _} = args, wait) do
-    case request_multipart(
-           :post,
-           Constants.webhook_token(webhook_id, webhook_token),
-           args,
-           params: [wait: wait]
-         ) do
-      {:ok, body} ->
-        {:ok, Poison.decode!(body)}
-
-      other ->
-        other
-    end
+    request_multipart(
+      :post,
+      Constants.webhook_token(webhook_id, webhook_token),
+      args,
+      params: [wait: wait]
+    )
+    |> handle_request_with_decode
   end
 
   def execute_webhook(webhook_id, webhook_token, %{content: _} = args, wait) do
-    case request(
-           :post,
-           Constants.webhook_token(webhook_id, webhook_token),
-           args,
-           params: [wait: wait]
-         ) do
-      {:ok, body} ->
-        {:ok, Poison.decode!(body)}
-
-      other ->
-        other
-    end
+    request(
+      :post,
+      Constants.webhook_token(webhook_id, webhook_token),
+      args,
+      params: [wait: wait]
+    )
+    |> handle_request_with_decode
   end
 
   @doc """
@@ -2581,13 +2502,8 @@ defmodule Nostrum.Api do
   end
 
   def get_application_information do
-    case request(:get, Constants.application_information()) do
-      {:ok, body} ->
-        {:ok, Poison.decode!(body)}
-
-      other ->
-        other
-    end
+    request(:get, Constants.application_information())
+    |> handle_request_with_decode
   end
 
   # HTTPosion defaults to `""` for an empty body, so it's safe to do so here
@@ -2647,13 +2563,17 @@ defmodule Nostrum.Api do
     Application.get_env(:nostrum, :token)
   end
 
+  defp handle_request_with_decode(response)
+  defp handle_request_with_decode({:ok, body}), do: {:ok, Poison.decode!(body, keys: :atoms)}
+  defp handle_request_with_decode({:error, _} = error), do: error
+
   defp handle_request_with_decode(response, type)
   defp handle_request_with_decode({:error, _} = error, _type), do: error
 
   defp handle_request_with_decode({:ok, body}, type) do
     convert =
       body
-      |> Poison.decode!()
+      |> Poison.decode!(keys: :atoms)
       |> Util.cast(type)
 
     {:ok, convert}
