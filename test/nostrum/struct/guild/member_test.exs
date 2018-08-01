@@ -17,7 +17,8 @@ defmodule Nostrum.Struct.MemberTest do
   describe "guild_permissions/2" do
     test "returns all perms if admin" do
       member = %Member{roles: [10]}
-      guild = %Guild{roles: [%Role{id: 10, permissions: Permission.to_bitset([:administrator])}]}
+      role = %Role{id: 10, permissions: Permission.to_bitset([:administrator])}
+      guild = %Guild{roles: %{role.id => role}}
 
       result = Member.guild_permissions(member, guild)
 
@@ -39,7 +40,7 @@ defmodule Nostrum.Struct.MemberTest do
       role = %Role{id: 10, permissions: Permission.to_bitset(role_perms)}
 
       guild = %Guild{
-        roles: [role]
+        roles: %{role.id => role}
       }
 
       result = Member.guild_permissions(member, guild)
@@ -57,7 +58,12 @@ defmodule Nostrum.Struct.MemberTest do
       member = %Member{user: %User{id: member_id}, roles: [role_id]}
       role = %Role{id: role_id, permissions: 0x00000008}
       channel = %Channel{id: channel_id}
-      guild = %Guild{channels: [channel], members: [member], roles: [role]}
+
+      guild = %Guild{
+        channels: %{channel.id => channel},
+        members: %{member.user.id => member},
+        roles: %{role.id => role}
+      }
 
       result = Member.guild_channel_permissions(member, guild, channel_id)
 
@@ -86,7 +92,11 @@ defmodule Nostrum.Struct.MemberTest do
         ]
       }
 
-      guild = %Guild{id: guild_id, channels: [channel], roles: [everyone_role, role]}
+      guild = %Guild{
+        id: guild_id,
+        channels: %{channel.id => channel},
+        roles: %{everyone_role.id => everyone_role, role.id => role}
+      }
 
       result = Member.guild_channel_permissions(member, guild, channel_id)
 
@@ -115,7 +125,11 @@ defmodule Nostrum.Struct.MemberTest do
         ]
       }
 
-      guild = %Guild{id: guild_id, channels: [channel], roles: [everyone_role, role]}
+      guild = %Guild{
+        id: guild_id,
+        channels: %{channel.id => channel},
+        roles: %{everyone_role.id => everyone_role, role.id => role}
+      }
 
       result = Member.guild_channel_permissions(member, guild, channel_id)
 
