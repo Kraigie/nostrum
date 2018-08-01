@@ -132,7 +132,7 @@ defmodule Nostrum.Struct.Guild do
   @type voice_states :: list(map) | nil
 
   @typedoc "List of members"
-  @type members :: %{required(Member.id()) => Member.t()} | nil
+  @type members :: %{required(User.id()) => Member.t()} | nil
 
   @typedoc "List of channels"
   @type channels :: %{required(Channel.id()) => Channel.t()} | nil

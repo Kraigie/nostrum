@@ -70,7 +70,15 @@ defmodule Nostrum.Cache.UserCache do
       :ets.insert(:users, {new_user.id, new_user})
       {User.to_struct(u), User.to_struct(new_user)}
     else
-      _ -> :noop
+      {:error, _} ->
+        # User just came online, make sure to cache if possible
+        if Enum.all?([:username, :discriminator], &Map.has_key?(info, &1)),
+          do: :ets.insert(:users, {info.id, info})
+
+        :noop
+
+      true ->
+        :noop
     end
   end
 
