@@ -238,7 +238,12 @@ defmodule Nostrum.Util do
   @doc false
   @spec fullsweep_after() :: non_neg_integer
   def fullsweep_after do
-    {:fullsweep_after, Application.get_env(:nostrum, :fullsweep_after_default, :erlang.system_info(:fullsweep_after) |> elem(1))}
+    {:fullsweep_after,
+     Application.get_env(
+       :nostrum,
+       :fullsweep_after_default,
+       :erlang.system_info(:fullsweep_after) |> elem(1)
+     )}
   end
 
   @doc """
