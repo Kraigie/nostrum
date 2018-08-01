@@ -34,7 +34,7 @@ defmodule Nostrum.Cache.PresenceCache do
   end
   ```
   """
-  @spec get(User.id(), Guild.id()) :: {:error, :presence_not_found} | {:ok, Map.t()}
+  @spec get(User.id(), Guild.id()) :: {:error, :presence_not_found} | {:ok, map}
   def get(user_id, guild_id) when is_snowflake(user_id) and is_snowflake(guild_id) do
     case :ets.lookup(:presences, {user_id, guild_id}) do
       [] -> {:error, :presence_not_found}
@@ -45,19 +45,19 @@ defmodule Nostrum.Cache.PresenceCache do
   @doc """
   Same as `get/1`, but raises `Nostrum.Error.CacheError` in case of a failure.
   """
-  @spec get!(User.id(), Guild.id()) :: no_return | Map.t()
+  @spec get!(User.id(), Guild.id()) :: no_return | map
   def get!(user_id, guild_id) when is_snowflake(user_id) and is_snowflake(guild_id) do
     user_id |> get(guild_id) |> Util.bangify_find({user_id, guild_id}, __MODULE__)
   end
 
   @doc false
-  @spec create(Map.t()) :: :ok
+  @spec create(map) :: :ok
   def create(presence) do
     :ets.insert(:presences, {{presence.user.id, presence.guild_id}, presence})
   end
 
   @doc false
-  @spec update(Map.t()) :: {Guild.id(), nil | Map.t(), Map.t()} | :noop
+  @spec update(map) :: {Guild.id(), nil | map, map} | :noop
   def update(presence) do
     case get(presence.user.id, presence.guild_id) do
       {:ok, p} ->
@@ -75,7 +75,7 @@ defmodule Nostrum.Cache.PresenceCache do
   end
 
   @doc false
-  @spec bulk_create(Guild.id(), [Map.t()]) :: :ok
+  @spec bulk_create(Guild.id(), [map]) :: :ok
   def bulk_create(_, []), do: :ok
 
   def bulk_create(guild_id, presences) when is_list(presences) do

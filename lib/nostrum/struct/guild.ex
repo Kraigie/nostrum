@@ -85,7 +85,7 @@ defmodule Nostrum.Struct.Guild do
   @type explicit_content_filter :: integer
 
   @typedoc "List of roles"
-  @type roles :: [Role.t()]
+  @type roles :: %{required(Role.id()) => Role.t()}
 
   @typedoc "List of emojis"
   @type emojis :: [Emoji.t()]
@@ -132,10 +132,10 @@ defmodule Nostrum.Struct.Guild do
   @type voice_states :: list(map) | nil
 
   @typedoc "List of members"
-  @type members :: [Member.t()] | nil
+  @type members :: %{required(Member.id()) => Member.t()} | nil
 
   @typedoc "List of channels"
-  @type channels :: [Channel.t()] | nil
+  @type channels :: %{required(Channel.id()) => Channel.t()} | nil
 
   @typedoc """
   A `Nostrum.Struct.Guild` that is sent on user-specific rest endpoints.

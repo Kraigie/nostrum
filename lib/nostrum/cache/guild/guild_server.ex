@@ -209,16 +209,16 @@ defmodule Nostrum.Cache.Guild.GuildServer do
     {:noreply, %{state | members: Map.put(members, id, member)}}
   end
 
-  def handle_cast({:member, :chunk, new_members}, %{members: members} = state) do
+  def handle_cast({:chunk, :member, new_members}, %{members: members} = state) do
     new_members =
       Enum.reduce(new_members, members, fn m, acc ->
-        Map.put(acc, m.id, Util.cast(m, {:struct, Member}))
+        Map.put(acc, m.user.id, Util.cast(m, {:struct, Member}))
       end)
 
     {:noreply, %{state | members: new_members}, :hibernate}
   end
 
-  @spec upsert(%{required(Snowflake.t()) => struct}, Snowflake.t(), Map.t(), atom) ::
+  @spec upsert(%{required(Snowflake.t()) => struct}, Snowflake.t(), map, atom) ::
           {struct | nil, struct, %{required(Snowflake.t()) => struct}}
   defp upsert(map, key, new, struct) do
     if Map.has_key?(map, key) do

@@ -56,6 +56,12 @@ defmodule Nostrum.Cache.UserCache do
   end
 
   @doc false
+  @spec create([map]) :: :ok
+  def bulk_create(members) do
+    Enum.each(members, &:ets.insert(:users, {&1.user.id, &1.user}))
+  end
+
+  @doc false
   @spec update(map) :: :noop | {User.t(), User.t()}
   def update(info) do
     with {:ok, u} <- lookup(info.id),

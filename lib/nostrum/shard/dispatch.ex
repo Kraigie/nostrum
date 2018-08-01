@@ -6,7 +6,7 @@ defmodule Nostrum.Shard.Dispatch do
   alias Nostrum.Cache.Guild.GuildServer
   alias Nostrum.Shard.Session
   alias Nostrum.Struct.{Guild, Message, User}
-  alias Nostrum.Struct.Guild.{Member, UnavailableGuild}
+  alias Nostrum.Struct.Guild.UnavailableGuild
   alias Nostrum.Util
 
   require Logger
@@ -138,11 +138,8 @@ defmodule Nostrum.Shard.Dispatch do
   end
 
   def handle_event(:GUILD_MEMBERS_CHUNK = event, p, state) do
-    p.members
-    |> Task.async_stream(fn member ->
-      UserCache.create(member.user)
-      GuildServer.member_chunk(p.guild_id, Member.to_struct(member))
-    end)
+    UserCache.bulk_create(p.members)
+    GuildServer.member_chunk(p.guild_id, p.members)
 
     {event, p, state}
   end
