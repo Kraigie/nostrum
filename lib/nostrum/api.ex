@@ -55,7 +55,7 @@ defmodule Nostrum.Api do
 
   This occurs when hackney or HTTPoison fail, or when the API doesn't respond with `200` or `204`.
   """
-  @type error :: {:error, Nostrum.Error.ApiError.t()}
+  @type error :: {:error, Nostrum.Error.ApiError.t() | HTTPoison.Error.t()}
 
   @typedoc """
   Represents a limit used to retrieve messages.
@@ -2544,8 +2544,8 @@ defmodule Nostrum.Api do
   @doc false
   def bangify(to_bang) do
     case to_bang do
-      {:error, %{status_code: code, message: message}} ->
-        raise(Nostrum.Error.ApiError, status_code: code, message: message)
+      {:error, error} ->
+        raise(error)
 
       {:ok, body} ->
         body

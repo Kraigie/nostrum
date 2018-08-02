@@ -1,8 +1,7 @@
 defmodule Nostrum.Constants do
   @moduledoc false
 
-  # REFERENCE: https://gist.github.com/SinisterRectus/9518f3e7d0d1ccb4335b2a0d389c30b0
-  def base_url, do: "https://discordapp.com/api/v6"
+  def base_url, do: "https://discordapp.com/api/v7"
   def cdn_url, do: "https://cdn.discordapp.com"
   def gateway, do: "/gateway"
   def gateway_bot, do: "/gateway/bot"

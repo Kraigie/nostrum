@@ -6,42 +6,49 @@ defmodule Nostrum.Error.ApiError do
   This should only occur when using the banged API methods.
   """
 
-  @typedoc """
-  Map representing the error returned by an API call.
+  defexception [
+    :status_code,
+    :response
+  ]
 
-    * status_code
-      * `nil` if HTTPoison or Hackney throws an error.
-      * Status code of response otherwise.
-    * message
-      * Error message of response. If the error is from the Discord API,
-        this will be a map containing the keys `code` and `message` as strings.
-  """
   @type t :: %{
-          status_code: integer | nil,
-          message: String.t() | message_map
+          status_code: status_code,
+          response: response
         }
 
-  @type message_map :: %{
-          code: String.t(),
-          message: String.t()
-        }
+  @type status_code :: 100..511
+  @type discord_status_code :: 10001..90001
 
-  # https://github.com/edgurgel/httpoison/blob/108a298984a2b814f77f98de08d61e7ac46fdc65/lib/httpoison.ex#L40
-  # https://hexdocs.pm/elixir/Kernel.html#defexception/1
-  defexception [:message]
+  @type response :: String.t() | error | detailed_error
 
-  def exception(status_code: status_code, message: message) when is_atom(message) do
-    msg = "ERROR: #{status_code} #{to_string(message)}"
-    %__MODULE__{message: msg}
+  @type detailed_error :: %{code: discord_status_code, message: String.t(), errors: errors}
+  @type errors :: %{required(String.t()) => errors} | %{required(String.t()) => error_list_map}
+  @type error_list_map :: %{_errors: [error]}
+  @type error :: %{code: discord_status_code, message: String.t()}
+
+  @impl true
+  def message(%__MODULE__{response: response, status_code: nil}) when is_binary(response) do
+    response
   end
 
-  def exception(status_code: status_code, message: message) when is_binary(message) do
-    msg = "ERROR: #{status_code} #{message}"
-    %__MODULE__{message: msg}
+  @impl true
+  def message(%__MODULE__{response: response, status_code: nil}) do
+    "#{inspect(response)}"
   end
 
-  def exception(status_code: status_code, message: resp) when is_map(resp) do
-    msg = "ERROR: #{status_code} #{inspect(resp)}"
-    %__MODULE__{message: msg}
+  # TODO: pretty print for discord errors
+  @impl true
+  def message(%__MODULE__{
+        response: %{code: error_code, message: message, errors: errors},
+        status_code: code
+      }) do
+    "(HTTP #{code}) received Discord status code #{error_code} (#{message}) with errors: #{
+      inspect(errors)
+    }"
+  end
+
+  @impl true
+  def message(%__MODULE__{response: %{code: error_code, message: message}, status_code: code}) do
+    "(HTTP #{code}) received Discord status code #{error_code} (#{message})"
   end
 end

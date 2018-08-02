@@ -7,6 +7,7 @@ defmodule Nostrum.Api.Ratelimiter do
   use GenServer
 
   alias Nostrum.Api.{Base, Bucket}
+  alias Nostrum.Error.ApiError
   alias Nostrum.Util
 
   require Logger
@@ -152,8 +153,8 @@ defmodule Nostrum.Api.Ratelimiter do
 
   defp format_response(response) do
     case response do
-      {:error, %HTTPoison.Error{reason: reason}} ->
-        {:error, %{status_code: nil, message: reason}}
+      {:error, error} ->
+        {:error, error}
 
       {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
         {:ok, body}
@@ -164,8 +165,8 @@ defmodule Nostrum.Api.Ratelimiter do
       {:ok, %HTTPoison.Response{status_code: 204}} ->
         {:ok}
 
-      {:ok, %HTTPoison.Response{status_code: status_code, body: body}} ->
-        {:error, %{status_code: status_code, message: Poison.decode!(body)}}
+      {:ok, %HTTPoison.Response{status_code: code, body: body}} ->
+        {:error, %ApiError{status_code: code, response: Poison.decode!(body, keys: :atoms)}}
     end
   end
 end
