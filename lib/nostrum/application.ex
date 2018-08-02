@@ -1,4 +1,4 @@
-defmodule Nostrum do
+defmodule Nostrum.Application do
   @moduledoc false
 
   use Application
