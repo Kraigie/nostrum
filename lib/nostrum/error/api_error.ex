@@ -26,16 +26,6 @@ defmodule Nostrum.Error.ApiError do
   @type error_list_map :: %{_errors: [error]}
   @type error :: %{code: discord_status_code, message: String.t()}
 
-  @impl true
-  def message(%__MODULE__{response: response, status_code: nil}) when is_binary(response) do
-    response
-  end
-
-  @impl true
-  def message(%__MODULE__{response: response, status_code: nil}) do
-    "#{inspect(response)}"
-  end
-
   # TODO: pretty print for discord errors
   @impl true
   def message(%__MODULE__{
