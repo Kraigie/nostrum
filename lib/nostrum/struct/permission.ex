@@ -45,6 +45,7 @@ defmodule Nostrum.Struct.Permission do
           | :manage_roles
           | :manage_webhooks
           | :manage_emojis
+
   @type text_permission ::
           :add_reactions
           | :send_messages
@@ -55,6 +56,7 @@ defmodule Nostrum.Struct.Permission do
           | :read_message_history
           | :mention_everyone
           | :use_external_emojis
+
   @type voice_permission ::
           :connect
           | :speak
@@ -62,6 +64,8 @@ defmodule Nostrum.Struct.Permission do
           | :deafen_members
           | :move_members
           | :use_vad
+          | :priority_speaker
+
   @type t ::
           general_permission
           | text_permission
@@ -76,6 +80,7 @@ defmodule Nostrum.Struct.Permission do
     manage_guild: 0x00000020,
     add_reactions: 0x00000040,
     view_audit_log: 0x00000080,
+    priority_speaker: 0x00000100,
     view_channel: 0x00000400,
     send_messages: 0x00000800,
     send_tts_messages: 0x00001000,
