@@ -45,7 +45,7 @@ defmodule Nostrum.Struct.MemberTest do
 
       result = Member.guild_permissions(member, guild)
 
-      assert(result === Permission.from_bitset!(0x00000021))
+      assert(result === Permission.from_bitset(0x00000021))
     end
   end
 
@@ -100,7 +100,7 @@ defmodule Nostrum.Struct.MemberTest do
 
       result = Member.guild_channel_permissions(member, guild, channel_id)
 
-      assert(result === Permission.from_bitset!(0x00000040))
+      assert(result === Permission.from_bitset(0x00000040))
     end
 
     test "member overwrites have priority over role overwrites" do
@@ -133,7 +133,7 @@ defmodule Nostrum.Struct.MemberTest do
 
       result = Member.guild_channel_permissions(member, guild, channel_id)
 
-      assert(result === Permission.from_bitset!(0x00000040))
+      assert(result === Permission.from_bitset(0x00000040))
     end
   end
 

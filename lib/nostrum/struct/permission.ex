@@ -102,6 +102,7 @@ defmodule Nostrum.Struct.Permission do
     manage_webhooks: 0x20000000,
     manage_emojis: 0x40000000
   }
+
   @bit_to_permission_map Map.new(@permission_to_bit_map, fn {k, v} -> {v, k} end)
   @permission_list Map.keys(@permission_to_bit_map)
 
@@ -170,62 +171,29 @@ defmodule Nostrum.Struct.Permission do
   @doc """
   Converts the given bitset to a list of permissions.
 
-  If the bitset contains invalid bits, returns `{:error, invalid_bits}`.
+  If invalid bits are given they will be omitted from the results.
 
   ## Examples
 
   ```Elixir
   iex> Nostrum.Struct.Permission.from_bitset(0x08000002)
-  {:ok, [:kick_members, :manage_nicknames]}
-
-  iex> Nostrum.Struct.Permission.from_bitset(0)
-  {:ok, []}
+  [:manage_nicknames, :kick_members]
 
   iex> Nostrum.Struct.Permission.from_bitset(0x4000000000000)
-  {:error, [0x4000000000000]}
+  []
   ```
   """
-  @spec from_bitset(bitset) :: {:ok, [t]} | {:error, [bit]}
+  @spec from_bitset(bitset) :: [t]
   def from_bitset(bitset) do
-    {errors, successes} =
-      0..53
-      |> Enum.map(fn index -> 0x1 <<< index end)
-      |> Enum.filter(fn mask -> (bitset &&& mask) === mask end)
-      |> Enum.map(fn bit ->
-        case from_bit(bit) do
-          {:ok, perm} -> {:ok, perm}
-          :error -> {:error, bit}
-        end
-      end)
-      |> Enum.split_with(&match?({:error, _}, &1))
-
-    case errors do
-      [] ->
-        {:ok, successes |> Enum.map(fn {:ok, perm} -> perm end)}
-
-      errors ->
-        {:error, errors |> Enum.map(fn {:error, bit} -> bit end)}
-    end
-  end
-
-  @doc """
-  Same as `from_bitset/1`, but raises `ArgumentError` in case of failure.
-
-  ## Examples
-
-  ```Elixir
-  iex> Nostrum.Struct.Permission.from_bitset!(0x04000000)
-  [:change_nickname]
-  """
-  @spec from_bitset!(bitset) :: [t] | no_return
-  def from_bitset!(bitset) do
-    case from_bitset(bitset) do
-      {:ok, perms} ->
-        perms
-
-      {:error, invalid_bits} ->
-        raise(ArgumentError, "got a bitset with invalid bits `#{inspect(invalid_bits)}`")
-    end
+    0..53
+    |> Enum.map(fn index -> 0x1 <<< index end)
+    |> Enum.filter(fn mask -> (bitset &&& mask) === mask end)
+    |> Enum.reduce([], fn bit, acc ->
+      case from_bit(bit) do
+        {:ok, perm} -> [perm | acc]
+        :error -> acc
+      end
+    end)
   end
 
   @doc """
