@@ -17,7 +17,7 @@ defmodule Nostrum.Error.ApiError do
         }
 
   @type status_code :: 100..511
-  @type discord_status_code :: 10001..90001
+  @type discord_status_code :: 10_001..90_001
 
   @type response :: String.t() | error | detailed_error
 

@@ -1,4 +1,4 @@
-defmodule Nostrum.Struct.Permission do
+defmodule Nostrum.Permission do
   @moduledoc """
   Functions that work on permissions.
 
@@ -112,10 +112,10 @@ defmodule Nostrum.Struct.Permission do
   ## Examples
 
   ```Elixir
-  iex> Nostrum.Struct.Permission.is_permission(:administrator)
+  iex> Nostrum.Permission.is_permission(:administrator)
   true
 
-  iex> Nostrum.Struct.Permission.is_permission(:not_a_permission)
+  iex> Nostrum.Permission.is_permission(:not_a_permission)
   false
   ```
   """
@@ -135,10 +135,10 @@ defmodule Nostrum.Struct.Permission do
   ## Examples
 
   ```Elixir
-  iex> Nostrum.Struct.Permission.from_bit(0x04000000)
+  iex> Nostrum.Permission.from_bit(0x04000000)
   {:ok, :change_nickname}
 
-  iex> Nostrum.Struct.Permission.from_bit(0)
+  iex> Nostrum.Permission.from_bit(0)
   :error
   ```
   """
@@ -153,10 +153,10 @@ defmodule Nostrum.Struct.Permission do
   ## Examples
 
   ```Elixir
-  iex> Nostrum.Struct.Permission.from_bit!(0x04000000)
+  iex> Nostrum.Permission.from_bit!(0x04000000)
   :change_nickname
 
-  iex> Nostrum.Struct.Permission.from_bit!(0)
+  iex> Nostrum.Permission.from_bit!(0)
   ** (ArgumentError) expected a valid bit, got: `0`
   ```
   """
@@ -176,10 +176,10 @@ defmodule Nostrum.Struct.Permission do
   ## Examples
 
   ```Elixir
-  iex> Nostrum.Struct.Permission.from_bitset(0x08000002)
+  iex> Nostrum.Permission.from_bitset(0x08000002)
   [:manage_nicknames, :kick_members]
 
-  iex> Nostrum.Struct.Permission.from_bitset(0x4000000000000)
+  iex> Nostrum.Permission.from_bitset(0x4000000000000)
   []
   ```
   """
@@ -202,7 +202,7 @@ defmodule Nostrum.Struct.Permission do
   ## Examples
 
   ```Elixir
-  iex> Nostrum.Struct.Permission.to_bit(:administrator)
+  iex> Nostrum.Permission.to_bit(:administrator)
   8
   ```
   """
@@ -215,7 +215,7 @@ defmodule Nostrum.Struct.Permission do
   ## Examples
 
   ```Elixir
-  iex> Nostrum.Struct.Permission.to_bitset([:administrator, :create_instant_invite])
+  iex> Nostrum.Permission.to_bitset([:administrator, :create_instant_invite])
   9
   ```
   """

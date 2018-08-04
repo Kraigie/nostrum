@@ -1,7 +1,8 @@
 defmodule Nostrum.Struct.MemberTest do
   use ExUnit.Case, async: true
 
-  alias Nostrum.Struct.{Channel, Guild, Permission, User, Overwrite}
+  alias Nostrum.Permission
+  alias Nostrum.Struct.{Channel, Guild, User, Overwrite}
   alias Nostrum.Struct.Guild.{Member, Role}
 
   doctest Member
