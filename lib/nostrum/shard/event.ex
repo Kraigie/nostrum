@@ -21,12 +21,12 @@ defmodule Nostrum.Shard.Event do
   end
 
   def handle(:heartbeat, _payload, state) do
-    Logger.info("HEARTBEAT PING")
+    Logger.debug("HEARTBEAT PING")
     {state, Payload.heartbeat_payload(state.seq)}
   end
 
   def handle(:heartbeat_ack, _payload, state) do
-    Logger.info("HEARTBEAT_ACK")
+    Logger.debug("HEARTBEAT_ACK")
     %{state | last_heartbeat_ack: DateTime.utc_now(), heartbeat_ack: true}
   end
 
