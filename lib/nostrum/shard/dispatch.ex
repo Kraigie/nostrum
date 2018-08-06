@@ -176,14 +176,6 @@ defmodule Nostrum.Shard.Dispatch do
   def handle_event(:MESSAGE_ACK = event, p, state), do: {event, p, state}
 
   def handle_event(:PRESENCE_UPDATE = event, p, state) do
-    member = %{
-      user: p.user,
-      roles: Map.get(p, :roles, []),
-      nick: Map.get(p, :nick, nil)
-    }
-
-    GuildServer.member_add_from_presence(p.guild_id, member)
-
     [
       {event, PresenceCache.update(p), state}
       | [handle_event(:USER_UPDATE, p.user, state)]

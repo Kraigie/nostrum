@@ -205,10 +205,6 @@ defmodule Nostrum.Cache.Guild.GuildServer do
     {:reply, {guild_id, old_emojis, emojis}, %{state | emojis: emojis}, :hibernate}
   end
 
-  def handle_cast({:create, :member, %{user: %{id: id}} = member}, %{members: members} = state) do
-    {:noreply, %{state | members: Map.put(members, id, Util.cast(member, {:struct, Member}))}}
-  end
-
   def handle_cast({:chunk, :member, new_members}, %{members: members} = state) do
     new_members =
       Enum.reduce(new_members, members, fn m, acc ->
