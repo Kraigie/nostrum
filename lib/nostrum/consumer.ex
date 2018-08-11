@@ -66,8 +66,14 @@ defmodule Nostrum.Consumer do
 
   @type channel_create :: {:CHANNEL_CREATE, {Channel.t()}, WSState.t()}
   @type channel_delete :: {:CHANNEL_DELETE, {Channel.t()}, WSState.t()}
+  @typedoc """
+  Dispatched when a channel is updated.
+
+  `old_channel` will be `nil` when the pre-update channel could not be fetched from the cache.
+  """
   @type channel_update ::
-          {:CHANNEL_UPDATE, {old_channel :: Channel.t(), new_channel :: Channel.t()}, WSState.t()}
+          {:CHANNEL_UPDATE, {old_channel :: Channel.t() | nil, new_channel :: Channel.t()},
+           WSState.t()}
   @type channel_pins_ack :: {:CHANNEL_PINS_ACK, {map}, WSState.t()}
   @type channel_pins_update :: {:CHANNEL_PINS_UPDATE, {map}, WSState.t()}
   @type guild_ban_add ::
@@ -99,9 +105,14 @@ defmodule Nostrum.Consumer do
   @type guild_member_remove ::
           {:GUILD_MEMBER_REMOVE,
            {guild_id :: integer, old_member :: Nostrum.Struct.Guild.Member.t()}, WSState.t()}
+  @typedoc """
+  Dispatched when a guild member is updated.
+
+  `old_member` will be `nil` when the pre-update member could not be fetched from the cache.
+  """
   @type guild_member_update ::
           {:GUILD_MEMBER_UPDATE,
-           {guild_id :: integer, old_member :: Nostrum.Struct.Guild.Member.t(),
+           {guild_id :: integer, old_member :: Nostrum.Struct.Guild.Member.t() | nil,
             new_member :: Nostrum.Struct.Guild.Member.t()}, WSState.t()}
   @type guild_role_create ::
           {:GUILD_ROLE_CREATE, {guild_id :: integer, new_role :: Nostrum.Struct.Guild.Role.t()},
@@ -109,9 +120,14 @@ defmodule Nostrum.Consumer do
   @type guild_role_delete ::
           {:GUILD_ROLE_DELETE, {guild_id :: integer, old_role :: Nostrum.Struct.Guild.Role.t()},
            WSState.t()}
+  @typedoc """
+  Dispatched when a role on a guild is updated.
+
+  `old_role` will be `nil` when the pre-update role could not be fetched from the cache.
+  """
   @type guild_role_update ::
           {:GUILD_ROLE_UPDATE,
-           {guild_id :: integer, old_role :: Nostrum.Struct.Guild.Role.t(),
+           {guild_id :: integer, old_role :: Nostrum.Struct.Guild.Role.t() | nil,
             new_role :: Nostrum.Struct.Guild.Role.t()}, WSState.t()}
   @type message_create :: {:MESSAGE_CREATE, {message :: Nostrum.Struct.Message.t()}, WSState.t()}
   @type message_delete :: {:MESSAGE_DELETE, {message :: Nostrum.Struct.Message.t()}, WSState.t()}
@@ -123,6 +139,11 @@ defmodule Nostrum.Consumer do
   @type message_reaction_remove :: {:MESSAGE_REACTION_REMOVE, {map}, WSState.t()}
   @type message_reaction_remove_all :: {:MESSAGE_REACTION_REMOVE_ALL, {map}, WSState.t()}
   @type message_ack :: {:MESSAGE_ACK, {map}, WSState.t()}
+  @typedoc """
+  Dispatched when a user's presence is updated.
+
+  `old_presence` will be `nil` when the pre-update presence could not be fetched from the cache.
+  """
   @type presence_update ::
           {:PRESENCE_UPDATE,
            {guild_id :: integer, old_presence :: map | nil, new_presence :: map}, WSState.t()}
@@ -130,9 +151,14 @@ defmodule Nostrum.Consumer do
   @type resumed :: {:RESUMED, {map}, WSState.t()}
   @type typing_start :: {:TYPING_START, {map}, WSState.t()}
   @type user_settings_update :: no_return
+  @typedoc """
+  Dispatched when a user is updated.
+
+  `old_user` will be `nil` when the pre-update user could not be fetched from the cache.
+  """
   @type user_update ::
           {:USER_UPDATE,
-           {old_user :: Nostrum.Struct.User.t(), new_user :: Nostrum.Struct.User.t()},
+           {old_user :: Nostrum.Struct.User.t() | nil, new_user :: Nostrum.Struct.User.t()},
            WSState.t()}
   @type voice_state_update :: {:VOICE_STATE_UPDATE, {map}, WSState.t()}
   @type voice_server_update :: {:VOICE_SERVER_UPDATE, {map}, WSState.t()}
