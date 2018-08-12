@@ -143,7 +143,7 @@ defmodule Nostrum.Cache.Guild.GuildServer do
   end
 
   def handle_call(
-        {:create, :member, guild_id, %{user: id} = member},
+        {:create, :member, guild_id, %{user: %{id: id}} = member},
         _from,
         %{members: members} = state
       ) do
@@ -154,7 +154,7 @@ defmodule Nostrum.Cache.Guild.GuildServer do
   end
 
   def handle_call(
-        {:update, :member, guild_id, %{user: id} = partial_member},
+        {:update, :member, guild_id, %{user: %{id: id}} = partial_member},
         _from,
         %{members: members} = state
       ) do
