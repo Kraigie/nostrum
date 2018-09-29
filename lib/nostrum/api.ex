@@ -2176,7 +2176,7 @@ defmodule Nostrum.Api do
 
   def get_current_user_guilds(options) when is_map(options) do
     request(:get, Constants.me_guilds(), "", params: options)
-    |> handle_request_with_decode({:struct, Guild})
+    |> handle_request_with_decode({:list, {:struct, Guild}})
   end
 
   @doc ~S"""
