@@ -227,6 +227,10 @@ defmodule Nostrum.Util do
   def cast(value, {:struct, module}) when is_map(value) do
     module.to_struct(value)
   end
+  
+  def cast(values, {:struct, module}) when is_list(values) do
+    Enum.map(values, &module.to_struct/1)
+  end
 
   def cast(value, module) do
     case module.cast(value) do
