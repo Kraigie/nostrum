@@ -75,7 +75,7 @@ defmodule Nostrum.Struct.Embed do
   @type url :: String.t() | nil
 
   @typedoc "Timestamp of embed content"
-  @type timestamp :: String.t() | nil
+  @type timestamp :: String.t() | Date.t() | Time.t() | NaiveDateTime.t() | DateTime.t() | nil
 
   @typedoc "Color code of the embed"
   @type color :: Integer.t() | nil
