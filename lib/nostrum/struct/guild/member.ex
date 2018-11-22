@@ -161,7 +161,7 @@ defmodule Nostrum.Struct.Guild.Member do
         channel.permission_overwrites
         |> Enum.filter(&(&1.id in overwrite_ids))
         |> Enum.map(fn overwrite -> {overwrite.allow, overwrite.deny} end)
-        |> Enum.reduce(fn {allow, deny}, {allow_acc, deny_acc} ->
+        |> Enum.reduce({0, 0}, fn {allow, deny}, {allow_acc, deny_acc} ->
           {allow_acc ||| allow, deny_acc ||| deny}
         end)
 
