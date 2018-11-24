@@ -51,14 +51,20 @@ defmodule Nostrum.Struct.MemberTest do
   end
 
   describe "guild_channel_permissions/3" do
-    test "returns all perms if member is admin" do
-      member_id = 500
-      role_id = 200
-      channel_id = 100
+    setup do
+      [
+        channel_id: 300,
+        everyone_role_id: 100,
+        guild_id: 100,
+        member_id: 500,
+        role_id: 200
+      ]
+    end
 
-      member = %Member{user: %User{id: member_id}, roles: [role_id]}
-      role = %Role{id: role_id, permissions: 0x00000008}
-      channel = %Channel{id: channel_id}
+    test "returns all perms if member is admin", context do
+      member = %Member{user: %User{id: context[:member_id]}, roles: [context[:role_id]]}
+      role = %Role{id: context[:role_id], permissions: 0x00000008}
+      channel = %Channel{id: context[:channel_id]}
 
       guild = %Guild{
         channels: %{channel.id => channel},
@@ -66,104 +72,90 @@ defmodule Nostrum.Struct.MemberTest do
         roles: %{role.id => role}
       }
 
-      result = Member.guild_channel_permissions(member, guild, channel_id)
+      result = Member.guild_channel_permissions(member, guild, context[:channel_id])
 
       assert(result === Permission.all())
     end
 
-    test "role overwrites have priority over @everyone overwrites" do
-      member_id = 500
-      guild_id = 100
-      role_id = 200
-      channel_id = 300
-      everyone_role_id = 100
-
+    test "role overwrites have priority over @everyone overwrites", context do
       test_perm_bits = 0x00000040
 
-      member = %Member{user: %User{id: member_id}, roles: [everyone_role_id, role_id]}
+      member = %Member{
+        user: %User{id: context[:member_id]},
+        roles: [context[:everyone_role_id], context[:role_id]]
+      }
 
-      everyone_role = %Role{id: everyone_role_id, permissions: 0}
-      role = %Role{id: role_id, permissions: 0}
+      everyone_role = %Role{id: context[:everyone_role_id], permissions: 0}
+      role = %Role{id: context[:role_id], permissions: 0}
 
       channel = %Channel{
-        id: channel_id,
+        id: context[:channel_id],
         permission_overwrites: [
-          %Overwrite{id: role_id, allow: test_perm_bits, deny: 0},
-          %Overwrite{id: everyone_role_id, deny: test_perm_bits, allow: 0}
+          %Overwrite{id: context[:role_id], allow: test_perm_bits, deny: 0},
+          %Overwrite{id: context[:everyone_role_id], deny: test_perm_bits, allow: 0}
         ]
       }
 
       guild = %Guild{
-        id: guild_id,
+        id: context[:guild_id],
         channels: %{channel.id => channel},
         roles: %{everyone_role.id => everyone_role, role.id => role}
       }
 
-      result = Member.guild_channel_permissions(member, guild, channel_id)
+      result = Member.guild_channel_permissions(member, guild, context[:channel_id])
 
       assert(result === Permission.from_bitset(0x00000040))
     end
 
-    test "member overwrites have priority over role overwrites" do
-      member_id = 500
-      guild_id = 100
-      role_id = 200
-      channel_id = 300
-      everyone_role_id = 100
-
+    test "member overwrites have priority over role overwrites", context do
       test_perm_bits = 0x00000040
 
-      member = %Member{user: %User{id: member_id}, roles: [role_id]}
+      member = %Member{user: %User{id: context[:member_id]}, roles: [context[:role_id]]}
 
-      everyone_role = %Role{id: everyone_role_id, permissions: 0}
-      role = %Role{id: role_id, permissions: 0}
+      everyone_role = %Role{id: context[:everyone_role_id], permissions: 0}
+      role = %Role{id: context[:role_id], permissions: 0}
 
       channel = %Channel{
-        id: channel_id,
+        id: context[:channel_id],
         permission_overwrites: [
-          %Overwrite{id: role_id, allow: 0, deny: test_perm_bits},
-          %Overwrite{id: member_id, allow: test_perm_bits, deny: 0}
+          %Overwrite{id: context[:role_id], allow: 0, deny: test_perm_bits},
+          %Overwrite{id: context[:member_id], allow: test_perm_bits, deny: 0}
         ]
       }
 
       guild = %Guild{
-        id: guild_id,
+        id: context[:guild_id],
         channels: %{channel.id => channel},
         roles: %{everyone_role.id => everyone_role, role.id => role}
       }
 
-      result = Member.guild_channel_permissions(member, guild, channel_id)
+      result = Member.guild_channel_permissions(member, guild, context[:channel_id])
 
       assert(result === Permission.from_bitset(0x00000040))
     end
 
-    test "returns empty list when there are no matching ids between channel overrides and member roles" do
-      member_id = 500
-      guild_id = 100
-      role_id = 200
-      channel_id = 300
-      everyone_role_id = 100
+    test "returns empty list when there are no matching ids between channel overrides and member roles",
+         context do
+      member = %Member{user: %User{id: context[:member_id]}, roles: [context[:role_id]]}
 
-      member = %Member{user: %User{id: member_id}, roles: [role_id]}
-
-      everyone_role = %Role{id: everyone_role_id, permissions: 0}
-      role = %Role{id: role_id, permissions: 0}
+      everyone_role = %Role{id: context[:everyone_role_id], permissions: 0}
+      role = %Role{id: context[:role_id], permissions: 0}
 
       channel = %Channel{
-        id: channel_id,
+        id: context[:channel_id],
         permission_overwrites: [
-          %Overwrite{id: role_id, allow: 0, deny: 0},
-          %Overwrite{id: member_id, allow: 0, deny: 0}
+          %Overwrite{id: context[:role_id], allow: 0, deny: 0},
+          %Overwrite{id: context[:member_id], allow: 0, deny: 0}
         ]
       }
 
       guild = %Guild{
-        id: guild_id,
+        id: context[:guild_id],
         channels: %{channel.id => channel},
         roles: %{everyone_role.id => everyone_role, role.id => role}
       }
 
-      result = Member.guild_channel_permissions(member, guild, channel_id)
+      result = Member.guild_channel_permissions(member, guild, context[:channel_id])
 
       assert(result == [])
     end
