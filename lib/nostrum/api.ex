@@ -693,7 +693,7 @@ defmodule Nostrum.Api do
   Same as `get_channel_messages/3`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
   @spec get_channel_messages!(Channel.id(), limit, locator) :: no_return | [Message.t()]
-  def get_channel_messages!(channel_id, limit, locator) do
+  def get_channel_messages!(channel_id, limit, locator \\ {}) do
     get_channel_messages(channel_id, limit, locator)
     |> bangify
   end
