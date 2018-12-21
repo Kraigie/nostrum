@@ -94,7 +94,7 @@ defmodule Nostrum.Struct.User do
 
   If `:avatar` is `nil`, the default avatar url is returned.
 
-  Supported image formats are PNG, JPEG, GIF, WebP, and GIF.
+  Supported image formats are PNG, JPEG, WebP, and GIF.
 
   ## Examples
 
