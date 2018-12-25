@@ -229,7 +229,7 @@ defmodule Nostrum.Struct.Embed do
   ```
   """
   @spec put_footer(t, Footer.text(), Footer.icon_url()) :: t
-  def put_footer(%__MODULE__{} = embed, text, icon_url) do
+  def put_footer(%__MODULE__{} = embed, text, icon_url \\ nil) do
     footer = %Footer{
       text: text,
       icon_url: icon_url
