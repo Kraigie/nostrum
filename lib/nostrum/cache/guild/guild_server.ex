@@ -133,7 +133,7 @@ defmodule Nostrum.Cache.Guild.GuildServer do
       state
       |> Map.from_struct()
       |> Map.merge(guild)
-      |> Util.cast({:struct, Member})
+      |> Util.cast({:struct, Guild})
 
     {:reply, {state, new_guild}, new_guild, :hibernate}
   end
