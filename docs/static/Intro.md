@@ -1,7 +1,7 @@
 # Intro
 Nostrum is a an Elixir library that can be used to interact with Discord.
 
-Nostrum currently supports the latest stable version of Elixir, v. 1.4.
+Nostrum currently supports the latest stable version of Elixir, v. 1.7.
 
 With a platform like Discord, there are many moving parts and an attempt was made
 to break these parts into smaller logical pieces.

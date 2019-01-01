@@ -5,7 +5,7 @@ defmodule Nostrum.Mixfile do
     [
       app: :nostrum,
       version: "0.3.0",
-      elixir: "~> 1.4",
+      elixir: "~> 1.7",
       build_embedded: Mix.env() == :prod,
       start_permanent: Mix.env() == :prod,
       description: "An elixir Discord library",
