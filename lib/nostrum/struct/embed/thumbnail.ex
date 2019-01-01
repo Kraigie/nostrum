@@ -4,6 +4,7 @@ defmodule Nostrum.Struct.Embed.Thumbnail do
   """
 
   alias Nostrum.Util
+  alias Poison.Encoder
 
   defstruct [
     :url,
@@ -12,13 +13,13 @@ defmodule Nostrum.Struct.Embed.Thumbnail do
     :width
   ]
 
-  defimpl Poison.Encoder do
+  defimpl Encoder do
     def encode(thumbnail, options) do
       thumbnail
       |> Map.from_struct()
       |> Enum.filter(fn {_, v} -> v != nil end)
       |> Map.new()
-      |> Poison.Encoder.encode(options)
+      |> Encoder.encode(options)
     end
   end
 

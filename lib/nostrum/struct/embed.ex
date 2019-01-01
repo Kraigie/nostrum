@@ -35,6 +35,7 @@ defmodule Nostrum.Struct.Embed do
 
   alias Nostrum.Struct.Embed.{Author, Field, Footer, Image, Provider, Thumbnail, Video}
   alias Nostrum.Util
+  alias Poison.Encoder
 
   defstruct [
     :title,
@@ -52,13 +53,13 @@ defmodule Nostrum.Struct.Embed do
     :fields
   ]
 
-  defimpl Poison.Encoder do
+  defimpl Encoder do
     def encode(embed, options) do
       embed
       |> Map.from_struct()
       |> Enum.filter(fn {_, v} -> v != nil end)
       |> Map.new()
-      |> Poison.Encoder.encode(options)
+      |> Encoder.encode(options)
     end
   end
 

@@ -2,8 +2,8 @@ defmodule Nostrum.Shard.Dispatch do
   @moduledoc false
 
   alias Nostrum.Cache.{ChannelCache, PresenceCache, UserCache}
-  alias Nostrum.Cache.Me
   alias Nostrum.Cache.Guild.GuildServer
+  alias Nostrum.Cache.Me
   alias Nostrum.Shard.Session
   alias Nostrum.Struct.{Guild, Message, User}
   alias Nostrum.Struct.Guild.UnavailableGuild

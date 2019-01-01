@@ -4,6 +4,7 @@ defmodule Nostrum.Struct.Embed.Footer do
   """
 
   alias Nostrum.Util
+  alias Poison.Encoder
 
   defstruct [
     :text,
@@ -11,13 +12,13 @@ defmodule Nostrum.Struct.Embed.Footer do
     :proxy_icon_url
   ]
 
-  defimpl Poison.Encoder do
+  defimpl Encoder do
     def encode(footer, options) do
       footer
       |> Map.from_struct()
       |> Enum.filter(fn {_, v} -> v != nil end)
       |> Map.new()
-      |> Poison.Encoder.encode(options)
+      |> Encoder.encode(options)
     end
   end
 

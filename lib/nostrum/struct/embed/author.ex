@@ -4,6 +4,7 @@ defmodule Nostrum.Struct.Embed.Author do
   """
 
   alias Nostrum.Util
+  alias Poison.Encoder
 
   defstruct [
     :name,
@@ -12,13 +13,13 @@ defmodule Nostrum.Struct.Embed.Author do
     :proxy_icon_url
   ]
 
-  defimpl Poison.Encoder do
+  defimpl Encoder do
     def encode(author, options) do
       author
       |> Map.from_struct()
       |> Enum.filter(fn {_, v} -> v != nil end)
       |> Map.new()
-      |> Poison.Encoder.encode(options)
+      |> Encoder.encode(options)
     end
   end
 
