@@ -145,16 +145,18 @@ defmodule Nostrum.Util do
   @spec gateway() :: String.t()
   def gateway do
     case :ets.lookup(:gateway_url, "url") do
-      [] -> get_new_gateway_url()
-      [{"url", url, shards}] -> {url, shards}
+      [{"url", url, shards}] ->
+        {url, shards}
+      [] -> 
+        case get_new_gateway_url() do
+          {:ok, url, shards} -> {url, shards}
+          {:error, message} -> raise(message)
+        end
     end
   end
 
   defp get_new_gateway_url do
     case Api.request(:get, Constants.gateway_bot(), "") do
-      {:error, %{status_code: code, message: message}} ->
-        raise(Nostrum.Error.ApiError, status_code: code, message: message)
-
       {:ok, body} ->
         body = Poison.decode!(body)
 
@@ -162,7 +164,10 @@ defmodule Nostrum.Util do
         shards = if body["shards"], do: body["shards"], else: 1
 
         :ets.insert(:gateway_url, {"url", url, shards})
-        {url, shards}
+
+        {:ok, url, shards}
+      
+      {:error, message} -> {:error, message}
     end
   end
 
@@ -219,7 +224,7 @@ defmodule Nostrum.Util do
   end
 
   # Handles the case where the given term is already indexed
-  def cast(values, {:index, index_by, type}) when is_map(values), do: values
+  def cast(values, {:index, _index_by, _type}) when is_map(values), do: values
   def cast(values, {:index, index_by, type}) when is_list(values) do
     values
     |> Enum.map(&{&1 |> get_in(index_by) |> cast(Snowflake), cast(&1, type)})
