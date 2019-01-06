@@ -220,10 +220,10 @@ defmodule Nostrum.Util do
 
   # Handles the case where the given term is already indexed
   def cast(values, {:index, index_by, type}) when is_map(values), do: values
+
   def cast(values, {:index, index_by, type}) when is_list(values) do
     values
-    |> Enum.map(&{&1 |> get_in(index_by) |> cast(Snowflake), cast(&1, type)})
-    |> Enum.into(%{})
+    |> Enum.into(%{}, &{&1 |> get_in(index_by) |> cast(Snowflake), cast(&1, type)})
   end
 
   def cast(value, {:struct, module}) when is_map(value) do

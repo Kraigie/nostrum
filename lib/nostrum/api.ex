@@ -48,7 +48,7 @@ defmodule Nostrum.Api do
   alias Nostrum.{Constants, Util}
   alias Nostrum.Struct.{Channel, Embed, Emoji, Guild, Invite, Message, User, Webhook}
   alias Nostrum.Struct.Guild.{Member, Role}
-  alias Nostrum.Shard.{Supervisor, Session}
+  alias Nostrum.Shard.{Session, Supervisor}
 
   @typedoc """
   Represents a failed response from the API.

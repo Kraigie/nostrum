@@ -23,7 +23,7 @@ defmodule Nostrum.Struct.User do
   """
 
   alias Nostrum.Struct.Snowflake
-  alias Nostrum.{Util, Constants}
+  alias Nostrum.{Constants, Util}
 
   defstruct [
     :id,
