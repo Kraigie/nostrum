@@ -152,9 +152,14 @@ defmodule Nostrum.Util do
 
   defp get_new_gateway_url do
     case Api.request(:get, Constants.gateway_bot(), "") do
+      # Handle deeper API error.
+      # For example, not including a token can result in a somewhat opaque 401 unauthorized error
+      {:error, %Nostrum.Error.ApiError{response: %{message: message}}} ->
+        raise(message)
+
       {:error, %{status_code: code, message: message}} ->
         raise(Nostrum.Error.ApiError, status_code: code, message: message)
-
+  
       {:ok, body} ->
         body = Poison.decode!(body)
 
