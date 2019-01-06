@@ -3,9 +3,7 @@ defmodule Nostrum.Struct.Invite do
   Struct representing a Discord invite.
   """
 
-  alias Nostrum.Struct.Channel
-  alias Nostrum.Struct.Guild
-  alias Nostrum.Struct.User
+  alias Nostrum.Struct.{Channel, Guild, User}
   alias Nostrum.Util
 
   defstruct [

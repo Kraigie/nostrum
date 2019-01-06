@@ -30,9 +30,7 @@ defmodule Nostrum.Struct.Channel do
   ```
   """
 
-  alias Nostrum.Struct.Overwrite
-  alias Nostrum.Struct.Snowflake
-  alias Nostrum.Struct.User
+  alias Nostrum.Struct.{Overwrite, Snowflake, User}
   alias Nostrum.Util
 
   defstruct [
