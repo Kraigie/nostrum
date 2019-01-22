@@ -38,8 +38,11 @@ defmodule Nostrum.Struct.Guild.Member do
     def to_string(member), do: @for.mention(member)
   end
 
-  @typedoc "The user struct"
-  @type user :: User.t()
+  @typedoc """
+  The user struct. This field can be `nil` if Member struct came as a partial Member object included
+  in a message received from a guild channel.
+  """
+  @type user :: User.t() | nil
 
   @typedoc "The nickname of the user"
   @type nick :: String.t() | nil
