@@ -165,7 +165,7 @@ defmodule Nostrum.Shard.Dispatch do
 
   def handle_event(:MESSAGE_DELETE_BULK = event, p, state), do: {event, p, state}
 
-  def handle_event(:MESSAGE_UPDATE = event, p, state), do: {event, p, state}
+  def handle_event(:MESSAGE_UPDATE = event, p, state), do: {event, Message.to_struct(p), state}
 
   def handle_event(:MESSAGE_REACTION_ADD = event, p, state), do: {event, p, state}
 
