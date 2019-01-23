@@ -3,8 +3,8 @@ defmodule Nostrum.Struct.Message do
   Struct representing a Discord message.
   """
 
-  alias Nostrum.Struct.Guild.Member
   alias Nostrum.Struct.{Embed, Snowflake, User}
+  alias Nostrum.Struct.Guild.Member
   alias Nostrum.Struct.Message.{Activity, Application, Attachment, Reaction}
   alias Nostrum.Util
 
@@ -103,7 +103,7 @@ defmodule Nostrum.Struct.Message do
   @type application :: Application.t() | nil
 
   @typedoc """
-  Partial Guild Member object received with Message Create event if message came from a guild channel.
+  Partial Guild Member object received with the Message Create event if message came from a guild channel.
   """
   @type member :: Member.t() | nil
 

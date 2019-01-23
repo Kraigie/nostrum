@@ -39,7 +39,7 @@ defmodule Nostrum.Struct.Guild.Member do
   end
 
   @typedoc """
-  The user struct. This field can be `nil` if Member struct came as a partial Member object included
+  The user struct. This field can be `nil` if the Member struct came as a partial Member object included
   in a message received from a guild channel.
   """
   @type user :: User.t() | nil
