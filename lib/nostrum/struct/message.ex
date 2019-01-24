@@ -4,6 +4,7 @@ defmodule Nostrum.Struct.Message do
   """
 
   alias Nostrum.Struct.{Embed, Snowflake, User}
+  alias Nostrum.Struct.Guild.Member
   alias Nostrum.Struct.Message.{Activity, Application, Attachment, Reaction}
   alias Nostrum.Util
 
@@ -18,6 +19,7 @@ defmodule Nostrum.Struct.Message do
     :embeds,
     :id,
     :guild_id,
+    :member,
     :mention_everyone,
     :mention_roles,
     :mentions,
@@ -100,6 +102,11 @@ defmodule Nostrum.Struct.Message do
   """
   @type application :: Application.t() | nil
 
+  @typedoc """
+  Partial Guild Member object received with the Message Create event if message came from a guild channel.
+  """
+  @type member :: Member.t() | nil
+
   @type t :: %__MODULE__{
           activity: activity,
           application: application,
@@ -111,6 +118,7 @@ defmodule Nostrum.Struct.Message do
           embeds: embeds,
           id: id,
           guild_id: guild_id,
+          member: member,
           mention_everyone: mention_everyone,
           mention_roles: mention_roles,
           mentions: mentions,
@@ -150,6 +158,7 @@ defmodule Nostrum.Struct.Message do
       |> Map.update(:webhook_id, nil, &Util.cast(&1, Snowflake))
       |> Map.update(:activity, nil, &Util.cast(&1, {:struct, Activity}))
       |> Map.update(:application, nil, &Util.cast(&1, {:struct, Application}))
+      |> Map.update(:member, nil, &Util.cast(&1, {:struct, Member}))
 
     struct(__MODULE__, new)
   end

@@ -219,7 +219,7 @@ defmodule Nostrum.Util do
   end
 
   # Handles the case where the given term is already indexed
-  def cast(values, {:index, index_by, type}) when is_map(values), do: values
+  def cast(values, {:index, _index_by, _type}) when is_map(values), do: values
 
   def cast(values, {:index, index_by, type}) when is_list(values) do
     values
