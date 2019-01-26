@@ -80,7 +80,7 @@ defmodule Nostrum.Util do
   @spec now() :: integer
   def now do
     DateTime.utc_now()
-    |> DateTime.to_unix(:milliseconds)
+    |> DateTime.to_unix(:millisecond)
   end
 
   @doc """
