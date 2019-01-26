@@ -127,7 +127,7 @@ defmodule Nostrum.Struct.Snowflake do
   def from_datetime(%DateTime{} = datetime) do
     use Bitwise
 
-    unix_time_ms = DateTime.to_unix(datetime, :milliseconds)
+    unix_time_ms = DateTime.to_unix(datetime, :millisecond)
     discord_time_ms = unix_time_ms - Constants.discord_epoch()
 
     if discord_time_ms >= 0 do
@@ -164,7 +164,7 @@ defmodule Nostrum.Struct.Snowflake do
 
     time_elapsed_ms = (snowflake >>> 22) + Constants.discord_epoch()
 
-    {:ok, datetime} = DateTime.from_unix(time_elapsed_ms, :milliseconds)
+    {:ok, datetime} = DateTime.from_unix(time_elapsed_ms, :millisecond)
     datetime
   end
 end
