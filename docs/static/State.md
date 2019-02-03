@@ -7,7 +7,7 @@ simple interactions with the cache. Feel free to suggest additional functionalit
 Nostrum uses structs when appropriate to pass around objects from Discord.
 
 In some cases, the struct modules will include helper functions for interacting
-with the struct. See `Nostrum.Struct.Emoji.format_custom_emoji/2` for an example.
+with the struct. See `Nostrum.Struct.Emoji.image_url/1` for an example.
 
 ## Guilds
 Each guild is ran in its own `GenServer` process, all of which are ran under a
