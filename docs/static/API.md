@@ -59,5 +59,5 @@ The ratelimiter at a high level works something like this:
 ## Rest Only
 If you only want to use the REST portion of the provided API, the only process
 needed is the ratelimiter. This can be manually started by calling
-`Nostrum.Api.Ratelimiter.start_link/0`. If you don't want to start Nostrum you
+`Nostrum.Api.Ratelimiter.start_link/1`. If you don't want to start Nostrum you
 can add `runtime: false` to the dependency options.

@@ -10,7 +10,7 @@ defmodule Nostrum.Mixfile do
       start_permanent: Mix.env() == :prod,
       description: "An elixir Discord library",
       package: package(),
-      name: "Elixir",
+      name: "Nostrum",
       source_url: "https://github.com/kraigie/nostrum",
       homepage_url: "https://github.com/kraigie/nostrum",
       deps: deps(),
