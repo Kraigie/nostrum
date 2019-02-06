@@ -47,7 +47,7 @@ defmodule Nostrum.Api do
 
   alias Nostrum.{Constants, Util}
   alias Nostrum.Struct.{Channel, Embed, Emoji, Guild, Invite, Message, User, Webhook}
-  alias Nostrum.Struct.Guild.{Member, Role}
+  alias Nostrum.Struct.Guild.{AuditLog, Member, Role}
   alias Nostrum.Shard.{Session, Supervisor}
 
   @typedoc """
@@ -1182,6 +1182,22 @@ defmodule Nostrum.Api do
   def delete_guild_emoji!(guild_id, emoji_id) do
     delete_guild_emoji(guild_id, emoji_id)
     |> bangify
+  end
+
+  @doc ~S"""
+  Get the `t:Nostrum.Struct.Guild.AuditLog.t/0` for the given `guild_id`.
+
+  ## Options
+
+    * `:user_id` (`t:Nostrum.Struct.User.id/0`) - filter the log for a user ID
+    * `:action_type` (`t:Integer.t/0`) - filter the log by audit log type, see [Audit Log Events](https://discordapp.com/developers/docs/resources/audit-log#audit-log-entry-object-audit-log-events)
+    * `:before` (`t:Nostrum.Struct.Snowflake.t/0`) - filter the log before a certain entry ID
+    * `:limit` (`t:positive_integer/0`) - how many entries are returned (default 50, minimum 1, maximum 100)
+  """
+  @spec get_guild_audit_log(Guild.id(), options) :: any()
+  def get_guild_audit_log(guild_id, options \\ []) do
+    request(:get, Constants.guild_audit_logs(guild_id), "", params: options)
+    |> handle_request_with_decode({:struct, AuditLog})
   end
 
   @doc ~S"""

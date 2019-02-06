@@ -43,6 +43,7 @@ defmodule Nostrum.Constants do
   def guild_member_role(guild_id, user_id, role_id),
     do: "/guilds/#{guild_id}/members/#{user_id}/roles/#{role_id}"
 
+  def guild_audit_logs(guild_id), do: "/guilds/#{guild_id}/audit-logs"
   def guild_bans(guild_id), do: "/guilds/#{guild_id}/bans"
   def guild_ban(guild_id, user_id), do: "/guilds/#{guild_id}/bans/#{user_id}"
   def guild_roles(guild_id), do: "/guilds/#{guild_id}/roles"
