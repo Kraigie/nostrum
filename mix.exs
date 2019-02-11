@@ -78,7 +78,7 @@ defmodule Nostrum.Mixfile do
       {:ex_doc, "~> 0.14", only: :dev},
       {:credo, "~> 0.4", only: [:dev, :test]},
       {:dialyxir, "~> 0.5", only: [:dev], runtime: false},
-      {:websockex, git: "https://github.com/Azolo/websockex"},
+      {:websockex, "~> 0.4"},
       {:gen_stage, "~> 0.11"},
       {:recon, "~> 2.3", only: :dev}
     ]
