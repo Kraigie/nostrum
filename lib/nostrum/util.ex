@@ -4,28 +4,9 @@ defmodule Nostrum.Util do
   """
 
   alias Nostrum.{Api, Constants}
-  alias Nostrum.Shard.Stage.Producer
   alias Nostrum.Struct.Snowflake
 
   require Logger
-
-  @doc """
-  Gets all producers Nostrum event producers.
-
-  To be used when creating custom consumer processes.
-
-  ## Example
-  ```Elixir
-  # Inside of your custom consumer process init callback
-  def init(state) do
-    {:consumer, state, subscribe_to: Nostrum.Util.producers}
-  end
-  ```
-  """
-  @spec producers() :: list(pid)
-  def producers do
-    Producer
-  end
 
   @doc """
   Helper for defining all the methods used for struct and encoding transformations.
