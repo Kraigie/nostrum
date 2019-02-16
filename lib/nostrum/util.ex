@@ -219,7 +219,7 @@ defmodule Nostrum.Util do
   end
 
   @doc false
-  @spec fullsweep_after() :: non_neg_integer
+  @spec fullsweep_after() :: {:fullsweep_after, non_neg_integer}
   def fullsweep_after do
     {:fullsweep_after,
      Application.get_env(
