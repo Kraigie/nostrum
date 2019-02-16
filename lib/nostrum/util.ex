@@ -136,13 +136,13 @@ defmodule Nostrum.Util do
     end
   end
 
-  @doc """
-  Returns the gateway url for current websocket connections.
+  @doc ~S"""
+  Returns the gateway url and shard count for current websocket connections.
 
   If by chance no gateway connection has been made, will fetch the url to use and store it
   for future use.
   """
-  @spec gateway() :: String.t()
+  @spec gateway() :: {String.t(), integer}
   def gateway do
     case :ets.lookup(:gateway_url, "url") do
       [] -> get_new_gateway_url()
