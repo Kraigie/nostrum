@@ -9,8 +9,7 @@ defmodule Nostrum.Application do
 
     if !Application.get_env(:nostrum, :token), do: raise("Please supply a token")
 
-    num_shards = Application.get_env(:nostrum, :num_shards)
-    corrected_num_shards = if num_shards, do: num_shards, else: 1
+    num_shards = Application.get_env(:nostrum, :num_shards, 1)
 
     setup_ets_tables()
 
@@ -18,7 +17,7 @@ defmodule Nostrum.Application do
       Nostrum.Api.Ratelimiter,
       Nostrum.Shard.Connector,
       Nostrum.Cache.CacheSupervisor,
-      {Nostrum.Shard.Supervisor, corrected_num_shards}
+      {Nostrum.Shard.Supervisor, num_shards}
     ]
 
     if Application.get_env(:nostrum, :dev, nil) do
