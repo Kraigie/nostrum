@@ -54,6 +54,7 @@ defmodule Nostrum.Cache.PresenceCache do
   @spec create(map) :: :ok
   def create(presence) do
     :ets.insert(:presences, {{presence.user.id, presence.guild_id}, presence})
+    :ok
   end
 
   @doc false
