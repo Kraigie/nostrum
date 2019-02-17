@@ -18,7 +18,7 @@ defmodule Nostrum.Cache.ChannelCache do
   alias Nostrum.Struct.Channel
   alias Nostrum.Util
 
-  import Nostrum.Struct.Snowflake, only: [is_snowflake: 1]
+  import Nostrum.Snowflake, only: [is_snowflake: 1]
 
   @doc ~S"""
   Retrieves a channel from the cache.

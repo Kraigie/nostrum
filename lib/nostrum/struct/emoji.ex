@@ -35,8 +35,8 @@ defmodule Nostrum.Struct.Emoji do
   See `t:Nostrum.Struct.Emoji.api_name/0` for more information.
   """
 
-  alias Nostrum.{Constants, Util}
-  alias Nostrum.Struct.{Snowflake, User}
+  alias Nostrum.{Constants, Snowflake, Util}
+  alias Nostrum.Struct.User
 
   defstruct [
     :id,

@@ -3,8 +3,7 @@ defmodule Nostrum.Struct.Overwrite do
   Struct representing a Discord overwrite.
   """
 
-  alias Nostrum.Struct.Snowflake
-  alias Nostrum.Util
+  alias Nostrum.{Snowflake, Util}
 
   defstruct [
     :id,

@@ -18,8 +18,7 @@ defmodule Nostrum.Struct.Guild.Role do
   ```
   """
 
-  alias Nostrum.Struct.Snowflake
-  alias Nostrum.Util
+  alias Nostrum.{Snowflake, Util}
 
   defstruct [
     :id,

@@ -3,9 +3,8 @@ defmodule Nostrum.Util do
   Utility functions
   """
 
-  alias Nostrum.{Api, Constants}
+  alias Nostrum.{Api, Constants, Snowflake}
   alias Nostrum.Shard.Stage.Producer
-  alias Nostrum.Struct.Snowflake
 
   require Logger
 

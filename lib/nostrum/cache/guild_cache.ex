@@ -10,7 +10,7 @@ defmodule Nostrum.Cache.GuildCache do
   alias Nostrum.Struct.Message
   alias Nostrum.Util
 
-  import Nostrum.Struct.Snowflake, only: [is_snowflake: 1]
+  import Nostrum.Snowflake, only: [is_snowflake: 1]
 
   @type clause ::
           {:id, Guild.id()}
