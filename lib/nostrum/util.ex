@@ -117,7 +117,7 @@ defmodule Nostrum.Util do
     end
   end
 
-  @doc ~S"""
+  @doc """
   Returns the gateway url and shard count for current websocket connections.
 
   If by chance no gateway connection has been made, will fetch the url to use and store it
