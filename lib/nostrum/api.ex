@@ -1194,7 +1194,7 @@ defmodule Nostrum.Api do
     * `:before` (`t:Nostrum.Struct.Snowflake.t/0`) - filter the log before a certain entry ID
     * `:limit` (`t:positive_integer/0`) - how many entries are returned (default 50, minimum 1, maximum 100)
   """
-  @spec get_guild_audit_log(Guild.id(), options) :: any()
+  @spec get_guild_audit_log(Guild.id(), options) :: {:ok, AuditLog.t()} | error
   def get_guild_audit_log(guild_id, options \\ []) do
     request(:get, Constants.guild_audit_logs(guild_id), "", params: options)
     |> handle_request_with_decode({:struct, AuditLog})
