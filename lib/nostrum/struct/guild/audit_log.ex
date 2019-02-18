@@ -9,13 +9,13 @@ defmodule Nostrum.Struct.Guild.AuditLog do
 
   defstruct [:entries, :users, :webhooks]
 
-  @typedoc "Entries of this guild's audit log."
+  @typedoc "Entries of this guild's audit log"
   @type entries :: [AuditLogEntry.t()]
 
-  @typedoc "Users found in the audit log."
+  @typedoc "Users found in the audit log"
   @type users :: [User.t()]
 
-  @typedoc "Webhooks found in the audit log."
+  @typedoc "Webhooks found in the audit log"
   @type webhooks :: [Webhook.t()]
 
   @type t :: %__MODULE__{

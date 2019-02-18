@@ -17,7 +17,7 @@ defmodule Nostrum.Struct.Guild.AuditLogEntry do
   ]
 
   @typedoc """
-  An audit log event identifier. See [Audit log events](https://discordapp.com/developers/docs/resources/audit-log#audit-log-entry-object-audit-log-events).
+  An audit log event identifier. See [Audit log events](https://discordapp.com/developers/docs/resources/audit-log#audit-log-entry-object-audit-log-events)
   """
   @type action_type :: pos_integer()
 
@@ -25,36 +25,42 @@ defmodule Nostrum.Struct.Guild.AuditLogEntry do
 
   @typedoc """
   Individual changes of this audit log entry.
-  Change keys are documented [here](https://discordapp.com/developers/docs/resources/audit-log#audit-log-change-object-audit-log-change-key).
+  Change keys are documented [here](https://discordapp.com/developers/docs/resources/audit-log#audit-log-change-object-audit-log-change-key)
   """
-  @type changes :: [%{optional(:old_value) => change_value, optional(:new_value) => change_value, :key => String.t()}]
+  @type changes :: [
+          %{
+            optional(:old_value) => change_value,
+            optional(:new_value) => change_value,
+            :key => String.t()
+          }
+        ]
 
-  @typedoc "The ID of this entry."
+  @typedoc "The ID of this entry"
   @type id :: Snowflake.t()
 
   @typedoc """
-  [Optional audit entry info](https://discordapp.com/developers/docs/resources/audit-log#audit-log-entry-object-optional-audit-entry-info).
+  [Optional audit entry info](https://discordapp.com/developers/docs/resources/audit-log#audit-log-entry-object-optional-audit-entry-info)
   """
   @type options :: Map.t()
 
-  @typedoc "The reason for this change, if applicable."
+  @typedoc "The reason for this change, if applicable"
   @type reason :: String.t() | nil
 
-  @typedoc "The ID of the affected entity."
+  @typedoc "The ID of the affected entity"
   @type target_id :: String.t() | nil
 
-  @typedoc "The user who made the changes."
+  @typedoc "The user who made the changes"
   @type user_id :: User.id()
 
   @type t :: %__MODULE__{
-    action_type: action_type,
-    changes: changes,
-    id: id,
-    options: options,
-    reason: reason,
-    target_id: target_id,
-    user_id: user_id
-  }
+          action_type: action_type,
+          changes: changes,
+          id: id,
+          options: options,
+          reason: reason,
+          target_id: target_id,
+          user_id: user_id
+        }
 
   @doc false
   def to_struct(map) do
