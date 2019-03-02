@@ -1571,7 +1571,7 @@ defmodule Nostrum.Api do
   @doc """
   Modifies the nickname of the current user in a guild.
 
-  If successful, returns `{:ok}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
+  If successful, returns `{:ok, %{nick: nick}}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
 
   ## Options
 
@@ -1581,12 +1581,13 @@ defmodule Nostrum.Api do
 
   ```Elixir
   Nostrum.Api.modify_current_user_nick(41771983423143937, nick: "Nostrum")
-  {:ok}
+  {:ok, %{nick: "Nostrum"}}
   ```
   """
-  @spec modify_current_user_nick(Guild.id(), options) :: error | {:ok}
+  @spec modify_current_user_nick(Guild.id(), options) :: error | {:ok, %{nick: String.t()}}
   def modify_current_user_nick(guild_id, options \\ %{}) do
     request(:patch, Constants.guild_me_nick(guild_id), options)
+    |> handle_request_with_decode()
   end
 
   @doc """
