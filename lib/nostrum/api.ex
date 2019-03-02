@@ -1569,6 +1569,27 @@ defmodule Nostrum.Api do
   end
 
   @doc """
+  Modifies the nickname of the current user in a guild.
+
+  If successful, returns `{:ok}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
+
+  ## Options
+
+    * `:nick` (string) - value to set users nickname to
+
+  ## Examples
+
+  ```Elixir
+  Nostrum.Api.modify_current_user_nick(41771983423143937, nick: "Nostrum")
+  {:ok}
+  ```
+  """
+  @spec modify_current_user_nick(Guild.id(), options) :: error | {:ok}
+  def modify_current_user_nick(guild_id, options \\ %{}) do
+    request(:patch, Constants.guild_me_nick(guild_id), options)
+  end
+
+  @doc """
   Adds a role to a member.
 
   Role to add is specified by `role_id`.
