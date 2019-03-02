@@ -1591,6 +1591,15 @@ defmodule Nostrum.Api do
   end
 
   @doc """
+  Same as `modify_current_user_nick/2`, but raises `Nostrum.Error.ApiError` in case of failure.
+  """
+  @spec modify_current_user_nick!(Guild.id(), options) :: error | {:ok, %{nick: String.t()}}
+  def modify_current_user_nick!(guild_id, options \\ %{}) do
+    modify_current_user_nick(guild_id, options)
+    |> bangify()
+  end
+
+  @doc """
   Adds a role to a member.
 
   Role to add is specified by `role_id`.
