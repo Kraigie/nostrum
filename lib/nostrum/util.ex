@@ -4,27 +4,8 @@ defmodule Nostrum.Util do
   """
 
   alias Nostrum.{Api, Constants, Snowflake}
-  alias Nostrum.Shard.Stage.Producer
 
   require Logger
-
-  @doc """
-  Gets all producers Nostrum event producers.
-
-  To be used when creating custom consumer processes.
-
-  ## Example
-  ```Elixir
-  # Inside of your custom consumer process init callback
-  def init(state) do
-    {:consumer, state, subscribe_to: Nostrum.Util.producers}
-  end
-  ```
-  """
-  @spec producers() :: list(pid)
-  def producers do
-    Producer
-  end
 
   @doc """
   Helper for defining all the methods used for struct and encoding transformations.
@@ -136,12 +117,12 @@ defmodule Nostrum.Util do
   end
 
   @doc """
-  Returns the gateway url for current websocket connections.
+  Returns the gateway url and shard count for current websocket connections.
 
   If by chance no gateway connection has been made, will fetch the url to use and store it
   for future use.
   """
-  @spec gateway() :: String.t()
+  @spec gateway() :: {String.t(), integer}
   def gateway do
     case :ets.lookup(:gateway_url, "url") do
       [] -> get_new_gateway_url()
@@ -237,7 +218,7 @@ defmodule Nostrum.Util do
   end
 
   @doc false
-  @spec fullsweep_after() :: non_neg_integer
+  @spec fullsweep_after() :: {:fullsweep_after, non_neg_integer}
   def fullsweep_after do
     {:fullsweep_after,
      Application.get_env(
