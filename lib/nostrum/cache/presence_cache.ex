@@ -17,7 +17,7 @@ defmodule Nostrum.Cache.PresenceCache do
   alias Nostrum.Struct.{Guild, User}
   alias Nostrum.Util
 
-  import Nostrum.Struct.Snowflake, only: [is_snowflake: 1]
+  import Nostrum.Snowflake, only: [is_snowflake: 1]
 
   @doc ~S"""
   Retreives a presence for a user from the cache by guild and id.

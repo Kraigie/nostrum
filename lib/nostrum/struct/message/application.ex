@@ -3,8 +3,7 @@ defmodule Nostrum.Struct.Message.Application do
   Struct representing a Discord message application.
   """
 
-  alias Nostrum.Struct.Snowflake
-  alias Nostrum.Util
+  alias Nostrum.{Snowflake, Util}
 
   defstruct [
     :id,

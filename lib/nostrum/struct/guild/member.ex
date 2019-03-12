@@ -22,8 +22,8 @@ defmodule Nostrum.Struct.Guild.Member do
   """
 
   alias Nostrum.Permission
-  alias Nostrum.Struct.{Channel, Guild, Snowflake, User}
-  alias Nostrum.Util
+  alias Nostrum.Struct.{Channel, Guild, User}
+  alias Nostrum.{Snowflake, Util}
 
   defstruct [
     :user,

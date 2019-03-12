@@ -17,7 +17,7 @@ defmodule Nostrum.Cache.UserCache do
   alias Nostrum.Struct.User
   alias Nostrum.Util
 
-  import Nostrum.Struct.Snowflake, only: [is_snowflake: 1]
+  import Nostrum.Snowflake, only: [is_snowflake: 1]
 
   @doc ~s"""
   Retrieves a user from the cache by id.

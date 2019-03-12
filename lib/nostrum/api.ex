@@ -43,7 +43,7 @@ defmodule Nostrum.Api do
 
   use Bitwise
 
-  import Nostrum.Struct.Snowflake, only: [is_snowflake: 1]
+  import Nostrum.Snowflake, only: [is_snowflake: 1]
 
   alias Nostrum.{Constants, Util}
   alias Nostrum.Struct.{Channel, Embed, Emoji, Guild, Invite, Message, User, Webhook}
@@ -141,7 +141,7 @@ defmodule Nostrum.Api do
   ## Options
 
     * `:content` (string) - the message contents (up to 2000 characters)
-    * `:nonce` (`t:Nostrum.Struct.Snowflake.t/0`) - a nonce that can be used for
+    * `:nonce` (`t:Nostrum.Snowflake.t/0`) - a nonce that can be used for
     optimistic message sending
     * `:tts` (boolean) - true if this is a TTS message
     * `:file` (`t:Path.t/0` | map) - the path of the file being sent, or a map with the following keys
@@ -748,7 +748,7 @@ defmodule Nostrum.Api do
     do: send_chunked_delete(messages, channel_id)
 
   def bulk_delete_messages(channel_id, messages, true) do
-    alias Nostrum.Struct.Snowflake
+    alias Nostrum.Snowflake
 
     snowflake_two_weeks_ago =
       DateTime.utc_now()
@@ -765,7 +765,7 @@ defmodule Nostrum.Api do
 
   @spec send_chunked_delete(
           [Nostrum.Struct.Message.id()],
-          Nostrum.Struct.Snowflake.t()
+          Nostrum.Snowflake.t()
         ) :: error | {:ok}
   defp send_chunked_delete(messages, channel_id) do
     messages
@@ -1091,7 +1091,7 @@ defmodule Nostrum.Api do
 
     * `:name` (string) - name of the emoji
     * `:image` (base64 data URI) - the 128x128 emoji image. Maximum size of 256kb
-    * `:roles` (list of `t:Nostrum.Struct.Snowflake.t/0`) - roles for which this emoji will be whitelisted
+    * `:roles` (list of `t:Nostrum.Snowflake.t/0`) - roles for which this emoji will be whitelisted
     (default: [])
 
   `:name` and `:image` are always required.
@@ -1135,7 +1135,7 @@ defmodule Nostrum.Api do
   ## Options
 
     * `:name` (string) - name of the emoji
-    * `:roles` (list of `t:Nostrum.Struct.Snowflake.t/0`) - roles to which this emoji will be whitelisted
+    * `:roles` (list of `t:Nostrum.Snowflake.t/0`) - roles to which this emoji will be whitelisted
 
   ## Examples
 
@@ -1227,14 +1227,14 @@ defmodule Nostrum.Api do
     * `:default_message_notifications` (integer) - default message
     notification level
     * `:explicit_content_filter` (integer) - explicit content filter level
-    * `:afk_channel_id` (`t:Nostrum.Struct.Snowflake.t/0`) - id for afk channel
+    * `:afk_channel_id` (`t:Nostrum.Snowflake.t/0`) - id for afk channel
     * `:afk_timeout` (integer) - afk timeout in seconds
     * `:icon` (base64 data URI) - 128x128 jpeg image for the guild icon
-    * `:owner_id` (`t:Nostrum.Struct.Snowflake.t/0`) - user id to transfer
+    * `:owner_id` (`t:Nostrum.Snowflake.t/0`) - user id to transfer
     guild ownership to (must be owner)
     * `:splash` (base64 data URI) - 128x128 jpeg image for the guild splash
     (VIP only)
-    * `:system_channel_id` (`t:Nostrum.Struct.Snowflake.t/0`) - the id of the
+    * `:system_channel_id` (`t:Nostrum.Snowflake.t/0`) - the id of the
     channel to which system messages are sent
 
   ## Examples
@@ -1536,10 +1536,10 @@ defmodule Nostrum.Api do
   ## Options
 
     * `:nick` (string) - value to set users nickname to
-    * `:roles` (list of `t:Nostrum.Struct.Snowflake.t/0`) - array of role ids the member is assigned
+    * `:roles` (list of `t:Nostrum.Snowflake.t/0`) - array of role ids the member is assigned
     * `:mute` (boolean) - if the user is muted
     * `:deaf` (boolean) - if the user is deafened
-    * `:channel_id` (`t:Nostrum.Struct.Snowflake.t/0`) - id of channel to move user to (if they are connected to voice)
+    * `:channel_id` (`t:Nostrum.Snowflake.t/0`) - id of channel to move user to (if they are connected to voice)
 
   ## Examples
 
@@ -2155,9 +2155,9 @@ defmodule Nostrum.Api do
 
   ## Options
 
-    * `:before` (`t:Nostrum.Struct.Snowflake.t/0`) - get guilds before this
+    * `:before` (`t:Nostrum.Snowflake.t/0`) - get guilds before this
     guild ID
-    * `:after` (`t:Nostrum.Struct.Snowflake.t/0`) - get guilds after this guild
+    * `:after` (`t:Nostrum.Snowflake.t/0`) - get guilds after this guild
     ID
     * `:limit` (integer) - max number of guilds to return (1-100)
 

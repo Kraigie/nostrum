@@ -1,4 +1,4 @@
-defmodule Nostrum.Struct.Snowflake do
+defmodule Nostrum.Snowflake do
   @moduledoc """
   Functions that work on Snowflakes.
   """
@@ -27,16 +27,16 @@ defmodule Nostrum.Struct.Snowflake do
   ## Examples
 
   ```Elixir
-  iex> Nostrum.Struct.Snowflake.is_snowflake(89918932789497856)
+  iex> Nostrum.Snowflake.is_snowflake(89918932789497856)
   true
 
-  iex> Nostrum.Struct.Snowflake.is_snowflake(-1)
+  iex> Nostrum.Snowflake.is_snowflake(-1)
   false
 
-  iex> Nostrum.Struct.Snowflake.is_snowflake(0xFFFFFFFFFFFFFFFF + 1)
+  iex> Nostrum.Snowflake.is_snowflake(0xFFFFFFFFFFFFFFFF + 1)
   false
 
-  iex> Nostrum.Struct.Snowflake.is_snowflake("117789813427535878")
+  iex> Nostrum.Snowflake.is_snowflake("117789813427535878")
   false
   ```
   """
@@ -49,19 +49,19 @@ defmodule Nostrum.Struct.Snowflake do
   ## Examples
 
   ```Elixir
-  iex> Nostrum.Struct.Snowflake.cast(200317799350927360)
+  iex> Nostrum.Snowflake.cast(200317799350927360)
   {:ok, 200317799350927360}
 
-  iex> Nostrum.Struct.Snowflake.cast("200317799350927360")
+  iex> Nostrum.Snowflake.cast("200317799350927360")
   {:ok, 200317799350927360}
 
-  iex> Nostrum.Struct.Snowflake.cast(nil)
+  iex> Nostrum.Snowflake.cast(nil)
   {:ok, nil}
 
-  iex> Nostrum.Struct.Snowflake.cast(true)
+  iex> Nostrum.Snowflake.cast(true)
   :error
 
-  iex> Nostrum.Struct.Snowflake.cast(-1)
+  iex> Nostrum.Snowflake.cast(-1)
   :error
   ```
   """
@@ -96,7 +96,7 @@ defmodule Nostrum.Struct.Snowflake do
   ## Examples
 
   ```Elixir
-  iex> Nostrum.Struct.Snowflake.dump(109112383011581952)
+  iex> Nostrum.Snowflake.dump(109112383011581952)
   "109112383011581952"
   ```
   """
@@ -115,11 +115,11 @@ defmodule Nostrum.Struct.Snowflake do
 
   ```Elixir
   iex> {:ok, dt, _} = DateTime.from_iso8601("2016-05-05T21:04:13.203Z")
-  iex> Nostrum.Struct.Snowflake.from_datetime(dt)
+  iex> Nostrum.Snowflake.from_datetime(dt)
   {:ok, 177888205536755712}
 
   iex> {:ok, dt, _} = DateTime.from_iso8601("1998-12-25T00:00:00.000Z")
-  iex> Nostrum.Struct.Snowflake.from_datetime(dt)
+  iex> Nostrum.Snowflake.from_datetime(dt)
   :error
   ```
   """
@@ -154,7 +154,7 @@ defmodule Nostrum.Struct.Snowflake do
   ## Examples
 
   ```Elixir
-  iex> Nostrum.Struct.Snowflake.creation_time(177888205536886784)
+  iex> Nostrum.Snowflake.creation_time(177888205536886784)
   #DateTime<2016-05-05 21:04:13.203Z>
   ```
   """

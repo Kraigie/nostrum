@@ -3,8 +3,7 @@ defmodule Nostrum.Util do
   Utility functions
   """
 
-  alias Nostrum.{Api, Constants}
-  alias Nostrum.Struct.Snowflake
+  alias Nostrum.{Api, Constants, Snowflake}
 
   require Logger
 
