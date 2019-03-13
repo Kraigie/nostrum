@@ -9,13 +9,6 @@ It is highly recommended to check out the
 [documentation](https://kraigie.github.io/nostrum/) first. It includes all of the
 information listed here and more.
 
-## Foreword
-The version of this library hosted on Hex is severely outdated. Once most of the open issues are
-addressed, and some issues are worked out in Websockex, a new package will be release with the most
-up to date Elixir version.
-
-In the meantime it is recommended you use the version hosted on GitHub.
-
 ## Installation
 Add Nostrum as a dependency:
 
