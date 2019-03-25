@@ -1593,7 +1593,7 @@ defmodule Nostrum.Api do
   @doc """
   Same as `modify_current_user_nick/2`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
-  @spec modify_current_user_nick!(Guild.id(), options) :: error | {:ok, %{nick: String.t()}}
+  @spec modify_current_user_nick!(Guild.id(), options) :: no_return | %{nick: String.t()}
   def modify_current_user_nick!(guild_id, options \\ %{}) do
     modify_current_user_nick(guild_id, options)
     |> bangify()
