@@ -1478,7 +1478,8 @@ defmodule Nostrum.Api do
   situationally requires the `MANAGE_NICKNAMES`, `MANAGE_ROLES`,
   `MUTE_MEMBERS`, and `DEAFEN_MEMBERS` permissions.
 
-  If successful, returns `{:ok, member}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
+  If successful, returns `{:ok, member}` or `{:ok}` if the user was already a member of the
+  guild. Otherwise, returns a `t:Nostrum.Api.error/0`.
 
   ## Options
 
@@ -1501,9 +1502,8 @@ defmodule Nostrum.Api do
     roles: [431849301, 913809431]
   )
   ```
-  ```
   """
-  @spec add_guild_member(Guild.id(), User.id(), options) :: error | {:ok, Member.t()}
+  @spec add_guild_member(Guild.id(), User.id(), options) :: error | {:ok, Member.t()} | {:ok}
   def add_guild_member(guild_id, user_id, options)
 
   def add_guild_member(guild_id, user_id, options) when is_list(options),
@@ -1518,7 +1518,7 @@ defmodule Nostrum.Api do
   @doc """
   Same as `add_guild_member/3`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
-  @spec add_guild_member!(Guild.id(), User.id(), options) :: no_return | Member.t()
+  @spec add_guild_member!(Guild.id(), User.id(), options) :: no_return | Member.t() | {:ok}
   def add_guild_member!(guild_id, user_id, options) do
     add_guild_member(guild_id, user_id, options)
     |> bangify
@@ -2568,6 +2568,8 @@ defmodule Nostrum.Api do
   defp handle_request_with_decode({:error, _} = error), do: error
 
   defp handle_request_with_decode(response, type)
+  # add_guild_member/3 can return both a 201 and a 204
+  defp handle_request_with_decode({:ok}, _type), do: {:ok}
   defp handle_request_with_decode({:error, _} = error, _type), do: error
 
   defp handle_request_with_decode({:ok, body}, type) do
