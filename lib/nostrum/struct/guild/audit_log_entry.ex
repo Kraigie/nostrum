@@ -3,7 +3,8 @@ defmodule Nostrum.Struct.Guild.AuditLogEntry do
   Represents a single entry in the guild's audit log.
   """
 
-  alias Nostrum.Struct.{Snowflake, User}
+  alias Nostrum.Snowflake
+  alias Nostrum.Struct.User
   alias Nostrum.Util
 
   defstruct [
@@ -64,14 +65,15 @@ defmodule Nostrum.Struct.Guild.AuditLogEntry do
 
   @doc false
   def to_struct(map) do
-    %__MODULE__{
-      action_type: map.action_type,
-      changes: Map.get(map, :changes, []),
-      id: Util.cast(map.id, Snowflake),
-      options: Map.get(map, :options, %{}),
-      reason: Map.get(map, :reason, nil),
-      target_id: map.target_id,
-      user_id: Util.cast(map.user_id, Snowflake)
-    }
+    new =
+      map
+      |> Map.new(fn {k, v} -> {Util.maybe_to_atom(k), v} end)
+      |> Map.update(:id, nil, &Util.cast(&1, Snowflake))
+      |> Map.update(:user_id, nil, &Util.cast(&1, Snowflake))
+      |> Map.put_new(:changes, [])
+      |> Map.put_new(:options, %{})
+      |> Map.put_new(:reason, nil)
+
+    struct(__MODULE__, new)
   end
 end
