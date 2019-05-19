@@ -72,9 +72,6 @@ defmodule Nostrum.Struct.Guild.AuditLogEntry do
       |> Map.new(fn {k, v} -> {Util.maybe_to_atom(k), v} end)
       |> Map.update(:id, nil, &Util.cast(&1, Snowflake))
       |> Map.update(:user_id, nil, &Util.cast(&1, Snowflake))
-      |> Map.put_new(:changes, nil)
-      |> Map.put_new(:options, nil)
-      |> Map.put_new(:reason, nil)
 
     struct(__MODULE__, new)
   end
