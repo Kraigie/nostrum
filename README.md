@@ -12,19 +12,19 @@ information listed here and more.
 ## Installation
 Add Nostrum as a dependency:
 
- *Dev*
-```Elixir
-def deps do
-  [{:nostrum, git: "https://github.com/Kraigie/nostrum.git"}]
-end
-```
-
  *Stable*
 
  Stable documentation can be found [here](https://hexdocs.pm/nostrum/)
 ```elixir
 def deps do
-  [{:nostrum, "~> 0.1"}]
+  [{:nostrum, "~> 0.3"}]
+end
+```
+
+ *Dev*
+```Elixir
+def deps do
+  [{:nostrum, git: "https://github.com/Kraigie/nostrum.git"}]
 end
 ```
 

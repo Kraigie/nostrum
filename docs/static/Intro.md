@@ -45,25 +45,19 @@ There are two versions of Nostrum, a stable version released on Hex and a dev
 version on GitHub. The dev version will be more up to date but will likely
 have more errors.
 
-The version of this library hosted on Hex is severely outdated. Once the dependency
-[gun](https://github.com/ninenines/gun) has a 2.0 release, a new package will be
-released with the most up to date Elixir version (1.6.4 as of the time of this writing).
-
-In the meantime it is recommended you use the version hosted on GitHub.
-
 Add Nostrum as a dependency:
+
+ *Stable*
+```Elixir
+def deps do
+  [{:nostrum, "~> 0.3"}]
+end
+```
 
  *Dev*
 ```Elixir
 def deps do
   [{:nostrum, git: "https://github.com/Kraigie/nostrum.git"}]
-end
-```
-
- *Stable*
-```Elixir
-def deps do
-  [{:nostrum, "~> 0.1"}]
 end
 ```
 
