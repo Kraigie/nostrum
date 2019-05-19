@@ -28,13 +28,15 @@ defmodule Nostrum.Struct.Guild.AuditLogEntry do
   Individual changes of this audit log entry.
   Change keys are documented [here](https://discordapp.com/developers/docs/resources/audit-log#audit-log-change-object-audit-log-change-key)
   """
-  @type changes :: [
-          %{
-            optional(:old_value) => change_value,
-            optional(:new_value) => change_value,
-            :key => String.t()
-          }
-        ]
+  @type changes ::
+          [
+            %{
+              optional(:old_value) => change_value,
+              optional(:new_value) => change_value,
+              :key => String.t()
+            }
+          ]
+          | nil
 
   @typedoc "The ID of this entry"
   @type id :: Snowflake.t()
@@ -42,7 +44,7 @@ defmodule Nostrum.Struct.Guild.AuditLogEntry do
   @typedoc """
   [Optional audit entry info](https://discordapp.com/developers/docs/resources/audit-log#audit-log-entry-object-optional-audit-entry-info)
   """
-  @type options :: Map.t()
+  @type options :: Map.t() | nil
 
   @typedoc "The reason for this change, if applicable"
   @type reason :: String.t() | nil
@@ -70,8 +72,8 @@ defmodule Nostrum.Struct.Guild.AuditLogEntry do
       |> Map.new(fn {k, v} -> {Util.maybe_to_atom(k), v} end)
       |> Map.update(:id, nil, &Util.cast(&1, Snowflake))
       |> Map.update(:user_id, nil, &Util.cast(&1, Snowflake))
-      |> Map.put_new(:changes, [])
-      |> Map.put_new(:options, %{})
+      |> Map.put_new(:changes, nil)
+      |> Map.put_new(:options, nil)
       |> Map.put_new(:reason, nil)
 
     struct(__MODULE__, new)

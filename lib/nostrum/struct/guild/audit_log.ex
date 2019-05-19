@@ -29,9 +29,9 @@ defmodule Nostrum.Struct.Guild.AuditLog do
     new =
       map
       |> Map.new(fn {k, v} -> {Util.maybe_to_atom(k), v} end)
-      |> Map.update(:audit_log_entries, [], &Util.cast(&1, {:list, {:struct, AuditLogEntry}}))
-      |> Map.update(:users, [], &Util.cast(&1, {:list, {:struct, User}}))
-      |> Map.update(:webhooks, [], &Util.cast(&1, {:list, {:struct, Webhook}}))
+      |> Map.update(:audit_log_entries, nil, &Util.cast(&1, {:list, {:struct, AuditLogEntry}}))
+      |> Map.update(:users, nil, &Util.cast(&1, {:list, {:struct, User}}))
+      |> Map.update(:webhooks, nil, &Util.cast(&1, {:list, {:struct, Webhook}}))
 
     struct(__MODULE__, new)
   end
