@@ -4,6 +4,7 @@ defmodule Nostrum.Shard.Dispatch do
   alias Nostrum.Cache.{ChannelCache, PresenceCache, UserCache}
   alias Nostrum.Cache.Guild.GuildServer
   alias Nostrum.Cache.Me
+  alias Nostrum.Gateway.MessageDeleteEvent
   alias Nostrum.Shard.Session
   alias Nostrum.Struct.{Guild, Message, User}
   alias Nostrum.Struct.Guild.UnavailableGuild
@@ -161,7 +162,8 @@ defmodule Nostrum.Shard.Dispatch do
 
   def handle_event(:MESSAGE_CREATE = event, p, state), do: {event, Message.to_struct(p), state}
 
-  def handle_event(:MESSAGE_DELETE = event, p, state), do: {event, p, state}
+  def handle_event(:MESSAGE_DELETE = event, p, state),
+    do: {event, struct(MessageDeleteEvent, p), state}
 
   def handle_event(:MESSAGE_DELETE_BULK = event, p, state), do: {event, p, state}
 
