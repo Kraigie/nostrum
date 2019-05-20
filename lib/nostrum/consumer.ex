@@ -21,6 +21,7 @@ defmodule Nostrum.Consumer do
   use ConsumerSupervisor
 
   alias Nostrum.Shard.Stage.Cache
+  alias Nostrum.Gateway.MessageDeleteEvent
   alias Nostrum.Struct.{Channel, WSState}
   alias Nostrum.Util
 
@@ -130,7 +131,7 @@ defmodule Nostrum.Consumer do
            {guild_id :: integer, old_role :: Nostrum.Struct.Guild.Role.t() | nil,
             new_role :: Nostrum.Struct.Guild.Role.t()}, WSState.t()}
   @type message_create :: {:MESSAGE_CREATE, {message :: Nostrum.Struct.Message.t()}, WSState.t()}
-  @type message_delete :: {:MESSAGE_DELETE, {message :: Nostrum.Struct.Message.t()}, WSState.t()}
+  @type message_delete :: {:MESSAGE_DELETE, {message :: MessageDeleteEvent.t()}, WSState.t()}
   @type message_delete_bulk ::
           {:MESSAGE_DELETE_BULK, {updated_messages :: [Nostrum.Struct.Message.t()]}, WSState.t()}
   @type message_update ::
