@@ -6,6 +6,7 @@ defmodule Nostrum.Mixfile do
       app: :nostrum,
       version: "0.3.2",
       elixir: "~> 1.7",
+      elixirc_paths: elixirc_paths(Mix.env()),
       build_embedded: Mix.env() == :prod,
       start_permanent: Mix.env() == :prod,
       description: "An elixir Discord library",
@@ -17,6 +18,9 @@ defmodule Nostrum.Mixfile do
       docs: docs()
     ]
   end
+
+  defp elixirc_paths(:test), do: ["lib", "test/nostrum"]
+  defp elixirc_paths(_), do: ["lib"]
 
   def application do
     [
