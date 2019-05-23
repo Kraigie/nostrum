@@ -1,9 +1,9 @@
 defmodule Nostrum.Shard.DispatchTest do
   use ExUnit.Case, async: true
 
-  alias Nostrum.Stubs
   alias Nostrum.Shard.Dispatch
-  alias Nostrum.Gateway.MessageDeleteEvent
+  alias Nostrum.Struct.MessageDeleteEvent
+  alias Nostrum.Stubs
 
   describe "handle_event/1" do
     test "returns `%MessageDeleteEvent{}` given Message Delete Event" do

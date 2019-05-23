@@ -1,4 +1,4 @@
-defmodule Nostrum.Gateway.MessageDeleteEvent do
+defmodule Nostrum.Struct.MessageDeleteEvent do
   @moduledoc """
   Struct representing a Message Delete Event
   """
