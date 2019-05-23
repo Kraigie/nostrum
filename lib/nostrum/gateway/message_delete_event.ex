@@ -1,6 +1,6 @@
 defmodule Nostrum.Gateway.MessageDeleteEvent do
   @moduledoc """
-  Struct representing a Message Delete Event.
+  Struct representing a Message Delete Event
   """
 
   alias Nostrum.Snowflake
@@ -11,14 +11,14 @@ defmodule Nostrum.Gateway.MessageDeleteEvent do
     :guild_id
   ]
 
-  @typedoc "Id of the deleted message."
+  @typedoc "Id of the deleted message"
   @type id :: Snowflake.t()
 
-  @typedoc "Channel id of the deleted message."
+  @typedoc "Channel id of the deleted message"
   @type channel_id :: Snowflake.t()
 
   @typedoc """
-  Guild id of the deleted message.
+  Guild id of the deleted message
 
   `nil` if a non-guild message was deleted.
   """
