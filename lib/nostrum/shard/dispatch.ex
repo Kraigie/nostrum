@@ -5,8 +5,8 @@ defmodule Nostrum.Shard.Dispatch do
   alias Nostrum.Cache.Guild.GuildServer
   alias Nostrum.Cache.Me
   alias Nostrum.Shard.Session
-  alias Nostrum.Struct.{Guild, Message, User}
   alias Nostrum.Struct.Event.MessageDelete
+  alias Nostrum.Struct.{Guild, Message, User}
   alias Nostrum.Struct.Guild.UnavailableGuild
   alias Nostrum.Util
 
