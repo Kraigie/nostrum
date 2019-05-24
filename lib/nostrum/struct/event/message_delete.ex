@@ -1,6 +1,6 @@
-defmodule Nostrum.Struct.MessageDeleteEvent do
+defmodule Nostrum.Struct.Event.MessageDelete do
   @moduledoc """
-  Struct representing a Message Delete Event
+  Struct representing a Message Delete event
   """
 
   alias Nostrum.Snowflake
