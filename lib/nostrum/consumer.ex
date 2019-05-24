@@ -21,7 +21,8 @@ defmodule Nostrum.Consumer do
   use ConsumerSupervisor
 
   alias Nostrum.Shard.Stage.Cache
-  alias Nostrum.Struct.{Channel, MessageDelete, WSState}
+  alias Nostrum.Struct.{Channel, WSState}
+  alias Nostrum.Struct.Event.MessageDelete
   alias Nostrum.Util
 
   @doc """
