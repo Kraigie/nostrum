@@ -1256,38 +1256,8 @@ defmodule Nostrum.Api do
   ## Examples
 
   ```elixir
-  Nostrum.Api.modify_guild(451824027976073216, name: "Elixir Guild")
-  {:ok,
-   %Nostrum.Struct.Guild{
-     afk_channel_id: nil,
-     afk_timeout: 300,
-     application_id: nil,
-     channels: nil,
-     default_message_notifications: 0,
-     embed_channel_id: nil,
-     embed_enabled: false,
-     emojis: [],
-     explicit_content_filter: 0,
-     features: [],
-     icon: "0f2db27187b1afcf27126d8513fceff2",
-     id: 451824027976073216,
-     joined_at: nil,
-     large: nil,
-     member_count: nil,
-     members: nil,
-     mfa_level: 0,
-     name: "Nose Drum",
-     owner_id: 196989358165852160,
-     region: "eu-central",
-     roles: %{},
-     splash: nil,
-     system_channel_id: 451824027976073218,
-     unavailable: nil,
-     verification_level: 0,
-     voice_states: nil,
-     widget_channel_id: nil,
-     widget_enabled: false
-   }}
+  iex> {:ok, %Nostrum.Struct.Guild{id: 451824027976073216, name: "Nose Drum"}} = Nostrum.Api.modify_guild(451824027976073216, name: "Nose Drum")
+  iex>
   ```
   """
   @spec modify_guild(Guild.id(), options) :: error | {:ok, Guild.rest_guild()}
