@@ -1,7 +1,7 @@
 defmodule Nostrum.Cache.UserCache do
   @default_cache_implementation Nostrum.Cache.UserCache.ETS
   @moduledoc """
-  Cache behaviour for users.
+  Cache behaviour & dispatcher for users.
   """
 
   alias Nostrum.Struct.User
