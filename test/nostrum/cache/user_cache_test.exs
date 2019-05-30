@@ -1,11 +1,12 @@
 defmodule Nostrum.Cache.UserCacheTest do
   use ExUnit.Case, async: true
 
-  @cache_implementations [
+  @cache_modules [
+    # Implementations
     Nostrum.Cache.UserCache.ETS
   ]
 
-  for cache <- @cache_implementations do
+  for cache <- @cache_modules do
     defmodule :"#{cache}Test" do
       alias Nostrum.Struct.User
       use ExUnit.Case
