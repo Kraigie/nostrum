@@ -5,7 +5,7 @@ defmodule Nostrum.Shard.DispatchTest do
   alias Nostrum.Struct.Event.MessageDelete
 
   describe "handle_event/1" do
-    test "returns `%MessageDelete{}` given Message Delete Event" do
+    test "returns `MessageDelete.t()` given Message Delete event" do
       result = Dispatch.handle_event(:MESSAGE_DELETE, Stubs.gateway_message_delete_payload(), %{})
 
       expected =
