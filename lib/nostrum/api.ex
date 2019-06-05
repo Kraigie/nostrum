@@ -1884,8 +1884,7 @@ defmodule Nostrum.Api do
           Guild.id(),
           [%{id: Role.id(), position: integer}],
           AuditLogEntry.reason()
-        ) ::
-          error | {:ok, [Role.t()]}
+        ) :: error | {:ok, [Role.t()]}
   def modify_guild_role_positions(guild_id, positions, reason \\ nil)
       when is_snowflake(guild_id) and is_list(positions) do
     %{
@@ -1906,8 +1905,7 @@ defmodule Nostrum.Api do
           Guild.id(),
           [%{id: Role.id(), position: integer}],
           AuditLogEntry.reason()
-        ) ::
-          no_return | [Role.t()]
+        ) :: no_return | [Role.t()]
   def modify_guild_role_positions!(guild_id, positions, reason \\ nil) do
     modify_guild_role_positions(guild_id, positions, reason)
     |> bangify
