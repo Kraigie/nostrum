@@ -795,18 +795,18 @@ defmodule Nostrum.Api do
 
   Role or user to overwrite is specified by `channel_id` and `overwrite_id`.
 
-  `permission_info` is a map with the following required keys:
+  `permission_info` is a map with the following keys:
+   * `type` - Required; `member` if editing a user, `role` if editing a role.
    * `allow` - Bitwise value of allowed permissions.
    * `deny` - Bitwise value of denied permissions.
-   * `type` - `member` if editing a user, `role` if editing a role.
   """
   @spec edit_channel_permissions(
           integer,
           integer,
           %{
-            allow: integer,
-            deny: integer,
-            type: String.t()
+            required(:type) => String.t(),
+            optional(:allow) => integer,
+            optional(:deny) => integer
           }
         ) :: error | {:ok}
   def edit_channel_permissions(channel_id, overwrite_id, permission_info) do
@@ -820,9 +820,9 @@ defmodule Nostrum.Api do
           integer,
           integer,
           %{
-            allow: integer,
-            deny: integer,
-            type: String.t()
+            required(:type) => String.t(),
+            optional(:allow) => integer,
+            optional(:deny) => integer
           }
         ) :: no_return | {:ok}
   def edit_channel_permissions!(channel_id, overwrite_id, permission_info) do
