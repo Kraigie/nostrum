@@ -119,7 +119,7 @@ defmodule Nostrum.Api do
   @doc """
   Updates the status of the bot for all shards.
 
-  See `update_shard_status/4` for usage.
+  See `update_shard_status/5` for usage.
   """
   @spec update_status(status, String.t(), integer, String.t()) :: :ok
   def update_status(status, game, type \\ 0, stream \\ nil) do
@@ -313,7 +313,8 @@ defmodule Nostrum.Api do
   end
 
   @doc ~S"""
-  Same as `delete_message/2`, but takes a `Nostrum.Struct.Message`.
+  Same as `delete_message/2`, but takes a `Nostrum.Struct.Message` instead of a
+  `channel_id` and `message_id`.
   """
   @spec delete_message(Message.t()) :: error | {:ok}
   def delete_message(%Message{id: id, channel_id: c_id}) do
@@ -629,7 +630,7 @@ defmodule Nostrum.Api do
   end
 
   @doc ~S"""
-  Retrives a channel's messages around a `locator` up to a `limit`.
+  Retrieves a channel's messages around a `locator` up to a `limit`.
 
   This endpoint requires the 'VIEW_CHANNEL' permission. If the current user
   is missing the 'READ_MESSAGE_HISTORY' permission, then this function will
@@ -640,7 +641,7 @@ defmodule Nostrum.Api do
   ## Examples
 
   ```Elixir
-  Nostrum.Api.get_channel_messages(43189401384091, 5, {:before 130230401384})
+  Nostrum.Api.get_channel_messages(43189401384091, 5, {:before, 130230401384})
   ```
   """
   @spec get_channel_messages(Channel.id(), limit, locator) :: error | {:ok, [Message.t()]}
@@ -793,12 +794,16 @@ defmodule Nostrum.Api do
   @doc """
   Edit the permission overwrites for a user or role.
 
-  Role or user to overwrite is specified by `channel_id` and `overwrite_id`.
+  Role or user to overwrite is specified by `overwrite_id`.
 
   `permission_info` is a map with the following keys:
    * `type` - Required; `member` if editing a user, `role` if editing a role.
    * `allow` - Bitwise value of allowed permissions.
    * `deny` - Bitwise value of denied permissions.
+
+   `allow` and `deny` are defaulted to `0`, meaning that even if you don't
+   specify them, they will override their respective former values in an
+   existing overwrite.
   """
   @spec edit_channel_permissions(
           integer,
