@@ -2,7 +2,7 @@ defmodule Nostrum.Shard.DispatchTest do
   use ExUnit.Case, async: true
 
   alias Nostrum.Shard.Dispatch
-  alias Nostrum.Struct.Event.MessageDelete
+  alias Nostrum.Struct.Event.{MessageDelete, MessageDeleteBulk}
 
   describe "handle_event/1" do
     test "returns `MessageDelete.t()` given Message Delete event" do
@@ -15,6 +15,16 @@ defmodule Nostrum.Shard.DispatchTest do
            guild_id: 279_093_381_723_062_272,
            id: 580_112_111_657_549_834
          }, %{}}
+
+      assert(^result = expected)
+    end
+
+    test "returns `MessageDeleteBulk.t()` given Message Delete event" do
+      result = Dispatch.handle_event(:MESSAGE_DELETE_BULK, Stubs.gateway_message_delete_bulk_payload(), %{})
+
+      expected =
+        {:MESSAGE_DELETE_BULK,
+         struct(MessageDeleteBulk, Stubs.gateway_message_delete_bulk_payload()), %{}}
 
       assert(^result = expected)
     end
