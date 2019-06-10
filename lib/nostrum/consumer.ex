@@ -22,7 +22,7 @@ defmodule Nostrum.Consumer do
 
   alias Nostrum.Shard.Stage.Cache
   alias Nostrum.Struct.{Channel, WSState}
-  alias Nostrum.Struct.Event.MessageDelete
+  alias Nostrum.Struct.Event.{MessageDelete, MessageDeleteBulk}
   alias Nostrum.Util
 
   @doc """
@@ -131,9 +131,8 @@ defmodule Nostrum.Consumer do
            {guild_id :: integer, old_role :: Nostrum.Struct.Guild.Role.t() | nil,
             new_role :: Nostrum.Struct.Guild.Role.t()}, WSState.t()}
   @type message_create :: {:MESSAGE_CREATE, {message :: Nostrum.Struct.Message.t()}, WSState.t()}
-  @type message_delete :: {:MESSAGE_DELETE, {message :: MessageDelete.t()}, WSState.t()}
-  @type message_delete_bulk ::
-          {:MESSAGE_DELETE_BULK, {updated_messages :: [Nostrum.Struct.Message.t()]}, WSState.t()}
+  @type message_delete :: {:MESSAGE_DELETE, {MessageDelete.t()}, WSState.t()}
+  @type message_delete_bulk :: {:MESSAGE_DELETE_BULK, {MessageDeleteBulk.t()}, WSState.t()}
   @type message_update ::
           {:MESSAGE_UPDATE, {updated_message :: Nostrum.Struct.Message.t()}, WSState.t()}
   @type message_reaction_add :: {:MESSAGE_REACTION_ADD, {map}, WSState.t()}
