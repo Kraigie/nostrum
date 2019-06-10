@@ -20,7 +20,12 @@ defmodule Nostrum.Shard.DispatchTest do
     end
 
     test "returns `MessageDeleteBulk.t()` given Message Delete event" do
-      result = Dispatch.handle_event(:MESSAGE_DELETE_BULK, Stubs.gateway_message_delete_bulk_payload(), %{})
+      result =
+        Dispatch.handle_event(
+          :MESSAGE_DELETE_BULK,
+          Stubs.gateway_message_delete_bulk_payload(),
+          %{}
+        )
 
       expected =
         {:MESSAGE_DELETE_BULK,
