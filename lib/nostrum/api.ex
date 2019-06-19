@@ -119,7 +119,7 @@ defmodule Nostrum.Api do
   @doc """
   Updates the status of the bot for all shards.
 
-  See `update_shard_status/4` for usage.
+  See `update_shard_status/5` for usage.
   """
   @spec update_status(status, String.t(), integer, String.t()) :: :ok
   def update_status(status, game, type \\ 0, stream \\ nil) do
@@ -313,7 +313,8 @@ defmodule Nostrum.Api do
   end
 
   @doc ~S"""
-  Same as `delete_message/2`, but takes a `Nostrum.Struct.Message`.
+  Same as `delete_message/2`, but takes a `Nostrum.Struct.Message` instead of a
+  `channel_id` and `message_id`.
   """
   @spec delete_message(Message.t()) :: error | {:ok}
   def delete_message(%Message{id: id, channel_id: c_id}) do
@@ -648,7 +649,7 @@ defmodule Nostrum.Api do
   end
 
   @doc ~S"""
-  Retrives a channel's messages around a `locator` up to a `limit`.
+  Retrieves a channel's messages around a `locator` up to a `limit`.
 
   This endpoint requires the 'VIEW_CHANNEL' permission. If the current user
   is missing the 'READ_MESSAGE_HISTORY' permission, then this function will
@@ -659,7 +660,7 @@ defmodule Nostrum.Api do
   ## Examples
 
   ```Elixir
-  Nostrum.Api.get_channel_messages(43189401384091, 5, {:before 130230401384})
+  Nostrum.Api.get_channel_messages(43189401384091, 5, {:before, 130230401384})
   ```
   """
   @spec get_channel_messages(Channel.id(), limit, locator) :: error | {:ok, [Message.t()]}
@@ -800,11 +801,7 @@ defmodule Nostrum.Api do
   end
 
   @doc """
-  Deletes multiple messages from a channel.
-
-  See `bulk_delete_messages/2` for more info.
-
-  Raises `Nostrum.Error.ApiError` if error occurs while making the rest call.
+  Same as `bulk_delete_messages/2`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
   @spec bulk_delete_messages!(integer, [Nostrum.Struct.Message.id()], boolean) ::
           no_return | {:ok}
@@ -816,19 +813,28 @@ defmodule Nostrum.Api do
   @doc """
   Edit the permission overwrites for a user or role.
 
-  Role or user to overwrite is specified by `channel_id` and `overwrite_id`.
+  Role or user to overwrite is specified by `overwrite_id`.
 
-  `permission_info` is a kwl with the following required keys:
+  `permission_info` is a map with the following keys:
+   * `type` - Required; `member` if editing a user, `role` if editing a role.
    * `allow` - Bitwise value of allowed permissions.
    * `deny` - Bitwise value of denied permissions.
    * `type` - `member` if editing a user, `role` if editing a role.
 
   An optional `reason` can be provided for the audit log.
+
+   `allow` and `deny` are defaulted to `0`, meaning that even if you don't
+   specify them, they will override their respective former values in an
+   existing overwrite.
   """
   @spec edit_channel_permissions(
           integer,
           integer,
-          [allow: integer, deny: integer, type: String.t()],
+          %{
+            required(:type) => String.t(),
+            optional(:allow) => integer,
+            optional(:deny) => integer
+          },
           AuditLogEntry.reason()
         ) :: error | {:ok}
   def edit_channel_permissions(channel_id, overwrite_id, permission_info, reason \\ nil) do
@@ -842,16 +848,16 @@ defmodule Nostrum.Api do
   end
 
   @doc """
-  Edit the permission overwrites for a user or role.
-
-  See `edit_channel_permissions/2` for more info.
-
-  Raises `Nostrum.Error.ApiError` if error occurs while making the rest call.
+  Same as `edit_channel_permissions/3`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
   @spec edit_channel_permissions!(
           integer,
           integer,
-          [allow: integer, deny: integer, type: String.t()],
+          %{
+            required(:type) => String.t(),
+            optional(:allow) => integer,
+            optional(:deny) => integer
+          },
           AuditLogEntry.reason()
         ) :: no_return | {:ok}
   def edit_channel_permissions!(channel_id, overwrite_id, permission_info, reason \\ nil) do
@@ -980,13 +986,7 @@ defmodule Nostrum.Api do
   end
 
   @doc """
-  Triggers the typing indicator.
-
-  Triggers the typing indicator in the channel specified by `channel_id`.
-  The typing indicator lasts for about 8 seconds and then automatically stops.
-
-  Raises `Nostrum.Error.ApiError` if error occurs while making the rest call.
-  Returns {:ok} if successful.
+  Same as `start_typing/1`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
   @spec start_typing!(integer) :: no_return | {:ok}
   def start_typing!(channel_id) do
@@ -2327,7 +2327,7 @@ defmodule Nostrum.Api do
   end
 
   @doc """
-  Same as `modify_current_user/3`, but raises `Nostrum.Error.ApiError` in case of failure.
+  Same as `modify_current_user/1`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
   @spec modify_current_user!(keyword | map) :: no_return | User.t()
   def modify_current_user!(options) do
@@ -2549,7 +2549,7 @@ defmodule Nostrum.Api do
   Gets a webhook by id.
 
   ## Parameters
-    - `webhook_id` - Id of webhook to get.
+    - `webhook_id` - Id of the webhook to get.
   """
   @spec get_webhook(Webhook.id()) :: error | {:ok, Nostrum.Struct.Webhook.t()}
   def get_webhook(webhook_id) do
@@ -2564,7 +2564,7 @@ defmodule Nostrum.Api do
   authentication.
 
   ## Parameters
-    - `webhook_id` - Id of webhook to get.
+    - `webhook_id` - Id of the webhook to get.
     - `webhook_token` - Token of the webhook to get.
   """
   @spec get_webhook_with_token(Webhook.id(), Webhook.token()) ::
@@ -2661,18 +2661,18 @@ defmodule Nostrum.Api do
   Executes a webhook.
 
   ## Parameters
-  - `webhook_id` - Id of webhook to delete.
-  - `webhook_token` - Token of the webhook to delete.
+  - `webhook_id` - Id of the webhook to execute.
+  - `webhook_token` - Token of the webhook to execute.
   - `args` - Map with the following required keys:
     - `content` - Message content.
     - `file` - File to send.
-    - `embeds` - Embed to send.
+    - `embeds` - List of embeds to send.
     - `username` - Overrides the default name of the webhook.
     - `avatar_url` - Overrides the default avatar of the webhook.
     - `tts` - Whether the message should be read over text to speech.
   - `wait` - Whether to return an error or not. Defaults to `false`.
 
-  Only one of `content`, `file` or `embed` should be supplied in the `args` parameter.
+  Only one of `content`, `file` or `embeds` should be supplied in the `args` parameter.
   """
   @spec execute_webhook(
           Webhook.id(),
@@ -2683,7 +2683,7 @@ defmodule Nostrum.Api do
             avatar_url: String.t(),
             tts: boolean,
             file: String.t(),
-            embeds: Embed.t()
+            embeds: [Embed.t()]
           },
           boolean
         ) :: error | {:ok}
@@ -2713,8 +2713,8 @@ defmodule Nostrum.Api do
   Executes a slack webhook.
 
   ## Parameters
-    - `webhook_id` - Id of webhook to delete.
-    - `webhook_token` - Token of the webhook to delete.
+    - `webhook_id` - Id of the webhook to execute.
+    - `webhook_token` - Token of the webhook to execute.
   """
   @spec execute_slack_webhook(Webhook.id(), Webhook.token(), boolean) :: error | {:ok}
   def execute_slack_webhook(webhook_id, webhook_token, wait \\ false) do
@@ -2725,14 +2725,38 @@ defmodule Nostrum.Api do
   Executes a git webhook.
 
   ## Parameters
-    - `webhook_id` - Id of webhook to delete.
-    - `webhook_token` - Token of the webhook to delete.
+    - `webhook_id` - Id of the webhook to execute.
+    - `webhook_token` - Token of the webhook to execute.
   """
   @spec execute_git_webhook(Webhook.id(), Webhook.token(), boolean) :: error | {:ok}
   def execute_git_webhook(webhook_id, webhook_token, wait \\ false) do
     request(:post, Constants.webhook_git(webhook_id, webhook_token), params: [wait: wait])
   end
 
+  @doc """
+  Gets the bot's OAuth2 application info.
+
+  ## Example
+  ```elixir
+  Nostrum.Api.get_application_information
+  {:ok,
+  %{
+    bot_public: false,
+    bot_require_code_grant: false,
+    description: "Test",
+    icon: nil,
+    id: "172150183260323840",
+    name: "Baba O-Riley",
+    owner: %{
+      avatar: nil,
+      discriminator: "0042",
+      id: "172150183260323840",
+      username: "i own a bot"
+    },
+  }}
+  ```
+  """
+  @spec get_application_information() :: error | {:ok, map()}
   def get_application_information do
     request(:get, Constants.application_information())
     |> handle_request_with_decode

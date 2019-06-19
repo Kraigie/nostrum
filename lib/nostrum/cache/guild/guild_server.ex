@@ -13,7 +13,7 @@ defmodule Nostrum.Cache.Guild.GuildServer do
   @doc false
   # REVIEW: If a guild server crashes, it will be restarted with its initial state.
   def start_link(id, guild) do
-    GenServer.start_link(__MODULE__, [id, guild], name: :"#{guild.name}")
+    GenServer.start_link(__MODULE__, [id, guild])
   end
 
   @doc false
