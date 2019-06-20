@@ -47,7 +47,7 @@ defmodule Nostrum.Api do
 
   alias Nostrum.{Constants, Util}
   alias Nostrum.Struct.{Channel, Embed, Emoji, Guild, Invite, Message, User, Webhook}
-  alias Nostrum.Struct.Guild.{AuditLog, Member, Role}
+  alias Nostrum.Struct.Guild.{AuditLog, AuditLogEntry, Member, Role}
   alias Nostrum.Shard.{Session, Supervisor}
 
   @typedoc """
@@ -541,6 +541,8 @@ defmodule Nostrum.Api do
   @doc ~S"""
   Modifies a channel's settings.
 
+  An optional `reason` can be given for the guild audit log.
+
   If a `t:Nostrum.Struct.Channel.guild_channel/0` is being modified, this
   endpoint requires the `MANAGE_CHANNEL` permission. It fires a
   `t:Nostrum.Consumer.channel_update/0` event. If a
@@ -576,28 +578,38 @@ defmodule Nostrum.Api do
   {:ok, %Nostrum.Struct.Channel{id: 41771983423143933}}
   ```
   """
-  @spec modify_channel(Channel.id(), options) :: error | {:ok, Channel.t()}
-  def modify_channel(channel_id, options)
+  @spec modify_channel(Channel.id(), options, AuditLogEntry.reason()) ::
+          error | {:ok, Channel.t()}
+  def modify_channel(channel_id, options, reason \\ nil)
 
-  def modify_channel(channel_id, options) when is_list(options),
-    do: modify_channel(channel_id, Map.new(options))
+  def modify_channel(channel_id, options, reason) when is_list(options),
+    do: modify_channel(channel_id, Map.new(options), reason)
 
-  def modify_channel(channel_id, %{} = options) when is_snowflake(channel_id) do
-    request(:patch, Constants.channel(channel_id), options)
+  def modify_channel(channel_id, %{} = options, reason) when is_snowflake(channel_id) do
+    %{
+      method: :patch,
+      route: Constants.channel(channel_id),
+      body: options,
+      options: [],
+      headers: maybe_add_reason(reason)
+    }
+    |> request
     |> handle_request_with_decode({:struct, Channel})
   end
 
   @doc ~S"""
   Same as `modify_channel/2`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
-  @spec modify_channel!(Channel.id(), options) :: no_return | Channel.t()
-  def modify_channel!(channel_id, options) do
-    modify_channel(channel_id, options)
+  @spec modify_channel!(Channel.id(), options, AuditLogEntry.reason()) :: no_return | Channel.t()
+  def modify_channel!(channel_id, options, reason \\ nil) do
+    modify_channel(channel_id, options, reason)
     |> bangify
   end
 
   @doc ~S"""
   Deletes a channel.
+
+  An optional `reason` can be provided for the guild audit log.
 
   If deleting a `t:Nostrum.Struct.Channel.guild_channel/0`, this endpoint requires
   the `MANAGE_CHANNELS` permission. It fires a
@@ -614,18 +626,25 @@ defmodule Nostrum.Api do
   {:ok, %Nostrum.Struct.Channel{id: 421533712753360896}}
   ```
   """
-  @spec delete_channel(Channel.id()) :: error | {:ok, Channel.t()}
-  def delete_channel(channel_id) when is_snowflake(channel_id) do
-    request(:delete, Constants.channel(channel_id))
+  @spec delete_channel(Channel.id(), AuditLogEntry.reason()) :: error | {:ok, Channel.t()}
+  def delete_channel(channel_id, reason \\ nil) when is_snowflake(channel_id) do
+    %{
+      method: :delete,
+      route: Constants.channel(channel_id),
+      body: "",
+      options: [],
+      headers: maybe_add_reason(reason)
+    }
+    |> request()
     |> handle_request_with_decode({:struct, Channel})
   end
 
   @doc ~S"""
   Same as `delete_channel/1`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
-  @spec delete_channel!(Channel.id()) :: no_return | Channel.t()
-  def delete_channel!(channel_id) do
-    delete_channel(channel_id)
+  @spec delete_channel!(Channel.id(), AuditLogEntry.reason()) :: no_return | Channel.t()
+  def delete_channel!(channel_id, reason \\ nil) do
+    delete_channel(channel_id, reason)
     |> bangify
   end
 
@@ -800,6 +819,9 @@ defmodule Nostrum.Api do
    * `type` - Required; `member` if editing a user, `role` if editing a role.
    * `allow` - Bitwise value of allowed permissions.
    * `deny` - Bitwise value of denied permissions.
+   * `type` - `member` if editing a user, `role` if editing a role.
+
+  An optional `reason` can be provided for the audit log.
 
    `allow` and `deny` are defaulted to `0`, meaning that even if you don't
    specify them, they will override their respective former values in an
@@ -812,10 +834,17 @@ defmodule Nostrum.Api do
             required(:type) => String.t(),
             optional(:allow) => integer,
             optional(:deny) => integer
-          }
+          },
+          AuditLogEntry.reason()
         ) :: error | {:ok}
-  def edit_channel_permissions(channel_id, overwrite_id, permission_info) do
-    request(:put, Constants.channel_permission(channel_id, overwrite_id), permission_info)
+  def edit_channel_permissions(channel_id, overwrite_id, permission_info, reason \\ nil) do
+    request(%{
+      method: :put,
+      route: Constants.channel_permission(channel_id, overwrite_id),
+      body: permission_info,
+      options: [],
+      headers: maybe_add_reason(reason)
+    })
   end
 
   @doc """
@@ -828,10 +857,11 @@ defmodule Nostrum.Api do
             required(:type) => String.t(),
             optional(:allow) => integer,
             optional(:deny) => integer
-          }
+          },
+          AuditLogEntry.reason()
         ) :: no_return | {:ok}
-  def edit_channel_permissions!(channel_id, overwrite_id, permission_info) do
-    edit_channel_permissions(channel_id, overwrite_id, permission_info)
+  def edit_channel_permissions!(channel_id, overwrite_id, permission_info, reason \\ nil) do
+    edit_channel_permissions(channel_id, overwrite_id, permission_info, reason)
     |> bangify
   end
 
@@ -839,10 +869,17 @@ defmodule Nostrum.Api do
   Delete a channel permission for a user or role.
 
   Role or user overwrite to delete is specified by `channel_id` and `overwrite_id`.
+  An optional `reason` can be given for the audit log.
   """
-  @spec delete_channel_permissions(integer, integer) :: error | {:ok}
-  def delete_channel_permissions(channel_id, overwrite_id) do
-    request(:delete, Constants.channel_permission(channel_id, overwrite_id))
+  @spec delete_channel_permissions(integer, integer, AuditLogEntry.reason()) :: error | {:ok}
+  def delete_channel_permissions(channel_id, overwrite_id, reason \\ nil) do
+    request(%{
+      method: :delete,
+      route: Constants.channel_permission(channel_id, overwrite_id),
+      body: "",
+      options: [],
+      headers: maybe_add_reason(reason)
+    })
   end
 
   @doc ~S"""
@@ -878,6 +915,8 @@ defmodule Nostrum.Api do
   @doc ~S"""
   Creates an invite for a guild channel.
 
+  An optional `reason` can be provided for the audit log.
+
   This endpoint requires the `CREATE_INSTANT_INVITE` permission.
 
   If successful, returns `{:ok, invite}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
@@ -903,24 +942,33 @@ defmodule Nostrum.Api do
   {:ok, %Nostrum.Struct.Invite{}}
   ```
   """
-  @spec create_channel_invite(Channel.id(), options) :: error | {:ok, Invite.detailed_invite()}
-  def create_channel_invite(channel_id, options \\ [])
+  @spec create_channel_invite(Channel.id(), options, AuditLogEntry.reason()) ::
+          error | {:ok, Invite.detailed_invite()}
+  def create_channel_invite(channel_id, options \\ [], reason \\ nil)
 
-  def create_channel_invite(channel_id, options) when is_list(options),
-    do: create_channel_invite(channel_id, Map.new(options))
+  def create_channel_invite(channel_id, options, reason) when is_list(options),
+    do: create_channel_invite(channel_id, Map.new(options), reason)
 
-  def create_channel_invite(channel_id, options)
+  def create_channel_invite(channel_id, options, reason)
       when is_snowflake(channel_id) and is_map(options) do
-    request(:post, Constants.channel_invites(channel_id), options)
+    %{
+      method: :post,
+      route: Constants.channel_invites(channel_id),
+      body: options,
+      options: [],
+      headers: maybe_add_reason(reason)
+    }
+    |> request()
     |> handle_request_with_decode({:struct, Invite})
   end
 
   @doc ~S"""
   Same as `create_channel_invite/2`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
-  @spec create_channel_invite!(Channel.id(), options) :: no_return | Invite.detailed_invite()
-  def create_channel_invite!(channel_id, options \\ []) do
-    create_channel_invite(channel_id, options)
+  @spec create_channel_invite!(Channel.id(), options, AuditLogEntry.reason()) ::
+          no_return | Invite.detailed_invite()
+  def create_channel_invite!(channel_id, options \\ [], reason \\ nil) do
+    create_channel_invite(channel_id, options, reason)
     |> bangify
   end
 
@@ -1080,6 +1128,8 @@ defmodule Nostrum.Api do
   This endpoint requires the `MANAGE_EMOJIS` permission. It fires a
   `t:Nostrum.Consumer.guild_emojis_update/0` event.
 
+  An optional `reason` can be provided for the audit log.
+
   If successful, returns `{:ok, emoji}`. Otherwise, returns `t:Nostrum.Api.error/0`.
 
   ## Options
@@ -1099,23 +1149,31 @@ defmodule Nostrum.Api do
   Nostrum.Api.create_guild_emoji(43189401384091, name: "nostrum", image: image, roles: [])
   ```
   """
-  @spec create_guild_emoji(Guild.id(), options) :: error | {:ok, Emoji.t()}
-  def create_guild_emoji(guild_id, options)
+  @spec create_guild_emoji(Guild.id(), options, AuditLogEntry.reason()) ::
+          error | {:ok, Emoji.t()}
+  def create_guild_emoji(guild_id, options, reason \\ nil)
 
-  def create_guild_emoji(guild_id, options) when is_list(options),
-    do: create_guild_emoji(guild_id, Map.new(options))
+  def create_guild_emoji(guild_id, options, reason) when is_list(options),
+    do: create_guild_emoji(guild_id, Map.new(options), reason)
 
-  def create_guild_emoji(guild_id, %{} = options) do
-    request(:post, Constants.guild_emojis(guild_id), options)
+  def create_guild_emoji(guild_id, %{} = options, reason) do
+    %{
+      method: :post,
+      route: Constants.guild_emojis(guild_id),
+      body: options,
+      options: [],
+      headers: maybe_add_reason(reason)
+    }
+    |> request()
     |> handle_request_with_decode({:struct, Emoji})
   end
 
   @doc ~S"""
   Same as `create_guild_emoji/2`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
-  @spec create_guild_emoji!(Guild.id(), options) :: no_return | Emoji.t()
-  def create_guild_emoji!(guild_id, params) do
-    create_guild_emoji(guild_id, params)
+  @spec create_guild_emoji!(Guild.id(), options, AuditLogEntry.reason()) :: no_return | Emoji.t()
+  def create_guild_emoji!(guild_id, params, reason \\ nil) do
+    create_guild_emoji(guild_id, params, reason)
     |> bangify
   end
 
@@ -1124,6 +1182,8 @@ defmodule Nostrum.Api do
 
   This endpoint requires the `MANAGE_EMOJIS` permission. It fires a
   `t:Nostrum.Consumer.guild_emojis_update/0` event.
+
+  An optional `reason` can be provided for the audit log.
 
   If successful, returns `{:ok, emoji}`. Otherwise, returns `t:Nostrum.Api.error/0`.
 
@@ -1138,44 +1198,62 @@ defmodule Nostrum.Api do
   Nostrum.Api.modify_guild_emoji(43189401384091, 4314301984301, name: "elixir", roles: [])
   ```
   """
-  @spec modify_guild_emoji(Guild.id(), Emoji.id(), options) :: error | {:ok, Emoji.t()}
-  def modify_guild_emoji(guild_id, emoji_id, options \\ %{})
+  @spec modify_guild_emoji(Guild.id(), Emoji.id(), options, AuditLogEntry.reason()) ::
+          error | {:ok, Emoji.t()}
+  def modify_guild_emoji(guild_id, emoji_id, options \\ %{}, reason \\ nil)
 
-  def modify_guild_emoji(guild_id, emoji_id, options) when is_list(options),
-    do: modify_guild_emoji(guild_id, emoji_id, Map.new(options))
+  def modify_guild_emoji(guild_id, emoji_id, options, reason) when is_list(options),
+    do: modify_guild_emoji(guild_id, emoji_id, Map.new(options), reason)
 
-  def modify_guild_emoji(guild_id, emoji_id, %{} = options) do
-    request(:patch, Constants.guild_emoji(guild_id, emoji_id), options)
+  def modify_guild_emoji(guild_id, emoji_id, %{} = options, reason) do
+    %{
+      method: :patch,
+      route: Constants.guild_emoji(guild_id, emoji_id),
+      body: options,
+      options: [],
+      headers: maybe_add_reason(reason)
+    }
+    |> request()
     |> handle_request_with_decode({:struct, Emoji})
   end
 
   @doc ~S"""
   Same as `modify_guild_emoji/3`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
-  @spec modify_guild_emoji!(Guild.id(), Emoji.id(), options) :: no_return | Emoji.t()
-  def modify_guild_emoji!(guild_id, emoji_id, options) do
-    modify_guild_emoji(guild_id, emoji_id, options)
+  @spec modify_guild_emoji!(Guild.id(), Emoji.id(), options, AuditLogEntry.reason()) ::
+          no_return | Emoji.t()
+  def modify_guild_emoji!(guild_id, emoji_id, options, reason \\ nil) do
+    modify_guild_emoji(guild_id, emoji_id, options, reason)
     |> bangify
   end
 
   @doc ~S"""
   Deletes the given emoji.
 
+  An optional `reason` can be provided for the audit log.
+
   This endpoint requires the `MANAGE_EMOJIS` permission. It fires a
   `t:Nostrum.Consumer.guild_emojis_update/0` event.
 
   If successful, returns `{:ok}`. Otherwise, returns `t:Nostrum.Api.error/0`.
   """
-  @spec delete_guild_emoji(Guild.id(), Emoji.id()) :: error | {:ok}
-  def delete_guild_emoji(guild_id, emoji_id),
-    do: request(:delete, Constants.guild_emoji(guild_id, emoji_id))
+  @spec delete_guild_emoji(Guild.id(), Emoji.id(), AuditLogEntry.reason()) :: error | {:ok}
+  def delete_guild_emoji(guild_id, emoji_id, reason \\ nil),
+    do:
+      request(%{
+        method: :delete,
+        route: Constants.guild_emoji(guild_id, emoji_id),
+        body: "",
+        options: [],
+        headers: maybe_add_reason(reason)
+      })
 
   @doc ~S"""
   Same as `delete_guild_emoji/2`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
-  @spec delete_guild_emoji!(Guild.id(), Emoji.id()) :: no_return | {:ok}
-  def delete_guild_emoji!(guild_id, emoji_id) do
-    delete_guild_emoji(guild_id, emoji_id)
+  @spec delete_guild_emoji!(Guild.id(), Emoji.id(), AuditLogEntry.reason()) :: no_return | {:ok}
+  def delete_guild_emoji!(guild_id, emoji_id, reason \\ nil) do
+    delete_guild_emoji(guild_id, emoji_id, reason)
     |> bangify
   end
 
@@ -1228,6 +1306,8 @@ defmodule Nostrum.Api do
   This endpoint requires the `MANAGE_GUILD` permission. It fires the
   `t:Nostrum.Consumer.guild_update/0` event.
 
+  An optional `reason` can be provided for the audit log.
+
   If successful, returns `{:ok, guild}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
 
   ## Options
@@ -1258,16 +1338,24 @@ defmodule Nostrum.Api do
   {:ok, %Nostrum.Struct.Channel{id: 81384788765712384}}
   ```
   """
-  @spec modify_guild(Guild.id(), options) :: error | {:ok, Guild.rest_guild()}
-  def modify_guild(guild_id, options \\ [])
+  @spec modify_guild(Guild.id(), options, AuditLogEntry.reason()) ::
+          error | {:ok, Guild.rest_guild()}
+  def modify_guild(guild_id, options \\ [], reason \\ nil)
 
-  def modify_guild(guild_id, options) when is_list(options),
-    do: modify_guild(guild_id, Map.new(options))
+  def modify_guild(guild_id, options, reason) when is_list(options),
+    do: modify_guild(guild_id, Map.new(options), reason)
 
-  def modify_guild(guild_id, options) when is_snowflake(guild_id) and is_map(options) do
+  def modify_guild(guild_id, options, reason) when is_snowflake(guild_id) and is_map(options) do
     options = Map.new(options)
 
-    request(:patch, Constants.guild(guild_id), options)
+    %{
+      method: :patch,
+      route: Constants.guild(guild_id),
+      body: options,
+      options: [],
+      headers: maybe_add_reason(reason)
+    }
+    |> request()
     |> handle_request_with_decode({:struct, Guild})
   end
 
@@ -1584,10 +1672,17 @@ defmodule Nostrum.Api do
 
   Role to add is specified by `role_id`.
   User to add role to is specified by `guild_id` and `user_id`.
+  An optional `reason` can be given for the audit log.
   """
-  @spec add_guild_member_role(integer, integer, integer) :: error | {:ok}
-  def add_guild_member_role(guild_id, user_id, role_id) do
-    request(:put, Constants.guild_member_role(guild_id, user_id, role_id))
+  @spec add_guild_member_role(integer, integer, integer, AuditLogEntry.reason()) :: error | {:ok}
+  def add_guild_member_role(guild_id, user_id, role_id, reason \\ nil) do
+    request(%{
+      method: :put,
+      route: Constants.guild_member_role(guild_id, user_id, role_id),
+      body: "",
+      options: [],
+      headers: maybe_add_reason(reason)
+    })
   end
 
   @doc """
@@ -1595,10 +1690,18 @@ defmodule Nostrum.Api do
 
   Role to remove is specified by `role_id`.
   User to remove role from is specified by `guild_id` and `user_id`.
+  An optional `reason` can be given for the audit log.
   """
-  @spec remove_guild_member_role(integer, integer, integer) :: error | {:ok}
-  def remove_guild_member_role(guild_id, user_id, role_id) do
-    request(:delete, Constants.guild_member_role(guild_id, user_id, role_id))
+  @spec remove_guild_member_role(integer, integer, integer, AuditLogEntry.reason()) ::
+          error | {:ok}
+  def remove_guild_member_role(guild_id, user_id, role_id, reason \\ nil) do
+    request(%{
+      method: :delete,
+      route: Constants.guild_member_role(guild_id, user_id, role_id),
+      body: "",
+      options: [],
+      headers: maybe_add_reason(reason)
+    })
   end
 
   @doc """
@@ -1606,6 +1709,8 @@ defmodule Nostrum.Api do
 
   This event requires the `KICK_MEMBERS` permission. It fires a
   `t:Nostrum.Consumer.guild_member_remove/0` event.
+
+  An optional reason can be provided for the audit log with `reason`.
 
   If successful, returns `{:ok}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
 
@@ -1616,18 +1721,24 @@ defmodule Nostrum.Api do
   {:ok}
   ```
   """
-  @spec remove_guild_member(Guild.id(), User.id()) :: error | {:ok}
-  def remove_guild_member(guild_id, user_id)
+  @spec remove_guild_member(Guild.id(), User.id(), AuditLogEntry.reason()) :: error | {:ok}
+  def remove_guild_member(guild_id, user_id, reason \\ nil)
       when is_snowflake(guild_id) and is_snowflake(user_id) do
-    request(:delete, Constants.guild_member(guild_id, user_id))
+    request(%{
+      method: :delete,
+      route: Constants.guild_member(guild_id, user_id),
+      body: "",
+      options: [],
+      headers: maybe_add_reason(reason)
+    })
   end
 
   @doc """
   Same as `remove_guild_member/2`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
-  @spec remove_guild_member!(Guild.id(), User.id()) :: no_return | {:ok}
-  def remove_guild_member!(guild_id, user_id) do
-    remove_guild_member(guild_id, user_id)
+  @spec remove_guild_member!(Guild.id(), User.id(), AuditLogEntry.reason()) :: no_return | {:ok}
+  def remove_guild_member!(guild_id, user_id, reason \\ nil) do
+    remove_guild_member(guild_id, user_id, reason)
     |> bangify
   end
 
@@ -1646,20 +1757,34 @@ defmodule Nostrum.Api do
   Bans a user from a guild.
 
   User to delete is specified by `guild_id` and `user_id`.
+  An optional `reason` can be specified for the audit log.
   """
-  @spec create_guild_ban(integer, integer, integer) :: error | {:ok}
-  def create_guild_ban(guild_id, user_id, days_to_delete) do
-    request(:put, Constants.guild_ban(guild_id, user_id), %{"delete-message-days": days_to_delete})
+  @spec create_guild_ban(integer, integer, integer, AuditLogEntry.reason()) :: error | {:ok}
+  def create_guild_ban(guild_id, user_id, days_to_delete, reason \\ nil) do
+    request(%{
+      method: :put,
+      route: Constants.guild_ban(guild_id, user_id),
+      body: %{"delete-message-days": days_to_delete},
+      options: [],
+      headers: maybe_add_reason(reason)
+    })
   end
 
   @doc """
   Removes a ban for a user.
 
   User to unban is specified by `guild_id` and `user_id`.
+  An optional `reason` can be specified for the audit log.
   """
-  @spec remove_guild_ban(integer, integer) :: error | {:ok}
-  def remove_guild_ban(guild_id, user_id) do
-    request(:delete, Constants.guild_ban(guild_id, user_id))
+  @spec remove_guild_ban(integer, integer, AuditLogEntry.reason()) :: error | {:ok}
+  def remove_guild_ban(guild_id, user_id, reason \\ nil) do
+    request(%{
+      method: :delete,
+      route: Constants.guild_ban(guild_id, user_id),
+      body: "",
+      options: [],
+      headers: maybe_add_reason(reason)
+    })
   end
 
   @doc ~S"""
@@ -1691,6 +1816,8 @@ defmodule Nostrum.Api do
   @doc ~S"""
   Creates a guild role.
 
+  An optional reason for the audit log can be provided via `reason`.
+
   This endpoint requires the `MANAGE_ROLES` permission. It fires a
   `t:Nostrum.Consumer.guild_role_create/0` event.
 
@@ -1710,23 +1837,30 @@ defmodule Nostrum.Api do
   Nostrum.Api.create_guild_role(41771983423143937, name: "nostrum-club", hoist: true)
   ```
   """
-  @spec create_guild_role(Guild.id(), options) :: error | {:ok, Role.t()}
-  def create_guild_role(guild_id, options)
+  @spec create_guild_role(Guild.id(), options, AuditLogEntry.reason()) :: error | {:ok, Role.t()}
+  def create_guild_role(guild_id, options, reason \\ nil)
 
-  def create_guild_role(guild_id, options) when is_list(options),
-    do: create_guild_role(guild_id, Map.new(options))
+  def create_guild_role(guild_id, options, reason) when is_list(options),
+    do: create_guild_role(guild_id, Map.new(options), reason)
 
-  def create_guild_role(guild_id, %{} = options) when is_snowflake(guild_id) do
-    request(:post, Constants.guild_roles(guild_id), options)
+  def create_guild_role(guild_id, %{} = options, reason) when is_snowflake(guild_id) do
+    %{
+      method: :post,
+      route: Constants.guild_roles(guild_id),
+      body: options,
+      options: [],
+      headers: maybe_add_reason(reason)
+    }
+    |> request()
     |> handle_request_with_decode({:struct, Role})
   end
 
   @doc ~S"""
   Same as `create_guild_role/2`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
-  @spec create_guild_role!(Guild.id(), options) :: no_return | Role.t()
-  def create_guild_role!(guild_id, options) do
-    create_guild_role(guild_id, options)
+  @spec create_guild_role!(Guild.id(), options, AuditLogEntry.reason()) :: no_return | Role.t()
+  def create_guild_role!(guild_id, options, reason \\ nil) do
+    create_guild_role(guild_id, options, reason)
     |> bangify
   end
 
@@ -1746,21 +1880,34 @@ defmodule Nostrum.Api do
   Nostrum.Api.modify_guild_role_positions(41771983423143937, [%{id: 41771983423143936, position: 2}])
   ```
   """
-  @spec modify_guild_role_positions(Guild.id(), [%{id: Role.id(), position: integer}]) ::
-          error | {:ok, [Role.t()]}
-  def modify_guild_role_positions(guild_id, positions)
+  @spec modify_guild_role_positions(
+          Guild.id(),
+          [%{id: Role.id(), position: integer}],
+          AuditLogEntry.reason()
+        ) :: error | {:ok, [Role.t()]}
+  def modify_guild_role_positions(guild_id, positions, reason \\ nil)
       when is_snowflake(guild_id) and is_list(positions) do
-    request(:patch, Constants.guild_roles(guild_id), positions)
+    %{
+      method: :patch,
+      route: Constants.guild_roles(guild_id),
+      body: positions,
+      options: [],
+      headers: maybe_add_reason(reason)
+    }
+    |> request()
     |> handle_request_with_decode({:list, {:struct, Role}})
   end
 
   @doc ~S"""
   Same as `modify_guild_role_positions/2`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
-  @spec modify_guild_role_positions!(Guild.id(), [%{id: Role.id(), position: integer}]) ::
-          no_return | [Role.t()]
-  def modify_guild_role_positions!(guild_id, positions) do
-    modify_guild_role_positions(guild_id, positions)
+  @spec modify_guild_role_positions!(
+          Guild.id(),
+          [%{id: Role.id(), position: integer}],
+          AuditLogEntry.reason()
+        ) :: no_return | [Role.t()]
+  def modify_guild_role_positions!(guild_id, positions, reason \\ nil) do
+    modify_guild_role_positions(guild_id, positions, reason)
     |> bangify
   end
 
@@ -1769,6 +1916,8 @@ defmodule Nostrum.Api do
 
   This endpoint requires the `MANAGE_ROLES` permission. It fires a
   `t:Nostrum.Consumer.guild_role_update/0` event.
+
+  An optional `reason` can be specified for the audit log.
 
   If successful, returns `{:ok, role}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
 
@@ -1786,29 +1935,40 @@ defmodule Nostrum.Api do
   Nostrum.Api.modify_guild_role(41771983423143937, 392817238471936, hoist: false, name: "foo-bar")
   ```
   """
-  @spec modify_guild_role(Guild.id(), Role.id(), options) :: error | {:ok, Role.t()}
-  def modify_guild_role(guild_id, role_id, options)
+  @spec modify_guild_role(Guild.id(), Role.id(), options, AuditLogEntry.reason()) ::
+          error | {:ok, Role.t()}
+  def modify_guild_role(guild_id, role_id, options, reason \\ nil)
 
-  def modify_guild_role(guild_id, role_id, options) when is_list(options),
-    do: modify_guild_role(guild_id, role_id, Map.new(options))
+  def modify_guild_role(guild_id, role_id, options, reason) when is_list(options),
+    do: modify_guild_role(guild_id, role_id, Map.new(options), reason)
 
-  def modify_guild_role(guild_id, role_id, %{} = options)
+  def modify_guild_role(guild_id, role_id, %{} = options, reason)
       when is_snowflake(guild_id) and is_snowflake(role_id) do
-    request(:patch, Constants.guild_role(guild_id, role_id), options)
+    %{
+      method: :patch,
+      route: Constants.guild_role(guild_id, role_id),
+      body: options,
+      options: [],
+      headers: maybe_add_reason(reason)
+    }
+    |> request()
     |> handle_request_with_decode({:struct, Role})
   end
 
   @doc ~S"""
   Same as `modify_guild_role/3`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
-  @spec modify_guild_role!(Guild.id(), Role.id(), options) :: no_return | Role.t()
-  def modify_guild_role!(guild_id, role_id, options) do
-    modify_guild_role(guild_id, role_id, options)
+  @spec modify_guild_role!(Guild.id(), Role.id(), options, AuditLogEntry.reason()) ::
+          no_return | Role.t()
+  def modify_guild_role!(guild_id, role_id, options, reason \\ nil) do
+    modify_guild_role(guild_id, role_id, options, reason)
     |> bangify
   end
 
   @doc ~S"""
   Deletes a role from a guild.
+
+  An optional `reason` can be specified for the audit log.
 
   This endpoint requires the `MANAGE_ROLES` permission. It fires a
   `t:Nostrum.Consumer.guild_role_delete/0` event.
@@ -1821,18 +1981,24 @@ defmodule Nostrum.Api do
   Nostrum.Api.delete_guild_role(41771983423143937, 392817238471936)
   ```
   """
-  @spec delete_guild_role(Guild.id(), Role.id()) :: error | {:ok}
-  def delete_guild_role(guild_id, role_id)
+  @spec delete_guild_role(Guild.id(), Role.id(), AuditLogEntry.reason()) :: error | {:ok}
+  def delete_guild_role(guild_id, role_id, reason \\ nil)
       when is_snowflake(guild_id) and is_snowflake(role_id) do
-    request(:delete, Constants.guild_role(guild_id, role_id))
+    request(%{
+      method: :delete,
+      route: Constants.guild_role(guild_id, role_id),
+      body: "",
+      options: [],
+      headers: maybe_add_reason(reason)
+    })
   end
 
   @doc ~S"""
   Same as `delete_guild_role/2`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
-  @spec delete_guild_role!(Guild.id(), Role.id()) :: no_return | {:ok}
-  def delete_guild_role!(guild_id, role_id) do
-    delete_guild_role(guild_id, role_id)
+  @spec delete_guild_role!(Guild.id(), Role.id(), AuditLogEntry.reason()) :: no_return | {:ok}
+  def delete_guild_role!(guild_id, role_id, reason \\ nil) do
+    delete_guild_role(guild_id, role_id, reason)
     |> bangify
   end
 
@@ -1868,6 +2034,8 @@ defmodule Nostrum.Api do
   @doc """
   Begins a guild prune to prune members within `days`.
 
+  An optional `reason` can be provided for the guild audit log.
+
   This endpoint requires the `KICK_MEMBERS` permission. It fires multiple
   `t:Nostrum.Consumer.guild_member_remove/0` events.
 
@@ -1880,18 +2048,28 @@ defmodule Nostrum.Api do
   {:ok, %{pruned: 0}}
   ```
   """
-  @spec begin_guild_prune(Guild.id(), 1..30) :: error | {:ok, %{pruned: integer}}
-  def begin_guild_prune(guild_id, days) when is_snowflake(guild_id) and days in 1..30 do
-    request(:post, Constants.guild_prune(guild_id), "", params: [days: days])
+  @spec begin_guild_prune(Guild.id(), 1..30, AuditLogEntry.reason()) ::
+          error | {:ok, %{pruned: integer}}
+  def begin_guild_prune(guild_id, days, reason \\ nil)
+      when is_snowflake(guild_id) and days in 1..30 do
+    %{
+      method: :post,
+      route: Constants.guild_prune(guild_id),
+      body: "",
+      options: [params: [days: days]],
+      headers: maybe_add_reason(reason)
+    }
+    |> request()
     |> handle_request_with_decode
   end
 
   @doc ~S"""
   Same as `begin_guild_prune/2`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
-  @spec begin_guild_prune!(Guild.id(), 1..30) :: no_return | %{pruned: integer}
-  def begin_guild_prune!(guild_id, days) do
-    begin_guild_prune(guild_id, days)
+  @spec begin_guild_prune!(Guild.id(), 1..30, AuditLogEntry.reason()) ::
+          no_return | %{pruned: integer}
+  def begin_guild_prune!(guild_id, days, reason) do
+    begin_guild_prune(guild_id, days, reason)
     |> bangify
   end
 
@@ -2321,13 +2499,25 @@ defmodule Nostrum.Api do
     - `args` - Map with the following **required** keys:
       - `name` - Name of the webhook.
       - `avatar` - Base64 128x128 jpeg image for the default avatar.
+    - `reason` - An optional reason for the guild audit log.
   """
-  @spec create_webhook(Channel.id(), %{
-          name: String.t(),
-          avatar: String.t()
-        }) :: error | {:ok, Nostrum.Struct.Webhook.t()}
-  def create_webhook(channel_id, args) do
-    request(:post, Constants.webhooks_channel(channel_id), args)
+  @spec create_webhook(
+          Channel.id(),
+          %{
+            name: String.t(),
+            avatar: String.t()
+          },
+          AuditLogEntry.reason()
+        ) :: error | {:ok, Nostrum.Struct.Webhook.t()}
+  def create_webhook(channel_id, args, reason \\ nil) do
+    %{
+      method: :post,
+      route: Constants.webhooks_channel(channel_id),
+      body: args,
+      options: [],
+      headers: maybe_add_reason(reason)
+    }
+    |> request()
     |> handle_request_with_decode
   end
 
@@ -2392,13 +2582,25 @@ defmodule Nostrum.Api do
     - `args` - Map with the following *optional* keys:
       - `name` - Name of the webhook.
       - `avatar` - Base64 128x128 jpeg image for the default avatar.
+    - `reason` - An optional reason for the guild audit log.
   """
-  @spec modify_webhook(Webhook.id(), %{
-          name: String.t(),
-          avatar: String.t()
-        }) :: error | {:ok, Nostrum.Struct.Webhook.t()}
-  def modify_webhook(webhook_id, args) do
-    request(:patch, Constants.webhook(webhook_id), args)
+  @spec modify_webhook(
+          Webhook.id(),
+          %{
+            name: String.t(),
+            avatar: String.t()
+          },
+          AuditLogEntry.reason()
+        ) :: error | {:ok, Nostrum.Struct.Webhook.t()}
+  def modify_webhook(webhook_id, args, reason \\ nil) do
+    %{
+      method: :patch,
+      route: Constants.webhook(webhook_id),
+      body: args,
+      options: [],
+      headers: maybe_add_reason(reason)
+    }
+    |> request()
     |> handle_request_with_decode
   end
 
@@ -2414,13 +2616,26 @@ defmodule Nostrum.Api do
     - `args` - Map with the following *optional* keys:
       - `name` - Name of the webhook.
       - `avatar` - Base64 128x128 jpeg image for the default avatar.
+    - `reason` - An optional reason for the guild audit log.
   """
-  @spec modify_webhook_with_token(Webhook.id(), Webhook.token(), %{
-          name: String.t(),
-          avatar: String.t()
-        }) :: error | {:ok, Nostrum.Struct.Webhook.t()}
-  def modify_webhook_with_token(webhook_id, webhook_token, args) do
-    request(:patch, Constants.webhook_token(webhook_id, webhook_token), args)
+  @spec modify_webhook_with_token(
+          Webhook.id(),
+          Webhook.token(),
+          %{
+            name: String.t(),
+            avatar: String.t()
+          },
+          AuditLogEntry.reason()
+        ) :: error | {:ok, Nostrum.Struct.Webhook.t()}
+  def modify_webhook_with_token(webhook_id, webhook_token, args, reason \\ nil) do
+    %{
+      method: :patch,
+      route: Constants.webhook_token(webhook_id, webhook_token),
+      body: args,
+      options: [],
+      headers: maybe_add_reason(reason)
+    }
+    |> request()
     |> handle_request_with_decode
   end
 
@@ -2428,12 +2643,18 @@ defmodule Nostrum.Api do
   Deletes a webhook.
 
   ## Parameters
-    - `webhook_id` - Id of the webhook to delete.
-    - `webhook_token` - Token of the webhook to delete.
+    - `webhook_id` - Id of webhook to delete.
+    - `reason` - An optional reason for the guild audit log.
   """
-  @spec delete_webhook(Webhook.id()) :: error | {:ok}
-  def delete_webhook(webhook_id) do
-    request(:delete, Constants.webhook(webhook_id))
+  @spec delete_webhook(Webhook.id(), AuditLogEntry.reason()) :: error | {:ok}
+  def delete_webhook(webhook_id, reason \\ nil) do
+    request(%{
+      method: :delete,
+      route: Constants.webhook(webhook_id),
+      body: "",
+      options: [],
+      headers: maybe_add_reason(reason)
+    })
   end
 
   @doc """
@@ -2539,6 +2760,24 @@ defmodule Nostrum.Api do
   def get_application_information do
     request(:get, Constants.application_information())
     |> handle_request_with_decode
+  end
+
+  @spec maybe_add_reason(String.t() | nil) :: List.t()
+  defp maybe_add_reason(reason) do
+    maybe_add_reason(reason, [{"content-type", "application/json"}])
+  end
+
+  @spec maybe_add_reason(String.t() | nil, List.t()) :: List.t()
+  defp maybe_add_reason(nil, headers) do
+    headers
+  end
+
+  defp maybe_add_reason(reason, headers) do
+    [{"x-audit-log-reason", reason} | headers]
+  end
+
+  def request(request) do
+    GenServer.call(Ratelimiter, {:queue, request, nil}, :infinity)
   end
 
   # HTTPosion defaults to `""` for an empty body, so it's safe to do so here
