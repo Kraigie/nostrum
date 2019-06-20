@@ -1257,7 +1257,7 @@ defmodule Nostrum.Api do
 
   ```elixir
   Nostrum.Api.modify_guild(451824027976073216, name: "Nose Drum")
-  {:ok, %Nostrum.Struct.Guild{id: 451824027976073216, name: "Nose Drum"}}
+  {:ok, %Nostrum.Struct.Guild{id: 451824027976073216, name: "Nose Drum", ...}}
   ```
   """
   @spec modify_guild(Guild.id(), options) :: error | {:ok, Guild.rest_guild()}
