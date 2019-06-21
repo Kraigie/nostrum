@@ -1330,12 +1330,9 @@ defmodule Nostrum.Api do
 
   ## Examples
 
-  ```Elixir
-  Nostrum.Api.modify_guild(81384788765712384, name: "Elixir Guild")
-  {:ok, %Nostrum.Struct.Channel{id: 81384788765712384, name: "Elixir Guild"}}
-
-  Nostrum.Api.modify_channel(81384788765712384)
-  {:ok, %Nostrum.Struct.Channel{id: 81384788765712384}}
+  ```elixir
+  Nostrum.Api.modify_guild(451824027976073216, name: "Nose Drum")
+  {:ok, %Nostrum.Struct.Guild{id: 451824027976073216, name: "Nose Drum", ...}}
   ```
   """
   @spec modify_guild(Guild.id(), options, AuditLogEntry.reason()) ::
