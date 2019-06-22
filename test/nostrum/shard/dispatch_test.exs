@@ -19,19 +19,13 @@ defmodule Nostrum.Shard.DispatchTest do
       assert(^result = expected)
     end
 
-    test "returns `MessageDeleteBulk.t()` given Message Delete event" do
-      result =
-        Dispatch.handle_event(
-          :MESSAGE_DELETE_BULK,
-          Stubs.gateway_message_delete_bulk_payload(),
-          %{}
-        )
+    test "returns `MessageDeleteBulk.t()` given Message Delete Bulk event" do
+      payload = Stubs.gateway_message_delete_bulk_payload()
 
-      expected =
-        {:MESSAGE_DELETE_BULK,
-         struct(MessageDeleteBulk, Stubs.gateway_message_delete_bulk_payload()), %{}}
+      {key, event, _} = Dispatch.handle_event(:MESSAGE_DELETE_BULK, payload, %{})
 
-      assert(^result = expected)
+      assert(^key = :MESSAGE_DELETE_BULK)
+      assert(^event = struct(MessageDeleteBulk, payload))
     end
   end
 end
