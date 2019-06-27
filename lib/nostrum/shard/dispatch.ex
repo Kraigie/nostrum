@@ -5,7 +5,7 @@ defmodule Nostrum.Shard.Dispatch do
   alias Nostrum.Cache.Guild.GuildServer
   alias Nostrum.Cache.Me
   alias Nostrum.Shard.Session
-  alias Nostrum.Struct.Event.MessageDelete
+  alias Nostrum.Struct.Event.{MessageDelete, MessageDeleteBulk}
   alias Nostrum.Struct.{Guild, Message, User}
   alias Nostrum.Struct.Guild.UnavailableGuild
   alias Nostrum.Util
@@ -29,7 +29,7 @@ defmodule Nostrum.Shard.Dispatch do
   # Handles the case of not finding users in the user cache
   defp format_event({_name, :noop, _state}), do: :noop
   defp format_event({_name, event_info, _state} = event) when is_tuple(event_info), do: event
-  defp format_event({name, event_info, state}), do: {name, {event_info}, state}
+  defp format_event({name, event_info, state}), do: {name, event_info, state}
   defp format_event(:noop), do: :noop
 
   defp check_new_or_unavailable(guild_id) do
@@ -165,7 +165,8 @@ defmodule Nostrum.Shard.Dispatch do
   def handle_event(:MESSAGE_DELETE = event, p, state),
     do: {event, struct(MessageDelete, p), state}
 
-  def handle_event(:MESSAGE_DELETE_BULK = event, p, state), do: {event, p, state}
+  def handle_event(:MESSAGE_DELETE_BULK = event, p, state),
+    do: {event, struct(MessageDeleteBulk, p), state}
 
   def handle_event(:MESSAGE_UPDATE = event, p, state), do: {event, Message.to_struct(p), state}
 

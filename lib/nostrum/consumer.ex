@@ -22,7 +22,7 @@ defmodule Nostrum.Consumer do
 
   alias Nostrum.Shard.Stage.Cache
   alias Nostrum.Struct.{Channel, WSState}
-  alias Nostrum.Struct.Event.MessageDelete
+  alias Nostrum.Struct.Event.{MessageDelete, MessageDeleteBulk}
   alias Nostrum.Util
 
   @doc """
@@ -65,8 +65,8 @@ defmodule Nostrum.Consumer do
           | {:max_seconds, non_neg_integer()}
           | {:subscribe_to, [GenStage.stage() | {GenStage.stage(), keyword()}]}
 
-  @type channel_create :: {:CHANNEL_CREATE, {Channel.t()}, WSState.t()}
-  @type channel_delete :: {:CHANNEL_DELETE, {Channel.t()}, WSState.t()}
+  @type channel_create :: {:CHANNEL_CREATE, Channel.t(), WSState.t()}
+  @type channel_delete :: {:CHANNEL_DELETE, Channel.t(), WSState.t()}
   @typedoc """
   Dispatched when a channel is updated.
 
@@ -75,17 +75,16 @@ defmodule Nostrum.Consumer do
   @type channel_update ::
           {:CHANNEL_UPDATE, {old_channel :: Channel.t() | nil, new_channel :: Channel.t()},
            WSState.t()}
-  @type channel_pins_ack :: {:CHANNEL_PINS_ACK, {map}, WSState.t()}
-  @type channel_pins_update :: {:CHANNEL_PINS_UPDATE, {map}, WSState.t()}
+  @type channel_pins_ack :: {:CHANNEL_PINS_ACK, map, WSState.t()}
+  @type channel_pins_update :: {:CHANNEL_PINS_UPDATE, map, WSState.t()}
   @type guild_ban_add ::
           {:GUILD_BAN_ADD, {guild_id :: integer, Nostrum.Struct.User.t()}, WSState.t()}
   @type guild_ban_remove ::
           {:GUILD_BAN_REMOVE, {guild_id :: integer, Nostrum.Struct.User.t()}, WSState.t()}
-  @type guild_create :: {:GUILD_CREATE, {new_guild :: Nostrum.Struct.Guild.t()}, WSState.t()}
-  @type guild_available ::
-          {:GUILD_AVAILABLE, {new_guild :: Nostrum.Struct.Guild.t()}, WSState.t()}
+  @type guild_create :: {:GUILD_CREATE, new_guild :: Nostrum.Struct.Guild.t(), WSState.t()}
+  @type guild_available :: {:GUILD_AVAILABLE, new_guild :: Nostrum.Struct.Guild.t(), WSState.t()}
   @type guild_unavailable ::
-          {:GUILD_UNAVAILABLE, {unavailable_guild :: Nostrum.Struct.Guild.UnavailableGuild.t()},
+          {:GUILD_UNAVAILABLE, unavailable_guild :: Nostrum.Struct.Guild.UnavailableGuild.t(),
            WSState.t()}
   @type guild_update ::
           {:GUILD_CREATE,
@@ -98,11 +97,11 @@ defmodule Nostrum.Consumer do
           {:GUILD_EMOJIS_UPDATE,
            {guild_id :: integer, old_emojis :: [Nostrum.Struct.Message.Emoji.t()],
             new_emojis :: [Nostrum.Struct.Message.Emoji.t()]}, WSState.t()}
-  @type guild_integrations_update :: {:GUILD_INTEGERATIONS_UPDATE, {map}, WSState.t()}
+  @type guild_integrations_update :: {:GUILD_INTEGERATIONS_UPDATE, map, WSState.t()}
   @type guild_member_add ::
           {:GUILD_MEMBER_ADD,
            {guild_id :: integer, new_member :: Nostrum.Struct.Guild.Member.t()}, WSState.t()}
-  @type guild_members_chunk :: {:GUILD_MEMBERS_CHUNK, {map}, WSState.t()}
+  @type guild_members_chunk :: {:GUILD_MEMBERS_CHUNK, map, WSState.t()}
   @type guild_member_remove ::
           {:GUILD_MEMBER_REMOVE,
            {guild_id :: integer, old_member :: Nostrum.Struct.Guild.Member.t()}, WSState.t()}
@@ -130,16 +129,15 @@ defmodule Nostrum.Consumer do
           {:GUILD_ROLE_UPDATE,
            {guild_id :: integer, old_role :: Nostrum.Struct.Guild.Role.t() | nil,
             new_role :: Nostrum.Struct.Guild.Role.t()}, WSState.t()}
-  @type message_create :: {:MESSAGE_CREATE, {message :: Nostrum.Struct.Message.t()}, WSState.t()}
-  @type message_delete :: {:MESSAGE_DELETE, {message :: MessageDelete.t()}, WSState.t()}
-  @type message_delete_bulk ::
-          {:MESSAGE_DELETE_BULK, {updated_messages :: [Nostrum.Struct.Message.t()]}, WSState.t()}
+  @type message_create :: {:MESSAGE_CREATE, message :: Nostrum.Struct.Message.t(), WSState.t()}
+  @type message_delete :: {:MESSAGE_DELETE, MessageDelete.t(), WSState.t()}
+  @type message_delete_bulk :: {:MESSAGE_DELETE_BULK, MessageDeleteBulk.t(), WSState.t()}
   @type message_update ::
-          {:MESSAGE_UPDATE, {updated_message :: Nostrum.Struct.Message.t()}, WSState.t()}
-  @type message_reaction_add :: {:MESSAGE_REACTION_ADD, {map}, WSState.t()}
-  @type message_reaction_remove :: {:MESSAGE_REACTION_REMOVE, {map}, WSState.t()}
-  @type message_reaction_remove_all :: {:MESSAGE_REACTION_REMOVE_ALL, {map}, WSState.t()}
-  @type message_ack :: {:MESSAGE_ACK, {map}, WSState.t()}
+          {:MESSAGE_UPDATE, updated_message :: Nostrum.Struct.Message.t(), WSState.t()}
+  @type message_reaction_add :: {:MESSAGE_REACTION_ADD, map, WSState.t()}
+  @type message_reaction_remove :: {:MESSAGE_REACTION_REMOVE, map, WSState.t()}
+  @type message_reaction_remove_all :: {:MESSAGE_REACTION_REMOVE_ALL, map, WSState.t()}
+  @type message_ack :: {:MESSAGE_ACK, map, WSState.t()}
   @typedoc """
   Dispatched when a user's presence is updated.
 
@@ -148,9 +146,9 @@ defmodule Nostrum.Consumer do
   @type presence_update ::
           {:PRESENCE_UPDATE,
            {guild_id :: integer, old_presence :: map | nil, new_presence :: map}, WSState.t()}
-  @type ready :: {:READY, {map}, WSState.t()}
-  @type resumed :: {:RESUMED, {map}, WSState.t()}
-  @type typing_start :: {:TYPING_START, {map}, WSState.t()}
+  @type ready :: {:READY, map, WSState.t()}
+  @type resumed :: {:RESUMED, map, WSState.t()}
+  @type typing_start :: {:TYPING_START, map, WSState.t()}
   @type user_settings_update :: no_return
   @typedoc """
   Dispatched when a user is updated.
@@ -161,9 +159,9 @@ defmodule Nostrum.Consumer do
           {:USER_UPDATE,
            {old_user :: Nostrum.Struct.User.t() | nil, new_user :: Nostrum.Struct.User.t()},
            WSState.t()}
-  @type voice_state_update :: {:VOICE_STATE_UPDATE, {map}, WSState.t()}
-  @type voice_server_update :: {:VOICE_SERVER_UPDATE, {map}, WSState.t()}
-  @type webhooks_update :: {:WEBHOOKS_UPDATE, {map}, WSState.t()}
+  @type voice_state_update :: {:VOICE_STATE_UPDATE, map, WSState.t()}
+  @type voice_server_update :: {:VOICE_SERVER_UPDATE, map, WSState.t()}
+  @type webhooks_update :: {:WEBHOOKS_UPDATE, map, WSState.t()}
 
   @type event ::
           channel_create
