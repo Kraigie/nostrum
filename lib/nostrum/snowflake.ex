@@ -155,7 +155,7 @@ defmodule Nostrum.Snowflake do
 
   ```Elixir
   iex> Nostrum.Snowflake.creation_time(177888205536886784)
-  #DateTime<2016-05-05 21:04:13.203Z>
+  ~U[2016-05-05 21:04:13.203Z]
   ```
   """
   @spec creation_time(t) :: DateTime.t()
