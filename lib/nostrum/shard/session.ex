@@ -58,9 +58,9 @@ defmodule Nostrum.Shard.Session do
         exit({:ws_upgrade_failed, reason})
     after
       @timeout_ws_upgrade ->
-        Logger.error(
+        Logger.error(fn ->
           "Cannot upgrade connection to Websocket after #{@timeout_ws_upgrade / 1000} seconds."
-        )
+        end)
 
         exit(:timeout)
     end
@@ -78,7 +78,7 @@ defmodule Nostrum.Shard.Session do
       zlib_ctx: zlib_context
     }
 
-    Logger.debug("Websocket connection up on worker #{inspect(worker)}.")
+    Logger.debug(fn -> "Websocket connection up on worker #{inspect(worker)}." end)
 
     {:ok, state}
   end
