@@ -68,6 +68,8 @@ defmodule Nostrum.Shard.Payload do
 
   defp build_payload(data, opcode_name) do
     opcode = Constants.opcode_from_name(opcode_name)
-    %{"op" => opcode, "d" => data} |> :erlang.term_to_binary()
+
+    %{"op" => opcode, "d" => data}
+    |> :erlang.term_to_binary()
   end
 end

@@ -1,15 +1,20 @@
 defmodule Nostrum.Shard.Session do
   @moduledoc false
 
-  use WebSockex
-
   alias Nostrum.{Constants, Util}
   alias Nostrum.Shard.{Connector, Event, Payload}
   alias Nostrum.Struct.WSState
 
   require Logger
 
+  use GenServer
+
   @gateway_qs "/?compress=zlib-stream&encoding=etf&v=6"
+
+  # Maximum time the initial connection may take, in milliseconds.
+  @timeout_connect 5_000
+  # Maximum time the websocket upgrade may take, in milliseconds.
+  @timeout_ws_upgrade 5_000
 
   def update_status(pid, status, game, stream, type) do
     {idle_since, afk} =
@@ -22,50 +27,76 @@ defmodule Nostrum.Shard.Session do
       end
 
     payload = Payload.status_update_payload(idle_since, game, stream, status, afk, type)
-    WebSockex.cast(pid, {:status_update, payload})
+    GenServer.cast(pid, {:status_update, payload})
   end
 
   def request_guild_members(pid, guild_id, limit \\ 0) do
     payload = Payload.request_members_payload(guild_id, limit)
-    WebSockex.cast(pid, {:request_guild_members, payload})
+    GenServer.cast(pid, {:request_guild_members, payload})
   end
 
   def start_link([gateway, shard_num]) do
+    GenServer.start_link(__MODULE__, [gateway, shard_num])
+  end
+
+  def init([gateway, shard_num]) do
+    Connector.block_until_connect()
+    Logger.metadata(shard: shard_num)
+
+    {:ok, worker} = :gun.open(:binary.bin_to_list(gateway), 443, %{protocols: [:http]})
+
+    receive do
+      {:gun_up, ^worker, :http} ->
+        :ok
+
+      {:gun_error, ^worker, reason} ->
+        Logger.error("Cannot establish connection to Discord: #{inspect(reason)}")
+        exit(:cannot_connect)
+    after
+      @timeout_connect ->
+        Logger.error(
+          "Cannot establish connection to Discord after #{@timeout_connect / 1000} seconds"
+        )
+
+        exit(:timeout)
+    end
+
+    stream = :gun.ws_upgrade(worker, @gateway_qs)
+
+    receive do
+      {:gun_upgrade, ^worker, ^stream, [<<"websocket">>], _headers} ->
+        :ok
+
+      {:gun_error, ^worker, ^stream, reason} ->
+        exit({:ws_upgrade_failed, reason})
+    after
+      @timeout_ws_upgrade ->
+        Logger.error(
+          "Cannot upgrade connection to Websocket after #{@timeout_ws_upgrade / 1000} seconds."
+        )
+
+        exit(:timeout)
+    end
+
+    zlib_context = :zlib.open()
+    :zlib.inflateInit(zlib_context)
+
     state = %WSState{
+      conn_pid: self(),
+      conn: worker,
       shard_num: shard_num,
       gateway: gateway <> @gateway_qs,
       last_heartbeat_ack: DateTime.utc_now(),
-      heartbeat_ack: true
+      heartbeat_ack: true,
+      zlib_ctx: zlib_context
     }
 
-    Connector.block_until_connect()
+    Logger.debug("Websocket connection up on worker #{inspect(worker)}.")
 
-    # TODO: Add support for `spawn_opt` start arguments to WebSockex, this does nothing until then.
-    WebSockex.start_link(
-      gateway <> @gateway_qs,
-      __MODULE__,
-      state,
-      spawn_opt: [Util.fullsweep_after()]
-    )
+    {:ok, state}
   end
 
-  def handle_connect(conn, state) do
-    Logger.metadata(shard: state.shard_num)
-
-    zlib_ctx = :zlib.open()
-    :zlib.inflateInit(zlib_ctx)
-
-    {:ok,
-     %{
-       state
-       | conn: conn,
-         conn_pid: self(),
-         zlib_ctx: zlib_ctx,
-         heartbeat_ack: true
-     }}
-  end
-
-  def handle_frame({:binary, frame}, state) do
+  def handle_info({:gun_ws, _worker, _stream, {:binary, frame}}, state) do
     payload =
       state.zlib_ctx
       |> :zlib.inflate(frame)
@@ -81,59 +112,53 @@ defmodule Nostrum.Shard.Session do
 
     case from_handle do
       {new_state, reply} ->
-        {:reply, {:binary, reply}, new_state}
+        :ok = :gun.ws_send(state.conn, {:binary, reply})
+        {:noreply, new_state}
 
       new_state ->
-        {:ok, new_state}
+        {:noreply, new_state}
     end
   end
 
+  def handle_info({:gun_ws, conn, _stream, {:close, errno, reason}}, state) do
+    Logger.warn(fn ->
+      "websocket disconnected with code #{errno}, reason #{inspect(reason)}, "
+      "attempting reconnect"
+    end)
+
+    :timer.cancel(state.heartbeat_ref)
+    :gun.close(conn)
+
+    # Just let it crash!!!
+    {:shutdown, :closed, state}
+  end
+
   def handle_cast({:status_update, payload}, state) do
-    {:reply, {:binary, payload}, state}
+    :ok = :gun.ws_send(state.conn, {:binary, payload})
+    {:noreply, state}
   end
 
   def handle_cast({:request_guild_members, payload}, state) do
-    {:reply, {:binary, payload}, state}
+    :ok = :gun.ws_send(state.conn, {:binary, payload})
+    {:noreply, state}
   end
 
   def handle_cast(:heartbeat, %{heartbeat_ack: false} = state) do
     Logger.warn("heartbeat_ack not received in time, disconnecting")
-    {:close, state}
+    :ok = :gun.close(state.conn)
+    {:stop, {:heartbeat_ack_timeout, state.shard_num}, state}
   end
 
   def handle_cast(:heartbeat, state) do
     {:ok, ref} =
-      :timer.apply_after(state.heartbeat_interval, WebSockex, :cast, [state.conn_pid, :heartbeat])
+      :timer.apply_after(state.heartbeat_interval, :gen_server, :cast, [
+        state.conn_pid,
+        :heartbeat
+      ])
 
-    {:reply, {:binary, Payload.heartbeat_payload(state.seq)},
+    :ok = :gun.ws_send(state.conn, {:binary, Payload.heartbeat_payload(state.seq)})
+
+    {:noreply,
      %{state | heartbeat_ref: ref, heartbeat_ack: false, last_heartbeat_send: DateTime.utc_now()}}
-  end
-
-  def handle_disconnect(%{reason: reason}, state) when is_tuple(reason) do
-    Logger.warn(fn ->
-      "websocket disconnected with reason #{inspect(reason)}, attempting reconnect"
-    end)
-
-    :timer.cancel(state.heartbeat_ref)
-
-    {:reconnect, state}
-  end
-
-  def handle_disconnect(%{reason: reason}, state) do
-    Logger.warn(fn ->
-      "websocket errored with reason #{inspect(reason)}, attempting reconnect"
-    end)
-
-    :timer.cancel(state.heartbeat_ref)
-
-    {:reconnect, state}
-  end
-
-  def terminate(reason, state) do
-    :timer.cancel(state.heartbeat_ref)
-
-    Logger.warn(fn ->
-      "websocket closed with reason #{inspect(reason)}"
-    end)
   end
 end
