@@ -44,22 +44,7 @@ defmodule Nostrum.Shard.Session do
     Logger.metadata(shard: shard_num)
 
     {:ok, worker} = :gun.open(:binary.bin_to_list(gateway), 443, %{protocols: [:http]})
-
-    receive do
-      {:gun_up, ^worker, :http} ->
-        :ok
-
-      {:gun_error, ^worker, reason} ->
-        Logger.error("Cannot establish connection to Discord: #{inspect(reason)}")
-        exit(:cannot_connect)
-    after
-      @timeout_connect ->
-        Logger.error(
-          "Cannot establish connection to Discord after #{@timeout_connect / 1000} seconds"
-        )
-
-        exit(:timeout)
-    end
+    {:ok, :http} = :gun.await_up(worker, @timeout_connect)
 
     stream = :gun.ws_upgrade(worker, @gateway_qs)
 
