@@ -45,8 +45,10 @@ defmodule Nostrum.Shard.Session do
 
     {:ok, worker} = :gun.open(:binary.bin_to_list(gateway), 443, %{protocols: [:http]})
     {:ok, :http} = :gun.await_up(worker, @timeout_connect)
-
     stream = :gun.ws_upgrade(worker, @gateway_qs)
+
+    # TODO: Once gun 2.0 is released, the block below can be simplified to:
+    # {:upgrade, [<<"websocket">>], _headers} = :gun.await(worker, stream, @timeout_ws_upgrade)
 
     receive do
       {:gun_upgrade, ^worker, ^stream, [<<"websocket">>], _headers} ->
