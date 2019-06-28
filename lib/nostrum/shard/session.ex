@@ -39,7 +39,11 @@ defmodule Nostrum.Shard.Session do
     GenServer.start_link(__MODULE__, [gateway, shard_num])
   end
 
-  def init([gateway, shard_num]) do
+  def init([gateway, shard_num] = args) do
+    {:ok, nil, {:continue, args}}
+  end
+
+  def handle_continue([gateway, shard_num], nil) do
     Connector.block_until_connect()
     Logger.metadata(shard: shard_num)
 
@@ -80,7 +84,7 @@ defmodule Nostrum.Shard.Session do
 
     Logger.debug(fn -> "Websocket connection up on worker #{inspect(worker)}." end)
 
-    {:ok, state}
+    {:noreply, state}
   end
 
   def handle_info({:gun_ws, _worker, _stream, {:binary, frame}}, state) do
