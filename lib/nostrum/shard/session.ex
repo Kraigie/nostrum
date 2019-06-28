@@ -39,7 +39,7 @@ defmodule Nostrum.Shard.Session do
     GenServer.start_link(__MODULE__, [gateway, shard_num])
   end
 
-  def init([gateway, shard_num] = args) do
+  def init([_gateway, _shard_num] = args) do
     {:ok, nil, {:continue, args}}
   end
 
@@ -47,6 +47,28 @@ defmodule Nostrum.Shard.Session do
     Connector.block_until_connect()
     Logger.metadata(shard: shard_num)
 
+    worker = connect(gateway)
+
+    zlib_context = :zlib.open()
+    :zlib.inflateInit(zlib_context)
+
+    state = %WSState{
+      conn_pid: self(),
+      conn: worker,
+      shard_num: shard_num,
+      gateway: gateway <> @gateway_qs,
+      last_heartbeat_ack: DateTime.utc_now(),
+      heartbeat_ack: true,
+      zlib_ctx: zlib_context
+    }
+
+    Logger.debug(fn -> "Websocket connection up on worker #{inspect(worker)}." end)
+
+    {:noreply, state}
+  end
+
+  @spec connect(String.t()) :: pid()
+  defp connect(gateway) do
     {:ok, worker} = :gun.open(:binary.bin_to_list(gateway), 443, %{protocols: [:http]})
     {:ok, :http} = :gun.await_up(worker, @timeout_connect)
     stream = :gun.ws_upgrade(worker, @gateway_qs)
@@ -69,22 +91,7 @@ defmodule Nostrum.Shard.Session do
         exit(:timeout)
     end
 
-    zlib_context = :zlib.open()
-    :zlib.inflateInit(zlib_context)
-
-    state = %WSState{
-      conn_pid: self(),
-      conn: worker,
-      shard_num: shard_num,
-      gateway: gateway <> @gateway_qs,
-      last_heartbeat_ack: DateTime.utc_now(),
-      heartbeat_ack: true,
-      zlib_ctx: zlib_context
-    }
-
-    Logger.debug(fn -> "Websocket connection up on worker #{inspect(worker)}." end)
-
-    {:noreply, state}
+    worker
   end
 
   def handle_info({:gun_ws, _worker, _stream, {:binary, frame}}, state) do
@@ -117,11 +124,12 @@ defmodule Nostrum.Shard.Session do
       "attempting reconnect"
     end)
 
-    :timer.cancel(state.heartbeat_ref)
-    :gun.close(conn)
+    {:ok, :cancel} = :timer.cancel(state.heartbeat_ref)
+    :ok = :gun.close(conn)
 
-    # Just let it crash!!!
-    {:shutdown, :closed, state}
+    worker = connect(state.gateway)
+
+    {:noreply, %{state | conn: worker}}
   end
 
   def handle_cast({:status_update, payload}, state) do
