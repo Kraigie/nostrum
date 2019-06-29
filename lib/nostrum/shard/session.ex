@@ -120,8 +120,8 @@ defmodule Nostrum.Shard.Session do
 
   def handle_info({:gun_ws, conn, _stream, {:close, errno, reason}}, state) do
     Logger.warn(fn ->
-      "websocket disconnected with code #{errno}, reason #{inspect(reason)}, "
-      "attempting reconnect"
+      "websocket disconnected with code #{errno}, reason #{inspect(reason)}, " <>
+        "attempting reconnect"
     end)
 
     {:ok, :cancel} = :timer.cancel(state.heartbeat_ref)
