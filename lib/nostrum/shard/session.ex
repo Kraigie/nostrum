@@ -12,9 +12,9 @@ defmodule Nostrum.Shard.Session do
   @gateway_qs "/?compress=zlib-stream&encoding=etf&v=6"
 
   # Maximum time the initial connection may take, in milliseconds.
-  @timeout_connect 5_000
+  @timeout_connect 10_000
   # Maximum time the websocket upgrade may take, in milliseconds.
-  @timeout_ws_upgrade 5_000
+  @timeout_ws_upgrade 10_000
 
   def update_status(pid, status, game, stream, type) do
     {idle_since, afk} =
