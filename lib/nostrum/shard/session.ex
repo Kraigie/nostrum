@@ -118,6 +118,17 @@ defmodule Nostrum.Shard.Session do
     end
   end
 
+  def handle_info({:gun_down, conn, protocol, reason, _killed_streams, _unprocessed_streams}, state) do
+    Logger.warn(fn -> "connection down (#{protocol} #{reason}), attempting reconnect" end)
+
+    {:ok, :cancel} = :timer.cancel(state.heartbeat_ref)
+    :ok = :gun.close(conn)
+
+    worker = connect(state.gateway)
+
+    {:noreply, %{state | conn: worker}}
+  end
+
   def handle_info({:gun_ws, conn, _stream, {:close, errno, reason}}, state) do
     Logger.warn(fn ->
       "websocket disconnected with code #{errno}, reason #{inspect(reason)}, " <>
