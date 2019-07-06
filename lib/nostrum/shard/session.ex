@@ -118,7 +118,10 @@ defmodule Nostrum.Shard.Session do
     end
   end
 
-  def handle_info({:gun_down, conn, protocol, reason, _killed_streams, _unprocessed_streams}, state) do
+  def handle_info(
+        {:gun_down, conn, protocol, reason, _killed_streams, _unprocessed_streams},
+        state
+      ) do
     Logger.warn(fn -> "connection down (#{protocol} #{reason}), attempting reconnect" end)
 
     {:ok, :cancel} = :timer.cancel(state.heartbeat_ref)
