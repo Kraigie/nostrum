@@ -43,10 +43,21 @@ defmodule Nostrum.Shard.Session do
     {:ok, nil, {:continue, args}}
   end
 
+  def read_mails do
+    receive do
+      message ->
+        Logger.error("received unhandled message #{inspect(message)}")
+        read_mails()
+    after
+      0 -> :ok
+    end
+  end
+
   def handle_continue([gateway, shard_num], nil) do
     Connector.block_until_connect()
     Logger.metadata(shard: shard_num)
 
+    :ok = read_mails()
     worker = connect(gateway)
 
     zlib_context = :zlib.open()
