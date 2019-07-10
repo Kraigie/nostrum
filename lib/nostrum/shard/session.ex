@@ -57,7 +57,6 @@ defmodule Nostrum.Shard.Session do
     Connector.block_until_connect()
     Logger.metadata(shard: shard_num)
 
-    :ok = read_mails()
     worker = connect(gateway)
 
     zlib_context = :zlib.open()
@@ -80,6 +79,8 @@ defmodule Nostrum.Shard.Session do
 
   @spec connect(String.t()) :: pid()
   defp connect(gateway) do
+    :ok = read_mails()
+
     {:ok, worker} = :gun.open(:binary.bin_to_list(gateway), 443, %{protocols: [:http]})
     {:ok, :http} = :gun.await_up(worker, @timeout_connect)
     stream = :gun.ws_upgrade(worker, @gateway_qs)
