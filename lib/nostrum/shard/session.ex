@@ -43,16 +43,6 @@ defmodule Nostrum.Shard.Session do
     {:ok, nil, {:continue, args}}
   end
 
-  def read_mails do
-    receive do
-      message ->
-        Logger.error("received unhandled message #{inspect(message)}")
-        read_mails()
-    after
-      0 -> :ok
-    end
-  end
-
   def handle_continue([gateway, shard_num], nil) do
     Connector.block_until_connect()
     Logger.metadata(shard: shard_num)
@@ -79,8 +69,6 @@ defmodule Nostrum.Shard.Session do
 
   @spec connect(String.t()) :: pid()
   defp connect(gateway) do
-    :ok = read_mails()
-
     {:ok, worker} = :gun.open(:binary.bin_to_list(gateway), 443, %{protocols: [:http]})
     {:ok, :http} = :gun.await_up(worker, @timeout_connect)
     stream = :gun.ws_upgrade(worker, @gateway_qs)
@@ -152,6 +140,14 @@ defmodule Nostrum.Shard.Session do
 
     {:ok, :cancel} = :timer.cancel(state.heartbeat_ref)
     :ok = :gun.close(conn)
+
+    # Drop the `:gun_down` message from the mailbox.
+    receive do
+      {:gun_down, _worker, :ws, :closed, [], []} ->
+        :ok
+    after
+      1_000 -> :ok
+    end
 
     worker = connect(state.gateway)
 
