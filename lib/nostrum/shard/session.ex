@@ -72,7 +72,12 @@ defmodule Nostrum.Shard.Session do
     {:ok, worker} = :gun.open(:binary.bin_to_list(gateway), 443, %{protocols: [:http]})
     {:ok, :http} = :gun.await_up(worker, @timeout_connect)
     stream = :gun.ws_upgrade(worker, @gateway_qs)
+    await_ws_upgraded(worker, stream)
 
+    worker
+  end
+
+  defp await_ws_upgraded(worker, stream) do
     # TODO: Once gun 2.0 is released, the block below can be simplified to:
     # {:upgrade, [<<"websocket">>], _headers} = :gun.await(worker, stream, @timeout_ws_upgrade)
 
@@ -90,8 +95,6 @@ defmodule Nostrum.Shard.Session do
 
         exit(:timeout)
     end
-
-    worker
   end
 
   def handle_info({:gun_ws, _worker, _stream, {:binary, frame}}, state) do
@@ -118,40 +121,22 @@ defmodule Nostrum.Shard.Session do
     end
   end
 
-  def handle_info(
-        {:gun_down, conn, protocol, reason, _killed_streams, _unprocessed_streams},
-        state
-      ) do
-    Logger.warn(fn -> "connection down (#{protocol} #{reason}), attempting reconnect" end)
-
-    {:ok, :cancel} = :timer.cancel(state.heartbeat_ref)
-    :ok = :gun.close(conn)
-
-    worker = connect(state.gateway)
-
-    {:noreply, %{state | conn: worker}}
+  def handle_info({:gun_ws, _conn, _stream, {:close, _errno, _reason}}, state) do
+    {:noreply, state}
   end
 
-  def handle_info({:gun_ws, conn, _stream, {:close, errno, reason}}, state) do
-    Logger.warn(fn ->
-      "websocket disconnected with code #{errno}, reason #{inspect(reason)}, " <>
-        "attempting reconnect"
-    end)
+  def handle_info(
+        {:gun_down, _conn, _proto, _reason, _killed_streams, _unprocessed_streams},
+        state
+      ) do
+    {:noreply, state}
+  end
 
-    {:ok, :cancel} = :timer.cancel(state.heartbeat_ref)
-    :ok = :gun.close(conn)
-
-    # Drop the `:gun_down` message from the mailbox.
-    receive do
-      {:gun_down, _worker, :ws, :closed, [], []} ->
-        :ok
-    after
-      1_000 -> :ok
-    end
-
-    worker = connect(state.gateway)
-
-    {:noreply, %{state | conn: worker}}
+  def handle_info({:gun_up, worker, _proto}, state) do
+    stream = :gun.ws_upgrade(worker, @gateway_qs)
+    await_ws_upgraded(worker, stream)
+    Logger.warn("Reconnected after connection broke.")
+    {:noreply, state}
   end
 
   def handle_cast({:status_update, payload}, state) do
