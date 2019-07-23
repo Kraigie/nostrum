@@ -47,7 +47,10 @@ defmodule Nostrum.Shard.Session do
     Connector.block_until_connect()
     Logger.metadata(shard: shard_num)
 
-    worker = connect(gateway)
+    {:ok, worker} = :gun.open(:binary.bin_to_list(gateway), 443, %{protocols: [:http]})
+    {:ok, :http} = :gun.await_up(worker, @timeout_connect)
+    stream = :gun.ws_upgrade(worker, @gateway_qs)
+    await_ws_upgraded(worker, stream)
 
     zlib_context = :zlib.open()
     :zlib.inflateInit(zlib_context)
@@ -65,16 +68,6 @@ defmodule Nostrum.Shard.Session do
     Logger.debug(fn -> "Websocket connection up on worker #{inspect(worker)}." end)
 
     {:noreply, state}
-  end
-
-  @spec connect(String.t()) :: pid()
-  defp connect(gateway) do
-    {:ok, worker} = :gun.open(:binary.bin_to_list(gateway), 443, %{protocols: [:http]})
-    {:ok, :http} = :gun.await_up(worker, @timeout_connect)
-    stream = :gun.ws_upgrade(worker, @gateway_qs)
-    await_ws_upgraded(worker, stream)
-
-    worker
   end
 
   defp await_ws_upgraded(worker, stream) do
