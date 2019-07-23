@@ -127,6 +127,20 @@ defmodule Nostrum.Api do
     :ok
   end
 
+  @doc """
+  Joins, moves, or disconnects the bot from a voice channel.
+
+  The correct shard to send the update to will be inferred from the
+  `guild_id`. If a corresponding `guild_id` is not found a cache error will be
+  raised.
+
+  To disconnect from a channel, `channel_id` should be set to `nil`.
+  """
+  @spec update_voice_state(Guild.id(), Channel.id(), boolean, boolean) :: no_return | :ok
+  def update_voice_state(guild_id, channel_id, self_mute \\ false, self_deaf \\ false) do
+    Supervisor.update_voice_state(guild_id, channel_id, self_mute, self_deaf)
+  end
+
   @doc ~S"""
   Posts a message to a guild text or DM channel.
 

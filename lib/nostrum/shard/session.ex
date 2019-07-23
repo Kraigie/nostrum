@@ -25,6 +25,11 @@ defmodule Nostrum.Shard.Session do
     WebSockex.cast(pid, {:status_update, payload})
   end
 
+  def update_voice_state(pid, guild_id, channel_id, self_mute, self_deaf) do
+    payload = Payload.update_voice_state_payload(guild_id, channel_id, self_mute, self_deaf)
+    WebSockex.cast(pid, {:update_voice_state, payload})
+  end
+
   def request_guild_members(pid, guild_id, limit \\ 0) do
     payload = Payload.request_members_payload(guild_id, limit)
     WebSockex.cast(pid, {:request_guild_members, payload})
@@ -89,6 +94,10 @@ defmodule Nostrum.Shard.Session do
   end
 
   def handle_cast({:status_update, payload}, state) do
+    {:reply, {:binary, payload}, state}
+  end
+
+  def handle_cast({:update_voice_state, payload}, state) do
     {:reply, {:binary, payload}, state}
   end
 
