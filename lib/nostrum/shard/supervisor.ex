@@ -3,11 +3,12 @@ defmodule Nostrum.Shard.Supervisor do
 
   use Supervisor
 
-  alias Nostrum.{Shard, Util}
   alias Nostrum.Cache.Mapping.GuildShard
   alias Nostrum.Error.CacheError
+  alias Nostrum.Shard
   alias Nostrum.Shard.Session
   alias Nostrum.Shard.Stage.{Cache, Producer}
+  alias Nostrum.Util
 
   require Logger
 
