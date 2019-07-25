@@ -26,7 +26,7 @@ defmodule DummyConsumer do
     Consumer.start_link(__MODULE__)
   end
 
-  def handle_event({:MESSAGE_CREATE, {message}, _}) do
+  def handle_event({:MESSAGE_CREATE, message, _}) do
     Logger.debug(fn -> "Message received: #{inspect(message.content)}" end)
   end
 

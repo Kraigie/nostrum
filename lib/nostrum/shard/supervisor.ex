@@ -4,6 +4,8 @@ defmodule Nostrum.Shard.Supervisor do
   use Supervisor
 
   alias Nostrum.{Shard, Util}
+  alias Nostrum.Cache.Mapping.GuildShard
+  alias Nostrum.Error.CacheError
   alias Nostrum.Shard.Session
   alias Nostrum.Shard.Stage.{Cache, Producer}
 
@@ -46,6 +48,25 @@ defmodule Nostrum.Shard.Supervisor do
     |> Enum.map(fn {_id, pid, _type, _modules} ->
       Session.update_status(pid, status, game, stream, type)
     end)
+  end
+
+  def update_voice_state(guild_id, channel_id, self_mute, self_deaf) do
+    case GuildShard.get_shard(guild_id) do
+      {:ok, shard_id} ->
+        ShardSupervisor
+        |> Supervisor.which_children()
+        |> Enum.filter(fn {_id, _pid, _type, [modules]} -> modules == Nostrum.Shard end)
+        |> Enum.filter(fn {id, _pid, _type, _modules} -> id == shard_id end)
+        |> Enum.map(fn {_id, pid, _type, _modules} -> Supervisor.which_children(pid) end)
+        |> List.flatten()
+        |> Enum.filter(fn {_id, _pid, _type, [modules]} -> modules == Nostrum.Shard.Session end)
+        |> List.first()
+        |> elem(1)
+        |> Session.update_voice_state(guild_id, channel_id, self_mute, self_deaf)
+
+      {:error, :id_not_found} ->
+        raise CacheError, key: guild_id, cache_name: GuildShardMapping
+    end
   end
 
   @doc false

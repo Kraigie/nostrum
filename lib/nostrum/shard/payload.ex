@@ -57,6 +57,17 @@ defmodule Nostrum.Shard.Payload do
   end
 
   @doc false
+  def update_voice_state_payload(guild_id, channel_id, self_mute, self_deaf) do
+    %{
+      "guild_id" => guild_id,
+      "channel_id" => channel_id,
+      "self_mute" => self_mute,
+      "self_deaf" => self_deaf
+    }
+    |> build_payload("VOICE_STATUS_UPDATE")
+  end
+
+  @doc false
   def request_members_payload(guild_id, limit) do
     %{
       "guild_id" => guild_id,

@@ -11,8 +11,6 @@ defmodule Nostrum.Cache.Mapping.GuildShard do
   """
   @spec get_shard(Guild.id()) :: {:ok, integer} | {:error, :id_not_found}
   def get_shard(guild_id) do
-    :ets.lookup_element(:guild_shard_map, guild_id, 2)
-
     case :ets.lookup(:guild_shard_map, guild_id) do
       [{_guild_id, shard_num}] -> {:ok, shard_num}
       [] -> {:error, :id_not_found}
