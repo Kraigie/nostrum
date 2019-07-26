@@ -1,4 +1,5 @@
 defmodule Nostrum.Mixfile do
+  @moduledoc false
   use Mix.Project
 
   def project do
@@ -15,7 +16,8 @@ defmodule Nostrum.Mixfile do
       source_url: "https://github.com/kraigie/nostrum",
       homepage_url: "https://github.com/kraigie/nostrum",
       deps: deps(),
-      docs: docs()
+      docs: docs(),
+      dialyzer: dialyzer()
     ]
   end
 
@@ -81,10 +83,17 @@ defmodule Nostrum.Mixfile do
       {:poison, "~> 3.0"},
       {:ex_doc, "~> 0.14", only: :dev},
       {:credo, "~> 0.4", only: [:dev, :test]},
-      {:dialyxir, "~> 0.5", only: [:dev], runtime: false},
+      {:dialyxir, "~> 1.0.0-rc.6", only: [:dev], runtime: false},
       {:websockex, "~> 0.4"},
       {:gen_stage, "~> 0.11"},
       {:recon, "~> 2.3", only: :dev}
+    ]
+  end
+
+  def dialyzer do
+    [
+      plt_add_deps: :transitive,
+      plt_add_apps: [:mix]
     ]
   end
 end
