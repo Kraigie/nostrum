@@ -55,7 +55,7 @@ defmodule Nostrum.Shard.Session do
     {:ok, worker} = :gun.open(:binary.bin_to_list(gateway), 443, %{protocols: [:http]})
     {:ok, :http} = :gun.await_up(worker, @timeout_connect)
     stream = :gun.ws_upgrade(worker, @gateway_qs)
-    await_ws_upgraded(worker, stream)
+    await_ws_upgrade(worker, stream)
 
     zlib_context = :zlib.open()
     :zlib.inflateInit(zlib_context)
@@ -75,7 +75,7 @@ defmodule Nostrum.Shard.Session do
     {:noreply, state}
   end
 
-  defp await_ws_upgraded(worker, stream) do
+  defp await_ws_upgrade(worker, stream) do
     # TODO: Once gun 2.0 is released, the block below can be simplified to:
     # {:upgrade, [<<"websocket">>], _headers} = :gun.await(worker, stream, @timeout_ws_upgrade)
 
@@ -133,7 +133,7 @@ defmodule Nostrum.Shard.Session do
 
   def handle_info({:gun_up, worker, _proto}, state) do
     stream = :gun.ws_upgrade(worker, @gateway_qs)
-    await_ws_upgraded(worker, stream)
+    await_ws_upgrade(worker, stream)
     Logger.warn("Reconnected after connection broke.")
     {:noreply, state}
   end
