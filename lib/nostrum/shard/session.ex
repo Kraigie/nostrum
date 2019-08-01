@@ -120,7 +120,7 @@ defmodule Nostrum.Shard.Session do
   end
 
   def handle_info({:gun_ws, _conn, _stream, {:close, errno, reason}}, state) do
-    Logger.info("Shard websocket closed (errno #{errno}, reason #{inspect(reason)}).")
+    Logger.info("Shard websocket closed (errno #{errno}, reason #{inspect(reason)})")
     {:noreply, state}
   end
 
@@ -135,7 +135,7 @@ defmodule Nostrum.Shard.Session do
     :ok = :zlib.inflateReset(state.zlib_ctx)
     stream = :gun.ws_upgrade(worker, @gateway_qs)
     await_ws_upgrade(worker, stream)
-    Logger.warn("Reconnected after connection broke.")
+    Logger.warn("Reconnected after connection broke")
     {:noreply, state}
   end
 
