@@ -94,8 +94,8 @@ defmodule Nostrum.Consumer do
            WSState.t()}
   @type guild_emojis_update ::
           {:GUILD_EMOJIS_UPDATE,
-           {guild_id :: integer, old_emojis :: [Nostrum.Struct.Message.Emoji.t()],
-            new_emojis :: [Nostrum.Struct.Message.Emoji.t()]}, WSState.t()}
+           {guild_id :: integer, old_emojis :: [Nostrum.Struct.Emoji.t()],
+            new_emojis :: [Nostrum.Struct.Emoji.t()]}, WSState.t()}
   @type guild_integrations_update :: {:GUILD_INTEGERATIONS_UPDATE, map, WSState.t()}
   @type guild_member_add ::
           {:GUILD_MEMBER_ADD,
