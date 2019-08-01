@@ -132,6 +132,7 @@ defmodule Nostrum.Shard.Session do
   end
 
   def handle_info({:gun_up, worker, _proto}, state) do
+    :ok = :zlib.inflateReset(state.zlib_ctx)
     stream = :gun.ws_upgrade(worker, @gateway_qs)
     await_ws_upgrade(worker, stream)
     Logger.warn("Reconnected after connection broke.")
@@ -144,7 +145,7 @@ defmodule Nostrum.Shard.Session do
   end
 
   def handle_cast({:update_voice_state, payload}, state) do
-    :ok = :gun.ws_send(state.conn, {:binary, payload}
+    :ok = :gun.ws_send(state.conn, {:binary, payload})
     {:noreply, state}
   end
 
