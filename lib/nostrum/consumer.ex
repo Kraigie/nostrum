@@ -23,7 +23,6 @@ defmodule Nostrum.Consumer do
   alias Nostrum.Shard.Stage.Cache
   alias Nostrum.Struct.{Channel, WSState}
   alias Nostrum.Struct.Event.{MessageDelete, MessageDeleteBulk}
-  alias Nostrum.Util
 
   @doc """
   Callback used to handle events.
@@ -247,8 +246,7 @@ defmodule Nostrum.Consumer do
     ConsumerSupervisor.start_link(
       __MODULE__,
       [mod, Keyword.drop(options, [:name])],
-      name: name,
-      spawn_opt: [Util.fullsweep_after()]
+      name: name
     )
   end
 
@@ -256,8 +254,7 @@ defmodule Nostrum.Consumer do
     do:
       ConsumerSupervisor.start_link(
         __MODULE__,
-        [mod, options],
-        spawn_opt: [Util.fullsweep_after()]
+        [mod, options]
       )
 
   @doc false

@@ -45,12 +45,10 @@ defmodule Nostrum.Shard.Session do
 
     Connector.block_until_connect()
 
-    # TODO: Add support for `spawn_opt` start arguments to WebSockex, this does nothing until then.
     WebSockex.start_link(
       gateway <> @gateway_qs,
       __MODULE__,
-      state,
-      spawn_opt: [Util.fullsweep_after()]
+      state
     )
   end
 

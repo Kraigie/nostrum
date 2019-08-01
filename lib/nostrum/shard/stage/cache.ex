@@ -5,12 +5,11 @@ defmodule Nostrum.Shard.Stage.Cache do
 
   alias Nostrum.Shard.Dispatch
   alias Nostrum.Shard.Stage.Producer
-  alias Nostrum.Util
 
   require Logger
 
   def start_link(opts) do
-    GenStage.start_link(__MODULE__, opts, name: __MODULE__, spawn_opt: [Util.fullsweep_after()])
+    GenStage.start_link(__MODULE__, opts, name: __MODULE__)
   end
 
   def init(_opts) do
