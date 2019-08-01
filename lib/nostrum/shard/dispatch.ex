@@ -54,7 +54,7 @@ defmodule Nostrum.Shard.Dispatch do
   end
 
   def handle_event(:CHANNEL_DELETE = event, %{type: 1} = p, state) do
-    {event, ChannelCache.delete(p), state}
+    {event, ChannelCache.delete(p.id), state}
   end
 
   def handle_event(:CHANNEL_DELETE = event, %{type: t} = p, state) when t in [0, 2] do
