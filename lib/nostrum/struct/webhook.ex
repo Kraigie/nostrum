@@ -3,7 +3,7 @@ defmodule Nostrum.Struct.Webhook do
   Struct representing a Discord webhook.
   """
 
-  alias Nostrum.Struct.User
+  alias Nostrum.Struct.{Channel, Guild, User}
 
   @typedoc "Id of the webhook"
   @type id :: String.t()

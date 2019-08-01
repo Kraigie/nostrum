@@ -45,7 +45,7 @@ defmodule Nostrum.Api do
 
   import Nostrum.Snowflake, only: [is_snowflake: 1]
 
-  alias Nostrum.{Constants, Util}
+  alias Nostrum.{Constants, Snowflake, Util}
   alias Nostrum.Struct.{Channel, Embed, Emoji, Guild, Invite, Message, User, Webhook}
   alias Nostrum.Struct.Guild.{AuditLog, AuditLogEntry, Member, Role}
   alias Nostrum.Shard.{Session, Supervisor}

@@ -6,6 +6,8 @@ defmodule Nostrum.Cache.Mapping.GuildShard do
   is an ETS table that stores this information.
   """
 
+  alias Nostrum.Struct.Guild
+
   @doc """
   Gets the a shard num from a `guild_id`.
   """

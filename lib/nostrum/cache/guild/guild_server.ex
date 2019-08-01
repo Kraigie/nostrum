@@ -6,7 +6,7 @@ defmodule Nostrum.Cache.Guild.GuildServer do
   alias Nostrum.Cache.Guild.GuildRegister
   alias Nostrum.Struct.{Channel, Guild}
   alias Nostrum.Struct.Guild.{Member, Role}
-  alias Nostrum.Util
+  alias Nostrum.{Snowflake, Util}
 
   require Logger
 
