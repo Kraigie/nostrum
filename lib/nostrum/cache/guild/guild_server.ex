@@ -29,11 +29,6 @@ defmodule Nostrum.Cache.Guild.GuildServer do
   end
 
   @doc false
-  def child_spec do
-    Supervisor.child_spec(__MODULE__, start: {__MODULE__, :start_link, []})
-  end
-
-  @doc false
   def call(id, request) do
     with {:ok, pid} <- GuildRegister.lookup(id), do: GenServer.call(pid, request)
   end

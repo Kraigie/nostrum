@@ -40,7 +40,7 @@ defmodule Nostrum.Cache.GuildCache do
   def select_all(selector)
 
   def select_all(selector) when is_selector(selector) do
-    Supervisor.which_children(GuildSupervisor)
+    DynamicSupervisor.which_children(GuildSupervisor)
     |> Stream.map(fn {_, pid, _, _} -> pid end)
     |> Task.async_stream(fn pid -> GenServer.call(pid, {:select, selector}) end)
     |> Stream.map(fn {:ok, value} -> value end)
