@@ -110,7 +110,7 @@ defmodule Nostrum.Api do
     - `type` - The type of status to show. 0 (Playing) | 1 (Streaming) | 2 (Listening) | 3 (Watching)
     - `stream` - URL of twitch.tv stream
   """
-  @spec update_shard_status(pid, status, String.t(), integer, String.t()) :: :ok
+  @spec update_shard_status(pid, status, String.t(), integer, String.t() | nil) :: :ok
   def update_shard_status(pid, status, game, type \\ 0, stream \\ nil) do
     Session.update_status(pid, to_string(status), game, stream, type)
     :ok
@@ -121,7 +121,7 @@ defmodule Nostrum.Api do
 
   See `update_shard_status/5` for usage.
   """
-  @spec update_status(status, String.t(), integer, String.t()) :: :ok
+  @spec update_status(status, String.t(), integer, String.t() | nil) :: :ok
   def update_status(status, game, type \\ 0, stream \\ nil) do
     Supervisor.update_status(status, game, stream, type)
     :ok
@@ -798,7 +798,7 @@ defmodule Nostrum.Api do
   end
 
   @spec send_chunked_delete(
-          [Nostrum.Struct.Message.id()],
+          [Nostrum.Struct.Message.id()] | %Stream{},
           Nostrum.Snowflake.t()
         ) :: error | {:ok}
   defp send_chunked_delete(messages, channel_id) do
