@@ -20,6 +20,15 @@ defmodule Nostrum.Cache.ChannelCache do
 
   import Nostrum.Snowflake, only: [is_snowflake: 1]
 
+  # dialyzer seems to think lookup will never fail,
+  # so it complains about catchall clauses
+  # TODO maybe fix this properly?
+  @dialyzer [
+    {:nowarn_function, get: 1},
+    {:nowarn_function, update: 1},
+    {:nowarn_function, delete: 1}
+  ]
+
   @doc ~S"""
   Retrieves a channel from the cache.
 
