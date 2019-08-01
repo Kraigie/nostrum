@@ -22,7 +22,7 @@ defmodule Nostrum.Struct.Guild.AuditLogEntry do
   """
   @type action_type :: pos_integer()
 
-  @typep change_value :: String.t() | Snowflake.t() | Integer.t() | [map()] | boolean()
+  @typep change_value :: String.t() | Snowflake.t() | integer() | [map()] | boolean()
 
   @typedoc """
   Individual changes of this audit log entry.
@@ -44,7 +44,7 @@ defmodule Nostrum.Struct.Guild.AuditLogEntry do
   @typedoc """
   [Optional audit entry info](https://discordapp.com/developers/docs/resources/audit-log#audit-log-entry-object-optional-audit-entry-info)
   """
-  @type options :: Map.t() | nil
+  @type options :: map() | nil
 
   @typedoc "The reason for this change, if applicable"
   @type reason :: String.t() | nil

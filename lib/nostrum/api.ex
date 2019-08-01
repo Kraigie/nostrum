@@ -1277,7 +1277,7 @@ defmodule Nostrum.Api do
   ## Options
 
     * `:user_id` (`t:Nostrum.Struct.User.id/0`) - filter the log for a user ID
-    * `:action_type` (`t:Integer.t/0`) - filter the log by audit log type, see [Audit Log Events](https://discordapp.com/developers/docs/resources/audit-log#audit-log-entry-object-audit-log-events)
+    * `:action_type` (`t:integer/0`) - filter the log by audit log type, see [Audit Log Events](https://discordapp.com/developers/docs/resources/audit-log#audit-log-entry-object-audit-log-events)
     * `:before` (`t:Nostrum.Struct.Snowflake.t/0`) - filter the log before a certain entry ID
     * `:limit` (`t:positive_integer/0`) - how many entries are returned (default 50, minimum 1, maximum 100)
   """
@@ -2773,12 +2773,12 @@ defmodule Nostrum.Api do
     |> handle_request_with_decode
   end
 
-  @spec maybe_add_reason(String.t() | nil) :: List.t()
+  @spec maybe_add_reason(String.t() | nil) :: list()
   defp maybe_add_reason(reason) do
     maybe_add_reason(reason, [{"content-type", "application/json"}])
   end
 
-  @spec maybe_add_reason(String.t() | nil, List.t()) :: List.t()
+  @spec maybe_add_reason(String.t() | nil, list()) :: list()
   defp maybe_add_reason(nil, headers) do
     headers
   end
