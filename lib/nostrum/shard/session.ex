@@ -155,9 +155,9 @@ defmodule Nostrum.Shard.Session do
   end
 
   def handle_cast(:heartbeat, %{heartbeat_ack: false} = state) do
-    Logger.warn("heartbeat_ack not received in time, disconnecting")
-    :ok = :gun.close(state.conn)
-    {:stop, {:heartbeat_ack_timeout, state.shard_num}, state}
+    Logger.warn("heartbeat_ack not received in time")
+    {:ok, :cancel} = :timer.cancel_ref(state.timer_ref)
+    {:noreply, state}
   end
 
   def handle_cast(:heartbeat, state) do
