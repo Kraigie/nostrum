@@ -131,6 +131,7 @@ defmodule Nostrum.Shard.Session do
     # Try to cancel the internal timer, but
     # do not explode if it was already cancelled.
     :timer.cancel_ref(state.timer_ref)
+    :gun.ws_send(state.conn, :close)
     {:noreply, state}
   end
 
