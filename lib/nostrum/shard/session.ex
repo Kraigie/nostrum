@@ -128,6 +128,9 @@ defmodule Nostrum.Shard.Session do
         {:gun_down, _conn, _proto, _reason, _killed_streams, _unprocessed_streams},
         state
       ) do
+    # Try to cancel the internal timer, but
+    # do not explode if it was already cancelled.
+    :timer.cancel_ref(state.timer_ref)
     {:noreply, state}
   end
 
