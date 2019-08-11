@@ -70,7 +70,7 @@ defmodule Nostrum.Shard.Session do
       zlib_ctx: zlib_context
     }
 
-    Logger.debug(fn -> "Websocket connection up on worker #{inspect(worker)}." end)
+    Logger.debug(fn -> "Websocket connection up on worker #{inspect(worker)}" end)
 
     {:noreply, state}
   end
@@ -88,7 +88,7 @@ defmodule Nostrum.Shard.Session do
     after
       @timeout_ws_upgrade ->
         Logger.error(fn ->
-          "Cannot upgrade connection to Websocket after #{@timeout_ws_upgrade / 1000} seconds."
+          "Cannot upgrade connection to Websocket after #{@timeout_ws_upgrade / 1000} seconds"
         end)
 
         exit(:timeout)
@@ -158,7 +158,7 @@ defmodule Nostrum.Shard.Session do
   end
 
   def handle_cast(:heartbeat, %{heartbeat_ack: false} = state) do
-    Logger.warn("heartbeat_ack not received in time")
+    Logger.warn("heartbeat_ack not received in time, disconnecting")
     {:ok, :cancel} = :timer.cancel_ref(state.timer_ref)
     :gun.ws_send(state.conn, :close)
     {:noreply, state}
