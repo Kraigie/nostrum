@@ -1,15 +1,20 @@
 defmodule Nostrum.Shard.Session do
   @moduledoc false
 
-  use WebSockex
-
   alias Nostrum.{Constants, Util}
   alias Nostrum.Shard.{Connector, Event, Payload}
   alias Nostrum.Struct.WSState
 
   require Logger
 
+  use GenServer
+
   @gateway_qs "/?compress=zlib-stream&encoding=etf&v=6"
+
+  # Maximum time the initial connection may take, in milliseconds.
+  @timeout_connect 10_000
+  # Maximum time the websocket upgrade may take, in milliseconds.
+  @timeout_ws_upgrade 10_000
 
   def update_status(pid, status, game, stream, type) do
     {idle_since, afk} =
@@ -22,55 +27,75 @@ defmodule Nostrum.Shard.Session do
       end
 
     payload = Payload.status_update_payload(idle_since, game, stream, status, afk, type)
-    WebSockex.cast(pid, {:status_update, payload})
+    GenServer.cast(pid, {:status_update, payload})
   end
 
   def update_voice_state(pid, guild_id, channel_id, self_mute, self_deaf) do
     payload = Payload.update_voice_state_payload(guild_id, channel_id, self_mute, self_deaf)
-    WebSockex.cast(pid, {:update_voice_state, payload})
+    GenServer.cast(pid, {:update_voice_state, payload})
   end
 
   def request_guild_members(pid, guild_id, limit \\ 0) do
     payload = Payload.request_members_payload(guild_id, limit)
-    WebSockex.cast(pid, {:request_guild_members, payload})
+    GenServer.cast(pid, {:request_guild_members, payload})
   end
 
   def start_link([gateway, shard_num]) do
+    GenServer.start_link(__MODULE__, [gateway, shard_num], spawn_opt: [Util.fullsweep_after()])
+  end
+
+  def init([_gateway, _shard_num] = args) do
+    {:ok, nil, {:continue, args}}
+  end
+
+  def handle_continue([gateway, shard_num], nil) do
+    Connector.block_until_connect()
+    Logger.metadata(shard: shard_num)
+
+    {:ok, worker} = :gun.open(:binary.bin_to_list(gateway), 443, %{protocols: [:http]})
+    {:ok, :http} = :gun.await_up(worker, @timeout_connect)
+    stream = :gun.ws_upgrade(worker, @gateway_qs)
+    await_ws_upgrade(worker, stream)
+
+    zlib_context = :zlib.open()
+    :zlib.inflateInit(zlib_context)
+
     state = %WSState{
+      conn_pid: self(),
+      conn: worker,
       shard_num: shard_num,
       gateway: gateway <> @gateway_qs,
       last_heartbeat_ack: DateTime.utc_now(),
-      heartbeat_ack: true
+      heartbeat_ack: true,
+      zlib_ctx: zlib_context
     }
 
-    Connector.block_until_connect()
+    Logger.debug(fn -> "Websocket connection up on worker #{inspect(worker)}" end)
 
-    # TODO: Add support for `spawn_opt` start arguments to WebSockex, this does nothing until then.
-    WebSockex.start_link(
-      gateway <> @gateway_qs,
-      __MODULE__,
-      state,
-      spawn_opt: [Util.fullsweep_after()]
-    )
+    {:noreply, state}
   end
 
-  def handle_connect(conn, state) do
-    Logger.metadata(shard: state.shard_num)
+  defp await_ws_upgrade(worker, stream) do
+    # TODO: Once gun 2.0 is released, the block below can be simplified to:
+    # {:upgrade, [<<"websocket">>], _headers} = :gun.await(worker, stream, @timeout_ws_upgrade)
 
-    zlib_ctx = :zlib.open()
-    :zlib.inflateInit(zlib_ctx)
+    receive do
+      {:gun_upgrade, ^worker, ^stream, [<<"websocket">>], _headers} ->
+        :ok
 
-    {:ok,
-     %{
-       state
-       | conn: conn,
-         conn_pid: self(),
-         zlib_ctx: zlib_ctx,
-         heartbeat_ack: true
-     }}
+      {:gun_error, ^worker, ^stream, reason} ->
+        exit({:ws_upgrade_failed, reason})
+    after
+      @timeout_ws_upgrade ->
+        Logger.error(fn ->
+          "Cannot upgrade connection to Websocket after #{@timeout_ws_upgrade / 1000} seconds"
+        end)
+
+        exit(:timeout)
+    end
   end
 
-  def handle_frame({:binary, frame}, state) do
+  def handle_info({:gun_ws, _worker, _stream, {:binary, frame}}, state) do
     payload =
       state.zlib_ctx
       |> :zlib.inflate(frame)
@@ -86,63 +111,69 @@ defmodule Nostrum.Shard.Session do
 
     case from_handle do
       {new_state, reply} ->
-        {:reply, {:binary, reply}, new_state}
+        :ok = :gun.ws_send(state.conn, {:binary, reply})
+        {:noreply, new_state}
 
       new_state ->
-        {:ok, new_state}
+        {:noreply, new_state}
     end
   end
 
+  def handle_info({:gun_ws, _conn, _stream, {:close, errno, reason}}, state) do
+    Logger.info("Shard websocket closed (errno #{errno}, reason #{inspect(reason)})")
+    {:noreply, state}
+  end
+
+  def handle_info(
+        {:gun_down, _conn, _proto, _reason, _killed_streams, _unprocessed_streams},
+        state
+      ) do
+    # Try to cancel the internal timer, but
+    # do not explode if it was already cancelled.
+    :timer.cancel_ref(state.timer_ref)
+    {:noreply, state}
+  end
+
+  def handle_info({:gun_up, worker, _proto}, state) do
+    :ok = :zlib.inflateReset(state.zlib_ctx)
+    stream = :gun.ws_upgrade(worker, @gateway_qs)
+    await_ws_upgrade(worker, stream)
+    Logger.warn("Reconnected after connection broke")
+    {:noreply, state}
+  end
+
   def handle_cast({:status_update, payload}, state) do
-    {:reply, {:binary, payload}, state}
+    :ok = :gun.ws_send(state.conn, {:binary, payload})
+    {:noreply, state}
   end
 
   def handle_cast({:update_voice_state, payload}, state) do
-    {:reply, {:binary, payload}, state}
+    :ok = :gun.ws_send(state.conn, {:binary, payload})
+    {:noreply, state}
   end
 
   def handle_cast({:request_guild_members, payload}, state) do
-    {:reply, {:binary, payload}, state}
+    :ok = :gun.ws_send(state.conn, {:binary, payload})
+    {:noreply, state}
   end
 
   def handle_cast(:heartbeat, %{heartbeat_ack: false} = state) do
     Logger.warn("heartbeat_ack not received in time, disconnecting")
-    {:close, state}
+    {:ok, :cancel} = :timer.cancel_ref(state.timer_ref)
+    :gun.ws_send(state.conn, :close)
+    {:noreply, state}
   end
 
   def handle_cast(:heartbeat, state) do
     {:ok, ref} =
-      :timer.apply_after(state.heartbeat_interval, WebSockex, :cast, [state.conn_pid, :heartbeat])
+      :timer.apply_after(state.heartbeat_interval, :gen_server, :cast, [
+        state.conn_pid,
+        :heartbeat
+      ])
 
-    {:reply, {:binary, Payload.heartbeat_payload(state.seq)},
+    :ok = :gun.ws_send(state.conn, {:binary, Payload.heartbeat_payload(state.seq)})
+
+    {:noreply,
      %{state | heartbeat_ref: ref, heartbeat_ack: false, last_heartbeat_send: DateTime.utc_now()}}
-  end
-
-  def handle_disconnect(%{reason: reason}, state) when is_tuple(reason) do
-    Logger.warn(fn ->
-      "websocket disconnected with reason #{inspect(reason)}, attempting reconnect"
-    end)
-
-    :timer.cancel(state.heartbeat_ref)
-
-    {:reconnect, state}
-  end
-
-  def handle_disconnect(%{reason: reason}, state) do
-    Logger.warn(fn ->
-      "websocket errored with reason #{inspect(reason)}, attempting reconnect"
-    end)
-
-    :timer.cancel(state.heartbeat_ref)
-
-    {:reconnect, state}
-  end
-
-  def terminate(reason, state) do
-    :timer.cancel(state.heartbeat_ref)
-
-    Logger.warn(fn ->
-      "websocket closed with reason #{inspect(reason)}"
-    end)
   end
 end
