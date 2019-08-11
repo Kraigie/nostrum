@@ -31,8 +31,8 @@ defmodule Nostrum.Struct.WSState do
   @typedoc "PID of the shard containing this state"
   @type shard_pid :: pid
 
-  @typedoc "Websockex connection state map"
-  @type conn :: map
+  @typedoc "PID of the `:gun` worker connected to the websocket"
+  @type conn :: pid
 
   @typedoc "PID of the connection process"
   @type conn_pid :: pid
