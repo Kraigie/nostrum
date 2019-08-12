@@ -41,7 +41,7 @@ defmodule Nostrum.Shard.Session do
   end
 
   def start_link([gateway, shard_num]) do
-    GenServer.start_link(__MODULE__, [gateway, shard_num], spawn_opt: [Util.fullsweep_after()])
+    GenServer.start_link(__MODULE__, [gateway, shard_num])
   end
 
   def init([_gateway, _shard_num] = args) do
@@ -130,7 +130,7 @@ defmodule Nostrum.Shard.Session do
       ) do
     # Try to cancel the internal timer, but
     # do not explode if it was already cancelled.
-    :timer.cancel_ref(state.timer_ref)
+    :timer.cancel(state.timer_ref)
     {:noreply, state}
   end
 
@@ -159,7 +159,7 @@ defmodule Nostrum.Shard.Session do
 
   def handle_cast(:heartbeat, %{heartbeat_ack: false} = state) do
     Logger.warn("heartbeat_ack not received in time, disconnecting")
-    {:ok, :cancel} = :timer.cancel_ref(state.timer_ref)
+    {:ok, :cancel} = :timer.cancel(state.timer_ref)
     :gun.ws_send(state.conn, :close)
     {:noreply, state}
   end
