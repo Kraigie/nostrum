@@ -29,7 +29,7 @@ defmodule Nostrum.Mixfile do
     ]
   end
 
-  # How to shamelessly copy from NERVES project.
+  # "How to" shamelessly copied from the nerves project.
   # https://github.com/nerves-project/nerves/tree/master/docs
   def docs do
     [
