@@ -6,7 +6,7 @@ defmodule Nostrum.Cache.Guild.GuildSupervisor do
   alias Nostrum.Cache.Guild.GuildServer
 
   def start_link([]) do
-    DynamicSupervisor.start_link(__MODULE__, [], name: GuildSupervisor)
+    DynamicSupervisor.start_link(__MODULE__, [], name: __MODULE__)
   end
 
   def start_child(args) do
