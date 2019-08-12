@@ -4,11 +4,11 @@ defmodule Nostrum.Struct.VoiceRegion do
   """
 
   @type t :: %{
-    custom: boolean,
-    deprecated: boolean,
-    id: String.t,
-    name: String.t,
-    optimal: boolean,
-    vip: boolean
-  }
+          custom: boolean,
+          deprecated: boolean,
+          id: String.t(),
+          name: String.t(),
+          optimal: boolean,
+          vip: boolean
+        }
 end
