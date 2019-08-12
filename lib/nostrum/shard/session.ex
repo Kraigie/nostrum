@@ -130,7 +130,7 @@ defmodule Nostrum.Shard.Session do
       ) do
     # Try to cancel the internal timer, but
     # do not explode if it was already cancelled.
-    :timer.cancel_ref(state.heartbeat_ref)
+    :timer.cancel(state.heartbeat_ref)
     {:noreply, state}
   end
 
@@ -159,7 +159,7 @@ defmodule Nostrum.Shard.Session do
 
   def handle_cast(:heartbeat, %{heartbeat_ack: false, heartbeat_ref: timer_ref} = state) do
     Logger.warn("heartbeat_ack not received in time, disconnecting")
-    {:ok, :cancel} = :timer.cancel_ref(timer_ref)
+    {:ok, :cancel} = :timer.cancel(timer_ref)
     :gun.ws_send(state.conn, :close)
     {:noreply, state}
   end
