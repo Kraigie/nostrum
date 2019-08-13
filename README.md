@@ -17,7 +17,7 @@ Add Nostrum as a dependency:
  Stable documentation can be found [here](https://hexdocs.pm/nostrum/)
 ```elixir
 def deps do
-  [{:nostrum, "~> 0.3"}]
+  [{:nostrum, "~> 0.4"}]
 end
 ```
 
