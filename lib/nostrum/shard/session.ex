@@ -139,7 +139,7 @@ defmodule Nostrum.Shard.Session do
     stream = :gun.ws_upgrade(worker, @gateway_qs)
     await_ws_upgrade(worker, stream)
     Logger.warn("Reconnected after connection broke")
-    {:noreply, state}
+    {:noreply, %{state | heartbeat_ack: true}}
   end
 
   def handle_cast({:status_update, payload}, state) do
