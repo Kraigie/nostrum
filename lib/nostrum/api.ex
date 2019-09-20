@@ -242,7 +242,8 @@ defmodule Nostrum.Api do
   @doc ~S"""
   Same as `create_message/2`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
-  @spec create_message!(Channel.id() | Message.t(), options | String.t()) :: no_return | Message.t()
+  @spec create_message!(Channel.id() | Message.t(), options | String.t()) ::
+          no_return | Message.t()
   def create_message!(channel_id, options) do
     create_message(channel_id, options)
     |> bangify
