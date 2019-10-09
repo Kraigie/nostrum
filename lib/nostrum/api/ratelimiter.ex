@@ -147,7 +147,8 @@ defmodule Nostrum.Api.Ratelimiter do
     if String.ends_with?(endpoint, "/messages/_id") and method == :delete do
       "delete:" <> endpoint
     else
-      endpoint
+      # Strips `emoji` and `user_id` suffix off the reaction endpoints.
+      String.replace(endpoint, ~r[/reactions/.+/.+$]iu, "/reactions")
     end
   end
 

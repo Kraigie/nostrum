@@ -43,6 +43,18 @@ defmodule Nostrum.Api.RatelimitTest do
     assert result == expected
   end
 
+  test "reaction endpoint" do
+    expected = "/channels/#{@test_channel}/messages/_id/reactions"
+
+    result =
+      Nostrum.Api.Ratelimiter.get_endpoint(
+        "/channels/#{@test_channel}/messages/#{@test_message}/reactions/⬅/@me",
+        :get
+      )
+
+    assert result == expected
+  end
+
   @tag disabled: true
   test "non-major parameter async no 429" do
     [first, second] = @test_users
