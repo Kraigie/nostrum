@@ -130,7 +130,7 @@ defmodule Nostrum.Shard.Session do
       ) do
     # Try to cancel the internal timer, but
     # do not explode if it was already cancelled.
-    :timer.cancel(state.timer_ref)
+    :timer.cancel(state.heartbeat_ref)
     {:noreply, state}
   end
 
@@ -139,7 +139,7 @@ defmodule Nostrum.Shard.Session do
     stream = :gun.ws_upgrade(worker, @gateway_qs)
     await_ws_upgrade(worker, stream)
     Logger.warn("Reconnected after connection broke")
-    {:noreply, state}
+    {:noreply, %{state | heartbeat_ack: true}}
   end
 
   def handle_cast({:status_update, payload}, state) do
@@ -157,9 +157,9 @@ defmodule Nostrum.Shard.Session do
     {:noreply, state}
   end
 
-  def handle_cast(:heartbeat, %{heartbeat_ack: false} = state) do
+  def handle_cast(:heartbeat, %{heartbeat_ack: false, heartbeat_ref: timer_ref} = state) do
     Logger.warn("heartbeat_ack not received in time, disconnecting")
-    {:ok, :cancel} = :timer.cancel(state.timer_ref)
+    {:ok, :cancel} = :timer.cancel(timer_ref)
     :gun.ws_send(state.conn, :close)
     {:noreply, state}
   end

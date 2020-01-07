@@ -50,7 +50,7 @@ Add Nostrum as a dependency:
  *Stable*
 ```Elixir
 def deps do
-  [{:nostrum, "~> 0.3"}]
+  [{:nostrum, "~> 0.4"}]
 end
 ```
 
@@ -123,5 +123,4 @@ Nostrum takes advantage of `:debug`, `:warn`, and `:info`.
 A very simple example bot can be found
 [here](https://github.com/Kraigie/nostrum/blob/a655b8bea1c96777ea6ec729493625b147899081/examples/event_consumer.ex).
 
-A more complex bot can be found
-[here](https://github.com/Kraigie/mark-hoff).
+A more complex bot can be found [here](https://github.com/jchristgit/bolt).

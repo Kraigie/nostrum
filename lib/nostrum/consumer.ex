@@ -86,7 +86,7 @@ defmodule Nostrum.Consumer do
           {:GUILD_UNAVAILABLE, unavailable_guild :: Nostrum.Struct.Guild.UnavailableGuild.t(),
            WSState.t()}
   @type guild_update ::
-          {:GUILD_CREATE,
+          {:GUILD_UPDATE,
            {old_guild :: Nostrum.Struct.Guild.t(), new_guild :: Nostrum.Struct.Guild.t()},
            WSState.t()}
   @type guild_delete ::
