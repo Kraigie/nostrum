@@ -24,6 +24,7 @@ defmodule Nostrum.Cache.GuildCache do
   @type reason ::
           :id_not_found
           | :id_not_found_on_guild_lookup
+          | :channel_not_found
 
   defguardp is_selector(term) when is_function(term, 1)
 
