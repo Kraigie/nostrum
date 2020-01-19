@@ -476,6 +476,37 @@ defmodule Nostrum.Api do
   end
 
   @doc ~S"""
+  Deletes all reactions of a given emoji from a message.
+
+  This endpoint requires the `MANAGE_MESSAGES` permissions. It fires a `t:Nostrum.Consumer.message_reaction_remove_emoji/0` event.
+
+  If successful, returns `{:ok}`. Otherwise, returns `t:Nostrum.Api.error/0`.
+
+  See `create_reaction/3` for similar examples.
+  """
+  @spec delete_reaction(Channel.id(), Message.id(), emoji) :: error | {:ok}
+  def delete_reaction(channel_id, message_id, emoji)
+
+  def delete_reaction(channel_id, message_id, %Emoji{} = emoji),
+    do: delete_reaction(channel_id, message_id, Emoji.api_name(emoji))
+
+  def delete_reaction(channel_id, message_id, emoji_api_name) do
+    request(
+      :delete,
+      Constants.channel_reactions_delete_emoji(channel_id, message_id, emoji_api_name)
+    )
+  end
+
+  @doc ~S"""
+  Same as `delete_reaction/3`, but raises `Nostrum.Error.ApiError` in case of failure.
+  """
+  @spec delete_reaction!(Channel.id(), Message.id(), emoji) :: no_return | {:ok}
+  def delete_reaction!(channel_id, message_id, emoji) do
+    delete_reaction(channel_id, message_id, emoji)
+    |> bangify
+  end
+
+  @doc ~S"""
   Gets all users who reacted with an emoji.
 
   This endpoint requires the `VIEW_CHANNEL` and `READ_MESSAGE_HISTORY` permissions.

@@ -24,6 +24,9 @@ defmodule Nostrum.Constants do
   def channel_reactions_delete(channel_id, message_id),
     do: "/channels/#{channel_id}/messages/#{message_id}/reactions"
 
+  def channel_reactions_delete_emoji(channel_id, message_id, emoji),
+    do: "/channels/#{channel_id}/messages/#{message_id}/reactions/#{emoji}"
+
   def channel_bulk_delete(channel_id), do: "/channels/#{channel_id}/messages/bulk_delete"
 
   def channel_permission(channel_id, overwrite_id),

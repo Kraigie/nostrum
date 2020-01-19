@@ -176,6 +176,8 @@ defmodule Nostrum.Shard.Dispatch do
 
   def handle_event(:MESSAGE_REACTION_REMOVE_ALL = event, p, state), do: {event, p, state}
 
+  def handle_event(:MESSAGE_REACTION_REMOVE_EMOJI = event, p, state), do: {event, p, state}
+
   def handle_event(:MESSAGE_ACK = event, p, state), do: {event, p, state}
 
   def handle_event(:PRESENCE_UPDATE = event, p, state) do
