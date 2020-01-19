@@ -137,6 +137,7 @@ defmodule Nostrum.Consumer do
   @type message_reaction_add :: {:MESSAGE_REACTION_ADD, map, WSState.t()}
   @type message_reaction_remove :: {:MESSAGE_REACTION_REMOVE, map, WSState.t()}
   @type message_reaction_remove_all :: {:MESSAGE_REACTION_REMOVE_ALL, map, WSState.t()}
+  @type message_reaction_remove_emoji :: {:MESSAGE_REACTION_REMOVE_EMOJI, map, WSState.t()}
   @type message_ack :: {:MESSAGE_ACK, map, WSState.t()}
   @typedoc """
   Dispatched when a user's presence is updated.
