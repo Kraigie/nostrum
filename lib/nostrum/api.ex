@@ -2427,7 +2427,13 @@ defmodule Nostrum.Api do
   """
   @spec leave_guild(integer) :: error | {:ok}
   def leave_guild(guild_id) do
-    request(:delete, Constants.me_guild(guild_id))
+    request(%{
+      method: :delete,
+      route: Constants.me_guild(guild_id),
+      body: "",
+      options: [],
+      headers: []
+    })
   end
 
   @doc """
