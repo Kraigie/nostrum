@@ -65,7 +65,7 @@ defmodule Nostrum.Struct.User do
   @type email :: String.t() | nil
 
   @typedoc "The user's public flags"
-  @type public_flags :: Flags.t() | nil
+  @type public_flags :: Flags.t()
 
   @type t :: %__MODULE__{
           id: id,
