@@ -181,8 +181,8 @@ defmodule Nostrum.Struct.Flags do
   def to_integer(flag_struct) do
     booleans =
       flag_struct
+      |> Map.from_struct()
       |> Map.to_list()
-      |> List.delete({:__struct__, Nostrum.Struct.Flags})
 
     Enum.reduce(booleans, 0, fn {flag, enabled}, flag_value ->
       case enabled do
