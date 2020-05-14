@@ -22,7 +22,7 @@ defmodule Nostrum.Struct.User do
   A `member` has everything that a `user` has, but also additional information on a per guild basis. This includes things like a `nickname` and a list of `roles`.
   """
 
-  alias Nostrum.{Constants, Snowflake, Util}
+  alias Nostrum.{Constants, Snowflake, Util, Struct.Flags}
 
   defstruct [
     :id,
@@ -32,7 +32,8 @@ defmodule Nostrum.Struct.User do
     :bot,
     :mfa_enabled,
     :verified,
-    :email
+    :email,
+    :public_flags
   ]
 
   defimpl String.Chars do
@@ -63,6 +64,9 @@ defmodule Nostrum.Struct.User do
   @typedoc "The user's email"
   @type email :: String.t() | nil
 
+  @typedoc "The user's public flags"
+  @type public_flags :: Flags.t() | nil
+
   @type t :: %__MODULE__{
           id: id,
           username: username,
@@ -71,7 +75,8 @@ defmodule Nostrum.Struct.User do
           bot: bot,
           mfa_enabled: mfa_enabled,
           verified: verified,
-          email: email
+          email: email,
+          public_flags: public_flags
         }
 
   @doc ~S"""
@@ -153,6 +158,7 @@ defmodule Nostrum.Struct.User do
       map
       |> Map.new(fn {k, v} -> {Util.maybe_to_atom(k), v} end)
       |> Map.update(:id, nil, &Util.cast(&1, Snowflake))
+      |> Map.update(:public_flags, 0, &Flags.from_integer(&1))
 
     struct(__MODULE__, new)
   end
