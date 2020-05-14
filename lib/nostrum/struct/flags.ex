@@ -159,20 +159,20 @@ defmodule Nostrum.Struct.Flags do
 
   ```elixir
   iex> my_flags = %Nostrum.Struct.Flags{
-    bug_hunter_level_1: false,
-    bug_hunter_level_2: false,
-    early_supporter: true,
-    hypesquad_balance: true,
-    hypesquad_bravery: false,
-    hypesquad_brilliance: false,
-    hypesquad_events: false,
-    partner: true,
-    staff: false,
-    system: false,
-    team_user: false,
-    verified_bot: false,
-    verified_developer: true
-  }
+  ...>  bug_hunter_level_1: false,
+  ...>  bug_hunter_level_2: false,
+  ...>  early_supporter: true,
+  ...>  hypesquad_balance: true,
+  ...>  hypesquad_bravery: false,
+  ...>  hypesquad_brilliance: false,
+  ...>  hypesquad_events: false,
+  ...>  partner: true,
+  ...>  staff: false,
+  ...>  system: false,
+  ...>  team_user: false,
+  ...>  verified_bot: false,
+  ...>  verified_developer: true
+  ...> }
   iex> Nostrum.Struct.Flags.to_integer(my_flags)
   131842
   ```

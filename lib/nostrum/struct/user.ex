@@ -22,7 +22,7 @@ defmodule Nostrum.Struct.User do
   A `member` has everything that a `user` has, but also additional information on a per guild basis. This includes things like a `nickname` and a list of `roles`.
   """
 
-  alias Nostrum.{Constants, Snowflake, Util, Struct.Flags}
+  alias Nostrum.{Constants, Snowflake, Struct.Flags, Util}
 
   defstruct [
     :id,
