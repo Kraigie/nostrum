@@ -158,7 +158,7 @@ defmodule Nostrum.Struct.User do
       map
       |> Map.new(fn {k, v} -> {Util.maybe_to_atom(k), v} end)
       |> Map.update(:id, nil, &Util.cast(&1, Snowflake))
-      |> Map.update(:public_flags, 0, &Flags.from_integer(&1))
+      |> Map.update(:public_flags, %Flags{}, &Flags.from_integer(&1))
 
     struct(__MODULE__, new)
   end
