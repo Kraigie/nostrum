@@ -1,4 +1,4 @@
-defmodule Nostrum.Struct.Flags do
+defmodule Nostrum.Struct.User.Flags do
   @moduledoc """
   Struct representing the flags a user account can have
   """
@@ -124,8 +124,8 @@ defmodule Nostrum.Struct.Flags do
   ## Examples
 
   ```elixir
-  iex> Nostrum.Struct.Flags.from_integer(131842)
-  %Nostrum.Struct.Flags{
+  iex> Nostrum.Struct.User.Flags.from_integer(131842)
+  %Nostrum.Struct.User.Flags{
     bug_hunter_level_1: false,
     bug_hunter_level_2: false,
     early_supporter: true,
@@ -158,7 +158,7 @@ defmodule Nostrum.Struct.Flags do
   ## Examples
 
   ```elixir
-  iex> my_flags = %Nostrum.Struct.Flags{
+  iex> my_flags = %Nostrum.Struct.User.Flags{
   ...>  bug_hunter_level_1: false,
   ...>  bug_hunter_level_2: false,
   ...>  early_supporter: true,
@@ -173,7 +173,7 @@ defmodule Nostrum.Struct.Flags do
   ...>  verified_bot: false,
   ...>  verified_developer: true
   ...> }
-  iex> Nostrum.Struct.Flags.to_integer(my_flags)
+  iex> Nostrum.Struct.User.Flags.to_integer(my_flags)
   131842
   ```
   """

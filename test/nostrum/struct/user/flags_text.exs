@@ -1,7 +1,7 @@
-defmodule Nostrum.Struct.FlagsTest do
+defmodule Nostrum.Struct.User.FlagsTest do
   use ExUnit.Case, async: true
 
-  alias Nostrum.Struct.Flags
+  alias Nostrum.Struct.User.Flags
 
   doctest Flags
 
