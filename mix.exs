@@ -15,7 +15,8 @@ defmodule Nostrum.Mixfile do
       source_url: "https://github.com/kraigie/nostrum",
       homepage_url: "https://github.com/kraigie/nostrum",
       deps: deps(),
-      docs: docs()
+      docs: docs(),
+      aliases: aliases()
     ]
   end
 
@@ -60,6 +61,12 @@ defmodule Nostrum.Mixfile do
       Structs: [
         ~r/Nostrum.Struct/
       ]
+    ]
+  end
+
+  def aliases do
+    [
+      lint: ["format --check-formatted", "credo --strict"]
     ]
   end
 
