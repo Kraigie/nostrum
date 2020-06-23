@@ -12,12 +12,12 @@ defmodule Nostrum.Cache.Guild.GuildServer do
 
   @doc false
   # REVIEW: If a guild server crashes, it will be restarted with its initial state.
-  def start_link(id, guild) do
-    GenServer.start_link(__MODULE__, [id, guild])
+  def start_link(init) do
+    GenServer.start_link(__MODULE__, init)
   end
 
   @doc false
-  def init([id, guild]) do
+  def init(id: id, guild: guild) do
     case Registry.register(GuildRegistry, id, self()) do
       {:ok, _pid} ->
         {:ok, guild}
@@ -26,11 +26,6 @@ defmodule Nostrum.Cache.Guild.GuildServer do
         # Causes start_link to return {:error, reason}
         {:stop, error}
     end
-  end
-
-  @doc false
-  def child_spec do
-    Supervisor.child_spec(__MODULE__, start: {__MODULE__, :start_link, []})
   end
 
   @doc false

@@ -1,6 +1,7 @@
 defmodule Nostrum.Cache.Guild.GuildRegister do
   @moduledoc false
 
+  alias Nostrum.Cache.Guild.GuildSupervisor
   alias Nostrum.Cache.GuildCache
 
   def lookup(id) do
@@ -24,7 +25,7 @@ defmodule Nostrum.Cache.Guild.GuildRegister do
   end
 
   def create_guild_process(id, guild) do
-    case Supervisor.start_child(GuildSupervisor, [id, guild]) do
+    case GuildSupervisor.start_child(id, guild) do
       {:ok, _pid} ->
         {:ok, guild}
 
