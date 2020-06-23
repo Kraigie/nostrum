@@ -77,7 +77,7 @@ defmodule Nostrum.Mixfile do
 
   defp deps do
     [
-      {:httpoison, "~> 1.5"},
+      {:httpoison, "~> 1.7"},
       {:poison, "~> 3.0"},
       {:gun, "~> 1.3"},
       {:ex_doc, "~> 0.14", only: :dev},
