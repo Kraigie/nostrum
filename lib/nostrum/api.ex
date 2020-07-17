@@ -1309,7 +1309,7 @@ defmodule Nostrum.Api do
   ## Options
 
     * `:user_id` (`t:Nostrum.Struct.User.id/0`) - filter the log for a user ID
-    * `:action_type` (`t:Integer.t/0`) - filter the log by audit log type, see [Audit Log Events](https://discordapp.com/developers/docs/resources/audit-log#audit-log-entry-object-audit-log-events)
+    * `:action_type` (`t:Integer.t/0`) - filter the log by audit log type, see [Audit Log Events](https://discord.com/developers/docs/resources/audit-log#audit-log-entry-object-audit-log-events)
     * `:before` (`t:Nostrum.Struct.Snowflake.t/0`) - filter the log before a certain entry ID
     * `:limit` (`t:positive_integer/0`) - how many entries are returned (default 50, minimum 1, maximum 100)
   """
@@ -2381,7 +2381,7 @@ defmodule Nostrum.Api do
   ## Options
 
     * `:username` (string) - new username
-    * `:avatar` (string) - the user's avatar as [avatar data](https://discordapp.com/developers/docs/resources/user#avatar-data)
+    * `:avatar` (string) - the user's avatar as [avatar data](https://discord.com/developers/docs/resources/user#avatar-data)
 
   ## Examples
 

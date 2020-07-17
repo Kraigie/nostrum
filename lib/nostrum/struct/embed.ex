@@ -220,11 +220,11 @@ defmodule Nostrum.Struct.Embed do
   }
 
   iex> embed = %Nostrum.Struct.Embed{}
-  ...> Nostrum.Struct.Embed.put_footer(embed, "nostrum footer", "https://discordapp.com/assets/53ef346458017da2062aca5c7955946b.svg")
+  ...> Nostrum.Struct.Embed.put_footer(embed, "nostrum footer", "https://discord.com/assets/53ef346458017da2062aca5c7955946b.svg")
   %Nostrum.Struct.Embed{
     footer: %Nostrum.Struct.Embed.Footer{
       text: "nostrum footer",
-      icon_url: "https://discordapp.com/assets/53ef346458017da2062aca5c7955946b.svg"
+      icon_url: "https://discord.com/assets/53ef346458017da2062aca5c7955946b.svg"
     }
   }
   ```
@@ -246,10 +246,10 @@ defmodule Nostrum.Struct.Embed do
 
   ```Elixir
   iex> embed = %Nostrum.Struct.Embed{}
-  ...> Nostrum.Struct.Embed.put_image(embed, "https://discordapp.com/assets/af92e60c16b7019f34a467383b31490a.svg")
+  ...> Nostrum.Struct.Embed.put_image(embed, "https://discord.com/assets/af92e60c16b7019f34a467383b31490a.svg")
   %Nostrum.Struct.Embed{
     image: %Nostrum.Struct.Embed.Image{
-      url: "https://discordapp.com/assets/af92e60c16b7019f34a467383b31490a.svg"
+      url: "https://discord.com/assets/af92e60c16b7019f34a467383b31490a.svg"
     }
   }
   ```
@@ -270,10 +270,10 @@ defmodule Nostrum.Struct.Embed do
 
   ```Elixir
   iex> embed = %Nostrum.Struct.Embed{}
-  ...> Nostrum.Struct.Embed.put_thumbnail(embed, "https://discordapp.com/assets/af92e60c16b7019f34a467383b31490a.svg")
+  ...> Nostrum.Struct.Embed.put_thumbnail(embed, "https://discord.com/assets/af92e60c16b7019f34a467383b31490a.svg")
   %Nostrum.Struct.Embed{
     thumbnail: %Nostrum.Struct.Embed.Thumbnail{
-      url: "https://discordapp.com/assets/af92e60c16b7019f34a467383b31490a.svg"
+      url: "https://discord.com/assets/af92e60c16b7019f34a467383b31490a.svg"
     }
   }
   ```

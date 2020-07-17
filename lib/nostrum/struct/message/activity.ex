@@ -11,12 +11,12 @@ defmodule Nostrum.Struct.Message.Activity do
   ]
 
   @typedoc """
-  [Type of message activity](https://discordapp.com/developers/docs/resources/channel#message-object-message-activity-types).
+  [Type of message activity](https://discord.com/developers/docs/resources/channel#message-object-message-activity-types).
   """
   @type type :: integer
 
   @typedoc """
-  The party id from a [rich presence event](https://discordapp.com/developers/docs/rich-presence/how-to).
+  The party id from a [rich presence event](https://discord.com/developers/docs/rich-presence/how-to).
   """
   @type party_id :: String.t() | nil
 
