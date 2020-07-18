@@ -88,7 +88,7 @@ defmodule Nostrum.Struct.Message do
   @type webhook_id :: Snowflake.t() | nil
 
   @typedoc """
-  [Type of message](https://discordapp.com/developers/docs/resources/channel#message-object-message-types).
+  [Type of message](https://discord.com/developers/docs/resources/channel#message-object-message-types).
   """
   @type type :: integer
 

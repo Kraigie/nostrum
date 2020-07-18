@@ -18,7 +18,7 @@ defmodule Nostrum.Struct.Guild.AuditLogEntry do
   ]
 
   @typedoc """
-  An audit log event identifier. See [Audit log events](https://discordapp.com/developers/docs/resources/audit-log#audit-log-entry-object-audit-log-events)
+  An audit log event identifier. See [Audit log events](https://discord.com/developers/docs/resources/audit-log#audit-log-entry-object-audit-log-events)
   """
   @type action_type :: pos_integer()
 
@@ -26,7 +26,7 @@ defmodule Nostrum.Struct.Guild.AuditLogEntry do
 
   @typedoc """
   Individual changes of this audit log entry.
-  Change keys are documented [here](https://discordapp.com/developers/docs/resources/audit-log#audit-log-change-object-audit-log-change-key)
+  Change keys are documented [here](https://discord.com/developers/docs/resources/audit-log#audit-log-change-object-audit-log-change-key)
   """
   @type changes ::
           [
@@ -42,7 +42,7 @@ defmodule Nostrum.Struct.Guild.AuditLogEntry do
   @type id :: Snowflake.t()
 
   @typedoc """
-  [Optional audit entry info](https://discordapp.com/developers/docs/resources/audit-log#audit-log-entry-object-optional-audit-entry-info)
+  [Optional audit entry info](https://discord.com/developers/docs/resources/audit-log#audit-log-entry-object-optional-audit-entry-info)
   """
   @type options :: Map.t() | nil
 
