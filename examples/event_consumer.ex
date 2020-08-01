@@ -7,9 +7,7 @@ defmodule ExampleSupervisor do
 
   @impl true
   def init(_init_arg) do
-    children = [
-      {ExampleConsumer, []}
-    ]
+    children = [ExampleConsumer]
 
     Supervisor.init(children, strategy: :one_for_one)
   end
