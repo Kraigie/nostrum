@@ -2263,7 +2263,7 @@ defmodule Nostrum.Api do
   end
 
   @doc """
-  Modifies a guild imbed.
+  Modifies a guild embed.
   """
   @spec modify_guild_embed(integer, map) :: error | {:ok, map}
   def modify_guild_embed(guild_id, options) do
@@ -2277,25 +2277,30 @@ defmodule Nostrum.Api do
   If successful, returns `{:ok, invite}`. Otherwise, returns a
   `t:Nostrum.Api.error/0`.
 
+  ## Options
+
+    * `:with_counts` (boolean) - whether to include member count fields
+
   ## Examples
 
   ```Elixir
   Nostrum.Api.get_invite("zsjUsC")
-  {:ok, %Nostrum.Struct.Invite{code: "zsjUsC"}}
+
+  Nostrum.Api.get_invite("zsjUsC", with_counts: true)
   ```
   """
-  @spec get_invite(Invite.code()) :: error | {:ok, Invite.simple_invite()}
-  def get_invite(invite_code) when is_binary(invite_code) do
-    request(:get, Constants.invite(invite_code))
+  @spec get_invite(Invite.code(), options) :: error | {:ok, Invite.simple_invite()}
+  def get_invite(invite_code, options \\ []) when is_binary(invite_code) do
+    request(:get, Constants.invite(invite_code), "", params: options)
     |> handle_request_with_decode({:struct, Invite})
   end
 
   @doc ~S"""
   Same as `get_invite/1`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
-  @spec get_invite!(Invite.code()) :: no_return | Invite.simple_invite()
-  def get_invite!(invite_code) do
-    get_invite(invite_code)
+  @spec get_invite!(Invite.code(), options) :: no_return | Invite.simple_invite()
+  def get_invite!(invite_code, options \\ []) do
+    get_invite(invite_code, options)
     |> bangify
   end
 
@@ -2311,7 +2316,6 @@ defmodule Nostrum.Api do
 
   ```Elixir
   Nostrum.Api.delete_invite("zsjUsC")
-  {:ok, %Nostrum.Struct.Invite{code: "zsjUsC"}}
   ```
   """
   @spec delete_invite(Invite.code()) :: error | {:ok, Invite.simple_invite()}

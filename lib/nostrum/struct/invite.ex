@@ -11,12 +11,15 @@ defmodule Nostrum.Struct.Invite do
     :guild,
     :channel,
     :inviter,
+    :target_user,
+    :target_user_type,
+    :approximate_presence_count,
+    :approximate_member_count,
     :uses,
     :max_uses,
     :max_age,
     :temporary,
-    :created_at,
-    :revoked
+    :created_at
   ]
 
   @typedoc """
@@ -25,9 +28,9 @@ defmodule Nostrum.Struct.Invite do
   @type code :: String.t()
 
   @typedoc """
-  The guild this invite is for.
+  Partially populated guild struct of the guild this invite is for.
   """
-  @type guild :: Guild.t()
+  @type guild :: Guild.t() | nil
 
   @typedoc """
   The channel this invite is for.
@@ -37,7 +40,27 @@ defmodule Nostrum.Struct.Invite do
   @typedoc """
   The user who created this invite.
   """
-  @type inviter :: User.t()
+  @type inviter :: User.t() | nil
+
+  @typedoc """
+  Partially populated user struct of the target user for this invite.
+  """
+  @type target_user :: User.t() | nil
+
+  @typedoc """
+  The type of user target for this invite.
+  """
+  @type target_user_type :: integer | nil
+
+  @typedoc """
+  Approximate online member count of the guild this invite is for.
+  """
+  @type approximate_presence_count :: integer | nil
+
+  @typedoc """
+  Approximate total member count of the guild this invite is for.
+  """
+  @type approximate_member_count :: integer | nil
 
   @typedoc """
   Number of times this invite has been used.
@@ -65,11 +88,6 @@ defmodule Nostrum.Struct.Invite do
   @type created_at :: String.t()
 
   @typedoc """
-  Whether this invite is revoked.
-  """
-  @type revoked :: boolean
-
-  @typedoc """
   An invite without metadata.
   """
   @type simple_invite :: %__MODULE__{
@@ -77,12 +95,15 @@ defmodule Nostrum.Struct.Invite do
           guild: guild,
           channel: channel,
           inviter: inviter,
+          target_user: target_user,
+          target_user_type: target_user_type,
+          approximate_presence_count: approximate_presence_count,
+          approximate_member_count: approximate_member_count,
           uses: nil,
           max_uses: nil,
           max_age: nil,
           temporary: nil,
-          created_at: nil,
-          revoked: nil
+          created_at: nil
         }
 
   @typedoc """
@@ -93,12 +114,15 @@ defmodule Nostrum.Struct.Invite do
           guild: guild,
           channel: channel,
           inviter: inviter,
+          target_user: target_user,
+          target_user_type: target_user_type,
+          approximate_presence_count: approximate_presence_count,
+          approximate_member_count: approximate_member_count,
           uses: uses,
           max_uses: max_uses,
           max_age: max_age,
           temporary: temporary,
-          created_at: created_at,
-          revoked: revoked
+          created_at: created_at
         }
 
   @type t :: simple_invite | detailed_invite
@@ -112,5 +136,6 @@ defmodule Nostrum.Struct.Invite do
     |> Map.update(:guild, nil, &Util.cast(&1, {:struct, Guild}))
     |> Map.update(:channel, nil, &Util.cast(&1, {:struct, Channel}))
     |> Map.update(:inviter, nil, &Util.cast(&1, {:struct, User}))
+    |> Map.update(:target_user, nil, &Util.cast(&1, {:struct, User}))
   end
 end

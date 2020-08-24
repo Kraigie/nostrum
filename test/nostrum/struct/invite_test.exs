@@ -32,12 +32,20 @@ defmodule Nostrum.Struct.InviteTest do
           "verified" => true,
           "email" => "nelly@discordapp.com"
         },
+        "target_user" => %{
+          "id" => "165176875973476352",
+          "username" => "bob",
+          "avatar" => "deadbeef",
+          "discriminator" => "1234"
+        },
+        "target_user_type" => 1,
+        "approximate_presence_count" => 80,
+        "approximate_member_count" => 100,
         "uses" => 0,
         "max_uses" => 0,
         "max_age" => 0,
         "temporary" => false,
-        "created_at" => "2016-03-31T19:15:39.954000+00:00",
-        "revoked" => false
+        "created_at" => "2016-03-31T19:15:39.954000+00:00"
       }
 
       invite = Invite.to_struct(etf_invite)
@@ -65,6 +73,12 @@ defmodule Nostrum.Struct.InviteTest do
       expected = context.etf_invite["inviter"] |> Util.cast({:struct, User})
 
       assert(expected === context.invite.inviter)
+    end
+
+    test "decodes target_user correctly", context do
+      expected = context.etf_invite["target_user"] |> Util.cast({:struct, User})
+
+      assert(expected === context.invite.target_user)
     end
   end
 end
