@@ -29,4 +29,7 @@ defmodule Nostrum.Struct.Event.MessageDelete do
           channel_id: channel_id,
           guild_id: guild_id
         }
+
+  @doc false
+  def to_struct(map), do: struct(__MODULE__, map)
 end
