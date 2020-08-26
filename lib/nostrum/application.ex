@@ -7,10 +7,9 @@ defmodule Nostrum.Application do
   def start(_, _) do
     import Supervisor.Spec
 
-    if !Application.get_env(:nostrum, :token), do: raise("Please supply a token")
-
     num_shards = Application.get_env(:nostrum, :num_shards, 1)
 
+    validate_token()
     setup_ets_tables()
 
     children = [
@@ -36,5 +35,14 @@ defmodule Nostrum.Application do
     :ets.new(:presences, [:set, :public, :named_table])
     :ets.new(:guild_shard_map, [:set, :public, :named_table])
     :ets.new(:channel_guild_map, [:set, :public, :named_table])
+  end
+
+  defp validate_token() do
+    token = Application.get_env(:nostrum, :token)
+    unless token, do: raise("Please supply a token")
+    unless token =~ ~r/[\w-]{24}\.[\w-]{6}\.[\w-]{27}/, do: raise(
+      """
+      Invalid token. You can find the token of your bot in the "bot" tab for your Application.
+      """)
   end
 end
