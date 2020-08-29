@@ -12,26 +12,26 @@ defmodule Nostrum.Shard.Supervisor do
 
   require Logger
 
-  def start_link(:auto) do
-    {url, shards} = Util.gateway()
+  def start_link(_args) do
+    {url, gateway_shard_count} = Util.gateway()
 
-    Supervisor.start_link(
-      __MODULE__,
-      [url, shards],
-      name: ShardSupervisor
-    )
-  end
+    num_shards =
+      case Application.get_env(:nostrum, :num_shards, :auto) do
+        :auto ->
+          gateway_shard_count
 
-  def start_link(num_shards) do
-    {url, shards} = Util.gateway()
+        ^gateway_shard_count ->
+          gateway_shard_count
 
-    if num_shards != shards,
-      do:
-        Logger.info(
-          "Specified #{num_shards} shards " <>
-            "when the recommended number is #{shards}. Consider using the num_shards: " <>
-            ":auto option in your Nostrum config."
-        )
+        shard_count when is_integer(shard_count) and shard_count > 0 ->
+          Logger.warn(
+            "Configured shard count (#{shard_count}) " <>
+              "differs from Discord Gateway's recommended shard count (#{gateway_shard_count})" <>
+              "Consider using `num_shards: :auto` option in your Nostrum config."
+          )
+
+          shard_count
+      end
 
     Supervisor.start_link(
       __MODULE__,

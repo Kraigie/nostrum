@@ -132,6 +132,9 @@ defmodule Nostrum.Util do
 
   defp get_new_gateway_url do
     case Api.request(:get, Constants.gateway_bot(), "") do
+      {:error, %{status_code: 401}} ->
+        raise("Authentication rejected, invalid token")
+
       {:error, %{status_code: code, message: message}} ->
         raise(Nostrum.Error.ApiError, status_code: code, message: message)
 
