@@ -26,11 +26,14 @@ defmodule Nostrum.Shard.Supervisor do
         shard_count when is_integer(shard_count) and shard_count > 0 ->
           Logger.warn(
             "Configured shard count (#{shard_count}) " <>
-              "differs from Discord Gateway's recommended shard count (#{gateway_shard_count})" <>
+              "differs from Discord Gateway's recommended shard count (#{gateway_shard_count}). " <>
               "Consider using `num_shards: :auto` option in your Nostrum config."
           )
 
           shard_count
+
+        value ->
+          raise ~s("#{value}" is not a valid shard count)
       end
 
     Supervisor.start_link(
