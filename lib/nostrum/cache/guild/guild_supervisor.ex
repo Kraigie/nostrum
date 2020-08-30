@@ -1,15 +1,20 @@
 defmodule Nostrum.Cache.Guild.GuildSupervisor do
   @moduledoc false
 
-  use Supervisor
+  use DynamicSupervisor
 
   alias Nostrum.Cache.Guild.GuildServer
 
   def start_link([]) do
-    Supervisor.start_link(__MODULE__, [], name: GuildSupervisor)
+    DynamicSupervisor.start_link(__MODULE__, [], name: __MODULE__)
+  end
+
+  def start_child(id, guild) do
+    spec = {GuildServer, id: id, guild: guild}
+    DynamicSupervisor.start_child(__MODULE__, spec)
   end
 
   def init([]) do
-    Supervisor.init([GuildServer.child_spec()], strategy: :simple_one_for_one)
+    DynamicSupervisor.init(strategy: :one_for_one)
   end
 end

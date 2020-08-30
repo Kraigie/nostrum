@@ -1,7 +1,7 @@
 defmodule Nostrum.Constants do
   @moduledoc false
 
-  def base_url, do: "https://discordapp.com/api/v7"
+  def base_url, do: "https://discord.com/api/v7"
   def cdn_url, do: "https://cdn.discordapp.com"
   def gateway, do: "/gateway"
   def gateway_bot, do: "/gateway/bot"
@@ -23,6 +23,9 @@ defmodule Nostrum.Constants do
 
   def channel_reactions_delete(channel_id, message_id),
     do: "/channels/#{channel_id}/messages/#{message_id}/reactions"
+
+  def channel_reactions_delete_emoji(channel_id, message_id, emoji),
+    do: "/channels/#{channel_id}/messages/#{message_id}/reactions/#{emoji}"
 
   def channel_bulk_delete(channel_id), do: "/channels/#{channel_id}/messages/bulk_delete"
 

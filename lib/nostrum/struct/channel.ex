@@ -12,7 +12,7 @@ defmodule Nostrum.Struct.Channel do
     * `4` - GUILD_CATEGORY
 
   More information can be found on the
-  [Discord API Channel Documentation](https://discordapp.com/developers/docs/resources/channel#channel-object).
+  [Discord API Channel Documentation](https://discord.com/developers/docs/resources/channel#channel-object).
 
   ## Mentioning Channels in Messages
 

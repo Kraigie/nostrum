@@ -5,7 +5,7 @@ defmodule Nostrum.Mixfile do
   def project do
     [
       app: :nostrum,
-      version: "0.4.1",
+      version: "0.4.3",
       elixir: "~> 1.9",
       elixirc_paths: elixirc_paths(Mix.env()),
       build_embedded: Mix.env() == :prod,
@@ -17,7 +17,8 @@ defmodule Nostrum.Mixfile do
       homepage_url: "https://github.com/kraigie/nostrum",
       deps: deps(),
       docs: docs(),
-      dialyzer: dialyzer()
+      dialyzer: dialyzer(),
+      aliases: aliases()
     ]
   end
 
@@ -31,7 +32,7 @@ defmodule Nostrum.Mixfile do
     ]
   end
 
-  # How to shamelessly copied from NERVES project.
+  # "How to" shamelessly copied from the nerves project.
   # https://github.com/nerves-project/nerves/tree/master/docs
   def docs do
     [
@@ -65,6 +66,12 @@ defmodule Nostrum.Mixfile do
     ]
   end
 
+  def aliases do
+    [
+      lint: ["format --check-formatted", "credo --strict"]
+    ]
+  end
+
   def package do
     [
       name: :nostrum,
@@ -79,7 +86,7 @@ defmodule Nostrum.Mixfile do
 
   defp deps do
     [
-      {:httpoison, "~> 1.5"},
+      {:httpoison, "~> 1.7"},
       {:poison, "~> 3.0"},
       {:gun, "~> 1.3"},
       {:ex_doc, "~> 0.14", only: :dev},

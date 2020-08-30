@@ -1,74 +1,111 @@
+# To get this example going, run `iex -S mix` and `ExampleSupervisor.start_link`.
+# This will start the event consumer under a supervisor.
 defmodule ExampleSupervisor do
-  def start do
-    # List comprehension creates a consumer per cpu core
-    children =
-      for i <- 1..System.schedulers_online(),
-          do: Supervisor.child_spec({ExampleConsumer, []}, id: {:consumer, i})
+  use Supervisor
 
-    Supervisor.start_link(children, strategy: :one_for_one)
+  def start_link(args \\ []) do
+    Supervisor.start_link(__MODULE__, args, name: __MODULE__)
+  end
+
+  @impl true
+  def init(_init_arg) do
+    children = [ExampleConsumer]
+
+    Supervisor.init(children, strategy: :one_for_one)
   end
 end
 
+# The event consumer that will be handling all incoming events.
 defmodule ExampleConsumer do
   use Nostrum.Consumer
 
-  alias Nostrum.Api
-
-  require Logger
-
   def start_link do
-    Consumer.start_link(__MODULE__, :state)
+    Consumer.start_link(__MODULE__)
   end
 
-  def handle_event({:MESSAGE_CREATE, {msg}, ws_state}, state) do
-    # Let's do a little command 'parsing'
-    # We first grab the content, split it into an array and then convert the array to a tuple
-    args = msg.content |> String.split(" ") |> List.to_tuple()
+  # We only need to write event handlers for the events we are interested in,
+  # the rest will go to the catch-all case to be ignored.
+  def handle_event({:MESSAGE_CREATE, message, _ws_state}) do
+    ExampleCommands.command(message)
+  end
 
-    # Check if first arg is the command
-    if elem(args, 0) === "!userinfo" do
-      # First, we check if there are 2 arguments | This being `!userinfo ID` | Otherwise we error out in the `false` clause.
-      # Then we grab the second arg | `ID`
-      # Parse it into an integer, otherwise error out within the `:error` clause.
-      # Then, we try and grab the data from the cache.
-      # If this fails, it will try the next thing in the clause which in this case would be sending out a request to Discord.
-      # If this fails, it will go over into the else statement down below and print out that it can't find anyone/anything.
-      with true <- tuple_size(args) == 2,
-           second_arg = elem(args, 1),
-           {user_id, _binary} <- Integer.parse(second_arg),
-           {:ok, user} <- Nostrum.Cache.UserCache.get(id: user_id),
-           Api.get_user(user_id),
-           {:ok, channel} <- Nostrum.Cache.ChannelCache.get(id: msg.channel_id),
-           Api.get_channel(msg.channel_id),
-           {:ok, guild} <- Nostrum.Cache.GuildCache.get(channel.guild_id),
-           Api.get_guild(channel.guild_id) do
-        Api.create_message!(
-          msg.channel_id,
-          "#{user_id} belongs to a person named: #{user.username}\nMessage sent in: #{
-            channel.name
-          }\nChannel is in: #{guild.name}"
-        )
-      else
-        # For this, we just print out we can't find anyone while using the error from the with statement. If it can't find someone, it will print out `user_not_found` as the reason.
-        {:error, reason} ->
-          Api.create_message!(msg.channel_id, "Sorry, something went wrong: #{reason}")
+  # The catch-all event case that takes the rest of the events.
+  # If you do not have this, or have not defined literally
+  # every event case yourself (what an absolute madlad if you have),
+  # the consumer will crash, not having any function signature to match upon.
+  # By the way, the return atom stands for "no-op", shorthand for "no operation",
+  # however, if you read it as "noop" and quietly chuckle to yourself every time you see it,
+  # since it just sounds like a silly way of saying "nope", know, that you are not alone.
+  def handle_event(_event), do: :noop
+end
 
-        # They typed an invalid input, probably due to using letters rather than numbers.
-        :error ->
-          Api.create_message!(msg.channel_id, "Make sure the User ID is only numbers")
+# Our basic, example command handler that will be taking the message
+# and actually doing something with it, wow, amazing!
+defmodule ExampleCommands do
+  import Nostrum.Snowflake, only: [is_snowflake: 1]
 
-        # There wasn't 2 elements in there, so it returned false.
-        false ->
-          Api.create_message!(msg.channel_id, "Please supply a User ID")
-      end
+  alias Nostrum.Api
+  alias Nostrum.Cache.{ChannelCache, GuildCache, UserCache}
+  alias Nostrum.Struct.User
+
+  # Fetch the defined prefix from our config, however,
+  # if you have not defined it in your config yet, fear not,
+  # the line below will default it to "!"
+  @prefix Application.get_env(:example_app, :prefix, "!")
+
+  defp get_cached_with_fallback(id, cache, api) do
+    case cache.(id) do
+      {:ok, _} = data -> data
+      {:error, _} -> api.(id)
     end
-
-    {:ok, state}
   end
 
-  # Default event handler, if you don't include this, your consumer WILL crash if
-  # you don't have a method definition for each event type.
-  def handle_event(_, state) do
-    {:ok, state}
+  # The command that will be handling our message. Use pattern matching to
+  # enforce the data shape that you accept, while also destructuring data for convenience.
+  # This also helps avoiding unnecessary conditional checks in the function body,
+  # that would usually introduce a need for early returns in other languages.
+  # For this, a simple `userinfo` command that accepts a user id and returns a message,
+  # containing information you would be fetching from the cache (or the API, as a backup).
+  def command(%{
+        content: @prefix <> "userinfo " <> message_user_id,
+        channel_id: channel_id,
+        guild_id: guild_id
+      })
+      when guild_id != nil do
+    # Our happy path for sending a complete userinfo response.
+    # We'll wrap both sides of the first one with an extra identifier,
+    # so we can more easily match on cases where parsing would fail.
+    with {{user_id, _binary}, :parse_id} when is_snowflake(user_id) <-
+           {Integer.parse(message_user_id), :parse_id},
+         {:ok, user} <-
+           get_cached_with_fallback(user_id, &UserCache.get/1, &Api.get_user/1),
+         {:ok, %{name: channel_name}} <-
+           get_cached_with_fallback(channel_id, &ChannelCache.get/1, &Api.get_channel/1),
+         {:ok, %{name: guild_name}} <-
+           get_cached_with_fallback(guild_id, &GuildCache.get/1, &Api.get_guild/1) do
+      Api.create_message(
+        channel_id,
+        """
+        ID #{message_user_id} belongs to: #{User.full_name(user)}
+        Message sent in channel: ##{channel_name}
+        Channel belongs to guild: #{guild_name}
+        """
+      )
+    else
+      # Since we have multiple failure patterns from the combination of `Integer.parse/2`
+      # and `is_snowflake/1`, we'll use the identifier as the term to match on instead.
+      {_invalid_id, :parse_id} ->
+        Api.create_message(channel_id, "Make sure you entered a valid User ID")
+
+      # The cache + API failure case. For now, lets just return the stringified failure
+      # reason of whatever the API returned. Up to you if you want to make it all nice and pretty.
+      {:error, reason} ->
+        Api.create_message(channel_id, "Failed to retrieve all required info: #{inspect(reason)}")
+    end
   end
+
+  # Just like handling events in the consumer,
+  # a catch-all case for the things we do not care about.
+  # The good 'ol "nooper" (yes, as in "noose", you can't stop me)
+  def command(_invalid_command), do: :noop
 end

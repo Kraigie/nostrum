@@ -5,7 +5,7 @@ defmodule Nostrum.Shard.Dispatch do
   alias Nostrum.Cache.Guild.GuildServer
   alias Nostrum.Cache.Me
   alias Nostrum.Shard.Session
-  alias Nostrum.Struct.Event.{MessageDelete, MessageDeleteBulk}
+  alias Nostrum.Struct.Event.{InviteCreate, InviteDelete, MessageDelete, MessageDeleteBulk}
   alias Nostrum.Struct.{Guild, Message, User}
   alias Nostrum.Struct.Guild.UnavailableGuild
   alias Nostrum.Util
@@ -160,13 +160,19 @@ defmodule Nostrum.Shard.Dispatch do
   def handle_event(:GUILD_ROLE_UPDATE = event, p, state),
     do: {event, GuildServer.role_update(p.guild_id, p.role), state}
 
+  def handle_event(:INVITE_CREATE = event, p, state),
+    do: {event, InviteCreate.to_struct(p), state}
+
+  def handle_event(:INVITE_DELETE = event, p, state),
+    do: {event, InviteDelete.to_struct(p), state}
+
   def handle_event(:MESSAGE_CREATE = event, p, state), do: {event, Message.to_struct(p), state}
 
   def handle_event(:MESSAGE_DELETE = event, p, state),
-    do: {event, struct(MessageDelete, p), state}
+    do: {event, MessageDelete.to_struct(p), state}
 
   def handle_event(:MESSAGE_DELETE_BULK = event, p, state),
-    do: {event, struct(MessageDeleteBulk, p), state}
+    do: {event, MessageDeleteBulk.to_struct(p), state}
 
   def handle_event(:MESSAGE_UPDATE = event, p, state), do: {event, Message.to_struct(p), state}
 
@@ -175,6 +181,8 @@ defmodule Nostrum.Shard.Dispatch do
   def handle_event(:MESSAGE_REACTION_REMOVE = event, p, state), do: {event, p, state}
 
   def handle_event(:MESSAGE_REACTION_REMOVE_ALL = event, p, state), do: {event, p, state}
+
+  def handle_event(:MESSAGE_REACTION_REMOVE_EMOJI = event, p, state), do: {event, p, state}
 
   def handle_event(:MESSAGE_ACK = event, p, state), do: {event, p, state}
 

@@ -476,6 +476,37 @@ defmodule Nostrum.Api do
   end
 
   @doc ~S"""
+  Deletes all reactions of a given emoji from a message.
+
+  This endpoint requires the `MANAGE_MESSAGES` permissions. It fires a `t:Nostrum.Consumer.message_reaction_remove_emoji/0` event.
+
+  If successful, returns `{:ok}`. Otherwise, returns `t:Nostrum.Api.error/0`.
+
+  See `create_reaction/3` for similar examples.
+  """
+  @spec delete_reaction(Channel.id(), Message.id(), emoji) :: error | {:ok}
+  def delete_reaction(channel_id, message_id, emoji)
+
+  def delete_reaction(channel_id, message_id, %Emoji{} = emoji),
+    do: delete_reaction(channel_id, message_id, Emoji.api_name(emoji))
+
+  def delete_reaction(channel_id, message_id, emoji_api_name) do
+    request(
+      :delete,
+      Constants.channel_reactions_delete_emoji(channel_id, message_id, emoji_api_name)
+    )
+  end
+
+  @doc ~S"""
+  Same as `delete_reaction/3`, but raises `Nostrum.Error.ApiError` in case of failure.
+  """
+  @spec delete_reaction!(Channel.id(), Message.id(), emoji) :: no_return | {:ok}
+  def delete_reaction!(channel_id, message_id, emoji) do
+    delete_reaction(channel_id, message_id, emoji)
+    |> bangify
+  end
+
+  @doc ~S"""
   Gets all users who reacted with an emoji.
 
   This endpoint requires the `VIEW_CHANNEL` and `READ_MESSAGE_HISTORY` permissions.
@@ -1278,7 +1309,7 @@ defmodule Nostrum.Api do
   ## Options
 
     * `:user_id` (`t:Nostrum.Struct.User.id/0`) - filter the log for a user ID
-    * `:action_type` (`t:integer/0`) - filter the log by audit log type, see [Audit Log Events](https://discordapp.com/developers/docs/resources/audit-log#audit-log-entry-object-audit-log-events)
+    * `:action_type` (`t:integer/0`) - filter the log by audit log type, see [Audit Log Events](https://discord.com/developers/docs/resources/audit-log#audit-log-entry-object-audit-log-events)
     * `:before` (`t:Nostrum.Struct.Snowflake.t/0`) - filter the log before a certain entry ID
     * `:limit` (`t:positive_integer/0`) - how many entries are returned (default 50, minimum 1, maximum 100)
   """
@@ -1677,6 +1708,37 @@ defmodule Nostrum.Api do
   def modify_guild_member!(guild_id, user_id, options \\ %{}) do
     modify_guild_member(guild_id, user_id, options)
     |> bangify
+  end
+
+  @doc """
+  Modifies the nickname of the current user in a guild.
+
+  If successful, returns `{:ok, %{nick: nick}}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
+
+  ## Options
+
+    * `:nick` (string) - value to set users nickname to
+
+  ## Examples
+
+  ```Elixir
+  Nostrum.Api.modify_current_user_nick(41771983423143937, nick: "Nostrum")
+  {:ok, %{nick: "Nostrum"}}
+  ```
+  """
+  @spec modify_current_user_nick(Guild.id(), options) :: error | {:ok, %{nick: String.t()}}
+  def modify_current_user_nick(guild_id, options \\ %{}) do
+    request(:patch, Constants.guild_me_nick(guild_id), options)
+    |> handle_request_with_decode()
+  end
+
+  @doc """
+  Same as `modify_current_user_nick/2`, but raises `Nostrum.Error.ApiError` in case of failure.
+  """
+  @spec modify_current_user_nick!(Guild.id(), options) :: no_return | %{nick: String.t()}
+  def modify_current_user_nick!(guild_id, options \\ %{}) do
+    modify_current_user_nick(guild_id, options)
+    |> bangify()
   end
 
   @doc """
@@ -2201,7 +2263,7 @@ defmodule Nostrum.Api do
   end
 
   @doc """
-  Modifies a guild imbed.
+  Modifies a guild embed.
   """
   @spec modify_guild_embed(integer, map) :: error | {:ok, map}
   def modify_guild_embed(guild_id, options) do
@@ -2215,25 +2277,30 @@ defmodule Nostrum.Api do
   If successful, returns `{:ok, invite}`. Otherwise, returns a
   `t:Nostrum.Api.error/0`.
 
+  ## Options
+
+    * `:with_counts` (boolean) - whether to include member count fields
+
   ## Examples
 
   ```Elixir
   Nostrum.Api.get_invite("zsjUsC")
-  {:ok, %Nostrum.Struct.Invite{code: "zsjUsC"}}
+
+  Nostrum.Api.get_invite("zsjUsC", with_counts: true)
   ```
   """
-  @spec get_invite(Invite.code()) :: error | {:ok, Invite.simple_invite()}
-  def get_invite(invite_code) when is_binary(invite_code) do
-    request(:get, Constants.invite(invite_code))
+  @spec get_invite(Invite.code(), options) :: error | {:ok, Invite.simple_invite()}
+  def get_invite(invite_code, options \\ []) when is_binary(invite_code) do
+    request(:get, Constants.invite(invite_code), "", params: options)
     |> handle_request_with_decode({:struct, Invite})
   end
 
   @doc ~S"""
   Same as `get_invite/1`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
-  @spec get_invite!(Invite.code()) :: no_return | Invite.simple_invite()
-  def get_invite!(invite_code) do
-    get_invite(invite_code)
+  @spec get_invite!(Invite.code(), options) :: no_return | Invite.simple_invite()
+  def get_invite!(invite_code, options \\ []) do
+    get_invite(invite_code, options)
     |> bangify
   end
 
@@ -2249,7 +2316,6 @@ defmodule Nostrum.Api do
 
   ```Elixir
   Nostrum.Api.delete_invite("zsjUsC")
-  {:ok, %Nostrum.Struct.Invite{code: "zsjUsC"}}
   ```
   """
   @spec delete_invite(Invite.code()) :: error | {:ok, Invite.simple_invite()}
@@ -2319,7 +2385,7 @@ defmodule Nostrum.Api do
   ## Options
 
     * `:username` (string) - new username
-    * `:avatar` (string) - the user's avatar as [avatar data](https://discordapp.com/developers/docs/resources/user#avatar-data)
+    * `:avatar` (string) - the user's avatar as [avatar data](https://discord.com/developers/docs/resources/user#avatar-data)
 
   ## Examples
 
@@ -2396,7 +2462,13 @@ defmodule Nostrum.Api do
   """
   @spec leave_guild(integer) :: error | {:ok}
   def leave_guild(guild_id) do
-    request(:delete, Constants.me_guild(guild_id))
+    request(%{
+      method: :delete,
+      route: Constants.me_guild(guild_id),
+      body: "",
+      options: [],
+      headers: []
+    })
   end
 
   @doc """
