@@ -90,8 +90,8 @@ defmodule Nostrum.Mixfile do
       {:poison, "~> 3.0"},
       {:gun, "~> 1.3"},
       {:ex_doc, "~> 0.14", only: :dev},
-      {:credo, "~> 0.4", only: [:dev, :test]},
-      {:dialyxir, "~> 1.0.0-rc.6", only: [:dev], runtime: false},
+      {:credo, "~> 1.4", only: [:dev, :test]},
+      {:dialyxir, "~> 1.0.0", only: [:dev], runtime: false},
       {:gen_stage, "~> 0.11"},
       {:recon, "~> 2.3", only: :dev}
     ]
