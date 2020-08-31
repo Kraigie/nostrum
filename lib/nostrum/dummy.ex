@@ -2,17 +2,18 @@ _ = """
   This module exists primarily for documentation/testing purposes
 """
 
-defmodule Dummy do
+defmodule DummySupervisor do
   @moduledoc false
 
-  def start_link do
-    children = for i <- 0..1, do: create_worker(i)
-    Supervisor.start_link(children, strategy: :one_for_one)
+  use Supervisor
+
+  def start_link(_args) do
+    Supervisor.start_link(__MODULE__, [], name: __MODULE__)
   end
 
-  @doc false
-  def create_worker(id) do
-    Supervisor.child_spec({DummyConsumer, []}, id: id)
+  def init(_args) do
+    children = for id <- 0..1, do: Supervisor.child_spec({DummyConsumer, []}, id: id)
+    Supervisor.init(children, strategy: :one_for_one)
   end
 end
 
@@ -23,7 +24,9 @@ defmodule DummyConsumer do
   require Logger
 
   def start_link do
-    Consumer.start_link(__MODULE__)
+    Consumer.start_link(__MODULE__,
+      name: :"#{__MODULE__}-#{System.unique_integer([:positive, :monotonic])}"
+    )
   end
 
   def handle_event({:MESSAGE_CREATE, message, _}) do
