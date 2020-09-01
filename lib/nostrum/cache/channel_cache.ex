@@ -93,9 +93,16 @@ defmodule Nostrum.Cache.ChannelCache do
   def lookup(id) do
     case :ets.lookup(:channels, id) do
       [] ->
-        GuildCache.select_by([channel_id: id], fn %{channels: channels} ->
-          Map.get(channels, id, {:error, :channel_not_found})
+        [channel_id: id]
+        |> GuildCache.select_by(fn %{channels: channels} ->
+          Map.get(channels, id, {:error, :id_not_found})
         end)
+        |> case do
+          {:error, :id_not_found} ->
+            {:error, :channel_not_found}
+          res ->
+            res
+        end
 
       [{^id, channel}] ->
         {:ok, channel}
