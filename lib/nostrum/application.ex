@@ -37,7 +37,7 @@ defmodule Nostrum.Application do
     :ets.new(:channel_guild_map, [:set, :public, :named_table])
   end
 
-  defp validate_token() do
+  defp validate_token do
     token = Application.get_env(:nostrum, :token)
     unless token, do: raise("Please supply a token")
     unless token =~ ~r/[\w-]{24}\.[\w-]{6}\.[\w-]{27}/, do: raise(
