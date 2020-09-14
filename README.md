@@ -76,7 +76,7 @@ end
 
 Although it's recommended to run under a supervisor, you could start it from `iex`.
 ```Elixir
-  iex()> ExampleConsumer.start
+  iex()> {:ok, pid_consumer} = ExampleConsumer.start_link
   {:ok, #PID<0.208.0>}
 ```
 
