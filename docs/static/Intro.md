@@ -1,7 +1,7 @@
 # Intro
 Nostrum is a an Elixir library that can be used to interact with Discord.
 
-Nostrum currently supports the latest stable version of Elixir, v. 1.7.
+Nostrum currently supports the latest stable version of Elixir, v. 1.9.
 
 With a platform like Discord, there are many moving parts and an attempt was made
 to break these parts into smaller logical pieces.
@@ -13,6 +13,7 @@ the following -
  * [State](state.html) - `Caches` that hold the state of Discord that your bot can see.
  * [Events](events.html) - How you can handle real time events that your bot can see.
  * [Custom Consumers](consumers.html) - Information on defining custom consumer processes.
+ * [Voice](voice.html) - How to play audio through Discord voice channels.
 
 ### Why Elixir?
 From the Elixir website -
@@ -76,6 +77,7 @@ you can omit the field and it will default to 1. You can also set this option to
 
 The following fields are also supported:
 
+ - `ffmpeg` - Specifies the path to the ffmpeg executable for playing audio. Defaults to `"ffmpeg"`
  - `dev` - This is added to enable Nostrum to be run completely stand alone for
  development purposes. `true` will cause Nostrum to spawn its own event consumers.
  If you have the dev flag set to true while running Nostrum alongside your

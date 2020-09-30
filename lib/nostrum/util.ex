@@ -64,6 +64,15 @@ defmodule Nostrum.Util do
   end
 
   @doc """
+  Returns the number of microseconds since unix epoch.
+  """
+  @spec usec_now() :: integer
+  def usec_now do
+    DateTime.utc_now()
+    |> DateTime.to_unix(:microsecond)
+  end
+
+  @doc """
   Returns the current date as an ISO formatted string.
   """
   @spec now_iso() :: String.t()
@@ -239,31 +248,46 @@ defmodule Nostrum.Util do
   """
   def unused_atoms do
     [
-      recipients: "Ready",
-      require_colons: "Ready",
-      last_message_id: "Ready",
-      friend_sync: "Self",
-      visibility: "Self",
-      channel_overrides: "Self",
-      message_notifications: "Self",
-      muted: "Self",
-      mobile_push: "Self",
-      suppress_everyone: "Self",
-      convert_emoticons: "Self",
-      detect_platform_accounts: "Self",
-      developer_mode: "Self",
-      enable_tts_command: "Self",
-      friend_source_flags: "Self",
-      guild_positions: "Self",
-      inline_attachment_media: "Self",
-      inline_embed_media: "Self",
-      locale: "Self",
-      message_display_compact: "Self",
-      render_embeds: "Self",
-      render_reactions: "Self",
-      restricted_guilds: "Self",
-      show_current_game: "Self",
-      theme: "Self"
+      :active,
+      :audio,
+      :audio_codec,
+      :audio_ssrc,
+      :channel_overrides,
+      :convert_emoticons,
+      :detect_platform_accounts,
+      :developer_mode,
+      :enable_tts_command,
+      :encodings,
+      :experiments,
+      :friend_source_flags,
+      :friend_sync,
+      :guild_positions,
+      :inline_attachment_media,
+      :inline_embed_media,
+      :last_message_id,
+      :locale,
+      :max_bitrate,
+      :media_session_id,
+      :message_display_compact,
+      :message_notifications,
+      :mobile_push,
+      :modes,
+      :muted,
+      :recipients,
+      :render_embeds,
+      :render_reactions,
+      :require_colons,
+      :restricted_guilds,
+      :rid,
+      :rtx_ssrc,
+      :scale_resolution_down_by,
+      :show_current_game,
+      :suppress_everyone,
+      :theme,
+      :video,
+      :video_codec,
+      :video_ssrc,
+      :visibility,
     ]
   end
 end

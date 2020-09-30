@@ -110,7 +110,7 @@ defmodule Nostrum.Api do
     - `type` - The type of status to show. 0 (Playing) | 1 (Streaming) | 2 (Listening) | 3 (Watching)
     - `stream` - URL of twitch.tv stream
   """
-  @spec update_shard_status(pid, status, String.t(), integer, String.t()) :: :ok
+  @spec update_shard_status(pid, status, String.t(), integer, String.t() | nil) :: :ok
   def update_shard_status(pid, status, game, type \\ 0, stream \\ nil) do
     Session.update_status(pid, to_string(status), game, stream, type)
     :ok
@@ -121,7 +121,7 @@ defmodule Nostrum.Api do
 
   See `update_shard_status/5` for usage.
   """
-  @spec update_status(status, String.t(), integer, String.t()) :: :ok
+  @spec update_status(status, String.t(), integer, String.t() | nil) :: :ok
   def update_status(status, game, type \\ 0, stream \\ nil) do
     Supervisor.update_status(status, game, stream, type)
     :ok
@@ -136,7 +136,7 @@ defmodule Nostrum.Api do
 
   To disconnect from a channel, `channel_id` should be set to `nil`.
   """
-  @spec update_voice_state(Guild.id(), Channel.id(), boolean, boolean) :: no_return | :ok
+  @spec update_voice_state(Guild.id(), Channel.id() | nil, boolean, boolean) :: no_return | :ok
   def update_voice_state(guild_id, channel_id, self_mute \\ false, self_deaf \\ false) do
     Supervisor.update_voice_state(guild_id, channel_id, self_mute, self_deaf)
   end

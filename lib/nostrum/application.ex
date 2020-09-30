@@ -12,7 +12,8 @@ defmodule Nostrum.Application do
       Nostrum.Api.Ratelimiter,
       Nostrum.Shard.Connector,
       Nostrum.Cache.CacheSupervisor,
-      Nostrum.Shard.Supervisor
+      Nostrum.Shard.Supervisor,
+      Nostrum.Voice.Supervisor
     ]
 
     if Application.get_env(:nostrum, :dev),

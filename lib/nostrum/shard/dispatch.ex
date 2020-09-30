@@ -9,6 +9,7 @@ defmodule Nostrum.Shard.Dispatch do
   alias Nostrum.Struct.{Guild, Message, User}
   alias Nostrum.Struct.Guild.UnavailableGuild
   alias Nostrum.Util
+  alias Nostrum.Voice
 
   require Logger
 
@@ -221,9 +222,26 @@ defmodule Nostrum.Shard.Dispatch do
     {event, UserCache.update(p), state}
   end
 
-  def handle_event(:VOICE_STATE_UPDATE = event, p, state), do: {event, p, state}
+  def handle_event(:VOICE_STATE_UPDATE = event, p, state) do
+    if Me.get().id === p.user_id do
+      if p.channel_id do
+        Voice.update_guild(p.guild_id,
+          session: p.session_id
+        )
+      else
+        Voice.remove_guild(p.guild_id)
+      end
+    end
+    {event, p, state}
+  end
 
-  def handle_event(:VOICE_SERVER_UPDATE = event, p, state), do: {event, p, state}
+  def handle_event(:VOICE_SERVER_UPDATE = event, p, state) do
+    Voice.update_guild(p.guild_id,
+      token: p.token,
+      gateway: p.endpoint
+    )
+    {event, p, state}
+  end
 
   def handle_event(:WEBHOOKS_UPDATE = event, p, state), do: {event, p, state}
 
