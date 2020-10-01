@@ -46,7 +46,8 @@ defmodule Nostrum.Mixfile do
       "docs/static/API.md",
       "docs/static/State.md",
       "docs/static/Events.md",
-      "docs/static/Consumers.md"
+      "docs/static/Consumers.md",
+      "docs/static/Gateway Intents.md"
     ]
   end
 
