@@ -1,7 +1,7 @@
 defmodule Nostrum.Shard.Payload do
   @moduledoc false
 
-  alias Nostrum.{Constants, Util, Shard.Intents}
+  alias Nostrum.{Constants, Shard.Intents, Util}
 
   @large_threshold 250
 
