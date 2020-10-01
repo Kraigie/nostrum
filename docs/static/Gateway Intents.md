@@ -96,3 +96,5 @@ Note that intents marked with `*` are **privileged** intents. You must enable th
 Once your bot passes 100 servers Discord will force you to **verify your bot**. If you require privileged intents you may need to write additional information on your usage of them.
 
 Be advised that since Nostrum defaults to all intents being enabled you may need to disable these intents by adding everything else in the above list to the `gateway_intents` configuration option.
+
+More information on gateway intents can be found in the [Discord Developer documentation](https://discord.com/developers/docs/topics/gateway#gateway-intents).
