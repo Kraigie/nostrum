@@ -93,16 +93,16 @@ defmodule Nostrum.Voice do
   ## Examples
 
   ```Elixir
-  Nostrum.Voice.join_channel(123456789, 420691337)
+  iex> Nostrum.Voice.join_channel(123456789, 420691337)
 
-  Nostrum.Voice.play(123456789, :url, "~/music/FavoriteSong.mp3")
+  iex> Nostrum.Voice.play(123456789, :url, "~/music/FavoriteSong.mp3")
   ```
   ```Elixir
-  Nostrum.Voice.join_channel(123456789, 420691337)
+  iex> Nostrum.Voice.join_channel(123456789, 420691337)
 
-  raw_data = File.read!("~/music/sound_effect.wav")
+  iex> raw_data = File.read!("~/music/sound_effect.wav")
 
-  Nostrum.Voice.play(123456789, :pipe, raw_data)
+  iex> Nostrum.Voice.play(123456789, :pipe, raw_data)
   ```
   """
   @spec play(Guild.id(), :url | :pipe, String.t() | binary() | iodata()) :: :ok | {:error, String.t()}
@@ -143,11 +143,11 @@ defmodule Nostrum.Voice do
   ## Examples
 
   ```Elixir
-  Nostrum.Voice.join_channel(123456789, 420691337)
+  iex> Nostrum.Voice.join_channel(123456789, 420691337)
 
-  Nostrum.Voice.play(123456789, :url, "http://brandthill.com/files/weird_dubstep_noises.mp3")
+  iex> Nostrum.Voice.play(123456789, :url, "http://brandthill.com/files/weird_dubstep_noises.mp3")
 
-  Nostrum.Voice.stop(123456789)
+  iex> Nostrum.Voice.stop(123456789)
   ```
   """
   @spec stop(Guild.id()) :: :ok | {:error, String.t()}
@@ -185,11 +185,11 @@ defmodule Nostrum.Voice do
   ## Examples
 
   ```Elixir
-  Nostrum.Voice.join_channel(123456789, 420691337)
+  iex> Nostrum.Voice.join_channel(123456789, 420691337)
 
-  Nostrum.Voice.play(123456789, :url, "~/files/twelve_hour_loop_of_waterfall_sounds.mp3")
+  iex> Nostrum.Voice.play(123456789, :url, "~/files/twelve_hour_loop_of_waterfall_sounds.mp3")
 
-  Nostrum.Voice.pause(123456789)
+  iex> Nostrum.Voice.pause(123456789)
   ```
   """
   @spec pause(Guild.id()) :: :ok | {:error, String.t()}
@@ -222,14 +222,16 @@ defmodule Nostrum.Voice do
 
   This function is used to resume a sound that had previously been paused.
 
+  ## Examples
+
   ```Elixir
-  Nostrum.Voice.join_channel(123456789, 420691337)
+  iex> Nostrum.Voice.join_channel(123456789, 420691337)
 
-  Nostrum.Voice.play(123456789, :url, "~/stuff/Toto - Africa (Bass Boosted)")
+  iex> Nostrum.Voice.play(123456789, :url, "~/stuff/Toto - Africa (Bass Boosted)")
 
-  Nostrum.Voice.pause(123456789)
+  iex> Nostrum.Voice.pause(123456789)
 
-  Nostrum.Voice.resume(123456789)
+  iex> Nostrum.Voice.resume(123456789)
   ```
   """
   @spec resume(Guild.id()) :: :ok | {:error, String.t()}
@@ -252,6 +254,92 @@ defmodule Nostrum.Voice do
         update_voice(guild_id, player_pid: pid)
         :ok
     end
+  end
+
+  @doc """
+  Check if bot is playing sound in a voice channel.
+
+  ## Parameters
+    - `guild_id` - ID of guild to check if audio being played.
+
+  Returns `true` if the bot is currently being played in a voice channel, otherwise `false`.
+
+  ## Examples
+
+  ```Elixir
+  iex> Nostrum.Voice.join_channel(123456789, 420691337)
+
+  iex> Nostrum.Voice.play(123456789, :url, "https://a-real-site.biz/RickRoll.m4a")
+
+  iex> Nostrum.Voice.playing?(123456789)
+  true
+
+  iex> Nostrum.Voice.pause(123456789)
+
+  iex> Nostrum.Voice.playing?(123456789)
+  false
+  ```
+  """
+  @spec playing?(Guild.id()) :: boolean
+  def playing?(guild_id) do
+    get_voice(guild_id) |> VoiceState.playing?()
+  end
+
+  @doc """
+  Check if connection is up and ready to play audio.
+
+  ## Parameters
+    - `guild_id` - ID of guild to check if voice connection is up.
+
+  Returns `true` if the bot is connected to a voice channel, otherwise `false`.
+
+  This function does not check if audio is already playing. For that, use `playing?/1`.
+
+  ## Examples
+
+  ```Elixir
+  iex> Nostrum.Voice.join_channel(123456789, 420691337)
+
+  iex> Nostrum.Voice.ready?(123456789)
+  true
+
+  iex> Nostrum.Voice.leave_channel(123456789)
+
+  iex> Nostrum.Voice.ready?(123456789)
+  false
+  ```
+  """
+  @spec ready?(Guild.id()) :: boolean
+  def ready?(guild_id) do
+    get_voice(guild_id) |> VoiceState.ready_for_rtp?()
+  end
+
+  @doc """
+  Get id of the voice channel that bot is connected to.
+
+  ## Parameters
+    - `guild_id` - ID of guild that the resultant channel belongs to.
+
+  Returns the `channel_id` for the channel the bot is connected to, otherwise `nil`.
+
+  ## Examples
+
+  ```Elixir
+  iex> Nostrum.Voice.join_channel(123456789, 420691337)
+
+  iex> Nostrum.Voice.get_channel(123456789)
+  420691337
+
+  iex> Nostrum.Voice.leave_channel(123456789)
+
+  iex> Nostrum.Voice.get_channel(123456789)
+  nil
+  ```
+  """
+  @spec get_channel_id(Guild.id()) :: Channel.id()
+  def get_channel_id(guild_id) do
+    voice = get_voice(guild_id)
+    if voice, do: voice.channel_id, else: nil
   end
 
   @doc false
