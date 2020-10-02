@@ -10,6 +10,7 @@ defmodule Nostrum.Shard.Dispatch do
   alias Nostrum.Struct.Guild.UnavailableGuild
   alias Nostrum.Util
   alias Nostrum.Voice
+  alias Nostrum.Voice.Session, as: VoiceSession
 
   require Logger
 
@@ -224,19 +225,49 @@ defmodule Nostrum.Shard.Dispatch do
 
   def handle_event(:VOICE_STATE_UPDATE = event, p, state) do
     if Me.get().id === p.user_id do
-      if p.channel_id do
-        Voice.update_guild(p.guild_id,
-          session: p.session_id
-        )
-      else
-        Voice.remove_guild(p.guild_id)
+      if p.channel_id do # Joining Channel
+        voice = Voice.get_voice(p.guild_id)
+        cond do
+          # Not yet in a channel:
+          is_nil(voice) or is_nil(voice.session) ->
+            Voice.update_voice(p.guild_id,
+              channel_id: p.channel_id,
+              session: p.session_id
+            )
+
+          # Already in different channel:
+          voice.channel_id != p.channel_id and is_pid(voice.session_pid) ->
+            v_ws = VoiceSession.get_ws_state(voice.session_pid)
+            # On the off-change that we receive Voice Server Update first:
+            {new_token, new_gateway} =
+              if voice.token == v_ws.token do
+                {nil, nil}  # Need to reset
+              else
+                {voice.token, voice.gateway} # Already updated
+              end
+
+            Voice.remove_voice(p.guild_id)
+            Voice.update_voice(p.guild_id,
+              channel_id: p.channel_id,
+              session: p.session_id,
+              token: new_token,
+              gateway: new_gateway
+            )
+
+          # Already in this channel
+          true ->
+            Voice.update_voice(p.guild_id)
+        end
+
+      else # Leaving Channel
+        Voice.remove_voice(p.guild_id)
       end
     end
     {event, p, state}
   end
 
   def handle_event(:VOICE_SERVER_UPDATE = event, p, state) do
-    Voice.update_guild(p.guild_id,
+    Voice.update_voice(p.guild_id,
       token: p.token,
       gateway: p.endpoint
     )

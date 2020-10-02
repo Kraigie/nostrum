@@ -2,7 +2,7 @@ defmodule Nostrum.Struct.VoiceWSState do
   @moduledoc false
 
   defstruct [
-    :guild,
+    :guild_id,
     :session,
     :token,
     :conn,

@@ -35,16 +35,16 @@ defmodule Nostrum.Voice.Session do
     state = %VoiceWSState{
       conn_pid: self(),
       conn: worker,
-      guild: voice.guild,
+      guild_id: voice.guild_id,
       session: voice.session,
       token: voice.token,
-      gateway: voice.gateway <> @gateway_qs,
+      gateway: voice.gateway,
       last_heartbeat_ack: DateTime.utc_now(),
       heartbeat_ack: true
     }
 
     Logger.debug(fn -> "Voice Websocket connection up on worker #{inspect(worker)}" end)
-    Voice.update_guild(voice.guild, session_pid: self())
+    Voice.update_voice(voice.guild_id, session_pid: self())
     {:noreply, state}
   end
 
@@ -61,13 +61,16 @@ defmodule Nostrum.Voice.Session do
     end
   end
 
-  def handle_info({:speaking, speaking}, state) do
-    voice = Voice.update_guild(state.guild,
-      speaking: speaking
-    )
-    payload = Payload.speaking_payload(voice)
-    :ok = :gun.ws_send(state.conn, {:text, payload})
-    {:noreply, state}
+  def get_ws_state(pid) do
+    GenServer.call(pid, :ws_state)
+  end
+
+  def close_connection(pid) do
+    GenServer.call(pid, :close)
+  end
+
+  def set_speaking(pid, speaking) do
+    GenServer.cast(pid, {:speaking, speaking})
   end
 
   def handle_info({:gun_ws, _worker, _stream, {:text, frame}}, state) do
@@ -95,7 +98,7 @@ defmodule Nostrum.Voice.Session do
 
   def handle_info({:gun_ws, _conn, _stream, {:close, errno, reason}}, state) do
     Logger.info("Voice websocket closed (errno #{errno}, reason #{inspect(reason)})")
-    Voice.remove_guild(state.guild)
+    Voice.remove_voice(state.guild_id)
     {:noreply, state}
   end
 
@@ -134,5 +137,23 @@ defmodule Nostrum.Voice.Session do
 
     {:noreply,
      %{state | heartbeat_ref: ref, heartbeat_ack: false, last_heartbeat_send: DateTime.utc_now()}}
+  end
+
+  def handle_cast({:speaking, speaking}, state) do
+    payload =
+      Voice.update_voice(state.guild_id, speaking: speaking)
+      |> Payload.speaking_payload()
+
+    :ok = :gun.ws_send(state.conn, {:text, payload})
+    {:noreply, state}
+  end
+
+  def handle_call(:ws_state, _from, state) do
+    {:reply, state, state}
+  end
+
+  def handle_call(:close, _from, state) do
+    :gun.close(state.conn)
+    {:reply, state, state}
   end
 end

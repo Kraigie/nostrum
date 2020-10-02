@@ -16,7 +16,7 @@ defmodule Nostrum.Voice.Payload do
 
   def identify_payload(%VoiceWSState{} = state) do
     %{
-      server_id: state.guild,
+      server_id: state.guild_id,
       user_id: Me.get().id,
       token: state.token,
       session_id: state.session
@@ -26,7 +26,7 @@ defmodule Nostrum.Voice.Payload do
 
   def resume_payload(%VoiceWSState{} = state) do
     %{
-      server_id: state.guild,
+      server_id: state.guild_id,
       token: state.token,
       session_id: state.session
     }

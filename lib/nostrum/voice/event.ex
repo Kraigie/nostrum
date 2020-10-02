@@ -10,7 +10,7 @@ defmodule Nostrum.Voice.Event do
   def handle(:ready, payload, state) do
     Logger.debug("VOICE READY")
 
-    voice = Voice.update_guild(state.guild,
+    voice = Voice.update_voice(state.guild_id,
       ssrc: payload.d.ssrc,
       ip: payload.d.ip,
       port: payload.d.port,
@@ -23,7 +23,7 @@ defmodule Nostrum.Voice.Event do
   end
 
   def handle(:session_description, payload, state) do
-    Voice.update_guild(state.guild,
+    Voice.update_voice(state.guild_id,
       secret_key: payload.d.secret_key |> :erlang.list_to_binary(),
       rtp_sequence: 0,
       rtp_timestamp: 0

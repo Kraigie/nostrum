@@ -26,14 +26,14 @@ defmodule Nostrum.Voice.Supervisor do
     child = supervisor(
       Session,
       [voice],
-      [id: voice.guild]
+      [id: voice.guild_id]
     )
     VoiceSupervisor |> Supervisor.start_child(child)
   end
 
-  def end_session(guild) do
-    VoiceSupervisor |> Supervisor.terminate_child(guild)
-    VoiceSupervisor |> Supervisor.delete_child(guild)
+  def end_session(guild_id) do
+    VoiceSupervisor |> Supervisor.terminate_child(guild_id)
+    VoiceSupervisor |> Supervisor.delete_child(guild_id)
   end
 
 end

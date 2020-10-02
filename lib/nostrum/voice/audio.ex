@@ -6,6 +6,7 @@ defmodule Nostrum.Voice.Audio do
   alias Nostrum.Struct.VoiceState
   alias Nostrum.Util
   alias Nostrum.Voice
+  alias Porcelain.Process, as: Proc
 
   @encryption_mode "xsalsa20_poly1305"
   @samples_per_frame 960
@@ -77,32 +78,33 @@ defmodule Nostrum.Voice.Audio do
       }
     end)
 
-    voice = Voice.update_guild(voice.guild,
+    voice = Voice.update_voice(voice.guild_id,
       rtp_sequence: voice.rtp_sequence,
       rtp_timestamp: voice.rtp_timestamp
     )
 
     if length(frames) < @frames_per_burst do
       Voice.set_speaking(voice, false)
-      Voice.update_guild(voice.guild, ffmpeg_proc: nil)
+      Proc.stop(voice.ffmpeg_proc)
+      Voice.update_voice(voice.guild_id, ffmpeg_proc: nil)
       exit(:normal)
     else
       voice
     end
   end
 
-  def spawn_ffmpeg(input, stream \\ <<>>) do
-    {input, stream} =
-      case input do
-        :stream ->
-          {"pipe:0", stream}
-        filename ->
-          {filename, <<>>}
+  def spawn_ffmpeg(type, input) do
+    {input_url, stdin} =
+      case type do
+        :url ->
+          {input, <<>>}
+        :pipe ->
+          {"pipe:0", input}
       end
     Porcelain.spawn(
       Application.get_env(:nostrum, :ffmpeg, "ffmpeg"),
       [
-        "-i", input,
+        "-i", input_url,
         "-ac", "2",
         "-ar", "48000",
         "-f", "s16le",
@@ -111,7 +113,7 @@ defmodule Nostrum.Voice.Audio do
         "pipe:1"
       ],
       [
-        in: stream,
+        in: stdin,
         out: :stream
       ]
     )

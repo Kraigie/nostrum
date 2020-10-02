@@ -1,10 +1,12 @@
 defmodule Nostrum.Struct.VoiceState do
   @moduledoc false
 
+  alias Nostrum.Voice.Session
   alias Porcelain.Process, as: Proc
 
   defstruct [
-    :guild,
+    :guild_id,
+    :channel_id,
     :gateway,
     :session,
     :token,
@@ -26,10 +28,10 @@ defmodule Nostrum.Struct.VoiceState do
   def new(params), do: struct(__MODULE__, params)
 
   def ready_for_ws?(%__MODULE__{} = v) do
-      not (is_pid(v.session_pid)
-        or is_nil(v.session)
-        or is_nil(v.gateway)
-        or is_nil(v.token))
+    not (is_pid(v.session_pid)
+      or is_nil(v.session)
+      or is_nil(v.gateway)
+      or is_nil(v.token))
   end
 
   def ready_for_ws?(_), do: false
@@ -65,6 +67,10 @@ defmodule Nostrum.Struct.VoiceState do
 
     unless is_nil(v.udp_socket) do
       :gen_udp.close(v.udp_socket)
+    end
+
+    unless is_nil(v.session_pid) do
+      Session.close_connection(v.session_pid)
     end
 
     :ok

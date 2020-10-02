@@ -22,6 +22,7 @@ defmodule Nostrum.Voice do
   alias Nostrum.Api
   alias Nostrum.Struct.{Channel, Guild, VoiceState}
   alias Nostrum.Voice.Audio
+  alias Nostrum.Voice.Session
   alias Nostrum.Voice.Supervisor, as: VoiceSupervisor
   alias Porcelain.Process, as: Proc
 
@@ -40,23 +41,23 @@ defmodule Nostrum.Voice do
   end
 
   @doc false
-  def update_guild(guild, args \\ []) do
-    GenServer.call(VoiceStateMap, {:update, guild, args})
+  def update_voice(guild_id, args \\ []) do
+    GenServer.call(VoiceStateMap, {:update, guild_id, args})
   end
 
   @doc false
-  def get_guild(guild) do
-    GenServer.call(VoiceStateMap, {:get, guild})
+  def get_voice(guild_id) do
+    GenServer.call(VoiceStateMap, {:get, guild_id})
   end
   @doc false
-  def remove_guild(guild) do
-    GenServer.cast(VoiceStateMap, {:remove, guild})
+  def remove_voice(guild_id) do
+    GenServer.call(VoiceStateMap, {:remove, guild_id})
   end
 
   @doc """
   Joins or moves the bot to a voice channel.
 
-  This function is equivalent to `t:Nostrum.Api.update_voice_state/4`.
+  This function is equivalent to `Nostrum.Api.update_voice_state/4`.
   """
   @spec join_channel(Guild.id(), Channel.id(), boolean, boolean) :: no_return | :ok
   def join_channel(guild_id, channel_id, self_mute \\ false, self_deaf \\ false) do
@@ -66,7 +67,7 @@ defmodule Nostrum.Voice do
   @doc """
   Disconnects from the voice channel of the given guild id.
 
-  This function is equivalent to calling `t:Nostrum.Api.update_voice_state(guild_id, nil)`.
+  This function is equivalent to calling `Nostrum.Api.update_voice_state(guild_id, nil)`.
   """
   @spec leave_channel(Guild.id()) :: no_return | :ok
   def leave_channel(guild_id) do
@@ -80,12 +81,12 @@ defmodule Nostrum.Voice do
 
   ## Parameters
     - `guild_id` - ID of guild whose voice channel the sound will be played in.
-    - `filename` - Filename of file to be played, or `:stream` if piping data.
-    - `stream` - Data to be piped into ffmpeg if `filename` was set to `:stream`
+    - `type` - `:url` if playing file (remote or local), `:pipe` if piping data to stdin.
+    - `input` - If `type` `:url`, url or filename. If `type` `:pipe`, raw data to be played.
 
-  Returns `:noop` if unable to play or a sound is playing, otherwise returns `:ok`
+  Returns `{:error, reason}` if unable to play or a sound is playing, else `:ok`
 
-  If playing sound via the `stream` parameter, the sound must be stopped or paused
+  If playing sound with the `:pipe` type, the sound must be stopped or paused
   before playing another sound because the ffmpeg process does not close automatically
   when receiving data piped into stdin.
 
@@ -94,28 +95,34 @@ defmodule Nostrum.Voice do
   ```Elixir
   Nostrum.Voice.join_channel(123456789, 420691337)
 
-  Nostrum.Voice.play(123456789, "~/music/FavoriteSong.mp3")
+  Nostrum.Voice.play(123456789, :url, "~/music/FavoriteSong.mp3")
   ```
   ```Elixir
   Nostrum.Voice.join_channel(123456789, 420691337)
 
   raw_data = File.read!("~/music/sound_effect.wav")
 
-  Nostrum.Voice.play(123456789, :stream, raw_data)
+  Nostrum.Voice.play(123456789, :pipe, raw_data)
   ```
   """
-  @spec play(Guild.id(), String.t() | :stream, binary() | iodata()) :: :noop | :ok
-  def play(guild_id, filename, stream \\ <<>>) do
-    voice = get_guild(guild_id)
-    if VoiceState.ready_for_rtp?(voice) and not VoiceState.playing?(voice) do
-      unless is_nil(voice.ffmpeg_proc), do: Proc.stop(voice.ffmpeg_pro)
-      set_speaking(voice, true)
-      voice = update_guild(guild_id, ffmpeg_proc: Audio.spawn_ffmpeg(filename, stream))
-      {:ok, pid} = Task.start(fn -> Audio.init_player(voice) end)
-      update_guild(guild_id, player_pid: pid)
-      :ok
-    else
-      :noop
+  @spec play(Guild.id(), :url | :pipe, String.t() | binary() | iodata()) :: :ok | {:error, String.t()}
+  def play(guild_id, type, input) do
+    voice = get_voice(guild_id)
+
+    cond do
+      not VoiceState.ready_for_rtp?(voice) ->
+        {:error, "Must be connected to voice channel to play audio."}
+
+      VoiceState.playing?(voice) ->
+        {:error, "Audio already playing in voice channel."}
+
+      true ->
+        unless is_nil(voice.ffmpeg_proc), do: Proc.stop(voice.ffmpeg_pro)
+        set_speaking(voice, true)
+        voice = update_voice(guild_id, ffmpeg_proc: Audio.spawn_ffmpeg(type, input))
+        {:ok, pid} = Task.start(fn -> Audio.init_player(voice) end)
+        update_voice(guild_id, player_pid: pid)
+        :ok
     end
   end
 
@@ -127,7 +134,7 @@ defmodule Nostrum.Voice do
   ## Parameters
     - `guild_id` - ID of guild whose voice channel the sound will be stopped in.
 
-  Returns `:noop` if unable to stop or no sound is playing, otherwise returns `:ok`
+  Returns `{:error, reason}` if unable to stop or no sound is playing, else `:ok`
 
   If a sound played from a file has already completed, this function does not need
   to be called. If playing from a stream, this function musted be called before another
@@ -138,21 +145,27 @@ defmodule Nostrum.Voice do
   ```Elixir
   Nostrum.Voice.join_channel(123456789, 420691337)
 
-  Nostrum.Voice.play(123456789, "~/things/4_hour_nightcore_mix.ogg")
+  Nostrum.Voice.play(123456789, :url, "http://brandthill.com/files/weird_dubstep_noises.mp3")
 
   Nostrum.Voice.stop(123456789)
   ```
   """
-  @spec stop(Guild.id()) :: :noop | :ok
+  @spec stop(Guild.id()) :: :ok | {:error, String.t()}
   def stop(guild_id) do
-    voice = get_guild(guild_id)
-    if VoiceState.playing?(voice) do
-      set_speaking(voice, false)
-      Process.exit(voice.player_pid, :stop)
-      Porcelain.Process.stop(voice.ffmpeg_proc)
-      :ok
-    else
-      :noop
+    voice = get_voice(guild_id)
+
+    cond do
+      not VoiceState.ready_for_rtp?(voice) ->
+        {:error, "Must be connected to voice channel to stop audio."}
+
+      not VoiceState.playing?(voice) ->
+        {:error, "Audio must be playing to stop."}
+
+      true ->
+        set_speaking(voice, false)
+        Process.exit(voice.player_pid, :stop)
+        Proc.stop(voice.ffmpeg_proc)
+        :ok
     end
   end
 
@@ -164,9 +177,9 @@ defmodule Nostrum.Voice do
   ## Parameters
     - `guild_id` - ID of guild whose voice channel the sound will be paused in.
 
-  Returns `:noop` if unable to pause or no sound is playing, otherwise returns `:ok`
+  Returns `{:error, reason}` if unable to pause or no sound is playing, else `:ok`
 
-  This function is similar to `t:Nostrum.Voice.stop/1`, except that the sound may be
+  This function is similar to `stop/1`, except that the sound may be
   resumed after being paused.
 
   ## Examples
@@ -174,20 +187,26 @@ defmodule Nostrum.Voice do
   ```Elixir
   Nostrum.Voice.join_channel(123456789, 420691337)
 
-  Nostrum.Voice.play(123456789, "~/files/twelve_hour_loop_of_waterfall_sounds.mp3")
+  Nostrum.Voice.play(123456789, :url, "~/files/twelve_hour_loop_of_waterfall_sounds.mp3")
 
   Nostrum.Voice.pause(123456789)
   ```
   """
-  @spec pause(Guild.id()) :: :noop | :ok
+  @spec pause(Guild.id()) :: :ok | {:error, String.t()}
   def pause(guild_id) do
-    voice = get_guild(guild_id)
-    if VoiceState.playing?(voice) do
-      set_speaking(voice, false)
-      Process.exit(voice.player_pid, :pause)
-      :ok
-    else
-      :noop
+    voice = get_voice(guild_id)
+
+    cond do
+      not VoiceState.ready_for_rtp?(voice) ->
+        {:error, "Must be connected to voice channel to pause audio."}
+
+      not VoiceState.playing?(voice) ->
+        {:error, "Audio must be playing to pause."}
+
+      true ->
+        set_speaking(voice, false)
+        Process.exit(voice.player_pid, :pause)
+        :ok
     end
   end
 
@@ -199,66 +218,75 @@ defmodule Nostrum.Voice do
   ## Parameters
     - `guild_id` - ID of guild whose voice channel the sound will be resumed in.
 
-  Returns `:noop` if unable to resume or no sound has been paused, otherwise returns `:ok`
+  Returns `{:error, reason}` if unable to resume or no sound has been paused, otherwise returns `:ok`
 
   This function is used to resume a sound that had previously been paused.
 
   ```Elixir
   Nostrum.Voice.join_channel(123456789, 420691337)
 
-  Nostrum.Voice.play(123456789, "~/stuff/Toto - Africa (Bass Boosted)")
+  Nostrum.Voice.play(123456789, :url, "~/stuff/Toto - Africa (Bass Boosted)")
 
   Nostrum.Voice.pause(123456789)
 
   Nostrum.Voice.resume(123456789)
   ```
   """
-  @spec resume(Guild.id()) :: :noop | :ok
+  @spec resume(Guild.id()) :: :ok | {:error, String.t()}
   def resume(guild_id) do
-    voice = get_guild(guild_id)
-    if VoiceState.playing?(voice) or is_nil(voice.ffmpeg_proc) do
-      :noop
-    else
-      set_speaking(voice, true)
-      {:ok, pid} = Task.start(fn -> Audio.player_loop(voice) end)
-      update_guild(guild_id, player_pid: pid)
-      :ok
+    voice = get_voice(guild_id)
+
+    cond do
+      not VoiceState.ready_for_rtp?(voice) ->
+        {:error, "Must be connected to voice channel to resume audio."}
+
+      VoiceState.playing?(voice) ->
+        {:error, "Audio already playing in voice channel."}
+
+      is_nil(voice.ffmpeg_proc) ->
+        {:error, "Audio must be paused to resume."}
+
+      true ->
+        set_speaking(voice, true)
+        {:ok, pid} = Task.start(fn -> Audio.player_loop(voice) end)
+        update_voice(guild_id, player_pid: pid)
+        :ok
     end
   end
 
   @doc false
   def set_speaking(%VoiceState{} = voice, speaking) do
-    send(voice.session_pid, {:speaking, speaking})
+    Session.set_speaking(voice.session_pid, speaking)
   end
 
   @doc false
-  def set_speaking(guild, speaking) do
-    get_guild(guild) |> set_speaking(speaking)
+  def set_speaking(guild_id, speaking) do
+    get_voice(guild_id) |> set_speaking(speaking)
   end
 
   @doc false
-  def handle_call({:update, guild, args}, _from, state) do
+  def handle_call({:update, guild_id, args}, _from, state) do
     voice =
       state
-      |> Map.get(guild, VoiceState.new(guild: guild))
+      |> Map.get(guild_id, VoiceState.new(guild_id: guild_id))
       |> Map.merge(Enum.into(args, %{}))
 
-    state = Map.put(state, guild, voice)
+    state = Map.put(state, guild_id, voice)
     start_if_ready(voice)
     {:reply, voice, state}
   end
 
   @doc false
-  def handle_call({:get, guild}, _from, state) do
-    {:reply, Map.get(state, guild), state}
+  def handle_call({:get, guild_id}, _from, state) do
+    {:reply, Map.get(state, guild_id), state}
   end
 
   @doc false
-  def handle_cast({:remove, guild}, state) do
-    VoiceSupervisor.end_session(guild)
-    Map.get(state, guild) |> VoiceState.cleanup()
+  def handle_call({:remove, guild_id}, _from, state) do
+    state[guild_id] |> VoiceState.cleanup()
+    VoiceSupervisor.end_session(guild_id)
 
-    {:noreply, Map.delete(state, guild)}
+    {:reply, true, Map.delete(state, guild_id)}
   end
 
   @doc false
