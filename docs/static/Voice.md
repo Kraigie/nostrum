@@ -12,5 +12,7 @@ encode any audio (or video) file for sending to Discord's voice servers.
 By default Nostrum will look for the executable `ffmpeg` in the system path.
 If the executable is elsewhere, the path may be configured via
 `config :nostrum, :ffmpeg, "/path/to/ffmpeg"`.
-The function `Nostrum.Voice.play/3` allows sound to played via files or via raw
-data that gets piped to `stdin` of the `ffmpeg` instance.
+The function `Nostrum.Voice.play/3` allows sound to played via files, local or 
+remote, or via raw data that gets piped to `stdin` of the `ffmpeg` process.
+When playing from a url, the url can be a name of a file on the filesystem or a url
+of a webserver hosting a file - `ffmpeg` will download and play it.

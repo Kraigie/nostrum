@@ -1,7 +1,7 @@
 # Intro
 Nostrum is a an Elixir library that can be used to interact with Discord.
 
-Nostrum currently supports versions of Elixir above v. 1.9.
+Nostrum currently supports versions of Elixir at or above v. 1.9.
 
 With a platform like Discord, there are many moving parts and an attempt was made
 to break these parts into smaller logical pieces.
@@ -13,7 +13,7 @@ the following -
  * [State](state.html) - `Caches` that hold the state of Discord that your bot can see.
  * [Events](events.html) - How you can handle real time events that your bot can see.
  * [Custom Consumers](consumers.html) - Information on defining custom consumer processes.
- * [Voice](voice.html) - How to play audio through Discord voice channels.
+ * [Voice](voice.html) - Playing audio through Discord voice channels.
 
 ### Why Elixir?
 From the Elixir website -
