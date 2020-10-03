@@ -93,13 +93,26 @@ defmodule Nostrum.Voice.Audio do
     end
   end
 
-  def spawn_ffmpeg(type, input) do
+  def spawn_ffmpeg(input, type \\ :url) do
     {input_url, stdin} =
       case type do
         :url ->
           {input, <<>>}
         :pipe ->
           {"pipe:0", input}
+        :ytdl ->
+          %Proc{out: outstream} = Porcelain.spawn(
+            Application.get_env(:nostrum, :youtubedl, "youtube-dl"),
+            [
+              "-f", "bestaudio",
+              "-o", "-",
+              input
+            ],
+            [
+              out: :stream
+            ]
+          )
+          {"pipe:0", outstream}
       end
     Porcelain.spawn(
       Application.get_env(:nostrum, :ffmpeg, "ffmpeg"),

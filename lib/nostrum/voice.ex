@@ -81,8 +81,11 @@ defmodule Nostrum.Voice do
 
   ## Parameters
     - `guild_id` - ID of guild whose voice channel the sound will be played in.
-    - `type` - `:url` if playing file (remote or local), `:pipe` if piping data to stdin.
-    - `input` - If `type` `:url`, url or filename. If `type` `:pipe`, raw data to be played.
+    - `input` - Audio to be played. Type of `input` determined by `type` parameter.
+    - `type` - Type of input (defaults to `:url`).
+      - `:url` Input will be [any url that `ffmpeg` can read](https://www.ffmpeg.org/ffmpeg-protocols.html).
+      - `:pipe` Input will be data that is piped to stdin of `ffmpeg`.
+      - `:ytdl` Input will be url for `youtube-dl`, which gets automatically piped to `ffmpeg`.
 
   Returns `{:error, reason}` if unable to play or a sound is playing, else `:ok`
 
@@ -95,18 +98,23 @@ defmodule Nostrum.Voice do
   ```Elixir
   iex> Nostrum.Voice.join_channel(123456789, 420691337)
 
-  iex> Nostrum.Voice.play(123456789, :url, "~/music/FavoriteSong.mp3")
+  iex> Nostrum.Voice.play(123456789, "~/music/FavoriteSong.mp3", :url)
   ```
   ```Elixir
   iex> Nostrum.Voice.join_channel(123456789, 420691337)
 
   iex> raw_data = File.read!("~/music/sound_effect.wav")
 
-  iex> Nostrum.Voice.play(123456789, :pipe, raw_data)
+  iex> Nostrum.Voice.play(123456789, raw_data, :pipe)
+  ```
+  ```Elixir
+  iex> Nostrum.Voice.join_channel(123456789, 420691337)
+
+  iex> Nostrum.Voice.play(123456789, "https://www.youtube.com/watch?v=b4RJ-QGOtw4", :ytdl)
   ```
   """
-  @spec play(Guild.id(), :url | :pipe, String.t() | binary() | iodata()) :: :ok | {:error, String.t()}
-  def play(guild_id, type, input) do
+  @spec play(Guild.id(), String.t() | binary() | iodata(), :url | :pipe | :ytdl) :: :ok | {:error, String.t()}
+  def play(guild_id, input, type \\ :url) do
     voice = get_voice(guild_id)
 
     cond do
@@ -119,7 +127,7 @@ defmodule Nostrum.Voice do
       true ->
         unless is_nil(voice.ffmpeg_proc), do: Proc.stop(voice.ffmpeg_proc)
         set_speaking(voice, true)
-        voice = update_voice(guild_id, ffmpeg_proc: Audio.spawn_ffmpeg(type, input))
+        voice = update_voice(guild_id, ffmpeg_proc: Audio.spawn_ffmpeg(input, type))
         {:ok, pid} = Task.start(fn -> Audio.init_player(voice) end)
         update_voice(guild_id, player_pid: pid)
         :ok
@@ -145,7 +153,7 @@ defmodule Nostrum.Voice do
   ```Elixir
   iex> Nostrum.Voice.join_channel(123456789, 420691337)
 
-  iex> Nostrum.Voice.play(123456789, :url, "http://brandthill.com/files/weird_dubstep_noises.mp3")
+  iex> Nostrum.Voice.play(123456789, "http://brandthill.com/files/weird_dubstep_noises.mp3")
 
   iex> Nostrum.Voice.stop(123456789)
   ```
@@ -187,7 +195,7 @@ defmodule Nostrum.Voice do
   ```Elixir
   iex> Nostrum.Voice.join_channel(123456789, 420691337)
 
-  iex> Nostrum.Voice.play(123456789, :url, "~/files/twelve_hour_loop_of_waterfall_sounds.mp3")
+  iex> Nostrum.Voice.play(123456789, "~/files/twelve_hour_loop_of_waterfall_sounds.mp3")
 
   iex> Nostrum.Voice.pause(123456789)
   ```
@@ -227,7 +235,7 @@ defmodule Nostrum.Voice do
   ```Elixir
   iex> Nostrum.Voice.join_channel(123456789, 420691337)
 
-  iex> Nostrum.Voice.play(123456789, :url, "~/stuff/Toto - Africa (Bass Boosted)")
+  iex> Nostrum.Voice.play(123456789, "~/stuff/Toto - Africa (Bass Boosted)")
 
   iex> Nostrum.Voice.pause(123456789)
 
@@ -269,7 +277,7 @@ defmodule Nostrum.Voice do
   ```Elixir
   iex> Nostrum.Voice.join_channel(123456789, 420691337)
 
-  iex> Nostrum.Voice.play(123456789, :url, "https://a-real-site.biz/RickRoll.m4a")
+  iex> Nostrum.Voice.play(123456789, "https://a-real-site.biz/RickRoll.m4a")
 
   iex> Nostrum.Voice.playing?(123456789)
   true
