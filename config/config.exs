@@ -5,7 +5,7 @@ config :nostrum,
   num_shards: :auto,
   ffmpeg: "ffmpeg"
 
-config :logger, :console, metadata: [:shard]
+config :logger, :console, metadata: [:shard, :guild, :channel]
 
 config :porcelain, :driver, Porcelain.Driver.Basic
 

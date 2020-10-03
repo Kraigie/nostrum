@@ -263,6 +263,8 @@ defmodule Nostrum.Shard.Dispatch do
         Voice.remove_voice(p.guild_id)
       end
     end
+
+    GuildServer.voice_state_update(p.guild_id, p)
     {event, p, state}
   end
 

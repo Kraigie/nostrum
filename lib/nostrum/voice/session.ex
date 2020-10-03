@@ -1,6 +1,7 @@
 defmodule Nostrum.Voice.Session do
   @moduledoc false
 
+  alias Nostrum.Cache.{ChannelCache, GuildCache}
   alias Nostrum.Constants
   alias Nostrum.Struct.{VoiceState, VoiceWSState}
   alias Nostrum.Util
@@ -26,6 +27,10 @@ defmodule Nostrum.Voice.Session do
   end
 
   def handle_continue(%VoiceState{} = voice, nil) do
+    Logger.metadata(
+      guild: ~s|"#{GuildCache.get!(voice.guild_id).name}"|,
+      channel: ~s|"#{ChannelCache.get!(voice.channel_id).name}"|
+    )
     [host, port] = String.split(voice.gateway, ":")
     {:ok, worker} = :gun.open(:binary.bin_to_list(host), String.to_integer(port), %{protocols: [:http]})
     {:ok, :http} = :gun.await_up(worker, @timeout_connect)

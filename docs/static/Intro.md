@@ -109,12 +109,14 @@ config :logger,
 ```
 
 Nostrum exposes the following metadata fields through logger:
- - `shard` - Id of the shard on which the event occured
+ - `shard` - Id of the shard on which the event occurred
+ - `guild` - Name of the guild on which the voice connection event occurred
+ - `channel` - Name of the channel on which the voice connection event occurred
 
 To enable this metadata, logger can be configured as such:
 ```Elixir
 config :logger, :console,
-  metadata: [:shard]
+  metadata: [:shard, :guild, :channel]
 ```  
 
 For more information on how this works, please see the Logger

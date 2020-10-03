@@ -117,7 +117,7 @@ defmodule Nostrum.Voice do
         {:error, "Audio already playing in voice channel."}
 
       true ->
-        unless is_nil(voice.ffmpeg_proc), do: Proc.stop(voice.ffmpeg_pro)
+        unless is_nil(voice.ffmpeg_proc), do: Proc.stop(voice.ffmpeg_proc)
         set_speaking(voice, true)
         voice = update_voice(guild_id, ffmpeg_proc: Audio.spawn_ffmpeg(type, input))
         {:ok, pid} = Task.start(fn -> Audio.init_player(voice) end)
