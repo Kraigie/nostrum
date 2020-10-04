@@ -105,6 +105,7 @@ defmodule Nostrum.Voice.Audio do
             Application.get_env(:nostrum, :youtubedl, "youtube-dl"),
             [
               "-f", "bestaudio",
+              "-q",
               "-o", "-",
               input
             ],
