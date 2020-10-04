@@ -3,7 +3,7 @@ defmodule Nostrum.Voice do
   Interface for playing audio through Discord's voice channels.
 
   # Using Discord Voice Channels
-  To play sound in discord with Nostrum, you'll need `ffmpeg` to be installed.
+  To play sound in Discord with Nostrum, you'll need `ffmpeg` to be installed.
   If you don't have the executable `ffmpeg` in the path, the absolute path may
   be configured through config keys `:nostrum, :ffmpeg`.
 
@@ -11,9 +11,9 @@ defmodule Nostrum.Voice do
   most of the functions in this module take a guild id, and the resulting action
   will be performed in the given guild's voice channel that the bot is connected to.
 
-  The primary discord gateway responsible for all text based communication relies on
+  The primary Discord gateway responsible for all text based communication relies on
   one websocket connection per shard, where small bots typically only have one shard.
-  The discord voice gateway works by establishing a websocket connection per guild/channel.
+  The Discord voice gateways work by establishing a websocket connection per guild/channel.
   After some handshaking on this connection, audio data can be sent over UDP/RTP. Behind
   the scenes the voice websocket connections are implemented nearly the same way the main
   shard websocket connections are, and require no developer intervention.
@@ -65,7 +65,7 @@ defmodule Nostrum.Voice do
   end
 
   @doc """
-  Disconnects from the voice channel of the given guild id.
+  Leaves the voice channel of the given guild id.
 
   This function is equivalent to calling `Nostrum.Api.update_voice_state(guild_id, nil)`.
   """
@@ -75,7 +75,7 @@ defmodule Nostrum.Voice do
   end
 
   @doc """
-  Play sound in the voice channel the bot is in.
+  Plays sound in the voice channel the bot is in.
 
   The bot must be connected to a voice channel in the guild specified.
 
@@ -87,11 +87,11 @@ defmodule Nostrum.Voice do
       - `:pipe` Input will be data that is piped to stdin of `ffmpeg`.
       - `:ytdl` Input will be url for `youtube-dl`, which gets automatically piped to `ffmpeg`.
 
-  Returns `{:error, reason}` if unable to play or a sound is playing, else `:ok`
+  Returns `{:error, reason}` if unable to play or a sound is playing, else `:ok`.
 
-  If playing sound with the `:pipe` type, the sound must be stopped or paused
-  before playing another sound because the ffmpeg process does not close automatically
-  when receiving data piped into stdin.
+  If playing sound with type `:pipe` or `:ytdl`, either `stop/1` or `pause/1` must be called before
+  playing another sound, because `ffmpeg` does not close automatically when its input is piped
+  into stdin. With the `:url` option, ffmpeg will close automatically when playing completes.
 
   ## Examples
 
@@ -135,14 +135,14 @@ defmodule Nostrum.Voice do
   end
 
   @doc """
-  Stop the current sound being in a voice channel.
+  Stops the current sound being played in a voice channel.
 
   The bot must be connected to a voice channel in the guild specified.
 
   ## Parameters
     - `guild_id` - ID of guild whose voice channel the sound will be stopped in.
 
-  Returns `{:error, reason}` if unable to stop or no sound is playing, else `:ok`
+  Returns `{:error, reason}` if unable to stop or no sound is playing, else `:ok`.
 
   If a sound played from a file has already completed, this function does not need
   to be called. If playing from a stream, this function musted be called before another
@@ -178,14 +178,14 @@ defmodule Nostrum.Voice do
   end
 
   @doc """
-  Pause the current sound being played in a voice channel.
+  Pauses the current sound being played in a voice channel.
 
   The bot must be connected to a voice channel in the guild specified.
 
   ## Parameters
     - `guild_id` - ID of guild whose voice channel the sound will be paused in.
 
-  Returns `{:error, reason}` if unable to pause or no sound is playing, else `:ok`
+  Returns `{:error, reason}` if unable to pause or no sound is playing, else `:ok`.
 
   This function is similar to `stop/1`, except that the sound may be
   resumed after being paused.
@@ -219,14 +219,14 @@ defmodule Nostrum.Voice do
   end
 
   @doc """
-  Resume the current sound being played in a voice channel.
+  Resumes playing the current paused sound in a voice channel.
 
   The bot must be connected to a voice channel in the guild specified.
 
   ## Parameters
     - `guild_id` - ID of guild whose voice channel the sound will be resumed in.
 
-  Returns `{:error, reason}` if unable to resume or no sound has been paused, otherwise returns `:ok`
+  Returns `{:error, reason}` if unable to resume or no sound has been paused, otherwise returns `:ok`.
 
   This function is used to resume a sound that had previously been paused.
 
@@ -265,7 +265,7 @@ defmodule Nostrum.Voice do
   end
 
   @doc """
-  Check if bot is playing sound in a voice channel.
+  Checks if the bot is playing sound in a voice channel.
 
   ## Parameters
     - `guild_id` - ID of guild to check if audio being played.
@@ -294,7 +294,7 @@ defmodule Nostrum.Voice do
   end
 
   @doc """
-  Check if connection is up and ready to play audio.
+  Checks if the connection is up and ready to play audio.
 
   ## Parameters
     - `guild_id` - ID of guild to check if voice connection is up.
@@ -323,7 +323,7 @@ defmodule Nostrum.Voice do
   end
 
   @doc """
-  Get id of the voice channel that bot is connected to.
+  Gets the id of the voice channel that the bot is connected to.
 
   ## Parameters
     - `guild_id` - ID of guild that the resultant channel belongs to.

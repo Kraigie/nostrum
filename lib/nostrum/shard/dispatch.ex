@@ -238,7 +238,7 @@ defmodule Nostrum.Shard.Dispatch do
           # Already in different channel:
           voice.channel_id != p.channel_id and is_pid(voice.session_pid) ->
             v_ws = VoiceSession.get_ws_state(voice.session_pid)
-            # On the off-change that we receive Voice Server Update first:
+            # On the off-chance that we receive Voice Server Update first:
             {new_token, new_gateway} =
               if voice.token == v_ws.token do
                 {nil, nil}  # Need to reset

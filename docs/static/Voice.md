@@ -24,7 +24,7 @@ data as discussed in the section above. Nostrum also has support for `youtube-dl
 powerful command line utility for downloading audio/video from online video services.
 Although the name implies support for Youtube, `youtube-dl` supports downloading from
 [an immense list of sites](https://github.com/ytdl-org/youtube-dl/blob/master/docs/supportedsites.md).
-Be default Nostrum will look for the executable `youtube-dl` in the system path. If the
-executable is elsewhere, the path may be configured via `config :nostrum, :youtubedl, "/path/to/youtube-dl"`. When `Nostrum.Voice.play/3` is called with `:ytdl` for the `type` parameter,
-`youtube-dl` will be running with options `-f bestaudio -o -`, which will attempt to download
-the audio at the given url and pipe it to `ffmpeg`.
+By default Nostrum will look for the executable `youtube-dl` in the system path. If the
+executable is elsewhere, the path may be configured via `config :nostrum, :youtubedl, "/path/to/youtube-dl"`.
+When `Nostrum.Voice.play/3` is called with `:ytdl` for the `type` parameter, `youtube-dl` will be
+run with options `-f bestaudio -q -o -`, which will attempt to download the audio at the given url and pipe it to `ffmpeg`.
