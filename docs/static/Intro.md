@@ -129,3 +129,5 @@ A very simple example bot can be found
 [here](https://github.com/Kraigie/nostrum/blob/master/examples/event_consumer.ex).
 
 A more complex bot can be found [here](https://github.com/jchristgit/bolt).
+
+An example bot that plays audio through voice channels can be found [here](https://github.com/Kraigie/nostrum/blob/master/examples/audio_player_example.ex).
