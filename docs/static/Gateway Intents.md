@@ -1,10 +1,10 @@
 # Gateway Intents
 
-The Discord API allows you to fine tune the payloads that are received by your bot, gateway intents.
+The Discord API allows you to fine tune the payloads that are received by your bot through gateway intents.
 
-When connecting to Discord you can instruct Discord on what events you want to receive (i.e. messages, user presences, etc.).
+When connecting to Discord you can instruct Discord on which events you want to receive (i.e. messages, user presences, etc.).
 
-Nostrum allows you to set these intents within your configuration, **by default all intents are enabled**.
+Nostrum allows you to set these intents within your configuration, **by default all intents are enabled, including privileged ones**.
 
 To pass intents you should use the following configuration:
 ```elixir
@@ -17,7 +17,7 @@ config :nostrum,
   ]
 ```
 
-Possible options (and the events they correspond to) are:
+Possible intents (and the gateway events they correspond to) are:
 
 ```
 guilds:
