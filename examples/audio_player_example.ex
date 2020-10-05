@@ -19,9 +19,8 @@ defmodule AudioPlayerConsumer do
   use Nostrum.Consumer
 
   alias Nostrum.Api
-  alias Nostrum.Voice
   alias Nostrum.Cache.GuildCache
-
+  alias Nostrum.Voice
 
   # Soundcloud link will be fed through youtube-dl
   @soundcloud_url "https://soundcloud.com/fyre-brand/melted-butter"
@@ -34,7 +33,7 @@ defmodule AudioPlayerConsumer do
 
   def get_voice_channel_of_msg(msg) do
     msg.guild_id
-    |> GuildCache.get!
+    |> GuildCache.get!()
     |> Map.get(:voice_states)
     |> Enum.find(%{}, fn v -> v.user_id == msg.author.id end)
     |> Map.get(:channel_id)
@@ -52,6 +51,7 @@ defmodule AudioPlayerConsumer do
         case get_voice_channel_of_msg(msg) do
           nil ->
             Api.create_message(msg.channel_id, "Must be in a voice channel to summon")
+
           voice_channel_id ->
             Voice.join_channel(msg.guild_id, voice_channel_id)
         end

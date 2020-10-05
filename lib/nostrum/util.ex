@@ -274,6 +274,7 @@ defmodule Nostrum.Util do
       :modes,
       :muted,
       :recipients,
+      :referenced_message,
       :render_embeds,
       :render_reactions,
       :require_colons,
@@ -287,7 +288,7 @@ defmodule Nostrum.Util do
       :video,
       :video_codec,
       :video_ssrc,
-      :visibility,
+      :visibility
     ]
   end
 end

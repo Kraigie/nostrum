@@ -3,6 +3,7 @@ defmodule Nostrum.Voice.Audio do
 
   require Logger
 
+  alias Nostrum.Error.VoiceError
   alias Nostrum.Struct.VoiceState
   alias Nostrum.Util
   alias Nostrum.Voice
@@ -11,7 +12,8 @@ defmodule Nostrum.Voice.Audio do
   @encryption_mode "xsalsa20_poly1305"
   @samples_per_frame 960
   @usec_per_frame 20_000
-  @frames_per_burst 10 # How many consecutive packets to send before resting
+  # How many consecutive packets to send before resting
+  @frames_per_burst 10
 
   def encryption_mode, do: @encryption_mode
 
@@ -27,7 +29,8 @@ defmodule Nostrum.Voice.Audio do
 
   def encrypt_packet(%VoiceState{} = voice, data) do
     header = rtp_header(voice)
-    nonce = header <> <<0::96>> # 12 byte header + 12 null bytes
+    # 12 byte header + 12 null bytes
+    nonce = header <> <<0::96>>
     header <> Kcl.secretbox(data, nonce, voice.secret_key)
   end
 
@@ -52,7 +55,7 @@ defmodule Nostrum.Voice.Audio do
     voice = send_frames(voice)
     t2 = Util.usec_now()
 
-    (((@usec_per_frame * @frames_per_burst) - (t2 - t1)) / 1000)
+    ((@usec_per_frame * @frames_per_burst - (t2 - t1)) / 1000)
     |> trunc()
     |> max(0)
     |> Process.sleep()
@@ -65,23 +68,27 @@ defmodule Nostrum.Voice.Audio do
       voice.ffmpeg_proc.out
       |> Enum.take(@frames_per_burst)
 
-    voice = Enum.reduce(frames, voice, fn f, v ->
-      :gen_udp.send(
-        v.udp_socket,
-        v.ip |> ip_to_tuple(),
-        v.port,
-        encrypt_packet(v, f)
-      )
-      %{v |
-        rtp_sequence: v.rtp_sequence + 1,
-        rtp_timestamp: v.rtp_timestamp + @samples_per_frame
-      }
-    end)
+    voice =
+      Enum.reduce(frames, voice, fn f, v ->
+        :gen_udp.send(
+          v.udp_socket,
+          v.ip |> ip_to_tuple(),
+          v.port,
+          encrypt_packet(v, f)
+        )
 
-    voice = Voice.update_voice(voice.guild_id,
-      rtp_sequence: voice.rtp_sequence,
-      rtp_timestamp: voice.rtp_timestamp
-    )
+        %{
+          v
+          | rtp_sequence: v.rtp_sequence + 1,
+            rtp_timestamp: v.rtp_timestamp + @samples_per_frame
+        }
+      end)
+
+    voice =
+      Voice.update_voice(voice.guild_id,
+        rtp_sequence: voice.rtp_sequence,
+        rtp_timestamp: voice.rtp_timestamp
+      )
 
     if length(frames) < @frames_per_burst do
       Voice.set_speaking(voice, false)
@@ -93,44 +100,83 @@ defmodule Nostrum.Voice.Audio do
     end
   end
 
+  def spawn_youtubedl(url) do
+    res =
+      Porcelain.spawn(
+        Application.get_env(:nostrum, :youtubedl, "youtube-dl"),
+        [
+          "-f",
+          "bestaudio",
+          "-q",
+          "-o",
+          "-",
+          url
+        ],
+        out: :stream
+      )
+
+    case res do
+      {:error, reason} ->
+        raise(VoiceError, reason: reason, executable: "youtube-dl")
+
+      proc ->
+        proc
+    end
+  end
+
   def spawn_ffmpeg(input, type \\ :url) do
     {input_url, stdin} =
       case type do
         :url ->
           {input, <<>>}
+
         :pipe ->
           {"pipe:0", input}
+
         :ytdl ->
-          %Proc{out: outstream} = Porcelain.spawn(
-            Application.get_env(:nostrum, :youtubedl, "youtube-dl"),
-            [
-              "-f", "bestaudio",
-              "-q",
-              "-o", "-",
-              input
-            ],
-            [
-              out: :stream
-            ]
-          )
+          %Proc{out: outstream} = spawn_youtubedl(input)
+
           {"pipe:0", outstream}
       end
-    Porcelain.spawn(
-      Application.get_env(:nostrum, :ffmpeg, "ffmpeg"),
-      [
-        "-i", input_url,
-        "-ac", "2",
-        "-ar", "48000",
-        "-f", "s16le",
-        "-acodec", "libopus",
-        "-loglevel", "quiet",
-        "pipe:1"
-      ],
-      [
+
+    res =
+      Porcelain.spawn(
+        Application.get_env(:nostrum, :ffmpeg, "ffmpeg"),
+        [
+          "-i",
+          input_url,
+          "-ac",
+          "2",
+          "-ar",
+          "48000",
+          "-f",
+          "s16le",
+          "-acodec",
+          "libopus",
+          "-loglevel",
+          "quiet",
+          "pipe:1"
+        ],
         in: stdin,
         out: :stream
-      ]
-    )
+      )
+
+    case res do
+      {:error, reason} ->
+        raise(VoiceError, reason: reason, executable: "ffmpeg")
+
+      proc ->
+        proc
+    end
+  end
+
+  def crash_on_voice_error(reason) do
+    Logger.error("""
+    An error occurred whilst trying to play sound: #{reason}
+    If you intend to use voice, ensure Nostrum is configured to find the required utilities.
+    """)
+
+    raise reason
   end
 
   @doc """
@@ -145,12 +191,14 @@ defmodule Nostrum.Voice.Audio do
 
     req_packet =
       <<
-        1::16,    # '1' for request
-        70::16,   # length of rest
+        # '1' for request
+        1::16,
+        # length of rest
+        70::16,
         ssrc::32
-      >>
-      <> (ip |> String.pad_trailing(64, <<0>>))
-      <> <<port::16>>
+      >> <>
+        (ip |> String.pad_trailing(64, <<0>>)) <>
+        <<port::16>>
 
     :ok = :gen_udp.send(socket, ip_tuple, port, req_packet)
     {:ok, res_packet} = :gen_udp.recv(socket, 74)
@@ -166,6 +214,7 @@ defmodule Nostrum.Voice.Audio do
         my_port::16
       >>
     } = res_packet
+
     my_ip = my_ip |> String.trim(<<0>>)
     {my_ip, my_port}
   end
@@ -175,6 +224,7 @@ defmodule Nostrum.Voice.Audio do
       ip
       |> String.to_charlist()
       |> :inet_parse.address()
+
     ip_tuple
   end
 end

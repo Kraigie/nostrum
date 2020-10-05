@@ -49,6 +49,7 @@ defmodule Nostrum.Voice do
   def get_voice(guild_id) do
     GenServer.call(VoiceStateMap, {:get, guild_id})
   end
+
   @doc false
   def remove_voice(guild_id) do
     GenServer.call(VoiceStateMap, {:remove, guild_id})
@@ -113,7 +114,8 @@ defmodule Nostrum.Voice do
   iex> Nostrum.Voice.play(123456789, "https://www.youtube.com/watch?v=b4RJ-QGOtw4", :ytdl)
   ```
   """
-  @spec play(Guild.id(), String.t() | binary() | iodata(), :url | :pipe | :ytdl) :: :ok | {:error, String.t()}
+  @spec play(Guild.id(), String.t() | binary() | iodata(), :url | :pipe | :ytdl) ::
+          :ok | {:error, String.t()}
   def play(guild_id, input, type \\ :url) do
     voice = get_voice(guild_id)
 

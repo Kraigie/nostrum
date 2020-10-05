@@ -28,20 +28,20 @@ defmodule Nostrum.Struct.VoiceState do
   def new(params), do: struct(__MODULE__, params)
 
   def ready_for_ws?(%__MODULE__{} = v) do
-    not (is_pid(v.session_pid)
-      or is_nil(v.session)
-      or is_nil(v.gateway)
-      or is_nil(v.token))
+    not (is_pid(v.session_pid) or
+           is_nil(v.session) or
+           is_nil(v.gateway) or
+           is_nil(v.token))
   end
 
   def ready_for_ws?(_), do: false
 
   def ready_for_rtp?(%__MODULE__{} = v) do
-    not (is_nil(v.ip)
-      or is_nil(v.port)
-      or is_nil(v.ssrc)
-      or is_nil(v.secret_key)
-      or is_nil(v.udp_socket))
+    not (is_nil(v.ip) or
+           is_nil(v.port) or
+           is_nil(v.ssrc) or
+           is_nil(v.secret_key) or
+           is_nil(v.udp_socket))
   end
 
   def ready_for_rtp?(_), do: false

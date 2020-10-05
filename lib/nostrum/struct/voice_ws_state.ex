@@ -13,6 +13,6 @@ defmodule Nostrum.Struct.VoiceWSState do
     :last_heartbeat_ack,
     :heartbeat_ack,
     :heartbeat_interval,
-    :heartbeat_ref,
+    :heartbeat_ref
   ]
 end

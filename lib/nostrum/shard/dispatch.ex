@@ -225,8 +225,10 @@ defmodule Nostrum.Shard.Dispatch do
 
   def handle_event(:VOICE_STATE_UPDATE = event, p, state) do
     if Me.get().id === p.user_id do
-      if p.channel_id do # Joining Channel
+      if p.channel_id do
+        # Joining Channel
         voice = Voice.get_voice(p.guild_id)
+
         cond do
           # Not yet in a channel:
           is_nil(voice) or is_nil(voice.session) ->
@@ -241,12 +243,15 @@ defmodule Nostrum.Shard.Dispatch do
             # On the off-chance that we receive Voice Server Update first:
             {new_token, new_gateway} =
               if voice.token == v_ws.token do
-                {nil, nil}  # Need to reset
+                # Need to reset
+                {nil, nil}
               else
-                {voice.token, voice.gateway} # Already updated
+                # Already updated
+                {voice.token, voice.gateway}
               end
 
             Voice.remove_voice(p.guild_id)
+
             Voice.update_voice(p.guild_id,
               channel_id: p.channel_id,
               session: p.session_id,
@@ -254,12 +259,12 @@ defmodule Nostrum.Shard.Dispatch do
               gateway: new_gateway
             )
 
-          # Already in this channel
+          # Already in this channel:
           true ->
             Voice.update_voice(p.guild_id)
         end
-
-      else # Leaving Channel
+      else
+        # Leaving Channel:
         Voice.remove_voice(p.guild_id)
       end
     end
@@ -273,6 +278,7 @@ defmodule Nostrum.Shard.Dispatch do
       token: p.token,
       gateway: p.endpoint
     )
+
     {event, p, state}
   end
 

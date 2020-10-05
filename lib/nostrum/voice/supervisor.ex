@@ -16,18 +16,22 @@ defmodule Nostrum.Voice.Supervisor do
     children = [
       Nostrum.Voice
     ]
+
     options = [
       strategy: :one_for_one
     ]
+
     Supervisor.init(children, options)
   end
 
   def create_session(%VoiceState{} = voice) do
-    child = supervisor(
-      Session,
-      [voice],
-      [id: voice.guild_id]
-    )
+    child =
+      supervisor(
+        Session,
+        [voice],
+        id: voice.guild_id
+      )
+
     VoiceSupervisor |> Supervisor.start_child(child)
   end
 
@@ -35,5 +39,4 @@ defmodule Nostrum.Voice.Supervisor do
     VoiceSupervisor |> Supervisor.terminate_child(guild_id)
     VoiceSupervisor |> Supervisor.delete_child(guild_id)
   end
-
 end

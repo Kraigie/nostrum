@@ -39,7 +39,7 @@ defmodule Nostrum.Voice.Payload do
       data: %{
         address: ip,
         port: port,
-        mode: Audio.encryption_mode
+        mode: Audio.encryption_mode()
       }
     }
     |> build_payload("SELECT_PROTOCOL")
@@ -49,7 +49,7 @@ defmodule Nostrum.Voice.Payload do
     %{
       ssrc: voice.ssrc,
       delay: 0,
-      speaking: (if voice.speaking, do: 1, else: 0)
+      speaking: if(voice.speaking, do: 1, else: 0)
     }
     |> build_payload("SPEAKING")
   end
@@ -60,5 +60,4 @@ defmodule Nostrum.Voice.Payload do
     %{op: opcode, d: data}
     |> Poison.encode!()
   end
-
 end

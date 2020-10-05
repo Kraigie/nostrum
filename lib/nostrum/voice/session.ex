@@ -31,8 +31,12 @@ defmodule Nostrum.Voice.Session do
       guild: ~s|"#{GuildCache.get!(voice.guild_id).name}"|,
       channel: ~s|"#{ChannelCache.get!(voice.channel_id).name}"|
     )
+
     [host, port] = String.split(voice.gateway, ":")
-    {:ok, worker} = :gun.open(:binary.bin_to_list(host), String.to_integer(port), %{protocols: [:http]})
+
+    {:ok, worker} =
+      :gun.open(:binary.bin_to_list(host), String.to_integer(port), %{protocols: [:http]})
+
     {:ok, :http} = :gun.await_up(worker, @timeout_connect)
     stream = :gun.ws_upgrade(worker, @gateway_qs)
     await_ws_upgrade(worker, stream)
@@ -60,9 +64,10 @@ defmodule Nostrum.Voice.Session do
 
       {:gun_error, ^worker, ^stream, reason, _headers} ->
         exit({:ws_upgrade_failed, reason})
-    after @timeout_ws_upgrade ->
-      Logger.error("Voice Websocket upgrade failed after #{@timeout_ws_upgrade / 1000} seconds")
-      exit(:timeout)
+    after
+      @timeout_ws_upgrade ->
+        Logger.error("Voice Websocket upgrade failed after #{@timeout_ws_upgrade / 1000} seconds")
+        exit(:timeout)
     end
   end
 
@@ -98,7 +103,6 @@ defmodule Nostrum.Voice.Session do
       new_state ->
         {:noreply, new_state}
     end
-
   end
 
   def handle_info({:gun_ws, _conn, _stream, {:close, errno, reason}}, state) do

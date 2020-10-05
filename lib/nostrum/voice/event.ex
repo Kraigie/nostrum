@@ -10,12 +10,13 @@ defmodule Nostrum.Voice.Event do
   def handle(:ready, payload, state) do
     Logger.debug("VOICE READY")
 
-    voice = Voice.update_voice(state.guild_id,
-      ssrc: payload.d.ssrc,
-      ip: payload.d.ip,
-      port: payload.d.port,
-      udp_socket: Audio.open_udp()
-    )
+    voice =
+      Voice.update_voice(state.guild_id,
+        ssrc: payload.d.ssrc,
+        ip: payload.d.ip,
+        port: payload.d.port,
+        udp_socket: Audio.open_udp()
+      )
 
     {my_ip, my_port} = Audio.discover_ip(voice.udp_socket, voice.ip, voice.port, voice.ssrc)
 
@@ -28,6 +29,7 @@ defmodule Nostrum.Voice.Event do
       rtp_sequence: 0,
       rtp_timestamp: 0
     )
+
     state
   end
 
@@ -56,20 +58,28 @@ defmodule Nostrum.Voice.Event do
   end
 
   def handle(:client_connect, payload, state) do
-    Logger.debug(fn -> "Voice client connected: #{
-      payload.d.user_id
-      |> String.to_integer()
-      |> UserCache.get!()
-      |> Map.get(:username)}" end)
+    Logger.debug(fn ->
+      "Voice client connected: #{
+        payload.d.user_id
+        |> String.to_integer()
+        |> UserCache.get!()
+        |> Map.get(:username)
+      }"
+    end)
+
     state
   end
 
   def handle(:client_disconnect, payload, state) do
-    Logger.debug(fn -> "Voice client disconnected: #{
-      payload.d.user_id
-      |> String.to_integer()
-      |> UserCache.get!()
-      |> Map.get(:username)}" end)
+    Logger.debug(fn ->
+      "Voice client disconnected: #{
+        payload.d.user_id
+        |> String.to_integer()
+        |> UserCache.get!()
+        |> Map.get(:username)
+      }"
+    end)
+
     state
   end
 
@@ -81,5 +91,4 @@ defmodule Nostrum.Voice.Event do
     Logger.warn("UNHANDLED VOICE GATEWAY EVENT #{event}")
     state
   end
-
 end
