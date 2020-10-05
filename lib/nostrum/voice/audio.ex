@@ -170,15 +170,6 @@ defmodule Nostrum.Voice.Audio do
     end
   end
 
-  def crash_on_voice_error(reason) do
-    Logger.error("""
-    An error occurred whilst trying to play sound: #{reason}
-    If you intend to use voice, ensure Nostrum is configured to find the required utilities.
-    """)
-
-    raise reason
-  end
-
   @doc """
   Because UDP is connectionless, we must discover our machine's external
   IP and port used to communicate via the UDP socket to inform the discord

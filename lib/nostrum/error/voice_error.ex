@@ -1,6 +1,6 @@
 defmodule Nostrum.Error.VoiceError do
   @moduledoc """
-  Represents an error when using playing sound through voice channels.
+  Represents an error when playing sound through voice channels.
 
   This occurs when attempting to play audio and Porcelain can't find either
   the ffmpeg executable or the youtube-dl executable.
