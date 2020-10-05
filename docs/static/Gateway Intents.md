@@ -1,6 +1,6 @@
 # Gateway Intents
 
-The Discord API allows you to find tune the payloads that are received by your bot, gateway intents.
+The Discord API allows you to fine tune the payloads that are received by your bot, gateway intents.
 
 When connecting to Discord you can instruct Discord on what events you want to receive (i.e. messages, user presences, etc.).
 
