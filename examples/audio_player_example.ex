@@ -22,8 +22,10 @@ defmodule AudioPlayerConsumer do
   alias Nostrum.Cache.GuildCache
   alias Nostrum.Voice
 
+  require Logger
+
   # Soundcloud link will be fed through youtube-dl
-  @soundcloud_url "https://soundcloud.com/fyre-brand/melted-butter"
+  @soundcloud_url "https://soundcloud.com/fyre-brand/level-up"
   # Audio file will be fed directly to ffmpeg
   @nut_file_url "https://brandthill.com/files/nut.wav"
 
@@ -89,6 +91,10 @@ defmodule AudioPlayerConsumer do
       _ ->
         :noop
     end
+  end
+
+  def handle_event({:VOICE_SPEAKING_UPDATE, payload, _ws_state}) do
+    Logger.debug("VOICE SPEAKING UPDATE #{inspect(payload)}")
   end
 
   # Default event handler, if you don't include this, your consumer WILL crash if

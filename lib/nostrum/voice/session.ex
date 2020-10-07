@@ -3,6 +3,7 @@ defmodule Nostrum.Voice.Session do
 
   alias Nostrum.Cache.{ChannelCache, GuildCache}
   alias Nostrum.Constants
+  alias Nostrum.Shard.Stage.Producer
   alias Nostrum.Struct.{VoiceState, VoiceWSState}
   alias Nostrum.Util
   alias Nostrum.Voice
@@ -149,9 +150,11 @@ defmodule Nostrum.Voice.Session do
   end
 
   def handle_cast({:speaking, speaking}, state) do
-    payload =
-      Voice.update_voice(state.guild_id, speaking: speaking)
-      |> Payload.speaking_payload()
+    voice = Voice.update_voice(state.guild_id, speaking: speaking)
+    speaking_update = Payload.speaking_update_payload(voice)
+    payload = Payload.speaking_payload(voice)
+
+    Producer.notify(Producer, speaking_update, state)
 
     :ok = :gun.ws_send(state.conn, {:text, payload})
     {:noreply, state}

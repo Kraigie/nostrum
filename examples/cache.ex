@@ -1,6 +1,6 @@
 # To get this example going, run `iex -S mix` and `ExampleSupervisor.start_link`.
 # This will start the event consumer under a supervisor.
-defmodule ExampleSupervisor do
+defmodule CacheExampleSupervisor do
   use Supervisor
 
   def start_link(args \\ []) do
@@ -16,7 +16,7 @@ defmodule ExampleSupervisor do
 end
 
 # The event consumer that will be handling all incoming events.
-defmodule ExampleConsumer do
+defmodule CacheExampleConsumer do
   use Nostrum.Consumer
 
   def start_link do

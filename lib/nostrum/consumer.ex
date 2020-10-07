@@ -22,7 +22,7 @@ defmodule Nostrum.Consumer do
 
   alias Nostrum.Shard.Stage.Cache
   alias Nostrum.Struct.{Channel, WSState}
-  alias Nostrum.Struct.Event.{MessageDelete, MessageDeleteBulk}
+  alias Nostrum.Struct.Event.{MessageDelete, MessageDeleteBulk, SpeakingUpdate}
   alias Nostrum.Util
 
   @doc """
@@ -160,6 +160,7 @@ defmodule Nostrum.Consumer do
           {:USER_UPDATE,
            {old_user :: Nostrum.Struct.User.t() | nil, new_user :: Nostrum.Struct.User.t()},
            WSState.t()}
+  @type voice_speaking_update :: {:VOICE_SPEAKING_UPDATE, SpeakingUpdate.t(), WSState.t()}
   @type voice_state_update :: {:VOICE_STATE_UPDATE, map, WSState.t()}
   @type voice_server_update :: {:VOICE_SERVER_UPDATE, map, WSState.t()}
   @type webhooks_update :: {:WEBHOOKS_UPDATE, map, WSState.t()}
@@ -200,6 +201,7 @@ defmodule Nostrum.Consumer do
           | typing_start
           | user_settings_update
           | user_update
+          | voice_speaking_update
           | voice_state_update
           | voice_server_update
           | webhooks_update

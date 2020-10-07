@@ -16,7 +16,6 @@ defmodule Nostrum.Struct.VoiceState do
     :speaking,
     :ip,
     :port,
-    :mode,
     :udp_socket,
     :rtp_sequence,
     :rtp_timestamp,

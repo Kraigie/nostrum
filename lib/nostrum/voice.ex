@@ -90,10 +90,6 @@ defmodule Nostrum.Voice do
 
   Returns `{:error, reason}` if unable to play or a sound is playing, else `:ok`.
 
-  If playing sound with type `:pipe` or `:ytdl`, either `stop/1` or `pause/1` must be called before
-  playing another sound, because `ffmpeg` does not close automatically when its input is piped
-  into stdin. With the `:url` option, ffmpeg will close automatically when playing completes.
-
   ## Examples
 
   ```Elixir
@@ -146,9 +142,8 @@ defmodule Nostrum.Voice do
 
   Returns `{:error, reason}` if unable to stop or no sound is playing, else `:ok`.
 
-  If a sound played from a file has already completed, this function does not need
-  to be called. If playing from a stream, this function musted be called before another
-  sound be played in the specified guild's voice channel.
+  If a sound has finished playing, this function does not need to be called to start
+  playing another sound.
 
   ## Examples
 

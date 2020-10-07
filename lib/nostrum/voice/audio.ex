@@ -46,28 +46,44 @@ defmodule Nostrum.Voice.Audio do
   end
 
   def init_player(voice) do
-    Process.sleep(200)
+    take_nap()
     player_loop(voice)
   end
 
-  def player_loop(voice) do
+  def player_loop(voice, init? \\ true) do
     t1 = Util.usec_now()
-    voice = send_frames(voice)
+    voice = try_send_data(voice, init?)
     t2 = Util.usec_now()
 
-    ((@usec_per_frame * @frames_per_burst - (t2 - t1)) / 1000)
+    take_nap(t2 - t1)
+
+    player_loop(voice, false)
+  end
+
+  def take_nap(diff \\ 0) do
+    ((@usec_per_frame * @frames_per_burst - diff) / 1000)
     |> trunc()
     |> max(0)
     |> Process.sleep()
-
-    player_loop(voice)
   end
 
-  def send_frames(%VoiceState{} = voice) do
-    frames =
+  def try_send_data(%VoiceState{} = voice, init?) do
+    wait = if(init?, do: 20_000, else: 200)
+    {:ok, watchdog} = :timer.apply_after(wait, __MODULE__, :on_stall, [voice])
+
+    {voice, done} =
       voice.ffmpeg_proc.out
       |> Enum.take(@frames_per_burst)
+      |> send_frames(voice)
 
+    :timer.cancel(watchdog)
+
+    if done,
+      do: on_complete(voice),
+      else: voice
+  end
+
+  def send_frames(frames, %VoiceState{} = voice) do
     voice =
       Enum.reduce(frames, voice, fn f, v ->
         :gen_udp.send(
@@ -84,20 +100,10 @@ defmodule Nostrum.Voice.Audio do
         }
       end)
 
-    voice =
-      Voice.update_voice(voice.guild_id,
-        rtp_sequence: voice.rtp_sequence,
-        rtp_timestamp: voice.rtp_timestamp
-      )
-
-    if length(frames) < @frames_per_burst do
-      Voice.set_speaking(voice, false)
-      Proc.stop(voice.ffmpeg_proc)
-      Voice.update_voice(voice.guild_id, ffmpeg_proc: nil)
-      exit(:normal)
-    else
-      voice
-    end
+    {Voice.update_voice(voice.guild_id,
+       rtp_sequence: voice.rtp_sequence,
+       rtp_timestamp: voice.rtp_timestamp
+     ), length(frames) < @frames_per_burst}
   end
 
   def spawn_youtubedl(url) do
@@ -105,13 +111,12 @@ defmodule Nostrum.Voice.Audio do
       Porcelain.spawn(
         Application.get_env(:nostrum, :youtubedl, "youtube-dl"),
         [
-          "-f",
-          "bestaudio",
-          "-q",
-          "-o",
-          "-",
-          url
-        ],
+          ["-f", "bestaudio"],
+          ["-o", "-"],
+          ["-q"],
+          [url]
+        ]
+        |> List.flatten(),
         out: :stream
       )
 
@@ -143,20 +148,15 @@ defmodule Nostrum.Voice.Audio do
       Porcelain.spawn(
         Application.get_env(:nostrum, :ffmpeg, "ffmpeg"),
         [
-          "-i",
-          input_url,
-          "-ac",
-          "2",
-          "-ar",
-          "48000",
-          "-f",
-          "s16le",
-          "-acodec",
-          "libopus",
-          "-loglevel",
-          "quiet",
-          "pipe:1"
-        ],
+          ["-i", input_url],
+          ["-ac", "2"],
+          ["-ar", "48000"],
+          ["-f", "s16le"],
+          ["-acodec", "libopus"],
+          ["-loglevel", "quiet"],
+          ["pipe:1"]
+        ]
+        |> List.flatten(),
         in: stdin,
         out: :stream
       )
@@ -168,6 +168,19 @@ defmodule Nostrum.Voice.Audio do
       proc ->
         proc
     end
+  end
+
+  def on_stall(%VoiceState{} = voice) do
+    unless is_nil(voice.ffmpeg_proc) do
+      Proc.stop(voice.ffmpeg_proc)
+    end
+  end
+
+  def on_complete(%VoiceState{} = voice) do
+    Voice.update_voice(voice.guild_id, ffmpeg_proc: nil)
+    List.duplicate(<<0xF8, 0xFF, 0xFE>>, 5) |> send_frames(voice)
+    Voice.set_speaking(voice, false)
+    Process.exit(voice.player_pid, :stop)
   end
 
   @doc """

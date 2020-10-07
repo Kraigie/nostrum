@@ -5,7 +5,15 @@ defmodule Nostrum.Shard.Dispatch do
   alias Nostrum.Cache.Guild.GuildServer
   alias Nostrum.Cache.Me
   alias Nostrum.Shard.Session
-  alias Nostrum.Struct.Event.{InviteCreate, InviteDelete, MessageDelete, MessageDeleteBulk}
+
+  alias Nostrum.Struct.Event.{
+    InviteCreate,
+    InviteDelete,
+    MessageDelete,
+    MessageDeleteBulk,
+    SpeakingUpdate
+  }
+
   alias Nostrum.Struct.{Guild, Message, User}
   alias Nostrum.Struct.Guild.UnavailableGuild
   alias Nostrum.Util
@@ -222,6 +230,9 @@ defmodule Nostrum.Shard.Dispatch do
 
     {event, UserCache.update(p), state}
   end
+
+  def handle_event(:VOICE_SPEAKING_UPDATE = event, p, state),
+    do: {event, SpeakingUpdate.to_struct(p), state}
 
   def handle_event(:VOICE_STATE_UPDATE = event, p, state) do
     if Me.get().id === p.user_id do
