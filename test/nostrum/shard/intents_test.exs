@@ -4,13 +4,24 @@ defmodule Nostrum.Shard.IntentsTest do
   alias Nostrum.Shard.Intents
 
   describe "get_enabled_intents/0" do
-    test "returns all intents enabled when no intents are set" do
-      Application.put_env(:nostrum, :gateway_intents, nil)
+    test "returns all intents enabled when all intents are set" do
+      Application.put_env(:nostrum, :gateway_intents, :all)
 
       result = Intents.get_enabled_intents()
 
       # Value of all intents
       expected = 32767
+
+      assert(^result = expected)
+    end
+
+    test "returns all non-privileged intents enabled when intents set to :nonprivileged (default)" do
+      Application.put_env(:nostrum, :gateway_intents, :nonprivileged)
+
+      result = Intents.get_enabled_intents()
+
+      # Value of all non-privileged intents
+      expected = 32767 - (2 + 256)
 
       assert(^result = expected)
     end
