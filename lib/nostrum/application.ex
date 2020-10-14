@@ -4,26 +4,20 @@ defmodule Nostrum.Application do
   use Application
 
   @doc false
-  def start(_, _) do
-    import Supervisor.Spec
-
-    num_shards = Application.get_env(:nostrum, :num_shards, 1)
-
-    validate_token()
+  def start(_type, _args) do
+    check_token()
     setup_ets_tables()
 
     children = [
       Nostrum.Api.Ratelimiter,
       Nostrum.Shard.Connector,
       Nostrum.Cache.CacheSupervisor,
-      {Nostrum.Shard.Supervisor, num_shards}
+      Nostrum.Shard.Supervisor
     ]
 
-    if Application.get_env(:nostrum, :dev, nil) do
-      Supervisor.start_link(children ++ [supervisor(Dummy, [])], strategy: :one_for_one)
-    else
-      Supervisor.start_link(children, strategy: :one_for_one)
-    end
+    if Application.get_env(:nostrum, :dev),
+      do: Supervisor.start_link(children ++ [DummySupervisor], strategy: :one_for_one),
+      else: Supervisor.start_link(children, strategy: :one_for_one)
   end
 
   @doc false
@@ -37,12 +31,10 @@ defmodule Nostrum.Application do
     :ets.new(:channel_guild_map, [:set, :public, :named_table])
   end
 
-  defp validate_token do
-    token = Application.get_env(:nostrum, :token)
-    unless token, do: raise("Please supply a token")
-    unless token =~ ~r/[\w-]{24}\.[\w-]{6}\.[\w-]{27}/, do: raise(
-      """
-      Invalid token. You can find the token of your bot in the "bot" tab for your Application.
-      """)
-  end
+  defp check_token, do: check_token(Application.get_env(:nostrum, :token))
+  defp check_token(nil), do: raise("Please supply a token")
+  defp check_token(<<_::192, 46, _::48, 46, _::216>>), do: :ok
+
+  defp check_token(_invalid_format),
+    do: raise("Invalid token format, copy it again from the `Bot` tab of your Application")
 end

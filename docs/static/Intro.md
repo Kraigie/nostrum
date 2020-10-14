@@ -76,6 +76,7 @@ you can omit the field and it will default to 1. You can also set this option to
 
 The following fields are also supported:
 
+ - `gateway_intents` - This field takes a list of atoms representing gateway intents for Nostrum to subscribe to from the Discord API. More information can be found in the [gateway intents](gateway-intents.html) documentation page.
  - `dev` - This is added to enable Nostrum to be run completely stand alone for
  development purposes. `true` will cause Nostrum to spawn its own event consumers.
  If you have the dev flag set to true while running Nostrum alongside your
