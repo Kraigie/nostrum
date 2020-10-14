@@ -91,10 +91,14 @@ direct_message_typing:
   - TYPING_START
 ```
 
+Besides an explicit list of atoms, acceptable configuration values are `:all` and `:nonprivileged`.
+
 Note that intents marked with `*` are **privileged** intents. You must enable these intents by visiting the Discord Developer portal.
 
 Once your bot passes 100 servers Discord will force you to **verify your bot**. If you require privileged intents you may need to write additional information on your usage of them.
 
-Be advised that since Nostrum defaults to all intents being enabled you may need to disable these intents by adding everything else in the above list to the `gateway_intents` configuration option.
+Be advised that Nostrum's default value for `gateway_intents` is `:all`, which enables all intents.
+You may need to disable these privileged intents by configuring `gateway_intents` to `:nonprivileged`.
+This is equivalent to setting `gateway_intents` to the above list without the **privileged** intents.
 
 More information on gateway intents can be found in the [Discord Developer documentation](https://discord.com/developers/docs/topics/gateway#gateway-intents).

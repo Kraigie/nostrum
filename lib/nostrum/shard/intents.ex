@@ -3,6 +3,11 @@ defmodule Nostrum.Shard.Intents do
 
   import Bitwise
 
+  @privileged_intents [
+    :guild_members,
+    :guild_presences
+  ]
+
   @spec intent_values :: [{atom, integer()}, ...]
   def intent_values do
     [
@@ -26,13 +31,18 @@ defmodule Nostrum.Shard.Intents do
 
   @spec get_enabled_intents :: integer()
   def get_enabled_intents do
-    enabled_intents = Application.get_env(:nostrum, :gateway_intents)
-
     # If no intents are passed in config, default to all being enabled.
-    if enabled_intents do
-      get_intent_value(enabled_intents)
-    else
-      get_intent_value(Keyword.keys(intent_values()))
+    enabled_intents = Application.get_env(:nostrum, :gateway_intents, :all)
+
+    case enabled_intents do
+      :all ->
+        get_intent_value(Keyword.keys(intent_values()))
+
+      :nonprivileged ->
+        get_intent_value(Keyword.keys(intent_values()) -- @privileged_intents)
+
+      intents ->
+        get_intent_value(intents)
     end
   end
 
