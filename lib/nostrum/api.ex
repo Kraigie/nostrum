@@ -2961,7 +2961,7 @@ defmodule Nostrum.Api do
     {:ok, convert}
   end
 
-  def prepare_allowed_mentions(options) do
+  defp prepare_allowed_mentions(options) do
     with raw_options when raw_options != :all <- Map.get(options, :allowed_mentions, :all),
          allowed_mentions when is_map(allowed_mentions) <- parse_allowed_mentions(raw_options) do
       Map.put(options, :allowed_mentions, allowed_mentions)
