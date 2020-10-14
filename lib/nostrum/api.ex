@@ -182,7 +182,7 @@ defmodule Nostrum.Api do
     * `{:role, list}` - Allows to ping list of roles. Can contain up to 100 ids of roles.
     * list - a list containing the values above.
 
-  Passing a list will merge the settings settings provided
+  Passing a list will merge the settings provided
 
   ## Examples
 
