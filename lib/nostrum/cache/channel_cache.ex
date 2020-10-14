@@ -100,6 +100,7 @@ defmodule Nostrum.Cache.ChannelCache do
         |> case do
           {:error, :id_not_found} ->
             {:error, :channel_not_found}
+
           res ->
             res
         end
