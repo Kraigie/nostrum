@@ -3,16 +3,20 @@ defmodule Nostrum.Application do
 
   use Application
 
+  require Logger
+
   @doc false
   def start(_type, _args) do
     check_token()
+    check_executables()
     setup_ets_tables()
 
     children = [
       Nostrum.Api.Ratelimiter,
       Nostrum.Shard.Connector,
       Nostrum.Cache.CacheSupervisor,
-      Nostrum.Shard.Supervisor
+      Nostrum.Shard.Supervisor,
+      Nostrum.Voice.Supervisor
     ]
 
     if Application.get_env(:nostrum, :dev),
@@ -37,4 +41,26 @@ defmodule Nostrum.Application do
 
   defp check_token(_invalid_format),
     do: raise("Invalid token format, copy it again from the `Bot` tab of your Application")
+
+  defp check_executables do
+    ff = Application.get_env(:nostrum, :ffmpeg)
+    yt = Application.get_env(:nostrum, :youtubedl)
+
+    cond do
+      is_binary(ff) and is_nil(System.find_executable(ff)) ->
+        Logger.warn("""
+        #{ff} was not found in your path. Nostrum requires ffmpeg to use voice.
+        If you don't intend to use voice, configure :nostrum, :ffmpeg to nil to suppress.
+        """)
+
+      is_binary(yt) and is_nil(System.find_executable(yt)) ->
+        Logger.warn("""
+        #{yt} was not found in your path. Nostrum supports youtube-dl for voice.
+        If you don't require youtube-dl support, configure :nostrum, :youtubedl to nil to suppress.
+        """)
+
+      true ->
+        :ok
+    end
+  end
 end

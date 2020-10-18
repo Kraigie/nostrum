@@ -1,6 +1,6 @@
 defmodule Nostrum.Struct.Event.InviteDelete do
   @moduledoc """
-  Struct representing a Invite Delete event
+  Struct representing an Invite Delete event
   """
 
   alias Nostrum.Struct.{Channel, Guild}

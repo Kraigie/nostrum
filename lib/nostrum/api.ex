@@ -136,7 +136,7 @@ defmodule Nostrum.Api do
 
   To disconnect from a channel, `channel_id` should be set to `nil`.
   """
-  @spec update_voice_state(Guild.id(), Channel.id(), boolean, boolean) :: no_return | :ok
+  @spec update_voice_state(Guild.id(), Channel.id() | nil, boolean, boolean) :: no_return | :ok
   def update_voice_state(guild_id, channel_id, self_mute \\ false, self_deaf \\ false) do
     Supervisor.update_voice_state(guild_id, channel_id, self_mute, self_deaf)
   end
@@ -163,8 +163,26 @@ defmodule Nostrum.Api do
       * `:name` (string) - the name of the file
       * `:body` (string) - binary you wish to send
     * `:embed` (`t:Nostrum.Struct.Embed.t/0`) - embedded rich content
+    * `:allowed_mentions` - See "Allowed mentions" below
 
     At least one of the following is required: `:content`, `:file`, `:embed`.
+
+  ## Allowed mentions
+
+  With this option you can control when content from a message should trigger a ping.
+  Consider using this option when you are going to display user_generated content.
+
+  ### Allowed values
+    * `:all` (default) - Ping everything as usual
+    * `:none` - Nobody will be pinged
+    * `:everyone` - Allows to ping @here and @everone
+    * `:user` - Allows to ping users
+    * `:roles` - Allows to ping roles
+    * `{:user, list}` - Allows to ping list of users. Can contain up to 100 ids of users.
+    * `{:role, list}` - Allows to ping list of roles. Can contain up to 100 ids of roles.
+    * list - a list containing the values above.
+
+  Passing a list will merge the settings provided
 
   ## Examples
 
@@ -183,6 +201,8 @@ defmodule Nostrum.Api do
   Nostrum.Api.create_message(43189401384091, file: "/path/to/file.txt")
 
   Nostrum.Api.create_message(43189401384091, content: "hello world!", embed: embed, file: "/path/to/file.txt")
+
+  Nostrum.Api.create_message(43189401384091, content: "Hello @everyone", allowed_mentions: :none)
   ```
   """
   @spec create_message(Channel.id() | Message.t(), options | String.t()) ::
@@ -196,6 +216,8 @@ defmodule Nostrum.Api do
     do: create_message(channel_id, Map.new(options))
 
   def create_message(channel_id, %{} = options) when is_snowflake(channel_id) do
+    options = prepare_allowed_mentions(options)
+
     case options do
       %{file: _} -> create_message_with_multipart(channel_id, options)
       _ -> create_message_with_json(channel_id, options)
@@ -2938,4 +2960,44 @@ defmodule Nostrum.Api do
 
     {:ok, convert}
   end
+
+  defp prepare_allowed_mentions(options) do
+    with raw_options when raw_options != :all <- Map.get(options, :allowed_mentions, :all),
+         allowed_mentions when is_map(allowed_mentions) <- parse_allowed_mentions(raw_options) do
+      Map.put(options, :allowed_mentions, allowed_mentions)
+    else
+      _ ->
+        Map.delete(options, :allowed_mentions)
+    end
+  end
+
+  defp parse_allowed_mentions(:none), do: %{parse: []}
+  defp parse_allowed_mentions(:everyone), do: %{parse: [:everyone]}
+
+  # Parse users
+  defp parse_allowed_mentions(:users), do: %{parse: [:users]}
+  defp parse_allowed_mentions({:users, users}) when is_list(users), do: %{users: users}
+
+  # Parse roles
+  defp parse_allowed_mentions(:roles), do: %{parse: [:roles]}
+  defp parse_allowed_mentions({:roles, roles}) when is_list(roles), do: %{roles: roles}
+
+  # Parse many
+  defp parse_allowed_mentions(options) when is_list(options) or is_map(options) do
+    options
+    |> Enum.map(&parse_allowed_mentions/1)
+    |> Enum.reduce(fn a, b ->
+      Map.merge(a, b, fn
+        key, parse_a, parse_b when key in [:parse, :users, :roles] ->
+          Enum.uniq(parse_a ++ parse_b)
+
+        _k, _v1, v2 ->
+          v2
+      end)
+    end)
+    |> Map.put_new(:parse, [])
+  end
+
+  # ignore
+  defp parse_allowed_mentions(options), do: options
 end

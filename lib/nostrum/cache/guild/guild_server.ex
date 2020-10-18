@@ -119,6 +119,11 @@ defmodule Nostrum.Cache.Guild.GuildServer do
     call(guild_id, {:update, :emoji, guild_id, emojis})
   end
 
+  @doc false
+  def voice_state_update(guild_id, voice_state) do
+    call(guild_id, {:update, :voice_state, guild_id, voice_state})
+  end
+
   def handle_call({:select, fun}, _from, state) do
     {:reply, fun.(state), state, :hibernate}
   end
@@ -193,6 +198,23 @@ defmodule Nostrum.Cache.Guild.GuildServer do
     {popped, new} = Map.pop(roles, role_id)
     ret = if popped, do: {guild_id, popped}, else: :noop
     {:reply, ret, %{state | roles: new}, :hibernate}
+  end
+
+  def handle_call({:update, :voice_state, guild_id, vsu}, _from, %{voice_states: vs_list} = state) do
+    # Remove heavy and duplicate data from voice state
+    vsu = vsu |> Map.delete(:member)
+    vs_list = vs_list |> Enum.reject(fn v -> v.user_id == vsu.user_id end)
+
+    new_voice_states =
+      if is_nil(vsu.channel_id) do
+        # Leaving
+        vs_list
+      else
+        # Joining, changing, or updating
+        [vsu | vs_list]
+      end
+
+    {:reply, {guild_id, new_voice_states}, %{state | voice_states: new_voice_states}, :hibernate}
   end
 
   def handle_call({:update, :emoji, guild_id, emojis}, _from, state) do

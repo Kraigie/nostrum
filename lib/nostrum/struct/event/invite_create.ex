@@ -1,6 +1,6 @@
 defmodule Nostrum.Struct.Event.InviteCreate do
   @moduledoc """
-  Struct representing a Invite Create event
+  Struct representing an Invite Create event
   """
 
   alias Nostrum.Struct.{Channel, Guild, User}
