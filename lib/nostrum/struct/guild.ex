@@ -3,7 +3,7 @@ defmodule Nostrum.Struct.Guild do
   Struct representing a Discord guild.
   """
 
-  alias Nostrum.Struct.{Channel, Emoji}
+  alias Nostrum.Struct.{Channel, Emoji, User}
   alias Nostrum.Struct.Guild.{Member, Role}
   alias Nostrum.{Constants, Snowflake, Util}
 

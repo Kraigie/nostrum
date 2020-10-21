@@ -45,7 +45,7 @@ defmodule Nostrum.Api do
 
   import Nostrum.Snowflake, only: [is_snowflake: 1]
 
-  alias Nostrum.{Constants, Util}
+  alias Nostrum.{Constants, Snowflake, Util}
   alias Nostrum.Struct.{Channel, Embed, Emoji, Guild, Invite, Message, User, Webhook}
   alias Nostrum.Struct.Guild.{AuditLog, AuditLogEntry, Member, Role}
   alias Nostrum.Shard.{Session, Supervisor}
@@ -852,7 +852,7 @@ defmodule Nostrum.Api do
   end
 
   @spec send_chunked_delete(
-          [Nostrum.Struct.Message.id()],
+          [Nostrum.Struct.Message.id()] | %Stream{},
           Nostrum.Snowflake.t()
         ) :: error | {:ok}
   defp send_chunked_delete(messages, channel_id) do
@@ -1331,7 +1331,7 @@ defmodule Nostrum.Api do
   ## Options
 
     * `:user_id` (`t:Nostrum.Struct.User.id/0`) - filter the log for a user ID
-    * `:action_type` (`t:Integer.t/0`) - filter the log by audit log type, see [Audit Log Events](https://discord.com/developers/docs/resources/audit-log#audit-log-entry-object-audit-log-events)
+    * `:action_type` (`t:integer/0`) - filter the log by audit log type, see [Audit Log Events](https://discord.com/developers/docs/resources/audit-log#audit-log-entry-object-audit-log-events)
     * `:before` (`t:Nostrum.Struct.Snowflake.t/0`) - filter the log before a certain entry ID
     * `:limit` (`t:positive_integer/0`) - how many entries are returned (default 50, minimum 1, maximum 100)
   """
@@ -2868,12 +2868,12 @@ defmodule Nostrum.Api do
     |> handle_request_with_decode
   end
 
-  @spec maybe_add_reason(String.t() | nil) :: List.t()
+  @spec maybe_add_reason(String.t() | nil) :: list()
   defp maybe_add_reason(reason) do
     maybe_add_reason(reason, [{"content-type", "application/json"}])
   end
 
-  @spec maybe_add_reason(String.t() | nil, List.t()) :: List.t()
+  @spec maybe_add_reason(String.t() | nil, list()) :: list()
   defp maybe_add_reason(nil, headers) do
     headers
   end
@@ -2899,7 +2899,7 @@ defmodule Nostrum.Api do
     GenServer.call(Ratelimiter, {:queue, request, nil}, :infinity)
   end
 
-  def request_multipart(method, route, body \\ "", options \\ []) do
+  def request_multipart(method, route, body, options \\ []) do
     request = %{
       method: method,
       route: route,

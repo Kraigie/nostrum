@@ -79,7 +79,7 @@ defmodule Nostrum.Struct.Embed do
   @type timestamp :: String.t() | nil
 
   @typedoc "Color code of the embed"
-  @type color :: Integer.t() | nil
+  @type color :: integer() | nil
 
   @typedoc "Footer information"
   @type footer :: Footer.t() | nil

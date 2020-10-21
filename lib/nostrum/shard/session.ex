@@ -41,7 +41,7 @@ defmodule Nostrum.Shard.Session do
   end
 
   def start_link([gateway, shard_num]) do
-    GenServer.start_link(__MODULE__, [gateway, shard_num], spawn_opt: [Util.fullsweep_after()])
+    GenServer.start_link(__MODULE__, [gateway, shard_num], spawn_opt: Util.fullsweep_after())
   end
 
   def init([_gateway, _shard_num] = args) do
