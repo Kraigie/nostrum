@@ -11,7 +11,12 @@ jobs:
       - uses: actions/setup-elixir@v1
         with:
           otp-version: '22.0'
-          elixir-version: ${{matrix.elixir-version}}
+          elixir-version: ${{ matrix.elixir-version }}
+      - uses: actions/cache@v2
+        with:
+          path: deps
+          key: ${{ runner.os }}-mix-${{ hashFiles(format('{0}{1}', github.workspace, '/mix.lock')) }}
+          restore-keys: ${{ runner.os }}-mix-
       - run: mix deps.get
       - run: mix credo --strict
       - run: mix format --check-formatted
