@@ -1,0 +1,446 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.23.0">
+    <meta name="project" content="Nostrum v0.4.5">
+    <title>Nostrum.Snowflake — Nostrum v0.4.5</title>
+    <link rel="stylesheet" href="dist/elixir-9f91ebe876dc01d67920.css" />
+    <script src="dist/sidebar_items-b2bb24de56.js"></script>
+      <script src="docs_config.js"></script>
+    <script async src="dist/app-60a0c9f10e9e52eae31f.js"></script>
+  </head>
+  <body data-type="modules">
+    <script>try { if(localStorage.getItem('night-mode') === 'true') document.body.className += ' night-mode'; } catch (e) { }</script>
+<div class="main">
+
+<button class="sidebar-button sidebar-toggle">
+  <span class="icon-menu" title="Collapse/expand sidebar"></span>
+</button>
+
+<section class="sidebar">
+  <form class="sidebar-search" action="search.html">
+    <button type="submit" class="search-button" aria-label="Submit Search">
+      <span class="icon-search" aria-hidden="true" title="Submit search"></span>
+    </button>
+    <button type="button" tabindex="-1" class="search-close-button" aria-label="Cancel Search">
+      <span class="icon-cross" aria-hidden="true" title="Cancel search"></span>
+    </button>
+    <label class="search-label">
+      <input name="q" type="text" id="search-list" class="search-input" placeholder="Search..." aria-label="Input your search terms" autocomplete="off" />
+    </label>
+  </form>
+
+  <div class="autocomplete">
+    <div class="autocomplete-results">
+    </div>
+  </div>
+
+  <div class="sidebar-header">
+    <div class="sidebar-projectDetails">
+      <a href="https://github.com/kraigie/nostrum" class="sidebar-projectName">
+Nostrum      </a>
+      <strong class="sidebar-projectVersion">
+        v0.4.5
+      </strong>
+    </div>
+  </div>
+
+  <ul class="sidebar-listNav">
+    <li><a id="extras-list" href="#full-list">Pages</a></li>
+
+      <li><a id="modules-list" href="#full-list">Modules</a></li>
+
+      <li><a id="tasks-list" href="#full-list">Mix Tasks</a></li>
+  </ul>
+  <div class="gradient"></div>
+  <ul id="full-list" class="sidebar-fullList"></ul>
+</section>
+
+<section class="content">
+  <div class="content-outer">
+    <div id="content" class="content-inner">
+
+      <h1>
+        Nostrum.Snowflake <small class="app-vsn">(Nostrum v0.4.5)</small>
+          <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/snowflake.ex#L1" title="View Source" class="view-source" rel="help">
+            <span class="icon-code" aria-hidden="true"></span>
+            <span class="sr-only">View Source</span>
+          </a>
+      </h1>
+
+
+        <section id="moduledoc">
+<p>Functions that work on Snowflakes.</p>        </section>
+
+        <section id="summary" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#summary">
+              <span class="icon-link" aria-hidden="true"></span>
+              <span class="sr-only">Link to this section</span>
+            </a>
+            Summary
+          </h1>
+  <div class="summary-types summary">
+    <h2>
+      <a href="#types">Types</a>
+    </h2>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:external_snowflake/0">external_snowflake()</a>
+  </div>
+    <div class="summary-synopsis"><p>The type that represents snowflakes in JSON.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:t/0">t()</a>
+  </div>
+    <div class="summary-synopsis"><p>The snowflake type.</p></div>
+</div>
+  </div>
+  <div class="summary-functions summary">
+    <h2>
+      <a href="#functions">Functions</a>
+    </h2>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#cast/1">cast(value)</a>
+  </div>
+    <div class="summary-synopsis"><p>Attempts to convert a term into a snowflake.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#cast!/1">cast!(value)</a>
+  </div>
+    <div class="summary-synopsis"><p>Same as <a href="#cast/1"><code class="inline">cast/1</code></a>, except it raises an <a href="https://hexdocs.pm/elixir/ArgumentError.html"><code class="inline">ArgumentError</code></a> on failure.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#creation_time/1">creation_time(snowflake)</a>
+  </div>
+    <div class="summary-synopsis"><p>Returns the creation time of the snowflake.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#dump/1">dump(snowflake)</a>
+  </div>
+    <div class="summary-synopsis"><p>Convert a snowflake into its external representation.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#from_datetime/1">from_datetime(datetime)</a>
+  </div>
+    <div class="summary-synopsis"><p>Converts the given <code class="inline">datetime</code> into a snowflake.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#from_datetime!/1">from_datetime!(datetime)</a>
+  </div>
+    <div class="summary-synopsis"><p>Same as <a href="#from_datetime/1"><code class="inline">from_datetime/1</code></a>, except it raises an <a href="https://hexdocs.pm/elixir/ArgumentError.html"><code class="inline">ArgumentError</code></a> on failure.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#is_snowflake/1">is_snowflake(term)</a>
+  </div>
+    <div class="summary-synopsis"><p>Returns <code class="inline">true</code> if <code class="inline">term</code> is a snowflake; otherwise returns <code class="inline">false</code>.</p></div>
+</div>
+  </div>
+        </section>
+
+        <section id="types" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#types">
+              <span class="icon-link" aria-hidden="true"></span>
+              <span class="sr-only">Link to this section</span>
+            </a>
+Types          </h1>
+          <div class="types-list">
+<section class="detail" id="t:external_snowflake/0">
+  <div class="detail-header">
+    <a href="#t:external_snowflake/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">external_snowflake()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/snowflake.ex#L14" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>external_snowflake() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()</pre>
+      </div>
+
+<p>The type that represents snowflakes in JSON.</p><p>In JSON, Snowflakes are typically represented as strings due
+to some languages not being able to represent such a large number.</p>  </section>
+</section>
+<section class="detail" id="t:t/0">
+  <div class="detail-header">
+    <a href="#t:t/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">t()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/snowflake.ex#L22" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>t() :: 0..18_446_744_073_709_551_615</pre>
+      </div>
+
+<p>The snowflake type.</p><p>Snowflakes are 64-bit unsigned integers used to represent discord
+object ids.</p>  </section>
+</section>
+          </div>
+        </section>
+        <section id="functions" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#functions">
+              <span class="icon-link" aria-hidden="true"></span>
+              <span class="sr-only">Link to this section</span>
+            </a>
+Functions          </h1>
+          <div class="functions-list">
+<section class="detail" id="cast/1">
+  <div class="detail-header">
+    <a href="#cast/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">cast(value)</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/snowflake.ex#L69" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>cast(<a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()) :: {:ok, <a href="#t:t/0">t</a>() | nil} | :error</pre>
+      </div>
+
+<p>Attempts to convert a term into a snowflake.</p><h2 id="cast/1-examples" class="section-heading">
+  <a href="#cast/1-examples" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Examples
+</h2>
+<pre><code class="Elixir">iex&gt; Nostrum.Snowflake.cast(200317799350927360)
+{:ok, 200317799350927360}
+
+iex&gt; Nostrum.Snowflake.cast(&quot;200317799350927360&quot;)
+{:ok, 200317799350927360}
+
+iex&gt; Nostrum.Snowflake.cast(nil)
+{:ok, nil}
+
+iex&gt; Nostrum.Snowflake.cast(true)
+:error
+
+iex&gt; Nostrum.Snowflake.cast(-1)
+:error</code></pre>  </section>
+</section>
+<section class="detail" id="cast!/1">
+  <div class="detail-header">
+    <a href="#cast!/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">cast!(value)</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/snowflake.ex#L86" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>cast!(<a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()) :: <a href="#t:t/0">t</a>() | nil | <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">no_return</a>()</pre>
+      </div>
+
+<p>Same as <a href="#cast/1"><code class="inline">cast/1</code></a>, except it raises an <a href="https://hexdocs.pm/elixir/ArgumentError.html"><code class="inline">ArgumentError</code></a> on failure.</p>  </section>
+</section>
+<section class="detail" id="creation_time/1">
+  <div class="detail-header">
+    <a href="#creation_time/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">creation_time(snowflake)</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/snowflake.ex#L162" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>creation_time(<a href="#t:t/0">t</a>()) :: <a href="https://hexdocs.pm/elixir/DateTime.html#t:t/0">DateTime.t</a>()</pre>
+      </div>
+
+<p>Returns the creation time of the snowflake.</p><h2 id="creation_time/1-examples" class="section-heading">
+  <a href="#creation_time/1-examples" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Examples
+</h2>
+<pre><code class="Elixir">iex&gt; Nostrum.Snowflake.creation_time(177888205536886784)
+~U[2016-05-05 21:04:13.203Z]</code></pre>  </section>
+</section>
+<section class="detail" id="dump/1">
+  <div class="detail-header">
+    <a href="#dump/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">dump(snowflake)</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/snowflake.ex#L104" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>dump(<a href="#t:t/0">t</a>()) :: <a href="#t:external_snowflake/0">external_snowflake</a>()</pre>
+      </div>
+
+<p>Convert a snowflake into its external representation.</p><h2 id="dump/1-examples" class="section-heading">
+  <a href="#dump/1-examples" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Examples
+</h2>
+<pre><code class="Elixir">iex&gt; Nostrum.Snowflake.dump(109112383011581952)
+&quot;109112383011581952&quot;</code></pre>  </section>
+</section>
+<section class="detail" id="from_datetime/1">
+  <div class="detail-header">
+    <a href="#from_datetime/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">from_datetime(datetime)</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/snowflake.ex#L127" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>from_datetime(<a href="https://hexdocs.pm/elixir/DateTime.html#t:t/0">DateTime.t</a>()) :: {:ok, <a href="#t:t/0">t</a>()} | :error</pre>
+      </div>
+
+<p>Converts the given <code class="inline">datetime</code> into a snowflake.</p><p>If <code class="inline">datetime</code> occured before the discord epoch, the function will return
+<code class="inline">:error</code>.</p><p>The converted snowflake's last 22 bits will be zeroed out due to missing data.</p><h2 id="from_datetime/1-examples" class="section-heading">
+  <a href="#from_datetime/1-examples" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Examples
+</h2>
+<pre><code class="Elixir">iex&gt; {:ok, dt, _} = DateTime.from_iso8601(&quot;2016-05-05T21:04:13.203Z&quot;)
+iex&gt; Nostrum.Snowflake.from_datetime(dt)
+{:ok, 177888205536755712}
+
+iex&gt; {:ok, dt, _} = DateTime.from_iso8601(&quot;1998-12-25T00:00:00.000Z&quot;)
+iex&gt; Nostrum.Snowflake.from_datetime(dt)
+:error</code></pre>  </section>
+</section>
+<section class="detail" id="from_datetime!/1">
+  <div class="detail-header">
+    <a href="#from_datetime!/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">from_datetime!(datetime)</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/snowflake.ex#L144" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>from_datetime!(<a href="https://hexdocs.pm/elixir/DateTime.html#t:t/0">DateTime.t</a>()) :: <a href="#t:t/0">t</a>() | <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">no_return</a>()</pre>
+      </div>
+
+<p>Same as <a href="#from_datetime/1"><code class="inline">from_datetime/1</code></a>, except it raises an <a href="https://hexdocs.pm/elixir/ArgumentError.html"><code class="inline">ArgumentError</code></a> on failure.</p>  </section>
+</section>
+<section class="detail" id="is_snowflake/1">
+  <div class="detail-header">
+    <a href="#is_snowflake/1" class="detail-link" title="Link to this macro">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this macro</span>
+    </a>
+    <h1 class="signature">is_snowflake(term)</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/snowflake.ex#L43" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+      <span class="note">(macro)</span>
+  </div>
+
+  <section class="docstring">
+
+<p>Returns <code class="inline">true</code> if <code class="inline">term</code> is a snowflake; otherwise returns <code class="inline">false</code>.</p><h2 id="is_snowflake/1-examples" class="section-heading">
+  <a href="#is_snowflake/1-examples" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Examples
+</h2>
+<pre><code class="Elixir">iex&gt; Nostrum.Snowflake.is_snowflake(89918932789497856)
+true
+
+iex&gt; Nostrum.Snowflake.is_snowflake(-1)
+false
+
+iex&gt; Nostrum.Snowflake.is_snowflake(0xFFFFFFFFFFFFFFFF + 1)
+false
+
+iex&gt; Nostrum.Snowflake.is_snowflake(&quot;117789813427535878&quot;)
+false</code></pre>  </section>
+</section>
+          </div>
+        </section>
+      <footer class="footer">
+        <p>
+          <span class="line">
+            Built using
+            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener">ExDoc</a> (v0.23.0) for the
+            <a href="https://elixir-lang.org" title="Elixir" target="_blank">Elixir programming language</a>.
+          </span>
+          <span class="line">
+            Designed by
+            <a href="https://twitter.com/dignifiedquire" target="_blank" rel="noopener" title="@dignifiedquire">Friedel Ziegelmayer</a>.
+          </span>
+        </p>
+        <p>
+            <a href="api-reference.html" title="API reference" class="line footer-button">API Reference</a>
+          <button class="line footer-button display-shortcuts-help">
+            Display keyboard shortcuts
+          </button>
+          <button class="line footer-button night-mode-toggle">
+            Toggle night mode
+          </button>
+          <button class="line footer-button display-quick-switch">
+            Go to a HexDocs package
+          </button>
+          <button class="line footer-button tooltips-toggle">
+            <span class="tooltips-option-disable">Disable tooltips</span>
+            <span class="tooltips-option-enable">Enable tooltips</span>
+          </button>
+        </p>
+      </footer>
+    </div>
+  </div>
+</section>
+</div>
+  </body>
+</html>

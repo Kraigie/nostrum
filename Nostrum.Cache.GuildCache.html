@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.23.0">
+    <meta name="project" content="Nostrum v0.4.5">
+    <title>Nostrum.Cache.GuildCache — Nostrum v0.4.5</title>
+    <link rel="stylesheet" href="dist/elixir-9f91ebe876dc01d67920.css" />
+    <script src="dist/sidebar_items-b2bb24de56.js"></script>
+      <script src="docs_config.js"></script>
+    <script async src="dist/app-60a0c9f10e9e52eae31f.js"></script>
+  </head>
+  <body data-type="modules">
+    <script>try { if(localStorage.getItem('night-mode') === 'true') document.body.className += ' night-mode'; } catch (e) { }</script>
+<div class="main">
+
+<button class="sidebar-button sidebar-toggle">
+  <span class="icon-menu" title="Collapse/expand sidebar"></span>
+</button>
+
+<section class="sidebar">
+  <form class="sidebar-search" action="search.html">
+    <button type="submit" class="search-button" aria-label="Submit Search">
+      <span class="icon-search" aria-hidden="true" title="Submit search"></span>
+    </button>
+    <button type="button" tabindex="-1" class="search-close-button" aria-label="Cancel Search">
+      <span class="icon-cross" aria-hidden="true" title="Cancel search"></span>
+    </button>
+    <label class="search-label">
+      <input name="q" type="text" id="search-list" class="search-input" placeholder="Search..." aria-label="Input your search terms" autocomplete="off" />
+    </label>
+  </form>
+
+  <div class="autocomplete">
+    <div class="autocomplete-results">
+    </div>
+  </div>
+
+  <div class="sidebar-header">
+    <div class="sidebar-projectDetails">
+      <a href="https://github.com/kraigie/nostrum" class="sidebar-projectName">
+Nostrum      </a>
+      <strong class="sidebar-projectVersion">
+        v0.4.5
+      </strong>
+    </div>
+  </div>
+
+  <ul class="sidebar-listNav">
+    <li><a id="extras-list" href="#full-list">Pages</a></li>
+
+      <li><a id="modules-list" href="#full-list">Modules</a></li>
+
+      <li><a id="tasks-list" href="#full-list">Mix Tasks</a></li>
+  </ul>
+  <div class="gradient"></div>
+  <ul id="full-list" class="sidebar-fullList"></ul>
+</section>
+
+<section class="content">
+  <div class="content-outer">
+    <div id="content" class="content-inner">
+
+      <h1>
+        Nostrum.Cache.GuildCache <small class="app-vsn">(Nostrum v0.4.5)</small>
+          <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L1" title="View Source" class="view-source" rel="help">
+            <span class="icon-code" aria-hidden="true"></span>
+            <span class="sr-only">View Source</span>
+          </a>
+      </h1>
+
+
+        <section id="moduledoc">
+<p>Functions for retrieving guild states.</p>        </section>
+
+        <section id="summary" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#summary">
+              <span class="icon-link" aria-hidden="true"></span>
+              <span class="sr-only">Link to this section</span>
+            </a>
+            Summary
+          </h1>
+  <div class="summary-types summary">
+    <h2>
+      <a href="#types">Types</a>
+    </h2>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:clause/0">clause()</a>
+  </div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:clauses/0">clauses()</a>
+  </div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:reason/0">reason()</a>
+  </div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:selector/0">selector()</a>
+  </div>
+</div>
+  </div>
+  <div class="summary-functions summary">
+    <h2>
+      <a href="#functions">Functions</a>
+    </h2>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#all/0">all()</a>
+  </div>
+    <div class="summary-synopsis"><p>Retrives all <a href="Nostrum.Struct.Guild.html"><code class="inline">Nostrum.Struct.Guild</code></a> from the cache as a stream.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#get/1">get(id)</a>
+  </div>
+    <div class="summary-synopsis"><p>Retrives a single <a href="Nostrum.Struct.Guild.html"><code class="inline">Nostrum.Struct.Guild</code></a> from the cache via its <code class="inline">id</code>.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#get!/1">get!(id)</a>
+  </div>
+    <div class="summary-synopsis"><p>Same as <a href="#get/1"><code class="inline">get/1</code></a>, but raises <a href="Nostrum.Error.CacheError.html"><code class="inline">Nostrum.Error.CacheError</code></a> in case of failure.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#get_by/1">get_by(clauses)</a>
+  </div>
+    <div class="summary-synopsis"><p>Retrives a single <a href="Nostrum.Struct.Guild.html"><code class="inline">Nostrum.Struct.Guild</code></a> where it matches the <code class="inline">clauses</code>.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#get_by!/1">get_by!(clauses)</a>
+  </div>
+    <div class="summary-synopsis"><p>Same as <a href="#get_by/1"><code class="inline">get_by/1</code></a>, but raises <a href="Nostrum.Error.CacheError.html"><code class="inline">Nostrum.Error.CacheError</code></a> in case of failure.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#select/2">select(id, selector)</a>
+  </div>
+    <div class="summary-synopsis"><p>Selects values using a <code class="inline">selector</code> from a <a href="Nostrum.Struct.Guild.html"><code class="inline">Nostrum.Struct.Guild</code></a>.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#select!/2">select!(id, selector)</a>
+  </div>
+    <div class="summary-synopsis"><p>Same as <a href="#select/2"><code class="inline">select/2</code></a>, but raises <a href="Nostrum.Error.CacheError.html"><code class="inline">Nostrum.Error.CacheError</code></a> in case of failure.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#select_all/1">select_all(selector)</a>
+  </div>
+    <div class="summary-synopsis"><p>Selects values using a <code class="inline">selector</code> from all <a href="Nostrum.Struct.Guild.html"><code class="inline">Nostrum.Struct.Guild</code></a> in the cache.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#select_by/2">select_by(clauses, selector)</a>
+  </div>
+    <div class="summary-synopsis"><p>Selects values using a <code class="inline">selector</code> from a <a href="Nostrum.Struct.Guild.html"><code class="inline">Nostrum.Struct.Guild</code></a> that matches
+the <code class="inline">clauses</code>.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#select_by!/2">select_by!(clauses, selector)</a>
+  </div>
+    <div class="summary-synopsis"><p>Same as <a href="#select_by/2"><code class="inline">select_by/2</code></a>, but raises <a href="Nostrum.Error.CacheError.html"><code class="inline">Nostrum.Error.CacheError</code></a> in case of failure.</p></div>
+</div>
+  </div>
+        </section>
+
+        <section id="types" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#types">
+              <span class="icon-link" aria-hidden="true"></span>
+              <span class="sr-only">Link to this section</span>
+            </a>
+Types          </h1>
+          <div class="types-list">
+<section class="detail" id="t:clause/0">
+  <div class="detail-header">
+    <a href="#t:clause/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">clause()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L15" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>clause() ::
+  {:id, <a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>()}
+  | {:channel_id, <a href="Nostrum.Struct.Channel.html#t:id/0">Nostrum.Struct.Channel.id</a>()}
+  | {:message, <a href="Nostrum.Struct.Message.html#t:t/0">Nostrum.Struct.Message.t</a>()}</pre>
+      </div>
+
+  </section>
+</section>
+<section class="detail" id="t:clauses/0">
+  <div class="detail-header">
+    <a href="#t:clauses/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">clauses()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L20" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>clauses() :: [<a href="#t:clause/0">clause</a>()] | <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()</pre>
+      </div>
+
+  </section>
+</section>
+<section class="detail" id="t:reason/0">
+  <div class="detail-header">
+    <a href="#t:reason/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">reason()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L24" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>reason() :: :id_not_found | :id_not_found_on_guild_lookup</pre>
+      </div>
+
+  </section>
+</section>
+<section class="detail" id="t:selector/0">
+  <div class="detail-header">
+    <a href="#t:selector/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">selector()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L22" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>selector() :: (<a href="Nostrum.Struct.Guild.html#t:t/0">Nostrum.Struct.Guild.t</a>() -&gt; <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">any</a>())</pre>
+      </div>
+
+  </section>
+</section>
+          </div>
+        </section>
+        <section id="functions" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#functions">
+              <span class="icon-link" aria-hidden="true"></span>
+              <span class="sr-only">Link to this section</span>
+            </a>
+Functions          </h1>
+          <div class="functions-list">
+<section class="detail" id="all/0">
+  <div class="detail-header">
+    <a href="#all/0" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">all()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L34" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>all() :: <a href="https://hexdocs.pm/elixir/Enum.html#t:t/0">Enum.t</a>()</pre>
+      </div>
+
+<p>Retrives all <a href="Nostrum.Struct.Guild.html"><code class="inline">Nostrum.Struct.Guild</code></a> from the cache as a stream.</p>  </section>
+</section>
+<section class="detail" id="get/1">
+  <div class="detail-header">
+    <a href="#get/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">get(id)</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L65" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>get(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>()) ::
+  {:ok, <a href="Nostrum.Struct.Guild.html#t:t/0">Nostrum.Struct.Guild.t</a>()} | {:error, <a href="#t:reason/0">reason</a>()}</pre>
+      </div>
+
+<p>Retrives a single <a href="Nostrum.Struct.Guild.html"><code class="inline">Nostrum.Struct.Guild</code></a> from the cache via its <code class="inline">id</code>.</p><p>Returns <code class="inline">{:error, reason}</code> if no result was found.</p><h2 id="get/1-examples" class="section-heading">
+  <a href="#get/1-examples" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Examples
+</h2>
+<pre><code class="Elixir">iex&gt; Nostrum.Cache.GuildCache.get(0)
+{:ok, %Nostrum.Struct.Guild{id: 0}}
+
+iex&gt; Nostrum.Cache.GuildCache.get(10)
+{:error, :id_not_found_on_guild_lookup}</code></pre>  </section>
+</section>
+<section class="detail" id="get!/1">
+  <div class="detail-header">
+    <a href="#get!/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">get!(id)</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L73" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>get!(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>()) :: <a href="Nostrum.Struct.Guild.html#t:t/0">Nostrum.Struct.Guild.t</a>() | <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">no_return</a>()</pre>
+      </div>
+
+<p>Same as <a href="#get/1"><code class="inline">get/1</code></a>, but raises <a href="Nostrum.Error.CacheError.html"><code class="inline">Nostrum.Error.CacheError</code></a> in case of failure.</p>  </section>
+</section>
+<section class="detail" id="get_by/1">
+  <div class="detail-header">
+    <a href="#get_by/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">get_by(clauses)</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L92" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>get_by(<a href="#t:clauses/0">clauses</a>()) :: {:ok, <a href="Nostrum.Struct.Guild.html#t:t/0">Nostrum.Struct.Guild.t</a>()} | {:error, <a href="#t:reason/0">reason</a>()}</pre>
+      </div>
+
+<p>Retrives a single <a href="Nostrum.Struct.Guild.html"><code class="inline">Nostrum.Struct.Guild</code></a> where it matches the <code class="inline">clauses</code>.</p><p>Returns <code class="inline">{:error, reason}</code> if no result was found.</p><pre><code class="Elixir">iex&gt; Nostrum.Cache.GuildCache.get_by(id: 0)
+{:ok, %Nostrum.Struct.Guild{id: 0}}
+
+iex&gt; Nostrum.Cache.GuildCache.get_by(%{id: 0})
+{:ok, %Nostrum.Struct.Guild{id: 0}}
+
+iex&gt; Nostrum.Cache.GuildCache.get_by(id: 10)
+{:error, :id_not_found_on_guild_lookup}</code></pre>  </section>
+</section>
+<section class="detail" id="get_by!/1">
+  <div class="detail-header">
+    <a href="#get_by!/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">get_by!(clauses)</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L100" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>get_by!(<a href="#t:clauses/0">clauses</a>()) :: <a href="Nostrum.Struct.Guild.html#t:t/0">Nostrum.Struct.Guild.t</a>() | <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">no_return</a>()</pre>
+      </div>
+
+<p>Same as <a href="#get_by/1"><code class="inline">get_by/1</code></a>, but raises <a href="Nostrum.Error.CacheError.html"><code class="inline">Nostrum.Error.CacheError</code></a> in case of failure.</p>  </section>
+</section>
+<section class="detail" id="select/2">
+  <div class="detail-header">
+    <a href="#select/2" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">select(id, selector)</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L118" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>select(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(), <a href="#t:selector/0">selector</a>()) ::
+  {:ok, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">any</a>()} | {:error, <a href="#t:reason/0">reason</a>()}</pre>
+      </div>
+
+<p>Selects values using a <code class="inline">selector</code> from a <a href="Nostrum.Struct.Guild.html"><code class="inline">Nostrum.Struct.Guild</code></a>.</p><p>Returns <code class="inline">{:error, reason}</code> if no result was found.</p><h2 id="select/2-examples" class="section-heading">
+  <a href="#select/2-examples" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Examples
+</h2>
+<pre><code class="Elixir">iex&gt; Nostrum.Cache.GuildCache.select(0, fn guild -&gt; guild.id end)
+{:ok, 0}
+
+iex&gt; Nostrum.Cache.GuildCache.select(10, fn guild -&gt; guild.id end)
+{:error, :id_not_found_on_guild_lookup}</code></pre>  </section>
+</section>
+<section class="detail" id="select!/2">
+  <div class="detail-header">
+    <a href="#select!/2" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">select!(id, selector)</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L126" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>select!(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(), <a href="#t:selector/0">selector</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">any</a>() | <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">no_return</a>()</pre>
+      </div>
+
+<p>Same as <a href="#select/2"><code class="inline">select/2</code></a>, but raises <a href="Nostrum.Error.CacheError.html"><code class="inline">Nostrum.Error.CacheError</code></a> in case of failure.</p>  </section>
+</section>
+<section class="detail" id="select_all/1">
+  <div class="detail-header">
+    <a href="#select_all/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">select_all(selector)</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L40" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>select_all(<a href="#t:selector/0">selector</a>()) :: <a href="https://hexdocs.pm/elixir/Enum.html#t:t/0">Enum.t</a>()</pre>
+      </div>
+
+<p>Selects values using a <code class="inline">selector</code> from all <a href="Nostrum.Struct.Guild.html"><code class="inline">Nostrum.Struct.Guild</code></a> in the cache.</p>  </section>
+</section>
+<section class="detail" id="select_by/2">
+  <div class="detail-header">
+    <a href="#select_by/2" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">select_by(clauses, selector)</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L146" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>select_by(<a href="#t:clauses/0">clauses</a>(), <a href="#t:selector/0">selector</a>()) :: {:ok, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">any</a>()} | {:error, <a href="#t:reason/0">reason</a>()}</pre>
+      </div>
+
+<p>Selects values using a <code class="inline">selector</code> from a <a href="Nostrum.Struct.Guild.html"><code class="inline">Nostrum.Struct.Guild</code></a> that matches
+the <code class="inline">clauses</code>.</p><p>Returns <code class="inline">{:error, reason}</code> if no result was found.</p><pre><code class="Elixir">iex&gt; Nostrum.Cache.GuildCache.select_by([id: 0], fn guild -&gt; guild.id end)
+{:ok, 0}
+
+iex&gt; Nostrum.Cache.GuildCache.select_by(%{id: 0}, fn guild -&gt; guild.id end)
+{:ok, 0}
+
+iex&gt; Nostrum.Cache.GuildCache.select_by([id: 10], fn guild -&gt; guild.id end)
+{:error, :id_not_found_on_guild_lookup}</code></pre>  </section>
+</section>
+<section class="detail" id="select_by!/2">
+  <div class="detail-header">
+    <a href="#select_by!/2" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">select_by!(clauses, selector)</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L174" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>select_by!(<a href="#t:clauses/0">clauses</a>(), <a href="#t:selector/0">selector</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">any</a>() | <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">no_return</a>()</pre>
+      </div>
+
+<p>Same as <a href="#select_by/2"><code class="inline">select_by/2</code></a>, but raises <a href="Nostrum.Error.CacheError.html"><code class="inline">Nostrum.Error.CacheError</code></a> in case of failure.</p>  </section>
+</section>
+          </div>
+        </section>
+      <footer class="footer">
+        <p>
+          <span class="line">
+            Built using
+            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener">ExDoc</a> (v0.23.0) for the
+            <a href="https://elixir-lang.org" title="Elixir" target="_blank">Elixir programming language</a>.
+          </span>
+          <span class="line">
+            Designed by
+            <a href="https://twitter.com/dignifiedquire" target="_blank" rel="noopener" title="@dignifiedquire">Friedel Ziegelmayer</a>.
+          </span>
+        </p>
+        <p>
+            <a href="api-reference.html" title="API reference" class="line footer-button">API Reference</a>
+          <button class="line footer-button display-shortcuts-help">
+            Display keyboard shortcuts
+          </button>
+          <button class="line footer-button night-mode-toggle">
+            Toggle night mode
+          </button>
+          <button class="line footer-button display-quick-switch">
+            Go to a HexDocs package
+          </button>
+          <button class="line footer-button tooltips-toggle">
+            <span class="tooltips-option-disable">Disable tooltips</span>
+            <span class="tooltips-option-enable">Enable tooltips</span>
+          </button>
+        </p>
+      </footer>
+    </div>
+  </div>
+</section>
+</div>
+  </body>
+</html>

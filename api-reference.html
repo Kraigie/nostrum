@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.23.0">
+    <meta name="project" content="Nostrum v0.4.5">
+    <title>API Reference — Nostrum v0.4.5</title>
+    <link rel="stylesheet" href="dist/elixir-9f91ebe876dc01d67920.css" />
+    <script src="dist/sidebar_items-b2bb24de56.js"></script>
+      <script src="docs_config.js"></script>
+    <script async src="dist/app-60a0c9f10e9e52eae31f.js"></script>
+  </head>
+  <body data-type="extras">
+    <script>try { if(localStorage.getItem('night-mode') === 'true') document.body.className += ' night-mode'; } catch (e) { }</script>
+<div class="main">
+
+<button class="sidebar-button sidebar-toggle">
+  <span class="icon-menu" title="Collapse/expand sidebar"></span>
+</button>
+
+<section class="sidebar">
+  <form class="sidebar-search" action="search.html">
+    <button type="submit" class="search-button" aria-label="Submit Search">
+      <span class="icon-search" aria-hidden="true" title="Submit search"></span>
+    </button>
+    <button type="button" tabindex="-1" class="search-close-button" aria-label="Cancel Search">
+      <span class="icon-cross" aria-hidden="true" title="Cancel search"></span>
+    </button>
+    <label class="search-label">
+      <input name="q" type="text" id="search-list" class="search-input" placeholder="Search..." aria-label="Input your search terms" autocomplete="off" />
+    </label>
+  </form>
+
+  <div class="autocomplete">
+    <div class="autocomplete-results">
+    </div>
+  </div>
+
+  <div class="sidebar-header">
+    <div class="sidebar-projectDetails">
+      <a href="https://github.com/kraigie/nostrum" class="sidebar-projectName">
+Nostrum      </a>
+      <strong class="sidebar-projectVersion">
+        v0.4.5
+      </strong>
+    </div>
+  </div>
+
+  <ul class="sidebar-listNav">
+    <li><a id="extras-list" href="#full-list">Pages</a></li>
+
+      <li><a id="modules-list" href="#full-list">Modules</a></li>
+
+      <li><a id="tasks-list" href="#full-list">Mix Tasks</a></li>
+  </ul>
+  <div class="gradient"></div>
+  <ul id="full-list" class="sidebar-fullList"></ul>
+</section>
+
+<section class="content">
+  <div class="content-outer">
+    <div id="content" class="content-inner">
+
+<h1>
+  API Reference <small class="app-vsn">Nostrum v0.4.5</small>
+</h1>
+
+  <section class="details-list">
+    <h2 id="modules" class="section-heading">
+  <a href="#modules" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Modules
+</h2>
+
+    <div class="summary">
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Nostrum.Api.html">Nostrum.Api</a>
+  </div>
+    <div class="summary-synopsis"><p>Interface for Discord's rest API.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Nostrum.Api.Ratelimiter.html">Nostrum.Api.Ratelimiter</a>
+  </div>
+    <div class="summary-synopsis"><p>Ratelimit implimentation specific to Discord's API.
+Only to be used when starting in a rest-only manner.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Nostrum.Cache.ChannelCache.html">Nostrum.Cache.ChannelCache</a>
+  </div>
+    <div class="summary-synopsis"><p>Cache for channels.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Nostrum.Cache.GuildCache.html">Nostrum.Cache.GuildCache</a>
+  </div>
+    <div class="summary-synopsis"><p>Functions for retrieving guild states.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Nostrum.Cache.Mapping.ChannelGuild.html">Nostrum.Cache.Mapping.ChannelGuild</a>
+  </div>
+    <div class="summary-synopsis"><p>Mapping of channel -&gt; guild relationships.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Nostrum.Cache.Mapping.GuildShard.html">Nostrum.Cache.Mapping.GuildShard</a>
+  </div>
+    <div class="summary-synopsis"><p>Mapping of guild -&gt; shard relationships.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Nostrum.Cache.Mapping.ShardPidNum.html">Nostrum.Cache.Mapping.ShardPidNum</a>
+  </div>
+    <div class="summary-synopsis"><p>Simple mapping of shard pid to num</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Nostrum.Cache.Me.html">Nostrum.Cache.Me</a>
+  </div>
+    <div class="summary-synopsis"><p>Simple cache that stores information for the current user.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Nostrum.Cache.PresenceCache.html">Nostrum.Cache.PresenceCache</a>
+  </div>
+    <div class="summary-synopsis"><p>Cache for presences.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Nostrum.Cache.UserCache.html">Nostrum.Cache.UserCache</a>
+  </div>
+    <div class="summary-synopsis"><p>Cache for users.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Nostrum.Consumer.html">Nostrum.Consumer</a>
+  </div>
+    <div class="summary-synopsis"><p>Consumer process for gateway event handling.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Nostrum.Error.ApiError.html">Nostrum.Error.ApiError</a>
+  </div>
+    <div class="summary-synopsis"><p>Represents a failed response from the API.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Nostrum.Error.CacheError.html">Nostrum.Error.CacheError</a>
+  </div>
+    <div class="summary-synopsis"><p>Represents an error when interacting with the cache.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Nostrum.Error.VoiceError.html">Nostrum.Error.VoiceError</a>
+  </div>
+    <div class="summary-synopsis"><p>Represents an error when playing sound through voice channels.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Nostrum.Permission.html">Nostrum.Permission</a>
+  </div>
+    <div class="summary-synopsis"><p>Functions that work on permissions.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Nostrum.Snowflake.html">Nostrum.Snowflake</a>
+  </div>
+    <div class="summary-synopsis"><p>Functions that work on Snowflakes.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Nostrum.Struct.Channel.html">Nostrum.Struct.Channel</a>
+  </div>
+    <div class="summary-synopsis"><p>Struct representing a Discord guild channel.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Nostrum.Struct.Embed.html">Nostrum.Struct.Embed</a>
+  </div>
+    <div class="summary-synopsis"><p>Functions that work on Discord embeds.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Nostrum.Struct.Embed.Author.html">Nostrum.Struct.Embed.Author</a>
+  </div>
+    <div class="summary-synopsis"><p>Struct representing a Discord embed author.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Nostrum.Struct.Embed.Field.html">Nostrum.Struct.Embed.Field</a>
+  </div>
+    <div class="summary-synopsis"><p>Struct representing a Discord embed field.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Nostrum.Struct.Embed.Footer.html">Nostrum.Struct.Embed.Footer</a>
+  </div>
+    <div class="summary-synopsis"><p>Struct representing a Discord embed footer.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Nostrum.Struct.Embed.Image.html">Nostrum.Struct.Embed.Image</a>
+  </div>
+    <div class="summary-synopsis"><p>Struct representing a Discord embed image.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Nostrum.Struct.Embed.Provider.html">Nostrum.Struct.Embed.Provider</a>
+  </div>
+    <div class="summary-synopsis"><p>Struct representing a Discord embed provider.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Nostrum.Struct.Embed.Thumbnail.html">Nostrum.Struct.Embed.Thumbnail</a>
+  </div>
+    <div class="summary-synopsis"><p>Struct representing a Discord embed thumbnail.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Nostrum.Struct.Embed.Video.html">Nostrum.Struct.Embed.Video</a>
+  </div>
+    <div class="summary-synopsis"><p>Struct representing a Discord embed video.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Nostrum.Struct.Emoji.html">Nostrum.Struct.Emoji</a>
+  </div>
+    <div class="summary-synopsis"><p>Struct representing a Discord emoji.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Nostrum.Struct.Event.InviteCreate.html">Nostrum.Struct.Event.InviteCreate</a>
+  </div>
+    <div class="summary-synopsis"><p>Struct representing an Invite Create event</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Nostrum.Struct.Event.InviteDelete.html">Nostrum.Struct.Event.InviteDelete</a>
+  </div>
+    <div class="summary-synopsis"><p>Struct representing an Invite Delete event</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Nostrum.Struct.Event.MessageDelete.html">Nostrum.Struct.Event.MessageDelete</a>
+  </div>
+    <div class="summary-synopsis"><p>Struct representing a Message Delete event</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Nostrum.Struct.Event.MessageDeleteBulk.html">Nostrum.Struct.Event.MessageDeleteBulk</a>
+  </div>
+    <div class="summary-synopsis"><p>Struct representing a Message Delete Bulk event</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Nostrum.Struct.Event.SpeakingUpdate.html">Nostrum.Struct.Event.SpeakingUpdate</a>
+  </div>
+    <div class="summary-synopsis"><p>Struct representing a Nostrum-generated Speaking Update event</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Nostrum.Struct.Guild.html">Nostrum.Struct.Guild</a>
+  </div>
+    <div class="summary-synopsis"><p>Struct representing a Discord guild.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Nostrum.Struct.Guild.AuditLog.html">Nostrum.Struct.Guild.AuditLog</a>
+  </div>
+    <div class="summary-synopsis"><p>Represents a guild's audit log.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Nostrum.Struct.Guild.AuditLogEntry.html">Nostrum.Struct.Guild.AuditLogEntry</a>
+  </div>
+    <div class="summary-synopsis"><p>Represents a single entry in the guild's audit log.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Nostrum.Struct.Guild.Integration.html">Nostrum.Struct.Guild.Integration</a>
+  </div>
+    <div class="summary-synopsis"><p>Struct representing a Discord guild integration.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Nostrum.Struct.Guild.Integration.Account.html">Nostrum.Struct.Guild.Integration.Account</a>
+  </div>
+    <div class="summary-synopsis"><p>Struct representing a Discord guild's integration account.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Nostrum.Struct.Guild.Member.html">Nostrum.Struct.Guild.Member</a>
+  </div>
+    <div class="summary-synopsis"><p>Struct representing a Discord guild member.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Nostrum.Struct.Guild.Role.html">Nostrum.Struct.Guild.Role</a>
+  </div>
+    <div class="summary-synopsis"><p>Struct representing a Discord role.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Nostrum.Struct.Guild.UnavailableGuild.html">Nostrum.Struct.Guild.UnavailableGuild</a>
+  </div>
+    <div class="summary-synopsis"><p>Struct representing an unavailable Discord guild.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Nostrum.Struct.Invite.html">Nostrum.Struct.Invite</a>
+  </div>
+    <div class="summary-synopsis"><p>Struct representing a Discord invite.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Nostrum.Struct.Message.html">Nostrum.Struct.Message</a>
+  </div>
+    <div class="summary-synopsis"><p>Struct representing a Discord message.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Nostrum.Struct.Message.Activity.html">Nostrum.Struct.Message.Activity</a>
+  </div>
+    <div class="summary-synopsis"><p>Struct representing a Discord message activity.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Nostrum.Struct.Message.Application.html">Nostrum.Struct.Message.Application</a>
+  </div>
+    <div class="summary-synopsis"><p>Struct representing a Discord message application.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Nostrum.Struct.Message.Attachment.html">Nostrum.Struct.Message.Attachment</a>
+  </div>
+    <div class="summary-synopsis"><p>Struct representing a Discord message attachment.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Nostrum.Struct.Message.Reaction.html">Nostrum.Struct.Message.Reaction</a>
+  </div>
+    <div class="summary-synopsis"><p>Struct representing a Discord message reaction.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Nostrum.Struct.Overwrite.html">Nostrum.Struct.Overwrite</a>
+  </div>
+    <div class="summary-synopsis"><p>Struct representing a Discord overwrite.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Nostrum.Struct.User.html">Nostrum.Struct.User</a>
+  </div>
+    <div class="summary-synopsis"><p>Struct representing a Discord user.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Nostrum.Struct.User.Connection.html">Nostrum.Struct.User.Connection</a>
+  </div>
+    <div class="summary-synopsis"><p>Struct representing a Discord User's connections</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Nostrum.Struct.User.Flags.html">Nostrum.Struct.User.Flags</a>
+  </div>
+    <div class="summary-synopsis"><p>Struct representing the flags a user account can have</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Nostrum.Struct.VoiceRegion.html">Nostrum.Struct.VoiceRegion</a>
+  </div>
+    <div class="summary-synopsis"><p>Struct representing a Discord voice region.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Nostrum.Struct.WSState.html">Nostrum.Struct.WSState</a>
+  </div>
+    <div class="summary-synopsis"><p>Struct representing the current WS state.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Nostrum.Struct.Webhook.html">Nostrum.Struct.Webhook</a>
+  </div>
+    <div class="summary-synopsis"><p>Struct representing a Discord webhook.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Nostrum.Util.html">Nostrum.Util</a>
+  </div>
+    <div class="summary-synopsis"><p>Utility functions</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Nostrum.Voice.html">Nostrum.Voice</a>
+  </div>
+    <div class="summary-synopsis"><p>Interface for playing audio through Discord's voice channels.</p></div>
+</div>
+    </div>
+  </section>
+
+  <section class="details-list">
+    <h2 id="mix-tasks" class="section-heading">
+  <a href="#mix-tasks" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Mix Tasks
+</h2>
+
+    <div class="summary">
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Mix.Tasks.Gh.Docs.html">mix gh.docs</a>
+  </div>
+    <div class="summary-synopsis"><p>Task that pushes docs to gh-pages branch on Discord.</p></div>
+</div>
+    </div>
+  </section>
+      <footer class="footer">
+        <p>
+          <span class="line">
+            Built using
+            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener">ExDoc</a> (v0.23.0) for the
+            <a href="https://elixir-lang.org" title="Elixir" target="_blank">Elixir programming language</a>.
+          </span>
+          <span class="line">
+            Designed by
+            <a href="https://twitter.com/dignifiedquire" target="_blank" rel="noopener" title="@dignifiedquire">Friedel Ziegelmayer</a>.
+          </span>
+        </p>
+        <p>
+            <a href="api-reference.html" title="API reference" class="line footer-button">API Reference</a>
+          <button class="line footer-button display-shortcuts-help">
+            Display keyboard shortcuts
+          </button>
+          <button class="line footer-button night-mode-toggle">
+            Toggle night mode
+          </button>
+          <button class="line footer-button display-quick-switch">
+            Go to a HexDocs package
+          </button>
+          <button class="line footer-button tooltips-toggle">
+            <span class="tooltips-option-disable">Disable tooltips</span>
+            <span class="tooltips-option-enable">Enable tooltips</span>
+          </button>
+        </p>
+      </footer>
+    </div>
+  </div>
+</section>
+</div>
+  </body>
+</html>

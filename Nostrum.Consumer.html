@@ -1,0 +1,1474 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.23.0">
+    <meta name="project" content="Nostrum v0.4.5">
+    <title>Nostrum.Consumer — Nostrum v0.4.5</title>
+    <link rel="stylesheet" href="dist/elixir-9f91ebe876dc01d67920.css" />
+    <script src="dist/sidebar_items-b2bb24de56.js"></script>
+      <script src="docs_config.js"></script>
+    <script async src="dist/app-60a0c9f10e9e52eae31f.js"></script>
+  </head>
+  <body data-type="modules">
+    <script>try { if(localStorage.getItem('night-mode') === 'true') document.body.className += ' night-mode'; } catch (e) { }</script>
+<div class="main">
+
+<button class="sidebar-button sidebar-toggle">
+  <span class="icon-menu" title="Collapse/expand sidebar"></span>
+</button>
+
+<section class="sidebar">
+  <form class="sidebar-search" action="search.html">
+    <button type="submit" class="search-button" aria-label="Submit Search">
+      <span class="icon-search" aria-hidden="true" title="Submit search"></span>
+    </button>
+    <button type="button" tabindex="-1" class="search-close-button" aria-label="Cancel Search">
+      <span class="icon-cross" aria-hidden="true" title="Cancel search"></span>
+    </button>
+    <label class="search-label">
+      <input name="q" type="text" id="search-list" class="search-input" placeholder="Search..." aria-label="Input your search terms" autocomplete="off" />
+    </label>
+  </form>
+
+  <div class="autocomplete">
+    <div class="autocomplete-results">
+    </div>
+  </div>
+
+  <div class="sidebar-header">
+    <div class="sidebar-projectDetails">
+      <a href="https://github.com/kraigie/nostrum" class="sidebar-projectName">
+Nostrum      </a>
+      <strong class="sidebar-projectVersion">
+        v0.4.5
+      </strong>
+    </div>
+  </div>
+
+  <ul class="sidebar-listNav">
+    <li><a id="extras-list" href="#full-list">Pages</a></li>
+
+      <li><a id="modules-list" href="#full-list">Modules</a></li>
+
+      <li><a id="tasks-list" href="#full-list">Mix Tasks</a></li>
+  </ul>
+  <div class="gradient"></div>
+  <ul id="full-list" class="sidebar-fullList"></ul>
+</section>
+
+<section class="content">
+  <div class="content-outer">
+    <div id="content" class="content-inner">
+
+      <h1>
+        Nostrum.Consumer <small>behaviour</small> <small class="app-vsn">(Nostrum v0.4.5)</small>
+          <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L1" title="View Source" class="view-source" rel="help">
+            <span class="icon-code" aria-hidden="true"></span>
+            <span class="sr-only">View Source</span>
+          </a>
+      </h1>
+
+
+        <section id="moduledoc">
+<p>Consumer process for gateway event handling.</p><h1>Consuming Gateway Events</h1><p>To handle events, Nostrum uses a GenStage implementation.</p><p>Nostrum defines the <code class="inline">producer</code> and <code class="inline">producer_consumer</code> in the GenStage design.
+To consume the events you must create at least one <code class="inline">consumer</code> process. It is
+generally recommended that you spawn a consumer per core. To find this number
+you can use <a href="https://hexdocs.pm/elixir/System.html#schedulers_online/0"><code class="inline">System.schedulers_online/0</code></a>.</p><p>Nostrum uses a ConsumerSupervisor to dispatch events, meaning your handlers
+will each be ran in their own seperate task.</p><h2 id="module-example" class="section-heading">
+  <a href="#module-example" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Example
+</h2>
+<p>An example consumer can be found
+<a href="https://github.com/Kraigie/nostrum/blob/master/examples/event_consumer.ex">here</a>.</p>        </section>
+
+        <section id="summary" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#summary">
+              <span class="icon-link" aria-hidden="true"></span>
+              <span class="sr-only">Link to this section</span>
+            </a>
+            Summary
+          </h1>
+  <div class="summary-types summary">
+    <h2>
+      <a href="#types">Types</a>
+    </h2>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:channel_create/0">channel_create()</a>
+  </div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:channel_delete/0">channel_delete()</a>
+  </div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:channel_pins_ack/0">channel_pins_ack()</a>
+  </div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:channel_pins_update/0">channel_pins_update()</a>
+  </div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:channel_update/0">channel_update()</a>
+  </div>
+    <div class="summary-synopsis"><p>Dispatched when a channel is updated.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:event/0">event()</a>
+  </div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:guild_available/0">guild_available()</a>
+  </div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:guild_ban_add/0">guild_ban_add()</a>
+  </div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:guild_ban_remove/0">guild_ban_remove()</a>
+  </div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:guild_create/0">guild_create()</a>
+  </div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:guild_delete/0">guild_delete()</a>
+  </div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:guild_emojis_update/0">guild_emojis_update()</a>
+  </div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:guild_integrations_update/0">guild_integrations_update()</a>
+  </div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:guild_member_add/0">guild_member_add()</a>
+  </div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:guild_member_remove/0">guild_member_remove()</a>
+  </div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:guild_member_update/0">guild_member_update()</a>
+  </div>
+    <div class="summary-synopsis"><p>Dispatched when a guild member is updated.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:guild_members_chunk/0">guild_members_chunk()</a>
+  </div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:guild_role_create/0">guild_role_create()</a>
+  </div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:guild_role_delete/0">guild_role_delete()</a>
+  </div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:guild_role_update/0">guild_role_update()</a>
+  </div>
+    <div class="summary-synopsis"><p>Dispatched when a role on a guild is updated.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:guild_unavailable/0">guild_unavailable()</a>
+  </div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:guild_update/0">guild_update()</a>
+  </div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:message_ack/0">message_ack()</a>
+  </div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:message_create/0">message_create()</a>
+  </div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:message_delete/0">message_delete()</a>
+  </div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:message_delete_bulk/0">message_delete_bulk()</a>
+  </div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:message_reaction_add/0">message_reaction_add()</a>
+  </div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:message_reaction_remove/0">message_reaction_remove()</a>
+  </div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:message_reaction_remove_all/0">message_reaction_remove_all()</a>
+  </div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:message_reaction_remove_emoji/0">message_reaction_remove_emoji()</a>
+  </div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:message_update/0">message_update()</a>
+  </div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:option/0">option()</a>
+  </div>
+    <div class="summary-synopsis"><p>General process options.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:options/0">options()</a>
+  </div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:presence_update/0">presence_update()</a>
+  </div>
+    <div class="summary-synopsis"><p>Dispatched when a user's presence is updated.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:ready/0">ready()</a>
+  </div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:resumed/0">resumed()</a>
+  </div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:typing_start/0">typing_start()</a>
+  </div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:user_settings_update/0">user_settings_update()</a>
+  </div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:user_update/0">user_update()</a>
+  </div>
+    <div class="summary-synopsis"><p>Dispatched when a user is updated.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:voice_server_update/0">voice_server_update()</a>
+  </div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:voice_speaking_update/0">voice_speaking_update()</a>
+  </div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:voice_state_update/0">voice_state_update()</a>
+  </div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:webhooks_update/0">webhooks_update()</a>
+  </div>
+</div>
+  </div>
+  <div class="summary-functions summary">
+    <h2>
+      <a href="#functions">Functions</a>
+    </h2>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#start_link/2">start_link(mod, options \\ [])</a>
+  </div>
+    <div class="summary-synopsis"><p>Starts a consumer process.</p></div>
+</div>
+  </div>
+  <div class="summary-callbacks summary">
+    <h2>
+      <a href="#callbacks">Callbacks</a>
+    </h2>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#c:handle_event/1">handle_event(event)</a>
+  </div>
+    <div class="summary-synopsis"><p>Callback used to handle events.</p></div>
+</div>
+  </div>
+        </section>
+
+        <section id="types" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#types">
+              <span class="icon-link" aria-hidden="true"></span>
+              <span class="sr-only">Link to this section</span>
+            </a>
+Types          </h1>
+          <div class="types-list">
+<section class="detail" id="t:channel_create/0">
+  <div class="detail-header">
+    <a href="#t:channel_create/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">channel_create()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L68" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>channel_create() ::
+  {:CHANNEL_CREATE, <a href="Nostrum.Struct.Channel.html#t:t/0">Nostrum.Struct.Channel.t</a>(), <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
+      </div>
+
+  </section>
+</section>
+<section class="detail" id="t:channel_delete/0">
+  <div class="detail-header">
+    <a href="#t:channel_delete/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">channel_delete()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L69" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>channel_delete() ::
+  {:CHANNEL_DELETE, <a href="Nostrum.Struct.Channel.html#t:t/0">Nostrum.Struct.Channel.t</a>(), <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
+      </div>
+
+  </section>
+</section>
+<section class="detail" id="t:channel_pins_ack/0">
+  <div class="detail-header">
+    <a href="#t:channel_pins_ack/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">channel_pins_ack()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L78" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>channel_pins_ack() :: {:CHANNEL_PINS_ACK, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>(), <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
+      </div>
+
+  </section>
+</section>
+<section class="detail" id="t:channel_pins_update/0">
+  <div class="detail-header">
+    <a href="#t:channel_pins_update/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">channel_pins_update()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L79" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>channel_pins_update() ::
+  {:CHANNEL_PINS_UPDATE, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>(), <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
+      </div>
+
+  </section>
+</section>
+<section class="detail" id="t:channel_update/0">
+  <div class="detail-header">
+    <a href="#t:channel_update/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">channel_update()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L75" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>channel_update() ::
+  {:CHANNEL_UPDATE,
+   {old_channel :: <a href="Nostrum.Struct.Channel.html#t:t/0">Nostrum.Struct.Channel.t</a>() | nil,
+    new_channel :: <a href="Nostrum.Struct.Channel.html#t:t/0">Nostrum.Struct.Channel.t</a>()}, <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
+      </div>
+
+<p>Dispatched when a channel is updated.</p><p><code class="inline">old_channel</code> will be <code class="inline">nil</code> when the pre-update channel could not be fetched from the cache.</p>  </section>
+</section>
+<section class="detail" id="t:event/0">
+  <div class="detail-header">
+    <a href="#t:event/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">event()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L168" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>event() ::
+  <a href="#t:channel_create/0">channel_create</a>()
+  | <a href="#t:channel_delete/0">channel_delete</a>()
+  | <a href="#t:channel_update/0">channel_update</a>()
+  | <a href="#t:channel_pins_ack/0">channel_pins_ack</a>()
+  | <a href="#t:channel_pins_update/0">channel_pins_update</a>()
+  | <a href="#t:guild_ban_add/0">guild_ban_add</a>()
+  | <a href="#t:guild_ban_remove/0">guild_ban_remove</a>()
+  | <a href="#t:guild_create/0">guild_create</a>()
+  | <a href="#t:guild_available/0">guild_available</a>()
+  | <a href="#t:guild_unavailable/0">guild_unavailable</a>()
+  | <a href="#t:guild_update/0">guild_update</a>()
+  | <a href="#t:guild_delete/0">guild_delete</a>()
+  | <a href="#t:guild_emojis_update/0">guild_emojis_update</a>()
+  | <a href="#t:guild_integrations_update/0">guild_integrations_update</a>()
+  | <a href="#t:guild_member_add/0">guild_member_add</a>()
+  | <a href="#t:guild_members_chunk/0">guild_members_chunk</a>()
+  | <a href="#t:guild_member_remove/0">guild_member_remove</a>()
+  | <a href="#t:guild_member_update/0">guild_member_update</a>()
+  | <a href="#t:guild_role_create/0">guild_role_create</a>()
+  | <a href="#t:guild_role_delete/0">guild_role_delete</a>()
+  | <a href="#t:guild_role_update/0">guild_role_update</a>()
+  | <a href="#t:message_create/0">message_create</a>()
+  | <a href="#t:message_delete/0">message_delete</a>()
+  | <a href="#t:message_delete_bulk/0">message_delete_bulk</a>()
+  | <a href="#t:message_update/0">message_update</a>()
+  | <a href="#t:message_reaction_add/0">message_reaction_add</a>()
+  | <a href="#t:message_reaction_remove/0">message_reaction_remove</a>()
+  | <a href="#t:message_reaction_remove_all/0">message_reaction_remove_all</a>()
+  | <a href="#t:message_ack/0">message_ack</a>()
+  | <a href="#t:presence_update/0">presence_update</a>()
+  | <a href="#t:ready/0">ready</a>()
+  | <a href="#t:resumed/0">resumed</a>()
+  | <a href="#t:typing_start/0">typing_start</a>()
+  | <a href="#t:user_settings_update/0">user_settings_update</a>()
+  | <a href="#t:user_update/0">user_update</a>()
+  | <a href="#t:voice_speaking_update/0">voice_speaking_update</a>()
+  | <a href="#t:voice_state_update/0">voice_state_update</a>()
+  | <a href="#t:voice_server_update/0">voice_server_update</a>()
+  | <a href="#t:webhooks_update/0">webhooks_update</a>()</pre>
+      </div>
+
+  </section>
+</section>
+<section class="detail" id="t:guild_available/0">
+  <div class="detail-header">
+    <a href="#t:guild_available/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">guild_available()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L85" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>guild_available() ::
+  {:GUILD_AVAILABLE, new_guild :: <a href="Nostrum.Struct.Guild.html#t:t/0">Nostrum.Struct.Guild.t</a>(),
+   <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
+      </div>
+
+  </section>
+</section>
+<section class="detail" id="t:guild_ban_add/0">
+  <div class="detail-header">
+    <a href="#t:guild_ban_add/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">guild_ban_add()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L80" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>guild_ban_add() ::
+  {:GUILD_BAN_ADD, {guild_id :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>(), <a href="Nostrum.Struct.User.html#t:t/0">Nostrum.Struct.User.t</a>()},
+   <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
+      </div>
+
+  </section>
+</section>
+<section class="detail" id="t:guild_ban_remove/0">
+  <div class="detail-header">
+    <a href="#t:guild_ban_remove/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">guild_ban_remove()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L82" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>guild_ban_remove() ::
+  {:GUILD_BAN_REMOVE, {guild_id :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>(), <a href="Nostrum.Struct.User.html#t:t/0">Nostrum.Struct.User.t</a>()},
+   <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
+      </div>
+
+  </section>
+</section>
+<section class="detail" id="t:guild_create/0">
+  <div class="detail-header">
+    <a href="#t:guild_create/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">guild_create()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L84" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>guild_create() ::
+  {:GUILD_CREATE, new_guild :: <a href="Nostrum.Struct.Guild.html#t:t/0">Nostrum.Struct.Guild.t</a>(),
+   <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
+      </div>
+
+  </section>
+</section>
+<section class="detail" id="t:guild_delete/0">
+  <div class="detail-header">
+    <a href="#t:guild_delete/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">guild_delete()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L93" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>guild_delete() ::
+  {:GUILD_DELETE,
+   {old_guild :: <a href="Nostrum.Struct.Guild.html#t:t/0">Nostrum.Struct.Guild.t</a>(), unavailable :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">boolean</a>()},
+   <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
+      </div>
+
+  </section>
+</section>
+<section class="detail" id="t:guild_emojis_update/0">
+  <div class="detail-header">
+    <a href="#t:guild_emojis_update/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">guild_emojis_update()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L96" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>guild_emojis_update() ::
+  {:GUILD_EMOJIS_UPDATE,
+   {guild_id :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>(), old_emojis :: [<a href="Nostrum.Struct.Emoji.html#t:t/0">Nostrum.Struct.Emoji.t</a>()],
+    new_emojis :: [<a href="Nostrum.Struct.Emoji.html#t:t/0">Nostrum.Struct.Emoji.t</a>()]}, <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
+      </div>
+
+  </section>
+</section>
+<section class="detail" id="t:guild_integrations_update/0">
+  <div class="detail-header">
+    <a href="#t:guild_integrations_update/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">guild_integrations_update()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L100" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>guild_integrations_update() ::
+  {:GUILD_INTEGERATIONS_UPDATE, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>(), <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
+      </div>
+
+  </section>
+</section>
+<section class="detail" id="t:guild_member_add/0">
+  <div class="detail-header">
+    <a href="#t:guild_member_add/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">guild_member_add()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L101" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>guild_member_add() ::
+  {:GUILD_MEMBER_ADD,
+   {guild_id :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>(), new_member :: <a href="Nostrum.Struct.Guild.Member.html#t:t/0">Nostrum.Struct.Guild.Member.t</a>()},
+   <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
+      </div>
+
+  </section>
+</section>
+<section class="detail" id="t:guild_member_remove/0">
+  <div class="detail-header">
+    <a href="#t:guild_member_remove/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">guild_member_remove()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L105" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>guild_member_remove() ::
+  {:GUILD_MEMBER_REMOVE,
+   {guild_id :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>(), old_member :: <a href="Nostrum.Struct.Guild.Member.html#t:t/0">Nostrum.Struct.Guild.Member.t</a>()},
+   <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
+      </div>
+
+  </section>
+</section>
+<section class="detail" id="t:guild_member_update/0">
+  <div class="detail-header">
+    <a href="#t:guild_member_update/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">guild_member_update()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L113" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>guild_member_update() ::
+  {:GUILD_MEMBER_UPDATE,
+   {guild_id :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>(), old_member :: <a href="Nostrum.Struct.Guild.Member.html#t:t/0">Nostrum.Struct.Guild.Member.t</a>() | nil,
+    new_member :: <a href="Nostrum.Struct.Guild.Member.html#t:t/0">Nostrum.Struct.Guild.Member.t</a>()}, <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
+      </div>
+
+<p>Dispatched when a guild member is updated.</p><p><code class="inline">old_member</code> will be <code class="inline">nil</code> when the pre-update member could not be fetched from the cache.</p>  </section>
+</section>
+<section class="detail" id="t:guild_members_chunk/0">
+  <div class="detail-header">
+    <a href="#t:guild_members_chunk/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">guild_members_chunk()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L104" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>guild_members_chunk() ::
+  {:GUILD_MEMBERS_CHUNK, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>(), <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
+      </div>
+
+  </section>
+</section>
+<section class="detail" id="t:guild_role_create/0">
+  <div class="detail-header">
+    <a href="#t:guild_role_create/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">guild_role_create()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L117" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>guild_role_create() ::
+  {:GUILD_ROLE_CREATE,
+   {guild_id :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>(), new_role :: <a href="Nostrum.Struct.Guild.Role.html#t:t/0">Nostrum.Struct.Guild.Role.t</a>()},
+   <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
+      </div>
+
+  </section>
+</section>
+<section class="detail" id="t:guild_role_delete/0">
+  <div class="detail-header">
+    <a href="#t:guild_role_delete/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">guild_role_delete()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L120" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>guild_role_delete() ::
+  {:GUILD_ROLE_DELETE,
+   {guild_id :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>(), old_role :: <a href="Nostrum.Struct.Guild.Role.html#t:t/0">Nostrum.Struct.Guild.Role.t</a>()},
+   <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
+      </div>
+
+  </section>
+</section>
+<section class="detail" id="t:guild_role_update/0">
+  <div class="detail-header">
+    <a href="#t:guild_role_update/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">guild_role_update()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L128" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>guild_role_update() ::
+  {:GUILD_ROLE_UPDATE,
+   {guild_id :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>(), old_role :: <a href="Nostrum.Struct.Guild.Role.html#t:t/0">Nostrum.Struct.Guild.Role.t</a>() | nil,
+    new_role :: <a href="Nostrum.Struct.Guild.Role.html#t:t/0">Nostrum.Struct.Guild.Role.t</a>()}, <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
+      </div>
+
+<p>Dispatched when a role on a guild is updated.</p><p><code class="inline">old_role</code> will be <code class="inline">nil</code> when the pre-update role could not be fetched from the cache.</p>  </section>
+</section>
+<section class="detail" id="t:guild_unavailable/0">
+  <div class="detail-header">
+    <a href="#t:guild_unavailable/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">guild_unavailable()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L86" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>guild_unavailable() ::
+  {:GUILD_UNAVAILABLE,
+   unavailable_guild :: <a href="Nostrum.Struct.Guild.UnavailableGuild.html#t:t/0">Nostrum.Struct.Guild.UnavailableGuild.t</a>(),
+   <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
+      </div>
+
+  </section>
+</section>
+<section class="detail" id="t:guild_update/0">
+  <div class="detail-header">
+    <a href="#t:guild_update/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">guild_update()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L89" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>guild_update() ::
+  {:GUILD_UPDATE,
+   {old_guild :: <a href="Nostrum.Struct.Guild.html#t:t/0">Nostrum.Struct.Guild.t</a>(),
+    new_guild :: <a href="Nostrum.Struct.Guild.html#t:t/0">Nostrum.Struct.Guild.t</a>()}, <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
+      </div>
+
+  </section>
+</section>
+<section class="detail" id="t:message_ack/0">
+  <div class="detail-header">
+    <a href="#t:message_ack/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">message_ack()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L141" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>message_ack() :: {:MESSAGE_ACK, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>(), <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
+      </div>
+
+  </section>
+</section>
+<section class="detail" id="t:message_create/0">
+  <div class="detail-header">
+    <a href="#t:message_create/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">message_create()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L132" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>message_create() ::
+  {:MESSAGE_CREATE, message :: <a href="Nostrum.Struct.Message.html#t:t/0">Nostrum.Struct.Message.t</a>(),
+   <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
+      </div>
+
+  </section>
+</section>
+<section class="detail" id="t:message_delete/0">
+  <div class="detail-header">
+    <a href="#t:message_delete/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">message_delete()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L133" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>message_delete() ::
+  {:MESSAGE_DELETE, <a href="Nostrum.Struct.Event.MessageDelete.html#t:t/0">Nostrum.Struct.Event.MessageDelete.t</a>(),
+   <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
+      </div>
+
+  </section>
+</section>
+<section class="detail" id="t:message_delete_bulk/0">
+  <div class="detail-header">
+    <a href="#t:message_delete_bulk/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">message_delete_bulk()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L134" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>message_delete_bulk() ::
+  {:MESSAGE_DELETE_BULK, <a href="Nostrum.Struct.Event.MessageDeleteBulk.html#t:t/0">Nostrum.Struct.Event.MessageDeleteBulk.t</a>(),
+   <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
+      </div>
+
+  </section>
+</section>
+<section class="detail" id="t:message_reaction_add/0">
+  <div class="detail-header">
+    <a href="#t:message_reaction_add/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">message_reaction_add()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L137" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>message_reaction_add() ::
+  {:MESSAGE_REACTION_ADD, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>(), <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
+      </div>
+
+  </section>
+</section>
+<section class="detail" id="t:message_reaction_remove/0">
+  <div class="detail-header">
+    <a href="#t:message_reaction_remove/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">message_reaction_remove()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L138" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>message_reaction_remove() ::
+  {:MESSAGE_REACTION_REMOVE, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>(), <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
+      </div>
+
+  </section>
+</section>
+<section class="detail" id="t:message_reaction_remove_all/0">
+  <div class="detail-header">
+    <a href="#t:message_reaction_remove_all/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">message_reaction_remove_all()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L139" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>message_reaction_remove_all() ::
+  {:MESSAGE_REACTION_REMOVE_ALL, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>(), <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
+      </div>
+
+  </section>
+</section>
+<section class="detail" id="t:message_reaction_remove_emoji/0">
+  <div class="detail-header">
+    <a href="#t:message_reaction_remove_emoji/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">message_reaction_remove_emoji()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L140" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>message_reaction_remove_emoji() ::
+  {:MESSAGE_REACTION_REMOVE_EMOJI, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>(), <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
+      </div>
+
+  </section>
+</section>
+<section class="detail" id="t:message_update/0">
+  <div class="detail-header">
+    <a href="#t:message_update/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">message_update()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L135" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>message_update() ::
+  {:MESSAGE_UPDATE, updated_message :: <a href="Nostrum.Struct.Message.html#t:t/0">Nostrum.Struct.Message.t</a>(),
+   <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
+      </div>
+
+  </section>
+</section>
+<section class="detail" id="t:option/0">
+  <div class="detail-header">
+    <a href="#t:option/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">option()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L61" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>option() ::
+  {:registry, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">atom</a>()}
+  | {:name, <a href="https://hexdocs.pm/elixir/Supervisor.html#t:name/0">Supervisor.name</a>()}
+  | {:max_restarts, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">non_neg_integer</a>()}
+  | {:max_seconds, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">non_neg_integer</a>()}
+  | {:subscribe_to, [<a href="https://hexdocs.pm/gen_stage/0.14.2/GenStage.html#t:stage/0">GenStage.stage</a>() | {<a href="https://hexdocs.pm/gen_stage/0.14.2/GenStage.html#t:stage/0">GenStage.stage</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">keyword</a>()}]}</pre>
+      </div>
+
+<p>General process options.</p><p>The <code class="inline">subscribe_to</code> option should only be set if you want to use your own producer or producer consumer.</p>  </section>
+</section>
+<section class="detail" id="t:options/0">
+  <div class="detail-header">
+    <a href="#t:options/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">options()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L54" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>options() :: [<a href="#t:option/0">option</a>()] | []</pre>
+      </div>
+
+  </section>
+</section>
+<section class="detail" id="t:presence_update/0">
+  <div class="detail-header">
+    <a href="#t:presence_update/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">presence_update()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L147" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>presence_update() ::
+  {:PRESENCE_UPDATE,
+   {guild_id :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>(), old_presence :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>() | nil, new_presence :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()},
+   <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
+      </div>
+
+<p>Dispatched when a user's presence is updated.</p><p><code class="inline">old_presence</code> will be <code class="inline">nil</code> when the pre-update presence could not be fetched from the cache.</p>  </section>
+</section>
+<section class="detail" id="t:ready/0">
+  <div class="detail-header">
+    <a href="#t:ready/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">ready()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L150" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>ready() :: {:READY, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>(), <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
+      </div>
+
+  </section>
+</section>
+<section class="detail" id="t:resumed/0">
+  <div class="detail-header">
+    <a href="#t:resumed/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">resumed()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L151" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>resumed() :: {:RESUMED, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>(), <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
+      </div>
+
+  </section>
+</section>
+<section class="detail" id="t:typing_start/0">
+  <div class="detail-header">
+    <a href="#t:typing_start/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">typing_start()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L152" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>typing_start() :: {:TYPING_START, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>(), <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
+      </div>
+
+  </section>
+</section>
+<section class="detail" id="t:user_settings_update/0">
+  <div class="detail-header">
+    <a href="#t:user_settings_update/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">user_settings_update()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L153" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>user_settings_update() :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">no_return</a>()</pre>
+      </div>
+
+  </section>
+</section>
+<section class="detail" id="t:user_update/0">
+  <div class="detail-header">
+    <a href="#t:user_update/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">user_update()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L159" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>user_update() ::
+  {:USER_UPDATE,
+   {old_user :: <a href="Nostrum.Struct.User.html#t:t/0">Nostrum.Struct.User.t</a>() | nil,
+    new_user :: <a href="Nostrum.Struct.User.html#t:t/0">Nostrum.Struct.User.t</a>()}, <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
+      </div>
+
+<p>Dispatched when a user is updated.</p><p><code class="inline">old_user</code> will be <code class="inline">nil</code> when the pre-update user could not be fetched from the cache.</p>  </section>
+</section>
+<section class="detail" id="t:voice_server_update/0">
+  <div class="detail-header">
+    <a href="#t:voice_server_update/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">voice_server_update()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L165" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>voice_server_update() ::
+  {:VOICE_SERVER_UPDATE, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>(), <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
+      </div>
+
+  </section>
+</section>
+<section class="detail" id="t:voice_speaking_update/0">
+  <div class="detail-header">
+    <a href="#t:voice_speaking_update/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">voice_speaking_update()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L163" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>voice_speaking_update() ::
+  {:VOICE_SPEAKING_UPDATE, <a href="Nostrum.Struct.Event.SpeakingUpdate.html#t:t/0">Nostrum.Struct.Event.SpeakingUpdate.t</a>(),
+   <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
+      </div>
+
+  </section>
+</section>
+<section class="detail" id="t:voice_state_update/0">
+  <div class="detail-header">
+    <a href="#t:voice_state_update/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">voice_state_update()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L164" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>voice_state_update() :: {:VOICE_STATE_UPDATE, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>(), <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
+      </div>
+
+  </section>
+</section>
+<section class="detail" id="t:webhooks_update/0">
+  <div class="detail-header">
+    <a href="#t:webhooks_update/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">webhooks_update()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L166" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>webhooks_update() :: {:WEBHOOKS_UPDATE, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>(), <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
+      </div>
+
+  </section>
+</section>
+          </div>
+        </section>
+        <section id="functions" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#functions">
+              <span class="icon-link" aria-hidden="true"></span>
+              <span class="sr-only">Link to this section</span>
+            </a>
+Functions          </h1>
+          <div class="functions-list">
+<section class="detail" id="start_link/2">
+    <span id="start_link/1"></span>
+  <div class="detail-header">
+    <a href="#start_link/2" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">start_link(mod, options \\ [])</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L247" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>start_link(<a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">module</a>(), <a href="#t:options/0">options</a>()) :: <a href="https://hexdocs.pm/elixir/Supervisor.html#t:on_start/0">Supervisor.on_start</a>()</pre>
+      </div>
+
+<p>Starts a consumer process.</p><p><code class="inline">mod</code> is the name of the module where you define your event callbacks, which should probably be
+the current module which you can get with <code class="inline">__MODULE__</code>.</p><p><code class="inline">options</code> is a list of general process options. See <a href="#t:options/0"><code class="inline">Nostrum.Consumer.options/0</code></a> for more info.</p>  </section>
+</section>
+          </div>
+        </section>
+        <section id="callbacks" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#callbacks">
+              <span class="icon-link" aria-hidden="true"></span>
+              <span class="sr-only">Link to this section</span>
+            </a>
+Callbacks          </h1>
+          <div class="callbacks-list">
+<section class="detail" id="c:handle_event/1">
+  <div class="detail-header">
+    <a href="#c:handle_event/1" class="detail-link" title="Link to this callback">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this callback</span>
+    </a>
+    <h1 class="signature">handle_event(event)</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L52" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>handle_event(<a href="#t:event/0">event</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">any</a>()</pre>
+      </div>
+
+<p>Callback used to handle events.</p><h2 id="c:handle_event/1-event" class="section-heading">
+  <a href="#c:handle_event/1-event" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Event
+</h2>
+<p><code class="inline">event</code> is a tuple describing the event. The tuple will include information in
+the following format:</p><pre><code class="Elixir">{event_name, {event_payload(s)}, WSState.t}</code></pre><p>For example, a message create will look like this</p><pre><code class="Elixir">{:MESSAGE_CREATE, {Nostrum.Struct.Message.t}, WSState.t}</code></pre><p>In some cases there will be multiple payloads when something is updated, so as
+to include the new and the old versions. In the event of there being two payloads,
+the old payload will always be first, followed by the new payload.</p><pre><code class="Elixir">{:USER_UPDATE, {old_user :: Nostrum.Struct.User.t, new_user :: Nostrum.Struct.User.t}, WSState.t()}</code></pre><p>For a full listing of events, please see <a href="#t:event/0"><code class="inline">Nostrum.Consumer.event/0</code></a>.</p>  </section>
+</section>
+          </div>
+        </section>
+      <footer class="footer">
+        <p>
+          <span class="line">
+            Built using
+            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener">ExDoc</a> (v0.23.0) for the
+            <a href="https://elixir-lang.org" title="Elixir" target="_blank">Elixir programming language</a>.
+          </span>
+          <span class="line">
+            Designed by
+            <a href="https://twitter.com/dignifiedquire" target="_blank" rel="noopener" title="@dignifiedquire">Friedel Ziegelmayer</a>.
+          </span>
+        </p>
+        <p>
+            <a href="api-reference.html" title="API reference" class="line footer-button">API Reference</a>
+          <button class="line footer-button display-shortcuts-help">
+            Display keyboard shortcuts
+          </button>
+          <button class="line footer-button night-mode-toggle">
+            Toggle night mode
+          </button>
+          <button class="line footer-button display-quick-switch">
+            Go to a HexDocs package
+          </button>
+          <button class="line footer-button tooltips-toggle">
+            <span class="tooltips-option-disable">Disable tooltips</span>
+            <span class="tooltips-option-enable">Enable tooltips</span>
+          </button>
+        </p>
+      </footer>
+    </div>
+  </div>
+</section>
+</div>
+  </body>
+</html>

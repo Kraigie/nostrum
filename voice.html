@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.23.0">
+    <meta name="project" content="Nostrum v0.4.5">
+    <title>Voice — Nostrum v0.4.5</title>
+    <link rel="stylesheet" href="dist/elixir-9f91ebe876dc01d67920.css" />
+    <script src="dist/sidebar_items-b2bb24de56.js"></script>
+      <script src="docs_config.js"></script>
+    <script async src="dist/app-60a0c9f10e9e52eae31f.js"></script>
+  </head>
+  <body data-type="extras">
+    <script>try { if(localStorage.getItem('night-mode') === 'true') document.body.className += ' night-mode'; } catch (e) { }</script>
+<div class="main">
+
+<button class="sidebar-button sidebar-toggle">
+  <span class="icon-menu" title="Collapse/expand sidebar"></span>
+</button>
+
+<section class="sidebar">
+  <form class="sidebar-search" action="search.html">
+    <button type="submit" class="search-button" aria-label="Submit Search">
+      <span class="icon-search" aria-hidden="true" title="Submit search"></span>
+    </button>
+    <button type="button" tabindex="-1" class="search-close-button" aria-label="Cancel Search">
+      <span class="icon-cross" aria-hidden="true" title="Cancel search"></span>
+    </button>
+    <label class="search-label">
+      <input name="q" type="text" id="search-list" class="search-input" placeholder="Search..." aria-label="Input your search terms" autocomplete="off" />
+    </label>
+  </form>
+
+  <div class="autocomplete">
+    <div class="autocomplete-results">
+    </div>
+  </div>
+
+  <div class="sidebar-header">
+    <div class="sidebar-projectDetails">
+      <a href="https://github.com/kraigie/nostrum" class="sidebar-projectName">
+Nostrum      </a>
+      <strong class="sidebar-projectVersion">
+        v0.4.5
+      </strong>
+    </div>
+  </div>
+
+  <ul class="sidebar-listNav">
+    <li><a id="extras-list" href="#full-list">Pages</a></li>
+
+      <li><a id="modules-list" href="#full-list">Modules</a></li>
+
+      <li><a id="tasks-list" href="#full-list">Mix Tasks</a></li>
+  </ul>
+  <div class="gradient"></div>
+  <ul id="full-list" class="sidebar-fullList"></ul>
+</section>
+
+<section class="content">
+  <div class="content-outer">
+    <div id="content" class="content-inner">
+
+<h2 id="voice-channels" class="section-heading">
+  <a href="#voice-channels" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Voice Channels
+</h2>
+<p>Discord voice channels allow audio data to be sent to the voice servers over UDP.
+A bot is able to connect to up to one voice channel per guild. One websocket
+connection will be opened and maintained for each voice channel the bot joins.
+The websocket connection should reconnect automatically the same way that the 
+main Discord gateway websocket connections do. For available voice functions and
+usage see the <a href="Nostrum.Voice.html"><code class="inline">Nostrum.Voice</code></a> module.</p><h2 id="ffmpeg" class="section-heading">
+  <a href="#ffmpeg" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  FFmpeg
+</h2>
+<p>Nostrum uses the powerful <a href="https://ffmpeg.org/">ffmpeg</a> command line utility to
+encode any audio (or video) file for sending to Discord's voice servers.
+By default Nostrum will look for the executable <code class="inline">ffmpeg</code> in the system path.
+If the executable is elsewhere, the path may be configured via
+<code class="inline">config :nostrum, :ffmpeg, &quot;/path/to/ffmpeg&quot;</code>.
+The function <a href="Nostrum.Voice.html#play/3"><code class="inline">Nostrum.Voice.play/3</code></a> allows sound to played via files, local or 
+remote, or via raw data that gets piped to <code class="inline">stdin</code> of the <code class="inline">ffmpeg</code> process.
+When playing from a url, the url can be a name of a file on the filesystem or a url
+of file on a remote server - <a href="https://www.ffmpeg.org/ffmpeg-protocols.html">ffmpeg supports a ton of protocols</a>,
+the most common of which are probably <code class="inline">http</code> or simply reading a file from the filesystem.</p><h2 id="youtube-dl" class="section-heading">
+  <a href="#youtube-dl" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  youtube-dl
+</h2>
+<p>With only <code class="inline">ffmpeg</code> installed, Nostrum supports playing audio/video files or raw, piped
+data as discussed in the section above. Nostrum also has support for <code class="inline">youtube-dl</code>, another
+powerful command line utility for downloading audio/video from online video services.
+Although the name implies support for Youtube, <code class="inline">youtube-dl</code> supports downloading from
+<a href="https://github.com/ytdl-org/youtube-dl/blob/master/docs/supportedsites.md">an immense list of sites</a>.
+By default Nostrum will look for the executable <code class="inline">youtube-dl</code> in the system path. If the
+executable is elsewhere, the path may be configured via <code class="inline">config :nostrum, :youtubedl, &quot;/path/to/youtube-dl&quot;</code>.
+When <a href="Nostrum.Voice.html#play/3"><code class="inline">Nostrum.Voice.play/3</code></a> is called with <code class="inline">:ytdl</code> for the <code class="inline">type</code> parameter, <code class="inline">youtube-dl</code> will be
+run with options <code class="inline">-f bestaudio -q -o -</code>, which will attempt to download the audio at the given url and pipe it to <code class="inline">ffmpeg</code>.</p>      <footer class="footer">
+        <p>
+          <span class="line">
+            Built using
+            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener">ExDoc</a> (v0.23.0) for the
+            <a href="https://elixir-lang.org" title="Elixir" target="_blank">Elixir programming language</a>.
+          </span>
+          <span class="line">
+            Designed by
+            <a href="https://twitter.com/dignifiedquire" target="_blank" rel="noopener" title="@dignifiedquire">Friedel Ziegelmayer</a>.
+          </span>
+        </p>
+        <p>
+            <a href="api-reference.html" title="API reference" class="line footer-button">API Reference</a>
+          <button class="line footer-button display-shortcuts-help">
+            Display keyboard shortcuts
+          </button>
+          <button class="line footer-button night-mode-toggle">
+            Toggle night mode
+          </button>
+          <button class="line footer-button display-quick-switch">
+            Go to a HexDocs package
+          </button>
+          <button class="line footer-button tooltips-toggle">
+            <span class="tooltips-option-disable">Disable tooltips</span>
+            <span class="tooltips-option-enable">Enable tooltips</span>
+          </button>
+        </p>
+      </footer>
+    </div>
+  </div>
+</section>
+</div>
+  </body>
+</html>

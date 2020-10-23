@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.23.0">
+    <meta name="project" content="Nostrum v0.4.5">
+    <title>Api — Nostrum v0.4.5</title>
+    <link rel="stylesheet" href="dist/elixir-9f91ebe876dc01d67920.css" />
+    <script src="dist/sidebar_items-b2bb24de56.js"></script>
+      <script src="docs_config.js"></script>
+    <script async src="dist/app-60a0c9f10e9e52eae31f.js"></script>
+  </head>
+  <body data-type="extras">
+    <script>try { if(localStorage.getItem('night-mode') === 'true') document.body.className += ' night-mode'; } catch (e) { }</script>
+<div class="main">
+
+<button class="sidebar-button sidebar-toggle">
+  <span class="icon-menu" title="Collapse/expand sidebar"></span>
+</button>
+
+<section class="sidebar">
+  <form class="sidebar-search" action="search.html">
+    <button type="submit" class="search-button" aria-label="Submit Search">
+      <span class="icon-search" aria-hidden="true" title="Submit search"></span>
+    </button>
+    <button type="button" tabindex="-1" class="search-close-button" aria-label="Cancel Search">
+      <span class="icon-cross" aria-hidden="true" title="Cancel search"></span>
+    </button>
+    <label class="search-label">
+      <input name="q" type="text" id="search-list" class="search-input" placeholder="Search..." aria-label="Input your search terms" autocomplete="off" />
+    </label>
+  </form>
+
+  <div class="autocomplete">
+    <div class="autocomplete-results">
+    </div>
+  </div>
+
+  <div class="sidebar-header">
+    <div class="sidebar-projectDetails">
+      <a href="https://github.com/kraigie/nostrum" class="sidebar-projectName">
+Nostrum      </a>
+      <strong class="sidebar-projectVersion">
+        v0.4.5
+      </strong>
+    </div>
+  </div>
+
+  <ul class="sidebar-listNav">
+    <li><a id="extras-list" href="#full-list">Pages</a></li>
+
+      <li><a id="modules-list" href="#full-list">Modules</a></li>
+
+      <li><a id="tasks-list" href="#full-list">Mix Tasks</a></li>
+  </ul>
+  <div class="gradient"></div>
+  <ul id="full-list" class="sidebar-fullList"></ul>
+</section>
+
+<section class="content">
+  <div class="content-outer">
+    <div id="content" class="content-inner">
+
+<h1>Api</h1><p>Nostrum includes a complete implementation of the endpoints supported by Discord's
+API. Method names are copied closely from the documentation to eliminate any
+confusion about what a method does, as well as allow users to easily lookup the
+endpoints in the official API documentation.</p><p>For a full listing of method definitions, please see <a href="Nostrum.Api.html"><code class="inline">Nostrum.Api</code></a></p><h2 id="what-does-the-mean" class="section-heading">
+  <a href="#what-does-the-mean" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  What does the '!' mean?
+</h2>
+<p>(soon™) All methods have a <code class="inline">banged</code> version of themselves. This is a common Elixir
+idiom hailing from Elixir's style of failing fast.</p><p>By default, the API method will return a tuple like one of the following:</p><pre><code class="Elixir"># Success
+{:ok, msg} = Nostrum.Api.create_message(179679229036724225, &quot;456&quot;)
+
+# Failure
+{:error, reason} = Nostrum.Api.create_message(123, &quot;eat my shorts api&quot;)</code></pre><p>A banged method, instead of returning an <code class="inline">error</code> tuple, will throw an error.
+If successful, it will directly return the response with no <code class="inline">:ok</code> tuple.</p><pre><code class="Elixir"># Success
+msg = Nostrum.Api.create_message!(179679229036724225, &quot;456&quot;)
+
+# Failure - Throws an error
+Nostrum.Api.create_message!(123, &quot;eat my shorts api&quot;)</code></pre><h2 id="helpers" class="section-heading">
+  <a href="#helpers" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Helpers
+</h2>
+<p>When appropriate, some helpers are defined to make interacting with the API simpler.
+An example of this is <a href="Nostrum.Api.html#get_channel_messages/3"><code class="inline">Nostrum.Api.get_channel_messages/3</code></a>. By default this endpoint
+only allows the retrieval of <code class="inline">100</code> messages at a time. A general use case will
+have a user wanting more messages than that, thus Nostrum handles the retrieval
+of any number of messages for the user.</p><p>There are other endpoints that could use grooming like above, feel free to suggest
+an interface and implementation for these methods.</p><h2 id="ratelimiting" class="section-heading">
+  <a href="#ratelimiting" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Ratelimiting
+</h2>
+<p>Ratelimiting is handled internally by Nostrum, so long as you use the methods
+supplied in the <a href="Nostrum.Api.html"><code class="inline">Nostrum.Api</code></a> module. This means either calling the methods as
+they're given or using <a href="Nostrum.Api.html#request/4"><code class="inline">Nostrum.Api.request/4</code></a> to call an endpoint.</p><p>To ensure that every request is handled properly, no matter if they're called
+asynchronously or not, Nostrum funnels all requests through a single <a href="https://hexdocs.pm/elixir/GenServer.html"><code class="inline">GenServer</code></a>.</p><p>The ratelimiter at a high level works something like this:</p><ol><li>Request is sent to the serializer</li><li>Serializer checks to see if there's a current block on that endpoint.</li><li>If there is a block, the pid of the caller is stored, and a task is started
+to try the call again after a specified time stored from previous calls.</li><li>If the request goes through, the headers are processed to see if a block
+should be instantiated for that endpoint.</li></ol><h2 id="rest-only" class="section-heading">
+  <a href="#rest-only" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Rest Only
+</h2>
+<p>If you only want to use the REST portion of the provided API, the only process
+needed is the ratelimiter. This can be manually started by calling
+<a href="Nostrum.Api.Ratelimiter.html#start_link/1"><code class="inline">Nostrum.Api.Ratelimiter.start_link/1</code></a>. If you don't want to start Nostrum you
+can add <code class="inline">runtime: false</code> to the dependency options.</p>      <footer class="footer">
+        <p>
+          <span class="line">
+            Built using
+            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener">ExDoc</a> (v0.23.0) for the
+            <a href="https://elixir-lang.org" title="Elixir" target="_blank">Elixir programming language</a>.
+          </span>
+          <span class="line">
+            Designed by
+            <a href="https://twitter.com/dignifiedquire" target="_blank" rel="noopener" title="@dignifiedquire">Friedel Ziegelmayer</a>.
+          </span>
+        </p>
+        <p>
+            <a href="api-reference.html" title="API reference" class="line footer-button">API Reference</a>
+          <button class="line footer-button display-shortcuts-help">
+            Display keyboard shortcuts
+          </button>
+          <button class="line footer-button night-mode-toggle">
+            Toggle night mode
+          </button>
+          <button class="line footer-button display-quick-switch">
+            Go to a HexDocs package
+          </button>
+          <button class="line footer-button tooltips-toggle">
+            <span class="tooltips-option-disable">Disable tooltips</span>
+            <span class="tooltips-option-enable">Enable tooltips</span>
+          </button>
+        </p>
+      </footer>
+    </div>
+  </div>
+</section>
+</div>
+  </body>
+</html>

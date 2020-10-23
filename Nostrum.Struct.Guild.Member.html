@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.23.0">
+    <meta name="project" content="Nostrum v0.4.5">
+    <title>Nostrum.Struct.Guild.Member — Nostrum v0.4.5</title>
+    <link rel="stylesheet" href="dist/elixir-9f91ebe876dc01d67920.css" />
+    <script src="dist/sidebar_items-b2bb24de56.js"></script>
+      <script src="docs_config.js"></script>
+    <script async src="dist/app-60a0c9f10e9e52eae31f.js"></script>
+  </head>
+  <body data-type="modules">
+    <script>try { if(localStorage.getItem('night-mode') === 'true') document.body.className += ' night-mode'; } catch (e) { }</script>
+<div class="main">
+
+<button class="sidebar-button sidebar-toggle">
+  <span class="icon-menu" title="Collapse/expand sidebar"></span>
+</button>
+
+<section class="sidebar">
+  <form class="sidebar-search" action="search.html">
+    <button type="submit" class="search-button" aria-label="Submit Search">
+      <span class="icon-search" aria-hidden="true" title="Submit search"></span>
+    </button>
+    <button type="button" tabindex="-1" class="search-close-button" aria-label="Cancel Search">
+      <span class="icon-cross" aria-hidden="true" title="Cancel search"></span>
+    </button>
+    <label class="search-label">
+      <input name="q" type="text" id="search-list" class="search-input" placeholder="Search..." aria-label="Input your search terms" autocomplete="off" />
+    </label>
+  </form>
+
+  <div class="autocomplete">
+    <div class="autocomplete-results">
+    </div>
+  </div>
+
+  <div class="sidebar-header">
+    <div class="sidebar-projectDetails">
+      <a href="https://github.com/kraigie/nostrum" class="sidebar-projectName">
+Nostrum      </a>
+      <strong class="sidebar-projectVersion">
+        v0.4.5
+      </strong>
+    </div>
+  </div>
+
+  <ul class="sidebar-listNav">
+    <li><a id="extras-list" href="#full-list">Pages</a></li>
+
+      <li><a id="modules-list" href="#full-list">Modules</a></li>
+
+      <li><a id="tasks-list" href="#full-list">Mix Tasks</a></li>
+  </ul>
+  <div class="gradient"></div>
+  <ul id="full-list" class="sidebar-fullList"></ul>
+</section>
+
+<section class="content">
+  <div class="content-outer">
+    <div id="content" class="content-inner">
+
+      <h1>
+        Nostrum.Struct.Guild.Member <small class="app-vsn">(Nostrum v0.4.5)</small>
+          <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild/member.ex#L1" title="View Source" class="view-source" rel="help">
+            <span class="icon-code" aria-hidden="true"></span>
+            <span class="sr-only">View Source</span>
+          </a>
+      </h1>
+
+
+        <section id="moduledoc">
+<p>Struct representing a Discord guild member.</p><p>A <a href="#content"><code class="inline">Nostrum.Struct.Guild.Member</code></a> stores a <a href="Nostrum.Struct.User.html"><code class="inline">Nostrum.Struct.User</code></a>'s properties
+pertaining to a specific <a href="Nostrum.Struct.Guild.html"><code class="inline">Nostrum.Struct.Guild</code></a>.</p><h2 id="module-mentioning-members-in-messages" class="section-heading">
+  <a href="#module-mentioning-members-in-messages" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Mentioning Members in Messages
+</h2>
+<p>A <a href="#content"><code class="inline">Nostrum.Struct.Guild.Member</code></a> can be mentioned in message content using the <a href="https://hexdocs.pm/elixir/String.Chars.html"><code class="inline">String.Chars</code></a>
+protocol or <a href="#mention/1"><code class="inline">mention/1</code></a>.</p><pre><code class="Elixir">member = %Nostrum.Struct.Guild.Member{user: Nostrum.Struct.User{id: 120571255635181568}}
+Nostrum.Api.create_message!(184046599834435585, &quot;#{member}&quot;)
+%Nostrum.Struct.Message{content: &quot;&lt;@120571255635181568&gt;&quot;}
+
+member = %Nostrum.Struct.Guild.Member{user: Nostrum.Struct.User{id: 89918932789497856}}
+Nostrum.Api.create_message!(280085880452939778, &quot;#{Nostrum.Struct.Guild.Member.mention(member)}&quot;)
+%Nostrum.Struct.Message{content: &quot;&lt;@89918932789497856&gt;&quot;}</code></pre>        </section>
+
+        <section id="summary" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#summary">
+              <span class="icon-link" aria-hidden="true"></span>
+              <span class="sr-only">Link to this section</span>
+            </a>
+            Summary
+          </h1>
+  <div class="summary-types summary">
+    <h2>
+      <a href="#types">Types</a>
+    </h2>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:deaf/0">deaf()</a>
+  </div>
+    <div class="summary-synopsis"><p>Whether the user is deafened.
+If you dont request offline guild members this field will be <code class="inline">nil</code> for any members that come online.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:joined_at/0">joined_at()</a>
+  </div>
+    <div class="summary-synopsis"><p>Date the user joined the guild.
+If you dont request offline guild members this field will be <code class="inline">nil</code> for any members that come online.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:mute/0">mute()</a>
+  </div>
+    <div class="summary-synopsis"><p>Whether the user is muted.
+If you dont request offline guild members this field will be <code class="inline">nil</code> for any members that come online.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:nick/0">nick()</a>
+  </div>
+    <div class="summary-synopsis"><p>The nickname of the user</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:roles/0">roles()</a>
+  </div>
+    <div class="summary-synopsis"><p>A list of role ids</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:t/0">t()</a>
+  </div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:user/0">user()</a>
+  </div>
+    <div class="summary-synopsis"><p>The user struct. This field can be <code class="inline">nil</code> if the Member struct came as a partial Member object included
+in a message received from a guild channel.</p></div>
+</div>
+  </div>
+  <div class="summary-functions summary">
+    <h2>
+      <a href="#functions">Functions</a>
+    </h2>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#guild_channel_permissions/3">guild_channel_permissions(member, guild, channel_id)</a>
+  </div>
+    <div class="summary-synopsis"><p>Returns a member's permissions in a guild channel, based on its <a href="Nostrum.Struct.Overwrite.html"><code class="inline">Nostrum.Struct.Overwrite</code></a>s.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#guild_permissions/2">guild_permissions(member, guild)</a>
+  </div>
+    <div class="summary-synopsis"><p>Returns a member's guild permissions.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#mention/1">mention(member)</a>
+  </div>
+    <div class="summary-synopsis"><p>Formats a <a href="#content"><code class="inline">Nostrum.Struct.Guild.Member</code></a> into a mention.</p></div>
+</div>
+  </div>
+        </section>
+
+        <section id="types" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#types">
+              <span class="icon-link" aria-hidden="true"></span>
+              <span class="sr-only">Link to this section</span>
+            </a>
+Types          </h1>
+          <div class="types-list">
+<section class="detail" id="t:deaf/0">
+  <div class="detail-header">
+    <a href="#t:deaf/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">deaf()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild/member.ex#L63" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>deaf() :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">boolean</a>() | nil</pre>
+      </div>
+
+<p>Whether the user is deafened.
+If you dont request offline guild members this field will be <code class="inline">nil</code> for any members that come online.</p>  </section>
+</section>
+<section class="detail" id="t:joined_at/0">
+  <div class="detail-header">
+    <a href="#t:joined_at/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">joined_at()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild/member.ex#L57" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>joined_at() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>() | nil</pre>
+      </div>
+
+<p>Date the user joined the guild.
+If you dont request offline guild members this field will be <code class="inline">nil</code> for any members that come online.</p>  </section>
+</section>
+<section class="detail" id="t:mute/0">
+  <div class="detail-header">
+    <a href="#t:mute/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">mute()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild/member.ex#L69" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>mute() :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">boolean</a>() | nil</pre>
+      </div>
+
+<p>Whether the user is muted.
+If you dont request offline guild members this field will be <code class="inline">nil</code> for any members that come online.</p>  </section>
+</section>
+<section class="detail" id="t:nick/0">
+  <div class="detail-header">
+    <a href="#t:nick/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">nick()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild/member.ex#L48" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>nick() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>() | nil</pre>
+      </div>
+
+<p>The nickname of the user</p>  </section>
+</section>
+<section class="detail" id="t:roles/0">
+  <div class="detail-header">
+    <a href="#t:roles/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">roles()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild/member.ex#L51" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>roles() :: [<a href="Nostrum.Snowflake.html#t:t/0">Nostrum.Snowflake.t</a>()]</pre>
+      </div>
+
+<p>A list of role ids</p>  </section>
+</section>
+<section class="detail" id="t:t/0">
+  <div class="detail-header">
+    <a href="#t:t/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">t()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild/member.ex#L71" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>t() :: %Nostrum.Struct.Guild.Member{
+  deaf: <a href="#t:deaf/0">deaf</a>(),
+  joined_at: <a href="#t:joined_at/0">joined_at</a>(),
+  mute: <a href="#t:mute/0">mute</a>(),
+  nick: <a href="#t:nick/0">nick</a>(),
+  roles: <a href="#t:roles/0">roles</a>(),
+  user: <a href="#t:user/0">user</a>()
+}</pre>
+      </div>
+
+  </section>
+</section>
+<section class="detail" id="t:user/0">
+  <div class="detail-header">
+    <a href="#t:user/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">user()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild/member.ex#L45" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>user() :: <a href="Nostrum.Struct.User.html#t:t/0">Nostrum.Struct.User.t</a>() | nil</pre>
+      </div>
+
+<p>The user struct. This field can be <code class="inline">nil</code> if the Member struct came as a partial Member object included
+in a message received from a guild channel.</p>  </section>
+</section>
+          </div>
+        </section>
+        <section id="functions" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#functions">
+              <span class="icon-link" aria-hidden="true"></span>
+              <span class="sr-only">Link to this section</span>
+            </a>
+Functions          </h1>
+          <div class="functions-list">
+<section class="detail" id="guild_channel_permissions/3">
+  <div class="detail-header">
+    <a href="#guild_channel_permissions/3" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">guild_channel_permissions(member, guild, channel_id)</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild/member.ex#L149" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>guild_channel_permissions(
+  <a href="#t:t/0">t</a>(),
+  <a href="Nostrum.Struct.Guild.html#t:t/0">Nostrum.Struct.Guild.t</a>(),
+  <a href="Nostrum.Struct.Channel.html#t:id/0">Nostrum.Struct.Channel.id</a>()
+) :: [<a href="Nostrum.Permission.html#t:t/0">Nostrum.Permission.t</a>()]</pre>
+      </div>
+
+<p>Returns a member's permissions in a guild channel, based on its <a href="Nostrum.Struct.Overwrite.html"><code class="inline">Nostrum.Struct.Overwrite</code></a>s.</p><h2 id="guild_channel_permissions/3-examples" class="section-heading">
+  <a href="#guild_channel_permissions/3-examples" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Examples
+</h2>
+<pre><code class="Elixir">guild = Nostrum.Cache.GuildCache.get!(279093381723062272)
+member = Map.get(guild.members, 177888205536886784)
+channel_id = 381889573426429952
+Nostrum.Struct.Guild.Member.guild_channel_permissions(member, guild, channel_id)
+#=&gt; [:manage_messages]</code></pre>  </section>
+</section>
+<section class="detail" id="guild_permissions/2">
+  <div class="detail-header">
+    <a href="#guild_permissions/2" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">guild_permissions(member, guild)</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild/member.ex#L107" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>guild_permissions(<a href="#t:t/0">t</a>(), <a href="Nostrum.Struct.Guild.html#t:t/0">Nostrum.Struct.Guild.t</a>()) :: [<a href="Nostrum.Permission.html#t:t/0">Nostrum.Permission.t</a>()]</pre>
+      </div>
+
+<p>Returns a member's guild permissions.</p><h2 id="guild_permissions/2-examples" class="section-heading">
+  <a href="#guild_permissions/2-examples" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Examples
+</h2>
+<pre><code class="Elixir">guild = Nostrum.Cache.GuildCache.get!(279093381723062272)
+member = Map.get(guild.members, 177888205536886784)
+Nostrum.Struct.Guild.Member.guild_permissions(member, guild)
+#=&gt; [:administrator]</code></pre>  </section>
+</section>
+<section class="detail" id="mention/1">
+  <div class="detail-header">
+    <a href="#mention/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">mention(member)</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild/member.ex#L92" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>mention(<a href="#t:t/0">t</a>()) :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()</pre>
+      </div>
+
+<p>Formats a <a href="#content"><code class="inline">Nostrum.Struct.Guild.Member</code></a> into a mention.</p><h2 id="mention/1-examples" class="section-heading">
+  <a href="#mention/1-examples" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Examples
+</h2>
+<pre><code class="Elixir">iex&gt; member = %Nostrum.Struct.Guild.Member{user: %Nostrum.Struct.User{id: 177888205536886784}}
+...&gt; Nostrum.Struct.Guild.Member.mention(member)
+&quot;&lt;@177888205536886784&gt;&quot;</code></pre>  </section>
+</section>
+          </div>
+        </section>
+      <footer class="footer">
+        <p>
+          <span class="line">
+            Built using
+            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener">ExDoc</a> (v0.23.0) for the
+            <a href="https://elixir-lang.org" title="Elixir" target="_blank">Elixir programming language</a>.
+          </span>
+          <span class="line">
+            Designed by
+            <a href="https://twitter.com/dignifiedquire" target="_blank" rel="noopener" title="@dignifiedquire">Friedel Ziegelmayer</a>.
+          </span>
+        </p>
+        <p>
+            <a href="api-reference.html" title="API reference" class="line footer-button">API Reference</a>
+          <button class="line footer-button display-shortcuts-help">
+            Display keyboard shortcuts
+          </button>
+          <button class="line footer-button night-mode-toggle">
+            Toggle night mode
+          </button>
+          <button class="line footer-button display-quick-switch">
+            Go to a HexDocs package
+          </button>
+          <button class="line footer-button tooltips-toggle">
+            <span class="tooltips-option-disable">Disable tooltips</span>
+            <span class="tooltips-option-enable">Enable tooltips</span>
+          </button>
+        </p>
+      </footer>
+    </div>
+  </div>
+</section>
+</div>
+  </body>
+</html>

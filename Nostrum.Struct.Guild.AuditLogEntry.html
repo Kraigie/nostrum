@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.23.0">
+    <meta name="project" content="Nostrum v0.4.5">
+    <title>Nostrum.Struct.Guild.AuditLogEntry — Nostrum v0.4.5</title>
+    <link rel="stylesheet" href="dist/elixir-9f91ebe876dc01d67920.css" />
+    <script src="dist/sidebar_items-b2bb24de56.js"></script>
+      <script src="docs_config.js"></script>
+    <script async src="dist/app-60a0c9f10e9e52eae31f.js"></script>
+  </head>
+  <body data-type="modules">
+    <script>try { if(localStorage.getItem('night-mode') === 'true') document.body.className += ' night-mode'; } catch (e) { }</script>
+<div class="main">
+
+<button class="sidebar-button sidebar-toggle">
+  <span class="icon-menu" title="Collapse/expand sidebar"></span>
+</button>
+
+<section class="sidebar">
+  <form class="sidebar-search" action="search.html">
+    <button type="submit" class="search-button" aria-label="Submit Search">
+      <span class="icon-search" aria-hidden="true" title="Submit search"></span>
+    </button>
+    <button type="button" tabindex="-1" class="search-close-button" aria-label="Cancel Search">
+      <span class="icon-cross" aria-hidden="true" title="Cancel search"></span>
+    </button>
+    <label class="search-label">
+      <input name="q" type="text" id="search-list" class="search-input" placeholder="Search..." aria-label="Input your search terms" autocomplete="off" />
+    </label>
+  </form>
+
+  <div class="autocomplete">
+    <div class="autocomplete-results">
+    </div>
+  </div>
+
+  <div class="sidebar-header">
+    <div class="sidebar-projectDetails">
+      <a href="https://github.com/kraigie/nostrum" class="sidebar-projectName">
+Nostrum      </a>
+      <strong class="sidebar-projectVersion">
+        v0.4.5
+      </strong>
+    </div>
+  </div>
+
+  <ul class="sidebar-listNav">
+    <li><a id="extras-list" href="#full-list">Pages</a></li>
+
+      <li><a id="modules-list" href="#full-list">Modules</a></li>
+
+      <li><a id="tasks-list" href="#full-list">Mix Tasks</a></li>
+  </ul>
+  <div class="gradient"></div>
+  <ul id="full-list" class="sidebar-fullList"></ul>
+</section>
+
+<section class="content">
+  <div class="content-outer">
+    <div id="content" class="content-inner">
+
+      <h1>
+        Nostrum.Struct.Guild.AuditLogEntry <small class="app-vsn">(Nostrum v0.4.5)</small>
+          <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild/audit_log_entry.ex#L1" title="View Source" class="view-source" rel="help">
+            <span class="icon-code" aria-hidden="true"></span>
+            <span class="sr-only">View Source</span>
+          </a>
+      </h1>
+
+
+        <section id="moduledoc">
+<p>Represents a single entry in the guild's audit log.</p>        </section>
+
+        <section id="summary" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#summary">
+              <span class="icon-link" aria-hidden="true"></span>
+              <span class="sr-only">Link to this section</span>
+            </a>
+            Summary
+          </h1>
+  <div class="summary-types summary">
+    <h2>
+      <a href="#types">Types</a>
+    </h2>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:action_type/0">action_type()</a>
+  </div>
+    <div class="summary-synopsis"><p>An audit log event identifier. See <a href="https://discord.com/developers/docs/resources/audit-log#audit-log-entry-object-audit-log-events">Audit log events</a></p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:changes/0">changes()</a>
+  </div>
+    <div class="summary-synopsis"><p>Individual changes of this audit log entry.
+Change keys are documented <a href="https://discord.com/developers/docs/resources/audit-log#audit-log-change-object-audit-log-change-key">here</a></p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:id/0">id()</a>
+  </div>
+    <div class="summary-synopsis"><p>The ID of this entry</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:options/0">options()</a>
+  </div>
+    <div class="summary-synopsis"><p><a href="https://discord.com/developers/docs/resources/audit-log#audit-log-entry-object-optional-audit-entry-info">Optional audit entry info</a></p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:reason/0">reason()</a>
+  </div>
+    <div class="summary-synopsis"><p>The reason for this change, if applicable</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:t/0">t()</a>
+  </div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:target_id/0">target_id()</a>
+  </div>
+    <div class="summary-synopsis"><p>The ID of the affected entity</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:user_id/0">user_id()</a>
+  </div>
+    <div class="summary-synopsis"><p>The user who made the changes</p></div>
+</div>
+  </div>
+        </section>
+
+        <section id="types" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#types">
+              <span class="icon-link" aria-hidden="true"></span>
+              <span class="sr-only">Link to this section</span>
+            </a>
+Types          </h1>
+          <div class="types-list">
+<section class="detail" id="t:action_type/0">
+  <div class="detail-header">
+    <a href="#t:action_type/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">action_type()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild/audit_log_entry.ex#L23" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>action_type() :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pos_integer</a>()</pre>
+      </div>
+
+<p>An audit log event identifier. See <a href="https://discord.com/developers/docs/resources/audit-log#audit-log-entry-object-audit-log-events">Audit log events</a></p>  </section>
+</section>
+<section class="detail" id="t:changes/0">
+  <div class="detail-header">
+    <a href="#t:changes/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">changes()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild/audit_log_entry.ex#L31" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>changes() ::
+  [
+    %{
+      optional(:old_value) =&gt; change_value(),
+      optional(:new_value) =&gt; change_value(),
+      :key =&gt; <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()
+    }
+  ]
+  | nil</pre>
+      </div>
+
+<p>Individual changes of this audit log entry.
+Change keys are documented <a href="https://discord.com/developers/docs/resources/audit-log#audit-log-change-object-audit-log-change-key">here</a></p>  </section>
+</section>
+<section class="detail" id="t:id/0">
+  <div class="detail-header">
+    <a href="#t:id/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">id()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild/audit_log_entry.ex#L42" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>id() :: <a href="Nostrum.Snowflake.html#t:t/0">Nostrum.Snowflake.t</a>()</pre>
+      </div>
+
+<p>The ID of this entry</p>  </section>
+</section>
+<section class="detail" id="t:options/0">
+  <div class="detail-header">
+    <a href="#t:options/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">options()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild/audit_log_entry.ex#L47" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>options() :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>() | nil</pre>
+      </div>
+
+<p><a href="https://discord.com/developers/docs/resources/audit-log#audit-log-entry-object-optional-audit-entry-info">Optional audit entry info</a></p>  </section>
+</section>
+<section class="detail" id="t:reason/0">
+  <div class="detail-header">
+    <a href="#t:reason/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">reason()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild/audit_log_entry.ex#L50" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>reason() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>() | nil</pre>
+      </div>
+
+<p>The reason for this change, if applicable</p>  </section>
+</section>
+<section class="detail" id="t:t/0">
+  <div class="detail-header">
+    <a href="#t:t/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">t()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild/audit_log_entry.ex#L58" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>t() :: %Nostrum.Struct.Guild.AuditLogEntry{
+  action_type: <a href="#t:action_type/0">action_type</a>(),
+  changes: <a href="#t:changes/0">changes</a>(),
+  id: <a href="#t:id/0">id</a>(),
+  options: <a href="#t:options/0">options</a>(),
+  reason: <a href="#t:reason/0">reason</a>(),
+  target_id: <a href="#t:target_id/0">target_id</a>(),
+  user_id: <a href="#t:user_id/0">user_id</a>()
+}</pre>
+      </div>
+
+  </section>
+</section>
+<section class="detail" id="t:target_id/0">
+  <div class="detail-header">
+    <a href="#t:target_id/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">target_id()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild/audit_log_entry.ex#L53" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>target_id() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>() | nil</pre>
+      </div>
+
+<p>The ID of the affected entity</p>  </section>
+</section>
+<section class="detail" id="t:user_id/0">
+  <div class="detail-header">
+    <a href="#t:user_id/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">user_id()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild/audit_log_entry.ex#L56" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>user_id() :: <a href="Nostrum.Struct.User.html#t:id/0">Nostrum.Struct.User.id</a>()</pre>
+      </div>
+
+<p>The user who made the changes</p>  </section>
+</section>
+          </div>
+        </section>
+      <footer class="footer">
+        <p>
+          <span class="line">
+            Built using
+            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener">ExDoc</a> (v0.23.0) for the
+            <a href="https://elixir-lang.org" title="Elixir" target="_blank">Elixir programming language</a>.
+          </span>
+          <span class="line">
+            Designed by
+            <a href="https://twitter.com/dignifiedquire" target="_blank" rel="noopener" title="@dignifiedquire">Friedel Ziegelmayer</a>.
+          </span>
+        </p>
+        <p>
+            <a href="api-reference.html" title="API reference" class="line footer-button">API Reference</a>
+          <button class="line footer-button display-shortcuts-help">
+            Display keyboard shortcuts
+          </button>
+          <button class="line footer-button night-mode-toggle">
+            Toggle night mode
+          </button>
+          <button class="line footer-button display-quick-switch">
+            Go to a HexDocs package
+          </button>
+          <button class="line footer-button tooltips-toggle">
+            <span class="tooltips-option-disable">Disable tooltips</span>
+            <span class="tooltips-option-enable">Enable tooltips</span>
+          </button>
+        </p>
+      </footer>
+    </div>
+  </div>
+</section>
+</div>
+  </body>
+</html>

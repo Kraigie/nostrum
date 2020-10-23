@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.23.0">
+    <meta name="project" content="Nostrum v0.4.5">
+    <title>Nostrum.Struct.Message — Nostrum v0.4.5</title>
+    <link rel="stylesheet" href="dist/elixir-9f91ebe876dc01d67920.css" />
+    <script src="dist/sidebar_items-b2bb24de56.js"></script>
+      <script src="docs_config.js"></script>
+    <script async src="dist/app-60a0c9f10e9e52eae31f.js"></script>
+  </head>
+  <body data-type="modules">
+    <script>try { if(localStorage.getItem('night-mode') === 'true') document.body.className += ' night-mode'; } catch (e) { }</script>
+<div class="main">
+
+<button class="sidebar-button sidebar-toggle">
+  <span class="icon-menu" title="Collapse/expand sidebar"></span>
+</button>
+
+<section class="sidebar">
+  <form class="sidebar-search" action="search.html">
+    <button type="submit" class="search-button" aria-label="Submit Search">
+      <span class="icon-search" aria-hidden="true" title="Submit search"></span>
+    </button>
+    <button type="button" tabindex="-1" class="search-close-button" aria-label="Cancel Search">
+      <span class="icon-cross" aria-hidden="true" title="Cancel search"></span>
+    </button>
+    <label class="search-label">
+      <input name="q" type="text" id="search-list" class="search-input" placeholder="Search..." aria-label="Input your search terms" autocomplete="off" />
+    </label>
+  </form>
+
+  <div class="autocomplete">
+    <div class="autocomplete-results">
+    </div>
+  </div>
+
+  <div class="sidebar-header">
+    <div class="sidebar-projectDetails">
+      <a href="https://github.com/kraigie/nostrum" class="sidebar-projectName">
+Nostrum      </a>
+      <strong class="sidebar-projectVersion">
+        v0.4.5
+      </strong>
+    </div>
+  </div>
+
+  <ul class="sidebar-listNav">
+    <li><a id="extras-list" href="#full-list">Pages</a></li>
+
+      <li><a id="modules-list" href="#full-list">Modules</a></li>
+
+      <li><a id="tasks-list" href="#full-list">Mix Tasks</a></li>
+  </ul>
+  <div class="gradient"></div>
+  <ul id="full-list" class="sidebar-fullList"></ul>
+</section>
+
+<section class="content">
+  <div class="content-outer">
+    <div id="content" class="content-inner">
+
+      <h1>
+        Nostrum.Struct.Message <small class="app-vsn">(Nostrum v0.4.5)</small>
+          <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/message.ex#L1" title="View Source" class="view-source" rel="help">
+            <span class="icon-code" aria-hidden="true"></span>
+            <span class="sr-only">View Source</span>
+          </a>
+      </h1>
+
+
+        <section id="moduledoc">
+<p>Struct representing a Discord message.</p>        </section>
+
+        <section id="summary" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#summary">
+              <span class="icon-link" aria-hidden="true"></span>
+              <span class="sr-only">Link to this section</span>
+            </a>
+            Summary
+          </h1>
+  <div class="summary-types summary">
+    <h2>
+      <a href="#types">Types</a>
+    </h2>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:activity/0">activity()</a>
+  </div>
+    <div class="summary-synopsis"><p>The activity of the message. Sent with Rich Presence-related chat embeds.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:application/0">application()</a>
+  </div>
+    <div class="summary-synopsis"><p>The application of the message. Sent with Rich Presence-related chat embeds.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:attachments/0">attachments()</a>
+  </div>
+    <div class="summary-synopsis"><p>List of attached files in the message</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:author/0">author()</a>
+  </div>
+    <div class="summary-synopsis"><p>The user struct of the author</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:channel_id/0">channel_id()</a>
+  </div>
+    <div class="summary-synopsis"><p>The id of the channel</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:content/0">content()</a>
+  </div>
+    <div class="summary-synopsis"><p>The content of the message</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:edited_timestamp/0">edited_timestamp()</a>
+  </div>
+    <div class="summary-synopsis"><p>When the message was edited</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:embeds/0">embeds()</a>
+  </div>
+    <div class="summary-synopsis"><p>List of embedded content in the message</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:guild_id/0">guild_id()</a>
+  </div>
+    <div class="summary-synopsis"><p>The id of the guild</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:id/0">id()</a>
+  </div>
+    <div class="summary-synopsis"><p>The id of the message</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:member/0">member()</a>
+  </div>
+    <div class="summary-synopsis"><p>Partial Guild Member object received with the Message Create event if message came from a guild channel.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:mention_everyone/0">mention_everyone()</a>
+  </div>
+    <div class="summary-synopsis"><p>Whether this messsage mentions everyone</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:mention_roles/0">mention_roles()</a>
+  </div>
+    <div class="summary-synopsis"><p>List of roles ids mentioned in the message</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:mentions/0">mentions()</a>
+  </div>
+    <div class="summary-synopsis"><p>List of users mentioned in the message</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:nonce/0">nonce()</a>
+  </div>
+    <div class="summary-synopsis"><p>Validates if a message was sent</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:pinned/0">pinned()</a>
+  </div>
+    <div class="summary-synopsis"><p>Whether this message is pinned</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:reactions/0">reactions()</a>
+  </div>
+    <div class="summary-synopsis"><p>Reactions to the message.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:t/0">t()</a>
+  </div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:timestamp/0">timestamp()</a>
+  </div>
+    <div class="summary-synopsis"><p>When the message was sent</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:tts/0">tts()</a>
+  </div>
+    <div class="summary-synopsis"><p>Whether this was a TTS message</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:type/0">type()</a>
+  </div>
+    <div class="summary-synopsis"><p><a href="https://discord.com/developers/docs/resources/channel#message-object-message-types">Type of message</a>.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:webhook_id/0">webhook_id()</a>
+  </div>
+    <div class="summary-synopsis"><p>If the message is generated by a webhook, this is the webhook's id.</p></div>
+</div>
+  </div>
+        </section>
+
+        <section id="types" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#types">
+              <span class="icon-link" aria-hidden="true"></span>
+              <span class="sr-only">Link to this section</span>
+            </a>
+Types          </h1>
+          <div class="types-list">
+<section class="detail" id="t:activity/0">
+  <div class="detail-header">
+    <a href="#t:activity/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">activity()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/message.ex#L98" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>activity() :: <a href="Nostrum.Struct.Message.Activity.html#t:t/0">Nostrum.Struct.Message.Activity.t</a>() | nil</pre>
+      </div>
+
+<p>The activity of the message. Sent with Rich Presence-related chat embeds.</p>  </section>
+</section>
+<section class="detail" id="t:application/0">
+  <div class="detail-header">
+    <a href="#t:application/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">application()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/message.ex#L103" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>application() :: <a href="Nostrum.Struct.Message.Application.html#t:t/0">Nostrum.Struct.Message.Application.t</a>() | nil</pre>
+      </div>
+
+<p>The application of the message. Sent with Rich Presence-related chat embeds.</p>  </section>
+</section>
+<section class="detail" id="t:attachments/0">
+  <div class="detail-header">
+    <a href="#t:attachments/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">attachments()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/message.ex#L69" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>attachments() :: [<a href="Nostrum.Struct.Message.Attachment.html#t:t/0">Nostrum.Struct.Message.Attachment.t</a>()]</pre>
+      </div>
+
+<p>List of attached files in the message</p>  </section>
+</section>
+<section class="detail" id="t:author/0">
+  <div class="detail-header">
+    <a href="#t:author/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">author()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/message.ex#L45" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>author() :: <a href="Nostrum.Struct.User.html#t:t/0">Nostrum.Struct.User.t</a>()</pre>
+      </div>
+
+<p>The user struct of the author</p>  </section>
+</section>
+<section class="detail" id="t:channel_id/0">
+  <div class="detail-header">
+    <a href="#t:channel_id/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">channel_id()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/message.ex#L42" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>channel_id() :: <a href="Nostrum.Snowflake.html#t:t/0">Nostrum.Snowflake.t</a>()</pre>
+      </div>
+
+<p>The id of the channel</p>  </section>
+</section>
+<section class="detail" id="t:content/0">
+  <div class="detail-header">
+    <a href="#t:content/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">content()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/message.ex#L48" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>content() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()</pre>
+      </div>
+
+<p>The content of the message</p>  </section>
+</section>
+<section class="detail" id="t:edited_timestamp/0">
+  <div class="detail-header">
+    <a href="#t:edited_timestamp/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">edited_timestamp()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/message.ex#L54" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>edited_timestamp() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>() | nil</pre>
+      </div>
+
+<p>When the message was edited</p>  </section>
+</section>
+<section class="detail" id="t:embeds/0">
+  <div class="detail-header">
+    <a href="#t:embeds/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">embeds()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/message.ex#L72" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>embeds() :: [<a href="Nostrum.Struct.Embed.html#t:t/0">Nostrum.Struct.Embed.t</a>()]</pre>
+      </div>
+
+<p>List of embedded content in the message</p>  </section>
+</section>
+<section class="detail" id="t:guild_id/0">
+  <div class="detail-header">
+    <a href="#t:guild_id/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">guild_id()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/message.ex#L39" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>guild_id() :: <a href="Nostrum.Snowflake.html#t:t/0">Nostrum.Snowflake.t</a>() | nil</pre>
+      </div>
+
+<p>The id of the guild</p>  </section>
+</section>
+<section class="detail" id="t:id/0">
+  <div class="detail-header">
+    <a href="#t:id/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">id()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/message.ex#L36" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>id() :: <a href="Nostrum.Snowflake.html#t:t/0">Nostrum.Snowflake.t</a>()</pre>
+      </div>
+
+<p>The id of the message</p>  </section>
+</section>
+<section class="detail" id="t:member/0">
+  <div class="detail-header">
+    <a href="#t:member/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">member()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/message.ex#L108" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>member() :: <a href="Nostrum.Struct.Guild.Member.html#t:t/0">Nostrum.Struct.Guild.Member.t</a>() | nil</pre>
+      </div>
+
+<p>Partial Guild Member object received with the Message Create event if message came from a guild channel.</p>  </section>
+</section>
+<section class="detail" id="t:mention_everyone/0">
+  <div class="detail-header">
+    <a href="#t:mention_everyone/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">mention_everyone()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/message.ex#L60" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>mention_everyone() :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">boolean</a>()</pre>
+      </div>
+
+<p>Whether this messsage mentions everyone</p>  </section>
+</section>
+<section class="detail" id="t:mention_roles/0">
+  <div class="detail-header">
+    <a href="#t:mention_roles/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">mention_roles()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/message.ex#L66" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>mention_roles() :: [<a href="Nostrum.Snowflake.html#t:t/0">Nostrum.Snowflake.t</a>()]</pre>
+      </div>
+
+<p>List of roles ids mentioned in the message</p>  </section>
+</section>
+<section class="detail" id="t:mentions/0">
+  <div class="detail-header">
+    <a href="#t:mentions/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">mentions()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/message.ex#L63" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>mentions() :: [<a href="Nostrum.Struct.User.html#t:t/0">Nostrum.Struct.User.t</a>()]</pre>
+      </div>
+
+<p>List of users mentioned in the message</p>  </section>
+</section>
+<section class="detail" id="t:nonce/0">
+  <div class="detail-header">
+    <a href="#t:nonce/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">nonce()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/message.ex#L80" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>nonce() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>() | nil</pre>
+      </div>
+
+<p>Validates if a message was sent</p>  </section>
+</section>
+<section class="detail" id="t:pinned/0">
+  <div class="detail-header">
+    <a href="#t:pinned/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">pinned()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/message.ex#L83" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>pinned() :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">boolean</a>()</pre>
+      </div>
+
+<p>Whether this message is pinned</p>  </section>
+</section>
+<section class="detail" id="t:reactions/0">
+  <div class="detail-header">
+    <a href="#t:reactions/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">reactions()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/message.ex#L77" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>reactions() :: [<a href="Nostrum.Struct.Message.Reaction.html#t:t/0">Nostrum.Struct.Message.Reaction.t</a>()] | nil</pre>
+      </div>
+
+<p>Reactions to the message.</p>  </section>
+</section>
+<section class="detail" id="t:t/0">
+  <div class="detail-header">
+    <a href="#t:t/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">t()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/message.ex#L110" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>t() :: %Nostrum.Struct.Message{
+  activity: <a href="#t:activity/0">activity</a>(),
+  application: <a href="#t:application/0">application</a>(),
+  attachments: <a href="#t:attachments/0">attachments</a>(),
+  author: <a href="#t:author/0">author</a>(),
+  channel_id: <a href="#t:channel_id/0">channel_id</a>(),
+  content: <a href="#t:content/0">content</a>(),
+  edited_timestamp: <a href="#t:edited_timestamp/0">edited_timestamp</a>(),
+  embeds: <a href="#t:embeds/0">embeds</a>(),
+  guild_id: <a href="#t:guild_id/0">guild_id</a>(),
+  id: <a href="#t:id/0">id</a>(),
+  member: <a href="#t:member/0">member</a>(),
+  mention_everyone: <a href="#t:mention_everyone/0">mention_everyone</a>(),
+  mention_roles: <a href="#t:mention_roles/0">mention_roles</a>(),
+  mentions: <a href="#t:mentions/0">mentions</a>(),
+  nonce: <a href="#t:nonce/0">nonce</a>(),
+  pinned: <a href="#t:pinned/0">pinned</a>(),
+  reactions: <a href="#t:reactions/0">reactions</a>(),
+  timestamp: <a href="#t:timestamp/0">timestamp</a>(),
+  tts: <a href="#t:tts/0">tts</a>(),
+  type: <a href="#t:type/0">type</a>(),
+  webhook_id: <a href="#t:webhook_id/0">webhook_id</a>()
+}</pre>
+      </div>
+
+  </section>
+</section>
+<section class="detail" id="t:timestamp/0">
+  <div class="detail-header">
+    <a href="#t:timestamp/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">timestamp()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/message.ex#L51" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>timestamp() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()</pre>
+      </div>
+
+<p>When the message was sent</p>  </section>
+</section>
+<section class="detail" id="t:tts/0">
+  <div class="detail-header">
+    <a href="#t:tts/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">tts()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/message.ex#L57" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>tts() :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">boolean</a>()</pre>
+      </div>
+
+<p>Whether this was a TTS message</p>  </section>
+</section>
+<section class="detail" id="t:type/0">
+  <div class="detail-header">
+    <a href="#t:type/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">type()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/message.ex#L93" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>type() :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>()</pre>
+      </div>
+
+<p><a href="https://discord.com/developers/docs/resources/channel#message-object-message-types">Type of message</a>.</p>  </section>
+</section>
+<section class="detail" id="t:webhook_id/0">
+  <div class="detail-header">
+    <a href="#t:webhook_id/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">webhook_id()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/message.ex#L88" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>webhook_id() :: <a href="Nostrum.Snowflake.html#t:t/0">Nostrum.Snowflake.t</a>() | nil</pre>
+      </div>
+
+<p>If the message is generated by a webhook, this is the webhook's id.</p>  </section>
+</section>
+          </div>
+        </section>
+      <footer class="footer">
+        <p>
+          <span class="line">
+            Built using
+            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener">ExDoc</a> (v0.23.0) for the
+            <a href="https://elixir-lang.org" title="Elixir" target="_blank">Elixir programming language</a>.
+          </span>
+          <span class="line">
+            Designed by
+            <a href="https://twitter.com/dignifiedquire" target="_blank" rel="noopener" title="@dignifiedquire">Friedel Ziegelmayer</a>.
+          </span>
+        </p>
+        <p>
+            <a href="api-reference.html" title="API reference" class="line footer-button">API Reference</a>
+          <button class="line footer-button display-shortcuts-help">
+            Display keyboard shortcuts
+          </button>
+          <button class="line footer-button night-mode-toggle">
+            Toggle night mode
+          </button>
+          <button class="line footer-button display-quick-switch">
+            Go to a HexDocs package
+          </button>
+          <button class="line footer-button tooltips-toggle">
+            <span class="tooltips-option-disable">Disable tooltips</span>
+            <span class="tooltips-option-enable">Enable tooltips</span>
+          </button>
+        </p>
+      </footer>
+    </div>
+  </div>
+</section>
+</div>
+  </body>
+</html>

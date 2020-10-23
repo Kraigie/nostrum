@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.23.0">
+    <meta name="project" content="Nostrum v0.4.5">
+    <title>Nostrum.Util — Nostrum v0.4.5</title>
+    <link rel="stylesheet" href="dist/elixir-9f91ebe876dc01d67920.css" />
+    <script src="dist/sidebar_items-b2bb24de56.js"></script>
+      <script src="docs_config.js"></script>
+    <script async src="dist/app-60a0c9f10e9e52eae31f.js"></script>
+  </head>
+  <body data-type="modules">
+    <script>try { if(localStorage.getItem('night-mode') === 'true') document.body.className += ' night-mode'; } catch (e) { }</script>
+<div class="main">
+
+<button class="sidebar-button sidebar-toggle">
+  <span class="icon-menu" title="Collapse/expand sidebar"></span>
+</button>
+
+<section class="sidebar">
+  <form class="sidebar-search" action="search.html">
+    <button type="submit" class="search-button" aria-label="Submit Search">
+      <span class="icon-search" aria-hidden="true" title="Submit search"></span>
+    </button>
+    <button type="button" tabindex="-1" class="search-close-button" aria-label="Cancel Search">
+      <span class="icon-cross" aria-hidden="true" title="Cancel search"></span>
+    </button>
+    <label class="search-label">
+      <input name="q" type="text" id="search-list" class="search-input" placeholder="Search..." aria-label="Input your search terms" autocomplete="off" />
+    </label>
+  </form>
+
+  <div class="autocomplete">
+    <div class="autocomplete-results">
+    </div>
+  </div>
+
+  <div class="sidebar-header">
+    <div class="sidebar-projectDetails">
+      <a href="https://github.com/kraigie/nostrum" class="sidebar-projectName">
+Nostrum      </a>
+      <strong class="sidebar-projectVersion">
+        v0.4.5
+      </strong>
+    </div>
+  </div>
+
+  <ul class="sidebar-listNav">
+    <li><a id="extras-list" href="#full-list">Pages</a></li>
+
+      <li><a id="modules-list" href="#full-list">Modules</a></li>
+
+      <li><a id="tasks-list" href="#full-list">Mix Tasks</a></li>
+  </ul>
+  <div class="gradient"></div>
+  <ul id="full-list" class="sidebar-fullList"></ul>
+</section>
+
+<section class="content">
+  <div class="content-outer">
+    <div id="content" class="content-inner">
+
+      <h1>
+        Nostrum.Util <small class="app-vsn">(Nostrum v0.4.5)</small>
+          <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/util.ex#L1" title="View Source" class="view-source" rel="help">
+            <span class="icon-code" aria-hidden="true"></span>
+            <span class="sr-only">View Source</span>
+          </a>
+      </h1>
+
+
+        <section id="moduledoc">
+<p>Utility functions</p>        </section>
+
+        <section id="summary" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#summary">
+              <span class="icon-link" aria-hidden="true"></span>
+              <span class="sr-only">Link to this section</span>
+            </a>
+            Summary
+          </h1>
+  <div class="summary-functions summary">
+    <h2>
+      <a href="#functions">Functions</a>
+    </h2>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#enum_to_struct/2">enum_to_struct(enum, struct)</a>
+  </div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#gateway/0">gateway()</a>
+  </div>
+    <div class="summary-synopsis"><p>Returns the gateway url and shard count for current websocket connections.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#maybe_to_atom/1">maybe_to_atom(token)</a>
+  </div>
+    <div class="summary-synopsis"><p>Attempts to convert a string to an atom.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#nostrum_struct/1">nostrum_struct(body)</a>
+  </div>
+    <div class="summary-synopsis"><p>Helper for defining all the methods used for struct and encoding transformations.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#now/0">now()</a>
+  </div>
+    <div class="summary-synopsis"><p>Returns the number of milliseconds since unix epoch.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#now_iso/0">now_iso()</a>
+  </div>
+    <div class="summary-synopsis"><p>Returns the current date as an ISO formatted string.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#num_shards/0">num_shards()</a>
+  </div>
+    <div class="summary-synopsis"><p>Returns the number of shards.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#safe_atom_map/1">safe_atom_map(term)</a>
+  </div>
+    <div class="summary-synopsis"><p>Converts a map into an atom-keyed map.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#unused_atoms/0">unused_atoms()</a>
+  </div>
+    <div class="summary-synopsis"><p>Since we're being sacrilegious and converting strings to atoms from the WS, there will be some
+atoms that we see that aren't defined in any Discord structs. This method mainly serves as a
+means to define those atoms once so the user isn't warned about them in the
+<a href="#maybe_to_atom/1"><code class="inline">Nostrum.Util.maybe_to_atom/1</code></a> function when they are in fact harmless.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#usec_now/0">usec_now()</a>
+  </div>
+    <div class="summary-synopsis"><p>Returns the number of microseconds since unix epoch.</p></div>
+</div>
+  </div>
+        </section>
+
+        <section id="functions" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#functions">
+              <span class="icon-link" aria-hidden="true"></span>
+              <span class="sr-only">Link to this section</span>
+            </a>
+Functions          </h1>
+          <div class="functions-list">
+<section class="detail" id="enum_to_struct/2">
+  <div class="detail-header">
+    <a href="#enum_to_struct/2" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">enum_to_struct(enum, struct)</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/util.ex#L89" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+
+  </section>
+</section>
+<section class="detail" id="gateway/0">
+  <div class="detail-header">
+    <a href="#gateway/0" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">gateway()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/util.ex#L135" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>gateway() :: {<a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>()}</pre>
+      </div>
+
+<p>Returns the gateway url and shard count for current websocket connections.</p><p>If by chance no gateway connection has been made, will fetch the url to use and store it
+for future use.</p>  </section>
+</section>
+<section class="detail" id="maybe_to_atom/1">
+  <div class="detail-header">
+    <a href="#maybe_to_atom/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">maybe_to_atom(token)</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/util.ex#L191" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>maybe_to_atom(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">atom</a>() | <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">atom</a>()</pre>
+      </div>
+
+<p>Attempts to convert a string to an atom.</p><p>If atom does not currently exist, will warn that we're doing an unsafe conversion.</p>  </section>
+</section>
+<section class="detail" id="nostrum_struct/1">
+  <div class="detail-header">
+    <a href="#nostrum_struct/1" class="detail-link" title="Link to this macro">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this macro</span>
+    </a>
+    <h1 class="signature">nostrum_struct(body)</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/util.ex#L23" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+      <span class="note">(macro)</span>
+  </div>
+
+  <section class="docstring">
+
+<p>Helper for defining all the methods used for struct and encoding transformations.</p><h2 id="nostrum_struct/1-example" class="section-heading">
+  <a href="#nostrum_struct/1-example" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Example
+</h2>
+<pre><code class="Elixir">Nostrum.Util.nostrum_struct(%{
+  author: User,
+  mentions: [User],
+  mention_roles: [User],
+  embeds: [Embed]
+})</code></pre>  </section>
+</section>
+<section class="detail" id="now/0">
+  <div class="detail-header">
+    <a href="#now/0" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">now()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/util.ex#L61" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>now() :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>()</pre>
+      </div>
+
+<p>Returns the number of milliseconds since unix epoch.</p>  </section>
+</section>
+<section class="detail" id="now_iso/0">
+  <div class="detail-header">
+    <a href="#now_iso/0" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">now_iso()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/util.ex#L79" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>now_iso() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()</pre>
+      </div>
+
+<p>Returns the current date as an ISO formatted string.</p>  </section>
+</section>
+<section class="detail" id="num_shards/0">
+  <div class="detail-header">
+    <a href="#num_shards/0" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">num_shards()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/util.ex#L105" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>num_shards() :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>()</pre>
+      </div>
+
+<p>Returns the number of shards.</p><p>This is not the number of currently active shards, but the number of shards specified
+in your config.</p>  </section>
+</section>
+<section class="detail" id="safe_atom_map/1">
+  <div class="detail-header">
+    <a href="#safe_atom_map/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">safe_atom_map(term)</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/util.ex#L172" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>safe_atom_map(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()</pre>
+      </div>
+
+<p>Converts a map into an atom-keyed map.</p><p>Given a map with variable type keys, returns the same map with all keys as <code class="inline">atoms</code>.</p><p>This function will attempt to convert keys to an existing atom, and if that fails will default to
+creating a new atom while displaying a warning. The idea here is that we should be able to see
+if any results from Discord are giving variable keys. Since we <em>will</em> define all
+types of objects returned by Discord, the amount of new atoms created <em>SHOULD</em> be 0. 👀</p>  </section>
+</section>
+<section class="detail" id="unused_atoms/0">
+  <div class="detail-header">
+    <a href="#unused_atoms/0" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">unused_atoms()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/util.ex#L249" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+
+<p>Since we're being sacrilegious and converting strings to atoms from the WS, there will be some
+atoms that we see that aren't defined in any Discord structs. This method mainly serves as a
+means to define those atoms once so the user isn't warned about them in the
+<a href="#maybe_to_atom/1"><code class="inline">Nostrum.Util.maybe_to_atom/1</code></a> function when they are in fact harmless.</p>  </section>
+</section>
+<section class="detail" id="usec_now/0">
+  <div class="detail-header">
+    <a href="#usec_now/0" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">usec_now()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/util.ex#L70" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>usec_now() :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>()</pre>
+      </div>
+
+<p>Returns the number of microseconds since unix epoch.</p>  </section>
+</section>
+          </div>
+        </section>
+      <footer class="footer">
+        <p>
+          <span class="line">
+            Built using
+            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener">ExDoc</a> (v0.23.0) for the
+            <a href="https://elixir-lang.org" title="Elixir" target="_blank">Elixir programming language</a>.
+          </span>
+          <span class="line">
+            Designed by
+            <a href="https://twitter.com/dignifiedquire" target="_blank" rel="noopener" title="@dignifiedquire">Friedel Ziegelmayer</a>.
+          </span>
+        </p>
+        <p>
+            <a href="api-reference.html" title="API reference" class="line footer-button">API Reference</a>
+          <button class="line footer-button display-shortcuts-help">
+            Display keyboard shortcuts
+          </button>
+          <button class="line footer-button night-mode-toggle">
+            Toggle night mode
+          </button>
+          <button class="line footer-button display-quick-switch">
+            Go to a HexDocs package
+          </button>
+          <button class="line footer-button tooltips-toggle">
+            <span class="tooltips-option-disable">Disable tooltips</span>
+            <span class="tooltips-option-enable">Enable tooltips</span>
+          </button>
+        </p>
+      </footer>
+    </div>
+  </div>
+</section>
+</div>
+  </body>
+</html>

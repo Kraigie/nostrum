@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.23.0">
+    <meta name="project" content="Nostrum v0.4.5">
+    <title>Nostrum.Voice — Nostrum v0.4.5</title>
+    <link rel="stylesheet" href="dist/elixir-9f91ebe876dc01d67920.css" />
+    <script src="dist/sidebar_items-b2bb24de56.js"></script>
+      <script src="docs_config.js"></script>
+    <script async src="dist/app-60a0c9f10e9e52eae31f.js"></script>
+  </head>
+  <body data-type="modules">
+    <script>try { if(localStorage.getItem('night-mode') === 'true') document.body.className += ' night-mode'; } catch (e) { }</script>
+<div class="main">
+
+<button class="sidebar-button sidebar-toggle">
+  <span class="icon-menu" title="Collapse/expand sidebar"></span>
+</button>
+
+<section class="sidebar">
+  <form class="sidebar-search" action="search.html">
+    <button type="submit" class="search-button" aria-label="Submit Search">
+      <span class="icon-search" aria-hidden="true" title="Submit search"></span>
+    </button>
+    <button type="button" tabindex="-1" class="search-close-button" aria-label="Cancel Search">
+      <span class="icon-cross" aria-hidden="true" title="Cancel search"></span>
+    </button>
+    <label class="search-label">
+      <input name="q" type="text" id="search-list" class="search-input" placeholder="Search..." aria-label="Input your search terms" autocomplete="off" />
+    </label>
+  </form>
+
+  <div class="autocomplete">
+    <div class="autocomplete-results">
+    </div>
+  </div>
+
+  <div class="sidebar-header">
+    <div class="sidebar-projectDetails">
+      <a href="https://github.com/kraigie/nostrum" class="sidebar-projectName">
+Nostrum      </a>
+      <strong class="sidebar-projectVersion">
+        v0.4.5
+      </strong>
+    </div>
+  </div>
+
+  <ul class="sidebar-listNav">
+    <li><a id="extras-list" href="#full-list">Pages</a></li>
+
+      <li><a id="modules-list" href="#full-list">Modules</a></li>
+
+      <li><a id="tasks-list" href="#full-list">Mix Tasks</a></li>
+  </ul>
+  <div class="gradient"></div>
+  <ul id="full-list" class="sidebar-fullList"></ul>
+</section>
+
+<section class="content">
+  <div class="content-outer">
+    <div id="content" class="content-inner">
+
+      <h1>
+        Nostrum.Voice <small class="app-vsn">(Nostrum v0.4.5)</small>
+          <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L1" title="View Source" class="view-source" rel="help">
+            <span class="icon-code" aria-hidden="true"></span>
+            <span class="sr-only">View Source</span>
+          </a>
+      </h1>
+
+
+        <section id="moduledoc">
+<p>Interface for playing audio through Discord's voice channels.</p><h1>Using Discord Voice Channels</h1><p>To play sound in Discord with Nostrum, you'll need <code class="inline">ffmpeg</code> to be installed.
+If you don't have the executable <code class="inline">ffmpeg</code> in the path, the absolute path may
+be configured through config keys <code class="inline">:nostrum, :ffmpeg</code>.</p><p>A bot may be connected to at most one voice channel per guild. For this reason,
+most of the functions in this module take a guild id, and the resulting action
+will be performed in the given guild's voice channel that the bot is connected to.</p><p>The primary Discord gateway responsible for all text based communication relies on
+one websocket connection per shard, where small bots typically only have one shard.
+The Discord voice gateways work by establishing a websocket connection per guild/channel.
+After some handshaking on this connection, audio data can be sent over UDP/RTP. Behind
+the scenes the voice websocket connections are implemented nearly the same way the main
+shard websocket connections are, and require no developer intervention.</p>        </section>
+
+        <section id="summary" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#summary">
+              <span class="icon-link" aria-hidden="true"></span>
+              <span class="sr-only">Link to this section</span>
+            </a>
+            Summary
+          </h1>
+  <div class="summary-functions summary">
+    <h2>
+      <a href="#functions">Functions</a>
+    </h2>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#child_spec/1">child_spec(init_arg)</a>
+  </div>
+    <div class="summary-synopsis"><p>Returns a specification to start this module under a supervisor.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#get_channel_id/1">get_channel_id(guild_id)</a>
+  </div>
+    <div class="summary-synopsis"><p>Gets the id of the voice channel that the bot is connected to.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#join_channel/4">join_channel(guild_id, channel_id, self_mute \\ false, self_deaf \\ false)</a>
+  </div>
+    <div class="summary-synopsis"><p>Joins or moves the bot to a voice channel.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#leave_channel/1">leave_channel(guild_id)</a>
+  </div>
+    <div class="summary-synopsis"><p>Leaves the voice channel of the given guild id.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#pause/1">pause(guild_id)</a>
+  </div>
+    <div class="summary-synopsis"><p>Pauses the current sound being played in a voice channel.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#play/3">play(guild_id, input, type \\ :url)</a>
+  </div>
+    <div class="summary-synopsis"><p>Plays sound in the voice channel the bot is in.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#playing?/1">playing?(guild_id)</a>
+  </div>
+    <div class="summary-synopsis"><p>Checks if the bot is playing sound in a voice channel.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#ready?/1">ready?(guild_id)</a>
+  </div>
+    <div class="summary-synopsis"><p>Checks if the connection is up and ready to play audio.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#resume/1">resume(guild_id)</a>
+  </div>
+    <div class="summary-synopsis"><p>Resumes playing the current paused sound in a voice channel.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#stop/1">stop(guild_id)</a>
+  </div>
+    <div class="summary-synopsis"><p>Stops the current sound being played in a voice channel.</p></div>
+</div>
+  </div>
+        </section>
+
+        <section id="functions" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#functions">
+              <span class="icon-link" aria-hidden="true"></span>
+              <span class="sr-only">Link to this section</span>
+            </a>
+Functions          </h1>
+          <div class="functions-list">
+<section class="detail" id="child_spec/1">
+  <div class="detail-header">
+    <a href="#child_spec/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">child_spec(init_arg)</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L31" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+
+<p>Returns a specification to start this module under a supervisor.</p><p>See <a href="https://hexdocs.pm/elixir/Supervisor.html"><code class="inline">Supervisor</code></a>.</p>  </section>
+</section>
+<section class="detail" id="get_channel_id/1">
+  <div class="detail-header">
+    <a href="#get_channel_id/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">get_channel_id(guild_id)</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L345" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>get_channel_id(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>()) :: <a href="Nostrum.Struct.Channel.html#t:id/0">Nostrum.Struct.Channel.id</a>()</pre>
+      </div>
+
+<p>Gets the id of the voice channel that the bot is connected to.</p><h2 id="get_channel_id/1-parameters" class="section-heading">
+  <a href="#get_channel_id/1-parameters" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Parameters
+</h2>
+<ul><li><code class="inline">guild_id</code> - ID of guild that the resultant channel belongs to.</li></ul><p>Returns the <code class="inline">channel_id</code> for the channel the bot is connected to, otherwise <code class="inline">nil</code>.</p><h2 id="get_channel_id/1-examples" class="section-heading">
+  <a href="#get_channel_id/1-examples" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Examples
+</h2>
+<pre><code class="Elixir">iex&gt; Nostrum.Voice.join_channel(123456789, 420691337)
+
+iex&gt; Nostrum.Voice.get_channel(123456789)
+420691337
+
+iex&gt; Nostrum.Voice.leave_channel(123456789)
+
+iex&gt; Nostrum.Voice.get_channel(123456789)
+nil</code></pre>  </section>
+</section>
+<section class="detail" id="join_channel/4">
+    <span id="join_channel/2"></span>
+    <span id="join_channel/3"></span>
+  <div class="detail-header">
+    <a href="#join_channel/4" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">join_channel(guild_id, channel_id, self_mute \\ false, self_deaf \\ false)</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L64" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>join_channel(
+  <a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(),
+  <a href="Nostrum.Struct.Channel.html#t:id/0">Nostrum.Struct.Channel.id</a>(),
+  <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">boolean</a>(),
+  <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">boolean</a>()
+) :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">no_return</a>() | :ok</pre>
+      </div>
+
+<p>Joins or moves the bot to a voice channel.</p><p>This function is equivalent to <a href="Nostrum.Api.html#update_voice_state/4"><code class="inline">Nostrum.Api.update_voice_state/4</code></a>.</p>  </section>
+</section>
+<section class="detail" id="leave_channel/1">
+  <div class="detail-header">
+    <a href="#leave_channel/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">leave_channel(guild_id)</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L74" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>leave_channel(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">no_return</a>() | :ok</pre>
+      </div>
+
+<p>Leaves the voice channel of the given guild id.</p><p>This function is equivalent to calling <code class="inline">Nostrum.Api.update_voice_state(guild_id, nil)</code>.</p>  </section>
+</section>
+<section class="detail" id="pause/1">
+  <div class="detail-header">
+    <a href="#pause/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">pause(guild_id)</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L201" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>pause(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>()) :: :ok | {:error, <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()}</pre>
+      </div>
+
+<p>Pauses the current sound being played in a voice channel.</p><p>The bot must be connected to a voice channel in the guild specified.</p><h2 id="pause/1-parameters" class="section-heading">
+  <a href="#pause/1-parameters" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Parameters
+</h2>
+<ul><li><code class="inline">guild_id</code> - ID of guild whose voice channel the sound will be paused in.</li></ul><p>Returns <code class="inline">{:error, reason}</code> if unable to pause or no sound is playing, else <code class="inline">:ok</code>.</p><p>This function is similar to <a href="#stop/1"><code class="inline">stop/1</code></a>, except that the sound may be
+resumed after being paused.</p><h2 id="pause/1-examples" class="section-heading">
+  <a href="#pause/1-examples" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Examples
+</h2>
+<pre><code class="Elixir">iex&gt; Nostrum.Voice.join_channel(123456789, 420691337)
+
+iex&gt; Nostrum.Voice.play(123456789, &quot;~/files/twelve_hour_loop_of_waterfall_sounds.mp3&quot;)
+
+iex&gt; Nostrum.Voice.pause(123456789)</code></pre>  </section>
+</section>
+<section class="detail" id="play/3">
+    <span id="play/2"></span>
+  <div class="detail-header">
+    <a href="#play/3" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">play(guild_id, input, type \\ :url)</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L115" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>play(
+  <a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(),
+  <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>() | <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">binary</a>() | <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">iodata</a>(),
+  :url | :pipe | :ytdl
+) :: :ok | {:error, <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()}</pre>
+      </div>
+
+<p>Plays sound in the voice channel the bot is in.</p><p>The bot must be connected to a voice channel in the guild specified.</p><h2 id="play/3-parameters" class="section-heading">
+  <a href="#play/3-parameters" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Parameters
+</h2>
+<ul><li><code class="inline">guild_id</code> - ID of guild whose voice channel the sound will be played in.</li><li><code class="inline">input</code> - Audio to be played. Type of <code class="inline">input</code> determined by <code class="inline">type</code> parameter.</li><li><code class="inline">type</code> - Type of input (defaults to <code class="inline">:url</code>).<ul><li><code class="inline">:url</code> Input will be <a href="https://www.ffmpeg.org/ffmpeg-protocols.html">any url that <code class="inline">ffmpeg</code> can read</a>.</li><li><code class="inline">:pipe</code> Input will be data that is piped to stdin of <code class="inline">ffmpeg</code>.</li><li><code class="inline">:ytdl</code> Input will be url for <code class="inline">youtube-dl</code>, which gets automatically piped to <code class="inline">ffmpeg</code>.</li></ul></li></ul><p>Returns <code class="inline">{:error, reason}</code> if unable to play or a sound is playing, else <code class="inline">:ok</code>.</p><h2 id="play/3-examples" class="section-heading">
+  <a href="#play/3-examples" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Examples
+</h2>
+<pre><code class="Elixir">iex&gt; Nostrum.Voice.join_channel(123456789, 420691337)
+
+iex&gt; Nostrum.Voice.play(123456789, &quot;~/music/FavoriteSong.mp3&quot;, :url)</code></pre><pre><code class="Elixir">iex&gt; Nostrum.Voice.join_channel(123456789, 420691337)
+
+iex&gt; raw_data = File.read!(&quot;~/music/sound_effect.wav&quot;)
+
+iex&gt; Nostrum.Voice.play(123456789, raw_data, :pipe)</code></pre><pre><code class="Elixir">iex&gt; Nostrum.Voice.join_channel(123456789, 420691337)
+
+iex&gt; Nostrum.Voice.play(123456789, &quot;https://www.youtube.com/watch?v=b4RJ-QGOtw4&quot;, :ytdl)</code></pre>  </section>
+</section>
+<section class="detail" id="playing?/1">
+  <div class="detail-header">
+    <a href="#playing?/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">playing?(guild_id)</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L289" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>playing?(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">boolean</a>()</pre>
+      </div>
+
+<p>Checks if the bot is playing sound in a voice channel.</p><h2 id="playing?/1-parameters" class="section-heading">
+  <a href="#playing?/1-parameters" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Parameters
+</h2>
+<ul><li><code class="inline">guild_id</code> - ID of guild to check if audio being played.</li></ul><p>Returns <code class="inline">true</code> if the bot is currently being played in a voice channel, otherwise <code class="inline">false</code>.</p><h2 id="playing?/1-examples" class="section-heading">
+  <a href="#playing?/1-examples" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Examples
+</h2>
+<pre><code class="Elixir">iex&gt; Nostrum.Voice.join_channel(123456789, 420691337)
+
+iex&gt; Nostrum.Voice.play(123456789, &quot;https://a-real-site.biz/RickRoll.m4a&quot;)
+
+iex&gt; Nostrum.Voice.playing?(123456789)
+true
+
+iex&gt; Nostrum.Voice.pause(123456789)
+
+iex&gt; Nostrum.Voice.playing?(123456789)
+false</code></pre>  </section>
+</section>
+<section class="detail" id="ready?/1">
+  <div class="detail-header">
+    <a href="#ready?/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">ready?(guild_id)</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L318" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>ready?(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">boolean</a>()</pre>
+      </div>
+
+<p>Checks if the connection is up and ready to play audio.</p><h2 id="ready?/1-parameters" class="section-heading">
+  <a href="#ready?/1-parameters" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Parameters
+</h2>
+<ul><li><code class="inline">guild_id</code> - ID of guild to check if voice connection is up.</li></ul><p>Returns <code class="inline">true</code> if the bot is connected to a voice channel, otherwise <code class="inline">false</code>.</p><p>This function does not check if audio is already playing. For that, use <a href="#playing?/1"><code class="inline">playing?/1</code></a>.</p><h2 id="ready?/1-examples" class="section-heading">
+  <a href="#ready?/1-examples" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Examples
+</h2>
+<pre><code class="Elixir">iex&gt; Nostrum.Voice.join_channel(123456789, 420691337)
+
+iex&gt; Nostrum.Voice.ready?(123456789)
+true
+
+iex&gt; Nostrum.Voice.leave_channel(123456789)
+
+iex&gt; Nostrum.Voice.ready?(123456789)
+false</code></pre>  </section>
+</section>
+<section class="detail" id="resume/1">
+  <div class="detail-header">
+    <a href="#resume/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">resume(guild_id)</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L243" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>resume(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>()) :: :ok | {:error, <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()}</pre>
+      </div>
+
+<p>Resumes playing the current paused sound in a voice channel.</p><p>The bot must be connected to a voice channel in the guild specified.</p><h2 id="resume/1-parameters" class="section-heading">
+  <a href="#resume/1-parameters" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Parameters
+</h2>
+<ul><li><code class="inline">guild_id</code> - ID of guild whose voice channel the sound will be resumed in.</li></ul><p>Returns <code class="inline">{:error, reason}</code> if unable to resume or no sound has been paused, otherwise returns <code class="inline">:ok</code>.</p><p>This function is used to resume a sound that had previously been paused.</p><h2 id="resume/1-examples" class="section-heading">
+  <a href="#resume/1-examples" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Examples
+</h2>
+<pre><code class="Elixir">iex&gt; Nostrum.Voice.join_channel(123456789, 420691337)
+
+iex&gt; Nostrum.Voice.play(123456789, &quot;~/stuff/Toto - Africa (Bass Boosted)&quot;)
+
+iex&gt; Nostrum.Voice.pause(123456789)
+
+iex&gt; Nostrum.Voice.resume(123456789)</code></pre>  </section>
+</section>
+<section class="detail" id="stop/1">
+  <div class="detail-header">
+    <a href="#stop/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">stop(guild_id)</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L159" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>stop(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>()) :: :ok | {:error, <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()}</pre>
+      </div>
+
+<p>Stops the current sound being played in a voice channel.</p><p>The bot must be connected to a voice channel in the guild specified.</p><h2 id="stop/1-parameters" class="section-heading">
+  <a href="#stop/1-parameters" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Parameters
+</h2>
+<ul><li><code class="inline">guild_id</code> - ID of guild whose voice channel the sound will be stopped in.</li></ul><p>Returns <code class="inline">{:error, reason}</code> if unable to stop or no sound is playing, else <code class="inline">:ok</code>.</p><p>If a sound has finished playing, this function does not need to be called to start
+playing another sound.</p><h2 id="stop/1-examples" class="section-heading">
+  <a href="#stop/1-examples" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Examples
+</h2>
+<pre><code class="Elixir">iex&gt; Nostrum.Voice.join_channel(123456789, 420691337)
+
+iex&gt; Nostrum.Voice.play(123456789, &quot;http://brandthill.com/files/weird_dubstep_noises.mp3&quot;)
+
+iex&gt; Nostrum.Voice.stop(123456789)</code></pre>  </section>
+</section>
+          </div>
+        </section>
+      <footer class="footer">
+        <p>
+          <span class="line">
+            Built using
+            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener">ExDoc</a> (v0.23.0) for the
+            <a href="https://elixir-lang.org" title="Elixir" target="_blank">Elixir programming language</a>.
+          </span>
+          <span class="line">
+            Designed by
+            <a href="https://twitter.com/dignifiedquire" target="_blank" rel="noopener" title="@dignifiedquire">Friedel Ziegelmayer</a>.
+          </span>
+        </p>
+        <p>
+            <a href="api-reference.html" title="API reference" class="line footer-button">API Reference</a>
+          <button class="line footer-button display-shortcuts-help">
+            Display keyboard shortcuts
+          </button>
+          <button class="line footer-button night-mode-toggle">
+            Toggle night mode
+          </button>
+          <button class="line footer-button display-quick-switch">
+            Go to a HexDocs package
+          </button>
+          <button class="line footer-button tooltips-toggle">
+            <span class="tooltips-option-disable">Disable tooltips</span>
+            <span class="tooltips-option-enable">Enable tooltips</span>
+          </button>
+        </p>
+      </footer>
+    </div>
+  </div>
+</section>
+</div>
+  </body>
+</html>
