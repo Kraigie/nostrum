@@ -6,11 +6,12 @@ jobs:
     strategy:
       matrix:
         elixir-version: ['1.9', '1.10', '1.11']
+        otp-version: ['22', '23']
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-elixir@v1
         with:
-          otp-version: '22.0'
+          otp-version: ${{ matrix.otp-version }}
           elixir-version: ${{ matrix.elixir-version }}
       - uses: actions/cache@v2
         with:
