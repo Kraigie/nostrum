@@ -18,10 +18,13 @@ jobs:
           key: ${{ runner.os }}-mix-${{ hashFiles(format('{0}{1}', github.workspace, '/mix.lock')) }}
           restore-keys: ${{ runner.os }}-mix-
       - run: mix deps.get
+        name: Fetch Dependencies
       - run: mix docs
+        name: Build Docs
       - uses: JamesIves/github-pages-deploy-action@3.7.1
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           BRANCH: gh-pages
           FOLDER: doc
           CLEAN: true
+        name: Deploy Github Pages
