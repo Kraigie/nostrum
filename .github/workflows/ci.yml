@@ -1,6 +1,21 @@
 name: ci
 on: [push]
 jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        elixir-version: ['1.9', '1.10']
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-elixir@v1
+        with:
+          otp-version: '22.0'
+          elixir-version: ${{matrix.elixir-version}}
+      - run: mix deps.get
+      - run: mix credo --strict
+      - run: mix format --check-formatted
+      - run: mix test --no-start
   docs:
     runs-on: ubuntu-latest
     steps:
