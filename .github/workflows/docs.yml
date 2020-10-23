@@ -1,0 +1,22 @@
+name: docs
+on:
+  push:
+    branches:
+      - master
+jobs:
+  gh-pages:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-elixir@v1
+        with:
+          otp-version: '22.0'
+          elixir-version: '1.9'
+      - run: mix deps.get
+      - run: mix docs
+      - uses: JamesIves/github-pages-deploy-action@3.7.1
+        with:
+          GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          BRANCH: gh-pages
+          FOLDER: doc
+          CLEAN: true
