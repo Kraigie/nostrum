@@ -1,6 +1,6 @@
 # Nostrum
 
-[![Build Status](https://travis-ci.org/Kraigie/nostrum.svg?branch=master)](https://travis-ci.org/Kraigie/nostrum)
+[![Build Status](https://github.com/Kraigie/nostrum/workflows/Test%20&%20Lint/badge.svg)](https://github.com/Kraigie/nostrum/actions)
 [![Join Discord](https://img.shields.io/badge/discord-join-7289DA.svg)](https://discord.gg/2Bgn8nW)
 
 An [Elixir](http://elixir-lang.org/) library for the Discord API.
