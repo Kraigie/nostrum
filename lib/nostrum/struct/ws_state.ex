@@ -20,7 +20,7 @@ defmodule Nostrum.Struct.WSState do
   ]
 
   @typedoc "The shard number"
-  @type shard_num :: String.t()
+  @type shard_num :: non_neg_integer
 
   @typedoc "The sequence number of the last event"
   @type seq :: integer | nil

@@ -40,6 +40,10 @@ defmodule Nostrum.Shard.Session do
     GenServer.cast(pid, {:request_guild_members, payload})
   end
 
+  def get_ws_state(pid) do
+    GenServer.call(pid, :get_ws_state)
+  end
+
   def start_link([gateway, shard_num]) do
     GenServer.start_link(__MODULE__, [gateway, shard_num], spawn_opt: [Util.fullsweep_after()])
   end
@@ -175,5 +179,9 @@ defmodule Nostrum.Shard.Session do
 
     {:noreply,
      %{state | heartbeat_ref: ref, heartbeat_ack: false, last_heartbeat_send: DateTime.utc_now()}}
+  end
+
+  def handle_call(:get_ws_state, _sender, state) do
+    {:reply, state, state}
   end
 end
