@@ -3,7 +3,7 @@ defmodule Nostrum.Cache.GuildCache do
   Functions for retrieving guild states.
   """
 
-  alias Nostrum.Cache.Guild.GuildServer
+  alias Nostrum.Cache.Guild.{GuildServer, GuildSupervisor}
   alias Nostrum.Cache.Mapping.ChannelGuild
   alias Nostrum.Struct.Channel
   alias Nostrum.Struct.Guild
