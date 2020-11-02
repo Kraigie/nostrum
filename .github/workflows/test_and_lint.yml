@@ -5,7 +5,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        elixir-version: ['1.9', '1.10', '1.11']
+        elixir-version: ['1.10', '1.11']
         otp-version: ['22', '23']
     steps:
       - uses: actions/checkout@v2
@@ -15,9 +15,10 @@ jobs:
           elixir-version: ${{ matrix.elixir-version }}
       - uses: actions/cache@v2
         with:
-          path: deps
-          key: ${{ runner.os }}-mix-${{ hashFiles(format('{0}{1}', github.workspace, '/mix.lock')) }}
-          restore-keys: ${{ runner.os }}-mix-
+          path: _build
+          # Generate a hash of the OTP version and Elixir version
+          key: ${{ matrix.otp-version }}-${{ matrix.elixir-version }}-mix-${{ hashFiles(format('{0}{1}', github.workspace, '/mix.lock')) }}
+          restore-keys: ${{ matrix.otp-version }}-${{ matrix.elixir-version }}-mix
       - run: mix deps.get
         name: Fetch Dependencies
       - run: mix credo --strict
