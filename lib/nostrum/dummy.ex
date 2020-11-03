@@ -31,6 +31,8 @@ defmodule DummyConsumer do
 
   def handle_event({:MESSAGE_CREATE, message, _}) do
     Logger.debug(fn -> "Message received: #{inspect(message.content)}" end)
+    Logger.debug("#{inspect(message)}")
+    Application.put_env(:nostrum, :last_msg, message)
   end
 
   def handle_event({event_name, _, _}) do

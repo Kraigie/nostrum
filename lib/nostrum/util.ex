@@ -245,12 +245,12 @@ defmodule Nostrum.Util do
   @doc """
   Gets the latency of the shard connection from a `Nostrum.Struct.WSState.t()` struct.
 
-  Returns the latency in milliseconds as an integer, returning 0 if unknown.
+  Returns the latency in milliseconds as an integer, returning nil if unknown.
   """
-  @spec get_shard_latency(WSState.t()) :: non_neg_integer
-  def get_shard_latency(%WSState{last_heartbeat_ack: nil}), do: 0
+  @spec get_shard_latency(WSState.t()) :: non_neg_integer | nil
+  def get_shard_latency(%WSState{last_heartbeat_ack: nil}), do: nil
 
-  def get_shard_latency(%WSState{last_heartbeat_send: nil}), do: 0
+  def get_shard_latency(%WSState{last_heartbeat_send: nil}), do: nil
 
   def get_shard_latency(%WSState{} = state) do
     latency = DateTime.diff(state.last_heartbeat_ack, state.last_heartbeat_send, :millisecond)
@@ -263,7 +263,7 @@ defmodule Nostrum.Util do
   Calls `get_shard_latency/1` on all shards and returns a map whose keys are
   shard nums and whose values are latencies in milliseconds.
   """
-  @spec get_all_shard_latencies :: %{WSState.shard_num() => integer}
+  @spec get_all_shard_latencies :: %{WSState.shard_num() => non_neg_integer | nil}
   def get_all_shard_latencies do
     ShardSupervisor
     |> Supervisor.which_children()

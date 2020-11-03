@@ -23,7 +23,7 @@ defmodule Nostrum.Mixfile do
   end
 
   defp elixirc_paths(:test), do: ["lib", "test"]
-  defp elixirc_paths(_), do: ["lib"]
+  defp elixirc_paths(_), do: ["lib", "examples"]
 
   def application do
     [
