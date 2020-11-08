@@ -118,7 +118,7 @@ defmodule Nostrum.Struct.Guild.Member do
 
     member_permissions =
       member_role_ids
-      |> Enum.map(&Enum.find(guild.roles, fn role -> role.id == &1 end))
+      |> Enum.map(&Map.get(guild.roles, &1))
       |> Enum.filter(&(!match?(nil, &1)))
       |> Enum.reduce(0, fn role, bitset_acc ->
         bitset_acc ||| role.permissions
@@ -154,7 +154,7 @@ defmodule Nostrum.Struct.Guild.Member do
     if Enum.member?(guild_perms, :administrator) do
       Permission.all()
     else
-      channel = Enum.find(guild.channels, &(&1.id == channel_id))
+      channel = Map.get(guild.channels, channel_id)
 
       everyone_role_id = guild.id
       role_ids = [everyone_role_id | member.roles]
