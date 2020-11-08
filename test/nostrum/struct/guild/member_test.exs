@@ -19,7 +19,7 @@ defmodule Nostrum.Struct.MemberTest do
     test "returns all perms if admin" do
       member = %Member{roles: [10]}
       role = %Role{id: 10, permissions: Permission.to_bitset([:administrator])}
-      guild = %Guild{roles: %{role.id => role}}
+      guild = %Guild{roles: [role]}
 
       result = Member.guild_permissions(member, guild)
 
@@ -41,7 +41,7 @@ defmodule Nostrum.Struct.MemberTest do
       role = %Role{id: 10, permissions: Permission.to_bitset(role_perms)}
 
       guild = %Guild{
-        roles: %{role.id => role}
+        roles: [role]
       }
 
       result = Member.guild_permissions(member, guild)
@@ -67,9 +67,9 @@ defmodule Nostrum.Struct.MemberTest do
       channel = %Channel{id: context[:channel_id]}
 
       guild = %Guild{
-        channels: %{channel.id => channel},
-        members: %{member.user.id => member},
-        roles: %{role.id => role}
+        channels: [channel],
+        members: [member],
+        roles: [role]
       }
 
       result = Member.guild_channel_permissions(member, guild, context[:channel_id])
@@ -98,8 +98,8 @@ defmodule Nostrum.Struct.MemberTest do
 
       guild = %Guild{
         id: context[:guild_id],
-        channels: %{channel.id => channel},
-        roles: %{everyone_role.id => everyone_role, role.id => role}
+        channels: [channel],
+        roles: [everyone_role, role]
       }
 
       result = Member.guild_channel_permissions(member, guild, context[:channel_id])
@@ -125,8 +125,8 @@ defmodule Nostrum.Struct.MemberTest do
 
       guild = %Guild{
         id: context[:guild_id],
-        channels: %{channel.id => channel},
-        roles: %{everyone_role.id => everyone_role, role.id => role}
+        channels: [channel],
+        roles: [everyone_role, role]
       }
 
       result = Member.guild_channel_permissions(member, guild, context[:channel_id])
@@ -151,8 +151,8 @@ defmodule Nostrum.Struct.MemberTest do
 
       guild = %Guild{
         id: context[:guild_id],
-        channels: %{channel.id => channel},
-        roles: %{everyone_role.id => everyone_role, role.id => role}
+        channels: [channel],
+        roles: [everyone_role, role]
       }
 
       result = Member.guild_channel_permissions(member, guild, context[:channel_id])
