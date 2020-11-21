@@ -23,7 +23,6 @@ defmodule Nostrum.Consumer do
   alias Nostrum.Shard.Stage.Cache
   alias Nostrum.Struct.{Channel, WSState}
   alias Nostrum.Struct.Event.{MessageDelete, MessageDeleteBulk, SpeakingUpdate}
-  alias Nostrum.Util
 
   @doc """
   Callback used to handle events.
