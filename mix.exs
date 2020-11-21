@@ -96,7 +96,7 @@ defmodule Nostrum.Mixfile do
       {:ex_doc, "~> 0.14", only: :dev},
       {:credo, "~> 1.4", only: [:dev, :test]},
       {:dialyxir, "~> 1.0.0", only: [:dev], runtime: false},
-      {:gen_stage, "~> 0.11"},
+      {:gen_stage, "~> 0.11 or ~> 1.0"},
       {:recon, "~> 2.3", only: :dev}
     ]
   end
