@@ -125,7 +125,7 @@ defmodule Nostrum.Struct.Embed do
   @callback footer(struct) :: footer()
   @callback image(struct) :: url()
   @callback thumbnail(struct) :: url()
-  @callback timestamp(struct) :: timestamp
+  @callback timestamp(struct) :: timestamp()
   @callback title(struct) :: title()
   @callback url(struct) :: url()
 
