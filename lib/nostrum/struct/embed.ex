@@ -118,6 +118,47 @@ defmodule Nostrum.Struct.Embed do
           fields: fields
         }
 
+  @callback author(struct) :: author()
+  @callback color(struct) :: color()
+  @callback fields(struct) :: fields()
+  @callback description(struct) :: description()
+  @callback footer(struct) :: footer()
+  @callback image(struct) :: image()
+  @callback thumbnail(struct) :: thumbnail()
+  @callback timestamp(struct) :: timestamp
+  @callback title(struct) :: title()
+  @callback url(struct) :: url()
+
+  def __using__(_) do
+    quote do
+      @behaviour Nostrum.Struct.Embed
+
+      def author(_), do: nil
+      def color(_), do: nil
+      def fields(_), do: nil
+      def description(_), do: nil
+      def footer(_), do: nil
+      def image(_), do: nil
+      def thumbnail(_), do: nil
+      def timestamp(_), do: nil
+      def title(_), do: nil
+      def url(_), do: nil
+
+      defoverridable(
+        author: 1,
+        color: 1,
+        fields: 1,
+        description: 1,
+        footer: 1,
+        image: 1,
+        thumbnail: 1,
+        timestamp: 1,
+        title: 1,
+        url: 1
+      )
+    end
+  end
+
   @doc ~S"""
   Puts the given `value` under `:title` in `embed`.
 
@@ -379,6 +420,46 @@ defmodule Nostrum.Struct.Embed do
 
   def put_field(embed, name, value, inline) do
     put_field(%__MODULE__{embed | fields: []}, name, value, inline)
+  end
+
+  @doc """
+  Create an embed from a struct that implements the protocol `Nostrum.Struct.Embed.Protocol`.
+  """
+  def from(%module{} = struct) do
+    # checks if the struct implements the behaviour
+    unless Enum.member?(module.module_info(:attributes), {:behaviour, [__MODULE__]}) do
+      raise "#{module} does not implement the behaviour #{__MODULE__}"
+    end
+
+    embed =
+      %__MODULE__{}
+      |> put_color(module.color(struct))
+      |> put_description(module.description(struct))
+      |> put_image(module.image(struct))
+      |> put_thumbnail(module.thumbnail(struct))
+      |> put_timestamp(module.timestamp(struct))
+      |> put_title(module.title(struct))
+      |> put_url(module.url(struct))
+
+    embed =
+      if author = module.author(struct) do
+        put_author(embed, author.name, author.url, author.icon_url)
+      else
+        embed
+      end
+
+    embed =
+      if footer = module.footer(struct) do
+        put_footer(embed, footer.text, footer.icon_url)
+      else
+        embed
+      end
+
+    if fields = module.fields(struct) do
+      Enum.reduce(fields, embed, &put_field(&2, &1.name, &1.value, &1.inline))
+    else
+      embed
+    end
   end
 
   # TODO: Jump down the rabbit hole
