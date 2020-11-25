@@ -119,12 +119,12 @@ defmodule Nostrum.Struct.Embed do
         }
 
   @callback author(struct) :: author()
-  @callback color(struct) :: color()
+  @callback color(struct) :: integer() | nil
   @callback fields(struct) :: fields()
   @callback description(struct) :: description()
   @callback footer(struct) :: footer()
-  @callback image(struct) :: image()
-  @callback thumbnail(struct) :: thumbnail()
+  @callback image(struct) :: url()
+  @callback thumbnail(struct) :: url()
   @callback timestamp(struct) :: timestamp
   @callback title(struct) :: title()
   @callback url(struct) :: url()
