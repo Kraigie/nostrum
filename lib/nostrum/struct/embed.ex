@@ -129,7 +129,7 @@ defmodule Nostrum.Struct.Embed do
   @callback title(struct) :: title()
   @callback url(struct) :: url()
 
-  def __using__(_) do
+  defmacro __using__(_) do
     quote do
       @behaviour Nostrum.Struct.Embed
 
