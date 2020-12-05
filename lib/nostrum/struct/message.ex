@@ -5,7 +5,7 @@ defmodule Nostrum.Struct.Message do
 
   alias Nostrum.Struct.{Embed, User}
   alias Nostrum.Struct.Guild.Member
-  alias Nostrum.Struct.Message.{Activity, Application, Attachment, Reaction}
+  alias Nostrum.Struct.Message.{Activity, Application, Attachment, Reaction, Reference}
   alias Nostrum.{Snowflake, Util}
 
   defstruct [
@@ -23,9 +23,11 @@ defmodule Nostrum.Struct.Message do
     :mention_everyone,
     :mention_roles,
     :mentions,
+    :message_reference,
     :nonce,
     :pinned,
     :reactions,
+    :referenced_message,
     :timestamp,
     :tts,
     :type,
@@ -107,6 +109,20 @@ defmodule Nostrum.Struct.Message do
   """
   @type member :: Member.t() | nil
 
+  @typedoc """
+  reference data sent with crossposted messages and replies
+  """
+  @type message_reference :: Reference.t() | nil
+
+  @typedoc """
+  the message associated with the message_reference
+
+  This field is only returned for messages with a type of 19 (REPLY). If the message is a reply but the
+  referenced_message field is not present, the backend did not attempt to fetch the message that was being replied to,
+  so its state is unknown. If the field exists but is null, the referenced message was deleted.
+  """
+  @type referenced_message :: t() | nil
+
   @type t :: %__MODULE__{
           activity: activity,
           application: application,
@@ -122,6 +138,7 @@ defmodule Nostrum.Struct.Message do
           mention_everyone: mention_everyone,
           mention_roles: mention_roles,
           mentions: mentions,
+          message_reference: message_reference,
           nonce: nonce,
           pinned: pinned,
           reactions: reactions,
@@ -159,6 +176,8 @@ defmodule Nostrum.Struct.Message do
       |> Map.update(:activity, nil, &Util.cast(&1, {:struct, Activity}))
       |> Map.update(:application, nil, &Util.cast(&1, {:struct, Application}))
       |> Map.update(:member, nil, &Util.cast(&1, {:struct, Member}))
+      |> Map.update(:message_reference, nil, &Util.cast(&1, {:struct, Reference}))
+      |> Map.update(:referenced_message, nil, &Util.cast(&1, {:struct, __MODULE__}))
 
     struct(__MODULE__, new)
   end
