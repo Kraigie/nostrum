@@ -4,7 +4,7 @@ defmodule Nostrum.Struct.Message.Reference do
   """
 
   alias Nostrum.{Snowflake, Util}
-  alias Nostrum.Struct.Message.{Channel, Guild, Message}
+  alias Nostrum.Struct.{Channel, Guild, Message}
 
   defstruct [
     :message_id,
