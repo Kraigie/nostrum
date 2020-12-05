@@ -110,12 +110,12 @@ defmodule Nostrum.Struct.Message do
   @type member :: Member.t() | nil
 
   @typedoc """
-  reference data sent with crossposted messages and replies
+  Reference data sent with crossposted messages and replies
   """
   @type message_reference :: Reference.t() | nil
 
   @typedoc """
-  the message associated with the message_reference
+  The message associated with the message_reference
 
   This field is only returned for messages with a type of 19 (REPLY). If the message is a reply but the
   referenced_message field is not present, the backend did not attempt to fetch the message that was being replied to,
@@ -142,6 +142,7 @@ defmodule Nostrum.Struct.Message do
           nonce: nonce,
           pinned: pinned,
           reactions: reactions,
+          referenced_message: referenced_message,
           timestamp: timestamp,
           tts: tts,
           type: type,

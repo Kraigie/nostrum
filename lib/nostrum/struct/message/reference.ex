@@ -4,6 +4,7 @@ defmodule Nostrum.Struct.Message.Reference do
   """
 
   alias Nostrum.{Snowflake, Util}
+  alias Nostrum.Struct.Message.{Channel, Guild, Message}
 
   defstruct [
     :message_id,
@@ -11,14 +12,14 @@ defmodule Nostrum.Struct.Message.Reference do
     :guild_id
   ]
 
-  @typedoc "id of the originating message"
-  @type message_id :: Snowflake.t()
+  @typedoc "Id of the originating message"
+  @type message_id :: Message.id()
 
-  @typedoc "id of the originating message's channel"
-  @type channel_id :: Snowflake.t()
+  @typedoc "Id of the originating message's channel"
+  @type channel_id :: Channel.id()
 
-  @typedoc "id of the originating message's guild"
-  @type guild_id :: Snowflake.t()
+  @typedoc "Id of the originating message's guild"
+  @type guild_id :: Guild.id()
 
   @type t :: %__MODULE__{
           message_id: message_id,
