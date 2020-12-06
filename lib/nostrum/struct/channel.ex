@@ -30,7 +30,7 @@ defmodule Nostrum.Struct.Channel do
   ```
   """
 
-  alias Nostrum.Struct.{Overwrite, User}
+  alias Nostrum.Struct.{Channel, Guild, Message, Overwrite, User}
   alias Nostrum.{Snowflake, Util}
 
   defstruct [
@@ -61,7 +61,7 @@ defmodule Nostrum.Struct.Channel do
   @type id :: Snowflake.t()
 
   @typedoc "The id of the channel's guild"
-  @type guild_id :: Snowflake.t()
+  @type guild_id :: Guild.id()
 
   @typedoc "The ordered position of the channel"
   @type position :: integer
@@ -79,7 +79,7 @@ defmodule Nostrum.Struct.Channel do
   @type nsfw :: boolean
 
   @typedoc "Id of the last message sent"
-  @type last_message_id :: Snowflake.t() | nil
+  @type last_message_id :: Message.id() | nil
 
   @typedoc "The bitrate of the voice channel"
   @type bitrate :: integer
@@ -94,13 +94,13 @@ defmodule Nostrum.Struct.Channel do
   @type icon :: String.t() | nil
 
   @typedoc "The id of the DM creator"
-  @type owner_id :: Snowflake.t()
+  @type owner_id :: User.id()
 
   @typedoc "The application id of the group DM creator if it is bot-created"
   @type application_id :: Snowflake.t() | nil
 
   @typedoc "The id of the parent category for a channel"
-  @type parent_id :: Snowflake.t() | nil
+  @type parent_id :: Channel.id() | nil
 
   @typedoc "When the last pinned message was pinned"
   @type last_pin_timestamp :: String.t() | nil

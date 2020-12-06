@@ -53,13 +53,13 @@ defmodule Nostrum.Struct.Guild do
   @type splash :: String.t() | nil
 
   @typedoc "The id of the guild owner"
-  @type owner_id :: Snowflake.t()
+  @type owner_id :: User.id()
 
   @typedoc "The id of the voice region"
   @type region :: String.t()
 
   @typedoc "The id of the guild's afk channel"
-  @type afk_channel_id :: Snowflake.t() | nil
+  @type afk_channel_id :: Channel.id() | nil
 
   @typedoc "The time someone must be afk before being moved"
   @type afk_timeout :: integer
@@ -68,7 +68,7 @@ defmodule Nostrum.Struct.Guild do
   @type embed_enabled :: boolean | nil
 
   @typedoc "The id of the embedded channel"
-  @type embed_channel_id :: Snowflake.t() | nil
+  @type embed_channel_id :: Channel.id() | nil
 
   @typedoc "The level of verification"
   @type verification_level :: integer
@@ -108,24 +108,24 @@ defmodule Nostrum.Struct.Guild do
   @typedoc """
   The channel id for the server widget.
   """
-  @type widget_channel_id :: Snowflake.t()
+  @type widget_channel_id :: Channel.id()
 
   @typedoc """
   The id of the channel to which system messages are sent.
   """
-  @type system_channel_id :: Snowflake.t() | nil
+  @type system_channel_id :: Channel.id() | nil
 
   @typedoc """
   The id of the channel that is used for rules. This is only available to guilds that
   contain ``PUBLIC`` in `t:features/0`.
   """
-  @type rules_channel_id :: Snowflake.t() | nil
+  @type rules_channel_id :: Channel.id() | nil
 
   @typedoc """
   The id of the channel where admins and moderators receive notices from Discord. This
   is only available to guilds that contain ``PUBLIC`` in `t:features/0`.
   """
-  @type public_updates_channel_id :: Snowflake.t() | nil
+  @type public_updates_channel_id :: Channel.id() | nil
 
   @typedoc "Date the bot user joined the guild"
   @type joined_at :: String.t() | nil

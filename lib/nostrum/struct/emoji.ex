@@ -36,6 +36,7 @@ defmodule Nostrum.Struct.Emoji do
   """
 
   alias Nostrum.{Constants, Snowflake, Util}
+  alias Nostrum.Struct.Guild.Role
   alias Nostrum.Struct.User
 
   defstruct [
@@ -86,7 +87,7 @@ defmodule Nostrum.Struct.Emoji do
   @type name :: String.t()
 
   @typedoc "Roles this emoji is whitelisted to"
-  @type roles :: [Snowflake.t()] | nil
+  @type roles :: [Role.id()] | nil
 
   @typedoc "User that created this emoji"
   @type user :: User.t() | nil
