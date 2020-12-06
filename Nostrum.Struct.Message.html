@@ -8,7 +8,7 @@
     <meta name="project" content="Nostrum v0.4.5">
     <title>Nostrum.Struct.Message — Nostrum v0.4.5</title>
     <link rel="stylesheet" href="dist/elixir-9f91ebe876dc01d67920.css" />
-    <script src="dist/sidebar_items-b2bb24de56.js"></script>
+    <script src="dist/sidebar_items-1787dee45a.js"></script>
       <script src="docs_config.js"></script>
     <script async src="dist/app-60a0c9f10e9e52eae31f.js"></script>
   </head>
@@ -173,6 +173,12 @@ Nostrum      </a>
 </div>
 <div class="summary-row">
   <div class="summary-signature">
+    <a href="#t:message_reference/0">message_reference()</a>
+  </div>
+    <div class="summary-synopsis"><p>Reference data sent with crossposted messages and replies</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
     <a href="#t:nonce/0">nonce()</a>
   </div>
     <div class="summary-synopsis"><p>Validates if a message was sent</p></div>
@@ -188,6 +194,12 @@ Nostrum      </a>
     <a href="#t:reactions/0">reactions()</a>
   </div>
     <div class="summary-synopsis"><p>Reactions to the message.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:referenced_message/0">referenced_message()</a>
+  </div>
+    <div class="summary-synopsis"><p>The message associated with the message_reference</p></div>
 </div>
 <div class="summary-row">
   <div class="summary-signature">
@@ -236,7 +248,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">activity()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/message.ex#L98" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/message.ex#L100" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -257,7 +269,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">application()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/message.ex#L103" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/message.ex#L105" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -278,7 +290,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">attachments()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/message.ex#L69" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/message.ex#L71" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -299,7 +311,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">author()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/message.ex#L45" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/message.ex#L47" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -320,7 +332,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">channel_id()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/message.ex#L42" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/message.ex#L44" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -341,7 +353,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">content()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/message.ex#L48" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/message.ex#L50" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -362,7 +374,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">edited_timestamp()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/message.ex#L54" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/message.ex#L56" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -383,7 +395,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">embeds()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/message.ex#L72" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/message.ex#L74" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -404,7 +416,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">guild_id()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/message.ex#L39" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/message.ex#L41" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -425,7 +437,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">id()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/message.ex#L36" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/message.ex#L38" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -446,7 +458,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">member()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/message.ex#L108" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/message.ex#L110" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -467,7 +479,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">mention_everyone()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/message.ex#L60" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/message.ex#L62" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -488,7 +500,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">mention_roles()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/message.ex#L66" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/message.ex#L68" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -509,7 +521,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">mentions()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/message.ex#L63" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/message.ex#L65" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -523,6 +535,27 @@ Types          </h1>
 
 <p>List of users mentioned in the message</p>  </section>
 </section>
+<section class="detail" id="t:message_reference/0">
+  <div class="detail-header">
+    <a href="#t:message_reference/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">message_reference()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/message.ex#L115" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>message_reference() :: <a href="Nostrum.Struct.Message.Reference.html#t:t/0">Nostrum.Struct.Message.Reference.t</a>() | nil</pre>
+      </div>
+
+<p>Reference data sent with crossposted messages and replies</p>  </section>
+</section>
 <section class="detail" id="t:nonce/0">
   <div class="detail-header">
     <a href="#t:nonce/0" class="detail-link" title="Link to this type">
@@ -530,7 +563,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">nonce()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/message.ex#L80" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/message.ex#L82" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -551,7 +584,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">pinned()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/message.ex#L83" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/message.ex#L85" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -572,7 +605,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">reactions()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/message.ex#L77" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/message.ex#L79" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -586,6 +619,29 @@ Types          </h1>
 
 <p>Reactions to the message.</p>  </section>
 </section>
+<section class="detail" id="t:referenced_message/0">
+  <div class="detail-header">
+    <a href="#t:referenced_message/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">referenced_message()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/message.ex#L124" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>referenced_message() :: <a href="#t:t/0">t</a>() | nil</pre>
+      </div>
+
+<p>The message associated with the message_reference</p><p>This field is only returned for messages with a type of 19 (REPLY). If the message is a reply but the
+referenced_message field is not present, the backend did not attempt to fetch the message that was being replied to,
+so its state is unknown. If the field exists but is null, the referenced message was deleted.</p>  </section>
+</section>
 <section class="detail" id="t:t/0">
   <div class="detail-header">
     <a href="#t:t/0" class="detail-link" title="Link to this type">
@@ -593,7 +649,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">t()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/message.ex#L110" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/message.ex#L126" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -617,9 +673,11 @@ Types          </h1>
   mention_everyone: <a href="#t:mention_everyone/0">mention_everyone</a>(),
   mention_roles: <a href="#t:mention_roles/0">mention_roles</a>(),
   mentions: <a href="#t:mentions/0">mentions</a>(),
+  message_reference: <a href="#t:message_reference/0">message_reference</a>(),
   nonce: <a href="#t:nonce/0">nonce</a>(),
   pinned: <a href="#t:pinned/0">pinned</a>(),
   reactions: <a href="#t:reactions/0">reactions</a>(),
+  referenced_message: <a href="#t:referenced_message/0">referenced_message</a>(),
   timestamp: <a href="#t:timestamp/0">timestamp</a>(),
   tts: <a href="#t:tts/0">tts</a>(),
   type: <a href="#t:type/0">type</a>(),
@@ -636,7 +694,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">timestamp()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/message.ex#L51" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/message.ex#L53" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -657,7 +715,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">tts()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/message.ex#L57" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/message.ex#L59" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -678,7 +736,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">type()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/message.ex#L93" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/message.ex#L95" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -699,7 +757,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">webhook_id()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/message.ex#L88" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/message.ex#L90" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>

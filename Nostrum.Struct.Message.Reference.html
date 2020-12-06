@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="ExDoc v0.23.0">
     <meta name="project" content="Nostrum v0.4.5">
-    <title>Nostrum.Struct.Embed.Image — Nostrum v0.4.5</title>
+    <title>Nostrum.Struct.Message.Reference — Nostrum v0.4.5</title>
     <link rel="stylesheet" href="dist/elixir-9f91ebe876dc01d67920.css" />
     <script src="dist/sidebar_items-1787dee45a.js"></script>
       <script src="docs_config.js"></script>
@@ -64,8 +64,8 @@ Nostrum      </a>
     <div id="content" class="content-inner">
 
       <h1>
-        Nostrum.Struct.Embed.Image <small class="app-vsn">(Nostrum v0.4.5)</small>
-          <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/embed/image.ex#L1" title="View Source" class="view-source" rel="help">
+        Nostrum.Struct.Message.Reference <small class="app-vsn">(Nostrum v0.4.5)</small>
+          <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/message/reference.ex#L1" title="View Source" class="view-source" rel="help">
             <span class="icon-code" aria-hidden="true"></span>
             <span class="sr-only">View Source</span>
           </a>
@@ -73,7 +73,7 @@ Nostrum      </a>
 
 
         <section id="moduledoc">
-<p>Struct representing a Discord embed image.</p>        </section>
+<p>Struct representing a discord message reference.</p>        </section>
 
         <section id="summary" class="details-list">
           <h1 class="section-heading">
@@ -89,32 +89,26 @@ Nostrum      </a>
     </h2>
 <div class="summary-row">
   <div class="summary-signature">
-    <a href="#t:height/0">height()</a>
+    <a href="#t:channel_id/0">channel_id()</a>
   </div>
-    <div class="summary-synopsis"><p>Height of the image</p></div>
+    <div class="summary-synopsis"><p>Id of the originating message's channel</p></div>
 </div>
 <div class="summary-row">
   <div class="summary-signature">
-    <a href="#t:proxy_url/0">proxy_url()</a>
+    <a href="#t:guild_id/0">guild_id()</a>
   </div>
-    <div class="summary-synopsis"><p>URL of image icon</p></div>
+    <div class="summary-synopsis"><p>Id of the originating message's guild</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:message_id/0">message_id()</a>
+  </div>
+    <div class="summary-synopsis"><p>Id of the originating message</p></div>
 </div>
 <div class="summary-row">
   <div class="summary-signature">
     <a href="#t:t/0">t()</a>
   </div>
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#t:url/0">url()</a>
-  </div>
-    <div class="summary-synopsis"><p>Image text</p></div>
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#t:width/0">width()</a>
-  </div>
-    <div class="summary-synopsis"><p>Width of the image</p></div>
 </div>
   </div>
         </section>
@@ -127,14 +121,14 @@ Nostrum      </a>
             </a>
 Types          </h1>
           <div class="types-list">
-<section class="detail" id="t:height/0">
+<section class="detail" id="t:channel_id/0">
   <div class="detail-header">
-    <a href="#t:height/0" class="detail-link" title="Link to this type">
+    <a href="#t:channel_id/0" class="detail-link" title="Link to this type">
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature">height()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/embed/image.ex#L33" class="view-source" rel="help" title="View Source">
+    <h1 class="signature">channel_id()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/message/reference.ex#L19" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -143,19 +137,19 @@ Types          </h1>
   <section class="docstring">
       <h2>Specs</h2>
       <div class="specs">
-          <pre>height() :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>() | nil</pre>
+          <pre>channel_id() :: <a href="Nostrum.Struct.Channel.html#t:id/0">Nostrum.Struct.Channel.id</a>()</pre>
       </div>
 
-<p>Height of the image</p>  </section>
+<p>Id of the originating message's channel</p>  </section>
 </section>
-<section class="detail" id="t:proxy_url/0">
+<section class="detail" id="t:guild_id/0">
   <div class="detail-header">
-    <a href="#t:proxy_url/0" class="detail-link" title="Link to this type">
+    <a href="#t:guild_id/0" class="detail-link" title="Link to this type">
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature">proxy_url()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/embed/image.ex#L30" class="view-source" rel="help" title="View Source">
+    <h1 class="signature">guild_id()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/message/reference.ex#L22" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -164,10 +158,31 @@ Types          </h1>
   <section class="docstring">
       <h2>Specs</h2>
       <div class="specs">
-          <pre>proxy_url() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>() | nil</pre>
+          <pre>guild_id() :: <a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>()</pre>
       </div>
 
-<p>URL of image icon</p>  </section>
+<p>Id of the originating message's guild</p>  </section>
+</section>
+<section class="detail" id="t:message_id/0">
+  <div class="detail-header">
+    <a href="#t:message_id/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">message_id()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/message/reference.ex#L16" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>message_id() :: <a href="Nostrum.Struct.Message.html#t:id/0">Nostrum.Struct.Message.id</a>()</pre>
+      </div>
+
+<p>Id of the originating message</p>  </section>
 </section>
 <section class="detail" id="t:t/0">
   <div class="detail-header">
@@ -176,7 +191,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">t()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/embed/image.ex#L38" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/message/reference.ex#L24" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -185,57 +200,14 @@ Types          </h1>
   <section class="docstring">
       <h2>Specs</h2>
       <div class="specs">
-          <pre>t() :: %Nostrum.Struct.Embed.Image{
-  height: <a href="#t:height/0">height</a>(),
-  proxy_url: <a href="#t:proxy_url/0">proxy_url</a>(),
-  url: <a href="#t:url/0">url</a>(),
-  width: <a href="#t:width/0">width</a>()
+          <pre>t() :: %Nostrum.Struct.Message.Reference{
+  channel_id: <a href="#t:channel_id/0">channel_id</a>(),
+  guild_id: <a href="#t:guild_id/0">guild_id</a>(),
+  message_id: <a href="#t:message_id/0">message_id</a>()
 }</pre>
       </div>
 
   </section>
-</section>
-<section class="detail" id="t:url/0">
-  <div class="detail-header">
-    <a href="#t:url/0" class="detail-link" title="Link to this type">
-      <span class="icon-link" aria-hidden="true"></span>
-      <span class="sr-only">Link to this type</span>
-    </a>
-    <h1 class="signature">url()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/embed/image.ex#L27" class="view-source" rel="help" title="View Source">
-       <span class="icon-code" aria-hidden="true"></span>
-       <span class="sr-only">View Source</span>
-     </a>
-  </div>
-
-  <section class="docstring">
-      <h2>Specs</h2>
-      <div class="specs">
-          <pre>url() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>() | nil</pre>
-      </div>
-
-<p>Image text</p>  </section>
-</section>
-<section class="detail" id="t:width/0">
-  <div class="detail-header">
-    <a href="#t:width/0" class="detail-link" title="Link to this type">
-      <span class="icon-link" aria-hidden="true"></span>
-      <span class="sr-only">Link to this type</span>
-    </a>
-    <h1 class="signature">width()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/embed/image.ex#L36" class="view-source" rel="help" title="View Source">
-       <span class="icon-code" aria-hidden="true"></span>
-       <span class="sr-only">View Source</span>
-     </a>
-  </div>
-
-  <section class="docstring">
-      <h2>Specs</h2>
-      <div class="specs">
-          <pre>width() :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>() | nil</pre>
-      </div>
-
-<p>Width of the image</p>  </section>
 </section>
           </div>
         </section>
