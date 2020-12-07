@@ -1416,6 +1416,10 @@ defmodule Nostrum.Api do
     (VIP only)
     * `:system_channel_id` (`t:Nostrum.Snowflake.t/0`) - the id of the
     channel to which system messages are sent
+    * `:rules_channel_id` (`t:Nostrum.Snowflake.t/0`) - the id of the channel that
+    is used for rules in public guilds
+    * `:public_updates_channel_id` (`t:Nostrum.Snowflake.t/0`) - the id of the channel
+    where admins and moderators receive notices from Discord in public guilds
 
   ## Examples
 

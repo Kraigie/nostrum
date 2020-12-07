@@ -29,6 +29,8 @@ defmodule Nostrum.Struct.Guild do
     :widget_enabled,
     :widget_channel_id,
     :system_channel_id,
+    :rules_channel_id,
+    :public_updates_channel_id,
     :joined_at,
     :large,
     :unavailable,
@@ -51,13 +53,13 @@ defmodule Nostrum.Struct.Guild do
   @type splash :: String.t() | nil
 
   @typedoc "The id of the guild owner"
-  @type owner_id :: Snowflake.t()
+  @type owner_id :: User.id()
 
   @typedoc "The id of the voice region"
   @type region :: String.t()
 
   @typedoc "The id of the guild's afk channel"
-  @type afk_channel_id :: Snowflake.t() | nil
+  @type afk_channel_id :: Channel.id() | nil
 
   @typedoc "The time someone must be afk before being moved"
   @type afk_timeout :: integer
@@ -66,7 +68,7 @@ defmodule Nostrum.Struct.Guild do
   @type embed_enabled :: boolean | nil
 
   @typedoc "The id of the embedded channel"
-  @type embed_channel_id :: Snowflake.t() | nil
+  @type embed_channel_id :: Channel.id() | nil
 
   @typedoc "The level of verification"
   @type verification_level :: integer
@@ -106,12 +108,24 @@ defmodule Nostrum.Struct.Guild do
   @typedoc """
   The channel id for the server widget.
   """
-  @type widget_channel_id :: Snowflake.t()
+  @type widget_channel_id :: Channel.id()
 
   @typedoc """
   The id of the channel to which system messages are sent.
   """
-  @type system_channel_id :: Snowflake.t() | nil
+  @type system_channel_id :: Channel.id() | nil
+
+  @typedoc """
+  The id of the channel that is used for rules. This is only available to guilds that
+  contain ``PUBLIC`` in `t:features/0`.
+  """
+  @type rules_channel_id :: Channel.id() | nil
+
+  @typedoc """
+  The id of the channel where admins and moderators receive notices from Discord. This
+  is only available to guilds that contain ``PUBLIC`` in `t:features/0`.
+  """
+  @type public_updates_channel_id :: Channel.id() | nil
 
   @typedoc "Date the bot user joined the guild"
   @type joined_at :: String.t() | nil
@@ -159,6 +173,8 @@ defmodule Nostrum.Struct.Guild do
           widget_enabled: nil,
           widget_channel_id: nil,
           system_channel_id: nil,
+          rules_channel_id: nil,
+          public_updates_channel_id: nil,
           joined_at: nil,
           large: nil,
           unavailable: nil,
@@ -193,6 +209,8 @@ defmodule Nostrum.Struct.Guild do
           widget_enabled: widget_enabled,
           widget_channel_id: widget_channel_id,
           system_channel_id: system_channel_id,
+          rules_channel_id: rules_channel_id,
+          public_updates_channel_id: public_updates_channel_id,
           joined_at: nil,
           large: nil,
           unavailable: nil,
@@ -227,6 +245,8 @@ defmodule Nostrum.Struct.Guild do
           widget_enabled: nil,
           widget_channel_id: nil,
           system_channel_id: nil,
+          rules_channel_id: nil,
+          public_updates_channel_id: nil,
           joined_at: nil,
           large: nil,
           unavailable: true,
@@ -261,6 +281,8 @@ defmodule Nostrum.Struct.Guild do
           widget_enabled: widget_enabled,
           widget_channel_id: widget_channel_id,
           system_channel_id: system_channel_id,
+          rules_channel_id: rules_channel_id,
+          public_updates_channel_id: public_updates_channel_id,
           joined_at: joined_at,
           large: large,
           unavailable: false,
@@ -348,6 +370,8 @@ defmodule Nostrum.Struct.Guild do
       |> Map.update(:application_id, nil, &Util.cast(&1, Snowflake))
       |> Map.update(:widget_channel_id, nil, &Util.cast(&1, Snowflake))
       |> Map.update(:system_channel_id, nil, &Util.cast(&1, Snowflake))
+      |> Map.update(:rules_channel_id, nil, &Util.cast(&1, Snowflake))
+      |> Map.update(:public_updates_channel_id, nil, &Util.cast(&1, Snowflake))
       |> Map.update(:members, nil, &Util.cast(&1, {:index, [:user, :id], {:struct, Member}}))
       |> Map.update(:channels, nil, &Util.cast(&1, {:index, [:id], {:struct, Channel}}))
 

@@ -23,6 +23,7 @@ defmodule Nostrum.Struct.Guild.Member do
 
   alias Nostrum.Permission
   alias Nostrum.Struct.{Channel, Guild, User}
+  alias Nostrum.Struct.Guild.Role
   alias Nostrum.{Snowflake, Util}
 
   defstruct [
@@ -48,7 +49,7 @@ defmodule Nostrum.Struct.Guild.Member do
   @type nick :: String.t() | nil
 
   @typedoc "A list of role ids"
-  @type roles :: [Snowflake.t()]
+  @type roles :: [Role.id()]
 
   @typedoc """
   Date the user joined the guild.

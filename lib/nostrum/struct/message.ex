@@ -3,8 +3,8 @@ defmodule Nostrum.Struct.Message do
   Struct representing a Discord message.
   """
 
-  alias Nostrum.Struct.{Embed, User}
-  alias Nostrum.Struct.Guild.Member
+  alias Nostrum.Struct.{Embed, Guild, User}
+  alias Nostrum.Struct.Guild.{Member, Role}
   alias Nostrum.Struct.Message.{Activity, Application, Attachment, Reaction, Reference}
   alias Nostrum.{Snowflake, Util}
 
@@ -38,10 +38,10 @@ defmodule Nostrum.Struct.Message do
   @type id :: Snowflake.t()
 
   @typedoc "The id of the guild"
-  @type guild_id :: Snowflake.t() | nil
+  @type guild_id :: Guild.id() | nil
 
   @typedoc "The id of the channel"
-  @type channel_id :: Snowflake.t()
+  @type channel_id :: Channel.id()
 
   @typedoc "The user struct of the author"
   @type author :: User.t()
@@ -65,7 +65,7 @@ defmodule Nostrum.Struct.Message do
   @type mentions :: [User.t()]
 
   @typedoc "List of roles ids mentioned in the message"
-  @type mention_roles :: [Snowflake.t()]
+  @type mention_roles :: [Role.id()]
 
   @typedoc "List of attached files in the message"
   @type attachments :: [Attachment.t()]
