@@ -8,7 +8,7 @@
     <meta name="project" content="Nostrum v0.4.5">
     <title>Nostrum.Struct.Guild — Nostrum v0.4.5</title>
     <link rel="stylesheet" href="dist/elixir-9f91ebe876dc01d67920.css" />
-    <script src="dist/sidebar_items-1787dee45a.js"></script>
+    <script src="dist/sidebar_items-6491bf425d.js"></script>
       <script src="docs_config.js"></script>
     <script async src="dist/app-60a0c9f10e9e52eae31f.js"></script>
   </head>
@@ -209,6 +209,13 @@ Nostrum      </a>
 </div>
 <div class="summary-row">
   <div class="summary-signature">
+    <a href="#t:public_updates_channel_id/0">public_updates_channel_id()</a>
+  </div>
+    <div class="summary-synopsis"><p>The id of the channel where admins and moderators receive notices from Discord. This
+is only available to guilds that contain <code class="inline">PUBLIC</code> in <a href="#t:features/0"><code class="inline">features/0</code></a>.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
     <a href="#t:region/0">region()</a>
   </div>
     <div class="summary-synopsis"><p>The id of the voice region</p></div>
@@ -224,6 +231,13 @@ Nostrum      </a>
     <a href="#t:roles/0">roles()</a>
   </div>
     <div class="summary-synopsis"><p>List of roles</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:rules_channel_id/0">rules_channel_id()</a>
+  </div>
+    <div class="summary-synopsis"><p>The id of the channel that is used for rules. This is only available to guilds that
+contain <code class="inline">PUBLIC</code> in <a href="#t:features/0"><code class="inline">features/0</code></a>.</p></div>
 </div>
 <div class="summary-row">
   <div class="summary-signature">
@@ -319,7 +333,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">afk_channel_id()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild.ex#L60" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild.ex#L62" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -328,7 +342,7 @@ Types          </h1>
   <section class="docstring">
       <h2>Specs</h2>
       <div class="specs">
-          <pre>afk_channel_id() :: <a href="Nostrum.Snowflake.html#t:t/0">Nostrum.Snowflake.t</a>() | nil</pre>
+          <pre>afk_channel_id() :: <a href="Nostrum.Struct.Channel.html#t:id/0">Nostrum.Struct.Channel.id</a>() | nil</pre>
       </div>
 
 <p>The id of the guild's afk channel</p>  </section>
@@ -340,7 +354,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">afk_timeout()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild.ex#L63" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild.ex#L65" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -361,7 +375,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">application_id()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild.ex#L99" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild.ex#L101" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -382,7 +396,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">available_guild()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild.ex#L242" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild.ex#L262" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -411,8 +425,10 @@ Types          </h1>
   mfa_level: <a href="#t:mfa_level/0">mfa_level</a>(),
   name: <a href="#t:name/0">name</a>(),
   owner_id: <a href="#t:owner_id/0">owner_id</a>(),
+  public_updates_channel_id: <a href="#t:public_updates_channel_id/0">public_updates_channel_id</a>(),
   region: <a href="#t:region/0">region</a>(),
   roles: <a href="#t:roles/0">roles</a>(),
+  rules_channel_id: <a href="#t:rules_channel_id/0">rules_channel_id</a>(),
   splash: <a href="#t:splash/0">splash</a>(),
   system_channel_id: <a href="#t:system_channel_id/0">system_channel_id</a>(),
   unavailable: false,
@@ -432,7 +448,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">channels()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild.ex#L135" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild.ex#L149" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -454,7 +470,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">default_message_notifications()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild.ex#L77" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild.ex#L79" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -475,7 +491,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">embed_channel_id()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild.ex#L69" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild.ex#L71" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -484,7 +500,7 @@ Types          </h1>
   <section class="docstring">
       <h2>Specs</h2>
       <div class="specs">
-          <pre>embed_channel_id() :: <a href="Nostrum.Snowflake.html#t:t/0">Nostrum.Snowflake.t</a>() | nil</pre>
+          <pre>embed_channel_id() :: <a href="Nostrum.Struct.Channel.html#t:id/0">Nostrum.Struct.Channel.id</a>() | nil</pre>
       </div>
 
 <p>The id of the embedded channel</p>  </section>
@@ -496,7 +512,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">embed_enabled()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild.ex#L66" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild.ex#L68" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -517,7 +533,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">emojis()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild.ex#L88" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild.ex#L90" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -538,7 +554,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">explicit_content_filter()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild.ex#L82" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild.ex#L84" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -559,7 +575,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">features()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild.ex#L91" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild.ex#L93" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -580,7 +596,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">icon()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild.ex#L48" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild.ex#L50" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -601,7 +617,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">id()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild.ex#L42" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild.ex#L44" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -622,7 +638,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">joined_at()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild.ex#L117" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild.ex#L131" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -643,7 +659,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">large()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild.ex#L120" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild.ex#L134" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -664,7 +680,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">member_count()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild.ex#L126" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild.ex#L140" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -685,7 +701,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">members()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild.ex#L132" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild.ex#L146" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -707,7 +723,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">mfa_level()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild.ex#L94" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild.ex#L96" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -728,7 +744,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">name()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild.ex#L45" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild.ex#L47" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -749,7 +765,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">owner_id()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild.ex#L54" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild.ex#L56" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -758,10 +774,32 @@ Types          </h1>
   <section class="docstring">
       <h2>Specs</h2>
       <div class="specs">
-          <pre>owner_id() :: <a href="Nostrum.Snowflake.html#t:t/0">Nostrum.Snowflake.t</a>()</pre>
+          <pre>owner_id() :: <a href="Nostrum.Struct.User.html#t:id/0">Nostrum.Struct.User.id</a>()</pre>
       </div>
 
 <p>The id of the guild owner</p>  </section>
+</section>
+<section class="detail" id="t:public_updates_channel_id/0">
+  <div class="detail-header">
+    <a href="#t:public_updates_channel_id/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">public_updates_channel_id()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild.ex#L128" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>public_updates_channel_id() :: <a href="Nostrum.Struct.Channel.html#t:id/0">Nostrum.Struct.Channel.id</a>() | nil</pre>
+      </div>
+
+<p>The id of the channel where admins and moderators receive notices from Discord. This
+is only available to guilds that contain <code class="inline">PUBLIC</code> in <a href="#t:features/0"><code class="inline">features/0</code></a>.</p>  </section>
 </section>
 <section class="detail" id="t:region/0">
   <div class="detail-header">
@@ -770,7 +808,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">region()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild.ex#L57" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild.ex#L59" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -791,7 +829,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">rest_guild()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild.ex#L174" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild.ex#L190" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -820,8 +858,10 @@ Types          </h1>
   mfa_level: <a href="#t:mfa_level/0">mfa_level</a>(),
   name: <a href="#t:name/0">name</a>(),
   owner_id: <a href="#t:owner_id/0">owner_id</a>(),
+  public_updates_channel_id: <a href="#t:public_updates_channel_id/0">public_updates_channel_id</a>(),
   region: <a href="#t:region/0">region</a>(),
   roles: <a href="#t:roles/0">roles</a>(),
+  rules_channel_id: <a href="#t:rules_channel_id/0">rules_channel_id</a>(),
   splash: <a href="#t:splash/0">splash</a>(),
   system_channel_id: <a href="#t:system_channel_id/0">system_channel_id</a>(),
   unavailable: nil,
@@ -841,7 +881,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">roles()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild.ex#L85" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild.ex#L87" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -857,6 +897,28 @@ Types          </h1>
 
 <p>List of roles</p>  </section>
 </section>
+<section class="detail" id="t:rules_channel_id/0">
+  <div class="detail-header">
+    <a href="#t:rules_channel_id/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">rules_channel_id()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild.ex#L122" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>rules_channel_id() :: <a href="Nostrum.Struct.Channel.html#t:id/0">Nostrum.Struct.Channel.id</a>() | nil</pre>
+      </div>
+
+<p>The id of the channel that is used for rules. This is only available to guilds that
+contain <code class="inline">PUBLIC</code> in <a href="#t:features/0"><code class="inline">features/0</code></a>.</p>  </section>
+</section>
 <section class="detail" id="t:splash/0">
   <div class="detail-header">
     <a href="#t:splash/0" class="detail-link" title="Link to this type">
@@ -864,7 +926,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">splash()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild.ex#L51" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild.ex#L53" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -885,7 +947,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">system_channel_id()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild.ex#L114" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild.ex#L116" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -894,7 +956,7 @@ Types          </h1>
   <section class="docstring">
       <h2>Specs</h2>
       <div class="specs">
-          <pre>system_channel_id() :: <a href="Nostrum.Snowflake.html#t:t/0">Nostrum.Snowflake.t</a>() | nil</pre>
+          <pre>system_channel_id() :: <a href="Nostrum.Struct.Channel.html#t:id/0">Nostrum.Struct.Channel.id</a>() | nil</pre>
       </div>
 
 <p>The id of the channel to which system messages are sent.</p>  </section>
@@ -906,7 +968,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">t()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild.ex#L273" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild.ex#L295" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -927,7 +989,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">unavailable()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild.ex#L123" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild.ex#L137" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -948,7 +1010,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">unavailable_guild()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild.ex#L208" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild.ex#L226" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -977,8 +1039,10 @@ Types          </h1>
   mfa_level: nil,
   name: nil,
   owner_id: nil,
+  public_updates_channel_id: nil,
   region: nil,
   roles: nil,
+  rules_channel_id: nil,
   splash: nil,
   system_channel_id: nil,
   unavailable: true,
@@ -998,7 +1062,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">user_guild()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild.ex#L140" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild.ex#L154" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1027,8 +1091,10 @@ Types          </h1>
   mfa_level: nil,
   name: <a href="#t:name/0">name</a>(),
   owner_id: nil,
+  public_updates_channel_id: nil,
   region: nil,
   roles: nil,
+  rules_channel_id: nil,
   splash: nil,
   system_channel_id: nil,
   unavailable: nil,
@@ -1048,7 +1114,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">verification_level()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild.ex#L72" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild.ex#L74" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1069,7 +1135,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">voice_states()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild.ex#L129" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild.ex#L143" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1090,7 +1156,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">widget_channel_id()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild.ex#L109" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild.ex#L111" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1099,7 +1165,7 @@ Types          </h1>
   <section class="docstring">
       <h2>Specs</h2>
       <div class="specs">
-          <pre>widget_channel_id() :: <a href="Nostrum.Snowflake.html#t:t/0">Nostrum.Snowflake.t</a>()</pre>
+          <pre>widget_channel_id() :: <a href="Nostrum.Struct.Channel.html#t:id/0">Nostrum.Struct.Channel.id</a>()</pre>
       </div>
 
 <p>The channel id for the server widget.</p>  </section>
@@ -1111,7 +1177,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">widget_enabled()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild.ex#L104" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild.ex#L106" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1143,7 +1209,7 @@ Functions          </h1>
       <span class="sr-only">Link to this function</span>
     </a>
     <h1 class="signature">icon_url(guild, image_format \\ &quot;webp&quot;)</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild.ex#L300" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild.ex#L322" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1178,7 +1244,7 @@ nil</code></pre>  </section>
       <span class="sr-only">Link to this function</span>
     </a>
     <h1 class="signature">splash_url(guild, image_format \\ &quot;webp&quot;)</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild.ex#L327" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild.ex#L349" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
