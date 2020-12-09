@@ -442,24 +442,26 @@ defmodule Nostrum.Struct.Embed do
       |> put_url(module.url(struct))
 
     embed =
-      if author = module.author(struct) do
-        put_author(embed, author.name, author.url, author.icon_url)
-      else
-        embed
+      case module.author(struct) do
+        %Author{} = author -> put_author(embed, author.name, author.url, author.icon_url)
+        nil -> embed
+        other -> raise "\"#{inspect(other)}\" is invalid for type author()"
       end
 
     embed =
-      if footer = module.footer(struct) do
-        put_footer(embed, footer.text, footer.icon_url)
-      else
-        embed
+      case module.footer(struct) do
+        %Footer{} = footer -> put_footer(embed, footer.text, footer.icon_url)
+        nil -> embed
+        other -> raise "\"#{inspect(other)}\" is invalid for type footer()"
       end
 
-    if fields = module.fields(struct) do
-      Enum.reduce(fields, embed, &put_field(&2, &1.name, &1.value, &1.inline))
-    else
-      embed
-    end
+    struct
+    |> module.fields()
+    |> List.wrap()
+    |> Enum.reduce(embed, fn
+      %Field{} = field, embed -> put_field(embed, field.name, field.value, field.inline)
+      other, _ -> raise "\"#{inspect(other)}\" is invalid for type fields()"
+    end)
   end
 
   # TODO: Jump down the rabbit hole
