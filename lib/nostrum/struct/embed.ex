@@ -423,7 +423,7 @@ defmodule Nostrum.Struct.Embed do
   end
 
   @doc """
-  Create an embed from a struct that implements the protocol `Nostrum.Struct.Embed.Protocol`.
+  Create an embed from a struct that implements the `Nostrum.Struct.Embed` behaviour
   """
   def from(%module{} = struct) do
     # checks if the struct implements the behaviour
