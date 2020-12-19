@@ -90,6 +90,23 @@ defmodule Nostrum.Constants do
 
   def application_information, do: "/oauth2/applications/@me"
 
+  def global_application_command(application_id, command_id),
+    do: "/applications/#{application_id}/commands/#{command_id}"
+
+  def global_application_commands(application_id), do: "/applications/#{application_id}/commands"
+
+  def guild_application_command(application_id, guild_id, command_id),
+    do: "/applications/#{application_id}/guilds/#{guild_id}/commands/#{command_id}"
+
+  def guild_application_commands(application_id, guild_id),
+    do: "/applications/#{application_id}/guilds/#{guild_id}/commands"
+
+  def interaction_callback(interaction_id, interaction_token),
+    do: "/interactions/#{interaction_id}/#{interaction_token}/callback"
+
+  def interaction_followup_message(application_id, interaction_token, message_id),
+    do: "/webhooks/#{application_id}/#{interaction_token}/#{message_id}"
+
   def channel_permissions(chanID), do: "/channels/#{chanID}/permissions"
   def channels, do: "/channels"
   def channel_call_ring(channel_id), do: "/channels/#{channel_id}/call/ring"
