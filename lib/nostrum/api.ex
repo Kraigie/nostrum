@@ -45,6 +45,7 @@ defmodule Nostrum.Api do
 
   import Nostrum.Snowflake, only: [is_snowflake: 1]
 
+  alias Nostrum.Cache.Me
   alias Nostrum.{Constants, Snowflake, Util}
   alias Nostrum.Struct.{Channel, Embed, Emoji, Guild, Interaction, Invite, Message, User, Webhook}
   alias Nostrum.Struct.Guild.{AuditLog, AuditLogEntry, Member, Role}
@@ -2404,7 +2405,7 @@ defmodule Nostrum.Api do
   @doc """
   Gets info on the current user.
 
-  If nostrum's caching is enabled, it is recommended to use `Nostrum.Cache.Me.get/0`
+  If nostrum's caching is enabled, it is recommended to use `Me.get/0`
   instead of this function. This is because sending out an API request is much slower
   than pulling from our cache.
 
@@ -2898,15 +2899,30 @@ defmodule Nostrum.Api do
 
   ## Parameters
   - `application_id`: Application ID for which to search commands.
-    If not given, this will be fetched from `Nostrum.Cache.Me`.
+    If not given, this will be fetched from `Me`.
 
   ## Return value
   A list of ``ApplicationCommand``s on success. See the official reference:
   https://discord.com/developers/docs/interactions/slash-commands#applicationcommand
+
+  ## Example
+
+  ```elixir
+  iex> Nostrum.Api.get_global_application_commands
+  {:ok,
+   [
+     %{
+       application_id: "455589479713865749",
+       description: "ed, man! man, ed",
+       id: "789841753196331029",
+       name: "edit"
+     }
+   ]}
+  ```
   """
   @spec get_global_application_commands() :: {:ok, [map()]} | error
   @spec get_global_application_commands(User.id()) :: {:ok, [map()]} | error
-  def get_global_application_commands(application_id \\ Nostrum.Cache.Me.get().id) do
+  def get_global_application_commands(application_id \\ Me.get().id) do
     request(:get, Constants.global_application_commands(application_id))
     |> handle_request_with_decode
   end
@@ -2921,16 +2937,24 @@ defmodule Nostrum.Api do
 
   ## Parameters
   - `application_id`: Application ID for which to create the command.
-    If not given, this will be fetched from `Nostrum.Cache.Me`.
+    If not given, this will be fetched from `Me`.
   - `command`: Command configuration, see the linked API documentation for reference.
 
   ## Return value
   The created command. See the official reference:
   https://discord.com/developers/docs/interactions/slash-commands#create-global-application-command
+
+  ## Example
+
+  ```elixir
+  Nostrum.Api.create_application_command(
+    %{name: "edit", description: "ed, man! man, ed", options: []}
+  )
+  ```
   """
   @spec create_global_application_command(map()) :: {:ok, map()} | error
   @spec create_global_application_command(User.id(), map()) :: {:ok, map()} | error
-  def create_global_application_command(application_id \\ Nostrum.Cache.Me.get().id, command) do
+  def create_global_application_command(application_id \\ Me.get().id, command) do
     request(:post, Constants.global_application_commands(application_id), command)
     |> handle_request_with_decode
   end
@@ -2942,7 +2966,7 @@ defmodule Nostrum.Api do
 
   ## Parameters
   - `application_id`: Application ID for which to edit the command.
-    If not given, this will be fetched from `Nostrum.Cache.Me`.
+    If not given, this will be fetched from `Me`.
   - `command_id`: The current snowflake of the command.
   - `command`: Command configuration, see the linked API documentation for reference.
 
@@ -2953,7 +2977,7 @@ defmodule Nostrum.Api do
   @spec edit_global_application_command(Snowflake.t(), map()) :: {:ok, map()} | error
   @spec edit_global_application_command(User.id(), Snowflake.t(), map()) :: {:ok, map()} | error
   def edit_global_application_command(
-        application_id \\ Nostrum.Cache.Me.get().id,
+        application_id \\ Me.get().id,
         command_id,
         command
       ) do
@@ -2966,12 +2990,12 @@ defmodule Nostrum.Api do
 
   ## Parameters
   - `application_id`: Application ID for which to create the command.
-    If not given, this will be fetched from `Nostrum.Cache.Me`.
+    If not given, this will be fetched from `Me`.
   - `command_id`: The current snowflake of the command.
   """
   @spec delete_global_application_command(Snowflake.t()) :: {:ok} | error
   @spec delete_global_application_command(User.id(), Snowflake.t()) :: {:ok} | error
-  def delete_global_application_command(application_id \\ Nostrum.Cache.Me.get().id, command_id) do
+  def delete_global_application_command(application_id \\ Me.get().id, command_id) do
     request(:delete, Constants.global_application_command(application_id, command_id))
   end
 
@@ -2980,7 +3004,7 @@ defmodule Nostrum.Api do
 
   ## Parameters
   - `application_id`: Application ID for which to fetch commands.
-    If not given, this will be fetched from `Nostrum.Cache.Me`.
+    If not given, this will be fetched from `Me`.
   - `guild_id`: The guild ID for which guild application commands
     should be requested.
 
@@ -2990,7 +3014,7 @@ defmodule Nostrum.Api do
   """
   @spec get_guild_application_commands(Guild.id()) :: {:ok, [map()]} | error
   @spec get_guild_application_commands(User.id(), Guild.id()) :: {:ok, [map()]} | error
-  def get_guild_application_commands(application_id \\ Nostrum.Cache.Me.get().id, guild_id) do
+  def get_guild_application_commands(application_id \\ Me.get().id, guild_id) do
     request(:get, Constants.guild_application_commands(application_id, guild_id))
     |> handle_request_with_decode
   end
@@ -3002,7 +3026,7 @@ defmodule Nostrum.Api do
 
   ## Parameters
   - `application_id`: Application ID for which to create the command.
-    If not given, this will be fetched from `Nostrum.Cache.Me`.
+    If not given, this will be fetched from `Me`.
   - `guild_id`: Guild on which to create the command.
   - `command`: Command configuration, see the linked API documentation for reference.
 
@@ -3013,7 +3037,7 @@ defmodule Nostrum.Api do
   @spec create_guild_application_command(Guild.id(), map()) :: {:ok, map()} | error
   @spec create_guild_application_command(User.id(), Guild.id(), map()) :: {:ok, map()} | error
   def create_guild_application_command(
-        application_id \\ Nostrum.Cache.Me.get().id,
+        application_id \\ Me.get().id,
         guild_id,
         command
       ) do
@@ -3028,7 +3052,7 @@ defmodule Nostrum.Api do
 
   ## Parameters
   - `application_id`: Application ID for which to edit the command.
-    If not given, this will be fetched from `Nostrum.Cache.Me`.
+    If not given, this will be fetched from `Me`.
   - `guild_id`: Guild for which to update the command.
   - `command_id`: The current snowflake of the command.
   - `command`: Command configuration, see the linked API documentation for reference.
@@ -3041,7 +3065,7 @@ defmodule Nostrum.Api do
   @spec edit_guild_application_command(User.id(), Guild.id(), Snowflake.t(), map()) ::
           {:ok, map()} | error
   def edit_guild_application_command(
-        application_id \\ Nostrum.Cache.Me.get().id,
+        application_id \\ Me.get().id,
         guild_id,
         command_id,
         command
@@ -3059,14 +3083,14 @@ defmodule Nostrum.Api do
 
   ## Parameters
   - `application_id`: Application ID for which to create the command.
-    If not given, this will be fetched from `Nostrum.Cache.Me`.
+    If not given, this will be fetched from `Me`.
   - `guild_id`: The guild on which the command exists.
   - `command_id`: The current snowflake of the command.
   """
   @spec delete_guild_application_command(Guild.id(), Snowflake.t()) :: {:ok} | error
   @spec delete_guild_application_command(User.id(), Guild.id(), Snowflake.t()) :: {:ok} | error
   def delete_guild_application_command(
-        application_id \\ Nostrum.Cache.Me.get().id,
+        application_id \\ Me.get().id,
         guild_id,
         command_id
       ) do
@@ -3116,7 +3140,7 @@ defmodule Nostrum.Api do
   """
   @spec create_followup_message(Interaction.token(), map()) :: {:ok} | error
   @spec create_followup_message(User.id(), Interaction.token(), map()) :: {:ok} | error
-  def create_followup_message(application_id \\ Nostrum.Cache.Me.get().id, token, webhook_payload) do
+  def create_followup_message(application_id \\ Me.get().id, token, webhook_payload) do
     execute_webhook(application_id, token, webhook_payload)
   end
 
@@ -3125,7 +3149,7 @@ defmodule Nostrum.Api do
 
   ## Parameters
   - `application_id`: Application ID for which to create the command.
-    If not given, this will be fetched from `Nostrum.Cache.Me`.
+    If not given, this will be fetched from `Me`.
   - `token`: Interaction token.
   - `message_id`: Followup message ID.
   """
@@ -3133,7 +3157,7 @@ defmodule Nostrum.Api do
   @spec delete_interaction_followup_message(User.id(), Interaction.token(), Message.id()) ::
           {:ok} | error
   def delete_interaction_followup_message(
-        application_id \\ Nostrum.Cache.Me.get().id,
+        application_id \\ Me.get().id,
         token,
         message_id
       ) do

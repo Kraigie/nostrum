@@ -72,8 +72,6 @@ defmodule Nostrum.Struct.Interaction do
   @doc false
   @spec to_struct(Map.t()) :: __MODULE__.t()
   def to_struct(map) do
-    IO.inspect(map, label: "Interaction.to_struct/1")
-
     new =
       map
       |> Map.new(fn {k, v} -> {Util.maybe_to_atom(k), v} end)
