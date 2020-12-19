@@ -3121,6 +3121,18 @@ defmodule Nostrum.Api do
   - `response`: An [`InteractionResponse`](https://discord.com/developers/docs/interactions/slash-commands#interaction-interaction-response)
     object. See the linked documentation.
 
+  ## Example
+
+  ```elixir
+  response = %{
+    type: 4,
+    data: %{
+      content: "I copy and pasted this code."
+    }
+  }
+  Nostrum.Api.create_interaction_response(interaction, response)
+  ```
+
   As an alternative to passing the interaction ID and token, the
   original `t:Nostrum.Struct.Interaction.t/0` can also be passed
   directly. See `create_interaction_response/1`.
