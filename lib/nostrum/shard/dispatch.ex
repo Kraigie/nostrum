@@ -4,7 +4,7 @@ defmodule Nostrum.Shard.Dispatch do
   alias Nostrum.Cache.{ChannelCache, PresenceCache, UserCache}
   alias Nostrum.Cache.Guild.GuildServer
   alias Nostrum.Cache.Me
-  alias Nostrum.Shard.{Session, Intents}
+  alias Nostrum.Shard.{Intents, Session}
 
   alias Nostrum.Struct.Event.{
     InviteCreate,
