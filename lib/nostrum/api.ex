@@ -164,6 +164,7 @@ defmodule Nostrum.Api do
       * `:body` (string) - binary you wish to send
     * `:embed` (`t:Nostrum.Struct.Embed.t/0`) - embedded rich content
     * `:allowed_mentions` - See "Allowed mentions" below
+    * `:message_reference` (`map`) - See "Message references" below
 
     At least one of the following is required: `:content`, `:file`, `:embed`.
 
@@ -181,6 +182,26 @@ defmodule Nostrum.Api do
     * `{:user, list}` - Allows to ping list of users. Can contain up to 100 ids of users.
     * `{:role, list}` - Allows to ping list of roles. Can contain up to 100 ids of roles.
     * list - a list containing the values above.
+
+  ### Message reference
+
+  You can create a reply to another message on guilds using this option, given
+  that you have the ``VIEW_MESSAGE_HISTORY`` permission. To do so, include the
+  ``message_reference`` field in your call. The complete structure
+  documentation can be found [on the Discord Developer
+  Portal](https://discord.com/developers/docs/resources/channel#message-object-message-reference-structure),
+  but simply passing ``message_id`` will suffice:
+
+  ```elixir
+  def my_command(msg) do
+    # Reply to the author - ``msg`` is a ``Nostrum.Struct.Message``
+    Nostrum.Api.create_message(
+      msg.channel_id,
+      content: "Hello",
+      message_reference: %{message_id: msg.id}
+    )
+  end
+  ```
 
   Passing a list will merge the settings provided
 
@@ -1395,6 +1416,10 @@ defmodule Nostrum.Api do
     (VIP only)
     * `:system_channel_id` (`t:Nostrum.Snowflake.t/0`) - the id of the
     channel to which system messages are sent
+    * `:rules_channel_id` (`t:Nostrum.Snowflake.t/0`) - the id of the channel that
+    is used for rules in public guilds
+    * `:public_updates_channel_id` (`t:Nostrum.Snowflake.t/0`) - the id of the channel
+    where admins and moderators receive notices from Discord in public guilds
 
   ## Examples
 

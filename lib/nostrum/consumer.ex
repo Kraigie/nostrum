@@ -23,7 +23,6 @@ defmodule Nostrum.Consumer do
   alias Nostrum.Shard.Stage.Cache
   alias Nostrum.Struct.{Channel, WSState}
   alias Nostrum.Struct.Event.{MessageDelete, MessageDeleteBulk, SpeakingUpdate}
-  alias Nostrum.Util
 
   @doc """
   Callback used to handle events.
@@ -241,28 +240,21 @@ defmodule Nostrum.Consumer do
   `mod` is the name of the module where you define your event callbacks, which should probably be
   the current module which you can get with `__MODULE__`.
 
-  `options` is a list of general process options. See `t:Nostrum.Consumer.options/0` for more info.
+  `opts` is a list of general process options. See `t:Nostrum.Consumer.options/0` for more info.
   """
   @spec start_link(module, options) :: Supervisor.on_start()
-  def start_link(mod, options \\ [])
+  def start_link(mod, opts \\ []) do
+    {mod_and_opts, cs_opts} =
+      case Keyword.pop(opts, :name) do
+        {nil, mod_opts} -> {[mod, mod_opts], []}
+        {cs_name, mod_opts} -> {[mod, mod_opts], [name: cs_name]}
+      end
 
-  def start_link(mod, [name: name] = options) do
-    ConsumerSupervisor.start_link(
-      __MODULE__,
-      [mod, Keyword.drop(options, [:name])],
-      name: name
-    )
+    ConsumerSupervisor.start_link(__MODULE__, mod_and_opts, cs_opts)
   end
 
-  def start_link(mod, options),
-    do:
-      ConsumerSupervisor.start_link(
-        __MODULE__,
-        [mod, options]
-      )
-
   @doc false
-  def init([mod, opt]) do
+  def init([mod, opts]) do
     default = [strategy: :one_for_one, subscribe_to: [Cache]]
 
     ConsumerSupervisor.init(
@@ -273,7 +265,7 @@ defmodule Nostrum.Consumer do
           restart: :transient
         }
       ],
-      Keyword.merge(default, opt)
+      Keyword.merge(default, opts)
     )
   end
 end

@@ -3,9 +3,9 @@ defmodule Nostrum.Struct.Message do
   Struct representing a Discord message.
   """
 
-  alias Nostrum.Struct.{Embed, User}
-  alias Nostrum.Struct.Guild.Member
-  alias Nostrum.Struct.Message.{Activity, Application, Attachment, Reaction}
+  alias Nostrum.Struct.{Embed, Guild, User}
+  alias Nostrum.Struct.Guild.{Member, Role}
+  alias Nostrum.Struct.Message.{Activity, Application, Attachment, Reaction, Reference}
   alias Nostrum.{Snowflake, Util}
 
   defstruct [
@@ -23,9 +23,11 @@ defmodule Nostrum.Struct.Message do
     :mention_everyone,
     :mention_roles,
     :mentions,
+    :message_reference,
     :nonce,
     :pinned,
     :reactions,
+    :referenced_message,
     :timestamp,
     :tts,
     :type,
@@ -36,10 +38,10 @@ defmodule Nostrum.Struct.Message do
   @type id :: Snowflake.t()
 
   @typedoc "The id of the guild"
-  @type guild_id :: Snowflake.t() | nil
+  @type guild_id :: Guild.id() | nil
 
   @typedoc "The id of the channel"
-  @type channel_id :: Snowflake.t()
+  @type channel_id :: Channel.id()
 
   @typedoc "The user struct of the author"
   @type author :: User.t()
@@ -63,7 +65,7 @@ defmodule Nostrum.Struct.Message do
   @type mentions :: [User.t()]
 
   @typedoc "List of roles ids mentioned in the message"
-  @type mention_roles :: [Snowflake.t()]
+  @type mention_roles :: [Role.id()]
 
   @typedoc "List of attached files in the message"
   @type attachments :: [Attachment.t()]
@@ -107,6 +109,20 @@ defmodule Nostrum.Struct.Message do
   """
   @type member :: Member.t() | nil
 
+  @typedoc """
+  Reference data sent with crossposted messages and replies
+  """
+  @type message_reference :: Reference.t() | nil
+
+  @typedoc """
+  The message associated with the message_reference
+
+  This field is only returned for messages with a type of 19 (REPLY). If the message is a reply but the
+  referenced_message field is not present, the backend did not attempt to fetch the message that was being replied to,
+  so its state is unknown. If the field exists but is null, the referenced message was deleted.
+  """
+  @type referenced_message :: t() | nil
+
   @type t :: %__MODULE__{
           activity: activity,
           application: application,
@@ -122,9 +138,11 @@ defmodule Nostrum.Struct.Message do
           mention_everyone: mention_everyone,
           mention_roles: mention_roles,
           mentions: mentions,
+          message_reference: message_reference,
           nonce: nonce,
           pinned: pinned,
           reactions: reactions,
+          referenced_message: referenced_message,
           timestamp: timestamp,
           tts: tts,
           type: type,
@@ -159,6 +177,8 @@ defmodule Nostrum.Struct.Message do
       |> Map.update(:activity, nil, &Util.cast(&1, {:struct, Activity}))
       |> Map.update(:application, nil, &Util.cast(&1, {:struct, Application}))
       |> Map.update(:member, nil, &Util.cast(&1, {:struct, Member}))
+      |> Map.update(:message_reference, nil, &Util.cast(&1, {:struct, Reference}))
+      |> Map.update(:referenced_message, nil, &Util.cast(&1, {:struct, __MODULE__}))
 
     struct(__MODULE__, new)
   end
