@@ -119,7 +119,7 @@ defmodule Nostrum.Shard.Dispatch do
     intents_should_request? = has_members and not has_presences
     large_server? = guild.member_count >= @large_threshold
 
-    should_request? = (large_server? or intents_should_request?)
+    should_request? = large_server? or intents_should_request?
 
     if should_request? and Application.get_env(:nostrum, :request_guild_members, false) do
       Session.request_guild_members(state.conn_pid, guild.id)
