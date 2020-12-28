@@ -59,11 +59,13 @@ defmodule Nostrum.Voice.Event do
 
   def handle(:client_connect, payload, state) do
     Logger.debug(fn ->
+      user_id = payload.d.user_id |> String.to_integer()
+
       "Voice client connected: #{
-        payload.d.user_id
-        |> String.to_integer()
-        |> UserCache.get!()
-        |> Map.get(:username)
+        case UserCache.get(user_id) do
+          {:ok, user} -> Map.get(user, :username)
+          _ -> user_id
+        end
       }"
     end)
 
@@ -72,11 +74,13 @@ defmodule Nostrum.Voice.Event do
 
   def handle(:client_disconnect, payload, state) do
     Logger.debug(fn ->
+      user_id = payload.d.user_id |> String.to_integer()
+
       "Voice client disconnected: #{
-        payload.d.user_id
-        |> String.to_integer()
-        |> UserCache.get!()
-        |> Map.get(:username)
+        case UserCache.get(user_id) do
+          {:ok, user} -> Map.get(user, :username)
+          _ -> user_id
+        end
       }"
     end)
 

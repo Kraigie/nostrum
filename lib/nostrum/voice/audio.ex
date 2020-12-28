@@ -148,6 +148,7 @@ defmodule Nostrum.Voice.Audio do
       Porcelain.spawn(
         Application.get_env(:nostrum, :ffmpeg, "ffmpeg"),
         [
+          ["-re"],
           ["-i", input_url],
           ["-ac", "2"],
           ["-ar", "48000"],
