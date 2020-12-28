@@ -2440,7 +2440,7 @@ defmodule Nostrum.Api do
   Nostrum.Api.modify_current_user(avatar: "data:image/jpeg;base64,YXl5IGJieSB1IGx1a2luIDQgc3VtIGZ1az8=")
   ```
   """
-  @spec modify_current_user(keyword | map) :: error | {:ok, User.t()}
+  @spec modify_current_user(options) :: error | {:ok, User.t()}
   def modify_current_user(options)
 
   def modify_current_user(options) when is_list(options),
@@ -2454,7 +2454,7 @@ defmodule Nostrum.Api do
   @doc """
   Same as `modify_current_user/1`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
-  @spec modify_current_user!(keyword | map) :: no_return | User.t()
+  @spec modify_current_user!(options) :: no_return | User.t()
   def modify_current_user!(options) do
     modify_current_user(options)
     |> bangify
