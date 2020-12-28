@@ -113,8 +113,8 @@ defmodule Nostrum.Shard.Dispatch do
       :ets.insert(:channel_guild_map, {channel.id, guild.id})
     end)
 
-    has_members = (Intents.get_enabled_intents() &&& 1 <<< 1) == 1 <<< 1
-    has_presences = (Intents.get_enabled_intents() &&& 1 <<< 8) == 1 <<< 8
+    has_members = Intents.has_intent?(:guild_members)
+    has_presences = Intents.has_intent?(:guild_presences)
 
     intents_should_request? = has_members and not has_presences
     large_server? = guild.member_count >= @large_threshold

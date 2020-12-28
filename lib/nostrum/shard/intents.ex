@@ -55,4 +55,12 @@ defmodule Nostrum.Shard.Intents do
       end
     end)
   end
+
+  @spec has_intent?(atom()) :: boolean
+  def has_intent?(requested_intent) do
+    enabled_integer = get_enabled_intents()
+    intent_integer = intent_values()[requested_intent]
+
+    (enabled_integer &&& intent_integer) == intent_integer
+  end
 end
