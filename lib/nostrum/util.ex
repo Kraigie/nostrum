@@ -4,6 +4,8 @@ defmodule Nostrum.Util do
   """
 
   alias Nostrum.{Api, Constants, Snowflake}
+  alias Nostrum.Shard.Session
+  alias Nostrum.Struct.WSState
 
   require Logger
 
@@ -238,6 +240,38 @@ defmodule Nostrum.Util do
        :fullsweep_after_default,
        :erlang.system_info(:fullsweep_after) |> elem(1)
      )}
+  end
+
+  @doc """
+  Gets the latency of the shard connection from a `Nostrum.Struct.WSState.t()` struct.
+
+  Returns the latency in milliseconds as an integer, returning nil if unknown.
+  """
+  @spec get_shard_latency(WSState.t()) :: non_neg_integer | nil
+  def get_shard_latency(%WSState{last_heartbeat_ack: nil}), do: nil
+
+  def get_shard_latency(%WSState{last_heartbeat_send: nil}), do: nil
+
+  def get_shard_latency(%WSState{} = state) do
+    latency = DateTime.diff(state.last_heartbeat_ack, state.last_heartbeat_send, :millisecond)
+    max(0, latency + if(latency < 0, do: state.heartbeat_interval, else: 0))
+  end
+
+  @doc """
+  Gets the latencies of all shard connections.
+
+  Calls `get_shard_latency/1` on all shards and returns a map whose keys are
+  shard nums and whose values are latencies in milliseconds.
+  """
+  @spec get_all_shard_latencies :: %{WSState.shard_num() => non_neg_integer | nil}
+  def get_all_shard_latencies do
+    ShardSupervisor
+    |> Supervisor.which_children()
+    |> Enum.filter(fn {_id, _pid, _type, [modules]} -> modules == Nostrum.Shard end)
+    |> Enum.map(fn {_id, pid, _type, _modules} -> Supervisor.which_children(pid) end)
+    |> List.flatten()
+    |> Enum.map(fn {_id, pid, _type, _modules} -> Session.get_ws_state(pid) end)
+    |> Enum.reduce(%{}, fn s, m -> Map.put(m, s.shard_num, get_shard_latency(s)) end)
   end
 
   @doc """
