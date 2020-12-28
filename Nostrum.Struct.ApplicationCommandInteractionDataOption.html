@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="ExDoc v0.23.0">
     <meta name="project" content="Nostrum v0.4.5">
-    <title>Nostrum.Struct.Embed.Provider — Nostrum v0.4.5</title>
+    <title>Nostrum.Struct.ApplicationCommandInteractionDataOption — Nostrum v0.4.5</title>
     <link rel="stylesheet" href="dist/elixir-9f91ebe876dc01d67920.css" />
     <script src="dist/sidebar_items-59210649a1.js"></script>
       <script src="docs_config.js"></script>
@@ -64,8 +64,8 @@ Nostrum      </a>
     <div id="content" class="content-inner">
 
       <h1>
-        Nostrum.Struct.Embed.Provider <small class="app-vsn">(Nostrum v0.4.5)</small>
-          <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/embed/provider.ex#L1" title="View Source" class="view-source" rel="help">
+        Nostrum.Struct.ApplicationCommandInteractionDataOption <small class="app-vsn">(Nostrum v0.4.5)</small>
+          <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/application_command_interaction_data_option.ex#L1" title="View Source" class="view-source" rel="help">
             <span class="icon-code" aria-hidden="true"></span>
             <span class="sr-only">View Source</span>
           </a>
@@ -73,7 +73,7 @@ Nostrum      </a>
 
 
         <section id="moduledoc">
-<p>Struct representing a Discord embed provider.</p>        </section>
+<p>Struct for command invocation arguments.</p>        </section>
 
         <section id="summary" class="details-list">
           <h1 class="section-heading">
@@ -91,18 +91,25 @@ Nostrum      </a>
   <div class="summary-signature">
     <a href="#t:name/0">name()</a>
   </div>
-    <div class="summary-synopsis"><p>Name of the provider</p></div>
+    <div class="summary-synopsis"><p>Parameter name</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:options/0">options()</a>
+  </div>
+    <div class="summary-synopsis"><p>Parameter options for subcommands.</p></div>
 </div>
 <div class="summary-row">
   <div class="summary-signature">
     <a href="#t:t/0">t()</a>
   </div>
+    <div class="summary-synopsis"><p>Command interaction data struct</p></div>
 </div>
 <div class="summary-row">
   <div class="summary-signature">
-    <a href="#t:url/0">url()</a>
+    <a href="#t:value/0">value()</a>
   </div>
-    <div class="summary-synopsis"><p>URL of provider</p></div>
+    <div class="summary-synopsis"><p>Parameter value.</p></div>
 </div>
   </div>
         </section>
@@ -122,7 +129,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">name()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/embed/provider.ex#L25" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/application_command_interaction_data_option.ex#L11" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -131,10 +138,31 @@ Types          </h1>
   <section class="docstring">
       <h2>Specs</h2>
       <div class="specs">
-          <pre>name() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>() | nil</pre>
+          <pre>name() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()</pre>
       </div>
 
-<p>Name of the provider</p>  </section>
+<p>Parameter name</p>  </section>
+</section>
+<section class="detail" id="t:options/0">
+  <div class="detail-header">
+    <a href="#t:options/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">options()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/application_command_interaction_data_option.ex#L26" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>options() :: [<a href="#t:t/0">Nostrum.Struct.ApplicationCommandInteractionDataOption.t</a>()] | nil</pre>
+      </div>
+
+<p>Parameter options for subcommands.</p><p>Mutually exclusive with <code class="inline">value</code>.</p>  </section>
 </section>
 <section class="detail" id="t:t/0">
   <div class="detail-header">
@@ -143,7 +171,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">t()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/embed/provider.ex#L30" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/application_command_interaction_data_option.ex#L29" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -152,19 +180,23 @@ Types          </h1>
   <section class="docstring">
       <h2>Specs</h2>
       <div class="specs">
-          <pre>t() :: %Nostrum.Struct.Embed.Provider{name: <a href="#t:name/0">name</a>(), url: <a href="#t:url/0">url</a>()}</pre>
+          <pre>t() :: %Nostrum.Struct.ApplicationCommandInteractionDataOption{
+  name: <a href="#t:name/0">name</a>(),
+  options: <a href="#t:options/0">options</a>(),
+  value: <a href="#t:value/0">value</a>()
+}</pre>
       </div>
 
-  </section>
+<p>Command interaction data struct</p>  </section>
 </section>
-<section class="detail" id="t:url/0">
+<section class="detail" id="t:value/0">
   <div class="detail-header">
-    <a href="#t:url/0" class="detail-link" title="Link to this type">
+    <a href="#t:value/0" class="detail-link" title="Link to this type">
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature">url()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/embed/provider.ex#L28" class="view-source" rel="help" title="View Source">
+    <h1 class="signature">value()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/application_command_interaction_data_option.ex#L19" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -173,10 +205,10 @@ Types          </h1>
   <section class="docstring">
       <h2>Specs</h2>
       <div class="specs">
-          <pre>url() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>() | nil</pre>
+          <pre>value() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>() | nil</pre>
       </div>
 
-<p>URL of provider</p>  </section>
+<p>Parameter value.</p><p>Mutually exclusive with <code class="inline">options</code>.</p>  </section>
 </section>
           </div>
         </section>

@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="ExDoc v0.23.0">
     <meta name="project" content="Nostrum v0.4.5">
-    <title>Nostrum.Struct.Message.Attachment — Nostrum v0.4.5</title>
+    <title>Nostrum.Struct.ApplicationCommandInteractionData — Nostrum v0.4.5</title>
     <link rel="stylesheet" href="dist/elixir-9f91ebe876dc01d67920.css" />
     <script src="dist/sidebar_items-59210649a1.js"></script>
       <script src="docs_config.js"></script>
@@ -64,8 +64,8 @@ Nostrum      </a>
     <div id="content" class="content-inner">
 
       <h1>
-        Nostrum.Struct.Message.Attachment <small class="app-vsn">(Nostrum v0.4.5)</small>
-          <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/message/attachment.ex#L1" title="View Source" class="view-source" rel="help">
+        Nostrum.Struct.ApplicationCommandInteractionData <small class="app-vsn">(Nostrum v0.4.5)</small>
+          <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/application_command_interaction_data.ex#L1" title="View Source" class="view-source" rel="help">
             <span class="icon-code" aria-hidden="true"></span>
             <span class="sr-only">View Source</span>
           </a>
@@ -73,7 +73,7 @@ Nostrum      </a>
 
 
         <section id="moduledoc">
-<p>Struct representing a Discord message attachment.</p>        </section>
+<p>Struct for interaction data.</p>        </section>
 
         <section id="summary" class="details-list">
           <h1 class="section-heading">
@@ -89,50 +89,27 @@ Nostrum      </a>
     </h2>
 <div class="summary-row">
   <div class="summary-signature">
-    <a href="#t:filename/0">filename()</a>
-  </div>
-    <div class="summary-synopsis"><p>Name of attached file</p></div>
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#t:height/0">height()</a>
-  </div>
-    <div class="summary-synopsis"><p>Height of the file (if image)</p></div>
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
     <a href="#t:id/0">id()</a>
   </div>
-    <div class="summary-synopsis"><p>Attachment id</p></div>
+    <div class="summary-synopsis"><p>ID of the invoked command</p></div>
 </div>
 <div class="summary-row">
   <div class="summary-signature">
-    <a href="#t:proxy_url/0">proxy_url()</a>
+    <a href="#t:name/0">name()</a>
   </div>
-    <div class="summary-synopsis"><p>Proxy url of the file</p></div>
+    <div class="summary-synopsis"><p>Name of the invoked command</p></div>
 </div>
 <div class="summary-row">
   <div class="summary-signature">
-    <a href="#t:size/0">size()</a>
+    <a href="#t:options/0">options()</a>
   </div>
-    <div class="summary-synopsis"><p>Size of the file in bytes</p></div>
+    <div class="summary-synopsis"><p>Parameters and values supplied by the user, if applicable</p></div>
 </div>
 <div class="summary-row">
   <div class="summary-signature">
     <a href="#t:t/0">t()</a>
   </div>
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#t:url/0">url()</a>
-  </div>
-    <div class="summary-synopsis"><p>Source url of the file</p></div>
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#t:width/0">width()</a>
-  </div>
-    <div class="summary-synopsis"><p>Width of the file (if image)</p></div>
+    <div class="summary-synopsis"><p>Command interaction data for slash commands.</p></div>
 </div>
   </div>
         </section>
@@ -145,48 +122,6 @@ Nostrum      </a>
             </a>
 Types          </h1>
           <div class="types-list">
-<section class="detail" id="t:filename/0">
-  <div class="detail-header">
-    <a href="#t:filename/0" class="detail-link" title="Link to this type">
-      <span class="icon-link" aria-hidden="true"></span>
-      <span class="sr-only">Link to this type</span>
-    </a>
-    <h1 class="signature">filename()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/message/attachment.ex#L22" class="view-source" rel="help" title="View Source">
-       <span class="icon-code" aria-hidden="true"></span>
-       <span class="sr-only">View Source</span>
-     </a>
-  </div>
-
-  <section class="docstring">
-      <h2>Specs</h2>
-      <div class="specs">
-          <pre>filename() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()</pre>
-      </div>
-
-<p>Name of attached file</p>  </section>
-</section>
-<section class="detail" id="t:height/0">
-  <div class="detail-header">
-    <a href="#t:height/0" class="detail-link" title="Link to this type">
-      <span class="icon-link" aria-hidden="true"></span>
-      <span class="sr-only">Link to this type</span>
-    </a>
-    <h1 class="signature">height()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/message/attachment.ex#L34" class="view-source" rel="help" title="View Source">
-       <span class="icon-code" aria-hidden="true"></span>
-       <span class="sr-only">View Source</span>
-     </a>
-  </div>
-
-  <section class="docstring">
-      <h2>Specs</h2>
-      <div class="specs">
-          <pre>height() :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>() | nil</pre>
-      </div>
-
-<p>Height of the file (if image)</p>  </section>
-</section>
 <section class="detail" id="t:id/0">
   <div class="detail-header">
     <a href="#t:id/0" class="detail-link" title="Link to this type">
@@ -194,7 +129,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">id()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/message/attachment.ex#L19" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/application_command_interaction_data.ex#L11" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -206,16 +141,16 @@ Types          </h1>
           <pre>id() :: <a href="Nostrum.Snowflake.html#t:t/0">Nostrum.Snowflake.t</a>()</pre>
       </div>
 
-<p>Attachment id</p>  </section>
+<p>ID of the invoked command</p>  </section>
 </section>
-<section class="detail" id="t:proxy_url/0">
+<section class="detail" id="t:name/0">
   <div class="detail-header">
-    <a href="#t:proxy_url/0" class="detail-link" title="Link to this type">
+    <a href="#t:name/0" class="detail-link" title="Link to this type">
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature">proxy_url()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/message/attachment.ex#L31" class="view-source" rel="help" title="View Source">
+    <h1 class="signature">name()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/application_command_interaction_data.ex#L14" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -224,19 +159,19 @@ Types          </h1>
   <section class="docstring">
       <h2>Specs</h2>
       <div class="specs">
-          <pre>proxy_url() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()</pre>
+          <pre>name() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()</pre>
       </div>
 
-<p>Proxy url of the file</p>  </section>
+<p>Name of the invoked command</p>  </section>
 </section>
-<section class="detail" id="t:size/0">
+<section class="detail" id="t:options/0">
   <div class="detail-header">
-    <a href="#t:size/0" class="detail-link" title="Link to this type">
+    <a href="#t:options/0" class="detail-link" title="Link to this type">
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature">size()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/message/attachment.ex#L25" class="view-source" rel="help" title="View Source">
+    <h1 class="signature">options()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/application_command_interaction_data.ex#L17" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -245,10 +180,10 @@ Types          </h1>
   <section class="docstring">
       <h2>Specs</h2>
       <div class="specs">
-          <pre>size() :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>()</pre>
+          <pre>options() :: <a href="Nostrum.Struct.ApplicationCommandInteractionDataOption.html#t:t/0">Nostrum.Struct.ApplicationCommandInteractionDataOption.t</a>() | nil</pre>
       </div>
 
-<p>Size of the file in bytes</p>  </section>
+<p>Parameters and values supplied by the user, if applicable</p>  </section>
 </section>
 <section class="detail" id="t:t/0">
   <div class="detail-header">
@@ -257,7 +192,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">t()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/message/attachment.ex#L39" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/application_command_interaction_data.ex#L27" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -266,60 +201,15 @@ Types          </h1>
   <section class="docstring">
       <h2>Specs</h2>
       <div class="specs">
-          <pre>t() :: %Nostrum.Struct.Message.Attachment{
-  filename: <a href="#t:filename/0">filename</a>(),
-  height: <a href="#t:height/0">height</a>(),
+          <pre>t() :: %Nostrum.Struct.ApplicationCommandInteractionData{
   id: <a href="#t:id/0">id</a>(),
-  proxy_url: <a href="#t:proxy_url/0">proxy_url</a>(),
-  size: <a href="#t:size/0">size</a>(),
-  url: <a href="#t:url/0">url</a>(),
-  width: <a href="#t:width/0">width</a>()
+  name: <a href="#t:name/0">name</a>(),
+  options: <a href="#t:options/0">options</a>()
 }</pre>
       </div>
 
-  </section>
-</section>
-<section class="detail" id="t:url/0">
-  <div class="detail-header">
-    <a href="#t:url/0" class="detail-link" title="Link to this type">
-      <span class="icon-link" aria-hidden="true"></span>
-      <span class="sr-only">Link to this type</span>
-    </a>
-    <h1 class="signature">url()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/message/attachment.ex#L28" class="view-source" rel="help" title="View Source">
-       <span class="icon-code" aria-hidden="true"></span>
-       <span class="sr-only">View Source</span>
-     </a>
-  </div>
-
-  <section class="docstring">
-      <h2>Specs</h2>
-      <div class="specs">
-          <pre>url() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()</pre>
-      </div>
-
-<p>Source url of the file</p>  </section>
-</section>
-<section class="detail" id="t:width/0">
-  <div class="detail-header">
-    <a href="#t:width/0" class="detail-link" title="Link to this type">
-      <span class="icon-link" aria-hidden="true"></span>
-      <span class="sr-only">Link to this type</span>
-    </a>
-    <h1 class="signature">width()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/message/attachment.ex#L37" class="view-source" rel="help" title="View Source">
-       <span class="icon-code" aria-hidden="true"></span>
-       <span class="sr-only">View Source</span>
-     </a>
-  </div>
-
-  <section class="docstring">
-      <h2>Specs</h2>
-      <div class="specs">
-          <pre>width() :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>() | nil</pre>
-      </div>
-
-<p>Width of the file (if image)</p>  </section>
+<p>Command interaction data for slash commands.</p><p>Used as part of <a href="Nostrum.Struct.Interaction.html#t:t/0"><code class="inline">Nostrum.Struct.Interaction.t/0</code></a>.</p><p>Official reference:
+<a href="https://discord.com/developers/docs/interactions/slash-commands#interaction-applicationcommandinteractiondata">https://discord.com/developers/docs/interactions/slash-commands#interaction-applicationcommandinteractiondata</a></p>  </section>
 </section>
           </div>
         </section>
