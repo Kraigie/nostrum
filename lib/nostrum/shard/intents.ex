@@ -31,7 +31,7 @@ defmodule Nostrum.Shard.Intents do
 
   @spec get_enabled_intents :: integer()
   def get_enabled_intents do
-    # If no intents are passed in config, default to all being enabled.
+    # If no intents are passed in config, default to non-privileged being enabled.
     enabled_intents = Application.get_env(:nostrum, :gateway_intents, :nonprivileged)
 
     case enabled_intents do
@@ -54,5 +54,13 @@ defmodule Nostrum.Shard.Intents do
         value -> intents ||| value
       end
     end)
+  end
+
+  @spec has_intent?(atom()) :: boolean
+  def has_intent?(requested_intent) do
+    enabled_integer = get_enabled_intents()
+    intent_integer = intent_values()[requested_intent]
+
+    (enabled_integer &&& intent_integer) == intent_integer
   end
 end

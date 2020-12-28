@@ -4,7 +4,7 @@ defmodule Nostrum.Shard.Dispatch do
   alias Nostrum.Cache.{ChannelCache, PresenceCache, UserCache}
   alias Nostrum.Cache.Guild.GuildServer
   alias Nostrum.Cache.Me
-  alias Nostrum.Shard.Session
+  alias Nostrum.Shard.{Intents, Session}
 
   alias Nostrum.Struct.Event.{
     InviteCreate,
@@ -21,6 +21,8 @@ defmodule Nostrum.Shard.Dispatch do
   alias Nostrum.Voice.Session, as: VoiceSession
 
   require Logger
+
+  import Bitwise
 
   @large_threshold 250
 
@@ -111,8 +113,15 @@ defmodule Nostrum.Shard.Dispatch do
       :ets.insert(:channel_guild_map, {channel.id, guild.id})
     end)
 
-    if guild.member_count >= @large_threshold and
-         Application.get_env(:nostrum, :request_guild_members, false) do
+    has_members = Intents.has_intent?(:guild_members)
+    has_presences = Intents.has_intent?(:guild_presences)
+
+    intents_should_request? = has_members and not has_presences
+    large_server? = guild.member_count >= @large_threshold
+
+    should_request? = large_server? or intents_should_request?
+
+    if should_request? and Application.get_env(:nostrum, :request_guild_members, false) do
       Session.request_guild_members(state.conn_pid, guild.id)
     end
 
