@@ -14,7 +14,7 @@ defmodule Nostrum.Shard.Dispatch do
     SpeakingUpdate
   }
 
-  alias Nostrum.Struct.{Guild, Message, User}
+  alias Nostrum.Struct.{Guild, Interaction, Message, User}
   alias Nostrum.Struct.Guild.UnavailableGuild
   alias Nostrum.Util
   alias Nostrum.Voice
@@ -294,6 +294,10 @@ defmodule Nostrum.Shard.Dispatch do
   end
 
   def handle_event(:WEBHOOKS_UPDATE = event, p, state), do: {event, p, state}
+
+  def handle_event(:INTERACTION_CREATE = event, p, state) do
+    {event, Interaction.to_struct(p), state}
+  end
 
   def handle_event(event, p, state) do
     Logger.warn("UNHANDLED GATEWAY DISPATCH EVENT TYPE: #{event}, #{inspect(p)}")

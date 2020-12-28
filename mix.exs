@@ -50,7 +50,8 @@ defmodule Nostrum.Mixfile do
       "docs/static/Events.md",
       "docs/static/Consumers.md",
       "docs/static/Voice.md",
-      "docs/static/Gateway Intents.md"
+      "docs/static/Gateway Intents.md",
+      "docs/static/Slash commands.md"
     ]
   end
 

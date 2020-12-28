@@ -45,8 +45,9 @@ defmodule Nostrum.Api do
 
   import Nostrum.Snowflake, only: [is_snowflake: 1]
 
+  alias Nostrum.Cache.Me
   alias Nostrum.{Constants, Snowflake, Util}
-  alias Nostrum.Struct.{Channel, Embed, Emoji, Guild, Invite, Message, User, Webhook}
+  alias Nostrum.Struct.{Channel, Embed, Emoji, Guild, Interaction, Invite, Message, User, Webhook}
   alias Nostrum.Struct.Guild.{AuditLog, AuditLogEntry, Member, Role}
   alias Nostrum.Shard.{Session, Supervisor}
 
@@ -2404,7 +2405,7 @@ defmodule Nostrum.Api do
   @doc """
   Gets info on the current user.
 
-  If nostrum's caching is enabled, it is recommended to use `Nostrum.Cache.Me.get/0`
+  If nostrum's caching is enabled, it is recommended to use `Me.get/0`
   instead of this function. This is because sending out an API request is much slower
   than pulling from our cache.
 
@@ -2891,6 +2892,288 @@ defmodule Nostrum.Api do
   def get_application_information do
     request(:get, Constants.application_information())
     |> handle_request_with_decode
+  end
+
+  @doc """
+  Fetch all global commands.
+
+  ## Parameters
+  - `application_id`: Application ID for which to search commands.
+    If not given, this will be fetched from `Me`.
+
+  ## Return value
+  A list of ``ApplicationCommand``s on success. See the official reference:
+  https://discord.com/developers/docs/interactions/slash-commands#applicationcommand
+
+  ## Example
+
+  ```elixir
+  iex> Nostrum.Api.get_global_application_commands
+  {:ok,
+   [
+     %{
+       application_id: "455589479713865749",
+       description: "ed, man! man, ed",
+       id: "789841753196331029",
+       name: "edit"
+     }
+   ]}
+  ```
+  """
+  @spec get_global_application_commands() :: {:ok, [map()]} | error
+  @spec get_global_application_commands(User.id()) :: {:ok, [map()]} | error
+  def get_global_application_commands(application_id \\ Me.get().id) do
+    request(:get, Constants.global_application_commands(application_id))
+    |> handle_request_with_decode
+  end
+
+  @doc """
+  Create a new global application command.
+
+  The new command will be available on all guilds in around an hour.
+  If you want to test commands, use `create_guild_application_command/2` instead,
+  as commands will become available instantly there.
+  If an existing command with the same name exists, it will be overwritten.
+
+  ## Parameters
+  - `application_id`: Application ID for which to create the command.
+    If not given, this will be fetched from `Me`.
+  - `command`: Command configuration, see the linked API documentation for reference.
+
+  ## Return value
+  The created command. See the official reference:
+  https://discord.com/developers/docs/interactions/slash-commands#create-global-application-command
+
+  ## Example
+
+  ```elixir
+  Nostrum.Api.create_application_command(
+    %{name: "edit", description: "ed, man! man, ed", options: []}
+  )
+  ```
+  """
+  @spec create_global_application_command(map()) :: {:ok, map()} | error
+  @spec create_global_application_command(User.id(), map()) :: {:ok, map()} | error
+  def create_global_application_command(application_id \\ Me.get().id, command) do
+    request(:post, Constants.global_application_commands(application_id), command)
+    |> handle_request_with_decode
+  end
+
+  @doc """
+  Update an existing global application command.
+
+  The updated command will be available on all guilds in around an hour.
+
+  ## Parameters
+  - `application_id`: Application ID for which to edit the command.
+    If not given, this will be fetched from `Me`.
+  - `command_id`: The current snowflake of the command.
+  - `command`: Command configuration, see the linked API documentation for reference.
+
+  ## Return value
+  The updated command. See the official reference:
+  https://discord.com/developers/docs/interactions/slash-commands#edit-global-application-command
+  """
+  @spec edit_global_application_command(Snowflake.t(), map()) :: {:ok, map()} | error
+  @spec edit_global_application_command(User.id(), Snowflake.t(), map()) :: {:ok, map()} | error
+  def edit_global_application_command(
+        application_id \\ Me.get().id,
+        command_id,
+        command
+      ) do
+    request(:patch, Constants.global_application_command(application_id, command_id), command)
+    |> handle_request_with_decode
+  end
+
+  @doc """
+  Delete an existing global application command.
+
+  ## Parameters
+  - `application_id`: Application ID for which to create the command.
+    If not given, this will be fetched from `Me`.
+  - `command_id`: The current snowflake of the command.
+  """
+  @spec delete_global_application_command(Snowflake.t()) :: {:ok} | error
+  @spec delete_global_application_command(User.id(), Snowflake.t()) :: {:ok} | error
+  def delete_global_application_command(application_id \\ Me.get().id, command_id) do
+    request(:delete, Constants.global_application_command(application_id, command_id))
+  end
+
+  @doc """
+  Fetch all guild application commands for the given guild.
+
+  ## Parameters
+  - `application_id`: Application ID for which to fetch commands.
+    If not given, this will be fetched from `Me`.
+  - `guild_id`: The guild ID for which guild application commands
+    should be requested.
+
+  ## Return value
+  A list of ``ApplicationCommand``s on success. See the official reference:
+  https://discord.com/developers/docs/interactions/slash-commands#applicationcommand
+  """
+  @spec get_guild_application_commands(Guild.id()) :: {:ok, [map()]} | error
+  @spec get_guild_application_commands(User.id(), Guild.id()) :: {:ok, [map()]} | error
+  def get_guild_application_commands(application_id \\ Me.get().id, guild_id) do
+    request(:get, Constants.guild_application_commands(application_id, guild_id))
+    |> handle_request_with_decode
+  end
+
+  @doc """
+  Create a guild application command on the specified guild.
+
+  The new command will be available immediately.
+
+  ## Parameters
+  - `application_id`: Application ID for which to create the command.
+    If not given, this will be fetched from `Me`.
+  - `guild_id`: Guild on which to create the command.
+  - `command`: Command configuration, see the linked API documentation for reference.
+
+  ## Return value
+  The created command. See the official reference:
+  https://discord.com/developers/docs/interactions/slash-commands#create-guild-application-command
+  """
+  @spec create_guild_application_command(Guild.id(), map()) :: {:ok, map()} | error
+  @spec create_guild_application_command(User.id(), Guild.id(), map()) :: {:ok, map()} | error
+  def create_guild_application_command(
+        application_id \\ Me.get().id,
+        guild_id,
+        command
+      ) do
+    request(:post, Constants.guild_application_commands(application_id, guild_id), command)
+    |> handle_request_with_decode
+  end
+
+  @doc """
+  Update an existing guild application command.
+
+  The updated command will be available immediately.
+
+  ## Parameters
+  - `application_id`: Application ID for which to edit the command.
+    If not given, this will be fetched from `Me`.
+  - `guild_id`: Guild for which to update the command.
+  - `command_id`: The current snowflake of the command.
+  - `command`: Command configuration, see the linked API documentation for reference.
+
+  ## Return value
+  The updated command. See the official reference:
+  https://discord.com/developers/docs/interactions/slash-commands#edit-guild-application-command
+  """
+  @spec edit_guild_application_command(Guild.id(), Snowflake.t(), map()) :: {:ok, map()} | error
+  @spec edit_guild_application_command(User.id(), Guild.id(), Snowflake.t(), map()) ::
+          {:ok, map()} | error
+  def edit_guild_application_command(
+        application_id \\ Me.get().id,
+        guild_id,
+        command_id,
+        command
+      ) do
+    request(
+      :patch,
+      Constants.guild_application_command(application_id, guild_id, command_id),
+      command
+    )
+    |> handle_request_with_decode
+  end
+
+  @doc """
+  Delete an existing guild application command.
+
+  ## Parameters
+  - `application_id`: Application ID for which to create the command.
+    If not given, this will be fetched from `Me`.
+  - `guild_id`: The guild on which the command exists.
+  - `command_id`: The current snowflake of the command.
+  """
+  @spec delete_guild_application_command(Guild.id(), Snowflake.t()) :: {:ok} | error
+  @spec delete_guild_application_command(User.id(), Guild.id(), Snowflake.t()) :: {:ok} | error
+  def delete_guild_application_command(
+        application_id \\ Me.get().id,
+        guild_id,
+        command_id
+      ) do
+    request(:delete, Constants.guild_application_command(application_id, guild_id, command_id))
+  end
+
+  # Why the two separate functions here?
+  # For the standard use case of "responding to an interaction retrieved
+  # from the gateway", `create_interaction_response/2` is perfectly
+  # sufficient. However, when one, for instance, uses Nostrum in a web
+  # service, or wants to respond to interactions at a later point in time,
+  # we do not want the user to manually have to reconstruct interactions.
+  @doc """
+  Same as `create_interaction_response/3`, but directly takes the
+  `t:Nostrum.Struct.Interaction.t/0` received from the gateway.
+  """
+  @spec create_interaction_response(Interaction.t(), map()) :: {:ok} | error
+  def create_interaction_response(interaction, response) do
+    create_interaction_response(interaction.id, interaction.token, response)
+  end
+
+  @doc """
+  Create a response to an interaction received from the gateway.
+
+  ## Parameters
+  - `id`: The interaction ID to which the response should be created.
+  - `token`: The interaction token.
+  - `response`: An [`InteractionResponse`](https://discord.com/developers/docs/interactions/slash-commands#interaction-interaction-response)
+    object. See the linked documentation.
+
+  ## Example
+
+  ```elixir
+  response = %{
+    type: 4,
+    data: %{
+      content: "I copy and pasted this code."
+    }
+  }
+  Nostrum.Api.create_interaction_response(interaction, response)
+  ```
+
+  As an alternative to passing the interaction ID and token, the
+  original `t:Nostrum.Struct.Interaction.t/0` can also be passed
+  directly. See `create_interaction_response/1`.
+  """
+  @spec create_interaction_response(Interaction.id(), Interaction.token(), map()) :: {:ok} | error
+  def create_interaction_response(id, token, response) do
+    request(:post, Constants.interaction_callback(id, token), response)
+  end
+
+  # edit original interaction response is purposefully not implemented
+  # at the moment, waiting for "edit webhook message" first
+
+  @doc """
+  Create a followup message for an interaction.
+
+  Delegates to ``execute_webhook/3``, see the function for more details.
+  """
+  @spec create_followup_message(Interaction.token(), map()) :: {:ok} | error
+  @spec create_followup_message(User.id(), Interaction.token(), map()) :: {:ok} | error
+  def create_followup_message(application_id \\ Me.get().id, token, webhook_payload) do
+    execute_webhook(application_id, token, webhook_payload)
+  end
+
+  @doc """
+  Delete a followup message for an interaction.
+
+  ## Parameters
+  - `application_id`: Application ID for which to create the command.
+    If not given, this will be fetched from `Me`.
+  - `token`: Interaction token.
+  - `message_id`: Followup message ID.
+  """
+  @spec delete_interaction_followup_message(Interaction.token(), Message.id()) :: {:ok} | error
+  @spec delete_interaction_followup_message(User.id(), Interaction.token(), Message.id()) ::
+          {:ok} | error
+  def delete_interaction_followup_message(
+        application_id \\ Me.get().id,
+        token,
+        message_id
+      ) do
+    request(:delete, Constants.interaction_followup_message(application_id, token, message_id))
   end
 
   @spec maybe_add_reason(String.t() | nil) :: list()
