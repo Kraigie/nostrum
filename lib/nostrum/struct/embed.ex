@@ -296,6 +296,10 @@ defmodule Nostrum.Struct.Embed do
   ```
   """
   @spec put_image(t, Image.url()) :: t
+  def put_image(%__MODULE__{} = embed, nil) do
+    %__MODULE__{embed | image: nil}
+  end
+
   def put_image(%__MODULE__{} = embed, url) do
     image = %Image{
       url: url
@@ -320,6 +324,10 @@ defmodule Nostrum.Struct.Embed do
   ```
   """
   @spec put_thumbnail(t, Thumbnail.url()) :: t
+  def put_thumbnail(%__MODULE__{} = embed, nil) do
+    %__MODULE__{embed | thumbnail: nil}
+  end
+
   def put_thumbnail(%__MODULE__{} = embed, url) do
     thumbnail = %Thumbnail{
       url: url
