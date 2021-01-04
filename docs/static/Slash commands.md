@@ -118,7 +118,7 @@ that you would use for regular commands.
 
 ## Responding to interactions
 
-To respond to interactions, use ``Nostrum.Api.create_interaction_response/2-3``:
+To respond to interactions, use ``Nostrum.Api.create_interaction_response/2``:
 
 ```elixir
 defp manage_role(%Interaction{data: %{options: [%{value: role_id}, %{value: "assign"}]}} = interaction) do
