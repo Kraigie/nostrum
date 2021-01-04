@@ -31,6 +31,49 @@ defmodule Nostrum.Struct.Embed do
     ]
   }
   ```
+
+  ## Using structs
+
+  You can also create `Nostrum.Struct.Embed`s from structs, by using the
+  `Nostrum.Struct.Embed` module. Here's how the example above could be build using structs
+
+  ```Elixir
+    defmodule MyApp.MyStruct do
+      use Nostrum.Struct.Embed
+
+      defstruct []
+
+      def title(_), do: "craig"
+      def description(_), do: "nostrum"
+      def url(_), do: "https://google.com/"
+      def timestamp(_), do: "2016-05-05T21:04:13.203Z"
+      def color(_), do: 431_948
+
+      def fields(_) do
+        [
+          %Nostrum.Struct.Embed.Field{name: "Field 1", value: "Test"},
+          %Nostrum.Struct.Embed.Field{name: "Field 2", value: "More test", inline: true}
+        ]
+      end
+    end
+
+  iex> Nostrum.Struct.Embed.from(%MyApp.MyStruct{})
+  %Nostrum.Struct.Embed{
+    title: "craig",
+    description: "nostrum",
+    url: "https://google.com/",
+    timestamp: "2016-05-05T21:04:13.203Z",
+    color: 431_948,
+    fields: [
+      %Nostrum.Struct.Embed.Field{name: "Field 1", value: "Test"},
+      %Nostrum.Struct.Embed.Field{name: "Field 2", value: "More test", inline: true}
+    ]
+  }
+  ```
+  See this modules callbacks for a list of all the functions that can be implemented.
+
+  The implementation of these callbacks is optional. Not implemented functions will simply
+  be ignored.
   """
 
   alias Nostrum.Struct.Embed.{Author, Field, Footer, Image, Provider, Thumbnail, Video}
