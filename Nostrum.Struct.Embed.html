@@ -8,7 +8,7 @@
     <meta name="project" content="Nostrum v0.4.5">
     <title>Nostrum.Struct.Embed — Nostrum v0.4.5</title>
     <link rel="stylesheet" href="dist/elixir-9f91ebe876dc01d67920.css" />
-    <script src="dist/sidebar_items-59210649a1.js"></script>
+    <script src="dist/sidebar_items-18be5a95a2.js"></script>
       <script src="docs_config.js"></script>
     <script async src="dist/app-60a0c9f10e9e52eae31f.js"></script>
   </head>
@@ -64,7 +64,7 @@ Nostrum      </a>
     <div id="content" class="content-inner">
 
       <h1>
-        Nostrum.Struct.Embed <small class="app-vsn">(Nostrum v0.4.5)</small>
+        Nostrum.Struct.Embed <small>behaviour</small> <small class="app-vsn">(Nostrum v0.4.5)</small>
           <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L1" title="View Source" class="view-source" rel="help">
             <span class="icon-code" aria-hidden="true"></span>
             <span class="sr-only">View Source</span>
@@ -99,7 +99,43 @@ or standard <a href="https://hexdocs.pm/elixir/Map.html"><code class="inline">Ma
     %Nostrum.Struct.Embed.Field{name: &quot;Field 1&quot;, value: &quot;Test&quot;},
     %Nostrum.Struct.Embed.Field{name: &quot;Field 2&quot;, value: &quot;More test&quot;, inline: true}
   ]
-}</code></pre>        </section>
+}</code></pre><h2 id="module-using-structs" class="section-heading">
+  <a href="#module-using-structs" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Using structs
+</h2>
+<p>You can also create <a href="#content"><code class="inline">Nostrum.Struct.Embed</code></a>s from structs, by using the
+<a href="#content"><code class="inline">Nostrum.Struct.Embed</code></a> module. Here's how the example above could be build using structs</p><pre><code class="Elixir">  defmodule MyApp.MyStruct do
+    use Nostrum.Struct.Embed
+
+    defstruct []
+
+    def title(_), do: &quot;craig&quot;
+    def description(_), do: &quot;nostrum&quot;
+    def url(_), do: &quot;https://google.com/&quot;
+    def timestamp(_), do: &quot;2016-05-05T21:04:13.203Z&quot;
+    def color(_), do: 431_948
+
+    def fields(_) do
+      [
+        %Nostrum.Struct.Embed.Field{name: &quot;Field 1&quot;, value: &quot;Test&quot;},
+        %Nostrum.Struct.Embed.Field{name: &quot;Field 2&quot;, value: &quot;More test&quot;, inline: true}
+      ]
+    end
+  end
+
+iex&gt; Nostrum.Struct.Embed.from(%MyApp.MyStruct{})
+%Nostrum.Struct.Embed{
+  title: &quot;craig&quot;,
+  description: &quot;nostrum&quot;,
+  url: &quot;https://google.com/&quot;,
+  timestamp: &quot;2016-05-05T21:04:13.203Z&quot;,
+  color: 431_948,
+  fields: [
+    %Nostrum.Struct.Embed.Field{name: &quot;Field 1&quot;, value: &quot;Test&quot;},
+    %Nostrum.Struct.Embed.Field{name: &quot;Field 2&quot;, value: &quot;More test&quot;, inline: true}
+  ]
+}</code></pre><p>See this modules callbacks for a list of all the functions that can be implemented.</p><p>The implementation of these callbacks is optional. Not implemented functions will simply
+be ignored.</p>        </section>
 
         <section id="summary" class="details-list">
           <h1 class="section-heading">
@@ -203,6 +239,12 @@ or standard <a href="https://hexdocs.pm/elixir/Map.html"><code class="inline">Ma
     </h2>
 <div class="summary-row">
   <div class="summary-signature">
+    <a href="#from/1">from(struct)</a>
+  </div>
+    <div class="summary-synopsis"><p>Create an embed from a struct that implements the <a href="#content"><code class="inline">Nostrum.Struct.Embed</code></a> behaviour</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
     <a href="#put_author/4">put_author(embed, name, url, icon_url)</a>
   </div>
     <div class="summary-synopsis"><p>Puts a <a href="Nostrum.Struct.Embed.Author.html"><code class="inline">Nostrum.Struct.Embed.Author</code></a> under <code class="inline">:author</code> in <code class="inline">embed</code>.</p></div>
@@ -262,6 +304,61 @@ or standard <a href="https://hexdocs.pm/elixir/Map.html"><code class="inline">Ma
     <div class="summary-synopsis"><p>Puts the given <code class="inline">value</code> under <code class="inline">:url</code> in <code class="inline">embed</code>.</p></div>
 </div>
   </div>
+  <div class="summary-callbacks summary">
+    <h2>
+      <a href="#callbacks">Callbacks</a>
+    </h2>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#c:author/1">author(struct)</a>
+  </div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#c:color/1">color(struct)</a>
+  </div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#c:description/1">description(struct)</a>
+  </div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#c:fields/1">fields(struct)</a>
+  </div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#c:footer/1">footer(struct)</a>
+  </div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#c:image/1">image(struct)</a>
+  </div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#c:thumbnail/1">thumbnail(struct)</a>
+  </div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#c:timestamp/1">timestamp(struct)</a>
+  </div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#c:title/1">title(struct)</a>
+  </div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#c:url/1">url(struct)</a>
+  </div>
+</div>
+  </div>
         </section>
 
         <section id="types" class="details-list">
@@ -279,7 +376,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">author()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L100" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L143" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -300,7 +397,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">color()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L82" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L125" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -321,7 +418,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">description()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L73" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L116" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -342,7 +439,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">fields()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L103" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L146" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -363,7 +460,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">footer()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L85" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L128" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -384,7 +481,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">image()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L88" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L131" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -405,7 +502,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">provider()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L97" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L140" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -426,7 +523,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">t()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L105" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L148" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -461,7 +558,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">thumbnail()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L91" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L134" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -482,7 +579,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">timestamp()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L79" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L122" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -503,7 +600,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">title()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L67" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L110" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -524,7 +621,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">type()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L70" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L113" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -545,7 +642,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">url()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L76" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L119" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -566,7 +663,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">video()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L94" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L137" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -590,6 +687,23 @@ Types          </h1>
             </a>
 Functions          </h1>
           <div class="functions-list">
+<section class="detail" id="from/1">
+  <div class="detail-header">
+    <a href="#from/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">from(struct)</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L479" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+
+<p>Create an embed from a struct that implements the <a href="#content"><code class="inline">Nostrum.Struct.Embed</code></a> behaviour</p>  </section>
+</section>
 <section class="detail" id="put_author/4">
   <div class="detail-header">
     <a href="#put_author/4" class="detail-link" title="Link to this function">
@@ -597,7 +711,7 @@ Functions          </h1>
       <span class="sr-only">Link to this function</span>
     </a>
     <h1 class="signature">put_author(embed, name, url, icon_url)</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L329" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L421" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -635,7 +749,7 @@ Functions          </h1>
       <span class="sr-only">Link to this function</span>
     </a>
     <h1 class="signature">put_color(embed, value)</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L203" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L287" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -662,7 +776,7 @@ Functions          </h1>
       <span class="sr-only">Link to this function</span>
     </a>
     <h1 class="signature">put_description(embed, value)</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L155" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L239" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -690,7 +804,7 @@ Functions          </h1>
       <span class="sr-only">Link to this function</span>
     </a>
     <h1 class="signature">put_field(embed, name, value, inline \\ nil)</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L368" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L460" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -740,7 +854,7 @@ iex&gt; embed = %Nostrum.Struct.Embed{
       <span class="sr-only">Link to this function</span>
     </a>
     <h1 class="signature">put_footer(embed, text, icon_url \\ nil)</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L233" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L317" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -785,7 +899,7 @@ iex&gt; embed = %Nostrum.Struct.Embed{}
       <span class="sr-only">Link to this function</span>
     </a>
     <h1 class="signature">put_image(embed, url)</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L258" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L342" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -816,7 +930,7 @@ iex&gt; embed = %Nostrum.Struct.Embed{}
       <span class="sr-only">Link to this function</span>
     </a>
     <h1 class="signature">put_thumbnail(embed, url)</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L282" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L370" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -847,7 +961,7 @@ iex&gt; embed = %Nostrum.Struct.Embed{}
       <span class="sr-only">Link to this function</span>
     </a>
     <h1 class="signature">put_timestamp(embed, value)</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L187" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L271" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -863,9 +977,9 @@ iex&gt; embed = %Nostrum.Struct.Embed{}
   <a href="#put_timestamp/2-examples" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
   Examples
 </h2>
-<pre><code class="nohighlight makeup elixir"><span class="gp unselectable">iex&gt; </span><span class="n">embed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="6606421415-1">%</span><span class="nc" data-group-id="6606421415-1">Nostrum.Struct.Embed</span><span class="p" data-group-id="6606421415-1">{</span><span class="p" data-group-id="6606421415-1">}</span><span class="w">
-</span><span class="gp unselectable">...&gt; </span><span class="nc">Nostrum.Struct.Embed</span><span class="o">.</span><span class="n">put_timestamp</span><span class="p" data-group-id="6606421415-2">(</span><span class="n">embed</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;2018-04-21T17:33:51.893000Z&quot;</span><span class="p" data-group-id="6606421415-2">)</span><span class="w">
-</span><span class="p" data-group-id="6606421415-3">%</span><span class="nc" data-group-id="6606421415-3">Nostrum.Struct.Embed</span><span class="p" data-group-id="6606421415-3">{</span><span class="ss">timestamp</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;2018-04-21T17:33:51.893000Z&quot;</span><span class="p" data-group-id="6606421415-3">}</span></code></pre>  </section>
+<pre><code class="nohighlight makeup elixir"><span class="gp unselectable">iex&gt; </span><span class="n">embed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="6950112402-1">%</span><span class="nc" data-group-id="6950112402-1">Nostrum.Struct.Embed</span><span class="p" data-group-id="6950112402-1">{</span><span class="p" data-group-id="6950112402-1">}</span><span class="w">
+</span><span class="gp unselectable">...&gt; </span><span class="nc">Nostrum.Struct.Embed</span><span class="o">.</span><span class="n">put_timestamp</span><span class="p" data-group-id="6950112402-2">(</span><span class="n">embed</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;2018-04-21T17:33:51.893000Z&quot;</span><span class="p" data-group-id="6950112402-2">)</span><span class="w">
+</span><span class="p" data-group-id="6950112402-3">%</span><span class="nc" data-group-id="6950112402-3">Nostrum.Struct.Embed</span><span class="p" data-group-id="6950112402-3">{</span><span class="ss">timestamp</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;2018-04-21T17:33:51.893000Z&quot;</span><span class="p" data-group-id="6950112402-3">}</span></code></pre>  </section>
 </section>
 <section class="detail" id="put_title/2">
   <div class="detail-header">
@@ -874,7 +988,7 @@ iex&gt; embed = %Nostrum.Struct.Embed{}
       <span class="sr-only">Link to this function</span>
     </a>
     <h1 class="signature">put_title(embed, value)</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L133" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L217" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -901,7 +1015,7 @@ iex&gt; embed = %Nostrum.Struct.Embed{}
       <span class="sr-only">Link to this function</span>
     </a>
     <h1 class="signature">put_url(embed, value)</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L171" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L255" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -920,6 +1034,226 @@ iex&gt; embed = %Nostrum.Struct.Embed{}
 <pre><code class="Elixir">iex&gt; embed = %Nostrum.Struct.Embed{}
 ...&gt; Nostrum.Struct.Embed.put_url(embed, &quot;https://github.com/Kraigie/nostrum&quot;)
 %Nostrum.Struct.Embed{url: &quot;https://github.com/Kraigie/nostrum&quot;}</code></pre>  </section>
+</section>
+          </div>
+        </section>
+        <section id="callbacks" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#callbacks">
+              <span class="icon-link" aria-hidden="true"></span>
+              <span class="sr-only">Link to this section</span>
+            </a>
+Callbacks          </h1>
+          <div class="callbacks-list">
+<section class="detail" id="c:author/1">
+  <div class="detail-header">
+    <a href="#c:author/1" class="detail-link" title="Link to this callback">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this callback</span>
+    </a>
+    <h1 class="signature">author(struct)</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L164" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>author(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">struct</a>()) :: <a href="#t:author/0">author</a>()</pre>
+      </div>
+
+  </section>
+</section>
+<section class="detail" id="c:color/1">
+  <div class="detail-header">
+    <a href="#c:color/1" class="detail-link" title="Link to this callback">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this callback</span>
+    </a>
+    <h1 class="signature">color(struct)</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L165" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>color(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">struct</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>() | nil</pre>
+      </div>
+
+  </section>
+</section>
+<section class="detail" id="c:description/1">
+  <div class="detail-header">
+    <a href="#c:description/1" class="detail-link" title="Link to this callback">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this callback</span>
+    </a>
+    <h1 class="signature">description(struct)</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L167" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>description(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">struct</a>()) :: <a href="#t:description/0">description</a>()</pre>
+      </div>
+
+  </section>
+</section>
+<section class="detail" id="c:fields/1">
+  <div class="detail-header">
+    <a href="#c:fields/1" class="detail-link" title="Link to this callback">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this callback</span>
+    </a>
+    <h1 class="signature">fields(struct)</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L166" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>fields(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">struct</a>()) :: <a href="#t:fields/0">fields</a>()</pre>
+      </div>
+
+  </section>
+</section>
+<section class="detail" id="c:footer/1">
+  <div class="detail-header">
+    <a href="#c:footer/1" class="detail-link" title="Link to this callback">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this callback</span>
+    </a>
+    <h1 class="signature">footer(struct)</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L168" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>footer(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">struct</a>()) :: <a href="#t:footer/0">footer</a>()</pre>
+      </div>
+
+  </section>
+</section>
+<section class="detail" id="c:image/1">
+  <div class="detail-header">
+    <a href="#c:image/1" class="detail-link" title="Link to this callback">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this callback</span>
+    </a>
+    <h1 class="signature">image(struct)</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L169" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>image(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">struct</a>()) :: <a href="#t:url/0">url</a>()</pre>
+      </div>
+
+  </section>
+</section>
+<section class="detail" id="c:thumbnail/1">
+  <div class="detail-header">
+    <a href="#c:thumbnail/1" class="detail-link" title="Link to this callback">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this callback</span>
+    </a>
+    <h1 class="signature">thumbnail(struct)</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L170" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>thumbnail(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">struct</a>()) :: <a href="#t:url/0">url</a>()</pre>
+      </div>
+
+  </section>
+</section>
+<section class="detail" id="c:timestamp/1">
+  <div class="detail-header">
+    <a href="#c:timestamp/1" class="detail-link" title="Link to this callback">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this callback</span>
+    </a>
+    <h1 class="signature">timestamp(struct)</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L171" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>timestamp(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">struct</a>()) :: <a href="#t:timestamp/0">timestamp</a>()</pre>
+      </div>
+
+  </section>
+</section>
+<section class="detail" id="c:title/1">
+  <div class="detail-header">
+    <a href="#c:title/1" class="detail-link" title="Link to this callback">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this callback</span>
+    </a>
+    <h1 class="signature">title(struct)</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L172" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>title(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">struct</a>()) :: <a href="#t:title/0">title</a>()</pre>
+      </div>
+
+  </section>
+</section>
+<section class="detail" id="c:url/1">
+  <div class="detail-header">
+    <a href="#c:url/1" class="detail-link" title="Link to this callback">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this callback</span>
+    </a>
+    <h1 class="signature">url(struct)</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L173" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>url(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">struct</a>()) :: <a href="#t:url/0">url</a>()</pre>
+      </div>
+
+  </section>
 </section>
           </div>
         </section>
