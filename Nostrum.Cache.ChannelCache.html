@@ -5,8 +5,8 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="ExDoc v0.23.0">
-    <meta name="project" content="Nostrum v0.4.5">
-    <title>Nostrum.Cache.ChannelCache — Nostrum v0.4.5</title>
+    <meta name="project" content="Nostrum v0.4.6">
+    <title>Nostrum.Cache.ChannelCache — Nostrum v0.4.6</title>
     <link rel="stylesheet" href="dist/elixir-9f91ebe876dc01d67920.css" />
     <script src="dist/sidebar_items-18be5a95a2.js"></script>
       <script src="docs_config.js"></script>
@@ -43,7 +43,7 @@
       <a href="https://github.com/kraigie/nostrum" class="sidebar-projectName">
 Nostrum      </a>
       <strong class="sidebar-projectVersion">
-        v0.4.5
+        v0.4.6
       </strong>
     </div>
   </div>
@@ -64,7 +64,7 @@ Nostrum      </a>
     <div id="content" class="content-inner">
 
       <h1>
-        Nostrum.Cache.ChannelCache <small class="app-vsn">(Nostrum v0.4.5)</small>
+        Nostrum.Cache.ChannelCache <small class="app-vsn">(Nostrum v0.4.6)</small>
           <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/channel_cache.ex#L1" title="View Source" class="view-source" rel="help">
             <span class="icon-code" aria-hidden="true"></span>
             <span class="sr-only">View Source</span>
@@ -78,9 +78,9 @@ methods provided below you can call any other ETS methods on the table.</p><h2 i
   <a href="#module-example" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
   Example
 </h2>
-<pre><code class="nohighlight makeup elixir"><span class="n">info</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ss">:ets</span><span class="o">.</span><span class="n">info</span><span class="p" data-group-id="7478988110-1">(</span><span class="ss">:channels</span><span class="p" data-group-id="7478988110-1">)</span><span class="w">
-</span><span class="p" data-group-id="7478988110-2">[</span><span class="n">...</span><span class="p">,</span><span class="w"> </span><span class="ss">heir</span><span class="p">:</span><span class="w"> </span><span class="ss">:none</span><span class="p">,</span><span class="w"> </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="ss">:channels</span><span class="p">,</span><span class="w"> </span><span class="ss">size</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">...</span><span class="p" data-group-id="7478988110-2">]</span><span class="w">
-</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">info</span><span class="p" data-group-id="7478988110-3">[</span><span class="ss">:size</span><span class="p" data-group-id="7478988110-3">]</span><span class="w">
+<pre><code class="nohighlight makeup elixir"><span class="n">info</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ss">:ets</span><span class="o">.</span><span class="n">info</span><span class="p" data-group-id="0627895490-1">(</span><span class="ss">:channels</span><span class="p" data-group-id="0627895490-1">)</span><span class="w">
+</span><span class="p" data-group-id="0627895490-2">[</span><span class="n">...</span><span class="p">,</span><span class="w"> </span><span class="ss">heir</span><span class="p">:</span><span class="w"> </span><span class="ss">:none</span><span class="p">,</span><span class="w"> </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="ss">:channels</span><span class="p">,</span><span class="w"> </span><span class="ss">size</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">...</span><span class="p" data-group-id="0627895490-2">]</span><span class="w">
+</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">info</span><span class="p" data-group-id="0627895490-3">[</span><span class="ss">:size</span><span class="p" data-group-id="0627895490-3">]</span><span class="w">
 </span><span class="mi">1</span></code></pre>        </section>
 
         <section id="summary" class="details-list">
@@ -144,12 +144,12 @@ information, a call is made to a <a href="Nostrum.Cache.GuildCache.html"><code c
   <a href="#get/1-example" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
   Example
 </h2>
-<pre><code class="nohighlight makeup elixir"><span class="k">case</span><span class="w"> </span><span class="nc">Nostrum.Cache.ChannelCache</span><span class="o">.</span><span class="n">get</span><span class="p" data-group-id="1626822333-1">(</span><span class="mi">133333333337</span><span class="p" data-group-id="1626822333-1">)</span><span class="w"> </span><span class="k" data-group-id="1626822333-2">do</span><span class="w">
-  </span><span class="p" data-group-id="1626822333-3">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">channel</span><span class="p" data-group-id="1626822333-3">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+<pre><code class="nohighlight makeup elixir"><span class="k">case</span><span class="w"> </span><span class="nc">Nostrum.Cache.ChannelCache</span><span class="o">.</span><span class="n">get</span><span class="p" data-group-id="5685010636-1">(</span><span class="mi">133333333337</span><span class="p" data-group-id="5685010636-1">)</span><span class="w"> </span><span class="k" data-group-id="5685010636-2">do</span><span class="w">
+  </span><span class="p" data-group-id="5685010636-3">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">channel</span><span class="p" data-group-id="5685010636-3">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
     </span><span class="s">&quot;We found &quot;</span><span class="w"> </span><span class="o">&lt;&gt;</span><span class="w"> </span><span class="n">channel</span><span class="o">.</span><span class="n">name</span><span class="w">
-  </span><span class="p" data-group-id="1626822333-4">{</span><span class="ss">:error</span><span class="p">,</span><span class="w"> </span><span class="c">_reason</span><span class="p" data-group-id="1626822333-4">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+  </span><span class="p" data-group-id="5685010636-4">{</span><span class="ss">:error</span><span class="p">,</span><span class="w"> </span><span class="c">_reason</span><span class="p" data-group-id="5685010636-4">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
     </span><span class="s">&quot;Donde esta&quot;</span><span class="w">
-</span><span class="k" data-group-id="1626822333-2">end</span></code></pre>  </section>
+</span><span class="k" data-group-id="5685010636-2">end</span></code></pre>  </section>
 </section>
 <section class="detail" id="get!/1">
   <div class="detail-header">
