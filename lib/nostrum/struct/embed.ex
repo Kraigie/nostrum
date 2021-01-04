@@ -31,6 +31,49 @@ defmodule Nostrum.Struct.Embed do
     ]
   }
   ```
+
+  ## Using structs
+
+  You can also create `Nostrum.Struct.Embed`s from structs, by using the
+  `Nostrum.Struct.Embed` module. Here's how the example above could be build using structs
+
+  ```Elixir
+    defmodule MyApp.MyStruct do
+      use Nostrum.Struct.Embed
+
+      defstruct []
+
+      def title(_), do: "craig"
+      def description(_), do: "nostrum"
+      def url(_), do: "https://google.com/"
+      def timestamp(_), do: "2016-05-05T21:04:13.203Z"
+      def color(_), do: 431_948
+
+      def fields(_) do
+        [
+          %Nostrum.Struct.Embed.Field{name: "Field 1", value: "Test"},
+          %Nostrum.Struct.Embed.Field{name: "Field 2", value: "More test", inline: true}
+        ]
+      end
+    end
+
+  iex> Nostrum.Struct.Embed.from(%MyApp.MyStruct{})
+  %Nostrum.Struct.Embed{
+    title: "craig",
+    description: "nostrum",
+    url: "https://google.com/",
+    timestamp: "2016-05-05T21:04:13.203Z",
+    color: 431_948,
+    fields: [
+      %Nostrum.Struct.Embed.Field{name: "Field 1", value: "Test"},
+      %Nostrum.Struct.Embed.Field{name: "Field 2", value: "More test", inline: true}
+    ]
+  }
+  ```
+  See this modules callbacks for a list of all the functions that can be implemented.
+
+  The implementation of these callbacks is optional. Not implemented functions will simply
+  be ignored.
   """
 
   alias Nostrum.Struct.Embed.{Author, Field, Footer, Image, Provider, Thumbnail, Video}
@@ -117,6 +160,47 @@ defmodule Nostrum.Struct.Embed do
           author: author,
           fields: fields
         }
+
+  @callback author(struct) :: author()
+  @callback color(struct) :: integer() | nil
+  @callback fields(struct) :: fields()
+  @callback description(struct) :: description()
+  @callback footer(struct) :: footer()
+  @callback image(struct) :: url()
+  @callback thumbnail(struct) :: url()
+  @callback timestamp(struct) :: timestamp()
+  @callback title(struct) :: title()
+  @callback url(struct) :: url()
+
+  defmacro __using__(_) do
+    quote do
+      @behaviour Nostrum.Struct.Embed
+
+      def author(_), do: nil
+      def color(_), do: nil
+      def fields(_), do: nil
+      def description(_), do: nil
+      def footer(_), do: nil
+      def image(_), do: nil
+      def thumbnail(_), do: nil
+      def timestamp(_), do: nil
+      def title(_), do: nil
+      def url(_), do: nil
+
+      defoverridable(
+        author: 1,
+        color: 1,
+        fields: 1,
+        description: 1,
+        footer: 1,
+        image: 1,
+        thumbnail: 1,
+        timestamp: 1,
+        title: 1,
+        url: 1
+      )
+    end
+  end
 
   @doc ~S"""
   Puts the given `value` under `:title` in `embed`.
@@ -255,6 +339,10 @@ defmodule Nostrum.Struct.Embed do
   ```
   """
   @spec put_image(t, Image.url()) :: t
+  def put_image(%__MODULE__{} = embed, nil) do
+    %__MODULE__{embed | image: nil}
+  end
+
   def put_image(%__MODULE__{} = embed, url) do
     image = %Image{
       url: url
@@ -279,6 +367,10 @@ defmodule Nostrum.Struct.Embed do
   ```
   """
   @spec put_thumbnail(t, Thumbnail.url()) :: t
+  def put_thumbnail(%__MODULE__{} = embed, nil) do
+    %__MODULE__{embed | thumbnail: nil}
+  end
+
   def put_thumbnail(%__MODULE__{} = embed, url) do
     thumbnail = %Thumbnail{
       url: url
@@ -379,6 +471,48 @@ defmodule Nostrum.Struct.Embed do
 
   def put_field(embed, name, value, inline) do
     put_field(%__MODULE__{embed | fields: []}, name, value, inline)
+  end
+
+  @doc """
+  Create an embed from a struct that implements the `Nostrum.Struct.Embed` behaviour
+  """
+  def from(%module{} = struct) do
+    # checks if the struct implements the behaviour
+    unless Enum.member?(module.module_info(:attributes), {:behaviour, [__MODULE__]}) do
+      raise "#{module} does not implement the behaviour #{__MODULE__}"
+    end
+
+    embed =
+      %__MODULE__{}
+      |> put_color(module.color(struct))
+      |> put_description(module.description(struct))
+      |> put_image(module.image(struct))
+      |> put_thumbnail(module.thumbnail(struct))
+      |> put_timestamp(module.timestamp(struct))
+      |> put_title(module.title(struct))
+      |> put_url(module.url(struct))
+
+    embed =
+      case module.author(struct) do
+        %Author{} = author -> put_author(embed, author.name, author.url, author.icon_url)
+        nil -> embed
+        other -> raise "\"#{inspect(other)}\" is invalid for type author()"
+      end
+
+    embed =
+      case module.footer(struct) do
+        %Footer{} = footer -> put_footer(embed, footer.text, footer.icon_url)
+        nil -> embed
+        other -> raise "\"#{inspect(other)}\" is invalid for type footer()"
+      end
+
+    struct
+    |> module.fields()
+    |> List.wrap()
+    |> Enum.reduce(embed, fn
+      %Field{} = field, embed -> put_field(embed, field.name, field.value, field.inline)
+      other, _ -> raise "\"#{inspect(other)}\" is invalid for type fields()"
+    end)
   end
 
   # TODO: Jump down the rabbit hole
