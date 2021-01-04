@@ -22,8 +22,6 @@ defmodule Nostrum.Shard.Dispatch do
 
   require Logger
 
-  import Bitwise
-
   @large_threshold 250
 
   def handle({payload, state}) do
