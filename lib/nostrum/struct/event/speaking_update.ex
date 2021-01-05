@@ -11,6 +11,8 @@ defmodule Nostrum.Struct.Event.SpeakingUpdate do
     :speaking
   ]
 
+  alias Nostrum.Struct.{Channel, Guild}
+
   @typedoc """
   Id of the channel this speaking update is occurring in.
   """
