@@ -1,5 +1,11 @@
 name: Test & Lint
-on: [push, pull_request]
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+
 jobs:
   test_and_lint:
     runs-on: ubuntu-latest
@@ -9,21 +15,27 @@ jobs:
         otp-version: ['22', '23']
     steps:
       - uses: actions/checkout@v2
+
       - uses: actions/setup-elixir@v1
         with:
           otp-version: ${{ matrix.otp-version }}
           elixir-version: ${{ matrix.elixir-version }}
+
       - uses: actions/cache@v2
         with:
           path: _build
           # Generate a hash of the OTP version and Elixir version
           key: ${{ matrix.otp-version }}-${{ matrix.elixir-version }}-mix-${{ hashFiles(format('{0}{1}', github.workspace, '/mix.lock')) }}
           restore-keys: ${{ matrix.otp-version }}-${{ matrix.elixir-version }}-mix
+
       - run: mix deps.get
         name: Fetch Dependencies
+
       - run: mix credo --strict
         name: Lint
+
       - run: mix format --check-formatted
         name: Check Formatting
+
       - run: mix test --no-start
         name: Run Tests
