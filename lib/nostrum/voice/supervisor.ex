@@ -25,14 +25,12 @@ defmodule Nostrum.Voice.Supervisor do
   end
 
   def create_session(%VoiceState{} = voice) do
-    child =
-      supervisor(
-        Session,
-        [voice],
-        id: voice.guild_id
-      )
+    child = %{
+      id: voice.guild_id,
+      start: {Session, :start_link, [voice]}
+    }
 
-    VoiceSupervisor |> Supervisor.start_child(child)
+    Supervisor.start_child(VoiceSupervisor, child)
   end
 
   def end_session(guild_id) do

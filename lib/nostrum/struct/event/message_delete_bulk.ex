@@ -3,7 +3,7 @@ defmodule Nostrum.Struct.Event.MessageDeleteBulk do
   Struct representing a Message Delete Bulk event
   """
 
-  alias Nostrum.Struct.{Guild, Message}
+  alias Nostrum.Struct.{Channel, Guild, Message}
 
   defstruct [
     :channel_id,

@@ -3,7 +3,7 @@ defmodule Nostrum.Struct.Message do
   Struct representing a Discord message.
   """
 
-  alias Nostrum.Struct.{Embed, Guild, User}
+  alias Nostrum.Struct.{Channel, Embed, Guild, User}
   alias Nostrum.Struct.Guild.{Member, Role}
   alias Nostrum.Struct.Message.{Activity, Application, Attachment, Reaction, Reference}
   alias Nostrum.{Snowflake, Util}

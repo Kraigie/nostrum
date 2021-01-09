@@ -31,7 +31,7 @@ defmodule Nostrum.Struct.ApplicationCommandInteractionData do
         }
 
   @doc false
-  @spec to_struct(Map.t()) :: __MODULE__.t()
+  @spec to_struct(map()) :: __MODULE__.t()
   def to_struct(map) do
     new =
       map
