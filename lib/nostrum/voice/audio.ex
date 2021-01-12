@@ -68,7 +68,7 @@ defmodule Nostrum.Voice.Audio do
   end
 
   def try_send_data(%VoiceState{} = voice, init?) do
-    wait = if(init?, do: 20_000, else: 200)
+    wait = if(init?, do: 5_000, else: 500)
     {:ok, watchdog} = :timer.apply_after(wait, __MODULE__, :on_stall, [voice])
 
     {voice, done} =
@@ -82,6 +82,8 @@ defmodule Nostrum.Voice.Audio do
       do: on_complete(voice),
       else: voice
   end
+
+  def try_send_data(_, _), do: :ok
 
   def send_frames(frames, %VoiceState{} = voice) do
     voice =
