@@ -9,7 +9,7 @@ defmodule CacheExampleSupervisor do
 
   @impl true
   def init(_init_arg) do
-    children = [ExampleConsumer]
+    children = [CacheExampleConsumer]
 
     Supervisor.init(children, strategy: :one_for_one)
   end
