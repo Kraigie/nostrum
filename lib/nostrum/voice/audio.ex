@@ -151,7 +151,6 @@ defmodule Nostrum.Voice.Audio do
         Application.get_env(:nostrum, :ffmpeg, "ffmpeg"),
         [
           parse_ffmpeg_options(options),
-          ["-re"],
           ["-i", input_url],
           ["-ac", "2"],
           ["-ar", "48000"],
