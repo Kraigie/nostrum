@@ -87,8 +87,17 @@ defmodule Nostrum.Voice do
       - `:url` Input will be [any url that `ffmpeg` can read](https://www.ffmpeg.org/ffmpeg-protocols.html).
       - `:pipe` Input will be data that is piped to stdin of `ffmpeg`.
       - `:ytdl` Input will be url for `youtube-dl`, which gets automatically piped to `ffmpeg`.
+    - `options` - See options section below.
+
 
   Returns `{:error, reason}` if unable to play or a sound is playing, else `:ok`.
+
+  ## Options
+    - `:start_pos` (string) - The start position of the audio to be played. Defaults to beginning.
+    - `:duration` (string) - The duration to of the audio to be played . Defaults to entire duration.
+    - `:realtime` (boolean) - Make ffmpeg process the input in realtime instead of as fast as possible. Defaults to true.
+
+    The values of `:start_pos` and `:duration` can be [any time duration that ffmpeg can read](https://ffmpeg.org/ffmpeg-utils.html#Time-duration).
 
   ## Examples
 
@@ -107,12 +116,12 @@ defmodule Nostrum.Voice do
   ```Elixir
   iex> Nostrum.Voice.join_channel(123456789, 420691337)
 
-  iex> Nostrum.Voice.play(123456789, "https://www.youtube.com/watch?v=b4RJ-QGOtw4", :ytdl)
+  iex> Nostrum.Voice.play(123456789, "https://www.youtube.com/watch?v=b4RJ-QGOtw4", :ytdl, realtime: true, start_pos: "0:17", duration: "30s")
   ```
   """
-  @spec play(Guild.id(), String.t() | binary() | iodata(), :url | :pipe | :ytdl) ::
+  @spec play(Guild.id(), String.t() | binary() | iodata(), :url | :pipe | :ytdl, keyword()) ::
           :ok | {:error, String.t()}
-  def play(guild_id, input, type \\ :url) do
+  def play(guild_id, input, type \\ :url, options \\ []) do
     voice = get_voice(guild_id)
 
     cond do
@@ -125,7 +134,7 @@ defmodule Nostrum.Voice do
       true ->
         unless is_nil(voice.ffmpeg_proc), do: Proc.stop(voice.ffmpeg_proc)
         set_speaking(voice, true)
-        voice = update_voice(guild_id, ffmpeg_proc: Audio.spawn_ffmpeg(input, type))
+        voice = update_voice(guild_id, ffmpeg_proc: Audio.spawn_ffmpeg(input, type, options))
         {:ok, pid} = Task.start(fn -> Audio.init_player(voice) end)
         update_voice(guild_id, player_pid: pid)
         :ok
