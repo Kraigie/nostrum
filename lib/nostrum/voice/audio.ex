@@ -146,23 +146,11 @@ defmodule Nostrum.Voice.Audio do
           {"pipe:0", outstream}
       end
 
-    parameters = [
-      case Keyword.get(options, :start_pos) do
-        nil -> []
-        val -> ["-ss", val]
-      end,
-      case Keyword.get(options, :duration) do
-        nil -> []
-        val -> ["-t", val]
-      end,
-      if(Keyword.get(options, :realtime, true), do: ["-re"], else: [])
-    ]
-
     res =
       Porcelain.spawn(
         Application.get_env(:nostrum, :ffmpeg, "ffmpeg"),
         [
-          parameters,
+          parse_ffmpeg_options(options),
           ["-re"],
           ["-i", input_url],
           ["-ac", "2"],
@@ -184,6 +172,20 @@ defmodule Nostrum.Voice.Audio do
       proc ->
         proc
     end
+  end
+
+  def parse_ffmpeg_options(options) do
+    [
+      case Keyword.get(options, :start_pos) do
+        nil -> []
+        val -> ["-ss", val]
+      end,
+      case Keyword.get(options, :duration) do
+        nil -> []
+        val -> ["-t", val]
+      end,
+      if(Keyword.get(options, :realtime, true), do: ["-re"], else: [])
+    ]
   end
 
   def on_stall(%VoiceState{} = voice) do
