@@ -134,7 +134,7 @@ defmodule Nostrum.Shard.Dispatch do
         :noop
 
       {:ok, g} ->
-        {check_new_or_unavailable(g.id), {g}, state}
+        {check_new_or_unavailable(g.id), g, state}
     end
   end
 
