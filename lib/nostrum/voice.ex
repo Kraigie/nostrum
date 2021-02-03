@@ -96,8 +96,18 @@ defmodule Nostrum.Voice do
     - `:start_pos` (string) - The start position of the audio to be played. Defaults to beginning.
     - `:duration` (string) - The duration to of the audio to be played . Defaults to entire duration.
     - `:realtime` (boolean) - Make ffmpeg process the input in realtime instead of as fast as possible. Defaults to true.
+    - `:volume` (number) - The output volume of the audio. Default volume is 1.0.
+    - `:filter` (string) - Filter(s) to be applied to the audio. No filters applied by default.
 
     The values of `:start_pos` and `:duration` can be [any time duration that ffmpeg can read](https://ffmpeg.org/ffmpeg-utils.html#Time-duration).
+    The `:filter` can be used multiple times in a single call (see examples).
+    The values of `:filter` can be [any audio filters that ffmpeg can read](https://ffmpeg.org/ffmpeg-filters.html#Audio-Filters).
+    Filters will be applied in order and can be as complex as you want. The world is your oyster!
+    Note that using the `:volume` option is shortcut to the "volume" filter, and using any number of `:filter` options will override it.
+
+    Having all the ffmpeg audio filters available is *extremely powerful* so it may be worth learning some of them for your use cases.
+    If you use any filters to *increase* the playback speed of your audio, it's recommended to set the `:realtime` option to `false`
+    because realtime processing is relative to the original playback speed.
 
   ## Examples
 
@@ -105,6 +115,10 @@ defmodule Nostrum.Voice do
   iex> Nostrum.Voice.join_channel(123456789, 420691337)
 
   iex> Nostrum.Voice.play(123456789, "~/music/FavoriteSong.mp3", :url)
+
+  iex> Nostrum.Voice.play(123456789, "~/music/NotFavoriteButStillGoodSong.mp3", :url, volume: 0.5)
+
+  iex> Nostrum.Voice.play(123456789, "~/music/ThisWillBeHeavilyDistorted.mp3", :url, volume: 1000)
   ```
   ```Elixir
   iex> Nostrum.Voice.join_channel(123456789, 420691337)
@@ -116,7 +130,11 @@ defmodule Nostrum.Voice do
   ```Elixir
   iex> Nostrum.Voice.join_channel(123456789, 420691337)
 
-  iex> Nostrum.Voice.play(123456789, "https://www.youtube.com/watch?v=b4RJ-QGOtw4", :ytdl, realtime: true, start_pos: "0:17", duration: "30")
+  iex> Nostrum.Voice.play(123456789, "https://www.youtube.com/watch?v=b4RJ-QGOtw4", :ytdl,
+  ...>   realtime: true, start_pos: "0:17", duration: "30")
+
+  iex> Nostrum.Voice.play(123456789, "https://www.youtube.com/watch?v=0ngcL_5ekXo", :ytdl,
+  ...>   filter: "lowpass=f=1200", filter: "highpass=f=300", filter: "asetrate=44100*0.5")
   ```
   """
   @spec play(Guild.id(), String.t() | binary() | iodata(), :url | :pipe | :ytdl, keyword()) ::
