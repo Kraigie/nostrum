@@ -69,7 +69,9 @@ defmodule Nostrum.Struct.VoiceState do
     end
 
     unless is_nil(v.session_pid) do
-      Session.close_connection(v.session_pid)
+      if Process.alive?(v.session_pid) do
+        Session.close_connection(v.session_pid)
+      end
     end
 
     :ok

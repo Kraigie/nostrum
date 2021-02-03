@@ -116,7 +116,7 @@ defmodule Nostrum.Voice do
   ```Elixir
   iex> Nostrum.Voice.join_channel(123456789, 420691337)
 
-  iex> Nostrum.Voice.play(123456789, "https://www.youtube.com/watch?v=b4RJ-QGOtw4", :ytdl, realtime: true, start_pos: "0:17", duration: "30s")
+  iex> Nostrum.Voice.play(123456789, "https://www.youtube.com/watch?v=b4RJ-QGOtw4", :ytdl, realtime: true, start_pos: "0:17", duration: "30")
   ```
   """
   @spec play(Guild.id(), String.t() | binary() | iodata(), :url | :pipe | :ytdl, keyword()) ::
