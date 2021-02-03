@@ -150,8 +150,7 @@ defmodule Nostrum.Voice.Audio do
       Porcelain.spawn(
         Application.get_env(:nostrum, :ffmpeg, "ffmpeg"),
         [
-          parse_ffmpeg_options(options),
-          ["-i", input_url],
+          ffmpeg_options(options, input_url),
           ["-ac", "2"],
           ["-ar", "48000"],
           ["-f", "s16le"],
@@ -173,17 +172,37 @@ defmodule Nostrum.Voice.Audio do
     end
   end
 
-  def parse_ffmpeg_options(options) do
+  def ffmpeg_options(options, input_url) do
     [
+      # Start position
       case Keyword.get(options, :start_pos) do
         nil -> []
         val -> ["-ss", val]
       end,
+
+      # Duration
       case Keyword.get(options, :duration) do
         nil -> []
         val -> ["-t", val]
       end,
-      if(Keyword.get(options, :realtime, true), do: ["-re"], else: [])
+
+      # Realtime Processing
+      if(Keyword.get(options, :realtime, true), do: ["-re"], else: []),
+
+      # Input URL
+      ["-i", input_url],
+
+      # Volume
+      case Keyword.get(options, :volume) do
+        val when is_number(val) -> ["-af", "volume=#{val}"]
+        _ -> []
+      end,
+
+      # Filters
+      case Keyword.get_values(options, :filter) do
+        [] -> []
+        val -> ["-af", Enum.join(val, ", ")]
+      end
     ]
   end
 
