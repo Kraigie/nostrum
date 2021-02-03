@@ -103,7 +103,11 @@ defmodule Nostrum.Voice do
     The `:filter` can be used multiple times in a single call (see examples).
     The values of `:filter` can be [any audio filters that ffmpeg can read](https://ffmpeg.org/ffmpeg-filters.html#Audio-Filters).
     Filters will be applied in order and can be as complex as you want. The world is your oyster!
-    Note that using the `:volume` option is shortcut to the "volume" filter, and using any number of `:filter` options will override it.
+
+    Note that using the `:volume` option is shortcut for the "volume" filter, and will be added to the end of the filter chain, acting as a master volume.
+    Volume values between `0.0` and `1.0` act as standard oparating range where `0` is off and `1` is max.
+    Values greater than `1.0` will add saturation and distortion to the audio.
+    Negative values act the same as their position but reverse the polarity of the waveform.
 
     Having all the ffmpeg audio filters available is *extremely powerful* so it may be worth learning some of them for your use cases.
     If you use any filters to *increase* the playback speed of your audio, it's recommended to set the `:realtime` option to `false`

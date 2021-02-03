@@ -173,6 +173,13 @@ defmodule Nostrum.Voice.Audio do
   end
 
   def ffmpeg_options(options, input_url) do
+    # Volume
+    vol_opt =
+      case Keyword.get(options, :volume) do
+        val when is_number(val) -> [filter: "volume=#{val}"]
+        _ -> []
+      end
+
     [
       # Start position
       case Keyword.get(options, :start_pos) do
@@ -192,14 +199,8 @@ defmodule Nostrum.Voice.Audio do
       # Input URL
       ["-i", input_url],
 
-      # Volume
-      case Keyword.get(options, :volume) do
-        val when is_number(val) -> ["-af", "volume=#{val}"]
-        _ -> []
-      end,
-
       # Filters
-      case Keyword.get_values(options, :filter) do
+      case Keyword.get_values(options ++ vol_opt, :filter) do
         [] -> []
         val -> ["-af", Enum.join(val, ", ")]
       end
