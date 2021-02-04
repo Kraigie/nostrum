@@ -77,7 +77,7 @@ defmodule Nostrum.Voice.Session do
   end
 
   def close_connection(pid) do
-    GenServer.call(pid, :close)
+    GenServer.cast(pid, :close)
   end
 
   def set_speaking(pid, speaking) do
@@ -160,12 +160,12 @@ defmodule Nostrum.Voice.Session do
     {:noreply, state}
   end
 
-  def handle_call(:ws_state, _from, state) do
-    {:reply, state, state}
+  def handle_cast(:close, state) do
+    :gun.close(state.conn)
+    {:noreply, state}
   end
 
-  def handle_call(:close, _from, state) do
-    :gun.close(state.conn)
+  def handle_call(:ws_state, _from, state) do
     {:reply, state, state}
   end
 end
