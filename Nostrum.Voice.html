@@ -8,7 +8,7 @@
     <meta name="project" content="Nostrum v0.4.6">
     <title>Nostrum.Voice — Nostrum v0.4.6</title>
     <link rel="stylesheet" href="dist/elixir-9f91ebe876dc01d67920.css" />
-    <script src="dist/sidebar_items-18be5a95a2.js"></script>
+    <script src="dist/sidebar_items-63c304dd53.js"></script>
       <script src="docs_config.js"></script>
     <script async src="dist/app-60a0c9f10e9e52eae31f.js"></script>
   </head>
@@ -128,7 +128,7 @@ shard websocket connections are, and require no developer intervention.</p>     
 </div>
 <div class="summary-row">
   <div class="summary-signature">
-    <a href="#play/3">play(guild_id, input, type \\ :url)</a>
+    <a href="#play/4">play(guild_id, input, type \\ :url, options \\ [])</a>
   </div>
     <div class="summary-synopsis"><p>Plays sound in the voice channel the bot is in.</p></div>
 </div>
@@ -191,7 +191,7 @@ Functions          </h1>
       <span class="sr-only">Link to this function</span>
     </a>
     <h1 class="signature">get_channel_id(guild_id)</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L345" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L376" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -277,7 +277,7 @@ nil</code></pre>  </section>
       <span class="sr-only">Link to this function</span>
     </a>
     <h1 class="signature">pause(guild_id)</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L201" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L232" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -304,15 +304,16 @@ iex&gt; Nostrum.Voice.play(123456789, &quot;~/files/twelve_hour_loop_of_waterfal
 
 iex&gt; Nostrum.Voice.pause(123456789)</code></pre>  </section>
 </section>
-<section class="detail" id="play/3">
+<section class="detail" id="play/4">
     <span id="play/2"></span>
+    <span id="play/3"></span>
   <div class="detail-header">
-    <a href="#play/3" class="detail-link" title="Link to this function">
+    <a href="#play/4" class="detail-link" title="Link to this function">
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">play(guild_id, input, type \\ :url)</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L115" class="view-source" rel="help" title="View Source">
+    <h1 class="signature">play(guild_id, input, type \\ :url, options \\ [])</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L146" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -324,27 +325,48 @@ iex&gt; Nostrum.Voice.pause(123456789)</code></pre>  </section>
           <pre>play(
   <a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(),
   <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>() | <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">binary</a>() | <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">iodata</a>(),
-  :url | :pipe | :ytdl
+  :url | :pipe | :ytdl,
+  <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">keyword</a>()
 ) :: :ok | {:error, <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()}</pre>
       </div>
 
-<p>Plays sound in the voice channel the bot is in.</p><p>The bot must be connected to a voice channel in the guild specified.</p><h2 id="play/3-parameters" class="section-heading">
-  <a href="#play/3-parameters" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+<p>Plays sound in the voice channel the bot is in.</p><p>The bot must be connected to a voice channel in the guild specified.</p><h2 id="play/4-parameters" class="section-heading">
+  <a href="#play/4-parameters" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
   Parameters
 </h2>
-<ul><li><code class="inline">guild_id</code> - ID of guild whose voice channel the sound will be played in.</li><li><code class="inline">input</code> - Audio to be played. Type of <code class="inline">input</code> determined by <code class="inline">type</code> parameter.</li><li><code class="inline">type</code> - Type of input (defaults to <code class="inline">:url</code>).<ul><li><code class="inline">:url</code> Input will be <a href="https://www.ffmpeg.org/ffmpeg-protocols.html">any url that <code class="inline">ffmpeg</code> can read</a>.</li><li><code class="inline">:pipe</code> Input will be data that is piped to stdin of <code class="inline">ffmpeg</code>.</li><li><code class="inline">:ytdl</code> Input will be url for <code class="inline">youtube-dl</code>, which gets automatically piped to <code class="inline">ffmpeg</code>.</li></ul></li></ul><p>Returns <code class="inline">{:error, reason}</code> if unable to play or a sound is playing, else <code class="inline">:ok</code>.</p><h2 id="play/3-examples" class="section-heading">
-  <a href="#play/3-examples" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+<ul><li><code class="inline">guild_id</code> - ID of guild whose voice channel the sound will be played in.</li><li><code class="inline">input</code> - Audio to be played. Type of <code class="inline">input</code> determined by <code class="inline">type</code> parameter.</li><li><code class="inline">type</code> - Type of input (defaults to <code class="inline">:url</code>).<ul><li><code class="inline">:url</code> Input will be <a href="https://www.ffmpeg.org/ffmpeg-protocols.html">any url that <code class="inline">ffmpeg</code> can read</a>.</li><li><code class="inline">:pipe</code> Input will be data that is piped to stdin of <code class="inline">ffmpeg</code>.</li><li><code class="inline">:ytdl</code> Input will be url for <code class="inline">youtube-dl</code>, which gets automatically piped to <code class="inline">ffmpeg</code>.</li></ul></li><li><code class="inline">options</code> - See options section below.</li></ul><p>Returns <code class="inline">{:error, reason}</code> if unable to play or a sound is playing, else <code class="inline">:ok</code>.</p><h2 id="play/4-options" class="section-heading">
+  <a href="#play/4-options" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Options
+</h2>
+<ul><li><code class="inline">:start_pos</code> (string) - The start position of the audio to be played. Defaults to beginning.</li><li><code class="inline">:duration</code> (string) - The duration to of the audio to be played . Defaults to entire duration.</li><li><code class="inline">:realtime</code> (boolean) - Make ffmpeg process the input in realtime instead of as fast as possible. Defaults to true.</li><li><code class="inline">:volume</code> (number) - The output volume of the audio. Default volume is 1.0.</li><li><code class="inline">:filter</code> (string) - Filter(s) to be applied to the audio. No filters applied by default.</li></ul><p>  The values of <code class="inline">:start_pos</code> and <code class="inline">:duration</code> can be <a href="https://ffmpeg.org/ffmpeg-utils.html#Time-duration">any time duration that ffmpeg can read</a>.
+  The <code class="inline">:filter</code> can be used multiple times in a single call (see examples).
+  The values of <code class="inline">:filter</code> can be <a href="https://ffmpeg.org/ffmpeg-filters.html#Audio-Filters">any audio filters that ffmpeg can read</a>.
+  Filters will be applied in order and can be as complex as you want. The world is your oyster!</p><p>  Note that using the <code class="inline">:volume</code> option is shortcut for the &quot;volume&quot; filter, and will be added to the end of the filter chain, acting as a master volume.
+  Volume values between <code class="inline">0.0</code> and <code class="inline">1.0</code> act as standard oparating range where <code class="inline">0</code> is off and <code class="inline">1</code> is max.
+  Values greater than <code class="inline">1.0</code> will add saturation and distortion to the audio.
+  Negative values act the same as their position but reverse the polarity of the waveform.</p><p>  Having all the ffmpeg audio filters available is <em>extremely powerful</em> so it may be worth learning some of them for your use cases.
+  If you use any filters to <em>increase</em> the playback speed of your audio, it's recommended to set the <code class="inline">:realtime</code> option to <code class="inline">false</code>
+  because realtime processing is relative to the original playback speed.</p><h2 id="play/4-examples" class="section-heading">
+  <a href="#play/4-examples" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
   Examples
 </h2>
 <pre><code class="Elixir">iex&gt; Nostrum.Voice.join_channel(123456789, 420691337)
 
-iex&gt; Nostrum.Voice.play(123456789, &quot;~/music/FavoriteSong.mp3&quot;, :url)</code></pre><pre><code class="Elixir">iex&gt; Nostrum.Voice.join_channel(123456789, 420691337)
+iex&gt; Nostrum.Voice.play(123456789, &quot;~/music/FavoriteSong.mp3&quot;, :url)
+
+iex&gt; Nostrum.Voice.play(123456789, &quot;~/music/NotFavoriteButStillGoodSong.mp3&quot;, :url, volume: 0.5)
+
+iex&gt; Nostrum.Voice.play(123456789, &quot;~/music/ThisWillBeHeavilyDistorted.mp3&quot;, :url, volume: 1000)</code></pre><pre><code class="Elixir">iex&gt; Nostrum.Voice.join_channel(123456789, 420691337)
 
 iex&gt; raw_data = File.read!(&quot;~/music/sound_effect.wav&quot;)
 
 iex&gt; Nostrum.Voice.play(123456789, raw_data, :pipe)</code></pre><pre><code class="Elixir">iex&gt; Nostrum.Voice.join_channel(123456789, 420691337)
 
-iex&gt; Nostrum.Voice.play(123456789, &quot;https://www.youtube.com/watch?v=b4RJ-QGOtw4&quot;, :ytdl)</code></pre>  </section>
+iex&gt; Nostrum.Voice.play(123456789, &quot;https://www.youtube.com/watch?v=b4RJ-QGOtw4&quot;, :ytdl,
+...&gt;   realtime: true, start_pos: &quot;0:17&quot;, duration: &quot;30&quot;)
+
+iex&gt; Nostrum.Voice.play(123456789, &quot;https://www.youtube.com/watch?v=0ngcL_5ekXo&quot;, :ytdl,
+...&gt;   filter: &quot;lowpass=f=1200&quot;, filter: &quot;highpass=f=300&quot;, filter: &quot;asetrate=44100*0.5&quot;)</code></pre>  </section>
 </section>
 <section class="detail" id="playing?/1">
   <div class="detail-header">
@@ -353,7 +375,7 @@ iex&gt; Nostrum.Voice.play(123456789, &quot;https://www.youtube.com/watch?v=b4RJ
       <span class="sr-only">Link to this function</span>
     </a>
     <h1 class="signature">playing?(guild_id)</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L289" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L320" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -392,7 +414,7 @@ false</code></pre>  </section>
       <span class="sr-only">Link to this function</span>
     </a>
     <h1 class="signature">ready?(guild_id)</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L318" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L349" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -429,7 +451,7 @@ false</code></pre>  </section>
       <span class="sr-only">Link to this function</span>
     </a>
     <h1 class="signature">resume(guild_id)</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L243" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L274" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -464,7 +486,7 @@ iex&gt; Nostrum.Voice.resume(123456789)</code></pre>  </section>
       <span class="sr-only">Link to this function</span>
     </a>
     <h1 class="signature">stop(guild_id)</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L159" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L190" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
