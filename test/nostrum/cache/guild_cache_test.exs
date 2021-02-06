@@ -8,7 +8,7 @@ defmodule Nostrum.Cache.GuildCacheTest do
 
   setup_all do
     CacheSupervisor.start_link([])
-    GuildRegister.create_guild_process(0, %Guild{id: 0})
+    GuildRegister.create_guild_process(0, %Guild{id: 0}, 1)
 
     :ok
   end

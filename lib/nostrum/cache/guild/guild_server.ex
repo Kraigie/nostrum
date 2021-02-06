@@ -6,6 +6,7 @@ defmodule Nostrum.Cache.Guild.GuildServer do
   alias Nostrum.Cache.Guild.GuildRegister
   alias Nostrum.Struct.{Channel, Guild}
   alias Nostrum.Struct.Guild.{Member, Role}
+  alias Nostrum.Struct.WSState
   alias Nostrum.{Snowflake, Util}
 
   require Logger
@@ -38,9 +39,9 @@ defmodule Nostrum.Cache.Guild.GuildServer do
   end
 
   @doc false
-  @spec create(Guild.t()) :: {:ok, Guild.t()} | {:error, term}
-  def create(guild) do
-    GuildRegister.create_guild_process(guild.id, guild)
+  @spec create(Guild.t(), WSState.shard_num()) :: {:ok, Guild.t()} | {:error, term}
+  def create(guild, shard_id) do
+    GuildRegister.create_guild_process(guild.id, guild, shard_id)
   end
 
   @doc false

@@ -128,7 +128,7 @@ defmodule Nostrum.Shard.Dispatch do
 
     guild = Util.cast(guild, {:struct, Guild})
 
-    case GuildServer.create(guild) do
+    case GuildServer.create(guild, state.shard_num) do
       {:error, reason} ->
         Logger.warn("Failed to create new guild process: #{inspect(reason)}")
         :noop

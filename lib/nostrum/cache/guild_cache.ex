@@ -40,8 +40,17 @@ defmodule Nostrum.Cache.GuildCache do
   def select_all(selector)
 
   def select_all(selector) when is_selector(selector) do
-    Supervisor.which_children(GuildSupervisor)
+    # Gorgeous code. Gorgeous. Gorgeous. Gorgeous.
+    ShardSupervisor
+    |> Supervisor.which_children()
+    |> Stream.filter(fn {_id, _pid, _type, [modules]} -> modules == Nostrum.Shard end)
+    |> Enum.map(fn {_id, pid, _type, _modules} -> Supervisor.which_children(pid) end)
+    |> List.flatten()
+    |> Enum.filter(fn {_id, _pid, _type, [modules]} -> modules == GuildSupervisor end)
     |> Stream.map(fn {_, pid, _, _} -> pid end)
+    |> Enum.map(&Supervisor.which_children/1)
+    |> List.flatten()
+    |> Enum.map(fn {_id, pid, _type, _modules} -> pid end)
     |> Task.async_stream(fn pid -> GenServer.call(pid, {:select, selector}) end)
     |> Stream.map(fn {:ok, value} -> value end)
   end

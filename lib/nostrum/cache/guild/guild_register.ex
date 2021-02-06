@@ -24,8 +24,8 @@ defmodule Nostrum.Cache.Guild.GuildRegister do
     end
   end
 
-  def create_guild_process(id, guild) do
-    case GuildSupervisor.start_child(id, guild) do
+  def create_guild_process(id, guild, shard_id) do
+    case GuildSupervisor.start_child(id, guild, shard_id) do
       {:ok, _pid} ->
         {:ok, guild}
 

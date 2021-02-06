@@ -3,6 +3,7 @@ defmodule Nostrum.Shard do
 
   use Supervisor
 
+  alias Nostrum.Cache.Guild.GuildSupervisor
   alias Nostrum.Shard.Session
 
   def start_link([_, shard_num] = opts) do
@@ -11,9 +12,9 @@ defmodule Nostrum.Shard do
 
   def init(opts) do
     children = [
+      {GuildSupervisor, opts},
       {Session, opts}
       # TODO: Add per shard ratelimiter
-      # TODO: Add per shard cache
     ]
 
     Supervisor.init(children, strategy: :one_for_all, max_restarts: 3, max_seconds: 60)
