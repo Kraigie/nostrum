@@ -63,7 +63,7 @@ defmodule Nostrum.Voice.Session do
       {:gun_upgrade, ^worker, ^stream, [<<"websocket">>], _headers} ->
         :ok
 
-      {:gun_error, ^worker, ^stream, reason, _headers} ->
+      {:gun_error, ^worker, ^stream, reason} ->
         exit({:ws_upgrade_failed, reason})
     after
       @timeout_ws_upgrade ->
@@ -108,7 +108,6 @@ defmodule Nostrum.Voice.Session do
 
   def handle_info({:gun_ws, _conn, _stream, {:close, errno, reason}}, state) do
     Logger.info("Voice websocket closed (errno #{errno}, reason #{inspect(reason)})")
-    Voice.remove_voice(state.guild_id)
     {:noreply, state}
   end
 
