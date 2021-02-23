@@ -2828,7 +2828,6 @@ defmodule Nostrum.Api do
       args,
       params: [wait: wait]
     )
-    |> handle_request_with_decode
   end
 
   def execute_webhook(webhook_id, webhook_token, %{content: _} = args, wait) do
@@ -2838,7 +2837,6 @@ defmodule Nostrum.Api do
       args,
       params: [wait: wait]
     )
-    |> handle_request_with_decode
   end
 
   @doc """
