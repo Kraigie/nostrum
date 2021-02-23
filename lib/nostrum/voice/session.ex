@@ -108,6 +108,11 @@ defmodule Nostrum.Voice.Session do
 
   def handle_info({:gun_ws, _conn, _stream, {:close, errno, reason}}, state) do
     Logger.info("Voice websocket closed (errno #{errno}, reason #{inspect(reason)})")
+    if errno == 4006 do
+      channel_id = Voice.get_channel_id(state.guild_id)
+      Voice.leave_channel(state.guild_id)
+      Voice.join_channel(state.guild_id, channel_id)
+    end
     {:noreply, state}
   end
 
