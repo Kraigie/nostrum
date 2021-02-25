@@ -37,8 +37,7 @@ defmodule Nostrum.Voice.Session do
 
     [host, port] = String.split(voice.gateway, ":")
 
-    {:ok, worker} =
-      :gun.open(:binary.bin_to_list(host), String.to_integer(port), @gun_opts)
+    {:ok, worker} = :gun.open(:binary.bin_to_list(host), String.to_integer(port), @gun_opts)
 
     {:ok, :http} = :gun.await_up(worker, @timeout_connect)
     stream = :gun.ws_upgrade(worker, @gateway_qs)
