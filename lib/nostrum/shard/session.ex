@@ -16,7 +16,7 @@ defmodule Nostrum.Shard.Session do
   # Maximum time the websocket upgrade may take, in milliseconds.
   @timeout_ws_upgrade 10_000
   # Options to pass to :gun.open/3
-  @gun_opts %{protocols: [:http], retry: 1_000_000}
+  @gun_opts %{protocols: [:http], retry: 1_000_000_000}
 
   def update_status(pid, status, game, stream, type) do
     {idle_since, afk} =

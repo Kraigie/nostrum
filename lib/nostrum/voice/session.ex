@@ -19,7 +19,7 @@ defmodule Nostrum.Voice.Session do
 
   @timeout_ws_upgrade 10_000
 
-  @gun_opts %{protocols: [:http], retry: 1_000_000}
+  @gun_opts %{protocols: [:http], retry: 1_000_000_000}
 
   def start_link(%VoiceState{} = vs) do
     GenServer.start_link(__MODULE__, vs)
