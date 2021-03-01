@@ -67,12 +67,17 @@ defmodule Nostrum.Voice.Audio do
     |> Process.sleep()
   end
 
+  def get_source(%VoiceState{ffmpeg_proc: nil, raw_audio: raw_audio}), do: raw_audio
+
+  def get_source(%VoiceState{ffmpeg_proc: ffmpeg_proc}), do: ffmpeg_proc.out
+
   def try_send_data(%VoiceState{} = voice, init?) do
     wait = if(init?, do: 20_000, else: 500)
     {:ok, watchdog} = :timer.apply_after(wait, __MODULE__, :on_stall, [voice])
 
     {voice, done} =
-      voice.ffmpeg_proc.out
+      voice
+      |> get_source()
       |> Enum.take(@frames_per_burst)
       |> send_frames(voice)
 
@@ -104,7 +109,9 @@ defmodule Nostrum.Voice.Audio do
 
     {Voice.update_voice(voice.guild_id,
        rtp_sequence: voice.rtp_sequence,
-       rtp_timestamp: voice.rtp_timestamp
+       rtp_timestamp: voice.rtp_timestamp,
+       raw_audio:
+         unless(is_nil(voice.raw_audio), do: Enum.slice(voice.raw_audio, @frames_per_burst..-1))
      ), length(frames) < @frames_per_burst}
   end
 

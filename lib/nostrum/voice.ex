@@ -87,6 +87,7 @@ defmodule Nostrum.Voice do
       - `:url` Input will be [any url that `ffmpeg` can read](https://www.ffmpeg.org/ffmpeg-protocols.html).
       - `:pipe` Input will be data that is piped to stdin of `ffmpeg`.
       - `:ytdl` Input will be url for `youtube-dl`, which gets automatically piped to `ffmpeg`.
+      - `:raw` Input will be an enumarable of raw opus frames. This bypasses `ffmpeg` and all options.
     - `options` - See options section below.
 
 
@@ -141,7 +142,7 @@ defmodule Nostrum.Voice do
   ...>   filter: "lowpass=f=1200", filter: "highpass=f=300", filter: "asetrate=44100*0.5")
   ```
   """
-  @spec play(Guild.id(), String.t() | binary() | iodata(), :url | :pipe | :ytdl, keyword()) ::
+  @spec play(Guild.id(), String.t() | binary() | iodata(), :url | :pipe | :ytdl | :raw, keyword()) ::
           :ok | {:error, String.t()}
   def play(guild_id, input, type \\ :url, options \\ []) do
     voice = get_voice(guild_id)
@@ -156,7 +157,13 @@ defmodule Nostrum.Voice do
       true ->
         unless is_nil(voice.ffmpeg_proc), do: Proc.stop(voice.ffmpeg_proc)
         set_speaking(voice, true)
-        voice = update_voice(guild_id, ffmpeg_proc: Audio.spawn_ffmpeg(input, type, options))
+
+        {ffmpeg_proc, raw_audio} =
+          if type == :raw,
+            do: {nil, input},
+            else: {Audio.spawn_ffmpeg(input, type, options), nil}
+
+        voice = update_voice(guild_id, ffmpeg_proc: ffmpeg_proc, raw_audio: raw_audio)
         {:ok, pid} = Task.start(fn -> Audio.init_player(voice) end)
         update_voice(guild_id, player_pid: pid)
         :ok
@@ -200,7 +207,7 @@ defmodule Nostrum.Voice do
       true ->
         set_speaking(voice, false)
         Process.exit(voice.player_pid, :stop)
-        Proc.stop(voice.ffmpeg_proc)
+        unless is_nil(voice.ffmpeg_proc), do: Proc.stop(voice.ffmpeg_proc)
         :ok
     end
   end
@@ -281,7 +288,7 @@ defmodule Nostrum.Voice do
       VoiceState.playing?(voice) ->
         {:error, "Audio already playing in voice channel."}
 
-      is_nil(voice.ffmpeg_proc) ->
+      is_nil(voice.ffmpeg_proc) and is_nil(voice.raw_audio) ->
         {:error, "Audio must be paused to resume."}
 
       true ->
