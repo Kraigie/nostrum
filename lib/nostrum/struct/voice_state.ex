@@ -21,6 +21,7 @@ defmodule Nostrum.Struct.VoiceState do
     :rtp_timestamp,
     :ffmpeg_proc,
     :raw_audio,
+    :raw_stateful,
     :player_pid
   ]
 

@@ -110,8 +110,11 @@ defmodule Nostrum.Voice.Audio do
     {Voice.update_voice(voice.guild_id,
        rtp_sequence: voice.rtp_sequence,
        rtp_timestamp: voice.rtp_timestamp,
+       # If using raw audio and it isn't stateful, update its state manually
        raw_audio:
-         unless(is_nil(voice.raw_audio), do: Enum.slice(voice.raw_audio, @frames_per_burst..-1))
+         unless(is_nil(voice.raw_audio) or voice.raw_stateful,
+           do: Enum.slice(voice.raw_audio, @frames_per_burst..-1)
+         )
      ), length(frames) < @frames_per_burst}
   end
 
@@ -221,7 +224,7 @@ defmodule Nostrum.Voice.Audio do
   end
 
   def on_complete(%VoiceState{} = voice) do
-    Voice.update_voice(voice.guild_id, ffmpeg_proc: nil)
+    Voice.update_voice(voice.guild_id, ffmpeg_proc: nil, raw_audio: nil)
     List.duplicate(<<0xF8, 0xFF, 0xFE>>, 5) |> send_frames(voice)
     Voice.set_speaking(voice, false)
     Process.exit(voice.player_pid, :stop)

@@ -88,6 +88,7 @@ defmodule Nostrum.Voice do
       - `:pipe` Input will be data that is piped to stdin of `ffmpeg`.
       - `:ytdl` Input will be url for `youtube-dl`, which gets automatically piped to `ffmpeg`.
       - `:raw` Input will be an enumarable of raw opus frames. This bypasses `ffmpeg` and all options.
+      - `:raw_s` Same as `:raw` but input must be stateful, i.e. calling `Enum.take/2` on input is not idempotent.
     - `options` - See options section below.
 
 
@@ -142,7 +143,12 @@ defmodule Nostrum.Voice do
   ...>   filter: "lowpass=f=1200", filter: "highpass=f=300", filter: "asetrate=44100*0.5")
   ```
   """
-  @spec play(Guild.id(), String.t() | binary() | iodata(), :url | :pipe | :ytdl | :raw, keyword()) ::
+  @spec play(
+          Guild.id(),
+          String.t() | binary() | iodata() | Enum.t(),
+          :url | :pipe | :ytdl | :raw | :raw_s,
+          keyword()
+        ) ::
           :ok | {:error, String.t()}
   def play(guild_id, input, type \\ :url, options \\ []) do
     voice = get_voice(guild_id)
@@ -158,12 +164,20 @@ defmodule Nostrum.Voice do
         unless is_nil(voice.ffmpeg_proc), do: Proc.stop(voice.ffmpeg_proc)
         set_speaking(voice, true)
 
-        {ffmpeg_proc, raw_audio} =
-          if type == :raw,
-            do: {nil, input},
-            else: {Audio.spawn_ffmpeg(input, type, options), nil}
+        {ffmpeg_proc, raw_audio, raw_stateful} =
+          case type do
+            :raw -> {nil, input, false}
+            :raw_s -> {nil, input, true}
+            _ffmpeg -> {Audio.spawn_ffmpeg(input, type, options), nil, false}
+          end
 
-        voice = update_voice(guild_id, ffmpeg_proc: ffmpeg_proc, raw_audio: raw_audio)
+        voice =
+          update_voice(guild_id,
+            ffmpeg_proc: ffmpeg_proc,
+            raw_audio: raw_audio,
+            raw_stateful: raw_stateful
+          )
+
         {:ok, pid} = Task.start(fn -> Audio.init_player(voice) end)
         update_voice(guild_id, player_pid: pid)
         :ok
