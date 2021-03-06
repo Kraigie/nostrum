@@ -93,7 +93,7 @@ defmodule Nostrum.Mixfile do
       {:poison, "~> 3.0"},
       {:gun, "~> 1.3"},
       {:kcl, "~> 1.3"},
-      {:porcelain, "~> 2.0"},
+      {:porcelain, git: "https://github.com/alco/porcelain"},
       {:ex_doc, "~> 0.14", only: :dev},
       {:credo, "~> 1.4", only: [:dev, :test]},
       {:dialyxir, "~> 1.0.0", only: [:dev], runtime: false},
