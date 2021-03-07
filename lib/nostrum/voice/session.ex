@@ -63,7 +63,7 @@ defmodule Nostrum.Voice.Session do
       {:gun_upgrade, ^worker, ^stream, [<<"websocket">>], _headers} ->
         :ok
 
-      {:gun_error, ^worker, ^stream, reason, _headers} ->
+      {:gun_error, ^worker, ^stream, reason} ->
         exit({:ws_upgrade_failed, reason})
     after
       @timeout_ws_upgrade ->
@@ -108,7 +108,14 @@ defmodule Nostrum.Voice.Session do
 
   def handle_info({:gun_ws, _conn, _stream, {:close, errno, reason}}, state) do
     Logger.info("Voice websocket closed (errno #{errno}, reason #{inspect(reason)})")
-    Voice.remove_voice(state.guild_id)
+
+    # If we received a errno of 4006, session is no longer valid, so we must get a new session.
+    if errno == 4006 do
+      channel_id = Voice.get_channel_id(state.guild_id)
+      Voice.leave_channel(state.guild_id)
+      Voice.join_channel(state.guild_id, channel_id)
+    end
+
     {:noreply, state}
   end
 
