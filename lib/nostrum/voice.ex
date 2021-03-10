@@ -426,7 +426,7 @@ defmodule Nostrum.Voice do
   directly using `Nostrum.Voice.send_frames/2`.
   """
   @spec set_is_speaking(Guild.id(), boolean) :: :ok
-  def set_is_speaking(guild_id, speaking), do: set_speaking(guild_id, speaking)
+  def set_is_speaking(guild_id, speaking), do: get_voice(guild_id) |> set_speaking(speaking)
 
   @doc """
   Low-level. Send pre-encoded audio packets directly.
