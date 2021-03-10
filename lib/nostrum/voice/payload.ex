@@ -61,7 +61,7 @@ defmodule Nostrum.Voice.Payload do
         guild_id: voice.guild_id,
         channel_id: voice.channel_id,
         speaking: voice.speaking,
-        timeout: timed_out
+        timed_out: timed_out
       }
     }
   end
