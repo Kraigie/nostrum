@@ -54,13 +54,14 @@ defmodule Nostrum.Voice.Payload do
     |> build_payload("SPEAKING")
   end
 
-  def speaking_update_payload(%VoiceState{} = voice) do
+  def speaking_update_payload(%VoiceState{} = voice, timed_out \\ false) do
     %{
       t: :VOICE_SPEAKING_UPDATE,
       d: %{
         guild_id: voice.guild_id,
         channel_id: voice.channel_id,
-        speaking: voice.speaking
+        speaking: voice.speaking,
+        timeout: timed_out
       }
     }
   end

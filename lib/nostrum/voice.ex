@@ -379,13 +379,8 @@ defmodule Nostrum.Voice do
   end
 
   @doc false
-  def set_speaking(%VoiceState{} = voice, speaking) do
-    Session.set_speaking(voice.session_pid, speaking)
-  end
-
-  @doc false
-  def set_speaking(guild_id, speaking) do
-    get_voice(guild_id) |> set_speaking(speaking)
+  def set_speaking(%VoiceState{} = voice, speaking, timed_out \\ false) do
+    Session.set_speaking(voice.session_pid, speaking, timed_out)
   end
 
   @doc false
