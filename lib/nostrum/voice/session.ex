@@ -81,8 +81,8 @@ defmodule Nostrum.Voice.Session do
     GenServer.cast(pid, :close)
   end
 
-  def set_speaking(pid, speaking) do
-    GenServer.cast(pid, {:speaking, speaking})
+  def set_speaking(pid, speaking, timed_out \\ false) do
+    GenServer.cast(pid, {:speaking, speaking, timed_out})
   end
 
   def handle_info({:gun_ws, _worker, _stream, {:text, frame}}, state) do
@@ -157,9 +157,9 @@ defmodule Nostrum.Voice.Session do
      %{state | heartbeat_ref: ref, heartbeat_ack: false, last_heartbeat_send: DateTime.utc_now()}}
   end
 
-  def handle_cast({:speaking, speaking}, state) do
+  def handle_cast({:speaking, speaking, timed_out}, state) do
     voice = Voice.update_voice(state.guild_id, speaking: speaking)
-    speaking_update = Payload.speaking_update_payload(voice)
+    speaking_update = Payload.speaking_update_payload(voice, timed_out)
     payload = Payload.speaking_payload(voice)
 
     Producer.notify(Producer, speaking_update, state)
