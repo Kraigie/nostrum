@@ -8,7 +8,7 @@
     <meta name="project" content="Nostrum v0.4.6">
     <title>Nostrum.Struct.Event.SpeakingUpdate — Nostrum v0.4.6</title>
     <link rel="stylesheet" href="dist/elixir-9f91ebe876dc01d67920.css" />
-    <script src="dist/sidebar_items-63c304dd53.js"></script>
+    <script src="dist/sidebar_items-61cb6420b5.js"></script>
       <script src="docs_config.js"></script>
     <script async src="dist/app-60a0c9f10e9e52eae31f.js"></script>
   </head>
@@ -110,6 +110,12 @@ Nostrum      </a>
     <a href="#t:t/0">t()</a>
   </div>
 </div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:timed_out/0">timed_out()</a>
+  </div>
+    <div class="summary-synopsis"><p>Boolean representing if speaking update was caused by an audio timeout.</p></div>
+</div>
   </div>
         </section>
 
@@ -128,7 +134,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">channel_id()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/event/speaking_update.ex#L19" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/event/speaking_update.ex#L20" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -149,7 +155,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">guild_id()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/event/speaking_update.ex#L24" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/event/speaking_update.ex#L25" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -170,7 +176,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">speaking()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/event/speaking_update.ex#L29" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/event/speaking_update.ex#L30" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -191,7 +197,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">t()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/event/speaking_update.ex#L31" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/event/speaking_update.ex#L37" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -203,11 +209,33 @@ Types          </h1>
           <pre>t() :: %Nostrum.Struct.Event.SpeakingUpdate{
   channel_id: <a href="#t:channel_id/0">channel_id</a>(),
   guild_id: <a href="#t:guild_id/0">guild_id</a>(),
-  speaking: <a href="#t:speaking/0">speaking</a>()
+  speaking: <a href="#t:speaking/0">speaking</a>(),
+  timed_out: <a href="#t:timed_out/0">timed_out</a>()
 }</pre>
       </div>
 
   </section>
+</section>
+<section class="detail" id="t:timed_out/0">
+  <div class="detail-header">
+    <a href="#t:timed_out/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">timed_out()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/event/speaking_update.ex#L35" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>timed_out() :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">boolean</a>()</pre>
+      </div>
+
+<p>Boolean representing if speaking update was caused by an audio timeout.</p>  </section>
 </section>
           </div>
         </section>

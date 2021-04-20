@@ -8,7 +8,7 @@
     <meta name="project" content="Nostrum v0.4.6">
     <title>Voice — Nostrum v0.4.6</title>
     <link rel="stylesheet" href="dist/elixir-9f91ebe876dc01d67920.css" />
-    <script src="dist/sidebar_items-63c304dd53.js"></script>
+    <script src="dist/sidebar_items-61cb6420b5.js"></script>
       <script src="docs_config.js"></script>
     <script async src="dist/app-60a0c9f10e9e52eae31f.js"></script>
   </head>
@@ -81,7 +81,7 @@ encode any audio (or video) file for sending to Discord's voice servers.
 By default Nostrum will look for the executable <code class="inline">ffmpeg</code> in the system path.
 If the executable is elsewhere, the path may be configured via
 <code class="inline">config :nostrum, :ffmpeg, &quot;/path/to/ffmpeg&quot;</code>.
-The function <a href="Nostrum.Voice.html#play/3"><code class="inline">Nostrum.Voice.play/3</code></a> allows sound to played via files, local or 
+The function <a href="Nostrum.Voice.html#play/4"><code class="inline">Nostrum.Voice.play/4</code></a> allows sound to played via files, local or 
 remote, or via raw data that gets piped to <code class="inline">stdin</code> of the <code class="inline">ffmpeg</code> process.
 When playing from a url, the url can be a name of a file on the filesystem or a url
 of file on a remote server - <a href="https://www.ffmpeg.org/ffmpeg-protocols.html">ffmpeg supports a ton of protocols</a>,
@@ -96,8 +96,26 @@ Although the name implies support for Youtube, <code class="inline">youtube-dl</
 <a href="https://github.com/ytdl-org/youtube-dl/blob/master/docs/supportedsites.md">an immense list of sites</a>.
 By default Nostrum will look for the executable <code class="inline">youtube-dl</code> in the system path. If the
 executable is elsewhere, the path may be configured via <code class="inline">config :nostrum, :youtubedl, &quot;/path/to/youtube-dl&quot;</code>.
-When <a href="Nostrum.Voice.html#play/3"><code class="inline">Nostrum.Voice.play/3</code></a> is called with <code class="inline">:ytdl</code> for the <code class="inline">type</code> parameter, <code class="inline">youtube-dl</code> will be
-run with options <code class="inline">-f bestaudio -q -o -</code>, which will attempt to download the audio at the given url and pipe it to <code class="inline">ffmpeg</code>.</p>      <footer class="footer">
+When <a href="Nostrum.Voice.html#play/4"><code class="inline">Nostrum.Voice.play/4</code></a> is called with <code class="inline">:ytdl</code> for the <code class="inline">type</code> parameter, <code class="inline">youtube-dl</code> will be
+run with options <code class="inline">-f bestaudio -q -o -</code>, which will attempt to download the audio at the given url and pipe it to <code class="inline">ffmpeg</code>.</p><h2 id="audio-timeout" class="section-heading">
+  <a href="#audio-timeout" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Audio Timeout
+</h2>
+<p>Upon invoking <a href="Nostrum.Voice.html#play/4"><code class="inline">Nostrum.Voice.play/4</code></a>, the player process has a large configurable initial window
+(<code class="inline">20_000</code> milliseconds by default) that it must generate audio within before timing out. This is done to allow
+ample time for slow networks to download large audio/video files. This configurable timeout only applies to when
+<code class="inline">play</code> is initially invoked; once audio has begun transmitting, the timeout drops to <code class="inline">500</code> milliseconds.
+Because the <code class="inline">ffmpeg</code> process doesn't close when its input device is <code class="inline">stdin</code>, which is the case
+with <code class="inline">type</code> is set to <code class="inline">:pipe</code> or <code class="inline">:ytdl</code>, the timeout is necessary to promtly detect end of input.
+If the audio process times out with the initial window, the <a href="Nostrum.Struct.Event.SpeakingUpdate.html"><code class="inline">Nostrum.Struct.Event.SpeakingUpdate</code></a>
+that is generated will have its <code class="inline">timed_out</code> field set to <code class="inline">true</code>. It will be <code class="inline">false</code> in all other cases.
+If your use case does not include large, slow downloads and you wish to more quickly be notified
+of timeouts or errors, you may consider setting <code class="inline">audio_timeout</code> to a lower value.
+However, <code class="inline">youtube-dl</code> typically takes at least 2.5 seconds to begin outputting audio data,
+even on a fast connection.
+If your use case involves playing large files at a timestamp several hours in like this,
+<code class="inline">play(guild_id, url, :ytdl, start_time: &quot;2:37:56&quot;)</code>, you may consider setting the timeout to a higher value, as downloading a large youtube video and having <code class="inline">ffmpeg</code> seek through several hours
+of audio may take 15-20 seconds, even with a fast network connection.</p>      <footer class="footer">
         <p>
           <span class="line">
             Built using
