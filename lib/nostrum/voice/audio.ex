@@ -72,7 +72,7 @@ defmodule Nostrum.Voice.Audio do
   def get_source(%VoiceState{ffmpeg_proc: ffmpeg_proc}), do: ffmpeg_proc.out
 
   def try_send_data(%VoiceState{} = voice, init?) do
-    wait = if(init?, do: 20_000, else: 500)
+    wait = if(init?, do: Application.get_env(:nostrum, :audio_timeout, 20_000), else: 500)
     {:ok, watchdog} = :timer.apply_after(wait, __MODULE__, :on_stall, [voice])
 
     {voice, done} =
@@ -84,7 +84,7 @@ defmodule Nostrum.Voice.Audio do
     :timer.cancel(watchdog)
 
     if done,
-      do: on_complete(voice),
+      do: on_complete(voice, init?),
       else: voice
   end
 
@@ -223,10 +223,10 @@ defmodule Nostrum.Voice.Audio do
     end
   end
 
-  def on_complete(%VoiceState{} = voice) do
+  def on_complete(%VoiceState{} = voice, timed_out) do
     Voice.update_voice(voice.guild_id, ffmpeg_proc: nil, raw_audio: nil)
     List.duplicate(<<0xF8, 0xFF, 0xFE>>, 5) |> send_frames(voice)
-    Voice.set_speaking(voice, false)
+    Voice.set_speaking(voice, false, timed_out)
     Process.exit(voice.player_pid, :stop)
   end
 

@@ -19,6 +19,8 @@ defmodule Nostrum.Voice.Session do
 
   @timeout_ws_upgrade 10_000
 
+  @gun_opts %{protocols: [:http], retry: 1_000_000_000}
+
   def start_link(%VoiceState{} = vs) do
     GenServer.start_link(__MODULE__, vs)
   end
@@ -35,8 +37,7 @@ defmodule Nostrum.Voice.Session do
 
     [host, port] = String.split(voice.gateway, ":")
 
-    {:ok, worker} =
-      :gun.open(:binary.bin_to_list(host), String.to_integer(port), %{protocols: [:http]})
+    {:ok, worker} = :gun.open(:binary.bin_to_list(host), String.to_integer(port), @gun_opts)
 
     {:ok, :http} = :gun.await_up(worker, @timeout_connect)
     stream = :gun.ws_upgrade(worker, @gateway_qs)
@@ -63,7 +64,7 @@ defmodule Nostrum.Voice.Session do
       {:gun_upgrade, ^worker, ^stream, [<<"websocket">>], _headers} ->
         :ok
 
-      {:gun_error, ^worker, ^stream, reason, _headers} ->
+      {:gun_error, ^worker, ^stream, reason} ->
         exit({:ws_upgrade_failed, reason})
     after
       @timeout_ws_upgrade ->
@@ -80,8 +81,8 @@ defmodule Nostrum.Voice.Session do
     GenServer.cast(pid, :close)
   end
 
-  def set_speaking(pid, speaking) do
-    GenServer.cast(pid, {:speaking, speaking})
+  def set_speaking(pid, speaking, timed_out \\ false) do
+    GenServer.cast(pid, {:speaking, speaking, timed_out})
   end
 
   def handle_info({:gun_ws, _worker, _stream, {:text, frame}}, state) do
@@ -108,7 +109,14 @@ defmodule Nostrum.Voice.Session do
 
   def handle_info({:gun_ws, _conn, _stream, {:close, errno, reason}}, state) do
     Logger.info("Voice websocket closed (errno #{errno}, reason #{inspect(reason)})")
-    Voice.remove_voice(state.guild_id)
+
+    # If we received a errno of 4006, session is no longer valid, so we must get a new session.
+    if errno == 4006 do
+      channel_id = Voice.get_channel_id(state.guild_id)
+      Voice.leave_channel(state.guild_id)
+      Voice.join_channel(state.guild_id, channel_id)
+    end
+
     {:noreply, state}
   end
 
@@ -149,9 +157,9 @@ defmodule Nostrum.Voice.Session do
      %{state | heartbeat_ref: ref, heartbeat_ack: false, last_heartbeat_send: DateTime.utc_now()}}
   end
 
-  def handle_cast({:speaking, speaking}, state) do
+  def handle_cast({:speaking, speaking, timed_out}, state) do
     voice = Voice.update_voice(state.guild_id, speaking: speaking)
-    speaking_update = Payload.speaking_update_payload(voice)
+    speaking_update = Payload.speaking_update_payload(voice, timed_out)
     payload = Payload.speaking_payload(voice)
 
     Producer.notify(Producer, speaking_update, state)
