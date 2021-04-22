@@ -17,6 +17,7 @@ remote, or via raw data that gets piped to `stdin` of the `ffmpeg` process.
 When playing from a url, the url can be a name of a file on the filesystem or a url
 of file on a remote server - [ffmpeg supports a ton of protocols](https://www.ffmpeg.org/ffmpeg-protocols.html),
 the most common of which are probably `http` or simply reading a file from the filesystem.
+It is also possible to send raw opus frames, bypassing ffmpeg, if desired.
 
 ## youtube-dl
 With only `ffmpeg` installed, Nostrum supports playing audio/video files or raw, piped
