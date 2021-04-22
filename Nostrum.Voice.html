@@ -8,7 +8,7 @@
     <meta name="project" content="Nostrum v0.4.6">
     <title>Nostrum.Voice — Nostrum v0.4.6</title>
     <link rel="stylesheet" href="dist/elixir-9f91ebe876dc01d67920.css" />
-    <script src="dist/sidebar_items-61cb6420b5.js"></script>
+    <script src="dist/sidebar_items-0f0ab219aa.js"></script>
       <script src="docs_config.js"></script>
     <script async src="dist/app-60a0c9f10e9e52eae31f.js"></script>
   </head>
@@ -75,14 +75,19 @@ Nostrum      </a>
         <section id="moduledoc">
 <p>Interface for playing audio through Discord's voice channels.</p><h1>Using Discord Voice Channels</h1><p>To play sound in Discord with Nostrum, you'll need <code class="inline">ffmpeg</code> to be installed.
 If you don't have the executable <code class="inline">ffmpeg</code> in the path, the absolute path may
-be configured through config keys <code class="inline">:nostrum, :ffmpeg</code>.</p><p>A bot may be connected to at most one voice channel per guild. For this reason,
+be configured through config keys <code class="inline">:nostrum, :ffmpeg</code>. If you don't want to use
+ffmpeg, read on to the next section.</p><p>A bot may be connected to at most one voice channel per guild. For this reason,
 most of the functions in this module take a guild id, and the resulting action
 will be performed in the given guild's voice channel that the bot is connected to.</p><p>The primary Discord gateway responsible for all text based communication relies on
 one websocket connection per shard, where small bots typically only have one shard.
 The Discord voice gateways work by establishing a websocket connection per guild/channel.
 After some handshaking on this connection, audio data can be sent over UDP/RTP. Behind
 the scenes the voice websocket connections are implemented nearly the same way the main
-shard websocket connections are, and require no developer intervention.</p>        </section>
+shard websocket connections are, and require no developer intervention.</p><h2 id="module-voice-without-ffmpeg" class="section-heading">
+  <a href="#module-voice-without-ffmpeg" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Voice Without FFmpeg
+</h2>
+<p>If you wish to BYOE (Bring Your Own Encoder), there are a few options.</p><ul><li>Use <code class="inline">:raw</code> as <code class="inline">type</code> for <a href="#play/4"><code class="inline">Nostrum.Voice.play/4</code></a><ul><li>Provide the complete list of opus frames as the input</li></ul></li><li>Use <code class="inline">:raw_s</code> as <code class="inline">type</code> for <a href="#play/4"><code class="inline">Nostrum.Voice.play/4</code></a><ul><li>Provide a stateful enumerable of opus frames as input (think GenServer wrapped in <a href="https://hexdocs.pm/elixir/Stream.html#unfold/2"><code class="inline">Stream.unfold/2</code></a>)</li></ul></li><li>Use lower level functions to send opus frames at your leisure<ul><li>Send packets on your own time using <a href="#send_frames/2"><code class="inline">Nostrum.Voice.send_frames/2</code></a></li></ul></li></ul>        </section>
 
         <section id="summary" class="details-list">
           <h1 class="section-heading">
@@ -152,6 +157,18 @@ shard websocket connections are, and require no developer intervention.</p>     
 </div>
 <div class="summary-row">
   <div class="summary-signature">
+    <a href="#send_frames/2">send_frames(guild_id, frames)</a>
+  </div>
+    <div class="summary-synopsis"><p>Low-level. Send pre-encoded audio packets directly.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#set_is_speaking/2">set_is_speaking(guild_id, speaking)</a>
+  </div>
+    <div class="summary-synopsis"><p>Low-level. Set speaking flag in voice channel.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
     <a href="#stop/1">stop(guild_id)</a>
   </div>
     <div class="summary-synopsis"><p>Stops the current sound being played in a voice channel.</p></div>
@@ -174,7 +191,7 @@ Functions          </h1>
       <span class="sr-only">Link to this function</span>
     </a>
     <h1 class="signature">child_spec(init_arg)</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L31" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L41" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -191,7 +208,7 @@ Functions          </h1>
       <span class="sr-only">Link to this function</span>
     </a>
     <h1 class="signature">get_channel_id(guild_id)</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L376" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L407" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -230,7 +247,7 @@ nil</code></pre>  </section>
       <span class="sr-only">Link to this function</span>
     </a>
     <h1 class="signature">join_channel(guild_id, channel_id, self_mute \\ false, self_deaf \\ false)</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L64" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L74" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -256,7 +273,7 @@ nil</code></pre>  </section>
       <span class="sr-only">Link to this function</span>
     </a>
     <h1 class="signature">leave_channel(guild_id)</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L74" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L84" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -277,7 +294,7 @@ nil</code></pre>  </section>
       <span class="sr-only">Link to this function</span>
     </a>
     <h1 class="signature">pause(guild_id)</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L232" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L263" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -313,7 +330,7 @@ iex&gt; Nostrum.Voice.pause(123456789)</code></pre>  </section>
       <span class="sr-only">Link to this function</span>
     </a>
     <h1 class="signature">play(guild_id, input, type \\ :url, options \\ [])</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L146" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L163" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -324,8 +341,8 @@ iex&gt; Nostrum.Voice.pause(123456789)</code></pre>  </section>
       <div class="specs">
           <pre>play(
   <a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(),
-  <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>() | <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">binary</a>() | <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">iodata</a>(),
-  :url | :pipe | :ytdl,
+  <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>() | <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">binary</a>() | <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">iodata</a>() | <a href="https://hexdocs.pm/elixir/Enum.html#t:t/0">Enum.t</a>(),
+  :url | :pipe | :ytdl | :raw | :raw_s,
   <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">keyword</a>()
 ) :: :ok | {:error, <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()}</pre>
       </div>
@@ -334,7 +351,7 @@ iex&gt; Nostrum.Voice.pause(123456789)</code></pre>  </section>
   <a href="#play/4-parameters" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
   Parameters
 </h2>
-<ul><li><code class="inline">guild_id</code> - ID of guild whose voice channel the sound will be played in.</li><li><code class="inline">input</code> - Audio to be played. Type of <code class="inline">input</code> determined by <code class="inline">type</code> parameter.</li><li><code class="inline">type</code> - Type of input (defaults to <code class="inline">:url</code>).<ul><li><code class="inline">:url</code> Input will be <a href="https://www.ffmpeg.org/ffmpeg-protocols.html">any url that <code class="inline">ffmpeg</code> can read</a>.</li><li><code class="inline">:pipe</code> Input will be data that is piped to stdin of <code class="inline">ffmpeg</code>.</li><li><code class="inline">:ytdl</code> Input will be url for <code class="inline">youtube-dl</code>, which gets automatically piped to <code class="inline">ffmpeg</code>.</li></ul></li><li><code class="inline">options</code> - See options section below.</li></ul><p>Returns <code class="inline">{:error, reason}</code> if unable to play or a sound is playing, else <code class="inline">:ok</code>.</p><h2 id="play/4-options" class="section-heading">
+<ul><li><code class="inline">guild_id</code> - ID of guild whose voice channel the sound will be played in.</li><li><code class="inline">input</code> - Audio to be played. Type of <code class="inline">input</code> determined by <code class="inline">type</code> parameter.</li><li><code class="inline">type</code> - Type of input (defaults to <code class="inline">:url</code>).<ul><li><code class="inline">:url</code> Input will be <a href="https://www.ffmpeg.org/ffmpeg-protocols.html">any url that <code class="inline">ffmpeg</code> can read</a>.</li><li><code class="inline">:pipe</code> Input will be data that is piped to stdin of <code class="inline">ffmpeg</code>.</li><li><code class="inline">:ytdl</code> Input will be url for <code class="inline">youtube-dl</code>, which gets automatically piped to <code class="inline">ffmpeg</code>.</li><li><code class="inline">:raw</code> Input will be an enumarable of raw opus frames. This bypasses <code class="inline">ffmpeg</code> and all options.</li><li><code class="inline">:raw_s</code> Same as <code class="inline">:raw</code> but input must be stateful, i.e. calling <a href="https://hexdocs.pm/elixir/Enum.html#take/2"><code class="inline">Enum.take/2</code></a> on input is not idempotent.</li></ul></li><li><code class="inline">options</code> - See options section below.</li></ul><p>Returns <code class="inline">{:error, reason}</code> if unable to play or a sound is playing, else <code class="inline">:ok</code>.</p><h2 id="play/4-options" class="section-heading">
   <a href="#play/4-options" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
   Options
 </h2>
@@ -375,7 +392,7 @@ iex&gt; Nostrum.Voice.play(123456789, &quot;https://www.youtube.com/watch?v=0ngc
       <span class="sr-only">Link to this function</span>
     </a>
     <h1 class="signature">playing?(guild_id)</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L320" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L351" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -414,7 +431,7 @@ false</code></pre>  </section>
       <span class="sr-only">Link to this function</span>
     </a>
     <h1 class="signature">ready?(guild_id)</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L349" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L380" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -451,7 +468,7 @@ false</code></pre>  </section>
       <span class="sr-only">Link to this function</span>
     </a>
     <h1 class="signature">resume(guild_id)</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L274" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L305" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -479,6 +496,53 @@ iex&gt; Nostrum.Voice.pause(123456789)
 
 iex&gt; Nostrum.Voice.resume(123456789)</code></pre>  </section>
 </section>
+<section class="detail" id="send_frames/2">
+  <div class="detail-header">
+    <a href="#send_frames/2" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">send_frames(guild_id, frames)</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L440" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>send_frames(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(), [<a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">binary</a>()]) :: :ok | {:error, <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()}</pre>
+      </div>
+
+<p>Low-level. Send pre-encoded audio packets directly.</p><p>Speaking should be set to true via <a href="#set_is_speaking/2"><code class="inline">Nostrum.Voice.set_is_speaking/2</code></a> before sending frames.</p><p>Opus frames will be encrypted and prefixed with the appropriate RTP header and sent immediately.
+The length of <code class="inline">frames</code> depends on how often you wish to send a sequence of frames.
+A single frame contains 20ms of audio. Sending more than 50 frames (1 second of audio)
+in a single function call may result in inconsistent playback rates.</p><p><a href="#playing?/1"><code class="inline">Nostrum.Voice.playing?/1</code></a> will not return accurate values when using <a href="#send_frames/2"><code class="inline">send_frames/2</code></a>
+instead of <a href="#play/4"><code class="inline">Nostrum.Voice.play/4</code></a></p>  </section>
+</section>
+<section class="detail" id="set_is_speaking/2">
+  <div class="detail-header">
+    <a href="#set_is_speaking/2" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">set_is_speaking(guild_id, speaking)</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L424" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>set_is_speaking(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">boolean</a>()) :: :ok</pre>
+      </div>
+
+<p>Low-level. Set speaking flag in voice channel.</p><p>This function does not need to be called unless you are sending audio frames
+directly using <a href="#send_frames/2"><code class="inline">Nostrum.Voice.send_frames/2</code></a>.</p>  </section>
+</section>
 <section class="detail" id="stop/1">
   <div class="detail-header">
     <a href="#stop/1" class="detail-link" title="Link to this function">
@@ -486,7 +550,7 @@ iex&gt; Nostrum.Voice.resume(123456789)</code></pre>  </section>
       <span class="sr-only">Link to this function</span>
     </a>
     <h1 class="signature">stop(guild_id)</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L190" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L221" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
