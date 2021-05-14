@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="ExDoc v0.23.0">
     <meta name="project" content="Nostrum v0.4.6">
-    <title>Nostrum.Struct.Embed.Footer — Nostrum v0.4.6</title>
+    <title>Nostrum.Struct.Guild.Ban — Nostrum v0.4.6</title>
     <link rel="stylesheet" href="dist/elixir-9f91ebe876dc01d67920.css" />
     <script src="dist/sidebar_items-ce0619f7aa.js"></script>
       <script src="docs_config.js"></script>
@@ -64,8 +64,8 @@ Nostrum      </a>
     <div id="content" class="content-inner">
 
       <h1>
-        Nostrum.Struct.Embed.Footer <small class="app-vsn">(Nostrum v0.4.6)</small>
-          <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/embed/footer.ex#L1" title="View Source" class="view-source" rel="help">
+        Nostrum.Struct.Guild.Ban <small class="app-vsn">(Nostrum v0.4.6)</small>
+          <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild/ban.ex#L1" title="View Source" class="view-source" rel="help">
             <span class="icon-code" aria-hidden="true"></span>
             <span class="sr-only">View Source</span>
           </a>
@@ -73,7 +73,7 @@ Nostrum      </a>
 
 
         <section id="moduledoc">
-<p>Struct representing a Discord embed footer.</p>        </section>
+<p>Represents a guild ban.</p>        </section>
 
         <section id="summary" class="details-list">
           <h1 class="section-heading">
@@ -89,15 +89,9 @@ Nostrum      </a>
     </h2>
 <div class="summary-row">
   <div class="summary-signature">
-    <a href="#t:icon_url/0">icon_url()</a>
+    <a href="#t:reason/0">reason()</a>
   </div>
-    <div class="summary-synopsis"><p>URL of footer icon</p></div>
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#t:proxy_icon_url/0">proxy_icon_url()</a>
-  </div>
-    <div class="summary-synopsis"><p>Proxied URL of footer icon</p></div>
+    <div class="summary-synopsis"><p>The reason for the ban</p></div>
 </div>
 <div class="summary-row">
   <div class="summary-signature">
@@ -106,9 +100,9 @@ Nostrum      </a>
 </div>
 <div class="summary-row">
   <div class="summary-signature">
-    <a href="#t:text/0">text()</a>
+    <a href="#t:user/0">user()</a>
   </div>
-    <div class="summary-synopsis"><p>Footer text</p></div>
+    <div class="summary-synopsis"><p>The banned user</p></div>
 </div>
   </div>
         </section>
@@ -121,14 +115,14 @@ Nostrum      </a>
             </a>
 Types          </h1>
           <div class="types-list">
-<section class="detail" id="t:icon_url/0">
+<section class="detail" id="t:reason/0">
   <div class="detail-header">
-    <a href="#t:icon_url/0" class="detail-link" title="Link to this type">
+    <a href="#t:reason/0" class="detail-link" title="Link to this type">
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature">icon_url()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/embed/footer.ex#L29" class="view-source" rel="help" title="View Source">
+    <h1 class="signature">reason()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild/ban.ex#L15" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -137,31 +131,10 @@ Types          </h1>
   <section class="docstring">
       <h2>Specs</h2>
       <div class="specs">
-          <pre>icon_url() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>() | nil</pre>
+          <pre>reason() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>() | nil</pre>
       </div>
 
-<p>URL of footer icon</p>  </section>
-</section>
-<section class="detail" id="t:proxy_icon_url/0">
-  <div class="detail-header">
-    <a href="#t:proxy_icon_url/0" class="detail-link" title="Link to this type">
-      <span class="icon-link" aria-hidden="true"></span>
-      <span class="sr-only">Link to this type</span>
-    </a>
-    <h1 class="signature">proxy_icon_url()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/embed/footer.ex#L32" class="view-source" rel="help" title="View Source">
-       <span class="icon-code" aria-hidden="true"></span>
-       <span class="sr-only">View Source</span>
-     </a>
-  </div>
-
-  <section class="docstring">
-      <h2>Specs</h2>
-      <div class="specs">
-          <pre>proxy_icon_url() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>() | nil</pre>
-      </div>
-
-<p>Proxied URL of footer icon</p>  </section>
+<p>The reason for the ban</p>  </section>
 </section>
 <section class="detail" id="t:t/0">
   <div class="detail-header">
@@ -170,7 +143,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">t()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/embed/footer.ex#L34" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild/ban.ex#L20" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -179,23 +152,19 @@ Types          </h1>
   <section class="docstring">
       <h2>Specs</h2>
       <div class="specs">
-          <pre>t() :: %Nostrum.Struct.Embed.Footer{
-  icon_url: <a href="#t:icon_url/0">icon_url</a>(),
-  proxy_icon_url: <a href="#t:proxy_icon_url/0">proxy_icon_url</a>(),
-  text: <a href="#t:text/0">text</a>()
-}</pre>
+          <pre>t() :: %Nostrum.Struct.Guild.Ban{reason: <a href="#t:reason/0">reason</a>(), user: <a href="#t:user/0">user</a>()}</pre>
       </div>
 
   </section>
 </section>
-<section class="detail" id="t:text/0">
+<section class="detail" id="t:user/0">
   <div class="detail-header">
-    <a href="#t:text/0" class="detail-link" title="Link to this type">
+    <a href="#t:user/0" class="detail-link" title="Link to this type">
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature">text()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/embed/footer.ex#L26" class="view-source" rel="help" title="View Source">
+    <h1 class="signature">user()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild/ban.ex#L18" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -204,10 +173,10 @@ Types          </h1>
   <section class="docstring">
       <h2>Specs</h2>
       <div class="specs">
-          <pre>text() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()</pre>
+          <pre>user() :: <a href="Nostrum.Struct.User.html#t:t/0">Nostrum.Struct.User.t</a>()</pre>
       </div>
 
-<p>Footer text</p>  </section>
+<p>The banned user</p>  </section>
 </section>
           </div>
         </section>
