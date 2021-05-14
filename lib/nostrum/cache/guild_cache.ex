@@ -64,7 +64,7 @@ defmodule Nostrum.Cache.GuildCache do
 
   ```Elixir
   iex> Nostrum.Cache.GuildCache.get(0)
-  {:ok, %Nostrum.Struct.Guild{id: 0}}
+  {:ok, %Nostrum.Struct.Guild{...}}
 
   iex> Nostrum.Cache.GuildCache.get(10)
   {:error, :id_not_found_on_guild_lookup}
@@ -88,10 +88,10 @@ defmodule Nostrum.Cache.GuildCache do
 
   ```Elixir
   iex> Nostrum.Cache.GuildCache.get_by(id: 0)
-  {:ok, %Nostrum.Struct.Guild{id: 0}}
+  {:ok, %Nostrum.Struct.Guild{...}}
 
   iex> Nostrum.Cache.GuildCache.get_by(%{id: 0})
-  {:ok, %Nostrum.Struct.Guild{id: 0}}
+  {:ok, %Nostrum.Struct.Guild{...}}
 
   iex> Nostrum.Cache.GuildCache.get_by(id: 10)
   {:error, :id_not_found_on_guild_lookup}
