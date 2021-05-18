@@ -7,6 +7,7 @@ defmodule Nostrum.Struct.VoiceWSState do
     :token,
     :conn,
     :conn_pid,
+    :stream,
     :gateway,
     :identified,
     :last_heartbeat_send,
