@@ -50,6 +50,7 @@ defmodule Nostrum.Voice.Session do
       session: voice.session,
       token: voice.token,
       gateway: voice.gateway,
+      stream: stream,
       last_heartbeat_ack: DateTime.utc_now(),
       heartbeat_ack: true
     }
@@ -85,7 +86,7 @@ defmodule Nostrum.Voice.Session do
     GenServer.cast(pid, {:speaking, speaking, timed_out})
   end
 
-  def handle_info({:gun_ws, _worker, _stream, {:text, frame}}, state) do
+  def handle_info({:gun_ws, _worker, stream, {:text, frame}}, state) do
     payload =
       frame
       |> :erlang.iolist_to_binary()
@@ -99,7 +100,7 @@ defmodule Nostrum.Voice.Session do
 
     case from_handle do
       {new_state, reply} ->
-        :ok = :gun.ws_send(state.conn, {:text, reply})
+        :ok = :gun.ws_send(state.conn, stream, {:text, reply})
         {:noreply, new_state}
 
       new_state ->
@@ -140,7 +141,7 @@ defmodule Nostrum.Voice.Session do
   def handle_cast(:heartbeat, %{heartbeat_ack: false, heartbeat_ref: timer_ref} = state) do
     Logger.warn("heartbeat_ack not received in time, disconnecting")
     {:ok, :cancel} = :timer.cancel(timer_ref)
-    :gun.ws_send(state.conn, :close)
+    :gun.ws_send(state.conn, state.stream, :close)
     {:noreply, state}
   end
 
@@ -151,7 +152,7 @@ defmodule Nostrum.Voice.Session do
         :heartbeat
       ])
 
-    :ok = :gun.ws_send(state.conn, {:text, Payload.heartbeat_payload()})
+    :ok = :gun.ws_send(state.conn, state.stream, {:text, Payload.heartbeat_payload()})
 
     {:noreply,
      %{state | heartbeat_ref: ref, heartbeat_ack: false, last_heartbeat_send: DateTime.utc_now()}}
@@ -164,7 +165,7 @@ defmodule Nostrum.Voice.Session do
 
     Producer.notify(Producer, speaking_update, state)
 
-    :ok = :gun.ws_send(state.conn, {:text, payload})
+    :ok = :gun.ws_send(state.conn, state.stream, {:text, payload})
     {:noreply, state}
   end
 

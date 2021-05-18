@@ -10,6 +10,7 @@ defmodule Nostrum.Struct.WSState do
     :shard_pid,
     :conn,
     :conn_pid,
+    :stream,
     :gateway,
     :last_heartbeat_send,
     :last_heartbeat_ack,
@@ -36,6 +37,9 @@ defmodule Nostrum.Struct.WSState do
 
   @typedoc "PID of the connection process"
   @type conn_pid :: pid
+
+  @typedoc "Stream reference for `:gun`"
+  @type stream :: reference()
 
   @typedoc "Gateway URL"
   @type gateway :: String.t()
@@ -71,6 +75,7 @@ defmodule Nostrum.Struct.WSState do
           shard_pid: shard_pid,
           conn: conn,
           conn_pid: conn_pid,
+          stream: stream,
           gateway: gateway,
           last_heartbeat_send: last_heartbeat_send,
           last_heartbeat_ack: last_heartbeat_ack,
