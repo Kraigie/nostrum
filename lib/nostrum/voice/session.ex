@@ -40,7 +40,7 @@ defmodule Nostrum.Voice.Session do
 
     {:ok, :http} = :gun.await_up(worker, @timeout_connect)
     stream = :gun.ws_upgrade(worker, @gateway_qs)
-    await_ws_upgrade(worker, stream)
+    {:upgrade, ["websocket"], _} = :gun.await(worker, stream, @timeout_ws_upgrade)
 
     state = %VoiceWSState{
       conn_pid: self(),
@@ -57,20 +57,6 @@ defmodule Nostrum.Voice.Session do
     Logger.debug(fn -> "Voice Websocket connection up on worker #{inspect(worker)}" end)
     Voice.update_voice(voice.guild_id, session_pid: self())
     {:noreply, state}
-  end
-
-  defp await_ws_upgrade(worker, stream) do
-    receive do
-      {:gun_upgrade, ^worker, ^stream, [<<"websocket">>], _headers} ->
-        :ok
-
-      {:gun_error, ^worker, ^stream, reason} ->
-        exit({:ws_upgrade_failed, reason})
-    after
-      @timeout_ws_upgrade ->
-        Logger.error("Voice Websocket upgrade failed after #{@timeout_ws_upgrade / 1000} seconds")
-        exit(:timeout)
-    end
   end
 
   def get_ws_state(pid) do
@@ -131,7 +117,7 @@ defmodule Nostrum.Voice.Session do
 
   def handle_info({:gun_up, worker, _proto}, state) do
     stream = :gun.ws_upgrade(worker, @gateway_qs)
-    await_ws_upgrade(worker, stream)
+    {:upgrade, ["websocket"], _} = :gun.await(worker, stream, @timeout_ws_upgrade)
     Logger.warn("Reconnected after connection broke")
     {:noreply, %{state | heartbeat_ack: true}}
   end
