@@ -36,6 +36,7 @@ jobs:
 
       - run: mix format --check-formatted
         name: Check Formatting
+        if: ${{ matrix.elixir-version == '1.12' && matrix.otp-version == '24' }}
 
       - run: mix test --no-start
         name: Run Tests
