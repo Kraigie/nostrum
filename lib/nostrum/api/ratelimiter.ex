@@ -22,7 +22,6 @@ defmodule Nostrum.Api.Ratelimiter do
 
   @major_parameters ["channels", "guilds", "webhooks"]
   @gregorian_epoch 62_167_219_200
-  @sanity_wait 500
 
   @doc """
   Starts the ratelimiter.
@@ -109,7 +108,7 @@ defmodule Nostrum.Api.Ratelimiter do
       "RATELIMITER: Waiting #{timeout}ms to process request with route #{request.route}"
     )
 
-    Process.sleep(timeout + @sanity_wait)
+    Process.sleep(timeout)
     GenServer.call(Ratelimiter, {:queue, request, from}, :infinity)
   end
 
