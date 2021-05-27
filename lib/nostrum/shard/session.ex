@@ -132,7 +132,7 @@ defmodule Nostrum.Shard.Session do
   end
 
   def handle_info(
-        {:gun_down, _conn, _proto, _reason, _killed_streams, _unprocessed_streams},
+        {:gun_down, _conn, _proto, _reason, _killed_streams},
         state
       ) do
     # Try to cancel the internal timer, but
