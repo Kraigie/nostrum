@@ -22,7 +22,6 @@ defmodule Nostrum.Api.Ratelimiter do
 
   @major_parameters ["channels", "guilds", "webhooks"]
   @gregorian_epoch 62_167_219_200
-  @sanity_wait 500
 
   @doc """
   Starts the ratelimiter.
@@ -77,16 +76,22 @@ defmodule Nostrum.Api.Ratelimiter do
   defp handle_headers({:error, reason}, _route), do: {:error, reason}
 
   defp handle_headers({:ok, %HTTPoison.Response{headers: headers}} = response, route) do
-    global_limit = headers |> List.keyfind("X-RateLimit-Global", 0)
-    remaining = headers |> List.keyfind("X-RateLimit-Remaining", 0) |> value_from_rltuple
-    reset = headers |> List.keyfind("X-RateLimit-Reset", 0) |> value_from_rltuple
-    retry_after = headers |> List.keyfind("Retry-After", 0) |> value_from_rltuple
+    headers_to_keep =
+      MapSet.new([
+        "x-ratelimit-global",
+        "x-ratelimit-remaining",
+        "x-ratelimit-reset",
+        "retry-after",
+        "date"
+      ])
 
-    origin_timestamp =
-      headers
-      |> List.keyfind("Date", 0)
-      |> value_from_rltuple
-      |> date_string_to_unix
+    kept_headers = filter_headers(headers, headers_to_keep)
+
+    global_limit = Map.get(kept_headers, "x-ratelimit-global")
+    remaining = to_integer(Map.get(kept_headers, "x-ratelimit-remaining"))
+    reset = to_integer(Map.get(kept_headers, "x-ratelimit-reset"))
+    retry_after = to_integer(Map.get(kept_headers, "retry-after"))
+    origin_timestamp = date_string_to_unix(Map.get(kept_headers, "date"))
 
     latency = abs(origin_timestamp - Util.now())
 
@@ -109,7 +114,7 @@ defmodule Nostrum.Api.Ratelimiter do
       "RATELIMITER: Waiting #{timeout}ms to process request with route #{request.route}"
     )
 
-    Process.sleep(timeout + @sanity_wait)
+    Process.sleep(timeout)
     GenServer.call(Ratelimiter, {:queue, request, from}, :infinity)
   end
 
@@ -124,9 +129,8 @@ defmodule Nostrum.Api.Ratelimiter do
     (:calendar.datetime_to_gregorian_seconds(datetime) - @gregorian_epoch) * 1000
   end
 
-  defp value_from_rltuple(tuple) when is_nil(tuple), do: nil
-  defp value_from_rltuple({"Date", v}), do: v
-  defp value_from_rltuple({_k, v}), do: String.to_integer(v)
+  defp to_integer(v) when is_binary(v), do: String.to_integer(v)
+  defp to_integer(_v), do: nil
 
   @doc """
   Retrieves a proper ratelimit endpoint from a given route and url.
@@ -168,5 +172,15 @@ defmodule Nostrum.Api.Ratelimiter do
       {:ok, %HTTPoison.Response{status_code: code, body: body}} ->
         {:error, %ApiError{status_code: code, response: Poison.decode!(body, keys: :atoms)}}
     end
+  end
+
+  # Will go through headers and keep the ones that are members of the headers_to_keep MapSet (case insensitive!)
+  defp filter_headers(headers, headers_to_keep) do
+    headers
+    |> Stream.map(fn {key, value} ->
+      {String.downcase(key), value}
+    end)
+    |> Stream.filter(fn {key, _v} -> MapSet.member?(headers_to_keep, key) end)
+    |> Enum.into(%{})
   end
 end

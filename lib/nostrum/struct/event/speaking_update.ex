@@ -8,7 +8,8 @@ defmodule Nostrum.Struct.Event.SpeakingUpdate do
   defstruct [
     :channel_id,
     :guild_id,
-    :speaking
+    :speaking,
+    :timed_out
   ]
 
   alias Nostrum.Struct.{Channel, Guild}
@@ -28,10 +29,16 @@ defmodule Nostrum.Struct.Event.SpeakingUpdate do
   """
   @type speaking :: boolean()
 
+  @typedoc """
+  Boolean representing if speaking update was caused by an audio timeout.
+  """
+  @type timed_out :: boolean()
+
   @type t :: %__MODULE__{
           channel_id: channel_id,
           guild_id: guild_id,
-          speaking: speaking
+          speaking: speaking,
+          timed_out: timed_out
         }
 
   @doc false

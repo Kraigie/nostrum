@@ -15,6 +15,8 @@ defmodule Nostrum.Shard.Session do
   @timeout_connect 10_000
   # Maximum time the websocket upgrade may take, in milliseconds.
   @timeout_ws_upgrade 10_000
+  # Options to pass to :gun.open/3
+  @gun_opts %{protocols: [:http], retry: 1_000_000_000}
 
   def update_status(pid, status, game, stream, type) do
     {idle_since, afk} =
@@ -56,7 +58,7 @@ defmodule Nostrum.Shard.Session do
     Connector.block_until_connect()
     Logger.metadata(shard: shard_num)
 
-    {:ok, worker} = :gun.open(:binary.bin_to_list(gateway), 443, %{protocols: [:http]})
+    {:ok, worker} = :gun.open(:binary.bin_to_list(gateway), 443, @gun_opts)
     {:ok, :http} = :gun.await_up(worker, @timeout_connect)
     stream = :gun.ws_upgrade(worker, @gateway_qs)
     await_ws_upgrade(worker, stream)
@@ -68,6 +70,7 @@ defmodule Nostrum.Shard.Session do
       conn_pid: self(),
       conn: worker,
       shard_num: shard_num,
+      stream: stream,
       gateway: gateway <> @gateway_qs,
       last_heartbeat_ack: DateTime.utc_now(),
       heartbeat_ack: true,
@@ -99,7 +102,7 @@ defmodule Nostrum.Shard.Session do
     end
   end
 
-  def handle_info({:gun_ws, _worker, _stream, {:binary, frame}}, state) do
+  def handle_info({:gun_ws, _worker, stream, {:binary, frame}}, state) do
     payload =
       state.zlib_ctx
       |> :zlib.inflate(frame)
@@ -115,7 +118,7 @@ defmodule Nostrum.Shard.Session do
 
     case from_handle do
       {new_state, reply} ->
-        :ok = :gun.ws_send(state.conn, {:binary, reply})
+        :ok = :gun.ws_send(state.conn, stream, {:binary, reply})
         {:noreply, new_state}
 
       new_state ->
@@ -129,7 +132,7 @@ defmodule Nostrum.Shard.Session do
   end
 
   def handle_info(
-        {:gun_down, _conn, _proto, _reason, _killed_streams, _unprocessed_streams},
+        {:gun_down, _conn, _proto, _reason, _killed_streams},
         state
       ) do
     # Try to cancel the internal timer, but
@@ -147,24 +150,24 @@ defmodule Nostrum.Shard.Session do
   end
 
   def handle_cast({:status_update, payload}, state) do
-    :ok = :gun.ws_send(state.conn, {:binary, payload})
+    :ok = :gun.ws_send(state.conn, state.stream, {:binary, payload})
     {:noreply, state}
   end
 
   def handle_cast({:update_voice_state, payload}, state) do
-    :ok = :gun.ws_send(state.conn, {:binary, payload})
+    :ok = :gun.ws_send(state.conn, state.stream, {:binary, payload})
     {:noreply, state}
   end
 
   def handle_cast({:request_guild_members, payload}, state) do
-    :ok = :gun.ws_send(state.conn, {:binary, payload})
+    :ok = :gun.ws_send(state.conn, state.stream, {:binary, payload})
     {:noreply, state}
   end
 
   def handle_cast(:heartbeat, %{heartbeat_ack: false, heartbeat_ref: timer_ref} = state) do
     Logger.warn("heartbeat_ack not received in time, disconnecting")
     {:ok, :cancel} = :timer.cancel(timer_ref)
-    :gun.ws_send(state.conn, :close)
+    :gun.ws_send(state.conn, state.stream, :close)
     {:noreply, state}
   end
 
@@ -175,7 +178,7 @@ defmodule Nostrum.Shard.Session do
         :heartbeat
       ])
 
-    :ok = :gun.ws_send(state.conn, {:binary, Payload.heartbeat_payload(state.seq)})
+    :ok = :gun.ws_send(state.conn, state.stream, {:binary, Payload.heartbeat_payload(state.seq)})
 
     {:noreply,
      %{state | heartbeat_ref: ref, heartbeat_ack: false, last_heartbeat_send: DateTime.utc_now()}}

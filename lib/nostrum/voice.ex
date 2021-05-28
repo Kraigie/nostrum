@@ -5,7 +5,8 @@ defmodule Nostrum.Voice do
   # Using Discord Voice Channels
   To play sound in Discord with Nostrum, you'll need `ffmpeg` to be installed.
   If you don't have the executable `ffmpeg` in the path, the absolute path may
-  be configured through config keys `:nostrum, :ffmpeg`.
+  be configured through config keys `:nostrum, :ffmpeg`. If you don't want to use
+  ffmpeg, read on to the next section.
 
   A bot may be connected to at most one voice channel per guild. For this reason,
   most of the functions in this module take a guild id, and the resulting action
@@ -17,6 +18,15 @@ defmodule Nostrum.Voice do
   After some handshaking on this connection, audio data can be sent over UDP/RTP. Behind
   the scenes the voice websocket connections are implemented nearly the same way the main
   shard websocket connections are, and require no developer intervention.
+
+  ## Voice Without FFmpeg
+  If you wish to BYOE (Bring Your Own Encoder), there are a few options.
+    - Use `:raw` as `type` for `Nostrum.Voice.play/4`
+      - Provide the complete list of opus frames as the input
+    - Use `:raw_s` as `type` for `Nostrum.Voice.play/4`
+      - Provide a stateful enumerable of opus frames as input (think GenServer wrapped in `Stream.unfold/2`)
+    - Use lower level functions to send opus frames at your leisure
+      - Send packets on your own time using `Nostrum.Voice.send_frames/2`
   """
 
   alias Nostrum.Api
@@ -87,6 +97,8 @@ defmodule Nostrum.Voice do
       - `:url` Input will be [any url that `ffmpeg` can read](https://www.ffmpeg.org/ffmpeg-protocols.html).
       - `:pipe` Input will be data that is piped to stdin of `ffmpeg`.
       - `:ytdl` Input will be url for `youtube-dl`, which gets automatically piped to `ffmpeg`.
+      - `:raw` Input will be an enumarable of raw opus frames. This bypasses `ffmpeg` and all options.
+      - `:raw_s` Same as `:raw` but input must be stateful, i.e. calling `Enum.take/2` on input is not idempotent.
     - `options` - See options section below.
 
 
@@ -141,7 +153,12 @@ defmodule Nostrum.Voice do
   ...>   filter: "lowpass=f=1200", filter: "highpass=f=300", filter: "asetrate=44100*0.5")
   ```
   """
-  @spec play(Guild.id(), String.t() | binary() | iodata(), :url | :pipe | :ytdl, keyword()) ::
+  @spec play(
+          Guild.id(),
+          String.t() | binary() | iodata() | Enum.t(),
+          :url | :pipe | :ytdl | :raw | :raw_s,
+          keyword()
+        ) ::
           :ok | {:error, String.t()}
   def play(guild_id, input, type \\ :url, options \\ []) do
     voice = get_voice(guild_id)
@@ -156,7 +173,21 @@ defmodule Nostrum.Voice do
       true ->
         unless is_nil(voice.ffmpeg_proc), do: Proc.stop(voice.ffmpeg_proc)
         set_speaking(voice, true)
-        voice = update_voice(guild_id, ffmpeg_proc: Audio.spawn_ffmpeg(input, type, options))
+
+        {ffmpeg_proc, raw_audio, raw_stateful} =
+          case type do
+            :raw -> {nil, input, false}
+            :raw_s -> {nil, input, true}
+            _ffmpeg -> {Audio.spawn_ffmpeg(input, type, options), nil, false}
+          end
+
+        voice =
+          update_voice(guild_id,
+            ffmpeg_proc: ffmpeg_proc,
+            raw_audio: raw_audio,
+            raw_stateful: raw_stateful
+          )
+
         {:ok, pid} = Task.start(fn -> Audio.init_player(voice) end)
         update_voice(guild_id, player_pid: pid)
         :ok
@@ -200,7 +231,7 @@ defmodule Nostrum.Voice do
       true ->
         set_speaking(voice, false)
         Process.exit(voice.player_pid, :stop)
-        Proc.stop(voice.ffmpeg_proc)
+        unless is_nil(voice.ffmpeg_proc), do: Proc.stop(voice.ffmpeg_proc)
         :ok
     end
   end
@@ -281,7 +312,7 @@ defmodule Nostrum.Voice do
       VoiceState.playing?(voice) ->
         {:error, "Audio already playing in voice channel."}
 
-      is_nil(voice.ffmpeg_proc) ->
+      is_nil(voice.ffmpeg_proc) and is_nil(voice.raw_audio) ->
         {:error, "Audio must be paused to resume."}
 
       true ->
@@ -379,13 +410,42 @@ defmodule Nostrum.Voice do
   end
 
   @doc false
-  def set_speaking(%VoiceState{} = voice, speaking) do
-    Session.set_speaking(voice.session_pid, speaking)
+  def set_speaking(%VoiceState{} = voice, speaking, timed_out \\ false) do
+    Session.set_speaking(voice.session_pid, speaking, timed_out)
   end
 
-  @doc false
-  def set_speaking(guild_id, speaking) do
-    get_voice(guild_id) |> set_speaking(speaking)
+  @doc """
+  Low-level. Set speaking flag in voice channel.
+
+  This function does not need to be called unless you are sending audio frames
+  directly using `Nostrum.Voice.send_frames/2`.
+  """
+  @spec set_is_speaking(Guild.id(), boolean) :: :ok
+  def set_is_speaking(guild_id, speaking), do: get_voice(guild_id) |> set_speaking(speaking)
+
+  @doc """
+  Low-level. Send pre-encoded audio packets directly.
+
+  Speaking should be set to true via `Nostrum.Voice.set_is_speaking/2` before sending frames.
+
+  Opus frames will be encrypted and prefixed with the appropriate RTP header and sent immediately.
+  The length of `frames` depends on how often you wish to send a sequence of frames.
+  A single frame contains 20ms of audio. Sending more than 50 frames (1 second of audio)
+  in a single function call may result in inconsistent playback rates.
+
+  `Nostrum.Voice.playing?/1` will not return accurate values when using `send_frames/2`
+  instead of `Nostrum.Voice.play/4`
+  """
+  @spec send_frames(Guild.id(), [binary]) :: :ok | {:error, String.t()}
+  def send_frames(guild_id, frames) when is_list(frames) do
+    voice = get_voice(guild_id)
+
+    if VoiceState.ready_for_rtp?(voice) do
+      Audio.send_frames(frames, voice)
+      :ok
+    else
+      {:error, "Must be connected to voice channel to send frames."}
+    end
   end
 
   @doc false

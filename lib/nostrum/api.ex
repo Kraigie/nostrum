@@ -1865,7 +1865,16 @@ defmodule Nostrum.Api do
   end
 
   @doc """
-  Gets a list of users banend from a guild.
+  Gets a ban object for the given user from a guild.
+  """
+  @spec get_guild_ban(integer, integer) :: error | {:ok, Guild.Ban.t()}
+  def get_guild_ban(guild_id, user_id) do
+    request(:get, Constants.guild_ban(guild_id, user_id))
+    |> handle_request_with_decode({:struct, Guild.Ban})
+  end
+
+  @doc """
+  Gets a list of users banned from a guild.
 
   Guild to get bans for is specified by `guild_id`.
   """

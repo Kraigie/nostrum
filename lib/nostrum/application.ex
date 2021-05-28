@@ -49,8 +49,8 @@ defmodule Nostrum.Application do
     cond do
       is_binary(ff) and is_nil(System.find_executable(ff)) ->
         Logger.warn("""
-        #{ff} was not found in your path. Nostrum requires ffmpeg to use voice.
-        If you don't intend to use voice, configure :nostrum, :ffmpeg to nil to suppress.
+        #{ff} was not found in your path. By default, Nostrum requires ffmpeg to use voice.
+        If you don't intend to use voice with ffmpeg, configure :nostrum, :ffmpeg to nil to suppress.
         """)
 
       is_binary(yt) and is_nil(System.find_executable(yt)) ->

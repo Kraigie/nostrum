@@ -67,19 +67,24 @@ defmodule Nostrum.Voice.Audio do
     |> Process.sleep()
   end
 
+  def get_source(%VoiceState{ffmpeg_proc: nil, raw_audio: raw_audio}), do: raw_audio
+
+  def get_source(%VoiceState{ffmpeg_proc: ffmpeg_proc}), do: ffmpeg_proc.out
+
   def try_send_data(%VoiceState{} = voice, init?) do
-    wait = if(init?, do: 20_000, else: 500)
+    wait = if(init?, do: Application.get_env(:nostrum, :audio_timeout, 20_000), else: 500)
     {:ok, watchdog} = :timer.apply_after(wait, __MODULE__, :on_stall, [voice])
 
     {voice, done} =
-      voice.ffmpeg_proc.out
+      voice
+      |> get_source()
       |> Enum.take(@frames_per_burst)
       |> send_frames(voice)
 
     :timer.cancel(watchdog)
 
     if done,
-      do: on_complete(voice),
+      do: on_complete(voice, init?),
       else: voice
   end
 
@@ -104,7 +109,12 @@ defmodule Nostrum.Voice.Audio do
 
     {Voice.update_voice(voice.guild_id,
        rtp_sequence: voice.rtp_sequence,
-       rtp_timestamp: voice.rtp_timestamp
+       rtp_timestamp: voice.rtp_timestamp,
+       # If using raw audio and it isn't stateful, update its state manually
+       raw_audio:
+         unless(is_nil(voice.raw_audio) or voice.raw_stateful,
+           do: Enum.slice(voice.raw_audio, @frames_per_burst..-1)
+         )
      ), length(frames) < @frames_per_burst}
   end
 
@@ -213,10 +223,10 @@ defmodule Nostrum.Voice.Audio do
     end
   end
 
-  def on_complete(%VoiceState{} = voice) do
-    Voice.update_voice(voice.guild_id, ffmpeg_proc: nil)
+  def on_complete(%VoiceState{} = voice, timed_out) do
+    Voice.update_voice(voice.guild_id, ffmpeg_proc: nil, raw_audio: nil)
     List.duplicate(<<0xF8, 0xFF, 0xFE>>, 5) |> send_frames(voice)
-    Voice.set_speaking(voice, false)
+    Voice.set_speaking(voice, false, timed_out)
     Process.exit(voice.player_pid, :stop)
   end
 
