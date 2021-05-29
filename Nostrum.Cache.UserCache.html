@@ -78,9 +78,9 @@ methods provided below you can call any other ETS methods on the table.</p><h2 i
   <a href="#module-example" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
   Example
 </h2>
-<pre><code class="nohighlight makeup elixir"><span class="n">info</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ss">:ets</span><span class="o">.</span><span class="n">info</span><span class="p" data-group-id="0977329833-1">(</span><span class="ss">:users</span><span class="p" data-group-id="0977329833-1">)</span><span class="w">
-</span><span class="p" data-group-id="0977329833-2">[</span><span class="n">...</span><span class="p">,</span><span class="w"> </span><span class="ss">heir</span><span class="p">:</span><span class="w"> </span><span class="ss">:none</span><span class="p">,</span><span class="w"> </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="ss">:users</span><span class="p">,</span><span class="w"> </span><span class="ss">size</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">...</span><span class="p" data-group-id="0977329833-2">]</span><span class="w">
-</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">info</span><span class="p" data-group-id="0977329833-3">[</span><span class="ss">:size</span><span class="p" data-group-id="0977329833-3">]</span><span class="w">
+<pre><code class="nohighlight makeup elixir"><span class="n">info</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ss">:ets</span><span class="o">.</span><span class="n">info</span><span class="p" data-group-id="0087802702-1">(</span><span class="ss">:users</span><span class="p" data-group-id="0087802702-1">)</span><span class="w">
+</span><span class="p" data-group-id="0087802702-2">[</span><span class="n">...</span><span class="p">,</span><span class="w"> </span><span class="ss">heir</span><span class="p">:</span><span class="w"> </span><span class="ss">:none</span><span class="p">,</span><span class="w"> </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="ss">:users</span><span class="p">,</span><span class="w"> </span><span class="ss">size</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">...</span><span class="p" data-group-id="0087802702-2">]</span><span class="w">
+</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">info</span><span class="p" data-group-id="0087802702-3">[</span><span class="ss">:size</span><span class="p" data-group-id="0087802702-3">]</span><span class="w">
 </span><span class="mi">1</span></code></pre>        </section>
 
         <section id="summary" class="details-list">
@@ -142,12 +142,12 @@ Functions          </h1>
   <a href="#get/1-example" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
   Example
 </h2>
-<pre><code class="nohighlight makeup elixir"><span class="k">case</span><span class="w"> </span><span class="nc">Nostrum.Cache.UserCache</span><span class="o">.</span><span class="n">get</span><span class="p" data-group-id="5488122847-1">(</span><span class="mi">1111222233334444</span><span class="p" data-group-id="5488122847-1">)</span><span class="w"> </span><span class="k" data-group-id="5488122847-2">do</span><span class="w">
-  </span><span class="p" data-group-id="5488122847-3">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">user</span><span class="p" data-group-id="5488122847-3">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+<pre><code class="nohighlight makeup elixir"><span class="k">case</span><span class="w"> </span><span class="nc">Nostrum.Cache.UserCache</span><span class="o">.</span><span class="n">get</span><span class="p" data-group-id="7648456644-1">(</span><span class="mi">1111222233334444</span><span class="p" data-group-id="7648456644-1">)</span><span class="w"> </span><span class="k" data-group-id="7648456644-2">do</span><span class="w">
+  </span><span class="p" data-group-id="7648456644-3">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">user</span><span class="p" data-group-id="7648456644-3">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
     </span><span class="s">&quot;We found &quot;</span><span class="w"> </span><span class="o">&lt;&gt;</span><span class="w"> </span><span class="n">user</span><span class="o">.</span><span class="n">username</span><span class="w">
-  </span><span class="p" data-group-id="5488122847-4">{</span><span class="ss">:error</span><span class="p">,</span><span class="w"> </span><span class="c">_reason</span><span class="p" data-group-id="5488122847-4">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+  </span><span class="p" data-group-id="7648456644-4">{</span><span class="ss">:error</span><span class="p">,</span><span class="w"> </span><span class="c">_reason</span><span class="p" data-group-id="7648456644-4">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
     </span><span class="s">&quot;No es bueno&quot;</span><span class="w">
-</span><span class="k" data-group-id="5488122847-2">end</span></code></pre>  </section>
+</span><span class="k" data-group-id="7648456644-2">end</span></code></pre>  </section>
 </section>
 <section class="detail" id="get!/1">
   <div class="detail-header">
