@@ -182,7 +182,7 @@ defmodule Nostrum.Struct.Message do
 
     struct(__MODULE__, new)
   end
-  
+
   @doc """
   Takes the message and produces a URL that, when clicked from the user client, will 
   jump them to that message, assuming they have access to the message and the message 
