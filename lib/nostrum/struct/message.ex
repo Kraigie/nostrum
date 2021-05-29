@@ -189,6 +189,7 @@ defmodule Nostrum.Struct.Message do
   is valid.
   """
   def to_url(%__MODULE__{} = msg) do
-    "https://discord.com/channels/" <> (msg.guild_id || "@me") <> "/" <> msg.channel_id <> "/" <> msg.id
+    "https://discord.com/channels/" <>
+      (msg.guild_id || "@me") <> "/" <> msg.channel_id <> "/" <> msg.id
   end
 end
