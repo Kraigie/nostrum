@@ -479,8 +479,10 @@ defmodule Nostrum.Voice do
       |> Map.merge(Enum.into(args, %{}))
 
     state = Map.put(state, guild_id, voice)
+
     if Application.get_env(:nostrum, :voice_auto_connect, true),
       do: start_if_ready(voice)
+
     {:reply, voice, state}
   end
 
