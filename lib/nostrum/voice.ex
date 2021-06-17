@@ -448,6 +448,29 @@ defmodule Nostrum.Voice do
     end
   end
 
+  @doc """
+  Low-level. Manually connect to voice websockets gateway.
+
+  This function should only be called if config option `:voice_auto_connect` is set to `false`.
+  By default Nostrum will automatically create a voice gateway when joining a channel.
+  """
+  @spec connect_to_gateway(Guild.id()) :: :ok | {:error, String.t()}
+  def connect_to_gateway(guild_id) do
+    voice = get_voice(guild_id)
+
+    cond do
+      VoiceState.ready_for_ws?(voice) ->
+        VoiceSupervisor.create_session(voice)
+        :ok
+
+      is_nil(voice) ->
+        {:error, "Must be in voice channel to connect to gateway."}
+
+      true ->
+        {:error, "Voice gateway connection already open."}
+    end
+  end
+
   @doc false
   def handle_call({:update, guild_id, args}, _from, state) do
     voice =
@@ -456,7 +479,10 @@ defmodule Nostrum.Voice do
       |> Map.merge(Enum.into(args, %{}))
 
     state = Map.put(state, guild_id, voice)
-    start_if_ready(voice)
+
+    if Application.get_env(:nostrum, :voice_auto_connect, true),
+      do: start_if_ready(voice)
+
     {:reply, voice, state}
   end
 
