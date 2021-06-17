@@ -8,7 +8,7 @@
     <meta name="project" content="Nostrum v0.4.7">
     <title>Nostrum.Voice — Nostrum v0.4.7</title>
     <link rel="stylesheet" href="dist/elixir-9f91ebe876dc01d67920.css" />
-    <script src="dist/sidebar_items-ee11613f58.js"></script>
+    <script src="dist/sidebar_items-7ff2410719.js"></script>
       <script src="docs_config.js"></script>
     <script async src="dist/app-60a0c9f10e9e52eae31f.js"></script>
   </head>
@@ -109,6 +109,12 @@ shard websocket connections are, and require no developer intervention.</p><h2 i
 </div>
 <div class="summary-row">
   <div class="summary-signature">
+    <a href="#connect_to_gateway/1">connect_to_gateway(guild_id)</a>
+  </div>
+    <div class="summary-synopsis"><p>Low-level. Manually connect to voice websockets gateway.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
     <a href="#get_channel_id/1">get_channel_id(guild_id)</a>
   </div>
     <div class="summary-synopsis"><p>Gets the id of the voice channel that the bot is connected to.</p></div>
@@ -200,6 +206,28 @@ Functions          </h1>
   <section class="docstring">
 
 <p>Returns a specification to start this module under a supervisor.</p><p>See <a href="https://hexdocs.pm/elixir/Supervisor.html"><code class="inline">Supervisor</code></a>.</p>  </section>
+</section>
+<section class="detail" id="connect_to_gateway/1">
+  <div class="detail-header">
+    <a href="#connect_to_gateway/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">connect_to_gateway(guild_id)</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L458" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>connect_to_gateway(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>()) :: :ok | {:error, <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()}</pre>
+      </div>
+
+<p>Low-level. Manually connect to voice websockets gateway.</p><p>This function should only be called if config option <code class="inline">:voice_auto_connect</code> is set to <code class="inline">false</code>.
+By default Nostrum will automatically create a voice gateway when joining a channel.</p>  </section>
 </section>
 <section class="detail" id="get_channel_id/1">
   <div class="detail-header">
