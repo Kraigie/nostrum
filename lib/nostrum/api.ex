@@ -3018,7 +3018,7 @@ defmodule Nostrum.Api do
   Commands that do not already exist will count toward daily application command create limits.
 
   ## Parameters
-  - `application_id`: Application ID for which to create the command.
+  - `application_id`: Application ID for which to overwrite the commands.
     If not given, this will be fetched from `Me`.
   - `commands`: List of command configurations, see the linked API documentation for reference.
 
@@ -3140,9 +3140,9 @@ defmodule Nostrum.Api do
   - Delete any command that was not provided but existed on Discord's end
 
   ## Parameters
-  - `application_id`: Application ID for which to create the command.
+  - `application_id`: Application ID for which to overwrite the commands.
     If not given, this will be fetched from `Me`.
-  - `guild_id`: Guild on which to create the command.
+  - `guild_id`: Guild on which to overwrite the commands.
   - `commands`: List of command configurations, see the linked API documentation for reference.
 
   ## Return value
