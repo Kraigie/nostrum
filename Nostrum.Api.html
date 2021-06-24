@@ -8,7 +8,7 @@
     <meta name="project" content="Nostrum v0.4.7">
     <title>Nostrum.Api — Nostrum v0.4.7</title>
     <link rel="stylesheet" href="dist/elixir-9f91ebe876dc01d67920.css" />
-    <script src="dist/sidebar_items-7ff2410719.js"></script>
+    <script src="dist/sidebar_items-98eb99c877.js"></script>
       <script src="docs_config.js"></script>
     <script async src="dist/app-60a0c9f10e9e52eae31f.js"></script>
   </head>
@@ -202,6 +202,18 @@ authors =
     <a href="#bulk_delete_messages!/3">bulk_delete_messages!(channel_id, messages, filter \\ true)</a>
   </div>
     <div class="summary-synopsis"><p>Same as <a href="#bulk_delete_messages/2"><code class="inline">bulk_delete_messages/2</code></a>, but raises <a href="Nostrum.Error.ApiError.html"><code class="inline">Nostrum.Error.ApiError</code></a> in case of failure.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#bulk_overwrite_global_application_commands/2">bulk_overwrite_global_application_commands(application_id \\ Me.get().id(), commands)</a>
+  </div>
+    <div class="summary-synopsis"><p>Overwrite the existing global application commands.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#bulk_overwrite_guild_application_commands/3">bulk_overwrite_guild_application_commands(application_id \\ Me.get().id(), guild_id, commands)</a>
+  </div>
+    <div class="summary-synopsis"><p>Overwrite the existing guild application commands on the specified guild.</p></div>
 </div>
 <div class="summary-row">
   <div class="summary-signature">
@@ -1555,6 +1567,76 @@ two weeks ago should be filtered out; defaults to <code class="inline">true</cod
 
 <p>Same as <a href="#bulk_delete_messages/2"><code class="inline">bulk_delete_messages/2</code></a>, but raises <a href="Nostrum.Error.ApiError.html"><code class="inline">Nostrum.Error.ApiError</code></a> in case of failure.</p>  </section>
 </section>
+<section class="detail" id="bulk_overwrite_global_application_commands/2">
+    <span id="bulk_overwrite_global_application_commands/1"></span>
+  <div class="detail-header">
+    <a href="#bulk_overwrite_global_application_commands/2" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">bulk_overwrite_global_application_commands(application_id \\ Me.get().id(), commands)</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3031" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>bulk_overwrite_global_application_commands(<a href="Nostrum.Struct.User.html#t:id/0">Nostrum.Struct.User.id</a>(), [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()]) ::
+  {:ok, [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()]} | <a href="#t:error/0">error</a>()</pre>
+      </div>
+
+<p>Overwrite the existing global application commands.</p><p>This action will:</p><ul><li>Create any command that was provided and did not already exist</li><li>Update any command that was provided and already existed if its configuration changed</li><li>Delete any command that was not provided but existed on Discord's end</li></ul><p>Updates will be available in all guilds after 1 hour.
+Commands that do not already exist will count toward daily application command create limits.</p><h2 id="bulk_overwrite_global_application_commands/2-parameters" class="section-heading">
+  <a href="#bulk_overwrite_global_application_commands/2-parameters" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Parameters
+</h2>
+<ul><li><code class="inline">application_id</code>: Application ID for which to overwrite the commands.
+If not given, this will be fetched from <code class="inline">Me</code>.</li><li><code class="inline">commands</code>: List of command configurations, see the linked API documentation for reference.</li></ul><h2 id="bulk_overwrite_global_application_commands/2-return-value" class="section-heading">
+  <a href="#bulk_overwrite_global_application_commands/2-return-value" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Return value
+</h2>
+<p>Updated list of global application commands. See the official reference:
+<a href="https://discord.com/developers/docs/interactions/slash-commands#bulk-overwrite-global-application-commands">https://discord.com/developers/docs/interactions/slash-commands#bulk-overwrite-global-application-commands</a></p>  </section>
+</section>
+<section class="detail" id="bulk_overwrite_guild_application_commands/3">
+    <span id="bulk_overwrite_guild_application_commands/2"></span>
+  <div class="detail-header">
+    <a href="#bulk_overwrite_guild_application_commands/3" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">bulk_overwrite_guild_application_commands(application_id \\ Me.get().id(), guild_id, commands)</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3155" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>bulk_overwrite_guild_application_commands(
+  <a href="Nostrum.Struct.User.html#t:id/0">Nostrum.Struct.User.id</a>(),
+  <a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(),
+  [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()]
+) :: {:ok, [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()]} | <a href="#t:error/0">error</a>()</pre>
+      </div>
+
+<p>Overwrite the existing guild application commands on the specified guild.</p><p>This action will:</p><ul><li>Create any command that was provided and did not already exist</li><li>Update any command that was provided and already existed if its configuration changed</li><li>Delete any command that was not provided but existed on Discord's end</li></ul><h2 id="bulk_overwrite_guild_application_commands/3-parameters" class="section-heading">
+  <a href="#bulk_overwrite_guild_application_commands/3-parameters" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Parameters
+</h2>
+<ul><li><code class="inline">application_id</code>: Application ID for which to overwrite the commands.
+If not given, this will be fetched from <code class="inline">Me</code>.</li><li><code class="inline">guild_id</code>: Guild on which to overwrite the commands.</li><li><code class="inline">commands</code>: List of command configurations, see the linked API documentation for reference.</li></ul><h2 id="bulk_overwrite_guild_application_commands/3-return-value" class="section-heading">
+  <a href="#bulk_overwrite_guild_application_commands/3-return-value" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Return value
+</h2>
+<p>Updated list of guild application commands. See the official reference:
+<a href="https://discord.com/developers/docs/interactions/slash-commands#bulk-overwrite-guild-application-commands">https://discord.com/developers/docs/interactions/slash-commands#bulk-overwrite-guild-application-commands</a></p>  </section>
+</section>
 <section class="detail" id="create_channel_invite/3">
     <span id="create_channel_invite/1"></span>
     <span id="create_channel_invite/2"></span>
@@ -1682,7 +1764,7 @@ Nostrum.Api.create_channel_invite(41771983423143933, max_uses: 20)
       <span class="sr-only">Link to this function</span>
     </a>
     <h1 class="signature">create_followup_message(application_id \\ Me.get().id(), token, webhook_payload)</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3162" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3219" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1738,9 +1820,9 @@ If not given, this will be fetched from <code class="inline">Me</code>.</li><li>
   <a href="#create_global_application_command/2-example" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
   Example
 </h2>
-<pre><code class="nohighlight makeup elixir"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">create_application_command</span><span class="p" data-group-id="2448439926-1">(</span><span class="w">
-  </span><span class="p" data-group-id="2448439926-2">%{</span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;edit&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">description</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ed, man! man, ed&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">options</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="2448439926-3">[</span><span class="p" data-group-id="2448439926-3">]</span><span class="p" data-group-id="2448439926-2">}</span><span class="w">
-</span><span class="p" data-group-id="2448439926-1">)</span></code></pre>  </section>
+<pre><code class="nohighlight makeup elixir"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">create_application_command</span><span class="p" data-group-id="7061018755-1">(</span><span class="w">
+  </span><span class="p" data-group-id="7061018755-2">%{</span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;edit&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">description</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ed, man! man, ed&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">options</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="7061018755-3">[</span><span class="p" data-group-id="7061018755-3">]</span><span class="p" data-group-id="7061018755-2">}</span><span class="w">
+</span><span class="p" data-group-id="7061018755-1">)</span></code></pre>  </section>
 </section>
 <section class="detail" id="create_group_dm/2">
   <div class="detail-header">
@@ -1802,7 +1884,7 @@ to a nickname.</p><h2 id="create_group_dm/2-examples" class="section-heading">
       <span class="sr-only">Link to this function</span>
     </a>
     <h1 class="signature">create_guild_application_command(application_id \\ Me.get().id(), guild_id, command)</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3046" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3073" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -2067,7 +2149,7 @@ Nostrum.Api.create_guild_emoji(43189401384091, name: &quot;nostrum&quot;, image:
       <span class="sr-only">Link to this function</span>
     </a>
     <h1 class="signature">create_interaction_response(interaction, response)</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3118" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3175" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -2090,7 +2172,7 @@ Nostrum.Api.create_guild_emoji(43189401384091, name: &quot;nostrum&quot;, image:
       <span class="sr-only">Link to this function</span>
     </a>
     <h1 class="signature">create_interaction_response(id, token, response)</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3148" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3205" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -2115,13 +2197,13 @@ object. See the linked documentation.</li></ul><h2 id="create_interaction_respon
   <a href="#create_interaction_response/3-example" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
   Example
 </h2>
-<pre><code class="nohighlight makeup elixir"><span class="n">response</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="8424211589-1">%{</span><span class="w">
+<pre><code class="nohighlight makeup elixir"><span class="n">response</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="5951539144-1">%{</span><span class="w">
   </span><span class="ss">type</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w">
-  </span><span class="ss">data</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="8424211589-2">%{</span><span class="w">
+  </span><span class="ss">data</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="5951539144-2">%{</span><span class="w">
     </span><span class="ss">content</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;I copy and pasted this code.&quot;</span><span class="w">
-  </span><span class="p" data-group-id="8424211589-2">}</span><span class="w">
-</span><span class="p" data-group-id="8424211589-1">}</span><span class="w">
-</span><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">create_interaction_response</span><span class="p" data-group-id="8424211589-3">(</span><span class="n">interaction</span><span class="p">,</span><span class="w"> </span><span class="n">response</span><span class="p" data-group-id="8424211589-3">)</span></code></pre><p>As an alternative to passing the interaction ID and token, the
+  </span><span class="p" data-group-id="5951539144-2">}</span><span class="w">
+</span><span class="p" data-group-id="5951539144-1">}</span><span class="w">
+</span><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">create_interaction_response</span><span class="p" data-group-id="5951539144-3">(</span><span class="n">interaction</span><span class="p">,</span><span class="w"> </span><span class="n">response</span><span class="p" data-group-id="5951539144-3">)</span></code></pre><p>As an alternative to passing the interaction ID and token, the
 original <a href="Nostrum.Struct.Interaction.html#t:t/0"><code class="inline">Nostrum.Struct.Interaction.t/0</code></a> can also be passed
 directly. See <code class="inline">create_interaction_response/1</code>.</p>  </section>
 </section>
@@ -2173,14 +2255,14 @@ that you have the <code class="inline">VIEW_MESSAGE_HISTORY</code> permission. T
 <code class="inline">message_reference</code> field in your call. The complete structure
 documentation can be found <a href="https://discord.com/developers/docs/resources/channel#message-object-message-reference-structure">on the Discord Developer
 Portal</a>,
-but simply passing <code class="inline">message_id</code> will suffice:</p><pre><code class="nohighlight makeup elixir"><span class="kd">def</span><span class="w"> </span><span class="nf">my_command</span><span class="p" data-group-id="2138947449-1">(</span><span class="n">msg</span><span class="p" data-group-id="2138947449-1">)</span><span class="w"> </span><span class="k" data-group-id="2138947449-2">do</span><span class="w">
+but simply passing <code class="inline">message_id</code> will suffice:</p><pre><code class="nohighlight makeup elixir"><span class="kd">def</span><span class="w"> </span><span class="nf">my_command</span><span class="p" data-group-id="8900252613-1">(</span><span class="n">msg</span><span class="p" data-group-id="8900252613-1">)</span><span class="w"> </span><span class="k" data-group-id="8900252613-2">do</span><span class="w">
   </span><span class="c1"># Reply to the author - ``msg`` is a ``Nostrum.Struct.Message``</span><span class="w">
-  </span><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">create_message</span><span class="p" data-group-id="2138947449-3">(</span><span class="w">
+  </span><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">create_message</span><span class="p" data-group-id="8900252613-3">(</span><span class="w">
     </span><span class="n">msg</span><span class="o">.</span><span class="n">channel_id</span><span class="p">,</span><span class="w">
     </span><span class="ss">content</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Hello&quot;</span><span class="p">,</span><span class="w">
-    </span><span class="ss">message_reference</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="2138947449-4">%{</span><span class="ss">message_id</span><span class="p">:</span><span class="w"> </span><span class="n">msg</span><span class="o">.</span><span class="n">id</span><span class="p" data-group-id="2138947449-4">}</span><span class="w">
-  </span><span class="p" data-group-id="2138947449-3">)</span><span class="w">
-</span><span class="k" data-group-id="2138947449-2">end</span></code></pre><p>Passing a list will merge the settings provided</p><h2 id="create_message/2-examples" class="section-heading">
+    </span><span class="ss">message_reference</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="8900252613-4">%{</span><span class="ss">message_id</span><span class="p">:</span><span class="w"> </span><span class="n">msg</span><span class="o">.</span><span class="n">id</span><span class="p" data-group-id="8900252613-4">}</span><span class="w">
+  </span><span class="p" data-group-id="8900252613-3">)</span><span class="w">
+</span><span class="k" data-group-id="8900252613-2">end</span></code></pre><p>Passing a list will merge the settings provided</p><h2 id="create_message/2-examples" class="section-heading">
   <a href="#create_message/2-examples" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
   Examples
 </h2>
@@ -2535,7 +2617,7 @@ It fires the <a href="Nostrum.Consumer.html#t:guild_delete/0"><code class="inlin
       <span class="sr-only">Link to this function</span>
     </a>
     <h1 class="signature">delete_guild_application_command(application_id \\ Me.get().id(), guild_id, command_id)</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3099" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3126" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -2697,7 +2779,7 @@ If not given, this will be fetched from <code class="inline">Me</code>.</li><li>
       <span class="sr-only">Link to this function</span>
     </a>
     <h1 class="signature">delete_interaction_followup_message(application_id \\ Me.get().id(), token, message_id)</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3178" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3235" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -3203,7 +3285,7 @@ If not given, this will be fetched from <code class="inline">Me</code>.</li><li>
       <span class="sr-only">Link to this function</span>
     </a>
     <h1 class="signature">edit_guild_application_command(application_id \\ Me.get().id(), guild_id, command_id, command)</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3074" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3101" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -3469,21 +3551,21 @@ Nostrum.Api.edit_message(43189401384091, 1894013840914098, content: &quot;hello 
   Example
 </h2>
 <pre><code class="nohighlight makeup elixir"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">get_application_information</span><span class="w">
-</span><span class="p" data-group-id="5382622755-1">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w">
-</span><span class="p" data-group-id="5382622755-2">%{</span><span class="w">
+</span><span class="p" data-group-id="2854542559-1">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w">
+</span><span class="p" data-group-id="2854542559-2">%{</span><span class="w">
   </span><span class="ss">bot_public</span><span class="p">:</span><span class="w"> </span><span class="no">false</span><span class="p">,</span><span class="w">
   </span><span class="ss">bot_require_code_grant</span><span class="p">:</span><span class="w"> </span><span class="no">false</span><span class="p">,</span><span class="w">
   </span><span class="ss">description</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Test&quot;</span><span class="p">,</span><span class="w">
   </span><span class="ss">icon</span><span class="p">:</span><span class="w"> </span><span class="no">nil</span><span class="p">,</span><span class="w">
   </span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;172150183260323840&quot;</span><span class="p">,</span><span class="w">
   </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Baba O-Riley&quot;</span><span class="p">,</span><span class="w">
-  </span><span class="ss">owner</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="5382622755-3">%{</span><span class="w">
+  </span><span class="ss">owner</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="2854542559-3">%{</span><span class="w">
     </span><span class="ss">avatar</span><span class="p">:</span><span class="w"> </span><span class="no">nil</span><span class="p">,</span><span class="w">
     </span><span class="ss">discriminator</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;0042&quot;</span><span class="p">,</span><span class="w">
     </span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;172150183260323840&quot;</span><span class="p">,</span><span class="w">
     </span><span class="ss">username</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;i own a bot&quot;</span><span class="w">
-  </span><span class="p" data-group-id="5382622755-3">}</span><span class="p">,</span><span class="w">
-</span><span class="p" data-group-id="5382622755-2">}</span><span class="p" data-group-id="5382622755-1">}</span></code></pre>  </section>
+  </span><span class="p" data-group-id="2854542559-3">}</span><span class="p">,</span><span class="w">
+</span><span class="p" data-group-id="2854542559-2">}</span><span class="p" data-group-id="2854542559-1">}</span></code></pre>  </section>
 </section>
 <section class="detail" id="get_channel/1">
   <div class="detail-header">
@@ -3848,15 +3930,15 @@ If not given, this will be fetched from <code class="inline">Me</code>.</li></ul
   Example
 </h2>
 <pre><code class="nohighlight makeup elixir"><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">get_global_application_commands</span><span class="w">
-</span><span class="p" data-group-id="3321087316-1">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w">
- </span><span class="p" data-group-id="3321087316-2">[</span><span class="w">
-   </span><span class="p" data-group-id="3321087316-3">%{</span><span class="w">
+</span><span class="p" data-group-id="6619191306-1">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w">
+ </span><span class="p" data-group-id="6619191306-2">[</span><span class="w">
+   </span><span class="p" data-group-id="6619191306-3">%{</span><span class="w">
      </span><span class="ss">application_id</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;455589479713865749&quot;</span><span class="p">,</span><span class="w">
      </span><span class="ss">description</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ed, man! man, ed&quot;</span><span class="p">,</span><span class="w">
      </span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;789841753196331029&quot;</span><span class="p">,</span><span class="w">
      </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;edit&quot;</span><span class="w">
-   </span><span class="p" data-group-id="3321087316-3">}</span><span class="w">
- </span><span class="p" data-group-id="3321087316-2">]</span><span class="p" data-group-id="3321087316-1">}</span></code></pre>  </section>
+   </span><span class="p" data-group-id="6619191306-3">}</span><span class="w">
+ </span><span class="p" data-group-id="6619191306-2">]</span><span class="p" data-group-id="6619191306-1">}</span></code></pre>  </section>
 </section>
 <section class="detail" id="get_guild/1">
   <div class="detail-header">
@@ -3915,7 +3997,7 @@ If not given, this will be fetched from <code class="inline">Me</code>.</li></ul
       <span class="sr-only">Link to this function</span>
     </a>
     <h1 class="signature">get_guild_application_commands(application_id \\ Me.get().id(), guild_id)</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3024" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3051" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -4528,7 +4610,7 @@ Nostrum.Api.get_invite(&quot;zsjUsC&quot;, with_counts: true)</code></pre>  </se
       <span class="sr-only">Link to this function</span>
     </a>
     <h1 class="signature">get_token()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3257" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3314" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -5088,8 +5170,8 @@ where admins and moderators receive notices from Discord in public guilds</li></
   <a href="#modify_guild/3-examples" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
   Examples
 </h2>
-<pre><code class="nohighlight makeup elixir"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">modify_guild</span><span class="p" data-group-id="2397112027-1">(</span><span class="mi">451824027976073216</span><span class="p">,</span><span class="w"> </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Nose Drum&quot;</span><span class="p" data-group-id="2397112027-1">)</span><span class="w">
-</span><span class="p" data-group-id="2397112027-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="2397112027-3">%</span><span class="nc" data-group-id="2397112027-3">Nostrum.Struct.Guild</span><span class="p" data-group-id="2397112027-3">{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">451824027976073216</span><span class="p">,</span><span class="w"> </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Nose Drum&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">...</span><span class="p" data-group-id="2397112027-3">}</span><span class="p" data-group-id="2397112027-2">}</span></code></pre>  </section>
+<pre><code class="nohighlight makeup elixir"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">modify_guild</span><span class="p" data-group-id="8165593297-1">(</span><span class="mi">451824027976073216</span><span class="p">,</span><span class="w"> </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Nose Drum&quot;</span><span class="p" data-group-id="8165593297-1">)</span><span class="w">
+</span><span class="p" data-group-id="8165593297-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="8165593297-3">%</span><span class="nc" data-group-id="8165593297-3">Nostrum.Struct.Guild</span><span class="p" data-group-id="8165593297-3">{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">451824027976073216</span><span class="p">,</span><span class="w"> </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Nose Drum&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">...</span><span class="p" data-group-id="8165593297-3">}</span><span class="p" data-group-id="8165593297-2">}</span></code></pre>  </section>
 </section>
 <section class="detail" id="modify_guild!/2">
     <span id="modify_guild!/1"></span>
@@ -5642,7 +5724,7 @@ An optional <code class="inline">reason</code> can be given for the audit log.</
       <span class="sr-only">Link to this function</span>
     </a>
     <h1 class="signature">request(request)</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3200" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3257" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -5661,7 +5743,7 @@ An optional <code class="inline">reason</code> can be given for the audit log.</
       <span class="sr-only">Link to this function</span>
     </a>
     <h1 class="signature">request(method, route, body \\ &quot;&quot;, options \\ [])</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3205" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3262" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -5679,7 +5761,7 @@ An optional <code class="inline">reason</code> can be given for the audit log.</
       <span class="sr-only">Link to this function</span>
     </a>
     <h1 class="signature">request_multipart(method, route, body, options \\ [])</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3217" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3274" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>

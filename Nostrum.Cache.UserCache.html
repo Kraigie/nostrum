@@ -8,7 +8,7 @@
     <meta name="project" content="Nostrum v0.4.7">
     <title>Nostrum.Cache.UserCache — Nostrum v0.4.7</title>
     <link rel="stylesheet" href="dist/elixir-9f91ebe876dc01d67920.css" />
-    <script src="dist/sidebar_items-7ff2410719.js"></script>
+    <script src="dist/sidebar_items-98eb99c877.js"></script>
       <script src="docs_config.js"></script>
     <script async src="dist/app-60a0c9f10e9e52eae31f.js"></script>
   </head>
@@ -78,9 +78,9 @@ methods provided below you can call any other ETS methods on the table.</p><h2 i
   <a href="#module-example" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
   Example
 </h2>
-<pre><code class="nohighlight makeup elixir"><span class="n">info</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ss">:ets</span><span class="o">.</span><span class="n">info</span><span class="p" data-group-id="1355440155-1">(</span><span class="ss">:users</span><span class="p" data-group-id="1355440155-1">)</span><span class="w">
-</span><span class="p" data-group-id="1355440155-2">[</span><span class="n">...</span><span class="p">,</span><span class="w"> </span><span class="ss">heir</span><span class="p">:</span><span class="w"> </span><span class="ss">:none</span><span class="p">,</span><span class="w"> </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="ss">:users</span><span class="p">,</span><span class="w"> </span><span class="ss">size</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">...</span><span class="p" data-group-id="1355440155-2">]</span><span class="w">
-</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">info</span><span class="p" data-group-id="1355440155-3">[</span><span class="ss">:size</span><span class="p" data-group-id="1355440155-3">]</span><span class="w">
+<pre><code class="nohighlight makeup elixir"><span class="n">info</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ss">:ets</span><span class="o">.</span><span class="n">info</span><span class="p" data-group-id="7498595980-1">(</span><span class="ss">:users</span><span class="p" data-group-id="7498595980-1">)</span><span class="w">
+</span><span class="p" data-group-id="7498595980-2">[</span><span class="n">...</span><span class="p">,</span><span class="w"> </span><span class="ss">heir</span><span class="p">:</span><span class="w"> </span><span class="ss">:none</span><span class="p">,</span><span class="w"> </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="ss">:users</span><span class="p">,</span><span class="w"> </span><span class="ss">size</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">...</span><span class="p" data-group-id="7498595980-2">]</span><span class="w">
+</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">info</span><span class="p" data-group-id="7498595980-3">[</span><span class="ss">:size</span><span class="p" data-group-id="7498595980-3">]</span><span class="w">
 </span><span class="mi">1</span></code></pre>        </section>
 
         <section id="summary" class="details-list">
@@ -142,12 +142,12 @@ Functions          </h1>
   <a href="#get/1-example" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
   Example
 </h2>
-<pre><code class="nohighlight makeup elixir"><span class="k">case</span><span class="w"> </span><span class="nc">Nostrum.Cache.UserCache</span><span class="o">.</span><span class="n">get</span><span class="p" data-group-id="3829823873-1">(</span><span class="mi">1111222233334444</span><span class="p" data-group-id="3829823873-1">)</span><span class="w"> </span><span class="k" data-group-id="3829823873-2">do</span><span class="w">
-  </span><span class="p" data-group-id="3829823873-3">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">user</span><span class="p" data-group-id="3829823873-3">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+<pre><code class="nohighlight makeup elixir"><span class="k">case</span><span class="w"> </span><span class="nc">Nostrum.Cache.UserCache</span><span class="o">.</span><span class="n">get</span><span class="p" data-group-id="2783549192-1">(</span><span class="mi">1111222233334444</span><span class="p" data-group-id="2783549192-1">)</span><span class="w"> </span><span class="k" data-group-id="2783549192-2">do</span><span class="w">
+  </span><span class="p" data-group-id="2783549192-3">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">user</span><span class="p" data-group-id="2783549192-3">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
     </span><span class="s">&quot;We found &quot;</span><span class="w"> </span><span class="o">&lt;&gt;</span><span class="w"> </span><span class="n">user</span><span class="o">.</span><span class="n">username</span><span class="w">
-  </span><span class="p" data-group-id="3829823873-4">{</span><span class="ss">:error</span><span class="p">,</span><span class="w"> </span><span class="c">_reason</span><span class="p" data-group-id="3829823873-4">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+  </span><span class="p" data-group-id="2783549192-4">{</span><span class="ss">:error</span><span class="p">,</span><span class="w"> </span><span class="c">_reason</span><span class="p" data-group-id="2783549192-4">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
     </span><span class="s">&quot;No es bueno&quot;</span><span class="w">
-</span><span class="k" data-group-id="3829823873-2">end</span></code></pre>  </section>
+</span><span class="k" data-group-id="2783549192-2">end</span></code></pre>  </section>
 </section>
 <section class="detail" id="get!/1">
   <div class="detail-header">
