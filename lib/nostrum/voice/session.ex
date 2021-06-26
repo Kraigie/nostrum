@@ -5,7 +5,6 @@ defmodule Nostrum.Voice.Session do
   alias Nostrum.Constants
   alias Nostrum.Shard.Stage.Producer
   alias Nostrum.Struct.{VoiceState, VoiceWSState}
-  alias Nostrum.Util
   alias Nostrum.Voice
   alias Nostrum.Voice.{Event, Payload}
 
