@@ -91,10 +91,9 @@ defmodule Nostrum.Voice.Session do
       frame
       |> :erlang.iolist_to_binary()
       |> Poison.decode!()
-      |> Util.safe_atom_map()
 
     from_handle =
-      payload.op
+      payload["op"]
       |> Constants.atom_from_voice_opcode()
       |> Event.handle(payload, state)
 

@@ -12,9 +12,9 @@ defmodule Nostrum.Voice.Event do
 
     voice =
       Voice.update_voice(state.guild_id,
-        ssrc: payload.d.ssrc,
-        ip: payload.d.ip,
-        port: payload.d.port,
+        ssrc: payload["d"]["ssrc"],
+        ip: payload["d"]["ip"],
+        port: payload["d"]["port"],
         udp_socket: Audio.open_udp()
       )
 
@@ -25,7 +25,7 @@ defmodule Nostrum.Voice.Event do
 
   def handle(:session_description, payload, state) do
     Voice.update_voice(state.guild_id,
-      secret_key: payload.d.secret_key |> :erlang.list_to_binary(),
+      secret_key: payload["d"]["secret_key"] |> :erlang.list_to_binary(),
       rtp_sequence: 0,
       rtp_timestamp: 0
     )
@@ -44,7 +44,7 @@ defmodule Nostrum.Voice.Event do
   end
 
   def handle(:hello, payload, state) do
-    state = %{state | heartbeat_interval: payload.d.heartbeat_interval}
+    state = %{state | heartbeat_interval: payload["d"]["heartbeat_interval"]}
 
     GenServer.cast(state.conn_pid, :heartbeat)
 
@@ -59,7 +59,7 @@ defmodule Nostrum.Voice.Event do
 
   def handle(:client_connect, payload, state) do
     Logger.debug(fn ->
-      user_id = payload.d.user_id |> String.to_integer()
+      user_id = payload["d"]["user_id"] |> String.to_integer()
 
       "Voice client connected: #{case UserCache.get(user_id) do
         {:ok, user} -> Map.get(user, :username)
@@ -72,7 +72,7 @@ defmodule Nostrum.Voice.Event do
 
   def handle(:client_disconnect, payload, state) do
     Logger.debug(fn ->
-      user_id = payload.d.user_id |> String.to_integer()
+      user_id = payload["d"]["user_id"] |> String.to_integer()
 
       "Voice client disconnected: #{case UserCache.get(user_id) do
         {:ok, user} -> Map.get(user, :username)
