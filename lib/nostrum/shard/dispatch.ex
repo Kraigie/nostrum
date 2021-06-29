@@ -7,11 +7,21 @@ defmodule Nostrum.Shard.Dispatch do
   alias Nostrum.Shard.{Intents, Session}
 
   alias Nostrum.Struct.Event.{
+    ChannelPinsUpdate,
+    GuildBanAdd,
+    GuildBanRemove,
+    GuildIntegrationsUpdate,
     InviteCreate,
     InviteDelete,
     MessageDelete,
     MessageDeleteBulk,
-    SpeakingUpdate
+    MessageReactionAdd,
+    MessageReactionRemove,
+    MessageReactionRemoveAll,
+    MessageReactionRemoveEmoji,
+    SpeakingUpdate,
+    TypingStart,
+    VoiceState
   }
 
   alias Nostrum.Struct.{Guild, Interaction, Message, User}
@@ -83,11 +93,17 @@ defmodule Nostrum.Shard.Dispatch do
 
   def handle_event(:CHANNEL_PINS_ACK = event, p, state), do: {event, p, state}
 
-  def handle_event(:CHANNEL_PINS_UPDATE = event, p, state), do: {event, p, state}
+  def handle_event(:CHANNEL_PINS_UPDATE = event, p, state) do
+    {event, ChannelPinsUpdate.to_struct(p), state}
+  end
 
-  def handle_event(:GUILD_BAN_ADD = event, p, state), do: {event, {p.guild_id, p}, state}
+  def handle_event(:GUILD_BAN_ADD = event, p, state) do
+    {event, GuildBanAdd.to_struct(p), state}
+  end
 
-  def handle_event(:GUILD_BAN_REMOVE = event, p, state), do: {event, {p.guild_id, p}, state}
+  def handle_event(:GUILD_BAN_REMOVE = event, p, state) do
+    {event, GuildBanRemove.to_struct(p), state}
+  end
 
   def handle_event(:GUILD_CREATE, %{unavailable: true} = guild, state) do
     :ets.insert(:unavailable_guilds, {guild.id, guild})
@@ -148,7 +164,9 @@ defmodule Nostrum.Shard.Dispatch do
   def handle_event(:GUILD_EMOJIS_UPDATE = event, p, state),
     do: {event, GuildServer.emoji_update(p.guild_id, p.emojis), state}
 
-  def handle_event(:GUILD_INTEGRATIONS_UPDATE = event, p, state), do: {event, p, state}
+  def handle_event(:GUILD_INTEGRATIONS_UPDATE = event, p, state) do
+    {event, GuildIntegrationsUpdate.to_struct(p), state}
+  end
 
   def handle_event(:GUILD_MEMBER_ADD = event, p, state) do
     UserCache.create(p.user)
@@ -159,6 +177,7 @@ defmodule Nostrum.Shard.Dispatch do
     UserCache.bulk_create(p.members)
     GuildServer.member_chunk(p.guild_id, p.members)
 
+    # note: not casted at the moment, deemed mostly internal
     {event, p, state}
   end
 
@@ -193,13 +212,21 @@ defmodule Nostrum.Shard.Dispatch do
 
   def handle_event(:MESSAGE_UPDATE = event, p, state), do: {event, Message.to_struct(p), state}
 
-  def handle_event(:MESSAGE_REACTION_ADD = event, p, state), do: {event, p, state}
+  def handle_event(:MESSAGE_REACTION_ADD = event, p, state) do
+    {event, MessageReactionAdd.to_struct(p), state}
+  end
 
-  def handle_event(:MESSAGE_REACTION_REMOVE = event, p, state), do: {event, p, state}
+  def handle_event(:MESSAGE_REACTION_REMOVE = event, p, state) do
+    {event, MessageReactionRemove.to_struct(p), state}
+  end
 
-  def handle_event(:MESSAGE_REACTION_REMOVE_ALL = event, p, state), do: {event, p, state}
+  def handle_event(:MESSAGE_REACTION_REMOVE_ALL = event, p, state) do
+    {event, MessageReactionRemoveAll.to_struct(p), state}
+  end
 
-  def handle_event(:MESSAGE_REACTION_REMOVE_EMOJI = event, p, state), do: {event, p, state}
+  def handle_event(:MESSAGE_REACTION_REMOVE_EMOJI = event, p, state) do
+    {event, MessageReactionRemoveEmoji.to_struct(p), state}
+  end
 
   def handle_event(:MESSAGE_ACK = event, p, state), do: {event, p, state}
 
@@ -226,7 +253,9 @@ defmodule Nostrum.Shard.Dispatch do
 
   def handle_event(:RESUMED = event, p, state), do: {event, p, state}
 
-  def handle_event(:TYPING_START = event, p, state), do: {event, p, state}
+  def handle_event(:TYPING_START = event, p, state) do
+    {event, TypingStart.to_struct(p), state}
+  end
 
   def handle_event(:USER_SETTINGS_UPDATE = event, p, state), do: {event, p, state}
 
@@ -288,7 +317,7 @@ defmodule Nostrum.Shard.Dispatch do
     end
 
     GuildServer.voice_state_update(p.guild_id, p)
-    {event, p, state}
+    {event, VoiceState.to_struct(p), state}
   end
 
   def handle_event(:VOICE_SERVER_UPDATE = event, p, state) do
