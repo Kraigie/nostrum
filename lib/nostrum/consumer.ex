@@ -114,7 +114,7 @@ defmodule Nostrum.Consumer do
            {guild_id :: integer, old_emojis :: [Nostrum.Struct.Emoji.t()],
             new_emojis :: [Nostrum.Struct.Emoji.t()]}, WSState.t()}
   @type guild_integrations_update ::
-          {:GUILD_INTEGERATIONS_UPDATE, GuildIntegrationsUpdate.t(), WSState.t()}
+          {:GUILD_INTEGRATIONS_UPDATE, GuildIntegrationsUpdate.t(), WSState.t()}
   @type guild_member_add ::
           {:GUILD_MEMBER_ADD,
            {guild_id :: integer, new_member :: Nostrum.Struct.Guild.Member.t()}, WSState.t()}
