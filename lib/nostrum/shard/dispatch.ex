@@ -1,8 +1,7 @@
 defmodule Nostrum.Shard.Dispatch do
   @moduledoc false
 
-  alias Nostrum.Cache.{ChannelCache, PresenceCache, UserCache}
-  alias Nostrum.Cache.Guild.GuildServer
+  alias Nostrum.Cache.{ChannelCache, GuildCache, PresenceCache, UserCache}
   alias Nostrum.Cache.Me
   alias Nostrum.Shard.{Intents, Session}
 
@@ -55,7 +54,7 @@ defmodule Nostrum.Shard.Dispatch do
 
   def handle_event(:CHANNEL_CREATE = event, %{type: t} = p, state) when t in [0, 2] do
     :ets.insert(:channel_guild_map, {p.id, p.guild_id})
-    {event, GuildServer.channel_create(p.guild_id, p), state}
+    {event, GuildCache.channel_create(p.guild_id, p), state}
   end
 
   # Ignore group channels
@@ -69,11 +68,11 @@ defmodule Nostrum.Shard.Dispatch do
 
   def handle_event(:CHANNEL_DELETE = event, %{type: t} = p, state) when t in [0, 2] do
     :ets.delete(:channel_guild_map, p.id)
-    {event, GuildServer.channel_delete(p.guild_id, p.id), state}
+    {event, GuildCache.channel_delete(p.guild_id, p.id), state}
   end
 
   def handle_event(:CHANNEL_UPDATE = event, p, state) do
-    {event, GuildServer.channel_update(p.guild_id, p), state}
+    {event, GuildCache.channel_update(p.guild_id, p), state}
   end
 
   def handle_event(:CHANNEL_DELETE, _p, _state) do
@@ -128,54 +127,48 @@ defmodule Nostrum.Shard.Dispatch do
 
     guild = Util.cast(guild, {:struct, Guild})
 
-    case GuildServer.create(guild) do
-      {:error, reason} ->
-        Logger.warn("Failed to create new guild process: #{inspect(reason)}")
-        :noop
-
-      {:ok, g} ->
-        {check_new_or_unavailable(g.id), g, state}
-    end
+    true = GuildCache.create(guild)
+    {check_new_or_unavailable(guild.id), guild, state}
   end
 
-  def handle_event(:GUILD_UPDATE = event, p, state), do: {event, GuildServer.update(p), state}
+  def handle_event(:GUILD_UPDATE = event, p, state), do: {event, GuildCache.update(p), state}
 
   def handle_event(:GUILD_DELETE = event, p, state) do
     :ets.delete(:guild_shard_map, p.id)
-    {event, {GuildServer.delete(p.id), Map.get(p, :unavailable, false)}, state}
+    {event, {GuildCache.delete(p.id), Map.get(p, :unavailable, false)}, state}
   end
 
   def handle_event(:GUILD_EMOJIS_UPDATE = event, p, state),
-    do: {event, GuildServer.emoji_update(p.guild_id, p.emojis), state}
+    do: {event, GuildCache.emoji_update(p.guild_id, p.emojis), state}
 
   def handle_event(:GUILD_INTEGRATIONS_UPDATE = event, p, state), do: {event, p, state}
 
   def handle_event(:GUILD_MEMBER_ADD = event, p, state) do
     UserCache.create(p.user)
-    {event, GuildServer.member_add(p.guild_id, p), state}
+    {event, GuildCache.member_add(p.guild_id, p), state}
   end
 
   def handle_event(:GUILD_MEMBERS_CHUNK = event, p, state) do
     UserCache.bulk_create(p.members)
-    GuildServer.member_chunk(p.guild_id, p.members)
+    GuildCache.member_chunk(p.guild_id, p.members)
 
     {event, p, state}
   end
 
   def handle_event(:GUILD_MEMBER_REMOVE = event, p, state),
-    do: {event, GuildServer.member_remove(p.guild_id, p.user), state}
+    do: {event, GuildCache.member_remove(p.guild_id, p.user), state}
 
   def handle_event(:GUILD_MEMBER_UPDATE = event, p, state),
-    do: {event, GuildServer.member_update(p.guild_id, p), state}
+    do: {event, GuildCache.member_update(p.guild_id, p), state}
 
   def handle_event(:GUILD_ROLE_CREATE = event, p, state),
-    do: {event, GuildServer.role_create(p.guild_id, p.role), state}
+    do: {event, GuildCache.role_create(p.guild_id, p.role), state}
 
   def handle_event(:GUILD_ROLE_DELETE = event, p, state),
-    do: {event, GuildServer.role_delete(p.guild_id, p.role_id), state}
+    do: {event, GuildCache.role_delete(p.guild_id, p.role_id), state}
 
   def handle_event(:GUILD_ROLE_UPDATE = event, p, state),
-    do: {event, GuildServer.role_update(p.guild_id, p.role), state}
+    do: {event, GuildCache.role_update(p.guild_id, p.role), state}
 
   def handle_event(:INVITE_CREATE = event, p, state),
     do: {event, InviteCreate.to_struct(p), state}
@@ -287,7 +280,7 @@ defmodule Nostrum.Shard.Dispatch do
       end
     end
 
-    GuildServer.voice_state_update(p.guild_id, p)
+    GuildCache.voice_state_update(p.guild_id, p)
     {event, p, state}
   end
 
