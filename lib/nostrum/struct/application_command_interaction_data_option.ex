@@ -5,10 +5,18 @@ defmodule Nostrum.Struct.ApplicationCommandInteractionDataOption do
 
   alias Nostrum.Util
 
-  defstruct [:name, :value, :options]
+  defstruct [:name, :type, :value, :options]
 
   @typedoc "Parameter name"
   @type name :: String.t()
+
+  @typedoc """
+  The application command option type.
+
+  See https://discord.com/developers/docs/interactions/slash-commands#application-command-object-application-command-option-type
+  for more details.
+  """
+  @type type :: 1..9
 
   @typedoc """
   Parameter value.
@@ -28,6 +36,7 @@ defmodule Nostrum.Struct.ApplicationCommandInteractionDataOption do
   @typedoc "Command interaction data struct"
   @type t :: %__MODULE__{
           name: name,
+          type: type,
           value: value,
           options: options
         }
@@ -35,15 +44,12 @@ defmodule Nostrum.Struct.ApplicationCommandInteractionDataOption do
   @doc false
   @spec to_struct(map()) :: __MODULE__.t()
   def to_struct(map) do
-    new =
-      map
-      |> Map.new(fn {k, v} -> {Util.maybe_to_atom(k), v} end)
-      |> Map.update(
-        :options,
-        nil,
-        &Util.cast(&1, {:list, {:struct, ApplicationCommandInteractionDataOption}})
-      )
-
-    struct(__MODULE__, new)
+    %__MODULE__{
+      name: map["name"],
+      type: map["type"],
+      value: map["value"],
+      options:
+        Util.cast(map["options"], {:list, {:struct, ApplicationCommandInteractionDataOption}})
+    }
   end
 end

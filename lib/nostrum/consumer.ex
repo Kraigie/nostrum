@@ -22,7 +22,24 @@ defmodule Nostrum.Consumer do
 
   alias Nostrum.Shard.Stage.Cache
   alias Nostrum.Struct.{Channel, WSState}
-  alias Nostrum.Struct.Event.{MessageDelete, MessageDeleteBulk, SpeakingUpdate}
+
+  alias Nostrum.Struct.Event.{
+    ChannelPinsUpdate,
+    GuildBanAdd,
+    GuildBanRemove,
+    GuildIntegrationsUpdate,
+    MessageDelete,
+    MessageDeleteBulk,
+    MessageReactionAdd,
+    MessageReactionRemove,
+    MessageReactionRemoveAll,
+    MessageReactionRemoveEmoji,
+    Ready,
+    SpeakingUpdate,
+    TypingStart,
+    VoiceServerUpdate,
+    VoiceState
+  }
 
   @doc """
   Callback used to handle events.
@@ -75,11 +92,11 @@ defmodule Nostrum.Consumer do
           {:CHANNEL_UPDATE, {old_channel :: Channel.t() | nil, new_channel :: Channel.t()},
            WSState.t()}
   @type channel_pins_ack :: {:CHANNEL_PINS_ACK, map, WSState.t()}
-  @type channel_pins_update :: {:CHANNEL_PINS_UPDATE, map, WSState.t()}
+  @type channel_pins_update :: {:CHANNEL_PINS_UPDATE, ChannelPinsUpdate.t(), WSState.t()}
   @type guild_ban_add ::
-          {:GUILD_BAN_ADD, {guild_id :: integer, Nostrum.Struct.User.t()}, WSState.t()}
+          {:GUILD_BAN_ADD, GuildBanAdd.t(), WSState.t()}
   @type guild_ban_remove ::
-          {:GUILD_BAN_REMOVE, {guild_id :: integer, Nostrum.Struct.User.t()}, WSState.t()}
+          {:GUILD_BAN_REMOVE, GuildBanRemove.t(), WSState.t()}
   @type guild_create :: {:GUILD_CREATE, new_guild :: Nostrum.Struct.Guild.t(), WSState.t()}
   @type guild_available :: {:GUILD_AVAILABLE, new_guild :: Nostrum.Struct.Guild.t(), WSState.t()}
   @type guild_unavailable ::
@@ -96,7 +113,8 @@ defmodule Nostrum.Consumer do
           {:GUILD_EMOJIS_UPDATE,
            {guild_id :: integer, old_emojis :: [Nostrum.Struct.Emoji.t()],
             new_emojis :: [Nostrum.Struct.Emoji.t()]}, WSState.t()}
-  @type guild_integrations_update :: {:GUILD_INTEGERATIONS_UPDATE, map, WSState.t()}
+  @type guild_integrations_update ::
+          {:GUILD_INTEGRATIONS_UPDATE, GuildIntegrationsUpdate.t(), WSState.t()}
   @type guild_member_add ::
           {:GUILD_MEMBER_ADD,
            {guild_id :: integer, new_member :: Nostrum.Struct.Guild.Member.t()}, WSState.t()}
@@ -133,10 +151,13 @@ defmodule Nostrum.Consumer do
   @type message_delete_bulk :: {:MESSAGE_DELETE_BULK, MessageDeleteBulk.t(), WSState.t()}
   @type message_update ::
           {:MESSAGE_UPDATE, updated_message :: Nostrum.Struct.Message.t(), WSState.t()}
-  @type message_reaction_add :: {:MESSAGE_REACTION_ADD, map, WSState.t()}
-  @type message_reaction_remove :: {:MESSAGE_REACTION_REMOVE, map, WSState.t()}
-  @type message_reaction_remove_all :: {:MESSAGE_REACTION_REMOVE_ALL, map, WSState.t()}
-  @type message_reaction_remove_emoji :: {:MESSAGE_REACTION_REMOVE_EMOJI, map, WSState.t()}
+  @type message_reaction_add :: {:MESSAGE_REACTION_ADD, MessageReactionAdd.t(), WSState.t()}
+  @type message_reaction_remove ::
+          {:MESSAGE_REACTION_REMOVE, MessageReactionRemove.t(), WSState.t()}
+  @type message_reaction_remove_all ::
+          {:MESSAGE_REACTION_REMOVE_ALL, MessageReactionRemoveAll.t(), WSState.t()}
+  @type message_reaction_remove_emoji ::
+          {:MESSAGE_REACTION_REMOVE_EMOJI, MessageReactionRemoveEmoji.t(), WSState.t()}
   @type message_ack :: {:MESSAGE_ACK, map, WSState.t()}
   @typedoc """
   Dispatched when a user's presence is updated.
@@ -146,9 +167,9 @@ defmodule Nostrum.Consumer do
   @type presence_update ::
           {:PRESENCE_UPDATE,
            {guild_id :: integer, old_presence :: map | nil, new_presence :: map}, WSState.t()}
-  @type ready :: {:READY, map, WSState.t()}
+  @type ready :: {:READY, Ready.t(), WSState.t()}
   @type resumed :: {:RESUMED, map, WSState.t()}
-  @type typing_start :: {:TYPING_START, map, WSState.t()}
+  @type typing_start :: {:TYPING_START, TypingStart.t(), WSState.t()}
   @type user_settings_update :: no_return
   @typedoc """
   Dispatched when a user is updated.
@@ -160,8 +181,8 @@ defmodule Nostrum.Consumer do
            {old_user :: Nostrum.Struct.User.t() | nil, new_user :: Nostrum.Struct.User.t()},
            WSState.t()}
   @type voice_speaking_update :: {:VOICE_SPEAKING_UPDATE, SpeakingUpdate.t(), WSState.t()}
-  @type voice_state_update :: {:VOICE_STATE_UPDATE, map, WSState.t()}
-  @type voice_server_update :: {:VOICE_SERVER_UPDATE, map, WSState.t()}
+  @type voice_state_update :: {:VOICE_STATE_UPDATE, VoiceState.t(), WSState.t()}
+  @type voice_server_update :: {:VOICE_SERVER_UPDATE, VoiceServerUpdate.t(), WSState.t()}
   @type webhooks_update :: {:WEBHOOKS_UPDATE, map, WSState.t()}
 
   @type event ::

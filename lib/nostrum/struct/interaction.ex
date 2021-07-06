@@ -5,22 +5,29 @@ defmodule Nostrum.Struct.Interaction do
   alias Nostrum.Snowflake
   alias Nostrum.Struct.ApplicationCommandInteractionData
   alias Nostrum.Struct.Guild.Member
-  alias Nostrum.Struct.{Channel, Guild}
+  alias Nostrum.Struct.User
+  alias Nostrum.Struct.{Channel, Guild, Message}
   alias Nostrum.Util
 
   defstruct [
     :id,
+    :application_id,
     :type,
     :data,
     :guild_id,
     :channel_id,
     :member,
+    :user,
     :token,
-    :version
+    :version,
+    :message
   ]
 
   @typedoc "Interaction identifier"
   @type id :: Snowflake.t()
+
+  @typedoc "ID of the application that this interaction is for"
+  @type application_id :: Snowflake.t()
 
   @typedoc """
   Interaction kind.
@@ -38,19 +45,25 @@ defmodule Nostrum.Struct.Interaction do
   @type data :: ApplicationCommandInteractionData.t() | nil
 
   @typedoc "ID of the guild where the command was invoked"
-  @type guild_id :: Guild.id()
+  @type guild_id :: Guild.id() | nil
 
   @typedoc "ID of the channel where the command was invoked"
   @type channel_id :: Channel.id()
 
-  @typedoc "Member information about the invoker"
-  @type member :: Member.t()
+  @typedoc "Member information about the invoker, if invoked on a guild"
+  @type member :: Member.t() | nil
+
+  @typedoc "User object for the invoking user, if invoked via a DM"
+  @type user :: User.t() | nil
 
   @typedoc "Continuation token for responses"
   @type token :: String.t()
 
   @typedoc "Version identifier, always `1`"
   @type version :: pos_integer()
+
+  @typedoc "For components, the message they were attached to"
+  @type message :: Message.t() | nil
 
   @typedoc """
   A command invocation for slash commands.
@@ -60,26 +73,33 @@ defmodule Nostrum.Struct.Interaction do
   """
   @type t :: %__MODULE__{
           id: id,
+          application_id: application_id,
           type: type,
           data: data,
           guild_id: guild_id,
           channel_id: channel_id,
           member: member,
+          user: user,
           token: token,
-          version: version
+          version: version,
+          message: message
         }
 
   @doc false
   @spec to_struct(map()) :: __MODULE__.t()
   def to_struct(map) do
-    new =
-      map
-      |> Map.new(fn {k, v} -> {Util.maybe_to_atom(k), v} end)
-      |> Map.update(:id, nil, &Util.cast(&1, Snowflake))
-      |> Map.update(:channel_id, nil, &Util.cast(&1, Snowflake))
-      |> Map.update(:guild_id, nil, &Util.cast(&1, Snowflake))
-      |> Map.update(:member, nil, &Util.cast(&1, {:struct, Member}))
-
-    struct(__MODULE__, new)
+    %__MODULE__{
+      id: map["id"],
+      application_id: map["application_id"],
+      type: map["type"],
+      data: Util.cast(map["data"], {:struct, ApplicationCommandInteractionData}),
+      guild_id: map["guild_id"],
+      channel_id: map["channel_id"],
+      member: Util.cast(map["member"], {:struct, Member}),
+      user: Util.cast(map["user"], {:struct, User}),
+      token: map["token"],
+      version: map["version"],
+      message: Util.cast(map["message"], {:struct, Message})
+    }
   end
 end

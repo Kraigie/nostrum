@@ -161,30 +161,6 @@ defmodule Nostrum.Util do
   end
 
   @doc """
-  Converts a map into an atom-keyed map.
-
-  Given a map with variable type keys, returns the same map with all keys as `atoms`.
-
-  This function will attempt to convert keys to an existing atom, and if that fails will default to
-  creating a new atom while displaying a warning. The idea here is that we should be able to see
-  if any results from Discord are giving variable keys. Since we *will* define all
-  types of objects returned by Discord, the amount of new atoms created *SHOULD* be 0. 👀
-  """
-  @spec safe_atom_map(map) :: map
-  def safe_atom_map(term) do
-    cond do
-      is_map(term) ->
-        for {key, value} <- term, into: %{}, do: {maybe_to_atom(key), safe_atom_map(value)}
-
-      is_list(term) ->
-        Enum.map(term, fn item -> safe_atom_map(item) end)
-
-      true ->
-        term
-    end
-  end
-
-  @doc """
   Attempts to convert a string to an atom.
 
   If atom does not currently exist, will warn that we're doing an unsafe conversion.
