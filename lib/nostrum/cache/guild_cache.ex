@@ -62,7 +62,7 @@ defmodule Nostrum.Cache.GuildCache do
   def select_all(selector)
 
   def select_all(selector) when is_selector(selector) do
-    :ets.foldl(fn {_id, guild}, acc -> acc ++ selector.(guild) end, [], @table_name)
+    :ets.foldl(fn {_id, guild}, acc -> [selector.(guild) | acc] end, [], @table_name)
   end
 
   @doc """
