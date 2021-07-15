@@ -2,10 +2,15 @@ defmodule Nostrum.Struct.ApplicationCommandInteractionData do
   @moduledoc "Struct for interaction data."
 
   alias Nostrum.Snowflake
-  alias Nostrum.Struct.ApplicationCommandInteractionDataOption
+
+  alias Nostrum.Struct.{
+    ApplicationCommandInteractionDataOption,
+    ApplicationCommandInteractionDataResolved
+  }
+
   alias Nostrum.Util
 
-  defstruct [:id, :name, :options]
+  defstruct [:id, :name, :resolved, :options, :custom_id, :component_type]
 
   @typedoc "ID of the invoked command"
   @type id :: Snowflake.t()
@@ -13,8 +18,17 @@ defmodule Nostrum.Struct.ApplicationCommandInteractionData do
   @typedoc "Name of the invoked command"
   @type name :: String.t()
 
+  @typedoc "Converted users & roles & channels"
+  @type resolved :: ApplicationCommandInteractionDataResolved.t() | nil
+
   @typedoc "Parameters and values supplied by the user, if applicable"
   @type options :: ApplicationCommandInteractionDataOption.t() | nil
+
+  @typedoc "For components, the ``custom_id`` of the component"
+  @type custom_id :: String.t() | nil
+
+  @typedoc "For components, the ``type`` of the component"
+  @type component_type :: Integer.t() | nil
 
   @typedoc """
   Command interaction data for slash commands.
@@ -27,22 +41,23 @@ defmodule Nostrum.Struct.ApplicationCommandInteractionData do
   @type t :: %__MODULE__{
           id: id,
           name: name,
-          options: options
+          resolved: resolved,
+          options: options,
+          custom_id: custom_id,
+          component_type: component_type
         }
 
   @doc false
   @spec to_struct(map()) :: __MODULE__.t()
   def to_struct(map) do
-    new =
-      map
-      |> Map.new(fn {k, v} -> {Util.maybe_to_atom(k), v} end)
-      |> Map.update(:id, nil, &Util.cast(&1, Snowflake))
-      |> Map.update(
-        :options,
-        nil,
-        &Util.cast(&1, {:list, {:struct, ApplicationCommandInteractionDataOption}})
-      )
-
-    struct(__MODULE__, new)
+    %__MODULE__{
+      id: map["id"],
+      name: map["name"],
+      resolved: Util.cast(map["resolved"], {:struct, ApplicationCommandInteractionDataResolved}),
+      options:
+        Util.cast(map["options"], {:list, {:struct, ApplicationCommandInteractionDataOption}}),
+      custom_id: map["custom_id"],
+      component_type: map["component_type"]
+    }
   end
 end

@@ -202,7 +202,7 @@ defmodule Nostrum.Cache.Guild.GuildServer do
 
   def handle_call({:update, :voice_state, guild_id, vsu}, _from, %{voice_states: vs_list} = state) do
     # Remove heavy and duplicate data from voice state
-    vsu = vsu |> Map.delete(:member)
+    vsu = vsu |> Map.delete("member")
     vs_list = vs_list |> Enum.reject(fn v -> v.user_id == vsu.user_id end)
 
     new_voice_states =

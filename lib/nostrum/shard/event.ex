@@ -3,13 +3,10 @@ defmodule Nostrum.Shard.Event do
 
   alias Nostrum.Shard.Payload
   alias Nostrum.Shard.Stage.Producer
-  alias Nostrum.Util
 
   require Logger
 
   def handle(:dispatch, payload, state) do
-    payload = Util.safe_atom_map(payload)
-
     if Application.get_env(:nostrum, :log_dispatch_events),
       do: payload.t |> inspect() |> Logger.debug()
 
