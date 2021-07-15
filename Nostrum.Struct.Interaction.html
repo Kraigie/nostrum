@@ -8,7 +8,7 @@
     <meta name="project" content="Nostrum v0.4.7">
     <title>Nostrum.Struct.Interaction — Nostrum v0.4.7</title>
     <link rel="stylesheet" href="dist/elixir-9f91ebe876dc01d67920.css" />
-    <script src="dist/sidebar_items-98eb99c877.js"></script>
+    <script src="dist/sidebar_items-a0b276ddac.js"></script>
       <script src="docs_config.js"></script>
     <script async src="dist/app-60a0c9f10e9e52eae31f.js"></script>
   </head>
@@ -89,6 +89,12 @@ Nostrum      </a>
     </h2>
 <div class="summary-row">
   <div class="summary-signature">
+    <a href="#t:application_id/0">application_id()</a>
+  </div>
+    <div class="summary-synopsis"><p>ID of the application that this interaction is for</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
     <a href="#t:channel_id/0">channel_id()</a>
   </div>
     <div class="summary-synopsis"><p>ID of the channel where the command was invoked</p></div>
@@ -115,7 +121,13 @@ Nostrum      </a>
   <div class="summary-signature">
     <a href="#t:member/0">member()</a>
   </div>
-    <div class="summary-synopsis"><p>Member information about the invoker</p></div>
+    <div class="summary-synopsis"><p>Member information about the invoker, if invoked on a guild</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:message/0">message()</a>
+  </div>
+    <div class="summary-synopsis"><p>For components, the message they were attached to</p></div>
 </div>
 <div class="summary-row">
   <div class="summary-signature">
@@ -137,6 +149,12 @@ Nostrum      </a>
 </div>
 <div class="summary-row">
   <div class="summary-signature">
+    <a href="#t:user/0">user()</a>
+  </div>
+    <div class="summary-synopsis"><p>User object for the invoking user, if invoked via a DM</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
     <a href="#t:version/0">version()</a>
   </div>
     <div class="summary-synopsis"><p>Version identifier, always <code class="inline">1</code></p></div>
@@ -152,6 +170,27 @@ Nostrum      </a>
             </a>
 Types          </h1>
           <div class="types-list">
+<section class="detail" id="t:application_id/0">
+  <div class="detail-header">
+    <a href="#t:application_id/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">application_id()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/interaction.ex#L30" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>application_id() :: <a href="Nostrum.Snowflake.html#t:t/0">Nostrum.Snowflake.t</a>()</pre>
+      </div>
+
+<p>ID of the application that this interaction is for</p>  </section>
+</section>
 <section class="detail" id="t:channel_id/0">
   <div class="detail-header">
     <a href="#t:channel_id/0" class="detail-link" title="Link to this type">
@@ -159,7 +198,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">channel_id()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/interaction.ex#L44" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/interaction.ex#L51" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -180,7 +219,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">data()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/interaction.ex#L38" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/interaction.ex#L45" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -201,7 +240,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">guild_id()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/interaction.ex#L41" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/interaction.ex#L48" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -210,7 +249,7 @@ Types          </h1>
   <section class="docstring">
       <h2>Specs</h2>
       <div class="specs">
-          <pre>guild_id() :: <a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>()</pre>
+          <pre>guild_id() :: <a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>() | nil</pre>
       </div>
 
 <p>ID of the guild where the command was invoked</p>  </section>
@@ -222,7 +261,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">id()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/interaction.ex#L23" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/interaction.ex#L27" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -243,7 +282,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">member()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/interaction.ex#L47" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/interaction.ex#L54" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -252,10 +291,31 @@ Types          </h1>
   <section class="docstring">
       <h2>Specs</h2>
       <div class="specs">
-          <pre>member() :: <a href="Nostrum.Struct.Guild.Member.html#t:t/0">Nostrum.Struct.Guild.Member.t</a>()</pre>
+          <pre>member() :: <a href="Nostrum.Struct.Guild.Member.html#t:t/0">Nostrum.Struct.Guild.Member.t</a>() | nil</pre>
       </div>
 
-<p>Member information about the invoker</p>  </section>
+<p>Member information about the invoker, if invoked on a guild</p>  </section>
+</section>
+<section class="detail" id="t:message/0">
+  <div class="detail-header">
+    <a href="#t:message/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">message()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/interaction.ex#L66" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>message() :: <a href="Nostrum.Struct.Message.html#t:t/0">Nostrum.Struct.Message.t</a>() | nil</pre>
+      </div>
+
+<p>For components, the message they were attached to</p>  </section>
 </section>
 <section class="detail" id="t:t/0">
   <div class="detail-header">
@@ -264,7 +324,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">t()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/interaction.ex#L61" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/interaction.ex#L74" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -274,13 +334,16 @@ Types          </h1>
       <h2>Specs</h2>
       <div class="specs">
           <pre>t() :: %Nostrum.Struct.Interaction{
+  application_id: <a href="#t:application_id/0">application_id</a>(),
   channel_id: <a href="#t:channel_id/0">channel_id</a>(),
   data: <a href="#t:data/0">data</a>(),
   guild_id: <a href="#t:guild_id/0">guild_id</a>(),
   id: <a href="#t:id/0">id</a>(),
   member: <a href="#t:member/0">member</a>(),
+  message: <a href="#t:message/0">message</a>(),
   token: <a href="#t:token/0">token</a>(),
   type: <a href="#t:type/0">type</a>(),
+  user: <a href="#t:user/0">user</a>(),
   version: <a href="#t:version/0">version</a>()
 }</pre>
       </div>
@@ -295,7 +358,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">token()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/interaction.ex#L50" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/interaction.ex#L60" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -316,7 +379,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">type()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/interaction.ex#L31" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/interaction.ex#L38" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -330,6 +393,27 @@ Types          </h1>
 
 <p>Interaction kind.</p><ul><li><code class="inline">1</code> for <em>Ping</em></li><li><code class="inline">2</code> for <em>ApplicationCommand</em></li></ul>  </section>
 </section>
+<section class="detail" id="t:user/0">
+  <div class="detail-header">
+    <a href="#t:user/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">user()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/interaction.ex#L57" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>user() :: <a href="Nostrum.Struct.User.html#t:t/0">Nostrum.Struct.User.t</a>() | nil</pre>
+      </div>
+
+<p>User object for the invoking user, if invoked via a DM</p>  </section>
+</section>
 <section class="detail" id="t:version/0">
   <div class="detail-header">
     <a href="#t:version/0" class="detail-link" title="Link to this type">
@@ -337,7 +421,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">version()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/interaction.ex#L53" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/interaction.ex#L63" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
