@@ -3007,6 +3007,33 @@ defmodule Nostrum.Api do
   end
 
   @doc """
+  Overwrite the existing global application commands.
+
+  This action will:
+  - Create any command that was provided and did not already exist
+  - Update any command that was provided and already existed if its configuration changed
+  - Delete any command that was not provided but existed on Discord's end
+
+  Updates will be available in all guilds after 1 hour.
+  Commands that do not already exist will count toward daily application command create limits.
+
+  ## Parameters
+  - `application_id`: Application ID for which to overwrite the commands.
+    If not given, this will be fetched from `Me`.
+  - `commands`: List of command configurations, see the linked API documentation for reference.
+
+  ## Return value
+  Updated list of global application commands. See the official reference:
+  https://discord.com/developers/docs/interactions/slash-commands#bulk-overwrite-global-application-commands
+  """
+  @spec bulk_overwrite_global_application_commands([map()]) :: {:ok, [map()]} | error
+  @spec bulk_overwrite_global_application_commands(User.id(), [map()]) :: {:ok, [map()]} | error
+  def bulk_overwrite_global_application_commands(application_id \\ Me.get().id, commands) do
+    request(:put, Constants.global_application_commands(application_id), commands)
+    |> handle_request_with_decode
+  end
+
+  @doc """
   Fetch all guild application commands for the given guild.
 
   ## Parameters
@@ -3102,6 +3129,36 @@ defmodule Nostrum.Api do
         command_id
       ) do
     request(:delete, Constants.guild_application_command(application_id, guild_id, command_id))
+  end
+
+  @doc """
+  Overwrite the existing guild application commands on the specified guild.
+
+  This action will:
+  - Create any command that was provided and did not already exist
+  - Update any command that was provided and already existed if its configuration changed
+  - Delete any command that was not provided but existed on Discord's end
+
+  ## Parameters
+  - `application_id`: Application ID for which to overwrite the commands.
+    If not given, this will be fetched from `Me`.
+  - `guild_id`: Guild on which to overwrite the commands.
+  - `commands`: List of command configurations, see the linked API documentation for reference.
+
+  ## Return value
+  Updated list of guild application commands. See the official reference:
+  https://discord.com/developers/docs/interactions/slash-commands#bulk-overwrite-guild-application-commands
+  """
+  @spec bulk_overwrite_guild_application_commands(Guild.id(), [map()]) :: {:ok, [map()]} | error
+  @spec bulk_overwrite_guild_application_commands(User.id(), Guild.id(), [map()]) ::
+          {:ok, [map()]} | error
+  def bulk_overwrite_guild_application_commands(
+        application_id \\ Me.get().id,
+        guild_id,
+        commands
+      ) do
+    request(:put, Constants.guild_application_commands(application_id, guild_id), commands)
+    |> handle_request_with_decode
   end
 
   # Why the two separate functions here?

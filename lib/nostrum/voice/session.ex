@@ -5,7 +5,6 @@ defmodule Nostrum.Voice.Session do
   alias Nostrum.Constants
   alias Nostrum.Shard.Stage.Producer
   alias Nostrum.Struct.{VoiceState, VoiceWSState}
-  alias Nostrum.Util
   alias Nostrum.Voice
   alias Nostrum.Voice.{Event, Payload}
 
@@ -91,10 +90,9 @@ defmodule Nostrum.Voice.Session do
       frame
       |> :erlang.iolist_to_binary()
       |> Poison.decode!()
-      |> Util.safe_atom_map()
 
     from_handle =
-      payload.op
+      payload["op"]
       |> Constants.atom_from_voice_opcode()
       |> Event.handle(payload, state)
 
