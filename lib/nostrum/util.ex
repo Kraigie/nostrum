@@ -154,7 +154,9 @@ defmodule Nostrum.Util do
     case Api.request(:get, Constants.gateway_bot(), "") do
       # Handle deeper API error.
       # For example, not including a token can result in a somewhat opaque 401 unauthorized error
-      {:error, %Nostrum.Error.ApiError{response: %{message: message}}} ->
+      {:error, error}} ->
+        raise(error)
+      
         raise(message)
 
       {:error, %{status_code: code, message: message}} ->
