@@ -10,29 +10,32 @@ It is highly recommended to check out the
 information listed here and more.
 
 ## Installation
-Add Nostrum as a dependency:
 
- *Stable*
+It is recommended to use a **stable** release by specifying a published
+version from Hex:
 
- Stable documentation can be found [here](https://hexdocs.pm/nostrum/)
 ```elixir
 def deps do
   [{:nostrum, "~> 0.4"}]
 end
 ```
 
- *Dev*
-```Elixir
+For stable installations, documentation can be found at
+https://hexdocs.pm/nostrum. However, if you want the latest changes and help
+test the library, you can also install directly from GitHub:
+
+```elixir
 def deps do
-  [{:nostrum, git: "https://github.com/Kraigie/nostrum.git"}]
+  [{:nostrum, github: "Kraigie/nostrum"}]
 end
 ```
 
-Edit or create your config file:
+Documentation for master can be found at https://kraigie.github.io/nostrum/.
 
-The file should be located at `/config/config.exs`. To run Nostrum you need the
-following two fields:
-```Elixir
+Edit or create your config file at `/config/config.exs`. To run Nostrum you
+need the following two fields:
+
+```elixir
 config :nostrum,
   token: "666" # The token of your bot as a string
 ```
