@@ -126,6 +126,11 @@ defmodule Nostrum.Shard.Session do
     end
   end
 
+  def handle_info({:gun_ws, _conn, _stream, :close}, state) do
+    Logger.info("Shard websocket closed (unknown reason)")
+    {:noreply, state}
+  end
+
   def handle_info({:gun_ws, _conn, _stream, {:close, errno, reason}}, state) do
     Logger.info("Shard websocket closed (errno #{errno}, reason #{inspect(reason)})")
     {:noreply, state}
