@@ -19,8 +19,8 @@ defmodule Nostrum.Cache.UserCache.ETS do
 
   @impl Nostrum.Cache.UserCache
   @spec bulk_create([Map.t()]) :: :ok
-  def bulk_create(members) do
-    Enum.each(members, &:ets.insert(@table_name, {&1.user.id, &1.user}))
+  def bulk_create(users) do
+    Enum.each(users, &:ets.insert(@table_name, {&1.id, &1}))
   end
 
   @impl Nostrum.Cache.UserCache
