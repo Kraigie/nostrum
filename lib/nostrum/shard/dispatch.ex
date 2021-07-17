@@ -177,8 +177,12 @@ defmodule Nostrum.Shard.Dispatch do
   def handle_event(:GUILD_MEMBER_REMOVE = event, p, state),
     do: {event, GuildCache.member_remove(p["guild_id"], p["user"]), state}
 
-  def handle_event(:GUILD_MEMBER_UPDATE = event, p, state) do
-    {event, GuildCache.member_update(p["guild_id"], p), state}
+  def handle_event(:GUILD_MEMBER_UPDATE = event, %{"guild_id" => guild_id} = p, state) do
+    {event, GuildCache.member_update(guild_id, p), state}
+  end
+
+  def handle_event(:GUILD_MEMBER_UPDATE = event, %{guild_id: guild_id} = p, state) do
+    {event, GuildCache.member_update(guild_id, p), state}
   end
 
   def handle_event(:GUILD_ROLE_CREATE = event, p, state),
