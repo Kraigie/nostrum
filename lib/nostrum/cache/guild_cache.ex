@@ -258,7 +258,7 @@ defmodule Nostrum.Cache.GuildCache do
   @doc false
   def member_add(guild_id, payload) do
     [{_id, guild}] = :ets.lookup(@table_name, guild_id)
-    {_old, member, new_members} = upsert(guild.members, payload.user.id, payload, Member)
+    {_old, member, new_members} = upsert(guild.members, payload["user"]["id"], payload, Member)
     new = %{guild | members: new_members, member_count: guild.member_count + 1}
     true = :ets.update_element(@table_name, guild_id, {2, new})
     member
@@ -267,7 +267,7 @@ defmodule Nostrum.Cache.GuildCache do
   @doc false
   def member_remove(guild_id, user) do
     [{_id, guild}] = :ets.lookup(@table_name, guild_id)
-    {popped, new_members} = Map.pop(guild.members, user.id)
+    {popped, new_members} = Map.pop(guild.members, user["id"])
     new_guild = %{guild | members: new_members, member_count: guild.member_count - 1}
     true = :ets.update_element(@table_name, guild_id, {2, new_guild})
     if popped, do: {guild_id, popped}, else: :noop
@@ -276,7 +276,7 @@ defmodule Nostrum.Cache.GuildCache do
   @doc false
   def member_update(guild_id, member) do
     [{_id, guild}] = :ets.lookup(@table_name, guild_id)
-    {old, new, new_members} = upsert(guild.members, member.user.id, member, Member)
+    {old, new, new_members} = upsert(guild.members, member["user"]["id"], member, Member)
     new_guild = %{guild | members: new_members}
     true = :ets.update_element(@table_name, guild_id, {2, new_guild})
     {old, new}

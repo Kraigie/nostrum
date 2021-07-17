@@ -162,8 +162,8 @@ defmodule Nostrum.Shard.Dispatch do
   end
 
   def handle_event(:GUILD_MEMBER_ADD = event, p, state) do
-    UserCache.create(p.user)
-    {event, GuildCache.member_add(p.guild_id, p), state}
+    UserCache.create(p["user"])
+    {event, GuildCache.member_add(p["guild_id"], p), state}
   end
 
   def handle_event(:GUILD_MEMBERS_CHUNK = event, p, state) do
@@ -175,10 +175,11 @@ defmodule Nostrum.Shard.Dispatch do
   end
 
   def handle_event(:GUILD_MEMBER_REMOVE = event, p, state),
-    do: {event, GuildCache.member_remove(p.guild_id, p.user), state}
+    do: {event, GuildCache.member_remove(p["guild_id"], p["user"]), state}
 
-  def handle_event(:GUILD_MEMBER_UPDATE = event, p, state),
-    do: {event, GuildCache.member_update(p.guild_id, p), state}
+  def handle_event(:GUILD_MEMBER_UPDATE = event, p, state) do
+    {event, GuildCache.member_update(p["guild_id"], p), state}
+  end
 
   def handle_event(:GUILD_ROLE_CREATE = event, p, state),
     do: {event, GuildCache.role_create(p.guild_id, p.role), state}
