@@ -15,7 +15,6 @@ defmodule Nostrum.Cache.GuildCache do
   alias Nostrum.Struct.Guild.Role
   alias Nostrum.Struct.Message
   alias Nostrum.Util
-  use GenServer
 
   import Nostrum.Snowflake, only: [is_snowflake: 1]
 
@@ -34,16 +33,9 @@ defmodule Nostrum.Cache.GuildCache do
 
   defguardp is_selector(term) when is_function(term, 1)
 
-  @doc false
-  def start_link(opts) do
-    tid = :ets.new(@table_name, [:public, :set, :named_table])
-    GenServer.start_link(__MODULE__, tid, opts)
-  end
-
-  @doc false
-  def init(tid) do
-    {:ok, tid}
-  end
+  @doc "Retrieve the ETS table name used for the cache."
+  @spec tabname :: atom()
+  def tabname, do: @table_name
 
   @doc """
   Retrieves all `Nostrum.Struct.Guild` from the cache as a list.

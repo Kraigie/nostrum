@@ -1,6 +1,7 @@
 defmodule Nostrum.Application do
   @moduledoc false
 
+  alias Nostrum.Cache.GuildCache
   use Application
 
   require Logger
@@ -33,6 +34,7 @@ defmodule Nostrum.Application do
     :ets.new(:presences, [:set, :public, :named_table])
     :ets.new(:guild_shard_map, [:set, :public, :named_table])
     :ets.new(:channel_guild_map, [:set, :public, :named_table])
+    :ets.new(GuildCache.tabname(), [:set, :public, :named_table])
   end
 
   defp check_token, do: check_token(Application.get_env(:nostrum, :token))

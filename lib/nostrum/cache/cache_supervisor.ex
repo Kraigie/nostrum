@@ -9,7 +9,6 @@ defmodule Nostrum.Cache.CacheSupervisor do
 
   def init([]) do
     children = [
-      Nostrum.Cache.GuildCache,
       Nostrum.Cache.Me
     ]
 
