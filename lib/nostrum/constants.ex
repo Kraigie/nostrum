@@ -1,7 +1,7 @@
 defmodule Nostrum.Constants do
   @moduledoc false
 
-  def base_url, do: "https://discord.com/api/v7"
+  def base_url, do: "https://discord.com/api/v8"
   def cdn_url, do: "https://cdn.discordapp.com"
   def gateway, do: "/gateway"
   def gateway_bot, do: "/gateway/bot"
@@ -62,9 +62,9 @@ defmodule Nostrum.Constants do
   def guild_integration_sync(guild_id, integration_id),
     do: "/guilds/#{guild_id}/integrations/#{integration_id}/sync"
 
-  def guild_embed(guild_id), do: "/guilds/#{guild_id}/embed"
   def guild_emojis(guild_id), do: "/guilds/#{guild_id}/emojis"
   def guild_emoji(guild_id, emoji_id), do: "/guilds/#{guild_id}/emojis/#{emoji_id}"
+  def guild_widget(guild_id), do: "/guilds/#{guild_id}/widget"
 
   def webhooks_guild(guild_id), do: "/guilds/#{guild_id}/webhooks"
   def webhooks_channel(channel_id), do: "/channels/#{channel_id}/webhooks"
@@ -85,7 +85,7 @@ defmodule Nostrum.Constants do
   def me_channels, do: "/users/@me/channels"
   def me_connections, do: "/users/@me/connections"
 
-  def invite(invite_code), do: "/invites/#{invite_code}"
+  def invite(invite_code), do: "/invite/#{invite_code}"
   def regions, do: "/voice/regions"
 
   def application_information, do: "/oauth2/applications/@me"

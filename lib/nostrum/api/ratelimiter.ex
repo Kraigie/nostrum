@@ -95,7 +95,8 @@ defmodule Nostrum.Api.Ratelimiter do
 
     latency = abs(origin_timestamp - Util.now())
 
-    if global_limit, do: update_global_bucket(route, 0, retry_after, latency)
+    # `retry_after` is returned in seconds, we use milliseconds internally.
+    if global_limit, do: update_global_bucket(route, 0, retry_after * 1000, latency)
     if reset, do: update_bucket(route, remaining, reset, latency)
 
     response

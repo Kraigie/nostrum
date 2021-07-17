@@ -16,8 +16,6 @@ defmodule Nostrum.Struct.Guild do
     :region,
     :afk_channel_id,
     :afk_timeout,
-    :embed_enabled,
-    :embed_channel_id,
     :verification_level,
     :default_message_notifications,
     :explicit_content_filter,
@@ -63,12 +61,6 @@ defmodule Nostrum.Struct.Guild do
 
   @typedoc "The time someone must be afk before being moved"
   @type afk_timeout :: integer
-
-  @typedoc "Whether the guild is emeddable"
-  @type embed_enabled :: boolean | nil
-
-  @typedoc "The id of the embedded channel"
-  @type embed_channel_id :: Channel.id() | nil
 
   @typedoc "The level of verification"
   @type verification_level :: integer
@@ -160,8 +152,6 @@ defmodule Nostrum.Struct.Guild do
           region: nil,
           afk_channel_id: nil,
           afk_timeout: nil,
-          embed_enabled: nil,
-          embed_channel_id: nil,
           verification_level: nil,
           default_message_notifications: nil,
           explicit_content_filter: nil,
@@ -196,8 +186,6 @@ defmodule Nostrum.Struct.Guild do
           region: region,
           afk_channel_id: afk_channel_id,
           afk_timeout: afk_timeout,
-          embed_enabled: embed_enabled,
-          embed_channel_id: embed_channel_id,
           verification_level: verification_level,
           default_message_notifications: default_message_notifications,
           explicit_content_filter: explicit_content_filter,
@@ -232,8 +220,6 @@ defmodule Nostrum.Struct.Guild do
           region: nil,
           afk_channel_id: nil,
           afk_timeout: nil,
-          embed_enabled: nil,
-          embed_channel_id: nil,
           verification_level: nil,
           default_message_notifications: nil,
           explicit_content_filter: nil,
@@ -268,8 +254,6 @@ defmodule Nostrum.Struct.Guild do
           region: region,
           afk_channel_id: afk_channel_id,
           afk_timeout: afk_timeout,
-          embed_enabled: embed_enabled,
-          embed_channel_id: embed_channel_id,
           verification_level: verification_level,
           default_message_notifications: default_message_notifications,
           explicit_content_filter: explicit_content_filter,

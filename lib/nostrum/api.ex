@@ -1895,7 +1895,7 @@ defmodule Nostrum.Api do
     request(%{
       method: :put,
       route: Constants.guild_ban(guild_id, user_id),
-      body: %{"delete-message-days": days_to_delete},
+      body: %{delete_message_days: days_to_delete},
       options: [],
       headers: maybe_add_reason(reason)
     })
@@ -2314,17 +2314,17 @@ defmodule Nostrum.Api do
   @doc """
   Gets a guild embed.
   """
-  @spec get_guild_embed(integer) :: error | {:ok, map}
-  def get_guild_embed(guild_id) do
-    request(:get, Constants.guild_embed(guild_id))
+  @spec get_guild_widget(integer) :: error | {:ok, map}
+  def get_guild_widget(guild_id) do
+    request(:get, Constants.guild_widget(guild_id))
   end
 
   @doc """
   Modifies a guild embed.
   """
-  @spec modify_guild_embed(integer, map) :: error | {:ok, map}
-  def modify_guild_embed(guild_id, options) do
-    request(:patch, Constants.guild_embed(guild_id), options)
+  @spec modify_guild_widget(integer, map) :: error | {:ok, map}
+  def modify_guild_widget(guild_id, options) do
+    request(:patch, Constants.guild_widget(guild_id), options)
     |> handle_request_with_decode
   end
 
