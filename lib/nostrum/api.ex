@@ -2250,7 +2250,8 @@ defmodule Nostrum.Api do
 
   Guild to get integrations for is specified by `guild_id`.
   """
-  @spec get_guild_integrations(integer) :: error | {:ok, [Nostrum.Struct.Guild.Integration.t()]}
+  @spec get_guild_integrations(Guild.id()) ::
+          error | {:ok, [Nostrum.Struct.Guild.Integration.t()]}
   def get_guild_integrations(guild_id) do
     request(:get, Constants.guild_integrations(guild_id))
     |> handle_request_with_decode
@@ -2817,8 +2818,8 @@ defmodule Nostrum.Api do
   Only one of `content`, `file` or `embeds` should be supplied in the `args` parameter.
   """
   @spec execute_webhook(
-          Webhook.id(),
-          Webhook.token(),
+          Webhook.id() | User.id(),
+          Webhook.token() | Interaction.token(),
           %{
             content: String.t(),
             username: String.t(),

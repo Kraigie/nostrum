@@ -31,7 +31,7 @@ defmodule Nostrum.Struct.ApplicationCommandInteractionData do
 
   @typedoc "For components, the ``type`` of the component"
   @typedoc since: "0.5.0"
-  @type component_type :: Integer.t() | nil
+  @type component_type :: integer() | nil
 
   @typedoc """
   Command interaction data for slash commands.
