@@ -121,19 +121,27 @@ defmodule Nostrum.Voice.Audio do
      ), length(frames) < @frames_per_burst}
   end
 
-  @spec spawn_youtubedl(String.t()) :: Porcelain.Process.t()
   def spawn_youtubedl(url) do
-    Porcelain.spawn(
-      Application.get_env(:nostrum, :youtubedl, "youtube-dl"),
-      [
-        ["-f", "bestaudio"],
-        ["-o", "-"],
-        ["-q"],
-        [url]
-      ]
-      |> List.flatten(),
-      out: :stream
-    )
+    res =
+      Porcelain.spawn(
+        Application.get_env(:nostrum, :youtubedl, "youtube-dl"),
+        [
+          ["-f", "bestaudio"],
+          ["-o", "-"],
+          ["-q"],
+          [url]
+        ]
+        |> List.flatten(),
+        out: :stream
+      )
+
+    case res do
+      {:error, reason} ->
+        raise(VoiceError, reason: reason, executable: "youtube-dl")
+
+      proc ->
+        proc
+    end
   end
 
   def spawn_ffmpeg(input, type \\ :url, options \\ []) do
@@ -151,21 +159,30 @@ defmodule Nostrum.Voice.Audio do
           {"pipe:0", outstream}
       end
 
-    Porcelain.spawn(
-      Application.get_env(:nostrum, :ffmpeg, "ffmpeg"),
-      [
-        ffmpeg_options(options, input_url),
-        ["-ac", "2"],
-        ["-ar", "48000"],
-        ["-f", "s16le"],
-        ["-acodec", "libopus"],
-        ["-loglevel", "quiet"],
-        ["pipe:1"]
-      ]
-      |> List.flatten(),
-      in: stdin,
-      out: :stream
-    )
+    res =
+      Porcelain.spawn(
+        Application.get_env(:nostrum, :ffmpeg, "ffmpeg"),
+        [
+          ffmpeg_options(options, input_url),
+          ["-ac", "2"],
+          ["-ar", "48000"],
+          ["-f", "s16le"],
+          ["-acodec", "libopus"],
+          ["-loglevel", "quiet"],
+          ["pipe:1"]
+        ]
+        |> List.flatten(),
+        in: stdin,
+        out: :stream
+      )
+
+    case res do
+      {:error, reason} ->
+        raise(VoiceError, reason: reason, executable: "ffmpeg")
+
+      proc ->
+        proc
+    end
   end
 
   def ffmpeg_options(options, input_url) do
