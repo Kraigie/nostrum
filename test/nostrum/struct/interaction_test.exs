@@ -77,7 +77,7 @@ defmodule Nostrum.Struct.InteractionTest do
                    %ApplicationCommandInteractionDataOption{
                      name: "name",
                      type: 8,
-                     value: "451824027976073216"
+                     value: 451_824_027_976_073_216
                    },
                    %ApplicationCommandInteractionDataOption{
                      name: "action",

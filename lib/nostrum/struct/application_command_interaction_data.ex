@@ -1,13 +1,12 @@
 defmodule Nostrum.Struct.ApplicationCommandInteractionData do
   @moduledoc "Struct for interaction data."
 
-  alias Nostrum.Snowflake
-
   alias Nostrum.Struct.{
     ApplicationCommandInteractionDataOption,
     ApplicationCommandInteractionDataResolved
   }
 
+  alias Nostrum.Snowflake
   alias Nostrum.Util
 
   defstruct [:id, :name, :resolved, :options, :custom_id, :component_type]
