@@ -179,6 +179,30 @@ defmodule Nostrum.Struct.Guild.Member do
     end
   end
 
+  @doc """
+  Return the topmost role of the given member on the given guild.
+
+  The topmost role is determined via `t:Nostrum.Struct.Guild.Role.position`.
+
+  ## Parameters
+
+  - `member`: The member whose top role to return.
+  - `guild`: The guild which the member belongs to.
+
+  ## Return value
+
+  The topmost role of the member on the given guild, if the member has roles
+  assigned. Otherwise, `nil` is returned.
+  """
+  @doc since: "0.5.0"
+  @spec top_role(__MODULE__.t(), Guild.t()) :: Role.t() | nil
+  def top_role(%__MODULE__{roles: member_roles}, %Guild{roles: guild_roles}) do
+    guild_roles
+    |> Stream.filter(fn {id, _role} -> id in member_roles end)
+    |> Stream.map(fn {_id, role} -> role end)
+    |> Enum.max_by(& &1.position, fn -> nil end)
+  end
+
   @doc false
   def p_encode do
     %__MODULE__{

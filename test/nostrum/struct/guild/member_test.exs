@@ -161,6 +161,36 @@ defmodule Nostrum.Struct.MemberTest do
     end
   end
 
+  describe "top_role/2" do
+    setup do
+      guild = %Guild{
+        roles: %{
+          1 => %Role{
+            id: 1,
+            position: 5
+          },
+          2 => %Role{
+            id: 2,
+            position: 4
+          }
+        }
+      }
+
+      [guild: guild]
+    end
+
+    test "returns topmost role by position", %{guild: guild} do
+      member = %Member{roles: Map.keys(guild.roles)}
+
+      assert %Role{id: 1, position: 5} = Member.top_role(member, guild)
+    end
+
+    test "returns `nil` for no roles on member", %{guild: guild} do
+      member = %Member{roles: []}
+      refute Member.top_role(member, guild)
+    end
+  end
+
   describe "String.Chars" do
     test "matches `mention/1`" do
       member = %Member{user: %User{id: 150_061_853_001_777_154}}
