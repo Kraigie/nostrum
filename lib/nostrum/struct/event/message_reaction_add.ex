@@ -1,5 +1,6 @@
 defmodule Nostrum.Struct.Event.MessageReactionAdd do
   @moduledoc "Sent when a user adds a reaction to a message"
+  @moduledoc since: "0.5.0"
 
   alias Nostrum.Struct.Guild.Member
   alias Nostrum.Struct.{Channel, Emoji, Message, User}

@@ -1,5 +1,6 @@
 defmodule Nostrum.Struct.Event.MessageReactionRemoveAll do
   @moduledoc "Sent when a user explicitly removes all reactions from a message"
+  @moduledoc since: "0.5.0"
 
   alias Nostrum.Struct.{Channel, Guild, Message}
 

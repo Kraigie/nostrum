@@ -1,5 +1,6 @@
 defmodule Nostrum.Struct.Event.GuildBanRemove do
   @moduledoc "Sent when a user is unbanned from a guild"
+  @moduledoc since: "0.5.0"
 
   alias Nostrum.Struct.Guild
   alias Nostrum.Struct.User

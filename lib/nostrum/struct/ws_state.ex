@@ -39,6 +39,7 @@ defmodule Nostrum.Struct.WSState do
   @type conn_pid :: pid
 
   @typedoc "Stream reference for `:gun`"
+  @typedoc since: "0.5.0"
   @type stream :: reference()
 
   @typedoc "Gateway URL"

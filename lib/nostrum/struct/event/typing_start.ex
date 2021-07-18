@@ -1,5 +1,6 @@
 defmodule Nostrum.Struct.Event.TypingStart do
   @moduledoc "Sent when a user starts typing in a channel"
+  @moduledoc since: "0.5.0"
 
   alias Nostrum.Struct.Channel
   alias Nostrum.Struct.Guild

@@ -1,5 +1,6 @@
 defmodule Nostrum.Struct.Event.VoiceState do
   @moduledoc "Represents a user's voice connection status"
+  @moduledoc since: "0.5.0"
 
   alias Nostrum.Struct.Channel
   alias Nostrum.Struct.Guild

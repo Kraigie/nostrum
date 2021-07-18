@@ -1867,6 +1867,7 @@ defmodule Nostrum.Api do
   @doc """
   Gets a ban object for the given user from a guild.
   """
+  @doc since: "0.5.0"
   @spec get_guild_ban(integer, integer) :: error | {:ok, Guild.Ban.t()}
   def get_guild_ban(guild_id, user_id) do
     request(:get, Constants.guild_ban(guild_id, user_id))
@@ -3026,6 +3027,7 @@ defmodule Nostrum.Api do
   Updated list of global application commands. See the official reference:
   https://discord.com/developers/docs/interactions/slash-commands#bulk-overwrite-global-application-commands
   """
+  @doc since: "0.5.0"
   @spec bulk_overwrite_global_application_commands([map()]) :: {:ok, [map()]} | error
   @spec bulk_overwrite_global_application_commands(User.id(), [map()]) :: {:ok, [map()]} | error
   def bulk_overwrite_global_application_commands(application_id \\ Me.get().id, commands) do
@@ -3149,6 +3151,7 @@ defmodule Nostrum.Api do
   Updated list of guild application commands. See the official reference:
   https://discord.com/developers/docs/interactions/slash-commands#bulk-overwrite-guild-application-commands
   """
+  @doc since: "0.5.0"
   @spec bulk_overwrite_guild_application_commands(Guild.id(), [map()]) :: {:ok, [map()]} | error
   @spec bulk_overwrite_guild_application_commands(User.id(), Guild.id(), [map()]) ::
           {:ok, [map()]} | error

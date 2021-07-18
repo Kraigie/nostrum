@@ -1,5 +1,6 @@
 defmodule Nostrum.Struct.Event.GuildBanAdd do
   @moduledoc "Sent when a user is banned from a guild"
+  @moduledoc since: "0.5.0"
 
   alias Nostrum.Struct.Guild
   alias Nostrum.Struct.User
