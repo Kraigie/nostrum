@@ -1,6 +1,9 @@
 defmodule Nostrum.Voice.Audio do
   @moduledoc false
 
+  @dialyzer {:nowarn_function, spawn_youtubedl: 1}
+  @dialyzer {:nowarn_function, spawn_ffmpeg: 3}
+
   require Logger
 
   alias Nostrum.Error.VoiceError
