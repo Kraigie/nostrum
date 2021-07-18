@@ -96,7 +96,7 @@ defmodule Nostrum.Mixfile do
       {:porcelain, "~> 2.0"},
       {:ex_doc, "~> 0.15", only: :dev},
       {:credo, "~> 1.4", only: [:dev, :test]},
-      {:dialyxir, "~> 1.0.0", only: [:dev], runtime: false},
+      {:dialyxir, "~> 1.1", only: [:dev], runtime: false},
       {:gen_stage, "~> 0.11 or ~> 1.0"},
       {:recon, "~> 2.3", only: :dev, optional: true}
     ]
