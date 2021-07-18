@@ -7,6 +7,7 @@ defmodule Nostrum.Api.Ratelimiter do
   use GenServer
 
   alias Nostrum.Api.{Base, Bucket}
+  alias Nostrum.Constants
   alias Nostrum.Error.ApiError
   alias Nostrum.Util
 
@@ -33,7 +34,10 @@ defmodule Nostrum.Api.Ratelimiter do
 
   def init([]) do
     :ets.new(:ratelimit_buckets, [:set, :public, :named_table])
-    {:ok, []}
+    domain = to_charlist(Constants.domain())
+    {:ok, conn_pid} = :gun.open(domain, 443)
+    {:ok, :http2} = :gun.await_up(conn_pid)
+    {:ok, conn_pid}
   end
 
   @doc """
@@ -44,7 +48,7 @@ defmodule Nostrum.Api.Ratelimiter do
     :ets.delete_all_objects(:ratelimit_buckets)
   end
 
-  def handle_call({:queue, request, original_from}, from, state) do
+  def handle_call({:queue, request, original_from}, from, conn) do
     retry_time =
       request.route
       |> get_endpoint(request.method)
@@ -52,10 +56,10 @@ defmodule Nostrum.Api.Ratelimiter do
 
     case retry_time do
       :now ->
-        GenServer.reply(original_from || from, do_request(request))
+        GenServer.reply(original_from || from, do_request(request, conn))
 
       time when time < 0 ->
-        GenServer.reply(original_from || from, do_request(request))
+        GenServer.reply(original_from || from, do_request(request, conn))
 
       time ->
         Task.start(fn ->
@@ -63,35 +67,29 @@ defmodule Nostrum.Api.Ratelimiter do
         end)
     end
 
-    {:noreply, state}
+    {:noreply, conn}
   end
 
-  defp do_request(request) do
-    request.method
-    |> Base.request(request.route, request.body, request.headers, request.options)
+  defp do_request(request, conn) do
+    conn
+    |> Base.request(request.method, request.route, request.body, request.headers, request.options)
     |> handle_headers(get_endpoint(request.route, request.method))
     |> format_response
   end
 
   defp handle_headers({:error, reason}, _route), do: {:error, reason}
 
-  defp handle_headers({:ok, %HTTPoison.Response{headers: headers}} = response, route) do
-    headers_to_keep =
-      MapSet.new([
-        "x-ratelimit-global",
-        "x-ratelimit-remaining",
-        "x-ratelimit-reset",
-        "retry-after",
-        "date"
-      ])
+  defp handle_headers({:ok, {_status, headers, _body}} = response, route) do
+    global_limit = headers |> List.keyfind("x-ratelimit-global", 0)
+    remaining = headers |> List.keyfind("x-ratelimit-remaining", 0) |> value_from_rltuple
+    reset = headers |> List.keyfind("x-ratelimit-reset", 0) |> value_from_rltuple
+    retry_after = headers |> List.keyfind("retry-after", 0) |> value_from_rltuple
 
-    kept_headers = filter_headers(headers, headers_to_keep)
-
-    global_limit = Map.get(kept_headers, "x-ratelimit-global")
-    remaining = to_integer(Map.get(kept_headers, "x-ratelimit-remaining"))
-    reset = to_integer(Map.get(kept_headers, "x-ratelimit-reset"))
-    retry_after = to_integer(Map.get(kept_headers, "retry-after"))
-    origin_timestamp = date_string_to_unix(Map.get(kept_headers, "date"))
+    origin_timestamp =
+      headers
+      |> List.keyfind("date", 0)
+      |> value_from_rltuple
+      |> date_string_to_unix
 
     latency = abs(origin_timestamp - Util.now())
 
@@ -129,13 +127,14 @@ defmodule Nostrum.Api.Ratelimiter do
     (:calendar.datetime_to_gregorian_seconds(datetime) - @gregorian_epoch) * 1000
   end
 
-  defp to_integer(v) when is_binary(v), do: String.to_integer(v)
-  defp to_integer(_v), do: nil
+  defp value_from_rltuple(tuple) when is_nil(tuple), do: nil
+  defp value_from_rltuple({"date", v}), do: v
+  defp value_from_rltuple({_k, v}), do: String.to_integer(v)
 
   @doc """
   Retrieves a proper ratelimit endpoint from a given route and url.
   """
-  @spec get_endpoint(String.t(), atom) :: String.t()
+  @spec get_endpoint(String.t(), String.t()) :: String.t()
   def get_endpoint(route, method) do
     endpoint =
       Regex.replace(~r/\/([a-z-]+)\/(?:[0-9]{17,19})/i, route, fn capture, param ->
@@ -148,7 +147,7 @@ defmodule Nostrum.Api.Ratelimiter do
         end
       end)
 
-    if String.ends_with?(endpoint, "/messages/_id") and method == :delete do
+    if String.ends_with?(endpoint, "/messages/_id") and method == "DELETE" do
       "delete:" <> endpoint
     else
       endpoint
@@ -160,17 +159,14 @@ defmodule Nostrum.Api.Ratelimiter do
       {:error, error} ->
         {:error, error}
 
-      {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
+      {:ok, {status, _, body}} when status in [200, 201] ->
         {:ok, body}
 
-      {:ok, %HTTPoison.Response{status_code: 201, body: body}} ->
-        {:ok, body}
-
-      {:ok, %HTTPoison.Response{status_code: 204}} ->
+      {:ok, {204, _, _}} ->
         {:ok}
 
-      {:ok, %HTTPoison.Response{status_code: code, body: body}} ->
-        {:error, %ApiError{status_code: code, response: Poison.decode!(body, keys: :atoms)}}
+      {:ok, {status, _, body}} ->
+        {:error, %ApiError{status_code: status, response: Poison.decode!(body, keys: :atoms)}}
     end
   end
 

@@ -89,7 +89,6 @@ defmodule Nostrum.Mixfile do
 
   defp deps do
     [
-      {:httpoison, "~> 1.7"},
       {:poison, "~> 3.0"},
       {:gun, "== 2.0.0-rc.2"},
       {:kcl, "~> 1.3"},
