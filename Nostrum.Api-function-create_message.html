@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.24.2">
+    <meta name="project" content="Nostrum v0.4.7">
+    <title>Nostrum.Api.create_message — Nostrum v0.4.7</title>
+    <link rel="stylesheet" href="dist/elixir-a172fe91e725dcb259e2.css" />
+    <script src="dist/sidebar_items-a0b276ddac.js"></script>
+      <script src="docs_config.js"></script>
+    <script async src="dist/app-f27ff079945e43879c46.js"></script>
+  </head>
+  <body data-type="modules">
+    <script>
+      try {
+        if (localStorage.getItem('night-mode') === 'true') {
+          document.body.classList.add('night-mode');
+        }
+      } catch (error) { }
+    </script>
+<div class="main">
+
+<button class="sidebar-button sidebar-toggle">
+  <span class="icon-menu" title="Collapse/expand sidebar"></span>
+</button>
+
+<section class="sidebar">
+  <form class="sidebar-search" action="search.html">
+    <button type="submit" class="search-button" aria-label="Submit Search">
+      <span class="icon-search" aria-hidden="true" title="Submit search"></span>
+    </button>
+    <button type="button" tabindex="-1" class="search-close-button" aria-label="Cancel Search">
+      <span class="icon-cross" aria-hidden="true" title="Cancel search"></span>
+    </button>
+    <label class="search-label">
+      <input name="q" type="text" class="search-input" placeholder="Search..." aria-label="Input your search terms" autocomplete="off" />
+    </label>
+  </form>
+
+  <div class="autocomplete">
+    <div class="autocomplete-results">
+    </div>
+  </div>
+
+  <div class="sidebar-header">
+    <div class="sidebar-projectDetails">
+      <a href="https://github.com/kraigie/nostrum" class="sidebar-projectName">
+Nostrum      </a>
+      <strong class="sidebar-projectVersion">
+        v0.4.7
+      </strong>
+    </div>
+  </div>
+
+  <ul class="sidebar-listNav">
+    <li><a id="extras-list-link" href="#full-list">Pages</a></li>
+
+      <li><a id="modules-list-link" href="#full-list">Modules</a></li>
+
+      <li><a id="tasks-list-link" href="#full-list">Mix Tasks</a></li>
+  </ul>
+  <div class="gradient"></div>
+  <ul id="full-list" class="sidebar-fullList"></ul>
+</section>
+
+<section class="content">
+  <div class="content-outer">
+    <div id="content" class="content-inner">
+
+<h1>Nostrum.Api.create_message</h1>
+
+<div class="deprecated">
+  You're seeing just the function <code>create_message</code>, go back to <a href="Nostrum.Api.html">Nostrum.Api</a> module for more information.
+</div>
+
+<section class="detail" id="create_message/2">
+  <div class="detail-header">
+    <a href="#create_message/2" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">create_message(channel_id, options)</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/api.ex#L232" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>create_message(
+  <a href="Nostrum.Struct.Channel.html#t:id/0">Nostrum.Struct.Channel.id</a>() | <a href="Nostrum.Struct.Message.html#t:t/0">Nostrum.Struct.Message.t</a>(),
+  <a href="#t:options/0">options</a>() | <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()
+) :: <a href="#t:error/0">error</a>() | {:ok, <a href="Nostrum.Struct.Message.html#t:t/0">Nostrum.Struct.Message.t</a>()}</pre>
+      </div>
+
+<p>Posts a message to a guild text or DM channel.</p><p>This endpoint requires the <code class="inline">VIEW_CHANNEL</code> and <code class="inline">SEND_MESSAGES</code> permissions. It
+may situationally need the <code class="inline">SEND_MESSAGES_TTS</code> permission. It fires the
+<a href="Nostrum.Consumer.html#t:message_create/0"><code class="inline">Nostrum.Consumer.message_create/0</code></a> event.</p><p>If <code class="inline">options</code> is a string, <code class="inline">options</code> will be used as the message's content.</p><p>If successful, returns <code class="inline">{:ok, message}</code>. Otherwise, returns a <a href="#t:error/0"><code class="inline">Nostrum.Api.error/0</code></a>.</p><h2 id="create_message/2-options" class="section-heading">
+  <a href="#create_message/2-options" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Options
+</h2>
+<ul><li><code class="inline">:content</code> (string) - the message contents (up to 2000 characters)</li><li><code class="inline">:nonce</code> (<a href="Nostrum.Snowflake.html#t:t/0"><code class="inline">Nostrum.Snowflake.t/0</code></a>) - a nonce that can be used for
+optimistic message sending</li><li><code class="inline">:tts</code> (boolean) - true if this is a TTS message</li><li><code class="inline">:file</code> (<a href="https://hexdocs.pm/elixir/Path.html#t:t/0"><code class="inline">Path.t/0</code></a> | map) - the path of the file being sent, or a map with the following keys
+if sending a binary from memory<ul><li><code class="inline">:name</code> (string) - the name of the file</li><li><code class="inline">:body</code> (string) - binary you wish to send</li></ul></li><li><code class="inline">:embed</code> (<a href="Nostrum.Struct.Embed.html#t:t/0"><code class="inline">Nostrum.Struct.Embed.t/0</code></a>) - embedded rich content</li><li><code class="inline">:allowed_mentions</code> - See &quot;Allowed mentions&quot; below</li><li><code class="inline">:message_reference</code> (<code class="inline">map</code>) - See &quot;Message references&quot; below</li></ul><p>  At least one of the following is required: <code class="inline">:content</code>, <code class="inline">:file</code>, <code class="inline">:embed</code>.</p><h2 id="create_message/2-allowed-mentions" class="section-heading">
+  <a href="#create_message/2-allowed-mentions" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Allowed mentions
+</h2>
+<p>With this option you can control when content from a message should trigger a ping.
+Consider using this option when you are going to display user_generated content.</p><h3 id="create_message/2-allowed-values" class="section-heading">
+  <a href="#create_message/2-allowed-values" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Allowed values
+</h3>
+<ul><li><code class="inline">:all</code> (default) - Ping everything as usual</li><li><code class="inline">:none</code> - Nobody will be pinged</li><li><code class="inline">:everyone</code> - Allows to ping @here and @everone</li><li><code class="inline">:user</code> - Allows to ping users</li><li><code class="inline">:roles</code> - Allows to ping roles</li><li><code class="inline">{:user, list}</code> - Allows to ping list of users. Can contain up to 100 ids of users.</li><li><code class="inline">{:role, list}</code> - Allows to ping list of roles. Can contain up to 100 ids of roles.</li><li>list - a list containing the values above.</li></ul><h3 id="create_message/2-message-reference" class="section-heading">
+  <a href="#create_message/2-message-reference" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Message reference
+</h3>
+<p>You can create a reply to another message on guilds using this option, given
+that you have the <code class="inline">VIEW_MESSAGE_HISTORY</code> permission. To do so, include the
+<code class="inline">message_reference</code> field in your call. The complete structure
+documentation can be found <a href="https://discord.com/developers/docs/resources/channel#message-object-message-reference-structure">on the Discord Developer
+Portal</a>,
+but simply passing <code class="inline">message_id</code> will suffice:</p><pre><code class="makeup elixir"><span class="kd">def</span><span class="w"> </span><span class="nf">my_command</span><span class="p" data-group-id="3004383207-1">(</span><span class="n">msg</span><span class="p" data-group-id="3004383207-1">)</span><span class="w"> </span><span class="k" data-group-id="3004383207-2">do</span><span class="w">
+  </span><span class="c1"># Reply to the author - ``msg`` is a ``Nostrum.Struct.Message``</span><span class="w">
+  </span><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">create_message</span><span class="p" data-group-id="3004383207-3">(</span><span class="w">
+    </span><span class="n">msg</span><span class="o">.</span><span class="n">channel_id</span><span class="p">,</span><span class="w">
+    </span><span class="ss">content</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Hello&quot;</span><span class="p">,</span><span class="w">
+    </span><span class="ss">message_reference</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="3004383207-4">%{</span><span class="ss">message_id</span><span class="p">:</span><span class="w"> </span><span class="n">msg</span><span class="o">.</span><span class="n">id</span><span class="p" data-group-id="3004383207-4">}</span><span class="w">
+  </span><span class="p" data-group-id="3004383207-3">)</span><span class="w">
+</span><span class="k" data-group-id="3004383207-2">end</span></code></pre><p>Passing a list will merge the settings provided</p><h2 id="create_message/2-examples" class="section-heading">
+  <a href="#create_message/2-examples" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Examples
+</h2>
+<pre><code class="Elixir">Nostrum.Api.create_message(43189401384091, content: &quot;hello world!&quot;)
+
+Nostrum.Api.create_message(43189401384091, &quot;hello world!&quot;)
+
+import Nostrum.Struct.Embed
+embed =
+  %Nostrum.Struct.Embed{}
+  |&gt; put_title(&quot;embed&quot;)
+  |&gt; put_description(&quot;new desc&quot;)
+Nostrum.Api.create_message(43189401384091, embed: embed)
+
+Nostrum.Api.create_message(43189401384091, file: &quot;/path/to/file.txt&quot;)
+
+Nostrum.Api.create_message(43189401384091, content: &quot;hello world!&quot;, embed: embed, file: &quot;/path/to/file.txt&quot;)
+
+Nostrum.Api.create_message(43189401384091, content: &quot;Hello @everyone&quot;, allowed_mentions: :none)</code></pre>  </section>
+</section>
+
+      <footer class="footer">
+        <p>
+          <span class="line">
+            Built using
+            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener">ExDoc</a> (v0.24.2) for the
+            <a href="https://elixir-lang.org" title="Elixir" target="_blank">Elixir programming language</a>.
+          </span>
+          <span class="line">
+            Designed by
+            <a href="https://twitter.com/dignifiedquire" target="_blank" rel="noopener" title="@dignifiedquire">Friedel Ziegelmayer</a>.
+          </span>
+        </p>
+        <p>
+            <a href="api-reference.html" title="API reference" class="line footer-button">API Reference</a>
+          <button class="line footer-button display-shortcuts-help">
+            Display keyboard shortcuts
+          </button>
+          <button class="line footer-button night-mode-toggle">
+            Toggle night mode
+          </button>
+          <button class="line footer-button display-quick-switch">
+            Go to a HexDocs package
+          </button>
+          <button class="line footer-button tooltips-toggle">
+            <span class="tooltips-option-disable">Disable tooltips</span>
+            <span class="tooltips-option-enable">Enable tooltips</span>
+          </button>
+        </p>
+      </footer>
+    </div>
+  </div>
+</section>
+</div>
+  </body>
+</html>

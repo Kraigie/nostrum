@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.24.2">
+    <meta name="project" content="Nostrum v0.4.7">
+    <title>Nostrum.Voice.play — Nostrum v0.4.7</title>
+    <link rel="stylesheet" href="dist/elixir-a172fe91e725dcb259e2.css" />
+    <script src="dist/sidebar_items-a0b276ddac.js"></script>
+      <script src="docs_config.js"></script>
+    <script async src="dist/app-f27ff079945e43879c46.js"></script>
+  </head>
+  <body data-type="modules">
+    <script>
+      try {
+        if (localStorage.getItem('night-mode') === 'true') {
+          document.body.classList.add('night-mode');
+        }
+      } catch (error) { }
+    </script>
+<div class="main">
+
+<button class="sidebar-button sidebar-toggle">
+  <span class="icon-menu" title="Collapse/expand sidebar"></span>
+</button>
+
+<section class="sidebar">
+  <form class="sidebar-search" action="search.html">
+    <button type="submit" class="search-button" aria-label="Submit Search">
+      <span class="icon-search" aria-hidden="true" title="Submit search"></span>
+    </button>
+    <button type="button" tabindex="-1" class="search-close-button" aria-label="Cancel Search">
+      <span class="icon-cross" aria-hidden="true" title="Cancel search"></span>
+    </button>
+    <label class="search-label">
+      <input name="q" type="text" class="search-input" placeholder="Search..." aria-label="Input your search terms" autocomplete="off" />
+    </label>
+  </form>
+
+  <div class="autocomplete">
+    <div class="autocomplete-results">
+    </div>
+  </div>
+
+  <div class="sidebar-header">
+    <div class="sidebar-projectDetails">
+      <a href="https://github.com/kraigie/nostrum" class="sidebar-projectName">
+Nostrum      </a>
+      <strong class="sidebar-projectVersion">
+        v0.4.7
+      </strong>
+    </div>
+  </div>
+
+  <ul class="sidebar-listNav">
+    <li><a id="extras-list-link" href="#full-list">Pages</a></li>
+
+      <li><a id="modules-list-link" href="#full-list">Modules</a></li>
+
+      <li><a id="tasks-list-link" href="#full-list">Mix Tasks</a></li>
+  </ul>
+  <div class="gradient"></div>
+  <ul id="full-list" class="sidebar-fullList"></ul>
+</section>
+
+<section class="content">
+  <div class="content-outer">
+    <div id="content" class="content-inner">
+
+<h1>Nostrum.Voice.play</h1>
+
+<div class="deprecated">
+  You're seeing just the function <code>play</code>, go back to <a href="Nostrum.Voice.html">Nostrum.Voice</a> module for more information.
+</div>
+
+<section class="detail" id="play/4">
+    <span id="play/2"></span>
+    <span id="play/3"></span>
+  <div class="detail-header">
+    <a href="#play/4" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">play(guild_id, input, type \\ :url, options \\ [])</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L163" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>play(
+  <a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(),
+  <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>() | <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">binary</a>() | <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">iodata</a>() | <a href="https://hexdocs.pm/elixir/Enum.html#t:t/0">Enum.t</a>(),
+  :url | :pipe | :ytdl | :raw | :raw_s,
+  <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">keyword</a>()
+) :: :ok | {:error, <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()}</pre>
+      </div>
+
+<p>Plays sound in the voice channel the bot is in.</p><p>The bot must be connected to a voice channel in the guild specified.</p><h2 id="play/4-parameters" class="section-heading">
+  <a href="#play/4-parameters" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Parameters
+</h2>
+<ul><li><code class="inline">guild_id</code> - ID of guild whose voice channel the sound will be played in.</li><li><code class="inline">input</code> - Audio to be played. Type of <code class="inline">input</code> determined by <code class="inline">type</code> parameter.</li><li><code class="inline">type</code> - Type of input (defaults to <code class="inline">:url</code>).<ul><li><code class="inline">:url</code> Input will be <a href="https://www.ffmpeg.org/ffmpeg-protocols.html">any url that <code class="inline">ffmpeg</code> can read</a>.</li><li><code class="inline">:pipe</code> Input will be data that is piped to stdin of <code class="inline">ffmpeg</code>.</li><li><code class="inline">:ytdl</code> Input will be url for <code class="inline">youtube-dl</code>, which gets automatically piped to <code class="inline">ffmpeg</code>.</li><li><code class="inline">:raw</code> Input will be an enumarable of raw opus frames. This bypasses <code class="inline">ffmpeg</code> and all options.</li><li><code class="inline">:raw_s</code> Same as <code class="inline">:raw</code> but input must be stateful, i.e. calling <a href="https://hexdocs.pm/elixir/Enum.html#take/2"><code class="inline">Enum.take/2</code></a> on input is not idempotent.</li></ul></li><li><code class="inline">options</code> - See options section below.</li></ul><p>Returns <code class="inline">{:error, reason}</code> if unable to play or a sound is playing, else <code class="inline">:ok</code>.</p><h2 id="play/4-options" class="section-heading">
+  <a href="#play/4-options" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Options
+</h2>
+<ul><li><code class="inline">:start_pos</code> (string) - The start position of the audio to be played. Defaults to beginning.</li><li><code class="inline">:duration</code> (string) - The duration to of the audio to be played . Defaults to entire duration.</li><li><code class="inline">:realtime</code> (boolean) - Make ffmpeg process the input in realtime instead of as fast as possible. Defaults to true.</li><li><code class="inline">:volume</code> (number) - The output volume of the audio. Default volume is 1.0.</li><li><code class="inline">:filter</code> (string) - Filter(s) to be applied to the audio. No filters applied by default.</li></ul><p>  The values of <code class="inline">:start_pos</code> and <code class="inline">:duration</code> can be <a href="https://ffmpeg.org/ffmpeg-utils.html#Time-duration">any time duration that ffmpeg can read</a>.
+  The <code class="inline">:filter</code> can be used multiple times in a single call (see examples).
+  The values of <code class="inline">:filter</code> can be <a href="https://ffmpeg.org/ffmpeg-filters.html#Audio-Filters">any audio filters that ffmpeg can read</a>.
+  Filters will be applied in order and can be as complex as you want. The world is your oyster!</p><p>  Note that using the <code class="inline">:volume</code> option is shortcut for the &quot;volume&quot; filter, and will be added to the end of the filter chain, acting as a master volume.
+  Volume values between <code class="inline">0.0</code> and <code class="inline">1.0</code> act as standard oparating range where <code class="inline">0</code> is off and <code class="inline">1</code> is max.
+  Values greater than <code class="inline">1.0</code> will add saturation and distortion to the audio.
+  Negative values act the same as their position but reverse the polarity of the waveform.</p><p>  Having all the ffmpeg audio filters available is <em>extremely powerful</em> so it may be worth learning some of them for your use cases.
+  If you use any filters to <em>increase</em> the playback speed of your audio, it's recommended to set the <code class="inline">:realtime</code> option to <code class="inline">false</code>
+  because realtime processing is relative to the original playback speed.</p><h2 id="play/4-examples" class="section-heading">
+  <a href="#play/4-examples" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Examples
+</h2>
+<pre><code class="Elixir">iex&gt; Nostrum.Voice.join_channel(123456789, 420691337)
+
+iex&gt; Nostrum.Voice.play(123456789, &quot;~/music/FavoriteSong.mp3&quot;, :url)
+
+iex&gt; Nostrum.Voice.play(123456789, &quot;~/music/NotFavoriteButStillGoodSong.mp3&quot;, :url, volume: 0.5)
+
+iex&gt; Nostrum.Voice.play(123456789, &quot;~/music/ThisWillBeHeavilyDistorted.mp3&quot;, :url, volume: 1000)</code></pre><pre><code class="Elixir">iex&gt; Nostrum.Voice.join_channel(123456789, 420691337)
+
+iex&gt; raw_data = File.read!(&quot;~/music/sound_effect.wav&quot;)
+
+iex&gt; Nostrum.Voice.play(123456789, raw_data, :pipe)</code></pre><pre><code class="Elixir">iex&gt; Nostrum.Voice.join_channel(123456789, 420691337)
+
+iex&gt; Nostrum.Voice.play(123456789, &quot;https://www.youtube.com/watch?v=b4RJ-QGOtw4&quot;, :ytdl,
+...&gt;   realtime: true, start_pos: &quot;0:17&quot;, duration: &quot;30&quot;)
+
+iex&gt; Nostrum.Voice.play(123456789, &quot;https://www.youtube.com/watch?v=0ngcL_5ekXo&quot;, :ytdl,
+...&gt;   filter: &quot;lowpass=f=1200&quot;, filter: &quot;highpass=f=300&quot;, filter: &quot;asetrate=44100*0.5&quot;)</code></pre>  </section>
+</section>
+
+      <footer class="footer">
+        <p>
+          <span class="line">
+            Built using
+            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener">ExDoc</a> (v0.24.2) for the
+            <a href="https://elixir-lang.org" title="Elixir" target="_blank">Elixir programming language</a>.
+          </span>
+          <span class="line">
+            Designed by
+            <a href="https://twitter.com/dignifiedquire" target="_blank" rel="noopener" title="@dignifiedquire">Friedel Ziegelmayer</a>.
+          </span>
+        </p>
+        <p>
+            <a href="api-reference.html" title="API reference" class="line footer-button">API Reference</a>
+          <button class="line footer-button display-shortcuts-help">
+            Display keyboard shortcuts
+          </button>
+          <button class="line footer-button night-mode-toggle">
+            Toggle night mode
+          </button>
+          <button class="line footer-button display-quick-switch">
+            Go to a HexDocs package
+          </button>
+          <button class="line footer-button tooltips-toggle">
+            <span class="tooltips-option-disable">Disable tooltips</span>
+            <span class="tooltips-option-enable">Enable tooltips</span>
+          </button>
+        </p>
+      </footer>
+    </div>
+  </div>
+</section>
+</div>
+  </body>
+</html>

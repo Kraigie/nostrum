@@ -4,16 +4,22 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="ExDoc v0.23.0">
+    <meta name="generator" content="ExDoc v0.24.2">
     <meta name="project" content="Nostrum v0.4.7">
     <title>Slash commands — Nostrum v0.4.7</title>
-    <link rel="stylesheet" href="dist/elixir-9f91ebe876dc01d67920.css" />
+    <link rel="stylesheet" href="dist/elixir-a172fe91e725dcb259e2.css" />
     <script src="dist/sidebar_items-a0b276ddac.js"></script>
       <script src="docs_config.js"></script>
-    <script async src="dist/app-60a0c9f10e9e52eae31f.js"></script>
+    <script async src="dist/app-f27ff079945e43879c46.js"></script>
   </head>
   <body data-type="extras">
-    <script>try { if(localStorage.getItem('night-mode') === 'true') document.body.className += ' night-mode'; } catch (e) { }</script>
+    <script>
+      try {
+        if (localStorage.getItem('night-mode') === 'true') {
+          document.body.classList.add('night-mode');
+        }
+      } catch (error) { }
+    </script>
 <div class="main">
 
 <button class="sidebar-button sidebar-toggle">
@@ -29,7 +35,7 @@
       <span class="icon-cross" aria-hidden="true" title="Cancel search"></span>
     </button>
     <label class="search-label">
-      <input name="q" type="text" id="search-list" class="search-input" placeholder="Search..." aria-label="Input your search terms" autocomplete="off" />
+      <input name="q" type="text" class="search-input" placeholder="Search..." aria-label="Input your search terms" autocomplete="off" />
     </label>
   </form>
 
@@ -49,11 +55,11 @@ Nostrum      </a>
   </div>
 
   <ul class="sidebar-listNav">
-    <li><a id="extras-list" href="#full-list">Pages</a></li>
+    <li><a id="extras-list-link" href="#full-list">Pages</a></li>
 
-      <li><a id="modules-list" href="#full-list">Modules</a></li>
+      <li><a id="modules-list-link" href="#full-list">Modules</a></li>
 
-      <li><a id="tasks-list" href="#full-list">Mix Tasks</a></li>
+      <li><a id="tasks-list-link" href="#full-list">Mix Tasks</a></li>
   </ul>
   <div class="gradient"></div>
   <ul id="full-list" class="sidebar-fullList"></ul>
@@ -81,88 +87,101 @@ commands. Global commands will be distributed across all guilds that your bot
 is in within an hour. Guild-specific commands slash commands will be available
 instantly, which is why we will use guild-specific commands for testing.</p><p>We will create a command that will allow the user to assign or remove a role of
 choice. The <code class="inline">guild_id</code> parameter is the ID of the guild on which the command
-will be created.</p><p>Our command definition looks as follows:</p><pre><code class="nohighlight makeup elixir"><span class="n">command</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="7546955164-1">%{</span><span class="w">
+will be created.</p><p>Our command definition looks as follows:</p><pre><code class="makeup elixir"><span class="n">command</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="2477011479-1">%{</span><span class="w">
   </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;role&quot;</span><span class="p">,</span><span class="w">
   </span><span class="ss">description</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;assign or remove a role&quot;</span><span class="p">,</span><span class="w">
-  </span><span class="ss">options</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="7546955164-2">[</span><span class="w">
-    </span><span class="p" data-group-id="7546955164-3">%{</span><span class="w">
+  </span><span class="ss">options</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="2477011479-2">[</span><span class="w">
+    </span><span class="p" data-group-id="2477011479-3">%{</span><span class="w">
       </span><span class="c1"># ApplicationCommandType::ROLE</span><span class="w">
       </span><span class="ss">type</span><span class="p">:</span><span class="w"> </span><span class="mi">8</span><span class="p">,</span><span class="w">
       </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;name&quot;</span><span class="p">,</span><span class="w">
       </span><span class="ss">description</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;role to assign or remove&quot;</span><span class="p">,</span><span class="w">
       </span><span class="ss">required</span><span class="p">:</span><span class="w"> </span><span class="no">true</span><span class="w">
-    </span><span class="p" data-group-id="7546955164-3">}</span><span class="p">,</span><span class="w">
-    </span><span class="p" data-group-id="7546955164-4">%{</span><span class="w">
+    </span><span class="p" data-group-id="2477011479-3">}</span><span class="p">,</span><span class="w">
+    </span><span class="p" data-group-id="2477011479-4">%{</span><span class="w">
       </span><span class="c1"># ApplicationCommandType::STRING</span><span class="w">
       </span><span class="ss">type</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span><span class="w">
       </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;action&quot;</span><span class="p">,</span><span class="w">
       </span><span class="ss">description</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;whether to assign or remove the role&quot;</span><span class="p">,</span><span class="w">
       </span><span class="ss">required</span><span class="p">:</span><span class="w"> </span><span class="no">true</span><span class="p">,</span><span class="w">
-      </span><span class="ss">choices</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="7546955164-5">[</span><span class="w">
-        </span><span class="p" data-group-id="7546955164-6">%{</span><span class="w">
+      </span><span class="ss">choices</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="2477011479-5">[</span><span class="w">
+        </span><span class="p" data-group-id="2477011479-6">%{</span><span class="w">
           </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;assign&quot;</span><span class="p">,</span><span class="w">
           </span><span class="ss">value</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;assign&quot;</span><span class="w">
-        </span><span class="p" data-group-id="7546955164-6">}</span><span class="p">,</span><span class="w">
-        </span><span class="p" data-group-id="7546955164-7">%{</span><span class="w">
+        </span><span class="p" data-group-id="2477011479-6">}</span><span class="p">,</span><span class="w">
+        </span><span class="p" data-group-id="2477011479-7">%{</span><span class="w">
           </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;remove&quot;</span><span class="p">,</span><span class="w">
           </span><span class="ss">value</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;remove&quot;</span><span class="w">
-        </span><span class="p" data-group-id="7546955164-7">}</span><span class="w">
-      </span><span class="p" data-group-id="7546955164-5">]</span><span class="w">
-    </span><span class="p" data-group-id="7546955164-4">}</span><span class="w">
-  </span><span class="p" data-group-id="7546955164-2">]</span><span class="w">
-</span><span class="p" data-group-id="7546955164-1">}</span></code></pre><p>To register this command on the guild, we simply pass it to
-<a href="Nostrum.Api.html#create_guild_application_command/2"><code class="inline">Nostrum.Api.create_guild_application_command/2</code></a>:</p><pre><code class="nohighlight makeup elixir"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">create_guild_application_command</span><span class="p" data-group-id="8982721640-1">(</span><span class="n">guild_id</span><span class="p">,</span><span class="w"> </span><span class="n">command</span><span class="p" data-group-id="8982721640-1">)</span></code></pre><p>You can register the command in the <code class="inline">:READY</code> gateway event handler.</p><h2 id="receiving-interactions" class="section-heading">
+        </span><span class="p" data-group-id="2477011479-7">}</span><span class="w">
+      </span><span class="p" data-group-id="2477011479-5">]</span><span class="w">
+    </span><span class="p" data-group-id="2477011479-4">}</span><span class="w">
+  </span><span class="p" data-group-id="2477011479-2">]</span><span class="w">
+</span><span class="p" data-group-id="2477011479-1">}</span></code></pre><p>To register this command on the guild, we simply pass it to
+<a href="Nostrum.Api.html#create_guild_application_command/2"><code class="inline">Nostrum.Api.create_guild_application_command/2</code></a>:</p><pre><code class="makeup elixir"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">create_guild_application_command</span><span class="p" data-group-id="3230410685-1">(</span><span class="n">guild_id</span><span class="p">,</span><span class="w"> </span><span class="n">command</span><span class="p" data-group-id="3230410685-1">)</span></code></pre><p>You can register the command in the <code class="inline">:READY</code> gateway event handler.</p><h2 id="receiving-interactions" class="section-heading">
   <a href="#receiving-interactions" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
   Receiving interactions
 </h2>
 <p>Set up a gateway event handler for <code class="inline">:INTERACTION_CREATE</code>. On command
-invocation the interaction payload will look something like the following:</p><pre><code class="nohighlight makeup elixir"><span class="p">%</span><span class="nc">Nostrum.Struct.Interaction</span><span class="err">{</span><span class="w">
+invocation the interaction payload will look something like the following:</p><pre><code class="makeup elixir"><span class="p">%</span><span class="nc">Nostrum.Struct.Interaction</span><span class="err">{</span><span class="w">
   </span><span class="ss">channel_id</span><span class="p">:</span><span class="w"> </span><span class="mi">474025345243414539</span><span class="p">,</span><span class="w">
-  </span><span class="ss">data</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="9448770871-1">%{</span><span class="w">
+  </span><span class="ss">data</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="1719425315-1">%{</span><span class="w">
     </span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">793152718839087135</span><span class="p">,</span><span class="w">
     </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;role&quot;</span><span class="p">,</span><span class="w">
-    </span><span class="ss">options</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="9448770871-2">[</span><span class="w">
-      </span><span class="p" data-group-id="9448770871-3">%{</span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;name&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">value</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;458692275199803406&quot;</span><span class="p" data-group-id="9448770871-3">}</span><span class="p">,</span><span class="w">
-      </span><span class="p" data-group-id="9448770871-4">%{</span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;action&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">value</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;assign&quot;</span><span class="p" data-group-id="9448770871-4">}</span><span class="w">
-    </span><span class="p" data-group-id="9448770871-2">]</span><span class="w">
-  </span><span class="p" data-group-id="9448770871-1">}</span><span class="p">,</span><span class="w">
+    </span><span class="ss">options</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="1719425315-2">[</span><span class="w">
+      </span><span class="p" data-group-id="1719425315-3">%{</span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;name&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">value</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;458692275199803406&quot;</span><span class="p" data-group-id="1719425315-3">}</span><span class="p">,</span><span class="w">
+      </span><span class="p" data-group-id="1719425315-4">%{</span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;action&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">value</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;assign&quot;</span><span class="p" data-group-id="1719425315-4">}</span><span class="w">
+    </span><span class="p" data-group-id="1719425315-2">]</span><span class="w">
+  </span><span class="p" data-group-id="1719425315-1">}</span><span class="p">,</span><span class="w">
   </span><span class="c1"># ...</span></code></pre><p>Note that Discord already converted the user-supplied role to a snowflake.
 Convenient!</p><p>Let's match on the retrieved event and create two function heads for the
-separate operation modes:</p><pre><code class="nohighlight makeup elixir"><span class="kn">alias</span><span class="w"> </span><span class="nc">Nostrum.Api</span><span class="w">
+separate operation modes:</p><pre><code class="makeup elixir"><span class="kn">alias</span><span class="w"> </span><span class="nc">Nostrum.Api</span><span class="w">
 </span><span class="kn">alias</span><span class="w"> </span><span class="nc">Nostrum.Struct.Interaction</span><span class="w">
 
-</span><span class="kd">defp</span><span class="w"> </span><span class="nf">manage_role</span><span class="p" data-group-id="8890065546-1">(</span><span class="p" data-group-id="8890065546-2">%</span><span class="nc" data-group-id="8890065546-2">Interaction</span><span class="p" data-group-id="8890065546-2">{</span><span class="ss">data</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="8890065546-3">%{</span><span class="ss">options</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="8890065546-4">[</span><span class="p" data-group-id="8890065546-5">%{</span><span class="ss">value</span><span class="p">:</span><span class="w"> </span><span class="n">role_id</span><span class="p" data-group-id="8890065546-5">}</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="8890065546-6">%{</span><span class="ss">value</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;assign&quot;</span><span class="p" data-group-id="8890065546-6">}</span><span class="p" data-group-id="8890065546-4">]</span><span class="p" data-group-id="8890065546-3">}</span><span class="p" data-group-id="8890065546-2">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">interaction</span><span class="p" data-group-id="8890065546-1">)</span><span class="w"> </span><span class="k" data-group-id="8890065546-7">do</span><span class="w">
-  </span><span class="nc">Api</span><span class="o">.</span><span class="n">add_guild_member_role</span><span class="p" data-group-id="8890065546-8">(</span><span class="n">interaction</span><span class="o">.</span><span class="n">guild_id</span><span class="p">,</span><span class="w"> </span><span class="n">interaction</span><span class="o">.</span><span class="n">member</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">role_id</span><span class="p" data-group-id="8890065546-8">)</span><span class="w">
-</span><span class="k" data-group-id="8890065546-7">end</span><span class="w">
+</span><span class="kd">defp</span><span class="w"> </span><span class="nf">manage_role</span><span class="p" data-group-id="7275091021-1">(</span><span class="p" data-group-id="7275091021-2">%</span><span class="nc" data-group-id="7275091021-2">Interaction</span><span class="p" data-group-id="7275091021-2">{</span><span class="ss">data</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="7275091021-3">%{</span><span class="ss">options</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="7275091021-4">[</span><span class="p" data-group-id="7275091021-5">%{</span><span class="ss">value</span><span class="p">:</span><span class="w"> </span><span class="n">role_id</span><span class="p" data-group-id="7275091021-5">}</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="7275091021-6">%{</span><span class="ss">value</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;assign&quot;</span><span class="p" data-group-id="7275091021-6">}</span><span class="p" data-group-id="7275091021-4">]</span><span class="p" data-group-id="7275091021-3">}</span><span class="p" data-group-id="7275091021-2">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">interaction</span><span class="p" data-group-id="7275091021-1">)</span><span class="w"> </span><span class="k" data-group-id="7275091021-7">do</span><span class="w">
+  </span><span class="nc">Api</span><span class="o">.</span><span class="n">add_guild_member_role</span><span class="p" data-group-id="7275091021-8">(</span><span class="n">interaction</span><span class="o">.</span><span class="n">guild_id</span><span class="p">,</span><span class="w"> </span><span class="n">interaction</span><span class="o">.</span><span class="n">member</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">role_id</span><span class="p" data-group-id="7275091021-8">)</span><span class="w">
+</span><span class="k" data-group-id="7275091021-7">end</span><span class="w">
 
-</span><span class="kd">defp</span><span class="w"> </span><span class="nf">manage_role</span><span class="p" data-group-id="8890065546-9">(</span><span class="p" data-group-id="8890065546-10">%</span><span class="nc" data-group-id="8890065546-10">Interaction</span><span class="p" data-group-id="8890065546-10">{</span><span class="ss">data</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="8890065546-11">%{</span><span class="ss">options</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="8890065546-12">[</span><span class="p" data-group-id="8890065546-13">%{</span><span class="ss">value</span><span class="p">:</span><span class="w"> </span><span class="n">role_id</span><span class="p" data-group-id="8890065546-13">}</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="8890065546-14">%{</span><span class="ss">value</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;remove&quot;</span><span class="p" data-group-id="8890065546-14">}</span><span class="p" data-group-id="8890065546-12">]</span><span class="p" data-group-id="8890065546-11">}</span><span class="p" data-group-id="8890065546-10">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">interaction</span><span class="p" data-group-id="8890065546-9">)</span><span class="w"> </span><span class="k" data-group-id="8890065546-15">do</span><span class="w">
-  </span><span class="nc">Api</span><span class="o">.</span><span class="n">remove_guild_member_role</span><span class="p" data-group-id="8890065546-16">(</span><span class="n">interaction</span><span class="o">.</span><span class="n">guild_id</span><span class="p">,</span><span class="w"> </span><span class="n">interaction</span><span class="o">.</span><span class="n">member</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">role_id</span><span class="p" data-group-id="8890065546-16">)</span><span class="w">
-</span><span class="k" data-group-id="8890065546-15">end</span><span class="w">
+</span><span class="kd">defp</span><span class="w"> </span><span class="nf">manage_role</span><span class="p" data-group-id="7275091021-9">(</span><span class="p" data-group-id="7275091021-10">%</span><span class="nc" data-group-id="7275091021-10">Interaction</span><span class="p" data-group-id="7275091021-10">{</span><span class="ss">data</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="7275091021-11">%{</span><span class="ss">options</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="7275091021-12">[</span><span class="p" data-group-id="7275091021-13">%{</span><span class="ss">value</span><span class="p">:</span><span class="w"> </span><span class="n">role_id</span><span class="p" data-group-id="7275091021-13">}</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="7275091021-14">%{</span><span class="ss">value</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;remove&quot;</span><span class="p" data-group-id="7275091021-14">}</span><span class="p" data-group-id="7275091021-12">]</span><span class="p" data-group-id="7275091021-11">}</span><span class="p" data-group-id="7275091021-10">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">interaction</span><span class="p" data-group-id="7275091021-9">)</span><span class="w"> </span><span class="k" data-group-id="7275091021-15">do</span><span class="w">
+  </span><span class="nc">Api</span><span class="o">.</span><span class="n">remove_guild_member_role</span><span class="p" data-group-id="7275091021-16">(</span><span class="n">interaction</span><span class="o">.</span><span class="n">guild_id</span><span class="p">,</span><span class="w"> </span><span class="n">interaction</span><span class="o">.</span><span class="n">member</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">role_id</span><span class="p" data-group-id="7275091021-16">)</span><span class="w">
+</span><span class="k" data-group-id="7275091021-15">end</span><span class="w">
 
-</span><span class="kd">def</span><span class="w"> </span><span class="nf">handle_event</span><span class="p" data-group-id="8890065546-17">(</span><span class="p" data-group-id="8890065546-18">{</span><span class="ss">:INTERACTION_CREATE</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="8890065546-19">%</span><span class="nc" data-group-id="8890065546-19">Interaction</span><span class="p" data-group-id="8890065546-19">{</span><span class="ss">data</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="8890065546-20">%{</span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;role&quot;</span><span class="p" data-group-id="8890065546-20">}</span><span class="p" data-group-id="8890065546-19">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">interaction</span><span class="p">,</span><span class="w"> </span><span class="c">_ws_state</span><span class="p" data-group-id="8890065546-18">}</span><span class="p" data-group-id="8890065546-17">)</span><span class="w"> </span><span class="k" data-group-id="8890065546-21">do</span><span class="w">
-  </span><span class="n">manage_role</span><span class="p" data-group-id="8890065546-22">(</span><span class="n">interaction</span><span class="p" data-group-id="8890065546-22">)</span><span class="w">
-</span><span class="k" data-group-id="8890065546-21">end</span></code></pre><p>Okay, we now have our handling code done. This is pretty much the same code
+</span><span class="kd">def</span><span class="w"> </span><span class="nf">handle_event</span><span class="p" data-group-id="7275091021-17">(</span><span class="p" data-group-id="7275091021-18">{</span><span class="ss">:INTERACTION_CREATE</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="7275091021-19">%</span><span class="nc" data-group-id="7275091021-19">Interaction</span><span class="p" data-group-id="7275091021-19">{</span><span class="ss">data</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="7275091021-20">%{</span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;role&quot;</span><span class="p" data-group-id="7275091021-20">}</span><span class="p" data-group-id="7275091021-19">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">interaction</span><span class="p">,</span><span class="w"> </span><span class="c">_ws_state</span><span class="p" data-group-id="7275091021-18">}</span><span class="p" data-group-id="7275091021-17">)</span><span class="w"> </span><span class="k" data-group-id="7275091021-21">do</span><span class="w">
+  </span><span class="n">manage_role</span><span class="p" data-group-id="7275091021-22">(</span><span class="n">interaction</span><span class="p" data-group-id="7275091021-22">)</span><span class="w">
+</span><span class="k" data-group-id="7275091021-21">end</span></code></pre><p>Okay, we now have our handling code done. This is pretty much the same code
 that you would use for regular commands.</p><h2 id="responding-to-interactions" class="section-heading">
   <a href="#responding-to-interactions" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
   Responding to interactions
 </h2>
-<p>To respond to interactions, use <a href="Nostrum.Api.html#create_interaction_response/2"><code class="inline">Nostrum.Api.create_interaction_response/2</code></a>:</p><pre><code class="nohighlight makeup elixir"><span class="kd">defp</span><span class="w"> </span><span class="nf">manage_role</span><span class="p" data-group-id="8792099276-1">(</span><span class="p" data-group-id="8792099276-2">%</span><span class="nc" data-group-id="8792099276-2">Interaction</span><span class="p" data-group-id="8792099276-2">{</span><span class="ss">data</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="8792099276-3">%{</span><span class="ss">options</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="8792099276-4">[</span><span class="p" data-group-id="8792099276-5">%{</span><span class="ss">value</span><span class="p">:</span><span class="w"> </span><span class="n">role_id</span><span class="p" data-group-id="8792099276-5">}</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="8792099276-6">%{</span><span class="ss">value</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;assign&quot;</span><span class="p" data-group-id="8792099276-6">}</span><span class="p" data-group-id="8792099276-4">]</span><span class="p" data-group-id="8792099276-3">}</span><span class="p" data-group-id="8792099276-2">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">interaction</span><span class="p" data-group-id="8792099276-1">)</span><span class="w"> </span><span class="k" data-group-id="8792099276-7">do</span><span class="w">
-  </span><span class="nc">Api</span><span class="o">.</span><span class="n">add_guild_member_role</span><span class="p" data-group-id="8792099276-8">(</span><span class="n">interaction</span><span class="o">.</span><span class="n">guild_id</span><span class="p">,</span><span class="w"> </span><span class="n">interaction</span><span class="o">.</span><span class="n">member</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">role_id</span><span class="p" data-group-id="8792099276-8">)</span><span class="w">
-  </span><span class="n">response</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="8792099276-9">%{</span><span class="w">
+<p>To respond to interactions, use <a href="Nostrum.Api.html#create_interaction_response/2"><code class="inline">Nostrum.Api.create_interaction_response/2</code></a>:</p><pre><code class="makeup elixir"><span class="kd">defp</span><span class="w"> </span><span class="nf">manage_role</span><span class="p" data-group-id="8107074385-1">(</span><span class="p" data-group-id="8107074385-2">%</span><span class="nc" data-group-id="8107074385-2">Interaction</span><span class="p" data-group-id="8107074385-2">{</span><span class="ss">data</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="8107074385-3">%{</span><span class="ss">options</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="8107074385-4">[</span><span class="p" data-group-id="8107074385-5">%{</span><span class="ss">value</span><span class="p">:</span><span class="w"> </span><span class="n">role_id</span><span class="p" data-group-id="8107074385-5">}</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="8107074385-6">%{</span><span class="ss">value</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;assign&quot;</span><span class="p" data-group-id="8107074385-6">}</span><span class="p" data-group-id="8107074385-4">]</span><span class="p" data-group-id="8107074385-3">}</span><span class="p" data-group-id="8107074385-2">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">interaction</span><span class="p" data-group-id="8107074385-1">)</span><span class="w"> </span><span class="k" data-group-id="8107074385-7">do</span><span class="w">
+  </span><span class="nc">Api</span><span class="o">.</span><span class="n">add_guild_member_role</span><span class="p" data-group-id="8107074385-8">(</span><span class="n">interaction</span><span class="o">.</span><span class="n">guild_id</span><span class="p">,</span><span class="w"> </span><span class="n">interaction</span><span class="o">.</span><span class="n">member</span><span class="o">.</span><span class="n">user</span><span class="o">.</span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">role_id</span><span class="p" data-group-id="8107074385-8">)</span><span class="w">
+  </span><span class="n">response</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="8107074385-9">%{</span><span class="w">
     </span><span class="ss">type</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w">  </span><span class="c1"># ChannelMessageWithSource</span><span class="w">
-    </span><span class="ss">data</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="8792099276-10">%{</span><span class="w">
+    </span><span class="ss">data</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="8107074385-10">%{</span><span class="w">
       </span><span class="ss">content</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;role assigned&quot;</span><span class="w">
-    </span><span class="p" data-group-id="8792099276-10">}</span><span class="w">
-  </span><span class="p" data-group-id="8792099276-9">}</span><span class="w">
-  </span><span class="nc">Api</span><span class="o">.</span><span class="n">create_interaction_response</span><span class="p" data-group-id="8792099276-11">(</span><span class="n">interaction</span><span class="p">,</span><span class="w"> </span><span class="n">response</span><span class="p" data-group-id="8792099276-11">)</span><span class="w">
-</span><span class="k" data-group-id="8792099276-7">end</span></code></pre><p>We have now built a simple command using slash commands, with argument
+    </span><span class="p" data-group-id="8107074385-10">}</span><span class="w">
+  </span><span class="p" data-group-id="8107074385-9">}</span><span class="w">
+  </span><span class="nc">Api</span><span class="o">.</span><span class="n">create_interaction_response</span><span class="p" data-group-id="8107074385-11">(</span><span class="n">interaction</span><span class="p">,</span><span class="w"> </span><span class="n">response</span><span class="p" data-group-id="8107074385-11">)</span><span class="w">
+</span><span class="k" data-group-id="8107074385-7">end</span></code></pre><p>We have now built a simple command using slash commands, with argument
 conversion delegated to Discords side of things. Further actions on the
 command, such as checking permissions, author roles, and more - are left as an
-exercise to the reader.</p>      <footer class="footer">
+exercise to the reader.</p><div class="bottom-actions">
+  <div class="bottom-actions-item">
+      <a href="gateway-intents.html" class="bottom-actions-button" rel="prev">
+        <span class="subheader">
+          ← Previous Page
+        </span>
+        <span class="title">
+Gateway Intents        </span>
+      </a>
+  </div>
+  <div class="bottom-actions-item">
+  </div>
+</div>
+      <footer class="footer">
         <p>
           <span class="line">
             Built using
-            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener">ExDoc</a> (v0.23.0) for the
+            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener">ExDoc</a> (v0.24.2) for the
             <a href="https://elixir-lang.org" title="Elixir" target="_blank">Elixir programming language</a>.
           </span>
           <span class="line">

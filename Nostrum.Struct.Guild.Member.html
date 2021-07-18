@@ -4,16 +4,22 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="ExDoc v0.23.0">
+    <meta name="generator" content="ExDoc v0.24.2">
     <meta name="project" content="Nostrum v0.4.7">
     <title>Nostrum.Struct.Guild.Member — Nostrum v0.4.7</title>
-    <link rel="stylesheet" href="dist/elixir-9f91ebe876dc01d67920.css" />
+    <link rel="stylesheet" href="dist/elixir-a172fe91e725dcb259e2.css" />
     <script src="dist/sidebar_items-a0b276ddac.js"></script>
       <script src="docs_config.js"></script>
-    <script async src="dist/app-60a0c9f10e9e52eae31f.js"></script>
+    <script async src="dist/app-f27ff079945e43879c46.js"></script>
   </head>
   <body data-type="modules">
-    <script>try { if(localStorage.getItem('night-mode') === 'true') document.body.className += ' night-mode'; } catch (e) { }</script>
+    <script>
+      try {
+        if (localStorage.getItem('night-mode') === 'true') {
+          document.body.classList.add('night-mode');
+        }
+      } catch (error) { }
+    </script>
 <div class="main">
 
 <button class="sidebar-button sidebar-toggle">
@@ -29,7 +35,7 @@
       <span class="icon-cross" aria-hidden="true" title="Cancel search"></span>
     </button>
     <label class="search-label">
-      <input name="q" type="text" id="search-list" class="search-input" placeholder="Search..." aria-label="Input your search terms" autocomplete="off" />
+      <input name="q" type="text" class="search-input" placeholder="Search..." aria-label="Input your search terms" autocomplete="off" />
     </label>
   </form>
 
@@ -49,11 +55,11 @@ Nostrum      </a>
   </div>
 
   <ul class="sidebar-listNav">
-    <li><a id="extras-list" href="#full-list">Pages</a></li>
+    <li><a id="extras-list-link" href="#full-list">Pages</a></li>
 
-      <li><a id="modules-list" href="#full-list">Modules</a></li>
+      <li><a id="modules-list-link" href="#full-list">Modules</a></li>
 
-      <li><a id="tasks-list" href="#full-list">Mix Tasks</a></li>
+      <li><a id="tasks-list-link" href="#full-list">Mix Tasks</a></li>
   </ul>
   <div class="gradient"></div>
   <ul id="full-list" class="sidebar-fullList"></ul>
@@ -73,12 +79,12 @@ Nostrum      </a>
 
 
         <section id="moduledoc">
-<p>Struct representing a Discord guild member.</p><p>A <a href="#content"><code class="inline">Nostrum.Struct.Guild.Member</code></a> stores a <a href="Nostrum.Struct.User.html"><code class="inline">Nostrum.Struct.User</code></a>'s properties
+<p>Struct representing a Discord guild member.</p><p>A <a href="Nostrum.Struct.Guild.Member.html#content"><code class="inline">Nostrum.Struct.Guild.Member</code></a> stores a <a href="Nostrum.Struct.User.html"><code class="inline">Nostrum.Struct.User</code></a>'s properties
 pertaining to a specific <a href="Nostrum.Struct.Guild.html"><code class="inline">Nostrum.Struct.Guild</code></a>.</p><h2 id="module-mentioning-members-in-messages" class="section-heading">
   <a href="#module-mentioning-members-in-messages" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
   Mentioning Members in Messages
 </h2>
-<p>A <a href="#content"><code class="inline">Nostrum.Struct.Guild.Member</code></a> can be mentioned in message content using the <a href="https://hexdocs.pm/elixir/String.Chars.html"><code class="inline">String.Chars</code></a>
+<p>A <a href="Nostrum.Struct.Guild.Member.html#content"><code class="inline">Nostrum.Struct.Guild.Member</code></a> can be mentioned in message content using the <a href="https://hexdocs.pm/elixir/String.Chars.html"><code class="inline">String.Chars</code></a>
 protocol or <a href="#mention/1"><code class="inline">mention/1</code></a>.</p><pre><code class="Elixir">member = %Nostrum.Struct.Guild.Member{user: Nostrum.Struct.User{id: 120571255635181568}}
 Nostrum.Api.create_message!(184046599834435585, &quot;#{member}&quot;)
 %Nostrum.Struct.Message{content: &quot;&lt;@120571255635181568&gt;&quot;}
@@ -165,7 +171,7 @@ in a message received from a guild channel.</p></div>
   <div class="summary-signature">
     <a href="#mention/1">mention(member)</a>
   </div>
-    <div class="summary-synopsis"><p>Formats a <a href="#content"><code class="inline">Nostrum.Struct.Guild.Member</code></a> into a mention.</p></div>
+    <div class="summary-synopsis"><p>Formats a <a href="Nostrum.Struct.Guild.Member.html#content"><code class="inline">Nostrum.Struct.Guild.Member</code></a> into a mention.</p></div>
 </div>
   </div>
         </section>
@@ -426,7 +432,7 @@ Nostrum.Struct.Guild.Member.guild_permissions(member, guild)
           <pre>mention(<a href="#t:t/0">t</a>()) :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()</pre>
       </div>
 
-<p>Formats a <a href="#content"><code class="inline">Nostrum.Struct.Guild.Member</code></a> into a mention.</p><h2 id="mention/1-examples" class="section-heading">
+<p>Formats a <a href="Nostrum.Struct.Guild.Member.html#content"><code class="inline">Nostrum.Struct.Guild.Member</code></a> into a mention.</p><h2 id="mention/1-examples" class="section-heading">
   <a href="#mention/1-examples" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
   Examples
 </h2>
@@ -440,7 +446,7 @@ Nostrum.Struct.Guild.Member.guild_permissions(member, guild)
         <p>
           <span class="line">
             Built using
-            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener">ExDoc</a> (v0.23.0) for the
+            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener">ExDoc</a> (v0.24.2) for the
             <a href="https://elixir-lang.org" title="Elixir" target="_blank">Elixir programming language</a>.
           </span>
           <span class="line">
