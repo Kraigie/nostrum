@@ -9,7 +9,9 @@ defmodule Nostrum.Cache.GuildCache do
   """
 
   alias Nostrum.Cache.Mapping.ChannelGuild
+  alias Nostrum.Snowflake
   alias Nostrum.Struct.Channel
+  alias Nostrum.Struct.Emoji
   alias Nostrum.Struct.Guild
   alias Nostrum.Struct.Guild.Member
   alias Nostrum.Struct.Guild.Role
@@ -191,11 +193,13 @@ defmodule Nostrum.Cache.GuildCache do
 
   # IMPLEMENTATION
   @doc false
+  @spec create(Guild.t()) :: true
   def create(guild) do
-    :ets.insert_new(@table_name, {guild.id, guild})
+    true = :ets.insert_new(@table_name, {guild.id, guild})
   end
 
   @doc false
+  @spec update(map()) :: true
   def update(payload) do
     [{_id, guild}] = :ets.lookup(@table_name, payload.id)
     new_guild = Map.merge(guild, payload)
@@ -203,6 +207,7 @@ defmodule Nostrum.Cache.GuildCache do
   end
 
   @doc false
+  @spec delete(Guild.id()) :: Guild.t() | nil
   def delete(guild_id) do
     # Returns the old guild, if cached
     case :ets.take(@table_name, guild_id) do
@@ -212,6 +217,7 @@ defmodule Nostrum.Cache.GuildCache do
   end
 
   @doc false
+  @spec channel_create(Guild.id(), map()) :: Channel.t()
   def channel_create(guild_id, channel) do
     [{_id, guild}] = :ets.lookup(@table_name, guild_id)
     new_channel = Util.cast(channel, {:struct, Channel})
@@ -222,6 +228,7 @@ defmodule Nostrum.Cache.GuildCache do
   end
 
   @doc false
+  @spec channel_delete(Guild.id(), Channel.id()) :: Channel.t() | :noop
   def channel_delete(guild_id, channel_id) do
     [{_id, guild}] = :ets.lookup(@table_name, guild_id)
     {popped, new_channels} = Map.pop(guild.channels, channel_id)
@@ -231,6 +238,7 @@ defmodule Nostrum.Cache.GuildCache do
   end
 
   @doc false
+  @spec channel_update(Guild.id(), map()) :: {Channel.t(), Channel.t()}
   def channel_update(guild_id, channel) do
     [{_id, guild}] = :ets.lookup(@table_name, guild_id)
     {old, new, new_channels} = upsert(guild.channels, channel.id, channel, Channel)
@@ -240,6 +248,7 @@ defmodule Nostrum.Cache.GuildCache do
   end
 
   @doc false
+  @spec emoji_update(Guild.id(), [Emoji.t()]) :: {[Emoji.t()], [Emoji.t()]}
   def emoji_update(guild_id, emojis) do
     [{_id, guild}] = :ets.lookup(@table_name, guild_id)
     new = %{guild | emojis: emojis}
@@ -248,6 +257,7 @@ defmodule Nostrum.Cache.GuildCache do
   end
 
   @doc false
+  @spec member_add(Guild.id(), map()) :: Member.t()
   def member_add(guild_id, payload) do
     [{_id, guild}] = :ets.lookup(@table_name, guild_id)
     {_old, member, new_members} = upsert(guild.members, payload["user"]["id"], payload, Member)
@@ -257,6 +267,7 @@ defmodule Nostrum.Cache.GuildCache do
   end
 
   @doc false
+  @spec member_remove(Guild.id(), map()) :: {Guild.id(), Member.t()} | :noop
   def member_remove(guild_id, user) do
     [{_id, guild}] = :ets.lookup(@table_name, guild_id)
     {popped, new_members} = Map.pop(guild.members, user["id"])
@@ -266,6 +277,7 @@ defmodule Nostrum.Cache.GuildCache do
   end
 
   @doc false
+  @spec member_update(Guild.id(), map()) :: {Member.t(), Member.t()}
   def member_update(guild_id, member) do
     [{_id, guild}] = :ets.lookup(@table_name, guild_id)
     {old, new, new_members} = upsert(guild.members, member["user"]["id"], member, Member)
@@ -291,6 +303,7 @@ defmodule Nostrum.Cache.GuildCache do
   end
 
   @doc false
+  @spec role_create(Guild.id(), map()) :: Role.t()
   def role_create(guild_id, role) do
     [{_id, guild}] = :ets.lookup(@table_name, guild_id)
     {_old, new, new_roles} = upsert(guild.roles, role.id, role, Role)
@@ -300,6 +313,7 @@ defmodule Nostrum.Cache.GuildCache do
   end
 
   @doc false
+  @spec role_delete(Guild.id(), Role.id()) :: {Guild.id(), Role.t()} | :noop
   def role_delete(guild_id, role_id) do
     [{_id, guild}] = :ets.lookup(@table_name, guild_id)
     {popped, new_roles} = Map.pop(guild.roles, role_id)
@@ -309,6 +323,7 @@ defmodule Nostrum.Cache.GuildCache do
   end
 
   @doc false
+  @spec role_update(Guild.id(), map()) :: {Role.t(), Role.t()}
   def role_update(guild_id, role) do
     [{_id, guild}] = :ets.lookup(@table_name, guild_id)
     {old, new_role, new_roles} = upsert(guild.roles, role.id, role, Role)
@@ -318,6 +333,7 @@ defmodule Nostrum.Cache.GuildCache do
   end
 
   @doc false
+  @spec voice_state_update(Guild.id(), map()) :: {Guild.id(), [map()]}
   def voice_state_update(guild_id, payload) do
     [{_id, guild}] = :ets.lookup(@table_name, guild_id)
     lighter_payload = Map.delete(payload, :member)
