@@ -73,7 +73,7 @@ config :nostrum,
 
 The following fields are also supported:
 
- - `num_shards` - A fixed number of shards to run, or `:auto` to have Nostrum determine it automatically.
+ - `num_shards` - A fixed number of shards to run, or `:auto` to have Nostrum determine it automatically. Defaults to `:auto`.
  - `ffmpeg` - Specifies the path to the `ffmpeg` executable for playing audio. Defaults to `"ffmpeg"`.
  - `youtubedl` - Specifies the path to the `youtube-dl` executable for playing audio with youtube-dl support. Defaults to `"youtube-dl"`.
  - `gateway_intents` - This field takes a list of atoms representing gateway intents for Nostrum to subscribe to from the Discord API. More information can be found in the [gateway intents](gateway-intents.html) documentation page.
