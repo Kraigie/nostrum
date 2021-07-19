@@ -1,5 +1,6 @@
 defmodule Nostrum.Struct.Event.PartialApplication do
   @moduledoc "Sent on `READY`"
+  @moduledoc since: "0.5.0"
 
   defstruct [:id, :flags]
 

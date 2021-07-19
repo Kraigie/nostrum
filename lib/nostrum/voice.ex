@@ -420,6 +420,7 @@ defmodule Nostrum.Voice do
   This function does not need to be called unless you are sending audio frames
   directly using `Nostrum.Voice.send_frames/2`.
   """
+  @doc since: "0.5.0"
   @spec set_is_speaking(Guild.id(), boolean) :: :ok
   def set_is_speaking(guild_id, speaking), do: get_voice(guild_id) |> set_speaking(speaking)
 
@@ -436,6 +437,7 @@ defmodule Nostrum.Voice do
   `Nostrum.Voice.playing?/1` will not return accurate values when using `send_frames/2`
   instead of `Nostrum.Voice.play/4`
   """
+  @doc since: "0.5.0"
   @spec send_frames(Guild.id(), [binary]) :: :ok | {:error, String.t()}
   def send_frames(guild_id, frames) when is_list(frames) do
     voice = get_voice(guild_id)
@@ -454,6 +456,7 @@ defmodule Nostrum.Voice do
   This function should only be called if config option `:voice_auto_connect` is set to `false`.
   By default Nostrum will automatically create a voice gateway when joining a channel.
   """
+  @doc since: "0.5.0"
   @spec connect_to_gateway(Guild.id()) :: :ok | {:error, String.t()}
   def connect_to_gateway(guild_id) do
     voice = get_voice(guild_id)

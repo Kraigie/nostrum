@@ -1,5 +1,6 @@
 defmodule Nostrum.Struct.Event.MessageReactionRemoveEmoji do
   @moduledoc "Sent when a bot removes all instances of a given emoji from the reactions of a message"
+  @moduledoc since: "0.5.0"
 
   alias Nostrum.Struct.{Channel, Emoji, Guild, Message}
   alias Nostrum.Util

@@ -1,5 +1,6 @@
 defmodule Nostrum.Struct.Event.Ready do
   @moduledoc "Sent after initial handshake with the gateway"
+  @moduledoc since: "0.5.0"
 
   alias Nostrum.Struct.Event.PartialApplication
   alias Nostrum.Struct.Guild.UnavailableGuild

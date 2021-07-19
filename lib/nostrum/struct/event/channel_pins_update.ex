@@ -1,5 +1,6 @@
 defmodule Nostrum.Struct.Event.ChannelPinsUpdate do
   @moduledoc "Represents an update to channel pins."
+  @moduledoc since: "0.5.0"
 
   alias Nostrum.Struct.Channel
   alias Nostrum.Struct.Guild

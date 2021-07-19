@@ -1,5 +1,6 @@
 defmodule Nostrum.Struct.Event.VoiceServerUpdate do
   @moduledoc "Sent when a guild's voice server is updated"
+  @moduledoc since: "0.5.0"
 
   alias Nostrum.Struct.Guild
 

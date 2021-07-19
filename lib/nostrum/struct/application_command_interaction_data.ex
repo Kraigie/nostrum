@@ -19,15 +19,18 @@ defmodule Nostrum.Struct.ApplicationCommandInteractionData do
   @type name :: String.t()
 
   @typedoc "Converted users & roles & channels"
+  @typedoc since: "0.5.0"
   @type resolved :: ApplicationCommandInteractionDataResolved.t() | nil
 
   @typedoc "Parameters and values supplied by the user, if applicable"
   @type options :: ApplicationCommandInteractionDataOption.t() | nil
 
   @typedoc "For components, the ``custom_id`` of the component"
+  @typedoc since: "0.5.0"
   @type custom_id :: String.t() | nil
 
   @typedoc "For components, the ``type`` of the component"
+  @typedoc since: "0.5.0"
   @type component_type :: Integer.t() | nil
 
   @typedoc """

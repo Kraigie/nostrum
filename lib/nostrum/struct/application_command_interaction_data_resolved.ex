@@ -1,5 +1,6 @@
 defmodule Nostrum.Struct.ApplicationCommandInteractionDataResolved do
   @moduledoc "Converted interaction payload."
+  @moduledoc since: "0.5.0"
 
   alias Nostrum.Snowflake
   alias Nostrum.Struct.Channel
