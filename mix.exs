@@ -79,7 +79,7 @@ defmodule Nostrum.Mixfile do
     [
       name: :nostrum,
       licenses: ["MIT"],
-      maintainers: ["Craig Dazey", "Johannes Christ", "Joseph Banks"],
+      maintainers: ["Craig Dazey", "Johannes Christ", "Joe Banks"],
       links: %{
         "GitHub" => "https://github.com/Kraigie/nostrum/",
         "Docs" => "https://kraigie.github.io/nostrum/"
