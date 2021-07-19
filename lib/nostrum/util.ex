@@ -106,7 +106,7 @@ defmodule Nostrum.Util do
   @spec num_shards() :: integer
   def num_shards do
     num =
-      with :auto <- Application.get_env(:nostrum, :num_shards),
+      with :auto <- Application.get_env(:nostrum, :num_shards, :auto),
            {_url, shards} <- gateway(),
            do: shards
 

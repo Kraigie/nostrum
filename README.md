@@ -34,8 +34,7 @@ The file should be located at `/config/config.exs`. To run Nostrum you need the
 following two fields:
 ```Elixir
 config :nostrum,
-  token: "666", # The token of your bot as a string
-  num_shards: 2 # The number of shards you want to run your bot under, or :auto.
+  token: "666" # The token of your bot as a string
 ```
 
 For more information about the differences between dev and stable as well as
