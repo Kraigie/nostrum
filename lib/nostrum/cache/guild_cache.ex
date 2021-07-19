@@ -244,7 +244,7 @@ defmodule Nostrum.Cache.GuildCache do
     [{_id, guild}] = :ets.lookup(@table_name, guild_id)
     new = %{guild | emojis: emojis}
     true = :ets.update_element(@table_name, guild_id, {2, new})
-    emojis
+    {guild.emojis, emojis}
   end
 
   @doc false
