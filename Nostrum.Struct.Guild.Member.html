@@ -8,7 +8,7 @@
     <meta name="project" content="Nostrum v0.4.7">
     <title>Nostrum.Struct.Guild.Member — Nostrum v0.4.7</title>
     <link rel="stylesheet" href="dist/elixir-a172fe91e725dcb259e2.css" />
-    <script src="dist/sidebar_items-5c3818fe88.js"></script>
+    <script src="dist/sidebar_items-cb993a0a0f.js"></script>
       <script src="docs_config.js"></script>
     <script async src="dist/app-f27ff079945e43879c46.js"></script>
   </head>
@@ -172,6 +172,12 @@ in a message received from a guild channel.</p></div>
     <a href="#mention/1">mention(member)</a>
   </div>
     <div class="summary-synopsis"><p>Formats a <a href="Nostrum.Struct.Guild.Member.html#content"><code class="inline">Nostrum.Struct.Guild.Member</code></a> into a mention.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#top_role/2">top_role(member, guild)</a>
+  </div>
+    <div class="summary-synopsis"><p>Return the topmost role of the given member on the given guild.</p></div>
 </div>
   </div>
         </section>
@@ -439,6 +445,38 @@ Nostrum.Struct.Guild.Member.guild_permissions(member, guild)
 <pre><code class="Elixir">iex&gt; member = %Nostrum.Struct.Guild.Member{user: %Nostrum.Struct.User{id: 177888205536886784}}
 ...&gt; Nostrum.Struct.Guild.Member.mention(member)
 &quot;&lt;@177888205536886784&gt;&quot;</code></pre>  </section>
+</section>
+<section class="detail" id="top_role/2">
+  <div class="detail-header">
+    <a href="#top_role/2" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">top_role(member, guild)</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild/member.ex#L199" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+      <span class="note">(since 0.5.0)</span>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>top_role(<a href="#t:t/0">Nostrum.Struct.Guild.Member.t</a>(), <a href="Nostrum.Struct.Guild.html#t:t/0">Nostrum.Struct.Guild.t</a>()) ::
+  <a href="Nostrum.Struct.Guild.Role.html#t:t/0">Nostrum.Struct.Guild.Role.t</a>() | nil</pre>
+      </div>
+
+<p>Return the topmost role of the given member on the given guild.</p><p>The topmost role is determined via <code class="inline">t:Nostrum.Struct.Guild.Role.position</code>.</p><h2 id="top_role/2-parameters" class="section-heading">
+  <a href="#top_role/2-parameters" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Parameters
+</h2>
+<ul><li><code class="inline">member</code>: The member whose top role to return.</li><li><code class="inline">guild</code>: The guild which the member belongs to.</li></ul><h2 id="top_role/2-return-value" class="section-heading">
+  <a href="#top_role/2-return-value" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Return value
+</h2>
+<p>The topmost role of the member on the given guild, if the member has roles
+assigned. Otherwise, <code class="inline">nil</code> is returned.</p>  </section>
 </section>
           </div>
         </section>
