@@ -276,8 +276,7 @@ defmodule Nostrum.Cache.GuildCache do
 
   @doc false
   def member_chunk(guild_id, member_chunk) do
-    # CHONK like craigs cats
-    # or are they? i don't remember
+    # CHONK like that one cat of craig
 
     [{_id, guild}] = :ets.lookup(@table_name, guild_id)
 
