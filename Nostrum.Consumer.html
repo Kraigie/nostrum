@@ -8,7 +8,7 @@
     <meta name="project" content="Nostrum v0.4.7">
     <title>Nostrum.Consumer — Nostrum v0.4.7</title>
     <link rel="stylesheet" href="dist/elixir-a172fe91e725dcb259e2.css" />
-    <script src="dist/sidebar_items-cb993a0a0f.js"></script>
+    <script src="dist/sidebar_items-a0797dfb4b.js"></script>
       <script src="docs_config.js"></script>
     <script async src="dist/app-f27ff079945e43879c46.js"></script>
   </head>
@@ -312,6 +312,7 @@ will each be ran in their own seperate task.</p><h2 id="module-example" class="s
   <div class="summary-signature">
     <a href="#t:voice_speaking_update/0">voice_speaking_update()</a>
   </div>
+    <div class="summary-synopsis"><p>Dispatched when the bot starts or stops speaking.</p></div>
 </div>
 <div class="summary-row">
   <div class="summary-signature">
@@ -475,7 +476,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">event()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L188" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L193" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1300,7 +1301,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">voice_server_update()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L185" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L190" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1323,7 +1324,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">voice_speaking_update()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L183" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L188" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1334,10 +1335,10 @@ Types          </h1>
       <div class="specs">
           <pre>voice_speaking_update() ::
   {:VOICE_SPEAKING_UPDATE, <a href="Nostrum.Struct.Event.SpeakingUpdate.html#t:t/0">Nostrum.Struct.Event.SpeakingUpdate.t</a>(),
-   <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
+   <a href="Nostrum.Struct.VoiceWSState.html#t:t/0">Nostrum.Struct.VoiceWSState.t</a>()}</pre>
       </div>
 
-  </section>
+<p>Dispatched when the bot starts or stops speaking.</p><p>Note that the third tuple element is of type <code class="inline">VoiceWSState.t()</code> instead of <code class="inline">WSState.t().</code></p>  </section>
 </section>
 <section class="detail" id="t:voice_state_update/0">
   <div class="detail-header">
@@ -1346,7 +1347,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">voice_state_update()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L184" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L189" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1369,7 +1370,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">webhooks_update()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L186" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L191" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1401,7 +1402,7 @@ Functions          </h1>
       <span class="sr-only">Link to this function</span>
     </a>
     <h1 class="signature">start_link(mod, opts \\ [])</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L267" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L272" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
