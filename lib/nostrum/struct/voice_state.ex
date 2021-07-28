@@ -7,6 +7,8 @@ defmodule Nostrum.Struct.VoiceState do
   defstruct [
     :guild_id,
     :channel_id,
+    :self_mute,
+    :self_deaf,
     :gateway,
     :session,
     :token,

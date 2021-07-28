@@ -21,6 +21,7 @@ defmodule Nostrum.Shard.Dispatch do
     MessageReactionRemoveEmoji,
     SpeakingUpdate,
     TypingStart,
+    VoiceServerUpdate,
     VoiceState
   }
 
@@ -281,7 +282,9 @@ defmodule Nostrum.Shard.Dispatch do
           is_nil(voice) or is_nil(voice.session) ->
             Voice.update_voice(p.guild_id,
               channel_id: p.channel_id,
-              session: p.session_id
+              session: p.session_id,
+              self_mute: p.self_mute,
+              self_deaf: p.self_deaf
             )
 
           # Already in different channel:
@@ -302,6 +305,8 @@ defmodule Nostrum.Shard.Dispatch do
             Voice.update_voice(p.guild_id,
               channel_id: p.channel_id,
               session: p.session_id,
+              self_mute: p.self_mute,
+              self_deaf: p.self_deaf,
               token: new_token,
               gateway: new_gateway
             )
@@ -326,7 +331,7 @@ defmodule Nostrum.Shard.Dispatch do
       gateway: p.endpoint
     )
 
-    {event, p, state}
+    {event, VoiceServerUpdate.to_struct(p), state}
   end
 
   def handle_event(:WEBHOOKS_UPDATE = event, p, state), do: {event, p, state}

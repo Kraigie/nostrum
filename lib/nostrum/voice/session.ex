@@ -111,9 +111,11 @@ defmodule Nostrum.Voice.Session do
 
     # If we received a errno of 4006, session is no longer valid, so we must get a new session.
     if errno == 4006 do
-      channel_id = Voice.get_channel_id(state.guild_id)
+      %VoiceState{channel_id: chan, self_mute: mute, self_deaf: deaf} =
+        Voice.get_voice(state.guild_id)
+
       Voice.leave_channel(state.guild_id)
-      Voice.join_channel(state.guild_id, channel_id)
+      Voice.join_channel(state.guild_id, chan, mute, deaf)
     end
 
     {:noreply, state}
