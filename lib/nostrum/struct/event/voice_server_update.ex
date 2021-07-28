@@ -24,10 +24,6 @@ defmodule Nostrum.Struct.Event.VoiceServerUpdate do
 
   @doc false
   def to_struct(map) do
-    %__MODULE__{
-      token: map["token"],
-      guild_id: map["guild_id"],
-      endpoint: map["endpoint"]
-    }
+    struct(__MODULE__, map)
   end
 end

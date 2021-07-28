@@ -92,19 +92,19 @@ defmodule Nostrum.Struct.Event.VoiceState do
   @doc false
   def to_struct(map) do
     %__MODULE__{
-      guild_id: map["guild_id"],
-      channel_id: map["channel_id"],
-      user_id: map["user_id"],
+      guild_id: map.guild_id,
+      channel_id: map.channel_id,
+      user_id: map.user_id,
       member: Util.cast(map["member"], {:struct, Member}),
-      session_id: map["session_id"],
-      deaf?: map["deaf"],
-      mute?: map["mute"],
-      self_deaf?: map["self_deaf"],
-      self_mute?: map["self_mute"],
-      self_stream?: map["self_stream"],
-      self_video?: map["self_video"],
-      suppress?: map["suppress"],
-      request_to_speak_timestamp: convert_stamp(map["request_to_speak_timestamp"])
+      session_id: map.session_id,
+      deaf?: map.deaf,
+      mute?: map.mute,
+      self_deaf?: map.self_deaf,
+      self_mute?: map.self_mute,
+      self_stream?: map[:self_stream] || false,
+      self_video?: map.self_video,
+      suppress?: map.suppress,
+      request_to_speak_timestamp: convert_stamp(map.request_to_speak_timestamp)
     }
   end
 end
