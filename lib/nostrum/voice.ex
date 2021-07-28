@@ -485,12 +485,12 @@ defmodule Nostrum.Voice do
 
   This function will block until the specified number of packets is received.
   """
-  @spec listen(Guild.id(), non_neg_integer) :: [{binary, binary}] | {:error, String.t()}
+  @spec listen(Guild.id(), pos_integer) :: [{binary, binary}] | {:error, String.t()}
   def listen(guild_id, num_packets) do
     voice = get_voice(guild_id)
 
     if VoiceState.ready_for_rtp?(voice) do
-      Enum.map(0..num_packets, fn _ -> Audio.get_rtp_packet(voice) end)
+      Enum.map(1..num_packets, fn _ -> Audio.get_rtp_packet(voice) end)
     else
       {:error, "Must be connected to voice channel to listen for incoming data."}
     end
