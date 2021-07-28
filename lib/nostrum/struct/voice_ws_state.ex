@@ -19,7 +19,7 @@ defmodule Nostrum.Struct.VoiceWSState do
     :heartbeat_ref
   ]
 
-  @typedoc "The guild id"
+  @typedoc "The guild id that this voice websocket state applies to"
   @type guild_id :: Nostrum.Struct.Guild.id()
 
   @typedoc "The session id"
@@ -40,7 +40,7 @@ defmodule Nostrum.Struct.VoiceWSState do
   @typedoc "Gateway URL"
   @type gateway :: String.t()
 
-  @typedoc "Where the session has been identified"
+  @typedoc "Whether the session has been identified"
   @type identified :: boolean()
 
   @typedoc """
