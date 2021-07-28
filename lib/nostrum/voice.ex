@@ -485,6 +485,7 @@ defmodule Nostrum.Voice do
 
   This function will block until the specified number of packets is received.
   """
+  @doc since: "0.5.0"
   @spec listen(Guild.id(), pos_integer) :: [{binary, binary}] | {:error, String.t()}
   def listen(guild_id, num_packets) do
     voice = get_voice(guild_id)
