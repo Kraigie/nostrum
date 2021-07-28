@@ -63,7 +63,7 @@ defmodule Nostrum.Voice.Event do
 
       "Voice client connected: #{
         case UserCache.get(user_id) do
-          {:ok, user} -> Map.get(user, :username)
+          {:ok, %{username: username}} -> username
           _ -> user_id
         end
       }"
@@ -78,7 +78,7 @@ defmodule Nostrum.Voice.Event do
 
       "Voice client disconnected: #{
         case UserCache.get(user_id) do
-          {:ok, user} -> Map.get(user, :username)
+          {:ok, %{username: username}} -> username
           _ -> user_id
         end
       }"
