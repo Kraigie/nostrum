@@ -21,7 +21,7 @@ defmodule Nostrum.Consumer do
   use ConsumerSupervisor
 
   alias Nostrum.Shard.Stage.Cache
-  alias Nostrum.Struct.{Channel, WSState}
+  alias Nostrum.Struct.{Channel, VoiceWSState, WSState}
 
   alias Nostrum.Struct.Event.{
     ChannelPinsUpdate,
@@ -180,7 +180,12 @@ defmodule Nostrum.Consumer do
           {:USER_UPDATE,
            {old_user :: Nostrum.Struct.User.t() | nil, new_user :: Nostrum.Struct.User.t()},
            WSState.t()}
-  @type voice_speaking_update :: {:VOICE_SPEAKING_UPDATE, SpeakingUpdate.t(), WSState.t()}
+  @typedoc """
+  Dispatched when the bot starts or stops speaking.
+
+  Note that the third tuple element is of type `VoiceWSState.t()` instead of `WSState.t().`
+  """
+  @type voice_speaking_update :: {:VOICE_SPEAKING_UPDATE, SpeakingUpdate.t(), VoiceWSState.t()}
   @type voice_state_update :: {:VOICE_STATE_UPDATE, VoiceState.t(), WSState.t()}
   @type voice_server_update :: {:VOICE_SERVER_UPDATE, VoiceServerUpdate.t(), WSState.t()}
   @type webhooks_update :: {:WEBHOOKS_UPDATE, map, WSState.t()}
