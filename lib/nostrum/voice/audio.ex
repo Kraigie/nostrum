@@ -48,6 +48,20 @@ defmodule Nostrum.Voice.Audio do
     socket
   end
 
+  def get_rtp_packet(%VoiceState{secret_key: key, udp_socket: socket} = v) do
+    {:ok, {_ip, _port, payload}} = :gen_udp.recv(socket, 1024)
+
+    case payload do
+      # Skip RTCP packets
+      <<2::2, 0::1, 1::5, 201::8, _rest::binary>> ->
+        get_rtp_packet(v)
+
+      <<header::96, data::binary>> ->
+        nonce = <<header::96, 0::96>>
+        {<<header::96>>, Kcl.secretunbox(data, nonce, key)}
+    end
+  end
+
   def init_player(voice) do
     take_nap()
     player_loop(voice)
