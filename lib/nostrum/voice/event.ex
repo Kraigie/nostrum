@@ -62,7 +62,7 @@ defmodule Nostrum.Voice.Event do
       user_id = payload["d"]["user_id"] |> String.to_integer()
 
       "Voice client connected: #{case UserCache.get(user_id) do
-        {:ok, user} -> Map.get(user, :username)
+        {:ok, %{username: username}} -> username
         _ -> user_id
       end}"
     end)
@@ -75,7 +75,7 @@ defmodule Nostrum.Voice.Event do
       user_id = payload["d"]["user_id"] |> String.to_integer()
 
       "Voice client disconnected: #{case UserCache.get(user_id) do
-        {:ok, user} -> Map.get(user, :username)
+        {:ok, %{username: username}} -> username
         _ -> user_id
       end}"
     end)

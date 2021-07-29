@@ -474,6 +474,29 @@ defmodule Nostrum.Voice do
     end
   end
 
+  @doc """
+  Listen for incoming voice RTP packets.
+
+  ## Parameters
+    - `guild_id` - ID of guild that the bot is listening to.
+    - `num_packets` - Number of packets to wait for.
+
+  Returns a list of 2-element tuples in the form `{rtp_header, opus_frame}`.
+
+  This function will block until the specified number of packets is received.
+  """
+  @doc since: "0.5.0"
+  @spec listen(Guild.id(), pos_integer) :: [{binary, binary}] | {:error, String.t()}
+  def listen(guild_id, num_packets) do
+    voice = get_voice(guild_id)
+
+    if VoiceState.ready_for_rtp?(voice) do
+      Enum.map(1..num_packets, fn _ -> Audio.get_rtp_packet(voice) end)
+    else
+      {:error, "Must be connected to voice channel to listen for incoming data."}
+    end
+  end
+
   @doc false
   def handle_call({:update, guild_id, args}, _from, state) do
     voice =
