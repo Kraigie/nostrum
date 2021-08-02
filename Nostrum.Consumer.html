@@ -4,11 +4,11 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="ExDoc v0.24.2">
+    <meta name="generator" content="ExDoc v0.25.1">
     <meta name="project" content="Nostrum v0.4.7">
     <title>Nostrum.Consumer — Nostrum v0.4.7</title>
     <link rel="stylesheet" href="dist/elixir-a172fe91e725dcb259e2.css" />
-    <script src="dist/sidebar_items-d9712b1017.js"></script>
+    <script src="dist/sidebar_items-eb5a55d4e2.js"></script>
       <script src="docs_config.js"></script>
     <script async src="dist/app-f27ff079945e43879c46.js"></script>
   </head>
@@ -325,17 +325,6 @@ will each be ran in their own seperate task.</p><h2 id="module-example" class="s
   </div>
 </div>
   </div>
-  <div class="summary-functions summary">
-    <h2>
-      <a href="#functions">Functions</a>
-    </h2>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#start_link/2">start_link(mod, opts \\ [])</a>
-  </div>
-    <div class="summary-synopsis"><p>Starts a consumer process.</p></div>
-</div>
-  </div>
   <div class="summary-callbacks summary">
     <h2>
       <a href="#callbacks">Callbacks</a>
@@ -345,6 +334,17 @@ will each be ran in their own seperate task.</p><h2 id="module-example" class="s
     <a href="#c:handle_event/1">handle_event(event)</a>
   </div>
     <div class="summary-synopsis"><p>Callback used to handle events.</p></div>
+</div>
+  </div>
+  <div class="summary-functions summary">
+    <h2>
+      <a href="#functions">Functions</a>
+    </h2>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#start_link/2">start_link(mod, opts \\ [])</a>
+  </div>
+    <div class="summary-synopsis"><p>Starts a consumer process.</p></div>
 </div>
   </div>
         </section>
@@ -1386,39 +1386,6 @@ Types          </h1>
 </section>
           </div>
         </section>
-        <section id="functions" class="details-list">
-          <h1 class="section-heading">
-            <a class="hover-link" href="#functions">
-              <span class="icon-link" aria-hidden="true"></span>
-              <span class="sr-only">Link to this section</span>
-            </a>
-Functions          </h1>
-          <div class="functions-list">
-<section class="detail" id="start_link/2">
-    <span id="start_link/1"></span>
-  <div class="detail-header">
-    <a href="#start_link/2" class="detail-link" title="Link to this function">
-      <span class="icon-link" aria-hidden="true"></span>
-      <span class="sr-only">Link to this function</span>
-    </a>
-    <h1 class="signature">start_link(mod, opts \\ [])</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L272" class="view-source" rel="help" title="View Source">
-       <span class="icon-code" aria-hidden="true"></span>
-       <span class="sr-only">View Source</span>
-     </a>
-  </div>
-
-  <section class="docstring">
-      <h2>Specs</h2>
-      <div class="specs">
-          <pre>start_link(<a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">module</a>(), <a href="#t:options/0">options</a>()) :: <a href="https://hexdocs.pm/elixir/Supervisor.html#t:on_start/0">Supervisor.on_start</a>()</pre>
-      </div>
-
-<p>Starts a consumer process.</p><p><code class="inline">mod</code> is the name of the module where you define your event callbacks, which should probably be
-the current module which you can get with <code class="inline">__MODULE__</code>.</p><p><code class="inline">opts</code> is a list of general process options. See <a href="#t:options/0"><code class="inline">Nostrum.Consumer.options/0</code></a> for more info.</p>  </section>
-</section>
-          </div>
-        </section>
         <section id="callbacks" class="details-list">
           <h1 class="section-heading">
             <a class="hover-link" href="#callbacks">
@@ -1457,11 +1424,44 @@ the old payload will always be first, followed by the new payload.</p><pre><code
 </section>
           </div>
         </section>
+        <section id="functions" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#functions">
+              <span class="icon-link" aria-hidden="true"></span>
+              <span class="sr-only">Link to this section</span>
+            </a>
+Functions          </h1>
+          <div class="functions-list">
+<section class="detail" id="start_link/2">
+    <span id="start_link/1"></span>
+  <div class="detail-header">
+    <a href="#start_link/2" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">start_link(mod, opts \\ [])</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L272" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>start_link(<a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">module</a>(), <a href="#t:options/0">options</a>()) :: <a href="https://hexdocs.pm/elixir/Supervisor.html#t:on_start/0">Supervisor.on_start</a>()</pre>
+      </div>
+
+<p>Starts a consumer process.</p><p><code class="inline">mod</code> is the name of the module where you define your event callbacks, which should probably be
+the current module which you can get with <code class="inline">__MODULE__</code>.</p><p><code class="inline">opts</code> is a list of general process options. See <a href="#t:options/0"><code class="inline">Nostrum.Consumer.options/0</code></a> for more info.</p>  </section>
+</section>
+          </div>
+        </section>
       <footer class="footer">
         <p>
           <span class="line">
             Built using
-            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener">ExDoc</a> (v0.24.2) for the
+            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener">ExDoc</a> (v0.25.1) for the
             <a href="https://elixir-lang.org" title="Elixir" target="_blank">Elixir programming language</a>.
           </span>
           <span class="line">
