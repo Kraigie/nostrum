@@ -8,7 +8,7 @@
     <meta name="project" content="Nostrum v0.4.7">
     <title>Nostrum.Cache.GuildCache — Nostrum v0.4.7</title>
     <link rel="stylesheet" href="dist/elixir-a172fe91e725dcb259e2.css" />
-    <script src="dist/sidebar_items-eb5a55d4e2.js"></script>
+    <script src="dist/sidebar_items-7e1ee19a00.js"></script>
       <script src="docs_config.js"></script>
     <script async src="dist/app-f27ff079945e43879c46.js"></script>
   </head>
@@ -79,7 +79,9 @@ Nostrum      </a>
 
 
         <section id="moduledoc">
-<p>Functions for retrieving guild states.</p>        </section>
+<p>Functions for retrieving guild states.</p><p>The ETS table name associated with the Guild Cache is <code class="inline">nostrum_guilds</code>.
+Besides the methods provided here, you can call any other ETS methods
+on the table.</p>        </section>
 
         <section id="summary" class="details-list">
           <h1 class="section-heading">
@@ -122,7 +124,7 @@ Nostrum      </a>
   <div class="summary-signature">
     <a href="#all/0">all()</a>
   </div>
-    <div class="summary-synopsis"><p>Retrives all <a href="Nostrum.Struct.Guild.html"><code class="inline">Nostrum.Struct.Guild</code></a> from the cache as a stream.</p></div>
+    <div class="summary-synopsis"><p>Retrieves all <a href="Nostrum.Struct.Guild.html"><code class="inline">Nostrum.Struct.Guild</code></a> from the cache as a list.</p></div>
 </div>
 <div class="summary-row">
   <div class="summary-signature">
@@ -179,6 +181,12 @@ the <code class="inline">clauses</code>.</p></div>
   </div>
     <div class="summary-synopsis"><p>Same as <a href="#select_by/2"><code class="inline">select_by/2</code></a>, but raises <a href="Nostrum.Error.CacheError.html"><code class="inline">Nostrum.Error.CacheError</code></a> in case of failure.</p></div>
 </div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#tabname/0">tabname()</a>
+  </div>
+    <div class="summary-synopsis"><p>Retrieve the ETS table name used for the cache.</p></div>
+</div>
   </div>
         </section>
 
@@ -197,7 +205,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">clause()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L15" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L23" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -221,7 +229,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">clauses()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L20" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L28" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -242,7 +250,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">reason()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L24" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L32" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -263,7 +271,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">selector()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L22" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L30" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -294,7 +302,7 @@ Functions          </h1>
       <span class="sr-only">Link to this function</span>
     </a>
     <h1 class="signature">all()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L34" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L46" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -306,7 +314,7 @@ Functions          </h1>
           <pre>all() :: <a href="https://hexdocs.pm/elixir/Enum.html#t:t/0">Enum.t</a>()</pre>
       </div>
 
-<p>Retrives all <a href="Nostrum.Struct.Guild.html"><code class="inline">Nostrum.Struct.Guild</code></a> from the cache as a stream.</p>  </section>
+<p>Retrieves all <a href="Nostrum.Struct.Guild.html"><code class="inline">Nostrum.Struct.Guild</code></a> from the cache as a list.</p>  </section>
 </section>
 <section class="detail" id="get/1">
   <div class="detail-header">
@@ -315,7 +323,7 @@ Functions          </h1>
       <span class="sr-only">Link to this function</span>
     </a>
     <h1 class="signature">get(id)</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L65" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L78" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -345,7 +353,7 @@ iex&gt; Nostrum.Cache.GuildCache.get(10)
       <span class="sr-only">Link to this function</span>
     </a>
     <h1 class="signature">get!(id)</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L73" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L86" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -366,7 +374,7 @@ iex&gt; Nostrum.Cache.GuildCache.get(10)
       <span class="sr-only">Link to this function</span>
     </a>
     <h1 class="signature">get_by(clauses)</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L92" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L105" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -394,7 +402,7 @@ iex&gt; Nostrum.Cache.GuildCache.get_by(id: 10)
       <span class="sr-only">Link to this function</span>
     </a>
     <h1 class="signature">get_by!(clauses)</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L100" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L113" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -415,7 +423,7 @@ iex&gt; Nostrum.Cache.GuildCache.get_by(id: 10)
       <span class="sr-only">Link to this function</span>
     </a>
     <h1 class="signature">select(id, selector)</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L118" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L131" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -445,7 +453,7 @@ iex&gt; Nostrum.Cache.GuildCache.select(10, fn guild -&gt; guild.id end)
       <span class="sr-only">Link to this function</span>
     </a>
     <h1 class="signature">select!(id, selector)</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L126" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L139" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -466,7 +474,7 @@ iex&gt; Nostrum.Cache.GuildCache.select(10, fn guild -&gt; guild.id end)
       <span class="sr-only">Link to this function</span>
     </a>
     <h1 class="signature">select_all(selector)</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L40" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L56" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -487,7 +495,7 @@ iex&gt; Nostrum.Cache.GuildCache.select(10, fn guild -&gt; guild.id end)
       <span class="sr-only">Link to this function</span>
     </a>
     <h1 class="signature">select_by(clauses, selector)</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L146" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L159" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -516,7 +524,7 @@ iex&gt; Nostrum.Cache.GuildCache.select_by([id: 10], fn guild -&gt; guild.id end
       <span class="sr-only">Link to this function</span>
     </a>
     <h1 class="signature">select_by!(clauses, selector)</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L174" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L191" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -529,6 +537,27 @@ iex&gt; Nostrum.Cache.GuildCache.select_by([id: 10], fn guild -&gt; guild.id end
       </div>
 
 <p>Same as <a href="#select_by/2"><code class="inline">select_by/2</code></a>, but raises <a href="Nostrum.Error.CacheError.html"><code class="inline">Nostrum.Error.CacheError</code></a> in case of failure.</p>  </section>
+</section>
+<section class="detail" id="tabname/0">
+  <div class="detail-header">
+    <a href="#tabname/0" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">tabname()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L40" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>tabname() :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">atom</a>()</pre>
+      </div>
+
+<p>Retrieve the ETS table name used for the cache.</p>  </section>
 </section>
           </div>
         </section>
