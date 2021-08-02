@@ -51,7 +51,7 @@ defmodule Nostrum.Cache.UserCache do
   @doc false
   @spec create(map) :: User.t()
   def create(user) do
-    :ets.insert(:users, {user.id, user})
+    :ets.insert(:users, {user["id"], user})
     User.to_struct(user)
   end
 

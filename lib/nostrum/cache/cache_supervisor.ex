@@ -9,9 +9,6 @@ defmodule Nostrum.Cache.CacheSupervisor do
 
   def init([]) do
     children = [
-      # REVIEW: If shard dies, should guilds die also? An attempt will be made to restart them
-      {Registry, keys: :unique, name: GuildRegistry},
-      Nostrum.Cache.Guild.GuildSupervisor,
       Nostrum.Cache.Me
     ]
 
