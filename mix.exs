@@ -92,7 +92,7 @@ defmodule Nostrum.Mixfile do
       {:httpoison, "~> 1.7"},
       {:poison, "~> 3.0"},
       {:gun, "== 2.0.0-rc.2"},
-      {:kcl, "~> 1.3"},
+      {:kcl, "~> 1.4"},
       {:porcelain, "~> 2.0"},
       {:ex_doc, "~> 0.15", only: :dev},
       {:credo, "~> 1.4", only: [:dev, :test]},
