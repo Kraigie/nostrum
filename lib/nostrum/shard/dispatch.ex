@@ -156,7 +156,7 @@ defmodule Nostrum.Shard.Dispatch do
   end
 
   def handle_event(:GUILD_EMOJIS_UPDATE = event, p, state),
-    do: {event, GuildCache.emoji_update(p.guild_id, p.emojis), state}
+    do: {event, GuildCache.emoji_update(p["guild_id"], p["emojis"]), state}
 
   def handle_event(:GUILD_INTEGRATIONS_UPDATE = event, p, state) do
     {event, GuildIntegrationsUpdate.to_struct(p), state}
@@ -187,13 +187,16 @@ defmodule Nostrum.Shard.Dispatch do
   end
 
   def handle_event(:GUILD_ROLE_CREATE = event, p, state),
-    do: {event, GuildCache.role_create(p.guild_id, p.role), state}
+    do: {event, GuildCache.role_create(p["guild_id"], p["role"]), state}
 
   def handle_event(:GUILD_ROLE_DELETE = event, p, state),
-    do: {event, GuildCache.role_delete(p.guild_id, p.role_id), state}
+    do: {event, GuildCache.role_delete(p["guild_id"], p["role_id"]), state}
 
-  def handle_event(:GUILD_ROLE_UPDATE = event, p, state),
-    do: {event, GuildCache.role_update(p.guild_id, p.role), state}
+  def handle_event(:GUILD_ROLE_UPDATE = event, %{"guild_id" => guild_id} = p, state),
+    do: {event, GuildCache.role_update(guild_id, p["role"]), state}
+
+  def handle_event(:GUILD_ROLE_UPDATE = event, %{guild_id: guild_id} = p, state),
+    do: {event, GuildCache.role_update(guild_id, p["role"]), state}
 
   def handle_event(:INVITE_CREATE = event, p, state),
     do: {event, InviteCreate.to_struct(p), state}
