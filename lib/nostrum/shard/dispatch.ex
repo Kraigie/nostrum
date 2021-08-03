@@ -83,7 +83,7 @@ defmodule Nostrum.Shard.Dispatch do
   end
 
   def handle_event(:CHANNEL_UPDATE = event, p, state) do
-    {event, GuildCache.channel_update(p.guild_id, p), state}
+    {event, GuildCache.channel_update(p["guild_id"], p), state}
   end
 
   def handle_event(:CHANNEL_DELETE, _p, _state) do
