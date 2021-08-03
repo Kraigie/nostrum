@@ -336,14 +336,16 @@ defmodule Nostrum.Cache.GuildCache do
   @spec voice_state_update(Guild.id(), map()) :: {Guild.id(), [map()]}
   def voice_state_update(guild_id, payload) do
     [{_id, guild}] = :ets.lookup(@table_name, guild_id)
-    lighter_payload = Map.delete(payload, :member)
-    state_without_user = Enum.reject(guild.voice_states, &(&1.user_id == lighter_payload.user_id))
+    # Trim the `member` from the update payload.
+    # Remove both `"member"` and `:member` in case of future key changes.
+    trimmed_update = Map.drop(payload, [:member, "member"])
+    state_without_user = Enum.reject(guild.voice_states, &(&1.user_id == trimmed_update.user_id))
     # If the `channel_id` is nil, then the user is leaving.
     # Otherwise, the voice state was updated.
     new_state =
-      if(is_nil(lighter_payload.channel_id),
+      if(is_nil(trimmed_update.channel_id),
         do: state_without_user,
-        else: [lighter_payload | state_without_user]
+        else: [trimmed_update | state_without_user]
       )
 
     new_guild = %{guild | voice_states: new_state}
