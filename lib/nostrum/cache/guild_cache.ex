@@ -248,12 +248,13 @@ defmodule Nostrum.Cache.GuildCache do
   end
 
   @doc false
-  @spec emoji_update(Guild.id(), [Emoji.t()]) :: {[Emoji.t()], [Emoji.t()]}
+  @spec emoji_update(Guild.id(), [map()]) :: {[Emoji.t()], [Emoji.t()]}
   def emoji_update(guild_id, emojis) do
     [{_id, guild}] = :ets.lookup(@table_name, guild_id)
-    new = %{guild | emojis: emojis}
+    casted = Util.cast(emojis, {:list, {:struct, Emoji}})
+    new = %{guild | emojis: casted}
     true = :ets.update_element(@table_name, guild_id, {2, new})
-    {guild.emojis, emojis}
+    {guild.emojis, casted}
   end
 
   @doc false
@@ -306,7 +307,7 @@ defmodule Nostrum.Cache.GuildCache do
   @spec role_create(Guild.id(), map()) :: Role.t()
   def role_create(guild_id, role) do
     [{_id, guild}] = :ets.lookup(@table_name, guild_id)
-    {_old, new, new_roles} = upsert(guild.roles, role.id, role, Role)
+    {_old, new, new_roles} = upsert(guild.roles, role["id"], role, Role)
     new_guild = %{guild | roles: new_roles}
     true = :ets.update_element(@table_name, guild_id, {2, new_guild})
     new
@@ -326,7 +327,7 @@ defmodule Nostrum.Cache.GuildCache do
   @spec role_update(Guild.id(), map()) :: {Role.t(), Role.t()}
   def role_update(guild_id, role) do
     [{_id, guild}] = :ets.lookup(@table_name, guild_id)
-    {old, new_role, new_roles} = upsert(guild.roles, role.id, role, Role)
+    {old, new_role, new_roles} = upsert(guild.roles, role["id"], role, Role)
     new_guild = %{guild | roles: new_roles}
     true = :ets.update_element(@table_name, guild_id, {2, new_guild})
     {old, new_role}
