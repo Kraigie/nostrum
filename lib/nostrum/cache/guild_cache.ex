@@ -241,7 +241,7 @@ defmodule Nostrum.Cache.GuildCache do
   @spec channel_update(Guild.id(), map()) :: {Channel.t(), Channel.t()}
   def channel_update(guild_id, channel) do
     [{_id, guild}] = :ets.lookup(@table_name, guild_id)
-    {old, new, new_channels} = upsert(guild.channels, channel.id, channel, Channel)
+    {old, new, new_channels} = upsert(guild.channels, channel["id"], channel, Channel)
     new_guild = %{guild | channels: new_channels}
     true = :ets.update_element(@table_name, guild_id, {2, new_guild})
     {old, new}
