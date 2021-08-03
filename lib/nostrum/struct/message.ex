@@ -3,32 +3,38 @@ defmodule Nostrum.Struct.Message do
   Struct representing a Discord message.
   """
 
-  alias Nostrum.Struct.{Channel, Embed, Guild, User}
+  alias Nostrum.Struct.{Channel, Embed, Guild, User, Interaction}
   alias Nostrum.Struct.Guild.{Member, Role}
-  alias Nostrum.Struct.Message.{Activity, Application, Attachment, Reaction, Reference}
+  alias Nostrum.Struct.Message.{Activity, Application, Attachment, Reaction, Reference, Sticker}
   alias Nostrum.{Snowflake, Util}
 
   defstruct [
     :activity,
     :application,
+    :application_id,
     :attachments,
     :author,
     :channel_id,
     :content,
+    :components,
     :edited_timestamp,
     :embeds,
     :id,
+    :interaction,
     :guild_id,
     :member,
     :mention_everyone,
     :mention_roles,
+    :mention_channels,
     :mentions,
     :message_reference,
     :nonce,
     :pinned,
     :reactions,
     :referenced_message,
+    :sticker_items,
     :timestamp,
+    :thread,
     :tts,
     :type,
     :webhook_id
@@ -61,6 +67,11 @@ defmodule Nostrum.Struct.Message do
   @typedoc "Whether this messsage mentions everyone"
   @type mention_everyone :: boolean
 
+  @typedoc """
+  List of Channel mention objects.
+  """
+  @type mention_channels :: [Channel.channel_mention()]
+
   @typedoc "List of users mentioned in the message"
   @type mentions :: [User.t()]
 
@@ -70,12 +81,25 @@ defmodule Nostrum.Struct.Message do
   @typedoc "List of attached files in the message"
   @type attachments :: [Attachment.t()]
 
+  @typedoc """
+  List of Message Components
+  """
+  @type components :: [Component.t()]
+
+  @typedoc """
+  Array of Message Sticker Item Objects
+  """
+  @type sticker_items :: [Sticker.t()]
+
+  @typedoc """
+  Message interaction object.
+  """
+  @type interaction :: Interaction.t()
+
   @typedoc "List of embedded content in the message"
   @type embeds :: [Embed.t()]
 
-  @typedoc """
-  Reactions to the message.
-  """
+  @typedoc "Reactions to the message."
   @type reactions :: [Reaction.t()] | nil
 
   @typedoc "Validates if a message was sent"
@@ -90,9 +114,32 @@ defmodule Nostrum.Struct.Message do
   @type webhook_id :: Snowflake.t() | nil
 
   @typedoc """
-  [Type of message](https://discord.com/developers/docs/resources/channel#message-object-message-types).
+  |TYPE                                         |	VALUE|
+  |---------------------------------------------|-------|
+  |DEFAULT                                      |	0|
+  |RECIPIENT_ADD                                |	1|
+  |RECIPIENT_REMOVE                             |	2|
+  |CALL                                         |	3|
+  |CHANNEL_NAME_CHANGE                          |	4|
+  |CHANNEL_ICON_CHANGE                          |	5|
+  |CHANNEL_PINNED_MESSAGE                       |	6|
+  |GUILD_MEMBER_JOIN                            |	7|
+  |USER_PREMIUM_GUILD_SUBSCRIPTION              |	8|
+  |USER_PREMIUM_GUILD_SUBSCRIPTION_TIER_1       |	9|
+  |USER_PREMIUM_GUILD_SUBSCRIPTION_TIER_2       |	10|
+  |USER_PREMIUM_GUILD_SUBSCRIPTION_TIER_3       |	11|
+  |CHANNEL_FOLLOW_ADD                           |	12|
+  |GUILD_DISCOVERY_DISQUALIFIED                 |	14|
+  |GUILD_DISCOVERY_REQUALIFIED                  |	15|
+  |GUILD_DISCOVERY_GRACE_PERIOD_INITIAL_WARNING |	16|
+  |GUILD_DISCOVERY_GRACE_PERIOD_FINAL_WARNING   |	17|
+  |THREAD_CREATED                               |	18|
+  |REPLY                                        |	19|
+  |APPLICATION_COMMAND                          |	20|
+  |THREAD_STARTER_MESSAGE                       |	21|
+  |GUILD_INVITE_REMINDER                        |	22|
   """
-  @type type :: integer
+  @type type :: 0..22
 
   @typedoc """
   The activity of the message. Sent with Rich Presence-related chat embeds.
@@ -104,6 +151,10 @@ defmodule Nostrum.Struct.Message do
   """
   @type application :: Application.t() | nil
 
+  @typedoc """
+  if the message is a response to an Interaction, this is the id of the interaction's application
+  """
+  @type application_id :: Application.id() | nil
   @typedoc """
   Partial Guild Member object received with the Message Create event if message came from a guild channel.
   """
@@ -121,19 +172,27 @@ defmodule Nostrum.Struct.Message do
   referenced_message field is not present, the backend did not attempt to fetch the message that was being replied to,
   so its state is unknown. If the field exists but is null, the referenced message was deleted.
   """
-  @type referenced_message :: t() | nil
+  @type referenced_message :: __MODULE__.t() | nil
+
+  @typedoc """
+  the thread that was started from this message, includes thread member object
+  """
+  @type thread :: Channel.t() | nil
 
   @type t :: %__MODULE__{
           activity: activity,
+          application_id: application_id,
           application: application,
           attachments: attachments,
           author: author,
           channel_id: channel_id,
+          components: components,
           content: content,
           edited_timestamp: edited_timestamp,
           embeds: embeds,
-          id: id,
           guild_id: guild_id,
+          id: id,
+          interaction: interaction,
           member: member,
           mention_everyone: mention_everyone,
           mention_roles: mention_roles,
@@ -143,6 +202,8 @@ defmodule Nostrum.Struct.Message do
           pinned: pinned,
           reactions: reactions,
           referenced_message: referenced_message,
+          sticker_items: sticker_items,
+          thread: thread,
           timestamp: timestamp,
           tts: tts,
           type: type,
@@ -163,31 +224,39 @@ defmodule Nostrum.Struct.Message do
     new =
       map
       |> Map.new(fn {k, v} -> {Util.maybe_to_atom(k), v} end)
-      |> Map.update(:id, nil, &Util.cast(&1, Snowflake))
-      |> Map.update(:guild_id, nil, &Util.cast(&1, Snowflake))
-      |> Map.update(:channel_id, nil, &Util.cast(&1, Snowflake))
-      |> Map.update(:author, nil, &Util.cast(&1, {:struct, User}))
-      |> Map.update(:mentions, nil, &Util.cast(&1, {:list, {:struct, User}}))
-      |> Map.update(:mention_roles, nil, &Util.cast(&1, {:list, Snowflake}))
-      |> Map.update(:attachments, nil, &Util.cast(&1, {:list, {:struct, Attachment}}))
-      |> Map.update(:embeds, nil, &Util.cast(&1, {:list, {:struct, Embed}}))
-      |> Map.update(:reactions, nil, &Util.cast(&1, {:list, {:struct, Reaction}}))
-      |> Map.update(:nonce, nil, &Util.cast(&1, Snowflake))
-      |> Map.update(:webhook_id, nil, &Util.cast(&1, Snowflake))
       |> Map.update(:activity, nil, &Util.cast(&1, {:struct, Activity}))
+      |> Map.update(:application_id, nil, &Util.cast(&1, Snowflake))
       |> Map.update(:application, nil, &Util.cast(&1, {:struct, Application}))
+      |> Map.update(:attachments, nil, &Util.cast(&1, {:list, {:struct, Attachment}}))
+      |> Map.update(:author, nil, &Util.cast(&1, {:struct, User}))
+      |> Map.update(:channel_id, nil, &Util.cast(&1, Snowflake))
+      |> Map.update(:components, nil, &Util.cast(&1, {:list, {:struct, Component}}))
+      |> Map.update(:embeds, nil, &Util.cast(&1, {:list, {:struct, Embed}}))
+      |> Map.update(:guild_id, nil, &Util.cast(&1, Snowflake))
+      |> Map.update(:id, nil, &Util.cast(&1, Snowflake))
+      |> Map.update(:interaction, nil, &Util.cast(&1, {:struct, Channel}))
       |> Map.update(:member, nil, &Util.cast(&1, {:struct, Member}))
+      |> Map.update(:mention_channels, nil, &Util.cast(&1, {:list, {:struct, Channel}}))
+      |> Map.update(:mention_roles, nil, &Util.cast(&1, {:list, Snowflake}))
+      |> Map.update(:mentions, nil, &Util.cast(&1, {:list, {:struct, User}}))
       |> Map.update(:message_reference, nil, &Util.cast(&1, {:struct, Reference}))
+      |> Map.update(:nonce, nil, &Util.cast(&1, Snowflake))
+      |> Map.update(:reactions, nil, &Util.cast(&1, {:list, {:struct, Reaction}}))
       |> Map.update(:referenced_message, nil, &Util.cast(&1, {:struct, __MODULE__}))
+      |> Map.update(:sticker_items, nil, &Util.cast(&1, {:list, {:struct, Stickers}}))
+      |> Map.update(:thread, nil, &Util.cast(&1, {:struct, Channel}))
+      |> Map.update(:webhook_id, nil, &Util.cast(&1, Snowflake))
 
     struct(__MODULE__, new)
   end
 
   @doc """
-  Takes the message and produces a URL that, when clicked from the user client, will 
-  jump them to that message, assuming they have access to the message and the message 
+  Takes the message and produces a URL that, when clicked from the user client, will
+  jump them to that message, assuming they have access to the message and the message
   is valid.
   """
+  @doc since: "0.5.0"
+  @spec to_url(Module.t()) :: String.t()
   def to_url(%__MODULE__{} = msg) do
     "https://discord.com/channels/" <>
       (msg.guild_id || "@me") <> "/" <> msg.channel_id <> "/" <> msg.id

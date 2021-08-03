@@ -105,6 +105,8 @@ defmodule Nostrum.Struct.Channel do
   @typedoc "When the last pinned message was pinned"
   @type last_pin_timestamp :: String.t() | nil
 
+  @type type :: 0..13
+
   @typedoc """
   A `Nostrum.Struct.Channel` that represents a text channel in a guild.
   """
@@ -220,6 +222,15 @@ defmodule Nostrum.Struct.Channel do
           last_pin_timestamp: nil
         }
 
+  @typedoc """
+  A `Nostrum.Struct.Channel` that represents a channel mention in a message.
+  """
+  @type channel_mention :: %__MODULE__{
+          id: id,
+          guild_id: guild_id,
+          type: type,
+          name: name
+        }
   @typedoc """
   A `Nostrum.Struct.Channel` that represents a channel in a guild.
   """
