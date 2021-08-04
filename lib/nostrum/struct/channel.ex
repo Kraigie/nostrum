@@ -1,15 +1,7 @@
 defmodule Nostrum.Struct.Channel do
   @moduledoc ~S"""
-  Struct representing a Discord guild channel.
 
-  A `Nostrum.Struct.Channel` represents all 5 types of channels. Each
-  channel has a field `:type` with any of the following values:
-
-    * `0` - GUILD_TEXT
-    * `1` - DM
-    * `2` - GUILD_VOICE
-    * `3` - GROUP_DM
-    * `4` - GUILD_CATEGORY
+  A `Nostrum.Struct.Channel` represents a Guild or DM channel.
 
   More information can be found on the
   [Discord API Channel Documentation](https://discord.com/developers/docs/resources/channel#channel-object).
@@ -19,7 +11,7 @@ defmodule Nostrum.Struct.Channel do
   A `Nostrum.Struct.Channel` can be mentioned in message content using the `String.Chars`
   protocol or `mention/1`.
 
-  ```Elixir
+  ```elixir
   channel = %Nostrum.Struct.Channel{id: 381889573426429952}
   Nostrum.Api.create_message!(184046599834435585, "#{channel}")
   %Nostrum.Struct.Message{content: "<#381889573426429952>"}
@@ -64,7 +56,7 @@ defmodule Nostrum.Struct.Channel do
   @type guild_id :: Guild.id()
 
   @typedoc "The ordered position of the channel"
-  @type position :: integer
+  @type position :: integer()
 
   @typedoc "The list of overwrites"
   @type permission_overwrites :: [Overwrite.t()]
@@ -82,10 +74,10 @@ defmodule Nostrum.Struct.Channel do
   @type last_message_id :: Message.id() | nil
 
   @typedoc "The bitrate of the voice channel"
-  @type bitrate :: integer
+  @type bitrate :: integer()
 
   @typedoc "The user limit of the voice channel"
-  @type user_limit :: integer
+  @type user_limit :: integer()
 
   @typedoc "The recipients of the DM"
   @type recipients :: [User.t()]
@@ -106,24 +98,25 @@ defmodule Nostrum.Struct.Channel do
   @type last_pin_timestamp :: String.t() | nil
 
   @typedoc """
-  TYPE                 	|ID 	|DESCRIPTION
-  -------------------------------------------------------------------------------
-  GUILD_TEXT           	|0  	|a text channel within a server
-  DM                   	|1  	|a direct message between users
-  GUILD_VOICE          	|2  	|a voice channel within a server
-  GROUP_DM             	|3  	|a direct message between multiple users
-  GUILD_CATEGORY       	|4  	|an organizational category that contains up to 50 channels
-  GUILD_NEWS           	|5  	|a channel that users can follow and crosspost into their own server
-  GUILD_STORE          	|6  	|a channel in which game developers can sell their game on Discord
-  GUILD_NEWS_THREAD    	|10 	|a temporary sub-channel within a GUILD_NEWS channel
-  GUILD_PUBLIC_THREAD  	|11 	|a temporary sub-channel within a GUILD_TEXT channel
-  GUILD_PRIVATE_THREAD 	|12 	|a temporary sub-channel within a GUILD_TEXT channel that is only viewable by those invited and those with the MANAGE_THREADS permission
-  GUILD_STAGE_VOICE    	|13 	|a voice channel for hosting events with an audience
+  [Discord API Channel Object Type Documentation](https://discord.com/developers/docs/resources/channel#channel-object-channel-types)
+
+  - `0`  - `GUILD_TEXT`           a text channel within a server
+  - `1`  - `DM`                   a direct message between users
+  - `2`  - `GUILD_VOICE`          a voice channel within a server
+  - `3`  - `GROUP_DM`             a direct message between multiple users
+  - `4`  - `GUILD_CATEGORY`       an organizational category that contains up to 50 channels
+  - `5`  - `GUILD_NEWS`           a channel that users can follow and crosspost into their own server
+  - `6`  - `GUILD_STORE`          a channel in which game developers can sell their game on Discord
+  - `10` - `GUILD_NEWS_THREAD`    a temporary sub-channel within a `GUILD_NEWS` channel
+  - `11` - `GUILD_PUBLIC_THREAD`  a temporary sub-channel within a `GUILD_TEXT` channel
+  - `12` - `GUILD_PRIVATE_THREAD` a temporary sub-channel within a `GUILD_TEXT` channel that is only viewable by those invited and those with the `MANAGE_THREADS` permission
+  - `13` - `GUILD_STAGE_VOICE`    a voice channel for hosting events with an audience
+
   """
-  @type type :: 0..13
+  @type type :: integer()
 
   @typedoc """
-  A `Nostrum.Struct.Channel` that represents a text channel in a guild.
+  A `Nostrum.Struct.Channel` that represents a text channel in a guild
   """
   @type guild_text_channel :: %__MODULE__{
           id: id,
@@ -146,7 +139,7 @@ defmodule Nostrum.Struct.Channel do
         }
 
   @typedoc """
-  A `Nostrum.Struct.Channel` that represents a DM channel.
+  A `Nostrum.Struct.Channel` that represents a DM channel
   """
   @type dm_channel :: %__MODULE__{
           id: id,
@@ -169,7 +162,7 @@ defmodule Nostrum.Struct.Channel do
         }
 
   @typedoc """
-  A `Nostrum.Struct.Channel` that represents a voice channel in a guild.
+  A `Nostrum.Struct.Channel` that represents a voice channel in a guild
   """
   @type guild_voice_channel :: %__MODULE__{
           id: id,
@@ -192,7 +185,7 @@ defmodule Nostrum.Struct.Channel do
         }
 
   @typedoc """
-  A `Nostrum.Struct.Channel` that represents a group DM channel.
+  A `Nostrum.Struct.Channel` that represents a group DM channel
   """
   @type group_dm_channel :: %__MODULE__{
           id: id,
@@ -215,7 +208,7 @@ defmodule Nostrum.Struct.Channel do
         }
 
   @typedoc """
-  A `Nostrum.Struct.Channel` that represents a channel category in a guild.
+  A `Nostrum.Struct.Channel` that represents a channel category in a guild
   """
   @type channel_category :: %__MODULE__{
           id: id,
@@ -238,7 +231,7 @@ defmodule Nostrum.Struct.Channel do
         }
 
   @typedoc """
-  A `Nostrum.Struct.Channel` that represents a channel mention in a message.
+  A `Nostrum.Struct.Channel` that represents a channel mention in a message
   """
   @type channel_mention :: %__MODULE__{
           id: id,
@@ -247,7 +240,7 @@ defmodule Nostrum.Struct.Channel do
           name: name
         }
   @typedoc """
-  A `Nostrum.Struct.Channel` that represents a channel in a guild.
+  A `Nostrum.Struct.Channel` that represents a channel in a guild
   """
   @type guild_channel ::
           guild_text_channel
@@ -255,7 +248,7 @@ defmodule Nostrum.Struct.Channel do
           | channel_category
 
   @typedoc """
-  A `Nostrum.Struct.Channel` that represents a text channel.
+  A `Nostrum.Struct.Channel` that represents a text channel
   """
   @type text_channel ::
           guild_text_channel
@@ -263,7 +256,7 @@ defmodule Nostrum.Struct.Channel do
           | group_dm_channel
 
   @typedoc """
-  A `Nostrum.Struct.Channel` that represents a voice channel.
+  A `Nostrum.Struct.Channel` that represents a voice channel
   """
   @type voice_channel :: guild_voice_channel
 
@@ -275,7 +268,7 @@ defmodule Nostrum.Struct.Channel do
           | channel_category
 
   @doc ~S"""
-  Formats a `Nostrum.Struct.Channel` into a mention.
+  Formats a `Nostrum.Struct.Channel` into a mention
 
   ## Examples
 
@@ -287,13 +280,6 @@ defmodule Nostrum.Struct.Channel do
   """
   @spec mention(t) :: String.t()
   def mention(%__MODULE__{id: id}), do: "<##{id}>"
-
-  @doc false
-  def p_encode do
-    %__MODULE__{
-      permission_overwrites: [Overwrite.p_encode()]
-    }
-  end
 
   @doc false
   def to_struct(map) do
