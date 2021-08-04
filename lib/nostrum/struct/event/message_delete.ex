@@ -36,7 +36,7 @@ defmodule Nostrum.Struct.Event.MessageDelete do
       id: map["id"],
       channel_id: map["channel_id"],
       # https://github.com/discord/discord-api-docs/issues/296
-      guild_id: map.guild_id
+      guild_id: map[:guild_id]
     }
   end
 end
