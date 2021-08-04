@@ -175,6 +175,7 @@ defmodule Nostrum.Struct.Message do
   @typedoc """
   The message associated with the `:message_reference`
 
+  This field is only returned for messages with a `type: 19` (Reply). If the message is a reply but the`:referenced_message` field is not present, the backend did not attempt to fetch the message that was being replied to,so its state is unknown. If the field exists but is `nil`, the referenced message was deleted.
   """
   @type referenced_message :: __MODULE__.t() | nil
 
@@ -213,8 +214,6 @@ defmodule Nostrum.Struct.Message do
           type: type,
           webhook_id: webhook_id
         }
-
-  @doc false
 
   @doc false
   def to_struct(map) do
