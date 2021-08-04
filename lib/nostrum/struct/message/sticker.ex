@@ -1,6 +1,8 @@
 defmodule Nostrum.Struct.Message.Sticker do
   @moduledoc """
-  Struct representing a Discord message.
+  A `Nostrum.Struct.Message.Sticker` represents a sticker that can be sent inside a `Nostrum.Struct.Message`.
+
+  More information can be found on the [Discord API Sticker Object Documentation.](https://discord.com/developers/docs/resources/sticker#sticker-object-sticker-structure)
   """
 
   alias Nostrum.Struct.{Guild, User}
@@ -21,70 +23,66 @@ defmodule Nostrum.Struct.Message.Sticker do
   ]
 
   @typedoc """
-  	id of the sticker
+  Id of the sticker
   """
   @type id :: Snowflake.t()
 
   @typedoc """
-  for standard stickers, id of the pack the sticker is from
+  Id of the pack the sticker is from
   """
   @type pack_id :: Snowflake.t()
 
   @typedoc """
-  name of the sticker
+  Name of the sticker
   """
   @type name :: String.t() | nil
 
   @typedoc """
-  	description of the sticker
+  Description of the sticker
   """
   @type description :: String.t() | nil
 
   @typedoc """
-  for guild stickers, the Discord name of a unicode emoji representing the sticker's expression. for standard stickers, a comma-separated list of related expressions.
+  Discord name of a unicode emoji representing the sticker's expression. for standard stickers, a comma-separated list of related expressions.
   """
   @type tags :: String.t() | nil
 
   @typedoc """
-  Sticker Types:
+  [Discord API Sticker Object Type Documentation](https://discord.com/developers/docs/resources/sticker#sticker-object-sticker-types)
 
-  TYPE     |	VALUE 	|DESCRIPTION
-  ---------|----------|-----------------------------------------------------------------------------
-  STANDARD |	1     	|an official sticker in a pack, part of Nitro or in a removed purchasable pack
-  GUILD    |	2     	|a sticker uploaded to a Boosted guild for the guild's members
+  - `1`  - `STANDARD`       an official sticker in a pack, part of Nitro or in a removed purchasable pack
+  - `2`  - `GUILD`          a sticker uploaded to a Boosted guild for the guild's members
   """
-  @type type :: integer
+  @type type :: integer()
 
   @typedoc """
-  Sticker Format Types
+  [Discord API Sticker Object Format Type Documentation](https://discord.com/developers/docs/resources/sticker#sticker-object-sticker-format-types)
 
-  TYPE        | VALUE
-  ------------| ---------
-  PNG         | 1
-  APNG        | 2
-  LOTTIE      | 3
+  - `1`  - `PNG`
+  - `2`  - `APNG`
+  - `3`  - `LOTTIE`
   """
-  @type format_type :: integer
+  @type format_type :: integer()
 
   @typedoc """
-  whether this guild sticker can be used, may be false due to loss of Server Boosts
+  Whether this guild sticker can be used, may be false due to loss of Server Boosts
   """
   @type available :: boolean
 
   @typedoc """
-  id of the guild that owns this sticker
+  Id of the guild that owns this sticker
   """
   @type guild_id :: Guild.id() | nil
 
   @typedoc """
-  the user that uploaded the guild sticker
+  User that uploaded the guild sticker
   """
   @type user :: User.t()
 
   @typedoc """
-  the standard sticker's sort order within its pack
+  The sticker's sort order within its pack
   """
-  @type sort_value :: integer
+  @type sort_value :: integer()
 
   @type t :: %__MODULE__{
           id: id,
@@ -101,13 +99,6 @@ defmodule Nostrum.Struct.Message.Sticker do
         }
 
   @doc false
-  def p_encode do
-    %__MODULE__{
-      user: User.p_encode()
-    }
-  end
-
-  @doc false
   def to_struct(map) do
     new =
       map
@@ -115,7 +106,7 @@ defmodule Nostrum.Struct.Message.Sticker do
       |> Map.update(:id, nil, &Util.cast(&1, Snowflake))
       |> Map.update(:pack_id, nil, &Util.cast(&1, Snowflake))
       |> Map.update(:guild_id, nil, &Util.cast(&1, Snowflake))
-      |> Map.update(:user, nil, &Util.cast(&1, {:struct, Snowflake}))
+      |> Map.update(:user, nil, &Util.cast(&1, {:struct, User}))
 
     struct(__MODULE__, new)
   end
