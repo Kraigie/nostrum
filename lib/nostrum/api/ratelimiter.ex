@@ -147,7 +147,7 @@ defmodule Nostrum.Api.Ratelimiter do
         end
       end)
 
-    if String.ends_with?(endpoint, "/messages/_id") and method == "DELETE" do
+    if String.ends_with?(endpoint, "/messages/_id") and method == :delete do
       "delete:" <> endpoint
     else
       endpoint

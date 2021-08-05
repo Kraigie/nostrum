@@ -8,6 +8,12 @@ defmodule Nostrum.Api.Base do
   def request(conn, method, route, body, raw_headers, options) do
     full_route = "#{base_route()}#{route}"
     headers = process_request_headers(raw_headers)
+    # Convert method from atom to string for `:gun`
+    method =
+      method
+      |> Atom.to_string()
+      |> String.upcase()
+
     stream = :gun.request(conn, method, full_route, headers, process_request_body(body), options)
 
     case :gun.await(conn, stream) do
