@@ -163,6 +163,8 @@ defmodule Nostrum.Api do
     if sending a binary from memory
       * `:name` (string) - the name of the file
       * `:body` (string) - binary you wish to send
+    * `:files` - a list of files where each element is the same format as the `:file` option. If both
+    `:file` and `:files` are specified, `:file` will be prepended to the `:files` list.
     * `:embed` (`t:Nostrum.Struct.Embed.t/0`) - embedded rich content
     * `:allowed_mentions` - See "Allowed mentions" below
     * `:message_reference` (`map`) - See "Message references" below
@@ -242,6 +244,7 @@ defmodule Nostrum.Api do
 
     case options do
       %{file: _} -> create_message_with_multipart(channel_id, options)
+      %{files: _} -> create_message_with_multipart(channel_id, options)
       _ -> create_message_with_json(channel_id, options)
     end
   end
@@ -249,10 +252,28 @@ defmodule Nostrum.Api do
   def create_message(channel_id, content) when is_snowflake(channel_id) and is_binary(content),
     do: create_message_with_json(channel_id, %{content: content})
 
+  # If both `:file` and `:files`, move `:file` to existing `:files` list
+  defp create_message_with_multipart(channel_id, %{file: file, files: files} = options) do
+    options =
+      %{options | files: [file | files]}
+      |> Map.delete(:file)
+
+    create_message_with_multipart(channel_id, options)
+  end
+
+  # If only one file, move it to new list with `:files` key
   defp create_message_with_multipart(channel_id, %{file: file} = options) do
+    options =
+      %{options | files: [file]}
+      |> Map.delete(:file)
+
+    create_message_with_multipart(channel_id, options)
+  end
+
+  defp create_message_with_multipart(channel_id, %{files: files} = options) do
     payload_json =
       options
-      |> Map.delete(:file)
+      |> Map.delete(:files)
       |> Poison.encode!()
 
     boundary = generate_boundary()
@@ -260,7 +281,7 @@ defmodule Nostrum.Api do
     request = %{
       method: :post,
       route: Constants.channel_messages(channel_id),
-      body: create_multipart(file, payload_json, boundary),
+      body: create_multipart(files, payload_json, boundary),
       options: %{},
       headers: [
         {"content-type", "multipart/form-data; boundary=#{boundary}"}
@@ -3334,34 +3355,35 @@ defmodule Nostrum.Api do
     end
   end
 
-  defp create_multipart(file, json, boundary) do
-    {:multipart, create_multipart_body(file, json, boundary)}
+  defp create_multipart(files, json, boundary) do
+    {:multipart, create_multipart_body(files, json, boundary)}
   end
 
-  defp create_multipart(body, boundary) do
-    {:multipart, create_multipart_body(body, boundary)}
+  defp create_multipart(options, boundary) do
+    {:multipart, create_multipart_body(options, boundary)}
   end
 
-  defp create_multipart_body(file, json, boundary) do
-    {body, name} = get_file_contents(file)
+  @crlf "\r\n"
 
-    file_mime = MIME.from_path(name)
-    file_size = byte_size(body)
+  defp create_multipart_body(files, json, boundary) do
     json_mime = MIME.type("json")
     json_size = byte_size(json)
-    crlf = "\r\n"
 
-    ~s|--#{boundary}#{crlf}| <>
-      ~s|content-length: #{file_size}#{crlf}| <>
-      ~s|content-type: #{file_mime}#{crlf}| <>
-      ~s|content-disposition: form-data; name="file"; filename="#{name}"#{crlf}#{crlf}| <>
-      body <>
-      ~s|#{crlf}--#{boundary}#{crlf}| <>
-      ~s|content-length: #{json_size}#{crlf}| <>
-      ~s|content-type: #{json_mime}#{crlf}| <>
-      ~s|content-disposition: form-data; name="payload_json"#{crlf}#{crlf}| <>
+    file_parts =
+      files
+      |> Enum.with_index(1)
+      |> Enum.reduce(~s|--#{boundary}#{@crlf}|, fn {f, i}, acc ->
+        acc <>
+          create_file_part_for_multipart(f, i) <>
+          ~s|#{@crlf}--#{boundary}#{@crlf}|
+      end)
+
+    file_parts <>
+      ~s|content-length: #{json_size}#{@crlf}| <>
+      ~s|content-type: #{json_mime}#{@crlf}| <>
+      ~s|content-disposition: form-data; name="payload_json"#{@crlf}#{@crlf}| <>
       json <>
-      ~s|#{crlf}--#{boundary}--#{crlf}|
+      ~s|#{@crlf}--#{boundary}--#{@crlf}|
   end
 
   defp create_multipart_body(%{content: content, tts: tts, file: file}, boundary) do
@@ -3369,23 +3391,34 @@ defmodule Nostrum.Api do
     file_size = byte_size(content)
     tts_mime = MIME.type("")
     tts_size = byte_size(tts)
-    crlf = "\r\n"
 
-    ~s|--#{boundary}#{crlf}| <>
-      ~s|content-length: #{file_size}#{crlf}| <>
-      ~s|content-type: #{file_mime}#{crlf}| <>
-      ~s|content-disposition: form-data; name="file"; filename="#{file}"#{crlf}#{crlf}| <>
+    ~s|--#{boundary}#{@crlf}| <>
+      ~s|content-length: #{file_size}#{@crlf}| <>
+      ~s|content-type: #{file_mime}#{@crlf}| <>
+      ~s|content-disposition: form-data; name="file"; filename="#{file}"#{@crlf}#{@crlf}| <>
       content <>
-      ~s|#{crlf}--#{boundary}#{crlf}| <>
-      ~s|content-length: #{tts_size}#{crlf}| <>
-      ~s|content-type: #{tts_mime}#{crlf}| <>
-      ~s|content-disposition: form-data; name="tts"#{crlf}#{crlf}| <>
+      ~s|#{@crlf}--#{boundary}#{@crlf}| <>
+      ~s|content-length: #{tts_size}#{@crlf}| <>
+      ~s|content-type: #{tts_mime}#{@crlf}| <>
+      ~s|content-disposition: form-data; name="tts"#{@crlf}#{@crlf}| <>
       tts <>
-      ~s|#{crlf}--#{boundary}--#{crlf}|
+      ~s|#{@crlf}--#{boundary}--#{@crlf}|
+  end
+
+  def create_file_part_for_multipart(file, index) do
+    {body, name} = get_file_contents(file)
+
+    file_mime = MIME.from_path(name)
+    file_size = byte_size(body)
+
+    ~s|content-length: #{file_size}#{@crlf}| <>
+      ~s|content-type: #{file_mime}#{@crlf}| <>
+      ~s|content-disposition: form-data; name="file#{index}"; filename="#{name}"#{@crlf}#{@crlf}| <>
+      body
   end
 
   defp get_file_contents(path) when is_binary(path) do
-    {File.read!(path), path}
+    {File.read!(path), Path.basename(path)}
   end
 
   defp get_file_contents(%{body: body, name: name}), do: {body, name}
