@@ -257,16 +257,15 @@ defmodule Nostrum.Api do
 
     boundary = generate_boundary()
 
-    request =
-      %{
-        method: :post,
-        route: Constants.channel_messages(channel_id),
-        body: create_multipart(file, payload_json, boundary),
-        options: %{},
-        headers: [
-          {"content-type", "multipart/form-data; boundary=#{boundary}"}
-        ]
-      }
+    request = %{
+      method: :post,
+      route: Constants.channel_messages(channel_id),
+      body: create_multipart(file, payload_json, boundary),
+      options: %{},
+      headers: [
+        {"content-type", "multipart/form-data; boundary=#{boundary}"}
+      ]
+    }
 
     GenServer.call(Ratelimiter, {:queue, request, nil}, :infinity)
     |> handle_request_with_decode({:struct, Message})
