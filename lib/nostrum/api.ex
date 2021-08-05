@@ -3267,22 +3267,17 @@ defmodule Nostrum.Api do
   end
 
   def request_multipart(method, route, body, options \\ %{}) do
+    boundary = generate_boundary()
+
     request = %{
       method: method,
       route: route,
       # Hello :gun test suite :^)
-      body: """
-      --craigrocks\r\n
-      Content-Disposition: form-data; name="file"; filename="#{body.content}"\r\n
-      \r\n
-      --craigrocks\r\n
-      Content-Disposition: form-data; name="tts"\r\n
-      \r\n
-      #{body.tts}\r\n
-      --craigrocks--
-      """,
+      body: create_multipart(body, boundary),
       options: options,
-      headers: [{"content-type", "multipart/form-data;boundary=craigrocks"}]
+      headers: [
+        {"content-type", "multipart/form-data; boundary=#{boundary}"}
+      ]
     }
 
     GenServer.call(Ratelimiter, {:queue, request, nil}, :infinity)
@@ -3342,6 +3337,10 @@ defmodule Nostrum.Api do
     {:multipart, create_multipart_body(file, json, boundary)}
   end
 
+  defp create_multipart(body, boundary) do
+    {:multipart, create_multipart_body(body, boundary)}
+  end
+
   defp create_multipart_body(file, json, boundary) do
     {body, name} = get_file_contents(file)
 
@@ -3361,6 +3360,26 @@ defmodule Nostrum.Api do
       ~s|content-type: #{json_mime}#{crlf}| <>
       ~s|content-disposition: form-data; name="payload_json"#{crlf}#{crlf}| <>
       json <>
+      ~s|#{crlf}--#{boundary}--#{crlf}|
+  end
+
+  defp create_multipart_body(%{content: content, tts: tts, file: file}, boundary) do
+    file_mime = MIME.from_path(file)
+    file_size = byte_size(content)
+    tts_mime = MIME.type("")
+    tts_size = byte_size(tts)
+    crlf = "\r\n"
+
+    ~s|--#{boundary}#{crlf}| <>
+      ~s|content-length: #{file_size}#{crlf}| <>
+      ~s|content-type: #{file_mime}#{crlf}| <>
+      ~s|content-disposition: form-data; name="file"; filename="#{file}"#{crlf}#{crlf}| <>
+      content <>
+      ~s|#{crlf}--#{boundary}#{crlf}| <>
+      ~s|content-length: #{tts_size}#{crlf}| <>
+      ~s|content-type: #{tts_mime}#{crlf}| <>
+      ~s|content-disposition: form-data; name="tts"#{crlf}#{crlf}| <>
+      tts <>
       ~s|#{crlf}--#{boundary}--#{crlf}|
   end
 
