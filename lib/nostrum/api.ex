@@ -267,7 +267,6 @@ defmodule Nostrum.Api do
           {"content-type", "multipart/form-data; boundary=#{boundary}"}
         ]
       }
-      |> IO.inspect(label: "request")
 
     GenServer.call(Ratelimiter, {:queue, request, nil}, :infinity)
     |> handle_request_with_decode({:struct, Message})
