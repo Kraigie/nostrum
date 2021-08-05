@@ -255,39 +255,22 @@ defmodule Nostrum.Api do
       |> Map.delete(:file)
       |> Poison.encode!()
 
+    boundary = generate_boundary()
+
     request =
       %{
         method: "POST",
         route: Constants.channel_messages(channel_id),
-        body:
-          "--craig\r\n" <>
-            "Content-Disposition: form-data; name=\"payload_json\"\r\n" <>
-            "Content-Type: application/json\r\n" <>
-            "\r\n" <>
-            "#{payload_json}\r\n" <>
-            "--craig\r\n" <>
-            "#{create_multipart(file)}\r\n" <>
-            "--craig--",
+        body: create_multipart(file, payload_json, boundary),
         options: %{},
         headers: [
-          {"content-type", "multipart/form-data; boundary=craig"}
+          {"content-type", "multipart/form-data; boundary=#{boundary}"}
         ]
       }
       |> IO.inspect(label: "request")
 
     GenServer.call(Ratelimiter, {:queue, request, nil}, :infinity)
     |> handle_request_with_decode({:struct, Message})
-  end
-
-  def create_multipart(path) when is_binary(path),
-    do: create_multipart_file(path, File.read!(path))
-
-  def create_multipart(%{name: name, body: body}), do: create_multipart_file(name, body)
-
-  defp create_multipart_file(name, contents) do
-    ~s|Content-Disposition: form-data; name="file"; filename="#{name}"\r\n| <>
-    ~s|Content-Type: application/octet-stream\r\n\r\n| <>
-      contents
   end
 
   defp create_message_with_json(channel_id, options) do
@@ -3353,6 +3336,44 @@ defmodule Nostrum.Api do
       _ ->
         Map.delete(options, :allowed_mentions)
     end
+  end
+
+  defp create_multipart(file, json, boundary) do
+    {:multipart, create_multipart_body(file, json, boundary)}
+  end
+
+  defp create_multipart_body(file, json, boundary) do
+    {body, name} = get_file_contents(file)
+
+    file_mime = MIME.from_path(name)
+    file_size = byte_size(body)
+    json_mime = MIME.type("json")
+    json_size = byte_size(json)
+    crlf = "\r\n"
+
+    ~s|--#{boundary}#{crlf}| <>
+      ~s|content-length: #{file_size}#{crlf}| <>
+      ~s|content-type: #{file_mime}#{crlf}| <>
+      ~s|content-disposition: form-data; name="file"; filename="#{name}"#{crlf}#{crlf}| <>
+      body <>
+      ~s|#{crlf}--#{boundary}#{crlf}| <>
+      ~s|content-length: #{json_size}#{crlf}| <>
+      ~s|content-type: #{json_mime}#{crlf}| <>
+      ~s|content-disposition: form-data; name="payload_json"#{crlf}#{crlf}| <>
+      json <>
+      ~s|#{crlf}--#{boundary}--#{crlf}|
+  end
+
+  defp get_file_contents(path) when is_binary(path) do
+    {File.read!(path), path}
+  end
+
+  defp get_file_contents(%{body: body, name: name}), do: {body, name}
+
+  defp generate_boundary do
+    String.duplicate("-", 20) <>
+      "KraigieNostrumCat_" <>
+      Base.encode16(:crypto.strong_rand_bytes(10))
   end
 
   defp parse_allowed_mentions(:none), do: %{parse: []}
