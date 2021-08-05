@@ -255,43 +255,24 @@ defmodule Nostrum.Api do
       |> Map.delete(:file)
       |> Poison.encode!()
 
-    request =
-      %{
-        method: "POST",
-        route: Constants.channel_messages(channel_id),
-        body:
-          "--craig\r\n" <>
-            "Content-Disposition: form-data; name=\"payload_json\"\r\n" <>
-            "Content-Type: application/json\r\n" <>
-            "\r\n" <>
-            "#{payload_json}\r\n" <>
-            "--craig\r\n" <>
-            "#{create_multipart(file)}\r\n" <>
-            "--craig--",
-        options: %{},
-        headers: [
-          {"content-type", "multipart/form-data; boundary=craig"}
-        ]
-      }
-      |> IO.inspect(label: "request")
+    boundary = generate_boundary()
+
+    request = %{
+      method: :post,
+      route: Constants.channel_messages(channel_id),
+      body: create_multipart(file, payload_json, boundary),
+      options: %{},
+      headers: [
+        {"content-type", "multipart/form-data; boundary=#{boundary}"}
+      ]
+    }
 
     GenServer.call(Ratelimiter, {:queue, request, nil}, :infinity)
     |> handle_request_with_decode({:struct, Message})
   end
 
-  def create_multipart(path) when is_binary(path),
-    do: create_multipart_file(path, File.read!(path))
-
-  def create_multipart(%{name: name, body: body}), do: create_multipart_file(name, body)
-
-  defp create_multipart_file(name, contents) do
-    ~s|Content-Disposition: form-data; name="file"; filename="#{name}"\r\n| <>
-    ~s|Content-Type: application/octet-stream\r\n\r\n| <>
-      contents
-  end
-
   defp create_message_with_json(channel_id, options) do
-    request("POST", Constants.channel_messages(channel_id), options)
+    request(:post, Constants.channel_messages(channel_id), options)
     |> handle_request_with_decode({:struct, Message})
   end
 
@@ -346,13 +327,13 @@ defmodule Nostrum.Api do
 
   def edit_message(channel_id, message_id, %{} = options)
       when is_snowflake(channel_id) and is_snowflake(message_id) do
-    request("PATCH", Constants.channel_message(channel_id, message_id), options)
+    request(:patch, Constants.channel_message(channel_id, message_id), options)
     |> handle_request_with_decode({:struct, Message})
   end
 
   def edit_message(channel_id, message_id, content)
       when is_snowflake(channel_id) and is_snowflake(message_id) and is_binary(content) do
-    request("PATCH", Constants.channel_message(channel_id, message_id), %{content: content})
+    request(:patch, Constants.channel_message(channel_id, message_id), %{content: content})
     |> handle_request_with_decode({:struct, Message})
   end
 
@@ -409,7 +390,7 @@ defmodule Nostrum.Api do
   @spec delete_message(Channel.id(), Message.id()) :: error | {:ok}
   def delete_message(channel_id, message_id)
       when is_snowflake(channel_id) and is_snowflake(message_id) do
-    request("DELETE", Constants.channel_message(channel_id, message_id))
+    request(:delete, Constants.channel_message(channel_id, message_id))
   end
 
   @doc ~S"""
@@ -461,7 +442,7 @@ defmodule Nostrum.Api do
     do: create_reaction(channel_id, message_id, Emoji.api_name(emoji))
 
   def create_reaction(channel_id, message_id, emoji_api_name) do
-    request("PUT", Constants.channel_reaction_me(channel_id, message_id, emoji_api_name))
+    request(:put, Constants.channel_reaction_me(channel_id, message_id, emoji_api_name))
   end
 
   @doc ~S"""
@@ -490,7 +471,7 @@ defmodule Nostrum.Api do
     do: delete_own_reaction(channel_id, message_id, Emoji.api_name(emoji))
 
   def delete_own_reaction(channel_id, message_id, emoji_api_name) do
-    request("DELETE", Constants.channel_reaction_me(channel_id, message_id, emoji_api_name))
+    request(:delete, Constants.channel_reaction_me(channel_id, message_id, emoji_api_name))
   end
 
   @doc ~S"""
@@ -519,7 +500,7 @@ defmodule Nostrum.Api do
     do: delete_user_reaction(channel_id, message_id, Emoji.api_name(emoji), user_id)
 
   def delete_user_reaction(channel_id, message_id, emoji_api_name, user_id) do
-    request("DELETE", Constants.channel_reaction(channel_id, message_id, emoji_api_name, user_id))
+    request(:delete, Constants.channel_reaction(channel_id, message_id, emoji_api_name, user_id))
   end
 
   @doc ~S"""
@@ -548,7 +529,7 @@ defmodule Nostrum.Api do
 
   def delete_reaction(channel_id, message_id, emoji_api_name) do
     request(
-      "DELETE",
+      :delete,
       Constants.channel_reactions_delete_emoji(channel_id, message_id, emoji_api_name)
     )
   end
@@ -578,7 +559,7 @@ defmodule Nostrum.Api do
     do: get_reactions(channel_id, message_id, Emoji.api_name(emoji))
 
   def get_reactions(channel_id, message_id, emoji_api_name) do
-    request("GET", Constants.channel_reactions_get(channel_id, message_id, emoji_api_name))
+    request(:get, Constants.channel_reactions_get(channel_id, message_id, emoji_api_name))
     |> handle_request_with_decode({:list, {:struct, User}})
   end
 
@@ -601,7 +582,7 @@ defmodule Nostrum.Api do
   """
   @spec delete_all_reactions(Channel.id(), Message.id()) :: error | {:ok}
   def delete_all_reactions(channel_id, message_id) do
-    request("DELETE", Constants.channel_reactions_delete(channel_id, message_id))
+    request(:delete, Constants.channel_reactions_delete(channel_id, message_id))
   end
 
   @doc ~S"""
@@ -627,7 +608,7 @@ defmodule Nostrum.Api do
   """
   @spec get_channel(Channel.id()) :: error | {:ok, Channel.t()}
   def get_channel(channel_id) when is_snowflake(channel_id) do
-    request("GET", Constants.channel(channel_id))
+    request(:get, Constants.channel(channel_id))
     |> handle_request_with_decode({:struct, Channel})
   end
 
@@ -689,7 +670,7 @@ defmodule Nostrum.Api do
 
   def modify_channel(channel_id, %{} = options, reason) when is_snowflake(channel_id) do
     %{
-      method: "PATCH",
+      method: :patch,
       route: Constants.channel(channel_id),
       body: options,
       options: %{},
@@ -731,7 +712,7 @@ defmodule Nostrum.Api do
   @spec delete_channel(Channel.id(), AuditLogEntry.reason()) :: error | {:ok, Channel.t()}
   def delete_channel(channel_id, reason \\ nil) when is_snowflake(channel_id) do
     %{
-      method: "DELETE",
+      method: :delete,
       route: Constants.channel(channel_id),
       body: "",
       options: %{},
@@ -807,7 +788,7 @@ defmodule Nostrum.Api do
         non_empty_locator -> [{:limit, limit}, non_empty_locator]
       end
 
-    request("GET", Constants.channel_messages(channel_id), "", params: qs_params)
+    request(:get, Constants.channel_messages(channel_id), "", params: qs_params)
     |> handle_request_with_decode({:list, {:struct, Message}})
   end
 
@@ -836,7 +817,7 @@ defmodule Nostrum.Api do
   @spec get_channel_message(Channel.id(), Message.id()) :: error | {:ok, Message.t()}
   def get_channel_message(channel_id, message_id)
       when is_snowflake(channel_id) and is_snowflake(message_id) do
-    request("GET", Constants.channel_message(channel_id, message_id))
+    request(:get, Constants.channel_message(channel_id, message_id))
     |> handle_request_with_decode({:struct, Message})
   end
 
@@ -894,7 +875,7 @@ defmodule Nostrum.Api do
     |> Stream.chunk_every(100)
     |> Stream.map(fn message_chunk ->
       request(
-        "POST",
+        :post,
         Constants.channel_bulk_delete(channel_id),
         %{messages: message_chunk}
       )
@@ -941,7 +922,7 @@ defmodule Nostrum.Api do
         ) :: error | {:ok}
   def edit_channel_permissions(channel_id, overwrite_id, permission_info, reason \\ nil) do
     request(%{
-      method: "PUT",
+      method: :put,
       route: Constants.channel_permission(channel_id, overwrite_id),
       body: permission_info,
       options: %{},
@@ -976,7 +957,7 @@ defmodule Nostrum.Api do
   @spec delete_channel_permissions(integer, integer, AuditLogEntry.reason()) :: error | {:ok}
   def delete_channel_permissions(channel_id, overwrite_id, reason \\ nil) do
     request(%{
-      method: "DELETE",
+      method: :delete,
       route: Constants.channel_permission(channel_id, overwrite_id),
       body: "",
       options: %{},
@@ -1001,7 +982,7 @@ defmodule Nostrum.Api do
   """
   @spec get_channel_invites(Channel.id()) :: error | {:ok, [Invite.detailed_invite()]}
   def get_channel_invites(channel_id) when is_snowflake(channel_id) do
-    request("GET", Constants.channel_invites(channel_id))
+    request(:get, Constants.channel_invites(channel_id))
     |> handle_request_with_decode({:list, {:struct, Invite}})
   end
 
@@ -1054,7 +1035,7 @@ defmodule Nostrum.Api do
   def create_channel_invite(channel_id, options, reason)
       when is_snowflake(channel_id) and is_map(options) do
     %{
-      method: "POST",
+      method: :post,
       route: Constants.channel_invites(channel_id),
       body: options,
       options: %{},
@@ -1084,7 +1065,7 @@ defmodule Nostrum.Api do
   """
   @spec start_typing(integer) :: error | {:ok}
   def start_typing(channel_id) do
-    request("POST", Constants.channel_typing(channel_id))
+    request(:post, Constants.channel_typing(channel_id))
   end
 
   @doc """
@@ -1111,7 +1092,7 @@ defmodule Nostrum.Api do
   """
   @spec get_pinned_messages(Channel.id()) :: error | {:ok, [Message.t()]}
   def get_pinned_messages(channel_id) when is_snowflake(channel_id) do
-    request("GET", Constants.channel_pins(channel_id))
+    request(:get, Constants.channel_pins(channel_id))
     |> handle_request_with_decode({:list, {:struct, Message}})
   end
 
@@ -1143,7 +1124,7 @@ defmodule Nostrum.Api do
   @spec add_pinned_channel_message(Channel.id(), Message.id()) :: error | {:ok}
   def add_pinned_channel_message(channel_id, message_id)
       when is_snowflake(channel_id) and is_snowflake(message_id) do
-    request("PUT", Constants.channel_pin(channel_id, message_id))
+    request(:put, Constants.channel_pin(channel_id, message_id))
   end
 
   @doc ~S"""
@@ -1168,7 +1149,7 @@ defmodule Nostrum.Api do
   @spec delete_pinned_channel_message(Channel.id(), Message.id()) :: error | {:ok}
   def delete_pinned_channel_message(channel_id, message_id)
       when is_snowflake(channel_id) and is_snowflake(message_id) do
-    request("DELETE", Constants.channel_pin(channel_id, message_id))
+    request(:delete, Constants.channel_pin(channel_id, message_id))
   end
 
   @doc ~S"""
@@ -1189,7 +1170,7 @@ defmodule Nostrum.Api do
   """
   @spec list_guild_emojis(Guild.id()) :: error | {:ok, [Emoji.t()]}
   def list_guild_emojis(guild_id) do
-    request("GET", Constants.guild_emojis(guild_id))
+    request(:get, Constants.guild_emojis(guild_id))
     |> handle_request_with_decode({:list, {:struct, Emoji}})
   end
 
@@ -1211,7 +1192,7 @@ defmodule Nostrum.Api do
   """
   @spec get_guild_emoji(Guild.id(), Emoji.id()) :: error | {:ok, Emoji.t()}
   def get_guild_emoji(guild_id, emoji_id) do
-    request("GET", Constants.guild_emoji(guild_id, emoji_id))
+    request(:get, Constants.guild_emoji(guild_id, emoji_id))
     |> handle_request_with_decode({:struct, Emoji})
   end
 
@@ -1260,7 +1241,7 @@ defmodule Nostrum.Api do
 
   def create_guild_emoji(guild_id, %{} = options, reason) do
     %{
-      method: "POST",
+      method: :post,
       route: Constants.guild_emojis(guild_id),
       body: options,
       options: %{},
@@ -1309,7 +1290,7 @@ defmodule Nostrum.Api do
 
   def modify_guild_emoji(guild_id, emoji_id, %{} = options, reason) do
     %{
-      method: "PATCH",
+      method: :patch,
       route: Constants.guild_emoji(guild_id, emoji_id),
       body: options,
       options: %{},
@@ -1343,7 +1324,7 @@ defmodule Nostrum.Api do
   def delete_guild_emoji(guild_id, emoji_id, reason \\ nil),
     do:
       request(%{
-        method: "DELETE",
+        method: :delete,
         route: Constants.guild_emoji(guild_id, emoji_id),
         body: "",
         options: %{},
@@ -1371,7 +1352,7 @@ defmodule Nostrum.Api do
   """
   @spec get_guild_audit_log(Guild.id(), options) :: {:ok, AuditLog.t()} | error
   def get_guild_audit_log(guild_id, options \\ []) do
-    request("GET", Constants.guild_audit_logs(guild_id), "", params: options)
+    request(:get, Constants.guild_audit_logs(guild_id), "", params: options)
     |> handle_request_with_decode({:struct, AuditLog})
   end
 
@@ -1389,7 +1370,7 @@ defmodule Nostrum.Api do
   """
   @spec get_guild(Guild.id()) :: error | {:ok, Guild.rest_guild()}
   def get_guild(guild_id) when is_snowflake(guild_id) do
-    request("GET", Constants.guild(guild_id))
+    request(:get, Constants.guild(guild_id))
     |> handle_request_with_decode({:struct, Guild})
   end
 
@@ -1452,7 +1433,7 @@ defmodule Nostrum.Api do
     options = Map.new(options)
 
     %{
-      method: "PATCH",
+      method: :patch,
       route: Constants.guild(guild_id),
       body: options,
       options: %{},
@@ -1488,7 +1469,7 @@ defmodule Nostrum.Api do
   """
   @spec delete_guild(Guild.id()) :: error | {:ok}
   def delete_guild(guild_id) when is_snowflake(guild_id) do
-    request("DELETE", Constants.guild(guild_id))
+    request(:delete, Constants.guild(guild_id))
   end
 
   @doc ~S"""
@@ -1514,7 +1495,7 @@ defmodule Nostrum.Api do
   """
   @spec get_guild_channels(Guild.id()) :: error | {:ok, [Channel.guild_channel()]}
   def get_guild_channels(guild_id) when is_snowflake(guild_id) do
-    request("GET", Constants.guild_channels(guild_id))
+    request(:get, Constants.guild_channels(guild_id))
     |> handle_request_with_decode({:list, {:struct, Channel}})
   end
 
@@ -1563,7 +1544,7 @@ defmodule Nostrum.Api do
     do: create_guild_channel(guild_id, Map.new(options))
 
   def create_guild_channel(guild_id, %{} = options) when is_snowflake(guild_id) do
-    request("POST", Constants.guild_channels(guild_id), options)
+    request(:post, Constants.guild_channels(guild_id), options)
     |> handle_request_with_decode({:struct, Channel})
   end
 
@@ -1597,7 +1578,7 @@ defmodule Nostrum.Api do
           error | {:ok}
   def modify_guild_channel_positions(guild_id, positions)
       when is_snowflake(guild_id) and is_list(positions) do
-    request("PATCH", Constants.guild_channels(guild_id), positions)
+    request(:patch, Constants.guild_channels(guild_id), positions)
   end
 
   @doc ~S"""
@@ -1623,7 +1604,7 @@ defmodule Nostrum.Api do
   """
   @spec get_guild_member(Guild.id(), User.id()) :: error | {:ok, Member.t()}
   def get_guild_member(guild_id, user_id) when is_snowflake(guild_id) and is_snowflake(user_id) do
-    request("GET", Constants.guild_member(guild_id, user_id))
+    request(:get, Constants.guild_member(guild_id, user_id))
     |> handle_request_with_decode({:struct, Member})
   end
 
@@ -1659,7 +1640,7 @@ defmodule Nostrum.Api do
     do: list_guild_members(guild_id, Map.new(options))
 
   def list_guild_members(guild_id, %{} = options) when is_snowflake(guild_id) do
-    request("GET", Constants.guild_members(guild_id), "", params: options)
+    request(:get, Constants.guild_members(guild_id), "", params: options)
     |> handle_request_with_decode({:list, {:struct, Member}})
   end
 
@@ -1713,7 +1694,7 @@ defmodule Nostrum.Api do
 
   def add_guild_member(guild_id, user_id, %{} = options)
       when is_snowflake(guild_id) and is_snowflake(user_id) do
-    request("PUT", Constants.guild_member(guild_id, user_id), options)
+    request(:put, Constants.guild_member(guild_id, user_id), options)
     |> handle_request_with_decode({:struct, Member})
   end
 
@@ -1758,7 +1739,7 @@ defmodule Nostrum.Api do
 
   def modify_guild_member(guild_id, user_id, %{} = options)
       when is_snowflake(guild_id) and is_snowflake(user_id) do
-    request("PATCH", Constants.guild_member(guild_id, user_id), options)
+    request(:patch, Constants.guild_member(guild_id, user_id), options)
   end
 
   @doc """
@@ -1788,7 +1769,7 @@ defmodule Nostrum.Api do
   """
   @spec modify_current_user_nick(Guild.id(), options) :: error | {:ok, %{nick: String.t()}}
   def modify_current_user_nick(guild_id, options \\ %{}) do
-    request("PATCH", Constants.guild_me_nick(guild_id), options)
+    request(:patch, Constants.guild_me_nick(guild_id), options)
     |> handle_request_with_decode()
   end
 
@@ -1811,7 +1792,7 @@ defmodule Nostrum.Api do
   @spec add_guild_member_role(integer, integer, integer, AuditLogEntry.reason()) :: error | {:ok}
   def add_guild_member_role(guild_id, user_id, role_id, reason \\ nil) do
     request(%{
-      method: "PUT",
+      method: :put,
       route: Constants.guild_member_role(guild_id, user_id, role_id),
       body: "",
       options: %{},
@@ -1830,7 +1811,7 @@ defmodule Nostrum.Api do
           error | {:ok}
   def remove_guild_member_role(guild_id, user_id, role_id, reason \\ nil) do
     request(%{
-      method: "DELETE",
+      method: :delete,
       route: Constants.guild_member_role(guild_id, user_id, role_id),
       body: "",
       options: %{},
@@ -1859,7 +1840,7 @@ defmodule Nostrum.Api do
   def remove_guild_member(guild_id, user_id, reason \\ nil)
       when is_snowflake(guild_id) and is_snowflake(user_id) do
     request(%{
-      method: "DELETE",
+      method: :delete,
       route: Constants.guild_member(guild_id, user_id),
       body: "",
       options: %{},
@@ -1882,7 +1863,7 @@ defmodule Nostrum.Api do
   @doc since: "0.5.0"
   @spec get_guild_ban(integer, integer) :: error | {:ok, Guild.Ban.t()}
   def get_guild_ban(guild_id, user_id) do
-    request("GET", Constants.guild_ban(guild_id, user_id))
+    request(:get, Constants.guild_ban(guild_id, user_id))
     |> handle_request_with_decode({:struct, Guild.Ban})
   end
 
@@ -1893,7 +1874,7 @@ defmodule Nostrum.Api do
   """
   @spec get_guild_bans(integer) :: error | {:ok, [Nostrum.Struct.User.t()]}
   def get_guild_bans(guild_id) do
-    request("GET", Constants.guild_bans(guild_id))
+    request(:get, Constants.guild_bans(guild_id))
     |> handle_request_with_decode
   end
 
@@ -1906,7 +1887,7 @@ defmodule Nostrum.Api do
   @spec create_guild_ban(integer, integer, integer, AuditLogEntry.reason()) :: error | {:ok}
   def create_guild_ban(guild_id, user_id, days_to_delete, reason \\ nil) do
     request(%{
-      method: "PUT",
+      method: :put,
       route: Constants.guild_ban(guild_id, user_id),
       body: %{"delete-message-days": days_to_delete},
       options: %{},
@@ -1923,7 +1904,7 @@ defmodule Nostrum.Api do
   @spec remove_guild_ban(integer, integer, AuditLogEntry.reason()) :: error | {:ok}
   def remove_guild_ban(guild_id, user_id, reason \\ nil) do
     request(%{
-      method: "DELETE",
+      method: :delete,
       route: Constants.guild_ban(guild_id, user_id),
       body: "",
       options: %{},
@@ -1944,7 +1925,7 @@ defmodule Nostrum.Api do
   """
   @spec get_guild_roles(Guild.id()) :: error | {:ok, [Role.t()]}
   def get_guild_roles(guild_id) when is_snowflake(guild_id) do
-    request("GET", Constants.guild_roles(guild_id))
+    request(:get, Constants.guild_roles(guild_id))
     |> handle_request_with_decode({:list, {:struct, Role}})
   end
 
@@ -1989,7 +1970,7 @@ defmodule Nostrum.Api do
 
   def create_guild_role(guild_id, %{} = options, reason) when is_snowflake(guild_id) do
     %{
-      method: "POST",
+      method: :post,
       route: Constants.guild_roles(guild_id),
       body: options,
       options: %{},
@@ -2032,7 +2013,7 @@ defmodule Nostrum.Api do
   def modify_guild_role_positions(guild_id, positions, reason \\ nil)
       when is_snowflake(guild_id) and is_list(positions) do
     %{
-      method: "PATCH",
+      method: :patch,
       route: Constants.guild_roles(guild_id),
       body: positions,
       options: %{},
@@ -2089,7 +2070,7 @@ defmodule Nostrum.Api do
   def modify_guild_role(guild_id, role_id, %{} = options, reason)
       when is_snowflake(guild_id) and is_snowflake(role_id) do
     %{
-      method: "PATCH",
+      method: :patch,
       route: Constants.guild_role(guild_id, role_id),
       body: options,
       options: %{},
@@ -2129,7 +2110,7 @@ defmodule Nostrum.Api do
   def delete_guild_role(guild_id, role_id, reason \\ nil)
       when is_snowflake(guild_id) and is_snowflake(role_id) do
     request(%{
-      method: "DELETE",
+      method: :delete,
       route: Constants.guild_role(guild_id, role_id),
       body: "",
       options: %{},
@@ -2162,7 +2143,7 @@ defmodule Nostrum.Api do
   """
   @spec get_guild_prune_count(Guild.id(), 1..30) :: error | {:ok, %{pruned: integer}}
   def get_guild_prune_count(guild_id, days) when is_snowflake(guild_id) and days in 1..30 do
-    request("GET", Constants.guild_prune(guild_id), "", params: [days: days])
+    request(:get, Constants.guild_prune(guild_id), "", params: [days: days])
     |> handle_request_with_decode
   end
 
@@ -2197,7 +2178,7 @@ defmodule Nostrum.Api do
   def begin_guild_prune(guild_id, days, reason \\ nil)
       when is_snowflake(guild_id) and days in 1..30 do
     %{
-      method: "POST",
+      method: :post,
       route: Constants.guild_prune(guild_id),
       body: "",
       options: [params: [days: days]],
@@ -2224,7 +2205,7 @@ defmodule Nostrum.Api do
   """
   @spec get_voice_region(integer) :: error | {:ok, [Nostrum.Struct.VoiceRegion.t()]}
   def get_voice_region(guild_id) do
-    request("GET", Constants.guild_voice_regions(guild_id))
+    request(:get, Constants.guild_voice_regions(guild_id))
     |> handle_request_with_decode
   end
 
@@ -2244,7 +2225,7 @@ defmodule Nostrum.Api do
   """
   @spec get_guild_invites(Guild.id()) :: error | {:ok, [Invite.detailed_invite()]}
   def get_guild_invites(guild_id) when is_snowflake(guild_id) do
-    request("GET", Constants.guild_invites(guild_id))
+    request(:get, Constants.guild_invites(guild_id))
     |> handle_request_with_decode({:list, {:struct, Invite}})
   end
 
@@ -2264,7 +2245,7 @@ defmodule Nostrum.Api do
   """
   @spec get_guild_integrations(integer) :: error | {:ok, [Nostrum.Struct.Guild.Integration.t()]}
   def get_guild_integrations(guild_id) do
-    request("GET", Constants.guild_integrations(guild_id))
+    request(:get, Constants.guild_integrations(guild_id))
     |> handle_request_with_decode
   end
 
@@ -2282,7 +2263,7 @@ defmodule Nostrum.Api do
           id: integer
         }) :: error | {:ok}
   def create_guild_integrations(guild_id, options) do
-    request("POST", Constants.guild_integrations(guild_id), options)
+    request(:post, Constants.guild_integrations(guild_id), options)
   end
 
   @doc """
@@ -2301,7 +2282,7 @@ defmodule Nostrum.Api do
           enable_emoticons: boolean
         }) :: error | {:ok}
   def modify_guild_integrations(guild_id, integration_id, options) do
-    request("PATCH", Constants.guild_integration(guild_id, integration_id), options)
+    request(:patch, Constants.guild_integration(guild_id, integration_id), options)
   end
 
   @doc """
@@ -2311,7 +2292,7 @@ defmodule Nostrum.Api do
   """
   @spec delete_guild_integrations(integer, integer) :: error | {:ok}
   def delete_guild_integrations(guild_id, integration_id) do
-    request("DELETE", Constants.guild_integration(guild_id, integration_id))
+    request(:delete, Constants.guild_integration(guild_id, integration_id))
   end
 
   @doc """
@@ -2321,7 +2302,7 @@ defmodule Nostrum.Api do
   """
   @spec sync_guild_integrations(integer, integer) :: error | {:ok}
   def sync_guild_integrations(guild_id, integration_id) do
-    request("POST", Constants.guild_integration_sync(guild_id, integration_id))
+    request(:post, Constants.guild_integration_sync(guild_id, integration_id))
   end
 
   @doc """
@@ -2329,7 +2310,7 @@ defmodule Nostrum.Api do
   """
   @spec get_guild_embed(integer) :: error | {:ok, map}
   def get_guild_embed(guild_id) do
-    request("GET", Constants.guild_embed(guild_id))
+    request(:get, Constants.guild_embed(guild_id))
   end
 
   @doc """
@@ -2337,7 +2318,7 @@ defmodule Nostrum.Api do
   """
   @spec modify_guild_embed(integer, map) :: error | {:ok, map}
   def modify_guild_embed(guild_id, options) do
-    request("PATCH", Constants.guild_embed(guild_id), options)
+    request(:patch, Constants.guild_embed(guild_id), options)
     |> handle_request_with_decode
   end
 
@@ -2361,7 +2342,7 @@ defmodule Nostrum.Api do
   """
   @spec get_invite(Invite.code(), options) :: error | {:ok, Invite.simple_invite()}
   def get_invite(invite_code, options \\ []) when is_binary(invite_code) do
-    request("GET", Constants.invite(invite_code), "", params: options)
+    request(:get, Constants.invite(invite_code), "", params: options)
     |> handle_request_with_decode({:struct, Invite})
   end
 
@@ -2390,7 +2371,7 @@ defmodule Nostrum.Api do
   """
   @spec delete_invite(Invite.code()) :: error | {:ok, Invite.simple_invite()}
   def delete_invite(invite_code) when is_binary(invite_code) do
-    request("DELETE", Constants.invite(invite_code))
+    request(:delete, Constants.invite(invite_code))
     |> handle_request_with_decode({:struct, Invite})
   end
 
@@ -2411,7 +2392,7 @@ defmodule Nostrum.Api do
   """
   @spec get_user(User.id()) :: error | {:ok, User.t()}
   def get_user(user_id) do
-    request("GET", Constants.user(user_id))
+    request(:get, Constants.user(user_id))
     |> handle_request_with_decode({:struct, User})
   end
 
@@ -2436,7 +2417,7 @@ defmodule Nostrum.Api do
   """
   @spec get_current_user() :: error | {:ok, User.t()}
   def get_current_user do
-    request("GET", Constants.me())
+    request(:get, Constants.me())
     |> handle_request_with_decode({:struct, User})
   end
 
@@ -2470,7 +2451,7 @@ defmodule Nostrum.Api do
     do: modify_current_user(Map.new(options))
 
   def modify_current_user(%{} = options) do
-    request("PATCH", Constants.me(), options)
+    request(:patch, Constants.me(), options)
     |> handle_request_with_decode({:struct, User})
   end
 
@@ -2512,7 +2493,7 @@ defmodule Nostrum.Api do
     do: get_current_user_guilds(Map.new(options))
 
   def get_current_user_guilds(options) when is_map(options) do
-    request("GET", Constants.me_guilds(), "", params: options)
+    request(:get, Constants.me_guilds(), "", params: options)
     |> handle_request_with_decode({:list, {:struct, Guild}})
   end
 
@@ -2533,7 +2514,7 @@ defmodule Nostrum.Api do
   @spec leave_guild(integer) :: error | {:ok}
   def leave_guild(guild_id) do
     request(%{
-      method: "DELETE",
+      method: :delete,
       route: Constants.me_guild(guild_id),
       body: "",
       options: %{},
@@ -2555,7 +2536,7 @@ defmodule Nostrum.Api do
   """
   @spec get_user_dms() :: error | {:ok, [Channel.dm_channel()]}
   def get_user_dms do
-    request("GET", Constants.me_channels())
+    request(:get, Constants.me_channels())
     |> handle_request_with_decode({:list, {:struct, Channel}})
   end
 
@@ -2582,7 +2563,7 @@ defmodule Nostrum.Api do
   """
   @spec create_dm(User.id()) :: error | {:ok, Channel.dm_channel()}
   def create_dm(user_id) when is_snowflake(user_id) do
-    request("POST", Constants.me_channels(), %{recipient_id: user_id})
+    request(:post, Constants.me_channels(), %{recipient_id: user_id})
     |> handle_request_with_decode({:struct, Channel})
   end
 
@@ -2613,7 +2594,7 @@ defmodule Nostrum.Api do
   @spec create_group_dm([String.t()], %{optional(User.id()) => String.t()}) ::
           error | {:ok, Channel.group_dm_channel()}
   def create_group_dm(access_tokens, nicks) when is_list(access_tokens) and is_map(nicks) do
-    request("POST", Constants.me_channels(), %{access_tokens: access_tokens, nicks: nicks})
+    request(:post, Constants.me_channels(), %{access_tokens: access_tokens, nicks: nicks})
     |> handle_request_with_decode({:struct, Channel})
   end
 
@@ -2632,7 +2613,7 @@ defmodule Nostrum.Api do
   """
   @spec get_user_connections() :: error | {:ok, Nostrum.Struct.User.Connection.t()}
   def get_user_connections do
-    request("GET", Constants.me_connections())
+    request(:get, Constants.me_connections())
     |> handle_request_with_decode
   end
 
@@ -2641,7 +2622,7 @@ defmodule Nostrum.Api do
   """
   @spec list_voice_regions() :: error | {:ok, [Nostrum.Struct.VoiceRegion.t()]}
   def list_voice_regions do
-    request("GET", Constants.regions())
+    request(:get, Constants.regions())
     |> handle_request_with_decode
   end
 
@@ -2665,7 +2646,7 @@ defmodule Nostrum.Api do
         ) :: error | {:ok, Nostrum.Struct.Webhook.t()}
   def create_webhook(channel_id, args, reason \\ nil) do
     %{
-      method: "POST",
+      method: :post,
       route: Constants.webhooks_channel(channel_id),
       body: args,
       options: %{},
@@ -2683,7 +2664,7 @@ defmodule Nostrum.Api do
   """
   @spec get_channel_webhooks(Channel.id()) :: error | {:ok, [Nostrum.Struct.Webhook.t()]}
   def get_channel_webhooks(channel_id) do
-    request("GET", Constants.webhooks_channel(channel_id))
+    request(:get, Constants.webhooks_channel(channel_id))
     |> handle_request_with_decode
   end
 
@@ -2695,7 +2676,7 @@ defmodule Nostrum.Api do
   """
   @spec get_guild_webhooks(Guild.id()) :: error | {:ok, [Nostrum.Struct.Webhook.t()]}
   def get_guild_webhooks(guild_id) do
-    request("GET", Constants.webhooks_guild(guild_id))
+    request(:get, Constants.webhooks_guild(guild_id))
     |> handle_request_with_decode
   end
 
@@ -2707,7 +2688,7 @@ defmodule Nostrum.Api do
   """
   @spec get_webhook(Webhook.id()) :: error | {:ok, Nostrum.Struct.Webhook.t()}
   def get_webhook(webhook_id) do
-    request("GET", Constants.webhook(webhook_id))
+    request(:get, Constants.webhook(webhook_id))
     |> handle_request_with_decode
   end
 
@@ -2724,7 +2705,7 @@ defmodule Nostrum.Api do
   @spec get_webhook_with_token(Webhook.id(), Webhook.token()) ::
           error | {:ok, Nostrum.Struct.Webhook.t()}
   def get_webhook_with_token(webhook_id, webhook_token) do
-    request("GET", Constants.webhook_token(webhook_id, webhook_token))
+    request(:get, Constants.webhook_token(webhook_id, webhook_token))
     |> handle_request_with_decode
   end
 
@@ -2748,7 +2729,7 @@ defmodule Nostrum.Api do
         ) :: error | {:ok, Nostrum.Struct.Webhook.t()}
   def modify_webhook(webhook_id, args, reason \\ nil) do
     %{
-      method: "PATCH",
+      method: :patch,
       route: Constants.webhook(webhook_id),
       body: args,
       options: %{},
@@ -2783,7 +2764,7 @@ defmodule Nostrum.Api do
         ) :: error | {:ok, Nostrum.Struct.Webhook.t()}
   def modify_webhook_with_token(webhook_id, webhook_token, args, reason \\ nil) do
     %{
-      method: "PATCH",
+      method: :patch,
       route: Constants.webhook_token(webhook_id, webhook_token),
       body: args,
       options: %{},
@@ -2803,7 +2784,7 @@ defmodule Nostrum.Api do
   @spec delete_webhook(Webhook.id(), AuditLogEntry.reason()) :: error | {:ok}
   def delete_webhook(webhook_id, reason \\ nil) do
     request(%{
-      method: "DELETE",
+      method: :delete,
       route: Constants.webhook(webhook_id),
       body: "",
       options: %{},
@@ -2845,7 +2826,7 @@ defmodule Nostrum.Api do
 
   def execute_webhook(webhook_id, webhook_token, %{file: _} = args, wait) do
     request_multipart(
-      "POST",
+      :post,
       Constants.webhook_token(webhook_id, webhook_token),
       args,
       params: [wait: wait]
@@ -2854,7 +2835,7 @@ defmodule Nostrum.Api do
 
   def execute_webhook(webhook_id, webhook_token, %{content: _} = args, wait) do
     request(
-      "POST",
+      :post,
       Constants.webhook_token(webhook_id, webhook_token),
       args,
       params: [wait: wait]
@@ -2870,7 +2851,7 @@ defmodule Nostrum.Api do
   """
   @spec execute_slack_webhook(Webhook.id(), Webhook.token(), boolean) :: error | {:ok}
   def execute_slack_webhook(webhook_id, webhook_token, wait \\ false) do
-    request("POST", Constants.webhook_slack(webhook_id, webhook_token), params: [wait: wait])
+    request(:post, Constants.webhook_slack(webhook_id, webhook_token), params: [wait: wait])
   end
 
   @doc """
@@ -2882,7 +2863,7 @@ defmodule Nostrum.Api do
   """
   @spec execute_git_webhook(Webhook.id(), Webhook.token(), boolean) :: error | {:ok}
   def execute_git_webhook(webhook_id, webhook_token, wait \\ false) do
-    request("POST", Constants.webhook_git(webhook_id, webhook_token), params: [wait: wait])
+    request(:post, Constants.webhook_git(webhook_id, webhook_token), params: [wait: wait])
   end
 
   @doc """
@@ -2910,7 +2891,7 @@ defmodule Nostrum.Api do
   """
   @spec get_application_information() :: error | {:ok, map()}
   def get_application_information do
-    request("GET", Constants.application_information())
+    request(:get, Constants.application_information())
     |> handle_request_with_decode
   end
 
@@ -2943,7 +2924,7 @@ defmodule Nostrum.Api do
   @spec get_global_application_commands() :: {:ok, [map()]} | error
   @spec get_global_application_commands(User.id()) :: {:ok, [map()]} | error
   def get_global_application_commands(application_id \\ Me.get().id) do
-    request("GET", Constants.global_application_commands(application_id))
+    request(:get, Constants.global_application_commands(application_id))
     |> handle_request_with_decode
   end
 
@@ -2975,7 +2956,7 @@ defmodule Nostrum.Api do
   @spec create_global_application_command(map()) :: {:ok, map()} | error
   @spec create_global_application_command(User.id(), map()) :: {:ok, map()} | error
   def create_global_application_command(application_id \\ Me.get().id, command) do
-    request("POST", Constants.global_application_commands(application_id), command)
+    request(:post, Constants.global_application_commands(application_id), command)
     |> handle_request_with_decode
   end
 
@@ -3001,7 +2982,7 @@ defmodule Nostrum.Api do
         command_id,
         command
       ) do
-    request("PATCH", Constants.global_application_command(application_id, command_id), command)
+    request(:patch, Constants.global_application_command(application_id, command_id), command)
     |> handle_request_with_decode
   end
 
@@ -3016,7 +2997,7 @@ defmodule Nostrum.Api do
   @spec delete_global_application_command(Snowflake.t()) :: {:ok} | error
   @spec delete_global_application_command(User.id(), Snowflake.t()) :: {:ok} | error
   def delete_global_application_command(application_id \\ Me.get().id, command_id) do
-    request("DELETE", Constants.global_application_command(application_id, command_id))
+    request(:delete, Constants.global_application_command(application_id, command_id))
   end
 
   @doc """
@@ -3063,7 +3044,7 @@ defmodule Nostrum.Api do
   @spec get_guild_application_commands(Guild.id()) :: {:ok, [map()]} | error
   @spec get_guild_application_commands(User.id(), Guild.id()) :: {:ok, [map()]} | error
   def get_guild_application_commands(application_id \\ Me.get().id, guild_id) do
-    request("GET", Constants.guild_application_commands(application_id, guild_id))
+    request(:get, Constants.guild_application_commands(application_id, guild_id))
     |> handle_request_with_decode
   end
 
@@ -3089,7 +3070,7 @@ defmodule Nostrum.Api do
         guild_id,
         command
       ) do
-    request("POST", Constants.guild_application_commands(application_id, guild_id), command)
+    request(:post, Constants.guild_application_commands(application_id, guild_id), command)
     |> handle_request_with_decode
   end
 
@@ -3119,7 +3100,7 @@ defmodule Nostrum.Api do
         command
       ) do
     request(
-      "PATCH",
+      :patch,
       Constants.guild_application_command(application_id, guild_id, command_id),
       command
     )
@@ -3142,7 +3123,7 @@ defmodule Nostrum.Api do
         guild_id,
         command_id
       ) do
-    request("DELETE", Constants.guild_application_command(application_id, guild_id, command_id))
+    request(:delete, Constants.guild_application_command(application_id, guild_id, command_id))
   end
 
   @doc """
@@ -3218,7 +3199,7 @@ defmodule Nostrum.Api do
   """
   @spec create_interaction_response(Interaction.id(), Interaction.token(), map()) :: {:ok} | error
   def create_interaction_response(id, token, response) do
-    request("POST", Constants.interaction_callback(id, token), response)
+    request(:post, Constants.interaction_callback(id, token), response)
   end
 
   # edit original interaction response is purposefully not implemented
@@ -3252,7 +3233,7 @@ defmodule Nostrum.Api do
         token,
         message_id
       ) do
-    request("DELETE", Constants.interaction_followup_message(application_id, token, message_id))
+    request(:delete, Constants.interaction_followup_message(application_id, token, message_id))
   end
 
   @spec maybe_add_reason(String.t() | nil) :: list()
@@ -3287,22 +3268,17 @@ defmodule Nostrum.Api do
   end
 
   def request_multipart(method, route, body, options \\ %{}) do
+    boundary = generate_boundary()
+
     request = %{
       method: method,
       route: route,
       # Hello :gun test suite :^)
-      body: """
-      --craigrocks\r\n
-      Content-Disposition: form-data; name="file"; filename="#{body.content}"\r\n
-      \r\n
-      --craigrocks\r\n
-      Content-Disposition: form-data; name="tts"\r\n
-      \r\n
-      #{body.tts}\r\n
-      --craigrocks--
-      """,
+      body: create_multipart(body, boundary),
       options: options,
-      headers: [{"content-type", "multipart/form-data;boundary=craigrocks"}]
+      headers: [
+        {"content-type", "multipart/form-data; boundary=#{boundary}"}
+      ]
     }
 
     GenServer.call(Ratelimiter, {:queue, request, nil}, :infinity)
@@ -3356,6 +3332,68 @@ defmodule Nostrum.Api do
       _ ->
         Map.delete(options, :allowed_mentions)
     end
+  end
+
+  defp create_multipart(file, json, boundary) do
+    {:multipart, create_multipart_body(file, json, boundary)}
+  end
+
+  defp create_multipart(body, boundary) do
+    {:multipart, create_multipart_body(body, boundary)}
+  end
+
+  defp create_multipart_body(file, json, boundary) do
+    {body, name} = get_file_contents(file)
+
+    file_mime = MIME.from_path(name)
+    file_size = byte_size(body)
+    json_mime = MIME.type("json")
+    json_size = byte_size(json)
+    crlf = "\r\n"
+
+    ~s|--#{boundary}#{crlf}| <>
+      ~s|content-length: #{file_size}#{crlf}| <>
+      ~s|content-type: #{file_mime}#{crlf}| <>
+      ~s|content-disposition: form-data; name="file"; filename="#{name}"#{crlf}#{crlf}| <>
+      body <>
+      ~s|#{crlf}--#{boundary}#{crlf}| <>
+      ~s|content-length: #{json_size}#{crlf}| <>
+      ~s|content-type: #{json_mime}#{crlf}| <>
+      ~s|content-disposition: form-data; name="payload_json"#{crlf}#{crlf}| <>
+      json <>
+      ~s|#{crlf}--#{boundary}--#{crlf}|
+  end
+
+  defp create_multipart_body(%{content: content, tts: tts, file: file}, boundary) do
+    file_mime = MIME.from_path(file)
+    file_size = byte_size(content)
+    tts_mime = MIME.type("")
+    tts_size = byte_size(tts)
+    crlf = "\r\n"
+
+    ~s|--#{boundary}#{crlf}| <>
+      ~s|content-length: #{file_size}#{crlf}| <>
+      ~s|content-type: #{file_mime}#{crlf}| <>
+      ~s|content-disposition: form-data; name="file"; filename="#{file}"#{crlf}#{crlf}| <>
+      content <>
+      ~s|#{crlf}--#{boundary}#{crlf}| <>
+      ~s|content-length: #{tts_size}#{crlf}| <>
+      ~s|content-type: #{tts_mime}#{crlf}| <>
+      ~s|content-disposition: form-data; name="tts"#{crlf}#{crlf}| <>
+      tts <>
+      ~s|#{crlf}--#{boundary}--#{crlf}|
+  end
+
+  defp get_file_contents(path) when is_binary(path) do
+    {File.read!(path), path}
+  end
+
+  defp get_file_contents(%{body: body, name: name}), do: {body, name}
+
+  defp generate_boundary do
+    String.duplicate("-", 20) <>
+      "KraigieNostrumCat_" <>
+      Base.encode16(:crypto.strong_rand_bytes(10))
   end
 
   defp parse_allowed_mentions(:none), do: %{parse: []}

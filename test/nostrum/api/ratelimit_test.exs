@@ -17,7 +17,7 @@ defmodule Nostrum.Api.RatelimitTest do
     result =
       Nostrum.Api.Ratelimiter.get_endpoint(
         "/channels/#{@test_channel}/messages/#{@test_message}",
-        "GET"
+        :get
       )
 
     assert result == expected
@@ -29,7 +29,7 @@ defmodule Nostrum.Api.RatelimitTest do
     result =
       Nostrum.Api.Ratelimiter.get_endpoint(
         "/channels/#{@test_channel}/messages/#{@test_message}",
-        "DELETE"
+        :delete
       )
 
     assert result == expected
@@ -38,7 +38,7 @@ defmodule Nostrum.Api.RatelimitTest do
   test "endpoint with no major parameter" do
     expected = "/users/_id"
 
-    result = Nostrum.Api.Ratelimiter.get_endpoint("/users/#{@test_user}", "GET")
+    result = Nostrum.Api.Ratelimiter.get_endpoint("/users/#{@test_user}", :get)
 
     assert result == expected
   end

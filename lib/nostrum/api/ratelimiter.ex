@@ -147,7 +147,7 @@ defmodule Nostrum.Api.Ratelimiter do
         end
       end)
 
-    if String.ends_with?(endpoint, "/messages/_id") and method == "DELETE" do
+    if String.ends_with?(endpoint, "/messages/_id") and method == :delete do
       "delete:" <> endpoint
     else
       endpoint
@@ -168,15 +168,5 @@ defmodule Nostrum.Api.Ratelimiter do
       {:ok, {status, _, body}} ->
         {:error, %ApiError{status_code: status, response: Poison.decode!(body, keys: :atoms)}}
     end
-  end
-
-  # Will go through headers and keep the ones that are members of the headers_to_keep MapSet (case insensitive!)
-  defp filter_headers(headers, headers_to_keep) do
-    headers
-    |> Stream.map(fn {key, value} ->
-      {String.downcase(key), value}
-    end)
-    |> Stream.filter(fn {key, _v} -> MapSet.member?(headers_to_keep, key) end)
-    |> Enum.into(%{})
   end
 end
