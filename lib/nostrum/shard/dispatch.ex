@@ -59,13 +59,13 @@ defmodule Nostrum.Shard.Dispatch do
     end
   end
 
-  def handle_event(:CHANNEL_CREATE = event, %{type: 1} = p, state) do
+  def handle_event(:CHANNEL_CREATE = event, %{"type" => 1} = p, state) do
     {event, ChannelCache.create(p), state}
   end
 
-  def handle_event(:CHANNEL_CREATE = event, %{type: t} = p, state) when t in [0, 2] do
-    :ets.insert(:channel_guild_map, {p.id, p.guild_id})
-    {event, GuildCache.channel_create(p.guild_id, p), state}
+  def handle_event(:CHANNEL_CREATE = event, %{"type" => t} = p, state) when t in [0, 2] do
+    :ets.insert(:channel_guild_map, {p["id"], p["guild_id"]})
+    {event, GuildCache.channel_create(p["guild_id"], p), state}
   end
 
   # Ignore group channels
@@ -73,22 +73,22 @@ defmodule Nostrum.Shard.Dispatch do
     :noop
   end
 
-  def handle_event(:CHANNEL_DELETE = event, %{type: 1} = p, state) do
-    {event, ChannelCache.delete(p.id), state}
+  def handle_event(:CHANNEL_DELETE = event, %{"type" => 1} = p, state) do
+    {event, ChannelCache.delete(p["id"]), state}
   end
 
-  def handle_event(:CHANNEL_DELETE = event, %{type: t} = p, state) when t in [0, 2] do
-    :ets.delete(:channel_guild_map, p.id)
-    {event, GuildCache.channel_delete(p.guild_id, p.id), state}
-  end
-
-  def handle_event(:CHANNEL_UPDATE = event, p, state) do
-    {event, GuildCache.channel_update(p["guild_id"], p), state}
+  def handle_event(:CHANNEL_DELETE = event, %{"type" => t} = p, state) when t in [0, 2] do
+    :ets.delete(:channel_guild_map, p["id"])
+    {event, GuildCache.channel_delete(p["guild_id"], p["id"]), state}
   end
 
   def handle_event(:CHANNEL_DELETE, _p, _state) do
     # Ignore group channels
     :noop
+  end
+
+  def handle_event(:CHANNEL_UPDATE = event, p, state) do
+    {event, GuildCache.channel_update(p["guild_id"], p), state}
   end
 
   def handle_event(:CHANNEL_PINS_ACK = event, p, state), do: {event, p, state}

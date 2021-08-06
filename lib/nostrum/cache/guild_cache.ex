@@ -221,7 +221,7 @@ defmodule Nostrum.Cache.GuildCache do
   def channel_create(guild_id, channel) do
     [{_id, guild}] = :ets.lookup(@table_name, guild_id)
     new_channel = Util.cast(channel, {:struct, Channel})
-    new_channels = Map.put(guild.channels, channel.id, new_channel)
+    new_channels = Map.put(guild.channels, channel["id"], new_channel)
     new_guild = %{guild | channels: new_channels}
     true = :ets.update_element(@table_name, guild_id, {2, new_guild})
     new_channel
