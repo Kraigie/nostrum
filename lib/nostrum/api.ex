@@ -178,10 +178,10 @@ defmodule Nostrum.Api do
     * `:all` (default) - Ping everything as usual
     * `:none` - Nobody will be pinged
     * `:everyone` - Allows to ping @here and @everone
-    * `:user` - Allows to ping users
+    * `:users` - Allows to ping users
     * `:roles` - Allows to ping roles
-    * `{:user, list}` - Allows to ping list of users. Can contain up to 100 ids of users.
-    * `{:role, list}` - Allows to ping list of roles. Can contain up to 100 ids of roles.
+    * `{:users, list}` - Allows to ping list of users. Can contain up to 100 ids of users.
+    * `{:roles, list}` - Allows to ping list of roles. Can contain up to 100 ids of roles.
     * list - a list containing the values above.
 
   ### Message reference
