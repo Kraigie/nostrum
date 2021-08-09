@@ -261,7 +261,7 @@ defmodule Nostrum.Api do
       method: :post,
       route: Constants.channel_messages(channel_id),
       body: create_multipart(file, payload_json, boundary),
-      options: %{},
+      params: [],
       headers: [
         {"content-type", "multipart/form-data; boundary=#{boundary}"}
       ]
@@ -673,7 +673,7 @@ defmodule Nostrum.Api do
       method: :patch,
       route: Constants.channel(channel_id),
       body: options,
-      options: %{},
+      params: [],
       headers: maybe_add_reason(reason)
     }
     |> request
@@ -715,7 +715,7 @@ defmodule Nostrum.Api do
       method: :delete,
       route: Constants.channel(channel_id),
       body: "",
-      options: %{},
+      params: [],
       headers: maybe_add_reason(reason)
     }
     |> request()
@@ -788,7 +788,7 @@ defmodule Nostrum.Api do
         non_empty_locator -> [{:limit, limit}, non_empty_locator]
       end
 
-    request(:get, Constants.channel_messages(channel_id), "", params: qs_params)
+    request(:get, Constants.channel_messages(channel_id), "", qs_params)
     |> handle_request_with_decode({:list, {:struct, Message}})
   end
 
@@ -925,7 +925,7 @@ defmodule Nostrum.Api do
       method: :put,
       route: Constants.channel_permission(channel_id, overwrite_id),
       body: permission_info,
-      options: %{},
+      params: [],
       headers: maybe_add_reason(reason)
     })
   end
@@ -960,7 +960,7 @@ defmodule Nostrum.Api do
       method: :delete,
       route: Constants.channel_permission(channel_id, overwrite_id),
       body: "",
-      options: %{},
+      params: [],
       headers: maybe_add_reason(reason)
     })
   end
@@ -1038,7 +1038,7 @@ defmodule Nostrum.Api do
       method: :post,
       route: Constants.channel_invites(channel_id),
       body: options,
-      options: %{},
+      params: [],
       headers: maybe_add_reason(reason)
     }
     |> request()
@@ -1244,7 +1244,7 @@ defmodule Nostrum.Api do
       method: :post,
       route: Constants.guild_emojis(guild_id),
       body: options,
-      options: %{},
+      params: [],
       headers: maybe_add_reason(reason)
     }
     |> request()
@@ -1293,7 +1293,7 @@ defmodule Nostrum.Api do
       method: :patch,
       route: Constants.guild_emoji(guild_id, emoji_id),
       body: options,
-      options: %{},
+      params: [],
       headers: maybe_add_reason(reason)
     }
     |> request()
@@ -1327,7 +1327,7 @@ defmodule Nostrum.Api do
         method: :delete,
         route: Constants.guild_emoji(guild_id, emoji_id),
         body: "",
-        options: %{},
+        params: [],
         headers: maybe_add_reason(reason)
       })
 
@@ -1352,7 +1352,7 @@ defmodule Nostrum.Api do
   """
   @spec get_guild_audit_log(Guild.id(), options) :: {:ok, AuditLog.t()} | error
   def get_guild_audit_log(guild_id, options \\ []) do
-    request(:get, Constants.guild_audit_logs(guild_id), "", params: options)
+    request(:get, Constants.guild_audit_logs(guild_id), "", options)
     |> handle_request_with_decode({:struct, AuditLog})
   end
 
@@ -1436,7 +1436,7 @@ defmodule Nostrum.Api do
       method: :patch,
       route: Constants.guild(guild_id),
       body: options,
-      options: %{},
+      params: [],
       headers: maybe_add_reason(reason)
     }
     |> request()
@@ -1640,7 +1640,7 @@ defmodule Nostrum.Api do
     do: list_guild_members(guild_id, Map.new(options))
 
   def list_guild_members(guild_id, %{} = options) when is_snowflake(guild_id) do
-    request(:get, Constants.guild_members(guild_id), "", params: options)
+    request(:get, Constants.guild_members(guild_id), "", options)
     |> handle_request_with_decode({:list, {:struct, Member}})
   end
 
@@ -1795,7 +1795,7 @@ defmodule Nostrum.Api do
       method: :put,
       route: Constants.guild_member_role(guild_id, user_id, role_id),
       body: "",
-      options: %{},
+      params: [],
       headers: maybe_add_reason(reason)
     })
   end
@@ -1814,7 +1814,7 @@ defmodule Nostrum.Api do
       method: :delete,
       route: Constants.guild_member_role(guild_id, user_id, role_id),
       body: "",
-      options: %{},
+      params: [],
       headers: maybe_add_reason(reason)
     })
   end
@@ -1843,7 +1843,7 @@ defmodule Nostrum.Api do
       method: :delete,
       route: Constants.guild_member(guild_id, user_id),
       body: "",
-      options: %{},
+      params: [],
       headers: maybe_add_reason(reason)
     })
   end
@@ -1890,7 +1890,7 @@ defmodule Nostrum.Api do
       method: :put,
       route: Constants.guild_ban(guild_id, user_id),
       body: %{"delete-message-days": days_to_delete},
-      options: %{},
+      params: [],
       headers: maybe_add_reason(reason)
     })
   end
@@ -1907,7 +1907,7 @@ defmodule Nostrum.Api do
       method: :delete,
       route: Constants.guild_ban(guild_id, user_id),
       body: "",
-      options: %{},
+      params: [],
       headers: maybe_add_reason(reason)
     })
   end
@@ -1973,7 +1973,7 @@ defmodule Nostrum.Api do
       method: :post,
       route: Constants.guild_roles(guild_id),
       body: options,
-      options: %{},
+      params: [],
       headers: maybe_add_reason(reason)
     }
     |> request()
@@ -2016,7 +2016,7 @@ defmodule Nostrum.Api do
       method: :patch,
       route: Constants.guild_roles(guild_id),
       body: positions,
-      options: %{},
+      params: [],
       headers: maybe_add_reason(reason)
     }
     |> request()
@@ -2073,7 +2073,7 @@ defmodule Nostrum.Api do
       method: :patch,
       route: Constants.guild_role(guild_id, role_id),
       body: options,
-      options: %{},
+      params: [],
       headers: maybe_add_reason(reason)
     }
     |> request()
@@ -2113,7 +2113,7 @@ defmodule Nostrum.Api do
       method: :delete,
       route: Constants.guild_role(guild_id, role_id),
       body: "",
-      options: %{},
+      params: [],
       headers: maybe_add_reason(reason)
     })
   end
@@ -2143,7 +2143,7 @@ defmodule Nostrum.Api do
   """
   @spec get_guild_prune_count(Guild.id(), 1..30) :: error | {:ok, %{pruned: integer}}
   def get_guild_prune_count(guild_id, days) when is_snowflake(guild_id) and days in 1..30 do
-    request(:get, Constants.guild_prune(guild_id), "", params: [days: days])
+    request(:get, Constants.guild_prune(guild_id), "", days: days)
     |> handle_request_with_decode
   end
 
@@ -2181,7 +2181,7 @@ defmodule Nostrum.Api do
       method: :post,
       route: Constants.guild_prune(guild_id),
       body: "",
-      options: [params: [days: days]],
+      params: [days: days],
       headers: maybe_add_reason(reason)
     }
     |> request()
@@ -2342,7 +2342,7 @@ defmodule Nostrum.Api do
   """
   @spec get_invite(Invite.code(), options) :: error | {:ok, Invite.simple_invite()}
   def get_invite(invite_code, options \\ []) when is_binary(invite_code) do
-    request(:get, Constants.invite(invite_code), "", params: options)
+    request(:get, Constants.invite(invite_code), "", options)
     |> handle_request_with_decode({:struct, Invite})
   end
 
@@ -2493,7 +2493,7 @@ defmodule Nostrum.Api do
     do: get_current_user_guilds(Map.new(options))
 
   def get_current_user_guilds(options) when is_map(options) do
-    request(:get, Constants.me_guilds(), "", params: options)
+    request(:get, Constants.me_guilds(), "", options)
     |> handle_request_with_decode({:list, {:struct, Guild}})
   end
 
@@ -2517,7 +2517,7 @@ defmodule Nostrum.Api do
       method: :delete,
       route: Constants.me_guild(guild_id),
       body: "",
-      options: %{},
+      params: [],
       headers: []
     })
   end
@@ -2649,7 +2649,7 @@ defmodule Nostrum.Api do
       method: :post,
       route: Constants.webhooks_channel(channel_id),
       body: args,
-      options: %{},
+      params: [],
       headers: maybe_add_reason(reason)
     }
     |> request()
@@ -2732,7 +2732,7 @@ defmodule Nostrum.Api do
       method: :patch,
       route: Constants.webhook(webhook_id),
       body: args,
-      options: %{},
+      params: [],
       headers: maybe_add_reason(reason)
     }
     |> request()
@@ -2767,7 +2767,7 @@ defmodule Nostrum.Api do
       method: :patch,
       route: Constants.webhook_token(webhook_id, webhook_token),
       body: args,
-      options: %{},
+      params: [],
       headers: maybe_add_reason(reason)
     }
     |> request()
@@ -2787,7 +2787,7 @@ defmodule Nostrum.Api do
       method: :delete,
       route: Constants.webhook(webhook_id),
       body: "",
-      options: %{},
+      params: [],
       headers: maybe_add_reason(reason)
     })
   end
@@ -2829,7 +2829,7 @@ defmodule Nostrum.Api do
       :post,
       Constants.webhook_token(webhook_id, webhook_token),
       args,
-      params: [wait: wait]
+      wait: wait
     )
   end
 
@@ -2838,7 +2838,7 @@ defmodule Nostrum.Api do
       :post,
       Constants.webhook_token(webhook_id, webhook_token),
       args,
-      params: [wait: wait]
+      wait: wait
     )
   end
 
@@ -2851,7 +2851,7 @@ defmodule Nostrum.Api do
   """
   @spec execute_slack_webhook(Webhook.id(), Webhook.token(), boolean) :: error | {:ok}
   def execute_slack_webhook(webhook_id, webhook_token, wait \\ false) do
-    request(:post, Constants.webhook_slack(webhook_id, webhook_token), params: [wait: wait])
+    request(:post, Constants.webhook_slack(webhook_id, webhook_token), wait: wait)
   end
 
   @doc """
@@ -2863,7 +2863,7 @@ defmodule Nostrum.Api do
   """
   @spec execute_git_webhook(Webhook.id(), Webhook.token(), boolean) :: error | {:ok}
   def execute_git_webhook(webhook_id, webhook_token, wait \\ false) do
-    request(:post, Constants.webhook_git(webhook_id, webhook_token), params: [wait: wait])
+    request(:post, Constants.webhook_git(webhook_id, webhook_token), wait: wait)
   end
 
   @doc """
@@ -3250,24 +3250,26 @@ defmodule Nostrum.Api do
     [{"x-audit-log-reason", reason} | headers]
   end
 
+  @spec request(map()) :: {:ok} | error
   def request(request) do
     GenServer.call(Ratelimiter, {:queue, request, nil}, :infinity)
   end
 
-  # HTTPosion defaults to `""` for an empty body, so it's safe to do so here
-  def request(method, route, body \\ "", options \\ %{}) do
+  @spec request(atom(), String.t(), any, keyword() | map()) :: {:ok} | error
+  def request(method, route, body \\ "", params \\ []) do
     request = %{
       method: method,
       route: route,
       body: body,
-      options: options,
+      params: params,
       headers: [{"content-type", "application/json"}]
     }
 
     GenServer.call(Ratelimiter, {:queue, request, nil}, :infinity)
   end
 
-  def request_multipart(method, route, body, options \\ %{}) do
+  @spec request_multipart(atom(), String.t(), any, keyword() | map()) :: {:ok} | error
+  def request_multipart(method, route, body, params \\ []) do
     boundary = generate_boundary()
 
     request = %{
@@ -3275,7 +3277,7 @@ defmodule Nostrum.Api do
       route: route,
       # Hello :gun test suite :^)
       body: create_multipart(body, boundary),
-      options: options,
+      params: params,
       headers: [
         {"content-type", "multipart/form-data; boundary=#{boundary}"}
       ]
