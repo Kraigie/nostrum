@@ -70,9 +70,17 @@ defmodule Nostrum.Api.Ratelimiter do
     {:noreply, conn}
   end
 
+  def handle_info({:gun_down, _conn, _proto, _reason, _killed_streams}, state) do
+    {:noreply, state}
+  end
+
+  def handle_info({:gun_up, _conn, _proto}, state) do
+    {:noreply, state}
+  end
+
   defp do_request(request, conn) do
     conn
-    |> Base.request(request.method, request.route, request.body, request.headers, request.options)
+    |> Base.request(request.method, request.route, request.body, request.headers, request.params)
     |> handle_headers(get_endpoint(request.route, request.method))
     |> format_response
   end

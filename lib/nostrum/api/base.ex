@@ -5,8 +5,7 @@ defmodule Nostrum.Api.Base do
 
   import Nostrum.Constants, only: [base_route: 0]
 
-  def request(conn, method, route, body, raw_headers, options) do
-    full_route = "#{base_route()}#{route}"
+  def request(conn, method, route, body, raw_headers, params) do
     headers = process_request_headers(raw_headers)
     # Convert method from atom to string for `:gun`
     method =
@@ -14,7 +13,11 @@ defmodule Nostrum.Api.Base do
       |> Atom.to_string()
       |> String.upcase()
 
-    stream = :gun.request(conn, method, full_route, headers, process_request_body(body), options)
+    query_string = URI.encode_query(params)
+
+    full_route = "#{base_route()}#{route}?#{query_string}"
+
+    stream = :gun.request(conn, method, full_route, headers, process_request_body(body))
 
     case :gun.await(conn, stream) do
       {:response, :fin, status, headers} ->
