@@ -283,10 +283,22 @@ defmodule Nostrum.Cache.GuildCache do
   @spec member_update(Guild.id(), map()) :: {Member.t(), Member.t()}
   def member_update(guild_id, member) do
     [{_id, guild}] = :ets.lookup(@table_name, guild_id)
-    {old, new, new_members} = upsert(guild.members, member["user"]["id"], member, Member)
-    new_guild = %{guild | members: new_members}
-    true = :ets.update_element(@table_name, guild_id, {2, new_guild})
-    {old, new}
+
+    case member do
+      # String keys.
+      %{"user" => user} ->
+        {old, new, new_members} = upsert(guild.members, member["user"]["id"], member, Member)
+        new_guild = %{guild | members: new_members}
+        true = :ets.update_element(@table_name, guild_id, {2, new_guild})
+        {old, new}
+
+      # Atom keys. Hurray for consistency.
+      %{user: user} ->
+        {old, new, new_members} = upsert(guild.members, member.user.id, member, Member)
+        new_guild = %{guild | members: new_members}
+        true = :ets.update_element(@table_name, guild_id, {2, new_guild})
+        {old, new}
+    end
   end
 
   @doc false
