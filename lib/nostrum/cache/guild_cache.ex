@@ -199,11 +199,13 @@ defmodule Nostrum.Cache.GuildCache do
   end
 
   @doc false
-  @spec update(map()) :: true
+  @spec update(map()) :: {Guild.t(), Guild.t()}
   def update(payload) do
-    [{_id, guild}] = :ets.lookup(@table_name, payload.id)
-    new_guild = Map.merge(guild, payload)
-    true = :ets.update_element(@table_name, payload.id, {2, new_guild})
+    [{_id, old_guild}] = :ets.lookup(@table_name, payload["id"])
+    casted = Util.cast(payload, {:struct, Guild})
+    new_guild = Map.merge(old_guild, casted)
+    true = :ets.update_element(@table_name, payload["id"], {2, new_guild})
+    {old_guild, new_guild}
   end
 
   @doc false
