@@ -8,7 +8,7 @@
     <meta name="project" content="Nostrum v0.4.7">
     <title>Nostrum.Struct.ApplicationCommandInteractionDataResolved — Nostrum v0.4.7</title>
     <link rel="stylesheet" href="dist/elixir-a172fe91e725dcb259e2.css" />
-    <script src="dist/sidebar_items-7e1ee19a00.js"></script>
+    <script src="dist/sidebar_items-eb05f91089.js"></script>
       <script src="docs_config.js"></script>
     <script async src="dist/app-f27ff079945e43879c46.js"></script>
   </head>
@@ -107,6 +107,12 @@ Nostrum      </a>
 </div>
 <div class="summary-row">
   <div class="summary-signature">
+    <a href="#t:messages/0">messages()</a>
+  </div>
+    <div class="summary-synopsis"><p>The IDs and corresponding messages.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
     <a href="#t:roles/0">roles()</a>
   </div>
     <div class="summary-synopsis"><p>IDs and corresponding roles</p></div>
@@ -141,7 +147,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">channels()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/application_command_interaction_data_resolved.ex#L44" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/application_command_interaction_data_resolved.ex#L50" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -167,7 +173,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">members()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/application_command_interaction_data_resolved.ex#L29" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/application_command_interaction_data_resolved.ex#L30" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -183,6 +189,28 @@ Types          </h1>
 <p>IDs and corresponding partial members.</p><p>These members are <em>missing</em> values on the following fields:</p><ul><li><code class="inline">user</code></li><li><code class="inline">deaf</code></li><li><code class="inline">mute</code></li></ul><p>The corresponding user data can be looked up in <code class="inline">users</code>. For members that
 are part of this map, data for the corresponding user will always be included.</p>  </section>
 </section>
+<section class="detail" id="t:messages/0">
+  <div class="detail-header">
+    <a href="#t:messages/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">messages()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/application_command_interaction_data_resolved.ex#L35" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>messages() ::
+  %{required(<a href="Nostrum.Struct.Message.html#t:id/0">Nostrum.Struct.Message.id</a>()) =&gt; <a href="Nostrum.Struct.Message.html#t:t/0">Nostrum.Struct.Message.t</a>()} | nil</pre>
+      </div>
+
+<p>The IDs and corresponding messages.</p>  </section>
+</section>
 <section class="detail" id="t:roles/0">
   <div class="detail-header">
     <a href="#t:roles/0" class="detail-link" title="Link to this type">
@@ -190,7 +218,7 @@ are part of this map, data for the corresponding user will always be included.</
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">roles()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/application_command_interaction_data_resolved.ex#L32" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/application_command_interaction_data_resolved.ex#L38" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -213,7 +241,7 @@ are part of this map, data for the corresponding user will always be included.</
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">t()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/application_command_interaction_data_resolved.ex#L47" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/application_command_interaction_data_resolved.ex#L53" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -225,6 +253,7 @@ are part of this map, data for the corresponding user will always be included.</
           <pre>t() :: %Nostrum.Struct.ApplicationCommandInteractionDataResolved{
   channels: <a href="#t:channels/0">channels</a>(),
   members: <a href="#t:members/0">members</a>(),
+  messages: <a href="#t:messages/0">messages</a>(),
   roles: <a href="#t:roles/0">roles</a>(),
   users: <a href="#t:users/0">users</a>()
 }</pre>
@@ -239,7 +268,7 @@ are part of this map, data for the corresponding user will always be included.</
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">users()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/application_command_interaction_data_resolved.ex#L15" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/application_command_interaction_data_resolved.ex#L16" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
