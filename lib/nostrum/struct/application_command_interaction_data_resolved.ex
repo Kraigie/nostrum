@@ -6,10 +6,11 @@ defmodule Nostrum.Struct.ApplicationCommandInteractionDataResolved do
   alias Nostrum.Struct.Channel
   alias Nostrum.Struct.Guild.Member
   alias Nostrum.Struct.Guild.Role
+  alias Nostrum.Struct.Message
   alias Nostrum.Struct.User
   alias Nostrum.Util
 
-  defstruct [:users, :members, :roles, :channels]
+  defstruct [:users, :members, :roles, :channels, :messages]
 
   @typedoc "IDs and corresponding users"
   @type users :: %{User.id() => User.t()} | nil
@@ -27,6 +28,11 @@ defmodule Nostrum.Struct.ApplicationCommandInteractionDataResolved do
   are part of this map, data for the corresponding user will always be included.
   """
   @type members :: %{User.id() => Member.t()} | nil
+
+  @typedoc """
+  The IDs and corresponding messages.
+  """
+  @type messages :: %{Message.id() => Message.t()} | nil
 
   @typedoc "IDs and corresponding roles"
   @type roles :: %{Role.id() => Role.t()} | nil
@@ -48,7 +54,8 @@ defmodule Nostrum.Struct.ApplicationCommandInteractionDataResolved do
           users: users,
           members: members(),
           roles: roles(),
-          channels: channels()
+          channels: channels(),
+          messages: messages()
         }
 
   # Parse the given mapping of strings to some corresponding arguments.
@@ -70,7 +77,8 @@ defmodule Nostrum.Struct.ApplicationCommandInteractionDataResolved do
       users: map_parse(map["users"], {:struct, User}),
       members: map_parse(map["members"], {:struct, Member}),
       roles: map_parse(map["roles"], {:struct, Role}),
-      channels: map_parse(map["channels"], {:struct, Channel})
+      channels: map_parse(map["channels"], {:struct, Channel}),
+      messages: map_parse(map["messages"], {:struct, Message})
     }
   end
 end
