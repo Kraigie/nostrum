@@ -278,13 +278,23 @@ defmodule Nostrum.Cache.GuildCache do
   end
 
   @doc false
-  @spec member_update(Guild.id(), map()) :: {Member.t(), Member.t()}
+  @spec member_update(Guild.id(), map()) :: {Member.t() | nil, Member.t()}
   def member_update(guild_id, member) do
-    [{_id, guild}] = :ets.lookup(@table_name, guild_id)
-    {old, new, new_members} = upsert(guild.members, member.user.id, member, Member)
-    new_guild = %{guild | members: new_members}
-    true = :ets.update_element(@table_name, guild_id, {2, new_guild})
-    {old, new}
+    # We may retrieve a GUILD_MEMBER_UPDATE event for our own user even if we
+    # have the required intents to retrieve it for other members disabled, as
+    # outlined in issue https://github.com/Kraigie/nostrum/issues/293. In
+    # that case, we will not have the guild cached.
+    case :ets.lookup(@table_name, guild_id) do
+      [{_id, guild}] ->
+        {old, new, new_members} = upsert(guild.members, member.user.id, member, Member)
+        new_guild = %{guild | members: new_members}
+        true = :ets.update_element(@table_name, guild_id, {2, new_guild})
+        {old, new}
+
+      [] ->
+        new = Util.cast(member, {:struct, Member})
+        {nil, new}
+    end
   end
 
   @doc false
