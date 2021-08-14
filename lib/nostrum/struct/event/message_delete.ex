@@ -33,8 +33,8 @@ defmodule Nostrum.Struct.Event.MessageDelete do
   @doc false
   def to_struct(map) do
     %__MODULE__{
-      id: map["id"],
-      channel_id: map["channel_id"],
+      id: map.id,
+      channel_id: map.channel_id,
       # https://github.com/discord/discord-api-docs/issues/296
       guild_id: map[:guild_id]
     }

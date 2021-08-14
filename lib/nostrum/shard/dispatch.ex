@@ -83,7 +83,7 @@ defmodule Nostrum.Shard.Dispatch do
   end
 
   def handle_event(:CHANNEL_UPDATE = event, p, state) do
-    {event, GuildCache.channel_update(p["guild_id"], p), state}
+    {event, GuildCache.channel_update(p.guild_id, p), state}
   end
 
   def handle_event(:CHANNEL_DELETE, _p, _state) do
@@ -156,15 +156,15 @@ defmodule Nostrum.Shard.Dispatch do
   end
 
   def handle_event(:GUILD_EMOJIS_UPDATE = event, p, state),
-    do: {event, GuildCache.emoji_update(p["guild_id"], p["emojis"]), state}
+    do: {event, GuildCache.emoji_update(p.guild_id, p.emojis), state}
 
   def handle_event(:GUILD_INTEGRATIONS_UPDATE = event, p, state) do
     {event, GuildIntegrationsUpdate.to_struct(p), state}
   end
 
   def handle_event(:GUILD_MEMBER_ADD = event, p, state) do
-    UserCache.create(p["user"])
-    {event, GuildCache.member_add(p["guild_id"], p), state}
+    UserCache.create(p.user)
+    {event, GuildCache.member_add(p.guild_id, p), state}
   end
 
   def handle_event(:GUILD_MEMBERS_CHUNK = event, p, state) do
@@ -176,27 +176,20 @@ defmodule Nostrum.Shard.Dispatch do
   end
 
   def handle_event(:GUILD_MEMBER_REMOVE = event, p, state),
-    do: {event, GuildCache.member_remove(p["guild_id"], p["user"]), state}
-
-  def handle_event(:GUILD_MEMBER_UPDATE = event, %{"guild_id" => guild_id} = p, state) do
-    {event, GuildCache.member_update(guild_id, p), state}
-  end
+    do: {event, GuildCache.member_remove(p.guild_id, p.user), state}
 
   def handle_event(:GUILD_MEMBER_UPDATE = event, %{guild_id: guild_id} = p, state) do
     {event, GuildCache.member_update(guild_id, p), state}
   end
 
   def handle_event(:GUILD_ROLE_CREATE = event, p, state),
-    do: {event, GuildCache.role_create(p["guild_id"], p["role"]), state}
+    do: {event, GuildCache.role_create(p.guild_id, p.role), state}
 
   def handle_event(:GUILD_ROLE_DELETE = event, p, state),
-    do: {event, GuildCache.role_delete(p["guild_id"], p["role_id"]), state}
-
-  def handle_event(:GUILD_ROLE_UPDATE = event, %{"guild_id" => guild_id} = p, state),
-    do: {event, GuildCache.role_update(guild_id, p["role"]), state}
+    do: {event, GuildCache.role_delete(p.guild_id, p.role_id), state}
 
   def handle_event(:GUILD_ROLE_UPDATE = event, %{guild_id: guild_id} = p, state),
-    do: {event, GuildCache.role_update(guild_id, p["role"]), state}
+    do: {event, GuildCache.role_update(guild_id, p.role), state}
 
   def handle_event(:INVITE_CREATE = event, p, state),
     do: {event, InviteCreate.to_struct(p), state}

@@ -46,11 +46,11 @@ defmodule Nostrum.Struct.ApplicationCommandInteractionDataOption do
   @spec to_struct(map()) :: __MODULE__.t()
   def to_struct(map) do
     %__MODULE__{
-      name: map["name"],
-      type: map["type"],
-      value: map["value"],
+      name: map.name,
+      type: map.type,
+      value: map[:value],
       options:
-        Util.cast(map["options"], {:list, {:struct, ApplicationCommandInteractionDataOption}})
+        Util.cast(map[:options], {:list, {:struct, ApplicationCommandInteractionDataOption}})
     }
   end
 end

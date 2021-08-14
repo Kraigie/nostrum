@@ -53,11 +53,11 @@ defmodule Nostrum.Struct.Event.Ready do
   @doc false
   def to_struct(map) do
     %__MODULE__{
-      v: map["v"],
-      user: Util.cast(map["user"], {:struct, User}),
-      guilds: Util.cast(map["guilds"], {:list, {:struct, UnavailableGuild}}),
-      shard: :erlang.list_to_tuple(map["shard"]),
-      application: Util.cast(map["application"], {:struct, PartialApplication})
+      v: map.v,
+      user: Util.cast(map.user, {:struct, User}),
+      guilds: Util.cast(map.guilds, {:list, {:struct, UnavailableGuild}}),
+      shard: :erlang.list_to_tuple(map.shard),
+      application: Util.cast(map.application, {:struct, PartialApplication})
     }
   end
 end

@@ -30,10 +30,10 @@ defmodule Nostrum.Struct.Event.MessageReactionRemoveEmoji do
   @doc false
   def to_struct(map) do
     %__MODULE__{
-      channel_id: map["channel_id"],
-      guild_id: map["guild_id"],
-      message_id: map["message_id"],
-      emoji: Util.cast(map["emoji"], {:struct, Emoji})
+      channel_id: map.channel_id,
+      guild_id: map[:guild_id],
+      message_id: map.message_id,
+      emoji: Util.cast(map.emoji, {:struct, Emoji})
     }
   end
 end

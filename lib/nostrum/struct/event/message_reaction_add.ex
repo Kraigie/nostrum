@@ -39,12 +39,12 @@ defmodule Nostrum.Struct.Event.MessageReactionAdd do
   @doc false
   def to_struct(map) do
     %__MODULE__{
-      user_id: map["user_id"],
-      channel_id: map["channel_id"],
-      message_id: map["message_id"],
-      guild_id: map["guild_id"],
-      member: Util.cast(map["member"], {:struct, Member}),
-      emoji: Util.cast(map["emoji"], {:struct, Emoji})
+      user_id: map.user_id,
+      channel_id: map.channel_id,
+      message_id: map.message_id,
+      guild_id: map[:guild_id],
+      member: Util.cast(map[:member], {:struct, Member}),
+      emoji: Util.cast(map.emoji, {:struct, Emoji})
     }
   end
 end

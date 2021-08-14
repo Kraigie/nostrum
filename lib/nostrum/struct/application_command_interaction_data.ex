@@ -54,13 +54,13 @@ defmodule Nostrum.Struct.ApplicationCommandInteractionData do
   @spec to_struct(map()) :: __MODULE__.t()
   def to_struct(map) do
     %__MODULE__{
-      id: map["id"],
-      name: map["name"],
-      resolved: Util.cast(map["resolved"], {:struct, ApplicationCommandInteractionDataResolved}),
+      id: map.id,
+      name: map.name,
+      resolved: Util.cast(map[:resolved], {:struct, ApplicationCommandInteractionDataResolved}),
       options:
-        Util.cast(map["options"], {:list, {:struct, ApplicationCommandInteractionDataOption}}),
-      custom_id: map["custom_id"],
-      component_type: map["component_type"]
+        Util.cast(map[:options], {:list, {:struct, ApplicationCommandInteractionDataOption}}),
+      custom_id: map[:custom_id],
+      component_type: map[:component_type]
     }
   end
 end
