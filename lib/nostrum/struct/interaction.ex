@@ -92,17 +92,17 @@ defmodule Nostrum.Struct.Interaction do
   @spec to_struct(map()) :: __MODULE__.t()
   def to_struct(map) do
     %__MODULE__{
-      id: map["id"],
-      application_id: map["application_id"],
-      type: map["type"],
-      data: Util.cast(map["data"], {:struct, ApplicationCommandInteractionData}),
-      guild_id: map["guild_id"],
-      channel_id: map["channel_id"],
-      member: Util.cast(map["member"], {:struct, Member}),
-      user: Util.cast(map["user"], {:struct, User}),
-      token: map["token"],
-      version: map["version"],
-      message: Util.cast(map["message"], {:struct, Message})
+      id: map.id,
+      application_id: map.application_id,
+      type: map.type,
+      data: Util.cast(map[:data], {:struct, ApplicationCommandInteractionData}),
+      guild_id: map[:guild_id],
+      channel_id: map[:channel_id],
+      member: Util.cast(map[:member], {:struct, Member}),
+      user: Util.cast(map[:user], {:struct, User}),
+      token: map.token,
+      version: map.version,
+      message: Util.cast(map[:message], {:struct, Message})
     }
   end
 end

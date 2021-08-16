@@ -2,7 +2,6 @@ defmodule Nostrum.Struct.ApplicationCommandInteractionDataResolved do
   @moduledoc "Converted interaction payload."
   @moduledoc since: "0.5.0"
 
-  alias Nostrum.Snowflake
   alias Nostrum.Struct.Channel
   alias Nostrum.Struct.Guild.Member
   alias Nostrum.Struct.Guild.Role
@@ -66,19 +65,20 @@ defmodule Nostrum.Struct.ApplicationCommandInteractionDataResolved do
   end
 
   defp map_parse(structure, target_type) do
+    # Conversion of digit strings to integers is performed in `Util.safe_atom_map`.
     structure
-    |> Enum.map(fn {k, v} -> {Util.cast(k, Snowflake), Util.cast(v, target_type)} end)
+    |> Enum.map(fn {k, v} -> {k, Util.cast(v, target_type)} end)
     |> :maps.from_list()
   end
 
   @doc false
   def to_struct(map) do
     %__MODULE__{
-      users: map_parse(map["users"], {:struct, User}),
-      members: map_parse(map["members"], {:struct, Member}),
-      roles: map_parse(map["roles"], {:struct, Role}),
-      channels: map_parse(map["channels"], {:struct, Channel}),
-      messages: map_parse(map["messages"], {:struct, Message})
+      users: map_parse(map[:users], {:struct, User}),
+      members: map_parse(map[:members], {:struct, Member}),
+      roles: map_parse(map[:roles], {:struct, Role}),
+      channels: map_parse(map[:channels], {:struct, Channel}),
+      messages: map_parse(map[:messages], {:struct, Message})
     }
   end
 end

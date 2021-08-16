@@ -23,8 +23,8 @@ defmodule Nostrum.Struct.Event.GuildBanAdd do
   @doc false
   def to_struct(map) do
     %__MODULE__{
-      guild_id: map["guild_id"],
-      user: Util.cast(map["user"], {:struct, User})
+      guild_id: map.guild_id,
+      user: Util.cast(map.user, {:struct, User})
     }
   end
 end
