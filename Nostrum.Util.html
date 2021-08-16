@@ -8,7 +8,7 @@
     <meta name="project" content="Nostrum v0.4.7">
     <title>Nostrum.Util — Nostrum v0.4.7</title>
     <link rel="stylesheet" href="dist/elixir-a172fe91e725dcb259e2.css" />
-    <script src="dist/sidebar_items-eb05f91089.js"></script>
+    <script src="dist/sidebar_items-6e45ab773f.js"></script>
       <script src="docs_config.js"></script>
     <script async src="dist/app-f27ff079945e43879c46.js"></script>
   </head>
@@ -148,6 +148,12 @@ Nostrum      </a>
 </div>
 <div class="summary-row">
   <div class="summary-signature">
+    <a href="#safe_atom_map/1">safe_atom_map(term)</a>
+  </div>
+    <div class="summary-synopsis"><p>Converts a map into an atom-keyed map.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
     <a href="#unused_atoms/0">unused_atoms()</a>
   </div>
     <div class="summary-synopsis"><p>Since we're being sacrilegious and converting strings to atoms from the WS, there will be some
@@ -218,7 +224,7 @@ for future use.</p>  </section>
       <span class="sr-only">Link to this function</span>
     </a>
     <h1 class="signature">get_all_shard_latencies()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/util.ex#L243" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/util.ex#L282" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -242,7 +248,7 @@ shard nums and whose values are latencies in milliseconds.</p>  </section>
       <span class="sr-only">Link to this function</span>
     </a>
     <h1 class="signature">get_shard_latency(state)</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/util.ex#L227" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/util.ex#L266" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -263,7 +269,7 @@ shard nums and whose values are latencies in milliseconds.</p>  </section>
       <span class="sr-only">Link to this function</span>
     </a>
     <h1 class="signature">maybe_to_atom(token)</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/util.ex#L169" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/util.ex#L198" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -272,10 +278,11 @@ shard nums and whose values are latencies in milliseconds.</p>  </section>
   <section class="docstring">
       <h2>Specs</h2>
       <div class="specs">
-          <pre>maybe_to_atom(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">atom</a>() | <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">atom</a>()</pre>
+          <pre>maybe_to_atom(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">atom</a>() | <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">atom</a>() | Integer.t()</pre>
       </div>
 
-<p>Attempts to convert a string to an atom.</p><p>If atom does not currently exist, will warn that we're doing an unsafe conversion.</p>  </section>
+<p>Attempts to convert a string to an atom.</p><p>Binary <code class="inline">token</code>s that consist of digits are assumed to be snowflakes, and will
+be parsed as such.</p><p>If atom does not currently exist, will warn that we're doing an unsafe conversion.</p>  </section>
 </section>
 <section class="detail" id="nostrum_struct/1">
   <div class="detail-header">
@@ -368,6 +375,32 @@ shard nums and whose values are latencies in milliseconds.</p>  </section>
 <p>Returns the number of shards.</p><p>This is not the number of currently active shards, but the number of shards specified
 in your config.</p>  </section>
 </section>
+<section class="detail" id="safe_atom_map/1">
+  <div class="detail-header">
+    <a href="#safe_atom_map/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">safe_atom_map(term)</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/util.ex#L176" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>safe_atom_map(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()</pre>
+      </div>
+
+<p>Converts a map into an atom-keyed map.</p><p>Given a map with variable type keys, returns the same map with all keys as <code class="inline">atoms</code>.
+To support maps keyed with integers (such as in Discord's interaction data),
+binaries that appear to be integers will be parsed as such.</p><p>This function will attempt to convert keys to an existing atom, and if that fails will default to
+creating a new atom while displaying a warning. The idea here is that we should be able to see
+if any results from Discord are giving variable keys. Since we <em>will</em> define all
+types of objects returned by Discord, the amount of new atoms created <em>SHOULD</em> be 0. 👀</p>  </section>
+</section>
 <section class="detail" id="unused_atoms/0">
   <div class="detail-header">
     <a href="#unused_atoms/0" class="detail-link" title="Link to this function">
@@ -375,7 +408,7 @@ in your config.</p>  </section>
       <span class="sr-only">Link to this function</span>
     </a>
     <h1 class="signature">unused_atoms()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/util.ex#L259" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/util.ex#L298" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
