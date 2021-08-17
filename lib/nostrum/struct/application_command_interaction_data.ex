@@ -13,10 +13,10 @@ defmodule Nostrum.Struct.ApplicationCommandInteractionData do
   defstruct [:id, :name, :resolved, :options, :custom_id, :component_type]
 
   @typedoc "ID of the invoked command"
-  @type id :: Snowflake.t()
+  @type id :: Snowflake.t() | nil
 
   @typedoc "Name of the invoked command"
-  @type name :: String.t()
+  @type name :: String.t() | nil
 
   @typedoc "Converted users & roles & channels"
   @typedoc since: "0.5.0"
@@ -54,8 +54,8 @@ defmodule Nostrum.Struct.ApplicationCommandInteractionData do
   @spec to_struct(map()) :: __MODULE__.t()
   def to_struct(map) do
     %__MODULE__{
-      id: map.id,
-      name: map.name,
+      id: map[:id],
+      name: map[:name],
       resolved: Util.cast(map[:resolved], {:struct, ApplicationCommandInteractionDataResolved}),
       options:
         Util.cast(map[:options], {:list, {:struct, ApplicationCommandInteractionDataOption}}),
