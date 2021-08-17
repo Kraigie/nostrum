@@ -35,7 +35,7 @@ defmodule Nostrum.Struct.Event.Ready do
   For more information, see
   https://discord.com/developers/docs/topics/gateway#sharding.
   """
-  @type shard :: {Integer.t(), non_neg_integer()} | nil
+  @type shard :: {integer(), non_neg_integer()} | nil
 
   @typedoc "Partial application object with `id` and `flags`"
   @type application :: PartialApplication.t()

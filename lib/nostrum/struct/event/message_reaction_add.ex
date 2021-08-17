@@ -3,7 +3,7 @@ defmodule Nostrum.Struct.Event.MessageReactionAdd do
   @moduledoc since: "0.5.0"
 
   alias Nostrum.Struct.Guild.Member
-  alias Nostrum.Struct.{Channel, Emoji, Message, User}
+  alias Nostrum.Struct.{Channel, Emoji, Guild, Message, User}
   alias Nostrum.Util
 
   defstruct [:user_id, :channel_id, :message_id, :guild_id, :member, :emoji]
