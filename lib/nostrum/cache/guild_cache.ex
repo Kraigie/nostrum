@@ -278,7 +278,7 @@ defmodule Nostrum.Cache.GuildCache do
   end
 
   @doc false
-  @spec member_update(Guild.id(), map()) :: {Member.t() | nil, Member.t()}
+  @spec member_update(Guild.id(), map()) :: {Guild.id(), Member.t() | nil, Member.t()}
   def member_update(guild_id, member) do
     # We may retrieve a GUILD_MEMBER_UPDATE event for our own user even if we
     # have the required intents to retrieve it for other members disabled, as
@@ -289,11 +289,11 @@ defmodule Nostrum.Cache.GuildCache do
         {old, new, new_members} = upsert(guild.members, member.user.id, member, Member)
         new_guild = %{guild | members: new_members}
         true = :ets.update_element(@table_name, guild_id, {2, new_guild})
-        {old, new}
+        {guild_id, old, new}
 
       [] ->
         new = Util.cast(member, {:struct, Member})
-        {nil, new}
+        {guild_id, nil, new}
     end
   end
 
