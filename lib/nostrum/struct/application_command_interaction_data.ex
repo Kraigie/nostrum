@@ -13,10 +13,10 @@ defmodule Nostrum.Struct.ApplicationCommandInteractionData do
   defstruct [:id, :name, :resolved, :options, :custom_id, :component_type]
 
   @typedoc "ID of the invoked command"
-  @type id :: Snowflake.t()
+  @type id :: Snowflake.t() | nil
 
   @typedoc "Name of the invoked command"
-  @type name :: String.t()
+  @type name :: String.t() | nil
 
   @typedoc "Converted users & roles & channels"
   @typedoc since: "0.5.0"
