@@ -69,9 +69,8 @@ defmodule Nostrum.Struct.Component do
   - Select menus **must** be sent inside an Action Row
   - An Action Row can contain **only one** select menu
   - An Action Row containing a select menu **cannot** also contain buttons
-
-
   """
+
   defmacro __using__(_opts) do
     quote do
       alias Nostrum.Struct.Component
