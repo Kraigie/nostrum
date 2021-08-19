@@ -31,7 +31,6 @@ defmodule Nostrum.Struct.Channel do
   "<#766435015768539156>"
   ```
 
-
   ## Channel Cache
 
   The [`ChannelCache`](`Nostrum.Cache.ChannelCache`) module provides functionality for you to retreive information about any channel that your application can see. It provides two functions: [`get()/1`](`Nostrum.Cache.ChannelCache.get()/1`) and [`get!()/1`](`Nostrum.Cache.ChannelCache.get!()/1`).
@@ -151,16 +150,6 @@ defmodule Nostrum.Struct.Channel do
     :default_auto_archive_duration,
     :permissions
   ]
-
-  ######
-  ## loses a lot of information. to_string() would be expected to return the full channel details
-  ## mention and link protocols could be defined?
-  #####
-
-  defimpl String.Chars do
-    @spec to_string(Nostrum.Struct.Channel.t()) :: String.t()
-    def to_string(channel), do: @for.mention(channel)
-  end
 
   @typedoc """
   The id of the channel object.
@@ -352,6 +341,7 @@ defmodule Nostrum.Struct.Channel do
           join_timestamp: join_timestamp,
           flags: flags
         }
+
   @typedoc """
   User id of the threads creator.
   """
@@ -384,7 +374,7 @@ defmodule Nostrum.Struct.Channel do
   @typedoc """
   Computed permissions of the invoking user.t()
 
-  computed permissions for the invoking user in the channel, including overwrites, only included when part of the resolved data received on a slash command interaction
+  Permissions for the invoking user in the channel, including overwrites, only included when part of the resolved data received on a slash command interaction
   """
   @typedoc since: "0.5"
   @type permissions :: String.t()
@@ -583,7 +573,6 @@ defmodule Nostrum.Struct.Channel do
           type: type,
           name: name
         }
-
   @typedoc """
   Guild channel types
   """
@@ -628,6 +617,7 @@ defmodule Nostrum.Struct.Channel do
   @doc """
   Convert a channel into a mention.
 
+
   Handles the conversion of a `Nostrum.Struct.Channel` into the required format to _mention_ the channel within a message.
 
   ## Parameters
@@ -648,6 +638,7 @@ defmodule Nostrum.Struct.Channel do
   @spec mention(t) :: String.t()
   def mention(channel)
   def mention(%__MODULE__{id: id}), do: "<##{id}>"
+
   def mention(_any), do: "<#Invalid Channel>"
 
   @doc """
