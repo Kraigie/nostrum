@@ -95,19 +95,20 @@ defmodule Nostrum.Struct.Channel do
 
     The currently implemented channel types are:
 
-  |      | Channel Type         |                                                                                        |
-  | ---- | -------------------- | -------------------------------------------------------------------------------------- |
-  | `0`  | Guild Text           | `GUILD_TEXT`            _A text channel within aserver_                               |
-  | `1`  | Direct Message       | `DM`                    _A direct message between users_                               |
-  | `2`  | Guild Voice          | `GUILD_VOICE`           _A voice channel within a server_                              |
-  | `3`  | Group Direct Message | `GROUP_DM`              _A direct message between multiple users_                      |
-  | `4`  | Guild Category       | `GUILD_CATEGORY`        _A category that contains up to 50 channels_                   |
-  | `5`  | Guild Announcements  | `GUILD_NEWS`            _A channel that users can follow and crosspost from_           |
-  | `6`  | Guild Store          | `GUILD_STORE`           _A channel in which developers can sell their game on Discord_ |
-  | `10` | Guild News Thread    | `GUILD_NEWS_THREAD`     _A temporary sub-channel within a `5` channel_                 |
-  | `11` | Guild Public Thread  | `GUILD_PUBLIC_THREAD`   _A temporary sub-channel within an `0` channel_                |
-  | `12` | Guild Private Thread | `GUILD_PRIVATE_THREAD`  _A temporary private sub-channel within an `0`                 |
-  | `13` | Guild Stage Voice    | `GUILD_STAGE_VOICE`     _A voice channel for hosting events with an audience_          |
+  |     | Channel Type        |                                                                                       |
+  | ----| --------------------| --------------------------------------------------------------------------------------|
+  | `0` | Guild Text          | `GUILD_TEXT`            _A text channel within aserver_                               |
+  | `1` | Direct Message      | `DM`                    _A direct message between users_                              |
+  | `2` | Guild Voice         | `GUILD_VOICE`           _A voice channel within a server_                             |
+  | `3` | Group Direct Message| `GROUP_DM`              _A direct message between multiple users_                     |
+  | `4` | Guild Category      | `GUILD_CATEGORY`        _A category that contains up to 50 channels_                  |
+  | `5` | Guild Announcements | `GUILD_NEWS`            _A channel that users can follow and crosspost from_          |
+  | `6` | Guild Store         | `GUILD_STORE`           _A channel to sell games on Discord_                          |
+  | `10`| Guild News Thread   | `GUILD_NEWS_THREAD`     _A temporary sub-channel within a `5` channel_                |
+  | `11`| Guild Public Thread | `GUILD_PUBLIC_THREAD`   _A temporary sub-channel within an `0` channel_               |
+  | `12`| Guild Private Thread| `GUILD_PRIVATE_THREAD`  _A temporary private sub-channel within an `0`                |
+  | `13`| Guild Stage Voice   | `GUILD_STAGE_VOICE`     _A voice channel for hosting events with an audience_         |
+
 
 
 
