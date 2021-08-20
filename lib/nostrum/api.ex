@@ -2800,36 +2800,63 @@ defmodule Nostrum.Api do
     })
   end
 
-  @doc """
-  Executes a webhook.
+  @typep m1 :: %{
+           content: String.t(),
+           username: String.t(),
+           avatar_url: String.t(),
+           tts: boolean,
+           file: String.t() | nil,
+           embeds: nonempty_list(Embed.t()) | nil
+         }
 
-  ## Parameters
-  - `webhook_id` - Id of the webhook to execute.
-  - `webhook_token` - Token of the webhook to execute.
-  - `args` - Map with the following required keys:
-    - `content` - Message content.
-    - `file` - File to send.
-    - `embeds` - List of embeds to send.
-    - `username` - Overrides the default name of the webhook.
-    - `avatar_url` - Overrides the default avatar of the webhook.
-    - `tts` - Whether the message should be read over text to speech.
-  - `wait` - Whether to return an error or not. Defaults to `false`.
+  @typep m2 ::
+           %{
+             content: String.t() | nil,
+             username: String.t(),
+             avatar_url: String.t(),
+             tts: boolean,
+             file: String.t(),
+             embeds: nonempty_list(Embed.t()) | nil
+           }
 
-  Only one of `content`, `file` or `embeds` should be supplied in the `args` parameter.
-  """
+  @typep m3 ::
+           %{
+             content: String.t() | nil,
+             username: String.t(),
+             avatar_url: String.t(),
+             tts: boolean,
+             file: String.t() | nil,
+             embeds: nonempty_list(Embed.t())
+           }
+
+  @type matrix :: m1 | m2 | m3
+
   @spec execute_webhook(
           Webhook.id() | User.id(),
           Webhook.token() | Interaction.token(),
-          %{
-            content: String.t(),
-            username: String.t(),
-            avatar_url: String.t(),
-            tts: boolean,
-            file: String.t(),
-            embeds: [Embed.t()]
-          },
+          matrix,
           boolean
-        ) :: error | {:ok}
+        ) ::
+          error | {:ok}
+
+  @doc """
+   Executes a webhook.
+
+   ## Parameters
+   - `webhook_id` - Id of the webhook to execute.
+   - `webhook_token` - Token of the webhook to execute.
+   - `args` - Map with the following required keys:
+     - `content` - Message content.
+     - `file` - File to send.
+     - `embeds` - List of embeds to send.
+     - `username` - Overrides the default name of the webhook.
+     - `avatar_url` - Overrides the default avatar of the webhook.
+     - `tts` - Whether the message should be read over text to speech.
+   - `wait` - Whether to return an error or not. Defaults to `false`.
+
+   Only one of `content`, `file` or `embeds` should be supplied in the `args` parameter.
+  """
+
   def execute_webhook(webhook_id, webhook_token, args, wait \\ false)
 
   def execute_webhook(webhook_id, webhook_token, %{file: _} = args, wait) do
