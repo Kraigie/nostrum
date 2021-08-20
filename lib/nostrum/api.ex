@@ -2801,32 +2801,32 @@ defmodule Nostrum.Api do
   end
 
   @typep m1 :: %{
-           content: String.t(),
-           username: String.t(),
-           avatar_url: String.t(),
-           tts: boolean,
-           file: String.t() | nil,
-           embeds: nonempty_list(Embed.t()) | nil
+           required(:content) => String.t(),
+           :username => String.t(),
+           :avatar_url => String.t(),
+           :tts => boolean,
+           optional(:file) => String.t() | nil,
+           optional(:embeds) => nonempty_list(Embed.t()) | nil
          }
 
   @typep m2 ::
            %{
-             content: String.t() | nil,
-             username: String.t(),
-             avatar_url: String.t(),
-             tts: boolean,
-             file: String.t(),
-             embeds: nonempty_list(Embed.t()) | nil
+             optional(:content) => String.t() | nil,
+             :username => String.t(),
+             :avatar_url => String.t(),
+             :tts => boolean,
+             required(:file) => String.t(),
+             optional(:embeds) => nonempty_list(Embed.t()) | nil
            }
 
   @typep m3 ::
            %{
-             content: String.t() | nil,
-             username: String.t(),
-             avatar_url: String.t(),
-             tts: boolean,
-             file: String.t() | nil,
-             embeds: nonempty_list(Embed.t())
+             optional(:content) => String.t() | nil,
+             :username => String.t(),
+             :avatar_url => String.t(),
+             :tts => boolean,
+             optional(:file) => String.t() | nil,
+             required(:embeds) => nonempty_list(Embed.t())
            }
 
   @type matrix :: m1 | m2 | m3
