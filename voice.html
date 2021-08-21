@@ -8,7 +8,7 @@
     <meta name="project" content="Nostrum v0.4.7">
     <title>Voice — Nostrum v0.4.7</title>
     <link rel="stylesheet" href="dist/elixir-a172fe91e725dcb259e2.css" />
-    <script src="dist/sidebar_items-6e45ab773f.js"></script>
+    <script src="dist/sidebar_items-f1f7ccf13a.js"></script>
       <script src="docs_config.js"></script>
     <script async src="dist/app-f27ff079945e43879c46.js"></script>
   </head>
@@ -104,7 +104,17 @@ Although the name implies support for Youtube, <code class="inline">youtube-dl</
 By default Nostrum will look for the executable <code class="inline">youtube-dl</code> in the system path. If the
 executable is elsewhere, the path may be configured via <code class="inline">config :nostrum, :youtubedl, &quot;/path/to/youtube-dl&quot;</code>.
 When <a href="Nostrum.Voice.html#play/4"><code class="inline">Nostrum.Voice.play/4</code></a> is called with <code class="inline">:ytdl</code> for the <code class="inline">type</code> parameter, <code class="inline">youtube-dl</code> will be
-run with options <code class="inline">-f bestaudio -q -o -</code>, which will attempt to download the audio at the given url and pipe it to <code class="inline">ffmpeg</code>.</p><h2 id="audio-timeout" class="section-heading">
+run with options <code class="inline">-f bestaudio -q -o -</code>, which will attempt to download the audio at the given url and pipe it to <code class="inline">ffmpeg</code>.</p><h2 id="streamlink" class="section-heading">
+  <a href="#streamlink" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  streamlink
+</h2>
+<p>Nostrum also has support for <code class="inline">streamlink</code>, yet another powerful command line utility for downloading live streams from online video streaming services.
+By default Nostrum will look for the executable <code class="inline">streamlink</code> in the system path. 
+If the executable is elsewhere, the path may be configured via <code class="inline">config :nostrum, :streamlink, &quot;/path/to/streamlink&quot;</code>.
+When <a href="Nostrum.Voice.html#play/4"><code class="inline">Nostrum.Voice.play/4</code></a> is called with <code class="inline">:stream</code> for the <code class="inline">type</code> parameter, <code class="inline">streamlink</code> 
+will be attempt to download the live stream content and pipe it to <code class="inline">ffmpeg</code>.
+Using <code class="inline">streamlink</code> with Nostrum depends on <code class="inline">youtube-dl</code> to get the underlying
+stream URL from the user-friendly URL that's given as input.</p><h2 id="audio-timeout" class="section-heading">
   <a href="#audio-timeout" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
   Audio Timeout
 </h2>
