@@ -30,6 +30,15 @@ executable is elsewhere, the path may be configured via `config :nostrum, :youtu
 When `Nostrum.Voice.play/4` is called with `:ytdl` for the `type` parameter, `youtube-dl` will be
 run with options `-f bestaudio -q -o -`, which will attempt to download the audio at the given url and pipe it to `ffmpeg`.
 
+## streamlink
+Nostrum also has support for `streamlink`, yet another powerful command line utility for downloading live streams from online video streaming services.
+By default Nostrum will look for the executable `streamlink` in the system path. 
+If the executable is elsewhere, the path may be configured via `config :nostrum, :streamlink, "/path/to/streamlink"`.
+When `Nostrum.Voice.play/4` is called with `:stream` for the `type` parameter, `streamlink` 
+will be attempt to download the live stream content and pipe it to `ffmpeg`.
+Using `streamlink` with Nostrum depends on `youtube-dl` to get the underlying
+stream URL from the user-friendly URL that's given as input.
+
 ## Audio Timeout
 Upon invoking `Nostrum.Voice.play/4`, the player process has a large configurable initial window
 (`20_000` milliseconds by default) that it must generate audio within before timing out. This is done to allow
