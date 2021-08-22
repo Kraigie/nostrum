@@ -1355,7 +1355,7 @@ defmodule Nostrum.Api do
     * `:user_id` (`t:Nostrum.Struct.User.id/0`) - filter the log for a user ID
     * `:action_type` (`t:integer/0`) - filter the log by audit log type, see [Audit Log Events](https://discord.com/developers/docs/resources/audit-log#audit-log-entry-object-audit-log-events)
     * `:before` (`t:Nostrum.Struct.Snowflake.t/0`) - filter the log before a certain entry ID
-    * `:limit` (`t:positive_integer/0`) - how many entries are returned (default 50, minimum 1, maximum 100)
+    * `:limit` (`t:pos_integer/0`) - how many entries are returned (default 50, minimum 1, maximum 100)
   """
   @spec get_guild_audit_log(Guild.id(), options) :: {:ok, AuditLog.t()} | error
   def get_guild_audit_log(guild_id, options \\ []) do
@@ -2619,7 +2619,7 @@ defmodule Nostrum.Api do
   @doc """
   Gets a list of user connections.
   """
-  @spec get_user_connections() :: error | {:ok, Nostrum.Struct.User.Connection.t()}
+  @spec get_user_connections() :: error | {:ok, list()}
   def get_user_connections do
     request(:get, Constants.me_connections())
     |> handle_request_with_decode
