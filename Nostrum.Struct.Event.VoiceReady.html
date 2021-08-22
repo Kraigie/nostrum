@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="ExDoc v0.25.1">
     <meta name="project" content="Nostrum v0.4.7">
-    <title>Nostrum.Struct.Event.MessageDeleteBulk — Nostrum v0.4.7</title>
+    <title>Nostrum.Struct.Event.VoiceReady — Nostrum v0.4.7</title>
     <link rel="stylesheet" href="dist/elixir-a172fe91e725dcb259e2.css" />
     <script src="dist/sidebar_items-ac0dc2c544.js"></script>
       <script src="docs_config.js"></script>
@@ -70,8 +70,8 @@ Nostrum      </a>
     <div id="content" class="content-inner">
 
       <h1>
-        Nostrum.Struct.Event.MessageDeleteBulk <small class="app-vsn">(Nostrum v0.4.7)</small>
-          <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/event/message_delete_bulk.ex#L1" title="View Source" class="view-source" rel="help">
+        Nostrum.Struct.Event.VoiceReady <small class="app-vsn">(Nostrum v0.4.7)</small>
+          <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/event/voice_ready.ex#L1" title="View Source" class="view-source" rel="help">
             <span class="icon-code" aria-hidden="true"></span>
             <span class="sr-only">View Source</span>
           </a>
@@ -79,7 +79,10 @@ Nostrum      </a>
 
 
         <section id="moduledoc">
-<p>Struct representing a Message Delete Bulk event</p>        </section>
+<p>Struct representing a Nostrum-generated Voice Ready event</p><p>Nostrum will generate this event when the bot joins a voice channel
+and is ready to play audio.</p><p>Listening to this event may be used for bots that begin playing audio
+directly after joining a voice channel as an alternative to waiting
+until <a href="Nostrum.Voice.html#ready?/1"><code class="inline">Nostrum.Voice.ready?/1</code></a> returns <code class="inline">true</code>.</p>        </section>
 
         <section id="summary" class="details-list">
           <h1 class="section-heading">
@@ -97,19 +100,13 @@ Nostrum      </a>
   <div class="summary-signature">
     <a href="#t:channel_id/0">channel_id()</a>
   </div>
-    <div class="summary-synopsis"><p>Channel id of the deleted message</p></div>
+    <div class="summary-synopsis"><p>Id of the channel that voice is ready in.</p></div>
 </div>
 <div class="summary-row">
   <div class="summary-signature">
     <a href="#t:guild_id/0">guild_id()</a>
   </div>
-    <div class="summary-synopsis"><p>Guild id of the deleted message</p></div>
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#t:ids/0">ids()</a>
-  </div>
-    <div class="summary-synopsis"><p>Ids of the deleted messages</p></div>
+    <div class="summary-synopsis"><p>Id of the guild that voice is ready in.</p></div>
 </div>
 <div class="summary-row">
   <div class="summary-signature">
@@ -134,7 +131,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">channel_id()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/event/message_delete_bulk.ex#L15" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/event/voice_ready.ex#L24" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -146,7 +143,7 @@ Types          </h1>
           <pre>channel_id() :: <a href="Nostrum.Struct.Channel.html#t:id/0">Nostrum.Struct.Channel.id</a>()</pre>
       </div>
 
-<p>Channel id of the deleted message</p>  </section>
+<p>Id of the channel that voice is ready in.</p>  </section>
 </section>
 <section class="detail" id="t:guild_id/0">
   <div class="detail-header">
@@ -155,7 +152,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">guild_id()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/event/message_delete_bulk.ex#L22" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/event/voice_ready.ex#L29" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -164,31 +161,10 @@ Types          </h1>
   <section class="docstring">
       <h2>Specs</h2>
       <div class="specs">
-          <pre>guild_id() :: <a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>() | nil</pre>
+          <pre>guild_id() :: <a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>()</pre>
       </div>
 
-<p>Guild id of the deleted message</p><p><code class="inline">nil</code> if a non-guild message was deleted.</p>  </section>
-</section>
-<section class="detail" id="t:ids/0">
-  <div class="detail-header">
-    <a href="#t:ids/0" class="detail-link" title="Link to this type">
-      <span class="icon-link" aria-hidden="true"></span>
-      <span class="sr-only">Link to this type</span>
-    </a>
-    <h1 class="signature">ids()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/event/message_delete_bulk.ex#L25" class="view-source" rel="help" title="View Source">
-       <span class="icon-code" aria-hidden="true"></span>
-       <span class="sr-only">View Source</span>
-     </a>
-  </div>
-
-  <section class="docstring">
-      <h2>Specs</h2>
-      <div class="specs">
-          <pre>ids() :: [<a href="Nostrum.Struct.Message.html#t:id/0">Nostrum.Struct.Message.id</a>(), ...]</pre>
-      </div>
-
-<p>Ids of the deleted messages</p>  </section>
+<p>Id of the guild that voice is ready in.</p>  </section>
 </section>
 <section class="detail" id="t:t/0">
   <div class="detail-header">
@@ -197,7 +173,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">t()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/event/message_delete_bulk.ex#L27" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/event/voice_ready.ex#L31" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -206,10 +182,9 @@ Types          </h1>
   <section class="docstring">
       <h2>Specs</h2>
       <div class="specs">
-          <pre>t() :: %Nostrum.Struct.Event.MessageDeleteBulk{
+          <pre>t() :: %Nostrum.Struct.Event.VoiceReady{
   channel_id: <a href="#t:channel_id/0">channel_id</a>(),
-  guild_id: <a href="#t:guild_id/0">guild_id</a>(),
-  ids: <a href="#t:ids/0">ids</a>()
+  guild_id: <a href="#t:guild_id/0">guild_id</a>()
 }</pre>
       </div>
 

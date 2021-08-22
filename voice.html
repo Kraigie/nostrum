@@ -8,7 +8,7 @@
     <meta name="project" content="Nostrum v0.4.7">
     <title>Voice — Nostrum v0.4.7</title>
     <link rel="stylesheet" href="dist/elixir-a172fe91e725dcb259e2.css" />
-    <script src="dist/sidebar_items-f1f7ccf13a.js"></script>
+    <script src="dist/sidebar_items-ac0dc2c544.js"></script>
       <script src="docs_config.js"></script>
     <script async src="dist/app-f27ff079945e43879c46.js"></script>
   </head>
@@ -123,7 +123,7 @@ stream URL from the user-friendly URL that's given as input.</p><h2 id="audio-ti
 ample time for slow networks to download large audio/video files. This configurable timeout only applies to when
 <code class="inline">play</code> is initially invoked; once audio has begun transmitting, the timeout drops to <code class="inline">500</code> milliseconds.
 Because the <code class="inline">ffmpeg</code> process doesn't close when its input device is <code class="inline">stdin</code>, which is the case
-with <code class="inline">type</code> is set to <code class="inline">:pipe</code> or <code class="inline">:ytdl</code>, the timeout is necessary to promtly detect end of input.
+when <code class="inline">type</code> is set to <code class="inline">:pipe</code>, <code class="inline">:ytdl</code>, or <code class="inline">:stream</code> the timeout is necessary to promtly detect end of input.
 If the audio process times out with the initial window, the <a href="Nostrum.Struct.Event.SpeakingUpdate.html"><code class="inline">Nostrum.Struct.Event.SpeakingUpdate</code></a>
 that is generated will have its <code class="inline">timed_out</code> field set to <code class="inline">true</code>. It will be <code class="inline">false</code> in all other cases.
 If your use case does not include large, slow downloads and you wish to more quickly be notified
@@ -132,7 +132,50 @@ However, <code class="inline">youtube-dl</code> typically takes at least 2.5 sec
 even on a fast connection.
 If your use case involves playing large files at a timestamp several hours in like this,
 <code class="inline">play(guild_id, url, :ytdl, start_time: &quot;2:37:56&quot;)</code>, you may consider setting the timeout to a higher value, as downloading a large youtube video and having <code class="inline">ffmpeg</code> seek through several hours
-of audio may take 15-20 seconds, even with a fast network connection.</p><div class="bottom-actions">
+of audio may take 15-20 seconds, even with a fast network connection.</p><h2 id="voice-events" class="section-heading">
+  <a href="#voice-events" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Voice Events
+</h2>
+<p>There are a few voice related events that bots can consume with a <a href="Nostrum.Consumer.html"><code class="inline">Nostrum.Consumer</code></a> process:</p><ul><li><a href="Nostrum.Consumer.html#t:voice_state_update/0"><code class="inline">Nostrum.Consumer.voice_state_update/0</code></a></li><li><a href="Nostrum.Consumer.html#t:voice_server_update/0"><code class="inline">Nostrum.Consumer.voice_server_update/0</code></a></li><li><a href="Nostrum.Consumer.html#t:voice_speaking_update/0"><code class="inline">Nostrum.Consumer.voice_speaking_update/0</code></a></li><li><a href="Nostrum.Consumer.html#t:voice_ready/0"><code class="inline">Nostrum.Consumer.voice_ready/0</code></a></li></ul><p>Both <a href="Nostrum.Consumer.html#t:voice_state_update/0"><code class="inline">Nostrum.Consumer.voice_state_update/0</code></a> and <a href="Nostrum.Consumer.html#t:voice_server_update/0"><code class="inline">Nostrum.Consumer.voice_server_update/0</code></a> 
+are sent by the shard gateway session when a bot joins a voice channel. The receipt of both of 
+these events is required for a voice gateway session to begin, and it happens automatically when 
+joining a channel. The <a href="Nostrum.Consumer.html#t:voice_state_update/0"><code class="inline">Nostrum.Consumer.voice_state_update/0</code></a> event is also sent every time 
+any user joins or leaves a voice channel, and <a href="Nostrum.Struct.Guild.html#t:voice_states/0"><code class="inline">Nostrum.Struct.Guild.voice_states/0</code></a> is 
+automatically updated within the guild cache to reflect current state of voice channels.</p><p>A use case for listening to both <a href="Nostrum.Consumer.html#t:voice_state_update/0"><code class="inline">Nostrum.Consumer.voice_state_update/0</code></a> and 
+<a href="Nostrum.Consumer.html#t:voice_server_update/0"><code class="inline">Nostrum.Consumer.voice_server_update/0</code></a> events would be to outsource voice connections to 
+an application outisde of Nostrum. This can be done by setting the config option 
+<code class="inline">voice_auto_connect</code> to <code class="inline">false</code> and taking the session and token information 
+from both of the events and passing them to your external voice app. 
+Outside of this niche use case, another use case for listening solely to the
+<a href="Nostrum.Consumer.html#t:voice_state_update/0"><code class="inline">Nostrum.Consumer.voice_state_update/0</code></a> event would be to detect when users join or leave 
+voice channels.</p><p>The <a href="Nostrum.Consumer.html#t:voice_speaking_update/0"><code class="inline">Nostrum.Consumer.voice_speaking_update/0</code></a> is generated by Nostrum for convenience. It is 
+sent everytime the bot starts or stops speaking/sending audio. A use case for this event is if 
+you have a queue of URLs to play, listening to the <a href="Nostrum.Consumer.html#t:voice_speaking_update/0"><code class="inline">Nostrum.Consumer.voice_speaking_update/0</code></a> 
+will let the bot know when the current URL has finished playing and that it should begin playing 
+the next one in the queue. The alternative approach for this use case that is not event-driven 
+is to periodically call <a href="Nostrum.Voice.html#playing?/1"><code class="inline">Nostrum.Voice.playing?/1</code></a> and wait for it to return <code class="inline">false</code> as the 
+trigger to play the next URL. Note that the third element in the event is of type
+<a href="Nostrum.Struct.VoiceWSState.html#t:t/0"><code class="inline">Nostrum.Struct.VoiceWSState.t/0</code></a> and not <a href="Nostrum.Struct.WSState.html#t:t/0"><code class="inline">Nostrum.Struct.WSState.t/0</code></a>.</p><p>The <a href="Nostrum.Consumer.html#t:voice_ready/0"><code class="inline">Nostrum.Consumer.voice_ready/0</code></a> is generated by Nostrum for convencience. It is sent
+when the bot is ready to begin sending audio data upon joining a voice channel. From the moment
+the bot joins a voice channel, Nostrum handles the multi-step handshaking process that is 
+required before any audio packets can be sent or received. It is a common use case for bot to
+immediately begin playing audio upon joining a voice channel. Calling <a href="Nostrum.Voice.html#play/4"><code class="inline">Nostrum.Voice.play/4</code></a>
+directly after calling <a href="Nostrum.Voice.html#join_channel/4"><code class="inline">Nostrum.Voice.join_channel/4</code></a> will always return an error as several
+network actions must take place before playing audio is possible. Listening for the
+<a href="Nostrum.Consumer.html#t:voice_ready/0"><code class="inline">Nostrum.Consumer.voice_ready/0</code></a> event can be used by the bot to begin playing audio as soon 
+as it is able to. The alternative approach for this use case that is not event-driven is to 
+periodically call <a href="Nostrum.Voice.html#ready?/1"><code class="inline">Nostrum.Voice.ready?/1</code></a> and wait for it to return <code class="inline">true</code> as the trigger to
+begin playing. Another common approach is to define a <code class="inline">try_play</code> function as follows:</p><pre><code class="makeup elixir"><span class="kd">def</span><span class="w"> </span><span class="nf">try_play</span><span class="p" data-group-id="7546795979-1">(</span><span class="n">guild_id</span><span class="p">,</span><span class="w"> </span><span class="n">url</span><span class="p">,</span><span class="w"> </span><span class="n">type</span><span class="p">,</span><span class="w"> </span><span class="n">opts</span><span class="w"> </span><span class="o">\\</span><span class="w"> </span><span class="p" data-group-id="7546795979-2">[</span><span class="p" data-group-id="7546795979-2">]</span><span class="p" data-group-id="7546795979-1">)</span><span class="w"> </span><span class="k" data-group-id="7546795979-3">do</span><span class="w">
+  </span><span class="k">case</span><span class="w"> </span><span class="nc">Nostrum.Voice</span><span class="o">.</span><span class="n">play</span><span class="p" data-group-id="7546795979-4">(</span><span class="n">guild_id</span><span class="p">,</span><span class="w"> </span><span class="n">url</span><span class="p">,</span><span class="w"> </span><span class="n">type</span><span class="p">,</span><span class="w"> </span><span class="n">opts</span><span class="p" data-group-id="7546795979-4">)</span><span class="w"> </span><span class="k" data-group-id="7546795979-5">do</span><span class="w">
+    </span><span class="p" data-group-id="7546795979-6">{</span><span class="ss">:error</span><span class="p">,</span><span class="w"> </span><span class="c">_msg</span><span class="p" data-group-id="7546795979-6">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+      </span><span class="nc">Process</span><span class="o">.</span><span class="n">sleep</span><span class="p" data-group-id="7546795979-7">(</span><span class="mi">100</span><span class="p" data-group-id="7546795979-7">)</span><span class="w">
+      </span><span class="n">try_play</span><span class="p" data-group-id="7546795979-8">(</span><span class="n">guild_id</span><span class="p">,</span><span class="w"> </span><span class="n">url</span><span class="p">,</span><span class="w"> </span><span class="n">type</span><span class="p">,</span><span class="w"> </span><span class="n">opts</span><span class="p" data-group-id="7546795979-8">)</span><span class="w">
+
+    </span><span class="bp">_</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+      </span><span class="ss">:ok</span><span class="w">
+  </span><span class="k" data-group-id="7546795979-5">end</span><span class="w">
+</span><span class="k" data-group-id="7546795979-3">end</span></code></pre><p>Note that the third element in the event is of type <a href="Nostrum.Struct.VoiceWSState.html#t:t/0"><code class="inline">Nostrum.Struct.VoiceWSState.t/0</code></a> and 
+not <a href="Nostrum.Struct.WSState.html#t:t/0"><code class="inline">Nostrum.Struct.WSState.t/0</code></a>.</p><div class="bottom-actions">
   <div class="bottom-actions-item">
       <a href="consumers.html" class="bottom-actions-button" rel="prev">
         <span class="subheader">
