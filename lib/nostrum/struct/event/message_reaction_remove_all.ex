@@ -1,5 +1,6 @@
 defmodule Nostrum.Struct.Event.MessageReactionRemoveAll do
   @moduledoc "Sent when a user explicitly removes all reactions from a message"
+  @moduledoc since: "0.5.0"
 
   alias Nostrum.Struct.{Channel, Guild, Message}
 
@@ -24,9 +25,9 @@ defmodule Nostrum.Struct.Event.MessageReactionRemoveAll do
   @doc false
   def to_struct(map) do
     %__MODULE__{
-      channel_id: map["channel_id"],
-      message_id: map["message_id"],
-      guild_id: map["guild_id"]
+      channel_id: map.channel_id,
+      message_id: map.message_id,
+      guild_id: map[:guild_id]
     }
   end
 end

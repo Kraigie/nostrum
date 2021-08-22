@@ -178,10 +178,10 @@ defmodule Nostrum.Api do
     * `:all` (default) - Ping everything as usual
     * `:none` - Nobody will be pinged
     * `:everyone` - Allows to ping @here and @everone
-    * `:user` - Allows to ping users
+    * `:users` - Allows to ping users
     * `:roles` - Allows to ping roles
-    * `{:user, list}` - Allows to ping list of users. Can contain up to 100 ids of users.
-    * `{:role, list}` - Allows to ping list of roles. Can contain up to 100 ids of roles.
+    * `{:users, list}` - Allows to ping list of users. Can contain up to 100 ids of users.
+    * `{:roles, list}` - Allows to ping list of roles. Can contain up to 100 ids of roles.
     * list - a list containing the values above.
 
   ### Message reference
@@ -1355,7 +1355,7 @@ defmodule Nostrum.Api do
     * `:user_id` (`t:Nostrum.Struct.User.id/0`) - filter the log for a user ID
     * `:action_type` (`t:integer/0`) - filter the log by audit log type, see [Audit Log Events](https://discord.com/developers/docs/resources/audit-log#audit-log-entry-object-audit-log-events)
     * `:before` (`t:Nostrum.Struct.Snowflake.t/0`) - filter the log before a certain entry ID
-    * `:limit` (`t:positive_integer/0`) - how many entries are returned (default 50, minimum 1, maximum 100)
+    * `:limit` (`t:pos_integer/0`) - how many entries are returned (default 50, minimum 1, maximum 100)
   """
   @spec get_guild_audit_log(Guild.id(), options) :: {:ok, AuditLog.t()} | error
   def get_guild_audit_log(guild_id, options \\ []) do
@@ -1867,6 +1867,7 @@ defmodule Nostrum.Api do
   @doc """
   Gets a ban object for the given user from a guild.
   """
+  @doc since: "0.5.0"
   @spec get_guild_ban(integer, integer) :: error | {:ok, Guild.Ban.t()}
   def get_guild_ban(guild_id, user_id) do
     request(:get, Constants.guild_ban(guild_id, user_id))
@@ -2249,7 +2250,8 @@ defmodule Nostrum.Api do
 
   Guild to get integrations for is specified by `guild_id`.
   """
-  @spec get_guild_integrations(integer) :: error | {:ok, [Nostrum.Struct.Guild.Integration.t()]}
+  @spec get_guild_integrations(Guild.id()) ::
+          error | {:ok, [Nostrum.Struct.Guild.Integration.t()]}
   def get_guild_integrations(guild_id) do
     request(:get, Constants.guild_integrations(guild_id))
     |> handle_request_with_decode
@@ -2617,7 +2619,7 @@ defmodule Nostrum.Api do
   @doc """
   Gets a list of user connections.
   """
-  @spec get_user_connections() :: error | {:ok, Nostrum.Struct.User.Connection.t()}
+  @spec get_user_connections() :: error | {:ok, list()}
   def get_user_connections do
     request(:get, Constants.me_connections())
     |> handle_request_with_decode
@@ -2816,8 +2818,8 @@ defmodule Nostrum.Api do
   Only one of `content`, `file` or `embeds` should be supplied in the `args` parameter.
   """
   @spec execute_webhook(
-          Webhook.id(),
-          Webhook.token(),
+          Webhook.id() | User.id(),
+          Webhook.token() | Interaction.token(),
           %{
             content: String.t(),
             username: String.t(),
@@ -3026,6 +3028,7 @@ defmodule Nostrum.Api do
   Updated list of global application commands. See the official reference:
   https://discord.com/developers/docs/interactions/slash-commands#bulk-overwrite-global-application-commands
   """
+  @doc since: "0.5.0"
   @spec bulk_overwrite_global_application_commands([map()]) :: {:ok, [map()]} | error
   @spec bulk_overwrite_global_application_commands(User.id(), [map()]) :: {:ok, [map()]} | error
   def bulk_overwrite_global_application_commands(application_id \\ Me.get().id, commands) do
@@ -3149,6 +3152,7 @@ defmodule Nostrum.Api do
   Updated list of guild application commands. See the official reference:
   https://discord.com/developers/docs/interactions/slash-commands#bulk-overwrite-guild-application-commands
   """
+  @doc since: "0.5.0"
   @spec bulk_overwrite_guild_application_commands(Guild.id(), [map()]) :: {:ok, [map()]} | error
   @spec bulk_overwrite_guild_application_commands(User.id(), Guild.id(), [map()]) ::
           {:ok, [map()]} | error

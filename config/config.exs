@@ -2,7 +2,6 @@ import Config
 
 config :nostrum,
   token: "",
-  num_shards: :auto,
   ffmpeg: "ffmpeg",
   youtubedl: "youtube-dl"
 

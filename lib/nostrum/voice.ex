@@ -97,6 +97,7 @@ defmodule Nostrum.Voice do
       - `:url` Input will be [any url that `ffmpeg` can read](https://www.ffmpeg.org/ffmpeg-protocols.html).
       - `:pipe` Input will be data that is piped to stdin of `ffmpeg`.
       - `:ytdl` Input will be url for `youtube-dl`, which gets automatically piped to `ffmpeg`.
+      - `:stream` Input will be livestream url for `streamlink`, which gets automatically piped to `ffmpeg`.
       - `:raw` Input will be an enumarable of raw opus frames. This bypasses `ffmpeg` and all options.
       - `:raw_s` Same as `:raw` but input must be stateful, i.e. calling `Enum.take/2` on input is not idempotent.
     - `options` - See options section below.
@@ -152,11 +153,18 @@ defmodule Nostrum.Voice do
   iex> Nostrum.Voice.play(123456789, "https://www.youtube.com/watch?v=0ngcL_5ekXo", :ytdl,
   ...>   filter: "lowpass=f=1200", filter: "highpass=f=300", filter: "asetrate=44100*0.5")
   ```
+  ```Elixir
+  iex> Nostrum.Voice.join_channel(123456789, 420691337)
+
+  iex> Nostrum.Voice.play(123456789, "https://www.twitch.tv/pestily", :stream)
+
+  iex> Nostrum.Voice.play(123456789, "https://youtu.be/LN4r-K8ZP5Q", :stream)
+  ```
   """
   @spec play(
           Guild.id(),
           String.t() | binary() | iodata() | Enum.t(),
-          :url | :pipe | :ytdl | :raw | :raw_s,
+          :url | :pipe | :ytdl | :stream | :raw | :raw_s,
           keyword()
         ) ::
           :ok | {:error, String.t()}
@@ -420,6 +428,7 @@ defmodule Nostrum.Voice do
   This function does not need to be called unless you are sending audio frames
   directly using `Nostrum.Voice.send_frames/2`.
   """
+  @doc since: "0.5.0"
   @spec set_is_speaking(Guild.id(), boolean) :: :ok
   def set_is_speaking(guild_id, speaking), do: get_voice(guild_id) |> set_speaking(speaking)
 
@@ -436,6 +445,7 @@ defmodule Nostrum.Voice do
   `Nostrum.Voice.playing?/1` will not return accurate values when using `send_frames/2`
   instead of `Nostrum.Voice.play/4`
   """
+  @doc since: "0.5.0"
   @spec send_frames(Guild.id(), [binary]) :: :ok | {:error, String.t()}
   def send_frames(guild_id, frames) when is_list(frames) do
     voice = get_voice(guild_id)
@@ -454,6 +464,7 @@ defmodule Nostrum.Voice do
   This function should only be called if config option `:voice_auto_connect` is set to `false`.
   By default Nostrum will automatically create a voice gateway when joining a channel.
   """
+  @doc since: "0.5.0"
   @spec connect_to_gateway(Guild.id()) :: :ok | {:error, String.t()}
   def connect_to_gateway(guild_id) do
     voice = get_voice(guild_id)
@@ -468,6 +479,29 @@ defmodule Nostrum.Voice do
 
       true ->
         {:error, "Voice gateway connection already open."}
+    end
+  end
+
+  @doc """
+  Listen for incoming voice RTP packets.
+
+  ## Parameters
+    - `guild_id` - ID of guild that the bot is listening to.
+    - `num_packets` - Number of packets to wait for.
+
+  Returns a list of 2-element tuples in the form `{rtp_header, opus_frame}`.
+
+  This function will block until the specified number of packets is received.
+  """
+  @doc since: "0.5.0"
+  @spec listen(Guild.id(), pos_integer) :: [{binary, binary}] | {:error, String.t()}
+  def listen(guild_id, num_packets) do
+    voice = get_voice(guild_id)
+
+    if VoiceState.ready_for_rtp?(voice) do
+      Enum.map(1..num_packets, fn _ -> Audio.get_rtp_packet(voice) end)
+    else
+      {:error, "Must be connected to voice channel to listen for incoming data."}
     end
   end
 

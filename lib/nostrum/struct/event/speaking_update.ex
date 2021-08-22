@@ -32,6 +32,7 @@ defmodule Nostrum.Struct.Event.SpeakingUpdate do
   @typedoc """
   Boolean representing if speaking update was caused by an audio timeout.
   """
+  @typedoc since: "0.5.0"
   @type timed_out :: boolean()
 
   @type t :: %__MODULE__{

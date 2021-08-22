@@ -1,5 +1,6 @@
 defmodule Nostrum.Struct.Event.ChannelPinsUpdate do
   @moduledoc "Represents an update to channel pins."
+  @moduledoc since: "0.5.0"
 
   alias Nostrum.Struct.Channel
   alias Nostrum.Struct.Guild
@@ -25,9 +26,9 @@ defmodule Nostrum.Struct.Event.ChannelPinsUpdate do
   @doc false
   def to_struct(map) do
     %__MODULE__{
-      guild_id: map["guild_id"],
-      channel_id: map["channel_id"],
-      last_pin_timestamp: parse_stamp(map["last_pin_timestamp"])
+      guild_id: map[:guild_id],
+      channel_id: map.channel_id,
+      last_pin_timestamp: parse_stamp(map[:last_pin_timestamp])
     }
   end
 

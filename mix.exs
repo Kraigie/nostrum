@@ -79,7 +79,7 @@ defmodule Nostrum.Mixfile do
     [
       name: :nostrum,
       licenses: ["MIT"],
-      maintainers: ["Craig Dazey"],
+      maintainers: ["Craig Dazey", "Johannes Christ", "Joe Banks"],
       links: %{
         "GitHub" => "https://github.com/Kraigie/nostrum/",
         "Docs" => "https://kraigie.github.io/nostrum/"
@@ -92,11 +92,11 @@ defmodule Nostrum.Mixfile do
       {:httpoison, "~> 1.7"},
       {:poison, "~> 3.0"},
       {:gun, "== 2.0.0-rc.2"},
-      {:kcl, "~> 1.3"},
+      {:kcl, "~> 1.4"},
       {:porcelain, "~> 2.0"},
-      {:ex_doc, "~> 0.14", only: :dev},
+      {:ex_doc, "~> 0.15", only: :dev},
       {:credo, "~> 1.4", only: [:dev, :test]},
-      {:dialyxir, "~> 1.0.0", only: [:dev], runtime: false},
+      {:dialyxir, "~> 1.1", only: [:dev], runtime: false},
       {:gen_stage, "~> 0.11 or ~> 1.0"},
       {:recon, "~> 2.3", only: :dev, optional: true}
     ]
