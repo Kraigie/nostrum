@@ -21,7 +21,7 @@ defmodule Nostrum.Struct.Channel do
       permission_overwrites: [],
       position: 1,
       type: 5,
-}
+  }
   ```
 
   The channel struct implements `String.Chars` protocol through the `mention/1` function. This example uses our channel from the previous code block.
@@ -33,7 +33,7 @@ defmodule Nostrum.Struct.Channel do
 
   ## Channel Cache
 
-  The [`ChannelCache`](`Nostrum.Cache.ChannelCache`) module provides functionality for you to retreive information about any channel that your application can see. It provides two functions: [`get()/1`](`Nostrum.Cache.ChannelCache.get()/1`) and [`get!()/1`](`Nostrum.Cache.ChannelCache.get!()/1`).
+  The [`ChannelCache`](`Nostrum.Cache.ChannelCache`) module provides functionality for you to retreive information about any channel that your application can see. It provides two functions: [`get/1`](`Nostrum.Cache.ChannelCache.get/1`) and [`get!/1`](`Nostrum.Cache.ChannelCache.get!/1`).
 
   ```elixir
   Nostrum.Cache.ChannelCache.get!(827333533688397865)
@@ -97,7 +97,7 @@ defmodule Nostrum.Struct.Channel do
 
   |     | Channel Type        |                                                                                       |
   | ----| --------------------| --------------------------------------------------------------------------------------|
-  | `0` | Guild Text          | `GUILD_TEXT`            _A text channel within aserver_                               |
+  | `0` | Guild Text          | `GUILD_TEXT`            _A text channel within a server_                               |
   | `1` | Direct Message      | `DM`                    _A direct message between users_                              |
   | `2` | Guild Voice         | `GUILD_VOICE`           _A voice channel within a server_                             |
   | `3` | Group Direct Message| `GROUP_DM`              _A direct message between multiple users_                     |
@@ -160,21 +160,7 @@ defmodule Nostrum.Struct.Channel do
   @typedoc """
   The type of channel.
 
-  |      | Channel Type         |                                                                                        |
-  | ---- | -------------------- | -------------------------------------------------------------------------------------- |
-  | `0`  | Guild Text           | `GUILD_TEXT`            _A text channel within a server_                               |
-  | `1`  | Direct Message       | `DM`                    _A direct message between users_                               |
-  | `2`  | Guild Voice          | `GUILD_VOICE`           _A voice channel within a server_                              |
-  | `3`  | Group Direct Message | `GROUP_DM`              _A direct message between multiple users_                      |
-  | `4`  | Guild Category       | `GUILD_CATEGORY`        _A category that contains up to 50 channels_                   |
-  | `5`  | Guild Announcements  | `GUILD_NEWS`            _A channel that users can follow and crosspost from_           |
-  | `6`  | Guild Store          | `GUILD_STORE`           _A channel in which developers can sell their game on Discord_ |
-  | `10` | Guild News Thread    | `GUILD_NEWS_THREAD`     _A temporary sub-channel within a `5` channel_                 |
-  | `11` | Guild Public Thread  | `GUILD_PUBLIC_THREAD`   _A temporary sub-channel within an `0` channel_                |
-  | `12` | Guild Private Thread | `GUILD_PRIVATE_THREAD`  _A temporary private sub-channel within an `0`                 |
-  | `13` | Guild Stage Voice    | `GUILD_STAGE_VOICE`     _A voice channel for hosting events with an audience_          |
-
-  More information about _Discord Channel Types_ can be found on the [Discord API Channel Type Documentation](https://discord.com/developers/docs/resources/channel#channel-object-channel-types).
+  More information about _Discord Channel Types_ can be found under the [`types`](#module-channel-types) on the [Discord API Channel Type Documentation](https://discord.com/developers/docs/resources/channel#channel-object-channel-types).
   """
   ## Unsure if it should be here or at the top of the documentation, at both for now.
   @type type :: integer()
@@ -205,7 +191,7 @@ defmodule Nostrum.Struct.Channel do
   @type topic :: String.t()
 
   @typedoc """
-  The channels NSFW setting.
+  Whether the NSFW setting is enabled for this channel.
   """
   @type nsfw :: boolean()
 
@@ -233,7 +219,7 @@ defmodule Nostrum.Struct.Channel do
   @type user_limit :: integer()
 
   @typedoc """
-  A list of users in a group channel.
+  A list of users in a group DM.
   """
   @type recipients :: [User.t()]
 
@@ -373,7 +359,7 @@ defmodule Nostrum.Struct.Channel do
   @type default_auto_archive_duration :: integer()
 
   @typedoc """
-  Computed permissions of the invoking user.t()
+  Computed permissions of the invoking user.
 
   Permissions for the invoking user in the channel, including overwrites, only included when part of the resolved data received on a slash command interaction
   """
