@@ -88,15 +88,14 @@ defmodule Nostrum.Api.Ratelimiter do
     kept_headers = filter_headers(headers, headers_to_keep)
 
     global_limit = Map.get(kept_headers, "x-ratelimit-global")
-    remaining = to_integer(Map.get(kept_headers, "x-ratelimit-remaining"))
-    reset = to_integer(Map.get(kept_headers, "x-ratelimit-reset"))
+    remaining = String.to_integer(Map.get(kept_headers, "x-ratelimit-remaining"))
+    reset = to_float(Map.get(kept_headers, "x-ratelimit-reset"))
     retry_after = to_integer(Map.get(kept_headers, "retry-after"))
     origin_timestamp = date_string_to_unix(Map.get(kept_headers, "date"))
 
     latency = abs(origin_timestamp - Util.now())
 
-    # `retry_after` is returned in seconds, we use milliseconds internally.
-    if global_limit, do: update_global_bucket(route, 0, retry_after * 1000, latency)
+    if global_limit, do: update_global_bucket(route, 0, retry_after, latency)
     if reset, do: update_bucket(route, remaining, reset, latency)
 
     response
@@ -111,11 +110,13 @@ defmodule Nostrum.Api.Ratelimiter do
   end
 
   defp wait_for_timeout(request, timeout, from) do
+    truncated = :erlang.trunc(timeout)
+
     Logger.info(
-      "RATELIMITER: Waiting #{timeout}ms to process request with route #{request.route}"
+      "RATELIMITER: Waiting #{truncated}ms to process request with route #{request.route}"
     )
 
-    Process.sleep(timeout)
+    Process.sleep(truncated)
     GenServer.call(Ratelimiter, {:queue, request, from}, :infinity)
   end
 
@@ -129,6 +130,9 @@ defmodule Nostrum.Api.Ratelimiter do
   defp erl_datetime_to_timestamp(datetime) do
     (:calendar.datetime_to_gregorian_seconds(datetime) - @gregorian_epoch) * 1000
   end
+
+  defp to_float(v) when is_binary(v), do: String.to_float(v)
+  defp to_float(_v), do: nil
 
   defp to_integer(v) when is_binary(v), do: String.to_integer(v)
   defp to_integer(_v), do: nil
