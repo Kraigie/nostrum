@@ -37,6 +37,7 @@ defmodule Nostrum.Consumer do
     Ready,
     SpeakingUpdate,
     TypingStart,
+    VoiceReady,
     VoiceServerUpdate,
     VoiceState
   }
@@ -181,6 +182,12 @@ defmodule Nostrum.Consumer do
            {old_user :: Nostrum.Struct.User.t() | nil, new_user :: Nostrum.Struct.User.t()},
            WSState.t()}
   @typedoc """
+  Dispatched when the bot is ready to begin sending audio after joining a voice channel.
+
+  Note that the third tuple element is of type `VoiceWSState.t()` instead of `WSState.t().`
+  """
+  @type voice_ready :: {:VOICE_READY, VoiceReady.t(), VoiceWSState.t()}
+  @typedoc """
   Dispatched when the bot starts or stops speaking.
 
   Note that the third tuple element is of type `VoiceWSState.t()` instead of `WSState.t().`
@@ -226,6 +233,7 @@ defmodule Nostrum.Consumer do
           | typing_start
           | user_settings_update
           | user_update
+          | voice_ready
           | voice_speaking_update
           | voice_state_update
           | voice_server_update

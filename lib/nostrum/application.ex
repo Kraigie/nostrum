@@ -47,6 +47,7 @@ defmodule Nostrum.Application do
   defp check_executables do
     ff = Application.get_env(:nostrum, :ffmpeg)
     yt = Application.get_env(:nostrum, :youtubedl)
+    sl = Application.get_env(:nostrum, :streamlink)
 
     cond do
       is_binary(ff) and is_nil(System.find_executable(ff)) ->
@@ -59,6 +60,12 @@ defmodule Nostrum.Application do
         Logger.warn("""
         #{yt} was not found in your path. Nostrum supports youtube-dl for voice.
         If you don't require youtube-dl support, configure :nostrum, :youtubedl to nil to suppress.
+        """)
+
+      is_binary(sl) and is_nil(System.find_executable(sl)) ->
+        Logger.warn("""
+        #{sl} was not found in your path. Nostrum supports streamlink for voice.
+        If you don't require streamlink support, configure :nostrum, :streamlink to nil to suppress.
         """)
 
       true ->
