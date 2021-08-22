@@ -194,6 +194,7 @@ defmodule Nostrum.Util do
 
   If atom does not currently exist, will warn that we're doing an unsafe conversion.
   """
+
   @spec maybe_to_atom(atom | String.t()) :: atom | integer()
   def maybe_to_atom(token) when is_atom(token), do: token
 
