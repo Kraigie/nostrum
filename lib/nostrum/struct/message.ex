@@ -184,10 +184,12 @@ defmodule Nostrum.Struct.Message do
   end
 
   @doc """
-  Takes the message and produces a URL that, when clicked from the user client, will 
-  jump them to that message, assuming they have access to the message and the message 
+  Takes the message and produces a URL that, when clicked from the user client, will
+  jump them to that message, assuming they have access to the message and the message
   is valid.
   """
+  @doc since: "0.5.0"
+  @spec to_url(%__MODULE__{}) :: String.t()
   def to_url(%__MODULE__{} = msg) do
     "https://discord.com/channels/" <>
       (msg.guild_id || "@me") <> "/" <> msg.channel_id <> "/" <> msg.id

@@ -8,6 +8,12 @@ defmodule Nostrum.Voice.Payload do
 
   require Logger
 
+  # All functions in this module that end with a call to `build_payload/1`
+  # with an all-caps string return JSON payloads which are response messages
+  # to incoming voice websocket messages.
+  # Other functions which return a map with keys `:t` and `:d` are for
+  # generating voice-related events to be consumed by a Consumer process.
+
   def heartbeat_payload do
     DateTime.utc_now()
     |> DateTime.to_unix()
@@ -62,6 +68,16 @@ defmodule Nostrum.Voice.Payload do
         channel_id: voice.channel_id,
         speaking: voice.speaking,
         timed_out: timed_out
+      }
+    }
+  end
+
+  def voice_ready_payload(%VoiceState{} = voice) do
+    %{
+      t: :VOICE_READY,
+      d: %{
+        guild_id: voice.guild_id,
+        channel_id: voice.channel_id
       }
     }
   end

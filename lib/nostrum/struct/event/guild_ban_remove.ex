@@ -1,5 +1,6 @@
 defmodule Nostrum.Struct.Event.GuildBanRemove do
   @moduledoc "Sent when a user is unbanned from a guild"
+  @moduledoc since: "0.5.0"
 
   alias Nostrum.Struct.Guild
   alias Nostrum.Struct.User
@@ -22,8 +23,8 @@ defmodule Nostrum.Struct.Event.GuildBanRemove do
   @doc false
   def to_struct(map) do
     %__MODULE__{
-      guild_id: map["guild_id"],
-      user: Util.cast(map["user"], {:struct, User})
+      guild_id: map.guild_id,
+      user: Util.cast(map.user, {:struct, User})
     }
   end
 end

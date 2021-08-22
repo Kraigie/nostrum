@@ -10,7 +10,6 @@ To pass intents you should use the following configuration:
 ```elixir
 config :nostrum,
   token: "bot_token",
-  num_shards: :auto,
   gateway_intents: [
       :guilds,
       # other gateway intents

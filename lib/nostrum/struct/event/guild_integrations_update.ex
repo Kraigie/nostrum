@@ -1,5 +1,6 @@
 defmodule Nostrum.Struct.Event.GuildIntegrationsUpdate do
   @moduledoc "Sent when a guild integration is updated"
+  @moduledoc since: "0.5.0"
 
   alias Nostrum.Struct.Guild
 
@@ -15,6 +16,6 @@ defmodule Nostrum.Struct.Event.GuildIntegrationsUpdate do
 
   @doc false
   def to_struct(map) do
-    %__MODULE__{guild_id: map["guild_id"]}
+    %__MODULE__{guild_id: map.guild_id}
   end
 end

@@ -1,14 +1,15 @@
 defmodule Nostrum.Struct.ApplicationCommandInteractionDataResolved do
   @moduledoc "Converted interaction payload."
+  @moduledoc since: "0.5.0"
 
-  alias Nostrum.Snowflake
   alias Nostrum.Struct.Channel
   alias Nostrum.Struct.Guild.Member
   alias Nostrum.Struct.Guild.Role
+  alias Nostrum.Struct.Message
   alias Nostrum.Struct.User
   alias Nostrum.Util
 
-  defstruct [:users, :members, :roles, :channels]
+  defstruct [:users, :members, :roles, :channels, :messages]
 
   @typedoc "IDs and corresponding users"
   @type users :: %{User.id() => User.t()} | nil
@@ -26,6 +27,11 @@ defmodule Nostrum.Struct.ApplicationCommandInteractionDataResolved do
   are part of this map, data for the corresponding user will always be included.
   """
   @type members :: %{User.id() => Member.t()} | nil
+
+  @typedoc """
+  The IDs and corresponding messages.
+  """
+  @type messages :: %{Message.id() => Message.t()} | nil
 
   @typedoc "IDs and corresponding roles"
   @type roles :: %{Role.id() => Role.t()} | nil
@@ -47,7 +53,8 @@ defmodule Nostrum.Struct.ApplicationCommandInteractionDataResolved do
           users: users,
           members: members(),
           roles: roles(),
-          channels: channels()
+          channels: channels(),
+          messages: messages()
         }
 
   # Parse the given mapping of strings to some corresponding arguments.
@@ -58,18 +65,20 @@ defmodule Nostrum.Struct.ApplicationCommandInteractionDataResolved do
   end
 
   defp map_parse(structure, target_type) do
+    # Conversion of digit strings to integers is performed in `Util.safe_atom_map`.
     structure
-    |> Enum.map(fn {k, v} -> {Util.cast(k, Snowflake), Util.cast(v, target_type)} end)
+    |> Enum.map(fn {k, v} -> {k, Util.cast(v, target_type)} end)
     |> :maps.from_list()
   end
 
   @doc false
   def to_struct(map) do
     %__MODULE__{
-      users: map_parse(map["users"], {:struct, User}),
-      members: map_parse(map["members"], {:struct, Member}),
-      roles: map_parse(map["roles"], {:struct, Role}),
-      channels: map_parse(map["channels"], {:struct, Channel})
+      users: map_parse(map[:users], {:struct, User}),
+      members: map_parse(map[:members], {:struct, Member}),
+      roles: map_parse(map[:roles], {:struct, Role}),
+      channels: map_parse(map[:channels], {:struct, Channel}),
+      messages: map_parse(map[:messages], {:struct, Message})
     }
   end
 end

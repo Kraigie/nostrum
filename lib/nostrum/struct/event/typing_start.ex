@@ -1,5 +1,6 @@
 defmodule Nostrum.Struct.Event.TypingStart do
   @moduledoc "Sent when a user starts typing in a channel"
+  @moduledoc since: "0.5.0"
 
   alias Nostrum.Struct.Channel
   alias Nostrum.Struct.Guild
@@ -22,7 +23,7 @@ defmodule Nostrum.Struct.Event.TypingStart do
   @type timestamp :: pos_integer()
 
   @typedoc "The member who started typing if this happened in a guild"
-  @type member :: Member.t()
+  @type member :: Member.t() | nil
 
   @typedoc "Event sent when a user starts typing in a channel"
   @type t :: %__MODULE__{
@@ -36,11 +37,11 @@ defmodule Nostrum.Struct.Event.TypingStart do
   @doc false
   def to_struct(map) do
     %__MODULE__{
-      channel_id: map["channel_id"],
-      guild_id: map["guild_id"],
-      user_id: map["user_id"],
-      timestamp: map["timestamp"],
-      member: Util.cast(map["member"], {:struct, Member})
+      channel_id: map.channel_id,
+      guild_id: map[:guild_id],
+      user_id: map.user_id,
+      timestamp: map.timestamp,
+      member: Util.cast(map[:member], {:struct, Member})
     }
   end
 end

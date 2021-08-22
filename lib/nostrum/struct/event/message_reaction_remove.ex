@@ -1,5 +1,6 @@
 defmodule Nostrum.Struct.Event.MessageReactionRemove do
   @moduledoc "Sent when a user removes a reaction from a message"
+  @moduledoc since: "0.5.0"
 
   alias Nostrum.Struct.{Channel, Emoji, Guild, Message, User}
   alias Nostrum.Util
@@ -34,11 +35,11 @@ defmodule Nostrum.Struct.Event.MessageReactionRemove do
   @doc false
   def to_struct(map) do
     %__MODULE__{
-      user_id: map["user_id"],
-      channel_id: map["channel_id"],
-      message_id: map["message_id"],
-      guild_id: map["guild_id"],
-      emoji: Util.cast(map["emoji"], {:struct, Emoji})
+      user_id: map.user_id,
+      channel_id: map.channel_id,
+      message_id: map.message_id,
+      guild_id: map[:guild_id],
+      emoji: Util.cast(map.emoji, {:struct, Emoji})
     }
   end
 end

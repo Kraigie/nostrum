@@ -68,17 +68,15 @@ The file should be located at `/config/config.exs`. To run Nostrum you need the
 following two fields:
 ```Elixir
 config :nostrum,
-  token: 666, # The token of your bot as a string
-  num_shards: 2 # The number of shards you want to run your bot under, or :auto.
+  token: 666  # The token of your bot as a string
 ```
-If you don't know what `num_shards` is or don't have your bot on a lot of guilds
-you can omit the field and it will default to 1. You can also set this option to
-`:auto` and Nostrum will automatically get the recommended number of shards.
 
 The following fields are also supported:
 
+ - `num_shards` - A fixed number of shards to run, or `:auto` to have Nostrum determine it automatically. Defaults to `:auto`.
  - `ffmpeg` - Specifies the path to the `ffmpeg` executable for playing audio. Defaults to `"ffmpeg"`.
  - `youtubedl` - Specifies the path to the `youtube-dl` executable for playing audio with youtube-dl support. Defaults to `"youtube-dl"`.
+ - `streamlink` - Specifies the path to the `streamlink` executable for playing livestream audio with streamlink support. Defaults to `"streamlink"`.
  - `gateway_intents` - This field takes a list of atoms representing gateway intents for Nostrum to subscribe to from the Discord API. More information can be found in the [gateway intents](gateway-intents.html) documentation page.
  - `audio_timeout` - Milliseconds that input must begin generating audio by upon invoking `play`. More information about this option can be found in the [voice](voice.html) documentation page. Defaults to `20_000` (20s).
  - `voice_auto_connect` - This will determine if Nostrum automatically connects to voice websockets gateways upon joining voice channels. If set to `false` but you still wish to connect to the voice gateway, you can do so manually by calling `Nostrum.Voice.connect_to_gateway/1` after joining a voice channel. Defaults to `true`.
