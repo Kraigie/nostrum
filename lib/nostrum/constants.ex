@@ -85,7 +85,7 @@ defmodule Nostrum.Constants do
   def me_channels, do: "/users/@me/channels"
   def me_connections, do: "/users/@me/connections"
 
-  def invite(invite_code), do: "/invite/#{invite_code}"
+  def invite(invite_code), do: "/invites/#{invite_code}"
   def regions, do: "/voice/regions"
 
   def application_information, do: "/oauth2/applications/@me"
