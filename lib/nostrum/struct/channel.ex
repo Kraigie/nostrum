@@ -660,7 +660,7 @@ defmodule Nostrum.Struct.Channel do
     ```elixir
         > Nostrum.Cache.ChannelCache.get(381889573426429952)
         > |> Nostrum.Struct.Channel.link()
-        "https://discordapp.com/channels/#81384788765712384/381889573426429952"
+        "https://discordapp.com/channels/81384788765712384/381889573426429952"
 
         > Nostrum.GuildCache.get(81384788765712384)
         > |> Nostrum.Struct.Channel.link()
