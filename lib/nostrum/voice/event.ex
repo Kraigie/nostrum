@@ -3,7 +3,7 @@ defmodule Nostrum.Voice.Event do
 
   alias Nostrum.Cache.UserCache
   alias Nostrum.Voice
-  alias Nostrum.Voice.{Audio, Payload}
+  alias Nostrum.Voice.{Audio, Payload, Session}
 
   require Logger
 
@@ -24,11 +24,15 @@ defmodule Nostrum.Voice.Event do
   end
 
   def handle(:session_description, payload, state) do
+    Logger.debug("VOICE SESSION DESCRIPTION")
+
     Voice.update_voice(state.guild_id,
       secret_key: payload["d"]["secret_key"] |> :erlang.list_to_binary(),
       rtp_sequence: 0,
       rtp_timestamp: 0
     )
+
+    Session.on_voice_ready(state.conn_pid)
 
     state
   end

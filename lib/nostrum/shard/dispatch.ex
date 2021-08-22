@@ -20,6 +20,7 @@ defmodule Nostrum.Shard.Dispatch do
     MessageReactionRemoveEmoji,
     SpeakingUpdate,
     TypingStart,
+    VoiceReady,
     VoiceServerUpdate,
     VoiceState
   }
@@ -261,6 +262,9 @@ defmodule Nostrum.Shard.Dispatch do
 
     {event, UserCache.update(p), state}
   end
+
+  def handle_event(:VOICE_READY = event, p, state),
+    do: {event, VoiceReady.to_struct(p), state}
 
   def handle_event(:VOICE_SPEAKING_UPDATE = event, p, state),
     do: {event, SpeakingUpdate.to_struct(p), state}
