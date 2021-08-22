@@ -110,7 +110,7 @@ defmodule Nostrum.Api.Ratelimiter do
   end
 
   defp wait_for_timeout(request, timeout, from) do
-    truncated = :erlang.trunc(timeout)
+    truncated = :erlang.ceil(timeout)
 
     Logger.info(
       "RATELIMITER: Waiting #{truncated}ms to process request with route #{request.route}"
