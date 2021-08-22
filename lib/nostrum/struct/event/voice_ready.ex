@@ -19,12 +19,12 @@ defmodule Nostrum.Struct.Event.VoiceReady do
   alias Nostrum.Struct.{Channel, Guild}
 
   @typedoc """
-  Id of the channel this speaking update is occurring in.
+  Id of the channel that voice is ready in.
   """
   @type channel_id :: Channel.id()
 
   @typedoc """
-  Id of the guild this speaking update is occurring in.
+  Id of the guild that voice is ready in.
   """
   @type guild_id :: Guild.id()
 
