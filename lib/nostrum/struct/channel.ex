@@ -35,34 +35,36 @@ defmodule Nostrum.Struct.Channel do
 
   The [`ChannelCache`](`Nostrum.Cache.ChannelCache`) module provides functionality for you to retreive information about any channel that your application can see. It provides two functions: [`get/1`](`Nostrum.Cache.ChannelCache.get/1`) and [`get!/1`](`Nostrum.Cache.ChannelCache.get!/1`).
 
+  ## Example
+
   ```elixir
-  Nostrum.Cache.ChannelCache.get!(827333533688397865)
-      %Nostrum.Struct.Channel{
-            application_id: nil,
-            bitrate: nil,
-            guild_id: 766435015768539156,
-            icon: nil,
-            id: 827333533688397865,
-            last_message_id: nil,
-            last_pin_timestamp: nil,
-            name: "announcements",
-            nsfw: false,
-            owner_id: nil,
-            parent_id: nil,
-            permission_overwrites: [
-              %Nostrum.Struct.Overwrite{
-                allow: 0,
-                deny: 2048,
-                id: 766435015768539156,
-                type: :role
-              }
-            ],
-            position: 1,
-            recipients: nil,
-            topic: nil,
-            type: 5,
-            user_limit: nil
-          }
+  iex> Nostrum.Cache.ChannelCache.get!(827333533688397865)
+  %Nostrum.Struct.Channel{
+    application_id: nil,
+    bitrate: nil,
+    guild_id: 766435015768539156,
+    icon: nil,
+    id: 827333533688397865,
+    last_message_id: nil,
+    last_pin_timestamp: nil,
+    name: "announcements",
+    nsfw: false,
+    owner_id: nil,
+    parent_id: nil,
+    permission_overwrites: [
+      %Nostrum.Struct.Overwrite{
+        allow: 0,
+        deny: 2048,
+        id: 766435015768539156,
+        type: :role
+      }
+    ],
+    position: 1,
+    recipients: nil,
+    topic: nil,
+    type: 5,
+    user_limit: nil
+  }
   ```
 
   More details of the cache can be found at `Nostrum.Cache.ChannelCache`.
@@ -91,26 +93,23 @@ defmodule Nostrum.Struct.Channel do
 
   This diagram represents the regular channel types `0`, `2`, `5` and `13`.
 
-    ![Discord Channels](http://puu.sh/I4uW4/21e27a3385.png)
+    ![Discord Channels](./images/channel_types.png)
 
     The currently implemented channel types are:
 
-  |     | Channel Type        |                                                                                       |
-  | ----| --------------------| --------------------------------------------------------------------------------------|
-  | `0` | Guild Text          | `GUILD_TEXT`            _A text channel within a server_                               |
-  | `1` | Direct Message      | `DM`                    _A direct message between users_                              |
-  | `2` | Guild Voice         | `GUILD_VOICE`           _A voice channel within a server_                             |
-  | `3` | Group Direct Message| `GROUP_DM`              _A direct message between multiple users_                     |
-  | `4` | Guild Category      | `GUILD_CATEGORY`        _A category that contains up to 50 channels_                  |
-  | `5` | Guild Announcements | `GUILD_NEWS`            _A channel that users can follow and crosspost from_          |
-  | `6` | Guild Store         | `GUILD_STORE`           _A channel to sell games on Discord_                          |
-  | `10`| Guild News Thread   | `GUILD_NEWS_THREAD`     _A temporary sub-channel within a `5` channel_                |
-  | `11`| Guild Public Thread | `GUILD_PUBLIC_THREAD`   _A temporary sub-channel within an `0` channel_               |
-  | `12`| Guild Private Thread| `GUILD_PRIVATE_THREAD`  _A temporary private sub-channel within an `0`                |
-  | `13`| Guild Stage Voice   | `GUILD_STAGE_VOICE`     _A voice channel for hosting events with an audience_         |
-
-
-
+  |     |Channel Type                                                 |                                                                  |
+  |---- |--------------------                                         |---------------------------------------------------------------   |
+  |`0`  |[`GUILD_TEXT`](`t:guild_text_channel/0`)                     |_A text channel within a server_                                  |
+  |`1`  |[`DM`](`t:dm_channel/0`)                                     |_A direct message between users_                                  |
+  |`2`  |[`GUILD_VOICE`](`t:guild_voice_channel/0`)                   |_A voice channel within a server_                                 |
+  |`3`  |[`GROUP_DM`](`t:group_dm_channel/0`)                         |_A direct message between multiple users_                         |
+  |`4`  |[`GUILD_CATEGORY`](`t:guild_category_channel/0`)             |_A category that contains up to 50 channels_                      |
+  |`5`  |[`GUILD_NEWS`](`t:guild_news_channel/0`)                     |_A channel that users can follow and crosspost_                   |
+  |`6`  |[`GUILD_STORE`](`t:guild_store_channel/0`)                   |_A channel to sell games on Discord_                              |
+  |`10` |[`GUILD_NEWS_THREAD`](`t:guild_news_thread_channel/0`)       |_A temporary sub-channel within a news channel_                   |
+  |`11` |[`GUILD_PUBLIC_THREAD`](`t:guild_public_thread_channel/0`)   |_A temporary sub-channel within a text channel_                   |
+  |`12` |[`GUILD_PRIVATE_THREAD`](`t:guild_private_thread_channel/0`) |_A temporary private sub-channel within a text channel_           |
+  |`13` |[`GUILD_STAGE_VOICE`](`t:guild_stage_voice_channel/0`)       |_A voice channel for hosting events with an audience_             |
 
   More information about _Discord Channel Types_ can be found on the [Discord API Channel Type Documentation](https://discord.com/developers/docs/resources/channel#channel-object-channel-types).
   """
@@ -211,7 +210,7 @@ defmodule Nostrum.Struct.Channel do
   Amount of seconds a user has to wait before sending another message (0-21600); bots, as well as users with the permission manage_messages or manage_channel, are unaffected
   """
   @typedoc since: "0.5"
-  @type rate_limit_per_user :: String.t() | nil
+  @type rate_limit_per_user :: integer() | nil
 
   @typedoc """
   The user limit of a voice channel.
@@ -245,11 +244,13 @@ defmodule Nostrum.Struct.Channel do
 
   @typedoc """
   Timestamp for the last pinned message.
+
+  Timestamp per [ISO 8601:2019](https://en.wikipedia.org/wiki/ISO_8601). See also: `DateTime.from_iso8601/2`.
   """
   @type last_pin_timestamp :: String.t() | nil
 
   @typedoc """
-  Region id for the voice channel.
+  Region id for the channel.
 
   More information about _region ids_ can be found on the [Discord API Voice Region Object Documentation](https://discord.com/developers/docs/resources/voice#voice-region-object).
   """
@@ -257,7 +258,7 @@ defmodule Nostrum.Struct.Channel do
   @type rtc_region :: String.t() | nil
 
   @typedoc """
-  The video quality mode of the voice channel.
+  The video quality mode of the channel.
 
   More information about _video quality modes_ can be found on the [Discord API Video Quality Mode Documentation](https://discord.com/developers/docs/resources/channel#channel-object-video-quality-modes).
   """
@@ -291,6 +292,8 @@ defmodule Nostrum.Struct.Channel do
 
   @typedoc """
   When the thread was archived.
+
+  Timestamp per [ISO 8601:2019](https://en.wikipedia.org/wiki/ISO_8601). See also: `DateTime.from_iso8601/2`.
   """
   @typedoc since: "0.5"
   @type archive_timestamp :: String.t() | nil
@@ -333,10 +336,12 @@ defmodule Nostrum.Struct.Channel do
   User id of the threads creator.
   """
   @typedoc since: "0.5"
-  @type user_id :: Snowflake.t()
+  @type user_id :: Snowflake.t() | nil
 
   @typedoc """
   When the current user joined the thread.
+
+  Timestamp per [ISO 8601:2019](https://en.wikipedia.org/wiki/ISO_8601). See also: `DateTime.from_iso8601/2`.
   """
   @typedoc since: "0.5"
   @type join_timestamp :: String.t()
@@ -582,7 +587,7 @@ defmodule Nostrum.Struct.Channel do
   A `Nostrum.Struct.Channel` that represents a voice channel
 
   """
-  @typedoc deprecated: "See t.0"
+  @typedoc deprecated: "See t:guild_voice_channel/0"
   @type voice_channel :: guild_voice_channel
 
   @typedoc """
@@ -614,13 +619,13 @@ defmodule Nostrum.Struct.Channel do
   ## Examples
 
   ```elixir
-      > Nostrum.Cache.ChannelCache.get(381889573426429952)
-      > |> Nostrum.Struct.Channel.mention()
-      "<#381889573426429952>"
+  iex> Nostrum.Cache.ChannelCache.get(381889573426429952)
+  iex> |> Nostrum.Struct.Channel.mention()
+  "<#381889573426429952>"
 
-      > Nostrum.GuildCache.get(81384788765712384)
-      > |> Nostrum.Struct.Channel.mention()
-      "<#Invalid Channel>"
+  iex> Nostrum.GuildCache.get(81384788765712384)
+  iex> |> Nostrum.Struct.Channel.mention()
+  "<#Invalid Channel>"
   ```
 
   """
