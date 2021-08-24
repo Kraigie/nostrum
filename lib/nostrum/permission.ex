@@ -31,6 +31,10 @@ defmodule Nostrum.Permission do
   """
   @type bitset :: non_neg_integer
 
+  @typedoc """
+  This grouping is from an older version of the permission API and no longer applies
+  """
+  @typedoc deprecated: "See t.0"
   @type general_permission ::
           :create_instant_invite
           | :kick_members
@@ -46,6 +50,9 @@ defmodule Nostrum.Permission do
           | :manage_webhooks
           | :manage_emojis
 
+  @typedoc """
+  The permissions that apply to text channels.
+  """
   @type text_permission ::
           :create_instant_invite
           | :manage_channels
@@ -68,6 +75,9 @@ defmodule Nostrum.Permission do
           | :use_external_stickers
           | :send_messages_in_threads
 
+  @typedoc """
+  The permissions that apply to voice channels.
+  """
   @type voice_permission ::
           :create_instant_invite
           | :manage_channels
@@ -82,6 +92,38 @@ defmodule Nostrum.Permission do
           | :use_vad
           | :manage_roles
 
+  @typedoc """
+  The permissions that apply to stage channels.
+  """
+  @typedoc since: "0.5"
+  @type stage_permission ::
+          :create_instant_invite
+          | :manage_channels
+          | :view_channel
+          | :connect
+          | :mute_members
+          | :deafen_members
+          | :move_members
+          | :manage_roles
+          | :request_to_speak
+
+  @typedoc """
+  The permissions which apply to general server administration.
+  """
+  @typedoc since: "0.5"
+  @type server_permission ::
+          :kick_members
+          | :ban_members
+          | :administrator
+          | :manage_guild
+          | :view_audit_log
+          | :view_guild_insights
+          | :change_nickname
+          | :manage_nicknames
+          | :manage_emojis_and_stickers
+  @typedoc """
+  The full permission type.
+  """
   @type t ::
           :create_instant_invite
           | :kick_members
