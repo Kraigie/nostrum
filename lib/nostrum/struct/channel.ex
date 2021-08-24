@@ -38,7 +38,7 @@ defmodule Nostrum.Struct.Channel do
   ## Example
 
   ```elixir
-  iex> Nostrum.Cache.ChannelCache.get!(827333533688397865)
+  Nostrum.Cache.ChannelCache.get!(827333533688397865)
   %Nostrum.Struct.Channel{
     application_id: nil,
     bitrate: nil,
@@ -626,12 +626,12 @@ defmodule Nostrum.Struct.Channel do
   ## Examples
 
   ```elixir
-  iex> Nostrum.Cache.ChannelCache.get(381889573426429952)
-  iex> |> Nostrum.Struct.Channel.mention()
+  Nostrum.Cache.ChannelCache.get(381889573426429952)
+  |> Nostrum.Struct.Channel.mention()
   "<#381889573426429952>"
 
-  iex> Nostrum.GuildCache.get(81384788765712384)
-  iex> |> Nostrum.Struct.Channel.mention()
+  Nostrum.GuildCache.get(81384788765712384)
+  |> Nostrum.Struct.Channel.mention()
   "<#Invalid Channel>"
   ```
 
@@ -666,12 +666,12 @@ defmodule Nostrum.Struct.Channel do
 
   ```elixir
 
-  iex> Nostrum.Cache.ChannelCache.get(381889573426429952)
+  Nostrum.Cache.ChannelCache.get(381889573426429952)
   ...> |> Nostrum.Struct.Channel.link()
   "https://discordapp.com/channels/81384788765712384/381889573426429952"
 
-  iex> Nostrum.GuildCache.get(81384788765712384)
-  iex> |> Nostrum.Struct.Channel.link()
+  Nostrum.GuildCache.get(81384788765712384)
+  |> Nostrum.Struct.Channel.link()
   "Channel Not Found"
 
     ```
