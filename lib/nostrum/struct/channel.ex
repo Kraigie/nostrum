@@ -13,14 +13,14 @@ defmodule Nostrum.Struct.Channel do
   A typical channel would appear as:
 
   ```elixir
-  channel = %Nostrum.Struct.Channel{
-      guild_id: 766435015768539156,
-      id: 827333533688397865,
-      name: "announcements",
-      nsfw: false,
-      permission_overwrites: [],
-      position: 1,
-      type: 5,
+  %Nostrum.Struct.Channel{
+    guild_id: 766435015768539156,
+    id: 827333533688397865,
+    name: "announcements",
+    nsfw: false,
+    permission_overwrites: [],
+    position: 1,
+    type: 5,
   }
   ```
 
@@ -38,7 +38,7 @@ defmodule Nostrum.Struct.Channel do
   ## Example
 
   ```elixir
-  iex> Nostrum.Cache.ChannelCache.get!(827333533688397865)
+  Nostrum.Cache.ChannelCache.get!(827333533688397865)
   %Nostrum.Struct.Channel{
     application_id: nil,
     bitrate: nil,
@@ -161,7 +161,6 @@ defmodule Nostrum.Struct.Channel do
 
   More information about _Discord Channel Types_ can be found under the [`types`](#module-channel-types) on the [Discord API Channel Type Documentation](https://discord.com/developers/docs/resources/channel#channel-object-channel-types).
   """
-  ## Unsure if it should be here or at the top of the documentation, at both for now.
   @type type :: integer()
 
   @typedoc """
@@ -200,7 +199,7 @@ defmodule Nostrum.Struct.Channel do
   @type last_message_id :: Message.id() | nil
 
   @typedoc """
-  The bitate of the channel.
+  The bitate of the voice channel.
   """
   @type bitrate :: integer()
 
@@ -228,17 +227,23 @@ defmodule Nostrum.Struct.Channel do
   @type icon :: String.t() | nil
 
   @typedoc """
-  The id of the channels creator.
+  The id of the user of a group direct message or thread.
+
+  This applies to user created channels.
   """
   @type owner_id :: User.id()
 
   @typedoc """
-  The id of the application that created the channel.
+  The id of the application that created a group direct message or thread.
+
+  This applies to bot created channels.
   """
   @type application_id :: Snowflake.t() | nil
 
   @typedoc """
-  The id of the category channel that this channel is located under.
+  The id of the parent channel that this channel is located under.
+
+  For threads, that is the channel that contains the thread. For regular channels, it is the category that the channel is located under.
   """
   @type parent_id :: Channel.id() | nil
 
@@ -322,7 +327,9 @@ defmodule Nostrum.Struct.Channel do
   @type auto_archive_duration :: integer()
 
   @typedoc """
-  Indicates whether a user has joined a thread or not.
+  Present when the bot joins a thread.
+
+  Note: This is omitted on threads that the bot can immediately access on `:GUILD_CREATE` events received.
   """
   @typedoc since: "0.5"
   @type member :: %{
@@ -339,7 +346,7 @@ defmodule Nostrum.Struct.Channel do
   @type user_id :: Snowflake.t() | nil
 
   @typedoc """
-  When the current user joined the thread.
+  When the user joined the thread.
 
   Timestamp per [ISO 8601:2019](https://en.wikipedia.org/wiki/ISO_8601). See also: `DateTime.from_iso8601/2`.
   """
@@ -619,12 +626,12 @@ defmodule Nostrum.Struct.Channel do
   ## Examples
 
   ```elixir
-  iex> Nostrum.Cache.ChannelCache.get(381889573426429952)
-  iex> |> Nostrum.Struct.Channel.mention()
+  Nostrum.Cache.ChannelCache.get(381889573426429952)
+  |> Nostrum.Struct.Channel.mention()
   "<#381889573426429952>"
 
-  iex> Nostrum.GuildCache.get(81384788765712384)
-  iex> |> Nostrum.Struct.Channel.mention()
+  Nostrum.GuildCache.get(81384788765712384)
+  |> Nostrum.Struct.Channel.mention()
   "<#Invalid Channel>"
   ```
 
@@ -634,6 +641,15 @@ defmodule Nostrum.Struct.Channel do
   def mention(%__MODULE__{id: id}), do: "<##{id}>"
 
   def mention(_any), do: "<#Invalid Channel>"
+
+  @doc """
+  Banged version of `mention/1`
+  """
+  @spec mention!(t) :: String.t()
+  def mention!(channel)
+  def mention!(%__MODULE__{id: id}), do: "<##{id}>"
+
+  def mention!(_any), do: raise(MatchError)
 
   @doc """
   Convert a channel into a hyperlink.
@@ -648,14 +664,16 @@ defmodule Nostrum.Struct.Channel do
 
   ## Examples
 
-    ```elixir
-        > Nostrum.Cache.ChannelCache.get(381889573426429952)
-        > |> Nostrum.Struct.Channel.link()
-        "https://discordapp.com/channels/81384788765712384/381889573426429952"
+  ```elixir
 
-        > Nostrum.GuildCache.get(81384788765712384)
-        > |> Nostrum.Struct.Channel.link()
-        "Channel Not Found"
+  Nostrum.Cache.ChannelCache.get(381889573426429952)
+  |> Nostrum.Struct.Channel.link()
+  "https://discordapp.com/channels/81384788765712384/381889573426429952"
+
+  Nostrum.GuildCache.get(81384788765712384)
+  |> Nostrum.Struct.Channel.link()
+  "Channel Not Found"
+
     ```
 
   """
@@ -666,6 +684,17 @@ defmodule Nostrum.Struct.Channel do
     do: "https://discordapp.com/channels/#{guild_id}/#{id}"
 
   def link(_any), do: "Channel Not Found"
+
+  @doc """
+  Banged version of `link/1`
+  """
+  @spec link!(t) :: String.t()
+  def link!(channel)
+
+  def link!(%__MODULE__{id: id, guild_id: guild_id}),
+    do: "https://discordapp.com/channels/#{guild_id}/#{id}"
+
+  def link!(_any), do: raise(MatchError)
 
   @doc false
   def to_struct(map) do
