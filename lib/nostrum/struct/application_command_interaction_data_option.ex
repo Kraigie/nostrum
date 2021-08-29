@@ -49,8 +49,7 @@ defmodule Nostrum.Struct.ApplicationCommandInteractionDataOption do
       name: map.name,
       type: map.type,
       value: map[:value],
-      options:
-        Util.cast(map[:options], {:list, {:struct, ApplicationCommandInteractionDataOption}})
+      options: Util.cast(map[:options], {:list, {:struct, __MODULE__}})
     }
   end
 end
