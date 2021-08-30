@@ -616,47 +616,7 @@ defmodule Nostrum.Struct.Channel do
   @doc """
   Convert a channel into a mention.
 
-
-  Handles the conversion of a `Nostrum.Struct.Channel` into the required format to _mention_ the channel within a message.
-
-  ## Parameters
-
-    - channel: `t:Nostrum.Struct.Channel.t/0`
-
-  ## Examples
-
-  ```elixir
-  Nostrum.Cache.ChannelCache.get(381889573426429952)
-  |> Nostrum.Struct.Channel.mention()
-  "<#381889573426429952>"
-
-  Nostrum.GuildCache.get(81384788765712384)
-  |> Nostrum.Struct.Channel.mention()
-  "<#Invalid Channel>"
-  ```
-
-  """
-  @spec mention(t) :: String.t()
-  def mention(channel)
-  def mention(%__MODULE__{id: id}), do: "<##{id}>"
-
-  def mention(_any), do: "<#Invalid Channel>"
-
-  @doc """
-  Banged version of `mention/1`
-  """
-  @spec mention!(t) :: String.t()
-  def mention!(channel)
-  def mention!(%__MODULE__{id: id}), do: "<##{id}>"
-
-  def mention!(_any), do: raise(MatchError)
-
-  @doc """
-  Convert a channel into a hyperlink.
-
-  Handles the conversion of a `Nostrum.Struct.Channel` into a [link](#link/1) to that channel.
-
-  > Note: if a user does not already have access to that channel, they will receive "Resource not available" upon following the hyperlink. If you do not know if they have access to the channel or want to grant temporary access it might be safer to use `Nostrum.Api.create_channel_invite/3`
+  Handles the conversion of a `Nostrum.Struct.Channel` into the required format to _mention_ the channel within a message. Mentioning the channel will provide a clickable link to take the user to the channel.
 
   ## Parameters
 
@@ -665,36 +625,15 @@ defmodule Nostrum.Struct.Channel do
   ## Examples
 
   ```elixir
-
   Nostrum.Cache.ChannelCache.get(381889573426429952)
-  |> Nostrum.Struct.Channel.link()
-  "https://discordapp.com/channels/81384788765712384/381889573426429952"
+  |> Nostrum.Struct.Channel.mention()
+  "<#381889573426429952>"
 
-  Nostrum.GuildCache.get(81384788765712384)
-  |> Nostrum.Struct.Channel.link()
-  "Channel Not Found"
-
-    ```
+  ```
 
   """
-  @spec link(t) :: String.t()
-  def link(channel)
-
-  def link(%__MODULE__{id: id, guild_id: guild_id}),
-    do: "https://discordapp.com/channels/#{guild_id}/#{id}"
-
-  def link(_any), do: "Channel Not Found"
-
-  @doc """
-  Banged version of `link/1`
-  """
-  @spec link!(t) :: String.t()
-  def link!(channel)
-
-  def link!(%__MODULE__{id: id, guild_id: guild_id}),
-    do: "https://discordapp.com/channels/#{guild_id}/#{id}"
-
-  def link!(_any), do: raise(MatchError)
+  @spec mention(t) :: String.t()
+  def mention(%__MODULE__{id: id}), do: "<##{id}>"
 
   @doc false
   def to_struct(map) do
