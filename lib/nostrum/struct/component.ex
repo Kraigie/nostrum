@@ -75,8 +75,8 @@ defmodule Nostrum.Struct.Component do
 
   defmacro __using__(_opts) do
     quote do
-      alias Nostrum.Struct.{Component, Emoji}
       alias Nostrum.Struct.Component.{ActionRow, Button, Option, SelectMenu}
+      alias Nostrum.Struct.{Component, Emoji}
       alias Nostrum.Util
       @before_compile Component
     end
@@ -105,7 +105,7 @@ defmodule Nostrum.Struct.Component do
         |> Nostrum.Struct.Component.to_struct()
       end
 
-      defp allowed_keys(), do: Map.keys(@defaults)
+      defp allowed_keys, do: Map.keys(@defaults)
 
       ## Destroy all structs and ensure nested map
       def flatten(map), do: :maps.map(&do_flatten/2, map)
