@@ -84,12 +84,14 @@ defmodule Nostrum.Struct.Component do
 
   defmacro __before_compile__(_env) do
     quote do
+      alias Nostrum.Struct.Component
+
       defp new(opts \\ []) do
         @defaults
         |> to_component(opts)
       end
 
-      defp update(%Nostrum.Struct.Component{} = component, opts \\ []) do
+      defp update(%Component{} = component, opts \\ []) do
         component
         |> Map.from_struct()
         |> to_component(opts)
@@ -102,7 +104,7 @@ defmodule Nostrum.Struct.Component do
         |> Enum.filter(fn {k, _} -> k in allowed_keys() end)
         |> Enum.into(%{})
         |> flatten()
-        |> Nostrum.Struct.Component.to_struct()
+        |> Component.to_struct()
       end
 
       defp allowed_keys, do: Map.keys(@defaults)
