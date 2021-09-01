@@ -210,7 +210,7 @@ defmodule Nostrum.Struct.Component do
   @typedoc """
   A url for link buttons.
 
-  Valid for: Buttons, `String.t()` representing	an
+  Valid for: [Buttons](#module-buttons)
   """
   @type url :: String.t() | nil
 

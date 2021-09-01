@@ -27,13 +27,14 @@ defmodule Nostrum.Struct.Component.Option do
           value: value
         }
 
+  @spec to_struct(nil | maybe_improper_list | map) :: Nostrum.Struct.Component.Option.t()
   def to_struct(map) do
     %__MODULE__{
-      label: map["label"],
-      value: map["value"],
-      description: map["description"],
-      emoji: Util.cast(map["emoji"], {:struct, Emoji}),
-      default: map["default"]
+      label: map[:label],
+      value: map[:value],
+      description: map[:description],
+      emoji: Util.cast(map[:emoji], {:struct, Emoji}),
+      default: map[:default]
     }
   end
 end
