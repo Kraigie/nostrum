@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="ExDoc v0.25.1">
     <meta name="project" content="Nostrum v0.4.7">
-    <title>Nostrum.Struct.Guild.Ban — Nostrum v0.4.7</title>
+    <title>Nostrum.Cache.UserCache.ETS — Nostrum v0.4.7</title>
     <link rel="stylesheet" href="dist/elixir-a172fe91e725dcb259e2.css" />
     <script src="dist/sidebar_items-c071bb0820.js"></script>
       <script src="docs_config.js"></script>
@@ -70,8 +70,8 @@ Nostrum      </a>
     <div id="content" class="content-inner">
 
       <h1>
-        Nostrum.Struct.Guild.Ban <small class="app-vsn">(Nostrum v0.4.7)</small>
-          <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild/ban.ex#L1" title="View Source" class="view-source" rel="help">
+        Nostrum.Cache.UserCache.ETS <small class="app-vsn">(Nostrum v0.4.7)</small>
+          <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/user_cache/ets.ex#L1" title="View Source" class="view-source" rel="help">
             <span class="icon-code" aria-hidden="true"></span>
             <span class="sr-only">View Source</span>
           </a>
@@ -79,7 +79,9 @@ Nostrum      </a>
 
 
         <section id="moduledoc">
-<p>Represents a guild ban.</p>        </section>
+<p>An ETS-based cache for users.</p><p>The default table name under which users are cached is <code class="inline">users</code>.
+In addition to the cache behaviour implementations provided by this module,
+you can also call regular ETS table methods on it, such as <code class="inline">:ets.info</code>.</p>        </section>
 
         <section id="summary" class="details-list">
           <h1 class="section-heading">
@@ -89,100 +91,43 @@ Nostrum      </a>
             </a>
             Summary
           </h1>
-  <div class="summary-types summary">
+  <div class="summary-functions summary">
     <h2>
-      <a href="#types">Types</a>
+      <a href="#functions">Functions</a>
     </h2>
 <div class="summary-row">
   <div class="summary-signature">
-    <a href="#t:reason/0">reason()</a>
+    <a href="#setup/0">setup()</a>
   </div>
-    <div class="summary-synopsis"><p>The reason for the ban</p></div>
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#t:t/0">t()</a>
-  </div>
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#t:user/0">user()</a>
-  </div>
-    <div class="summary-synopsis"><p>The banned user</p></div>
+    <div class="summary-synopsis"><p>Set up the cache for tests.</p></div>
 </div>
   </div>
         </section>
 
-        <section id="types" class="details-list">
+        <section id="functions" class="details-list">
           <h1 class="section-heading">
-            <a class="hover-link" href="#types">
+            <a class="hover-link" href="#functions">
               <span class="icon-link" aria-hidden="true"></span>
               <span class="sr-only">Link to this section</span>
             </a>
-Types          </h1>
-          <div class="types-list">
-<section class="detail" id="t:reason/0">
+Functions          </h1>
+          <div class="functions-list">
+<section class="detail" id="setup/0">
   <div class="detail-header">
-    <a href="#t:reason/0" class="detail-link" title="Link to this type">
+    <a href="#setup/0" class="detail-link" title="Link to this function">
       <span class="icon-link" aria-hidden="true"></span>
-      <span class="sr-only">Link to this type</span>
+      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">reason()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild/ban.ex#L16" class="view-source" rel="help" title="View Source">
+    <h1 class="signature">setup()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/user_cache/ets.ex#L16" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
   </div>
 
   <section class="docstring">
-      <h2>Specs</h2>
-      <div class="specs">
-          <pre>reason() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>() | nil</pre>
-      </div>
 
-<p>The reason for the ban</p>  </section>
-</section>
-<section class="detail" id="t:t/0">
-  <div class="detail-header">
-    <a href="#t:t/0" class="detail-link" title="Link to this type">
-      <span class="icon-link" aria-hidden="true"></span>
-      <span class="sr-only">Link to this type</span>
-    </a>
-    <h1 class="signature">t()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild/ban.ex#L21" class="view-source" rel="help" title="View Source">
-       <span class="icon-code" aria-hidden="true"></span>
-       <span class="sr-only">View Source</span>
-     </a>
-  </div>
-
-  <section class="docstring">
-      <h2>Specs</h2>
-      <div class="specs">
-          <pre>t() :: %Nostrum.Struct.Guild.Ban{reason: <a href="#t:reason/0">reason</a>(), user: <a href="#t:user/0">user</a>()}</pre>
-      </div>
-
-  </section>
-</section>
-<section class="detail" id="t:user/0">
-  <div class="detail-header">
-    <a href="#t:user/0" class="detail-link" title="Link to this type">
-      <span class="icon-link" aria-hidden="true"></span>
-      <span class="sr-only">Link to this type</span>
-    </a>
-    <h1 class="signature">user()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild/ban.ex#L19" class="view-source" rel="help" title="View Source">
-       <span class="icon-code" aria-hidden="true"></span>
-       <span class="sr-only">View Source</span>
-     </a>
-  </div>
-
-  <section class="docstring">
-      <h2>Specs</h2>
-      <div class="specs">
-          <pre>user() :: <a href="Nostrum.Struct.User.html#t:t/0">Nostrum.Struct.User.t</a>()</pre>
-      </div>
-
-<p>The banned user</p>  </section>
+<p>Set up the cache for tests.</p>  </section>
 </section>
           </div>
         </section>
