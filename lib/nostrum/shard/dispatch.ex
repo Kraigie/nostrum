@@ -169,7 +169,7 @@ defmodule Nostrum.Shard.Dispatch do
   end
 
   def handle_event(:GUILD_MEMBERS_CHUNK = event, p, state) do
-    UserCache.bulk_create(p.members)
+    UserCache.bulk_create(Stream.map(p.members, & &1.user))
     GuildCache.member_chunk(p.guild_id, p.members)
 
     # note: not casted at the moment, deemed mostly internal
