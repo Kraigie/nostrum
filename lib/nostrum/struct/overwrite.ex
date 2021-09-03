@@ -15,8 +15,8 @@ defmodule Nostrum.Struct.Overwrite do
   @typedoc "Role or User id"
   @type id :: Snowflake.t()
 
-  @typedoc "Either 'role' or 'member'"
-  @type type :: String.t()
+  @typedoc "Either ``0`` (role) or ``1`` (member)"
+  @type type :: 0 | 1
 
   @typedoc "Permission bit set"
   @type allow :: integer

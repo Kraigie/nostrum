@@ -82,6 +82,12 @@ defmodule Nostrum.Consumer do
           | {:max_seconds, non_neg_integer()}
           | {:subscribe_to, [GenStage.stage() | {GenStage.stage(), keyword()}]}
 
+  @typedoc """
+  Dispatched when a channel is created.
+
+  Starting from [API and Gateway V8](https://discord.com/developers/docs/change-log#api-and-gateway-v8),
+  this will never be sent for a DM.
+  """
   @type channel_create :: {:CHANNEL_CREATE, Channel.t(), WSState.t()}
   @type channel_delete :: {:CHANNEL_DELETE, Channel.t(), WSState.t()}
   @typedoc """
