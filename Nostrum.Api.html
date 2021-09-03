@@ -8,7 +8,7 @@
     <meta name="project" content="Nostrum v0.4.7">
     <title>Nostrum.Api — Nostrum v0.4.7</title>
     <link rel="stylesheet" href="dist/elixir-a172fe91e725dcb259e2.css" />
-    <script src="dist/sidebar_items-c071bb0820.js"></script>
+    <script src="dist/sidebar_items-6a973236a7.js"></script>
       <script src="docs_config.js"></script>
     <script async src="dist/app-f27ff079945e43879c46.js"></script>
   </head>
@@ -759,12 +759,6 @@ authors =
 </div>
 <div class="summary-row">
   <div class="summary-signature">
-    <a href="#get_guild_embed/1">get_guild_embed(guild_id)</a>
-  </div>
-    <div class="summary-synopsis"><p>Gets a guild embed.</p></div>
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
     <a href="#get_guild_emoji/2">get_guild_emoji(guild_id, emoji_id)</a>
   </div>
     <div class="summary-synopsis"><p>Gets an emoji for the given guild and emoji ids.</p></div>
@@ -834,6 +828,12 @@ authors =
     <a href="#get_guild_webhooks/1">get_guild_webhooks(guild_id)</a>
   </div>
     <div class="summary-synopsis"><p>Gets a list of webooks for a guild.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#get_guild_widget/1">get_guild_widget(guild_id)</a>
+  </div>
+    <div class="summary-synopsis"><p>Gets a guild embed.</p></div>
 </div>
 <div class="summary-row">
   <div class="summary-signature">
@@ -1023,12 +1023,6 @@ authors =
 </div>
 <div class="summary-row">
   <div class="summary-signature">
-    <a href="#modify_guild_embed/2">modify_guild_embed(guild_id, options)</a>
-  </div>
-    <div class="summary-synopsis"><p>Modifies a guild embed.</p></div>
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
     <a href="#modify_guild_emoji/4">modify_guild_emoji(guild_id, emoji_id, options \\ %{}, reason \\ nil)</a>
   </div>
     <div class="summary-synopsis"><p>Modify the given emoji.</p></div>
@@ -1080,6 +1074,12 @@ authors =
     <a href="#modify_guild_role_positions!/3">modify_guild_role_positions!(guild_id, positions, reason \\ nil)</a>
   </div>
     <div class="summary-synopsis"><p>Same as <a href="#modify_guild_role_positions/2"><code class="inline">modify_guild_role_positions/2</code></a>, but raises <a href="Nostrum.Error.ApiError.html"><code class="inline">Nostrum.Error.ApiError</code></a> in case of failure.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#modify_guild_widget/2">modify_guild_widget(guild_id, options)</a>
+  </div>
+    <div class="summary-synopsis"><p>Modifies a guild embed.</p></div>
 </div>
 <div class="summary-row">
   <div class="summary-signature">
@@ -1854,9 +1854,9 @@ If not given, this will be fetched from <code class="inline">Me</code>.</li><li>
   <a href="#create_global_application_command/2-example" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
   Example
 </h2>
-<pre><code class="makeup elixir"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">create_application_command</span><span class="p" data-group-id="0431629992-1">(</span><span class="w">
-  </span><span class="p" data-group-id="0431629992-2">%{</span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;edit&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">description</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ed, man! man, ed&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">options</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="0431629992-3">[</span><span class="p" data-group-id="0431629992-3">]</span><span class="p" data-group-id="0431629992-2">}</span><span class="w">
-</span><span class="p" data-group-id="0431629992-1">)</span></code></pre>  </section>
+<pre><code class="makeup elixir"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">create_application_command</span><span class="p" data-group-id="3679855449-1">(</span><span class="w">
+  </span><span class="p" data-group-id="3679855449-2">%{</span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;edit&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">description</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ed, man! man, ed&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">options</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="3679855449-3">[</span><span class="p" data-group-id="3679855449-3">]</span><span class="p" data-group-id="3679855449-2">}</span><span class="w">
+</span><span class="p" data-group-id="3679855449-1">)</span></code></pre>  </section>
 </section>
 <section class="detail" id="create_group_dm/2">
   <div class="detail-header">
@@ -2231,13 +2231,13 @@ object. See the linked documentation.</li></ul><h2 id="create_interaction_respon
   <a href="#create_interaction_response/3-example" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
   Example
 </h2>
-<pre><code class="makeup elixir"><span class="n">response</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="1591050453-1">%{</span><span class="w">
+<pre><code class="makeup elixir"><span class="n">response</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="8439892752-1">%{</span><span class="w">
   </span><span class="ss">type</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w">
-  </span><span class="ss">data</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="1591050453-2">%{</span><span class="w">
+  </span><span class="ss">data</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="8439892752-2">%{</span><span class="w">
     </span><span class="ss">content</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;I copy and pasted this code.&quot;</span><span class="w">
-  </span><span class="p" data-group-id="1591050453-2">}</span><span class="w">
-</span><span class="p" data-group-id="1591050453-1">}</span><span class="w">
-</span><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">create_interaction_response</span><span class="p" data-group-id="1591050453-3">(</span><span class="n">interaction</span><span class="p">,</span><span class="w"> </span><span class="n">response</span><span class="p" data-group-id="1591050453-3">)</span></code></pre><p>As an alternative to passing the interaction ID and token, the
+  </span><span class="p" data-group-id="8439892752-2">}</span><span class="w">
+</span><span class="p" data-group-id="8439892752-1">}</span><span class="w">
+</span><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">create_interaction_response</span><span class="p" data-group-id="8439892752-3">(</span><span class="n">interaction</span><span class="p">,</span><span class="w"> </span><span class="n">response</span><span class="p" data-group-id="8439892752-3">)</span></code></pre><p>As an alternative to passing the interaction ID and token, the
 original <a href="Nostrum.Struct.Interaction.html#t:t/0"><code class="inline">Nostrum.Struct.Interaction.t/0</code></a> can also be passed
 directly. See <code class="inline">create_interaction_response/1</code>.</p>  </section>
 </section>
@@ -2289,14 +2289,14 @@ that you have the <code class="inline">VIEW_MESSAGE_HISTORY</code> permission. T
 <code class="inline">message_reference</code> field in your call. The complete structure
 documentation can be found <a href="https://discord.com/developers/docs/resources/channel#message-object-message-reference-structure">on the Discord Developer
 Portal</a>,
-but simply passing <code class="inline">message_id</code> will suffice:</p><pre><code class="makeup elixir"><span class="kd">def</span><span class="w"> </span><span class="nf">my_command</span><span class="p" data-group-id="3780092145-1">(</span><span class="n">msg</span><span class="p" data-group-id="3780092145-1">)</span><span class="w"> </span><span class="k" data-group-id="3780092145-2">do</span><span class="w">
+but simply passing <code class="inline">message_id</code> will suffice:</p><pre><code class="makeup elixir"><span class="kd">def</span><span class="w"> </span><span class="nf">my_command</span><span class="p" data-group-id="2243690990-1">(</span><span class="n">msg</span><span class="p" data-group-id="2243690990-1">)</span><span class="w"> </span><span class="k" data-group-id="2243690990-2">do</span><span class="w">
   </span><span class="c1"># Reply to the author - ``msg`` is a ``Nostrum.Struct.Message``</span><span class="w">
-  </span><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">create_message</span><span class="p" data-group-id="3780092145-3">(</span><span class="w">
+  </span><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">create_message</span><span class="p" data-group-id="2243690990-3">(</span><span class="w">
     </span><span class="n">msg</span><span class="o">.</span><span class="n">channel_id</span><span class="p">,</span><span class="w">
     </span><span class="ss">content</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Hello&quot;</span><span class="p">,</span><span class="w">
-    </span><span class="ss">message_reference</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="3780092145-4">%{</span><span class="ss">message_id</span><span class="p">:</span><span class="w"> </span><span class="n">msg</span><span class="o">.</span><span class="n">id</span><span class="p" data-group-id="3780092145-4">}</span><span class="w">
-  </span><span class="p" data-group-id="3780092145-3">)</span><span class="w">
-</span><span class="k" data-group-id="3780092145-2">end</span></code></pre><p>Passing a list will merge the settings provided</p><h2 id="create_message/2-examples" class="section-heading">
+    </span><span class="ss">message_reference</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="2243690990-4">%{</span><span class="ss">message_id</span><span class="p">:</span><span class="w"> </span><span class="n">msg</span><span class="o">.</span><span class="n">id</span><span class="p" data-group-id="2243690990-4">}</span><span class="w">
+  </span><span class="p" data-group-id="2243690990-3">)</span><span class="w">
+</span><span class="k" data-group-id="2243690990-2">end</span></code></pre><p>Passing a list will merge the settings provided</p><h2 id="create_message/2-examples" class="section-heading">
   <a href="#create_message/2-examples" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
   Examples
 </h2>
@@ -3574,21 +3574,21 @@ Nostrum.Api.edit_message(43189401384091, 1894013840914098, content: &quot;hello 
   Example
 </h2>
 <pre><code class="makeup elixir"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">get_application_information</span><span class="w">
-</span><span class="p" data-group-id="4255269532-1">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w">
-</span><span class="p" data-group-id="4255269532-2">%{</span><span class="w">
+</span><span class="p" data-group-id="0636426448-1">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w">
+</span><span class="p" data-group-id="0636426448-2">%{</span><span class="w">
   </span><span class="ss">bot_public</span><span class="p">:</span><span class="w"> </span><span class="no">false</span><span class="p">,</span><span class="w">
   </span><span class="ss">bot_require_code_grant</span><span class="p">:</span><span class="w"> </span><span class="no">false</span><span class="p">,</span><span class="w">
   </span><span class="ss">description</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Test&quot;</span><span class="p">,</span><span class="w">
   </span><span class="ss">icon</span><span class="p">:</span><span class="w"> </span><span class="no">nil</span><span class="p">,</span><span class="w">
   </span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;172150183260323840&quot;</span><span class="p">,</span><span class="w">
   </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Baba O-Riley&quot;</span><span class="p">,</span><span class="w">
-  </span><span class="ss">owner</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="4255269532-3">%{</span><span class="w">
+  </span><span class="ss">owner</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="0636426448-3">%{</span><span class="w">
     </span><span class="ss">avatar</span><span class="p">:</span><span class="w"> </span><span class="no">nil</span><span class="p">,</span><span class="w">
     </span><span class="ss">discriminator</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;0042&quot;</span><span class="p">,</span><span class="w">
     </span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;172150183260323840&quot;</span><span class="p">,</span><span class="w">
     </span><span class="ss">username</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;i own a bot&quot;</span><span class="w">
-  </span><span class="p" data-group-id="4255269532-3">}</span><span class="p">,</span><span class="w">
-</span><span class="p" data-group-id="4255269532-2">}</span><span class="p" data-group-id="4255269532-1">}</span></code></pre>  </section>
+  </span><span class="p" data-group-id="0636426448-3">}</span><span class="p">,</span><span class="w">
+</span><span class="p" data-group-id="0636426448-2">}</span><span class="p" data-group-id="0636426448-1">}</span></code></pre>  </section>
 </section>
 <section class="detail" id="get_channel/1">
   <div class="detail-header">
@@ -3953,15 +3953,15 @@ If not given, this will be fetched from <code class="inline">Me</code>.</li></ul
   Example
 </h2>
 <pre><code class="makeup elixir"><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">get_global_application_commands</span><span class="w">
-</span><span class="p" data-group-id="1468620256-1">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w">
- </span><span class="p" data-group-id="1468620256-2">[</span><span class="w">
-   </span><span class="p" data-group-id="1468620256-3">%{</span><span class="w">
+</span><span class="p" data-group-id="3065012234-1">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w">
+ </span><span class="p" data-group-id="3065012234-2">[</span><span class="w">
+   </span><span class="p" data-group-id="3065012234-3">%{</span><span class="w">
      </span><span class="ss">application_id</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;455589479713865749&quot;</span><span class="p">,</span><span class="w">
      </span><span class="ss">description</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ed, man! man, ed&quot;</span><span class="p">,</span><span class="w">
      </span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;789841753196331029&quot;</span><span class="p">,</span><span class="w">
      </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;edit&quot;</span><span class="w">
-   </span><span class="p" data-group-id="1468620256-3">}</span><span class="w">
- </span><span class="p" data-group-id="1468620256-2">]</span><span class="p" data-group-id="1468620256-1">}</span></code></pre>  </section>
+   </span><span class="p" data-group-id="3065012234-3">}</span><span class="w">
+ </span><span class="p" data-group-id="3065012234-2">]</span><span class="p" data-group-id="3065012234-1">}</span></code></pre>  </section>
 </section>
 <section class="detail" id="get_guild/1">
   <div class="detail-header">
@@ -4167,27 +4167,6 @@ should be requested.</li></ul><h2 id="get_guild_application_commands/2-return-va
       </div>
 
 <p>Same as <a href="#get_guild_channels/1"><code class="inline">get_guild_channels/1</code></a>, but raises <a href="Nostrum.Error.ApiError.html"><code class="inline">Nostrum.Error.ApiError</code></a> in case of failure.</p>  </section>
-</section>
-<section class="detail" id="get_guild_embed/1">
-  <div class="detail-header">
-    <a href="#get_guild_embed/1" class="detail-link" title="Link to this function">
-      <span class="icon-link" aria-hidden="true"></span>
-      <span class="sr-only">Link to this function</span>
-    </a>
-    <h1 class="signature">get_guild_embed(guild_id)</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2320" class="view-source" rel="help" title="View Source">
-       <span class="icon-code" aria-hidden="true"></span>
-       <span class="sr-only">View Source</span>
-     </a>
-  </div>
-
-  <section class="docstring">
-      <h2>Specs</h2>
-      <div class="specs">
-          <pre>get_guild_embed(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>()) :: <a href="#t:error/0">error</a>() | {:ok, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()}</pre>
-      </div>
-
-<p>Gets a guild embed.</p>  </section>
 </section>
 <section class="detail" id="get_guild_emoji/2">
   <div class="detail-header">
@@ -4474,6 +4453,27 @@ should be requested.</li></ul><h2 id="get_guild_application_commands/2-return-va
   Parameters
 </h2>
 <ul><li><code class="inline">guild_id</code> - Guild to get webhooks for.</li></ul>  </section>
+</section>
+<section class="detail" id="get_guild_widget/1">
+  <div class="detail-header">
+    <a href="#get_guild_widget/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">get_guild_widget(guild_id)</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2320" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>get_guild_widget(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>()) :: <a href="#t:error/0">error</a>() | {:ok, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()}</pre>
+      </div>
+
+<p>Gets a guild embed.</p>  </section>
 </section>
 <section class="detail" id="get_invite/2">
     <span id="get_invite/1"></span>
@@ -5194,8 +5194,8 @@ where admins and moderators receive notices from Discord in public guilds</li></
   <a href="#modify_guild/3-examples" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
   Examples
 </h2>
-<pre><code class="makeup elixir"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">modify_guild</span><span class="p" data-group-id="7381962206-1">(</span><span class="mi">451824027976073216</span><span class="p">,</span><span class="w"> </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Nose Drum&quot;</span><span class="p" data-group-id="7381962206-1">)</span><span class="w">
-</span><span class="p" data-group-id="7381962206-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="7381962206-3">%</span><span class="nc" data-group-id="7381962206-3">Nostrum.Struct.Guild</span><span class="p" data-group-id="7381962206-3">{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">451824027976073216</span><span class="p">,</span><span class="w"> </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Nose Drum&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">...</span><span class="p" data-group-id="7381962206-3">}</span><span class="p" data-group-id="7381962206-2">}</span></code></pre>  </section>
+<pre><code class="makeup elixir"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">modify_guild</span><span class="p" data-group-id="6313958934-1">(</span><span class="mi">451824027976073216</span><span class="p">,</span><span class="w"> </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Nose Drum&quot;</span><span class="p" data-group-id="6313958934-1">)</span><span class="w">
+</span><span class="p" data-group-id="6313958934-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="6313958934-3">%</span><span class="nc" data-group-id="6313958934-3">Nostrum.Struct.Guild</span><span class="p" data-group-id="6313958934-3">{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">451824027976073216</span><span class="p">,</span><span class="w"> </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Nose Drum&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">...</span><span class="p" data-group-id="6313958934-3">}</span><span class="p" data-group-id="6313958934-2">}</span></code></pre>  </section>
 </section>
 <section class="detail" id="modify_guild!/2">
     <span id="modify_guild!/1"></span>
@@ -5271,27 +5271,6 @@ where admins and moderators receive notices from Discord in public guilds</li></
       </div>
 
 <p>Same as <a href="#modify_guild_channel_positions/2"><code class="inline">modify_guild_channel_positions/2</code></a>, but raises <a href="Nostrum.Error.ApiError.html"><code class="inline">Nostrum.Error.ApiError</code></a> in case of failure.</p>  </section>
-</section>
-<section class="detail" id="modify_guild_embed/2">
-  <div class="detail-header">
-    <a href="#modify_guild_embed/2" class="detail-link" title="Link to this function">
-      <span class="icon-link" aria-hidden="true"></span>
-      <span class="sr-only">Link to this function</span>
-    </a>
-    <h1 class="signature">modify_guild_embed(guild_id, options)</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2328" class="view-source" rel="help" title="View Source">
-       <span class="icon-code" aria-hidden="true"></span>
-       <span class="sr-only">View Source</span>
-     </a>
-  </div>
-
-  <section class="docstring">
-      <h2>Specs</h2>
-      <div class="specs">
-          <pre>modify_guild_embed(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()) :: <a href="#t:error/0">error</a>() | {:ok, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()}</pre>
-      </div>
-
-<p>Modifies a guild embed.</p>  </section>
 </section>
 <section class="detail" id="modify_guild_emoji/4">
     <span id="modify_guild_emoji/2"></span>
@@ -5564,6 +5543,27 @@ It situationally requires the <code class="inline">MANAGE_NICKNAMES</code>, <cod
       </div>
 
 <p>Same as <a href="#modify_guild_role_positions/2"><code class="inline">modify_guild_role_positions/2</code></a>, but raises <a href="Nostrum.Error.ApiError.html"><code class="inline">Nostrum.Error.ApiError</code></a> in case of failure.</p>  </section>
+</section>
+<section class="detail" id="modify_guild_widget/2">
+  <div class="detail-header">
+    <a href="#modify_guild_widget/2" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">modify_guild_widget(guild_id, options)</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2328" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>modify_guild_widget(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()) :: <a href="#t:error/0">error</a>() | {:ok, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()}</pre>
+      </div>
+
+<p>Modifies a guild embed.</p>  </section>
 </section>
 <section class="detail" id="modify_webhook/3">
     <span id="modify_webhook/2"></span>

@@ -8,7 +8,7 @@
     <meta name="project" content="Nostrum v0.4.7">
     <title>Nostrum.Struct.Channel — Nostrum v0.4.7</title>
     <link rel="stylesheet" href="dist/elixir-a172fe91e725dcb259e2.css" />
-    <script src="dist/sidebar_items-c071bb0820.js"></script>
+    <script src="dist/sidebar_items-6a973236a7.js"></script>
       <script src="docs_config.js"></script>
     <script async src="dist/app-f27ff079945e43879c46.js"></script>
   </head>
@@ -79,20 +79,19 @@ Nostrum      </a>
 
 
         <section id="moduledoc">
-<p>Struct representing a Discord guild channel.</p><p>A <a href="Nostrum.Struct.Channel.html#content"><code class="inline">Nostrum.Struct.Channel</code></a> represents all 5 types of channels. Each
-channel has a field <code class="inline">:type</code> with any of the following values:</p><ul><li><code class="inline">0</code> - GUILD_TEXT</li><li><code class="inline">1</code> - DM</li><li><code class="inline">2</code> - GUILD_VOICE</li><li><code class="inline">3</code> - GROUP_DM</li><li><code class="inline">4</code> - GUILD_CATEGORY</li></ul><p>More information can be found on the
+<p>A <a href="Nostrum.Struct.Channel.html#content"><code class="inline">Nostrum.Struct.Channel</code></a> represents a Guild or DM channel.</p><p>More information can be found on the
 <a href="https://discord.com/developers/docs/resources/channel#channel-object">Discord API Channel Documentation</a>.</p><h2 id="module-mentioning-channels-in-messages" class="section-heading">
   <a href="#module-mentioning-channels-in-messages" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
   Mentioning Channels in Messages
 </h2>
 <p>A <a href="Nostrum.Struct.Channel.html#content"><code class="inline">Nostrum.Struct.Channel</code></a> can be mentioned in message content using the <a href="https://hexdocs.pm/elixir/String.Chars.html"><code class="inline">String.Chars</code></a>
-protocol or <a href="#mention/1"><code class="inline">mention/1</code></a>.</p><pre><code class="Elixir">channel = %Nostrum.Struct.Channel{id: 381889573426429952}
-Nostrum.Api.create_message!(184046599834435585, &quot;#{channel}&quot;)
-%Nostrum.Struct.Message{content: &quot;&lt;#381889573426429952&gt;&quot;}
+protocol or <a href="#mention/1"><code class="inline">mention/1</code></a>.</p><pre><code class="makeup elixir"><span class="n">channel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="1325652822-1">%</span><span class="nc" data-group-id="1325652822-1">Nostrum.Struct.Channel</span><span class="p" data-group-id="1325652822-1">{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">381889573426429952</span><span class="p" data-group-id="1325652822-1">}</span><span class="w">
+</span><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">create_message!</span><span class="p" data-group-id="1325652822-2">(</span><span class="mi">184046599834435585</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;</span><span class="si" data-group-id="1325652822-3">#{</span><span class="n">channel</span><span class="si" data-group-id="1325652822-3">}</span><span class="s">&quot;</span><span class="p" data-group-id="1325652822-2">)</span><span class="w">
+</span><span class="p" data-group-id="1325652822-4">%</span><span class="nc" data-group-id="1325652822-4">Nostrum.Struct.Message</span><span class="p" data-group-id="1325652822-4">{</span><span class="ss">content</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&lt;#381889573426429952&gt;&quot;</span><span class="p" data-group-id="1325652822-4">}</span><span class="w">
 
-channel = %Nostrum.Struct.Channel{id: 280085880452939778}
-Nostrum.Api.create_message!(280085880452939778, &quot;#{Nostrum.Struct.Channel.mention(channel)}&quot;)
-%Nostrum.Struct.Message{content: &quot;&lt;#280085880452939778&gt;&quot;}</code></pre>        </section>
+</span><span class="n">channel</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="1325652822-5">%</span><span class="nc" data-group-id="1325652822-5">Nostrum.Struct.Channel</span><span class="p" data-group-id="1325652822-5">{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">280085880452939778</span><span class="p" data-group-id="1325652822-5">}</span><span class="w">
+</span><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">create_message!</span><span class="p" data-group-id="1325652822-6">(</span><span class="mi">280085880452939778</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;</span><span class="si" data-group-id="1325652822-7">#{</span><span class="nc">Nostrum.Struct.Channel</span><span class="o">.</span><span class="n">mention</span><span class="p" data-group-id="1325652822-8">(</span><span class="n">channel</span><span class="p" data-group-id="1325652822-8">)</span><span class="si" data-group-id="1325652822-7">}</span><span class="s">&quot;</span><span class="p" data-group-id="1325652822-6">)</span><span class="w">
+</span><span class="p" data-group-id="1325652822-9">%</span><span class="nc" data-group-id="1325652822-9">Nostrum.Struct.Message</span><span class="p" data-group-id="1325652822-9">{</span><span class="ss">content</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&lt;#280085880452939778&gt;&quot;</span><span class="p" data-group-id="1325652822-9">}</span></code></pre>        </section>
 
         <section id="summary" class="details-list">
           <h1 class="section-heading">
@@ -122,25 +121,31 @@ Nostrum.Api.create_message!(280085880452939778, &quot;#{Nostrum.Struct.Channel.m
   <div class="summary-signature">
     <a href="#t:channel_category/0">channel_category()</a>
   </div>
-    <div class="summary-synopsis"><p>A <a href="Nostrum.Struct.Channel.html#content"><code class="inline">Nostrum.Struct.Channel</code></a> that represents a channel category in a guild.</p></div>
+    <div class="summary-synopsis"><p>A <a href="Nostrum.Struct.Channel.html#content"><code class="inline">Nostrum.Struct.Channel</code></a> that represents a channel category in a guild</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:channel_mention/0">channel_mention()</a>
+  </div>
+    <div class="summary-synopsis"><p>A <a href="Nostrum.Struct.Channel.html#content"><code class="inline">Nostrum.Struct.Channel</code></a> that represents a channel mention in a message</p></div>
 </div>
 <div class="summary-row">
   <div class="summary-signature">
     <a href="#t:dm_channel/0">dm_channel()</a>
   </div>
-    <div class="summary-synopsis"><p>A <a href="Nostrum.Struct.Channel.html#content"><code class="inline">Nostrum.Struct.Channel</code></a> that represents a DM channel.</p></div>
+    <div class="summary-synopsis"><p>A <a href="Nostrum.Struct.Channel.html#content"><code class="inline">Nostrum.Struct.Channel</code></a> that represents a DM channel</p></div>
 </div>
 <div class="summary-row">
   <div class="summary-signature">
     <a href="#t:group_dm_channel/0">group_dm_channel()</a>
   </div>
-    <div class="summary-synopsis"><p>A <a href="Nostrum.Struct.Channel.html#content"><code class="inline">Nostrum.Struct.Channel</code></a> that represents a group DM channel.</p></div>
+    <div class="summary-synopsis"><p>A <a href="Nostrum.Struct.Channel.html#content"><code class="inline">Nostrum.Struct.Channel</code></a> that represents a group DM channel</p></div>
 </div>
 <div class="summary-row">
   <div class="summary-signature">
     <a href="#t:guild_channel/0">guild_channel()</a>
   </div>
-    <div class="summary-synopsis"><p>A <a href="Nostrum.Struct.Channel.html#content"><code class="inline">Nostrum.Struct.Channel</code></a> that represents a channel in a guild.</p></div>
+    <div class="summary-synopsis"><p>A <a href="Nostrum.Struct.Channel.html#content"><code class="inline">Nostrum.Struct.Channel</code></a> that represents a channel in a guild</p></div>
 </div>
 <div class="summary-row">
   <div class="summary-signature">
@@ -152,13 +157,13 @@ Nostrum.Api.create_message!(280085880452939778, &quot;#{Nostrum.Struct.Channel.m
   <div class="summary-signature">
     <a href="#t:guild_text_channel/0">guild_text_channel()</a>
   </div>
-    <div class="summary-synopsis"><p>A <a href="Nostrum.Struct.Channel.html#content"><code class="inline">Nostrum.Struct.Channel</code></a> that represents a text channel in a guild.</p></div>
+    <div class="summary-synopsis"><p>A <a href="Nostrum.Struct.Channel.html#content"><code class="inline">Nostrum.Struct.Channel</code></a> that represents a text channel in a guild</p></div>
 </div>
 <div class="summary-row">
   <div class="summary-signature">
     <a href="#t:guild_voice_channel/0">guild_voice_channel()</a>
   </div>
-    <div class="summary-synopsis"><p>A <a href="Nostrum.Struct.Channel.html#content"><code class="inline">Nostrum.Struct.Channel</code></a> that represents a voice channel in a guild.</p></div>
+    <div class="summary-synopsis"><p>A <a href="Nostrum.Struct.Channel.html#content"><code class="inline">Nostrum.Struct.Channel</code></a> that represents a voice channel in a guild</p></div>
 </div>
 <div class="summary-row">
   <div class="summary-signature">
@@ -235,13 +240,19 @@ Nostrum.Api.create_message!(280085880452939778, &quot;#{Nostrum.Struct.Channel.m
   <div class="summary-signature">
     <a href="#t:text_channel/0">text_channel()</a>
   </div>
-    <div class="summary-synopsis"><p>A <a href="Nostrum.Struct.Channel.html#content"><code class="inline">Nostrum.Struct.Channel</code></a> that represents a text channel.</p></div>
+    <div class="summary-synopsis"><p>A <a href="Nostrum.Struct.Channel.html#content"><code class="inline">Nostrum.Struct.Channel</code></a> that represents a text channel</p></div>
 </div>
 <div class="summary-row">
   <div class="summary-signature">
     <a href="#t:topic/0">topic()</a>
   </div>
     <div class="summary-synopsis"><p>Current channel topic</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:type/0">type()</a>
+  </div>
+    <div class="summary-synopsis"><p><a href="https://discord.com/developers/docs/resources/channel#channel-object-channel-types">Discord API Channel Object Type Documentation</a></p></div>
 </div>
 <div class="summary-row">
   <div class="summary-signature">
@@ -253,7 +264,7 @@ Nostrum.Api.create_message!(280085880452939778, &quot;#{Nostrum.Struct.Channel.m
   <div class="summary-signature">
     <a href="#t:voice_channel/0">voice_channel()</a>
   </div>
-    <div class="summary-synopsis"><p>A <a href="Nostrum.Struct.Channel.html#content"><code class="inline">Nostrum.Struct.Channel</code></a> that represents a voice channel.</p></div>
+    <div class="summary-synopsis"><p>A <a href="Nostrum.Struct.Channel.html#content"><code class="inline">Nostrum.Struct.Channel</code></a> that represents a voice channel</p></div>
 </div>
   </div>
   <div class="summary-functions summary">
@@ -264,7 +275,7 @@ Nostrum.Api.create_message!(280085880452939778, &quot;#{Nostrum.Struct.Channel.m
   <div class="summary-signature">
     <a href="#mention/1">mention(channel)</a>
   </div>
-    <div class="summary-synopsis"><p>Formats a <a href="Nostrum.Struct.Channel.html#content"><code class="inline">Nostrum.Struct.Channel</code></a> into a mention.</p></div>
+    <div class="summary-synopsis"><p>Formats a <a href="Nostrum.Struct.Channel.html#content"><code class="inline">Nostrum.Struct.Channel</code></a> into a mention</p></div>
 </div>
   </div>
         </section>
@@ -284,7 +295,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">application_id()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L100" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L92" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -305,7 +316,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">bitrate()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L85" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L77" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -326,7 +337,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">channel_category()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L203" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L213" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -356,7 +367,46 @@ Types          </h1>
 }</pre>
       </div>
 
-<p>A <a href="Nostrum.Struct.Channel.html#content"><code class="inline">Nostrum.Struct.Channel</code></a> that represents a channel category in a guild.</p>  </section>
+<p>A <a href="Nostrum.Struct.Channel.html#content"><code class="inline">Nostrum.Struct.Channel</code></a> that represents a channel category in a guild</p>  </section>
+</section>
+<section class="detail" id="t:channel_mention/0">
+  <div class="detail-header">
+    <a href="#t:channel_mention/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">channel_mention()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L236" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>channel_mention() :: %Nostrum.Struct.Channel{
+  application_id: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>(),
+  bitrate: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>(),
+  guild_id: <a href="#t:guild_id/0">guild_id</a>(),
+  icon: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>(),
+  id: <a href="#t:id/0">id</a>(),
+  last_message_id: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>(),
+  last_pin_timestamp: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>(),
+  name: <a href="#t:name/0">name</a>(),
+  nsfw: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>(),
+  owner_id: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>(),
+  parent_id: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>(),
+  permission_overwrites: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>(),
+  position: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>(),
+  recipients: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>(),
+  topic: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>(),
+  type: <a href="#t:type/0">type</a>(),
+  user_limit: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()
+}</pre>
+      </div>
+
+<p>A <a href="Nostrum.Struct.Channel.html#content"><code class="inline">Nostrum.Struct.Channel</code></a> that represents a channel mention in a message</p>  </section>
 </section>
 <section class="detail" id="t:dm_channel/0">
   <div class="detail-header">
@@ -365,7 +415,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">dm_channel()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L134" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L144" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -395,7 +445,7 @@ Types          </h1>
 }</pre>
       </div>
 
-<p>A <a href="Nostrum.Struct.Channel.html#content"><code class="inline">Nostrum.Struct.Channel</code></a> that represents a DM channel.</p>  </section>
+<p>A <a href="Nostrum.Struct.Channel.html#content"><code class="inline">Nostrum.Struct.Channel</code></a> that represents a DM channel</p>  </section>
 </section>
 <section class="detail" id="t:group_dm_channel/0">
   <div class="detail-header">
@@ -404,7 +454,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">group_dm_channel()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L180" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L190" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -434,7 +484,7 @@ Types          </h1>
 }</pre>
       </div>
 
-<p>A <a href="Nostrum.Struct.Channel.html#content"><code class="inline">Nostrum.Struct.Channel</code></a> that represents a group DM channel.</p>  </section>
+<p>A <a href="Nostrum.Struct.Channel.html#content"><code class="inline">Nostrum.Struct.Channel</code></a> that represents a group DM channel</p>  </section>
 </section>
 <section class="detail" id="t:guild_channel/0">
   <div class="detail-header">
@@ -443,7 +493,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">guild_channel()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L226" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L245" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -456,7 +506,7 @@ Types          </h1>
   <a href="#t:guild_text_channel/0">guild_text_channel</a>() | <a href="#t:guild_voice_channel/0">guild_voice_channel</a>() | <a href="#t:channel_category/0">channel_category</a>()</pre>
       </div>
 
-<p>A <a href="Nostrum.Struct.Channel.html#content"><code class="inline">Nostrum.Struct.Channel</code></a> that represents a channel in a guild.</p>  </section>
+<p>A <a href="Nostrum.Struct.Channel.html#content"><code class="inline">Nostrum.Struct.Channel</code></a> that represents a channel in a guild</p>  </section>
 </section>
 <section class="detail" id="t:guild_id/0">
   <div class="detail-header">
@@ -465,7 +515,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">guild_id()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L64" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L56" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -486,7 +536,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">guild_text_channel()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L111" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L121" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -516,7 +566,7 @@ Types          </h1>
 }</pre>
       </div>
 
-<p>A <a href="Nostrum.Struct.Channel.html#content"><code class="inline">Nostrum.Struct.Channel</code></a> that represents a text channel in a guild.</p>  </section>
+<p>A <a href="Nostrum.Struct.Channel.html#content"><code class="inline">Nostrum.Struct.Channel</code></a> that represents a text channel in a guild</p>  </section>
 </section>
 <section class="detail" id="t:guild_voice_channel/0">
   <div class="detail-header">
@@ -525,7 +575,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">guild_voice_channel()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L157" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L167" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -555,7 +605,7 @@ Types          </h1>
 }</pre>
       </div>
 
-<p>A <a href="Nostrum.Struct.Channel.html#content"><code class="inline">Nostrum.Struct.Channel</code></a> that represents a voice channel in a guild.</p>  </section>
+<p>A <a href="Nostrum.Struct.Channel.html#content"><code class="inline">Nostrum.Struct.Channel</code></a> that represents a voice channel in a guild</p>  </section>
 </section>
 <section class="detail" id="t:icon/0">
   <div class="detail-header">
@@ -564,7 +614,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">icon()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L94" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L86" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -585,7 +635,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">id()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L61" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L53" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -606,7 +656,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">last_message_id()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L82" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L74" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -627,7 +677,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">last_pin_timestamp()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L106" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L98" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -648,7 +698,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">name()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L73" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L65" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -669,7 +719,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">nsfw()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L79" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L71" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -690,7 +740,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">owner_id()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L97" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L89" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -711,7 +761,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">parent_id()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L103" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L95" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -732,7 +782,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">permission_overwrites()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L70" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L62" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -753,7 +803,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">position()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L67" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L59" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -774,7 +824,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">recipients()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L91" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L83" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -795,7 +845,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">t()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L244" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L263" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -821,7 +871,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">text_channel()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L234" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L253" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -833,7 +883,7 @@ Types          </h1>
           <pre>text_channel() :: <a href="#t:guild_text_channel/0">guild_text_channel</a>() | <a href="#t:dm_channel/0">dm_channel</a>() | <a href="#t:group_dm_channel/0">group_dm_channel</a>()</pre>
       </div>
 
-<p>A <a href="Nostrum.Struct.Channel.html#content"><code class="inline">Nostrum.Struct.Channel</code></a> that represents a text channel.</p>  </section>
+<p>A <a href="Nostrum.Struct.Channel.html#content"><code class="inline">Nostrum.Struct.Channel</code></a> that represents a text channel</p>  </section>
 </section>
 <section class="detail" id="t:topic/0">
   <div class="detail-header">
@@ -842,7 +892,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">topic()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L76" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L68" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -856,6 +906,27 @@ Types          </h1>
 
 <p>Current channel topic</p>  </section>
 </section>
+<section class="detail" id="t:type/0">
+  <div class="detail-header">
+    <a href="#t:type/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">type()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L116" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>type() :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>()</pre>
+      </div>
+
+<p><a href="https://discord.com/developers/docs/resources/channel#channel-object-channel-types">Discord API Channel Object Type Documentation</a></p><ul><li><code class="inline">0</code>  - <code class="inline">GUILD_TEXT</code>           a text channel within a server</li><li><code class="inline">1</code>  - <code class="inline">DM</code>                   a direct message between users</li><li><code class="inline">2</code>  - <code class="inline">GUILD_VOICE</code>          a voice channel within a server</li><li><code class="inline">3</code>  - <code class="inline">GROUP_DM</code>             a direct message between multiple users</li><li><code class="inline">4</code>  - <code class="inline">GUILD_CATEGORY</code>       an organizational category that contains up to 50 channels</li><li><code class="inline">5</code>  - <code class="inline">GUILD_NEWS</code>           a channel that users can follow and crosspost into their own server</li><li><code class="inline">6</code>  - <code class="inline">GUILD_STORE</code>          a channel in which game developers can sell their game on Discord</li><li><code class="inline">10</code> - <code class="inline">GUILD_NEWS_THREAD</code>    a temporary sub-channel within a <code class="inline">GUILD_NEWS</code> channel</li><li><code class="inline">11</code> - <code class="inline">GUILD_PUBLIC_THREAD</code>  a temporary sub-channel within a <code class="inline">GUILD_TEXT</code> channel</li><li><code class="inline">12</code> - <code class="inline">GUILD_PRIVATE_THREAD</code> a temporary sub-channel within a <code class="inline">GUILD_TEXT</code> channel that is only viewable by those invited and those with the <code class="inline">MANAGE_THREADS</code> permission</li><li><code class="inline">13</code> - <code class="inline">GUILD_STAGE_VOICE</code>    a voice channel for hosting events with an audience</li></ul>  </section>
+</section>
 <section class="detail" id="t:user_limit/0">
   <div class="detail-header">
     <a href="#t:user_limit/0" class="detail-link" title="Link to this type">
@@ -863,7 +934,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">user_limit()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L88" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L80" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -884,7 +955,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">voice_channel()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L242" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L261" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -896,7 +967,7 @@ Types          </h1>
           <pre>voice_channel() :: <a href="#t:guild_voice_channel/0">guild_voice_channel</a>()</pre>
       </div>
 
-<p>A <a href="Nostrum.Struct.Channel.html#content"><code class="inline">Nostrum.Struct.Channel</code></a> that represents a voice channel.</p>  </section>
+<p>A <a href="Nostrum.Struct.Channel.html#content"><code class="inline">Nostrum.Struct.Channel</code></a> that represents a voice channel</p>  </section>
 </section>
           </div>
         </section>
@@ -915,7 +986,7 @@ Functions          </h1>
       <span class="sr-only">Link to this function</span>
     </a>
     <h1 class="signature">mention(channel)</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L263" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L282" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -927,7 +998,7 @@ Functions          </h1>
           <pre>mention(<a href="#t:t/0">t</a>()) :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()</pre>
       </div>
 
-<p>Formats a <a href="Nostrum.Struct.Channel.html#content"><code class="inline">Nostrum.Struct.Channel</code></a> into a mention.</p><h2 id="mention/1-examples" class="section-heading">
+<p>Formats a <a href="Nostrum.Struct.Channel.html#content"><code class="inline">Nostrum.Struct.Channel</code></a> into a mention</p><h2 id="mention/1-examples" class="section-heading">
   <a href="#mention/1-examples" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
   Examples
 </h2>
