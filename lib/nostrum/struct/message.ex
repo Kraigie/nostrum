@@ -19,7 +19,7 @@ defmodule Nostrum.Struct.Message do
     :author,
     :channel_id,
     :content,
-    :components,
+    # :components,
     :edited_timestamp,
     :embeds,
     :id,
@@ -88,10 +88,10 @@ defmodule Nostrum.Struct.Message do
   @typedoc "List of attached files in the message"
   @type attachments :: [Attachment.t()]
 
-  @typedoc """
-  List of Message Components
-  """
-  @type components :: [Component.t()]
+  # @typedoc """
+  # List of Message Components
+  # """
+  # @type components :: [Component.t()]
 
   @typedoc """
   Array of Message Sticker Item Objects
@@ -191,7 +191,7 @@ defmodule Nostrum.Struct.Message do
           attachments: attachments,
           author: author,
           channel_id: channel_id,
-          components: components,
+          # components: components,
           content: content,
           edited_timestamp: edited_timestamp,
           embeds: embeds,
@@ -226,7 +226,7 @@ defmodule Nostrum.Struct.Message do
       |> Map.update(:attachments, nil, &Util.cast(&1, {:list, {:struct, Attachment}}))
       |> Map.update(:author, nil, &Util.cast(&1, {:struct, User}))
       |> Map.update(:channel_id, nil, &Util.cast(&1, Snowflake))
-      |> Map.update(:components, nil, &Util.cast(&1, {:list, {:struct, Component}}))
+      # |> Map.update(:components, nil, &Util.cast(&1, {:list, {:struct, Component}}))
       |> Map.update(:embeds, nil, &Util.cast(&1, {:list, {:struct, Embed}}))
       |> Map.update(:guild_id, nil, &Util.cast(&1, Snowflake))
       |> Map.update(:id, nil, &Util.cast(&1, Snowflake))
