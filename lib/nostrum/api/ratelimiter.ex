@@ -87,16 +87,25 @@ defmodule Nostrum.Api.Ratelimiter do
 
     kept_headers = filter_headers(headers, headers_to_keep)
 
+    # Per https://discord.com/developers/docs/topics/rate-limits, all of these
+    # headers are optional. Our `to_integer` and `to_float` functions will
+    # return `nil` if the given header is unset to ease this code.
     global_limit = Map.get(kept_headers, "x-ratelimit-global")
-    remaining = String.to_integer(Map.get(kept_headers, "x-ratelimit-remaining"))
+    remaining = to_integer(Map.get(kept_headers, "x-ratelimit-remaining"))
     reset = to_float(Map.get(kept_headers, "x-ratelimit-reset"))
     retry_after = to_integer(Map.get(kept_headers, "retry-after"))
     origin_timestamp = date_string_to_unix(Map.get(kept_headers, "date"))
 
     latency = abs(origin_timestamp - Util.now())
 
+    # If we have hit a global limit, Discord responds with a 429 and informs
+    # us when we can retry. Our global bucket keeps track of this ratelimit.
     if global_limit, do: update_global_bucket(route, 0, retry_after, latency)
-    if reset, do: update_bucket(route, remaining, reset, latency)
+
+    # If Discord did send us other ratelimit information, we can also update
+    # the ratelimiter bucket for this route. For some endpoints, such as
+    # when creating a DM with a user, we may not retrieve ratelimit headers.
+    if reset != nil and remaining != nil, do: update_bucket(route, remaining, reset, latency)
 
     response
   end
