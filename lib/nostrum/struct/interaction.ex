@@ -26,9 +26,13 @@ defmodule Nostrum.Struct.Interaction do
   @typedoc "Interaction identifier"
   @type id :: Snowflake.t()
 
-  @typedoc "ID of the application that this interaction is for"
+  @typedoc """
+  ID of the application that this interaction is for
+
+  Will be `nil` if the interaction was part of a message struct.
+  """
   @typedoc since: "0.5.0"
-  @type application_id :: Snowflake.t()
+  @type application_id :: Snowflake.t() | nil
 
   @typedoc """
   Interaction kind.
@@ -58,11 +62,19 @@ defmodule Nostrum.Struct.Interaction do
   @typedoc since: "0.5.0"
   @type user :: User.t() | nil
 
-  @typedoc "Continuation token for responses"
-  @type token :: String.t()
+  @typedoc """
+  Continuation token for responses
 
-  @typedoc "Version identifier, always `1`"
-  @type version :: pos_integer()
+  Will be `nil` if this interaction is part of a message struct.
+  """
+  @type token :: String.t() | nil
+
+  @typedoc """
+  Version identifier, always `1`
+
+  Will be `nil` if this interaction is part of a message struct.
+  """
+  @type version :: pos_integer() | nil
 
   @typedoc "For components, the message they were attached to"
   @typedoc since: "0.5.0"
@@ -93,15 +105,15 @@ defmodule Nostrum.Struct.Interaction do
   def to_struct(map) do
     %__MODULE__{
       id: map.id,
-      application_id: map.application_id,
+      application_id: map[:application_id],
       type: map.type,
       data: Util.cast(map[:data], {:struct, ApplicationCommandInteractionData}),
       guild_id: map[:guild_id],
       channel_id: map[:channel_id],
       member: Util.cast(map[:member], {:struct, Member}),
       user: Util.cast(map[:user], {:struct, User}),
-      token: map.token,
-      version: map.version,
+      token: map[:token],
+      version: map[:version],
       message: Util.cast(map[:message], {:struct, Message})
     }
   end
