@@ -51,7 +51,7 @@ defmodule Nostrum.Struct.ApplicationCommandInteractionData do
   @typedoc since: "0.5.0"
   @type interaction_type :: integer() | nil
 
-  @typedoc "ID of the user or message targeted by a context menu command"
+  @typedoc "id of the user or message targeted by a context menu command"
   @typedoc since: "0.5.0"
   @type target_id :: Snowflake.t() | nil
 
