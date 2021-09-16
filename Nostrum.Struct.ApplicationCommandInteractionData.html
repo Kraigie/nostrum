@@ -8,7 +8,7 @@
     <meta name="project" content="Nostrum v0.4.7">
     <title>Nostrum.Struct.ApplicationCommandInteractionData — Nostrum v0.4.7</title>
     <link rel="stylesheet" href="dist/elixir-a172fe91e725dcb259e2.css" />
-    <script src="dist/sidebar_items-30f20cb641.js"></script>
+    <script src="dist/sidebar_items-15b1d06457.js"></script>
       <script src="docs_config.js"></script>
     <script async src="dist/app-f27ff079945e43879c46.js"></script>
   </head>
@@ -113,6 +113,14 @@ Nostrum      </a>
 </div>
 <div class="summary-row">
   <div class="summary-signature">
+    <a href="#t:interaction_type/0">interaction_type()</a>
+  </div>
+    <div class="summary-synopsis"><p>The type of application command invoked.
+Official reference:
+<a href="https://discord.com/developers/docs/interactions/application-commands#application-command-object-application-command-types">https://discord.com/developers/docs/interactions/application-commands#application-command-object-application-command-types</a></p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
     <a href="#t:name/0">name()</a>
   </div>
     <div class="summary-synopsis"><p>Name of the invoked command</p></div>
@@ -131,9 +139,21 @@ Nostrum      </a>
 </div>
 <div class="summary-row">
   <div class="summary-signature">
+    <a href="#t:select_values/0">select_values()</a>
+  </div>
+    <div class="summary-synopsis"><p>For select menu components, this will be a list of the values the user selected.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
     <a href="#t:t/0">t()</a>
   </div>
     <div class="summary-synopsis"><p>Command interaction data for slash commands.</p></div>
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:target_id/0">target_id()</a>
+  </div>
+    <div class="summary-synopsis"><p>ID of the user or message targeted by a context menu command</p></div>
 </div>
   </div>
         </section>
@@ -153,7 +173,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">component_type()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/application_command_interaction_data.ex#L34" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/application_command_interaction_data.ex#L44" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -175,7 +195,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">custom_id()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/application_command_interaction_data.ex#L30" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/application_command_interaction_data.ex#L40" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -197,7 +217,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">id()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/application_command_interaction_data.ex#L16" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/application_command_interaction_data.ex#L26" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -211,6 +231,30 @@ Types          </h1>
 
 <p>ID of the invoked command</p>  </section>
 </section>
+<section class="detail" id="t:interaction_type/0">
+  <div class="detail-header">
+    <a href="#t:interaction_type/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">interaction_type()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/application_command_interaction_data.ex#L52" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+      <span class="note">(since 0.5.0)</span>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>interaction_type() :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>() | nil</pre>
+      </div>
+
+<p>The type of application command invoked.
+Official reference:
+<a href="https://discord.com/developers/docs/interactions/application-commands#application-command-object-application-command-types">https://discord.com/developers/docs/interactions/application-commands#application-command-object-application-command-types</a></p>  </section>
+</section>
 <section class="detail" id="t:name/0">
   <div class="detail-header">
     <a href="#t:name/0" class="detail-link" title="Link to this type">
@@ -218,7 +262,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">name()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/application_command_interaction_data.ex#L19" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/application_command_interaction_data.ex#L29" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -239,7 +283,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">options()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/application_command_interaction_data.ex#L26" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/application_command_interaction_data.ex#L36" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -260,7 +304,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">resolved()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/application_command_interaction_data.ex#L23" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/application_command_interaction_data.ex#L33" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -275,6 +319,28 @@ Types          </h1>
 
 <p>Converted users &amp; roles &amp; channels</p>  </section>
 </section>
+<section class="detail" id="t:select_values/0">
+  <div class="detail-header">
+    <a href="#t:select_values/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">select_values()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/application_command_interaction_data.ex#L62" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+      <span class="note">(since 0.5.0)</span>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>select_values() :: [<a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()] | nil</pre>
+      </div>
+
+<p>For select menu components, this will be a list of the values the user selected.</p>  </section>
+</section>
 <section class="detail" id="t:t/0">
   <div class="detail-header">
     <a href="#t:t/0" class="detail-link" title="Link to this type">
@@ -282,7 +348,7 @@ Types          </h1>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">t()</h1>
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/application_command_interaction_data.ex#L44" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/application_command_interaction_data.ex#L72" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -297,12 +363,37 @@ Types          </h1>
   id: <a href="#t:id/0">id</a>(),
   name: <a href="#t:name/0">name</a>(),
   options: <a href="#t:options/0">options</a>(),
-  resolved: <a href="#t:resolved/0">resolved</a>()
+  resolved: <a href="#t:resolved/0">resolved</a>(),
+  target_id: <a href="#t:target_id/0">target_id</a>(),
+  type: <a href="#t:interaction_type/0">interaction_type</a>(),
+  values: <a href="#t:select_values/0">select_values</a>()
 }</pre>
       </div>
 
 <p>Command interaction data for slash commands.</p><p>Used as part of <a href="Nostrum.Struct.Interaction.html#t:t/0"><code class="inline">Nostrum.Struct.Interaction.t/0</code></a>.</p><p>Official reference:
 <a href="https://discord.com/developers/docs/interactions/slash-commands#interaction-applicationcommandinteractiondata">https://discord.com/developers/docs/interactions/slash-commands#interaction-applicationcommandinteractiondata</a></p>  </section>
+</section>
+<section class="detail" id="t:target_id/0">
+  <div class="detail-header">
+    <a href="#t:target_id/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">target_id()</h1>
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/application_command_interaction_data.ex#L56" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+      <span class="note">(since 0.5.0)</span>
+  </div>
+
+  <section class="docstring">
+      <h2>Specs</h2>
+      <div class="specs">
+          <pre>target_id() :: <a href="Nostrum.Snowflake.html#t:t/0">Nostrum.Snowflake.t</a>() | nil</pre>
+      </div>
+
+<p>ID of the user or message targeted by a context menu command</p>  </section>
 </section>
           </div>
         </section>
