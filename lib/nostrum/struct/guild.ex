@@ -1,4 +1,16 @@
 defmodule Nostrum.Struct.Guild do
+
+  # fields that are only sent on GUILD_CREATE
+  @guild_create_fields [
+    :joined_at,
+    :large,
+    :unavailable,
+    :member_count,
+    :voice_states,
+    :members,
+    :channels
+  ]
+
   @moduledoc """
   Struct representing a Discord guild.
   """
@@ -361,4 +373,20 @@ defmodule Nostrum.Struct.Guild do
 
     struct(__MODULE__, new)
   end
+
+  @doc false
+  @spec merge(t, t) :: t
+  def merge(old_guild, new_guild) do
+    Map.merge(old_guild, new_guild, &handle_key_conflict/3)
+  end
+
+  # Make it so that values which are only sent on GUILD_CREATE are not replaced with nil
+  defp handle_key_conflict(key, old, nil) when key in @guild_create_fields do
+    old
+  end
+
+  defp handle_key_conflict(_key, _old, new) do
+    new
+  end
+
 end
