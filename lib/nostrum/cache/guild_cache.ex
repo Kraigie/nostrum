@@ -203,7 +203,7 @@ defmodule Nostrum.Cache.GuildCache do
   def update(payload) do
     [{_id, old_guild}] = :ets.lookup(@table_name, payload.id)
     casted = Util.cast(payload, {:struct, Guild})
-    new_guild = Map.merge(old_guild, casted)
+    new_guild = Guild.merge(old_guild, casted)
     true = :ets.update_element(@table_name, payload.id, {2, new_guild})
     {old_guild, new_guild}
   end
