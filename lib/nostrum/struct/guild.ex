@@ -1,5 +1,4 @@
 defmodule Nostrum.Struct.Guild do
-
   # fields that are only sent on GUILD_CREATE
   @guild_create_fields [
     :joined_at,
@@ -388,5 +387,4 @@ defmodule Nostrum.Struct.Guild do
   defp handle_key_conflict(_key, _old, new) do
     new
   end
-
 end
