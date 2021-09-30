@@ -66,7 +66,7 @@ defmodule Nostrum.Struct.ApplicationCommandInteractionDataOption do
           type: type,
           value: value,
           options: options,
-          focused: focused,
+          focused: focused
         }
 
   defp parse_value(type, value) when type in [6, 7, 8], do: Util.cast(value, Snowflake)
@@ -80,7 +80,7 @@ defmodule Nostrum.Struct.ApplicationCommandInteractionDataOption do
       type: map.type,
       value: parse_value(map.type, map[:value]),
       options: Util.cast(map[:options], {:list, {:struct, __MODULE__}}),
-      focused: map[:focused],
+      focused: map[:focused]
     }
   end
 end
