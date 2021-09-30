@@ -48,7 +48,7 @@ defmodule Nostrum.Struct.ApplicationCommandInteractionDataOption do
           type: type,
           value: value,
           options: options,
-          focused: focused,
+          focused: focused
         }
 
   @doc false
@@ -59,7 +59,7 @@ defmodule Nostrum.Struct.ApplicationCommandInteractionDataOption do
       type: map.type,
       value: map[:value],
       options: Util.cast(map[:options], {:list, {:struct, __MODULE__}}),
-      focused: map[:focused],
+      focused: map[:focused]
     }
   end
 end
