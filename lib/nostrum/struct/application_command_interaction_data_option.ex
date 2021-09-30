@@ -5,7 +5,7 @@ defmodule Nostrum.Struct.ApplicationCommandInteractionDataOption do
 
   alias Nostrum.Util
 
-  defstruct [:name, :type, :value, :options]
+  defstruct [:name, :type, :value, :options, :focused]
 
   @typedoc "Parameter name"
   @type name :: String.t()
@@ -29,17 +29,26 @@ defmodule Nostrum.Struct.ApplicationCommandInteractionDataOption do
 
   @typedoc """
   Parameter options for subcommands.
+  Not present for autocomplete interactions.
 
   Mutually exclusive with `value`.
   """
   @type options :: [__MODULE__.t()] | nil
+
+  @typedoc """
+  Whether this field is focused by the user
+
+  Present only for autocomplete interactions.
+  """
+  @type focused :: boolean() | nil
 
   @typedoc "Command interaction data struct"
   @type t :: %__MODULE__{
           name: name,
           type: type,
           value: value,
-          options: options
+          options: options,
+          focused: focused,
         }
 
   @doc false
@@ -49,7 +58,8 @@ defmodule Nostrum.Struct.ApplicationCommandInteractionDataOption do
       name: map.name,
       type: map.type,
       value: map[:value],
-      options: Util.cast(map[:options], {:list, {:struct, __MODULE__}})
+      options: Util.cast(map[:options], {:list, {:struct, __MODULE__}}),
+      focused: map[:focused],
     }
   end
 end
