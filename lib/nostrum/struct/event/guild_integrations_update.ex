@@ -16,6 +16,6 @@ defmodule Nostrum.Struct.Event.GuildIntegrationsUpdate do
 
   @doc false
   def to_struct(map) do
-    %__MODULE__{guild_id: map["guild_id"]}
+    %__MODULE__{guild_id: map.guild_id}
   end
 end

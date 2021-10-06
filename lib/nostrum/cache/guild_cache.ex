@@ -199,11 +199,13 @@ defmodule Nostrum.Cache.GuildCache do
   end
 
   @doc false
-  @spec update(map()) :: true
+  @spec update(map()) :: {Guild.t(), Guild.t()}
   def update(payload) do
-    [{_id, guild}] = :ets.lookup(@table_name, payload.id)
-    new_guild = Map.merge(guild, payload)
+    [{_id, old_guild}] = :ets.lookup(@table_name, payload.id)
+    casted = Util.cast(payload, {:struct, Guild})
+    new_guild = Guild.merge(old_guild, casted)
     true = :ets.update_element(@table_name, payload.id, {2, new_guild})
+    {old_guild, new_guild}
   end
 
   @doc false
@@ -241,7 +243,7 @@ defmodule Nostrum.Cache.GuildCache do
   @spec channel_update(Guild.id(), map()) :: {Channel.t(), Channel.t()}
   def channel_update(guild_id, channel) do
     [{_id, guild}] = :ets.lookup(@table_name, guild_id)
-    {old, new, new_channels} = upsert(guild.channels, channel["id"], channel, Channel)
+    {old, new, new_channels} = upsert(guild.channels, channel.id, channel, Channel)
     new_guild = %{guild | channels: new_channels}
     true = :ets.update_element(@table_name, guild_id, {2, new_guild})
     {old, new}
@@ -261,7 +263,7 @@ defmodule Nostrum.Cache.GuildCache do
   @spec member_add(Guild.id(), map()) :: Member.t()
   def member_add(guild_id, payload) do
     [{_id, guild}] = :ets.lookup(@table_name, guild_id)
-    {_old, member, new_members} = upsert(guild.members, payload["user"]["id"], payload, Member)
+    {_old, member, new_members} = upsert(guild.members, payload.user.id, payload, Member)
     new = %{guild | members: new_members, member_count: guild.member_count + 1}
     true = :ets.update_element(@table_name, guild_id, {2, new})
     member
@@ -271,20 +273,30 @@ defmodule Nostrum.Cache.GuildCache do
   @spec member_remove(Guild.id(), map()) :: {Guild.id(), Member.t()} | :noop
   def member_remove(guild_id, user) do
     [{_id, guild}] = :ets.lookup(@table_name, guild_id)
-    {popped, new_members} = Map.pop(guild.members, user["id"])
+    {popped, new_members} = Map.pop(guild.members, user.id)
     new_guild = %{guild | members: new_members, member_count: guild.member_count - 1}
     true = :ets.update_element(@table_name, guild_id, {2, new_guild})
     if popped, do: {guild_id, popped}, else: :noop
   end
 
   @doc false
-  @spec member_update(Guild.id(), map()) :: {Member.t(), Member.t()}
+  @spec member_update(Guild.id(), map()) :: {Guild.id(), Member.t() | nil, Member.t()}
   def member_update(guild_id, member) do
-    [{_id, guild}] = :ets.lookup(@table_name, guild_id)
-    {old, new, new_members} = upsert(guild.members, member["user"]["id"], member, Member)
-    new_guild = %{guild | members: new_members}
-    true = :ets.update_element(@table_name, guild_id, {2, new_guild})
-    {old, new}
+    # We may retrieve a GUILD_MEMBER_UPDATE event for our own user even if we
+    # have the required intents to retrieve it for other members disabled, as
+    # outlined in issue https://github.com/Kraigie/nostrum/issues/293. In
+    # that case, we will not have the guild cached.
+    case :ets.lookup(@table_name, guild_id) do
+      [{_id, guild}] ->
+        {old, new, new_members} = upsert(guild.members, member.user.id, member, Member)
+        new_guild = %{guild | members: new_members}
+        true = :ets.update_element(@table_name, guild_id, {2, new_guild})
+        {guild_id, old, new}
+
+      [] ->
+        new = Util.cast(member, {:struct, Member})
+        {guild_id, nil, new}
+    end
   end
 
   @doc false
@@ -307,7 +319,7 @@ defmodule Nostrum.Cache.GuildCache do
   @spec role_create(Guild.id(), map()) :: Role.t()
   def role_create(guild_id, role) do
     [{_id, guild}] = :ets.lookup(@table_name, guild_id)
-    {_old, new, new_roles} = upsert(guild.roles, role["id"], role, Role)
+    {_old, new, new_roles} = upsert(guild.roles, role.id, role, Role)
     new_guild = %{guild | roles: new_roles}
     true = :ets.update_element(@table_name, guild_id, {2, new_guild})
     new
@@ -327,7 +339,7 @@ defmodule Nostrum.Cache.GuildCache do
   @spec role_update(Guild.id(), map()) :: {Role.t(), Role.t()}
   def role_update(guild_id, role) do
     [{_id, guild}] = :ets.lookup(@table_name, guild_id)
-    {old, new_role, new_roles} = upsert(guild.roles, role["id"], role, Role)
+    {old, new_role, new_roles} = upsert(guild.roles, role.id, role, Role)
     new_guild = %{guild | roles: new_roles}
     true = :ets.update_element(@table_name, guild_id, {2, new_guild})
     {old, new_role}

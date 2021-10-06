@@ -3,6 +3,10 @@ defmodule Nostrum.Struct.ApplicationCommandInteractionDataOption do
 
   # seasons greetings from `AbstractBeanModelParserFactory.java`.
 
+  alias Nostrum.Snowflake
+  alias Nostrum.Struct.Channel
+  alias Nostrum.Struct.Guild.Role
+  alias Nostrum.Struct.User
   alias Nostrum.Util
 
   defstruct [:name, :type, :value, :options]
@@ -22,10 +26,24 @@ defmodule Nostrum.Struct.ApplicationCommandInteractionDataOption do
   @typedoc """
   Parameter value.
 
-  Mutually exclusive with `options`.
+  The type of this depends on the `t:type/0`:
+
+  - For `t:type/0` of `3`, this will be a `t:String.t/0`.
+  - For `t:type/0` of `4`, this will be a `t:integer/0`.
+  - For `t:type/0` of `5`, this will be a `t:boolean/0`.
+  - For `t:type/0` of `6`, this will be a `t:Nostrum.Struct.User.id/0`. The
+    corresponding guild member _and_ user can be looked up in
+    `t:Nostrum.Struct.ApplicationCommandInteractionData.resolved/0`.
+  - For `t:type/0` of `7`, this will be a `t:Nostrum.Struct.Channel.id/0`. The
+    corresponding channel can be looked up in
+    `t:Nostrum.Struct.ApplicationCommandInteractionData.resolved/0`.
+  - For `t:type/0` of `8`, this will be a `t:Nostrum.Struct.Guild.Role.id/0`. The
+    corresponding role can be looked up in
+    `t:Nostrum.Struct.ApplicationCommandInteractionData.resolved/0`.
+
+  Mutually exclusive with `options`. If `options` is not `nil`, this will be `nil`.
   """
-  # OptionType.t() ?
-  @type value :: String.t() | nil
+  @type value :: String.t() | integer() | boolean() | User.id() | Channel.id() | Role.id() | nil
 
   @typedoc """
   Parameter options for subcommands.
@@ -42,15 +60,17 @@ defmodule Nostrum.Struct.ApplicationCommandInteractionDataOption do
           options: options
         }
 
+  defp parse_value(type, value) when type in [6, 7, 8], do: Util.cast(value, Snowflake)
+  defp parse_value(_type, value), do: value
+
   @doc false
   @spec to_struct(map()) :: __MODULE__.t()
   def to_struct(map) do
     %__MODULE__{
-      name: map["name"],
-      type: map["type"],
-      value: map["value"],
-      options:
-        Util.cast(map["options"], {:list, {:struct, ApplicationCommandInteractionDataOption}})
+      name: map.name,
+      type: map.type,
+      value: parse_value(map.type, map[:value]),
+      options: Util.cast(map[:options], {:list, {:struct, __MODULE__}})
     }
   end
 end

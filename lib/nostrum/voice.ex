@@ -97,6 +97,7 @@ defmodule Nostrum.Voice do
       - `:url` Input will be [any url that `ffmpeg` can read](https://www.ffmpeg.org/ffmpeg-protocols.html).
       - `:pipe` Input will be data that is piped to stdin of `ffmpeg`.
       - `:ytdl` Input will be url for `youtube-dl`, which gets automatically piped to `ffmpeg`.
+      - `:stream` Input will be livestream url for `streamlink`, which gets automatically piped to `ffmpeg`.
       - `:raw` Input will be an enumarable of raw opus frames. This bypasses `ffmpeg` and all options.
       - `:raw_s` Same as `:raw` but input must be stateful, i.e. calling `Enum.take/2` on input is not idempotent.
     - `options` - See options section below.
@@ -152,11 +153,18 @@ defmodule Nostrum.Voice do
   iex> Nostrum.Voice.play(123456789, "https://www.youtube.com/watch?v=0ngcL_5ekXo", :ytdl,
   ...>   filter: "lowpass=f=1200", filter: "highpass=f=300", filter: "asetrate=44100*0.5")
   ```
+  ```Elixir
+  iex> Nostrum.Voice.join_channel(123456789, 420691337)
+
+  iex> Nostrum.Voice.play(123456789, "https://www.twitch.tv/pestily", :stream)
+
+  iex> Nostrum.Voice.play(123456789, "https://youtu.be/LN4r-K8ZP5Q", :stream)
+  ```
   """
   @spec play(
           Guild.id(),
           String.t() | binary() | iodata() | Enum.t(),
-          :url | :pipe | :ytdl | :raw | :raw_s,
+          :url | :pipe | :ytdl | :stream | :raw | :raw_s,
           keyword()
         ) ::
           :ok | {:error, String.t()}

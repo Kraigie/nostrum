@@ -1,7 +1,9 @@
 defmodule Nostrum.Voice.Audio do
   @moduledoc false
 
+  @dialyzer {:nowarn_function, get_stream_url: 1}
   @dialyzer {:nowarn_function, spawn_youtubedl: 1}
+  @dialyzer {:nowarn_function, spawn_streamlink: 1}
   @dialyzer {:nowarn_function, spawn_ffmpeg: 3}
 
   require Logger
@@ -11,6 +13,7 @@ defmodule Nostrum.Voice.Audio do
   alias Nostrum.Util
   alias Nostrum.Voice
   alias Porcelain.Process, as: Proc
+  alias Porcelain.Result, as: Res
 
   @encryption_mode "xsalsa20_poly1305"
   @samples_per_frame 960
@@ -135,6 +138,32 @@ defmodule Nostrum.Voice.Audio do
      ), length(frames) < @frames_per_burst}
   end
 
+  def get_stream_url(url) do
+    res =
+      Porcelain.exec(
+        Application.get_env(:nostrum, :youtubedl, "youtube-dl"),
+        [
+          ["-f", "best"],
+          ["-g"],
+          [url]
+        ]
+        |> List.flatten(),
+        out: :string,
+        err: :out
+      )
+
+    case res do
+      {:error, reason} ->
+        raise(VoiceError, reason: reason, executable: "youtube-dl")
+
+      %Res{status: status, out: stderr} when status != 0 ->
+        raise(stderr)
+
+      %Res{status: 0, out: stream_url} ->
+        stream_url |> String.trim()
+    end
+  end
+
   def spawn_youtubedl(url) do
     res =
       Porcelain.spawn(
@@ -158,6 +187,29 @@ defmodule Nostrum.Voice.Audio do
     end
   end
 
+  def spawn_streamlink(url) do
+    res =
+      Porcelain.spawn(
+        Application.get_env(:nostrum, :streamlink, "streamlink"),
+        [
+          ["--stdout"],
+          ["--quiet"],
+          ["--default-stream", "best"],
+          ["--url", get_stream_url(url)]
+        ]
+        |> List.flatten(),
+        out: :stream
+      )
+
+    case res do
+      {:error, reason} ->
+        raise(VoiceError, reason: reason, executable: "streamlink")
+
+      proc ->
+        proc
+    end
+  end
+
   def spawn_ffmpeg(input, type \\ :url, options \\ []) do
     {input_url, stdin} =
       case type do
@@ -169,6 +221,11 @@ defmodule Nostrum.Voice.Audio do
 
         :ytdl ->
           %Proc{out: outstream} = spawn_youtubedl(input)
+
+          {"pipe:0", outstream}
+
+        :stream ->
+          %Proc{out: outstream} = spawn_streamlink(input)
 
           {"pipe:0", outstream}
       end

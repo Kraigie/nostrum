@@ -37,6 +37,7 @@ defmodule Nostrum.Consumer do
     Ready,
     SpeakingUpdate,
     TypingStart,
+    VoiceReady,
     VoiceServerUpdate,
     VoiceState
   }
@@ -81,6 +82,12 @@ defmodule Nostrum.Consumer do
           | {:max_seconds, non_neg_integer()}
           | {:subscribe_to, [GenStage.stage() | {GenStage.stage(), keyword()}]}
 
+  @typedoc """
+  Dispatched when a channel is created.
+
+  Starting from [API and Gateway V8](https://discord.com/developers/docs/change-log#api-and-gateway-v8),
+  this will never be sent for a DM.
+  """
   @type channel_create :: {:CHANNEL_CREATE, Channel.t(), WSState.t()}
   @type channel_delete :: {:CHANNEL_DELETE, Channel.t(), WSState.t()}
   @typedoc """
@@ -181,6 +188,12 @@ defmodule Nostrum.Consumer do
            {old_user :: Nostrum.Struct.User.t() | nil, new_user :: Nostrum.Struct.User.t()},
            WSState.t()}
   @typedoc """
+  Dispatched when the bot is ready to begin sending audio after joining a voice channel.
+
+  Note that the third tuple element is of type `VoiceWSState.t()` instead of `WSState.t().`
+  """
+  @type voice_ready :: {:VOICE_READY, VoiceReady.t(), VoiceWSState.t()}
+  @typedoc """
   Dispatched when the bot starts or stops speaking.
 
   Note that the third tuple element is of type `VoiceWSState.t()` instead of `WSState.t().`
@@ -226,6 +239,7 @@ defmodule Nostrum.Consumer do
           | typing_start
           | user_settings_update
           | user_update
+          | voice_ready
           | voice_speaking_update
           | voice_state_update
           | voice_server_update

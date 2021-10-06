@@ -161,12 +161,51 @@ defmodule Nostrum.Util do
   end
 
   @doc """
+  Converts a map into an atom-keyed map.
+
+  Given a map with variable type keys, returns the same map with all keys as `atoms`.
+  To support maps keyed with integers (such as in Discord's interaction data),
+  binaries that appear to be integers will be parsed as such.
+
+  This function will attempt to convert keys to an existing atom, and if that fails will default to
+  creating a new atom while displaying a warning. The idea here is that we should be able to see
+  if any results from Discord are giving variable keys. Since we *will* define all
+  types of objects returned by Discord, the amount of new atoms created *SHOULD* be 0. 👀
+  """
+  @spec safe_atom_map(map) :: map
+  def safe_atom_map(term) do
+    cond do
+      is_map(term) ->
+        for {key, value} <- term, into: %{}, do: {maybe_to_atom(key), safe_atom_map(value)}
+
+      is_list(term) ->
+        Enum.map(term, fn item -> safe_atom_map(item) end)
+
+      true ->
+        term
+    end
+  end
+
+  @doc """
   Attempts to convert a string to an atom.
+
+  Binary `token`s that consist of digits are assumed to be snowflakes, and will
+  be parsed as such.
 
   If atom does not currently exist, will warn that we're doing an unsafe conversion.
   """
-  @spec maybe_to_atom(atom | String.t()) :: atom
+  @spec maybe_to_atom(atom | String.t()) :: atom | integer
   def maybe_to_atom(token) when is_atom(token), do: token
+
+  def maybe_to_atom(<<head, _rest::binary>> = token) when head in ?1..?9 do
+    case Integer.parse(token) do
+      {snowflake, ""} ->
+        snowflake
+
+      _ ->
+        :erlang.binary_to_atom(token)
+    end
+  end
 
   def maybe_to_atom(token) do
     String.to_existing_atom(token)

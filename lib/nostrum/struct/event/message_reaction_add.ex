@@ -3,7 +3,7 @@ defmodule Nostrum.Struct.Event.MessageReactionAdd do
   @moduledoc since: "0.5.0"
 
   alias Nostrum.Struct.Guild.Member
-  alias Nostrum.Struct.{Channel, Emoji, Message, User}
+  alias Nostrum.Struct.{Channel, Emoji, Guild, Message, User}
   alias Nostrum.Util
 
   defstruct [:user_id, :channel_id, :message_id, :guild_id, :member, :emoji]
@@ -39,12 +39,12 @@ defmodule Nostrum.Struct.Event.MessageReactionAdd do
   @doc false
   def to_struct(map) do
     %__MODULE__{
-      user_id: map["user_id"],
-      channel_id: map["channel_id"],
-      message_id: map["message_id"],
-      guild_id: map["guild_id"],
-      member: Util.cast(map["member"], {:struct, Member}),
-      emoji: Util.cast(map["emoji"], {:struct, Emoji})
+      user_id: map.user_id,
+      channel_id: map.channel_id,
+      message_id: map.message_id,
+      guild_id: map[:guild_id],
+      member: Util.cast(map[:member], {:struct, Member}),
+      emoji: Util.cast(map.emoji, {:struct, Emoji})
     }
   end
 end

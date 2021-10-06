@@ -1,4 +1,15 @@
 defmodule Nostrum.Struct.Guild do
+  # fields that are only sent on GUILD_CREATE
+  @guild_create_fields [
+    :joined_at,
+    :large,
+    :unavailable,
+    :member_count,
+    :voice_states,
+    :members,
+    :channels
+  ]
+
   @moduledoc """
   Struct representing a Discord guild.
   """
@@ -16,8 +27,6 @@ defmodule Nostrum.Struct.Guild do
     :region,
     :afk_channel_id,
     :afk_timeout,
-    :embed_enabled,
-    :embed_channel_id,
     :verification_level,
     :default_message_notifications,
     :explicit_content_filter,
@@ -63,12 +72,6 @@ defmodule Nostrum.Struct.Guild do
 
   @typedoc "The time someone must be afk before being moved"
   @type afk_timeout :: integer
-
-  @typedoc "Whether the guild is emeddable"
-  @type embed_enabled :: boolean | nil
-
-  @typedoc "The id of the embedded channel"
-  @type embed_channel_id :: Channel.id() | nil
 
   @typedoc "The level of verification"
   @type verification_level :: integer
@@ -160,8 +163,6 @@ defmodule Nostrum.Struct.Guild do
           region: nil,
           afk_channel_id: nil,
           afk_timeout: nil,
-          embed_enabled: nil,
-          embed_channel_id: nil,
           verification_level: nil,
           default_message_notifications: nil,
           explicit_content_filter: nil,
@@ -196,8 +197,6 @@ defmodule Nostrum.Struct.Guild do
           region: region,
           afk_channel_id: afk_channel_id,
           afk_timeout: afk_timeout,
-          embed_enabled: embed_enabled,
-          embed_channel_id: embed_channel_id,
           verification_level: verification_level,
           default_message_notifications: default_message_notifications,
           explicit_content_filter: explicit_content_filter,
@@ -232,8 +231,6 @@ defmodule Nostrum.Struct.Guild do
           region: nil,
           afk_channel_id: nil,
           afk_timeout: nil,
-          embed_enabled: nil,
-          embed_channel_id: nil,
           verification_level: nil,
           default_message_notifications: nil,
           explicit_content_filter: nil,
@@ -268,8 +265,6 @@ defmodule Nostrum.Struct.Guild do
           region: region,
           afk_channel_id: afk_channel_id,
           afk_timeout: afk_timeout,
-          embed_enabled: embed_enabled,
-          embed_channel_id: embed_channel_id,
           verification_level: verification_level,
           default_message_notifications: default_message_notifications,
           explicit_content_filter: explicit_content_filter,
@@ -376,5 +371,20 @@ defmodule Nostrum.Struct.Guild do
       |> Map.update(:channels, nil, &Util.cast(&1, {:index, [:id], {:struct, Channel}}))
 
     struct(__MODULE__, new)
+  end
+
+  @doc false
+  @spec merge(t, t) :: t
+  def merge(old_guild, new_guild) do
+    Map.merge(old_guild, new_guild, &handle_key_conflict/3)
+  end
+
+  # Make it so that values which are only sent on GUILD_CREATE are not replaced with nil
+  defp handle_key_conflict(key, old, nil) when key in @guild_create_fields do
+    old
+  end
+
+  defp handle_key_conflict(_key, _old, new) do
+    new
   end
 end

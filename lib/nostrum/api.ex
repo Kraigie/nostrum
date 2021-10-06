@@ -178,10 +178,10 @@ defmodule Nostrum.Api do
     * `:all` (default) - Ping everything as usual
     * `:none` - Nobody will be pinged
     * `:everyone` - Allows to ping @here and @everone
-    * `:user` - Allows to ping users
+    * `:users` - Allows to ping users
     * `:roles` - Allows to ping roles
-    * `{:user, list}` - Allows to ping list of users. Can contain up to 100 ids of users.
-    * `{:role, list}` - Allows to ping list of roles. Can contain up to 100 ids of roles.
+    * `{:users, list}` - Allows to ping list of users. Can contain up to 100 ids of users.
+    * `{:roles, list}` - Allows to ping list of roles. Can contain up to 100 ids of roles.
     * list - a list containing the values above.
 
   ### Message reference
@@ -1348,7 +1348,7 @@ defmodule Nostrum.Api do
     * `:user_id` (`t:Nostrum.Struct.User.id/0`) - filter the log for a user ID
     * `:action_type` (`t:integer/0`) - filter the log by audit log type, see [Audit Log Events](https://discord.com/developers/docs/resources/audit-log#audit-log-entry-object-audit-log-events)
     * `:before` (`t:Nostrum.Struct.Snowflake.t/0`) - filter the log before a certain entry ID
-    * `:limit` (`t:positive_integer/0`) - how many entries are returned (default 50, minimum 1, maximum 100)
+    * `:limit` (`t:pos_integer/0`) - how many entries are returned (default 50, minimum 1, maximum 100)
   """
   @spec get_guild_audit_log(Guild.id(), options) :: {:ok, AuditLog.t()} | error
   def get_guild_audit_log(guild_id, options \\ []) do
@@ -1889,8 +1889,8 @@ defmodule Nostrum.Api do
     request(%{
       method: :put,
       route: Constants.guild_ban(guild_id, user_id),
-      body: %{"delete-message-days": days_to_delete},
-      params: [],
+      body: %{delete_message_days: days_to_delete},
+      options: [],
       headers: maybe_add_reason(reason)
     })
   end
@@ -2243,7 +2243,8 @@ defmodule Nostrum.Api do
 
   Guild to get integrations for is specified by `guild_id`.
   """
-  @spec get_guild_integrations(integer) :: error | {:ok, [Nostrum.Struct.Guild.Integration.t()]}
+  @spec get_guild_integrations(Guild.id()) ::
+          error | {:ok, [Nostrum.Struct.Guild.Integration.t()]}
   def get_guild_integrations(guild_id) do
     request(:get, Constants.guild_integrations(guild_id))
     |> handle_request_with_decode
@@ -2308,17 +2309,17 @@ defmodule Nostrum.Api do
   @doc """
   Gets a guild embed.
   """
-  @spec get_guild_embed(integer) :: error | {:ok, map}
-  def get_guild_embed(guild_id) do
-    request(:get, Constants.guild_embed(guild_id))
+  @spec get_guild_widget(integer) :: error | {:ok, map}
+  def get_guild_widget(guild_id) do
+    request(:get, Constants.guild_widget(guild_id))
   end
 
   @doc """
   Modifies a guild embed.
   """
-  @spec modify_guild_embed(integer, map) :: error | {:ok, map}
-  def modify_guild_embed(guild_id, options) do
-    request(:patch, Constants.guild_embed(guild_id), options)
+  @spec modify_guild_widget(integer, map) :: error | {:ok, map}
+  def modify_guild_widget(guild_id, options) do
+    request(:patch, Constants.guild_widget(guild_id), options)
     |> handle_request_with_decode
   end
 
@@ -2611,7 +2612,7 @@ defmodule Nostrum.Api do
   @doc """
   Gets a list of user connections.
   """
-  @spec get_user_connections() :: error | {:ok, Nostrum.Struct.User.Connection.t()}
+  @spec get_user_connections() :: error | {:ok, list()}
   def get_user_connections do
     request(:get, Constants.me_connections())
     |> handle_request_with_decode
@@ -2792,36 +2793,63 @@ defmodule Nostrum.Api do
     })
   end
 
-  @doc """
-  Executes a webhook.
+  @typep m1 :: %{
+           required(:content) => String.t(),
+           :username => String.t(),
+           :avatar_url => String.t(),
+           :tts => boolean,
+           optional(:file) => String.t() | nil,
+           optional(:embeds) => nonempty_list(Embed.t()) | nil
+         }
 
-  ## Parameters
-  - `webhook_id` - Id of the webhook to execute.
-  - `webhook_token` - Token of the webhook to execute.
-  - `args` - Map with the following required keys:
-    - `content` - Message content.
-    - `file` - File to send.
-    - `embeds` - List of embeds to send.
-    - `username` - Overrides the default name of the webhook.
-    - `avatar_url` - Overrides the default avatar of the webhook.
-    - `tts` - Whether the message should be read over text to speech.
-  - `wait` - Whether to return an error or not. Defaults to `false`.
+  @typep m2 ::
+           %{
+             optional(:content) => String.t() | nil,
+             :username => String.t(),
+             :avatar_url => String.t(),
+             :tts => boolean,
+             required(:file) => String.t(),
+             optional(:embeds) => nonempty_list(Embed.t()) | nil
+           }
 
-  Only one of `content`, `file` or `embeds` should be supplied in the `args` parameter.
-  """
+  @typep m3 ::
+           %{
+             optional(:content) => String.t() | nil,
+             :username => String.t(),
+             :avatar_url => String.t(),
+             :tts => boolean,
+             optional(:file) => String.t() | nil,
+             required(:embeds) => nonempty_list(Embed.t())
+           }
+
+  @type matrix :: m1 | m2 | m3
+
   @spec execute_webhook(
-          Webhook.id(),
-          Webhook.token(),
-          %{
-            content: String.t(),
-            username: String.t(),
-            avatar_url: String.t(),
-            tts: boolean,
-            file: String.t(),
-            embeds: [Embed.t()]
-          },
+          Webhook.id() | User.id(),
+          Webhook.token() | Interaction.token(),
+          matrix,
           boolean
-        ) :: error | {:ok}
+        ) ::
+          error | {:ok}
+
+  @doc """
+   Executes a webhook.
+
+   ## Parameters
+   - `webhook_id` - Id of the webhook to execute.
+   - `webhook_token` - Token of the webhook to execute.
+   - `args` - Map with the following required keys:
+     - `content` - Message content.
+     - `file` - File to send.
+     - `embeds` - List of embeds to send.
+     - `username` - Overrides the default name of the webhook.
+     - `avatar_url` - Overrides the default avatar of the webhook.
+     - `tts` - Whether the message should be read over text to speech.
+   - `wait` - Whether to return an error or not. Defaults to `false`.
+
+   Only one of `content`, `file` or `embeds` should be supplied in the `args` parameter.
+  """
+
   def execute_webhook(webhook_id, webhook_token, args, wait \\ false)
 
   def execute_webhook(webhook_id, webhook_token, %{file: _} = args, wait) do
