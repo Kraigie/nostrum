@@ -5,21 +5,29 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="ExDoc v0.25.1">
-    <meta name="project" content="Nostrum v0.4.7">
-    <title>Nostrum.Cache.PresenceCache — Nostrum v0.4.7</title>
+    <meta name="project" content="Nostrum v0.5.0">
+
+    <title>Nostrum.Cache.PresenceCache — Nostrum v0.5.0</title>
     <link rel="stylesheet" href="dist/elixir-a172fe91e725dcb259e2.css" />
+
     <script src="dist/sidebar_items-15b1d06457.js"></script>
+
       <script src="docs_config.js"></script>
+
     <script async src="dist/app-f27ff079945e43879c46.js"></script>
+
+
   </head>
   <body data-type="modules">
     <script>
+
       try {
         if (localStorage.getItem('night-mode') === 'true') {
           document.body.classList.add('night-mode');
         }
       } catch (error) { }
     </script>
+
 <div class="main">
 
 <button class="sidebar-button sidebar-toggle">
@@ -47,11 +55,13 @@
   <div class="sidebar-header">
     <div class="sidebar-projectDetails">
       <a href="https://github.com/kraigie/nostrum" class="sidebar-projectName">
-Nostrum      </a>
+Nostrum
+      </a>
       <strong class="sidebar-projectVersion">
-        v0.4.7
+        v0.5.0
       </strong>
     </div>
+
   </div>
 
   <ul class="sidebar-listNav">
@@ -59,7 +69,9 @@ Nostrum      </a>
 
       <li><a id="modules-list-link" href="#full-list">Modules</a></li>
 
+
       <li><a id="tasks-list-link" href="#full-list">Mix Tasks</a></li>
+
   </ul>
   <div class="gradient"></div>
   <ul id="full-list" class="sidebar-fullList"></ul>
@@ -70,11 +82,13 @@ Nostrum      </a>
     <div id="content" class="content-inner">
 
       <h1>
-        Nostrum.Cache.PresenceCache <small class="app-vsn">(Nostrum v0.4.7)</small>
+Nostrum.Cache.PresenceCache <small class="app-vsn">(Nostrum v0.5.0)</small>
+
           <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache.ex#L1" title="View Source" class="view-source" rel="help">
             <span class="icon-code" aria-hidden="true"></span>
             <span class="sr-only">View Source</span>
           </a>
+
       </h1>
 
 
@@ -84,10 +98,12 @@ methods provided below you can call any other ETS methods on the table.</p><h2 i
   <a href="#module-example" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
   Example
 </h2>
-<pre><code class="makeup elixir"><span class="n">info</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ss">:ets</span><span class="o">.</span><span class="n">info</span><span class="p" data-group-id="3289477216-1">(</span><span class="ss">:presences</span><span class="p" data-group-id="3289477216-1">)</span><span class="w">
-</span><span class="p" data-group-id="3289477216-2">[</span><span class="n">...</span><span class="p">,</span><span class="w"> </span><span class="ss">heir</span><span class="p">:</span><span class="w"> </span><span class="ss">:none</span><span class="p">,</span><span class="w"> </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="ss">:presences</span><span class="p">,</span><span class="w"> </span><span class="ss">size</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">...</span><span class="p" data-group-id="3289477216-2">]</span><span class="w">
-</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">info</span><span class="p" data-group-id="3289477216-3">[</span><span class="ss">:size</span><span class="p" data-group-id="3289477216-3">]</span><span class="w">
-</span><span class="mi">1</span></code></pre>        </section>
+<pre><code class="makeup elixir"><span class="n">info</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ss">:ets</span><span class="o">.</span><span class="n">info</span><span class="p" data-group-id="7322102081-1">(</span><span class="ss">:presences</span><span class="p" data-group-id="7322102081-1">)</span><span class="w">
+</span><span class="p" data-group-id="7322102081-2">[</span><span class="n">...</span><span class="p">,</span><span class="w"> </span><span class="ss">heir</span><span class="p">:</span><span class="w"> </span><span class="ss">:none</span><span class="p">,</span><span class="w"> </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="ss">:presences</span><span class="p">,</span><span class="w"> </span><span class="ss">size</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">...</span><span class="p" data-group-id="7322102081-2">]</span><span class="w">
+</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">info</span><span class="p" data-group-id="7322102081-3">[</span><span class="ss">:size</span><span class="p" data-group-id="7322102081-3">]</span><span class="w">
+</span><span class="mi">1</span></code></pre>
+        </section>
+
 
         <section id="summary" class="details-list">
           <h1 class="section-heading">
@@ -97,6 +113,7 @@ methods provided below you can call any other ETS methods on the table.</p><h2 i
             </a>
             Summary
           </h1>
+
   <div class="summary-functions summary">
     <h2>
       <a href="#functions">Functions</a>
@@ -104,17 +121,26 @@ methods provided below you can call any other ETS methods on the table.</p><h2 i
 <div class="summary-row">
   <div class="summary-signature">
     <a href="#get/2">get(user_id, guild_id)</a>
+
   </div>
+
     <div class="summary-synopsis"><p>Retreives a presence for a user from the cache by guild and id.</p></div>
+
 </div>
 <div class="summary-row">
   <div class="summary-signature">
     <a href="#get!/2">get!(user_id, guild_id)</a>
+
   </div>
+
     <div class="summary-synopsis"><p>Same as <code class="inline">get/1</code>, but raises <a href="Nostrum.Error.CacheError.html"><code class="inline">Nostrum.Error.CacheError</code></a> in case of a failure.</p></div>
+
 </div>
+
   </div>
+
         </section>
+
 
         <section id="functions" class="details-list">
           <h1 class="section-heading">
@@ -122,62 +148,81 @@ methods provided below you can call any other ETS methods on the table.</p><h2 i
               <span class="icon-link" aria-hidden="true"></span>
               <span class="sr-only">Link to this section</span>
             </a>
-Functions          </h1>
+Functions
+          </h1>
           <div class="functions-list">
 <section class="detail" id="get/2">
+
   <div class="detail-header">
     <a href="#get/2" class="detail-link" title="Link to this function">
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
     <h1 class="signature">get(user_id, guild_id)</h1>
+
       <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache.ex#L38" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
+
+
   </div>
 
   <section class="docstring">
+
       <h2>Specs</h2>
       <div class="specs">
+
           <pre>get(<a href="Nostrum.Struct.User.html#t:id/0">Nostrum.Struct.User.id</a>(), <a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>()) ::
   {:error, :presence_not_found} | {:ok, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()}</pre>
+
       </div>
 
 <p>Retreives a presence for a user from the cache by guild and id.</p><p>If successful, returns <code class="inline">{:ok, presence}</code>. Otherwise returns <code class="inline">{:error, reason}</code>.</p><h2 id="get/2-example" class="section-heading">
   <a href="#get/2-example" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
   Example
 </h2>
-<pre><code class="makeup elixir"><span class="k">case</span><span class="w"> </span><span class="nc">Nostrum.Cache.PresenceCache</span><span class="o">.</span><span class="n">get</span><span class="p" data-group-id="8074668877-1">(</span><span class="mi">111133335555</span><span class="p">,</span><span class="w"> </span><span class="mi">222244446666</span><span class="p" data-group-id="8074668877-1">)</span><span class="w"> </span><span class="k" data-group-id="8074668877-2">do</span><span class="w">
-  </span><span class="p" data-group-id="8074668877-3">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">presence</span><span class="p" data-group-id="8074668877-3">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
-    </span><span class="s">&quot;They&#39;re </span><span class="si" data-group-id="8074668877-4">#{</span><span class="n">presence</span><span class="o">.</span><span class="n">status</span><span class="si" data-group-id="8074668877-4">}</span><span class="s">&quot;</span><span class="w">
-  </span><span class="p" data-group-id="8074668877-5">{</span><span class="ss">:error</span><span class="p">,</span><span class="w"> </span><span class="c">_reason</span><span class="p" data-group-id="8074668877-5">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+<pre><code class="makeup elixir"><span class="k">case</span><span class="w"> </span><span class="nc">Nostrum.Cache.PresenceCache</span><span class="o">.</span><span class="n">get</span><span class="p" data-group-id="8891387813-1">(</span><span class="mi">111133335555</span><span class="p">,</span><span class="w"> </span><span class="mi">222244446666</span><span class="p" data-group-id="8891387813-1">)</span><span class="w"> </span><span class="k" data-group-id="8891387813-2">do</span><span class="w">
+  </span><span class="p" data-group-id="8891387813-3">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">presence</span><span class="p" data-group-id="8891387813-3">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+    </span><span class="s">&quot;They&#39;re </span><span class="si" data-group-id="8891387813-4">#{</span><span class="n">presence</span><span class="o">.</span><span class="n">status</span><span class="si" data-group-id="8891387813-4">}</span><span class="s">&quot;</span><span class="w">
+  </span><span class="p" data-group-id="8891387813-5">{</span><span class="ss">:error</span><span class="p">,</span><span class="w"> </span><span class="c">_reason</span><span class="p" data-group-id="8891387813-5">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
     </span><span class="s">&quot;They&#39;re dead Jim&quot;</span><span class="w">
-</span><span class="k" data-group-id="8074668877-2">end</span></code></pre>  </section>
+</span><span class="k" data-group-id="8891387813-2">end</span></code></pre>
+  </section>
 </section>
 <section class="detail" id="get!/2">
+
   <div class="detail-header">
     <a href="#get!/2" class="detail-link" title="Link to this function">
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
     <h1 class="signature">get!(user_id, guild_id)</h1>
+
       <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache.ex#L49" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
+
+
   </div>
 
   <section class="docstring">
+
       <h2>Specs</h2>
       <div class="specs">
+
           <pre>get!(<a href="Nostrum.Struct.User.html#t:id/0">Nostrum.Struct.User.id</a>(), <a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">no_return</a>() | <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()</pre>
+
       </div>
 
-<p>Same as <code class="inline">get/1</code>, but raises <a href="Nostrum.Error.CacheError.html"><code class="inline">Nostrum.Error.CacheError</code></a> in case of a failure.</p>  </section>
+<p>Same as <code class="inline">get/1</code>, but raises <a href="Nostrum.Error.CacheError.html"><code class="inline">Nostrum.Error.CacheError</code></a> in case of a failure.</p>
+  </section>
 </section>
+
           </div>
         </section>
+
       <footer class="footer">
         <p>
           <span class="line">
@@ -191,7 +236,9 @@ Functions          </h1>
           </span>
         </p>
         <p>
+
             <a href="api-reference.html" title="API reference" class="line footer-button">API Reference</a>
+
           <button class="line footer-button display-shortcuts-help">
             Display keyboard shortcuts
           </button>
@@ -211,5 +258,7 @@ Functions          </h1>
   </div>
 </section>
 </div>
+
+
   </body>
 </html>

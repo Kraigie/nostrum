@@ -5,21 +5,29 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="ExDoc v0.25.1">
-    <meta name="project" content="Nostrum v0.4.7">
-    <title>Nostrum.Cache.UserCache — Nostrum v0.4.7</title>
+    <meta name="project" content="Nostrum v0.5.0">
+
+    <title>Nostrum.Cache.UserCache — Nostrum v0.5.0</title>
     <link rel="stylesheet" href="dist/elixir-a172fe91e725dcb259e2.css" />
+
     <script src="dist/sidebar_items-15b1d06457.js"></script>
+
       <script src="docs_config.js"></script>
+
     <script async src="dist/app-f27ff079945e43879c46.js"></script>
+
+
   </head>
   <body data-type="modules">
     <script>
+
       try {
         if (localStorage.getItem('night-mode') === 'true') {
           document.body.classList.add('night-mode');
         }
       } catch (error) { }
     </script>
+
 <div class="main">
 
 <button class="sidebar-button sidebar-toggle">
@@ -47,11 +55,13 @@
   <div class="sidebar-header">
     <div class="sidebar-projectDetails">
       <a href="https://github.com/kraigie/nostrum" class="sidebar-projectName">
-Nostrum      </a>
+Nostrum
+      </a>
       <strong class="sidebar-projectVersion">
-        v0.4.7
+        v0.5.0
       </strong>
     </div>
+
   </div>
 
   <ul class="sidebar-listNav">
@@ -59,7 +69,9 @@ Nostrum      </a>
 
       <li><a id="modules-list-link" href="#full-list">Modules</a></li>
 
+
       <li><a id="tasks-list-link" href="#full-list">Mix Tasks</a></li>
+
   </ul>
   <div class="gradient"></div>
   <ul id="full-list" class="sidebar-fullList"></ul>
@@ -70,16 +82,20 @@ Nostrum      </a>
     <div id="content" class="content-inner">
 
       <h1>
-        Nostrum.Cache.UserCache <small>behaviour</small> <small class="app-vsn">(Nostrum v0.4.7)</small>
+Nostrum.Cache.UserCache <small>behaviour</small> <small class="app-vsn">(Nostrum v0.5.0)</small>
+
           <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/user_cache.ex#L1" title="View Source" class="view-source" rel="help">
             <span class="icon-code" aria-hidden="true"></span>
             <span class="sr-only">View Source</span>
           </a>
+
       </h1>
 
 
         <section id="moduledoc">
-<p>Cache behaviour &amp; dispatcher for users.</p>        </section>
+<p>Cache behaviour &amp; dispatcher for users.</p>
+        </section>
+
 
         <section id="summary" class="details-list">
           <h1 class="section-heading">
@@ -89,6 +105,7 @@ Nostrum      </a>
             </a>
             Summary
           </h1>
+
   <div class="summary-callbacks summary">
     <h2>
       <a href="#callbacks">Callbacks</a>
@@ -96,34 +113,51 @@ Nostrum      </a>
 <div class="summary-row">
   <div class="summary-signature">
     <a href="#c:bulk_create/1">bulk_create(user_payloads)</a>
+
   </div>
+
     <div class="summary-synopsis"><p>Bulk add multiple users to the cache at once.</p></div>
+
 </div>
 <div class="summary-row">
   <div class="summary-signature">
     <a href="#c:create/1">create(payload)</a>
+
   </div>
+
     <div class="summary-synopsis"><p>Add a new user to the cache based on the Discord Gateway payload.</p></div>
+
 </div>
 <div class="summary-row">
   <div class="summary-signature">
     <a href="#c:delete/1">delete(snowflake)</a>
+
   </div>
+
     <div class="summary-synopsis"><p>Delete a user by ID.</p></div>
+
 </div>
 <div class="summary-row">
   <div class="summary-signature">
     <a href="#c:get/1">get(id)</a>
+
   </div>
+
     <div class="summary-synopsis"><p>Retrieves a user from the cache by id.</p></div>
+
 </div>
 <div class="summary-row">
   <div class="summary-signature">
     <a href="#c:update/1">update(payload)</a>
+
   </div>
+
     <div class="summary-synopsis"><p>Update a user in the cache based on payload sent via the Gateway.</p></div>
+
 </div>
+
   </div>
+
   <div class="summary-functions summary">
     <h2>
       <a href="#functions">Functions</a>
@@ -131,41 +165,62 @@ Nostrum      </a>
 <div class="summary-row">
   <div class="summary-signature">
     <a href="#bulk_create/1">bulk_create(users)</a>
+
   </div>
+
     <div class="summary-synopsis"><p>Bulk create multiple users using the selected cache implementation.</p></div>
+
 </div>
 <div class="summary-row">
   <div class="summary-signature">
     <a href="#create/1">create(payload)</a>
+
   </div>
+
     <div class="summary-synopsis"><p>Create a user using the selected cache implementation.</p></div>
+
 </div>
 <div class="summary-row">
   <div class="summary-signature">
     <a href="#delete/1">delete(id)</a>
+
   </div>
+
     <div class="summary-synopsis"><p>Delete a user by ID using the selected cache implementation.</p></div>
+
 </div>
 <div class="summary-row">
   <div class="summary-signature">
     <a href="#get/1">get(id)</a>
+
   </div>
+
     <div class="summary-synopsis"><p>Retrieve a user using the selected cache implementation.</p></div>
+
 </div>
 <div class="summary-row">
   <div class="summary-signature">
     <a href="#get!/1">get!(id)</a>
+
   </div>
+
     <div class="summary-synopsis"><p>Same as <a href="#get/1"><code class="inline">get/1</code></a>, but raises <a href="Nostrum.Error.CacheError.html"><code class="inline">Nostrum.Error.CacheError</code></a> in case of a failure.</p></div>
+
 </div>
 <div class="summary-row">
   <div class="summary-signature">
     <a href="#update/1">update(payload)</a>
+
   </div>
+
     <div class="summary-synopsis"><p>Update the given user using the selected cache implementation.</p></div>
+
 </div>
+
   </div>
+
         </section>
+
 
         <section id="callbacks" class="details-list">
           <h1 class="section-heading">
@@ -173,265 +228,359 @@ Nostrum      </a>
               <span class="icon-link" aria-hidden="true"></span>
               <span class="sr-only">Link to this section</span>
             </a>
-Callbacks          </h1>
+Callbacks
+          </h1>
           <div class="callbacks-list">
 <section class="detail" id="c:bulk_create/1">
+
   <div class="detail-header">
     <a href="#c:bulk_create/1" class="detail-link" title="Link to this callback">
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this callback</span>
     </a>
     <h1 class="signature">bulk_create(user_payloads)</h1>
+
       <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/user_cache.ex#L53" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
+
+
   </div>
 
   <section class="docstring">
+
       <h2>Specs</h2>
       <div class="specs">
+
           <pre>bulk_create(user_payloads :: [Map.t()]) :: :ok</pre>
+
       </div>
 
-<p>Bulk add multiple users to the cache at once.</p><p>Returns <code class="inline">:ok</code>.</p>  </section>
+<p>Bulk add multiple users to the cache at once.</p><p>Returns <code class="inline">:ok</code>.</p>
+  </section>
 </section>
 <section class="detail" id="c:create/1">
+
   <div class="detail-header">
     <a href="#c:create/1" class="detail-link" title="Link to this callback">
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this callback</span>
     </a>
     <h1 class="signature">create(payload)</h1>
+
       <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/user_cache.ex#L46" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
+
+
   </div>
 
   <section class="docstring">
+
       <h2>Specs</h2>
       <div class="specs">
+
           <pre>create(payload :: Map.t()) :: <a href="Nostrum.Struct.User.html#t:t/0">Nostrum.Struct.User.t</a>()</pre>
+
       </div>
 
-<p>Add a new user to the cache based on the Discord Gateway payload.</p><p>Returns a <a href="Nostrum.Struct.User.html#t:t/0"><code class="inline">Nostrum.Struct.User.t/0</code></a> struct representing the created user.</p>  </section>
+<p>Add a new user to the cache based on the Discord Gateway payload.</p><p>Returns a <a href="Nostrum.Struct.User.html#t:t/0"><code class="inline">Nostrum.Struct.User.t/0</code></a> struct representing the created user.</p>
+  </section>
 </section>
 <section class="detail" id="c:delete/1">
+
   <div class="detail-header">
     <a href="#c:delete/1" class="detail-link" title="Link to this callback">
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this callback</span>
     </a>
     <h1 class="signature">delete(snowflake)</h1>
+
       <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/user_cache.ex#L69" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
+
+
   </div>
 
   <section class="docstring">
+
       <h2>Specs</h2>
       <div class="specs">
+
           <pre>delete(snowflake :: <a href="Nostrum.Struct.User.html#t:id/0">Nostrum.Struct.User.id</a>()) :: :noop | <a href="Nostrum.Struct.User.html#t:t/0">Nostrum.Struct.User.t</a>()</pre>
+
       </div>
 
 <p>Delete a user by ID.</p><p>Returns the deleted user if present in the cache, or
-<code class="inline">:noop</code> if the user was not cached.</p>  </section>
+<code class="inline">:noop</code> if the user was not cached.</p>
+  </section>
 </section>
 <section class="detail" id="c:get/1">
+
   <div class="detail-header">
     <a href="#c:get/1" class="detail-link" title="Link to this callback">
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this callback</span>
     </a>
     <h1 class="signature">get(id)</h1>
+
       <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/user_cache.ex#L39" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
+
+
   </div>
 
   <section class="docstring">
+
       <h2>Specs</h2>
       <div class="specs">
+
           <pre>get(id :: <a href="Nostrum.Struct.User.html#t:id/0">Nostrum.Struct.User.id</a>()) ::
   {:ok, <a href="Nostrum.Struct.User.html#t:t/0">Nostrum.Struct.User.t</a>()} | {:error, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">atom</a>()}</pre>
+
       </div>
 
 <p>Retrieves a user from the cache by id.</p><p>If successful, returns <code class="inline">{:ok, user}</code>. Otherwise, returns <code class="inline">{:error, reason}</code>.</p><h2 id="c:get/1-example" class="section-heading">
   <a href="#c:get/1-example" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
   Example
 </h2>
-<pre><code class="makeup elixir"><span class="k">case</span><span class="w"> </span><span class="nc">Nostrum.Cache.UserCache</span><span class="o">.</span><span class="n">get</span><span class="p" data-group-id="2291368088-1">(</span><span class="mi">1111222233334444</span><span class="p" data-group-id="2291368088-1">)</span><span class="w"> </span><span class="k" data-group-id="2291368088-2">do</span><span class="w">
-  </span><span class="p" data-group-id="2291368088-3">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">user</span><span class="p" data-group-id="2291368088-3">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+<pre><code class="makeup elixir"><span class="k">case</span><span class="w"> </span><span class="nc">Nostrum.Cache.UserCache</span><span class="o">.</span><span class="n">get</span><span class="p" data-group-id="3970115731-1">(</span><span class="mi">1111222233334444</span><span class="p" data-group-id="3970115731-1">)</span><span class="w"> </span><span class="k" data-group-id="3970115731-2">do</span><span class="w">
+  </span><span class="p" data-group-id="3970115731-3">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">user</span><span class="p" data-group-id="3970115731-3">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
     </span><span class="s">&quot;We found &quot;</span><span class="w"> </span><span class="o">&lt;&gt;</span><span class="w"> </span><span class="n">user</span><span class="o">.</span><span class="n">username</span><span class="w">
-  </span><span class="p" data-group-id="2291368088-4">{</span><span class="ss">:error</span><span class="p">,</span><span class="w"> </span><span class="c">_reason</span><span class="p" data-group-id="2291368088-4">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+  </span><span class="p" data-group-id="3970115731-4">{</span><span class="ss">:error</span><span class="p">,</span><span class="w"> </span><span class="c">_reason</span><span class="p" data-group-id="3970115731-4">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
     </span><span class="s">&quot;No es bueno&quot;</span><span class="w">
-</span><span class="k" data-group-id="2291368088-2">end</span></code></pre>  </section>
+</span><span class="k" data-group-id="3970115731-2">end</span></code></pre>
+  </section>
 </section>
 <section class="detail" id="c:update/1">
+
   <div class="detail-header">
     <a href="#c:update/1" class="detail-link" title="Link to this callback">
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this callback</span>
     </a>
     <h1 class="signature">update(payload)</h1>
+
       <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/user_cache.ex#L61" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
+
+
   </div>
 
   <section class="docstring">
+
       <h2>Specs</h2>
       <div class="specs">
+
           <pre>update(payload :: Map.t()) ::
   :noop | {<a href="Nostrum.Struct.User.html#t:t/0">Nostrum.Struct.User.t</a>(), <a href="Nostrum.Struct.User.html#t:t/0">Nostrum.Struct.User.t</a>()}</pre>
+
       </div>
 
 <p>Update a user in the cache based on payload sent via the Gateway.</p><p>Returns <code class="inline">:noop</code> if the user has not been updated in the cache, or
-<code class="inline">{old_user, new_user}</code> is the user has been written to the cache.</p>  </section>
+<code class="inline">{old_user, new_user}</code> is the user has been written to the cache.</p>
+  </section>
 </section>
+
           </div>
         </section>
+
         <section id="functions" class="details-list">
           <h1 class="section-heading">
             <a class="hover-link" href="#functions">
               <span class="icon-link" aria-hidden="true"></span>
               <span class="sr-only">Link to this section</span>
             </a>
-Functions          </h1>
+Functions
+          </h1>
           <div class="functions-list">
 <section class="detail" id="bulk_create/1">
+
   <div class="detail-header">
     <a href="#bulk_create/1" class="detail-link" title="Link to this function">
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
     <h1 class="signature">bulk_create(users)</h1>
+
       <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/user_cache.ex#L93" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
+
+
   </div>
 
   <section class="docstring">
+
       <h2>Specs</h2>
       <div class="specs">
+
           <pre>bulk_create([Map.t()]) :: :ok</pre>
+
       </div>
 
-<p>Bulk create multiple users using the selected cache implementation.</p>  </section>
+<p>Bulk create multiple users using the selected cache implementation.</p>
+  </section>
 </section>
 <section class="detail" id="create/1">
+
   <div class="detail-header">
     <a href="#create/1" class="detail-link" title="Link to this function">
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
     <h1 class="signature">create(payload)</h1>
+
       <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/user_cache.ex#L87" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
+
+
   </div>
 
   <section class="docstring">
+
       <h2>Specs</h2>
       <div class="specs">
+
           <pre>create(Map.t()) :: <a href="Nostrum.Struct.User.html#t:t/0">Nostrum.Struct.User.t</a>()</pre>
+
       </div>
 
-<p>Create a user using the selected cache implementation.</p>  </section>
+<p>Create a user using the selected cache implementation.</p>
+  </section>
 </section>
 <section class="detail" id="delete/1">
+
   <div class="detail-header">
     <a href="#delete/1" class="detail-link" title="Link to this function">
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
     <h1 class="signature">delete(id)</h1>
+
       <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/user_cache.ex#L105" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
+
+
   </div>
 
   <section class="docstring">
+
       <h2>Specs</h2>
       <div class="specs">
+
           <pre>delete(<a href="Nostrum.Struct.User.html#t:id/0">Nostrum.Struct.User.id</a>()) :: :noop | <a href="Nostrum.Struct.User.html#t:t/0">Nostrum.Struct.User.t</a>()</pre>
+
       </div>
 
-<p>Delete a user by ID using the selected cache implementation.</p>  </section>
+<p>Delete a user by ID using the selected cache implementation.</p>
+  </section>
 </section>
 <section class="detail" id="get/1">
+
   <div class="detail-header">
     <a href="#get/1" class="detail-link" title="Link to this function">
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
     <h1 class="signature">get(id)</h1>
+
       <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/user_cache.ex#L75" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
+
+
   </div>
 
   <section class="docstring">
+
       <h2>Specs</h2>
       <div class="specs">
+
           <pre>get(<a href="Nostrum.Struct.User.html#t:id/0">Nostrum.Struct.User.id</a>()) ::
   {:error, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">atom</a>()} | {:ok, <a href="Nostrum.Struct.User.html#t:t/0">Nostrum.Struct.User.t</a>()}</pre>
+
       </div>
 
-<p>Retrieve a user using the selected cache implementation.</p>  </section>
+<p>Retrieve a user using the selected cache implementation.</p>
+  </section>
 </section>
 <section class="detail" id="get!/1">
+
   <div class="detail-header">
     <a href="#get!/1" class="detail-link" title="Link to this function">
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
     <h1 class="signature">get!(id)</h1>
+
       <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/user_cache.ex#L83" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
+
+
   </div>
 
   <section class="docstring">
+
       <h2>Specs</h2>
       <div class="specs">
+
           <pre>get!(<a href="Nostrum.Struct.User.html#t:id/0">Nostrum.Struct.User.id</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">no_return</a>() | <a href="Nostrum.Struct.User.html#t:t/0">Nostrum.Struct.User.t</a>()</pre>
+
       </div>
 
-<p>Same as <a href="#get/1"><code class="inline">get/1</code></a>, but raises <a href="Nostrum.Error.CacheError.html"><code class="inline">Nostrum.Error.CacheError</code></a> in case of a failure.</p>  </section>
+<p>Same as <a href="#get/1"><code class="inline">get/1</code></a>, but raises <a href="Nostrum.Error.CacheError.html"><code class="inline">Nostrum.Error.CacheError</code></a> in case of a failure.</p>
+  </section>
 </section>
 <section class="detail" id="update/1">
+
   <div class="detail-header">
     <a href="#update/1" class="detail-link" title="Link to this function">
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
     <h1 class="signature">update(payload)</h1>
+
       <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/user_cache.ex#L99" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
+
+
   </div>
 
   <section class="docstring">
+
       <h2>Specs</h2>
       <div class="specs">
+
           <pre>update(Map.t()) :: :noop | {<a href="Nostrum.Struct.User.html#t:t/0">Nostrum.Struct.User.t</a>(), <a href="Nostrum.Struct.User.html#t:t/0">Nostrum.Struct.User.t</a>()}</pre>
+
       </div>
 
-<p>Update the given user using the selected cache implementation.</p>  </section>
+<p>Update the given user using the selected cache implementation.</p>
+  </section>
 </section>
+
           </div>
         </section>
+
       <footer class="footer">
         <p>
           <span class="line">
@@ -445,7 +594,9 @@ Functions          </h1>
           </span>
         </p>
         <p>
+
             <a href="api-reference.html" title="API reference" class="line footer-button">API Reference</a>
+
           <button class="line footer-button display-shortcuts-help">
             Display keyboard shortcuts
           </button>
@@ -465,5 +616,7 @@ Functions          </h1>
   </div>
 </section>
 </div>
+
+
   </body>
 </html>

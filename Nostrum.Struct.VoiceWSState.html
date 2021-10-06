@@ -5,21 +5,29 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="ExDoc v0.25.1">
-    <meta name="project" content="Nostrum v0.4.7">
-    <title>Nostrum.Struct.VoiceWSState — Nostrum v0.4.7</title>
+    <meta name="project" content="Nostrum v0.5.0">
+
+    <title>Nostrum.Struct.VoiceWSState — Nostrum v0.5.0</title>
     <link rel="stylesheet" href="dist/elixir-a172fe91e725dcb259e2.css" />
+
     <script src="dist/sidebar_items-15b1d06457.js"></script>
+
       <script src="docs_config.js"></script>
+
     <script async src="dist/app-f27ff079945e43879c46.js"></script>
+
+
   </head>
   <body data-type="modules">
     <script>
+
       try {
         if (localStorage.getItem('night-mode') === 'true') {
           document.body.classList.add('night-mode');
         }
       } catch (error) { }
     </script>
+
 <div class="main">
 
 <button class="sidebar-button sidebar-toggle">
@@ -47,11 +55,13 @@
   <div class="sidebar-header">
     <div class="sidebar-projectDetails">
       <a href="https://github.com/kraigie/nostrum" class="sidebar-projectName">
-Nostrum      </a>
+Nostrum
+      </a>
       <strong class="sidebar-projectVersion">
-        v0.4.7
+        v0.5.0
       </strong>
     </div>
+
   </div>
 
   <ul class="sidebar-listNav">
@@ -59,7 +69,9 @@ Nostrum      </a>
 
       <li><a id="modules-list-link" href="#full-list">Modules</a></li>
 
+
       <li><a id="tasks-list-link" href="#full-list">Mix Tasks</a></li>
+
   </ul>
   <div class="gradient"></div>
   <ul id="full-list" class="sidebar-fullList"></ul>
@@ -70,16 +82,20 @@ Nostrum      </a>
     <div id="content" class="content-inner">
 
       <h1>
-        Nostrum.Struct.VoiceWSState <small class="app-vsn">(Nostrum v0.4.7)</small>
+Nostrum.Struct.VoiceWSState <small class="app-vsn">(Nostrum v0.5.0)</small>
+
           <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/voice_ws_state.ex#L1" title="View Source" class="view-source" rel="help">
             <span class="icon-code" aria-hidden="true"></span>
             <span class="sr-only">View Source</span>
           </a>
+
       </h1>
 
 
         <section id="moduledoc">
-<p>Struct representing the current Voice WS state.</p>        </section>
+<p>Struct representing the current Voice WS state.</p>
+        </section>
+
 
         <section id="summary" class="details-list">
           <h1 class="section-heading">
@@ -89,6 +105,7 @@ Nostrum      </a>
             </a>
             Summary
           </h1>
+
   <div class="summary-types summary">
     <h2>
       <a href="#types">Types</a>
@@ -96,90 +113,134 @@ Nostrum      </a>
 <div class="summary-row">
   <div class="summary-signature">
     <a href="#t:conn/0">conn()</a>
+
   </div>
+
     <div class="summary-synopsis"><p>PID of the <code class="inline">:gun</code> worker connected to the websocket</p></div>
+
 </div>
 <div class="summary-row">
   <div class="summary-signature">
     <a href="#t:conn_pid/0">conn_pid()</a>
+
   </div>
+
     <div class="summary-synopsis"><p>PID of the connection process</p></div>
+
 </div>
 <div class="summary-row">
   <div class="summary-signature">
     <a href="#t:gateway/0">gateway()</a>
+
   </div>
+
     <div class="summary-synopsis"><p>Gateway URL</p></div>
+
 </div>
 <div class="summary-row">
   <div class="summary-signature">
     <a href="#t:guild_id/0">guild_id()</a>
+
   </div>
+
     <div class="summary-synopsis"><p>The guild id that this voice websocket state applies to</p></div>
+
 </div>
 <div class="summary-row">
   <div class="summary-signature">
     <a href="#t:heartbeat_ack/0">heartbeat_ack()</a>
+
   </div>
+
     <div class="summary-synopsis"><p>Whether or not the last hearbeat sent was ACK'd</p></div>
+
 </div>
 <div class="summary-row">
   <div class="summary-signature">
     <a href="#t:heartbeat_interval/0">heartbeat_interval()</a>
+
   </div>
+
     <div class="summary-synopsis"><p>Interval at which heartbeats are sent</p></div>
+
 </div>
 <div class="summary-row">
   <div class="summary-signature">
     <a href="#t:heartbeat_ref/0">heartbeat_ref()</a>
+
   </div>
+
     <div class="summary-synopsis"><p>Time ref for the heartbeat</p></div>
+
 </div>
 <div class="summary-row">
   <div class="summary-signature">
     <a href="#t:identified/0">identified()</a>
+
   </div>
+
     <div class="summary-synopsis"><p>Whether the session has been identified</p></div>
+
 </div>
 <div class="summary-row">
   <div class="summary-signature">
     <a href="#t:last_heartbeat_ack/0">last_heartbeat_ack()</a>
+
   </div>
+
     <div class="summary-synopsis"><p>The time the last heartbeat was acknowledged, will be nil if a heartbeat
 hasn't been ACK'd yet</p></div>
+
 </div>
 <div class="summary-row">
   <div class="summary-signature">
     <a href="#t:last_heartbeat_send/0">last_heartbeat_send()</a>
+
   </div>
+
     <div class="summary-synopsis"><p>The time the last heartbeat was sent, if a heartbeat hasn't been sent it
 will be the time the websocket process was started</p></div>
+
 </div>
 <div class="summary-row">
   <div class="summary-signature">
     <a href="#t:session/0">session()</a>
+
   </div>
+
     <div class="summary-synopsis"><p>The session id</p></div>
+
 </div>
 <div class="summary-row">
   <div class="summary-signature">
     <a href="#t:stream/0">stream()</a>
+
   </div>
+
     <div class="summary-synopsis"><p>Stream reference for <code class="inline">:gun</code></p></div>
+
 </div>
 <div class="summary-row">
   <div class="summary-signature">
     <a href="#t:t/0">t()</a>
+
   </div>
+
 </div>
 <div class="summary-row">
   <div class="summary-signature">
     <a href="#t:token/0">token()</a>
+
   </div>
+
     <div class="summary-synopsis"><p>The session token</p></div>
+
 </div>
+
   </div>
+
         </section>
+
 
         <section id="types" class="details-list">
           <h1 class="section-heading">
@@ -187,278 +248,381 @@ will be the time the websocket process was started</p></div>
               <span class="icon-link" aria-hidden="true"></span>
               <span class="sr-only">Link to this section</span>
             </a>
-Types          </h1>
+Types
+          </h1>
           <div class="types-list">
 <section class="detail" id="t:conn/0">
+
   <div class="detail-header">
     <a href="#t:conn/0" class="detail-link" title="Link to this type">
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">conn()</h1>
+
       <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/voice_ws_state.ex#L32" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
+
+
   </div>
 
   <section class="docstring">
+
       <h2>Specs</h2>
       <div class="specs">
+
           <pre>conn() :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pid</a>()</pre>
+
       </div>
 
-<p>PID of the <code class="inline">:gun</code> worker connected to the websocket</p>  </section>
+<p>PID of the <code class="inline">:gun</code> worker connected to the websocket</p>
+  </section>
 </section>
 <section class="detail" id="t:conn_pid/0">
+
   <div class="detail-header">
     <a href="#t:conn_pid/0" class="detail-link" title="Link to this type">
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">conn_pid()</h1>
+
       <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/voice_ws_state.ex#L35" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
+
+
   </div>
 
   <section class="docstring">
+
       <h2>Specs</h2>
       <div class="specs">
+
           <pre>conn_pid() :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pid</a>()</pre>
+
       </div>
 
-<p>PID of the connection process</p>  </section>
+<p>PID of the connection process</p>
+  </section>
 </section>
 <section class="detail" id="t:gateway/0">
+
   <div class="detail-header">
     <a href="#t:gateway/0" class="detail-link" title="Link to this type">
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">gateway()</h1>
+
       <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/voice_ws_state.ex#L41" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
+
+
   </div>
 
   <section class="docstring">
+
       <h2>Specs</h2>
       <div class="specs">
+
           <pre>gateway() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()</pre>
+
       </div>
 
-<p>Gateway URL</p>  </section>
+<p>Gateway URL</p>
+  </section>
 </section>
 <section class="detail" id="t:guild_id/0">
+
   <div class="detail-header">
     <a href="#t:guild_id/0" class="detail-link" title="Link to this type">
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">guild_id()</h1>
+
       <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/voice_ws_state.ex#L23" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
+
+
   </div>
 
   <section class="docstring">
+
       <h2>Specs</h2>
       <div class="specs">
+
           <pre>guild_id() :: <a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>()</pre>
+
       </div>
 
-<p>The guild id that this voice websocket state applies to</p>  </section>
+<p>The guild id that this voice websocket state applies to</p>
+  </section>
 </section>
 <section class="detail" id="t:heartbeat_ack/0">
+
   <div class="detail-header">
     <a href="#t:heartbeat_ack/0" class="detail-link" title="Link to this type">
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">heartbeat_ack()</h1>
+
       <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/voice_ws_state.ex#L59" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
+
+
   </div>
 
   <section class="docstring">
+
       <h2>Specs</h2>
       <div class="specs">
+
           <pre>heartbeat_ack() :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">boolean</a>()</pre>
+
       </div>
 
-<p>Whether or not the last hearbeat sent was ACK'd</p>  </section>
+<p>Whether or not the last hearbeat sent was ACK'd</p>
+  </section>
 </section>
 <section class="detail" id="t:heartbeat_interval/0">
+
   <div class="detail-header">
     <a href="#t:heartbeat_interval/0" class="detail-link" title="Link to this type">
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">heartbeat_interval()</h1>
+
       <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/voice_ws_state.ex#L62" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
+
+
   </div>
 
   <section class="docstring">
+
       <h2>Specs</h2>
       <div class="specs">
+
           <pre>heartbeat_interval() :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>() | nil</pre>
+
       </div>
 
-<p>Interval at which heartbeats are sent</p>  </section>
+<p>Interval at which heartbeats are sent</p>
+  </section>
 </section>
 <section class="detail" id="t:heartbeat_ref/0">
+
   <div class="detail-header">
     <a href="#t:heartbeat_ref/0" class="detail-link" title="Link to this type">
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">heartbeat_ref()</h1>
+
       <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/voice_ws_state.ex#L65" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
+
+
   </div>
 
   <section class="docstring">
+
       <h2>Specs</h2>
       <div class="specs">
+
           <pre>heartbeat_ref() :: <a href="https://erlang.org/doc/man/timer.html#type-tref">:timer.tref</a>() | nil</pre>
+
       </div>
 
-<p>Time ref for the heartbeat</p>  </section>
+<p>Time ref for the heartbeat</p>
+  </section>
 </section>
 <section class="detail" id="t:identified/0">
+
   <div class="detail-header">
     <a href="#t:identified/0" class="detail-link" title="Link to this type">
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">identified()</h1>
+
       <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/voice_ws_state.ex#L44" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
+
+
   </div>
 
   <section class="docstring">
+
       <h2>Specs</h2>
       <div class="specs">
+
           <pre>identified() :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">boolean</a>()</pre>
+
       </div>
 
-<p>Whether the session has been identified</p>  </section>
+<p>Whether the session has been identified</p>
+  </section>
 </section>
 <section class="detail" id="t:last_heartbeat_ack/0">
+
   <div class="detail-header">
     <a href="#t:last_heartbeat_ack/0" class="detail-link" title="Link to this type">
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">last_heartbeat_ack()</h1>
+
       <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/voice_ws_state.ex#L56" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
+
+
   </div>
 
   <section class="docstring">
+
       <h2>Specs</h2>
       <div class="specs">
+
           <pre>last_heartbeat_ack() :: <a href="https://hexdocs.pm/elixir/DateTime.html#t:t/0">DateTime.t</a>() | nil</pre>
+
       </div>
 
 <p>The time the last heartbeat was acknowledged, will be nil if a heartbeat
-hasn't been ACK'd yet</p>  </section>
+hasn't been ACK'd yet</p>
+  </section>
 </section>
 <section class="detail" id="t:last_heartbeat_send/0">
+
   <div class="detail-header">
     <a href="#t:last_heartbeat_send/0" class="detail-link" title="Link to this type">
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">last_heartbeat_send()</h1>
+
       <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/voice_ws_state.ex#L50" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
+
+
   </div>
 
   <section class="docstring">
+
       <h2>Specs</h2>
       <div class="specs">
+
           <pre>last_heartbeat_send() :: <a href="https://hexdocs.pm/elixir/DateTime.html#t:t/0">DateTime.t</a>()</pre>
+
       </div>
 
 <p>The time the last heartbeat was sent, if a heartbeat hasn't been sent it
-will be the time the websocket process was started</p>  </section>
+will be the time the websocket process was started</p>
+  </section>
 </section>
 <section class="detail" id="t:session/0">
+
   <div class="detail-header">
     <a href="#t:session/0" class="detail-link" title="Link to this type">
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">session()</h1>
+
       <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/voice_ws_state.ex#L26" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
+
+
   </div>
 
   <section class="docstring">
+
       <h2>Specs</h2>
       <div class="specs">
+
           <pre>session() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()</pre>
+
       </div>
 
-<p>The session id</p>  </section>
+<p>The session id</p>
+  </section>
 </section>
 <section class="detail" id="t:stream/0">
+
   <div class="detail-header">
     <a href="#t:stream/0" class="detail-link" title="Link to this type">
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">stream()</h1>
+
       <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/voice_ws_state.ex#L38" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
+
+
   </div>
 
   <section class="docstring">
+
       <h2>Specs</h2>
       <div class="specs">
+
           <pre>stream() :: <a href="https://hexdocs.pm/gun/2.0.0-rc.2/gun.html#t:stream_ref/0">:gun.stream_ref</a>()</pre>
+
       </div>
 
-<p>Stream reference for <code class="inline">:gun</code></p>  </section>
+<p>Stream reference for <code class="inline">:gun</code></p>
+  </section>
 </section>
 <section class="detail" id="t:t/0">
+
   <div class="detail-header">
     <a href="#t:t/0" class="detail-link" title="Link to this type">
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">t()</h1>
+
       <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/voice_ws_state.ex#L67" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
+
+
   </div>
 
   <section class="docstring">
+
       <h2>Specs</h2>
       <div class="specs">
+
           <pre>t() :: %Nostrum.Struct.VoiceWSState{
   conn: <a href="#t:conn/0">conn</a>(),
   conn_pid: <a href="#t:conn_pid/0">conn_pid</a>(),
@@ -474,33 +638,45 @@ will be the time the websocket process was started</p>  </section>
   stream: <a href="#t:stream/0">stream</a>(),
   token: <a href="#t:token/0">token</a>()
 }</pre>
+
       </div>
+
 
   </section>
 </section>
 <section class="detail" id="t:token/0">
+
   <div class="detail-header">
     <a href="#t:token/0" class="detail-link" title="Link to this type">
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">token()</h1>
+
       <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/voice_ws_state.ex#L29" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
+
+
   </div>
 
   <section class="docstring">
+
       <h2>Specs</h2>
       <div class="specs">
+
           <pre>token() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()</pre>
+
       </div>
 
-<p>The session token</p>  </section>
+<p>The session token</p>
+  </section>
 </section>
+
           </div>
         </section>
+
       <footer class="footer">
         <p>
           <span class="line">
@@ -514,7 +690,9 @@ will be the time the websocket process was started</p>  </section>
           </span>
         </p>
         <p>
+
             <a href="api-reference.html" title="API reference" class="line footer-button">API Reference</a>
+
           <button class="line footer-button display-shortcuts-help">
             Display keyboard shortcuts
           </button>
@@ -534,5 +712,7 @@ will be the time the websocket process was started</p>  </section>
   </div>
 </section>
 </div>
+
+
   </body>
 </html>

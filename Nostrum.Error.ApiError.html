@@ -5,21 +5,29 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="ExDoc v0.25.1">
-    <meta name="project" content="Nostrum v0.4.7">
-    <title>Nostrum.Error.ApiError — Nostrum v0.4.7</title>
+    <meta name="project" content="Nostrum v0.5.0">
+
+    <title>Nostrum.Error.ApiError — Nostrum v0.5.0</title>
     <link rel="stylesheet" href="dist/elixir-a172fe91e725dcb259e2.css" />
+
     <script src="dist/sidebar_items-15b1d06457.js"></script>
+
       <script src="docs_config.js"></script>
+
     <script async src="dist/app-f27ff079945e43879c46.js"></script>
+
+
   </head>
   <body data-type="modules">
     <script>
+
       try {
         if (localStorage.getItem('night-mode') === 'true') {
           document.body.classList.add('night-mode');
         }
       } catch (error) { }
     </script>
+
 <div class="main">
 
 <button class="sidebar-button sidebar-toggle">
@@ -47,11 +55,13 @@
   <div class="sidebar-header">
     <div class="sidebar-projectDetails">
       <a href="https://github.com/kraigie/nostrum" class="sidebar-projectName">
-Nostrum      </a>
+Nostrum
+      </a>
       <strong class="sidebar-projectVersion">
-        v0.4.7
+        v0.5.0
       </strong>
     </div>
+
   </div>
 
   <ul class="sidebar-listNav">
@@ -59,7 +69,9 @@ Nostrum      </a>
 
       <li><a id="modules-list-link" href="#full-list">Modules</a></li>
 
+
       <li><a id="tasks-list-link" href="#full-list">Mix Tasks</a></li>
+
   </ul>
   <div class="gradient"></div>
   <ul id="full-list" class="sidebar-fullList"></ul>
@@ -70,17 +82,21 @@ Nostrum      </a>
     <div id="content" class="content-inner">
 
       <h1>
-        Nostrum.Error.ApiError <small>exception</small> <small class="app-vsn">(Nostrum v0.4.7)</small>
+Nostrum.Error.ApiError <small>exception</small> <small class="app-vsn">(Nostrum v0.5.0)</small>
+
           <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/error/api_error.ex#L1" title="View Source" class="view-source" rel="help">
             <span class="icon-code" aria-hidden="true"></span>
             <span class="sr-only">View Source</span>
           </a>
+
       </h1>
 
 
         <section id="moduledoc">
 <p>Represents a failed response from the API.</p><p>This occurs when hackney or HTTPoison fail, or when the API doesn't respond with <code class="inline">200</code> or <code class="inline">204</code>.
-This should only occur when using the banged API methods.</p>        </section>
+This should only occur when using the banged API methods.</p>
+        </section>
+
 
         <section id="summary" class="details-list">
           <h1 class="section-heading">
@@ -90,6 +106,7 @@ This should only occur when using the banged API methods.</p>        </section>
             </a>
             Summary
           </h1>
+
   <div class="summary-types summary">
     <h2>
       <a href="#types">Types</a>
@@ -97,45 +114,64 @@ This should only occur when using the banged API methods.</p>        </section>
 <div class="summary-row">
   <div class="summary-signature">
     <a href="#t:detailed_error/0">detailed_error()</a>
+
   </div>
+
 </div>
 <div class="summary-row">
   <div class="summary-signature">
     <a href="#t:discord_status_code/0">discord_status_code()</a>
+
   </div>
+
 </div>
 <div class="summary-row">
   <div class="summary-signature">
     <a href="#t:error/0">error()</a>
+
   </div>
+
 </div>
 <div class="summary-row">
   <div class="summary-signature">
     <a href="#t:error_list_map/0">error_list_map()</a>
+
   </div>
+
 </div>
 <div class="summary-row">
   <div class="summary-signature">
     <a href="#t:errors/0">errors()</a>
+
   </div>
+
 </div>
 <div class="summary-row">
   <div class="summary-signature">
     <a href="#t:response/0">response()</a>
+
   </div>
+
 </div>
 <div class="summary-row">
   <div class="summary-signature">
     <a href="#t:status_code/0">status_code()</a>
+
   </div>
+
 </div>
 <div class="summary-row">
   <div class="summary-signature">
     <a href="#t:t/0">t()</a>
+
   </div>
+
 </div>
+
   </div>
+
         </section>
+
 
         <section id="types" class="details-list">
           <h1 class="section-heading">
@@ -143,184 +179,251 @@ This should only occur when using the banged API methods.</p>        </section>
               <span class="icon-link" aria-hidden="true"></span>
               <span class="sr-only">Link to this section</span>
             </a>
-Types          </h1>
+Types
+          </h1>
           <div class="types-list">
 <section class="detail" id="t:detailed_error/0">
+
   <div class="detail-header">
     <a href="#t:detailed_error/0" class="detail-link" title="Link to this type">
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">detailed_error()</h1>
+
       <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/error/api_error.ex#L24" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
+
+
   </div>
 
   <section class="docstring">
+
       <h2>Specs</h2>
       <div class="specs">
+
           <pre>detailed_error() :: %{
   code: <a href="#t:discord_status_code/0">discord_status_code</a>(),
   message: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>(),
   errors: <a href="#t:errors/0">errors</a>()
 }</pre>
+
       </div>
+
 
   </section>
 </section>
 <section class="detail" id="t:discord_status_code/0">
+
   <div class="detail-header">
     <a href="#t:discord_status_code/0" class="detail-link" title="Link to this type">
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">discord_status_code()</h1>
+
       <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/error/api_error.ex#L20" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
+
+
   </div>
 
   <section class="docstring">
+
       <h2>Specs</h2>
       <div class="specs">
+
           <pre>discord_status_code() :: 10001..90001</pre>
+
       </div>
+
 
   </section>
 </section>
 <section class="detail" id="t:error/0">
+
   <div class="detail-header">
     <a href="#t:error/0" class="detail-link" title="Link to this type">
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">error()</h1>
+
       <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/error/api_error.ex#L27" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
+
+
   </div>
 
   <section class="docstring">
+
       <h2>Specs</h2>
       <div class="specs">
+
           <pre>error() :: %{code: <a href="#t:discord_status_code/0">discord_status_code</a>(), message: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()}</pre>
+
       </div>
+
 
   </section>
 </section>
 <section class="detail" id="t:error_list_map/0">
+
   <div class="detail-header">
     <a href="#t:error_list_map/0" class="detail-link" title="Link to this type">
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">error_list_map()</h1>
+
       <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/error/api_error.ex#L26" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
+
+
   </div>
 
   <section class="docstring">
+
       <h2>Specs</h2>
       <div class="specs">
+
           <pre>error_list_map() :: %{_errors: [<a href="#t:error/0">error</a>()]}</pre>
+
       </div>
+
 
   </section>
 </section>
 <section class="detail" id="t:errors/0">
+
   <div class="detail-header">
     <a href="#t:errors/0" class="detail-link" title="Link to this type">
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">errors()</h1>
+
       <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/error/api_error.ex#L25" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
+
+
   </div>
 
   <section class="docstring">
+
       <h2>Specs</h2>
       <div class="specs">
+
           <pre>errors() ::
   %{required(<a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()) =&gt; <a href="#t:errors/0">errors</a>()}
   | %{required(<a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()) =&gt; <a href="#t:error_list_map/0">error_list_map</a>()}</pre>
+
       </div>
+
 
   </section>
 </section>
 <section class="detail" id="t:response/0">
+
   <div class="detail-header">
     <a href="#t:response/0" class="detail-link" title="Link to this type">
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">response()</h1>
+
       <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/error/api_error.ex#L22" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
+
+
   </div>
 
   <section class="docstring">
+
       <h2>Specs</h2>
       <div class="specs">
+
           <pre>response() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>() | <a href="#t:error/0">error</a>() | <a href="#t:detailed_error/0">detailed_error</a>()</pre>
+
       </div>
+
 
   </section>
 </section>
 <section class="detail" id="t:status_code/0">
+
   <div class="detail-header">
     <a href="#t:status_code/0" class="detail-link" title="Link to this type">
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">status_code()</h1>
+
       <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/error/api_error.ex#L19" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
+
+
   </div>
 
   <section class="docstring">
+
       <h2>Specs</h2>
       <div class="specs">
+
           <pre>status_code() :: 100..511</pre>
+
       </div>
+
 
   </section>
 </section>
 <section class="detail" id="t:t/0">
+
   <div class="detail-header">
     <a href="#t:t/0" class="detail-link" title="Link to this type">
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">t()</h1>
+
       <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/error/api_error.ex#L14" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
+
+
   </div>
 
   <section class="docstring">
+
       <h2>Specs</h2>
       <div class="specs">
+
           <pre>t() :: %{status_code: <a href="#t:status_code/0">status_code</a>(), response: <a href="#t:response/0">response</a>()}</pre>
+
       </div>
+
 
   </section>
 </section>
+
           </div>
         </section>
+
       <footer class="footer">
         <p>
           <span class="line">
@@ -334,7 +437,9 @@ Types          </h1>
           </span>
         </p>
         <p>
+
             <a href="api-reference.html" title="API reference" class="line footer-button">API Reference</a>
+
           <button class="line footer-button display-shortcuts-help">
             Display keyboard shortcuts
           </button>
@@ -354,5 +459,7 @@ Types          </h1>
   </div>
 </section>
 </div>
+
+
   </body>
 </html>

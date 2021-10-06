@@ -5,21 +5,29 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="ExDoc v0.25.1">
-    <meta name="project" content="Nostrum v0.4.7">
-    <title>Nostrum.Struct.ApplicationCommandInteractionDataResolved — Nostrum v0.4.7</title>
+    <meta name="project" content="Nostrum v0.5.0">
+
+    <title>Nostrum.Struct.ApplicationCommandInteractionDataResolved — Nostrum v0.5.0</title>
     <link rel="stylesheet" href="dist/elixir-a172fe91e725dcb259e2.css" />
+
     <script src="dist/sidebar_items-15b1d06457.js"></script>
+
       <script src="docs_config.js"></script>
+
     <script async src="dist/app-f27ff079945e43879c46.js"></script>
+
+
   </head>
   <body data-type="modules">
     <script>
+
       try {
         if (localStorage.getItem('night-mode') === 'true') {
           document.body.classList.add('night-mode');
         }
       } catch (error) { }
     </script>
+
 <div class="main">
 
 <button class="sidebar-button sidebar-toggle">
@@ -47,11 +55,13 @@
   <div class="sidebar-header">
     <div class="sidebar-projectDetails">
       <a href="https://github.com/kraigie/nostrum" class="sidebar-projectName">
-Nostrum      </a>
+Nostrum
+      </a>
       <strong class="sidebar-projectVersion">
-        v0.4.7
+        v0.5.0
       </strong>
     </div>
+
   </div>
 
   <ul class="sidebar-listNav">
@@ -59,7 +69,9 @@ Nostrum      </a>
 
       <li><a id="modules-list-link" href="#full-list">Modules</a></li>
 
+
       <li><a id="tasks-list-link" href="#full-list">Mix Tasks</a></li>
+
   </ul>
   <div class="gradient"></div>
   <ul id="full-list" class="sidebar-fullList"></ul>
@@ -70,16 +82,20 @@ Nostrum      </a>
     <div id="content" class="content-inner">
 
       <h1>
-        Nostrum.Struct.ApplicationCommandInteractionDataResolved <small class="app-vsn">(Nostrum v0.4.7)</small>
+Nostrum.Struct.ApplicationCommandInteractionDataResolved <small class="app-vsn">(Nostrum v0.5.0)</small>
+
           <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/application_command_interaction_data_resolved.ex#L1" title="View Source" class="view-source" rel="help">
             <span class="icon-code" aria-hidden="true"></span>
             <span class="sr-only">View Source</span>
           </a>
+
       </h1>
 
 
         <section id="moduledoc">
-<p>Converted interaction payload.</p>        </section>
+<p>Converted interaction payload.</p>
+        </section>
+
 
         <section id="summary" class="details-list">
           <h1 class="section-heading">
@@ -89,6 +105,7 @@ Nostrum      </a>
             </a>
             Summary
           </h1>
+
   <div class="summary-types summary">
     <h2>
       <a href="#types">Types</a>
@@ -96,41 +113,62 @@ Nostrum      </a>
 <div class="summary-row">
   <div class="summary-signature">
     <a href="#t:channels/0">channels()</a>
+
   </div>
+
     <div class="summary-synopsis"><p>IDs and corresponding partial channels.</p></div>
+
 </div>
 <div class="summary-row">
   <div class="summary-signature">
     <a href="#t:members/0">members()</a>
+
   </div>
+
     <div class="summary-synopsis"><p>IDs and corresponding partial members.</p></div>
+
 </div>
 <div class="summary-row">
   <div class="summary-signature">
     <a href="#t:messages/0">messages()</a>
+
   </div>
+
     <div class="summary-synopsis"><p>The IDs and corresponding messages.</p></div>
+
 </div>
 <div class="summary-row">
   <div class="summary-signature">
     <a href="#t:roles/0">roles()</a>
+
   </div>
+
     <div class="summary-synopsis"><p>IDs and corresponding roles</p></div>
+
 </div>
 <div class="summary-row">
   <div class="summary-signature">
     <a href="#t:t/0">t()</a>
+
   </div>
+
     <div class="summary-synopsis"><p>Resolved interaction data</p></div>
+
 </div>
 <div class="summary-row">
   <div class="summary-signature">
     <a href="#t:users/0">users()</a>
+
   </div>
+
     <div class="summary-synopsis"><p>IDs and corresponding users</p></div>
+
 </div>
+
   </div>
+
         </section>
+
 
         <section id="types" class="details-list">
           <h1 class="section-heading">
@@ -138,118 +176,157 @@ Nostrum      </a>
               <span class="icon-link" aria-hidden="true"></span>
               <span class="sr-only">Link to this section</span>
             </a>
-Types          </h1>
+Types
+          </h1>
           <div class="types-list">
 <section class="detail" id="t:channels/0">
+
   <div class="detail-header">
     <a href="#t:channels/0" class="detail-link" title="Link to this type">
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">channels()</h1>
+
       <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/application_command_interaction_data_resolved.ex#L49" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
+
+
   </div>
 
   <section class="docstring">
+
       <h2>Specs</h2>
       <div class="specs">
+
           <pre>channels() ::
   %{
     required(<a href="Nostrum.Struct.Channel.html#t:id/0">Nostrum.Struct.Channel.id</a>()) =&gt;
       <a href="Nostrum.Struct.Channel.html#t:guild_text_channel/0">Nostrum.Struct.Channel.guild_text_channel</a>()
   }
   | nil</pre>
+
       </div>
 
-<p>IDs and corresponding partial channels.</p><p>The channels in this map <em>only</em> have the following keys set:</p><ul><li><code class="inline">id</code></li><li><code class="inline">name</code></li><li><code class="inline">type</code></li><li><code class="inline">permissions</code></li></ul>  </section>
+<p>IDs and corresponding partial channels.</p><p>The channels in this map <em>only</em> have the following keys set:</p><ul><li><code class="inline">id</code></li><li><code class="inline">name</code></li><li><code class="inline">type</code></li><li><code class="inline">permissions</code></li></ul>
+  </section>
 </section>
 <section class="detail" id="t:members/0">
+
   <div class="detail-header">
     <a href="#t:members/0" class="detail-link" title="Link to this type">
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">members()</h1>
+
       <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/application_command_interaction_data_resolved.ex#L29" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
+
+
   </div>
 
   <section class="docstring">
+
       <h2>Specs</h2>
       <div class="specs">
+
           <pre>members() ::
   %{required(<a href="Nostrum.Struct.User.html#t:id/0">Nostrum.Struct.User.id</a>()) =&gt; <a href="Nostrum.Struct.Guild.Member.html#t:t/0">Nostrum.Struct.Guild.Member.t</a>()} | nil</pre>
+
       </div>
 
 <p>IDs and corresponding partial members.</p><p>These members are <em>missing</em> values on the following fields:</p><ul><li><code class="inline">user</code></li><li><code class="inline">deaf</code></li><li><code class="inline">mute</code></li></ul><p>The corresponding user data can be looked up in <code class="inline">users</code>. For members that
-are part of this map, data for the corresponding user will always be included.</p>  </section>
+are part of this map, data for the corresponding user will always be included.</p>
+  </section>
 </section>
 <section class="detail" id="t:messages/0">
+
   <div class="detail-header">
     <a href="#t:messages/0" class="detail-link" title="Link to this type">
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">messages()</h1>
+
       <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/application_command_interaction_data_resolved.ex#L34" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
+
+
   </div>
 
   <section class="docstring">
+
       <h2>Specs</h2>
       <div class="specs">
+
           <pre>messages() ::
   %{required(<a href="Nostrum.Struct.Message.html#t:id/0">Nostrum.Struct.Message.id</a>()) =&gt; <a href="Nostrum.Struct.Message.html#t:t/0">Nostrum.Struct.Message.t</a>()} | nil</pre>
+
       </div>
 
-<p>The IDs and corresponding messages.</p>  </section>
+<p>The IDs and corresponding messages.</p>
+  </section>
 </section>
 <section class="detail" id="t:roles/0">
+
   <div class="detail-header">
     <a href="#t:roles/0" class="detail-link" title="Link to this type">
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">roles()</h1>
+
       <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/application_command_interaction_data_resolved.ex#L37" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
+
+
   </div>
 
   <section class="docstring">
+
       <h2>Specs</h2>
       <div class="specs">
+
           <pre>roles() ::
   %{required(<a href="Nostrum.Struct.Guild.Role.html#t:id/0">Nostrum.Struct.Guild.Role.id</a>()) =&gt; <a href="Nostrum.Struct.Guild.Role.html#t:t/0">Nostrum.Struct.Guild.Role.t</a>()}
   | nil</pre>
+
       </div>
 
-<p>IDs and corresponding roles</p>  </section>
+<p>IDs and corresponding roles</p>
+  </section>
 </section>
 <section class="detail" id="t:t/0">
+
   <div class="detail-header">
     <a href="#t:t/0" class="detail-link" title="Link to this type">
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">t()</h1>
+
       <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/application_command_interaction_data_resolved.ex#L52" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
+
+
   </div>
 
   <section class="docstring">
+
       <h2>Specs</h2>
       <div class="specs">
+
           <pre>t() :: %Nostrum.Struct.ApplicationCommandInteractionDataResolved{
   channels: <a href="#t:channels/0">channels</a>(),
   members: <a href="#t:members/0">members</a>(),
@@ -257,34 +334,46 @@ are part of this map, data for the corresponding user will always be included.</
   roles: <a href="#t:roles/0">roles</a>(),
   users: <a href="#t:users/0">users</a>()
 }</pre>
+
       </div>
 
-<p>Resolved interaction data</p>  </section>
+<p>Resolved interaction data</p>
+  </section>
 </section>
 <section class="detail" id="t:users/0">
+
   <div class="detail-header">
     <a href="#t:users/0" class="detail-link" title="Link to this type">
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this type</span>
     </a>
     <h1 class="signature">users()</h1>
+
       <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/application_command_interaction_data_resolved.ex#L15" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
+
+
   </div>
 
   <section class="docstring">
+
       <h2>Specs</h2>
       <div class="specs">
+
           <pre>users() ::
   %{required(<a href="Nostrum.Struct.User.html#t:id/0">Nostrum.Struct.User.id</a>()) =&gt; <a href="Nostrum.Struct.User.html#t:t/0">Nostrum.Struct.User.t</a>()} | nil</pre>
+
       </div>
 
-<p>IDs and corresponding users</p>  </section>
+<p>IDs and corresponding users</p>
+  </section>
 </section>
+
           </div>
         </section>
+
       <footer class="footer">
         <p>
           <span class="line">
@@ -298,7 +387,9 @@ are part of this map, data for the corresponding user will always be included.</
           </span>
         </p>
         <p>
+
             <a href="api-reference.html" title="API reference" class="line footer-button">API Reference</a>
+
           <button class="line footer-button display-shortcuts-help">
             Display keyboard shortcuts
           </button>
@@ -318,5 +409,7 @@ are part of this map, data for the corresponding user will always be included.</
   </div>
 </section>
 </div>
+
+
   </body>
 </html>
