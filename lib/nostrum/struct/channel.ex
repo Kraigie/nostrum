@@ -1,8 +1,6 @@
 defmodule Nostrum.Struct.Channel do
   @moduledoc """
-  Struct representing a channel.
-
-  There are currently eleven channel types within discord, ranging from direct messages between two users to server announcement channels pushing a message to thousands. This module also contains several helper functions for handling channels within your applcation.
+  Struct and helper functions for working with channels.
 
   ## Channel Struct
 
@@ -316,7 +314,7 @@ defmodule Nostrum.Struct.Channel do
   @type archived :: boolean()
 
   @typedoc """
-  Archive duration for the thread.
+  Archive duration for the thread in minutes.
 
   - 60, 1 hour
   - 1440, 24 hours
@@ -360,7 +358,7 @@ defmodule Nostrum.Struct.Channel do
   @type flags :: integer()
 
   @typedoc """
-  Default duration for newly created threads.
+  Default duration for newly created threads in minutes.
 
   - 60, 1 hour
   - 1440, 24 hours
