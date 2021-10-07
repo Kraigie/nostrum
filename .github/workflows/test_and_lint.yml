@@ -9,6 +9,7 @@ on:
 jobs:
   # Only run lint and formatting jobs on latest OTP/Elixir versions.
   lint:
+    name: Lint with Credo and Mix Format
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -32,6 +33,7 @@ jobs:
         name: Lint (mix format)
 
   test:
+    name: Run Unit tests
     runs-on: ubuntu-latest
     strategy:
       matrix:
