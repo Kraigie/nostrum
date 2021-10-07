@@ -26,6 +26,9 @@ jobs:
           key: 24-1.12-mix-${{ hashFiles(format('{0}{1}', github.workspace, '/mix.lock')) }}
           restore-keys: 24-1.12-mix
 
+      - run: mix deps.get
+        name: Fetch Dependencies
+
       - run: mix credo --strict
         name: Lint (credo)
 
