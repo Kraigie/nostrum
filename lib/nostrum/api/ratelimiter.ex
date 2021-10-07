@@ -7,6 +7,7 @@ defmodule Nostrum.Api.Ratelimiter do
   use GenServer
 
   alias Nostrum.Api.{Base, Bucket}
+  alias Nostrum.Constants
   alias Nostrum.Error.ApiError
   alias Nostrum.Util
 
@@ -33,7 +34,10 @@ defmodule Nostrum.Api.Ratelimiter do
 
   def init([]) do
     :ets.new(:ratelimit_buckets, [:set, :public, :named_table])
-    {:ok, []}
+    domain = to_charlist(Constants.domain())
+    {:ok, conn_pid} = :gun.open(domain, 443, %{retry: 1_000_000_000})
+    {:ok, :http2} = :gun.await_up(conn_pid)
+    {:ok, conn_pid}
   end
 
   @doc """
@@ -44,7 +48,7 @@ defmodule Nostrum.Api.Ratelimiter do
     :ets.delete_all_objects(:ratelimit_buckets)
   end
 
-  def handle_call({:queue, request, original_from}, from, state) do
+  def handle_call({:queue, request, original_from}, from, conn) do
     retry_time =
       request.route
       |> get_endpoint(request.method)
@@ -52,10 +56,10 @@ defmodule Nostrum.Api.Ratelimiter do
 
     case retry_time do
       :now ->
-        GenServer.reply(original_from || from, do_request(request))
+        GenServer.reply(original_from || from, do_request(request, conn))
 
       time when time < 0 ->
-        GenServer.reply(original_from || from, do_request(request))
+        GenServer.reply(original_from || from, do_request(request, conn))
 
       time ->
         Task.start(fn ->
@@ -63,44 +67,54 @@ defmodule Nostrum.Api.Ratelimiter do
         end)
     end
 
+    {:noreply, conn}
+  end
+
+  def handle_info({:gun_down, _conn, _proto, _reason, _killed_streams}, state) do
     {:noreply, state}
   end
 
-  defp do_request(request) do
-    request.method
-    |> Base.request(request.route, request.body, request.headers, request.options)
+  def handle_info({:gun_up, _conn, _proto}, state) do
+    {:noreply, state}
+  end
+
+  defp do_request(request, conn) do
+    conn
+    |> Base.request(request.method, request.route, request.body, request.headers, request.params)
     |> handle_headers(get_endpoint(request.route, request.method))
     |> format_response
   end
 
+  @spec value_from_rltuple({String.t(), String.t()}) :: String.t() | nil
+  defp value_from_rltuple({_k, v}), do: v
+
+  @spec header_value([{String.t(), String.t()}], String.t(), String.t() | nil) :: String.t() | nil
+  defp header_value(headers, key, default \\ nil) do
+    headers
+    |> List.keyfind(key, 0, {key, default})
+    |> value_from_rltuple()
+  end
+
   defp handle_headers({:error, reason}, _route), do: {:error, reason}
 
-  defp handle_headers({:ok, %HTTPoison.Response{headers: headers}} = response, route) do
-    headers_to_keep =
-      MapSet.new([
-        "x-ratelimit-global",
-        "x-ratelimit-remaining",
-        "x-ratelimit-reset",
-        "retry-after",
-        "date"
-      ])
-
-    kept_headers = filter_headers(headers, headers_to_keep)
-
+  defp handle_headers({:ok, {_status, headers, _body}} = response, route) do
     # Per https://discord.com/developers/docs/topics/rate-limits, all of these
-    # headers are optional. Our `to_integer` and `to_float` functions will
-    # return `nil` if the given header is unset to ease this code.
-    global_limit = Map.get(kept_headers, "x-ratelimit-global")
-    remaining = to_integer(Map.get(kept_headers, "x-ratelimit-remaining"))
-    reset = to_float(Map.get(kept_headers, "x-ratelimit-reset"))
-    retry_after = to_integer(Map.get(kept_headers, "retry-after"))
-    origin_timestamp = date_string_to_unix(Map.get(kept_headers, "date"))
+    # headers are optional, which is why we supply a default of 0.
+    global_limit = header_value(headers, "x-ratelimit-global")
+    remaining = header_value(headers, "x-ratelimit-remaining", "0") |> String.to_integer()
+    reset = header_value(headers, "x-ratelimit-reset", "0") |> String.to_float()
+    retry_after = header_value(headers, "retry-after", "0") |> String.to_integer()
+
+    origin_timestamp =
+      headers
+      |> header_value("date", 0)
+      |> date_string_to_unix
 
     latency = abs(origin_timestamp - Util.now())
 
     # If we have hit a global limit, Discord responds with a 429 and informs
     # us when we can retry. Our global bucket keeps track of this ratelimit.
-    if global_limit, do: update_global_bucket(route, 0, retry_after, latency)
+    if global_limit != nil, do: update_global_bucket(route, 0, retry_after, latency)
 
     # If Discord did send us other ratelimit information, we can also update
     # the ratelimiter bucket for this route. For some endpoints, such as
@@ -140,16 +154,10 @@ defmodule Nostrum.Api.Ratelimiter do
     (:calendar.datetime_to_gregorian_seconds(datetime) - @gregorian_epoch) * 1000
   end
 
-  defp to_float(v) when is_binary(v), do: String.to_float(v)
-  defp to_float(_v), do: nil
-
-  defp to_integer(v) when is_binary(v), do: String.to_integer(v)
-  defp to_integer(_v), do: nil
-
   @doc """
   Retrieves a proper ratelimit endpoint from a given route and url.
   """
-  @spec get_endpoint(String.t(), atom) :: String.t()
+  @spec get_endpoint(String.t(), String.t()) :: String.t()
   def get_endpoint(route, method) do
     endpoint =
       Regex.replace(~r/\/([a-z-]+)\/(?:[0-9]{17,19})/i, route, fn capture, param ->
@@ -174,27 +182,14 @@ defmodule Nostrum.Api.Ratelimiter do
       {:error, error} ->
         {:error, error}
 
-      {:ok, %HTTPoison.Response{status_code: 200, body: body}} ->
+      {:ok, {status, _, body}} when status in [200, 201] ->
         {:ok, body}
 
-      {:ok, %HTTPoison.Response{status_code: 201, body: body}} ->
-        {:ok, body}
-
-      {:ok, %HTTPoison.Response{status_code: 204}} ->
+      {:ok, {204, _, _}} ->
         {:ok}
 
-      {:ok, %HTTPoison.Response{status_code: code, body: body}} ->
-        {:error, %ApiError{status_code: code, response: Poison.decode!(body, keys: :atoms)}}
+      {:ok, {status, _, body}} ->
+        {:error, %ApiError{status_code: status, response: Poison.decode!(body, keys: :atoms)}}
     end
-  end
-
-  # Will go through headers and keep the ones that are members of the headers_to_keep MapSet (case insensitive!)
-  defp filter_headers(headers, headers_to_keep) do
-    headers
-    |> Stream.map(fn {key, value} ->
-      {String.downcase(key), value}
-    end)
-    |> Stream.filter(fn {key, _v} -> MapSet.member?(headers_to_keep, key) end)
-    |> Enum.into(%{})
   end
 end

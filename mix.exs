@@ -89,11 +89,11 @@ defmodule Nostrum.Mixfile do
 
   defp deps do
     [
-      {:httpoison, "~> 1.7"},
       {:poison, "~> 3.0"},
-      {:gun, "== 2.0.0-rc.2"},
+      {:gun, "== 2.0.1", hex: :remedy_gun},
       {:kcl, "~> 1.4"},
       {:porcelain, "~> 2.0"},
+      {:mime, "~> 1.6"},
       {:ex_doc, "~> 0.15", only: :dev},
       {:credo, "~> 1.4", only: [:dev, :test]},
       {:dialyxir, "~> 1.1", only: [:dev], runtime: false},

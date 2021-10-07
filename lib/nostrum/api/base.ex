@@ -3,26 +3,47 @@ defmodule Nostrum.Api.Base do
 
   @version Nostrum.Mixfile.project()[:version]
 
-  use HTTPoison.Base
+  import Nostrum.Constants, only: [base_route: 0]
 
-  alias Nostrum.Constants
+  def request(conn, method, route, body, raw_headers, params) do
+    headers = process_request_headers(raw_headers)
+    # Convert method from atom to string for `:gun`
+    method =
+      method
+      |> Atom.to_string()
+      |> String.upcase()
 
-  def process_url(url) do
-    URI.encode(Constants.base_url() <> url)
+    query_string = URI.encode_query(params)
+
+    full_route = "#{base_route()}#{route}?#{query_string}"
+
+    stream = :gun.request(conn, method, full_route, headers, process_request_body(body))
+
+    case :gun.await(conn, stream) do
+      {:response, :fin, status, headers} ->
+        {:ok, {status, headers, ""}}
+
+      {:response, :nofin, status, headers} ->
+        {:ok, body} = :gun.await_body(conn, stream)
+        {:ok, {status, headers, body}}
+
+      {:error, _reason} = result ->
+        result
+    end
   end
 
   def process_request_body(""), do: ""
-  def process_request_body({:multipart, _} = body), do: body
+  def process_request_body({:multipart, content}), do: content
   def process_request_body(body), do: Poison.encode!(body)
 
   def process_request_headers(headers) do
     user_agent = [
-      {"User-Agent", "DiscordBot (https://github.com/kraigie/nostrum, #{@version})"} | headers
+      {"user-agent", "DiscordBot (https://github.com/kraigie/nostrum, #{@version})"} | headers
     ]
 
-    token = "Bot " <> Application.get_env(:nostrum, :token)
+    token = "Bot #{Application.get_env(:nostrum, :token)}"
 
-    [{"Authorization", token} | user_agent]
+    [{"authorization", token} | user_agent]
   end
 
   def process_response_body(body) do
