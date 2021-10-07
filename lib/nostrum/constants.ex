@@ -2,8 +2,8 @@ defmodule Nostrum.Constants do
   @moduledoc false
 
   def domain, do: "discord.com"
-  def base_route, do: "/api/v7"
-  def base_url, do: "https://#{domain()}/#{base_route()}"
+  def base_route, do: "/api/v8"
+  def base_url, do: "https://#{domain()}#{base_route()}"
   def cdn_url, do: "https://cdn.discordapp.com"
   def gateway, do: "/gateway"
   def gateway_bot, do: "/gateway/bot"
@@ -64,9 +64,9 @@ defmodule Nostrum.Constants do
   def guild_integration_sync(guild_id, integration_id),
     do: "/guilds/#{guild_id}/integrations/#{integration_id}/sync"
 
-  def guild_embed(guild_id), do: "/guilds/#{guild_id}/embed"
   def guild_emojis(guild_id), do: "/guilds/#{guild_id}/emojis"
   def guild_emoji(guild_id, emoji_id), do: "/guilds/#{guild_id}/emojis/#{emoji_id}"
+  def guild_widget(guild_id), do: "/guilds/#{guild_id}/widget"
 
   def webhooks_guild(guild_id), do: "/guilds/#{guild_id}/webhooks"
   def webhooks_channel(channel_id), do: "/channels/#{channel_id}/webhooks"

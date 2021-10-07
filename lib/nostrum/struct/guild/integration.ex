@@ -40,10 +40,10 @@ defmodule Nostrum.Struct.Guild.Integration do
   @spec to_struct(map()) :: __MODULE__.t()
   def to_struct(map) do
     %__MODULE__{
-      id: map["id"],
-      name: map["name"],
-      type: map["type"],
-      enabled: map["enabled"]
+      id: map.id,
+      name: map.name,
+      type: map.type,
+      enabled: map.enabled
     }
   end
 end

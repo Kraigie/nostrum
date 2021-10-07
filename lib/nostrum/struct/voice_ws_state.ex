@@ -35,7 +35,7 @@ defmodule Nostrum.Struct.VoiceWSState do
   @type conn_pid :: pid
 
   @typedoc "Stream reference for `:gun`"
-  @type stream :: reference()
+  @type stream :: :gun.stream_ref()
 
   @typedoc "Gateway URL"
   @type gateway :: String.t()
@@ -62,7 +62,7 @@ defmodule Nostrum.Struct.VoiceWSState do
   @type heartbeat_interval :: integer | nil
 
   @typedoc "Time ref for the heartbeat"
-  @type heartbeat_ref :: integer | nil
+  @type heartbeat_ref :: :timer.tref() | nil
 
   @type t :: %__MODULE__{
           guild_id: guild_id,

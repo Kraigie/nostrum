@@ -65,7 +65,7 @@ defmodule Nostrum.Cache.PresenceCache do
         new_presence = Map.merge(p, presence)
         create(new_presence)
 
-        if p.game == new_presence.game and p.status == new_presence.status,
+        if p.activities == new_presence.activities and p.status == new_presence.status,
           do: :noop,
           else: {presence.guild_id, p, new_presence}
 

@@ -8,6 +8,7 @@ defmodule Nostrum.Struct.InteractionTest do
   }
 
   alias Nostrum.Struct.Guild.{Role, Member}
+  alias Nostrum.Util
 
   use ExUnit.Case, async: true
 
@@ -64,6 +65,8 @@ defmodule Nostrum.Struct.InteractionTest do
 
   describe "Interaction.to_struct/1" do
     test "casts interaction properly" do
+      atom_mapped = Util.safe_atom_map(@payload)
+
       assert %Interaction{
                application_id: 455_589_479_713_865_749,
                channel_id: 455_589_923_626_549_259,
@@ -74,7 +77,7 @@ defmodule Nostrum.Struct.InteractionTest do
                    %ApplicationCommandInteractionDataOption{
                      name: "name",
                      type: 8,
-                     value: "451824027976073216"
+                     value: 451_824_027_976_073_216
                    },
                    %ApplicationCommandInteractionDataOption{
                      name: "action",
@@ -97,7 +100,7 @@ defmodule Nostrum.Struct.InteractionTest do
                token: "bob",
                type: 2,
                version: 1
-             } = Interaction.to_struct(@payload)
+             } = Interaction.to_struct(atom_mapped)
     end
   end
 end

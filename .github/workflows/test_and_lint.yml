@@ -7,7 +7,36 @@ on:
   pull_request:
 
 jobs:
-  test_and_lint:
+  # Only run lint and formatting jobs on latest OTP/Elixir versions.
+  lint:
+    name: Lint with Credo and Mix Format
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: erlef/setup-beam@v1
+        with:
+          otp-version: 24
+          elixir-version: 1.12
+
+      - uses: actions/cache@v2
+        with:
+          path: _build
+          # Generate a hash of the OTP version and Elixir version
+          key: 24-1.12-mix-${{ hashFiles(format('{0}{1}', github.workspace, '/mix.lock')) }}
+          restore-keys: 24-1.12-mix
+
+      - run: mix deps.get
+        name: Fetch Dependencies
+
+      - run: mix credo --strict
+        name: Lint (credo)
+
+      - run: mix format --check-formatted
+        name: Lint (mix format)
+
+  test:
+    name: Run Unit tests
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -30,13 +59,6 @@ jobs:
 
       - run: mix deps.get
         name: Fetch Dependencies
-
-      - run: mix credo --strict
-        name: Lint
-
-      - run: mix format --check-formatted
-        name: Check Formatting
-        if: ${{ matrix.elixir-version == '1.12' && matrix.otp-version == '24' }}
 
       - run: mix test --no-start
         name: Run Tests

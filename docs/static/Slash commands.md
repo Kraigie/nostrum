@@ -6,7 +6,7 @@ command menu.
 Using nostrum, you can create, receive, and respond to slash commands invoked
 by Discord users.
 
-## Permisisons required
+## Permissions required
 
 Quoting the [official Discord
 documentation](https://discord.com/developers/docs/interactions/slash-commands#interaction):

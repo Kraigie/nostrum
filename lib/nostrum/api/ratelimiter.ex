@@ -70,31 +70,56 @@ defmodule Nostrum.Api.Ratelimiter do
     {:noreply, conn}
   end
 
+  def handle_info({:gun_down, _conn, _proto, _reason, _killed_streams}, state) do
+    {:noreply, state}
+  end
+
+  def handle_info({:gun_up, _conn, _proto}, state) do
+    {:noreply, state}
+  end
+
   defp do_request(request, conn) do
     conn
-    |> Base.request(request.method, request.route, request.body, request.headers, request.options)
+    |> Base.request(request.method, request.route, request.body, request.headers, request.params)
     |> handle_headers(get_endpoint(request.route, request.method))
     |> format_response
+  end
+
+  @spec value_from_rltuple({String.t(), String.t()}) :: String.t() | nil
+  defp value_from_rltuple({_k, v}), do: v
+
+  @spec header_value([{String.t(), String.t()}], String.t(), String.t() | nil) :: String.t() | nil
+  defp header_value(headers, key, default \\ nil) do
+    headers
+    |> List.keyfind(key, 0, {key, default})
+    |> value_from_rltuple()
   end
 
   defp handle_headers({:error, reason}, _route), do: {:error, reason}
 
   defp handle_headers({:ok, {_status, headers, _body}} = response, route) do
-    global_limit = headers |> List.keyfind("x-ratelimit-global", 0)
-    remaining = headers |> List.keyfind("x-ratelimit-remaining", 0) |> value_from_rltuple
-    reset = headers |> List.keyfind("x-ratelimit-reset", 0) |> value_from_rltuple
-    retry_after = headers |> List.keyfind("retry-after", 0) |> value_from_rltuple
+    # Per https://discord.com/developers/docs/topics/rate-limits, all of these
+    # headers are optional, which is why we supply a default of 0.
+    global_limit = header_value(headers, "x-ratelimit-global")
+    remaining = header_value(headers, "x-ratelimit-remaining", "0") |> String.to_integer()
+    reset = header_value(headers, "x-ratelimit-reset", "0") |> String.to_float()
+    retry_after = header_value(headers, "retry-after", "0") |> String.to_integer()
 
     origin_timestamp =
       headers
-      |> List.keyfind("date", 0)
-      |> value_from_rltuple
+      |> header_value("date", 0)
       |> date_string_to_unix
 
     latency = abs(origin_timestamp - Util.now())
 
-    if global_limit, do: update_global_bucket(route, 0, retry_after, latency)
-    if reset, do: update_bucket(route, remaining, reset, latency)
+    # If we have hit a global limit, Discord responds with a 429 and informs
+    # us when we can retry. Our global bucket keeps track of this ratelimit.
+    if global_limit != nil, do: update_global_bucket(route, 0, retry_after, latency)
+
+    # If Discord did send us other ratelimit information, we can also update
+    # the ratelimiter bucket for this route. For some endpoints, such as
+    # when creating a DM with a user, we may not retrieve ratelimit headers.
+    if reset != nil and remaining != nil, do: update_bucket(route, remaining, reset, latency)
 
     response
   end
@@ -108,11 +133,13 @@ defmodule Nostrum.Api.Ratelimiter do
   end
 
   defp wait_for_timeout(request, timeout, from) do
+    truncated = :erlang.ceil(timeout)
+
     Logger.info(
-      "RATELIMITER: Waiting #{timeout}ms to process request with route #{request.route}"
+      "RATELIMITER: Waiting #{truncated}ms to process request with route #{request.route}"
     )
 
-    Process.sleep(timeout)
+    Process.sleep(truncated)
     GenServer.call(Ratelimiter, {:queue, request, from}, :infinity)
   end
 
@@ -126,10 +153,6 @@ defmodule Nostrum.Api.Ratelimiter do
   defp erl_datetime_to_timestamp(datetime) do
     (:calendar.datetime_to_gregorian_seconds(datetime) - @gregorian_epoch) * 1000
   end
-
-  defp value_from_rltuple(tuple) when is_nil(tuple), do: nil
-  defp value_from_rltuple({"date", v}), do: v
-  defp value_from_rltuple({_k, v}), do: String.to_integer(v)
 
   @doc """
   Retrieves a proper ratelimit endpoint from a given route and url.

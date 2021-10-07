@@ -40,7 +40,7 @@ defmodule Nostrum.Struct.WSState do
 
   @typedoc "Stream reference for `:gun`"
   @typedoc since: "0.5.0"
-  @type stream :: reference()
+  @type stream :: :gun.stream_ref()
 
   @typedoc "Gateway URL"
   @type gateway :: String.t()
@@ -61,10 +61,10 @@ defmodule Nostrum.Struct.WSState do
   @type heartbeat_ack :: boolean
 
   @typedoc "Interval at which heartbeats are sent"
-  @type heartbeat_interval :: integer | nil
+  @type heartbeat_interval :: pos_integer() | nil
 
   @typedoc "Time ref for the heartbeat"
-  @type heartbeat_ref :: integer | nil
+  @type heartbeat_ref :: :timer.tref() | nil
 
   @typedoc "Reference to the current zlib context"
   @type zlib_ctx :: reference | nil

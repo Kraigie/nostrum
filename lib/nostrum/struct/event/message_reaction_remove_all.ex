@@ -25,9 +25,9 @@ defmodule Nostrum.Struct.Event.MessageReactionRemoveAll do
   @doc false
   def to_struct(map) do
     %__MODULE__{
-      channel_id: map["channel_id"],
-      message_id: map["message_id"],
-      guild_id: map["guild_id"]
+      channel_id: map.channel_id,
+      message_id: map.message_id,
+      guild_id: map[:guild_id]
     }
   end
 end

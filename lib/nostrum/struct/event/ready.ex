@@ -35,7 +35,7 @@ defmodule Nostrum.Struct.Event.Ready do
   For more information, see
   https://discord.com/developers/docs/topics/gateway#sharding.
   """
-  @type shard :: {Integer.t(), non_neg_integer()} | nil
+  @type shard :: {integer(), non_neg_integer()} | nil
 
   @typedoc "Partial application object with `id` and `flags`"
   @type application :: PartialApplication.t()
@@ -53,11 +53,11 @@ defmodule Nostrum.Struct.Event.Ready do
   @doc false
   def to_struct(map) do
     %__MODULE__{
-      v: map["v"],
-      user: Util.cast(map["user"], {:struct, User}),
-      guilds: Util.cast(map["guilds"], {:list, {:struct, UnavailableGuild}}),
-      shard: :erlang.list_to_tuple(map["shard"]),
-      application: Util.cast(map["application"], {:struct, PartialApplication})
+      v: map.v,
+      user: Util.cast(map.user, {:struct, User}),
+      guilds: Util.cast(map.guilds, {:list, {:struct, UnavailableGuild}}),
+      shard: :erlang.list_to_tuple(map.shard),
+      application: Util.cast(map.application, {:struct, PartialApplication})
     }
   end
 end
