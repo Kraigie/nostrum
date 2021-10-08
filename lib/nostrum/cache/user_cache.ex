@@ -43,14 +43,14 @@ defmodule Nostrum.Cache.UserCache do
 
   Returns a `t:Nostrum.Struct.User.t/0` struct representing the created user.
   """
-  @callback create(payload :: Map.t()) :: User.t()
+  @callback create(payload :: map()) :: User.t()
 
   @doc ~S"""
   Bulk add multiple users to the cache at once.
 
   Returns `:ok`.
   """
-  @callback bulk_create(user_payloads :: [Map.t()]) :: :ok
+  @callback bulk_create(user_payloads :: [map()]) :: :ok
 
   @doc ~S"""
   Update a user in the cache based on payload sent via the Gateway.
@@ -58,7 +58,7 @@ defmodule Nostrum.Cache.UserCache do
   Returns `:noop` if the user has not been updated in the cache, or
   `{old_user, new_user}` is the user has been written to the cache.
   """
-  @callback update(payload :: Map.t()) :: :noop | {User.t(), User.t()}
+  @callback update(payload :: map()) :: :noop | {User.t(), User.t()}
 
   @doc ~S"""
   Delete a user by ID.
@@ -83,19 +83,19 @@ defmodule Nostrum.Cache.UserCache do
   def get!(id) when is_snowflake(id), do: id |> get |> Util.bangify_find(id, __MODULE__)
 
   @doc "Create a user using the selected cache implementation."
-  @spec create(Map.t()) :: User.t()
+  @spec create(map()) :: User.t()
   def create(payload) do
     @configured_cache.create(payload)
   end
 
   @doc "Bulk create multiple users using the selected cache implementation."
-  @spec bulk_create([Map.t()]) :: :ok
+  @spec bulk_create([map()]) :: :ok
   def bulk_create(users) do
     @configured_cache.bulk_create(users)
   end
 
   @doc "Update the given user using the selected cache implementation."
-  @spec update(Map.t()) :: :noop | {User.t(), User.t()}
+  @spec update(map()) :: :noop | {User.t(), User.t()}
   def update(payload) do
     @configured_cache.update(payload)
   end

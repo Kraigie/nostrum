@@ -18,13 +18,13 @@ defmodule Nostrum.Cache.UserCache.ETS do
   end
 
   @impl Nostrum.Cache.UserCache
-  @spec bulk_create([Map.t()]) :: :ok
+  @spec bulk_create([map()]) :: :ok
   def bulk_create(users) do
     Enum.each(users, &:ets.insert(@table_name, {&1.id, &1}))
   end
 
   @impl Nostrum.Cache.UserCache
-  @spec create(Map.t()) :: User.t()
+  @spec create(map()) :: User.t()
   def create(user) do
     :ets.insert(@table_name, {user.id, user})
     User.to_struct(user)
@@ -53,7 +53,7 @@ defmodule Nostrum.Cache.UserCache.ETS do
   end
 
   @impl Nostrum.Cache.UserCache
-  @spec update(Map.t()) :: {User.t(), User.t()} | :noop
+  @spec update(map()) :: {User.t(), User.t()} | :noop
   def update(info) do
     with {:ok, u} <- lookup(info.id),
          new_user = Map.merge(u, info),
