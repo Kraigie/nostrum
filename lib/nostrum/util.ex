@@ -146,7 +146,7 @@ defmodule Nostrum.Util do
       {:error, %{status_code: 401}} ->
         raise("Authentication rejected, invalid token")
 
-      {:error, %{status_code: code, message: message}} ->
+      {:error, %{status_code: code, response: %{message: message}}} ->
         raise(Nostrum.Error.ApiError, status_code: code, message: message)
 
       {:ok, body} ->
