@@ -264,7 +264,8 @@ defmodule Nostrum.Api do
   # If only one file, move it to new list with `:files` key
   defp create_message_with_multipart(channel_id, %{file: file} = options) do
     options =
-      %{options | files: [file]}
+      options
+      |> Map.put(:files, [file])
       |> Map.delete(:file)
 
     create_message_with_multipart(channel_id, options)
