@@ -71,7 +71,7 @@ defmodule Nostrum.Voice.Audio do
 
   def unique_rtp(v, num, packets) do
     len_before = length(packets)
-    packets = Enum.uniq([ get_rtp_packet(v) | packets ])
+    packets = Enum.uniq([get_rtp_packet(v) | packets])
     # If length is the same as before, duplicate was found
     if len_before == length(packets) do
       unique_rtp(v, num, packets)
