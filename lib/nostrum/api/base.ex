@@ -5,6 +5,11 @@ defmodule Nostrum.Api.Base do
 
   import Nostrum.Constants, only: [base_route: 0]
 
+  @type methods :: :get | :post | :put | :delete
+
+  @spec request(pid, methods(), String.t(), iodata(), [{String.t(), String.t()}], Enum.t()) ::
+          {:error, :timeout | {:connection_error, any} | {:down, any} | {:stream_error, any}}
+          | {:ok, {non_neg_integer, [{String.t(), String.t()}], binary}}
   def request(conn, method, route, body, raw_headers, params) do
     headers = process_request_headers(raw_headers)
     # Convert method from atom to string for `:gun`

@@ -50,7 +50,7 @@ defmodule Nostrum.Cache.UserCache do
 
   Returns `:ok`.
   """
-  @callback bulk_create(user_payloads :: [map()]) :: :ok
+  @callback bulk_create(user_payloads :: Enum.t()) :: :ok
 
   @doc ~S"""
   Update a user in the cache based on payload sent via the Gateway.
@@ -89,7 +89,7 @@ defmodule Nostrum.Cache.UserCache do
   end
 
   @doc "Bulk create multiple users using the selected cache implementation."
-  @spec bulk_create([map()]) :: :ok
+  @spec bulk_create(Enum.t()) :: :ok
   def bulk_create(users) do
     @configured_cache.bulk_create(users)
   end
