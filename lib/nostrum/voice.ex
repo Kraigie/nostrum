@@ -499,7 +499,7 @@ defmodule Nostrum.Voice do
     voice = get_voice(guild_id)
 
     if VoiceState.ready_for_rtp?(voice) do
-      Enum.map(1..num_packets, fn _ -> Audio.get_rtp_packet(voice) end)
+      Audio.get_unique_rtp_packets(voice, num_packets)
     else
       {:error, "Must be connected to voice channel to listen for incoming data."}
     end
