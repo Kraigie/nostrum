@@ -65,18 +65,19 @@ defmodule Nostrum.Voice.Audio do
     end
   end
 
-  def get_unique_rtp_packets(v, num), do: unique_rtp(v, num, [])
+  def get_unique_rtp_packets(v, num), do: unique_rtp(v, num, [], MapSet.new())
 
-  def unique_rtp(_v, 0, packets), do: Enum.reverse(packets)
+  def unique_rtp(_v, 0, packets, _set), do: Enum.reverse(packets)
 
-  def unique_rtp(v, num, packets) do
-    len_before = length(packets)
-    packets = Enum.uniq([get_rtp_packet(v) | packets])
-    # If length is the same as before, duplicate was found
-    if len_before == length(packets) do
-      unique_rtp(v, num, packets)
+  def unique_rtp(v, num_remaining, packets, set) do
+    packet = get_rtp_packet(v)
+
+    # Check for and remove duplicate RTP packets
+    if MapSet.member?(set, packet) do
+      # Duplicate was found
+      unique_rtp(v, num_remaining, packets, set)
     else
-      unique_rtp(v, num - 1, packets)
+      unique_rtp(v, num_remaining - 1, [packet | packets], MapSet.put(set, packet))
     end
   end
 

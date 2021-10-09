@@ -489,7 +489,7 @@ defmodule Nostrum.Voice do
     - `guild_id` - ID of guild that the bot is listening to.
     - `num_packets` - Number of packets to wait for.
 
-  Returns a list of 2-element tuples in the form `{rtp_header, opus_frame}`.
+  Returns a list of 2-element tuples in the form `{rtp_header, opus_packet}`.
 
   This function will block until the specified number of packets is received.
   """
