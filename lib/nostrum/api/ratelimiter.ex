@@ -35,7 +35,10 @@ defmodule Nostrum.Api.Ratelimiter do
   def init([]) do
     :ets.new(:ratelimit_buckets, [:set, :public, :named_table])
     domain = to_charlist(Constants.domain())
-    {:ok, conn_pid} = :gun.open(domain, 443, %{retry: 1_000_000_000})
+
+    open_opts = %{retry: 1_000_000_000, tls_opts: Constants.gun_tls_opts()}
+    {:ok, conn_pid} = :gun.open(domain, 443, open_opts)
+
     {:ok, :http2} = :gun.await_up(conn_pid)
     {:ok, conn_pid}
   end
