@@ -10,9 +10,9 @@ In some cases, the struct modules will include helper functions for interacting
 with the struct. See `Nostrum.Struct.Emoji.image_url/1` for an example.
 
 ## Guilds
-Each guild is ran in its own `GenServer` process, all of which are ran under a
-supervisor. Behind the scenes, Nostrum uses the `Registry` module to
-map guild ids to a `pid` to allow for lookup.
+Guilds are cached in an ETS table, keyed off their ID. You can obtain the table
+name of the backing ETS table using the `tabname` function exported by the
+module.
 
 Please see `Nostrum.Cache.GuildCache` for more information on interacting with
 guilds.
