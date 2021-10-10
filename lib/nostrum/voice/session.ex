@@ -18,8 +18,6 @@ defmodule Nostrum.Voice.Session do
 
   @timeout_ws_upgrade 10_000
 
-  @gun_opts %{protocols: [:http], retry: 1_000_000_000}
-
   def start_link(%VoiceState{} = vs) do
     GenServer.start_link(__MODULE__, vs)
   end
@@ -36,7 +34,8 @@ defmodule Nostrum.Voice.Session do
 
     [host, port] = String.split(voice.gateway, ":")
 
-    {:ok, worker} = :gun.open(:binary.bin_to_list(host), String.to_integer(port), @gun_opts)
+    gun_opts = %{protocols: [:http], retry: 1_000_000_000, tls_opts: Constants.gun_tls_opts()}
+    {:ok, worker} = :gun.open(:binary.bin_to_list(host), String.to_integer(port), gun_opts)
 
     {:ok, :http} = :gun.await_up(worker, @timeout_connect)
     stream = :gun.ws_upgrade(worker, @gateway_qs)
