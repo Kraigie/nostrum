@@ -180,4 +180,31 @@ defmodule Nostrum.Constants do
     {k, _} = Enum.find(voice_opcodes(), fn {_, v} -> v == opcode end)
     k |> String.downcase() |> String.to_atom()
   end
+
+  @doc """
+  Return transport options for `:gun` to verify SSL certificates.
+
+  By default, SSL connections will try to verify the peer, but not know
+  where to look for a CA bundle. This will result in the following lines
+  being printed to the log
+
+  ```
+  17:03:48.657 [warn]  Description: 'Authenticity is not established by certificate path validation'
+     Reason: 'Option {verify, verify_peer} and cacertfile/cacerts is missing'
+  ```
+
+  This function returns a list suitable for the `:tls_opts` field of the
+  `:gun.open` call. You can find more information about the type in [the
+  gun documentation](https://ninenines.eu/docs/en/gun/2.0/manual/gun/).
+  """
+  @doc since: "0.5"
+  @spec gun_tls_opts :: [:ssl.tls_client_option()]
+  # See: https://erlef.github.io/security-wg/secure_coding_and_deployment_hardening/ssl
+  def gun_tls_opts,
+    do: [
+      verify: :verify_peer,
+      cacerts: :certifi.cacerts(),
+      depth: 3,
+      customize_hostname_check: [match_fun: :public_key.pkix_verify_hostname_match_fun(:https)]
+    ]
 end
