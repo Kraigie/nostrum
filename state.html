@@ -92,9 +92,9 @@ with the struct. See <a href="Nostrum.Struct.Emoji.html#image_url/1"><code class
   <a href="#guilds" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
   Guilds
 </h2>
-<p>Each guild is ran in its own <a href="https://hexdocs.pm/elixir/GenServer.html"><code class="inline">GenServer</code></a> process, all of which are ran under a
-supervisor. Behind the scenes, Nostrum uses the <a href="https://hexdocs.pm/elixir/Registry.html"><code class="inline">Registry</code></a> module to
-map guild ids to a <code class="inline">pid</code> to allow for lookup.</p><p>Please see <a href="Nostrum.Cache.GuildCache.html"><code class="inline">Nostrum.Cache.GuildCache</code></a> for more information on interacting with
+<p>Guilds are cached in an ETS table, keyed off their ID. You can obtain the table
+name of the backing ETS table using the <code class="inline">tabname</code> function exported by the
+module.</p><p>Please see <a href="Nostrum.Cache.GuildCache.html"><code class="inline">Nostrum.Cache.GuildCache</code></a> for more information on interacting with
 guilds.</p><h2 id="channels" class="section-heading">
   <a href="#channels" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
   Channels
