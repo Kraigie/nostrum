@@ -91,7 +91,7 @@ defmodule Nostrum.Struct.Channel do
 
   This diagram represents the regular channel types `0`, `2`, `5` and `13`.
 
-    ![Discord Channels](./images/channel_types.png)
+    ![Discord Channels](./assets/channel_types.png)
 
     The currently implemented channel types are:
 
