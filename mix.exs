@@ -38,7 +38,8 @@ defmodule Nostrum.Mixfile do
     [
       main: "intro",
       extras: extras(),
-      groups_for_modules: groups_for_modules()
+      groups_for_modules: groups_for_modules(),
+      assets: "docs/assets"
     ]
   end
 
