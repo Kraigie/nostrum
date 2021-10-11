@@ -15,8 +15,6 @@ defmodule Nostrum.Shard.Session do
   @timeout_connect 10_000
   # Maximum time the websocket upgrade may take, in milliseconds.
   @timeout_ws_upgrade 10_000
-  # Options to pass to :gun.open/3
-  @gun_opts %{protocols: [:http], retry: 1_000_000_000}
 
   def update_status(pid, status, game, stream, type) do
     {idle_since, afk} =
@@ -58,7 +56,8 @@ defmodule Nostrum.Shard.Session do
     Connector.block_until_connect()
     Logger.metadata(shard: shard_num)
 
-    {:ok, worker} = :gun.open(:binary.bin_to_list(gateway), 443, @gun_opts)
+    gun_opts = %{protocols: [:http], retry: 1_000_000_000, tls_opts: Constants.gun_tls_opts()}
+    {:ok, worker} = :gun.open(:binary.bin_to_list(gateway), 443, gun_opts)
     {:ok, :http} = :gun.await_up(worker, @timeout_connect)
     stream = :gun.ws_upgrade(worker, @gateway_qs)
     await_ws_upgrade(worker, stream)

@@ -3300,12 +3300,12 @@ defmodule Nostrum.Api do
     [{"x-audit-log-reason", reason} | headers]
   end
 
-  @spec request(map()) :: {:ok} | error
+  @spec request(map()) :: {:ok} | {:ok, String.t()} | error
   def request(request) do
     GenServer.call(Ratelimiter, {:queue, request, nil}, :infinity)
   end
 
-  @spec request(atom(), String.t(), any, keyword() | map()) :: {:ok} | error
+  @spec request(atom(), String.t(), any, keyword() | map()) :: {:ok} | {:ok, String.t()} | error
   def request(method, route, body \\ "", params \\ []) do
     request = %{
       method: method,

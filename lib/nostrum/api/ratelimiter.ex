@@ -35,7 +35,10 @@ defmodule Nostrum.Api.Ratelimiter do
   def init([]) do
     :ets.new(:ratelimit_buckets, [:set, :public, :named_table])
     domain = to_charlist(Constants.domain())
-    {:ok, conn_pid} = :gun.open(domain, 443, %{retry: 1_000_000_000})
+
+    open_opts = %{retry: 1_000_000_000, tls_opts: Constants.gun_tls_opts()}
+    {:ok, conn_pid} = :gun.open(domain, 443, open_opts)
+
     {:ok, :http2} = :gun.await_up(conn_pid)
     {:ok, conn_pid}
   end
@@ -102,24 +105,24 @@ defmodule Nostrum.Api.Ratelimiter do
     # headers are optional, which is why we supply a default of 0.
     global_limit = header_value(headers, "x-ratelimit-global")
     remaining = header_value(headers, "x-ratelimit-remaining", "0") |> String.to_integer()
-    reset = header_value(headers, "x-ratelimit-reset", "0") |> String.to_float()
+    reset = header_value(headers, "x-ratelimit-reset", "0.0") |> String.to_float()
     retry_after = header_value(headers, "retry-after", "0") |> String.to_integer()
 
     origin_timestamp =
       headers
-      |> header_value("date", 0)
+      |> header_value("date", "0")
       |> date_string_to_unix
 
     latency = abs(origin_timestamp - Util.now())
 
     # If we have hit a global limit, Discord responds with a 429 and informs
     # us when we can retry. Our global bucket keeps track of this ratelimit.
-    if global_limit != nil, do: update_global_bucket(route, 0, retry_after, latency)
+    unless is_nil(global_limit), do: update_global_bucket(route, 0, retry_after, latency)
 
     # If Discord did send us other ratelimit information, we can also update
     # the ratelimiter bucket for this route. For some endpoints, such as
     # when creating a DM with a user, we may not retrieve ratelimit headers.
-    if reset != nil and remaining != nil, do: update_bucket(route, remaining, reset, latency)
+    if reset != 0 and remaining != 0, do: update_bucket(route, remaining, reset, latency)
 
     response
   end

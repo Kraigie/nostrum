@@ -38,7 +38,8 @@ defmodule Nostrum.Mixfile do
     [
       main: "intro",
       extras: extras(),
-      groups_for_modules: groups_for_modules()
+      groups_for_modules: groups_for_modules(),
+      assets: "docs/assets"
     ]
   end
 
@@ -91,6 +92,7 @@ defmodule Nostrum.Mixfile do
     [
       {:poison, "~> 3.0"},
       {:gun, "== 2.0.1", hex: :remedy_gun},
+      {:certifi, "~> 2.8"},
       {:kcl, "~> 1.4"},
       {:porcelain, "~> 2.0"},
       {:mime, "~> 1.6"},
