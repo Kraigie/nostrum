@@ -3286,6 +3286,115 @@ defmodule Nostrum.Api do
     request(:delete, Constants.interaction_followup_message(application_id, token, message_id))
   end
 
+  @doc """
+  Fetches command permissions for all commands for your application in a guild.
+
+  ## Parameters
+  - `application_id`: Application ID commands are registered under.
+    If not given, this will be fetched from `Me`.
+  - `guild_id`: Guild ID to fetch command permissions from.
+
+  ## Return value
+  This method returns a list of guild application command permission objects, see all available values on the [Discord API docs](https://discord.com/developers/docs/interactions/slash-commands#application-command-permissions-object-guild-application-command-permissions-structure).
+  """
+  @doc since: "0.5.0"
+  @spec get_guild_application_command_permissions(User.id(), Guild.id()) :: {:ok, [map()]} | error
+  def get_guild_application_command_permissions(
+        application_id \\ Me.get().id,
+        guild_id
+      ) do
+    request(:get, Constants.guild_application_command_permissions(application_id, guild_id))
+    |> handle_request_with_decode
+  end
+
+  @doc """
+  Fetches command permissions for a specific command for your application in a guild.
+
+  ## Parameters
+  - `application_id`: Application ID commands are registered under.
+    If not given, this will be fetched from `Me`.
+  - `guild_id`: Guild ID to fetch command permissions from.
+  - `command_id`: Command ID to fetch permissions for.
+
+  ## Return value
+  This method returns a single guild application command permission object, see all available values on the [Discord API docs](https://discord.com/developers/docs/interactions/slash-commands#application-command-permissions-object-guild-application-command-permissions-structure).
+  """
+  @doc since: "0.5.0"
+  @spec get_application_command_permissions(User.id(), Guild.id(), Snowflake.t()) ::
+          {:ok, map()} | error
+  def get_application_command_permissions(
+        application_id \\ Me.get().id,
+        guild_id,
+        command_id
+      ) do
+    request(
+      :get,
+      Constants.guild_application_command_permissions(application_id, guild_id, command_id)
+    )
+    |> handle_request_with_decode
+  end
+
+  @doc """
+  Edits command permissions for a specific command for your application in a guild. You can only add up to 10 permission overwrites for a command.
+
+  ## Parameters
+  - `application_id`: Application ID commands are registered under.
+    If not given, this will be fetched from `Me`.
+  - `guild_id`: Guild ID to fetch command permissions from.
+  - `command_id`: Command ID to fetch permissions for.
+  - `permissions`: List of [application command permissions](https://discord.com/developers/docs/interactions/slash-commands#application-command-permissions-object-application-command-permissions-structure)
+
+  ## Return value
+  This method returns a guild application command permission object, see all available values on the [Discord API docs](https://discord.com/developers/docs/interactions/slash-commands#application-command-permissions-object-guild-application-command-permissions-structure).
+  """
+  @doc since: "0.5.0"
+  @spec edit_application_command_permissions(User.id(), Guild.id(), Snowflake.t(), [map()]) ::
+          {:ok, map()} | error
+  def edit_application_command_permissions(
+        application_id \\ Me.get().id,
+        guild_id,
+        command_id,
+        permissions
+      ) do
+    request(
+      :put,
+      Constants.guild_application_command_permissions(application_id, guild_id, command_id),
+      %{
+        permissions: permissions
+      }
+    )
+    |> handle_request_with_decode
+  end
+
+  @doc """
+  Edits command permissions for a specific command for your application in a guild. You can only add up to 10 permission overwrites for a command.
+
+  ## Parameters
+  - `application_id`: Application ID commands are registered under.
+    If not given, this will be fetched from `Me`.
+  - `guild_id`: Guild ID to fetch command permissions from.
+  - `command_id`: Command ID to fetch permissions for.
+  - `permissions`: List of partial [guild application command permissions](hhttps://discord.com/developers/docs/interactions/slash-commands#application-command-permissions-object-guild-application-command-permissions-structure) with `id` and `permissions`. You can add up to 10 overwrites per command.
+
+  ## Return value
+  This method returns a guild application command permission object, see all available values on the [Discord API docs](https://discord.com/developers/docs/interactions/slash-commands#application-command-permissions-object-guild-application-command-permissions-structure).
+  """
+  @doc since: "0.5.0"
+  @spec batch_edit_application_command_permissions(User.id(), Guild.id(), [map()]) ::
+          {:ok, map()} | error
+  def batch_edit_application_command_permissions(
+        application_id \\ Me.get().id,
+        guild_id,
+        permissions
+      ) do
+    request(
+      :put,
+      Constants.guild_application_command_permissions(application_id, guild_id),
+      permissions
+    )
+    |> handle_request_with_decode
+  end
+
   @spec maybe_add_reason(String.t() | nil) :: list()
   defp maybe_add_reason(reason) do
     maybe_add_reason(reason, [{"content-type", "application/json"}])
