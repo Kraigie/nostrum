@@ -89,10 +89,7 @@ defmodule Nostrum.Voice.Session do
   end
 
   def handle_info({:gun_ws, _worker, stream, {:text, frame}}, state) do
-    payload =
-      frame
-      |> :erlang.iolist_to_binary()
-      |> Poison.decode!()
+    payload = Jason.decode!(frame) # Jason.decode calls iodata_to_binary internally
 
     from_handle =
       payload["op"]

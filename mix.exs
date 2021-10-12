@@ -90,7 +90,7 @@ defmodule Nostrum.Mixfile do
 
   defp deps do
     [
-      {:poison, "~> 3.0"},
+      {:jason, "~> 1.2"},
       {:gun, "== 2.0.1", hex: :remedy_gun},
       {:certifi, "~> 2.8"},
       {:kcl, "~> 1.4"},

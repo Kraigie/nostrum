@@ -4,7 +4,6 @@ defmodule Nostrum.Struct.Embed.Image do
   """
 
   alias Nostrum.Util
-  alias Poison.Encoder
 
   defstruct [
     :url,
@@ -13,13 +12,13 @@ defmodule Nostrum.Struct.Embed.Image do
     :width
   ]
 
-  defimpl Encoder do
+  defimpl Jason.Encoder do
     def encode(image, options) do
       image
       |> Map.from_struct()
       |> Enum.filter(fn {_, v} -> v != nil end)
       |> Map.new()
-      |> Encoder.encode(options)
+      |> Jason.Encode.map(options)
     end
   end
 

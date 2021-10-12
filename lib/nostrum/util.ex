@@ -24,7 +24,7 @@ defmodule Nostrum.Util do
   """
   defmacro nostrum_struct(body) do
     quote do
-      @derive [Poison.Encoder]
+      @derive [Jason.Encoder]
       defstruct Map.keys(unquote(body))
 
       def p_encode do
@@ -150,7 +150,7 @@ defmodule Nostrum.Util do
         raise(Nostrum.Error.ApiError, status_code: code, message: message)
 
       {:ok, body} ->
-        body = Poison.decode!(body)
+        body = Jason.decode!(body)
 
         "wss://" <> url = body["url"]
         shards = if body["shards"], do: body["shards"], else: 1

@@ -14,7 +14,7 @@ defmodule Nostrum.Struct.Guild.UnavailableGuild do
           unavailable: unavailable
         }
 
-  @derive [Poison.Encoder]
+  @derive [Jason.Encoder]
   defstruct [
     :id,
     :unavailable

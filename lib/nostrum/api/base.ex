@@ -39,7 +39,7 @@ defmodule Nostrum.Api.Base do
 
   def process_request_body(""), do: ""
   def process_request_body({:multipart, content}), do: content
-  def process_request_body(body), do: Poison.encode!(body)
+  def process_request_body(body), do: Jason.encode!(body)
 
   def process_request_headers(headers) do
     user_agent = [

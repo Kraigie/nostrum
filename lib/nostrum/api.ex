@@ -54,7 +54,7 @@ defmodule Nostrum.Api do
   @typedoc """
   Represents a failed response from the API.
 
-  This occurs when hackney or HTTPoison fail, or when the API doesn't respond with `200` or `204`.
+  This occurs when `:gun` fails, or when the API doesn't respond with `200` or `204`.
   """
   @type error :: {:error, Nostrum.Error.ApiError.t()}
 
@@ -275,7 +275,7 @@ defmodule Nostrum.Api do
     payload_json =
       options
       |> Map.delete(:files)
-      |> Poison.encode!()
+      |> Jason.encode!()
 
     boundary = generate_boundary()
 
@@ -3475,7 +3475,7 @@ defmodule Nostrum.Api do
   end
 
   defp handle_request_with_decode(response)
-  defp handle_request_with_decode({:ok, body}), do: {:ok, Poison.decode!(body, keys: :atoms)}
+  defp handle_request_with_decode({:ok, body}), do: {:ok, Jason.decode!(body, keys: :atoms)}
   defp handle_request_with_decode({:error, _} = error), do: error
 
   defp handle_request_with_decode(response, type)
@@ -3486,7 +3486,7 @@ defmodule Nostrum.Api do
   defp handle_request_with_decode({:ok, body}, type) do
     convert =
       body
-      |> Poison.decode!(keys: :atoms)
+      |> Jason.decode!(keys: :atoms)
       |> Util.cast(type)
 
     {:ok, convert}
