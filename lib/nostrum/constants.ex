@@ -103,6 +103,12 @@ defmodule Nostrum.Constants do
   def guild_application_commands(application_id, guild_id),
     do: "/applications/#{application_id}/guilds/#{guild_id}/commands"
 
+  def guild_application_command_permissions(application_id, guild_id),
+    do: "/applications/#{application_id}/guilds/#{guild_id}/commands/permissions"
+
+  def guild_application_command_permissions(application_id, guild_id, command_id),
+    do: "/applications/#{application_id}/guilds/#{guild_id}/commands/#{command_id}/permissions"
+
   def interaction_callback(interaction_id, interaction_token),
     do: "/interactions/#{interaction_id}/#{interaction_token}/callback"
 
