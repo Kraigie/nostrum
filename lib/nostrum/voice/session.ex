@@ -89,7 +89,8 @@ defmodule Nostrum.Voice.Session do
   end
 
   def handle_info({:gun_ws, _worker, stream, {:text, frame}}, state) do
-    payload = Jason.decode!(frame) # Jason.decode calls iodata_to_binary internally
+    # Jason.decode calls iodata_to_binary internally
+    payload = Jason.decode!(frame)
 
     from_handle =
       payload["op"]
