@@ -1,6 +1,6 @@
 defmodule Nostrum.Struct.Interaction do
   @moduledoc "Slash command invocation struct."
-  # https://discord.com/developers/docs/interactions/slash-commands#interaction
+  # https://discord.com/developers/docs/interactions/application-commands#interaction
 
   alias Nostrum.Snowflake
   alias Nostrum.Struct.ApplicationCommandInteractionData
@@ -84,7 +84,7 @@ defmodule Nostrum.Struct.Interaction do
   A command invocation for slash commands.
 
   Official reference:
-  https://discord.com/developers/docs/interactions/slash-commands#interaction
+  https://discord.com/developers/docs/interactions/application-commands#interaction
   """
   @type t :: %__MODULE__{
           id: id,

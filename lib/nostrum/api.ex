@@ -2954,7 +2954,7 @@ defmodule Nostrum.Api do
 
   ## Return value
   A list of ``ApplicationCommand``s on success. See the official reference:
-  https://discord.com/developers/docs/interactions/slash-commands#applicationcommand
+  https://discord.com/developers/docs/interactions/application-commands#applicationcommand
 
   ## Example
 
@@ -2993,7 +2993,7 @@ defmodule Nostrum.Api do
 
   ## Return value
   The created command. See the official reference:
-  https://discord.com/developers/docs/interactions/slash-commands#create-global-application-command
+  https://discord.com/developers/docs/interactions/application-commands#create-global-application-command
 
   ## Example
 
@@ -3023,7 +3023,7 @@ defmodule Nostrum.Api do
 
   ## Return value
   The updated command. See the official reference:
-  https://discord.com/developers/docs/interactions/slash-commands#edit-global-application-command
+  https://discord.com/developers/docs/interactions/application-commands#edit-global-application-command
   """
   @spec edit_global_application_command(Snowflake.t(), map()) :: {:ok, map()} | error
   @spec edit_global_application_command(User.id(), Snowflake.t(), map()) :: {:ok, map()} | error
@@ -3068,7 +3068,7 @@ defmodule Nostrum.Api do
 
   ## Return value
   Updated list of global application commands. See the official reference:
-  https://discord.com/developers/docs/interactions/slash-commands#bulk-overwrite-global-application-commands
+  https://discord.com/developers/docs/interactions/application-commands#bulk-overwrite-global-application-commands
   """
   @doc since: "0.5.0"
   @spec bulk_overwrite_global_application_commands([map()]) :: {:ok, [map()]} | error
@@ -3089,7 +3089,7 @@ defmodule Nostrum.Api do
 
   ## Return value
   A list of ``ApplicationCommand``s on success. See the official reference:
-  https://discord.com/developers/docs/interactions/slash-commands#applicationcommand
+  https://discord.com/developers/docs/interactions/application-commands#applicationcommand
   """
   @spec get_guild_application_commands(Guild.id()) :: {:ok, [map()]} | error
   @spec get_guild_application_commands(User.id(), Guild.id()) :: {:ok, [map()]} | error
@@ -3111,7 +3111,7 @@ defmodule Nostrum.Api do
 
   ## Return value
   The created command. See the official reference:
-  https://discord.com/developers/docs/interactions/slash-commands#create-guild-application-command
+  https://discord.com/developers/docs/interactions/application-commands#create-guild-application-command
   """
   @spec create_guild_application_command(Guild.id(), map()) :: {:ok, map()} | error
   @spec create_guild_application_command(User.id(), Guild.id(), map()) :: {:ok, map()} | error
@@ -3138,7 +3138,7 @@ defmodule Nostrum.Api do
 
   ## Return value
   The updated command. See the official reference:
-  https://discord.com/developers/docs/interactions/slash-commands#edit-guild-application-command
+  https://discord.com/developers/docs/interactions/application-commands#edit-guild-application-command
   """
   @spec edit_guild_application_command(Guild.id(), Snowflake.t(), map()) :: {:ok, map()} | error
   @spec edit_guild_application_command(User.id(), Guild.id(), Snowflake.t(), map()) ::
@@ -3192,7 +3192,7 @@ defmodule Nostrum.Api do
 
   ## Return value
   Updated list of guild application commands. See the official reference:
-  https://discord.com/developers/docs/interactions/slash-commands#bulk-overwrite-guild-application-commands
+  https://discord.com/developers/docs/interactions/application-commands#bulk-overwrite-guild-application-commands
   """
   @doc since: "0.5.0"
   @spec bulk_overwrite_guild_application_commands(Guild.id(), [map()]) :: {:ok, [map()]} | error
@@ -3228,7 +3228,7 @@ defmodule Nostrum.Api do
   ## Parameters
   - `id`: The interaction ID to which the response should be created.
   - `token`: The interaction token.
-  - `response`: An [`InteractionResponse`](https://discord.com/developers/docs/interactions/slash-commands#interaction-interaction-response)
+  - `response`: An [`InteractionResponse`](https://discord.com/developers/docs/interactions/application-commands#interaction-interaction-response)
     object. See the linked documentation.
 
   ## Example
@@ -3295,7 +3295,7 @@ defmodule Nostrum.Api do
   - `guild_id`: Guild ID to fetch command permissions from.
 
   ## Return value
-  This method returns a list of guild application command permission objects, see all available values on the [Discord API docs](https://discord.com/developers/docs/interactions/slash-commands#application-command-permissions-object-guild-application-command-permissions-structure).
+  This method returns a list of guild application command permission objects, see all available values on the [Discord API docs](https://discord.com/developers/docs/interactions/application-commands#application-command-permissions-object-guild-application-command-permissions-structure).
   """
   @doc since: "0.5.0"
   @spec get_guild_application_command_permissions(Guild.id()) :: {:ok, [map()]} | error
@@ -3318,7 +3318,7 @@ defmodule Nostrum.Api do
   - `command_id`: Command ID to fetch permissions for.
 
   ## Return value
-  This method returns a single guild application command permission object, see all available values on the [Discord API docs](https://discord.com/developers/docs/interactions/slash-commands#application-command-permissions-object-guild-application-command-permissions-structure).
+  This method returns a single guild application command permission object, see all available values on the [Discord API docs](https://discord.com/developers/docs/interactions/application-commands#application-command-permissions-object-guild-application-command-permissions-structure).
   """
   @doc since: "0.5.0"
   @spec get_application_command_permissions(Guild.id(), Snowflake.t()) ::
@@ -3345,10 +3345,10 @@ defmodule Nostrum.Api do
     If not given, this will be fetched from `Me`.
   - `guild_id`: Guild ID to fetch command permissions from.
   - `command_id`: Command ID to fetch permissions for.
-  - `permissions`: List of [application command permissions](https://discord.com/developers/docs/interactions/slash-commands#application-command-permissions-object-application-command-permissions-structure)
+  - `permissions`: List of [application command permissions](https://discord.com/developers/docs/interactions/application-commands#application-command-permissions-object-application-command-permissions-structure)
 
   ## Return value
-  This method returns a guild application command permission object, see all available values on the [Discord API docs](https://discord.com/developers/docs/interactions/slash-commands#application-command-permissions-object-guild-application-command-permissions-structure).
+  This method returns a guild application command permission object, see all available values on the [Discord API docs](https://discord.com/developers/docs/interactions/application-commands#application-command-permissions-object-guild-application-command-permissions-structure).
   """
   @doc since: "0.5.0"
   @spec edit_application_command_permissions(Guild.id(), Snowflake.t(), [map()]) ::
@@ -3379,10 +3379,10 @@ defmodule Nostrum.Api do
     If not given, this will be fetched from `Me`.
   - `guild_id`: Guild ID to fetch command permissions from.
   - `command_id`: Command ID to fetch permissions for.
-  - `permissions`: List of partial [guild application command permissions](hhttps://discord.com/developers/docs/interactions/slash-commands#application-command-permissions-object-guild-application-command-permissions-structure) with `id` and `permissions`. You can add up to 10 overwrites per command.
+  - `permissions`: List of partial [guild application command permissions](hhttps://discord.com/developers/docs/interactions/application-commands#application-command-permissions-object-guild-application-command-permissions-structure) with `id` and `permissions`. You can add up to 10 overwrites per command.
 
   ## Return value
-  This method returns a guild application command permission object, see all available values on the [Discord API docs](https://discord.com/developers/docs/interactions/slash-commands#application-command-permissions-object-guild-application-command-permissions-structure).
+  This method returns a guild application command permission object, see all available values on the [Discord API docs](https://discord.com/developers/docs/interactions/application-commands#application-command-permissions-object-guild-application-command-permissions-structure).
   """
   @doc since: "0.5.0"
   @spec batch_edit_application_command_permissions(Guild.id(), [map()]) ::

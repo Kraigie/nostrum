@@ -17,7 +17,7 @@ defmodule Nostrum.Struct.ApplicationCommandInteractionDataOption do
   @typedoc """
   The application command option type.
 
-  See https://discord.com/developers/docs/interactions/slash-commands#application-command-object-application-command-option-type
+  See https://discord.com/developers/docs/interactions/application-commands#application-command-object-application-command-option-type
   for more details.
   """
   @typedoc since: "0.5.0"
