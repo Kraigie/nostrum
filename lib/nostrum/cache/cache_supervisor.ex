@@ -20,8 +20,9 @@ defmodule Nostrum.Cache.CacheSupervisor do
   def init([]) do
     children = [
       Nostrum.Cache.Me,
-      # Uses the configured cache implementation.
-      Nostrum.Cache.GuildCache
+      # Uses the configured cache implementations.
+      Nostrum.Cache.GuildCache,
+      Nostrum.Cache.PresenceCache
     ]
 
     Supervisor.init(children, strategy: :one_for_one)
