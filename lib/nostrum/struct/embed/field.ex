@@ -4,6 +4,7 @@ defmodule Nostrum.Struct.Embed.Field do
   """
 
   alias Nostrum.Util
+  alias Jason.{Encode, Encoder}
 
   defstruct [
     :name,
@@ -11,13 +12,13 @@ defmodule Nostrum.Struct.Embed.Field do
     :inline
   ]
 
-  defimpl Jason.Encoder do
+  defimpl Encoder do
     def encode(field, options) do
       field
       |> Map.from_struct()
       |> Enum.filter(fn {_, v} -> v != nil end)
       |> Map.new()
-      |> Jason.Encode.map(options)
+      |> Encode.map(options)
     end
   end
 
