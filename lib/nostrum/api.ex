@@ -3298,6 +3298,7 @@ defmodule Nostrum.Api do
   This method returns a list of guild application command permission objects, see all available values on the [Discord API docs](https://discord.com/developers/docs/interactions/slash-commands#application-command-permissions-object-guild-application-command-permissions-structure).
   """
   @doc since: "0.5.0"
+  @spec get_guild_application_command_permissions(Guild.id()) :: {:ok, [map()]} | error
   @spec get_guild_application_command_permissions(User.id(), Guild.id()) :: {:ok, [map()]} | error
   def get_guild_application_command_permissions(
         application_id \\ Me.get().id,
@@ -3320,6 +3321,8 @@ defmodule Nostrum.Api do
   This method returns a single guild application command permission object, see all available values on the [Discord API docs](https://discord.com/developers/docs/interactions/slash-commands#application-command-permissions-object-guild-application-command-permissions-structure).
   """
   @doc since: "0.5.0"
+  @spec get_application_command_permissions(Guild.id(), Snowflake.t()) ::
+          {:ok, map()} | error
   @spec get_application_command_permissions(User.id(), Guild.id(), Snowflake.t()) ::
           {:ok, map()} | error
   def get_application_command_permissions(
@@ -3348,6 +3351,8 @@ defmodule Nostrum.Api do
   This method returns a guild application command permission object, see all available values on the [Discord API docs](https://discord.com/developers/docs/interactions/slash-commands#application-command-permissions-object-guild-application-command-permissions-structure).
   """
   @doc since: "0.5.0"
+  @spec edit_application_command_permissions(Guild.id(), Snowflake.t(), [map()]) ::
+          {:ok, map()} | error
   @spec edit_application_command_permissions(User.id(), Guild.id(), Snowflake.t(), [map()]) ::
           {:ok, map()} | error
   def edit_application_command_permissions(
@@ -3380,6 +3385,8 @@ defmodule Nostrum.Api do
   This method returns a guild application command permission object, see all available values on the [Discord API docs](https://discord.com/developers/docs/interactions/slash-commands#application-command-permissions-object-guild-application-command-permissions-structure).
   """
   @doc since: "0.5.0"
+  @spec batch_edit_application_command_permissions(Guild.id(), [map()]) ::
+          {:ok, map()} | error
   @spec batch_edit_application_command_permissions(User.id(), Guild.id(), [map()]) ::
           {:ok, map()} | error
   def batch_edit_application_command_permissions(
