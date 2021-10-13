@@ -47,7 +47,20 @@ defmodule Nostrum.Api do
 
   alias Nostrum.Cache.Me
   alias Nostrum.{Constants, Snowflake, Util}
-  alias Nostrum.Struct.{Channel, Embed, Emoji, Guild, Interaction, Invite, Message, User, Webhook}
+
+  alias Nostrum.Struct.{
+    ApplicationCommand,
+    Channel,
+    Embed,
+    Emoji,
+    Guild,
+    Interaction,
+    Invite,
+    Message,
+    User,
+    Webhook
+  }
+
   alias Nostrum.Struct.Guild.{AuditLog, AuditLogEntry, Member, Role}
   alias Nostrum.Shard.{Session, Supervisor}
 
@@ -3003,8 +3016,10 @@ defmodule Nostrum.Api do
   )
   ```
   """
-  @spec create_global_application_command(map()) :: {:ok, map()} | error
-  @spec create_global_application_command(User.id(), map()) :: {:ok, map()} | error
+  @spec create_global_application_command(ApplicationCommand.application_command_map()) ::
+          {:ok, map()} | error
+  @spec create_global_application_command(User.id(), ApplicationCommand.application_command_map()) ::
+          {:ok, map()} | error
   def create_global_application_command(application_id \\ Me.get().id, command) do
     request(:post, Constants.global_application_commands(application_id), command)
     |> handle_request_with_decode
@@ -3071,8 +3086,11 @@ defmodule Nostrum.Api do
   https://discord.com/developers/docs/interactions/application-commands#bulk-overwrite-global-application-commands
   """
   @doc since: "0.5.0"
-  @spec bulk_overwrite_global_application_commands([map()]) :: {:ok, [map()]} | error
-  @spec bulk_overwrite_global_application_commands(User.id(), [map()]) :: {:ok, [map()]} | error
+  @spec bulk_overwrite_global_application_commands([ApplicationCommand.application_command_map()]) ::
+          {:ok, [map()]} | error
+  @spec bulk_overwrite_global_application_commands(User.id(), [
+          ApplicationCommand.application_command_map()
+        ]) :: {:ok, [map()]} | error
   def bulk_overwrite_global_application_commands(application_id \\ Me.get().id, commands) do
     request(:put, Constants.global_application_commands(application_id), commands)
     |> handle_request_with_decode
@@ -3113,8 +3131,13 @@ defmodule Nostrum.Api do
   The created command. See the official reference:
   https://discord.com/developers/docs/interactions/application-commands#create-guild-application-command
   """
-  @spec create_guild_application_command(Guild.id(), map()) :: {:ok, map()} | error
-  @spec create_guild_application_command(User.id(), Guild.id(), map()) :: {:ok, map()} | error
+  @spec create_guild_application_command(Guild.id(), ApplicationCommand.application_command_map()) ::
+          {:ok, map()} | error
+  @spec create_guild_application_command(
+          User.id(),
+          Guild.id(),
+          ApplicationCommand.application_command_map()
+        ) :: {:ok, map()} | error
   def create_guild_application_command(
         application_id \\ Me.get().id,
         guild_id,
@@ -3195,8 +3218,12 @@ defmodule Nostrum.Api do
   https://discord.com/developers/docs/interactions/application-commands#bulk-overwrite-guild-application-commands
   """
   @doc since: "0.5.0"
-  @spec bulk_overwrite_guild_application_commands(Guild.id(), [map()]) :: {:ok, [map()]} | error
-  @spec bulk_overwrite_guild_application_commands(User.id(), Guild.id(), [map()]) ::
+  @spec bulk_overwrite_guild_application_commands(Guild.id(), [
+          ApplicationCommand.application_command_map()
+        ]) :: {:ok, [map()]} | error
+  @spec bulk_overwrite_guild_application_commands(User.id(), Guild.id(), [
+          ApplicationCommand.application_command_map()
+        ]) ::
           {:ok, [map()]} | error
   def bulk_overwrite_guild_application_commands(
         application_id \\ Me.get().id,
