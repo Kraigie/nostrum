@@ -81,7 +81,9 @@ defmodule Nostrum.Shard.Payload do
   defp build_payload(data, opcode_name) do
     opcode = Constants.opcode_from_name(opcode_name)
 
+    # term_to_iovec is the same as term_to_binary except it instead returns an iolist
+    # a safe optimization since :gun.ws_send accepts an iolist
     %{"op" => opcode, "d" => data}
-    |> :erlang.term_to_binary()
+    |> :erlang.term_to_iovec()
   end
 end

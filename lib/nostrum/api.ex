@@ -275,7 +275,7 @@ defmodule Nostrum.Api do
     payload_json =
       options
       |> Map.delete(:files)
-      |> Jason.encode!()
+      |> Jason.encode_to_iodata!()
 
     boundary = generate_boundary()
 
@@ -3514,23 +3514,31 @@ defmodule Nostrum.Api do
 
   defp create_multipart_body(files, json, boundary) do
     json_mime = MIME.type("json")
-    json_size = byte_size(json)
+    json_size = :erlang.iolist_size(json)
 
     file_parts =
       files
       |> Enum.with_index(1)
-      |> Enum.reduce(~s|--#{boundary}#{@crlf}|, fn {f, i}, acc ->
-        acc <>
-          create_file_part_for_multipart(f, i) <>
-          ~s|#{@crlf}--#{boundary}#{@crlf}|
+      |> Enum.reduce([~s|--#{boundary}#{@crlf}|], fn {f, i}, acc ->
+        [
+          acc
+          | [
+              create_file_part_for_multipart(f, i),
+              ~s|#{@crlf}--#{boundary}#{@crlf}|
+            ]
+        ]
       end)
 
-    file_parts <>
-      ~s|content-length: #{json_size}#{@crlf}| <>
-      ~s|content-type: #{json_mime}#{@crlf}| <>
-      ~s|content-disposition: form-data; name="payload_json"#{@crlf}#{@crlf}| <>
-      json <>
-      ~s|#{@crlf}--#{boundary}--#{@crlf}|
+    [
+      file_parts
+      | [
+          ~s|content-length: #{json_size}#{@crlf}|,
+          ~s|content-type: #{json_mime}#{@crlf}|,
+          ~s|content-disposition: form-data; name="payload_json"#{@crlf}#{@crlf}|,
+          json,
+          ~s|#{@crlf}--#{boundary}--#{@crlf}|
+        ]
+    ]
   end
 
   defp create_multipart_body(%{content: content, tts: tts, file: file}, boundary) do
@@ -3539,17 +3547,19 @@ defmodule Nostrum.Api do
     tts_mime = MIME.type("")
     tts_size = byte_size(tts)
 
-    ~s|--#{boundary}#{@crlf}| <>
-      ~s|content-length: #{file_size}#{@crlf}| <>
-      ~s|content-type: #{file_mime}#{@crlf}| <>
-      ~s|content-disposition: form-data; name="file"; filename="#{file}"#{@crlf}#{@crlf}| <>
-      content <>
-      ~s|#{@crlf}--#{boundary}#{@crlf}| <>
-      ~s|content-length: #{tts_size}#{@crlf}| <>
-      ~s|content-type: #{tts_mime}#{@crlf}| <>
-      ~s|content-disposition: form-data; name="tts"#{@crlf}#{@crlf}| <>
-      tts <>
+    [
+      ~s|--#{boundary}#{@crlf}|,
+      ~s|content-length: #{file_size}#{@crlf}|,
+      ~s|content-type: #{file_mime}#{@crlf}|,
+      ~s|content-disposition: form-data; name="file"; filename="#{file}"#{@crlf}#{@crlf}|,
+      content,
+      ~s|#{@crlf}--#{boundary}#{@crlf}|,
+      ~s|content-length: #{tts_size}#{@crlf}|,
+      ~s|content-type: #{tts_mime}#{@crlf}|,
+      ~s|content-disposition: form-data; name="tts"#{@crlf}#{@crlf}|,
+      tts,
       ~s|#{@crlf}--#{boundary}--#{@crlf}|
+    ]
   end
 
   def create_file_part_for_multipart(file, index) do
@@ -3558,10 +3568,12 @@ defmodule Nostrum.Api do
     file_mime = MIME.from_path(name)
     file_size = byte_size(body)
 
-    ~s|content-length: #{file_size}#{@crlf}| <>
-      ~s|content-type: #{file_mime}#{@crlf}| <>
-      ~s|content-disposition: form-data; name="file#{index}"; filename="#{name}"#{@crlf}#{@crlf}| <>
+    [
+      ~s|content-length: #{file_size}#{@crlf}|,
+      ~s|content-type: #{file_mime}#{@crlf}|,
+      ~s|content-disposition: form-data; name="file#{index}"; filename="#{name}"#{@crlf}#{@crlf}|,
       body
+    ]
   end
 
   defp get_file_contents(path) when is_binary(path) do
