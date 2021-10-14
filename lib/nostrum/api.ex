@@ -3040,8 +3040,15 @@ defmodule Nostrum.Api do
   The updated command. See the official reference:
   https://discord.com/developers/docs/interactions/application-commands#edit-global-application-command
   """
-  @spec edit_global_application_command(Snowflake.t(), ApplicationCommand.application_command_edit_map()) :: {:ok, map()} | error
-  @spec edit_global_application_command(User.id(), Snowflake.t(), ApplicationCommand.application_command_edit_map()) :: {:ok, map()} | error
+  @spec edit_global_application_command(
+          Snowflake.t(),
+          ApplicationCommand.application_command_edit_map()
+        ) :: {:ok, map()} | error
+  @spec edit_global_application_command(
+          User.id(),
+          Snowflake.t(),
+          ApplicationCommand.application_command_edit_map()
+        ) :: {:ok, map()} | error
   def edit_global_application_command(
         application_id \\ Me.get().id,
         command_id,
@@ -3163,8 +3170,17 @@ defmodule Nostrum.Api do
   The updated command. See the official reference:
   https://discord.com/developers/docs/interactions/application-commands#edit-guild-application-command
   """
-  @spec edit_guild_application_command(Guild.id(), Snowflake.t(), ApplicationCommand.application_command_edit_map()) :: {:ok, map()} | error
-  @spec edit_guild_application_command(User.id(), Guild.id(), Snowflake.t(), ApplicationCommand.application_command_edit_map()) ::
+  @spec edit_guild_application_command(
+          Guild.id(),
+          Snowflake.t(),
+          ApplicationCommand.application_command_edit_map()
+        ) :: {:ok, map()} | error
+  @spec edit_guild_application_command(
+          User.id(),
+          Guild.id(),
+          Snowflake.t(),
+          ApplicationCommand.application_command_edit_map()
+        ) ::
           {:ok, map()} | error
   def edit_guild_application_command(
         application_id \\ Me.get().id,
