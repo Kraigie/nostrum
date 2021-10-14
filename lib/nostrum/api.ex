@@ -3040,8 +3040,8 @@ defmodule Nostrum.Api do
   The updated command. See the official reference:
   https://discord.com/developers/docs/interactions/application-commands#edit-global-application-command
   """
-  @spec edit_global_application_command(Snowflake.t(), map()) :: {:ok, map()} | error
-  @spec edit_global_application_command(User.id(), Snowflake.t(), map()) :: {:ok, map()} | error
+  @spec edit_global_application_command(Snowflake.t(), ApplicationCommand.application_command_edit_map()) :: {:ok, map()} | error
+  @spec edit_global_application_command(User.id(), Snowflake.t(), ApplicationCommand.application_command_edit_map()) :: {:ok, map()} | error
   def edit_global_application_command(
         application_id \\ Me.get().id,
         command_id,
@@ -3163,8 +3163,8 @@ defmodule Nostrum.Api do
   The updated command. See the official reference:
   https://discord.com/developers/docs/interactions/application-commands#edit-guild-application-command
   """
-  @spec edit_guild_application_command(Guild.id(), Snowflake.t(), map()) :: {:ok, map()} | error
-  @spec edit_guild_application_command(User.id(), Guild.id(), Snowflake.t(), map()) ::
+  @spec edit_guild_application_command(Guild.id(), Snowflake.t(), ApplicationCommand.application_command_edit_map()) :: {:ok, map()} | error
+  @spec edit_guild_application_command(User.id(), Guild.id(), Snowflake.t(), ApplicationCommand.application_command_edit_map()) ::
           {:ok, map()} | error
   def edit_guild_application_command(
         application_id \\ Me.get().id,
@@ -3378,9 +3378,13 @@ defmodule Nostrum.Api do
   This method returns a guild application command permission object, see all available values on the [Discord API docs](https://discord.com/developers/docs/interactions/application-commands#application-command-permissions-object-guild-application-command-permissions-structure).
   """
   @doc since: "0.5.0"
-  @spec edit_application_command_permissions(Guild.id(), Snowflake.t(), [map()]) ::
+  @spec edit_application_command_permissions(Guild.id(), Snowflake.t(), [
+          ApplicationCommand.application_command_permissions()
+        ]) ::
           {:ok, map()} | error
-  @spec edit_application_command_permissions(User.id(), Guild.id(), Snowflake.t(), [map()]) ::
+  @spec edit_application_command_permissions(User.id(), Guild.id(), Snowflake.t(), [
+          ApplicationCommand.application_command_permissions()
+        ]) ::
           {:ok, map()} | error
   def edit_application_command_permissions(
         application_id \\ Me.get().id,
@@ -3412,9 +3416,19 @@ defmodule Nostrum.Api do
   This method returns a guild application command permission object, see all available values on the [Discord API docs](https://discord.com/developers/docs/interactions/application-commands#application-command-permissions-object-guild-application-command-permissions-structure).
   """
   @doc since: "0.5.0"
-  @spec batch_edit_application_command_permissions(Guild.id(), [map()]) ::
+  @spec batch_edit_application_command_permissions(Guild.id(), [
+          %{
+            id: Snowflake.t(),
+            permissions: [ApplicationCommand.application_command_permissions()]
+          }
+        ]) ::
           {:ok, map()} | error
-  @spec batch_edit_application_command_permissions(User.id(), Guild.id(), [map()]) ::
+  @spec batch_edit_application_command_permissions(User.id(), Guild.id(), [
+          %{
+            id: Snowflake.t(),
+            permissions: [ApplicationCommand.application_command_permissions()]
+          }
+        ]) ::
           {:ok, map()} | error
   def batch_edit_application_command_permissions(
         application_id \\ Me.get().id,

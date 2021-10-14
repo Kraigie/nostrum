@@ -121,6 +121,8 @@ defmodule Nostrum.Struct.Interaction do
 end
 
 defmodule Nostrum.Struct.ApplicationCommand do
+  alias Nostrum.Snowflake
+
   @moduledoc """
   typespecs for creating Application Commands
 
@@ -204,4 +206,33 @@ defmodule Nostrum.Struct.ApplicationCommand do
           optional(:default_permission) => boolean(),
           optional(:options) => [command_option()]
         }
+
+  @typedoc """
+  When editing an existing application command, only the following fields may be updated,
+  missing fields will remain unchanged.
+  """
+  @type application_command_edit_map :: %{
+          optional(:name) => command_name(),
+          optional(:description) => command_description(),
+          optional(:options) => [command_option()],
+          optional(:default_permission) => boolean()
+        }
+
+  @typedoc """
+  For editing the permissions for an application command
+   - `:id` is the id of the role or user
+   - `:type` is the type of the id, either `role` or `user`
+   - `:allow` is whether the role or user should be allowed to use the command
+  """
+  @type application_command_permissions :: %{
+          id: Snowflake.t(),
+          type: application_command_permission_type(),
+          permission: boolean()
+        }
+
+  @typedoc """
+  - `1` for `ROLE`
+  - `2` for `USER`
+  """
+  @type application_command_permission_type :: pos_integer()
 end
