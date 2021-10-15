@@ -1925,7 +1925,7 @@ defmodule Nostrum.Api do
       method: :put,
       route: Constants.guild_ban(guild_id, user_id),
       body: %{delete_message_days: days_to_delete},
-      options: [],
+      params: [],
       headers: maybe_add_reason(reason)
     })
   end
