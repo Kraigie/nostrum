@@ -96,7 +96,7 @@ defmodule Nostrum.Struct.InteractionTest do
                member: %Member{
                  user: %User{}
                },
-               user: nil,
+               user: %User{},
                token: "bob",
                type: 2,
                version: 1
