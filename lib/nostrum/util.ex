@@ -10,53 +10,6 @@ defmodule Nostrum.Util do
   require Logger
 
   @doc """
-  Helper for defining all the methods used for struct and encoding transformations.
-
-  ## Example
-  ``` Elixir
-  Nostrum.Util.nostrum_struct(%{
-    author: User,
-    mentions: [User],
-    mention_roles: [User],
-    embeds: [Embed]
-  })
-  ```
-  """
-  defmacro nostrum_struct(body) do
-    quote do
-      @derive [Jason.Encoder]
-      defstruct Map.keys(unquote(body))
-
-      def p_encode do
-        encoded =
-          for {k, v} <- unquote(body), v != nil, into: %{} do
-            case v do
-              [v] -> {k, [v.p_encode]}
-              v -> {k, v.p_encode}
-            end
-          end
-
-        struct(__ENV__.module, encoded)
-      end
-
-      def to_struct(map) do
-        alias Nostrum.Util
-
-        new_map =
-          for {k, v} <- unquote(body), into: %{} do
-            case v do
-              nil -> {k, Map.get(map, k)}
-              [v] -> {k, Util.enum_to_struct(Map.get(map, k), v)}
-              v -> {k, apply(v, :to_struct, [Map.get(map, k)])}
-            end
-          end
-
-        struct(__ENV__.module, new_map)
-      end
-    end
-  end
-
-  @doc """
   Returns the number of milliseconds since unix epoch.
   """
   @spec now() :: integer
