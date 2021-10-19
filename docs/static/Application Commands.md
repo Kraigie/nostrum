@@ -9,10 +9,10 @@ by Discord users.
 ## Permissions required
 
 Quoting the [official Discord
-documentation](https://discord.com/developers/docs/interactions/application-commands#interaction):
+documentation](https://discord.com/developers/docs/interactions/application-commands#authorizing-your-application):
 
 > In order to make Commands work within a guild, the guild must authorize
-> your application with the applications.commands scope. The bot scope is not
+> your application with the `applications.commands` scope. The `bot` scope is not
 > enough.
 
 ## Getting started
