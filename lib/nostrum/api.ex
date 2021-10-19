@@ -2967,7 +2967,7 @@ defmodule Nostrum.Api do
 
   ## Return value
   A list of ``ApplicationCommand``s on success. See the official reference:
-  https://discord.com/developers/docs/interactions/application-commands#applicationcommand
+  https://discord.com/developers/docs/interactions/application-commands#application-command-object-application-command-structure
 
   ## Example
 
@@ -3114,7 +3114,7 @@ defmodule Nostrum.Api do
 
   ## Return value
   A list of ``ApplicationCommand``s on success. See the official reference:
-  https://discord.com/developers/docs/interactions/application-commands#applicationcommand
+  https://discord.com/developers/docs/interactions/application-commands#application-command-object-application-command-structure
   """
   @spec get_guild_application_commands(Guild.id()) :: {:ok, [map()]} | error
   @spec get_guild_application_commands(User.id(), Guild.id()) :: {:ok, [map()]} | error
@@ -3271,7 +3271,7 @@ defmodule Nostrum.Api do
   ## Parameters
   - `id`: The interaction ID to which the response should be created.
   - `token`: The interaction token.
-  - `response`: An [`InteractionResponse`](https://discord.com/developers/docs/interactions/application-commands#interaction-interaction-response)
+  - `response`: An [`InteractionResponse`](https://discord.com/developers/docs/interactions/receiving-and-responding#interaction-response-object)
     object. See the linked documentation.
 
   ## Example

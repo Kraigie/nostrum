@@ -66,7 +66,7 @@ defmodule Nostrum.Struct.ApplicationCommandInteractionData do
   Used as part of `t:Nostrum.Struct.Interaction.t/0`.
 
   Official reference:
-  https://discord.com/developers/docs/interactions/application-commands#interaction-applicationcommandinteractiondata
+  https://discord.com/developers/docs/interactions/receiving-and-responding#interaction-object
   """
   @type t :: %__MODULE__{
           id: id,
