@@ -59,6 +59,7 @@ defmodule Nostrum.Struct.ApplicationCommand do
    - required parameters on a command must precede optional ones
    - for subcommands and subcommand groups, `:options` are it's parameters
    - `:options` and `:choices` are mutually exclusive
+   - `:autocomplete` may not be set to true if `:choices` is present
    - if `:type` is 7 then `:channel_types` can be a list of allowed [channel types](https://discord.com/developers/docs/resources/channel#channel-object-channel-types)
 
   """
@@ -69,7 +70,8 @@ defmodule Nostrum.Struct.ApplicationCommand do
           optional(:required) => boolean(),
           optional(:choices) => [command_choice()],
           optional(:options) => [command_option()],
-          optional(:channel_types) => [pos_integer()]
+          optional(:channel_types) => [pos_integer()],
+          optional(:autocomplete) => boolean()
         }
 
   @typedoc """

@@ -9,7 +9,7 @@ defmodule Nostrum.Struct.ApplicationCommandInteractionDataOption do
   alias Nostrum.Struct.User
   alias Nostrum.Util
 
-  defstruct [:name, :type, :value, :options]
+  defstruct [:name, :type, :value, :options, :focused]
 
   @typedoc "Parameter name"
   @type name :: String.t()
@@ -21,7 +21,7 @@ defmodule Nostrum.Struct.ApplicationCommandInteractionDataOption do
   for more details.
   """
   @typedoc since: "0.5.0"
-  @type type :: 1..9
+  @type type :: 1..10
 
   @typedoc """
   Parameter value.
@@ -40,10 +40,22 @@ defmodule Nostrum.Struct.ApplicationCommandInteractionDataOption do
   - For `t:type/0` of `8`, this will be a `t:Nostrum.Struct.Guild.Role.id/0`. The
     corresponding role can be looked up in
     `t:Nostrum.Struct.ApplicationCommandInteractionData.resolved/0`.
+  - For `t:type/0` of `9`, this will be a `t:Nostrum.Struct.User.id/0` or `t:Nostrum.Struct.Guild.Role.id/0`. The
+    corresponding user or role can be looked up in
+    `t:Nostrum.Struct.ApplicationCommandInteractionData.resolved/0`.
+  - For `t:type/0` of `10`, this will be a `t:number/0`.
 
   Mutually exclusive with `options`. If `options` is not `nil`, this will be `nil`.
   """
-  @type value :: String.t() | integer() | boolean() | User.id() | Channel.id() | Role.id() | nil
+  @type value ::
+          String.t()
+          | integer()
+          | boolean()
+          | number()
+          | User.id()
+          | Channel.id()
+          | Role.id()
+          | nil
 
   @typedoc """
   Parameter options for subcommands.
@@ -52,15 +64,21 @@ defmodule Nostrum.Struct.ApplicationCommandInteractionDataOption do
   """
   @type options :: [__MODULE__.t()] | nil
 
+  @typedoc """
+  Whether this parameter is focused for `autocomplete` interactions.
+  """
+  @type focused :: boolean() | nil
+
   @typedoc "Command interaction data struct"
   @type t :: %__MODULE__{
           name: name,
           type: type,
           value: value,
-          options: options
+          options: options,
+          focused: focused
         }
 
-  defp parse_value(type, value) when type in [6, 7, 8], do: Util.cast(value, Snowflake)
+  defp parse_value(type, value) when type in [6, 7, 8, 9], do: Util.cast(value, Snowflake)
   defp parse_value(_type, value), do: value
 
   @doc false
@@ -70,7 +88,8 @@ defmodule Nostrum.Struct.ApplicationCommandInteractionDataOption do
       name: map.name,
       type: map.type,
       value: parse_value(map.type, map[:value]),
-      options: Util.cast(map[:options], {:list, {:struct, __MODULE__}})
+      options: Util.cast(map[:options], {:list, {:struct, __MODULE__}}),
+      focused: map[:focused]
     }
   end
 end

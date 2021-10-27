@@ -39,9 +39,10 @@ defmodule Nostrum.Struct.Interaction do
 
   - `1` for *Ping*
   - `2` for *ApplicationCommand*
-  - `3` for *MessageComponent*`
+  - `3` for *MessageComponent*
+  - `4` for *ApplicationCommandAutocomplete*
   """
-  @type type :: pos_integer()
+  @type type :: 1..4
 
   @typedoc """
   Invocation data.
