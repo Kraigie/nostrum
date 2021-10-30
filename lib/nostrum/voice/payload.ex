@@ -86,6 +86,6 @@ defmodule Nostrum.Voice.Payload do
     opcode = Constants.voice_opcode_from_name(opcode_name)
 
     %{op: opcode, d: data}
-    |> Poison.encode!()
+    |> Jason.encode_to_iodata!()
   end
 end

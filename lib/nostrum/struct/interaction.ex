@@ -1,6 +1,6 @@
 defmodule Nostrum.Struct.Interaction do
-  @moduledoc "Slash command invocation struct."
-  # https://discord.com/developers/docs/interactions/slash-commands#interaction
+  @moduledoc "Application command and Component invocation struct."
+  # https://discord.com/developers/docs/interactions/application-commands#interaction
 
   alias Nostrum.Snowflake
   alias Nostrum.Struct.ApplicationCommandInteractionData
@@ -39,13 +39,15 @@ defmodule Nostrum.Struct.Interaction do
 
   - `1` for *Ping*
   - `2` for *ApplicationCommand*
+  - `3` for *MessageComponent*
+  - `4` for *ApplicationCommandAutocomplete*
   """
-  @type type :: pos_integer()
+  @type type :: 1..4
 
   @typedoc """
   Invocation data.
 
-  Only present for *ApplicationCommand* interactions, that is, `type=2`.
+  Only present for *ApplicationCommand* and *MessageComponent* interactions, that is, `type=2` or `type=3`.
   """
   @type data :: ApplicationCommandInteractionData.t() | nil
 
@@ -58,7 +60,7 @@ defmodule Nostrum.Struct.Interaction do
   @typedoc "Member information about the invoker, if invoked on a guild"
   @type member :: Member.t() | nil
 
-  @typedoc "User object for the invoking user, if invoked via a DM"
+  @typedoc "User object for the invoking user, will be a copy of `member.user` if invoked in a guild"
   @typedoc since: "0.5.0"
   @type user :: User.t() | nil
 
@@ -81,10 +83,10 @@ defmodule Nostrum.Struct.Interaction do
   @type message :: Message.t() | nil
 
   @typedoc """
-  A command invocation for slash commands.
+  A command invocation for Application Commands or Components.
 
   Official reference:
-  https://discord.com/developers/docs/interactions/slash-commands#interaction
+  https://discord.com/developers/docs/interactions/application-commands
   """
   @type t :: %__MODULE__{
           id: id,
@@ -111,7 +113,7 @@ defmodule Nostrum.Struct.Interaction do
       guild_id: map[:guild_id],
       channel_id: map[:channel_id],
       member: Util.cast(map[:member], {:struct, Member}),
-      user: Util.cast(map[:user], {:struct, User}),
+      user: Util.cast(map[:user] || map[:member][:user], {:struct, User}),
       token: map[:token],
       version: map[:version],
       message: Util.cast(map[:message], {:struct, Message})

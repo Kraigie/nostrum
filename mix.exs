@@ -47,12 +47,12 @@ defmodule Nostrum.Mixfile do
     [
       "docs/static/Intro.md",
       "docs/static/API.md",
+      "docs/static/Application Commands.md",
       "docs/static/State.md",
       "docs/static/Events.md",
       "docs/static/Consumers.md",
       "docs/static/Voice.md",
-      "docs/static/Gateway Intents.md",
-      "docs/static/Slash commands.md"
+      "docs/static/Gateway Intents.md"
     ]
   end
 
@@ -90,7 +90,7 @@ defmodule Nostrum.Mixfile do
 
   defp deps do
     [
-      {:poison, "~> 3.0"},
+      {:jason, "~> 1.2"},
       {:gun, "== 2.0.1", hex: :remedy_gun},
       {:certifi, "~> 2.8"},
       {:kcl, "~> 1.4"},

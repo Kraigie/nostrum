@@ -192,7 +192,7 @@ defmodule Nostrum.Api.Ratelimiter do
         {:ok}
 
       {:ok, {status, _, body}} ->
-        {:error, %ApiError{status_code: status, response: Poison.decode!(body, keys: :atoms)}}
+        {:error, %ApiError{status_code: status, response: Jason.decode!(body, keys: :atoms)}}
     end
   end
 end

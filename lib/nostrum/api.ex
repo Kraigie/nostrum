@@ -47,14 +47,27 @@ defmodule Nostrum.Api do
 
   alias Nostrum.Cache.Me
   alias Nostrum.{Constants, Snowflake, Util}
-  alias Nostrum.Struct.{Channel, Embed, Emoji, Guild, Interaction, Invite, Message, User, Webhook}
+
+  alias Nostrum.Struct.{
+    ApplicationCommand,
+    Channel,
+    Embed,
+    Emoji,
+    Guild,
+    Interaction,
+    Invite,
+    Message,
+    User,
+    Webhook
+  }
+
   alias Nostrum.Struct.Guild.{AuditLog, AuditLogEntry, Member, Role}
   alias Nostrum.Shard.{Session, Supervisor}
 
   @typedoc """
   Represents a failed response from the API.
 
-  This occurs when hackney or HTTPoison fail, or when the API doesn't respond with `200` or `204`.
+  This occurs when `:gun` fails, or when the API doesn't respond with `200` or `204`.
   """
   @type error :: {:error, Nostrum.Error.ApiError.t()}
 
@@ -275,7 +288,7 @@ defmodule Nostrum.Api do
     payload_json =
       options
       |> Map.delete(:files)
-      |> Poison.encode!()
+      |> Jason.encode_to_iodata!()
 
     boundary = generate_boundary()
 
@@ -1912,7 +1925,7 @@ defmodule Nostrum.Api do
       method: :put,
       route: Constants.guild_ban(guild_id, user_id),
       body: %{delete_message_days: days_to_delete},
-      options: [],
+      params: [],
       headers: maybe_add_reason(reason)
     })
   end
@@ -2954,7 +2967,7 @@ defmodule Nostrum.Api do
 
   ## Return value
   A list of ``ApplicationCommand``s on success. See the official reference:
-  https://discord.com/developers/docs/interactions/slash-commands#applicationcommand
+  https://discord.com/developers/docs/interactions/application-commands#application-command-object-application-command-structure
 
   ## Example
 
@@ -2993,7 +3006,7 @@ defmodule Nostrum.Api do
 
   ## Return value
   The created command. See the official reference:
-  https://discord.com/developers/docs/interactions/slash-commands#create-global-application-command
+  https://discord.com/developers/docs/interactions/application-commands#create-global-application-command
 
   ## Example
 
@@ -3003,8 +3016,10 @@ defmodule Nostrum.Api do
   )
   ```
   """
-  @spec create_global_application_command(map()) :: {:ok, map()} | error
-  @spec create_global_application_command(User.id(), map()) :: {:ok, map()} | error
+  @spec create_global_application_command(ApplicationCommand.application_command_map()) ::
+          {:ok, map()} | error
+  @spec create_global_application_command(User.id(), ApplicationCommand.application_command_map()) ::
+          {:ok, map()} | error
   def create_global_application_command(application_id \\ Me.get().id, command) do
     request(:post, Constants.global_application_commands(application_id), command)
     |> handle_request_with_decode
@@ -3023,10 +3038,17 @@ defmodule Nostrum.Api do
 
   ## Return value
   The updated command. See the official reference:
-  https://discord.com/developers/docs/interactions/slash-commands#edit-global-application-command
+  https://discord.com/developers/docs/interactions/application-commands#edit-global-application-command
   """
-  @spec edit_global_application_command(Snowflake.t(), map()) :: {:ok, map()} | error
-  @spec edit_global_application_command(User.id(), Snowflake.t(), map()) :: {:ok, map()} | error
+  @spec edit_global_application_command(
+          Snowflake.t(),
+          ApplicationCommand.application_command_edit_map()
+        ) :: {:ok, map()} | error
+  @spec edit_global_application_command(
+          User.id(),
+          Snowflake.t(),
+          ApplicationCommand.application_command_edit_map()
+        ) :: {:ok, map()} | error
   def edit_global_application_command(
         application_id \\ Me.get().id,
         command_id,
@@ -3068,11 +3090,14 @@ defmodule Nostrum.Api do
 
   ## Return value
   Updated list of global application commands. See the official reference:
-  https://discord.com/developers/docs/interactions/slash-commands#bulk-overwrite-global-application-commands
+  https://discord.com/developers/docs/interactions/application-commands#bulk-overwrite-global-application-commands
   """
   @doc since: "0.5.0"
-  @spec bulk_overwrite_global_application_commands([map()]) :: {:ok, [map()]} | error
-  @spec bulk_overwrite_global_application_commands(User.id(), [map()]) :: {:ok, [map()]} | error
+  @spec bulk_overwrite_global_application_commands([ApplicationCommand.application_command_map()]) ::
+          {:ok, [map()]} | error
+  @spec bulk_overwrite_global_application_commands(User.id(), [
+          ApplicationCommand.application_command_map()
+        ]) :: {:ok, [map()]} | error
   def bulk_overwrite_global_application_commands(application_id \\ Me.get().id, commands) do
     request(:put, Constants.global_application_commands(application_id), commands)
     |> handle_request_with_decode
@@ -3089,7 +3114,7 @@ defmodule Nostrum.Api do
 
   ## Return value
   A list of ``ApplicationCommand``s on success. See the official reference:
-  https://discord.com/developers/docs/interactions/slash-commands#applicationcommand
+  https://discord.com/developers/docs/interactions/application-commands#application-command-object-application-command-structure
   """
   @spec get_guild_application_commands(Guild.id()) :: {:ok, [map()]} | error
   @spec get_guild_application_commands(User.id(), Guild.id()) :: {:ok, [map()]} | error
@@ -3111,10 +3136,15 @@ defmodule Nostrum.Api do
 
   ## Return value
   The created command. See the official reference:
-  https://discord.com/developers/docs/interactions/slash-commands#create-guild-application-command
+  https://discord.com/developers/docs/interactions/application-commands#create-guild-application-command
   """
-  @spec create_guild_application_command(Guild.id(), map()) :: {:ok, map()} | error
-  @spec create_guild_application_command(User.id(), Guild.id(), map()) :: {:ok, map()} | error
+  @spec create_guild_application_command(Guild.id(), ApplicationCommand.application_command_map()) ::
+          {:ok, map()} | error
+  @spec create_guild_application_command(
+          User.id(),
+          Guild.id(),
+          ApplicationCommand.application_command_map()
+        ) :: {:ok, map()} | error
   def create_guild_application_command(
         application_id \\ Me.get().id,
         guild_id,
@@ -3138,10 +3168,19 @@ defmodule Nostrum.Api do
 
   ## Return value
   The updated command. See the official reference:
-  https://discord.com/developers/docs/interactions/slash-commands#edit-guild-application-command
+  https://discord.com/developers/docs/interactions/application-commands#edit-guild-application-command
   """
-  @spec edit_guild_application_command(Guild.id(), Snowflake.t(), map()) :: {:ok, map()} | error
-  @spec edit_guild_application_command(User.id(), Guild.id(), Snowflake.t(), map()) ::
+  @spec edit_guild_application_command(
+          Guild.id(),
+          Snowflake.t(),
+          ApplicationCommand.application_command_edit_map()
+        ) :: {:ok, map()} | error
+  @spec edit_guild_application_command(
+          User.id(),
+          Guild.id(),
+          Snowflake.t(),
+          ApplicationCommand.application_command_edit_map()
+        ) ::
           {:ok, map()} | error
   def edit_guild_application_command(
         application_id \\ Me.get().id,
@@ -3192,11 +3231,15 @@ defmodule Nostrum.Api do
 
   ## Return value
   Updated list of guild application commands. See the official reference:
-  https://discord.com/developers/docs/interactions/slash-commands#bulk-overwrite-guild-application-commands
+  https://discord.com/developers/docs/interactions/application-commands#bulk-overwrite-guild-application-commands
   """
   @doc since: "0.5.0"
-  @spec bulk_overwrite_guild_application_commands(Guild.id(), [map()]) :: {:ok, [map()]} | error
-  @spec bulk_overwrite_guild_application_commands(User.id(), Guild.id(), [map()]) ::
+  @spec bulk_overwrite_guild_application_commands(Guild.id(), [
+          ApplicationCommand.application_command_map()
+        ]) :: {:ok, [map()]} | error
+  @spec bulk_overwrite_guild_application_commands(User.id(), Guild.id(), [
+          ApplicationCommand.application_command_map()
+        ]) ::
           {:ok, [map()]} | error
   def bulk_overwrite_guild_application_commands(
         application_id \\ Me.get().id,
@@ -3228,7 +3271,7 @@ defmodule Nostrum.Api do
   ## Parameters
   - `id`: The interaction ID to which the response should be created.
   - `token`: The interaction token.
-  - `response`: An [`InteractionResponse`](https://discord.com/developers/docs/interactions/slash-commands#interaction-interaction-response)
+  - `response`: An [`InteractionResponse`](https://discord.com/developers/docs/interactions/receiving-and-responding#interaction-response-object)
     object. See the linked documentation.
 
   ## Example
@@ -3295,7 +3338,7 @@ defmodule Nostrum.Api do
   - `guild_id`: Guild ID to fetch command permissions from.
 
   ## Return value
-  This method returns a list of guild application command permission objects, see all available values on the [Discord API docs](https://discord.com/developers/docs/interactions/slash-commands#application-command-permissions-object-guild-application-command-permissions-structure).
+  This method returns a list of guild application command permission objects, see all available values on the [Discord API docs](https://discord.com/developers/docs/interactions/application-commands#application-command-permissions-object-guild-application-command-permissions-structure).
   """
   @doc since: "0.5.0"
   @spec get_guild_application_command_permissions(Guild.id()) :: {:ok, [map()]} | error
@@ -3318,7 +3361,7 @@ defmodule Nostrum.Api do
   - `command_id`: Command ID to fetch permissions for.
 
   ## Return value
-  This method returns a single guild application command permission object, see all available values on the [Discord API docs](https://discord.com/developers/docs/interactions/slash-commands#application-command-permissions-object-guild-application-command-permissions-structure).
+  This method returns a single guild application command permission object, see all available values on the [Discord API docs](https://discord.com/developers/docs/interactions/application-commands#application-command-permissions-object-guild-application-command-permissions-structure).
   """
   @doc since: "0.5.0"
   @spec get_application_command_permissions(Guild.id(), Snowflake.t()) ::
@@ -3345,15 +3388,19 @@ defmodule Nostrum.Api do
     If not given, this will be fetched from `Me`.
   - `guild_id`: Guild ID to fetch command permissions from.
   - `command_id`: Command ID to fetch permissions for.
-  - `permissions`: List of [application command permissions](https://discord.com/developers/docs/interactions/slash-commands#application-command-permissions-object-application-command-permissions-structure)
+  - `permissions`: List of [application command permissions](https://discord.com/developers/docs/interactions/application-commands#application-command-permissions-object-application-command-permissions-structure)
 
   ## Return value
-  This method returns a guild application command permission object, see all available values on the [Discord API docs](https://discord.com/developers/docs/interactions/slash-commands#application-command-permissions-object-guild-application-command-permissions-structure).
+  This method returns a guild application command permission object, see all available values on the [Discord API docs](https://discord.com/developers/docs/interactions/application-commands#application-command-permissions-object-guild-application-command-permissions-structure).
   """
   @doc since: "0.5.0"
-  @spec edit_application_command_permissions(Guild.id(), Snowflake.t(), [map()]) ::
+  @spec edit_application_command_permissions(Guild.id(), Snowflake.t(), [
+          ApplicationCommand.application_command_permissions()
+        ]) ::
           {:ok, map()} | error
-  @spec edit_application_command_permissions(User.id(), Guild.id(), Snowflake.t(), [map()]) ::
+  @spec edit_application_command_permissions(User.id(), Guild.id(), Snowflake.t(), [
+          ApplicationCommand.application_command_permissions()
+        ]) ::
           {:ok, map()} | error
   def edit_application_command_permissions(
         application_id \\ Me.get().id,
@@ -3379,15 +3426,25 @@ defmodule Nostrum.Api do
     If not given, this will be fetched from `Me`.
   - `guild_id`: Guild ID to fetch command permissions from.
   - `command_id`: Command ID to fetch permissions for.
-  - `permissions`: List of partial [guild application command permissions](hhttps://discord.com/developers/docs/interactions/slash-commands#application-command-permissions-object-guild-application-command-permissions-structure) with `id` and `permissions`. You can add up to 10 overwrites per command.
+  - `permissions`: List of partial [guild application command permissions](hhttps://discord.com/developers/docs/interactions/application-commands#application-command-permissions-object-guild-application-command-permissions-structure) with `id` and `permissions`. You can add up to 10 overwrites per command.
 
   ## Return value
-  This method returns a guild application command permission object, see all available values on the [Discord API docs](https://discord.com/developers/docs/interactions/slash-commands#application-command-permissions-object-guild-application-command-permissions-structure).
+  This method returns a guild application command permission object, see all available values on the [Discord API docs](https://discord.com/developers/docs/interactions/application-commands#application-command-permissions-object-guild-application-command-permissions-structure).
   """
   @doc since: "0.5.0"
-  @spec batch_edit_application_command_permissions(Guild.id(), [map()]) ::
+  @spec batch_edit_application_command_permissions(Guild.id(), [
+          %{
+            id: Snowflake.t(),
+            permissions: [ApplicationCommand.application_command_permissions()]
+          }
+        ]) ::
           {:ok, map()} | error
-  @spec batch_edit_application_command_permissions(User.id(), Guild.id(), [map()]) ::
+  @spec batch_edit_application_command_permissions(User.id(), Guild.id(), [
+          %{
+            id: Snowflake.t(),
+            permissions: [ApplicationCommand.application_command_permissions()]
+          }
+        ]) ::
           {:ok, map()} | error
   def batch_edit_application_command_permissions(
         application_id \\ Me.get().id,
@@ -3475,7 +3532,7 @@ defmodule Nostrum.Api do
   end
 
   defp handle_request_with_decode(response)
-  defp handle_request_with_decode({:ok, body}), do: {:ok, Poison.decode!(body, keys: :atoms)}
+  defp handle_request_with_decode({:ok, body}), do: {:ok, Jason.decode!(body, keys: :atoms)}
   defp handle_request_with_decode({:error, _} = error), do: error
 
   defp handle_request_with_decode(response, type)
@@ -3486,7 +3543,7 @@ defmodule Nostrum.Api do
   defp handle_request_with_decode({:ok, body}, type) do
     convert =
       body
-      |> Poison.decode!(keys: :atoms)
+      |> Jason.decode!(keys: :atoms)
       |> Util.cast(type)
 
     {:ok, convert}
@@ -3514,23 +3571,31 @@ defmodule Nostrum.Api do
 
   defp create_multipart_body(files, json, boundary) do
     json_mime = MIME.type("json")
-    json_size = byte_size(json)
+    json_size = :erlang.iolist_size(json)
 
     file_parts =
       files
       |> Enum.with_index(1)
-      |> Enum.reduce(~s|--#{boundary}#{@crlf}|, fn {f, i}, acc ->
-        acc <>
-          create_file_part_for_multipart(f, i) <>
-          ~s|#{@crlf}--#{boundary}#{@crlf}|
+      |> Enum.reduce([~s|--#{boundary}#{@crlf}|], fn {f, i}, acc ->
+        [
+          acc
+          | [
+              create_file_part_for_multipart(f, i),
+              ~s|#{@crlf}--#{boundary}#{@crlf}|
+            ]
+        ]
       end)
 
-    file_parts <>
-      ~s|content-length: #{json_size}#{@crlf}| <>
-      ~s|content-type: #{json_mime}#{@crlf}| <>
-      ~s|content-disposition: form-data; name="payload_json"#{@crlf}#{@crlf}| <>
-      json <>
-      ~s|#{@crlf}--#{boundary}--#{@crlf}|
+    [
+      file_parts
+      | [
+          ~s|content-length: #{json_size}#{@crlf}|,
+          ~s|content-type: #{json_mime}#{@crlf}|,
+          ~s|content-disposition: form-data; name="payload_json"#{@crlf}#{@crlf}|,
+          json,
+          ~s|#{@crlf}--#{boundary}--#{@crlf}|
+        ]
+    ]
   end
 
   defp create_multipart_body(%{content: content, tts: tts, file: file}, boundary) do
@@ -3539,17 +3604,19 @@ defmodule Nostrum.Api do
     tts_mime = MIME.type("")
     tts_size = byte_size(tts)
 
-    ~s|--#{boundary}#{@crlf}| <>
-      ~s|content-length: #{file_size}#{@crlf}| <>
-      ~s|content-type: #{file_mime}#{@crlf}| <>
-      ~s|content-disposition: form-data; name="file"; filename="#{file}"#{@crlf}#{@crlf}| <>
-      content <>
-      ~s|#{@crlf}--#{boundary}#{@crlf}| <>
-      ~s|content-length: #{tts_size}#{@crlf}| <>
-      ~s|content-type: #{tts_mime}#{@crlf}| <>
-      ~s|content-disposition: form-data; name="tts"#{@crlf}#{@crlf}| <>
-      tts <>
+    [
+      ~s|--#{boundary}#{@crlf}|,
+      ~s|content-length: #{file_size}#{@crlf}|,
+      ~s|content-type: #{file_mime}#{@crlf}|,
+      ~s|content-disposition: form-data; name="file"; filename="#{file}"#{@crlf}#{@crlf}|,
+      content,
+      ~s|#{@crlf}--#{boundary}#{@crlf}|,
+      ~s|content-length: #{tts_size}#{@crlf}|,
+      ~s|content-type: #{tts_mime}#{@crlf}|,
+      ~s|content-disposition: form-data; name="tts"#{@crlf}#{@crlf}|,
+      tts,
       ~s|#{@crlf}--#{boundary}--#{@crlf}|
+    ]
   end
 
   def create_file_part_for_multipart(file, index) do
@@ -3558,10 +3625,12 @@ defmodule Nostrum.Api do
     file_mime = MIME.from_path(name)
     file_size = byte_size(body)
 
-    ~s|content-length: #{file_size}#{@crlf}| <>
-      ~s|content-type: #{file_mime}#{@crlf}| <>
-      ~s|content-disposition: form-data; name="file#{index}"; filename="#{name}"#{@crlf}#{@crlf}| <>
+    [
+      ~s|content-length: #{file_size}#{@crlf}|,
+      ~s|content-type: #{file_mime}#{@crlf}|,
+      ~s|content-disposition: form-data; name="file#{index}"; filename="#{name}"#{@crlf}#{@crlf}|,
       body
+    ]
   end
 
   defp get_file_contents(path) when is_binary(path) do

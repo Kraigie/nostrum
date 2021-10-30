@@ -1,18 +1,18 @@
-# Slash commands
+# Application commands
 
 Discord allows you to create commands for your bot that work within the slash
-command menu.
+command menu or via the context menu.
 
-Using nostrum, you can create, receive, and respond to slash commands invoked
+Using nostrum, you can create, receive, and respond to application commands invoked
 by Discord users.
 
 ## Permissions required
 
 Quoting the [official Discord
-documentation](https://discord.com/developers/docs/interactions/slash-commands#interaction):
+documentation](https://discord.com/developers/docs/interactions/application-commands#authorizing-your-application):
 
-> In order to make Slash Commands work within a guild, the guild must authorize
-> your application with the applications.commands scope. The bot scope is not
+> In order to make Commands work within a guild, the guild must authorize
+> your application with the `applications.commands` scope. The `bot` scope is not
 > enough.
 
 ## Getting started

@@ -4,7 +4,7 @@ defmodule Nostrum.Struct.Embed.Author do
   """
 
   alias Nostrum.Util
-  alias Poison.Encoder
+  alias Jason.{Encode, Encoder}
 
   defstruct [
     :name,
@@ -19,7 +19,7 @@ defmodule Nostrum.Struct.Embed.Author do
       |> Map.from_struct()
       |> Enum.filter(fn {_, v} -> v != nil end)
       |> Map.new()
-      |> Encoder.encode(options)
+      |> Encode.map(options)
     end
   end
 
