@@ -10,7 +10,7 @@
     <title>Nostrum.Struct.Interaction — Nostrum v0.5.0</title>
     <link rel="stylesheet" href="dist/elixir-a172fe91e725dcb259e2.css" />
 
-    <script src="dist/sidebar_items-b0fff568b6.js"></script>
+    <script src="dist/sidebar_items-da7e96099a.js"></script>
 
       <script src="docs_config.js"></script>
 
@@ -93,7 +93,7 @@ Nostrum.Struct.Interaction <small class="app-vsn">(Nostrum v0.5.0)</small>
 
 
         <section id="moduledoc">
-<p>Slash command invocation struct.</p>
+<p>Application command and Component invocation struct.</p>
         </section>
 
 
@@ -179,7 +179,7 @@ Nostrum.Struct.Interaction <small class="app-vsn">(Nostrum v0.5.0)</small>
 
   </div>
 
-    <div class="summary-synopsis"><p>A command invocation for slash commands.</p></div>
+    <div class="summary-synopsis"><p>A command invocation for Application Commands or Components.</p></div>
 
 </div>
 <div class="summary-row">
@@ -206,7 +206,7 @@ Nostrum.Struct.Interaction <small class="app-vsn">(Nostrum v0.5.0)</small>
 
   </div>
 
-    <div class="summary-synopsis"><p>User object for the invoking user, if invoked via a DM</p></div>
+    <div class="summary-synopsis"><p>User object for the invoking user, will be a copy of <code class="inline">member.user</code> if invoked in a guild</p></div>
 
 </div>
 <div class="summary-row">
@@ -273,7 +273,7 @@ Types
     </a>
     <h1 class="signature">channel_id()</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/interaction.ex#L56" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/interaction.ex#L58" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -302,7 +302,7 @@ Types
     </a>
     <h1 class="signature">data()</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/interaction.ex#L50" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/interaction.ex#L52" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -319,7 +319,7 @@ Types
 
       </div>
 
-<p>Invocation data.</p><p>Only present for <em>ApplicationCommand</em> interactions, that is, <code class="inline">type=2</code>.</p>
+<p>Invocation data.</p><p>Only present for <em>ApplicationCommand</em> and <em>MessageComponent</em> interactions, that is, <code class="inline">type=2</code> or <code class="inline">type=3</code>.</p>
   </section>
 </section>
 <section class="detail" id="t:guild_id/0">
@@ -331,7 +331,7 @@ Types
     </a>
     <h1 class="signature">guild_id()</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/interaction.ex#L53" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/interaction.ex#L55" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -389,7 +389,7 @@ Types
     </a>
     <h1 class="signature">member()</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/interaction.ex#L59" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/interaction.ex#L61" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -418,7 +418,7 @@ Types
     </a>
     <h1 class="signature">message()</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/interaction.ex#L81" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/interaction.ex#L83" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -449,7 +449,7 @@ Types
     </a>
     <h1 class="signature">t()</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/interaction.ex#L89" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/interaction.ex#L91" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -478,8 +478,8 @@ Types
 
       </div>
 
-<p>A command invocation for slash commands.</p><p>Official reference:
-<a href="https://discord.com/developers/docs/interactions/slash-commands#interaction">https://discord.com/developers/docs/interactions/slash-commands#interaction</a></p>
+<p>A command invocation for Application Commands or Components.</p><p>Official reference:
+<a href="https://discord.com/developers/docs/interactions/application-commands">https://discord.com/developers/docs/interactions/application-commands</a></p>
   </section>
 </section>
 <section class="detail" id="t:token/0">
@@ -491,7 +491,7 @@ Types
     </a>
     <h1 class="signature">token()</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/interaction.ex#L70" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/interaction.ex#L72" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -520,7 +520,7 @@ Types
     </a>
     <h1 class="signature">type()</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/interaction.ex#L43" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/interaction.ex#L45" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -533,11 +533,11 @@ Types
       <h2>Specs</h2>
       <div class="specs">
 
-          <pre>type() :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pos_integer</a>()</pre>
+          <pre>type() :: 1..4</pre>
 
       </div>
 
-<p>Interaction kind.</p><ul><li><code class="inline">1</code> for <em>Ping</em></li><li><code class="inline">2</code> for <em>ApplicationCommand</em></li></ul>
+<p>Interaction kind.</p><ul><li><code class="inline">1</code> for <em>Ping</em></li><li><code class="inline">2</code> for <em>ApplicationCommand</em></li><li><code class="inline">3</code> for <em>MessageComponent</em></li><li><code class="inline">4</code> for <em>ApplicationCommandAutocomplete</em></li></ul>
   </section>
 </section>
 <section class="detail" id="t:user/0">
@@ -549,7 +549,7 @@ Types
     </a>
     <h1 class="signature">user()</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/interaction.ex#L63" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/interaction.ex#L65" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -568,7 +568,7 @@ Types
 
       </div>
 
-<p>User object for the invoking user, if invoked via a DM</p>
+<p>User object for the invoking user, will be a copy of <code class="inline">member.user</code> if invoked in a guild</p>
   </section>
 </section>
 <section class="detail" id="t:version/0">
@@ -580,7 +580,7 @@ Types
     </a>
     <h1 class="signature">version()</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/interaction.ex#L77" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/interaction.ex#L79" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>

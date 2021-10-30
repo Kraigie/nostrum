@@ -10,7 +10,7 @@
     <title>Nostrum.Util — Nostrum v0.5.0</title>
     <link rel="stylesheet" href="dist/elixir-a172fe91e725dcb259e2.css" />
 
-    <script src="dist/sidebar_items-b0fff568b6.js"></script>
+    <script src="dist/sidebar_items-da7e96099a.js"></script>
 
       <script src="docs_config.js"></script>
 
@@ -155,15 +155,6 @@ Nostrum.Util <small class="app-vsn">(Nostrum v0.5.0)</small>
 </div>
 <div class="summary-row">
   <div class="summary-signature">
-    <a href="#nostrum_struct/1">nostrum_struct(body)</a>
-
-  </div>
-
-    <div class="summary-synopsis"><p>Helper for defining all the methods used for struct and encoding transformations.</p></div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
     <a href="#now/0">now()</a>
 
   </div>
@@ -243,7 +234,7 @@ Functions
     </a>
     <h1 class="signature">enum_to_struct(enum, struct)</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/util.ex#L91" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/util.ex#L44" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -265,7 +256,7 @@ Functions
     </a>
     <h1 class="signature">gateway()</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/util.ex#L137" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/util.ex#L90" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -295,7 +286,7 @@ for future use.</p>
     </a>
     <h1 class="signature">get_all_shard_latencies()</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/util.ex#L282" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/util.ex#L235" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -327,7 +318,7 @@ shard nums and whose values are latencies in milliseconds.</p>
     </a>
     <h1 class="signature">get_shard_latency(state)</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/util.ex#L266" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/util.ex#L219" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -356,7 +347,7 @@ shard nums and whose values are latencies in milliseconds.</p>
     </a>
     <h1 class="signature">maybe_to_atom(token)</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/util.ex#L198" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/util.ex#L151" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -377,39 +368,6 @@ shard nums and whose values are latencies in milliseconds.</p>
 be parsed as such.</p><p>If atom does not currently exist, will warn that we're doing an unsafe conversion.</p>
   </section>
 </section>
-<section class="detail" id="nostrum_struct/1">
-
-  <div class="detail-header">
-    <a href="#nostrum_struct/1" class="detail-link" title="Link to this macro">
-      <span class="icon-link" aria-hidden="true"></span>
-      <span class="sr-only">Link to this macro</span>
-    </a>
-    <h1 class="signature">nostrum_struct(body)</h1>
-
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/util.ex#L25" class="view-source" rel="help" title="View Source">
-       <span class="icon-code" aria-hidden="true"></span>
-       <span class="sr-only">View Source</span>
-     </a>
-
-
-      <span class="note">(macro)</span>
-
-  </div>
-
-  <section class="docstring">
-
-<p>Helper for defining all the methods used for struct and encoding transformations.</p><h2 id="nostrum_struct/1-example" class="section-heading">
-  <a href="#nostrum_struct/1-example" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
-  Example
-</h2>
-<pre><code class="Elixir">Nostrum.Util.nostrum_struct(%{
-  author: User,
-  mentions: [User],
-  mention_roles: [User],
-  embeds: [Embed]
-})</code></pre>
-  </section>
-</section>
 <section class="detail" id="now/0">
 
   <div class="detail-header">
@@ -419,7 +377,7 @@ be parsed as such.</p><p>If atom does not currently exist, will warn that we're 
     </a>
     <h1 class="signature">now()</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/util.ex#L63" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/util.ex#L16" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -448,7 +406,7 @@ be parsed as such.</p><p>If atom does not currently exist, will warn that we're 
     </a>
     <h1 class="signature">now_iso()</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/util.ex#L81" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/util.ex#L34" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -477,7 +435,7 @@ be parsed as such.</p><p>If atom does not currently exist, will warn that we're 
     </a>
     <h1 class="signature">num_shards()</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/util.ex#L107" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/util.ex#L60" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -507,7 +465,7 @@ in your config.</p>
     </a>
     <h1 class="signature">safe_atom_map(term)</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/util.ex#L176" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/util.ex#L129" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -541,7 +499,7 @@ types of objects returned by Discord, the amount of new atoms created <em>SHOULD
     </a>
     <h1 class="signature">unused_atoms()</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/util.ex#L298" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/util.ex#L251" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -566,7 +524,7 @@ means to define those atoms once so the user isn't warned about them in the
     </a>
     <h1 class="signature">usec_now()</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/util.ex#L72" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/util.ex#L25" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>

@@ -10,7 +10,7 @@
     <title>Nostrum.Struct.ApplicationCommandInteractionDataOption — Nostrum v0.5.0</title>
     <link rel="stylesheet" href="dist/elixir-a172fe91e725dcb259e2.css" />
 
-    <script src="dist/sidebar_items-b0fff568b6.js"></script>
+    <script src="dist/sidebar_items-da7e96099a.js"></script>
 
       <script src="docs_config.js"></script>
 
@@ -112,6 +112,15 @@ Nostrum.Struct.ApplicationCommandInteractionDataOption <small class="app-vsn">(N
     </h2>
 <div class="summary-row">
   <div class="summary-signature">
+    <a href="#t:focused/0">focused()</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Whether this parameter is focused for <code class="inline">autocomplete</code> interactions.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
     <a href="#t:name/0">name()</a>
 
   </div>
@@ -170,6 +179,35 @@ Nostrum.Struct.ApplicationCommandInteractionDataOption <small class="app-vsn">(N
 Types
           </h1>
           <div class="types-list">
+<section class="detail" id="t:focused/0">
+
+  <div class="detail-header">
+    <a href="#t:focused/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">focused()</h1>
+
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/application_command_interaction_data_option.ex#L70" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre>focused() :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">boolean</a>() | nil</pre>
+
+      </div>
+
+<p>Whether this parameter is focused for <code class="inline">autocomplete</code> interactions.</p>
+  </section>
+</section>
 <section class="detail" id="t:name/0">
 
   <div class="detail-header">
@@ -208,7 +246,7 @@ Types
     </a>
     <h1 class="signature">options()</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/application_command_interaction_data_option.ex#L53" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/application_command_interaction_data_option.ex#L65" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -237,7 +275,7 @@ Types
     </a>
     <h1 class="signature">t()</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/application_command_interaction_data_option.ex#L56" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/application_command_interaction_data_option.ex#L73" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -251,6 +289,7 @@ Types
       <div class="specs">
 
           <pre>t() :: %Nostrum.Struct.ApplicationCommandInteractionDataOption{
+  focused: <a href="#t:focused/0">focused</a>(),
   name: <a href="#t:name/0">name</a>(),
   options: <a href="#t:options/0">options</a>(),
   type: <a href="#t:type/0">type</a>(),
@@ -286,11 +325,11 @@ Types
       <h2>Specs</h2>
       <div class="specs">
 
-          <pre>type() :: 1..9</pre>
+          <pre>type() :: 1..10</pre>
 
       </div>
 
-<p>The application command option type.</p><p>See <a href="https://discord.com/developers/docs/interactions/slash-commands#application-command-object-application-command-option-type">https://discord.com/developers/docs/interactions/slash-commands#application-command-object-application-command-option-type</a>
+<p>The application command option type.</p><p>See <a href="https://discord.com/developers/docs/interactions/application-commands#application-command-object-application-command-option-type">https://discord.com/developers/docs/interactions/application-commands#application-command-object-application-command-option-type</a>
 for more details.</p>
   </section>
 </section>
@@ -303,7 +342,7 @@ for more details.</p>
     </a>
     <h1 class="signature">value()</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/application_command_interaction_data_option.ex#L46" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/application_command_interaction_data_option.ex#L50" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -320,6 +359,7 @@ for more details.</p>
   <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()
   | <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>()
   | <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">boolean</a>()
+  | <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">number</a>()
   | <a href="Nostrum.Struct.User.html#t:id/0">Nostrum.Struct.User.id</a>()
   | <a href="Nostrum.Struct.Channel.html#t:id/0">Nostrum.Struct.Channel.id</a>()
   | <a href="Nostrum.Struct.Guild.Role.html#t:id/0">Nostrum.Struct.Guild.Role.id</a>()
@@ -333,7 +373,9 @@ corresponding guild member <em>and</em> user can be looked up in
 corresponding channel can be looked up in
 <a href="Nostrum.Struct.ApplicationCommandInteractionData.html#t:resolved/0"><code class="inline">Nostrum.Struct.ApplicationCommandInteractionData.resolved/0</code></a>.</li><li>For <a href="#t:type/0"><code class="inline">type/0</code></a> of <code class="inline">8</code>, this will be a <a href="Nostrum.Struct.Guild.Role.html#t:id/0"><code class="inline">Nostrum.Struct.Guild.Role.id/0</code></a>. The
 corresponding role can be looked up in
-<a href="Nostrum.Struct.ApplicationCommandInteractionData.html#t:resolved/0"><code class="inline">Nostrum.Struct.ApplicationCommandInteractionData.resolved/0</code></a>.</li></ul><p>Mutually exclusive with <code class="inline">options</code>. If <code class="inline">options</code> is not <code class="inline">nil</code>, this will be <code class="inline">nil</code>.</p>
+<a href="Nostrum.Struct.ApplicationCommandInteractionData.html#t:resolved/0"><code class="inline">Nostrum.Struct.ApplicationCommandInteractionData.resolved/0</code></a>.</li><li>For <a href="#t:type/0"><code class="inline">type/0</code></a> of <code class="inline">9</code>, this will be a <a href="Nostrum.Struct.User.html#t:id/0"><code class="inline">Nostrum.Struct.User.id/0</code></a> or <a href="Nostrum.Struct.Guild.Role.html#t:id/0"><code class="inline">Nostrum.Struct.Guild.Role.id/0</code></a>. The
+corresponding user or role can be looked up in
+<a href="Nostrum.Struct.ApplicationCommandInteractionData.html#t:resolved/0"><code class="inline">Nostrum.Struct.ApplicationCommandInteractionData.resolved/0</code></a>.</li><li>For <a href="#t:type/0"><code class="inline">type/0</code></a> of <code class="inline">10</code>, this will be a <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types"><code class="inline">number/0</code></a>.</li></ul><p>Mutually exclusive with <code class="inline">options</code>. If <code class="inline">options</code> is not <code class="inline">nil</code>, this will be <code class="inline">nil</code>.</p>
   </section>
 </section>
 
