@@ -664,7 +664,7 @@ defmodule Nostrum.Api do
   If a `t:Nostrum.Struct.Channel.guild_channel/0` is being modified, this
   endpoint requires the `MANAGE_CHANNEL` permission. It fires a
   `t:Nostrum.Consumer.channel_update/0` event. If a
-  `t:Nostrum.Struct.Channel.channel_category/0` is being modified, then this
+  `t:Nostrum.Struct.Channel.guild_category_channel/0` is being modified, then this
   endpoint fires multiple `t:Nostrum.Consumer.channel_update/0` events.
 
   If successful, returns `{:ok, channel}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
@@ -731,7 +731,7 @@ defmodule Nostrum.Api do
 
   If deleting a `t:Nostrum.Struct.Channel.guild_channel/0`, this endpoint requires
   the `MANAGE_CHANNELS` permission. It fires a
-  `t:Nostrum.Consumer.channel_delete/0`. If a `t:Nostrum.Struct.Channel.channel_category/0`
+  `t:Nostrum.Consumer.channel_delete/0`. If a `t:Nostrum.Struct.Channel.guild_category_channel/0`
   is deleted, then a `t:Nostrum.Consumer.channel_update/0` event will fire
   for each channel under the category.
 
