@@ -39,6 +39,7 @@ defmodule Nostrum.Mixfile do
       main: "intro",
       extras: extras(),
       groups_for_modules: groups_for_modules(),
+      groups_for_functions: groups_for_functions(),
       assets: "docs/assets"
     ]
   end
@@ -69,6 +70,11 @@ defmodule Nostrum.Mixfile do
       ]
     ]
   end
+
+  defp groups_for_functions,
+    do: [
+      "Reading the cache": &(&1[:section] == :reading)
+    ]
 
   def aliases do
     [

@@ -7,6 +7,7 @@ defmodule Nostrum.Cache.UserCache.ETS do
   In addition to the cache behaviour implementations provided by this module,
   you can also call regular ETS table methods on it, such as `:ets.info`.
   """
+  @moduledoc since: "0.5"
 
   @behaviour Nostrum.Cache.UserCache
 

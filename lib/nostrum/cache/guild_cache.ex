@@ -1,63 +1,97 @@
 defmodule Nostrum.Cache.GuildCache do
-  @table_name :nostrum_guilds
+  @default_cache_implementation Nostrum.Cache.GuildCache.ETS
   @moduledoc """
-  Functions for retrieving guild states.
+  Cache behaviour & dispatcher for guilds.
 
-  The ETS table name associated with the Guild Cache is `#{@table_name}`.
-  Besides the methods provided here, you can call any other ETS methods
-  on the table.
+  You can call the functions provided by this module independent of which cache
+  is configured, and it will dispatch to the configured cache implementation.
+  The user-facing functions for reading the cache can be found in the "Reading
+  the cache" section.
+
+  By default, #{@default_cache_implementation} will be used for caching guilds.
+  You can override this in the `:caches` option of the `:nostrum` application
+  by setting the `:guilds` field to a different module implementing the
+  `Nostrum.Cache.GuildCache` behaviour. Any module below
+  `Nostrum.Cache.GuildCache` can be used as a cache.
+
+  ## Writing your own guild cache
+
+  As with the other caches, the guild cache API consists of two parts:
+
+  - The functions that the user calls, such as `c:all/0` or `c:select_by/2`.
+
+  - The functions that nostrum calls, such as `c:create/1` or `c:update/1`.
+  These **do not create any objects in the Discord API**, they are purely
+  created to update the cached data from data that Discord sends us. If you
+  want to create objects on Discord, use the functions exposed by `Nostrum.Api`
+  instead.
+
+  You need to implement both of them for nostrum to work with your custom
+  cache. **You also need to implement `Supervisor` callbacks**, which will
+  start your cache as a child under `Nostrum.Cache.CacheSupervisor`: As an
+  example, the `Nostrum.Cache.GuildCache.ETS` implementation uses this to to
+  set up its ETS table it uses for caching. See the callbacks section for every
+  nostrum-related callback you need to implement.
+
+  The "upstream data" wording in this module references the fact that the
+  data that the guild cache (and other caches) retrieves represents the raw
+  data we receive from the upstream connection, no attempt is made by nostrum
+  to sanitize the data before it enters the cache. Caching implementations
+  need to cast the data to the resulting type themselves. A possible future
+  improvement would be moving the data casting into this module before the
+  backing cache implementation is called.
   """
 
-  alias Nostrum.Cache.Mapping.ChannelGuild
-  alias Nostrum.Snowflake
   alias Nostrum.Struct.Channel
   alias Nostrum.Struct.Emoji
   alias Nostrum.Struct.Guild
   alias Nostrum.Struct.Guild.Member
   alias Nostrum.Struct.Guild.Role
   alias Nostrum.Struct.Message
-  alias Nostrum.Util
 
-  import Nostrum.Snowflake, only: [is_snowflake: 1]
+  @configured_cache :nostrum
+                    |> Application.compile_env(:caches, %{})
+                    |> Map.get(:guilds, @default_cache_implementation)
 
+  @typedoc "Specifies the reason for why a lookup operation has failed."
+  @type reason ::
+          :id_not_found
+          | :id_not_found_on_guild_lookup
+
+  @typedoc "A selector for looking up entries in the cache."
+  @type selector :: (Guild.t() -> any)
+
+  @typedoc "A clause for filtering guilds."
   @type clause ::
           {:id, Guild.id()}
           | {:channel_id, Channel.id()}
           | {:message, Message.t()}
 
+  @typedoc "A collection of `t:clause/0`s for filtering guilds."
   @type clauses :: [clause] | map
 
-  @type selector :: (Guild.t() -> any)
+  ## Supervisor callbacks
+  # These set up the backing cache.
+  @doc false
+  defdelegate init(init_arg), to: @configured_cache
+  @doc false
+  defdelegate start_link(init_arg), to: @configured_cache
+  @doc false
+  defdelegate child_spec(opts), to: @configured_cache
 
-  @type reason ::
-          :id_not_found
-          | :id_not_found_on_guild_lookup
-
-  defguardp is_selector(term) when is_function(term, 1)
-
-  @doc "Retrieve the ETS table name used for the cache."
-  @spec tabname :: atom()
-  def tabname, do: @table_name
-
-  @doc """
-  Retrieves all `Nostrum.Struct.Guild` from the cache as a list.
-  """
-  @spec all() :: Enum.t()
-  def all do
-    @table_name
-    |> :ets.tab2list()
-    |> Stream.map(&elem(&1, 1))
-  end
+  ## Behaviour specification
 
   @doc """
-  Selects values using a `selector` from all `Nostrum.Struct.Guild` in the cache.
+  Retrieves all `Nostrum.Struct.Guild` from the cache.
   """
-  @spec select_all(selector) :: Enum.t()
-  def select_all(selector)
+  @doc section: :reading
+  @callback all() :: Enum.t()
 
-  def select_all(selector) when is_selector(selector) do
-    :ets.foldl(fn {_id, guild}, acc -> [selector.(guild) | acc] end, [], @table_name)
-  end
+  @doc """
+  Selects guilds matching `selector` from all `Nostrum.Struct.Guild` in the cache.
+  """
+  @doc section: :reading
+  @callback select_all(selector :: (Guild.t() -> any())) :: Enum.t()
 
   @doc """
   Retrives a single `Nostrum.Struct.Guild` from the cache via its `id`.
@@ -74,16 +108,14 @@ defmodule Nostrum.Cache.GuildCache do
   {:error, :id_not_found_on_guild_lookup}
   ```
   """
-  @spec get(Guild.id()) :: {:ok, Guild.t()} | {:error, reason}
-  def get(id) do
-    select(id, fn guild -> guild end)
-  end
+  @doc section: :reading
+  @callback get(Guild.id()) :: {:ok, Guild.t()} | {:error, reason}
 
-  @doc ~S"""
+  @doc """
   Same as `get/1`, but raises `Nostrum.Error.CacheError` in case of failure.
   """
-  @spec get!(Guild.id()) :: Guild.t() | no_return
-  def get!(id), do: get(id) |> Util.bangify_find(id, __MODULE__)
+  @doc section: :reading
+  @callback get!(Guild.id()) :: Guild.t() | no_return
 
   @doc """
   Retrives a single `Nostrum.Struct.Guild` where it matches the `clauses`.
@@ -101,16 +133,14 @@ defmodule Nostrum.Cache.GuildCache do
   {:error, :id_not_found_on_guild_lookup}
   ```
   """
-  @spec get_by(clauses) :: {:ok, Guild.t()} | {:error, reason}
-  def get_by(clauses) do
-    select_by(clauses, fn guild -> guild end)
-  end
+  @doc section: :reading
+  @callback get_by(clauses) :: {:ok, Guild.t()} | {:error, reason()}
 
-  @doc ~S"""
+  @doc """
   Same as `get_by/1`, but raises `Nostrum.Error.CacheError` in case of failure.
   """
-  @spec get_by!(clauses) :: Guild.t() | no_return
-  def get_by!(clauses), do: get_by(clauses) |> Util.bangify_find(clauses, __MODULE__)
+  @doc section: :reading
+  @callback get_by!(clauses) :: Guild.t() | no_return
 
   @doc """
   Selects values using a `selector` from a `Nostrum.Struct.Guild`.
@@ -127,16 +157,14 @@ defmodule Nostrum.Cache.GuildCache do
   {:error, :id_not_found_on_guild_lookup}
   ```
   """
-  @spec select(Guild.id(), selector) :: {:ok, any} | {:error, reason}
-  def select(id, selector) do
-    select_by(%{id: id}, selector)
-  end
+  @doc section: :reading
+  @callback select(Guild.id(), selector) :: {:ok, any} | {:error, reason}
 
-  @doc ~S"""
+  @doc """
   Same as `select/2`, but raises `Nostrum.Error.CacheError` in case of failure.
   """
-  @spec select!(Guild.id(), selector) :: any | no_return
-  def select!(id, selector), do: select(id, selector) |> Util.bangify_find(id, __MODULE__)
+  @doc section: :reading
+  @callback select!(Guild.id(), selector) :: any | no_return
 
   @doc """
   Selects values using a `selector` from a `Nostrum.Struct.Guild` that matches
@@ -155,235 +183,165 @@ defmodule Nostrum.Cache.GuildCache do
   {:error, :id_not_found_on_guild_lookup}
   ```
   """
-  @spec select_by(clauses, selector) :: {:ok, any} | {:error, reason}
-  def select_by(clauses, selector)
+  @doc section: :reading
+  @callback select_by(clauses, selector) :: {:ok, any} | {:error, reason}
 
-  def select_by(clauses, selector) when is_list(clauses) and is_selector(selector),
-    do: select_by(Map.new(clauses), selector)
-
-  def select_by(%{id: id}, selector) when is_snowflake(id) and is_selector(selector) do
-    case :ets.lookup(@table_name, id) do
-      [{^id, guild}] ->
-        selection = selector.(guild)
-        {:ok, selection}
-
-      [] ->
-        {:error, :id_not_found_on_guild_lookup}
-    end
-  end
-
-  def select_by(%{channel_id: channel_id}, selector)
-      when is_snowflake(channel_id) and is_selector(selector) do
-    case ChannelGuild.get_guild(channel_id) do
-      {:ok, guild_id} -> select_by(%{id: guild_id}, selector)
-      {:error, _} = error -> error
-    end
-  end
-
-  def select_by(%{message: %Message{channel_id: channel_id}}, selector) do
-    select_by(%{channel_id: channel_id}, selector)
-  end
-
-  @doc ~S"""
+  @doc """
   Same as `select_by/2`, but raises `Nostrum.Error.CacheError` in case of failure.
   """
-  @spec select_by!(clauses, selector) :: any | no_return
-  def select_by!(clauses, selector),
-    do: select_by(clauses, selector) |> Util.bangify_find(clauses, __MODULE__)
+  @doc section: :reading
+  @callback select_by!(clauses, selector) :: any | no_return
 
-  # IMPLEMENTATION
-  @doc false
-  @spec create(Guild.t()) :: true
-  def create(guild) do
-    true = :ets.insert_new(@table_name, {guild.id, guild})
-  end
+  # Functions called from nostrum.
+  @doc "Create a guild in the cache."
+  @callback create(Guild.t()) :: true
 
-  @doc false
-  @spec update(map()) :: {Guild.t(), Guild.t()}
-  def update(payload) do
-    [{_id, old_guild}] = :ets.lookup(@table_name, payload.id)
-    casted = Util.cast(payload, {:struct, Guild})
-    new_guild = Guild.merge(old_guild, casted)
-    true = :ets.update_element(@table_name, payload.id, {2, new_guild})
-    {old_guild, new_guild}
-  end
+  @doc """
+  Update a guild from upstream data.
 
-  @doc false
-  @spec delete(Guild.id()) :: Guild.t() | nil
-  def delete(guild_id) do
-    # Returns the old guild, if cached
-    case :ets.take(@table_name, guild_id) do
-      [guild] -> guild
-      [] -> nil
-    end
-  end
+  Return the original guild before the update, and the updated guild.
+  """
+  @callback update(map()) :: {old_guild :: Guild.t(), updated_guild :: Guild.t()}
 
-  @doc false
-  @spec channel_create(Guild.id(), map()) :: Channel.t()
-  def channel_create(guild_id, channel) do
-    [{_id, guild}] = :ets.lookup(@table_name, guild_id)
-    new_channel = Util.cast(channel, {:struct, Channel})
-    new_channels = Map.put(guild.channels, channel.id, new_channel)
-    new_guild = %{guild | channels: new_channels}
-    true = :ets.update_element(@table_name, guild_id, {2, new_guild})
-    new_channel
-  end
+  @doc """
+  Delete a guild from the cache.
 
-  @doc false
-  @spec channel_delete(Guild.id(), Channel.id()) :: Channel.t() | :noop
-  def channel_delete(guild_id, channel_id) do
-    [{_id, guild}] = :ets.lookup(@table_name, guild_id)
-    {popped, new_channels} = Map.pop(guild.channels, channel_id)
-    new_guild = %{guild | channels: new_channels}
-    true = :ets.update_element(@table_name, guild_id, {2, new_guild})
-    if popped, do: popped, else: :noop
-  end
+  Return the old guild if it was cached, or `nil` otherwise.
+  """
+  @callback delete(Guild.id()) :: Guild.t() | nil
 
-  @doc false
-  @spec channel_update(Guild.id(), map()) :: {Channel.t(), Channel.t()}
-  def channel_update(guild_id, channel) do
-    [{_id, guild}] = :ets.lookup(@table_name, guild_id)
-    {old, new, new_channels} = upsert(guild.channels, channel.id, channel, Channel)
-    new_guild = %{guild | channels: new_channels}
-    true = :ets.update_element(@table_name, guild_id, {2, new_guild})
-    {old, new}
-  end
+  @doc """
+  Create a channel for the guild from upstream data.
 
-  @doc false
-  @spec emoji_update(Guild.id(), [map()]) :: {[Emoji.t()], [Emoji.t()]}
-  def emoji_update(guild_id, emojis) do
-    [{_id, guild}] = :ets.lookup(@table_name, guild_id)
-    casted = Util.cast(emojis, {:list, {:struct, Emoji}})
-    new = %{guild | emojis: casted}
-    true = :ets.update_element(@table_name, guild_id, {2, new})
-    {guild.emojis, casted}
-  end
+  Return the adapted `t:Nostrum.Struct.Channel.t/0` structure.
+  """
+  @callback channel_create(Guild.id(), channel :: map()) :: Channel.t()
 
-  @doc false
-  @spec member_add(Guild.id(), map()) :: Member.t()
-  def member_add(guild_id, payload) do
-    [{_id, guild}] = :ets.lookup(@table_name, guild_id)
-    {_old, member, new_members} = upsert(guild.members, payload.user.id, payload, Member)
-    new = %{guild | members: new_members, member_count: guild.member_count + 1}
-    true = :ets.update_element(@table_name, guild_id, {2, new})
-    member
-  end
+  @doc """
+  Delete the given channel from the guild.
 
-  @doc false
-  @spec member_remove(Guild.id(), map()) :: {Guild.id(), Member.t()} | :noop
-  def member_remove(guild_id, user) do
-    [{_id, guild}] = :ets.lookup(@table_name, guild_id)
-    {popped, new_members} = Map.pop(guild.members, user.id)
-    new_guild = %{guild | members: new_members, member_count: guild.member_count - 1}
-    true = :ets.update_element(@table_name, guild_id, {2, new_guild})
-    if popped, do: {guild_id, popped}, else: :noop
-  end
+  If the channel was cached, return the original channel. Return `:noop`
+  otherwise.
+  """
+  @callback channel_delete(Guild.id(), Channel.id()) :: Channel.t() | :noop
 
-  @doc false
-  @spec member_update(Guild.id(), map()) :: {Guild.id(), Member.t() | nil, Member.t()}
-  def member_update(guild_id, member) do
-    # We may retrieve a GUILD_MEMBER_UPDATE event for our own user even if we
-    # have the required intents to retrieve it for other members disabled, as
-    # outlined in issue https://github.com/Kraigie/nostrum/issues/293. In
-    # that case, we will not have the guild cached.
-    case :ets.lookup(@table_name, guild_id) do
-      [{_id, guild}] ->
-        {old, new, new_members} = upsert(guild.members, member.user.id, member, Member)
-        new_guild = %{guild | members: new_members}
-        true = :ets.update_element(@table_name, guild_id, {2, new_guild})
-        {guild_id, old, new}
+  @doc """
+  Update the given channel on the given guild from upstream data.
 
-      [] ->
-        new = Util.cast(member, {:struct, Member})
-        {guild_id, nil, new}
-    end
-  end
+  Return the original channel before the update, and the updated channel.
+  """
+  @callback channel_update(Guild.id(), channel :: map()) ::
+              {old_channel :: Channel.t(), new_channel :: Channel.t()}
 
-  @doc false
-  def member_chunk(guild_id, member_chunk) do
-    # CHONK like that one cat of craig
+  @doc """
+  Update the emoji list of the given guild from upstream data.
 
-    [{_id, guild}] = :ets.lookup(@table_name, guild_id)
+  Discord sends us the complete emoji list on an update, which is passed here.
 
-    new_members =
-      Enum.reduce(member_chunk, guild.members, fn m, acc ->
-        Map.put(acc, m.user.id, Util.cast(m, {:struct, Member}))
-      end)
+  Return the old list of emojis before the update, and the updated list of
+  emojis.
+  """
+  @callback emoji_update(Guild.id(), emojis :: [map()]) ::
+              {old_emojis :: [Emoji.t()], new_emojis :: [Emoji.t()]}
 
-    # XXX: do we not need to update member count here?
-    new = %{guild | members: new_members}
-    true = :ets.update_element(@table_name, guild_id, {2, new})
-  end
+  @doc """
+  Add the member for the given guild from upstream data.
 
-  @doc false
-  @spec role_create(Guild.id(), map()) :: Role.t()
-  def role_create(guild_id, role) do
-    [{_id, guild}] = :ets.lookup(@table_name, guild_id)
-    {_old, new, new_roles} = upsert(guild.roles, role.id, role, Role)
-    new_guild = %{guild | roles: new_roles}
-    true = :ets.update_element(@table_name, guild_id, {2, new_guild})
-    new
-  end
+  Return the casted member structure.
+  """
+  @callback member_add(Guild.id(), member :: map()) :: Member.t()
 
-  @doc false
-  @spec role_delete(Guild.id(), Role.id()) :: {Guild.id(), Role.t()} | :noop
-  def role_delete(guild_id, role_id) do
-    [{_id, guild}] = :ets.lookup(@table_name, guild_id)
-    {popped, new_roles} = Map.pop(guild.roles, role_id)
-    new_guild = %{guild | roles: new_roles}
-    true = :ets.update_element(@table_name, guild_id, {2, new_guild})
-    if popped, do: {guild_id, popped}, else: :noop
-  end
+  @doc """
+  Remove the given member for the given guild from upstream data.
 
-  @doc false
-  @spec role_update(Guild.id(), map()) :: {Role.t(), Role.t()}
-  def role_update(guild_id, role) do
-    [{_id, guild}] = :ets.lookup(@table_name, guild_id)
-    {old, new_role, new_roles} = upsert(guild.roles, role.id, role, Role)
-    new_guild = %{guild | roles: new_roles}
-    true = :ets.update_element(@table_name, guild_id, {2, new_guild})
-    {old, new_role}
-  end
+  Return the guild ID and old member if the member was cached. Otherwise,
+  return `:noop`.
+  """
+  @callback member_remove(Guild.id(), member :: map()) ::
+              {Guild.id(), old_member :: Member.t()} | :noop
 
-  @doc false
-  @spec voice_state_update(Guild.id(), map()) :: {Guild.id(), [map()]}
-  def voice_state_update(guild_id, payload) do
-    [{_id, guild}] = :ets.lookup(@table_name, guild_id)
-    # Trim the `member` from the update payload.
-    # Remove both `"member"` and `:member` in case of future key changes.
-    trimmed_update = Map.drop(payload, [:member, "member"])
-    state_without_user = Enum.reject(guild.voice_states, &(&1.user_id == trimmed_update.user_id))
-    # If the `channel_id` is nil, then the user is leaving.
-    # Otherwise, the voice state was updated.
-    new_state =
-      if(is_nil(trimmed_update.channel_id),
-        do: state_without_user,
-        else: [trimmed_update | state_without_user]
-      )
+  @doc """
+  Update the given member for the given guild from upstream data.
 
-    new_guild = %{guild | voice_states: new_state}
-    true = :ets.update_element(@table_name, guild_id, {2, new_guild})
-    {guild_id, new_state}
-  end
+  Return the guild ID that was updated, the old cached member (if the member
+  was known to the cache), and the updated member.
 
-  @spec upsert(%{required(Snowflake.t()) => struct}, Snowflake.t(), map, atom) ::
-          {struct | nil, struct, %{required(Snowflake.t()) => struct}}
-  defp upsert(map, key, new, struct) do
-    if Map.has_key?(map, key) do
-      old = Map.get(map, key)
+  ## Note regarding intents
 
-      new =
-        old
-        |> Map.from_struct()
-        |> Map.merge(new)
-        |> Util.cast({:struct, struct})
+  Even if the required intents to receive `GUILD_MEMBER_UPDATE`
+  events are disabled to a point where we do not receive guild creation events,
+  it is still possible to receive the event for our own user. An example of
+  this can be found in [issue
+  #293](https://github.com/Kraigie/nostrum/issues/293). Note that the linked
+  issue refers to the old contents of this module before the ETS-based guild
+  cache was moved into `#{__MODULE__}.ETS`.
+  """
+  @callback member_update(Guild.id(), member :: map()) ::
+              {Guild.id(), old_member :: Member.t() | nil, updated_member :: Member.t()}
 
-      new_map = Map.put(map, key, new)
+  @doc """
+  Bulk create multiple members in the cache from upstream data.
 
-      {old, new, new_map}
-    else
-      new = Util.cast(new, {:struct, struct})
-      {nil, new, Map.put(map, key, new)}
-    end
-  end
+  Return value is unused, as we currently do not dispatch a gateway for this.
+  """
+  @callback member_chunk(Guild.id(), chunk :: [member :: map()]) :: true
+
+  @doc """
+  Create a role on the given guild from upstream data.
+
+  Return the casted role.
+  """
+  @callback role_create(Guild.id(), role :: map()) :: Role.t()
+
+  @doc """
+  Delete the given role on the given guild.
+
+  Return the guild and the old role if it was cached, or `:noop` otherwise.
+  """
+  @callback role_delete(Guild.id(), Role.id()) :: {Guild.id(), old_role :: Role.t()} | :noop
+
+  @doc """
+  Update a role on the given guild from upstream data.
+
+  Return the old role before the update and the updated role.
+  """
+  @callback role_update(Guild.id(), role :: map()) :: {old_role :: Role.t(), new_role :: Role.t()}
+
+  @doc """
+  Update the voice state of the given guild from upstream data.
+
+  Note that it is recommended to drop the `:member` / `"member"` keys of
+  the supplied upstream data, as these would otherwise duplicate the data
+  that is being kept in the guild cache already.
+
+  Return the guild ID and the updated voice states of the guild.
+  """
+  @callback voice_state_update(Guild.id(), state :: map()) :: {Guild.id(), new_state :: [map()]}
+
+  # Dispatching logic.
+  defdelegate all, to: @configured_cache
+  defdelegate select_all(selector), to: @configured_cache
+  defdelegate get(guild_id), to: @configured_cache
+  defdelegate get!(guild_id), to: @configured_cache
+  defdelegate get_by(clauses), to: @configured_cache
+  defdelegate get_by!(clauses), to: @configured_cache
+  defdelegate select(guild_id, selector), to: @configured_cache
+  defdelegate select!(guild_id, selector), to: @configured_cache
+  defdelegate select_by(clauses, selector), to: @configured_cache
+  defdelegate select_by!(clauses, selector), to: @configured_cache
+  defdelegate create(guild), to: @configured_cache
+  defdelegate update(guild), to: @configured_cache
+  defdelegate delete(guild_id), to: @configured_cache
+  defdelegate channel_create(guild_id, channel), to: @configured_cache
+  defdelegate channel_delete(guild_id, channel_id), to: @configured_cache
+  defdelegate channel_update(guild_id, channel), to: @configured_cache
+  defdelegate emoji_update(guild_id, emojis), to: @configured_cache
+  defdelegate member_add(guild_id, member), to: @configured_cache
+  defdelegate member_remove(guild_id, member), to: @configured_cache
+  defdelegate member_update(guild_id, member), to: @configured_cache
+  defdelegate member_chunk(guild_id, member), to: @configured_cache
+  defdelegate role_create(guild_id, role), to: @configured_cache
+  defdelegate role_delete(guild_id, role), to: @configured_cache
+  defdelegate role_update(guild_id, role), to: @configured_cache
+  defdelegate voice_state_update(guild_id, state), to: @configured_cache
 end
