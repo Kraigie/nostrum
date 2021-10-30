@@ -1,12 +1,13 @@
 defmodule Nostrum.Struct.ApplicationCommand do
-  alias Nostrum.Snowflake
-
   @moduledoc """
-  typespecs for creating Application Commands
+  Typespecs for creating Application Commands
 
   Official reference:
   https://discord.com/developers/docs/interactions/application-commands
   """
+  @moduledoc since: "0.5.0"
+
+  alias Nostrum.Snowflake
 
   @typedoc """
   The name of the command, subcommand, or command_option, it must be between 1 and 32 characters in length and match the following regex `^[\w-]{1,32}$`

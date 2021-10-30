@@ -67,6 +67,7 @@ defmodule Nostrum.Struct.ApplicationCommandInteractionDataOption do
   @typedoc """
   Whether this parameter is focused for `autocomplete` interactions.
   """
+  @typedoc since: "0.5.0"
   @type focused :: boolean() | nil
 
   @typedoc "Command interaction data struct"
