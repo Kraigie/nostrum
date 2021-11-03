@@ -165,7 +165,7 @@ defmodule Nostrum.Shard.Dispatch do
 
   def handle_event(:GUILD_MEMBER_ADD = event, p, state) do
     UserCache.create(p.user)
-    {event, GuildCache.member_add(p.guild_id, p), state}
+    {event, {p.guild_id, GuildCache.member_add(p.guild_id, p)}, state}
   end
 
   def handle_event(:GUILD_MEMBERS_CHUNK = event, p, state) do
