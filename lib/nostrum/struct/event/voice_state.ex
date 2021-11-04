@@ -95,7 +95,7 @@ defmodule Nostrum.Struct.Event.VoiceState do
       guild_id: map.guild_id,
       channel_id: map.channel_id,
       user_id: map.user_id,
-      member: Util.cast(map["member"], {:struct, Member}),
+      member: Util.cast(map[:member], {:struct, Member}),
       session_id: map.session_id,
       deaf?: map.deaf,
       mute?: map.mute,
