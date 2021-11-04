@@ -9,7 +9,7 @@ defmodule Nostrum.Shard.Session do
 
   use GenServer
 
-  @gateway_qs "/?compress=zlib-stream&encoding=etf&v=6"
+  @gateway_qs "/?compress=zlib-stream&encoding=etf&v=8"
 
   # Maximum time the initial connection may take, in milliseconds.
   @timeout_connect 10_000
