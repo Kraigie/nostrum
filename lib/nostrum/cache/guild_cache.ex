@@ -5,8 +5,6 @@ defmodule Nostrum.Cache.GuildCache do
 
   You can call the functions provided by this module independent of which cache
   is configured, and it will dispatch to the configured cache implementation.
-  The user-facing functions for reading the cache can be found in the "Reading
-  the cache" section.
 
   By default, #{@default_cache_implementation} will be used for caching guilds.
   You can override this in the `:caches` option of the `:nostrum` application
@@ -33,6 +31,10 @@ defmodule Nostrum.Cache.GuildCache do
   set up its ETS table it uses for caching. See the callbacks section for every
   nostrum-related callback you need to implement.
 
+  Note that this module also defines a few helper functions, such as `get!/1`
+  or `select_by!/2`, which call the backing cache's regular functions and
+  perform the result unwrapping by themselves.
+
   The "upstream data" wording in this module references the fact that the
   data that the guild cache (and other caches) retrieves represents the raw
   data we receive from the upstream connection, no attempt is made by nostrum
@@ -48,6 +50,7 @@ defmodule Nostrum.Cache.GuildCache do
   alias Nostrum.Struct.Guild.Member
   alias Nostrum.Struct.Guild.Role
   alias Nostrum.Struct.Message
+  alias Nostrum.Util
 
   @configured_cache :nostrum
                     |> Application.compile_env(:caches, %{})
@@ -84,13 +87,11 @@ defmodule Nostrum.Cache.GuildCache do
   @doc """
   Retrieves all `Nostrum.Struct.Guild` from the cache.
   """
-  @doc section: :reading
   @callback all() :: Enum.t()
 
   @doc """
   Selects guilds matching `selector` from all `Nostrum.Struct.Guild` in the cache.
   """
-  @doc section: :reading
   @callback select_all(selector :: (Guild.t() -> any())) :: Enum.t()
 
   @doc """
@@ -108,14 +109,7 @@ defmodule Nostrum.Cache.GuildCache do
   {:error, :id_not_found_on_guild_lookup}
   ```
   """
-  @doc section: :reading
   @callback get(Guild.id()) :: {:ok, Guild.t()} | {:error, reason}
-
-  @doc """
-  Same as `get/1`, but raises `Nostrum.Error.CacheError` in case of failure.
-  """
-  @doc section: :reading
-  @callback get!(Guild.id()) :: Guild.t() | no_return
 
   @doc """
   Retrives a single `Nostrum.Struct.Guild` where it matches the `clauses`.
@@ -133,14 +127,7 @@ defmodule Nostrum.Cache.GuildCache do
   {:error, :id_not_found_on_guild_lookup}
   ```
   """
-  @doc section: :reading
   @callback get_by(clauses) :: {:ok, Guild.t()} | {:error, reason()}
-
-  @doc """
-  Same as `get_by/1`, but raises `Nostrum.Error.CacheError` in case of failure.
-  """
-  @doc section: :reading
-  @callback get_by!(clauses) :: Guild.t() | no_return
 
   @doc """
   Selects values using a `selector` from a `Nostrum.Struct.Guild`.
@@ -157,14 +144,7 @@ defmodule Nostrum.Cache.GuildCache do
   {:error, :id_not_found_on_guild_lookup}
   ```
   """
-  @doc section: :reading
   @callback select(Guild.id(), selector) :: {:ok, any} | {:error, reason}
-
-  @doc """
-  Same as `select/2`, but raises `Nostrum.Error.CacheError` in case of failure.
-  """
-  @doc section: :reading
-  @callback select!(Guild.id(), selector) :: any | no_return
 
   @doc """
   Selects values using a `selector` from a `Nostrum.Struct.Guild` that matches
@@ -183,14 +163,7 @@ defmodule Nostrum.Cache.GuildCache do
   {:error, :id_not_found_on_guild_lookup}
   ```
   """
-  @doc section: :reading
   @callback select_by(clauses, selector) :: {:ok, any} | {:error, reason}
-
-  @doc """
-  Same as `select_by/2`, but raises `Nostrum.Error.CacheError` in case of failure.
-  """
-  @doc section: :reading
-  @callback select_by!(clauses, selector) :: any | no_return
 
   # Functions called from nostrum.
   @doc "Create a guild in the cache."
@@ -322,13 +295,9 @@ defmodule Nostrum.Cache.GuildCache do
   defdelegate all, to: @configured_cache
   defdelegate select_all(selector), to: @configured_cache
   defdelegate get(guild_id), to: @configured_cache
-  defdelegate get!(guild_id), to: @configured_cache
   defdelegate get_by(clauses), to: @configured_cache
-  defdelegate get_by!(clauses), to: @configured_cache
   defdelegate select(guild_id, selector), to: @configured_cache
-  defdelegate select!(guild_id, selector), to: @configured_cache
   defdelegate select_by(clauses, selector), to: @configured_cache
-  defdelegate select_by!(clauses, selector), to: @configured_cache
   defdelegate create(guild), to: @configured_cache
   defdelegate update(guild), to: @configured_cache
   defdelegate delete(guild_id), to: @configured_cache
@@ -344,4 +313,36 @@ defmodule Nostrum.Cache.GuildCache do
   defdelegate role_delete(guild_id, role), to: @configured_cache
   defdelegate role_update(guild_id, role), to: @configured_cache
   defdelegate voice_state_update(guild_id, state), to: @configured_cache
+
+  # Helper functions.
+
+  @doc """
+  Same as `get/1`, but raises `Nostrum.Error.CacheError` in case of failure.
+  """
+  @spec get!(Guild.id()) :: Guild.t() | no_return()
+  def get!(guild_id), do: guild_id |> get |> Util.bangify_find(guild_id, __MODULE__)
+
+  @doc """
+  Same as `get_by/1`, but raises `Nostrum.Error.CacheError` in case of failure.
+  """
+  @spec get_by!(clauses) :: Guild.t() | no_return()
+  def get_by!(clauses), do: clauses |> get_by |> Util.bangify_find(clauses, __MODULE__)
+
+  @doc """
+  Same as `select/2`, but raises `Nostrum.Error.CacheError` in case of failure.
+  """
+  @spec select!(Guild.id(), selector) :: any | no_return
+  def select!(guild_id, selector) do
+    select(guild_id, selector)
+    |> Util.bangify_find(guild_id, __MODULE__)
+  end
+
+  @doc """
+  Same as `select_by/2`, but raises `Nostrum.Error.CacheError` in case of failure.
+  """
+  @spec select_by!(clauses, selector) :: any | no_return
+  def select_by!(clauses, selector) do
+    select_by(clauses, selector)
+    |> Util.bangify_find(clauses, __MODULE__)
+  end
 end

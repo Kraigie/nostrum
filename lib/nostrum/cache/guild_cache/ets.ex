@@ -75,11 +75,6 @@ defmodule Nostrum.Cache.GuildCache.ETS do
     select(id, fn guild -> guild end)
   end
 
-  @doc "Same as `get/1`, but raise if the guild does not exist."
-  @impl GuildCache
-  @spec get!(Guild.id()) :: Guild.t() | no_return
-  def get!(id), do: get(id) |> Util.bangify_find(id, __MODULE__)
-
   @doc "Get a guild from the cache using the given selectors."
   @impl GuildCache
   @spec get_by(GuildCache.clauses()) :: {:ok, Guild.t()} | {:error, GuildCache.reason()}
@@ -87,22 +82,12 @@ defmodule Nostrum.Cache.GuildCache.ETS do
     select_by(clauses, fn guild -> guild end)
   end
 
-  @doc "Same as `get_by/1`, but raise if no guild was found."
-  @impl GuildCache
-  @spec get_by!(GuildCache.clauses()) :: Guild.t() | no_return
-  def get_by!(clauses), do: get_by(clauses) |> Util.bangify_find(clauses, __MODULE__)
-
   @doc "Select values from the guild with the matching ID."
   @impl GuildCache
   @spec select(Guild.id(), GuildCache.selector()) :: {:ok, any} | {:error, GuildCache.reason()}
   def select(id, selector) do
     select_by(%{id: id}, selector)
   end
-
-  @doc "Same as `select!/1`, but raise if no guild matching `id` is found."
-  @impl GuildCache
-  @spec select!(Guild.id(), GuildCache.selector()) :: any | no_return
-  def select!(id, selector), do: select(id, selector) |> Util.bangify_find(id, __MODULE__)
 
   @doc "Select values using a `selector` for a guild that matches the given `clauses`."
   @impl GuildCache
@@ -135,12 +120,6 @@ defmodule Nostrum.Cache.GuildCache.ETS do
   def select_by(%{message: %Message{channel_id: channel_id}}, selector) do
     select_by(%{channel_id: channel_id}, selector)
   end
-
-  @doc "Same as `select_by/2`, but raise if no guild was found."
-  @impl GuildCache
-  @spec select_by!(GuildCache.clauses(), GuildCache.selector()) :: any | no_return
-  def select_by!(clauses, selector),
-    do: select_by(clauses, selector) |> Util.bangify_find(clauses, __MODULE__)
 
   # IMPLEMENTATION
   @doc "Create the given guild in the cache."

@@ -77,7 +77,7 @@ defmodule Nostrum.Cache.GuildCacheTest do
           created = @cache.channel_create(@test_guild.id, @test_channel)
           expected = Channel.to_struct(@test_channel)
           assert ^expected = created
-          cached = @cache.get!(@test_guild.id)
+          {:ok, cached} = @cache.get(@test_guild.id)
           channels = %{expected.id => expected}
           assert ^channels = cached.channels
 
@@ -113,20 +113,22 @@ defmodule Nostrum.Cache.GuildCacheTest do
           member = @cache.member_add(@test_guild.id, @test_member)
           assert ^expected = member
 
-          assert %{^member_id => ^expected} =
-                   @cache.select_by!([id: @test_guild.id], & &1.members)
+          assert {:ok, %{^member_id => ^expected}} =
+                   @cache.select_by([id: @test_guild.id], & &1.members)
 
           # member_update/2
           payload = put_in(@test_member, [:user, :name], "GrumblerBot3")
           updated = Member.to_struct(payload)
           {guild_id, ^expected, ^updated} = @cache.member_update(@test_guild.id, payload)
           assert guild_id == @test_guild.id
-          assert %{^member_id => ^updated} = @cache.select_by!([id: @test_guild.id], & &1.members)
+
+          assert {:ok, %{^member_id => ^updated}} =
+                   @cache.select_by([id: @test_guild.id], & &1.members)
 
           # member_remove/2
           remove_payload = payload.user
           {^guild_id, ^updated} = @cache.member_remove(@test_guild.id, remove_payload)
-          guild_members = @cache.select_by!([id: @test_guild.id], & &1.members)
+          {:ok, guild_members} = @cache.select_by([id: @test_guild.id], & &1.members)
           assert Enum.empty?(guild_members)
         end
 
@@ -149,8 +151,8 @@ defmodule Nostrum.Cache.GuildCacheTest do
           first_id = @test_member.user.id
           second_id = second_member.user.id
 
-          assert %Guild{members: %{^first_id => _a, ^second_id => _b}} =
-                   @cache.get!(@test_guild.id)
+          assert {:ok, %Guild{members: %{^first_id => _a, ^second_id => _b}}} =
+                   @cache.get(@test_guild.id)
         end
 
         test "role management" do
@@ -158,7 +160,7 @@ defmodule Nostrum.Cache.GuildCacheTest do
           expected = Role.to_struct(@test_role)
           role_id = expected.id
           assert ^expected = @cache.role_create(@test_guild.id, @test_role)
-          assert %Guild{roles: %{^role_id => ^expected}} = @cache.get!(@test_guild.id)
+          assert {:ok, %Guild{roles: %{^role_id => ^expected}}} = @cache.get(@test_guild.id)
 
           # role_update/2
           updated_payload = Map.put(@test_role, :name, "Higher Sharders")
@@ -167,7 +169,7 @@ defmodule Nostrum.Cache.GuildCacheTest do
 
           # role_delete/2
           {_guild_id, ^new_role} = @cache.role_delete(@test_guild.id, @test_role.id)
-          guild = @cache.get!(@test_guild.id)
+          {:ok, guild} = @cache.get(@test_guild.id)
           assert guild.roles == %{}
         end
       end
