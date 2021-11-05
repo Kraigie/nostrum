@@ -2865,7 +2865,7 @@ defmodule Nostrum.Api do
           matrix,
           boolean
         ) ::
-          error | {:ok}
+          error | {:ok} | {:ok, Message.t()}
 
   @doc """
    Executes a webhook.
@@ -2881,6 +2881,8 @@ defmodule Nostrum.Api do
      - `avatar_url` - Overrides the default avatar of the webhook.
      - `tts` - Whether the message should be read over text to speech.
    - `wait` - Whether to return an error or not. Defaults to `false`.
+
+   **Note**: If `wait` is `true`, this method will return a `Message.t()` on success.
 
    Only one of `content`, `file` or `embeds` should be supplied in the `args` parameter.
   """
@@ -2902,6 +2904,34 @@ defmodule Nostrum.Api do
       Constants.webhook_token(webhook_id, webhook_token),
       args,
       wait: wait
+    )
+  end
+
+  @doc """
+  Edits a message previously created by the same webhook,
+  args are the same as `execute_webhook/3`,
+  however all fields are optional.
+  """
+  @spec edit_webhook_message(
+          Webhook.id(),
+          Webhook.token(),
+          Message.id(),
+          map()
+        ) ::
+          error | {:ok, Message.t()}
+  def edit_webhook_message(webhook_id, webhook_token, message_id, %{file: _} = args) do
+    request_multipart(
+      :patch,
+      Constants.webhook_message_edit(webhook_id, webhook_token, message_id),
+      args
+    )
+  end
+
+  def edit_webhook_message(webhook_id, webhook_token, message_id, args) do
+    request(
+      :patch,
+      Constants.webhook_message_edit(webhook_id, webhook_token, message_id),
+      args
     )
   end
 
@@ -3288,15 +3318,49 @@ defmodule Nostrum.Api do
 
   As an alternative to passing the interaction ID and token, the
   original `t:Nostrum.Struct.Interaction.t/0` can also be passed
-  directly. See `create_interaction_response/1`.
+  directly. See `create_interaction_response/2`.
   """
   @spec create_interaction_response(Interaction.id(), Interaction.token(), map()) :: {:ok} | error
   def create_interaction_response(id, token, response) do
     request(:post, Constants.interaction_callback(id, token), response)
   end
 
-  # edit original interaction response is purposefully not implemented
-  # at the moment, waiting for "edit webhook message" first
+  @doc """
+  Same as `edit_interaction_response/3`, but directly takes the
+  `t:Nostrum.Struct.Interaction.t/0` received from the gateway.
+  """
+  @spec edit_interaction_response(Interaction.t(), map()) :: {:ok, Message.t()} | error
+  def edit_interaction_response(%Interaction{} = interaction, response) do
+    edit_interaction_response(interaction.application_id, interaction.token, response)
+  end
+
+  @doc """
+  Edits the original interaction response.
+
+  Functions the same as `edit_webhook_message/3`
+  """
+  @spec edit_interaction_response(User.id(), Interaction.token(), map()) ::
+          {:ok, Message.t()} | error
+  def edit_interaction_response(id \\ Me.get().id, token, response) do
+    request(:patch, Constants.interaction_callback_original(id, token), response)
+  end
+
+  @doc """
+  Same as `delete_interaction_response/3`, but directly takes the
+  `t:Nostrum.Struct.Interaction.t/0` received from the gateway.
+  """
+  @spec delete_interaction_response(Interaction.t()) :: {:ok} | error
+  def delete_interaction_response(%Interaction{} = interaction) do
+    delete_interaction_response(interaction.application_id, interaction.token)
+  end
+
+  @doc """
+  Deletes the original interaction response.
+  """
+  @spec delete_interaction_response(User.id(), Interaction.token()) :: {:ok} | error
+  def delete_interaction_response(id \\ Me.get().id, token) do
+    request(:delete, Constants.interaction_callback_original(id, token))
+  end
 
   @doc """
   Create a followup message for an interaction.
