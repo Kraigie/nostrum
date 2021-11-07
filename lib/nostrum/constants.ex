@@ -73,6 +73,9 @@ defmodule Nostrum.Constants do
   def webhook(webhook_id), do: "/webhooks/#{webhook_id}"
   def webhook_token(webhook_id, webhook_token), do: "/webhooks/#{webhook_id}/#{webhook_token}"
 
+  def webhook_message_edit(webhook_id, webhook_token, message_id),
+    do: "/webhooks/#{webhook_id}/#{webhook_token}/#{message_id}"
+
   def webhook_git(webhook_id, webhook_token),
     do: "/webhooks/#{webhook_id}/#{webhook_token}/github"
 
@@ -111,6 +114,9 @@ defmodule Nostrum.Constants do
 
   def interaction_callback(interaction_id, interaction_token),
     do: "/interactions/#{interaction_id}/#{interaction_token}/callback"
+
+  def interaction_callback_original(application_id, interaction_token),
+    do: "/webhooks/#{application_id}/#{interaction_token}/messages/@original"
 
   def interaction_followup_message(application_id, interaction_token, message_id),
     do: "/webhooks/#{application_id}/#{interaction_token}/#{message_id}"
