@@ -98,6 +98,7 @@ defmodule Nostrum.Struct.Guild.Role do
       |> Map.update(:permissions, nil, fn
         perm when is_integer(perm) -> perm
         perm when is_binary(perm) -> String.to_integer(perm)
+        x -> x
       end)
 
     struct(__MODULE__, new)
