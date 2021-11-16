@@ -1763,7 +1763,7 @@ defmodule Nostrum.Api do
 
   ```Elixir
   Nostrum.Api.modify_guild_member(41771983423143937, 637162356451, nick: "Nostrum")
-  {:ok}
+  {:ok, %Nostrum.Struct.Member{}}
   ```
   """
   @spec modify_guild_member(Guild.id(), User.id(), options) :: error | {:ok, Member.t()}
