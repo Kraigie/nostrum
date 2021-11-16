@@ -1749,7 +1749,7 @@ defmodule Nostrum.Api do
   It situationally requires the `MANAGE_NICKNAMES`, `MANAGE_ROLES`,
   `MUTE_MEMBERS`, `DEAFEN_MEMBERS`, and `MOVE_MEMBERS` permissions.
 
-  If successful, returns `{:ok}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
+  If successful, returns `{:ok, member}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
 
   ## Options
 
@@ -1766,7 +1766,7 @@ defmodule Nostrum.Api do
   {:ok}
   ```
   """
-  @spec modify_guild_member(Guild.id(), User.id(), options) :: error | {:ok}
+  @spec modify_guild_member(Guild.id(), User.id(), options) :: error | {:ok, Member.t()}
   def modify_guild_member(guild_id, user_id, options \\ %{})
 
   def modify_guild_member(guild_id, user_id, options) when is_list(options),
@@ -1775,6 +1775,7 @@ defmodule Nostrum.Api do
   def modify_guild_member(guild_id, user_id, %{} = options)
       when is_snowflake(guild_id) and is_snowflake(user_id) do
     request(:patch, Constants.guild_member(guild_id, user_id), options)
+    |> handle_request_with_decode({:struct, Member})
   end
 
   @doc """
