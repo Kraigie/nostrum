@@ -95,6 +95,10 @@ defmodule Nostrum.Struct.Guild.Role do
       map
       |> Map.new(fn {k, v} -> {Util.maybe_to_atom(k), v} end)
       |> Map.update(:id, nil, &Util.cast(&1, Snowflake))
+      |> Map.update(:permissions, nil, fn
+        perm when is_binary(perm) -> String.to_integer(perm)
+        x -> x
+      end)
 
     struct(__MODULE__, new)
   end
