@@ -147,7 +147,8 @@ defmodule Nostrum.Cache.GuildCache.ETS do
   @impl GuildCache
   @spec create(Guild.t()) :: true
   def create(guild) do
-    true = :ets.insert_new(@table_name, {guild.id, guild})
+    # A duplicate guild insert is treated as a replace.
+    true = :ets.insert(@table_name, {guild.id, guild})
   end
 
   @doc "Update the given guild in the cache."
