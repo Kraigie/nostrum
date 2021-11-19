@@ -3344,6 +3344,7 @@ defmodule Nostrum.Api do
           {:ok, Message.t()} | error
   def edit_interaction_response(id \\ Me.get().id, token, response) do
     request(:patch, Constants.interaction_callback_original(id, token), response)
+    |> handle_request_with_decode({:struct, Message})
   end
 
   @doc """
