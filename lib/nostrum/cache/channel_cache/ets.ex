@@ -42,25 +42,8 @@ defmodule Nostrum.Cache.ChannelCache.ETS do
   @spec tabname :: atom()
   def tabname, do: @table_name
 
-  @doc ~S"""
-  Retrieves a channel from the cache.
-
-  Internally, the ChannelCache process only stores
-  `t:Nostrum.Struct.Channel.dm_channel/0` references. To get channel
-  information, a call is made to a `Nostrum.Cache.GuildCache`.
-
-  If successful, returns `{:ok, channel}`. Otherwise, returns `{:error, reason}`
-
-  ## Example
-  ```elixir
-  case Nostrum.Cache.ChannelCache.get(133333333337) do
-    {:ok, channel} ->
-      "We found " <> channel.name
-    {:error, _reason} ->
-      "Donde esta"
-  end
-  ```
-  """
+  # IMPLEMENTATION
+  @doc "Retrieve a channel from the cache by ID."
   @impl ChannelCache
   @spec get(Channel.id() | Nostrum.Struct.Message.t()) ::
           {:ok, Channel.t()} | {:error, ChannelCache.reason()}
@@ -73,15 +56,13 @@ defmodule Nostrum.Cache.ChannelCache.ETS do
     end
   end
 
-  @doc ~S"""
-  Same as `get/1`, but raises `Nostrum.Error.CacheError` in case of a failure.
-  """
+  @doc "Same as `get/1`, but raises `Nostrum.Error.CacheError` in case of a failure."
   @impl ChannelCache
   @spec get!(Channel.id() | Nostrum.Struct.Message.t()) :: no_return | Channel.t()
   def get!(%Nostrum.Struct.Message{channel_id: channel_id}), do: get!(channel_id)
   def get!(id) when is_snowflake(id), do: id |> get |> Util.bangify_find(id, __MODULE__)
 
-  @doc false
+  @doc "Converts and creates the given map as a channel in the cache."
   @impl ChannelCache
   @spec create(map) :: Channel.t()
   def create(channel) do
@@ -89,7 +70,7 @@ defmodule Nostrum.Cache.ChannelCache.ETS do
     convert(channel)
   end
 
-  @doc false
+  @doc "Update the given channel in the cache."
   @impl ChannelCache
   @spec update(Channel.t()) :: :noop | {Channel.t(), Channel.t()}
   def update(channel) do
@@ -102,7 +83,7 @@ defmodule Nostrum.Cache.ChannelCache.ETS do
     end
   end
 
-  @doc false
+  @doc "Delete the channel from the cache by ID."
   @impl ChannelCache
   @spec delete(Channel.id()) :: :noop | Channel.t()
   def delete(id) do
@@ -116,7 +97,7 @@ defmodule Nostrum.Cache.ChannelCache.ETS do
     end
   end
 
-  @doc false
+  @doc "Lookup a channel from the cache by ID and if it does not exist try to get from GuildCache with select_by"
   @impl ChannelCache
   @spec lookup(Channel.id()) :: {:error, :channel_not_found} | {:ok, map}
   def lookup(id) do
@@ -139,7 +120,7 @@ defmodule Nostrum.Cache.ChannelCache.ETS do
     end
   end
 
-  @doc false
+  # Converts a map into a Channel
   defp convert(%{__struct__: _} = struct), do: struct
   defp convert(map), do: Channel.to_struct(map)
 end
