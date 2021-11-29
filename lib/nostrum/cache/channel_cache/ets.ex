@@ -62,7 +62,8 @@ defmodule Nostrum.Cache.ChannelCache.ETS do
   ```
   """
   @impl ChannelCache
-  @spec get(Channel.id() | Nostrum.Struct.Message.t()) :: {:ok, Channel.t()} | {:error, ChannelCache.reason()}
+  @spec get(Channel.id() | Nostrum.Struct.Message.t()) ::
+          {:ok, Channel.t()} | {:error, ChannelCache.reason()}
   def get(%Nostrum.Struct.Message{channel_id: channel_id}), do: get(channel_id)
 
   def get(id) when is_snowflake(id) do

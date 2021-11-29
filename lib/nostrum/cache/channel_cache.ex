@@ -36,7 +36,8 @@ defmodule Nostrum.Cache.ChannelCache do
 
   ## Behaviour specification
 
-  @callback get(Channel.id() | Nostrum.Struct.Message.t()) :: {:error, reason} | {:ok, Channel.t()} | {:error, reason}
+  @callback get(Channel.id() | Nostrum.Struct.Message.t()) ::
+              {:error, reason} | {:ok, Channel.t()} | {:error, reason}
 
   @callback get!(Channel.id() | Nostrum.Struct.Message.t()) :: no_return | Channel.t()
 
