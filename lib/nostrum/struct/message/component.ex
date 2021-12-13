@@ -143,14 +143,14 @@ defmodule Nostrum.Struct.Message.Component do
 
   Defaults to ``1``. Minimum of ``0``. Maximum of ``25``. Only present for select menus.
   """
-  @type min_values :: 0..25
+  @type min_values :: 0..25 | nil
 
   @typedoc """
   Maximum number of items that must be chosen.
 
   Defaults to ``1``. Maximum of ``25``. Only present for select menus.
   """
-  @type max_values :: 1..25
+  @type max_values :: 1..25 | nil
 
   @typedoc """
   Child components for action rows.
