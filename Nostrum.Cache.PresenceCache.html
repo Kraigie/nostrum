@@ -10,7 +10,7 @@
     <title>Nostrum.Cache.PresenceCache — Nostrum v0.5.0</title>
     <link rel="stylesheet" href="dist/elixir-a172fe91e725dcb259e2.css" />
 
-    <script src="dist/sidebar_items-670b1c2548.js"></script>
+    <script src="dist/sidebar_items-40fc781b4d.js"></script>
 
       <script src="docs_config.js"></script>
 
@@ -82,7 +82,7 @@ Nostrum
     <div id="content" class="content-inner">
 
       <h1>
-Nostrum.Cache.PresenceCache <small class="app-vsn">(Nostrum v0.5.0)</small>
+Nostrum.Cache.PresenceCache <small>behaviour</small> <small class="app-vsn">(Nostrum v0.5.0)</small>
 
           <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache.ex#L1" title="View Source" class="view-source" rel="help">
             <span class="icon-code" aria-hidden="true"></span>
@@ -93,15 +93,25 @@ Nostrum.Cache.PresenceCache <small class="app-vsn">(Nostrum v0.5.0)</small>
 
 
         <section id="moduledoc">
-<p>Cache for presences.</p><p>The ETS table name associated with the User Cache is <code class="inline">:presences</code>. Besides the
-methods provided below you can call any other ETS methods on the table.</p><h2 id="module-example" class="section-heading">
-  <a href="#module-example" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
-  Example
+<p>Cache behaviour &amp; dispatcher for Discord presences.</p><p>By default, <a href="Nostrum.Cache.PresenceCache.ETS.html"><code class="inline">Elixir.Nostrum.Cache.PresenceCache.ETS</code></a> will be use for caching
+presences.  You can override this in the <code class="inline">:caches</code> option of the <code class="inline">nostrum</code>
+application by setting the <code class="inline">:presences</code> fields to a different module
+implementing the <a href="Nostrum.Cache.PresenceCache.html#content"><code class="inline">Nostrum.Cache.PresenceCache</code></a> behaviour. Any module below
+<a href="Nostrum.Cache.PresenceCache.html#content"><code class="inline">Nostrum.Cache.PresenceCache</code></a> implements this behaviour and can be used as a
+cache.</p><h2 id="module-writing-your-own-presence-cache" class="section-heading">
+  <a href="#module-writing-your-own-presence-cache" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Writing your own presence cache
 </h2>
-<pre><code class="makeup elixir"><span class="n">info</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ss">:ets</span><span class="o">.</span><span class="n">info</span><span class="p" data-group-id="2684179095-1">(</span><span class="ss">:presences</span><span class="p" data-group-id="2684179095-1">)</span><span class="w">
-</span><span class="p" data-group-id="2684179095-2">[</span><span class="n">...</span><span class="p">,</span><span class="w"> </span><span class="ss">heir</span><span class="p">:</span><span class="w"> </span><span class="ss">:none</span><span class="p">,</span><span class="w"> </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="ss">:presences</span><span class="p">,</span><span class="w"> </span><span class="ss">size</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">...</span><span class="p" data-group-id="2684179095-2">]</span><span class="w">
-</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">info</span><span class="p" data-group-id="2684179095-3">[</span><span class="ss">:size</span><span class="p" data-group-id="2684179095-3">]</span><span class="w">
-</span><span class="mi">1</span></code></pre>
+<p>As with the other caches, the presence cache API consists of two parts:</p><ul><li><p>The functions that the user calls, currently only <a href="#c:get/2"><code class="inline">get/2</code></a>.</p></li><li><p>The functions that nostrum calls, such as <a href="#c:create/1"><code class="inline">create/1</code></a> or <a href="#c:update/1"><code class="inline">update/1</code></a>.
+These <strong>do not create any objects in the Discord API</strong>, they are purely
+created to update the cached data from data that Discord sends us. If you
+want to create objects on Discord, use the functions exposed by <a href="Nostrum.Api.html"><code class="inline">Nostrum.Api</code></a>
+instead.</p></li></ul><p>You need to implement both of them for nostrum to work with your custom
+cache. <strong>You also need to implement <a href="https://hexdocs.pm/elixir/Supervisor.html"><code class="inline">Supervisor</code></a> callbacks</strong>, which will
+start your cache as a child under <a href="Nostrum.Cache.CacheSupervisor.html"><code class="inline">Nostrum.Cache.CacheSupervisor</code></a>: As an
+example, the <a href="Nostrum.Cache.PresenceCache.ETS.html"><code class="inline">Nostrum.Cache.PresenceCache.ETS</code></a> implementation uses this to to
+set up its ETS table it uses for caching. See the callbacks section for every
+nostrum-related callback you need to implement.</p>
         </section>
 
 
@@ -114,9 +124,26 @@ methods provided below you can call any other ETS methods on the table.</p><h2 i
             Summary
           </h1>
 
-  <div class="summary-functions summary">
+  <div class="summary-types summary">
     <h2>
-      <a href="#functions">Functions</a>
+      <a href="#types">Types</a>
+    </h2>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:presence/0">presence()</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Represents a presence as received from Discord.
+See <a href="https://discord.com/developers/docs/topics/gateway#presence-update">Presence Update</a>.</p></div>
+
+</div>
+
+  </div>
+
+  <div class="summary-reading-the-cache summary">
+    <h2>
+      <a href="#reading-the-cache">Reading the cache</a>
     </h2>
 <div class="summary-row">
   <div class="summary-signature">
@@ -124,7 +151,7 @@ methods provided below you can call any other ETS methods on the table.</p><h2 i
 
   </div>
 
-    <div class="summary-synopsis"><p>Retreives a presence for a user from the cache by guild and id.</p></div>
+    <div class="summary-synopsis"><p>See <a href="Nostrum.Cache.PresenceCache.ETS.html#get/2"><code class="inline">Nostrum.Cache.PresenceCache.ETS.get/2</code></a>.</p></div>
 
 </div>
 <div class="summary-row">
@@ -133,7 +160,84 @@ methods provided below you can call any other ETS methods on the table.</p><h2 i
 
   </div>
 
-    <div class="summary-synopsis"><p>Same as <code class="inline">get/1</code>, but raises <a href="Nostrum.Error.CacheError.html"><code class="inline">Nostrum.Error.CacheError</code></a> in case of a failure.</p></div>
+    <div class="summary-synopsis"><p>Same as <code class="inline">get/1</code>, but raise <a href="Nostrum.Error.CacheError.html"><code class="inline">Nostrum.Error.CacheError</code></a> in case of a failure.</p></div>
+
+</div>
+
+  </div>
+
+  <div class="summary-callbacks summary">
+    <h2>
+      <a href="#callbacks">Callbacks</a>
+    </h2>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#c:bulk_create/2">bulk_create(id, list)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Bulk create multiple presences for the given guild in the cache.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#c:create/1">create(presence)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Create a presence in the cache.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#c:get/2">get(id, id)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Retreives a presence for a user from the cache by guild and id.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#c:update/1">update(map)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Update the given presence in the cache from upstream data.</p></div>
+
+</div>
+
+  </div>
+
+  <div class="summary-functions summary">
+    <h2>
+      <a href="#functions">Functions</a>
+    </h2>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#bulk_create/2">bulk_create(guild_id, presences)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>See <a href="Nostrum.Cache.PresenceCache.ETS.html#bulk_create/2"><code class="inline">Nostrum.Cache.PresenceCache.ETS.bulk_create/2</code></a>.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#create/1">create(presence)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>See <a href="Nostrum.Cache.PresenceCache.ETS.html#create/1"><code class="inline">Nostrum.Cache.PresenceCache.ETS.create/1</code></a>.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#update/1">update(presence)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>See <a href="Nostrum.Cache.PresenceCache.ETS.html#update/1"><code class="inline">Nostrum.Cache.PresenceCache.ETS.update/1</code></a>.</p></div>
 
 </div>
 
@@ -142,15 +246,62 @@ methods provided below you can call any other ETS methods on the table.</p><h2 i
         </section>
 
 
-        <section id="functions" class="details-list">
+        <section id="types" class="details-list">
           <h1 class="section-heading">
-            <a class="hover-link" href="#functions">
+            <a class="hover-link" href="#types">
               <span class="icon-link" aria-hidden="true"></span>
               <span class="sr-only">Link to this section</span>
             </a>
-Functions
+Types
           </h1>
-          <div class="functions-list">
+          <div class="types-list">
+<section class="detail" id="t:presence/0">
+
+  <div class="detail-header">
+    <a href="#t:presence/0" class="detail-link" title="Link to this opaque">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this opaque</span>
+    </a>
+    <h1 class="signature">presence()</h1>
+
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache.ex#L58" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+      <span class="note">(opaque)</span>
+
+      <span class="note">(since 0.5)</span>
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre>presence()</pre>
+
+      </div>
+
+<p>Represents a presence as received from Discord.
+See <a href="https://discord.com/developers/docs/topics/gateway#presence-update">Presence Update</a>.</p>
+  </section>
+</section>
+
+          </div>
+        </section>
+
+        <section id="reading-the-cache" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#reading-the-cache">
+              <span class="icon-link" aria-hidden="true"></span>
+              <span class="sr-only">Link to this section</span>
+            </a>
+Reading the cache
+          </h1>
+          <div class="reading-the-cache-list">
 <section class="detail" id="get/2">
 
   <div class="detail-header">
@@ -160,7 +311,130 @@ Functions
     </a>
     <h1 class="signature">get(user_id, guild_id)</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache.ex#L38" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache.ex#L102" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>See <a href="Nostrum.Cache.PresenceCache.ETS.html#get/2"><code class="inline">Nostrum.Cache.PresenceCache.ETS.get/2</code></a>.</p>
+  </section>
+</section>
+<section class="detail" id="get!/2">
+
+  <div class="detail-header">
+    <a href="#get!/2" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">get!(user_id, guild_id)</h1>
+
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache.ex#L111" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre>get!(<a href="Nostrum.Struct.User.html#t:id/0">Nostrum.Struct.User.id</a>(), <a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>()) ::
+  <a href="#t:presence/0">presence</a>() | <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">no_return</a>()</pre>
+
+      </div>
+
+<p>Same as <code class="inline">get/1</code>, but raise <a href="Nostrum.Error.CacheError.html"><code class="inline">Nostrum.Error.CacheError</code></a> in case of a failure.</p>
+  </section>
+</section>
+
+          </div>
+        </section>
+
+        <section id="callbacks" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#callbacks">
+              <span class="icon-link" aria-hidden="true"></span>
+              <span class="sr-only">Link to this section</span>
+            </a>
+Callbacks
+          </h1>
+          <div class="callbacks-list">
+<section class="detail" id="c:bulk_create/2">
+
+  <div class="detail-header">
+    <a href="#c:bulk_create/2" class="detail-link" title="Link to this callback">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this callback</span>
+    </a>
+    <h1 class="signature">bulk_create(id, list)</h1>
+
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache.ex#L86" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre>bulk_create(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(), [<a href="#t:presence/0">presence</a>()]) :: :ok</pre>
+
+      </div>
+
+<p>Bulk create multiple presences for the given guild in the cache.</p>
+  </section>
+</section>
+<section class="detail" id="c:create/1">
+
+  <div class="detail-header">
+    <a href="#c:create/1" class="detail-link" title="Link to this callback">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this callback</span>
+    </a>
+    <h1 class="signature">create(presence)</h1>
+
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache.ex#L81" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre>create(<a href="#t:presence/0">presence</a>()) :: :ok</pre>
+
+      </div>
+
+<p>Create a presence in the cache.</p>
+  </section>
+</section>
+<section class="detail" id="c:get/2">
+
+  <div class="detail-header">
+    <a href="#c:get/2" class="detail-link" title="Link to this callback">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this callback</span>
+    </a>
+    <h1 class="signature">get(id, id)</h1>
+
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache.ex#L76" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -174,32 +448,32 @@ Functions
       <div class="specs">
 
           <pre>get(<a href="Nostrum.Struct.User.html#t:id/0">Nostrum.Struct.User.id</a>(), <a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>()) ::
-  {:error, :presence_not_found} | {:ok, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()}</pre>
+  {:ok, <a href="#t:presence/0">presence</a>()} | {:error, :presence_not_found}</pre>
 
       </div>
 
-<p>Retreives a presence for a user from the cache by guild and id.</p><p>If successful, returns <code class="inline">{:ok, presence}</code>. Otherwise returns <code class="inline">{:error, reason}</code>.</p><h2 id="get/2-example" class="section-heading">
-  <a href="#get/2-example" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+<p>Retreives a presence for a user from the cache by guild and id.</p><p>If successful, returns <code class="inline">{:ok, presence}</code>. Otherwise returns <code class="inline">{:error, reason}</code>.</p><h2 id="c:get/2-example" class="section-heading">
+  <a href="#c:get/2-example" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
   Example
 </h2>
-<pre><code class="makeup elixir"><span class="k">case</span><span class="w"> </span><span class="nc">Nostrum.Cache.PresenceCache</span><span class="o">.</span><span class="n">get</span><span class="p" data-group-id="4400929095-1">(</span><span class="mi">111133335555</span><span class="p">,</span><span class="w"> </span><span class="mi">222244446666</span><span class="p" data-group-id="4400929095-1">)</span><span class="w"> </span><span class="k" data-group-id="4400929095-2">do</span><span class="w">
-  </span><span class="p" data-group-id="4400929095-3">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">presence</span><span class="p" data-group-id="4400929095-3">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
-    </span><span class="s">&quot;They&#39;re </span><span class="si" data-group-id="4400929095-4">#{</span><span class="n">presence</span><span class="o">.</span><span class="n">status</span><span class="si" data-group-id="4400929095-4">}</span><span class="s">&quot;</span><span class="w">
-  </span><span class="p" data-group-id="4400929095-5">{</span><span class="ss">:error</span><span class="p">,</span><span class="w"> </span><span class="c">_reason</span><span class="p" data-group-id="4400929095-5">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+<pre><code class="makeup elixir"><span class="k">case</span><span class="w"> </span><span class="nc">Nostrum.Cache.PresenceCache</span><span class="o">.</span><span class="n">get</span><span class="p" data-group-id="3750759980-1">(</span><span class="mi">111133335555</span><span class="p">,</span><span class="w"> </span><span class="mi">222244446666</span><span class="p" data-group-id="3750759980-1">)</span><span class="w"> </span><span class="k" data-group-id="3750759980-2">do</span><span class="w">
+  </span><span class="p" data-group-id="3750759980-3">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">presence</span><span class="p" data-group-id="3750759980-3">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+    </span><span class="s">&quot;They&#39;re </span><span class="si" data-group-id="3750759980-4">#{</span><span class="n">presence</span><span class="o">.</span><span class="n">status</span><span class="si" data-group-id="3750759980-4">}</span><span class="s">&quot;</span><span class="w">
+  </span><span class="p" data-group-id="3750759980-5">{</span><span class="ss">:error</span><span class="p">,</span><span class="w"> </span><span class="c">_reason</span><span class="p" data-group-id="3750759980-5">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
     </span><span class="s">&quot;They&#39;re dead Jim&quot;</span><span class="w">
-</span><span class="k" data-group-id="4400929095-2">end</span></code></pre>
+</span><span class="k" data-group-id="3750759980-2">end</span></code></pre>
   </section>
 </section>
-<section class="detail" id="get!/2">
+<section class="detail" id="c:update/1">
 
   <div class="detail-header">
-    <a href="#get!/2" class="detail-link" title="Link to this function">
+    <a href="#c:update/1" class="detail-link" title="Link to this callback">
       <span class="icon-link" aria-hidden="true"></span>
-      <span class="sr-only">Link to this function</span>
+      <span class="sr-only">Link to this callback</span>
     </a>
-    <h1 class="signature">get!(user_id, guild_id)</h1>
+    <h1 class="signature">update(map)</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache.ex#L49" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache.ex#L97" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -212,11 +486,99 @@ Functions
       <h2>Specs</h2>
       <div class="specs">
 
-          <pre>get!(<a href="Nostrum.Struct.User.html#t:id/0">Nostrum.Struct.User.id</a>(), <a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">no_return</a>() | <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()</pre>
+          <pre>update(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()) ::
+  {<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(), old_presence :: <a href="#t:presence/0">presence</a>() | nil,
+   new_presence :: <a href="#t:presence/0">presence</a>()}
+  | :noop</pre>
 
       </div>
 
-<p>Same as <code class="inline">get/1</code>, but raises <a href="Nostrum.Error.CacheError.html"><code class="inline">Nostrum.Error.CacheError</code></a> in case of a failure.</p>
+<p>Update the given presence in the cache from upstream data.</p><h2 id="c:update/1-return-value" class="section-heading">
+  <a href="#c:update/1-return-value" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Return value
+</h2>
+<p>Return the guild ID along with the old presence (if it was cached, otherwise
+<code class="inline">nil</code>) and the updated presence structure. If the <code class="inline">:activities</code> or <code class="inline">:status</code>
+fields of the presence did not change, return <code class="inline">:noop</code>.</p>
+  </section>
+</section>
+
+          </div>
+        </section>
+
+        <section id="functions" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#functions">
+              <span class="icon-link" aria-hidden="true"></span>
+              <span class="sr-only">Link to this section</span>
+            </a>
+Functions
+          </h1>
+          <div class="functions-list">
+<section class="detail" id="bulk_create/2">
+
+  <div class="detail-header">
+    <a href="#bulk_create/2" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">bulk_create(guild_id, presences)</h1>
+
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache.ex#L105" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>See <a href="Nostrum.Cache.PresenceCache.ETS.html#bulk_create/2"><code class="inline">Nostrum.Cache.PresenceCache.ETS.bulk_create/2</code></a>.</p>
+  </section>
+</section>
+<section class="detail" id="create/1">
+
+  <div class="detail-header">
+    <a href="#create/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">create(presence)</h1>
+
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache.ex#L103" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>See <a href="Nostrum.Cache.PresenceCache.ETS.html#create/1"><code class="inline">Nostrum.Cache.PresenceCache.ETS.create/1</code></a>.</p>
+  </section>
+</section>
+<section class="detail" id="update/1">
+
+  <div class="detail-header">
+    <a href="#update/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">update(presence)</h1>
+
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache.ex#L104" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>See <a href="Nostrum.Cache.PresenceCache.ETS.html#update/1"><code class="inline">Nostrum.Cache.PresenceCache.ETS.update/1</code></a>.</p>
   </section>
 </section>
 
