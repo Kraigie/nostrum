@@ -16,7 +16,7 @@ defmodule Nostrum.Struct.Message.Component do
   defstruct [
     :type,
     :custom_id,
-    :disabled?,
+    :disabled,
     :style,
     :label,
     :emoji,
@@ -58,7 +58,7 @@ defmodule Nostrum.Struct.Message.Component do
 
   Only present for buttons and select menus.
   """
-  @type disabled? :: boolean() | nil
+  @type disabled :: boolean() | nil
 
   @typedoc """
   An integer representing the style of the button.
@@ -163,7 +163,7 @@ defmodule Nostrum.Struct.Message.Component do
   @type t :: %__MODULE__{
           type: type(),
           custom_id: custom_id(),
-          disabled?: disabled?(),
+          disabled: disabled(),
           style: style(),
           label: label(),
           emoji: emoji(),
@@ -181,7 +181,7 @@ defmodule Nostrum.Struct.Message.Component do
     %__MODULE__{
       type: map.type,
       custom_id: map[:custom_id],
-      disabled?: map[:disabled],
+      disabled: map[:disabled],
       style: map[:style],
       label: map[:label],
       emoji: Util.cast(map[:emoji], {:struct, Emoji}),
