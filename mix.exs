@@ -40,7 +40,8 @@ defmodule Nostrum.Mixfile do
       extras: extras(),
       groups_for_modules: groups_for_modules(),
       groups_for_functions: groups_for_functions(),
-      assets: "docs/assets"
+      assets: "docs/assets",
+      nest_modules_by_prefix: [Nostrum.Cache]
     ]
   end
 
