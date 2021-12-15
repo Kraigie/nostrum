@@ -18,8 +18,7 @@ defmodule Nostrum.Cache.ChannelCache do
 
   As with the other caches, the channel cache API consists of two parts:
 
-  - The functions that the user calls, (none in this module as the time of
-    writing)
+  - The functions that the user calls, currently only `get/1` and `get!/1`
 
   - The functions that nostrum calls, such as `c:create/1` or `c:update/1`.
   These **do not create any objects in the Discord API**, they are purely
