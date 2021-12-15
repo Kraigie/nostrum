@@ -7,7 +7,7 @@
     <meta name="generator" content="ExDoc v0.25.1">
     <meta name="project" content="Nostrum v0.5.0">
 
-    <title>Nostrum.Cache.PresenceCache.ETS — Nostrum v0.5.0</title>
+    <title>Nostrum.Cache.ChannelCache.ETS — Nostrum v0.5.0</title>
     <link rel="stylesheet" href="dist/elixir-a172fe91e725dcb259e2.css" />
 
     <script src="dist/sidebar_items-b1680a92e6.js"></script>
@@ -82,9 +82,9 @@ Nostrum
     <div id="content" class="content-inner">
 
       <h1>
-Nostrum.Cache.PresenceCache.ETS <small class="app-vsn">(Nostrum v0.5.0)</small>
+Nostrum.Cache.ChannelCache.ETS <small class="app-vsn">(Nostrum v0.5.0)</small>
 
-          <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache/ets.ex#L1" title="View Source" class="view-source" rel="help">
+          <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/channel_cache/ets.ex#L1" title="View Source" class="view-source" rel="help">
             <span class="icon-code" aria-hidden="true"></span>
             <span class="sr-only">View Source</span>
           </a>
@@ -93,18 +93,13 @@ Nostrum.Cache.PresenceCache.ETS <small class="app-vsn">(Nostrum v0.5.0)</small>
 
 
         <section id="moduledoc">
-<p>ETS-based cache for user presences.</p><p>The ETS table name associated with the User Cache is <code class="inline">presences</code>. Besides
-the methods provided below you can call any other ETS methods on the table.
-If you need to access the name of the presence cache's table
-programmatically, use the <a href="#tabname/0"><code class="inline">tabname/0</code></a> function instead of hardcoding it in
-your application.</p><h2 id="module-example" class="section-heading">
-  <a href="#module-example" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
-  Example
-</h2>
-<pre><code class="makeup elixir"><span class="n">info</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ss">:ets</span><span class="o">.</span><span class="n">info</span><span class="p" data-group-id="2441641969-1">(</span><span class="n">presences</span><span class="p" data-group-id="2441641969-1">)</span><span class="w">
-</span><span class="p" data-group-id="2441641969-2">[</span><span class="n">...</span><span class="p">,</span><span class="w"> </span><span class="ss">heir</span><span class="p">:</span><span class="w"> </span><span class="ss">:none</span><span class="p">,</span><span class="w"> </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="n">presences</span><span class="p">,</span><span class="w"> </span><span class="ss">size</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">...</span><span class="p" data-group-id="2441641969-2">]</span><span class="w">
-</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">info</span><span class="p" data-group-id="2441641969-3">[</span><span class="ss">:size</span><span class="p" data-group-id="2441641969-3">]</span><span class="w">
-</span><span class="mi">1</span></code></pre>
+<p>An ETS-based cache for channels.</p><p>The supervisor defined by this module will set up the ETS table associated
+with it.</p><p>The default table name under which channels are cached is <code class="inline">nostrum_channels</code>.
+In addition to the cache behaviour implementations provided by this module,
+you can also call regular ETS table methods on it, such as <code class="inline">:ets.info</code>.</p><p>Note that users should not call the functions not related to this specific
+implementation of the cache directly. Instead, call the functions of
+<a href="Nostrum.Cache.ChannelCache.html"><code class="inline">Nostrum.Cache.ChannelCache</code></a> directly, which will dispatch to the configured
+cache.</p>
         </section>
 
 
@@ -123,15 +118,6 @@ your application.</p><h2 id="module-example" class="section-heading">
     </h2>
 <div class="summary-row">
   <div class="summary-signature">
-    <a href="#bulk_create/2">bulk_create(guild_id, presences)</a>
-
-  </div>
-
-    <div class="summary-synopsis"><p>Bulk create multiple presences in the cache.</p></div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
     <a href="#child_spec/1">child_spec(init_arg)</a>
 
   </div>
@@ -141,20 +127,38 @@ your application.</p><h2 id="module-example" class="section-heading">
 </div>
 <div class="summary-row">
   <div class="summary-signature">
-    <a href="#create/1">create(presence)</a>
+    <a href="#create/1">create(channel)</a>
 
   </div>
 
-    <div class="summary-synopsis"><p>Add the given presence data to the cache.</p></div>
+    <div class="summary-synopsis"><p>Converts and creates the given map as a channel in the cache.</p></div>
 
 </div>
 <div class="summary-row">
   <div class="summary-signature">
-    <a href="#get/2">get(user_id, guild_id)</a>
+    <a href="#delete/1">delete(id)</a>
 
   </div>
 
-    <div class="summary-synopsis"><p>Retrieves a presence for a user from the cache by guild and id.</p></div>
+    <div class="summary-synopsis"><p>Delete the channel from the cache by ID.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#get/1">get(id)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Retrieve a channel from the cache by ID.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#get!/1">get!(id)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Same as <a href="#get/1"><code class="inline">get/1</code></a>, but raises <a href="Nostrum.Error.CacheError.html"><code class="inline">Nostrum.Error.CacheError</code></a> in case of a failure.</p></div>
 
 </div>
 <div class="summary-row">
@@ -164,6 +168,15 @@ your application.</p><h2 id="module-example" class="section-heading">
   </div>
 
     <div class="summary-synopsis"><p>Set up the cache's ETS table.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#lookup/1">lookup(id)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Lookup a channel from the cache by ID and if it does not exist try to get from GuildCache with select_by</p></div>
 
 </div>
 <div class="summary-row">
@@ -181,16 +194,16 @@ your application.</p><h2 id="module-example" class="section-heading">
 
   </div>
 
-    <div class="summary-synopsis"><p>Return the ETS table name used for this cache.</p></div>
+    <div class="summary-synopsis"><p>Retrieve the ETS table name used for the cache.</p></div>
 
 </div>
 <div class="summary-row">
   <div class="summary-signature">
-    <a href="#update/1">update(presence)</a>
+    <a href="#update/1">update(channel)</a>
 
   </div>
 
-    <div class="summary-synopsis"><p>Update the given presence data in the cache.</p></div>
+    <div class="summary-synopsis"><p>Update the given channel in the cache.</p></div>
 
 </div>
 
@@ -208,35 +221,6 @@ your application.</p><h2 id="module-example" class="section-heading">
 Functions
           </h1>
           <div class="functions-list">
-<section class="detail" id="bulk_create/2">
-
-  <div class="detail-header">
-    <a href="#bulk_create/2" class="detail-link" title="Link to this function">
-      <span class="icon-link" aria-hidden="true"></span>
-      <span class="sr-only">Link to this function</span>
-    </a>
-    <h1 class="signature">bulk_create(guild_id, presences)</h1>
-
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache/ets.ex#L86" class="view-source" rel="help" title="View Source">
-       <span class="icon-code" aria-hidden="true"></span>
-       <span class="sr-only">View Source</span>
-     </a>
-
-
-  </div>
-
-  <section class="docstring">
-
-      <h2>Specs</h2>
-      <div class="specs">
-
-          <pre>bulk_create(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(), [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()]) :: :ok</pre>
-
-      </div>
-
-<p>Bulk create multiple presences in the cache.</p>
-  </section>
-</section>
 <section class="detail" id="child_spec/1">
 
   <div class="detail-header">
@@ -246,7 +230,7 @@ Functions
     </a>
     <h1 class="signature">child_spec(init_arg)</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache/ets.ex#L26" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/channel_cache/ets.ex#L27" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -266,9 +250,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">create(presence)</h1>
+    <h1 class="signature">create(channel)</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache/ets.ex#L59" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/channel_cache/ets.ex#L68" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -281,23 +265,23 @@ Functions
       <h2>Specs</h2>
       <div class="specs">
 
-          <pre>create(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()) :: :ok</pre>
+          <pre>create(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()) :: <a href="Nostrum.Struct.Channel.html#t:t/0">Nostrum.Struct.Channel.t</a>()</pre>
 
       </div>
 
-<p>Add the given presence data to the cache.</p>
+<p>Converts and creates the given map as a channel in the cache.</p>
   </section>
 </section>
-<section class="detail" id="get/2">
+<section class="detail" id="delete/1">
 
   <div class="detail-header">
-    <a href="#get/2" class="detail-link" title="Link to this function">
+    <a href="#delete/1" class="detail-link" title="Link to this function">
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">get(user_id, guild_id)</h1>
+    <h1 class="signature">delete(id)</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache/ets.ex#L49" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/channel_cache/ets.ex#L89" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -310,12 +294,72 @@ Functions
       <h2>Specs</h2>
       <div class="specs">
 
-          <pre>get(<a href="Nostrum.Struct.User.html#t:id/0">Nostrum.Struct.User.id</a>(), <a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>()) ::
-  {:error, :presence_not_found} | {:ok, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()}</pre>
+          <pre>delete(<a href="Nostrum.Struct.Channel.html#t:id/0">Nostrum.Struct.Channel.id</a>()) :: :noop | <a href="Nostrum.Struct.Channel.html#t:t/0">Nostrum.Struct.Channel.t</a>()</pre>
 
       </div>
 
-<p>Retrieves a presence for a user from the cache by guild and id.</p>
+<p>Delete the channel from the cache by ID.</p>
+  </section>
+</section>
+<section class="detail" id="get/1">
+
+  <div class="detail-header">
+    <a href="#get/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">get(id)</h1>
+
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/channel_cache/ets.ex#L50" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre>get(<a href="Nostrum.Struct.Channel.html#t:id/0">Nostrum.Struct.Channel.id</a>() | <a href="Nostrum.Struct.Message.html#t:t/0">Nostrum.Struct.Message.t</a>()) ::
+  {:ok, <a href="Nostrum.Struct.Channel.html#t:t/0">Nostrum.Struct.Channel.t</a>()}
+  | {:error, <a href="Nostrum.Cache.ChannelCache.html#t:reason/0">Nostrum.Cache.ChannelCache.reason</a>()}</pre>
+
+      </div>
+
+<p>Retrieve a channel from the cache by ID.</p>
+  </section>
+</section>
+<section class="detail" id="get!/1">
+
+  <div class="detail-header">
+    <a href="#get!/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">get!(id)</h1>
+
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/channel_cache/ets.ex#L62" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre>get!(<a href="Nostrum.Struct.Channel.html#t:id/0">Nostrum.Struct.Channel.id</a>() | <a href="Nostrum.Struct.Message.html#t:t/0">Nostrum.Struct.Message.t</a>()) ::
+  <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">no_return</a>() | <a href="Nostrum.Struct.Channel.html#t:t/0">Nostrum.Struct.Channel.t</a>()</pre>
+
+      </div>
+
+<p>Same as <a href="#get/1"><code class="inline">get/1</code></a>, but raises <a href="Nostrum.Error.CacheError.html"><code class="inline">Nostrum.Error.CacheError</code></a> in case of a failure.</p>
   </section>
 </section>
 <section class="detail" id="init/1">
@@ -327,7 +371,7 @@ Functions
     </a>
     <h1 class="signature">init(init_arg)</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache/ets.ex#L35" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/channel_cache/ets.ex#L36" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -340,6 +384,36 @@ Functions
 <p>Set up the cache's ETS table.</p>
   </section>
 </section>
+<section class="detail" id="lookup/1">
+
+  <div class="detail-header">
+    <a href="#lookup/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">lookup(id)</h1>
+
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/channel_cache/ets.ex#L103" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre>lookup(<a href="Nostrum.Struct.Channel.html#t:id/0">Nostrum.Struct.Channel.id</a>()) ::
+  {:error, :channel_not_found} | {:ok, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()}</pre>
+
+      </div>
+
+<p>Lookup a channel from the cache by ID and if it does not exist try to get from GuildCache with select_by</p>
+  </section>
+</section>
 <section class="detail" id="start_link/1">
 
   <div class="detail-header">
@@ -349,7 +423,7 @@ Functions
     </a>
     <h1 class="signature">start_link(init_arg)</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache/ets.ex#L29" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/channel_cache/ets.ex#L30" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -371,7 +445,7 @@ Functions
     </a>
     <h1 class="signature">tabname()</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache/ets.ex#L42" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/channel_cache/ets.ex#L43" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -388,7 +462,7 @@ Functions
 
       </div>
 
-<p>Return the ETS table name used for this cache.</p>
+<p>Retrieve the ETS table name used for the cache.</p>
   </section>
 </section>
 <section class="detail" id="update/1">
@@ -398,9 +472,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">update(presence)</h1>
+    <h1 class="signature">update(channel)</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache/ets.ex#L67" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/channel_cache/ets.ex#L76" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -413,11 +487,12 @@ Functions
       <h2>Specs</h2>
       <div class="specs">
 
-          <pre>update(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()) :: {<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(), nil | <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()} | :noop</pre>
+          <pre>update(<a href="Nostrum.Struct.Channel.html#t:t/0">Nostrum.Struct.Channel.t</a>()) ::
+  :noop | {<a href="Nostrum.Struct.Channel.html#t:t/0">Nostrum.Struct.Channel.t</a>(), <a href="Nostrum.Struct.Channel.html#t:t/0">Nostrum.Struct.Channel.t</a>()}</pre>
 
       </div>
 
-<p>Update the given presence data in the cache.</p>
+<p>Update the given channel in the cache.</p>
   </section>
 </section>
 
