@@ -73,9 +73,7 @@ defmodule Nostrum.Mixfile do
   end
 
   defp groups_for_functions,
-    do: [
-      "Reading the cache": &(&1[:section] == :reading)
-    ]
+    do: []
 
   def aliases do
     [
