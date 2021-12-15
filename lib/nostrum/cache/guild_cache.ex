@@ -320,18 +320,26 @@ defmodule Nostrum.Cache.GuildCache do
   Same as `get/1`, but raises `Nostrum.Error.CacheError` in case of failure.
   """
   @spec get!(Guild.id()) :: Guild.t() | no_return()
-  def get!(guild_id), do: guild_id |> get |> Util.bangify_find(guild_id, __MODULE__)
+  def get!(guild_id) do
+    guild_id
+    |> get
+    |> Util.bangify_find(guild_id, __MODULE__)
+  end
 
   @doc """
   Same as `get_by/1`, but raises `Nostrum.Error.CacheError` in case of failure.
   """
-  @spec get_by!(clauses) :: Guild.t() | no_return()
-  def get_by!(clauses), do: clauses |> get_by |> Util.bangify_find(clauses, __MODULE__)
+  @spec get_by!(clauses()) :: Guild.t() | no_return()
+  def get_by!(clauses) do
+    clauses
+    |> get_by
+    |> Util.bangify_find(clauses, __MODULE__)
+  end
 
   @doc """
   Same as `select/2`, but raises `Nostrum.Error.CacheError` in case of failure.
   """
-  @spec select!(Guild.id(), selector) :: any | no_return
+  @spec select!(Guild.id(), selector()) :: any() | no_return()
   def select!(guild_id, selector) do
     select(guild_id, selector)
     |> Util.bangify_find(guild_id, __MODULE__)
@@ -340,7 +348,7 @@ defmodule Nostrum.Cache.GuildCache do
   @doc """
   Same as `select_by/2`, but raises `Nostrum.Error.CacheError` in case of failure.
   """
-  @spec select_by!(clauses, selector) :: any | no_return
+  @spec select_by!(clauses(), selector()) :: any() | no_return()
   def select_by!(clauses, selector) do
     select_by(clauses, selector)
     |> Util.bangify_find(clauses, __MODULE__)
