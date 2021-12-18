@@ -101,11 +101,11 @@ defmodule Nostrum.Mixfile do
       {:certifi, "~> 2.8"},
       {:kcl, "~> 1.4"},
       {:porcelain, "~> 2.0"},
-      {:mime, "~> 1.6"},
       {:ex_doc, "~> 0.28", only: :dev},
+      {:mime, "~> 2.0"},
       {:credo, "~> 1.4", only: [:dev, :test]},
       {:dialyxir, "~> 1.1", only: [:dev], runtime: false},
-      {:gen_stage, "~> 0.11 or ~> 1.0"},
+      {:gen_stage, "~> 1.1"},
       {:recon, "~> 2.3", only: :dev, optional: true}
     ]
   end
