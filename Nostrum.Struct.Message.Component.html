@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.25.1">
+    <meta name="project" content="Nostrum v0.5.0">
+
+    <title>Nostrum.Struct.Message.Component — Nostrum v0.5.0</title>
+    <link rel="stylesheet" href="dist/elixir-a172fe91e725dcb259e2.css" />
+
+    <script src="dist/sidebar_items-c2c660c6e9.js"></script>
+
+      <script src="docs_config.js"></script>
+
+    <script async src="dist/app-f27ff079945e43879c46.js"></script>
+
+
+  </head>
+  <body data-type="modules">
+    <script>
+
+      try {
+        if (localStorage.getItem('night-mode') === 'true') {
+          document.body.classList.add('night-mode');
+        }
+      } catch (error) { }
+    </script>
+
+<div class="main">
+
+<button class="sidebar-button sidebar-toggle">
+  <span class="icon-menu" title="Collapse/expand sidebar"></span>
+</button>
+
+<section class="sidebar">
+  <form class="sidebar-search" action="search.html">
+    <button type="submit" class="search-button" aria-label="Submit Search">
+      <span class="icon-search" aria-hidden="true" title="Submit search"></span>
+    </button>
+    <button type="button" tabindex="-1" class="search-close-button" aria-label="Cancel Search">
+      <span class="icon-cross" aria-hidden="true" title="Cancel search"></span>
+    </button>
+    <label class="search-label">
+      <input name="q" type="text" class="search-input" placeholder="Search..." aria-label="Input your search terms" autocomplete="off" />
+    </label>
+  </form>
+
+  <div class="autocomplete">
+    <div class="autocomplete-results">
+    </div>
+  </div>
+
+  <div class="sidebar-header">
+    <div class="sidebar-projectDetails">
+      <a href="https://github.com/kraigie/nostrum" class="sidebar-projectName">
+Nostrum
+      </a>
+      <strong class="sidebar-projectVersion">
+        v0.5.0
+      </strong>
+    </div>
+
+  </div>
+
+  <ul class="sidebar-listNav">
+    <li><a id="extras-list-link" href="#full-list">Pages</a></li>
+
+      <li><a id="modules-list-link" href="#full-list">Modules</a></li>
+
+
+      <li><a id="tasks-list-link" href="#full-list">Mix Tasks</a></li>
+
+  </ul>
+  <div class="gradient"></div>
+  <ul id="full-list" class="sidebar-fullList"></ul>
+</section>
+
+<section class="content">
+  <div class="content-outer">
+    <div id="content" class="content-inner">
+
+      <h1>
+Nostrum.Struct.Message.Component <small class="app-vsn">(Nostrum v0.5.0)</small>
+
+          <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/message/component.ex#L1" title="View Source" class="view-source" rel="help">
+            <span class="icon-code" aria-hidden="true"></span>
+            <span class="sr-only">View Source</span>
+          </a>
+
+      </h1>
+
+
+        <section id="moduledoc">
+<p>A component attached to a message.</p><p>Note that the fields present depend on the <a href="#t:type/0"><code class="inline">type/0</code></a> of the component object.</p><p>See the <a href="https://discord.com/developers/docs/interactions/message-components#component-object">Discord API Component Object
+Documentation</a>
+for more information.</p>
+        </section>
+
+
+        <section id="summary" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#summary">
+              <span class="icon-link" aria-hidden="true"></span>
+              <span class="sr-only">Link to this section</span>
+            </a>
+            Summary
+          </h1>
+
+  <div class="summary-types summary">
+    <h2>
+      <a href="#types">Types</a>
+    </h2>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:components/0">components()</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Child components for action rows.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:custom_id/0">custom_id()</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>A developer-defined identifier for the component.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:disabled/0">disabled()</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Whether the component is disabled.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:emoji/0">emoji()</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Partial emoji of the button.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:label/0">label()</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Text that appears on the button.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:max_values/0">max_values()</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Maximum number of items that must be chosen.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:min_values/0">min_values()</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Minimum number of items that must be chosen.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:options/0">options()</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Choices of the select menu.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:placeholder/0">placeholder()</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Custom placeholder text if nothing is selected.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:style/0">style()</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>An integer representing the style of the button.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:t/0">t()</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Represents a message component.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:type/0">type()</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Component type.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:url/0">url()</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>URL for link-style buttons.</p></div>
+
+</div>
+
+  </div>
+
+        </section>
+
+
+        <section id="types" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#types">
+              <span class="icon-link" aria-hidden="true"></span>
+              <span class="sr-only">Link to this section</span>
+            </a>
+Types
+          </h1>
+          <div class="types-list">
+<section class="detail" id="t:components/0">
+
+  <div class="detail-header">
+    <a href="#t:components/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">components()</h1>
+
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/message/component.ex#L160" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre>components() :: [<a href="#t:t/0">t</a>()]</pre>
+
+      </div>
+
+<p>Child components for action rows.</p><p>Only present for action rows.</p>
+  </section>
+</section>
+<section class="detail" id="t:custom_id/0">
+
+  <div class="detail-header">
+    <a href="#t:custom_id/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">custom_id()</h1>
+
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/message/component.ex#L54" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre>custom_id() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>() | nil</pre>
+
+      </div>
+
+<p>A developer-defined identifier for the component.</p><p>Maximum of 100 characters. Only present for buttons and select menus.</p>
+  </section>
+</section>
+<section class="detail" id="t:disabled/0">
+
+  <div class="detail-header">
+    <a href="#t:disabled/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">disabled()</h1>
+
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/message/component.ex#L61" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre>disabled() :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">boolean</a>() | nil</pre>
+
+      </div>
+
+<p>Whether the component is disabled.</p><p>Only present for buttons and select menus.</p>
+  </section>
+</section>
+<section class="detail" id="t:emoji/0">
+
+  <div class="detail-header">
+    <a href="#t:emoji/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">emoji()</h1>
+
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/message/component.ex#L99" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre>emoji() :: <a href="Nostrum.Struct.Emoji.html#t:t/0">Nostrum.Struct.Emoji.t</a>() | nil</pre>
+
+      </div>
+
+<p>Partial emoji of the button.</p><p>Only present for buttons. The following fields are set:</p><ul><li><code class="inline">name</code></li><li><code class="inline">id</code></li><li><code class="inline">animated</code></li></ul>
+  </section>
+</section>
+<section class="detail" id="t:label/0">
+
+  <div class="detail-header">
+    <a href="#t:label/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">label()</h1>
+
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/message/component.ex#L88" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre>label() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>() | nil</pre>
+
+      </div>
+
+<p>Text that appears on the button.</p><p>Maximum of 80 characters. Only present for buttons.</p>
+  </section>
+</section>
+<section class="detail" id="t:max_values/0">
+
+  <div class="detail-header">
+    <a href="#t:max_values/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">max_values()</h1>
+
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/message/component.ex#L153" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre>max_values() :: 1..25 | nil</pre>
+
+      </div>
+
+<p>Maximum number of items that must be chosen.</p><p>Defaults to <code class="inline">1</code>. Maximum of <code class="inline">25</code>. Only present for select menus.</p>
+  </section>
+</section>
+<section class="detail" id="t:min_values/0">
+
+  <div class="detail-header">
+    <a href="#t:min_values/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">min_values()</h1>
+
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/message/component.ex#L146" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre>min_values() :: 0..25 | nil</pre>
+
+      </div>
+
+<p>Minimum number of items that must be chosen.</p><p>Defaults to <code class="inline">1</code>. Minimum of <code class="inline">0</code>. Maximum of <code class="inline">25</code>. Only present for select menus.</p>
+  </section>
+</section>
+<section class="detail" id="t:options/0">
+
+  <div class="detail-header">
+    <a href="#t:options/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">options()</h1>
+
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/message/component.ex#L118" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre>options() ::
+  [
+    %{
+      :label =&gt; <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>(),
+      :value =&gt; <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>(),
+      optional(:description) =&gt; <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>(),
+      optional(:emoji) =&gt; %{
+        id: <a href="Nostrum.Struct.Emoji.html#t:id/0">Nostrum.Struct.Emoji.id</a>(),
+        name: <a href="Nostrum.Struct.Emoji.html#t:name/0">Nostrum.Struct.Emoji.name</a>(),
+        animated: <a href="Nostrum.Struct.Emoji.html#t:animated/0">Nostrum.Struct.Emoji.animated</a>()
+      },
+      optional(:default) =&gt; <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">boolean</a>()
+    }
+  ]
+  | nil</pre>
+
+      </div>
+
+<p>Choices of the select menu.</p><p>Maximum of 25 options. Only present for select menus.</p><h2 id="t:options/0-references" class="section-heading">
+  <a href="#t:options/0-references" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  References
+</h2>
+<p>See <a href="https://discord.com/developers/docs/interactions/message-components#select-menu-object-select-option-structure">Discord Developer Portal: Select Option
+Structure</a>.</p>
+  </section>
+</section>
+<section class="detail" id="t:placeholder/0">
+
+  <div class="detail-header">
+    <a href="#t:placeholder/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">placeholder()</h1>
+
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/message/component.ex#L139" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre>placeholder() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>() | nil</pre>
+
+      </div>
+
+<p>Custom placeholder text if nothing is selected.</p><p>Maximum of 100 characters. Only present for select menus.</p>
+  </section>
+</section>
+<section class="detail" id="t:style/0">
+
+  <div class="detail-header">
+    <a href="#t:style/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">style()</h1>
+
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/message/component.ex#L81" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre>style() :: 1 | 2 | 3 | 4 | 5 | nil</pre>
+
+      </div>
+
+<p>An integer representing the style of the button.</p><p>Only present for buttons.</p><h2 id="t:style/0-values" class="section-heading">
+  <a href="#t:style/0-values" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Values
+</h2>
+<ul><li><code class="inline">1</code>: Primary - blurple, <code class="inline">custom_id</code> required.</li><li><code class="inline">2</code>: Secondary - grey, <code class="inline">custom_id</code> required.</li><li><code class="inline">3</code>: Success - green, <code class="inline">custom_id</code> required.</li><li><code class="inline">4</code>: Danger - red, <code class="inline">custom_id</code> required.</li><li><code class="inline">5</code>: Link - grey, <code class="inline">url</code> required, navigates to the URL.</li></ul><h2 id="t:style/0-references" class="section-heading">
+  <a href="#t:style/0-references" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  References
+</h2>
+<p>See <a href="https://discord.com/developers/docs/interactions/message-components#button-object-button-styles">Discord Developer Portal: Button
+Styles</a>.</p>
+  </section>
+</section>
+<section class="detail" id="t:t/0">
+
+  <div class="detail-header">
+    <a href="#t:t/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">t()</h1>
+
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/message/component.ex#L163" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre>t() :: %Nostrum.Struct.Message.Component{
+  components: <a href="#t:components/0">components</a>(),
+  custom_id: <a href="#t:custom_id/0">custom_id</a>(),
+  disabled: <a href="#t:disabled/0">disabled</a>(),
+  emoji: <a href="#t:emoji/0">emoji</a>(),
+  label: <a href="#t:label/0">label</a>(),
+  max_values: <a href="#t:max_values/0">max_values</a>(),
+  min_values: <a href="#t:min_values/0">min_values</a>(),
+  options: <a href="#t:options/0">options</a>(),
+  placeholder: <a href="#t:placeholder/0">placeholder</a>(),
+  style: <a href="#t:style/0">style</a>(),
+  type: <a href="#t:type/0">type</a>(),
+  url: <a href="#t:url/0">url</a>()
+}</pre>
+
+      </div>
+
+<p>Represents a message component.</p>
+  </section>
+</section>
+<section class="detail" id="t:type/0">
+
+  <div class="detail-header">
+    <a href="#t:type/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">type()</h1>
+
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/message/component.ex#L47" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre>type() :: 1 | 2 | 3</pre>
+
+      </div>
+
+<p>Component type.</p><p>This field is always set.</p><h2 id="t:type/0-values" class="section-heading">
+  <a href="#t:type/0-values" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Values
+</h2>
+<ul><li><code class="inline">1</code>: Action Row - A container for other components.</li><li><code class="inline">2</code>: Button - A button object.</li><li><code class="inline">3</code>: Select Menu - A select menu for picking from choices.</li></ul><h2 id="t:type/0-references" class="section-heading">
+  <a href="#t:type/0-references" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  References
+</h2>
+<p>See <a href="https://discord.com/developers/docs/interactions/message-components#component-object-component-types">Discord Developer Portal: Component
+Types</a>.</p>
+  </section>
+</section>
+<section class="detail" id="t:url/0">
+
+  <div class="detail-header">
+    <a href="#t:url/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">url()</h1>
+
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/message/component.ex#L106" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre>url() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>() | nil</pre>
+
+      </div>
+
+<p>URL for link-style buttons.</p><p>Only present for buttons.</p>
+  </section>
+</section>
+
+          </div>
+        </section>
+
+      <footer class="footer">
+        <p>
+          <span class="line">
+            Built using
+            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener">ExDoc</a> (v0.25.1) for the
+            <a href="https://elixir-lang.org" title="Elixir" target="_blank">Elixir programming language</a>.
+          </span>
+          <span class="line">
+            Designed by
+            <a href="https://twitter.com/dignifiedquire" target="_blank" rel="noopener" title="@dignifiedquire">Friedel Ziegelmayer</a>.
+          </span>
+        </p>
+        <p>
+
+            <a href="api-reference.html" title="API reference" class="line footer-button">API Reference</a>
+
+          <button class="line footer-button display-shortcuts-help">
+            Display keyboard shortcuts
+          </button>
+          <button class="line footer-button night-mode-toggle">
+            Toggle night mode
+          </button>
+          <button class="line footer-button display-quick-switch">
+            Go to a HexDocs package
+          </button>
+          <button class="line footer-button tooltips-toggle">
+            <span class="tooltips-option-disable">Disable tooltips</span>
+            <span class="tooltips-option-enable">Enable tooltips</span>
+          </button>
+        </p>
+      </footer>
+    </div>
+  </div>
+</section>
+</div>
+
+
+  </body>
+</html>
