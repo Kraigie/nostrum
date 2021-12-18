@@ -97,7 +97,7 @@ defmodule Nostrum.Mixfile do
   defp deps do
     [
       {:jason, "~> 1.2"},
-      {:gun, "== 2.0.1", hex: :remedy_gun},
+      {:gun, "==2.0.0-rc.2"},
       {:certifi, "~> 2.8"},
       {:kcl, "~> 1.4"},
       {:porcelain, "~> 2.0"},
