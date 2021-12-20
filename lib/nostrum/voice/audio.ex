@@ -308,7 +308,7 @@ defmodule Nostrum.Voice.Audio do
   end
 
   def on_stall(%VoiceState{} = voice) do
-    unless is_nil(voice.ffmpeg_proc) do
+    if VoiceState.playing?(voice) and not is_nil(voice.ffmpeg_proc) do
       Proc.stop(voice.ffmpeg_proc)
     end
   end
