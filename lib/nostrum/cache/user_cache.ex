@@ -6,10 +6,10 @@ defmodule Nostrum.Cache.UserCache do
   You can call the functions provided by this module independent of which cache
   is configured, and it will dispatch to the configured cache implementation.
 
-  By default, #{@default_cache_implementation} will be used for caching guilds.
+  By default, #{@default_cache_implementation} will be used for caching users.
   You can override this in the `:caches` option of the `:nostrum` application
-  by setting the `:users` field to a different module implementing the
-  `Nostrum.Cache.UserCache` behaviour.
+  by setting the `:users` field to a different module implementing the behaviour
+  defined by this module.
 
   See the documentation for the `Nostrum.Cache.GuildCache` module for more details.
 
@@ -20,7 +20,7 @@ defmodule Nostrum.Cache.UserCache do
   import Nostrum.Snowflake, only: [is_snowflake: 1]
 
   @configured_cache :nostrum
-                    |> Application.compile_env([:caches, :guilds], @default_cache_implementation)
+                    |> Application.compile_env([:caches, :users], @default_cache_implementation)
 
   ## Supervisor callbacks
 
