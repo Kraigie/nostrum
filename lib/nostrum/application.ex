@@ -28,7 +28,6 @@ defmodule Nostrum.Application do
   def setup_ets_tables do
     :ets.new(:gateway_url, [:set, :public, :named_table])
     :ets.new(:unavailable_guilds, [:set, :public, :named_table])
-    :ets.new(:users, [:set, :public, :named_table])
     :ets.new(:guild_shard_map, [:set, :public, :named_table])
     :ets.new(:channel_guild_map, [:set, :public, :named_table])
   end

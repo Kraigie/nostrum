@@ -22,6 +22,7 @@ defmodule Nostrum.Cache.CacheSupervisor do
       Nostrum.Cache.Me,
       # Uses the configured cache implementations.
       Nostrum.Cache.GuildCache,
+      Nostrum.Cache.UserCache,
       Nostrum.Cache.ChannelCache,
       Nostrum.Cache.PresenceCache
     ]

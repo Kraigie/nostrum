@@ -1,5 +1,5 @@
 defmodule Nostrum.Cache.UserCache.ETS do
-  @table_name :users
+  @table_name :nostrum_users
   @moduledoc """
   An ETS-based cache for users.
 
@@ -12,10 +12,18 @@ defmodule Nostrum.Cache.UserCache.ETS do
   @behaviour Nostrum.Cache.UserCache
 
   alias Nostrum.Struct.User
+  use Supervisor
 
-  @doc "Set up the cache for tests."
-  def setup do
+  @doc "Start the supervisor."
+  def start_link(init_arg) do
+    Supervisor.start_link(__MODULE__, init_arg, name: __MODULE__)
+  end
+
+  @doc "Set up the ETS table."
+  @impl Supervisor
+  def init(_init_arg) do
     :ets.new(@table_name, [:set, :public, :named_table])
+    Supervisor.init([], strategy: :one_for_one)
   end
 
   @impl Nostrum.Cache.UserCache
