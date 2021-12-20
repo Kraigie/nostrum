@@ -82,7 +82,6 @@ defmodule Nostrum.Cache.UserCache do
   """
   @callback delete(snowflake :: User.id()) :: :noop | User.t()
 
-
   ## Dispatching
   defdelegate get(id), to: @configured_cache
   defdelegate create(payload), to: @configured_cache
