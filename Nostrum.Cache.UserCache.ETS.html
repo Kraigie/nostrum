@@ -10,7 +10,7 @@
     <title>Nostrum.Cache.UserCache.ETS — Nostrum v0.5.0</title>
     <link rel="stylesheet" href="dist/elixir-a172fe91e725dcb259e2.css" />
 
-    <script src="dist/sidebar_items-c2c660c6e9.js"></script>
+    <script src="dist/sidebar_items-0c2a2b6bc0.js"></script>
 
       <script src="docs_config.js"></script>
 
@@ -93,7 +93,7 @@ Nostrum.Cache.UserCache.ETS <small class="app-vsn">(Nostrum v0.5.0)</small>
 
 
         <section id="moduledoc">
-<p>An ETS-based cache for users.</p><p>The default table name under which users are cached is <code class="inline">users</code>.
+<p>An ETS-based cache for users.</p><p>The default table name under which users are cached is <code class="inline">nostrum_users</code>.
 In addition to the cache behaviour implementations provided by this module,
 you can also call regular ETS table methods on it, such as <code class="inline">:ets.info</code>.</p>
         </section>
@@ -114,11 +114,29 @@ you can also call regular ETS table methods on it, such as <code class="inline">
     </h2>
 <div class="summary-row">
   <div class="summary-signature">
-    <a href="#setup/0">setup()</a>
+    <a href="#child_spec/1">child_spec(init_arg)</a>
 
   </div>
 
-    <div class="summary-synopsis"><p>Set up the cache for tests.</p></div>
+    <div class="summary-synopsis"><p>Returns a specification to start this module under a supervisor.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#init/1">init(init_arg)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Set up the ETS table.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#start_link/1">start_link(init_arg)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Start the supervisor.</p></div>
 
 </div>
 
@@ -136,16 +154,16 @@ you can also call regular ETS table methods on it, such as <code class="inline">
 Functions
           </h1>
           <div class="functions-list">
-<section class="detail" id="setup/0">
+<section class="detail" id="child_spec/1">
 
   <div class="detail-header">
-    <a href="#setup/0" class="detail-link" title="Link to this function">
+    <a href="#child_spec/1" class="detail-link" title="Link to this function">
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">setup()</h1>
+    <h1 class="signature">child_spec(init_arg)</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/user_cache/ets.ex#L17" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/user_cache/ets.ex#L15" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -155,7 +173,51 @@ Functions
 
   <section class="docstring">
 
-<p>Set up the cache for tests.</p>
+<p>Returns a specification to start this module under a supervisor.</p><p>See <a href="https://hexdocs.pm/elixir/Supervisor.html"><code class="inline">Supervisor</code></a>.</p>
+  </section>
+</section>
+<section class="detail" id="init/1">
+
+  <div class="detail-header">
+    <a href="#init/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">init(init_arg)</h1>
+
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/user_cache/ets.ex#L24" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>Set up the ETS table.</p>
+  </section>
+</section>
+<section class="detail" id="start_link/1">
+
+  <div class="detail-header">
+    <a href="#start_link/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">start_link(init_arg)</h1>
+
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/user_cache/ets.ex#L18" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>Start the supervisor.</p>
   </section>
 </section>
 

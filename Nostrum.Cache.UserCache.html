@@ -10,7 +10,7 @@
     <title>Nostrum.Cache.UserCache — Nostrum v0.5.0</title>
     <link rel="stylesheet" href="dist/elixir-a172fe91e725dcb259e2.css" />
 
-    <script src="dist/sidebar_items-c2c660c6e9.js"></script>
+    <script src="dist/sidebar_items-0c2a2b6bc0.js"></script>
 
       <script src="docs_config.js"></script>
 
@@ -93,7 +93,11 @@ Nostrum.Cache.UserCache <small>behaviour</small> <small class="app-vsn">(Nostrum
 
 
         <section id="moduledoc">
-<p>Cache behaviour &amp; dispatcher for users.</p>
+<p>Cache behaviour &amp; dispatcher for users.</p><p>You can call the functions provided by this module independent of which cache
+is configured, and it will dispatch to the configured cache implementation.</p><p>By default, Elixir.Nostrum.Cache.UserCache.ETS will be used for caching users.
+You can override this in the <code class="inline">:caches</code> option of the <code class="inline">:nostrum</code> application
+by setting the <code class="inline">:users</code> field to a different module implementing the behaviour
+defined by this module.</p><p>See the documentation for the <a href="Nostrum.Cache.GuildCache.html"><code class="inline">Nostrum.Cache.GuildCache</code></a> module for more details.</p>
         </section>
 
 
@@ -168,7 +172,7 @@ Nostrum.Cache.UserCache <small>behaviour</small> <small class="app-vsn">(Nostrum
 
   </div>
 
-    <div class="summary-synopsis"><p>Bulk create multiple users using the selected cache implementation.</p></div>
+    <div class="summary-synopsis"><p>See <code class="inline">Nostrum.Cache.UserCache.ETS.bulk_create/1</code>.</p></div>
 
 </div>
 <div class="summary-row">
@@ -177,16 +181,16 @@ Nostrum.Cache.UserCache <small>behaviour</small> <small class="app-vsn">(Nostrum
 
   </div>
 
-    <div class="summary-synopsis"><p>Create a user using the selected cache implementation.</p></div>
+    <div class="summary-synopsis"><p>See <code class="inline">Nostrum.Cache.UserCache.ETS.create/1</code>.</p></div>
 
 </div>
 <div class="summary-row">
   <div class="summary-signature">
-    <a href="#delete/1">delete(id)</a>
+    <a href="#delete/1">delete(snowflake)</a>
 
   </div>
 
-    <div class="summary-synopsis"><p>Delete a user by ID using the selected cache implementation.</p></div>
+    <div class="summary-synopsis"><p>See <code class="inline">Nostrum.Cache.UserCache.ETS.delete/1</code>.</p></div>
 
 </div>
 <div class="summary-row">
@@ -195,7 +199,7 @@ Nostrum.Cache.UserCache <small>behaviour</small> <small class="app-vsn">(Nostrum
 
   </div>
 
-    <div class="summary-synopsis"><p>Retrieve a user using the selected cache implementation.</p></div>
+    <div class="summary-synopsis"><p>See <code class="inline">Nostrum.Cache.UserCache.ETS.get/1</code>.</p></div>
 
 </div>
 <div class="summary-row">
@@ -204,7 +208,7 @@ Nostrum.Cache.UserCache <small>behaviour</small> <small class="app-vsn">(Nostrum
 
   </div>
 
-    <div class="summary-synopsis"><p>Same as <a href="#get/1"><code class="inline">get/1</code></a>, but raises <a href="Nostrum.Error.CacheError.html"><code class="inline">Nostrum.Error.CacheError</code></a> in case of a failure.</p></div>
+    <div class="summary-synopsis"><p>Same as <a href="#c:get/1"><code class="inline">get/1</code></a>, but raises <a href="Nostrum.Error.CacheError.html"><code class="inline">Nostrum.Error.CacheError</code></a> in case of a failure.</p></div>
 
 </div>
 <div class="summary-row">
@@ -213,7 +217,7 @@ Nostrum.Cache.UserCache <small>behaviour</small> <small class="app-vsn">(Nostrum
 
   </div>
 
-    <div class="summary-synopsis"><p>Update the given user using the selected cache implementation.</p></div>
+    <div class="summary-synopsis"><p>See <code class="inline">Nostrum.Cache.UserCache.ETS.update/1</code>.</p></div>
 
 </div>
 
@@ -240,7 +244,7 @@ Callbacks
     </a>
     <h1 class="signature">bulk_create(user_payloads)</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/user_cache.ex#L53" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/user_cache.ex#L67" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -269,7 +273,7 @@ Callbacks
     </a>
     <h1 class="signature">create(payload)</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/user_cache.ex#L46" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/user_cache.ex#L60" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -298,7 +302,7 @@ Callbacks
     </a>
     <h1 class="signature">delete(snowflake)</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/user_cache.ex#L69" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/user_cache.ex#L83" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -328,7 +332,7 @@ Callbacks
     </a>
     <h1 class="signature">get(id)</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/user_cache.ex#L39" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/user_cache.ex#L53" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -350,12 +354,12 @@ Callbacks
   <a href="#c:get/1-example" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
   Example
 </h2>
-<pre><code class="makeup elixir"><span class="k">case</span><span class="w"> </span><span class="nc">Nostrum.Cache.UserCache</span><span class="o">.</span><span class="n">get</span><span class="p" data-group-id="1183212342-1">(</span><span class="mi">1111222233334444</span><span class="p" data-group-id="1183212342-1">)</span><span class="w"> </span><span class="k" data-group-id="1183212342-2">do</span><span class="w">
-  </span><span class="p" data-group-id="1183212342-3">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">user</span><span class="p" data-group-id="1183212342-3">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+<pre><code class="makeup elixir"><span class="k">case</span><span class="w"> </span><span class="nc">Nostrum.Cache.UserCache</span><span class="o">.</span><span class="n">get</span><span class="p" data-group-id="0792448713-1">(</span><span class="mi">1111222233334444</span><span class="p" data-group-id="0792448713-1">)</span><span class="w"> </span><span class="k" data-group-id="0792448713-2">do</span><span class="w">
+  </span><span class="p" data-group-id="0792448713-3">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">user</span><span class="p" data-group-id="0792448713-3">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
     </span><span class="s">&quot;We found &quot;</span><span class="w"> </span><span class="o">&lt;&gt;</span><span class="w"> </span><span class="n">user</span><span class="o">.</span><span class="n">username</span><span class="w">
-  </span><span class="p" data-group-id="1183212342-4">{</span><span class="ss">:error</span><span class="p">,</span><span class="w"> </span><span class="c">_reason</span><span class="p" data-group-id="1183212342-4">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+  </span><span class="p" data-group-id="0792448713-4">{</span><span class="ss">:error</span><span class="p">,</span><span class="w"> </span><span class="c">_reason</span><span class="p" data-group-id="0792448713-4">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
     </span><span class="s">&quot;No es bueno&quot;</span><span class="w">
-</span><span class="k" data-group-id="1183212342-2">end</span></code></pre>
+</span><span class="k" data-group-id="0792448713-2">end</span></code></pre>
   </section>
 </section>
 <section class="detail" id="c:update/1">
@@ -367,7 +371,7 @@ Callbacks
     </a>
     <h1 class="signature">update(payload)</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/user_cache.ex#L61" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/user_cache.ex#L75" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -411,7 +415,7 @@ Functions
     </a>
     <h1 class="signature">bulk_create(users)</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/user_cache.ex#L93" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/user_cache.ex#L88" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -421,14 +425,7 @@ Functions
 
   <section class="docstring">
 
-      <h2>Specs</h2>
-      <div class="specs">
-
-          <pre>bulk_create(<a href="https://hexdocs.pm/elixir/Enum.html#t:t/0">Enum.t</a>()) :: :ok</pre>
-
-      </div>
-
-<p>Bulk create multiple users using the selected cache implementation.</p>
+<p>See <code class="inline">Nostrum.Cache.UserCache.ETS.bulk_create/1</code>.</p>
   </section>
 </section>
 <section class="detail" id="create/1">
@@ -450,14 +447,7 @@ Functions
 
   <section class="docstring">
 
-      <h2>Specs</h2>
-      <div class="specs">
-
-          <pre>create(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()) :: <a href="Nostrum.Struct.User.html#t:t/0">Nostrum.Struct.User.t</a>()</pre>
-
-      </div>
-
-<p>Create a user using the selected cache implementation.</p>
+<p>See <code class="inline">Nostrum.Cache.UserCache.ETS.create/1</code>.</p>
   </section>
 </section>
 <section class="detail" id="delete/1">
@@ -467,9 +457,9 @@ Functions
       <span class="icon-link" aria-hidden="true"></span>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">delete(id)</h1>
+    <h1 class="signature">delete(snowflake)</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/user_cache.ex#L105" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/user_cache.ex#L90" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -479,14 +469,7 @@ Functions
 
   <section class="docstring">
 
-      <h2>Specs</h2>
-      <div class="specs">
-
-          <pre>delete(<a href="Nostrum.Struct.User.html#t:id/0">Nostrum.Struct.User.id</a>()) :: :noop | <a href="Nostrum.Struct.User.html#t:t/0">Nostrum.Struct.User.t</a>()</pre>
-
-      </div>
-
-<p>Delete a user by ID using the selected cache implementation.</p>
+<p>See <code class="inline">Nostrum.Cache.UserCache.ETS.delete/1</code>.</p>
   </section>
 </section>
 <section class="detail" id="get/1">
@@ -498,7 +481,7 @@ Functions
     </a>
     <h1 class="signature">get(id)</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/user_cache.ex#L75" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/user_cache.ex#L86" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -508,15 +491,7 @@ Functions
 
   <section class="docstring">
 
-      <h2>Specs</h2>
-      <div class="specs">
-
-          <pre>get(<a href="Nostrum.Struct.User.html#t:id/0">Nostrum.Struct.User.id</a>()) ::
-  {:error, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">atom</a>()} | {:ok, <a href="Nostrum.Struct.User.html#t:t/0">Nostrum.Struct.User.t</a>()}</pre>
-
-      </div>
-
-<p>Retrieve a user using the selected cache implementation.</p>
+<p>See <code class="inline">Nostrum.Cache.UserCache.ETS.get/1</code>.</p>
   </section>
 </section>
 <section class="detail" id="get!/1">
@@ -528,7 +503,7 @@ Functions
     </a>
     <h1 class="signature">get!(id)</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/user_cache.ex#L83" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/user_cache.ex#L96" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -545,7 +520,7 @@ Functions
 
       </div>
 
-<p>Same as <a href="#get/1"><code class="inline">get/1</code></a>, but raises <a href="Nostrum.Error.CacheError.html"><code class="inline">Nostrum.Error.CacheError</code></a> in case of a failure.</p>
+<p>Same as <a href="#c:get/1"><code class="inline">get/1</code></a>, but raises <a href="Nostrum.Error.CacheError.html"><code class="inline">Nostrum.Error.CacheError</code></a> in case of a failure.</p>
   </section>
 </section>
 <section class="detail" id="update/1">
@@ -557,7 +532,7 @@ Functions
     </a>
     <h1 class="signature">update(payload)</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/user_cache.ex#L99" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/user_cache.ex#L89" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -567,14 +542,7 @@ Functions
 
   <section class="docstring">
 
-      <h2>Specs</h2>
-      <div class="specs">
-
-          <pre>update(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()) :: :noop | {<a href="Nostrum.Struct.User.html#t:t/0">Nostrum.Struct.User.t</a>(), <a href="Nostrum.Struct.User.html#t:t/0">Nostrum.Struct.User.t</a>()}</pre>
-
-      </div>
-
-<p>Update the given user using the selected cache implementation.</p>
+<p>See <code class="inline">Nostrum.Cache.UserCache.ETS.update/1</code>.</p>
   </section>
 </section>
 
