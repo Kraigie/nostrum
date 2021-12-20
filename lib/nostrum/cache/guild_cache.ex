@@ -53,8 +53,7 @@ defmodule Nostrum.Cache.GuildCache do
   alias Nostrum.Util
 
   @configured_cache :nostrum
-                    |> Application.compile_env(:caches, %{})
-                    |> Map.get(:guilds, @default_cache_implementation)
+                    |> Application.compile_env([:caches, :guilds], @default_cache_implementation)
 
   @typedoc "Specifies the reason for why a lookup operation has failed."
   @type reason ::

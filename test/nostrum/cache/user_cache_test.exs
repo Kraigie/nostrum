@@ -34,8 +34,7 @@ defmodule Nostrum.Cache.UserCacheTest do
       }
 
       setup do
-        @cache.setup()
-        :ok
+        [pid: start_supervised!(@cache)]
       end
 
       describe "bulk_create/1" do
