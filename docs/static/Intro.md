@@ -79,6 +79,7 @@ The following fields are also supported:
  - `streamlink` - Specifies the path to the `streamlink` executable for playing livestream audio with streamlink support. Defaults to `"streamlink"`.
  - `gateway_intents` - This field takes a list of atoms representing gateway intents for Nostrum to subscribe to from the Discord API. More information can be found in the [gateway intents](gateway-intents.html) documentation page.
  - `audio_timeout` - Milliseconds that input must begin generating audio by upon invoking `play`. More information about this option can be found in the [voice](voice.html) documentation page. Defaults to `20_000` (20s).
+ - `audio_frames_per_burst` - Number of opus frames to send at a time while playing audio. More information about this option can be found in the [voice](voice.html) documentation page. Defaults to `10`.
  - `voice_auto_connect` - This will determine if Nostrum automatically connects to voice websockets gateways upon joining voice channels. If set to `false` but you still wish to connect to the voice gateway, you can do so manually by calling `Nostrum.Voice.connect_to_gateway/1` after joining a voice channel. Defaults to `true`.
  - `dev` - This is added to enable Nostrum to be run completely stand alone for
  development purposes. `true` will cause Nostrum to spawn its own event consumers.
