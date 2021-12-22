@@ -110,7 +110,7 @@ defmodule Nostrum.Voice.Session do
   def handle_info({:gun_ws, _conn, _stream, {:close, errno, reason}}, state) do
     Logger.info("Voice websocket closed (errno #{errno}, reason #{inspect(reason)})")
 
-    # If we received a errno of 4006, session is no longer valid, so we must get a new session.
+    # If we received an errno of 4006, session is no longer valid, so we must get a new session.
     if errno == 4006 do
       %VoiceState{channel_id: chan, self_mute: mute, self_deaf: deaf} =
         Voice.get_voice(state.guild_id)
@@ -123,7 +123,7 @@ defmodule Nostrum.Voice.Session do
   end
 
   def handle_info(
-        {:gun_down, _conn, _proto, _reason, _killed_streams, _unprocessed_streams},
+        {:gun_down, _conn, _proto, _reason, _killed_streams},
         state
       ) do
     # Try to cancel the internal timer, but
