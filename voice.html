@@ -10,7 +10,7 @@
     <title>Voice — Nostrum v0.5.0</title>
     <link rel="stylesheet" href="dist/elixir-a172fe91e725dcb259e2.css" />
 
-    <script src="dist/sidebar_items-0c2a2b6bc0.js"></script>
+    <script src="dist/sidebar_items-acf28ff1af.js"></script>
 
       <script src="docs_config.js"></script>
 
@@ -144,7 +144,22 @@ However, <code class="inline">youtube-dl</code> typically takes at least 2.5 sec
 even on a fast connection.
 If your use case involves playing large files at a timestamp several hours in like this,
 <code class="inline">play(guild_id, url, :ytdl, start_time: &quot;2:37:56&quot;)</code>, you may consider setting the timeout to a higher value, as downloading a large youtube video and having <code class="inline">ffmpeg</code> seek through several hours
-of audio may take 15-20 seconds, even with a fast network connection.</p><h2 id="voice-events" class="section-heading">
+of audio may take 15-20 seconds, even with a fast network connection.</p><h2 id="audio-frames-per-burst" class="section-heading">
+  <a href="#audio-frames-per-burst" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Audio Frames Per Burst
+</h2>
+<p>The value <code class="inline">:audio_frames_per_burst</code> represents the number of consecutive packets to send before resting.
+When using <a href="Nostrum.Voice.html#play/4"><code class="inline">Nostrum.Voice.play/4</code></a> to play audio, Nostrum collects a number of opus frames from the 
+audio input source before sending them all to Discord as a &quot;burst&quot; of ordered frames. 
+This is done to reduce the overhead of process-sleeping and setup.
+For reference, a single opus frame is 20 milliseconds of audio (at least for the format that Discord uses).
+By default, the <code class="inline">:audio_frames_per_burst</code> is set to <code class="inline">10</code>, equivalent to 200 milliseconds of audio.</p><p>Under normal circumstances, there's no reason to change this value. However, if you attempt to play a very short
+piece of audio that's less than <code class="inline">10</code> frames (200ms) in length, it will time out (after the configured 
+<code class="inline">:audio_timeout</code> duration has passed) as it waits to collect <code class="inline">10</code> frames to send. For those cases, configure the
+value to <em>at most</em> the minumum frame length of the audio you intend to play, or simply <code class="inline">1</code>. Setting the value to <code class="inline">1</code>
+means that each opus frame from your audio source will be taken individually and be sent in its own &quot;burst&quot; with the 
+player process sleeping between each; you likely won't notice a difference in audio playback quality compared to the 
+default value of <code class="inline">10</code> other than that your sub-200ms audio files will play as expected.</p><h2 id="voice-events" class="section-heading">
   <a href="#voice-events" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
   Voice Events
 </h2>
@@ -177,16 +192,16 @@ network actions must take place before playing audio is possible. Listening for 
 <a href="Nostrum.Consumer.html#t:voice_ready/0"><code class="inline">Nostrum.Consumer.voice_ready/0</code></a> event can be used by the bot to begin playing audio as soon 
 as it is able to. The alternative approach for this use case that is not event-driven is to 
 periodically call <a href="Nostrum.Voice.html#ready?/1"><code class="inline">Nostrum.Voice.ready?/1</code></a> and wait for it to return <code class="inline">true</code> as the trigger to
-begin playing. Another common approach is to define a <code class="inline">try_play</code> function as follows:</p><pre><code class="makeup elixir"><span class="kd">def</span><span class="w"> </span><span class="nf">try_play</span><span class="p" data-group-id="2818286450-1">(</span><span class="n">guild_id</span><span class="p">,</span><span class="w"> </span><span class="n">url</span><span class="p">,</span><span class="w"> </span><span class="n">type</span><span class="p">,</span><span class="w"> </span><span class="n">opts</span><span class="w"> </span><span class="o">\\</span><span class="w"> </span><span class="p" data-group-id="2818286450-2">[</span><span class="p" data-group-id="2818286450-2">]</span><span class="p" data-group-id="2818286450-1">)</span><span class="w"> </span><span class="k" data-group-id="2818286450-3">do</span><span class="w">
-  </span><span class="k">case</span><span class="w"> </span><span class="nc">Nostrum.Voice</span><span class="o">.</span><span class="n">play</span><span class="p" data-group-id="2818286450-4">(</span><span class="n">guild_id</span><span class="p">,</span><span class="w"> </span><span class="n">url</span><span class="p">,</span><span class="w"> </span><span class="n">type</span><span class="p">,</span><span class="w"> </span><span class="n">opts</span><span class="p" data-group-id="2818286450-4">)</span><span class="w"> </span><span class="k" data-group-id="2818286450-5">do</span><span class="w">
-    </span><span class="p" data-group-id="2818286450-6">{</span><span class="ss">:error</span><span class="p">,</span><span class="w"> </span><span class="c">_msg</span><span class="p" data-group-id="2818286450-6">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
-      </span><span class="nc">Process</span><span class="o">.</span><span class="n">sleep</span><span class="p" data-group-id="2818286450-7">(</span><span class="mi">100</span><span class="p" data-group-id="2818286450-7">)</span><span class="w">
-      </span><span class="n">try_play</span><span class="p" data-group-id="2818286450-8">(</span><span class="n">guild_id</span><span class="p">,</span><span class="w"> </span><span class="n">url</span><span class="p">,</span><span class="w"> </span><span class="n">type</span><span class="p">,</span><span class="w"> </span><span class="n">opts</span><span class="p" data-group-id="2818286450-8">)</span><span class="w">
+begin playing. Another common approach is to define a <code class="inline">try_play</code> function as follows:</p><pre><code class="makeup elixir"><span class="kd">def</span><span class="w"> </span><span class="nf">try_play</span><span class="p" data-group-id="8027150693-1">(</span><span class="n">guild_id</span><span class="p">,</span><span class="w"> </span><span class="n">url</span><span class="p">,</span><span class="w"> </span><span class="n">type</span><span class="p">,</span><span class="w"> </span><span class="n">opts</span><span class="w"> </span><span class="o">\\</span><span class="w"> </span><span class="p" data-group-id="8027150693-2">[</span><span class="p" data-group-id="8027150693-2">]</span><span class="p" data-group-id="8027150693-1">)</span><span class="w"> </span><span class="k" data-group-id="8027150693-3">do</span><span class="w">
+  </span><span class="k">case</span><span class="w"> </span><span class="nc">Nostrum.Voice</span><span class="o">.</span><span class="n">play</span><span class="p" data-group-id="8027150693-4">(</span><span class="n">guild_id</span><span class="p">,</span><span class="w"> </span><span class="n">url</span><span class="p">,</span><span class="w"> </span><span class="n">type</span><span class="p">,</span><span class="w"> </span><span class="n">opts</span><span class="p" data-group-id="8027150693-4">)</span><span class="w"> </span><span class="k" data-group-id="8027150693-5">do</span><span class="w">
+    </span><span class="p" data-group-id="8027150693-6">{</span><span class="ss">:error</span><span class="p">,</span><span class="w"> </span><span class="c">_msg</span><span class="p" data-group-id="8027150693-6">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+      </span><span class="nc">Process</span><span class="o">.</span><span class="n">sleep</span><span class="p" data-group-id="8027150693-7">(</span><span class="mi">100</span><span class="p" data-group-id="8027150693-7">)</span><span class="w">
+      </span><span class="n">try_play</span><span class="p" data-group-id="8027150693-8">(</span><span class="n">guild_id</span><span class="p">,</span><span class="w"> </span><span class="n">url</span><span class="p">,</span><span class="w"> </span><span class="n">type</span><span class="p">,</span><span class="w"> </span><span class="n">opts</span><span class="p" data-group-id="8027150693-8">)</span><span class="w">
 
     </span><span class="bp">_</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
       </span><span class="ss">:ok</span><span class="w">
-  </span><span class="k" data-group-id="2818286450-5">end</span><span class="w">
-</span><span class="k" data-group-id="2818286450-3">end</span></code></pre><p>Note that the third element in the event is of type <a href="Nostrum.Struct.VoiceWSState.html#t:t/0"><code class="inline">Nostrum.Struct.VoiceWSState.t/0</code></a> and 
+  </span><span class="k" data-group-id="8027150693-5">end</span><span class="w">
+</span><span class="k" data-group-id="8027150693-3">end</span></code></pre><p>Note that the third element in the event is of type <a href="Nostrum.Struct.VoiceWSState.html#t:t/0"><code class="inline">Nostrum.Struct.VoiceWSState.t/0</code></a> and 
 not <a href="Nostrum.Struct.WSState.html#t:t/0"><code class="inline">Nostrum.Struct.WSState.t/0</code></a>.</p>
 <div class="bottom-actions">
   <div class="bottom-actions-item">
