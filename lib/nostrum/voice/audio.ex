@@ -18,10 +18,14 @@ defmodule Nostrum.Voice.Audio do
   @encryption_mode "xsalsa20_poly1305"
   @samples_per_frame 960
   @usec_per_frame 20_000
-  # How many consecutive packets to send before resting
+  # Default value
   @frames_per_burst 10
 
   def encryption_mode, do: @encryption_mode
+
+  # How many consecutive packets to send before resting
+  def frames_per_burst,
+    do: Application.get_env(:nostrum, :audio_frames_per_burst, @frames_per_burst)
 
   def rtp_header(%VoiceState{} = voice) do
     <<
@@ -97,7 +101,7 @@ defmodule Nostrum.Voice.Audio do
   end
 
   def take_nap(diff \\ 0) do
-    ((@usec_per_frame * @frames_per_burst - diff) / 1000)
+    ((@usec_per_frame * frames_per_burst() - diff) / 1000)
     |> trunc()
     |> max(0)
     |> Process.sleep()
@@ -114,7 +118,7 @@ defmodule Nostrum.Voice.Audio do
     {voice, done} =
       voice
       |> get_source()
-      |> Enum.take(@frames_per_burst)
+      |> Enum.take(frames_per_burst())
       |> send_frames(voice)
 
     :timer.cancel(watchdog)
@@ -149,9 +153,9 @@ defmodule Nostrum.Voice.Audio do
        # If using raw audio and it isn't stateful, update its state manually
        raw_audio:
          unless(is_nil(voice.raw_audio) or voice.raw_stateful,
-           do: Enum.slice(voice.raw_audio, @frames_per_burst..-1)
+           do: Enum.slice(voice.raw_audio, frames_per_burst()..-1)
          )
-     ), length(frames) < @frames_per_burst}
+     ), length(frames) < frames_per_burst()}
   end
 
   def get_stream_url(url) do

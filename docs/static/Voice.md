@@ -56,6 +56,22 @@ If your use case involves playing large files at a timestamp several hours in li
 `play(guild_id, url, :ytdl, start_time: "2:37:56")`, you may consider setting the timeout to a higher value, as downloading a large youtube video and having `ffmpeg` seek through several hours
 of audio may take 15-20 seconds, even with a fast network connection.
 
+## Audio Frames Per Burst
+The value `:audio_frames_per_burst` represents the number of consecutive packets to send before resting.
+When using `Nostrum.Voice.play/4` to play audio, Nostrum collects a number of opus frames from the 
+audio input source before sending them all to Discord as a "burst" of ordered frames. 
+This is done to reduce the overhead of process-sleeping and setup.
+For reference, a single opus frame is 20 milliseconds of audio (at least for the format that Discord uses).
+By default, the `:audio_frames_per_burst` is set to `10`, equivalent to 200 milliseconds of audio.
+
+Under normal circumstances, there's no reason to change this value. However, if you attempt to play a very short
+piece of audio that's less than `10` frames (200ms) in length, it will time out (after the configured 
+`:audio_timeout` duration has passed) as it waits to collect `10` frames to send. For those cases, configure the
+value to *at most* the minumum frame length of the audio you intend to play, or simply `1`. Setting the value to `1`
+means that each opus frame from your audio source will be taken individually and be sent in its own "burst" with the 
+player process sleeping between each; you likely won't notice a difference in audio playback quality compared to the 
+default value of `10` other than that your sub-200ms audio files will play as expected.
+
 ## Voice Events
 There are a few voice related events that bots can consume with a `Nostrum.Consumer` process:
   - `t:Nostrum.Consumer.voice_state_update/0`
