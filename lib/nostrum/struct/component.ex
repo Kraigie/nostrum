@@ -16,7 +16,7 @@ defmodule Nostrum.Struct.Component do
   ## Buttons
   Buttons are interactive components that render on messages. They have a `type: 2`, They can be clicked by users. Buttons in Nostrum are further separated into two types, detailed below. Only the [Interaction Button](#module-interaction-buttons-non-link-buttons) will fire a `Nostrum.Struct.Interaction` when pressed.
 
-  ![Discord Buttons](https://discord.com/assets/7bb017ce52cfd6575e21c058feb3883b.png)
+  ![Discord Buttons](./assets/buttons.png)
 
   - Buttons must exist inside an Action Row
   - An Action Row can contain up to 5 buttons
@@ -31,7 +31,7 @@ defmodule Nostrum.Struct.Component do
   - Link buttons will **always** use `style: 5`
 
   #### Link `style: 5`
-  ![Secondary](https://user-images.githubusercontent.com/34633373/129678527-d8d1c988-33c5-46d6-874e-2cfb2d9ba7f4.png)
+  ![Link Button](./assets/secondary_button.png)
 
   ## Interaction Buttons ( Non-link Buttons )
 
@@ -41,29 +41,29 @@ defmodule Nostrum.Struct.Component do
   - Can have one of the below `:style` applied.
 
   #### Primary `style: 1`
-  ![Primary](https://user-images.githubusercontent.com/34633373/129678518-74790396-efcc-45f0-9a84-eba3f4c66950.png)
+  ![Primary](./assets/primary_button.png)
 
   #### Secondary `style: 2`
-  ![Secondary](https://user-images.githubusercontent.com/34633373/129678527-d8d1c988-33c5-46d6-874e-2cfb2d9ba7f4.png)
+  ![Secondary](./assets/secondary_button.png)
 
   #### Success `style: 3`
-  ![Success](https://user-images.githubusercontent.com/34633373/129678543-5d72ba09-f042-49b6-b56a-9ae072011ee1.png)
+  ![Success](./assets/success_button.png)
 
   #### Danger `style: 4`
-  ![Danger (1)](https://user-images.githubusercontent.com/34633373/129678473-7e4b045f-b4a3-4993-96a2-4916cb88161f.png)
+  ![Danger (1)](./assets/danger_button.png)
 
   ## 🐼 ~~Emoji Buttons~~
 
   > Note: The discord documentation and marketing material in relation to buttons indicates that there are three kinds of buttons: 🐼 **Emoji Buttons**, **Link Buttons** & **Non-Link Buttons**. When in fact all buttons can contain an emoji. Because of this reason 🐼 **Emoji Buttons** are not included as a seperate type. Emojis will be instead handled by the two included ( superior ) button types.
 
-  ![emoji buttons in action](http://puu.sh/I4wdq/e6c28f7c85.png)
+  ![emoji buttons in action](./assets/emoji_button.png)
 
   > The field requirements are already becoming convoluted especially considering everything so far is all still a "Component". Using the sub types and helper functions will ensure all of the rules are followed when creating components.
 
   ## Select Menu
   Select menus are another interactive component that renders on messages. On desktop, clicking on a select menu opens a dropdown-style UI; on mobile, tapping a select menu opens up a half-sheet with the options.
 
-  ![Discord Selects](https://discord.com/assets/0845178564ed70a6c657d9b40d1de8fc.png)
+  ![Discord Selects](./assets/select_menu.png)
 
   Select menus support single-select and multi-select behavior, meaning you can prompt a user to choose just one item from a list, or multiple. When a user finishes making their choice by clicking out of the dropdown or closing the half-sheet, your app will receive an interaction.
   - Select menus **must** be sent inside an Action Row
@@ -72,6 +72,7 @@ defmodule Nostrum.Struct.Component do
 
 
   """
+  @moduledoc since: "0.5"
 
   defmacro __using__(_opts) do
     quote do
@@ -99,9 +100,9 @@ defmodule Nostrum.Struct.Component do
 
       defp to_component(component_map, opts) do
         opts
-        |> Enum.reject(fn {_, v} -> v == nil end)
+        |> Stream.reject(fn {_, v} -> v == nil end)
         |> Enum.into(component_map)
-        |> Enum.filter(fn {k, _} -> k in allowed_keys() end)
+        |> Stream.filter(fn {k, _} -> k in allowed_keys() end)
         |> Enum.into(%{})
         |> flatten()
         |> Component.to_struct()
@@ -113,7 +114,10 @@ defmodule Nostrum.Struct.Component do
       def flatten(map), do: :maps.map(&do_flatten/2, map)
       defp do_flatten(_key, value), do: enm(value)
       defp enm(list) when is_list(list), do: Enum.map(list, &enm/1)
-      defp enm(%{__struct__: _} = strct), do: :maps.map(&do_flatten/2, Map.from_struct(strct))
+
+      defp enm(%{__struct__: _} = component),
+        do: :maps.map(&do_flatten/2, Map.from_struct(component))
+
       defp enm(data), do: data
     end
   end

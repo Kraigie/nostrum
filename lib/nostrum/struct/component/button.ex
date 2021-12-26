@@ -2,6 +2,7 @@ defmodule Nostrum.Struct.Component.Button do
   @moduledoc """
   Helpers for dealing with Button Components
   """
+  @moduledoc since: "0.5"
   use Nostrum.Struct.Component
 
   @type link_button :: %{
@@ -26,7 +27,6 @@ defmodule Nostrum.Struct.Component.Button do
 
   @type opt ::
           {:style, Component.style()}
-          | {:label, Component.label()}
           | {:label, Component.label()}
           | {:emoji, Component.emoji()}
           | {:custom_id, Component.custom_id()}
@@ -139,5 +139,5 @@ defmodule Nostrum.Struct.Component.Button do
 
   def put_style(_, _), do: buttons_only()
 
-  defp buttons_only, do: raise("This operation is only available button components")
+  defp buttons_only, do: raise("This operation is only available to button components")
 end

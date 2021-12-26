@@ -2,6 +2,7 @@ defmodule Nostrum.Struct.Component.ActionRow do
   @moduledoc """
   Action Rows.
   """
+  @moduledoc since: "0.5"
   use Nostrum.Struct.Component
 
   @defaults %{
@@ -42,12 +43,12 @@ defmodule Nostrum.Struct.Component.ActionRow do
   def append(%Component{type: 1, components: [%Component{type: 3} | _]} = c, _), do: c
 
   def append(%Component{type: 1, components: [%Component{} | _]} = c, %Component{type: 2} = i),
-    do: appnd(c, i)
+    do: do_append(c, i)
 
   def append(%Component{type: 1, components: []} = c, %Component{type: 2} = i),
-    do: appnd(c, i)
+    do: do_append(c, i)
 
-  defp appnd(%Component{components: components} = c, %Component{type: 2} = i) do
+  defp do_append(%Component{components: components} = c, %Component{type: 2} = i) do
     inner_components_count = Enum.count(components)
 
     cond do
@@ -74,16 +75,16 @@ defmodule Nostrum.Struct.Component.ActionRow do
         %Component{type: 1, components: [%Component{} | _]} = action_row_with_buttons,
         %Component{type: 2} = button_to_append
       ) do
-    appnd_lazy(action_row_with_buttons, button_to_append)
+    do_append_lazy(action_row_with_buttons, button_to_append)
   end
 
   def append_lazy(
         %Component{type: 1, components: []} = empty_action_row,
         %Component{type: 2} = button_to_append
       ),
-      do: appnd(empty_action_row, button_to_append)
+      do: do_append(empty_action_row, button_to_append)
 
-  defp appnd_lazy(
+  defp do_append_lazy(
          %Component{components: [_head | tail] = components} = action_row,
          %Component{type: 2} = button_to_append
        ) do

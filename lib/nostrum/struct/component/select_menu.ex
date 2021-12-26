@@ -2,7 +2,7 @@ defmodule Nostrum.Struct.Component.SelectMenu do
   @moduledoc """
   Select Menu
   """
-
+  @moduledoc since: "0.5"
   @defaults %{
     custom_id: nil,
     options: [],
