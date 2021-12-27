@@ -57,7 +57,6 @@ defmodule Nostrum.Struct.Component.Button do
     [
       {:style, opts[:style]},
       {:label, opts[:label]},
-      {:label, opts[:label]},
       {:emoji, opts[:emoji]},
       {:custom_id, opts[:custom_id]},
       {:disabled, opts[:disabled]},
