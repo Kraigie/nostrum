@@ -26,6 +26,10 @@ defmodule Nostrum.Cache.UserCache.ETS do
     Supervisor.init([], strategy: :one_for_one)
   end
 
+  @doc "Retrieve the ETS table name used for the cache."
+  @spec tabname :: atom()
+  def tabname, do: @table_name
+
   @impl Nostrum.Cache.UserCache
   @spec bulk_create(Enum.t()) :: :ok
   def bulk_create(users) do
