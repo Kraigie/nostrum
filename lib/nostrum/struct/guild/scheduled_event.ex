@@ -3,8 +3,8 @@ defmodule Nostrum.Struct.Guild.ScheduledEvent do
   Struct representing a scheduled event in a guild.
   """
 
-  alias Nostrum.Struct.User
   alias Nostrum.Struct.Guild.ScheduledEvent.EntityMetadata
+  alias Nostrum.Struct.User
   alias Nostrum.{Snowflake, Util}
 
   defstruct [
