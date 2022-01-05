@@ -2363,17 +2363,17 @@ defmodule Nostrum.Api do
   Creates a new scheduled event for the guild.
 
   ## Options
-    * - `:channel_id` (`t:Nostrum.Snowflake.t/0`) optional channel id for the event
-    * - `:entity_metadata` (`t:Nostrum.Struct.Guild.ScheduledEvent.EntityMetadata.t/0`) metadata for the event
-    * - `:name` (string) required name for the event
-    * - `:privacy_level` (integer) at the time of writing, this must always be 2 for `GUILD_ONLY`
-    * - `:scheduled_start_time` required time for the event to start as a (ISO8601 timestamp)[`DateTime.to_iso8601/3`]
-    * - `:scheduled_end_time` optional time for the event to end as a (ISO8601 timestamp)[`DateTime.to_iso8601/3`]
-    * - `:description` (string) optional description for the event
-    * - `:entity_type` (integer) an integer representing the type of entity the event is for
-      * - `1` - `STAGE_INSTANCE`
-      * - `2` - `VOICE`
-      * - `3` - `EXTERNAL`
+    * `:channel_id` - (`t:Nostrum.Snowflake.t/0`) optional channel id for the event
+    * `:entity_metadata` - (`t:Nostrum.Struct.Guild.ScheduledEvent.EntityMetadata.t/0`) metadata for the event
+    * `:name` - (string) required name for the event
+    * `:privacy_level` - (integer) at the time of writing, this must always be 2 for `GUILD_ONLY`
+    * `:scheduled_start_time` - required time for the event to start as a (ISO8601 timestamp)[`DateTime.to_iso8601/3`]
+    * `:scheduled_end_time` - optional time for the event to end as a (ISO8601 timestamp)[`DateTime.to_iso8601/3`]
+    * `:description` - (string) optional description for the event
+    * `:entity_type` - (integer) an integer representing the type of entity the event is for
+      * `1` - `STAGE_INSTANCE`
+      * `2` - `VOICE`
+      * `3` - `EXTERNAL`
 
   See the (official documentation)[https://discord.com/developers/docs/resources/guild-scheduled-event] for more information.
 
