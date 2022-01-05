@@ -902,7 +902,7 @@ defmodule Nostrum.Api do
   end
 
   @spec send_chunked_delete(
-          [Nostrum.Struct.Message.id()] | %Stream{},
+          [Nostrum.Struct.Message.id()] | Enum.t(),
           Nostrum.Snowflake.t()
         ) :: error | {:ok}
   defp send_chunked_delete(messages, channel_id) do
