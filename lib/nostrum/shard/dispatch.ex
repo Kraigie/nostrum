@@ -28,7 +28,7 @@ defmodule Nostrum.Shard.Dispatch do
   }
 
   alias Nostrum.Struct.{Guild, Interaction, Message, User}
-  alias Nostrum.Struct.Guild.{UnavailableGuild, ScheduledEvent}
+  alias Nostrum.Struct.Guild.{ScheduledEvent, UnavailableGuild}
   alias Nostrum.Util
   alias Nostrum.Voice
   alias Nostrum.Voice.Session, as: VoiceSession
