@@ -2424,7 +2424,6 @@ defmodule Nostrum.Api do
           error | {:ok}
   def delete_guild_scheduled_event(guild_id, event_id) do
     request(:delete, Constants.guild_scheduled_event(guild_id, event_id))
-    |> handle_request_with_decode
   end
 
   @doc """
