@@ -99,9 +99,9 @@ defmodule Nostrum.Struct.Guild.ScheduledEvent do
   @type entity_metadata :: EntityMetadata.t() | nil
 
   @typedoc """
-  The user who created the scheduled event.
+  The user who created the scheduled event. Only present when retrieving the event from the API.
 
-  note: This will be `nil` only for events created before October 25th, 2021.
+  note: This will be `nil` for events created before October 25th, 2021.
   """
   @type creator :: User.t() | nil
 
