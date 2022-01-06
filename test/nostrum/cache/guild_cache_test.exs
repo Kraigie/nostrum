@@ -157,15 +157,21 @@ defmodule Nostrum.Cache.GuildCacheTest do
 
         test "role management" do
           # role_create/2
-          expected = Role.to_struct(@test_role)
-          role_id = expected.id
-          assert ^expected = @cache.role_create(@test_guild.id, @test_role)
-          assert {:ok, %Guild{roles: %{^role_id => ^expected}}} = @cache.get(@test_guild.id)
+          expected_guild_id = @test_guild.id
+          expected_role_struct = Role.to_struct(@test_role)
+          expected_return = {expected_guild_id, expected_role_struct}
+          role_id = expected_role_struct.id
+          assert ^expected_return = @cache.role_create(@test_guild.id, @test_role)
+
+          assert {:ok, %Guild{roles: %{^role_id => ^expected_role_struct}}} =
+                   @cache.get(@test_guild.id)
 
           # role_update/2
           updated_payload = Map.put(@test_role, :name, "Higher Sharders")
           new_role = Role.to_struct(updated_payload)
-          {^expected, ^new_role} = @cache.role_update(@test_guild.id, updated_payload)
+
+          {^expected_guild_id, ^expected_role_struct, ^new_role} =
+            @cache.role_update(@test_guild.id, updated_payload)
 
           # role_delete/2
           {_guild_id, ^new_role} = @cache.role_delete(@test_guild.id, @test_role.id)
