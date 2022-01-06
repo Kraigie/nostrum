@@ -259,13 +259,13 @@ defmodule Nostrum.Cache.GuildCache.ETS do
 
   @doc "Create the given role in the given guild in the cache."
   @impl GuildCache
-  @spec role_create(Guild.id(), map()) :: Role.t()
+  @spec role_create(Guild.id(), map()) :: {Guild.id(), Role.t()}
   def role_create(guild_id, role) do
     [{_id, guild}] = :ets.lookup(@table_name, guild_id)
     {_old, new, new_roles} = upsert(guild.roles, role.id, role, Role)
     new_guild = %{guild | roles: new_roles}
     true = :ets.update_element(@table_name, guild_id, {2, new_guild})
-    new
+    {guild_id, new}
   end
 
   @doc "Delete the given role from the given guild in the cache."
@@ -281,13 +281,13 @@ defmodule Nostrum.Cache.GuildCache.ETS do
 
   @doc "Update the given role in the given guild in the cache."
   @impl GuildCache
-  @spec role_update(Guild.id(), map()) :: {Role.t(), Role.t()}
+  @spec role_update(Guild.id(), map()) :: {Guild.id(), Role.t(), Role.t()}
   def role_update(guild_id, role) do
     [{_id, guild}] = :ets.lookup(@table_name, guild_id)
     {old, new_role, new_roles} = upsert(guild.roles, role.id, role, Role)
     new_guild = %{guild | roles: new_roles}
     true = :ets.update_element(@table_name, guild_id, {2, new_guild})
-    {old, new_role}
+    {guild_id, old, new_role}
   end
 
   @doc "Update guild voice states with the given voice state in the cache."

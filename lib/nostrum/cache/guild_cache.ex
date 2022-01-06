@@ -263,7 +263,7 @@ defmodule Nostrum.Cache.GuildCache do
 
   Return the casted role.
   """
-  @callback role_create(Guild.id(), role :: map()) :: Role.t()
+  @callback role_create(Guild.id(), role :: map()) :: {Guild.id(), new_role :: Role.t()}
 
   @doc """
   Delete the given role on the given guild.
@@ -277,7 +277,8 @@ defmodule Nostrum.Cache.GuildCache do
 
   Return the old role before the update and the updated role.
   """
-  @callback role_update(Guild.id(), role :: map()) :: {old_role :: Role.t(), new_role :: Role.t()}
+  @callback role_update(Guild.id(), role :: map()) ::
+              {Guild.id(), old_role :: Role.t(), new_role :: Role.t()}
 
   @doc """
   Update the voice state of the given guild from upstream data.
