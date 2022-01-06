@@ -33,8 +33,8 @@ defmodule Nostrum.Struct.Guild.ScheduledEvent.User do
       map
       |> Map.new(fn {k, v} -> {Util.maybe_to_atom(k), v} end)
       |> Map.update(:guild_scheduled_event_id, nil, &Util.cast(&1, Snowflake))
-      |> Map.update(:user, nil, &Util.cast(&1, User))
-      |> Map.update(:member, nil, &Util.cast(&1, Member))
+      |> Map.update(:user, nil, &Util.cast(&1, {:struct, User}))
+      |> Map.update(:member, nil, &Util.cast(&1, {:struct, Member}))
 
     struct(__MODULE__, new)
   end
