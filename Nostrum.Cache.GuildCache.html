@@ -1190,7 +1190,7 @@ cache was moved into <a href="Nostrum.Cache.GuildCache.ETS.html"><code class="in
       <div class="specs">
 
           <pre>role_create(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(), role :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()) ::
-  <a href="Nostrum.Struct.Guild.Role.html#t:t/0">Nostrum.Struct.Guild.Role.t</a>()</pre>
+  {<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(), new_role :: <a href="Nostrum.Struct.Guild.Role.html#t:t/0">Nostrum.Struct.Guild.Role.t</a>()}</pre>
 
       </div>
 
@@ -1250,7 +1250,7 @@ cache was moved into <a href="Nostrum.Cache.GuildCache.ETS.html"><code class="in
       <div class="specs">
 
           <pre>role_update(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(), role :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()) ::
-  {old_role :: <a href="Nostrum.Struct.Guild.Role.html#t:t/0">Nostrum.Struct.Guild.Role.t</a>(),
+  {<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(), old_role :: <a href="Nostrum.Struct.Guild.Role.html#t:t/0">Nostrum.Struct.Guild.Role.t</a>(),
    new_role :: <a href="Nostrum.Struct.Guild.Role.html#t:t/0">Nostrum.Struct.Guild.Role.t</a>()}</pre>
 
       </div>
@@ -1402,7 +1402,7 @@ iex&gt; Nostrum.Cache.GuildCache.select_by([id: 10], fn guild -&gt; guild.id end
     </a>
     <h1 class="signature">voice_state_update(id, state)</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L291" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L292" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1447,7 +1447,7 @@ Functions
     </a>
     <h1 class="signature">all()</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L294" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L295" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1469,7 +1469,7 @@ Functions
     </a>
     <h1 class="signature">channel_create(guild_id, channel)</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L303" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L304" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1491,7 +1491,7 @@ Functions
     </a>
     <h1 class="signature">channel_delete(guild_id, channel_id)</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L304" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L305" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1513,7 +1513,7 @@ Functions
     </a>
     <h1 class="signature">channel_update(guild_id, channel)</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L305" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L306" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1535,7 +1535,7 @@ Functions
     </a>
     <h1 class="signature">create(guild)</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L300" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L301" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1557,7 +1557,7 @@ Functions
     </a>
     <h1 class="signature">delete(guild_id)</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L302" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L303" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1579,7 +1579,7 @@ Functions
     </a>
     <h1 class="signature">emoji_update(guild_id, emojis)</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L306" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L307" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1601,7 +1601,7 @@ Functions
     </a>
     <h1 class="signature">get(guild_id)</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L296" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L297" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1623,7 +1623,7 @@ Functions
     </a>
     <h1 class="signature">get!(guild_id)</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L322" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L323" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1652,7 +1652,7 @@ Functions
     </a>
     <h1 class="signature">get_by(clauses)</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L297" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L298" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1674,7 +1674,7 @@ Functions
     </a>
     <h1 class="signature">get_by!(clauses)</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L332" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L333" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1703,7 +1703,7 @@ Functions
     </a>
     <h1 class="signature">member_add(guild_id, member)</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L307" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L308" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1725,7 +1725,7 @@ Functions
     </a>
     <h1 class="signature">member_chunk(guild_id, member)</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L310" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L311" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1747,7 +1747,7 @@ Functions
     </a>
     <h1 class="signature">member_remove(guild_id, member)</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L308" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L309" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1769,7 +1769,7 @@ Functions
     </a>
     <h1 class="signature">member_update(guild_id, member)</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L309" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L310" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1791,7 +1791,7 @@ Functions
     </a>
     <h1 class="signature">role_create(guild_id, role)</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L311" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L312" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1813,7 +1813,7 @@ Functions
     </a>
     <h1 class="signature">role_delete(guild_id, role)</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L312" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L313" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1835,7 +1835,7 @@ Functions
     </a>
     <h1 class="signature">role_update(guild_id, role)</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L313" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L314" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1857,7 +1857,7 @@ Functions
     </a>
     <h1 class="signature">select(guild_id, selector)</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L298" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L299" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1879,7 +1879,7 @@ Functions
     </a>
     <h1 class="signature">select!(guild_id, selector)</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L342" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L343" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1908,7 +1908,7 @@ Functions
     </a>
     <h1 class="signature">select_all(selector)</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L295" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L296" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1930,7 +1930,7 @@ Functions
     </a>
     <h1 class="signature">select_by(clauses, selector)</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L299" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L300" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1952,7 +1952,7 @@ Functions
     </a>
     <h1 class="signature">select_by!(clauses, selector)</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L351" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L352" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -1981,7 +1981,7 @@ Functions
     </a>
     <h1 class="signature">update(guild)</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L301" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L302" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -2003,7 +2003,7 @@ Functions
     </a>
     <h1 class="signature">voice_state_update(guild_id, state)</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L314" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L315" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
