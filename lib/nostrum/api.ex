@@ -2367,8 +2367,8 @@ defmodule Nostrum.Api do
     * `:entity_metadata` - (`t:Nostrum.Struct.Guild.ScheduledEvent.EntityMetadata.t/0`) metadata for the event
     * `:name` - (string) required name for the event
     * `:privacy_level` - (integer) at the time of writing, this must always be 2 for `GUILD_ONLY`
-    * `:scheduled_start_time` - required time for the event to start as a (ISO8601 timestamp)[`DateTime.to_iso8601/3`]
-    * `:scheduled_end_time` - optional time for the event to end as a (ISO8601 timestamp)[`DateTime.to_iso8601/3`]
+    * `:scheduled_start_time` - required time for the event to start as a `DateTime` or (ISO8601 timestamp)[`DateTime.to_iso8601/3`]
+    * `:scheduled_end_time` - optional time for the event to end as a `DateTime` or (ISO8601 timestamp)[`DateTime.to_iso8601/3`]
     * `:description` - (string) optional description for the event
     * `:entity_type` - (integer) an integer representing the type of entity the event is for
       * `1` - `STAGE_INSTANCE`
@@ -2388,6 +2388,12 @@ defmodule Nostrum.Api do
     do: create_guild_scheduled_event(guild_id, reason, Map.new(options))
 
   def create_guild_scheduled_event(guild_id, reason, %{} = options) do
+
+    options =
+      options
+    |> maybe_convert_date_time(:scheduled_start_time)
+    |> maybe_convert_date_time(:scheduled_end_time)
+
     request(%{
       method: :post,
       route: Constants.guild_scheduled_events(guild_id),
@@ -2454,6 +2460,11 @@ defmodule Nostrum.Api do
     do: modify_guild_scheduled_event(guild_id, event_id, reason, Map.new(options))
 
   def modify_guild_scheduled_event(guild_id, event_id, reason, %{} = options) do
+    options =
+      options
+    |> maybe_convert_date_time(:scheduled_start_time)
+    |> maybe_convert_date_time(:scheduled_end_time)
+
     request(%{
       method: :patch,
       route: Constants.guild_scheduled_event(guild_id, event_id),
@@ -3862,4 +3873,15 @@ defmodule Nostrum.Api do
 
   # ignore
   defp parse_allowed_mentions(options), do: options
+
+  @spec maybe_convert_date_time(map(), atom()) :: map()
+  defp maybe_convert_date_time(options, key) do
+    case options do
+      %{^key => %DateTime{} = date_time} ->
+        timestamp = DateTime.to_iso8601(date_time)
+        %{options | key => timestamp}
+      _ ->
+        options
+    end
+  end
 end
