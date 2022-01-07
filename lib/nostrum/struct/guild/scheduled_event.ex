@@ -149,5 +149,4 @@ defmodule Nostrum.Struct.Guild.ScheduledEvent do
     {:ok, casted, 0} = DateTime.from_iso8601(stamp)
     casted
   end
-
 end

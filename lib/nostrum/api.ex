@@ -2388,11 +2388,10 @@ defmodule Nostrum.Api do
     do: create_guild_scheduled_event(guild_id, reason, Map.new(options))
 
   def create_guild_scheduled_event(guild_id, reason, %{} = options) do
-
     options =
       options
-    |> maybe_convert_date_time(:scheduled_start_time)
-    |> maybe_convert_date_time(:scheduled_end_time)
+      |> maybe_convert_date_time(:scheduled_start_time)
+      |> maybe_convert_date_time(:scheduled_end_time)
 
     request(%{
       method: :post,
@@ -2462,8 +2461,8 @@ defmodule Nostrum.Api do
   def modify_guild_scheduled_event(guild_id, event_id, reason, %{} = options) do
     options =
       options
-    |> maybe_convert_date_time(:scheduled_start_time)
-    |> maybe_convert_date_time(:scheduled_end_time)
+      |> maybe_convert_date_time(:scheduled_start_time)
+      |> maybe_convert_date_time(:scheduled_end_time)
 
     request(%{
       method: :patch,
@@ -3880,6 +3879,7 @@ defmodule Nostrum.Api do
       %{^key => %DateTime{} = date_time} ->
         timestamp = DateTime.to_iso8601(date_time)
         %{options | key => timestamp}
+
       _ ->
         options
     end
