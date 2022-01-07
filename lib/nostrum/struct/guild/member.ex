@@ -32,7 +32,8 @@ defmodule Nostrum.Struct.Guild.Member do
     :roles,
     :joined_at,
     :deaf,
-    :mute
+    :mute,
+    :communication_disabled_until
   ]
 
   defimpl String.Chars do
@@ -69,13 +70,19 @@ defmodule Nostrum.Struct.Guild.Member do
   """
   @type mute :: boolean | nil
 
+  @typedoc """
+  Current timeout status of the user. If user is currently timed out this will be a `t:DateTime.t/0` of the unmute time, it will be `nil` or a date in the past if the user is not currently timed out.
+  """
+  @type communication_disabled_until :: DateTime.t() | nil
+
   @type t :: %__MODULE__{
           user: user,
           nick: nick,
           roles: roles,
           joined_at: joined_at,
           deaf: deaf,
-          mute: mute
+          mute: mute,
+          communication_disabled_until: communication_disabled_until
         }
 
   @doc ~S"""
@@ -217,6 +224,14 @@ defmodule Nostrum.Struct.Guild.Member do
       |> Map.new(fn {k, v} -> {Util.maybe_to_atom(k), v} end)
       |> Map.update(:user, nil, &Util.cast(&1, {:struct, User}))
       |> Map.update(:roles, nil, &Util.cast(&1, {:list, Snowflake}))
+
+    comms_disabled =
+      if new[:communication_disabled_until] do
+        {:ok, dt, _} = DateTime.from_iso8601(new[:communication_disabled_until])
+        dt
+      end
+
+    new = Map.put(new, :communication_disabled_until, comms_disabled)
 
     struct(__MODULE__, new)
   end
