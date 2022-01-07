@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.25.1">
+    <meta name="project" content="Nostrum v0.5.0">
+
+    <title>Nostrum.Struct.Guild.ScheduledEvent — Nostrum v0.5.0</title>
+    <link rel="stylesheet" href="dist/elixir-a172fe91e725dcb259e2.css" />
+
+    <script src="dist/sidebar_items-da25a04981.js"></script>
+
+      <script src="docs_config.js"></script>
+
+    <script async src="dist/app-f27ff079945e43879c46.js"></script>
+
+
+  </head>
+  <body data-type="modules">
+    <script>
+
+      try {
+        if (localStorage.getItem('night-mode') === 'true') {
+          document.body.classList.add('night-mode');
+        }
+      } catch (error) { }
+    </script>
+
+<div class="main">
+
+<button class="sidebar-button sidebar-toggle">
+  <span class="icon-menu" title="Collapse/expand sidebar"></span>
+</button>
+
+<section class="sidebar">
+  <form class="sidebar-search" action="search.html">
+    <button type="submit" class="search-button" aria-label="Submit Search">
+      <span class="icon-search" aria-hidden="true" title="Submit search"></span>
+    </button>
+    <button type="button" tabindex="-1" class="search-close-button" aria-label="Cancel Search">
+      <span class="icon-cross" aria-hidden="true" title="Cancel search"></span>
+    </button>
+    <label class="search-label">
+      <input name="q" type="text" class="search-input" placeholder="Search..." aria-label="Input your search terms" autocomplete="off" />
+    </label>
+  </form>
+
+  <div class="autocomplete">
+    <div class="autocomplete-results">
+    </div>
+  </div>
+
+  <div class="sidebar-header">
+    <div class="sidebar-projectDetails">
+      <a href="https://github.com/kraigie/nostrum" class="sidebar-projectName">
+Nostrum
+      </a>
+      <strong class="sidebar-projectVersion">
+        v0.5.0
+      </strong>
+    </div>
+
+  </div>
+
+  <ul class="sidebar-listNav">
+    <li><a id="extras-list-link" href="#full-list">Pages</a></li>
+
+      <li><a id="modules-list-link" href="#full-list">Modules</a></li>
+
+
+      <li><a id="tasks-list-link" href="#full-list">Mix Tasks</a></li>
+
+  </ul>
+  <div class="gradient"></div>
+  <ul id="full-list" class="sidebar-fullList"></ul>
+</section>
+
+<section class="content">
+  <div class="content-outer">
+    <div id="content" class="content-inner">
+
+      <h1>
+Nostrum.Struct.Guild.ScheduledEvent <small class="app-vsn">(Nostrum v0.5.0)</small>
+
+          <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild/scheduled_event.ex#L1" title="View Source" class="view-source" rel="help">
+            <span class="icon-code" aria-hidden="true"></span>
+            <span class="sr-only">View Source</span>
+          </a>
+
+      </h1>
+
+
+        <section id="moduledoc">
+<p>Struct representing a scheduled event in a guild.</p>
+        </section>
+
+
+        <section id="summary" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#summary">
+              <span class="icon-link" aria-hidden="true"></span>
+              <span class="sr-only">Link to this section</span>
+            </a>
+            Summary
+          </h1>
+
+  <div class="summary-types summary">
+    <h2>
+      <a href="#types">Types</a>
+    </h2>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:channel_id/0">channel_id()</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>The id of the channel the scheduled event is in.
+Will be <code class="inline">nil</code> if <code class="inline">entity_type</code> is <code class="inline">EXTERNAL</code></p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:creator/0">creator()</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>The user who created the scheduled event. Only present when retrieving the event from the API.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:creator_id/0">creator_id()</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>The id of the user who created the scheduled event.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:description/0">description()</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>The description of the scheduled event.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:entity_id/0">entity_id()</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>the id of an entity associated with a guild scheduled event.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:entity_metadata/0">entity_metadata()</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Holds additional metadata associated with a scheduled event.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:entity_type/0">entity_type()</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>The type of entity the scheduled event is for.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:guild_id/0">guild_id()</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>The id of the guild the scheduled event is in.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:id/0">id()</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>The id of the scheduled event.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:name/0">name()</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>The name of the scheduled event.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:privacy_level/0">privacy_level()</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>The privacy level of the scheduled event.
+At the time of writing, this is always <code class="inline">2</code> for <code class="inline">GUILD_ONLY</code></p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:scheduled_end_time/0">scheduled_end_time()</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>The time the scheduled event ends as an ISO8601 timestamp.
+Only required if <code class="inline">entity_type</code> is <code class="inline">EXTERNAL</code></p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:scheduled_start_time/0">scheduled_start_time()</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>The time the scheduled event starts.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:status/0">status()</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>The status of the scheduled event.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:t/0">t()</a>
+
+  </div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#t:user_count/0">user_count()</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>The number of users who have subscribed to the scheduled event.</p></div>
+
+</div>
+
+  </div>
+
+  <div class="summary-functions summary">
+    <h2>
+      <a href="#functions">Functions</a>
+    </h2>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#to_struct/1">to_struct(map)</a>
+
+  </div>
+
+</div>
+
+  </div>
+
+        </section>
+
+
+        <section id="types" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#types">
+              <span class="icon-link" aria-hidden="true"></span>
+              <span class="sr-only">Link to this section</span>
+            </a>
+Types
+          </h1>
+          <div class="types-list">
+<section class="detail" id="t:channel_id/0">
+
+  <div class="detail-header">
+    <a href="#t:channel_id/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">channel_id()</h1>
+
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild/scheduled_event.ex#L38" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre>channel_id() :: <a href="Nostrum.Snowflake.html#t:t/0">Nostrum.Snowflake.t</a>() | nil</pre>
+
+      </div>
+
+<p>The id of the channel the scheduled event is in.
+Will be <code class="inline">nil</code> if <code class="inline">entity_type</code> is <code class="inline">EXTERNAL</code></p>
+  </section>
+</section>
+<section class="detail" id="t:creator/0">
+
+  <div class="detail-header">
+    <a href="#t:creator/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">creator()</h1>
+
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild/scheduled_event.ex#L106" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre>creator() :: <a href="Nostrum.Struct.User.html#t:t/0">Nostrum.Struct.User.t</a>() | nil</pre>
+
+      </div>
+
+<p>The user who created the scheduled event. Only present when retrieving the event from the API.</p><p>note: This will be <code class="inline">nil</code> for events created before October 25th, 2021.</p>
+  </section>
+</section>
+<section class="detail" id="t:creator_id/0">
+
+  <div class="detail-header">
+    <a href="#t:creator_id/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">creator_id()</h1>
+
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild/scheduled_event.ex#L45" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre>creator_id() :: <a href="Nostrum.Snowflake.html#t:t/0">Nostrum.Snowflake.t</a>() | nil</pre>
+
+      </div>
+
+<p>The id of the user who created the scheduled event.</p><p>note: This will be <code class="inline">nil</code> only for events created before October 25th, 2021.</p>
+  </section>
+</section>
+<section class="detail" id="t:description/0">
+
+  <div class="detail-header">
+    <a href="#t:description/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">description()</h1>
+
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild/scheduled_event.ex#L51" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre>description() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>() | nil</pre>
+
+      </div>
+
+<p>The description of the scheduled event.</p>
+  </section>
+</section>
+<section class="detail" id="t:entity_id/0">
+
+  <div class="detail-header">
+    <a href="#t:entity_id/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">entity_id()</h1>
+
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild/scheduled_event.ex#L94" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre>entity_id() :: <a href="Nostrum.Snowflake.html#t:t/0">Nostrum.Snowflake.t</a>() | nil</pre>
+
+      </div>
+
+<p>the id of an entity associated with a guild scheduled event.</p>
+  </section>
+</section>
+<section class="detail" id="t:entity_metadata/0">
+
+  <div class="detail-header">
+    <a href="#t:entity_metadata/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">entity_metadata()</h1>
+
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild/scheduled_event.ex#L99" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre>entity_metadata() ::
+  <a href="Nostrum.Struct.Guild.ScheduledEvent.EntityMetadata.html#t:t/0">Nostrum.Struct.Guild.ScheduledEvent.EntityMetadata.t</a>() | nil</pre>
+
+      </div>
+
+<p>Holds additional metadata associated with a scheduled event.</p>
+  </section>
+</section>
+<section class="detail" id="t:entity_type/0">
+
+  <div class="detail-header">
+    <a href="#t:entity_type/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">entity_type()</h1>
+
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild/scheduled_event.ex#L89" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre>entity_type() :: 1..3</pre>
+
+      </div>
+
+<p>The type of entity the scheduled event is for.</p><p><code class="inline">1</code> - <code class="inline">STAGE_INSTANCE</code>
+<code class="inline">2</code> - <code class="inline">VOICE</code>
+<code class="inline">3</code> - <code class="inline">EXTERNAL</code></p>
+  </section>
+</section>
+<section class="detail" id="t:guild_id/0">
+
+  <div class="detail-header">
+    <a href="#t:guild_id/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">guild_id()</h1>
+
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild/scheduled_event.ex#L32" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre>guild_id() :: <a href="Nostrum.Snowflake.html#t:t/0">Nostrum.Snowflake.t</a>()</pre>
+
+      </div>
+
+<p>The id of the guild the scheduled event is in.</p>
+  </section>
+</section>
+<section class="detail" id="t:id/0">
+
+  <div class="detail-header">
+    <a href="#t:id/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">id()</h1>
+
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild/scheduled_event.ex#L29" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre>id() :: <a href="Nostrum.Snowflake.html#t:t/0">Nostrum.Snowflake.t</a>()</pre>
+
+      </div>
+
+<p>The id of the scheduled event.</p>
+  </section>
+</section>
+<section class="detail" id="t:name/0">
+
+  <div class="detail-header">
+    <a href="#t:name/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">name()</h1>
+
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild/scheduled_event.ex#L48" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre>name() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()</pre>
+
+      </div>
+
+<p>The name of the scheduled event.</p>
+  </section>
+</section>
+<section class="detail" id="t:privacy_level/0">
+
+  <div class="detail-header">
+    <a href="#t:privacy_level/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">privacy_level()</h1>
+
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild/scheduled_event.ex#L68" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre>privacy_level() :: 2</pre>
+
+      </div>
+
+<p>The privacy level of the scheduled event.
+At the time of writing, this is always <code class="inline">2</code> for <code class="inline">GUILD_ONLY</code></p>
+  </section>
+</section>
+<section class="detail" id="t:scheduled_end_time/0">
+
+  <div class="detail-header">
+    <a href="#t:scheduled_end_time/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">scheduled_end_time()</h1>
+
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild/scheduled_event.ex#L62" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre>scheduled_end_time() :: <a href="https://hexdocs.pm/elixir/DateTime.html#t:t/0">DateTime.t</a>() | nil</pre>
+
+      </div>
+
+<p>The time the scheduled event ends as an ISO8601 timestamp.
+Only required if <code class="inline">entity_type</code> is <code class="inline">EXTERNAL</code></p>
+  </section>
+</section>
+<section class="detail" id="t:scheduled_start_time/0">
+
+  <div class="detail-header">
+    <a href="#t:scheduled_start_time/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">scheduled_start_time()</h1>
+
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild/scheduled_event.ex#L56" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre>scheduled_start_time() :: <a href="https://hexdocs.pm/elixir/DateTime.html#t:t/0">DateTime.t</a>()</pre>
+
+      </div>
+
+<p>The time the scheduled event starts.</p>
+  </section>
+</section>
+<section class="detail" id="t:status/0">
+
+  <div class="detail-header">
+    <a href="#t:status/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">status()</h1>
+
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild/scheduled_event.ex#L80" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre>status() :: 1..4</pre>
+
+      </div>
+
+<p>The status of the scheduled event.</p><p><code class="inline">1</code> - <code class="inline">SCHEDULED</code>
+<code class="inline">2</code> - <code class="inline">ACTIVE</code>
+<code class="inline">3</code> - <code class="inline">COMPLETED</code>
+<code class="inline">4</code> - <code class="inline">CANCELLED</code></p><p>note: Once status is set to Completed or Cancelled it can no longer be updated.</p>
+  </section>
+</section>
+<section class="detail" id="t:t/0">
+
+  <div class="detail-header">
+    <a href="#t:t/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">t()</h1>
+
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild/scheduled_event.ex#L111" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre>t() :: %Nostrum.Struct.Guild.ScheduledEvent{
+  channel_id: <a href="#t:channel_id/0">channel_id</a>(),
+  creator: <a href="#t:creator/0">creator</a>(),
+  creator_id: <a href="#t:creator_id/0">creator_id</a>(),
+  description: <a href="#t:description/0">description</a>(),
+  entity_id: <a href="#t:entity_id/0">entity_id</a>(),
+  entity_metadata: <a href="#t:entity_metadata/0">entity_metadata</a>(),
+  entity_type: <a href="#t:entity_type/0">entity_type</a>(),
+  guild_id: <a href="#t:guild_id/0">guild_id</a>(),
+  id: <a href="#t:id/0">id</a>(),
+  name: <a href="#t:name/0">name</a>(),
+  privacy_level: <a href="#t:privacy_level/0">privacy_level</a>(),
+  scheduled_end_time: <a href="#t:scheduled_end_time/0">scheduled_end_time</a>(),
+  scheduled_start_time: <a href="#t:scheduled_start_time/0">scheduled_start_time</a>(),
+  status: <a href="#t:status/0">status</a>(),
+  user_count: <a href="#t:user_count/0">user_count</a>()
+}</pre>
+
+      </div>
+
+
+  </section>
+</section>
+<section class="detail" id="t:user_count/0">
+
+  <div class="detail-header">
+    <a href="#t:user_count/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">user_count()</h1>
+
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild/scheduled_event.ex#L109" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre>user_count() :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">non_neg_integer</a>() | nil</pre>
+
+      </div>
+
+<p>The number of users who have subscribed to the scheduled event.</p>
+  </section>
+</section>
+
+          </div>
+        </section>
+
+        <section id="functions" class="details-list">
+          <h1 class="section-heading">
+            <a class="hover-link" href="#functions">
+              <span class="icon-link" aria-hidden="true"></span>
+              <span class="sr-only">Link to this section</span>
+            </a>
+Functions
+          </h1>
+          <div class="functions-list">
+<section class="detail" id="to_struct/1">
+
+  <div class="detail-header">
+    <a href="#to_struct/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">to_struct(map)</h1>
+
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild/scheduled_event.ex#L129" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+
+  </section>
+</section>
+
+          </div>
+        </section>
+
+      <footer class="footer">
+        <p>
+          <span class="line">
+            Built using
+            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener">ExDoc</a> (v0.25.1) for the
+            <a href="https://elixir-lang.org" title="Elixir" target="_blank">Elixir programming language</a>.
+          </span>
+          <span class="line">
+            Designed by
+            <a href="https://twitter.com/dignifiedquire" target="_blank" rel="noopener" title="@dignifiedquire">Friedel Ziegelmayer</a>.
+          </span>
+        </p>
+        <p>
+
+            <a href="api-reference.html" title="API reference" class="line footer-button">API Reference</a>
+
+          <button class="line footer-button display-shortcuts-help">
+            Display keyboard shortcuts
+          </button>
+          <button class="line footer-button night-mode-toggle">
+            Toggle night mode
+          </button>
+          <button class="line footer-button display-quick-switch">
+            Go to a HexDocs package
+          </button>
+          <button class="line footer-button tooltips-toggle">
+            <span class="tooltips-option-disable">Disable tooltips</span>
+            <span class="tooltips-option-enable">Enable tooltips</span>
+          </button>
+        </p>
+      </footer>
+    </div>
+  </div>
+</section>
+</div>
+
+
+  </body>
+</html>

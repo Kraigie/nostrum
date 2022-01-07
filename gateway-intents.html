@@ -10,7 +10,7 @@
     <title>Gateway Intents — Nostrum v0.5.0</title>
     <link rel="stylesheet" href="dist/elixir-a172fe91e725dcb259e2.css" />
 
-    <script src="dist/sidebar_items-655490affa.js"></script>
+    <script src="dist/sidebar_items-da25a04981.js"></script>
 
       <script src="docs_config.js"></script>
 
@@ -83,10 +83,10 @@ Nostrum
 
 <h1>Gateway Intents</h1><p>The Discord API allows you to fine tune the payloads that are received by your bot through gateway intents.</p><p>When connecting to Discord you can instruct Discord on which events you want to receive (i.e. messages, user presences, etc.).</p><p>Nostrum allows you to set these intents within your configuration, <strong>by default all non-privileged intents are enabled</strong>.</p><p>To pass intents you should use the following configuration:</p><pre><code class="makeup elixir"><span class="n">config</span><span class="w"> </span><span class="ss">:nostrum</span><span class="p">,</span><span class="w">
   </span><span class="ss">token</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;bot_token&quot;</span><span class="p">,</span><span class="w">
-  </span><span class="ss">gateway_intents</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="7064395219-1">[</span><span class="w">
+  </span><span class="ss">gateway_intents</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="3435440646-1">[</span><span class="w">
       </span><span class="ss">:guilds</span><span class="p">,</span><span class="w">
       </span><span class="c1"># other gateway intents</span><span class="w">
-  </span><span class="p" data-group-id="7064395219-1">]</span></code></pre><p>Possible intents (and the gateway events they correspond to) are:</p><pre><code class="makeup elixir"><span class="ss">guilds</span><span class="p">:</span><span class="w">
+  </span><span class="p" data-group-id="3435440646-1">]</span></code></pre><p>Possible intents (and the gateway events they correspond to) are:</p><pre><code class="makeup elixir"><span class="ss">guilds</span><span class="p">:</span><span class="w">
   </span><span class="o">-</span><span class="w"> </span><span class="nc">GUILD_CREATE</span><span class="w">
   </span><span class="o">-</span><span class="w"> </span><span class="nc">GUILD_UPDATE</span><span class="w">
   </span><span class="o">-</span><span class="w"> </span><span class="nc">GUILD_DELETE</span><span class="w">
@@ -154,7 +154,14 @@ Nostrum
   </span><span class="o">-</span><span class="w"> </span><span class="nc">MESSAGE_REACTION_REMOVE_EMOJI</span><span class="w">
 
 </span><span class="ss">direct_message_typing</span><span class="p">:</span><span class="w">
-  </span><span class="o">-</span><span class="w"> </span><span class="nc">TYPING_START</span></code></pre><p>Besides an explicit list of atoms, acceptable configuration values are <code class="inline">:all</code> and <code class="inline">:nonprivileged</code>.</p><p>Note that intents marked with <code class="inline">*</code> are <strong>privileged</strong> intents. You must enable these intents by visiting the Discord Developer portal.</p><p>Once your bot passes 100 servers Discord will force you to <strong>verify your bot</strong>. If you require privileged intents you may need to write additional information on your usage of them.</p><p>Nostrum's default value for <code class="inline">gateway_intents</code> is <code class="inline">:nonprivileged</code>, which enables all non-privileged intents.
+  </span><span class="o">-</span><span class="w"> </span><span class="nc">TYPING_START</span><span class="w">
+
+</span><span class="ss">GUILD_SCHEDULED_EVENTS</span><span class="p">:</span><span class="w">
+  </span><span class="o">-</span><span class="w"> </span><span class="nc">GUILD_SCHEDULED_EVENT_CREATE</span><span class="w">
+  </span><span class="o">-</span><span class="w"> </span><span class="nc">GUILD_SCHEDULED_EVENT_UPDATE</span><span class="w">
+  </span><span class="o">-</span><span class="w"> </span><span class="nc">GUILD_SCHEDULED_EVENT_DELETE</span><span class="w">
+  </span><span class="o">-</span><span class="w"> </span><span class="nc">GUILD_SCHEDULED_EVENT_USER_ADD</span><span class="w">
+  </span><span class="o">-</span><span class="w"> </span><span class="nc">GUILD_SCHEDULED_EVENT_USER_REMOVE</span></code></pre><p>Besides an explicit list of atoms, acceptable configuration values are <code class="inline">:all</code> and <code class="inline">:nonprivileged</code>.</p><p>Note that intents marked with <code class="inline">*</code> are <strong>privileged</strong> intents. You must enable these intents by visiting the Discord Developer portal.</p><p>Once your bot passes 100 servers Discord will force you to <strong>verify your bot</strong>. If you require privileged intents you may need to write additional information on your usage of them.</p><p>Nostrum's default value for <code class="inline">gateway_intents</code> is <code class="inline">:nonprivileged</code>, which enables all non-privileged intents.
 This is equivalent to setting <code class="inline">gateway_intents</code> to the above list without the <strong>privileged</strong> intents.
 If you require all intents, including privileged ones, set <code class="inline">gateway_intents</code> to <code class="inline">:all</code>.</p><p>More information on gateway intents can be found in the <a href="https://discord.com/developers/docs/topics/gateway#gateway-intents">Discord Developer documentation</a>.</p>
 <div class="bottom-actions">
