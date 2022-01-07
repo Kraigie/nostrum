@@ -1778,17 +1778,15 @@ defmodule Nostrum.Api do
 
   def modify_guild_member(guild_id, user_id, %{} = options, reason)
       when is_snowflake(guild_id) and is_snowflake(user_id) do
-    new_comms_disabled =
-      if options[:communication_disabled_until] do
-        DateTime.to_iso8601(options[:communication_disabled_until])
-      end
+    # Handle native timeout timestamp serialisation
+    disable_ts = options[:communication_disabled_until]
 
     options =
-      Map.replace(
-        options,
-        :communication_disabled_until,
-        new_comms_disabled
-      )
+      if disable_ts != nil do
+        %{options | communication_disabled_until: DateTime.to_iso8601(disable_ts)}
+      else
+        options
+      end
 
     request(%{
       method: :patch,
