@@ -88,6 +88,13 @@ direct_message_reactions:
 
 direct_message_typing:
   - TYPING_START
+
+GUILD_SCHEDULED_EVENTS:
+  - GUILD_SCHEDULED_EVENT_CREATE
+  - GUILD_SCHEDULED_EVENT_UPDATE
+  - GUILD_SCHEDULED_EVENT_DELETE
+  - GUILD_SCHEDULED_EVENT_USER_ADD
+  - GUILD_SCHEDULED_EVENT_USER_REMOVE
 ```
 
 Besides an explicit list of atoms, acceptable configuration values are `:all` and `:nonprivileged`.
