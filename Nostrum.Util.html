@@ -10,7 +10,7 @@
     <title>Nostrum.Util — Nostrum v0.5.0</title>
     <link rel="stylesheet" href="dist/elixir-a172fe91e725dcb259e2.css" />
 
-    <script src="dist/sidebar_items-31ed73acbc.js"></script>
+    <script src="dist/sidebar_items-d2abcfb8e4.js"></script>
 
       <script src="docs_config.js"></script>
 
@@ -155,6 +155,15 @@ Nostrum.Util <small class="app-vsn">(Nostrum v0.5.0)</small>
 </div>
 <div class="summary-row">
   <div class="summary-signature">
+    <a href="#maybe_to_datetime/1">maybe_to_datetime(stamp)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Converts possibly nil ISO8601 timestamp to a <a href="https://hexdocs.pm/elixir/DateTime.html"><code class="inline">DateTime</code></a></p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
     <a href="#now/0">now()</a>
 
   </div>
@@ -286,7 +295,7 @@ for future use.</p>
     </a>
     <h1 class="signature">get_all_shard_latencies()</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/util.ex#L235" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/util.ex#L248" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -318,7 +327,7 @@ shard nums and whose values are latencies in milliseconds.</p>
     </a>
     <h1 class="signature">get_shard_latency(state)</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/util.ex#L219" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/util.ex#L232" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -366,6 +375,35 @@ shard nums and whose values are latencies in milliseconds.</p>
 
 <p>Attempts to convert a string to an atom.</p><p>Binary <code class="inline">token</code>s that consist of digits are assumed to be snowflakes, and will
 be parsed as such.</p><p>If atom does not currently exist, will warn that we're doing an unsafe conversion.</p>
+  </section>
+</section>
+<section class="detail" id="maybe_to_datetime/1">
+
+  <div class="detail-header">
+    <a href="#maybe_to_datetime/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">maybe_to_datetime(stamp)</h1>
+
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/util.ex#L175" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre>maybe_to_datetime(<a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>() | nil) :: <a href="https://hexdocs.pm/elixir/DateTime.html#t:t/0">DateTime.t</a>() | nil</pre>
+
+      </div>
+
+<p>Converts possibly nil ISO8601 timestamp to a <a href="https://hexdocs.pm/elixir/DateTime.html"><code class="inline">DateTime</code></a></p>
   </section>
 </section>
 <section class="detail" id="now/0">
@@ -499,7 +537,7 @@ types of objects returned by Discord, the amount of new atoms created <em>SHOULD
     </a>
     <h1 class="signature">unused_atoms()</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/util.ex#L251" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/util.ex#L264" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
