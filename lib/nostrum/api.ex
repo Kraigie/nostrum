@@ -1751,6 +1751,8 @@ defmodule Nostrum.Api do
 
   If successful, returns `{:ok, member}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
 
+  An optional `reason` argument can be given for the audit log.
+
   ## Options
 
     * `:nick` (string) - value to set users nickname to
@@ -1758,6 +1760,7 @@ defmodule Nostrum.Api do
     * `:mute` (boolean) - if the user is muted
     * `:deaf` (boolean) - if the user is deafened
     * `:channel_id` (`t:Nostrum.Snowflake.t/0`) - id of channel to move user to (if they are connected to voice)
+    * `:communication_disabled_until` (`t:DateTime.t/0` or `nil`) - datetime to disable user communication (timeout) until, or `nil` to remove timeout.
 
   ## Examples
 
@@ -1766,24 +1769,36 @@ defmodule Nostrum.Api do
   {:ok, %Nostrum.Struct.Member{}}
   ```
   """
-  @spec modify_guild_member(Guild.id(), User.id(), options) :: error | {:ok, Member.t()}
-  def modify_guild_member(guild_id, user_id, options \\ %{})
+  @spec modify_guild_member(Guild.id(), User.id(), options, AuditLogEntry.reason()) ::
+          error | {:ok, Member.t()}
+  def modify_guild_member(guild_id, user_id, options \\ %{}, reason \\ nil)
 
-  def modify_guild_member(guild_id, user_id, options) when is_list(options),
-    do: modify_guild_member(guild_id, user_id, Map.new(options))
+  def modify_guild_member(guild_id, user_id, options, reason) when is_list(options),
+    do: modify_guild_member(guild_id, user_id, Map.new(options), reason)
 
-  def modify_guild_member(guild_id, user_id, %{} = options)
+  def modify_guild_member(guild_id, user_id, %{} = options, reason)
       when is_snowflake(guild_id) and is_snowflake(user_id) do
-    request(:patch, Constants.guild_member(guild_id, user_id), options)
+    options =
+      options
+      |> maybe_convert_date_time(:communication_disabled_until)
+
+    request(%{
+      method: :patch,
+      route: Constants.guild_member(guild_id, user_id),
+      body: options,
+      params: [],
+      headers: maybe_add_reason(reason)
+    })
     |> handle_request_with_decode({:struct, Member})
   end
 
   @doc """
   Same as `modify_guild_member/3`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
-  @spec modify_guild_member!(Guild.id(), User.id(), options) :: error | {:ok}
-  def modify_guild_member!(guild_id, user_id, options \\ %{}) do
-    modify_guild_member(guild_id, user_id, options)
+  @spec modify_guild_member!(Guild.id(), User.id(), options, AuditLogEntry.reason()) ::
+          error | {:ok}
+  def modify_guild_member!(guild_id, user_id, options \\ %{}, reason \\ nil) do
+    modify_guild_member(guild_id, user_id, options, reason)
     |> bangify
   end
 
