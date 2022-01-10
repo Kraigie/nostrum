@@ -61,7 +61,7 @@ defmodule Nostrum.Api do
     Webhook
   }
 
-  alias Nostrum.Struct.Guild.{AuditLog, AuditLogEntry, Member, Role}
+  alias Nostrum.Struct.Guild.{AuditLog, AuditLogEntry, Member, Role, ScheduledEvent}
   alias Nostrum.Shard.{Session, Supervisor}
 
   @typedoc """
@@ -902,7 +902,7 @@ defmodule Nostrum.Api do
   end
 
   @spec send_chunked_delete(
-          [Nostrum.Struct.Message.id()] | %Stream{},
+          [Nostrum.Struct.Message.id()] | Enum.t(),
           Nostrum.Snowflake.t()
         ) :: error | {:ok}
   defp send_chunked_delete(messages, channel_id) do
@@ -2380,6 +2380,138 @@ defmodule Nostrum.Api do
     |> handle_request_with_decode
   end
 
+  @doc """
+  Creates a new scheduled event for the guild.
+
+  ## Options
+    * `:channel_id` - (`t:Nostrum.Snowflake.t/0`) optional channel id for the event
+    * `:entity_metadata` - (`t:Nostrum.Struct.Guild.ScheduledEvent.EntityMetadata.t/0`) metadata for the event
+    * `:name` - (string) required name for the event
+    * `:privacy_level` - (integer) at the time of writing, this must always be 2 for `GUILD_ONLY`
+    * `:scheduled_start_time` - required time for the event to start as a `DateTime` or (ISO8601 timestamp)[`DateTime.to_iso8601/3`]
+    * `:scheduled_end_time` - optional time for the event to end as a `DateTime` or (ISO8601 timestamp)[`DateTime.to_iso8601/3`]
+    * `:description` - (string) optional description for the event
+    * `:entity_type` - (integer) an integer representing the type of entity the event is for
+      * `1` - `STAGE_INSTANCE`
+      * `2` - `VOICE`
+      * `3` - `EXTERNAL`
+
+  See the (official documentation)[https://discord.com/developers/docs/resources/guild-scheduled-event] for more information.
+
+
+  An optional `reason` can be specified for the audit log.
+  """
+  @spec create_guild_scheduled_event(Guild.id(), reason :: AuditLogEntry.reason(), options) ::
+          {:ok, ScheduledEvent.t()} | error
+  def create_guild_scheduled_event(guild_id, reason \\ nil, options)
+
+  def create_guild_scheduled_event(guild_id, reason, options) when is_list(options),
+    do: create_guild_scheduled_event(guild_id, reason, Map.new(options))
+
+  def create_guild_scheduled_event(guild_id, reason, %{} = options) do
+    options =
+      options
+      |> maybe_convert_date_time(:scheduled_start_time)
+      |> maybe_convert_date_time(:scheduled_end_time)
+
+    request(%{
+      method: :post,
+      route: Constants.guild_scheduled_events(guild_id),
+      body: options,
+      params: [],
+      headers: maybe_add_reason(reason)
+    })
+    |> handle_request_with_decode({:struct, ScheduledEvent})
+  end
+
+  @doc """
+  Get a list of scheduled events for a guild.
+  """
+  @spec get_guild_scheduled_events(Guild.id()) :: error | {:ok, [ScheduledEvent.t()]}
+  def get_guild_scheduled_events(guild_id) do
+    request(:get, Constants.guild_scheduled_events(guild_id))
+    |> handle_request_with_decode({:list, {:struct, ScheduledEvent}})
+  end
+
+  @doc """
+  Get a scheduled event for a guild.
+  """
+  @spec get_guild_scheduled_event(Guild.id(), ScheduledEvent.id()) ::
+          error | {:ok, ScheduledEvent.t()}
+  def get_guild_scheduled_event(guild_id, event_id) do
+    request(:get, Constants.guild_scheduled_event(guild_id, event_id))
+    |> handle_request_with_decode({:struct, ScheduledEvent})
+  end
+
+  @doc """
+  Delete a scheduled event for a guild.
+  """
+  @spec delete_guild_scheduled_event(Guild.id(), ScheduledEvent.id()) ::
+          error | {:ok}
+  def delete_guild_scheduled_event(guild_id, event_id) do
+    request(:delete, Constants.guild_scheduled_event(guild_id, event_id))
+  end
+
+  @doc """
+  Modify a scheduled event for a guild.
+
+  Options are the same as for `create_guild_scheduled_event/2` except all fields are optional,
+  with the additional optional integer field `:status` which can be one of:
+    * `1` - `SCHEDULED
+    * `2` - `ACTIVE`
+    * `3` - `COMPLETED`
+    * `4` - `CANCELLED`
+
+  Copied from the official documentation:
+  *If updating entity_type to `EXTERNAL`:
+    * `channel_id` is required and must be set to null
+    * `entity_metadata` with a `location` field must be provided
+    * `scheduled_end_time` must be provided
+  """
+  @spec modify_guild_scheduled_event(
+          Guild.id(),
+          ScheduledEvent.id(),
+          reason :: AuditLogEntry.reason(),
+          options
+        ) :: error | {:ok, ScheduledEvent.t()}
+  def modify_guild_scheduled_event(guild_id, event_id, reason \\ nil, options)
+
+  def modify_guild_scheduled_event(guild_id, event_id, reason, options) when is_list(options),
+    do: modify_guild_scheduled_event(guild_id, event_id, reason, Map.new(options))
+
+  def modify_guild_scheduled_event(guild_id, event_id, reason, %{} = options) do
+    options =
+      options
+      |> maybe_convert_date_time(:scheduled_start_time)
+      |> maybe_convert_date_time(:scheduled_end_time)
+
+    request(%{
+      method: :patch,
+      route: Constants.guild_scheduled_event(guild_id, event_id),
+      body: options,
+      params: [],
+      headers: maybe_add_reason(reason)
+    })
+    |> handle_request_with_decode({:struct, ScheduledEvent})
+  end
+
+  @doc """
+  Get a list of users who have subscribed to an event.
+
+  ## Options
+  All are optional, with their default values listed.
+  * `:limit` (integer) maximum number of users to return, defaults to `100`
+  * `:with_member` (boolean) whether to include the member object for each user, defaults to `false`
+  * `:before` (`t:Nostrum.Snowflake.t/0`) return only users before this user id, defaults to `nil`
+  * `:after` (`t:Nostrum.Snowflake.t/0`) return only users after this user id, defaults to `nil`
+  """
+  @spec get_guild_scheduled_event_users(Guild.id(), ScheduledEvent.id(), options) ::
+          error | {:ok, [ScheduledEvent.User.t()]}
+  def get_guild_scheduled_event_users(guild_id, event_id, params \\ []) do
+    request(:get, Constants.guild_scheduled_event_users(guild_id, event_id), "", params)
+    |> handle_request_with_decode({:list, {:struct, ScheduledEvent.User}})
+  end
+
   @doc ~S"""
   Gets an invite by its `invite_code`.
 
@@ -3761,4 +3893,16 @@ defmodule Nostrum.Api do
 
   # ignore
   defp parse_allowed_mentions(options), do: options
+
+  @spec maybe_convert_date_time(map(), atom()) :: map()
+  defp maybe_convert_date_time(options, key) do
+    case options do
+      %{^key => %DateTime{} = date_time} ->
+        timestamp = DateTime.to_iso8601(date_time)
+        %{options | key => timestamp}
+
+      _ ->
+        options
+    end
+  end
 end

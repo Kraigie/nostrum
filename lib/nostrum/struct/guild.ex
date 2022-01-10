@@ -7,7 +7,8 @@ defmodule Nostrum.Struct.Guild do
     :member_count,
     :voice_states,
     :members,
-    :channels
+    :channels,
+    :guild_scheduled_events
   ]
 
   @moduledoc """
@@ -15,7 +16,7 @@ defmodule Nostrum.Struct.Guild do
   """
 
   alias Nostrum.Struct.{Channel, Emoji, User}
-  alias Nostrum.Struct.Guild.{Member, Role}
+  alias Nostrum.Struct.Guild.{Member, Role, ScheduledEvent}
   alias Nostrum.{Constants, Snowflake, Util}
 
   defstruct [
@@ -46,7 +47,8 @@ defmodule Nostrum.Struct.Guild do
     :member_count,
     :voice_states,
     :members,
-    :channels
+    :channels,
+    :guild_scheduled_events
   ]
 
   @typedoc "The guild's id"
@@ -151,6 +153,9 @@ defmodule Nostrum.Struct.Guild do
   @typedoc "List of channels"
   @type channels :: %{required(Channel.id()) => Channel.t()} | nil
 
+  @typedoc "List of scheduled events"
+  @type guild_scheduled_events :: list(ScheduledEvent.t()) | nil
+
   @typedoc """
   A `Nostrum.Struct.Guild` that is sent on user-specific rest endpoints.
   """
@@ -216,7 +221,8 @@ defmodule Nostrum.Struct.Guild do
           member_count: nil,
           voice_states: nil,
           members: nil,
-          channels: nil
+          channels: nil,
+          guild_scheduled_events: nil
         }
 
   @typedoc """
@@ -250,7 +256,8 @@ defmodule Nostrum.Struct.Guild do
           member_count: nil,
           voice_states: nil,
           members: nil,
-          channels: nil
+          channels: nil,
+          guild_scheduled_events: nil
         }
 
   @typedoc """
@@ -284,7 +291,8 @@ defmodule Nostrum.Struct.Guild do
           member_count: member_count,
           voice_states: voice_states,
           members: members,
-          channels: channels
+          channels: channels,
+          guild_scheduled_events: guild_scheduled_events
         }
 
   @type t ::
@@ -369,6 +377,11 @@ defmodule Nostrum.Struct.Guild do
       |> Map.update(:public_updates_channel_id, nil, &Util.cast(&1, Snowflake))
       |> Map.update(:members, nil, &Util.cast(&1, {:index, [:user, :id], {:struct, Member}}))
       |> Map.update(:channels, nil, &Util.cast(&1, {:index, [:id], {:struct, Channel}}))
+      |> Map.update(
+        :guild_scheduled_events,
+        nil,
+        &Util.cast(&1, {:list, {:struct, ScheduledEvent}})
+      )
 
     struct(__MODULE__, new)
   end

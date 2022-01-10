@@ -28,6 +28,8 @@ defmodule Nostrum.Consumer do
     GuildBanAdd,
     GuildBanRemove,
     GuildIntegrationsUpdate,
+    GuildScheduledEventUserAdd,
+    GuildScheduledEventUserRemove,
     MessageDelete,
     MessageDeleteBulk,
     MessageReactionAdd,
@@ -153,6 +155,16 @@ defmodule Nostrum.Consumer do
           {:GUILD_ROLE_UPDATE,
            {guild_id :: integer, old_role :: Nostrum.Struct.Guild.Role.t() | nil,
             new_role :: Nostrum.Struct.Guild.Role.t()}, WSState.t()}
+  @type guild_scheduled_event_create ::
+          {:GUILD_SCHEDULED_EVENT_CREATE, Nostrum.Struct.Guild.ScheduledEvent.t(), WSState.t()}
+  @type guild_scheduled_event_delete ::
+          {:GUILD_SCHEDULED_EVENT_DELETE, Nostrum.Struct.Guild.ScheduledEvent.t(), WSState.t()}
+  @type guild_scheduled_event_update ::
+          {:GUILD_SCHEDULED_EVENT_UPDATE, Nostrum.Struct.Guild.ScheduledEvent.t(), WSState.t()}
+  @type guild_scheduled_event_user_add ::
+          {:GUILD_SCHEDULED_EVENT_USER_ADD, GuildScheduledEventUserAdd.t(), WSState.t()}
+  @type guild_scheduled_event_user_remove ::
+          {:GUILD_SCHEDULED_EVENT_USER_REMOVE, GuildScheduledEventUserRemove.t(), WSState.t()}
   @type message_create :: {:MESSAGE_CREATE, message :: Nostrum.Struct.Message.t(), WSState.t()}
   @type message_delete :: {:MESSAGE_DELETE, MessageDelete.t(), WSState.t()}
   @type message_delete_bulk :: {:MESSAGE_DELETE_BULK, MessageDeleteBulk.t(), WSState.t()}
