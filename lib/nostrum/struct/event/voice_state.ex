@@ -6,7 +6,7 @@ defmodule Nostrum.Struct.Event.VoiceState do
   alias Nostrum.Struct.Guild
   alias Nostrum.Struct.Guild.Member
   alias Nostrum.Struct.User
-  alias Nostrum.Util
+  alias Nostrum.{Snowflake, Util}
 
   defstruct [
     :guild_id,
@@ -82,20 +82,16 @@ defmodule Nostrum.Struct.Event.VoiceState do
 
   @doc false
   def to_struct(map) do
-    %__MODULE__{
-      guild_id: map.guild_id,
-      channel_id: map.channel_id,
-      user_id: map.user_id,
-      member: Util.cast(map[:member], {:struct, Member}),
-      session_id: map.session_id,
-      deaf: map.deaf,
-      mute: map.mute,
-      self_deaf: map.self_deaf,
-      self_mute: map.self_mute,
-      self_stream: map[:self_stream] || false,
-      self_video: map.self_video,
-      suppress: map.suppress,
-      request_to_speak_timestamp: Util.maybe_to_datetime(map.request_to_speak_timestamp)
-    }
+    new =
+      map
+      |> Map.new(fn {k, v} -> {Util.maybe_to_atom(k), v} end)
+      |> Map.put_new(:self_stream, false)
+      |> Map.update(:guild_id, nil, &Util.cast(&1, Snowflake))
+      |> Map.update(:channel_id, nil, &Util.cast(&1, Snowflake))
+      |> Map.update(:user_id, nil, &Util.cast(&1, Snowflake))
+      |> Map.update(:member, nil, &Util.cast(&1, {:struct, Member}))
+      |> Map.update(:request_to_speak_timestamp, nil, &Util.maybe_to_datetime/1)
+
+    struct(__MODULE__, new)
   end
 end

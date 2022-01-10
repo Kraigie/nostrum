@@ -105,18 +105,19 @@ defmodule Nostrum.Struct.Interaction do
   @doc false
   @spec to_struct(map()) :: __MODULE__.t()
   def to_struct(map) do
-    %__MODULE__{
-      id: map.id,
-      application_id: map[:application_id],
-      type: map.type,
-      data: Util.cast(map[:data], {:struct, ApplicationCommandInteractionData}),
-      guild_id: map[:guild_id],
-      channel_id: map[:channel_id],
-      member: Util.cast(map[:member], {:struct, Member}),
-      user: Util.cast(map[:user] || map[:member][:user], {:struct, User}),
-      token: map[:token],
-      version: map[:version],
-      message: Util.cast(map[:message], {:struct, Message})
-    }
+    new =
+      map
+      |> Map.new(fn {k, v} -> {Util.maybe_to_atom(k), v} end)
+      |> Map.update(:id, nil, &Util.cast(&1, Snowflake))
+      |> Map.update(:application_id, nil, &Util.cast(&1, Snowflake))
+      |> Map.update(:guild_id, nil, &Util.cast(&1, Snowflake))
+      |> Map.update(:channel_id, nil, &Util.cast(&1, Snowflake))
+      |> Map.update(:data, nil, &Util.cast(&1, {:struct, ApplicationCommandInteractionData}))
+      |> Map.update(:member, nil, &Util.cast(&1, {:struct, Guild.Member}))
+      |> Map.put_new(:user, map[:member][:user])
+      |> Map.update(:user, nil, &Util.cast(&1, {:struct, User}))
+      |> Map.update(:message, nil, &Util.cast(&1, {:struct, Message}))
+
+    struct(__MODULE__, new)
   end
 end

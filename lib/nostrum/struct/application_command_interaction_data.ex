@@ -83,17 +83,22 @@ defmodule Nostrum.Struct.ApplicationCommandInteractionData do
   @doc false
   @spec to_struct(map()) :: __MODULE__.t()
   def to_struct(map) do
-    %__MODULE__{
-      id: map[:id],
-      name: map[:name],
-      type: map[:type],
-      resolved: Util.cast(map[:resolved], {:struct, ApplicationCommandInteractionDataResolved}),
-      options:
-        Util.cast(map[:options], {:list, {:struct, ApplicationCommandInteractionDataOption}}),
-      custom_id: map[:custom_id],
-      component_type: map[:component_type],
-      values: map[:values],
-      target_id: map[:target_id]
-    }
+    new =
+      map
+      |> Map.new(fn {k, v} -> {Util.maybe_to_atom(k), v} end)
+      |> Map.update(:id, nil, &Util.cast(&1, Snowflake))
+      |> Map.update(:target_id, nil, &Util.cast(&1, Snowflake))
+      |> Map.update(
+        :resolved,
+        nil,
+        &Util.cast(&1, {:struct, ApplicationCommandInteractionDataResolved})
+      )
+      |> Map.update(
+        :options,
+        nil,
+        &Util.cast(&1, {:list, {:struct, ApplicationCommandInteractionDataOption}})
+      )
+
+    struct(__MODULE__, new)
   end
 end

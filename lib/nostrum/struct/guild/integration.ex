@@ -12,7 +12,7 @@ defmodule Nostrum.Struct.Guild.Integration do
   """
   @moduledoc since: "0.5.0"
 
-  alias Nostrum.Snowflake
+  alias Nostrum.{Snowflake, Util}
 
   defstruct [:id, :name, :type, :enabled]
 
@@ -39,11 +39,11 @@ defmodule Nostrum.Struct.Guild.Integration do
   @doc false
   @spec to_struct(map()) :: __MODULE__.t()
   def to_struct(map) do
-    %__MODULE__{
-      id: map.id,
-      name: map.name,
-      type: map.type,
-      enabled: map.enabled
-    }
+    new =
+      map
+      |> Map.new(fn {k, v} -> {Util.maybe_to_atom(k), v} end)
+      |> Map.update(:id, nil, &Util.cast(&1, Snowflake))
+
+    struct(__MODULE__, new)
   end
 end

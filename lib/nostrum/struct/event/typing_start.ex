@@ -6,7 +6,7 @@ defmodule Nostrum.Struct.Event.TypingStart do
   alias Nostrum.Struct.Guild
   alias Nostrum.Struct.Guild.Member
   alias Nostrum.Struct.User
-  alias Nostrum.Util
+  alias Nostrum.{Snowflake, Util}
 
   defstruct [:channel_id, :guild_id, :user_id, :timestamp, :member]
 
@@ -36,12 +36,14 @@ defmodule Nostrum.Struct.Event.TypingStart do
 
   @doc false
   def to_struct(map) do
-    %__MODULE__{
-      channel_id: map.channel_id,
-      guild_id: map[:guild_id],
-      user_id: map.user_id,
-      timestamp: map.timestamp,
-      member: Util.cast(map[:member], {:struct, Member})
-    }
+    new =
+      map
+      |> Map.new(fn {k, v} -> {Util.maybe_to_atom(k), v} end)
+      |> Map.update(:channel_id, nil, &Util.cast(&1, Snowflake))
+      |> Map.update(:guild_id, nil, &Util.cast(&1, Snowflake))
+      |> Map.update(:user_id, nil, &Util.cast(&1, Snowflake))
+      |> Map.update(:member, nil, &Util.cast(&1, {:struct, Member}))
+
+    struct(__MODULE__, new)
   end
 end

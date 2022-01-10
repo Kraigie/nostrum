@@ -52,12 +52,14 @@ defmodule Nostrum.Struct.Event.Ready do
 
   @doc false
   def to_struct(map) do
-    %__MODULE__{
-      v: map.v,
-      user: Util.cast(map.user, {:struct, User}),
-      guilds: Util.cast(map.guilds, {:list, {:struct, UnavailableGuild}}),
-      shard: :erlang.list_to_tuple(map.shard),
-      application: Util.cast(map.application, {:struct, PartialApplication})
-    }
+    new =
+      map
+      |> Map.new(fn {k, v} -> {Util.maybe_to_atom(k), v} end)
+      |> Map.update(:user, nil, &Util.cast(&1, {:struct, User}))
+      |> Map.update(:guilds, nil, &Util.cast(&1, {:list, {:struct, UnavailableGuild}}))
+      |> Map.update(:application, nil, &Util.cast(&1, {:struct, PartialApplication}))
+      |> Map.update(:shard, nil, &:erlang.list_to_tuple/1)
+
+    struct(__MODULE__, new)
   end
 end
