@@ -377,6 +377,7 @@ defmodule Nostrum.Struct.Guild do
       |> Map.update(:public_updates_channel_id, nil, &Util.cast(&1, Snowflake))
       |> Map.update(:members, nil, &Util.cast(&1, {:index, [:user, :id], {:struct, Member}}))
       |> Map.update(:channels, nil, &Util.cast(&1, {:index, [:id], {:struct, Channel}}))
+      |> Map.update(:joined_at, nil, &Util.maybe_to_datetime/1)
       |> Map.update(
         :guild_scheduled_events,
         nil,

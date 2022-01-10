@@ -224,14 +224,7 @@ defmodule Nostrum.Struct.Guild.Member do
       |> Map.new(fn {k, v} -> {Util.maybe_to_atom(k), v} end)
       |> Map.update(:user, nil, &Util.cast(&1, {:struct, User}))
       |> Map.update(:roles, nil, &Util.cast(&1, {:list, Snowflake}))
-
-    comms_disabled =
-      if new[:communication_disabled_until] do
-        {:ok, dt, _} = DateTime.from_iso8601(new[:communication_disabled_until])
-        dt
-      end
-
-    new = Map.put(new, :communication_disabled_until, comms_disabled)
+      |> Map.update(:communication_disabled_until, nil, &Util.maybe_to_datetime/1)
 
     struct(__MODULE__, new)
   end

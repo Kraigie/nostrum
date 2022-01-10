@@ -4,6 +4,7 @@ defmodule Nostrum.Struct.Event.ChannelPinsUpdate do
 
   alias Nostrum.Struct.Channel
   alias Nostrum.Struct.Guild
+  alias Nostrum.Util
 
   defstruct [:guild_id, :channel_id, :last_pin_timestamp]
 
@@ -25,19 +26,11 @@ defmodule Nostrum.Struct.Event.ChannelPinsUpdate do
 
   @doc false
   def to_struct(map) do
-    %__MODULE__{
-      guild_id: map[:guild_id],
-      channel_id: map.channel_id,
-      last_pin_timestamp: parse_stamp(map[:last_pin_timestamp])
-    }
-  end
+    new =
+      map
+      |> Map.new(fn {k, v} -> {Util.maybe_to_atom(k), v} end)
+      |> Map.update(:last_pin_timestamp, nil, &Util.maybe_to_datetime/1)
 
-  defp parse_stamp(nil) do
-    nil
-  end
-
-  defp parse_stamp(stamp) do
-    {:ok, casted, 0} = DateTime.from_iso8601(stamp)
-    casted
+    struct(__MODULE__, new)
   end
 end

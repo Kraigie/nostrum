@@ -135,18 +135,9 @@ defmodule Nostrum.Struct.Guild.ScheduledEvent do
       |> Map.update(:creator_id, nil, &Util.cast(&1, Snowflake))
       |> Map.update(:entity_metadata, nil, &Util.cast(&1, {:struct, EntityMetadata}))
       |> Map.update(:creator, nil, &Util.cast(&1, {:struct, User}))
-      |> Map.update(:scheduled_start_time, nil, &parse_stamp/1)
-      |> Map.update(:scheduled_end_time, nil, &parse_stamp/1)
+      |> Map.update(:scheduled_start_time, nil, &Util.maybe_to_datetime/1)
+      |> Map.update(:scheduled_end_time, nil, &Util.maybe_to_datetime/1)
 
     struct(__MODULE__, new)
-  end
-
-  defp parse_stamp(nil) do
-    nil
-  end
-
-  defp parse_stamp(stamp) do
-    {:ok, casted, 0} = DateTime.from_iso8601(stamp)
-    casted
   end
 end

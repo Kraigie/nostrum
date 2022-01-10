@@ -168,6 +168,19 @@ defmodule Nostrum.Util do
       String.to_atom(token)
   end
 
+  @doc """
+  Converts possibly nil ISO8601 timestamp to a `DateTime`
+  """
+  @spec maybe_to_datetime(String.t() | nil) :: DateTime.t() | nil
+  def maybe_to_datetime(nil) do
+    nil
+  end
+
+  def maybe_to_datetime(stamp) do
+    {:ok, casted, 0} = DateTime.from_iso8601(stamp)
+    casted
+  end
+
   # Generic casting function
   @doc false
   @spec cast(term, module | {:list, term} | {:struct, term} | {:index, [term], term}) :: term
