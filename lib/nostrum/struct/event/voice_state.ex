@@ -80,15 +80,6 @@ defmodule Nostrum.Struct.Event.VoiceState do
           request_to_speak_timestamp: request_to_speak_timestamp
         }
 
-  defp convert_stamp(nil) do
-    nil
-  end
-
-  defp convert_stamp(stamp) do
-    {:ok, casted, 0} = DateTime.from_iso8601(stamp)
-    casted
-  end
-
   @doc false
   def to_struct(map) do
     %__MODULE__{
@@ -104,7 +95,7 @@ defmodule Nostrum.Struct.Event.VoiceState do
       self_stream?: map[:self_stream] || false,
       self_video?: map.self_video,
       suppress?: map.suppress,
-      request_to_speak_timestamp: convert_stamp(map.request_to_speak_timestamp)
+      request_to_speak_timestamp: Util.maybe_to_datetime(map.request_to_speak_timestamp)
     }
   end
 end

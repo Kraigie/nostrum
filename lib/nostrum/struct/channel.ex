@@ -247,10 +247,8 @@ defmodule Nostrum.Struct.Channel do
 
   @typedoc """
   Timestamp for the last pinned message.
-
-  Timestamp per [ISO 8601:2019](https://en.wikipedia.org/wiki/ISO_8601). See also: `DateTime.from_iso8601/2`.
   """
-  @type last_pin_timestamp :: String.t() | nil
+  @type last_pin_timestamp :: DateTime.t() | nil
 
   @typedoc """
   Region id for the channel.
@@ -295,11 +293,9 @@ defmodule Nostrum.Struct.Channel do
 
   @typedoc """
   When the thread was archived.
-
-  Timestamp per [ISO 8601:2019](https://en.wikipedia.org/wiki/ISO_8601). See also: `DateTime.from_iso8601/2`.
   """
   @typedoc since: "0.5"
-  @type archive_timestamp :: String.t() | nil
+  @type archive_timestamp :: DateTime.t() | nil
 
   @typedoc """
   The threads locked status.
@@ -345,11 +341,9 @@ defmodule Nostrum.Struct.Channel do
 
   @typedoc """
   When the user joined the thread.
-
-  Timestamp per [ISO 8601:2019](https://en.wikipedia.org/wiki/ISO_8601). See also: `DateTime.from_iso8601/2`.
   """
   @typedoc since: "0.5"
-  @type join_timestamp :: String.t()
+  @type join_timestamp :: DateTime.t()
 
   @typedoc """
   User thread settings, currently only used for notifications.
@@ -646,6 +640,9 @@ defmodule Nostrum.Struct.Channel do
       |> Map.update(:owner_id, nil, &Util.cast(&1, Snowflake))
       |> Map.update(:application_id, nil, &Util.cast(&1, Snowflake))
       |> Map.update(:parent_id, nil, &Util.cast(&1, Snowflake))
+      |> Map.update(:last_pin_timestamp, nil, &Util.maybe_to_datetime/1)
+      |> Map.update(:archive_timestamp, nil, &Util.maybe_to_datetime/1)
+      |> Map.update(:join_timestamp, nil, &Util.maybe_to_datetime/1)
 
     struct(__MODULE__, new)
   end
