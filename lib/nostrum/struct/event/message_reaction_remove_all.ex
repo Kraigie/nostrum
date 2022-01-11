@@ -3,7 +3,7 @@ defmodule Nostrum.Struct.Event.MessageReactionRemoveAll do
   @moduledoc since: "0.5.0"
 
   alias Nostrum.Struct.{Channel, Guild, Message}
-  alias Nostrum.Util
+  alias Nostrum.{Snowflake, Util}
 
   defstruct [:channel_id, :message_id, :guild_id]
 

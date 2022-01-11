@@ -4,7 +4,7 @@ defmodule Nostrum.Struct.Event.MessageReactionAdd do
 
   alias Nostrum.Struct.Guild.Member
   alias Nostrum.Struct.{Channel, Emoji, Guild, Message, User}
-  alias Nostrum.Util
+  alias Nostrum.{Snowflake, Util}
 
   defstruct [:user_id, :channel_id, :message_id, :guild_id, :member, :emoji]
 

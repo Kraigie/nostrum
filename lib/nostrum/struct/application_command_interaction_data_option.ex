@@ -7,7 +7,7 @@ defmodule Nostrum.Struct.ApplicationCommandInteractionDataOption do
   alias Nostrum.Struct.Channel
   alias Nostrum.Struct.Guild.Role
   alias Nostrum.Struct.User
-  alias Nostrum.Util
+  alias Nostrum.{Snowflake, Util}
 
   defstruct [:name, :type, :value, :options, :focused]
 
