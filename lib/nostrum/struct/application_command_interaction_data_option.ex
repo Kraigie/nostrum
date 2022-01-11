@@ -85,12 +85,12 @@ defmodule Nostrum.Struct.ApplicationCommandInteractionDataOption do
   @doc false
   @spec to_struct(map()) :: __MODULE__.t()
   def to_struct(map) do
-    %__MODULE__{
-      name: map.name,
-      type: map.type,
-      value: parse_value(map.type, map[:value]),
-      options: Util.cast(map[:options], {:list, {:struct, __MODULE__}}),
-      focused: map[:focused]
-    }
+    new =
+      map
+      |> Map.new(fn {k, v} -> {Util.maybe_to_atom(k), v} end)
+      |> Map.update(:options, nil, &Util.cast(&1, {:list, {:struct, __MODULE__}}))
+      |> Map.update(:value, nil, &parse_value(map.type, &1))
+
+    struct(__MODULE__, new)
   end
 end

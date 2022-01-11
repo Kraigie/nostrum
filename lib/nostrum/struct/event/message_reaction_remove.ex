@@ -34,12 +34,15 @@ defmodule Nostrum.Struct.Event.MessageReactionRemove do
 
   @doc false
   def to_struct(map) do
-    %__MODULE__{
-      user_id: map.user_id,
-      channel_id: map.channel_id,
-      message_id: map.message_id,
-      guild_id: map[:guild_id],
-      emoji: Util.cast(map.emoji, {:struct, Emoji})
-    }
+    new =
+      map
+      |> Map.new(fn {k, v} -> {Util.maybe_to_atom(k), v} end)
+      |> Map.update(:user_id, nil, &Util.cast(&1, Snowflake))
+      |> Map.update(:channel_id, nil, &Util.cast(&1, Snowflake))
+      |> Map.update(:message_id, nil, &Util.cast(&1, Snowflake))
+      |> Map.update(:guild_id, nil, &Util.cast(&1, Snowflake))
+      |> Map.update(:emoji, nil, &Util.cast(&1, {:struct, Emoji}))
+
+    struct(__MODULE__, new)
   end
 end

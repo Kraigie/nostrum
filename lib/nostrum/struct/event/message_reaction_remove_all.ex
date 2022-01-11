@@ -3,6 +3,7 @@ defmodule Nostrum.Struct.Event.MessageReactionRemoveAll do
   @moduledoc since: "0.5.0"
 
   alias Nostrum.Struct.{Channel, Guild, Message}
+  alias Nostrum.Util
 
   defstruct [:channel_id, :message_id, :guild_id]
 
@@ -24,10 +25,13 @@ defmodule Nostrum.Struct.Event.MessageReactionRemoveAll do
 
   @doc false
   def to_struct(map) do
-    %__MODULE__{
-      channel_id: map.channel_id,
-      message_id: map.message_id,
-      guild_id: map[:guild_id]
-    }
+    new =
+      map
+      |> Map.new(fn {k, v} -> {Util.maybe_to_atom(k), v} end)
+      |> Map.update(:channel_id, nil, &Util.cast(&1, Snowflake))
+      |> Map.update(:message_id, nil, &Util.cast(&1, Snowflake))
+      |> Map.update(:guild_id, nil, &Util.cast(&1, Snowflake))
+
+    struct(__MODULE__, new)
   end
 end

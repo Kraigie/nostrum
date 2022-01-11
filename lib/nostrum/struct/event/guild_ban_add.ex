@@ -22,9 +22,12 @@ defmodule Nostrum.Struct.Event.GuildBanAdd do
 
   @doc false
   def to_struct(map) do
-    %__MODULE__{
-      guild_id: map.guild_id,
-      user: Util.cast(map.user, {:struct, User})
-    }
+    new =
+      map
+      |> Map.new(fn {k, v} -> {Util.maybe_to_atom(k), v} end)
+      |> Map.update(:guild_id, nil, &Util.cast(&1, Snowflake))
+      |> Map.update(:user, nil, &Util.cast(&1, {:struct, User}))
+
+    struct(__MODULE__, new)
   end
 end

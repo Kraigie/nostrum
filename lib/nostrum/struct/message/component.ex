@@ -161,36 +161,29 @@ defmodule Nostrum.Struct.Message.Component do
 
   @typedoc "Represents a message component."
   @type t :: %__MODULE__{
-          type: type(),
-          custom_id: custom_id(),
-          disabled: disabled(),
-          style: style(),
-          label: label(),
-          emoji: emoji(),
-          url: url(),
-          options: options(),
-          placeholder: placeholder(),
-          min_values: min_values(),
-          max_values: max_values(),
-          components: components()
+          type: type,
+          custom_id: custom_id,
+          disabled: disabled,
+          style: style,
+          label: label,
+          emoji: emoji,
+          url: url,
+          options: options,
+          placeholder: placeholder,
+          min_values: min_values,
+          max_values: max_values,
+          components: components
         }
 
   @doc false
   @spec to_struct(map()) :: t()
   def to_struct(map) do
-    %__MODULE__{
-      type: map.type,
-      custom_id: map[:custom_id],
-      disabled: map[:disabled],
-      style: map[:style],
-      label: map[:label],
-      emoji: Util.cast(map[:emoji], {:struct, Emoji}),
-      url: map[:url],
-      options: map[:options],
-      placeholder: map[:placeholder],
-      min_values: map[:min_values],
-      max_values: map[:max_values],
-      components: Util.cast(map[:components], {:list, {:struct, __MODULE__}})
-    }
+    new =
+      map
+      |> Map.new(fn {k, v} -> {Util.maybe_to_atom(k), v} end)
+      |> Map.update(:emoji, nil, &Util.cast(&1, {:struct, Emoji}))
+      |> Map.update(:components, nil, &Util.cast(&1, {:list, {:struct, __MODULE__}}))
+
+    struct(__MODULE__, new)
   end
 end

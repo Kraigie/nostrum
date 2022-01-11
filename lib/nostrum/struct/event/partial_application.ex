@@ -2,7 +2,7 @@ defmodule Nostrum.Struct.Event.PartialApplication do
   @moduledoc "Sent on `READY`"
   @moduledoc since: "0.5.0"
 
-  alias Nostrum.Snowflake
+  alias Nostrum.{Snowflake, Util}
 
   defstruct [:id, :flags]
 
@@ -24,12 +24,11 @@ defmodule Nostrum.Struct.Event.PartialApplication do
 
   @doc false
   def to_struct(map) do
-    %__MODULE__{
-      id: map.id,
-      # This is documented as optional in Discord's Gateway documentation,
-      # but unlike our other struct fields, we assume it to be present in
-      # ready.
-      flags: map.flags
-    }
+    new =
+      map
+      |> Map.new(fn {k, v} -> {Util.maybe_to_atom(k), v} end)
+      |> Map.update(:id, nil, &Util.cast(&1, Snowflake))
+
+    struct(__MODULE__, new)
   end
 end

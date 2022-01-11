@@ -28,14 +28,18 @@ defmodule Nostrum.Struct.Component.Option do
           value: value
         }
 
+  @doc false
   @spec to_struct(nil | maybe_improper_list | map) :: Nostrum.Struct.Component.Option.t()
+  def to_struct(nil) do
+    nil
+  end
+
   def to_struct(map) do
-    %__MODULE__{
-      label: map[:label],
-      value: map[:value],
-      description: map[:description],
-      emoji: Util.cast(map[:emoji], {:struct, Emoji}),
-      default: map[:default]
-    }
+    new =
+      map
+      |> Map.new(fn {k, v} -> {Util.maybe_to_atom(k), v} end)
+      |> Map.update(:emoji, nil, &Util.cast(&1, {:struct, Emoji}))
+
+    struct(__MODULE__, new)
   end
 end

@@ -3,6 +3,7 @@ defmodule Nostrum.Struct.Event.GuildIntegrationsUpdate do
   @moduledoc since: "0.5.0"
 
   alias Nostrum.Struct.Guild
+  alias Nostrum.Util
 
   defstruct [:guild_id]
 
@@ -16,6 +17,11 @@ defmodule Nostrum.Struct.Event.GuildIntegrationsUpdate do
 
   @doc false
   def to_struct(map) do
-    %__MODULE__{guild_id: map.guild_id}
+    new =
+      map
+      |> Map.new(fn {k, v} -> {Util.maybe_to_atom(k), v} end)
+      |> Map.update(:guild_id, nil, &Util.cast(&1, Snowflake))
+
+    struct(__MODULE__, new)
   end
 end

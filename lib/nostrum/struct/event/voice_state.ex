@@ -6,7 +6,7 @@ defmodule Nostrum.Struct.Event.VoiceState do
   alias Nostrum.Struct.Guild
   alias Nostrum.Struct.Guild.Member
   alias Nostrum.Struct.User
-  alias Nostrum.Util
+  alias Nostrum.{Snowflake, Util}
 
   defstruct [
     :guild_id,
@@ -14,13 +14,13 @@ defmodule Nostrum.Struct.Event.VoiceState do
     :user_id,
     :member,
     :session_id,
-    :deaf?,
-    :mute?,
-    :self_deaf?,
-    :self_mute?,
-    :self_stream?,
-    :self_video?,
-    :suppress?,
+    :deaf,
+    :mute,
+    :self_deaf,
+    :self_mute,
+    :self_stream,
+    :self_video,
+    :suppress,
     :request_to_speak_timestamp
   ]
 
@@ -40,25 +40,25 @@ defmodule Nostrum.Struct.Event.VoiceState do
   @type session_id :: String.t()
 
   @typedoc "Whether this user is deafened by the server"
-  @type deaf? :: boolean
+  @type deaf :: boolean
 
   @typedoc "Whether this user is muteened by the server"
-  @type mute? :: boolean
+  @type mute :: boolean
 
   @typedoc "Whether this user is locally deafened"
-  @type self_deaf? :: boolean
+  @type self_deaf :: boolean
 
   @typedoc "Whether this user is locally muted"
-  @type self_mute? :: boolean
+  @type self_mute :: boolean
 
   @typedoc "Whether the user is streaming using \"Go Live\""
-  @type self_stream? :: boolean
+  @type self_stream :: boolean
 
   @typedoc "Whether this user's camera is enabled"
-  @type self_video? :: boolean
+  @type self_video :: boolean
 
   @typedoc "Whether this user is muted by the current user"
-  @type suppress? :: boolean
+  @type suppress :: boolean
 
   @typedoc "Time at which the user requested to speak, if applicable"
   @type request_to_speak_timestamp :: DateTime.t() | nil
@@ -70,32 +70,28 @@ defmodule Nostrum.Struct.Event.VoiceState do
           user_id: user_id,
           member: member,
           session_id: session_id,
-          deaf?: deaf?,
-          mute?: mute?,
-          self_deaf?: self_deaf?,
-          self_mute?: self_mute?,
-          self_stream?: self_stream?,
-          self_video?: self_video?,
-          suppress?: suppress?,
+          deaf: deaf,
+          mute: mute,
+          self_deaf: self_deaf,
+          self_mute: self_mute,
+          self_stream: self_stream,
+          self_video: self_video,
+          suppress: suppress,
           request_to_speak_timestamp: request_to_speak_timestamp
         }
 
   @doc false
   def to_struct(map) do
-    %__MODULE__{
-      guild_id: map.guild_id,
-      channel_id: map.channel_id,
-      user_id: map.user_id,
-      member: Util.cast(map[:member], {:struct, Member}),
-      session_id: map.session_id,
-      deaf?: map.deaf,
-      mute?: map.mute,
-      self_deaf?: map.self_deaf,
-      self_mute?: map.self_mute,
-      self_stream?: map[:self_stream] || false,
-      self_video?: map.self_video,
-      suppress?: map.suppress,
-      request_to_speak_timestamp: Util.maybe_to_datetime(map.request_to_speak_timestamp)
-    }
+    new =
+      map
+      |> Map.new(fn {k, v} -> {Util.maybe_to_atom(k), v} end)
+      |> Map.put_new(:self_stream, false)
+      |> Map.update(:guild_id, nil, &Util.cast(&1, Snowflake))
+      |> Map.update(:channel_id, nil, &Util.cast(&1, Snowflake))
+      |> Map.update(:user_id, nil, &Util.cast(&1, Snowflake))
+      |> Map.update(:member, nil, &Util.cast(&1, {:struct, Member}))
+      |> Map.update(:request_to_speak_timestamp, nil, &Util.maybe_to_datetime/1)
+
+    struct(__MODULE__, new)
   end
 end
