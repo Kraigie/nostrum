@@ -19,8 +19,8 @@ defmodule Nostrum.Struct.Event.TypingStart do
   @typedoc "ID of the user who started typing"
   @type user_id :: User.id()
 
-  @typedoc "Unix time (in seconds) of when the user started typing"
-  @type timestamp :: pos_integer()
+  @typedoc "When the user started typing"
+  @type timestamp :: DateTime.t()
 
   @typedoc "The member who started typing if this happened in a guild"
   @type member :: Member.t() | nil
@@ -43,6 +43,7 @@ defmodule Nostrum.Struct.Event.TypingStart do
       |> Map.update(:guild_id, nil, &Util.cast(&1, Snowflake))
       |> Map.update(:user_id, nil, &Util.cast(&1, Snowflake))
       |> Map.update(:member, nil, &Util.cast(&1, {:struct, Member}))
+      |> Map.update(:timestamp, nil, &DateTime.from_unix!/1)
 
     struct(__MODULE__, new)
   end
