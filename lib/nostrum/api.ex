@@ -3469,6 +3469,29 @@ defmodule Nostrum.Api do
   directly. See `create_interaction_response/2`.
   """
   @spec create_interaction_response(Interaction.id(), Interaction.token(), map()) :: {:ok} | error
+  def create_interaction_response(id, token, %{data: %{files: files}} = options) do
+    payload_json =
+      options
+      |> Map.update!(:data, fn data ->
+        Map.delete(data, :files)
+      end)
+      |> Jason.encode_to_iodata!()
+
+    boundary = generate_boundary()
+
+    request = %{
+      method: :post,
+      route: Constants.interaction_callback(id, token),
+      body: create_multipart(files, payload_json, boundary),
+      params: [],
+      headers: [
+        {"content-type", "multipart/form-data; boundary=#{boundary}"}
+      ]
+    }
+
+    GenServer.call(Ratelimiter, {:queue, request, nil}, :infinity)
+  end
+
   def create_interaction_response(id, token, response) do
     request(:post, Constants.interaction_callback(id, token), response)
   end
@@ -3836,7 +3859,7 @@ defmodule Nostrum.Api do
     {body, name} = get_file_contents(file)
 
     file_mime = MIME.from_path(name)
-    file_size = byte_size(body)
+    file_size = :erlang.iolist_size(body)
 
     [
       ~s|content-length: #{file_size}#{@crlf}|,
