@@ -3,7 +3,7 @@ defmodule Nostrum.Struct.Event.GuildIntegrationsUpdate do
   @moduledoc since: "0.5.0"
 
   alias Nostrum.Struct.Guild
-  alias Nostrum.Util
+  alias Nostrum.{Snowflake, Util}
 
   defstruct [:guild_id]
 

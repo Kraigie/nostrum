@@ -4,7 +4,7 @@ defmodule Nostrum.Struct.Event.GuildBanAdd do
 
   alias Nostrum.Struct.Guild
   alias Nostrum.Struct.User
-  alias Nostrum.Util
+  alias Nostrum.{Snowflake, Util}
 
   defstruct [:guild_id, :user]
 

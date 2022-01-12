@@ -3,7 +3,7 @@ defmodule Nostrum.Struct.Event.MessageReactionRemove do
   @moduledoc since: "0.5.0"
 
   alias Nostrum.Struct.{Channel, Emoji, Guild, Message, User}
-  alias Nostrum.Util
+  alias Nostrum.{Snowflake, Util}
 
   defstruct [:user_id, :channel_id, :message_id, :guild_id, :emoji]
 

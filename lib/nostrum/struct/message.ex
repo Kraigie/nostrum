@@ -69,10 +69,10 @@ defmodule Nostrum.Struct.Message do
   @type content :: String.t()
 
   @typedoc "When the message was sent"
-  @type timestamp :: String.t()
+  @type timestamp :: DateTime.t()
 
   @typedoc "When the message was edited"
-  @type edited_timestamp :: String.t() | nil
+  @type edited_timestamp :: DateTime.t() | nil
 
   @typedoc "Whether this was a TTS message"
   @type tts :: boolean
@@ -237,6 +237,7 @@ defmodule Nostrum.Struct.Message do
       |> Map.update(:author, nil, &Util.cast(&1, {:struct, User}))
       |> Map.update(:channel_id, nil, &Util.cast(&1, Snowflake))
       |> Map.update(:components, nil, &Util.cast(&1, {:list, {:struct, Component}}))
+      |> Map.update(:edited_timestamp, nil, &Util.maybe_to_datetime/1)
       |> Map.update(:embeds, nil, &Util.cast(&1, {:list, {:struct, Embed}}))
       |> Map.update(:guild_id, nil, &Util.cast(&1, Snowflake))
       |> Map.update(:id, nil, &Util.cast(&1, Snowflake))
@@ -251,6 +252,7 @@ defmodule Nostrum.Struct.Message do
       |> Map.update(:referenced_message, nil, &Util.cast(&1, {:struct, __MODULE__}))
       |> Map.update(:sticker_items, nil, &Util.cast(&1, {:list, {:struct, Sticker}}))
       |> Map.update(:thread, nil, &Util.cast(&1, {:struct, Channel}))
+      |> Map.update(:timestamp, nil, &Util.maybe_to_datetime/1)
       |> Map.update(:webhook_id, nil, &Util.cast(&1, Snowflake))
 
     struct(__MODULE__, new)
