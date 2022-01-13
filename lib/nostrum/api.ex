@@ -3469,13 +3469,42 @@ defmodule Nostrum.Api do
   directly. See `create_interaction_response/2`.
   """
   @spec create_interaction_response(Interaction.id(), Interaction.token(), map()) :: {:ok} | error
+  def create_interaction_response(id, token, %{data: %{file: file, files: files}} = options) do
+    options =
+      options
+      |> Map.update!(:data, fn data ->
+        Map.drop(data, [:file, :files])
+      end)
+
+    create_interaction_response_with_multipart(id, token, [file | files], options)
+  end
+
+  def create_interaction_response(id, token, %{data: %{file: file}} = options) do
+    options =
+      options
+      |> Map.update!(:data, fn data ->
+        Map.delete(data, :file)
+      end)
+
+    create_interaction_response_with_multipart(id, token, [file], options)
+  end
+
   def create_interaction_response(id, token, %{data: %{files: files}} = options) do
-    payload_json =
+    options =
       options
       |> Map.update!(:data, fn data ->
         Map.delete(data, :files)
       end)
-      |> Jason.encode_to_iodata!()
+
+    create_interaction_response_with_multipart(id, token, files, options)
+  end
+
+  def create_interaction_response(id, token, response) do
+    request(:post, Constants.interaction_callback(id, token), response)
+  end
+
+  defp create_interaction_response_with_multipart(id, token, files, options) do
+    payload_json = Jason.encode_to_iodata!(options)
 
     boundary = generate_boundary()
 
@@ -3490,10 +3519,6 @@ defmodule Nostrum.Api do
     }
 
     GenServer.call(Ratelimiter, {:queue, request, nil}, :infinity)
-  end
-
-  def create_interaction_response(id, token, response) do
-    request(:post, Constants.interaction_callback(id, token), response)
   end
 
   @doc """
