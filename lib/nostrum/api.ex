@@ -3037,13 +3037,14 @@ defmodule Nostrum.Api do
 
   def execute_webhook(webhook_id, webhook_token, args, wait \\ false)
 
-  def execute_webhook(webhook_id, webhook_token, %{file: _} = args, wait) do
-    request_multipart(
-      :post,
-      Constants.webhook_token(webhook_id, webhook_token),
-      args,
-      wait: wait
-    )
+  def execute_webhook(webhook_id, webhook_token, %{file: file} = args, wait) do
+    args = Map.delete(args, :file)
+    execute_webhook_with_multipart(webhook_id, webhook_token, [file], args, wait)
+  end
+
+  def execute_webhook(webhook_id, webhook_token, %{files: files} = args, wait) do
+    args = Map.delete(args, :files)
+    execute_webhook_with_multipart(webhook_id, webhook_token, files, args, wait)
   end
 
   def execute_webhook(webhook_id, webhook_token, %{content: _} = args, wait) do
@@ -3055,6 +3056,32 @@ defmodule Nostrum.Api do
     )
   end
 
+  def execute_webhook(webhook_id, webhook_token, %{embeds: _} = args, wait) do
+    request(
+      :post,
+      Constants.webhook_token(webhook_id, webhook_token),
+      args,
+      wait: wait
+    )
+  end
+
+  defp execute_webhook_with_multipart(webhook_id, webhook_token, files, args, wait) do
+    payload_json = Jason.encode_to_iodata!(args)
+
+    boundary = generate_boundary()
+
+    request = %{
+      method: :post,
+      route: Constants.webhook_token(webhook_id, webhook_token),
+      body: create_multipart(files, payload_json, boundary),
+      params: [{:wait, wait}],
+      headers: [
+        {"content-type", "multipart/form-data; boundary=#{boundary}"}
+      ]
+    }
+
+    GenServer.call(Ratelimiter, {:queue, request, nil}, :infinity)
+  end
   @doc """
   Edits a message previously created by the same webhook,
   args are the same as `execute_webhook/3`,
