@@ -3082,6 +3082,7 @@ defmodule Nostrum.Api do
 
     GenServer.call(Ratelimiter, {:queue, request, nil}, :infinity)
   end
+
   @doc """
   Edits a message previously created by the same webhook,
   args are the same as `execute_webhook/3`,
