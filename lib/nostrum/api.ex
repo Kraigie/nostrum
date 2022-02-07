@@ -2981,7 +2981,7 @@ defmodule Nostrum.Api do
            :username => String.t(),
            :avatar_url => String.t(),
            :tts => boolean,
-           optional(:file) => String.t() | nil,
+           optional(:files) => [String.t() | %{body: binary(), name: String.t()}],
            optional(:embeds) => nonempty_list(Embed.t()) | nil
          }
 
@@ -2991,7 +2991,7 @@ defmodule Nostrum.Api do
              :username => String.t(),
              :avatar_url => String.t(),
              :tts => boolean,
-             required(:file) => String.t(),
+             required(:files) => [String.t() | %{body: binary(), name: String.t()}],
              optional(:embeds) => nonempty_list(Embed.t()) | nil
            }
 
@@ -3001,7 +3001,7 @@ defmodule Nostrum.Api do
              :username => String.t(),
              :avatar_url => String.t(),
              :tts => boolean,
-             optional(:file) => String.t() | nil,
+             optional(:files) => [String.t() | %{body: binary(), name: String.t()}],
              required(:embeds) => nonempty_list(Embed.t())
            }
 
@@ -3023,7 +3023,7 @@ defmodule Nostrum.Api do
    - `webhook_token` - Token of the webhook to execute.
    - `args` - Map with the following required keys:
      - `content` - Message content.
-     - `file` - File to send.
+     - `files` - List of Files to send.
      - `embeds` - List of embeds to send.
      - `username` - Overrides the default name of the webhook.
      - `avatar_url` - Overrides the default avatar of the webhook.
@@ -3032,7 +3032,7 @@ defmodule Nostrum.Api do
 
    **Note**: If `wait` is `true`, this method will return a `Message.t()` on success.
 
-   Only one of `content`, `file` or `embeds` should be supplied in the `args` parameter.
+   At least one of `content`, `files` or `embeds` should be supplied in the `args` parameter.
   """
 
   def execute_webhook(webhook_id, webhook_token, args, wait \\ false)
@@ -3479,6 +3479,15 @@ defmodule Nostrum.Api do
   - `token`: The interaction token.
   - `response`: An [`InteractionResponse`](https://discord.com/developers/docs/interactions/receiving-and-responding#interaction-response-object)
     object. See the linked documentation.
+
+
+  ### Attachments
+  To include attachments in the response, you can include a `:files` field in the response.
+  This field expects a list of attachments which can be in either of the following formats:
+  - A path to the file to upload.
+  - A map with the following fields:
+    - `:body` The file contents.
+    - `:name` The filename of the file.
 
   ## Example
 
