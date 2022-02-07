@@ -10,7 +10,7 @@
     <title>State — Nostrum v0.5.0-rc1</title>
     <link rel="stylesheet" href="dist/elixir-a172fe91e725dcb259e2.css" />
 
-    <script src="dist/sidebar_items-52ba820cea.js"></script>
+    <script src="dist/sidebar_items-a388d92bb5.js"></script>
 
       <script src="docs_config.js"></script>
 
@@ -83,7 +83,20 @@ Nostrum
 
 <h1>State</h1><p>Nostrum keeps track of the state that your bot can see. This state is updated
 based on events from the WS connection. Most of the cache modules support only
-simple interactions with the cache. Feel free to suggest additional functionality.</p><h2 id="structs" class="section-heading">
+simple interactions with the cache. Feel free to suggest additional functionality.</p><h2 id="pluggable-caches" class="section-heading">
+  <a href="#pluggable-caches" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  Pluggable caches
+</h2>
+<p>The default caches supplied by nostrum should work for most of your needs, but
+all of the caches can be exchanged for your own implementations. For this,
+implement the behaviours exported by the cache modules under <code class="inline">Nostrum.Cache</code>.</p><p>Use the <code class="inline">[:nostrum, :caches]</code> configuration for configuring which cache
+implementation you want to use. This can only be set at dependency compilation
+time. A common situation is that you don't want to cache presences in your bot,
+most likely you don't care about user's status, so you can disable it altogether
+by using the <code class="inline">NoOp</code> presence cache:</p><pre><code class="makeup elixir"><span class="n">config</span><span class="w"> </span><span class="ss">:nostrum</span><span class="p">,</span><span class="w">
+  </span><span class="ss">caches</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="7091495103-1">%{</span><span class="w">
+    </span><span class="ss">presences</span><span class="p">:</span><span class="w"> </span><span class="nc">Nostrum.Cache.PresenceCache.NoOp</span><span class="w">
+  </span><span class="p" data-group-id="7091495103-1">}</span></code></pre><h2 id="structs" class="section-heading">
   <a href="#structs" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
   Structs
 </h2>
@@ -92,24 +105,22 @@ with the struct. See <a href="Nostrum.Struct.Emoji.html#image_url/1"><code class
   <a href="#guilds" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
   Guilds
 </h2>
-<p>Guilds are cached in an ETS table, keyed off their ID. You can obtain the table
-name of the backing ETS table using the <code class="inline">tabname</code> function exported by the
-module.</p><p>Please see <a href="Nostrum.Cache.GuildCache.html"><code class="inline">Nostrum.Cache.GuildCache</code></a> for more information on interacting with
+<p>By default, guilds are cached in an ETS table, keyed off their ID. You can
+obtain the table name of the backing ETS table using the <code class="inline">tabname</code> function
+exported by the <a href="Nostrum.Cache.GuildCache.ETS.html"><code class="inline">Nostrum.Cache.GuildCache.ETS</code></a> module.</p><p>Please see <a href="Nostrum.Cache.GuildCache.html"><code class="inline">Nostrum.Cache.GuildCache</code></a> for more information on interacting with
 guilds.</p><h2 id="channels" class="section-heading">
   <a href="#channels" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
   Channels
 </h2>
-<p>DM channels are all stored in a single map in a single <a href="https://hexdocs.pm/elixir/GenServer.html"><code class="inline">GenServer</code></a>. Guild channels
-are stored in their respective guilds.</p><p>Channels aren't important enough to have their own process per channel, and the
-current implementation is not done well, in the future this will likely be moved
-to an ETS backed cache like users are, but the interface will remain the same.</p><p>Please see <a href="Nostrum.Cache.ChannelCache.html"><code class="inline">Nostrum.Cache.ChannelCache</code></a> for more information on interacting with
-channels. Though they're stored in different places, the interface hides that fact.</p><h2 id="users" class="section-heading">
+<p>By default, DM channels are stored in an ETS table, see
+<a href="Nostrum.Cache.ChannelCache.ETS.html"><code class="inline">Nostrum.Cache.ChannelCache.ETS</code></a>. Guild channels are stored in their respective
+guilds.</p><h2 id="users" class="section-heading">
   <a href="#users" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
   Users
 </h2>
-<p>Users are all stored in an ETS table, keyed off of their id.</p><p>To see the name of the ETS table associated with the user cache, and examples of
+<p>By default, users are all stored in an ETS table, keyed off of their id.</p><p>To see the name of the ETS table associated with the user cache, and examples of
 interacting with it both directly and through the provided abstractions, please
-see <a href="Nostrum.Cache.UserCache.html"><code class="inline">Nostrum.Cache.UserCache</code></a>.</p><h2 id="mappings" class="section-heading">
+see <a href="Nostrum.Cache.UserCache.ETS.html"><code class="inline">Nostrum.Cache.UserCache.ETS</code></a>.</p><h2 id="mappings" class="section-heading">
   <a href="#mappings" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
   Mappings
 </h2>
