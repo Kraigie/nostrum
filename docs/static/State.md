@@ -6,7 +6,7 @@ simple interactions with the cache. Feel free to suggest additional functionalit
 ## Pluggable caches
 
 The default caches supplied by nostrum should work for most of your needs, but
-all of them caches can be exchanged for your own implementations. For this,
+all of the caches can be exchanged for your own implementations. For this,
 implement the behaviours exported by the cache modules under `Nostrum.Cache`.
 
 Use the `[:nostrum, :caches]` configuration for configuring which cache
