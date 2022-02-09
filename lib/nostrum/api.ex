@@ -3037,6 +3037,11 @@ defmodule Nostrum.Api do
 
   def execute_webhook(webhook_id, webhook_token, args, wait \\ false)
 
+  def execute_webhook(webhook_id, webhook_token, %{file: file, files: files} = args, wait) do
+    args = Map.drop(args, [:file, :files])
+    execute_webhook_with_multipart(webhook_id, webhook_token, [file | files], args, wait)
+  end
+
   def execute_webhook(webhook_id, webhook_token, %{file: file} = args, wait) do
     args = Map.delete(args, :file)
     execute_webhook_with_multipart(webhook_id, webhook_token, [file], args, wait)
