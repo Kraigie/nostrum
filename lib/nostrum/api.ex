@@ -2981,7 +2981,7 @@ defmodule Nostrum.Api do
            :username => String.t(),
            :avatar_url => String.t(),
            :tts => boolean,
-           optional(:file) => String.t() | nil,
+           optional(:files) => [String.t() | %{body: binary(), name: String.t()}],
            optional(:embeds) => nonempty_list(Embed.t()) | nil
          }
 
@@ -2991,7 +2991,7 @@ defmodule Nostrum.Api do
              :username => String.t(),
              :avatar_url => String.t(),
              :tts => boolean,
-             required(:file) => String.t(),
+             required(:files) => [String.t() | %{body: binary(), name: String.t()}],
              optional(:embeds) => nonempty_list(Embed.t()) | nil
            }
 
@@ -3001,7 +3001,7 @@ defmodule Nostrum.Api do
              :username => String.t(),
              :avatar_url => String.t(),
              :tts => boolean,
-             optional(:file) => String.t() | nil,
+             optional(:files) => [String.t() | %{body: binary(), name: String.t()}],
              required(:embeds) => nonempty_list(Embed.t())
            }
 
@@ -3023,7 +3023,7 @@ defmodule Nostrum.Api do
    - `webhook_token` - Token of the webhook to execute.
    - `args` - Map with the following required keys:
      - `content` - Message content.
-     - `file` - File to send.
+     - `files` - List of Files to send.
      - `embeds` - List of embeds to send.
      - `username` - Overrides the default name of the webhook.
      - `avatar_url` - Overrides the default avatar of the webhook.
@@ -3032,18 +3032,24 @@ defmodule Nostrum.Api do
 
    **Note**: If `wait` is `true`, this method will return a `Message.t()` on success.
 
-   Only one of `content`, `file` or `embeds` should be supplied in the `args` parameter.
+   At least one of `content`, `files` or `embeds` should be supplied in the `args` parameter.
   """
 
   def execute_webhook(webhook_id, webhook_token, args, wait \\ false)
 
-  def execute_webhook(webhook_id, webhook_token, %{file: _} = args, wait) do
-    request_multipart(
-      :post,
-      Constants.webhook_token(webhook_id, webhook_token),
-      args,
-      wait: wait
-    )
+  def execute_webhook(webhook_id, webhook_token, %{file: file, files: files} = args, wait) do
+    args = Map.drop(args, [:file, :files])
+    execute_webhook_with_multipart(webhook_id, webhook_token, [file | files], args, wait)
+  end
+
+  def execute_webhook(webhook_id, webhook_token, %{file: file} = args, wait) do
+    args = Map.delete(args, :file)
+    execute_webhook_with_multipart(webhook_id, webhook_token, [file], args, wait)
+  end
+
+  def execute_webhook(webhook_id, webhook_token, %{files: files} = args, wait) do
+    args = Map.delete(args, :files)
+    execute_webhook_with_multipart(webhook_id, webhook_token, files, args, wait)
   end
 
   def execute_webhook(webhook_id, webhook_token, %{content: _} = args, wait) do
@@ -3053,6 +3059,33 @@ defmodule Nostrum.Api do
       args,
       wait: wait
     )
+  end
+
+  def execute_webhook(webhook_id, webhook_token, %{embeds: _} = args, wait) do
+    request(
+      :post,
+      Constants.webhook_token(webhook_id, webhook_token),
+      args,
+      wait: wait
+    )
+  end
+
+  defp execute_webhook_with_multipart(webhook_id, webhook_token, files, args, wait) do
+    payload_json = Jason.encode_to_iodata!(args)
+
+    boundary = generate_boundary()
+
+    request = %{
+      method: :post,
+      route: Constants.webhook_token(webhook_id, webhook_token),
+      body: create_multipart(files, payload_json, boundary),
+      params: [{:wait, wait}],
+      headers: [
+        {"content-type", "multipart/form-data; boundary=#{boundary}"}
+      ]
+    }
+
+    GenServer.call(Ratelimiter, {:queue, request, nil}, :infinity)
   end
 
   @doc """
@@ -3452,6 +3485,15 @@ defmodule Nostrum.Api do
   - `response`: An [`InteractionResponse`](https://discord.com/developers/docs/interactions/receiving-and-responding#interaction-response-object)
     object. See the linked documentation.
 
+
+  ### Attachments
+  To include attachments in the response, you can include a `:files` field in the response.
+  This field expects a list of attachments which can be in either of the following formats:
+  - A path to the file to upload.
+  - A map with the following fields:
+    - `:body` The file contents.
+    - `:name` The filename of the file.
+
   ## Example
 
   ```elixir
@@ -3469,8 +3511,56 @@ defmodule Nostrum.Api do
   directly. See `create_interaction_response/2`.
   """
   @spec create_interaction_response(Interaction.id(), Interaction.token(), map()) :: {:ok} | error
+  def create_interaction_response(id, token, %{data: %{file: file, files: files}} = options) do
+    options =
+      options
+      |> Map.update!(:data, fn data ->
+        Map.drop(data, [:file, :files])
+      end)
+
+    create_interaction_response_with_multipart(id, token, [file | files], options)
+  end
+
+  def create_interaction_response(id, token, %{data: %{file: file}} = options) do
+    options =
+      options
+      |> Map.update!(:data, fn data ->
+        Map.delete(data, :file)
+      end)
+
+    create_interaction_response_with_multipart(id, token, [file], options)
+  end
+
+  def create_interaction_response(id, token, %{data: %{files: files}} = options) do
+    options =
+      options
+      |> Map.update!(:data, fn data ->
+        Map.delete(data, :files)
+      end)
+
+    create_interaction_response_with_multipart(id, token, files, options)
+  end
+
   def create_interaction_response(id, token, response) do
     request(:post, Constants.interaction_callback(id, token), response)
+  end
+
+  defp create_interaction_response_with_multipart(id, token, files, options) do
+    payload_json = Jason.encode_to_iodata!(options)
+
+    boundary = generate_boundary()
+
+    request = %{
+      method: :post,
+      route: Constants.interaction_callback(id, token),
+      body: create_multipart(files, payload_json, boundary),
+      params: [],
+      headers: [
+        {"content-type", "multipart/form-data; boundary=#{boundary}"}
+      ]
+    }
+
+    GenServer.call(Ratelimiter, {:queue, request, nil}, :infinity)
   end
 
   @doc """
@@ -3836,7 +3926,7 @@ defmodule Nostrum.Api do
     {body, name} = get_file_contents(file)
 
     file_mime = MIME.from_path(name)
-    file_size = byte_size(body)
+    file_size = :erlang.iolist_size(body)
 
     [
       ~s|content-length: #{file_size}#{@crlf}|,
