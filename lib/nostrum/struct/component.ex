@@ -70,13 +70,23 @@ defmodule Nostrum.Struct.Component do
   - An Action Row can contain **only one** select menu
   - An Action Row containing a select menu **cannot** also contain buttons
 
+  ## Text Input
+  Text inputs are an interactive component that render on modals. They can be used to collect short-form or long-form text.
+  - Text inputs **must** be sent inside an Action Row
+  - An Action Row can contain **only one** text input
+  - An Action Row containing a text input **cannot** also contain buttons or a select menu
 
+  Can be used to collect short-form or long-form text.
+  - For short-form text, use `style: 1`
+  - For long-form text, use `style: 2`
+
+  Text inputs are only allowed to be sent as part of an Interaction respose that opens a MODAL.
   """
   @moduledoc since: "0.5.0"
 
   defmacro __using__(_opts) do
     quote do
-      alias Nostrum.Struct.Component.{ActionRow, Button, Option, SelectMenu}
+      alias Nostrum.Struct.Component.{ActionRow, Button, Option, SelectMenu, TextInput}
       alias Nostrum.Struct.{Component, Emoji}
       alias Nostrum.Util
       @before_compile Component
@@ -136,7 +146,8 @@ defmodule Nostrum.Struct.Component do
   """
   @callback update(t(), opts :: [keyword()]) :: t()
 
-  alias Nostrum.Struct.Component.{ActionRow, Button, Option, SelectMenu}
+  alias Nostrum.Struct.Component.{ActionRow, Button, Option, SelectMenu, TextInput}
+  alias Nostrum.Struct.Emoji
   alias Nostrum.Util
 
   @derive Jason.Encoder
@@ -152,13 +163,17 @@ defmodule Nostrum.Struct.Component do
     :placeholder,
     :min_values,
     :max_values,
+    :min_length,
+    :max_length,
+    :requred,
+    :value,
     :components
   ]
 
   @typedoc """
   The currently valid component types.
   """
-  @type t :: ActionRow.t() | Button.t() | SelectMenu.t()
+  @type t :: ActionRow.t() | Button.t() | SelectMenu.t() | TextInput.t()
 
   @typedoc """
   The type of component.
@@ -170,6 +185,7 @@ defmodule Nostrum.Struct.Component do
   |  `1` |  Action Row |
   |  `2` |  Button |
   |  `3` |  SelectMenu |
+  |  `4` |  TextInput |
 
   Check out the [Discord API Message Component Types](https://discord.com/developers/docs/interactions/message-components#component-object-component-types) for more information.
 
@@ -179,7 +195,7 @@ defmodule Nostrum.Struct.Component do
   @typedoc """
   Used to identify the command when the interraction is sent to you from the user.
 
-  Valid for [Interaction Buttons](#module-interaction-button) & [Select Menus](#module-select-menu).
+  Valid for [Interaction Buttons](#module-interaction-button), [Select Menus](#module-select-menu), and [Text Input](#module-text-input).
   """
   @type custom_id :: String.t() | nil
 
@@ -193,7 +209,7 @@ defmodule Nostrum.Struct.Component do
   @typedoc """
   Indicates the style.
 
-  Valid for Valid for [Interaction Buttons](#module-interaction-button) only,
+  Valid for Valid for [Interaction Buttons](#module-interaction-button) and [Text Input](#module-text-input).
   """
   @type style :: integer() | nil
 
@@ -209,7 +225,7 @@ defmodule Nostrum.Struct.Component do
 
   Valid for [Buttons](#module-buttons)
   """
-  @type emoji :: map() | nil
+  @type emoji ::  %{id: Emoji.id(), name: Emoji.name(), animated: Emoji.animated()} | nil
 
   @typedoc """
   A url for link buttons.
@@ -228,7 +244,7 @@ defmodule Nostrum.Struct.Component do
   @typedoc """
   Placeholder text if nothing is selected, max 100 characters
 
-  Valid for [Select Menus](#module-select-menu).
+  Valid for [Select Menus](#module-select-menu) and [Text Input](#module-text-input).
 
   """
   @type placeholder :: String.t() | nil
@@ -248,13 +264,40 @@ defmodule Nostrum.Struct.Component do
   @type max_values :: integer() | nil
 
   @typedoc """
+  The minimum length of the text input. Minimum value 0, max 4000.
+
+  Valid for [Text Input](#module-text-input).
+  """
+  @type min_length :: integer() | nil
+
+  @typedoc """
+  The maximum length of the text input. Minimum value 1, max 4000.
+
+  Valid for [Text Input](#module-text-input).
+  """
+  @type max_length :: integer() | nil
+
+  @typedoc """
+  Indicates if the text input is required.
+
+  Valid for [Text Input](#module-text-input).
+  """
+  @type requred :: boolean() | nil
+
+  @typedoc """
+  A pre-filled value for the text input, max 4000 characters.
+
+  Valid for [Text Input](#module-text-input).
+  """
+  @type value :: String.t() | nil
+
+  @typedoc """
   A list of components to place inside an action row.
 
-  Due to constraints of action rows, this can either be a list of up to five buttons, or a single select menu.
+  Due to constraints of action rows, this can either be a list of up to five buttons, a single select menu, or a single text input.
 
   Valid for [Action Row](#module-action-row).
   """
-
   @type components :: [SelectMenu.t() | Button.t() | nil]
 
   @spec to_struct(map()) :: struct

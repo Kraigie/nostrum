@@ -3,7 +3,8 @@ defmodule Nostrum.Struct.ApplicationCommandInteractionData do
 
   alias Nostrum.Struct.{
     ApplicationCommandInteractionDataOption,
-    ApplicationCommandInteractionDataResolved
+    ApplicationCommandInteractionDataResolved,
+    Message.Component
   }
 
   alias Nostrum.Snowflake
@@ -18,7 +19,8 @@ defmodule Nostrum.Struct.ApplicationCommandInteractionData do
     :component_type,
     :type,
     :values,
-    :target_id
+    :target_id,
+    :components
   ]
 
   @typedoc "ID of the invoked command"
@@ -61,6 +63,12 @@ defmodule Nostrum.Struct.ApplicationCommandInteractionData do
   @type select_values :: [String.t()] | nil
 
   @typedoc """
+  For Modal Sumbit interactions, this will contain the values the user submitted.
+  """
+  @typedoc since: "0.5.0"
+  @type components :: [Component.t()] | nil
+
+  @typedoc """
   Command interaction data for slash commands.
 
   Used as part of `t:Nostrum.Struct.Interaction.t/0`.
@@ -77,7 +85,8 @@ defmodule Nostrum.Struct.ApplicationCommandInteractionData do
           custom_id: custom_id,
           component_type: component_type,
           values: select_values,
-          target_id: target_id
+          target_id: target_id,
+          components: components
         }
 
   @doc false
@@ -98,6 +107,7 @@ defmodule Nostrum.Struct.ApplicationCommandInteractionData do
         nil,
         &Util.cast(&1, {:list, {:struct, ApplicationCommandInteractionDataOption}})
       )
+      |> Map.update(:components, nil, &Util.cast(&1, {:list, {:struct, Component}}))
 
     struct(__MODULE__, new)
   end
