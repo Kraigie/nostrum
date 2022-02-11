@@ -33,7 +33,8 @@ defmodule Nostrum.Struct.Guild.Member do
     :joined_at,
     :deaf,
     :mute,
-    :communication_disabled_until
+    :communication_disabled_until,
+    :premium_since
   ]
 
   defimpl String.Chars do
@@ -75,6 +76,11 @@ defmodule Nostrum.Struct.Guild.Member do
   """
   @type communication_disabled_until :: DateTime.t() | nil
 
+  @typedoc """
+  Current guild booster status of the user. If user is currently boosting a guild this will be a `t:DateTime.t/0` since the start of the boosting, it will be `nil` if the user is not currently boosting the guild.
+  """
+  @type premium_since :: DateTime.t() | nil
+
   @type t :: %__MODULE__{
           user: user,
           nick: nick,
@@ -82,7 +88,8 @@ defmodule Nostrum.Struct.Guild.Member do
           joined_at: joined_at,
           deaf: deaf,
           mute: mute,
-          communication_disabled_until: communication_disabled_until
+          communication_disabled_until: communication_disabled_until,
+          premium_since: premium_since
         }
 
   @doc ~S"""
@@ -225,6 +232,7 @@ defmodule Nostrum.Struct.Guild.Member do
       |> Map.update(:user, nil, &Util.cast(&1, {:struct, User}))
       |> Map.update(:roles, nil, &Util.cast(&1, {:list, Snowflake}))
       |> Map.update(:communication_disabled_until, nil, &Util.maybe_to_datetime/1)
+      |> Map.update(:premium_since, nil, &Util.maybe_to_datetime/1)
 
     struct(__MODULE__, new)
   end
