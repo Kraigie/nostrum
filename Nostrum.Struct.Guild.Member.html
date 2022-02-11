@@ -10,7 +10,7 @@
     <title>Nostrum.Struct.Guild.Member — Nostrum v0.5.0-rc2</title>
     <link rel="stylesheet" href="dist/elixir-a172fe91e725dcb259e2.css" />
 
-    <script src="dist/sidebar_items-a388d92bb5.js"></script>
+    <script src="dist/sidebar_items-045b0b22d1.js"></script>
 
       <script src="docs_config.js"></script>
 
@@ -172,6 +172,15 @@ If you dont request offline guild members this field will be <code class="inline
 </div>
 <div class="summary-row">
   <div class="summary-signature">
+    <a href="#t:premium_since/0">premium_since()</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Current guild booster status of the user. If user is currently boosting a guild this will be a <a href="https://hexdocs.pm/elixir/DateTime.html#t:t/0"><code class="inline">DateTime.t/0</code></a> since the start of the boosting, it will be <code class="inline">nil</code> if the user is not currently boosting the guild.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
     <a href="#t:roles/0">roles()</a>
 
   </div>
@@ -263,7 +272,7 @@ Types
     </a>
     <h1 class="signature">communication_disabled_until()</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild/member.ex#L76" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild/member.ex#L77" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -292,7 +301,7 @@ Types
     </a>
     <h1 class="signature">deaf()</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild/member.ex#L65" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild/member.ex#L66" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -322,7 +331,7 @@ If you dont request offline guild members this field will be <code class="inline
     </a>
     <h1 class="signature">joined_at()</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild/member.ex#L59" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild/member.ex#L60" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -352,7 +361,7 @@ If you dont request offline guild members this field will be <code class="inline
     </a>
     <h1 class="signature">mute()</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild/member.ex#L71" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild/member.ex#L72" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -382,7 +391,7 @@ If you dont request offline guild members this field will be <code class="inline
     </a>
     <h1 class="signature">nick()</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild/member.ex#L50" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild/member.ex#L51" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -402,6 +411,35 @@ If you dont request offline guild members this field will be <code class="inline
 <p>The nickname of the user</p>
   </section>
 </section>
+<section class="detail" id="t:premium_since/0">
+
+  <div class="detail-header">
+    <a href="#t:premium_since/0" class="detail-link" title="Link to this type">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature">premium_since()</h1>
+
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild/member.ex#L82" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre>premium_since() :: <a href="https://hexdocs.pm/elixir/DateTime.html#t:t/0">DateTime.t</a>() | nil</pre>
+
+      </div>
+
+<p>Current guild booster status of the user. If user is currently boosting a guild this will be a <a href="https://hexdocs.pm/elixir/DateTime.html#t:t/0"><code class="inline">DateTime.t/0</code></a> since the start of the boosting, it will be <code class="inline">nil</code> if the user is not currently boosting the guild.</p>
+  </section>
+</section>
 <section class="detail" id="t:roles/0">
 
   <div class="detail-header">
@@ -411,7 +449,7 @@ If you dont request offline guild members this field will be <code class="inline
     </a>
     <h1 class="signature">roles()</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild/member.ex#L53" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild/member.ex#L54" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -440,7 +478,7 @@ If you dont request offline guild members this field will be <code class="inline
     </a>
     <h1 class="signature">t()</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild/member.ex#L78" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild/member.ex#L84" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -459,6 +497,7 @@ If you dont request offline guild members this field will be <code class="inline
   joined_at: <a href="#t:joined_at/0">joined_at</a>(),
   mute: <a href="#t:mute/0">mute</a>(),
   nick: <a href="#t:nick/0">nick</a>(),
+  premium_since: <a href="#t:premium_since/0">premium_since</a>(),
   roles: <a href="#t:roles/0">roles</a>(),
   user: <a href="#t:user/0">user</a>()
 }</pre>
@@ -477,7 +516,7 @@ If you dont request offline guild members this field will be <code class="inline
     </a>
     <h1 class="signature">user()</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild/member.ex#L47" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild/member.ex#L48" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -520,7 +559,7 @@ Functions
     </a>
     <h1 class="signature">guild_channel_permissions(member, guild, channel_id)</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild/member.ex#L157" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild/member.ex#L164" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -561,7 +600,7 @@ Nostrum.Struct.Guild.Member.guild_channel_permissions(member, guild, channel_id)
     </a>
     <h1 class="signature">guild_permissions(member, guild)</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild/member.ex#L115" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild/member.ex#L122" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -597,7 +636,7 @@ Nostrum.Struct.Guild.Member.guild_permissions(member, guild)
     </a>
     <h1 class="signature">mention(member)</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild/member.ex#L100" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild/member.ex#L107" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -632,7 +671,7 @@ Nostrum.Struct.Guild.Member.guild_permissions(member, guild)
     </a>
     <h1 class="signature">top_role(member, guild)</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild/member.ex#L206" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild/member.ex#L213" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
