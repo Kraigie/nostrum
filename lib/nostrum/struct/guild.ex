@@ -48,7 +48,8 @@ defmodule Nostrum.Struct.Guild do
     :voice_states,
     :members,
     :channels,
-    :guild_scheduled_events
+    :guild_scheduled_events,
+    :vanity_url_code
   ]
 
   @typedoc "The guild's id"
@@ -156,6 +157,9 @@ defmodule Nostrum.Struct.Guild do
   @typedoc "List of scheduled events"
   @type guild_scheduled_events :: list(ScheduledEvent.t()) | nil
 
+  @typedoc "Guild invite vanity URL"
+  @type vanity_url_code :: String.t() | nil
+
   @typedoc """
   A `Nostrum.Struct.Guild` that is sent on user-specific rest endpoints.
   """
@@ -187,7 +191,8 @@ defmodule Nostrum.Struct.Guild do
           member_count: nil,
           voice_states: nil,
           members: nil,
-          channels: nil
+          channels: nil,
+          vanity_url_code: nil
         }
 
   @typedoc """
@@ -215,6 +220,7 @@ defmodule Nostrum.Struct.Guild do
           system_channel_id: system_channel_id,
           rules_channel_id: rules_channel_id,
           public_updates_channel_id: public_updates_channel_id,
+          vanity_url_code: vanity_url_code,
           joined_at: nil,
           large: nil,
           unavailable: nil,
@@ -257,7 +263,8 @@ defmodule Nostrum.Struct.Guild do
           voice_states: nil,
           members: nil,
           channels: nil,
-          guild_scheduled_events: nil
+          guild_scheduled_events: nil,
+          vanity_url_code: nil
         }
 
   @typedoc """
@@ -292,7 +299,8 @@ defmodule Nostrum.Struct.Guild do
           voice_states: voice_states,
           members: members,
           channels: channels,
-          guild_scheduled_events: guild_scheduled_events
+          guild_scheduled_events: guild_scheduled_events,
+          vanity_url_code: vanity_url_code
         }
 
   @type t ::
