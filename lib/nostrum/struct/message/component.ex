@@ -25,6 +25,10 @@ defmodule Nostrum.Struct.Message.Component do
     :placeholder,
     :min_values,
     :max_values,
+    :min_length,
+    :max_length,
+    :required,
+    :value,
     :components
   ]
 
@@ -38,13 +42,14 @@ defmodule Nostrum.Struct.Message.Component do
   - ``1``: Action Row - A container for other components.
   - ``2``: Button - A button object.
   - ``3``: Select Menu - A select menu for picking from choices.
+  - ``4``: Text Input - A text input field.
 
   ## References
 
   See [Discord Developer Portal: Component
   Types](https://discord.com/developers/docs/interactions/message-components#component-object-component-types).
   """
-  @type type :: 1 | 2 | 3
+  @type type :: 1 | 2 | 3 | 4
 
   @typedoc """
   A developer-defined identifier for the component.
@@ -61,17 +66,21 @@ defmodule Nostrum.Struct.Message.Component do
   @type disabled :: boolean() | nil
 
   @typedoc """
-  An integer representing the style of the button.
+  An integer representing the style of the button or text input.
 
-  Only present for buttons.
+  Only present for buttons and text input.
 
-  ## Values
+  ## Values (Button)
 
   - ``1``: Primary - blurple, ``custom_id`` required.
   - ``2``: Secondary - grey, ``custom_id`` required.
   - ``3``: Success - green, ``custom_id`` required.
   - ``4``: Danger - red, ``custom_id`` required.
   - ``5``: Link - grey, ``url`` required, navigates to the URL.
+
+  ## Values (Text Input)
+  - ``1``: Short - A single line text input.
+  - ``2``: Paragraph - A multi-line text input.
 
   ## References
 
@@ -81,9 +90,9 @@ defmodule Nostrum.Struct.Message.Component do
   @type style :: 1 | 2 | 3 | 4 | 5 | nil
 
   @typedoc """
-  Text that appears on the button.
+  Text that appears on the button, or above the text input.
 
-  Maximum of 80 characters. Only present for buttons.
+  Maximum of 80 characters. Only present for buttons and text input.
   """
   @type label :: String.t() | nil
 
@@ -134,7 +143,7 @@ defmodule Nostrum.Struct.Message.Component do
   @typedoc """
   Custom placeholder text if nothing is selected.
 
-  Maximum of 100 characters. Only present for select menus.
+  Maximum of 100 characters. Only present for select menus and text inputs.
   """
   @type placeholder :: String.t() | nil
 
@@ -151,6 +160,35 @@ defmodule Nostrum.Struct.Message.Component do
   Defaults to ``1``. Maximum of ``25``. Only present for select menus.
   """
   @type max_values :: 1..25 | nil
+
+  @typedoc """
+  Minimum length of the input text.
+
+  Defaults to ``0``. Maximum of ``4000``. Only present for text inputs.
+  """
+  @type min_length :: 0..4000 | nil
+
+  @typedoc """
+  Maximum length of the input text.
+
+  Defaults to ``1``. Maximum of ``4000``. Only present for text inputs.
+  """
+  @type max_length :: 1..4000 | nil
+
+  @typedoc """
+  Whether the component is required to be filled, defaults to `false`.
+
+  Only present for text inputs.
+  """
+  @type required :: boolean() | nil
+
+  @typedoc """
+  The current value of the component.
+
+  When creating a new component, this will be its pre-filled value if present.
+  Only present for text inputs.
+  """
+  @type value :: String.t() | nil
 
   @typedoc """
   Child components for action rows.
@@ -172,6 +210,10 @@ defmodule Nostrum.Struct.Message.Component do
           placeholder: placeholder,
           min_values: min_values,
           max_values: max_values,
+          min_length: min_length,
+          max_length: max_length,
+          required: required,
+          value: value,
           components: components
         }
 

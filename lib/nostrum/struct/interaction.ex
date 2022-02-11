@@ -41,8 +41,9 @@ defmodule Nostrum.Struct.Interaction do
   - `2` for *ApplicationCommand*
   - `3` for *MessageComponent*
   - `4` for *ApplicationCommandAutocomplete*
+  - `5` for *ModalSubmit*
   """
-  @type type :: 1..4
+  @type type :: 1..5
 
   @typedoc """
   Invocation data.
