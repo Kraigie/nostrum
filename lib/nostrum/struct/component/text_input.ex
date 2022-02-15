@@ -6,7 +6,7 @@ defmodule Nostrum.Struct.Component.TextInput do
   @moduledoc since: "0.5"
   use Nostrum.Struct.Component
 
-  @type t :: %{
+  @type t :: %Component{
           type: Component.type(),
           custom_id: Component.custom_id(),
           style: Component.style(),

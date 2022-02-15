@@ -225,7 +225,7 @@ defmodule Nostrum.Struct.Component do
 
   Valid for [Buttons](#module-buttons)
   """
-  @type emoji ::  %{id: Emoji.id(), name: Emoji.name(), animated: Emoji.animated()} | nil
+  @type emoji :: %{id: Emoji.id(), name: Emoji.name(), animated: Emoji.animated()} | nil
 
   @typedoc """
   A url for link buttons.
@@ -282,7 +282,7 @@ defmodule Nostrum.Struct.Component do
 
   Valid for [Text Input](#module-text-input).
   """
-  @type requred :: boolean() | nil
+  @type required :: boolean() | nil
 
   @typedoc """
   A pre-filled value for the text input, max 4000 characters.

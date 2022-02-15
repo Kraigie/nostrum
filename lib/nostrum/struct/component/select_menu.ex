@@ -14,7 +14,7 @@ defmodule Nostrum.Struct.Component.SelectMenu do
   }
   use Nostrum.Struct.Component
 
-  @type t :: %{
+  @type t :: %Component{
           type: Component.type(),
           custom_id: Component.custom_id(),
           disabled: Component.disabled(),
