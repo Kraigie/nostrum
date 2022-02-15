@@ -10,7 +10,7 @@ defmodule Nostrum.Struct.Component.ActionRow do
     components: []
   }
 
-  @type t :: %{
+  @type t :: %Component{
           type: Component.type(),
           components: [Component.components()]
         }

@@ -5,7 +5,7 @@ defmodule Nostrum.Struct.Component.Button do
   @moduledoc since: "0.5"
   use Nostrum.Struct.Component
 
-  @type link_button :: %{
+  @type link_button :: %Component{
           type: Component.type(),
           style: Component.style(),
           label: Component.label(),
@@ -14,7 +14,7 @@ defmodule Nostrum.Struct.Component.Button do
           disabled: Component.disabled()
         }
 
-  @type interaction_button :: %{
+  @type interaction_button :: %Component{
           type: Component.type(),
           style: Component.style(),
           label: Component.label(),
