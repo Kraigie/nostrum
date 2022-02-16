@@ -6,6 +6,7 @@ defmodule Nostrum.Struct.Component.Option do
   alias Nostrum.Struct.Component
   alias Nostrum.Util
 
+  @derive Jason.Encoder
   defstruct [
     :label,
     :value,
