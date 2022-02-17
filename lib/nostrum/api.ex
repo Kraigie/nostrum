@@ -2982,6 +2982,7 @@ defmodule Nostrum.Api do
            :avatar_url => String.t(),
            :tts => boolean,
            optional(:files) => [String.t() | %{body: binary(), name: String.t()}],
+           optional(:flags) => non_neg_integer(),
            optional(:embeds) => nonempty_list(Embed.t()) | nil
          }
 
@@ -2992,6 +2993,7 @@ defmodule Nostrum.Api do
              :avatar_url => String.t(),
              :tts => boolean,
              required(:files) => [String.t() | %{body: binary(), name: String.t()}],
+             optional(:flags) => non_neg_integer(),
              optional(:embeds) => nonempty_list(Embed.t()) | nil
            }
 
@@ -3002,6 +3004,7 @@ defmodule Nostrum.Api do
              :avatar_url => String.t(),
              :tts => boolean,
              optional(:files) => [String.t() | %{body: binary(), name: String.t()}],
+             optional(:flags) => non_neg_integer(),
              required(:embeds) => nonempty_list(Embed.t())
            }
 
@@ -3477,6 +3480,14 @@ defmodule Nostrum.Api do
   end
 
   @doc """
+  Same as `create_interaction_response/2`, but raises `Nostrum.Error.ApiError` in case of failure.
+  """
+  @spec create_interaction_response!(Interaction.t(), map()) :: no_return() | {:ok}
+  def create_interaction_response!(interaction, response) do
+    create_interaction_response!(interaction.id, interaction.token, response)
+  end
+
+  @doc """
   Create a response to an interaction received from the gateway.
 
   ## Parameters
@@ -3563,6 +3574,11 @@ defmodule Nostrum.Api do
     GenServer.call(Ratelimiter, {:queue, request, nil}, :infinity)
   end
 
+  def create_interaction_response!(id, token, response) do
+    create_interaction_response(id, token, response)
+    |> bangify
+  end
+
   @doc """
   Same as `edit_interaction_response/3`, but directly takes the
   `t:Nostrum.Struct.Interaction.t/0` received from the gateway.
@@ -3570,6 +3586,14 @@ defmodule Nostrum.Api do
   @spec edit_interaction_response(Interaction.t(), map()) :: {:ok, Message.t()} | error
   def edit_interaction_response(%Interaction{} = interaction, response) do
     edit_interaction_response(interaction.application_id, interaction.token, response)
+  end
+
+  @doc """
+  Same as `edit_interaction_response/2`, but raises `Nostrum.Error.ApiError` in case of failure.
+  """
+  @spec edit_interaction_response!(Interaction.t(), map()) :: no_return() | Message.t()
+  def edit_interaction_response!(%Interaction{} = interaction, response) do
+    edit_interaction_response!(interaction.application_id, interaction.token, response)
   end
 
   @doc """
@@ -3585,6 +3609,16 @@ defmodule Nostrum.Api do
   end
 
   @doc """
+  Same as `edit_interaction_response/3`, but raises `Nostrum.Error.ApiError` in case of failure.
+  """
+  @spec edit_interaction_response!(User.id(), Interaction.token(), map()) ::
+          no_return() | Message.t()
+  def edit_interaction_response!(id \\ Me.get().id, token, response) do
+    edit_interaction_response(id, token, response)
+    |> bangify
+  end
+
+  @doc """
   Same as `delete_interaction_response/3`, but directly takes the
   `t:Nostrum.Struct.Interaction.t/0` received from the gateway.
   """
@@ -3593,12 +3627,27 @@ defmodule Nostrum.Api do
     delete_interaction_response(interaction.application_id, interaction.token)
   end
 
+  @spec delete_interaction_response!(Interaction.t()) :: no_return() | {:ok}
+  def delete_interaction_response!(%Interaction{} = interaction) do
+    delete_interaction_response(interaction.application_id, interaction.token)
+    |> bangify
+  end
+
   @doc """
   Deletes the original interaction response.
   """
   @spec delete_interaction_response(User.id(), Interaction.token()) :: {:ok} | error
   def delete_interaction_response(id \\ Me.get().id, token) do
     request(:delete, Constants.interaction_callback_original(id, token))
+  end
+
+  @doc """
+  Same as `delete_interaction_response/2`, but raises `Nostrum.Error.ApiError` in case of failure.
+  """
+  @spec delete_interaction_response!(User.id(), Interaction.token()) :: no_return() | {:ok}
+  def delete_interaction_response!(id \\ Me.get().id, token) do
+    delete_interaction_response(id, token)
+    |> bangify
   end
 
   @doc """
