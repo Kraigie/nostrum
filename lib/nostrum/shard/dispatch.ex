@@ -20,6 +20,7 @@ defmodule Nostrum.Shard.Dispatch do
     MessageReactionRemove,
     MessageReactionRemoveAll,
     MessageReactionRemoveEmoji,
+    Ready,
     SpeakingUpdate,
     TypingStart,
     VoiceReady,
@@ -263,7 +264,7 @@ defmodule Nostrum.Shard.Dispatch do
     current_user = Util.cast(p.user, {:struct, User})
     Me.put(current_user)
 
-    [{event, p, state}] ++ ready_guilds
+    [{event, Ready.to_struct(p), state} | ready_guilds]
   end
 
   def handle_event(:RESUMED = event, p, state), do: {event, p, state}
