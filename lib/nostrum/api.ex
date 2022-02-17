@@ -3655,10 +3655,20 @@ defmodule Nostrum.Api do
 
   Delegates to ``execute_webhook/3``, see the function for more details.
   """
-  @spec create_followup_message(Interaction.token(), map()) :: {:ok} | error
-  @spec create_followup_message(User.id(), Interaction.token(), map()) :: {:ok} | error
+  @spec create_followup_message(User.id(), Interaction.token(), map()) ::
+          {:ok, Message.t()} | error
   def create_followup_message(application_id \\ Me.get().id, token, webhook_payload) do
     execute_webhook(application_id, token, webhook_payload)
+  end
+
+  @doc """
+  Same as `create_followup_message/3`, but raises `Nostrum.Error.ApiError` in case of failure.
+  """
+  @spec create_followup_message!(User.id(), Interaction.token(), map()) ::
+          no_return() | Message.t()
+  def create_followup_message!(application_id \\ Me.get().id, token, webhook_payload) do
+    create_followup_message(application_id, token, webhook_payload)
+    |> bangify
   end
 
   @doc """
@@ -3670,7 +3680,6 @@ defmodule Nostrum.Api do
   - `token`: Interaction token.
   - `message_id`: Followup message ID.
   """
-  @spec delete_interaction_followup_message(Interaction.token(), Message.id()) :: {:ok} | error
   @spec delete_interaction_followup_message(User.id(), Interaction.token(), Message.id()) ::
           {:ok} | error
   def delete_interaction_followup_message(
@@ -3679,6 +3688,20 @@ defmodule Nostrum.Api do
         message_id
       ) do
     request(:delete, Constants.interaction_followup_message(application_id, token, message_id))
+  end
+
+  @doc """
+  Same as `delete_interaction_followup_message/3`, but raises `Nostrum.Error.ApiError` in case of failure.
+  """
+  @spec delete_interaction_followup_message!(User.id(), Interaction.token(), Message.id()) ::
+          no_return() | {:ok}
+  def delete_interaction_followup_message!(
+        application_id \\ Me.get().id,
+        token,
+        message_id
+      ) do
+    delete_interaction_followup_message(application_id, token, message_id)
+    |> bangify
   end
 
   @doc """
