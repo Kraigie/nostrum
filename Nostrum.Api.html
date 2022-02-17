@@ -10,7 +10,7 @@
     <title>Nostrum.Api — Nostrum v0.5.0-rc2</title>
     <link rel="stylesheet" href="dist/elixir-a172fe91e725dcb259e2.css" />
 
-    <script src="dist/sidebar_items-d0a012e112.js"></script>
+    <script src="dist/sidebar_items-8157d00a90.js"></script>
 
       <script src="docs_config.js"></script>
 
@@ -361,6 +361,15 @@ authors =
 </div>
 <div class="summary-row">
   <div class="summary-signature">
+    <a href="#create_followup_message!/3">create_followup_message!(application_id \\ Me.get().id, token, webhook_payload)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Same as <a href="#create_followup_message/3"><code class="inline">create_followup_message/3</code></a>, but raises <a href="Nostrum.Error.ApiError.html"><code class="inline">Nostrum.Error.ApiError</code></a> in case of failure.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
     <a href="#create_global_application_command/2">create_global_application_command(application_id \\ Me.get().id, command)</a>
 
   </div>
@@ -493,6 +502,22 @@ authors =
   </div>
 
     <div class="summary-synopsis"><p>Create a response to an interaction received from the gateway.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#create_interaction_response!/2">create_interaction_response!(interaction, response)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Same as <a href="#create_interaction_response/2"><code class="inline">create_interaction_response/2</code></a>, but raises <a href="Nostrum.Error.ApiError.html"><code class="inline">Nostrum.Error.ApiError</code></a> in case of failure.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#create_interaction_response!/3">create_interaction_response!(id, token, response)</a>
+
+  </div>
 
 </div>
 <div class="summary-row">
@@ -686,6 +711,15 @@ authors =
 </div>
 <div class="summary-row">
   <div class="summary-signature">
+    <a href="#delete_interaction_followup_message!/3">delete_interaction_followup_message!(application_id \\ Me.get().id, token, message_id)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Same as <a href="#delete_interaction_followup_message/3"><code class="inline">delete_interaction_followup_message/3</code></a>, but raises <a href="Nostrum.Error.ApiError.html"><code class="inline">Nostrum.Error.ApiError</code></a> in case of failure.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
     <a href="#delete_interaction_response/1">delete_interaction_response(interaction)</a>
 
   </div>
@@ -701,6 +735,22 @@ authors =
   </div>
 
     <div class="summary-synopsis"><p>Deletes the original interaction response.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#delete_interaction_response!/1">delete_interaction_response!(interaction)</a>
+
+  </div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#delete_interaction_response!/2">delete_interaction_response!(id \\ Me.get().id, token)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Same as <a href="#delete_interaction_response/2"><code class="inline">delete_interaction_response/2</code></a>, but raises <a href="Nostrum.Error.ApiError.html"><code class="inline">Nostrum.Error.ApiError</code></a> in case of failure.</p></div>
 
 </div>
 <div class="summary-row">
@@ -901,6 +951,24 @@ authors =
   </div>
 
     <div class="summary-synopsis"><p>Edits the original interaction response.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#edit_interaction_response!/2">edit_interaction_response!(interaction, response)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Same as <a href="#edit_interaction_response/2"><code class="inline">edit_interaction_response/2</code></a>, but raises <a href="Nostrum.Error.ApiError.html"><code class="inline">Nostrum.Error.ApiError</code></a> in case of failure.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="#edit_interaction_response!/3">edit_interaction_response!(id \\ Me.get().id, token, response)</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Same as <a href="#edit_interaction_response/3"><code class="inline">edit_interaction_response/3</code></a>, but raises <a href="Nostrum.Error.ApiError.html"><code class="inline">Nostrum.Error.ApiError</code></a> in case of failure.</p></div>
 
 </div>
 <div class="summary-row">
@@ -1997,7 +2065,7 @@ The tuple can also be empty to search from the most recent message in the channe
     </a>
     <h1 class="signature">matrix()</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3008" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3011" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -2290,7 +2358,7 @@ An optional <code class="inline">reason</code> can be given for the audit log.</
     </a>
     <h1 class="signature">batch_edit_application_command_permissions(application_id \\ Me.get().id, guild_id, permissions)</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3752" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3824" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -2488,7 +2556,7 @@ two weeks ago should be filtered out; defaults to <code class="inline">true</cod
     </a>
     <h1 class="signature">bulk_overwrite_global_application_commands(application_id \\ Me.get().id, commands)</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3312" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3315" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -2534,7 +2602,7 @@ If not given, this will be fetched from <code class="inline">Me</code>.</li><li>
     </a>
     <h1 class="signature">bulk_overwrite_guild_application_commands(application_id \\ Me.get().id, guild_id, commands)</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3455" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3458" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -2734,7 +2802,7 @@ Nostrum.Api.create_channel_invite(41771983423143933, max_uses: 20)
     </a>
     <h1 class="signature">create_file_part_for_multipart(file, index)</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3925" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3997" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -2758,7 +2826,7 @@ Nostrum.Api.create_channel_invite(41771983423143933, max_uses: 20)
     </a>
     <h1 class="signature">create_followup_message(application_id \\ Me.get().id, token, webhook_payload)</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3611" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3660" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -2775,11 +2843,46 @@ Nostrum.Api.create_channel_invite(41771983423143933, max_uses: 20)
   <a href="Nostrum.Struct.User.html#t:id/0">Nostrum.Struct.User.id</a>(),
   <a href="Nostrum.Struct.Interaction.html#t:token/0">Nostrum.Struct.Interaction.token</a>(),
   <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()
-) :: {:ok} | <a href="#t:error/0">error</a>()</pre>
+) :: {:ok, <a href="Nostrum.Struct.Message.html#t:t/0">Nostrum.Struct.Message.t</a>()} | <a href="#t:error/0">error</a>()</pre>
 
       </div>
 
 <p>Create a followup message for an interaction.</p><p>Delegates to <a href="#execute_webhook/3"><code class="inline">execute_webhook/3</code></a>, see the function for more details.</p>
+  </section>
+</section>
+<section class="detail" id="create_followup_message!/3">
+
+    <span id="create_followup_message!/2"></span>
+
+  <div class="detail-header">
+    <a href="#create_followup_message!/3" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">create_followup_message!(application_id \\ Me.get().id, token, webhook_payload)</h1>
+
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3669" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre>create_followup_message!(
+  <a href="Nostrum.Struct.User.html#t:id/0">Nostrum.Struct.User.id</a>(),
+  <a href="Nostrum.Struct.Interaction.html#t:token/0">Nostrum.Struct.Interaction.token</a>(),
+  <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()
+) :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">no_return</a>() | <a href="Nostrum.Struct.Message.html#t:t/0">Nostrum.Struct.Message.t</a>()</pre>
+
+      </div>
+
+<p>Same as <a href="#create_followup_message/3"><code class="inline">create_followup_message/3</code></a>, but raises <a href="Nostrum.Error.ApiError.html"><code class="inline">Nostrum.Error.ApiError</code></a> in case of failure.</p>
   </section>
 </section>
 <section class="detail" id="create_global_application_command/2">
@@ -2793,7 +2896,7 @@ Nostrum.Api.create_channel_invite(41771983423143933, max_uses: 20)
     </a>
     <h1 class="signature">create_global_application_command(application_id \\ Me.get().id, command)</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3234" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3237" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -2830,9 +2933,9 @@ If not given, this will be fetched from <code class="inline">Me</code>.</li><li>
   <a href="#create_global_application_command/2-example" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
   Example
 </h2>
-<pre><code class="makeup elixir"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">create_application_command</span><span class="p" data-group-id="3956634354-1">(</span><span class="w">
-  </span><span class="p" data-group-id="3956634354-2">%{</span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;edit&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">description</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ed, man! man, ed&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">options</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="3956634354-3">[</span><span class="p" data-group-id="3956634354-3">]</span><span class="p" data-group-id="3956634354-2">}</span><span class="w">
-</span><span class="p" data-group-id="3956634354-1">)</span></code></pre>
+<pre><code class="makeup elixir"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">create_application_command</span><span class="p" data-group-id="6456419338-1">(</span><span class="w">
+  </span><span class="p" data-group-id="6456419338-2">%{</span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;edit&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">description</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ed, man! man, ed&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">options</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="6456419338-3">[</span><span class="p" data-group-id="6456419338-3">]</span><span class="p" data-group-id="6456419338-2">}</span><span class="w">
+</span><span class="p" data-group-id="6456419338-1">)</span></code></pre>
   </section>
 </section>
 <section class="detail" id="create_group_dm/2">
@@ -2914,7 +3017,7 @@ to a nickname.</p><h2 id="create_group_dm/2-examples" class="section-heading">
     </a>
     <h1 class="signature">create_guild_application_command(application_id \\ Me.get().id, guild_id, command)</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3359" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3362" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -3295,7 +3398,7 @@ Nostrum.Api.create_guild_emoji(43189401384091, name: &quot;nostrum&quot;, image:
     </a>
     <h1 class="signature">create_interaction_response(interaction, response)</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3475" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3478" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -3326,7 +3429,7 @@ Nostrum.Api.create_guild_emoji(43189401384091, name: &quot;nostrum&quot;, image:
     </a>
     <h1 class="signature">create_interaction_response(id, token, options)</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3514" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3525" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -3361,15 +3464,67 @@ This field expects a list of attachments which can be in either of the following
   <a href="#create_interaction_response/3-example" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
   Example
 </h2>
-<pre><code class="makeup elixir"><span class="n">response</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="4528962909-1">%{</span><span class="w">
+<pre><code class="makeup elixir"><span class="n">response</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="8905583437-1">%{</span><span class="w">
   </span><span class="ss">type</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w">
-  </span><span class="ss">data</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="4528962909-2">%{</span><span class="w">
+  </span><span class="ss">data</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="8905583437-2">%{</span><span class="w">
     </span><span class="ss">content</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;I copy and pasted this code.&quot;</span><span class="w">
-  </span><span class="p" data-group-id="4528962909-2">}</span><span class="w">
-</span><span class="p" data-group-id="4528962909-1">}</span><span class="w">
-</span><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">create_interaction_response</span><span class="p" data-group-id="4528962909-3">(</span><span class="n">interaction</span><span class="p">,</span><span class="w"> </span><span class="n">response</span><span class="p" data-group-id="4528962909-3">)</span></code></pre><p>As an alternative to passing the interaction ID and token, the
+  </span><span class="p" data-group-id="8905583437-2">}</span><span class="w">
+</span><span class="p" data-group-id="8905583437-1">}</span><span class="w">
+</span><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">create_interaction_response</span><span class="p" data-group-id="8905583437-3">(</span><span class="n">interaction</span><span class="p">,</span><span class="w"> </span><span class="n">response</span><span class="p" data-group-id="8905583437-3">)</span></code></pre><p>As an alternative to passing the interaction ID and token, the
 original <a href="Nostrum.Struct.Interaction.html#t:t/0"><code class="inline">Nostrum.Struct.Interaction.t/0</code></a> can also be passed
 directly. See <a href="#create_interaction_response/2"><code class="inline">create_interaction_response/2</code></a>.</p>
+  </section>
+</section>
+<section class="detail" id="create_interaction_response!/2">
+
+  <div class="detail-header">
+    <a href="#create_interaction_response!/2" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">create_interaction_response!(interaction, response)</h1>
+
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3486" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre>create_interaction_response!(<a href="Nostrum.Struct.Interaction.html#t:t/0">Nostrum.Struct.Interaction.t</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()) ::
+  <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">no_return</a>() | {:ok}</pre>
+
+      </div>
+
+<p>Same as <a href="#create_interaction_response/2"><code class="inline">create_interaction_response/2</code></a>, but raises <a href="Nostrum.Error.ApiError.html"><code class="inline">Nostrum.Error.ApiError</code></a> in case of failure.</p>
+  </section>
+</section>
+<section class="detail" id="create_interaction_response!/3">
+
+  <div class="detail-header">
+    <a href="#create_interaction_response!/3" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">create_interaction_response!(id, token, response)</h1>
+
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3577" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+
   </section>
 </section>
 <section class="detail" id="create_message/2">
@@ -3428,14 +3583,14 @@ that you have the <code class="inline">VIEW_MESSAGE_HISTORY</code> permission. T
 <code class="inline">message_reference</code> field in your call. The complete structure
 documentation can be found <a href="https://discord.com/developers/docs/resources/channel#message-object-message-reference-structure">on the Discord Developer
 Portal</a>,
-but simply passing <code class="inline">message_id</code> will suffice:</p><pre><code class="makeup elixir"><span class="kd">def</span><span class="w"> </span><span class="nf">my_command</span><span class="p" data-group-id="2886750472-1">(</span><span class="n">msg</span><span class="p" data-group-id="2886750472-1">)</span><span class="w"> </span><span class="k" data-group-id="2886750472-2">do</span><span class="w">
+but simply passing <code class="inline">message_id</code> will suffice:</p><pre><code class="makeup elixir"><span class="kd">def</span><span class="w"> </span><span class="nf">my_command</span><span class="p" data-group-id="7735280433-1">(</span><span class="n">msg</span><span class="p" data-group-id="7735280433-1">)</span><span class="w"> </span><span class="k" data-group-id="7735280433-2">do</span><span class="w">
   </span><span class="c1"># Reply to the author - ``msg`` is a ``Nostrum.Struct.Message``</span><span class="w">
-  </span><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">create_message</span><span class="p" data-group-id="2886750472-3">(</span><span class="w">
+  </span><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">create_message</span><span class="p" data-group-id="7735280433-3">(</span><span class="w">
     </span><span class="n">msg</span><span class="o">.</span><span class="n">channel_id</span><span class="p">,</span><span class="w">
     </span><span class="ss">content</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Hello&quot;</span><span class="p">,</span><span class="w">
-    </span><span class="ss">message_reference</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="2886750472-4">%{</span><span class="ss">message_id</span><span class="p">:</span><span class="w"> </span><span class="n">msg</span><span class="o">.</span><span class="n">id</span><span class="p" data-group-id="2886750472-4">}</span><span class="w">
-  </span><span class="p" data-group-id="2886750472-3">)</span><span class="w">
-</span><span class="k" data-group-id="2886750472-2">end</span></code></pre><p>Passing a list will merge the settings provided</p><h2 id="create_message/2-examples" class="section-heading">
+    </span><span class="ss">message_reference</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="7735280433-4">%{</span><span class="ss">message_id</span><span class="p">:</span><span class="w"> </span><span class="n">msg</span><span class="o">.</span><span class="n">id</span><span class="p" data-group-id="7735280433-4">}</span><span class="w">
+  </span><span class="p" data-group-id="7735280433-3">)</span><span class="w">
+</span><span class="k" data-group-id="7735280433-2">end</span></code></pre><p>Passing a list will merge the settings provided</p><h2 id="create_message/2-examples" class="section-heading">
   <a href="#create_message/2-examples" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
   Examples
 </h2>
@@ -3792,7 +3947,7 @@ An optional <code class="inline">reason</code> can be given for the audit log.</
     </a>
     <h1 class="signature">delete_global_application_command(application_id \\ Me.get().id, command_id)</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3282" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3285" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -3895,7 +4050,7 @@ It fires the <a href="Nostrum.Consumer.html#t:guild_delete/0"><code class="inlin
     </a>
     <h1 class="signature">delete_guild_application_command(application_id \\ Me.get().id, guild_id, command_id)</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3421" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3424" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -4142,7 +4297,7 @@ If not given, this will be fetched from <code class="inline">Me</code>.</li><li>
     </a>
     <h1 class="signature">delete_interaction_followup_message(application_id \\ Me.get().id, token, message_id)</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3627" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3685" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -4171,6 +4326,41 @@ If not given, this will be fetched from <code class="inline">Me</code>.</li><li>
 If not given, this will be fetched from <code class="inline">Me</code>.</li><li><code class="inline">token</code>: Interaction token.</li><li><code class="inline">message_id</code>: Followup message ID.</li></ul>
   </section>
 </section>
+<section class="detail" id="delete_interaction_followup_message!/3">
+
+    <span id="delete_interaction_followup_message!/2"></span>
+
+  <div class="detail-header">
+    <a href="#delete_interaction_followup_message!/3" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">delete_interaction_followup_message!(application_id \\ Me.get().id, token, message_id)</h1>
+
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3698" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre>delete_interaction_followup_message!(
+  <a href="Nostrum.Struct.User.html#t:id/0">Nostrum.Struct.User.id</a>(),
+  <a href="Nostrum.Struct.Interaction.html#t:token/0">Nostrum.Struct.Interaction.token</a>(),
+  <a href="Nostrum.Struct.Message.html#t:id/0">Nostrum.Struct.Message.id</a>()
+) :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">no_return</a>() | {:ok}</pre>
+
+      </div>
+
+<p>Same as <a href="#delete_interaction_followup_message/3"><code class="inline">delete_interaction_followup_message/3</code></a>, but raises <a href="Nostrum.Error.ApiError.html"><code class="inline">Nostrum.Error.ApiError</code></a> in case of failure.</p>
+  </section>
+</section>
 <section class="detail" id="delete_interaction_response/1">
 
   <div class="detail-header">
@@ -4180,7 +4370,7 @@ If not given, this will be fetched from <code class="inline">Me</code>.</li><li>
     </a>
     <h1 class="signature">delete_interaction_response(interaction)</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3592" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3626" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -4210,7 +4400,7 @@ If not given, this will be fetched from <code class="inline">Me</code>.</li><li>
     </a>
     <h1 class="signature">delete_interaction_response(id \\ Me.get().id, token)</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3600" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3640" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -4231,6 +4421,68 @@ If not given, this will be fetched from <code class="inline">Me</code>.</li><li>
       </div>
 
 <p>Deletes the original interaction response.</p>
+  </section>
+</section>
+<section class="detail" id="delete_interaction_response!/1">
+
+  <div class="detail-header">
+    <a href="#delete_interaction_response!/1" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">delete_interaction_response!(interaction)</h1>
+
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3631" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre>delete_interaction_response!(<a href="Nostrum.Struct.Interaction.html#t:t/0">Nostrum.Struct.Interaction.t</a>()) ::
+  <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">no_return</a>() | {:ok}</pre>
+
+      </div>
+
+
+  </section>
+</section>
+<section class="detail" id="delete_interaction_response!/2">
+
+  <div class="detail-header">
+    <a href="#delete_interaction_response!/2" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">delete_interaction_response!(id \\ Me.get().id, token)</h1>
+
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3648" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre>delete_interaction_response!(
+  <a href="Nostrum.Struct.User.html#t:id/0">Nostrum.Struct.User.id</a>(),
+  <a href="Nostrum.Struct.Interaction.html#t:token/0">Nostrum.Struct.Interaction.token</a>()
+) :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">no_return</a>() | {:ok}</pre>
+
+      </div>
+
+<p>Same as <a href="#delete_interaction_response/2"><code class="inline">delete_interaction_response/2</code></a>, but raises <a href="Nostrum.Error.ApiError.html"><code class="inline">Nostrum.Error.ApiError</code></a> in case of failure.</p>
   </section>
 </section>
 <section class="detail" id="delete_invite/1">
@@ -4740,7 +4992,7 @@ permissions. It fires a <a href="Nostrum.Consumer.html#t:message_reaction_remove
     </a>
     <h1 class="signature">edit_application_command_permissions(application_id \\ Me.get().id, guild_id, command_id, permissions)</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3708" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3780" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -4869,7 +5121,7 @@ If not given, this will be fetched from <code class="inline">Me</code>.</li><li>
     </a>
     <h1 class="signature">edit_global_application_command(application_id \\ Me.get().id, command_id, command)</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3263" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3266" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -4914,7 +5166,7 @@ If not given, this will be fetched from <code class="inline">Me</code>.</li><li>
     </a>
     <h1 class="signature">edit_guild_application_command(application_id \\ Me.get().id, guild_id, command_id, command)</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3396" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3399" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -4958,7 +5210,7 @@ If not given, this will be fetched from <code class="inline">Me</code>.</li><li>
     </a>
     <h1 class="signature">edit_interaction_response(interaction, response)</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3571" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3587" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -4989,7 +5241,7 @@ If not given, this will be fetched from <code class="inline">Me</code>.</li><li>
     </a>
     <h1 class="signature">edit_interaction_response(id \\ Me.get().id, token, response)</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3582" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3606" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -5011,6 +5263,69 @@ If not given, this will be fetched from <code class="inline">Me</code>.</li><li>
       </div>
 
 <p>Edits the original interaction response.</p><p>Functions the same as <code class="inline">edit_webhook_message/3</code></p>
+  </section>
+</section>
+<section class="detail" id="edit_interaction_response!/2">
+
+  <div class="detail-header">
+    <a href="#edit_interaction_response!/2" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">edit_interaction_response!(interaction, response)</h1>
+
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3595" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre>edit_interaction_response!(<a href="Nostrum.Struct.Interaction.html#t:t/0">Nostrum.Struct.Interaction.t</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()) ::
+  <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">no_return</a>() | <a href="Nostrum.Struct.Message.html#t:t/0">Nostrum.Struct.Message.t</a>()</pre>
+
+      </div>
+
+<p>Same as <a href="#edit_interaction_response/2"><code class="inline">edit_interaction_response/2</code></a>, but raises <a href="Nostrum.Error.ApiError.html"><code class="inline">Nostrum.Error.ApiError</code></a> in case of failure.</p>
+  </section>
+</section>
+<section class="detail" id="edit_interaction_response!/3">
+
+  <div class="detail-header">
+    <a href="#edit_interaction_response!/3" class="detail-link" title="Link to this function">
+      <span class="icon-link" aria-hidden="true"></span>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature">edit_interaction_response!(id \\ Me.get().id, token, response)</h1>
+
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3616" class="view-source" rel="help" title="View Source">
+       <span class="icon-code" aria-hidden="true"></span>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre>edit_interaction_response!(
+  <a href="Nostrum.Struct.User.html#t:id/0">Nostrum.Struct.User.id</a>(),
+  <a href="Nostrum.Struct.Interaction.html#t:token/0">Nostrum.Struct.Interaction.token</a>(),
+  <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()
+) :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">no_return</a>() | <a href="Nostrum.Struct.Message.html#t:t/0">Nostrum.Struct.Message.t</a>()</pre>
+
+      </div>
+
+<p>Same as <a href="#edit_interaction_response/3"><code class="inline">edit_interaction_response/3</code></a>, but raises <a href="Nostrum.Error.ApiError.html"><code class="inline">Nostrum.Error.ApiError</code></a> in case of failure.</p>
   </section>
 </section>
 <section class="detail" id="edit_message/2">
@@ -5169,7 +5484,7 @@ Nostrum.Api.edit_message(43189401384091, 1894013840914098, content: &quot;hello 
     </a>
     <h1 class="signature">edit_webhook_message(webhook_id, webhook_token, message_id, args)</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3103" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3106" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -5207,7 +5522,7 @@ however all fields are optional.</p>
     </a>
     <h1 class="signature">execute_git_webhook(webhook_id, webhook_token, wait \\ false)</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3139" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3142" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -5246,7 +5561,7 @@ however all fields are optional.</p>
     </a>
     <h1 class="signature">execute_slack_webhook(webhook_id, webhook_token, wait \\ false)</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3127" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3130" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -5285,7 +5600,7 @@ however all fields are optional.</p>
     </a>
     <h1 class="signature">execute_webhook(webhook_id, webhook_token, args, wait \\ false)</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3038" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3041" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -5321,7 +5636,7 @@ however all fields are optional.</p>
     </a>
     <h1 class="signature">get_application_command_permissions(application_id \\ Me.get().id, guild_id, command_id)</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3674" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3746" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -5365,7 +5680,7 @@ If not given, this will be fetched from <code class="inline">Me</code>.</li><li>
     </a>
     <h1 class="signature">get_application_information()</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3167" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3170" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -5387,21 +5702,21 @@ If not given, this will be fetched from <code class="inline">Me</code>.</li><li>
   Example
 </h2>
 <pre><code class="makeup elixir"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">get_application_information</span><span class="w">
-</span><span class="p" data-group-id="1211587806-1">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w">
-</span><span class="p" data-group-id="1211587806-2">%{</span><span class="w">
+</span><span class="p" data-group-id="8932412893-1">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w">
+</span><span class="p" data-group-id="8932412893-2">%{</span><span class="w">
   </span><span class="ss">bot_public</span><span class="p">:</span><span class="w"> </span><span class="no">false</span><span class="p">,</span><span class="w">
   </span><span class="ss">bot_require_code_grant</span><span class="p">:</span><span class="w"> </span><span class="no">false</span><span class="p">,</span><span class="w">
   </span><span class="ss">description</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Test&quot;</span><span class="p">,</span><span class="w">
   </span><span class="ss">icon</span><span class="p">:</span><span class="w"> </span><span class="no">nil</span><span class="p">,</span><span class="w">
   </span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;172150183260323840&quot;</span><span class="p">,</span><span class="w">
   </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Baba O-Riley&quot;</span><span class="p">,</span><span class="w">
-  </span><span class="ss">owner</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="1211587806-3">%{</span><span class="w">
+  </span><span class="ss">owner</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="8932412893-3">%{</span><span class="w">
     </span><span class="ss">avatar</span><span class="p">:</span><span class="w"> </span><span class="no">nil</span><span class="p">,</span><span class="w">
     </span><span class="ss">discriminator</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;0042&quot;</span><span class="p">,</span><span class="w">
     </span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;172150183260323840&quot;</span><span class="p">,</span><span class="w">
     </span><span class="ss">username</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;i own a bot&quot;</span><span class="w">
-  </span><span class="p" data-group-id="1211587806-3">}</span><span class="p">,</span><span class="w">
-</span><span class="p" data-group-id="1211587806-2">}</span><span class="p" data-group-id="1211587806-1">}</span></code></pre>
+  </span><span class="p" data-group-id="8932412893-3">}</span><span class="p">,</span><span class="w">
+</span><span class="p" data-group-id="8932412893-2">}</span><span class="p" data-group-id="8932412893-1">}</span></code></pre>
   </section>
 </section>
 <section class="detail" id="get_channel/1">
@@ -5850,7 +6165,7 @@ ID</li><li><code class="inline">:limit</code> (integer) - max number of guilds t
     </a>
     <h1 class="signature">get_global_application_commands(application_id \\ Me.get().id)</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3200" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3203" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -5883,15 +6198,15 @@ If not given, this will be fetched from <code class="inline">Me</code>.</li></ul
   Example
 </h2>
 <pre><code class="makeup elixir"><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">get_global_application_commands</span><span class="w">
-</span><span class="p" data-group-id="2593045289-1">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w">
- </span><span class="p" data-group-id="2593045289-2">[</span><span class="w">
-   </span><span class="p" data-group-id="2593045289-3">%{</span><span class="w">
+</span><span class="p" data-group-id="3280402767-1">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w">
+ </span><span class="p" data-group-id="3280402767-2">[</span><span class="w">
+   </span><span class="p" data-group-id="3280402767-3">%{</span><span class="w">
      </span><span class="ss">application_id</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;455589479713865749&quot;</span><span class="p">,</span><span class="w">
      </span><span class="ss">description</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ed, man! man, ed&quot;</span><span class="p">,</span><span class="w">
      </span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;789841753196331029&quot;</span><span class="p">,</span><span class="w">
      </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;edit&quot;</span><span class="w">
-   </span><span class="p" data-group-id="2593045289-3">}</span><span class="w">
- </span><span class="p" data-group-id="2593045289-2">]</span><span class="p" data-group-id="2593045289-1">}</span></code></pre>
+   </span><span class="p" data-group-id="3280402767-3">}</span><span class="w">
+ </span><span class="p" data-group-id="3280402767-2">]</span><span class="p" data-group-id="3280402767-1">}</span></code></pre>
   </section>
 </section>
 <section class="detail" id="get_guild/1">
@@ -5970,7 +6285,7 @@ If not given, this will be fetched from <code class="inline">Me</code>.</li></ul
     </a>
     <h1 class="signature">get_guild_application_command_permissions(application_id \\ Me.get().id, guild_id)</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3649" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3721" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -6015,7 +6330,7 @@ If not given, this will be fetched from <code class="inline">Me</code>.</li><li>
     </a>
     <h1 class="signature">get_guild_application_commands(application_id \\ Me.get().id, guild_id)</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3332" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3335" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -6934,7 +7249,7 @@ Nostrum.Api.get_invite(&quot;zsjUsC&quot;, with_counts: true)</code></pre>
     </a>
     <h1 class="signature">get_token()</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3833" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3905" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -7675,8 +7990,8 @@ where admins and moderators receive notices from Discord in public guilds</li></
   <a href="#modify_guild/3-examples" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
   Examples
 </h2>
-<pre><code class="makeup elixir"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">modify_guild</span><span class="p" data-group-id="9873187294-1">(</span><span class="mi">451824027976073216</span><span class="p">,</span><span class="w"> </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Nose Drum&quot;</span><span class="p" data-group-id="9873187294-1">)</span><span class="w">
-</span><span class="p" data-group-id="9873187294-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="9873187294-3">%</span><span class="nc" data-group-id="9873187294-3">Nostrum.Struct.Guild</span><span class="p" data-group-id="9873187294-3">{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">451824027976073216</span><span class="p">,</span><span class="w"> </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Nose Drum&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">...</span><span class="p" data-group-id="9873187294-3">}</span><span class="p" data-group-id="9873187294-2">}</span></code></pre>
+<pre><code class="makeup elixir"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">modify_guild</span><span class="p" data-group-id="0958267838-1">(</span><span class="mi">451824027976073216</span><span class="p">,</span><span class="w"> </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Nose Drum&quot;</span><span class="p" data-group-id="0958267838-1">)</span><span class="w">
+</span><span class="p" data-group-id="0958267838-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="0958267838-3">%</span><span class="nc" data-group-id="0958267838-3">Nostrum.Struct.Guild</span><span class="p" data-group-id="0958267838-3">{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">451824027976073216</span><span class="p">,</span><span class="w"> </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Nose Drum&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">...</span><span class="p" data-group-id="0958267838-3">}</span><span class="p" data-group-id="0958267838-2">}</span></code></pre>
   </section>
 </section>
 <section class="detail" id="modify_guild!/2">
@@ -8443,7 +8758,7 @@ An optional <code class="inline">reason</code> can be given for the audit log.</
     </a>
     <h1 class="signature">request(request)</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3780" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3852" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -8476,7 +8791,7 @@ An optional <code class="inline">reason</code> can be given for the audit log.</
     </a>
     <h1 class="signature">request(method, route, body \\ &quot;&quot;, params \\ [])</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3785" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3857" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
@@ -8508,7 +8823,7 @@ An optional <code class="inline">reason</code> can be given for the audit log.</
     </a>
     <h1 class="signature">request_multipart(method, route, body, params \\ [])</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3798" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3870" class="view-source" rel="help" title="View Source">
        <span class="icon-code" aria-hidden="true"></span>
        <span class="sr-only">View Source</span>
      </a>
