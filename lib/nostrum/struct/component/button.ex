@@ -2,7 +2,7 @@ defmodule Nostrum.Struct.Component.Button do
   @moduledoc """
   Helpers for dealing with Button Components
   """
-  @moduledoc since: "0.5"
+  @moduledoc since: "0.5.0"
   use Nostrum.Struct.Component
 
   @type link_button :: %{

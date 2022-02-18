@@ -15,7 +15,7 @@ defmodule Nostrum.Cache.ChannelCache.ETS do
   `Nostrum.Cache.ChannelCache` directly, which will dispatch to the configured
   cache.
   """
-  @moduledoc since: "0.5"
+  @moduledoc since: "0.5.0"
 
   @behaviour Nostrum.Cache.ChannelCache
 

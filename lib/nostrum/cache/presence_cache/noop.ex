@@ -4,6 +4,7 @@ defmodule Nostrum.Cache.PresenceCache.NoOp do
 
   Useful for bots that do not need presence caching.
   """
+  @moduledoc since: "0.5.0"
   @behaviour Nostrum.Cache.PresenceCache
 
   alias Nostrum.Struct.Guild

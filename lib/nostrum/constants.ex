@@ -218,7 +218,7 @@ defmodule Nostrum.Constants do
   `:gun.open` call. You can find more information about the type in [the
   gun documentation](https://ninenines.eu/docs/en/gun/2.0/manual/gun/).
   """
-  @doc since: "0.5"
+  @doc since: "0.5.0"
   @spec gun_tls_opts :: [:ssl.tls_client_option()]
   # See: https://erlef.github.io/security-wg/secure_coding_and_deployment_hardening/ssl
   def gun_tls_opts,

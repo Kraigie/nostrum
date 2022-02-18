@@ -206,7 +206,7 @@ defmodule Nostrum.Struct.Channel do
 
   Amount of seconds a user has to wait before sending another message (0-21600); bots, as well as users with the permission manage_messages or manage_channel, are unaffected
   """
-  @typedoc since: "0.5"
+  @typedoc since: "0.5.0"
   @type rate_limit_per_user :: integer() | nil
 
   @typedoc """
@@ -255,7 +255,7 @@ defmodule Nostrum.Struct.Channel do
 
   More information about _region ids_ can be found on the [Discord API Voice Region Object Documentation](https://discord.com/developers/docs/resources/voice#voice-region-object).
   """
-  @typedoc since: "0.5"
+  @typedoc since: "0.5.0"
   @type rtc_region :: String.t() | nil
 
   @typedoc """
@@ -263,19 +263,19 @@ defmodule Nostrum.Struct.Channel do
 
   More information about _video quality modes_ can be found on the [Discord API Video Quality Mode Documentation](https://discord.com/developers/docs/resources/channel#channel-object-video-quality-modes).
   """
-  @typedoc since: "0.5"
+  @typedoc since: "0.5.0"
   @type video_quality_mode :: integer() | nil
 
   @typedoc """
   Approximate count of messages in a thread, capped at 50.
   """
-  @typedoc since: "0.5"
+  @typedoc since: "0.5.0"
   @type message_count :: integer() | nil
 
   @typedoc """
   Approximate count of members in a thread, capped at 50.
   """
-  @typedoc since: "0.5"
+  @typedoc since: "0.5.0"
   @type member_count :: integer() | nil
 
   @typedoc """
@@ -283,7 +283,7 @@ defmodule Nostrum.Struct.Channel do
 
   More information about _video quality modes_ can be found on the [Discord API Video Quality Mode Documentation](https://discord.com/developers/docs/resources/channel#channel-object-video-quality-modes).
   """
-  @typedoc since: "0.5"
+  @typedoc since: "0.5.0"
   @type thread_metadata :: %{
           archived: archived,
           auto_archive_duration: auto_archive_duration,
@@ -294,19 +294,19 @@ defmodule Nostrum.Struct.Channel do
   @typedoc """
   When the thread was archived.
   """
-  @typedoc since: "0.5"
+  @typedoc since: "0.5.0"
   @type archive_timestamp :: DateTime.t() | nil
 
   @typedoc """
   The threads locked status.
   """
-  @typedoc since: "0.5"
+  @typedoc since: "0.5.0"
   @type locked :: boolean()
 
   @typedoc """
   The threads archived status.
   """
-  @typedoc since: "0.5"
+  @typedoc since: "0.5.0"
   @type archived :: boolean()
 
   @typedoc """
@@ -317,7 +317,7 @@ defmodule Nostrum.Struct.Channel do
   - 4320, 3 days
   - 10080, 7 days
   """
-  @typedoc since: "0.5"
+  @typedoc since: "0.5.0"
   @type auto_archive_duration :: integer()
 
   @typedoc """
@@ -325,7 +325,7 @@ defmodule Nostrum.Struct.Channel do
 
   Note: This is omitted on threads that the bot can immediately access on `:GUILD_CREATE` events received.
   """
-  @typedoc since: "0.5"
+  @typedoc since: "0.5.0"
   @type member :: %{
           id: id,
           user_id: user_id,
@@ -336,19 +336,19 @@ defmodule Nostrum.Struct.Channel do
   @typedoc """
   User id of the threads creator.
   """
-  @typedoc since: "0.5"
+  @typedoc since: "0.5.0"
   @type user_id :: Snowflake.t() | nil
 
   @typedoc """
   When the user joined the thread.
   """
-  @typedoc since: "0.5"
+  @typedoc since: "0.5.0"
   @type join_timestamp :: DateTime.t()
 
   @typedoc """
   User thread settings, currently only used for notifications.
   """
-  @typedoc since: "0.5"
+  @typedoc since: "0.5.0"
   @type flags :: integer()
 
   @typedoc """
@@ -359,7 +359,7 @@ defmodule Nostrum.Struct.Channel do
   - 4320, 3 days
   - 10080, 7 days
   """
-  @typedoc since: "0.5"
+  @typedoc since: "0.5.0"
   @type default_auto_archive_duration :: integer()
 
   @typedoc """
@@ -367,7 +367,7 @@ defmodule Nostrum.Struct.Channel do
 
   Permissions for the invoking user in the channel, including overwrites, only included when part of the resolved data received on a slash command interaction
   """
-  @typedoc since: "0.5"
+  @typedoc since: "0.5.0"
   @type permissions :: String.t()
 
   @typedoc """
@@ -450,7 +450,7 @@ defmodule Nostrum.Struct.Channel do
   @typedoc """
   Type 5 partial channel object representing a news channel.
   """
-  @typedoc since: "0.5"
+  @typedoc since: "0.5.0"
   @type guild_news_channel :: %__MODULE__{
           id: id,
           type: 5,
@@ -468,7 +468,7 @@ defmodule Nostrum.Struct.Channel do
   @typedoc """
   Type 6 partial channel object representing a store channel.
   """
-  @typedoc since: "0.5"
+  @typedoc since: "0.5.0"
   @type guild_store_channel :: %__MODULE__{
           id: id,
           guild_id: guild_id,
@@ -483,7 +483,7 @@ defmodule Nostrum.Struct.Channel do
   @typedoc """
   Type 10 partial channel object representing a news thread.
   """
-  @typedoc since: "0.5"
+  @typedoc since: "0.5.0"
   @type guild_news_thread_channel :: %__MODULE__{
           id: id,
           guild_id: guild_id,
@@ -501,7 +501,7 @@ defmodule Nostrum.Struct.Channel do
   @typedoc """
   Type 11 partial channel object representing a standard thread.
   """
-  @typedoc since: "0.5"
+  @typedoc since: "0.5.0"
   @type guild_public_thread_channel :: %__MODULE__{
           id: id,
           guild_id: guild_id,
@@ -519,7 +519,7 @@ defmodule Nostrum.Struct.Channel do
   @typedoc """
   Type 12 partial channel object representing a private thread.
   """
-  @typedoc since: "0.5"
+  @typedoc since: "0.5.0"
   @type guild_private_thread_channel :: %__MODULE__{
           id: id,
           guild_id: guild_id,
@@ -537,7 +537,7 @@ defmodule Nostrum.Struct.Channel do
   @typedoc """
   Type 13 channel object representing a stage channel.
   """
-  @typedoc since: "0.5"
+  @typedoc since: "0.5.0"
   @type guild_stage_voice_channel :: %__MODULE__{
           id: id,
           guild_id: guild_id,

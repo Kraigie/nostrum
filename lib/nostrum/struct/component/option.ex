@@ -2,7 +2,7 @@ defmodule Nostrum.Struct.Component.Option do
   @moduledoc """
   Component Options
   """
-  @moduledoc since: "0.5"
+  @moduledoc since: "0.5.0"
   alias Nostrum.Struct.Component
   alias Nostrum.Util
 

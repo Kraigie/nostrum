@@ -17,7 +17,7 @@ defmodule Nostrum.Cache.PresenceCache.ETS do
   1
   ```
   """
-  @moduledoc since: "0.5"
+  @moduledoc since: "0.5.0"
 
   @behaviour Nostrum.Cache.PresenceCache
 

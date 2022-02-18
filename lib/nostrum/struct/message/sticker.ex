@@ -4,6 +4,7 @@ defmodule Nostrum.Struct.Message.Sticker do
 
   More information can be found on the [Discord API Sticker Object Documentation.](https://discord.com/developers/docs/resources/sticker#sticker-object-sticker-structure)
   """
+  @moduledoc since: "0.5.0"
 
   alias Nostrum.Struct.{Guild, User}
   alias Nostrum.{Snowflake, Util}

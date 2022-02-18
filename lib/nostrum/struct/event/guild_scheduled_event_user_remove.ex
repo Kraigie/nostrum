@@ -2,6 +2,7 @@ defmodule Nostrum.Struct.Event.GuildScheduledEventUserRemove do
   @moduledoc """
   Struct representing a guild scheduled event user remove event.
   """
+  @moduledoc since: "0.5.0"
 
   alias Nostrum.Struct.{Guild, User}
   alias Nostrum.Struct.Guild.ScheduledEvent

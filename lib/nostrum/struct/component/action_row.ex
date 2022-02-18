@@ -2,7 +2,7 @@ defmodule Nostrum.Struct.Component.ActionRow do
   @moduledoc """
   Action Rows.
   """
-  @moduledoc since: "0.5"
+  @moduledoc since: "0.5.0"
   use Nostrum.Struct.Component
 
   @defaults %{

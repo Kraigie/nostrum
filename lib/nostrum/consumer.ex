@@ -204,6 +204,7 @@ defmodule Nostrum.Consumer do
 
   Note that the third tuple element is of type `VoiceWSState.t()` instead of `WSState.t().`
   """
+  @typedoc since: "0.5.0"
   @type voice_ready :: {:VOICE_READY, VoiceReady.t(), VoiceWSState.t()}
   @typedoc """
   Dispatched when the bot starts or stops speaking.

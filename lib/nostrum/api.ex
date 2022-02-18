@@ -2395,6 +2395,7 @@ defmodule Nostrum.Api do
 
   An optional `reason` can be specified for the audit log.
   """
+  @doc since: "0.5.0"
   @spec create_guild_scheduled_event(Guild.id(), reason :: AuditLogEntry.reason(), options) ::
           {:ok, ScheduledEvent.t()} | error
   def create_guild_scheduled_event(guild_id, reason \\ nil, options)
@@ -2421,6 +2422,7 @@ defmodule Nostrum.Api do
   @doc """
   Get a list of scheduled events for a guild.
   """
+  @doc since: "0.5.0"
   @spec get_guild_scheduled_events(Guild.id()) :: error | {:ok, [ScheduledEvent.t()]}
   def get_guild_scheduled_events(guild_id) do
     request(:get, Constants.guild_scheduled_events(guild_id))
@@ -2430,6 +2432,7 @@ defmodule Nostrum.Api do
   @doc """
   Get a scheduled event for a guild.
   """
+  @doc since: "0.5.0"
   @spec get_guild_scheduled_event(Guild.id(), ScheduledEvent.id()) ::
           error | {:ok, ScheduledEvent.t()}
   def get_guild_scheduled_event(guild_id, event_id) do
@@ -2440,6 +2443,7 @@ defmodule Nostrum.Api do
   @doc """
   Delete a scheduled event for a guild.
   """
+  @doc since: "0.5.0"
   @spec delete_guild_scheduled_event(Guild.id(), ScheduledEvent.id()) ::
           error | {:ok}
   def delete_guild_scheduled_event(guild_id, event_id) do
@@ -2462,6 +2466,7 @@ defmodule Nostrum.Api do
     * `entity_metadata` with a `location` field must be provided
     * `scheduled_end_time` must be provided
   """
+  @doc since: "0.5.0"
   @spec modify_guild_scheduled_event(
           Guild.id(),
           ScheduledEvent.id(),
@@ -2499,6 +2504,7 @@ defmodule Nostrum.Api do
   * `:before` (`t:Nostrum.Snowflake.t/0`) return only users before this user id, defaults to `nil`
   * `:after` (`t:Nostrum.Snowflake.t/0`) return only users after this user id, defaults to `nil`
   """
+  @doc since: "0.5.0"
   @spec get_guild_scheduled_event_users(Guild.id(), ScheduledEvent.id(), options) ::
           error | {:ok, [ScheduledEvent.User.t()]}
   def get_guild_scheduled_event_users(guild_id, event_id, params \\ []) do
@@ -3096,6 +3102,7 @@ defmodule Nostrum.Api do
   args are the same as `execute_webhook/3`,
   however all fields are optional.
   """
+  @doc since: "0.5.0"
   @spec edit_webhook_message(
           Webhook.id(),
           Webhook.token(),
@@ -3482,6 +3489,7 @@ defmodule Nostrum.Api do
   @doc """
   Same as `create_interaction_response/2`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
+  @doc since: "0.5.0"
   @spec create_interaction_response!(Interaction.t(), map()) :: no_return() | {:ok}
   def create_interaction_response!(interaction, response) do
     create_interaction_response!(interaction.id, interaction.token, response)
@@ -3583,6 +3591,7 @@ defmodule Nostrum.Api do
   Same as `edit_interaction_response/3`, but directly takes the
   `t:Nostrum.Struct.Interaction.t/0` received from the gateway.
   """
+  @doc since: "0.5.0"
   @spec edit_interaction_response(Interaction.t(), map()) :: {:ok, Message.t()} | error
   def edit_interaction_response(%Interaction{} = interaction, response) do
     edit_interaction_response(interaction.application_id, interaction.token, response)
@@ -3591,6 +3600,7 @@ defmodule Nostrum.Api do
   @doc """
   Same as `edit_interaction_response/2`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
+  @doc since: "0.5.0"
   @spec edit_interaction_response!(Interaction.t(), map()) :: no_return() | Message.t()
   def edit_interaction_response!(%Interaction{} = interaction, response) do
     edit_interaction_response!(interaction.application_id, interaction.token, response)
@@ -3601,6 +3611,7 @@ defmodule Nostrum.Api do
 
   Functions the same as `edit_webhook_message/3`
   """
+  @doc since: "0.5.0"
   @spec edit_interaction_response(User.id(), Interaction.token(), map()) ::
           {:ok, Message.t()} | error
   def edit_interaction_response(id \\ Me.get().id, token, response) do
@@ -3611,6 +3622,7 @@ defmodule Nostrum.Api do
   @doc """
   Same as `edit_interaction_response/3`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
+  @doc since: "0.5.0"
   @spec edit_interaction_response!(User.id(), Interaction.token(), map()) ::
           no_return() | Message.t()
   def edit_interaction_response!(id \\ Me.get().id, token, response) do
@@ -3622,11 +3634,13 @@ defmodule Nostrum.Api do
   Same as `delete_interaction_response/3`, but directly takes the
   `t:Nostrum.Struct.Interaction.t/0` received from the gateway.
   """
+  @doc since: "0.5.0"
   @spec delete_interaction_response(Interaction.t()) :: {:ok} | error
   def delete_interaction_response(%Interaction{} = interaction) do
     delete_interaction_response(interaction.application_id, interaction.token)
   end
 
+  @doc since: "0.5.0"
   @spec delete_interaction_response!(Interaction.t()) :: no_return() | {:ok}
   def delete_interaction_response!(%Interaction{} = interaction) do
     delete_interaction_response(interaction.application_id, interaction.token)
@@ -3636,6 +3650,7 @@ defmodule Nostrum.Api do
   @doc """
   Deletes the original interaction response.
   """
+  @doc since: "0.5.0"
   @spec delete_interaction_response(User.id(), Interaction.token()) :: {:ok} | error
   def delete_interaction_response(id \\ Me.get().id, token) do
     request(:delete, Constants.interaction_callback_original(id, token))
@@ -3644,6 +3659,7 @@ defmodule Nostrum.Api do
   @doc """
   Same as `delete_interaction_response/2`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
+  @doc since: "0.5.0"
   @spec delete_interaction_response!(User.id(), Interaction.token()) :: no_return() | {:ok}
   def delete_interaction_response!(id \\ Me.get().id, token) do
     delete_interaction_response(id, token)
@@ -3664,6 +3680,7 @@ defmodule Nostrum.Api do
   @doc """
   Same as `create_followup_message/3`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
+  @doc since: "0.5.0"
   @spec create_followup_message!(User.id(), Interaction.token(), map()) ::
           no_return() | Message.t()
   def create_followup_message!(application_id \\ Me.get().id, token, webhook_payload) do
@@ -3693,6 +3710,7 @@ defmodule Nostrum.Api do
   @doc """
   Same as `delete_interaction_followup_message/3`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
+  @doc since: "0.5.0"
   @spec delete_interaction_followup_message!(User.id(), Interaction.token(), Message.id()) ::
           no_return() | {:ok}
   def delete_interaction_followup_message!(

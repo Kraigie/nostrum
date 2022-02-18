@@ -72,7 +72,7 @@ defmodule Nostrum.Struct.Component do
 
 
   """
-  @moduledoc since: "0.5"
+  @moduledoc since: "0.5.0"
 
   defmacro __using__(_opts) do
     quote do

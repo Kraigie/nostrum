@@ -30,7 +30,7 @@ defmodule Nostrum.Cache.PresenceCache do
   nostrum-related callback you need to implement.
   """
 
-  @moduledoc since: "0.5"
+  @moduledoc since: "0.5.0"
 
   @configured_cache :nostrum
                     |> Application.compile_env(:caches, %{})
@@ -54,7 +54,7 @@ defmodule Nostrum.Cache.PresenceCache do
   Represents a presence as received from Discord.
   See [Presence Update](https://discord.com/developers/docs/topics/gateway#presence-update).
   """
-  @typedoc since: "0.5"
+  @typedoc since: "0.5.0"
   @opaque presence :: map()
 
   # Callbacks

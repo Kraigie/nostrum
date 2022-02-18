@@ -2,6 +2,7 @@ defmodule Nostrum.Struct.Guild.ScheduledEvent.EntityMetadata do
   @moduledoc """
   Struct representing any additional metadata associated with a Guild Event.
   """
+  @moduledoc since: "0.5.0"
 
   alias Nostrum.Util
 
