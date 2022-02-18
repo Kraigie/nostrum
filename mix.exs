@@ -6,7 +6,7 @@ defmodule Nostrum.Mixfile do
     [
       app: :nostrum,
       version: "0.5.0",
-      elixir: "~> 1.10",
+      elixir: "~> 1.11",
       elixirc_paths: elixirc_paths(Mix.env()),
       build_embedded: Mix.env() == :prod,
       start_permanent: Mix.env() == :prod,
@@ -40,6 +40,7 @@ defmodule Nostrum.Mixfile do
       extras: extras(),
       groups_for_modules: groups_for_modules(),
       groups_for_functions: groups_for_functions(),
+      source_ref: "master",
       assets: "docs/assets",
       nest_modules_by_prefix: [Nostrum.Cache]
     ]
@@ -101,7 +102,7 @@ defmodule Nostrum.Mixfile do
       {:kcl, "~> 1.4"},
       {:porcelain, "~> 2.0"},
       {:mime, "~> 1.6"},
-      {:ex_doc, "~> 0.15", only: :dev},
+      {:ex_doc, "~> 0.28", only: :dev},
       {:credo, "~> 1.4", only: [:dev, :test]},
       {:dialyxir, "~> 1.1", only: [:dev], runtime: false},
       {:gen_stage, "~> 0.11 or ~> 1.0"},
