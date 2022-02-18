@@ -100,8 +100,11 @@ defmodule Nostrum.Cache.PresenceCache do
   # Dispatch
   @doc section: :reading
   defdelegate get(user_id, guild_id), to: @configured_cache
+  @doc false
   defdelegate create(presence), to: @configured_cache
+  @doc false
   defdelegate update(presence), to: @configured_cache
+  @doc false
   defdelegate bulk_create(guild_id, presences), to: @configured_cache
 
   # Dispatch helpers

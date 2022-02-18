@@ -298,20 +298,35 @@ defmodule Nostrum.Cache.GuildCache do
   defdelegate get_by(clauses), to: @configured_cache
   defdelegate select(guild_id, selector), to: @configured_cache
   defdelegate select_by(clauses, selector), to: @configured_cache
+  @doc false
   defdelegate create(guild), to: @configured_cache
+  @doc false
   defdelegate update(guild), to: @configured_cache
+  @doc false
   defdelegate delete(guild_id), to: @configured_cache
+  @doc false
   defdelegate channel_create(guild_id, channel), to: @configured_cache
+  @doc false
   defdelegate channel_delete(guild_id, channel_id), to: @configured_cache
+  @doc false
   defdelegate channel_update(guild_id, channel), to: @configured_cache
+  @doc false
   defdelegate emoji_update(guild_id, emojis), to: @configured_cache
+  @doc false
   defdelegate member_add(guild_id, member), to: @configured_cache
+  @doc false
   defdelegate member_remove(guild_id, member), to: @configured_cache
+  @doc false
   defdelegate member_update(guild_id, member), to: @configured_cache
+  @doc false
   defdelegate member_chunk(guild_id, member), to: @configured_cache
+  @doc false
   defdelegate role_create(guild_id, role), to: @configured_cache
+  @doc false
   defdelegate role_delete(guild_id, role), to: @configured_cache
+  @doc false
   defdelegate role_update(guild_id, role), to: @configured_cache
+  @doc false
   defdelegate voice_state_update(guild_id, state), to: @configured_cache
 
   # Helper functions.

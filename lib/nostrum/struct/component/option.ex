@@ -16,10 +16,16 @@ defmodule Nostrum.Struct.Component.Option do
   ]
 
   @type label :: Component.label()
+
   @type value :: String.t()
-  @type description :: Component.description()
+
+  @typedoc "An optional description for the option, up to 100 characters."
+  @type description :: String.t() | nil
+
   @type emoji :: Component.emoji()
-  @type default :: Component.default()
+
+  @typedoc "Whether to render this option as selected by default."
+  @type default :: boolean()
 
   @type t :: %__MODULE__{
           default: default,

@@ -12,7 +12,6 @@ defmodule Nostrum.Cache.UserCache do
   defined by this module.
 
   See the documentation for the `Nostrum.Cache.GuildCache` module for more details.
-
   """
 
   alias Nostrum.Struct.User
@@ -84,9 +83,13 @@ defmodule Nostrum.Cache.UserCache do
 
   ## Dispatching
   defdelegate get(id), to: @configured_cache
+  @doc false
   defdelegate create(payload), to: @configured_cache
+  @doc false
   defdelegate bulk_create(users), to: @configured_cache
+  @doc false
   defdelegate update(payload), to: @configured_cache
+  @doc false
   defdelegate delete(snowflake), to: @configured_cache
 
   @doc """

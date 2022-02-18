@@ -137,7 +137,6 @@ defmodule Nostrum.Struct.Component do
   @callback update(t(), opts :: [keyword()]) :: t()
 
   alias Nostrum.Struct.Component.{ActionRow, Button, Option, SelectMenu}
-  alias Nostrum.Struct.Emoji
   alias Nostrum.Util
 
   @derive Jason.Encoder
@@ -210,7 +209,7 @@ defmodule Nostrum.Struct.Component do
 
   Valid for [Buttons](#module-buttons)
   """
-  @type emoji :: Emoji.partial_button_emoji() | nil
+  @type emoji :: map() | nil
 
   @typedoc """
   A url for link buttons.

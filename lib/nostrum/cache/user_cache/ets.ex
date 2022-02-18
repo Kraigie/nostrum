@@ -30,12 +30,14 @@ defmodule Nostrum.Cache.UserCache.ETS do
   @spec tabname :: atom()
   def tabname, do: @table_name
 
+  @doc "Bulk create a list of users from upstream data."
   @impl Nostrum.Cache.UserCache
   @spec bulk_create(Enum.t()) :: :ok
   def bulk_create(users) do
     Enum.each(users, &:ets.insert(@table_name, {&1.id, &1}))
   end
 
+  @doc "Create a user from upstream data."
   @impl Nostrum.Cache.UserCache
   @spec create(map()) :: User.t()
   def create(user) do
@@ -56,6 +58,7 @@ defmodule Nostrum.Cache.UserCache.ETS do
     end
   end
 
+  @doc "Get a user by ID."
   @impl Nostrum.Cache.UserCache
   @spec get(User.id()) :: {:ok, User.t()} | {:error, atom}
   def get(id) do
@@ -65,6 +68,7 @@ defmodule Nostrum.Cache.UserCache.ETS do
     end
   end
 
+  @doc "Update a user from upstream data."
   @impl Nostrum.Cache.UserCache
   @spec update(map()) :: {User.t(), User.t()} | :noop
   def update(info) do

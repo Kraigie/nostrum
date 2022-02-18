@@ -2455,13 +2455,14 @@ defmodule Nostrum.Api do
 
   Options are the same as for `create_guild_scheduled_event/2` except all fields are optional,
   with the additional optional integer field `:status` which can be one of:
-    * `1` - `SCHEDULED
+
+    * `1` - `SCHEDULED`
     * `2` - `ACTIVE`
     * `3` - `COMPLETED`
     * `4` - `CANCELLED`
 
   Copied from the official documentation:
-  *If updating entity_type to `EXTERNAL`:
+  * If updating entity_type to `EXTERNAL`:
     * `channel_id` is required and must be set to null
     * `entity_metadata` with a `location` field must be provided
     * `scheduled_end_time` must be provided
