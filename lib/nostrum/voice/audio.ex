@@ -1,25 +1,24 @@
 defmodule Nostrum.Voice.Audio do
   @moduledoc false
 
-  @dialyzer {:nowarn_function, get_stream_url: 1}
-  @dialyzer {:nowarn_function, spawn_youtubedl: 1}
-  @dialyzer {:nowarn_function, spawn_streamlink: 1}
-  @dialyzer {:nowarn_function, spawn_ffmpeg: 3}
-
   require Logger
 
   alias Nostrum.Error.VoiceError
   alias Nostrum.Struct.VoiceState
   alias Nostrum.Util
   alias Nostrum.Voice
-  alias Porcelain.Process, as: Proc
-  alias Porcelain.Result, as: Res
+  alias Nostrum.Voice.Ports
 
   @encryption_mode "xsalsa20_poly1305"
   @samples_per_frame 960
   @usec_per_frame 20_000
   # Default value
   @frames_per_burst 10
+
+  # Executables
+  @ffmpeg "ffmpeg"
+  @ytdl "youtube-dl"
+  @streamlink "streamlink"
 
   def encryption_mode, do: @encryption_mode
 
@@ -85,19 +84,23 @@ defmodule Nostrum.Voice.Audio do
     end
   end
 
-  def init_player(voice) do
+  def start_player(voice) do
     take_nap()
-    player_loop(voice)
+    player_loop(voice, _init? = true, _source = get_source(voice))
   end
 
-  def player_loop(voice, init? \\ true) do
+  def resume_player(voice) do
+    player_loop(voice, _init? = false, _source = get_source(voice))
+  end
+
+  def player_loop(voice, init?, source) do
     t1 = Util.usec_now()
-    voice = try_send_data(voice, init?)
+    voice = try_send_data(voice, init?, source)
     t2 = Util.usec_now()
 
     take_nap(t2 - t1)
 
-    player_loop(voice, false)
+    player_loop(voice, false, source)
   end
 
   def take_nap(diff \\ 0) do
@@ -109,15 +112,14 @@ defmodule Nostrum.Voice.Audio do
 
   def get_source(%VoiceState{ffmpeg_proc: nil, raw_audio: raw_audio}), do: raw_audio
 
-  def get_source(%VoiceState{ffmpeg_proc: ffmpeg_proc}), do: ffmpeg_proc.out
+  def get_source(%VoiceState{ffmpeg_proc: ffmpeg_proc}), do: Ports.get_stream(ffmpeg_proc)
 
-  def try_send_data(%VoiceState{} = voice, init?) do
+  def try_send_data(%VoiceState{} = voice, init?, source) do
     wait = if(init?, do: Application.get_env(:nostrum, :audio_timeout, 20_000), else: 500)
     {:ok, watchdog} = :timer.apply_after(wait, __MODULE__, :on_stall, [voice])
 
     {voice, done} =
-      voice
-      |> get_source()
+      source
       |> Enum.take(frames_per_burst())
       |> send_frames(voice)
 
@@ -160,73 +162,73 @@ defmodule Nostrum.Voice.Audio do
 
   def get_stream_url(url) do
     res =
-      Porcelain.exec(
-        Application.get_env(:nostrum, :youtubedl, "youtube-dl"),
+      System.cmd(
+        Application.get_env(:nostrum, :youtubedl, @ytdl),
         [
           ["-f", "best"],
           ["-g"],
           [url]
         ]
         |> List.flatten(),
-        out: :string,
-        err: :out
+        stderr_to_stdout: true
       )
 
     case res do
-      {:error, reason} ->
-        raise(VoiceError, reason: reason, executable: "youtube-dl")
-
-      %Res{status: status, out: stderr} when status != 0 ->
-        raise(stderr)
-
-      %Res{status: 0, out: stream_url} ->
+      {stream_url, 0} ->
         stream_url |> String.trim()
+
+      {err_output, _code} ->
+        raise(err_output)
     end
+  rescue
+    e in ErlangError ->
+      reraise(VoiceError, [reason: e.original, executable: @ytdl], __STACKTRACE__)
+
+    e in RuntimeError ->
+      reraise(VoiceError, [reason: e.message, executable: @ytdl], __STACKTRACE__)
   end
 
   def spawn_youtubedl(url) do
     res =
-      Porcelain.spawn(
-        Application.get_env(:nostrum, :youtubedl, "youtube-dl"),
+      Ports.execute(
+        Application.get_env(:nostrum, :youtubedl, @ytdl),
         [
           ["-f", "bestaudio"],
           ["-o", "-"],
           ["-q"],
           [url]
         ]
-        |> List.flatten(),
-        out: :stream
+        |> List.flatten()
       )
 
     case res do
       {:error, reason} ->
-        raise(VoiceError, reason: reason, executable: "youtube-dl")
+        raise(VoiceError, reason: reason, executable: @ytdl)
 
-      proc ->
-        proc
+      {:ok, pid} ->
+        pid
     end
   end
 
   def spawn_streamlink(url) do
     res =
-      Porcelain.spawn(
-        Application.get_env(:nostrum, :streamlink, "streamlink"),
+      Ports.execute(
+        Application.get_env(:nostrum, :streamlink, @streamlink),
         [
           ["--stdout"],
           ["--quiet"],
           ["--default-stream", "best"],
           ["--url", get_stream_url(url)]
         ]
-        |> List.flatten(),
-        out: :stream
+        |> List.flatten()
       )
 
     case res do
       {:error, reason} ->
-        raise(VoiceError, reason: reason, executable: "streamlink")
+        raise(VoiceError, reason: reason, executable: @streamlink)
 
-      proc ->
-        proc
+      {:ok, pid} ->
+        pid
     end
   end
 
@@ -234,25 +236,21 @@ defmodule Nostrum.Voice.Audio do
     {input_url, stdin} =
       case type do
         :url ->
-          {input, <<>>}
+          {input, nil}
 
         :pipe ->
           {"pipe:0", input}
 
         :ytdl ->
-          %Proc{out: outstream} = spawn_youtubedl(input)
-
-          {"pipe:0", outstream}
+          {"pipe:0", spawn_youtubedl(input)}
 
         :stream ->
-          %Proc{out: outstream} = spawn_streamlink(input)
-
-          {"pipe:0", outstream}
+          {"pipe:0", spawn_streamlink(input)}
       end
 
     res =
-      Porcelain.spawn(
-        Application.get_env(:nostrum, :ffmpeg, "ffmpeg"),
+      Ports.execute(
+        Application.get_env(:nostrum, :ffmpeg, @ffmpeg),
         [
           ffmpeg_options(options, input_url),
           ["-ac", "2"],
@@ -263,16 +261,15 @@ defmodule Nostrum.Voice.Audio do
           ["pipe:1"]
         ]
         |> List.flatten(),
-        in: stdin,
-        out: :stream
+        stdin
       )
 
     case res do
       {:error, reason} ->
-        raise(VoiceError, reason: reason, executable: "ffmpeg")
+        raise(VoiceError, reason: reason, executable: @ffmpeg)
 
-      proc ->
-        proc
+      {:ok, pid} ->
+        pid
     end
   end
 
@@ -313,7 +310,7 @@ defmodule Nostrum.Voice.Audio do
 
   def on_stall(%VoiceState{} = voice) do
     if VoiceState.playing?(voice) and not is_nil(voice.ffmpeg_proc) do
-      Proc.stop(voice.ffmpeg_proc)
+      Ports.close(voice.ffmpeg_proc)
     end
   end
 

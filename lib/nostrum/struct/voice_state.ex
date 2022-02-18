@@ -1,8 +1,8 @@
 defmodule Nostrum.Struct.VoiceState do
   @moduledoc false
 
+  alias Nostrum.Voice.Ports
   alias Nostrum.Voice.Session
-  alias Porcelain.Process, as: Proc
 
   defstruct [
     :guild_id,
@@ -63,8 +63,8 @@ defmodule Nostrum.Struct.VoiceState do
     end
 
     unless is_nil(v.ffmpeg_proc) do
-      if Proc.alive?(v.ffmpeg_proc) do
-        Proc.stop(v.ffmpeg_proc)
+      if Process.alive?(v.ffmpeg_proc) do
+        Ports.close(v.ffmpeg_proc)
       end
     end
 
