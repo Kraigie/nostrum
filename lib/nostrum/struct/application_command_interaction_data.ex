@@ -65,7 +65,7 @@ defmodule Nostrum.Struct.ApplicationCommandInteractionData do
   @typedoc """
   For Modal Sumbit interactions, this will contain the values the user submitted.
   """
-  @typedoc since: "0.5.0"
+  @typedoc since: "0.5.1"
   @type components :: [Component.t()] | nil
 
   @typedoc """

@@ -166,6 +166,7 @@ defmodule Nostrum.Struct.Message.Component do
 
   Defaults to ``0``. Maximum of ``4000``. Only present for text inputs.
   """
+  @typedoc since: "0.5.1"
   @type min_length :: 0..4000 | nil
 
   @typedoc """
@@ -173,6 +174,7 @@ defmodule Nostrum.Struct.Message.Component do
 
   Defaults to ``1``. Maximum of ``4000``. Only present for text inputs.
   """
+  @typedoc since: "0.5.1"
   @type max_length :: 1..4000 | nil
 
   @typedoc """
@@ -180,6 +182,7 @@ defmodule Nostrum.Struct.Message.Component do
 
   Only present for text inputs.
   """
+  @typedoc since: "0.5.1"
   @type required :: boolean() | nil
 
   @typedoc """
@@ -188,6 +191,7 @@ defmodule Nostrum.Struct.Message.Component do
   When creating a new component, this will be its pre-filled value if present.
   Only present for text inputs.
   """
+  @typedoc since: "0.5.1"
   @type value :: String.t() | nil
 
   @typedoc """

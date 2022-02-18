@@ -268,6 +268,7 @@ defmodule Nostrum.Struct.Component do
 
   Valid for [Text Input](#module-text-input).
   """
+  @typedoc since: "0.5.1"
   @type min_length :: integer() | nil
 
   @typedoc """
@@ -275,6 +276,7 @@ defmodule Nostrum.Struct.Component do
 
   Valid for [Text Input](#module-text-input).
   """
+  @typedoc since: "0.5.1"
   @type max_length :: integer() | nil
 
   @typedoc """
@@ -282,6 +284,7 @@ defmodule Nostrum.Struct.Component do
 
   Valid for [Text Input](#module-text-input).
   """
+  @typedoc since: "0.5.1"
   @type required :: boolean() | nil
 
   @typedoc """
@@ -289,6 +292,7 @@ defmodule Nostrum.Struct.Component do
 
   Valid for [Text Input](#module-text-input).
   """
+  @typedoc since: "0.5.1"
   @type value :: String.t() | nil
 
   @typedoc """
