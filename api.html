@@ -4,17 +4,17 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="ExDoc v0.25.1">
-    <meta name="project" content="Nostrum v0.5.0-rc2">
+    <meta name="generator" content="ExDoc v0.28.0">
+    <meta name="project" content="Nostrum v0.5.0">
 
-    <title>Api — Nostrum v0.5.0-rc2</title>
-    <link rel="stylesheet" href="dist/elixir-a172fe91e725dcb259e2.css" />
+    <title>Api — Nostrum v0.5.0</title>
+    <link rel="stylesheet" href="dist/elixir-a816d167216329cc463d.css" />
 
-    <script src="dist/sidebar_items-8157d00a90.js"></script>
+    <script src="dist/sidebar_items-873cd43efc.js"></script>
 
       <script src="docs_config.js"></script>
 
-    <script async src="dist/app-f27ff079945e43879c46.js"></script>
+    <script async src="dist/app-80aa23c1d96b6dc3c064.js"></script>
 
 
   </head>
@@ -30,17 +30,18 @@
 
 <div class="main">
 
-<button class="sidebar-button sidebar-toggle">
-  <span class="icon-menu" title="Collapse/expand sidebar"></span>
-</button>
 
 <section class="sidebar">
+  <button class="sidebar-button sidebar-toggle">
+    <i class="ri-menu-line ri-lg" title="Collapse/expand sidebar"></i>
+  </button>
+
   <form class="sidebar-search" action="search.html">
     <button type="submit" class="search-button" aria-label="Submit Search">
-      <span class="icon-search" aria-hidden="true" title="Submit search"></span>
+      <i class="ri-search-2-line" aria-hidden="true" title="Submit search"></i>
     </button>
     <button type="button" tabindex="-1" class="search-close-button" aria-label="Cancel Search">
-      <span class="icon-cross" aria-hidden="true" title="Cancel search"></span>
+      <i class="ri-close-line ri-lg" aria-hidden="true" title="Cancel search"></i>
     </button>
     <label class="search-label">
       <input name="q" type="text" class="search-input" placeholder="Search..." aria-label="Input your search terms" autocomplete="off" />
@@ -53,26 +54,26 @@
   </div>
 
   <div class="sidebar-header">
+
     <div class="sidebar-projectDetails">
-      <a href="https://github.com/kraigie/nostrum" class="sidebar-projectName">
+      <a href="https://github.com/Kraigie/nostrum" class="sidebar-projectName" translate="no">
 Nostrum
       </a>
-      <strong class="sidebar-projectVersion">
-        v0.5.0-rc2
+      <strong class="sidebar-projectVersion" translate="no">
+        v0.5.0
       </strong>
     </div>
+    <ul class="sidebar-listNav">
+      <li><a id="extras-list-link" href="#full-list">Pages</a></li>
 
+        <li><a id="modules-list-link" href="#full-list">Modules</a></li>
+
+
+        <li><a id="tasks-list-link" href="#full-list"><span translate="no">Mix</span> Tasks</a></li>
+
+    </ul>
   </div>
 
-  <ul class="sidebar-listNav">
-    <li><a id="extras-list-link" href="#full-list">Pages</a></li>
-
-      <li><a id="modules-list-link" href="#full-list">Modules</a></li>
-
-
-      <li><a id="tasks-list-link" href="#full-list">Mix Tasks</a></li>
-
-  </ul>
   <div class="gradient"></div>
   <ul id="full-list" class="sidebar-fullList"></ul>
 </section>
@@ -81,11 +82,26 @@ Nostrum
   <div class="content-outer">
     <div id="content" class="content-inner">
 
-<h1>Api</h1><p>Nostrum includes a complete implementation of the endpoints supported by Discord's
+<h1>
+<button class="settings display-settings">
+  <i class="ri-settings-3-line"></i>
+  <span class="sr-only">Settings</span>
+</button>
+
+
+    <a href="https://github.com/Kraigie/nostrum/blob/master/docs/static/API.md#L1" title="View Source" class="view-source" rel="help">
+      <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+      <span class="sr-only">View Source</span>
+    </a>
+
+  <span>Api</span>
+</h1>
+
+<p>Nostrum includes a complete implementation of the endpoints supported by Discord's
 API. Method names are copied closely from the documentation to eliminate any
 confusion about what a method does, as well as allow users to easily lookup the
 endpoints in the official API documentation.</p><p>For a full listing of method definitions, please see <a href="Nostrum.Api.html"><code class="inline">Nostrum.Api</code></a></p><h2 id="what-does-the-mean" class="section-heading">
-  <a href="#what-does-the-mean" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  <a href="#what-does-the-mean" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
   What does the '!' mean?
 </h2>
 <p>(soon™) All methods have a <code class="inline">banged</code> version of themselves. This is a common Elixir
@@ -99,7 +115,7 @@ msg = Nostrum.Api.create_message!(179679229036724225, &quot;456&quot;)
 
 # Failure - Throws an error
 Nostrum.Api.create_message!(123, &quot;eat my shorts api&quot;)</code></pre><h2 id="helpers" class="section-heading">
-  <a href="#helpers" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  <a href="#helpers" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
   Helpers
 </h2>
 <p>When appropriate, some helpers are defined to make interacting with the API simpler.
@@ -108,7 +124,7 @@ only allows the retrieval of <code class="inline">100</code> messages at a time.
 have a user wanting more messages than that, thus Nostrum handles the retrieval
 of any number of messages for the user.</p><p>There are other endpoints that could use grooming like above, feel free to suggest
 an interface and implementation for these methods.</p><h2 id="ratelimiting" class="section-heading">
-  <a href="#ratelimiting" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  <a href="#ratelimiting" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
   Ratelimiting
 </h2>
 <p>Ratelimiting is handled internally by Nostrum, so long as you use the methods
@@ -117,7 +133,7 @@ they're given or using <a href="Nostrum.Api.html#request/4"><code class="inline"
 asynchronously or not, Nostrum funnels all requests through a single <a href="https://hexdocs.pm/elixir/GenServer.html"><code class="inline">GenServer</code></a>.</p><p>The ratelimiter at a high level works something like this:</p><ol><li>Request is sent to the serializer</li><li>Serializer checks to see if there's a current block on that endpoint.</li><li>If there is a block, the pid of the caller is stored, and a task is started
 to try the call again after a specified time stored from previous calls.</li><li>If the request goes through, the headers are processed to see if a block
 should be instantiated for that endpoint.</li></ol><h2 id="rest-only" class="section-heading">
-  <a href="#rest-only" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  <a href="#rest-only" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
   Rest Only
 </h2>
 <p>If you only want to use the REST portion of the provided API, the only process
@@ -152,34 +168,27 @@ Application commands
 </div>
 
       <footer class="footer">
-        <p>
-          <span class="line">
-            Built using
-            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener">ExDoc</a> (v0.25.1) for the
-            <a href="https://elixir-lang.org" title="Elixir" target="_blank">Elixir programming language</a>.
-          </span>
-          <span class="line">
-            Designed by
-            <a href="https://twitter.com/dignifiedquire" target="_blank" rel="noopener" title="@dignifiedquire">Friedel Ziegelmayer</a>.
-          </span>
-        </p>
-        <p>
 
-            <a href="api-reference.html" title="API reference" class="line footer-button">API Reference</a>
+          <p>
+            On Hex.pm:
 
-          <button class="line footer-button display-shortcuts-help">
-            Display keyboard shortcuts
-          </button>
-          <button class="line footer-button night-mode-toggle">
-            Toggle night mode
-          </button>
-          <button class="line footer-button display-quick-switch">
-            Go to a HexDocs package
-          </button>
-          <button class="line footer-button tooltips-toggle">
-            <span class="tooltips-option-disable">Disable tooltips</span>
-            <span class="tooltips-option-enable">Enable tooltips</span>
-          </button>
+            <span class="line">
+              <a href="https://hex.pm/packages/nostrum/0.5.0" class="line footer-hex-package">Package</a>
+              <a href="https://preview.hex.pm/preview/nostrum/0.5.0" class="line">Preview</a>
+
+                <a href="https://preview.hex.pm/preview/nostrum/0.5.0/show/docs/static/API.md">(current file)</a>
+
+            </span>
+
+            <button class="line footer-button display-quick-switch">
+              Search
+            </button>
+          </p>
+
+        <p>
+          Built using
+          <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.28.0) for the
+          <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
         </p>
       </footer>
     </div>

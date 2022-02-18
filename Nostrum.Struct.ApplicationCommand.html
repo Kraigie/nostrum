@@ -4,17 +4,17 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="ExDoc v0.25.1">
-    <meta name="project" content="Nostrum v0.5.0-rc2">
+    <meta name="generator" content="ExDoc v0.28.0">
+    <meta name="project" content="Nostrum v0.5.0">
 
-    <title>Nostrum.Struct.ApplicationCommand — Nostrum v0.5.0-rc2</title>
-    <link rel="stylesheet" href="dist/elixir-a172fe91e725dcb259e2.css" />
+    <title>Nostrum.Struct.ApplicationCommand — Nostrum v0.5.0</title>
+    <link rel="stylesheet" href="dist/elixir-a816d167216329cc463d.css" />
 
-    <script src="dist/sidebar_items-8157d00a90.js"></script>
+    <script src="dist/sidebar_items-873cd43efc.js"></script>
 
       <script src="docs_config.js"></script>
 
-    <script async src="dist/app-f27ff079945e43879c46.js"></script>
+    <script async src="dist/app-80aa23c1d96b6dc3c064.js"></script>
 
 
   </head>
@@ -30,17 +30,18 @@
 
 <div class="main">
 
-<button class="sidebar-button sidebar-toggle">
-  <span class="icon-menu" title="Collapse/expand sidebar"></span>
-</button>
 
 <section class="sidebar">
+  <button class="sidebar-button sidebar-toggle">
+    <i class="ri-menu-line ri-lg" title="Collapse/expand sidebar"></i>
+  </button>
+
   <form class="sidebar-search" action="search.html">
     <button type="submit" class="search-button" aria-label="Submit Search">
-      <span class="icon-search" aria-hidden="true" title="Submit search"></span>
+      <i class="ri-search-2-line" aria-hidden="true" title="Submit search"></i>
     </button>
     <button type="button" tabindex="-1" class="search-close-button" aria-label="Cancel Search">
-      <span class="icon-cross" aria-hidden="true" title="Cancel search"></span>
+      <i class="ri-close-line ri-lg" aria-hidden="true" title="Cancel search"></i>
     </button>
     <label class="search-label">
       <input name="q" type="text" class="search-input" placeholder="Search..." aria-label="Input your search terms" autocomplete="off" />
@@ -53,26 +54,26 @@
   </div>
 
   <div class="sidebar-header">
+
     <div class="sidebar-projectDetails">
-      <a href="https://github.com/kraigie/nostrum" class="sidebar-projectName">
+      <a href="https://github.com/Kraigie/nostrum" class="sidebar-projectName" translate="no">
 Nostrum
       </a>
-      <strong class="sidebar-projectVersion">
-        v0.5.0-rc2
+      <strong class="sidebar-projectVersion" translate="no">
+        v0.5.0
       </strong>
     </div>
+    <ul class="sidebar-listNav">
+      <li><a id="extras-list-link" href="#full-list">Pages</a></li>
 
+        <li><a id="modules-list-link" href="#full-list">Modules</a></li>
+
+
+        <li><a id="tasks-list-link" href="#full-list"><span translate="no">Mix</span> Tasks</a></li>
+
+    </ul>
   </div>
 
-  <ul class="sidebar-listNav">
-    <li><a id="extras-list-link" href="#full-list">Pages</a></li>
-
-      <li><a id="modules-list-link" href="#full-list">Modules</a></li>
-
-
-      <li><a id="tasks-list-link" href="#full-list">Mix Tasks</a></li>
-
-  </ul>
   <div class="gradient"></div>
   <ul id="full-list" class="sidebar-fullList"></ul>
 </section>
@@ -81,155 +82,172 @@ Nostrum
   <div class="content-outer">
     <div id="content" class="content-inner">
 
-      <h1>
-Nostrum.Struct.ApplicationCommand <small class="app-vsn">(Nostrum v0.5.0-rc2)</small>
-
-          <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/application_command.ex#L1" title="View Source" class="view-source" rel="help">
-            <span class="icon-code" aria-hidden="true"></span>
-            <span class="sr-only">View Source</span>
-          </a>
-
-      </h1>
+<h1>
+<button class="settings display-settings">
+  <i class="ri-settings-3-line"></i>
+  <span class="sr-only">Settings</span>
+</button>
 
 
-        <section id="moduledoc">
+    <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/application_command.ex#L1" title="View Source" class="view-source" rel="help">
+      <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+      <span class="sr-only">View Source</span>
+    </a>
+
+  <span translate="no">Nostrum.Struct.ApplicationCommand</span> 
+  <small class="app-vsn" translate="no">(Nostrum v0.5.0)</small>
+
+</h1>
+
+
+  <section id="moduledoc">
 <p>Typespecs for creating Application Commands</p><p>Official reference:
 <a href="https://discord.com/developers/docs/interactions/application-commands">https://discord.com/developers/docs/interactions/application-commands</a></p>
-        </section>
+  </section>
 
 
-        <section id="summary" class="details-list">
-          <h1 class="section-heading">
-            <a class="hover-link" href="#summary">
-              <span class="icon-link" aria-hidden="true"></span>
-              <span class="sr-only">Link to this section</span>
-            </a>
-            Summary
-          </h1>
+  <section id="summary" class="details-list">
+    <h1 class="section-heading">
+      <a class="hover-link" href="#summary">
+        <i class="ri-link-m" aria-hidden="true"></i>
+        <span class="sr-only">Link to this section</span>
+      </a>
+      Summary
+    </h1>
 
   <div class="summary-types summary">
     <h2>
       <a href="#types">Types</a>
     </h2>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#t:application_command_edit_map/0">application_command_edit_map()</a>
 
-  </div>
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#t:application_command_edit_map/0" translate="no">application_command_edit_map()</a>
 
-    <div class="summary-synopsis"><p>When editing an existing application command, only the following fields may be updated,
+        </div>
+
+          <div class="summary-synopsis"><p>When editing an existing application command, only the following fields may be updated,
 missing fields will remain unchanged.</p></div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#t:application_command_map/0">application_command_map()</a>
+      </div>
 
-  </div>
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#t:application_command_map/0" translate="no">application_command_map()</a>
 
-    <div class="summary-synopsis"><p>This defines the map for creating an application command.</p></div>
+        </div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#t:application_command_permission_type/0">application_command_permission_type()</a>
+          <div class="summary-synopsis"><p>This defines the map for creating an application command.</p></div>
 
-  </div>
+      </div>
 
-    <div class="summary-synopsis"><ul><li><code class="inline">1</code> for <code class="inline">ROLE</code></li><li><code class="inline">2</code> for <code class="inline">USER</code></li></ul></div>
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#t:application_command_permission_type/0" translate="no">application_command_permission_type()</a>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#t:application_command_permissions/0">application_command_permissions()</a>
+        </div>
 
-  </div>
+          <div class="summary-synopsis"><ul><li><code class="inline">1</code> for <code class="inline">ROLE</code></li><li><code class="inline">2</code> for <code class="inline">USER</code></li></ul></div>
 
-    <div class="summary-synopsis"><p>For editing the permissions for an application command</p></div>
+      </div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#t:command_choice/0">command_choice()</a>
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#t:application_command_permissions/0" translate="no">application_command_permissions()</a>
 
-  </div>
+        </div>
 
-    <div class="summary-synopsis"><p>If you specify choices for a command those become the only valid options for the user to select from.</p></div>
+          <div class="summary-synopsis"><p>For editing the permissions for an application command</p></div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#t:command_description/0">command_description()</a>
+      </div>
 
-  </div>
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#t:command_choice/0" translate="no">command_choice()</a>
 
-    <div class="summary-synopsis"><p>The command, subcommand, or options's description, for <code class="inline">CHAT_INPUT</code> commands it must be between 1 and 100 characters in length.
+        </div>
+
+          <div class="summary-synopsis"><p>If you specify choices for a command those become the only valid options for the user to select from.</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#t:command_description/0" translate="no">command_description()</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>The command, subcommand, or options's description, for <code class="inline">CHAT_INPUT</code> commands it must be between 1 and 100 characters in length.
 For <code class="inline">USER</code> and <code class="inline">MESSAGE</code> commands it must be an empty string.</p></div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#t:command_name/0">command_name()</a>
+      </div>
 
-  </div>
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#t:command_name/0" translate="no">command_name()</a>
 
-    <div class="summary-synopsis"><p>The name of the command, subcommand, or command_option, it must be between 1 and 32 characters in length and match the following regex <code class="inline">^[w-]{1,32}$</code>
+        </div>
+
+          <div class="summary-synopsis"><p>The name of the command, subcommand, or command_option, it must be between 1 and 32 characters in length and match the following regex <code class="inline">^[w-]{1,32}$</code>
 Only <code class="inline">USER</code> and <code class="inline">MESSAGE</code> commands may include uppercase letters and spaces.</p></div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#t:command_option/0">command_option()</a>
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#t:command_option/0" translate="no">command_option()</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>This defines a commands parameters, only valid for <code class="inline">CHAT_INPUT</code> commands.</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#t:command_option_type/0" translate="no">command_option_type()</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>Indicates what type of argument the command expects.</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#t:command_type/0" translate="no">command_type()</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>The type of application command you wish to create</p></div>
+
+      </div>
 
   </div>
 
-    <div class="summary-synopsis"><p>This defines a commands parameters, only valid for <code class="inline">CHAT_INPUT</code> commands.</p></div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#t:command_option_type/0">command_option_type()</a>
-
-  </div>
-
-    <div class="summary-synopsis"><p>Indicates what type of argument the command expects.</p></div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#t:command_type/0">command_type()</a>
-
-  </div>
-
-    <div class="summary-synopsis"><p>The type of application command you wish to create</p></div>
-
-</div>
-
-  </div>
-
-        </section>
+  </section>
 
 
-        <section id="types" class="details-list">
-          <h1 class="section-heading">
-            <a class="hover-link" href="#types">
-              <span class="icon-link" aria-hidden="true"></span>
-              <span class="sr-only">Link to this section</span>
-            </a>
+  <section id="types" class="details-list">
+    <h1 class="section-heading">
+      <a class="hover-link" href="#types">
+        <i class="ri-link-m" aria-hidden="true"></i>
+        <span class="sr-only">Link to this section</span>
+      </a>
 Types
-          </h1>
-          <div class="types-list">
+    </h1>
+    <div class="types-list">
 <section class="detail" id="t:application_command_edit_map/0">
 
   <div class="detail-header">
     <a href="#t:application_command_edit_map/0" class="detail-link" title="Link to this type">
-      <span class="icon-link" aria-hidden="true"></span>
+      <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature">application_command_edit_map()</h1>
+    <h1 class="signature" translate="no">application_command_edit_map()</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/application_command.ex#L97" class="view-source" rel="help" title="View Source">
-       <span class="icon-code" aria-hidden="true"></span>
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/application_command.ex#L97" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
 
@@ -241,7 +259,7 @@ Types
       <h2>Specs</h2>
       <div class="specs">
 
-          <pre>application_command_edit_map() :: %{
+          <pre translate="no">application_command_edit_map() :: %{
   optional(:name) =&gt; <a href="#t:command_name/0">command_name</a>(),
   optional(:description) =&gt; <a href="#t:command_description/0">command_description</a>(),
   optional(:options) =&gt; [<a href="#t:command_option/0">command_option</a>()],
@@ -258,13 +276,13 @@ missing fields will remain unchanged.</p>
 
   <div class="detail-header">
     <a href="#t:application_command_map/0" class="detail-link" title="Link to this type">
-      <span class="icon-link" aria-hidden="true"></span>
+      <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature">application_command_map()</h1>
+    <h1 class="signature" translate="no">application_command_map()</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/application_command.ex#L85" class="view-source" rel="help" title="View Source">
-       <span class="icon-code" aria-hidden="true"></span>
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/application_command.ex#L85" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
 
@@ -276,7 +294,7 @@ missing fields will remain unchanged.</p>
       <h2>Specs</h2>
       <div class="specs">
 
-          <pre>application_command_map() :: %{
+          <pre translate="no">application_command_map() :: %{
   :name =&gt; <a href="#t:command_name/0">command_name</a>(),
   :description =&gt; <a href="#t:command_description/0">command_description</a>(),
   optional(:type) =&gt; <a href="#t:command_type/0">command_type</a>(),
@@ -293,13 +311,13 @@ missing fields will remain unchanged.</p>
 
   <div class="detail-header">
     <a href="#t:application_command_permission_type/0" class="detail-link" title="Link to this type">
-      <span class="icon-link" aria-hidden="true"></span>
+      <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature">application_command_permission_type()</h1>
+    <h1 class="signature" translate="no">application_command_permission_type()</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/application_command.ex#L120" class="view-source" rel="help" title="View Source">
-       <span class="icon-code" aria-hidden="true"></span>
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/application_command.ex#L120" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
 
@@ -311,7 +329,7 @@ missing fields will remain unchanged.</p>
       <h2>Specs</h2>
       <div class="specs">
 
-          <pre>application_command_permission_type() :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pos_integer</a>()</pre>
+          <pre translate="no">application_command_permission_type() :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pos_integer</a>()</pre>
 
       </div>
 
@@ -322,13 +340,13 @@ missing fields will remain unchanged.</p>
 
   <div class="detail-header">
     <a href="#t:application_command_permissions/0" class="detail-link" title="Link to this type">
-      <span class="icon-link" aria-hidden="true"></span>
+      <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature">application_command_permissions()</h1>
+    <h1 class="signature" translate="no">application_command_permissions()</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/application_command.ex#L110" class="view-source" rel="help" title="View Source">
-       <span class="icon-code" aria-hidden="true"></span>
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/application_command.ex#L110" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
 
@@ -340,7 +358,7 @@ missing fields will remain unchanged.</p>
       <h2>Specs</h2>
       <div class="specs">
 
-          <pre>application_command_permissions() :: %{
+          <pre translate="no">application_command_permissions() :: %{
   id: <a href="Nostrum.Snowflake.html#t:t/0">Nostrum.Snowflake.t</a>(),
   type: <a href="#t:application_command_permission_type/0">application_command_permission_type</a>(),
   permission: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">boolean</a>()
@@ -355,13 +373,13 @@ missing fields will remain unchanged.</p>
 
   <div class="detail-header">
     <a href="#t:command_choice/0" class="detail-link" title="Link to this type">
-      <span class="icon-link" aria-hidden="true"></span>
+      <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature">command_choice()</h1>
+    <h1 class="signature" translate="no">command_choice()</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/application_command.ex#L35" class="view-source" rel="help" title="View Source">
-       <span class="icon-code" aria-hidden="true"></span>
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/application_command.ex#L35" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
 
@@ -373,7 +391,7 @@ missing fields will remain unchanged.</p>
       <h2>Specs</h2>
       <div class="specs">
 
-          <pre>command_choice() :: %{name: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>(), value: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>() | <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">number</a>()}</pre>
+          <pre translate="no">command_choice() :: %{name: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>(), value: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>() | <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">number</a>()}</pre>
 
       </div>
 
@@ -384,13 +402,13 @@ missing fields will remain unchanged.</p>
 
   <div class="detail-header">
     <a href="#t:command_description/0" class="detail-link" title="Link to this type">
-      <span class="icon-link" aria-hidden="true"></span>
+      <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature">command_description()</h1>
+    <h1 class="signature" translate="no">command_description()</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/application_command.ex#L22" class="view-source" rel="help" title="View Source">
-       <span class="icon-code" aria-hidden="true"></span>
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/application_command.ex#L22" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
 
@@ -402,7 +420,7 @@ missing fields will remain unchanged.</p>
       <h2>Specs</h2>
       <div class="specs">
 
-          <pre>command_description() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()</pre>
+          <pre translate="no">command_description() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()</pre>
 
       </div>
 
@@ -414,13 +432,13 @@ For <code class="inline">USER</code> and <code class="inline">MESSAGE</code> com
 
   <div class="detail-header">
     <a href="#t:command_name/0" class="detail-link" title="Link to this type">
-      <span class="icon-link" aria-hidden="true"></span>
+      <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature">command_name()</h1>
+    <h1 class="signature" translate="no">command_name()</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/application_command.ex#L16" class="view-source" rel="help" title="View Source">
-       <span class="icon-code" aria-hidden="true"></span>
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/application_command.ex#L16" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
 
@@ -432,7 +450,7 @@ For <code class="inline">USER</code> and <code class="inline">MESSAGE</code> com
       <h2>Specs</h2>
       <div class="specs">
 
-          <pre>command_name() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()</pre>
+          <pre translate="no">command_name() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()</pre>
 
       </div>
 
@@ -444,13 +462,13 @@ Only <code class="inline">USER</code> and <code class="inline">MESSAGE</code> co
 
   <div class="detail-header">
     <a href="#t:command_option/0" class="detail-link" title="Link to this type">
-      <span class="icon-link" aria-hidden="true"></span>
+      <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature">command_option()</h1>
+    <h1 class="signature" translate="no">command_option()</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/application_command.ex#L67" class="view-source" rel="help" title="View Source">
-       <span class="icon-code" aria-hidden="true"></span>
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/application_command.ex#L67" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
 
@@ -462,7 +480,7 @@ Only <code class="inline">USER</code> and <code class="inline">MESSAGE</code> co
       <h2>Specs</h2>
       <div class="specs">
 
-          <pre>command_option() :: %{
+          <pre translate="no">command_option() :: %{
   :name =&gt; <a href="#t:command_name/0">command_name</a>(),
   :description =&gt; <a href="#t:command_description/0">command_description</a>(),
   :type =&gt; <a href="#t:command_option_type/0">command_option_type</a>(),
@@ -476,7 +494,7 @@ Only <code class="inline">USER</code> and <code class="inline">MESSAGE</code> co
       </div>
 
 <p>This defines a commands parameters, only valid for <code class="inline">CHAT_INPUT</code> commands.</p><h2 id="t:command_option/0-notes" class="section-heading">
-  <a href="#t:command_option/0-notes" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  <a href="#t:command_option/0-notes" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
   Notes
 </h2>
 <ul><li>required parameters on a command must precede optional ones</li><li>for subcommands and subcommand groups, <code class="inline">:options</code> are it's parameters</li><li><code class="inline">:options</code> and <code class="inline">:choices</code> are mutually exclusive</li><li><code class="inline">:autocomplete</code> may not be set to true if <code class="inline">:choices</code> is present</li><li>if <code class="inline">:type</code> is 7 then <code class="inline">:channel_types</code> can be a list of allowed <a href="https://discord.com/developers/docs/resources/channel#channel-object-channel-types">channel types</a></li></ul>
@@ -486,13 +504,13 @@ Only <code class="inline">USER</code> and <code class="inline">MESSAGE</code> co
 
   <div class="detail-header">
     <a href="#t:command_option_type/0" class="detail-link" title="Link to this type">
-      <span class="icon-link" aria-hidden="true"></span>
+      <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature">command_option_type()</h1>
+    <h1 class="signature" translate="no">command_option_type()</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/application_command.ex#L54" class="view-source" rel="help" title="View Source">
-       <span class="icon-code" aria-hidden="true"></span>
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/application_command.ex#L54" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
 
@@ -504,7 +522,7 @@ Only <code class="inline">USER</code> and <code class="inline">MESSAGE</code> co
       <h2>Specs</h2>
       <div class="specs">
 
-          <pre>command_option_type() :: 1..10</pre>
+          <pre translate="no">command_option_type() :: 1..10</pre>
 
       </div>
 
@@ -515,13 +533,13 @@ Only <code class="inline">USER</code> and <code class="inline">MESSAGE</code> co
 
   <div class="detail-header">
     <a href="#t:command_type/0" class="detail-link" title="Link to this type">
-      <span class="icon-link" aria-hidden="true"></span>
+      <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature">command_type()</h1>
+    <h1 class="signature" translate="no">command_type()</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/application_command.ex#L30" class="view-source" rel="help" title="View Source">
-       <span class="icon-code" aria-hidden="true"></span>
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/application_command.ex#L30" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
 
@@ -533,7 +551,7 @@ Only <code class="inline">USER</code> and <code class="inline">MESSAGE</code> co
       <h2>Specs</h2>
       <div class="specs">
 
-          <pre>command_type() :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pos_integer</a>()</pre>
+          <pre translate="no">command_type() :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pos_integer</a>()</pre>
 
       </div>
 
@@ -541,38 +559,31 @@ Only <code class="inline">USER</code> and <code class="inline">MESSAGE</code> co
   </section>
 </section>
 
-          </div>
-        </section>
+    </div>
+  </section>
 
       <footer class="footer">
-        <p>
-          <span class="line">
-            Built using
-            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener">ExDoc</a> (v0.25.1) for the
-            <a href="https://elixir-lang.org" title="Elixir" target="_blank">Elixir programming language</a>.
-          </span>
-          <span class="line">
-            Designed by
-            <a href="https://twitter.com/dignifiedquire" target="_blank" rel="noopener" title="@dignifiedquire">Friedel Ziegelmayer</a>.
-          </span>
-        </p>
-        <p>
 
-            <a href="api-reference.html" title="API reference" class="line footer-button">API Reference</a>
+          <p>
+            On Hex.pm:
 
-          <button class="line footer-button display-shortcuts-help">
-            Display keyboard shortcuts
-          </button>
-          <button class="line footer-button night-mode-toggle">
-            Toggle night mode
-          </button>
-          <button class="line footer-button display-quick-switch">
-            Go to a HexDocs package
-          </button>
-          <button class="line footer-button tooltips-toggle">
-            <span class="tooltips-option-disable">Disable tooltips</span>
-            <span class="tooltips-option-enable">Enable tooltips</span>
-          </button>
+            <span class="line">
+              <a href="https://hex.pm/packages/nostrum/0.5.0" class="line footer-hex-package">Package</a>
+              <a href="https://preview.hex.pm/preview/nostrum/0.5.0" class="line">Preview</a>
+
+                <a href="https://preview.hex.pm/preview/nostrum/0.5.0/show/lib/nostrum/struct/application_command.ex">(current file)</a>
+
+            </span>
+
+            <button class="line footer-button display-quick-switch">
+              Search
+            </button>
+          </p>
+
+        <p>
+          Built using
+          <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.28.0) for the
+          <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
         </p>
       </footer>
     </div>

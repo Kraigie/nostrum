@@ -4,17 +4,17 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="ExDoc v0.25.1">
-    <meta name="project" content="Nostrum v0.5.0-rc2">
+    <meta name="generator" content="ExDoc v0.28.0">
+    <meta name="project" content="Nostrum v0.5.0">
 
-    <title>Intro — Nostrum v0.5.0-rc2</title>
-    <link rel="stylesheet" href="dist/elixir-a172fe91e725dcb259e2.css" />
+    <title>Intro — Nostrum v0.5.0</title>
+    <link rel="stylesheet" href="dist/elixir-a816d167216329cc463d.css" />
 
-    <script src="dist/sidebar_items-8157d00a90.js"></script>
+    <script src="dist/sidebar_items-873cd43efc.js"></script>
 
       <script src="docs_config.js"></script>
 
-    <script async src="dist/app-f27ff079945e43879c46.js"></script>
+    <script async src="dist/app-80aa23c1d96b6dc3c064.js"></script>
 
 
   </head>
@@ -30,17 +30,18 @@
 
 <div class="main">
 
-<button class="sidebar-button sidebar-toggle">
-  <span class="icon-menu" title="Collapse/expand sidebar"></span>
-</button>
 
 <section class="sidebar">
+  <button class="sidebar-button sidebar-toggle">
+    <i class="ri-menu-line ri-lg" title="Collapse/expand sidebar"></i>
+  </button>
+
   <form class="sidebar-search" action="search.html">
     <button type="submit" class="search-button" aria-label="Submit Search">
-      <span class="icon-search" aria-hidden="true" title="Submit search"></span>
+      <i class="ri-search-2-line" aria-hidden="true" title="Submit search"></i>
     </button>
     <button type="button" tabindex="-1" class="search-close-button" aria-label="Cancel Search">
-      <span class="icon-cross" aria-hidden="true" title="Cancel search"></span>
+      <i class="ri-close-line ri-lg" aria-hidden="true" title="Cancel search"></i>
     </button>
     <label class="search-label">
       <input name="q" type="text" class="search-input" placeholder="Search..." aria-label="Input your search terms" autocomplete="off" />
@@ -53,26 +54,26 @@
   </div>
 
   <div class="sidebar-header">
+
     <div class="sidebar-projectDetails">
-      <a href="https://github.com/kraigie/nostrum" class="sidebar-projectName">
+      <a href="https://github.com/Kraigie/nostrum" class="sidebar-projectName" translate="no">
 Nostrum
       </a>
-      <strong class="sidebar-projectVersion">
-        v0.5.0-rc2
+      <strong class="sidebar-projectVersion" translate="no">
+        v0.5.0
       </strong>
     </div>
+    <ul class="sidebar-listNav">
+      <li><a id="extras-list-link" href="#full-list">Pages</a></li>
 
+        <li><a id="modules-list-link" href="#full-list">Modules</a></li>
+
+
+        <li><a id="tasks-list-link" href="#full-list"><span translate="no">Mix</span> Tasks</a></li>
+
+    </ul>
   </div>
 
-  <ul class="sidebar-listNav">
-    <li><a id="extras-list-link" href="#full-list">Pages</a></li>
-
-      <li><a id="modules-list-link" href="#full-list">Modules</a></li>
-
-
-      <li><a id="tasks-list-link" href="#full-list">Mix Tasks</a></li>
-
-  </ul>
   <div class="gradient"></div>
   <ul id="full-list" class="sidebar-fullList"></ul>
 </section>
@@ -81,10 +82,25 @@ Nostrum
   <div class="content-outer">
     <div id="content" class="content-inner">
 
-<h1>Intro</h1><p>Nostrum is a an Elixir library that can be used to interact with Discord.</p><p>Nostrum currently supports versions of Elixir at or above v. 1.10.</p><p>With a platform like Discord, there are many moving parts and an attempt was made
+<h1>
+<button class="settings display-settings">
+  <i class="ri-settings-3-line"></i>
+  <span class="sr-only">Settings</span>
+</button>
+
+
+    <a href="https://github.com/Kraigie/nostrum/blob/master/docs/static/Intro.md#L1" title="View Source" class="view-source" rel="help">
+      <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+      <span class="sr-only">View Source</span>
+    </a>
+
+  <span>Intro</span>
+</h1>
+
+<p>Nostrum is a an Elixir library that can be used to interact with Discord.</p><p>Nostrum currently supports versions of Elixir at or above v. 1.11.</p><p>With a platform like Discord, there are many moving parts and an attempt was made
 to break these parts into smaller logical pieces.</p><p>To see documentation about a specific part of the library, please visit one of
 the following -</p><ul><li><a href="api.html">API</a> - Methods to interact with the RESTful API (and some other goodies).</li><li><a href="state.html">State</a> - <code class="inline">Caches</code> that hold the state of Discord that your bot can see.</li><li><a href="events.html">Events</a> - How you can handle real time events that your bot can see.</li><li><a href="consumers.html">Custom Consumers</a> - Information on defining custom consumer processes.</li><li><a href="voice.html">Voice</a> - Playing audio through Discord voice channels.</li></ul><h3 id="why-elixir" class="section-heading">
-  <a href="#why-elixir" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  <a href="#why-elixir" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
   Why Elixir?
 </h3>
 <p>From the Elixir website -</p><blockquote><p>Elixir is a dynamic, functional language designed for building scalable and
@@ -100,7 +116,7 @@ application quickly.</p><p><em>Distributed</em> - Nostrum does not currently sup
 mode out of the box. By default everything is ran on the one <code class="inline">node</code> that you
 launch the application from. I'm open to suggestions as to how Nostrum could
 leverage being spread across many nodes.</p><h3 id="usage" class="section-heading">
-  <a href="#usage" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  <a href="#usage" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
   Usage
 </h3>
 <p>There are two versions of Nostrum, a stable version released on Hex and a dev
@@ -133,7 +149,7 @@ Logger debug data, include the following:</p><pre><code class="Elixir">config :l
   metadata: [:shard, :guild, :channel]</code></pre><p>For more information on how this works, please see the Logger
 <a href="https://hexdocs.pm/logger/Logger.html#module-levels">documentation</a>
 Nostrum takes advantage of <code class="inline">:debug</code>, <code class="inline">:warn</code>, and <code class="inline">:info</code>.</p><h3 id="example-bot" class="section-heading">
-  <a href="#example-bot" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  <a href="#example-bot" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
   Example Bot
 </h3>
 <p>A very simple example bot can be found
@@ -166,34 +182,27 @@ Api
 </div>
 
       <footer class="footer">
-        <p>
-          <span class="line">
-            Built using
-            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener">ExDoc</a> (v0.25.1) for the
-            <a href="https://elixir-lang.org" title="Elixir" target="_blank">Elixir programming language</a>.
-          </span>
-          <span class="line">
-            Designed by
-            <a href="https://twitter.com/dignifiedquire" target="_blank" rel="noopener" title="@dignifiedquire">Friedel Ziegelmayer</a>.
-          </span>
-        </p>
-        <p>
 
-            <a href="api-reference.html" title="API reference" class="line footer-button">API Reference</a>
+          <p>
+            On Hex.pm:
 
-          <button class="line footer-button display-shortcuts-help">
-            Display keyboard shortcuts
-          </button>
-          <button class="line footer-button night-mode-toggle">
-            Toggle night mode
-          </button>
-          <button class="line footer-button display-quick-switch">
-            Go to a HexDocs package
-          </button>
-          <button class="line footer-button tooltips-toggle">
-            <span class="tooltips-option-disable">Disable tooltips</span>
-            <span class="tooltips-option-enable">Enable tooltips</span>
-          </button>
+            <span class="line">
+              <a href="https://hex.pm/packages/nostrum/0.5.0" class="line footer-hex-package">Package</a>
+              <a href="https://preview.hex.pm/preview/nostrum/0.5.0" class="line">Preview</a>
+
+                <a href="https://preview.hex.pm/preview/nostrum/0.5.0/show/docs/static/Intro.md">(current file)</a>
+
+            </span>
+
+            <button class="line footer-button display-quick-switch">
+              Search
+            </button>
+          </p>
+
+        <p>
+          Built using
+          <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.28.0) for the
+          <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
         </p>
       </footer>
     </div>

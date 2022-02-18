@@ -4,17 +4,17 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="ExDoc v0.25.1">
-    <meta name="project" content="Nostrum v0.5.0-rc2">
+    <meta name="generator" content="ExDoc v0.28.0">
+    <meta name="project" content="Nostrum v0.5.0">
 
-    <title>Nostrum.Struct.Guild.ScheduledEvent — Nostrum v0.5.0-rc2</title>
-    <link rel="stylesheet" href="dist/elixir-a172fe91e725dcb259e2.css" />
+    <title>Nostrum.Struct.Guild.ScheduledEvent — Nostrum v0.5.0</title>
+    <link rel="stylesheet" href="dist/elixir-a816d167216329cc463d.css" />
 
-    <script src="dist/sidebar_items-8157d00a90.js"></script>
+    <script src="dist/sidebar_items-873cd43efc.js"></script>
 
       <script src="docs_config.js"></script>
 
-    <script async src="dist/app-f27ff079945e43879c46.js"></script>
+    <script async src="dist/app-80aa23c1d96b6dc3c064.js"></script>
 
 
   </head>
@@ -30,17 +30,18 @@
 
 <div class="main">
 
-<button class="sidebar-button sidebar-toggle">
-  <span class="icon-menu" title="Collapse/expand sidebar"></span>
-</button>
 
 <section class="sidebar">
+  <button class="sidebar-button sidebar-toggle">
+    <i class="ri-menu-line ri-lg" title="Collapse/expand sidebar"></i>
+  </button>
+
   <form class="sidebar-search" action="search.html">
     <button type="submit" class="search-button" aria-label="Submit Search">
-      <span class="icon-search" aria-hidden="true" title="Submit search"></span>
+      <i class="ri-search-2-line" aria-hidden="true" title="Submit search"></i>
     </button>
     <button type="button" tabindex="-1" class="search-close-button" aria-label="Cancel Search">
-      <span class="icon-cross" aria-hidden="true" title="Cancel search"></span>
+      <i class="ri-close-line ri-lg" aria-hidden="true" title="Cancel search"></i>
     </button>
     <label class="search-label">
       <input name="q" type="text" class="search-input" placeholder="Search..." aria-label="Input your search terms" autocomplete="off" />
@@ -53,26 +54,26 @@
   </div>
 
   <div class="sidebar-header">
+
     <div class="sidebar-projectDetails">
-      <a href="https://github.com/kraigie/nostrum" class="sidebar-projectName">
+      <a href="https://github.com/Kraigie/nostrum" class="sidebar-projectName" translate="no">
 Nostrum
       </a>
-      <strong class="sidebar-projectVersion">
-        v0.5.0-rc2
+      <strong class="sidebar-projectVersion" translate="no">
+        v0.5.0
       </strong>
     </div>
+    <ul class="sidebar-listNav">
+      <li><a id="extras-list-link" href="#full-list">Pages</a></li>
 
+        <li><a id="modules-list-link" href="#full-list">Modules</a></li>
+
+
+        <li><a id="tasks-list-link" href="#full-list"><span translate="no">Mix</span> Tasks</a></li>
+
+    </ul>
   </div>
 
-  <ul class="sidebar-listNav">
-    <li><a id="extras-list-link" href="#full-list">Pages</a></li>
-
-      <li><a id="modules-list-link" href="#full-list">Modules</a></li>
-
-
-      <li><a id="tasks-list-link" href="#full-list">Mix Tasks</a></li>
-
-  </ul>
   <div class="gradient"></div>
   <ul id="full-list" class="sidebar-fullList"></ul>
 </section>
@@ -81,180 +82,203 @@ Nostrum
   <div class="content-outer">
     <div id="content" class="content-inner">
 
-      <h1>
-Nostrum.Struct.Guild.ScheduledEvent <small class="app-vsn">(Nostrum v0.5.0-rc2)</small>
-
-          <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild/scheduled_event.ex#L1" title="View Source" class="view-source" rel="help">
-            <span class="icon-code" aria-hidden="true"></span>
-            <span class="sr-only">View Source</span>
-          </a>
-
-      </h1>
+<h1>
+<button class="settings display-settings">
+  <i class="ri-settings-3-line"></i>
+  <span class="sr-only">Settings</span>
+</button>
 
 
-        <section id="moduledoc">
+    <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/guild/scheduled_event.ex#L1" title="View Source" class="view-source" rel="help">
+      <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+      <span class="sr-only">View Source</span>
+    </a>
+
+  <span translate="no">Nostrum.Struct.Guild.ScheduledEvent</span> 
+  <small class="app-vsn" translate="no">(Nostrum v0.5.0)</small>
+
+</h1>
+
+
+  <section id="moduledoc">
 <p>Struct representing a scheduled event in a guild.</p>
-        </section>
+  </section>
 
 
-        <section id="summary" class="details-list">
-          <h1 class="section-heading">
-            <a class="hover-link" href="#summary">
-              <span class="icon-link" aria-hidden="true"></span>
-              <span class="sr-only">Link to this section</span>
-            </a>
-            Summary
-          </h1>
+  <section id="summary" class="details-list">
+    <h1 class="section-heading">
+      <a class="hover-link" href="#summary">
+        <i class="ri-link-m" aria-hidden="true"></i>
+        <span class="sr-only">Link to this section</span>
+      </a>
+      Summary
+    </h1>
 
   <div class="summary-types summary">
     <h2>
       <a href="#types">Types</a>
     </h2>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#t:channel_id/0">channel_id()</a>
 
-  </div>
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#t:channel_id/0" translate="no">channel_id()</a>
 
-    <div class="summary-synopsis"><p>The id of the channel the scheduled event is in.
+        </div>
+
+          <div class="summary-synopsis"><p>The id of the channel the scheduled event is in.
 Will be <code class="inline">nil</code> if <code class="inline">entity_type</code> is <code class="inline">EXTERNAL</code></p></div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#t:creator/0">creator()</a>
+      </div>
 
-  </div>
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#t:creator/0" translate="no">creator()</a>
 
-    <div class="summary-synopsis"><p>The user who created the scheduled event. Only present when retrieving the event from the API.</p></div>
+        </div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#t:creator_id/0">creator_id()</a>
+          <div class="summary-synopsis"><p>The user who created the scheduled event. Only present when retrieving the event from the API.</p></div>
 
-  </div>
+      </div>
 
-    <div class="summary-synopsis"><p>The id of the user who created the scheduled event.</p></div>
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#t:creator_id/0" translate="no">creator_id()</a>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#t:description/0">description()</a>
+        </div>
 
-  </div>
+          <div class="summary-synopsis"><p>The id of the user who created the scheduled event.</p></div>
 
-    <div class="summary-synopsis"><p>The description of the scheduled event.</p></div>
+      </div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#t:entity_id/0">entity_id()</a>
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#t:description/0" translate="no">description()</a>
 
-  </div>
+        </div>
 
-    <div class="summary-synopsis"><p>the id of an entity associated with a guild scheduled event.</p></div>
+          <div class="summary-synopsis"><p>The description of the scheduled event.</p></div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#t:entity_metadata/0">entity_metadata()</a>
+      </div>
 
-  </div>
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#t:entity_id/0" translate="no">entity_id()</a>
 
-    <div class="summary-synopsis"><p>Holds additional metadata associated with a scheduled event.</p></div>
+        </div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#t:entity_type/0">entity_type()</a>
+          <div class="summary-synopsis"><p>the id of an entity associated with a guild scheduled event.</p></div>
 
-  </div>
+      </div>
 
-    <div class="summary-synopsis"><p>The type of entity the scheduled event is for.</p></div>
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#t:entity_metadata/0" translate="no">entity_metadata()</a>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#t:guild_id/0">guild_id()</a>
+        </div>
 
-  </div>
+          <div class="summary-synopsis"><p>Holds additional metadata associated with a scheduled event.</p></div>
 
-    <div class="summary-synopsis"><p>The id of the guild the scheduled event is in.</p></div>
+      </div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#t:id/0">id()</a>
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#t:entity_type/0" translate="no">entity_type()</a>
 
-  </div>
+        </div>
 
-    <div class="summary-synopsis"><p>The id of the scheduled event.</p></div>
+          <div class="summary-synopsis"><p>The type of entity the scheduled event is for.</p></div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#t:name/0">name()</a>
+      </div>
 
-  </div>
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#t:guild_id/0" translate="no">guild_id()</a>
 
-    <div class="summary-synopsis"><p>The name of the scheduled event.</p></div>
+        </div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#t:privacy_level/0">privacy_level()</a>
+          <div class="summary-synopsis"><p>The id of the guild the scheduled event is in.</p></div>
 
-  </div>
+      </div>
 
-    <div class="summary-synopsis"><p>The privacy level of the scheduled event.
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#t:id/0" translate="no">id()</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>The id of the scheduled event.</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#t:name/0" translate="no">name()</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>The name of the scheduled event.</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#t:privacy_level/0" translate="no">privacy_level()</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>The privacy level of the scheduled event.
 At the time of writing, this is always <code class="inline">2</code> for <code class="inline">GUILD_ONLY</code></p></div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#t:scheduled_end_time/0">scheduled_end_time()</a>
+      </div>
 
-  </div>
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#t:scheduled_end_time/0" translate="no">scheduled_end_time()</a>
 
-    <div class="summary-synopsis"><p>The time the scheduled event ends as an ISO8601 timestamp.
+        </div>
+
+          <div class="summary-synopsis"><p>The time the scheduled event ends as an ISO8601 timestamp.
 Only required if <code class="inline">entity_type</code> is <code class="inline">EXTERNAL</code></p></div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#t:scheduled_start_time/0">scheduled_start_time()</a>
+      </div>
 
-  </div>
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#t:scheduled_start_time/0" translate="no">scheduled_start_time()</a>
 
-    <div class="summary-synopsis"><p>The time the scheduled event starts.</p></div>
+        </div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#t:status/0">status()</a>
+          <div class="summary-synopsis"><p>The time the scheduled event starts.</p></div>
 
-  </div>
+      </div>
 
-    <div class="summary-synopsis"><p>The status of the scheduled event.</p></div>
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#t:status/0" translate="no">status()</a>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#t:t/0">t()</a>
+        </div>
 
-  </div>
+          <div class="summary-synopsis"><p>The status of the scheduled event.</p></div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#t:user_count/0">user_count()</a>
+      </div>
 
-  </div>
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#t:t/0" translate="no">t()</a>
 
-    <div class="summary-synopsis"><p>The number of users who have subscribed to the scheduled event.</p></div>
+        </div>
 
-</div>
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#t:user_count/0" translate="no">user_count()</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>The number of users who have subscribed to the scheduled event.</p></div>
+
+      </div>
 
   </div>
 
@@ -262,39 +286,40 @@ Only required if <code class="inline">entity_type</code> is <code class="inline"
     <h2>
       <a href="#functions">Functions</a>
     </h2>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#to_struct/1">to_struct(map)</a>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#to_struct/1" translate="no">to_struct(map)</a>
+
+        </div>
+
+      </div>
 
   </div>
 
-</div>
-
-  </div>
-
-        </section>
+  </section>
 
 
-        <section id="types" class="details-list">
-          <h1 class="section-heading">
-            <a class="hover-link" href="#types">
-              <span class="icon-link" aria-hidden="true"></span>
-              <span class="sr-only">Link to this section</span>
-            </a>
+  <section id="types" class="details-list">
+    <h1 class="section-heading">
+      <a class="hover-link" href="#types">
+        <i class="ri-link-m" aria-hidden="true"></i>
+        <span class="sr-only">Link to this section</span>
+      </a>
 Types
-          </h1>
-          <div class="types-list">
+    </h1>
+    <div class="types-list">
 <section class="detail" id="t:channel_id/0">
 
   <div class="detail-header">
     <a href="#t:channel_id/0" class="detail-link" title="Link to this type">
-      <span class="icon-link" aria-hidden="true"></span>
+      <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature">channel_id()</h1>
+    <h1 class="signature" translate="no">channel_id()</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild/scheduled_event.ex#L38" class="view-source" rel="help" title="View Source">
-       <span class="icon-code" aria-hidden="true"></span>
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/guild/scheduled_event.ex#L38" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
 
@@ -306,7 +331,7 @@ Types
       <h2>Specs</h2>
       <div class="specs">
 
-          <pre>channel_id() :: <a href="Nostrum.Snowflake.html#t:t/0">Nostrum.Snowflake.t</a>() | nil</pre>
+          <pre translate="no">channel_id() :: <a href="Nostrum.Snowflake.html#t:t/0">Nostrum.Snowflake.t</a>() | nil</pre>
 
       </div>
 
@@ -318,13 +343,13 @@ Will be <code class="inline">nil</code> if <code class="inline">entity_type</cod
 
   <div class="detail-header">
     <a href="#t:creator/0" class="detail-link" title="Link to this type">
-      <span class="icon-link" aria-hidden="true"></span>
+      <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature">creator()</h1>
+    <h1 class="signature" translate="no">creator()</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild/scheduled_event.ex#L106" class="view-source" rel="help" title="View Source">
-       <span class="icon-code" aria-hidden="true"></span>
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/guild/scheduled_event.ex#L106" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
 
@@ -336,7 +361,7 @@ Will be <code class="inline">nil</code> if <code class="inline">entity_type</cod
       <h2>Specs</h2>
       <div class="specs">
 
-          <pre>creator() :: <a href="Nostrum.Struct.User.html#t:t/0">Nostrum.Struct.User.t</a>() | nil</pre>
+          <pre translate="no">creator() :: <a href="Nostrum.Struct.User.html#t:t/0">Nostrum.Struct.User.t</a>() | nil</pre>
 
       </div>
 
@@ -347,13 +372,13 @@ Will be <code class="inline">nil</code> if <code class="inline">entity_type</cod
 
   <div class="detail-header">
     <a href="#t:creator_id/0" class="detail-link" title="Link to this type">
-      <span class="icon-link" aria-hidden="true"></span>
+      <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature">creator_id()</h1>
+    <h1 class="signature" translate="no">creator_id()</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild/scheduled_event.ex#L45" class="view-source" rel="help" title="View Source">
-       <span class="icon-code" aria-hidden="true"></span>
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/guild/scheduled_event.ex#L45" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
 
@@ -365,7 +390,7 @@ Will be <code class="inline">nil</code> if <code class="inline">entity_type</cod
       <h2>Specs</h2>
       <div class="specs">
 
-          <pre>creator_id() :: <a href="Nostrum.Snowflake.html#t:t/0">Nostrum.Snowflake.t</a>() | nil</pre>
+          <pre translate="no">creator_id() :: <a href="Nostrum.Snowflake.html#t:t/0">Nostrum.Snowflake.t</a>() | nil</pre>
 
       </div>
 
@@ -376,13 +401,13 @@ Will be <code class="inline">nil</code> if <code class="inline">entity_type</cod
 
   <div class="detail-header">
     <a href="#t:description/0" class="detail-link" title="Link to this type">
-      <span class="icon-link" aria-hidden="true"></span>
+      <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature">description()</h1>
+    <h1 class="signature" translate="no">description()</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild/scheduled_event.ex#L51" class="view-source" rel="help" title="View Source">
-       <span class="icon-code" aria-hidden="true"></span>
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/guild/scheduled_event.ex#L51" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
 
@@ -394,7 +419,7 @@ Will be <code class="inline">nil</code> if <code class="inline">entity_type</cod
       <h2>Specs</h2>
       <div class="specs">
 
-          <pre>description() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>() | nil</pre>
+          <pre translate="no">description() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>() | nil</pre>
 
       </div>
 
@@ -405,13 +430,13 @@ Will be <code class="inline">nil</code> if <code class="inline">entity_type</cod
 
   <div class="detail-header">
     <a href="#t:entity_id/0" class="detail-link" title="Link to this type">
-      <span class="icon-link" aria-hidden="true"></span>
+      <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature">entity_id()</h1>
+    <h1 class="signature" translate="no">entity_id()</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild/scheduled_event.ex#L94" class="view-source" rel="help" title="View Source">
-       <span class="icon-code" aria-hidden="true"></span>
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/guild/scheduled_event.ex#L94" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
 
@@ -423,7 +448,7 @@ Will be <code class="inline">nil</code> if <code class="inline">entity_type</cod
       <h2>Specs</h2>
       <div class="specs">
 
-          <pre>entity_id() :: <a href="Nostrum.Snowflake.html#t:t/0">Nostrum.Snowflake.t</a>() | nil</pre>
+          <pre translate="no">entity_id() :: <a href="Nostrum.Snowflake.html#t:t/0">Nostrum.Snowflake.t</a>() | nil</pre>
 
       </div>
 
@@ -434,13 +459,13 @@ Will be <code class="inline">nil</code> if <code class="inline">entity_type</cod
 
   <div class="detail-header">
     <a href="#t:entity_metadata/0" class="detail-link" title="Link to this type">
-      <span class="icon-link" aria-hidden="true"></span>
+      <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature">entity_metadata()</h1>
+    <h1 class="signature" translate="no">entity_metadata()</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild/scheduled_event.ex#L99" class="view-source" rel="help" title="View Source">
-       <span class="icon-code" aria-hidden="true"></span>
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/guild/scheduled_event.ex#L99" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
 
@@ -452,7 +477,7 @@ Will be <code class="inline">nil</code> if <code class="inline">entity_type</cod
       <h2>Specs</h2>
       <div class="specs">
 
-          <pre>entity_metadata() ::
+          <pre translate="no">entity_metadata() ::
   <a href="Nostrum.Struct.Guild.ScheduledEvent.EntityMetadata.html#t:t/0">Nostrum.Struct.Guild.ScheduledEvent.EntityMetadata.t</a>() | nil</pre>
 
       </div>
@@ -464,13 +489,13 @@ Will be <code class="inline">nil</code> if <code class="inline">entity_type</cod
 
   <div class="detail-header">
     <a href="#t:entity_type/0" class="detail-link" title="Link to this type">
-      <span class="icon-link" aria-hidden="true"></span>
+      <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature">entity_type()</h1>
+    <h1 class="signature" translate="no">entity_type()</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild/scheduled_event.ex#L89" class="view-source" rel="help" title="View Source">
-       <span class="icon-code" aria-hidden="true"></span>
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/guild/scheduled_event.ex#L89" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
 
@@ -482,7 +507,7 @@ Will be <code class="inline">nil</code> if <code class="inline">entity_type</cod
       <h2>Specs</h2>
       <div class="specs">
 
-          <pre>entity_type() :: 1..3</pre>
+          <pre translate="no">entity_type() :: 1..3</pre>
 
       </div>
 
@@ -495,13 +520,13 @@ Will be <code class="inline">nil</code> if <code class="inline">entity_type</cod
 
   <div class="detail-header">
     <a href="#t:guild_id/0" class="detail-link" title="Link to this type">
-      <span class="icon-link" aria-hidden="true"></span>
+      <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature">guild_id()</h1>
+    <h1 class="signature" translate="no">guild_id()</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild/scheduled_event.ex#L32" class="view-source" rel="help" title="View Source">
-       <span class="icon-code" aria-hidden="true"></span>
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/guild/scheduled_event.ex#L32" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
 
@@ -513,7 +538,7 @@ Will be <code class="inline">nil</code> if <code class="inline">entity_type</cod
       <h2>Specs</h2>
       <div class="specs">
 
-          <pre>guild_id() :: <a href="Nostrum.Snowflake.html#t:t/0">Nostrum.Snowflake.t</a>()</pre>
+          <pre translate="no">guild_id() :: <a href="Nostrum.Snowflake.html#t:t/0">Nostrum.Snowflake.t</a>()</pre>
 
       </div>
 
@@ -524,13 +549,13 @@ Will be <code class="inline">nil</code> if <code class="inline">entity_type</cod
 
   <div class="detail-header">
     <a href="#t:id/0" class="detail-link" title="Link to this type">
-      <span class="icon-link" aria-hidden="true"></span>
+      <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature">id()</h1>
+    <h1 class="signature" translate="no">id()</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild/scheduled_event.ex#L29" class="view-source" rel="help" title="View Source">
-       <span class="icon-code" aria-hidden="true"></span>
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/guild/scheduled_event.ex#L29" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
 
@@ -542,7 +567,7 @@ Will be <code class="inline">nil</code> if <code class="inline">entity_type</cod
       <h2>Specs</h2>
       <div class="specs">
 
-          <pre>id() :: <a href="Nostrum.Snowflake.html#t:t/0">Nostrum.Snowflake.t</a>()</pre>
+          <pre translate="no">id() :: <a href="Nostrum.Snowflake.html#t:t/0">Nostrum.Snowflake.t</a>()</pre>
 
       </div>
 
@@ -553,13 +578,13 @@ Will be <code class="inline">nil</code> if <code class="inline">entity_type</cod
 
   <div class="detail-header">
     <a href="#t:name/0" class="detail-link" title="Link to this type">
-      <span class="icon-link" aria-hidden="true"></span>
+      <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature">name()</h1>
+    <h1 class="signature" translate="no">name()</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild/scheduled_event.ex#L48" class="view-source" rel="help" title="View Source">
-       <span class="icon-code" aria-hidden="true"></span>
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/guild/scheduled_event.ex#L48" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
 
@@ -571,7 +596,7 @@ Will be <code class="inline">nil</code> if <code class="inline">entity_type</cod
       <h2>Specs</h2>
       <div class="specs">
 
-          <pre>name() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()</pre>
+          <pre translate="no">name() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()</pre>
 
       </div>
 
@@ -582,13 +607,13 @@ Will be <code class="inline">nil</code> if <code class="inline">entity_type</cod
 
   <div class="detail-header">
     <a href="#t:privacy_level/0" class="detail-link" title="Link to this type">
-      <span class="icon-link" aria-hidden="true"></span>
+      <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature">privacy_level()</h1>
+    <h1 class="signature" translate="no">privacy_level()</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild/scheduled_event.ex#L68" class="view-source" rel="help" title="View Source">
-       <span class="icon-code" aria-hidden="true"></span>
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/guild/scheduled_event.ex#L68" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
 
@@ -600,7 +625,7 @@ Will be <code class="inline">nil</code> if <code class="inline">entity_type</cod
       <h2>Specs</h2>
       <div class="specs">
 
-          <pre>privacy_level() :: 2</pre>
+          <pre translate="no">privacy_level() :: 2</pre>
 
       </div>
 
@@ -612,13 +637,13 @@ At the time of writing, this is always <code class="inline">2</code> for <code c
 
   <div class="detail-header">
     <a href="#t:scheduled_end_time/0" class="detail-link" title="Link to this type">
-      <span class="icon-link" aria-hidden="true"></span>
+      <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature">scheduled_end_time()</h1>
+    <h1 class="signature" translate="no">scheduled_end_time()</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild/scheduled_event.ex#L62" class="view-source" rel="help" title="View Source">
-       <span class="icon-code" aria-hidden="true"></span>
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/guild/scheduled_event.ex#L62" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
 
@@ -630,7 +655,7 @@ At the time of writing, this is always <code class="inline">2</code> for <code c
       <h2>Specs</h2>
       <div class="specs">
 
-          <pre>scheduled_end_time() :: <a href="https://hexdocs.pm/elixir/DateTime.html#t:t/0">DateTime.t</a>() | nil</pre>
+          <pre translate="no">scheduled_end_time() :: <a href="https://hexdocs.pm/elixir/DateTime.html#t:t/0">DateTime.t</a>() | nil</pre>
 
       </div>
 
@@ -642,13 +667,13 @@ Only required if <code class="inline">entity_type</code> is <code class="inline"
 
   <div class="detail-header">
     <a href="#t:scheduled_start_time/0" class="detail-link" title="Link to this type">
-      <span class="icon-link" aria-hidden="true"></span>
+      <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature">scheduled_start_time()</h1>
+    <h1 class="signature" translate="no">scheduled_start_time()</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild/scheduled_event.ex#L56" class="view-source" rel="help" title="View Source">
-       <span class="icon-code" aria-hidden="true"></span>
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/guild/scheduled_event.ex#L56" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
 
@@ -660,7 +685,7 @@ Only required if <code class="inline">entity_type</code> is <code class="inline"
       <h2>Specs</h2>
       <div class="specs">
 
-          <pre>scheduled_start_time() :: <a href="https://hexdocs.pm/elixir/DateTime.html#t:t/0">DateTime.t</a>()</pre>
+          <pre translate="no">scheduled_start_time() :: <a href="https://hexdocs.pm/elixir/DateTime.html#t:t/0">DateTime.t</a>()</pre>
 
       </div>
 
@@ -671,13 +696,13 @@ Only required if <code class="inline">entity_type</code> is <code class="inline"
 
   <div class="detail-header">
     <a href="#t:status/0" class="detail-link" title="Link to this type">
-      <span class="icon-link" aria-hidden="true"></span>
+      <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature">status()</h1>
+    <h1 class="signature" translate="no">status()</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild/scheduled_event.ex#L80" class="view-source" rel="help" title="View Source">
-       <span class="icon-code" aria-hidden="true"></span>
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/guild/scheduled_event.ex#L80" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
 
@@ -689,7 +714,7 @@ Only required if <code class="inline">entity_type</code> is <code class="inline"
       <h2>Specs</h2>
       <div class="specs">
 
-          <pre>status() :: 1..4</pre>
+          <pre translate="no">status() :: 1..4</pre>
 
       </div>
 
@@ -703,13 +728,13 @@ Only required if <code class="inline">entity_type</code> is <code class="inline"
 
   <div class="detail-header">
     <a href="#t:t/0" class="detail-link" title="Link to this type">
-      <span class="icon-link" aria-hidden="true"></span>
+      <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature">t()</h1>
+    <h1 class="signature" translate="no">t()</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild/scheduled_event.ex#L111" class="view-source" rel="help" title="View Source">
-       <span class="icon-code" aria-hidden="true"></span>
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/guild/scheduled_event.ex#L111" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
 
@@ -721,7 +746,7 @@ Only required if <code class="inline">entity_type</code> is <code class="inline"
       <h2>Specs</h2>
       <div class="specs">
 
-          <pre>t() :: %Nostrum.Struct.Guild.ScheduledEvent{
+          <pre translate="no">t() :: %Nostrum.Struct.Guild.ScheduledEvent{
   channel_id: <a href="#t:channel_id/0">channel_id</a>(),
   creator: <a href="#t:creator/0">creator</a>(),
   creator_id: <a href="#t:creator_id/0">creator_id</a>(),
@@ -748,13 +773,13 @@ Only required if <code class="inline">entity_type</code> is <code class="inline"
 
   <div class="detail-header">
     <a href="#t:user_count/0" class="detail-link" title="Link to this type">
-      <span class="icon-link" aria-hidden="true"></span>
+      <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature">user_count()</h1>
+    <h1 class="signature" translate="no">user_count()</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild/scheduled_event.ex#L109" class="view-source" rel="help" title="View Source">
-       <span class="icon-code" aria-hidden="true"></span>
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/guild/scheduled_event.ex#L109" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
 
@@ -766,7 +791,7 @@ Only required if <code class="inline">entity_type</code> is <code class="inline"
       <h2>Specs</h2>
       <div class="specs">
 
-          <pre>user_count() :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">non_neg_integer</a>() | nil</pre>
+          <pre translate="no">user_count() :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">non_neg_integer</a>() | nil</pre>
 
       </div>
 
@@ -774,29 +799,29 @@ Only required if <code class="inline">entity_type</code> is <code class="inline"
   </section>
 </section>
 
-          </div>
-        </section>
+    </div>
+  </section>
 
-        <section id="functions" class="details-list">
-          <h1 class="section-heading">
-            <a class="hover-link" href="#functions">
-              <span class="icon-link" aria-hidden="true"></span>
-              <span class="sr-only">Link to this section</span>
-            </a>
+  <section id="functions" class="details-list">
+    <h1 class="section-heading">
+      <a class="hover-link" href="#functions">
+        <i class="ri-link-m" aria-hidden="true"></i>
+        <span class="sr-only">Link to this section</span>
+      </a>
 Functions
-          </h1>
-          <div class="functions-list">
+    </h1>
+    <div class="functions-list">
 <section class="detail" id="to_struct/1">
 
   <div class="detail-header">
     <a href="#to_struct/1" class="detail-link" title="Link to this function">
-      <span class="icon-link" aria-hidden="true"></span>
+      <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">to_struct(map)</h1>
+    <h1 class="signature" translate="no">to_struct(map)</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/struct/guild/scheduled_event.ex#L129" class="view-source" rel="help" title="View Source">
-       <span class="icon-code" aria-hidden="true"></span>
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/guild/scheduled_event.ex#L129" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
 
@@ -809,38 +834,31 @@ Functions
   </section>
 </section>
 
-          </div>
-        </section>
+    </div>
+  </section>
 
       <footer class="footer">
-        <p>
-          <span class="line">
-            Built using
-            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener">ExDoc</a> (v0.25.1) for the
-            <a href="https://elixir-lang.org" title="Elixir" target="_blank">Elixir programming language</a>.
-          </span>
-          <span class="line">
-            Designed by
-            <a href="https://twitter.com/dignifiedquire" target="_blank" rel="noopener" title="@dignifiedquire">Friedel Ziegelmayer</a>.
-          </span>
-        </p>
-        <p>
 
-            <a href="api-reference.html" title="API reference" class="line footer-button">API Reference</a>
+          <p>
+            On Hex.pm:
 
-          <button class="line footer-button display-shortcuts-help">
-            Display keyboard shortcuts
-          </button>
-          <button class="line footer-button night-mode-toggle">
-            Toggle night mode
-          </button>
-          <button class="line footer-button display-quick-switch">
-            Go to a HexDocs package
-          </button>
-          <button class="line footer-button tooltips-toggle">
-            <span class="tooltips-option-disable">Disable tooltips</span>
-            <span class="tooltips-option-enable">Enable tooltips</span>
-          </button>
+            <span class="line">
+              <a href="https://hex.pm/packages/nostrum/0.5.0" class="line footer-hex-package">Package</a>
+              <a href="https://preview.hex.pm/preview/nostrum/0.5.0" class="line">Preview</a>
+
+                <a href="https://preview.hex.pm/preview/nostrum/0.5.0/show/lib/nostrum/struct/guild/scheduled_event.ex">(current file)</a>
+
+            </span>
+
+            <button class="line footer-button display-quick-switch">
+              Search
+            </button>
+          </p>
+
+        <p>
+          Built using
+          <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.28.0) for the
+          <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
         </p>
       </footer>
     </div>

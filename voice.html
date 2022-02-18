@@ -4,17 +4,17 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="ExDoc v0.25.1">
-    <meta name="project" content="Nostrum v0.5.0-rc2">
+    <meta name="generator" content="ExDoc v0.28.0">
+    <meta name="project" content="Nostrum v0.5.0">
 
-    <title>Voice — Nostrum v0.5.0-rc2</title>
-    <link rel="stylesheet" href="dist/elixir-a172fe91e725dcb259e2.css" />
+    <title>Voice — Nostrum v0.5.0</title>
+    <link rel="stylesheet" href="dist/elixir-a816d167216329cc463d.css" />
 
-    <script src="dist/sidebar_items-8157d00a90.js"></script>
+    <script src="dist/sidebar_items-873cd43efc.js"></script>
 
       <script src="docs_config.js"></script>
 
-    <script async src="dist/app-f27ff079945e43879c46.js"></script>
+    <script async src="dist/app-80aa23c1d96b6dc3c064.js"></script>
 
 
   </head>
@@ -30,17 +30,18 @@
 
 <div class="main">
 
-<button class="sidebar-button sidebar-toggle">
-  <span class="icon-menu" title="Collapse/expand sidebar"></span>
-</button>
 
 <section class="sidebar">
+  <button class="sidebar-button sidebar-toggle">
+    <i class="ri-menu-line ri-lg" title="Collapse/expand sidebar"></i>
+  </button>
+
   <form class="sidebar-search" action="search.html">
     <button type="submit" class="search-button" aria-label="Submit Search">
-      <span class="icon-search" aria-hidden="true" title="Submit search"></span>
+      <i class="ri-search-2-line" aria-hidden="true" title="Submit search"></i>
     </button>
     <button type="button" tabindex="-1" class="search-close-button" aria-label="Cancel Search">
-      <span class="icon-cross" aria-hidden="true" title="Cancel search"></span>
+      <i class="ri-close-line ri-lg" aria-hidden="true" title="Cancel search"></i>
     </button>
     <label class="search-label">
       <input name="q" type="text" class="search-input" placeholder="Search..." aria-label="Input your search terms" autocomplete="off" />
@@ -53,26 +54,26 @@
   </div>
 
   <div class="sidebar-header">
+
     <div class="sidebar-projectDetails">
-      <a href="https://github.com/kraigie/nostrum" class="sidebar-projectName">
+      <a href="https://github.com/Kraigie/nostrum" class="sidebar-projectName" translate="no">
 Nostrum
       </a>
-      <strong class="sidebar-projectVersion">
-        v0.5.0-rc2
+      <strong class="sidebar-projectVersion" translate="no">
+        v0.5.0
       </strong>
     </div>
+    <ul class="sidebar-listNav">
+      <li><a id="extras-list-link" href="#full-list">Pages</a></li>
 
+        <li><a id="modules-list-link" href="#full-list">Modules</a></li>
+
+
+        <li><a id="tasks-list-link" href="#full-list"><span translate="no">Mix</span> Tasks</a></li>
+
+    </ul>
   </div>
 
-  <ul class="sidebar-listNav">
-    <li><a id="extras-list-link" href="#full-list">Pages</a></li>
-
-      <li><a id="modules-list-link" href="#full-list">Modules</a></li>
-
-
-      <li><a id="tasks-list-link" href="#full-list">Mix Tasks</a></li>
-
-  </ul>
   <div class="gradient"></div>
   <ul id="full-list" class="sidebar-fullList"></ul>
 </section>
@@ -81,8 +82,23 @@ Nostrum
   <div class="content-outer">
     <div id="content" class="content-inner">
 
+<h1>
+<button class="settings display-settings">
+  <i class="ri-settings-3-line"></i>
+  <span class="sr-only">Settings</span>
+</button>
+
+
+    <a href="https://github.com/Kraigie/nostrum/blob/master/docs/static/Voice.md#L1" title="View Source" class="view-source" rel="help">
+      <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+      <span class="sr-only">View Source</span>
+    </a>
+
+  <span>Voice</span>
+</h1>
+
 <h2 id="voice-channels" class="section-heading">
-  <a href="#voice-channels" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  <a href="#voice-channels" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
   Voice Channels
 </h2>
 <p>Discord voice channels allow audio data to be sent to the voice servers over UDP.
@@ -91,7 +107,7 @@ connection will be opened and maintained for each voice channel the bot joins.
 The websocket connection should reconnect automatically the same way that the 
 main Discord gateway websocket connections do. For available voice functions and
 usage see the <a href="Nostrum.Voice.html"><code class="inline">Nostrum.Voice</code></a> module.</p><h2 id="ffmpeg" class="section-heading">
-  <a href="#ffmpeg" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  <a href="#ffmpeg" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
   FFmpeg
 </h2>
 <p>Nostrum uses the powerful <a href="https://ffmpeg.org/">ffmpeg</a> command line utility to
@@ -105,7 +121,7 @@ When playing from a url, the url can be a name of a file on the filesystem or a 
 of file on a remote server - <a href="https://www.ffmpeg.org/ffmpeg-protocols.html">ffmpeg supports a ton of protocols</a>,
 the most common of which are probably <code class="inline">http</code> or simply reading a file from the filesystem.
 It is also possible to send raw opus frames, bypassing ffmpeg, if desired.</p><h2 id="youtube-dl" class="section-heading">
-  <a href="#youtube-dl" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  <a href="#youtube-dl" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
   youtube-dl
 </h2>
 <p>With only <code class="inline">ffmpeg</code> installed, Nostrum supports playing audio/video files or raw, piped
@@ -117,7 +133,7 @@ By default Nostrum will look for the executable <code class="inline">youtube-dl<
 executable is elsewhere, the path may be configured via <code class="inline">config :nostrum, :youtubedl, &quot;/path/to/youtube-dl&quot;</code>.
 When <a href="Nostrum.Voice.html#play/4"><code class="inline">Nostrum.Voice.play/4</code></a> is called with <code class="inline">:ytdl</code> for the <code class="inline">type</code> parameter, <code class="inline">youtube-dl</code> will be
 run with options <code class="inline">-f bestaudio -q -o -</code>, which will attempt to download the audio at the given url and pipe it to <code class="inline">ffmpeg</code>.</p><h2 id="streamlink" class="section-heading">
-  <a href="#streamlink" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  <a href="#streamlink" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
   streamlink
 </h2>
 <p>Nostrum also has support for <code class="inline">streamlink</code>, yet another powerful command line utility for downloading live streams from online video streaming services.
@@ -127,7 +143,7 @@ When <a href="Nostrum.Voice.html#play/4"><code class="inline">Nostrum.Voice.play
 will be attempt to download the live stream content and pipe it to <code class="inline">ffmpeg</code>.
 Using <code class="inline">streamlink</code> with Nostrum depends on <code class="inline">youtube-dl</code> to get the underlying
 stream URL from the user-friendly URL that's given as input.</p><h2 id="audio-timeout" class="section-heading">
-  <a href="#audio-timeout" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  <a href="#audio-timeout" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
   Audio Timeout
 </h2>
 <p>Upon invoking <a href="Nostrum.Voice.html#play/4"><code class="inline">Nostrum.Voice.play/4</code></a>, the player process has a large configurable initial window
@@ -145,7 +161,7 @@ even on a fast connection.
 If your use case involves playing large files at a timestamp several hours in like this,
 <code class="inline">play(guild_id, url, :ytdl, start_time: &quot;2:37:56&quot;)</code>, you may consider setting the timeout to a higher value, as downloading a large youtube video and having <code class="inline">ffmpeg</code> seek through several hours
 of audio may take 15-20 seconds, even with a fast network connection.</p><h2 id="audio-frames-per-burst" class="section-heading">
-  <a href="#audio-frames-per-burst" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  <a href="#audio-frames-per-burst" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
   Audio Frames Per Burst
 </h2>
 <p>The value <code class="inline">:audio_frames_per_burst</code> represents the number of consecutive packets to send before resting.
@@ -160,7 +176,7 @@ value to <em>at most</em> the minumum frame length of the audio you intend to pl
 means that each opus frame from your audio source will be taken individually and be sent in its own &quot;burst&quot; with the 
 player process sleeping between each; you likely won't notice a difference in audio playback quality compared to the 
 default value of <code class="inline">10</code> other than that your sub-200ms audio files will play as expected.</p><h2 id="voice-events" class="section-heading">
-  <a href="#voice-events" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  <a href="#voice-events" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
   Voice Events
 </h2>
 <p>There are a few voice related events that bots can consume with a <a href="Nostrum.Consumer.html"><code class="inline">Nostrum.Consumer</code></a> process:</p><ul><li><a href="Nostrum.Consumer.html#t:voice_state_update/0"><code class="inline">Nostrum.Consumer.voice_state_update/0</code></a></li><li><a href="Nostrum.Consumer.html#t:voice_server_update/0"><code class="inline">Nostrum.Consumer.voice_server_update/0</code></a></li><li><a href="Nostrum.Consumer.html#t:voice_speaking_update/0"><code class="inline">Nostrum.Consumer.voice_speaking_update/0</code></a></li><li><a href="Nostrum.Consumer.html#t:voice_ready/0"><code class="inline">Nostrum.Consumer.voice_ready/0</code></a></li></ul><p>Both <a href="Nostrum.Consumer.html#t:voice_state_update/0"><code class="inline">Nostrum.Consumer.voice_state_update/0</code></a> and <a href="Nostrum.Consumer.html#t:voice_server_update/0"><code class="inline">Nostrum.Consumer.voice_server_update/0</code></a> 
@@ -192,16 +208,16 @@ network actions must take place before playing audio is possible. Listening for 
 <a href="Nostrum.Consumer.html#t:voice_ready/0"><code class="inline">Nostrum.Consumer.voice_ready/0</code></a> event can be used by the bot to begin playing audio as soon 
 as it is able to. The alternative approach for this use case that is not event-driven is to 
 periodically call <a href="Nostrum.Voice.html#ready?/1"><code class="inline">Nostrum.Voice.ready?/1</code></a> and wait for it to return <code class="inline">true</code> as the trigger to
-begin playing. Another common approach is to define a <code class="inline">try_play</code> function as follows:</p><pre><code class="makeup elixir"><span class="kd">def</span><span class="w"> </span><span class="nf">try_play</span><span class="p" data-group-id="2030086591-1">(</span><span class="n">guild_id</span><span class="p">,</span><span class="w"> </span><span class="n">url</span><span class="p">,</span><span class="w"> </span><span class="n">type</span><span class="p">,</span><span class="w"> </span><span class="n">opts</span><span class="w"> </span><span class="o">\\</span><span class="w"> </span><span class="p" data-group-id="2030086591-2">[</span><span class="p" data-group-id="2030086591-2">]</span><span class="p" data-group-id="2030086591-1">)</span><span class="w"> </span><span class="k" data-group-id="2030086591-3">do</span><span class="w">
-  </span><span class="k">case</span><span class="w"> </span><span class="nc">Nostrum.Voice</span><span class="o">.</span><span class="n">play</span><span class="p" data-group-id="2030086591-4">(</span><span class="n">guild_id</span><span class="p">,</span><span class="w"> </span><span class="n">url</span><span class="p">,</span><span class="w"> </span><span class="n">type</span><span class="p">,</span><span class="w"> </span><span class="n">opts</span><span class="p" data-group-id="2030086591-4">)</span><span class="w"> </span><span class="k" data-group-id="2030086591-5">do</span><span class="w">
-    </span><span class="p" data-group-id="2030086591-6">{</span><span class="ss">:error</span><span class="p">,</span><span class="w"> </span><span class="c">_msg</span><span class="p" data-group-id="2030086591-6">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
-      </span><span class="nc">Process</span><span class="o">.</span><span class="n">sleep</span><span class="p" data-group-id="2030086591-7">(</span><span class="mi">100</span><span class="p" data-group-id="2030086591-7">)</span><span class="w">
-      </span><span class="n">try_play</span><span class="p" data-group-id="2030086591-8">(</span><span class="n">guild_id</span><span class="p">,</span><span class="w"> </span><span class="n">url</span><span class="p">,</span><span class="w"> </span><span class="n">type</span><span class="p">,</span><span class="w"> </span><span class="n">opts</span><span class="p" data-group-id="2030086591-8">)</span><span class="w">
+begin playing. Another common approach is to define a <code class="inline">try_play</code> function as follows:</p><pre><code class="makeup elixir" translate="no"><span class="kd">def</span><span class="w"> </span><span class="nf">try_play</span><span class="p" data-group-id="7822628719-1">(</span><span class="n">guild_id</span><span class="p">,</span><span class="w"> </span><span class="n">url</span><span class="p">,</span><span class="w"> </span><span class="n">type</span><span class="p">,</span><span class="w"> </span><span class="n">opts</span><span class="w"> </span><span class="o">\\</span><span class="w"> </span><span class="p" data-group-id="7822628719-2">[</span><span class="p" data-group-id="7822628719-2">]</span><span class="p" data-group-id="7822628719-1">)</span><span class="w"> </span><span class="k" data-group-id="7822628719-3">do</span><span class="w">
+  </span><span class="k">case</span><span class="w"> </span><span class="nc">Nostrum.Voice</span><span class="o">.</span><span class="n">play</span><span class="p" data-group-id="7822628719-4">(</span><span class="n">guild_id</span><span class="p">,</span><span class="w"> </span><span class="n">url</span><span class="p">,</span><span class="w"> </span><span class="n">type</span><span class="p">,</span><span class="w"> </span><span class="n">opts</span><span class="p" data-group-id="7822628719-4">)</span><span class="w"> </span><span class="k" data-group-id="7822628719-5">do</span><span class="w">
+    </span><span class="p" data-group-id="7822628719-6">{</span><span class="ss">:error</span><span class="p">,</span><span class="w"> </span><span class="c">_msg</span><span class="p" data-group-id="7822628719-6">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+      </span><span class="nc">Process</span><span class="o">.</span><span class="n">sleep</span><span class="p" data-group-id="7822628719-7">(</span><span class="mi">100</span><span class="p" data-group-id="7822628719-7">)</span><span class="w">
+      </span><span class="n">try_play</span><span class="p" data-group-id="7822628719-8">(</span><span class="n">guild_id</span><span class="p">,</span><span class="w"> </span><span class="n">url</span><span class="p">,</span><span class="w"> </span><span class="n">type</span><span class="p">,</span><span class="w"> </span><span class="n">opts</span><span class="p" data-group-id="7822628719-8">)</span><span class="w">
 
     </span><span class="bp">_</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
       </span><span class="ss">:ok</span><span class="w">
-  </span><span class="k" data-group-id="2030086591-5">end</span><span class="w">
-</span><span class="k" data-group-id="2030086591-3">end</span></code></pre><p>Note that the third element in the event is of type <a href="Nostrum.Struct.VoiceWSState.html#t:t/0"><code class="inline">Nostrum.Struct.VoiceWSState.t/0</code></a> and 
+  </span><span class="k" data-group-id="7822628719-5">end</span><span class="w">
+</span><span class="k" data-group-id="7822628719-3">end</span></code></pre><p>Note that the third element in the event is of type <a href="Nostrum.Struct.VoiceWSState.html#t:t/0"><code class="inline">Nostrum.Struct.VoiceWSState.t/0</code></a> and 
 not <a href="Nostrum.Struct.WSState.html#t:t/0"><code class="inline">Nostrum.Struct.WSState.t/0</code></a>.</p>
 <div class="bottom-actions">
   <div class="bottom-actions-item">
@@ -231,34 +247,27 @@ Gateway Intents
 </div>
 
       <footer class="footer">
-        <p>
-          <span class="line">
-            Built using
-            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener">ExDoc</a> (v0.25.1) for the
-            <a href="https://elixir-lang.org" title="Elixir" target="_blank">Elixir programming language</a>.
-          </span>
-          <span class="line">
-            Designed by
-            <a href="https://twitter.com/dignifiedquire" target="_blank" rel="noopener" title="@dignifiedquire">Friedel Ziegelmayer</a>.
-          </span>
-        </p>
-        <p>
 
-            <a href="api-reference.html" title="API reference" class="line footer-button">API Reference</a>
+          <p>
+            On Hex.pm:
 
-          <button class="line footer-button display-shortcuts-help">
-            Display keyboard shortcuts
-          </button>
-          <button class="line footer-button night-mode-toggle">
-            Toggle night mode
-          </button>
-          <button class="line footer-button display-quick-switch">
-            Go to a HexDocs package
-          </button>
-          <button class="line footer-button tooltips-toggle">
-            <span class="tooltips-option-disable">Disable tooltips</span>
-            <span class="tooltips-option-enable">Enable tooltips</span>
-          </button>
+            <span class="line">
+              <a href="https://hex.pm/packages/nostrum/0.5.0" class="line footer-hex-package">Package</a>
+              <a href="https://preview.hex.pm/preview/nostrum/0.5.0" class="line">Preview</a>
+
+                <a href="https://preview.hex.pm/preview/nostrum/0.5.0/show/docs/static/Voice.md">(current file)</a>
+
+            </span>
+
+            <button class="line footer-button display-quick-switch">
+              Search
+            </button>
+          </p>
+
+        <p>
+          Built using
+          <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.28.0) for the
+          <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
         </p>
       </footer>
     </div>

@@ -4,17 +4,17 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="ExDoc v0.25.1">
-    <meta name="project" content="Nostrum v0.5.0-rc2">
+    <meta name="generator" content="ExDoc v0.28.0">
+    <meta name="project" content="Nostrum v0.5.0">
 
-    <title>Nostrum.Cache.ChannelCache — Nostrum v0.5.0-rc2</title>
-    <link rel="stylesheet" href="dist/elixir-a172fe91e725dcb259e2.css" />
+    <title>Nostrum.Cache.ChannelCache — Nostrum v0.5.0</title>
+    <link rel="stylesheet" href="dist/elixir-a816d167216329cc463d.css" />
 
-    <script src="dist/sidebar_items-8157d00a90.js"></script>
+    <script src="dist/sidebar_items-873cd43efc.js"></script>
 
       <script src="docs_config.js"></script>
 
-    <script async src="dist/app-f27ff079945e43879c46.js"></script>
+    <script async src="dist/app-80aa23c1d96b6dc3c064.js"></script>
 
 
   </head>
@@ -30,17 +30,18 @@
 
 <div class="main">
 
-<button class="sidebar-button sidebar-toggle">
-  <span class="icon-menu" title="Collapse/expand sidebar"></span>
-</button>
 
 <section class="sidebar">
+  <button class="sidebar-button sidebar-toggle">
+    <i class="ri-menu-line ri-lg" title="Collapse/expand sidebar"></i>
+  </button>
+
   <form class="sidebar-search" action="search.html">
     <button type="submit" class="search-button" aria-label="Submit Search">
-      <span class="icon-search" aria-hidden="true" title="Submit search"></span>
+      <i class="ri-search-2-line" aria-hidden="true" title="Submit search"></i>
     </button>
     <button type="button" tabindex="-1" class="search-close-button" aria-label="Cancel Search">
-      <span class="icon-cross" aria-hidden="true" title="Cancel search"></span>
+      <i class="ri-close-line ri-lg" aria-hidden="true" title="Cancel search"></i>
     </button>
     <label class="search-label">
       <input name="q" type="text" class="search-input" placeholder="Search..." aria-label="Input your search terms" autocomplete="off" />
@@ -53,26 +54,26 @@
   </div>
 
   <div class="sidebar-header">
+
     <div class="sidebar-projectDetails">
-      <a href="https://github.com/kraigie/nostrum" class="sidebar-projectName">
+      <a href="https://github.com/Kraigie/nostrum" class="sidebar-projectName" translate="no">
 Nostrum
       </a>
-      <strong class="sidebar-projectVersion">
-        v0.5.0-rc2
+      <strong class="sidebar-projectVersion" translate="no">
+        v0.5.0
       </strong>
     </div>
+    <ul class="sidebar-listNav">
+      <li><a id="extras-list-link" href="#full-list">Pages</a></li>
 
+        <li><a id="modules-list-link" href="#full-list">Modules</a></li>
+
+
+        <li><a id="tasks-list-link" href="#full-list"><span translate="no">Mix</span> Tasks</a></li>
+
+    </ul>
   </div>
 
-  <ul class="sidebar-listNav">
-    <li><a id="extras-list-link" href="#full-list">Pages</a></li>
-
-      <li><a id="modules-list-link" href="#full-list">Modules</a></li>
-
-
-      <li><a id="tasks-list-link" href="#full-list">Mix Tasks</a></li>
-
-  </ul>
   <div class="gradient"></div>
   <ul id="full-list" class="sidebar-fullList"></ul>
 </section>
@@ -81,18 +82,25 @@ Nostrum
   <div class="content-outer">
     <div id="content" class="content-inner">
 
-      <h1>
-Nostrum.Cache.ChannelCache <small>behaviour</small> <small class="app-vsn">(Nostrum v0.5.0-rc2)</small>
-
-          <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/channel_cache.ex#L1" title="View Source" class="view-source" rel="help">
-            <span class="icon-code" aria-hidden="true"></span>
-            <span class="sr-only">View Source</span>
-          </a>
-
-      </h1>
+<h1>
+<button class="settings display-settings">
+  <i class="ri-settings-3-line"></i>
+  <span class="sr-only">Settings</span>
+</button>
 
 
-        <section id="moduledoc">
+    <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/channel_cache.ex#L1" title="View Source" class="view-source" rel="help">
+      <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+      <span class="sr-only">View Source</span>
+    </a>
+
+  <span translate="no">Nostrum.Cache.ChannelCache</span> <small>behaviour</small>
+  <small class="app-vsn" translate="no">(Nostrum v0.5.0)</small>
+
+</h1>
+
+
+  <section id="moduledoc">
 <p>Cache behaviour &amp; dispatcher for channels.</p><p>You can call the functions provided by this module independent of which cache
 is configured, and it will dispatch to the configured cache implementation.
 The user-facing functions for reading the cache can be found in the &quot;Reading
@@ -101,7 +109,7 @@ You can override this in the <code class="inline">:caches</code> option of the <
 by setting the <code class="inline">:channels</code> field to a different module implementing the
 <a href="Nostrum.Cache.ChannelCache.html#content"><code class="inline">Nostrum.Cache.ChannelCache</code></a> behaviour. Any module below
 <a href="Nostrum.Cache.ChannelCache.html#content"><code class="inline">Nostrum.Cache.ChannelCache</code></a> can be used as a cache.</p><h2 id="module-writing-your-own-channel-cache" class="section-heading">
-  <a href="#module-writing-your-own-channel-cache" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  <a href="#module-writing-your-own-channel-cache" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
   Writing your own channel cache
 </h2>
 <p>As with the other caches, the channel cache API consists of two parts:</p><ul><li><p>The functions that the user calls, currently only <a href="#get/1"><code class="inline">get/1</code></a> and <a href="#get!/1"><code class="inline">get!/1</code></a></p></li><li><p>The functions that nostrum calls, such as <a href="#c:create/1"><code class="inline">create/1</code></a> or <a href="#c:update/1"><code class="inline">update/1</code></a>.
@@ -120,31 +128,32 @@ to sanitize the data before it enters the cache. Caching implementations
 need to cast the data to the resulting type themselves. A possible future
 improvement would be moving the data casting into this module before the
 backing cache implementation is called.</p>
-        </section>
+  </section>
 
 
-        <section id="summary" class="details-list">
-          <h1 class="section-heading">
-            <a class="hover-link" href="#summary">
-              <span class="icon-link" aria-hidden="true"></span>
-              <span class="sr-only">Link to this section</span>
-            </a>
-            Summary
-          </h1>
+  <section id="summary" class="details-list">
+    <h1 class="section-heading">
+      <a class="hover-link" href="#summary">
+        <i class="ri-link-m" aria-hidden="true"></i>
+        <span class="sr-only">Link to this section</span>
+      </a>
+      Summary
+    </h1>
 
   <div class="summary-types summary">
     <h2>
       <a href="#types">Types</a>
     </h2>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#t:reason/0">reason()</a>
 
-  </div>
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#t:reason/0" translate="no">reason()</a>
 
-    <div class="summary-synopsis"><p>Specifies the reason for why a lookup operation has failed.</p></div>
+        </div>
 
-</div>
+          <div class="summary-synopsis"><p>Specifies the reason for why a lookup operation has failed.</p></div>
+
+      </div>
 
   </div>
 
@@ -152,60 +161,66 @@ backing cache implementation is called.</p>
     <h2>
       <a href="#callbacks">Callbacks</a>
     </h2>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#c:create/1">create(map)</a>
 
-  </div>
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#c:create/1" translate="no">create(map)</a>
 
-    <div class="summary-synopsis"><p>Create a channel in the cache.</p></div>
+        </div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#c:delete/1">delete(id)</a>
+          <div class="summary-synopsis"><p>Create a channel in the cache.</p></div>
 
-  </div>
+      </div>
 
-    <div class="summary-synopsis"><p>Delete a channel from the cache.</p></div>
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#c:delete/1" translate="no">delete(id)</a>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#c:get/1">get(arg1)</a>
+        </div>
 
-  </div>
+          <div class="summary-synopsis"><p>Delete a channel from the cache.</p></div>
 
-    <div class="summary-synopsis"><p>Retrieves a channel from the cache.</p></div>
+      </div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#c:get!/1">get!(arg1)</a>
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#c:get/1" translate="no">get(arg1)</a>
 
-  </div>
+        </div>
 
-    <div class="summary-synopsis"><p>Same as <a href="#get/1"><code class="inline">get/1</code></a>, but raises <a href="Nostrum.Error.CacheError.html"><code class="inline">Nostrum.Error.CacheError</code></a> in case of failure.</p></div>
+          <div class="summary-synopsis"><p>Retrieves a channel from the cache.</p></div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#c:lookup/1">lookup(id)</a>
+      </div>
 
-  </div>
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#c:get!/1" translate="no">get!(arg1)</a>
 
-    <div class="summary-synopsis"><p>Lookup a channel from the cache by ID.</p></div>
+        </div>
 
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#c:update/1">update(t)</a>
+          <div class="summary-synopsis"><p>Same as <a href="#get/1"><code class="inline">get/1</code></a>, but raises <a href="Nostrum.Error.CacheError.html"><code class="inline">Nostrum.Error.CacheError</code></a> in case of failure.</p></div>
 
-  </div>
+      </div>
 
-    <div class="summary-synopsis"><p>Update a channel from upstream data.</p></div>
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#c:lookup/1" translate="no">lookup(id)</a>
 
-</div>
+        </div>
+
+          <div class="summary-synopsis"><p>Lookup a channel from the cache by ID.</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#c:update/1" translate="no">update(t)</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>Update a channel from upstream data.</p></div>
+
+      </div>
 
   </div>
 
@@ -213,86 +228,92 @@ backing cache implementation is called.</p>
     <h2>
       <a href="#functions">Functions</a>
     </h2>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#create/1">create(map)</a>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#create/1" translate="no">create(map)</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>See <a href="Nostrum.Cache.ChannelCache.ETS.html#create/1"><code class="inline">Nostrum.Cache.ChannelCache.ETS.create/1</code></a>.</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#delete/1" translate="no">delete(channel_id)</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>See <a href="Nostrum.Cache.ChannelCache.ETS.html#delete/1"><code class="inline">Nostrum.Cache.ChannelCache.ETS.delete/1</code></a>.</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#get/1" translate="no">get(channel_id)</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>See <a href="Nostrum.Cache.ChannelCache.ETS.html#get/1"><code class="inline">Nostrum.Cache.ChannelCache.ETS.get/1</code></a>.</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#get!/1" translate="no">get!(channel_id)</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>See <a href="Nostrum.Cache.ChannelCache.ETS.html#get!/1"><code class="inline">Nostrum.Cache.ChannelCache.ETS.get!/1</code></a>.</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#lookup/1" translate="no">lookup(channel_id)</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>See <a href="Nostrum.Cache.ChannelCache.ETS.html#lookup/1"><code class="inline">Nostrum.Cache.ChannelCache.ETS.lookup/1</code></a>.</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#update/1" translate="no">update(channel)</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>See <a href="Nostrum.Cache.ChannelCache.ETS.html#update/1"><code class="inline">Nostrum.Cache.ChannelCache.ETS.update/1</code></a>.</p></div>
+
+      </div>
 
   </div>
 
-    <div class="summary-synopsis"><p>See <a href="Nostrum.Cache.ChannelCache.ETS.html#create/1"><code class="inline">Nostrum.Cache.ChannelCache.ETS.create/1</code></a>.</p></div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#delete/1">delete(channel_id)</a>
-
-  </div>
-
-    <div class="summary-synopsis"><p>See <a href="Nostrum.Cache.ChannelCache.ETS.html#delete/1"><code class="inline">Nostrum.Cache.ChannelCache.ETS.delete/1</code></a>.</p></div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#get/1">get(channel_id)</a>
-
-  </div>
-
-    <div class="summary-synopsis"><p>See <a href="Nostrum.Cache.ChannelCache.ETS.html#get/1"><code class="inline">Nostrum.Cache.ChannelCache.ETS.get/1</code></a>.</p></div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#get!/1">get!(channel_id)</a>
-
-  </div>
-
-    <div class="summary-synopsis"><p>See <a href="Nostrum.Cache.ChannelCache.ETS.html#get!/1"><code class="inline">Nostrum.Cache.ChannelCache.ETS.get!/1</code></a>.</p></div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#lookup/1">lookup(channel_id)</a>
-
-  </div>
-
-    <div class="summary-synopsis"><p>See <a href="Nostrum.Cache.ChannelCache.ETS.html#lookup/1"><code class="inline">Nostrum.Cache.ChannelCache.ETS.lookup/1</code></a>.</p></div>
-
-</div>
-<div class="summary-row">
-  <div class="summary-signature">
-    <a href="#update/1">update(channel)</a>
-
-  </div>
-
-    <div class="summary-synopsis"><p>See <a href="Nostrum.Cache.ChannelCache.ETS.html#update/1"><code class="inline">Nostrum.Cache.ChannelCache.ETS.update/1</code></a>.</p></div>
-
-</div>
-
-  </div>
-
-        </section>
+  </section>
 
 
-        <section id="types" class="details-list">
-          <h1 class="section-heading">
-            <a class="hover-link" href="#types">
-              <span class="icon-link" aria-hidden="true"></span>
-              <span class="sr-only">Link to this section</span>
-            </a>
+  <section id="types" class="details-list">
+    <h1 class="section-heading">
+      <a class="hover-link" href="#types">
+        <i class="ri-link-m" aria-hidden="true"></i>
+        <span class="sr-only">Link to this section</span>
+      </a>
 Types
-          </h1>
-          <div class="types-list">
+    </h1>
+    <div class="types-list">
 <section class="detail" id="t:reason/0">
 
   <div class="detail-header">
     <a href="#t:reason/0" class="detail-link" title="Link to this type">
-      <span class="icon-link" aria-hidden="true"></span>
+      <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature">reason()</h1>
+    <h1 class="signature" translate="no">reason()</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/channel_cache.ex#L52" class="view-source" rel="help" title="View Source">
-       <span class="icon-code" aria-hidden="true"></span>
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/channel_cache.ex#L52" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
 
@@ -304,7 +325,7 @@ Types
       <h2>Specs</h2>
       <div class="specs">
 
-          <pre>reason() :: :channel_not_found</pre>
+          <pre translate="no">reason() :: :channel_not_found</pre>
 
       </div>
 
@@ -312,29 +333,29 @@ Types
   </section>
 </section>
 
-          </div>
-        </section>
+    </div>
+  </section>
 
-        <section id="callbacks" class="details-list">
-          <h1 class="section-heading">
-            <a class="hover-link" href="#callbacks">
-              <span class="icon-link" aria-hidden="true"></span>
-              <span class="sr-only">Link to this section</span>
-            </a>
+  <section id="callbacks" class="details-list">
+    <h1 class="section-heading">
+      <a class="hover-link" href="#callbacks">
+        <i class="ri-link-m" aria-hidden="true"></i>
+        <span class="sr-only">Link to this section</span>
+      </a>
 Callbacks
-          </h1>
-          <div class="callbacks-list">
+    </h1>
+    <div class="callbacks-list">
 <section class="detail" id="c:create/1">
 
   <div class="detail-header">
     <a href="#c:create/1" class="detail-link" title="Link to this callback">
-      <span class="icon-link" aria-hidden="true"></span>
+      <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this callback</span>
     </a>
-    <h1 class="signature">create(map)</h1>
+    <h1 class="signature" translate="no">create(map)</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/channel_cache.ex#L96" class="view-source" rel="help" title="View Source">
-       <span class="icon-code" aria-hidden="true"></span>
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/channel_cache.ex#L96" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
 
@@ -346,7 +367,7 @@ Callbacks
       <h2>Specs</h2>
       <div class="specs">
 
-          <pre>create(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()) :: <a href="Nostrum.Struct.Channel.html#t:t/0">Nostrum.Struct.Channel.t</a>()</pre>
+          <pre translate="no">create(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()) :: <a href="Nostrum.Struct.Channel.html#t:t/0">Nostrum.Struct.Channel.t</a>()</pre>
 
       </div>
 
@@ -357,13 +378,13 @@ Callbacks
 
   <div class="detail-header">
     <a href="#c:delete/1" class="detail-link" title="Link to this callback">
-      <span class="icon-link" aria-hidden="true"></span>
+      <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this callback</span>
     </a>
-    <h1 class="signature">delete(id)</h1>
+    <h1 class="signature" translate="no">delete(id)</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/channel_cache.ex#L110" class="view-source" rel="help" title="View Source">
-       <span class="icon-code" aria-hidden="true"></span>
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/channel_cache.ex#L110" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
 
@@ -375,7 +396,7 @@ Callbacks
       <h2>Specs</h2>
       <div class="specs">
 
-          <pre>delete(<a href="Nostrum.Struct.Channel.html#t:id/0">Nostrum.Struct.Channel.id</a>()) :: :noop | <a href="Nostrum.Struct.Channel.html#t:t/0">Nostrum.Struct.Channel.t</a>()</pre>
+          <pre translate="no">delete(<a href="Nostrum.Struct.Channel.html#t:id/0">Nostrum.Struct.Channel.id</a>()) :: :noop | <a href="Nostrum.Struct.Channel.html#t:t/0">Nostrum.Struct.Channel.t</a>()</pre>
 
       </div>
 
@@ -386,13 +407,13 @@ Callbacks
 
   <div class="detail-header">
     <a href="#c:get/1" class="detail-link" title="Link to this callback">
-      <span class="icon-link" aria-hidden="true"></span>
+      <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this callback</span>
     </a>
-    <h1 class="signature">get(arg1)</h1>
+    <h1 class="signature" translate="no">get(arg1)</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/channel_cache.ex#L85" class="view-source" rel="help" title="View Source">
-       <span class="icon-code" aria-hidden="true"></span>
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/channel_cache.ex#L85" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
 
@@ -404,7 +425,7 @@ Callbacks
       <h2>Specs</h2>
       <div class="specs">
 
-          <pre>get(<a href="Nostrum.Struct.Channel.html#t:id/0">Nostrum.Struct.Channel.id</a>() | <a href="Nostrum.Struct.Message.html#t:t/0">Nostrum.Struct.Message.t</a>()) ::
+          <pre translate="no">get(<a href="Nostrum.Struct.Channel.html#t:id/0">Nostrum.Struct.Channel.id</a>() | <a href="Nostrum.Struct.Message.html#t:t/0">Nostrum.Struct.Message.t</a>()) ::
   {:error, <a href="#t:reason/0">reason</a>()} | {:ok, <a href="Nostrum.Struct.Channel.html#t:t/0">Nostrum.Struct.Channel.t</a>()} | {:error, <a href="#t:reason/0">reason</a>()}</pre>
 
       </div>
@@ -412,28 +433,28 @@ Callbacks
 <p>Retrieves a channel from the cache.</p><p>Internally, the ChannelCache process only stores
 <a href="Nostrum.Struct.Channel.html#t:dm_channel/0"><code class="inline">Nostrum.Struct.Channel.dm_channel/0</code></a> references. To get channel
 information, a call is made to a <a href="Nostrum.Cache.GuildCache.html"><code class="inline">Nostrum.Cache.GuildCache</code></a>.</p><p>If successful, returns <code class="inline">{:ok, channel}</code>. Otherwise, returns <code class="inline">{:error, reason}</code></p><h2 id="c:get/1-example" class="section-heading">
-  <a href="#c:get/1-example" class="hover-link"><span class="icon-link" aria-hidden="true"></span></a>
+  <a href="#c:get/1-example" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
   Example
 </h2>
-<pre><code class="makeup elixir"><span class="k">case</span><span class="w"> </span><span class="nc">Nostrum.Cache.ChannelCache</span><span class="o">.</span><span class="n">get</span><span class="p" data-group-id="7235658173-1">(</span><span class="mi">133333333337</span><span class="p" data-group-id="7235658173-1">)</span><span class="w"> </span><span class="k" data-group-id="7235658173-2">do</span><span class="w">
-  </span><span class="p" data-group-id="7235658173-3">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">channel</span><span class="p" data-group-id="7235658173-3">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+<pre><code class="makeup elixir" translate="no"><span class="k">case</span><span class="w"> </span><span class="nc">Nostrum.Cache.ChannelCache</span><span class="o">.</span><span class="n">get</span><span class="p" data-group-id="9297351876-1">(</span><span class="mi">133333333337</span><span class="p" data-group-id="9297351876-1">)</span><span class="w"> </span><span class="k" data-group-id="9297351876-2">do</span><span class="w">
+  </span><span class="p" data-group-id="9297351876-3">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">channel</span><span class="p" data-group-id="9297351876-3">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
     </span><span class="s">&quot;We found &quot;</span><span class="w"> </span><span class="o">&lt;&gt;</span><span class="w"> </span><span class="n">channel</span><span class="o">.</span><span class="n">name</span><span class="w">
-  </span><span class="p" data-group-id="7235658173-4">{</span><span class="ss">:error</span><span class="p">,</span><span class="w"> </span><span class="c">_reason</span><span class="p" data-group-id="7235658173-4">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+  </span><span class="p" data-group-id="9297351876-4">{</span><span class="ss">:error</span><span class="p">,</span><span class="w"> </span><span class="c">_reason</span><span class="p" data-group-id="9297351876-4">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
     </span><span class="s">&quot;Donde esta&quot;</span><span class="w">
-</span><span class="k" data-group-id="7235658173-2">end</span></code></pre>
+</span><span class="k" data-group-id="9297351876-2">end</span></code></pre>
   </section>
 </section>
 <section class="detail" id="c:get!/1">
 
   <div class="detail-header">
     <a href="#c:get!/1" class="detail-link" title="Link to this callback">
-      <span class="icon-link" aria-hidden="true"></span>
+      <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this callback</span>
     </a>
-    <h1 class="signature">get!(arg1)</h1>
+    <h1 class="signature" translate="no">get!(arg1)</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/channel_cache.ex#L92" class="view-source" rel="help" title="View Source">
-       <span class="icon-code" aria-hidden="true"></span>
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/channel_cache.ex#L92" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
 
@@ -445,7 +466,7 @@ information, a call is made to a <a href="Nostrum.Cache.GuildCache.html"><code c
       <h2>Specs</h2>
       <div class="specs">
 
-          <pre>get!(<a href="Nostrum.Struct.Channel.html#t:id/0">Nostrum.Struct.Channel.id</a>() | <a href="Nostrum.Struct.Message.html#t:t/0">Nostrum.Struct.Message.t</a>()) ::
+          <pre translate="no">get!(<a href="Nostrum.Struct.Channel.html#t:id/0">Nostrum.Struct.Channel.id</a>() | <a href="Nostrum.Struct.Message.html#t:t/0">Nostrum.Struct.Message.t</a>()) ::
   <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">no_return</a>() | <a href="Nostrum.Struct.Channel.html#t:t/0">Nostrum.Struct.Channel.t</a>()</pre>
 
       </div>
@@ -457,13 +478,13 @@ information, a call is made to a <a href="Nostrum.Cache.GuildCache.html"><code c
 
   <div class="detail-header">
     <a href="#c:lookup/1" class="detail-link" title="Link to this callback">
-      <span class="icon-link" aria-hidden="true"></span>
+      <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this callback</span>
     </a>
-    <h1 class="signature">lookup(id)</h1>
+    <h1 class="signature" translate="no">lookup(id)</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/channel_cache.ex#L117" class="view-source" rel="help" title="View Source">
-       <span class="icon-code" aria-hidden="true"></span>
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/channel_cache.ex#L117" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
 
@@ -475,7 +496,7 @@ information, a call is made to a <a href="Nostrum.Cache.GuildCache.html"><code c
       <h2>Specs</h2>
       <div class="specs">
 
-          <pre>lookup(<a href="Nostrum.Struct.Channel.html#t:id/0">Nostrum.Struct.Channel.id</a>()) :: {:error, <a href="#t:reason/0">reason</a>()} | {:ok, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()}</pre>
+          <pre translate="no">lookup(<a href="Nostrum.Struct.Channel.html#t:id/0">Nostrum.Struct.Channel.id</a>()) :: {:error, <a href="#t:reason/0">reason</a>()} | {:ok, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()}</pre>
 
       </div>
 
@@ -486,13 +507,13 @@ information, a call is made to a <a href="Nostrum.Cache.GuildCache.html"><code c
 
   <div class="detail-header">
     <a href="#c:update/1" class="detail-link" title="Link to this callback">
-      <span class="icon-link" aria-hidden="true"></span>
+      <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this callback</span>
     </a>
-    <h1 class="signature">update(t)</h1>
+    <h1 class="signature" translate="no">update(t)</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/channel_cache.ex#L103" class="view-source" rel="help" title="View Source">
-       <span class="icon-code" aria-hidden="true"></span>
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/channel_cache.ex#L103" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
 
@@ -504,7 +525,7 @@ information, a call is made to a <a href="Nostrum.Cache.GuildCache.html"><code c
       <h2>Specs</h2>
       <div class="specs">
 
-          <pre>update(<a href="Nostrum.Struct.Channel.html#t:t/0">Nostrum.Struct.Channel.t</a>()) ::
+          <pre translate="no">update(<a href="Nostrum.Struct.Channel.html#t:t/0">Nostrum.Struct.Channel.t</a>()) ::
   :noop | {<a href="Nostrum.Struct.Channel.html#t:t/0">Nostrum.Struct.Channel.t</a>(), <a href="Nostrum.Struct.Channel.html#t:t/0">Nostrum.Struct.Channel.t</a>()}</pre>
 
       </div>
@@ -513,29 +534,29 @@ information, a call is made to a <a href="Nostrum.Cache.GuildCache.html"><code c
   </section>
 </section>
 
-          </div>
-        </section>
+    </div>
+  </section>
 
-        <section id="functions" class="details-list">
-          <h1 class="section-heading">
-            <a class="hover-link" href="#functions">
-              <span class="icon-link" aria-hidden="true"></span>
-              <span class="sr-only">Link to this section</span>
-            </a>
+  <section id="functions" class="details-list">
+    <h1 class="section-heading">
+      <a class="hover-link" href="#functions">
+        <i class="ri-link-m" aria-hidden="true"></i>
+        <span class="sr-only">Link to this section</span>
+      </a>
 Functions
-          </h1>
-          <div class="functions-list">
+    </h1>
+    <div class="functions-list">
 <section class="detail" id="create/1">
 
   <div class="detail-header">
     <a href="#create/1" class="detail-link" title="Link to this function">
-      <span class="icon-link" aria-hidden="true"></span>
+      <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">create(map)</h1>
+    <h1 class="signature" translate="no">create(map)</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/channel_cache.ex#L123" class="view-source" rel="help" title="View Source">
-       <span class="icon-code" aria-hidden="true"></span>
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/channel_cache.ex#L123" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
 
@@ -551,13 +572,13 @@ Functions
 
   <div class="detail-header">
     <a href="#delete/1" class="detail-link" title="Link to this function">
-      <span class="icon-link" aria-hidden="true"></span>
+      <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">delete(channel_id)</h1>
+    <h1 class="signature" translate="no">delete(channel_id)</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/channel_cache.ex#L125" class="view-source" rel="help" title="View Source">
-       <span class="icon-code" aria-hidden="true"></span>
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/channel_cache.ex#L125" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
 
@@ -573,13 +594,13 @@ Functions
 
   <div class="detail-header">
     <a href="#get/1" class="detail-link" title="Link to this function">
-      <span class="icon-link" aria-hidden="true"></span>
+      <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">get(channel_id)</h1>
+    <h1 class="signature" translate="no">get(channel_id)</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/channel_cache.ex#L121" class="view-source" rel="help" title="View Source">
-       <span class="icon-code" aria-hidden="true"></span>
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/channel_cache.ex#L121" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
 
@@ -595,13 +616,13 @@ Functions
 
   <div class="detail-header">
     <a href="#get!/1" class="detail-link" title="Link to this function">
-      <span class="icon-link" aria-hidden="true"></span>
+      <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">get!(channel_id)</h1>
+    <h1 class="signature" translate="no">get!(channel_id)</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/channel_cache.ex#L122" class="view-source" rel="help" title="View Source">
-       <span class="icon-code" aria-hidden="true"></span>
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/channel_cache.ex#L122" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
 
@@ -617,13 +638,13 @@ Functions
 
   <div class="detail-header">
     <a href="#lookup/1" class="detail-link" title="Link to this function">
-      <span class="icon-link" aria-hidden="true"></span>
+      <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">lookup(channel_id)</h1>
+    <h1 class="signature" translate="no">lookup(channel_id)</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/channel_cache.ex#L126" class="view-source" rel="help" title="View Source">
-       <span class="icon-code" aria-hidden="true"></span>
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/channel_cache.ex#L126" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
 
@@ -639,13 +660,13 @@ Functions
 
   <div class="detail-header">
     <a href="#update/1" class="detail-link" title="Link to this function">
-      <span class="icon-link" aria-hidden="true"></span>
+      <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature">update(channel)</h1>
+    <h1 class="signature" translate="no">update(channel)</h1>
 
-      <a href="https://github.com/kraigie/nostrum/blob/master/lib/nostrum/cache/channel_cache.ex#L124" class="view-source" rel="help" title="View Source">
-       <span class="icon-code" aria-hidden="true"></span>
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/channel_cache.ex#L124" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
 
@@ -658,38 +679,31 @@ Functions
   </section>
 </section>
 
-          </div>
-        </section>
+    </div>
+  </section>
 
       <footer class="footer">
-        <p>
-          <span class="line">
-            Built using
-            <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener">ExDoc</a> (v0.25.1) for the
-            <a href="https://elixir-lang.org" title="Elixir" target="_blank">Elixir programming language</a>.
-          </span>
-          <span class="line">
-            Designed by
-            <a href="https://twitter.com/dignifiedquire" target="_blank" rel="noopener" title="@dignifiedquire">Friedel Ziegelmayer</a>.
-          </span>
-        </p>
-        <p>
 
-            <a href="api-reference.html" title="API reference" class="line footer-button">API Reference</a>
+          <p>
+            On Hex.pm:
 
-          <button class="line footer-button display-shortcuts-help">
-            Display keyboard shortcuts
-          </button>
-          <button class="line footer-button night-mode-toggle">
-            Toggle night mode
-          </button>
-          <button class="line footer-button display-quick-switch">
-            Go to a HexDocs package
-          </button>
-          <button class="line footer-button tooltips-toggle">
-            <span class="tooltips-option-disable">Disable tooltips</span>
-            <span class="tooltips-option-enable">Enable tooltips</span>
-          </button>
+            <span class="line">
+              <a href="https://hex.pm/packages/nostrum/0.5.0" class="line footer-hex-package">Package</a>
+              <a href="https://preview.hex.pm/preview/nostrum/0.5.0" class="line">Preview</a>
+
+                <a href="https://preview.hex.pm/preview/nostrum/0.5.0/show/lib/nostrum/cache/channel_cache.ex">(current file)</a>
+
+            </span>
+
+            <button class="line footer-button display-quick-switch">
+              Search
+            </button>
+          </p>
+
+        <p>
+          Built using
+          <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.28.0) for the
+          <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
         </p>
       </footer>
     </div>
