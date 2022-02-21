@@ -10,7 +10,7 @@ defmodule Nostrum.Struct.Component.ActionRow do
     components: []
   }
 
-  @type t :: %{
+  @type t :: %Component{
           type: Component.type(),
           components: [Component.components()]
         }
@@ -22,7 +22,12 @@ defmodule Nostrum.Struct.Component.ActionRow do
   """
   def action_row(opts \\ [])
 
-  def action_row(%Component{type: 3} = component), do: component |> List.wrap() |> action_row()
+  def action_row(%Component{type: type} = component) when type in [3, 4] do
+    [
+      {:components, [component]}
+    ]
+    |> new()
+  end
 
   def action_row([%Component{type: 2} | _] = components),
     do: action_row([{:components, components}])
@@ -37,10 +42,13 @@ defmodule Nostrum.Struct.Component.ActionRow do
   @doc """
   Appends a button to the action row.
 
-  Returns the action row unchanged if there are already 5 buttons or if the action row contains a select menu.
+  Returns the action row unchanged if there are already 5 buttons or if the action row contains a select menu or text input.
   """
   def append(action_row, button)
-  def append(%Component{type: 1, components: [%Component{type: 3} | _]} = c, _), do: c
+
+  def append(%Component{type: 1, components: [%Component{type: type} | _]} = c, _)
+      when type in [3, 4],
+      do: c
 
   def append(%Component{type: 1, components: [%Component{} | _]} = c, %Component{type: 2} = i),
     do: do_append(c, i)
@@ -67,7 +75,8 @@ defmodule Nostrum.Struct.Component.ActionRow do
   """
   def append_lazy(action_row, button)
 
-  def append_lazy(%Component{type: 1, components: [%Component{type: 3} | _]} = inner_select, _) do
+  def append_lazy(%Component{type: 1, components: [%Component{type: type} | _]} = inner_select, _)
+      when type in [3, 4] do
     inner_select
   end
 
@@ -112,11 +121,13 @@ defmodule Nostrum.Struct.Component.ActionRow do
   @doc """
   Puts the given component into the action row, any existing components are disgarded.
   """
-  def put(%Component{type: 1} = component, %Component{type: 3} = select_menu) do
+  def put(%Component{type: 1} = component, %Component{type: type} = select_menu)
+      when type in [3, 4] do
     update(component, [{:components, [select_menu]}])
   end
 
-  def put(%Component{type: 1} = component, [%Component{type: 3} | []] = select_menu) do
+  def put(%Component{type: 1} = component, [%Component{type: type} | []] = select_menu)
+      when type in [3, 4] do
     update(component, [{:components, select_menu}])
   end
 
