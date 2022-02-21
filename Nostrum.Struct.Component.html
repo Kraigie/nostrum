@@ -10,7 +10,7 @@
     <title>Nostrum.Struct.Component — Nostrum v0.5.0</title>
     <link rel="stylesheet" href="dist/elixir-a816d167216329cc463d.css" />
 
-    <script src="dist/sidebar_items-873cd43efc.js"></script>
+    <script src="dist/sidebar_items-8a4734f7ca.js"></script>
 
       <script src="docs_config.js"></script>
 
@@ -125,7 +125,11 @@ Nostrum
   <a href="#module-select-menu" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
   Select Menu
 </h2>
-<p>Select menus are another interactive component that renders on messages. On desktop, clicking on a select menu opens a dropdown-style UI; on mobile, tapping a select menu opens up a half-sheet with the options.</p><p><img src="./assets/select_menu.png" alt="Discord Selects"/></p><p>Select menus support single-select and multi-select behavior, meaning you can prompt a user to choose just one item from a list, or multiple. When a user finishes making their choice by clicking out of the dropdown or closing the half-sheet, your app will receive an interaction.</p><ul><li>Select menus <strong>must</strong> be sent inside an Action Row</li><li>An Action Row can contain <strong>only one</strong> select menu</li><li>An Action Row containing a select menu <strong>cannot</strong> also contain buttons</li></ul>
+<p>Select menus are another interactive component that renders on messages. On desktop, clicking on a select menu opens a dropdown-style UI; on mobile, tapping a select menu opens up a half-sheet with the options.</p><p><img src="./assets/select_menu.png" alt="Discord Selects"/></p><p>Select menus support single-select and multi-select behavior, meaning you can prompt a user to choose just one item from a list, or multiple. When a user finishes making their choice by clicking out of the dropdown or closing the half-sheet, your app will receive an interaction.</p><ul><li>Select menus <strong>must</strong> be sent inside an Action Row</li><li>An Action Row can contain <strong>only one</strong> select menu</li><li>An Action Row containing a select menu <strong>cannot</strong> also contain buttons</li></ul><h2 id="module-text-input" class="section-heading">
+  <a href="#module-text-input" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
+  Text Input
+</h2>
+<p>Text inputs are an interactive component that render on modals. They can be used to collect short-form or long-form text.</p><ul><li>Text inputs <strong>must</strong> be sent inside an Action Row</li><li>An Action Row can contain <strong>only one</strong> text input</li><li>An Action Row containing a text input <strong>cannot</strong> also contain buttons or a select menu</li></ul><p>Can be used to collect short-form or long-form text.</p><ul><li>For short-form text, use <code class="inline">style: 1</code></li><li>For long-form text, use <code class="inline">style: 2</code></li></ul><p>Text inputs are only allowed to be sent as part of an Interaction respose that opens a MODAL.</p>
   </section>
 
 
@@ -195,11 +199,31 @@ Nostrum
 
       <div class="summary-row">
         <div class="summary-signature">
+          <a href="#t:max_length/0" translate="no">max_length()</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>The maximum length of the text input. Minimum value 1, max 4000.</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
           <a href="#t:max_values/0" translate="no">max_values()</a>
 
         </div>
 
           <div class="summary-synopsis"><p>The maximum number of permitted selections. Minimum value 0, max 25.</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#t:min_length/0" translate="no">min_length()</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>The minimum length of the text input. Minimum value 0, max 4000.</p></div>
 
       </div>
 
@@ -230,6 +254,16 @@ Nostrum
         </div>
 
           <div class="summary-synopsis"><p>Placeholder text if nothing is selected, max 100 characters</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#t:required/0" translate="no">required()</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>Indicates if the text input is required.</p></div>
 
       </div>
 
@@ -270,6 +304,16 @@ Nostrum
         </div>
 
           <div class="summary-synopsis"><p>A url for link buttons.</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#t:value/0" translate="no">value()</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>A pre-filled value for the text input, max 4000 characters.</p></div>
 
       </div>
 
@@ -338,7 +382,7 @@ Types
     </a>
     <h1 class="signature" translate="no">components()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/component.ex#L258" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/component.ex#L305" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -359,7 +403,7 @@ Types
 
       </div>
 
-<p>A list of components to place inside an action row.</p><p>Due to constraints of action rows, this can either be a list of up to five buttons, or a single select menu.</p><p>Valid for <a href="#module-action-row">Action Row</a>.</p>
+<p>A list of components to place inside an action row.</p><p>Due to constraints of action rows, this can either be a list of up to five buttons, a single select menu, or a single text input.</p><p>Valid for <a href="#module-action-row">Action Row</a>.</p>
   </section>
 </section>
 <section class="detail" id="t:custom_id/0">
@@ -371,7 +415,7 @@ Types
     </a>
     <h1 class="signature" translate="no">custom_id()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/component.ex#L184" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/component.ex#L200" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -388,7 +432,7 @@ Types
 
       </div>
 
-<p>Used to identify the command when the interraction is sent to you from the user.</p><p>Valid for <a href="#module-interaction-button">Interaction Buttons</a> &amp; <a href="#module-select-menu">Select Menus</a>.</p>
+<p>Used to identify the command when the interraction is sent to you from the user.</p><p>Valid for <a href="#module-interaction-button">Interaction Buttons</a>, <a href="#module-select-menu">Select Menus</a>, and <a href="#module-text-input">Text Input</a>.</p>
   </section>
 </section>
 <section class="detail" id="t:disabled/0">
@@ -400,7 +444,7 @@ Types
     </a>
     <h1 class="signature" translate="no">disabled()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/component.ex#L191" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/component.ex#L207" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -429,7 +473,7 @@ Types
     </a>
     <h1 class="signature" translate="no">emoji()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/component.ex#L212" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/component.ex#L228" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -442,7 +486,13 @@ Types
       <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">emoji() :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>() | nil</pre>
+          <pre translate="no">emoji() ::
+  %{
+    id: <a href="Nostrum.Struct.Emoji.html#t:id/0">Nostrum.Struct.Emoji.id</a>(),
+    name: <a href="Nostrum.Struct.Emoji.html#t:name/0">Nostrum.Struct.Emoji.name</a>(),
+    animated: <a href="Nostrum.Struct.Emoji.html#t:animated/0">Nostrum.Struct.Emoji.animated</a>()
+  }
+  | nil</pre>
 
       </div>
 
@@ -458,7 +508,7 @@ Types
     </a>
     <h1 class="signature" translate="no">label()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/component.ex#L205" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/component.ex#L221" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -478,6 +528,37 @@ Types
 <p>A string that appears on the button, max 80 characters.</p><p>Valid for <a href="#module-buttons">Buttons</a></p>
   </section>
 </section>
+<section class="detail" id="t:max_length/0">
+
+  <div class="detail-header">
+    <a href="#t:max_length/0" class="detail-link" title="Link to this type">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature" translate="no">max_length()</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/component.ex#L280" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+      <span class="note">(since 0.5.1)</span>
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre translate="no">max_length() :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>() | nil</pre>
+
+      </div>
+
+<p>The maximum length of the text input. Minimum value 1, max 4000.</p><p>Valid for <a href="#module-text-input">Text Input</a>.</p>
+  </section>
+</section>
 <section class="detail" id="t:max_values/0">
 
   <div class="detail-header">
@@ -487,7 +568,7 @@ Types
     </a>
     <h1 class="signature" translate="no">max_values()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/component.ex#L248" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/component.ex#L264" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -507,6 +588,37 @@ Types
 <p>The maximum number of permitted selections. Minimum value 0, max 25.</p><p>Valid for <a href="#module-select-menu">Select Menus</a>.</p>
   </section>
 </section>
+<section class="detail" id="t:min_length/0">
+
+  <div class="detail-header">
+    <a href="#t:min_length/0" class="detail-link" title="Link to this type">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature" translate="no">min_length()</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/component.ex#L272" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+      <span class="note">(since 0.5.1)</span>
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre translate="no">min_length() :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>() | nil</pre>
+
+      </div>
+
+<p>The minimum length of the text input. Minimum value 0, max 4000.</p><p>Valid for <a href="#module-text-input">Text Input</a>.</p>
+  </section>
+</section>
 <section class="detail" id="t:min_values/0">
 
   <div class="detail-header">
@@ -516,7 +628,7 @@ Types
     </a>
     <h1 class="signature" translate="no">min_values()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/component.ex#L241" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/component.ex#L257" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -545,7 +657,7 @@ Types
     </a>
     <h1 class="signature" translate="no">options()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/component.ex#L226" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/component.ex#L242" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -574,7 +686,7 @@ Types
     </a>
     <h1 class="signature" translate="no">placeholder()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/component.ex#L234" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/component.ex#L250" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -591,7 +703,38 @@ Types
 
       </div>
 
-<p>Placeholder text if nothing is selected, max 100 characters</p><p>Valid for <a href="#module-select-menu">Select Menus</a>.</p>
+<p>Placeholder text if nothing is selected, max 100 characters</p><p>Valid for <a href="#module-select-menu">Select Menus</a> and <a href="#module-text-input">Text Input</a>.</p>
+  </section>
+</section>
+<section class="detail" id="t:required/0">
+
+  <div class="detail-header">
+    <a href="#t:required/0" class="detail-link" title="Link to this type">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature" translate="no">required()</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/component.ex#L288" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+      <span class="note">(since 0.5.1)</span>
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre translate="no">required() :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">boolean</a>() | nil</pre>
+
+      </div>
+
+<p>Indicates if the text input is required.</p><p>Valid for <a href="#module-text-input">Text Input</a>.</p>
   </section>
 </section>
 <section class="detail" id="t:style/0">
@@ -603,7 +746,7 @@ Types
     </a>
     <h1 class="signature" translate="no">style()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/component.ex#L198" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/component.ex#L214" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -620,7 +763,7 @@ Types
 
       </div>
 
-<p>Indicates the style.</p><p>Valid for Valid for <a href="#module-interaction-button">Interaction Buttons</a> only,</p>
+<p>Indicates the style.</p><p>Valid for Valid for <a href="#module-interaction-button">Interaction Buttons</a> and <a href="#module-text-input">Text Input</a>.</p>
   </section>
 </section>
 <section class="detail" id="t:t/0">
@@ -632,7 +775,7 @@ Types
     </a>
     <h1 class="signature" translate="no">t()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/component.ex#L161" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/component.ex#L176" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -648,7 +791,8 @@ Types
           <pre translate="no">t() ::
   <a href="Nostrum.Struct.Component.ActionRow.html#t:t/0">Nostrum.Struct.Component.ActionRow.t</a>()
   | <a href="Nostrum.Struct.Component.Button.html#t:t/0">Nostrum.Struct.Component.Button.t</a>()
-  | <a href="Nostrum.Struct.Component.SelectMenu.html#t:t/0">Nostrum.Struct.Component.SelectMenu.t</a>()</pre>
+  | <a href="Nostrum.Struct.Component.SelectMenu.html#t:t/0">Nostrum.Struct.Component.SelectMenu.t</a>()
+  | <a href="Nostrum.Struct.Component.TextInput.html#t:t/0">Nostrum.Struct.Component.TextInput.t</a>()</pre>
 
       </div>
 
@@ -664,7 +808,7 @@ Types
     </a>
     <h1 class="signature" translate="no">type()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/component.ex#L177" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/component.ex#L193" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -681,7 +825,7 @@ Types
 
       </div>
 
-<p>The type of component.</p><p>Valid for All Types.</p><table><thead><tr><th style="text-align: left;"></th><th style="text-align: left;">Component Types</th></tr></thead><tbody><tr><td style="text-align: left;"><code class="inline">1</code></td><td style="text-align: left;">Action Row</td></tr><tr><td style="text-align: left;"><code class="inline">2</code></td><td style="text-align: left;">Button</td></tr><tr><td style="text-align: left;"><code class="inline">3</code></td><td style="text-align: left;">SelectMenu</td></tr></tbody></table><p>Check out the <a href="https://discord.com/developers/docs/interactions/message-components#component-object-component-types">Discord API Message Component Types</a> for more information.</p>
+<p>The type of component.</p><p>Valid for All Types.</p><table><thead><tr><th style="text-align: left;"></th><th style="text-align: left;">Component Types</th></tr></thead><tbody><tr><td style="text-align: left;"><code class="inline">1</code></td><td style="text-align: left;">Action Row</td></tr><tr><td style="text-align: left;"><code class="inline">2</code></td><td style="text-align: left;">Button</td></tr><tr><td style="text-align: left;"><code class="inline">3</code></td><td style="text-align: left;">SelectMenu</td></tr><tr><td style="text-align: left;"><code class="inline">4</code></td><td style="text-align: left;">TextInput</td></tr></tbody></table><p>Check out the <a href="https://discord.com/developers/docs/interactions/message-components#component-object-component-types">Discord API Message Component Types</a> for more information.</p>
   </section>
 </section>
 <section class="detail" id="t:url/0">
@@ -693,7 +837,7 @@ Types
     </a>
     <h1 class="signature" translate="no">url()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/component.ex#L219" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/component.ex#L235" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -711,6 +855,37 @@ Types
       </div>
 
 <p>A url for link buttons.</p><p>Valid for: <a href="#module-buttons">Buttons</a></p>
+  </section>
+</section>
+<section class="detail" id="t:value/0">
+
+  <div class="detail-header">
+    <a href="#t:value/0" class="detail-link" title="Link to this type">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature" translate="no">value()</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/component.ex#L296" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+      <span class="note">(since 0.5.1)</span>
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre translate="no">value() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>() | nil</pre>
+
+      </div>
+
+<p>A pre-filled value for the text input, max 4000 characters.</p><p>Valid for <a href="#module-text-input">Text Input</a>.</p>
   </section>
 </section>
 
@@ -735,7 +910,7 @@ Callbacks
     </a>
     <h1 class="signature" translate="no">new(opts)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/component.ex#L130" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/component.ex#L140" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -764,7 +939,7 @@ Callbacks
     </a>
     <h1 class="signature" translate="no">update(t, opts)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/component.ex#L137" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/component.ex#L147" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -806,7 +981,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">to_struct(map)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/component.ex#L261" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/component.ex#L308" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>

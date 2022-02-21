@@ -7,7 +7,7 @@
     <meta name="generator" content="ExDoc v0.28.0">
     <meta name="project" content="Nostrum v0.5.0">
 
-    <title>Nostrum.Struct.Component.ActionRow — Nostrum v0.5.0</title>
+    <title>Nostrum.Struct.Component.TextInput — Nostrum v0.5.0</title>
     <link rel="stylesheet" href="dist/elixir-a816d167216329cc463d.css" />
 
     <script src="dist/sidebar_items-8a4734f7ca.js"></script>
@@ -89,19 +89,19 @@ Nostrum
 </button>
 
 
-    <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/component/action_row.ex#L1" title="View Source" class="view-source" rel="help">
+    <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/component/text_input.ex#L1" title="View Source" class="view-source" rel="help">
       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
       <span class="sr-only">View Source</span>
     </a>
 
-  <span translate="no">Nostrum.Struct.Component.ActionRow</span> 
+  <span translate="no">Nostrum.Struct.Component.TextInput</span> 
   <small class="app-vsn" translate="no">(Nostrum v0.5.0)</small>
 
 </h1>
 
 
   <section id="moduledoc">
-<p>Action Rows.</p>
+<p>Text Input.</p>
   </section>
 
 
@@ -121,6 +121,22 @@ Nostrum
 
       <div class="summary-row">
         <div class="summary-signature">
+          <a href="#t:opt/0" translate="no">opt()</a>
+
+        </div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#t:opts/0" translate="no">opts()</a>
+
+        </div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
           <a href="#t:t/0" translate="no">t()</a>
 
         </div>
@@ -136,36 +152,6 @@ Nostrum
 
       <div class="summary-row">
         <div class="summary-signature">
-          <a href="#action_row/1" translate="no">action_row(opts \\ [])</a>
-
-        </div>
-
-          <div class="summary-synopsis"><p>Create an empty action row.</p></div>
-
-      </div>
-
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#append/2" translate="no">append(action_row, button)</a>
-
-        </div>
-
-          <div class="summary-synopsis"><p>Appends a button to the action row.</p></div>
-
-      </div>
-
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#append_lazy/2" translate="no">append_lazy(action_row, button)</a>
-
-        </div>
-
-          <div class="summary-synopsis"><p>Lazily appends a button to the action row.</p></div>
-
-      </div>
-
-      <div class="summary-row">
-        <div class="summary-signature">
           <a href="#flatten/1" translate="no">flatten(map)</a>
 
         </div>
@@ -174,21 +160,19 @@ Nostrum
 
       <div class="summary-row">
         <div class="summary-signature">
-          <a href="#put/2" translate="no">put(component, select_menu)</a>
+          <a href="#put_style/2" translate="no">put_style(text_input, style)</a>
 
         </div>
-
-          <div class="summary-synopsis"><p>Puts the given component into the action row, any existing components are disgarded.</p></div>
 
       </div>
 
       <div class="summary-row">
         <div class="summary-signature">
-          <a href="#put_new/2" translate="no">put_new(component, list_of_components)</a>
+          <a href="#text_input/3" translate="no">text_input(label, custom_id, opts \\ [])</a>
 
         </div>
 
-          <div class="summary-synopsis"><p>Puts the components into the action row unless a list of inner components already exists.</p></div>
+          <div class="summary-synopsis"><p>Create a text input component.</p></div>
 
       </div>
 
@@ -206,6 +190,71 @@ Nostrum
 Types
     </h1>
     <div class="types-list">
+<section class="detail" id="t:opt/0">
+
+  <div class="detail-header">
+    <a href="#t:opt/0" class="detail-link" title="Link to this type">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature" translate="no">opt()</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/component/text_input.ex#L20" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre translate="no">opt() ::
+  {:style, <a href="Nostrum.Struct.Component.html#t:style/0">Nostrum.Struct.Component.style</a>()}
+  | {:min_length, <a href="Nostrum.Struct.Component.html#t:min_length/0">Nostrum.Struct.Component.min_length</a>()}
+  | {:max_length, <a href="Nostrum.Struct.Component.html#t:max_length/0">Nostrum.Struct.Component.max_length</a>()}
+  | {:value, <a href="Nostrum.Struct.Component.html#t:value/0">Nostrum.Struct.Component.value</a>()}
+  | {:placeholder, <a href="Nostrum.Struct.Component.html#t:placeholder/0">Nostrum.Struct.Component.placeholder</a>()}
+  | {:required, <a href="Nostrum.Struct.Component.html#t:required/0">Nostrum.Struct.Component.required</a>()}
+  | {:value, <a href="Nostrum.Struct.Component.html#t:value/0">Nostrum.Struct.Component.value</a>()}</pre>
+
+      </div>
+
+
+  </section>
+</section>
+<section class="detail" id="t:opts/0">
+
+  <div class="detail-header">
+    <a href="#t:opts/0" class="detail-link" title="Link to this type">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature" translate="no">opts()</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/component/text_input.ex#L29" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre translate="no">opts() :: [<a href="#t:opt/0">opt</a>()]</pre>
+
+      </div>
+
+
+  </section>
+</section>
 <section class="detail" id="t:t/0">
 
   <div class="detail-header">
@@ -215,7 +264,7 @@ Types
     </a>
     <h1 class="signature" translate="no">t()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/component/action_row.ex#L13" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/component/text_input.ex#L9" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -229,22 +278,22 @@ Types
       <div class="specs">
 
           <pre translate="no">t() :: %Nostrum.Struct.Component{
-  components: [<a href="Nostrum.Struct.Component.html#t:components/0">Nostrum.Struct.Component.components</a>()],
-  custom_id: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>(),
+  components: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>(),
+  custom_id: <a href="Nostrum.Struct.Component.html#t:custom_id/0">Nostrum.Struct.Component.custom_id</a>(),
   disabled: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>(),
   emoji: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>(),
-  label: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>(),
-  max_length: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>(),
+  label: <a href="Nostrum.Struct.Component.html#t:label/0">Nostrum.Struct.Component.label</a>(),
+  max_length: <a href="Nostrum.Struct.Component.html#t:max_length/0">Nostrum.Struct.Component.max_length</a>(),
   max_values: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>(),
-  min_length: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>(),
+  min_length: <a href="Nostrum.Struct.Component.html#t:min_length/0">Nostrum.Struct.Component.min_length</a>(),
   min_values: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>(),
   options: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>(),
-  placeholder: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>(),
+  placeholder: <a href="Nostrum.Struct.Component.html#t:placeholder/0">Nostrum.Struct.Component.placeholder</a>(),
   requred: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>(),
-  style: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>(),
+  style: <a href="Nostrum.Struct.Component.html#t:style/0">Nostrum.Struct.Component.style</a>(),
   type: <a href="Nostrum.Struct.Component.html#t:type/0">Nostrum.Struct.Component.type</a>(),
   url: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>(),
-  value: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()
+  value: <a href="Nostrum.Struct.Component.html#t:value/0">Nostrum.Struct.Component.value</a>()
 }</pre>
 
       </div>
@@ -265,74 +314,6 @@ Types
 Functions
     </h1>
     <div class="functions-list">
-<section class="detail" id="action_row/1">
-
-    <span id="action_row/0"></span>
-
-  <div class="detail-header">
-    <a href="#action_row/1" class="detail-link" title="Link to this function">
-      <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
-    </a>
-    <h1 class="signature" translate="no">action_row(opts \\ [])</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/component/action_row.ex#L23" class="view-source" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
-
-
-  </div>
-
-  <section class="docstring">
-
-<p>Create an empty action row.</p><p>Options can be passed as a keyword list. The only supported option is a list of inner components</p>
-  </section>
-</section>
-<section class="detail" id="append/2">
-
-  <div class="detail-header">
-    <a href="#append/2" class="detail-link" title="Link to this function">
-      <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
-    </a>
-    <h1 class="signature" translate="no">append(action_row, button)</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/component/action_row.ex#L47" class="view-source" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
-
-
-  </div>
-
-  <section class="docstring">
-
-<p>Appends a button to the action row.</p><p>Returns the action row unchanged if there are already 5 buttons or if the action row contains a select menu or text input.</p>
-  </section>
-</section>
-<section class="detail" id="append_lazy/2">
-
-  <div class="detail-header">
-    <a href="#append_lazy/2" class="detail-link" title="Link to this function">
-      <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
-    </a>
-    <h1 class="signature" translate="no">append_lazy(action_row, button)</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/component/action_row.ex#L76" class="view-source" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
-
-
-  </div>
-
-  <section class="docstring">
-
-<p>Lazily appends a button to the action row.</p><p>If there are already 5 buttons, the first one will be dropped.</p>
-  </section>
-</section>
 <section class="detail" id="flatten/1">
 
   <div class="detail-header">
@@ -342,7 +323,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">flatten(map)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/component/action_row.ex#L1" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/component/text_input.ex#L1" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -355,16 +336,16 @@ Functions
 
   </section>
 </section>
-<section class="detail" id="put/2">
+<section class="detail" id="put_style/2">
 
   <div class="detail-header">
-    <a href="#put/2" class="detail-link" title="Link to this function">
+    <a href="#put_style/2" class="detail-link" title="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">put(component, select_menu)</h1>
+    <h1 class="signature" translate="no">put_style(text_input, style)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/component/action_row.ex#L124" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/component/text_input.ex#L60" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -374,19 +355,21 @@ Functions
 
   <section class="docstring">
 
-<p>Puts the given component into the action row, any existing components are disgarded.</p>
+
   </section>
 </section>
-<section class="detail" id="put_new/2">
+<section class="detail" id="text_input/3">
+
+    <span id="text_input/2"></span>
 
   <div class="detail-header">
-    <a href="#put_new/2" class="detail-link" title="Link to this function">
+    <a href="#text_input/3" class="detail-link" title="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">put_new(component, list_of_components)</h1>
+    <h1 class="signature" translate="no">text_input(label, custom_id, opts \\ [])</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/component/action_row.ex#L115" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/component/text_input.ex#L46" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -396,7 +379,7 @@ Functions
 
   <section class="docstring">
 
-<p>Puts the components into the action row unless a list of inner components already exists.</p>
+<p>Create a text input component.</p>
   </section>
 </section>
 
@@ -412,7 +395,7 @@ Functions
               <a href="https://hex.pm/packages/nostrum/0.5.0" class="line footer-hex-package">Package</a>
               <a href="https://preview.hex.pm/preview/nostrum/0.5.0" class="line">Preview</a>
 
-                <a href="https://preview.hex.pm/preview/nostrum/0.5.0/show/lib/nostrum/struct/component/action_row.ex">(current file)</a>
+                <a href="https://preview.hex.pm/preview/nostrum/0.5.0/show/lib/nostrum/struct/component/text_input.ex">(current file)</a>
 
             </span>
 
