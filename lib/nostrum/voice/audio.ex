@@ -312,6 +312,9 @@ defmodule Nostrum.Voice.Audio do
   end
 
   def on_stall(%VoiceState{} = voice) do
+    # Refresh voice state before running checks
+    voice = Voice.get_voice(voice.guild_id)
+
     if VoiceState.playing?(voice) and not is_nil(voice.ffmpeg_proc) do
       Proc.stop(voice.ffmpeg_proc)
     end
