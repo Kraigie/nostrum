@@ -100,7 +100,6 @@ defmodule Nostrum.Mixfile do
       {:gun, "== 2.0.1", hex: :remedy_gun},
       {:certifi, "~> 2.8"},
       {:kcl, "~> 1.4"},
-      {:porcelain, "~> 2.0"},
       {:mime, "~> 1.6"},
       {:ex_doc, "~> 0.28", only: :dev},
       {:credo, "~> 1.4", only: [:dev, :test]},

@@ -32,9 +32,9 @@ defmodule Nostrum.Voice do
   alias Nostrum.Api
   alias Nostrum.Struct.{Channel, Guild, VoiceState}
   alias Nostrum.Voice.Audio
+  alias Nostrum.Voice.Ports
   alias Nostrum.Voice.Session
   alias Nostrum.Voice.Supervisor, as: VoiceSupervisor
-  alias Porcelain.Process, as: Proc
 
   require Logger
 
@@ -163,7 +163,7 @@ defmodule Nostrum.Voice do
   """
   @spec play(
           Guild.id(),
-          String.t() | binary() | iodata() | Enum.t(),
+          String.t() | iodata() | Enum.t(),
           :url | :pipe | :ytdl | :stream | :raw | :raw_s,
           keyword()
         ) ::
@@ -179,7 +179,7 @@ defmodule Nostrum.Voice do
         {:error, "Audio already playing in voice channel."}
 
       true ->
-        unless is_nil(voice.ffmpeg_proc), do: Proc.stop(voice.ffmpeg_proc)
+        unless is_nil(voice.ffmpeg_proc), do: Ports.close(voice.ffmpeg_proc)
         set_speaking(voice, true)
 
         {ffmpeg_proc, raw_audio, raw_stateful} =
@@ -196,7 +196,7 @@ defmodule Nostrum.Voice do
             raw_stateful: raw_stateful
           )
 
-        {:ok, pid} = Task.start(fn -> Audio.init_player(voice) end)
+        {:ok, pid} = Task.start(fn -> Audio.start_player(voice) end)
         update_voice(guild_id, player_pid: pid)
         :ok
     end
@@ -239,7 +239,7 @@ defmodule Nostrum.Voice do
       true ->
         set_speaking(voice, false)
         Process.exit(voice.player_pid, :stop)
-        unless is_nil(voice.ffmpeg_proc), do: Proc.stop(voice.ffmpeg_proc)
+        unless is_nil(voice.ffmpeg_proc), do: Ports.close(voice.ffmpeg_proc)
         :ok
     end
   end
@@ -325,7 +325,7 @@ defmodule Nostrum.Voice do
 
       true ->
         set_speaking(voice, true)
-        {:ok, pid} = Task.start(fn -> Audio.player_loop(voice) end)
+        {:ok, pid} = Task.start(fn -> Audio.resume_player(voice) end)
         update_voice(guild_id, player_pid: pid)
         :ok
     end
