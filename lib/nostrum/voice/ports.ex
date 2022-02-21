@@ -38,7 +38,7 @@ defmodule Nostrum.Voice.Ports do
         :stream
       ])
 
-    # Spawn process to asyncronously send input to port
+    # Spawn process to asynchronously send input to port
     unless is_nil(input) do
       Task.start(fn -> send_input(port, input) end)
     end
@@ -119,7 +119,7 @@ defmodule Nostrum.Voice.Ports do
   end
 
   def handle_call(:close, _from, %{awaiter: awaiter, port: port, input_pid: input_pid}) do
-    if is_pid(awaiter), do: GenServer.reply(awaiter, nil)
+    unless is_nil(awaiter), do: GenServer.reply(awaiter, nil)
     if is_pid(input_pid), do: close(input_pid)
     Logger.debug("Closing port #{inspect(port)}")
     Port.close(port)
