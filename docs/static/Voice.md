@@ -31,13 +31,23 @@ When `Nostrum.Voice.play/4` is called with `:ytdl` for the `type` parameter, `yo
 run with options `-f bestaudio -q -o -`, which will attempt to download the audio at the given url and pipe it to `ffmpeg`.
 
 ## streamlink
-Nostrum also has support for `streamlink`, yet another powerful command line utility for downloading live streams from online video streaming services.
+Nostrum also has support for `streamlink`, yet another powerful command line utility 
+for downloading live streams from online video streaming services.
 By default Nostrum will look for the executable `streamlink` in the system path. 
 If the executable is elsewhere, the path may be configured via `config :nostrum, :streamlink, "/path/to/streamlink"`.
 When `Nostrum.Voice.play/4` is called with `:stream` for the `type` parameter, `streamlink` 
-will be attempt to download the live stream content and pipe it to `ffmpeg`.
-Using `streamlink` with Nostrum depends on `youtube-dl` to get the underlying
-stream URL from the user-friendly URL that's given as input.
+will attempt to download the live stream content and pipe it to `ffmpeg`.
+It's recommended to use the most up-to-date version of `streamlink` to properly
+play human-readable URLs from services such as Youtube and Twitch. Version 3.x.x
+currently works with both of these services. If the short, human-readable url of the streaming service
+doesn't work with `streamlink` out of the box, you may have more luck extracting the underlying raw stream url.
+These are typically long URLs that end in `.m3u8` or `.hls`. If you have `youtube-dl` installed,
+you can attempt to get this URL by running the following:
+
+```elixir
+{raw_url, 0} = System.cmd("youtube-dl", ["-f", "best", "-g", url])
+raw_url = raw_url |> String.trim()
+```
 
 ## Audio Timeout
 Upon invoking `Nostrum.Voice.play/4`, the player process has a large configurable initial window
@@ -46,14 +56,15 @@ ample time for slow networks to download large audio/video files. This configura
 `play` is initially invoked; once audio has begun transmitting, the timeout drops to `500` milliseconds.
 Because the `ffmpeg` process doesn't close when its input device is `stdin`, which is the case
 when `type` is set to `:pipe`, `:ytdl`, or `:stream` the timeout is necessary to promtly detect end of input.
-If the audio process times out with the initial window, the `Nostrum.Struct.Event.SpeakingUpdate`
+If the audio process times out within the initial window, the `Nostrum.Struct.Event.SpeakingUpdate`
 that is generated will have its `timed_out` field set to `true`. It will be `false` in all other cases.
 If your use case does not include large, slow downloads and you wish to more quickly be notified
 of timeouts or errors, you may consider setting `audio_timeout` to a lower value.
 However, `youtube-dl` typically takes at least 2.5 seconds to begin outputting audio data,
 even on a fast connection.
 If your use case involves playing large files at a timestamp several hours in like this,
-`play(guild_id, url, :ytdl, start_time: "2:37:56")`, you may consider setting the timeout to a higher value, as downloading a large youtube video and having `ffmpeg` seek through several hours
+`play(guild_id, url, :ytdl, start_time: "2:37:56")`, you may consider setting the timeout to a higher value,
+as downloading a large youtube video and having `ffmpeg` seek through several hours
 of audio may take 15-20 seconds, even with a fast network connection.
 
 ## Audio Frames Per Burst

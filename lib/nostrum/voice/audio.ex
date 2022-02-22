@@ -154,38 +154,12 @@ defmodule Nostrum.Voice.Audio do
        rtp_timestamp: voice.rtp_timestamp,
        # If using raw audio and it isn't stateful, update its state manually
        raw_audio:
-         unless(is_nil(voice.raw_audio) or voice.raw_stateful,
-           do: Enum.slice(voice.raw_audio, frames_per_burst()..-1)
-         )
+         if not is_nil(voice.raw_audio) and not voice.raw_stateful do
+           Enum.slice(voice.raw_audio, frames_per_burst()..-1)
+         else
+           voice.raw_audio
+         end
      ), length(frames) < frames_per_burst()}
-  end
-
-  def get_stream_url(url) do
-    res =
-      System.cmd(
-        Application.get_env(:nostrum, :youtubedl, @ytdl),
-        [
-          ["-f", "best"],
-          ["-g"],
-          [url]
-        ]
-        |> List.flatten(),
-        stderr_to_stdout: true
-      )
-
-    case res do
-      {stream_url, 0} ->
-        stream_url |> String.trim()
-
-      {err_output, _code} ->
-        raise(err_output)
-    end
-  rescue
-    e in ErlangError ->
-      reraise(VoiceError, [reason: e.original, executable: @ytdl], __STACKTRACE__)
-
-    e in RuntimeError ->
-      reraise(VoiceError, [reason: e.message, executable: @ytdl], __STACKTRACE__)
   end
 
   def spawn_youtubedl(url) do
@@ -218,7 +192,7 @@ defmodule Nostrum.Voice.Audio do
           ["--stdout"],
           ["--quiet"],
           ["--default-stream", "best"],
-          ["--url", get_stream_url(url)]
+          ["--url", url]
         ]
         |> List.flatten()
       )
