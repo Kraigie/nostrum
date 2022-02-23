@@ -136,13 +136,19 @@ run with options <code class="inline">-f bestaudio -q -o -</code>, which will at
   <a href="#streamlink" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
   streamlink
 </h2>
-<p>Nostrum also has support for <code class="inline">streamlink</code>, yet another powerful command line utility for downloading live streams from online video streaming services.
+<p>Nostrum also has support for <code class="inline">streamlink</code>, yet another powerful command line utility 
+for downloading live streams from online video streaming services.
 By default Nostrum will look for the executable <code class="inline">streamlink</code> in the system path. 
 If the executable is elsewhere, the path may be configured via <code class="inline">config :nostrum, :streamlink, &quot;/path/to/streamlink&quot;</code>.
 When <a href="Nostrum.Voice.html#play/4"><code class="inline">Nostrum.Voice.play/4</code></a> is called with <code class="inline">:stream</code> for the <code class="inline">type</code> parameter, <code class="inline">streamlink</code> 
-will be attempt to download the live stream content and pipe it to <code class="inline">ffmpeg</code>.
-Using <code class="inline">streamlink</code> with Nostrum depends on <code class="inline">youtube-dl</code> to get the underlying
-stream URL from the user-friendly URL that's given as input.</p><h2 id="audio-timeout" class="section-heading">
+will attempt to download the live stream content and pipe it to <code class="inline">ffmpeg</code>.
+It's recommended to use the most up-to-date version of <code class="inline">streamlink</code> to properly
+play human-readable URLs from services such as Youtube and Twitch. Version 3.x.x
+currently works with both of these services. If the short, human-readable url of the streaming service
+doesn't work with <code class="inline">streamlink</code> out of the box, you may have more luck extracting the underlying raw stream url.
+These are typically long URLs that end in <code class="inline">.m3u8</code> or <code class="inline">.hls</code>. If you have <code class="inline">youtube-dl</code> installed,
+you can attempt to get this URL by running the following:</p><pre><code class="makeup elixir" translate="no"><span class="p" data-group-id="9097333805-1">{</span><span class="n">raw_url</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p" data-group-id="9097333805-1">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">System</span><span class="o">.</span><span class="n">cmd</span><span class="p" data-group-id="9097333805-2">(</span><span class="s">&quot;youtube-dl&quot;</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="9097333805-3">[</span><span class="s">&quot;-f&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;best&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;-g&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">url</span><span class="p" data-group-id="9097333805-3">]</span><span class="p" data-group-id="9097333805-2">)</span><span class="w">
+</span><span class="n">raw_url</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">raw_url</span><span class="w"> </span><span class="o">|&gt;</span><span class="w"> </span><span class="nc">String</span><span class="o">.</span><span class="n">trim</span><span class="p" data-group-id="9097333805-4">(</span><span class="p" data-group-id="9097333805-4">)</span></code></pre><h2 id="audio-timeout" class="section-heading">
   <a href="#audio-timeout" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
   Audio Timeout
 </h2>
@@ -152,14 +158,15 @@ ample time for slow networks to download large audio/video files. This configura
 <code class="inline">play</code> is initially invoked; once audio has begun transmitting, the timeout drops to <code class="inline">500</code> milliseconds.
 Because the <code class="inline">ffmpeg</code> process doesn't close when its input device is <code class="inline">stdin</code>, which is the case
 when <code class="inline">type</code> is set to <code class="inline">:pipe</code>, <code class="inline">:ytdl</code>, or <code class="inline">:stream</code> the timeout is necessary to promtly detect end of input.
-If the audio process times out with the initial window, the <a href="Nostrum.Struct.Event.SpeakingUpdate.html"><code class="inline">Nostrum.Struct.Event.SpeakingUpdate</code></a>
+If the audio process times out within the initial window, the <a href="Nostrum.Struct.Event.SpeakingUpdate.html"><code class="inline">Nostrum.Struct.Event.SpeakingUpdate</code></a>
 that is generated will have its <code class="inline">timed_out</code> field set to <code class="inline">true</code>. It will be <code class="inline">false</code> in all other cases.
 If your use case does not include large, slow downloads and you wish to more quickly be notified
 of timeouts or errors, you may consider setting <code class="inline">audio_timeout</code> to a lower value.
 However, <code class="inline">youtube-dl</code> typically takes at least 2.5 seconds to begin outputting audio data,
 even on a fast connection.
 If your use case involves playing large files at a timestamp several hours in like this,
-<code class="inline">play(guild_id, url, :ytdl, start_time: &quot;2:37:56&quot;)</code>, you may consider setting the timeout to a higher value, as downloading a large youtube video and having <code class="inline">ffmpeg</code> seek through several hours
+<code class="inline">play(guild_id, url, :ytdl, start_time: &quot;2:37:56&quot;)</code>, you may consider setting the timeout to a higher value,
+as downloading a large youtube video and having <code class="inline">ffmpeg</code> seek through several hours
 of audio may take 15-20 seconds, even with a fast network connection.</p><h2 id="audio-frames-per-burst" class="section-heading">
   <a href="#audio-frames-per-burst" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
   Audio Frames Per Burst
@@ -208,16 +215,16 @@ network actions must take place before playing audio is possible. Listening for 
 <a href="Nostrum.Consumer.html#t:voice_ready/0"><code class="inline">Nostrum.Consumer.voice_ready/0</code></a> event can be used by the bot to begin playing audio as soon 
 as it is able to. The alternative approach for this use case that is not event-driven is to 
 periodically call <a href="Nostrum.Voice.html#ready?/1"><code class="inline">Nostrum.Voice.ready?/1</code></a> and wait for it to return <code class="inline">true</code> as the trigger to
-begin playing. Another common approach is to define a <code class="inline">try_play</code> function as follows:</p><pre><code class="makeup elixir" translate="no"><span class="kd">def</span><span class="w"> </span><span class="nf">try_play</span><span class="p" data-group-id="8205445597-1">(</span><span class="n">guild_id</span><span class="p">,</span><span class="w"> </span><span class="n">url</span><span class="p">,</span><span class="w"> </span><span class="n">type</span><span class="p">,</span><span class="w"> </span><span class="n">opts</span><span class="w"> </span><span class="o">\\</span><span class="w"> </span><span class="p" data-group-id="8205445597-2">[</span><span class="p" data-group-id="8205445597-2">]</span><span class="p" data-group-id="8205445597-1">)</span><span class="w"> </span><span class="k" data-group-id="8205445597-3">do</span><span class="w">
-  </span><span class="k">case</span><span class="w"> </span><span class="nc">Nostrum.Voice</span><span class="o">.</span><span class="n">play</span><span class="p" data-group-id="8205445597-4">(</span><span class="n">guild_id</span><span class="p">,</span><span class="w"> </span><span class="n">url</span><span class="p">,</span><span class="w"> </span><span class="n">type</span><span class="p">,</span><span class="w"> </span><span class="n">opts</span><span class="p" data-group-id="8205445597-4">)</span><span class="w"> </span><span class="k" data-group-id="8205445597-5">do</span><span class="w">
-    </span><span class="p" data-group-id="8205445597-6">{</span><span class="ss">:error</span><span class="p">,</span><span class="w"> </span><span class="c">_msg</span><span class="p" data-group-id="8205445597-6">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
-      </span><span class="nc">Process</span><span class="o">.</span><span class="n">sleep</span><span class="p" data-group-id="8205445597-7">(</span><span class="mi">100</span><span class="p" data-group-id="8205445597-7">)</span><span class="w">
-      </span><span class="n">try_play</span><span class="p" data-group-id="8205445597-8">(</span><span class="n">guild_id</span><span class="p">,</span><span class="w"> </span><span class="n">url</span><span class="p">,</span><span class="w"> </span><span class="n">type</span><span class="p">,</span><span class="w"> </span><span class="n">opts</span><span class="p" data-group-id="8205445597-8">)</span><span class="w">
+begin playing. Another common approach is to define a <code class="inline">try_play</code> function as follows:</p><pre><code class="makeup elixir" translate="no"><span class="kd">def</span><span class="w"> </span><span class="nf">try_play</span><span class="p" data-group-id="7377164725-1">(</span><span class="n">guild_id</span><span class="p">,</span><span class="w"> </span><span class="n">url</span><span class="p">,</span><span class="w"> </span><span class="n">type</span><span class="p">,</span><span class="w"> </span><span class="n">opts</span><span class="w"> </span><span class="o">\\</span><span class="w"> </span><span class="p" data-group-id="7377164725-2">[</span><span class="p" data-group-id="7377164725-2">]</span><span class="p" data-group-id="7377164725-1">)</span><span class="w"> </span><span class="k" data-group-id="7377164725-3">do</span><span class="w">
+  </span><span class="k">case</span><span class="w"> </span><span class="nc">Nostrum.Voice</span><span class="o">.</span><span class="n">play</span><span class="p" data-group-id="7377164725-4">(</span><span class="n">guild_id</span><span class="p">,</span><span class="w"> </span><span class="n">url</span><span class="p">,</span><span class="w"> </span><span class="n">type</span><span class="p">,</span><span class="w"> </span><span class="n">opts</span><span class="p" data-group-id="7377164725-4">)</span><span class="w"> </span><span class="k" data-group-id="7377164725-5">do</span><span class="w">
+    </span><span class="p" data-group-id="7377164725-6">{</span><span class="ss">:error</span><span class="p">,</span><span class="w"> </span><span class="c">_msg</span><span class="p" data-group-id="7377164725-6">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+      </span><span class="nc">Process</span><span class="o">.</span><span class="n">sleep</span><span class="p" data-group-id="7377164725-7">(</span><span class="mi">100</span><span class="p" data-group-id="7377164725-7">)</span><span class="w">
+      </span><span class="n">try_play</span><span class="p" data-group-id="7377164725-8">(</span><span class="n">guild_id</span><span class="p">,</span><span class="w"> </span><span class="n">url</span><span class="p">,</span><span class="w"> </span><span class="n">type</span><span class="p">,</span><span class="w"> </span><span class="n">opts</span><span class="p" data-group-id="7377164725-8">)</span><span class="w">
 
     </span><span class="bp">_</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
       </span><span class="ss">:ok</span><span class="w">
-  </span><span class="k" data-group-id="8205445597-5">end</span><span class="w">
-</span><span class="k" data-group-id="8205445597-3">end</span></code></pre><p>Note that the third element in the event is of type <a href="Nostrum.Struct.VoiceWSState.html#t:t/0"><code class="inline">Nostrum.Struct.VoiceWSState.t/0</code></a> and 
+  </span><span class="k" data-group-id="7377164725-5">end</span><span class="w">
+</span><span class="k" data-group-id="7377164725-3">end</span></code></pre><p>Note that the third element in the event is of type <a href="Nostrum.Struct.VoiceWSState.html#t:t/0"><code class="inline">Nostrum.Struct.VoiceWSState.t/0</code></a> and 
 not <a href="Nostrum.Struct.WSState.html#t:t/0"><code class="inline">Nostrum.Struct.WSState.t/0</code></a>.</p>
 <div class="bottom-actions">
   <div class="bottom-actions-item">
