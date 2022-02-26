@@ -11,7 +11,7 @@ defmodule Nostrum.Consumer do
   you can use `System.schedulers_online/0`.
 
   Nostrum uses a ConsumerSupervisor to dispatch events, meaning your handlers
-  will each be ran in their own seperate task.
+  will each be ran in their own separate task.
 
   ## Example
   An example consumer can be found

@@ -54,7 +54,7 @@ defmodule Nostrum.Struct.Component do
 
   ## 🐼 ~~Emoji Buttons~~
 
-  > Note: The discord documentation and marketing material in relation to buttons indicates that there are three kinds of buttons: 🐼 **Emoji Buttons**, **Link Buttons** & **Non-Link Buttons**. When in fact all buttons can contain an emoji. Because of this reason 🐼 **Emoji Buttons** are not included as a seperate type. Emojis will be instead handled by the two included ( superior ) button types.
+  > Note: The discord documentation and marketing material in relation to buttons indicates that there are three kinds of buttons: 🐼 **Emoji Buttons**, **Link Buttons** & **Non-Link Buttons**. When in fact all buttons can contain an emoji. Because of this reason 🐼 **Emoji Buttons** are not included as a separate type. Emojis will be instead handled by the two included ( superior ) button types.
 
   ![emoji buttons in action](./assets/emoji_button.png)
 
@@ -80,7 +80,7 @@ defmodule Nostrum.Struct.Component do
   - For short-form text, use `style: 1`
   - For long-form text, use `style: 2`
 
-  Text inputs are only allowed to be sent as part of an Interaction respose that opens a MODAL.
+  Text inputs are only allowed to be sent as part of an Interaction response that opens a MODAL.
   """
   @moduledoc since: "0.5.0"
 
@@ -165,7 +165,7 @@ defmodule Nostrum.Struct.Component do
     :max_values,
     :min_length,
     :max_length,
-    :requred,
+    :required,
     :value,
     :components
   ]

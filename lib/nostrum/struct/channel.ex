@@ -31,7 +31,7 @@ defmodule Nostrum.Struct.Channel do
 
   ## Channel Cache
 
-  The [`ChannelCache`](`Nostrum.Cache.ChannelCache`) module provides functionality for you to retreive information about any channel that your application can see. It provides two functions: [`get/1`](`Nostrum.Cache.ChannelCache.get/1`) and [`get!/1`](`Nostrum.Cache.ChannelCache.get!/1`).
+  The [`ChannelCache`](`Nostrum.Cache.ChannelCache`) module provides functionality for you to retrieve information about any channel that your application can see. It provides two functions: [`get/1`](`Nostrum.Cache.ChannelCache.get/1`) and [`get!/1`](`Nostrum.Cache.ChannelCache.get!/1`).
 
   ## Example
 

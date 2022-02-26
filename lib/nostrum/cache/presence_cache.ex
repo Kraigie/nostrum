@@ -59,7 +59,7 @@ defmodule Nostrum.Cache.PresenceCache do
 
   # Callbacks
   @doc ~S"""
-  Retreives a presence for a user from the cache by guild and id.
+  Retrieves a presence for a user from the cache by guild and id.
 
   If successful, returns `{:ok, presence}`. Otherwise returns `{:error, reason}`.
 

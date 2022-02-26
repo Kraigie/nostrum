@@ -119,7 +119,7 @@ defmodule Nostrum.Struct.Component.ActionRow do
   def put_new(%Component{type: 1, components: [_ | _]} = component, _), do: component
 
   @doc """
-  Puts the given component into the action row, any existing components are disgarded.
+  Puts the given component into the action row, any existing components are discarded.
   """
   def put(%Component{type: 1} = component, %Component{type: type} = select_menu)
       when type in [3, 4] do

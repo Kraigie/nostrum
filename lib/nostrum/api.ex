@@ -26,7 +26,7 @@ defmodule Nostrum.Api do
   Everything received from the WS connection will have `id` fields as `int`.
 
   If you're processing a response from the API and trying to access something in the cache
-  based off of an `id` in the response, you will need to conver it to an `int` using
+  based off of an `id` in the response, you will need to convert it to an `int` using
   `String.to_integer/1`. I'm open to suggestions for how this should be handled going forward.
 
   **Example**
@@ -192,7 +192,7 @@ defmodule Nostrum.Api do
   ### Allowed values
     * `:all` (default) - Ping everything as usual
     * `:none` - Nobody will be pinged
-    * `:everyone` - Allows to ping @here and @everone
+    * `:everyone` - Allows to ping @here and @everyone
     * `:users` - Allows to ping users
     * `:roles` - Allows to ping roles
     * `{:users, list}` - Allows to ping list of users. Can contain up to 100 ids of users.

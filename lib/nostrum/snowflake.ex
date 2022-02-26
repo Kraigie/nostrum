@@ -106,7 +106,7 @@ defmodule Nostrum.Snowflake do
   @doc """
   Converts the given `datetime` into a snowflake.
 
-  If `datetime` occured before the discord epoch, the function will return
+  If `datetime` occurred before the discord epoch, the function will return
   `:error`.
 
   The converted snowflake's last 22 bits will be zeroed out due to missing data.

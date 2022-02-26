@@ -1,6 +1,6 @@
 defmodule Nostrum.Api.Ratelimiter do
   @moduledoc """
-  Ratelimit implimentation specific to Discord's API.
+  Ratelimit implementation specific to Discord's API.
   Only to be used when starting in a rest-only manner.
   """
 
