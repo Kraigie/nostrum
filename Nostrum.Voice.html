@@ -10,7 +10,7 @@
     <title>Nostrum.Voice — Nostrum v0.5.0</title>
     <link rel="stylesheet" href="dist/elixir-a816d167216329cc463d.css" />
 
-    <script src="dist/sidebar_items-8a4734f7ca.js"></script>
+    <script src="dist/sidebar_items-41e083ed2c.js"></script>
 
       <script src="docs_config.js"></script>
 
@@ -165,7 +165,7 @@ shard websocket connections are, and require no developer intervention.</p><h2 i
 
       <div class="summary-row">
         <div class="summary-signature">
-          <a href="#join_channel/4" translate="no">join_channel(guild_id, channel_id, self_mute \\ false, self_deaf \\ false)</a>
+          <a href="#join_channel/5" translate="no">join_channel(guild_id, channel_id, self_mute \\ false, self_deaf \\ false, persist \\ true)</a>
 
         </div>
 
@@ -318,7 +318,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">connect_to_gateway(guild_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L469" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L492" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -350,7 +350,7 @@ By default Nostrum will automatically create a voice gateway when joining a chan
     </a>
     <h1 class="signature" translate="no">get_channel_id(guild_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L415" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L438" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -386,20 +386,22 @@ iex&gt; Nostrum.Voice.get_channel(123456789)
 nil</code></pre>
   </section>
 </section>
-<section class="detail" id="join_channel/4">
+<section class="detail" id="join_channel/5">
 
     <span id="join_channel/2"></span>
 
     <span id="join_channel/3"></span>
 
+    <span id="join_channel/4"></span>
+
   <div class="detail-header">
-    <a href="#join_channel/4" class="detail-link" title="Link to this function">
+    <a href="#join_channel/5" class="detail-link" title="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">join_channel(guild_id, channel_id, self_mute \\ false, self_deaf \\ false)</h1>
+    <h1 class="signature" translate="no">join_channel(guild_id, channel_id, self_mute \\ false, self_deaf \\ false, persist \\ true)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L74" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L84" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -416,12 +418,19 @@ nil</code></pre>
   <a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(),
   <a href="Nostrum.Struct.Channel.html#t:id/0">Nostrum.Struct.Channel.id</a>(),
   <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">boolean</a>(),
+  <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">boolean</a>(),
   <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">boolean</a>()
 ) :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">no_return</a>() | :ok</pre>
 
       </div>
 
-<p>Joins or moves the bot to a voice channel.</p><p>This function is equivalent to <a href="Nostrum.Api.html#update_voice_state/4"><code class="inline">Nostrum.Api.update_voice_state/4</code></a>.</p>
+<p>Joins or moves the bot to a voice channel.</p><p>This function calls <a href="Nostrum.Api.html#update_voice_state/4"><code class="inline">Nostrum.Api.update_voice_state/4</code></a>.</p><p>The fifth argument <code class="inline">persist</code> defaults to <code class="inline">true</code>. When true, if calling <a href="#join_channel/5"><code class="inline">join_channel/5</code></a>
+while already in a different channel in the same guild, the audio source will be persisted
+in the new channel. If the audio is actively playing at the time of changing channels,
+it will resume playing automatically upon joining. If there is an active audio source
+that has been paused before changing channels, the audio be able to be resumed manually if
+<a href="#resume/1"><code class="inline">resume/1</code></a> is called.</p><p>If <code class="inline">persist</code> is set to false, the audio source will be destroyed before changing channels.
+The same effect is achieved by calling <a href="#stop/1"><code class="inline">stop/1</code></a> or <a href="#leave_channel/1"><code class="inline">leave_channel/1</code></a> before <a href="#join_channel/5"><code class="inline">join_channel/5</code></a></p>
   </section>
 </section>
 <section class="detail" id="leave_channel/1">
@@ -433,7 +442,7 @@ nil</code></pre>
     </a>
     <h1 class="signature" translate="no">leave_channel(guild_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L84" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L107" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -462,7 +471,7 @@ nil</code></pre>
     </a>
     <h1 class="signature" translate="no">listen(guild_id, num_packets)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L498" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L521" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -498,7 +507,7 @@ nil</code></pre>
     </a>
     <h1 class="signature" translate="no">pause(guild_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L271" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L294" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -544,7 +553,7 @@ iex&gt; Nostrum.Voice.pause(123456789)</code></pre>
     </a>
     <h1 class="signature" translate="no">play(guild_id, input, type \\ :url, options \\ [])</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L171" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L194" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -618,7 +627,7 @@ iex&gt; Nostrum.Voice.play(123456789, &quot;https://youtu.be/LN4r-K8ZP5Q&quot;, 
     </a>
     <h1 class="signature" translate="no">playing?(guild_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L359" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L382" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -665,7 +674,7 @@ false</code></pre>
     </a>
     <h1 class="signature" translate="no">ready?(guild_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L388" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L411" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -710,7 +719,7 @@ false</code></pre>
     </a>
     <h1 class="signature" translate="no">resume(guild_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L313" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L336" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -753,7 +762,7 @@ iex&gt; Nostrum.Voice.resume(123456789)</code></pre>
     </a>
     <h1 class="signature" translate="no">send_frames(guild_id, frames)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L450" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L473" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -788,7 +797,7 @@ instead of <a href="#play/4"><code class="inline">Nostrum.Voice.play/4</code></a
     </a>
     <h1 class="signature" translate="no">set_is_speaking(guild_id, speaking)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L433" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L456" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -820,7 +829,7 @@ directly using <a href="#send_frames/2"><code class="inline">Nostrum.Voice.send_
     </a>
     <h1 class="signature" translate="no">stop(guild_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L229" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L252" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
