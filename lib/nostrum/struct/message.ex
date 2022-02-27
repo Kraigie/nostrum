@@ -78,7 +78,7 @@ defmodule Nostrum.Struct.Message do
   @type tts :: boolean
 
   @typedoc """
-  Whether this messsage mentions everyone
+  Whether this message mentions everyone
   """
   @type mention_everyone :: boolean
 

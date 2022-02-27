@@ -139,7 +139,7 @@ defmodule Nostrum.Struct.Guild do
   @typedoc "Whether the guild is considered 'large'"
   @type large :: boolean | nil
 
-  @typedoc "Whether the guild is avaliable"
+  @typedoc "Whether the guild is available"
   @type unavailable :: boolean | nil
 
   @typedoc "Total number of members in the guild"

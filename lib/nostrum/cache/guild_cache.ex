@@ -94,7 +94,7 @@ defmodule Nostrum.Cache.GuildCache do
   @callback select_all(selector :: (Guild.t() -> any())) :: Enum.t()
 
   @doc """
-  Retrives a single `Nostrum.Struct.Guild` from the cache via its `id`.
+  Retrieves a single `Nostrum.Struct.Guild` from the cache via its `id`.
 
   Returns `{:error, reason}` if no result was found.
 
@@ -111,7 +111,7 @@ defmodule Nostrum.Cache.GuildCache do
   @callback get(Guild.id()) :: {:ok, Guild.t()} | {:error, reason}
 
   @doc """
-  Retrives a single `Nostrum.Struct.Guild` where it matches the `clauses`.
+  Retrieves a single `Nostrum.Struct.Guild` where it matches the `clauses`.
 
   Returns `{:error, reason}` if no result was found.
 
