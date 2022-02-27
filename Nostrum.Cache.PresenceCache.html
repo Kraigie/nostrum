@@ -181,7 +181,7 @@ See <a href="https://discord.com/developers/docs/topics/gateway#presence-update"
 
         </div>
 
-          <div class="summary-synopsis"><p>Retreives a presence for a user from the cache by guild and id.</p></div>
+          <div class="summary-synopsis"><p>Retrieves a presence for a user from the cache by guild and id.</p></div>
 
       </div>
 
@@ -368,16 +368,16 @@ Callbacks
 
       </div>
 
-<p>Retreives a presence for a user from the cache by guild and id.</p><p>If successful, returns <code class="inline">{:ok, presence}</code>. Otherwise returns <code class="inline">{:error, reason}</code>.</p><h2 id="c:get/2-example" class="section-heading">
+<p>Retrieves a presence for a user from the cache by guild and id.</p><p>If successful, returns <code class="inline">{:ok, presence}</code>. Otherwise returns <code class="inline">{:error, reason}</code>.</p><h2 id="c:get/2-example" class="section-heading">
   <a href="#c:get/2-example" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
   Example
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="k">case</span><span class="w"> </span><span class="nc">Nostrum.Cache.PresenceCache</span><span class="o">.</span><span class="n">get</span><span class="p" data-group-id="0707999974-1">(</span><span class="mi">111133335555</span><span class="p">,</span><span class="w"> </span><span class="mi">222244446666</span><span class="p" data-group-id="0707999974-1">)</span><span class="w"> </span><span class="k" data-group-id="0707999974-2">do</span><span class="w">
-  </span><span class="p" data-group-id="0707999974-3">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">presence</span><span class="p" data-group-id="0707999974-3">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
-    </span><span class="s">&quot;They&#39;re </span><span class="si" data-group-id="0707999974-4">#{</span><span class="n">presence</span><span class="o">.</span><span class="n">status</span><span class="si" data-group-id="0707999974-4">}</span><span class="s">&quot;</span><span class="w">
-  </span><span class="p" data-group-id="0707999974-5">{</span><span class="ss">:error</span><span class="p">,</span><span class="w"> </span><span class="c">_reason</span><span class="p" data-group-id="0707999974-5">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+<pre><code class="makeup elixir" translate="no"><span class="k">case</span><span class="w"> </span><span class="nc">Nostrum.Cache.PresenceCache</span><span class="o">.</span><span class="n">get</span><span class="p" data-group-id="2880128721-1">(</span><span class="mi">111133335555</span><span class="p">,</span><span class="w"> </span><span class="mi">222244446666</span><span class="p" data-group-id="2880128721-1">)</span><span class="w"> </span><span class="k" data-group-id="2880128721-2">do</span><span class="w">
+  </span><span class="p" data-group-id="2880128721-3">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">presence</span><span class="p" data-group-id="2880128721-3">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+    </span><span class="s">&quot;They&#39;re </span><span class="si" data-group-id="2880128721-4">#{</span><span class="n">presence</span><span class="o">.</span><span class="n">status</span><span class="si" data-group-id="2880128721-4">}</span><span class="s">&quot;</span><span class="w">
+  </span><span class="p" data-group-id="2880128721-5">{</span><span class="ss">:error</span><span class="p">,</span><span class="w"> </span><span class="c">_reason</span><span class="p" data-group-id="2880128721-5">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
     </span><span class="s">&quot;They&#39;re dead Jim&quot;</span><span class="w">
-</span><span class="k" data-group-id="0707999974-2">end</span></code></pre>
+</span><span class="k" data-group-id="2880128721-2">end</span></code></pre>
   </section>
 </section>
 <section class="detail" id="c:update/1">
