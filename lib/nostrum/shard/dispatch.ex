@@ -32,7 +32,6 @@ defmodule Nostrum.Shard.Dispatch do
   alias Nostrum.Struct.Guild.{ScheduledEvent, UnavailableGuild}
   alias Nostrum.Util
   alias Nostrum.Voice
-  alias Nostrum.Voice.Session, as: VoiceSession
 
   require Logger
 
@@ -283,8 +282,14 @@ defmodule Nostrum.Shard.Dispatch do
     {event, UserCache.update(p), state}
   end
 
-  def handle_event(:VOICE_READY = event, p, state),
-    do: {event, VoiceReady.to_struct(p), state}
+  def handle_event(:VOICE_READY = event, p, state) do
+    voice = Voice.get_voice(p.guild_id)
+
+    if voice.persist_playback,
+      do: Voice.resume(p.guild_id)
+
+    {event, VoiceReady.to_struct(p), state}
+  end
 
   def handle_event(:VOICE_SPEAKING_UPDATE = event, p, state),
     do: {event, SpeakingUpdate.to_struct(p), state}
@@ -298,36 +303,11 @@ defmodule Nostrum.Shard.Dispatch do
         cond do
           # Not yet in a channel:
           is_nil(voice) or is_nil(voice.session) ->
-            Voice.update_voice(p.guild_id,
-              channel_id: p.channel_id,
-              session: p.session_id,
-              self_mute: p.self_mute,
-              self_deaf: p.self_deaf
-            )
+            Voice.on_channel_join_new(p)
 
           # Already in different channel:
           voice.channel_id != p.channel_id and is_pid(voice.session_pid) ->
-            v_ws = VoiceSession.get_ws_state(voice.session_pid)
-            # On the off-chance that we receive Voice Server Update first:
-            {new_token, new_gateway} =
-              if voice.token == v_ws.token do
-                # Need to reset
-                {nil, nil}
-              else
-                # Already updated
-                {voice.token, voice.gateway}
-              end
-
-            Voice.remove_voice(p.guild_id)
-
-            Voice.update_voice(p.guild_id,
-              channel_id: p.channel_id,
-              session: p.session_id,
-              self_mute: p.self_mute,
-              self_deaf: p.self_deaf,
-              token: new_token,
-              gateway: new_gateway
-            )
+            Voice.on_channel_join_change(p, voice)
 
           # Already in this channel:
           true ->

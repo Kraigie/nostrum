@@ -68,10 +68,33 @@ defmodule Nostrum.Voice do
   @doc """
   Joins or moves the bot to a voice channel.
 
-  This function is equivalent to `Nostrum.Api.update_voice_state/4`.
+  This function calls `Nostrum.Api.update_voice_state/4`.
+
+  The fifth argument `persist` defaults to `true`. When true, if calling `join_channel/5`
+  while already in a different channel in the same guild, the audio source will be persisted
+  in the new channel. If the audio is actively playing at the time of changing channels,
+  it will resume playing automatically upon joining. If there is an active audio source
+  that has been paused before changing channels, the audio be able to be resumed manually if
+  `resume/1` is called.
+
+  If `persist` is set to false, the audio source will be destroyed before changing channels.
+  The same effect is achieved by calling `stop/1` or `leave_channel/1` before `join_channel/5`
   """
-  @spec join_channel(Guild.id(), Channel.id(), boolean, boolean) :: no_return | :ok
-  def join_channel(guild_id, channel_id, self_mute \\ false, self_deaf \\ false) do
+  @spec join_channel(Guild.id(), Channel.id(), boolean, boolean, boolean) :: no_return | :ok
+  def join_channel(
+        guild_id,
+        channel_id,
+        self_mute \\ false,
+        self_deaf \\ false,
+        persist \\ true
+      ) do
+    with %VoiceState{} = voice <- get_voice(guild_id) do
+      update_voice(guild_id,
+        persist_source: persist,
+        persist_playback: persist and VoiceState.playing?(voice)
+      )
+    end
+
     Api.update_voice_state(guild_id, channel_id, self_mute, self_deaf)
   end
 
@@ -538,5 +561,63 @@ defmodule Nostrum.Voice do
     if VoiceState.ready_for_ws?(voice) do
       VoiceSupervisor.create_session(voice)
     end
+  end
+
+  @doc false
+  def on_channel_join_new(p) do
+    update_voice(p.guild_id,
+      channel_id: p.channel_id,
+      session: p.session_id,
+      self_mute: p.self_mute,
+      self_deaf: p.self_deaf
+    )
+  end
+
+  @doc false
+  def on_channel_join_change(p, voice) do
+    v_ws = Session.get_ws_state(voice.session_pid)
+
+    # On the off-chance that we receive Voice Server Update first:
+    {new_token, new_gateway} =
+      if voice.token == v_ws.token do
+        # Need to reset
+        {nil, nil}
+      else
+        # Already updated
+        {voice.token, voice.gateway}
+      end
+
+    %{
+      ffmpeg_proc: ffmpeg_proc,
+      raw_audio: raw_audio,
+      raw_stateful: raw_stateful,
+      persist_source: persist_source,
+      persist_playback: persist_playback
+    } = voice
+
+    # Nil-ify ffmpeg_proc so it doesn't get closed when cleanup is called
+    if persist_source, do: update_voice(p.guild_id, ffmpeg_proc: nil)
+
+    remove_voice(p.guild_id)
+
+    fields =
+      [
+        channel_id: p.channel_id,
+        session: p.session_id,
+        self_mute: p.self_mute,
+        self_deaf: p.self_deaf,
+        token: new_token,
+        gateway: new_gateway
+      ] ++
+        if persist_source,
+          do: [
+            ffmpeg_proc: ffmpeg_proc,
+            raw_audio: raw_audio,
+            raw_stateful: raw_stateful,
+            persist_playback: persist_playback
+          ],
+          else: []
+
+    update_voice(p.guild_id, fields)
   end
 end

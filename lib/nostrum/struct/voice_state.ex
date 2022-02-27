@@ -24,7 +24,9 @@ defmodule Nostrum.Struct.VoiceState do
     :ffmpeg_proc,
     :raw_audio,
     :raw_stateful,
-    :player_pid
+    :player_pid,
+    :persist_source,
+    :persist_playback
   ]
 
   def new, do: %__MODULE__{}
