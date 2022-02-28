@@ -22,13 +22,15 @@ defmodule Nostrum.Shard.Dispatch do
     MessageReactionRemoveEmoji,
     Ready,
     SpeakingUpdate,
+    ThreadListSync,
+    ThreadMembersUpdate,
     TypingStart,
     VoiceReady,
     VoiceServerUpdate,
     VoiceState
   }
 
-  alias Nostrum.Struct.{Guild, Interaction, Message, User}
+  alias Nostrum.Struct.{Guild, Interaction, Message, ThreadMember, User}
   alias Nostrum.Struct.Guild.{ScheduledEvent, UnavailableGuild}
   alias Nostrum.Util
   alias Nostrum.Voice
@@ -267,6 +269,24 @@ defmodule Nostrum.Shard.Dispatch do
   end
 
   def handle_event(:RESUMED = event, p, state), do: {event, p, state}
+
+  def handle_event(:THREAD_CREATE = event, p, state),
+    do: {event, GuildCache.channel_create(p.guild_id, p), state}
+
+  def handle_event(:THREAD_DELETE = event, p, state),
+    do: {event, GuildCache.channel_delete(p.guild_id, p.channel_id), state}
+
+  def handle_event(:THREAD_UPDATE = event, p, state),
+    do: {event, GuildCache.channel_update(p.guild_id, p), state}
+
+  def handle_event(:THREAD_LIST_SYNC = event, p, state),
+    do: {event, ThreadListSync.to_struct(p), state}
+
+  def handle_event(:THREAD_MEMBER_UPDATE = event, p, state),
+    do: {event, ThreadMember.to_struct(p), state}
+
+  def handle_event(:THREAD_MEMBERS_UPDATE = event, p, state),
+    do: {event, ThreadMembersUpdate.to_struct(p), state}
 
   def handle_event(:TYPING_START = event, p, state) do
     {event, TypingStart.to_struct(p), state}

@@ -146,7 +146,8 @@ defmodule Nostrum.Struct.Channel do
     :thread_metadata,
     :member,
     :default_auto_archive_duration,
-    :permissions
+    :permissions,
+    :newly_created
   ]
 
   @typedoc """
@@ -371,6 +372,12 @@ defmodule Nostrum.Struct.Channel do
   @type permissions :: String.t()
 
   @typedoc """
+  Included only in the `THREAD_CREATE` event.
+  """
+  @typedoc since: "0.5.1"
+  @type newly_created :: boolean | nil
+
+  @typedoc """
   Type 0 partial channel object representing a text channel within a guild.
   """
   @type guild_text_channel :: %__MODULE__{
@@ -495,7 +502,8 @@ defmodule Nostrum.Struct.Channel do
           message_count: message_count,
           member_count: member_count,
           rate_limit_per_user: rate_limit_per_user,
-          thread_metadata: thread_metadata
+          thread_metadata: thread_metadata,
+          newly_created: newly_created
         }
 
   @typedoc """
@@ -513,7 +521,8 @@ defmodule Nostrum.Struct.Channel do
           message_count: message_count,
           member_count: member_count,
           rate_limit_per_user: rate_limit_per_user,
-          thread_metadata: thread_metadata
+          thread_metadata: thread_metadata,
+          newly_created: newly_created
         }
 
   @typedoc """
@@ -531,7 +540,8 @@ defmodule Nostrum.Struct.Channel do
           message_count: message_count,
           member_count: member_count,
           rate_limit_per_user: rate_limit_per_user,
-          thread_metadata: thread_metadata
+          thread_metadata: thread_metadata,
+          newly_created: newly_created
         }
 
   @typedoc """

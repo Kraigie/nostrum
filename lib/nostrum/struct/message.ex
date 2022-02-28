@@ -178,7 +178,9 @@ defmodule Nostrum.Struct.Message do
   @type member :: Member.t() | nil
 
   @typedoc """
-  Reference data sent with crossposted messages and replies
+  Reference data sent with crossposted messages and replies.
+
+  For `THREAD_STARTER_MESSAGE` messages, this field points to the message that the thread was started from.
   """
   @type message_reference :: Reference.t() | nil
 
