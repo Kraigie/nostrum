@@ -4101,7 +4101,6 @@ defmodule Nostrum.Api do
   @spec join_thread(Channel.id()) :: {:ok} | error
   def join_thread(thread_id) do
     request(:put, Constants.thread_member_me(thread_id))
-    |> handle_request_with_decode
   end
 
   @doc """
@@ -4109,7 +4108,6 @@ defmodule Nostrum.Api do
   """
   def add_thread_member(thread_id, user_id) do
     request(:put, Constants.thread_member(thread_id, user_id))
-    |> handle_request_with_decode
   end
 
   @doc """
@@ -4118,7 +4116,6 @@ defmodule Nostrum.Api do
   @spec leave_thread(Channel.id()) :: {:ok} | error
   def leave_thread(thread_id) do
     request(:delete, Constants.thread_member_me(thread_id))
-    |> handle_request_with_decode
   end
 
   @doc """
@@ -4129,7 +4126,6 @@ defmodule Nostrum.Api do
   @spec remove_thread_member(Channel.id(), User.id()) :: {:ok} | error
   def remove_thread_member(thread_id, user_id) do
     request(:delete, Constants.thread_member(thread_id, user_id))
-    |> handle_request_with_decode
   end
 
   @spec maybe_add_reason(String.t() | nil) :: list()
