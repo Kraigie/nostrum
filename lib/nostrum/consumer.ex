@@ -227,7 +227,9 @@ defmodule Nostrum.Consumer do
   Dispatched when a thread is deleted, if the thread was cached, contains the original thread, otherwise contains `:noop`
   """
   @type thread_delete :: {:THREAD_DELETE, Channel.t() | :noop, WSState.t()}
-  @type thread_update :: {:THREAD_UPDATE, {old_thread :: Channel.t() | nil, new_thread :: Channel.t()}, WSState.t()}
+  @type thread_update ::
+          {:THREAD_UPDATE, {old_thread :: Channel.t() | nil, new_thread :: Channel.t()},
+           WSState.t()}
 
   @typedoc """
   Dispatched when gaining access to a channel
