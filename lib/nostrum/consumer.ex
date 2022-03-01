@@ -21,7 +21,7 @@ defmodule Nostrum.Consumer do
   use ConsumerSupervisor
 
   alias Nostrum.Shard.Stage.Cache
-  alias Nostrum.Struct.{Channel, VoiceWSState, WSState}
+  alias Nostrum.Struct.{Channel, ThreadMember, VoiceWSState, WSState}
 
   alias Nostrum.Struct.Event.{
     ChannelPinsUpdate,
@@ -38,6 +38,8 @@ defmodule Nostrum.Consumer do
     MessageReactionRemoveEmoji,
     Ready,
     SpeakingUpdate,
+    ThreadListSync,
+    ThreadMembersUpdate,
     TypingStart,
     VoiceReady,
     VoiceServerUpdate,
@@ -216,6 +218,27 @@ defmodule Nostrum.Consumer do
   @type voice_server_update :: {:VOICE_SERVER_UPDATE, VoiceServerUpdate.t(), WSState.t()}
   @type webhooks_update :: {:WEBHOOKS_UPDATE, map, WSState.t()}
 
+  @typedoc """
+  Dispatched when a thread is created or when added to a private thread
+  """
+  @type thread_create :: {:THREAD_CREATE, Channel.t(), WSState.t()}
+  @type thread_delete :: {:THREAD_DELETE, Channel.t(), WSState.t()}
+  @type thread_update :: {:THREAD_UPDATE, Channel.t(), WSState.t()}
+
+  @typedoc """
+  Dispatched when gaining access to a channel
+  """
+  @type thread_list_sync :: {:THREAD_LIST_SYNC, ThreadListSync.t(), WSState.t()}
+
+  @typedoc """
+  Dispatched when a `ThreadMember` for the current user is updated
+  """
+  @type thread_member_update :: {:THREAD_MEMBER_UPDATE, ThreadMember.t(), WSState.t()}
+
+  @typedoc """
+  Dispatched when member(s) are added or removed from a thread
+  """
+  @type thread_members_update :: {:THREAD_MEMBERS_UPDATE, ThreadMembersUpdate.t(), WSState.t()}
   @type event ::
           channel_create
           | channel_delete
@@ -249,6 +272,12 @@ defmodule Nostrum.Consumer do
           | presence_update
           | ready
           | resumed
+          | thread_create
+          | thread_delete
+          | thread_update
+          | thread_list_sync
+          | thread_member_update
+          | thread_members_update
           | typing_start
           | user_settings_update
           | user_update
