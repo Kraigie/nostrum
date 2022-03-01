@@ -57,6 +57,7 @@ defmodule Nostrum.Api do
     Interaction,
     Invite,
     Message,
+    ThreadMember,
     User,
     Webhook
   }
@@ -2990,6 +2991,7 @@ defmodule Nostrum.Api do
            :tts => boolean,
            optional(:files) => [String.t() | %{body: binary(), name: String.t()}],
            optional(:flags) => non_neg_integer(),
+           optional(:thread_id) => Snowflake.t(),
            optional(:embeds) => nonempty_list(Embed.t()) | nil
          }
 
@@ -3001,6 +3003,7 @@ defmodule Nostrum.Api do
              :tts => boolean,
              required(:files) => [String.t() | %{body: binary(), name: String.t()}],
              optional(:flags) => non_neg_integer(),
+             optional(:thread_id) => Snowflake.t(),
              optional(:embeds) => nonempty_list(Embed.t()) | nil
            }
 
@@ -3012,6 +3015,7 @@ defmodule Nostrum.Api do
              :tts => boolean,
              optional(:files) => [String.t() | %{body: binary(), name: String.t()}],
              optional(:flags) => non_neg_integer(),
+             optional(:thread_id) => Snowflake.t(),
              required(:embeds) => nonempty_list(Embed.t())
            }
 
@@ -3031,13 +3035,15 @@ defmodule Nostrum.Api do
    ## Parameters
    - `webhook_id` - Id of the webhook to execute.
    - `webhook_token` - Token of the webhook to execute.
-   - `args` - Map with the following required keys:
+   - `args` - Map with the following allowed keys:
      - `content` - Message content.
      - `files` - List of Files to send.
      - `embeds` - List of embeds to send.
      - `username` - Overrides the default name of the webhook.
      - `avatar_url` - Overrides the default avatar of the webhook.
      - `tts` - Whether the message should be read over text to speech.
+     - `flags` - Bitwise flags.
+     - `thread_id` - Send a message to the specified thread within the webhook's channel.
    - `wait` - Whether to return an error or not. Defaults to `false`.
 
    **Note**: If `wait` is `true`, this method will return a `Message.t()` on success.
@@ -3049,47 +3055,67 @@ defmodule Nostrum.Api do
 
   def execute_webhook(webhook_id, webhook_token, %{file: file, files: files} = args, wait) do
     args = Map.drop(args, [:file, :files])
-    execute_webhook_with_multipart(webhook_id, webhook_token, [file | files], args, wait)
+    {thread_id, args} = Map.pop(args, :thread_id)
+
+    execute_webhook_with_multipart(
+      webhook_id,
+      webhook_token,
+      [file | files],
+      args,
+      wait,
+      thread_id
+    )
   end
 
   def execute_webhook(webhook_id, webhook_token, %{file: file} = args, wait) do
     args = Map.delete(args, :file)
-    execute_webhook_with_multipart(webhook_id, webhook_token, [file], args, wait)
+    {thread_id, args} = Map.pop(args, :thread_id)
+    execute_webhook_with_multipart(webhook_id, webhook_token, [file], args, wait, thread_id)
   end
 
   def execute_webhook(webhook_id, webhook_token, %{files: files} = args, wait) do
     args = Map.delete(args, :files)
-    execute_webhook_with_multipart(webhook_id, webhook_token, files, args, wait)
+    {thread_id, args} = Map.pop(args, :thread_id)
+
+    execute_webhook_with_multipart(webhook_id, webhook_token, files, args, wait, thread_id)
   end
 
-  def execute_webhook(webhook_id, webhook_token, %{content: _} = args, wait) do
+  def execute_webhook(webhook_id, webhook_token, args, wait)
+      when is_map_key(args, :content) or is_map_key(args, :embeds) do
+    {thread_id, args} = Map.pop(args, :thread_id)
+
+    params =
+      if is_nil(thread_id) do
+        [{:wait, wait}]
+      else
+        [{:wait, wait}, {:thread_id, thread_id}]
+      end
+
     request(
       :post,
       Constants.webhook_token(webhook_id, webhook_token),
       args,
-      wait: wait
+      params
     )
   end
 
-  def execute_webhook(webhook_id, webhook_token, %{embeds: _} = args, wait) do
-    request(
-      :post,
-      Constants.webhook_token(webhook_id, webhook_token),
-      args,
-      wait: wait
-    )
-  end
-
-  defp execute_webhook_with_multipart(webhook_id, webhook_token, files, args, wait) do
+  defp execute_webhook_with_multipart(webhook_id, webhook_token, files, args, wait, thread_id) do
     payload_json = Jason.encode_to_iodata!(args)
 
     boundary = generate_boundary()
+
+    params =
+      if is_nil(thread_id) do
+        [{:wait, wait}]
+      else
+        [{:wait, wait}, {:thread_id, thread_id}]
+      end
 
     request = %{
       method: :post,
       route: Constants.webhook_token(webhook_id, webhook_token),
       body: create_multipart(files, payload_json, boundary),
-      params: [{:wait, wait}],
+      params: params,
       headers: [
         {"content-type", "multipart/form-data; boundary=#{boundary}"}
       ]
@@ -3853,6 +3879,259 @@ defmodule Nostrum.Api do
     |> handle_request_with_decode
   end
 
+  @type thread_with_message_params :: %{
+          required(:name) => String.t(),
+          optional(:auto_archive_duration) => 60 | 1440 | 4320 | 10_080,
+          optional(:rate_limit_per_user) => 0..21_600
+        }
+
+  @doc """
+  Create a thread on a channel message.
+
+  The `thread_id` will be the same as the id of the message, as such no message can have more than one thread.
+
+  If successful, returns `{:ok, Channel}`. Otherwise returns a `t:Nostrum.Api.error/0`.
+
+  An optional `reason` argument can be given for the audit log.
+
+  ## Options
+  - `name`: Name of the thread, max 100 characters.
+  - `auto_archive_duration`: Duration in minutes to auto-archive the thread after it has been inactive, can be set to 60, 1440, 4320, or 10080.
+  - `rate_limit_per_user`: Rate limit per user in seconds, can be set to any value in `0..21600`.
+
+  """
+  @spec start_thread_with_message(
+          Channel.id(),
+          Message.id(),
+          thread_with_message_params,
+          AuditLogEntry.reason()
+        ) ::
+          {:ok, Channel.t()} | error
+  def start_thread_with_message(channel_id, message_id, options, reason \\ nil) do
+    request(%{
+      method: :post,
+      route: Constants.thread_with_message(channel_id, message_id),
+      body: options,
+      params: [],
+      headers: maybe_add_reason(reason)
+    })
+    |> handle_request_with_decode({:struct, Channel})
+  end
+
+  @type thread_without_message_params :: %{
+          required(:name) => String.t(),
+          required(:type) => non_neg_integer(),
+          optional(:auto_archive_duration) => 60 | 1440 | 4320 | 10_080,
+          optional(:invitable) => boolean(),
+          optional(:rate_limit_per_user) => 0..21_600
+        }
+
+  @doc """
+  Create a thread on a channel without an associated message.
+
+  If successful, returns `{:ok, Channel}`. Otherwise returns a `t:Nostrum.Api.error/0`.
+
+  An optional `reason` argument can be given for the audit log.
+
+  ## Options
+  - `name`: Name of the thread, max 100 characters.
+  - `type`: Type of thread, can be either 11 (`GUILD_PUBLIC_THREAD`) or 12 (`GUILD_PRIVATE_THREAD`).
+  - `auto_archive_duration`: Duration in minutes to auto-archive the thread after it has been inactive, can be set to 60, 1440, 4320, or 10080.
+  - `invitable`: whether non-moderators can add other non-moderators to a thread; only available when creating a private thread defaults to `false`.
+  - `rate_limit_per_user`: Rate limit per user in seconds, can be set to any value in `0..21600`.
+  """
+  @spec start_thread(Channel.id(), thread_without_message_params, AuditLogEntry.reason()) ::
+          {:ok, Channel.t()} | error
+  def start_thread(channel_id, options, reason \\ nil) do
+    request(%{
+      method: :post,
+      route: Constants.thread_without_message(channel_id),
+      body: options,
+      params: [],
+      headers: maybe_add_reason(reason)
+    })
+    |> handle_request_with_decode({:struct, Channel})
+  end
+
+  @doc """
+  Returns a thread member object for the specified user if they are a member of the thread
+  """
+  @spec get_thread_member(Channel.id(), User.id()) :: {:ok, ThreadMember.t()} | error
+  def get_thread_member(thread_id, user_id) do
+    request(:get, Constants.thread_member(thread_id, user_id))
+    |> handle_request_with_decode({:struct, ThreadMember})
+  end
+
+  @doc """
+  Returns a list of thread members for the specified thread.
+
+  This endpoint is restricted according to whether the `GUILD_MEMBERS` privileged intent is enabled.
+  """
+  @spec get_thread_members(Channel.id()) :: {:ok, [ThreadMember.t()]} | error
+  def get_thread_members(thread_id) do
+    request(:get, Constants.thread_members(thread_id))
+    |> handle_request_with_decode({:list, {:struct, ThreadMember}})
+  end
+
+  @doc """
+  Return all active threads for the current guild.
+
+  Response body is a map with the following keys:
+  - `threads`: A list of channel objects.
+  - `members`: A list of `ThreadMemer` objects, one for each returned thread the current user has joined.
+  """
+  @spec list_guild_threads(Guild.id()) ::
+          {:ok, %{threads: [Channel.t()], members: [ThreadMember.t()]}} | error
+  def list_guild_threads(guild_id) do
+    res =
+      request(:get, Constants.guild_active_threads(guild_id))
+      |> handle_request_with_decode
+
+    case res do
+      {:ok, %{threads: channels, members: thread_members}} ->
+        map = %{
+          threads: Util.cast({:list, {:struct, Channel}}, channels),
+          members: Util.cast({:list, {:struct, ThreadMember}}, thread_members)
+        }
+
+        {:ok, map}
+
+      {:error, e} ->
+        {:error, e}
+    end
+  end
+
+  @doc """
+  Returns a list of archived threads for a given channel.
+
+  Threads are sorted by the `archive_timestamp` field, in descending order.
+
+  ## Response body
+  Response body is a map with the following keys:
+  - `threads`: A list of channel objects.
+  - `members`: A list of `ThreadMemer` objects, one for each returned thread the current user has joined.
+  - `has_more`: A boolean indicating whether there are more archived threads that can be fetched.
+
+  ## Options
+  - `before`: Returns threads before this timestamp, can be either a `DateTime` or (ISO8601 timestamp)[`DateTime.to_iso8601/3`].
+  - `limit`: Optional maximum number of threads to return.
+  """
+  @spec list_public_archived_threads(Channel.id(), options) ::
+          {:ok, %{threads: [Channel.t()], members: [ThreadMember.t()], has_more: boolean()}}
+          | error
+  def list_public_archived_threads(channel_id, options \\ [])
+
+  def list_public_archived_threads(channel_id, options) when is_map(options) do
+    Constants.public_archived_threads(channel_id)
+    |> list_archived_threads(Map.to_list(options))
+  end
+
+  def list_public_archived_threads(channel_id, options) when is_list(options) do
+    Constants.public_archived_threads(channel_id)
+    |> list_archived_threads(options)
+  end
+
+  @doc """
+  Same as `list_public_archived_threads/2`, but for private threads instead of public.
+  """
+  @spec list_private_archived_threads(Channel.id(), options) ::
+          {:ok, %{threads: [Channel.t()], members: [ThreadMember.t()], has_more: boolean()}}
+          | error
+  def list_private_archived_threads(channel_id, options \\ [])
+
+  def list_private_archived_threads(channel_id, options) when is_map(options) do
+    Constants.private_archived_threads(channel_id)
+    |> list_archived_threads(Map.to_list(options))
+  end
+
+  def list_private_archived_threads(channel_id, options) when is_list(options) do
+    Constants.private_archived_threads(channel_id)
+    |> list_archived_threads(options)
+  end
+
+  @doc """
+  Same as `list_public_archived_threads/2`, but only returns private threads that the current user has joined.
+  """
+  @spec list_joined_private_archived_threads(Channel.id(), options) ::
+          {:ok, %{threads: [Channel.t()], members: [ThreadMember.t()], has_more: boolean()}}
+          | error
+  def list_joined_private_archived_threads(channel_id, options \\ [])
+
+  def list_joined_private_archived_threads(channel_id, options) when is_map(options) do
+    Constants.private_joined_archived_threads(channel_id)
+    |> list_archived_threads(Map.to_list(options))
+  end
+
+  def list_joined_private_archived_threads(channel_id, options) when is_list(options) do
+    Constants.private_joined_archived_threads(channel_id)
+    |> list_archived_threads(options)
+  end
+
+  defp list_archived_threads(route, options) do
+    options = options |> maybe_convert_date_time(:before)
+
+    res =
+      request(%{
+        method: :get,
+        route: route,
+        body: "",
+        params: options,
+        headers: []
+      })
+      |> handle_request_with_decode
+
+    case res do
+      {:ok, %{threads: channels, members: thread_members, has_more: has_more}} ->
+        map = %{
+          threads: Util.cast({:list, {:struct, Channel}}, channels),
+          members: Util.cast({:list, {:struct, ThreadMember}}, thread_members),
+          has_more: has_more
+        }
+
+        {:ok, map}
+
+      {:error, e} ->
+        {:error, e}
+    end
+  end
+
+  @doc """
+  Join an existing thread, requires that the thread is not archived.
+  """
+  @spec join_thread(Channel.id()) :: {:ok} | error
+  def join_thread(thread_id) do
+    request(:put, Constants.thread_member_me(thread_id))
+    |> handle_request_with_decode
+  end
+
+  @doc """
+  Add a user to a thread, requires the ability to send messages in the thread.
+  """
+  def add_thread_member(thread_id, user_id) do
+    request(:put, Constants.thread_member(thread_id, user_id))
+    |> handle_request_with_decode
+  end
+
+  @doc """
+  Leave a thread, requires that the thread is not archived.
+  """
+  @spec leave_thread(Channel.id()) :: {:ok} | error
+  def leave_thread(thread_id) do
+    request(:delete, Constants.thread_member_me(thread_id))
+    |> handle_request_with_decode
+  end
+
+  @doc """
+  Removes another user from a thread, requires that the thread is not archived.
+
+  Also requires the `MANAGE_THREADS` permission, or the creator of the thread if the thread is private.
+  """
+  @spec remove_thread_member(Channel.id(), User.id()) :: {:ok} | error
+  def remove_thread_member(thread_id, user_id) do
+    request(:delete, Constants.thread_member(thread_id, user_id))
+    |> handle_request_with_decode
+  end
+
   @spec maybe_add_reason(String.t() | nil) :: list()
   defp maybe_add_reason(reason) do
     maybe_add_reason(reason, [{"content-type", "application/json"}])
@@ -4069,12 +4348,23 @@ defmodule Nostrum.Api do
   # ignore
   defp parse_allowed_mentions(options), do: options
 
-  @spec maybe_convert_date_time(map(), atom()) :: map()
-  defp maybe_convert_date_time(options, key) do
+  @spec maybe_convert_date_time(options(), atom()) :: options()
+  defp maybe_convert_date_time(options, key) when is_map(options) do
     case options do
       %{^key => %DateTime{} = date_time} ->
         timestamp = DateTime.to_iso8601(date_time)
         %{options | key => timestamp}
+
+      _ ->
+        options
+    end
+  end
+
+  defp maybe_convert_date_time(options, key) when is_list(options) do
+    case Keyword.get(options, key) do
+      %DateTime{} = date_time ->
+        timestamp = DateTime.to_iso8601(date_time)
+        Keyword.put(options, key, timestamp)
 
       _ ->
         options
