@@ -274,7 +274,7 @@ defmodule Nostrum.Shard.Dispatch do
     do: {event, GuildCache.channel_create(p.guild_id, p), state}
 
   def handle_event(:THREAD_DELETE = event, p, state),
-    do: {event, GuildCache.channel_delete(p.guild_id, p.channel_id), state}
+    do: {event, GuildCache.channel_delete(p.guild_id, p.id), state}
 
   def handle_event(:THREAD_UPDATE = event, p, state),
     do: {event, GuildCache.channel_update(p.guild_id, p), state}
