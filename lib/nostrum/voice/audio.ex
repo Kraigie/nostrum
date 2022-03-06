@@ -64,27 +64,8 @@ defmodule Nostrum.Voice.Audio do
 
       <<header::96, data::binary>> ->
         nonce = <<header::96, 0::96>>
-        {<<header::96>>, parse_opus(Kcl.secretunbox(data, nonce, key))}
+        {<<header::96>>, Kcl.secretunbox(data, nonce, key)}
     end
-  end
-
-  def parse_opus(packet) do
-    <<
-      0xBE::8,
-      0xDE::8,
-      ext_len::integer-16,
-      rest::binary
-    >> = packet
-    step(rest, ext_len)
-  end
-
-  def step(rest, 0), do: rest
-
-  def step(<<0::8, rest::binary>>, len), do: step(rest, len)
-
-  def step(rest, len) do
-    <<_id::4, l::integer-size(4), _ext0::8, _ext1::unit(8)-size(l), rest::binary>> = rest
-    step(rest, len - 1)
   end
 
   def get_unique_rtp_packets(v, num), do: unique_rtp(v, num, [], MapSet.new())
