@@ -137,14 +137,16 @@ defmodule Nostrum.Voice.Opus do
 
   def gen_page(body, state) when not is_list(body), do: gen_page([body], state)
 
-  def gen_page(body, state) when is_list(body) do
-    %{
-      page_sequence: page_sequence,
-      bitstream_serial: bitstream_serial,
-      granule_position: granule_position,
-      header_type: header_type
-    } = state
-
+  def gen_page(
+        body,
+        %{
+          page_sequence: page_sequence,
+          bitstream_serial: bitstream_serial,
+          granule_position: granule_position,
+          header_type: header_type
+        } = _state
+      )
+      when is_list(body) do
     %{
       version: 0,
       header_type: header_type,
@@ -185,16 +187,16 @@ defmodule Nostrum.Voice.Opus do
     }
   end
 
-  def encode_opus_head(head) do
-    %{
-      version: version,
-      channel_count: channel_count,
-      pre_skip: pre_skip,
-      input_sample_rate: input_sample_rate,
-      output_gain: output_gain,
-      mapping_family: mapping_family
-    } = head
-
+  def encode_opus_head(
+        %{
+          version: version,
+          channel_count: channel_count,
+          pre_skip: pre_skip,
+          input_sample_rate: input_sample_rate,
+          output_gain: output_gain,
+          mapping_family: mapping_family
+        } = _head
+      ) do
     <<
       "OpusHead",
       version::integer-8,
@@ -239,12 +241,12 @@ defmodule Nostrum.Voice.Opus do
     }
   end
 
-  def encode_opus_tags(tags) do
-    %{
-      vendor_string: vendor_string,
-      comments: comments
-    } = tags
-
+  def encode_opus_tags(
+        %{
+          vendor_string: vendor_string,
+          comments: comments
+        } = _tags
+      ) do
     comments_binary =
       Enum.reduce(comments, <<>>, fn comment, acc ->
         len = byte_size(comment)
@@ -295,19 +297,19 @@ defmodule Nostrum.Voice.Opus do
     }
   end
 
-  def encode_ogg_page(page) do
-    %{
-      version: version,
-      header_type: header_type,
-      granule_position: granule_position,
-      bitstream_serial: bitstream_serial,
-      page_sequence: page_sequence,
-      crc_checksum: crc_checksum,
-      page_segments: page_segments,
-      segment_table_raw: segment_table_raw,
-      body: body
-    } = page
-
+  def encode_ogg_page(
+        %{
+          version: version,
+          header_type: header_type,
+          granule_position: granule_position,
+          bitstream_serial: bitstream_serial,
+          page_sequence: page_sequence,
+          crc_checksum: crc_checksum,
+          page_segments: page_segments,
+          segment_table_raw: segment_table_raw,
+          body: body
+        } = _page
+      ) do
     <<
       "OggS",
       version::integer-8,
