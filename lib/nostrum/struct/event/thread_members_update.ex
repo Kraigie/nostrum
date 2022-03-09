@@ -5,7 +5,7 @@ defmodule Nostrum.Struct.Event.ThreadMembersUpdate do
   This event is sent whenever a user is added or removed from a thread.
 
   If the current user does not have the `GUILD_MEMBERS` intent,
-  this event will only be send when the current user is added to or removed from a thread.
+  this event will only be sent when the current user is added to or removed from a thread.
   """
 
   defstruct [

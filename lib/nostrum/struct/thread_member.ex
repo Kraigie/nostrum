@@ -2,6 +2,7 @@ defmodule Nostrum.Struct.ThreadMember do
   @moduledoc """
   Struct representing a thread member object
   """
+  @moduledoc since: "0.5.1"
 
   alias Nostrum.Struct.{Guild, User}
   alias Nostrum.{Snowflake, Util}
@@ -17,19 +18,16 @@ defmodule Nostrum.Struct.ThreadMember do
   @typedoc """
   The id of the thread, omitted within `GUILD_CREATE` events
   """
-  @typedoc since: "0.5.1"
   @type id :: Snowflake.t() | nil
 
   @typedoc """
   The id of the user, omitted within `GUILD_CREATE` events
   """
-  @typedoc since: "0.5.1"
   @type user_id :: User.id() | nil
 
   @typedoc """
   The timestamp of when the user last joined the thread
   """
-  @typedoc since: "0.5.1"
   @type join_timestamp :: DateTime.t()
 
   @typedoc """
@@ -42,7 +40,6 @@ defmodule Nostrum.Struct.ThreadMember do
 
   Only present within `THREAD_MEMBER_UPDATE` events
   """
-  @typedoc since: "0.5.1"
   @type guild_id :: Guild.id() | nil
 
   @type t :: %__MODULE__{
