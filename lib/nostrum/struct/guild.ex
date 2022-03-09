@@ -8,7 +8,8 @@ defmodule Nostrum.Struct.Guild do
     :voice_states,
     :members,
     :channels,
-    :guild_scheduled_events
+    :guild_scheduled_events,
+    :threads
   ]
 
   @moduledoc """
@@ -49,7 +50,8 @@ defmodule Nostrum.Struct.Guild do
     :members,
     :channels,
     :guild_scheduled_events,
-    :vanity_url_code
+    :vanity_url_code,
+    :threads
   ]
 
   @typedoc "The guild's id"
@@ -160,6 +162,10 @@ defmodule Nostrum.Struct.Guild do
   @typedoc "Guild invite vanity URL"
   @type vanity_url_code :: String.t() | nil
 
+  @typedoc "All active threads in the guild that the current user has permission to view"
+  @typedoc since: "0.5.1"
+  @type threads :: %{required(Channel.id()) => Channel.t()} | nil
+
   @typedoc """
   A `Nostrum.Struct.Guild` that is sent on user-specific rest endpoints.
   """
@@ -192,7 +198,8 @@ defmodule Nostrum.Struct.Guild do
           voice_states: nil,
           members: nil,
           channels: nil,
-          vanity_url_code: nil
+          vanity_url_code: nil,
+          threads: nil
         }
 
   @typedoc """
@@ -228,7 +235,8 @@ defmodule Nostrum.Struct.Guild do
           voice_states: nil,
           members: nil,
           channels: nil,
-          guild_scheduled_events: nil
+          guild_scheduled_events: nil,
+          threads: nil
         }
 
   @typedoc """
@@ -264,7 +272,8 @@ defmodule Nostrum.Struct.Guild do
           members: nil,
           channels: nil,
           guild_scheduled_events: nil,
-          vanity_url_code: nil
+          vanity_url_code: nil,
+          threads: nil
         }
 
   @typedoc """
@@ -300,7 +309,8 @@ defmodule Nostrum.Struct.Guild do
           members: members,
           channels: channels,
           guild_scheduled_events: guild_scheduled_events,
-          vanity_url_code: vanity_url_code
+          vanity_url_code: vanity_url_code,
+          threads: threads
         }
 
   @type t ::
@@ -391,6 +401,7 @@ defmodule Nostrum.Struct.Guild do
         nil,
         &Util.cast(&1, {:list, {:struct, ScheduledEvent}})
       )
+      |> Map.update(:threads, nil, &Util.cast(&1, {:index, [:id], {:struct, Channel}}))
 
     struct(__MODULE__, new)
   end

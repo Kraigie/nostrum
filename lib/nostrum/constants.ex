@@ -2,7 +2,7 @@ defmodule Nostrum.Constants do
   @moduledoc false
 
   def domain, do: "discord.com"
-  def base_route, do: "/api/v8"
+  def base_route, do: "/api/v9"
   def base_url, do: "https://#{domain()}#{base_route()}"
   def cdn_url, do: "https://cdn.discordapp.com"
   def gateway, do: "/gateway"
@@ -141,6 +141,26 @@ defmodule Nostrum.Constants do
   def cdn_emoji(id, image_format), do: "/emojis/#{id}.#{image_format}"
   def cdn_icon(id, icon, image_format), do: "/icons/#{id}/#{icon}.#{image_format}"
   def cdn_splash(id, splash, image_format), do: "/splashes/#{id}/#{splash}.#{image_format}"
+
+  def thread_with_message(channel_id, message_id),
+    do: "/channels/#{channel_id}/messages/#{message_id}/threads"
+
+  def thread_without_message(channel_id), do: "/channels/#{channel_id}/threads"
+
+  def thread_member_me(thread_id), do: "/channels/#{thread_id}/thread-members/@me"
+
+  def thread_member(thread_id, user_id), do: "/channels/#{thread_id}/thread-members/#{user_id}"
+
+  def thread_members(thread_id), do: "/channels/#{thread_id}/thread-members"
+
+  def guild_active_threads(guild_id), do: "/guilds/#{guild_id}/threads/active"
+
+  def public_archived_threads(channel_id), do: "/channels/#{channel_id}/threads/archived/public"
+
+  def private_archived_threads(channel_id), do: "/channels/#{channel_id}/threads/archived/private"
+
+  def private_joined_archived_threads(channel_id),
+    do: "/channels/#{channel_id}/users/@me/threads/archived/private"
 
   def discord_epoch, do: 1_420_070_400_000
 

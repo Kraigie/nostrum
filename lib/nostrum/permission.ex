@@ -56,6 +56,10 @@ defmodule Nostrum.Permission do
           | :read_message_history
           | :mention_everyone
           | :use_external_emojis
+          | :create_public_threads
+          | :create_private_threads
+          | :send_messages_in_threads
+          | :manage_threads
 
   @type voice_permission ::
           :connect
@@ -71,6 +75,7 @@ defmodule Nostrum.Permission do
           | text_permission
           | voice_permission
 
+  # TODO: replace this with bitshifts to match the API docs for readability
   @permission_to_bit_map %{
     create_instant_invite: 0x00000001,
     kick_members: 0x00000002,
@@ -100,7 +105,11 @@ defmodule Nostrum.Permission do
     manage_nicknames: 0x08000000,
     manage_roles: 0x10000000,
     manage_webhooks: 0x20000000,
-    manage_emojis: 0x40000000
+    manage_emojis: 0x40000000,
+    manage_threads: 0x0000000400000000,
+    create_public_threads: 0x0000000800000000,
+    create_private_threads: 0x0000001000000000,
+    send_messages_in_threads: 0x0000004000000000
   }
 
   @bit_to_permission_map Map.new(@permission_to_bit_map, fn {k, v} -> {v, k} end)
