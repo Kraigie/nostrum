@@ -10,7 +10,7 @@
     <title>Nostrum.Voice — Nostrum v0.5.0</title>
     <link rel="stylesheet" href="dist/elixir-a816d167216329cc463d.css" />
 
-    <script src="dist/sidebar_items-41e083ed2c.js"></script>
+    <script src="dist/sidebar_items-58089d3a6b.js"></script>
 
       <script src="docs_config.js"></script>
 
@@ -150,6 +150,26 @@ shard websocket connections are, and require no developer intervention.</p><h2 i
         </div>
 
           <div class="summary-synopsis"><p>Low-level. Manually connect to voice websockets gateway.</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#create_ogg_bitstream/1" translate="no">create_ogg_bitstream(opus_packets)</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>Create a complete Ogg logical bitstream from a list of Opus packets.</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#extract_opus_packet/1" translate="no">extract_opus_packet(packet)</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>Extract the opus packet from the RTP payload received from Discord.</p></div>
 
       </div>
 
@@ -296,7 +316,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">child_spec(init_arg)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L41" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L42" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -318,7 +338,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">connect_to_gateway(guild_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L492" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L493" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -341,6 +361,78 @@ Functions
 By default Nostrum will automatically create a voice gateway when joining a channel.</p>
   </section>
 </section>
+<section class="detail" id="create_ogg_bitstream/1">
+
+  <div class="detail-header">
+    <a href="#create_ogg_bitstream/1" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">create_ogg_bitstream(opus_packets)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L572" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+      <span class="note">(since 0.5.1)</span>
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre translate="no">create_ogg_bitstream([<a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">binary</a>()]) :: [<a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">binary</a>()]</pre>
+
+      </div>
+
+<p>Create a complete Ogg logical bitstream from a list of Opus packets.</p><p>This function takes a list of opus packets and returns a list of Ogg
+encapsulated Opus pages for a single Ogg logical bitstream.</p><p>It is highly recommended to learn about the Ogg container format to
+understand how to use the data.</p><p>To get started, assuming you have a list of evenly temporally spaced
+and consecutive opus packets from a single source that you want written
+to a file, you can run the following:</p><pre><code class="makeup elixir" translate="no"><span class="n">bitstream</span><span class="w"> </span><span class="o">=</span><span class="w">
+  </span><span class="n">opus_packets</span><span class="w">
+  </span><span class="o">|&gt;</span><span class="w"> </span><span class="n">create_ogg_bitstream</span><span class="p" data-group-id="0314143549-1">(</span><span class="p" data-group-id="0314143549-1">)</span><span class="w">
+  </span><span class="o">|&gt;</span><span class="w"> </span><span class="nc">:binary</span><span class="o">.</span><span class="n">list_to_bin</span><span class="p" data-group-id="0314143549-2">(</span><span class="p" data-group-id="0314143549-2">)</span><span class="w">
+
+</span><span class="nc">File</span><span class="o">.</span><span class="n">write!</span><span class="p" data-group-id="0314143549-3">(</span><span class="s">&quot;my_recording.ogg&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">bitstream</span><span class="p" data-group-id="0314143549-3">)</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="extract_opus_packet/1">
+
+  <div class="detail-header">
+    <a href="#extract_opus_packet/1" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">extract_opus_packet(packet)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L544" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+      <span class="note">(since 0.5.1)</span>
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre translate="no">extract_opus_packet(<a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">binary</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">binary</a>()</pre>
+
+      </div>
+
+<p>Extract the opus packet from the RTP payload received from Discord.</p><p>Incoming voice RTP packets contain RTP header extensions which must be
+stripped to retrieve the underlying opus packet.</p>
+  </section>
+</section>
 <section class="detail" id="get_channel_id/1">
 
   <div class="detail-header">
@@ -350,7 +442,7 @@ By default Nostrum will automatically create a voice gateway when joining a chan
     </a>
     <h1 class="signature" translate="no">get_channel_id(guild_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L438" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L439" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -401,7 +493,7 @@ nil</code></pre>
     </a>
     <h1 class="signature" translate="no">join_channel(guild_id, channel_id, self_mute \\ false, self_deaf \\ false, persist \\ true)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L84" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L85" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -442,7 +534,7 @@ The same effect is achieved by calling <a href="#stop/1"><code class="inline">st
     </a>
     <h1 class="signature" translate="no">leave_channel(guild_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L107" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L108" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -471,7 +563,7 @@ The same effect is achieved by calling <a href="#stop/1"><code class="inline">st
     </a>
     <h1 class="signature" translate="no">listen(guild_id, num_packets)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L521" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L526" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -495,7 +587,9 @@ The same effect is achieved by calling <a href="#stop/1"><code class="inline">st
   <a href="#listen/2-parameters" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
   Parameters
 </h2>
-<ul><li><code class="inline">guild_id</code> - ID of guild that the bot is listening to.</li><li><code class="inline">num_packets</code> - Number of packets to wait for.</li></ul><p>Returns a list of 2-element tuples in the form <code class="inline">{rtp_header, opus_packet}</code>.</p><p>This function will block until the specified number of packets is received.</p>
+<ul><li><code class="inline">guild_id</code> - ID of guild that the bot is listening to.</li><li><code class="inline">num_packets</code> - Number of packets to wait for.</li></ul><p>Returns a list of 2-element tuples in the form <code class="inline">{rtp_header, payload}</code>.</p><p><code class="inline">rtp_header</code> is a fixed 12-byte header. <code class="inline">payload</code> is the RTP payload
+prepended by RTP header extensions. To extract the opus packet from
+the payload by stripping header extensions, see <a href="#extract_opus_packet/1"><code class="inline">extract_opus_packet/1</code></a>.</p><p>This function will block until the specified number of packets is received.</p>
   </section>
 </section>
 <section class="detail" id="pause/1">
@@ -507,7 +601,7 @@ The same effect is achieved by calling <a href="#stop/1"><code class="inline">st
     </a>
     <h1 class="signature" translate="no">pause(guild_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L294" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L295" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -553,7 +647,7 @@ iex&gt; Nostrum.Voice.pause(123456789)</code></pre>
     </a>
     <h1 class="signature" translate="no">play(guild_id, input, type \\ :url, options \\ [])</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L194" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L195" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -627,7 +721,7 @@ iex&gt; Nostrum.Voice.play(123456789, &quot;https://youtu.be/LN4r-K8ZP5Q&quot;, 
     </a>
     <h1 class="signature" translate="no">playing?(guild_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L382" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L383" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -674,7 +768,7 @@ false</code></pre>
     </a>
     <h1 class="signature" translate="no">ready?(guild_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L411" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L412" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -719,7 +813,7 @@ false</code></pre>
     </a>
     <h1 class="signature" translate="no">resume(guild_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L336" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L337" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -762,7 +856,7 @@ iex&gt; Nostrum.Voice.resume(123456789)</code></pre>
     </a>
     <h1 class="signature" translate="no">send_frames(guild_id, frames)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L473" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L474" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -797,7 +891,7 @@ instead of <a href="#play/4"><code class="inline">Nostrum.Voice.play/4</code></a
     </a>
     <h1 class="signature" translate="no">set_is_speaking(guild_id, speaking)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L456" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L457" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -829,7 +923,7 @@ directly using <a href="#send_frames/2"><code class="inline">Nostrum.Voice.send_
     </a>
     <h1 class="signature" translate="no">stop(guild_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L252" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L253" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
