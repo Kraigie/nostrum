@@ -7,7 +7,7 @@
     <meta name="generator" content="ExDoc v0.28.0">
     <meta name="project" content="Nostrum v0.5.0">
 
-    <title>Nostrum.Struct.Event.TypingStart — Nostrum v0.5.0</title>
+    <title>Nostrum.Struct.ThreadMember — Nostrum v0.5.0</title>
     <link rel="stylesheet" href="dist/elixir-a816d167216329cc463d.css" />
 
     <script src="dist/sidebar_items-9b951bba8d.js"></script>
@@ -89,19 +89,19 @@ Nostrum
 </button>
 
 
-    <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/event/typing_start.ex#L1" title="View Source" class="view-source" rel="help">
+    <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/thread_member.ex#L1" title="View Source" class="view-source" rel="help">
       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
       <span class="sr-only">View Source</span>
     </a>
 
-  <span translate="no">Nostrum.Struct.Event.TypingStart</span> 
+  <span translate="no">Nostrum.Struct.ThreadMember</span> 
   <small class="app-vsn" translate="no">(Nostrum v0.5.0)</small>
 
 </h1>
 
 
   <section id="moduledoc">
-<p>Sent when a user starts typing in a channel</p>
+<p>Struct representing a thread member object</p>
   </section>
 
 
@@ -121,11 +121,11 @@ Nostrum
 
       <div class="summary-row">
         <div class="summary-signature">
-          <a href="#t:channel_id/0" translate="no">channel_id()</a>
+          <a href="#t:flags/0" translate="no">flags()</a>
 
         </div>
 
-          <div class="summary-synopsis"><p>Channel in which the user started typing</p></div>
+          <div class="summary-synopsis"><p>Any user-thread settings</p></div>
 
       </div>
 
@@ -135,17 +135,27 @@ Nostrum
 
         </div>
 
-          <div class="summary-synopsis"><p>ID of the guild where the user started typing, if applicable</p></div>
+          <div class="summary-synopsis"><p>The id of the guild the thread is in.</p></div>
 
       </div>
 
       <div class="summary-row">
         <div class="summary-signature">
-          <a href="#t:member/0" translate="no">member()</a>
+          <a href="#t:id/0" translate="no">id()</a>
 
         </div>
 
-          <div class="summary-synopsis"><p>The member who started typing if this happened in a guild</p></div>
+          <div class="summary-synopsis"><p>The id of the thread, omitted within <code class="inline">GUILD_CREATE</code> events</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#t:join_timestamp/0" translate="no">join_timestamp()</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>The timestamp of when the user last joined the thread</p></div>
 
       </div>
 
@@ -155,18 +165,6 @@ Nostrum
 
         </div>
 
-          <div class="summary-synopsis"><p>Event sent when a user starts typing in a channel</p></div>
-
-      </div>
-
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#t:timestamp/0" translate="no">timestamp()</a>
-
-        </div>
-
-          <div class="summary-synopsis"><p>When the user started typing</p></div>
-
       </div>
 
       <div class="summary-row">
@@ -175,7 +173,7 @@ Nostrum
 
         </div>
 
-          <div class="summary-synopsis"><p>ID of the user who started typing</p></div>
+          <div class="summary-synopsis"><p>The id of the user, omitted within <code class="inline">GUILD_CREATE</code> events</p></div>
 
       </div>
 
@@ -193,16 +191,16 @@ Nostrum
 Types
     </h1>
     <div class="types-list">
-<section class="detail" id="t:channel_id/0">
+<section class="detail" id="t:flags/0">
 
   <div class="detail-header">
-    <a href="#t:channel_id/0" class="detail-link" title="Link to this type">
+    <a href="#t:flags/0" class="detail-link" title="Link to this type">
       <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature" translate="no">channel_id()</h1>
+    <h1 class="signature" translate="no">flags()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/event/typing_start.ex#L14" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/thread_member.ex#L36" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -215,11 +213,11 @@ Types
       <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">channel_id() :: <a href="Nostrum.Struct.Channel.html#t:id/0">Nostrum.Struct.Channel.id</a>()</pre>
+          <pre translate="no">flags() :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">non_neg_integer</a>()</pre>
 
       </div>
 
-<p>Channel in which the user started typing</p>
+<p>Any user-thread settings</p>
   </section>
 </section>
 <section class="detail" id="t:guild_id/0">
@@ -231,7 +229,7 @@ Types
     </a>
     <h1 class="signature" translate="no">guild_id()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/event/typing_start.ex#L17" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/thread_member.ex#L43" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -248,19 +246,19 @@ Types
 
       </div>
 
-<p>ID of the guild where the user started typing, if applicable</p>
+<p>The id of the guild the thread is in.</p><p>Only present within <code class="inline">THREAD_MEMBER_UPDATE</code> events</p>
   </section>
 </section>
-<section class="detail" id="t:member/0">
+<section class="detail" id="t:id/0">
 
   <div class="detail-header">
-    <a href="#t:member/0" class="detail-link" title="Link to this type">
+    <a href="#t:id/0" class="detail-link" title="Link to this type">
       <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature" translate="no">member()</h1>
+    <h1 class="signature" translate="no">id()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/event/typing_start.ex#L26" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/thread_member.ex#L21" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -273,11 +271,40 @@ Types
       <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">member() :: <a href="Nostrum.Struct.Guild.Member.html#t:t/0">Nostrum.Struct.Guild.Member.t</a>() | nil</pre>
+          <pre translate="no">id() :: <a href="Nostrum.Snowflake.html#t:t/0">Nostrum.Snowflake.t</a>() | nil</pre>
 
       </div>
 
-<p>The member who started typing if this happened in a guild</p>
+<p>The id of the thread, omitted within <code class="inline">GUILD_CREATE</code> events</p>
+  </section>
+</section>
+<section class="detail" id="t:join_timestamp/0">
+
+  <div class="detail-header">
+    <a href="#t:join_timestamp/0" class="detail-link" title="Link to this type">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature" translate="no">join_timestamp()</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/thread_member.ex#L31" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre translate="no">join_timestamp() :: <a href="https://hexdocs.pm/elixir/DateTime.html#t:t/0">DateTime.t</a>()</pre>
+
+      </div>
+
+<p>The timestamp of when the user last joined the thread</p>
   </section>
 </section>
 <section class="detail" id="t:t/0">
@@ -289,7 +316,7 @@ Types
     </a>
     <h1 class="signature" translate="no">t()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/event/typing_start.ex#L29" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/thread_member.ex#L45" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -302,46 +329,17 @@ Types
       <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">t() :: %Nostrum.Struct.Event.TypingStart{
-  channel_id: <a href="#t:channel_id/0">channel_id</a>(),
+          <pre translate="no">t() :: %Nostrum.Struct.ThreadMember{
+  flags: <a href="#t:flags/0">flags</a>(),
   guild_id: <a href="#t:guild_id/0">guild_id</a>(),
-  member: <a href="#t:member/0">member</a>(),
-  timestamp: <a href="#t:timestamp/0">timestamp</a>(),
+  id: <a href="#t:id/0">id</a>(),
+  join_timestamp: <a href="#t:join_timestamp/0">join_timestamp</a>(),
   user_id: <a href="#t:user_id/0">user_id</a>()
 }</pre>
 
       </div>
 
-<p>Event sent when a user starts typing in a channel</p>
-  </section>
-</section>
-<section class="detail" id="t:timestamp/0">
 
-  <div class="detail-header">
-    <a href="#t:timestamp/0" class="detail-link" title="Link to this type">
-      <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this type</span>
-    </a>
-    <h1 class="signature" translate="no">timestamp()</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/event/typing_start.ex#L23" class="view-source" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
-
-
-  </div>
-
-  <section class="docstring">
-
-      <h2>Specs</h2>
-      <div class="specs">
-
-          <pre translate="no">timestamp() :: <a href="https://hexdocs.pm/elixir/DateTime.html#t:t/0">DateTime.t</a>()</pre>
-
-      </div>
-
-<p>When the user started typing</p>
   </section>
 </section>
 <section class="detail" id="t:user_id/0">
@@ -353,7 +351,7 @@ Types
     </a>
     <h1 class="signature" translate="no">user_id()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/event/typing_start.ex#L20" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/thread_member.ex#L26" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -366,11 +364,11 @@ Types
       <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">user_id() :: <a href="Nostrum.Struct.User.html#t:id/0">Nostrum.Struct.User.id</a>()</pre>
+          <pre translate="no">user_id() :: <a href="Nostrum.Struct.User.html#t:id/0">Nostrum.Struct.User.id</a>() | nil</pre>
 
       </div>
 
-<p>ID of the user who started typing</p>
+<p>The id of the user, omitted within <code class="inline">GUILD_CREATE</code> events</p>
   </section>
 </section>
 
@@ -386,7 +384,7 @@ Types
               <a href="https://hex.pm/packages/nostrum/0.5.0" class="line footer-hex-package">Package</a>
               <a href="https://preview.hex.pm/preview/nostrum/0.5.0" class="line">Preview</a>
 
-                <a href="https://preview.hex.pm/preview/nostrum/0.5.0/show/lib/nostrum/struct/event/typing_start.ex">(current file)</a>
+                <a href="https://preview.hex.pm/preview/nostrum/0.5.0/show/lib/nostrum/struct/thread_member.ex">(current file)</a>
 
             </span>
 

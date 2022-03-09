@@ -10,7 +10,7 @@
     <title>Nostrum.Permission — Nostrum v0.5.0</title>
     <link rel="stylesheet" href="dist/elixir-a816d167216329cc463d.css" />
 
-    <script src="dist/sidebar_items-58089d3a6b.js"></script>
+    <script src="dist/sidebar_items-9b951bba8d.js"></script>
 
       <script src="docs_config.js"></script>
 
@@ -381,7 +381,7 @@ Types
     </a>
     <h1 class="signature" translate="no">t()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/permission.ex#L69" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/permission.ex#L73" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -432,7 +432,11 @@ Types
   | :attach_files
   | :read_message_history
   | :mention_everyone
-  | :use_external_emojis</pre>
+  | :use_external_emojis
+  | :create_public_threads
+  | :create_private_threads
+  | :send_messages_in_threads
+  | :manage_threads</pre>
 
       </div>
 
@@ -448,7 +452,7 @@ Types
     </a>
     <h1 class="signature" translate="no">voice_permission()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/permission.ex#L60" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/permission.ex#L64" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -497,7 +501,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">all()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/permission.ex#L128" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/permission.ex#L137" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -526,7 +530,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">from_bit(bit)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/permission.ex#L146" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/permission.ex#L155" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -563,7 +567,7 @@ iex&gt; Nostrum.Permission.from_bit(0)
     </a>
     <h1 class="signature" translate="no">from_bit!(bit)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/permission.ex#L164" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/permission.ex#L173" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -600,7 +604,7 @@ iex&gt; Nostrum.Permission.from_bit!(0)
     </a>
     <h1 class="signature" translate="no">from_bitset(bitset)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/permission.ex#L187" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/permission.ex#L196" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -637,7 +641,7 @@ iex&gt; Nostrum.Permission.from_bitset(0x4000000000000)
     </a>
     <h1 class="signature" translate="no">is_permission(term)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/permission.ex#L122" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/permission.ex#L131" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -669,7 +673,7 @@ false</code></pre>
     </a>
     <h1 class="signature" translate="no">to_bit(permission)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/permission.ex#L210" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/permission.ex#L219" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -703,7 +707,7 @@ false</code></pre>
     </a>
     <h1 class="signature" translate="no">to_bitset(permissions)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/permission.ex#L223" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/permission.ex#L232" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
