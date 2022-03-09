@@ -32,6 +32,7 @@ defmodule Nostrum.Voice do
   alias Nostrum.Api
   alias Nostrum.Struct.{Channel, Guild, VoiceState}
   alias Nostrum.Voice.Audio
+  alias Nostrum.Voice.Opus
   alias Nostrum.Voice.Ports
   alias Nostrum.Voice.Session
   alias Nostrum.Voice.Supervisor, as: VoiceSupervisor
@@ -512,7 +513,11 @@ defmodule Nostrum.Voice do
     - `guild_id` - ID of guild that the bot is listening to.
     - `num_packets` - Number of packets to wait for.
 
-  Returns a list of 2-element tuples in the form `{rtp_header, opus_packet}`.
+  Returns a list of 2-element tuples in the form `{rtp_header, payload}`.
+
+  `rtp_header` is a fixed 12-byte header. `payload` is the RTP payload
+  prepended by RTP header extensions. To extract the opus packet from
+  the payload by stripping header extensions, see `extract_opus_packet/1`.
 
   This function will block until the specified number of packets is received.
   """
@@ -526,6 +531,46 @@ defmodule Nostrum.Voice do
     else
       {:error, "Must be connected to voice channel to listen for incoming data."}
     end
+  end
+
+  @doc """
+  Extract the opus packet from the RTP payload received from Discord.
+
+  Incoming voice RTP packets contain RTP header extensions which must be
+  stripped to retrieve the underlying opus packet.
+  """
+  @doc since: "0.5.1"
+  @spec extract_opus_packet(binary) :: binary
+  def extract_opus_packet(packet) do
+    Opus.strip_rtp_ext(packet)
+  end
+
+  @doc """
+  Create a complete Ogg logical bitstream from a list of Opus packets.
+
+  This function takes a list of opus packets and returns a list of Ogg
+  encapsulated Opus pages for a single Ogg logical bitstream.
+
+  It is highly recommended to learn about the Ogg container format to
+  understand how to use the data.
+
+  To get started, assuming you have a list of evenly temporally spaced
+  and consecutive opus packets from a single source that you want written
+  to a file, you can run the following:
+
+  ```elixir
+  bitstream =
+    opus_packets
+    |> create_ogg_bitstream()
+    |> :binary.list_to_bin()
+
+  File.write!("my_recording.ogg", bitstream)
+  ```
+  """
+  @doc since: "0.5.1"
+  @spec create_ogg_bitstream(list(binary)) :: list(binary)
+  def create_ogg_bitstream(opus_packets) do
+    Opus.create_ogg_bitstream(opus_packets)
   end
 
   @doc false

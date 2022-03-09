@@ -1,24 +1,60 @@
 defmodule Nostrum.Voice.Opus do
+  @moduledoc false
+
   use Bitwise
 
-  def parse_opus(packet) do
+  @doc """
+  Strips the RTP extensions from an RTP payload.
+
+  The encrypted portion of the RTP packets that we receive from Discord
+  isn't raw opus packets; it's actually opus prepended by RTP header extensions.
+  Looking at the unencrypted fixed-length RTP header, the extension bit is, in
+  fact, set to 1.
+
+  Discord seems to have misinterpreted the RTP header extension RFC and
+  thought that for one-byte header extensions that the two-byte integer
+  length following the constant 0xBEDE pattern is equivalent to the number
+  of header extensions - 1 (where ext length 0 would represent 1 extension),
+  but this is only the case for the 4-bit integer that describes each
+  one-byte header extension.
+
+  discord.js is the only other library that implements receiving audio, and
+  in their stripping of the RTP header extensions they account for an extra
+  "Discord byte" but it looks like they are actually incorrectly incrementing
+  the offset by an extra 1, which causes them to land on an extra 1 byte,
+  instead a full extension (1 byte header with 1 byte extension).
+  """
+  def strip_rtp_ext(packet) do
     <<
-      0xBE::8,
-      0xDE::8,
+      0xBE,
+      0xDE,
       ext_len::integer-16,
       rest::binary
     >> = packet
 
-    step(rest, ext_len)
+    # Actual number of extensions is 1 + given ext_len (Discord bug)
+    ext_len = ext_len + 1
+
+    rtp_ext_step(rest, ext_len)
   end
 
-  def step(rest, 0), do: rest
+  defp rtp_ext_step(rest, 0) do
+    # RTP header extensions fully stripped, leaving pure opus
+    rest
+  end
 
-  def step(<<0::8, rest::binary>>, len), do: step(rest, len)
+  defp rtp_ext_step(<<0::8, rest::binary>>, len) do
+    # One-byte headers of 0 is padding
+    rtp_ext_step(rest, len)
+  end
 
-  def step(rest, len) do
-    <<_id::4, l::integer-size(4), _ext0::8, _ext1::unit(8)-size(l), rest::binary>> = rest
-    step(rest, len - 1)
+  defp rtp_ext_step(rest, len) do
+    <<_id::4, l::integer-size(4), rest::binary>> = rest
+
+    # This is correct: for one-byte headers, length is 4-bit int + 1
+    l = l + 1
+    <<_ext::binary-size(l), rest::binary>> = rest
+    rtp_ext_step(rest, len - 1)
   end
 
   def parse_ogg(<<>>), do: []
@@ -59,7 +95,7 @@ defmodule Nostrum.Voice.Opus do
         version: 1,
         channel_count: 2,
         pre_skip: 0,
-        input_sample_rate: 48000,
+        input_sample_rate: 48_000,
         output_gain: 0,
         mapping_family: 0
       }
@@ -76,23 +112,27 @@ defmodule Nostrum.Voice.Opus do
       |> encode_opus_tags()
       |> gen_page(state)
 
-    {opus_pages, _} =
+    {opus_pages, state} =
       opus_packets
       |> Enum.chunk_every(50)
       |> Enum.map_reduce(state, fn chunk, state ->
-        header_type = if(length(chunk) == 50, do: 0, else: 4)
-
         state = %{
           state
-          | header_type: header_type,
-            page_sequence: state.page_sequence + 1,
-            granule_position: state.granule_position + 48000
+          | page_sequence: state.page_sequence + 1,
+            granule_position: state.granule_position + 960 * length(chunk)
         }
 
         {gen_page(chunk, state), state}
       end)
 
-    head <> tags <> :binary.list_to_bin(opus_pages)
+    eos =
+      gen_page([], %{
+        state
+        | page_sequence: state.page_sequence + 1,
+          header_type: 4
+      })
+
+    [head, tags | opus_pages ++ [eos]]
   end
 
   def gen_page(body, state) when not is_list(body), do: gen_page([body], state)
