@@ -4,6 +4,7 @@ defmodule Nostrum.Struct.Event.ThreadListSync do
 
   This event is sent when the user gains access to a channel.
   """
+  @moduledoc since: "0.5.1"
 
   alias Nostrum.Struct.{Channel, Guild, ThreadMember}
   alias Nostrum.{Snowflake, Util}
@@ -18,27 +19,23 @@ defmodule Nostrum.Struct.Event.ThreadListSync do
   @typedoc """
   The id of the guild.
   """
-  @typedoc since: "0.5.1"
   @type guid_id :: Guild.id()
 
   @typedoc """
   The parent channel ids whose threads are being synced.
   If omitted, all threads were synced for the entire guild.
   """
-  @typedoc since: "0.5.1"
   @type channel_ids :: [Channel.id()] | nil
 
   @typedoc """
   All active threads in the given channels that the user can access.
   """
-  @typedoc since: "0.5.1"
   @type threads :: [Channel.t()]
 
   @typedoc """
   All thread member objects from the synced threads for the current user,
   indicating which threads the user has been added to.
   """
-  @typedoc since: "0.5.1"
   @type members :: [ThreadMember.t()]
 
   @type t :: %__MODULE__{

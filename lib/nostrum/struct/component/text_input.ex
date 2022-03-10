@@ -3,7 +3,7 @@ defmodule Nostrum.Struct.Component.TextInput do
   Text Input.
   """
 
-  @moduledoc since: "0.5"
+  @moduledoc since: "0.5.1"
   use Nostrum.Struct.Component
 
   @type t :: %Component{

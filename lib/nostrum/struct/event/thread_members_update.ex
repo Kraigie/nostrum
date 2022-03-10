@@ -7,6 +7,7 @@ defmodule Nostrum.Struct.Event.ThreadMembersUpdate do
   If the current user does not have the `GUILD_MEMBERS` intent,
   this event will only be sent when the current user is added to or removed from a thread.
   """
+  @moduledoc since: "0.5.1"
 
   defstruct [
     :id,
@@ -22,13 +23,11 @@ defmodule Nostrum.Struct.Event.ThreadMembersUpdate do
   @typedoc """
   The id of the thread.
   """
-  @typedoc since: "0.5.1"
   @type id :: Channel.id()
 
   @typedoc """
   The id of the guild the thread is in.
   """
-  @typedoc since: "0.5.1"
   @type guild_id :: Guild.id()
 
   @typedoc """
@@ -36,19 +35,16 @@ defmodule Nostrum.Struct.Event.ThreadMembersUpdate do
 
   This number is capped at 50, though there can be more members in the thread.
   """
-  @typedoc since: "0.5.1"
   @type member_count :: non_neg_integer()
 
   @typedoc """
   The members that were added to the thread.
   """
-  @typedoc since: "0.5.1"
   @type added_members :: [ThreadMember.t()] | nil
 
   @typedoc """
   The ids of the members that were removed from the thread.
   """
-  @typedoc since: "0.5.1"
   @type removed_member_ids :: [User.id()] | nil
 
   @type t :: %__MODULE__{
