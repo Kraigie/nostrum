@@ -10,7 +10,7 @@
     <title>Nostrum.Struct.Guild.Integration — Nostrum v0.5.0</title>
     <link rel="stylesheet" href="dist/elixir-a816d167216329cc463d.css" />
 
-    <script src="dist/sidebar_items-9b951bba8d.js"></script>
+    <script src="dist/sidebar_items-2f9b9a740a.js"></script>
 
       <script src="docs_config.js"></script>
 
@@ -127,11 +127,41 @@ free to open an issue to add it.</p><h2 id="module-references" class="section-he
 
       <div class="summary-row">
         <div class="summary-signature">
+          <a href="#t:account/0" translate="no">account()</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>The integration account.</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#t:application/0" translate="no">application()</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>The bot/OAuth2 application for discord integrations</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
           <a href="#t:enabled/0" translate="no">enabled()</a>
 
         </div>
 
           <div class="summary-synopsis"><p>Whether this integration is enabled</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#t:guild_id/0" translate="no">guild_id()</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>The id of the guild this integration is for.</p></div>
 
       </div>
 
@@ -189,6 +219,68 @@ free to open an issue to add it.</p><h2 id="module-references" class="section-he
 Types
     </h1>
     <div class="types-list">
+<section class="detail" id="t:account/0">
+
+  <div class="detail-header">
+    <a href="#t:account/0" class="detail-link" title="Link to this type">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature" translate="no">account()</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/guild/integration.ex#L48" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+      <span class="note">(since 0.5.1)</span>
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre translate="no">account() :: <a href="Nostrum.Struct.Guild.Integration.Account.html#t:t/0">Nostrum.Struct.Guild.Integration.Account.t</a>()</pre>
+
+      </div>
+
+<p>The integration account.</p>
+  </section>
+</section>
+<section class="detail" id="t:application/0">
+
+  <div class="detail-header">
+    <a href="#t:application/0" class="detail-link" title="Link to this type">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature" translate="no">application()</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/guild/integration.ex#L54" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+      <span class="note">(since 0.5.1)</span>
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre translate="no">application() :: <a href="Nostrum.Struct.Guild.Integration.Application.html#t:t/0">Nostrum.Struct.Guild.Integration.Application.t</a>() | nil</pre>
+
+      </div>
+
+<p>The bot/OAuth2 application for discord integrations</p>
+  </section>
+</section>
 <section class="detail" id="t:enabled/0">
 
   <div class="detail-header">
@@ -198,7 +290,7 @@ Types
     </a>
     <h1 class="signature" translate="no">enabled()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/guild/integration.ex#L29" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/guild/integration.ex#L42" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -218,6 +310,37 @@ Types
 <p>Whether this integration is enabled</p>
   </section>
 </section>
+<section class="detail" id="t:guild_id/0">
+
+  <div class="detail-header">
+    <a href="#t:guild_id/0" class="detail-link" title="Link to this type">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature" translate="no">guild_id()</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/guild/integration.ex#L33" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+      <span class="note">(since 0.5.1)</span>
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre translate="no">guild_id() :: <a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>() | nil</pre>
+
+      </div>
+
+<p>The id of the guild this integration is for.</p><p>Only included when the Integration is sent via the gateway.</p>
+  </section>
+</section>
 <section class="detail" id="t:id/0">
 
   <div class="detail-header">
@@ -227,7 +350,7 @@ Types
     </a>
     <h1 class="signature" translate="no">id()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/guild/integration.ex#L20" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/guild/integration.ex#L25" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -256,7 +379,7 @@ Types
     </a>
     <h1 class="signature" translate="no">name()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/guild/integration.ex#L23" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/guild/integration.ex#L36" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -285,7 +408,7 @@ Types
     </a>
     <h1 class="signature" translate="no">t()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/guild/integration.ex#L32" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/guild/integration.ex#L57" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -299,7 +422,10 @@ Types
       <div class="specs">
 
           <pre translate="no">t() :: %Nostrum.Struct.Guild.Integration{
+  account: <a href="#t:account/0">account</a>(),
+  application: <a href="#t:application/0">application</a>(),
   enabled: <a href="#t:enabled/0">enabled</a>(),
+  guild_id: <a href="#t:guild_id/0">guild_id</a>(),
   id: <a href="#t:id/0">id</a>(),
   name: <a href="#t:name/0">name</a>(),
   type: <a href="#t:type/0">type</a>()
@@ -319,7 +445,7 @@ Types
     </a>
     <h1 class="signature" translate="no">type()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/guild/integration.ex#L26" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/guild/integration.ex#L39" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
