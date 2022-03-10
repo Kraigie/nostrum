@@ -5,9 +5,9 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="ExDoc v0.28.0">
-    <meta name="project" content="Nostrum v0.5.0">
+    <meta name="project" content="Nostrum v0.5.1">
 
-    <title>Nostrum.Struct.Channel — Nostrum v0.5.0</title>
+    <title>Nostrum.Struct.Channel — Nostrum v0.5.1</title>
     <link rel="stylesheet" href="dist/elixir-a816d167216329cc463d.css" />
 
     <script src="dist/sidebar_items-2f9b9a740a.js"></script>
@@ -60,7 +60,7 @@
 Nostrum
       </a>
       <strong class="sidebar-projectVersion" translate="no">
-        v0.5.0
+        v0.5.1
       </strong>
     </div>
     <ul class="sidebar-listNav">
@@ -95,7 +95,7 @@ Nostrum
     </a>
 
   <span translate="no">Nostrum.Struct.Channel</span> 
-  <small class="app-vsn" translate="no">(Nostrum v0.5.0)</small>
+  <small class="app-vsn" translate="no">(Nostrum v0.5.1)</small>
 
 </h1>
 
@@ -105,15 +105,15 @@ Nostrum
   <a href="#module-channel-struct" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
   Channel Struct
 </h2>
-<p>The channel struct is used by Nostrum to represent a <em>Discord Channel Object</em>. More information can be found on the <a href="https://discord.com/developers/docs/resources/channel#channels-resource">Discord API Channel Documentation</a>.</p><p>The struct can have one of several forms depending on the type of channel. You can read more about the individual channel types <a href="#module-channel-types">below</a>.</p><p>A typical channel would appear as:</p><pre><code class="makeup elixir" translate="no"><span class="p" data-group-id="8514388715-1">%</span><span class="nc" data-group-id="8514388715-1">Nostrum.Struct.Channel</span><span class="p" data-group-id="8514388715-1">{</span><span class="w">
+<p>The channel struct is used by Nostrum to represent a <em>Discord Channel Object</em>. More information can be found on the <a href="https://discord.com/developers/docs/resources/channel#channels-resource">Discord API Channel Documentation</a>.</p><p>The struct can have one of several forms depending on the type of channel. You can read more about the individual channel types <a href="#module-channel-types">below</a>.</p><p>A typical channel would appear as:</p><pre><code class="makeup elixir" translate="no"><span class="p" data-group-id="3373964054-1">%</span><span class="nc" data-group-id="3373964054-1">Nostrum.Struct.Channel</span><span class="p" data-group-id="3373964054-1">{</span><span class="w">
   </span><span class="ss">guild_id</span><span class="p">:</span><span class="w"> </span><span class="mi">766435015768539156</span><span class="p">,</span><span class="w">
   </span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">827333533688397865</span><span class="p">,</span><span class="w">
   </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;announcements&quot;</span><span class="p">,</span><span class="w">
   </span><span class="ss">nsfw</span><span class="p">:</span><span class="w"> </span><span class="no">false</span><span class="p">,</span><span class="w">
-  </span><span class="ss">permission_overwrites</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="8514388715-2">[</span><span class="p" data-group-id="8514388715-2">]</span><span class="p">,</span><span class="w">
+  </span><span class="ss">permission_overwrites</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="3373964054-2">[</span><span class="p" data-group-id="3373964054-2">]</span><span class="p">,</span><span class="w">
   </span><span class="ss">position</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
   </span><span class="ss">type</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">
-</span><span class="p" data-group-id="8514388715-1">}</span></code></pre><p>The channel struct implements <a href="https://hexdocs.pm/elixir/String.Chars.html"><code class="inline">String.Chars</code></a> protocol through the <a href="#mention/1"><code class="inline">mention/1</code></a> function. This example uses our channel from the previous code block.</p><pre><code class="makeup elixir" translate="no"><span class="n">channel</span><span class="w"> </span><span class="o">|&gt;</span><span class="w"> </span><span class="n">to_string</span><span class="p" data-group-id="0994200913-1">(</span><span class="p" data-group-id="0994200913-1">)</span><span class="w">
+</span><span class="p" data-group-id="3373964054-1">}</span></code></pre><p>The channel struct implements <a href="https://hexdocs.pm/elixir/String.Chars.html"><code class="inline">String.Chars</code></a> protocol through the <a href="#mention/1"><code class="inline">mention/1</code></a> function. This example uses our channel from the previous code block.</p><pre><code class="makeup elixir" translate="no"><span class="n">channel</span><span class="w"> </span><span class="o">|&gt;</span><span class="w"> </span><span class="n">to_string</span><span class="p" data-group-id="0695766266-1">(</span><span class="p" data-group-id="0695766266-1">)</span><span class="w">
 </span><span class="s">&quot;&lt;#766435015768539156&gt;&quot;</span></code></pre><h2 id="module-channel-cache" class="section-heading">
   <a href="#module-channel-cache" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
   Channel Cache
@@ -122,8 +122,8 @@ Nostrum
   <a href="#module-example" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
   Example
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Cache.ChannelCache</span><span class="o">.</span><span class="n">get!</span><span class="p" data-group-id="9110685076-1">(</span><span class="mi">827333533688397865</span><span class="p" data-group-id="9110685076-1">)</span><span class="w">
-</span><span class="p" data-group-id="9110685076-2">%</span><span class="nc" data-group-id="9110685076-2">Nostrum.Struct.Channel</span><span class="p" data-group-id="9110685076-2">{</span><span class="w">
+<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Cache.ChannelCache</span><span class="o">.</span><span class="n">get!</span><span class="p" data-group-id="9461445643-1">(</span><span class="mi">827333533688397865</span><span class="p" data-group-id="9461445643-1">)</span><span class="w">
+</span><span class="p" data-group-id="9461445643-2">%</span><span class="nc" data-group-id="9461445643-2">Nostrum.Struct.Channel</span><span class="p" data-group-id="9461445643-2">{</span><span class="w">
   </span><span class="ss">application_id</span><span class="p">:</span><span class="w"> </span><span class="no">nil</span><span class="p">,</span><span class="w">
   </span><span class="ss">bitrate</span><span class="p">:</span><span class="w"> </span><span class="no">nil</span><span class="p">,</span><span class="w">
   </span><span class="ss">guild_id</span><span class="p">:</span><span class="w"> </span><span class="mi">766435015768539156</span><span class="p">,</span><span class="w">
@@ -135,20 +135,20 @@ Nostrum
   </span><span class="ss">nsfw</span><span class="p">:</span><span class="w"> </span><span class="no">false</span><span class="p">,</span><span class="w">
   </span><span class="ss">owner_id</span><span class="p">:</span><span class="w"> </span><span class="no">nil</span><span class="p">,</span><span class="w">
   </span><span class="ss">parent_id</span><span class="p">:</span><span class="w"> </span><span class="no">nil</span><span class="p">,</span><span class="w">
-  </span><span class="ss">permission_overwrites</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="9110685076-3">[</span><span class="w">
-    </span><span class="p" data-group-id="9110685076-4">%</span><span class="nc" data-group-id="9110685076-4">Nostrum.Struct.Overwrite</span><span class="p" data-group-id="9110685076-4">{</span><span class="w">
+  </span><span class="ss">permission_overwrites</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="9461445643-3">[</span><span class="w">
+    </span><span class="p" data-group-id="9461445643-4">%</span><span class="nc" data-group-id="9461445643-4">Nostrum.Struct.Overwrite</span><span class="p" data-group-id="9461445643-4">{</span><span class="w">
       </span><span class="ss">allow</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
       </span><span class="ss">deny</span><span class="p">:</span><span class="w"> </span><span class="mi">2048</span><span class="p">,</span><span class="w">
       </span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">766435015768539156</span><span class="p">,</span><span class="w">
       </span><span class="ss">type</span><span class="p">:</span><span class="w"> </span><span class="ss">:role</span><span class="w">
-    </span><span class="p" data-group-id="9110685076-4">}</span><span class="w">
-  </span><span class="p" data-group-id="9110685076-3">]</span><span class="p">,</span><span class="w">
+    </span><span class="p" data-group-id="9461445643-4">}</span><span class="w">
+  </span><span class="p" data-group-id="9461445643-3">]</span><span class="p">,</span><span class="w">
   </span><span class="ss">position</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
   </span><span class="ss">recipients</span><span class="p">:</span><span class="w"> </span><span class="no">nil</span><span class="p">,</span><span class="w">
   </span><span class="ss">topic</span><span class="p">:</span><span class="w"> </span><span class="no">nil</span><span class="p">,</span><span class="w">
   </span><span class="ss">type</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">
   </span><span class="ss">user_limit</span><span class="p">:</span><span class="w"> </span><span class="no">nil</span><span class="w">
-</span><span class="p" data-group-id="9110685076-2">}</span></code></pre><p>More details of the cache can be found at <a href="Nostrum.Cache.ChannelCache.html"><code class="inline">Nostrum.Cache.ChannelCache</code></a>.</p><h2 id="module-helper-functions" class="section-heading">
+</span><span class="p" data-group-id="9461445643-2">}</span></code></pre><p>More details of the cache can be found at <a href="Nostrum.Cache.ChannelCache.html"><code class="inline">Nostrum.Cache.ChannelCache</code></a>.</p><h2 id="module-helper-functions" class="section-heading">
   <a href="#module-helper-functions" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
   Helper Functions
 </h2>
@@ -2629,8 +2629,8 @@ Functions
   <a href="#mention/1-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
   Examples
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Cache.ChannelCache</span><span class="o">.</span><span class="n">get</span><span class="p" data-group-id="8359524427-1">(</span><span class="mi">381889573426429952</span><span class="p" data-group-id="8359524427-1">)</span><span class="w">
-</span><span class="o">|&gt;</span><span class="w"> </span><span class="nc">Nostrum.Struct.Channel</span><span class="o">.</span><span class="n">mention</span><span class="p" data-group-id="8359524427-2">(</span><span class="p" data-group-id="8359524427-2">)</span><span class="w">
+<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Cache.ChannelCache</span><span class="o">.</span><span class="n">get</span><span class="p" data-group-id="0755044350-1">(</span><span class="mi">381889573426429952</span><span class="p" data-group-id="0755044350-1">)</span><span class="w">
+</span><span class="o">|&gt;</span><span class="w"> </span><span class="nc">Nostrum.Struct.Channel</span><span class="o">.</span><span class="n">mention</span><span class="p" data-group-id="0755044350-2">(</span><span class="p" data-group-id="0755044350-2">)</span><span class="w">
 </span><span class="s">&quot;&lt;#381889573426429952&gt;&quot;</span><span class="w">
 </span></code></pre>
   </section>
@@ -2645,10 +2645,10 @@ Functions
             On Hex.pm:
 
             <span class="line">
-              <a href="https://hex.pm/packages/nostrum/0.5.0" class="line footer-hex-package">Package</a>
-              <a href="https://preview.hex.pm/preview/nostrum/0.5.0" class="line">Preview</a>
+              <a href="https://hex.pm/packages/nostrum/0.5.1" class="line footer-hex-package">Package</a>
+              <a href="https://preview.hex.pm/preview/nostrum/0.5.1" class="line">Preview</a>
 
-                <a href="https://preview.hex.pm/preview/nostrum/0.5.0/show/lib/nostrum/struct/channel.ex">(current file)</a>
+                <a href="https://preview.hex.pm/preview/nostrum/0.5.1/show/lib/nostrum/struct/channel.ex">(current file)</a>
 
             </span>
 
