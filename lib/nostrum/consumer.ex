@@ -174,7 +174,7 @@ defmodule Nostrum.Consumer do
   @type integration_create :: {:INTEGRATION_CREATE, Integration.t(), WSState.t()}
 
   @typedoc """
-  Different from `t:guild_integrations_update()/0` in that more than only the `guild_id` is provided
+  Different from `t:guild_integrations_update/0` in that more than only the `guild_id` is provided
   """
   @typedoc since: "0.5.1"
   @type integration_update :: {:INTEGRATION_UPDATE, Integration.t(), WSState.t()}
