@@ -21,12 +21,14 @@ defmodule Nostrum.Consumer do
   use ConsumerSupervisor
 
   alias Nostrum.Shard.Stage.Cache
-  alias Nostrum.Struct.{Channel, ThreadMember, VoiceWSState, WSState}
+  alias Nostrum.Struct.{Channel, Interaction, ThreadMember, VoiceWSState, WSState}
+  alias Nostrum.Struct.Guild.Integration
 
   alias Nostrum.Struct.Event.{
     ChannelPinsUpdate,
     GuildBanAdd,
     GuildBanRemove,
+    GuildIntegrationDelete,
     GuildIntegrationsUpdate,
     GuildScheduledEventUserAdd,
     GuildScheduledEventUserRemove,
@@ -167,6 +169,18 @@ defmodule Nostrum.Consumer do
           {:GUILD_SCHEDULED_EVENT_USER_ADD, GuildScheduledEventUserAdd.t(), WSState.t()}
   @type guild_scheduled_event_user_remove ::
           {:GUILD_SCHEDULED_EVENT_USER_REMOVE, GuildScheduledEventUserRemove.t(), WSState.t()}
+
+  @typedoc since: "0.5.1"
+  @type integration_create :: {:INTEGRATION_CREATE, Integration.t(), WSState.t()}
+
+  @typedoc """
+  Different from `t:guild_integrations_update()/0` in that more than only the `guild_id` is provided
+  """
+  @typedoc since: "0.5.1"
+  @type integration_update :: {:INTEGRATION_UPDATE, Integration.t(), WSState.t()}
+  @typedoc since: "0.5.1"
+  @type integration_delete :: {:INTEGRATION_DELETE, GuildIntegrationDelete.t(), WSState.t()}
+  @type interaction_create :: {:INTERACTION_CREATE, Interaction.t(), WSState.t()}
   @type message_create :: {:MESSAGE_CREATE, message :: Nostrum.Struct.Message.t(), WSState.t()}
   @type message_delete :: {:MESSAGE_DELETE, MessageDelete.t(), WSState.t()}
   @type message_delete_bulk :: {:MESSAGE_DELETE_BULK, MessageDeleteBulk.t(), WSState.t()}
@@ -267,6 +281,10 @@ defmodule Nostrum.Consumer do
           | guild_role_create
           | guild_role_delete
           | guild_role_update
+          | integration_create
+          | integration_delete
+          | integration_update
+          | interaction_create
           | message_create
           | message_delete
           | message_delete_bulk

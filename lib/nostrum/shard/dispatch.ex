@@ -9,6 +9,7 @@ defmodule Nostrum.Shard.Dispatch do
     ChannelPinsUpdate,
     GuildBanAdd,
     GuildBanRemove,
+    GuildIntegrationDelete,
     GuildIntegrationsUpdate,
     GuildScheduledEventUserAdd,
     GuildScheduledEventUserRemove,
@@ -31,7 +32,7 @@ defmodule Nostrum.Shard.Dispatch do
   }
 
   alias Nostrum.Struct.{Guild, Interaction, Message, ThreadMember, User}
-  alias Nostrum.Struct.Guild.{ScheduledEvent, UnavailableGuild}
+  alias Nostrum.Struct.Guild.{Integration, ScheduledEvent, UnavailableGuild}
   alias Nostrum.Util
   alias Nostrum.Voice
 
@@ -212,6 +213,15 @@ defmodule Nostrum.Shard.Dispatch do
 
   def handle_event(:GUILD_SCHEDULED_EVENT_USER_REMOVE = event, p, state),
     do: {event, GuildScheduledEventUserRemove.to_struct(p), state}
+
+  def handle_event(:INTEGRATION_CREATE = event, p, state),
+    do: {event, Integration.to_struct(p), state}
+
+  def handle_event(:INTEGRATION_DELETE = event, p, state),
+    do: {event, GuildIntegrationDelete.to_struct(p), state}
+
+  def handle_event(:INTEGRATION_UPDATE = event, p, state),
+    do: {event, Integration.to_struct(p), state}
 
   def handle_event(:INVITE_CREATE = event, p, state),
     do: {event, InviteCreate.to_struct(p), state}
