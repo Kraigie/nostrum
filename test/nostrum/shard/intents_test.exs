@@ -10,7 +10,7 @@ defmodule Nostrum.Shard.IntentsTest do
       result = Intents.get_enabled_intents()
 
       # Value of all intents
-      expected = 98303
+      expected = 131_071
 
       assert(^result = expected)
     end
@@ -21,7 +21,7 @@ defmodule Nostrum.Shard.IntentsTest do
       result = Intents.get_enabled_intents()
 
       # Value of all non-privileged intents
-      expected = 98303 - (2 + 256)
+      expected = 131_071 - (2 + 256 + 32_768)
 
       assert(^result = expected)
     end
