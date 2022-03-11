@@ -258,9 +258,14 @@ defmodule Nostrum.Api do
     do: create_message(channel_id, Map.new(options))
 
   def create_message(channel_id, %{embed: embed} = options) do
-    IO.warn("The :embed field was removed in API v10 in favor of :embeds, which expects a list of embeds.")
-    options = Map.delete(options, :embed)
-    |> Map.put(:embeds, [embed])
+    IO.warn(
+      "The :embed field was removed in API v10 in favor of :embeds, which expects a list of embeds."
+    )
+
+    options =
+      Map.delete(options, :embed)
+      |> Map.put(:embeds, [embed])
+
     create_message(channel_id, options)
   end
 
@@ -378,9 +383,14 @@ defmodule Nostrum.Api do
     do: edit_message(channel_id, message_id, Map.new(options))
 
   def edit_message(channel_id, message_id, %{embed: embed} = options) do
-    IO.warn("The :embed field was removed in API v10 in favor of :embeds, which expects a list of embeds.")
-    options = Map.delete(options, :embed)
-    |> Map.put(:embeds, [embed])
+    IO.warn(
+      "The :embed field was removed in API v10 in favor of :embeds, which expects a list of embeds."
+    )
+
+    options =
+      Map.delete(options, :embed)
+      |> Map.put(:embeds, [embed])
+
     edit_message(channel_id, message_id, options)
   end
 
