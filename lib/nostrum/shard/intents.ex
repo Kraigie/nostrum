@@ -5,7 +5,8 @@ defmodule Nostrum.Shard.Intents do
 
   @privileged_intents [
     :guild_members,
-    :guild_presences
+    :guild_presences,
+    :message_content
   ]
 
   @spec intent_values :: [{atom, integer()}, ...]
@@ -26,6 +27,7 @@ defmodule Nostrum.Shard.Intents do
       direct_messages: 1 <<< 12,
       direct_message_reactions: 1 <<< 13,
       direct_message_typing: 1 <<< 14,
+      message_content: 1 <<< 15,
       guild_scheduled_events: 1 <<< 16
     ]
   end
