@@ -179,11 +179,15 @@ defmodule Nostrum.Api do
       * `:body` (string) - binary you wish to send
     * `:files` - a list of files where each element is the same format as the `:file` option. If both
     `:file` and `:files` are specified, `:file` will be prepended to the `:files` list.
-    * `:embed` (`t:Nostrum.Struct.Embed.t/0`) - embedded rich content
+    * `:embeds` (`t:Nostrum.Struct.Embed.t/0`) - a list of embedded rich content
     * `:allowed_mentions` - See "Allowed mentions" below
     * `:message_reference` (`map`) - See "Message references" below
 
-    At least one of the following is required: `:content`, `:file`, `:embed`.
+    At least one of the following is required: `:content`, `:file`, `:embeds`.
+
+  > #### Deprecation {: .warning}
+  >
+  > The `:embed` field was removed in API v10 in favor of `:embeds`.
 
   ## Allowed mentions
 
@@ -234,11 +238,11 @@ defmodule Nostrum.Api do
     %Nostrum.Struct.Embed{}
     |> put_title("embed")
     |> put_description("new desc")
-  Nostrum.Api.create_message(43189401384091, embed: embed)
+  Nostrum.Api.create_message(43189401384091, embeds: [embed])
 
   Nostrum.Api.create_message(43189401384091, file: "/path/to/file.txt")
 
-  Nostrum.Api.create_message(43189401384091, content: "hello world!", embed: embed, file: "/path/to/file.txt")
+  Nostrum.Api.create_message(43189401384091, content: "hello world!", embeds: [embed], file: "/path/to/file.txt")
 
   Nostrum.Api.create_message(43189401384091, content: "Hello @everyone", allowed_mentions: :none)
   ```
@@ -252,6 +256,13 @@ defmodule Nostrum.Api do
 
   def create_message(channel_id, options) when is_list(options),
     do: create_message(channel_id, Map.new(options))
+
+  def create_message(channel_id, %{embed: embed} = options) do
+    IO.warn("The :embed field was removed in API v10 in favor of :embeds, which expects a list of embeds.")
+    options = Map.delete(options, :embed)
+    |> Map.put(:embeds, [embed])
+    create_message(channel_id, options)
+  end
 
   def create_message(channel_id, %{} = options) when is_snowflake(channel_id) do
     options = prepare_allowed_mentions(options)
@@ -335,7 +346,12 @@ defmodule Nostrum.Api do
   ## Options
 
     * `:content` (string) - the message contents (up to 2000 characters)
-    * `:embed` (`t:Nostrum.Struct.Embed.t/0`) - embedded rich content
+    * `:embeds` (`t:Nostrum.Struct.Embed.t/0`) - a list of embedded rich content
+
+
+  > #### Deprecation {: .warning}
+  >
+  > The `:embed` field was removed in API v10 in favor of `:embeds`.
 
   ## Examples
 
@@ -349,9 +365,9 @@ defmodule Nostrum.Api do
     %Nostrum.Struct.Embed{}
     |> put_title("embed")
     |> put_description("new desc")
-  Nostrum.Api.edit_message(43189401384091, 1894013840914098, embed: embed)
+  Nostrum.Api.edit_message(43189401384091, 1894013840914098, embeds: [embed])
 
-  Nostrum.Api.edit_message(43189401384091, 1894013840914098, content: "hello world!", embed: embed)
+  Nostrum.Api.edit_message(43189401384091, 1894013840914098, content: "hello world!", embeds: [embed])
   ```
   """
   @spec edit_message(Channel.id(), Message.id(), options | String.t()) ::
@@ -360,6 +376,13 @@ defmodule Nostrum.Api do
 
   def edit_message(channel_id, message_id, options) when is_list(options),
     do: edit_message(channel_id, message_id, Map.new(options))
+
+  def edit_message(channel_id, message_id, %{embed: embed} = options) do
+    IO.warn("The :embed field was removed in API v10 in favor of :embeds, which expects a list of embeds.")
+    options = Map.delete(options, :embed)
+    |> Map.put(:embeds, [embed])
+    edit_message(channel_id, message_id, options)
+  end
 
   def edit_message(channel_id, message_id, %{} = options)
       when is_snowflake(channel_id) and is_snowflake(message_id) do
