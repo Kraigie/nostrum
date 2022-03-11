@@ -95,6 +95,9 @@ GUILD_SCHEDULED_EVENTS:
   - GUILD_SCHEDULED_EVENT_DELETE
   - GUILD_SCHEDULED_EVENT_USER_ADD
   - GUILD_SCHEDULED_EVENT_USER_REMOVE
+
+message_content*:
+  - MESSAGE_CONTENT
 ```
 
 Besides an explicit list of atoms, acceptable configuration values are `:all` and `:nonprivileged`.
