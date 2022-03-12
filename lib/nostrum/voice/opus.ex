@@ -20,7 +20,7 @@ defmodule Nostrum.Voice.Opus do
   audio as a part of their voice modules, and in their stripping of the RTP header
   extension they account for an extra "Discord byte" but it looks like they are actually
   misinterpreting the 16-bit extension lenth as the number of extension elements, then
-  iterating through each header extension and variable-length element but incorrectly
+  iterating through each one-byte header and variable-length element but incorrectly
   incrementing the offset by an extra 1, which causes them to land on an extra 1 byte,
   instead a full extension (1 byte header with 1 byte extension).
 
@@ -130,7 +130,6 @@ defmodule Nostrum.Voice.Opus do
         } = _state
       )
       when is_list(body) do
-
     segment_table_raw =
       body
       |> Enum.map(&byte_size(&1))
