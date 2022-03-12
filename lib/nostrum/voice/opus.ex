@@ -4,58 +4,33 @@ defmodule Nostrum.Voice.Opus do
   use Bitwise
 
   @doc """
-  Strips the RTP extensions from an RTP payload.
+  Strips the RTP header extension from an RTP payload.
 
   The encrypted portion of the RTP packets that we receive from Discord
-  isn't raw opus packets; it's actually opus prepended by RTP header extensions.
+  isn't raw opus packets; it's actually opus prepended by an RTP header extension.
   Looking at the unencrypted fixed-length RTP header, the extension bit is, in
   fact, set to 1.
 
-  Discord seems to have misinterpreted the RTP header extension RFC and
-  thought that for one-byte header extensions that the two-byte integer
-  length following the constant 0xBEDE pattern is equivalent to the number
-  of header extensions - 1 (where ext length 0 would represent 1 extension),
-  but this is only the case for the 4-bit integer that describes each
-  one-byte header extension.
+  RFC 8285 describes the format of RTP header extensions. Discord uses RTP
+  extensions with the one-byte header format that begins with a 0xBEDE pattern
+  followed by a 16 bit extension length. This extension length represents the length
+  of the following extension in 32-bit words.
 
-  discord.js is the only other library that implements receiving audio, and
-  in their stripping of the RTP header extensions they account for an extra
-  "Discord byte" but it looks like they are actually incorrectly incrementing
-  the offset by an extra 1, which causes them to land on an extra 1 byte,
-  instead a full extension (1 byte header with 1 byte extension).
+  Because the RTP header extension elements don't necessarily mean anything to the client
+  and Discord does not document what their extension element ids and corresponding values
+  mean, they can easily be skipped over since the total extension length is provided at
+  the beginning of the extension.
   """
-  def strip_rtp_ext(packet) do
-    <<
-      0xBE,
-      0xDE,
-      ext_len::integer-16,
-      rest::binary
-    >> = packet
-
-    # Actual number of extensions is 1 + given ext_len (Discord bug)
-    ext_len = ext_len + 1
-
-    rtp_ext_step(rest, ext_len)
-  end
-
-  defp rtp_ext_step(rest, 0) do
-    # RTP header extensions fully stripped, leaving pure opus
-    rest
-  end
-
-  defp rtp_ext_step(<<0::8, rest::binary>>, len) do
-    # One-byte headers of 0 is padding
-    rtp_ext_step(rest, len)
-  end
-
-  defp rtp_ext_step(rest, len) do
-    <<_id::4, l::integer-size(4), rest::binary>> = rest
-
-    # This is correct: for one-byte headers, length is 4-bit int + 1
-    l = l + 1
-    <<_ext::binary-size(l), rest::binary>> = rest
-    rtp_ext_step(rest, len - 1)
-  end
+  def strip_rtp_ext(
+        <<
+          0xBE,
+          0xDE,
+          ext_len::integer-16,
+          _exts::unit(32)-size(ext_len),
+          rest::binary
+        >> = _packet
+      ),
+      do: rest
 
   def parse_ogg(<<>>), do: []
 
@@ -147,6 +122,11 @@ defmodule Nostrum.Voice.Opus do
         } = _state
       )
       when is_list(body) do
+    segment_table_raw =
+      body
+      |> Enum.map(&byte_size/1)
+      |> encode_ogg_segment_table()
+
     %{
       version: 0,
       header_type: header_type,
@@ -154,28 +134,25 @@ defmodule Nostrum.Voice.Opus do
       bitstream_serial: bitstream_serial,
       page_sequence: page_sequence,
       crc_checksum: 0,
-      page_segments: body |> Enum.count(),
-      segment_table_raw:
-        body
-        |> Enum.map(&byte_size(&1))
-        |> encode_ogg_segment_table(),
-      body: body |> :binary.list_to_bin()
+      page_segments: byte_size(segment_table_raw),
+      segment_table_raw: segment_table_raw,
+      body: :binary.list_to_bin(body)
     }
     |> encode_with_crc()
   end
 
-  def parse_opus_head(binary) do
-    <<
-      "OpusHead",
-      version::integer-8,
-      channel_count::integer-8,
-      pre_skip::little-integer-16,
-      input_sample_rate::little-integer-32,
-      output_gain::little-integer-16,
-      mapping_family::integer-8,
-      rest::binary
-    >> = binary
-
+  def parse_opus_head(
+        <<
+          "OpusHead",
+          version::integer-8,
+          channel_count::integer-8,
+          pre_skip::little-integer-16,
+          input_sample_rate::little-integer-32,
+          output_gain::little-integer-16,
+          mapping_family::integer-8,
+          rest::binary
+        >> = _binary
+      ) do
     %{
       version: version,
       channel_count: channel_count,
@@ -208,15 +185,15 @@ defmodule Nostrum.Voice.Opus do
     >>
   end
 
-  def parse_opus_tags(binary) do
-    <<
-      "OpusTags",
-      vendor_string_length::little-integer-32,
-      vendor_string::binary-size(vendor_string_length),
-      user_comment_list_length::little-integer-32,
-      rest::binary
-    >> = binary
-
+  def parse_opus_tags(
+        <<
+          "OpusTags",
+          vendor_string_length::little-integer-32,
+          vendor_string::binary-size(vendor_string_length),
+          user_comment_list_length::little-integer-32,
+          rest::binary
+        >> = _binary
+      ) do
     {rest, comments} =
       if user_comment_list_length > 0 do
         Enum.reduce(1..user_comment_list_length, {rest, []}, fn _, {rest, list} ->
@@ -262,20 +239,20 @@ defmodule Nostrum.Voice.Opus do
     >>
   end
 
-  def parse_ogg_page(binary) do
-    <<
-      "OggS",
-      version::integer-8,
-      header_type::integer-8,
-      granule_position::little-integer-64,
-      bitstream_serial::little-integer-32,
-      page_sequence::little-integer-32,
-      crc_checksum::little-integer-32,
-      page_segments::integer-8,
-      segment_table_raw::binary-size(page_segments),
-      rest::binary
-    >> = binary
-
+  def parse_ogg_page(
+        <<
+          "OggS",
+          version::integer-8,
+          header_type::integer-8,
+          granule_position::little-integer-64,
+          bitstream_serial::little-integer-32,
+          page_sequence::little-integer-32,
+          crc_checksum::little-integer-32,
+          page_segments::integer-8,
+          segment_table_raw::binary-size(page_segments),
+          rest::binary
+        >> = _binary
+      ) do
     segment_table = parse_ogg_segment_table(segment_table_raw)
 
     body_len = segment_table |> Enum.sum()
