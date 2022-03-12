@@ -132,7 +132,7 @@ defmodule Nostrum.Voice.Opus do
       when is_list(body) do
     segment_table_raw =
       body
-      |> Enum.map(&byte_size(&1))
+      |> Enum.map(&byte_size/1)
       |> encode_ogg_segment_table()
 
     %{
@@ -142,9 +142,9 @@ defmodule Nostrum.Voice.Opus do
       bitstream_serial: bitstream_serial,
       page_sequence: page_sequence,
       crc_checksum: 0,
-      page_segments: segment_table_raw |> byte_size(),
+      page_segments: byte_size(segment_table_raw),
       segment_table_raw: segment_table_raw,
-      body: body |> :binary.list_to_bin()
+      body: :binary.list_to_bin(body)
     }
     |> encode_with_crc()
   end
