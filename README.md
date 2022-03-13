@@ -40,6 +40,13 @@ config :nostrum,
   token: "666" # The token of your bot as a string
 ```
 
+Note that due to Discord API changes, in order to receive message content (e.g.
+for non-slash commands or moderation tools), you need to have the "Message
+Content Intent" enabled on your [Bot's application
+settings](https://discord.com/developers/applications/), and the
+`:message_content` intent specified in the `[:nostrum, :gateway_intents]`
+configuration key.
+
 For more information about the differences between dev and stable as well as
 additional config parameters, please see the
 [documentation](https://kraigie.github.io/nostrum/).
