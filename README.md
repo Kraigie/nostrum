@@ -16,7 +16,7 @@ version from Hex:
 
 ```elixir
 def deps do
-  [{:nostrum, "~> 0.5"}]
+  [{:nostrum, "~> 0.6"}]
 end
 ```
 

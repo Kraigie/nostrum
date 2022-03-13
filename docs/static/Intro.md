@@ -51,7 +51,7 @@ Add Nostrum as a dependency:
  *Stable*
 ```Elixir
 def deps do
-  [{:nostrum, "~> 0.4"}]
+  [{:nostrum, "~> 0.6"}]
 end
 ```
 
