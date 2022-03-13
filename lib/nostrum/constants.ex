@@ -2,7 +2,7 @@ defmodule Nostrum.Constants do
   @moduledoc false
 
   def domain, do: "discord.com"
-  def base_route, do: "/api/v9"
+  def base_route, do: "/api/v10"
   def base_url, do: "https://#{domain()}#{base_route()}"
   def cdn_url, do: "https://cdn.discordapp.com"
   def gateway, do: "/gateway"
