@@ -81,6 +81,11 @@ defmodule Nostrum.Api.Ratelimiter do
     {:noreply, state}
   end
 
+  def handle_info({:gun_response, _conn, _ref, :nofin, status, headers}, state) do
+    Logger.debug("Got unexpected response with status #{status}, headers #{inspect(headers)}")
+    {:noreply, state}
+  end
+
   defp do_request(request, conn) do
     conn
     |> Base.request(request.method, request.route, request.body, request.headers, request.params)
