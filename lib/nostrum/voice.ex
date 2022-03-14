@@ -75,7 +75,7 @@ defmodule Nostrum.Voice do
   while already in a different channel in the same guild, the audio source will be persisted
   in the new channel. If the audio is actively playing at the time of changing channels,
   it will resume playing automatically upon joining. If there is an active audio source
-  that has been paused before changing channels, the audio be able to be resumed manually if
+  that has been paused before changing channels, the audio will be able to be resumed manually if
   `resume/1` is called.
 
   If `persist` is set to false, the audio source will be destroyed before changing channels.
@@ -512,37 +512,53 @@ defmodule Nostrum.Voice do
   ## Parameters
     - `guild_id` - ID of guild that the bot is listening to.
     - `num_packets` - Number of packets to wait for.
+    - `raw_rtp` - Whether to return raw RTP packets. Defaults to `false`.
 
-  Returns a list of 2-element tuples in the form `{rtp_header, payload}`.
+  Returns a list of tuples in the form `{{rtp_seq, rtp_time, rtp_ssrc}, opus_packet}`.
 
-  `rtp_header` is a fixed 12-byte header. `payload` is the RTP payload
-  prepended by RTP header extensions. To extract the opus packet from
-  the payload by stripping header extensions, see `extract_opus_packet/1`.
+  The inner tuple contains fields from the RTP header and can be matched against
+  to retrieve information about the packet such as the SSRC, which identifies the source.
+  Note that RTP timestamps are completely unrelated to Unix timestamps.
+
+  If `raw_rtp` is set to `true`, a list of raw RTP packets is returned instead.
+  To extract an opus packet from an RTP packet, see `extract_opus_packet/1`.
 
   This function will block until the specified number of packets is received.
   """
-  @doc since: "0.5.0"
-  @spec listen(Guild.id(), pos_integer) :: [{binary, binary}] | {:error, String.t()}
-  def listen(guild_id, num_packets) do
+  @doc since: "0.6.0"
+  @spec listen(Guild.id(), pos_integer, boolean) ::
+          [{{integer, integer, integer}, binary}] | [binary] | {:error, String.t()}
+  def listen(guild_id, num_packets, raw_rtp \\ false) do
     voice = get_voice(guild_id)
 
     if VoiceState.ready_for_rtp?(voice) do
-      Audio.get_unique_rtp_packets(voice, num_packets)
+      packets = Audio.get_unique_rtp_packets(voice, num_packets)
+
+      if raw_rtp do
+        Enum.map(packets, fn {header, payload} -> header <> payload end)
+      else
+        Enum.map(packets, fn {header, payload} ->
+          <<_::16, seq::integer-16, time::integer-32, ssrc::integer-32>> = header
+          opus = Opus.strip_rtp_ext(payload)
+          {{seq, time, ssrc}, opus}
+        end)
+      end
     else
       {:error, "Must be connected to voice channel to listen for incoming data."}
     end
   end
 
   @doc """
-  Extract the opus packet from the RTP payload received from Discord.
+  Extract the opus packet from the RTP packet received from Discord.
 
-  Incoming voice RTP packets contain RTP header extensions which must be
-  stripped to retrieve the underlying opus packet.
+  Incoming voice RTP packets contain a fixed length RTP header and an optional 
+  RTP header extension, which must be stripped to retrieve the underlying opus packet.
   """
-  @doc since: "0.5.1"
+  @doc since: "0.6.0"
   @spec extract_opus_packet(binary) :: binary
   def extract_opus_packet(packet) do
-    Opus.strip_rtp_ext(packet)
+    <<_header::96, payload::binary>> = packet
+    Opus.strip_rtp_ext(payload)
   end
 
   @doc """
