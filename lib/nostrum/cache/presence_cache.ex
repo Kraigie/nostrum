@@ -33,8 +33,7 @@ defmodule Nostrum.Cache.PresenceCache do
   @moduledoc since: "0.5.0"
 
   @configured_cache :nostrum
-                    |> Application.compile_env(:caches, %{})
-                    |> Map.get(:presences, @default_cache_implementation)
+                    |> Application.compile_env([:caches, :presences], @default_cache_implementation)
 
   alias Nostrum.Struct.{Guild, User}
   alias Nostrum.Util
