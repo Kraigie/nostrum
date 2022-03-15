@@ -115,6 +115,8 @@ defmodule Nostrum.Api do
   """
   @type options :: keyword | map
 
+  defguardp has_files(args) when is_map_key(args, :files) or is_map_key(args, :file)
+
   @doc """
   Updates the status of the bot for a certain shard.
 
@@ -185,10 +187,6 @@ defmodule Nostrum.Api do
 
     At least one of the following is required: `:content`, `:file`, `:embeds`.
 
-  > #### Deprecation {: .warning}
-  >
-  > The `:embed` field was removed in API v10 in favor of `:embeds`.
-
   ## Allowed mentions
 
   With this option you can control when content from a message should trigger a ping.
@@ -257,69 +255,19 @@ defmodule Nostrum.Api do
   def create_message(channel_id, options) when is_list(options),
     do: create_message(channel_id, Map.new(options))
 
-  def create_message(channel_id, %{embed: embed} = options) do
-    IO.warn(
-      "The :embed field was removed in API v10 in favor of :embeds, which expects a list of embeds."
-    )
-
-    options =
-      Map.delete(options, :embed)
-      |> Map.put(:embeds, [embed])
-
-    create_message(channel_id, options)
-  end
-
   def create_message(channel_id, %{} = options) when is_snowflake(channel_id) do
-    options = prepare_allowed_mentions(options)
+    options = prepare_allowed_mentions(options) |> combine_embeds()
 
-    case options do
-      %{file: _} -> create_message_with_multipart(channel_id, options)
-      %{files: _} -> create_message_with_multipart(channel_id, options)
-      _ -> create_message_with_json(channel_id, options)
-    end
+    if has_files(options),
+      do: create_message_with_multipart(channel_id, options),
+      else: create_message_with_json(channel_id, options)
   end
 
   def create_message(channel_id, content) when is_snowflake(channel_id) and is_binary(content),
     do: create_message_with_json(channel_id, %{content: content})
 
-  # If both `:file` and `:files`, move `:file` to existing `:files` list
-  defp create_message_with_multipart(channel_id, %{file: file, files: files} = options) do
-    options =
-      %{options | files: [file | files]}
-      |> Map.delete(:file)
-
-    create_message_with_multipart(channel_id, options)
-  end
-
-  # If only one file, move it to new list with `:files` key
-  defp create_message_with_multipart(channel_id, %{file: file} = options) do
-    options =
-      options
-      |> Map.put(:files, [file])
-      |> Map.delete(:file)
-
-    create_message_with_multipart(channel_id, options)
-  end
-
-  defp create_message_with_multipart(channel_id, %{files: files} = options) do
-    payload_json =
-      options
-      |> Map.delete(:files)
-      |> Jason.encode_to_iodata!()
-
-    boundary = generate_boundary()
-
-    request = %{
-      method: :post,
-      route: Constants.channel_messages(channel_id),
-      body: create_multipart(files, payload_json, boundary),
-      params: [],
-      headers: [
-        {"content-type", "multipart/form-data; boundary=#{boundary}"}
-      ]
-    }
-
-    GenServer.call(Ratelimiter, {:queue, request, nil}, :infinity)
+  defp create_message_with_multipart(channel_id, options) do
+    request_multipart(:post, Constants.channel_messages(channel_id), options)
     |> handle_request_with_decode({:struct, Message})
   end
 
@@ -353,11 +301,6 @@ defmodule Nostrum.Api do
     * `:content` (string) - the message contents (up to 2000 characters)
     * `:embeds` (`t:Nostrum.Struct.Embed.t/0`) - a list of embedded rich content
 
-
-  > #### Deprecation {: .warning}
-  >
-  > The `:embed` field was removed in API v10 in favor of `:embeds`.
-
   ## Examples
 
   ```Elixir
@@ -382,21 +325,9 @@ defmodule Nostrum.Api do
   def edit_message(channel_id, message_id, options) when is_list(options),
     do: edit_message(channel_id, message_id, Map.new(options))
 
-  def edit_message(channel_id, message_id, %{embed: embed} = options) do
-    IO.warn(
-      "The :embed field was removed in API v10 in favor of :embeds, which expects a list of embeds."
-    )
-
-    options =
-      Map.delete(options, :embed)
-      |> Map.put(:embeds, [embed])
-
-    edit_message(channel_id, message_id, options)
-  end
-
   def edit_message(channel_id, message_id, %{} = options)
       when is_snowflake(channel_id) and is_snowflake(message_id) do
-    request(:patch, Constants.channel_message(channel_id, message_id), options)
+    request(:patch, Constants.channel_message(channel_id, message_id), combine_embeds(options))
     |> handle_request_with_decode({:struct, Message})
   end
 
@@ -3086,75 +3017,23 @@ defmodule Nostrum.Api do
 
   def execute_webhook(webhook_id, webhook_token, args, wait \\ false)
 
-  def execute_webhook(webhook_id, webhook_token, %{file: file, files: files} = args, wait) do
-    args = Map.drop(args, [:file, :files])
-    {thread_id, args} = Map.pop(args, :thread_id)
-
-    execute_webhook_with_multipart(
-      webhook_id,
-      webhook_token,
-      [file | files],
-      args,
-      wait,
-      thread_id
-    )
-  end
-
-  def execute_webhook(webhook_id, webhook_token, %{file: file} = args, wait) do
-    args = Map.delete(args, :file)
-    {thread_id, args} = Map.pop(args, :thread_id)
-    execute_webhook_with_multipart(webhook_id, webhook_token, [file], args, wait, thread_id)
-  end
-
-  def execute_webhook(webhook_id, webhook_token, %{files: files} = args, wait) do
-    args = Map.delete(args, :files)
-    {thread_id, args} = Map.pop(args, :thread_id)
-
-    execute_webhook_with_multipart(webhook_id, webhook_token, files, args, wait, thread_id)
-  end
-
-  def execute_webhook(webhook_id, webhook_token, args, wait)
-      when is_map_key(args, :content) or is_map_key(args, :embeds) do
+  def execute_webhook(webhook_id, webhook_token, args, wait) do
     {thread_id, args} = Map.pop(args, :thread_id)
 
     params =
-      if is_nil(thread_id) do
-        [{:wait, wait}]
-      else
-        [{:wait, wait}, {:thread_id, thread_id}]
-      end
+      if is_nil(thread_id),
+        do: [wait: wait],
+        else: [wait: wait, thread_id: thread_id]
 
-    request(
+    req_func = if has_files(args), do: &request_multipart/4, else: &request/4
+
+    req_func.(
       :post,
       Constants.webhook_token(webhook_id, webhook_token),
-      args,
+      combine_embeds(args),
       params
     )
-  end
-
-  defp execute_webhook_with_multipart(webhook_id, webhook_token, files, args, wait, thread_id) do
-    payload_json = Jason.encode_to_iodata!(args)
-
-    boundary = generate_boundary()
-
-    params =
-      if is_nil(thread_id) do
-        [{:wait, wait}]
-      else
-        [{:wait, wait}, {:thread_id, thread_id}]
-      end
-
-    request = %{
-      method: :post,
-      route: Constants.webhook_token(webhook_id, webhook_token),
-      body: create_multipart(files, payload_json, boundary),
-      params: params,
-      headers: [
-        {"content-type", "multipart/form-data; boundary=#{boundary}"}
-      ]
-    }
-
-    GenServer.call(Ratelimiter, {:queue, request, nil}, :infinity)
+    |> handle_request_with_decode({:struct, Message})
   end
 
   @doc """
@@ -3170,7 +3049,7 @@ defmodule Nostrum.Api do
           map()
         ) ::
           error | {:ok, Message.t()}
-  def edit_webhook_message(webhook_id, webhook_token, message_id, %{file: _} = args) do
+  def edit_webhook_message(webhook_id, webhook_token, message_id, args) when has_files(args) do
     request_multipart(
       :patch,
       Constants.webhook_message_edit(webhook_id, webhook_token, message_id),
@@ -3590,56 +3469,12 @@ defmodule Nostrum.Api do
   directly. See `create_interaction_response/2`.
   """
   @spec create_interaction_response(Interaction.id(), Interaction.token(), map()) :: {:ok} | error
-  def create_interaction_response(id, token, %{data: %{file: file, files: files}} = options) do
-    options =
-      options
-      |> Map.update!(:data, fn data ->
-        Map.drop(data, [:file, :files])
-      end)
-
-    create_interaction_response_with_multipart(id, token, [file | files], options)
+  def create_interaction_response(id, token, %{data: data} = options) when has_files(data) do
+    request_multipart(:post, Constants.interaction_callback(id, token), combine_embeds(options))
   end
 
-  def create_interaction_response(id, token, %{data: %{file: file}} = options) do
-    options =
-      options
-      |> Map.update!(:data, fn data ->
-        Map.delete(data, :file)
-      end)
-
-    create_interaction_response_with_multipart(id, token, [file], options)
-  end
-
-  def create_interaction_response(id, token, %{data: %{files: files}} = options) do
-    options =
-      options
-      |> Map.update!(:data, fn data ->
-        Map.delete(data, :files)
-      end)
-
-    create_interaction_response_with_multipart(id, token, files, options)
-  end
-
-  def create_interaction_response(id, token, response) do
-    request(:post, Constants.interaction_callback(id, token), response)
-  end
-
-  defp create_interaction_response_with_multipart(id, token, files, options) do
-    payload_json = Jason.encode_to_iodata!(options)
-
-    boundary = generate_boundary()
-
-    request = %{
-      method: :post,
-      route: Constants.interaction_callback(id, token),
-      body: create_multipart(files, payload_json, boundary),
-      params: [],
-      headers: [
-        {"content-type", "multipart/form-data; boundary=#{boundary}"}
-      ]
-    }
-
-    GenServer.call(Ratelimiter, {:queue, request, nil}, :infinity)
+  def create_interaction_response(id, token, options) do
+    request(:post, Constants.interaction_callback(id, token), combine_embeds(options))
   end
 
   def create_interaction_response!(id, token, response) do
@@ -4205,15 +4040,18 @@ defmodule Nostrum.Api do
     GenServer.call(Ratelimiter, {:queue, request, nil}, :infinity)
   end
 
-  @spec request_multipart(atom(), String.t(), any, keyword() | map()) :: {:ok} | error
+  @spec request_multipart(atom(), String.t(), any, keyword() | map()) ::
+          {:ok} | {:ok, String.t()} | error
   def request_multipart(method, route, body, params \\ []) do
     boundary = generate_boundary()
+    {files, body} = combine_files(body) |> pop_files()
+    json = Jason.encode_to_iodata!(body)
 
     request = %{
       method: method,
       route: route,
       # Hello :gun test suite :^)
-      body: create_multipart(body, boundary),
+      body: {:multipart, create_multipart(files, json, boundary)},
       params: params,
       headers: [
         {"content-type", "multipart/form-data; boundary=#{boundary}"}
@@ -4222,6 +4060,23 @@ defmodule Nostrum.Api do
 
     GenServer.call(Ratelimiter, {:queue, request, nil}, :infinity)
   end
+
+  defp combine_embeds(%{embed: embed} = args),
+    do: Map.delete(args, :embed) |> Map.put(:embeds, [embed | args[:embeds] || []])
+
+  defp combine_embeds(%{data: data} = args), do: %{args | data: combine_embeds(data)}
+  defp combine_embeds(args), do: args
+
+  defp combine_files(%{file: file} = args),
+    do: Map.delete(args, :file) |> Map.put(:files, [file | args[:files] || []])
+
+  defp combine_files(%{data: data} = args), do: %{args | data: combine_files(data)}
+  defp combine_files(args), do: args
+
+  defp pop_files(%{data: data} = args),
+    do: {data.files, %{args | data: Map.delete(data, :files)}}
+
+  defp pop_files(args), do: Map.pop!(args, :files)
 
   @doc false
   def bangify(to_bang) do
@@ -4273,34 +4128,19 @@ defmodule Nostrum.Api do
     end
   end
 
-  defp create_multipart(files, json, boundary) do
-    {:multipart, create_multipart_body(files, json, boundary)}
-  end
-
-  defp create_multipart(options, boundary) do
-    {:multipart, create_multipart_body(options, boundary)}
-  end
-
   @crlf "\r\n"
 
-  defp create_multipart_body(files, json, boundary) do
+  defp create_multipart(files, json, boundary) do
     json_mime = MIME.type("json")
     json_size = :erlang.iolist_size(json)
 
     file_parts =
       files
-      |> Enum.with_index(1)
-      |> Enum.reduce([~s|--#{boundary}#{@crlf}|], fn {f, i}, acc ->
-        [
-          acc
-          | [
-              create_file_part_for_multipart(f, i),
-              ~s|#{@crlf}--#{boundary}#{@crlf}|
-            ]
-        ]
-      end)
+      |> Enum.with_index(0)
+      |> Enum.map(fn {f, i} -> create_file_part_for_multipart(f, i, boundary) end)
 
     [
+      ~s|--#{boundary}#{@crlf}|,
       file_parts
       | [
           ~s|content-length: #{json_size}#{@crlf}|,
@@ -4312,28 +4152,7 @@ defmodule Nostrum.Api do
     ]
   end
 
-  defp create_multipart_body(%{content: content, tts: tts, file: file}, boundary) do
-    file_mime = MIME.from_path(file)
-    file_size = byte_size(content)
-    tts_mime = MIME.type("")
-    tts_size = byte_size(tts)
-
-    [
-      ~s|--#{boundary}#{@crlf}|,
-      ~s|content-length: #{file_size}#{@crlf}|,
-      ~s|content-type: #{file_mime}#{@crlf}|,
-      ~s|content-disposition: form-data; name="file"; filename="#{file}"#{@crlf}#{@crlf}|,
-      content,
-      ~s|#{@crlf}--#{boundary}#{@crlf}|,
-      ~s|content-length: #{tts_size}#{@crlf}|,
-      ~s|content-type: #{tts_mime}#{@crlf}|,
-      ~s|content-disposition: form-data; name="tts"#{@crlf}#{@crlf}|,
-      tts,
-      ~s|#{@crlf}--#{boundary}--#{@crlf}|
-    ]
-  end
-
-  def create_file_part_for_multipart(file, index) do
+  defp create_file_part_for_multipart(file, index, boundary) do
     {body, name} = get_file_contents(file)
 
     file_mime = MIME.from_path(name)
@@ -4342,8 +4161,9 @@ defmodule Nostrum.Api do
     [
       ~s|content-length: #{file_size}#{@crlf}|,
       ~s|content-type: #{file_mime}#{@crlf}|,
-      ~s|content-disposition: form-data; name="file#{index}"; filename="#{name}"#{@crlf}#{@crlf}|,
-      body
+      ~s|content-disposition: form-data; name="files[#{index}]"; filename="#{name}"#{@crlf}#{@crlf}|,
+      body,
+      ~s|#{@crlf}--#{boundary}#{@crlf}|
     ]
   end
 
