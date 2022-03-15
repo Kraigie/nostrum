@@ -33,6 +33,9 @@ By default, guilds are cached in an ETS table, keyed off their ID. You can
 obtain the table name of the backing ETS table using the `tabname` function
 exported by the `Nostrum.Cache.GuildCache.ETS` module.
 
+If you do not have the `:guilds` intent enabled, it is recommended to use the `NoOp`
+cache for guilds.
+
 Please see `Nostrum.Cache.GuildCache` for more information on interacting with
 guilds.
 

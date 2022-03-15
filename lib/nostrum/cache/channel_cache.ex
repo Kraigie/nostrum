@@ -45,8 +45,10 @@ defmodule Nostrum.Cache.ChannelCache do
   alias Nostrum.Struct.Channel
 
   @configured_cache :nostrum
-                    |> Application.compile_env(:caches, %{})
-                    |> Map.get(:channels, @default_cache_implementation)
+                    |> Application.compile_env(
+                      [:caches, :channels],
+                      @default_cache_implementation
+                    )
 
   @typedoc "Specifies the reason for why a lookup operation has failed."
   @type reason :: :channel_not_found
