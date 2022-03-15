@@ -10,7 +10,7 @@
     <title>State — Nostrum v0.5.1</title>
     <link rel="stylesheet" href="dist/elixir-a816d167216329cc463d.css" />
 
-    <script src="dist/sidebar_items-2f9b9a740a.js"></script>
+    <script src="dist/sidebar_items-173bc2e69e.js"></script>
 
       <script src="docs_config.js"></script>
 
@@ -110,9 +110,9 @@ implementation you want to use. This can only be set at dependency compilation
 time. A common situation is that you don't want to cache presences in your bot,
 most likely you don't care about user's status, so you can disable it altogether
 by using the <code class="inline">NoOp</code> presence cache:</p><pre><code class="makeup elixir" translate="no"><span class="n">config</span><span class="w"> </span><span class="ss">:nostrum</span><span class="p">,</span><span class="w">
-  </span><span class="ss">caches</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="6968526243-1">%{</span><span class="w">
+  </span><span class="ss">caches</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="6521209293-1">%{</span><span class="w">
     </span><span class="ss">presences</span><span class="p">:</span><span class="w"> </span><span class="nc">Nostrum.Cache.PresenceCache.NoOp</span><span class="w">
-  </span><span class="p" data-group-id="6968526243-1">}</span></code></pre><h2 id="structs" class="section-heading">
+  </span><span class="p" data-group-id="6521209293-1">}</span></code></pre><h2 id="structs" class="section-heading">
   <a href="#structs" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
   Structs
 </h2>
@@ -123,7 +123,8 @@ with the struct. See <a href="Nostrum.Struct.Emoji.html#image_url/1"><code class
 </h2>
 <p>By default, guilds are cached in an ETS table, keyed off their ID. You can
 obtain the table name of the backing ETS table using the <code class="inline">tabname</code> function
-exported by the <a href="Nostrum.Cache.GuildCache.ETS.html"><code class="inline">Nostrum.Cache.GuildCache.ETS</code></a> module.</p><p>Please see <a href="Nostrum.Cache.GuildCache.html"><code class="inline">Nostrum.Cache.GuildCache</code></a> for more information on interacting with
+exported by the <a href="Nostrum.Cache.GuildCache.ETS.html"><code class="inline">Nostrum.Cache.GuildCache.ETS</code></a> module.</p><p>If you do not have the <code class="inline">:guilds</code> intent enabled, it is recommended to use the <code class="inline">NoOp</code>
+cache for guilds.</p><p>Please see <a href="Nostrum.Cache.GuildCache.html"><code class="inline">Nostrum.Cache.GuildCache</code></a> for more information on interacting with
 guilds.</p><h2 id="channels" class="section-heading">
   <a href="#channels" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
   Channels
