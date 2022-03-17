@@ -72,8 +72,8 @@ defmodule Nostrum.Struct.Guild.Integration do
       |> Map.new(fn {k, v} -> {Util.maybe_to_atom(k), v} end)
       |> Map.update(:id, nil, &Util.cast(&1, Snowflake))
       |> Map.update(:guild_id, nil, &Util.cast(&1, Snowflake))
-      |> Map.update(:account, nil, &Util.cast(&1, Account))
-      |> Map.update(:application, nil, &Util.cast(&1, IntegrationApplication))
+      |> Map.update(:account, nil, &Util.cast(&1, {:struct, Account}))
+      |> Map.update(:application, nil, &Util.cast(&1, {:struct, IntegrationApplication}))
 
     struct(__MODULE__, new)
   end
