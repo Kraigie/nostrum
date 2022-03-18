@@ -252,26 +252,15 @@ defmodule Nostrum.Api do
   def create_message(%Message{} = message, options),
     do: create_message(message.channel_id, options)
 
+  def create_message(channel_id, content) when is_binary(content),
+    do: create_message(channel_id, %{content: content})
+
   def create_message(channel_id, options) when is_list(options),
     do: create_message(channel_id, Map.new(options))
 
   def create_message(channel_id, %{} = options) when is_snowflake(channel_id) do
     options = prepare_allowed_mentions(options) |> combine_embeds()
 
-    if has_files(options),
-      do: create_message_with_multipart(channel_id, options),
-      else: create_message_with_json(channel_id, options)
-  end
-
-  def create_message(channel_id, content) when is_snowflake(channel_id) and is_binary(content),
-    do: create_message_with_json(channel_id, %{content: content})
-
-  defp create_message_with_multipart(channel_id, options) do
-    request_multipart(:post, Constants.channel_messages(channel_id), options)
-    |> handle_request_with_decode({:struct, Message})
-  end
-
-  defp create_message_with_json(channel_id, options) do
     request(:post, Constants.channel_messages(channel_id), options)
     |> handle_request_with_decode({:struct, Message})
   end
@@ -322,18 +311,17 @@ defmodule Nostrum.Api do
           error | {:ok, Message.t()}
   def edit_message(channel_id, message_id, options)
 
+  def edit_message(channel_id, message_id, content) when is_binary(content),
+    do: edit_message(channel_id, message_id, %{content: content})
+
   def edit_message(channel_id, message_id, options) when is_list(options),
     do: edit_message(channel_id, message_id, Map.new(options))
 
   def edit_message(channel_id, message_id, %{} = options)
       when is_snowflake(channel_id) and is_snowflake(message_id) do
-    request(:patch, Constants.channel_message(channel_id, message_id), combine_embeds(options))
-    |> handle_request_with_decode({:struct, Message})
-  end
+    options = prepare_allowed_mentions(options) |> combine_embeds()
 
-  def edit_message(channel_id, message_id, content)
-      when is_snowflake(channel_id) and is_snowflake(message_id) and is_binary(content) do
-    request(:patch, Constants.channel_message(channel_id, message_id), %{content: content})
+    request(:patch, Constants.channel_message(channel_id, message_id), options)
     |> handle_request_with_decode({:struct, Message})
   end
 
@@ -2813,7 +2801,7 @@ defmodule Nostrum.Api do
   end
 
   @doc """
-  Gets a list of webook for a channel.
+  Gets a list of webhooks for a channel.
 
   ## Parameters
     - `channel_id` - Channel to get webhooks for.
@@ -2825,7 +2813,7 @@ defmodule Nostrum.Api do
   end
 
   @doc """
-  Gets a list of webooks for a guild.
+  Gets a list of webhooks for a guild.
 
   ## Parameters
     - `guild_id` - Guild to get webhooks for.
@@ -3025,9 +3013,7 @@ defmodule Nostrum.Api do
         do: [wait: wait],
         else: [wait: wait, thread_id: thread_id]
 
-    req_func = if has_files(args), do: &request_multipart/4, else: &request/4
-
-    req_func.(
+    request(
       :post,
       Constants.webhook_token(webhook_id, webhook_token),
       combine_embeds(args),
@@ -3049,20 +3035,13 @@ defmodule Nostrum.Api do
           map()
         ) ::
           error | {:ok, Message.t()}
-  def edit_webhook_message(webhook_id, webhook_token, message_id, args) when has_files(args) do
-    request_multipart(
-      :patch,
-      Constants.webhook_message_edit(webhook_id, webhook_token, message_id),
-      args
-    )
-  end
-
   def edit_webhook_message(webhook_id, webhook_token, message_id, args) do
     request(
       :patch,
       Constants.webhook_message_edit(webhook_id, webhook_token, message_id),
-      args
+      combine_embeds(args)
     )
+    |> handle_request_with_decode({:struct, Message})
   end
 
   @doc """
@@ -3469,10 +3448,6 @@ defmodule Nostrum.Api do
   directly. See `create_interaction_response/2`.
   """
   @spec create_interaction_response(Interaction.id(), Interaction.token(), map()) :: {:ok} | error
-  def create_interaction_response(id, token, %{data: data} = options) when has_files(data) do
-    request_multipart(:post, Constants.interaction_callback(id, token), combine_embeds(options))
-  end
-
   def create_interaction_response(id, token, options) do
     request(:post, Constants.interaction_callback(id, token), combine_embeds(options))
   end
@@ -3510,7 +3485,7 @@ defmodule Nostrum.Api do
   @spec edit_interaction_response(User.id(), Interaction.token(), map()) ::
           {:ok, Message.t()} | error
   def edit_interaction_response(id \\ Me.get().id, token, response) do
-    request(:patch, Constants.interaction_callback_original(id, token), response)
+    request(:patch, Constants.interaction_callback_original(id, token), combine_embeds(response))
     |> handle_request_with_decode({:struct, Message})
   end
 
@@ -3850,7 +3825,7 @@ defmodule Nostrum.Api do
 
   Response body is a map with the following keys:
   - `threads`: A list of channel objects.
-  - `members`: A list of `ThreadMemer` objects, one for each returned thread the current user has joined.
+  - `members`: A list of `ThreadMember` objects, one for each returned thread the current user has joined.
   """
   @doc since: "0.5.1"
   @spec list_guild_threads(Guild.id()) ::
@@ -3882,7 +3857,7 @@ defmodule Nostrum.Api do
   ## Response body
   Response body is a map with the following keys:
   - `threads`: A list of channel objects.
-  - `members`: A list of `ThreadMemer` objects, one for each returned thread the current user has joined.
+  - `members`: A list of `ThreadMember` objects, one for each returned thread the current user has joined.
   - `has_more`: A boolean indicating whether there are more archived threads that can be fetched.
 
   ## Options
@@ -4028,16 +4003,23 @@ defmodule Nostrum.Api do
   end
 
   @spec request(atom(), String.t(), any, keyword() | map()) :: {:ok} | {:ok, String.t()} | error
-  def request(method, route, body \\ "", params \\ []) do
-    request = %{
+  def request(method, route, body \\ "", params \\ [])
+
+  def request(method, route, %{} = body, params) when has_files(body),
+    do: request_multipart(method, route, body, params)
+
+  def request(method, route, %{data: data} = body, params) when has_files(data),
+    do: request_multipart(method, route, body, params)
+
+  def request(method, route, body, params) do
+    %{
       method: method,
       route: route,
       body: body,
       params: params,
       headers: [{"content-type", "application/json"}]
     }
-
-    GenServer.call(Ratelimiter, {:queue, request, nil}, :infinity)
+    |> request()
   end
 
   @spec request_multipart(atom(), String.t(), any, keyword() | map()) ::
@@ -4047,7 +4029,7 @@ defmodule Nostrum.Api do
     {files, body} = combine_files(body) |> pop_files()
     json = Jason.encode_to_iodata!(body)
 
-    request = %{
+    %{
       method: method,
       route: route,
       # Hello :gun test suite :^)
@@ -4057,16 +4039,17 @@ defmodule Nostrum.Api do
         {"content-type", "multipart/form-data; boundary=#{boundary}"}
       ]
     }
-
-    GenServer.call(Ratelimiter, {:queue, request, nil}, :infinity)
+    |> request()
   end
 
+  # If `:embed` is present, prepend to `:embeds` for compatibility
   defp combine_embeds(%{embed: embed} = args),
     do: Map.delete(args, :embed) |> Map.put(:embeds, [embed | args[:embeds] || []])
 
   defp combine_embeds(%{data: data} = args), do: %{args | data: combine_embeds(data)}
   defp combine_embeds(args), do: args
 
+  # If `:file` is present, prepend to `:files` for compatibility
   defp combine_files(%{file: file} = args),
     do: Map.delete(args, :file) |> Map.put(:files, [file | args[:files] || []])
 
