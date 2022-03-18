@@ -20,7 +20,9 @@ defmodule Nostrum.Struct.Interaction do
     :user,
     :token,
     :version,
-    :message
+    :message,
+    :locale,
+    :guild_locale
   ]
 
   @typedoc "Interaction identifier"
@@ -84,6 +86,20 @@ defmodule Nostrum.Struct.Interaction do
   @type message :: Message.t() | nil
 
   @typedoc """
+  The selected langauge of the invoking user.
+
+  Available on all interaction types except for *PING*
+  """
+  @typedoc since: "0.6.0"
+  @type locale :: String.t() | nil
+
+  @typedoc """
+  The guild's preferred locale, if invoked in a guild.
+  """
+  @typedoc since: "0.6.0"
+  @type guild_locale :: String.t() | nil
+
+  @typedoc """
   A command invocation for Application Commands or Components.
 
   Official reference:
@@ -100,7 +116,9 @@ defmodule Nostrum.Struct.Interaction do
           user: user,
           token: token,
           version: version,
-          message: message
+          message: message,
+          locale: locale,
+          guild_locale: guild_locale
         }
 
   @doc false
