@@ -10,7 +10,7 @@
     <title>Nostrum.Voice — Nostrum v0.5.1</title>
     <link rel="stylesheet" href="dist/elixir-a816d167216329cc463d.css" />
 
-    <script src="dist/sidebar_items-8ea4ec25fa.js"></script>
+    <script src="dist/sidebar_items-8a6957e438.js"></script>
 
       <script src="docs_config.js"></script>
 
@@ -169,7 +169,7 @@ shard websocket connections are, and require no developer intervention.</p><h2 i
 
         </div>
 
-          <div class="summary-synopsis"><p>Extract the opus packet from the RTP payload received from Discord.</p></div>
+          <div class="summary-synopsis"><p>Extract the opus packet from the RTP packet received from Discord.</p></div>
 
       </div>
 
@@ -205,7 +205,7 @@ shard websocket connections are, and require no developer intervention.</p><h2 i
 
       <div class="summary-row">
         <div class="summary-signature">
-          <a href="#listen/2" translate="no">listen(guild_id, num_packets)</a>
+          <a href="#listen/3" translate="no">listen(guild_id, num_packets, raw_rtp \\ false)</a>
 
         </div>
 
@@ -370,7 +370,7 @@ By default Nostrum will automatically create a voice gateway when joining a chan
     </a>
     <h1 class="signature" translate="no">create_ogg_bitstream(opus_packets)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L572" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L588" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -395,10 +395,10 @@ understand how to use the data.</p><p>To get started, assuming you have a list o
 and consecutive opus packets from a single source that you want written
 to a file, you can run the following:</p><pre><code class="makeup elixir" translate="no"><span class="n">bitstream</span><span class="w"> </span><span class="o">=</span><span class="w">
   </span><span class="n">opus_packets</span><span class="w">
-  </span><span class="o">|&gt;</span><span class="w"> </span><span class="n">create_ogg_bitstream</span><span class="p" data-group-id="1715746311-1">(</span><span class="p" data-group-id="1715746311-1">)</span><span class="w">
-  </span><span class="o">|&gt;</span><span class="w"> </span><span class="nc">:binary</span><span class="o">.</span><span class="n">list_to_bin</span><span class="p" data-group-id="1715746311-2">(</span><span class="p" data-group-id="1715746311-2">)</span><span class="w">
+  </span><span class="o">|&gt;</span><span class="w"> </span><span class="n">create_ogg_bitstream</span><span class="p" data-group-id="8177202614-1">(</span><span class="p" data-group-id="8177202614-1">)</span><span class="w">
+  </span><span class="o">|&gt;</span><span class="w"> </span><span class="nc">:binary</span><span class="o">.</span><span class="n">list_to_bin</span><span class="p" data-group-id="8177202614-2">(</span><span class="p" data-group-id="8177202614-2">)</span><span class="w">
 
-</span><span class="nc">File</span><span class="o">.</span><span class="n">write!</span><span class="p" data-group-id="1715746311-3">(</span><span class="s">&quot;my_recording.ogg&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">bitstream</span><span class="p" data-group-id="1715746311-3">)</span></code></pre>
+</span><span class="nc">File</span><span class="o">.</span><span class="n">write!</span><span class="p" data-group-id="8177202614-3">(</span><span class="s">&quot;my_recording.ogg&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">bitstream</span><span class="p" data-group-id="8177202614-3">)</span></code></pre>
   </section>
 </section>
 <section class="detail" id="extract_opus_packet/1">
@@ -410,13 +410,13 @@ to a file, you can run the following:</p><pre><code class="makeup elixir" transl
     </a>
     <h1 class="signature" translate="no">extract_opus_packet(packet)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L544" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L559" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
 
 
-      <span class="note">(since 0.5.1)</span>
+      <span class="note">(since 0.6.0)</span>
 
   </div>
 
@@ -429,8 +429,8 @@ to a file, you can run the following:</p><pre><code class="makeup elixir" transl
 
       </div>
 
-<p>Extract the opus packet from the RTP payload received from Discord.</p><p>Incoming voice RTP packets contain RTP header extensions which must be
-stripped to retrieve the underlying opus packet.</p>
+<p>Extract the opus packet from the RTP packet received from Discord.</p><p>Incoming voice RTP packets contain a fixed length RTP header and an optional 
+RTP header extension, which must be stripped to retrieve the underlying opus packet.</p>
   </section>
 </section>
 <section class="detail" id="get_channel_id/1">
@@ -520,7 +520,7 @@ nil</code></pre>
 while already in a different channel in the same guild, the audio source will be persisted
 in the new channel. If the audio is actively playing at the time of changing channels,
 it will resume playing automatically upon joining. If there is an active audio source
-that has been paused before changing channels, the audio be able to be resumed manually if
+that has been paused before changing channels, the audio will be able to be resumed manually if
 <a href="#resume/1"><code class="inline">resume/1</code></a> is called.</p><p>If <code class="inline">persist</code> is set to false, the audio source will be destroyed before changing channels.
 The same effect is achieved by calling <a href="#stop/1"><code class="inline">stop/1</code></a> or <a href="#leave_channel/1"><code class="inline">leave_channel/1</code></a> before <a href="#join_channel/5"><code class="inline">join_channel/5</code></a></p>
   </section>
@@ -554,22 +554,24 @@ The same effect is achieved by calling <a href="#stop/1"><code class="inline">st
 <p>Leaves the voice channel of the given guild id.</p><p>This function is equivalent to calling <code class="inline">Nostrum.Api.update_voice_state(guild_id, nil)</code>.</p>
   </section>
 </section>
-<section class="detail" id="listen/2">
+<section class="detail" id="listen/3">
+
+    <span id="listen/2"></span>
 
   <div class="detail-header">
-    <a href="#listen/2" class="detail-link" title="Link to this function">
+    <a href="#listen/3" class="detail-link" title="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">listen(guild_id, num_packets)</h1>
+    <h1 class="signature" translate="no">listen(guild_id, num_packets, raw_rtp \\ false)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L526" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L531" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
 
 
-      <span class="note">(since 0.5.0)</span>
+      <span class="note">(since 0.6.0)</span>
 
   </div>
 
@@ -578,18 +580,21 @@ The same effect is achieved by calling <a href="#stop/1"><code class="inline">st
       <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">listen(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pos_integer</a>()) ::
-  [{<a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">binary</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">binary</a>()}] | {:error, <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()}</pre>
+          <pre translate="no">listen(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pos_integer</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">boolean</a>()) ::
+  [{{<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>()}, <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">binary</a>()}]
+  | [<a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">binary</a>()]
+  | {:error, <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()}</pre>
 
       </div>
 
-<p>Listen for incoming voice RTP packets.</p><h2 id="listen/2-parameters" class="section-heading">
-  <a href="#listen/2-parameters" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
+<p>Listen for incoming voice RTP packets.</p><h2 id="listen/3-parameters" class="section-heading">
+  <a href="#listen/3-parameters" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
   Parameters
 </h2>
-<ul><li><code class="inline">guild_id</code> - ID of guild that the bot is listening to.</li><li><code class="inline">num_packets</code> - Number of packets to wait for.</li></ul><p>Returns a list of 2-element tuples in the form <code class="inline">{rtp_header, payload}</code>.</p><p><code class="inline">rtp_header</code> is a fixed 12-byte header. <code class="inline">payload</code> is the RTP payload
-prepended by RTP header extensions. To extract the opus packet from
-the payload by stripping header extensions, see <a href="#extract_opus_packet/1"><code class="inline">extract_opus_packet/1</code></a>.</p><p>This function will block until the specified number of packets is received.</p>
+<ul><li><code class="inline">guild_id</code> - ID of guild that the bot is listening to.</li><li><code class="inline">num_packets</code> - Number of packets to wait for.</li><li><code class="inline">raw_rtp</code> - Whether to return raw RTP packets. Defaults to <code class="inline">false</code>.</li></ul><p>Returns a list of tuples in the form <code class="inline">{{rtp_seq, rtp_time, rtp_ssrc}, opus_packet}</code>.</p><p>The inner tuple contains fields from the RTP header and can be matched against
+to retrieve information about the packet such as the SSRC, which identifies the source.
+Note that RTP timestamps are completely unrelated to Unix timestamps.</p><p>If <code class="inline">raw_rtp</code> is set to <code class="inline">true</code>, a list of raw RTP packets is returned instead.
+To extract an opus packet from an RTP packet, see <a href="#extract_opus_packet/1"><code class="inline">extract_opus_packet/1</code></a>.</p><p>This function will block until the specified number of packets is received.</p>
   </section>
 </section>
 <section class="detail" id="pause/1">
