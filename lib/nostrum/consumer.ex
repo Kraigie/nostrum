@@ -216,18 +216,32 @@ defmodule Nostrum.Consumer do
            {old_user :: Nostrum.Struct.User.t() | nil, new_user :: Nostrum.Struct.User.t()},
            WSState.t()}
   @typedoc """
-  Dispatched when the bot is ready to begin sending audio after joining a voice channel.
+  Dispatched when the bot is ready to begin sending audio after joining a voice channel
 
-  Note that the third tuple element is of type `VoiceWSState.t()` instead of `WSState.t().`
+  Note that the third tuple element is of type `t:Nostrum.Struct.VoiceWSState.t/0` instead of `t:Nostrum.Struct.WSState.t/0`.
   """
   @typedoc since: "0.5.0"
   @type voice_ready :: {:VOICE_READY, VoiceReady.t(), VoiceWSState.t()}
   @typedoc """
-  Dispatched when the bot starts or stops speaking.
+  Dispatched when the bot starts or stops speaking
 
-  Note that the third tuple element is of type `VoiceWSState.t()` instead of `WSState.t().`
+  Note that the third tuple element is of type `t:Nostrum.Struct.VoiceWSState.t/0` instead of `t:Nostrum.Struct.WSState.t/0`.
   """
   @type voice_speaking_update :: {:VOICE_SPEAKING_UPDATE, SpeakingUpdate.t(), VoiceWSState.t()}
+  @typedoc """
+  Dispatched when async listening is enabled and another user is actively speaking
+
+  The second tuple element is an `t:Nostrum.Voice.rtp_opus/0`, which is a tuple with
+  RTP header information and an opus packet. While someone is actively talking, you can
+  expect about 50 events per second per speaking user.
+
+  Note that the third tuple element is of type `t:Nostrum.Struct.VoiceWSState.t/0` instead of `t:Nostrum.Struct.WSState.t/0`.
+  That struct contains a `t:Nostrum.Struct.VoiceWSState.ssrc_map/0` that can determine the speaking user based
+  on the SSRC.
+  """
+  @typedoc since: "0.6.0"
+  @type voice_incoming_packet ::
+          {:VOICE_INCOMING_PACKET, Nostrum.Voice.rtp_opus(), VoiceWSState.t()}
   @type voice_state_update :: {:VOICE_STATE_UPDATE, VoiceState.t(), WSState.t()}
   @type voice_server_update :: {:VOICE_SERVER_UPDATE, VoiceServerUpdate.t(), WSState.t()}
   @type webhooks_update :: {:WEBHOOKS_UPDATE, map, WSState.t()}
@@ -307,6 +321,7 @@ defmodule Nostrum.Consumer do
           | user_update
           | voice_ready
           | voice_speaking_update
+          | voice_incoming_packet
           | voice_state_update
           | voice_server_update
           | webhooks_update

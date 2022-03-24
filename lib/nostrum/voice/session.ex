@@ -6,7 +6,7 @@ defmodule Nostrum.Voice.Session do
   alias Nostrum.Shard.Stage.Producer
   alias Nostrum.Struct.{VoiceState, VoiceWSState}
   alias Nostrum.Voice
-  alias Nostrum.Voice.{Event, Payload}
+  alias Nostrum.Voice.{Event, Opus, Payload}
 
   require Logger
 
@@ -45,6 +45,8 @@ defmodule Nostrum.Voice.Session do
       conn_pid: self(),
       conn: worker,
       guild_id: voice.guild_id,
+      channel_id: voice.channel_id,
+      ssrc_map: Map.new(),
       session: voice.session,
       token: voice.token,
       gateway: voice.gateway,
@@ -137,6 +139,24 @@ defmodule Nostrum.Voice.Session do
     await_ws_upgrade(worker, stream)
     Logger.warn("Reconnected after connection broke")
     {:noreply, %{state | heartbeat_ack: true}}
+  end
+
+  def handle_info({:udp, _erl_port, _ip, _port, packet}, state) do
+    case packet do
+      # Skip RTCP packets
+      <<2::2, 0::1, 1::5, 201::8, _rest::binary>> ->
+        :noop
+
+      <<header::binary-size(12), data::binary>> ->
+        nonce = header <> <<0::8*12>>
+        payload = Kcl.secretunbox(data, nonce, state.secret_key)
+        <<_::16, seq::integer-16, time::integer-32, ssrc::integer-32>> = header
+        opus = Opus.strip_rtp_ext(payload)
+        incoming_packet = Payload.voice_incoming_packet({{seq, time, ssrc}, opus})
+        Producer.notify(Producer, incoming_packet, state)
+    end
+
+    {:noreply, state}
   end
 
   def handle_cast(:heartbeat, %{heartbeat_ack: false, heartbeat_ref: timer_ref} = state) do

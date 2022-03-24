@@ -26,15 +26,17 @@ defmodule Nostrum.Voice.Event do
   def handle(:session_description, payload, state) do
     Logger.debug("VOICE SESSION DESCRIPTION")
 
+    secret_key = payload["d"]["secret_key"] |> :erlang.list_to_binary()
+
     Voice.update_voice(state.guild_id,
-      secret_key: payload["d"]["secret_key"] |> :erlang.list_to_binary(),
+      secret_key: secret_key,
       rtp_sequence: 0,
       rtp_timestamp: 0
     )
 
     Session.on_voice_ready(state.conn_pid)
 
-    state
+    %{state | secret_key: secret_key}
   end
 
   def handle(:heartbeat_ack, _payload, state) do
@@ -89,7 +91,12 @@ defmodule Nostrum.Voice.Event do
 
   def handle(:codec_info, _payload, state), do: state
 
-  def handle(:speaking, _payload, state), do: state
+  def handle(:speaking, payload, state) do
+    ssrc = payload["d"]["ssrc"]
+    user_id = payload["d"]["user_id"] |> String.to_integer()
+    ssrc_map = Map.put(state.ssrc_map, ssrc, user_id)
+    %{state | ssrc_map: ssrc_map}
+  end
 
   def handle(event, _payload, state) do
     Logger.warn("UNHANDLED VOICE GATEWAY EVENT #{event}")

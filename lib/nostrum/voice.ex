@@ -1,6 +1,6 @@
 defmodule Nostrum.Voice do
   @moduledoc """
-  Interface for playing audio through Discord's voice channels.
+  Interface for playing and listening to audio through Discord's voice channels.
 
   # Using Discord Voice Channels
   To play sound in Discord with Nostrum, you'll need `ffmpeg` to be installed.
@@ -19,18 +19,21 @@ defmodule Nostrum.Voice do
   the scenes the voice websocket connections are implemented nearly the same way the main
   shard websocket connections are, and require no developer intervention.
 
+  In addition to playing audio, listening to incoming audio is supported through the
+  functions `listen/3` and `start_listen_async/1`.
+
   ## Voice Without FFmpeg
   If you wish to BYOE (Bring Your Own Encoder), there are a few options.
-    - Use `:raw` as `type` for `Nostrum.Voice.play/4`
+    - Use `:raw` as `type` for `play/4`
       - Provide the complete list of opus frames as the input
-    - Use `:raw_s` as `type` for `Nostrum.Voice.play/4`
+    - Use `:raw_s` as `type` for `play/4`
       - Provide a stateful enumerable of opus frames as input (think GenServer wrapped in `Stream.unfold/2`)
     - Use lower level functions to send opus frames at your leisure
-      - Send packets on your own time using `Nostrum.Voice.send_frames/2`
+      - Send packets on your own time using `send_frames/2`
   """
 
   alias Nostrum.Api
-  alias Nostrum.Struct.{Channel, Guild, VoiceState}
+  alias Nostrum.Struct.{Channel, Guild, VoiceState, VoiceWSState}
   alias Nostrum.Voice.Audio
   alias Nostrum.Voice.Opus
   alias Nostrum.Voice.Ports
@@ -40,6 +43,54 @@ defmodule Nostrum.Voice do
   require Logger
 
   use GenServer
+
+  @typedoc """
+  RTP sequence
+  """
+  @typedoc since: "0.6.0"
+  @type rtp_sequence :: non_neg_integer()
+
+  @typedoc """
+  RTP timestamp
+  """
+  @typedoc since: "0.6.0"
+  @type rtp_timestamp :: non_neg_integer()
+
+  @typedoc """
+  RTP SSRC
+  """
+  @typedoc since: "0.6.0"
+  @type rtp_ssrc :: non_neg_integer()
+
+  @typedoc """
+  Opus packet
+  """
+  @typedoc since: "0.6.0"
+  @type opus_packet :: binary()
+
+  @typedoc """
+  Tuple with RTP header elements and opus packet
+  """
+  @typedoc since: "0.6.0"
+  @type rtp_opus :: {{rtp_sequence(), rtp_timestamp(), rtp_ssrc()}, opus_packet()}
+
+  @typedoc """
+  The type of play input
+
+  The type given to `play/4` determines how the input parameter is interpreted.
+  See `play/4` for more information.
+  """
+  @typedoc since: "0.6.0"
+  @type play_type :: :url | :pipe | :ytdl | :stream | :raw | :raw_s
+
+  @typedoc """
+  The play input
+
+  The input given to `play/4`, either a compatible URL or binary audio data.
+  See `play/4` for more information.
+  """
+  @typedoc since: "0.6.0"
+  @type play_input :: String.t() | binary() | Enum.t()
 
   @doc false
   def start_link(_args) do
@@ -116,14 +167,14 @@ defmodule Nostrum.Voice do
 
   ## Parameters
     - `guild_id` - ID of guild whose voice channel the sound will be played in.
-    - `input` - Audio to be played. Type of `input` determined by `type` parameter.
-    - `type` - Type of input (defaults to `:url`).
+    - `input` - Audio to be played, `t:play_input/0`. Input type determined by `type` parameter.
+    - `type` - Type of input, `t:play_type/0` (defaults to `:url`).
       - `:url` Input will be [any url that `ffmpeg` can read](https://www.ffmpeg.org/ffmpeg-protocols.html).
       - `:pipe` Input will be data that is piped to stdin of `ffmpeg`.
       - `:ytdl` Input will be url for `youtube-dl`, which gets automatically piped to `ffmpeg`.
       - `:stream` Input will be livestream url for `streamlink`, which gets automatically piped to `ffmpeg`.
-      - `:raw` Input will be an enumarable of raw opus frames. This bypasses `ffmpeg` and all options.
-      - `:raw_s` Same as `:raw` but input must be stateful, i.e. calling `Enum.take/2` on input is not idempotent.
+      - `:raw` Input will be an enumarable of raw opus packets. This bypasses `ffmpeg` and all options.
+      - `:raw_s` Same as `:raw` but input must be stateful, i.e. calling `Enum.take/2` on `input` is not idempotent.
     - `options` - See options section below.
 
 
@@ -185,13 +236,7 @@ defmodule Nostrum.Voice do
   iex> Nostrum.Voice.play(123456789, "https://youtu.be/LN4r-K8ZP5Q", :stream)
   ```
   """
-  @spec play(
-          Guild.id(),
-          String.t() | iodata() | Enum.t(),
-          :url | :pipe | :ytdl | :stream | :raw | :raw_s,
-          keyword()
-        ) ::
-          :ok | {:error, String.t()}
+  @spec play(Guild.id(), play_input(), play_type(), keyword()) :: :ok | {:error, String.t()}
   def play(guild_id, input, type \\ :url, options \\ []) do
     voice = get_voice(guild_id)
 
@@ -441,6 +486,27 @@ defmodule Nostrum.Voice do
     if voice, do: voice.channel_id, else: nil
   end
 
+  @doc """
+  Gets a map of RTP SSRC to user id.
+
+  Within a voice channel, an SSRC (synchronization source) will uniquely map to a
+  user id of a user who is speaking.
+
+  If listening to incoming voice packets asynchronously, this function will not be
+  needed as the `t:Nostrum.Struct.VoiceWSState.ssrc_map/0` will be available with every event.
+  If listening with `listen/3`, this function may be used. It is recommended to
+  cache the result of this function and only call it again when you encounter an
+  SSRC that is not present in the cached result. This is to reduce excess load on the
+  voice websocket and voice state processes.
+  """
+  @doc since: "0.6.0"
+  @spec get_ssrc_map(Guild.id()) :: VoiceWSState.ssrc_map()
+  def get_ssrc_map(guild_id) do
+    voice = get_voice(guild_id)
+    v_ws = Session.get_ws_state(voice.session_pid)
+    v_ws.ssrc_map
+  end
+
   @doc false
   def set_speaking(%VoiceState{} = voice, speaking, timed_out \\ false) do
     Session.set_speaking(voice.session_pid, speaking, timed_out)
@@ -470,7 +536,7 @@ defmodule Nostrum.Voice do
   instead of `Nostrum.Voice.play/4`
   """
   @doc since: "0.5.0"
-  @spec send_frames(Guild.id(), [binary]) :: :ok | {:error, String.t()}
+  @spec send_frames(Guild.id(), [opus_packet()]) :: :ok | {:error, String.t()}
   def send_frames(guild_id, frames) when is_list(frames) do
     voice = get_voice(guild_id)
 
@@ -514,7 +580,7 @@ defmodule Nostrum.Voice do
     - `num_packets` - Number of packets to wait for.
     - `raw_rtp` - Whether to return raw RTP packets. Defaults to `false`.
 
-  Returns a list of tuples in the form `{{rtp_seq, rtp_time, rtp_ssrc}, opus_packet}`.
+  Returns a list of tuples of type `t:rtp_opus/0`.
 
   The inner tuple contains fields from the RTP header and can be matched against
   to retrieve information about the packet such as the SSRC, which identifies the source.
@@ -526,8 +592,7 @@ defmodule Nostrum.Voice do
   This function will block until the specified number of packets is received.
   """
   @doc since: "0.6.0"
-  @spec listen(Guild.id(), pos_integer, boolean) ::
-          [{{integer, integer, integer}, binary}] | [binary] | {:error, String.t()}
+  @spec listen(Guild.id(), pos_integer, boolean) :: [rtp_opus()] | [binary] | {:error, String.t()}
   def listen(guild_id, num_packets, raw_rtp \\ false) do
     voice = get_voice(guild_id)
 
@@ -549,13 +614,40 @@ defmodule Nostrum.Voice do
   end
 
   @doc """
+  Start asynchronously receiving events for incoming RTP packets for an active voice session.
+
+  This is an alternative to the blocking `listen/3`. Events will be generated asynchronously
+  when a user is speaking. See `t:Nostrum.Consumer.voice_incoming_packet/0` for more info.
+  """
+  @doc since: "0.6.0"
+  @spec start_listen_async(Guild.id()) :: :ok | {:error, term()}
+  def start_listen_async(guild_id), do: set_udp_active(guild_id, true)
+
+  @doc """
+  Stop asynchronously receiving events for incoming RTP packets for an active voice session.
+  """
+  @doc since: "0.6.0"
+  @spec stop_listen_async(Guild.id()) :: :ok | {:error, term()}
+  def stop_listen_async(guild_id), do: set_udp_active(guild_id, false)
+
+  defp set_udp_active(guild_id, active?) do
+    voice = get_voice(guild_id)
+
+    if VoiceState.ready_for_rtp?(voice) do
+      voice.udp_socket |> :inet.setopts([{:active, active?}])
+    else
+      {:error, "Must be connected to voice channel to alter socket options."}
+    end
+  end
+
+  @doc """
   Extract the opus packet from the RTP packet received from Discord.
 
-  Incoming voice RTP packets contain a fixed length RTP header and an optional 
+  Incoming voice RTP packets contain a fixed length RTP header and an optional
   RTP header extension, which must be stripped to retrieve the underlying opus packet.
   """
   @doc since: "0.6.0"
-  @spec extract_opus_packet(binary) :: binary
+  @spec extract_opus_packet(binary) :: opus_packet()
   def extract_opus_packet(packet) do
     <<_header::96, payload::binary>> = packet
     Opus.strip_rtp_ext(payload)
@@ -584,10 +676,8 @@ defmodule Nostrum.Voice do
   ```
   """
   @doc since: "0.5.1"
-  @spec create_ogg_bitstream(list(binary)) :: list(binary)
-  def create_ogg_bitstream(opus_packets) do
-    Opus.create_ogg_bitstream(opus_packets)
-  end
+  @spec create_ogg_bitstream([opus_packet()]) :: [binary]
+  defdelegate create_ogg_bitstream(opus_packets), to: Opus
 
   @doc false
   def handle_call({:update, guild_id, args}, _from, state) do
