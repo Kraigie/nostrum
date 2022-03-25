@@ -333,6 +333,20 @@ defmodule Nostrum.Voice.Opus do
     |> encode_ogg_page()
   end
 
+  def pad_opus([head | tail] = _packets) do
+    Enum.reduce(tail, [head], fn {{_, time, _}, _} = x, [{{_, prev_time, _}, _} | _] = acc ->
+      (time - prev_time)
+      |> div(960)
+      |> Kernel.-(1)
+      |> max(0)
+      |> (&List.duplicate({nil, <<0xF8, 0xFF, 0xFE>>}, &1)).()
+      |> Enum.reduce(acc, &[&1 | &2])
+      |> (&[x | &1]).()
+    end)
+    |> Stream.map(fn {_, opus} -> opus end)
+    |> Enum.reverse()
+  end
+
   @crc_lookup_table [
     0x00000000,
     0x04C11DB7,

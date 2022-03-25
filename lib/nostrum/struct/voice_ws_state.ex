@@ -75,7 +75,7 @@ defmodule Nostrum.Struct.VoiceWSState do
   """
   @type last_heartbeat_ack :: DateTime.t() | nil
 
-  @typedoc "Whether or not the last hearbeat sent was ACK'd"
+  @typedoc "Whether or not the last heartbeat sent was ACK'd"
   @type heartbeat_ack :: boolean
 
   @typedoc "Interval at which heartbeats are sent"

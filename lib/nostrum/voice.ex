@@ -173,7 +173,7 @@ defmodule Nostrum.Voice do
       - `:pipe` Input will be data that is piped to stdin of `ffmpeg`.
       - `:ytdl` Input will be url for `youtube-dl`, which gets automatically piped to `ffmpeg`.
       - `:stream` Input will be livestream url for `streamlink`, which gets automatically piped to `ffmpeg`.
-      - `:raw` Input will be an enumarable of raw opus packets. This bypasses `ffmpeg` and all options.
+      - `:raw` Input will be an enumerable of raw opus packets. This bypasses `ffmpeg` and all options.
       - `:raw_s` Same as `:raw` but input must be stateful, i.e. calling `Enum.take/2` on `input` is not idempotent.
     - `options` - See options section below.
 
@@ -193,7 +193,7 @@ defmodule Nostrum.Voice do
     Filters will be applied in order and can be as complex as you want. The world is your oyster!
 
     Note that using the `:volume` option is shortcut for the "volume" filter, and will be added to the end of the filter chain, acting as a master volume.
-    Volume values between `0.0` and `1.0` act as standard oparating range where `0` is off and `1` is max.
+    Volume values between `0.0` and `1.0` act as standard operating range where `0` is off and `1` is max.
     Values greater than `1.0` will add saturation and distortion to the audio.
     Negative values act the same as their position but reverse the polarity of the waveform.
 
@@ -674,10 +674,55 @@ defmodule Nostrum.Voice do
 
   File.write!("my_recording.ogg", bitstream)
   ```
+
+  When creating a logical bitstream, ensure that the packets are all from a single SSRC.
+  When listening in a channel with multiple speakers, you should be storing the received
+  packets in unique buckets for each SSRC so that the multiple audio sources don't become
+  jumbled. A single logical bitstream should represent audio data from a single speaker.
+  An Ogg physical bitstream (e.g. a file) may be composed of multiple interleaved Ogg
+  logical bitstreams as each logical bitstream and its constituent pages contain a unique
+  and randomly generated bitstream serial number, but this is a story for another time.
+
+  Assuming you have a list of `t:rtp_opus/0` packets that are not separated by ssrc, you
+  may do the following:
+
+  ```elixir
+  jumbled_packets
+  |> Stream.filter(fn {{_seq, _time, ssrc}, _opus} -> ssrc == particular_ssrc end)
+  |> Enum.map(fn {{_seq, _time, _ssrc}, opus} -> opus end)
+  |> create_ogg_bitstream()
+  ```
   """
   @doc since: "0.5.1"
   @spec create_ogg_bitstream([opus_packet()]) :: [binary]
   defdelegate create_ogg_bitstream(opus_packets), to: Opus
+
+  @doc """
+  Pad discontinuous chunks of opus audio with silence.
+
+  This function takes a list of `t:rtp_opus/0`, which is a tuple containing RTP bits and
+  opus audio data. It returns a list of opus audio packets. The reason the input has to be in
+  the `t:rtp_opus/0` tuple format returned by `listen/3` and async listen events is that the
+  RTP packet header contains info on the relative timestamps of incoming packets; the opus
+  packets themselves don't contain information relating to timing.
+
+  The use case of this function is as follows:
+  Consider a user speaks for two seconds, pauses for ten seconds, then speaks for another two
+  seconds. During the pause, no RTP packets will be received, so if you create a bitstream from
+  it, the resulting audio will be both two-second speaking segments consecutively without the
+  long pause in the middle. If you wish to preserve the timing of the speaking and include the
+  pause, calling this function will interleave the appropriate amount of opus silence packets
+  to maintain temporal fidelity.
+
+  Note that the Discord client currently sends about 10 silence packets (200 ms) each time it
+  detects end of speech, so creating a bitstream without first padding your audio with this
+  function will maintain short silences between speech segments.
+
+  *This function should only be called on a collection of RTP packets from a single SSRC*
+  """
+  @doc since: "0.6.0"
+  @spec pad_opus(nonempty_list(rtp_opus())) :: [opus_packet()]
+  defdelegate pad_opus(packets), to: Opus
 
   @doc false
   def handle_call({:update, guild_id, args}, _from, state) do
