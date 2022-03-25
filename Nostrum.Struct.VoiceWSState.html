@@ -10,7 +10,7 @@
     <title>Nostrum.Struct.VoiceWSState — Nostrum v0.5.1</title>
     <link rel="stylesheet" href="dist/elixir-a816d167216329cc463d.css" />
 
-    <script src="dist/sidebar_items-8a6957e438.js"></script>
+    <script src="dist/sidebar_items-4e3d17700c.js"></script>
 
       <script src="docs_config.js"></script>
 
@@ -121,6 +121,16 @@ Nostrum
 
       <div class="summary-row">
         <div class="summary-signature">
+          <a href="#t:channel_id/0" translate="no">channel_id()</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>The channel id that this voice websocket state applies to</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
           <a href="#t:conn/0" translate="no">conn()</a>
 
         </div>
@@ -165,7 +175,7 @@ Nostrum
 
         </div>
 
-          <div class="summary-synopsis"><p>Whether or not the last hearbeat sent was ACK'd</p></div>
+          <div class="summary-synopsis"><p>Whether or not the last heartbeat sent was ACK'd</p></div>
 
       </div>
 
@@ -223,11 +233,31 @@ will be the time the websocket process was started</p></div>
 
       <div class="summary-row">
         <div class="summary-signature">
+          <a href="#t:secret_key/0" translate="no">secret_key()</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>The secret key for audio encryption</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
           <a href="#t:session/0" translate="no">session()</a>
 
         </div>
 
           <div class="summary-synopsis"><p>The session id</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#t:ssrc_map/0" translate="no">ssrc_map()</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>A mapping of RTP SSRC (synchronization source) to user id</p></div>
 
       </div>
 
@@ -273,6 +303,37 @@ will be the time the websocket process was started</p></div>
 Types
     </h1>
     <div class="types-list">
+<section class="detail" id="t:channel_id/0">
+
+  <div class="detail-header">
+    <a href="#t:channel_id/0" class="detail-link" title="Link to this type">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature" translate="no">channel_id()</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/voice_ws_state.ex#L30" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+      <span class="note">(since 0.6.0)</span>
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre translate="no">channel_id() :: <a href="Nostrum.Struct.Channel.html#t:id/0">Nostrum.Struct.Channel.id</a>()</pre>
+
+      </div>
+
+<p>The channel id that this voice websocket state applies to</p>
+  </section>
+</section>
 <section class="detail" id="t:conn/0">
 
   <div class="detail-header">
@@ -282,7 +343,7 @@ Types
     </a>
     <h1 class="signature" translate="no">conn()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/voice_ws_state.ex#L32" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/voice_ws_state.ex#L52" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -311,7 +372,7 @@ Types
     </a>
     <h1 class="signature" translate="no">conn_pid()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/voice_ws_state.ex#L35" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/voice_ws_state.ex#L55" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -340,7 +401,7 @@ Types
     </a>
     <h1 class="signature" translate="no">gateway()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/voice_ws_state.ex#L41" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/voice_ws_state.ex#L61" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -369,7 +430,7 @@ Types
     </a>
     <h1 class="signature" translate="no">guild_id()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/voice_ws_state.ex#L23" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/voice_ws_state.ex#L26" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -398,7 +459,7 @@ Types
     </a>
     <h1 class="signature" translate="no">heartbeat_ack()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/voice_ws_state.ex#L59" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/voice_ws_state.ex#L79" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -415,7 +476,7 @@ Types
 
       </div>
 
-<p>Whether or not the last hearbeat sent was ACK'd</p>
+<p>Whether or not the last heartbeat sent was ACK'd</p>
   </section>
 </section>
 <section class="detail" id="t:heartbeat_interval/0">
@@ -427,7 +488,7 @@ Types
     </a>
     <h1 class="signature" translate="no">heartbeat_interval()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/voice_ws_state.ex#L62" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/voice_ws_state.ex#L82" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -456,7 +517,7 @@ Types
     </a>
     <h1 class="signature" translate="no">heartbeat_ref()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/voice_ws_state.ex#L65" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/voice_ws_state.ex#L85" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -485,7 +546,7 @@ Types
     </a>
     <h1 class="signature" translate="no">identified()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/voice_ws_state.ex#L44" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/voice_ws_state.ex#L64" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -514,7 +575,7 @@ Types
     </a>
     <h1 class="signature" translate="no">last_heartbeat_ack()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/voice_ws_state.ex#L56" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/voice_ws_state.ex#L76" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -544,7 +605,7 @@ hasn't been ACK'd yet</p>
     </a>
     <h1 class="signature" translate="no">last_heartbeat_send()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/voice_ws_state.ex#L50" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/voice_ws_state.ex#L70" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -565,6 +626,37 @@ hasn't been ACK'd yet</p>
 will be the time the websocket process was started</p>
   </section>
 </section>
+<section class="detail" id="t:secret_key/0">
+
+  <div class="detail-header">
+    <a href="#t:secret_key/0" class="detail-link" title="Link to this type">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature" translate="no">secret_key()</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/voice_ws_state.ex#L49" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+      <span class="note">(since 0.6.0)</span>
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre translate="no">secret_key() :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">binary</a>() | nil</pre>
+
+      </div>
+
+<p>The secret key for audio encryption</p>
+  </section>
+</section>
 <section class="detail" id="t:session/0">
 
   <div class="detail-header">
@@ -574,7 +666,7 @@ will be the time the websocket process was started</p>
     </a>
     <h1 class="signature" translate="no">session()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/voice_ws_state.ex#L26" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/voice_ws_state.ex#L42" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -594,6 +686,38 @@ will be the time the websocket process was started</p>
 <p>The session id</p>
   </section>
 </section>
+<section class="detail" id="t:ssrc_map/0">
+
+  <div class="detail-header">
+    <a href="#t:ssrc_map/0" class="detail-link" title="Link to this type">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature" translate="no">ssrc_map()</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/voice_ws_state.ex#L39" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+      <span class="note">(since 0.6.0)</span>
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre translate="no">ssrc_map() :: %{required(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>()) =&gt; <a href="Nostrum.Struct.User.html#t:id/0">Nostrum.Struct.User.id</a>()}</pre>
+
+      </div>
+
+<p>A mapping of RTP SSRC (synchronization source) to user id</p><p>This map can be used to identify the user who generated the incoming
+audio data when an RTP packet is received.</p>
+  </section>
+</section>
 <section class="detail" id="t:stream/0">
 
   <div class="detail-header">
@@ -603,7 +727,7 @@ will be the time the websocket process was started</p>
     </a>
     <h1 class="signature" translate="no">stream()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/voice_ws_state.ex#L38" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/voice_ws_state.ex#L58" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -632,7 +756,7 @@ will be the time the websocket process was started</p>
     </a>
     <h1 class="signature" translate="no">t()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/voice_ws_state.ex#L67" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/voice_ws_state.ex#L87" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -646,6 +770,7 @@ will be the time the websocket process was started</p>
       <div class="specs">
 
           <pre translate="no">t() :: %Nostrum.Struct.VoiceWSState{
+  channel_id: <a href="#t:channel_id/0">channel_id</a>(),
   conn: <a href="#t:conn/0">conn</a>(),
   conn_pid: <a href="#t:conn_pid/0">conn_pid</a>(),
   gateway: <a href="#t:gateway/0">gateway</a>(),
@@ -656,7 +781,9 @@ will be the time the websocket process was started</p>
   identified: <a href="#t:identified/0">identified</a>(),
   last_heartbeat_ack: <a href="#t:last_heartbeat_ack/0">last_heartbeat_ack</a>(),
   last_heartbeat_send: <a href="#t:last_heartbeat_send/0">last_heartbeat_send</a>(),
+  secret_key: <a href="#t:secret_key/0">secret_key</a>(),
   session: <a href="#t:session/0">session</a>(),
+  ssrc_map: <a href="#t:ssrc_map/0">ssrc_map</a>(),
   stream: <a href="#t:stream/0">stream</a>(),
   token: <a href="#t:token/0">token</a>()
 }</pre>
@@ -675,7 +802,7 @@ will be the time the websocket process was started</p>
     </a>
     <h1 class="signature" translate="no">token()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/voice_ws_state.ex#L29" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/voice_ws_state.ex#L45" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>

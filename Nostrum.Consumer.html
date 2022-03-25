@@ -10,7 +10,7 @@
     <title>Nostrum.Consumer — Nostrum v0.5.1</title>
     <link rel="stylesheet" href="dist/elixir-a816d167216329cc463d.css" />
 
-    <script src="dist/sidebar_items-8a6957e438.js"></script>
+    <script src="dist/sidebar_items-4e3d17700c.js"></script>
 
       <script src="docs_config.js"></script>
 
@@ -588,11 +588,21 @@ will each be ran in their own separate task.</p><h2 id="module-example" class="s
 
       <div class="summary-row">
         <div class="summary-signature">
+          <a href="#t:voice_incoming_packet/0" translate="no">voice_incoming_packet()</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>Dispatched when async listening is enabled and another user is actively speaking</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
           <a href="#t:voice_ready/0" translate="no">voice_ready()</a>
 
         </div>
 
-          <div class="summary-synopsis"><p>Dispatched when the bot is ready to begin sending audio after joining a voice channel.</p></div>
+          <div class="summary-synopsis"><p>Dispatched when the bot is ready to begin sending audio after joining a voice channel</p></div>
 
       </div>
 
@@ -610,7 +620,7 @@ will each be ran in their own separate task.</p><h2 id="module-example" class="s
 
         </div>
 
-          <div class="summary-synopsis"><p>Dispatched when the bot starts or stops speaking.</p></div>
+          <div class="summary-synopsis"><p>Dispatched when the bot starts or stops speaking</p></div>
 
       </div>
 
@@ -840,7 +850,7 @@ this will never be sent for a DM.</p>
     </a>
     <h1 class="signature" translate="no">event()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L262" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L276" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -901,6 +911,7 @@ this will never be sent for a DM.</p>
   | <a href="#t:user_update/0">user_update</a>()
   | <a href="#t:voice_ready/0">voice_ready</a>()
   | <a href="#t:voice_speaking_update/0">voice_speaking_update</a>()
+  | <a href="#t:voice_incoming_packet/0">voice_incoming_packet</a>()
   | <a href="#t:voice_state_update/0">voice_state_update</a>()
   | <a href="#t:voice_server_update/0">voice_server_update</a>()
   | <a href="#t:webhooks_update/0">webhooks_update</a>()</pre>
@@ -2143,7 +2154,7 @@ this will never be sent for a DM.</p>
     </a>
     <h1 class="signature" translate="no">thread_create()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L238" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L252" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2173,7 +2184,7 @@ this will never be sent for a DM.</p>
     </a>
     <h1 class="signature" translate="no">thread_delete()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L243" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L257" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2204,7 +2215,7 @@ this will never be sent for a DM.</p>
     </a>
     <h1 class="signature" translate="no">thread_list_sync()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L251" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L265" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2235,7 +2246,7 @@ this will never be sent for a DM.</p>
     </a>
     <h1 class="signature" translate="no">thread_member_update()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L256" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L270" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2266,7 +2277,7 @@ this will never be sent for a DM.</p>
     </a>
     <h1 class="signature" translate="no">thread_members_update()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L261" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L275" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2297,7 +2308,7 @@ this will never be sent for a DM.</p>
     </a>
     <h1 class="signature" translate="no">thread_update()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L244" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L258" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2412,6 +2423,43 @@ this will never be sent for a DM.</p>
 <p>Dispatched when a user is updated.</p><p><code class="inline">old_user</code> will be <code class="inline">nil</code> when the pre-update user could not be fetched from the cache.</p>
   </section>
 </section>
+<section class="detail" id="t:voice_incoming_packet/0">
+
+  <div class="detail-header">
+    <a href="#t:voice_incoming_packet/0" class="detail-link" title="Link to this type">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature" translate="no">voice_incoming_packet()</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L243" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+      <span class="note">(since 0.6.0)</span>
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre translate="no">voice_incoming_packet() ::
+  {:VOICE_INCOMING_PACKET, <a href="Nostrum.Voice.html#t:rtp_opus/0">Nostrum.Voice.rtp_opus</a>(),
+   <a href="Nostrum.Struct.VoiceWSState.html#t:t/0">Nostrum.Struct.VoiceWSState.t</a>()}</pre>
+
+      </div>
+
+<p>Dispatched when async listening is enabled and another user is actively speaking</p><p>The second tuple element is an <a href="Nostrum.Voice.html#t:rtp_opus/0"><code class="inline">Nostrum.Voice.rtp_opus/0</code></a>, which is a tuple with
+RTP header information and an opus packet. While someone is actively talking, you can
+expect about 50 events per second per speaking user.</p><p>Note that the third tuple element is of type <a href="Nostrum.Struct.VoiceWSState.html#t:t/0"><code class="inline">Nostrum.Struct.VoiceWSState.t/0</code></a> instead of <a href="Nostrum.Struct.WSState.html#t:t/0"><code class="inline">Nostrum.Struct.WSState.t/0</code></a>.
+That struct contains a <a href="Nostrum.Struct.VoiceWSState.html#t:ssrc_map/0"><code class="inline">Nostrum.Struct.VoiceWSState.ssrc_map/0</code></a> that can determine the speaking user based
+on the SSRC.</p>
+  </section>
+</section>
 <section class="detail" id="t:voice_ready/0">
 
   <div class="detail-header">
@@ -2442,7 +2490,7 @@ this will never be sent for a DM.</p>
 
       </div>
 
-<p>Dispatched when the bot is ready to begin sending audio after joining a voice channel.</p><p>Note that the third tuple element is of type <code class="inline">VoiceWSState.t()</code> instead of <code class="inline">WSState.t().</code></p>
+<p>Dispatched when the bot is ready to begin sending audio after joining a voice channel</p><p>Note that the third tuple element is of type <a href="Nostrum.Struct.VoiceWSState.html#t:t/0"><code class="inline">Nostrum.Struct.VoiceWSState.t/0</code></a> instead of <a href="Nostrum.Struct.WSState.html#t:t/0"><code class="inline">Nostrum.Struct.WSState.t/0</code></a>.</p>
   </section>
 </section>
 <section class="detail" id="t:voice_server_update/0">
@@ -2454,7 +2502,7 @@ this will never be sent for a DM.</p>
     </a>
     <h1 class="signature" translate="no">voice_server_update()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L232" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L246" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2504,7 +2552,7 @@ this will never be sent for a DM.</p>
 
       </div>
 
-<p>Dispatched when the bot starts or stops speaking.</p><p>Note that the third tuple element is of type <code class="inline">VoiceWSState.t()</code> instead of <code class="inline">WSState.t().</code></p>
+<p>Dispatched when the bot starts or stops speaking</p><p>Note that the third tuple element is of type <a href="Nostrum.Struct.VoiceWSState.html#t:t/0"><code class="inline">Nostrum.Struct.VoiceWSState.t/0</code></a> instead of <a href="Nostrum.Struct.WSState.html#t:t/0"><code class="inline">Nostrum.Struct.WSState.t/0</code></a>.</p>
   </section>
 </section>
 <section class="detail" id="t:voice_state_update/0">
@@ -2516,7 +2564,7 @@ this will never be sent for a DM.</p>
     </a>
     <h1 class="signature" translate="no">voice_state_update()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L231" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L245" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2547,7 +2595,7 @@ this will never be sent for a DM.</p>
     </a>
     <h1 class="signature" translate="no">webhooks_update()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L233" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L247" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2640,7 +2688,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">start_link(mod, opts \\ [])</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L352" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L367" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>

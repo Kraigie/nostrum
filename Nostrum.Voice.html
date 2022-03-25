@@ -10,7 +10,7 @@
     <title>Nostrum.Voice — Nostrum v0.5.1</title>
     <link rel="stylesheet" href="dist/elixir-a816d167216329cc463d.css" />
 
-    <script src="dist/sidebar_items-8a6957e438.js"></script>
+    <script src="dist/sidebar_items-4e3d17700c.js"></script>
 
       <script src="docs_config.js"></script>
 
@@ -101,7 +101,7 @@ Nostrum
 
 
   <section id="moduledoc">
-<p>Interface for playing audio through Discord's voice channels.</p><h1>Using Discord Voice Channels</h1><p>To play sound in Discord with Nostrum, you'll need <code class="inline">ffmpeg</code> to be installed.
+<p>Interface for playing and listening to audio through Discord's voice channels.</p><h1>Using Discord Voice Channels</h1><p>To play sound in Discord with Nostrum, you'll need <code class="inline">ffmpeg</code> to be installed.
 If you don't have the executable <code class="inline">ffmpeg</code> in the path, the absolute path may
 be configured through config keys <code class="inline">:nostrum, :ffmpeg</code>. If you don't want to use
 ffmpeg, read on to the next section.</p><p>A bot may be connected to at most one voice channel per guild. For this reason,
@@ -111,11 +111,12 @@ one websocket connection per shard, where small bots typically only have one sha
 The Discord voice gateways work by establishing a websocket connection per guild/channel.
 After some handshaking on this connection, audio data can be sent over UDP/RTP. Behind
 the scenes the voice websocket connections are implemented nearly the same way the main
-shard websocket connections are, and require no developer intervention.</p><h2 id="module-voice-without-ffmpeg" class="section-heading">
+shard websocket connections are, and require no developer intervention.</p><p>In addition to playing audio, listening to incoming audio is supported through the
+functions <a href="#listen/3"><code class="inline">listen/3</code></a> and <a href="#start_listen_async/1"><code class="inline">start_listen_async/1</code></a>.</p><h2 id="module-voice-without-ffmpeg" class="section-heading">
   <a href="#module-voice-without-ffmpeg" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
   Voice Without FFmpeg
 </h2>
-<p>If you wish to BYOE (Bring Your Own Encoder), there are a few options.</p><ul><li>Use <code class="inline">:raw</code> as <code class="inline">type</code> for <a href="#play/4"><code class="inline">Nostrum.Voice.play/4</code></a><ul><li>Provide the complete list of opus frames as the input</li></ul></li><li>Use <code class="inline">:raw_s</code> as <code class="inline">type</code> for <a href="#play/4"><code class="inline">Nostrum.Voice.play/4</code></a><ul><li>Provide a stateful enumerable of opus frames as input (think GenServer wrapped in <a href="https://hexdocs.pm/elixir/Stream.html#unfold/2"><code class="inline">Stream.unfold/2</code></a>)</li></ul></li><li>Use lower level functions to send opus frames at your leisure<ul><li>Send packets on your own time using <a href="#send_frames/2"><code class="inline">Nostrum.Voice.send_frames/2</code></a></li></ul></li></ul>
+<p>If you wish to BYOE (Bring Your Own Encoder), there are a few options.</p><ul><li>Use <code class="inline">:raw</code> as <code class="inline">type</code> for <a href="#play/4"><code class="inline">play/4</code></a><ul><li>Provide the complete list of opus frames as the input</li></ul></li><li>Use <code class="inline">:raw_s</code> as <code class="inline">type</code> for <a href="#play/4"><code class="inline">play/4</code></a><ul><li>Provide a stateful enumerable of opus frames as input (think GenServer wrapped in <a href="https://hexdocs.pm/elixir/Stream.html#unfold/2"><code class="inline">Stream.unfold/2</code></a>)</li></ul></li><li>Use lower level functions to send opus frames at your leisure<ul><li>Send packets on your own time using <a href="#send_frames/2"><code class="inline">send_frames/2</code></a></li></ul></li></ul>
   </section>
 
 
@@ -127,6 +128,83 @@ shard websocket connections are, and require no developer intervention.</p><h2 i
       </a>
       Summary
     </h1>
+
+  <div class="summary-types summary">
+    <h2>
+      <a href="#types">Types</a>
+    </h2>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#t:opus_packet/0" translate="no">opus_packet()</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>Opus packet</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#t:play_input/0" translate="no">play_input()</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>The play input</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#t:play_type/0" translate="no">play_type()</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>The type of play input</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#t:rtp_opus/0" translate="no">rtp_opus()</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>Tuple with RTP header elements and opus packet</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#t:rtp_sequence/0" translate="no">rtp_sequence()</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>RTP sequence</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#t:rtp_ssrc/0" translate="no">rtp_ssrc()</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>RTP SSRC</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#t:rtp_timestamp/0" translate="no">rtp_timestamp()</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>RTP timestamp</p></div>
+
+      </div>
+
+  </div>
 
   <div class="summary-functions summary">
     <h2>
@@ -185,6 +263,16 @@ shard websocket connections are, and require no developer intervention.</p><h2 i
 
       <div class="summary-row">
         <div class="summary-signature">
+          <a href="#get_ssrc_map/1" translate="no">get_ssrc_map(guild_id)</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>Gets a map of RTP SSRC to user id.</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
           <a href="#join_channel/5" translate="no">join_channel(guild_id, channel_id, self_mute \\ false, self_deaf \\ false, persist \\ true)</a>
 
         </div>
@@ -210,6 +298,16 @@ shard websocket connections are, and require no developer intervention.</p><h2 i
         </div>
 
           <div class="summary-synopsis"><p>Listen for incoming voice RTP packets.</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#pad_opus/1" translate="no">pad_opus(packets)</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>Pad discontinuous chunks of opus audio with silence.</p></div>
 
       </div>
 
@@ -285,6 +383,16 @@ shard websocket connections are, and require no developer intervention.</p><h2 i
 
       <div class="summary-row">
         <div class="summary-signature">
+          <a href="#start_listen_async/1" translate="no">start_listen_async(guild_id)</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>Start asynchronously receiving events for incoming RTP packets for an active voice session.</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
           <a href="#stop/1" translate="no">stop(guild_id)</a>
 
         </div>
@@ -293,10 +401,252 @@ shard websocket connections are, and require no developer intervention.</p><h2 i
 
       </div>
 
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#stop_listen_async/1" translate="no">stop_listen_async(guild_id)</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>Stop asynchronously receiving events for incoming RTP packets for an active voice session.</p></div>
+
+      </div>
+
   </div>
 
   </section>
 
+
+  <section id="types" class="details-list">
+    <h1 class="section-heading">
+      <a class="hover-link" href="#types">
+        <i class="ri-link-m" aria-hidden="true"></i>
+        <span class="sr-only">Link to this section</span>
+      </a>
+Types
+    </h1>
+    <div class="types-list">
+<section class="detail" id="t:opus_packet/0">
+
+  <div class="detail-header">
+    <a href="#t:opus_packet/0" class="detail-link" title="Link to this type">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature" translate="no">opus_packet()</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L69" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+      <span class="note">(since 0.6.0)</span>
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre translate="no">opus_packet() :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">binary</a>()</pre>
+
+      </div>
+
+<p>Opus packet</p>
+  </section>
+</section>
+<section class="detail" id="t:play_input/0">
+
+  <div class="detail-header">
+    <a href="#t:play_input/0" class="detail-link" title="Link to this type">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature" translate="no">play_input()</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L93" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+      <span class="note">(since 0.6.0)</span>
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre translate="no">play_input() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>() | <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">binary</a>() | <a href="https://hexdocs.pm/elixir/Enum.html#t:t/0">Enum.t</a>()</pre>
+
+      </div>
+
+<p>The play input</p><p>The input given to <a href="#play/4"><code class="inline">play/4</code></a>, either a compatible URL or binary audio data.
+See <a href="#play/4"><code class="inline">play/4</code></a> for more information.</p>
+  </section>
+</section>
+<section class="detail" id="t:play_type/0">
+
+  <div class="detail-header">
+    <a href="#t:play_type/0" class="detail-link" title="Link to this type">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature" translate="no">play_type()</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L84" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+      <span class="note">(since 0.6.0)</span>
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre translate="no">play_type() :: :url | :pipe | :ytdl | :stream | :raw | :raw_s</pre>
+
+      </div>
+
+<p>The type of play input</p><p>The type given to <a href="#play/4"><code class="inline">play/4</code></a> determines how the input parameter is interpreted.
+See <a href="#play/4"><code class="inline">play/4</code></a> for more information.</p>
+  </section>
+</section>
+<section class="detail" id="t:rtp_opus/0">
+
+  <div class="detail-header">
+    <a href="#t:rtp_opus/0" class="detail-link" title="Link to this type">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature" translate="no">rtp_opus()</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L75" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+      <span class="note">(since 0.6.0)</span>
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre translate="no">rtp_opus() :: {{<a href="#t:rtp_sequence/0">rtp_sequence</a>(), <a href="#t:rtp_timestamp/0">rtp_timestamp</a>(), <a href="#t:rtp_ssrc/0">rtp_ssrc</a>()}, <a href="#t:opus_packet/0">opus_packet</a>()}</pre>
+
+      </div>
+
+<p>Tuple with RTP header elements and opus packet</p>
+  </section>
+</section>
+<section class="detail" id="t:rtp_sequence/0">
+
+  <div class="detail-header">
+    <a href="#t:rtp_sequence/0" class="detail-link" title="Link to this type">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature" translate="no">rtp_sequence()</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L51" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+      <span class="note">(since 0.6.0)</span>
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre translate="no">rtp_sequence() :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">non_neg_integer</a>()</pre>
+
+      </div>
+
+<p>RTP sequence</p>
+  </section>
+</section>
+<section class="detail" id="t:rtp_ssrc/0">
+
+  <div class="detail-header">
+    <a href="#t:rtp_ssrc/0" class="detail-link" title="Link to this type">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature" translate="no">rtp_ssrc()</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L63" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+      <span class="note">(since 0.6.0)</span>
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre translate="no">rtp_ssrc() :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">non_neg_integer</a>()</pre>
+
+      </div>
+
+<p>RTP SSRC</p>
+  </section>
+</section>
+<section class="detail" id="t:rtp_timestamp/0">
+
+  <div class="detail-header">
+    <a href="#t:rtp_timestamp/0" class="detail-link" title="Link to this type">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature" translate="no">rtp_timestamp()</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L57" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+      <span class="note">(since 0.6.0)</span>
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre translate="no">rtp_timestamp() :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">non_neg_integer</a>()</pre>
+
+      </div>
+
+<p>RTP timestamp</p>
+  </section>
+</section>
+
+    </div>
+  </section>
 
   <section id="functions" class="details-list">
     <h1 class="section-heading">
@@ -316,7 +666,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">child_spec(init_arg)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L42" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L45" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -338,7 +688,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">connect_to_gateway(guild_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L493" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L559" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -370,7 +720,7 @@ By default Nostrum will automatically create a voice gateway when joining a chan
     </a>
     <h1 class="signature" translate="no">create_ogg_bitstream(opus_packets)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L588" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L698" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -385,7 +735,7 @@ By default Nostrum will automatically create a voice gateway when joining a chan
       <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">create_ogg_bitstream([<a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">binary</a>()]) :: [<a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">binary</a>()]</pre>
+          <pre translate="no">create_ogg_bitstream([<a href="#t:opus_packet/0">opus_packet</a>()]) :: [<a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">binary</a>()]</pre>
 
       </div>
 
@@ -395,10 +745,20 @@ understand how to use the data.</p><p>To get started, assuming you have a list o
 and consecutive opus packets from a single source that you want written
 to a file, you can run the following:</p><pre><code class="makeup elixir" translate="no"><span class="n">bitstream</span><span class="w"> </span><span class="o">=</span><span class="w">
   </span><span class="n">opus_packets</span><span class="w">
-  </span><span class="o">|&gt;</span><span class="w"> </span><span class="n">create_ogg_bitstream</span><span class="p" data-group-id="8177202614-1">(</span><span class="p" data-group-id="8177202614-1">)</span><span class="w">
-  </span><span class="o">|&gt;</span><span class="w"> </span><span class="nc">:binary</span><span class="o">.</span><span class="n">list_to_bin</span><span class="p" data-group-id="8177202614-2">(</span><span class="p" data-group-id="8177202614-2">)</span><span class="w">
+  </span><span class="o">|&gt;</span><span class="w"> </span><span class="n">create_ogg_bitstream</span><span class="p" data-group-id="0310026461-1">(</span><span class="p" data-group-id="0310026461-1">)</span><span class="w">
+  </span><span class="o">|&gt;</span><span class="w"> </span><span class="nc">:binary</span><span class="o">.</span><span class="n">list_to_bin</span><span class="p" data-group-id="0310026461-2">(</span><span class="p" data-group-id="0310026461-2">)</span><span class="w">
 
-</span><span class="nc">File</span><span class="o">.</span><span class="n">write!</span><span class="p" data-group-id="8177202614-3">(</span><span class="s">&quot;my_recording.ogg&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">bitstream</span><span class="p" data-group-id="8177202614-3">)</span></code></pre>
+</span><span class="nc">File</span><span class="o">.</span><span class="n">write!</span><span class="p" data-group-id="0310026461-3">(</span><span class="s">&quot;my_recording.ogg&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">bitstream</span><span class="p" data-group-id="0310026461-3">)</span></code></pre><p>When creating a logical bitstream, ensure that the packets are all from a single SSRC.
+When listening in a channel with multiple speakers, you should be storing the received
+packets in unique buckets for each SSRC so that the multiple audio sources don't become
+jumbled. A single logical bitstream should represent audio data from a single speaker.
+An Ogg physical bitstream (e.g. a file) may be composed of multiple interleaved Ogg
+logical bitstreams as each logical bitstream and its constituent pages contain a unique
+and randomly generated bitstream serial number, but this is a story for another time.</p><p>Assuming you have a list of <a href="#t:rtp_opus/0"><code class="inline">rtp_opus/0</code></a> packets that are not separated by ssrc, you
+may do the following:</p><pre><code class="makeup elixir" translate="no"><span class="n">jumbled_packets</span><span class="w">
+</span><span class="o">|&gt;</span><span class="w"> </span><span class="nc">Stream</span><span class="o">.</span><span class="n">filter</span><span class="p" data-group-id="7678381615-1">(</span><span class="k" data-group-id="7678381615-2">fn</span><span class="w"> </span><span class="p" data-group-id="7678381615-3">{</span><span class="p" data-group-id="7678381615-4">{</span><span class="c">_seq</span><span class="p">,</span><span class="w"> </span><span class="c">_time</span><span class="p">,</span><span class="w"> </span><span class="n">ssrc</span><span class="p" data-group-id="7678381615-4">}</span><span class="p">,</span><span class="w"> </span><span class="c">_opus</span><span class="p" data-group-id="7678381615-3">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">ssrc</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">particular_ssrc</span><span class="w"> </span><span class="k" data-group-id="7678381615-2">end</span><span class="p" data-group-id="7678381615-1">)</span><span class="w">
+</span><span class="o">|&gt;</span><span class="w"> </span><span class="nc">Enum</span><span class="o">.</span><span class="n">map</span><span class="p" data-group-id="7678381615-5">(</span><span class="k" data-group-id="7678381615-6">fn</span><span class="w"> </span><span class="p" data-group-id="7678381615-7">{</span><span class="p" data-group-id="7678381615-8">{</span><span class="c">_seq</span><span class="p">,</span><span class="w"> </span><span class="c">_time</span><span class="p">,</span><span class="w"> </span><span class="c">_ssrc</span><span class="p" data-group-id="7678381615-8">}</span><span class="p">,</span><span class="w"> </span><span class="n">opus</span><span class="p" data-group-id="7678381615-7">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">opus</span><span class="w"> </span><span class="k" data-group-id="7678381615-6">end</span><span class="p" data-group-id="7678381615-5">)</span><span class="w">
+</span><span class="o">|&gt;</span><span class="w"> </span><span class="n">create_ogg_bitstream</span><span class="p" data-group-id="7678381615-9">(</span><span class="p" data-group-id="7678381615-9">)</span></code></pre>
   </section>
 </section>
 <section class="detail" id="extract_opus_packet/1">
@@ -410,7 +770,7 @@ to a file, you can run the following:</p><pre><code class="makeup elixir" transl
     </a>
     <h1 class="signature" translate="no">extract_opus_packet(packet)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L559" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L651" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -425,11 +785,11 @@ to a file, you can run the following:</p><pre><code class="makeup elixir" transl
       <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">extract_opus_packet(<a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">binary</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">binary</a>()</pre>
+          <pre translate="no">extract_opus_packet(<a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">binary</a>()) :: <a href="#t:opus_packet/0">opus_packet</a>()</pre>
 
       </div>
 
-<p>Extract the opus packet from the RTP packet received from Discord.</p><p>Incoming voice RTP packets contain a fixed length RTP header and an optional 
+<p>Extract the opus packet from the RTP packet received from Discord.</p><p>Incoming voice RTP packets contain a fixed length RTP header and an optional
 RTP header extension, which must be stripped to retrieve the underlying opus packet.</p>
   </section>
 </section>
@@ -442,7 +802,7 @@ RTP header extension, which must be stripped to retrieve the underlying opus pac
     </a>
     <h1 class="signature" translate="no">get_channel_id(guild_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L439" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L484" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -478,6 +838,44 @@ iex&gt; Nostrum.Voice.get_channel(123456789)
 nil</code></pre>
   </section>
 </section>
+<section class="detail" id="get_ssrc_map/1">
+
+  <div class="detail-header">
+    <a href="#get_ssrc_map/1" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">get_ssrc_map(guild_id)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L504" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+      <span class="note">(since 0.6.0)</span>
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre translate="no">get_ssrc_map(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>()) ::
+  <a href="Nostrum.Struct.VoiceWSState.html#t:ssrc_map/0">Nostrum.Struct.VoiceWSState.ssrc_map</a>()</pre>
+
+      </div>
+
+<p>Gets a map of RTP SSRC to user id.</p><p>Within a voice channel, an SSRC (synchronization source) will uniquely map to a
+user id of a user who is speaking.</p><p>If listening to incoming voice packets asynchronously, this function will not be
+needed as the <a href="Nostrum.Struct.VoiceWSState.html#t:ssrc_map/0"><code class="inline">Nostrum.Struct.VoiceWSState.ssrc_map/0</code></a> will be available with every event.
+If listening with <a href="#listen/3"><code class="inline">listen/3</code></a>, this function may be used. It is recommended to
+cache the result of this function and only call it again when you encounter an
+SSRC that is not present in the cached result. This is to reduce excess load on the
+voice websocket and voice state processes.</p>
+  </section>
+</section>
 <section class="detail" id="join_channel/5">
 
     <span id="join_channel/2"></span>
@@ -493,7 +891,7 @@ nil</code></pre>
     </a>
     <h1 class="signature" translate="no">join_channel(guild_id, channel_id, self_mute \\ false, self_deaf \\ false, persist \\ true)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L85" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L136" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -534,7 +932,7 @@ The same effect is achieved by calling <a href="#stop/1"><code class="inline">st
     </a>
     <h1 class="signature" translate="no">leave_channel(guild_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L108" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L159" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -565,7 +963,7 @@ The same effect is achieved by calling <a href="#stop/1"><code class="inline">st
     </a>
     <h1 class="signature" translate="no">listen(guild_id, num_packets, raw_rtp \\ false)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L531" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L596" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -581,9 +979,7 @@ The same effect is achieved by calling <a href="#stop/1"><code class="inline">st
       <div class="specs">
 
           <pre translate="no">listen(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pos_integer</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">boolean</a>()) ::
-  [{{<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>()}, <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">binary</a>()}]
-  | [<a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">binary</a>()]
-  | {:error, <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()}</pre>
+  [<a href="#t:rtp_opus/0">rtp_opus</a>()] | [<a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">binary</a>()] | {:error, <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()}</pre>
 
       </div>
 
@@ -591,10 +987,53 @@ The same effect is achieved by calling <a href="#stop/1"><code class="inline">st
   <a href="#listen/3-parameters" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
   Parameters
 </h2>
-<ul><li><code class="inline">guild_id</code> - ID of guild that the bot is listening to.</li><li><code class="inline">num_packets</code> - Number of packets to wait for.</li><li><code class="inline">raw_rtp</code> - Whether to return raw RTP packets. Defaults to <code class="inline">false</code>.</li></ul><p>Returns a list of tuples in the form <code class="inline">{{rtp_seq, rtp_time, rtp_ssrc}, opus_packet}</code>.</p><p>The inner tuple contains fields from the RTP header and can be matched against
+<ul><li><code class="inline">guild_id</code> - ID of guild that the bot is listening to.</li><li><code class="inline">num_packets</code> - Number of packets to wait for.</li><li><code class="inline">raw_rtp</code> - Whether to return raw RTP packets. Defaults to <code class="inline">false</code>.</li></ul><p>Returns a list of tuples of type <a href="#t:rtp_opus/0"><code class="inline">rtp_opus/0</code></a>.</p><p>The inner tuple contains fields from the RTP header and can be matched against
 to retrieve information about the packet such as the SSRC, which identifies the source.
 Note that RTP timestamps are completely unrelated to Unix timestamps.</p><p>If <code class="inline">raw_rtp</code> is set to <code class="inline">true</code>, a list of raw RTP packets is returned instead.
 To extract an opus packet from an RTP packet, see <a href="#extract_opus_packet/1"><code class="inline">extract_opus_packet/1</code></a>.</p><p>This function will block until the specified number of packets is received.</p>
+  </section>
+</section>
+<section class="detail" id="pad_opus/1">
+
+  <div class="detail-header">
+    <a href="#pad_opus/1" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">pad_opus(packets)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L725" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+      <span class="note">(since 0.6.0)</span>
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre translate="no">pad_opus([<a href="#t:rtp_opus/0">rtp_opus</a>(), ...]) :: [<a href="#t:opus_packet/0">opus_packet</a>()]</pre>
+
+      </div>
+
+<p>Pad discontinuous chunks of opus audio with silence.</p><p>This function takes a list of <a href="#t:rtp_opus/0"><code class="inline">rtp_opus/0</code></a>, which is a tuple containing RTP bits and
+opus audio data. It returns a list of opus audio packets. The reason the input has to be in
+the <a href="#t:rtp_opus/0"><code class="inline">rtp_opus/0</code></a> tuple format returned by <a href="#listen/3"><code class="inline">listen/3</code></a> and async listen events is that the
+RTP packet header contains info on the relative timestamps of incoming packets; the opus
+packets themselves don't contain information relating to timing.</p><p>The use case of this function is as follows:
+Consider a user speaks for two seconds, pauses for ten seconds, then speaks for another two
+seconds. During the pause, no RTP packets will be received, so if you create a bitstream from
+it, the resulting audio will be both two-second speaking segments consecutively without the
+long pause in the middle. If you wish to preserve the timing of the speaking and include the
+pause, calling this function will interleave the appropriate amount of opus silence packets
+to maintain temporal fidelity.</p><p>Note that the Discord client currently sends about 10 silence packets (200 ms) each time it
+detects end of speech, so creating a bitstream without first padding your audio with this
+function will maintain short silences between speech segments.</p><p><em>This function should only be called on a collection of RTP packets from a single SSRC</em></p>
   </section>
 </section>
 <section class="detail" id="pause/1">
@@ -606,7 +1045,7 @@ To extract an opus packet from an RTP packet, see <a href="#extract_opus_packet/
     </a>
     <h1 class="signature" translate="no">pause(guild_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L295" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L340" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -652,7 +1091,7 @@ iex&gt; Nostrum.Voice.pause(123456789)</code></pre>
     </a>
     <h1 class="signature" translate="no">play(guild_id, input, type \\ :url, options \\ [])</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L195" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L240" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -665,12 +1104,8 @@ iex&gt; Nostrum.Voice.pause(123456789)</code></pre>
       <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">play(
-  <a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(),
-  <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>() | <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">iodata</a>() | <a href="https://hexdocs.pm/elixir/Enum.html#t:t/0">Enum.t</a>(),
-  :url | :pipe | :ytdl | :stream | :raw | :raw_s,
-  <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">keyword</a>()
-) :: :ok | {:error, <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()}</pre>
+          <pre translate="no">play(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(), <a href="#t:play_input/0">play_input</a>(), <a href="#t:play_type/0">play_type</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">keyword</a>()) ::
+  :ok | {:error, <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()}</pre>
 
       </div>
 
@@ -678,7 +1113,7 @@ iex&gt; Nostrum.Voice.pause(123456789)</code></pre>
   <a href="#play/4-parameters" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
   Parameters
 </h2>
-<ul><li><code class="inline">guild_id</code> - ID of guild whose voice channel the sound will be played in.</li><li><code class="inline">input</code> - Audio to be played. Type of <code class="inline">input</code> determined by <code class="inline">type</code> parameter.</li><li><code class="inline">type</code> - Type of input (defaults to <code class="inline">:url</code>).<ul><li><code class="inline">:url</code> Input will be <a href="https://www.ffmpeg.org/ffmpeg-protocols.html">any url that <code class="inline">ffmpeg</code> can read</a>.</li><li><code class="inline">:pipe</code> Input will be data that is piped to stdin of <code class="inline">ffmpeg</code>.</li><li><code class="inline">:ytdl</code> Input will be url for <code class="inline">youtube-dl</code>, which gets automatically piped to <code class="inline">ffmpeg</code>.</li><li><code class="inline">:stream</code> Input will be livestream url for <code class="inline">streamlink</code>, which gets automatically piped to <code class="inline">ffmpeg</code>.</li><li><code class="inline">:raw</code> Input will be an enumarable of raw opus frames. This bypasses <code class="inline">ffmpeg</code> and all options.</li><li><code class="inline">:raw_s</code> Same as <code class="inline">:raw</code> but input must be stateful, i.e. calling <a href="https://hexdocs.pm/elixir/Enum.html#take/2"><code class="inline">Enum.take/2</code></a> on input is not idempotent.</li></ul></li><li><code class="inline">options</code> - See options section below.</li></ul><p>Returns <code class="inline">{:error, reason}</code> if unable to play or a sound is playing, else <code class="inline">:ok</code>.</p><h2 id="play/4-options" class="section-heading">
+<ul><li><code class="inline">guild_id</code> - ID of guild whose voice channel the sound will be played in.</li><li><code class="inline">input</code> - Audio to be played, <a href="#t:play_input/0"><code class="inline">play_input/0</code></a>. Input type determined by <code class="inline">type</code> parameter.</li><li><code class="inline">type</code> - Type of input, <a href="#t:play_type/0"><code class="inline">play_type/0</code></a> (defaults to <code class="inline">:url</code>).<ul><li><code class="inline">:url</code> Input will be <a href="https://www.ffmpeg.org/ffmpeg-protocols.html">any url that <code class="inline">ffmpeg</code> can read</a>.</li><li><code class="inline">:pipe</code> Input will be data that is piped to stdin of <code class="inline">ffmpeg</code>.</li><li><code class="inline">:ytdl</code> Input will be url for <code class="inline">youtube-dl</code>, which gets automatically piped to <code class="inline">ffmpeg</code>.</li><li><code class="inline">:stream</code> Input will be livestream url for <code class="inline">streamlink</code>, which gets automatically piped to <code class="inline">ffmpeg</code>.</li><li><code class="inline">:raw</code> Input will be an enumerable of raw opus packets. This bypasses <code class="inline">ffmpeg</code> and all options.</li><li><code class="inline">:raw_s</code> Same as <code class="inline">:raw</code> but input must be stateful, i.e. calling <a href="https://hexdocs.pm/elixir/Enum.html#take/2"><code class="inline">Enum.take/2</code></a> on <code class="inline">input</code> is not idempotent.</li></ul></li><li><code class="inline">options</code> - See options section below.</li></ul><p>Returns <code class="inline">{:error, reason}</code> if unable to play or a sound is playing, else <code class="inline">:ok</code>.</p><h2 id="play/4-options" class="section-heading">
   <a href="#play/4-options" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
   Options
 </h2>
@@ -686,7 +1121,7 @@ iex&gt; Nostrum.Voice.pause(123456789)</code></pre>
   The <code class="inline">:filter</code> can be used multiple times in a single call (see examples).
   The values of <code class="inline">:filter</code> can be <a href="https://ffmpeg.org/ffmpeg-filters.html#Audio-Filters">any audio filters that ffmpeg can read</a>.
   Filters will be applied in order and can be as complex as you want. The world is your oyster!</p><p>  Note that using the <code class="inline">:volume</code> option is shortcut for the &quot;volume&quot; filter, and will be added to the end of the filter chain, acting as a master volume.
-  Volume values between <code class="inline">0.0</code> and <code class="inline">1.0</code> act as standard oparating range where <code class="inline">0</code> is off and <code class="inline">1</code> is max.
+  Volume values between <code class="inline">0.0</code> and <code class="inline">1.0</code> act as standard operating range where <code class="inline">0</code> is off and <code class="inline">1</code> is max.
   Values greater than <code class="inline">1.0</code> will add saturation and distortion to the audio.
   Negative values act the same as their position but reverse the polarity of the waveform.</p><p>  Having all the ffmpeg audio filters available is <em>extremely powerful</em> so it may be worth learning some of them for your use cases.
   If you use any filters to <em>increase</em> the playback speed of your audio, it's recommended to set the <code class="inline">:realtime</code> option to <code class="inline">false</code>
@@ -726,7 +1161,7 @@ iex&gt; Nostrum.Voice.play(123456789, &quot;https://youtu.be/LN4r-K8ZP5Q&quot;, 
     </a>
     <h1 class="signature" translate="no">playing?(guild_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L383" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L428" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -773,7 +1208,7 @@ false</code></pre>
     </a>
     <h1 class="signature" translate="no">ready?(guild_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L412" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L457" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -818,7 +1253,7 @@ false</code></pre>
     </a>
     <h1 class="signature" translate="no">resume(guild_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L337" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L382" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -861,7 +1296,7 @@ iex&gt; Nostrum.Voice.resume(123456789)</code></pre>
     </a>
     <h1 class="signature" translate="no">send_frames(guild_id, frames)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L474" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L540" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -876,7 +1311,8 @@ iex&gt; Nostrum.Voice.resume(123456789)</code></pre>
       <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">send_frames(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(), [<a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">binary</a>()]) :: :ok | {:error, <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()}</pre>
+          <pre translate="no">send_frames(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(), [<a href="#t:opus_packet/0">opus_packet</a>()]) ::
+  :ok | {:error, <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()}</pre>
 
       </div>
 
@@ -896,7 +1332,7 @@ instead of <a href="#play/4"><code class="inline">Nostrum.Voice.play/4</code></a
     </a>
     <h1 class="signature" translate="no">set_is_speaking(guild_id, speaking)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L457" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L523" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -919,6 +1355,38 @@ instead of <a href="#play/4"><code class="inline">Nostrum.Voice.play/4</code></a
 directly using <a href="#send_frames/2"><code class="inline">Nostrum.Voice.send_frames/2</code></a>.</p>
   </section>
 </section>
+<section class="detail" id="start_listen_async/1">
+
+  <div class="detail-header">
+    <a href="#start_listen_async/1" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">start_listen_async(guild_id)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L624" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+      <span class="note">(since 0.6.0)</span>
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre translate="no">start_listen_async(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>()) :: :ok | {:error, <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()}</pre>
+
+      </div>
+
+<p>Start asynchronously receiving events for incoming RTP packets for an active voice session.</p><p>This is an alternative to the blocking <a href="#listen/3"><code class="inline">listen/3</code></a>. Events will be generated asynchronously
+when a user is speaking. See <a href="Nostrum.Consumer.html#t:voice_incoming_packet/0"><code class="inline">Nostrum.Consumer.voice_incoming_packet/0</code></a> for more info.</p>
+  </section>
+</section>
 <section class="detail" id="stop/1">
 
   <div class="detail-header">
@@ -928,7 +1396,7 @@ directly using <a href="#send_frames/2"><code class="inline">Nostrum.Voice.send_
     </a>
     <h1 class="signature" translate="no">stop(guild_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L253" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L298" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -959,6 +1427,37 @@ playing another sound.</p><h2 id="stop/1-examples" class="section-heading">
 iex&gt; Nostrum.Voice.play(123456789, &quot;http://brandthill.com/files/weird_dubstep_noises.mp3&quot;)
 
 iex&gt; Nostrum.Voice.stop(123456789)</code></pre>
+  </section>
+</section>
+<section class="detail" id="stop_listen_async/1">
+
+  <div class="detail-header">
+    <a href="#stop_listen_async/1" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">stop_listen_async(guild_id)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L631" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+      <span class="note">(since 0.6.0)</span>
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre translate="no">stop_listen_async(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>()) :: :ok | {:error, <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()}</pre>
+
+      </div>
+
+<p>Stop asynchronously receiving events for incoming RTP packets for an active voice session.</p>
   </section>
 </section>
 
