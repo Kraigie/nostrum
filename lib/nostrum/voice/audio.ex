@@ -39,7 +39,7 @@ defmodule Nostrum.Voice.Audio do
   def encrypt_packet(%VoiceState{} = voice, data) do
     header = rtp_header(voice)
     # 12 byte header + 12 null bytes
-    nonce = header <> <<0::96>>
+    nonce = header <> <<0::8*12>>
     header <> Kcl.secretbox(data, nonce, voice.secret_key)
   end
 
@@ -62,9 +62,9 @@ defmodule Nostrum.Voice.Audio do
       <<2::2, 0::1, 1::5, 201::8, _rest::binary>> ->
         get_rtp_packet(v)
 
-      <<header::96, data::binary>> ->
-        nonce = <<header::96, 0::96>>
-        {<<header::96>>, Kcl.secretunbox(data, nonce, key)}
+      <<header::binary-size(12), data::binary>> ->
+        nonce = header <> <<0::8*12>>
+        {header, Kcl.secretunbox(data, nonce, key)}
     end
   end
 

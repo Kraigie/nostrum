@@ -324,6 +324,9 @@ defmodule Nostrum.Shard.Dispatch do
   def handle_event(:VOICE_SPEAKING_UPDATE = event, p, state),
     do: {event, SpeakingUpdate.to_struct(p), state}
 
+  def handle_event(:VOICE_INCOMING_PACKET = event, p, state),
+    do: {event, p, state}
+
   def handle_event(:VOICE_STATE_UPDATE = event, p, state) do
     if Me.get().id === p.user_id do
       if p.channel_id do

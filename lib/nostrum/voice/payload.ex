@@ -82,6 +82,13 @@ defmodule Nostrum.Voice.Payload do
     }
   end
 
+  def voice_incoming_packet(payload) do
+    %{
+      t: :VOICE_INCOMING_PACKET,
+      d: payload
+    }
+  end
+
   def build_payload(data, opcode_name) do
     opcode = Constants.voice_opcode_from_name(opcode_name)
 

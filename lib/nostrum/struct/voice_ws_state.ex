@@ -5,8 +5,11 @@ defmodule Nostrum.Struct.VoiceWSState do
 
   defstruct [
     :guild_id,
+    :channel_id,
+    :ssrc_map,
     :session,
     :token,
+    :secret_key,
     :conn,
     :conn_pid,
     :stream,
@@ -22,11 +25,28 @@ defmodule Nostrum.Struct.VoiceWSState do
   @typedoc "The guild id that this voice websocket state applies to"
   @type guild_id :: Nostrum.Struct.Guild.id()
 
+  @typedoc "The channel id that this voice websocket state applies to"
+  @typedoc since: "0.6.0"
+  @type channel_id :: Nostrum.Struct.Channel.id()
+
+  @typedoc """
+  A mapping of RTP SSRC (synchronization source) to user id
+
+  This map can be used to identify the user who generated the incoming
+  audio data when an RTP packet is received.
+  """
+  @typedoc since: "0.6.0"
+  @type ssrc_map :: %{integer() => Nostrum.Struct.User.id()}
+
   @typedoc "The session id"
   @type session :: String.t()
 
   @typedoc "The session token"
   @type token :: String.t()
+
+  @typedoc "The secret key for audio encryption"
+  @typedoc since: "0.6.0"
+  @type secret_key :: binary() | nil
 
   @typedoc "PID of the `:gun` worker connected to the websocket"
   @type conn :: pid
@@ -55,7 +75,7 @@ defmodule Nostrum.Struct.VoiceWSState do
   """
   @type last_heartbeat_ack :: DateTime.t() | nil
 
-  @typedoc "Whether or not the last hearbeat sent was ACK'd"
+  @typedoc "Whether or not the last heartbeat sent was ACK'd"
   @type heartbeat_ack :: boolean
 
   @typedoc "Interval at which heartbeats are sent"
@@ -66,8 +86,11 @@ defmodule Nostrum.Struct.VoiceWSState do
 
   @type t :: %__MODULE__{
           guild_id: guild_id,
+          channel_id: channel_id,
+          ssrc_map: ssrc_map,
           session: session,
           token: token,
+          secret_key: secret_key,
           conn: conn,
           conn_pid: conn_pid,
           stream: stream,
