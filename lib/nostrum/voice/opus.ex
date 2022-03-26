@@ -3,6 +3,16 @@ defmodule Nostrum.Voice.Opus do
 
   use Bitwise
 
+  # Number of samples in a 20ms Opus frame at 48kHz sample rate
+  @samples_per_frame 960
+
+  # Number of microseconds per Opus frame/packet
+  @usec_per_frame 20_000
+
+  def samples_per_frame, do: @samples_per_frame
+
+  def usec_per_frame, do: @usec_per_frame
+
   @doc """
   Strips the RTP header extension from an RTP payload.
 
@@ -333,18 +343,33 @@ defmodule Nostrum.Voice.Opus do
     |> encode_ogg_page()
   end
 
-  def pad_opus([head | tail] = _packets) do
-    Enum.reduce(tail, [head], fn {{_, time, _}, _} = x, [{{_, prev_time, _}, _} | _] = acc ->
-      (time - prev_time)
-      |> div(960)
-      |> Kernel.-(1)
-      |> max(0)
-      |> (&List.duplicate({nil, <<0xF8, 0xFF, 0xFE>>}, &1)).()
-      |> Enum.reduce(acc, &[&1 | &2])
-      |> (&[x | &1]).()
+  @doc """
+  Get the length of a gap between two consecutive RTP packets in 20ms frame lengths
+  """
+  def get_gap_length({{_, time, _}, _}, {{_, prev_time, _}, _}),
+    do: get_gap_length(time, prev_time)
+
+  def get_gap_length(time, prev_time) do
+    diff_samples = time - prev_time
+    diff_frames = div(diff_samples, @samples_per_frame)
+    max(0, diff_frames - 1)
+  end
+
+  @opus_silence <<0xF8, 0xFF, 0xFE>>
+
+  def generate_silence(num_frames), do: List.duplicate(@opus_silence, num_frames)
+
+  @doc """
+  Interleave silence in gaps found between consecutive RTP packets
+  """
+  def pad_opus(packets) do
+    Enum.flat_map_reduce(packets, hd(packets), fn {_, opus} = packet, prev_packet ->
+      get_gap_length(packet, prev_packet)
+      |> generate_silence()
+      |> (&(&1 ++ [opus])).()
+      |> (&{&1, packet}).()
     end)
-    |> Stream.map(fn {_, opus} -> opus end)
-    |> Enum.reverse()
+    |> elem(0)
   end
 
   @crc_lookup_table [

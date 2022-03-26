@@ -7,11 +7,11 @@ defmodule Nostrum.Voice.Audio do
   alias Nostrum.Struct.VoiceState
   alias Nostrum.Util
   alias Nostrum.Voice
+  alias Nostrum.Voice.Opus
   alias Nostrum.Voice.Ports
 
   @encryption_mode "xsalsa20_poly1305"
-  @samples_per_frame 960
-  @usec_per_frame 20_000
+
   # Default value
   @frames_per_burst 10
 
@@ -104,7 +104,7 @@ defmodule Nostrum.Voice.Audio do
   end
 
   def take_nap(diff \\ 0) do
-    ((@usec_per_frame * frames_per_burst() - diff) / 1000)
+    ((Opus.usec_per_frame() * frames_per_burst() - diff) / 1000)
     |> trunc()
     |> max(0)
     |> Process.sleep()
@@ -145,7 +145,7 @@ defmodule Nostrum.Voice.Audio do
         %{
           v
           | rtp_sequence: v.rtp_sequence + 1,
-            rtp_timestamp: v.rtp_timestamp + @samples_per_frame
+            rtp_timestamp: v.rtp_timestamp + Opus.samples_per_frame()
         }
       end)
 
@@ -293,7 +293,7 @@ defmodule Nostrum.Voice.Audio do
 
   def on_complete(%VoiceState{} = voice, timed_out) do
     Voice.update_voice(voice.guild_id, ffmpeg_proc: nil, raw_audio: nil)
-    List.duplicate(<<0xF8, 0xFF, 0xFE>>, 5) |> send_frames(voice)
+    Opus.generate_silence(5) |> send_frames(voice)
     Voice.set_speaking(voice, false, timed_out)
     Process.exit(voice.player_pid, :stop)
   end
