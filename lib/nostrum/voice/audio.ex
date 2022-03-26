@@ -104,8 +104,8 @@ defmodule Nostrum.Voice.Audio do
   end
 
   def take_nap(diff \\ 0) do
-    ((Opus.usec_per_frame() * frames_per_burst() - diff) / 1000)
-    |> trunc()
+    (Opus.usec_per_frame() * frames_per_burst() - diff)
+    |> div(1_000)
     |> max(0)
     |> Process.sleep()
   end

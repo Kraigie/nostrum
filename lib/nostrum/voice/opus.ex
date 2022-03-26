@@ -104,7 +104,7 @@ defmodule Nostrum.Voice.Opus do
         state = %{
           state
           | page_sequence: state.page_sequence + 1,
-            granule_position: state.granule_position + 960 * length(chunk)
+            granule_position: state.granule_position + @samples_per_frame * length(chunk)
         }
 
         {gen_page(chunk, state), state}

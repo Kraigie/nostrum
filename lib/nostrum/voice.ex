@@ -706,6 +706,11 @@ defmodule Nostrum.Voice do
   RTP packet header contains info on the relative timestamps of incoming packets; the opus
   packets themselves don't contain information relating to timing.
 
+  The Discord client will continue to internally increment the `t:rtp_timestamp()` when the
+  user is not speaking such that the duration of pauses can be determined from the RTP packets.
+  Bots will typically not behave this way, so if you call this function on audio produced by
+  a bot it is very likely that no silence will be inserted.
+
   The use case of this function is as follows:
   Consider a user speaks for two seconds, pauses for ten seconds, then speaks for another two
   seconds. During the pause, no RTP packets will be received, so if you create a bitstream from
