@@ -123,7 +123,14 @@ defmodule Nostrum.Voice.Ports do
     unless is_nil(awaiter), do: GenServer.reply(awaiter, nil)
     if is_pid(input_pid), do: close(input_pid)
     Logger.debug("Closing port #{inspect(port)}")
-    Port.close(port)
+
+    # Safely try to close the port
+    try do
+      Port.close(port)
+    rescue
+      ArgumentError -> :noop
+    end
+
     {:stop, :shutdown, nil, nil}
   end
 
