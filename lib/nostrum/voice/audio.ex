@@ -95,7 +95,7 @@ defmodule Nostrum.Voice.Audio do
 
   def player_loop(voice, init?) do
     t1 = Util.usec_now()
-    voice = try_send_data(voice, init?, get_source(voice))
+    voice = try_send_data(voice, init?)
     t2 = Util.usec_now()
 
     take_nap(t2 - t1)
@@ -114,12 +114,13 @@ defmodule Nostrum.Voice.Audio do
 
   def get_source(%VoiceState{ffmpeg_proc: ffmpeg_proc}), do: Ports.get_stream(ffmpeg_proc)
 
-  def try_send_data(%VoiceState{} = voice, init?, source) do
+  def try_send_data(%VoiceState{} = voice, init?) do
     wait = if(init?, do: Application.get_env(:nostrum, :audio_timeout, 20_000), else: 500)
     {:ok, watchdog} = :timer.apply_after(wait, __MODULE__, :on_stall, [voice])
 
     {voice, done} =
-      source
+      voice
+      |> get_source()
       |> Enum.take(frames_per_burst())
       |> send_frames(voice)
 
@@ -292,10 +293,10 @@ defmodule Nostrum.Voice.Audio do
   end
 
   def on_complete(%VoiceState{} = voice, timed_out) do
-    Voice.update_voice(voice.guild_id, ffmpeg_proc: nil, raw_audio: nil)
+    voice = Voice.update_voice(voice.guild_id, ffmpeg_proc: nil, raw_audio: nil)
     Opus.generate_silence(5) |> send_frames(voice)
     Voice.set_speaking(voice, false, timed_out)
-    Process.exit(voice.player_pid, :stop)
+    exit(:normal)
   end
 
   @doc """
