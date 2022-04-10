@@ -86,21 +86,21 @@ defmodule Nostrum.Voice.Audio do
 
   def start_player(voice) do
     take_nap()
-    player_loop(voice, _init? = true, _source = get_source(voice))
+    player_loop(voice, _init? = true)
   end
 
   def resume_player(voice) do
-    player_loop(voice, _init? = false, _source = get_source(voice))
+    player_loop(voice, _init? = false)
   end
 
-  def player_loop(voice, init?, source) do
+  def player_loop(voice, init?) do
     t1 = Util.usec_now()
-    voice = try_send_data(voice, init?, source)
+    voice = try_send_data(voice, init?, get_source(voice))
     t2 = Util.usec_now()
 
     take_nap(t2 - t1)
 
-    player_loop(voice, false, source)
+    player_loop(voice, false)
   end
 
   def take_nap(diff \\ 0) do
