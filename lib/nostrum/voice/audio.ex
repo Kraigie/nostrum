@@ -116,7 +116,7 @@ defmodule Nostrum.Voice.Audio do
 
   def try_send_data(%VoiceState{} = voice, init?) do
     wait = if(init?, do: Application.get_env(:nostrum, :audio_timeout, 20_000), else: 500)
-    {:ok, watchdog} = :timer.apply_after(wait, __MODULE__, :on_stall, [voice])
+    {:ok, watchdog} = :timer.apply_after(wait, __MODULE__, :on_stall, [voice, self()])
 
     {voice, done} =
       voice
@@ -283,13 +283,8 @@ defmodule Nostrum.Voice.Audio do
     ]
   end
 
-  def on_stall(%VoiceState{} = voice) do
-    # Refresh voice state before running checks
-    voice = Voice.get_voice(voice.guild_id)
-
-    if VoiceState.playing?(voice) and not is_nil(voice.ffmpeg_proc) do
-      Ports.close(voice.ffmpeg_proc)
-    end
+  def on_stall(%VoiceState{ffmpeg_proc: ffmpeg}, player) do
+    if Process.alive?(player) and is_pid(ffmpeg), do: Ports.close(ffmpeg)
   end
 
   def on_complete(%VoiceState{} = voice, timed_out) do
