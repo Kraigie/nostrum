@@ -7,11 +7,11 @@ defmodule Nostrum.Voice.Audio do
   alias Nostrum.Struct.VoiceState
   alias Nostrum.Util
   alias Nostrum.Voice
+  alias Nostrum.Voice.Opus
   alias Nostrum.Voice.Ports
 
   @encryption_mode "xsalsa20_poly1305"
-  @samples_per_frame 960
-  @usec_per_frame 20_000
+
   # Default value
   @frames_per_burst 10
 
@@ -86,26 +86,26 @@ defmodule Nostrum.Voice.Audio do
 
   def start_player(voice) do
     take_nap()
-    player_loop(voice, _init? = true, _source = get_source(voice))
+    player_loop(voice, _init? = true)
   end
 
   def resume_player(voice) do
-    player_loop(voice, _init? = false, _source = get_source(voice))
+    player_loop(voice, _init? = false)
   end
 
-  def player_loop(voice, init?, source) do
+  def player_loop(voice, init?) do
     t1 = Util.usec_now()
-    voice = try_send_data(voice, init?, source)
+    voice = try_send_data(voice, init?)
     t2 = Util.usec_now()
 
     take_nap(t2 - t1)
 
-    player_loop(voice, false, source)
+    player_loop(voice, false)
   end
 
   def take_nap(diff \\ 0) do
-    ((@usec_per_frame * frames_per_burst() - diff) / 1000)
-    |> trunc()
+    (Opus.usec_per_frame() * frames_per_burst() - diff)
+    |> div(1_000)
     |> max(0)
     |> Process.sleep()
   end
@@ -114,12 +114,13 @@ defmodule Nostrum.Voice.Audio do
 
   def get_source(%VoiceState{ffmpeg_proc: ffmpeg_proc}), do: Ports.get_stream(ffmpeg_proc)
 
-  def try_send_data(%VoiceState{} = voice, init?, source) do
+  def try_send_data(%VoiceState{} = voice, init?) do
     wait = if(init?, do: Application.get_env(:nostrum, :audio_timeout, 20_000), else: 500)
-    {:ok, watchdog} = :timer.apply_after(wait, __MODULE__, :on_stall, [voice])
+    {:ok, watchdog} = :timer.apply_after(wait, __MODULE__, :on_stall, [voice, self()])
 
     {voice, done} =
-      source
+      voice
+      |> get_source()
       |> Enum.take(frames_per_burst())
       |> send_frames(voice)
 
@@ -145,7 +146,7 @@ defmodule Nostrum.Voice.Audio do
         %{
           v
           | rtp_sequence: v.rtp_sequence + 1,
-            rtp_timestamp: v.rtp_timestamp + @samples_per_frame
+            rtp_timestamp: v.rtp_timestamp + Opus.samples_per_frame()
         }
       end)
 
@@ -282,20 +283,15 @@ defmodule Nostrum.Voice.Audio do
     ]
   end
 
-  def on_stall(%VoiceState{} = voice) do
-    # Refresh voice state before running checks
-    voice = Voice.get_voice(voice.guild_id)
-
-    if VoiceState.playing?(voice) and not is_nil(voice.ffmpeg_proc) do
-      Ports.close(voice.ffmpeg_proc)
-    end
+  def on_stall(%VoiceState{ffmpeg_proc: ffmpeg}, player) do
+    if Process.alive?(player) and is_pid(ffmpeg), do: Ports.close(ffmpeg)
   end
 
   def on_complete(%VoiceState{} = voice, timed_out) do
-    Voice.update_voice(voice.guild_id, ffmpeg_proc: nil, raw_audio: nil)
-    List.duplicate(<<0xF8, 0xFF, 0xFE>>, 5) |> send_frames(voice)
+    voice = Voice.update_voice(voice.guild_id, ffmpeg_proc: nil, raw_audio: nil)
+    Opus.generate_silence(5) |> send_frames(voice)
     Voice.set_speaking(voice, false, timed_out)
-    Process.exit(voice.player_pid, :stop)
+    exit(:normal)
   end
 
   @doc """

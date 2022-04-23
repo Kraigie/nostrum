@@ -92,6 +92,10 @@ defmodule Nostrum.Voice do
   @typedoc since: "0.6.0"
   @type play_input :: String.t() | binary() | Enum.t()
 
+  @raw_types [:raw, :raw_s]
+  @ffm_types [:url, :pipe, :ytdl, :stream]
+  @url_types [:url, :ytdl, :stream]
+
   @doc false
   def start_link(_args) do
     GenServer.start_link(__MODULE__, %{}, name: VoiceStateMap)
@@ -248,25 +252,18 @@ defmodule Nostrum.Voice do
         {:error, "Audio already playing in voice channel."}
 
       true ->
-        unless is_nil(voice.ffmpeg_proc), do: Ports.close(voice.ffmpeg_proc)
-        set_speaking(voice, true)
-
-        {ffmpeg_proc, raw_audio, raw_stateful} =
-          case type do
-            :raw -> {nil, input, false}
-            :raw_s -> {nil, input, true}
-            _ffmpeg -> {Audio.spawn_ffmpeg(input, type, options), nil, false}
-          end
+        if is_pid(voice.ffmpeg_proc), do: Ports.close(voice.ffmpeg_proc)
 
         voice =
           update_voice(guild_id,
-            ffmpeg_proc: ffmpeg_proc,
-            raw_audio: raw_audio,
-            raw_stateful: raw_stateful
+            current_url: if(type in @url_types, do: input),
+            ffmpeg_proc: if(type in @ffm_types, do: Audio.spawn_ffmpeg(input, type, options)),
+            raw_audio: if(type in @raw_types, do: input),
+            raw_stateful: type === :raw_s
           )
 
-        {:ok, pid} = Task.start(fn -> Audio.start_player(voice) end)
-        update_voice(guild_id, player_pid: pid)
+        set_speaking(voice, true)
+        update_voice(guild_id, player_pid: spawn(Audio, :start_player, [voice]))
         :ok
     end
   end
@@ -308,7 +305,7 @@ defmodule Nostrum.Voice do
       true ->
         set_speaking(voice, false)
         Process.exit(voice.player_pid, :stop)
-        unless is_nil(voice.ffmpeg_proc), do: Ports.close(voice.ffmpeg_proc)
+        if is_pid(voice.ffmpeg_proc), do: Ports.close(voice.ffmpeg_proc)
         :ok
     end
   end
@@ -394,8 +391,7 @@ defmodule Nostrum.Voice do
 
       true ->
         set_speaking(voice, true)
-        {:ok, pid} = Task.start(fn -> Audio.resume_player(voice) end)
-        update_voice(guild_id, player_pid: pid)
+        update_voice(guild_id, player_pid: spawn(Audio, :resume_player, [voice]))
         :ok
     end
   end
@@ -483,7 +479,23 @@ defmodule Nostrum.Voice do
   @spec get_channel_id(Guild.id()) :: Channel.id()
   def get_channel_id(guild_id) do
     voice = get_voice(guild_id)
-    if voice, do: voice.channel_id, else: nil
+    if voice, do: voice.channel_id
+  end
+
+  @doc """
+  Gets the current URL being played.
+
+  If `play/4` was invoked with type `:url`, `:ytdl`, or `:stream`, this function will return
+  the URL given as input last time it was called.
+
+  If `play/4` was invoked with type `:pipe`, `:raw`, or `:raw_s`, this will return `nil`
+  as the input is raw audio data, not be a readable URL string.
+  """
+  @doc since: "0.6.0"
+  @spec get_current_url(Guild.id()) :: String.t() | nil
+  def get_current_url(guild_id) do
+    voice = get_voice(guild_id)
+    if voice, do: voice.current_url
   end
 
   @doc """
@@ -706,6 +718,11 @@ defmodule Nostrum.Voice do
   RTP packet header contains info on the relative timestamps of incoming packets; the opus
   packets themselves don't contain information relating to timing.
 
+  The Discord client will continue to internally increment the `t:rtp_timestamp()` when the
+  user is not speaking such that the duration of pauses can be determined from the RTP packets.
+  Bots will typically not behave this way, so if you call this function on audio produced by
+  a bot it is very likely that no silence will be inserted.
+
   The use case of this function is as follows:
   Consider a user speaks for two seconds, pauses for ten seconds, then speaks for another two
   seconds. During the pause, no RTP packets will be received, so if you create a bitstream from
@@ -787,6 +804,7 @@ defmodule Nostrum.Voice do
       ffmpeg_proc: ffmpeg_proc,
       raw_audio: raw_audio,
       raw_stateful: raw_stateful,
+      current_url: current_url,
       persist_source: persist_source,
       persist_playback: persist_playback
     } = voice
@@ -810,6 +828,7 @@ defmodule Nostrum.Voice do
             ffmpeg_proc: ffmpeg_proc,
             raw_audio: raw_audio,
             raw_stateful: raw_stateful,
+            current_url: current_url,
             persist_playback: persist_playback
           ],
           else: []
