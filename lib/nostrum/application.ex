@@ -34,7 +34,10 @@ defmodule Nostrum.Application do
 
   defp check_token, do: check_token(Application.get_env(:nostrum, :token))
   defp check_token(nil), do: raise("Please supply a token")
-  defp check_token(<<_::192, 46, _::48, 46, _rest::binary>>), do: :ok
+
+  defp check_token(<<_user_id::binary-size(24), 46, _ts::binary-size(6), 46, _hmac_auth::binary>>) do
+    :ok
+  end
 
   defp check_token(_invalid_format),
     do: raise("Invalid token format, copy it again from the `Bot` tab of your Application")
