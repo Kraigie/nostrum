@@ -7,7 +7,7 @@ defmodule Nostrum.Application do
 
   @doc false
   def start(_type, _args) do
-    check_token()
+    Nostrum.Token.check_token!()
     check_executables()
     setup_ets_tables()
 
@@ -31,16 +31,6 @@ defmodule Nostrum.Application do
     :ets.new(:guild_shard_map, [:set, :public, :named_table])
     :ets.new(:channel_guild_map, [:set, :public, :named_table])
   end
-
-  defp check_token, do: check_token(Application.get_env(:nostrum, :token))
-  defp check_token(nil), do: raise("Please supply a token")
-
-  defp check_token(<<_user_id::binary-size(24), 46, _ts::binary-size(6), 46, _hmac_auth::binary>>) do
-    :ok
-  end
-
-  defp check_token(_invalid_format),
-    do: raise("Invalid token format, copy it again from the `Bot` tab of your Application")
 
   defp check_executables do
     ff = Application.get_env(:nostrum, :ffmpeg)
