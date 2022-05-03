@@ -48,14 +48,13 @@ defmodule Nostrum.Token do
   end
 
   defp decode_user_id!(user_id) do
-    try do
+    _user_id =
       user_id
       |> :base64.decode_to_string()
       |> :erlang.list_to_integer()
 
-      :ok
-    rescue
-      _ -> raise(@invalid_token_error_message)
-    end
+    :ok
+  rescue
+    _ -> raise(@invalid_token_error_message)
   end
 end
