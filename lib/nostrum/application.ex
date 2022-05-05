@@ -3,11 +3,13 @@ defmodule Nostrum.Application do
 
   use Application
 
+  alias Nostrum.Token
+
   require Logger
 
   @doc false
   def start(_type, _args) do
-    Nostrum.Token.check_token!()
+    Token.check_token!()
     check_executables()
     setup_ets_tables()
 
