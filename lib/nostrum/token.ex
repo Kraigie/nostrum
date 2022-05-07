@@ -55,6 +55,11 @@ defmodule Nostrum.Token do
 
     :ok
   rescue
-    _ -> raise(@invalid_token_error_message)
+    exception ->
+      reraise(
+        RuntimeError,
+        [message: @invalid_token_error_message, exception: exception],
+        __STACKTRACE__
+      )
   end
 end
