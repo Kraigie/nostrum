@@ -7,7 +7,7 @@
     <meta name="generator" content="ExDoc v0.28.0">
     <meta name="project" content="Nostrum v0.5.1">
 
-    <title>Nostrum.Cache.CacheSupervisor — Nostrum v0.5.1</title>
+    <title>Nostrum.Token — Nostrum v0.5.1</title>
     <link rel="stylesheet" href="dist/elixir-a816d167216329cc463d.css" />
 
     <script src="dist/sidebar_items-c3e710d5b5.js"></script>
@@ -89,19 +89,21 @@ Nostrum
 </button>
 
 
-    <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/cache_supervisor.ex#L1" title="View Source" class="view-source" rel="help">
+    <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/token.ex#L1" title="View Source" class="view-source" rel="help">
       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
       <span class="sr-only">View Source</span>
     </a>
 
-  <span translate="no">Nostrum.Cache.CacheSupervisor</span> 
+  <span translate="no">Nostrum.Token</span> 
   <small class="app-vsn" translate="no">(Nostrum v0.5.1)</small>
 
 </h1>
 
 
   <section id="moduledoc">
-<p>Supervises caches for nostrum structures.</p><p>See the documentation for the relevant submodules for details:</p><ul><li><a href="Nostrum.Cache.ChannelCache.html"><code class="inline">Nostrum.Cache.ChannelCache</code></a></li><li><a href="Nostrum.Cache.GuildCache.html"><code class="inline">Nostrum.Cache.GuildCache</code></a></li><li><a href="Nostrum.Cache.Me.html"><code class="inline">Nostrum.Cache.Me</code></a></li><li><a href="Nostrum.Cache.PresenceCache.html"><code class="inline">Nostrum.Cache.PresenceCache</code></a></li><li><a href="Nostrum.Cache.UserCache.html"><code class="inline">Nostrum.Cache.UserCache</code></a></li></ul>
+<p>A helper module for verifying the Discord bot token.</p><p>The token can be generated in the &quot;Bot&quot; tab of your Application the <a href="https://discord.com/developers/applications">Discord Developer Portal</a> and
+can be configured in your config file.</p><pre><code class="makeup elixir" translate="no"><span class="n">config</span><span class="w"> </span><span class="ss">:nostrum</span><span class="p">,</span><span class="w">
+  </span><span class="ss">token</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;666&quot;</span><span class="w"> </span><span class="c1"># The token of your bot as a string</span></code></pre>
   </section>
 
 
@@ -121,27 +123,17 @@ Nostrum
 
       <div class="summary-row">
         <div class="summary-signature">
-          <a href="#child_spec/1" translate="no">child_spec(init_arg)</a>
+          <a href="#check_token!/0" translate="no">check_token!()</a>
 
         </div>
 
-          <div class="summary-synopsis"><p>Returns a specification to start this module under a supervisor.</p></div>
+          <div class="summary-synopsis"><p>Checks if the Discord bot token has the correct format.</p></div>
 
       </div>
 
       <div class="summary-row">
         <div class="summary-signature">
-          <a href="#init/1" translate="no">init(list)</a>
-
-        </div>
-
-          <div class="summary-synopsis"><p>Callback implementation for <a href="https://hexdocs.pm/elixir/Supervisor.html#c:init/1"><code class="inline">Supervisor.init/1</code></a>.</p></div>
-
-      </div>
-
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#start_link/1" translate="no">start_link(list)</a>
+          <a href="#check_token!/1" translate="no">check_token!(token)</a>
 
         </div>
 
@@ -161,16 +153,16 @@ Nostrum
 Functions
     </h1>
     <div class="functions-list">
-<section class="detail" id="child_spec/1">
+<section class="detail" id="check_token!/0">
 
   <div class="detail-header">
-    <a href="#child_spec/1" class="detail-link" title="Link to this function">
+    <a href="#check_token!/0" class="detail-link" title="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">child_spec(init_arg)</h1>
+    <h1 class="signature" translate="no">check_token!()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/cache_supervisor.ex#L14" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/token.ex#L36" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -180,41 +172,31 @@ Functions
 
   <section class="docstring">
 
-<p>Returns a specification to start this module under a supervisor.</p><p>See <a href="https://hexdocs.pm/elixir/Supervisor.html"><code class="inline">Supervisor</code></a>.</p>
+<p>Checks if the Discord bot token has the correct format.</p><p>We check if the token is a binary followed by splitting it into 3 parts separated by a dot <code class="inline">&quot;.&quot;</code>.
+The first part is the Base64 encoded user_id which we decode and parse into as integer.
+The second part is an encoded timestamp, and the last part an arbitrary cryptographic signature.</p><p>Raises on failure.</p><h2 id="check_token!/0-examples" class="section-heading">
+  <a href="#check_token!/0-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
+  Examples
+</h2>
+<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="n">token</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;OTY4NTU2MzQ4MzkwMzkxODU5.G49NjP.pD8PLpKp-Xx8sr-8m1DCxSPTJZdcpcJZOExc1c&quot;</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Token</span><span class="o">.</span><span class="n">check_token!</span><span class="p" data-group-id="2959372445-1">(</span><span class="n">token</span><span class="p" data-group-id="2959372445-1">)</span><span class="w">
+</span><span class="ss">:ok</span><span class="w">
+
+</span><span class="gp unselectable">iex&gt; </span><span class="n">token</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;ODY4MDcxODUzMDMyMzU3OTc4.YPqU6Q.jNJcq1daGG3otexX3c1LcxCpgpQ&quot;</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Token</span><span class="o">.</span><span class="n">check_token!</span><span class="p" data-group-id="2959372445-2">(</span><span class="n">token</span><span class="p" data-group-id="2959372445-2">)</span><span class="w">
+</span><span class="ss">:ok</span></code></pre>
   </section>
 </section>
-<section class="detail" id="init/1">
+<section class="detail" id="check_token!/1">
 
   <div class="detail-header">
-    <a href="#init/1" class="detail-link" title="Link to this function">
+    <a href="#check_token!/1" class="detail-link" title="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">init(list)</h1>
+    <h1 class="signature" translate="no">check_token!(token)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/cache_supervisor.ex#L20" class="view-source" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
-
-
-  </div>
-
-  <section class="docstring">
-
-<p>Callback implementation for <a href="https://hexdocs.pm/elixir/Supervisor.html#c:init/1"><code class="inline">Supervisor.init/1</code></a>.</p>
-  </section>
-</section>
-<section class="detail" id="start_link/1">
-
-  <div class="detail-header">
-    <a href="#start_link/1" class="detail-link" title="Link to this function">
-      <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
-    </a>
-    <h1 class="signature" translate="no">start_link(list)</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/cache_supervisor.ex#L16" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/token.ex#L37" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -240,7 +222,7 @@ Functions
               <a href="https://hex.pm/packages/nostrum/0.5.1" class="line footer-hex-package">Package</a>
               <a href="https://preview.hex.pm/preview/nostrum/0.5.1" class="line">Preview</a>
 
-                <a href="https://preview.hex.pm/preview/nostrum/0.5.1/show/lib/nostrum/cache/cache_supervisor.ex">(current file)</a>
+                <a href="https://preview.hex.pm/preview/nostrum/0.5.1/show/lib/nostrum/token.ex">(current file)</a>
 
             </span>
 
