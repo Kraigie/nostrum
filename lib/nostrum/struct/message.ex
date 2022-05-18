@@ -267,8 +267,22 @@ defmodule Nostrum.Struct.Message do
   """
   @doc since: "0.5.0"
   @spec to_url(%__MODULE__{}) :: String.t()
-  def to_url(%__MODULE__{} = msg) do
-    "https://discord.com/channels/" <>
-      (msg.guild_id || "@me") <> "/" <> msg.channel_id <> "/" <> msg.id
+  def to_url(%__MODULE__{id: id, guild_id: guild_id, channel_id: channel_id}) do
+    guild_id =
+      if is_nil(guild_id) do
+        "@me"
+      else
+        to_string(guild_id)
+      end
+
+    [
+      "https://discordapp.com/channels/",
+      guild_id,
+      "/",
+      "#{channel_id}",
+      "/",
+      "#{id}"
+    ]
+    |> IO.iodata_to_binary()
   end
 end
