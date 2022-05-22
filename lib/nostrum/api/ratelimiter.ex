@@ -108,10 +108,16 @@ defmodule Nostrum.Api.Ratelimiter do
   defp handle_headers({:ok, {_status, headers, _body}} = response, route) do
     # Per https://discord.com/developers/docs/topics/rate-limits, all of these
     # headers are optional, which is why we supply a default of 0.
+
     global_limit = header_value(headers, "x-ratelimit-global")
-    remaining = header_value(headers, "x-ratelimit-remaining", "0") |> String.to_integer()
-    reset = header_value(headers, "x-ratelimit-reset", "0.0") |> String.to_float()
-    retry_after = header_value(headers, "retry-after", "0") |> String.to_integer()
+
+    remaining = header_value(headers, "x-ratelimit-remaining")
+    remaining = unless is_nil(remaining), do: String.to_integer(remaining)
+
+    reset = header_value(headers, "x-ratelimit-reset")
+    reset = unless is_nil(reset), do: String.to_float(reset)
+    retry_after = header_value(headers, "retry-after")
+    retry_after = unless is_nil(retry_after), do: String.to_float(retry_after)
 
     origin_timestamp =
       headers
@@ -127,7 +133,7 @@ defmodule Nostrum.Api.Ratelimiter do
     # If Discord did send us other ratelimit information, we can also update
     # the ratelimiter bucket for this route. For some endpoints, such as
     # when creating a DM with a user, we may not retrieve ratelimit headers.
-    if reset != 0 and remaining != 0, do: update_bucket(route, remaining, reset, latency)
+    unless is_nil(reset) or is_nil(remaining), do: update_bucket(route, remaining, reset, latency)
 
     response
   end
@@ -178,9 +184,11 @@ defmodule Nostrum.Api.Ratelimiter do
         end
       end)
 
+    endpoint = replace_webhook_token(endpoint)
+
     cond do
-      String.contains?(route, "reactions") ->
-        "reaction:" <> endpoint
+      String.contains?(endpoint, "reactions") ->
+        replace_emojis(endpoint)
 
       String.ends_with?(endpoint, "/messages/_id") and method == :delete ->
         "delete:" <> endpoint
@@ -204,5 +212,15 @@ defmodule Nostrum.Api.Ratelimiter do
       {:ok, {status, _, body}} ->
         {:error, %ApiError{status_code: status, response: Jason.decode!(body, keys: :atoms)}}
     end
+  end
+
+  defp replace_emojis(endpoint) do
+    endpoint = Regex.replace(~r/\/reactions\/.+\/@me/i, endpoint, "/reactions/_emoji/@me")
+    endpoint = Regex.replace(~r/\/reactions\/.+\/_id/i, endpoint, "/reactions/_emoji/_id")
+    Regex.replace(~r/\/reactions\/.+\/?$/i, endpoint, "/reactions/_emoji")
+  end
+
+  defp replace_webhook_token(endpoint) do
+    Regex.replace(~r/\/webhooks\/([0-9]{17,19})\/.+\/?/i, endpoint, "/webhooks/\\1/_token")
   end
 end
