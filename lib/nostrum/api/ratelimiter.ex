@@ -117,7 +117,14 @@ defmodule Nostrum.Api.Ratelimiter do
     reset = header_value(headers, "x-ratelimit-reset")
     reset = unless is_nil(reset), do: String.to_float(reset)
     retry_after = header_value(headers, "retry-after")
-    retry_after = unless is_nil(retry_after), do: String.to_float(retry_after)
+
+    retry_after =
+      unless is_nil(retry_after) do
+        # Since for some reason this might not contain a "."
+        # and String.to_float raises if it doesn't
+        {retry_after, ""} = Float.parse(retry_after)
+        retry_after
+      end
 
     origin_timestamp =
       headers
@@ -184,17 +191,14 @@ defmodule Nostrum.Api.Ratelimiter do
         end
       end)
 
-    endpoint = replace_webhook_token(endpoint)
+    endpoint =
+      replace_webhook_token(endpoint)
+      |> replace_emojis()
 
-    cond do
-      String.contains?(endpoint, "reactions") ->
-        replace_emojis(endpoint)
-
-      String.ends_with?(endpoint, "/messages/_id") and method == :delete ->
-        "delete:" <> endpoint
-
-      true ->
-        endpoint
+    if String.ends_with?(endpoint, "/messages/_id") and method == :delete do
+      "delete:" <> endpoint
+    else
+      endpoint
     end
   end
 
@@ -215,12 +219,18 @@ defmodule Nostrum.Api.Ratelimiter do
   end
 
   defp replace_emojis(endpoint) do
-    endpoint = Regex.replace(~r/\/reactions\/.+\/@me/i, endpoint, "/reactions/_emoji/@me")
-    endpoint = Regex.replace(~r/\/reactions\/.+\/_id/i, endpoint, "/reactions/_emoji/_id")
-    Regex.replace(~r/\/reactions\/.+\/?$/i, endpoint, "/reactions/_emoji")
+    Regex.replace(
+      ~r/\/reactions\/[^\/]+\/?(@me|_id)?/i,
+      endpoint,
+      "/reactions/_emoji/\\g{1}/"
+    )
   end
 
   defp replace_webhook_token(endpoint) do
-    Regex.replace(~r/\/webhooks\/([0-9]{17,19})\/.+\/?/i, endpoint, "/webhooks/\\1/_token")
+    Regex.replace(
+      ~r/\/webhooks\/([0-9]{17,19})\/[^\/]+\/?/i,
+      endpoint,
+      "/webhooks/\\g{1}/_token/"
+    )
   end
 end
