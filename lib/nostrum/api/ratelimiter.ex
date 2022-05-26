@@ -40,6 +40,10 @@ defmodule Nostrum.Api.Ratelimiter do
     {:ok, conn_pid} = :gun.open(domain, 443, open_opts)
 
     {:ok, :http2} = :gun.await_up(conn_pid)
+
+    # Start the old route cleanup loop
+    Process.send_after(self(), :remove_old_buckets, :timer.hours(1))
+
     {:ok, conn_pid}
   end
 
@@ -83,6 +87,12 @@ defmodule Nostrum.Api.Ratelimiter do
 
   def handle_info({:gun_response, _conn, _ref, :nofin, status, headers}, state) do
     Logger.debug("Got unexpected response with status #{status}, headers #{inspect(headers)}")
+    {:noreply, state}
+  end
+
+  def handle_info(:remove_old_buckets, state) do
+    Bucket.remove_old_buckets()
+    Process.send_after(self(), :remove_old_buckets, :timer.hours(1))
     {:noreply, state}
   end
 
