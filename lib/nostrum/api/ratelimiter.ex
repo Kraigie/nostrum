@@ -200,9 +200,7 @@ defmodule Nostrum.Api.Ratelimiter do
             "/#{param}/_id"
         end
       end)
-
-    endpoint =
-      replace_webhook_token(endpoint)
+      |> replace_webhook_token()
       |> replace_emojis()
 
     if String.ends_with?(endpoint, "/messages/_id") and method == :delete do
