@@ -40,4 +40,16 @@ defmodule Nostrum.Api.Bucket do
         reset_time - Util.now() + latency
     end
   end
+
+  @doc false
+  def remove_old_buckets do
+    # remove all buckets that have a reset time more than 1 hour ago
+    one_hour_ago = Util.now() - System.convert_time_unit(3600, :second, :millisecond)
+
+    # created from :ets.fun2ms(
+    # fn {_, _, reset_time, _} when reset_time < one_hour_ago -> true end
+    # )
+    match_spec = [{{:_, :_, :"$1", :_}, [{:<, :"$1", one_hour_ago}], [true]}]
+    :ets.select_delete(:ratelimit_buckets, match_spec)
+  end
 end

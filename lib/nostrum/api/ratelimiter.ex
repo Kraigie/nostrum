@@ -40,6 +40,10 @@ defmodule Nostrum.Api.Ratelimiter do
     {:ok, conn_pid} = :gun.open(domain, 443, open_opts)
 
     {:ok, :http2} = :gun.await_up(conn_pid)
+
+    # Start the old route cleanup loop
+    Process.send_after(self(), :remove_old_buckets, :timer.hours(1))
+
     {:ok, conn_pid}
   end
 
@@ -86,6 +90,12 @@ defmodule Nostrum.Api.Ratelimiter do
     {:noreply, state}
   end
 
+  def handle_info(:remove_old_buckets, state) do
+    Bucket.remove_old_buckets()
+    Process.send_after(self(), :remove_old_buckets, :timer.hours(1))
+    {:noreply, state}
+  end
+
   defp do_request(request, conn) do
     conn
     |> Base.request(request.method, request.route, request.body, request.headers, request.params)
@@ -108,10 +118,23 @@ defmodule Nostrum.Api.Ratelimiter do
   defp handle_headers({:ok, {_status, headers, _body}} = response, route) do
     # Per https://discord.com/developers/docs/topics/rate-limits, all of these
     # headers are optional, which is why we supply a default of 0.
+
     global_limit = header_value(headers, "x-ratelimit-global")
-    remaining = header_value(headers, "x-ratelimit-remaining", "0") |> String.to_integer()
-    reset = header_value(headers, "x-ratelimit-reset", "0.0") |> String.to_float()
-    retry_after = header_value(headers, "retry-after", "0") |> String.to_integer()
+
+    remaining = header_value(headers, "x-ratelimit-remaining")
+    remaining = unless is_nil(remaining), do: String.to_integer(remaining)
+
+    reset = header_value(headers, "x-ratelimit-reset")
+    reset = unless is_nil(reset), do: String.to_float(reset)
+    retry_after = header_value(headers, "retry-after")
+
+    retry_after =
+      unless is_nil(retry_after) do
+        # Since for some reason this might not contain a "."
+        # and String.to_float raises if it doesn't
+        {retry_after, ""} = Float.parse(retry_after)
+        retry_after
+      end
 
     origin_timestamp =
       headers
@@ -127,7 +150,7 @@ defmodule Nostrum.Api.Ratelimiter do
     # If Discord did send us other ratelimit information, we can also update
     # the ratelimiter bucket for this route. For some endpoints, such as
     # when creating a DM with a user, we may not retrieve ratelimit headers.
-    if reset != 0 and remaining != 0, do: update_bucket(route, remaining, reset, latency)
+    unless is_nil(reset) or is_nil(remaining), do: update_bucket(route, remaining, reset, latency)
 
     response
   end
@@ -177,6 +200,8 @@ defmodule Nostrum.Api.Ratelimiter do
             "/#{param}/_id"
         end
       end)
+      |> replace_webhook_token()
+      |> replace_emojis()
 
     if String.ends_with?(endpoint, "/messages/_id") and method == :delete do
       "delete:" <> endpoint
@@ -199,5 +224,21 @@ defmodule Nostrum.Api.Ratelimiter do
       {:ok, {status, _, body}} ->
         {:error, %ApiError{status_code: status, response: Jason.decode!(body, keys: :atoms)}}
     end
+  end
+
+  defp replace_emojis(endpoint) do
+    Regex.replace(
+      ~r/\/reactions\/[^\/]+\/?(@me|_id)?/i,
+      endpoint,
+      "/reactions/_emoji/\\g{1}/"
+    )
+  end
+
+  defp replace_webhook_token(endpoint) do
+    Regex.replace(
+      ~r/\/webhooks\/([0-9]{17,19})\/[^\/]+\/?/i,
+      endpoint,
+      "/webhooks/\\g{1}/_token/"
+    )
   end
 end
