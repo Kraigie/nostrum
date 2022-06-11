@@ -2938,10 +2938,10 @@ defmodule Nostrum.Api do
 
   @typep m1 :: %{
            required(:content) => String.t(),
-           :username => String.t(),
-           :avatar_url => String.t(),
-           :tts => boolean,
-           optional(:files) => [String.t() | %{body: binary(), name: String.t()}],
+           optional(:username) => String.t(),
+           optional(:avatar_url) => String.t(),
+           optional(:tts) => boolean,
+           optional(:files) => [String.t() | %{body: iodata(), name: String.t()}],
            optional(:flags) => non_neg_integer(),
            optional(:thread_id) => Snowflake.t(),
            optional(:embeds) => nonempty_list(Embed.t()) | nil
@@ -2950,10 +2950,10 @@ defmodule Nostrum.Api do
   @typep m2 ::
            %{
              optional(:content) => String.t() | nil,
-             :username => String.t(),
-             :avatar_url => String.t(),
-             :tts => boolean,
-             required(:files) => [String.t() | %{body: binary(), name: String.t()}],
+             optional(:username) => String.t(),
+             optional(:avatar_url) => String.t(),
+             optional(:tts) => boolean,
+             required(:files) => [String.t() | %{body: iodata(), name: String.t()}],
              optional(:flags) => non_neg_integer(),
              optional(:thread_id) => Snowflake.t(),
              optional(:embeds) => nonempty_list(Embed.t()) | nil
@@ -2962,10 +2962,10 @@ defmodule Nostrum.Api do
   @typep m3 ::
            %{
              optional(:content) => String.t() | nil,
-             :username => String.t(),
-             :avatar_url => String.t(),
-             :tts => boolean,
-             optional(:files) => [String.t() | %{body: binary(), name: String.t()}],
+             optional(:username) => String.t(),
+             optional(:avatar_url) => String.t(),
+             optional(:tts) => boolean,
+             optional(:files) => [String.t() | %{body: iodata(), name: String.t()}],
              optional(:flags) => non_neg_integer(),
              optional(:thread_id) => Snowflake.t(),
              required(:embeds) => nonempty_list(Embed.t())
