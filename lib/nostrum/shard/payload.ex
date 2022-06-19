@@ -18,11 +18,9 @@ defmodule Nostrum.Shard.Payload do
     %{
       "token" => Application.get_env(:nostrum, :token),
       "properties" => %{
-        "$os" => Atom.to_string(os) <> " " <> Atom.to_string(name),
-        "$browser" => "Nostrum",
-        "$device" => "Nostrum",
-        "$referrer" => "",
-        "$referring_domain" => ""
+        "os" => Atom.to_string(os) <> " " <> Atom.to_string(name),
+        "browser" => "Nostrum",
+        "device" => "Nostrum"
       },
       "compress" => false,
       "large_threshold" => @large_threshold,
