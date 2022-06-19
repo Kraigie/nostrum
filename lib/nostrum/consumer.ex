@@ -21,10 +21,20 @@ defmodule Nostrum.Consumer do
   use ConsumerSupervisor
 
   alias Nostrum.Shard.Stage.Cache
-  alias Nostrum.Struct.{Channel, Interaction, ThreadMember, VoiceWSState, WSState}
+
+  alias Nostrum.Struct.{
+    AutoModerationRule,
+    Channel,
+    Interaction,
+    ThreadMember,
+    VoiceWSState,
+    WSState
+  }
+
   alias Nostrum.Struct.Guild.Integration
 
   alias Nostrum.Struct.Event.{
+    AutoModerationRuleExecute,
     ChannelPinsUpdate,
     GuildBanAdd,
     GuildBanRemove,
@@ -87,6 +97,16 @@ defmodule Nostrum.Consumer do
           | {:max_restarts, non_neg_integer()}
           | {:max_seconds, non_neg_integer()}
           | {:subscribe_to, [GenStage.stage() | {GenStage.stage(), keyword()}]}
+
+  @type auto_moderation_rule_create ::
+          {:AUTO_MODERATION_RULE_CREATE, AutoModerationRule.t(), WSState.t()}
+  @type auto_moderation_rule_delete ::
+          {:AUTO_MODERATION_RULE_DELETE, AutoModerationRule.t(), WSState.t()}
+  @type auto_moderation_rule_update ::
+          {:AUTO_MODERATION_RULE_UPDATE, AutoModerationRule.t(), WSState.t()}
+
+  @type auto_moderation_rule_execute ::
+          {:AUTO_MODERATION_RULE_EXECUTE, AutoModerationRuleExecute.t(), WSState.t()}
 
   @typedoc """
   Dispatched when a channel is created.
@@ -274,7 +294,11 @@ defmodule Nostrum.Consumer do
   """
   @type thread_members_update :: {:THREAD_MEMBERS_UPDATE, ThreadMembersUpdate.t(), WSState.t()}
   @type event ::
-          channel_create
+          auto_moderation_rule_create
+          | auto_moderation_rule_delete
+          | auto_moderation_rule_update
+          | auto_moderation_rule_execute
+          | channel_create
           | channel_delete
           | channel_update
           | channel_pins_ack

@@ -50,6 +50,7 @@ defmodule Nostrum.Api do
 
   alias Nostrum.Struct.{
     ApplicationCommand,
+    AutoModerationRule,
     Channel,
     Embed,
     Emoji,
@@ -3981,6 +3982,80 @@ defmodule Nostrum.Api do
   @spec remove_thread_member(Channel.id(), User.id()) :: {:ok} | error
   def remove_thread_member(thread_id, user_id) do
     request(:delete, Constants.thread_member(thread_id, user_id))
+  end
+
+  @doc """
+  Get a list of all auto-moderation rules for a guild.
+  """
+  @doc since: "0.6.1"
+  @spec get_guild_auto_moderation_rules(Guild.id()) :: {:ok, [AutoModerationRule.t()]} | error
+  def get_guild_auto_moderation_rules(guild_id) do
+    request(:get, Constants.guild_auto_moderation_rule(guild_id))
+    |> handle_request_with_decode({:list, {:struct, AutoModerationRule}})
+  end
+
+  @doc """
+  Get a single auto-moderation rule for a guild.
+  """
+  @doc since: "0.6.1"
+  @spec get_guild_auto_moderation_rule(Guild.id(), AutoModerationRule.id()) ::
+          {:ok, AutoModerationRule.t()} | error
+  def get_guild_auto_moderation_rule(guild_id, rule_id) do
+    request(:get, Constants.guild_auto_moderation_rule(guild_id, rule_id))
+    |> handle_request_with_decode({:struct, AutoModerationRule})
+  end
+
+  @doc """
+  Create a new auto-moderation rule for a guild.
+
+  ## Options
+    * `:name` (`t:String.t/0`) - The name of the rule.
+    * `:event_type` (`t:AutoModerationRule.event_type/0`) - The type of event that triggers the rule.
+    * `:trigger_type` (`t:AutoModerationRule.trigger_type/0`) - The type of content that triggers the rule.
+    * `:trigger_metadata` (`t:AutoModerationRule.trigger_metadata/0`) - The metadata associated with the rule trigger.
+      - optional, based on the `:trigger_type`.
+    * `:actions` (`t:AutoModerationRule.actions/0`) - The actions to take when the rule is triggered.
+    * `:enabled` (`t:AutoModerationRule.enabled/0`) - Whether the rule is enabled or not.
+      - optional, defaults to `false`.
+    * `:exempt_roles` - (`t:AutoModerationRule.exempt_roles/0`) - A list of role id's that are exempt from the rule.
+      - optional, defaults to `[]`, maximum of 20.
+    * `:exempt_channels` - (`t:AutoModerationRule.exempt_channels/0`) - A list of channel id's that are exempt from the rule.
+      - optional, defaults to `[]`, maximum of 50.
+  """
+  @doc since: "0.6.1"
+  @spec create_guild_auto_moderation_rule(Guild.id(), options()) ::
+          {:ok, AutoModerationRule.t()} | error
+  def create_guild_auto_moderation_rule(guild_id, options) when is_list(options),
+    do: create_guild_auto_moderation_rule(guild_id, Map.new(options))
+
+  def create_guild_auto_moderation_rule(guild_id, options) do
+    request(:post, Constants.guild_auto_moderation_rule(guild_id), options)
+    |> handle_request_with_decode({:struct, AutoModerationRule})
+  end
+
+  @doc """
+  Modify an auto-moderation rule for a guild.
+
+  Takes the same options as `create_guild_auto_moderation_rule/2`, however all fields are optional.
+  """
+  @doc since: "0.6.1"
+  @spec modify_guild_auto_moderation_rule(Guild.id(), AutoModerationRule.id(), options()) ::
+          {:ok, AutoModerationRule.t()} | error
+  def modify_guild_auto_moderation_rule(guild_id, rule_id, options) when is_list(options),
+    do: modify_guild_auto_moderation_rule(guild_id, rule_id, Map.new(options))
+
+  def modify_guild_auto_moderation_rule(guild_id, rule_id, options) do
+    request(:patch, Constants.guild_auto_moderation_rule(guild_id, rule_id), options)
+    |> handle_request_with_decode({:struct, AutoModerationRule})
+  end
+
+  @doc """
+  Delete an auto-moderation rule for a guild.
+  """
+  @doc since: "0.6.1"
+  @spec delete_guild_auto_moderation_rule(Guild.id(), AutoModerationRule.id()) :: {:ok} | error
+  def delete_guild_auto_moderation_rule(guild_id, rule_id) do
+    request(:delete, Constants.guild_auto_moderation_rule(guild_id, rule_id))
   end
 
   @spec maybe_add_reason(String.t() | nil) :: list()
