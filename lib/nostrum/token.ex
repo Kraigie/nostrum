@@ -50,8 +50,8 @@ defmodule Nostrum.Token do
   defp decode_user_id!(user_id) do
     _user_id =
       user_id
-      |> :base64.decode_to_string()
-      |> :erlang.list_to_integer()
+      |> Base.decode64!(padding: false)
+      |> String.to_integer()
 
     :ok
   rescue
