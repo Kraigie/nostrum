@@ -5,9 +5,9 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="ExDoc v0.28.0">
-    <meta name="project" content="Nostrum v0.6.0">
+    <meta name="project" content="Nostrum v0.6.1">
 
-    <title>Nostrum.Voice — Nostrum v0.6.0</title>
+    <title>Nostrum.Voice — Nostrum v0.6.1</title>
     <link rel="stylesheet" href="dist/elixir-a816d167216329cc463d.css" />
 
     <script src="dist/sidebar_items-c3e710d5b5.js"></script>
@@ -60,7 +60,7 @@
 Nostrum
       </a>
       <strong class="sidebar-projectVersion" translate="no">
-        v0.6.0
+        v0.6.1
       </strong>
     </div>
     <ul class="sidebar-listNav">
@@ -95,7 +95,7 @@ Nostrum
     </a>
 
   <span translate="no">Nostrum.Voice</span> 
-  <small class="app-vsn" translate="no">(Nostrum v0.6.0)</small>
+  <small class="app-vsn" translate="no">(Nostrum v0.6.1)</small>
 
 </h1>
 
@@ -755,10 +755,10 @@ understand how to use the data.</p><p>To get started, assuming you have a list o
 and consecutive opus packets from a single source that you want written
 to a file, you can run the following:</p><pre><code class="makeup elixir" translate="no"><span class="n">bitstream</span><span class="w"> </span><span class="o">=</span><span class="w">
   </span><span class="n">opus_packets</span><span class="w">
-  </span><span class="o">|&gt;</span><span class="w"> </span><span class="n">create_ogg_bitstream</span><span class="p" data-group-id="0472331782-1">(</span><span class="p" data-group-id="0472331782-1">)</span><span class="w">
-  </span><span class="o">|&gt;</span><span class="w"> </span><span class="nc">:binary</span><span class="o">.</span><span class="n">list_to_bin</span><span class="p" data-group-id="0472331782-2">(</span><span class="p" data-group-id="0472331782-2">)</span><span class="w">
+  </span><span class="o">|&gt;</span><span class="w"> </span><span class="n">create_ogg_bitstream</span><span class="p" data-group-id="6350425382-1">(</span><span class="p" data-group-id="6350425382-1">)</span><span class="w">
+  </span><span class="o">|&gt;</span><span class="w"> </span><span class="nc">:binary</span><span class="o">.</span><span class="n">list_to_bin</span><span class="p" data-group-id="6350425382-2">(</span><span class="p" data-group-id="6350425382-2">)</span><span class="w">
 
-</span><span class="nc">File</span><span class="o">.</span><span class="n">write!</span><span class="p" data-group-id="0472331782-3">(</span><span class="s">&quot;my_recording.ogg&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">bitstream</span><span class="p" data-group-id="0472331782-3">)</span></code></pre><p>When creating a logical bitstream, ensure that the packets are all from a single SSRC.
+</span><span class="nc">File</span><span class="o">.</span><span class="n">write!</span><span class="p" data-group-id="6350425382-3">(</span><span class="s">&quot;my_recording.ogg&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">bitstream</span><span class="p" data-group-id="6350425382-3">)</span></code></pre><p>When creating a logical bitstream, ensure that the packets are all from a single SSRC.
 When listening in a channel with multiple speakers, you should be storing the received
 packets in unique buckets for each SSRC so that the multiple audio sources don't become
 jumbled. A single logical bitstream should represent audio data from a single speaker.
@@ -766,9 +766,9 @@ An Ogg physical bitstream (e.g. a file) may be composed of multiple interleaved 
 logical bitstreams as each logical bitstream and its constituent pages contain a unique
 and randomly generated bitstream serial number, but this is a story for another time.</p><p>Assuming you have a list of <a href="#t:rtp_opus/0"><code class="inline">rtp_opus/0</code></a> packets that are not separated by ssrc, you
 may do the following:</p><pre><code class="makeup elixir" translate="no"><span class="n">jumbled_packets</span><span class="w">
-</span><span class="o">|&gt;</span><span class="w"> </span><span class="nc">Stream</span><span class="o">.</span><span class="n">filter</span><span class="p" data-group-id="4644716427-1">(</span><span class="k" data-group-id="4644716427-2">fn</span><span class="w"> </span><span class="p" data-group-id="4644716427-3">{</span><span class="p" data-group-id="4644716427-4">{</span><span class="c">_seq</span><span class="p">,</span><span class="w"> </span><span class="c">_time</span><span class="p">,</span><span class="w"> </span><span class="n">ssrc</span><span class="p" data-group-id="4644716427-4">}</span><span class="p">,</span><span class="w"> </span><span class="c">_opus</span><span class="p" data-group-id="4644716427-3">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">ssrc</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">particular_ssrc</span><span class="w"> </span><span class="k" data-group-id="4644716427-2">end</span><span class="p" data-group-id="4644716427-1">)</span><span class="w">
-</span><span class="o">|&gt;</span><span class="w"> </span><span class="nc">Enum</span><span class="o">.</span><span class="n">map</span><span class="p" data-group-id="4644716427-5">(</span><span class="k" data-group-id="4644716427-6">fn</span><span class="w"> </span><span class="p" data-group-id="4644716427-7">{</span><span class="p" data-group-id="4644716427-8">{</span><span class="c">_seq</span><span class="p">,</span><span class="w"> </span><span class="c">_time</span><span class="p">,</span><span class="w"> </span><span class="c">_ssrc</span><span class="p" data-group-id="4644716427-8">}</span><span class="p">,</span><span class="w"> </span><span class="n">opus</span><span class="p" data-group-id="4644716427-7">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">opus</span><span class="w"> </span><span class="k" data-group-id="4644716427-6">end</span><span class="p" data-group-id="4644716427-5">)</span><span class="w">
-</span><span class="o">|&gt;</span><span class="w"> </span><span class="n">create_ogg_bitstream</span><span class="p" data-group-id="4644716427-9">(</span><span class="p" data-group-id="4644716427-9">)</span></code></pre>
+</span><span class="o">|&gt;</span><span class="w"> </span><span class="nc">Stream</span><span class="o">.</span><span class="n">filter</span><span class="p" data-group-id="4766231585-1">(</span><span class="k" data-group-id="4766231585-2">fn</span><span class="w"> </span><span class="p" data-group-id="4766231585-3">{</span><span class="p" data-group-id="4766231585-4">{</span><span class="c">_seq</span><span class="p">,</span><span class="w"> </span><span class="c">_time</span><span class="p">,</span><span class="w"> </span><span class="n">ssrc</span><span class="p" data-group-id="4766231585-4">}</span><span class="p">,</span><span class="w"> </span><span class="c">_opus</span><span class="p" data-group-id="4766231585-3">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">ssrc</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">particular_ssrc</span><span class="w"> </span><span class="k" data-group-id="4766231585-2">end</span><span class="p" data-group-id="4766231585-1">)</span><span class="w">
+</span><span class="o">|&gt;</span><span class="w"> </span><span class="nc">Enum</span><span class="o">.</span><span class="n">map</span><span class="p" data-group-id="4766231585-5">(</span><span class="k" data-group-id="4766231585-6">fn</span><span class="w"> </span><span class="p" data-group-id="4766231585-7">{</span><span class="p" data-group-id="4766231585-8">{</span><span class="c">_seq</span><span class="p">,</span><span class="w"> </span><span class="c">_time</span><span class="p">,</span><span class="w"> </span><span class="c">_ssrc</span><span class="p" data-group-id="4766231585-8">}</span><span class="p">,</span><span class="w"> </span><span class="n">opus</span><span class="p" data-group-id="4766231585-7">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">opus</span><span class="w"> </span><span class="k" data-group-id="4766231585-6">end</span><span class="p" data-group-id="4766231585-5">)</span><span class="w">
+</span><span class="o">|&gt;</span><span class="w"> </span><span class="n">create_ogg_bitstream</span><span class="p" data-group-id="4766231585-9">(</span><span class="p" data-group-id="4766231585-9">)</span></code></pre>
   </section>
 </section>
 <section class="detail" id="extract_opus_packet/1">
@@ -1516,10 +1516,10 @@ iex&gt; Nostrum.Voice.stop(123456789)</code></pre>
             On Hex.pm:
 
             <span class="line">
-              <a href="https://hex.pm/packages/nostrum/0.6.0" class="line footer-hex-package">Package</a>
-              <a href="https://preview.hex.pm/preview/nostrum/0.6.0" class="line">Preview</a>
+              <a href="https://hex.pm/packages/nostrum/0.6.1" class="line footer-hex-package">Package</a>
+              <a href="https://preview.hex.pm/preview/nostrum/0.6.1" class="line">Preview</a>
 
-                <a href="https://preview.hex.pm/preview/nostrum/0.6.0/show/lib/nostrum/voice.ex">(current file)</a>
+                <a href="https://preview.hex.pm/preview/nostrum/0.6.1/show/lib/nostrum/voice.ex">(current file)</a>
 
             </span>
 
