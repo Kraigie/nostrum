@@ -138,8 +138,11 @@ should be instantiated for that endpoint.</li></ol><h2 id="rest-only" class="sec
 </h2>
 <p>If you only want to use the REST portion of the provided API, the only process
 needed is the ratelimiter. This can be manually started by calling
-<a href="Nostrum.Api.Ratelimiter.html#start_link/1"><code class="inline">Nostrum.Api.Ratelimiter.start_link/1</code></a>. If you don't want to start Nostrum you
-can add <code class="inline">runtime: false</code> to the dependency options.</p>
+<a href="Nostrum.Api.Ratelimiter.html#start_link/1"><code class="inline">Nostrum.Api.Ratelimiter.start_link/1</code></a>. 
+If you don't want to start Nostrum you can add <code class="inline">runtime: false</code> to the dependency
+options. If you're using <a href="https://hexdocs.pm/mix/Mix.Tasks.Release.html"><code class="inline">mix release</code></a>, all <code class="inline">runtime: false</code> deps will be exluded
+from build, so you'll also need to add <code class="inline">:nostrum</code> app to <code class="inline">mix.exs</code>
+in <code class="inline">:included_applications</code> application option or in <code class="inline">releases</code> project option.</p>
 <div class="bottom-actions">
   <div class="bottom-actions-item">
 
