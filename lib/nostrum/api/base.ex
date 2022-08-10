@@ -21,7 +21,7 @@ defmodule Nostrum.Api.Base do
     query_string = URI.encode_query(params)
 
     full_route = "#{base_route()}#{route}?#{query_string}"
-
+    headers = process_request_headers(headers, body)
     stream = :gun.request(conn, method, full_route, headers, process_request_body(body))
 
     case :gun.await(conn, stream) do
@@ -37,6 +37,8 @@ defmodule Nostrum.Api.Base do
     end
   end
 
+  def process_request_headers(headers, ""), do: :proplists.delete("content-type", headers)
+  def process_request_headers(headers, _body), do: headers
   def process_request_body(""), do: ""
   def process_request_body({:multipart, content}), do: content
   def process_request_body(body), do: Jason.encode_to_iodata!(body)
