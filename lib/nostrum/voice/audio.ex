@@ -171,6 +171,7 @@ defmodule Nostrum.Voice.Audio do
           ["-f", "bestaudio"],
           ["-o", "-"],
           ["-q"],
+          ["--no-warnings"],
           [url]
         ]
         |> List.flatten()
