@@ -4,8 +4,8 @@ defmodule Nostrum.Struct.StickerPack do
   """
 
   alias Nostrum.Snowflake
-  alias Nostrum.Util
   alias Nostrum.Struct.Message.Sticker
+  alias Nostrum.Util
 
   defstruct [
     :id,
