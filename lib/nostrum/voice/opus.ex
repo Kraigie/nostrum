@@ -42,6 +42,8 @@ defmodule Nostrum.Voice.Opus do
       ),
       do: rest
 
+  def strip_rtp_ext(packet), do: packet
+
   def parse_ogg(<<>>), do: []
 
   def parse_ogg(binary) do
