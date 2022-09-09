@@ -162,6 +162,11 @@ defmodule Nostrum.Constants do
   def private_joined_archived_threads(channel_id),
     do: "/channels/#{channel_id}/users/@me/threads/archived/private"
 
+  def sticker(sticker_id), do: "/stickers/#{sticker_id}"
+  def sticker_packs, do: "/sticker-packs"
+  def guild_stickers(guild_id), do: "/guilds/#{guild_id}/stickers"
+  def guild_sticker(guild_id, sticker_id), do: "/guilds/#{guild_id}/stickers/#{sticker_id}"
+
   def discord_epoch, do: 1_420_070_400_000
 
   def opcodes do

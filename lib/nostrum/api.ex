@@ -3983,6 +3983,89 @@ defmodule Nostrum.Api do
     request(:delete, Constants.thread_member(thread_id, user_id))
   end
 
+  @doc """
+  Gets a sticker by its ID
+  """
+  @spec get_sticker(Sticker.id()) :: {:ok, Sticker.t()} | error
+  def get_sticker(sticker_id) do
+    request(:get, Constants.sticker(sticker_id))
+    |> handle_request_with_decode({:struct, Sticker})
+  end
+
+  @doc """
+  Lists all nitro sticker packs
+  """
+  @spec list_nitro_sticker_packs :: {:ok, StickerPacks.t()} | error
+  def list_nitro_sticker_packs do
+    request(:get, Constants.sticker_packs)
+    |> handle_request_with_decode({:struct, StickerPacks})
+  end
+
+  @doc """
+  Gets a guild sticker by its ID
+  """
+  @spec get_guild_sticker(Guild.id(), Sticker.id()) :: {:ok, Sticker.t()} | error
+  def get_guild_sticker(guild_id, sticker_id) do
+    request(:get, Constants.guild_sticker(guild_id, sticker_id))
+    |> handle_request_with_decode({:struct, Sticker})
+  end
+
+  @doc """
+  Creates a guild sticker
+  """
+  @spec create_guild_sticker(Guild.id(), options(), AuditLogEntry.reason()) :: {:ok, Sticker.t()} | error
+  def create_guild_sticker(guild_id, options, reason \\ nil)
+
+  def create_guild_sticker(guild_id, options, reason) when is_list(options) do
+    create_guild_sticker(guild_id, Map.new(options), reason)
+  end
+
+  def create_guild_sticker(guild_id, options, reason) do
+    request(%{
+      method: :post,
+      route: Constants.guild_stickers(guild_id),
+      body: options,
+      params: [],
+      headers: maybe_add_reason(reason)
+    })
+    |> handle_request_with_decode({:struct, Sticker})
+  end
+
+  @doc """
+  Modify a guild sticker
+  """
+  @spec modify_guild_sticker(Guild.id(), Snowflake.t(), options(), AuditLogEntry.reason()) :: {:ok, Sticker.t()} | error
+  def modify_guild_sticker(guild_id, sticker_id, options, reason \\ nil)
+
+  def modify_guild_sticker(guild_id, sticker_id, options, reason) when is_list(options) do
+    modify_guild_sticker(guild_id, sticker_id, Map.new(options), reason)
+  end
+
+  def modify_guild_sticker(guild_id, sticker_id, options, reason) do
+    request(%{
+      method: :patch,
+      route: Constants.guild_sticker(guild_id, sticker_id),
+      body: options,
+      params: [],
+      headers: maybe_add_reason(reason)
+    })
+    |> handle_request_with_decode({:struct, Sticker})
+  end
+
+  @doc """
+  Delete a guild sticker
+  """
+  @spec delete_guild_sticker(Guild.id(), Snowflake.t(), AuditLogEntry.reason()) :: {:ok} | error
+  def delete_guild_sticker(guild_id, sticker_id, reason \\ nil) do
+    request(%{
+      method: :delete,
+      route: Constants.guild_sticker(guild_id, sticker_id),
+      body: "",
+      params: [],
+      headers: maybe_add_reason(reason)
+    })
+  end
+
   @spec maybe_add_reason(String.t() | nil) :: list()
   defp maybe_add_reason(reason) do
     maybe_add_reason(reason, [{"content-type", "application/json"}])
