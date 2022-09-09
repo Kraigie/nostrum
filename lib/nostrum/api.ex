@@ -4066,7 +4066,6 @@ defmodule Nostrum.Api do
     })
   end
 
-
   @spec maybe_add_reason(String.t() | nil) :: list()
   defp maybe_add_reason(reason) do
     maybe_add_reason(reason, [{"content-type", "application/json"}])
