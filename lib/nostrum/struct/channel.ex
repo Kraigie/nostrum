@@ -108,6 +108,7 @@ defmodule Nostrum.Struct.Channel do
   |`11` |[`GUILD_PUBLIC_THREAD`](`t:guild_public_thread_channel/0`)   |_A temporary sub-channel within a text channel_                   |
   |`12` |[`GUILD_PRIVATE_THREAD`](`t:guild_private_thread_channel/0`) |_A temporary private sub-channel within a text channel_           |
   |`13` |[`GUILD_STAGE_VOICE`](`t:guild_stage_voice_channel/0`)       |_A voice channel for hosting events with an audience_             |
+  |`15` |[`GUILD_FORUM`](`t:guild_forum_channel/0`)                   |_A channel that can only contain threads                          |
 
   More information about _Discord Channel Types_ can be found on the [Discord API Channel Type Documentation](https://discord.com/developers/docs/resources/channel#channel-object-channel-types).
   """
@@ -147,7 +148,11 @@ defmodule Nostrum.Struct.Channel do
     :member,
     :default_auto_archive_duration,
     :permissions,
-    :newly_created
+    :newly_created,
+    :available_tags,
+    :applied_tags,
+    :default_reaction_emoji,
+    :default_thread_rate_limit_per_user
   ]
 
   @typedoc """
@@ -194,6 +199,8 @@ defmodule Nostrum.Struct.Channel do
 
   @typedoc """
   The id of the last message sent in the channel.
+
+  For `GUILD_FORUM` channels, this is the last thread created in the channel.
   """
   @type last_message_id :: Message.id() | nil
 
@@ -209,6 +216,11 @@ defmodule Nostrum.Struct.Channel do
   """
   @typedoc since: "0.5.0"
   @type rate_limit_per_user :: integer() | nil
+
+  @typedoc """
+  The `:rate_limit_per_user` which will be applied to threads created in the channel, in seconds.
+  """
+  @type default_thread_rate_limit_per_user :: integer() | nil
 
   @typedoc """
   The user limit of a voice channel.
@@ -280,16 +292,16 @@ defmodule Nostrum.Struct.Channel do
   @type member_count :: integer() | nil
 
   @typedoc """
-  The video quality mode of the voice channel.
-
-  More information about _video quality modes_ can be found on the [Discord API Video Quality Mode Documentation](https://discord.com/developers/docs/resources/channel#channel-object-video-quality-modes).
+  Thread-specific fields not needed by other channels.
   """
   @typedoc since: "0.5.0"
   @type thread_metadata :: %{
           archived: archived,
           auto_archive_duration: auto_archive_duration,
           archive_timestamp: archive_timestamp,
-          locked: boolean()
+          locked: boolean(),
+          invitable: boolean() | nil,
+          create_timestamp: DateTime.t() | nil
         }
 
   @typedoc """
@@ -376,6 +388,34 @@ defmodule Nostrum.Struct.Channel do
   """
   @typedoc since: "0.5.1"
   @type newly_created :: boolean | nil
+
+  @typedoc """
+  A map representing a tag for use in forum channels.
+
+  `:moderated` indicates whether the tag can only be added or removed by moderators.
+  `:emoji_id` and `:emoji_name` are mutually exclusive and indicate the emoji used to represent the tag.
+  """
+  @type forum_tag :: %{
+          id: Snowflake.t(),
+          name: String.t(),
+          moderated: boolean(),
+          emoji_id: Snowflake.t() | nil,
+          emoji_name: String.t() | nil
+        }
+
+  @type applied_tags :: [Snowflake.t()] | nil
+
+  @typedoc """
+  An object that specifies the emoji to use as the default way to react to a forum post.
+
+  `:emoji_id` and `:emoji_name` are mutually exclusive
+  """
+  @type default_reaction_emoji ::
+          %{
+            emoji_id: Snowflake.t() | nil,
+            emoji_name: String.t() | nil
+          }
+          | nil
 
   @typedoc """
   Type 0 partial channel object representing a text channel within a guild.
@@ -522,7 +562,8 @@ defmodule Nostrum.Struct.Channel do
           member_count: member_count,
           rate_limit_per_user: rate_limit_per_user,
           thread_metadata: thread_metadata,
-          newly_created: newly_created
+          newly_created: newly_created,
+          applied_tags: applied_tags()
         }
 
   @typedoc """
@@ -560,6 +601,25 @@ defmodule Nostrum.Struct.Channel do
           member_count: member_count,
           rate_limit_per_user: rate_limit_per_user,
           thread_metadata: thread_metadata
+        }
+
+  @typedoc """
+  Type 15 a guild forum channel.
+  """
+  @type guild_forum_channel :: %__MODULE__{
+          id: id,
+          guild_id: guild_id,
+          name: name,
+          type: type,
+          position: position,
+          permission_overwrites: permission_overwrites,
+          nsfw: nsfw,
+          parent_id: parent_id,
+          last_message_id: last_message_id,
+          available_tags: [forum_tag],
+          rate_limit_per_user: rate_limit_per_user,
+          default_reaction_emoji: default_reaction_emoji,
+          default_thread_rate_limit_per_user: default_thread_rate_limit_per_user
         }
 
   @typedoc """
@@ -614,6 +674,7 @@ defmodule Nostrum.Struct.Channel do
           | guild_public_thread_channel
           | guild_private_thread_channel
           | guild_stage_voice_channel
+          | guild_forum_channel
 
   @doc """
   Convert a channel into a mention.
@@ -653,7 +714,39 @@ defmodule Nostrum.Struct.Channel do
       |> Map.update(:last_pin_timestamp, nil, &Util.maybe_to_datetime/1)
       |> Map.update(:archive_timestamp, nil, &Util.maybe_to_datetime/1)
       |> Map.update(:join_timestamp, nil, &Util.maybe_to_datetime/1)
+      |> Map.update(:applied_tags, nil, &Util.cast(&1, {:list, Snowflake}))
+      |> Map.update(:thread_metadata, nil, &cast_thread_metadata/1)
+      |> Map.update(:available_tags, nil, &cast_available_tags/1)
+      |> Map.update(:default_reaction_emoji, nil, &cast_default_reaction_emoji/1)
 
     struct(__MODULE__, new)
+  end
+
+  defp cast_thread_metadata(nil), do: nil
+
+  defp cast_thread_metadata(map) do
+    map
+    |> Map.new(fn {k, v} -> {Util.maybe_to_atom(k), v} end)
+    |> Map.update(:archive_timestamp, nil, &Util.maybe_to_datetime/1)
+    |> Map.update(:create_timestamp, nil, &Util.maybe_to_datetime/1)
+  end
+
+  defp cast_available_tags(nil), do: nil
+
+  defp cast_available_tags(list) do
+    Enum.map(list, fn map ->
+      map
+      |> Map.new(fn {k, v} -> {Util.maybe_to_atom(k), v} end)
+      |> Map.update(:id, nil, &Util.cast(&1, Snowflake))
+      |> Map.update(:emoji_id, nil, &Util.cast(&1, Snowflake))
+    end)
+  end
+
+  defp cast_default_reaction_emoji(nil), do: nil
+
+  defp cast_default_reaction_emoji(map) do
+    map
+    |> Map.new(fn {k, v} -> {Util.maybe_to_atom(k), v} end)
+    |> Map.update(:id, nil, &Util.cast(&1, Snowflake))
   end
 end
