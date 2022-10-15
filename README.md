@@ -40,7 +40,7 @@ config :nostrum,
   token: "666" # The token of your bot as a string
 ```
 
-Note that due to Discord API changes, in order to receive message content (e.g.
+> **Note:** Due to Discord API changes, _in order to receive message content_ (e.g.
 for non-slash commands or moderation tools), you need to have the "Message
 Content Intent" enabled on your [Bot's application
 settings](https://discord.com/developers/applications/), and the
