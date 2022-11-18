@@ -1959,6 +1959,7 @@ defmodule Nostrum.Api do
     * `:color` (integer) - RGB color value (default: 0)
     * `:hoist` (boolean) - whether the role should be displayed separately in the sidebar (default: false)
     * `:mentionable` (boolean) - whether the role should be mentionable (default: false)
+    * `:icon` (string) - URL role icon (default: `nil`)
 
   ## Examples
 

@@ -23,7 +23,8 @@ defmodule Nostrum.Struct.Guild.RoleTest do
         "position" => 1,
         "permissions" => "8559918328",
         "managed" => false,
-        "mentionable" => true
+        "mentionable" => true,
+        "icon" => "abc123"
       }
 
       role = Role.to_struct(etf_role)
