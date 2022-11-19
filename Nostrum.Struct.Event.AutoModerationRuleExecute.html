@@ -7,7 +7,7 @@
     <meta name="generator" content="ExDoc v0.28.0">
     <meta name="project" content="Nostrum v0.6.1">
 
-    <title>Nostrum.Struct.Message.Sticker — Nostrum v0.6.1</title>
+    <title>Nostrum.Struct.Event.AutoModerationRuleExecute — Nostrum v0.6.1</title>
     <link rel="stylesheet" href="dist/elixir-a816d167216329cc463d.css" />
 
     <script src="dist/sidebar_items-514e5c502b.js"></script>
@@ -89,19 +89,20 @@ Nostrum
 </button>
 
 
-    <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/message/sticker.ex#L1" title="View Source" class="view-source" rel="help">
+    <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/event/auto_moderation_rule_execute.ex#L1" title="View Source" class="view-source" rel="help">
       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
       <span class="sr-only">View Source</span>
     </a>
 
-  <span translate="no">Nostrum.Struct.Message.Sticker</span> 
+  <span translate="no">Nostrum.Struct.Event.AutoModerationRuleExecute</span> 
   <small class="app-vsn" translate="no">(Nostrum v0.6.1)</small>
 
 </h1>
 
 
   <section id="moduledoc">
-<p>A <a href="Nostrum.Struct.Message.Sticker.html#content"><code class="inline">Nostrum.Struct.Message.Sticker</code></a> represents a sticker that can be sent inside a <a href="Nostrum.Struct.Message.html"><code class="inline">Nostrum.Struct.Message</code></a>.</p><p>More information can be found on the <a href="https://discord.com/developers/docs/resources/sticker#sticker-object-sticker-structure">Discord API Sticker Object Documentation.</a></p>
+<p>Sent when an auto-moderation rule executes.
+(e.g. message is blocked).</p>
   </section>
 
 
@@ -121,31 +122,41 @@ Nostrum
 
       <div class="summary-row">
         <div class="summary-signature">
-          <a href="#t:available/0" translate="no">available()</a>
+          <a href="#t:action/0" translate="no">action()</a>
 
         </div>
 
-          <div class="summary-synopsis"><p>Whether this guild sticker can be used, may be false due to loss of Server Boosts</p></div>
+          <div class="summary-synopsis"><p>The action that was executed</p></div>
 
       </div>
 
       <div class="summary-row">
         <div class="summary-signature">
-          <a href="#t:description/0" translate="no">description()</a>
+          <a href="#t:alert_system_message_id/0" translate="no">alert_system_message_id()</a>
 
         </div>
 
-          <div class="summary-synopsis"><p>Description of the sticker</p></div>
+          <div class="summary-synopsis"><p>The id of any system message that was generated as a result of the action</p></div>
 
       </div>
 
       <div class="summary-row">
         <div class="summary-signature">
-          <a href="#t:format_type/0" translate="no">format_type()</a>
+          <a href="#t:channel_id/0" translate="no">channel_id()</a>
 
         </div>
 
-          <div class="summary-synopsis"><p><a href="https://discord.com/developers/docs/resources/sticker#sticker-object-sticker-format-types">Discord API Sticker Object Format Type Documentation</a></p></div>
+          <div class="summary-synopsis"><p>The id of the channel in which the content was posted</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#t:content/0" translate="no">content()</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>The content of the message which triggered the rule</p></div>
 
       </div>
 
@@ -155,47 +166,57 @@ Nostrum
 
         </div>
 
-          <div class="summary-synopsis"><p>Id of the guild that owns this sticker</p></div>
+          <div class="summary-synopsis"><p>The id of the guild in which the action was executed</p></div>
 
       </div>
 
       <div class="summary-row">
         <div class="summary-signature">
-          <a href="#t:id/0" translate="no">id()</a>
+          <a href="#t:matched_content/0" translate="no">matched_content()</a>
 
         </div>
 
-          <div class="summary-synopsis"><p>Id of the sticker</p></div>
+          <div class="summary-synopsis"><p>The substring which matched the content</p></div>
 
       </div>
 
       <div class="summary-row">
         <div class="summary-signature">
-          <a href="#t:name/0" translate="no">name()</a>
+          <a href="#t:matched_keyword/0" translate="no">matched_keyword()</a>
 
         </div>
 
-          <div class="summary-synopsis"><p>Name of the sticker</p></div>
+          <div class="summary-synopsis"><p>The keyword that was matched in the content</p></div>
 
       </div>
 
       <div class="summary-row">
         <div class="summary-signature">
-          <a href="#t:pack_id/0" translate="no">pack_id()</a>
+          <a href="#t:message_id/0" translate="no">message_id()</a>
 
         </div>
 
-          <div class="summary-synopsis"><p>Id of the pack the sticker is from</p></div>
+          <div class="summary-synopsis"><p>The id of the message which was posted</p></div>
 
       </div>
 
       <div class="summary-row">
         <div class="summary-signature">
-          <a href="#t:sort_value/0" translate="no">sort_value()</a>
+          <a href="#t:rule_id/0" translate="no">rule_id()</a>
 
         </div>
 
-          <div class="summary-synopsis"><p>The sticker's sort order within its pack</p></div>
+          <div class="summary-synopsis"><p>The id of the rule that was executed</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#t:rule_trigger_type/0" translate="no">rule_trigger_type()</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>The type of the rule that was executed</p></div>
 
       </div>
 
@@ -209,31 +230,11 @@ Nostrum
 
       <div class="summary-row">
         <div class="summary-signature">
-          <a href="#t:tags/0" translate="no">tags()</a>
+          <a href="#t:user_id/0" translate="no">user_id()</a>
 
         </div>
 
-          <div class="summary-synopsis"><p>Discord name of a unicode emoji representing the sticker's expression. for standard stickers, a comma-separated list of related expressions.</p></div>
-
-      </div>
-
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#t:type/0" translate="no">type()</a>
-
-        </div>
-
-          <div class="summary-synopsis"><p><a href="https://discord.com/developers/docs/resources/sticker#sticker-object-sticker-types">Discord API Sticker Object Type Documentation</a></p></div>
-
-      </div>
-
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#t:user/0" translate="no">user()</a>
-
-        </div>
-
-          <div class="summary-synopsis"><p>User that uploaded the guild sticker</p></div>
+          <div class="summary-synopsis"><p>The id of the user which generated the content which triggered the rule</p></div>
 
       </div>
 
@@ -251,16 +252,16 @@ Nostrum
 Types
     </h1>
     <div class="types-list">
-<section class="detail" id="t:available/0">
+<section class="detail" id="t:action/0">
 
   <div class="detail-header">
-    <a href="#t:available/0" class="detail-link" title="Link to this type">
+    <a href="#t:action/0" class="detail-link" title="Link to this type">
       <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature" translate="no">available()</h1>
+    <h1 class="signature" translate="no">action()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/message/sticker.ex#L71" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/event/auto_moderation_rule_execute.ex#L29" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -273,23 +274,23 @@ Types
       <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">available() :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">boolean</a>()</pre>
+          <pre translate="no">action() :: <a href="Nostrum.Struct.AutoModerationRule.Action.html#t:t/0">Nostrum.Struct.AutoModerationRule.Action.t</a>()</pre>
 
       </div>
 
-<p>Whether this guild sticker can be used, may be false due to loss of Server Boosts</p>
+<p>The action that was executed</p>
   </section>
 </section>
-<section class="detail" id="t:description/0">
+<section class="detail" id="t:alert_system_message_id/0">
 
   <div class="detail-header">
-    <a href="#t:description/0" class="detail-link" title="Link to this type">
+    <a href="#t:alert_system_message_id/0" class="detail-link" title="Link to this type">
       <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature" translate="no">description()</h1>
+    <h1 class="signature" translate="no">alert_system_message_id()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/message/sticker.ex#L44" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/event/auto_moderation_rule_execute.ex#L59" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -302,23 +303,23 @@ Types
       <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">description() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>() | nil</pre>
+          <pre translate="no">alert_system_message_id() :: <a href="Nostrum.Struct.Message.html#t:id/0">Nostrum.Struct.Message.id</a>() | nil</pre>
 
       </div>
 
-<p>Description of the sticker</p>
+<p>The id of any system message that was generated as a result of the action</p><p>note: will not exist if the event does not correspond to an action that generates a system message</p>
   </section>
 </section>
-<section class="detail" id="t:format_type/0">
+<section class="detail" id="t:channel_id/0">
 
   <div class="detail-header">
-    <a href="#t:format_type/0" class="detail-link" title="Link to this type">
+    <a href="#t:channel_id/0" class="detail-link" title="Link to this type">
       <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature" translate="no">format_type()</h1>
+    <h1 class="signature" translate="no">channel_id()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/message/sticker.ex#L66" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/event/auto_moderation_rule_execute.ex#L45" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -331,11 +332,40 @@ Types
       <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">format_type() :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>()</pre>
+          <pre translate="no">channel_id() :: <a href="Nostrum.Struct.Channel.html#t:id/0">Nostrum.Struct.Channel.id</a>() | nil</pre>
 
       </div>
 
-<p><a href="https://discord.com/developers/docs/resources/sticker#sticker-object-sticker-format-types">Discord API Sticker Object Format Type Documentation</a></p><ul><li><code class="inline">1</code>  - <code class="inline">PNG</code></li><li><code class="inline">2</code>  - <code class="inline">APNG</code></li><li><code class="inline">3</code>  - <code class="inline">LOTTIE</code></li></ul>
+<p>The id of the channel in which the content was posted</p><p>note: this field may not exist if the content was blocked from being created</p>
+  </section>
+</section>
+<section class="detail" id="t:content/0">
+
+  <div class="detail-header">
+    <a href="#t:content/0" class="detail-link" title="Link to this type">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature" translate="no">content()</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/event/auto_moderation_rule_execute.ex#L62" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre translate="no">content() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()</pre>
+
+      </div>
+
+<p>The content of the message which triggered the rule</p>
   </section>
 </section>
 <section class="detail" id="t:guild_id/0">
@@ -347,7 +377,7 @@ Types
     </a>
     <h1 class="signature" translate="no">guild_id()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/message/sticker.ex#L76" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/event/auto_moderation_rule_execute.ex#L26" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -360,23 +390,23 @@ Types
       <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">guild_id() :: <a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>() | nil</pre>
+          <pre translate="no">guild_id() :: <a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>()</pre>
 
       </div>
 
-<p>Id of the guild that owns this sticker</p>
+<p>The id of the guild in which the action was executed</p>
   </section>
 </section>
-<section class="detail" id="t:id/0">
+<section class="detail" id="t:matched_content/0">
 
   <div class="detail-header">
-    <a href="#t:id/0" class="detail-link" title="Link to this type">
+    <a href="#t:matched_content/0" class="detail-link" title="Link to this type">
       <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature" translate="no">id()</h1>
+    <h1 class="signature" translate="no">matched_content()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/message/sticker.ex#L29" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/event/auto_moderation_rule_execute.ex#L72" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -389,23 +419,23 @@ Types
       <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">id() :: <a href="Nostrum.Snowflake.html#t:t/0">Nostrum.Snowflake.t</a>()</pre>
+          <pre translate="no">matched_content() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>() | nil</pre>
 
       </div>
 
-<p>Id of the sticker</p>
+<p>The substring which matched the content</p>
   </section>
 </section>
-<section class="detail" id="t:name/0">
+<section class="detail" id="t:matched_keyword/0">
 
   <div class="detail-header">
-    <a href="#t:name/0" class="detail-link" title="Link to this type">
+    <a href="#t:matched_keyword/0" class="detail-link" title="Link to this type">
       <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature" translate="no">name()</h1>
+    <h1 class="signature" translate="no">matched_keyword()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/message/sticker.ex#L39" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/event/auto_moderation_rule_execute.ex#L67" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -418,23 +448,23 @@ Types
       <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">name() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>() | nil</pre>
+          <pre translate="no">matched_keyword() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>() | nil</pre>
 
       </div>
 
-<p>Name of the sticker</p>
+<p>The keyword that was matched in the content</p>
   </section>
 </section>
-<section class="detail" id="t:pack_id/0">
+<section class="detail" id="t:message_id/0">
 
   <div class="detail-header">
-    <a href="#t:pack_id/0" class="detail-link" title="Link to this type">
+    <a href="#t:message_id/0" class="detail-link" title="Link to this type">
       <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature" translate="no">pack_id()</h1>
+    <h1 class="signature" translate="no">message_id()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/message/sticker.ex#L34" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/event/auto_moderation_rule_execute.ex#L52" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -447,23 +477,23 @@ Types
       <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">pack_id() :: <a href="Nostrum.Snowflake.html#t:t/0">Nostrum.Snowflake.t</a>()</pre>
+          <pre translate="no">message_id() :: <a href="Nostrum.Struct.Message.html#t:id/0">Nostrum.Struct.Message.id</a>() | nil</pre>
 
       </div>
 
-<p>Id of the pack the sticker is from</p>
+<p>The id of the message which was posted</p><p>note: this field will not exist if the content was blocked from being created</p>
   </section>
 </section>
-<section class="detail" id="t:sort_value/0">
+<section class="detail" id="t:rule_id/0">
 
   <div class="detail-header">
-    <a href="#t:sort_value/0" class="detail-link" title="Link to this type">
+    <a href="#t:rule_id/0" class="detail-link" title="Link to this type">
       <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature" translate="no">sort_value()</h1>
+    <h1 class="signature" translate="no">rule_id()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/message/sticker.ex#L86" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/event/auto_moderation_rule_execute.ex#L32" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -476,11 +506,40 @@ Types
       <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">sort_value() :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>()</pre>
+          <pre translate="no">rule_id() :: <a href="Nostrum.Struct.AutoModerationRule.html#t:id/0">Nostrum.Struct.AutoModerationRule.id</a>()</pre>
 
       </div>
 
-<p>The sticker's sort order within its pack</p>
+<p>The id of the rule that was executed</p>
+  </section>
+</section>
+<section class="detail" id="t:rule_trigger_type/0">
+
+  <div class="detail-header">
+    <a href="#t:rule_trigger_type/0" class="detail-link" title="Link to this type">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature" translate="no">rule_trigger_type()</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/event/auto_moderation_rule_execute.ex#L35" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre translate="no">rule_trigger_type() :: <a href="Nostrum.Struct.AutoModerationRule.html#t:trigger_type/0">Nostrum.Struct.AutoModerationRule.trigger_type</a>()</pre>
+
+      </div>
+
+<p>The type of the rule that was executed</p>
   </section>
 </section>
 <section class="detail" id="t:t/0">
@@ -492,7 +551,7 @@ Types
     </a>
     <h1 class="signature" translate="no">t()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/message/sticker.ex#L88" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/event/auto_moderation_rule_execute.ex#L74" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -505,18 +564,18 @@ Types
       <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">t() :: %Nostrum.Struct.Message.Sticker{
-  available: <a href="#t:available/0">available</a>(),
-  description: <a href="#t:description/0">description</a>(),
-  format_type: <a href="#t:format_type/0">format_type</a>(),
+          <pre translate="no">t() :: %Nostrum.Struct.Event.AutoModerationRuleExecute{
+  action: <a href="#t:action/0">action</a>(),
+  alert_system_message_id: <a href="#t:alert_system_message_id/0">alert_system_message_id</a>(),
+  channel_id: <a href="#t:channel_id/0">channel_id</a>(),
+  content: <a href="#t:content/0">content</a>(),
   guild_id: <a href="#t:guild_id/0">guild_id</a>(),
-  id: <a href="#t:id/0">id</a>(),
-  name: <a href="#t:name/0">name</a>(),
-  pack_id: <a href="#t:pack_id/0">pack_id</a>(),
-  sort_value: <a href="#t:sort_value/0">sort_value</a>(),
-  tags: <a href="#t:tags/0">tags</a>(),
-  type: <a href="#t:type/0">type</a>(),
-  user: <a href="#t:user/0">user</a>()
+  matched_content: <a href="#t:matched_content/0">matched_content</a>(),
+  matched_keyword: <a href="#t:matched_keyword/0">matched_keyword</a>(),
+  message_id: <a href="#t:message_id/0">message_id</a>(),
+  rule_id: <a href="#t:rule_id/0">rule_id</a>(),
+  rule_trigger_type: <a href="#t:rule_trigger_type/0">rule_trigger_type</a>(),
+  user_id: <a href="#t:user_id/0">user_id</a>()
 }</pre>
 
       </div>
@@ -524,16 +583,16 @@ Types
 
   </section>
 </section>
-<section class="detail" id="t:tags/0">
+<section class="detail" id="t:user_id/0">
 
   <div class="detail-header">
-    <a href="#t:tags/0" class="detail-link" title="Link to this type">
+    <a href="#t:user_id/0" class="detail-link" title="Link to this type">
       <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature" translate="no">tags()</h1>
+    <h1 class="signature" translate="no">user_id()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/message/sticker.ex#L49" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/event/auto_moderation_rule_execute.ex#L38" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -546,69 +605,11 @@ Types
       <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">tags() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>() | nil</pre>
+          <pre translate="no">user_id() :: User.id()</pre>
 
       </div>
 
-<p>Discord name of a unicode emoji representing the sticker's expression. for standard stickers, a comma-separated list of related expressions.</p>
-  </section>
-</section>
-<section class="detail" id="t:type/0">
-
-  <div class="detail-header">
-    <a href="#t:type/0" class="detail-link" title="Link to this type">
-      <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this type</span>
-    </a>
-    <h1 class="signature" translate="no">type()</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/message/sticker.ex#L57" class="view-source" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
-
-
-  </div>
-
-  <section class="docstring">
-
-      <h2>Specs</h2>
-      <div class="specs">
-
-          <pre translate="no">type() :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>()</pre>
-
-      </div>
-
-<p><a href="https://discord.com/developers/docs/resources/sticker#sticker-object-sticker-types">Discord API Sticker Object Type Documentation</a></p><ul><li><code class="inline">1</code>  - <code class="inline">STANDARD</code>       an official sticker in a pack, part of Nitro or in a removed purchasable pack</li><li><code class="inline">2</code>  - <code class="inline">GUILD</code>          a sticker uploaded to a Boosted guild for the guild's members</li></ul>
-  </section>
-</section>
-<section class="detail" id="t:user/0">
-
-  <div class="detail-header">
-    <a href="#t:user/0" class="detail-link" title="Link to this type">
-      <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this type</span>
-    </a>
-    <h1 class="signature" translate="no">user()</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/message/sticker.ex#L81" class="view-source" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
-
-
-  </div>
-
-  <section class="docstring">
-
-      <h2>Specs</h2>
-      <div class="specs">
-
-          <pre translate="no">user() :: <a href="Nostrum.Struct.User.html#t:t/0">Nostrum.Struct.User.t</a>()</pre>
-
-      </div>
-
-<p>User that uploaded the guild sticker</p>
+<p>The id of the user which generated the content which triggered the rule</p>
   </section>
 </section>
 
@@ -624,7 +625,7 @@ Types
               <a href="https://hex.pm/packages/nostrum/0.6.1" class="line footer-hex-package">Package</a>
               <a href="https://preview.hex.pm/preview/nostrum/0.6.1" class="line">Preview</a>
 
-                <a href="https://preview.hex.pm/preview/nostrum/0.6.1/show/lib/nostrum/struct/message/sticker.ex">(current file)</a>
+                <a href="https://preview.hex.pm/preview/nostrum/0.6.1/show/lib/nostrum/struct/event/auto_moderation_rule_execute.ex">(current file)</a>
 
             </span>
 

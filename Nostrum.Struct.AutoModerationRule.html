@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.28.0">
+    <meta name="project" content="Nostrum v0.6.1">
+
+    <title>Nostrum.Struct.AutoModerationRule — Nostrum v0.6.1</title>
+    <link rel="stylesheet" href="dist/elixir-a816d167216329cc463d.css" />
+
+    <script src="dist/sidebar_items-514e5c502b.js"></script>
+
+      <script src="docs_config.js"></script>
+
+    <script async src="dist/app-80aa23c1d96b6dc3c064.js"></script>
+
+
+  </head>
+  <body data-type="modules">
+    <script>
+
+      try {
+        if (localStorage.getItem('night-mode') === 'true') {
+          document.body.classList.add('night-mode');
+        }
+      } catch (error) { }
+    </script>
+
+<div class="main">
+
+
+<section class="sidebar">
+  <button class="sidebar-button sidebar-toggle">
+    <i class="ri-menu-line ri-lg" title="Collapse/expand sidebar"></i>
+  </button>
+
+  <form class="sidebar-search" action="search.html">
+    <button type="submit" class="search-button" aria-label="Submit Search">
+      <i class="ri-search-2-line" aria-hidden="true" title="Submit search"></i>
+    </button>
+    <button type="button" tabindex="-1" class="search-close-button" aria-label="Cancel Search">
+      <i class="ri-close-line ri-lg" aria-hidden="true" title="Cancel search"></i>
+    </button>
+    <label class="search-label">
+      <input name="q" type="text" class="search-input" placeholder="Search..." aria-label="Input your search terms" autocomplete="off" />
+    </label>
+  </form>
+
+  <div class="autocomplete">
+    <div class="autocomplete-results">
+    </div>
+  </div>
+
+  <div class="sidebar-header">
+
+    <div class="sidebar-projectDetails">
+      <a href="https://github.com/Kraigie/nostrum" class="sidebar-projectName" translate="no">
+Nostrum
+      </a>
+      <strong class="sidebar-projectVersion" translate="no">
+        v0.6.1
+      </strong>
+    </div>
+    <ul class="sidebar-listNav">
+      <li><a id="extras-list-link" href="#full-list">Pages</a></li>
+
+        <li><a id="modules-list-link" href="#full-list">Modules</a></li>
+
+
+        <li><a id="tasks-list-link" href="#full-list"><span translate="no">Mix</span> Tasks</a></li>
+
+    </ul>
+  </div>
+
+  <div class="gradient"></div>
+  <ul id="full-list" class="sidebar-fullList"></ul>
+</section>
+
+<section class="content">
+  <div class="content-outer">
+    <div id="content" class="content-inner">
+
+<h1>
+<button class="settings display-settings">
+  <i class="ri-settings-3-line"></i>
+  <span class="sr-only">Settings</span>
+</button>
+
+
+    <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/auto_moderation_rule.ex#L1" title="View Source" class="view-source" rel="help">
+      <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+      <span class="sr-only">View Source</span>
+    </a>
+
+  <span translate="no">Nostrum.Struct.AutoModerationRule</span> 
+  <small class="app-vsn" translate="no">(Nostrum v0.6.1)</small>
+
+</h1>
+
+
+  <section id="moduledoc">
+<p>Struct representing an auto-moderation rule.</p>
+  </section>
+
+
+  <section id="summary" class="details-list">
+    <h1 class="section-heading">
+      <a class="hover-link" href="#summary">
+        <i class="ri-link-m" aria-hidden="true"></i>
+        <span class="sr-only">Link to this section</span>
+      </a>
+      Summary
+    </h1>
+
+  <div class="summary-types summary">
+    <h2>
+      <a href="#types">Types</a>
+    </h2>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#t:actions/0" translate="no">actions()</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>A list of Actions which will be performed when the rule is triggered.</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#t:creator_id/0" translate="no">creator_id()</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>The id of the user who created the rule</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#t:enabled/0" translate="no">enabled()</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>If the rule is enabled or not.</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#t:event_type/0" translate="no">event_type()</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>Indicates in what event context a rule should be checked</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#t:exempt_channels/0" translate="no">exempt_channels()</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>A list of channels that are exempt from the rule</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#t:exempt_roles/0" translate="no">exempt_roles()</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>A list of roles that are exempt from the rule.</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#t:guild_id/0" translate="no">guild_id()</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>The id of the guild the rule belongs to</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#t:id/0" translate="no">id()</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>The id of the auto-moderation rule</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#t:name/0" translate="no">name()</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>The name of the rule</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#t:preset_values/0" translate="no">preset_values()</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>Values which represent the different presets defined by Discord</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#t:t/0" translate="no">t()</a>
+
+        </div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#t:trigger_metadata/0" translate="no">trigger_metadata()</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>Additional data used to determine if the rule should triggered.</p></div>
+
+      </div>
+
+      <div class="summary-row">
+        <div class="summary-signature">
+          <a href="#t:trigger_type/0" translate="no">trigger_type()</a>
+
+        </div>
+
+          <div class="summary-synopsis"><p>Characters the type of content which triggered the rule</p></div>
+
+      </div>
+
+  </div>
+
+  </section>
+
+
+  <section id="types" class="details-list">
+    <h1 class="section-heading">
+      <a class="hover-link" href="#types">
+        <i class="ri-link-m" aria-hidden="true"></i>
+        <span class="sr-only">Link to this section</span>
+      </a>
+Types
+    </h1>
+    <div class="types-list">
+<section class="detail" id="t:actions/0">
+
+  <div class="detail-header">
+    <a href="#t:actions/0" class="detail-link" title="Link to this type">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature" translate="no">actions()</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/auto_moderation_rule.ex#L89" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre translate="no">actions() :: [<a href="Nostrum.Struct.AutoModerationRule.Action.html#t:t/0">Nostrum.Struct.AutoModerationRule.Action.t</a>()]</pre>
+
+      </div>
+
+<p>A list of Actions which will be performed when the rule is triggered.</p>
+  </section>
+</section>
+<section class="detail" id="t:creator_id/0">
+
+  <div class="detail-header">
+    <a href="#t:creator_id/0" class="detail-link" title="Link to this type">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature" translate="no">creator_id()</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/auto_moderation_rule.ex#L38" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre translate="no">creator_id() :: <a href="Nostrum.Struct.User.html#t:id/0">Nostrum.Struct.User.id</a>()</pre>
+
+      </div>
+
+<p>The id of the user who created the rule</p>
+  </section>
+</section>
+<section class="detail" id="t:enabled/0">
+
+  <div class="detail-header">
+    <a href="#t:enabled/0" class="detail-link" title="Link to this type">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature" translate="no">enabled()</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/auto_moderation_rule.ex#L94" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre translate="no">enabled() :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">boolean</a>()</pre>
+
+      </div>
+
+<p>If the rule is enabled or not.</p>
+  </section>
+</section>
+<section class="detail" id="t:event_type/0">
+
+  <div class="detail-header">
+    <a href="#t:event_type/0" class="detail-link" title="Link to this type">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature" translate="no">event_type()</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/auto_moderation_rule.ex#L47" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre translate="no">event_type() :: 1</pre>
+
+      </div>
+
+<p>Indicates in what event context a rule should be checked</p><table><tbody><tr><td style="text-align: left;"></td><td style="text-align: left;">value</td><td style="text-align: left;">type</td><td style="text-align: left;">description</td></tr><tr><td style="text-align: left;"></td><td style="text-align: left;">----</td><td style="text-align: left;">----</td><td style="text-align: left;">-----------</td></tr><tr><td style="text-align: left;"></td><td style="text-align: left;"><code class="inline">1</code></td><td style="text-align: left;"><code class="inline">MESSAGE_SEND</code></td><td style="text-align: left;">when a member sends or edits a message in a guild</td></tr></tbody></table>
+  </section>
+</section>
+<section class="detail" id="t:exempt_channels/0">
+
+  <div class="detail-header">
+    <a href="#t:exempt_channels/0" class="detail-link" title="Link to this type">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature" translate="no">exempt_channels()</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/auto_moderation_rule.ex#L104" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre translate="no">exempt_channels() :: [<a href="Nostrum.Struct.Channel.html#t:id/0">Nostrum.Struct.Channel.id</a>()]</pre>
+
+      </div>
+
+<p>A list of channels that are exempt from the rule</p>
+  </section>
+</section>
+<section class="detail" id="t:exempt_roles/0">
+
+  <div class="detail-header">
+    <a href="#t:exempt_roles/0" class="detail-link" title="Link to this type">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature" translate="no">exempt_roles()</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/auto_moderation_rule.ex#L99" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre translate="no">exempt_roles() :: [<a href="Nostrum.Struct.Guild.Role.html#t:id/0">Nostrum.Struct.Guild.Role.id</a>()]</pre>
+
+      </div>
+
+<p>A list of roles that are exempt from the rule.</p>
+  </section>
+</section>
+<section class="detail" id="t:guild_id/0">
+
+  <div class="detail-header">
+    <a href="#t:guild_id/0" class="detail-link" title="Link to this type">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature" translate="no">guild_id()</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/auto_moderation_rule.ex#L32" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre translate="no">guild_id() :: <a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>()</pre>
+
+      </div>
+
+<p>The id of the guild the rule belongs to</p>
+  </section>
+</section>
+<section class="detail" id="t:id/0">
+
+  <div class="detail-header">
+    <a href="#t:id/0" class="detail-link" title="Link to this type">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature" translate="no">id()</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/auto_moderation_rule.ex#L29" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre translate="no">id() :: <a href="Nostrum.Snowflake.html#t:t/0">Nostrum.Snowflake.t</a>()</pre>
+
+      </div>
+
+<p>The id of the auto-moderation rule</p>
+  </section>
+</section>
+<section class="detail" id="t:name/0">
+
+  <div class="detail-header">
+    <a href="#t:name/0" class="detail-link" title="Link to this type">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature" translate="no">name()</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/auto_moderation_rule.ex#L35" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre translate="no">name() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()</pre>
+
+      </div>
+
+<p>The name of the rule</p>
+  </section>
+</section>
+<section class="detail" id="t:preset_values/0">
+
+  <div class="detail-header">
+    <a href="#t:preset_values/0" class="detail-link" title="Link to this type">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature" translate="no">preset_values()</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/auto_moderation_rule.ex#L72" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre translate="no">preset_values() :: 1..3</pre>
+
+      </div>
+
+<p>Values which represent the different presets defined by Discord</p><table><tbody><tr><td style="text-align: left;"></td><td style="text-align: left;">value</td><td style="text-align: left;">type</td><td style="text-align: left;">description</td></tr><tr><td style="text-align: left;"></td><td style="text-align: left;">----</td><td style="text-align: left;">----</td><td style="text-align: left;">-----------</td></tr><tr><td style="text-align: left;"></td><td style="text-align: left;"><code class="inline">1</code></td><td style="text-align: left;"><code class="inline">PROFANITY</code></td><td style="text-align: left;">Words which may be considered profane</td></tr><tr><td style="text-align: left;"></td><td style="text-align: left;"><code class="inline">2</code></td><td style="text-align: left;"><code class="inline">HARMFUL_LINK</code></td><td style="text-align: left;">Words that refer to sexually explicit behavior or activity</td></tr><tr><td style="text-align: left;"></td><td style="text-align: left;"><code class="inline">3</code></td><td style="text-align: left;"><code class="inline">SLURS</code></td><td style="text-align: left;">Personal insults or words that may be considered hate speech</td></tr></tbody></table>
+  </section>
+</section>
+<section class="detail" id="t:t/0">
+
+  <div class="detail-header">
+    <a href="#t:t/0" class="detail-link" title="Link to this type">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature" translate="no">t()</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/auto_moderation_rule.ex#L106" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre translate="no">t() :: %Nostrum.Struct.AutoModerationRule{
+  actions: <a href="#t:actions/0">actions</a>(),
+  creator_id: <a href="#t:creator_id/0">creator_id</a>(),
+  enabled: <a href="#t:enabled/0">enabled</a>(),
+  event_type: <a href="#t:event_type/0">event_type</a>(),
+  exempt_channels: <a href="#t:exempt_channels/0">exempt_channels</a>(),
+  exempt_roles: <a href="#t:exempt_roles/0">exempt_roles</a>(),
+  guild_id: <a href="#t:guild_id/0">guild_id</a>(),
+  id: <a href="#t:id/0">id</a>(),
+  name: <a href="#t:name/0">name</a>(),
+  trigger_metadata: <a href="#t:trigger_metadata/0">trigger_metadata</a>(),
+  trigger_type: <a href="#t:trigger_type/0">trigger_type</a>()
+}</pre>
+
+      </div>
+
+
+  </section>
+</section>
+<section class="detail" id="t:trigger_metadata/0">
+
+  <div class="detail-header">
+    <a href="#t:trigger_metadata/0" class="detail-link" title="Link to this type">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature" translate="no">trigger_metadata()</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/auto_moderation_rule.ex#L84" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre translate="no">trigger_metadata() :: <a href="Nostrum.Struct.AutoModerationRule.TriggerMetadata.html#t:t/0">Nostrum.Struct.AutoModerationRule.TriggerMetadata.t</a>()</pre>
+
+      </div>
+
+<p>Additional data used to determine if the rule should triggered.</p><p>The <a href="#t:trigger_type/0"><code class="inline">trigger_type/0</code></a> field will determine which of the following fields are present.</p><table><tbody><tr><td style="text-align: left;"></td><td style="text-align: left;">key</td><td style="text-align: left;">associated <code class="inline">trigger_type</code></td></tr><tr><td style="text-align: left;"></td><td style="text-align: left;">----</td><td style="text-align: left;">-----------</td></tr><tr><td style="text-align: left;"></td><td style="text-align: left;"><code class="inline">keywords</code></td><td style="text-align: left;"><code class="inline">KEYWORD</code></td></tr><tr><td style="text-align: left;"></td><td style="text-align: left;"><code class="inline">preset</code></td><td style="text-align: left;"><code class="inline">KEYWORD_PRESET</code></td></tr></tbody></table>
+  </section>
+</section>
+<section class="detail" id="t:trigger_type/0">
+
+  <div class="detail-header">
+    <a href="#t:trigger_type/0" class="detail-link" title="Link to this type">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature" translate="no">trigger_type()</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/auto_moderation_rule.ex#L61" class="view-source" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <h2>Specs</h2>
+      <div class="specs">
+
+          <pre translate="no">trigger_type() :: 1..4</pre>
+
+      </div>
+
+<p>Characters the type of content which triggered the rule</p><table><tbody><tr><td style="text-align: left;"></td><td style="text-align: left;">value</td><td style="text-align: left;">type</td><td style="text-align: left;">max per guild</td><td style="text-align: left;">description</td></tr><tr><td style="text-align: left;"></td><td style="text-align: left;">----</td><td style="text-align: left;">----</td><td style="text-align: left;">-----</td><td style="text-align: left;">-----------</td></tr><tr><td style="text-align: left;"></td><td style="text-align: left;"><code class="inline">1</code></td><td style="text-align: left;"><code class="inline">KEYWORD</code></td><td style="text-align: left;">3</td><td style="text-align: left;">check if content contains words from a user defined list of keywords</td></tr><tr><td style="text-align: left;"></td><td style="text-align: left;"><code class="inline">2</code></td><td style="text-align: left;"><code class="inline">HARMFUL_LINK</code></td><td style="text-align: left;">1</td><td style="text-align: left;">check if the content contains any harmful links</td></tr><tr><td style="text-align: left;"></td><td style="text-align: left;"><code class="inline">3</code></td><td style="text-align: left;"><code class="inline">SPAM</code></td><td style="text-align: left;">1</td><td style="text-align: left;">check if the content represents generic spam</td></tr><tr><td style="text-align: left;"></td><td style="text-align: left;"><code class="inline">4</code></td><td style="text-align: left;"><code class="inline">KEYWORD_PRESET</code></td><td style="text-align: left;">1</td><td style="text-align: left;">check if the content contains a list of discord defined keywords</td></tr></tbody></table><p>note: <code class="inline">HARMFUL_LINK</code> and <code class="inline">SPAM</code> are not yet offically released at the time of this writing.</p>
+  </section>
+</section>
+
+    </div>
+  </section>
+
+      <footer class="footer">
+
+          <p>
+            On Hex.pm:
+
+            <span class="line">
+              <a href="https://hex.pm/packages/nostrum/0.6.1" class="line footer-hex-package">Package</a>
+              <a href="https://preview.hex.pm/preview/nostrum/0.6.1" class="line">Preview</a>
+
+                <a href="https://preview.hex.pm/preview/nostrum/0.6.1/show/lib/nostrum/struct/auto_moderation_rule.ex">(current file)</a>
+
+            </span>
+
+            <button class="line footer-button display-quick-switch">
+              Search
+            </button>
+          </p>
+
+        <p>
+          Built using
+          <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.28.0) for the
+          <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
+        </p>
+      </footer>
+    </div>
+  </div>
+</section>
+</div>
+
+
+  </body>
+</html>

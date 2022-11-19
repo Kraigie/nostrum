@@ -7,7 +7,7 @@
     <meta name="generator" content="ExDoc v0.28.0">
     <meta name="project" content="Nostrum v0.6.1">
 
-    <title>Nostrum.Struct.Event.ChannelPinsUpdate — Nostrum v0.6.1</title>
+    <title>Nostrum.Struct.AutoModerationRule.TriggerMetadata — Nostrum v0.6.1</title>
     <link rel="stylesheet" href="dist/elixir-a816d167216329cc463d.css" />
 
     <script src="dist/sidebar_items-514e5c502b.js"></script>
@@ -89,19 +89,19 @@ Nostrum
 </button>
 
 
-    <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/event/channel_pins_update.ex#L1" title="View Source" class="view-source" rel="help">
+    <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/auto_moderation_rule/trigger_metadata.ex#L1" title="View Source" class="view-source" rel="help">
       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
       <span class="sr-only">View Source</span>
     </a>
 
-  <span translate="no">Nostrum.Struct.Event.ChannelPinsUpdate</span> 
+  <span translate="no">Nostrum.Struct.AutoModerationRule.TriggerMetadata</span> 
   <small class="app-vsn" translate="no">(Nostrum v0.6.1)</small>
 
 </h1>
 
 
   <section id="moduledoc">
-<p>Represents an update to channel pins.</p>
+<p>Struct representing the metadata of a trigger.</p>
   </section>
 
 
@@ -121,31 +121,21 @@ Nostrum
 
       <div class="summary-row">
         <div class="summary-signature">
-          <a href="#t:channel_id/0" translate="no">channel_id()</a>
+          <a href="#t:keyword_metadata/0" translate="no">keyword_metadata()</a>
 
         </div>
 
-          <div class="summary-synopsis"><p>The ID of the channel</p></div>
+          <div class="summary-synopsis"><p>Contains the list of keywords to that will trigger the rule.</p></div>
 
       </div>
 
       <div class="summary-row">
         <div class="summary-signature">
-          <a href="#t:guild_id/0" translate="no">guild_id()</a>
+          <a href="#t:preset_value_metadata/0" translate="no">preset_value_metadata()</a>
 
         </div>
 
-          <div class="summary-synopsis"><p>The ID of the guild, if the pin update was on a guild</p></div>
-
-      </div>
-
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#t:last_pin_timestamp/0" translate="no">last_pin_timestamp()</a>
-
-        </div>
-
-          <div class="summary-synopsis"><p>The time at which the most recent pinned message was pinned</p></div>
+          <div class="summary-synopsis"><p>A list of Values which represent the different presets defined by Discord</p></div>
 
       </div>
 
@@ -155,7 +145,7 @@ Nostrum
 
         </div>
 
-          <div class="summary-synopsis"><p>Event sent when a message is pinned or unpinned in a text channel</p></div>
+          <div class="summary-synopsis"><p>Additional data used to determine if the rule should triggered.</p></div>
 
       </div>
 
@@ -173,16 +163,16 @@ Nostrum
 Types
     </h1>
     <div class="types-list">
-<section class="detail" id="t:channel_id/0">
+<section class="detail" id="t:keyword_metadata/0">
 
   <div class="detail-header">
-    <a href="#t:channel_id/0" class="detail-link" title="Link to this type">
+    <a href="#t:keyword_metadata/0" class="detail-link" title="Link to this type">
       <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature" translate="no">channel_id()</h1>
+    <h1 class="signature" translate="no">keyword_metadata()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/event/channel_pins_update.ex#L15" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/auto_moderation_rule/trigger_metadata.ex#L30" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -195,23 +185,26 @@ Types
       <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">channel_id() :: <a href="Nostrum.Struct.Channel.html#t:id/0">Nostrum.Struct.Channel.id</a>()</pre>
+          <pre translate="no">keyword_metadata() :: %Nostrum.Struct.AutoModerationRule.TriggerMetadata{
+  keyword_filter: [<a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()],
+  presets: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()
+}</pre>
 
       </div>
 
-<p>The ID of the channel</p>
+<p>Contains the list of keywords to that will trigger the rule.</p>
   </section>
 </section>
-<section class="detail" id="t:guild_id/0">
+<section class="detail" id="t:preset_value_metadata/0">
 
   <div class="detail-header">
-    <a href="#t:guild_id/0" class="detail-link" title="Link to this type">
+    <a href="#t:preset_value_metadata/0" class="detail-link" title="Link to this type">
       <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature" translate="no">guild_id()</h1>
+    <h1 class="signature" translate="no">preset_value_metadata()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/event/channel_pins_update.ex#L12" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/auto_moderation_rule/trigger_metadata.ex#L23" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -224,40 +217,14 @@ Types
       <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">guild_id() :: <a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>() | nil</pre>
+          <pre translate="no">preset_value_metadata() :: %Nostrum.Struct.AutoModerationRule.TriggerMetadata{
+  keyword_filter: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>(),
+  presets: [1..3]
+}</pre>
 
       </div>
 
-<p>The ID of the guild, if the pin update was on a guild</p>
-  </section>
-</section>
-<section class="detail" id="t:last_pin_timestamp/0">
-
-  <div class="detail-header">
-    <a href="#t:last_pin_timestamp/0" class="detail-link" title="Link to this type">
-      <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this type</span>
-    </a>
-    <h1 class="signature" translate="no">last_pin_timestamp()</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/event/channel_pins_update.ex#L18" class="view-source" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
-
-
-  </div>
-
-  <section class="docstring">
-
-      <h2>Specs</h2>
-      <div class="specs">
-
-          <pre translate="no">last_pin_timestamp() :: <a href="https://hexdocs.pm/elixir/DateTime.html#t:t/0">DateTime.t</a>() | nil</pre>
-
-      </div>
-
-<p>The time at which the most recent pinned message was pinned</p>
+<p>A list of Values which represent the different presets defined by Discord</p><table><tbody><tr><td style="text-align: left;"></td><td style="text-align: left;">value</td><td style="text-align: left;">type</td><td style="text-align: left;">description</td></tr><tr><td style="text-align: left;"></td><td style="text-align: left;">----</td><td style="text-align: left;">----</td><td style="text-align: left;">-----------</td></tr><tr><td style="text-align: left;"></td><td style="text-align: left;"><code class="inline">1</code></td><td style="text-align: left;"><code class="inline">PROFANITY</code></td><td style="text-align: left;">Words which may be considered profane</td></tr><tr><td style="text-align: left;"></td><td style="text-align: left;"><code class="inline">2</code></td><td style="text-align: left;"><code class="inline">HARMFUL_LINK</code></td><td style="text-align: left;">Words that refer to sexually explicit behavior or activity</td></tr><tr><td style="text-align: left;"></td><td style="text-align: left;"><code class="inline">3</code></td><td style="text-align: left;"><code class="inline">SLURS</code></td><td style="text-align: left;">Personal insults or words that may be considered hate speech</td></tr></tbody></table>
   </section>
 </section>
 <section class="detail" id="t:t/0">
@@ -269,7 +236,7 @@ Types
     </a>
     <h1 class="signature" translate="no">t()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/event/channel_pins_update.ex#L21" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/auto_moderation_rule/trigger_metadata.ex#L44" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -282,15 +249,11 @@ Types
       <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">t() :: %Nostrum.Struct.Event.ChannelPinsUpdate{
-  channel_id: <a href="#t:channel_id/0">channel_id</a>(),
-  guild_id: <a href="#t:guild_id/0">guild_id</a>(),
-  last_pin_timestamp: <a href="#t:last_pin_timestamp/0">last_pin_timestamp</a>()
-}</pre>
+          <pre translate="no">t() :: <a href="#t:preset_value_metadata/0">preset_value_metadata</a>() | <a href="#t:keyword_metadata/0">keyword_metadata</a>()</pre>
 
       </div>
 
-<p>Event sent when a message is pinned or unpinned in a text channel</p>
+<p>Additional data used to determine if the rule should triggered.</p><p>The <a href="Nostrum.Struct.AutoModerationRule.html#t:trigger_type/0"><code class="inline">Nostrum.Struct.AutoModerationRule.trigger_type/0</code></a> of the parent struct determine which of the following fields are not <code class="inline">nil</code>.</p><table><tbody><tr><td style="text-align: left;"></td><td style="text-align: left;">key</td><td style="text-align: left;">associated <code class="inline">trigger_type</code></td></tr><tr><td style="text-align: left;"></td><td style="text-align: left;">----</td><td style="text-align: left;">-----------</td></tr><tr><td style="text-align: left;"></td><td style="text-align: left;"><code class="inline">keywords</code></td><td style="text-align: left;"><code class="inline">KEYWORD</code></td></tr><tr><td style="text-align: left;"></td><td style="text-align: left;"><code class="inline">preset</code></td><td style="text-align: left;"><code class="inline">KEYWORD_PRESET</code></td></tr></tbody></table>
   </section>
 </section>
 
@@ -306,7 +269,7 @@ Types
               <a href="https://hex.pm/packages/nostrum/0.6.1" class="line footer-hex-package">Package</a>
               <a href="https://preview.hex.pm/preview/nostrum/0.6.1" class="line">Preview</a>
 
-                <a href="https://preview.hex.pm/preview/nostrum/0.6.1/show/lib/nostrum/struct/event/channel_pins_update.ex">(current file)</a>
+                <a href="https://preview.hex.pm/preview/nostrum/0.6.1/show/lib/nostrum/struct/auto_moderation_rule/trigger_metadata.ex">(current file)</a>
 
             </span>
 
