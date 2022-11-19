@@ -28,7 +28,8 @@ defmodule Nostrum.Struct.Guild.Role do
     :position,
     :permissions,
     :managed,
-    :mentionable
+    :mentionable,
+    :icon
   ]
 
   defimpl String.Chars do
@@ -59,6 +60,9 @@ defmodule Nostrum.Struct.Guild.Role do
   @typedoc "Whether the role is mentionable"
   @type mentionable :: boolean
 
+  @typedoc "The hash of the role icon"
+  @type icon :: String.t() | nil
+
   @type t :: %__MODULE__{
           id: id,
           name: name,
@@ -67,7 +71,8 @@ defmodule Nostrum.Struct.Guild.Role do
           position: position,
           permissions: permissions,
           managed: managed,
-          mentionable: mentionable
+          mentionable: mentionable,
+          icon: icon
         }
 
   @doc ~S"""
