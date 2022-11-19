@@ -4,38 +4,44 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="ExDoc v0.28.0">
+    <meta name="generator" content="ExDoc v0.29.0">
     <meta name="project" content="Nostrum v0.6.1">
 
     <title>Nostrum.Snowflake — Nostrum v0.6.1</title>
-    <link rel="stylesheet" href="dist/elixir-a816d167216329cc463d.css" />
+    <link rel="stylesheet" href="dist/html-elixir-2YOS5DIE.css" />
 
-    <script src="dist/sidebar_items-8a53303cc4.js"></script>
+    <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
+    <script src="dist/handlebars.templates-X7YVL3G2.js"></script>
+    <script src="dist/sidebar_items-E0D39667.js"></script>
 
       <script src="docs_config.js"></script>
 
-    <script async src="dist/app-80aa23c1d96b6dc3c064.js"></script>
+    <script async src="dist/html-XN2TSG4M.js"></script>
 
 
   </head>
-  <body data-type="modules">
+  <body data-type="modules" class="page-module">
     <script>
 
       try {
-        if (localStorage.getItem('night-mode') === 'true') {
-          document.body.classList.add('night-mode');
+        var settings = JSON.parse(localStorage.getItem('ex_doc:settings') || '{}');
+
+        if (settings.theme === 'dark' ||
+           ((settings.theme === 'system' || settings.theme == null) &&
+             window.matchMedia('(prefers-color-scheme: dark)').matches)
+           ) {
+          document.body.classList.add('dark')
         }
       } catch (error) { }
     </script>
 
 <div class="main">
 
+<button class="sidebar-button sidebar-toggle" aria-label="toggle sidebar">
+  <i class="ri-menu-line ri-lg" title="Collapse/expand sidebar"></i>
+</button>
 
 <section class="sidebar">
-  <button class="sidebar-button sidebar-toggle">
-    <i class="ri-menu-line ri-lg" title="Collapse/expand sidebar"></i>
-  </button>
-
   <form class="sidebar-search" action="search.html">
     <button type="submit" class="search-button" aria-label="Submit Search">
       <i class="ri-search-2-line" aria-hidden="true" title="Submit search"></i>
@@ -44,6 +50,7 @@
       <i class="ri-close-line ri-lg" aria-hidden="true" title="Cancel search"></i>
     </button>
     <label class="search-label">
+      <p class="sr-only">Search</p>
       <input name="q" type="text" class="search-input" placeholder="Search..." aria-label="Input your search terms" autocomplete="off" />
     </label>
   </form>
@@ -79,6 +86,7 @@ Nostrum
 </section>
 
 <section class="content">
+  <output role="status" id="toast"></output>
   <div class="content-outer">
     <div id="content" class="content-inner">
 
@@ -239,7 +247,7 @@ Types
     </a>
     <h1 class="signature" translate="no">external_snowflake()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/snowflake.ex#L14" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/snowflake.ex#L15" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -249,10 +257,9 @@ Types
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">external_snowflake() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()</pre>
+          <pre translate="no"><span class="attribute">@type</span> external_snowflake() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()</pre>
 
       </div>
 
@@ -269,7 +276,7 @@ to some languages not being able to represent such a large number.</p>
     </a>
     <h1 class="signature" translate="no">t()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/snowflake.ex#L22" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/snowflake.ex#L23" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -279,10 +286,9 @@ to some languages not being able to represent such a large number.</p>
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">t() :: 0..18_446_744_073_709_551_615</pre>
+          <pre translate="no"><span class="attribute">@type</span> t() :: 0..18_446_744_073_709_551_615</pre>
 
       </div>
 
@@ -312,7 +318,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">cast(value)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/snowflake.ex#L69" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/snowflake.ex#L70" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -322,15 +328,16 @@ Functions
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">cast(<a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()) :: {:ok, <a href="#t:t/0">t</a>() | nil} | :error</pre>
+          <pre translate="no"><span class="attribute">@spec</span> cast(<a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()) :: {:ok, <a href="#t:t/0">t</a>() | nil} | :error</pre>
 
       </div>
 
 <p>Attempts to convert a term into a snowflake.</p><h2 id="cast/1-examples" class="section-heading">
-  <a href="#cast/1-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
+  <a href="#cast/1-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">examples</p>
+  </a>
   Examples
 </h2>
 <pre><code class="Elixir">iex&gt; Nostrum.Snowflake.cast(200317799350927360)
@@ -358,7 +365,7 @@ iex&gt; Nostrum.Snowflake.cast(-1)
     </a>
     <h1 class="signature" translate="no">cast!(value)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/snowflake.ex#L86" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/snowflake.ex#L87" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -368,10 +375,9 @@ iex&gt; Nostrum.Snowflake.cast(-1)
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">cast!(<a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()) :: <a href="#t:t/0">t</a>() | nil | <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">no_return</a>()</pre>
+          <pre translate="no"><span class="attribute">@spec</span> cast!(<a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()) :: <a href="#t:t/0">t</a>() | nil | <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">no_return</a>()</pre>
 
       </div>
 
@@ -387,7 +393,7 @@ iex&gt; Nostrum.Snowflake.cast(-1)
     </a>
     <h1 class="signature" translate="no">creation_time(snowflake)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/snowflake.ex#L162" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/snowflake.ex#L161" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -397,15 +403,16 @@ iex&gt; Nostrum.Snowflake.cast(-1)
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">creation_time(<a href="#t:t/0">t</a>()) :: <a href="https://hexdocs.pm/elixir/DateTime.html#t:t/0">DateTime.t</a>()</pre>
+          <pre translate="no"><span class="attribute">@spec</span> creation_time(<a href="#t:t/0">t</a>()) :: <a href="https://hexdocs.pm/elixir/DateTime.html#t:t/0">DateTime.t</a>()</pre>
 
       </div>
 
 <p>Returns the creation time of the snowflake.</p><h2 id="creation_time/1-examples" class="section-heading">
-  <a href="#creation_time/1-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
+  <a href="#creation_time/1-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">examples</p>
+  </a>
   Examples
 </h2>
 <pre><code class="Elixir">iex&gt; Nostrum.Snowflake.creation_time(177888205536886784)
@@ -421,7 +428,7 @@ iex&gt; Nostrum.Snowflake.cast(-1)
     </a>
     <h1 class="signature" translate="no">dump(snowflake)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/snowflake.ex#L104" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/snowflake.ex#L105" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -431,15 +438,16 @@ iex&gt; Nostrum.Snowflake.cast(-1)
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">dump(<a href="#t:t/0">t</a>()) :: <a href="#t:external_snowflake/0">external_snowflake</a>()</pre>
+          <pre translate="no"><span class="attribute">@spec</span> dump(<a href="#t:t/0">t</a>()) :: <a href="#t:external_snowflake/0">external_snowflake</a>()</pre>
 
       </div>
 
 <p>Convert a snowflake into its external representation.</p><h2 id="dump/1-examples" class="section-heading">
-  <a href="#dump/1-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
+  <a href="#dump/1-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">examples</p>
+  </a>
   Examples
 </h2>
 <pre><code class="Elixir">iex&gt; Nostrum.Snowflake.dump(109112383011581952)
@@ -455,7 +463,7 @@ iex&gt; Nostrum.Snowflake.cast(-1)
     </a>
     <h1 class="signature" translate="no">from_datetime(datetime)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/snowflake.ex#L127" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/snowflake.ex#L128" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -465,16 +473,17 @@ iex&gt; Nostrum.Snowflake.cast(-1)
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">from_datetime(<a href="https://hexdocs.pm/elixir/DateTime.html#t:t/0">DateTime.t</a>()) :: {:ok, <a href="#t:t/0">t</a>()} | :error</pre>
+          <pre translate="no"><span class="attribute">@spec</span> from_datetime(<a href="https://hexdocs.pm/elixir/DateTime.html#t:t/0">DateTime.t</a>()) :: {:ok, <a href="#t:t/0">t</a>()} | :error</pre>
 
       </div>
 
 <p>Converts the given <code class="inline">datetime</code> into a snowflake.</p><p>If <code class="inline">datetime</code> occurred before the discord epoch, the function will return
 <code class="inline">:error</code>.</p><p>The converted snowflake's last 22 bits will be zeroed out due to missing data.</p><h2 id="from_datetime/1-examples" class="section-heading">
-  <a href="#from_datetime/1-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
+  <a href="#from_datetime/1-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">examples</p>
+  </a>
   Examples
 </h2>
 <pre><code class="Elixir">iex&gt; {:ok, dt, _} = DateTime.from_iso8601(&quot;2016-05-05T21:04:13.203Z&quot;)
@@ -495,7 +504,7 @@ iex&gt; Nostrum.Snowflake.from_datetime(dt)
     </a>
     <h1 class="signature" translate="no">from_datetime!(datetime)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/snowflake.ex#L144" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/snowflake.ex#L143" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -505,10 +514,9 @@ iex&gt; Nostrum.Snowflake.from_datetime(dt)
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">from_datetime!(<a href="https://hexdocs.pm/elixir/DateTime.html#t:t/0">DateTime.t</a>()) :: <a href="#t:t/0">t</a>() | <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">no_return</a>()</pre>
+          <pre translate="no"><span class="attribute">@spec</span> from_datetime!(<a href="https://hexdocs.pm/elixir/DateTime.html#t:t/0">DateTime.t</a>()) :: <a href="#t:t/0">t</a>() | <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">no_return</a>()</pre>
 
       </div>
 
@@ -524,7 +532,7 @@ iex&gt; Nostrum.Snowflake.from_datetime(dt)
     </a>
     <h1 class="signature" translate="no">is_snowflake(term)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/snowflake.ex#L43" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/snowflake.ex#L44" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -537,7 +545,9 @@ iex&gt; Nostrum.Snowflake.from_datetime(dt)
   <section class="docstring">
 
 <p>Returns <code class="inline">true</code> if <code class="inline">term</code> is a snowflake; otherwise returns <code class="inline">false</code>.</p><h2 id="is_snowflake/1-examples" class="section-heading">
-  <a href="#is_snowflake/1-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
+  <a href="#is_snowflake/1-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">examples</p>
+  </a>
   Examples
 </h2>
 <pre><code class="Elixir">iex&gt; Nostrum.Snowflake.is_snowflake(89918932789497856)
@@ -570,15 +580,17 @@ false</code></pre>
 
             </span>
 
-            <button class="line footer-button display-quick-switch">
+            <button class="a-main line footer-button display-quick-switch">
               Search
             </button>
           </p>
 
         <p>
           Built using
-          <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.28.0) for the
-          <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
+          <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.29.0) for the
+
+            <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
+
         </p>
       </footer>
     </div>

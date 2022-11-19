@@ -4,38 +4,44 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="ExDoc v0.28.0">
+    <meta name="generator" content="ExDoc v0.29.0">
     <meta name="project" content="Nostrum v0.6.1">
 
     <title>Nostrum.Cache.ChannelCache — Nostrum v0.6.1</title>
-    <link rel="stylesheet" href="dist/elixir-a816d167216329cc463d.css" />
+    <link rel="stylesheet" href="dist/html-elixir-2YOS5DIE.css" />
 
-    <script src="dist/sidebar_items-8a53303cc4.js"></script>
+    <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
+    <script src="dist/handlebars.templates-X7YVL3G2.js"></script>
+    <script src="dist/sidebar_items-E0D39667.js"></script>
 
       <script src="docs_config.js"></script>
 
-    <script async src="dist/app-80aa23c1d96b6dc3c064.js"></script>
+    <script async src="dist/html-XN2TSG4M.js"></script>
 
 
   </head>
-  <body data-type="modules">
+  <body data-type="modules" class="page-behaviour">
     <script>
 
       try {
-        if (localStorage.getItem('night-mode') === 'true') {
-          document.body.classList.add('night-mode');
+        var settings = JSON.parse(localStorage.getItem('ex_doc:settings') || '{}');
+
+        if (settings.theme === 'dark' ||
+           ((settings.theme === 'system' || settings.theme == null) &&
+             window.matchMedia('(prefers-color-scheme: dark)').matches)
+           ) {
+          document.body.classList.add('dark')
         }
       } catch (error) { }
     </script>
 
 <div class="main">
 
+<button class="sidebar-button sidebar-toggle" aria-label="toggle sidebar">
+  <i class="ri-menu-line ri-lg" title="Collapse/expand sidebar"></i>
+</button>
 
 <section class="sidebar">
-  <button class="sidebar-button sidebar-toggle">
-    <i class="ri-menu-line ri-lg" title="Collapse/expand sidebar"></i>
-  </button>
-
   <form class="sidebar-search" action="search.html">
     <button type="submit" class="search-button" aria-label="Submit Search">
       <i class="ri-search-2-line" aria-hidden="true" title="Submit search"></i>
@@ -44,6 +50,7 @@
       <i class="ri-close-line ri-lg" aria-hidden="true" title="Cancel search"></i>
     </button>
     <label class="search-label">
+      <p class="sr-only">Search</p>
       <input name="q" type="text" class="search-input" placeholder="Search..." aria-label="Input your search terms" autocomplete="off" />
     </label>
   </form>
@@ -79,6 +86,7 @@ Nostrum
 </section>
 
 <section class="content">
+  <output role="status" id="toast"></output>
   <div class="content-outer">
     <div id="content" class="content-inner">
 
@@ -109,7 +117,9 @@ You can override this in the <code class="inline">:caches</code> option of the <
 by setting the <code class="inline">:channels</code> field to a different module implementing the
 <a href="Nostrum.Cache.ChannelCache.html#content"><code class="inline">Nostrum.Cache.ChannelCache</code></a> behaviour. Any module below
 <a href="Nostrum.Cache.ChannelCache.html#content"><code class="inline">Nostrum.Cache.ChannelCache</code></a> can be used as a cache.</p><h2 id="module-writing-your-own-channel-cache" class="section-heading">
-  <a href="#module-writing-your-own-channel-cache" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
+  <a href="#module-writing-your-own-channel-cache" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">writing-your-own-channel-cache</p>
+  </a>
   Writing your own channel cache
 </h2>
 <p>As with the other caches, the channel cache API consists of two parts:</p><ul><li><p>The functions that the user calls, currently only <a href="#get/1"><code class="inline">get/1</code></a> and <a href="#get!/1"><code class="inline">get!/1</code></a></p></li><li><p>The functions that nostrum calls, such as <a href="#c:create/1"><code class="inline">create/1</code></a> or <a href="#c:update/1"><code class="inline">update/1</code></a>.
@@ -322,10 +332,9 @@ Types
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">reason() :: :channel_not_found</pre>
+          <pre translate="no"><span class="attribute">@type</span> reason() :: :channel_not_found</pre>
 
       </div>
 
@@ -364,10 +373,9 @@ Callbacks
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">create(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()) :: <a href="Nostrum.Struct.Channel.html#t:t/0">Nostrum.Struct.Channel.t</a>()</pre>
+          <pre translate="no"><span class="attribute">@callback</span> create(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()) :: <a href="Nostrum.Struct.Channel.html#t:t/0">Nostrum.Struct.Channel.t</a>()</pre>
 
       </div>
 
@@ -393,10 +401,9 @@ Callbacks
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">delete(<a href="Nostrum.Struct.Channel.html#t:id/0">Nostrum.Struct.Channel.id</a>()) :: :noop | <a href="Nostrum.Struct.Channel.html#t:t/0">Nostrum.Struct.Channel.t</a>()</pre>
+          <pre translate="no"><span class="attribute">@callback</span> delete(<a href="Nostrum.Struct.Channel.html#t:id/0">Nostrum.Struct.Channel.id</a>()) :: :noop | <a href="Nostrum.Struct.Channel.html#t:t/0">Nostrum.Struct.Channel.t</a>()</pre>
 
       </div>
 
@@ -422,10 +429,9 @@ Callbacks
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">get(<a href="Nostrum.Struct.Channel.html#t:id/0">Nostrum.Struct.Channel.id</a>() | <a href="Nostrum.Struct.Message.html#t:t/0">Nostrum.Struct.Message.t</a>()) ::
+          <pre translate="no"><span class="attribute">@callback</span> get(<a href="Nostrum.Struct.Channel.html#t:id/0">Nostrum.Struct.Channel.id</a>() | <a href="Nostrum.Struct.Message.html#t:t/0">Nostrum.Struct.Message.t</a>()) ::
   {:error, <a href="#t:reason/0">reason</a>()} | {:ok, <a href="Nostrum.Struct.Channel.html#t:t/0">Nostrum.Struct.Channel.t</a>()} | {:error, <a href="#t:reason/0">reason</a>()}</pre>
 
       </div>
@@ -433,15 +439,17 @@ Callbacks
 <p>Retrieves a channel from the cache.</p><p>Internally, the ChannelCache process only stores
 <a href="Nostrum.Struct.Channel.html#t:dm_channel/0"><code class="inline">Nostrum.Struct.Channel.dm_channel/0</code></a> references. To get channel
 information, a call is made to a <a href="Nostrum.Cache.GuildCache.html"><code class="inline">Nostrum.Cache.GuildCache</code></a>.</p><p>If successful, returns <code class="inline">{:ok, channel}</code>. Otherwise, returns <code class="inline">{:error, reason}</code></p><h2 id="c:get/1-example" class="section-heading">
-  <a href="#c:get/1-example" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
+  <a href="#c:get/1-example" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">example</p>
+  </a>
   Example
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="k">case</span><span class="w"> </span><span class="nc">Nostrum.Cache.ChannelCache</span><span class="o">.</span><span class="n">get</span><span class="p" data-group-id="3259672870-1">(</span><span class="mi">133333333337</span><span class="p" data-group-id="3259672870-1">)</span><span class="w"> </span><span class="k" data-group-id="3259672870-2">do</span><span class="w">
-  </span><span class="p" data-group-id="3259672870-3">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">channel</span><span class="p" data-group-id="3259672870-3">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+<pre><code class="makeup elixir" translate="no"><span class="k">case</span><span class="w"> </span><span class="nc">Nostrum.Cache.ChannelCache</span><span class="o">.</span><span class="n">get</span><span class="p" data-group-id="4957323741-1">(</span><span class="mi">133333333337</span><span class="p" data-group-id="4957323741-1">)</span><span class="w"> </span><span class="k" data-group-id="4957323741-2">do</span><span class="w">
+  </span><span class="p" data-group-id="4957323741-3">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">channel</span><span class="p" data-group-id="4957323741-3">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
     </span><span class="s">&quot;We found &quot;</span><span class="w"> </span><span class="o">&lt;&gt;</span><span class="w"> </span><span class="n">channel</span><span class="o">.</span><span class="n">name</span><span class="w">
-  </span><span class="p" data-group-id="3259672870-4">{</span><span class="ss">:error</span><span class="p">,</span><span class="w"> </span><span class="c">_reason</span><span class="p" data-group-id="3259672870-4">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+  </span><span class="p" data-group-id="4957323741-4">{</span><span class="ss">:error</span><span class="p">,</span><span class="w"> </span><span class="c">_reason</span><span class="p" data-group-id="4957323741-4">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
     </span><span class="s">&quot;Donde esta&quot;</span><span class="w">
-</span><span class="k" data-group-id="3259672870-2">end</span></code></pre>
+</span><span class="k" data-group-id="4957323741-2">end</span></code></pre>
   </section>
 </section>
 <section class="detail" id="c:get!/1">
@@ -463,10 +471,9 @@ information, a call is made to a <a href="Nostrum.Cache.GuildCache.html"><code c
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">get!(<a href="Nostrum.Struct.Channel.html#t:id/0">Nostrum.Struct.Channel.id</a>() | <a href="Nostrum.Struct.Message.html#t:t/0">Nostrum.Struct.Message.t</a>()) ::
+          <pre translate="no"><span class="attribute">@callback</span> get!(<a href="Nostrum.Struct.Channel.html#t:id/0">Nostrum.Struct.Channel.id</a>() | <a href="Nostrum.Struct.Message.html#t:t/0">Nostrum.Struct.Message.t</a>()) ::
   <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">no_return</a>() | <a href="Nostrum.Struct.Channel.html#t:t/0">Nostrum.Struct.Channel.t</a>()</pre>
 
       </div>
@@ -493,10 +500,9 @@ information, a call is made to a <a href="Nostrum.Cache.GuildCache.html"><code c
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">lookup(<a href="Nostrum.Struct.Channel.html#t:id/0">Nostrum.Struct.Channel.id</a>()) :: {:error, <a href="#t:reason/0">reason</a>()} | {:ok, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()}</pre>
+          <pre translate="no"><span class="attribute">@callback</span> lookup(<a href="Nostrum.Struct.Channel.html#t:id/0">Nostrum.Struct.Channel.id</a>()) :: {:error, <a href="#t:reason/0">reason</a>()} | {:ok, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()}</pre>
 
       </div>
 
@@ -522,10 +528,9 @@ information, a call is made to a <a href="Nostrum.Cache.GuildCache.html"><code c
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">update(<a href="Nostrum.Struct.Channel.html#t:t/0">Nostrum.Struct.Channel.t</a>()) ::
+          <pre translate="no"><span class="attribute">@callback</span> update(<a href="Nostrum.Struct.Channel.html#t:t/0">Nostrum.Struct.Channel.t</a>()) ::
   :noop | {<a href="Nostrum.Struct.Channel.html#t:t/0">Nostrum.Struct.Channel.t</a>(), <a href="Nostrum.Struct.Channel.html#t:t/0">Nostrum.Struct.Channel.t</a>()}</pre>
 
       </div>
@@ -695,15 +700,17 @@ Functions
 
             </span>
 
-            <button class="line footer-button display-quick-switch">
+            <button class="a-main line footer-button display-quick-switch">
               Search
             </button>
           </p>
 
         <p>
           Built using
-          <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.28.0) for the
-          <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
+          <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.29.0) for the
+
+            <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
+
         </p>
       </footer>
     </div>

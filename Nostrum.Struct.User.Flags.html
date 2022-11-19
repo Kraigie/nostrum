@@ -4,38 +4,44 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="ExDoc v0.28.0">
+    <meta name="generator" content="ExDoc v0.29.0">
     <meta name="project" content="Nostrum v0.6.1">
 
     <title>Nostrum.Struct.User.Flags — Nostrum v0.6.1</title>
-    <link rel="stylesheet" href="dist/elixir-a816d167216329cc463d.css" />
+    <link rel="stylesheet" href="dist/html-elixir-2YOS5DIE.css" />
 
-    <script src="dist/sidebar_items-8a53303cc4.js"></script>
+    <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
+    <script src="dist/handlebars.templates-X7YVL3G2.js"></script>
+    <script src="dist/sidebar_items-E0D39667.js"></script>
 
       <script src="docs_config.js"></script>
 
-    <script async src="dist/app-80aa23c1d96b6dc3c064.js"></script>
+    <script async src="dist/html-XN2TSG4M.js"></script>
 
 
   </head>
-  <body data-type="modules">
+  <body data-type="modules" class="page-module">
     <script>
 
       try {
-        if (localStorage.getItem('night-mode') === 'true') {
-          document.body.classList.add('night-mode');
+        var settings = JSON.parse(localStorage.getItem('ex_doc:settings') || '{}');
+
+        if (settings.theme === 'dark' ||
+           ((settings.theme === 'system' || settings.theme == null) &&
+             window.matchMedia('(prefers-color-scheme: dark)').matches)
+           ) {
+          document.body.classList.add('dark')
         }
       } catch (error) { }
     </script>
 
 <div class="main">
 
+<button class="sidebar-button sidebar-toggle" aria-label="toggle sidebar">
+  <i class="ri-menu-line ri-lg" title="Collapse/expand sidebar"></i>
+</button>
 
 <section class="sidebar">
-  <button class="sidebar-button sidebar-toggle">
-    <i class="ri-menu-line ri-lg" title="Collapse/expand sidebar"></i>
-  </button>
-
   <form class="sidebar-search" action="search.html">
     <button type="submit" class="search-button" aria-label="Submit Search">
       <i class="ri-search-2-line" aria-hidden="true" title="Submit search"></i>
@@ -44,6 +50,7 @@
       <i class="ri-close-line ri-lg" aria-hidden="true" title="Cancel search"></i>
     </button>
     <label class="search-label">
+      <p class="sr-only">Search</p>
       <input name="q" type="text" class="search-input" placeholder="Search..." aria-label="Input your search terms" autocomplete="off" />
     </label>
   </form>
@@ -79,6 +86,7 @@ Nostrum
 </section>
 
 <section class="content">
+  <output role="status" id="toast"></output>
   <div class="content-outer">
     <div id="content" class="content-inner">
 
@@ -325,10 +333,9 @@ Types
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">bug_hunter_level_1() :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">boolean</a>()</pre>
+          <pre translate="no"><span class="attribute">@type</span> bug_hunter_level_1() :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">boolean</a>()</pre>
 
       </div>
 
@@ -354,10 +361,9 @@ Types
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">bug_hunter_level_2() :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">boolean</a>()</pre>
+          <pre translate="no"><span class="attribute">@type</span> bug_hunter_level_2() :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">boolean</a>()</pre>
 
       </div>
 
@@ -383,10 +389,9 @@ Types
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">early_supporter() :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">boolean</a>()</pre>
+          <pre translate="no"><span class="attribute">@type</span> early_supporter() :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">boolean</a>()</pre>
 
       </div>
 
@@ -412,10 +417,9 @@ Types
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">flags() :: %Nostrum.Struct.User.Flags{
+          <pre translate="no"><span class="attribute">@type</span> flags() :: %Nostrum.Struct.User.Flags{
   bug_hunter_level_1: <a href="#t:bug_hunter_level_1/0">bug_hunter_level_1</a>(),
   bug_hunter_level_2: <a href="#t:bug_hunter_level_2/0">bug_hunter_level_2</a>(),
   early_supporter: <a href="#t:early_supporter/0">early_supporter</a>(),
@@ -455,10 +459,9 @@ Types
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">hypesquad_balance() :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">boolean</a>()</pre>
+          <pre translate="no"><span class="attribute">@type</span> hypesquad_balance() :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">boolean</a>()</pre>
 
       </div>
 
@@ -484,10 +487,9 @@ Types
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">hypesquad_bravery() :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">boolean</a>()</pre>
+          <pre translate="no"><span class="attribute">@type</span> hypesquad_bravery() :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">boolean</a>()</pre>
 
       </div>
 
@@ -513,10 +515,9 @@ Types
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">hypesquad_brilliance() :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">boolean</a>()</pre>
+          <pre translate="no"><span class="attribute">@type</span> hypesquad_brilliance() :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">boolean</a>()</pre>
 
       </div>
 
@@ -542,10 +543,9 @@ Types
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">hypesquad_events() :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">boolean</a>()</pre>
+          <pre translate="no"><span class="attribute">@type</span> hypesquad_events() :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">boolean</a>()</pre>
 
       </div>
 
@@ -571,10 +571,9 @@ Types
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">partner() :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">boolean</a>()</pre>
+          <pre translate="no"><span class="attribute">@type</span> partner() :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">boolean</a>()</pre>
 
       </div>
 
@@ -600,10 +599,9 @@ Types
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">staff() :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">boolean</a>()</pre>
+          <pre translate="no"><span class="attribute">@type</span> staff() :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">boolean</a>()</pre>
 
       </div>
 
@@ -629,10 +627,9 @@ Types
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">system() :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">boolean</a>()</pre>
+          <pre translate="no"><span class="attribute">@type</span> system() :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">boolean</a>()</pre>
 
       </div>
 
@@ -658,10 +655,9 @@ Types
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">t() :: <a href="#t:flags/0">flags</a>()</pre>
+          <pre translate="no"><span class="attribute">@type</span> t() :: <a href="#t:flags/0">flags</a>()</pre>
 
       </div>
 
@@ -687,10 +683,9 @@ Types
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">team_user() :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">boolean</a>()</pre>
+          <pre translate="no"><span class="attribute">@type</span> team_user() :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">boolean</a>()</pre>
 
       </div>
 
@@ -716,10 +711,9 @@ Types
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">verified_bot() :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">boolean</a>()</pre>
+          <pre translate="no"><span class="attribute">@type</span> verified_bot() :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">boolean</a>()</pre>
 
       </div>
 
@@ -745,10 +739,9 @@ Types
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">verified_developer() :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">boolean</a>()</pre>
+          <pre translate="no"><span class="attribute">@type</span> verified_developer() :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">boolean</a>()</pre>
 
       </div>
 
@@ -787,19 +780,20 @@ Functions
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">from_integer(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>()) :: <a href="#t:t/0">t</a>()</pre>
+          <pre translate="no"><span class="attribute">@spec</span> from_integer(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>()) :: <a href="#t:t/0">t</a>()</pre>
 
       </div>
 
 <p>Constructs a flag struct based on an integer from the Discord API (either public_flags or flags).</p><h2 id="from_integer/1-examples" class="section-heading">
-  <a href="#from_integer/1-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
+  <a href="#from_integer/1-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">examples</p>
+  </a>
   Examples
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Struct.User.Flags</span><span class="o">.</span><span class="n">from_integer</span><span class="p" data-group-id="4902138479-1">(</span><span class="mi">131842</span><span class="p" data-group-id="4902138479-1">)</span><span class="w">
-</span><span class="p" data-group-id="4902138479-2">%</span><span class="nc" data-group-id="4902138479-2">Nostrum.Struct.User.Flags</span><span class="p" data-group-id="4902138479-2">{</span><span class="w">
+<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Struct.User.Flags</span><span class="o">.</span><span class="n">from_integer</span><span class="p" data-group-id="7751563273-1">(</span><span class="mi">131842</span><span class="p" data-group-id="7751563273-1">)</span><span class="w">
+</span><span class="p" data-group-id="7751563273-2">%</span><span class="nc" data-group-id="7751563273-2">Nostrum.Struct.User.Flags</span><span class="p" data-group-id="7751563273-2">{</span><span class="w">
   </span><span class="ss">bug_hunter_level_1</span><span class="p">:</span><span class="w"> </span><span class="no">false</span><span class="p">,</span><span class="w">
   </span><span class="ss">bug_hunter_level_2</span><span class="p">:</span><span class="w"> </span><span class="no">false</span><span class="p">,</span><span class="w">
   </span><span class="ss">early_supporter</span><span class="p">:</span><span class="w"> </span><span class="no">true</span><span class="p">,</span><span class="w">
@@ -813,7 +807,7 @@ Functions
   </span><span class="ss">team_user</span><span class="p">:</span><span class="w"> </span><span class="no">false</span><span class="p">,</span><span class="w">
   </span><span class="ss">verified_bot</span><span class="p">:</span><span class="w"> </span><span class="no">false</span><span class="p">,</span><span class="w">
   </span><span class="ss">verified_developer</span><span class="p">:</span><span class="w"> </span><span class="no">true</span><span class="w">
-</span><span class="p" data-group-id="4902138479-2">}</span></code></pre>
+</span><span class="p" data-group-id="7751563273-2">}</span></code></pre>
   </section>
 </section>
 <section class="detail" id="to_integer/1">
@@ -835,18 +829,19 @@ Functions
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">to_integer(<a href="#t:t/0">t</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>()</pre>
+          <pre translate="no"><span class="attribute">@spec</span> to_integer(<a href="#t:t/0">t</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>()</pre>
 
       </div>
 
 <p>Convert a flag struct to an integer value.</p><h2 id="to_integer/1-examples" class="section-heading">
-  <a href="#to_integer/1-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
+  <a href="#to_integer/1-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">examples</p>
+  </a>
   Examples
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="n">my_flags</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="2369850769-1">%</span><span class="nc" data-group-id="2369850769-1">Nostrum.Struct.User.Flags</span><span class="p" data-group-id="2369850769-1">{</span><span class="w">
+<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="n">my_flags</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="3306727167-1">%</span><span class="nc" data-group-id="3306727167-1">Nostrum.Struct.User.Flags</span><span class="p" data-group-id="3306727167-1">{</span><span class="w">
 </span><span class="gp unselectable">...&gt; </span><span class="w"> </span><span class="ss">bug_hunter_level_1</span><span class="p">:</span><span class="w"> </span><span class="no">false</span><span class="p">,</span><span class="w">
 </span><span class="gp unselectable">...&gt; </span><span class="w"> </span><span class="ss">bug_hunter_level_2</span><span class="p">:</span><span class="w"> </span><span class="no">false</span><span class="p">,</span><span class="w">
 </span><span class="gp unselectable">...&gt; </span><span class="w"> </span><span class="ss">early_supporter</span><span class="p">:</span><span class="w"> </span><span class="no">true</span><span class="p">,</span><span class="w">
@@ -860,8 +855,8 @@ Functions
 </span><span class="gp unselectable">...&gt; </span><span class="w"> </span><span class="ss">team_user</span><span class="p">:</span><span class="w"> </span><span class="no">false</span><span class="p">,</span><span class="w">
 </span><span class="gp unselectable">...&gt; </span><span class="w"> </span><span class="ss">verified_bot</span><span class="p">:</span><span class="w"> </span><span class="no">false</span><span class="p">,</span><span class="w">
 </span><span class="gp unselectable">...&gt; </span><span class="w"> </span><span class="ss">verified_developer</span><span class="p">:</span><span class="w"> </span><span class="no">true</span><span class="w">
-</span><span class="gp unselectable">...&gt; </span><span class="p" data-group-id="2369850769-1">}</span><span class="w">
-</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Struct.User.Flags</span><span class="o">.</span><span class="n">to_integer</span><span class="p" data-group-id="2369850769-2">(</span><span class="n">my_flags</span><span class="p" data-group-id="2369850769-2">)</span><span class="w">
+</span><span class="gp unselectable">...&gt; </span><span class="p" data-group-id="3306727167-1">}</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Struct.User.Flags</span><span class="o">.</span><span class="n">to_integer</span><span class="p" data-group-id="3306727167-2">(</span><span class="n">my_flags</span><span class="p" data-group-id="3306727167-2">)</span><span class="w">
 </span><span class="mi">131842</span></code></pre>
   </section>
 </section>
@@ -882,15 +877,17 @@ Functions
 
             </span>
 
-            <button class="line footer-button display-quick-switch">
+            <button class="a-main line footer-button display-quick-switch">
               Search
             </button>
           </p>
 
         <p>
           Built using
-          <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.28.0) for the
-          <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
+          <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.29.0) for the
+
+            <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
+
         </p>
       </footer>
     </div>

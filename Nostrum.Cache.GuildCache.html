@@ -4,38 +4,44 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="ExDoc v0.28.0">
+    <meta name="generator" content="ExDoc v0.29.0">
     <meta name="project" content="Nostrum v0.6.1">
 
     <title>Nostrum.Cache.GuildCache — Nostrum v0.6.1</title>
-    <link rel="stylesheet" href="dist/elixir-a816d167216329cc463d.css" />
+    <link rel="stylesheet" href="dist/html-elixir-2YOS5DIE.css" />
 
-    <script src="dist/sidebar_items-8a53303cc4.js"></script>
+    <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
+    <script src="dist/handlebars.templates-X7YVL3G2.js"></script>
+    <script src="dist/sidebar_items-E0D39667.js"></script>
 
       <script src="docs_config.js"></script>
 
-    <script async src="dist/app-80aa23c1d96b6dc3c064.js"></script>
+    <script async src="dist/html-XN2TSG4M.js"></script>
 
 
   </head>
-  <body data-type="modules">
+  <body data-type="modules" class="page-behaviour">
     <script>
 
       try {
-        if (localStorage.getItem('night-mode') === 'true') {
-          document.body.classList.add('night-mode');
+        var settings = JSON.parse(localStorage.getItem('ex_doc:settings') || '{}');
+
+        if (settings.theme === 'dark' ||
+           ((settings.theme === 'system' || settings.theme == null) &&
+             window.matchMedia('(prefers-color-scheme: dark)').matches)
+           ) {
+          document.body.classList.add('dark')
         }
       } catch (error) { }
     </script>
 
 <div class="main">
 
+<button class="sidebar-button sidebar-toggle" aria-label="toggle sidebar">
+  <i class="ri-menu-line ri-lg" title="Collapse/expand sidebar"></i>
+</button>
 
 <section class="sidebar">
-  <button class="sidebar-button sidebar-toggle">
-    <i class="ri-menu-line ri-lg" title="Collapse/expand sidebar"></i>
-  </button>
-
   <form class="sidebar-search" action="search.html">
     <button type="submit" class="search-button" aria-label="Submit Search">
       <i class="ri-search-2-line" aria-hidden="true" title="Submit search"></i>
@@ -44,6 +50,7 @@
       <i class="ri-close-line ri-lg" aria-hidden="true" title="Cancel search"></i>
     </button>
     <label class="search-label">
+      <p class="sr-only">Search</p>
       <input name="q" type="text" class="search-input" placeholder="Search..." aria-label="Input your search terms" autocomplete="off" />
     </label>
   </form>
@@ -79,6 +86,7 @@ Nostrum
 </section>
 
 <section class="content">
+  <output role="status" id="toast"></output>
   <div class="content-outer">
     <div id="content" class="content-inner">
 
@@ -107,7 +115,9 @@ You can override this in the <code class="inline">:caches</code> option of the <
 by setting the <code class="inline">:guilds</code> field to a different module implementing the
 <a href="Nostrum.Cache.GuildCache.html#content"><code class="inline">Nostrum.Cache.GuildCache</code></a> behaviour. Any module below
 <a href="Nostrum.Cache.GuildCache.html#content"><code class="inline">Nostrum.Cache.GuildCache</code></a> can be used as a cache.</p><h2 id="module-writing-your-own-guild-cache" class="section-heading">
-  <a href="#module-writing-your-own-guild-cache" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
+  <a href="#module-writing-your-own-guild-cache" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">writing-your-own-guild-cache</p>
+  </a>
   Writing your own guild cache
 </h2>
 <p>As with the other caches, the guild cache API consists of two parts:</p><ul><li><p>The functions that the user calls, such as <a href="#c:all/0"><code class="inline">all/0</code></a> or <a href="#c:select_by/2"><code class="inline">select_by/2</code></a>.</p></li><li><p>The functions that nostrum calls, such as <a href="#c:create/1"><code class="inline">create/1</code></a> or <a href="#c:update/1"><code class="inline">update/1</code></a>.
@@ -543,10 +553,9 @@ Types
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">clause() ::
+          <pre translate="no"><span class="attribute">@type</span> clause() ::
   {:id, <a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>()}
   | {:channel_id, <a href="Nostrum.Struct.Channel.html#t:id/0">Nostrum.Struct.Channel.id</a>()}
   | {:message, <a href="Nostrum.Struct.Message.html#t:t/0">Nostrum.Struct.Message.t</a>()}</pre>
@@ -575,10 +584,9 @@ Types
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">clauses() :: [<a href="#t:clause/0">clause</a>()] | <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()</pre>
+          <pre translate="no"><span class="attribute">@type</span> clauses() :: [<a href="#t:clause/0">clause</a>()] | <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()</pre>
 
       </div>
 
@@ -604,10 +612,9 @@ Types
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">reason() :: :id_not_found | :id_not_found_on_guild_lookup</pre>
+          <pre translate="no"><span class="attribute">@type</span> reason() :: :id_not_found | :id_not_found_on_guild_lookup</pre>
 
       </div>
 
@@ -633,10 +640,9 @@ Types
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">selector() :: (<a href="Nostrum.Struct.Guild.html#t:t/0">Nostrum.Struct.Guild.t</a>() -&gt; <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">any</a>())</pre>
+          <pre translate="no"><span class="attribute">@type</span> selector() :: (<a href="Nostrum.Struct.Guild.html#t:t/0">Nostrum.Struct.Guild.t</a>() -&gt; <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">any</a>())</pre>
 
       </div>
 
@@ -675,10 +681,9 @@ Callbacks
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">all() :: <a href="https://hexdocs.pm/elixir/Enum.html#t:t/0">Enum.t</a>()</pre>
+          <pre translate="no"><span class="attribute">@callback</span> all() :: <a href="https://hexdocs.pm/elixir/Enum.html#t:t/0">Enum.t</a>()</pre>
 
       </div>
 
@@ -704,10 +709,9 @@ Callbacks
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">channel_create(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(), channel :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()) ::
+          <pre translate="no"><span class="attribute">@callback</span> channel_create(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(), channel :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()) ::
   <a href="Nostrum.Struct.Channel.html#t:t/0">Nostrum.Struct.Channel.t</a>()</pre>
 
       </div>
@@ -734,10 +738,9 @@ Callbacks
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">channel_delete(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(), <a href="Nostrum.Struct.Channel.html#t:id/0">Nostrum.Struct.Channel.id</a>()) ::
+          <pre translate="no"><span class="attribute">@callback</span> channel_delete(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(), <a href="Nostrum.Struct.Channel.html#t:id/0">Nostrum.Struct.Channel.id</a>()) ::
   <a href="Nostrum.Struct.Channel.html#t:t/0">Nostrum.Struct.Channel.t</a>() | :noop</pre>
 
       </div>
@@ -765,10 +768,9 @@ otherwise.</p>
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">channel_update(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(), channel :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()) ::
+          <pre translate="no"><span class="attribute">@callback</span> channel_update(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(), channel :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()) ::
   {old_channel :: <a href="Nostrum.Struct.Channel.html#t:t/0">Nostrum.Struct.Channel.t</a>(),
    new_channel :: <a href="Nostrum.Struct.Channel.html#t:t/0">Nostrum.Struct.Channel.t</a>()}</pre>
 
@@ -796,10 +798,9 @@ otherwise.</p>
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">create(<a href="Nostrum.Struct.Guild.html#t:t/0">Nostrum.Struct.Guild.t</a>()) :: true</pre>
+          <pre translate="no"><span class="attribute">@callback</span> create(<a href="Nostrum.Struct.Guild.html#t:t/0">Nostrum.Struct.Guild.t</a>()) :: true</pre>
 
       </div>
 
@@ -825,10 +826,9 @@ otherwise.</p>
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">delete(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>()) :: <a href="Nostrum.Struct.Guild.html#t:t/0">Nostrum.Struct.Guild.t</a>() | nil</pre>
+          <pre translate="no"><span class="attribute">@callback</span> delete(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>()) :: <a href="Nostrum.Struct.Guild.html#t:t/0">Nostrum.Struct.Guild.t</a>() | nil</pre>
 
       </div>
 
@@ -854,10 +854,9 @@ otherwise.</p>
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">emoji_update(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(), emojis :: [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()]) ::
+          <pre translate="no"><span class="attribute">@callback</span> emoji_update(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(), emojis :: [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()]) ::
   {old_emojis :: [<a href="Nostrum.Struct.Emoji.html#t:t/0">Nostrum.Struct.Emoji.t</a>()],
    new_emojis :: [<a href="Nostrum.Struct.Emoji.html#t:t/0">Nostrum.Struct.Emoji.t</a>()]}</pre>
 
@@ -886,16 +885,17 @@ emojis.</p>
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">get(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>()) ::
+          <pre translate="no"><span class="attribute">@callback</span> get(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>()) ::
   {:ok, <a href="Nostrum.Struct.Guild.html#t:t/0">Nostrum.Struct.Guild.t</a>()} | {:error, <a href="#t:reason/0">reason</a>()}</pre>
 
       </div>
 
 <p>Retrieves a single <a href="Nostrum.Struct.Guild.html"><code class="inline">Nostrum.Struct.Guild</code></a> from the cache via its <code class="inline">id</code>.</p><p>Returns <code class="inline">{:error, reason}</code> if no result was found.</p><h2 id="c:get/1-examples" class="section-heading">
-  <a href="#c:get/1-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
+  <a href="#c:get/1-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">examples</p>
+  </a>
   Examples
 </h2>
 <pre><code class="Elixir">iex&gt; Nostrum.Cache.GuildCache.get(0)
@@ -924,10 +924,9 @@ iex&gt; Nostrum.Cache.GuildCache.get(10)
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">get_by(<a href="#t:clauses/0">clauses</a>()) :: {:ok, <a href="Nostrum.Struct.Guild.html#t:t/0">Nostrum.Struct.Guild.t</a>()} | {:error, <a href="#t:reason/0">reason</a>()}</pre>
+          <pre translate="no"><span class="attribute">@callback</span> get_by(<a href="#t:clauses/0">clauses</a>()) :: {:ok, <a href="Nostrum.Struct.Guild.html#t:t/0">Nostrum.Struct.Guild.t</a>()} | {:error, <a href="#t:reason/0">reason</a>()}</pre>
 
       </div>
 
@@ -960,10 +959,9 @@ iex&gt; Nostrum.Cache.GuildCache.get_by(id: 10)
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">member_add(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(), member :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()) ::
+          <pre translate="no"><span class="attribute">@callback</span> member_add(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(), member :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()) ::
   <a href="Nostrum.Struct.Guild.Member.html#t:t/0">Nostrum.Struct.Guild.Member.t</a>()</pre>
 
       </div>
@@ -990,10 +988,9 @@ iex&gt; Nostrum.Cache.GuildCache.get_by(id: 10)
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">member_chunk(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(), chunk :: [member :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()]) :: true</pre>
+          <pre translate="no"><span class="attribute">@callback</span> member_chunk(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(), chunk :: [member :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()]) :: true</pre>
 
       </div>
 
@@ -1019,10 +1016,9 @@ iex&gt; Nostrum.Cache.GuildCache.get_by(id: 10)
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">member_remove(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(), member :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()) ::
+          <pre translate="no"><span class="attribute">@callback</span> member_remove(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(), member :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()) ::
   {<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(), old_member :: <a href="Nostrum.Struct.Guild.Member.html#t:t/0">Nostrum.Struct.Guild.Member.t</a>()}
   | :noop</pre>
 
@@ -1051,10 +1047,9 @@ return <code class="inline">:noop</code>.</p>
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">member_update(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(), member :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()) ::
+          <pre translate="no"><span class="attribute">@callback</span> member_update(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(), member :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()) ::
   {<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(),
    old_member :: <a href="Nostrum.Struct.Guild.Member.html#t:t/0">Nostrum.Struct.Guild.Member.t</a>() | nil,
    updated_member :: <a href="Nostrum.Struct.Guild.Member.html#t:t/0">Nostrum.Struct.Guild.Member.t</a>()}</pre>
@@ -1063,7 +1058,9 @@ return <code class="inline">:noop</code>.</p>
 
 <p>Update the given member for the given guild from upstream data.</p><p>Return the guild ID that was updated, the old cached member (if the member
 was known to the cache), and the updated member.</p><h2 id="c:member_update/2-note-regarding-intents" class="section-heading">
-  <a href="#c:member_update/2-note-regarding-intents" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
+  <a href="#c:member_update/2-note-regarding-intents" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">note-regarding-intents</p>
+  </a>
   Note regarding intents
 </h2>
 <p>Even if the required intents to receive <code class="inline">GUILD_MEMBER_UPDATE</code>
@@ -1094,10 +1091,9 @@ cache was moved into <a href="Nostrum.Cache.GuildCache.ETS.html"><code class="in
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">role_create(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(), role :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()) ::
+          <pre translate="no"><span class="attribute">@callback</span> role_create(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(), role :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()) ::
   {<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(), new_role :: <a href="Nostrum.Struct.Guild.Role.html#t:t/0">Nostrum.Struct.Guild.Role.t</a>()}</pre>
 
       </div>
@@ -1124,10 +1120,9 @@ cache was moved into <a href="Nostrum.Cache.GuildCache.ETS.html"><code class="in
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">role_delete(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(), <a href="Nostrum.Struct.Guild.Role.html#t:id/0">Nostrum.Struct.Guild.Role.id</a>()) ::
+          <pre translate="no"><span class="attribute">@callback</span> role_delete(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(), <a href="Nostrum.Struct.Guild.Role.html#t:id/0">Nostrum.Struct.Guild.Role.id</a>()) ::
   {<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(), old_role :: <a href="Nostrum.Struct.Guild.Role.html#t:t/0">Nostrum.Struct.Guild.Role.t</a>()} | :noop</pre>
 
       </div>
@@ -1154,10 +1149,9 @@ cache was moved into <a href="Nostrum.Cache.GuildCache.ETS.html"><code class="in
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">role_update(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(), role :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()) ::
+          <pre translate="no"><span class="attribute">@callback</span> role_update(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(), role :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()) ::
   {<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(), old_role :: <a href="Nostrum.Struct.Guild.Role.html#t:t/0">Nostrum.Struct.Guild.Role.t</a>(),
    new_role :: <a href="Nostrum.Struct.Guild.Role.html#t:t/0">Nostrum.Struct.Guild.Role.t</a>()}</pre>
 
@@ -1185,16 +1179,17 @@ cache was moved into <a href="Nostrum.Cache.GuildCache.ETS.html"><code class="in
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">select(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(), <a href="#t:selector/0">selector</a>()) ::
+          <pre translate="no"><span class="attribute">@callback</span> select(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(), <a href="#t:selector/0">selector</a>()) ::
   {:ok, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">any</a>()} | {:error, <a href="#t:reason/0">reason</a>()}</pre>
 
       </div>
 
 <p>Selects values using a <code class="inline">selector</code> from a <a href="Nostrum.Struct.Guild.html"><code class="inline">Nostrum.Struct.Guild</code></a>.</p><p>Returns <code class="inline">{:error, reason}</code> if no result was found.</p><h2 id="c:select/2-examples" class="section-heading">
-  <a href="#c:select/2-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
+  <a href="#c:select/2-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">examples</p>
+  </a>
   Examples
 </h2>
 <pre><code class="Elixir">iex&gt; Nostrum.Cache.GuildCache.select(0, fn guild -&gt; guild.id end)
@@ -1223,10 +1218,9 @@ iex&gt; Nostrum.Cache.GuildCache.select(10, fn guild -&gt; guild.id end)
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">select_all(selector :: (<a href="Nostrum.Struct.Guild.html#t:t/0">Nostrum.Struct.Guild.t</a>() -&gt; <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">any</a>())) :: <a href="https://hexdocs.pm/elixir/Enum.html#t:t/0">Enum.t</a>()</pre>
+          <pre translate="no"><span class="attribute">@callback</span> select_all(selector :: (<a href="Nostrum.Struct.Guild.html#t:t/0">Nostrum.Struct.Guild.t</a>() -&gt; <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">any</a>())) :: <a href="https://hexdocs.pm/elixir/Enum.html#t:t/0">Enum.t</a>()</pre>
 
       </div>
 
@@ -1252,10 +1246,9 @@ iex&gt; Nostrum.Cache.GuildCache.select(10, fn guild -&gt; guild.id end)
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">select_by(<a href="#t:clauses/0">clauses</a>(), <a href="#t:selector/0">selector</a>()) :: {:ok, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">any</a>()} | {:error, <a href="#t:reason/0">reason</a>()}</pre>
+          <pre translate="no"><span class="attribute">@callback</span> select_by(<a href="#t:clauses/0">clauses</a>(), <a href="#t:selector/0">selector</a>()) :: {:ok, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">any</a>()} | {:error, <a href="#t:reason/0">reason</a>()}</pre>
 
       </div>
 
@@ -1289,10 +1282,9 @@ iex&gt; Nostrum.Cache.GuildCache.select_by([id: 10], fn guild -&gt; guild.id end
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">update(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()) ::
+          <pre translate="no"><span class="attribute">@callback</span> update(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()) ::
   {old_guild :: <a href="Nostrum.Struct.Guild.html#t:t/0">Nostrum.Struct.Guild.t</a>(),
    updated_guild :: <a href="Nostrum.Struct.Guild.html#t:t/0">Nostrum.Struct.Guild.t</a>()}</pre>
 
@@ -1320,10 +1312,9 @@ iex&gt; Nostrum.Cache.GuildCache.select_by([id: 10], fn guild -&gt; guild.id end
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">voice_state_update(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(), state :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()) ::
+          <pre translate="no"><span class="attribute">@callback</span> voice_state_update(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(), state :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()) ::
   {<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(), new_state :: [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()]}</pre>
 
       </div>
@@ -1409,10 +1400,9 @@ Functions
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">get!(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>()) :: <a href="Nostrum.Struct.Guild.html#t:t/0">Nostrum.Struct.Guild.t</a>() | <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">no_return</a>()</pre>
+          <pre translate="no"><span class="attribute">@spec</span> get!(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>()) :: <a href="Nostrum.Struct.Guild.html#t:t/0">Nostrum.Struct.Guild.t</a>() | <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">no_return</a>()</pre>
 
       </div>
 
@@ -1460,10 +1450,9 @@ Functions
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">get_by!(<a href="#t:clauses/0">clauses</a>()) :: <a href="Nostrum.Struct.Guild.html#t:t/0">Nostrum.Struct.Guild.t</a>() | <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">no_return</a>()</pre>
+          <pre translate="no"><span class="attribute">@spec</span> get_by!(<a href="#t:clauses/0">clauses</a>()) :: <a href="Nostrum.Struct.Guild.html#t:t/0">Nostrum.Struct.Guild.t</a>() | <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">no_return</a>()</pre>
 
       </div>
 
@@ -1511,10 +1500,9 @@ Functions
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">select!(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(), <a href="#t:selector/0">selector</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">any</a>() | <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">no_return</a>()</pre>
+          <pre translate="no"><span class="attribute">@spec</span> select!(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(), <a href="#t:selector/0">selector</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">any</a>() | <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">no_return</a>()</pre>
 
       </div>
 
@@ -1584,10 +1572,9 @@ Functions
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">select_by!(<a href="#t:clauses/0">clauses</a>(), <a href="#t:selector/0">selector</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">any</a>() | <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">no_return</a>()</pre>
+          <pre translate="no"><span class="attribute">@spec</span> select_by!(<a href="#t:clauses/0">clauses</a>(), <a href="#t:selector/0">selector</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">any</a>() | <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">no_return</a>()</pre>
 
       </div>
 
@@ -1611,15 +1598,17 @@ Functions
 
             </span>
 
-            <button class="line footer-button display-quick-switch">
+            <button class="a-main line footer-button display-quick-switch">
               Search
             </button>
           </p>
 
         <p>
           Built using
-          <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.28.0) for the
-          <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
+          <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.29.0) for the
+
+            <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
+
         </p>
       </footer>
     </div>

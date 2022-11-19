@@ -4,38 +4,44 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="ExDoc v0.28.0">
+    <meta name="generator" content="ExDoc v0.29.0">
     <meta name="project" content="Nostrum v0.6.1">
 
     <title>Nostrum.Struct.Message — Nostrum v0.6.1</title>
-    <link rel="stylesheet" href="dist/elixir-a816d167216329cc463d.css" />
+    <link rel="stylesheet" href="dist/html-elixir-2YOS5DIE.css" />
 
-    <script src="dist/sidebar_items-8a53303cc4.js"></script>
+    <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
+    <script src="dist/handlebars.templates-X7YVL3G2.js"></script>
+    <script src="dist/sidebar_items-E0D39667.js"></script>
 
       <script src="docs_config.js"></script>
 
-    <script async src="dist/app-80aa23c1d96b6dc3c064.js"></script>
+    <script async src="dist/html-XN2TSG4M.js"></script>
 
 
   </head>
-  <body data-type="modules">
+  <body data-type="modules" class="page-module">
     <script>
 
       try {
-        if (localStorage.getItem('night-mode') === 'true') {
-          document.body.classList.add('night-mode');
+        var settings = JSON.parse(localStorage.getItem('ex_doc:settings') || '{}');
+
+        if (settings.theme === 'dark' ||
+           ((settings.theme === 'system' || settings.theme == null) &&
+             window.matchMedia('(prefers-color-scheme: dark)').matches)
+           ) {
+          document.body.classList.add('dark')
         }
       } catch (error) { }
     </script>
 
 <div class="main">
 
+<button class="sidebar-button sidebar-toggle" aria-label="toggle sidebar">
+  <i class="ri-menu-line ri-lg" title="Collapse/expand sidebar"></i>
+</button>
 
 <section class="sidebar">
-  <button class="sidebar-button sidebar-toggle">
-    <i class="ri-menu-line ri-lg" title="Collapse/expand sidebar"></i>
-  </button>
-
   <form class="sidebar-search" action="search.html">
     <button type="submit" class="search-button" aria-label="Submit Search">
       <i class="ri-search-2-line" aria-hidden="true" title="Submit search"></i>
@@ -44,6 +50,7 @@
       <i class="ri-close-line ri-lg" aria-hidden="true" title="Cancel search"></i>
     </button>
     <label class="search-label">
+      <p class="sr-only">Search</p>
       <input name="q" type="text" class="search-input" placeholder="Search..." aria-label="Input your search terms" autocomplete="off" />
     </label>
   </form>
@@ -79,6 +86,7 @@ Nostrum
 </section>
 
 <section class="content">
+  <output role="status" id="toast"></output>
   <div class="content-outer">
     <div id="content" class="content-inner">
 
@@ -470,10 +478,9 @@ Types
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">activity() :: <a href="Nostrum.Struct.Message.Activity.html#t:t/0">Nostrum.Struct.Message.Activity.t</a>() | nil</pre>
+          <pre translate="no"><span class="attribute">@type</span> activity() :: <a href="Nostrum.Struct.Message.Activity.html#t:t/0">Nostrum.Struct.Message.Activity.t</a>() | nil</pre>
 
       </div>
 
@@ -499,10 +506,9 @@ Types
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">application() :: <a href="Nostrum.Struct.Message.Application.html#t:t/0">Nostrum.Struct.Message.Application.t</a>() | nil</pre>
+          <pre translate="no"><span class="attribute">@type</span> application() :: <a href="Nostrum.Struct.Message.Application.html#t:t/0">Nostrum.Struct.Message.Application.t</a>() | nil</pre>
 
       </div>
 
@@ -528,10 +534,9 @@ Types
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">application_id() :: <a href="Nostrum.Struct.Message.Application.html#t:id/0">Nostrum.Struct.Message.Application.id</a>() | nil</pre>
+          <pre translate="no"><span class="attribute">@type</span> application_id() :: <a href="Nostrum.Struct.Message.Application.html#t:id/0">Nostrum.Struct.Message.Application.id</a>() | nil</pre>
 
       </div>
 
@@ -557,10 +562,9 @@ Types
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">attachments() :: [<a href="Nostrum.Struct.Message.Attachment.html#t:t/0">Nostrum.Struct.Message.Attachment.t</a>()]</pre>
+          <pre translate="no"><span class="attribute">@type</span> attachments() :: [<a href="Nostrum.Struct.Message.Attachment.html#t:t/0">Nostrum.Struct.Message.Attachment.t</a>()]</pre>
 
       </div>
 
@@ -586,10 +590,9 @@ Types
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">author() :: <a href="Nostrum.Struct.User.html#t:t/0">Nostrum.Struct.User.t</a>()</pre>
+          <pre translate="no"><span class="attribute">@type</span> author() :: <a href="Nostrum.Struct.User.html#t:t/0">Nostrum.Struct.User.t</a>()</pre>
 
       </div>
 
@@ -615,10 +618,9 @@ Types
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">channel_id() :: <a href="Nostrum.Struct.Channel.html#t:id/0">Nostrum.Struct.Channel.id</a>()</pre>
+          <pre translate="no"><span class="attribute">@type</span> channel_id() :: <a href="Nostrum.Struct.Channel.html#t:id/0">Nostrum.Struct.Channel.id</a>()</pre>
 
       </div>
 
@@ -644,10 +646,9 @@ Types
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">components() :: [<a href="Nostrum.Struct.Message.Component.html#t:t/0">Nostrum.Struct.Message.Component.t</a>()]</pre>
+          <pre translate="no"><span class="attribute">@type</span> components() :: [<a href="Nostrum.Struct.Message.Component.html#t:t/0">Nostrum.Struct.Message.Component.t</a>()]</pre>
 
       </div>
 
@@ -673,10 +674,9 @@ Types
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">content() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()</pre>
+          <pre translate="no"><span class="attribute">@type</span> content() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()</pre>
 
       </div>
 
@@ -702,10 +702,9 @@ Types
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">edited_timestamp() :: <a href="https://hexdocs.pm/elixir/DateTime.html#t:t/0">DateTime.t</a>() | nil</pre>
+          <pre translate="no"><span class="attribute">@type</span> edited_timestamp() :: <a href="https://hexdocs.pm/elixir/DateTime.html#t:t/0">DateTime.t</a>() | nil</pre>
 
       </div>
 
@@ -731,10 +730,9 @@ Types
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">embeds() :: [<a href="Nostrum.Struct.Embed.html#t:t/0">Nostrum.Struct.Embed.t</a>()]</pre>
+          <pre translate="no"><span class="attribute">@type</span> embeds() :: [<a href="Nostrum.Struct.Embed.html#t:t/0">Nostrum.Struct.Embed.t</a>()]</pre>
 
       </div>
 
@@ -760,10 +758,9 @@ Types
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">guild_id() :: <a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>() | nil</pre>
+          <pre translate="no"><span class="attribute">@type</span> guild_id() :: <a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>() | nil</pre>
 
       </div>
 
@@ -789,10 +786,9 @@ Types
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">id() :: <a href="Nostrum.Snowflake.html#t:t/0">Nostrum.Snowflake.t</a>()</pre>
+          <pre translate="no"><span class="attribute">@type</span> id() :: <a href="Nostrum.Snowflake.html#t:t/0">Nostrum.Snowflake.t</a>()</pre>
 
       </div>
 
@@ -818,10 +814,9 @@ Types
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">interaction() :: <a href="Nostrum.Struct.Interaction.html#t:t/0">Nostrum.Struct.Interaction.t</a>()</pre>
+          <pre translate="no"><span class="attribute">@type</span> interaction() :: <a href="Nostrum.Struct.Interaction.html#t:t/0">Nostrum.Struct.Interaction.t</a>()</pre>
 
       </div>
 
@@ -847,10 +842,9 @@ Types
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">member() :: <a href="Nostrum.Struct.Guild.Member.html#t:t/0">Nostrum.Struct.Guild.Member.t</a>() | nil</pre>
+          <pre translate="no"><span class="attribute">@type</span> member() :: <a href="Nostrum.Struct.Guild.Member.html#t:t/0">Nostrum.Struct.Guild.Member.t</a>() | nil</pre>
 
       </div>
 
@@ -876,10 +870,9 @@ Types
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">mention_channels() :: [<a href="Nostrum.Struct.Channel.html#t:channel_mention/0">Nostrum.Struct.Channel.channel_mention</a>()]</pre>
+          <pre translate="no"><span class="attribute">@type</span> mention_channels() :: [<a href="Nostrum.Struct.Channel.html#t:channel_mention/0">Nostrum.Struct.Channel.channel_mention</a>()]</pre>
 
       </div>
 
@@ -905,10 +898,9 @@ Types
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">mention_everyone() :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">boolean</a>()</pre>
+          <pre translate="no"><span class="attribute">@type</span> mention_everyone() :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">boolean</a>()</pre>
 
       </div>
 
@@ -934,10 +926,9 @@ Types
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">mention_roles() :: [<a href="Nostrum.Struct.Guild.Role.html#t:id/0">Nostrum.Struct.Guild.Role.id</a>()]</pre>
+          <pre translate="no"><span class="attribute">@type</span> mention_roles() :: [<a href="Nostrum.Struct.Guild.Role.html#t:id/0">Nostrum.Struct.Guild.Role.id</a>()]</pre>
 
       </div>
 
@@ -963,10 +954,9 @@ Types
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">mentions() :: [<a href="Nostrum.Struct.User.html#t:t/0">Nostrum.Struct.User.t</a>()]</pre>
+          <pre translate="no"><span class="attribute">@type</span> mentions() :: [<a href="Nostrum.Struct.User.html#t:t/0">Nostrum.Struct.User.t</a>()]</pre>
 
       </div>
 
@@ -992,10 +982,9 @@ Types
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">message_reference() :: <a href="Nostrum.Struct.Message.Reference.html#t:t/0">Nostrum.Struct.Message.Reference.t</a>() | nil</pre>
+          <pre translate="no"><span class="attribute">@type</span> message_reference() :: <a href="Nostrum.Struct.Message.Reference.html#t:t/0">Nostrum.Struct.Message.Reference.t</a>() | nil</pre>
 
       </div>
 
@@ -1021,10 +1010,9 @@ Types
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">nonce() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>() | nil</pre>
+          <pre translate="no"><span class="attribute">@type</span> nonce() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>() | nil</pre>
 
       </div>
 
@@ -1050,10 +1038,9 @@ Types
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">pinned() :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">boolean</a>()</pre>
+          <pre translate="no"><span class="attribute">@type</span> pinned() :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">boolean</a>()</pre>
 
       </div>
 
@@ -1079,10 +1066,9 @@ Types
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">reactions() :: [<a href="Nostrum.Struct.Message.Reaction.html#t:t/0">Nostrum.Struct.Message.Reaction.t</a>()] | nil</pre>
+          <pre translate="no"><span class="attribute">@type</span> reactions() :: [<a href="Nostrum.Struct.Message.Reaction.html#t:t/0">Nostrum.Struct.Message.Reaction.t</a>()] | nil</pre>
 
       </div>
 
@@ -1108,10 +1094,9 @@ Types
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">referenced_message() :: <a href="#t:t/0">t</a>() | nil</pre>
+          <pre translate="no"><span class="attribute">@type</span> referenced_message() :: <a href="#t:t/0">t</a>() | nil</pre>
 
       </div>
 
@@ -1137,10 +1122,9 @@ Types
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">sticker_items() :: [<a href="Nostrum.Struct.Message.Sticker.html#t:t/0">Nostrum.Struct.Message.Sticker.t</a>()]</pre>
+          <pre translate="no"><span class="attribute">@type</span> sticker_items() :: [<a href="Nostrum.Struct.Message.Sticker.html#t:t/0">Nostrum.Struct.Message.Sticker.t</a>()]</pre>
 
       </div>
 
@@ -1166,10 +1150,9 @@ Types
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">t() :: %Nostrum.Struct.Message{
+          <pre translate="no"><span class="attribute">@type</span> t() :: %Nostrum.Struct.Message{
   activity: <a href="#t:activity/0">activity</a>(),
   application: <a href="#t:application/0">application</a>(),
   application_id: <a href="#t:application_id/0">application_id</a>(),
@@ -1225,10 +1208,9 @@ Types
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">thread() :: <a href="Nostrum.Struct.Channel.html#t:t/0">Nostrum.Struct.Channel.t</a>() | nil</pre>
+          <pre translate="no"><span class="attribute">@type</span> thread() :: <a href="Nostrum.Struct.Channel.html#t:t/0">Nostrum.Struct.Channel.t</a>() | nil</pre>
 
       </div>
 
@@ -1254,10 +1236,9 @@ Types
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">timestamp() :: <a href="https://hexdocs.pm/elixir/DateTime.html#t:t/0">DateTime.t</a>()</pre>
+          <pre translate="no"><span class="attribute">@type</span> timestamp() :: <a href="https://hexdocs.pm/elixir/DateTime.html#t:t/0">DateTime.t</a>()</pre>
 
       </div>
 
@@ -1283,10 +1264,9 @@ Types
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">tts() :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">boolean</a>()</pre>
+          <pre translate="no"><span class="attribute">@type</span> tts() :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">boolean</a>()</pre>
 
       </div>
 
@@ -1312,10 +1292,9 @@ Types
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">type() :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>()</pre>
+          <pre translate="no"><span class="attribute">@type</span> type() :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>()</pre>
 
       </div>
 
@@ -1341,10 +1320,9 @@ Types
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">webhook_id() :: <a href="Nostrum.Snowflake.html#t:t/0">Nostrum.Snowflake.t</a>() | nil</pre>
+          <pre translate="no"><span class="attribute">@type</span> webhook_id() :: <a href="Nostrum.Snowflake.html#t:t/0">Nostrum.Snowflake.t</a>() | nil</pre>
 
       </div>
 
@@ -1385,10 +1363,9 @@ Functions
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">to_url(%Nostrum.Struct.Message{
+          <pre translate="no"><span class="attribute">@spec</span> to_url(%Nostrum.Struct.Message{
   activity: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>(),
   application: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>(),
   application_id: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>(),
@@ -1444,15 +1421,17 @@ is valid.</p>
 
             </span>
 
-            <button class="line footer-button display-quick-switch">
+            <button class="a-main line footer-button display-quick-switch">
               Search
             </button>
           </p>
 
         <p>
           Built using
-          <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.28.0) for the
-          <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
+          <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.29.0) for the
+
+            <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
+
         </p>
       </footer>
     </div>

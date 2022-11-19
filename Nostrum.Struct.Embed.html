@@ -4,38 +4,44 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="ExDoc v0.28.0">
+    <meta name="generator" content="ExDoc v0.29.0">
     <meta name="project" content="Nostrum v0.6.1">
 
     <title>Nostrum.Struct.Embed — Nostrum v0.6.1</title>
-    <link rel="stylesheet" href="dist/elixir-a816d167216329cc463d.css" />
+    <link rel="stylesheet" href="dist/html-elixir-2YOS5DIE.css" />
 
-    <script src="dist/sidebar_items-8a53303cc4.js"></script>
+    <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
+    <script src="dist/handlebars.templates-X7YVL3G2.js"></script>
+    <script src="dist/sidebar_items-E0D39667.js"></script>
 
       <script src="docs_config.js"></script>
 
-    <script async src="dist/app-80aa23c1d96b6dc3c064.js"></script>
+    <script async src="dist/html-XN2TSG4M.js"></script>
 
 
   </head>
-  <body data-type="modules">
+  <body data-type="modules" class="page-behaviour">
     <script>
 
       try {
-        if (localStorage.getItem('night-mode') === 'true') {
-          document.body.classList.add('night-mode');
+        var settings = JSON.parse(localStorage.getItem('ex_doc:settings') || '{}');
+
+        if (settings.theme === 'dark' ||
+           ((settings.theme === 'system' || settings.theme == null) &&
+             window.matchMedia('(prefers-color-scheme: dark)').matches)
+           ) {
+          document.body.classList.add('dark')
         }
       } catch (error) { }
     </script>
 
 <div class="main">
 
+<button class="sidebar-button sidebar-toggle" aria-label="toggle sidebar">
+  <i class="ri-menu-line ri-lg" title="Collapse/expand sidebar"></i>
+</button>
 
 <section class="sidebar">
-  <button class="sidebar-button sidebar-toggle">
-    <i class="ri-menu-line ri-lg" title="Collapse/expand sidebar"></i>
-  </button>
-
   <form class="sidebar-search" action="search.html">
     <button type="submit" class="search-button" aria-label="Submit Search">
       <i class="ri-search-2-line" aria-hidden="true" title="Submit search"></i>
@@ -44,6 +50,7 @@
       <i class="ri-close-line ri-lg" aria-hidden="true" title="Cancel search"></i>
     </button>
     <label class="search-label">
+      <p class="sr-only">Search</p>
       <input name="q" type="text" class="search-input" placeholder="Search..." aria-label="Input your search terms" autocomplete="off" />
     </label>
   </form>
@@ -79,6 +86,7 @@ Nostrum
 </section>
 
 <section class="content">
+  <output role="status" id="toast"></output>
   <div class="content-outer">
     <div id="content" class="content-inner">
 
@@ -102,7 +110,9 @@ Nostrum
 
   <section id="moduledoc">
 <p>Functions that work on Discord embeds.</p><h2 id="module-building-embeds" class="section-heading">
-  <a href="#module-building-embeds" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
+  <a href="#module-building-embeds" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">building-embeds</p>
+  </a>
   Building Embeds
 </h2>
 <p><a href="Nostrum.Struct.Embed.html#content"><code class="inline">Nostrum.Struct.Embed</code></a>s can be built using this module's builder functions
@@ -128,7 +138,9 @@ or standard <a href="https://hexdocs.pm/elixir/Map.html"><code class="inline">Ma
     %Nostrum.Struct.Embed.Field{name: &quot;Field 2&quot;, value: &quot;More test&quot;, inline: true}
   ]
 }</code></pre><h2 id="module-using-structs" class="section-heading">
-  <a href="#module-using-structs" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
+  <a href="#module-using-structs" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">using-structs</p>
+  </a>
   Using structs
 </h2>
 <p>You can also create <a href="Nostrum.Struct.Embed.html#content"><code class="inline">Nostrum.Struct.Embed</code></a>s from structs, by using the
@@ -556,10 +568,9 @@ Types
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">author() :: <a href="Nostrum.Struct.Embed.Author.html#t:t/0">Nostrum.Struct.Embed.Author.t</a>() | nil</pre>
+          <pre translate="no"><span class="attribute">@type</span> author() :: <a href="Nostrum.Struct.Embed.Author.html#t:t/0">Nostrum.Struct.Embed.Author.t</a>() | nil</pre>
 
       </div>
 
@@ -585,10 +596,9 @@ Types
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">color() :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>() | nil</pre>
+          <pre translate="no"><span class="attribute">@type</span> color() :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>() | nil</pre>
 
       </div>
 
@@ -614,10 +624,9 @@ Types
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">description() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>() | nil</pre>
+          <pre translate="no"><span class="attribute">@type</span> description() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>() | nil</pre>
 
       </div>
 
@@ -643,10 +652,9 @@ Types
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">fields() :: [<a href="Nostrum.Struct.Embed.Field.html#t:t/0">Nostrum.Struct.Embed.Field.t</a>()] | nil</pre>
+          <pre translate="no"><span class="attribute">@type</span> fields() :: [<a href="Nostrum.Struct.Embed.Field.html#t:t/0">Nostrum.Struct.Embed.Field.t</a>()] | nil</pre>
 
       </div>
 
@@ -672,10 +680,9 @@ Types
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">footer() :: <a href="Nostrum.Struct.Embed.Footer.html#t:t/0">Nostrum.Struct.Embed.Footer.t</a>() | nil</pre>
+          <pre translate="no"><span class="attribute">@type</span> footer() :: <a href="Nostrum.Struct.Embed.Footer.html#t:t/0">Nostrum.Struct.Embed.Footer.t</a>() | nil</pre>
 
       </div>
 
@@ -701,10 +708,9 @@ Types
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">image() :: <a href="Nostrum.Struct.Embed.Image.html#t:t/0">Nostrum.Struct.Embed.Image.t</a>() | nil</pre>
+          <pre translate="no"><span class="attribute">@type</span> image() :: <a href="Nostrum.Struct.Embed.Image.html#t:t/0">Nostrum.Struct.Embed.Image.t</a>() | nil</pre>
 
       </div>
 
@@ -730,10 +736,9 @@ Types
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">provider() :: <a href="Nostrum.Struct.Embed.Provider.html#t:t/0">Nostrum.Struct.Embed.Provider.t</a>() | nil</pre>
+          <pre translate="no"><span class="attribute">@type</span> provider() :: <a href="Nostrum.Struct.Embed.Provider.html#t:t/0">Nostrum.Struct.Embed.Provider.t</a>() | nil</pre>
 
       </div>
 
@@ -759,10 +764,9 @@ Types
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">t() :: %Nostrum.Struct.Embed{
+          <pre translate="no"><span class="attribute">@type</span> t() :: %Nostrum.Struct.Embed{
   author: <a href="#t:author/0">author</a>(),
   color: <a href="#t:color/0">color</a>(),
   description: <a href="#t:description/0">description</a>(),
@@ -802,10 +806,9 @@ Types
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">thumbnail() :: <a href="Nostrum.Struct.Embed.Thumbnail.html#t:t/0">Nostrum.Struct.Embed.Thumbnail.t</a>() | nil</pre>
+          <pre translate="no"><span class="attribute">@type</span> thumbnail() :: <a href="Nostrum.Struct.Embed.Thumbnail.html#t:t/0">Nostrum.Struct.Embed.Thumbnail.t</a>() | nil</pre>
 
       </div>
 
@@ -831,10 +834,9 @@ Types
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">timestamp() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>() | nil</pre>
+          <pre translate="no"><span class="attribute">@type</span> timestamp() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>() | nil</pre>
 
       </div>
 
@@ -860,10 +862,9 @@ Types
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">title() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>() | nil</pre>
+          <pre translate="no"><span class="attribute">@type</span> title() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>() | nil</pre>
 
       </div>
 
@@ -889,10 +890,9 @@ Types
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">type() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>() | nil</pre>
+          <pre translate="no"><span class="attribute">@type</span> type() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>() | nil</pre>
 
       </div>
 
@@ -918,10 +918,9 @@ Types
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">url() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>() | nil</pre>
+          <pre translate="no"><span class="attribute">@type</span> url() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>() | nil</pre>
 
       </div>
 
@@ -947,10 +946,9 @@ Types
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">video() :: <a href="Nostrum.Struct.Embed.Video.html#t:t/0">Nostrum.Struct.Embed.Video.t</a>() | nil</pre>
+          <pre translate="no"><span class="attribute">@type</span> video() :: <a href="Nostrum.Struct.Embed.Video.html#t:t/0">Nostrum.Struct.Embed.Video.t</a>() | nil</pre>
 
       </div>
 
@@ -989,10 +987,9 @@ Callbacks
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">author(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">struct</a>()) :: <a href="#t:author/0">author</a>()</pre>
+          <pre translate="no"><span class="attribute">@callback</span> author(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">struct</a>()) :: <a href="#t:author/0">author</a>()</pre>
 
       </div>
 
@@ -1018,10 +1015,9 @@ Callbacks
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">color(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">struct</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>() | nil</pre>
+          <pre translate="no"><span class="attribute">@callback</span> color(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">struct</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>() | nil</pre>
 
       </div>
 
@@ -1047,10 +1043,9 @@ Callbacks
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">description(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">struct</a>()) :: <a href="#t:description/0">description</a>()</pre>
+          <pre translate="no"><span class="attribute">@callback</span> description(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">struct</a>()) :: <a href="#t:description/0">description</a>()</pre>
 
       </div>
 
@@ -1076,10 +1071,9 @@ Callbacks
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">fields(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">struct</a>()) :: <a href="#t:fields/0">fields</a>()</pre>
+          <pre translate="no"><span class="attribute">@callback</span> fields(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">struct</a>()) :: <a href="#t:fields/0">fields</a>()</pre>
 
       </div>
 
@@ -1105,10 +1099,9 @@ Callbacks
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">footer(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">struct</a>()) :: <a href="#t:footer/0">footer</a>()</pre>
+          <pre translate="no"><span class="attribute">@callback</span> footer(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">struct</a>()) :: <a href="#t:footer/0">footer</a>()</pre>
 
       </div>
 
@@ -1134,10 +1127,9 @@ Callbacks
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">image(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">struct</a>()) :: <a href="#t:url/0">url</a>()</pre>
+          <pre translate="no"><span class="attribute">@callback</span> image(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">struct</a>()) :: <a href="#t:url/0">url</a>()</pre>
 
       </div>
 
@@ -1163,10 +1155,9 @@ Callbacks
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">thumbnail(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">struct</a>()) :: <a href="#t:url/0">url</a>()</pre>
+          <pre translate="no"><span class="attribute">@callback</span> thumbnail(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">struct</a>()) :: <a href="#t:url/0">url</a>()</pre>
 
       </div>
 
@@ -1192,10 +1183,9 @@ Callbacks
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">timestamp(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">struct</a>()) :: <a href="#t:timestamp/0">timestamp</a>()</pre>
+          <pre translate="no"><span class="attribute">@callback</span> timestamp(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">struct</a>()) :: <a href="#t:timestamp/0">timestamp</a>()</pre>
 
       </div>
 
@@ -1221,10 +1211,9 @@ Callbacks
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">title(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">struct</a>()) :: <a href="#t:title/0">title</a>()</pre>
+          <pre translate="no"><span class="attribute">@callback</span> title(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">struct</a>()) :: <a href="#t:title/0">title</a>()</pre>
 
       </div>
 
@@ -1250,10 +1239,9 @@ Callbacks
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">url(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">struct</a>()) :: <a href="#t:url/0">url</a>()</pre>
+          <pre translate="no"><span class="attribute">@callback</span> url(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">struct</a>()) :: <a href="#t:url/0">url</a>()</pre>
 
       </div>
 
@@ -1314,10 +1302,9 @@ Functions
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">put_author(
+          <pre translate="no"><span class="attribute">@spec</span> put_author(
   <a href="#t:t/0">t</a>(),
   <a href="Nostrum.Struct.Embed.Author.html#t:name/0">Nostrum.Struct.Embed.Author.name</a>(),
   <a href="Nostrum.Struct.Embed.Author.html#t:url/0">Nostrum.Struct.Embed.Author.url</a>(),
@@ -1327,7 +1314,9 @@ Functions
       </div>
 
 <p>Puts a <a href="Nostrum.Struct.Embed.Author.html"><code class="inline">Nostrum.Struct.Embed.Author</code></a> under <code class="inline">:author</code> in <code class="inline">embed</code>.</p><h2 id="put_author/4-examples" class="section-heading">
-  <a href="#put_author/4-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
+  <a href="#put_author/4-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">examples</p>
+  </a>
   Examples
 </h2>
 <pre><code class="Elixir">iex&gt; embed = %Nostrum.Struct.Embed{}
@@ -1360,15 +1349,16 @@ Functions
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">put_color(<a href="#t:t/0">t</a>(), <a href="#t:color/0">color</a>()) :: <a href="#t:t/0">t</a>()</pre>
+          <pre translate="no"><span class="attribute">@spec</span> put_color(<a href="#t:t/0">t</a>(), <a href="#t:color/0">color</a>()) :: <a href="#t:t/0">t</a>()</pre>
 
       </div>
 
 <p>Puts the given <code class="inline">value</code> under <code class="inline">:color</code> in <code class="inline">embed</code>.</p><h2 id="put_color/2-examples" class="section-heading">
-  <a href="#put_color/2-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
+  <a href="#put_color/2-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">examples</p>
+  </a>
   Examples
 </h2>
 <pre><code class="Elixir">iex&gt; embed = %Nostrum.Struct.Embed{}
@@ -1395,15 +1385,16 @@ Functions
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">put_description(<a href="#t:t/0">t</a>(), <a href="#t:description/0">description</a>()) :: <a href="#t:t/0">t</a>()</pre>
+          <pre translate="no"><span class="attribute">@spec</span> put_description(<a href="#t:t/0">t</a>(), <a href="#t:description/0">description</a>()) :: <a href="#t:t/0">t</a>()</pre>
 
       </div>
 
 <p>Puts the given <code class="inline">value</code> under <code class="inline">:description</code> in <code class="inline">embed</code>.</p><h2 id="put_description/2-examples" class="section-heading">
-  <a href="#put_description/2-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
+  <a href="#put_description/2-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">examples</p>
+  </a>
   Examples
 </h2>
 <pre><code class="Elixir">iex&gt; embed = %Nostrum.Struct.Embed{}
@@ -1432,10 +1423,9 @@ Functions
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">put_field(
+          <pre translate="no"><span class="attribute">@spec</span> put_field(
   <a href="#t:t/0">t</a>(),
   <a href="Nostrum.Struct.Embed.Field.html#t:name/0">Nostrum.Struct.Embed.Field.name</a>(),
   <a href="Nostrum.Struct.Embed.Field.html#t:value/0">Nostrum.Struct.Embed.Field.value</a>(),
@@ -1445,7 +1435,9 @@ Functions
       </div>
 
 <p>Adds a <a href="Nostrum.Struct.Embed.Field.html"><code class="inline">Nostrum.Struct.Embed.Field</code></a> under <code class="inline">:fields</code> in <code class="inline">embed</code>.</p><h2 id="put_field/4-examples" class="section-heading">
-  <a href="#put_field/4-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
+  <a href="#put_field/4-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">examples</p>
+  </a>
   Examples
 </h2>
 <pre><code class="Elixir">iex&gt; embed = %Nostrum.Struct.Embed{}
@@ -1491,10 +1483,9 @@ iex&gt; embed = %Nostrum.Struct.Embed{
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">put_footer(
+          <pre translate="no"><span class="attribute">@spec</span> put_footer(
   <a href="#t:t/0">t</a>(),
   <a href="Nostrum.Struct.Embed.Footer.html#t:text/0">Nostrum.Struct.Embed.Footer.text</a>(),
   <a href="Nostrum.Struct.Embed.Footer.html#t:icon_url/0">Nostrum.Struct.Embed.Footer.icon_url</a>()
@@ -1503,7 +1494,9 @@ iex&gt; embed = %Nostrum.Struct.Embed{
       </div>
 
 <p>Puts a <a href="Nostrum.Struct.Embed.Footer.html"><code class="inline">Nostrum.Struct.Embed.Footer</code></a> under <code class="inline">:footer</code> in <code class="inline">embed</code>.</p><h2 id="put_footer/3-examples" class="section-heading">
-  <a href="#put_footer/3-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
+  <a href="#put_footer/3-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">examples</p>
+  </a>
   Examples
 </h2>
 <pre><code class="Elixir">iex&gt; embed = %Nostrum.Struct.Embed{}
@@ -1544,15 +1537,16 @@ iex&gt; embed = %Nostrum.Struct.Embed{}
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">put_image(<a href="#t:t/0">t</a>(), <a href="Nostrum.Struct.Embed.Image.html#t:url/0">Nostrum.Struct.Embed.Image.url</a>()) :: <a href="#t:t/0">t</a>()</pre>
+          <pre translate="no"><span class="attribute">@spec</span> put_image(<a href="#t:t/0">t</a>(), <a href="Nostrum.Struct.Embed.Image.html#t:url/0">Nostrum.Struct.Embed.Image.url</a>()) :: <a href="#t:t/0">t</a>()</pre>
 
       </div>
 
 <p>Puts a <a href="Nostrum.Struct.Embed.Image.html"><code class="inline">Nostrum.Struct.Embed.Image</code></a> under <code class="inline">:image</code> in <code class="inline">embed</code>.</p><h2 id="put_image/2-examples" class="section-heading">
-  <a href="#put_image/2-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
+  <a href="#put_image/2-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">examples</p>
+  </a>
   Examples
 </h2>
 <pre><code class="Elixir">iex&gt; embed = %Nostrum.Struct.Embed{}
@@ -1583,15 +1577,16 @@ iex&gt; embed = %Nostrum.Struct.Embed{}
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">put_thumbnail(<a href="#t:t/0">t</a>(), <a href="Nostrum.Struct.Embed.Thumbnail.html#t:url/0">Nostrum.Struct.Embed.Thumbnail.url</a>()) :: <a href="#t:t/0">t</a>()</pre>
+          <pre translate="no"><span class="attribute">@spec</span> put_thumbnail(<a href="#t:t/0">t</a>(), <a href="Nostrum.Struct.Embed.Thumbnail.html#t:url/0">Nostrum.Struct.Embed.Thumbnail.url</a>()) :: <a href="#t:t/0">t</a>()</pre>
 
       </div>
 
 <p>Puts a <a href="Nostrum.Struct.Embed.Thumbnail.html"><code class="inline">Nostrum.Struct.Embed.Thumbnail</code></a> under <code class="inline">:thumbnail</code> in <code class="inline">embed</code>.</p><h2 id="put_thumbnail/2-examples" class="section-heading">
-  <a href="#put_thumbnail/2-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
+  <a href="#put_thumbnail/2-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">examples</p>
+  </a>
   Examples
 </h2>
 <pre><code class="Elixir">iex&gt; embed = %Nostrum.Struct.Embed{}
@@ -1622,20 +1617,21 @@ iex&gt; embed = %Nostrum.Struct.Embed{}
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">put_timestamp(<a href="#t:t/0">t</a>(), <a href="#t:timestamp/0">timestamp</a>()) :: <a href="#t:t/0">t</a>()</pre>
+          <pre translate="no"><span class="attribute">@spec</span> put_timestamp(<a href="#t:t/0">t</a>(), <a href="#t:timestamp/0">timestamp</a>()) :: <a href="#t:t/0">t</a>()</pre>
 
       </div>
 
 <p>Puts the given <code class="inline">value</code> under <code class="inline">:timestamp</code> in <code class="inline">embed</code>.</p><h2 id="put_timestamp/2-examples" class="section-heading">
-  <a href="#put_timestamp/2-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
+  <a href="#put_timestamp/2-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">examples</p>
+  </a>
   Examples
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="n">embed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="0200476373-1">%</span><span class="nc" data-group-id="0200476373-1">Nostrum.Struct.Embed</span><span class="p" data-group-id="0200476373-1">{</span><span class="p" data-group-id="0200476373-1">}</span><span class="w">
-</span><span class="gp unselectable">...&gt; </span><span class="nc">Nostrum.Struct.Embed</span><span class="o">.</span><span class="n">put_timestamp</span><span class="p" data-group-id="0200476373-2">(</span><span class="n">embed</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;2018-04-21T17:33:51.893000Z&quot;</span><span class="p" data-group-id="0200476373-2">)</span><span class="w">
-</span><span class="p" data-group-id="0200476373-3">%</span><span class="nc" data-group-id="0200476373-3">Nostrum.Struct.Embed</span><span class="p" data-group-id="0200476373-3">{</span><span class="ss">timestamp</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;2018-04-21T17:33:51.893000Z&quot;</span><span class="p" data-group-id="0200476373-3">}</span></code></pre>
+<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="n">embed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="3331019771-1">%</span><span class="nc" data-group-id="3331019771-1">Nostrum.Struct.Embed</span><span class="p" data-group-id="3331019771-1">{</span><span class="p" data-group-id="3331019771-1">}</span><span class="w">
+</span><span class="gp unselectable">...&gt; </span><span class="nc">Nostrum.Struct.Embed</span><span class="o">.</span><span class="n">put_timestamp</span><span class="p" data-group-id="3331019771-2">(</span><span class="n">embed</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;2018-04-21T17:33:51.893000Z&quot;</span><span class="p" data-group-id="3331019771-2">)</span><span class="w">
+</span><span class="p" data-group-id="3331019771-3">%</span><span class="nc" data-group-id="3331019771-3">Nostrum.Struct.Embed</span><span class="p" data-group-id="3331019771-3">{</span><span class="ss">timestamp</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;2018-04-21T17:33:51.893000Z&quot;</span><span class="p" data-group-id="3331019771-3">}</span></code></pre>
   </section>
 </section>
 <section class="detail" id="put_title/2">
@@ -1657,15 +1653,16 @@ iex&gt; embed = %Nostrum.Struct.Embed{}
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">put_title(<a href="#t:t/0">t</a>(), <a href="#t:title/0">title</a>()) :: <a href="#t:t/0">t</a>()</pre>
+          <pre translate="no"><span class="attribute">@spec</span> put_title(<a href="#t:t/0">t</a>(), <a href="#t:title/0">title</a>()) :: <a href="#t:t/0">t</a>()</pre>
 
       </div>
 
 <p>Puts the given <code class="inline">value</code> under <code class="inline">:title</code> in <code class="inline">embed</code>.</p><h2 id="put_title/2-examples" class="section-heading">
-  <a href="#put_title/2-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
+  <a href="#put_title/2-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">examples</p>
+  </a>
   Examples
 </h2>
 <pre><code class="Elixir">iex&gt; embed = %Nostrum.Struct.Embed{}
@@ -1692,15 +1689,16 @@ iex&gt; embed = %Nostrum.Struct.Embed{}
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">put_url(<a href="#t:t/0">t</a>(), <a href="#t:url/0">url</a>()) :: <a href="#t:t/0">t</a>()</pre>
+          <pre translate="no"><span class="attribute">@spec</span> put_url(<a href="#t:t/0">t</a>(), <a href="#t:url/0">url</a>()) :: <a href="#t:t/0">t</a>()</pre>
 
       </div>
 
 <p>Puts the given <code class="inline">value</code> under <code class="inline">:url</code> in <code class="inline">embed</code>.</p><h2 id="put_url/2-examples" class="section-heading">
-  <a href="#put_url/2-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
+  <a href="#put_url/2-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">examples</p>
+  </a>
   Examples
 </h2>
 <pre><code class="Elixir">iex&gt; embed = %Nostrum.Struct.Embed{}
@@ -1725,15 +1723,17 @@ iex&gt; embed = %Nostrum.Struct.Embed{}
 
             </span>
 
-            <button class="line footer-button display-quick-switch">
+            <button class="a-main line footer-button display-quick-switch">
               Search
             </button>
           </p>
 
         <p>
           Built using
-          <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.28.0) for the
-          <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
+          <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.29.0) for the
+
+            <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
+
         </p>
       </footer>
     </div>

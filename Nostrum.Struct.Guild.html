@@ -4,38 +4,44 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="ExDoc v0.28.0">
+    <meta name="generator" content="ExDoc v0.29.0">
     <meta name="project" content="Nostrum v0.6.1">
 
     <title>Nostrum.Struct.Guild — Nostrum v0.6.1</title>
-    <link rel="stylesheet" href="dist/elixir-a816d167216329cc463d.css" />
+    <link rel="stylesheet" href="dist/html-elixir-2YOS5DIE.css" />
 
-    <script src="dist/sidebar_items-8a53303cc4.js"></script>
+    <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
+    <script src="dist/handlebars.templates-X7YVL3G2.js"></script>
+    <script src="dist/sidebar_items-E0D39667.js"></script>
 
       <script src="docs_config.js"></script>
 
-    <script async src="dist/app-80aa23c1d96b6dc3c064.js"></script>
+    <script async src="dist/html-XN2TSG4M.js"></script>
 
 
   </head>
-  <body data-type="modules">
+  <body data-type="modules" class="page-module">
     <script>
 
       try {
-        if (localStorage.getItem('night-mode') === 'true') {
-          document.body.classList.add('night-mode');
+        var settings = JSON.parse(localStorage.getItem('ex_doc:settings') || '{}');
+
+        if (settings.theme === 'dark' ||
+           ((settings.theme === 'system' || settings.theme == null) &&
+             window.matchMedia('(prefers-color-scheme: dark)').matches)
+           ) {
+          document.body.classList.add('dark')
         }
       } catch (error) { }
     </script>
 
 <div class="main">
 
+<button class="sidebar-button sidebar-toggle" aria-label="toggle sidebar">
+  <i class="ri-menu-line ri-lg" title="Collapse/expand sidebar"></i>
+</button>
 
 <section class="sidebar">
-  <button class="sidebar-button sidebar-toggle">
-    <i class="ri-menu-line ri-lg" title="Collapse/expand sidebar"></i>
-  </button>
-
   <form class="sidebar-search" action="search.html">
     <button type="submit" class="search-button" aria-label="Submit Search">
       <i class="ri-search-2-line" aria-hidden="true" title="Submit search"></i>
@@ -44,6 +50,7 @@
       <i class="ri-close-line ri-lg" aria-hidden="true" title="Cancel search"></i>
     </button>
     <label class="search-label">
+      <p class="sr-only">Search</p>
       <input name="q" type="text" class="search-input" placeholder="Search..." aria-label="Input your search terms" autocomplete="off" />
     </label>
   </form>
@@ -79,6 +86,7 @@ Nostrum
 </section>
 
 <section class="content">
+  <output role="status" id="toast"></output>
   <div class="content-outer">
     <div id="content" class="content-inner">
 
@@ -539,10 +547,9 @@ Types
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">afk_channel_id() :: <a href="Nostrum.Struct.Channel.html#t:id/0">Nostrum.Struct.Channel.id</a>() | nil</pre>
+          <pre translate="no"><span class="attribute">@type</span> afk_channel_id() :: <a href="Nostrum.Struct.Channel.html#t:id/0">Nostrum.Struct.Channel.id</a>() | nil</pre>
 
       </div>
 
@@ -568,10 +575,9 @@ Types
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">afk_timeout() :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>()</pre>
+          <pre translate="no"><span class="attribute">@type</span> afk_timeout() :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>()</pre>
 
       </div>
 
@@ -597,10 +603,9 @@ Types
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">application_id() :: <a href="Nostrum.Snowflake.html#t:t/0">Nostrum.Snowflake.t</a>() | nil</pre>
+          <pre translate="no"><span class="attribute">@type</span> application_id() :: <a href="Nostrum.Snowflake.html#t:t/0">Nostrum.Snowflake.t</a>() | nil</pre>
 
       </div>
 
@@ -626,10 +631,9 @@ Types
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">available_guild() :: %Nostrum.Struct.Guild{
+          <pre translate="no"><span class="attribute">@type</span> available_guild() :: %Nostrum.Struct.Guild{
   afk_channel_id: <a href="#t:afk_channel_id/0">afk_channel_id</a>(),
   afk_timeout: <a href="#t:afk_timeout/0">afk_timeout</a>(),
   application_id: <a href="#t:application_id/0">application_id</a>(),
@@ -687,10 +691,9 @@ Types
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">channels() ::
+          <pre translate="no"><span class="attribute">@type</span> channels() ::
   %{required(<a href="Nostrum.Struct.Channel.html#t:id/0">Nostrum.Struct.Channel.id</a>()) =&gt; <a href="Nostrum.Struct.Channel.html#t:t/0">Nostrum.Struct.Channel.t</a>()} | nil</pre>
 
       </div>
@@ -717,10 +720,9 @@ Types
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">default_message_notifications() :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>()</pre>
+          <pre translate="no"><span class="attribute">@type</span> default_message_notifications() :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>()</pre>
 
       </div>
 
@@ -746,10 +748,9 @@ Types
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">emojis() :: [<a href="Nostrum.Struct.Emoji.html#t:t/0">Nostrum.Struct.Emoji.t</a>()]</pre>
+          <pre translate="no"><span class="attribute">@type</span> emojis() :: [<a href="Nostrum.Struct.Emoji.html#t:t/0">Nostrum.Struct.Emoji.t</a>()]</pre>
 
       </div>
 
@@ -775,10 +776,9 @@ Types
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">explicit_content_filter() :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>()</pre>
+          <pre translate="no"><span class="attribute">@type</span> explicit_content_filter() :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>()</pre>
 
       </div>
 
@@ -804,10 +804,9 @@ Types
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">features() :: [<a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()]</pre>
+          <pre translate="no"><span class="attribute">@type</span> features() :: [<a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()]</pre>
 
       </div>
 
@@ -833,10 +832,9 @@ Types
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">guild_scheduled_events() :: [<a href="Nostrum.Struct.Guild.ScheduledEvent.html#t:t/0">Nostrum.Struct.Guild.ScheduledEvent.t</a>()] | nil</pre>
+          <pre translate="no"><span class="attribute">@type</span> guild_scheduled_events() :: [<a href="Nostrum.Struct.Guild.ScheduledEvent.html#t:t/0">Nostrum.Struct.Guild.ScheduledEvent.t</a>()] | nil</pre>
 
       </div>
 
@@ -862,10 +860,9 @@ Types
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">icon() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>() | nil</pre>
+          <pre translate="no"><span class="attribute">@type</span> icon() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>() | nil</pre>
 
       </div>
 
@@ -891,10 +888,9 @@ Types
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">id() :: <a href="Nostrum.Snowflake.html#t:t/0">Nostrum.Snowflake.t</a>()</pre>
+          <pre translate="no"><span class="attribute">@type</span> id() :: <a href="Nostrum.Snowflake.html#t:t/0">Nostrum.Snowflake.t</a>()</pre>
 
       </div>
 
@@ -920,10 +916,9 @@ Types
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">joined_at() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>() | nil</pre>
+          <pre translate="no"><span class="attribute">@type</span> joined_at() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>() | nil</pre>
 
       </div>
 
@@ -949,10 +944,9 @@ Types
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">large() :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">boolean</a>() | nil</pre>
+          <pre translate="no"><span class="attribute">@type</span> large() :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">boolean</a>() | nil</pre>
 
       </div>
 
@@ -978,10 +972,9 @@ Types
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">member_count() :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>() | nil</pre>
+          <pre translate="no"><span class="attribute">@type</span> member_count() :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>() | nil</pre>
 
       </div>
 
@@ -1007,10 +1000,9 @@ Types
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">members() ::
+          <pre translate="no"><span class="attribute">@type</span> members() ::
   %{required(<a href="Nostrum.Struct.User.html#t:id/0">Nostrum.Struct.User.id</a>()) =&gt; <a href="Nostrum.Struct.Guild.Member.html#t:t/0">Nostrum.Struct.Guild.Member.t</a>()} | nil</pre>
 
       </div>
@@ -1037,10 +1029,9 @@ Types
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">mfa_level() :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>()</pre>
+          <pre translate="no"><span class="attribute">@type</span> mfa_level() :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>()</pre>
 
       </div>
 
@@ -1066,10 +1057,9 @@ Types
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">name() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()</pre>
+          <pre translate="no"><span class="attribute">@type</span> name() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()</pre>
 
       </div>
 
@@ -1095,10 +1085,9 @@ Types
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">owner_id() :: <a href="Nostrum.Struct.User.html#t:id/0">Nostrum.Struct.User.id</a>()</pre>
+          <pre translate="no"><span class="attribute">@type</span> owner_id() :: <a href="Nostrum.Struct.User.html#t:id/0">Nostrum.Struct.User.id</a>()</pre>
 
       </div>
 
@@ -1124,10 +1113,9 @@ Types
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">public_updates_channel_id() :: <a href="Nostrum.Struct.Channel.html#t:id/0">Nostrum.Struct.Channel.id</a>() | nil</pre>
+          <pre translate="no"><span class="attribute">@type</span> public_updates_channel_id() :: <a href="Nostrum.Struct.Channel.html#t:id/0">Nostrum.Struct.Channel.id</a>() | nil</pre>
 
       </div>
 
@@ -1154,10 +1142,9 @@ is only available to guilds that contain <code class="inline">PUBLIC</code> in <
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">region() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()</pre>
+          <pre translate="no"><span class="attribute">@type</span> region() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()</pre>
 
       </div>
 
@@ -1183,10 +1170,9 @@ is only available to guilds that contain <code class="inline">PUBLIC</code> in <
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">rest_guild() :: %Nostrum.Struct.Guild{
+          <pre translate="no"><span class="attribute">@type</span> rest_guild() :: %Nostrum.Struct.Guild{
   afk_channel_id: <a href="#t:afk_channel_id/0">afk_channel_id</a>(),
   afk_timeout: <a href="#t:afk_timeout/0">afk_timeout</a>(),
   application_id: <a href="#t:application_id/0">application_id</a>(),
@@ -1244,10 +1230,9 @@ is only available to guilds that contain <code class="inline">PUBLIC</code> in <
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">roles() :: %{
+          <pre translate="no"><span class="attribute">@type</span> roles() :: %{
   required(<a href="Nostrum.Struct.Guild.Role.html#t:id/0">Nostrum.Struct.Guild.Role.id</a>()) =&gt; <a href="Nostrum.Struct.Guild.Role.html#t:t/0">Nostrum.Struct.Guild.Role.t</a>()
 }</pre>
 
@@ -1275,10 +1260,9 @@ is only available to guilds that contain <code class="inline">PUBLIC</code> in <
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">rules_channel_id() :: <a href="Nostrum.Struct.Channel.html#t:id/0">Nostrum.Struct.Channel.id</a>() | nil</pre>
+          <pre translate="no"><span class="attribute">@type</span> rules_channel_id() :: <a href="Nostrum.Struct.Channel.html#t:id/0">Nostrum.Struct.Channel.id</a>() | nil</pre>
 
       </div>
 
@@ -1305,10 +1289,9 @@ contain <code class="inline">PUBLIC</code> in <a href="#t:features/0"><code clas
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">splash() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>() | nil</pre>
+          <pre translate="no"><span class="attribute">@type</span> splash() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>() | nil</pre>
 
       </div>
 
@@ -1334,10 +1317,9 @@ contain <code class="inline">PUBLIC</code> in <a href="#t:features/0"><code clas
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">system_channel_id() :: <a href="Nostrum.Struct.Channel.html#t:id/0">Nostrum.Struct.Channel.id</a>() | nil</pre>
+          <pre translate="no"><span class="attribute">@type</span> system_channel_id() :: <a href="Nostrum.Struct.Channel.html#t:id/0">Nostrum.Struct.Channel.id</a>() | nil</pre>
 
       </div>
 
@@ -1363,10 +1345,9 @@ contain <code class="inline">PUBLIC</code> in <a href="#t:features/0"><code clas
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">t() :: <a href="#t:available_guild/0">available_guild</a>() | <a href="#t:unavailable_guild/0">unavailable_guild</a>() | <a href="#t:rest_guild/0">rest_guild</a>() | <a href="#t:user_guild/0">user_guild</a>()</pre>
+          <pre translate="no"><span class="attribute">@type</span> t() :: <a href="#t:available_guild/0">available_guild</a>() | <a href="#t:unavailable_guild/0">unavailable_guild</a>() | <a href="#t:rest_guild/0">rest_guild</a>() | <a href="#t:user_guild/0">user_guild</a>()</pre>
 
       </div>
 
@@ -1394,10 +1375,9 @@ contain <code class="inline">PUBLIC</code> in <a href="#t:features/0"><code clas
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">threads() ::
+          <pre translate="no"><span class="attribute">@type</span> threads() ::
   %{required(<a href="Nostrum.Struct.Channel.html#t:id/0">Nostrum.Struct.Channel.id</a>()) =&gt; <a href="Nostrum.Struct.Channel.html#t:t/0">Nostrum.Struct.Channel.t</a>()} | nil</pre>
 
       </div>
@@ -1424,10 +1404,9 @@ contain <code class="inline">PUBLIC</code> in <a href="#t:features/0"><code clas
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">unavailable() :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">boolean</a>() | nil</pre>
+          <pre translate="no"><span class="attribute">@type</span> unavailable() :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">boolean</a>() | nil</pre>
 
       </div>
 
@@ -1453,10 +1432,9 @@ contain <code class="inline">PUBLIC</code> in <a href="#t:features/0"><code clas
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">unavailable_guild() :: %Nostrum.Struct.Guild{
+          <pre translate="no"><span class="attribute">@type</span> unavailable_guild() :: %Nostrum.Struct.Guild{
   afk_channel_id: nil,
   afk_timeout: nil,
   application_id: nil,
@@ -1514,10 +1492,9 @@ contain <code class="inline">PUBLIC</code> in <a href="#t:features/0"><code clas
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">user_guild() :: %Nostrum.Struct.Guild{
+          <pre translate="no"><span class="attribute">@type</span> user_guild() :: %Nostrum.Struct.Guild{
   afk_channel_id: nil,
   afk_timeout: nil,
   application_id: nil,
@@ -1575,10 +1552,9 @@ contain <code class="inline">PUBLIC</code> in <a href="#t:features/0"><code clas
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">vanity_url_code() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>() | nil</pre>
+          <pre translate="no"><span class="attribute">@type</span> vanity_url_code() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>() | nil</pre>
 
       </div>
 
@@ -1604,10 +1580,9 @@ contain <code class="inline">PUBLIC</code> in <a href="#t:features/0"><code clas
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">verification_level() :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>()</pre>
+          <pre translate="no"><span class="attribute">@type</span> verification_level() :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>()</pre>
 
       </div>
 
@@ -1633,10 +1608,9 @@ contain <code class="inline">PUBLIC</code> in <a href="#t:features/0"><code clas
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">voice_states() :: [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()] | nil</pre>
+          <pre translate="no"><span class="attribute">@type</span> voice_states() :: [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()] | nil</pre>
 
       </div>
 
@@ -1662,10 +1636,9 @@ contain <code class="inline">PUBLIC</code> in <a href="#t:features/0"><code clas
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">widget_channel_id() :: <a href="Nostrum.Struct.Channel.html#t:id/0">Nostrum.Struct.Channel.id</a>()</pre>
+          <pre translate="no"><span class="attribute">@type</span> widget_channel_id() :: <a href="Nostrum.Struct.Channel.html#t:id/0">Nostrum.Struct.Channel.id</a>()</pre>
 
       </div>
 
@@ -1691,10 +1664,9 @@ contain <code class="inline">PUBLIC</code> in <a href="#t:features/0"><code clas
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">widget_enabled() :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">boolean</a>() | nil</pre>
+          <pre translate="no"><span class="attribute">@type</span> widget_enabled() :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">boolean</a>() | nil</pre>
 
       </div>
 
@@ -1735,15 +1707,16 @@ Functions
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">icon_url(<a href="#t:t/0">t</a>(), <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()) :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>() | nil</pre>
+          <pre translate="no"><span class="attribute">@spec</span> icon_url(<a href="#t:t/0">t</a>(), <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()) :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>() | nil</pre>
 
       </div>
 
 <p>Returns the URL of a guild's icon, or <code class="inline">nil</code> if there is no icon.</p><p>Supported image formats are PNG, JPEG, and WebP.</p><h2 id="icon_url/2-examples" class="section-heading">
-  <a href="#icon_url/2-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
+  <a href="#icon_url/2-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">examples</p>
+  </a>
   Examples
 </h2>
 <pre><code class="Elixir">iex&gt; guild = %Nostrum.Struct.Guild{icon: &quot;86e39f7ae3307e811784e2ffd11a7310&quot;,
@@ -1779,15 +1752,16 @@ nil</code></pre>
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">splash_url(<a href="#t:t/0">t</a>(), <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()) :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>() | nil</pre>
+          <pre translate="no"><span class="attribute">@spec</span> splash_url(<a href="#t:t/0">t</a>(), <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()) :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>() | nil</pre>
 
       </div>
 
 <p>Returns the URL of a guild's splash, or <code class="inline">nil</code> if there is no splash.</p><p>Supported image formats are PNG, JPEG, and WebP.</p><h2 id="splash_url/2-examples" class="section-heading">
-  <a href="#splash_url/2-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
+  <a href="#splash_url/2-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">examples</p>
+  </a>
   Examples
 </h2>
 <pre><code class="Elixir">iex&gt; guild = %Nostrum.Struct.Guild{splash: &quot;86e39f7ae3307e811784e2ffd11a7310&quot;,
@@ -1819,15 +1793,17 @@ nil</code></pre>
 
             </span>
 
-            <button class="line footer-button display-quick-switch">
+            <button class="a-main line footer-button display-quick-switch">
               Search
             </button>
           </p>
 
         <p>
           Built using
-          <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.28.0) for the
-          <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
+          <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.29.0) for the
+
+            <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
+
         </p>
       </footer>
     </div>

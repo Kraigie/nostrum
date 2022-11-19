@@ -4,38 +4,44 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="ExDoc v0.28.0">
+    <meta name="generator" content="ExDoc v0.29.0">
     <meta name="project" content="Nostrum v0.6.1">
 
     <title>Nostrum.Struct.Component — Nostrum v0.6.1</title>
-    <link rel="stylesheet" href="dist/elixir-a816d167216329cc463d.css" />
+    <link rel="stylesheet" href="dist/html-elixir-2YOS5DIE.css" />
 
-    <script src="dist/sidebar_items-8a53303cc4.js"></script>
+    <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
+    <script src="dist/handlebars.templates-X7YVL3G2.js"></script>
+    <script src="dist/sidebar_items-E0D39667.js"></script>
 
       <script src="docs_config.js"></script>
 
-    <script async src="dist/app-80aa23c1d96b6dc3c064.js"></script>
+    <script async src="dist/html-XN2TSG4M.js"></script>
 
 
   </head>
-  <body data-type="modules">
+  <body data-type="modules" class="page-behaviour">
     <script>
 
       try {
-        if (localStorage.getItem('night-mode') === 'true') {
-          document.body.classList.add('night-mode');
+        var settings = JSON.parse(localStorage.getItem('ex_doc:settings') || '{}');
+
+        if (settings.theme === 'dark' ||
+           ((settings.theme === 'system' || settings.theme == null) &&
+             window.matchMedia('(prefers-color-scheme: dark)').matches)
+           ) {
+          document.body.classList.add('dark')
         }
       } catch (error) { }
     </script>
 
 <div class="main">
 
+<button class="sidebar-button sidebar-toggle" aria-label="toggle sidebar">
+  <i class="ri-menu-line ri-lg" title="Collapse/expand sidebar"></i>
+</button>
 
 <section class="sidebar">
-  <button class="sidebar-button sidebar-toggle">
-    <i class="ri-menu-line ri-lg" title="Collapse/expand sidebar"></i>
-  </button>
-
   <form class="sidebar-search" action="search.html">
     <button type="submit" class="search-button" aria-label="Submit Search">
       <i class="ri-search-2-line" aria-hidden="true" title="Submit search"></i>
@@ -44,6 +50,7 @@
       <i class="ri-close-line ri-lg" aria-hidden="true" title="Cancel search"></i>
     </button>
     <label class="search-label">
+      <p class="sr-only">Search</p>
       <input name="q" type="text" class="search-input" placeholder="Search..." aria-label="Input your search terms" autocomplete="off" />
     </label>
   </form>
@@ -79,6 +86,7 @@ Nostrum
 </section>
 
 <section class="content">
+  <output role="status" id="toast"></output>
   <div class="content-outer">
     <div id="content" class="content-inner">
 
@@ -102,31 +110,45 @@ Nostrum
 
   <section id="moduledoc">
 <p>Components are a framework for adding interactive elements to the messages your app or bot sends. They're accessible, customizable, and easy to use. There are several different types of components; this documentation will outline the basics of this new framework and each example.</p><blockquote><p>Components have been broken out into individual modules for easy distinction between them and to separate helper functions and individual type checking between component types - especially as more components are added by Discord.</p></blockquote><p>Each of the components are provided all of the valid types through this module to avoid repetition and allow new components to be added quicker and easier.</p><h2 id="module-action-row" class="section-heading">
-  <a href="#module-action-row" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
+  <a href="#module-action-row" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">action-row</p>
+  </a>
   Action Row
 </h2>
 <p>An Action Row is a non-interactive container component for other types of components. It has a <code class="inline">type: 1</code> and a sub-array of <code class="inline">components</code> of other types.</p><ul><li>You can have up to 5 Action Rows per message</li><li>An Action Row cannot contain another Action Row</li><li>An Action Row containing buttons cannot also contain a select menu</li></ul><h2 id="module-buttons" class="section-heading">
-  <a href="#module-buttons" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
+  <a href="#module-buttons" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">buttons</p>
+  </a>
   Buttons
 </h2>
 <p>Buttons are interactive components that render on messages. They have a <code class="inline">type: 2</code>, They can be clicked by users. Buttons in Nostrum are further separated into two types, detailed below. Only the <a href="#module-interaction-buttons-non-link-buttons">Interaction Button</a> will fire a <a href="Nostrum.Struct.Interaction.html"><code class="inline">Nostrum.Struct.Interaction</code></a> when pressed.</p><p><img src="./assets/buttons.png" alt="Discord Buttons"/></p><ul><li>Buttons must exist inside an Action Row</li><li>An Action Row can contain up to 5 buttons</li><li>An Action Row containing buttons cannot also contain a select menu</li></ul><p>For more information check out the <a href="https://discord.com/developers/docs/interactions/message-components#button-object-button-styles">Discord API Button Styles</a> for more information.</p><h2 id="module-link-buttons" class="section-heading">
-  <a href="#module-link-buttons" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
+  <a href="#module-link-buttons" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">link-buttons</p>
+  </a>
   Link Buttons
 </h2>
 <ul><li>Link buttons <strong>do not</strong> send an <code class="inline">interaction</code> to your app when clicked</li><li>Link buttons <strong>must</strong> have a <code class="inline">url</code>, and <strong>cannot</strong> have a <code class="inline">custom_id</code></li><li>Link buttons will <strong>always</strong> use <code class="inline">style: 5</code></li></ul><h4>Link <code class="inline">style: 5</code></h4><p><img src="./assets/secondary_button.png" alt="Link Button"/></p><h2 id="module-interaction-buttons-non-link-buttons" class="section-heading">
-  <a href="#module-interaction-buttons-non-link-buttons" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
+  <a href="#module-interaction-buttons-non-link-buttons" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">interaction-buttons-non-link-buttons</p>
+  </a>
   Interaction Buttons ( Non-link Buttons )
 </h2>
 <blockquote><p>Discord calls these buttons &quot;Non-link Buttons&quot;  due to the fact that they do not contain a url. However it would be more accurate to call them an &quot;Interaction Button&quot; as they <strong>do</strong> fire an interaction when clicked which is far more useful for your applications interactivity. As such they are referred to as &quot;Interaction Button&quot; throughout the rest of this module.</p></blockquote><ul><li>Interaction buttons <strong>must</strong> have a <code class="inline">custom_id</code>, and <strong>cannot</strong> have a <code class="inline">url</code></li><li>Can have one of the below <code class="inline">:style</code> applied.</li></ul><h4>Primary <code class="inline">style: 1</code></h4><p><img src="./assets/primary_button.png" alt="Primary"/></p><h4>Secondary <code class="inline">style: 2</code></h4><p><img src="./assets/secondary_button.png" alt="Secondary"/></p><h4>Success <code class="inline">style: 3</code></h4><p><img src="./assets/success_button.png" alt="Success"/></p><h4>Danger <code class="inline">style: 4</code></h4><p><img src="./assets/danger_button.png" alt="Danger (1)"/></p><h2 id="module-emoji-buttons" class="section-heading">
-  <a href="#module-emoji-buttons" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
+  <a href="#module-emoji-buttons" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">emoji-buttons</p>
+  </a>
   🐼 <del>Emoji Buttons</del>
 </h2>
 <blockquote><p>Note: The discord documentation and marketing material in relation to buttons indicates that there are three kinds of buttons: 🐼 <strong>Emoji Buttons</strong>, <strong>Link Buttons</strong> &amp; <strong>Non-Link Buttons</strong>. When in fact all buttons can contain an emoji. Because of this reason 🐼 <strong>Emoji Buttons</strong> are not included as a separate type. Emojis will be instead handled by the two included ( superior ) button types.</p></blockquote><p><img src="./assets/emoji_button.png" alt="emoji buttons in action"/></p><blockquote><p>The field requirements are already becoming convoluted especially considering everything so far is all still a &quot;Component&quot;. Using the sub types and helper functions will ensure all of the rules are followed when creating components.</p></blockquote><h2 id="module-select-menu" class="section-heading">
-  <a href="#module-select-menu" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
+  <a href="#module-select-menu" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">select-menu</p>
+  </a>
   Select Menu
 </h2>
 <p>Select menus are another interactive component that renders on messages. On desktop, clicking on a select menu opens a dropdown-style UI; on mobile, tapping a select menu opens up a half-sheet with the options.</p><p><img src="./assets/select_menu.png" alt="Discord Selects"/></p><p>Select menus support single-select and multi-select behavior, meaning you can prompt a user to choose just one item from a list, or multiple. When a user finishes making their choice by clicking out of the dropdown or closing the half-sheet, your app will receive an interaction.</p><ul><li>Select menus <strong>must</strong> be sent inside an Action Row</li><li>An Action Row can contain <strong>only one</strong> select menu</li><li>An Action Row containing a select menu <strong>cannot</strong> also contain buttons</li></ul><h2 id="module-text-input" class="section-heading">
-  <a href="#module-text-input" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
+  <a href="#module-text-input" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">text-input</p>
+  </a>
   Text Input
 </h2>
 <p>Text inputs are an interactive component that render on modals. They can be used to collect short-form or long-form text.</p><ul><li>Text inputs <strong>must</strong> be sent inside an Action Row</li><li>An Action Row can contain <strong>only one</strong> text input</li><li>An Action Row containing a text input <strong>cannot</strong> also contain buttons or a select menu</li></ul><p>Can be used to collect short-form or long-form text.</p><ul><li>For short-form text, use <code class="inline">style: 1</code></li><li>For long-form text, use <code class="inline">style: 2</code></li></ul><p>Text inputs are only allowed to be sent as part of an Interaction response that opens a MODAL.</p>
@@ -392,10 +414,9 @@ Types
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">components() :: [
+          <pre translate="no"><span class="attribute">@type</span> components() :: [
   <a href="Nostrum.Struct.Component.SelectMenu.html#t:t/0">Nostrum.Struct.Component.SelectMenu.t</a>()
   | <a href="Nostrum.Struct.Component.Button.html#t:t/0">Nostrum.Struct.Component.Button.t</a>()
   | nil
@@ -425,10 +446,9 @@ Types
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">custom_id() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>() | nil</pre>
+          <pre translate="no"><span class="attribute">@type</span> custom_id() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>() | nil</pre>
 
       </div>
 
@@ -454,10 +474,9 @@ Types
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">disabled() :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">boolean</a>() | nil</pre>
+          <pre translate="no"><span class="attribute">@type</span> disabled() :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">boolean</a>() | nil</pre>
 
       </div>
 
@@ -483,10 +502,9 @@ Types
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">emoji() ::
+          <pre translate="no"><span class="attribute">@type</span> emoji() ::
   %{
     id: <a href="Nostrum.Struct.Emoji.html#t:id/0">Nostrum.Struct.Emoji.id</a>(),
     name: <a href="Nostrum.Struct.Emoji.html#t:name/0">Nostrum.Struct.Emoji.name</a>(),
@@ -518,10 +536,9 @@ Types
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">label() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>() | nil</pre>
+          <pre translate="no"><span class="attribute">@type</span> label() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>() | nil</pre>
 
       </div>
 
@@ -549,10 +566,9 @@ Types
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">max_length() :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>() | nil</pre>
+          <pre translate="no"><span class="attribute">@type</span> max_length() :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>() | nil</pre>
 
       </div>
 
@@ -578,10 +594,9 @@ Types
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">max_values() :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>() | nil</pre>
+          <pre translate="no"><span class="attribute">@type</span> max_values() :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>() | nil</pre>
 
       </div>
 
@@ -609,10 +624,9 @@ Types
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">min_length() :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>() | nil</pre>
+          <pre translate="no"><span class="attribute">@type</span> min_length() :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>() | nil</pre>
 
       </div>
 
@@ -638,10 +652,9 @@ Types
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">min_values() :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>() | nil</pre>
+          <pre translate="no"><span class="attribute">@type</span> min_values() :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>() | nil</pre>
 
       </div>
 
@@ -667,10 +680,9 @@ Types
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">options() :: [<a href="Nostrum.Struct.Component.Option.html#t:t/0">Nostrum.Struct.Component.Option.t</a>()] | nil</pre>
+          <pre translate="no"><span class="attribute">@type</span> options() :: [<a href="Nostrum.Struct.Component.Option.html#t:t/0">Nostrum.Struct.Component.Option.t</a>()] | nil</pre>
 
       </div>
 
@@ -696,10 +708,9 @@ Types
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">placeholder() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>() | nil</pre>
+          <pre translate="no"><span class="attribute">@type</span> placeholder() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>() | nil</pre>
 
       </div>
 
@@ -727,10 +738,9 @@ Types
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">required() :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">boolean</a>() | nil</pre>
+          <pre translate="no"><span class="attribute">@type</span> required() :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">boolean</a>() | nil</pre>
 
       </div>
 
@@ -756,10 +766,9 @@ Types
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">style() :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>() | nil</pre>
+          <pre translate="no"><span class="attribute">@type</span> style() :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>() | nil</pre>
 
       </div>
 
@@ -785,10 +794,9 @@ Types
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">t() ::
+          <pre translate="no"><span class="attribute">@type</span> t() ::
   <a href="Nostrum.Struct.Component.ActionRow.html#t:t/0">Nostrum.Struct.Component.ActionRow.t</a>()
   | <a href="Nostrum.Struct.Component.Button.html#t:t/0">Nostrum.Struct.Component.Button.t</a>()
   | <a href="Nostrum.Struct.Component.SelectMenu.html#t:t/0">Nostrum.Struct.Component.SelectMenu.t</a>()
@@ -818,10 +826,9 @@ Types
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">type() :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>()</pre>
+          <pre translate="no"><span class="attribute">@type</span> type() :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>()</pre>
 
       </div>
 
@@ -847,10 +854,9 @@ Types
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">url() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>() | nil</pre>
+          <pre translate="no"><span class="attribute">@type</span> url() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>() | nil</pre>
 
       </div>
 
@@ -878,10 +884,9 @@ Types
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">value() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>() | nil</pre>
+          <pre translate="no"><span class="attribute">@type</span> value() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>() | nil</pre>
 
       </div>
 
@@ -920,10 +925,9 @@ Callbacks
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">new(opts :: [<a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">keyword</a>()]) :: <a href="#t:t/0">t</a>()</pre>
+          <pre translate="no"><span class="attribute">@callback</span> new(opts :: [<a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">keyword</a>()]) :: <a href="#t:t/0">t</a>()</pre>
 
       </div>
 
@@ -949,10 +953,9 @@ Callbacks
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">update(<a href="#t:t/0">t</a>(), opts :: [<a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">keyword</a>()]) :: <a href="#t:t/0">t</a>()</pre>
+          <pre translate="no"><span class="attribute">@callback</span> update(<a href="#t:t/0">t</a>(), opts :: [<a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">keyword</a>()]) :: <a href="#t:t/0">t</a>()</pre>
 
       </div>
 
@@ -991,10 +994,9 @@ Functions
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">to_struct(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">struct</a>()</pre>
+          <pre translate="no"><span class="attribute">@spec</span> to_struct(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">struct</a>()</pre>
 
       </div>
 
@@ -1018,15 +1020,17 @@ Functions
 
             </span>
 
-            <button class="line footer-button display-quick-switch">
+            <button class="a-main line footer-button display-quick-switch">
               Search
             </button>
           </p>
 
         <p>
           Built using
-          <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.28.0) for the
-          <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
+          <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.29.0) for the
+
+            <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
+
         </p>
       </footer>
     </div>

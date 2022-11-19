@@ -4,38 +4,44 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="ExDoc v0.28.0">
+    <meta name="generator" content="ExDoc v0.29.0">
     <meta name="project" content="Nostrum v0.6.1">
 
     <title>Api — Nostrum v0.6.1</title>
-    <link rel="stylesheet" href="dist/elixir-a816d167216329cc463d.css" />
+    <link rel="stylesheet" href="dist/html-elixir-2YOS5DIE.css" />
 
-    <script src="dist/sidebar_items-8a53303cc4.js"></script>
+    <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
+    <script src="dist/handlebars.templates-X7YVL3G2.js"></script>
+    <script src="dist/sidebar_items-E0D39667.js"></script>
 
       <script src="docs_config.js"></script>
 
-    <script async src="dist/app-80aa23c1d96b6dc3c064.js"></script>
+    <script async src="dist/html-XN2TSG4M.js"></script>
 
 
   </head>
-  <body data-type="extras">
+  <body data-type="extras" class="page-extra">
     <script>
 
       try {
-        if (localStorage.getItem('night-mode') === 'true') {
-          document.body.classList.add('night-mode');
+        var settings = JSON.parse(localStorage.getItem('ex_doc:settings') || '{}');
+
+        if (settings.theme === 'dark' ||
+           ((settings.theme === 'system' || settings.theme == null) &&
+             window.matchMedia('(prefers-color-scheme: dark)').matches)
+           ) {
+          document.body.classList.add('dark')
         }
       } catch (error) { }
     </script>
 
 <div class="main">
 
+<button class="sidebar-button sidebar-toggle" aria-label="toggle sidebar">
+  <i class="ri-menu-line ri-lg" title="Collapse/expand sidebar"></i>
+</button>
 
 <section class="sidebar">
-  <button class="sidebar-button sidebar-toggle">
-    <i class="ri-menu-line ri-lg" title="Collapse/expand sidebar"></i>
-  </button>
-
   <form class="sidebar-search" action="search.html">
     <button type="submit" class="search-button" aria-label="Submit Search">
       <i class="ri-search-2-line" aria-hidden="true" title="Submit search"></i>
@@ -44,6 +50,7 @@
       <i class="ri-close-line ri-lg" aria-hidden="true" title="Cancel search"></i>
     </button>
     <label class="search-label">
+      <p class="sr-only">Search</p>
       <input name="q" type="text" class="search-input" placeholder="Search..." aria-label="Input your search terms" autocomplete="off" />
     </label>
   </form>
@@ -79,6 +86,7 @@ Nostrum
 </section>
 
 <section class="content">
+  <output role="status" id="toast"></output>
   <div class="content-outer">
     <div id="content" class="content-inner">
 
@@ -101,7 +109,9 @@ Nostrum
 API. Method names are copied closely from the documentation to eliminate any
 confusion about what a method does, as well as allow users to easily lookup the
 endpoints in the official API documentation.</p><p>For a full listing of method definitions, please see <a href="Nostrum.Api.html"><code class="inline">Nostrum.Api</code></a></p><h2 id="what-does-the-mean" class="section-heading">
-  <a href="#what-does-the-mean" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
+  <a href="#what-does-the-mean" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">what-does-the-mean</p>
+  </a>
   What does the '!' mean?
 </h2>
 <p>(soon™) All methods have a <code class="inline">banged</code> version of themselves. This is a common Elixir
@@ -115,7 +125,9 @@ msg = Nostrum.Api.create_message!(179679229036724225, &quot;456&quot;)
 
 # Failure - Throws an error
 Nostrum.Api.create_message!(123, &quot;eat my shorts api&quot;)</code></pre><h2 id="helpers" class="section-heading">
-  <a href="#helpers" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
+  <a href="#helpers" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">helpers</p>
+  </a>
   Helpers
 </h2>
 <p>When appropriate, some helpers are defined to make interacting with the API simpler.
@@ -124,7 +136,9 @@ only allows the retrieval of <code class="inline">100</code> messages at a time.
 have a user wanting more messages than that, thus Nostrum handles the retrieval
 of any number of messages for the user.</p><p>There are other endpoints that could use grooming like above, feel free to suggest
 an interface and implementation for these methods.</p><h2 id="ratelimiting" class="section-heading">
-  <a href="#ratelimiting" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
+  <a href="#ratelimiting" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">ratelimiting</p>
+  </a>
   Ratelimiting
 </h2>
 <p>Ratelimiting is handled internally by Nostrum, so long as you use the methods
@@ -133,7 +147,9 @@ they're given or using <a href="Nostrum.Api.html#request/4"><code class="inline"
 asynchronously or not, Nostrum funnels all requests through a single <a href="https://hexdocs.pm/elixir/GenServer.html"><code class="inline">GenServer</code></a>.</p><p>The ratelimiter at a high level works something like this:</p><ol><li>Request is sent to the serializer</li><li>Serializer checks to see if there's a current block on that endpoint.</li><li>If there is a block, the pid of the caller is stored, and a task is started
 to try the call again after a specified time stored from previous calls.</li><li>If the request goes through, the headers are processed to see if a block
 should be instantiated for that endpoint.</li></ol><h2 id="rest-only" class="section-heading">
-  <a href="#rest-only" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
+  <a href="#rest-only" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">rest-only</p>
+  </a>
   Rest Only
 </h2>
 <p>If you only want to use the REST portion of the provided API, the only process
@@ -169,7 +185,6 @@ Application commands
 
   </div>
 </div>
-
       <footer class="footer">
 
           <p>
@@ -183,15 +198,17 @@ Application commands
 
             </span>
 
-            <button class="line footer-button display-quick-switch">
+            <button class="a-main line footer-button display-quick-switch">
               Search
             </button>
           </p>
 
         <p>
           Built using
-          <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.28.0) for the
-          <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
+          <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.29.0) for the
+
+            <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
+
         </p>
       </footer>
     </div>

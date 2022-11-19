@@ -4,38 +4,44 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="ExDoc v0.28.0">
+    <meta name="generator" content="ExDoc v0.29.0">
     <meta name="project" content="Nostrum v0.6.1">
 
     <title>Nostrum.Cache.PresenceCache — Nostrum v0.6.1</title>
-    <link rel="stylesheet" href="dist/elixir-a816d167216329cc463d.css" />
+    <link rel="stylesheet" href="dist/html-elixir-2YOS5DIE.css" />
 
-    <script src="dist/sidebar_items-8a53303cc4.js"></script>
+    <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
+    <script src="dist/handlebars.templates-X7YVL3G2.js"></script>
+    <script src="dist/sidebar_items-E0D39667.js"></script>
 
       <script src="docs_config.js"></script>
 
-    <script async src="dist/app-80aa23c1d96b6dc3c064.js"></script>
+    <script async src="dist/html-XN2TSG4M.js"></script>
 
 
   </head>
-  <body data-type="modules">
+  <body data-type="modules" class="page-behaviour">
     <script>
 
       try {
-        if (localStorage.getItem('night-mode') === 'true') {
-          document.body.classList.add('night-mode');
+        var settings = JSON.parse(localStorage.getItem('ex_doc:settings') || '{}');
+
+        if (settings.theme === 'dark' ||
+           ((settings.theme === 'system' || settings.theme == null) &&
+             window.matchMedia('(prefers-color-scheme: dark)').matches)
+           ) {
+          document.body.classList.add('dark')
         }
       } catch (error) { }
     </script>
 
 <div class="main">
 
+<button class="sidebar-button sidebar-toggle" aria-label="toggle sidebar">
+  <i class="ri-menu-line ri-lg" title="Collapse/expand sidebar"></i>
+</button>
 
 <section class="sidebar">
-  <button class="sidebar-button sidebar-toggle">
-    <i class="ri-menu-line ri-lg" title="Collapse/expand sidebar"></i>
-  </button>
-
   <form class="sidebar-search" action="search.html">
     <button type="submit" class="search-button" aria-label="Submit Search">
       <i class="ri-search-2-line" aria-hidden="true" title="Submit search"></i>
@@ -44,6 +50,7 @@
       <i class="ri-close-line ri-lg" aria-hidden="true" title="Cancel search"></i>
     </button>
     <label class="search-label">
+      <p class="sr-only">Search</p>
       <input name="q" type="text" class="search-input" placeholder="Search..." aria-label="Input your search terms" autocomplete="off" />
     </label>
   </form>
@@ -79,6 +86,7 @@ Nostrum
 </section>
 
 <section class="content">
+  <output role="status" id="toast"></output>
   <div class="content-outer">
     <div id="content" class="content-inner">
 
@@ -107,7 +115,9 @@ application by setting the <code class="inline">:presences</code> fields to a di
 implementing the <a href="Nostrum.Cache.PresenceCache.html#content"><code class="inline">Nostrum.Cache.PresenceCache</code></a> behaviour. Any module below
 <a href="Nostrum.Cache.PresenceCache.html#content"><code class="inline">Nostrum.Cache.PresenceCache</code></a> implements this behaviour and can be used as a
 cache.</p><h2 id="module-writing-your-own-presence-cache" class="section-heading">
-  <a href="#module-writing-your-own-presence-cache" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
+  <a href="#module-writing-your-own-presence-cache" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">writing-your-own-presence-cache</p>
+  </a>
   Writing your own presence cache
 </h2>
 <p>As with the other caches, the presence cache API consists of two parts:</p><ul><li><p>The functions that the user calls, currently only <a href="#c:get/2"><code class="inline">get/2</code></a>.</p></li><li><p>The functions that nostrum calls, such as <a href="#c:create/1"><code class="inline">create/1</code></a> or <a href="#c:update/1"><code class="inline">update/1</code></a>.
@@ -259,10 +269,9 @@ Types
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">presence()</pre>
+          <pre translate="no"><span class="attribute">@opaque</span> presence()</pre>
 
       </div>
 
@@ -302,10 +311,9 @@ Callbacks
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">bulk_create(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(), [<a href="#t:presence/0">presence</a>()]) :: :ok</pre>
+          <pre translate="no"><span class="attribute">@callback</span> bulk_create(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(), [<a href="#t:presence/0">presence</a>()]) :: :ok</pre>
 
       </div>
 
@@ -331,10 +339,9 @@ Callbacks
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">create(<a href="#t:presence/0">presence</a>()) :: :ok</pre>
+          <pre translate="no"><span class="attribute">@callback</span> create(<a href="#t:presence/0">presence</a>()) :: :ok</pre>
 
       </div>
 
@@ -360,24 +367,25 @@ Callbacks
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">get(<a href="Nostrum.Struct.User.html#t:id/0">Nostrum.Struct.User.id</a>(), <a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>()) ::
+          <pre translate="no"><span class="attribute">@callback</span> get(<a href="Nostrum.Struct.User.html#t:id/0">Nostrum.Struct.User.id</a>(), <a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>()) ::
   {:ok, <a href="#t:presence/0">presence</a>()} | {:error, :presence_not_found}</pre>
 
       </div>
 
 <p>Retrieves a presence for a user from the cache by guild and id.</p><p>If successful, returns <code class="inline">{:ok, presence}</code>. Otherwise returns <code class="inline">{:error, reason}</code>.</p><h2 id="c:get/2-example" class="section-heading">
-  <a href="#c:get/2-example" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
+  <a href="#c:get/2-example" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">example</p>
+  </a>
   Example
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="k">case</span><span class="w"> </span><span class="nc">Nostrum.Cache.PresenceCache</span><span class="o">.</span><span class="n">get</span><span class="p" data-group-id="5097839900-1">(</span><span class="mi">111133335555</span><span class="p">,</span><span class="w"> </span><span class="mi">222244446666</span><span class="p" data-group-id="5097839900-1">)</span><span class="w"> </span><span class="k" data-group-id="5097839900-2">do</span><span class="w">
-  </span><span class="p" data-group-id="5097839900-3">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">presence</span><span class="p" data-group-id="5097839900-3">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
-    </span><span class="s">&quot;They&#39;re </span><span class="si" data-group-id="5097839900-4">#{</span><span class="n">presence</span><span class="o">.</span><span class="n">status</span><span class="si" data-group-id="5097839900-4">}</span><span class="s">&quot;</span><span class="w">
-  </span><span class="p" data-group-id="5097839900-5">{</span><span class="ss">:error</span><span class="p">,</span><span class="w"> </span><span class="c">_reason</span><span class="p" data-group-id="5097839900-5">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+<pre><code class="makeup elixir" translate="no"><span class="k">case</span><span class="w"> </span><span class="nc">Nostrum.Cache.PresenceCache</span><span class="o">.</span><span class="n">get</span><span class="p" data-group-id="0556988227-1">(</span><span class="mi">111133335555</span><span class="p">,</span><span class="w"> </span><span class="mi">222244446666</span><span class="p" data-group-id="0556988227-1">)</span><span class="w"> </span><span class="k" data-group-id="0556988227-2">do</span><span class="w">
+  </span><span class="p" data-group-id="0556988227-3">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">presence</span><span class="p" data-group-id="0556988227-3">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+    </span><span class="s">&quot;They&#39;re </span><span class="si" data-group-id="0556988227-4">#{</span><span class="n">presence</span><span class="o">.</span><span class="n">status</span><span class="si" data-group-id="0556988227-4">}</span><span class="s">&quot;</span><span class="w">
+  </span><span class="p" data-group-id="0556988227-5">{</span><span class="ss">:error</span><span class="p">,</span><span class="w"> </span><span class="c">_reason</span><span class="p" data-group-id="0556988227-5">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
     </span><span class="s">&quot;They&#39;re dead Jim&quot;</span><span class="w">
-</span><span class="k" data-group-id="5097839900-2">end</span></code></pre>
+</span><span class="k" data-group-id="0556988227-2">end</span></code></pre>
   </section>
 </section>
 <section class="detail" id="c:update/1">
@@ -399,10 +407,9 @@ Callbacks
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">update(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()) ::
+          <pre translate="no"><span class="attribute">@callback</span> update(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()) ::
   {<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(), old_presence :: <a href="#t:presence/0">presence</a>() | nil,
    new_presence :: <a href="#t:presence/0">presence</a>()}
   | :noop</pre>
@@ -410,7 +417,9 @@ Callbacks
       </div>
 
 <p>Update the given presence in the cache from upstream data.</p><h2 id="c:update/1-return-value" class="section-heading">
-  <a href="#c:update/1-return-value" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
+  <a href="#c:update/1-return-value" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">return-value</p>
+  </a>
   Return value
 </h2>
 <p>Return the guild ID along with the old presence (if it was cached, otherwise
@@ -472,10 +481,9 @@ Functions
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">get!(<a href="Nostrum.Struct.User.html#t:id/0">Nostrum.Struct.User.id</a>(), <a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>()) ::
+          <pre translate="no"><span class="attribute">@spec</span> get!(<a href="Nostrum.Struct.User.html#t:id/0">Nostrum.Struct.User.id</a>(), <a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>()) ::
   <a href="#t:presence/0">presence</a>() | <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">no_return</a>()</pre>
 
       </div>
@@ -500,15 +508,17 @@ Functions
 
             </span>
 
-            <button class="line footer-button display-quick-switch">
+            <button class="a-main line footer-button display-quick-switch">
               Search
             </button>
           </p>
 
         <p>
           Built using
-          <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.28.0) for the
-          <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
+          <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.29.0) for the
+
+            <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
+
         </p>
       </footer>
     </div>

@@ -4,38 +4,44 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="ExDoc v0.28.0">
+    <meta name="generator" content="ExDoc v0.29.0">
     <meta name="project" content="Nostrum v0.6.1">
 
     <title>Nostrum.Consumer — Nostrum v0.6.1</title>
-    <link rel="stylesheet" href="dist/elixir-a816d167216329cc463d.css" />
+    <link rel="stylesheet" href="dist/html-elixir-2YOS5DIE.css" />
 
-    <script src="dist/sidebar_items-8a53303cc4.js"></script>
+    <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
+    <script src="dist/handlebars.templates-X7YVL3G2.js"></script>
+    <script src="dist/sidebar_items-E0D39667.js"></script>
 
       <script src="docs_config.js"></script>
 
-    <script async src="dist/app-80aa23c1d96b6dc3c064.js"></script>
+    <script async src="dist/html-XN2TSG4M.js"></script>
 
 
   </head>
-  <body data-type="modules">
+  <body data-type="modules" class="page-behaviour">
     <script>
 
       try {
-        if (localStorage.getItem('night-mode') === 'true') {
-          document.body.classList.add('night-mode');
+        var settings = JSON.parse(localStorage.getItem('ex_doc:settings') || '{}');
+
+        if (settings.theme === 'dark' ||
+           ((settings.theme === 'system' || settings.theme == null) &&
+             window.matchMedia('(prefers-color-scheme: dark)').matches)
+           ) {
+          document.body.classList.add('dark')
         }
       } catch (error) { }
     </script>
 
 <div class="main">
 
+<button class="sidebar-button sidebar-toggle" aria-label="toggle sidebar">
+  <i class="ri-menu-line ri-lg" title="Collapse/expand sidebar"></i>
+</button>
 
 <section class="sidebar">
-  <button class="sidebar-button sidebar-toggle">
-    <i class="ri-menu-line ri-lg" title="Collapse/expand sidebar"></i>
-  </button>
-
   <form class="sidebar-search" action="search.html">
     <button type="submit" class="search-button" aria-label="Submit Search">
       <i class="ri-search-2-line" aria-hidden="true" title="Submit search"></i>
@@ -44,6 +50,7 @@
       <i class="ri-close-line ri-lg" aria-hidden="true" title="Cancel search"></i>
     </button>
     <label class="search-label">
+      <p class="sr-only">Search</p>
       <input name="q" type="text" class="search-input" placeholder="Search..." aria-label="Input your search terms" autocomplete="off" />
     </label>
   </form>
@@ -79,6 +86,7 @@ Nostrum
 </section>
 
 <section class="content">
+  <output role="status" id="toast"></output>
   <div class="content-outer">
     <div id="content" class="content-inner">
 
@@ -106,7 +114,9 @@ To consume the events you must create at least one <code class="inline">consumer
 generally recommended that you spawn a consumer per core. To find this number
 you can use <a href="https://hexdocs.pm/elixir/System.html#schedulers_online/0"><code class="inline">System.schedulers_online/0</code></a>.</p><p>Nostrum uses a ConsumerSupervisor to dispatch events, meaning your handlers
 will each be ran in their own separate task.</p><h2 id="module-example" class="section-heading">
-  <a href="#module-example" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
+  <a href="#module-example" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">example</p>
+  </a>
   Example
 </h2>
 <p>An example consumer can be found
@@ -739,10 +749,9 @@ Types
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">auto_moderation_rule_create() ::
+          <pre translate="no"><span class="attribute">@type</span> auto_moderation_rule_create() ::
   {:AUTO_MODERATION_RULE_CREATE, <a href="Nostrum.Struct.AutoModerationRule.html#t:t/0">Nostrum.Struct.AutoModerationRule.t</a>(),
    <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
 
@@ -770,10 +779,9 @@ Types
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">auto_moderation_rule_delete() ::
+          <pre translate="no"><span class="attribute">@type</span> auto_moderation_rule_delete() ::
   {:AUTO_MODERATION_RULE_DELETE, <a href="Nostrum.Struct.AutoModerationRule.html#t:t/0">Nostrum.Struct.AutoModerationRule.t</a>(),
    <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
 
@@ -801,10 +809,9 @@ Types
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">auto_moderation_rule_execute() ::
+          <pre translate="no"><span class="attribute">@type</span> auto_moderation_rule_execute() ::
   {:AUTO_MODERATION_RULE_EXECUTE,
    <a href="Nostrum.Struct.Event.AutoModerationRuleExecute.html#t:t/0">Nostrum.Struct.Event.AutoModerationRuleExecute.t</a>(),
    <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
@@ -833,10 +840,9 @@ Types
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">auto_moderation_rule_update() ::
+          <pre translate="no"><span class="attribute">@type</span> auto_moderation_rule_update() ::
   {:AUTO_MODERATION_RULE_UPDATE, <a href="Nostrum.Struct.AutoModerationRule.html#t:t/0">Nostrum.Struct.AutoModerationRule.t</a>(),
    <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
 
@@ -864,10 +870,9 @@ Types
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">channel_create() ::
+          <pre translate="no"><span class="attribute">@type</span> channel_create() ::
   {:CHANNEL_CREATE, <a href="Nostrum.Struct.Channel.html#t:t/0">Nostrum.Struct.Channel.t</a>(), <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
 
       </div>
@@ -895,10 +900,9 @@ this will never be sent for a DM.</p>
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">channel_delete() ::
+          <pre translate="no"><span class="attribute">@type</span> channel_delete() ::
   {:CHANNEL_DELETE, <a href="Nostrum.Struct.Channel.html#t:t/0">Nostrum.Struct.Channel.t</a>(), <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
 
       </div>
@@ -925,10 +929,9 @@ this will never be sent for a DM.</p>
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">channel_pins_ack() :: {:CHANNEL_PINS_ACK, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>(), <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
+          <pre translate="no"><span class="attribute">@type</span> channel_pins_ack() :: {:CHANNEL_PINS_ACK, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>(), <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
 
       </div>
 
@@ -954,10 +957,9 @@ this will never be sent for a DM.</p>
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">channel_pins_update() ::
+          <pre translate="no"><span class="attribute">@type</span> channel_pins_update() ::
   {:CHANNEL_PINS_UPDATE, <a href="Nostrum.Struct.Event.ChannelPinsUpdate.html#t:t/0">Nostrum.Struct.Event.ChannelPinsUpdate.t</a>(),
    <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
 
@@ -985,10 +987,9 @@ this will never be sent for a DM.</p>
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">channel_update() ::
+          <pre translate="no"><span class="attribute">@type</span> channel_update() ::
   {:CHANNEL_UPDATE,
    {old_channel :: <a href="Nostrum.Struct.Channel.html#t:t/0">Nostrum.Struct.Channel.t</a>() | nil,
     new_channel :: <a href="Nostrum.Struct.Channel.html#t:t/0">Nostrum.Struct.Channel.t</a>()}, <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
@@ -1017,10 +1018,9 @@ this will never be sent for a DM.</p>
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">event() ::
+          <pre translate="no"><span class="attribute">@type</span> event() ::
   <a href="#t:auto_moderation_rule_create/0">auto_moderation_rule_create</a>()
   | <a href="#t:auto_moderation_rule_delete/0">auto_moderation_rule_delete</a>()
   | <a href="#t:auto_moderation_rule_update/0">auto_moderation_rule_update</a>()
@@ -1101,10 +1101,9 @@ this will never be sent for a DM.</p>
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">guild_available() ::
+          <pre translate="no"><span class="attribute">@type</span> guild_available() ::
   {:GUILD_AVAILABLE, new_guild :: <a href="Nostrum.Struct.Guild.html#t:t/0">Nostrum.Struct.Guild.t</a>(),
    <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
 
@@ -1132,10 +1131,9 @@ this will never be sent for a DM.</p>
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">guild_ban_add() ::
+          <pre translate="no"><span class="attribute">@type</span> guild_ban_add() ::
   {:GUILD_BAN_ADD, <a href="Nostrum.Struct.Event.GuildBanAdd.html#t:t/0">Nostrum.Struct.Event.GuildBanAdd.t</a>(),
    <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
 
@@ -1163,10 +1161,9 @@ this will never be sent for a DM.</p>
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">guild_ban_remove() ::
+          <pre translate="no"><span class="attribute">@type</span> guild_ban_remove() ::
   {:GUILD_BAN_REMOVE, <a href="Nostrum.Struct.Event.GuildBanRemove.html#t:t/0">Nostrum.Struct.Event.GuildBanRemove.t</a>(),
    <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
 
@@ -1194,10 +1191,9 @@ this will never be sent for a DM.</p>
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">guild_create() ::
+          <pre translate="no"><span class="attribute">@type</span> guild_create() ::
   {:GUILD_CREATE, new_guild :: <a href="Nostrum.Struct.Guild.html#t:t/0">Nostrum.Struct.Guild.t</a>(),
    <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
 
@@ -1225,10 +1221,9 @@ this will never be sent for a DM.</p>
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">guild_delete() ::
+          <pre translate="no"><span class="attribute">@type</span> guild_delete() ::
   {:GUILD_DELETE,
    {old_guild :: <a href="Nostrum.Struct.Guild.html#t:t/0">Nostrum.Struct.Guild.t</a>(), unavailable :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">boolean</a>()},
    <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
@@ -1257,10 +1252,9 @@ this will never be sent for a DM.</p>
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">guild_emojis_update() ::
+          <pre translate="no"><span class="attribute">@type</span> guild_emojis_update() ::
   {:GUILD_EMOJIS_UPDATE,
    {guild_id :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>(), old_emojis :: [<a href="Nostrum.Struct.Emoji.html#t:t/0">Nostrum.Struct.Emoji.t</a>()],
     new_emojis :: [<a href="Nostrum.Struct.Emoji.html#t:t/0">Nostrum.Struct.Emoji.t</a>()]}, <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
@@ -1289,10 +1283,9 @@ this will never be sent for a DM.</p>
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">guild_integrations_update() ::
+          <pre translate="no"><span class="attribute">@type</span> guild_integrations_update() ::
   {:GUILD_INTEGRATIONS_UPDATE, <a href="Nostrum.Struct.Event.GuildIntegrationsUpdate.html#t:t/0">Nostrum.Struct.Event.GuildIntegrationsUpdate.t</a>(),
    <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
 
@@ -1320,10 +1313,9 @@ this will never be sent for a DM.</p>
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">guild_member_add() ::
+          <pre translate="no"><span class="attribute">@type</span> guild_member_add() ::
   {:GUILD_MEMBER_ADD,
    {guild_id :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>(), new_member :: <a href="Nostrum.Struct.Guild.Member.html#t:t/0">Nostrum.Struct.Guild.Member.t</a>()},
    <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
@@ -1352,10 +1344,9 @@ this will never be sent for a DM.</p>
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">guild_member_remove() ::
+          <pre translate="no"><span class="attribute">@type</span> guild_member_remove() ::
   {:GUILD_MEMBER_REMOVE,
    {guild_id :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>(), old_member :: <a href="Nostrum.Struct.Guild.Member.html#t:t/0">Nostrum.Struct.Guild.Member.t</a>()},
    <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
@@ -1384,10 +1375,9 @@ this will never be sent for a DM.</p>
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">guild_member_update() ::
+          <pre translate="no"><span class="attribute">@type</span> guild_member_update() ::
   {:GUILD_MEMBER_UPDATE,
    {guild_id :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>(), old_member :: <a href="Nostrum.Struct.Guild.Member.html#t:t/0">Nostrum.Struct.Guild.Member.t</a>() | nil,
     new_member :: <a href="Nostrum.Struct.Guild.Member.html#t:t/0">Nostrum.Struct.Guild.Member.t</a>()}, <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
@@ -1416,10 +1406,9 @@ this will never be sent for a DM.</p>
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">guild_members_chunk() ::
+          <pre translate="no"><span class="attribute">@type</span> guild_members_chunk() ::
   {:GUILD_MEMBERS_CHUNK, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>(), <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
 
       </div>
@@ -1446,10 +1435,9 @@ this will never be sent for a DM.</p>
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">guild_role_create() ::
+          <pre translate="no"><span class="attribute">@type</span> guild_role_create() ::
   {:GUILD_ROLE_CREATE,
    {guild_id :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>(), new_role :: <a href="Nostrum.Struct.Guild.Role.html#t:t/0">Nostrum.Struct.Guild.Role.t</a>()},
    <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
@@ -1478,10 +1466,9 @@ this will never be sent for a DM.</p>
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">guild_role_delete() ::
+          <pre translate="no"><span class="attribute">@type</span> guild_role_delete() ::
   {:GUILD_ROLE_DELETE,
    {guild_id :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>(), old_role :: <a href="Nostrum.Struct.Guild.Role.html#t:t/0">Nostrum.Struct.Guild.Role.t</a>()},
    <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
@@ -1510,10 +1497,9 @@ this will never be sent for a DM.</p>
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">guild_role_update() ::
+          <pre translate="no"><span class="attribute">@type</span> guild_role_update() ::
   {:GUILD_ROLE_UPDATE,
    {guild_id :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>(), old_role :: <a href="Nostrum.Struct.Guild.Role.html#t:t/0">Nostrum.Struct.Guild.Role.t</a>() | nil,
     new_role :: <a href="Nostrum.Struct.Guild.Role.html#t:t/0">Nostrum.Struct.Guild.Role.t</a>()}, <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
@@ -1542,10 +1528,9 @@ this will never be sent for a DM.</p>
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">guild_scheduled_event_create() ::
+          <pre translate="no"><span class="attribute">@type</span> guild_scheduled_event_create() ::
   {:GUILD_SCHEDULED_EVENT_CREATE, <a href="Nostrum.Struct.Guild.ScheduledEvent.html#t:t/0">Nostrum.Struct.Guild.ScheduledEvent.t</a>(),
    <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
 
@@ -1573,10 +1558,9 @@ this will never be sent for a DM.</p>
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">guild_scheduled_event_delete() ::
+          <pre translate="no"><span class="attribute">@type</span> guild_scheduled_event_delete() ::
   {:GUILD_SCHEDULED_EVENT_DELETE, <a href="Nostrum.Struct.Guild.ScheduledEvent.html#t:t/0">Nostrum.Struct.Guild.ScheduledEvent.t</a>(),
    <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
 
@@ -1604,10 +1588,9 @@ this will never be sent for a DM.</p>
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">guild_scheduled_event_update() ::
+          <pre translate="no"><span class="attribute">@type</span> guild_scheduled_event_update() ::
   {:GUILD_SCHEDULED_EVENT_UPDATE, <a href="Nostrum.Struct.Guild.ScheduledEvent.html#t:t/0">Nostrum.Struct.Guild.ScheduledEvent.t</a>(),
    <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
 
@@ -1635,10 +1618,9 @@ this will never be sent for a DM.</p>
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">guild_scheduled_event_user_add() ::
+          <pre translate="no"><span class="attribute">@type</span> guild_scheduled_event_user_add() ::
   {:GUILD_SCHEDULED_EVENT_USER_ADD,
    <a href="Nostrum.Struct.Event.GuildScheduledEventUserAdd.html#t:t/0">Nostrum.Struct.Event.GuildScheduledEventUserAdd.t</a>(),
    <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
@@ -1667,10 +1649,9 @@ this will never be sent for a DM.</p>
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">guild_scheduled_event_user_remove() ::
+          <pre translate="no"><span class="attribute">@type</span> guild_scheduled_event_user_remove() ::
   {:GUILD_SCHEDULED_EVENT_USER_REMOVE,
    <a href="Nostrum.Struct.Event.GuildScheduledEventUserRemove.html#t:t/0">Nostrum.Struct.Event.GuildScheduledEventUserRemove.t</a>(),
    <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
@@ -1699,10 +1680,9 @@ this will never be sent for a DM.</p>
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">guild_unavailable() ::
+          <pre translate="no"><span class="attribute">@type</span> guild_unavailable() ::
   {:GUILD_UNAVAILABLE,
    unavailable_guild :: <a href="Nostrum.Struct.Guild.UnavailableGuild.html#t:t/0">Nostrum.Struct.Guild.UnavailableGuild.t</a>(),
    <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
@@ -1731,10 +1711,9 @@ this will never be sent for a DM.</p>
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">guild_update() ::
+          <pre translate="no"><span class="attribute">@type</span> guild_update() ::
   {:GUILD_UPDATE,
    {old_guild :: <a href="Nostrum.Struct.Guild.html#t:t/0">Nostrum.Struct.Guild.t</a>(),
     new_guild :: <a href="Nostrum.Struct.Guild.html#t:t/0">Nostrum.Struct.Guild.t</a>()}, <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
@@ -1765,10 +1744,9 @@ this will never be sent for a DM.</p>
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">integration_create() ::
+          <pre translate="no"><span class="attribute">@type</span> integration_create() ::
   {:INTEGRATION_CREATE, <a href="Nostrum.Struct.Guild.Integration.html#t:t/0">Nostrum.Struct.Guild.Integration.t</a>(),
    <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
 
@@ -1798,10 +1776,9 @@ this will never be sent for a DM.</p>
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">integration_delete() ::
+          <pre translate="no"><span class="attribute">@type</span> integration_delete() ::
   {:INTEGRATION_DELETE, <a href="Nostrum.Struct.Event.GuildIntegrationDelete.html#t:t/0">Nostrum.Struct.Event.GuildIntegrationDelete.t</a>(),
    <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
 
@@ -1831,10 +1808,9 @@ this will never be sent for a DM.</p>
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">integration_update() ::
+          <pre translate="no"><span class="attribute">@type</span> integration_update() ::
   {:INTEGRATION_UPDATE, <a href="Nostrum.Struct.Guild.Integration.html#t:t/0">Nostrum.Struct.Guild.Integration.t</a>(),
    <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
 
@@ -1862,10 +1838,9 @@ this will never be sent for a DM.</p>
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">interaction_create() ::
+          <pre translate="no"><span class="attribute">@type</span> interaction_create() ::
   {:INTERACTION_CREATE, <a href="Nostrum.Struct.Interaction.html#t:t/0">Nostrum.Struct.Interaction.t</a>(),
    <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
 
@@ -1893,10 +1868,9 @@ this will never be sent for a DM.</p>
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">message_ack() :: {:MESSAGE_ACK, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>(), <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
+          <pre translate="no"><span class="attribute">@type</span> message_ack() :: {:MESSAGE_ACK, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>(), <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
 
       </div>
 
@@ -1922,10 +1896,9 @@ this will never be sent for a DM.</p>
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">message_create() ::
+          <pre translate="no"><span class="attribute">@type</span> message_create() ::
   {:MESSAGE_CREATE, message :: <a href="Nostrum.Struct.Message.html#t:t/0">Nostrum.Struct.Message.t</a>(),
    <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
 
@@ -1953,10 +1926,9 @@ this will never be sent for a DM.</p>
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">message_delete() ::
+          <pre translate="no"><span class="attribute">@type</span> message_delete() ::
   {:MESSAGE_DELETE, <a href="Nostrum.Struct.Event.MessageDelete.html#t:t/0">Nostrum.Struct.Event.MessageDelete.t</a>(),
    <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
 
@@ -1984,10 +1956,9 @@ this will never be sent for a DM.</p>
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">message_delete_bulk() ::
+          <pre translate="no"><span class="attribute">@type</span> message_delete_bulk() ::
   {:MESSAGE_DELETE_BULK, <a href="Nostrum.Struct.Event.MessageDeleteBulk.html#t:t/0">Nostrum.Struct.Event.MessageDeleteBulk.t</a>(),
    <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
 
@@ -2015,10 +1986,9 @@ this will never be sent for a DM.</p>
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">message_reaction_add() ::
+          <pre translate="no"><span class="attribute">@type</span> message_reaction_add() ::
   {:MESSAGE_REACTION_ADD, <a href="Nostrum.Struct.Event.MessageReactionAdd.html#t:t/0">Nostrum.Struct.Event.MessageReactionAdd.t</a>(),
    <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
 
@@ -2046,10 +2016,9 @@ this will never be sent for a DM.</p>
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">message_reaction_remove() ::
+          <pre translate="no"><span class="attribute">@type</span> message_reaction_remove() ::
   {:MESSAGE_REACTION_REMOVE, <a href="Nostrum.Struct.Event.MessageReactionRemove.html#t:t/0">Nostrum.Struct.Event.MessageReactionRemove.t</a>(),
    <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
 
@@ -2077,10 +2046,9 @@ this will never be sent for a DM.</p>
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">message_reaction_remove_all() ::
+          <pre translate="no"><span class="attribute">@type</span> message_reaction_remove_all() ::
   {:MESSAGE_REACTION_REMOVE_ALL,
    <a href="Nostrum.Struct.Event.MessageReactionRemoveAll.html#t:t/0">Nostrum.Struct.Event.MessageReactionRemoveAll.t</a>(),
    <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
@@ -2109,10 +2077,9 @@ this will never be sent for a DM.</p>
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">message_reaction_remove_emoji() ::
+          <pre translate="no"><span class="attribute">@type</span> message_reaction_remove_emoji() ::
   {:MESSAGE_REACTION_REMOVE_EMOJI,
    <a href="Nostrum.Struct.Event.MessageReactionRemoveEmoji.html#t:t/0">Nostrum.Struct.Event.MessageReactionRemoveEmoji.t</a>(),
    <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
@@ -2141,10 +2108,9 @@ this will never be sent for a DM.</p>
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">message_update() ::
+          <pre translate="no"><span class="attribute">@type</span> message_update() ::
   {:MESSAGE_UPDATE, updated_message :: <a href="Nostrum.Struct.Message.html#t:t/0">Nostrum.Struct.Message.t</a>(),
    <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
 
@@ -2172,15 +2138,14 @@ this will never be sent for a DM.</p>
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">option() ::
+          <pre translate="no"><span class="attribute">@type</span> option() ::
   {:registry, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">atom</a>()}
   | {:name, <a href="https://hexdocs.pm/elixir/Supervisor.html#t:name/0">Supervisor.name</a>()}
   | {:max_restarts, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">non_neg_integer</a>()}
   | {:max_seconds, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">non_neg_integer</a>()}
-  | {:subscribe_to, [<a href="https://hexdocs.pm/gen_stage/1.1.0/GenStage.html#t:stage/0">GenStage.stage</a>() | {<a href="https://hexdocs.pm/gen_stage/1.1.0/GenStage.html#t:stage/0">GenStage.stage</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">keyword</a>()}]}</pre>
+  | {:subscribe_to, [<a href="https://hexdocs.pm/gen_stage/1.1.2/GenStage.html#t:stage/0">GenStage.stage</a>() | {<a href="https://hexdocs.pm/gen_stage/1.1.2/GenStage.html#t:stage/0">GenStage.stage</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">keyword</a>()}]}</pre>
 
       </div>
 
@@ -2206,10 +2171,9 @@ this will never be sent for a DM.</p>
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">options() :: [<a href="#t:option/0">option</a>()] | []</pre>
+          <pre translate="no"><span class="attribute">@type</span> options() :: [<a href="#t:option/0">option</a>()] | []</pre>
 
       </div>
 
@@ -2235,10 +2199,9 @@ this will never be sent for a DM.</p>
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">presence_update() ::
+          <pre translate="no"><span class="attribute">@type</span> presence_update() ::
   {:PRESENCE_UPDATE,
    {guild_id :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>(), old_presence :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>() | nil, new_presence :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()},
    <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
@@ -2267,10 +2230,9 @@ this will never be sent for a DM.</p>
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">ready() :: {:READY, <a href="Nostrum.Struct.Event.Ready.html#t:t/0">Nostrum.Struct.Event.Ready.t</a>(), <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
+          <pre translate="no"><span class="attribute">@type</span> ready() :: {:READY, <a href="Nostrum.Struct.Event.Ready.html#t:t/0">Nostrum.Struct.Event.Ready.t</a>(), <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
 
       </div>
 
@@ -2296,10 +2258,9 @@ this will never be sent for a DM.</p>
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">resumed() :: {:RESUMED, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>(), <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
+          <pre translate="no"><span class="attribute">@type</span> resumed() :: {:RESUMED, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>(), <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
 
       </div>
 
@@ -2325,10 +2286,9 @@ this will never be sent for a DM.</p>
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">thread_create() ::
+          <pre translate="no"><span class="attribute">@type</span> thread_create() ::
   {:THREAD_CREATE, <a href="Nostrum.Struct.Channel.html#t:t/0">Nostrum.Struct.Channel.t</a>(), <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
 
       </div>
@@ -2355,10 +2315,9 @@ this will never be sent for a DM.</p>
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">thread_delete() ::
+          <pre translate="no"><span class="attribute">@type</span> thread_delete() ::
   {:THREAD_DELETE, <a href="Nostrum.Struct.Channel.html#t:t/0">Nostrum.Struct.Channel.t</a>() | :noop,
    <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
 
@@ -2386,10 +2345,9 @@ this will never be sent for a DM.</p>
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">thread_list_sync() ::
+          <pre translate="no"><span class="attribute">@type</span> thread_list_sync() ::
   {:THREAD_LIST_SYNC, <a href="Nostrum.Struct.Event.ThreadListSync.html#t:t/0">Nostrum.Struct.Event.ThreadListSync.t</a>(),
    <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
 
@@ -2417,10 +2375,9 @@ this will never be sent for a DM.</p>
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">thread_member_update() ::
+          <pre translate="no"><span class="attribute">@type</span> thread_member_update() ::
   {:THREAD_MEMBER_UPDATE, <a href="Nostrum.Struct.ThreadMember.html#t:t/0">Nostrum.Struct.ThreadMember.t</a>(),
    <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
 
@@ -2448,10 +2405,9 @@ this will never be sent for a DM.</p>
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">thread_members_update() ::
+          <pre translate="no"><span class="attribute">@type</span> thread_members_update() ::
   {:THREAD_MEMBERS_UPDATE, <a href="Nostrum.Struct.Event.ThreadMembersUpdate.html#t:t/0">Nostrum.Struct.Event.ThreadMembersUpdate.t</a>(),
    <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
 
@@ -2479,10 +2435,9 @@ this will never be sent for a DM.</p>
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">thread_update() ::
+          <pre translate="no"><span class="attribute">@type</span> thread_update() ::
   {:THREAD_UPDATE,
    {old_thread :: <a href="Nostrum.Struct.Channel.html#t:t/0">Nostrum.Struct.Channel.t</a>() | nil,
     new_thread :: <a href="Nostrum.Struct.Channel.html#t:t/0">Nostrum.Struct.Channel.t</a>()}, <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
@@ -2511,10 +2466,9 @@ this will never be sent for a DM.</p>
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">typing_start() ::
+          <pre translate="no"><span class="attribute">@type</span> typing_start() ::
   {:TYPING_START, <a href="Nostrum.Struct.Event.TypingStart.html#t:t/0">Nostrum.Struct.Event.TypingStart.t</a>(),
    <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
 
@@ -2542,10 +2496,9 @@ this will never be sent for a DM.</p>
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">user_settings_update() :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">no_return</a>()</pre>
+          <pre translate="no"><span class="attribute">@type</span> user_settings_update() :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">no_return</a>()</pre>
 
       </div>
 
@@ -2571,10 +2524,9 @@ this will never be sent for a DM.</p>
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">user_update() ::
+          <pre translate="no"><span class="attribute">@type</span> user_update() ::
   {:USER_UPDATE,
    {old_user :: <a href="Nostrum.Struct.User.html#t:t/0">Nostrum.Struct.User.t</a>() | nil,
     new_user :: <a href="Nostrum.Struct.User.html#t:t/0">Nostrum.Struct.User.t</a>()}, <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
@@ -2605,10 +2557,9 @@ this will never be sent for a DM.</p>
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">voice_incoming_packet() ::
+          <pre translate="no"><span class="attribute">@type</span> voice_incoming_packet() ::
   {:VOICE_INCOMING_PACKET, <a href="Nostrum.Voice.html#t:rtp_opus/0">Nostrum.Voice.rtp_opus</a>(),
    <a href="Nostrum.Struct.VoiceWSState.html#t:t/0">Nostrum.Struct.VoiceWSState.t</a>()}</pre>
 
@@ -2642,10 +2593,9 @@ on the SSRC.</p>
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">voice_ready() ::
+          <pre translate="no"><span class="attribute">@type</span> voice_ready() ::
   {:VOICE_READY, <a href="Nostrum.Struct.Event.VoiceReady.html#t:t/0">Nostrum.Struct.Event.VoiceReady.t</a>(),
    <a href="Nostrum.Struct.VoiceWSState.html#t:t/0">Nostrum.Struct.VoiceWSState.t</a>()}</pre>
 
@@ -2673,10 +2623,9 @@ on the SSRC.</p>
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">voice_server_update() ::
+          <pre translate="no"><span class="attribute">@type</span> voice_server_update() ::
   {:VOICE_SERVER_UPDATE, <a href="Nostrum.Struct.Event.VoiceServerUpdate.html#t:t/0">Nostrum.Struct.Event.VoiceServerUpdate.t</a>(),
    <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
 
@@ -2704,10 +2653,9 @@ on the SSRC.</p>
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">voice_speaking_update() ::
+          <pre translate="no"><span class="attribute">@type</span> voice_speaking_update() ::
   {:VOICE_SPEAKING_UPDATE, <a href="Nostrum.Struct.Event.SpeakingUpdate.html#t:t/0">Nostrum.Struct.Event.SpeakingUpdate.t</a>(),
    <a href="Nostrum.Struct.VoiceWSState.html#t:t/0">Nostrum.Struct.VoiceWSState.t</a>()}</pre>
 
@@ -2735,10 +2683,9 @@ on the SSRC.</p>
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">voice_state_update() ::
+          <pre translate="no"><span class="attribute">@type</span> voice_state_update() ::
   {:VOICE_STATE_UPDATE, <a href="Nostrum.Struct.Event.VoiceState.html#t:t/0">Nostrum.Struct.Event.VoiceState.t</a>(),
    <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
 
@@ -2766,10 +2713,9 @@ on the SSRC.</p>
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">webhooks_update() :: {:WEBHOOKS_UPDATE, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>(), <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
+          <pre translate="no"><span class="attribute">@type</span> webhooks_update() :: {:WEBHOOKS_UPDATE, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>(), <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
 
       </div>
 
@@ -2808,15 +2754,16 @@ Callbacks
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">handle_event(<a href="#t:event/0">event</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">any</a>()</pre>
+          <pre translate="no"><span class="attribute">@callback</span> handle_event(<a href="#t:event/0">event</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">any</a>()</pre>
 
       </div>
 
 <p>Callback used to handle events.</p><h2 id="c:handle_event/1-event" class="section-heading">
-  <a href="#c:handle_event/1-event" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
+  <a href="#c:handle_event/1-event" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">event</p>
+  </a>
   Event
 </h2>
 <p><code class="inline">event</code> is a tuple describing the event. The tuple will include information in
@@ -2859,10 +2806,9 @@ Functions
 
   <section class="docstring">
 
-      <h2>Specs</h2>
       <div class="specs">
 
-          <pre translate="no">start_link(<a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">module</a>(), <a href="#t:options/0">options</a>()) :: <a href="https://hexdocs.pm/elixir/Supervisor.html#t:on_start/0">Supervisor.on_start</a>()</pre>
+          <pre translate="no"><span class="attribute">@spec</span> start_link(<a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">module</a>(), <a href="#t:options/0">options</a>()) :: <a href="https://hexdocs.pm/elixir/Supervisor.html#t:on_start/0">Supervisor.on_start</a>()</pre>
 
       </div>
 
@@ -2887,15 +2833,17 @@ the current module which you can get with <code class="inline">__MODULE__</code>
 
             </span>
 
-            <button class="line footer-button display-quick-switch">
+            <button class="a-main line footer-button display-quick-switch">
               Search
             </button>
           </p>
 
         <p>
           Built using
-          <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.28.0) for the
-          <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
+          <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.29.0) for the
+
+            <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
+
         </p>
       </footer>
     </div>

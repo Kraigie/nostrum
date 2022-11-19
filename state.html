@@ -4,38 +4,44 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="ExDoc v0.28.0">
+    <meta name="generator" content="ExDoc v0.29.0">
     <meta name="project" content="Nostrum v0.6.1">
 
     <title>State — Nostrum v0.6.1</title>
-    <link rel="stylesheet" href="dist/elixir-a816d167216329cc463d.css" />
+    <link rel="stylesheet" href="dist/html-elixir-2YOS5DIE.css" />
 
-    <script src="dist/sidebar_items-8a53303cc4.js"></script>
+    <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
+    <script src="dist/handlebars.templates-X7YVL3G2.js"></script>
+    <script src="dist/sidebar_items-E0D39667.js"></script>
 
       <script src="docs_config.js"></script>
 
-    <script async src="dist/app-80aa23c1d96b6dc3c064.js"></script>
+    <script async src="dist/html-XN2TSG4M.js"></script>
 
 
   </head>
-  <body data-type="extras">
+  <body data-type="extras" class="page-extra">
     <script>
 
       try {
-        if (localStorage.getItem('night-mode') === 'true') {
-          document.body.classList.add('night-mode');
+        var settings = JSON.parse(localStorage.getItem('ex_doc:settings') || '{}');
+
+        if (settings.theme === 'dark' ||
+           ((settings.theme === 'system' || settings.theme == null) &&
+             window.matchMedia('(prefers-color-scheme: dark)').matches)
+           ) {
+          document.body.classList.add('dark')
         }
       } catch (error) { }
     </script>
 
 <div class="main">
 
+<button class="sidebar-button sidebar-toggle" aria-label="toggle sidebar">
+  <i class="ri-menu-line ri-lg" title="Collapse/expand sidebar"></i>
+</button>
 
 <section class="sidebar">
-  <button class="sidebar-button sidebar-toggle">
-    <i class="ri-menu-line ri-lg" title="Collapse/expand sidebar"></i>
-  </button>
-
   <form class="sidebar-search" action="search.html">
     <button type="submit" class="search-button" aria-label="Submit Search">
       <i class="ri-search-2-line" aria-hidden="true" title="Submit search"></i>
@@ -44,6 +50,7 @@
       <i class="ri-close-line ri-lg" aria-hidden="true" title="Cancel search"></i>
     </button>
     <label class="search-label">
+      <p class="sr-only">Search</p>
       <input name="q" type="text" class="search-input" placeholder="Search..." aria-label="Input your search terms" autocomplete="off" />
     </label>
   </form>
@@ -79,6 +86,7 @@ Nostrum
 </section>
 
 <section class="content">
+  <output role="status" id="toast"></output>
   <div class="content-outer">
     <div id="content" class="content-inner">
 
@@ -100,7 +108,9 @@ Nostrum
 <p>Nostrum keeps track of the state that your bot can see. This state is updated
 based on events from the WS connection. Most of the cache modules support only
 simple interactions with the cache. Feel free to suggest additional functionality.</p><h2 id="pluggable-caches" class="section-heading">
-  <a href="#pluggable-caches" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
+  <a href="#pluggable-caches" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">pluggable-caches</p>
+  </a>
   Pluggable caches
 </h2>
 <p>The default caches supplied by nostrum should work for most of your needs, but
@@ -110,15 +120,19 @@ implementation you want to use. This can only be set at dependency compilation
 time. A common situation is that you don't want to cache presences in your bot,
 most likely you don't care about user's status, so you can disable it altogether
 by using the <code class="inline">NoOp</code> presence cache:</p><pre><code class="makeup elixir" translate="no"><span class="n">config</span><span class="w"> </span><span class="ss">:nostrum</span><span class="p">,</span><span class="w">
-  </span><span class="ss">caches</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="7604012274-1">%{</span><span class="w">
+  </span><span class="ss">caches</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="8849045862-1">%{</span><span class="w">
     </span><span class="ss">presences</span><span class="p">:</span><span class="w"> </span><span class="nc">Nostrum.Cache.PresenceCache.NoOp</span><span class="w">
-  </span><span class="p" data-group-id="7604012274-1">}</span></code></pre><h2 id="structs" class="section-heading">
-  <a href="#structs" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
+  </span><span class="p" data-group-id="8849045862-1">}</span></code></pre><h2 id="structs" class="section-heading">
+  <a href="#structs" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">structs</p>
+  </a>
   Structs
 </h2>
 <p>Nostrum uses structs when appropriate to pass around objects from Discord.</p><p>In some cases, the struct modules will include helper functions for interacting
 with the struct. See <a href="Nostrum.Struct.Emoji.html#image_url/1"><code class="inline">Nostrum.Struct.Emoji.image_url/1</code></a> for an example.</p><h2 id="guilds" class="section-heading">
-  <a href="#guilds" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
+  <a href="#guilds" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">guilds</p>
+  </a>
   Guilds
 </h2>
 <p>By default, guilds are cached in an ETS table, keyed off their ID. You can
@@ -126,19 +140,25 @@ obtain the table name of the backing ETS table using the <code class="inline">ta
 exported by the <a href="Nostrum.Cache.GuildCache.ETS.html"><code class="inline">Nostrum.Cache.GuildCache.ETS</code></a> module.</p><p>If you do not have the <code class="inline">:guilds</code> intent enabled, it is recommended to use the <code class="inline">NoOp</code>
 cache for guilds.</p><p>Please see <a href="Nostrum.Cache.GuildCache.html"><code class="inline">Nostrum.Cache.GuildCache</code></a> for more information on interacting with
 guilds.</p><h2 id="channels" class="section-heading">
-  <a href="#channels" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
+  <a href="#channels" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">channels</p>
+  </a>
   Channels
 </h2>
 <p>By default, DM channels are stored in an ETS table, see
 <a href="Nostrum.Cache.ChannelCache.ETS.html"><code class="inline">Nostrum.Cache.ChannelCache.ETS</code></a>. Guild channels are stored in their respective
 guilds.</p><h2 id="users" class="section-heading">
-  <a href="#users" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
+  <a href="#users" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">users</p>
+  </a>
   Users
 </h2>
 <p>By default, users are all stored in an ETS table, keyed off of their id.</p><p>To see the name of the ETS table associated with the user cache, and examples of
 interacting with it both directly and through the provided abstractions, please
 see <a href="Nostrum.Cache.UserCache.ETS.html"><code class="inline">Nostrum.Cache.UserCache.ETS</code></a>.</p><h2 id="mappings" class="section-heading">
-  <a href="#mappings" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i></a>
+  <a href="#mappings" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">mappings</p>
+  </a>
   Mappings
 </h2>
 <p>There are some use cases where given a <code class="inline">channel_id</code> or <code class="inline">guild_id</code> we may want to
@@ -172,7 +192,6 @@ Events
 
   </div>
 </div>
-
       <footer class="footer">
 
           <p>
@@ -186,15 +205,17 @@ Events
 
             </span>
 
-            <button class="line footer-button display-quick-switch">
+            <button class="a-main line footer-button display-quick-switch">
               Search
             </button>
           </p>
 
         <p>
           Built using
-          <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.28.0) for the
-          <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
+          <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.29.0) for the
+
+            <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
+
         </p>
       </footer>
     </div>
