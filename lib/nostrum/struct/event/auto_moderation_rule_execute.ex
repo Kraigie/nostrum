@@ -5,7 +5,7 @@ defmodule Nostrum.Struct.Event.AutoModerationRuleExecute do
   """
   @moduledoc since: "0.7.0"
 
-  alias Nostrum.Struct.{AutoModerationRule, Channel, Guild, Message}
+  alias Nostrum.Struct.{AutoModerationRule, Channel, Guild, Message, User}
   alias Nostrum.{Snowflake, Util}
 
   defstruct [
