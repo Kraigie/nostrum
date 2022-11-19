@@ -6,6 +6,7 @@ defmodule Nostrum.Shard.Dispatch do
   alias Nostrum.Shard.{Intents, Session}
 
   alias Nostrum.Struct.Event.{
+    AutoModerationRuleExecute,
     ChannelPinsUpdate,
     GuildBanAdd,
     GuildBanRemove,
@@ -31,7 +32,7 @@ defmodule Nostrum.Shard.Dispatch do
     VoiceState
   }
 
-  alias Nostrum.Struct.{Guild, Interaction, Message, ThreadMember, User}
+  alias Nostrum.Struct.{AutoModerationRule, Guild, Interaction, Message, ThreadMember, User}
   alias Nostrum.Struct.Guild.{Integration, ScheduledEvent, UnavailableGuild}
   alias Nostrum.Util
   alias Nostrum.Voice
@@ -64,6 +65,18 @@ defmodule Nostrum.Shard.Dispatch do
       [_] -> :GUILD_AVAILABLE
     end
   end
+
+  def handle_event(:AUTO_MODERATION_RULE_CREATE = event, p, state),
+    do: {event, AutoModerationRule.to_struct(p), state}
+
+  def handle_event(:AUTO_MODERATION_RULE_DELETE = event, p, state),
+    do: {event, AutoModerationRule.to_struct(p), state}
+
+  def handle_event(:AUTO_MODERATION_RULE_UPDATE = event, p, state),
+    do: {event, AutoModerationRule.to_struct(p), state}
+
+  def handle_event(:AUTO_MODERATION_RULE_EXECUTION = event, p, state),
+    do: {event, AutoModerationRuleExecute.to_struct(p), state}
 
   def handle_event(:CHANNEL_CREATE = event, %{type: 1} = p, state) do
     {event, ChannelCache.create(p), state}

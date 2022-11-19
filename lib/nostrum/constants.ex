@@ -162,6 +162,12 @@ defmodule Nostrum.Constants do
   def private_joined_archived_threads(channel_id),
     do: "/channels/#{channel_id}/users/@me/threads/archived/private"
 
+  def guild_auto_moderation_rule(guild_id),
+    do: "/guilds/#{guild_id}/auto-moderation/rules"
+
+  def guild_auto_moderation_rule(guild_id, rule_id),
+    do: "/guilds/#{guild_id}/auto-moderation/rules/#{rule_id}"
+
   def discord_epoch, do: 1_420_070_400_000
 
   def opcodes do
