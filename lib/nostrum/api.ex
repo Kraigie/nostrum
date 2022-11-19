@@ -116,6 +116,41 @@ defmodule Nostrum.Api do
   """
   @type options :: keyword | map
 
+  @typedoc """
+  Represents which mentions to allow in a message.
+
+  This can be sent on its own or in a list to allow multiple types of
+  mentions in a message, see `t:allowed_mentions/0` for details.
+  """
+  @typedoc since: "0.7.0"
+  @type allowed_mention ::
+          :all
+          | :none
+          | :everyone
+          | :users
+          | :roles
+          | {:users, [User.id()]}
+          | {:roles, [Role.id()]}
+
+  @typedoc """
+  Represents mentions to allow in a message.
+
+  With this option you can control when content from a message should trigger a ping.
+  Consider using this option when you are going to display user generated content.
+
+  ### Allowed values
+    * `:all` (default) - Ping everything as usual
+    * `:none` - Nobody will be pinged
+    * `:everyone` - Allows to ping @here and @everyone
+    * `:users` - Allows to ping users
+    * `:roles` - Allows to ping roles
+    * `{:users, list}` - Allows to ping list of users. Can contain up to 100 ids of users.
+    * `{:roles, list}` - Allows to ping list of roles. Can contain up to 100 ids of roles.
+    * list - a list containing the values above.
+  """
+  @typedoc since: "0.7.0"
+  @type allowed_mentions :: allowed_mention | [allowed_mention]
+
   defguardp has_files(args) when is_map_key(args, :files) or is_map_key(args, :file)
 
   @doc """
@@ -183,25 +218,10 @@ defmodule Nostrum.Api do
     * `:files` - a list of files where each element is the same format as the `:file` option. If both
     `:file` and `:files` are specified, `:file` will be prepended to the `:files` list.
     * `:embeds` (`t:Nostrum.Struct.Embed.t/0`) - a list of embedded rich content
-    * `:allowed_mentions` - See "Allowed mentions" below
+    * `:allowed_mentions` (`t:allowed_mentions/0`) - see the allowed mentions type documentation
     * `:message_reference` (`map`) - See "Message references" below
 
     At least one of the following is required: `:content`, `:file`, `:embeds`.
-
-  ## Allowed mentions
-
-  With this option you can control when content from a message should trigger a ping.
-  Consider using this option when you are going to display user_generated content.
-
-  ### Allowed values
-    * `:all` (default) - Ping everything as usual
-    * `:none` - Nobody will be pinged
-    * `:everyone` - Allows to ping @here and @everyone
-    * `:users` - Allows to ping users
-    * `:roles` - Allows to ping roles
-    * `{:users, list}` - Allows to ping list of users. Can contain up to 100 ids of users.
-    * `{:roles, list}` - Allows to ping list of roles. Can contain up to 100 ids of roles.
-    * list - a list containing the values above.
 
   ### Message reference
 
@@ -2946,7 +2966,8 @@ defmodule Nostrum.Api do
            optional(:files) => [String.t() | %{body: iodata(), name: String.t()}],
            optional(:flags) => non_neg_integer(),
            optional(:thread_id) => Snowflake.t(),
-           optional(:embeds) => nonempty_list(Embed.t()) | nil
+           optional(:embeds) => nonempty_list(Embed.t()) | nil,
+           optional(:allowed_mentions) => allowed_mentions()
          }
 
   @typep m2 ::
@@ -2958,7 +2979,8 @@ defmodule Nostrum.Api do
              required(:files) => [String.t() | %{body: iodata(), name: String.t()}],
              optional(:flags) => non_neg_integer(),
              optional(:thread_id) => Snowflake.t(),
-             optional(:embeds) => nonempty_list(Embed.t()) | nil
+             optional(:embeds) => nonempty_list(Embed.t()) | nil,
+             optional(:allowed_mentions) => allowed_mentions()
            }
 
   @typep m3 ::
@@ -2970,7 +2992,8 @@ defmodule Nostrum.Api do
              optional(:files) => [String.t() | %{body: iodata(), name: String.t()}],
              optional(:flags) => non_neg_integer(),
              optional(:thread_id) => Snowflake.t(),
-             required(:embeds) => nonempty_list(Embed.t())
+             required(:embeds) => nonempty_list(Embed.t()),
+             optional(:allowed_mentions) => allowed_mentions()
            }
 
   @type matrix :: m1 | m2 | m3
@@ -2984,31 +3007,33 @@ defmodule Nostrum.Api do
           error | {:ok} | {:ok, Message.t()}
 
   @doc """
-   Executes a webhook.
+  Executes a webhook.
 
-   ## Parameters
-   - `webhook_id` - Id of the webhook to execute.
-   - `webhook_token` - Token of the webhook to execute.
-   - `args` - Map with the following allowed keys:
-     - `content` - Message content.
-     - `files` - List of Files to send.
-     - `embeds` - List of embeds to send.
-     - `username` - Overrides the default name of the webhook.
-     - `avatar_url` - Overrides the default avatar of the webhook.
-     - `tts` - Whether the message should be read over text to speech.
-     - `flags` - Bitwise flags.
-     - `thread_id` - Send a message to the specified thread within the webhook's channel.
-   - `wait` - Whether to return an error or not. Defaults to `false`.
+  ## Parameters
+  - `webhook_id` - Id of the webhook to execute.
+  - `webhook_token` - Token of the webhook to execute.
+  - `args` - Map with the following allowed keys:
+    - `content` - Message content.
+    - `files` - List of Files to send.
+    - `embeds` - List of embeds to send.
+    - `username` - Overrides the default name of the webhook.
+    - `avatar_url` - Overrides the default avatar of the webhook.
+    - `tts` - Whether the message should be read over text to speech.
+    - `flags` - Bitwise flags.
+    - `thread_id` - Send a message to the specified thread within the webhook's channel.
+    - `allowed_mentions` - Mentions to allow in the webhook message
+  - `wait` - Whether to return an error or not. Defaults to `false`.
 
-   **Note**: If `wait` is `true`, this method will return a `Message.t()` on success.
+  **Note**: If `wait` is `true`, this method will return a `Message.t()` on success.
 
-   At least one of `content`, `files` or `embeds` should be supplied in the `args` parameter.
+  At least one of `content`, `files` or `embeds` should be supplied in the `args` parameter.
   """
 
   def execute_webhook(webhook_id, webhook_token, args, wait \\ false)
 
   def execute_webhook(webhook_id, webhook_token, args, wait) do
     {thread_id, args} = Map.pop(args, :thread_id)
+    args = prepare_allowed_mentions(args)
 
     params =
       if is_nil(thread_id),
