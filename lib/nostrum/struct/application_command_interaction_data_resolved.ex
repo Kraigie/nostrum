@@ -49,6 +49,8 @@ defmodule Nostrum.Struct.ApplicationCommandInteractionDataResolved do
   """
   @type channels :: %{Channel.id() => Channel.guild_text_channel()} | nil
 
+  @typedoc "Attachments sent along with the interaction."
+  @typedoc since: "0.7.0"
   @type attachments :: %{Attachment.id() => Attachment.t()} | nil
 
   @typedoc "Resolved interaction data"

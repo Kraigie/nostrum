@@ -220,6 +220,7 @@ defmodule Nostrum.Struct.Channel do
   @typedoc """
   The `:rate_limit_per_user` which will be applied to threads created in the channel, in seconds.
   """
+  @typedoc since: "0.7.0"
   @type default_thread_rate_limit_per_user :: integer() | nil
 
   @typedoc """
@@ -395,6 +396,7 @@ defmodule Nostrum.Struct.Channel do
   `:moderated` indicates whether the tag can only be added or removed by moderators.
   `:emoji_id` and `:emoji_name` are mutually exclusive and indicate the emoji used to represent the tag.
   """
+  @typedoc since: "0.7.0"
   @type forum_tag :: %{
           id: Snowflake.t(),
           name: String.t(),
@@ -403,6 +405,7 @@ defmodule Nostrum.Struct.Channel do
           emoji_name: String.t() | nil
         }
 
+  @typedoc since: "0.7.0"
   @type applied_tags :: [Snowflake.t()] | nil
 
   @typedoc """
@@ -410,6 +413,7 @@ defmodule Nostrum.Struct.Channel do
 
   `:emoji_id` and `:emoji_name` are mutually exclusive
   """
+  @typedoc since: "0.7.0"
   @type default_reaction_emoji ::
           %{
             emoji_id: Snowflake.t() | nil,
@@ -606,6 +610,7 @@ defmodule Nostrum.Struct.Channel do
   @typedoc """
   Type 15 a guild forum channel.
   """
+  @typedoc since: "0.7.0"
   @type guild_forum_channel :: %__MODULE__{
           id: id,
           guild_id: guild_id,

@@ -2,7 +2,7 @@ defmodule Nostrum.Struct.AutoModerationRule do
   @moduledoc """
   Struct representing an auto-moderation rule.
   """
-  @moduledoc since: "0.6.1"
+  @moduledoc since: "0.7.0"
 
   alias Nostrum.Struct.AutoModerationRule.{Action, TriggerMetadata}
   alias Nostrum.Struct.Channel

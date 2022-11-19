@@ -2,7 +2,7 @@ defmodule Nostrum.Struct.AutoModerationRule.Action do
   @moduledoc """
   Defines an action to be taken when a rule is triggered.
   """
-  @moduledoc since: "0.6.1"
+  @moduledoc since: "0.7.0"
 
   alias Nostrum.Struct.AutoModerationRule.ActionMetadata
   alias Nostrum.Util

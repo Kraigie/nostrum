@@ -61,6 +61,7 @@ defmodule Nostrum.Struct.Guild.Role do
   @type mentionable :: boolean
 
   @typedoc "The hash of the role icon"
+  @typedoc since: "0.7.0"
   @type icon :: String.t() | nil
 
   @type t :: %__MODULE__{

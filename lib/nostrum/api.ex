@@ -3850,7 +3850,7 @@ defmodule Nostrum.Api do
 
   At least one of `content`, `embeds`, `sticker_ids`, or `files` must be specified.
   """
-
+  @doc since: "0.7.0"
   @spec start_thread_in_forum_channel(Channel.id(), map(), AuditLogEntry.reason()) ::
           {:ok, Channel.t()} | error
   def start_thread_in_forum_channel(channel_id, options, reason \\ nil)
@@ -4077,7 +4077,7 @@ defmodule Nostrum.Api do
   @doc """
   Get a list of all auto-moderation rules for a guild.
   """
-  @doc since: "0.6.1"
+  @doc since: "0.7.0"
   @spec get_guild_auto_moderation_rules(Guild.id()) :: {:ok, [AutoModerationRule.t()]} | error
   def get_guild_auto_moderation_rules(guild_id) do
     request(:get, Constants.guild_auto_moderation_rule(guild_id))
@@ -4087,7 +4087,7 @@ defmodule Nostrum.Api do
   @doc """
   Get a single auto-moderation rule for a guild.
   """
-  @doc since: "0.6.1"
+  @doc since: "0.7.0"
   @spec get_guild_auto_moderation_rule(Guild.id(), AutoModerationRule.id()) ::
           {:ok, AutoModerationRule.t()} | error
   def get_guild_auto_moderation_rule(guild_id, rule_id) do
@@ -4112,7 +4112,7 @@ defmodule Nostrum.Api do
     * `:exempt_channels` - (`t:AutoModerationRule.exempt_channels/0`) - A list of channel id's that are exempt from the rule.
       - optional, defaults to `[]`, maximum of 50.
   """
-  @doc since: "0.6.1"
+  @doc since: "0.7.0"
   @spec create_guild_auto_moderation_rule(Guild.id(), options()) ::
           {:ok, AutoModerationRule.t()} | error
   def create_guild_auto_moderation_rule(guild_id, options) when is_list(options),
@@ -4128,7 +4128,7 @@ defmodule Nostrum.Api do
 
   Takes the same options as `create_guild_auto_moderation_rule/2`, however all fields are optional.
   """
-  @doc since: "0.6.1"
+  @doc since: "0.7.0"
   @spec modify_guild_auto_moderation_rule(Guild.id(), AutoModerationRule.id(), options()) ::
           {:ok, AutoModerationRule.t()} | error
   def modify_guild_auto_moderation_rule(guild_id, rule_id, options) when is_list(options),
@@ -4142,7 +4142,7 @@ defmodule Nostrum.Api do
   @doc """
   Delete an auto-moderation rule for a guild.
   """
-  @doc since: "0.6.1"
+  @doc since: "0.7.0"
   @spec delete_guild_auto_moderation_rule(Guild.id(), AutoModerationRule.id()) :: {:ok} | error
   def delete_guild_auto_moderation_rule(guild_id, rule_id) do
     request(:delete, Constants.guild_auto_moderation_rule(guild_id, rule_id))

@@ -2,7 +2,7 @@ defmodule Nostrum.Struct.AutoModerationRule.TriggerMetadata do
   @moduledoc """
   Struct representing the metadata of a trigger.
   """
-  @moduledoc since: "0.6.1"
+  @moduledoc since: "0.7.0"
 
   alias Nostrum.Util
 

@@ -3,7 +3,7 @@ defmodule Nostrum.Struct.Event.AutoModerationRuleExecute do
   Sent when an auto-moderation rule executes.
   (e.g. message is blocked).
   """
-  @moduledoc since: "0.6.1"
+  @moduledoc since: "0.7.0"
 
   alias Nostrum.Struct.{AutoModerationRule, Channel, Guild, Message}
   alias Nostrum.{Snowflake, Util}

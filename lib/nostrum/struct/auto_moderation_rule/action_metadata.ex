@@ -2,7 +2,7 @@ defmodule Nostrum.Struct.AutoModerationRule.ActionMetadata do
   @moduledoc """
   Struct representing any additional data used when an action is taken.
   """
-  @moduledoc since: "0.6.1"
+  @moduledoc since: "0.7.0"
 
   alias Nostrum.{Snowflake, Util}
 
