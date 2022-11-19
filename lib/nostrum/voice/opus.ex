@@ -1,7 +1,7 @@
 defmodule Nostrum.Voice.Opus do
   @moduledoc false
 
-  use Bitwise
+  import Bitwise
 
   # Number of samples in a 20ms Opus frame at 48kHz sample rate
   @samples_per_frame 960

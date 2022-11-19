@@ -41,8 +41,6 @@ defmodule Nostrum.Api do
   ```
   """
 
-  use Bitwise
-
   import Nostrum.Snowflake, only: [is_snowflake: 1]
 
   alias Nostrum.Cache.Me
