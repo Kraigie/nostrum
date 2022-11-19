@@ -3801,6 +3801,70 @@ defmodule Nostrum.Api do
   end
 
   @doc """
+  Create a new thread in a forum channel.
+
+  If successful, returns `{:ok, Channel}`. Otherwise returns a `t:Nostrum.Api.error/0`.
+
+  An optional `reason` argument can be given for the audit log.
+
+  ## Options
+  - `name`: Name of the thread, max 100 characters.
+  - `auto_archive_duration`: Duration in minutes to auto-archive the thread after it has been inactive, can be set to 60, 1440, 4320, or 10080.
+  - `rate_limit_per_user`: Rate limit per user in seconds, can be set to any value in `0..21600`.
+  - `applied_tags`: An array of tag ids to apply to the thread.
+  - `message`: The first message in the created thread.
+
+  ### Thread Message Options
+  - `content`: The content of the message.
+  - `embeds`: A list of embeds.
+  - `allowed_mentions`: Allowed mentions object.
+  - `components`: A list of components.
+  - `sticker_ids`: A list of sticker ids.
+  - `:files` - a list of files where each element is the same format as the `:file` option. If both
+    `:file` and `:files` are specified, `:file` will be prepended to the `:files` list.
+
+  At least one of `content`, `embeds`, `sticker_ids`, or `files` must be specified.
+  """
+
+  @spec start_thread_in_forum_channel(Channel.id(), map(), AuditLogEntry.reason()) ::
+          {:ok, Channel.t()} | error
+  def start_thread_in_forum_channel(channel_id, options, reason \\ nil)
+
+  def start_thread_in_forum_channel(channel_id, %{message: data} = body, reason)
+      when has_files(data) do
+    # done this way to avoid breaking changes to support audit log reasons in multipart requests
+    boundary = generate_boundary()
+    {files, json} = combine_files(body) |> pop_files()
+    body = Jason.encode_to_iodata!(json)
+
+    headers =
+      maybe_add_reason(reason, [
+        {"content-type", "multipart/form-data; boundary=#{boundary}"}
+      ])
+
+    %{
+      method: :post,
+      route: Constants.thread_without_message(channel_id),
+      body: {:multipart, create_multipart(files, body, boundary)},
+      params: [],
+      headers: headers
+    }
+    |> request()
+    |> handle_request_with_decode({:struct, Channel})
+  end
+
+  def start_thread_in_forum_channel(channel_id, options, reason) do
+    request(%{
+      method: :post,
+      route: Constants.thread_without_message(channel_id),
+      body: options,
+      params: [],
+      headers: maybe_add_reason(reason)
+    })
+    |> handle_request_with_decode({:struct, Channel})
+  end
+
+  @doc """
   Returns a thread member object for the specified user if they are a member of the thread
   """
   @doc since: "0.5.1"
@@ -4123,6 +4187,7 @@ defmodule Nostrum.Api do
     do: Map.delete(args, :embed) |> Map.put(:embeds, [embed | args[:embeds] || []])
 
   defp combine_embeds(%{data: data} = args), do: %{args | data: combine_embeds(data)}
+  defp combine_embeds(%{message: data} = args), do: %{args | message: combine_embeds(data)}
   defp combine_embeds(args), do: args
 
   # If `:file` is present, prepend to `:files` for compatibility
@@ -4130,10 +4195,14 @@ defmodule Nostrum.Api do
     do: Map.delete(args, :file) |> Map.put(:files, [file | args[:files] || []])
 
   defp combine_files(%{data: data} = args), do: %{args | data: combine_files(data)}
+  defp combine_files(%{message: data} = args), do: %{args | message: combine_files(data)}
   defp combine_files(args), do: args
 
   defp pop_files(%{data: data} = args),
     do: {data.files, %{args | data: Map.delete(data, :files)}}
+
+  defp pop_files(%{message: data} = args),
+    do: {data.files, %{args | message: Map.delete(data, :files)}}
 
   defp pop_files(args), do: Map.pop!(args, :files)
 
