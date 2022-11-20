@@ -1979,6 +1979,7 @@ defmodule Nostrum.Api do
     * `:hoist` (boolean) - whether the role should be displayed separately in the sidebar (default: false)
     * `:mentionable` (boolean) - whether the role should be mentionable (default: false)
     * `:icon` (string) - URL role icon (default: `nil`)
+    * `:unicode_emoji` (string) - standard unicode character emoji role icon (default: `nil`)
 
   ## Examples
 

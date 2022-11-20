@@ -29,7 +29,8 @@ defmodule Nostrum.Struct.Guild.Role do
     :permissions,
     :managed,
     :mentionable,
-    :icon
+    :icon,
+    :unicode_emoji
   ]
 
   defimpl String.Chars do
@@ -64,6 +65,10 @@ defmodule Nostrum.Struct.Guild.Role do
   @typedoc since: "0.7.0"
   @type icon :: String.t() | nil
 
+  @typedoc "The standard unicode character emoji icon for the role"
+  @typedoc since: "0.7.0"
+  @type unicode_emoji :: String.t() | nil
+
   @type t :: %__MODULE__{
           id: id,
           name: name,
@@ -73,7 +78,8 @@ defmodule Nostrum.Struct.Guild.Role do
           permissions: permissions,
           managed: managed,
           mentionable: mentionable,
-          icon: icon
+          icon: icon,
+          unicode_emoji: unicode_emoji
         }
 
   @doc ~S"""
