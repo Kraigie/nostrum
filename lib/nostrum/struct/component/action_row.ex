@@ -2,11 +2,12 @@ defmodule Nostrum.Struct.Component.ActionRow do
   @moduledoc """
   Action Rows.
   """
+  alias Nostrum.Constants.ComponentType
   @moduledoc since: "0.5.0"
   use Nostrum.Struct.Component
 
   @defaults %{
-    type: 1,
+    type: ComponentType.action_row,
     components: []
   }
 

@@ -2,6 +2,8 @@ defmodule Nostrum.Struct.Component.Button do
   @moduledoc """
   Helpers for dealing with Button Components
   """
+  alias Nostrum.Constants.ComponentType
+  alias Nostrum.Constants.ButtonStyle
   @moduledoc since: "0.5.0"
   use Nostrum.Struct.Component
 
@@ -36,8 +38,8 @@ defmodule Nostrum.Struct.Component.Button do
   @type opts :: [opt]
 
   @defaults %{
-    type: 2,
-    style: 1,
+    type: ComponentType.button,
+    style: ButtonStyle.primary,
     label: "",
     emoji: nil,
     disabled: false,
@@ -93,7 +95,7 @@ defmodule Nostrum.Struct.Component.Button do
       {:label, label},
       {:url, url},
       {:emoji, opts[:emoji]},
-      {:style, 5}
+      {:style, ButtonStyle.link}
     ]
     |> new()
   end

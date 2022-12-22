@@ -110,6 +110,8 @@ defmodule Nostrum.Struct.Channel do
   |`13` |[`GUILD_STAGE_VOICE`](`t:guild_stage_voice_channel/0`)       |_A voice channel for hosting events with an audience_             |
   |`15` |[`GUILD_FORUM`](`t:guild_forum_channel/0`)                   |_A channel that can only contain threads                          |
 
+  You can use one of the `Nostrum.Constants.ChannelType` methods
+
   More information about _Discord Channel Types_ can be found on the [Discord API Channel Type Documentation](https://discord.com/developers/docs/resources/channel#channel-object-channel-types).
   """
 

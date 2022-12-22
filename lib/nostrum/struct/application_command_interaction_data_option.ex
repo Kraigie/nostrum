@@ -19,6 +19,8 @@ defmodule Nostrum.Struct.ApplicationCommandInteractionDataOption do
 
   See https://discord.com/developers/docs/interactions/application-commands#application-command-object-application-command-option-type
   for more details.
+
+  You can use one of the `Nostrum.Constants.ApplicationCommandOptionType` methods
   """
   @typedoc since: "0.5.0"
   @type type :: 1..10

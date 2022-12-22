@@ -2,6 +2,8 @@ defmodule Nostrum.Struct.Component.TextInput do
   @moduledoc """
   Text Input.
   """
+alias Nostrum.Constants.TextInputStyle
+alias Nostrum.Constants.ComponentType
 
   @moduledoc since: "0.5.1"
   use Nostrum.Struct.Component
@@ -29,9 +31,9 @@ defmodule Nostrum.Struct.Component.TextInput do
   @type opts :: [opt]
 
   @defaults %{
-    type: 4,
+    type: ComponentType.text_input,
     custom_id: nil,
-    style: 1,
+    style: TextInputStyle.short,
     label: "",
     min_length: nil,
     max_length: nil,

@@ -2,6 +2,7 @@ defmodule Nostrum.Struct.Component.SelectMenu do
   @moduledoc """
   Select Menu
   """
+  alias Nostrum.Constants.ComponentType
   @moduledoc since: "0.5.0"
   @defaults %{
     custom_id: nil,
@@ -10,7 +11,7 @@ defmodule Nostrum.Struct.Component.SelectMenu do
     min_values: 1,
     disabled: false,
     max_values: 1,
-    type: 3
+    type: ComponentType.string_select
   }
   use Nostrum.Struct.Component
 
