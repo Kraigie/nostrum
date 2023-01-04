@@ -59,5 +59,8 @@ The ratelimiter at a high level works something like this:
 ## Rest Only
 If you only want to use the REST portion of the provided API, the only process
 needed is the ratelimiter. This can be manually started by calling
-`Nostrum.Api.Ratelimiter.start_link/1`. If you don't want to start Nostrum you
-can add `runtime: false` to the dependency options.
+`Nostrum.Api.Ratelimiter.start_link/1`. 
+If you don't want to start Nostrum you can add `runtime: false` to the dependency
+options. If you're using `mix release`, all `runtime: false` deps will be exluded
+from build, so you'll also need to add `:nostrum` app to `mix.exs`
+in `:included_applications` application option or in `releases` project option.

@@ -34,7 +34,7 @@ defmodule Nostrum.Struct.ApplicationCommandInteractionData do
   @type resolved :: ApplicationCommandInteractionDataResolved.t() | nil
 
   @typedoc "Parameters and values supplied by the user, if applicable"
-  @type options :: ApplicationCommandInteractionDataOption.t() | nil
+  @type options :: [ApplicationCommandInteractionDataOption.t()] | nil
 
   @typedoc "For components, the ``custom_id`` of the component"
   @typedoc since: "0.5.0"

@@ -1,7 +1,7 @@
 defmodule Nostrum.Voice.Opus do
   @moduledoc false
 
-  use Bitwise
+  import Bitwise
 
   # Number of samples in a 20ms Opus frame at 48kHz sample rate
   @samples_per_frame 960
@@ -41,6 +41,8 @@ defmodule Nostrum.Voice.Opus do
         >> = _packet
       ),
       do: rest
+
+  def strip_rtp_ext(packet), do: packet
 
   def parse_ogg(<<>>), do: []
 

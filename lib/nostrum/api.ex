@@ -41,8 +41,6 @@ defmodule Nostrum.Api do
   ```
   """
 
-  use Bitwise
-
   import Nostrum.Snowflake, only: [is_snowflake: 1]
 
   alias Nostrum.Cache.Me
@@ -50,6 +48,7 @@ defmodule Nostrum.Api do
 
   alias Nostrum.Struct.{
     ApplicationCommand,
+    AutoModerationRule,
     Channel,
     Embed,
     Emoji,
@@ -114,6 +113,41 @@ defmodule Nostrum.Api do
   supports or needs.
   """
   @type options :: keyword | map
+
+  @typedoc """
+  Represents which mentions to allow in a message.
+
+  This can be sent on its own or in a list to allow multiple types of
+  mentions in a message, see `t:allowed_mentions/0` for details.
+  """
+  @typedoc since: "0.7.0"
+  @type allowed_mention ::
+          :all
+          | :none
+          | :everyone
+          | :users
+          | :roles
+          | {:users, [User.id()]}
+          | {:roles, [Role.id()]}
+
+  @typedoc """
+  Represents mentions to allow in a message.
+
+  With this option you can control when content from a message should trigger a ping.
+  Consider using this option when you are going to display user generated content.
+
+  ### Allowed values
+    * `:all` (default) - Ping everything as usual
+    * `:none` - Nobody will be pinged
+    * `:everyone` - Allows to ping @here and @everyone
+    * `:users` - Allows to ping users
+    * `:roles` - Allows to ping roles
+    * `{:users, list}` - Allows to ping list of users. Can contain up to 100 ids of users.
+    * `{:roles, list}` - Allows to ping list of roles. Can contain up to 100 ids of roles.
+    * list - a list containing the values above.
+  """
+  @typedoc since: "0.7.0"
+  @type allowed_mentions :: allowed_mention | [allowed_mention]
 
   defguardp has_files(args) when is_map_key(args, :files) or is_map_key(args, :file)
 
@@ -182,25 +216,10 @@ defmodule Nostrum.Api do
     * `:files` - a list of files where each element is the same format as the `:file` option. If both
     `:file` and `:files` are specified, `:file` will be prepended to the `:files` list.
     * `:embeds` (`t:Nostrum.Struct.Embed.t/0`) - a list of embedded rich content
-    * `:allowed_mentions` - See "Allowed mentions" below
+    * `:allowed_mentions` (`t:allowed_mentions/0`) - see the allowed mentions type documentation
     * `:message_reference` (`map`) - See "Message references" below
 
     At least one of the following is required: `:content`, `:file`, `:embeds`.
-
-  ## Allowed mentions
-
-  With this option you can control when content from a message should trigger a ping.
-  Consider using this option when you are going to display user_generated content.
-
-  ### Allowed values
-    * `:all` (default) - Ping everything as usual
-    * `:none` - Nobody will be pinged
-    * `:everyone` - Allows to ping @here and @everyone
-    * `:users` - Allows to ping users
-    * `:roles` - Allows to ping roles
-    * `{:users, list}` - Allows to ping list of users. Can contain up to 100 ids of users.
-    * `{:roles, list}` - Allows to ping list of roles. Can contain up to 100 ids of roles.
-    * list - a list containing the values above.
 
   ### Message reference
 
@@ -1964,6 +1983,8 @@ defmodule Nostrum.Api do
     * `:color` (integer) - RGB color value (default: 0)
     * `:hoist` (boolean) - whether the role should be displayed separately in the sidebar (default: false)
     * `:mentionable` (boolean) - whether the role should be mentionable (default: false)
+    * `:icon` (string) - URL role icon (default: `nil`)
+    * `:unicode_emoji` (string) - standard unicode character emoji role icon (default: `nil`)
 
   ## Examples
 
@@ -2943,37 +2964,40 @@ defmodule Nostrum.Api do
 
   @typep m1 :: %{
            required(:content) => String.t(),
-           :username => String.t(),
-           :avatar_url => String.t(),
-           :tts => boolean,
-           optional(:files) => [String.t() | %{body: binary(), name: String.t()}],
+           optional(:username) => String.t(),
+           optional(:avatar_url) => String.t(),
+           optional(:tts) => boolean,
+           optional(:files) => [String.t() | %{body: iodata(), name: String.t()}],
            optional(:flags) => non_neg_integer(),
            optional(:thread_id) => Snowflake.t(),
-           optional(:embeds) => nonempty_list(Embed.t()) | nil
+           optional(:embeds) => nonempty_list(Embed.t()) | nil,
+           optional(:allowed_mentions) => allowed_mentions()
          }
 
   @typep m2 ::
            %{
              optional(:content) => String.t() | nil,
-             :username => String.t(),
-             :avatar_url => String.t(),
-             :tts => boolean,
-             required(:files) => [String.t() | %{body: binary(), name: String.t()}],
+             optional(:username) => String.t(),
+             optional(:avatar_url) => String.t(),
+             optional(:tts) => boolean,
+             required(:files) => [String.t() | %{body: iodata(), name: String.t()}],
              optional(:flags) => non_neg_integer(),
              optional(:thread_id) => Snowflake.t(),
-             optional(:embeds) => nonempty_list(Embed.t()) | nil
+             optional(:embeds) => nonempty_list(Embed.t()) | nil,
+             optional(:allowed_mentions) => allowed_mentions()
            }
 
   @typep m3 ::
            %{
              optional(:content) => String.t() | nil,
-             :username => String.t(),
-             :avatar_url => String.t(),
-             :tts => boolean,
-             optional(:files) => [String.t() | %{body: binary(), name: String.t()}],
+             optional(:username) => String.t(),
+             optional(:avatar_url) => String.t(),
+             optional(:tts) => boolean,
+             optional(:files) => [String.t() | %{body: iodata(), name: String.t()}],
              optional(:flags) => non_neg_integer(),
              optional(:thread_id) => Snowflake.t(),
-             required(:embeds) => nonempty_list(Embed.t())
+             required(:embeds) => nonempty_list(Embed.t()),
+             optional(:allowed_mentions) => allowed_mentions()
            }
 
   @type matrix :: m1 | m2 | m3
@@ -2987,31 +3011,33 @@ defmodule Nostrum.Api do
           error | {:ok} | {:ok, Message.t()}
 
   @doc """
-   Executes a webhook.
+  Executes a webhook.
 
-   ## Parameters
-   - `webhook_id` - Id of the webhook to execute.
-   - `webhook_token` - Token of the webhook to execute.
-   - `args` - Map with the following allowed keys:
-     - `content` - Message content.
-     - `files` - List of Files to send.
-     - `embeds` - List of embeds to send.
-     - `username` - Overrides the default name of the webhook.
-     - `avatar_url` - Overrides the default avatar of the webhook.
-     - `tts` - Whether the message should be read over text to speech.
-     - `flags` - Bitwise flags.
-     - `thread_id` - Send a message to the specified thread within the webhook's channel.
-   - `wait` - Whether to return an error or not. Defaults to `false`.
+  ## Parameters
+  - `webhook_id` - Id of the webhook to execute.
+  - `webhook_token` - Token of the webhook to execute.
+  - `args` - Map with the following allowed keys:
+    - `content` - Message content.
+    - `files` - List of Files to send.
+    - `embeds` - List of embeds to send.
+    - `username` - Overrides the default name of the webhook.
+    - `avatar_url` - Overrides the default avatar of the webhook.
+    - `tts` - Whether the message should be read over text to speech.
+    - `flags` - Bitwise flags.
+    - `thread_id` - Send a message to the specified thread within the webhook's channel.
+    - `allowed_mentions` - Mentions to allow in the webhook message
+  - `wait` - Whether to return an error or not. Defaults to `false`.
 
-   **Note**: If `wait` is `true`, this method will return a `Message.t()` on success.
+  **Note**: If `wait` is `true`, this method will return a `Message.t()` on success.
 
-   At least one of `content`, `files` or `embeds` should be supplied in the `args` parameter.
+  At least one of `content`, `files` or `embeds` should be supplied in the `args` parameter.
   """
 
   def execute_webhook(webhook_id, webhook_token, args, wait \\ false)
 
   def execute_webhook(webhook_id, webhook_token, args, wait) do
     {thread_id, args} = Map.pop(args, :thread_id)
+    args = prepare_allowed_mentions(args)
 
     params =
       if is_nil(thread_id),
@@ -3804,6 +3830,70 @@ defmodule Nostrum.Api do
   end
 
   @doc """
+  Create a new thread in a forum channel.
+
+  If successful, returns `{:ok, Channel}`. Otherwise returns a `t:Nostrum.Api.error/0`.
+
+  An optional `reason` argument can be given for the audit log.
+
+  ## Options
+  - `name`: Name of the thread, max 100 characters.
+  - `auto_archive_duration`: Duration in minutes to auto-archive the thread after it has been inactive, can be set to 60, 1440, 4320, or 10080.
+  - `rate_limit_per_user`: Rate limit per user in seconds, can be set to any value in `0..21600`.
+  - `applied_tags`: An array of tag ids to apply to the thread.
+  - `message`: The first message in the created thread.
+
+  ### Thread Message Options
+  - `content`: The content of the message.
+  - `embeds`: A list of embeds.
+  - `allowed_mentions`: Allowed mentions object.
+  - `components`: A list of components.
+  - `sticker_ids`: A list of sticker ids.
+  - `:files` - a list of files where each element is the same format as the `:file` option. If both
+    `:file` and `:files` are specified, `:file` will be prepended to the `:files` list.
+
+  At least one of `content`, `embeds`, `sticker_ids`, or `files` must be specified.
+  """
+  @doc since: "0.7.0"
+  @spec start_thread_in_forum_channel(Channel.id(), map(), AuditLogEntry.reason()) ::
+          {:ok, Channel.t()} | error
+  def start_thread_in_forum_channel(channel_id, options, reason \\ nil)
+
+  def start_thread_in_forum_channel(channel_id, %{message: data} = body, reason)
+      when has_files(data) do
+    # done this way to avoid breaking changes to support audit log reasons in multipart requests
+    boundary = generate_boundary()
+    {files, json} = combine_files(body) |> pop_files()
+    body = Jason.encode_to_iodata!(json)
+
+    headers =
+      maybe_add_reason(reason, [
+        {"content-type", "multipart/form-data; boundary=#{boundary}"}
+      ])
+
+    %{
+      method: :post,
+      route: Constants.thread_without_message(channel_id),
+      body: {:multipart, create_multipart(files, body, boundary)},
+      params: [],
+      headers: headers
+    }
+    |> request()
+    |> handle_request_with_decode({:struct, Channel})
+  end
+
+  def start_thread_in_forum_channel(channel_id, options, reason) do
+    request(%{
+      method: :post,
+      route: Constants.thread_without_message(channel_id),
+      body: options,
+      params: [],
+      headers: maybe_add_reason(reason)
+    })
+    |> handle_request_with_decode({:struct, Channel})
+  end
+
+  @doc """
   Returns a thread member object for the specified user if they are a member of the thread
   """
   @doc since: "0.5.1"
@@ -3939,8 +4029,8 @@ defmodule Nostrum.Api do
     case res do
       {:ok, %{threads: channels, members: thread_members, has_more: has_more}} ->
         map = %{
-          threads: Util.cast({:list, {:struct, Channel}}, channels),
-          members: Util.cast({:list, {:struct, ThreadMember}}, thread_members),
+          threads: Util.cast(channels, {:list, {:struct, Channel}}),
+          members: Util.cast(thread_members, {:list, {:struct, ThreadMember}}),
           has_more: has_more
         }
 
@@ -3986,6 +4076,80 @@ defmodule Nostrum.Api do
   @spec remove_thread_member(Channel.id(), User.id()) :: {:ok} | error
   def remove_thread_member(thread_id, user_id) do
     request(:delete, Constants.thread_member(thread_id, user_id))
+  end
+
+  @doc """
+  Get a list of all auto-moderation rules for a guild.
+  """
+  @doc since: "0.7.0"
+  @spec get_guild_auto_moderation_rules(Guild.id()) :: {:ok, [AutoModerationRule.t()]} | error
+  def get_guild_auto_moderation_rules(guild_id) do
+    request(:get, Constants.guild_auto_moderation_rule(guild_id))
+    |> handle_request_with_decode({:list, {:struct, AutoModerationRule}})
+  end
+
+  @doc """
+  Get a single auto-moderation rule for a guild.
+  """
+  @doc since: "0.7.0"
+  @spec get_guild_auto_moderation_rule(Guild.id(), AutoModerationRule.id()) ::
+          {:ok, AutoModerationRule.t()} | error
+  def get_guild_auto_moderation_rule(guild_id, rule_id) do
+    request(:get, Constants.guild_auto_moderation_rule(guild_id, rule_id))
+    |> handle_request_with_decode({:struct, AutoModerationRule})
+  end
+
+  @doc """
+  Create a new auto-moderation rule for a guild.
+
+  ## Options
+    * `:name` (`t:String.t/0`) - The name of the rule.
+    * `:event_type` (`t:AutoModerationRule.event_type/0`) - The type of event that triggers the rule.
+    * `:trigger_type` (`t:AutoModerationRule.trigger_type/0`) - The type of content that triggers the rule.
+    * `:trigger_metadata` (`t:AutoModerationRule.trigger_metadata/0`) - The metadata associated with the rule trigger.
+      - optional, based on the `:trigger_type`.
+    * `:actions` (`t:AutoModerationRule.actions/0`) - The actions to take when the rule is triggered.
+    * `:enabled` (`t:AutoModerationRule.enabled/0`) - Whether the rule is enabled or not.
+      - optional, defaults to `false`.
+    * `:exempt_roles` - (`t:AutoModerationRule.exempt_roles/0`) - A list of role id's that are exempt from the rule.
+      - optional, defaults to `[]`, maximum of 20.
+    * `:exempt_channels` - (`t:AutoModerationRule.exempt_channels/0`) - A list of channel id's that are exempt from the rule.
+      - optional, defaults to `[]`, maximum of 50.
+  """
+  @doc since: "0.7.0"
+  @spec create_guild_auto_moderation_rule(Guild.id(), options()) ::
+          {:ok, AutoModerationRule.t()} | error
+  def create_guild_auto_moderation_rule(guild_id, options) when is_list(options),
+    do: create_guild_auto_moderation_rule(guild_id, Map.new(options))
+
+  def create_guild_auto_moderation_rule(guild_id, options) do
+    request(:post, Constants.guild_auto_moderation_rule(guild_id), options)
+    |> handle_request_with_decode({:struct, AutoModerationRule})
+  end
+
+  @doc """
+  Modify an auto-moderation rule for a guild.
+
+  Takes the same options as `create_guild_auto_moderation_rule/2`, however all fields are optional.
+  """
+  @doc since: "0.7.0"
+  @spec modify_guild_auto_moderation_rule(Guild.id(), AutoModerationRule.id(), options()) ::
+          {:ok, AutoModerationRule.t()} | error
+  def modify_guild_auto_moderation_rule(guild_id, rule_id, options) when is_list(options),
+    do: modify_guild_auto_moderation_rule(guild_id, rule_id, Map.new(options))
+
+  def modify_guild_auto_moderation_rule(guild_id, rule_id, options) do
+    request(:patch, Constants.guild_auto_moderation_rule(guild_id, rule_id), options)
+    |> handle_request_with_decode({:struct, AutoModerationRule})
+  end
+
+  @doc """
+  Delete an auto-moderation rule for a guild.
+  """
+  @doc since: "0.7.0"
+  @spec delete_guild_auto_moderation_rule(Guild.id(), AutoModerationRule.id()) :: {:ok} | error
+  def delete_guild_auto_moderation_rule(guild_id, rule_id) do
+    request(:delete, Constants.guild_auto_moderation_rule(guild_id, rule_id))
   end
 
   @spec maybe_add_reason(String.t() | nil) :: list()
@@ -4052,6 +4216,7 @@ defmodule Nostrum.Api do
     do: Map.delete(args, :embed) |> Map.put(:embeds, [embed | args[:embeds] || []])
 
   defp combine_embeds(%{data: data} = args), do: %{args | data: combine_embeds(data)}
+  defp combine_embeds(%{message: data} = args), do: %{args | message: combine_embeds(data)}
   defp combine_embeds(args), do: args
 
   # If `:file` is present, prepend to `:files` for compatibility
@@ -4059,10 +4224,14 @@ defmodule Nostrum.Api do
     do: Map.delete(args, :file) |> Map.put(:files, [file | args[:files] || []])
 
   defp combine_files(%{data: data} = args), do: %{args | data: combine_files(data)}
+  defp combine_files(%{message: data} = args), do: %{args | message: combine_files(data)}
   defp combine_files(args), do: args
 
   defp pop_files(%{data: data} = args),
     do: {data.files, %{args | data: Map.delete(data, :files)}}
+
+  defp pop_files(%{message: data} = args),
+    do: {data.files, %{args | message: Map.delete(data, :files)}}
 
   defp pop_files(args), do: Map.pop!(args, :files)
 

@@ -25,6 +25,7 @@ defmodule Nostrum.Struct.Guild.Member do
   alias Nostrum.Struct.{Channel, Guild, User}
   alias Nostrum.Struct.Guild.Role
   alias Nostrum.{Snowflake, Util}
+  import Bitwise
 
   defstruct [
     :user,
@@ -126,8 +127,6 @@ defmodule Nostrum.Struct.Guild.Member do
       do: Permission.all()
 
   def guild_permissions(%__MODULE__{} = member, %Guild{} = guild) do
-    use Bitwise
-
     everyone_role_id = guild.id
     member_role_ids = member.roles ++ [everyone_role_id]
 
@@ -162,8 +161,6 @@ defmodule Nostrum.Struct.Guild.Member do
   """
   @spec guild_channel_permissions(t, Guild.t(), Channel.id()) :: [Permission.t()]
   def guild_channel_permissions(%__MODULE__{} = member, guild, channel_id) do
-    use Bitwise
-
     guild_perms = guild_permissions(member, guild)
 
     if Enum.member?(guild_perms, :administrator) do
