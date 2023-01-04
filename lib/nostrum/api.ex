@@ -560,13 +560,18 @@ defmodule Nostrum.Api do
   See `create_reaction/3` for similar examples.
   """
   @spec get_reactions(Channel.id(), Message.id(), emoji) :: error | {:ok, [User.t()]}
-  def get_reactions(channel_id, message_id, emoji)
+  def get_reactions(channel_id, message_id, emoji, params \\ [])
 
-  def get_reactions(channel_id, message_id, %Emoji{} = emoji),
-    do: get_reactions(channel_id, message_id, Emoji.api_name(emoji))
+  def get_reactions(channel_id, message_id, %Emoji{} = emoji, params),
+    do: get_reactions(channel_id, message_id, Emoji.api_name(emoji), params)
 
-  def get_reactions(channel_id, message_id, emoji_api_name) do
-    request(:get, Constants.channel_reactions_get(channel_id, message_id, emoji_api_name))
+  def get_reactions(channel_id, message_id, emoji_api_name, params) do
+    request(
+      :get,
+      Constants.channel_reactions_get(channel_id, message_id, emoji_api_name),
+      "",
+      params
+    )
     |> handle_request_with_decode({:list, {:struct, User}})
   end
 

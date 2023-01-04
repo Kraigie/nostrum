@@ -109,7 +109,7 @@ defmodule Nostrum.Voice.Session do
     end
   end
 
-  def handle_info({:gun_ws, _conn, _stream, {:close, errno, reason}}, state) do
+  def handle_info({:gun_ws, conn, _stream, {:close, errno, reason}}, state) do
     Logger.info("Voice websocket closed (errno #{errno}, reason #{inspect(reason)})")
 
     # If we received an errno of 4006, session is no longer valid, so we must get a new session.
@@ -117,11 +117,13 @@ defmodule Nostrum.Voice.Session do
       %VoiceState{channel_id: chan, self_mute: mute, self_deaf: deaf} =
         Voice.get_voice(state.guild_id)
 
+      :gun.close(conn)
       Voice.leave_channel(state.guild_id)
       Voice.join_channel(state.guild_id, chan, mute, deaf)
+      {:stop, :killed, state}
+    else
+      {:noreply, state}
     end
-
-    {:noreply, state}
   end
 
   def handle_info(
