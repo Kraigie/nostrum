@@ -3,6 +3,7 @@ defmodule Nostrum.Struct.VoiceState do
 
   alias Nostrum.Voice.Ports
   alias Nostrum.Voice.Session
+  alias Nostrum.Voice.Supervisor, as: VoiceSupervisor
 
   defstruct [
     :guild_id,
@@ -68,11 +69,25 @@ defmodule Nostrum.Struct.VoiceState do
     if is_port(v.udp_socket),
       do: :gen_udp.close(v.udp_socket)
 
-    if is_pid(v.session_pid),
-      do: Session.close_connection(v.session_pid)
+    if is_pid(v.session_pid) do
+      Session.close_connection(v.session_pid)
+      delete_session_async(v)
+    else
+      VoiceSupervisor.delete_session(v.guild_id)
+    end
 
     :ok
   end
 
   def cleanup(_), do: :ok
+
+  defp delete_session_async(%__MODULE__{session_pid: pid, guild_id: guild_id}) do
+    spawn(fn ->
+      Process.monitor(pid)
+
+      receive do
+        _ -> VoiceSupervisor.delete_session(guild_id)
+      end
+    end)
+  end
 end
