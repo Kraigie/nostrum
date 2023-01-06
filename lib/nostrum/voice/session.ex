@@ -205,15 +205,25 @@ defmodule Nostrum.Voice.Session do
 
   def terminate({:shutdown, :restart}, state) do
     :gun.close(state.conn)
-
-    %VoiceState{channel_id: chan, self_mute: mute, self_deaf: deaf} =
-      Voice.get_voice(state.guild_id)
-
-    Voice.leave_channel(state.guild_id)
-    Voice.join_channel(state.guild_id, chan, mute, deaf)
+    restart_session_async(state)
   end
 
   def terminate({:shutdown, :close}, state) do
     :gun.close(state.conn)
+  end
+
+  def restart_session_async(state) do
+    spawn(fn ->
+      Process.monitor(state.conn_pid)
+
+      %VoiceState{channel_id: chan, self_mute: mute, self_deaf: deaf} =
+        Voice.get_voice(state.guild_id)
+
+      receive do
+        _ ->
+          Voice.leave_channel(state.guild_id)
+          Voice.join_channel(state.guild_id, chan, mute, deaf)
+      end
+    end)
   end
 end
