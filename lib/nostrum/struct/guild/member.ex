@@ -25,6 +25,7 @@ defmodule Nostrum.Struct.Guild.Member do
   alias Nostrum.Struct.{Channel, Guild, User}
   alias Nostrum.Struct.Guild.Role
   alias Nostrum.{Snowflake, Util}
+  import Bitwise
 
   defstruct [
     :user,
@@ -32,7 +33,9 @@ defmodule Nostrum.Struct.Guild.Member do
     :roles,
     :joined_at,
     :deaf,
-    :mute
+    :mute,
+    :communication_disabled_until,
+    :premium_since
   ]
 
   defimpl String.Chars do
@@ -69,13 +72,25 @@ defmodule Nostrum.Struct.Guild.Member do
   """
   @type mute :: boolean | nil
 
+  @typedoc """
+  Current timeout status of the user. If user is currently timed out this will be a `t:DateTime.t/0` of the unmute time, it will be `nil` or a date in the past if the user is not currently timed out.
+  """
+  @type communication_disabled_until :: DateTime.t() | nil
+
+  @typedoc """
+  Current guild booster status of the user. If user is currently boosting a guild this will be a `t:DateTime.t/0` since the start of the boosting, it will be `nil` if the user is not currently boosting the guild.
+  """
+  @type premium_since :: DateTime.t() | nil
+
   @type t :: %__MODULE__{
           user: user,
           nick: nick,
           roles: roles,
           joined_at: joined_at,
           deaf: deaf,
-          mute: mute
+          mute: mute,
+          communication_disabled_until: communication_disabled_until,
+          premium_since: premium_since
         }
 
   @doc ~S"""
@@ -112,8 +127,6 @@ defmodule Nostrum.Struct.Guild.Member do
       do: Permission.all()
 
   def guild_permissions(%__MODULE__{} = member, %Guild{} = guild) do
-    use Bitwise
-
     everyone_role_id = guild.id
     member_role_ids = member.roles ++ [everyone_role_id]
 
@@ -148,8 +161,6 @@ defmodule Nostrum.Struct.Guild.Member do
   """
   @spec guild_channel_permissions(t, Guild.t(), Channel.id()) :: [Permission.t()]
   def guild_channel_permissions(%__MODULE__{} = member, guild, channel_id) do
-    use Bitwise
-
     guild_perms = guild_permissions(member, guild)
 
     if Enum.member?(guild_perms, :administrator) do
@@ -179,6 +190,30 @@ defmodule Nostrum.Struct.Guild.Member do
     end
   end
 
+  @doc """
+  Return the topmost role of the given member on the given guild.
+
+  The topmost role is determined via `t:Nostrum.Struct.Guild.Role.position`.
+
+  ## Parameters
+
+  - `member`: The member whose top role to return.
+  - `guild`: The guild which the member belongs to.
+
+  ## Return value
+
+  The topmost role of the member on the given guild, if the member has roles
+  assigned. Otherwise, `nil` is returned.
+  """
+  @doc since: "0.5.0"
+  @spec top_role(__MODULE__.t(), Guild.t()) :: Role.t() | nil
+  def top_role(%__MODULE__{roles: member_roles}, %Guild{roles: guild_roles}) do
+    guild_roles
+    |> Stream.filter(fn {id, _role} -> id in member_roles end)
+    |> Stream.map(fn {_id, role} -> role end)
+    |> Enum.max_by(& &1.position, fn -> nil end)
+  end
+
   @doc false
   def p_encode do
     %__MODULE__{
@@ -193,6 +228,8 @@ defmodule Nostrum.Struct.Guild.Member do
       |> Map.new(fn {k, v} -> {Util.maybe_to_atom(k), v} end)
       |> Map.update(:user, nil, &Util.cast(&1, {:struct, User}))
       |> Map.update(:roles, nil, &Util.cast(&1, {:list, Snowflake}))
+      |> Map.update(:communication_disabled_until, nil, &Util.maybe_to_datetime/1)
+      |> Map.update(:premium_since, nil, &Util.maybe_to_datetime/1)
 
     struct(__MODULE__, new)
   end

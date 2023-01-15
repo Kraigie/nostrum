@@ -9,6 +9,7 @@ defmodule Nostrum.Struct.Event.SpeakingUpdate do
     :channel_id,
     :guild_id,
     :speaking,
+    :current_url,
     :timed_out
   ]
 
@@ -30,14 +31,22 @@ defmodule Nostrum.Struct.Event.SpeakingUpdate do
   @type speaking :: boolean()
 
   @typedoc """
+  Current URL being played if a readable format.
+  """
+  @typedoc since: "0.6.0"
+  @type current_url :: String.t() | nil
+
+  @typedoc """
   Boolean representing if speaking update was caused by an audio timeout.
   """
+  @typedoc since: "0.5.0"
   @type timed_out :: boolean()
 
   @type t :: %__MODULE__{
           channel_id: channel_id,
           guild_id: guild_id,
           speaking: speaking,
+          current_url: current_url,
           timed_out: timed_out
         }
 

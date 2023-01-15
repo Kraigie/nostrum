@@ -2,6 +2,7 @@ defmodule Nostrum.Struct.Guild.Ban do
   @moduledoc """
   Represents a guild ban.
   """
+  @moduledoc since: "0.5.0"
 
   alias Nostrum.Struct.User
   alias Nostrum.Util

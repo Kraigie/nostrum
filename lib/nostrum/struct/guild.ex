@@ -1,10 +1,23 @@
 defmodule Nostrum.Struct.Guild do
+  # fields that are only sent on GUILD_CREATE
+  @guild_create_fields [
+    :joined_at,
+    :large,
+    :unavailable,
+    :member_count,
+    :voice_states,
+    :members,
+    :channels,
+    :guild_scheduled_events,
+    :threads
+  ]
+
   @moduledoc """
   Struct representing a Discord guild.
   """
 
   alias Nostrum.Struct.{Channel, Emoji, User}
-  alias Nostrum.Struct.Guild.{Member, Role}
+  alias Nostrum.Struct.Guild.{Member, Role, ScheduledEvent}
   alias Nostrum.{Constants, Snowflake, Util}
 
   defstruct [
@@ -16,8 +29,6 @@ defmodule Nostrum.Struct.Guild do
     :region,
     :afk_channel_id,
     :afk_timeout,
-    :embed_enabled,
-    :embed_channel_id,
     :verification_level,
     :default_message_notifications,
     :explicit_content_filter,
@@ -37,7 +48,10 @@ defmodule Nostrum.Struct.Guild do
     :member_count,
     :voice_states,
     :members,
-    :channels
+    :channels,
+    :guild_scheduled_events,
+    :vanity_url_code,
+    :threads
   ]
 
   @typedoc "The guild's id"
@@ -63,12 +77,6 @@ defmodule Nostrum.Struct.Guild do
 
   @typedoc "The time someone must be afk before being moved"
   @type afk_timeout :: integer
-
-  @typedoc "Whether the guild is emeddable"
-  @type embed_enabled :: boolean | nil
-
-  @typedoc "The id of the embedded channel"
-  @type embed_channel_id :: Channel.id() | nil
 
   @typedoc "The level of verification"
   @type verification_level :: integer
@@ -133,7 +141,7 @@ defmodule Nostrum.Struct.Guild do
   @typedoc "Whether the guild is considered 'large'"
   @type large :: boolean | nil
 
-  @typedoc "Whether the guild is avaliable"
+  @typedoc "Whether the guild is available"
   @type unavailable :: boolean | nil
 
   @typedoc "Total number of members in the guild"
@@ -148,6 +156,16 @@ defmodule Nostrum.Struct.Guild do
   @typedoc "List of channels"
   @type channels :: %{required(Channel.id()) => Channel.t()} | nil
 
+  @typedoc "List of scheduled events"
+  @type guild_scheduled_events :: list(ScheduledEvent.t()) | nil
+
+  @typedoc "Guild invite vanity URL"
+  @type vanity_url_code :: String.t() | nil
+
+  @typedoc "All active threads in the guild that the current user has permission to view"
+  @typedoc since: "0.5.1"
+  @type threads :: %{required(Channel.id()) => Channel.t()} | nil
+
   @typedoc """
   A `Nostrum.Struct.Guild` that is sent on user-specific rest endpoints.
   """
@@ -160,8 +178,6 @@ defmodule Nostrum.Struct.Guild do
           region: nil,
           afk_channel_id: nil,
           afk_timeout: nil,
-          embed_enabled: nil,
-          embed_channel_id: nil,
           verification_level: nil,
           default_message_notifications: nil,
           explicit_content_filter: nil,
@@ -181,7 +197,9 @@ defmodule Nostrum.Struct.Guild do
           member_count: nil,
           voice_states: nil,
           members: nil,
-          channels: nil
+          channels: nil,
+          vanity_url_code: nil,
+          threads: nil
         }
 
   @typedoc """
@@ -196,8 +214,6 @@ defmodule Nostrum.Struct.Guild do
           region: region,
           afk_channel_id: afk_channel_id,
           afk_timeout: afk_timeout,
-          embed_enabled: embed_enabled,
-          embed_channel_id: embed_channel_id,
           verification_level: verification_level,
           default_message_notifications: default_message_notifications,
           explicit_content_filter: explicit_content_filter,
@@ -211,13 +227,16 @@ defmodule Nostrum.Struct.Guild do
           system_channel_id: system_channel_id,
           rules_channel_id: rules_channel_id,
           public_updates_channel_id: public_updates_channel_id,
+          vanity_url_code: vanity_url_code,
           joined_at: nil,
           large: nil,
           unavailable: nil,
           member_count: nil,
           voice_states: nil,
           members: nil,
-          channels: nil
+          channels: nil,
+          guild_scheduled_events: nil,
+          threads: nil
         }
 
   @typedoc """
@@ -232,8 +251,6 @@ defmodule Nostrum.Struct.Guild do
           region: nil,
           afk_channel_id: nil,
           afk_timeout: nil,
-          embed_enabled: nil,
-          embed_channel_id: nil,
           verification_level: nil,
           default_message_notifications: nil,
           explicit_content_filter: nil,
@@ -253,7 +270,10 @@ defmodule Nostrum.Struct.Guild do
           member_count: nil,
           voice_states: nil,
           members: nil,
-          channels: nil
+          channels: nil,
+          guild_scheduled_events: nil,
+          vanity_url_code: nil,
+          threads: nil
         }
 
   @typedoc """
@@ -268,8 +288,6 @@ defmodule Nostrum.Struct.Guild do
           region: region,
           afk_channel_id: afk_channel_id,
           afk_timeout: afk_timeout,
-          embed_enabled: embed_enabled,
-          embed_channel_id: embed_channel_id,
           verification_level: verification_level,
           default_message_notifications: default_message_notifications,
           explicit_content_filter: explicit_content_filter,
@@ -289,7 +307,10 @@ defmodule Nostrum.Struct.Guild do
           member_count: member_count,
           voice_states: voice_states,
           members: members,
-          channels: channels
+          channels: channels,
+          guild_scheduled_events: guild_scheduled_events,
+          vanity_url_code: vanity_url_code,
+          threads: threads
         }
 
   @type t ::
@@ -374,7 +395,29 @@ defmodule Nostrum.Struct.Guild do
       |> Map.update(:public_updates_channel_id, nil, &Util.cast(&1, Snowflake))
       |> Map.update(:members, nil, &Util.cast(&1, {:index, [:user, :id], {:struct, Member}}))
       |> Map.update(:channels, nil, &Util.cast(&1, {:index, [:id], {:struct, Channel}}))
+      |> Map.update(:joined_at, nil, &Util.maybe_to_datetime/1)
+      |> Map.update(
+        :guild_scheduled_events,
+        nil,
+        &Util.cast(&1, {:list, {:struct, ScheduledEvent}})
+      )
+      |> Map.update(:threads, nil, &Util.cast(&1, {:index, [:id], {:struct, Channel}}))
 
     struct(__MODULE__, new)
+  end
+
+  @doc false
+  @spec merge(t, t) :: t
+  def merge(old_guild, new_guild) do
+    Map.merge(old_guild, new_guild, &handle_key_conflict/3)
+  end
+
+  # Make it so that values which are only sent on GUILD_CREATE are not replaced with nil
+  defp handle_key_conflict(key, old, nil) when key in @guild_create_fields do
+    old
+  end
+
+  defp handle_key_conflict(_key, _old, new) do
+    new
   end
 end

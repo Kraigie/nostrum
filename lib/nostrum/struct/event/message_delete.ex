@@ -4,6 +4,7 @@ defmodule Nostrum.Struct.Event.MessageDelete do
   """
 
   alias Nostrum.Struct.{Channel, Guild, Message}
+  alias Nostrum.{Snowflake, Util}
 
   defstruct [
     :id,
@@ -31,5 +32,14 @@ defmodule Nostrum.Struct.Event.MessageDelete do
         }
 
   @doc false
-  def to_struct(map), do: struct(__MODULE__, map)
+  def to_struct(map) do
+    new =
+      map
+      |> Map.new(fn {k, v} -> {Util.maybe_to_atom(k), v} end)
+      |> Map.update(:id, nil, &Util.cast(&1, Snowflake))
+      |> Map.update(:channel_id, nil, &Util.cast(&1, Snowflake))
+      |> Map.update(:guild_id, nil, &Util.cast(&1, Snowflake))
+
+    struct(__MODULE__, new)
+  end
 end

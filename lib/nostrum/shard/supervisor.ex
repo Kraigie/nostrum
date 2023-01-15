@@ -59,8 +59,9 @@ defmodule Nostrum.Shard.Supervisor do
       {:ok, shard_id} ->
         ShardSupervisor
         |> Supervisor.which_children()
-        |> Enum.filter(fn {_id, _pid, _type, [modules]} -> modules == Nostrum.Shard end)
-        |> Enum.filter(fn {id, _pid, _type, _modules} -> id == shard_id end)
+        |> Enum.filter(fn {id, _pid, _type, [modules]} ->
+          modules == Nostrum.Shard and id == shard_id
+        end)
         |> Enum.map(fn {_id, pid, _type, _modules} -> Supervisor.which_children(pid) end)
         |> List.flatten()
         |> Enum.filter(fn {_id, _pid, _type, [modules]} -> modules == Nostrum.Shard.Session end)

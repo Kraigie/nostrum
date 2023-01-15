@@ -26,7 +26,7 @@ defmodule Nostrum.Api do
   Everything received from the WS connection will have `id` fields as `int`.
 
   If you're processing a response from the API and trying to access something in the cache
-  based off of an `id` in the response, you will need to conver it to an `int` using
+  based off of an `id` in the response, you will need to convert it to an `int` using
   `String.to_integer/1`. I'm open to suggestions for how this should be handled going forward.
 
   **Example**
@@ -41,22 +41,35 @@ defmodule Nostrum.Api do
   ```
   """
 
-  use Bitwise
-
   import Nostrum.Snowflake, only: [is_snowflake: 1]
 
   alias Nostrum.Cache.Me
   alias Nostrum.{Constants, Snowflake, Util}
-  alias Nostrum.Struct.{Channel, Embed, Emoji, Guild, Interaction, Invite, Message, User, Webhook}
-  alias Nostrum.Struct.Guild.{AuditLog, AuditLogEntry, Member, Role}
+
+  alias Nostrum.Struct.{
+    ApplicationCommand,
+    AutoModerationRule,
+    Channel,
+    Embed,
+    Emoji,
+    Guild,
+    Interaction,
+    Invite,
+    Message,
+    ThreadMember,
+    User,
+    Webhook
+  }
+
+  alias Nostrum.Struct.Guild.{AuditLog, AuditLogEntry, Member, Role, ScheduledEvent}
   alias Nostrum.Shard.{Session, Supervisor}
 
   @typedoc """
   Represents a failed response from the API.
 
-  This occurs when hackney or HTTPoison fail, or when the API doesn't respond with `200` or `204`.
+  This occurs when `:gun` fails, or when the API doesn't respond with `200` or `204`.
   """
-  @type error :: {:error, Nostrum.Error.ApiError.t() | HTTPoison.Error.t()}
+  @type error :: {:error, Nostrum.Error.ApiError.t()}
 
   @typedoc """
   Represents a limit used to retrieve messages.
@@ -100,6 +113,43 @@ defmodule Nostrum.Api do
   supports or needs.
   """
   @type options :: keyword | map
+
+  @typedoc """
+  Represents which mentions to allow in a message.
+
+  This can be sent on its own or in a list to allow multiple types of
+  mentions in a message, see `t:allowed_mentions/0` for details.
+  """
+  @typedoc since: "0.7.0"
+  @type allowed_mention ::
+          :all
+          | :none
+          | :everyone
+          | :users
+          | :roles
+          | {:users, [User.id()]}
+          | {:roles, [Role.id()]}
+
+  @typedoc """
+  Represents mentions to allow in a message.
+
+  With this option you can control when content from a message should trigger a ping.
+  Consider using this option when you are going to display user generated content.
+
+  ### Allowed values
+    * `:all` (default) - Ping everything as usual
+    * `:none` - Nobody will be pinged
+    * `:everyone` - Allows to ping @here and @everyone
+    * `:users` - Allows to ping users
+    * `:roles` - Allows to ping roles
+    * `{:users, list}` - Allows to ping list of users. Can contain up to 100 ids of users.
+    * `{:roles, list}` - Allows to ping list of roles. Can contain up to 100 ids of roles.
+    * list - a list containing the values above.
+  """
+  @typedoc since: "0.7.0"
+  @type allowed_mentions :: allowed_mention | [allowed_mention]
+
+  defguardp has_files(args) when is_map_key(args, :files) or is_map_key(args, :file)
 
   @doc """
   Updates the status of the bot for a certain shard.
@@ -163,26 +213,13 @@ defmodule Nostrum.Api do
     if sending a binary from memory
       * `:name` (string) - the name of the file
       * `:body` (string) - binary you wish to send
-    * `:embed` (`t:Nostrum.Struct.Embed.t/0`) - embedded rich content
-    * `:allowed_mentions` - See "Allowed mentions" below
+    * `:files` - a list of files where each element is the same format as the `:file` option. If both
+    `:file` and `:files` are specified, `:file` will be prepended to the `:files` list.
+    * `:embeds` (`t:Nostrum.Struct.Embed.t/0`) - a list of embedded rich content
+    * `:allowed_mentions` (`t:allowed_mentions/0`) - see the allowed mentions type documentation
     * `:message_reference` (`map`) - See "Message references" below
 
-    At least one of the following is required: `:content`, `:file`, `:embed`.
-
-  ## Allowed mentions
-
-  With this option you can control when content from a message should trigger a ping.
-  Consider using this option when you are going to display user_generated content.
-
-  ### Allowed values
-    * `:all` (default) - Ping everything as usual
-    * `:none` - Nobody will be pinged
-    * `:everyone` - Allows to ping @here and @everone
-    * `:user` - Allows to ping users
-    * `:roles` - Allows to ping roles
-    * `{:user, list}` - Allows to ping list of users. Can contain up to 100 ids of users.
-    * `{:role, list}` - Allows to ping list of roles. Can contain up to 100 ids of roles.
-    * list - a list containing the values above.
+    At least one of the following is required: `:content`, `:file`, `:embeds`.
 
   ### Message reference
 
@@ -218,11 +255,11 @@ defmodule Nostrum.Api do
     %Nostrum.Struct.Embed{}
     |> put_title("embed")
     |> put_description("new desc")
-  Nostrum.Api.create_message(43189401384091, embed: embed)
+  Nostrum.Api.create_message(43189401384091, embeds: [embed])
 
   Nostrum.Api.create_message(43189401384091, file: "/path/to/file.txt")
 
-  Nostrum.Api.create_message(43189401384091, content: "hello world!", embed: embed, file: "/path/to/file.txt")
+  Nostrum.Api.create_message(43189401384091, content: "hello world!", embeds: [embed], file: "/path/to/file.txt")
 
   Nostrum.Api.create_message(43189401384091, content: "Hello @everyone", allowed_mentions: :none)
   ```
@@ -234,51 +271,15 @@ defmodule Nostrum.Api do
   def create_message(%Message{} = message, options),
     do: create_message(message.channel_id, options)
 
+  def create_message(channel_id, content) when is_binary(content),
+    do: create_message(channel_id, %{content: content})
+
   def create_message(channel_id, options) when is_list(options),
     do: create_message(channel_id, Map.new(options))
 
   def create_message(channel_id, %{} = options) when is_snowflake(channel_id) do
-    options = prepare_allowed_mentions(options)
+    options = prepare_allowed_mentions(options) |> combine_embeds()
 
-    case options do
-      %{file: _} -> create_message_with_multipart(channel_id, options)
-      _ -> create_message_with_json(channel_id, options)
-    end
-  end
-
-  def create_message(channel_id, content) when is_snowflake(channel_id) and is_binary(content),
-    do: create_message_with_json(channel_id, %{content: content})
-
-  defp create_message_with_multipart(channel_id, %{file: file} = options) do
-    payload_json =
-      options
-      |> Map.delete(:file)
-      |> Poison.encode!()
-
-    request = %{
-      method: :post,
-      route: Constants.channel_messages(channel_id),
-      body: {:multipart, [create_multipart(file), {"payload_json", payload_json}]},
-      options: [],
-      headers: [
-        {"content-type", "multipart/form-data"}
-      ]
-    }
-
-    GenServer.call(Ratelimiter, {:queue, request, nil}, :infinity)
-    |> handle_request_with_decode({:struct, Message})
-  end
-
-  defp create_multipart(path) when is_binary(path) do
-    {:file, path}
-  end
-
-  defp create_multipart(%{name: name, body: body}) do
-    {"file", body, {"form-data", [{"name", "file"}, {"filename", name}]},
-     [{"Content-Type", "multipart/form-data"}]}
-  end
-
-  defp create_message_with_json(channel_id, options) do
     request(:post, Constants.channel_messages(channel_id), options)
     |> handle_request_with_decode({:struct, Message})
   end
@@ -306,7 +307,7 @@ defmodule Nostrum.Api do
   ## Options
 
     * `:content` (string) - the message contents (up to 2000 characters)
-    * `:embed` (`t:Nostrum.Struct.Embed.t/0`) - embedded rich content
+    * `:embeds` (`t:Nostrum.Struct.Embed.t/0`) - a list of embedded rich content
 
   ## Examples
 
@@ -320,27 +321,26 @@ defmodule Nostrum.Api do
     %Nostrum.Struct.Embed{}
     |> put_title("embed")
     |> put_description("new desc")
-  Nostrum.Api.edit_message(43189401384091, 1894013840914098, embed: embed)
+  Nostrum.Api.edit_message(43189401384091, 1894013840914098, embeds: [embed])
 
-  Nostrum.Api.edit_message(43189401384091, 1894013840914098, content: "hello world!", embed: embed)
+  Nostrum.Api.edit_message(43189401384091, 1894013840914098, content: "hello world!", embeds: [embed])
   ```
   """
   @spec edit_message(Channel.id(), Message.id(), options | String.t()) ::
           error | {:ok, Message.t()}
   def edit_message(channel_id, message_id, options)
 
+  def edit_message(channel_id, message_id, content) when is_binary(content),
+    do: edit_message(channel_id, message_id, %{content: content})
+
   def edit_message(channel_id, message_id, options) when is_list(options),
     do: edit_message(channel_id, message_id, Map.new(options))
 
   def edit_message(channel_id, message_id, %{} = options)
       when is_snowflake(channel_id) and is_snowflake(message_id) do
-    request(:patch, Constants.channel_message(channel_id, message_id), options)
-    |> handle_request_with_decode({:struct, Message})
-  end
+    options = prepare_allowed_mentions(options) |> combine_embeds()
 
-  def edit_message(channel_id, message_id, content)
-      when is_snowflake(channel_id) and is_snowflake(message_id) and is_binary(content) do
-    request(:patch, Constants.channel_message(channel_id, message_id), %{content: content})
+    request(:patch, Constants.channel_message(channel_id, message_id), options)
     |> handle_request_with_decode({:struct, Message})
   end
 
@@ -636,7 +636,7 @@ defmodule Nostrum.Api do
   If a `t:Nostrum.Struct.Channel.guild_channel/0` is being modified, this
   endpoint requires the `MANAGE_CHANNEL` permission. It fires a
   `t:Nostrum.Consumer.channel_update/0` event. If a
-  `t:Nostrum.Struct.Channel.channel_category/0` is being modified, then this
+  `t:Nostrum.Struct.Channel.guild_category_channel/0` is being modified, then this
   endpoint fires multiple `t:Nostrum.Consumer.channel_update/0` events.
 
   If successful, returns `{:ok, channel}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
@@ -680,7 +680,7 @@ defmodule Nostrum.Api do
       method: :patch,
       route: Constants.channel(channel_id),
       body: options,
-      options: [],
+      params: [],
       headers: maybe_add_reason(reason)
     }
     |> request
@@ -703,7 +703,7 @@ defmodule Nostrum.Api do
 
   If deleting a `t:Nostrum.Struct.Channel.guild_channel/0`, this endpoint requires
   the `MANAGE_CHANNELS` permission. It fires a
-  `t:Nostrum.Consumer.channel_delete/0`. If a `t:Nostrum.Struct.Channel.channel_category/0`
+  `t:Nostrum.Consumer.channel_delete/0`. If a `t:Nostrum.Struct.Channel.guild_category_channel/0`
   is deleted, then a `t:Nostrum.Consumer.channel_update/0` event will fire
   for each channel under the category.
 
@@ -722,7 +722,7 @@ defmodule Nostrum.Api do
       method: :delete,
       route: Constants.channel(channel_id),
       body: "",
-      options: [],
+      params: [],
       headers: maybe_add_reason(reason)
     }
     |> request()
@@ -795,7 +795,7 @@ defmodule Nostrum.Api do
         non_empty_locator -> [{:limit, limit}, non_empty_locator]
       end
 
-    request(:get, Constants.channel_messages(channel_id), "", params: qs_params)
+    request(:get, Constants.channel_messages(channel_id), "", qs_params)
     |> handle_request_with_decode({:list, {:struct, Message}})
   end
 
@@ -874,7 +874,7 @@ defmodule Nostrum.Api do
   end
 
   @spec send_chunked_delete(
-          [Nostrum.Struct.Message.id()] | %Stream{},
+          [Nostrum.Struct.Message.id()] | Enum.t(),
           Nostrum.Snowflake.t()
         ) :: error | {:ok}
   defp send_chunked_delete(messages, channel_id) do
@@ -932,7 +932,7 @@ defmodule Nostrum.Api do
       method: :put,
       route: Constants.channel_permission(channel_id, overwrite_id),
       body: permission_info,
-      options: [],
+      params: [],
       headers: maybe_add_reason(reason)
     })
   end
@@ -967,7 +967,7 @@ defmodule Nostrum.Api do
       method: :delete,
       route: Constants.channel_permission(channel_id, overwrite_id),
       body: "",
-      options: [],
+      params: [],
       headers: maybe_add_reason(reason)
     })
   end
@@ -1045,7 +1045,7 @@ defmodule Nostrum.Api do
       method: :post,
       route: Constants.channel_invites(channel_id),
       body: options,
-      options: [],
+      params: [],
       headers: maybe_add_reason(reason)
     }
     |> request()
@@ -1251,7 +1251,7 @@ defmodule Nostrum.Api do
       method: :post,
       route: Constants.guild_emojis(guild_id),
       body: options,
-      options: [],
+      params: [],
       headers: maybe_add_reason(reason)
     }
     |> request()
@@ -1300,7 +1300,7 @@ defmodule Nostrum.Api do
       method: :patch,
       route: Constants.guild_emoji(guild_id, emoji_id),
       body: options,
-      options: [],
+      params: [],
       headers: maybe_add_reason(reason)
     }
     |> request()
@@ -1334,7 +1334,7 @@ defmodule Nostrum.Api do
         method: :delete,
         route: Constants.guild_emoji(guild_id, emoji_id),
         body: "",
-        options: [],
+        params: [],
         headers: maybe_add_reason(reason)
       })
 
@@ -1355,11 +1355,11 @@ defmodule Nostrum.Api do
     * `:user_id` (`t:Nostrum.Struct.User.id/0`) - filter the log for a user ID
     * `:action_type` (`t:integer/0`) - filter the log by audit log type, see [Audit Log Events](https://discord.com/developers/docs/resources/audit-log#audit-log-entry-object-audit-log-events)
     * `:before` (`t:Nostrum.Struct.Snowflake.t/0`) - filter the log before a certain entry ID
-    * `:limit` (`t:positive_integer/0`) - how many entries are returned (default 50, minimum 1, maximum 100)
+    * `:limit` (`t:pos_integer/0`) - how many entries are returned (default 50, minimum 1, maximum 100)
   """
   @spec get_guild_audit_log(Guild.id(), options) :: {:ok, AuditLog.t()} | error
   def get_guild_audit_log(guild_id, options \\ []) do
-    request(:get, Constants.guild_audit_logs(guild_id), "", params: options)
+    request(:get, Constants.guild_audit_logs(guild_id), "", options)
     |> handle_request_with_decode({:struct, AuditLog})
   end
 
@@ -1443,7 +1443,7 @@ defmodule Nostrum.Api do
       method: :patch,
       route: Constants.guild(guild_id),
       body: options,
-      options: [],
+      params: [],
       headers: maybe_add_reason(reason)
     }
     |> request()
@@ -1647,7 +1647,7 @@ defmodule Nostrum.Api do
     do: list_guild_members(guild_id, Map.new(options))
 
   def list_guild_members(guild_id, %{} = options) when is_snowflake(guild_id) do
-    request(:get, Constants.guild_members(guild_id), "", params: options)
+    request(:get, Constants.guild_members(guild_id), "", options)
     |> handle_request_with_decode({:list, {:struct, Member}})
   end
 
@@ -1721,7 +1721,9 @@ defmodule Nostrum.Api do
   It situationally requires the `MANAGE_NICKNAMES`, `MANAGE_ROLES`,
   `MUTE_MEMBERS`, `DEAFEN_MEMBERS`, and `MOVE_MEMBERS` permissions.
 
-  If successful, returns `{:ok}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
+  If successful, returns `{:ok, member}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
+
+  An optional `reason` argument can be given for the audit log.
 
   ## Options
 
@@ -1730,31 +1732,45 @@ defmodule Nostrum.Api do
     * `:mute` (boolean) - if the user is muted
     * `:deaf` (boolean) - if the user is deafened
     * `:channel_id` (`t:Nostrum.Snowflake.t/0`) - id of channel to move user to (if they are connected to voice)
+    * `:communication_disabled_until` (`t:DateTime.t/0` or `nil`) - datetime to disable user communication (timeout) until, or `nil` to remove timeout.
 
   ## Examples
 
   ```Elixir
   Nostrum.Api.modify_guild_member(41771983423143937, 637162356451, nick: "Nostrum")
-  {:ok}
+  {:ok, %Nostrum.Struct.Member{}}
   ```
   """
-  @spec modify_guild_member(Guild.id(), User.id(), options) :: error | {:ok}
-  def modify_guild_member(guild_id, user_id, options \\ %{})
+  @spec modify_guild_member(Guild.id(), User.id(), options, AuditLogEntry.reason()) ::
+          error | {:ok, Member.t()}
+  def modify_guild_member(guild_id, user_id, options \\ %{}, reason \\ nil)
 
-  def modify_guild_member(guild_id, user_id, options) when is_list(options),
-    do: modify_guild_member(guild_id, user_id, Map.new(options))
+  def modify_guild_member(guild_id, user_id, options, reason) when is_list(options),
+    do: modify_guild_member(guild_id, user_id, Map.new(options), reason)
 
-  def modify_guild_member(guild_id, user_id, %{} = options)
+  def modify_guild_member(guild_id, user_id, %{} = options, reason)
       when is_snowflake(guild_id) and is_snowflake(user_id) do
-    request(:patch, Constants.guild_member(guild_id, user_id), options)
+    options =
+      options
+      |> maybe_convert_date_time(:communication_disabled_until)
+
+    request(%{
+      method: :patch,
+      route: Constants.guild_member(guild_id, user_id),
+      body: options,
+      params: [],
+      headers: maybe_add_reason(reason)
+    })
+    |> handle_request_with_decode({:struct, Member})
   end
 
   @doc """
   Same as `modify_guild_member/3`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
-  @spec modify_guild_member!(Guild.id(), User.id(), options) :: error | {:ok}
-  def modify_guild_member!(guild_id, user_id, options \\ %{}) do
-    modify_guild_member(guild_id, user_id, options)
+  @spec modify_guild_member!(Guild.id(), User.id(), options, AuditLogEntry.reason()) ::
+          error | {:ok}
+  def modify_guild_member!(guild_id, user_id, options \\ %{}, reason \\ nil) do
+    modify_guild_member(guild_id, user_id, options, reason)
     |> bangify
   end
 
@@ -1802,7 +1818,7 @@ defmodule Nostrum.Api do
       method: :put,
       route: Constants.guild_member_role(guild_id, user_id, role_id),
       body: "",
-      options: [],
+      params: [],
       headers: maybe_add_reason(reason)
     })
   end
@@ -1821,7 +1837,7 @@ defmodule Nostrum.Api do
       method: :delete,
       route: Constants.guild_member_role(guild_id, user_id, role_id),
       body: "",
-      options: [],
+      params: [],
       headers: maybe_add_reason(reason)
     })
   end
@@ -1850,7 +1866,7 @@ defmodule Nostrum.Api do
       method: :delete,
       route: Constants.guild_member(guild_id, user_id),
       body: "",
-      options: [],
+      params: [],
       headers: maybe_add_reason(reason)
     })
   end
@@ -1867,6 +1883,7 @@ defmodule Nostrum.Api do
   @doc """
   Gets a ban object for the given user from a guild.
   """
+  @doc since: "0.5.0"
   @spec get_guild_ban(integer, integer) :: error | {:ok, Guild.Ban.t()}
   def get_guild_ban(guild_id, user_id) do
     request(:get, Constants.guild_ban(guild_id, user_id))
@@ -1895,8 +1912,8 @@ defmodule Nostrum.Api do
     request(%{
       method: :put,
       route: Constants.guild_ban(guild_id, user_id),
-      body: %{"delete-message-days": days_to_delete},
-      options: [],
+      body: %{delete_message_days: days_to_delete},
+      params: [],
       headers: maybe_add_reason(reason)
     })
   end
@@ -1913,7 +1930,7 @@ defmodule Nostrum.Api do
       method: :delete,
       route: Constants.guild_ban(guild_id, user_id),
       body: "",
-      options: [],
+      params: [],
       headers: maybe_add_reason(reason)
     })
   end
@@ -1961,6 +1978,8 @@ defmodule Nostrum.Api do
     * `:color` (integer) - RGB color value (default: 0)
     * `:hoist` (boolean) - whether the role should be displayed separately in the sidebar (default: false)
     * `:mentionable` (boolean) - whether the role should be mentionable (default: false)
+    * `:icon` (string) - URL role icon (default: `nil`)
+    * `:unicode_emoji` (string) - standard unicode character emoji role icon (default: `nil`)
 
   ## Examples
 
@@ -1979,7 +1998,7 @@ defmodule Nostrum.Api do
       method: :post,
       route: Constants.guild_roles(guild_id),
       body: options,
-      options: [],
+      params: [],
       headers: maybe_add_reason(reason)
     }
     |> request()
@@ -2022,7 +2041,7 @@ defmodule Nostrum.Api do
       method: :patch,
       route: Constants.guild_roles(guild_id),
       body: positions,
-      options: [],
+      params: [],
       headers: maybe_add_reason(reason)
     }
     |> request()
@@ -2079,7 +2098,7 @@ defmodule Nostrum.Api do
       method: :patch,
       route: Constants.guild_role(guild_id, role_id),
       body: options,
-      options: [],
+      params: [],
       headers: maybe_add_reason(reason)
     }
     |> request()
@@ -2119,7 +2138,7 @@ defmodule Nostrum.Api do
       method: :delete,
       route: Constants.guild_role(guild_id, role_id),
       body: "",
-      options: [],
+      params: [],
       headers: maybe_add_reason(reason)
     })
   end
@@ -2149,7 +2168,7 @@ defmodule Nostrum.Api do
   """
   @spec get_guild_prune_count(Guild.id(), 1..30) :: error | {:ok, %{pruned: integer}}
   def get_guild_prune_count(guild_id, days) when is_snowflake(guild_id) and days in 1..30 do
-    request(:get, Constants.guild_prune(guild_id), "", params: [days: days])
+    request(:get, Constants.guild_prune(guild_id), "", days: days)
     |> handle_request_with_decode
   end
 
@@ -2187,7 +2206,7 @@ defmodule Nostrum.Api do
       method: :post,
       route: Constants.guild_prune(guild_id),
       body: "",
-      options: [params: [days: days]],
+      params: [days: days],
       headers: maybe_add_reason(reason)
     }
     |> request()
@@ -2249,7 +2268,8 @@ defmodule Nostrum.Api do
 
   Guild to get integrations for is specified by `guild_id`.
   """
-  @spec get_guild_integrations(integer) :: error | {:ok, [Nostrum.Struct.Guild.Integration.t()]}
+  @spec get_guild_integrations(Guild.id()) ::
+          error | {:ok, [Nostrum.Struct.Guild.Integration.t()]}
   def get_guild_integrations(guild_id) do
     request(:get, Constants.guild_integrations(guild_id))
     |> handle_request_with_decode
@@ -2314,18 +2334,157 @@ defmodule Nostrum.Api do
   @doc """
   Gets a guild embed.
   """
-  @spec get_guild_embed(integer) :: error | {:ok, map}
-  def get_guild_embed(guild_id) do
-    request(:get, Constants.guild_embed(guild_id))
+  @spec get_guild_widget(integer) :: error | {:ok, map}
+  def get_guild_widget(guild_id) do
+    request(:get, Constants.guild_widget(guild_id))
   end
 
   @doc """
   Modifies a guild embed.
   """
-  @spec modify_guild_embed(integer, map) :: error | {:ok, map}
-  def modify_guild_embed(guild_id, options) do
-    request(:patch, Constants.guild_embed(guild_id), options)
+  @spec modify_guild_widget(integer, map) :: error | {:ok, map}
+  def modify_guild_widget(guild_id, options) do
+    request(:patch, Constants.guild_widget(guild_id), options)
     |> handle_request_with_decode
+  end
+
+  @doc """
+  Creates a new scheduled event for the guild.
+
+  ## Options
+    * `:channel_id` - (`t:Nostrum.Snowflake.t/0`) optional channel id for the event
+    * `:entity_metadata` - (`t:Nostrum.Struct.Guild.ScheduledEvent.EntityMetadata.t/0`) metadata for the event
+    * `:name` - (string) required name for the event
+    * `:privacy_level` - (integer) at the time of writing, this must always be 2 for `GUILD_ONLY`
+    * `:scheduled_start_time` - required time for the event to start as a `DateTime` or (ISO8601 timestamp)[`DateTime.to_iso8601/3`]
+    * `:scheduled_end_time` - optional time for the event to end as a `DateTime` or (ISO8601 timestamp)[`DateTime.to_iso8601/3`]
+    * `:description` - (string) optional description for the event
+    * `:entity_type` - (integer) an integer representing the type of entity the event is for
+      * `1` - `STAGE_INSTANCE`
+      * `2` - `VOICE`
+      * `3` - `EXTERNAL`
+
+  See the (official documentation)[https://discord.com/developers/docs/resources/guild-scheduled-event] for more information.
+
+
+  An optional `reason` can be specified for the audit log.
+  """
+  @doc since: "0.5.0"
+  @spec create_guild_scheduled_event(Guild.id(), reason :: AuditLogEntry.reason(), options) ::
+          {:ok, ScheduledEvent.t()} | error
+  def create_guild_scheduled_event(guild_id, reason \\ nil, options)
+
+  def create_guild_scheduled_event(guild_id, reason, options) when is_list(options),
+    do: create_guild_scheduled_event(guild_id, reason, Map.new(options))
+
+  def create_guild_scheduled_event(guild_id, reason, %{} = options) do
+    options =
+      options
+      |> maybe_convert_date_time(:scheduled_start_time)
+      |> maybe_convert_date_time(:scheduled_end_time)
+
+    request(%{
+      method: :post,
+      route: Constants.guild_scheduled_events(guild_id),
+      body: options,
+      params: [],
+      headers: maybe_add_reason(reason)
+    })
+    |> handle_request_with_decode({:struct, ScheduledEvent})
+  end
+
+  @doc """
+  Get a list of scheduled events for a guild.
+  """
+  @doc since: "0.5.0"
+  @spec get_guild_scheduled_events(Guild.id()) :: error | {:ok, [ScheduledEvent.t()]}
+  def get_guild_scheduled_events(guild_id) do
+    request(:get, Constants.guild_scheduled_events(guild_id))
+    |> handle_request_with_decode({:list, {:struct, ScheduledEvent}})
+  end
+
+  @doc """
+  Get a scheduled event for a guild.
+  """
+  @doc since: "0.5.0"
+  @spec get_guild_scheduled_event(Guild.id(), ScheduledEvent.id()) ::
+          error | {:ok, ScheduledEvent.t()}
+  def get_guild_scheduled_event(guild_id, event_id) do
+    request(:get, Constants.guild_scheduled_event(guild_id, event_id))
+    |> handle_request_with_decode({:struct, ScheduledEvent})
+  end
+
+  @doc """
+  Delete a scheduled event for a guild.
+  """
+  @doc since: "0.5.0"
+  @spec delete_guild_scheduled_event(Guild.id(), ScheduledEvent.id()) ::
+          error | {:ok}
+  def delete_guild_scheduled_event(guild_id, event_id) do
+    request(:delete, Constants.guild_scheduled_event(guild_id, event_id))
+  end
+
+  @doc """
+  Modify a scheduled event for a guild.
+
+  Options are the same as for `create_guild_scheduled_event/2` except all fields are optional,
+  with the additional optional integer field `:status` which can be one of:
+
+    * `1` - `SCHEDULED`
+    * `2` - `ACTIVE`
+    * `3` - `COMPLETED`
+    * `4` - `CANCELLED`
+
+  Copied from the official documentation:
+  * If updating entity_type to `EXTERNAL`:
+    * `channel_id` is required and must be set to null
+    * `entity_metadata` with a `location` field must be provided
+    * `scheduled_end_time` must be provided
+  """
+  @doc since: "0.5.0"
+  @spec modify_guild_scheduled_event(
+          Guild.id(),
+          ScheduledEvent.id(),
+          reason :: AuditLogEntry.reason(),
+          options
+        ) :: error | {:ok, ScheduledEvent.t()}
+  def modify_guild_scheduled_event(guild_id, event_id, reason \\ nil, options)
+
+  def modify_guild_scheduled_event(guild_id, event_id, reason, options) when is_list(options),
+    do: modify_guild_scheduled_event(guild_id, event_id, reason, Map.new(options))
+
+  def modify_guild_scheduled_event(guild_id, event_id, reason, %{} = options) do
+    options =
+      options
+      |> maybe_convert_date_time(:scheduled_start_time)
+      |> maybe_convert_date_time(:scheduled_end_time)
+
+    request(%{
+      method: :patch,
+      route: Constants.guild_scheduled_event(guild_id, event_id),
+      body: options,
+      params: [],
+      headers: maybe_add_reason(reason)
+    })
+    |> handle_request_with_decode({:struct, ScheduledEvent})
+  end
+
+  @doc """
+  Get a list of users who have subscribed to an event.
+
+  ## Options
+  All are optional, with their default values listed.
+  * `:limit` (integer) maximum number of users to return, defaults to `100`
+  * `:with_member` (boolean) whether to include the member object for each user, defaults to `false`
+  * `:before` (`t:Nostrum.Snowflake.t/0`) return only users before this user id, defaults to `nil`
+  * `:after` (`t:Nostrum.Snowflake.t/0`) return only users after this user id, defaults to `nil`
+  """
+  @doc since: "0.5.0"
+  @spec get_guild_scheduled_event_users(Guild.id(), ScheduledEvent.id(), options) ::
+          error | {:ok, [ScheduledEvent.User.t()]}
+  def get_guild_scheduled_event_users(guild_id, event_id, params \\ []) do
+    request(:get, Constants.guild_scheduled_event_users(guild_id, event_id), "", params)
+    |> handle_request_with_decode({:list, {:struct, ScheduledEvent.User}})
   end
 
   @doc ~S"""
@@ -2348,7 +2507,7 @@ defmodule Nostrum.Api do
   """
   @spec get_invite(Invite.code(), options) :: error | {:ok, Invite.simple_invite()}
   def get_invite(invite_code, options \\ []) when is_binary(invite_code) do
-    request(:get, Constants.invite(invite_code), "", params: options)
+    request(:get, Constants.invite(invite_code), "", options)
     |> handle_request_with_decode({:struct, Invite})
   end
 
@@ -2499,7 +2658,7 @@ defmodule Nostrum.Api do
     do: get_current_user_guilds(Map.new(options))
 
   def get_current_user_guilds(options) when is_map(options) do
-    request(:get, Constants.me_guilds(), "", params: options)
+    request(:get, Constants.me_guilds(), "", options)
     |> handle_request_with_decode({:list, {:struct, Guild}})
   end
 
@@ -2523,7 +2682,7 @@ defmodule Nostrum.Api do
       method: :delete,
       route: Constants.me_guild(guild_id),
       body: "",
-      options: [],
+      params: [],
       headers: []
     })
   end
@@ -2617,7 +2776,7 @@ defmodule Nostrum.Api do
   @doc """
   Gets a list of user connections.
   """
-  @spec get_user_connections() :: error | {:ok, Nostrum.Struct.User.Connection.t()}
+  @spec get_user_connections() :: error | {:ok, list()}
   def get_user_connections do
     request(:get, Constants.me_connections())
     |> handle_request_with_decode
@@ -2655,7 +2814,7 @@ defmodule Nostrum.Api do
       method: :post,
       route: Constants.webhooks_channel(channel_id),
       body: args,
-      options: [],
+      params: [],
       headers: maybe_add_reason(reason)
     }
     |> request()
@@ -2663,7 +2822,7 @@ defmodule Nostrum.Api do
   end
 
   @doc """
-  Gets a list of webook for a channel.
+  Gets a list of webhooks for a channel.
 
   ## Parameters
     - `channel_id` - Channel to get webhooks for.
@@ -2675,7 +2834,7 @@ defmodule Nostrum.Api do
   end
 
   @doc """
-  Gets a list of webooks for a guild.
+  Gets a list of webhooks for a guild.
 
   ## Parameters
     - `guild_id` - Guild to get webhooks for.
@@ -2738,7 +2897,7 @@ defmodule Nostrum.Api do
       method: :patch,
       route: Constants.webhook(webhook_id),
       body: args,
-      options: [],
+      params: [],
       headers: maybe_add_reason(reason)
     }
     |> request()
@@ -2773,7 +2932,7 @@ defmodule Nostrum.Api do
       method: :patch,
       route: Constants.webhook_token(webhook_id, webhook_token),
       body: args,
-      options: [],
+      params: [],
       headers: maybe_add_reason(reason)
     }
     |> request()
@@ -2793,10 +2952,58 @@ defmodule Nostrum.Api do
       method: :delete,
       route: Constants.webhook(webhook_id),
       body: "",
-      options: [],
+      params: [],
       headers: maybe_add_reason(reason)
     })
   end
+
+  @typep m1 :: %{
+           required(:content) => String.t(),
+           optional(:username) => String.t(),
+           optional(:avatar_url) => String.t(),
+           optional(:tts) => boolean,
+           optional(:files) => [String.t() | %{body: iodata(), name: String.t()}],
+           optional(:flags) => non_neg_integer(),
+           optional(:thread_id) => Snowflake.t(),
+           optional(:embeds) => nonempty_list(Embed.t()) | nil,
+           optional(:allowed_mentions) => allowed_mentions()
+         }
+
+  @typep m2 ::
+           %{
+             optional(:content) => String.t() | nil,
+             optional(:username) => String.t(),
+             optional(:avatar_url) => String.t(),
+             optional(:tts) => boolean,
+             required(:files) => [String.t() | %{body: iodata(), name: String.t()}],
+             optional(:flags) => non_neg_integer(),
+             optional(:thread_id) => Snowflake.t(),
+             optional(:embeds) => nonempty_list(Embed.t()) | nil,
+             optional(:allowed_mentions) => allowed_mentions()
+           }
+
+  @typep m3 ::
+           %{
+             optional(:content) => String.t() | nil,
+             optional(:username) => String.t(),
+             optional(:avatar_url) => String.t(),
+             optional(:tts) => boolean,
+             optional(:files) => [String.t() | %{body: iodata(), name: String.t()}],
+             optional(:flags) => non_neg_integer(),
+             optional(:thread_id) => Snowflake.t(),
+             required(:embeds) => nonempty_list(Embed.t()),
+             optional(:allowed_mentions) => allowed_mentions()
+           }
+
+  @type matrix :: m1 | m2 | m3
+
+  @spec execute_webhook(
+          Webhook.id() | User.id(),
+          Webhook.token() | Interaction.token(),
+          matrix,
+          boolean
+        ) ::
+          error | {:ok} | {:ok, Message.t()}
 
   @doc """
   Executes a webhook.
@@ -2804,48 +3011,63 @@ defmodule Nostrum.Api do
   ## Parameters
   - `webhook_id` - Id of the webhook to execute.
   - `webhook_token` - Token of the webhook to execute.
-  - `args` - Map with the following required keys:
+  - `args` - Map with the following allowed keys:
     - `content` - Message content.
-    - `file` - File to send.
+    - `files` - List of Files to send.
     - `embeds` - List of embeds to send.
     - `username` - Overrides the default name of the webhook.
     - `avatar_url` - Overrides the default avatar of the webhook.
     - `tts` - Whether the message should be read over text to speech.
+    - `flags` - Bitwise flags.
+    - `thread_id` - Send a message to the specified thread within the webhook's channel.
+    - `allowed_mentions` - Mentions to allow in the webhook message
   - `wait` - Whether to return an error or not. Defaults to `false`.
 
-  Only one of `content`, `file` or `embeds` should be supplied in the `args` parameter.
+  **Note**: If `wait` is `true`, this method will return a `Message.t()` on success.
+
+  At least one of `content`, `files` or `embeds` should be supplied in the `args` parameter.
   """
-  @spec execute_webhook(
-          Webhook.id(),
-          Webhook.token(),
-          %{
-            content: String.t(),
-            username: String.t(),
-            avatar_url: String.t(),
-            tts: boolean,
-            file: String.t(),
-            embeds: [Embed.t()]
-          },
-          boolean
-        ) :: error | {:ok}
+
   def execute_webhook(webhook_id, webhook_token, args, wait \\ false)
 
-  def execute_webhook(webhook_id, webhook_token, %{file: _} = args, wait) do
-    request_multipart(
-      :post,
-      Constants.webhook_token(webhook_id, webhook_token),
-      args,
-      params: [wait: wait]
-    )
-  end
+  def execute_webhook(webhook_id, webhook_token, args, wait) do
+    {thread_id, args} = Map.pop(args, :thread_id)
+    args = prepare_allowed_mentions(args)
 
-  def execute_webhook(webhook_id, webhook_token, %{content: _} = args, wait) do
+    params =
+      if is_nil(thread_id),
+        do: [wait: wait],
+        else: [wait: wait, thread_id: thread_id]
+
     request(
       :post,
       Constants.webhook_token(webhook_id, webhook_token),
-      args,
-      params: [wait: wait]
+      combine_embeds(args),
+      params
     )
+    |> handle_request_with_decode({:struct, Message})
+  end
+
+  @doc """
+  Edits a message previously created by the same webhook,
+  args are the same as `execute_webhook/3`,
+  however all fields are optional.
+  """
+  @doc since: "0.5.0"
+  @spec edit_webhook_message(
+          Webhook.id(),
+          Webhook.token(),
+          Message.id(),
+          map()
+        ) ::
+          error | {:ok, Message.t()}
+  def edit_webhook_message(webhook_id, webhook_token, message_id, args) do
+    request(
+      :patch,
+      Constants.webhook_message_edit(webhook_id, webhook_token, message_id),
+      combine_embeds(args)
+    )
+    |> handle_request_with_decode({:struct, Message})
   end
 
   @doc """
@@ -2857,7 +3079,7 @@ defmodule Nostrum.Api do
   """
   @spec execute_slack_webhook(Webhook.id(), Webhook.token(), boolean) :: error | {:ok}
   def execute_slack_webhook(webhook_id, webhook_token, wait \\ false) do
-    request(:post, Constants.webhook_slack(webhook_id, webhook_token), params: [wait: wait])
+    request(:post, Constants.webhook_slack(webhook_id, webhook_token), wait: wait)
   end
 
   @doc """
@@ -2869,7 +3091,7 @@ defmodule Nostrum.Api do
   """
   @spec execute_git_webhook(Webhook.id(), Webhook.token(), boolean) :: error | {:ok}
   def execute_git_webhook(webhook_id, webhook_token, wait \\ false) do
-    request(:post, Constants.webhook_git(webhook_id, webhook_token), params: [wait: wait])
+    request(:post, Constants.webhook_git(webhook_id, webhook_token), wait: wait)
   end
 
   @doc """
@@ -2910,7 +3132,7 @@ defmodule Nostrum.Api do
 
   ## Return value
   A list of ``ApplicationCommand``s on success. See the official reference:
-  https://discord.com/developers/docs/interactions/slash-commands#applicationcommand
+  https://discord.com/developers/docs/interactions/application-commands#application-command-object-application-command-structure
 
   ## Example
 
@@ -2949,7 +3171,7 @@ defmodule Nostrum.Api do
 
   ## Return value
   The created command. See the official reference:
-  https://discord.com/developers/docs/interactions/slash-commands#create-global-application-command
+  https://discord.com/developers/docs/interactions/application-commands#create-global-application-command
 
   ## Example
 
@@ -2959,8 +3181,10 @@ defmodule Nostrum.Api do
   )
   ```
   """
-  @spec create_global_application_command(map()) :: {:ok, map()} | error
-  @spec create_global_application_command(User.id(), map()) :: {:ok, map()} | error
+  @spec create_global_application_command(ApplicationCommand.application_command_map()) ::
+          {:ok, map()} | error
+  @spec create_global_application_command(User.id(), ApplicationCommand.application_command_map()) ::
+          {:ok, map()} | error
   def create_global_application_command(application_id \\ Me.get().id, command) do
     request(:post, Constants.global_application_commands(application_id), command)
     |> handle_request_with_decode
@@ -2979,10 +3203,17 @@ defmodule Nostrum.Api do
 
   ## Return value
   The updated command. See the official reference:
-  https://discord.com/developers/docs/interactions/slash-commands#edit-global-application-command
+  https://discord.com/developers/docs/interactions/application-commands#edit-global-application-command
   """
-  @spec edit_global_application_command(Snowflake.t(), map()) :: {:ok, map()} | error
-  @spec edit_global_application_command(User.id(), Snowflake.t(), map()) :: {:ok, map()} | error
+  @spec edit_global_application_command(
+          Snowflake.t(),
+          ApplicationCommand.application_command_edit_map()
+        ) :: {:ok, map()} | error
+  @spec edit_global_application_command(
+          User.id(),
+          Snowflake.t(),
+          ApplicationCommand.application_command_edit_map()
+        ) :: {:ok, map()} | error
   def edit_global_application_command(
         application_id \\ Me.get().id,
         command_id,
@@ -3007,6 +3238,37 @@ defmodule Nostrum.Api do
   end
 
   @doc """
+  Overwrite the existing global application commands.
+
+  This action will:
+  - Create any command that was provided and did not already exist
+  - Update any command that was provided and already existed if its configuration changed
+  - Delete any command that was not provided but existed on Discord's end
+
+  Updates will be available in all guilds after 1 hour.
+  Commands that do not already exist will count toward daily application command create limits.
+
+  ## Parameters
+  - `application_id`: Application ID for which to overwrite the commands.
+    If not given, this will be fetched from `Me`.
+  - `commands`: List of command configurations, see the linked API documentation for reference.
+
+  ## Return value
+  Updated list of global application commands. See the official reference:
+  https://discord.com/developers/docs/interactions/application-commands#bulk-overwrite-global-application-commands
+  """
+  @doc since: "0.5.0"
+  @spec bulk_overwrite_global_application_commands([ApplicationCommand.application_command_map()]) ::
+          {:ok, [map()]} | error
+  @spec bulk_overwrite_global_application_commands(User.id(), [
+          ApplicationCommand.application_command_map()
+        ]) :: {:ok, [map()]} | error
+  def bulk_overwrite_global_application_commands(application_id \\ Me.get().id, commands) do
+    request(:put, Constants.global_application_commands(application_id), commands)
+    |> handle_request_with_decode
+  end
+
+  @doc """
   Fetch all guild application commands for the given guild.
 
   ## Parameters
@@ -3017,7 +3279,7 @@ defmodule Nostrum.Api do
 
   ## Return value
   A list of ``ApplicationCommand``s on success. See the official reference:
-  https://discord.com/developers/docs/interactions/slash-commands#applicationcommand
+  https://discord.com/developers/docs/interactions/application-commands#application-command-object-application-command-structure
   """
   @spec get_guild_application_commands(Guild.id()) :: {:ok, [map()]} | error
   @spec get_guild_application_commands(User.id(), Guild.id()) :: {:ok, [map()]} | error
@@ -3039,10 +3301,15 @@ defmodule Nostrum.Api do
 
   ## Return value
   The created command. See the official reference:
-  https://discord.com/developers/docs/interactions/slash-commands#create-guild-application-command
+  https://discord.com/developers/docs/interactions/application-commands#create-guild-application-command
   """
-  @spec create_guild_application_command(Guild.id(), map()) :: {:ok, map()} | error
-  @spec create_guild_application_command(User.id(), Guild.id(), map()) :: {:ok, map()} | error
+  @spec create_guild_application_command(Guild.id(), ApplicationCommand.application_command_map()) ::
+          {:ok, map()} | error
+  @spec create_guild_application_command(
+          User.id(),
+          Guild.id(),
+          ApplicationCommand.application_command_map()
+        ) :: {:ok, map()} | error
   def create_guild_application_command(
         application_id \\ Me.get().id,
         guild_id,
@@ -3066,10 +3333,19 @@ defmodule Nostrum.Api do
 
   ## Return value
   The updated command. See the official reference:
-  https://discord.com/developers/docs/interactions/slash-commands#edit-guild-application-command
+  https://discord.com/developers/docs/interactions/application-commands#edit-guild-application-command
   """
-  @spec edit_guild_application_command(Guild.id(), Snowflake.t(), map()) :: {:ok, map()} | error
-  @spec edit_guild_application_command(User.id(), Guild.id(), Snowflake.t(), map()) ::
+  @spec edit_guild_application_command(
+          Guild.id(),
+          Snowflake.t(),
+          ApplicationCommand.application_command_edit_map()
+        ) :: {:ok, map()} | error
+  @spec edit_guild_application_command(
+          User.id(),
+          Guild.id(),
+          Snowflake.t(),
+          ApplicationCommand.application_command_edit_map()
+        ) ::
           {:ok, map()} | error
   def edit_guild_application_command(
         application_id \\ Me.get().id,
@@ -3104,6 +3380,41 @@ defmodule Nostrum.Api do
     request(:delete, Constants.guild_application_command(application_id, guild_id, command_id))
   end
 
+  @doc """
+  Overwrite the existing guild application commands on the specified guild.
+
+  This action will:
+  - Create any command that was provided and did not already exist
+  - Update any command that was provided and already existed if its configuration changed
+  - Delete any command that was not provided but existed on Discord's end
+
+  ## Parameters
+  - `application_id`: Application ID for which to overwrite the commands.
+    If not given, this will be fetched from `Me`.
+  - `guild_id`: Guild on which to overwrite the commands.
+  - `commands`: List of command configurations, see the linked API documentation for reference.
+
+  ## Return value
+  Updated list of guild application commands. See the official reference:
+  https://discord.com/developers/docs/interactions/application-commands#bulk-overwrite-guild-application-commands
+  """
+  @doc since: "0.5.0"
+  @spec bulk_overwrite_guild_application_commands(Guild.id(), [
+          ApplicationCommand.application_command_map()
+        ]) :: {:ok, [map()]} | error
+  @spec bulk_overwrite_guild_application_commands(User.id(), Guild.id(), [
+          ApplicationCommand.application_command_map()
+        ]) ::
+          {:ok, [map()]} | error
+  def bulk_overwrite_guild_application_commands(
+        application_id \\ Me.get().id,
+        guild_id,
+        commands
+      ) do
+    request(:put, Constants.guild_application_commands(application_id, guild_id), commands)
+    |> handle_request_with_decode
+  end
+
   # Why the two separate functions here?
   # For the standard use case of "responding to an interaction retrieved
   # from the gateway", `create_interaction_response/2` is perfectly
@@ -3120,13 +3431,31 @@ defmodule Nostrum.Api do
   end
 
   @doc """
+  Same as `create_interaction_response/2`, but raises `Nostrum.Error.ApiError` in case of failure.
+  """
+  @doc since: "0.5.0"
+  @spec create_interaction_response!(Interaction.t(), map()) :: no_return() | {:ok}
+  def create_interaction_response!(interaction, response) do
+    create_interaction_response!(interaction.id, interaction.token, response)
+  end
+
+  @doc """
   Create a response to an interaction received from the gateway.
 
   ## Parameters
   - `id`: The interaction ID to which the response should be created.
   - `token`: The interaction token.
-  - `response`: An [`InteractionResponse`](https://discord.com/developers/docs/interactions/slash-commands#interaction-interaction-response)
+  - `response`: An [`InteractionResponse`](https://discord.com/developers/docs/interactions/receiving-and-responding#interaction-response-object)
     object. See the linked documentation.
+
+
+  ### Attachments
+  To include attachments in the response, you can include a `:files` field in the response.
+  This field expects a list of attachments which can be in either of the following formats:
+  - A path to the file to upload.
+  - A map with the following fields:
+    - `:body` The file contents.
+    - `:name` The filename of the file.
 
   ## Example
 
@@ -3142,25 +3471,117 @@ defmodule Nostrum.Api do
 
   As an alternative to passing the interaction ID and token, the
   original `t:Nostrum.Struct.Interaction.t/0` can also be passed
-  directly. See `create_interaction_response/1`.
+  directly. See `create_interaction_response/2`.
   """
   @spec create_interaction_response(Interaction.id(), Interaction.token(), map()) :: {:ok} | error
-  def create_interaction_response(id, token, response) do
-    request(:post, Constants.interaction_callback(id, token), response)
+  def create_interaction_response(id, token, options) do
+    request(:post, Constants.interaction_callback(id, token), combine_embeds(options))
   end
 
-  # edit original interaction response is purposefully not implemented
-  # at the moment, waiting for "edit webhook message" first
+  def create_interaction_response!(id, token, response) do
+    create_interaction_response(id, token, response)
+    |> bangify
+  end
+
+  @doc """
+  Same as `edit_interaction_response/3`, but directly takes the
+  `t:Nostrum.Struct.Interaction.t/0` received from the gateway.
+  """
+  @doc since: "0.5.0"
+  @spec edit_interaction_response(Interaction.t(), map()) :: {:ok, Message.t()} | error
+  def edit_interaction_response(%Interaction{} = interaction, response) do
+    edit_interaction_response(interaction.application_id, interaction.token, response)
+  end
+
+  @doc """
+  Same as `edit_interaction_response/2`, but raises `Nostrum.Error.ApiError` in case of failure.
+  """
+  @doc since: "0.5.0"
+  @spec edit_interaction_response!(Interaction.t(), map()) :: no_return() | Message.t()
+  def edit_interaction_response!(%Interaction{} = interaction, response) do
+    edit_interaction_response!(interaction.application_id, interaction.token, response)
+  end
+
+  @doc """
+  Edits the original interaction response.
+
+  Functions the same as `edit_webhook_message/3`
+  """
+  @doc since: "0.5.0"
+  @spec edit_interaction_response(User.id(), Interaction.token(), map()) ::
+          {:ok, Message.t()} | error
+  def edit_interaction_response(id \\ Me.get().id, token, response) do
+    request(:patch, Constants.interaction_callback_original(id, token), combine_embeds(response))
+    |> handle_request_with_decode({:struct, Message})
+  end
+
+  @doc """
+  Same as `edit_interaction_response/3`, but raises `Nostrum.Error.ApiError` in case of failure.
+  """
+  @doc since: "0.5.0"
+  @spec edit_interaction_response!(User.id(), Interaction.token(), map()) ::
+          no_return() | Message.t()
+  def edit_interaction_response!(id \\ Me.get().id, token, response) do
+    edit_interaction_response(id, token, response)
+    |> bangify
+  end
+
+  @doc """
+  Same as `delete_interaction_response/3`, but directly takes the
+  `t:Nostrum.Struct.Interaction.t/0` received from the gateway.
+  """
+  @doc since: "0.5.0"
+  @spec delete_interaction_response(Interaction.t()) :: {:ok} | error
+  def delete_interaction_response(%Interaction{} = interaction) do
+    delete_interaction_response(interaction.application_id, interaction.token)
+  end
+
+  @doc since: "0.5.0"
+  @spec delete_interaction_response!(Interaction.t()) :: no_return() | {:ok}
+  def delete_interaction_response!(%Interaction{} = interaction) do
+    delete_interaction_response(interaction.application_id, interaction.token)
+    |> bangify
+  end
+
+  @doc """
+  Deletes the original interaction response.
+  """
+  @doc since: "0.5.0"
+  @spec delete_interaction_response(User.id(), Interaction.token()) :: {:ok} | error
+  def delete_interaction_response(id \\ Me.get().id, token) do
+    request(:delete, Constants.interaction_callback_original(id, token))
+  end
+
+  @doc """
+  Same as `delete_interaction_response/2`, but raises `Nostrum.Error.ApiError` in case of failure.
+  """
+  @doc since: "0.5.0"
+  @spec delete_interaction_response!(User.id(), Interaction.token()) :: no_return() | {:ok}
+  def delete_interaction_response!(id \\ Me.get().id, token) do
+    delete_interaction_response(id, token)
+    |> bangify
+  end
 
   @doc """
   Create a followup message for an interaction.
 
   Delegates to ``execute_webhook/3``, see the function for more details.
   """
-  @spec create_followup_message(Interaction.token(), map()) :: {:ok} | error
-  @spec create_followup_message(User.id(), Interaction.token(), map()) :: {:ok} | error
+  @spec create_followup_message(User.id(), Interaction.token(), map()) ::
+          {:ok, Message.t()} | error
   def create_followup_message(application_id \\ Me.get().id, token, webhook_payload) do
     execute_webhook(application_id, token, webhook_payload)
+  end
+
+  @doc """
+  Same as `create_followup_message/3`, but raises `Nostrum.Error.ApiError` in case of failure.
+  """
+  @doc since: "0.5.0"
+  @spec create_followup_message!(User.id(), Interaction.token(), map()) ::
+          no_return() | Message.t()
+  def create_followup_message!(application_id \\ Me.get().id, token, webhook_payload) do
+    create_followup_message(application_id, token, webhook_payload)
+    |> bangify
   end
 
   @doc """
@@ -3172,7 +3593,6 @@ defmodule Nostrum.Api do
   - `token`: Interaction token.
   - `message_id`: Followup message ID.
   """
-  @spec delete_interaction_followup_message(Interaction.token(), Message.id()) :: {:ok} | error
   @spec delete_interaction_followup_message(User.id(), Interaction.token(), Message.id()) ::
           {:ok} | error
   def delete_interaction_followup_message(
@@ -3181,6 +3601,550 @@ defmodule Nostrum.Api do
         message_id
       ) do
     request(:delete, Constants.interaction_followup_message(application_id, token, message_id))
+  end
+
+  @doc """
+  Same as `delete_interaction_followup_message/3`, but raises `Nostrum.Error.ApiError` in case of failure.
+  """
+  @doc since: "0.5.0"
+  @spec delete_interaction_followup_message!(User.id(), Interaction.token(), Message.id()) ::
+          no_return() | {:ok}
+  def delete_interaction_followup_message!(
+        application_id \\ Me.get().id,
+        token,
+        message_id
+      ) do
+    delete_interaction_followup_message(application_id, token, message_id)
+    |> bangify
+  end
+
+  @doc """
+  Fetches command permissions for all commands for your application in a guild.
+
+  ## Parameters
+  - `application_id`: Application ID commands are registered under.
+    If not given, this will be fetched from `Me`.
+  - `guild_id`: Guild ID to fetch command permissions from.
+
+  ## Return value
+  This method returns a list of guild application command permission objects, see all available values on the [Discord API docs](https://discord.com/developers/docs/interactions/application-commands#application-command-permissions-object-guild-application-command-permissions-structure).
+  """
+  @doc since: "0.5.0"
+  @spec get_guild_application_command_permissions(Guild.id()) :: {:ok, [map()]} | error
+  @spec get_guild_application_command_permissions(User.id(), Guild.id()) :: {:ok, [map()]} | error
+  def get_guild_application_command_permissions(
+        application_id \\ Me.get().id,
+        guild_id
+      ) do
+    request(:get, Constants.guild_application_command_permissions(application_id, guild_id))
+    |> handle_request_with_decode
+  end
+
+  @doc """
+  Fetches command permissions for a specific command for your application in a guild.
+
+  ## Parameters
+  - `application_id`: Application ID commands are registered under.
+    If not given, this will be fetched from `Me`.
+  - `guild_id`: Guild ID to fetch command permissions from.
+  - `command_id`: Command ID to fetch permissions for.
+
+  ## Return value
+  This method returns a single guild application command permission object, see all available values on the [Discord API docs](https://discord.com/developers/docs/interactions/application-commands#application-command-permissions-object-guild-application-command-permissions-structure).
+  """
+  @doc since: "0.5.0"
+  @spec get_application_command_permissions(Guild.id(), Snowflake.t()) ::
+          {:ok, map()} | error
+  @spec get_application_command_permissions(User.id(), Guild.id(), Snowflake.t()) ::
+          {:ok, map()} | error
+  def get_application_command_permissions(
+        application_id \\ Me.get().id,
+        guild_id,
+        command_id
+      ) do
+    request(
+      :get,
+      Constants.guild_application_command_permissions(application_id, guild_id, command_id)
+    )
+    |> handle_request_with_decode
+  end
+
+  @doc """
+  Edits command permissions for a specific command for your application in a guild. You can only add up to 10 permission overwrites for a command.
+
+  ## Parameters
+  - `application_id`: Application ID commands are registered under.
+    If not given, this will be fetched from `Me`.
+  - `guild_id`: Guild ID to fetch command permissions from.
+  - `command_id`: Command ID to fetch permissions for.
+  - `permissions`: List of [application command permissions](https://discord.com/developers/docs/interactions/application-commands#application-command-permissions-object-application-command-permissions-structure)
+
+  ## Return value
+  This method returns a guild application command permission object, see all available values on the [Discord API docs](https://discord.com/developers/docs/interactions/application-commands#application-command-permissions-object-guild-application-command-permissions-structure).
+  """
+  @doc since: "0.5.0"
+  @spec edit_application_command_permissions(Guild.id(), Snowflake.t(), [
+          ApplicationCommand.application_command_permissions()
+        ]) ::
+          {:ok, map()} | error
+  @spec edit_application_command_permissions(User.id(), Guild.id(), Snowflake.t(), [
+          ApplicationCommand.application_command_permissions()
+        ]) ::
+          {:ok, map()} | error
+  def edit_application_command_permissions(
+        application_id \\ Me.get().id,
+        guild_id,
+        command_id,
+        permissions
+      ) do
+    request(
+      :put,
+      Constants.guild_application_command_permissions(application_id, guild_id, command_id),
+      %{
+        permissions: permissions
+      }
+    )
+    |> handle_request_with_decode
+  end
+
+  @doc """
+  Edits command permissions for a specific command for your application in a guild. You can only add up to 10 permission overwrites for a command.
+
+  ## Parameters
+  - `application_id`: Application ID commands are registered under.
+    If not given, this will be fetched from `Me`.
+  - `guild_id`: Guild ID to fetch command permissions from.
+  - `command_id`: Command ID to fetch permissions for.
+  - `permissions`: List of partial [guild application command permissions](hhttps://discord.com/developers/docs/interactions/application-commands#application-command-permissions-object-guild-application-command-permissions-structure) with `id` and `permissions`. You can add up to 10 overwrites per command.
+
+  ## Return value
+  This method returns a guild application command permission object, see all available values on the [Discord API docs](https://discord.com/developers/docs/interactions/application-commands#application-command-permissions-object-guild-application-command-permissions-structure).
+  """
+  @doc since: "0.5.0"
+  @spec batch_edit_application_command_permissions(Guild.id(), [
+          %{
+            id: Snowflake.t(),
+            permissions: [ApplicationCommand.application_command_permissions()]
+          }
+        ]) ::
+          {:ok, map()} | error
+  @spec batch_edit_application_command_permissions(User.id(), Guild.id(), [
+          %{
+            id: Snowflake.t(),
+            permissions: [ApplicationCommand.application_command_permissions()]
+          }
+        ]) ::
+          {:ok, map()} | error
+  def batch_edit_application_command_permissions(
+        application_id \\ Me.get().id,
+        guild_id,
+        permissions
+      ) do
+    request(
+      :put,
+      Constants.guild_application_command_permissions(application_id, guild_id),
+      permissions
+    )
+    |> handle_request_with_decode
+  end
+
+  @type thread_with_message_params :: %{
+          required(:name) => String.t(),
+          optional(:auto_archive_duration) => 60 | 1440 | 4320 | 10_080,
+          optional(:rate_limit_per_user) => 0..21_600
+        }
+
+  @doc """
+  Create a thread on a channel message.
+
+  The `thread_id` will be the same as the id of the message, as such no message can have more than one thread.
+
+  If successful, returns `{:ok, Channel}`. Otherwise returns a `t:Nostrum.Api.error/0`.
+
+  An optional `reason` argument can be given for the audit log.
+
+  ## Options
+  - `name`: Name of the thread, max 100 characters.
+  - `auto_archive_duration`: Duration in minutes to auto-archive the thread after it has been inactive, can be set to 60, 1440, 4320, or 10080.
+  - `rate_limit_per_user`: Rate limit per user in seconds, can be set to any value in `0..21600`.
+
+  """
+  @doc since: "0.5.1"
+  @spec start_thread_with_message(
+          Channel.id(),
+          Message.id(),
+          thread_with_message_params,
+          AuditLogEntry.reason()
+        ) ::
+          {:ok, Channel.t()} | error
+  def start_thread_with_message(channel_id, message_id, options, reason \\ nil) do
+    request(%{
+      method: :post,
+      route: Constants.thread_with_message(channel_id, message_id),
+      body: options,
+      params: [],
+      headers: maybe_add_reason(reason)
+    })
+    |> handle_request_with_decode({:struct, Channel})
+  end
+
+  @type thread_without_message_params :: %{
+          required(:name) => String.t(),
+          required(:type) => non_neg_integer(),
+          optional(:auto_archive_duration) => 60 | 1440 | 4320 | 10_080,
+          optional(:invitable) => boolean(),
+          optional(:rate_limit_per_user) => 0..21_600
+        }
+
+  @doc """
+  Create a thread on a channel without an associated message.
+
+  If successful, returns `{:ok, Channel}`. Otherwise returns a `t:Nostrum.Api.error/0`.
+
+  An optional `reason` argument can be given for the audit log.
+
+  ## Options
+  - `name`: Name of the thread, max 100 characters.
+  - `type`: Type of thread, can be either 11 (`GUILD_PUBLIC_THREAD`) or 12 (`GUILD_PRIVATE_THREAD`).
+  - `auto_archive_duration`: Duration in minutes to auto-archive the thread after it has been inactive, can be set to 60, 1440, 4320, or 10080.
+  - `invitable`: whether non-moderators can add other non-moderators to a thread; only available when creating a private thread defaults to `false`.
+  - `rate_limit_per_user`: Rate limit per user in seconds, can be set to any value in `0..21600`.
+  """
+  @doc since: "0.5.1"
+  @spec start_thread(Channel.id(), thread_without_message_params, AuditLogEntry.reason()) ::
+          {:ok, Channel.t()} | error
+  def start_thread(channel_id, options, reason \\ nil) do
+    request(%{
+      method: :post,
+      route: Constants.thread_without_message(channel_id),
+      body: options,
+      params: [],
+      headers: maybe_add_reason(reason)
+    })
+    |> handle_request_with_decode({:struct, Channel})
+  end
+
+  @doc """
+  Create a new thread in a forum channel.
+
+  If successful, returns `{:ok, Channel}`. Otherwise returns a `t:Nostrum.Api.error/0`.
+
+  An optional `reason` argument can be given for the audit log.
+
+  ## Options
+  - `name`: Name of the thread, max 100 characters.
+  - `auto_archive_duration`: Duration in minutes to auto-archive the thread after it has been inactive, can be set to 60, 1440, 4320, or 10080.
+  - `rate_limit_per_user`: Rate limit per user in seconds, can be set to any value in `0..21600`.
+  - `applied_tags`: An array of tag ids to apply to the thread.
+  - `message`: The first message in the created thread.
+
+  ### Thread Message Options
+  - `content`: The content of the message.
+  - `embeds`: A list of embeds.
+  - `allowed_mentions`: Allowed mentions object.
+  - `components`: A list of components.
+  - `sticker_ids`: A list of sticker ids.
+  - `:files` - a list of files where each element is the same format as the `:file` option. If both
+    `:file` and `:files` are specified, `:file` will be prepended to the `:files` list.
+
+  At least one of `content`, `embeds`, `sticker_ids`, or `files` must be specified.
+  """
+  @doc since: "0.7.0"
+  @spec start_thread_in_forum_channel(Channel.id(), map(), AuditLogEntry.reason()) ::
+          {:ok, Channel.t()} | error
+  def start_thread_in_forum_channel(channel_id, options, reason \\ nil)
+
+  def start_thread_in_forum_channel(channel_id, %{message: data} = body, reason)
+      when has_files(data) do
+    # done this way to avoid breaking changes to support audit log reasons in multipart requests
+    boundary = generate_boundary()
+    {files, json} = combine_files(body) |> pop_files()
+    body = Jason.encode_to_iodata!(json)
+
+    headers =
+      maybe_add_reason(reason, [
+        {"content-type", "multipart/form-data; boundary=#{boundary}"}
+      ])
+
+    %{
+      method: :post,
+      route: Constants.thread_without_message(channel_id),
+      body: {:multipart, create_multipart(files, body, boundary)},
+      params: [],
+      headers: headers
+    }
+    |> request()
+    |> handle_request_with_decode({:struct, Channel})
+  end
+
+  def start_thread_in_forum_channel(channel_id, options, reason) do
+    request(%{
+      method: :post,
+      route: Constants.thread_without_message(channel_id),
+      body: options,
+      params: [],
+      headers: maybe_add_reason(reason)
+    })
+    |> handle_request_with_decode({:struct, Channel})
+  end
+
+  @doc """
+  Returns a thread member object for the specified user if they are a member of the thread
+  """
+  @doc since: "0.5.1"
+  @spec get_thread_member(Channel.id(), User.id()) :: {:ok, ThreadMember.t()} | error
+  def get_thread_member(thread_id, user_id) do
+    request(:get, Constants.thread_member(thread_id, user_id))
+    |> handle_request_with_decode({:struct, ThreadMember})
+  end
+
+  @doc """
+  Returns a list of thread members for the specified thread.
+
+  This endpoint is restricted according to whether the `GUILD_MEMBERS` privileged intent is enabled.
+  """
+  @doc since: "0.5.1"
+  @spec get_thread_members(Channel.id()) :: {:ok, [ThreadMember.t()]} | error
+  def get_thread_members(thread_id) do
+    request(:get, Constants.thread_members(thread_id))
+    |> handle_request_with_decode({:list, {:struct, ThreadMember}})
+  end
+
+  @doc """
+  Return all active threads for the current guild.
+
+  Response body is a map with the following keys:
+  - `threads`: A list of channel objects.
+  - `members`: A list of `ThreadMember` objects, one for each returned thread the current user has joined.
+  """
+  @doc since: "0.5.1"
+  @spec list_guild_threads(Guild.id()) ::
+          {:ok, %{threads: [Channel.t()], members: [ThreadMember.t()]}} | error
+  def list_guild_threads(guild_id) do
+    res =
+      request(:get, Constants.guild_active_threads(guild_id))
+      |> handle_request_with_decode
+
+    case res do
+      {:ok, %{threads: channels, members: thread_members}} ->
+        map = %{
+          threads: Util.cast({:list, {:struct, Channel}}, channels),
+          members: Util.cast({:list, {:struct, ThreadMember}}, thread_members)
+        }
+
+        {:ok, map}
+
+      {:error, e} ->
+        {:error, e}
+    end
+  end
+
+  @doc """
+  Returns a list of archived threads for a given channel.
+
+  Threads are sorted by the `archive_timestamp` field, in descending order.
+
+  ## Response body
+  Response body is a map with the following keys:
+  - `threads`: A list of channel objects.
+  - `members`: A list of `ThreadMember` objects, one for each returned thread the current user has joined.
+  - `has_more`: A boolean indicating whether there are more archived threads that can be fetched.
+
+  ## Options
+  - `before`: Returns threads before this timestamp, can be either a `DateTime` or [ISO8601 timestamp](`DateTime.to_iso8601/3`).
+  - `limit`: Optional maximum number of threads to return.
+  """
+  @doc since: "0.5.1"
+  @spec list_public_archived_threads(Channel.id(), options) ::
+          {:ok, %{threads: [Channel.t()], members: [ThreadMember.t()], has_more: boolean()}}
+          | error
+  def list_public_archived_threads(channel_id, options \\ [])
+
+  def list_public_archived_threads(channel_id, options) when is_map(options) do
+    Constants.public_archived_threads(channel_id)
+    |> list_archived_threads(Map.to_list(options))
+  end
+
+  def list_public_archived_threads(channel_id, options) when is_list(options) do
+    Constants.public_archived_threads(channel_id)
+    |> list_archived_threads(options)
+  end
+
+  @doc """
+  Same as `list_public_archived_threads/2`, but for private threads instead of public.
+  """
+  @doc since: "0.5.1"
+  @spec list_private_archived_threads(Channel.id(), options) ::
+          {:ok, %{threads: [Channel.t()], members: [ThreadMember.t()], has_more: boolean()}}
+          | error
+  def list_private_archived_threads(channel_id, options \\ [])
+
+  def list_private_archived_threads(channel_id, options) when is_map(options) do
+    Constants.private_archived_threads(channel_id)
+    |> list_archived_threads(Map.to_list(options))
+  end
+
+  def list_private_archived_threads(channel_id, options) when is_list(options) do
+    Constants.private_archived_threads(channel_id)
+    |> list_archived_threads(options)
+  end
+
+  @doc """
+  Same as `list_public_archived_threads/2`, but only returns private threads that the current user has joined.
+  """
+  @doc since: "0.5.1"
+  @spec list_joined_private_archived_threads(Channel.id(), options) ::
+          {:ok, %{threads: [Channel.t()], members: [ThreadMember.t()], has_more: boolean()}}
+          | error
+  def list_joined_private_archived_threads(channel_id, options \\ [])
+
+  def list_joined_private_archived_threads(channel_id, options) when is_map(options) do
+    Constants.private_joined_archived_threads(channel_id)
+    |> list_archived_threads(Map.to_list(options))
+  end
+
+  def list_joined_private_archived_threads(channel_id, options) when is_list(options) do
+    Constants.private_joined_archived_threads(channel_id)
+    |> list_archived_threads(options)
+  end
+
+  defp list_archived_threads(route, options) do
+    options = options |> maybe_convert_date_time(:before)
+
+    res =
+      request(%{
+        method: :get,
+        route: route,
+        body: "",
+        params: options,
+        headers: []
+      })
+      |> handle_request_with_decode
+
+    case res do
+      {:ok, %{threads: channels, members: thread_members, has_more: has_more}} ->
+        map = %{
+          threads: Util.cast(channels, {:list, {:struct, Channel}}),
+          members: Util.cast(thread_members, {:list, {:struct, ThreadMember}}),
+          has_more: has_more
+        }
+
+        {:ok, map}
+
+      {:error, e} ->
+        {:error, e}
+    end
+  end
+
+  @doc """
+  Join an existing thread, requires that the thread is not archived.
+  """
+  @doc since: "0.5.1"
+  @spec join_thread(Channel.id()) :: {:ok} | error
+  def join_thread(thread_id) do
+    request(:put, Constants.thread_member_me(thread_id))
+  end
+
+  @doc """
+  Add a user to a thread, requires the ability to send messages in the thread.
+  """
+  @doc since: "0.5.1"
+  def add_thread_member(thread_id, user_id) do
+    request(:put, Constants.thread_member(thread_id, user_id))
+  end
+
+  @doc """
+  Leave a thread, requires that the thread is not archived.
+  """
+  @doc since: "0.5.1"
+  @spec leave_thread(Channel.id()) :: {:ok} | error
+  def leave_thread(thread_id) do
+    request(:delete, Constants.thread_member_me(thread_id))
+  end
+
+  @doc """
+  Removes another user from a thread, requires that the thread is not archived.
+
+  Also requires the `MANAGE_THREADS` permission, or the creator of the thread if the thread is private.
+  """
+  @doc since: "0.5.1"
+  @spec remove_thread_member(Channel.id(), User.id()) :: {:ok} | error
+  def remove_thread_member(thread_id, user_id) do
+    request(:delete, Constants.thread_member(thread_id, user_id))
+  end
+
+  @doc """
+  Get a list of all auto-moderation rules for a guild.
+  """
+  @doc since: "0.7.0"
+  @spec get_guild_auto_moderation_rules(Guild.id()) :: {:ok, [AutoModerationRule.t()]} | error
+  def get_guild_auto_moderation_rules(guild_id) do
+    request(:get, Constants.guild_auto_moderation_rule(guild_id))
+    |> handle_request_with_decode({:list, {:struct, AutoModerationRule}})
+  end
+
+  @doc """
+  Get a single auto-moderation rule for a guild.
+  """
+  @doc since: "0.7.0"
+  @spec get_guild_auto_moderation_rule(Guild.id(), AutoModerationRule.id()) ::
+          {:ok, AutoModerationRule.t()} | error
+  def get_guild_auto_moderation_rule(guild_id, rule_id) do
+    request(:get, Constants.guild_auto_moderation_rule(guild_id, rule_id))
+    |> handle_request_with_decode({:struct, AutoModerationRule})
+  end
+
+  @doc """
+  Create a new auto-moderation rule for a guild.
+
+  ## Options
+    * `:name` (`t:String.t/0`) - The name of the rule.
+    * `:event_type` (`t:AutoModerationRule.event_type/0`) - The type of event that triggers the rule.
+    * `:trigger_type` (`t:AutoModerationRule.trigger_type/0`) - The type of content that triggers the rule.
+    * `:trigger_metadata` (`t:AutoModerationRule.trigger_metadata/0`) - The metadata associated with the rule trigger.
+      - optional, based on the `:trigger_type`.
+    * `:actions` (`t:AutoModerationRule.actions/0`) - The actions to take when the rule is triggered.
+    * `:enabled` (`t:AutoModerationRule.enabled/0`) - Whether the rule is enabled or not.
+      - optional, defaults to `false`.
+    * `:exempt_roles` - (`t:AutoModerationRule.exempt_roles/0`) - A list of role id's that are exempt from the rule.
+      - optional, defaults to `[]`, maximum of 20.
+    * `:exempt_channels` - (`t:AutoModerationRule.exempt_channels/0`) - A list of channel id's that are exempt from the rule.
+      - optional, defaults to `[]`, maximum of 50.
+  """
+  @doc since: "0.7.0"
+  @spec create_guild_auto_moderation_rule(Guild.id(), options()) ::
+          {:ok, AutoModerationRule.t()} | error
+  def create_guild_auto_moderation_rule(guild_id, options) when is_list(options),
+    do: create_guild_auto_moderation_rule(guild_id, Map.new(options))
+
+  def create_guild_auto_moderation_rule(guild_id, options) do
+    request(:post, Constants.guild_auto_moderation_rule(guild_id), options)
+    |> handle_request_with_decode({:struct, AutoModerationRule})
+  end
+
+  @doc """
+  Modify an auto-moderation rule for a guild.
+
+  Takes the same options as `create_guild_auto_moderation_rule/2`, however all fields are optional.
+  """
+  @doc since: "0.7.0"
+  @spec modify_guild_auto_moderation_rule(Guild.id(), AutoModerationRule.id(), options()) ::
+          {:ok, AutoModerationRule.t()} | error
+  def modify_guild_auto_moderation_rule(guild_id, rule_id, options) when is_list(options),
+    do: modify_guild_auto_moderation_rule(guild_id, rule_id, Map.new(options))
+
+  def modify_guild_auto_moderation_rule(guild_id, rule_id, options) do
+    request(:patch, Constants.guild_auto_moderation_rule(guild_id, rule_id), options)
+    |> handle_request_with_decode({:struct, AutoModerationRule})
+  end
+
+  @doc """
+  Delete an auto-moderation rule for a guild.
+  """
+  @doc since: "0.7.0"
+  @spec delete_guild_auto_moderation_rule(Guild.id(), AutoModerationRule.id()) :: {:ok} | error
+  def delete_guild_auto_moderation_rule(guild_id, rule_id) do
+    request(:delete, Constants.guild_auto_moderation_rule(guild_id, rule_id))
   end
 
   @spec maybe_add_reason(String.t() | nil) :: list()
@@ -3197,44 +4161,74 @@ defmodule Nostrum.Api do
     [{"x-audit-log-reason", reason} | headers]
   end
 
+  @spec request(map()) :: {:ok} | {:ok, String.t()} | error
   def request(request) do
     GenServer.call(Ratelimiter, {:queue, request, nil}, :infinity)
   end
 
-  # HTTPosion defaults to `""` for an empty body, so it's safe to do so here
-  def request(method, route, body \\ "", options \\ []) do
-    request = %{
+  @spec request(atom(), String.t(), any, keyword() | map()) :: {:ok} | {:ok, String.t()} | error
+  def request(method, route, body \\ "", params \\ [])
+
+  def request(method, route, %{} = body, params) when has_files(body),
+    do: request_multipart(method, route, body, params)
+
+  def request(method, route, %{data: data} = body, params) when has_files(data),
+    do: request_multipart(method, route, body, params)
+
+  def request(method, route, body, params) do
+    %{
       method: method,
       route: route,
       body: body,
-      options: options,
+      params: params,
       headers: [{"content-type", "application/json"}]
     }
-
-    GenServer.call(Ratelimiter, {:queue, request, nil}, :infinity)
+    |> request()
   end
 
-  def request_multipart(method, route, body, options \\ []) do
-    request = %{
+  @spec request_multipart(atom(), String.t(), any, keyword() | map()) ::
+          {:ok} | {:ok, String.t()} | error
+  def request_multipart(method, route, body, params \\ []) do
+    boundary = generate_boundary()
+    {files, body} = combine_files(body) |> pop_files()
+    json = Jason.encode_to_iodata!(body)
+
+    %{
       method: method,
       route: route,
-      # Hello hackney documentation :^)
-      body:
-        {:multipart,
-         [
-           {
-             :file,
-             body.file,
-             {"form-data", [{"filename", body.content}]},
-             [{"tts", body.tts}]
-           }
-         ]},
-      options: options,
-      headers: [{"content-type", "multipart/form-data"}]
+      # Hello :gun test suite :^)
+      body: {:multipart, create_multipart(files, json, boundary)},
+      params: params,
+      headers: [
+        {"content-type", "multipart/form-data; boundary=#{boundary}"}
+      ]
     }
-
-    GenServer.call(Ratelimiter, {:queue, request, nil}, :infinity)
+    |> request()
   end
+
+  # If `:embed` is present, prepend to `:embeds` for compatibility
+  defp combine_embeds(%{embed: embed} = args),
+    do: Map.delete(args, :embed) |> Map.put(:embeds, [embed | args[:embeds] || []])
+
+  defp combine_embeds(%{data: data} = args), do: %{args | data: combine_embeds(data)}
+  defp combine_embeds(%{message: data} = args), do: %{args | message: combine_embeds(data)}
+  defp combine_embeds(args), do: args
+
+  # If `:file` is present, prepend to `:files` for compatibility
+  defp combine_files(%{file: file} = args),
+    do: Map.delete(args, :file) |> Map.put(:files, [file | args[:files] || []])
+
+  defp combine_files(%{data: data} = args), do: %{args | data: combine_files(data)}
+  defp combine_files(%{message: data} = args), do: %{args | message: combine_files(data)}
+  defp combine_files(args), do: args
+
+  defp pop_files(%{data: data} = args),
+    do: {data.files, %{args | data: Map.delete(data, :files)}}
+
+  defp pop_files(%{message: data} = args),
+    do: {data.files, %{args | message: Map.delete(data, :files)}}
+
+  defp pop_files(args), do: Map.pop!(args, :files)
 
   @doc false
   def bangify(to_bang) do
@@ -3259,7 +4253,7 @@ defmodule Nostrum.Api do
   end
 
   defp handle_request_with_decode(response)
-  defp handle_request_with_decode({:ok, body}), do: {:ok, Poison.decode!(body, keys: :atoms)}
+  defp handle_request_with_decode({:ok, body}), do: {:ok, Jason.decode!(body, keys: :atoms)}
   defp handle_request_with_decode({:error, _} = error), do: error
 
   defp handle_request_with_decode(response, type)
@@ -3270,7 +4264,7 @@ defmodule Nostrum.Api do
   defp handle_request_with_decode({:ok, body}, type) do
     convert =
       body
-      |> Poison.decode!(keys: :atoms)
+      |> Jason.decode!(keys: :atoms)
       |> Util.cast(type)
 
     {:ok, convert}
@@ -3284,6 +4278,57 @@ defmodule Nostrum.Api do
       _ ->
         Map.delete(options, :allowed_mentions)
     end
+  end
+
+  @crlf "\r\n"
+
+  defp create_multipart(files, json, boundary) do
+    json_mime = MIME.type("json")
+    json_size = :erlang.iolist_size(json)
+
+    file_parts =
+      files
+      |> Enum.with_index(0)
+      |> Enum.map(fn {f, i} -> create_file_part_for_multipart(f, i, boundary) end)
+
+    [
+      ~s|--#{boundary}#{@crlf}|,
+      file_parts
+      | [
+          ~s|content-length: #{json_size}#{@crlf}|,
+          ~s|content-type: #{json_mime}#{@crlf}|,
+          ~s|content-disposition: form-data; name="payload_json"#{@crlf}#{@crlf}|,
+          json,
+          ~s|#{@crlf}--#{boundary}--#{@crlf}|
+        ]
+    ]
+  end
+
+  defp create_file_part_for_multipart(file, index, boundary) do
+    {body, name} = get_file_contents(file)
+
+    file_mime = MIME.from_path(name)
+    file_size = :erlang.iolist_size(body)
+
+    [
+      ~s|content-length: #{file_size}#{@crlf}|,
+      ~s|content-type: #{file_mime}#{@crlf}|,
+      ~s|content-disposition: form-data; name="files[#{index}]"; filename="#{name}"#{@crlf}#{@crlf}|,
+      body,
+      ~s|#{@crlf}--#{boundary}#{@crlf}|
+    ]
+  end
+
+  defp get_file_contents(path) when is_binary(path) do
+    {File.read!(path), Path.basename(path)}
+  end
+
+  defp get_file_contents(%{body: body, name: name}), do: {body, name}
+
+  defp generate_boundary do
+    String.duplicate("-", 20) <>
+      "KraigieNostrumCat_" <>
+      Base.encode16(:crypto.strong_rand_bytes(10))
   end
 
   defp parse_allowed_mentions(:none), do: %{parse: []}
@@ -3315,4 +4360,27 @@ defmodule Nostrum.Api do
 
   # ignore
   defp parse_allowed_mentions(options), do: options
+
+  @spec maybe_convert_date_time(options(), atom()) :: options()
+  defp maybe_convert_date_time(options, key) when is_map(options) do
+    case options do
+      %{^key => %DateTime{} = date_time} ->
+        timestamp = DateTime.to_iso8601(date_time)
+        %{options | key => timestamp}
+
+      _ ->
+        options
+    end
+  end
+
+  defp maybe_convert_date_time(options, key) when is_list(options) do
+    case Keyword.get(options, key) do
+      %DateTime{} = date_time ->
+        timestamp = DateTime.to_iso8601(date_time)
+        Keyword.put(options, key, timestamp)
+
+      _ ->
+        options
+    end
+  end
 end

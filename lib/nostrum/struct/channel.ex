@@ -1,34 +1,122 @@
 defmodule Nostrum.Struct.Channel do
-  @moduledoc ~S"""
-  Struct representing a Discord guild channel.
+  @moduledoc """
+  Struct and helper functions for working with channels.
 
-  A `Nostrum.Struct.Channel` represents all 5 types of channels. Each
-  channel has a field `:type` with any of the following values:
+  ## Channel Struct
 
-    * `0` - GUILD_TEXT
-    * `1` - DM
-    * `2` - GUILD_VOICE
-    * `3` - GROUP_DM
-    * `4` - GUILD_CATEGORY
+  The channel struct is used by Nostrum to represent a _Discord Channel Object_. More information can be found on the [Discord API Channel Documentation](https://discord.com/developers/docs/resources/channel#channels-resource).
 
-  More information can be found on the
-  [Discord API Channel Documentation](https://discord.com/developers/docs/resources/channel#channel-object).
+  The struct can have one of several forms depending on the type of channel. You can read more about the individual channel types [below](#module-channel-types).
 
-  ## Mentioning Channels in Messages
+  A typical channel would appear as:
 
-  A `Nostrum.Struct.Channel` can be mentioned in message content using the `String.Chars`
-  protocol or `mention/1`.
-
-  ```Elixir
-  channel = %Nostrum.Struct.Channel{id: 381889573426429952}
-  Nostrum.Api.create_message!(184046599834435585, "#{channel}")
-  %Nostrum.Struct.Message{content: "<#381889573426429952>"}
-
-  channel = %Nostrum.Struct.Channel{id: 280085880452939778}
-  Nostrum.Api.create_message!(280085880452939778, "#{Nostrum.Struct.Channel.mention(channel)}")
-  %Nostrum.Struct.Message{content: "<#280085880452939778>"}
+  ```elixir
+  %Nostrum.Struct.Channel{
+    guild_id: 766435015768539156,
+    id: 827333533688397865,
+    name: "announcements",
+    nsfw: false,
+    permission_overwrites: [],
+    position: 1,
+    type: 5,
+  }
   ```
+
+  The channel struct implements `String.Chars` protocol through the `mention/1` function. This example uses our channel from the previous code block.
+
+  ```elixir
+  channel |> to_string()
+  "<#766435015768539156>"
+  ```
+
+  ## Channel Cache
+
+  The [`ChannelCache`](`Nostrum.Cache.ChannelCache`) module provides functionality for you to retrieve information about any channel that your application can see. It provides two functions: [`get/1`](`Nostrum.Cache.ChannelCache.get/1`) and [`get!/1`](`Nostrum.Cache.ChannelCache.get!/1`).
+
+  ## Example
+
+  ```elixir
+  Nostrum.Cache.ChannelCache.get!(827333533688397865)
+  %Nostrum.Struct.Channel{
+    application_id: nil,
+    bitrate: nil,
+    guild_id: 766435015768539156,
+    icon: nil,
+    id: 827333533688397865,
+    last_message_id: nil,
+    last_pin_timestamp: nil,
+    name: "announcements",
+    nsfw: false,
+    owner_id: nil,
+    parent_id: nil,
+    permission_overwrites: [
+      %Nostrum.Struct.Overwrite{
+        allow: 0,
+        deny: 2048,
+        id: 766435015768539156,
+        type: :role
+      }
+    ],
+    position: 1,
+    recipients: nil,
+    topic: nil,
+    type: 5,
+    user_limit: nil
+  }
+  ```
+
+  More details of the cache can be found at `Nostrum.Cache.ChannelCache`.
+
+  ## Helper Functions
+
+  This module contains two functions for assisting with channel structs. `mention/1` to convert the channel into a mention as a string, and `link/1` to convert the channel into a hyperlink as a string. Further details and examples are detailed in the [Functions section of this module.](#functions)
+
+  ## Api Functions
+
+  The Nostrum Api contains numerous functions related to channels. Notable functions relating to channels are shown below.
+
+  - `Nostrum.Api.create_guild_channel/2`
+  - `Nostrum.Api.get_channel/1`
+  - `Nostrum.Api.modify_channel/3`
+  - `Nostrum.Api.delete_channel/2`
+  - `Nostrum.Api.add_pinned_channel_message/2`
+  - `Nostrum.Api.create_channel_invite/3`
+  - `Nostrum.Api.get_guild_channels/1`
+  - `Nostrum.Api.modify_guild_channel_positions/2`
+
+  > Note: This is not an exhaustive list, for full details please see the `Nostrum.Api` module documentation.
+
+  ## Channel Types
+  Channels take the shape of various types depending on their use and not all fields are always used. The currently implemented channel types are detailed below. The type of channel is determined by the `:type` field.
+
+  This diagram represents the regular channel types `0`, `2`, `5` and `13`.
+
+    ![Discord Channels](./assets/channel_types.png)
+
+    The currently implemented channel types are:
+
+  |     |Channel Type                                                 |                                                                  |
+  |---- |--------------------                                         |---------------------------------------------------------------   |
+  |`0`  |[`GUILD_TEXT`](`t:guild_text_channel/0`)                     |_A text channel within a server_                                  |
+  |`1`  |[`DM`](`t:dm_channel/0`)                                     |_A direct message between users_                                  |
+  |`2`  |[`GUILD_VOICE`](`t:guild_voice_channel/0`)                   |_A voice channel within a server_                                 |
+  |`3`  |[`GROUP_DM`](`t:group_dm_channel/0`)                         |_A direct message between multiple users_                         |
+  |`4`  |[`GUILD_CATEGORY`](`t:guild_category_channel/0`)             |_A category that contains up to 50 channels_                      |
+  |`5`  |[`GUILD_NEWS`](`t:guild_news_channel/0`)                     |_A channel that users can follow and crosspost_                   |
+  |`6`  |[`GUILD_STORE`](`t:guild_store_channel/0`)                   |_A channel to sell games on Discord_                              |
+  |`10` |[`GUILD_NEWS_THREAD`](`t:guild_news_thread_channel/0`)       |_A temporary sub-channel within a news channel_                   |
+  |`11` |[`GUILD_PUBLIC_THREAD`](`t:guild_public_thread_channel/0`)   |_A temporary sub-channel within a text channel_                   |
+  |`12` |[`GUILD_PRIVATE_THREAD`](`t:guild_private_thread_channel/0`) |_A temporary private sub-channel within a text channel_           |
+  |`13` |[`GUILD_STAGE_VOICE`](`t:guild_stage_voice_channel/0`)       |_A voice channel for hosting events with an audience_             |
+  |`15` |[`GUILD_FORUM`](`t:guild_forum_channel/0`)                   |_A channel that can only contain threads                          |
+
+  More information about _Discord Channel Types_ can be found on the [Discord API Channel Type Documentation](https://discord.com/developers/docs/resources/channel#channel-object-channel-types).
   """
+
+  defimpl String.Chars do
+    @spec to_string(Nostrum.Struct.Channel.t()) :: String.t()
+    def to_string(channel), do: @for.mention(channel)
+  end
 
   alias Nostrum.Struct.{Channel, Guild, Message, Overwrite, User}
   alias Nostrum.{Snowflake, Util}
@@ -45,114 +133,325 @@ defmodule Nostrum.Struct.Channel do
     :last_message_id,
     :bitrate,
     :user_limit,
+    :rate_limit_per_user,
     :recipients,
     :icon,
     :owner_id,
     :application_id,
     :parent_id,
-    :last_pin_timestamp
+    :last_pin_timestamp,
+    :rtc_region,
+    :video_quality_mode,
+    :message_count,
+    :member_count,
+    :thread_metadata,
+    :member,
+    :default_auto_archive_duration,
+    :permissions,
+    :newly_created,
+    :available_tags,
+    :applied_tags,
+    :default_reaction_emoji,
+    :default_thread_rate_limit_per_user
   ]
 
-  defimpl String.Chars do
-    def to_string(channel), do: @for.mention(channel)
-  end
-
-  @typedoc "The channel's id"
+  @typedoc """
+  The id of the channel object.
+  """
   @type id :: Snowflake.t()
 
-  @typedoc "The id of the channel's guild"
-  @type guild_id :: Guild.id()
+  @typedoc """
+  The type of channel.
 
-  @typedoc "The ordered position of the channel"
-  @type position :: integer
-
-  @typedoc "The list of overwrites"
-  @type permission_overwrites :: [Overwrite.t()]
-
-  @typedoc "The name of the channel"
-  @type name :: String.t()
-
-  @typedoc "Current channel topic"
-  @type topic :: String.t()
-
-  @typedoc "If the channel is nsfw"
-  @type nsfw :: boolean
-
-  @typedoc "Id of the last message sent"
-  @type last_message_id :: Message.id() | nil
-
-  @typedoc "The bitrate of the voice channel"
-  @type bitrate :: integer
-
-  @typedoc "The user limit of the voice channel"
-  @type user_limit :: integer
-
-  @typedoc "The recipients of the DM"
-  @type recipients :: [User.t()]
-
-  @typedoc "The icon hash of the channel"
-  @type icon :: String.t() | nil
-
-  @typedoc "The id of the DM creator"
-  @type owner_id :: User.id()
-
-  @typedoc "The application id of the group DM creator if it is bot-created"
-  @type application_id :: Snowflake.t() | nil
-
-  @typedoc "The id of the parent category for a channel"
-  @type parent_id :: Channel.id() | nil
-
-  @typedoc "When the last pinned message was pinned"
-  @type last_pin_timestamp :: String.t() | nil
+  More information about _Discord Channel Types_ can be found under the [`types`](#module-channel-types) on the [Discord API Channel Type Documentation](https://discord.com/developers/docs/resources/channel#channel-object-channel-types).
+  """
+  @type type :: integer()
 
   @typedoc """
-  A `Nostrum.Struct.Channel` that represents a text channel in a guild.
+  The id of the guild the channel is located in.
   """
-  @type guild_text_channel :: %__MODULE__{
-          id: id,
-          type: 0,
-          guild_id: guild_id,
-          position: position,
-          permission_overwrites: permission_overwrites,
-          name: name,
-          topic: topic,
-          nsfw: nsfw,
-          last_message_id: last_message_id,
-          bitrate: nil,
-          user_limit: nil,
-          recipients: nil,
-          icon: nil,
-          owner_id: nil,
-          application_id: nil,
-          parent_id: parent_id,
-          last_pin_timestamp: last_pin_timestamp
+  @type guild_id :: Guild.id()
+
+  @typedoc """
+  The position of the channel in the sidebar of the guild.
+  """
+  @type position :: integer()
+
+  @typedoc """
+  A list of permission overwrites applied to the channel.
+  """
+  @type permission_overwrites :: [Overwrite.t()]
+
+  @typedoc """
+  The name of the channel.
+  """
+  @type name :: String.t()
+
+  @typedoc """
+  The topic of the channel.
+  """
+  @type topic :: String.t()
+
+  @typedoc """
+  Whether the NSFW setting is enabled for this channel.
+  """
+  @type nsfw :: boolean()
+
+  @typedoc """
+  The id of the last message sent in the channel.
+
+  For `GUILD_FORUM` channels, this is the last thread created in the channel.
+  """
+  @type last_message_id :: Message.id() | nil
+
+  @typedoc """
+  The bitate of the voice channel.
+  """
+  @type bitrate :: integer()
+
+  @typedoc """
+  The users rate limit.
+
+  Amount of seconds a user has to wait before sending another message (0-21600); bots, as well as users with the permission manage_messages or manage_channel, are unaffected
+  """
+  @typedoc since: "0.5.0"
+  @type rate_limit_per_user :: integer() | nil
+
+  @typedoc """
+  The `:rate_limit_per_user` which will be applied to threads created in the channel, in seconds.
+  """
+  @typedoc since: "0.7.0"
+  @type default_thread_rate_limit_per_user :: integer() | nil
+
+  @typedoc """
+  The user limit of a voice channel.
+  """
+  @type user_limit :: integer()
+
+  @typedoc """
+  A list of users in a group DM.
+  """
+  @type recipients :: [User.t()]
+
+  @typedoc """
+  The hash of the channels icon.
+  """
+  @type icon :: String.t() | nil
+
+  @typedoc """
+  The id of the user of a group direct message or thread.
+
+  This applies to user created channels.
+  """
+  @type owner_id :: User.id()
+
+  @typedoc """
+  The id of the application that created a group direct message or thread.
+
+  This applies to bot created channels.
+  """
+  @type application_id :: Snowflake.t() | nil
+
+  @typedoc """
+  The id of the parent channel that this channel is located under.
+
+  For threads, that is the channel that contains the thread. For regular channels, it is the category that the channel is located under.
+  """
+  @type parent_id :: Channel.id() | nil
+
+  @typedoc """
+  Timestamp for the last pinned message.
+  """
+  @type last_pin_timestamp :: DateTime.t() | nil
+
+  @typedoc """
+  Region id for the channel.
+
+  More information about _region ids_ can be found on the [Discord API Voice Region Object Documentation](https://discord.com/developers/docs/resources/voice#voice-region-object).
+  """
+  @typedoc since: "0.5.0"
+  @type rtc_region :: String.t() | nil
+
+  @typedoc """
+  The video quality mode of the channel.
+
+  More information about _video quality modes_ can be found on the [Discord API Video Quality Mode Documentation](https://discord.com/developers/docs/resources/channel#channel-object-video-quality-modes).
+  """
+  @typedoc since: "0.5.0"
+  @type video_quality_mode :: integer() | nil
+
+  @typedoc """
+  Approximate count of messages in a thread, capped at 50.
+  """
+  @typedoc since: "0.5.0"
+  @type message_count :: integer() | nil
+
+  @typedoc """
+  Approximate count of members in a thread, capped at 50.
+  """
+  @typedoc since: "0.5.0"
+  @type member_count :: integer() | nil
+
+  @typedoc """
+  Thread-specific fields not needed by other channels.
+  """
+  @typedoc since: "0.5.0"
+  @type thread_metadata :: %{
+          archived: archived,
+          auto_archive_duration: auto_archive_duration,
+          archive_timestamp: archive_timestamp,
+          locked: boolean(),
+          invitable: boolean() | nil,
+          create_timestamp: DateTime.t() | nil
         }
 
   @typedoc """
-  A `Nostrum.Struct.Channel` that represents a DM channel.
+  When the thread was archived.
+  """
+  @typedoc since: "0.5.0"
+  @type archive_timestamp :: DateTime.t() | nil
+
+  @typedoc """
+  The threads locked status.
+  """
+  @typedoc since: "0.5.0"
+  @type locked :: boolean()
+
+  @typedoc """
+  The threads archived status.
+  """
+  @typedoc since: "0.5.0"
+  @type archived :: boolean()
+
+  @typedoc """
+  Archive duration for the thread in minutes.
+
+  - 60, 1 hour
+  - 1440, 24 hours
+  - 4320, 3 days
+  - 10080, 7 days
+  """
+  @typedoc since: "0.5.0"
+  @type auto_archive_duration :: integer()
+
+  @typedoc """
+  Present when the bot joins a thread.
+
+  Note: This is omitted on threads that the bot can immediately access on `:GUILD_CREATE` events received.
+  """
+  @typedoc since: "0.5.0"
+  @type member :: %{
+          id: id,
+          user_id: user_id,
+          join_timestamp: join_timestamp,
+          flags: flags
+        }
+
+  @typedoc """
+  User id of the threads creator.
+  """
+  @typedoc since: "0.5.0"
+  @type user_id :: Snowflake.t() | nil
+
+  @typedoc """
+  When the user joined the thread.
+  """
+  @typedoc since: "0.5.0"
+  @type join_timestamp :: DateTime.t()
+
+  @typedoc """
+  User thread settings, currently only used for notifications.
+  """
+  @typedoc since: "0.5.0"
+  @type flags :: integer()
+
+  @typedoc """
+  Default duration for newly created threads in minutes.
+
+  - 60, 1 hour
+  - 1440, 24 hours
+  - 4320, 3 days
+  - 10080, 7 days
+  """
+  @typedoc since: "0.5.0"
+  @type default_auto_archive_duration :: integer()
+
+  @typedoc """
+  Computed permissions of the invoking user.
+
+  Permissions for the invoking user in the channel, including overwrites, only included when part of the resolved data received on a slash command interaction
+  """
+  @typedoc since: "0.5.0"
+  @type permissions :: String.t()
+
+  @typedoc """
+  Included only in the `THREAD_CREATE` event.
+  """
+  @typedoc since: "0.5.1"
+  @type newly_created :: boolean | nil
+
+  @typedoc """
+  A map representing a tag for use in forum channels.
+
+  `:moderated` indicates whether the tag can only be added or removed by moderators.
+  `:emoji_id` and `:emoji_name` are mutually exclusive and indicate the emoji used to represent the tag.
+  """
+  @typedoc since: "0.7.0"
+  @type forum_tag :: %{
+          id: Snowflake.t(),
+          name: String.t(),
+          moderated: boolean(),
+          emoji_id: Snowflake.t() | nil,
+          emoji_name: String.t() | nil
+        }
+
+  @typedoc since: "0.7.0"
+  @type applied_tags :: [Snowflake.t()] | nil
+
+  @typedoc """
+  An object that specifies the emoji to use as the default way to react to a forum post.
+
+  `:emoji_id` and `:emoji_name` are mutually exclusive
+  """
+  @typedoc since: "0.7.0"
+  @type default_reaction_emoji ::
+          %{
+            emoji_id: Snowflake.t() | nil,
+            emoji_name: String.t() | nil
+          }
+          | nil
+
+  @typedoc """
+  Type 0 partial channel object representing a text channel within a guild.
+  """
+  @type guild_text_channel :: %__MODULE__{
+          id: id,
+          guild_id: guild_id,
+          name: name,
+          type: type,
+          position: position,
+          permission_overwrites: permission_overwrites,
+          rate_limit_per_user: rate_limit_per_user,
+          nsfw: nsfw,
+          topic: topic,
+          last_message_id: last_message_id,
+          parent_id: parent_id,
+          default_auto_archive_duration: default_auto_archive_duration
+        }
+
+  @typedoc """
+  Type 1 partial channel object representing a direct message.
   """
   @type dm_channel :: %__MODULE__{
           id: id,
           type: 1,
-          guild_id: nil,
-          position: nil,
-          permission_overwrites: nil,
-          name: nil,
-          topic: nil,
-          nsfw: nil,
           last_message_id: last_message_id,
-          bitrate: nil,
-          user_limit: nil,
           recipients: recipients,
-          icon: nil,
-          owner_id: nil,
-          application_id: nil,
-          parent_id: nil,
-          last_pin_timestamp: nil
+          last_pin_timestamp: last_pin_timestamp
         }
 
   @typedoc """
-  A `Nostrum.Struct.Channel` that represents a voice channel in a guild.
+  Type 2 partial channel object representing an audio channel within a guild.
   """
   @type guild_voice_channel :: %__MODULE__{
           id: id,
@@ -161,113 +460,248 @@ defmodule Nostrum.Struct.Channel do
           position: position,
           permission_overwrites: permission_overwrites,
           name: name,
-          topic: nil,
           nsfw: nsfw,
-          last_message_id: nil,
           bitrate: bitrate,
           user_limit: user_limit,
-          recipients: nil,
-          icon: nil,
-          owner_id: nil,
-          application_id: nil,
           parent_id: parent_id,
-          last_pin_timestamp: nil
+          rtc_region: rtc_region
         }
 
   @typedoc """
-  A `Nostrum.Struct.Channel` that represents a group DM channel.
+  Type 3 partial channel object representing a group direct message.
   """
   @type group_dm_channel :: %__MODULE__{
           id: id,
           type: 3,
-          guild_id: nil,
-          position: nil,
-          permission_overwrites: nil,
           name: name,
-          topic: nil,
-          nsfw: nil,
           last_message_id: last_message_id,
-          bitrate: nil,
-          user_limit: nil,
           recipients: recipients,
           icon: icon,
           owner_id: owner_id,
-          application_id: application_id,
-          parent_id: nil,
-          last_pin_timestamp: nil
+          application_id: application_id
         }
 
   @typedoc """
-  A `Nostrum.Struct.Channel` that represents a channel category in a guild.
+  Type 4 partial channel object representing a channel category.
+
+  > Note:  Other channels `parent_id` field refers to this type of object.
   """
-  @type channel_category :: %__MODULE__{
+
+  @type guild_category_channel :: %__MODULE__{
           id: id,
           type: 4,
           guild_id: guild_id,
           position: position,
           permission_overwrites: permission_overwrites,
           name: name,
-          topic: nil,
           nsfw: nsfw,
-          last_message_id: nil,
-          bitrate: nil,
-          user_limit: nil,
-          recipients: nil,
-          icon: nil,
-          owner_id: nil,
-          application_id: nil,
-          parent_id: parent_id,
-          last_pin_timestamp: nil
+          parent_id: parent_id
         }
 
   @typedoc """
-  A `Nostrum.Struct.Channel` that represents a channel in a guild.
+  Type 5 partial channel object representing a news channel.
   """
+  @typedoc since: "0.5.0"
+  @type guild_news_channel :: %__MODULE__{
+          id: id,
+          type: 5,
+          guild_id: guild_id,
+          name: name,
+          position: position,
+          permission_overwrites: permission_overwrites,
+          nsfw: nsfw,
+          topic: topic,
+          last_message_id: last_message_id,
+          parent_id: parent_id,
+          default_auto_archive_duration: default_auto_archive_duration
+        }
+
+  @typedoc """
+  Type 6 partial channel object representing a store channel.
+  """
+  @typedoc since: "0.5.0"
+  @type guild_store_channel :: %__MODULE__{
+          id: id,
+          guild_id: guild_id,
+          name: name,
+          type: type,
+          position: position,
+          permission_overwrites: permission_overwrites,
+          nsfw: nsfw,
+          parent_id: parent_id
+        }
+
+  @typedoc """
+  Type 10 partial channel object representing a news thread.
+  """
+  @typedoc since: "0.5.0"
+  @type guild_news_thread_channel :: %__MODULE__{
+          id: id,
+          guild_id: guild_id,
+          parent_id: parent_id,
+          owner_id: owner_id,
+          name: name,
+          type: type,
+          last_message_id: last_message_id,
+          message_count: message_count,
+          member_count: member_count,
+          rate_limit_per_user: rate_limit_per_user,
+          thread_metadata: thread_metadata,
+          newly_created: newly_created
+        }
+
+  @typedoc """
+  Type 11 partial channel object representing a standard thread.
+  """
+  @typedoc since: "0.5.0"
+  @type guild_public_thread_channel :: %__MODULE__{
+          id: id,
+          guild_id: guild_id,
+          parent_id: parent_id,
+          owner_id: owner_id,
+          name: name,
+          type: type,
+          last_message_id: last_message_id,
+          message_count: message_count,
+          member_count: member_count,
+          rate_limit_per_user: rate_limit_per_user,
+          thread_metadata: thread_metadata,
+          newly_created: newly_created,
+          applied_tags: applied_tags()
+        }
+
+  @typedoc """
+  Type 12 partial channel object representing a private thread.
+  """
+  @typedoc since: "0.5.0"
+  @type guild_private_thread_channel :: %__MODULE__{
+          id: id,
+          guild_id: guild_id,
+          parent_id: parent_id,
+          owner_id: owner_id,
+          name: name,
+          type: type,
+          last_message_id: last_message_id,
+          message_count: message_count,
+          member_count: member_count,
+          rate_limit_per_user: rate_limit_per_user,
+          thread_metadata: thread_metadata,
+          newly_created: newly_created
+        }
+
+  @typedoc """
+  Type 13 channel object representing a stage channel.
+  """
+  @typedoc since: "0.5.0"
+  @type guild_stage_voice_channel :: %__MODULE__{
+          id: id,
+          guild_id: guild_id,
+          parent_id: parent_id,
+          owner_id: owner_id,
+          name: name,
+          type: type,
+          last_message_id: last_message_id,
+          message_count: message_count,
+          member_count: member_count,
+          rate_limit_per_user: rate_limit_per_user,
+          thread_metadata: thread_metadata
+        }
+
+  @typedoc """
+  Type 15 a guild forum channel.
+  """
+  @typedoc since: "0.7.0"
+  @type guild_forum_channel :: %__MODULE__{
+          id: id,
+          guild_id: guild_id,
+          name: name,
+          type: type,
+          position: position,
+          permission_overwrites: permission_overwrites,
+          nsfw: nsfw,
+          parent_id: parent_id,
+          last_message_id: last_message_id,
+          available_tags: [forum_tag],
+          rate_limit_per_user: rate_limit_per_user,
+          default_reaction_emoji: default_reaction_emoji,
+          default_thread_rate_limit_per_user: default_thread_rate_limit_per_user
+        }
+
+  @typedoc """
+  A partial channel object representing a channel mention.
+
+  More information about the _Discord Channel Mention Object_ can be found at the [Discord API Channel Mention Object
+  Documentation](https://discord.com/developers/docs/resources/channel#channel-mention-object).
+  """
+  @type channel_mention :: %__MODULE__{
+          id: id,
+          guild_id: guild_id,
+          type: type,
+          name: name
+        }
+  @typedoc """
+  Guild channel types
+  """
+  @typedoc deprecated: "See t.0"
   @type guild_channel ::
           guild_text_channel
           | guild_voice_channel
-          | channel_category
+          | guild_category_channel
 
   @typedoc """
-  A `Nostrum.Struct.Channel` that represents a text channel.
+  All valid text channels.
   """
+  @typedoc deprecated: "See t.0"
   @type text_channel ::
           guild_text_channel
           | dm_channel
           | group_dm_channel
 
   @typedoc """
-  A `Nostrum.Struct.Channel` that represents a voice channel.
+  A `Nostrum.Struct.Channel` that represents a voice channel
+
   """
+  @typedoc deprecated: "See t:guild_voice_channel/0"
   @type voice_channel :: guild_voice_channel
 
+  @typedoc """
+  All valid channel types.
+  """
   @type t ::
           guild_text_channel
           | dm_channel
           | guild_voice_channel
           | group_dm_channel
-          | channel_category
+          | guild_category_channel
+          | guild_news_channel
+          | guild_store_channel
+          | guild_news_thread_channel
+          | guild_public_thread_channel
+          | guild_private_thread_channel
+          | guild_stage_voice_channel
+          | guild_forum_channel
 
-  @doc ~S"""
-  Formats a `Nostrum.Struct.Channel` into a mention.
+  @doc """
+  Convert a channel into a mention.
+
+  Handles the conversion of a `Nostrum.Struct.Channel` into the required format to _mention_ the channel within a message. Mentioning the channel will provide a clickable link to take the user to the channel.
+
+  ## Parameters
+
+  - channel: `t:Nostrum.Struct.Channel.t/0`
 
   ## Examples
 
-  ```Elixir
-  iex> channel = %Nostrum.Struct.Channel{id: 381889573426429952}
-  ...> Nostrum.Struct.Channel.mention(channel)
+  ```elixir
+  Nostrum.Cache.ChannelCache.get(381889573426429952)
+  |> Nostrum.Struct.Channel.mention()
   "<#381889573426429952>"
+
   ```
+
   """
   @spec mention(t) :: String.t()
   def mention(%__MODULE__{id: id}), do: "<##{id}>"
-
-  @doc false
-  def p_encode do
-    %__MODULE__{
-      permission_overwrites: [Overwrite.p_encode()]
-    }
-  end
 
   @doc false
   def to_struct(map) do
@@ -282,7 +716,42 @@ defmodule Nostrum.Struct.Channel do
       |> Map.update(:owner_id, nil, &Util.cast(&1, Snowflake))
       |> Map.update(:application_id, nil, &Util.cast(&1, Snowflake))
       |> Map.update(:parent_id, nil, &Util.cast(&1, Snowflake))
+      |> Map.update(:last_pin_timestamp, nil, &Util.maybe_to_datetime/1)
+      |> Map.update(:archive_timestamp, nil, &Util.maybe_to_datetime/1)
+      |> Map.update(:join_timestamp, nil, &Util.maybe_to_datetime/1)
+      |> Map.update(:applied_tags, nil, &Util.cast(&1, {:list, Snowflake}))
+      |> Map.update(:thread_metadata, nil, &cast_thread_metadata/1)
+      |> Map.update(:available_tags, nil, &cast_available_tags/1)
+      |> Map.update(:default_reaction_emoji, nil, &cast_default_reaction_emoji/1)
 
     struct(__MODULE__, new)
+  end
+
+  defp cast_thread_metadata(nil), do: nil
+
+  defp cast_thread_metadata(map) do
+    map
+    |> Map.new(fn {k, v} -> {Util.maybe_to_atom(k), v} end)
+    |> Map.update(:archive_timestamp, nil, &Util.maybe_to_datetime/1)
+    |> Map.update(:create_timestamp, nil, &Util.maybe_to_datetime/1)
+  end
+
+  defp cast_available_tags(nil), do: nil
+
+  defp cast_available_tags(list) do
+    Enum.map(list, fn map ->
+      map
+      |> Map.new(fn {k, v} -> {Util.maybe_to_atom(k), v} end)
+      |> Map.update(:id, nil, &Util.cast(&1, Snowflake))
+      |> Map.update(:emoji_id, nil, &Util.cast(&1, Snowflake))
+    end)
+  end
+
+  defp cast_default_reaction_emoji(nil), do: nil
+
+  defp cast_default_reaction_emoji(map) do
+    map
+    |> Map.new(fn {k, v} -> {Util.maybe_to_atom(k), v} end)
+    |> Map.update(:id, nil, &Util.cast(&1, Snowflake))
   end
 end

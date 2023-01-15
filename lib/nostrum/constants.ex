@@ -1,7 +1,9 @@
 defmodule Nostrum.Constants do
   @moduledoc false
 
-  def base_url, do: "https://discord.com/api/v7"
+  def domain, do: "discord.com"
+  def base_route, do: "/api/v10"
+  def base_url, do: "https://#{domain()}#{base_route()}"
   def cdn_url, do: "https://cdn.discordapp.com"
   def gateway, do: "/gateway"
   def gateway_bot, do: "/gateway/bot"
@@ -62,14 +64,26 @@ defmodule Nostrum.Constants do
   def guild_integration_sync(guild_id, integration_id),
     do: "/guilds/#{guild_id}/integrations/#{integration_id}/sync"
 
-  def guild_embed(guild_id), do: "/guilds/#{guild_id}/embed"
   def guild_emojis(guild_id), do: "/guilds/#{guild_id}/emojis"
   def guild_emoji(guild_id, emoji_id), do: "/guilds/#{guild_id}/emojis/#{emoji_id}"
+
+  def guild_scheduled_events(guild_id), do: "/guilds/#{guild_id}/scheduled-events"
+
+  def guild_scheduled_event(guild_id, event_id),
+    do: "/guilds/#{guild_id}/scheduled-events/#{event_id}"
+
+  def guild_scheduled_event_users(guild_id, event_id),
+    do: "/guilds/#{guild_id}/scheduled-events/#{event_id}/users"
+
+  def guild_widget(guild_id), do: "/guilds/#{guild_id}/widget"
 
   def webhooks_guild(guild_id), do: "/guilds/#{guild_id}/webhooks"
   def webhooks_channel(channel_id), do: "/channels/#{channel_id}/webhooks"
   def webhook(webhook_id), do: "/webhooks/#{webhook_id}"
   def webhook_token(webhook_id, webhook_token), do: "/webhooks/#{webhook_id}/#{webhook_token}"
+
+  def webhook_message_edit(webhook_id, webhook_token, message_id),
+    do: "/webhooks/#{webhook_id}/#{webhook_token}/#{message_id}"
 
   def webhook_git(webhook_id, webhook_token),
     do: "/webhooks/#{webhook_id}/#{webhook_token}/github"
@@ -101,8 +115,17 @@ defmodule Nostrum.Constants do
   def guild_application_commands(application_id, guild_id),
     do: "/applications/#{application_id}/guilds/#{guild_id}/commands"
 
+  def guild_application_command_permissions(application_id, guild_id),
+    do: "/applications/#{application_id}/guilds/#{guild_id}/commands/permissions"
+
+  def guild_application_command_permissions(application_id, guild_id, command_id),
+    do: "/applications/#{application_id}/guilds/#{guild_id}/commands/#{command_id}/permissions"
+
   def interaction_callback(interaction_id, interaction_token),
     do: "/interactions/#{interaction_id}/#{interaction_token}/callback"
+
+  def interaction_callback_original(application_id, interaction_token),
+    do: "/webhooks/#{application_id}/#{interaction_token}/messages/@original"
 
   def interaction_followup_message(application_id, interaction_token, message_id),
     do: "/webhooks/#{application_id}/#{interaction_token}/#{message_id}"
@@ -118,6 +141,32 @@ defmodule Nostrum.Constants do
   def cdn_emoji(id, image_format), do: "/emojis/#{id}.#{image_format}"
   def cdn_icon(id, icon, image_format), do: "/icons/#{id}/#{icon}.#{image_format}"
   def cdn_splash(id, splash, image_format), do: "/splashes/#{id}/#{splash}.#{image_format}"
+
+  def thread_with_message(channel_id, message_id),
+    do: "/channels/#{channel_id}/messages/#{message_id}/threads"
+
+  def thread_without_message(channel_id), do: "/channels/#{channel_id}/threads"
+
+  def thread_member_me(thread_id), do: "/channels/#{thread_id}/thread-members/@me"
+
+  def thread_member(thread_id, user_id), do: "/channels/#{thread_id}/thread-members/#{user_id}"
+
+  def thread_members(thread_id), do: "/channels/#{thread_id}/thread-members"
+
+  def guild_active_threads(guild_id), do: "/guilds/#{guild_id}/threads/active"
+
+  def public_archived_threads(channel_id), do: "/channels/#{channel_id}/threads/archived/public"
+
+  def private_archived_threads(channel_id), do: "/channels/#{channel_id}/threads/archived/private"
+
+  def private_joined_archived_threads(channel_id),
+    do: "/channels/#{channel_id}/users/@me/threads/archived/private"
+
+  def guild_auto_moderation_rule(guild_id),
+    do: "/guilds/#{guild_id}/auto-moderation/rules"
+
+  def guild_auto_moderation_rule(guild_id, rule_id),
+    do: "/guilds/#{guild_id}/auto-moderation/rules/#{rule_id}"
 
   def discord_epoch, do: 1_420_070_400_000
 
@@ -178,4 +227,31 @@ defmodule Nostrum.Constants do
     {k, _} = Enum.find(voice_opcodes(), fn {_, v} -> v == opcode end)
     k |> String.downcase() |> String.to_atom()
   end
+
+  @doc """
+  Return transport options for `:gun` to verify SSL certificates.
+
+  By default, SSL connections will try to verify the peer, but not know
+  where to look for a CA bundle. This will result in the following lines
+  being printed to the log
+
+  ```
+  17:03:48.657 [warn]  Description: 'Authenticity is not established by certificate path validation'
+     Reason: 'Option {verify, verify_peer} and cacertfile/cacerts is missing'
+  ```
+
+  This function returns a list suitable for the `:tls_opts` field of the
+  `:gun.open` call. You can find more information about the type in [the
+  gun documentation](https://ninenines.eu/docs/en/gun/2.0/manual/gun/).
+  """
+  @doc since: "0.5.0"
+  @spec gun_tls_opts :: [:ssl.tls_client_option()]
+  # See: https://erlef.github.io/security-wg/secure_coding_and_deployment_hardening/ssl
+  def gun_tls_opts,
+    do: [
+      verify: :verify_peer,
+      cacerts: :certifi.cacerts(),
+      depth: 3,
+      customize_hostname_check: [match_fun: :public_key.pkix_verify_hostname_match_fun(:https)]
+    ]
 end

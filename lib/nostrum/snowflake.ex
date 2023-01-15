@@ -4,6 +4,7 @@ defmodule Nostrum.Snowflake do
   """
 
   alias Nostrum.Constants
+  import Bitwise
 
   @typedoc """
   The type that represents snowflakes in JSON.
@@ -106,7 +107,7 @@ defmodule Nostrum.Snowflake do
   @doc """
   Converts the given `datetime` into a snowflake.
 
-  If `datetime` occured before the discord epoch, the function will return
+  If `datetime` occurred before the discord epoch, the function will return
   `:error`.
 
   The converted snowflake's last 22 bits will be zeroed out due to missing data.
@@ -125,8 +126,6 @@ defmodule Nostrum.Snowflake do
   """
   @spec from_datetime(DateTime.t()) :: {:ok, t} | :error
   def from_datetime(%DateTime{} = datetime) do
-    use Bitwise
-
     unix_time_ms = DateTime.to_unix(datetime, :millisecond)
     discord_time_ms = unix_time_ms - Constants.discord_epoch()
 
@@ -160,8 +159,6 @@ defmodule Nostrum.Snowflake do
   """
   @spec creation_time(t) :: DateTime.t()
   def creation_time(snowflake) when is_snowflake(snowflake) do
-    use Bitwise
-
     time_elapsed_ms = (snowflake >>> 22) + Constants.discord_epoch()
 
     {:ok, datetime} = DateTime.from_unix(time_elapsed_ms, :millisecond)

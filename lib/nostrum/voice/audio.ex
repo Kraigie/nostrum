@@ -7,15 +7,24 @@ defmodule Nostrum.Voice.Audio do
   alias Nostrum.Struct.VoiceState
   alias Nostrum.Util
   alias Nostrum.Voice
-  alias Porcelain.Process, as: Proc
+  alias Nostrum.Voice.Opus
+  alias Nostrum.Voice.Ports
 
   @encryption_mode "xsalsa20_poly1305"
-  @samples_per_frame 960
-  @usec_per_frame 20_000
-  # How many consecutive packets to send before resting
+
+  # Default value
   @frames_per_burst 10
 
+  # Executables
+  @ffmpeg "ffmpeg"
+  @ytdl "youtube-dl"
+  @streamlink "streamlink"
+
   def encryption_mode, do: @encryption_mode
+
+  # How many consecutive packets to send before resting
+  def frames_per_burst,
+    do: Application.get_env(:nostrum, :audio_frames_per_burst, @frames_per_burst)
 
   def rtp_header(%VoiceState{} = voice) do
     <<
@@ -30,7 +39,7 @@ defmodule Nostrum.Voice.Audio do
   def encrypt_packet(%VoiceState{} = voice, data) do
     header = rtp_header(voice)
     # 12 byte header + 12 null bytes
-    nonce = header <> <<0::96>>
+    nonce = header <> <<0::8*12>>
     header <> Kcl.secretbox(data, nonce, voice.secret_key)
   end
 
@@ -45,12 +54,46 @@ defmodule Nostrum.Voice.Audio do
     socket
   end
 
-  def init_player(voice) do
-    take_nap()
-    player_loop(voice)
+  def get_rtp_packet(%VoiceState{secret_key: key, udp_socket: socket} = v) do
+    {:ok, {_ip, _port, payload}} = :gen_udp.recv(socket, 1024)
+
+    case payload do
+      # Skip RTCP packets
+      <<2::2, 0::1, 1::5, 201::8, _rest::binary>> ->
+        get_rtp_packet(v)
+
+      <<header::binary-size(12), data::binary>> ->
+        nonce = header <> <<0::8*12>>
+        {header, Kcl.secretunbox(data, nonce, key)}
+    end
   end
 
-  def player_loop(voice, init? \\ true) do
+  def get_unique_rtp_packets(v, num), do: unique_rtp(v, num, [], MapSet.new())
+
+  def unique_rtp(_v, 0, packets, _set), do: Enum.reverse(packets)
+
+  def unique_rtp(v, num_remaining, packets, set) do
+    packet = get_rtp_packet(v)
+
+    # Check for and remove duplicate RTP packets
+    if MapSet.member?(set, packet) do
+      # Duplicate was found
+      unique_rtp(v, num_remaining, packets, set)
+    else
+      unique_rtp(v, num_remaining - 1, [packet | packets], MapSet.put(set, packet))
+    end
+  end
+
+  def start_player(voice) do
+    take_nap()
+    player_loop(voice, _init? = true)
+  end
+
+  def resume_player(voice) do
+    player_loop(voice, _init? = false)
+  end
+
+  def player_loop(voice, init?) do
     t1 = Util.usec_now()
     voice = try_send_data(voice, init?)
     t2 = Util.usec_now()
@@ -61,24 +104,24 @@ defmodule Nostrum.Voice.Audio do
   end
 
   def take_nap(diff \\ 0) do
-    ((@usec_per_frame * @frames_per_burst - diff) / 1000)
-    |> trunc()
+    (Opus.usec_per_frame() * frames_per_burst() - diff)
+    |> div(1_000)
     |> max(0)
     |> Process.sleep()
   end
 
   def get_source(%VoiceState{ffmpeg_proc: nil, raw_audio: raw_audio}), do: raw_audio
 
-  def get_source(%VoiceState{ffmpeg_proc: ffmpeg_proc}), do: ffmpeg_proc.out
+  def get_source(%VoiceState{ffmpeg_proc: ffmpeg_proc}), do: Ports.get_stream(ffmpeg_proc)
 
   def try_send_data(%VoiceState{} = voice, init?) do
     wait = if(init?, do: Application.get_env(:nostrum, :audio_timeout, 20_000), else: 500)
-    {:ok, watchdog} = :timer.apply_after(wait, __MODULE__, :on_stall, [voice])
+    {:ok, watchdog} = :timer.apply_after(wait, __MODULE__, :on_stall, [voice, self()])
 
     {voice, done} =
       voice
       |> get_source()
-      |> Enum.take(@frames_per_burst)
+      |> Enum.take(frames_per_burst())
       |> send_frames(voice)
 
     :timer.cancel(watchdog)
@@ -103,7 +146,7 @@ defmodule Nostrum.Voice.Audio do
         %{
           v
           | rtp_sequence: v.rtp_sequence + 1,
-            rtp_timestamp: v.rtp_timestamp + @samples_per_frame
+            rtp_timestamp: v.rtp_timestamp + Opus.samples_per_frame()
         }
       end)
 
@@ -112,32 +155,56 @@ defmodule Nostrum.Voice.Audio do
        rtp_timestamp: voice.rtp_timestamp,
        # If using raw audio and it isn't stateful, update its state manually
        raw_audio:
-         unless(is_nil(voice.raw_audio) or voice.raw_stateful,
-           do: Enum.slice(voice.raw_audio, @frames_per_burst..-1)
-         )
-     ), length(frames) < @frames_per_burst}
+         if not is_nil(voice.raw_audio) and not voice.raw_stateful do
+           Enum.slice(voice.raw_audio, frames_per_burst()..-1)
+         else
+           voice.raw_audio
+         end
+     ), length(frames) < frames_per_burst()}
   end
 
   def spawn_youtubedl(url) do
     res =
-      Porcelain.spawn(
-        Application.get_env(:nostrum, :youtubedl, "youtube-dl"),
+      Ports.execute(
+        Application.get_env(:nostrum, :youtubedl, @ytdl),
         [
           ["-f", "bestaudio"],
           ["-o", "-"],
           ["-q"],
+          ["--no-warnings"],
           [url]
         ]
-        |> List.flatten(),
-        out: :stream
+        |> List.flatten()
       )
 
     case res do
       {:error, reason} ->
-        raise(VoiceError, reason: reason, executable: "youtube-dl")
+        raise(VoiceError, reason: reason, executable: @ytdl)
 
-      proc ->
-        proc
+      {:ok, pid} ->
+        pid
+    end
+  end
+
+  def spawn_streamlink(url) do
+    res =
+      Ports.execute(
+        Application.get_env(:nostrum, :streamlink, @streamlink),
+        [
+          ["--stdout"],
+          ["--quiet"],
+          ["--default-stream", "best"],
+          ["--url", url]
+        ]
+        |> List.flatten()
+      )
+
+    case res do
+      {:error, reason} ->
+        raise(VoiceError, reason: reason, executable: @streamlink)
+
+      {:ok, pid} ->
+        pid
     end
   end
 
@@ -145,20 +212,21 @@ defmodule Nostrum.Voice.Audio do
     {input_url, stdin} =
       case type do
         :url ->
-          {input, <<>>}
+          {input, nil}
 
         :pipe ->
           {"pipe:0", input}
 
         :ytdl ->
-          %Proc{out: outstream} = spawn_youtubedl(input)
+          {"pipe:0", spawn_youtubedl(input)}
 
-          {"pipe:0", outstream}
+        :stream ->
+          {"pipe:0", spawn_streamlink(input)}
       end
 
     res =
-      Porcelain.spawn(
-        Application.get_env(:nostrum, :ffmpeg, "ffmpeg"),
+      Ports.execute(
+        Application.get_env(:nostrum, :ffmpeg, @ffmpeg),
         [
           ffmpeg_options(options, input_url),
           ["-ac", "2"],
@@ -169,16 +237,15 @@ defmodule Nostrum.Voice.Audio do
           ["pipe:1"]
         ]
         |> List.flatten(),
-        in: stdin,
-        out: :stream
+        stdin
       )
 
     case res do
       {:error, reason} ->
-        raise(VoiceError, reason: reason, executable: "ffmpeg")
+        raise(VoiceError, reason: reason, executable: @ffmpeg)
 
-      proc ->
-        proc
+      {:ok, pid} ->
+        pid
     end
   end
 
@@ -217,17 +284,15 @@ defmodule Nostrum.Voice.Audio do
     ]
   end
 
-  def on_stall(%VoiceState{} = voice) do
-    unless is_nil(voice.ffmpeg_proc) do
-      Proc.stop(voice.ffmpeg_proc)
-    end
+  def on_stall(%VoiceState{ffmpeg_proc: ffmpeg}, player) do
+    if Process.alive?(player) and is_pid(ffmpeg), do: Ports.close(ffmpeg)
   end
 
   def on_complete(%VoiceState{} = voice, timed_out) do
-    Voice.update_voice(voice.guild_id, ffmpeg_proc: nil, raw_audio: nil)
-    List.duplicate(<<0xF8, 0xFF, 0xFE>>, 5) |> send_frames(voice)
+    voice = Voice.update_voice(voice.guild_id, ffmpeg_proc: nil, raw_audio: nil)
+    Opus.generate_silence(5) |> send_frames(voice)
     Voice.set_speaking(voice, false, timed_out)
-    Process.exit(voice.player_pid, :stop)
+    exit(:normal)
   end
 
   @doc """

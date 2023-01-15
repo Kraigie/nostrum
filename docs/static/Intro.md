@@ -1,7 +1,7 @@
 # Intro
 Nostrum is a an Elixir library that can be used to interact with Discord.
 
-Nostrum currently supports versions of Elixir at or above v. 1.9.
+Nostrum currently supports versions of Elixir at or above v. 1.11.
 
 With a platform like Discord, there are many moving parts and an attempt was made
 to break these parts into smaller logical pieces.
@@ -51,7 +51,7 @@ Add Nostrum as a dependency:
  *Stable*
 ```Elixir
 def deps do
-  [{:nostrum, "~> 0.4"}]
+  [{:nostrum, "~> 0.6"}]
 end
 ```
 
@@ -68,19 +68,19 @@ The file should be located at `/config/config.exs`. To run Nostrum you need the
 following two fields:
 ```Elixir
 config :nostrum,
-  token: 666, # The token of your bot as a string
-  num_shards: 2 # The number of shards you want to run your bot under, or :auto.
+  token: "666"  # The token of your bot as a string
 ```
-If you don't know what `num_shards` is or don't have your bot on a lot of guilds
-you can omit the field and it will default to 1. You can also set this option to
-`:auto` and Nostrum will automatically get the recommended number of shards.
 
 The following fields are also supported:
 
+ - `num_shards` - A fixed number of shards to run, or `:auto` to have Nostrum determine it automatically. Defaults to `:auto`.
  - `ffmpeg` - Specifies the path to the `ffmpeg` executable for playing audio. Defaults to `"ffmpeg"`.
  - `youtubedl` - Specifies the path to the `youtube-dl` executable for playing audio with youtube-dl support. Defaults to `"youtube-dl"`.
+ - `streamlink` - Specifies the path to the `streamlink` executable for playing livestream audio with streamlink support. Defaults to `"streamlink"`.
  - `gateway_intents` - This field takes a list of atoms representing gateway intents for Nostrum to subscribe to from the Discord API. More information can be found in the [gateway intents](gateway-intents.html) documentation page.
- - `audio_timeout` - Milliseconds that input must begin generating audio by upon invoking `play`. More information about this option can be found in the [voice](voice.html) documentation page. Defaults to `20_000` (20s). 
+ - `audio_timeout` - Milliseconds that input must begin generating audio by upon invoking `play`. More information about this option can be found in the [voice](voice.html) documentation page. Defaults to `20_000` (20s).
+ - `audio_frames_per_burst` - Number of opus frames to send at a time while playing audio. More information about this option can be found in the [voice](voice.html) documentation page. Defaults to `10`.
+ - `voice_auto_connect` - This will determine if Nostrum automatically connects to voice websockets gateways upon joining voice channels. If set to `false` but you still wish to connect to the voice gateway, you can do so manually by calling `Nostrum.Voice.connect_to_gateway/1` after joining a voice channel. Defaults to `true`.
  - `dev` - This is added to enable Nostrum to be run completely stand alone for
  development purposes. `true` will cause Nostrum to spawn its own event consumers.
  If you have the dev flag set to true while running Nostrum alongside your

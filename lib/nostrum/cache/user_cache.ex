@@ -1,23 +1,38 @@
 defmodule Nostrum.Cache.UserCache do
+  @default_cache_implementation Nostrum.Cache.UserCache.ETS
   @moduledoc """
-  Cache for users.
+  Cache behaviour & dispatcher for users.
 
-  The ETS table name associated with the User Cache is `:users`. Besides the
-  methods provided below you can call any other ETS methods on the table.
+  You can call the functions provided by this module independent of which cache
+  is configured, and it will dispatch to the configured cache implementation.
 
-  ## Example
-  ```elixir
-  info = :ets.info(:users)
-  [..., heir: :none, name: :users, size: 1, ...]
-  size = info[:size]
-  1
-  ```
+  By default, #{@default_cache_implementation} will be used for caching users.
+  You can override this in the `:caches` option of the `:nostrum` application
+  by setting the `:users` field to a different module implementing the behaviour
+  defined by this module.
+
+  See the documentation for the `Nostrum.Cache.GuildCache` module for more details.
   """
 
   alias Nostrum.Struct.User
   alias Nostrum.Util
-
   import Nostrum.Snowflake, only: [is_snowflake: 1]
+
+  @configured_cache :nostrum
+                    |> Application.compile_env([:caches, :users], @default_cache_implementation)
+
+  ## Supervisor callbacks
+
+  @doc false
+  defdelegate init(init_arg), to: @configured_cache
+
+  @doc false
+  defdelegate start_link(init_arg), to: @configured_cache
+
+  @doc false
+  defdelegate child_spec(opts), to: @configured_cache
+
+  ## Behaviour specification
 
   @doc ~s"""
   Retrieves a user from the cache by id.
@@ -34,76 +49,52 @@ defmodule Nostrum.Cache.UserCache do
   end
   ```
   """
-  @spec get(User.id()) :: {:error, atom} | {:ok, User.t()}
-  def get(id) when is_snowflake(id) do
-    case lookup(id) do
-      {:ok, user} -> {:ok, User.to_struct(user)}
-      error -> error
-    end
-  end
+  @callback get(id :: User.id()) :: {:ok, User.t()} | {:error, atom}
+
+  @doc ~S"""
+  Add a new user to the cache based on the Discord Gateway payload.
+
+  Returns a `t:Nostrum.Struct.User.t/0` struct representing the created user.
+  """
+  @callback create(payload :: map()) :: User.t()
+
+  @doc ~S"""
+  Bulk add multiple users to the cache at once.
+
+  Returns `:ok`.
+  """
+  @callback bulk_create(user_payloads :: Enum.t()) :: :ok
+
+  @doc ~S"""
+  Update a user in the cache based on payload sent via the Gateway.
+
+  Returns `:noop` if the user has not been updated in the cache, or
+  `{old_user, new_user}` is the user has been written to the cache.
+  """
+  @callback update(payload :: map()) :: :noop | {User.t(), User.t()}
+
+  @doc ~S"""
+  Delete a user by ID.
+
+  Returns the deleted user if present in the cache, or
+  `:noop` if the user was not cached.
+  """
+  @callback delete(snowflake :: User.id()) :: :noop | User.t()
+
+  ## Dispatching
+  defdelegate get(id), to: @configured_cache
+  @doc false
+  defdelegate create(payload), to: @configured_cache
+  @doc false
+  defdelegate bulk_create(users), to: @configured_cache
+  @doc false
+  defdelegate update(payload), to: @configured_cache
+  @doc false
+  defdelegate delete(snowflake), to: @configured_cache
 
   @doc """
-  Same as `get/1`, but raises `Nostrum.Error.CacheError` in case of a failure.
+  Same as `c:get/1`, but raises `Nostrum.Error.CacheError` in case of a failure.
   """
   @spec get!(User.id()) :: no_return | User.t()
   def get!(id) when is_snowflake(id), do: id |> get |> Util.bangify_find(id, __MODULE__)
-
-  @doc false
-  @spec create(map) :: User.t()
-  def create(user) do
-    :ets.insert(:users, {user.id, user})
-    User.to_struct(user)
-  end
-
-  @doc false
-  @spec create([map]) :: :ok
-  def bulk_create(members) do
-    Enum.each(members, &:ets.insert(:users, {&1.user.id, &1.user}))
-  end
-
-  @doc false
-  @spec update(map) :: :noop | {User.t(), User.t()}
-  def update(info) do
-    with {:ok, u} <- lookup(info.id),
-         new_user = Map.merge(u, info),
-         false <- u == new_user do
-      :ets.insert(:users, {new_user.id, new_user})
-      {User.to_struct(u), User.to_struct(new_user)}
-    else
-      {:error, _} ->
-        # User just came online, make sure to cache if possible
-        if Enum.all?([:username, :discriminator], &Map.has_key?(info, &1)),
-          do: :ets.insert(:users, {info.id, info})
-
-        :noop
-
-      true ->
-        :noop
-    end
-  end
-
-  @doc false
-  @spec delete(User.id()) :: :noop | User.t()
-  def delete(id) do
-    case lookup(id) do
-      {:ok, user} ->
-        :ets.delete(:users, id)
-        User.to_struct(user)
-
-      _ ->
-        :noop
-    end
-  end
-
-  @doc false
-  @spec lookup(User.id()) :: {:error, :user_not_found} | {:ok, map}
-  def lookup(id) do
-    case :ets.lookup(:users, id) do
-      [] ->
-        {:error, :user_not_found}
-
-      [{^id, user}] ->
-        {:ok, user}
-    end
-  end
 end

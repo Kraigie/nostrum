@@ -3,6 +3,25 @@ Nostrum keeps track of the state that your bot can see. This state is updated
 based on events from the WS connection. Most of the cache modules support only
 simple interactions with the cache. Feel free to suggest additional functionality.
 
+## Pluggable caches
+
+The default caches supplied by nostrum should work for most of your needs, but
+all of the caches can be exchanged for your own implementations. For this,
+implement the behaviours exported by the cache modules under `Nostrum.Cache`.
+
+Use the `[:nostrum, :caches]` configuration for configuring which cache
+implementation you want to use. This can only be set at dependency compilation
+time. A common situation is that you don't want to cache presences in your bot,
+most likely you don't care about user's status, so you can disable it altogether
+by using the `NoOp` presence cache:
+
+```elixir
+config :nostrum,
+  caches: %{
+    presences: Nostrum.Cache.PresenceCache.NoOp
+  }
+```
+
 ## Structs
 Nostrum uses structs when appropriate to pass around objects from Discord.
 
@@ -10,30 +29,27 @@ In some cases, the struct modules will include helper functions for interacting
 with the struct. See `Nostrum.Struct.Emoji.image_url/1` for an example.
 
 ## Guilds
-Each guild is ran in its own `GenServer` process, all of which are ran under a
-supervisor. Behind the scenes, Nostrum uses the `Registry` module to
-map guild ids to a `pid` to allow for lookup.
+By default, guilds are cached in an ETS table, keyed off their ID. You can
+obtain the table name of the backing ETS table using the `tabname` function
+exported by the `Nostrum.Cache.GuildCache.ETS` module.
+
+If you do not have the `:guilds` intent enabled, it is recommended to use the `NoOp`
+cache for guilds.
 
 Please see `Nostrum.Cache.GuildCache` for more information on interacting with
 guilds.
 
 ## Channels
-DM channels are all stored in a single map in a single `GenServer`. Guild channels
-are stored in their respective guilds.
-
-Channels aren't important enough to have their own process per channel, and the
-current implementation is not done well, in the future this will likely be moved
-to an ETS backed cache like users are, but the interface will remain the same.
-
-Please see `Nostrum.Cache.ChannelCache` for more information on interacting with
-channels. Though they're stored in different places, the interface hides that fact.
+By default, DM channels are stored in an ETS table, see
+`Nostrum.Cache.ChannelCache.ETS`. Guild channels are stored in their respective
+guilds.
 
 ## Users
-Users are all stored in an ETS table, keyed off of their id.
+By default, users are all stored in an ETS table, keyed off of their id.
 
 To see the name of the ETS table associated with the user cache, and examples of
 interacting with it both directly and through the provided abstractions, please
-see `Nostrum.Cache.UserCache`.
+see `Nostrum.Cache.UserCache.ETS`.
 
 ## Mappings
 There are some use cases where given a `channel_id` or `guild_id` we may want to

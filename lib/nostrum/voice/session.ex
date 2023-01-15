@@ -5,9 +5,8 @@ defmodule Nostrum.Voice.Session do
   alias Nostrum.Constants
   alias Nostrum.Shard.Stage.Producer
   alias Nostrum.Struct.{VoiceState, VoiceWSState}
-  alias Nostrum.Util
   alias Nostrum.Voice
-  alias Nostrum.Voice.{Event, Payload}
+  alias Nostrum.Voice.{Event, Opus, Payload}
 
   require Logger
 
@@ -18,8 +17,6 @@ defmodule Nostrum.Voice.Session do
   @timeout_connect 10_000
 
   @timeout_ws_upgrade 10_000
-
-  @gun_opts %{protocols: [:http], retry: 1_000_000_000}
 
   def start_link(%VoiceState{} = vs) do
     GenServer.start_link(__MODULE__, vs)
@@ -37,7 +34,8 @@ defmodule Nostrum.Voice.Session do
 
     [host, port] = String.split(voice.gateway, ":")
 
-    {:ok, worker} = :gun.open(:binary.bin_to_list(host), String.to_integer(port), @gun_opts)
+    gun_opts = %{protocols: [:http], retry: 1_000_000_000, tls_opts: Constants.gun_tls_opts()}
+    {:ok, worker} = :gun.open(:binary.bin_to_list(host), String.to_integer(port), gun_opts)
 
     {:ok, :http} = :gun.await_up(worker, @timeout_connect)
     stream = :gun.ws_upgrade(worker, @gateway_qs)
@@ -47,6 +45,8 @@ defmodule Nostrum.Voice.Session do
       conn_pid: self(),
       conn: worker,
       guild_id: voice.guild_id,
+      channel_id: voice.channel_id,
+      ssrc_map: Map.new(),
       session: voice.session,
       token: voice.token,
       gateway: voice.gateway,
@@ -86,15 +86,16 @@ defmodule Nostrum.Voice.Session do
     GenServer.cast(pid, {:speaking, speaking, timed_out})
   end
 
+  def on_voice_ready(pid) do
+    GenServer.cast(pid, :voice_ready)
+  end
+
   def handle_info({:gun_ws, _worker, stream, {:text, frame}}, state) do
-    payload =
-      frame
-      |> :erlang.iolist_to_binary()
-      |> Poison.decode!()
-      |> Util.safe_atom_map()
+    # Jason.decode calls iodata_to_binary internally
+    payload = Jason.decode!(frame)
 
     from_handle =
-      payload.op
+      payload["op"]
       |> Constants.atom_from_voice_opcode()
       |> Event.handle(payload, state)
 
@@ -111,18 +112,20 @@ defmodule Nostrum.Voice.Session do
   def handle_info({:gun_ws, _conn, _stream, {:close, errno, reason}}, state) do
     Logger.info("Voice websocket closed (errno #{errno}, reason #{inspect(reason)})")
 
-    # If we received a errno of 4006, session is no longer valid, so we must get a new session.
+    # If we received an errno of 4006, session is no longer valid, so we must get a new session.
     if errno == 4006 do
-      channel_id = Voice.get_channel_id(state.guild_id)
+      %VoiceState{channel_id: chan, self_mute: mute, self_deaf: deaf} =
+        Voice.get_voice(state.guild_id)
+
       Voice.leave_channel(state.guild_id)
-      Voice.join_channel(state.guild_id, channel_id)
+      Voice.join_channel(state.guild_id, chan, mute, deaf)
     end
 
     {:noreply, state}
   end
 
   def handle_info(
-        {:gun_down, _conn, _proto, _reason, _killed_streams, _unprocessed_streams},
+        {:gun_down, _conn, _proto, _reason, _killed_streams},
         state
       ) do
     # Try to cancel the internal timer, but
@@ -136,6 +139,24 @@ defmodule Nostrum.Voice.Session do
     await_ws_upgrade(worker, stream)
     Logger.warn("Reconnected after connection broke")
     {:noreply, %{state | heartbeat_ack: true}}
+  end
+
+  def handle_info({:udp, _erl_port, _ip, _port, packet}, state) do
+    case packet do
+      # Skip RTCP packets
+      <<2::2, 0::1, 1::5, 201::8, _rest::binary>> ->
+        :noop
+
+      <<header::binary-size(12), data::binary>> ->
+        nonce = header <> <<0::8*12>>
+        payload = Kcl.secretunbox(data, nonce, state.secret_key)
+        <<_::16, seq::integer-16, time::integer-32, ssrc::integer-32>> = header
+        opus = Opus.strip_rtp_ext(payload)
+        incoming_packet = Payload.voice_incoming_packet({{seq, time, ssrc}, opus})
+        Producer.notify(Producer, incoming_packet, state)
+    end
+
+    {:noreply, state}
   end
 
   def handle_cast(:heartbeat, %{heartbeat_ack: false, heartbeat_ref: timer_ref} = state) do
@@ -156,6 +177,15 @@ defmodule Nostrum.Voice.Session do
 
     {:noreply,
      %{state | heartbeat_ref: ref, heartbeat_ack: false, last_heartbeat_send: DateTime.utc_now()}}
+  end
+
+  def handle_cast(:voice_ready, state) do
+    voice = Voice.get_voice(state.guild_id)
+    voice_ready = Payload.voice_ready_payload(voice)
+
+    Producer.notify(Producer, voice_ready, state)
+
+    {:noreply, state}
   end
 
   def handle_cast({:speaking, speaking, timed_out}, state) do

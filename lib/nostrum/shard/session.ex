@@ -9,14 +9,12 @@ defmodule Nostrum.Shard.Session do
 
   use GenServer
 
-  @gateway_qs "/?compress=zlib-stream&encoding=etf&v=6"
+  @gateway_qs "/?compress=zlib-stream&encoding=etf&v=10"
 
   # Maximum time the initial connection may take, in milliseconds.
   @timeout_connect 10_000
   # Maximum time the websocket upgrade may take, in milliseconds.
   @timeout_ws_upgrade 10_000
-  # Options to pass to :gun.open/3
-  @gun_opts %{protocols: [:http], retry: 1_000_000_000}
 
   def update_status(pid, status, game, stream, type) do
     {idle_since, afk} =
@@ -58,7 +56,8 @@ defmodule Nostrum.Shard.Session do
     Connector.block_until_connect()
     Logger.metadata(shard: shard_num)
 
-    {:ok, worker} = :gun.open(:binary.bin_to_list(gateway), 443, @gun_opts)
+    gun_opts = %{protocols: [:http], retry: 1_000_000_000, tls_opts: Constants.gun_tls_opts()}
+    {:ok, worker} = :gun.open(:binary.bin_to_list(gateway), 443, gun_opts)
     {:ok, :http} = :gun.await_up(worker, @timeout_connect)
     stream = :gun.ws_upgrade(worker, @gateway_qs)
     await_ws_upgrade(worker, stream)
@@ -124,6 +123,11 @@ defmodule Nostrum.Shard.Session do
       new_state ->
         {:noreply, new_state}
     end
+  end
+
+  def handle_info({:gun_ws, _conn, _stream, :close}, state) do
+    Logger.info("Shard websocket closed (unknown reason)")
+    {:noreply, state}
   end
 
   def handle_info({:gun_ws, _conn, _stream, {:close, errno, reason}}, state) do

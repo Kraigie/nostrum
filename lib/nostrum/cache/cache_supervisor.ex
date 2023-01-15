@@ -1,5 +1,15 @@
 defmodule Nostrum.Cache.CacheSupervisor do
-  @moduledoc false
+  @moduledoc """
+  Supervises caches for nostrum structures.
+
+  See the documentation for the relevant submodules for details:
+
+  - `Nostrum.Cache.ChannelCache`
+  - `Nostrum.Cache.GuildCache`
+  - `Nostrum.Cache.Me`
+  - `Nostrum.Cache.PresenceCache`
+  - `Nostrum.Cache.UserCache`
+  """
 
   use Supervisor
 
@@ -9,10 +19,12 @@ defmodule Nostrum.Cache.CacheSupervisor do
 
   def init([]) do
     children = [
-      # REVIEW: If shard dies, should guilds die also? An attempt will be made to restart them
-      {Registry, keys: :unique, name: GuildRegistry},
-      Nostrum.Cache.Guild.GuildSupervisor,
-      Nostrum.Cache.Me
+      Nostrum.Cache.Me,
+      # Uses the configured cache implementations.
+      Nostrum.Cache.GuildCache,
+      Nostrum.Cache.UserCache,
+      Nostrum.Cache.ChannelCache,
+      Nostrum.Cache.PresenceCache
     ]
 
     Supervisor.init(children, strategy: :one_for_one)

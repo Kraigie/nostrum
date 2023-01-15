@@ -5,16 +5,16 @@ defmodule Nostrum.Mixfile do
   def project do
     [
       app: :nostrum,
-      version: "0.4.7",
-      elixir: "~> 1.9",
+      version: "0.6.1",
+      elixir: "~> 1.11",
       elixirc_paths: elixirc_paths(Mix.env()),
       build_embedded: Mix.env() == :prod,
       start_permanent: Mix.env() == :prod,
-      description: "An elixir Discord library",
+      description: "An Elixir Discord library",
       package: package(),
       name: "Nostrum",
-      source_url: "https://github.com/kraigie/nostrum",
-      homepage_url: "https://github.com/kraigie/nostrum",
+      source_url: "https://github.com/Kraigie/nostrum",
+      homepage_url: "https://github.com/Kraigie/nostrum",
       deps: deps(),
       docs: docs(),
       dialyzer: dialyzer(),
@@ -38,7 +38,11 @@ defmodule Nostrum.Mixfile do
     [
       main: "intro",
       extras: extras(),
-      groups_for_modules: groups_for_modules()
+      groups_for_modules: groups_for_modules(),
+      groups_for_functions: groups_for_functions(),
+      source_ref: "master",
+      assets: "docs/assets",
+      nest_modules_by_prefix: [Nostrum.Cache]
     ]
   end
 
@@ -46,12 +50,12 @@ defmodule Nostrum.Mixfile do
     [
       "docs/static/Intro.md",
       "docs/static/API.md",
+      "docs/static/Application Commands.md",
       "docs/static/State.md",
       "docs/static/Events.md",
       "docs/static/Consumers.md",
       "docs/static/Voice.md",
-      "docs/static/Gateway Intents.md",
-      "docs/static/Slash commands.md"
+      "docs/static/Gateway Intents.md"
     ]
   end
 
@@ -69,6 +73,9 @@ defmodule Nostrum.Mixfile do
     ]
   end
 
+  defp groups_for_functions,
+    do: []
+
   def aliases do
     [
       lint: ["format --check-formatted", "credo --strict"]
@@ -79,7 +86,7 @@ defmodule Nostrum.Mixfile do
     [
       name: :nostrum,
       licenses: ["MIT"],
-      maintainers: ["Craig Dazey"],
+      maintainers: ["Craig Dazey", "Johannes Christ", "Joe Banks"],
       links: %{
         "GitHub" => "https://github.com/Kraigie/nostrum/",
         "Docs" => "https://kraigie.github.io/nostrum/"
@@ -89,14 +96,14 @@ defmodule Nostrum.Mixfile do
 
   defp deps do
     [
-      {:httpoison, "~> 1.7"},
-      {:poison, "~> 3.0"},
-      {:gun, "== 2.0.0-rc.1"},
-      {:kcl, "~> 1.3"},
-      {:porcelain, "~> 2.0"},
-      {:ex_doc, "~> 0.14", only: :dev},
+      {:jason, "~> 1.2"},
+      {:gun, "== 2.0.1", hex: :remedy_gun},
+      {:certifi, "~> 2.8"},
+      {:kcl, "~> 1.4"},
+      {:mime, "~> 1.6 or ~> 2.0"},
+      {:ex_doc, "~> 0.28", only: :dev},
       {:credo, "~> 1.4", only: [:dev, :test]},
-      {:dialyxir, "~> 1.0.0", only: [:dev], runtime: false},
+      {:dialyxir, "~> 1.1", only: [:dev], runtime: false},
       {:gen_stage, "~> 0.11 or ~> 1.0"},
       {:recon, "~> 2.3", only: :dev, optional: true}
     ]

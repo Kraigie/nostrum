@@ -1,12 +1,14 @@
 defmodule Nostrum.Struct.VoiceState do
   @moduledoc false
 
+  alias Nostrum.Voice.Ports
   alias Nostrum.Voice.Session
-  alias Porcelain.Process, as: Proc
 
   defstruct [
     :guild_id,
     :channel_id,
+    :self_mute,
+    :self_deaf,
     :gateway,
     :session,
     :token,
@@ -22,7 +24,10 @@ defmodule Nostrum.Struct.VoiceState do
     :ffmpeg_proc,
     :raw_audio,
     :raw_stateful,
-    :player_pid
+    :current_url,
+    :player_pid,
+    :persist_source,
+    :persist_playback
   ]
 
   def new, do: %__MODULE__{}
@@ -54,27 +59,17 @@ defmodule Nostrum.Struct.VoiceState do
   def playing?(_), do: false
 
   def cleanup(%__MODULE__{} = v) do
-    unless is_nil(v.player_pid) do
-      if Process.alive?(v.player_pid) do
-        Process.exit(v.player_pid, :cleanup)
-      end
-    end
+    if is_pid(v.player_pid),
+      do: Process.exit(v.player_pid, :cleanup)
 
-    unless is_nil(v.ffmpeg_proc) do
-      if Proc.alive?(v.ffmpeg_proc) do
-        Proc.stop(v.ffmpeg_proc)
-      end
-    end
+    if is_pid(v.ffmpeg_proc),
+      do: Ports.close(v.ffmpeg_proc)
 
-    unless is_nil(v.udp_socket) do
-      :gen_udp.close(v.udp_socket)
-    end
+    if is_port(v.udp_socket),
+      do: :gen_udp.close(v.udp_socket)
 
-    unless is_nil(v.session_pid) do
-      if Process.alive?(v.session_pid) do
-        Session.close_connection(v.session_pid)
-      end
-    end
+    if is_pid(v.session_pid),
+      do: Session.close_connection(v.session_pid)
 
     :ok
   end

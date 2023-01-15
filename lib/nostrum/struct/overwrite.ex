@@ -15,8 +15,8 @@ defmodule Nostrum.Struct.Overwrite do
   @typedoc "Role or User id"
   @type id :: Snowflake.t()
 
-  @typedoc "Either 'role' or 'member'"
-  @type type :: String.t()
+  @typedoc "Either ``0`` (role) or ``1`` (member)"
+  @type type :: 0 | 1
 
   @typedoc "Permission bit set"
   @type allow :: integer
@@ -42,6 +42,14 @@ defmodule Nostrum.Struct.Overwrite do
       map
       |> Map.new(fn {k, v} -> {Util.maybe_to_atom(k), v} end)
       |> Map.update(:id, nil, &Util.cast(&1, Snowflake))
+      |> Map.update(:allow, nil, fn
+        perm when is_binary(perm) -> String.to_integer(perm)
+        x -> x
+      end)
+      |> Map.update(:deny, nil, fn
+        perm when is_binary(perm) -> String.to_integer(perm)
+        x -> x
+      end)
 
     struct(__MODULE__, new)
   end

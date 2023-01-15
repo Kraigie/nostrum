@@ -18,11 +18,9 @@ defmodule Nostrum.Shard.Payload do
     %{
       "token" => Application.get_env(:nostrum, :token),
       "properties" => %{
-        "$os" => Atom.to_string(os) <> " " <> Atom.to_string(name),
-        "$browser" => "Nostrum",
-        "$device" => "Nostrum",
-        "$referrer" => "",
-        "$referring_domain" => ""
+        "os" => Atom.to_string(os) <> " " <> Atom.to_string(name),
+        "browser" => "Nostrum",
+        "device" => "Nostrum"
       },
       "compress" => false,
       "large_threshold" => @large_threshold,
@@ -81,7 +79,9 @@ defmodule Nostrum.Shard.Payload do
   defp build_payload(data, opcode_name) do
     opcode = Constants.opcode_from_name(opcode_name)
 
+    # term_to_iovec is the same as term_to_binary except it instead returns an iolist
+    # a safe optimization since :gun.ws_send accepts an iolist
     %{"op" => opcode, "d" => data}
-    |> :erlang.term_to_binary()
+    |> :erlang.term_to_iovec()
   end
 end

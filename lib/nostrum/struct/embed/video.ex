@@ -4,7 +4,7 @@ defmodule Nostrum.Struct.Embed.Video do
   """
 
   alias Nostrum.Util
-  alias Poison.Encoder
+  alias Jason.{Encode, Encoder}
 
   defstruct [
     :url,
@@ -18,7 +18,7 @@ defmodule Nostrum.Struct.Embed.Video do
       |> Map.from_struct()
       |> Enum.filter(fn {_, v} -> v != nil end)
       |> Map.new()
-      |> Encoder.encode(options)
+      |> Encode.map(options)
     end
   end
 

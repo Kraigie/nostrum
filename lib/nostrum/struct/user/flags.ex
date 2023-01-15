@@ -22,67 +22,67 @@ defmodule Nostrum.Struct.User.Flags do
   @typedoc """
   Discord Employee
   """
-  @type staff :: bool
+  @type staff :: boolean
 
   @typedoc """
   Discord Partner
   """
-  @type partner :: bool
+  @type partner :: boolean
 
   @typedoc """
   HypeSquad Events
   """
-  @type hypesquad_events :: bool
+  @type hypesquad_events :: boolean
 
   @typedoc """
   Bug Hunter (Level 1)
   """
-  @type bug_hunter_level_1 :: bool
+  @type bug_hunter_level_1 :: boolean
 
   @typedoc """
   HypeSquad Bravery
   """
-  @type hypesquad_bravery :: bool
+  @type hypesquad_bravery :: boolean
 
   @typedoc """
   HypeSquad Brilliance
   """
-  @type hypesquad_brilliance :: bool
+  @type hypesquad_brilliance :: boolean
 
   @typedoc """
   HypeSquad Balance
   """
-  @type hypesquad_balance :: bool
+  @type hypesquad_balance :: boolean
 
   @typedoc """
   Early Supporter
   """
-  @type early_supporter :: bool
+  @type early_supporter :: boolean
 
   @typedoc """
   Team User
   """
-  @type team_user :: bool
+  @type team_user :: boolean
 
   @typedoc """
   System user
   """
-  @type system :: bool
+  @type system :: boolean
 
   @typedoc """
   Bug Hunter (Level 2)
   """
-  @type bug_hunter_level_2 :: bool
+  @type bug_hunter_level_2 :: boolean
 
   @typedoc """
   Verified bot
   """
-  @type verified_bot :: bool
+  @type verified_bot :: boolean
 
   @typedoc """
   Verified developer
   """
-  @type verified_developer :: bool
+  @type verified_developer :: boolean
 
   @type flags :: %__MODULE__{
           staff: staff,

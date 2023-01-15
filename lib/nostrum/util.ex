@@ -10,53 +10,6 @@ defmodule Nostrum.Util do
   require Logger
 
   @doc """
-  Helper for defining all the methods used for struct and encoding transformations.
-
-  ## Example
-  ``` Elixir
-  Nostrum.Util.nostrum_struct(%{
-    author: User,
-    mentions: [User],
-    mention_roles: [User],
-    embeds: [Embed]
-  })
-  ```
-  """
-  defmacro nostrum_struct(body) do
-    quote do
-      @derive [Poison.Encoder]
-      defstruct Map.keys(unquote(body))
-
-      def p_encode do
-        encoded =
-          for {k, v} <- unquote(body), v != nil, into: %{} do
-            case v do
-              [v] -> {k, [v.p_encode]}
-              v -> {k, v.p_encode}
-            end
-          end
-
-        struct(__ENV__.module, encoded)
-      end
-
-      def to_struct(map) do
-        alias Nostrum.Util
-
-        new_map =
-          for {k, v} <- unquote(body), into: %{} do
-            case v do
-              nil -> {k, Map.get(map, k)}
-              [v] -> {k, Util.enum_to_struct(Map.get(map, k), v)}
-              v -> {k, apply(v, :to_struct, [Map.get(map, k)])}
-            end
-          end
-
-        struct(__ENV__.module, new_map)
-      end
-    end
-  end
-
-  @doc """
   Returns the number of milliseconds since unix epoch.
   """
   @spec now() :: integer
@@ -106,7 +59,7 @@ defmodule Nostrum.Util do
   @spec num_shards() :: integer
   def num_shards do
     num =
-      with :auto <- Application.get_env(:nostrum, :num_shards),
+      with :auto <- Application.get_env(:nostrum, :num_shards, :auto),
            {_url, shards} <- gateway(),
            do: shards
 
@@ -142,15 +95,15 @@ defmodule Nostrum.Util do
   end
 
   defp get_new_gateway_url do
-    case Api.request(:get, Constants.gateway_bot(), "") do
+    case Api.request(:get, Constants.gateway_bot()) do
       {:error, %{status_code: 401}} ->
         raise("Authentication rejected, invalid token")
 
-      {:error, %{status_code: code, message: message}} ->
+      {:error, %{status_code: code, response: %{message: message}}} ->
         raise(Nostrum.Error.ApiError, status_code: code, message: message)
 
       {:ok, body} ->
-        body = Poison.decode!(body)
+        body = Jason.decode!(body)
 
         "wss://" <> url = body["url"]
         shards = if body["shards"], do: body["shards"], else: 1
@@ -164,6 +117,8 @@ defmodule Nostrum.Util do
   Converts a map into an atom-keyed map.
 
   Given a map with variable type keys, returns the same map with all keys as `atoms`.
+  To support maps keyed with integers (such as in Discord's interaction data),
+  binaries that appear to be integers will be parsed as such.
 
   This function will attempt to convert keys to an existing atom, and if that fails will default to
   creating a new atom while displaying a warning. The idea here is that we should be able to see
@@ -187,10 +142,23 @@ defmodule Nostrum.Util do
   @doc """
   Attempts to convert a string to an atom.
 
+  Binary `token`s that consist of digits are assumed to be snowflakes, and will
+  be parsed as such.
+
   If atom does not currently exist, will warn that we're doing an unsafe conversion.
   """
-  @spec maybe_to_atom(atom | String.t()) :: atom
+  @spec maybe_to_atom(atom | String.t()) :: atom | integer
   def maybe_to_atom(token) when is_atom(token), do: token
+
+  def maybe_to_atom(<<head, _rest::binary>> = token) when head in ?1..?9 do
+    case Integer.parse(token) do
+      {snowflake, ""} ->
+        snowflake
+
+      _ ->
+        :erlang.binary_to_atom(token)
+    end
+  end
 
   def maybe_to_atom(token) do
     String.to_existing_atom(token)
@@ -198,6 +166,19 @@ defmodule Nostrum.Util do
     _ ->
       Logger.debug(fn -> "Converting string to non-existing atom: #{token}" end)
       String.to_atom(token)
+  end
+
+  @doc """
+  Converts possibly nil ISO8601 timestamp to a `DateTime`
+  """
+  @spec maybe_to_datetime(String.t() | nil) :: DateTime.t() | nil
+  def maybe_to_datetime(nil) do
+    nil
+  end
+
+  def maybe_to_datetime(stamp) do
+    {:ok, casted, 0} = DateTime.from_iso8601(stamp)
+    casted
   end
 
   # Generic casting function

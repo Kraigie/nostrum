@@ -6,7 +6,7 @@ defmodule Nostrum.Struct.Guild.UnavailableGuild do
   @typedoc "The guild's id"
   @type id :: integer
 
-  @typedoc "Whether the guild is avaliable"
+  @typedoc "Whether the guild is available"
   @type unavailable :: boolean
 
   @type t :: %__MODULE__{
@@ -14,7 +14,7 @@ defmodule Nostrum.Struct.Guild.UnavailableGuild do
           unavailable: unavailable
         }
 
-  @derive [Poison.Encoder]
+  @derive [Jason.Encoder]
   defstruct [
     :id,
     :unavailable
