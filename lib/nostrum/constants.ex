@@ -124,7 +124,7 @@ defmodule Nostrum.Constants do
   def guild_application_command_permissions(application_id, guild_id, command_id),
     do: "/applications/#{application_id}/guilds/#{guild_id}/commands/#{command_id}/permissions"
 
-  def interaction_message_original(application_id, interaction_token),
+  def original_interaction_response(application_id, interaction_token),
     do: "/webhooks/#{application_id}/#{interaction_token}/messages/@original"
 
   def interaction_callback(interaction_id, interaction_token),

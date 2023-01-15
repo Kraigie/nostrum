@@ -3498,9 +3498,9 @@ defmodule Nostrum.Api do
   Retrieves the original message of an interaction.
   """
   @doc since: "0.6.1"
-  @spec get_interaction_message_original(Interaction.t()) :: error | {:ok, Message.t()}
-  def get_interaction_message_original(interaction) do
-    path = Constants.interaction_message_original(interaction.application_id, interaction.token)
+  @spec get_original_interaction_response(Interaction.t()) :: error | {:ok, Message.t()}
+  def get_original_interaction_response(interaction) do
+    path = Constants.original_interaction_response(interaction.application_id, interaction.token)
 
     request(:get, path)
     |> handle_request_with_decode({:struct, Message})
