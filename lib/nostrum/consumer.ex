@@ -20,6 +20,7 @@ defmodule Nostrum.Consumer do
 
   use ConsumerSupervisor
 
+  alias Nostrum.Struct.Guild.AuditLogEntry
   alias Nostrum.Shard.Stage.Cache
 
   alias Nostrum.Struct.{
@@ -126,6 +127,9 @@ defmodule Nostrum.Consumer do
            WSState.t()}
   @type channel_pins_ack :: {:CHANNEL_PINS_ACK, map, WSState.t()}
   @type channel_pins_update :: {:CHANNEL_PINS_UPDATE, ChannelPinsUpdate.t(), WSState.t()}
+
+  @type guild_audit_log_entry_create :: {:GUILD_AUDIT_LOG_ENTRY_CREATE, AuditLogEntry.t(), WSState.t()}
+
   @type guild_ban_add ::
           {:GUILD_BAN_ADD, GuildBanAdd.t(), WSState.t()}
   @type guild_ban_remove ::
@@ -303,6 +307,7 @@ defmodule Nostrum.Consumer do
           | channel_update
           | channel_pins_ack
           | channel_pins_update
+          | guild_audit_log_entry_create
           | guild_ban_add
           | guild_ban_remove
           | guild_create

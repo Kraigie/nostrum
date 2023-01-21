@@ -82,9 +82,6 @@ defmodule Nostrum.Shard.Dispatch do
     {event, ChannelCache.create(p), state}
   end
 
-  def handle_event(:GUILD_AUDIT_LOG_ENTRY_CREATE = event, p, state),
-    do: {event, Guild.AuditLogEntry.to_struct(p), state}
-
   def handle_event(:CHANNEL_CREATE = event, %{type: t} = p, state) when t in [0, 2] do
     :ets.insert(:channel_guild_map, {p.id, p.guild_id})
     {event, GuildCache.channel_create(p.guild_id, p), state}
@@ -118,6 +115,9 @@ defmodule Nostrum.Shard.Dispatch do
   def handle_event(:CHANNEL_PINS_UPDATE = event, p, state) do
     {event, ChannelPinsUpdate.to_struct(p), state}
   end
+
+  def handle_event(:GUILD_AUDIT_LOG_ENTRY_CREATE = event, p, state),
+    do: {event, Guild.AuditLogEntry.to_struct(p), state}
 
   def handle_event(:GUILD_BAN_ADD = event, p, state) do
     {event, GuildBanAdd.to_struct(p), state}
