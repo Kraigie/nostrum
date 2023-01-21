@@ -3928,8 +3928,8 @@ defmodule Nostrum.Api do
     case res do
       {:ok, %{threads: channels, members: thread_members}} ->
         map = %{
-          threads: Util.cast({:list, {:struct, Channel}}, channels),
-          members: Util.cast({:list, {:struct, ThreadMember}}, thread_members)
+          threads: Util.cast(channels, {:list, {:struct, Channel}}),
+          members: Util.cast(thread_members, {:list, {:struct, ThreadMember}})
         }
 
         {:ok, map}
