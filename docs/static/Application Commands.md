@@ -112,10 +112,12 @@ option list to a map.
 
 Did you notice the ``:ignore`` at the end of our function clauses? It's telling
 Nostrum to not send anything back to the user. Although our command performs
-its job, the lack of a response forces Discord to display "The application did
-not respond" to the user.
+its job, the lack of a response forces Discord to display "YourBot is thinking"
+to the user for 15 minutes until eventually giving up and switching that to
+"The application did not respond".
 
-To respond with something meaningful, simply return a map like the following:
+To respond with something more meaningful, simply return a map like the
+following:
 
 ```elixir
 def handle(interaction, %{"action" => "assign", "name" => role_id}) do
