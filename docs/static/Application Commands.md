@@ -18,62 +18,78 @@ documentation](https://discord.com/developers/docs/interactions/application-comm
 ## Getting started
 
 Discord differentiates between **global** and **guild-specific** slash
-commands. Global commands will be distributed across all guilds that your bot
-is in within an hour. Guild-specific commands slash commands will be available
-instantly, which is why we will use guild-specific commands for testing.
+commands. Global commands used to take up to an hour to update across all
+guilds, but that is not the case anymore.
 
 We will create a command that will allow the user to assign or remove a role of
-choice. The `guild_id` parameter is the ID of the guild on which the command
-will be created.
-
-Our command definition looks as follows:
+choice. Because each command resides in its own module, we'll have to write one:
 
 ```elixir
-command = %{
-  name: "role",
-  description: "assign or remove a role",
-  options: [
-    %{
-      # ApplicationCommandType::ROLE
-      type: 8,
-      name: "name",
-      description: "role to assign or remove",
-      required: true
-    },
-    %{
-      # ApplicationCommandType::STRING
-      type: 3,
-      name: "action",
-      description: "whether to assign or remove the role",
-      required: true,
-      choices: [
-        %{
-          name: "assign",
-          value: "assign"
-        },
-        %{
-          name: "remove",
-          value: "remove"
-        }
-      ]
-    }
+defmodule MyBot.Command.Role do
+  alias Nostrum.{Command, Command.Spec.Option}
+  use Command, %Command.Spec{
+    name: "role",
+    desc: "assign or remove a role",
+    options: [
+      %Option{
+        name: "name",
+        desc: "role to assign or remove",
+        type: :role
+      },
+      %Option{
+        name: "action",
+        desc: "whether to assign or remove the role",
+        type: :string,
+        choices: [
+          %{name: "assign", value: "assign"},
+          %{name: "remove", value: "remove"}
+        ]
+      }
+    ]
+  }
+end
+```
+
+To register this command globally, we need to specify it in `config/config.exs`:
+```elixir
+import Config
+# ...
+config :nostrum,
+  token: "YouЯ.T0.k3n",
+  managed_commands: [
+    MyBot.Command.Role
   ]
-}
 ```
-
-To register this command on the guild, we simply pass it to
-`Nostrum.Api.create_guild_application_command/2`:
-
-```elixir
-Nostrum.Api.create_guild_application_command(guild_id, command)
-```
-
-You can register the command in the ``:READY`` gateway event handler.
 
 ## Receiving interactions
 
-Set up a gateway event handler for ``:INTERACTION_CREATE``. On command
-invocation the interaction payload will look something like the following:
+When Nostrum receives an interaction, it invokes the function ``handle/2`` of
+your command module with the interaction and options it extracted from that
+interaction. Let's write a function with two clauses to handle our command:
+
+```elixir
+defmodule MyBot.Command.Role do
+  alias Nostrum.{Command, Command.Spec.Option, Api} # note the new alias!
+  use Command, %Command.Spec{
+    # ... spec from before
+  }
+
+  def handle(interaction, %{"action" => "assign", "name" => role_id}) do
+    Api.add_guild_member_role(interaction.guild_id, interaction.member.user.id, role_id)
+    :ignore
+  end
+
+  def handle(interaction, %{"action" => "remove", "name" => role_id}) do
+    Api.remove_guild_member_role(interaction.guild_id, interaction.member.user.id, role_id)
+    :ignore
+  end
+end
+```
+
+Try starting your bot running the command. Does it work?
+
+Behind the hood, an ``:INTERACTION_CREATE`` event was received by a built-in
+Nostrum consumer with an interaction that looked something like the following:
 
 ```elixir
 %Nostrum.Struct.Interaction{
@@ -89,49 +105,31 @@ invocation the interaction payload will look something like the following:
   # ...
 ```
 
-Note that Discord already converted the user-supplied role to a snowflake.
-Convenient!
-
-Let's match on the retrieved event and create two function heads for the
-separate operation modes:
-
-```elixir
-alias Nostrum.Api
-alias Nostrum.Struct.Interaction
-
-defp manage_role(%Interaction{data: %{options: [%{value: role_id}, %{value: "assign"}]}} = interaction) do
-  Api.add_guild_member_role(interaction.guild_id, interaction.member.user.id, role_id)
-end
-
-defp manage_role(%Interaction{data: %{options: [%{value: role_id}, %{value: "remove"}]}} = interaction) do
-  Api.remove_guild_member_role(interaction.guild_id, interaction.member.user.id, role_id)
-end
-
-def handle_event({:INTERACTION_CREATE, %Interaction{data: %{name: "role"}} = interaction, _ws_state}) do
-  manage_role(interaction)
-end
-```
-
-Okay, we now have our handling code done. This is pretty much the same code
-that you would use for regular commands.
-
+Nostrum figured out which module to call to handle that command and converted the
+option list to a map.
 
 ## Responding to interactions
 
-To respond to interactions, use ``Nostrum.Api.create_interaction_response/2``:
+Did you notice the ``:ignore`` at the end of our function clauses? It's telling
+Nostrum to not send anything back to the user. Although our command performs
+its job, the lack of a response forces Discord to display "The application did
+not respond" to the user.
+
+To respond with something meaningful, simply return a map like the following:
 
 ```elixir
-defp manage_role(%Interaction{data: %{options: [%{value: role_id}, %{value: "assign"}]}} = interaction) do
-  Api.add_guild_member_role(interaction.guild_id, interaction.member.user.id, role_id)
-  response = %{
-    type: 4,  # ChannelMessageWithSource
-    data: %{
-      content: "role assigned"
-    }
-  }
-  Api.create_interaction_response(interaction, response)
+def handle(interaction, %{"action" => "assign", "name" => role_id}) do
+  # ...
+  %{content: ":white_check_mark: **role assigned**"}
+end
+
+def handle(interaction, %{"action" => "remove", "name" => role_id}) do
+  # ...
+  %{content: ":white_check_mark: **role removed**"}
 end
 ```
+
+Aside from `content`, you can also specify `embeds` and `components`.
 
 We have now built a simple command using slash commands, with argument
 conversion delegated to Discords side of things. Further actions on the
