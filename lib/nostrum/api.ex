@@ -2888,7 +2888,8 @@ defmodule Nostrum.Api do
           Webhook.id(),
           %{
             name: String.t(),
-            avatar: String.t()
+            avatar: String.t(),
+            channel_id: Nostrum.Snowflake.t()
           },
           AuditLogEntry.reason()
         ) :: error | {:ok, Nostrum.Struct.Webhook.t()}
@@ -2923,7 +2924,8 @@ defmodule Nostrum.Api do
           Webhook.token(),
           %{
             name: String.t(),
-            avatar: String.t()
+            avatar: String.t(),
+            channel_id: Nostrum.Snowflake.t()
           },
           AuditLogEntry.reason()
         ) :: error | {:ok, Nostrum.Struct.Webhook.t()}
