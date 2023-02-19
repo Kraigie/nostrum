@@ -2882,6 +2882,7 @@ defmodule Nostrum.Api do
     - `args` - Map with the following *optional* keys:
       - `name` - Name of the webhook.
       - `avatar` - Base64 128x128 jpeg image for the default avatar.
+      - `channel_id` - Channel id to move the webhook to.
     - `reason` - An optional reason for the guild audit log.
   """
   @spec modify_webhook(
@@ -2917,6 +2918,7 @@ defmodule Nostrum.Api do
     - `args` - Map with the following *optional* keys:
       - `name` - Name of the webhook.
       - `avatar` - Base64 128x128 jpeg image for the default avatar.
+      - `channel_id` - Channel id to move the webhook to.
     - `reason` - An optional reason for the guild audit log.
   """
   @spec modify_webhook_with_token(
