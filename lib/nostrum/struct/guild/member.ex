@@ -30,7 +30,6 @@ defmodule Nostrum.Struct.Guild.Member do
   defstruct [
     :user,
     :nick,
-    :avatar,
     :roles,
     :joined_at,
     :deaf,
@@ -48,8 +47,6 @@ defmodule Nostrum.Struct.Guild.Member do
   in a message received from a guild channel.
   """
   @type user :: User.t() | nil
-
-  @type avatar :: String.t() | nil
 
   @typedoc "The nickname of the user"
   @type nick :: String.t() | nil
