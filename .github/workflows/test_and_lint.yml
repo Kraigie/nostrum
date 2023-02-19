@@ -7,24 +7,27 @@ on:
   pull_request:
 
 jobs:
-  # Only run lint and formatting jobs on latest OTP/Elixir versions.
   lint:
     name: Lint with Credo and Mix Format
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        elixir-version: ['1.13.4']
+        otp-version: ['24.3.4']
     steps:
       - uses: actions/checkout@v2
 
       - uses: erlef/setup-beam@v1
         with:
-          otp-version: 24
-          elixir-version: 1.13
+          otp-version: ${{ matrix.otp-version }}
+          elixir-version: ${{ matrix.elixir-version }}
+          version-type: strict
 
-      - uses: actions/cache@v2
+      - uses: actions/cache@v3
         with:
           path: _build
-          # Generate a hash of the OTP version and Elixir version
-          key: 24-1.12-mix-${{ hashFiles(format('{0}{1}', github.workspace, '/mix.lock')) }}
-          restore-keys: 24-1.12-mix
+          key: ${{ matrix.otp-version }}-${{ matrix.elixir-version }}-mix-${{ hashFiles(format('{0}{1}', github.workspace, '/mix.lock')) }}
+          restore-keys: ${{ matrix.otp-version }}-${{ matrix.elixir-version }}-mix
 
       - run: mix deps.get
         name: Fetch Dependencies
@@ -40,8 +43,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        elixir-version: ['1.11', '1.12', '1.13']
-        otp-version: ['22', '23', '24']
+        elixir-version: ['1.11.4', '1.12.3', '1.13.4', '1.14.3']
+        otp-version: ['22.3.4', '23.3.4', '24.3.4', '25.2.3']
     steps:
       - uses: actions/checkout@v2
 
@@ -49,11 +52,11 @@ jobs:
         with:
           otp-version: ${{ matrix.otp-version }}
           elixir-version: ${{ matrix.elixir-version }}
+          version-type: strict
 
-      - uses: actions/cache@v2
+      - uses: actions/cache@v3
         with:
           path: _build
-          # Generate a hash of the OTP version and Elixir version
           key: ${{ matrix.otp-version }}-${{ matrix.elixir-version }}-mix-${{ hashFiles(format('{0}{1}', github.workspace, '/mix.lock')) }}
           restore-keys: ${{ matrix.otp-version }}-${{ matrix.elixir-version }}-mix
 
