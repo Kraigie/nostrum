@@ -88,7 +88,6 @@ defmodule Nostrum.Struct.Guild.Member do
   @type t :: %__MODULE__{
           user: user,
           nick: nick,
-          avatar: avatar,
           roles: roles,
           joined_at: joined_at,
           deaf: deaf,
