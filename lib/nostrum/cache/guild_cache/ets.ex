@@ -28,6 +28,7 @@ defmodule Nostrum.Cache.GuildCache.ETS do
   alias Nostrum.Struct.Guild.Member
   alias Nostrum.Struct.Guild.Role
   alias Nostrum.Struct.Message
+  alias Nostrum.Struct.User
   alias Nostrum.Util
   import Nostrum.Snowflake, only: [is_snowflake: 1]
   use Supervisor
@@ -212,11 +213,16 @@ defmodule Nostrum.Cache.GuildCache.ETS do
   @impl GuildCache
   @spec member_remove(Guild.id(), map()) :: {Guild.id(), Member.t()} | :noop
   def member_remove(guild_id, user) do
-    [{_id, guild}] = :ets.lookup(@table_name, guild_id)
-    {popped, new_members} = Map.pop(guild.members, user.id)
-    new_guild = %{guild | members: new_members, member_count: guild.member_count - 1}
-    true = :ets.update_element(@table_name, guild_id, {2, new_guild})
-    if popped, do: {guild_id, popped}, else: :noop
+    case :ets.lookup(@table_name, guild_id) do
+      [{_id, guild}] ->
+        {popped, new_members} = Map.pop(guild.members, user.id)
+        new_guild = %{guild | members: new_members, member_count: guild.member_count - 1}
+        true = :ets.update_element(@table_name, guild_id, {2, new_guild})
+        if popped, do: {guild_id, popped}, else: :noop
+
+      [] ->
+        {guild_id, %Member{user: Util.cast(user, {:struct, User})}}
+    end
   end
 
   @doc "Update the given member for the given guild in the cache."
