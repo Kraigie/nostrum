@@ -14,6 +14,7 @@ defmodule Nostrum.Voice.Supervisor do
 
   def init(_opts) do
     children = [
+      {DynamicSupervisor, strategy: :one_for_one, name: VoiceSessionSupervisor},
       Nostrum.Voice
     ]
 
@@ -31,10 +32,6 @@ defmodule Nostrum.Voice.Supervisor do
       restart: :transient
     }
 
-    Supervisor.start_child(VoiceSupervisor, child)
-  end
-
-  def delete_session(guild_id) do
-    VoiceSupervisor |> Supervisor.delete_child(guild_id)
+    DynamicSupervisor.start_child(VoiceSessionSupervisor, child)
   end
 end
