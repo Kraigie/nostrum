@@ -100,7 +100,7 @@ defmodule Nostrum.Voice.Ports do
   @spec close(pid()) :: no_return()
   def close(pid) do
     if Process.alive?(pid),
-      do: GenServer.call(pid, :close)
+      do: GenServer.cast(pid, :close)
   end
 
   def handle_call(:get, _from, %{q: q, port_done: true} = state) do
@@ -119,7 +119,7 @@ defmodule Nostrum.Voice.Ports do
     end
   end
 
-  def handle_call(:close, _from, %{awaiter: awaiter, port: port, input_pid: input_pid}) do
+  def handle_cast(:close, %{awaiter: awaiter, port: port, input_pid: input_pid}) do
     unless is_nil(awaiter), do: GenServer.reply(awaiter, nil)
     if is_pid(input_pid), do: close(input_pid)
     Logger.debug("Closing port #{inspect(port)}")
@@ -131,7 +131,7 @@ defmodule Nostrum.Voice.Ports do
       ArgumentError -> :noop
     end
 
-    {:stop, :shutdown, nil, nil}
+    {:stop, :shutdown, nil}
   end
 
   def handle_info({_port, {:data, data}}, %{q: q, awaiter: nil} = state) do

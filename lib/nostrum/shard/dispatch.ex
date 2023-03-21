@@ -357,7 +357,7 @@ defmodule Nostrum.Shard.Dispatch do
 
           # Already in this channel:
           true ->
-            Voice.update_voice(p.guild_id)
+            :noop
         end
       else
         # Leaving Channel:

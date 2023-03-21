@@ -114,14 +114,10 @@ defmodule Nostrum.Voice.Session do
 
     # If we received an errno of 4006, session is no longer valid, so we must get a new session.
     if errno == 4006 do
-      %VoiceState{channel_id: chan, self_mute: mute, self_deaf: deaf} =
-        Voice.get_voice(state.guild_id)
-
-      Voice.leave_channel(state.guild_id)
-      Voice.join_channel(state.guild_id, chan, mute, deaf)
+      {:stop, {:shutdown, :restart}, state}
+    else
+      {:noreply, state}
     end
-
-    {:noreply, state}
   end
 
   def handle_info(
@@ -200,11 +196,34 @@ defmodule Nostrum.Voice.Session do
   end
 
   def handle_cast(:close, state) do
-    :gun.close(state.conn)
-    {:noreply, state}
+    {:stop, {:shutdown, :close}, state}
   end
 
   def handle_call(:ws_state, _from, state) do
     {:reply, state, state}
+  end
+
+  def terminate({:shutdown, :restart}, state) do
+    :gun.close(state.conn)
+    restart_session_async(state)
+  end
+
+  def terminate({:shutdown, :close}, state) do
+    :gun.close(state.conn)
+  end
+
+  def restart_session_async(state) do
+    spawn(fn ->
+      Process.monitor(state.conn_pid)
+
+      %VoiceState{channel_id: chan, self_mute: mute, self_deaf: deaf} =
+        Voice.get_voice(state.guild_id)
+
+      receive do
+        _ ->
+          Voice.leave_channel(state.guild_id)
+          Voice.join_channel(state.guild_id, chan, mute, deaf)
+      end
+    end)
   end
 end
