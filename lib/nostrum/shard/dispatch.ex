@@ -33,7 +33,7 @@ defmodule Nostrum.Shard.Dispatch do
   }
 
   alias Nostrum.Struct.{AutoModerationRule, Guild, Interaction, Message, ThreadMember, User}
-  alias Nostrum.Struct.Guild.{Integration, ScheduledEvent, UnavailableGuild, AuditLogEntry}
+  alias Nostrum.Struct.Guild.{AuditLogEntry, Integration, ScheduledEvent, UnavailableGuild}
   alias Nostrum.Util
   alias Nostrum.Voice
 
