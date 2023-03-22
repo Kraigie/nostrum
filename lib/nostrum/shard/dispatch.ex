@@ -33,7 +33,7 @@ defmodule Nostrum.Shard.Dispatch do
   }
 
   alias Nostrum.Struct.{AutoModerationRule, Guild, Interaction, Message, ThreadMember, User}
-  alias Nostrum.Struct.Guild.{Integration, ScheduledEvent, UnavailableGuild}
+  alias Nostrum.Struct.Guild.{AuditLogEntry, Integration, ScheduledEvent, UnavailableGuild}
   alias Nostrum.Util
   alias Nostrum.Voice
 
@@ -115,6 +115,9 @@ defmodule Nostrum.Shard.Dispatch do
   def handle_event(:CHANNEL_PINS_UPDATE = event, p, state) do
     {event, ChannelPinsUpdate.to_struct(p), state}
   end
+
+  def handle_event(:GUILD_AUDIT_LOG_ENTRY_CREATE = event, p, state),
+    do: {event, AuditLogEntry.to_struct(p), state}
 
   def handle_event(:GUILD_BAN_ADD = event, p, state) do
     {event, GuildBanAdd.to_struct(p), state}
