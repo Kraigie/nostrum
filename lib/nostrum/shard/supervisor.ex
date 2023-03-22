@@ -56,16 +56,10 @@ defmodule Nostrum.Shard.Supervisor do
 
   def update_voice_state(guild_id, channel_id, self_mute, self_deaf) do
     case GuildShard.get_shard(guild_id) do
-      {:ok, shard_id} ->
-        ShardSupervisor
+      {:ok, shard_num} ->
+        :"Shard-#{shard_num}"
         |> Supervisor.which_children()
-        |> Enum.filter(fn {id, _pid, _type, [modules]} ->
-          modules == Nostrum.Shard and id == shard_id
-        end)
-        |> Enum.map(fn {_id, pid, _type, _modules} -> Supervisor.which_children(pid) end)
-        |> List.flatten()
-        |> Enum.filter(fn {_id, _pid, _type, [modules]} -> modules == Nostrum.Shard.Session end)
-        |> List.first()
+        |> Enum.find(fn {id, _pid, _type, _modules} -> id == Nostrum.Shard.Session end)
         |> elem(1)
         |> Session.update_voice_state(guild_id, channel_id, self_mute, self_deaf)
 

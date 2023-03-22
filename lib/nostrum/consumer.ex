@@ -152,6 +152,15 @@ defmodule Nostrum.Consumer do
           {:GUILD_MEMBER_ADD,
            {guild_id :: integer, new_member :: Nostrum.Struct.Guild.Member.t()}, WSState.t()}
   @type guild_members_chunk :: {:GUILD_MEMBERS_CHUNK, map, WSState.t()}
+  @typedoc """
+  Dispatched when somebody leaves a guild.
+
+  In case the guild member intent is enabled but not the guild intent,
+  nostrum may not cache the actual guild, and thus be unable to provide
+  full information about members leaving guilds. In that case, this event
+  receives the guild ID and a partial member object with the leaving user as
+  provided by Discord, but no information about the user's state on the guild.
+  """
   @type guild_member_remove ::
           {:GUILD_MEMBER_REMOVE,
            {guild_id :: integer, old_member :: Nostrum.Struct.Guild.Member.t()}, WSState.t()}
