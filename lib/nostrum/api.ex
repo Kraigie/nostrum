@@ -2830,6 +2830,17 @@ defmodule Nostrum.Api do
   end
 
   @doc """
+  Retrieves the original message of a webhook.
+  """
+  @doc since: "0.6.2"
+  @spec get_webhook_message(Webhook.t(), Message.id()) ::
+          error | {:ok, Message.t()}
+  def get_webhook_message(webhook, message_id) do
+    request(:get, Constants.webhook_message(webhook.id, webhook.token, message_id))
+    |> handle_request_with_decode({:struct, Message})
+  end
+
+  @doc """
   Gets a list of webhooks for a channel.
 
   ## Parameters
@@ -3489,6 +3500,18 @@ defmodule Nostrum.Api do
   def create_interaction_response!(id, token, response) do
     create_interaction_response(id, token, response)
     |> bangify
+  end
+
+  @doc """
+  Retrieves the original message of an interaction.
+  """
+  @doc since: "0.6.2"
+  @spec get_original_interaction_response(Interaction.t()) :: error | {:ok, Message.t()}
+  def get_original_interaction_response(interaction) do
+    path = Constants.original_interaction_response(interaction.application_id, interaction.token)
+
+    request(:get, path)
+    |> handle_request_with_decode({:struct, Message})
   end
 
   @doc """
