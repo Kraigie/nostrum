@@ -211,7 +211,7 @@ defmodule Nostrum.Struct.Component do
   @typedoc """
   Indicates the style.
 
-  You can use on of the `Nostrum.Constants.ButtonStyle` methods.
+  You can use one of the `Nostrum.Constants.ButtonStyle` methods.
 
   Valid for Valid for [Interaction Buttons](#module-interaction-button) and [Text Input](#module-text-input).
   """
