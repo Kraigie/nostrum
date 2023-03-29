@@ -122,7 +122,7 @@ defmodule Nostrum.Struct.ApplicationCommand do
   - `2` for `USER`
   - `3` for `CHANNEL`
 
-  You can use on of the `Nostrum.Constants.ApplicationCommandPermissionType` methods
+  You can use one of the `Nostrum.Constants.ApplicationCommandPermissionType` methods.
   """
   @type application_command_permission_type :: 1..3
 end
