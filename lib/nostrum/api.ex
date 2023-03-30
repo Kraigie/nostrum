@@ -557,25 +557,33 @@ defmodule Nostrum.Api do
 
   If successful, returns `{:ok, users}`. Otherwise, returns `t:Nostrum.Api.error/0`.
 
+  The optional `params` are `after`, the user ID to query after, absent by default,
+  and `limit`, the max number of users to return, 1-100, 25 by default.
+
   See `create_reaction/3` for similar examples.
   """
-  @spec get_reactions(Channel.id(), Message.id(), emoji) :: error | {:ok, [User.t()]}
-  def get_reactions(channel_id, message_id, emoji)
+  @spec get_reactions(Channel.id(), Message.id(), emoji, keyword()) :: error | {:ok, [User.t()]}
+  def get_reactions(channel_id, message_id, emoji, params \\ [])
 
-  def get_reactions(channel_id, message_id, %Emoji{} = emoji),
-    do: get_reactions(channel_id, message_id, Emoji.api_name(emoji))
+  def get_reactions(channel_id, message_id, %Emoji{} = emoji, params),
+    do: get_reactions(channel_id, message_id, Emoji.api_name(emoji), params)
 
-  def get_reactions(channel_id, message_id, emoji_api_name) do
-    request(:get, Constants.channel_reactions_get(channel_id, message_id, emoji_api_name))
+  def get_reactions(channel_id, message_id, emoji_api_name, params) do
+    request(
+      :get,
+      Constants.channel_reactions_get(channel_id, message_id, emoji_api_name),
+      "",
+      params
+    )
     |> handle_request_with_decode({:list, {:struct, User}})
   end
 
   @doc ~S"""
-  Same as `get_reactions/3`, but raises `Nostrum.Error.ApiError` in case of failure.
+  Same as `get_reactions/4`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
-  @spec get_reactions!(Channel.id(), Message.id(), emoji) :: no_return | [User.t()]
-  def get_reactions!(channel_id, message_id, emoji) do
-    get_reactions(channel_id, message_id, emoji)
+  @spec get_reactions!(Channel.id(), Message.id(), emoji, keyword()) :: no_return | [User.t()]
+  def get_reactions!(channel_id, message_id, emoji, params \\ []) do
+    get_reactions(channel_id, message_id, emoji, params)
     |> bangify
   end
 
@@ -2822,6 +2830,17 @@ defmodule Nostrum.Api do
   end
 
   @doc """
+  Retrieves the original message of a webhook.
+  """
+  @doc since: "0.6.2"
+  @spec get_webhook_message(Webhook.t(), Message.id()) ::
+          error | {:ok, Message.t()}
+  def get_webhook_message(webhook, message_id) do
+    request(:get, Constants.webhook_message(webhook.id, webhook.token, message_id))
+    |> handle_request_with_decode({:struct, Message})
+  end
+
+  @doc """
   Gets a list of webhooks for a channel.
 
   ## Parameters
@@ -3484,6 +3503,18 @@ defmodule Nostrum.Api do
   end
 
   @doc """
+  Retrieves the original message of an interaction.
+  """
+  @doc since: "0.6.2"
+  @spec get_original_interaction_response(Interaction.t()) :: error | {:ok, Message.t()}
+  def get_original_interaction_response(interaction) do
+    path = Constants.original_interaction_response(interaction.application_id, interaction.token)
+
+    request(:get, path)
+    |> handle_request_with_decode({:struct, Message})
+  end
+
+  @doc """
   Same as `edit_interaction_response/3`, but directly takes the
   `t:Nostrum.Struct.Interaction.t/0` received from the gateway.
   """
@@ -3928,8 +3959,8 @@ defmodule Nostrum.Api do
     case res do
       {:ok, %{threads: channels, members: thread_members}} ->
         map = %{
-          threads: Util.cast({:list, {:struct, Channel}}, channels),
-          members: Util.cast({:list, {:struct, ThreadMember}}, thread_members)
+          threads: Util.cast(channels, {:list, {:struct, Channel}}),
+          members: Util.cast(thread_members, {:list, {:struct, ThreadMember}})
         }
 
         {:ok, map}

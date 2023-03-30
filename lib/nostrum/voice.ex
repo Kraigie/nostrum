@@ -118,7 +118,7 @@ defmodule Nostrum.Voice do
 
   @doc false
   def remove_voice(guild_id) do
-    GenServer.call(VoiceStateMap, {:remove, guild_id})
+    GenServer.cast(VoiceStateMap, {:remove, guild_id})
   end
 
   @doc """
@@ -762,11 +762,9 @@ defmodule Nostrum.Voice do
   end
 
   @doc false
-  def handle_call({:remove, guild_id}, _from, state) do
-    state[guild_id] |> VoiceState.cleanup()
-    VoiceSupervisor.end_session(guild_id)
-
-    {:reply, true, Map.delete(state, guild_id)}
+  def handle_cast({:remove, guild_id}, state) do
+    VoiceState.cleanup(state[guild_id])
+    {:noreply, Map.delete(state, guild_id)}
   end
 
   @doc false
