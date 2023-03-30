@@ -2,8 +2,8 @@ defmodule Nostrum.Struct.Component.TextInput do
   @moduledoc """
   Text Input.
   """
-alias Nostrum.Constants.TextInputStyle
 alias Nostrum.Constants.ComponentType
+alias Nostrum.Constants.TextInputStyle
 
   @moduledoc since: "0.5.1"
   use Nostrum.Struct.Component

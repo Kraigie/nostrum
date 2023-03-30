@@ -262,12 +262,22 @@ defmodule Nostrum.Constants do
     ]
 
   defmodule ApplicationCommandType do
+    @moduledoc """
+    Defines available types used for selecting application command types
+    For more info please refer to https://discord.com/developers/docs/interactions/application-commands#application-command-object-application-command-types
+    """
+
     def chat_input, do: 1
     def user, do: 2
     def message, do: 3
   end
 
   defmodule ApplicationCommandOptionType do
+    @moduledoc """
+    Defines available types used for defining application command option types for passed options
+    For more info please refer to https://discord.com/developers/docs/interactions/application-commands#application-command-object-application-command-option-type
+    """
+
     def sub_command, do: 1
     def sub_command_group, do: 2
     def string, do: 3
@@ -282,12 +292,23 @@ defmodule Nostrum.Constants do
   end
 
   defmodule ApplicationCommandPermissionType do
+    @moduledoc """
+    Defines available types for application command permissions
+    For more info please refer to https://discord.com/developers/docs/interactions/application-commands#application-command-permissions-object-application-command-permission-type
+    """
+
     def role, do: 1
     def user, do: 2
     def channel, do: 3
   end
 
   defmodule ComponentType do
+    @moduledoc """
+    Defines available types for message components
+    For more info please refer to https://discord.com/developers/docs/interactions/message-components#component-object-component-types
+    """
+
+    @spec action_row :: 1
     @doc "Container for other components"
     def action_row, do: 1
 
@@ -314,6 +335,11 @@ defmodule Nostrum.Constants do
   end
 
   defmodule ButtonStyle do
+    @moduledoc """
+    Defines available styles for button message components
+    For more info please refer to https://discord.com/developers/docs/interactions/message-components#button-object-button-styles
+    """
+
     def primary, do: 1
     def secondary, do: 2
     def success, do: 3
@@ -322,11 +348,21 @@ defmodule Nostrum.Constants do
   end
 
   defmodule TextInputStyle do
+    @moduledoc """
+    Defines available styles for modal text inputs
+    For more info please refer to https://discord.com/developers/docs/interactions/message-components#text-inputs-text-input-styles
+    """
+
     def short, do: 1
     def paragraph, do: 2
   end
 
   defmodule InteractionType do
+    @moduledoc """
+    Defines available types for interactions
+    For more info please refer to https://discord.com/developers/docs/interactions/receiving-and-responding#interaction-object-interaction-type
+    """
+
     def ping, do: 1
     def application_command, do: 2
     def message_component, do: 3
@@ -335,6 +371,11 @@ defmodule Nostrum.Constants do
   end
 
   defmodule InteractionCallbackType do
+    @moduledoc """
+    Defines available types for interaction callbacks
+    For more info please refer to https://discord.com/developers/docs/interactions/receiving-and-responding#interaction-response-object-interaction-callback-type
+    """
+
     def pong, do: 1
     def channel_message_with_source, do: 4
     def deferred_channel_message_with_source, do: 5
@@ -345,6 +386,11 @@ defmodule Nostrum.Constants do
   end
 
   defmodule ChannelType do
+    @moduledoc """
+    Defines available types for channels
+    For more info please refer to https://discord.com/developers/docs/resources/channel#channel-object-channel-types
+    """
+
     def guild_text, do: 0
     def dm, do: 1
     def guild_voice, do: 2
@@ -359,6 +405,11 @@ defmodule Nostrum.Constants do
   end
 
   defmodule WebhookType do
+    @moduledoc """
+    Defines available types for channels
+    For more info please refer to https://discord.com/developers/docs/resources/webhook#webhook-object-webhook-types
+    """
+
     def incoming, do: 1
     def channel_follower, do: 2
     def application, do: 3

@@ -2,8 +2,8 @@ defmodule Nostrum.Struct.Component.Button do
   @moduledoc """
   Helpers for dealing with Button Components
   """
-  alias Nostrum.Constants.ComponentType
   alias Nostrum.Constants.ButtonStyle
+  alias Nostrum.Constants.ComponentType
   @moduledoc since: "0.5.0"
   use Nostrum.Struct.Component
 
