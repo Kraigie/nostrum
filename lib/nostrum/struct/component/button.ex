@@ -38,8 +38,8 @@ defmodule Nostrum.Struct.Component.Button do
   @type opts :: [opt]
 
   @defaults %{
-    type: ComponentType.button,
-    style: ButtonStyle.primary,
+    type: ComponentType.button(),
+    style: ButtonStyle.primary(),
     label: "",
     emoji: nil,
     disabled: false,
@@ -95,7 +95,7 @@ defmodule Nostrum.Struct.Component.Button do
       {:label, label},
       {:url, url},
       {:emoji, opts[:emoji]},
-      {:style, ButtonStyle.link}
+      {:style, ButtonStyle.link()}
     ]
     |> new()
   end

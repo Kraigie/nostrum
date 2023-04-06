@@ -11,7 +11,7 @@ defmodule Nostrum.Struct.Component.SelectMenu do
     min_values: 1,
     disabled: false,
     max_values: 1,
-    type: ComponentType.string_select
+    type: ComponentType.string_select()
   }
   use Nostrum.Struct.Component
 

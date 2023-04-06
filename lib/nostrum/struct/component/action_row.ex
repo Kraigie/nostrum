@@ -7,7 +7,7 @@ defmodule Nostrum.Struct.Component.ActionRow do
   use Nostrum.Struct.Component
 
   @defaults %{
-    type: ComponentType.action_row,
+    type: ComponentType.action_row(),
     components: []
   }
 
