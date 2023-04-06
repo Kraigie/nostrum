@@ -12,7 +12,7 @@
 
     <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
     <script src="dist/handlebars.templates-X7YVL3G2.js"></script>
-    <script src="dist/sidebar_items-BB450525.js"></script>
+    <script src="dist/sidebar_items-0EDC7626.js"></script>
 
       <script src="docs_config.js"></script>
 
@@ -115,15 +115,15 @@ Nostrum
   </a>
   Channel Struct
 </h2>
-<p>The channel struct is used by Nostrum to represent a <em>Discord Channel Object</em>. More information can be found on the <a href="https://discord.com/developers/docs/resources/channel#channels-resource">Discord API Channel Documentation</a>.</p><p>The struct can have one of several forms depending on the type of channel. You can read more about the individual channel types <a href="#module-channel-types">below</a>.</p><p>A typical channel would appear as:</p><pre><code class="makeup elixir" translate="no"><span class="p" data-group-id="3948546472-1">%</span><span class="nc" data-group-id="3948546472-1">Nostrum.Struct.Channel</span><span class="p" data-group-id="3948546472-1">{</span><span class="w">
+<p>The channel struct is used by Nostrum to represent a <em>Discord Channel Object</em>. More information can be found on the <a href="https://discord.com/developers/docs/resources/channel#channels-resource">Discord API Channel Documentation</a>.</p><p>The struct can have one of several forms depending on the type of channel. You can read more about the individual channel types <a href="#module-channel-types">below</a>.</p><p>A typical channel would appear as:</p><pre><code class="makeup elixir" translate="no"><span class="p" data-group-id="2457919553-1">%</span><span class="nc" data-group-id="2457919553-1">Nostrum.Struct.Channel</span><span class="p" data-group-id="2457919553-1">{</span><span class="w">
   </span><span class="ss">guild_id</span><span class="p">:</span><span class="w"> </span><span class="mi">766435015768539156</span><span class="p">,</span><span class="w">
   </span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">827333533688397865</span><span class="p">,</span><span class="w">
   </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;announcements&quot;</span><span class="p">,</span><span class="w">
   </span><span class="ss">nsfw</span><span class="p">:</span><span class="w"> </span><span class="no">false</span><span class="p">,</span><span class="w">
-  </span><span class="ss">permission_overwrites</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="3948546472-2">[</span><span class="p" data-group-id="3948546472-2">]</span><span class="p">,</span><span class="w">
+  </span><span class="ss">permission_overwrites</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="2457919553-2">[</span><span class="p" data-group-id="2457919553-2">]</span><span class="p">,</span><span class="w">
   </span><span class="ss">position</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
   </span><span class="ss">type</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">
-</span><span class="p" data-group-id="3948546472-1">}</span></code></pre><p>The channel struct implements <a href="https://hexdocs.pm/elixir/String.Chars.html"><code class="inline">String.Chars</code></a> protocol through the <a href="#mention/1"><code class="inline">mention/1</code></a> function. This example uses our channel from the previous code block.</p><pre><code class="makeup elixir" translate="no"><span class="n">channel</span><span class="w"> </span><span class="o">|&gt;</span><span class="w"> </span><span class="n">to_string</span><span class="p" data-group-id="7249863552-1">(</span><span class="p" data-group-id="7249863552-1">)</span><span class="w">
+</span><span class="p" data-group-id="2457919553-1">}</span></code></pre><p>The channel struct implements <a href="https://hexdocs.pm/elixir/String.Chars.html"><code class="inline">String.Chars</code></a> protocol through the <a href="#mention/1"><code class="inline">mention/1</code></a> function. This example uses our channel from the previous code block.</p><pre><code class="makeup elixir" translate="no"><span class="n">channel</span><span class="w"> </span><span class="o">|&gt;</span><span class="w"> </span><span class="n">to_string</span><span class="p" data-group-id="3857757807-1">(</span><span class="p" data-group-id="3857757807-1">)</span><span class="w">
 </span><span class="s">&quot;&lt;#766435015768539156&gt;&quot;</span></code></pre><h2 id="module-channel-cache" class="section-heading">
   <a href="#module-channel-cache" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
   <p class="sr-only">channel-cache</p>
@@ -136,8 +136,8 @@ Nostrum
   </a>
   Example
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Cache.ChannelCache</span><span class="o">.</span><span class="n">get!</span><span class="p" data-group-id="3721143188-1">(</span><span class="mi">827333533688397865</span><span class="p" data-group-id="3721143188-1">)</span><span class="w">
-</span><span class="p" data-group-id="3721143188-2">%</span><span class="nc" data-group-id="3721143188-2">Nostrum.Struct.Channel</span><span class="p" data-group-id="3721143188-2">{</span><span class="w">
+<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Cache.ChannelCache</span><span class="o">.</span><span class="n">get!</span><span class="p" data-group-id="4395631947-1">(</span><span class="mi">827333533688397865</span><span class="p" data-group-id="4395631947-1">)</span><span class="w">
+</span><span class="p" data-group-id="4395631947-2">%</span><span class="nc" data-group-id="4395631947-2">Nostrum.Struct.Channel</span><span class="p" data-group-id="4395631947-2">{</span><span class="w">
   </span><span class="ss">application_id</span><span class="p">:</span><span class="w"> </span><span class="no">nil</span><span class="p">,</span><span class="w">
   </span><span class="ss">bitrate</span><span class="p">:</span><span class="w"> </span><span class="no">nil</span><span class="p">,</span><span class="w">
   </span><span class="ss">guild_id</span><span class="p">:</span><span class="w"> </span><span class="mi">766435015768539156</span><span class="p">,</span><span class="w">
@@ -149,20 +149,20 @@ Nostrum
   </span><span class="ss">nsfw</span><span class="p">:</span><span class="w"> </span><span class="no">false</span><span class="p">,</span><span class="w">
   </span><span class="ss">owner_id</span><span class="p">:</span><span class="w"> </span><span class="no">nil</span><span class="p">,</span><span class="w">
   </span><span class="ss">parent_id</span><span class="p">:</span><span class="w"> </span><span class="no">nil</span><span class="p">,</span><span class="w">
-  </span><span class="ss">permission_overwrites</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="3721143188-3">[</span><span class="w">
-    </span><span class="p" data-group-id="3721143188-4">%</span><span class="nc" data-group-id="3721143188-4">Nostrum.Struct.Overwrite</span><span class="p" data-group-id="3721143188-4">{</span><span class="w">
+  </span><span class="ss">permission_overwrites</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="4395631947-3">[</span><span class="w">
+    </span><span class="p" data-group-id="4395631947-4">%</span><span class="nc" data-group-id="4395631947-4">Nostrum.Struct.Overwrite</span><span class="p" data-group-id="4395631947-4">{</span><span class="w">
       </span><span class="ss">allow</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
       </span><span class="ss">deny</span><span class="p">:</span><span class="w"> </span><span class="mi">2048</span><span class="p">,</span><span class="w">
       </span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">766435015768539156</span><span class="p">,</span><span class="w">
       </span><span class="ss">type</span><span class="p">:</span><span class="w"> </span><span class="ss">:role</span><span class="w">
-    </span><span class="p" data-group-id="3721143188-4">}</span><span class="w">
-  </span><span class="p" data-group-id="3721143188-3">]</span><span class="p">,</span><span class="w">
+    </span><span class="p" data-group-id="4395631947-4">}</span><span class="w">
+  </span><span class="p" data-group-id="4395631947-3">]</span><span class="p">,</span><span class="w">
   </span><span class="ss">position</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
   </span><span class="ss">recipients</span><span class="p">:</span><span class="w"> </span><span class="no">nil</span><span class="p">,</span><span class="w">
   </span><span class="ss">topic</span><span class="p">:</span><span class="w"> </span><span class="no">nil</span><span class="p">,</span><span class="w">
   </span><span class="ss">type</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">
   </span><span class="ss">user_limit</span><span class="p">:</span><span class="w"> </span><span class="no">nil</span><span class="w">
-</span><span class="p" data-group-id="3721143188-2">}</span></code></pre><p>More details of the cache can be found at <a href="Nostrum.Cache.ChannelCache.html"><code class="inline">Nostrum.Cache.ChannelCache</code></a>.</p><h2 id="module-helper-functions" class="section-heading">
+</span><span class="p" data-group-id="4395631947-2">}</span></code></pre><p>More details of the cache can be found at <a href="Nostrum.Cache.ChannelCache.html"><code class="inline">Nostrum.Cache.ChannelCache</code></a>.</p><h2 id="module-helper-functions" class="section-heading">
   <a href="#module-helper-functions" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
   <p class="sr-only">helper-functions</p>
   </a>
@@ -180,7 +180,7 @@ Nostrum
   </a>
   Channel Types
 </h2>
-<p>Channels take the shape of various types depending on their use and not all fields are always used. The currently implemented channel types are detailed below. The type of channel is determined by the <code class="inline">:type</code> field.</p><p>This diagram represents the regular channel types <code class="inline">0</code>, <code class="inline">2</code>, <code class="inline">5</code> and <code class="inline">13</code>.</p><p>  <img src="./assets/channel_types.png" alt="Discord Channels"/></p><p>  The currently implemented channel types are:</p><table><thead><tr><th style="text-align: left;"></th><th style="text-align: left;">Channel Type</th><th style="text-align: left;"></th></tr></thead><tbody><tr><td style="text-align: left;"><code class="inline">0</code></td><td style="text-align: left;"><a href="#t:guild_text_channel/0"><code class="inline">GUILD_TEXT</code></a></td><td style="text-align: left;"><em>A text channel within a server</em></td></tr><tr><td style="text-align: left;"><code class="inline">1</code></td><td style="text-align: left;"><a href="#t:dm_channel/0"><code class="inline">DM</code></a></td><td style="text-align: left;"><em>A direct message between users</em></td></tr><tr><td style="text-align: left;"><code class="inline">2</code></td><td style="text-align: left;"><a href="#t:guild_voice_channel/0"><code class="inline">GUILD_VOICE</code></a></td><td style="text-align: left;"><em>A voice channel within a server</em></td></tr><tr><td style="text-align: left;"><code class="inline">3</code></td><td style="text-align: left;"><a href="#t:group_dm_channel/0"><code class="inline">GROUP_DM</code></a></td><td style="text-align: left;"><em>A direct message between multiple users</em></td></tr><tr><td style="text-align: left;"><code class="inline">4</code></td><td style="text-align: left;"><a href="#t:guild_category_channel/0"><code class="inline">GUILD_CATEGORY</code></a></td><td style="text-align: left;"><em>A category that contains up to 50 channels</em></td></tr><tr><td style="text-align: left;"><code class="inline">5</code></td><td style="text-align: left;"><a href="#t:guild_news_channel/0"><code class="inline">GUILD_NEWS</code></a></td><td style="text-align: left;"><em>A channel that users can follow and crosspost</em></td></tr><tr><td style="text-align: left;"><code class="inline">6</code></td><td style="text-align: left;"><a href="#t:guild_store_channel/0"><code class="inline">GUILD_STORE</code></a></td><td style="text-align: left;"><em>A channel to sell games on Discord</em></td></tr><tr><td style="text-align: left;"><code class="inline">10</code></td><td style="text-align: left;"><a href="#t:guild_news_thread_channel/0"><code class="inline">GUILD_NEWS_THREAD</code></a></td><td style="text-align: left;"><em>A temporary sub-channel within a news channel</em></td></tr><tr><td style="text-align: left;"><code class="inline">11</code></td><td style="text-align: left;"><a href="#t:guild_public_thread_channel/0"><code class="inline">GUILD_PUBLIC_THREAD</code></a></td><td style="text-align: left;"><em>A temporary sub-channel within a text channel</em></td></tr><tr><td style="text-align: left;"><code class="inline">12</code></td><td style="text-align: left;"><a href="#t:guild_private_thread_channel/0"><code class="inline">GUILD_PRIVATE_THREAD</code></a></td><td style="text-align: left;"><em>A temporary private sub-channel within a text channel</em></td></tr><tr><td style="text-align: left;"><code class="inline">13</code></td><td style="text-align: left;"><a href="#t:guild_stage_voice_channel/0"><code class="inline">GUILD_STAGE_VOICE</code></a></td><td style="text-align: left;"><em>A voice channel for hosting events with an audience</em></td></tr><tr><td style="text-align: left;"><code class="inline">15</code></td><td style="text-align: left;"><a href="#t:guild_forum_channel/0"><code class="inline">GUILD_FORUM</code></a></td><td style="text-align: left;">_A channel that can only contain threads</td></tr></tbody></table><p>More information about <em>Discord Channel Types</em> can be found on the <a href="https://discord.com/developers/docs/resources/channel#channel-object-channel-types">Discord API Channel Type Documentation</a>.</p>
+<p>Channels take the shape of various types depending on their use and not all fields are always used. The currently implemented channel types are detailed below. The type of channel is determined by the <code class="inline">:type</code> field.</p><p>This diagram represents the regular channel types <code class="inline">0</code>, <code class="inline">2</code>, <code class="inline">5</code> and <code class="inline">13</code>.</p><p>  <img src="./assets/channel_types.png" alt="Discord Channels"/></p><p>  The currently implemented channel types are:</p><table><thead><tr><th style="text-align: left;"></th><th style="text-align: left;">Channel Type</th><th style="text-align: left;"></th></tr></thead><tbody><tr><td style="text-align: left;"><code class="inline">0</code></td><td style="text-align: left;"><a href="#t:guild_text_channel/0"><code class="inline">GUILD_TEXT</code></a></td><td style="text-align: left;"><em>A text channel within a server</em></td></tr><tr><td style="text-align: left;"><code class="inline">1</code></td><td style="text-align: left;"><a href="#t:dm_channel/0"><code class="inline">DM</code></a></td><td style="text-align: left;"><em>A direct message between users</em></td></tr><tr><td style="text-align: left;"><code class="inline">2</code></td><td style="text-align: left;"><a href="#t:guild_voice_channel/0"><code class="inline">GUILD_VOICE</code></a></td><td style="text-align: left;"><em>A voice channel within a server</em></td></tr><tr><td style="text-align: left;"><code class="inline">3</code></td><td style="text-align: left;"><a href="#t:group_dm_channel/0"><code class="inline">GROUP_DM</code></a></td><td style="text-align: left;"><em>A direct message between multiple users</em></td></tr><tr><td style="text-align: left;"><code class="inline">4</code></td><td style="text-align: left;"><a href="#t:guild_category_channel/0"><code class="inline">GUILD_CATEGORY</code></a></td><td style="text-align: left;"><em>A category that contains up to 50 channels</em></td></tr><tr><td style="text-align: left;"><code class="inline">5</code></td><td style="text-align: left;"><a href="#t:guild_news_channel/0"><code class="inline">GUILD_NEWS</code></a></td><td style="text-align: left;"><em>A channel that users can follow and crosspost</em></td></tr><tr><td style="text-align: left;"><code class="inline">6</code></td><td style="text-align: left;"><a href="#t:guild_store_channel/0"><code class="inline">GUILD_STORE</code></a></td><td style="text-align: left;"><em>A channel to sell games on Discord</em></td></tr><tr><td style="text-align: left;"><code class="inline">10</code></td><td style="text-align: left;"><a href="#t:guild_news_thread_channel/0"><code class="inline">GUILD_NEWS_THREAD</code></a></td><td style="text-align: left;"><em>A temporary sub-channel within a news channel</em></td></tr><tr><td style="text-align: left;"><code class="inline">11</code></td><td style="text-align: left;"><a href="#t:guild_public_thread_channel/0"><code class="inline">GUILD_PUBLIC_THREAD</code></a></td><td style="text-align: left;"><em>A temporary sub-channel within a text channel</em></td></tr><tr><td style="text-align: left;"><code class="inline">12</code></td><td style="text-align: left;"><a href="#t:guild_private_thread_channel/0"><code class="inline">GUILD_PRIVATE_THREAD</code></a></td><td style="text-align: left;"><em>A temporary private sub-channel within a text channel</em></td></tr><tr><td style="text-align: left;"><code class="inline">13</code></td><td style="text-align: left;"><a href="#t:guild_stage_voice_channel/0"><code class="inline">GUILD_STAGE_VOICE</code></a></td><td style="text-align: left;"><em>A voice channel for hosting events with an audience</em></td></tr><tr><td style="text-align: left;"><code class="inline">15</code></td><td style="text-align: left;"><a href="#t:guild_forum_channel/0"><code class="inline">GUILD_FORUM</code></a></td><td style="text-align: left;">_A channel that can only contain threads</td></tr></tbody></table><p>You can use one of the <a href="Nostrum.Constants.ChannelType.html"><code class="inline">Nostrum.Constants.ChannelType</code></a> methods.</p><p>More information about <em>Discord Channel Types</em> can be found on the <a href="https://discord.com/developers/docs/resources/channel#channel-object-channel-types">Discord API Channel Type Documentation</a>.</p>
   </section>
 
 
@@ -792,7 +792,7 @@ Types
     </a>
     <h1 class="signature" translate="no">application_id()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L253" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L255" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -820,7 +820,7 @@ Types
     </a>
     <h1 class="signature" translate="no">applied_tags()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L409" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L411" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -850,7 +850,7 @@ Types
     </a>
     <h1 class="signature" translate="no">archive_timestamp()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L312" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L314" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -880,7 +880,7 @@ Types
     </a>
     <h1 class="signature" translate="no">archived()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L324" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L326" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -910,7 +910,7 @@ Types
     </a>
     <h1 class="signature" translate="no">auto_archive_duration()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L335" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L337" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -940,7 +940,7 @@ Types
     </a>
     <h1 class="signature" translate="no">bitrate()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L210" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L212" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -968,7 +968,7 @@ Types
     </a>
     <h1 class="signature" translate="no">channel_mention()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L636" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L638" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1029,7 +1029,7 @@ Documentation</a>.</p>
     </a>
     <h1 class="signature" translate="no">default_auto_archive_duration()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L377" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L379" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1059,7 +1059,7 @@ Documentation</a>.</p>
     </a>
     <h1 class="signature" translate="no">default_reaction_emoji()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L417" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L419" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1090,7 +1090,7 @@ Documentation</a>.</p>
     </a>
     <h1 class="signature" translate="no">default_thread_rate_limit_per_user()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L224" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L226" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1120,7 +1120,7 @@ Documentation</a>.</p>
     </a>
     <h1 class="signature" translate="no">dm_channel()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L445" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L447" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1180,7 +1180,7 @@ Documentation</a>.</p>
     </a>
     <h1 class="signature" translate="no">flags()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L366" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L368" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1210,7 +1210,7 @@ Documentation</a>.</p>
     </a>
     <h1 class="signature" translate="no">forum_tag()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L400" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L402" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1247,7 +1247,7 @@ Documentation</a>.</p>
     </a>
     <h1 class="signature" translate="no">group_dm_channel()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L473" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L475" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1307,7 +1307,7 @@ Documentation</a>.</p>
     </a>
     <h1 class="signature" translate="no">guild_category_channel()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L490" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L492" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1367,7 +1367,7 @@ Documentation</a>.</p>
     </a>
     <h1 class="signature" translate="no">guild_channel()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L646" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L648" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1400,7 +1400,7 @@ Documentation</a>.</p>
     </a>
     <h1 class="signature" translate="no">guild_forum_channel()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L614" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L616" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1462,7 +1462,7 @@ Documentation</a>.</p>
     </a>
     <h1 class="signature" translate="no">guild_id()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L173" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L175" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1490,7 +1490,7 @@ Documentation</a>.</p>
     </a>
     <h1 class="signature" translate="no">guild_news_channel()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L505" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L507" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1552,7 +1552,7 @@ Documentation</a>.</p>
     </a>
     <h1 class="signature" translate="no">guild_news_thread_channel()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L538" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L540" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1614,7 +1614,7 @@ Documentation</a>.</p>
     </a>
     <h1 class="signature" translate="no">guild_private_thread_channel()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L577" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L579" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1676,7 +1676,7 @@ Documentation</a>.</p>
     </a>
     <h1 class="signature" translate="no">guild_public_thread_channel()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L557" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L559" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1738,7 +1738,7 @@ Documentation</a>.</p>
     </a>
     <h1 class="signature" translate="no">guild_stage_voice_channel()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L596" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L598" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1800,7 +1800,7 @@ Documentation</a>.</p>
     </a>
     <h1 class="signature" translate="no">guild_store_channel()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L523" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L525" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1862,7 +1862,7 @@ Documentation</a>.</p>
     </a>
     <h1 class="signature" translate="no">guild_text_channel()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L427" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L429" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1922,7 +1922,7 @@ Documentation</a>.</p>
     </a>
     <h1 class="signature" translate="no">guild_voice_channel()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L456" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L458" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1982,7 +1982,7 @@ Documentation</a>.</p>
     </a>
     <h1 class="signature" translate="no">icon()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L239" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L241" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2010,7 +2010,7 @@ Documentation</a>.</p>
     </a>
     <h1 class="signature" translate="no">id()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L161" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L163" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2038,7 +2038,7 @@ Documentation</a>.</p>
     </a>
     <h1 class="signature" translate="no">join_timestamp()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L360" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L362" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2068,7 +2068,7 @@ Documentation</a>.</p>
     </a>
     <h1 class="signature" translate="no">last_message_id()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L205" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L207" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2096,7 +2096,7 @@ Documentation</a>.</p>
     </a>
     <h1 class="signature" translate="no">last_pin_timestamp()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L265" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L267" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2124,7 +2124,7 @@ Documentation</a>.</p>
     </a>
     <h1 class="signature" translate="no">locked()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L318" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L320" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2154,7 +2154,7 @@ Documentation</a>.</p>
     </a>
     <h1 class="signature" translate="no">member()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L343" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L345" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2189,7 +2189,7 @@ Documentation</a>.</p>
     </a>
     <h1 class="signature" translate="no">member_count()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L293" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L295" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2219,7 +2219,7 @@ Documentation</a>.</p>
     </a>
     <h1 class="signature" translate="no">message_count()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L287" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L289" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2249,7 +2249,7 @@ Documentation</a>.</p>
     </a>
     <h1 class="signature" translate="no">name()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L188" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L190" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2277,7 +2277,7 @@ Documentation</a>.</p>
     </a>
     <h1 class="signature" translate="no">newly_created()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L391" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L393" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2307,7 +2307,7 @@ Documentation</a>.</p>
     </a>
     <h1 class="signature" translate="no">nsfw()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L198" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L200" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2335,7 +2335,7 @@ Documentation</a>.</p>
     </a>
     <h1 class="signature" translate="no">owner_id()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L246" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L248" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2363,7 +2363,7 @@ Documentation</a>.</p>
     </a>
     <h1 class="signature" translate="no">parent_id()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L260" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L262" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2391,7 +2391,7 @@ Documentation</a>.</p>
     </a>
     <h1 class="signature" translate="no">permission_overwrites()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L183" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L185" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2419,7 +2419,7 @@ Documentation</a>.</p>
     </a>
     <h1 class="signature" translate="no">permissions()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L385" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L387" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2449,7 +2449,7 @@ Documentation</a>.</p>
     </a>
     <h1 class="signature" translate="no">position()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L178" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L180" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2477,7 +2477,7 @@ Documentation</a>.</p>
     </a>
     <h1 class="signature" translate="no">rate_limit_per_user()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L218" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L220" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2507,7 +2507,7 @@ Documentation</a>.</p>
     </a>
     <h1 class="signature" translate="no">recipients()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L234" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L236" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2535,7 +2535,7 @@ Documentation</a>.</p>
     </a>
     <h1 class="signature" translate="no">rtc_region()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L273" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L275" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2565,7 +2565,7 @@ Documentation</a>.</p>
     </a>
     <h1 class="signature" translate="no">t()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L670" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L672" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2605,7 +2605,7 @@ Documentation</a>.</p>
     </a>
     <h1 class="signature" translate="no">text_channel()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L655" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L657" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2637,7 +2637,7 @@ Documentation</a>.</p>
     </a>
     <h1 class="signature" translate="no">thread_metadata()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L299" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L301" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2674,7 +2674,7 @@ Documentation</a>.</p>
     </a>
     <h1 class="signature" translate="no">topic()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L193" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L195" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2702,7 +2702,7 @@ Documentation</a>.</p>
     </a>
     <h1 class="signature" translate="no">type()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L168" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L170" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2730,7 +2730,7 @@ Documentation</a>.</p>
     </a>
     <h1 class="signature" translate="no">user_id()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L354" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L356" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2760,7 +2760,7 @@ Documentation</a>.</p>
     </a>
     <h1 class="signature" translate="no">user_limit()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L229" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L231" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2788,7 +2788,7 @@ Documentation</a>.</p>
     </a>
     <h1 class="signature" translate="no">video_quality_mode()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L281" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L283" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2818,7 +2818,7 @@ Documentation</a>.</p>
     </a>
     <h1 class="signature" translate="no">voice_channel()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L665" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L667" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2863,7 +2863,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">mention(channel)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L704" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L706" class="view-source" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2891,8 +2891,8 @@ Functions
   </a>
   Examples
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Cache.ChannelCache</span><span class="o">.</span><span class="n">get</span><span class="p" data-group-id="8708766804-1">(</span><span class="mi">381889573426429952</span><span class="p" data-group-id="8708766804-1">)</span><span class="w">
-</span><span class="o">|&gt;</span><span class="w"> </span><span class="nc">Nostrum.Struct.Channel</span><span class="o">.</span><span class="n">mention</span><span class="p" data-group-id="8708766804-2">(</span><span class="p" data-group-id="8708766804-2">)</span><span class="w">
+<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Cache.ChannelCache</span><span class="o">.</span><span class="n">get</span><span class="p" data-group-id="5419027130-1">(</span><span class="mi">381889573426429952</span><span class="p" data-group-id="5419027130-1">)</span><span class="w">
+</span><span class="o">|&gt;</span><span class="w"> </span><span class="nc">Nostrum.Struct.Channel</span><span class="o">.</span><span class="n">mention</span><span class="p" data-group-id="5419027130-2">(</span><span class="p" data-group-id="5419027130-2">)</span><span class="w">
 </span><span class="s">&quot;&lt;#381889573426429952&gt;&quot;</span><span class="w">
 </span></code></pre>
   </section>
