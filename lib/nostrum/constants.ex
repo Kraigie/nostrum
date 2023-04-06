@@ -260,4 +260,158 @@ defmodule Nostrum.Constants do
       depth: 3,
       customize_hostname_check: [match_fun: :public_key.pkix_verify_hostname_match_fun(:https)]
     ]
+
+  defmodule ApplicationCommandType do
+    @moduledoc """
+    Defines available types used for selecting application command types
+    For more info please refer to https://discord.com/developers/docs/interactions/application-commands#application-command-object-application-command-types
+    """
+
+    def chat_input, do: 1
+    def user, do: 2
+    def message, do: 3
+  end
+
+  defmodule ApplicationCommandOptionType do
+    @moduledoc """
+    Defines available types used for defining application command option types for passed options
+    For more info please refer to https://discord.com/developers/docs/interactions/application-commands#application-command-object-application-command-option-type
+    """
+
+    def sub_command, do: 1
+    def sub_command_group, do: 2
+    def string, do: 3
+    def integer, do: 4
+    def boolean, do: 5
+    def user, do: 6
+    def channel, do: 7
+    def role, do: 8
+    def mentionable, do: 9
+    def number, do: 10
+    def attachment, do: 11
+  end
+
+  defmodule ApplicationCommandPermissionType do
+    @moduledoc """
+    Defines available types for application command permissions
+    For more info please refer to https://discord.com/developers/docs/interactions/application-commands#application-command-permissions-object-application-command-permission-type
+    """
+
+    def role, do: 1
+    def user, do: 2
+    def channel, do: 3
+  end
+
+  defmodule ComponentType do
+    @moduledoc """
+    Defines available types for message components
+    For more info please refer to https://discord.com/developers/docs/interactions/message-components#component-object-component-types
+    """
+
+    @spec action_row :: 1
+    @doc "Container for other components"
+    def action_row, do: 1
+
+    @doc "Button object"
+    def button, do: 2
+
+    @doc "Select menu for picking from defined text options"
+    def string_select, do: 3
+
+    @doc "Text input object"
+    def text_input, do: 4
+
+    @doc "Select menu for users"
+    def user_select, do: 5
+
+    @doc "Select menu for roles"
+    def role_select, do: 6
+
+    @doc "Select menu for mentionables (users and roles)"
+    def mentionable_select, do: 7
+
+    @doc "Select menu for channels"
+    def channel_select, do: 8
+  end
+
+  defmodule ButtonStyle do
+    @moduledoc """
+    Defines available styles for button message components
+    For more info please refer to https://discord.com/developers/docs/interactions/message-components#button-object-button-styles
+    """
+
+    def primary, do: 1
+    def secondary, do: 2
+    def success, do: 3
+    def danger, do: 4
+    def link, do: 5
+  end
+
+  defmodule TextInputStyle do
+    @moduledoc """
+    Defines available styles for modal text inputs
+    For more info please refer to https://discord.com/developers/docs/interactions/message-components#text-inputs-text-input-styles
+    """
+
+    def short, do: 1
+    def paragraph, do: 2
+  end
+
+  defmodule InteractionType do
+    @moduledoc """
+    Defines available types for interactions
+    For more info please refer to https://discord.com/developers/docs/interactions/receiving-and-responding#interaction-object-interaction-type
+    """
+
+    def ping, do: 1
+    def application_command, do: 2
+    def message_component, do: 3
+    def application_command_autocomplete, do: 4
+    def modal_submit, do: 5
+  end
+
+  defmodule InteractionCallbackType do
+    @moduledoc """
+    Defines available types for interaction callbacks
+    For more info please refer to https://discord.com/developers/docs/interactions/receiving-and-responding#interaction-response-object-interaction-callback-type
+    """
+
+    def pong, do: 1
+    def channel_message_with_source, do: 4
+    def deferred_channel_message_with_source, do: 5
+    def deferred_update_message, do: 6
+    def update_message, do: 7
+    def application_command_autocomplete_result, do: 8
+    def modal, do: 9
+  end
+
+  defmodule ChannelType do
+    @moduledoc """
+    Defines available types for channels
+    For more info please refer to https://discord.com/developers/docs/resources/channel#channel-object-channel-types
+    """
+
+    def guild_text, do: 0
+    def dm, do: 1
+    def guild_voice, do: 2
+    def group_db, do: 3
+    def guild_category, do: 4
+    def guild_announcement, do: 5
+    def announcement_thread, do: 10
+    def public_thread, do: 11
+    def private_thread, do: 12
+    def guild_directory, do: 14
+    def guild_forum, do: 15
+  end
+
+  defmodule WebhookType do
+    @moduledoc """
+    Defines available types for channels
+    For more info please refer to https://discord.com/developers/docs/resources/webhook#webhook-object-webhook-types
+    """
+
+    def incoming, do: 1
+    def channel_follower, do: 2
+    def application, do: 3
+  end
 end
