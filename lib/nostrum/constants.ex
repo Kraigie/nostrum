@@ -221,7 +221,8 @@ defmodule Nostrum.Constants do
       "UNDOCUMENTED_11" => 11,
       "CLIENT_CONNECT" => 12,
       "CLIENT_DISCONNECT" => 13,
-      "CODEC_INFO" => 14
+      "CODEC_INFO" => 14,
+      "UNDOCUMENTED_18" => 18
     }
   end
 
@@ -230,7 +231,7 @@ defmodule Nostrum.Constants do
   end
 
   def atom_from_voice_opcode(opcode) do
-    {k, _} = Enum.find(voice_opcodes(), fn {_, v} -> v == opcode end)
+    {k, _} = Enum.find(voice_opcodes(), {"UNKNOWN", -1}, fn {_, v} -> v == opcode end)
     k |> String.downcase() |> String.to_atom()
   end
 
