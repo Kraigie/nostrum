@@ -26,6 +26,8 @@ defmodule Nostrum.Struct.ApplicationCommand do
   - `1` for `CHAT_INPUT`, regular slash commands (default)
   - `2` for `USER`, right-click menu commands on a specific user
   - `3` for `MESSAGE`, right-click menu commands on a specific message
+
+  You can use on of the `Nostrum.Constants.ApplicationCommandType` methods
   """
   @type command_type :: pos_integer()
 
@@ -50,6 +52,8 @@ defmodule Nostrum.Struct.ApplicationCommand do
   - `8` for `ROLE`
   - `9` for `MENTIONABLE` *Note*: Includes users and roles
   - `10` for `NUMBER` *Note*: This has the same limitations as `INTEGER`
+
+  You can use on of the `Nostrum.Constants.ApplicationCommandOptionType` methods
   """
   @type command_option_type :: 1..10
 
@@ -116,6 +120,9 @@ defmodule Nostrum.Struct.ApplicationCommand do
   @typedoc """
   - `1` for `ROLE`
   - `2` for `USER`
+  - `3` for `CHANNEL`
+
+  You can use one of the `Nostrum.Constants.ApplicationCommandPermissionType` methods.
   """
-  @type application_command_permission_type :: pos_integer()
+  @type application_command_permission_type :: 1..3
 end

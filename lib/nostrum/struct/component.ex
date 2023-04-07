@@ -187,13 +187,15 @@ defmodule Nostrum.Struct.Component do
   |  `3` |  SelectMenu |
   |  `4` |  TextInput |
 
+  You can use one of the `Nostrum.Constants.ComponentType` methods.
+
   Check out the [Discord API Message Component Types](https://discord.com/developers/docs/interactions/message-components#component-object-component-types) for more information.
 
   """
   @type type :: integer()
 
   @typedoc """
-  Used to identify the command when the interraction is sent to you from the user.
+  Used to identify the command when the interaction is sent to you from the user.
 
   Valid for [Interaction Buttons](#module-interaction-button), [Select Menus](#module-select-menu), and [Text Input](#module-text-input).
   """
@@ -208,6 +210,8 @@ defmodule Nostrum.Struct.Component do
 
   @typedoc """
   Indicates the style.
+
+  You can use one of the `Nostrum.Constants.ButtonStyle` methods.
 
   Valid for Valid for [Interaction Buttons](#module-interaction-button) and [Text Input](#module-text-input).
   """

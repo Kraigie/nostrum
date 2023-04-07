@@ -31,7 +31,10 @@ defmodule Nostrum.Consumer do
     WSState
   }
 
-  alias Nostrum.Struct.Guild.Integration
+  alias Nostrum.Struct.Guild.{
+    AuditLogEntry,
+    Integration
+  }
 
   alias Nostrum.Struct.Event.{
     AutoModerationRuleExecute,
@@ -126,6 +129,8 @@ defmodule Nostrum.Consumer do
            WSState.t()}
   @type channel_pins_ack :: {:CHANNEL_PINS_ACK, map, WSState.t()}
   @type channel_pins_update :: {:CHANNEL_PINS_UPDATE, ChannelPinsUpdate.t(), WSState.t()}
+  @type guild_audit_log_entry_create ::
+          {:GUILD_AUDIT_LOG_ENTRY_CREATE, AuditLogEntry.t(), WSState.t()}
   @type guild_ban_add ::
           {:GUILD_BAN_ADD, GuildBanAdd.t(), WSState.t()}
   @type guild_ban_remove ::
@@ -152,6 +157,15 @@ defmodule Nostrum.Consumer do
           {:GUILD_MEMBER_ADD,
            {guild_id :: integer, new_member :: Nostrum.Struct.Guild.Member.t()}, WSState.t()}
   @type guild_members_chunk :: {:GUILD_MEMBERS_CHUNK, map, WSState.t()}
+  @typedoc """
+  Dispatched when somebody leaves a guild.
+
+  In case the guild member intent is enabled but not the guild intent,
+  nostrum may not cache the actual guild, and thus be unable to provide
+  full information about members leaving guilds. In that case, this event
+  receives the guild ID and a partial member object with the leaving user as
+  provided by Discord, but no information about the user's state on the guild.
+  """
   @type guild_member_remove ::
           {:GUILD_MEMBER_REMOVE,
            {guild_id :: integer, old_member :: Nostrum.Struct.Guild.Member.t()}, WSState.t()}
@@ -303,6 +317,7 @@ defmodule Nostrum.Consumer do
           | channel_update
           | channel_pins_ack
           | channel_pins_update
+          | guild_audit_log_entry_create
           | guild_ban_add
           | guild_ban_remove
           | guild_create
