@@ -4,19 +4,20 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="ExDoc v0.29.0">
+    <meta name="generator" content="ExDoc v0.29.4">
     <meta name="project" content="Nostrum v0.6.1">
 
     <title>Nostrum.Struct.Channel — Nostrum v0.6.1</title>
-    <link rel="stylesheet" href="dist/html-elixir-2YOS5DIE.css" />
+    <link rel="stylesheet" href="dist/html-elixir-HHVY3JYD.css" />
+
 
     <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
-    <script src="dist/handlebars.templates-X7YVL3G2.js"></script>
-    <script src="dist/sidebar_items-0EDC7626.js"></script>
+    <script src="dist/handlebars.templates-XWGFFSCD.js"></script>
+    <script src="dist/sidebar_items-01464099.js"></script>
 
       <script src="docs_config.js"></script>
 
-    <script async src="dist/html-XN2TSG4M.js"></script>
+    <script async src="dist/html-JDI3AVDD.js"></script>
 
 
   </head>
@@ -51,7 +52,7 @@
     </button>
     <label class="search-label">
       <p class="sr-only">Search</p>
-      <input name="q" type="text" class="search-input" placeholder="Search..." aria-label="Input your search terms" autocomplete="off" />
+      <input name="q" type="text" class="search-input" placeholder="Search..." aria-label="Input your search terms" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
     </label>
   </form>
 
@@ -66,9 +67,9 @@
       <a href="https://github.com/Kraigie/nostrum" class="sidebar-projectName" translate="no">
 Nostrum
       </a>
-      <strong class="sidebar-projectVersion" translate="no">
+      <div class="sidebar-projectVersion" translate="no">
         v0.6.1
-      </strong>
+      </div>
     </div>
     <ul class="sidebar-listNav">
       <li><a id="extras-list-link" href="#full-list">Pages</a></li>
@@ -82,7 +83,7 @@ Nostrum
   </div>
 
   <div class="gradient"></div>
-  <ul id="full-list" class="sidebar-fullList"></ul>
+  <ul id="full-list"></ul>
 </section>
 
 <section class="content">
@@ -91,13 +92,13 @@ Nostrum
     <div id="content" class="content-inner">
 
 <h1>
-<button class="settings display-settings">
+<button class="icon-action display-settings">
   <i class="ri-settings-3-line"></i>
   <span class="sr-only">Settings</span>
 </button>
 
 
-    <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L1" title="View Source" class="view-source" rel="help">
+    <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L1" title="View Source" class="icon-action" rel="help">
       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
       <span class="sr-only">View Source</span>
     </a>
@@ -115,15 +116,15 @@ Nostrum
   </a>
   Channel Struct
 </h2>
-<p>The channel struct is used by Nostrum to represent a <em>Discord Channel Object</em>. More information can be found on the <a href="https://discord.com/developers/docs/resources/channel#channels-resource">Discord API Channel Documentation</a>.</p><p>The struct can have one of several forms depending on the type of channel. You can read more about the individual channel types <a href="#module-channel-types">below</a>.</p><p>A typical channel would appear as:</p><pre><code class="makeup elixir" translate="no"><span class="p" data-group-id="5363560745-1">%</span><span class="nc" data-group-id="5363560745-1">Nostrum.Struct.Channel</span><span class="p" data-group-id="5363560745-1">{</span><span class="w">
+<p>The channel struct is used by Nostrum to represent a <em>Discord Channel Object</em>. More information can be found on the <a href="https://discord.com/developers/docs/resources/channel#channels-resource">Discord API Channel Documentation</a>.</p><p>The struct can have one of several forms depending on the type of channel. You can read more about the individual channel types <a href="#module-channel-types">below</a>.</p><p>A typical channel would appear as:</p><pre><code class="makeup elixir" translate="no"><span class="p" data-group-id="2273397418-1">%</span><span class="nc" data-group-id="2273397418-1">Nostrum.Struct.Channel</span><span class="p" data-group-id="2273397418-1">{</span><span class="w">
   </span><span class="ss">guild_id</span><span class="p">:</span><span class="w"> </span><span class="mi">766435015768539156</span><span class="p">,</span><span class="w">
   </span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">827333533688397865</span><span class="p">,</span><span class="w">
   </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;announcements&quot;</span><span class="p">,</span><span class="w">
   </span><span class="ss">nsfw</span><span class="p">:</span><span class="w"> </span><span class="no">false</span><span class="p">,</span><span class="w">
-  </span><span class="ss">permission_overwrites</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="5363560745-2">[</span><span class="p" data-group-id="5363560745-2">]</span><span class="p">,</span><span class="w">
+  </span><span class="ss">permission_overwrites</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="2273397418-2">[</span><span class="p" data-group-id="2273397418-2">]</span><span class="p">,</span><span class="w">
   </span><span class="ss">position</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
   </span><span class="ss">type</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">
-</span><span class="p" data-group-id="5363560745-1">}</span></code></pre><p>The channel struct implements <a href="https://hexdocs.pm/elixir/String.Chars.html"><code class="inline">String.Chars</code></a> protocol through the <a href="#mention/1"><code class="inline">mention/1</code></a> function. This example uses our channel from the previous code block.</p><pre><code class="makeup elixir" translate="no"><span class="n">channel</span><span class="w"> </span><span class="o">|&gt;</span><span class="w"> </span><span class="n">to_string</span><span class="p" data-group-id="8694381990-1">(</span><span class="p" data-group-id="8694381990-1">)</span><span class="w">
+</span><span class="p" data-group-id="2273397418-1">}</span></code></pre><p>The channel struct implements <a href="https://hexdocs.pm/elixir/String.Chars.html"><code class="inline">String.Chars</code></a> protocol through the <a href="#mention/1"><code class="inline">mention/1</code></a> function. This example uses our channel from the previous code block.</p><pre><code class="makeup elixir" translate="no"><span class="n">channel</span><span class="w"> </span><span class="o">|&gt;</span><span class="w"> </span><span class="n">to_string</span><span class="p" data-group-id="9286280452-1">(</span><span class="p" data-group-id="9286280452-1">)</span><span class="w">
 </span><span class="s">&quot;&lt;#766435015768539156&gt;&quot;</span></code></pre><h2 id="module-channel-cache" class="section-heading">
   <a href="#module-channel-cache" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
   <p class="sr-only">channel-cache</p>
@@ -136,8 +137,8 @@ Nostrum
   </a>
   Example
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Cache.ChannelCache</span><span class="o">.</span><span class="n">get!</span><span class="p" data-group-id="9815284462-1">(</span><span class="mi">827333533688397865</span><span class="p" data-group-id="9815284462-1">)</span><span class="w">
-</span><span class="p" data-group-id="9815284462-2">%</span><span class="nc" data-group-id="9815284462-2">Nostrum.Struct.Channel</span><span class="p" data-group-id="9815284462-2">{</span><span class="w">
+<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Cache.ChannelCache</span><span class="o">.</span><span class="n">get!</span><span class="p" data-group-id="8026563321-1">(</span><span class="mi">827333533688397865</span><span class="p" data-group-id="8026563321-1">)</span><span class="w">
+</span><span class="p" data-group-id="8026563321-2">%</span><span class="nc" data-group-id="8026563321-2">Nostrum.Struct.Channel</span><span class="p" data-group-id="8026563321-2">{</span><span class="w">
   </span><span class="ss">application_id</span><span class="p">:</span><span class="w"> </span><span class="no">nil</span><span class="p">,</span><span class="w">
   </span><span class="ss">bitrate</span><span class="p">:</span><span class="w"> </span><span class="no">nil</span><span class="p">,</span><span class="w">
   </span><span class="ss">guild_id</span><span class="p">:</span><span class="w"> </span><span class="mi">766435015768539156</span><span class="p">,</span><span class="w">
@@ -149,20 +150,20 @@ Nostrum
   </span><span class="ss">nsfw</span><span class="p">:</span><span class="w"> </span><span class="no">false</span><span class="p">,</span><span class="w">
   </span><span class="ss">owner_id</span><span class="p">:</span><span class="w"> </span><span class="no">nil</span><span class="p">,</span><span class="w">
   </span><span class="ss">parent_id</span><span class="p">:</span><span class="w"> </span><span class="no">nil</span><span class="p">,</span><span class="w">
-  </span><span class="ss">permission_overwrites</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="9815284462-3">[</span><span class="w">
-    </span><span class="p" data-group-id="9815284462-4">%</span><span class="nc" data-group-id="9815284462-4">Nostrum.Struct.Overwrite</span><span class="p" data-group-id="9815284462-4">{</span><span class="w">
+  </span><span class="ss">permission_overwrites</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="8026563321-3">[</span><span class="w">
+    </span><span class="p" data-group-id="8026563321-4">%</span><span class="nc" data-group-id="8026563321-4">Nostrum.Struct.Overwrite</span><span class="p" data-group-id="8026563321-4">{</span><span class="w">
       </span><span class="ss">allow</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w">
       </span><span class="ss">deny</span><span class="p">:</span><span class="w"> </span><span class="mi">2048</span><span class="p">,</span><span class="w">
       </span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">766435015768539156</span><span class="p">,</span><span class="w">
       </span><span class="ss">type</span><span class="p">:</span><span class="w"> </span><span class="ss">:role</span><span class="w">
-    </span><span class="p" data-group-id="9815284462-4">}</span><span class="w">
-  </span><span class="p" data-group-id="9815284462-3">]</span><span class="p">,</span><span class="w">
+    </span><span class="p" data-group-id="8026563321-4">}</span><span class="w">
+  </span><span class="p" data-group-id="8026563321-3">]</span><span class="p">,</span><span class="w">
   </span><span class="ss">position</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
   </span><span class="ss">recipients</span><span class="p">:</span><span class="w"> </span><span class="no">nil</span><span class="p">,</span><span class="w">
   </span><span class="ss">topic</span><span class="p">:</span><span class="w"> </span><span class="no">nil</span><span class="p">,</span><span class="w">
   </span><span class="ss">type</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">
   </span><span class="ss">user_limit</span><span class="p">:</span><span class="w"> </span><span class="no">nil</span><span class="w">
-</span><span class="p" data-group-id="9815284462-2">}</span></code></pre><p>More details of the cache can be found at <a href="Nostrum.Cache.ChannelCache.html"><code class="inline">Nostrum.Cache.ChannelCache</code></a>.</p><h2 id="module-helper-functions" class="section-heading">
+</span><span class="p" data-group-id="8026563321-2">}</span></code></pre><p>More details of the cache can be found at <a href="Nostrum.Cache.ChannelCache.html"><code class="inline">Nostrum.Cache.ChannelCache</code></a>.</p><h2 id="module-helper-functions" class="section-heading">
   <a href="#module-helper-functions" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
   <p class="sr-only">helper-functions</p>
   </a>
@@ -192,584 +193,582 @@ Nostrum
       </a>
       Summary
     </h1>
+<div class="summary-types summary">
+  <h2>
+    <a href="#types">Types</a>
+  </h2>
 
-  <div class="summary-types summary">
-    <h2>
-      <a href="#types">Types</a>
-    </h2>
-
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#t:application_id/0" translate="no">application_id()</a>
-
-        </div>
-
-          <div class="summary-synopsis"><p>The id of the application that created a group direct message or thread.</p></div>
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:application_id/0" translate="no">application_id()</a>
 
       </div>
 
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#t:applied_tags/0" translate="no">applied_tags()</a>
+        <div class="summary-synopsis"><p>The id of the application that created a group direct message or thread.</p></div>
 
-        </div>
+    </div>
 
-      </div>
-
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#t:archive_timestamp/0" translate="no">archive_timestamp()</a>
-
-        </div>
-
-          <div class="summary-synopsis"><p>When the thread was archived.</p></div>
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:applied_tags/0" translate="no">applied_tags()</a>
 
       </div>
 
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#t:archived/0" translate="no">archived()</a>
+    </div>
 
-        </div>
-
-          <div class="summary-synopsis"><p>The threads archived status.</p></div>
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:archive_timestamp/0" translate="no">archive_timestamp()</a>
 
       </div>
 
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#t:auto_archive_duration/0" translate="no">auto_archive_duration()</a>
+        <div class="summary-synopsis"><p>When the thread was archived.</p></div>
 
-        </div>
+    </div>
 
-          <div class="summary-synopsis"><p>Archive duration for the thread in minutes.</p></div>
-
-      </div>
-
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#t:bitrate/0" translate="no">bitrate()</a>
-
-        </div>
-
-          <div class="summary-synopsis"><p>The bitate of the voice channel.</p></div>
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:archived/0" translate="no">archived()</a>
 
       </div>
 
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#t:channel_mention/0" translate="no">channel_mention()</a>
+        <div class="summary-synopsis"><p>The threads archived status.</p></div>
 
-        </div>
+    </div>
 
-          <div class="summary-synopsis"><p>A partial channel object representing a channel mention.</p></div>
-
-      </div>
-
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#t:default_auto_archive_duration/0" translate="no">default_auto_archive_duration()</a>
-
-        </div>
-
-          <div class="summary-synopsis"><p>Default duration for newly created threads in minutes.</p></div>
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:auto_archive_duration/0" translate="no">auto_archive_duration()</a>
 
       </div>
 
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#t:default_reaction_emoji/0" translate="no">default_reaction_emoji()</a>
+        <div class="summary-synopsis"><p>Archive duration for the thread in minutes.</p></div>
 
-        </div>
+    </div>
 
-          <div class="summary-synopsis"><p>An object that specifies the emoji to use as the default way to react to a forum post.</p></div>
-
-      </div>
-
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#t:default_thread_rate_limit_per_user/0" translate="no">default_thread_rate_limit_per_user()</a>
-
-        </div>
-
-          <div class="summary-synopsis"><p>The <code class="inline">:rate_limit_per_user</code> which will be applied to threads created in the channel, in seconds.</p></div>
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:bitrate/0" translate="no">bitrate()</a>
 
       </div>
 
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#t:dm_channel/0" translate="no">dm_channel()</a>
+        <div class="summary-synopsis"><p>The bitate of the voice channel.</p></div>
 
-        </div>
+    </div>
 
-          <div class="summary-synopsis"><p>Type 1 partial channel object representing a direct message.</p></div>
-
-      </div>
-
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#t:flags/0" translate="no">flags()</a>
-
-        </div>
-
-          <div class="summary-synopsis"><p>User thread settings, currently only used for notifications.</p></div>
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:channel_mention/0" translate="no">channel_mention()</a>
 
       </div>
 
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#t:forum_tag/0" translate="no">forum_tag()</a>
+        <div class="summary-synopsis"><p>A partial channel object representing a channel mention.</p></div>
 
-        </div>
+    </div>
 
-          <div class="summary-synopsis"><p>A map representing a tag for use in forum channels.</p></div>
-
-      </div>
-
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#t:group_dm_channel/0" translate="no">group_dm_channel()</a>
-
-        </div>
-
-          <div class="summary-synopsis"><p>Type 3 partial channel object representing a group direct message.</p></div>
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:default_auto_archive_duration/0" translate="no">default_auto_archive_duration()</a>
 
       </div>
 
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#t:guild_category_channel/0" translate="no">guild_category_channel()</a>
+        <div class="summary-synopsis"><p>Default duration for newly created threads in minutes.</p></div>
 
-        </div>
+    </div>
 
-          <div class="summary-synopsis"><p>Type 4 partial channel object representing a channel category.</p></div>
-
-      </div>
-
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#t:guild_channel/0" translate="no">guild_channel()</a>
-
-            <span class="deprecated" title="See t.0">deprecated</span>
-
-        </div>
-
-          <div class="summary-synopsis"><p>Guild channel types</p></div>
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:default_reaction_emoji/0" translate="no">default_reaction_emoji()</a>
 
       </div>
 
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#t:guild_forum_channel/0" translate="no">guild_forum_channel()</a>
+        <div class="summary-synopsis"><p>An object that specifies the emoji to use as the default way to react to a forum post.</p></div>
 
-        </div>
+    </div>
 
-          <div class="summary-synopsis"><p>Type 15 a guild forum channel.</p></div>
-
-      </div>
-
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#t:guild_id/0" translate="no">guild_id()</a>
-
-        </div>
-
-          <div class="summary-synopsis"><p>The id of the guild the channel is located in.</p></div>
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:default_thread_rate_limit_per_user/0" translate="no">default_thread_rate_limit_per_user()</a>
 
       </div>
 
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#t:guild_news_channel/0" translate="no">guild_news_channel()</a>
+        <div class="summary-synopsis"><p>The <code class="inline">:rate_limit_per_user</code> which will be applied to threads created in the channel, in seconds.</p></div>
 
-        </div>
+    </div>
 
-          <div class="summary-synopsis"><p>Type 5 partial channel object representing a news channel.</p></div>
-
-      </div>
-
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#t:guild_news_thread_channel/0" translate="no">guild_news_thread_channel()</a>
-
-        </div>
-
-          <div class="summary-synopsis"><p>Type 10 partial channel object representing a news thread.</p></div>
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:dm_channel/0" translate="no">dm_channel()</a>
 
       </div>
 
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#t:guild_private_thread_channel/0" translate="no">guild_private_thread_channel()</a>
+        <div class="summary-synopsis"><p>Type 1 partial channel object representing a direct message.</p></div>
 
-        </div>
+    </div>
 
-          <div class="summary-synopsis"><p>Type 12 partial channel object representing a private thread.</p></div>
-
-      </div>
-
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#t:guild_public_thread_channel/0" translate="no">guild_public_thread_channel()</a>
-
-        </div>
-
-          <div class="summary-synopsis"><p>Type 11 partial channel object representing a standard thread.</p></div>
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:flags/0" translate="no">flags()</a>
 
       </div>
 
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#t:guild_stage_voice_channel/0" translate="no">guild_stage_voice_channel()</a>
+        <div class="summary-synopsis"><p>User thread settings, currently only used for notifications.</p></div>
 
-        </div>
+    </div>
 
-          <div class="summary-synopsis"><p>Type 13 channel object representing a stage channel.</p></div>
-
-      </div>
-
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#t:guild_store_channel/0" translate="no">guild_store_channel()</a>
-
-        </div>
-
-          <div class="summary-synopsis"><p>Type 6 partial channel object representing a store channel.</p></div>
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:forum_tag/0" translate="no">forum_tag()</a>
 
       </div>
 
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#t:guild_text_channel/0" translate="no">guild_text_channel()</a>
+        <div class="summary-synopsis"><p>A map representing a tag for use in forum channels.</p></div>
 
-        </div>
+    </div>
 
-          <div class="summary-synopsis"><p>Type 0 partial channel object representing a text channel within a guild.</p></div>
-
-      </div>
-
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#t:guild_voice_channel/0" translate="no">guild_voice_channel()</a>
-
-        </div>
-
-          <div class="summary-synopsis"><p>Type 2 partial channel object representing an audio channel within a guild.</p></div>
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:group_dm_channel/0" translate="no">group_dm_channel()</a>
 
       </div>
 
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#t:icon/0" translate="no">icon()</a>
+        <div class="summary-synopsis"><p>Type 3 partial channel object representing a group direct message.</p></div>
 
-        </div>
+    </div>
 
-          <div class="summary-synopsis"><p>The hash of the channels icon.</p></div>
-
-      </div>
-
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#t:id/0" translate="no">id()</a>
-
-        </div>
-
-          <div class="summary-synopsis"><p>The id of the channel object.</p></div>
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:guild_category_channel/0" translate="no">guild_category_channel()</a>
 
       </div>
 
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#t:join_timestamp/0" translate="no">join_timestamp()</a>
+        <div class="summary-synopsis"><p>Type 4 partial channel object representing a channel category.</p></div>
 
-        </div>
+    </div>
 
-          <div class="summary-synopsis"><p>When the user joined the thread.</p></div>
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:guild_channel/0" translate="no">guild_channel()</a>
 
-      </div>
-
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#t:last_message_id/0" translate="no">last_message_id()</a>
-
-        </div>
-
-          <div class="summary-synopsis"><p>The id of the last message sent in the channel.</p></div>
+          <span class="deprecated" title="See t.0">deprecated</span>
 
       </div>
 
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#t:last_pin_timestamp/0" translate="no">last_pin_timestamp()</a>
+        <div class="summary-synopsis"><p>Guild channel types</p></div>
 
-        </div>
+    </div>
 
-          <div class="summary-synopsis"><p>Timestamp for the last pinned message.</p></div>
-
-      </div>
-
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#t:locked/0" translate="no">locked()</a>
-
-        </div>
-
-          <div class="summary-synopsis"><p>The threads locked status.</p></div>
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:guild_forum_channel/0" translate="no">guild_forum_channel()</a>
 
       </div>
 
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#t:member/0" translate="no">member()</a>
+        <div class="summary-synopsis"><p>Type 15 a guild forum channel.</p></div>
 
-        </div>
+    </div>
 
-          <div class="summary-synopsis"><p>Present when the bot joins a thread.</p></div>
-
-      </div>
-
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#t:member_count/0" translate="no">member_count()</a>
-
-        </div>
-
-          <div class="summary-synopsis"><p>Approximate count of members in a thread, capped at 50.</p></div>
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:guild_id/0" translate="no">guild_id()</a>
 
       </div>
 
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#t:message_count/0" translate="no">message_count()</a>
+        <div class="summary-synopsis"><p>The id of the guild the channel is located in.</p></div>
 
-        </div>
+    </div>
 
-          <div class="summary-synopsis"><p>Approximate count of messages in a thread, capped at 50.</p></div>
-
-      </div>
-
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#t:name/0" translate="no">name()</a>
-
-        </div>
-
-          <div class="summary-synopsis"><p>The name of the channel.</p></div>
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:guild_news_channel/0" translate="no">guild_news_channel()</a>
 
       </div>
 
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#t:newly_created/0" translate="no">newly_created()</a>
+        <div class="summary-synopsis"><p>Type 5 partial channel object representing a news channel.</p></div>
 
-        </div>
+    </div>
 
-          <div class="summary-synopsis"><p>Included only in the <code class="inline">THREAD_CREATE</code> event.</p></div>
-
-      </div>
-
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#t:nsfw/0" translate="no">nsfw()</a>
-
-        </div>
-
-          <div class="summary-synopsis"><p>Whether the NSFW setting is enabled for this channel.</p></div>
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:guild_news_thread_channel/0" translate="no">guild_news_thread_channel()</a>
 
       </div>
 
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#t:owner_id/0" translate="no">owner_id()</a>
+        <div class="summary-synopsis"><p>Type 10 partial channel object representing a news thread.</p></div>
 
-        </div>
+    </div>
 
-          <div class="summary-synopsis"><p>The id of the user of a group direct message or thread.</p></div>
-
-      </div>
-
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#t:parent_id/0" translate="no">parent_id()</a>
-
-        </div>
-
-          <div class="summary-synopsis"><p>The id of the parent channel that this channel is located under.</p></div>
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:guild_private_thread_channel/0" translate="no">guild_private_thread_channel()</a>
 
       </div>
 
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#t:permission_overwrites/0" translate="no">permission_overwrites()</a>
+        <div class="summary-synopsis"><p>Type 12 partial channel object representing a private thread.</p></div>
 
-        </div>
+    </div>
 
-          <div class="summary-synopsis"><p>A list of permission overwrites applied to the channel.</p></div>
-
-      </div>
-
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#t:permissions/0" translate="no">permissions()</a>
-
-        </div>
-
-          <div class="summary-synopsis"><p>Computed permissions of the invoking user.</p></div>
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:guild_public_thread_channel/0" translate="no">guild_public_thread_channel()</a>
 
       </div>
 
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#t:position/0" translate="no">position()</a>
+        <div class="summary-synopsis"><p>Type 11 partial channel object representing a standard thread.</p></div>
 
-        </div>
+    </div>
 
-          <div class="summary-synopsis"><p>The position of the channel in the sidebar of the guild.</p></div>
-
-      </div>
-
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#t:rate_limit_per_user/0" translate="no">rate_limit_per_user()</a>
-
-        </div>
-
-          <div class="summary-synopsis"><p>The users rate limit.</p></div>
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:guild_stage_voice_channel/0" translate="no">guild_stage_voice_channel()</a>
 
       </div>
 
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#t:recipients/0" translate="no">recipients()</a>
+        <div class="summary-synopsis"><p>Type 13 channel object representing a stage channel.</p></div>
 
-        </div>
+    </div>
 
-          <div class="summary-synopsis"><p>A list of users in a group DM.</p></div>
-
-      </div>
-
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#t:rtc_region/0" translate="no">rtc_region()</a>
-
-        </div>
-
-          <div class="summary-synopsis"><p>Region id for the channel.</p></div>
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:guild_store_channel/0" translate="no">guild_store_channel()</a>
 
       </div>
 
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#t:t/0" translate="no">t()</a>
+        <div class="summary-synopsis"><p>Type 6 partial channel object representing a store channel.</p></div>
 
-        </div>
+    </div>
 
-          <div class="summary-synopsis"><p>All valid channel types.</p></div>
-
-      </div>
-
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#t:text_channel/0" translate="no">text_channel()</a>
-
-            <span class="deprecated" title="See t.0">deprecated</span>
-
-        </div>
-
-          <div class="summary-synopsis"><p>All valid text channels.</p></div>
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:guild_text_channel/0" translate="no">guild_text_channel()</a>
 
       </div>
 
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#t:thread_metadata/0" translate="no">thread_metadata()</a>
+        <div class="summary-synopsis"><p>Type 0 partial channel object representing a text channel within a guild.</p></div>
 
-        </div>
+    </div>
 
-          <div class="summary-synopsis"><p>Thread-specific fields not needed by other channels.</p></div>
-
-      </div>
-
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#t:topic/0" translate="no">topic()</a>
-
-        </div>
-
-          <div class="summary-synopsis"><p>The topic of the channel.</p></div>
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:guild_voice_channel/0" translate="no">guild_voice_channel()</a>
 
       </div>
 
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#t:type/0" translate="no">type()</a>
+        <div class="summary-synopsis"><p>Type 2 partial channel object representing an audio channel within a guild.</p></div>
 
-        </div>
+    </div>
 
-          <div class="summary-synopsis"><p>The type of channel.</p></div>
-
-      </div>
-
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#t:user_id/0" translate="no">user_id()</a>
-
-        </div>
-
-          <div class="summary-synopsis"><p>User id of the threads creator.</p></div>
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:icon/0" translate="no">icon()</a>
 
       </div>
 
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#t:user_limit/0" translate="no">user_limit()</a>
+        <div class="summary-synopsis"><p>The hash of the channels icon.</p></div>
 
-        </div>
+    </div>
 
-          <div class="summary-synopsis"><p>The user limit of a voice channel.</p></div>
-
-      </div>
-
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#t:video_quality_mode/0" translate="no">video_quality_mode()</a>
-
-        </div>
-
-          <div class="summary-synopsis"><p>The video quality mode of the channel.</p></div>
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:id/0" translate="no">id()</a>
 
       </div>
 
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#t:voice_channel/0" translate="no">voice_channel()</a>
+        <div class="summary-synopsis"><p>The id of the channel object.</p></div>
 
-            <span class="deprecated" title="See t:guild_voice_channel/0">deprecated</span>
+    </div>
 
-        </div>
-
-          <div class="summary-synopsis"><p>A <a href="Nostrum.Struct.Channel.html#content"><code class="inline">Nostrum.Struct.Channel</code></a> that represents a voice channel</p></div>
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:join_timestamp/0" translate="no">join_timestamp()</a>
 
       </div>
 
-  </div>
+        <div class="summary-synopsis"><p>When the user joined the thread.</p></div>
 
-  <div class="summary-functions summary">
-    <h2>
-      <a href="#functions">Functions</a>
-    </h2>
+    </div>
 
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#mention/1" translate="no">mention(channel)</a>
-
-        </div>
-
-          <div class="summary-synopsis"><p>Convert a channel into a mention.</p></div>
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:last_message_id/0" translate="no">last_message_id()</a>
 
       </div>
 
-  </div>
+        <div class="summary-synopsis"><p>The id of the last message sent in the channel.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:last_pin_timestamp/0" translate="no">last_pin_timestamp()</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Timestamp for the last pinned message.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:locked/0" translate="no">locked()</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>The threads locked status.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:member/0" translate="no">member()</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Present when the bot joins a thread.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:member_count/0" translate="no">member_count()</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Approximate count of members in a thread, capped at 50.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:message_count/0" translate="no">message_count()</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Approximate count of messages in a thread, capped at 50.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:name/0" translate="no">name()</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>The name of the channel.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:newly_created/0" translate="no">newly_created()</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Included only in the <code class="inline">THREAD_CREATE</code> event.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:nsfw/0" translate="no">nsfw()</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Whether the NSFW setting is enabled for this channel.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:owner_id/0" translate="no">owner_id()</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>The id of the user of a group direct message or thread.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:parent_id/0" translate="no">parent_id()</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>The id of the parent channel that this channel is located under.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:permission_overwrites/0" translate="no">permission_overwrites()</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>A list of permission overwrites applied to the channel.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:permissions/0" translate="no">permissions()</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Computed permissions of the invoking user.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:position/0" translate="no">position()</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>The position of the channel in the sidebar of the guild.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:rate_limit_per_user/0" translate="no">rate_limit_per_user()</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>The users rate limit.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:recipients/0" translate="no">recipients()</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>A list of users in a group DM.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:rtc_region/0" translate="no">rtc_region()</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Region id for the channel.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:t/0" translate="no">t()</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>All valid channel types.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:text_channel/0" translate="no">text_channel()</a>
+
+          <span class="deprecated" title="See t.0">deprecated</span>
+
+      </div>
+
+        <div class="summary-synopsis"><p>All valid text channels.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:thread_metadata/0" translate="no">thread_metadata()</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Thread-specific fields not needed by other channels.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:topic/0" translate="no">topic()</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>The topic of the channel.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:type/0" translate="no">type()</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>The type of channel.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:user_id/0" translate="no">user_id()</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>User id of the threads creator.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:user_limit/0" translate="no">user_limit()</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>The user limit of a voice channel.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:video_quality_mode/0" translate="no">video_quality_mode()</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>The video quality mode of the channel.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:voice_channel/0" translate="no">voice_channel()</a>
+
+          <span class="deprecated" title="See t:guild_voice_channel/0">deprecated</span>
+
+      </div>
+
+        <div class="summary-synopsis"><p>A <a href="Nostrum.Struct.Channel.html#content"><code class="inline">Nostrum.Struct.Channel</code></a> that represents a voice channel</p></div>
+
+    </div>
+
+</div>
+<div class="summary-functions summary">
+  <h2>
+    <a href="#functions">Functions</a>
+  </h2>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#mention/1" translate="no">mention(channel)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Convert a channel into a mention.</p></div>
+
+    </div>
+
+</div>
 
   </section>
 
@@ -792,7 +791,7 @@ Types
     </a>
     <h1 class="signature" translate="no">application_id()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L255" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L255" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -820,7 +819,7 @@ Types
     </a>
     <h1 class="signature" translate="no">applied_tags()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L411" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L411" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -850,7 +849,7 @@ Types
     </a>
     <h1 class="signature" translate="no">archive_timestamp()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L314" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L314" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -880,7 +879,7 @@ Types
     </a>
     <h1 class="signature" translate="no">archived()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L326" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L326" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -910,7 +909,7 @@ Types
     </a>
     <h1 class="signature" translate="no">auto_archive_duration()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L337" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L337" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -940,7 +939,7 @@ Types
     </a>
     <h1 class="signature" translate="no">bitrate()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L212" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L212" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -968,7 +967,7 @@ Types
     </a>
     <h1 class="signature" translate="no">channel_mention()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L638" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L638" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1029,7 +1028,7 @@ Documentation</a>.</p>
     </a>
     <h1 class="signature" translate="no">default_auto_archive_duration()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L379" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L379" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1059,7 +1058,7 @@ Documentation</a>.</p>
     </a>
     <h1 class="signature" translate="no">default_reaction_emoji()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L419" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L419" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1090,7 +1089,7 @@ Documentation</a>.</p>
     </a>
     <h1 class="signature" translate="no">default_thread_rate_limit_per_user()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L226" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L226" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1120,7 +1119,7 @@ Documentation</a>.</p>
     </a>
     <h1 class="signature" translate="no">dm_channel()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L447" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L447" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1180,7 +1179,7 @@ Documentation</a>.</p>
     </a>
     <h1 class="signature" translate="no">flags()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L368" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L368" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1210,7 +1209,7 @@ Documentation</a>.</p>
     </a>
     <h1 class="signature" translate="no">forum_tag()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L402" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L402" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1247,7 +1246,7 @@ Documentation</a>.</p>
     </a>
     <h1 class="signature" translate="no">group_dm_channel()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L475" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L475" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1307,7 +1306,7 @@ Documentation</a>.</p>
     </a>
     <h1 class="signature" translate="no">guild_category_channel()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L492" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L492" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1367,7 +1366,7 @@ Documentation</a>.</p>
     </a>
     <h1 class="signature" translate="no">guild_channel()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L648" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L648" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1400,7 +1399,7 @@ Documentation</a>.</p>
     </a>
     <h1 class="signature" translate="no">guild_forum_channel()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L616" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L616" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1462,7 +1461,7 @@ Documentation</a>.</p>
     </a>
     <h1 class="signature" translate="no">guild_id()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L175" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L175" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1490,7 +1489,7 @@ Documentation</a>.</p>
     </a>
     <h1 class="signature" translate="no">guild_news_channel()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L507" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L507" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1552,7 +1551,7 @@ Documentation</a>.</p>
     </a>
     <h1 class="signature" translate="no">guild_news_thread_channel()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L540" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L540" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1614,7 +1613,7 @@ Documentation</a>.</p>
     </a>
     <h1 class="signature" translate="no">guild_private_thread_channel()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L579" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L579" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1676,7 +1675,7 @@ Documentation</a>.</p>
     </a>
     <h1 class="signature" translate="no">guild_public_thread_channel()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L559" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L559" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1738,7 +1737,7 @@ Documentation</a>.</p>
     </a>
     <h1 class="signature" translate="no">guild_stage_voice_channel()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L598" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L598" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1800,7 +1799,7 @@ Documentation</a>.</p>
     </a>
     <h1 class="signature" translate="no">guild_store_channel()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L525" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L525" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1862,7 +1861,7 @@ Documentation</a>.</p>
     </a>
     <h1 class="signature" translate="no">guild_text_channel()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L429" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L429" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1922,7 +1921,7 @@ Documentation</a>.</p>
     </a>
     <h1 class="signature" translate="no">guild_voice_channel()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L458" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L458" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1982,7 +1981,7 @@ Documentation</a>.</p>
     </a>
     <h1 class="signature" translate="no">icon()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L241" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L241" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2010,7 +2009,7 @@ Documentation</a>.</p>
     </a>
     <h1 class="signature" translate="no">id()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L163" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L163" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2038,7 +2037,7 @@ Documentation</a>.</p>
     </a>
     <h1 class="signature" translate="no">join_timestamp()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L362" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L362" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2068,7 +2067,7 @@ Documentation</a>.</p>
     </a>
     <h1 class="signature" translate="no">last_message_id()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L207" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L207" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2096,7 +2095,7 @@ Documentation</a>.</p>
     </a>
     <h1 class="signature" translate="no">last_pin_timestamp()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L267" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L267" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2124,7 +2123,7 @@ Documentation</a>.</p>
     </a>
     <h1 class="signature" translate="no">locked()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L320" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L320" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2154,7 +2153,7 @@ Documentation</a>.</p>
     </a>
     <h1 class="signature" translate="no">member()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L345" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L345" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2189,7 +2188,7 @@ Documentation</a>.</p>
     </a>
     <h1 class="signature" translate="no">member_count()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L295" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L295" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2219,7 +2218,7 @@ Documentation</a>.</p>
     </a>
     <h1 class="signature" translate="no">message_count()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L289" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L289" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2249,7 +2248,7 @@ Documentation</a>.</p>
     </a>
     <h1 class="signature" translate="no">name()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L190" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L190" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2277,7 +2276,7 @@ Documentation</a>.</p>
     </a>
     <h1 class="signature" translate="no">newly_created()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L393" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L393" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2307,7 +2306,7 @@ Documentation</a>.</p>
     </a>
     <h1 class="signature" translate="no">nsfw()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L200" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L200" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2335,7 +2334,7 @@ Documentation</a>.</p>
     </a>
     <h1 class="signature" translate="no">owner_id()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L248" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L248" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2363,7 +2362,7 @@ Documentation</a>.</p>
     </a>
     <h1 class="signature" translate="no">parent_id()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L262" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L262" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2391,7 +2390,7 @@ Documentation</a>.</p>
     </a>
     <h1 class="signature" translate="no">permission_overwrites()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L185" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L185" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2419,7 +2418,7 @@ Documentation</a>.</p>
     </a>
     <h1 class="signature" translate="no">permissions()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L387" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L387" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2449,7 +2448,7 @@ Documentation</a>.</p>
     </a>
     <h1 class="signature" translate="no">position()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L180" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L180" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2477,7 +2476,7 @@ Documentation</a>.</p>
     </a>
     <h1 class="signature" translate="no">rate_limit_per_user()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L220" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L220" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2507,7 +2506,7 @@ Documentation</a>.</p>
     </a>
     <h1 class="signature" translate="no">recipients()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L236" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L236" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2535,7 +2534,7 @@ Documentation</a>.</p>
     </a>
     <h1 class="signature" translate="no">rtc_region()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L275" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L275" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2565,7 +2564,7 @@ Documentation</a>.</p>
     </a>
     <h1 class="signature" translate="no">t()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L672" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L672" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2605,7 +2604,7 @@ Documentation</a>.</p>
     </a>
     <h1 class="signature" translate="no">text_channel()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L657" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L657" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2637,7 +2636,7 @@ Documentation</a>.</p>
     </a>
     <h1 class="signature" translate="no">thread_metadata()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L301" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L301" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2674,7 +2673,7 @@ Documentation</a>.</p>
     </a>
     <h1 class="signature" translate="no">topic()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L195" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L195" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2702,7 +2701,7 @@ Documentation</a>.</p>
     </a>
     <h1 class="signature" translate="no">type()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L170" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L170" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2730,7 +2729,7 @@ Documentation</a>.</p>
     </a>
     <h1 class="signature" translate="no">user_id()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L356" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L356" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2760,7 +2759,7 @@ Documentation</a>.</p>
     </a>
     <h1 class="signature" translate="no">user_limit()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L231" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L231" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2788,7 +2787,7 @@ Documentation</a>.</p>
     </a>
     <h1 class="signature" translate="no">video_quality_mode()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L283" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L283" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2818,7 +2817,7 @@ Documentation</a>.</p>
     </a>
     <h1 class="signature" translate="no">voice_channel()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L667" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L667" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2863,7 +2862,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">mention(channel)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L706" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/channel.ex#L706" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2891,8 +2890,8 @@ Functions
   </a>
   Examples
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Cache.ChannelCache</span><span class="o">.</span><span class="n">get</span><span class="p" data-group-id="2285268107-1">(</span><span class="mi">381889573426429952</span><span class="p" data-group-id="2285268107-1">)</span><span class="w">
-</span><span class="o">|&gt;</span><span class="w"> </span><span class="nc">Nostrum.Struct.Channel</span><span class="o">.</span><span class="n">mention</span><span class="p" data-group-id="2285268107-2">(</span><span class="p" data-group-id="2285268107-2">)</span><span class="w">
+<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Cache.ChannelCache</span><span class="o">.</span><span class="n">get</span><span class="p" data-group-id="4087103349-1">(</span><span class="mi">381889573426429952</span><span class="p" data-group-id="4087103349-1">)</span><span class="w">
+</span><span class="o">|&gt;</span><span class="w"> </span><span class="nc">Nostrum.Struct.Channel</span><span class="o">.</span><span class="n">mention</span><span class="p" data-group-id="4087103349-2">(</span><span class="p" data-group-id="4087103349-2">)</span><span class="w">
 </span><span class="s">&quot;&lt;#381889573426429952&gt;&quot;</span><span class="w">
 </span></code></pre>
   </section>
@@ -2902,26 +2901,32 @@ Functions
   </section>
 
       <footer class="footer">
-
-          <p>
-            On Hex.pm:
+        <p>
 
             <span class="line">
-              <a href="https://hex.pm/packages/nostrum/0.6.1" class="line footer-hex-package">Package</a>
-              <a href="https://preview.hex.pm/preview/nostrum/0.6.1" class="line">Preview</a>
+              <a href="https://hex.pm/packages/nostrum/0.6.1" class="footer-hex-package">Hex Package</a>
 
-                <a href="https://preview.hex.pm/preview/nostrum/0.6.1/show/lib/nostrum/struct/channel.ex">(current file)</a>
+              <a href="https://preview.hex.pm/preview/nostrum/0.6.1">Hex Preview</a>
+
+                (<a href="https://preview.hex.pm/preview/nostrum/0.6.1/show/lib/nostrum/struct/channel.ex">current file</a>)
 
             </span>
 
-            <button class="a-main line footer-button display-quick-switch">
-              Search
+          <span class="line">
+            <button class="a-main footer-button display-quick-switch" title="Search HexDocs packages">
+              Search HexDocs
             </button>
-          </p>
 
-        <p>
+              <a href="Nostrum.epub" title="ePub version">
+                Download ePub version
+              </a>
+
+          </span>
+        </p>
+
+        <p class="built-using">
           Built using
-          <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.29.0) for the
+          <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.29.4) for the
 
             <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
 

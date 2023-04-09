@@ -4,19 +4,20 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="ExDoc v0.29.0">
+    <meta name="generator" content="ExDoc v0.29.4">
     <meta name="project" content="Nostrum v0.6.1">
 
     <title>Nostrum.Voice — Nostrum v0.6.1</title>
-    <link rel="stylesheet" href="dist/html-elixir-2YOS5DIE.css" />
+    <link rel="stylesheet" href="dist/html-elixir-HHVY3JYD.css" />
+
 
     <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
-    <script src="dist/handlebars.templates-X7YVL3G2.js"></script>
-    <script src="dist/sidebar_items-0EDC7626.js"></script>
+    <script src="dist/handlebars.templates-XWGFFSCD.js"></script>
+    <script src="dist/sidebar_items-01464099.js"></script>
 
       <script src="docs_config.js"></script>
 
-    <script async src="dist/html-XN2TSG4M.js"></script>
+    <script async src="dist/html-JDI3AVDD.js"></script>
 
 
   </head>
@@ -51,7 +52,7 @@
     </button>
     <label class="search-label">
       <p class="sr-only">Search</p>
-      <input name="q" type="text" class="search-input" placeholder="Search..." aria-label="Input your search terms" autocomplete="off" />
+      <input name="q" type="text" class="search-input" placeholder="Search..." aria-label="Input your search terms" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
     </label>
   </form>
 
@@ -66,9 +67,9 @@
       <a href="https://github.com/Kraigie/nostrum" class="sidebar-projectName" translate="no">
 Nostrum
       </a>
-      <strong class="sidebar-projectVersion" translate="no">
+      <div class="sidebar-projectVersion" translate="no">
         v0.6.1
-      </strong>
+      </div>
     </div>
     <ul class="sidebar-listNav">
       <li><a id="extras-list-link" href="#full-list">Pages</a></li>
@@ -82,7 +83,7 @@ Nostrum
   </div>
 
   <div class="gradient"></div>
-  <ul id="full-list" class="sidebar-fullList"></ul>
+  <ul id="full-list"></ul>
 </section>
 
 <section class="content">
@@ -91,13 +92,13 @@ Nostrum
     <div id="content" class="content-inner">
 
 <h1>
-<button class="settings display-settings">
+<button class="icon-action display-settings">
   <i class="ri-settings-3-line"></i>
   <span class="sr-only">Settings</span>
 </button>
 
 
-    <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L1" title="View Source" class="view-source" rel="help">
+    <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L1" title="View Source" class="icon-action" rel="help">
       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
       <span class="sr-only">View Source</span>
     </a>
@@ -138,300 +139,298 @@ functions <a href="#listen/3"><code class="inline">listen/3</code></a> and <a hr
       </a>
       Summary
     </h1>
+<div class="summary-types summary">
+  <h2>
+    <a href="#types">Types</a>
+  </h2>
 
-  <div class="summary-types summary">
-    <h2>
-      <a href="#types">Types</a>
-    </h2>
-
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#t:opus_packet/0" translate="no">opus_packet()</a>
-
-        </div>
-
-          <div class="summary-synopsis"><p>Opus packet</p></div>
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:opus_packet/0" translate="no">opus_packet()</a>
 
       </div>
 
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#t:play_input/0" translate="no">play_input()</a>
+        <div class="summary-synopsis"><p>Opus packet</p></div>
 
-        </div>
+    </div>
 
-          <div class="summary-synopsis"><p>The play input</p></div>
-
-      </div>
-
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#t:play_type/0" translate="no">play_type()</a>
-
-        </div>
-
-          <div class="summary-synopsis"><p>The type of play input</p></div>
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:play_input/0" translate="no">play_input()</a>
 
       </div>
 
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#t:rtp_opus/0" translate="no">rtp_opus()</a>
+        <div class="summary-synopsis"><p>The play input</p></div>
 
-        </div>
+    </div>
 
-          <div class="summary-synopsis"><p>Tuple with RTP header elements and opus packet</p></div>
-
-      </div>
-
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#t:rtp_sequence/0" translate="no">rtp_sequence()</a>
-
-        </div>
-
-          <div class="summary-synopsis"><p>RTP sequence</p></div>
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:play_type/0" translate="no">play_type()</a>
 
       </div>
 
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#t:rtp_ssrc/0" translate="no">rtp_ssrc()</a>
+        <div class="summary-synopsis"><p>The type of play input</p></div>
 
-        </div>
+    </div>
 
-          <div class="summary-synopsis"><p>RTP SSRC</p></div>
-
-      </div>
-
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#t:rtp_timestamp/0" translate="no">rtp_timestamp()</a>
-
-        </div>
-
-          <div class="summary-synopsis"><p>RTP timestamp</p></div>
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:rtp_opus/0" translate="no">rtp_opus()</a>
 
       </div>
 
-  </div>
+        <div class="summary-synopsis"><p>Tuple with RTP header elements and opus packet</p></div>
 
-  <div class="summary-functions summary">
-    <h2>
-      <a href="#functions">Functions</a>
-    </h2>
+    </div>
 
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#child_spec/1" translate="no">child_spec(init_arg)</a>
-
-        </div>
-
-          <div class="summary-synopsis"><p>Returns a specification to start this module under a supervisor.</p></div>
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:rtp_sequence/0" translate="no">rtp_sequence()</a>
 
       </div>
 
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#connect_to_gateway/1" translate="no">connect_to_gateway(guild_id)</a>
+        <div class="summary-synopsis"><p>RTP sequence</p></div>
 
-        </div>
+    </div>
 
-          <div class="summary-synopsis"><p>Low-level. Manually connect to voice websockets gateway.</p></div>
-
-      </div>
-
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#create_ogg_bitstream/1" translate="no">create_ogg_bitstream(opus_packets)</a>
-
-        </div>
-
-          <div class="summary-synopsis"><p>Create a complete Ogg logical bitstream from a list of Opus packets.</p></div>
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:rtp_ssrc/0" translate="no">rtp_ssrc()</a>
 
       </div>
 
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#extract_opus_packet/1" translate="no">extract_opus_packet(packet)</a>
+        <div class="summary-synopsis"><p>RTP SSRC</p></div>
 
-        </div>
+    </div>
 
-          <div class="summary-synopsis"><p>Extract the opus packet from the RTP packet received from Discord.</p></div>
-
-      </div>
-
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#get_channel_id/1" translate="no">get_channel_id(guild_id)</a>
-
-        </div>
-
-          <div class="summary-synopsis"><p>Gets the id of the voice channel that the bot is connected to.</p></div>
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:rtp_timestamp/0" translate="no">rtp_timestamp()</a>
 
       </div>
 
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#get_current_url/1" translate="no">get_current_url(guild_id)</a>
+        <div class="summary-synopsis"><p>RTP timestamp</p></div>
 
-        </div>
+    </div>
 
-          <div class="summary-synopsis"><p>Gets the current URL being played.</p></div>
+</div>
+<div class="summary-functions summary">
+  <h2>
+    <a href="#functions">Functions</a>
+  </h2>
 
-      </div>
-
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#get_ssrc_map/1" translate="no">get_ssrc_map(guild_id)</a>
-
-        </div>
-
-          <div class="summary-synopsis"><p>Gets a map of RTP SSRC to user id.</p></div>
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#child_spec/1" translate="no">child_spec(init_arg)</a>
 
       </div>
 
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#join_channel/5" translate="no">join_channel(guild_id, channel_id, self_mute \\ false, self_deaf \\ false, persist \\ true)</a>
+        <div class="summary-synopsis"><p>Returns a specification to start this module under a supervisor.</p></div>
 
-        </div>
+    </div>
 
-          <div class="summary-synopsis"><p>Joins or moves the bot to a voice channel.</p></div>
-
-      </div>
-
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#leave_channel/1" translate="no">leave_channel(guild_id)</a>
-
-        </div>
-
-          <div class="summary-synopsis"><p>Leaves the voice channel of the given guild id.</p></div>
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#connect_to_gateway/1" translate="no">connect_to_gateway(guild_id)</a>
 
       </div>
 
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#listen/3" translate="no">listen(guild_id, num_packets, raw_rtp \\ false)</a>
+        <div class="summary-synopsis"><p>Low-level. Manually connect to voice websockets gateway.</p></div>
 
-        </div>
+    </div>
 
-          <div class="summary-synopsis"><p>Listen for incoming voice RTP packets.</p></div>
-
-      </div>
-
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#pad_opus/1" translate="no">pad_opus(packets)</a>
-
-        </div>
-
-          <div class="summary-synopsis"><p>Pad discontinuous chunks of opus audio with silence.</p></div>
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#create_ogg_bitstream/1" translate="no">create_ogg_bitstream(opus_packets)</a>
 
       </div>
 
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#pause/1" translate="no">pause(guild_id)</a>
+        <div class="summary-synopsis"><p>Create a complete Ogg logical bitstream from a list of Opus packets.</p></div>
 
-        </div>
+    </div>
 
-          <div class="summary-synopsis"><p>Pauses the current sound being played in a voice channel.</p></div>
-
-      </div>
-
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#play/4" translate="no">play(guild_id, input, type \\ :url, options \\ [])</a>
-
-        </div>
-
-          <div class="summary-synopsis"><p>Plays sound in the voice channel the bot is in.</p></div>
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#extract_opus_packet/1" translate="no">extract_opus_packet(packet)</a>
 
       </div>
 
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#playing?/1" translate="no">playing?(guild_id)</a>
+        <div class="summary-synopsis"><p>Extract the opus packet from the RTP packet received from Discord.</p></div>
 
-        </div>
+    </div>
 
-          <div class="summary-synopsis"><p>Checks if the bot is playing sound in a voice channel.</p></div>
-
-      </div>
-
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#ready?/1" translate="no">ready?(guild_id)</a>
-
-        </div>
-
-          <div class="summary-synopsis"><p>Checks if the connection is up and ready to play audio.</p></div>
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#get_channel_id/1" translate="no">get_channel_id(guild_id)</a>
 
       </div>
 
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#resume/1" translate="no">resume(guild_id)</a>
+        <div class="summary-synopsis"><p>Gets the id of the voice channel that the bot is connected to.</p></div>
 
-        </div>
+    </div>
 
-          <div class="summary-synopsis"><p>Resumes playing the current paused sound in a voice channel.</p></div>
-
-      </div>
-
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#send_frames/2" translate="no">send_frames(guild_id, frames)</a>
-
-        </div>
-
-          <div class="summary-synopsis"><p>Low-level. Send pre-encoded audio packets directly.</p></div>
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#get_current_url/1" translate="no">get_current_url(guild_id)</a>
 
       </div>
 
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#set_is_speaking/2" translate="no">set_is_speaking(guild_id, speaking)</a>
+        <div class="summary-synopsis"><p>Gets the current URL being played.</p></div>
 
-        </div>
+    </div>
 
-          <div class="summary-synopsis"><p>Low-level. Set speaking flag in voice channel.</p></div>
-
-      </div>
-
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#start_listen_async/1" translate="no">start_listen_async(guild_id)</a>
-
-        </div>
-
-          <div class="summary-synopsis"><p>Start asynchronously receiving events for incoming RTP packets for an active voice session.</p></div>
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#get_ssrc_map/1" translate="no">get_ssrc_map(guild_id)</a>
 
       </div>
 
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#stop/1" translate="no">stop(guild_id)</a>
+        <div class="summary-synopsis"><p>Gets a map of RTP SSRC to user id.</p></div>
 
-        </div>
+    </div>
 
-          <div class="summary-synopsis"><p>Stops the current sound being played in a voice channel.</p></div>
-
-      </div>
-
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#stop_listen_async/1" translate="no">stop_listen_async(guild_id)</a>
-
-        </div>
-
-          <div class="summary-synopsis"><p>Stop asynchronously receiving events for incoming RTP packets for an active voice session.</p></div>
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#join_channel/5" translate="no">join_channel(guild_id, channel_id, self_mute \\ false, self_deaf \\ false, persist \\ true)</a>
 
       </div>
 
-  </div>
+        <div class="summary-synopsis"><p>Joins or moves the bot to a voice channel.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#leave_channel/1" translate="no">leave_channel(guild_id)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Leaves the voice channel of the given guild id.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#listen/3" translate="no">listen(guild_id, num_packets, raw_rtp \\ false)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Listen for incoming voice RTP packets.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#pad_opus/1" translate="no">pad_opus(packets)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Pad discontinuous chunks of opus audio with silence.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#pause/1" translate="no">pause(guild_id)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Pauses the current sound being played in a voice channel.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#play/4" translate="no">play(guild_id, input, type \\ :url, options \\ [])</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Plays sound in the voice channel the bot is in.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#playing?/1" translate="no">playing?(guild_id)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Checks if the bot is playing sound in a voice channel.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#ready?/1" translate="no">ready?(guild_id)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Checks if the connection is up and ready to play audio.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#resume/1" translate="no">resume(guild_id)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Resumes playing the current paused sound in a voice channel.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#send_frames/2" translate="no">send_frames(guild_id, frames)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Low-level. Send pre-encoded audio packets directly.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#set_is_speaking/2" translate="no">set_is_speaking(guild_id, speaking)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Low-level. Set speaking flag in voice channel.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#start_listen_async/1" translate="no">start_listen_async(guild_id)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Start asynchronously receiving events for incoming RTP packets for an active voice session.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#stop/1" translate="no">stop(guild_id)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Stops the current sound being played in a voice channel.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#stop_listen_async/1" translate="no">stop_listen_async(guild_id)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Stop asynchronously receiving events for incoming RTP packets for an active voice session.</p></div>
+
+    </div>
+
+</div>
 
   </section>
 
@@ -454,7 +453,7 @@ Types
     </a>
     <h1 class="signature" translate="no">opus_packet()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L69" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L69" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -484,7 +483,7 @@ Types
     </a>
     <h1 class="signature" translate="no">play_input()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L93" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L93" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -515,7 +514,7 @@ See <a href="#play/4"><code class="inline">play/4</code></a> for more informatio
     </a>
     <h1 class="signature" translate="no">play_type()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L84" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L84" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -546,7 +545,7 @@ See <a href="#play/4"><code class="inline">play/4</code></a> for more informatio
     </a>
     <h1 class="signature" translate="no">rtp_opus()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L75" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L75" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -576,7 +575,7 @@ See <a href="#play/4"><code class="inline">play/4</code></a> for more informatio
     </a>
     <h1 class="signature" translate="no">rtp_sequence()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L51" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L51" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -606,7 +605,7 @@ See <a href="#play/4"><code class="inline">play/4</code></a> for more informatio
     </a>
     <h1 class="signature" translate="no">rtp_ssrc()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L63" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L63" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -636,7 +635,7 @@ See <a href="#play/4"><code class="inline">play/4</code></a> for more informatio
     </a>
     <h1 class="signature" translate="no">rtp_timestamp()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L57" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L57" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -679,7 +678,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">child_spec(init_arg)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L45" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L45" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -701,7 +700,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">connect_to_gateway(guild_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L571" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L571" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -732,7 +731,7 @@ By default Nostrum will automatically create a voice gateway when joining a chan
     </a>
     <h1 class="signature" translate="no">create_ogg_bitstream(opus_packets)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L710" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L712" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -756,10 +755,10 @@ understand how to use the data.</p><p>To get started, assuming you have a list o
 and consecutive opus packets from a single source that you want written
 to a file, you can run the following:</p><pre><code class="makeup elixir" translate="no"><span class="n">bitstream</span><span class="w"> </span><span class="o">=</span><span class="w">
   </span><span class="n">opus_packets</span><span class="w">
-  </span><span class="o">|&gt;</span><span class="w"> </span><span class="n">create_ogg_bitstream</span><span class="p" data-group-id="0175879498-1">(</span><span class="p" data-group-id="0175879498-1">)</span><span class="w">
-  </span><span class="o">|&gt;</span><span class="w"> </span><span class="nc">:binary</span><span class="o">.</span><span class="n">list_to_bin</span><span class="p" data-group-id="0175879498-2">(</span><span class="p" data-group-id="0175879498-2">)</span><span class="w">
+  </span><span class="o">|&gt;</span><span class="w"> </span><span class="n">create_ogg_bitstream</span><span class="p" data-group-id="6710782557-1">(</span><span class="p" data-group-id="6710782557-1">)</span><span class="w">
+  </span><span class="o">|&gt;</span><span class="w"> </span><span class="nc">:binary</span><span class="o">.</span><span class="n">list_to_bin</span><span class="p" data-group-id="6710782557-2">(</span><span class="p" data-group-id="6710782557-2">)</span><span class="w">
 
-</span><span class="nc">File</span><span class="o">.</span><span class="n">write!</span><span class="p" data-group-id="0175879498-3">(</span><span class="s">&quot;my_recording.ogg&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">bitstream</span><span class="p" data-group-id="0175879498-3">)</span></code></pre><p>When creating a logical bitstream, ensure that the packets are all from a single SSRC.
+</span><span class="nc">File</span><span class="o">.</span><span class="n">write!</span><span class="p" data-group-id="6710782557-3">(</span><span class="s">&quot;my_recording.ogg&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">bitstream</span><span class="p" data-group-id="6710782557-3">)</span></code></pre><p>When creating a logical bitstream, ensure that the packets are all from a single SSRC.
 When listening in a channel with multiple speakers, you should be storing the received
 packets in unique buckets for each SSRC so that the multiple audio sources don't become
 jumbled. A single logical bitstream should represent audio data from a single speaker.
@@ -767,9 +766,9 @@ An Ogg physical bitstream (e.g. a file) may be composed of multiple interleaved 
 logical bitstreams as each logical bitstream and its constituent pages contain a unique
 and randomly generated bitstream serial number, but this is a story for another time.</p><p>Assuming you have a list of <a href="#t:rtp_opus/0"><code class="inline">rtp_opus/0</code></a> packets that are not separated by ssrc, you
 may do the following:</p><pre><code class="makeup elixir" translate="no"><span class="n">jumbled_packets</span><span class="w">
-</span><span class="o">|&gt;</span><span class="w"> </span><span class="nc">Stream</span><span class="o">.</span><span class="n">filter</span><span class="p" data-group-id="5537284179-1">(</span><span class="k" data-group-id="5537284179-2">fn</span><span class="w"> </span><span class="p" data-group-id="5537284179-3">{</span><span class="p" data-group-id="5537284179-4">{</span><span class="c">_seq</span><span class="p">,</span><span class="w"> </span><span class="c">_time</span><span class="p">,</span><span class="w"> </span><span class="n">ssrc</span><span class="p" data-group-id="5537284179-4">}</span><span class="p">,</span><span class="w"> </span><span class="c">_opus</span><span class="p" data-group-id="5537284179-3">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">ssrc</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">particular_ssrc</span><span class="w"> </span><span class="k" data-group-id="5537284179-2">end</span><span class="p" data-group-id="5537284179-1">)</span><span class="w">
-</span><span class="o">|&gt;</span><span class="w"> </span><span class="nc">Enum</span><span class="o">.</span><span class="n">map</span><span class="p" data-group-id="5537284179-5">(</span><span class="k" data-group-id="5537284179-6">fn</span><span class="w"> </span><span class="p" data-group-id="5537284179-7">{</span><span class="p" data-group-id="5537284179-8">{</span><span class="c">_seq</span><span class="p">,</span><span class="w"> </span><span class="c">_time</span><span class="p">,</span><span class="w"> </span><span class="c">_ssrc</span><span class="p" data-group-id="5537284179-8">}</span><span class="p">,</span><span class="w"> </span><span class="n">opus</span><span class="p" data-group-id="5537284179-7">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">opus</span><span class="w"> </span><span class="k" data-group-id="5537284179-6">end</span><span class="p" data-group-id="5537284179-5">)</span><span class="w">
-</span><span class="o">|&gt;</span><span class="w"> </span><span class="n">create_ogg_bitstream</span><span class="p" data-group-id="5537284179-9">(</span><span class="p" data-group-id="5537284179-9">)</span></code></pre>
+</span><span class="o">|&gt;</span><span class="w"> </span><span class="nc">Stream</span><span class="o">.</span><span class="n">filter</span><span class="p" data-group-id="1713789825-1">(</span><span class="k" data-group-id="1713789825-2">fn</span><span class="w"> </span><span class="p" data-group-id="1713789825-3">{</span><span class="p" data-group-id="1713789825-4">{</span><span class="c">_seq</span><span class="p">,</span><span class="w"> </span><span class="c">_time</span><span class="p">,</span><span class="w"> </span><span class="n">ssrc</span><span class="p" data-group-id="1713789825-4">}</span><span class="p">,</span><span class="w"> </span><span class="c">_opus</span><span class="p" data-group-id="1713789825-3">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">ssrc</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">particular_ssrc</span><span class="w"> </span><span class="k" data-group-id="1713789825-2">end</span><span class="p" data-group-id="1713789825-1">)</span><span class="w">
+</span><span class="o">|&gt;</span><span class="w"> </span><span class="nc">Enum</span><span class="o">.</span><span class="n">map</span><span class="p" data-group-id="1713789825-5">(</span><span class="k" data-group-id="1713789825-6">fn</span><span class="w"> </span><span class="p" data-group-id="1713789825-7">{</span><span class="p" data-group-id="1713789825-8">{</span><span class="c">_seq</span><span class="p">,</span><span class="w"> </span><span class="c">_time</span><span class="p">,</span><span class="w"> </span><span class="c">_ssrc</span><span class="p" data-group-id="1713789825-8">}</span><span class="p">,</span><span class="w"> </span><span class="n">opus</span><span class="p" data-group-id="1713789825-7">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">opus</span><span class="w"> </span><span class="k" data-group-id="1713789825-6">end</span><span class="p" data-group-id="1713789825-5">)</span><span class="w">
+</span><span class="o">|&gt;</span><span class="w"> </span><span class="n">create_ogg_bitstream</span><span class="p" data-group-id="1713789825-9">(</span><span class="p" data-group-id="1713789825-9">)</span></code></pre>
   </section>
 </section>
 <section class="detail" id="extract_opus_packet/1">
@@ -781,7 +780,7 @@ may do the following:</p><pre><code class="makeup elixir" translate="no"><span c
     </a>
     <h1 class="signature" translate="no">extract_opus_packet(packet)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L663" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L665" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -812,7 +811,7 @@ RTP header extension, which must be stripped to retrieve the underlying opus pac
     </a>
     <h1 class="signature" translate="no">get_channel_id(guild_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L480" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L480" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -860,7 +859,7 @@ nil</code></pre>
     </a>
     <h1 class="signature" translate="no">get_current_url(guild_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L496" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L496" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -892,7 +891,7 @@ as the input is raw audio data, not be a readable URL string.</p>
     </a>
     <h1 class="signature" translate="no">get_ssrc_map(guild_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L516" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L516" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -935,7 +934,7 @@ voice websocket and voice state processes.</p>
     </a>
     <h1 class="signature" translate="no">join_channel(guild_id, channel_id, self_mute \\ false, self_deaf \\ false, persist \\ true)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L140" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L140" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -975,7 +974,7 @@ The same effect is achieved by calling <a href="#stop/1"><code class="inline">st
     </a>
     <h1 class="signature" translate="no">leave_channel(guild_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L163" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L163" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1005,7 +1004,7 @@ The same effect is achieved by calling <a href="#stop/1"><code class="inline">st
     </a>
     <h1 class="signature" translate="no">listen(guild_id, num_packets, raw_rtp \\ false)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L608" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L609" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1019,8 +1018,11 @@ The same effect is achieved by calling <a href="#stop/1"><code class="inline">st
 
       <div class="specs">
 
-          <pre translate="no"><span class="attribute">@spec</span> listen(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pos_integer</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">boolean</a>()) ::
-  [<a href="#t:rtp_opus/0">rtp_opus</a>()] | [<a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">binary</a>()] | {:error, <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()}</pre>
+          <pre translate="no"><span class="attribute">@spec</span> listen(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pos_integer</a>(), raw_rtp :: false) ::
+  [<a href="#t:rtp_opus/0">rtp_opus</a>()] | {:error, <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()}</pre>
+
+          <pre translate="no"><span class="attribute">@spec</span> listen(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pos_integer</a>(), raw_rtp :: true) ::
+  [<a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">binary</a>()] | {:error, <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()}</pre>
 
       </div>
 
@@ -1045,7 +1047,7 @@ To extract an opus packet from an RTP packet, see <a href="#extract_opus_packet/
     </a>
     <h1 class="signature" translate="no">pad_opus(packets)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L742" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L744" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1090,7 +1092,7 @@ function will maintain short silences between speech segments.</p><p><em>This fu
     </a>
     <h1 class="signature" translate="no">pause(guild_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L337" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L337" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1139,7 +1141,7 @@ iex&gt; Nostrum.Voice.pause(123456789)</code></pre>
     </a>
     <h1 class="signature" translate="no">play(guild_id, input, type \\ :url, options \\ [])</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L244" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L244" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1214,7 +1216,7 @@ iex&gt; Nostrum.Voice.play(123456789, &quot;https://youtu.be/LN4r-K8ZP5Q&quot;, 
     </a>
     <h1 class="signature" translate="no">playing?(guild_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L424" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L424" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1264,7 +1266,7 @@ false</code></pre>
     </a>
     <h1 class="signature" translate="no">ready?(guild_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L453" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L453" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1312,7 +1314,7 @@ false</code></pre>
     </a>
     <h1 class="signature" translate="no">resume(guild_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L379" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L379" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1358,7 +1360,7 @@ iex&gt; Nostrum.Voice.resume(123456789)</code></pre>
     </a>
     <h1 class="signature" translate="no">send_frames(guild_id, frames)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L552" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L552" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1393,7 +1395,7 @@ instead of <a href="#play/4"><code class="inline">Nostrum.Voice.play/4</code></a
     </a>
     <h1 class="signature" translate="no">set_is_speaking(guild_id, speaking)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L535" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L535" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1424,7 +1426,7 @@ directly using <a href="#send_frames/2"><code class="inline">Nostrum.Voice.send_
     </a>
     <h1 class="signature" translate="no">start_listen_async(guild_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L636" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L638" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1455,7 +1457,7 @@ when a user is speaking. See <a href="Nostrum.Consumer.html#t:voice_incoming_pac
     </a>
     <h1 class="signature" translate="no">stop(guild_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L295" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L295" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1500,7 +1502,7 @@ iex&gt; Nostrum.Voice.stop(123456789)</code></pre>
     </a>
     <h1 class="signature" translate="no">stop_listen_async(guild_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L643" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice.ex#L645" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1526,26 +1528,32 @@ iex&gt; Nostrum.Voice.stop(123456789)</code></pre>
   </section>
 
       <footer class="footer">
-
-          <p>
-            On Hex.pm:
+        <p>
 
             <span class="line">
-              <a href="https://hex.pm/packages/nostrum/0.6.1" class="line footer-hex-package">Package</a>
-              <a href="https://preview.hex.pm/preview/nostrum/0.6.1" class="line">Preview</a>
+              <a href="https://hex.pm/packages/nostrum/0.6.1" class="footer-hex-package">Hex Package</a>
 
-                <a href="https://preview.hex.pm/preview/nostrum/0.6.1/show/lib/nostrum/voice.ex">(current file)</a>
+              <a href="https://preview.hex.pm/preview/nostrum/0.6.1">Hex Preview</a>
+
+                (<a href="https://preview.hex.pm/preview/nostrum/0.6.1/show/lib/nostrum/voice.ex">current file</a>)
 
             </span>
 
-            <button class="a-main line footer-button display-quick-switch">
-              Search
+          <span class="line">
+            <button class="a-main footer-button display-quick-switch" title="Search HexDocs packages">
+              Search HexDocs
             </button>
-          </p>
 
-        <p>
+              <a href="Nostrum.epub" title="ePub version">
+                Download ePub version
+              </a>
+
+          </span>
+        </p>
+
+        <p class="built-using">
           Built using
-          <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.29.0) for the
+          <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.29.4) for the
 
             <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
 

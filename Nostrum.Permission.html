@@ -4,19 +4,20 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="ExDoc v0.29.0">
+    <meta name="generator" content="ExDoc v0.29.4">
     <meta name="project" content="Nostrum v0.6.1">
 
     <title>Nostrum.Permission — Nostrum v0.6.1</title>
-    <link rel="stylesheet" href="dist/html-elixir-2YOS5DIE.css" />
+    <link rel="stylesheet" href="dist/html-elixir-HHVY3JYD.css" />
+
 
     <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
-    <script src="dist/handlebars.templates-X7YVL3G2.js"></script>
-    <script src="dist/sidebar_items-0EDC7626.js"></script>
+    <script src="dist/handlebars.templates-XWGFFSCD.js"></script>
+    <script src="dist/sidebar_items-01464099.js"></script>
 
       <script src="docs_config.js"></script>
 
-    <script async src="dist/html-XN2TSG4M.js"></script>
+    <script async src="dist/html-JDI3AVDD.js"></script>
 
 
   </head>
@@ -51,7 +52,7 @@
     </button>
     <label class="search-label">
       <p class="sr-only">Search</p>
-      <input name="q" type="text" class="search-input" placeholder="Search..." aria-label="Input your search terms" autocomplete="off" />
+      <input name="q" type="text" class="search-input" placeholder="Search..." aria-label="Input your search terms" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
     </label>
   </form>
 
@@ -66,9 +67,9 @@
       <a href="https://github.com/Kraigie/nostrum" class="sidebar-projectName" translate="no">
 Nostrum
       </a>
-      <strong class="sidebar-projectVersion" translate="no">
+      <div class="sidebar-projectVersion" translate="no">
         v0.6.1
-      </strong>
+      </div>
     </div>
     <ul class="sidebar-listNav">
       <li><a id="extras-list-link" href="#full-list">Pages</a></li>
@@ -82,7 +83,7 @@ Nostrum
   </div>
 
   <div class="gradient"></div>
-  <ul id="full-list" class="sidebar-fullList"></ul>
+  <ul id="full-list"></ul>
 </section>
 
 <section class="content">
@@ -91,13 +92,13 @@ Nostrum
     <div id="content" class="content-inner">
 
 <h1>
-<button class="settings display-settings">
+<button class="icon-action display-settings">
   <i class="ri-settings-3-line"></i>
   <span class="sr-only">Settings</span>
 </button>
 
 
-    <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/permission.ex#L1" title="View Source" class="view-source" rel="help">
+    <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/permission.ex#L1" title="View Source" class="icon-action" rel="help">
       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
       <span class="sr-only">View Source</span>
     </a>
@@ -131,142 +132,140 @@ end</code></pre>
       </a>
       Summary
     </h1>
+<div class="summary-types summary">
+  <h2>
+    <a href="#types">Types</a>
+  </h2>
 
-  <div class="summary-types summary">
-    <h2>
-      <a href="#types">Types</a>
-    </h2>
-
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#t:bit/0" translate="no">bit()</a>
-
-        </div>
-
-          <div class="summary-synopsis"><p>Represents a single permission as a bitvalue.</p></div>
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:bit/0" translate="no">bit()</a>
 
       </div>
 
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#t:bitset/0" translate="no">bitset()</a>
+        <div class="summary-synopsis"><p>Represents a single permission as a bitvalue.</p></div>
 
-        </div>
+    </div>
 
-          <div class="summary-synopsis"><p>Represents a set of permissions as a bitvalue.</p></div>
-
-      </div>
-
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#t:general_permission/0" translate="no">general_permission()</a>
-
-        </div>
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:bitset/0" translate="no">bitset()</a>
 
       </div>
 
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#t:t/0" translate="no">t()</a>
+        <div class="summary-synopsis"><p>Represents a set of permissions as a bitvalue.</p></div>
 
-        </div>
+    </div>
 
-      </div>
-
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#t:text_permission/0" translate="no">text_permission()</a>
-
-        </div>
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:general_permission/0" translate="no">general_permission()</a>
 
       </div>
 
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#t:voice_permission/0" translate="no">voice_permission()</a>
+    </div>
 
-        </div>
-
-      </div>
-
-  </div>
-
-  <div class="summary-functions summary">
-    <h2>
-      <a href="#functions">Functions</a>
-    </h2>
-
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#all/0" translate="no">all()</a>
-
-        </div>
-
-          <div class="summary-synopsis"><p>Returns a list of all permissions.</p></div>
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:t/0" translate="no">t()</a>
 
       </div>
 
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#from_bit/1" translate="no">from_bit(bit)</a>
+    </div>
 
-        </div>
-
-          <div class="summary-synopsis"><p>Converts the given bit to a permission.</p></div>
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:text_permission/0" translate="no">text_permission()</a>
 
       </div>
 
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#from_bit!/1" translate="no">from_bit!(bit)</a>
+    </div>
 
-        </div>
-
-          <div class="summary-synopsis"><p>Same as <a href="#from_bit/1"><code class="inline">from_bit/1</code></a>, but raises <a href="https://hexdocs.pm/elixir/ArgumentError.html"><code class="inline">ArgumentError</code></a> in case of failure.</p></div>
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:voice_permission/0" translate="no">voice_permission()</a>
 
       </div>
 
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#from_bitset/1" translate="no">from_bitset(bitset)</a>
+    </div>
 
-        </div>
+</div>
+<div class="summary-functions summary">
+  <h2>
+    <a href="#functions">Functions</a>
+  </h2>
 
-          <div class="summary-synopsis"><p>Converts the given bitset to a list of permissions.</p></div>
-
-      </div>
-
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#is_permission/1" translate="no">is_permission(term)</a>
-
-        </div>
-
-          <div class="summary-synopsis"><p>Returns <code class="inline">true</code> if <code class="inline">term</code> is a permission; otherwise returns <code class="inline">false</code>.</p></div>
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#all/0" translate="no">all()</a>
 
       </div>
 
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#to_bit/1" translate="no">to_bit(permission)</a>
+        <div class="summary-synopsis"><p>Returns a list of all permissions.</p></div>
 
-        </div>
+    </div>
 
-          <div class="summary-synopsis"><p>Converts the given permission to a bit.</p></div>
-
-      </div>
-
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#to_bitset/1" translate="no">to_bitset(permissions)</a>
-
-        </div>
-
-          <div class="summary-synopsis"><p>Converts the given enumerable of permissions to a bitset.</p></div>
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#from_bit/1" translate="no">from_bit(bit)</a>
 
       </div>
 
-  </div>
+        <div class="summary-synopsis"><p>Converts the given bit to a permission.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#from_bit!/1" translate="no">from_bit!(bit)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Same as <a href="#from_bit/1"><code class="inline">from_bit/1</code></a>, but raises <a href="https://hexdocs.pm/elixir/ArgumentError.html"><code class="inline">ArgumentError</code></a> in case of failure.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#from_bitset/1" translate="no">from_bitset(bitset)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Converts the given bitset to a list of permissions.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#is_permission/1" translate="no">is_permission(term)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Returns <code class="inline">true</code> if <code class="inline">term</code> is a permission; otherwise returns <code class="inline">false</code>.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#to_bit/1" translate="no">to_bit(permission)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Converts the given permission to a bit.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#to_bitset/1" translate="no">to_bitset(permissions)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Converts the given enumerable of permissions to a bitset.</p></div>
+
+    </div>
+
+</div>
 
   </section>
 
@@ -289,7 +288,7 @@ Types
     </a>
     <h1 class="signature" translate="no">bit()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/permission.ex#L27" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/permission.ex#L27" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -317,7 +316,7 @@ Types
     </a>
     <h1 class="signature" translate="no">bitset()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/permission.ex#L32" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/permission.ex#L32" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -345,7 +344,7 @@ Types
     </a>
     <h1 class="signature" translate="no">general_permission()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/permission.ex#L34" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/permission.ex#L34" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -389,7 +388,7 @@ Types
     </a>
     <h1 class="signature" translate="no">t()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/permission.ex#L81" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/permission.ex#L81" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -417,7 +416,7 @@ Types
     </a>
     <h1 class="signature" translate="no">text_permission()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/permission.ex#L52" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/permission.ex#L52" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -459,7 +458,7 @@ Types
     </a>
     <h1 class="signature" translate="no">voice_permission()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/permission.ex#L68" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/permission.ex#L68" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -511,7 +510,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">all()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/permission.ex#L152" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/permission.ex#L152" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -539,7 +538,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">from_bit(bit)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/permission.ex#L170" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/permission.ex#L170" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -577,7 +576,7 @@ iex&gt; Nostrum.Permission.from_bit(0)
     </a>
     <h1 class="signature" translate="no">from_bit!(bit)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/permission.ex#L188" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/permission.ex#L188" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -615,7 +614,7 @@ iex&gt; Nostrum.Permission.from_bit!(0)
     </a>
     <h1 class="signature" translate="no">from_bitset(bitset)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/permission.ex#L211" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/permission.ex#L211" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -653,7 +652,7 @@ iex&gt; Nostrum.Permission.from_bitset(0x4000000000000)
     </a>
     <h1 class="signature" translate="no">is_permission(term)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/permission.ex#L146" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/permission.ex#L146" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -687,7 +686,7 @@ false</code></pre>
     </a>
     <h1 class="signature" translate="no">to_bit(permission)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/permission.ex#L234" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/permission.ex#L234" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -722,7 +721,7 @@ false</code></pre>
     </a>
     <h1 class="signature" translate="no">to_bitset(permissions)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/permission.ex#L247" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/permission.ex#L247" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -753,26 +752,32 @@ false</code></pre>
   </section>
 
       <footer class="footer">
-
-          <p>
-            On Hex.pm:
+        <p>
 
             <span class="line">
-              <a href="https://hex.pm/packages/nostrum/0.6.1" class="line footer-hex-package">Package</a>
-              <a href="https://preview.hex.pm/preview/nostrum/0.6.1" class="line">Preview</a>
+              <a href="https://hex.pm/packages/nostrum/0.6.1" class="footer-hex-package">Hex Package</a>
 
-                <a href="https://preview.hex.pm/preview/nostrum/0.6.1/show/lib/nostrum/permission.ex">(current file)</a>
+              <a href="https://preview.hex.pm/preview/nostrum/0.6.1">Hex Preview</a>
+
+                (<a href="https://preview.hex.pm/preview/nostrum/0.6.1/show/lib/nostrum/permission.ex">current file</a>)
 
             </span>
 
-            <button class="a-main line footer-button display-quick-switch">
-              Search
+          <span class="line">
+            <button class="a-main footer-button display-quick-switch" title="Search HexDocs packages">
+              Search HexDocs
             </button>
-          </p>
 
-        <p>
+              <a href="Nostrum.epub" title="ePub version">
+                Download ePub version
+              </a>
+
+          </span>
+        </p>
+
+        <p class="built-using">
           Built using
-          <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.29.0) for the
+          <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.29.4) for the
 
             <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
 

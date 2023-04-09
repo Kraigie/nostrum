@@ -4,19 +4,20 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="ExDoc v0.29.0">
+    <meta name="generator" content="ExDoc v0.29.4">
     <meta name="project" content="Nostrum v0.6.1">
 
     <title>Nostrum.Util — Nostrum v0.6.1</title>
-    <link rel="stylesheet" href="dist/html-elixir-2YOS5DIE.css" />
+    <link rel="stylesheet" href="dist/html-elixir-HHVY3JYD.css" />
+
 
     <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
-    <script src="dist/handlebars.templates-X7YVL3G2.js"></script>
-    <script src="dist/sidebar_items-0EDC7626.js"></script>
+    <script src="dist/handlebars.templates-XWGFFSCD.js"></script>
+    <script src="dist/sidebar_items-01464099.js"></script>
 
       <script src="docs_config.js"></script>
 
-    <script async src="dist/html-XN2TSG4M.js"></script>
+    <script async src="dist/html-JDI3AVDD.js"></script>
 
 
   </head>
@@ -51,7 +52,7 @@
     </button>
     <label class="search-label">
       <p class="sr-only">Search</p>
-      <input name="q" type="text" class="search-input" placeholder="Search..." aria-label="Input your search terms" autocomplete="off" />
+      <input name="q" type="text" class="search-input" placeholder="Search..." aria-label="Input your search terms" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
     </label>
   </form>
 
@@ -66,9 +67,9 @@
       <a href="https://github.com/Kraigie/nostrum" class="sidebar-projectName" translate="no">
 Nostrum
       </a>
-      <strong class="sidebar-projectVersion" translate="no">
+      <div class="sidebar-projectVersion" translate="no">
         v0.6.1
-      </strong>
+      </div>
     </div>
     <ul class="sidebar-listNav">
       <li><a id="extras-list-link" href="#full-list">Pages</a></li>
@@ -82,7 +83,7 @@ Nostrum
   </div>
 
   <div class="gradient"></div>
-  <ul id="full-list" class="sidebar-fullList"></ul>
+  <ul id="full-list"></ul>
 </section>
 
 <section class="content">
@@ -91,13 +92,13 @@ Nostrum
     <div id="content" class="content-inner">
 
 <h1>
-<button class="settings display-settings">
+<button class="icon-action display-settings">
   <i class="ri-settings-3-line"></i>
   <span class="sr-only">Settings</span>
 </button>
 
 
-    <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/util.ex#L1" title="View Source" class="view-source" rel="help">
+    <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/util.ex#L1" title="View Source" class="icon-action" rel="help">
       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
       <span class="sr-only">View Source</span>
     </a>
@@ -121,134 +122,133 @@ Nostrum
       </a>
       Summary
     </h1>
+<div class="summary-functions summary">
+  <h2>
+    <a href="#functions">Functions</a>
+  </h2>
 
-  <div class="summary-functions summary">
-    <h2>
-      <a href="#functions">Functions</a>
-    </h2>
-
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#enum_to_struct/2" translate="no">enum_to_struct(enum, struct)</a>
-
-        </div>
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#enum_to_struct/2" translate="no">enum_to_struct(enum, struct)</a>
 
       </div>
 
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#gateway/0" translate="no">gateway()</a>
+    </div>
 
-        </div>
-
-          <div class="summary-synopsis"><p>Returns the gateway url and shard count for current websocket connections.</p></div>
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#gateway/0" translate="no">gateway()</a>
 
       </div>
 
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#get_all_shard_latencies/0" translate="no">get_all_shard_latencies()</a>
+        <div class="summary-synopsis"><p>Returns the gateway url and shard count for current websocket connections.</p></div>
 
-        </div>
+    </div>
 
-          <div class="summary-synopsis"><p>Gets the latencies of all shard connections.</p></div>
-
-      </div>
-
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#get_shard_latency/1" translate="no">get_shard_latency(state)</a>
-
-        </div>
-
-          <div class="summary-synopsis"><p>Gets the latency of the shard connection from a <code class="inline">Nostrum.Struct.WSState.t()</code> struct.</p></div>
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#get_all_shard_latencies/0" translate="no">get_all_shard_latencies()</a>
 
       </div>
 
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#maybe_to_atom/1" translate="no">maybe_to_atom(token)</a>
+        <div class="summary-synopsis"><p>Gets the latencies of all shard connections.</p></div>
 
-        </div>
+    </div>
 
-          <div class="summary-synopsis"><p>Attempts to convert a string to an atom.</p></div>
-
-      </div>
-
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#maybe_to_datetime/1" translate="no">maybe_to_datetime(stamp)</a>
-
-        </div>
-
-          <div class="summary-synopsis"><p>Converts possibly nil ISO8601 timestamp to a <a href="https://hexdocs.pm/elixir/DateTime.html"><code class="inline">DateTime</code></a></p></div>
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#get_shard_latency/1" translate="no">get_shard_latency(state)</a>
 
       </div>
 
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#now/0" translate="no">now()</a>
+        <div class="summary-synopsis"><p>Gets the latency of the shard connection from a <code class="inline">Nostrum.Struct.WSState.t()</code> struct.</p></div>
 
-        </div>
+    </div>
 
-          <div class="summary-synopsis"><p>Returns the number of milliseconds since unix epoch.</p></div>
-
-      </div>
-
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#now_iso/0" translate="no">now_iso()</a>
-
-        </div>
-
-          <div class="summary-synopsis"><p>Returns the current date as an ISO formatted string.</p></div>
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#maybe_to_atom/1" translate="no">maybe_to_atom(token)</a>
 
       </div>
 
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#num_shards/0" translate="no">num_shards()</a>
+        <div class="summary-synopsis"><p>Attempts to convert a string to an atom.</p></div>
 
-        </div>
+    </div>
 
-          <div class="summary-synopsis"><p>Returns the number of shards.</p></div>
-
-      </div>
-
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#safe_atom_map/1" translate="no">safe_atom_map(term)</a>
-
-        </div>
-
-          <div class="summary-synopsis"><p>Converts a map into an atom-keyed map.</p></div>
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#maybe_to_datetime/1" translate="no">maybe_to_datetime(stamp)</a>
 
       </div>
 
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#unused_atoms/0" translate="no">unused_atoms()</a>
+        <div class="summary-synopsis"><p>Converts possibly nil ISO8601 timestamp to a <a href="https://hexdocs.pm/elixir/DateTime.html"><code class="inline">DateTime</code></a></p></div>
 
-        </div>
+    </div>
 
-          <div class="summary-synopsis"><p>Since we're being sacrilegious and converting strings to atoms from the WS, there will be some
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#now/0" translate="no">now()</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Returns the number of milliseconds since unix epoch.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#now_iso/0" translate="no">now_iso()</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Returns the current date as an ISO formatted string.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#num_shards/0" translate="no">num_shards()</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Returns the number of shards.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#safe_atom_map/1" translate="no">safe_atom_map(term)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Converts a map into an atom-keyed map.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#unused_atoms/0" translate="no">unused_atoms()</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Since we're being sacrilegious and converting strings to atoms from the WS, there will be some
 atoms that we see that aren't defined in any Discord structs. This method mainly serves as a
 means to define those atoms once so the user isn't warned about them in the
 <a href="#maybe_to_atom/1"><code class="inline">Nostrum.Util.maybe_to_atom/1</code></a> function when they are in fact harmless.</p></div>
 
-      </div>
+    </div>
 
-      <div class="summary-row">
-        <div class="summary-signature">
-          <a href="#usec_now/0" translate="no">usec_now()</a>
-
-        </div>
-
-          <div class="summary-synopsis"><p>Returns the number of microseconds since unix epoch.</p></div>
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#usec_now/0" translate="no">usec_now()</a>
 
       </div>
 
-  </div>
+        <div class="summary-synopsis"><p>Returns the number of microseconds since unix epoch.</p></div>
+
+    </div>
+
+</div>
 
   </section>
 
@@ -271,7 +271,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">enum_to_struct(enum, struct)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/util.ex#L44" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/util.ex#L44" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -293,7 +293,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">gateway()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/util.ex#L90" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/util.ex#L90" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -322,7 +322,7 @@ for future use.</p>
     </a>
     <h1 class="signature" translate="no">get_all_shard_latencies()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/util.ex#L248" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/util.ex#L248" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -353,7 +353,7 @@ shard nums and whose values are latencies in milliseconds.</p>
     </a>
     <h1 class="signature" translate="no">get_shard_latency(state)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/util.ex#L232" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/util.ex#L232" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -381,7 +381,7 @@ shard nums and whose values are latencies in milliseconds.</p>
     </a>
     <h1 class="signature" translate="no">maybe_to_atom(token)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/util.ex#L151" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/util.ex#L151" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -410,7 +410,7 @@ be parsed as such.</p><p>If atom does not currently exist, will warn that we're 
     </a>
     <h1 class="signature" translate="no">maybe_to_datetime(stamp)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/util.ex#L175" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/util.ex#L175" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -438,7 +438,7 @@ be parsed as such.</p><p>If atom does not currently exist, will warn that we're 
     </a>
     <h1 class="signature" translate="no">now()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/util.ex#L16" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/util.ex#L16" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -466,7 +466,7 @@ be parsed as such.</p><p>If atom does not currently exist, will warn that we're 
     </a>
     <h1 class="signature" translate="no">now_iso()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/util.ex#L34" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/util.ex#L34" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -494,7 +494,7 @@ be parsed as such.</p><p>If atom does not currently exist, will warn that we're 
     </a>
     <h1 class="signature" translate="no">num_shards()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/util.ex#L60" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/util.ex#L60" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -523,7 +523,7 @@ in your config.</p>
     </a>
     <h1 class="signature" translate="no">safe_atom_map(term)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/util.ex#L129" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/util.ex#L129" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -556,7 +556,7 @@ types of objects returned by Discord, the amount of new atoms created <em>SHOULD
     </a>
     <h1 class="signature" translate="no">unused_atoms()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/util.ex#L264" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/util.ex#L264" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -581,7 +581,7 @@ means to define those atoms once so the user isn't warned about them in the
     </a>
     <h1 class="signature" translate="no">usec_now()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/util.ex#L25" class="view-source" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/util.ex#L25" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -605,26 +605,32 @@ means to define those atoms once so the user isn't warned about them in the
   </section>
 
       <footer class="footer">
-
-          <p>
-            On Hex.pm:
+        <p>
 
             <span class="line">
-              <a href="https://hex.pm/packages/nostrum/0.6.1" class="line footer-hex-package">Package</a>
-              <a href="https://preview.hex.pm/preview/nostrum/0.6.1" class="line">Preview</a>
+              <a href="https://hex.pm/packages/nostrum/0.6.1" class="footer-hex-package">Hex Package</a>
 
-                <a href="https://preview.hex.pm/preview/nostrum/0.6.1/show/lib/nostrum/util.ex">(current file)</a>
+              <a href="https://preview.hex.pm/preview/nostrum/0.6.1">Hex Preview</a>
+
+                (<a href="https://preview.hex.pm/preview/nostrum/0.6.1/show/lib/nostrum/util.ex">current file</a>)
 
             </span>
 
-            <button class="a-main line footer-button display-quick-switch">
-              Search
+          <span class="line">
+            <button class="a-main footer-button display-quick-switch" title="Search HexDocs packages">
+              Search HexDocs
             </button>
-          </p>
 
-        <p>
+              <a href="Nostrum.epub" title="ePub version">
+                Download ePub version
+              </a>
+
+          </span>
+        </p>
+
+        <p class="built-using">
           Built using
-          <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.29.0) for the
+          <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.29.4) for the
 
             <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
 
