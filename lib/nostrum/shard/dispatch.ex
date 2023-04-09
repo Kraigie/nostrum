@@ -349,6 +349,7 @@ defmodule Nostrum.Shard.Dispatch do
         # Joining Channel
         voice = Voice.get_voice(p.guild_id)
 
+        # credo:disable-for-next-line Credo.Check.Refactor.Nesting
         cond do
           # Not yet in a channel:
           is_nil(voice) or is_nil(voice.session) ->

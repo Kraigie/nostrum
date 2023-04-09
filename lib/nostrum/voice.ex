@@ -604,7 +604,8 @@ defmodule Nostrum.Voice do
   This function will block until the specified number of packets is received.
   """
   @doc since: "0.6.0"
-  @spec listen(Guild.id(), pos_integer, boolean) :: [rtp_opus()] | [binary] | {:error, String.t()}
+  @spec listen(Guild.id(), pos_integer, raw_rtp :: false) :: [rtp_opus()] | {:error, String.t()}
+  @spec listen(Guild.id(), pos_integer, raw_rtp :: true) :: [binary] | {:error, String.t()}
   def listen(guild_id, num_packets, raw_rtp \\ false) do
     voice = get_voice(guild_id)
 
@@ -614,6 +615,7 @@ defmodule Nostrum.Voice do
       if raw_rtp do
         Enum.map(packets, fn {header, payload} -> header <> payload end)
       else
+        # credo:disable-for-next-line Credo.Check.Refactor.Nesting
         Enum.map(packets, fn {header, payload} ->
           <<_::16, seq::integer-16, time::integer-32, ssrc::integer-32>> = header
           opus = Opus.strip_rtp_ext(payload)
