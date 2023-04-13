@@ -105,31 +105,18 @@ defmodule Nostrum.Struct.Component.Button do
   """
   def toggle(%{type: 2, disabled: button_state} = button) do
     button
-    |> struct({:disabled, !button_state})
+    |> struct([{:disabled, !button_state}])
   end
 
   def toggle(_), do: buttons_only()
 
   @doc """
-  Disables the button.
+  Disables the button when `disabled` is true. Enables it otherwise.
   """
-
-  def disable(%{type: 2} = button) do
+  def disable(%{type: 2} = button, disabled) do
     button
-    |> update({:disabled, true})
+    |> update([{:disabled, disabled}])
   end
-
-  def disable(_), do: buttons_only()
-
-  @doc """
-  Enables the button.
-  """
-  def enable(%{type: 2} = button) do
-    button
-    |> update({:disabled, false})
-  end
-
-  def enable(_), do: buttons_only()
 
   @doc """
   Changes the style of the button.
