@@ -111,11 +111,11 @@ defmodule Nostrum.Struct.Component.Button do
   def toggle(_), do: buttons_only()
 
   @doc """
-  Enables the button when `enabled` is true. Disables it otherwise.
+  Disables the button when `disabled` is true. Enables it otherwise.
   """
-  def enable(%{type: 2} = button, enabled) do
+  def disable(%{type: 2} = button, disabled) do
     button
-    |> update([{:disabled, !enabled}])
+    |> update([{:disabled, disabled}])
   end
 
   @doc """
