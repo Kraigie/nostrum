@@ -4,6 +4,7 @@ defmodule Nostrum.Api.Base do
   @version Nostrum.Mixfile.project()[:version]
 
   import Nostrum.Constants, only: [base_route: 0]
+  require Logger
 
   @type methods :: :get | :post | :put | :delete
 
@@ -31,6 +32,10 @@ defmodule Nostrum.Api.Base do
       {:response, :nofin, status, headers} ->
         {:ok, body} = :gun.await_body(conn, stream)
         {:ok, {status, headers, body}}
+
+      {:error, :timeout} = result ->
+        Logger.debug("Request for #{inspect(full_route)} timed out")
+        result
 
       {:error, _reason} = result ->
         result

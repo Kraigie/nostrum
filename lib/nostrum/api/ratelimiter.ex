@@ -85,8 +85,16 @@ defmodule Nostrum.Api.Ratelimiter do
     {:noreply, state}
   end
 
-  def handle_info({:gun_response, _conn, _ref, :nofin, status, headers}, state) do
-    Logger.debug("Got unexpected response with status #{status}, headers #{inspect(headers)}")
+  def handle_info({:gun_response, _conn, _ref, :nofin, status, _headers}, state) do
+    Logger.debug(
+      "Got unexpected (probably late) HTTP response with status #{status}, discarding it"
+    )
+
+    {:noreply, state}
+  end
+
+  def handle_info({:gun_data, _conn, _ref, :nofin, _data}, state) do
+    Logger.debug("Got unexpected (probably late) data from a HTTP response, discarding it")
     {:noreply, state}
   end
 
