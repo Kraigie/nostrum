@@ -23,13 +23,14 @@ defmodule Nostrum.Api.Ratelimiter do
 
   @major_parameters ["channels", "guilds", "webhooks"]
   @gregorian_epoch 62_167_219_200
+  @registered_name Ratelimiter
 
   @doc """
   Starts the ratelimiter.
   """
   @spec start_link([]) :: on_start
   def start_link([]) do
-    GenServer.start_link(__MODULE__, [], name: Ratelimiter)
+    GenServer.start_link(__MODULE__, [], name: @registered_name)
   end
 
   def init([]) do
@@ -55,26 +56,40 @@ defmodule Nostrum.Api.Ratelimiter do
     :ets.delete_all_objects(:ratelimit_buckets)
   end
 
-  def handle_call({:queue, request, original_from}, from, conn) do
-    retry_time =
-      request.route
-      |> get_endpoint(request.method)
-      |> Bucket.get_ratelimit_timeout()
+  defp get_retry_time(route, method) do
+    route
+    |> get_endpoint(method)
+    |> Bucket.get_ratelimit_timeout()
+  end
 
-    case retry_time do
+  def queue(request) do
+    case GenServer.call(@registered_name, {:queue, request}) do
+      {:error, {:retry_after, time}} ->
+        truncated = :erlang.ceil(time)
+
+        Logger.info(
+          "RATELIMITER: Waiting #{truncated}ms to process request with route #{request.route}"
+        )
+
+        Process.sleep(truncated)
+        GenServer.call(@registered_name, {:queue, request})
+
+      result ->
+        result
+    end
+  end
+
+  def handle_call({:queue, request}, _from, conn) do
+    case get_retry_time(request.route, request.method) do
       :now ->
-        GenServer.reply(original_from || from, do_request(request, conn))
+        {:reply, do_request(request, conn), conn}
 
       time when time < 0 ->
-        GenServer.reply(original_from || from, do_request(request, conn))
+        {:reply, do_request(request, conn), conn}
 
       time ->
-        Task.start(fn ->
-          wait_for_timeout(request, time, original_from || from)
-        end)
+        {:reply, {:error, {:retry_after, time}}, conn}
     end
-
-    {:noreply, conn}
   end
 
   def handle_info({:gun_down, _conn, _proto, _reason, _killed_streams}, state) do
@@ -169,17 +184,6 @@ defmodule Nostrum.Api.Ratelimiter do
 
   defp update_global_bucket(_route, _remaining, retry_after, latency) do
     Bucket.update_bucket("GLOBAL", 0, retry_after + Util.now(), latency)
-  end
-
-  defp wait_for_timeout(request, timeout, from) do
-    truncated = :erlang.ceil(timeout)
-
-    Logger.info(
-      "RATELIMITER: Waiting #{truncated}ms to process request with route #{request.route}"
-    )
-
-    Process.sleep(truncated)
-    GenServer.call(Ratelimiter, {:queue, request, from}, :infinity)
   end
 
   defp date_string_to_unix(header) do
