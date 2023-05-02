@@ -43,6 +43,7 @@ defmodule Nostrum.Api do
 
   import Nostrum.Snowflake, only: [is_snowflake: 1]
 
+  alias Nostrum.Api.Ratelimiter
   alias Nostrum.Cache.Me
   alias Nostrum.{Constants, Snowflake, Util}
 
@@ -4194,7 +4195,7 @@ defmodule Nostrum.Api do
 
   @spec request(map()) :: {:ok} | {:ok, String.t()} | error
   def request(request) do
-    GenServer.call(Ratelimiter, {:queue, request, nil}, :infinity)
+    Ratelimiter.queue(request)
   end
 
   @spec request(atom(), String.t(), any, keyword() | map()) :: {:ok} | {:ok, String.t()} | error
