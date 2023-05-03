@@ -1,8 +1,9 @@
 defmodule Nostrum.Shard.Event do
   @moduledoc false
 
+  alias Nostrum.ConsumerGroup
+  alias Nostrum.Shard.Dispatch
   alias Nostrum.Shard.Payload
-  alias Nostrum.Shard.Stage.Producer
   alias Nostrum.Util
 
   require Logger
@@ -13,7 +14,9 @@ defmodule Nostrum.Shard.Event do
     if Application.get_env(:nostrum, :log_dispatch_events),
       do: payload.t |> inspect() |> Logger.debug()
 
-    Producer.notify(Producer, payload, state)
+    {payload, state}
+    |> Dispatch.handle()
+    |> ConsumerGroup.dispatch()
 
     if payload.t == :READY do
       %{state | session: payload.d.session_id}

@@ -3,24 +3,20 @@ defmodule Nostrum.Consumer do
   Consumer process for gateway event handling.
 
   # Consuming Gateway Events
-  To handle events, Nostrum uses a GenStage implementation.
 
-  Nostrum defines the `producer` and `producer_consumer` in the GenStage design.
-  To consume the events you must create at least one `consumer` process. It is
-  generally recommended that you spawn a consumer per core. To find this number
-  you can use `System.schedulers_online/0`.
+  Events are first ingested by Nostrum's cache. Afterwards, they are sent to
+  any subscribed consumers via `Nostrum.ConsumerGroup`.
 
-  Nostrum uses a ConsumerSupervisor to dispatch events, meaning your handlers
-  will each be ran in their own separate task.
+  By default, nostrum will start a process for each event. This gives us free
+  parallelism and isolation. You therefore do not need to start more than one
+  consumer in your supervision tree.
 
   ## Example
   An example consumer can be found
   [here](https://github.com/Kraigie/nostrum/blob/master/examples/event_consumer.ex).
   """
 
-  use ConsumerSupervisor
-
-  alias Nostrum.Shard.Stage.Cache
+  alias Nostrum.ConsumerGroup
 
   alias Nostrum.Struct.{
     AutoModerationRule,
@@ -86,20 +82,6 @@ defmodule Nostrum.Consumer do
   For a full listing of events, please see `t:Nostrum.Consumer.event/0`.
   """
   @callback handle_event(event) :: any
-
-  @type options :: [option] | []
-
-  @typedoc """
-  General process options.
-
-  The `subscribe_to` option should only be set if you want to use your own producer or producer consumer.
-  """
-  @type option ::
-          {:registry, atom()}
-          | {:name, Supervisor.name()}
-          | {:max_restarts, non_neg_integer()}
-          | {:max_seconds, non_neg_integer()}
-          | {:subscribe_to, [GenStage.stage() | {GenStage.stage(), keyword()}]}
 
   @type auto_moderation_rule_create ::
           {:AUTO_MODERATION_RULE_CREATE, AutoModerationRule.t(), WSState.t()}
@@ -365,67 +347,41 @@ defmodule Nostrum.Consumer do
           | voice_server_update
           | webhooks_update
 
-  defmacro __using__(opts) do
+  defmacro __using__(_opts) do
     quote location: :keep do
-      @behaviour Nostrum.Consumer
+      use GenServer
 
-      alias Nostrum.Consumer
+      def start_link(opts) do
+        GenServer.start_link(__MODULE__, [], opts)
+      end
 
-      def start_link(event) do
+      def init([]) do
+        {:ok, nil, {:continue, nil}}
+      end
+
+      def handle_continue(_args, state) do
+        ConsumerGroup.join(self())
+        {:noreply, state}
+      end
+
+      def child_spec(opts) do
+        %{
+          id: __MODULE__,
+          start: {__MODULE__, :start_link, [opts]},
+          type: :worker,
+          restart: :permanent,
+          max_restarts: 0,
+          shutdown: 500
+        }
+      end
+
+      def handle_cast({:event, event}, state) do
         Task.start_link(fn ->
           __MODULE__.handle_event(event)
         end)
+
+        {:noreply, state}
       end
-
-      def child_spec(_arg) do
-        spec = %{
-          id: __MODULE__,
-          start: {__MODULE__, :start_link, []}
-        }
-
-        Supervisor.child_spec(spec, unquote(Macro.escape(opts)))
-      end
-
-      def handle_event(_event) do
-        :ok
-      end
-
-      defoverridable handle_event: 1, child_spec: 1
     end
-  end
-
-  @doc ~S"""
-  Starts a consumer process.
-
-  `mod` is the name of the module where you define your event callbacks, which should probably be
-  the current module which you can get with `__MODULE__`.
-
-  `opts` is a list of general process options. See `t:Nostrum.Consumer.options/0` for more info.
-  """
-  @spec start_link(module, options) :: Supervisor.on_start()
-  def start_link(mod, opts \\ []) do
-    {mod_and_opts, cs_opts} =
-      case Keyword.pop(opts, :name) do
-        {nil, mod_opts} -> {[mod, mod_opts], []}
-        {cs_name, mod_opts} -> {[mod, mod_opts], [name: cs_name]}
-      end
-
-    ConsumerSupervisor.start_link(__MODULE__, mod_and_opts, cs_opts)
-  end
-
-  @doc false
-  def init([mod, opts]) do
-    default = [strategy: :one_for_one, subscribe_to: [Cache]]
-
-    ConsumerSupervisor.init(
-      [
-        %{
-          id: mod,
-          start: {mod, :start_link, []},
-          restart: :transient
-        }
-      ],
-      Keyword.merge(default, opts)
-    )
   end
 end

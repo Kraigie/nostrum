@@ -3,7 +3,7 @@ defmodule Nostrum.Voice.Session do
 
   alias Nostrum.Cache.{ChannelCache, GuildCache}
   alias Nostrum.Constants
-  alias Nostrum.Shard.Stage.Producer
+  alias Nostrum.ConsumerGroup
   alias Nostrum.Struct.{VoiceState, VoiceWSState}
   alias Nostrum.Voice
   alias Nostrum.Voice.{Event, Opus, Payload}
@@ -149,7 +149,7 @@ defmodule Nostrum.Voice.Session do
         <<_::16, seq::integer-16, time::integer-32, ssrc::integer-32>> = header
         opus = Opus.strip_rtp_ext(payload)
         incoming_packet = Payload.voice_incoming_packet({{seq, time, ssrc}, opus})
-        Producer.notify(Producer, incoming_packet, state)
+        ConsumerGroup.dispatch(incoming_packet)
     end
 
     {:noreply, state}
@@ -179,7 +179,7 @@ defmodule Nostrum.Voice.Session do
     voice = Voice.get_voice(state.guild_id)
     voice_ready = Payload.voice_ready_payload(voice)
 
-    Producer.notify(Producer, voice_ready, state)
+    ConsumerGroup.dispatch(voice_ready)
 
     {:noreply, state}
   end
@@ -189,7 +189,7 @@ defmodule Nostrum.Voice.Session do
     speaking_update = Payload.speaking_update_payload(voice, timed_out)
     payload = Payload.speaking_payload(voice)
 
-    Producer.notify(Producer, speaking_update, state)
+    ConsumerGroup.dispatch(speaking_update)
 
     :ok = :gun.ws_send(state.conn, state.stream, {:text, payload})
     {:noreply, state}
