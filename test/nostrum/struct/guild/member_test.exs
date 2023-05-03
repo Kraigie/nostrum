@@ -9,9 +9,10 @@ defmodule Nostrum.Struct.MemberTest do
 
   describe "mention/1" do
     test "matches `Nostrum.Struct.User.mention/1`" do
-      member = %Member{user: %User{id: 150_061_853_001_777_154}}
+      member = %Member{user_id: 150_061_853_001_777_154}
+      user = %User{id: member.user_id}
 
-      assert(Member.mention(member) === User.mention(member.user))
+      assert(Member.mention(member) === User.mention(user))
     end
   end
 
@@ -23,16 +24,16 @@ defmodule Nostrum.Struct.MemberTest do
 
       result = Member.guild_permissions(member, guild)
 
-      assert(result === Permission.all())
+      assert result === Permission.all()
     end
 
     test "returns all perms if owner" do
-      member = %Member{user: %User{id: 200}}
-      guild = %Guild{owner_id: 200}
+      member = %Member{user_id: 200}
+      guild = %Guild{owner_id: member.user_id}
 
       result = Member.guild_permissions(member, guild)
 
-      assert(result === Permission.all())
+      assert result === Permission.all()
     end
 
     test "returns permissions otherwise" do
@@ -46,7 +47,7 @@ defmodule Nostrum.Struct.MemberTest do
 
       result = Member.guild_permissions(member, guild)
 
-      assert(result === Permission.from_bitset(0x00000021))
+      assert result === Permission.from_bitset(0x00000021)
     end
   end
 
@@ -62,13 +63,12 @@ defmodule Nostrum.Struct.MemberTest do
     end
 
     test "returns all perms if member is admin", context do
-      member = %Member{user: %User{id: context[:member_id]}, roles: [context[:role_id]]}
+      member = %Member{user_id: context[:member_id], roles: [context[:role_id]]}
       role = %Role{id: context[:role_id], permissions: 0x00000008}
       channel = %Channel{id: context[:channel_id]}
 
       guild = %Guild{
         channels: %{channel.id => channel},
-        members: %{member.user.id => member},
         roles: %{role.id => role}
       }
 
@@ -81,7 +81,7 @@ defmodule Nostrum.Struct.MemberTest do
       test_perm_bits = 0x00000040
 
       member = %Member{
-        user: %User{id: context[:member_id]},
+        user_id: context[:member_id],
         roles: [context[:everyone_role_id], context[:role_id]]
       }
 
@@ -110,7 +110,7 @@ defmodule Nostrum.Struct.MemberTest do
     test "member overwrites have priority over role overwrites", context do
       test_perm_bits = 0x00000040
 
-      member = %Member{user: %User{id: context[:member_id]}, roles: [context[:role_id]]}
+      member = %Member{user_id: context[:member_id], roles: [context[:role_id]]}
 
       everyone_role = %Role{id: context[:everyone_role_id], permissions: 0}
       role = %Role{id: context[:role_id], permissions: 0}
@@ -136,7 +136,7 @@ defmodule Nostrum.Struct.MemberTest do
 
     test "returns empty list when there are no matching ids between channel overrides and member roles",
          context do
-      member = %Member{user: %User{id: context[:member_id]}, roles: [context[:role_id]]}
+      member = %Member{user_id: context[:member_id], roles: [context[:role_id]]}
 
       everyone_role = %Role{id: context[:everyone_role_id], permissions: 0}
       role = %Role{id: context[:role_id], permissions: 0}
@@ -193,9 +193,16 @@ defmodule Nostrum.Struct.MemberTest do
 
   describe "String.Chars" do
     test "matches `mention/1`" do
-      member = %Member{user: %User{id: 150_061_853_001_777_154}}
+      member = %Member{user_id: 150_061_853_001_777_154}
 
-      assert(to_string(member) === Member.mention(member))
+      assert to_string(member) === Member.mention(member)
+    end
+  end
+
+  describe "to_struct/1" do
+    test "casts string snowflakes" do
+      data = %{user: %{id: "1234"}}
+      assert %Member{user_id: 1234} = Member.to_struct(data)
     end
   end
 end

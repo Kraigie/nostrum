@@ -2,7 +2,6 @@ defmodule Nostrum.Cache.GuildCacheTest do
   alias Nostrum.Struct.Channel
   alias Nostrum.Struct.Emoji
   alias Nostrum.Struct.Guild
-  alias Nostrum.Struct.Guild.Member
   alias Nostrum.Struct.Guild.Role
   use ExUnit.Case
 
@@ -23,7 +22,6 @@ defmodule Nostrum.Cache.GuildCacheTest do
         channels: %{},
         emojis: [],
         roles: %{},
-        members: %{},
         member_count: 0
       }
       @test_channel %{
@@ -33,13 +31,6 @@ defmodule Nostrum.Cache.GuildCacheTest do
       @test_role %{
         id: 102_512,
         name: "High Sharders"
-      }
-      @test_member %{
-        roles: [],
-        user: %{
-          id: 120_391,
-          name: "joe"
-        }
       }
 
       doctest @cache
@@ -106,55 +97,6 @@ defmodule Nostrum.Cache.GuildCacheTest do
           assert ^expected = new
         end
 
-        test "member management" do
-          # member_add/2
-          member_id = @test_member.user.id
-          expected = Member.to_struct(@test_member)
-          member = @cache.member_add(@test_guild.id, @test_member)
-          assert ^expected = member
-
-          assert {:ok, %{^member_id => ^expected}} =
-                   @cache.select_by([id: @test_guild.id], & &1.members)
-
-          # member_update/2
-          payload = put_in(@test_member, [:user, :name], "GrumblerBot3")
-          updated = Member.to_struct(payload)
-          {guild_id, ^expected, ^updated} = @cache.member_update(@test_guild.id, payload)
-          assert guild_id == @test_guild.id
-
-          assert {:ok, %{^member_id => ^updated}} =
-                   @cache.select_by([id: @test_guild.id], & &1.members)
-
-          # member_remove/2
-          remove_payload = payload.user
-          {^guild_id, ^updated} = @cache.member_remove(@test_guild.id, remove_payload)
-          {:ok, guild_members} = @cache.select_by([id: @test_guild.id], & &1.members)
-          assert Enum.empty?(guild_members)
-        end
-
-        # Copying the comment from the ETS cache implementation:
-        #   We may retrieve a GUILD_MEMBER_UPDATE event for our own user even if we
-        #   have the required intents to retrieve it for other members disabled, as
-        #   outlined in issue https://github.com/Kraigie/nostrum/issues/293. In
-        #   that case, we will not have the guild cached.
-        # This test verifies that the cache guards against that.
-        test "member_update/2 handles uncached guild" do
-          guild = Map.put(@test_guild, :id, @test_guild.id + 12839)
-          expected = Member.to_struct(@test_member)
-          {_guild_id, nil, ^expected} = @cache.member_update(guild, @test_member)
-        end
-
-        test "member_chunk/2" do
-          second_member = put_in(@test_member, [:user, :id], 19204)
-          chunk = [@test_member, second_member]
-          assert true = @cache.member_chunk(@test_guild.id, chunk)
-          first_id = @test_member.user.id
-          second_id = second_member.user.id
-
-          assert {:ok, %Guild{members: %{^first_id => _a, ^second_id => _b}}} =
-                   @cache.get(@test_guild.id)
-        end
-
         test "role management" do
           # role_create/2
           expected_guild_id = @test_guild.id
@@ -198,6 +140,14 @@ defmodule Nostrum.Cache.GuildCacheTest do
           # delete/1
           assert ^new = @cache.delete(@test_guild.id)
           assert @cache.delete(@test_guild.id) == nil
+        end
+
+        test "member count operations" do
+          assert {:ok, %{member_count: 0}} = @cache.get(@test_guild.id)
+          assert @cache.member_count_up(@test_guild.id)
+          assert {:ok, %{member_count: 1}} = @cache.get(@test_guild.id)
+          assert @cache.member_count_down(@test_guild.id)
+          assert {:ok, %{member_count: 0}} = @cache.get(@test_guild.id)
         end
       end
     end

@@ -100,11 +100,11 @@ alias Nostrum.Api
 alias Nostrum.Struct.Interaction
 
 defp manage_role(%Interaction{data: %{options: [%{value: role_id}, %{value: "assign"}]}} = interaction) do
-  Api.add_guild_member_role(interaction.guild_id, interaction.member.user.id, role_id)
+  Api.add_guild_member_role(interaction.guild_id, interaction.member.user_id, role_id)
 end
 
 defp manage_role(%Interaction{data: %{options: [%{value: role_id}, %{value: "remove"}]}} = interaction) do
-  Api.remove_guild_member_role(interaction.guild_id, interaction.member.user.id, role_id)
+  Api.remove_guild_member_role(interaction.guild_id, interaction.member.user_id, role_id)
 end
 
 def handle_event({:INTERACTION_CREATE, %Interaction{data: %{name: "role"}} = interaction, _ws_state}) do
@@ -122,7 +122,7 @@ To respond to interactions, use ``Nostrum.Api.create_interaction_response/2``:
 
 ```elixir
 defp manage_role(%Interaction{data: %{options: [%{value: role_id}, %{value: "assign"}]}} = interaction) do
-  Api.add_guild_member_role(interaction.guild_id, interaction.member.user.id, role_id)
+  Api.add_guild_member_role(interaction.guild_id, interaction.member.user_id, role_id)
   response = %{
     type: 4,  # ChannelMessageWithSource
     data: %{
