@@ -110,7 +110,7 @@ Nostrum
 
 
   <section id="moduledoc">
-<p>Cache behaviour &amp; dispatcher for channels.</p><p>You can call the functions provided by this module independent of which cache
+<p>Cache behaviour &amp; dispatcher for channels outside of guilds.</p><p>You can call the functions provided by this module independent of which cache
 is configured, and it will dispatch to the configured cache implementation.
 The user-facing functions for reading the cache can be found in the &quot;Reading
 the cache&quot; section.</p><p>By default, Elixir.Nostrum.Cache.ChannelCache.ETS will be used for caching channels.
@@ -442,12 +442,12 @@ information, a call is made to a <a href="Nostrum.Cache.GuildCache.html"><code c
   </a>
   Example
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="k">case</span><span class="w"> </span><span class="nc">Nostrum.Cache.ChannelCache</span><span class="o">.</span><span class="n">get</span><span class="p" data-group-id="2633691648-1">(</span><span class="mi">133333333337</span><span class="p" data-group-id="2633691648-1">)</span><span class="w"> </span><span class="k" data-group-id="2633691648-2">do</span><span class="w">
-  </span><span class="p" data-group-id="2633691648-3">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">channel</span><span class="p" data-group-id="2633691648-3">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+<pre><code class="makeup elixir" translate="no"><span class="k">case</span><span class="w"> </span><span class="nc">Nostrum.Cache.ChannelCache</span><span class="o">.</span><span class="n">get</span><span class="p" data-group-id="7958404984-1">(</span><span class="mi">133333333337</span><span class="p" data-group-id="7958404984-1">)</span><span class="w"> </span><span class="k" data-group-id="7958404984-2">do</span><span class="w">
+  </span><span class="p" data-group-id="7958404984-3">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">channel</span><span class="p" data-group-id="7958404984-3">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
     </span><span class="s">&quot;We found &quot;</span><span class="w"> </span><span class="o">&lt;&gt;</span><span class="w"> </span><span class="n">channel</span><span class="o">.</span><span class="n">name</span><span class="w">
-  </span><span class="p" data-group-id="2633691648-4">{</span><span class="ss">:error</span><span class="p">,</span><span class="w"> </span><span class="c">_reason</span><span class="p" data-group-id="2633691648-4">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+  </span><span class="p" data-group-id="7958404984-4">{</span><span class="ss">:error</span><span class="p">,</span><span class="w"> </span><span class="c">_reason</span><span class="p" data-group-id="7958404984-4">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
     </span><span class="s">&quot;Donde esta&quot;</span><span class="w">
-</span><span class="k" data-group-id="2633691648-2">end</span></code></pre>
+</span><span class="k" data-group-id="7958404984-2">end</span></code></pre>
   </section>
 </section>
 <section class="detail" id="c:get!/1">
