@@ -22,9 +22,15 @@ defmodule Nostrum.Application do
       Nostrum.Voice.Supervisor
     ]
 
-    if Application.get_env(:nostrum, :dev),
-      do: Supervisor.start_link(children ++ [DummySupervisor], strategy: :one_for_one),
-      else: Supervisor.start_link(children, strategy: :one_for_one)
+    children = if Application.get_env(:nostrum, :managed_commands) do
+      children ++ [Nostrum.Command]
+    else children end
+
+    children = if Application.get_env(:nostrum, :dev) do
+      children ++ [DummySupervisor]
+    else children end
+
+    Supervisor.start_link(children, strategy: :one_for_one, name: Nostrum.Supervisor)
   end
 
   @doc false
