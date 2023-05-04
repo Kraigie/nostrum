@@ -23,12 +23,6 @@ defmodule DummyConsumer do
 
   require Logger
 
-  def start_link do
-    Consumer.start_link(__MODULE__,
-      name: :"#{__MODULE__}-#{System.unique_integer([:positive, :monotonic])}"
-    )
-  end
-
   def handle_event({:MESSAGE_CREATE, message, _}) do
     Logger.debug(fn -> "Message received: #{inspect(message.content)}" end)
   end

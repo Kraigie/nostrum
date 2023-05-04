@@ -15,6 +15,7 @@ defmodule Nostrum.Application do
 
     children = [
       Nostrum.Api.Ratelimiter,
+      Nostrum.ConsumerGroup,
       Nostrum.Shard.Connector,
       Nostrum.Cache.CacheSupervisor,
       Nostrum.Shard.Supervisor,

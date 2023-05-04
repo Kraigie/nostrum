@@ -7,7 +7,6 @@ defmodule Nostrum.Shard.Supervisor do
   alias Nostrum.Error.CacheError
   alias Nostrum.Shard
   alias Nostrum.Shard.Session
-  alias Nostrum.Shard.Stage.{Cache, Producer}
   alias Nostrum.Util
 
   require Logger
@@ -70,11 +69,7 @@ defmodule Nostrum.Shard.Supervisor do
 
   @doc false
   def init([url, num_shards]) do
-    children =
-      [
-        Producer,
-        Cache
-      ] ++ for i <- 0..(num_shards - 1), do: create_worker(url, i)
+    children = for i <- 0..(num_shards - 1), do: create_worker(url, i)
 
     Supervisor.init(children, strategy: :one_for_one, max_restarts: 3, max_seconds: 60)
   end
