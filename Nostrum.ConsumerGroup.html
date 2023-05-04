@@ -141,7 +141,7 @@ Nostrum
 
       </div>
 
-        <div class="summary-synopsis"><p>Dispatch the given event to all consumers.</p></div>
+        <div class="summary-synopsis"><p>Dispatch the given event(s) to all consumers.</p></div>
 
     </div>
 
@@ -186,7 +186,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">child_spec(opts)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer_group.ex#L41" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer_group.ex#L52" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -210,7 +210,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">dispatch(event)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer_group.ex#L19" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer_group.ex#L20" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -224,11 +224,13 @@ Functions
 
       <div class="specs">
 
+          <pre translate="no"><span class="attribute">@spec</span> dispatch([<a href="Nostrum.Consumer.html#t:event/0">Nostrum.Consumer.event</a>(), ...]) :: :ok</pre>
+
           <pre translate="no"><span class="attribute">@spec</span> dispatch(<a href="Nostrum.Consumer.html#t:event/0">Nostrum.Consumer.event</a>()) :: :ok</pre>
 
       </div>
 
-<p>Dispatch the given event to all consumers.</p><p>This is called by nostrum internally, you likely won't need to call this
+<p>Dispatch the given event(s) to all consumers.</p><p>This is called by nostrum internally, you likely won't need to call this
 manually.</p>
   </section>
 </section>
@@ -241,7 +243,7 @@ manually.</p>
     </a>
     <h1 class="signature" translate="no">join(pid)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer_group.ex#L33" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer_group.ex#L44" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -266,7 +268,7 @@ gateway dispatch.</p>
     </a>
     <h1 class="signature" translate="no">start_link(opts)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer_group.ex#L37" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer_group.ex#L48" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
