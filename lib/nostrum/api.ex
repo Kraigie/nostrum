@@ -7,7 +7,7 @@ defmodule Nostrum.Api do
   task.
 
   **Examples**
-  ```Elixir
+  ```elixir
   # Async Task
   t = Task.async fn ->
     Nostrum.Api.get_channel_messages(12345678912345, :infinity, {})
@@ -30,7 +30,7 @@ defmodule Nostrum.Api do
   `String.to_integer/1`. I'm open to suggestions for how this should be handled going forward.
 
   **Example**
-  ```Elixir
+  ```elixir
   messages = Nostrum.Api.get_pinned_messages!(12345678912345)
 
   authors =
@@ -246,7 +246,7 @@ defmodule Nostrum.Api do
 
   ## Examples
 
-  ```Elixir
+  ```elixir
   Nostrum.Api.create_message(43189401384091, content: "hello world!")
 
   Nostrum.Api.create_message(43189401384091, "hello world!")
@@ -312,7 +312,7 @@ defmodule Nostrum.Api do
 
   ## Examples
 
-  ```Elixir
+  ```elixir
   Nostrum.Api.edit_message(43189401384091, 1894013840914098, content: "hello world!")
 
   Nostrum.Api.edit_message(43189401384091, 1894013840914098, "hello world!")
@@ -391,7 +391,7 @@ defmodule Nostrum.Api do
 
   ## Examples
 
-  ```Elixir
+  ```elixir
   Nostrum.Api.delete_message(43189401384091, 43189401384091)
   ```
   """
@@ -431,7 +431,7 @@ defmodule Nostrum.Api do
 
   ## Examples
 
-  ```Elixir
+  ```elixir
   # Using a Nostrum.Struct.Emoji.
   emoji = %Nostrum.Struct.Emoji{id: 43819043108, name: "foxbot"}
   Nostrum.Api.create_reaction(123123123123, 321321321321, emoji)
@@ -617,7 +617,7 @@ defmodule Nostrum.Api do
 
   ## Examples
 
-  ```Elixir
+  ```elixir
   Nostrum.Api.get_channel(381889573426429952)
   {:ok, %Nostrum.Struct.Channel{id: 381889573426429952}}
   ```
@@ -669,7 +669,7 @@ defmodule Nostrum.Api do
 
   ## Examples
 
-  ```Elixir
+  ```elixir
   Nostrum.Api.modify_channel(41771983423143933, name: "elixir-nostrum", topic: "nostrum discussion")
   {:ok, %Nostrum.Struct.Channel{id: 41771983423143933, name: "elixir-nostrum", topic: "nostrum discussion"}}
 
@@ -720,7 +720,7 @@ defmodule Nostrum.Api do
 
   ## Examples
 
-  ```Elixir
+  ```elixir
   Nostrum.Api.delete_channel(421533712753360896)
   {:ok, %Nostrum.Struct.Channel{id: 421533712753360896}}
   ```
@@ -758,7 +758,7 @@ defmodule Nostrum.Api do
 
   ## Examples
 
-  ```Elixir
+  ```elixir
   Nostrum.Api.get_channel_messages(43189401384091, 5, {:before, 130230401384})
   ```
   """
@@ -826,7 +826,7 @@ defmodule Nostrum.Api do
 
   ## Examples
 
-  ```Elixir
+  ```elixir
   Nostrum.Api.get_channel_message(43189401384091, 198238475613443)
   ```
   """
@@ -991,7 +991,7 @@ defmodule Nostrum.Api do
 
   ## Examples
 
-  ```Elixir
+  ```elixir
   Nostrum.Api.get_channel_invites(43189401384091)
   {:ok, [%Nostrum.Struct.Invite{} | _]}
   ```
@@ -1033,7 +1033,7 @@ defmodule Nostrum.Api do
 
   ## Examples
 
-  ```Elixir
+  ```elixir
   Nostrum.Api.create_channel_invite(41771983423143933)
   {:ok, Nostrum.Struct.Invite{}}
 
@@ -1102,7 +1102,7 @@ defmodule Nostrum.Api do
 
   ## Examples
 
-  ```Elixir
+  ```elixir
   Nostrum.Api.get_pinned_messages(43189401384091)
   ```
   """
@@ -1133,7 +1133,7 @@ defmodule Nostrum.Api do
 
   ## Examples
 
-  ```Elixir
+  ```elixir
   Nostrum.Api.add_pinned_channel_message(43189401384091, 18743893102394)
   ```
   """
@@ -1242,7 +1242,7 @@ defmodule Nostrum.Api do
 
   ## Examples
 
-  ```Elixir
+  ```elixir
   image = "data:image/png;base64,YXl5IGJieSB1IGx1a2luIDQgc3VtIGZ1az8="
 
   Nostrum.Api.create_guild_emoji(43189401384091, name: "nostrum", image: image, roles: [])
@@ -1293,7 +1293,7 @@ defmodule Nostrum.Api do
 
   ## Examples
 
-  ```Elixir
+  ```elixir
   Nostrum.Api.modify_guild_emoji(43189401384091, 4314301984301, name: "elixir", roles: [])
   ```
   """
@@ -1379,7 +1379,7 @@ defmodule Nostrum.Api do
 
   ## Examples
 
-  ```Elixir
+  ```elixir
   Nostrum.Api.get_guild(81384788765712384)
   {:ok, %Nostrum.Struct.Guild{id: 81384788765712384}}
   ```
@@ -1478,7 +1478,7 @@ defmodule Nostrum.Api do
 
   ## Examples
 
-  ```Elixir
+  ```elixir
   Nostrum.Api.delete_guild(81384788765712384)
   {:ok}
   ```
@@ -1504,7 +1504,7 @@ defmodule Nostrum.Api do
 
   ## Examples
 
-  ```Elixir
+  ```elixir
   Nostrum.Api.get_guild_channels(81384788765712384)
   {:ok, [%Nostrum.Struct.Channel{guild_id: 81384788765712384} | _]}
   ```
@@ -1548,7 +1548,7 @@ defmodule Nostrum.Api do
 
   ## Examples
 
-  ```Elixir
+  ```elixir
   Nostrum.Api.create_guild_channel(81384788765712384, name: "elixir-nostrum", topic: "craig's domain")
   {:ok, %Nostrum.Struct.Channel{guild_id: 81384788765712384}}
   ```
@@ -1585,7 +1585,7 @@ defmodule Nostrum.Api do
 
   ## Examples
 
-  ```Elixir
+  ```elixir
   Nostrum.Api.modify_guild_channel_positions(279093381723062272, [%{id: 351500354581692420, position: 2}])
   {:ok}
   ```
@@ -1614,7 +1614,7 @@ defmodule Nostrum.Api do
 
   ## Examples
 
-  ```Elixir
+  ```elixir
   Nostrum.Api.get_guild_member(4019283754613, 184937267485)
   ```
   """
@@ -1645,7 +1645,7 @@ defmodule Nostrum.Api do
 
   ## Examples
 
-  ```Elixir
+  ```elixir
   Nostrum.Api.list_guild_members(41771983423143937, limit: 1)
   ```
   """
@@ -1692,7 +1692,7 @@ defmodule Nostrum.Api do
 
   ## Examples
 
-  ```Elixir
+  ```elixir
   Nostrum.Api.add_guild_member(
     41771983423143937,
     18374719829378473,
@@ -1745,7 +1745,7 @@ defmodule Nostrum.Api do
 
   ## Examples
 
-  ```Elixir
+  ```elixir
   Nostrum.Api.modify_guild_member(41771983423143937, 637162356451, nick: "Nostrum")
   {:ok, %Nostrum.Struct.Member{}}
   ```
@@ -1794,7 +1794,7 @@ defmodule Nostrum.Api do
 
   ## Examples
 
-  ```Elixir
+  ```elixir
   Nostrum.Api.modify_current_user_nick(41771983423143937, nick: "Nostrum")
   {:ok, %{nick: "Nostrum"}}
   ```
@@ -1863,7 +1863,7 @@ defmodule Nostrum.Api do
 
   ## Examples
 
-  ```Elixir
+  ```elixir
   Nostrum.Api.remove_guild_member(1453827904102291, 18739485766253)
   {:ok}
   ```
@@ -1951,7 +1951,7 @@ defmodule Nostrum.Api do
 
   ## Examples
 
-  ```Elixir
+  ```elixir
   Nostrum.Api.get_guild_roles(147362948571673)
   ```
   """
@@ -1992,7 +1992,7 @@ defmodule Nostrum.Api do
 
   ## Examples
 
-  ```Elixir
+  ```elixir
   Nostrum.Api.create_guild_role(41771983423143937, name: "nostrum-club", hoist: true)
   ```
   """
@@ -2035,7 +2035,7 @@ defmodule Nostrum.Api do
 
   ## Examples
 
-  ```Elixir
+  ```elixir
   Nostrum.Api.modify_guild_role_positions(41771983423143937, [%{id: 41771983423143936, position: 2}])
   ```
   """
@@ -2090,7 +2090,7 @@ defmodule Nostrum.Api do
 
   ## Examples
 
-  ```Elixir
+  ```elixir
   Nostrum.Api.modify_guild_role(41771983423143937, 392817238471936, hoist: false, name: "foo-bar")
   ```
   """
@@ -2136,7 +2136,7 @@ defmodule Nostrum.Api do
 
   ## Examples
 
-  ```Elixir
+  ```elixir
   Nostrum.Api.delete_guild_role(41771983423143937, 392817238471936)
   ```
   """
@@ -2170,7 +2170,7 @@ defmodule Nostrum.Api do
 
   ## Examples
 
-  ```Elixir
+  ```elixir
   Nostrum.Api.get_guild_prune_count(81384788765712384, 1)
   {:ok, %{pruned: 0}}
   ```
@@ -2202,7 +2202,7 @@ defmodule Nostrum.Api do
 
   ## Examples
 
-  ```Elixir
+  ```elixir
   Nostrum.Api.begin_guild_prune(81384788765712384, 1)
   {:ok, %{pruned: 0}}
   ```
@@ -2252,7 +2252,7 @@ defmodule Nostrum.Api do
 
   ## Examples
 
-  ```Elixir
+  ```elixir
   Nostrum.Api.get_guild_invites(81384788765712384)
   {:ok, [%Nostrum.Struct.Invite{} | _]}
   ```
@@ -2508,7 +2508,7 @@ defmodule Nostrum.Api do
 
   ## Examples
 
-  ```Elixir
+  ```elixir
   Nostrum.Api.get_invite("zsjUsC")
 
   Nostrum.Api.get_invite("zsjUsC", with_counts: true)
@@ -2539,7 +2539,7 @@ defmodule Nostrum.Api do
 
   ## Examples
 
-  ```Elixir
+  ```elixir
   Nostrum.Api.delete_invite("zsjUsC")
   ```
   """
@@ -2614,7 +2614,7 @@ defmodule Nostrum.Api do
 
   ## Examples
 
-  ```Elixir
+  ```elixir
   Nostrum.Api.modify_current_user(avatar: "data:image/jpeg;base64,YXl5IGJieSB1IGx1a2luIDQgc3VtIGZ1az8=")
   ```
   """
@@ -2655,7 +2655,7 @@ defmodule Nostrum.Api do
 
   ## Examples
 
-  ```Elixir
+  ```elixir
   iex> Nostrum.Api.get_current_user_guilds(limit: 1)
   {:ok, [%Nostrum.Struct.Guild{}]}
   ```
@@ -2703,7 +2703,7 @@ defmodule Nostrum.Api do
 
   ## Examples
 
-  ```Elixir
+  ```elixir
   Nostrum.Api.get_user_dms()
   {:ok, [%Nostrum.Struct.Channel{type: 1} | _]}
   ```
@@ -2730,7 +2730,7 @@ defmodule Nostrum.Api do
 
   ## Examples
 
-  ```Elixir
+  ```elixir
   Nostrum.Api.create_dm(150061853001777154)
   {:ok, %Nostrum.Struct.Channel{type: 1}}
   ```
@@ -2760,7 +2760,7 @@ defmodule Nostrum.Api do
 
   ## Examples
 
-  ```Elixir
+  ```elixir
   Nostrum.Api.create_group_dm(["6qrZcUqja7812RVdnEKjpzOL4CvHBFG"], %{41771983423143937 => "My Nickname"})
   {:ok, %Nostrum.Struct.Channel{type: 3}}
   ```

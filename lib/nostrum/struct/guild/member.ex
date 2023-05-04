@@ -10,7 +10,7 @@ defmodule Nostrum.Struct.Guild.Member do
   A `Nostrum.Struct.Guild.Member` can be mentioned in message content using the `String.Chars`
   protocol or `mention/1`.
 
-  ```Elixir
+  ```elixir
   member = %Nostrum.Struct.Guild.Member{user: Nostrum.Struct.User{id: 120571255635181568}}
   Nostrum.Api.create_message!(184046599834435585, "#{member}")
   %Nostrum.Struct.Message{content: "<@120571255635181568>"}
@@ -98,7 +98,7 @@ defmodule Nostrum.Struct.Guild.Member do
 
   ## Examples
 
-  ```Elixir
+  ```elixir
   iex> member = %Nostrum.Struct.Guild.Member{user: %Nostrum.Struct.User{id: 177888205536886784}}
   ...> Nostrum.Struct.Guild.Member.mention(member)
   "<@177888205536886784>"
@@ -112,7 +112,7 @@ defmodule Nostrum.Struct.Guild.Member do
 
   ## Examples
 
-  ```Elixir
+  ```elixir
   guild = Nostrum.Cache.GuildCache.get!(279093381723062272)
   member = Map.get(guild.members, 177888205536886784)
   Nostrum.Struct.Guild.Member.guild_permissions(member, guild)
@@ -151,7 +151,7 @@ defmodule Nostrum.Struct.Guild.Member do
 
   ## Examples
 
-  ```Elixir
+  ```elixir
   guild = Nostrum.Cache.GuildCache.get!(279093381723062272)
   member = Map.get(guild.members, 177888205536886784)
   channel_id = 381889573426429952

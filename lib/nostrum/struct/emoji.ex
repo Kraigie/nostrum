@@ -7,7 +7,7 @@ defmodule Nostrum.Struct.Emoji do
   A `Nostrum.Struct.Emoji` can be mentioned in message content using the `String.Chars`
   protocol or `mention/1`.
 
-  ```Elixir
+  ```elixir
   emoji = %Nostrum.Struct.Emoji{id: 437093487582642177, name: "foxbot"}
   Nostrum.Api.create_message!(184046599834435585, "#{emoji}")
   %Nostrum.Struct.Message{content: "<:foxbot:437093487582642177>"}
@@ -22,7 +22,7 @@ defmodule Nostrum.Struct.Emoji do
   A `Nostrum.Struct.Emoji` can be used in `Nostrum.Api` by using its api name
   or the struct itself.
 
-  ```Elixir
+  ```elixir
   emoji = %Nostrum.Struct.Emoji{id: 436885297037312001, name: "tealixir"}
   Nostrum.Api.create_reaction(381889573426429952, 436247584349356032, Nostrum.Struct.Emoji.api_name(emoji))
   {:ok}
@@ -68,7 +68,7 @@ defmodule Nostrum.Struct.Emoji do
 
   ## Examples
 
-  ```Elixir
+  ```elixir
   # Custom Emojis
   "nostrum:431890438091489"
 
@@ -116,7 +116,7 @@ defmodule Nostrum.Struct.Emoji do
 
   ## Examples
 
-  ```Elixir
+  ```elixir
   iex> emoji = %Nostrum.Struct.Emoji{name: "≡ƒæì"}
   ...> Nostrum.Struct.Emoji.mention(emoji)
   "≡ƒæì"
@@ -141,7 +141,7 @@ defmodule Nostrum.Struct.Emoji do
 
   ## Examples
 
-  ```Elixir
+  ```elixir
   iex> emoji = %Nostrum.Struct.Emoji{name: "Γ¡É"}
   ...> Nostrum.Struct.Emoji.api_name(emoji)
   "Γ¡É"
@@ -162,7 +162,7 @@ defmodule Nostrum.Struct.Emoji do
 
   ## Examples
 
-  ```Elixir
+  ```elixir
   iex> emoji = %Nostrum.Struct.Emoji{id: 450225070569291776}
   iex> Nostrum.Struct.Emoji.image_url(emoji)
   "https://cdn.discordapp.com/emojis/450225070569291776.png"

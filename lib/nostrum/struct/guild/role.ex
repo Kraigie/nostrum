@@ -7,7 +7,7 @@ defmodule Nostrum.Struct.Guild.Role do
   A `Nostrum.Struct.Guild.Role` can be mentioned in message content using the `String.Chars`
   protocol or `mention/1`.
 
-  ```Elixir
+  ```elixir
   role = %Nostrum.Struct.Guild.Role{id: 431886897539973131}
   Nostrum.Api.create_message!(184046599834435585, "#{role}")
   %Nostrum.Struct.Message{}
@@ -87,7 +87,7 @@ defmodule Nostrum.Struct.Guild.Role do
 
   ## Examples
 
-  ```Elixir
+  ```elixir
   iex> role = %Nostrum.Struct.Guild.Role{id: 431886639627763722}
   ...> Nostrum.Struct.Guild.Role.mention(role)
   "<@&431886639627763722>"

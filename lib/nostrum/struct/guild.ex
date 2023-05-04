@@ -326,7 +326,7 @@ defmodule Nostrum.Struct.Guild do
 
   ## Examples
 
-  ```Elixir
+  ```elixir
   iex> guild = %Nostrum.Struct.Guild{icon: "86e39f7ae3307e811784e2ffd11a7310",
   ...>                               id: 41771983423143937}
   iex> Nostrum.Struct.Guild.icon_url(guild)
@@ -353,7 +353,7 @@ defmodule Nostrum.Struct.Guild do
 
   ## Examples
 
-  ```Elixir
+  ```elixir
   iex> guild = %Nostrum.Struct.Guild{splash: "86e39f7ae3307e811784e2ffd11a7310",
   ...>                               id: 41771983423143937}
   iex> Nostrum.Struct.Guild.splash_url(guild)

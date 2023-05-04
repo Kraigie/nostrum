@@ -7,7 +7,7 @@ defmodule Nostrum.Struct.Embed do
   `Nostrum.Struct.Embed`s can be built using this module's builder functions
   or standard `Map` syntax:
 
-  ```Elixir
+  ```elixir
   iex> import Nostrum.Struct.Embed
   ...> embed =
   ...>   %Nostrum.Struct.Embed{}
@@ -37,7 +37,7 @@ defmodule Nostrum.Struct.Embed do
   You can also create `Nostrum.Struct.Embed`s from structs, by using the
   `Nostrum.Struct.Embed` module. Here's how the example above could be build using structs
 
-  ```Elixir
+  ```elixir
     defmodule MyApp.MyStruct do
       use Nostrum.Struct.Embed
 
@@ -207,7 +207,7 @@ defmodule Nostrum.Struct.Embed do
 
   ## Examples
 
-  ```Elixir
+  ```elixir
   iex> embed = %Nostrum.Struct.Embed{}
   ...> Nostrum.Struct.Embed.put_title(embed, "nostrum")
   %Nostrum.Struct.Embed{title: "nostrum"}
@@ -229,7 +229,7 @@ defmodule Nostrum.Struct.Embed do
 
   ## Examples
 
-  ```Elixir
+  ```elixir
   iex> embed = %Nostrum.Struct.Embed{}
   ...> Nostrum.Struct.Embed.put_description(embed, "An elixir library for the discord API.")
   %Nostrum.Struct.Embed{description: "An elixir library for the discord API."}
@@ -245,7 +245,7 @@ defmodule Nostrum.Struct.Embed do
 
   ## Examples
 
-  ```Elixir
+  ```elixir
   iex> embed = %Nostrum.Struct.Embed{}
   ...> Nostrum.Struct.Embed.put_url(embed, "https://github.com/Kraigie/nostrum")
   %Nostrum.Struct.Embed{url: "https://github.com/Kraigie/nostrum"}
@@ -277,7 +277,7 @@ defmodule Nostrum.Struct.Embed do
 
   ## Examples
 
-  ```Elixir
+  ```elixir
   iex> embed = %Nostrum.Struct.Embed{}
   ...> Nostrum.Struct.Embed.put_color(embed, 431948)
   %Nostrum.Struct.Embed{color: 431948}
@@ -293,7 +293,7 @@ defmodule Nostrum.Struct.Embed do
 
   ## Examples
 
-  ```Elixir
+  ```elixir
   iex> embed = %Nostrum.Struct.Embed{}
   ...> Nostrum.Struct.Embed.put_footer(embed, "Discord API", nil)
   %Nostrum.Struct.Embed{
@@ -328,7 +328,7 @@ defmodule Nostrum.Struct.Embed do
 
   ## Examples
 
-  ```Elixir
+  ```elixir
   iex> embed = %Nostrum.Struct.Embed{}
   ...> Nostrum.Struct.Embed.put_image(embed, "https://discord.com/assets/af92e60c16b7019f34a467383b31490a.svg")
   %Nostrum.Struct.Embed{
@@ -356,7 +356,7 @@ defmodule Nostrum.Struct.Embed do
 
   ## Examples
 
-  ```Elixir
+  ```elixir
   iex> embed = %Nostrum.Struct.Embed{}
   ...> Nostrum.Struct.Embed.put_thumbnail(embed, "https://discord.com/assets/af92e60c16b7019f34a467383b31490a.svg")
   %Nostrum.Struct.Embed{
@@ -405,7 +405,7 @@ defmodule Nostrum.Struct.Embed do
 
   ## Examples
 
-  ```Elixir
+  ```elixir
   iex> embed = %Nostrum.Struct.Embed{}
   ...> Nostrum.Struct.Embed.put_author(embed, "skippi", "https://github.com/skippi", nil)
   %Nostrum.Struct.Embed{
@@ -433,7 +433,7 @@ defmodule Nostrum.Struct.Embed do
 
   ## Examples
 
-  ```Elixir
+  ```elixir
   iex> embed = %Nostrum.Struct.Embed{}
   ...> Nostrum.Struct.Embed.put_field(embed, "First User", "b1nzy")
   %Nostrum.Struct.Embed{

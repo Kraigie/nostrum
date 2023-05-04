@@ -100,7 +100,7 @@ defmodule Nostrum.Cache.GuildCache do
 
   ## Examples
 
-  ```Elixir
+  ```elixir
   iex> Nostrum.Cache.GuildCache.get(0)
   {:ok, %Nostrum.Struct.Guild{id: 0}}
 
@@ -115,7 +115,7 @@ defmodule Nostrum.Cache.GuildCache do
 
   Returns `{:error, reason}` if no result was found.
 
-  ```Elixir
+  ```elixir
   iex> Nostrum.Cache.GuildCache.get_by(id: 0)
   {:ok, %Nostrum.Struct.Guild{id: 0}}
 
@@ -135,7 +135,7 @@ defmodule Nostrum.Cache.GuildCache do
 
   ## Examples
 
-  ```Elixir
+  ```elixir
   iex> Nostrum.Cache.GuildCache.select(0, fn guild -> guild.id end)
   {:ok, 0}
 
@@ -151,7 +151,7 @@ defmodule Nostrum.Cache.GuildCache do
 
   Returns `{:error, reason}` if no result was found.
 
-  ```Elixir
+  ```elixir
   iex> Nostrum.Cache.GuildCache.select_by([id: 0], fn guild -> guild.id end)
   {:ok, 0}
 

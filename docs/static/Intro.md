@@ -49,14 +49,14 @@ have more errors.
 Add Nostrum as a dependency:
 
  *Stable*
-```Elixir
+```elixir
 def deps do
   [{:nostrum, "~> 0.6"}]
 end
 ```
 
  *Dev*
-```Elixir
+```elixir
 def deps do
   [{:nostrum, git: "https://github.com/Kraigie/nostrum.git"}]
 end
@@ -66,7 +66,7 @@ Edit or create your config file:
 
 The file should be located at `/config/config.exs`. To run Nostrum you need the
 following two fields:
-```Elixir
+```elixir
 config :nostrum,
   token: "666"  # The token of your bot as a string
 ```
@@ -106,7 +106,7 @@ The following fields are also supported:
 
 By default, Nostrum logs a lot of data using `Logger`. If you want to ignore
 Logger debug data, include the following:
-```Elixir
+```elixir
 config :logger,
   level: :warn
 ```
@@ -117,7 +117,7 @@ Nostrum exposes the following metadata fields through logger:
  - `channel` - Name of the channel on which the voice connection event occurred
 
 To enable this metadata, logger can be configured as such:
-```Elixir
+```elixir
 config :logger, :console,
   metadata: [:shard, :guild, :channel]
 ```  

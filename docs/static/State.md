@@ -57,7 +57,7 @@ find the `guild` or `shard` that the `id` belongs to. For this purpose Nostrum
 stores these types of relations in ETS tables.
 
 The following mappings exists.
-```Elixir
+```elixir
 guild_channel_id -> guild_id
 guild_id -> shard_num
 shard_num_num -> shard_pid

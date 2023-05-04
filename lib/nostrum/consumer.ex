@@ -67,19 +67,19 @@ defmodule Nostrum.Consumer do
   ## Event
   `event` is a tuple describing the event. The tuple will include information in
   the following format:
-  ```Elixir
+  ```elixir
   {event_name, {event_payload(s)}, WSState.t}
   ```
 
   For example, a message create will look like this
-  ```Elixir
+  ```elixir
   {:MESSAGE_CREATE, {Nostrum.Struct.Message.t}, WSState.t}
   ```
 
   In some cases there will be multiple payloads when something is updated, so as
   to include the new and the old versions. In the event of there being two payloads,
   the old payload will always be first, followed by the new payload.
-  ```Elixir
+  ```elixir
   {:USER_UPDATE, {old_user :: Nostrum.Struct.User.t, new_user :: Nostrum.Struct.User.t}, WSState.t()}
   ```
 

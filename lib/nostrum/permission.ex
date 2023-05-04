@@ -5,7 +5,7 @@ defmodule Nostrum.Permission do
   Some functions return a list of permissions. You can use enumerable functions
   to work with permissions:
 
-  ```Elixir
+  ```elixir
   alias Nostrum.Cache.GuildCache
   alias Nostrum.Struct.Guild.Member
 
@@ -135,7 +135,7 @@ defmodule Nostrum.Permission do
 
   ## Examples
 
-  ```Elixir
+  ```elixir
   iex> Nostrum.Permission.is_permission(:administrator)
   true
 
@@ -158,7 +158,7 @@ defmodule Nostrum.Permission do
 
   ## Examples
 
-  ```Elixir
+  ```elixir
   iex> Nostrum.Permission.from_bit(0x04000000)
   {:ok, :change_nickname}
 
@@ -176,7 +176,7 @@ defmodule Nostrum.Permission do
 
   ## Examples
 
-  ```Elixir
+  ```elixir
   iex> Nostrum.Permission.from_bit!(0x04000000)
   :change_nickname
 
@@ -199,7 +199,7 @@ defmodule Nostrum.Permission do
 
   ## Examples
 
-  ```Elixir
+  ```elixir
   iex> Nostrum.Permission.from_bitset(0x08000002)
   [:manage_nicknames, :kick_members]
 
@@ -225,7 +225,7 @@ defmodule Nostrum.Permission do
 
   ## Examples
 
-  ```Elixir
+  ```elixir
   iex> Nostrum.Permission.to_bit(:administrator)
   8
   ```
@@ -238,7 +238,7 @@ defmodule Nostrum.Permission do
 
   ## Examples
 
-  ```Elixir
+  ```elixir
   iex> Nostrum.Permission.to_bitset([:administrator, :create_instant_invite])
   9
   ```

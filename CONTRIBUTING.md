@@ -8,14 +8,14 @@ to this document in a pull request.
 ## Style
 ### Piping
 When using the pipe operator `|>`, adhere to the following format
-```Elixir
+```elixir
 request.route
 |> major_parameter
 |> Bucket.get_ratelimit_timeout
 ```
 
 If you want to assign the result of piping, indent the rhs as such
-```Elixir
+```elixir
 retry_time = 
   request.route
   |> major_parameter
@@ -25,12 +25,12 @@ retry_time =
 ## Issues and Pull Requests
 Before you submit any code, please run the following commands from your terminal.
 
-```Elixir
+```elixir
 mix compile --force
 ```
 When applicable, please fix any warnings this brings up.
 
-```Elixir
+```elixir
 mix credo --strict
 ```
 If there are any warnings please handle them to the best of your ability. If you're

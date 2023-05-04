@@ -7,7 +7,7 @@ defmodule Nostrum.Struct.User do
   A `Nostrum.Struct.User` can be mentioned in message content using the `String.Chars`
   protocol or `mention/1`.
 
-  ```Elixir
+  ```elixir
   user = %Nostrum.Struct.User{id: 120571255635181568}
   Nostrum.Api.create_message!(184046599834435585, "#{user}")
   %Nostrum.Struct.Message{content: "<@120571255635181568>"}
@@ -84,7 +84,7 @@ defmodule Nostrum.Struct.User do
 
   ## Examples
 
-  ```Elixir
+  ```elixir
   iex> user = %Nostrum.Struct.User{id: 177888205536886784}
   ...> Nostrum.Struct.User.mention(user)
   "<@177888205536886784>"
@@ -102,7 +102,7 @@ defmodule Nostrum.Struct.User do
 
   ## Examples
 
-  ```Elixir
+  ```elixir
   iex> user = %Nostrum.Struct.User{avatar: "8342729096ea3675442027381ff50dfe",
   ...>                             id: 80351110224678912}
   iex> Nostrum.Struct.User.avatar_url(user)
@@ -136,7 +136,7 @@ defmodule Nostrum.Struct.User do
 
   ## Examples
 
-  ```Elixir
+  ```elixir
   iex> user = %Nostrum.Struct.User{username: "b1nzy",
   ...>                             discriminator: "0852"}
   iex> Nostrum.Struct.User.full_name(user)

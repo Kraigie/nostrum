@@ -11,7 +11,7 @@ For a full listing of method definitions, please see `Nostrum.Api`
 idiom hailing from Elixir's style of failing fast.
 
 By default, the API method will return a tuple like one of the following:
-```Elixir
+```elixir
 # Success
 {:ok, msg} = Nostrum.Api.create_message(179679229036724225, "456")
 
@@ -21,7 +21,7 @@ By default, the API method will return a tuple like one of the following:
 
 A banged method, instead of returning an `error` tuple, will throw an error.
 If successful, it will directly return the response with no `:ok` tuple.
-```Elixir
+```elixir
 # Success
 msg = Nostrum.Api.create_message!(179679229036724225, "456")
 
