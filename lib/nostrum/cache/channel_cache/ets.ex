@@ -1,7 +1,7 @@
 defmodule Nostrum.Cache.ChannelCache.ETS do
   @table_name :nostrum_channels
   @moduledoc """
-  An ETS-based cache for channels.
+  An ETS-based cache for channels outside of guilds.
 
   The supervisor defined by this module will set up the ETS table associated
   with it.

@@ -1,7 +1,7 @@
 defmodule Nostrum.Cache.ChannelCache do
   @default_cache_implementation Nostrum.Cache.ChannelCache.ETS
   @moduledoc """
-  Cache behaviour & dispatcher for channels.
+  Cache behaviour & dispatcher for channels outside of guilds.
 
   You can call the functions provided by this module independent of which cache
   is configured, and it will dispatch to the configured cache implementation.
