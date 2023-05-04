@@ -19,6 +19,7 @@ defmodule Nostrum.Shard.Event do
     |> ConsumerGroup.dispatch()
 
     if payload.t == :READY do
+      Logger.info("READY")
       %{state | session: payload.d.session_id}
     else
       state
