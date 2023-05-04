@@ -7,7 +7,7 @@
     <meta name="generator" content="ExDoc v0.29.4">
     <meta name="project" content="Nostrum v0.6.1">
 
-    <title>Nostrum.Struct.Message.Reaction — Nostrum v0.6.1</title>
+    <title>Nostrum.ConsumerGroup — Nostrum v0.6.1</title>
     <link rel="stylesheet" href="dist/html-elixir-HHVY3JYD.css" />
 
 
@@ -98,19 +98,19 @@ Nostrum
 </button>
 
 
-    <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/message/reaction.ex#L1" title="View Source" class="icon-action" rel="help">
+    <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer_group.ex#L1" title="View Source" class="icon-action" rel="help">
       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
       <span class="sr-only">View Source</span>
     </a>
 
-  <span translate="no">Nostrum.Struct.Message.Reaction</span> 
+  <span translate="no">Nostrum.ConsumerGroup</span> 
   <small class="app-vsn" translate="no">(Nostrum v0.6.1)</small>
 
 </h1>
 
 
   <section id="moduledoc">
-<p>Struct representing a Discord message reaction.</p>
+<p>Registers consumers and handles event dispatch.</p>
   </section>
 
 
@@ -122,44 +122,42 @@ Nostrum
       </a>
       Summary
     </h1>
-<div class="summary-types summary">
+<div class="summary-functions summary">
   <h2>
-    <a href="#types">Types</a>
+    <a href="#functions">Functions</a>
   </h2>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#t:count/0" translate="no">count()</a>
+        <a href="#child_spec/1" translate="no">child_spec(opts)</a>
 
       </div>
-
-        <div class="summary-synopsis"><p>Times this emoji has been used to react</p></div>
 
     </div>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#t:emoji/0" translate="no">emoji()</a>
+        <a href="#dispatch/1" translate="no">dispatch(event)</a>
 
       </div>
 
-        <div class="summary-synopsis"><p>Emoji information</p></div>
+        <div class="summary-synopsis"><p>Dispatch the given event to all consumers.</p></div>
 
     </div>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#t:me/0" translate="no">me()</a>
+        <a href="#join/1" translate="no">join(pid)</a>
 
       </div>
 
-        <div class="summary-synopsis"><p>Whether the current user is the one who reacted</p></div>
+        <div class="summary-synopsis"><p>Join the given process to the consumers.</p></div>
 
     </div>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#t:t/0" translate="no">t()</a>
+        <a href="#start_link/1" translate="no">start_link(opts)</a>
 
       </div>
 
@@ -170,57 +168,55 @@ Nostrum
   </section>
 
 
-  <section id="types" class="details-list">
+  <section id="functions" class="details-list">
     <h1 class="section-heading">
-      <a class="hover-link" href="#types">
+      <a class="hover-link" href="#functions">
         <i class="ri-link-m" aria-hidden="true"></i>
         <span class="sr-only">Link to this section</span>
       </a>
-Types
+Functions
     </h1>
-    <div class="types-list">
-<section class="detail" id="t:count/0">
+    <div class="functions-list">
+<section class="detail" id="child_spec/1">
 
   <div class="detail-header">
-    <a href="#t:count/0" class="detail-link" title="Link to this type">
+    <a href="#child_spec/1" class="detail-link" title="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this type</span>
+      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">count()</h1>
+    <h1 class="signature" translate="no">child_spec(opts)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/message/reaction.ex#L16" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer_group.ex#L41" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
 
 
+      <span class="note">(since 0.7.0)</span>
+
   </div>
 
   <section class="docstring">
 
-      <div class="specs">
 
-          <pre translate="no"><span class="attribute">@type</span> count() :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>()</pre>
-
-      </div>
-
-<p>Times this emoji has been used to react</p>
   </section>
 </section>
-<section class="detail" id="t:emoji/0">
+<section class="detail" id="dispatch/1">
 
   <div class="detail-header">
-    <a href="#t:emoji/0" class="detail-link" title="Link to this type">
+    <a href="#dispatch/1" class="detail-link" title="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this type</span>
+      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">emoji()</h1>
+    <h1 class="signature" translate="no">dispatch(event)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/message/reaction.ex#L22" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer_group.ex#L19" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
 
+
+      <span class="note">(since 0.7.0)</span>
 
   </div>
 
@@ -228,69 +224,59 @@ Types
 
       <div class="specs">
 
-          <pre translate="no"><span class="attribute">@type</span> emoji() :: <a href="Nostrum.Struct.Emoji.html#t:t/0">Nostrum.Struct.Emoji.t</a>()</pre>
+          <pre translate="no"><span class="attribute">@spec</span> dispatch(<a href="Nostrum.Consumer.html#t:event/0">Nostrum.Consumer.event</a>()) :: :ok</pre>
 
       </div>
 
-<p>Emoji information</p>
+<p>Dispatch the given event to all consumers.</p><p>This is called by nostrum internally, you likely won't need to call this
+manually.</p>
   </section>
 </section>
-<section class="detail" id="t:me/0">
+<section class="detail" id="join/1">
 
   <div class="detail-header">
-    <a href="#t:me/0" class="detail-link" title="Link to this type">
+    <a href="#join/1" class="detail-link" title="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this type</span>
+      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">me()</h1>
+    <h1 class="signature" translate="no">join(pid)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/message/reaction.ex#L19" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer_group.ex#L33" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
 
 
+      <span class="note">(since 0.7.0)</span>
+
   </div>
 
   <section class="docstring">
 
-      <div class="specs">
-
-          <pre translate="no"><span class="attribute">@type</span> me() :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">boolean</a>()</pre>
-
-      </div>
-
-<p>Whether the current user is the one who reacted</p>
+<p>Join the given process to the consumers.</p><p>After the process has joined, it will receive any events sent by nostrum's
+gateway dispatch.</p>
   </section>
 </section>
-<section class="detail" id="t:t/0">
+<section class="detail" id="start_link/1">
 
   <div class="detail-header">
-    <a href="#t:t/0" class="detail-link" title="Link to this type">
+    <a href="#start_link/1" class="detail-link" title="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this type</span>
+      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">t()</h1>
+    <h1 class="signature" translate="no">start_link(opts)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/message/reaction.ex#L24" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer_group.ex#L37" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
 
 
+      <span class="note">(since 0.7.0)</span>
+
   </div>
 
   <section class="docstring">
-
-      <div class="specs">
-
-          <pre translate="no"><span class="attribute">@type</span> t() :: %Nostrum.Struct.Message.Reaction{
-  count: <a href="#t:count/0">count</a>(),
-  emoji: <a href="#t:emoji/0">emoji</a>(),
-  me: <a href="#t:me/0">me</a>()
-}</pre>
-
-      </div>
 
 
   </section>
@@ -307,7 +293,7 @@ Types
 
               <a href="https://preview.hex.pm/preview/nostrum/0.6.1">Hex Preview</a>
 
-                (<a href="https://preview.hex.pm/preview/nostrum/0.6.1/show/lib/nostrum/struct/message/reaction.ex">current file</a>)
+                (<a href="https://preview.hex.pm/preview/nostrum/0.6.1/show/lib/nostrum/consumer_group.ex">current file</a>)
 
             </span>
 

@@ -13,7 +13,7 @@
 
     <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
     <script src="dist/handlebars.templates-XWGFFSCD.js"></script>
-    <script src="dist/sidebar_items-03B0AD6D.js"></script>
+    <script src="dist/sidebar_items-3FBEC3FD.js"></script>
 
       <script src="docs_config.js"></script>
 
@@ -110,11 +110,10 @@ Nostrum
 
 
   <section id="moduledoc">
-<p>Consumer process for gateway event handling.</p><h1>Consuming Gateway Events</h1><p>To handle events, Nostrum uses a GenStage implementation.</p><p>Nostrum defines the <code class="inline">producer</code> and <code class="inline">producer_consumer</code> in the GenStage design.
-To consume the events you must create at least one <code class="inline">consumer</code> process. It is
-generally recommended that you spawn a consumer per core. To find this number
-you can use <a href="https://hexdocs.pm/elixir/System.html#schedulers_online/0"><code class="inline">System.schedulers_online/0</code></a>.</p><p>Nostrum uses a ConsumerSupervisor to dispatch events, meaning your handlers
-will each be ran in their own separate task.</p><h2 id="module-example" class="section-heading">
+<p>Consumer process for gateway event handling.</p><h1>Consuming Gateway Events</h1><p>Events are first ingested by Nostrum's cache. Afterwards, they are sent to
+any subscribed consumers via <a href="Nostrum.ConsumerGroup.html"><code class="inline">Nostrum.ConsumerGroup</code></a>.</p><p>By default, nostrum will start a process for each event. This gives us free
+parallelism and isolation. You therefore do not need to start more than one
+consumer in your supervision tree.</p><h2 id="module-example" class="section-heading">
   <a href="#module-example" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
   <p class="sr-only">example</p>
   </a>
@@ -512,24 +511,6 @@ will each be ran in their own separate task.</p><h2 id="module-example" class="s
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#t:option/0" translate="no">option()</a>
-
-      </div>
-
-        <div class="summary-synopsis"><p>General process options.</p></div>
-
-    </div>
-
-    <div class="summary-row">
-      <div class="summary-signature">
-        <a href="#t:options/0" translate="no">options()</a>
-
-      </div>
-
-    </div>
-
-    <div class="summary-row">
-      <div class="summary-signature">
         <a href="#t:presence_update/0" translate="no">presence_update()</a>
 
       </div>
@@ -709,22 +690,6 @@ will each be ran in their own separate task.</p><h2 id="module-example" class="s
     </div>
 
 </div>
-<div class="summary-functions summary">
-  <h2>
-    <a href="#functions">Functions</a>
-  </h2>
-
-    <div class="summary-row">
-      <div class="summary-signature">
-        <a href="#start_link/2" translate="no">start_link(mod, opts \\ [])</a>
-
-      </div>
-
-        <div class="summary-synopsis"><p>Starts a consumer process.</p></div>
-
-    </div>
-
-</div>
 
   </section>
 
@@ -747,7 +712,7 @@ Types
     </a>
     <h1 class="signature" translate="no">auto_moderation_rule_create()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L104" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L86" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -777,7 +742,7 @@ Types
     </a>
     <h1 class="signature" translate="no">auto_moderation_rule_delete()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L106" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L88" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -807,7 +772,7 @@ Types
     </a>
     <h1 class="signature" translate="no">auto_moderation_rule_execute()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L111" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L93" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -838,7 +803,7 @@ Types
     </a>
     <h1 class="signature" translate="no">auto_moderation_rule_update()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L108" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L90" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -868,7 +833,7 @@ Types
     </a>
     <h1 class="signature" translate="no">channel_create()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L120" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L102" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -898,7 +863,7 @@ this will never be sent for a DM.</p>
     </a>
     <h1 class="signature" translate="no">channel_delete()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L121" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L103" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -927,7 +892,7 @@ this will never be sent for a DM.</p>
     </a>
     <h1 class="signature" translate="no">channel_pins_ack()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L130" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L112" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -955,7 +920,7 @@ this will never be sent for a DM.</p>
     </a>
     <h1 class="signature" translate="no">channel_pins_update()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L131" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L113" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -985,7 +950,7 @@ this will never be sent for a DM.</p>
     </a>
     <h1 class="signature" translate="no">channel_update()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L127" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L109" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1016,7 +981,7 @@ this will never be sent for a DM.</p>
     </a>
     <h1 class="signature" translate="no">event()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L310" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L292" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1100,7 +1065,7 @@ this will never be sent for a DM.</p>
     </a>
     <h1 class="signature" translate="no">guild_audit_log_entry_create()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L132" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L114" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1130,7 +1095,7 @@ this will never be sent for a DM.</p>
     </a>
     <h1 class="signature" translate="no">guild_available()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L139" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L121" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1160,7 +1125,7 @@ this will never be sent for a DM.</p>
     </a>
     <h1 class="signature" translate="no">guild_ban_add()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L134" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L116" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1190,7 +1155,7 @@ this will never be sent for a DM.</p>
     </a>
     <h1 class="signature" translate="no">guild_ban_remove()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L136" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L118" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1220,7 +1185,7 @@ this will never be sent for a DM.</p>
     </a>
     <h1 class="signature" translate="no">guild_create()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L138" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L120" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1250,7 +1215,7 @@ this will never be sent for a DM.</p>
     </a>
     <h1 class="signature" translate="no">guild_delete()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L147" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L129" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1281,7 +1246,7 @@ this will never be sent for a DM.</p>
     </a>
     <h1 class="signature" translate="no">guild_emojis_update()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L150" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L132" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1312,7 +1277,7 @@ this will never be sent for a DM.</p>
     </a>
     <h1 class="signature" translate="no">guild_integrations_update()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L154" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L136" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1342,7 +1307,7 @@ this will never be sent for a DM.</p>
     </a>
     <h1 class="signature" translate="no">guild_member_add()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L156" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L138" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1373,7 +1338,7 @@ this will never be sent for a DM.</p>
     </a>
     <h1 class="signature" translate="no">guild_member_remove()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L169" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L151" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1408,7 +1373,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
     </a>
     <h1 class="signature" translate="no">guild_member_update()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L177" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L159" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1439,7 +1404,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
     </a>
     <h1 class="signature" translate="no">guild_members_chunk()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L159" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L141" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1468,7 +1433,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
     </a>
     <h1 class="signature" translate="no">guild_role_create()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L181" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L163" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1499,7 +1464,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
     </a>
     <h1 class="signature" translate="no">guild_role_delete()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L184" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L166" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1530,7 +1495,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
     </a>
     <h1 class="signature" translate="no">guild_role_update()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L192" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L174" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1561,7 +1526,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
     </a>
     <h1 class="signature" translate="no">guild_scheduled_event_create()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L196" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L178" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1591,7 +1556,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
     </a>
     <h1 class="signature" translate="no">guild_scheduled_event_delete()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L198" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L180" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1621,7 +1586,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
     </a>
     <h1 class="signature" translate="no">guild_scheduled_event_update()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L200" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L182" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1651,7 +1616,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
     </a>
     <h1 class="signature" translate="no">guild_scheduled_event_user_add()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L202" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L184" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1682,7 +1647,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
     </a>
     <h1 class="signature" translate="no">guild_scheduled_event_user_remove()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L204" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L186" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1713,7 +1678,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
     </a>
     <h1 class="signature" translate="no">guild_unavailable()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L140" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L122" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1744,7 +1709,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
     </a>
     <h1 class="signature" translate="no">guild_update()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L143" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L125" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1775,7 +1740,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
     </a>
     <h1 class="signature" translate="no">integration_create()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L208" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L190" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1807,7 +1772,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
     </a>
     <h1 class="signature" translate="no">integration_delete()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L216" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L198" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1839,7 +1804,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
     </a>
     <h1 class="signature" translate="no">integration_update()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L214" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L196" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1871,7 +1836,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
     </a>
     <h1 class="signature" translate="no">interaction_create()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L217" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L199" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1901,7 +1866,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
     </a>
     <h1 class="signature" translate="no">message_ack()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L230" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L212" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1929,7 +1894,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
     </a>
     <h1 class="signature" translate="no">message_create()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L218" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L200" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1959,7 +1924,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
     </a>
     <h1 class="signature" translate="no">message_delete()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L219" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L201" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1989,7 +1954,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
     </a>
     <h1 class="signature" translate="no">message_delete_bulk()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L220" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L202" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2019,7 +1984,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
     </a>
     <h1 class="signature" translate="no">message_reaction_add()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L223" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L205" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2049,7 +2014,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
     </a>
     <h1 class="signature" translate="no">message_reaction_remove()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L224" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L206" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2079,7 +2044,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
     </a>
     <h1 class="signature" translate="no">message_reaction_remove_all()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L226" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L208" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2110,7 +2075,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
     </a>
     <h1 class="signature" translate="no">message_reaction_remove_emoji()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L228" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L210" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2141,7 +2106,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
     </a>
     <h1 class="signature" translate="no">message_update()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L221" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L203" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2162,67 +2127,6 @@ provided by Discord, but no information about the user's state on the guild.</p>
 
   </section>
 </section>
-<section class="detail" id="t:option/0">
-
-  <div class="detail-header">
-    <a href="#t:option/0" class="detail-link" title="Link to this type">
-      <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this type</span>
-    </a>
-    <h1 class="signature" translate="no">option()</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L97" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
-
-
-  </div>
-
-  <section class="docstring">
-
-      <div class="specs">
-
-          <pre translate="no"><span class="attribute">@type</span> option() ::
-  {:registry, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">atom</a>()}
-  | {:name, <a href="https://hexdocs.pm/elixir/Supervisor.html#t:name/0">Supervisor.name</a>()}
-  | {:max_restarts, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">non_neg_integer</a>()}
-  | {:max_seconds, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">non_neg_integer</a>()}
-  | {:subscribe_to, [<a href="https://hexdocs.pm/gen_stage/1.2.1/GenStage.html#t:stage/0">GenStage.stage</a>() | {<a href="https://hexdocs.pm/gen_stage/1.2.1/GenStage.html#t:stage/0">GenStage.stage</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">keyword</a>()}]}</pre>
-
-      </div>
-
-<p>General process options.</p><p>The <code class="inline">subscribe_to</code> option should only be set if you want to use your own producer or producer consumer.</p>
-  </section>
-</section>
-<section class="detail" id="t:options/0">
-
-  <div class="detail-header">
-    <a href="#t:options/0" class="detail-link" title="Link to this type">
-      <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this type</span>
-    </a>
-    <h1 class="signature" translate="no">options()</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L90" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
-
-
-  </div>
-
-  <section class="docstring">
-
-      <div class="specs">
-
-          <pre translate="no"><span class="attribute">@type</span> options() :: [<a href="#t:option/0">option</a>()] | []</pre>
-
-      </div>
-
-
-  </section>
-</section>
 <section class="detail" id="t:presence_update/0">
 
   <div class="detail-header">
@@ -2232,7 +2136,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
     </a>
     <h1 class="signature" translate="no">presence_update()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L236" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L218" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2263,7 +2167,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
     </a>
     <h1 class="signature" translate="no">ready()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L239" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L221" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2291,7 +2195,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
     </a>
     <h1 class="signature" translate="no">resumed()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L240" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L222" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2319,7 +2223,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
     </a>
     <h1 class="signature" translate="no">thread_create()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L286" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L268" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2348,7 +2252,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
     </a>
     <h1 class="signature" translate="no">thread_delete()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L291" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L273" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2378,7 +2282,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
     </a>
     <h1 class="signature" translate="no">thread_list_sync()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L299" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L281" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2408,7 +2312,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
     </a>
     <h1 class="signature" translate="no">thread_member_update()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L304" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L286" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2438,7 +2342,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
     </a>
     <h1 class="signature" translate="no">thread_members_update()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L309" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L291" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2468,7 +2372,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
     </a>
     <h1 class="signature" translate="no">thread_update()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L292" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L274" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2499,7 +2403,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
     </a>
     <h1 class="signature" translate="no">typing_start()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L241" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L223" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2529,7 +2433,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
     </a>
     <h1 class="signature" translate="no">user_settings_update()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L242" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L224" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2557,7 +2461,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
     </a>
     <h1 class="signature" translate="no">user_update()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L248" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L230" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2588,7 +2492,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
     </a>
     <h1 class="signature" translate="no">voice_incoming_packet()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L277" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L259" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2624,7 +2528,7 @@ on the SSRC.</p>
     </a>
     <h1 class="signature" translate="no">voice_ready()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L258" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L240" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2656,7 +2560,7 @@ on the SSRC.</p>
     </a>
     <h1 class="signature" translate="no">voice_server_update()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L280" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L262" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2686,7 +2590,7 @@ on the SSRC.</p>
     </a>
     <h1 class="signature" translate="no">voice_speaking_update()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L264" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L246" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2716,7 +2620,7 @@ on the SSRC.</p>
     </a>
     <h1 class="signature" translate="no">voice_state_update()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L279" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L261" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2746,7 +2650,7 @@ on the SSRC.</p>
     </a>
     <h1 class="signature" translate="no">webhooks_update()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L281" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L263" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2787,7 +2691,7 @@ Callbacks
     </a>
     <h1 class="signature" translate="no">handle_event(event)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L88" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L84" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2813,50 +2717,6 @@ Callbacks
 the following format:</p><pre><code class="Elixir">{event_name, {event_payload(s)}, WSState.t}</code></pre><p>For example, a message create will look like this</p><pre><code class="Elixir">{:MESSAGE_CREATE, {Nostrum.Struct.Message.t}, WSState.t}</code></pre><p>In some cases there will be multiple payloads when something is updated, so as
 to include the new and the old versions. In the event of there being two payloads,
 the old payload will always be first, followed by the new payload.</p><pre><code class="Elixir">{:USER_UPDATE, {old_user :: Nostrum.Struct.User.t, new_user :: Nostrum.Struct.User.t}, WSState.t()}</code></pre><p>For a full listing of events, please see <a href="#t:event/0"><code class="inline">Nostrum.Consumer.event/0</code></a>.</p>
-  </section>
-</section>
-
-    </div>
-  </section>
-
-  <section id="functions" class="details-list">
-    <h1 class="section-heading">
-      <a class="hover-link" href="#functions">
-        <i class="ri-link-m" aria-hidden="true"></i>
-        <span class="sr-only">Link to this section</span>
-      </a>
-Functions
-    </h1>
-    <div class="functions-list">
-<section class="detail" id="start_link/2">
-
-    <span id="start_link/1"></span>
-
-  <div class="detail-header">
-    <a href="#start_link/2" class="detail-link" title="Link to this function">
-      <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
-    </a>
-    <h1 class="signature" translate="no">start_link(mod, opts \\ [])</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L406" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
-
-
-  </div>
-
-  <section class="docstring">
-
-      <div class="specs">
-
-          <pre translate="no"><span class="attribute">@spec</span> start_link(<a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">module</a>(), <a href="#t:options/0">options</a>()) :: <a href="https://hexdocs.pm/elixir/Supervisor.html#t:on_start/0">Supervisor.on_start</a>()</pre>
-
-      </div>
-
-<p>Starts a consumer process.</p><p><code class="inline">mod</code> is the name of the module where you define your event callbacks, which should probably be
-the current module which you can get with <code class="inline">__MODULE__</code>.</p><p><code class="inline">opts</code> is a list of general process options. See <a href="#t:options/0"><code class="inline">Nostrum.Consumer.options/0</code></a> for more info.</p>
   </section>
 </section>
 
