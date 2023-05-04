@@ -27,7 +27,7 @@ defmodule Nostrum.Snowflake do
 
   ## Examples
 
-  ```Elixir
+  ```elixir
   iex> Nostrum.Snowflake.is_snowflake(89918932789497856)
   true
 
@@ -49,7 +49,7 @@ defmodule Nostrum.Snowflake do
 
   ## Examples
 
-  ```Elixir
+  ```elixir
   iex> Nostrum.Snowflake.cast(200317799350927360)
   {:ok, 200317799350927360}
 
@@ -96,7 +96,7 @@ defmodule Nostrum.Snowflake do
 
   ## Examples
 
-  ```Elixir
+  ```elixir
   iex> Nostrum.Snowflake.dump(109112383011581952)
   "109112383011581952"
   ```
@@ -114,7 +114,7 @@ defmodule Nostrum.Snowflake do
 
   ## Examples
 
-  ```Elixir
+  ```elixir
   iex> {:ok, dt, _} = DateTime.from_iso8601("2016-05-05T21:04:13.203Z")
   iex> Nostrum.Snowflake.from_datetime(dt)
   {:ok, 177888205536755712}
@@ -152,7 +152,7 @@ defmodule Nostrum.Snowflake do
 
   ## Examples
 
-  ```Elixir
+  ```elixir
   iex> Nostrum.Snowflake.creation_time(177888205536886784)
   ~U[2016-05-05 21:04:13.203Z]
   ```

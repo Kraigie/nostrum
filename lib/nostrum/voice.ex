@@ -207,7 +207,7 @@ defmodule Nostrum.Voice do
 
   ## Examples
 
-  ```Elixir
+  ```elixir
   iex> Nostrum.Voice.join_channel(123456789, 420691337)
 
   iex> Nostrum.Voice.play(123456789, "~/music/FavoriteSong.mp3", :url)
@@ -216,14 +216,14 @@ defmodule Nostrum.Voice do
 
   iex> Nostrum.Voice.play(123456789, "~/music/ThisWillBeHeavilyDistorted.mp3", :url, volume: 1000)
   ```
-  ```Elixir
+  ```elixir
   iex> Nostrum.Voice.join_channel(123456789, 420691337)
 
   iex> raw_data = File.read!("~/music/sound_effect.wav")
 
   iex> Nostrum.Voice.play(123456789, raw_data, :pipe)
   ```
-  ```Elixir
+  ```elixir
   iex> Nostrum.Voice.join_channel(123456789, 420691337)
 
   iex> Nostrum.Voice.play(123456789, "https://www.youtube.com/watch?v=b4RJ-QGOtw4", :ytdl,
@@ -232,7 +232,7 @@ defmodule Nostrum.Voice do
   iex> Nostrum.Voice.play(123456789, "https://www.youtube.com/watch?v=0ngcL_5ekXo", :ytdl,
   ...>   filter: "lowpass=f=1200", filter: "highpass=f=300", filter: "asetrate=44100*0.5")
   ```
-  ```Elixir
+  ```elixir
   iex> Nostrum.Voice.join_channel(123456789, 420691337)
 
   iex> Nostrum.Voice.play(123456789, "https://www.twitch.tv/pestily", :stream)
@@ -283,7 +283,7 @@ defmodule Nostrum.Voice do
 
   ## Examples
 
-  ```Elixir
+  ```elixir
   iex> Nostrum.Voice.join_channel(123456789, 420691337)
 
   iex> Nostrum.Voice.play(123456789, "http://brandthill.com/files/weird_dubstep_noises.mp3")
@@ -325,7 +325,7 @@ defmodule Nostrum.Voice do
 
   ## Examples
 
-  ```Elixir
+  ```elixir
   iex> Nostrum.Voice.join_channel(123456789, 420691337)
 
   iex> Nostrum.Voice.play(123456789, "~/files/twelve_hour_loop_of_waterfall_sounds.mp3")
@@ -365,7 +365,7 @@ defmodule Nostrum.Voice do
 
   ## Examples
 
-  ```Elixir
+  ```elixir
   iex> Nostrum.Voice.join_channel(123456789, 420691337)
 
   iex> Nostrum.Voice.play(123456789, "~/stuff/Toto - Africa (Bass Boosted)")
@@ -406,7 +406,7 @@ defmodule Nostrum.Voice do
 
   ## Examples
 
-  ```Elixir
+  ```elixir
   iex> Nostrum.Voice.join_channel(123456789, 420691337)
 
   iex> Nostrum.Voice.play(123456789, "https://a-real-site.biz/RickRoll.m4a")
@@ -437,7 +437,7 @@ defmodule Nostrum.Voice do
 
   ## Examples
 
-  ```Elixir
+  ```elixir
   iex> Nostrum.Voice.join_channel(123456789, 420691337)
 
   iex> Nostrum.Voice.ready?(123456789)
@@ -464,7 +464,7 @@ defmodule Nostrum.Voice do
 
   ## Examples
 
-  ```Elixir
+  ```elixir
   iex> Nostrum.Voice.join_channel(123456789, 420691337)
 
   iex> Nostrum.Voice.get_channel(123456789)

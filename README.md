@@ -56,7 +56,7 @@ The below module needs to be started in some fashion to capture events. See
 [here](https://github.com/Kraigie/nostrum/blob/master/examples/event_consumer.ex)
 for a full example.
 
-```Elixir
+```elixir
 defmodule ExampleConsumer do
   use Nostrum.Consumer
 
@@ -84,7 +84,7 @@ end
 ```
 
 Although it's recommended to run under a supervisor, you could start it from `iex`.
-```Elixir
+```elixir
   iex()> ExampleConsumer.start
   {:ok, #PID<0.208.0>}
 ```
