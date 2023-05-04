@@ -42,7 +42,7 @@ defmodule Nostrum.Mixfile do
       groups_for_functions: groups_for_functions(),
       source_ref: "master",
       assets: "docs/assets",
-      nest_modules_by_prefix: [Nostrum.Cache]
+      nest_modules_by_prefix: [Nostrum.Cache, Nostrum.Constants, Nostrum.Struct]
     ]
   end
 
@@ -69,6 +69,9 @@ defmodule Nostrum.Mixfile do
       ],
       Structs: [
         ~r/Nostrum.Struct/
+      ],
+      Constants: [
+        ~r/Nostrum.Constants/
       ]
     ]
   end
