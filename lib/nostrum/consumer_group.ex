@@ -10,19 +10,30 @@ defmodule Nostrum.ConsumerGroup do
   @group_name :consumers
 
   @doc """
-  Dispatch the given event to all consumers.
+  Dispatch the given event(s) to all consumers.
 
   This is called by nostrum internally, you likely won't need to call this
   manually.
   """
+  @spec dispatch(nonempty_list(Consumer.event())) :: :ok
   @spec dispatch(Consumer.event()) :: :ok
-  def dispatch(event) do
+  def dispatch([:noop | events]) do
+    dispatch(events)
+  end
+
+  def dispatch([event | events]) do
     payload = {:event, event}
 
     @scope_name
     |> :pg.get_members(@group_name)
     |> Enum.each(&GenServer.cast(&1, payload))
+
+    dispatch(events)
   end
+
+  def dispatch([]), do: :ok
+  def dispatch(event) when is_tuple(event), do: dispatch([event])
+  def dispatch(:noop), do: :ok
 
   @doc """
   Join the given process to the consumers.
