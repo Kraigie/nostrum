@@ -5,7 +5,7 @@ defmodule Nostrum.Mixfile do
   def project do
     [
       app: :nostrum,
-      version: "0.6.1",
+      version: "0.7.0",
       elixir: "~> 1.11",
       elixirc_paths: elixirc_paths(Mix.env()),
       build_embedded: Mix.env() == :prod,
