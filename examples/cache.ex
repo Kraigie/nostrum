@@ -19,10 +19,6 @@ end
 defmodule CacheExampleConsumer do
   use Nostrum.Consumer
 
-  def start_link do
-    Consumer.start_link(__MODULE__)
-  end
-
   # We only need to write event handlers for the events we are interested in,
   # the rest will go to the catch-all case to be ignored.
   def handle_event({:MESSAGE_CREATE, message, _ws_state}) do

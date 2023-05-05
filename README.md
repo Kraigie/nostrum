@@ -62,10 +62,6 @@ defmodule ExampleConsumer do
 
   alias Nostrum.Api
 
-  def start_link do
-    Consumer.start_link(__MODULE__)
-  end
-
   def handle_event({:MESSAGE_CREATE, msg, _ws_state}) do
     case msg.content do
       "ping!" ->
@@ -83,10 +79,24 @@ defmodule ExampleConsumer do
 end
 ```
 
-Although it's recommended to run under a supervisor, you could start it from `iex`.
+You should start this under a supervisor or application:
+
 ```elixir
-  iex()> ExampleConsumer.start
-  {:ok, #PID<0.208.0>}
+defmodule MyApp.Application do
+  use Application
+
+  def start(_type, _args) do
+    children = [ExampleConsumer]
+    Supervisor.start_link(children, strategy: :one_for_one)
+  end
+end
+```
+
+For testing, you can start it from `iex`:
+
+```elixir
+iex()> ExampleConsumer.start_link()
+{:ok, #PID<0.208.0>}
 ```
 
 ## Getting Help

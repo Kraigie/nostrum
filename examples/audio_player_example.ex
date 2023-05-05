@@ -53,10 +53,6 @@ defmodule AudioPlayerConsumer do
     {"resume", "Resume the paused sound", []}
   ]
 
-  def start_link do
-    Consumer.start_link(__MODULE__)
-  end
-
   def get_voice_channel_of_interaction(%{guild_id: guild_id, user: %{id: user_id}} = _interaction) do
     guild_id
     |> GuildCache.get!()
