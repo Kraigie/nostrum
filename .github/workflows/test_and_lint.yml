@@ -16,12 +16,12 @@ jobs:
 
       - uses: erlef/setup-beam@v1
         with:
-          otp-version: 24
-          elixir-version: 1.13
+          otp-version: 25
+          elixir-version: 1.14
 
       - uses: actions/cache@v3
         env:
-          base-key: 24-1.13
+          base-key: 25-1.14
         with:
           path: |
             _build
