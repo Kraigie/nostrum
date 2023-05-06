@@ -185,7 +185,8 @@ missing fields will remain unchanged.</p></div>
 
       </div>
 
-        <div class="summary-synopsis"><p>The command, subcommand, or options's description, for <code class="inline">CHAT_INPUT</code> commands it must be between 1 and 100 characters in length.
+        <div class="summary-synopsis"><p>The description of the command, subcommand, or command_option.
+For <code class="inline">CHAT_INPUT</code> commands, it must be between 1 and 100 characters in length.
 For <code class="inline">USER</code> and <code class="inline">MESSAGE</code> commands it must be an empty string.</p></div>
 
     </div>
@@ -196,7 +197,8 @@ For <code class="inline">USER</code> and <code class="inline">MESSAGE</code> com
 
       </div>
 
-        <div class="summary-synopsis"><p>The name of the command, subcommand, or command_option, it must be between 1 and 32 characters in length and match the following regex <code class="inline">^[w-]{1,32}$</code>
+        <div class="summary-synopsis"><p>The name of the command, subcommand, or command_option.
+It must be between 1 and 32 characters in length and match the following regex: <code class="inline">^[w-]{1,32}$</code>.
 Only <code class="inline">USER</code> and <code class="inline">MESSAGE</code> commands may include uppercase letters and spaces.</p></div>
 
     </div>
@@ -207,7 +209,7 @@ Only <code class="inline">USER</code> and <code class="inline">MESSAGE</code> co
 
       </div>
 
-        <div class="summary-synopsis"><p>This defines a commands parameters, only valid for <code class="inline">CHAT_INPUT</code> commands.</p></div>
+        <div class="summary-synopsis"><p>This defines a command's parameters. Only valid for <code class="inline">CHAT_INPUT</code> commands.</p></div>
 
     </div>
 
@@ -254,7 +256,7 @@ Types
     </a>
     <h1 class="signature" translate="no">application_command_edit_map()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/application_command.ex#L101" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/application_command.ex#L103" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -290,7 +292,7 @@ missing fields will remain unchanged.</p>
     </a>
     <h1 class="signature" translate="no">application_command_map()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/application_command.ex#L89" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/application_command.ex#L91" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -326,7 +328,7 @@ missing fields will remain unchanged.</p>
     </a>
     <h1 class="signature" translate="no">application_command_permission_type()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/application_command.ex#L127" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/application_command.ex#L129" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -356,7 +358,7 @@ missing fields will remain unchanged.</p>
     </a>
     <h1 class="signature" translate="no">application_command_permissions()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/application_command.ex#L114" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/application_command.ex#L116" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -390,7 +392,7 @@ missing fields will remain unchanged.</p>
     </a>
     <h1 class="signature" translate="no">command_choice()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/application_command.ex#L37" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/application_command.ex#L39" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -420,7 +422,7 @@ missing fields will remain unchanged.</p>
     </a>
     <h1 class="signature" translate="no">command_description()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/application_command.ex#L22" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/application_command.ex#L24" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -438,7 +440,8 @@ missing fields will remain unchanged.</p>
 
       </div>
 
-<p>The command, subcommand, or options's description, for <code class="inline">CHAT_INPUT</code> commands it must be between 1 and 100 characters in length.
+<p>The description of the command, subcommand, or command_option.
+For <code class="inline">CHAT_INPUT</code> commands, it must be between 1 and 100 characters in length.
 For <code class="inline">USER</code> and <code class="inline">MESSAGE</code> commands it must be an empty string.</p>
   </section>
 </section>
@@ -451,7 +454,7 @@ For <code class="inline">USER</code> and <code class="inline">MESSAGE</code> com
     </a>
     <h1 class="signature" translate="no">command_name()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/application_command.ex#L16" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/application_command.ex#L17" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -469,7 +472,8 @@ For <code class="inline">USER</code> and <code class="inline">MESSAGE</code> com
 
       </div>
 
-<p>The name of the command, subcommand, or command_option, it must be between 1 and 32 characters in length and match the following regex <code class="inline">^[w-]{1,32}$</code>
+<p>The name of the command, subcommand, or command_option.
+It must be between 1 and 32 characters in length and match the following regex: <code class="inline">^[w-]{1,32}$</code>.
 Only <code class="inline">USER</code> and <code class="inline">MESSAGE</code> commands may include uppercase letters and spaces.</p>
   </section>
 </section>
@@ -482,7 +486,7 @@ Only <code class="inline">USER</code> and <code class="inline">MESSAGE</code> co
     </a>
     <h1 class="signature" translate="no">command_option()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/application_command.ex#L71" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/application_command.ex#L73" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -509,13 +513,13 @@ Only <code class="inline">USER</code> and <code class="inline">MESSAGE</code> co
 
       </div>
 
-<p>This defines a commands parameters, only valid for <code class="inline">CHAT_INPUT</code> commands.</p><h2 id="t:command_option/0-notes" class="section-heading">
+<p>This defines a command's parameters. Only valid for <code class="inline">CHAT_INPUT</code> commands.</p><h2 id="t:command_option/0-notes" class="section-heading">
   <a href="#t:command_option/0-notes" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
   <p class="sr-only">notes</p>
   </a>
   Notes
 </h2>
-<ul><li>required parameters on a command must precede optional ones</li><li>for subcommands and subcommand groups, <code class="inline">:options</code> are it's parameters</li><li><code class="inline">:options</code> and <code class="inline">:choices</code> are mutually exclusive</li><li><code class="inline">:autocomplete</code> may not be set to true if <code class="inline">:choices</code> is present</li><li>if <code class="inline">:type</code> is 7 then <code class="inline">:channel_types</code> can be a list of allowed <a href="https://discord.com/developers/docs/resources/channel#channel-object-channel-types">channel types</a></li></ul>
+<ul><li>required parameters on a command must precede optional ones</li><li>for subcommands and subcommand groups, <code class="inline">:options</code> are its parameters</li><li><code class="inline">:options</code> and <code class="inline">:choices</code> are mutually exclusive</li><li><code class="inline">:autocomplete</code> must not be set to true if <code class="inline">:choices</code> is present</li><li>if <code class="inline">:type</code> is 7 then <code class="inline">:channel_types</code> can be a list of allowed <a href="https://discord.com/developers/docs/resources/channel#channel-object-channel-types">channel types</a></li></ul>
   </section>
 </section>
 <section class="detail" id="t:command_option_type/0">
@@ -527,7 +531,7 @@ Only <code class="inline">USER</code> and <code class="inline">MESSAGE</code> co
     </a>
     <h1 class="signature" translate="no">command_option_type()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/application_command.ex#L58" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/application_command.ex#L60" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -545,7 +549,7 @@ Only <code class="inline">USER</code> and <code class="inline">MESSAGE</code> co
 
       </div>
 
-<p>Indicates what type of argument the command expects.</p><ul><li><code class="inline">1</code> for <code class="inline">SUB_COMMAND</code></li><li><code class="inline">2</code> for <code class="inline">SUB_COMMAND_GROUP</code></li><li><code class="inline">3</code> for <code class="inline">STRING</code></li><li><code class="inline">4</code> for <code class="inline">INTEGER</code> <em>Note</em>: due to API limitations they can only be between -2^53 and 2^53</li><li><code class="inline">5</code> for <code class="inline">BOOLEAN</code></li><li><code class="inline">6</code> for <code class="inline">USER</code></li><li><code class="inline">7</code> for <code class="inline">CHANNEL</code></li><li><code class="inline">8</code> for <code class="inline">ROLE</code></li><li><code class="inline">9</code> for <code class="inline">MENTIONABLE</code> <em>Note</em>: Includes users and roles</li><li><code class="inline">10</code> for <code class="inline">NUMBER</code> <em>Note</em>: This has the same limitations as <code class="inline">INTEGER</code></li></ul><p>You can use on of the <a href="Nostrum.Constants.ApplicationCommandOptionType.html"><code class="inline">Nostrum.Constants.ApplicationCommandOptionType</code></a> methods</p>
+<p>Indicates what type of argument the command expects.</p><ul><li><code class="inline">1</code> for <code class="inline">SUB_COMMAND</code></li><li><code class="inline">2</code> for <code class="inline">SUB_COMMAND_GROUP</code></li><li><code class="inline">3</code> for <code class="inline">STRING</code></li><li><code class="inline">4</code> for <code class="inline">INTEGER</code> <em>Note</em>: due to API limitations they can only be between -2^53 and 2^53</li><li><code class="inline">5</code> for <code class="inline">BOOLEAN</code></li><li><code class="inline">6</code> for <code class="inline">USER</code></li><li><code class="inline">7</code> for <code class="inline">CHANNEL</code></li><li><code class="inline">8</code> for <code class="inline">ROLE</code></li><li><code class="inline">9</code> for <code class="inline">MENTIONABLE</code> <em>Note</em>: Includes users and roles</li><li><code class="inline">10</code> for <code class="inline">NUMBER</code> <em>Note</em>: This has the same limitations as <code class="inline">INTEGER</code></li></ul><p>You may use one of the <a href="Nostrum.Constants.ApplicationCommandOptionType.html"><code class="inline">Nostrum.Constants.ApplicationCommandOptionType</code></a> methods.</p>
   </section>
 </section>
 <section class="detail" id="t:command_type/0">
@@ -557,7 +561,7 @@ Only <code class="inline">USER</code> and <code class="inline">MESSAGE</code> co
     </a>
     <h1 class="signature" translate="no">command_type()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/application_command.ex#L32" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/application_command.ex#L34" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -575,7 +579,7 @@ Only <code class="inline">USER</code> and <code class="inline">MESSAGE</code> co
 
       </div>
 
-<p>The type of application command you wish to create</p><ul><li><code class="inline">1</code> for <code class="inline">CHAT_INPUT</code>, regular slash commands (default)</li><li><code class="inline">2</code> for <code class="inline">USER</code>, right-click menu commands on a specific user</li><li><code class="inline">3</code> for <code class="inline">MESSAGE</code>, right-click menu commands on a specific message</li></ul><p>You can use on of the <a href="Nostrum.Constants.ApplicationCommandType.html"><code class="inline">Nostrum.Constants.ApplicationCommandType</code></a> methods</p>
+<p>The type of application command you wish to create</p><ul><li><code class="inline">1</code> for <code class="inline">CHAT_INPUT</code>, regular slash commands (default)</li><li><code class="inline">2</code> for <code class="inline">USER</code>, right-click menu commands on a specific user</li><li><code class="inline">3</code> for <code class="inline">MESSAGE</code>, right-click menu commands on a specific message</li></ul><p>You may use one of the <a href="Nostrum.Constants.ApplicationCommandType.html"><code class="inline">Nostrum.Constants.ApplicationCommandType</code></a> methods.</p>
   </section>
 </section>
 
