@@ -51,11 +51,11 @@ defmodule Nostrum.Struct.InteractionTest do
       "premium_since" => nil,
       "roles" => [451_824_750_399_062_036, 458_692_275_199_803_406],
       "user" => %{
-        "avatar" => "d52bf0e27ed56fcde93f8ee345ba8977",
-        "discriminator" => "2359",
-        "id" => 196_989_358_165_852_114,
+        "avatar" => "deadbeef",
+        "discriminator" => "1234",
+        "id" => 149_120,
         "public_flags" => 0,
-        "username" => "Volcyy"
+        "username" => "Joe Armstrong"
       }
     },
     "token" => "bob",
@@ -94,7 +94,7 @@ defmodule Nostrum.Struct.InteractionTest do
                guild_id: 451_824_027_976_073_216,
                id: 857_721_405_302_112_276,
                member: %Member{
-                 user: %User{}
+                 user_id: 149_120
                },
                user: %User{},
                token: "bob",

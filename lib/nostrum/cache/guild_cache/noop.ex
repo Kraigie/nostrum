@@ -11,7 +11,6 @@ defmodule Nostrum.Cache.GuildCache.NoOp do
   alias Nostrum.Struct.Channel
   alias Nostrum.Struct.Emoji
   alias Nostrum.Struct.Guild
-  alias Nostrum.Struct.Guild.Member
   alias Nostrum.Struct.Guild.Role
   alias Nostrum.Util
   use Supervisor
@@ -76,21 +75,6 @@ defmodule Nostrum.Cache.GuildCache.NoOp do
   end
 
   @impl GuildCache
-  def member_add(_guild_id, member), do: Util.cast(member, {:struct, Member})
-
-  @impl GuildCache
-  def member_update(guild_id, member) do
-    member = Util.cast(member, {:struct, Member})
-    {guild_id, member, member}
-  end
-
-  @impl GuildCache
-  def member_remove(_guild_id, _user_id), do: :noop
-
-  @impl GuildCache
-  def member_chunk(_guild_id, _member_chunk), do: true
-
-  @impl GuildCache
   def role_create(guild_id, role), do: {guild_id, Util.cast(role, {:struct, Role})}
 
   @impl GuildCache
@@ -104,4 +88,10 @@ defmodule Nostrum.Cache.GuildCache.NoOp do
 
   @impl GuildCache
   def voice_state_update(guild_id, _state), do: {guild_id, []}
+
+  @impl GuildCache
+  def member_count_up(_guild_id), do: true
+
+  @impl GuildCache
+  def member_count_down(_guild_id), do: true
 end

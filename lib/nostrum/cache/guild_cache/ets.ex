@@ -25,10 +25,8 @@ defmodule Nostrum.Cache.GuildCache.ETS do
   alias Nostrum.Struct.Channel
   alias Nostrum.Struct.Emoji
   alias Nostrum.Struct.Guild
-  alias Nostrum.Struct.Guild.Member
   alias Nostrum.Struct.Guild.Role
   alias Nostrum.Struct.Message
-  alias Nostrum.Struct.User
   alias Nostrum.Util
   import Nostrum.Snowflake, only: [is_snowflake: 1]
   use Supervisor
@@ -198,71 +196,6 @@ defmodule Nostrum.Cache.GuildCache.ETS do
     {guild.emojis, casted}
   end
 
-  @doc "Add the given member to the given guild in the cache."
-  @impl GuildCache
-  @spec member_add(Guild.id(), map()) :: Member.t()
-  def member_add(guild_id, payload) do
-    [{_id, guild}] = :ets.lookup(@table_name, guild_id)
-    {_old, member, new_members} = upsert(guild.members, payload.user.id, payload, Member)
-    new = %{guild | members: new_members, member_count: guild.member_count + 1}
-    true = :ets.update_element(@table_name, guild_id, {2, new})
-    member
-  end
-
-  @doc "Remove the given member from the given guild in the cache."
-  @impl GuildCache
-  @spec member_remove(Guild.id(), map()) :: {Guild.id(), Member.t()} | :noop
-  def member_remove(guild_id, user) do
-    case :ets.lookup(@table_name, guild_id) do
-      [{_id, guild}] ->
-        {popped, new_members} = Map.pop(guild.members, user.id)
-        new_guild = %{guild | members: new_members, member_count: guild.member_count - 1}
-        true = :ets.update_element(@table_name, guild_id, {2, new_guild})
-        if popped, do: {guild_id, popped}, else: :noop
-
-      [] ->
-        {guild_id, %Member{user: Util.cast(user, {:struct, User})}}
-    end
-  end
-
-  @doc "Update the given member for the given guild in the cache."
-  @impl GuildCache
-  @spec member_update(Guild.id(), map()) :: {Guild.id(), Member.t() | nil, Member.t()}
-  def member_update(guild_id, member) do
-    # We may retrieve a GUILD_MEMBER_UPDATE event for our own user even if we
-    # have the required intents to retrieve it for other members disabled, as
-    # outlined in issue https://github.com/Kraigie/nostrum/issues/293. In
-    # that case, we will not have the guild cached.
-    case :ets.lookup(@table_name, guild_id) do
-      [{_id, guild}] ->
-        {old, new, new_members} = upsert(guild.members, member.user.id, member, Member)
-        new_guild = %{guild | members: new_members}
-        true = :ets.update_element(@table_name, guild_id, {2, new_guild})
-        {guild_id, old, new}
-
-      [] ->
-        new = Util.cast(member, {:struct, Member})
-        {guild_id, nil, new}
-    end
-  end
-
-  @doc "Create a chunk of members for the given guild in the cache."
-  @impl GuildCache
-  def member_chunk(guild_id, member_chunk) do
-    # CHONK like that one cat of craig
-
-    [{_id, guild}] = :ets.lookup(@table_name, guild_id)
-
-    new_members =
-      Enum.reduce(member_chunk, guild.members, fn m, acc ->
-        Map.put(acc, m.user.id, Util.cast(m, {:struct, Member}))
-      end)
-
-    # XXX: do we not need to update member count here?
-    new = %{guild | members: new_members}
-    true = :ets.update_element(@table_name, guild_id, {2, new})
-  end
-
   @doc "Create the given role in the given guild in the cache."
   @impl GuildCache
   @spec role_create(Guild.id(), map()) :: {Guild.id(), Role.t()}
@@ -316,6 +249,24 @@ defmodule Nostrum.Cache.GuildCache.ETS do
     new_guild = %{guild | voice_states: new_state}
     true = :ets.update_element(@table_name, guild_id, {2, new_guild})
     {guild_id, new_state}
+  end
+
+  @doc "Increment the guild member count by one."
+  @doc since: "0.7.0"
+  @impl GuildCache
+  @spec member_count_up(Guild.id()) :: true
+  def member_count_up(guild_id) do
+    [{^guild_id, guild}] = :ets.lookup(@table_name, guild_id)
+    :ets.insert(@table_name, {guild_id, %{guild | member_count: guild.member_count + 1}})
+  end
+
+  @doc "Decrement the guild member count by one."
+  @doc since: "0.7.0"
+  @impl GuildCache
+  @spec member_count_down(Guild.id()) :: true
+  def member_count_down(guild_id) do
+    [{^guild_id, guild}] = :ets.lookup(@table_name, guild_id)
+    :ets.insert(@table_name, {guild_id, %{guild | member_count: guild.member_count - 1}})
   end
 
   @spec upsert(%{required(Snowflake.t()) => struct}, Snowflake.t(), map, atom) ::

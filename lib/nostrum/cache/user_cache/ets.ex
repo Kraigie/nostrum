@@ -58,6 +58,14 @@ defmodule Nostrum.Cache.UserCache.ETS do
     end
   end
 
+  @doc "Get a QLC handle for the backing table."
+  @doc since: "0.7.0"
+  @impl Nostrum.Cache.UserCache
+  @spec qlc_handle :: :qlc.query_handle()
+  def qlc_handle do
+    :ets.table(@table_name)
+  end
+
   @doc "Get a user by ID."
   @impl Nostrum.Cache.UserCache
   @spec get(User.id()) :: {:ok, User.t()} | {:error, atom}

@@ -81,6 +81,23 @@ defmodule Nostrum.Cache.UserCache do
   """
   @callback delete(snowflake :: User.id()) :: :noop | User.t()
 
+  @doc """
+  Return a query handle for usage with `:qlc`.
+
+  This is used by nostrum to provide automatic joins between the member and the
+  user cache, and may be used for other functions in the future.
+
+  The Erlang manual on [Implementing a QLC
+  Table](https://www.erlang.org/doc/man/qlc.html#implementing_a_qlc_table)
+  contains examples for implementation.
+
+  The query handle must return items in the form `{user_id, user}`, where
+  `user_id` is a `t:Nostrum.Struct.User.id/0` and `user` is a
+  `t:Nostrum.Struct.User.t/0`.
+  """
+  @doc since: "0.7.0"
+  @callback qlc_handle() :: :qlc.query_handle()
+
   ## Dispatching
   defdelegate get(id), to: @configured_cache
   @doc false
@@ -91,6 +108,8 @@ defmodule Nostrum.Cache.UserCache do
   defdelegate update(payload), to: @configured_cache
   @doc false
   defdelegate delete(snowflake), to: @configured_cache
+  @doc false
+  defdelegate qlc_handle(), to: @configured_cache
 
   @doc """
   Same as `c:get/1`, but raises `Nostrum.Error.CacheError` in case of a failure.

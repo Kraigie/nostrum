@@ -6,7 +6,6 @@ defmodule Nostrum.Struct.Guild do
     :unavailable,
     :member_count,
     :voice_states,
-    :members,
     :channels,
     :guild_scheduled_events,
     :threads
@@ -17,7 +16,7 @@ defmodule Nostrum.Struct.Guild do
   """
 
   alias Nostrum.Struct.{Channel, Emoji, User}
-  alias Nostrum.Struct.Guild.{Member, Role, ScheduledEvent}
+  alias Nostrum.Struct.Guild.{Role, ScheduledEvent}
   alias Nostrum.{Constants, Snowflake, Util}
 
   defstruct [
@@ -47,7 +46,6 @@ defmodule Nostrum.Struct.Guild do
     :unavailable,
     :member_count,
     :voice_states,
-    :members,
     :channels,
     :guild_scheduled_events,
     :vanity_url_code,
@@ -150,9 +148,6 @@ defmodule Nostrum.Struct.Guild do
   @typedoc "List of voice states as maps"
   @type voice_states :: list(map) | nil
 
-  @typedoc "List of members"
-  @type members :: %{required(User.id()) => Member.t()} | nil
-
   @typedoc "List of channels"
   @type channels :: %{required(Channel.id()) => Channel.t()} | nil
 
@@ -196,7 +191,6 @@ defmodule Nostrum.Struct.Guild do
           unavailable: nil,
           member_count: nil,
           voice_states: nil,
-          members: nil,
           channels: nil,
           vanity_url_code: nil,
           threads: nil
@@ -233,7 +227,6 @@ defmodule Nostrum.Struct.Guild do
           unavailable: nil,
           member_count: nil,
           voice_states: nil,
-          members: nil,
           channels: nil,
           guild_scheduled_events: nil,
           threads: nil
@@ -269,7 +262,6 @@ defmodule Nostrum.Struct.Guild do
           unavailable: true,
           member_count: nil,
           voice_states: nil,
-          members: nil,
           channels: nil,
           guild_scheduled_events: nil,
           vanity_url_code: nil,
@@ -306,7 +298,6 @@ defmodule Nostrum.Struct.Guild do
           unavailable: false,
           member_count: member_count,
           voice_states: voice_states,
-          members: members,
           channels: channels,
           guild_scheduled_events: guild_scheduled_events,
           vanity_url_code: vanity_url_code,
@@ -393,7 +384,6 @@ defmodule Nostrum.Struct.Guild do
       |> Map.update(:system_channel_id, nil, &Util.cast(&1, Snowflake))
       |> Map.update(:rules_channel_id, nil, &Util.cast(&1, Snowflake))
       |> Map.update(:public_updates_channel_id, nil, &Util.cast(&1, Snowflake))
-      |> Map.update(:members, nil, &Util.cast(&1, {:index, [:user, :id], {:struct, Member}}))
       |> Map.update(:channels, nil, &Util.cast(&1, {:index, [:id], {:struct, Channel}}))
       |> Map.update(:joined_at, nil, &Util.maybe_to_datetime/1)
       |> Map.update(

@@ -47,7 +47,6 @@ defmodule Nostrum.Cache.GuildCache do
   alias Nostrum.Struct.Channel
   alias Nostrum.Struct.Emoji
   alias Nostrum.Struct.Guild
-  alias Nostrum.Struct.Guild.Member
   alias Nostrum.Struct.Guild.Role
   alias Nostrum.Struct.Message
   alias Nostrum.Util
@@ -217,48 +216,6 @@ defmodule Nostrum.Cache.GuildCache do
               {old_emojis :: [Emoji.t()], new_emojis :: [Emoji.t()]}
 
   @doc """
-  Add the member for the given guild from upstream data.
-
-  Return the casted member structure.
-  """
-  @callback member_add(Guild.id(), member :: map()) :: Member.t()
-
-  @doc """
-  Remove the given member for the given guild from upstream data.
-
-  Return the guild ID and old member if the member was cached. Otherwise,
-  return `:noop`.
-  """
-  @callback member_remove(Guild.id(), member :: map()) ::
-              {Guild.id(), old_member :: Member.t()} | :noop
-
-  @doc """
-  Update the given member for the given guild from upstream data.
-
-  Return the guild ID that was updated, the old cached member (if the member
-  was known to the cache), and the updated member.
-
-  ## Note regarding intents
-
-  Even if the required intents to receive `GUILD_MEMBER_UPDATE`
-  events are disabled to a point where we do not receive guild creation events,
-  it is still possible to receive the event for our own user. An example of
-  this can be found in [issue
-  #293](https://github.com/Kraigie/nostrum/issues/293). Note that the linked
-  issue refers to the old contents of this module before the ETS-based guild
-  cache was moved into `#{__MODULE__}.ETS`.
-  """
-  @callback member_update(Guild.id(), member :: map()) ::
-              {Guild.id(), old_member :: Member.t() | nil, updated_member :: Member.t()}
-
-  @doc """
-  Bulk create multiple members in the cache from upstream data.
-
-  Return value is unused, as we currently do not dispatch a gateway for this.
-  """
-  @callback member_chunk(Guild.id(), chunk :: [member :: map()]) :: true
-
-  @doc """
   Create a role on the given guild from upstream data.
 
   Return the casted role.
@@ -291,6 +248,18 @@ defmodule Nostrum.Cache.GuildCache do
   """
   @callback voice_state_update(Guild.id(), state :: map()) :: {Guild.id(), new_state :: [map()]}
 
+  @doc """
+  Increment the member count for this guild by one.
+  """
+  @doc since: "0.7.0"
+  @callback member_count_up(Guild.id()) :: true
+
+  @doc """
+  Decrement the member count for this guild by one.
+  """
+  @doc since: "0.7.0"
+  @callback member_count_down(Guild.id()) :: true
+
   # Dispatching logic.
   defdelegate all, to: @configured_cache
   defdelegate select_all(selector), to: @configured_cache
@@ -313,14 +282,6 @@ defmodule Nostrum.Cache.GuildCache do
   @doc false
   defdelegate emoji_update(guild_id, emojis), to: @configured_cache
   @doc false
-  defdelegate member_add(guild_id, member), to: @configured_cache
-  @doc false
-  defdelegate member_remove(guild_id, member), to: @configured_cache
-  @doc false
-  defdelegate member_update(guild_id, member), to: @configured_cache
-  @doc false
-  defdelegate member_chunk(guild_id, member), to: @configured_cache
-  @doc false
   defdelegate role_create(guild_id, role), to: @configured_cache
   @doc false
   defdelegate role_delete(guild_id, role), to: @configured_cache
@@ -328,6 +289,10 @@ defmodule Nostrum.Cache.GuildCache do
   defdelegate role_update(guild_id, role), to: @configured_cache
   @doc false
   defdelegate voice_state_update(guild_id, state), to: @configured_cache
+  @doc false
+  defdelegate member_count_up(guild_id), to: @configured_cache
+  @doc false
+  defdelegate member_count_down(guild_id), to: @configured_cache
 
   # Helper functions.
 

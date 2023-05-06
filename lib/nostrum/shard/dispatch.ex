@@ -1,7 +1,7 @@
 defmodule Nostrum.Shard.Dispatch do
   @moduledoc false
 
-  alias Nostrum.Cache.{ChannelCache, GuildCache, PresenceCache, UserCache}
+  alias Nostrum.Cache.{ChannelCache, GuildCache, MemberCache, PresenceCache, UserCache}
   alias Nostrum.Cache.Me
   alias Nostrum.Shard.{Intents, Session}
 
@@ -140,8 +140,8 @@ defmodule Nostrum.Shard.Dispatch do
 
     guild = %{p | channels: channels_with_guild_id}
 
-    guild.members
-    |> Enum.each(fn member -> UserCache.create(member.user) end)
+    Enum.each(guild.members, fn member -> UserCache.create(member.user) end)
+    MemberCache.bulk_create(guild.id, guild.members)
 
     :ets.insert(:guild_shard_map, {guild.id, state.shard_num})
 
@@ -185,25 +185,28 @@ defmodule Nostrum.Shard.Dispatch do
   end
 
   def handle_event(:GUILD_MEMBER_ADD = event, p, state) do
+    GuildCache.member_count_up(p.guild_id)
     UserCache.create(p.user)
-    {event, {p.guild_id, GuildCache.member_add(p.guild_id, p)}, state}
+    {event, {p.guild_id, MemberCache.create(p.guild_id, p)}, state}
   end
 
   def handle_event(:GUILD_MEMBERS_CHUNK = event, p, state) do
     Stream.map(p.members, & &1.user)
     |> UserCache.bulk_create()
 
-    GuildCache.member_chunk(p.guild_id, p.members)
+    MemberCache.bulk_create(p.guild_id, p.members)
 
     # note: not casted at the moment, deemed mostly internal
     {event, p, state}
   end
 
-  def handle_event(:GUILD_MEMBER_REMOVE = event, p, state),
-    do: {event, GuildCache.member_remove(p.guild_id, p.user), state}
+  def handle_event(:GUILD_MEMBER_REMOVE = event, p, state) do
+    GuildCache.member_count_down(p.guild_id)
+    {event, MemberCache.delete(p.guild_id, p.user), state}
+  end
 
   def handle_event(:GUILD_MEMBER_UPDATE = event, %{guild_id: guild_id} = p, state) do
-    {event, GuildCache.member_update(guild_id, p), state}
+    {event, MemberCache.update(guild_id, p), state}
   end
 
   def handle_event(:GUILD_ROLE_CREATE = event, p, state),
