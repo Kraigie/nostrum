@@ -60,7 +60,6 @@ The following mappings exists.
 ```elixir
 guild_channel_id -> guild_id
 guild_id -> shard_num
-shard_num_num -> shard_pid
 ```
 
 Please see `Nostrum.Cache.Mapping.ChannelGuild` for one such map.
