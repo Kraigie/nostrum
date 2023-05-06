@@ -10,13 +10,15 @@ defmodule Nostrum.Struct.ApplicationCommand do
   alias Nostrum.Snowflake
 
   @typedoc """
-  The name of the command, subcommand, or command_option, it must be between 1 and 32 characters in length and match the following regex `^[\w-]{1,32}$`
+  The name of the command, subcommand, or command_option.
+  It must be between 1 and 32 characters in length and match the following regex: `^[\w-]{1,32}$`.
   Only `USER` and `MESSAGE` commands may include uppercase letters and spaces.
   """
   @type command_name :: String.t()
 
   @typedoc """
-  The command, subcommand, or options's description, for `CHAT_INPUT` commands it must be between 1 and 100 characters in length.
+  The description of the command, subcommand, or command_option.
+  For `CHAT_INPUT` commands, it must be between 1 and 100 characters in length.
   For `USER` and `MESSAGE` commands it must be an empty string.
   """
   @type command_description :: String.t()
@@ -27,7 +29,7 @@ defmodule Nostrum.Struct.ApplicationCommand do
   - `2` for `USER`, right-click menu commands on a specific user
   - `3` for `MESSAGE`, right-click menu commands on a specific message
 
-  You can use on of the `Nostrum.Constants.ApplicationCommandType` methods
+  You may use one of the `Nostrum.Constants.ApplicationCommandType` methods.
   """
   @type command_type :: pos_integer()
 
@@ -53,18 +55,18 @@ defmodule Nostrum.Struct.ApplicationCommand do
   - `9` for `MENTIONABLE` *Note*: Includes users and roles
   - `10` for `NUMBER` *Note*: This has the same limitations as `INTEGER`
 
-  You can use on of the `Nostrum.Constants.ApplicationCommandOptionType` methods
+  You may use one of the `Nostrum.Constants.ApplicationCommandOptionType` methods.
   """
   @type command_option_type :: 1..10
 
   @typedoc """
-  This defines a commands parameters, only valid for `CHAT_INPUT` commands.
+  This defines a command's parameters. Only valid for `CHAT_INPUT` commands.
 
   ## Notes
    - required parameters on a command must precede optional ones
-   - for subcommands and subcommand groups, `:options` are it's parameters
+   - for subcommands and subcommand groups, `:options` are its parameters
    - `:options` and `:choices` are mutually exclusive
-   - `:autocomplete` may not be set to true if `:choices` is present
+   - `:autocomplete` must not be set to true if `:choices` is present
    - if `:type` is 7 then `:channel_types` can be a list of allowed [channel types](https://discord.com/developers/docs/resources/channel#channel-object-channel-types)
 
   """
