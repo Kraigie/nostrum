@@ -17,7 +17,7 @@ defmodule Nostrum.Struct.ApplicationCommand do
   @type command_name :: String.t()
 
   @typedoc """
-  The command, subcommand, or options' description.
+  The description of the command, subcommand, or command_option.
   For `CHAT_INPUT` commands, it must be between 1 and 100 characters in length.
   For `USER` and `MESSAGE` commands it must be an empty string.
   """
