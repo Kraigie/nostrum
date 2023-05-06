@@ -122,9 +122,9 @@ implementation you want to use. This can only be set at dependency compilation
 time. A common situation is that you don't want to cache presences in your bot,
 most likely you don't care about user's status, so you can disable it altogether
 by using the <code class="inline">NoOp</code> presence cache:</p><pre><code class="makeup elixir" translate="no"><span class="n">config</span><span class="w"> </span><span class="ss">:nostrum</span><span class="p">,</span><span class="w">
-  </span><span class="ss">caches</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="5169418042-1">%{</span><span class="w">
+  </span><span class="ss">caches</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="7276657611-1">%{</span><span class="w">
     </span><span class="ss">presences</span><span class="p">:</span><span class="w"> </span><span class="nc">Nostrum.Cache.PresenceCache.NoOp</span><span class="w">
-  </span><span class="p" data-group-id="5169418042-1">}</span></code></pre><h2 id="structs" class="section-heading">
+  </span><span class="p" data-group-id="7276657611-1">}</span></code></pre><h2 id="structs" class="section-heading">
   <a href="#structs" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
   <p class="sr-only">structs</p>
   </a>
@@ -166,8 +166,7 @@ see <a href="Nostrum.Cache.UserCache.ETS.html"><code class="inline">Nostrum.Cach
 <p>There are some use cases where given a <code class="inline">channel_id</code> or <code class="inline">guild_id</code> we may want to
 find the <code class="inline">guild</code> or <code class="inline">shard</code> that the <code class="inline">id</code> belongs to. For this purpose Nostrum
 stores these types of relations in ETS tables.</p><p>The following mappings exists.</p><pre><code class="makeup elixir" translate="no"><span class="n">guild_channel_id</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">guild_id</span><span class="w">
-</span><span class="n">guild_id</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">shard_num</span><span class="w">
-</span><span class="n">shard_num_num</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">shard_pid</span></code></pre><p>Please see <a href="Nostrum.Cache.Mapping.ChannelGuild.html"><code class="inline">Nostrum.Cache.Mapping.ChannelGuild</code></a> for one such map.</p>
+</span><span class="n">guild_id</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">shard_num</span></code></pre><p>Please see <a href="Nostrum.Cache.Mapping.ChannelGuild.html"><code class="inline">Nostrum.Cache.Mapping.ChannelGuild</code></a> for one such map.</p>
 <div class="bottom-actions">
   <div class="bottom-actions-item">
 
