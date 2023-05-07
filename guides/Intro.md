@@ -12,7 +12,6 @@ the following -
  * [API](api.html) - Methods to interact with the RESTful API (and some other goodies).
  * [State](state.html) - `Caches` that hold the state of Discord that your bot can see.
  * [Events](events.html) - How you can handle real time events that your bot can see.
- * [Custom Consumers](consumers.html) - Information on defining custom consumer processes.
  * [Voice](voice.html) - Playing audio through Discord voice channels.
 
 ### Why Elixir?

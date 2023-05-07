@@ -53,7 +53,6 @@ defmodule Nostrum.Mixfile do
       "guides/Application Commands.md",
       "guides/State.md",
       "guides/Events.md",
-      "guides/Consumers.md",
       "guides/Voice.md",
       "guides/Gateway Intents.md"
     ]
