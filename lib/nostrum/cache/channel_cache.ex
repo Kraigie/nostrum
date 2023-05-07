@@ -43,6 +43,8 @@ defmodule Nostrum.Cache.ChannelCache do
   """
 
   alias Nostrum.Struct.Channel
+  alias Nostrum.Struct.Message
+  alias Nostrum.Util
 
   @configured_cache :nostrum
                     |> Application.compile_env(
@@ -84,14 +86,7 @@ defmodule Nostrum.Cache.ChannelCache do
   ```
   """
   @doc section: :reading
-  @callback get(Channel.id() | Nostrum.Struct.Message.t()) ::
-              {:error, reason} | {:ok, Channel.t()} | {:error, reason}
-
-  @doc """
-  Same as `get/1`, but raises `Nostrum.Error.CacheError` in case of failure.
-  """
-  @doc section: :reading
-  @callback get!(Channel.id() | Nostrum.Struct.Message.t()) :: no_return | Channel.t()
+  @callback get(Channel.id()) :: {:ok, Channel.t()} | {:error, reason}
 
   # Functions called from nostrum.
   @doc "Create a channel in the cache."
@@ -116,14 +111,32 @@ defmodule Nostrum.Cache.ChannelCache do
 
   Return channel_not_found if not found.
   """
+  @doc deprecated: "Use ChannelCache.get/1 instead"
   @callback lookup(Channel.id()) :: {:error, reason} | {:ok, map}
 
   # Dispatching logic
 
+  @doc """
+  Look up a channel in the cache, by message or ID.
+  """
+  def get(%Message{channel_id: channel_id}), do: @configured_cache.get(channel_id)
   defdelegate get(channel_id), to: @configured_cache
-  defdelegate get!(channel_id), to: @configured_cache
+
+  @doc """
+  Same as `get/1`, but raises `Nostrum.Error.CacheError` in case of failure.
+  """
+  @spec get!(Channel.id() | Nostrum.Struct.Message.t()) :: no_return | Channel.t()
+  def get!(%Message{channel_id: channel_id}), do: get!(channel_id)
+
+  def get!(channel_id) do
+    channel_id
+    |> @configured_cache.get()
+    |> Util.bangify_find(channel_id, __MODULE__)
+  end
+
   defdelegate create(map), to: @configured_cache
   defdelegate update(channel), to: @configured_cache
   defdelegate delete(channel_id), to: @configured_cache
+  @deprecated "Use ChannelCache.get/1 instead"
   defdelegate lookup(channel_id), to: @configured_cache
 end
