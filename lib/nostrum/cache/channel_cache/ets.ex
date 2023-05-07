@@ -22,7 +22,6 @@ defmodule Nostrum.Cache.ChannelCache.ETS do
   alias Nostrum.Cache.ChannelCache
   alias Nostrum.Cache.GuildCache
   alias Nostrum.Struct.Channel
-  alias Nostrum.Util
   import Nostrum.Snowflake, only: [is_snowflake: 1]
   use Supervisor
 
@@ -45,22 +44,13 @@ defmodule Nostrum.Cache.ChannelCache.ETS do
   # IMPLEMENTATION
   @doc "Retrieve a channel from the cache by ID."
   @impl ChannelCache
-  @spec get(Channel.id() | Nostrum.Struct.Message.t()) ::
-          {:ok, Channel.t()} | {:error, ChannelCache.reason()}
-  def get(%Nostrum.Struct.Message{channel_id: channel_id}), do: get(channel_id)
-
+  @spec get(Channel.id()) :: {:ok, Channel.t()} | {:error, ChannelCache.reason()}
   def get(id) when is_snowflake(id) do
     case lookup(id) do
       {:ok, channel} -> {:ok, convert(channel)}
       error -> error
     end
   end
-
-  @doc "Same as `get/1`, but raises `Nostrum.Error.CacheError` in case of a failure."
-  @impl ChannelCache
-  @spec get!(Channel.id() | Nostrum.Struct.Message.t()) :: no_return | Channel.t()
-  def get!(%Nostrum.Struct.Message{channel_id: channel_id}), do: get!(channel_id)
-  def get!(id) when is_snowflake(id), do: id |> get |> Util.bangify_find(id, __MODULE__)
 
   @doc "Converts and creates the given map as a channel in the cache."
   @impl ChannelCache
@@ -76,6 +66,9 @@ defmodule Nostrum.Cache.ChannelCache.ETS do
   def update(channel) do
     case lookup(channel.id) do
       {:ok, old_channel} ->
+        # XXX: this is incorrect. we always keep the old channel around.
+        # but updating it everytime would be wrong as well. we need to know
+        # the source that `lookup/1` got it from.
         {convert(old_channel), convert(channel)}
 
       _ ->

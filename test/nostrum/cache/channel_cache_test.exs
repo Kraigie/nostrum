@@ -1,5 +1,6 @@
 defmodule Nostrum.Cache.ChannelCacheTest do
   alias Nostrum.Struct.Channel
+  alias Nostrum.Struct.Message
   alias Nostrum.Application
   use ExUnit.Case
 
@@ -47,6 +48,13 @@ defmodule Nostrum.Cache.ChannelCacheTest do
           pid = start_supervised!(@cache)
           @cache.create(@test_channel)
           [pid: pid]
+        end
+
+        test "get/1 on dispatch module with message returns channel" do
+          expected = Channel.to_struct(@test_channel)
+
+          assert Nostrum.Cache.ChannelCache.get(%Message{channel_id: @test_channel.id}) ==
+                   {:ok, expected}
         end
 
         test "get/1 returns channel" do
