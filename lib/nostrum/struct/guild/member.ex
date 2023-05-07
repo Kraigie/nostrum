@@ -58,10 +58,10 @@ defmodule Nostrum.Struct.Guild.Member do
   @type roles :: [Role.id()]
 
   @typedoc """
-  Date the member joined the guild.
+  Date the member joined the guild, as a unix timestamp.
   If you dont request offline guild members this field will be `nil` for any members that come online.
   """
-  @type joined_at :: String.t() | nil
+  @type joined_at :: pos_integer() | nil
 
   @typedoc """
   Whether the member is deafened.

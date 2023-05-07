@@ -2840,7 +2840,7 @@ defmodule Nostrum.Api do
   @doc """
   Retrieves the original message of a webhook.
   """
-  @doc since: "0.6.2"
+  @doc since: "0.7.0"
   @spec get_webhook_message(Webhook.t(), Message.id()) ::
           error | {:ok, Message.t()}
   def get_webhook_message(webhook, message_id) do
@@ -3513,7 +3513,7 @@ defmodule Nostrum.Api do
   @doc """
   Retrieves the original message of an interaction.
   """
-  @doc since: "0.6.2"
+  @doc since: "0.7.0"
   @spec get_original_interaction_response(Interaction.t()) :: error | {:ok, Message.t()}
   def get_original_interaction_response(interaction) do
     path = Constants.original_interaction_response(interaction.application_id, interaction.token)
