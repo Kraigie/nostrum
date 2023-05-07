@@ -7,6 +7,17 @@ defmodule Nostrum.Application do
 
   require Logger
 
+  # Used for starting nostrum when running as an included application.
+  def child_spec(_opts) do
+    %{
+      id: __MODULE__,
+      start: {__MODULE__, :start, [:normal, []]},
+      type: :supervisor,
+      restart: :permanent,
+      shutdown: 500
+    }
+  end
+
   @doc false
   def start(_type, _args) do
     Token.check_token!()

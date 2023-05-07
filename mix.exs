@@ -54,7 +54,8 @@ defmodule Nostrum.Mixfile do
       "guides/State.md",
       "guides/Events.md",
       "guides/Voice.md",
-      "guides/Gateway Intents.md"
+      "guides/Gateway Intents.md",
+      "guides/multi_node.md"
     ]
   end
 
