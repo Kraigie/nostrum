@@ -13,7 +13,7 @@
 
     <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
     <script src="dist/handlebars.templates-XWGFFSCD.js"></script>
-    <script src="dist/sidebar_items-9E0A3817.js"></script>
+    <script src="dist/sidebar_items-EFDD8497.js"></script>
 
       <script src="docs_config.js"></script>
 
@@ -147,11 +147,19 @@ Nostrum
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#join/1" translate="no">join(pid)</a>
+        <a href="#join/0" translate="no">join()</a>
 
       </div>
 
         <div class="summary-synopsis"><p>Join the given process to the consumers.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#join/1" translate="no">join(pid)</a>
+
+      </div>
 
     </div>
 
@@ -186,7 +194,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">child_spec(opts)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer_group.ex#L52" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer_group.ex#L91" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -234,16 +242,16 @@ Functions
 manually.</p>
   </section>
 </section>
-<section class="detail" id="join/1">
+<section class="detail" id="join/0">
 
   <div class="detail-header">
-    <a href="#join/1" class="detail-link" title="Link to this function">
+    <a href="#join/0" class="detail-link" title="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">join(pid)</h1>
+    <h1 class="signature" translate="no">join()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer_group.ex#L44" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer_group.ex#L81" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -255,8 +263,72 @@ manually.</p>
 
   <section class="docstring">
 
-<p>Join the given process to the consumers.</p><p>After the process has joined, it will receive any events sent by nostrum's
-gateway dispatch.</p>
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> join() :: :ok</pre>
+
+      </div>
+
+<p>Join the given process to the consumers.</p><p>If no process is given, joins the current process to the consumers. This can
+be used for subscribing to gateway events and awaiting them inline.</p><p>After the process has joined, it will receive any events sent by nostrum's
+gateway dispatch. These events are sent as messages <code class="inline">{:event, t:Consumer.Event.t/0}</code>. The given <code class="inline">pid</code> is automatically unsubscribed when it
+terminates.</p><p>Note that there is currently no filtering done. If the gateway sends a lot of
+messages and the event subscriber does not terminate swiftly, its message
+queue will keep growing.</p><h2 id="join/0-example" class="section-heading">
+  <a href="#join/0-example" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">example</p>
+  </a>
+  Example
+</h2>
+<p>The following example illustrates how to use this to implement inline event
+awaiting:</p><pre><code class="makeup elixir" translate="no"><span class="kd">defmodule</span><span class="w"> </span><span class="nc">MyBot.Command</span><span class="w">
+  </span><span class="kn">alias</span><span class="w"> </span><span class="nc">Nostrum.Api</span><span class="w">
+  </span><span class="kn">alias</span><span class="w"> </span><span class="nc">Nostrum.ConsumerGroup</span><span class="w">
+  </span><span class="kn">alias</span><span class="w"> </span><span class="nc">Nostrum.Struct.Message</span><span class="w">
+  </span><span class="kn">alias</span><span class="w"> </span><span class="nc">Nostrum.Struct.User</span><span class="w">
+
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">command</span><span class="p" data-group-id="3407051159-1">(</span><span class="p" data-group-id="3407051159-2">%</span><span class="nc" data-group-id="3407051159-2">Message</span><span class="p" data-group-id="3407051159-2">{</span><span class="ss">author</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="3407051159-3">%</span><span class="nc" data-group-id="3407051159-3">User</span><span class="p" data-group-id="3407051159-3">{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="n">author_id</span><span class="p" data-group-id="3407051159-3">}</span><span class="p" data-group-id="3407051159-2">}</span><span class="p" data-group-id="3407051159-1">)</span><span class="w"> </span><span class="k" data-group-id="3407051159-4">do</span><span class="w">
+    </span><span class="nc">Api</span><span class="o">.</span><span class="n">create_message!</span><span class="p" data-group-id="3407051159-5">(</span><span class="n">msg</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Reply &#39;y&#39; in 5 seconds to confirm ordering a large burger menu.&quot;</span><span class="p" data-group-id="3407051159-5">)</span><span class="w">
+    </span><span class="nc">ConsumerGroup</span><span class="o">.</span><span class="n">join</span><span class="p" data-group-id="3407051159-6">(</span><span class="p" data-group-id="3407051159-6">)</span><span class="w">
+    </span><span class="k">receive</span><span class="w"> </span><span class="k" data-group-id="3407051159-7">do</span><span class="w">
+      </span><span class="p" data-group-id="3407051159-8">{</span><span class="ss">:event</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="3407051159-9">{</span><span class="ss">:MESSAGE_CREATE</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="3407051159-10">%</span><span class="nc" data-group-id="3407051159-10">Message</span><span class="p" data-group-id="3407051159-10">{</span><span class="ss">author</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="3407051159-11">%</span><span class="nc" data-group-id="3407051159-11">User</span><span class="p" data-group-id="3407051159-11">{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="n">author_id</span><span class="p" data-group-id="3407051159-11">}</span><span class="p">,</span><span class="w"> </span><span class="ss">content</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;y&quot;</span><span class="p" data-group-id="3407051159-10">}</span><span class="p">,</span><span class="w"> </span><span class="bp">_</span><span class="p" data-group-id="3407051159-9">}</span><span class="p" data-group-id="3407051159-8">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+        </span><span class="nc">Api</span><span class="o">.</span><span class="n">create_message!</span><span class="p" data-group-id="3407051159-12">(</span><span class="n">msg</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;The large burger menu is coming.&quot;</span><span class="p" data-group-id="3407051159-12">)</span><span class="w">
+    </span><span class="k" data-group-id="3407051159-7">after</span><span class="w">
+      </span><span class="mi">5_000</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+        </span><span class="nc">Api</span><span class="o">.</span><span class="n">create_message!</span><span class="p" data-group-id="3407051159-13">(</span><span class="n">msg</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Too slow!&quot;</span><span class="p" data-group-id="3407051159-13">)</span><span class="w">
+    </span><span class="k" data-group-id="3407051159-7">end</span><span class="w">
+  </span><span class="k" data-group-id="3407051159-4">end</span><span class="w">
+</span><span class="k">end</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="join/1">
+
+  <div class="detail-header">
+    <a href="#join/1" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">join(pid)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer_group.ex#L83" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+      <span class="note">(since 0.7.0)</span>
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> join(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pid</a>()) :: :ok</pre>
+
+      </div>
+
+
   </section>
 </section>
 <section class="detail" id="start_link/1">
@@ -268,7 +340,7 @@ gateway dispatch.</p>
     </a>
     <h1 class="signature" translate="no">start_link(opts)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer_group.ex#L48" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer_group.ex#L87" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>

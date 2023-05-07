@@ -13,7 +13,7 @@
 
     <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
     <script src="dist/handlebars.templates-XWGFFSCD.js"></script>
-    <script src="dist/sidebar_items-9E0A3817.js"></script>
+    <script src="dist/sidebar_items-EFDD8497.js"></script>
 
       <script src="docs_config.js"></script>
 
@@ -193,7 +193,7 @@ backing cache implementation is called.</p>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#c:get/1" translate="no">get(arg1)</a>
+        <a href="#c:get/1" translate="no">get(id)</a>
 
       </div>
 
@@ -203,17 +203,9 @@ backing cache implementation is called.</p>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#c:get!/1" translate="no">get!(arg1)</a>
-
-      </div>
-
-        <div class="summary-synopsis"><p>Same as <a href="#get/1"><code class="inline">get/1</code></a>, but raises <a href="Nostrum.Error.CacheError.html"><code class="inline">Nostrum.Error.CacheError</code></a> in case of failure.</p></div>
-
-    </div>
-
-    <div class="summary-row">
-      <div class="summary-signature">
         <a href="#c:lookup/1" translate="no">lookup(id)</a>
+
+          <span class="deprecated" title="Use ChannelCache.get/1 instead">deprecated</span>
 
       </div>
 
@@ -263,7 +255,7 @@ backing cache implementation is called.</p>
 
       </div>
 
-        <div class="summary-synopsis"><p>See <a href="Nostrum.Cache.ChannelCache.ETS.html#get/1"><code class="inline">Nostrum.Cache.ChannelCache.ETS.get/1</code></a>.</p></div>
+        <div class="summary-synopsis"><p>Look up a channel in the cache, by message or ID.</p></div>
 
     </div>
 
@@ -273,13 +265,15 @@ backing cache implementation is called.</p>
 
       </div>
 
-        <div class="summary-synopsis"><p>See <a href="Nostrum.Cache.ChannelCache.ETS.html#get!/1"><code class="inline">Nostrum.Cache.ChannelCache.ETS.get!/1</code></a>.</p></div>
+        <div class="summary-synopsis"><p>Same as <a href="#get/1"><code class="inline">get/1</code></a>, but raises <a href="Nostrum.Error.CacheError.html"><code class="inline">Nostrum.Error.CacheError</code></a> in case of failure.</p></div>
 
     </div>
 
     <div class="summary-row">
       <div class="summary-signature">
         <a href="#lookup/1" translate="no">lookup(channel_id)</a>
+
+          <span class="deprecated" title="Use ChannelCache.get/1 instead">deprecated</span>
 
       </div>
 
@@ -320,7 +314,7 @@ Types
     </a>
     <h1 class="signature" translate="no">reason()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/channel_cache.ex#L54" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/channel_cache.ex#L56" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -361,7 +355,7 @@ Callbacks
     </a>
     <h1 class="signature" translate="no">create(map)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/channel_cache.ex#L98" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/channel_cache.ex#L93" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -389,7 +383,7 @@ Callbacks
     </a>
     <h1 class="signature" translate="no">delete(id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/channel_cache.ex#L112" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/channel_cache.ex#L107" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -415,9 +409,9 @@ Callbacks
       <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this callback</span>
     </a>
-    <h1 class="signature" translate="no">get(arg1)</h1>
+    <h1 class="signature" translate="no">get(id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/channel_cache.ex#L87" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/channel_cache.ex#L89" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -429,8 +423,8 @@ Callbacks
 
       <div class="specs">
 
-          <pre translate="no"><span class="attribute">@callback</span> get(<a href="Nostrum.Struct.Channel.html#t:id/0">Nostrum.Struct.Channel.id</a>() | <a href="Nostrum.Struct.Message.html#t:t/0">Nostrum.Struct.Message.t</a>()) ::
-  {:error, <a href="#t:reason/0">reason</a>()} | {:ok, <a href="Nostrum.Struct.Channel.html#t:t/0">Nostrum.Struct.Channel.t</a>()} | {:error, <a href="#t:reason/0">reason</a>()}</pre>
+          <pre translate="no"><span class="attribute">@callback</span> get(<a href="Nostrum.Struct.Channel.html#t:id/0">Nostrum.Struct.Channel.id</a>()) ::
+  {:ok, <a href="Nostrum.Struct.Channel.html#t:t/0">Nostrum.Struct.Channel.t</a>()} | {:error, <a href="#t:reason/0">reason</a>()}</pre>
 
       </div>
 
@@ -442,41 +436,12 @@ information, a call is made to a <a href="Nostrum.Cache.GuildCache.html"><code c
   </a>
   Example
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="k">case</span><span class="w"> </span><span class="nc">Nostrum.Cache.ChannelCache</span><span class="o">.</span><span class="n">get</span><span class="p" data-group-id="1375412309-1">(</span><span class="mi">133333333337</span><span class="p" data-group-id="1375412309-1">)</span><span class="w"> </span><span class="k" data-group-id="1375412309-2">do</span><span class="w">
-  </span><span class="p" data-group-id="1375412309-3">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">channel</span><span class="p" data-group-id="1375412309-3">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+<pre><code class="makeup elixir" translate="no"><span class="k">case</span><span class="w"> </span><span class="nc">Nostrum.Cache.ChannelCache</span><span class="o">.</span><span class="n">get</span><span class="p" data-group-id="0158269504-1">(</span><span class="mi">133333333337</span><span class="p" data-group-id="0158269504-1">)</span><span class="w"> </span><span class="k" data-group-id="0158269504-2">do</span><span class="w">
+  </span><span class="p" data-group-id="0158269504-3">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">channel</span><span class="p" data-group-id="0158269504-3">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
     </span><span class="s">&quot;We found &quot;</span><span class="w"> </span><span class="o">&lt;&gt;</span><span class="w"> </span><span class="n">channel</span><span class="o">.</span><span class="n">name</span><span class="w">
-  </span><span class="p" data-group-id="1375412309-4">{</span><span class="ss">:error</span><span class="p">,</span><span class="w"> </span><span class="c">_reason</span><span class="p" data-group-id="1375412309-4">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+  </span><span class="p" data-group-id="0158269504-4">{</span><span class="ss">:error</span><span class="p">,</span><span class="w"> </span><span class="c">_reason</span><span class="p" data-group-id="0158269504-4">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
     </span><span class="s">&quot;Donde esta&quot;</span><span class="w">
-</span><span class="k" data-group-id="1375412309-2">end</span></code></pre>
-  </section>
-</section>
-<section class="detail" id="c:get!/1">
-
-  <div class="detail-header">
-    <a href="#c:get!/1" class="detail-link" title="Link to this callback">
-      <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this callback</span>
-    </a>
-    <h1 class="signature" translate="no">get!(arg1)</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/channel_cache.ex#L94" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
-
-
-  </div>
-
-  <section class="docstring">
-
-      <div class="specs">
-
-          <pre translate="no"><span class="attribute">@callback</span> get!(<a href="Nostrum.Struct.Channel.html#t:id/0">Nostrum.Struct.Channel.id</a>() | <a href="Nostrum.Struct.Message.html#t:t/0">Nostrum.Struct.Message.t</a>()) ::
-  <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">no_return</a>() | <a href="Nostrum.Struct.Channel.html#t:t/0">Nostrum.Struct.Channel.t</a>()</pre>
-
-      </div>
-
-<p>Same as <a href="#get/1"><code class="inline">get/1</code></a>, but raises <a href="Nostrum.Error.CacheError.html"><code class="inline">Nostrum.Error.CacheError</code></a> in case of failure.</p>
+</span><span class="k" data-group-id="0158269504-2">end</span></code></pre>
   </section>
 </section>
 <section class="detail" id="c:lookup/1">
@@ -488,13 +453,17 @@ information, a call is made to a <a href="Nostrum.Cache.GuildCache.html"><code c
     </a>
     <h1 class="signature" translate="no">lookup(id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/channel_cache.ex#L119" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/channel_cache.ex#L115" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
 
 
   </div>
+
+    <div class="deprecated">
+      This callback is deprecated. Use ChannelCache.get/1 instead.
+    </div>
 
   <section class="docstring">
 
@@ -516,7 +485,7 @@ information, a call is made to a <a href="Nostrum.Cache.GuildCache.html"><code c
     </a>
     <h1 class="signature" translate="no">update(t)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/channel_cache.ex#L105" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/channel_cache.ex#L100" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -558,7 +527,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">create(map)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/channel_cache.ex#L125" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/channel_cache.ex#L137" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -580,7 +549,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">delete(channel_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/channel_cache.ex#L127" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/channel_cache.ex#L139" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -602,7 +571,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">get(channel_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/channel_cache.ex#L123" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/channel_cache.ex#L122" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -612,7 +581,7 @@ Functions
 
   <section class="docstring">
 
-<p>See <a href="Nostrum.Cache.ChannelCache.ETS.html#get/1"><code class="inline">Nostrum.Cache.ChannelCache.ETS.get/1</code></a>.</p>
+<p>Look up a channel in the cache, by message or ID.</p>
   </section>
 </section>
 <section class="detail" id="get!/1">
@@ -624,7 +593,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">get!(channel_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/channel_cache.ex#L124" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/channel_cache.ex#L129" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -634,7 +603,14 @@ Functions
 
   <section class="docstring">
 
-<p>See <a href="Nostrum.Cache.ChannelCache.ETS.html#get!/1"><code class="inline">Nostrum.Cache.ChannelCache.ETS.get!/1</code></a>.</p>
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> get!(<a href="Nostrum.Struct.Channel.html#t:id/0">Nostrum.Struct.Channel.id</a>() | <a href="Nostrum.Struct.Message.html#t:t/0">Nostrum.Struct.Message.t</a>()) ::
+  <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">no_return</a>() | <a href="Nostrum.Struct.Channel.html#t:t/0">Nostrum.Struct.Channel.t</a>()</pre>
+
+      </div>
+
+<p>Same as <a href="#get/1"><code class="inline">get/1</code></a>, but raises <a href="Nostrum.Error.CacheError.html"><code class="inline">Nostrum.Error.CacheError</code></a> in case of failure.</p>
   </section>
 </section>
 <section class="detail" id="lookup/1">
@@ -646,13 +622,17 @@ Functions
     </a>
     <h1 class="signature" translate="no">lookup(channel_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/channel_cache.ex#L128" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/channel_cache.ex#L141" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
 
 
   </div>
+
+    <div class="deprecated">
+      This function is deprecated. Use ChannelCache.get/1 instead.
+    </div>
 
   <section class="docstring">
 
@@ -668,7 +648,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">update(channel)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/channel_cache.ex#L126" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/channel_cache.ex#L138" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
