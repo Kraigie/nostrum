@@ -38,7 +38,7 @@ defmodule Nostrum.Struct.AutoModerationRule.TriggerMetadata do
 
   | key | associated `trigger_type`
   | ---- | -----------
-  | `keywords` | `KEYWORD`
+  | `keywords` | `​KEYWORD`
   | `preset` | `KEYWORD_PRESET`
   """
   @type t :: preset_value_metadata() | keyword_metadata()

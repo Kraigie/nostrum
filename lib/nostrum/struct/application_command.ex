@@ -46,14 +46,14 @@ defmodule Nostrum.Struct.ApplicationCommand do
 
   - `1` for `SUB_COMMAND`
   - `2` for `SUB_COMMAND_GROUP`
-  - `3` for `STRING`
-  - `4` for `INTEGER` *Note*: due to API limitations they can only be between -2^53 and 2^53
+  - `3` for `​STRING`
+  - `4` for `​INTEGER` *Note*: due to API limitations they can only be between -2^53 and 2^53
   - `5` for `BOOLEAN`
   - `6` for `USER`
   - `7` for `CHANNEL`
   - `8` for `ROLE`
   - `9` for `MENTIONABLE` *Note*: Includes users and roles
-  - `10` for `NUMBER` *Note*: This has the same limitations as `INTEGER`
+  - `10` for `NUMBER` *Note*: This has the same limitations as `​INTEGER`
 
   You may use one of the `Nostrum.Constants.ApplicationCommandOptionType` methods.
   """

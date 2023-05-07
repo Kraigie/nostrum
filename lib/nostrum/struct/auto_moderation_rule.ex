@@ -51,7 +51,7 @@ defmodule Nostrum.Struct.AutoModerationRule do
 
   | value | type | max per guild | description
   | ---- | ---- | ----- | -----------
-  |`1` | `KEYWORD` | 3 | check if content contains words from a user defined list of keywords
+  |`1` | `​KEYWORD` | 3 | check if content contains words from a user defined list of keywords
   | `2` | `HARMFUL_LINK` | 1 | check if the content contains any harmful links
   | `3` | `SPAM` | 1 | check if the content represents generic spam
   | `4` | `KEYWORD_PRESET `| 1 | check if the content contains a list of discord defined keywords
@@ -78,7 +78,7 @@ defmodule Nostrum.Struct.AutoModerationRule do
 
   | key | associated `trigger_type`
   | ---- | -----------
-  | `keywords` | `KEYWORD`
+  | `keywords` | `​KEYWORD`
   | `preset` | `KEYWORD_PRESET`
   """
   @type trigger_metadata :: TriggerMetadata.t()
