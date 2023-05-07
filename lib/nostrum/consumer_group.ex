@@ -26,7 +26,7 @@ defmodule Nostrum.ConsumerGroup do
 
     @scope_name
     |> :pg.get_members(@group_name)
-    |> Enum.each(&GenServer.cast(&1, payload))
+    |> Enum.each(&send(&1, payload))
 
     dispatch(events)
   end
@@ -38,9 +38,48 @@ defmodule Nostrum.ConsumerGroup do
   @doc """
   Join the given process to the consumers.
 
+  If no process is given, joins the current process to the consumers. This can
+  be used for subscribing to gateway events and awaiting them inline.
+
   After the process has joined, it will receive any events sent by nostrum's
-  gateway dispatch.
+  gateway dispatch. These events are sent as messages `{:event,
+  t:Consumer.Event.t/0}`. The given `pid` is automatically unsubscribed when it
+  terminates.
+
+  Note that there is currently no filtering done. If the gateway sends a lot of
+  messages and the event subscriber does not terminate swiftly, its message
+  queue will keep growing.
+
+  ## Example
+
+  The following example illustrates how to use this to implement inline event
+  awaiting:
+
+  ```elixir
+  defmodule MyBot.Command
+    alias Nostrum.Api
+    alias Nostrum.ConsumerGroup
+    alias Nostrum.Struct.Message
+    alias Nostrum.Struct.User
+
+    def command(%Message{author: %User{id: author_id}}) do
+      Api.create_message!(msg, "Reply 'y' in 5 seconds to confirm ordering a large burger menu.")
+      ConsumerGroup.join()
+      receive do
+        {:event, {:MESSAGE_CREATE, %Message{author: %User{id: author_id}, content: "y"}, _}} ->
+          Api.create_message!(msg, "The large burger menu is coming.")
+      after
+        5_000 ->
+          Api.create_message!(msg, "Too slow!")
+      end
+    end
+  end
+  ```
   """
+  @spec join :: :ok
+  @spec join(pid()) :: :ok
+  def join, do: join(self())
+
   def join(pid) do
     :pg.join(@scope_name, @group_name, pid)
   end

@@ -69,7 +69,7 @@ defmodule Nostrum.Consumer do
 
   For example, a message create will look like this
   ```elixir
-  {:MESSAGE_CREATE, {Nostrum.Struct.Message.t}, WSState.t}
+  {:MESSAGE_CREATE, Nostrum.Struct.Message.t, WSState.t}
   ```
 
   In some cases there will be multiple payloads when something is updated, so as
@@ -375,7 +375,7 @@ defmodule Nostrum.Consumer do
         }
       end
 
-      def handle_cast({:event, event}, state) do
+      def handle_info({:event, event}, state) do
         Task.start_link(fn ->
           __MODULE__.handle_event(event)
         end)
