@@ -307,8 +307,15 @@ defmodule Nostrum.Api do
 
   ## Options
 
-    * `:content` (string) - the message contents (up to 2000 characters)
-    * `:embeds` (`t:Nostrum.Struct.Embed.t/0`) - a list of embedded rich content
+  * `:content` (string) - the message contents (up to 2000 characters)
+  * `:embeds` (`t:Nostrum.Struct.Embed.t/0`) - a list of embedded rich content
+  * `:files` - a list of files where each element is the same format as the
+  `:file` option. If both `:file` and `:files` are specified, `:file` will be
+  prepended to the `:files` list. See `create_message/2` for more information.
+
+  Note that if you edit a message with attachments, all attachments that should
+  be present after edit **must** be included in your request body. This
+  includes attachments that were sent in the original request.
 
   ## Examples
 
