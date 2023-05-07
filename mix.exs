@@ -41,21 +41,21 @@ defmodule Nostrum.Mixfile do
       groups_for_modules: groups_for_modules(),
       groups_for_functions: groups_for_functions(),
       source_ref: "master",
-      assets: "docs/assets",
+      assets: "guides/assets",
       nest_modules_by_prefix: [Nostrum.Cache, Nostrum.Constants, Nostrum.Struct]
     ]
   end
 
   def extras do
     [
-      "docs/static/Intro.md",
-      "docs/static/API.md",
-      "docs/static/Application Commands.md",
-      "docs/static/State.md",
-      "docs/static/Events.md",
-      "docs/static/Consumers.md",
-      "docs/static/Voice.md",
-      "docs/static/Gateway Intents.md"
+      "guides/Intro.md",
+      "guides/API.md",
+      "guides/Application Commands.md",
+      "guides/State.md",
+      "guides/Events.md",
+      "guides/Consumers.md",
+      "guides/Voice.md",
+      "guides/Gateway Intents.md"
     ]
   end
 
