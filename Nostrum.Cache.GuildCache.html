@@ -5,9 +5,9 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="ExDoc v0.29.4">
-    <meta name="project" content="Nostrum v0.7.0">
+    <meta name="project" content="Nostrum v0.7.0-rc1">
 
-    <title>Nostrum.Cache.GuildCache — Nostrum v0.7.0</title>
+    <title>Nostrum.Cache.GuildCache — Nostrum v0.7.0-rc1</title>
     <link rel="stylesheet" href="dist/html-elixir-HHVY3JYD.css" />
 
 
@@ -68,7 +68,7 @@
 Nostrum
       </a>
       <div class="sidebar-projectVersion" translate="no">
-        v0.7.0
+        v0.7.0-rc1
       </div>
     </div>
     <ul class="sidebar-listNav">
@@ -104,7 +104,7 @@ Nostrum
     </a>
 
   <span translate="no">Nostrum.Cache.GuildCache</span> <small>behaviour</small>
-  <small class="app-vsn" translate="no">(Nostrum v0.7.0)</small>
+  <small class="app-vsn" translate="no">(Nostrum v0.7.0-rc1)</small>
 
 </h1>
 
@@ -876,11 +876,11 @@ emojis.</p>
   </a>
   Examples
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Cache.GuildCache</span><span class="o">.</span><span class="n">get</span><span class="p" data-group-id="7318639244-1">(</span><span class="mi">0</span><span class="p" data-group-id="7318639244-1">)</span><span class="w">
-</span><span class="p" data-group-id="7318639244-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="7318639244-3">%</span><span class="nc" data-group-id="7318639244-3">Nostrum.Struct.Guild</span><span class="p" data-group-id="7318639244-3">{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p" data-group-id="7318639244-3">}</span><span class="p" data-group-id="7318639244-2">}</span><span class="w">
+<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Cache.GuildCache</span><span class="o">.</span><span class="n">get</span><span class="p" data-group-id="1592762468-1">(</span><span class="mi">0</span><span class="p" data-group-id="1592762468-1">)</span><span class="w">
+</span><span class="p" data-group-id="1592762468-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="1592762468-3">%</span><span class="nc" data-group-id="1592762468-3">Nostrum.Struct.Guild</span><span class="p" data-group-id="1592762468-3">{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p" data-group-id="1592762468-3">}</span><span class="p" data-group-id="1592762468-2">}</span><span class="w">
 
-</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Cache.GuildCache</span><span class="o">.</span><span class="n">get</span><span class="p" data-group-id="7318639244-4">(</span><span class="mi">10</span><span class="p" data-group-id="7318639244-4">)</span><span class="w">
-</span><span class="p" data-group-id="7318639244-5">{</span><span class="ss">:error</span><span class="p">,</span><span class="w"> </span><span class="ss">:id_not_found_on_guild_lookup</span><span class="p" data-group-id="7318639244-5">}</span></code></pre>
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Cache.GuildCache</span><span class="o">.</span><span class="n">get</span><span class="p" data-group-id="1592762468-4">(</span><span class="mi">10</span><span class="p" data-group-id="1592762468-4">)</span><span class="w">
+</span><span class="p" data-group-id="1592762468-5">{</span><span class="ss">:error</span><span class="p">,</span><span class="w"> </span><span class="ss">:id_not_found_on_guild_lookup</span><span class="p" data-group-id="1592762468-5">}</span></code></pre>
   </section>
 </section>
 <section class="detail" id="c:get_by/1">
@@ -908,14 +908,14 @@ emojis.</p>
 
       </div>
 
-<p>Retrieves a single <a href="Nostrum.Struct.Guild.html"><code class="inline">Nostrum.Struct.Guild</code></a> where it matches the <code class="inline">clauses</code>.</p><p>Returns <code class="inline">{:error, reason}</code> if no result was found.</p><pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Cache.GuildCache</span><span class="o">.</span><span class="n">get_by</span><span class="p" data-group-id="9907341747-1">(</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p" data-group-id="9907341747-1">)</span><span class="w">
-</span><span class="p" data-group-id="9907341747-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="9907341747-3">%</span><span class="nc" data-group-id="9907341747-3">Nostrum.Struct.Guild</span><span class="p" data-group-id="9907341747-3">{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p" data-group-id="9907341747-3">}</span><span class="p" data-group-id="9907341747-2">}</span><span class="w">
+<p>Retrieves a single <a href="Nostrum.Struct.Guild.html"><code class="inline">Nostrum.Struct.Guild</code></a> where it matches the <code class="inline">clauses</code>.</p><p>Returns <code class="inline">{:error, reason}</code> if no result was found.</p><pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Cache.GuildCache</span><span class="o">.</span><span class="n">get_by</span><span class="p" data-group-id="9343998113-1">(</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p" data-group-id="9343998113-1">)</span><span class="w">
+</span><span class="p" data-group-id="9343998113-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="9343998113-3">%</span><span class="nc" data-group-id="9343998113-3">Nostrum.Struct.Guild</span><span class="p" data-group-id="9343998113-3">{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p" data-group-id="9343998113-3">}</span><span class="p" data-group-id="9343998113-2">}</span><span class="w">
 
-</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Cache.GuildCache</span><span class="o">.</span><span class="n">get_by</span><span class="p" data-group-id="9907341747-4">(</span><span class="p" data-group-id="9907341747-5">%{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p" data-group-id="9907341747-5">}</span><span class="p" data-group-id="9907341747-4">)</span><span class="w">
-</span><span class="p" data-group-id="9907341747-6">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="9907341747-7">%</span><span class="nc" data-group-id="9907341747-7">Nostrum.Struct.Guild</span><span class="p" data-group-id="9907341747-7">{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p" data-group-id="9907341747-7">}</span><span class="p" data-group-id="9907341747-6">}</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Cache.GuildCache</span><span class="o">.</span><span class="n">get_by</span><span class="p" data-group-id="9343998113-4">(</span><span class="p" data-group-id="9343998113-5">%{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p" data-group-id="9343998113-5">}</span><span class="p" data-group-id="9343998113-4">)</span><span class="w">
+</span><span class="p" data-group-id="9343998113-6">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="9343998113-7">%</span><span class="nc" data-group-id="9343998113-7">Nostrum.Struct.Guild</span><span class="p" data-group-id="9343998113-7">{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p" data-group-id="9343998113-7">}</span><span class="p" data-group-id="9343998113-6">}</span><span class="w">
 
-</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Cache.GuildCache</span><span class="o">.</span><span class="n">get_by</span><span class="p" data-group-id="9907341747-8">(</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p" data-group-id="9907341747-8">)</span><span class="w">
-</span><span class="p" data-group-id="9907341747-9">{</span><span class="ss">:error</span><span class="p">,</span><span class="w"> </span><span class="ss">:id_not_found_on_guild_lookup</span><span class="p" data-group-id="9907341747-9">}</span></code></pre>
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Cache.GuildCache</span><span class="o">.</span><span class="n">get_by</span><span class="p" data-group-id="9343998113-8">(</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p" data-group-id="9343998113-8">)</span><span class="w">
+</span><span class="p" data-group-id="9343998113-9">{</span><span class="ss">:error</span><span class="p">,</span><span class="w"> </span><span class="ss">:id_not_found_on_guild_lookup</span><span class="p" data-group-id="9343998113-9">}</span></code></pre>
   </section>
 </section>
 <section class="detail" id="c:member_count_down/1">
@@ -1098,11 +1098,11 @@ emojis.</p>
   </a>
   Examples
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Cache.GuildCache</span><span class="o">.</span><span class="n">select</span><span class="p" data-group-id="9174032790-1">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="k" data-group-id="9174032790-2">fn</span><span class="w"> </span><span class="n">guild</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">guild</span><span class="o">.</span><span class="n">id</span><span class="w"> </span><span class="k" data-group-id="9174032790-2">end</span><span class="p" data-group-id="9174032790-1">)</span><span class="w">
-</span><span class="p" data-group-id="9174032790-3">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p" data-group-id="9174032790-3">}</span><span class="w">
+<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Cache.GuildCache</span><span class="o">.</span><span class="n">select</span><span class="p" data-group-id="4133600859-1">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="k" data-group-id="4133600859-2">fn</span><span class="w"> </span><span class="n">guild</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">guild</span><span class="o">.</span><span class="n">id</span><span class="w"> </span><span class="k" data-group-id="4133600859-2">end</span><span class="p" data-group-id="4133600859-1">)</span><span class="w">
+</span><span class="p" data-group-id="4133600859-3">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p" data-group-id="4133600859-3">}</span><span class="w">
 
-</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Cache.GuildCache</span><span class="o">.</span><span class="n">select</span><span class="p" data-group-id="9174032790-4">(</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="k" data-group-id="9174032790-5">fn</span><span class="w"> </span><span class="n">guild</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">guild</span><span class="o">.</span><span class="n">id</span><span class="w"> </span><span class="k" data-group-id="9174032790-5">end</span><span class="p" data-group-id="9174032790-4">)</span><span class="w">
-</span><span class="p" data-group-id="9174032790-6">{</span><span class="ss">:error</span><span class="p">,</span><span class="w"> </span><span class="ss">:id_not_found_on_guild_lookup</span><span class="p" data-group-id="9174032790-6">}</span></code></pre>
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Cache.GuildCache</span><span class="o">.</span><span class="n">select</span><span class="p" data-group-id="4133600859-4">(</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="k" data-group-id="4133600859-5">fn</span><span class="w"> </span><span class="n">guild</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">guild</span><span class="o">.</span><span class="n">id</span><span class="w"> </span><span class="k" data-group-id="4133600859-5">end</span><span class="p" data-group-id="4133600859-4">)</span><span class="w">
+</span><span class="p" data-group-id="4133600859-6">{</span><span class="ss">:error</span><span class="p">,</span><span class="w"> </span><span class="ss">:id_not_found_on_guild_lookup</span><span class="p" data-group-id="4133600859-6">}</span></code></pre>
   </section>
 </section>
 <section class="detail" id="c:select_all/1">
@@ -1159,14 +1159,14 @@ emojis.</p>
       </div>
 
 <p>Selects values using a <code class="inline">selector</code> from a <a href="Nostrum.Struct.Guild.html"><code class="inline">Nostrum.Struct.Guild</code></a> that matches
-the <code class="inline">clauses</code>.</p><p>Returns <code class="inline">{:error, reason}</code> if no result was found.</p><pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Cache.GuildCache</span><span class="o">.</span><span class="n">select_by</span><span class="p" data-group-id="3119815850-1">(</span><span class="p" data-group-id="3119815850-2">[</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p" data-group-id="3119815850-2">]</span><span class="p">,</span><span class="w"> </span><span class="k" data-group-id="3119815850-3">fn</span><span class="w"> </span><span class="n">guild</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">guild</span><span class="o">.</span><span class="n">id</span><span class="w"> </span><span class="k" data-group-id="3119815850-3">end</span><span class="p" data-group-id="3119815850-1">)</span><span class="w">
-</span><span class="p" data-group-id="3119815850-4">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p" data-group-id="3119815850-4">}</span><span class="w">
+the <code class="inline">clauses</code>.</p><p>Returns <code class="inline">{:error, reason}</code> if no result was found.</p><pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Cache.GuildCache</span><span class="o">.</span><span class="n">select_by</span><span class="p" data-group-id="2283303532-1">(</span><span class="p" data-group-id="2283303532-2">[</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p" data-group-id="2283303532-2">]</span><span class="p">,</span><span class="w"> </span><span class="k" data-group-id="2283303532-3">fn</span><span class="w"> </span><span class="n">guild</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">guild</span><span class="o">.</span><span class="n">id</span><span class="w"> </span><span class="k" data-group-id="2283303532-3">end</span><span class="p" data-group-id="2283303532-1">)</span><span class="w">
+</span><span class="p" data-group-id="2283303532-4">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p" data-group-id="2283303532-4">}</span><span class="w">
 
-</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Cache.GuildCache</span><span class="o">.</span><span class="n">select_by</span><span class="p" data-group-id="3119815850-5">(</span><span class="p" data-group-id="3119815850-6">%{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p" data-group-id="3119815850-6">}</span><span class="p">,</span><span class="w"> </span><span class="k" data-group-id="3119815850-7">fn</span><span class="w"> </span><span class="n">guild</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">guild</span><span class="o">.</span><span class="n">id</span><span class="w"> </span><span class="k" data-group-id="3119815850-7">end</span><span class="p" data-group-id="3119815850-5">)</span><span class="w">
-</span><span class="p" data-group-id="3119815850-8">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p" data-group-id="3119815850-8">}</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Cache.GuildCache</span><span class="o">.</span><span class="n">select_by</span><span class="p" data-group-id="2283303532-5">(</span><span class="p" data-group-id="2283303532-6">%{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p" data-group-id="2283303532-6">}</span><span class="p">,</span><span class="w"> </span><span class="k" data-group-id="2283303532-7">fn</span><span class="w"> </span><span class="n">guild</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">guild</span><span class="o">.</span><span class="n">id</span><span class="w"> </span><span class="k" data-group-id="2283303532-7">end</span><span class="p" data-group-id="2283303532-5">)</span><span class="w">
+</span><span class="p" data-group-id="2283303532-8">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p" data-group-id="2283303532-8">}</span><span class="w">
 
-</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Cache.GuildCache</span><span class="o">.</span><span class="n">select_by</span><span class="p" data-group-id="3119815850-9">(</span><span class="p" data-group-id="3119815850-10">[</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p" data-group-id="3119815850-10">]</span><span class="p">,</span><span class="w"> </span><span class="k" data-group-id="3119815850-11">fn</span><span class="w"> </span><span class="n">guild</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">guild</span><span class="o">.</span><span class="n">id</span><span class="w"> </span><span class="k" data-group-id="3119815850-11">end</span><span class="p" data-group-id="3119815850-9">)</span><span class="w">
-</span><span class="p" data-group-id="3119815850-12">{</span><span class="ss">:error</span><span class="p">,</span><span class="w"> </span><span class="ss">:id_not_found_on_guild_lookup</span><span class="p" data-group-id="3119815850-12">}</span></code></pre>
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Cache.GuildCache</span><span class="o">.</span><span class="n">select_by</span><span class="p" data-group-id="2283303532-9">(</span><span class="p" data-group-id="2283303532-10">[</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p" data-group-id="2283303532-10">]</span><span class="p">,</span><span class="w"> </span><span class="k" data-group-id="2283303532-11">fn</span><span class="w"> </span><span class="n">guild</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">guild</span><span class="o">.</span><span class="n">id</span><span class="w"> </span><span class="k" data-group-id="2283303532-11">end</span><span class="p" data-group-id="2283303532-9">)</span><span class="w">
+</span><span class="p" data-group-id="2283303532-12">{</span><span class="ss">:error</span><span class="p">,</span><span class="w"> </span><span class="ss">:id_not_found_on_guild_lookup</span><span class="p" data-group-id="2283303532-12">}</span></code></pre>
   </section>
 </section>
 <section class="detail" id="c:update/1">
@@ -1495,11 +1495,11 @@ Functions
         <p>
 
             <span class="line">
-              <a href="https://hex.pm/packages/nostrum/0.7.0" class="footer-hex-package">Hex Package</a>
+              <a href="https://hex.pm/packages/nostrum/0.7.0-rc1" class="footer-hex-package">Hex Package</a>
 
-              <a href="https://preview.hex.pm/preview/nostrum/0.7.0">Hex Preview</a>
+              <a href="https://preview.hex.pm/preview/nostrum/0.7.0-rc1">Hex Preview</a>
 
-                (<a href="https://preview.hex.pm/preview/nostrum/0.7.0/show/lib/nostrum/cache/guild_cache.ex">current file</a>)
+                (<a href="https://preview.hex.pm/preview/nostrum/0.7.0-rc1/show/lib/nostrum/cache/guild_cache.ex">current file</a>)
 
             </span>
 
