@@ -1,4 +1,4 @@
-# Api
+# API
 Nostrum includes a complete implementation of the endpoints supported by Discord's
 API. Method names are copied closely from the documentation to eliminate any
 confusion about what a method does, as well as allow users to easily lookup the
