@@ -6,8 +6,12 @@
 An [Elixir](http://elixir-lang.org/) library for the Discord API.
 
 It is highly recommended to check out the
-[documentation](https://kraigie.github.io/nostrum/) first. It includes all of the
+[documentation](https://hexdocs.pm/nostrum/) first. It includes all of the
 information listed here and more.
+
+**This README is for the master branch**, which includes recent developments
+and may be unstable. If you want to live on the edge regardless, you can check
+the [pre-release documentation](https://kraigie.github.io/nostrum/).
 
 ## Installation
 
