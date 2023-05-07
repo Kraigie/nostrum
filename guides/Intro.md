@@ -89,10 +89,6 @@ The following fields are also supported:
  This is included primarily for debugging and testing purposes. Defaults to `false`.
  - `log_dispatch_events` - This will log dispatch events as they are received from the gateway.
  This is included primarily for debugging and testing purposes. Defaults to `false`. 
- - `custom_consumer` - For use when creating custom consumer processes. This disables
- all caching done internally, in lieu of sending dispatch events to the processes
- you specify. For more information see [creating custom consumers](consumers.html).
- Defaults to `false`.
  - `request_guild_members` - This will perform member chunking to retrieve a complete list of
  members for all guilds. This will increase start up time and memory usage by quite a bit.
  Defaults to `false`.
