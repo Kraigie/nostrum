@@ -117,8 +117,8 @@ defmodule Nostrum.Voice do
   end
 
   @doc false
-  def remove_voice(guild_id) do
-    GenServer.cast(VoiceStateMap, {:remove, guild_id})
+  def remove_voice(guild_id, pre_cleanup_args \\ []) do
+    GenServer.cast(VoiceStateMap, {:remove, guild_id, pre_cleanup_args})
   end
 
   @doc """
@@ -746,7 +746,7 @@ defmodule Nostrum.Voice do
     voice =
       state
       |> Map.get(guild_id, VoiceState.new(guild_id: guild_id))
-      |> Map.merge(Enum.into(args, %{}))
+      |> Map.merge(Map.new(args))
 
     state = Map.put(state, guild_id, voice)
 
@@ -762,8 +762,12 @@ defmodule Nostrum.Voice do
   end
 
   @doc false
-  def handle_cast({:remove, guild_id}, state) do
-    VoiceState.cleanup(state[guild_id])
+  def handle_cast({:remove, guild_id, pre_cleanup_args}, state) do
+    state
+    |> Map.get(guild_id, %{})
+    |> Map.merge(Map.new(pre_cleanup_args))
+    |> VoiceState.cleanup()
+
     {:noreply, Map.delete(state, guild_id)}
   end
 
@@ -786,51 +790,33 @@ defmodule Nostrum.Voice do
 
   @doc false
   def on_channel_join_change(p, voice) do
-    v_ws = Session.get_ws_state(voice.session_pid)
-
-    # On the off-chance that we receive Voice Server Update first:
-    {new_token, new_gateway} =
-      if voice.token == v_ws.token do
-        # Need to reset
-        {nil, nil}
-      else
-        # Already updated
-        {voice.token, voice.gateway}
-      end
-
-    %{
-      ffmpeg_proc: ffmpeg_proc,
-      raw_audio: raw_audio,
-      raw_stateful: raw_stateful,
-      current_url: current_url,
-      persist_source: persist_source,
-      persist_playback: persist_playback
-    } = voice
-
     # Nil-ify ffmpeg_proc so it doesn't get closed when cleanup is called
-    if persist_source, do: update_voice(p.guild_id, ffmpeg_proc: nil)
+    if voice.persist_source do
+      remove_voice(p.guild_id, ffmpeg_proc: nil)
+    else
+      remove_voice(p.guild_id)
+    end
 
-    remove_voice(p.guild_id)
-
-    fields =
+    update_voice(
+      p.guild_id,
       [
         channel_id: p.channel_id,
         session: p.session_id,
         self_mute: p.self_mute,
         self_deaf: p.self_deaf,
-        token: new_token,
-        gateway: new_gateway
+        token: nil,
+        gateway: nil
       ] ++
-        if persist_source,
+        if(voice.persist_source,
           do: [
-            ffmpeg_proc: ffmpeg_proc,
-            raw_audio: raw_audio,
-            raw_stateful: raw_stateful,
-            current_url: current_url,
-            persist_playback: persist_playback
+            ffmpeg_proc: voice.ffmpeg_proc,
+            raw_audio: voice.raw_audio,
+            raw_stateful: voice.raw_stateful,
+            current_url: voice.current_url,
+            persist_playback: voice.persist_playback
           ],
           else: []
-
-    update_voice(p.guild_id, fields)
+        )
+    )
   end
 end
