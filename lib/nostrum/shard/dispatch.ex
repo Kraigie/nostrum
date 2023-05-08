@@ -364,15 +364,7 @@ defmodule Nostrum.Shard.Dispatch do
 
           # Already in this channel but connection died:
           is_pid(voice.session_pid) and not Process.alive?(voice.session_pid) ->
-            Voice.leave_channel(p.guild_id)
-
-            Voice.join_channel(
-              p.guild_id,
-              p.channel_id,
-              p.self_mute,
-              p.self_deaf,
-              voice.persist_source
-            )
+            Voice.restart_session(p)
 
           # Already in this channel:
           true ->
