@@ -210,13 +210,13 @@ defmodule Nostrum.Voice.Session do
     spawn(fn ->
       Process.monitor(state.conn_pid)
 
-      %VoiceState{channel_id: chan, self_mute: mute, self_deaf: deaf} =
+      %VoiceState{channel_id: chan, self_mute: mute, self_deaf: deaf, persist_source: persist} =
         Voice.get_voice(state.guild_id)
 
       receive do
         _ ->
           Voice.leave_channel(state.guild_id)
-          Voice.join_channel(state.guild_id, chan, mute, deaf)
+          Voice.join_channel(state.guild_id, chan, mute, deaf, persist)
       end
     end)
   end
