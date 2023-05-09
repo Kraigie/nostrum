@@ -11,6 +11,40 @@ defmodule Nostrum.Cache.MemberCacheTest do
     Nostrum.Cache.MemberCache.ETS
   ]
 
+  describe "get_with_user/1" do
+    setup do
+      [member_pid: start_supervised!(MemberCache), user_pid: start_supervised!(UserCache)]
+    end
+
+    test "no member and no user" do
+      refute MemberCache.get_with_user(1234, 12059)
+    end
+
+    test "no member but user" do
+      user = %{id: :erlang.unique_integer()}
+      UserCache.create(user)
+      refute MemberCache.get_with_user(1234, user.id)
+    end
+
+    test "member but no user" do
+      guild_id = :erlang.unique_integer()
+      raw_member = %{user: %{id: :erlang.unique_integer()}}
+      assert created_member = MemberCache.create(guild_id, raw_member)
+      assert {^created_member, nil} = MemberCache.get_with_user(guild_id, raw_member.user.id)
+    end
+
+    test "member with user" do
+      guild_id = :erlang.unique_integer()
+      raw_user = %{id: :erlang.unique_integer()}
+      raw_member = %{user: raw_user}
+      assert created_user = UserCache.create(raw_user)
+      assert created_member = MemberCache.create(guild_id, raw_member)
+
+      assert {^created_member, ^created_user} =
+               MemberCache.get_with_user(guild_id, raw_member.user.id)
+    end
+  end
+
   describe "get_with_users/1" do
     setup do
       [member_pid: start_supervised!(MemberCache), user_pid: start_supervised!(UserCache)]

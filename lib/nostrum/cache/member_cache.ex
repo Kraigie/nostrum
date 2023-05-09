@@ -113,6 +113,26 @@ defmodule Nostrum.Cache.MemberCache do
   defdelegate by_user(member_id), to: @configured_cache
 
   @doc """
+  Return a member together with its user via the user cache.
+  """
+  @spec get_with_user(Guild.id(), Member.user_id()) :: {Member.t(), User.t() | nil} | nil
+  def get_with_user(guild_id, member_id) do
+    case get(guild_id, member_id) do
+      {:ok, member} ->
+        case UserCache.get(member_id) do
+          {:ok, user} ->
+            {member, user}
+
+          _ ->
+            {member, nil}
+        end
+
+      _ ->
+        nil
+    end
+  end
+
+  @doc """
   Return an enumerable of members with their users.
 
   ## Parameters
@@ -130,13 +150,6 @@ defmodule Nostrum.Cache.MemberCache do
   """
   @spec get_with_users(Guild.id()) :: Enumerable.t({Member.t(), User.t()})
   def get_with_users(guild_id) do
-    member_query_handle = qlc_handle()
-    user_query_handle = UserCache.qlc_handle()
-    initial_bindings = :erl_eval.new_bindings()
-    member_bindings = :erl_eval.add_binding(:MemberHandle, member_query_handle, initial_bindings)
-    user_bindings = :erl_eval.add_binding(:UserHandle, user_query_handle, member_bindings)
-    final_bindings = :erl_eval.add_binding(:RequestedGuildId, guild_id, user_bindings)
-
     joined_handle =
       :qlc.string_to_handle(
         '[{Member, User} || ' ++
@@ -145,7 +158,9 @@ defmodule Nostrum.Cache.MemberCache do
           'GuildId =:= RequestedGuildId, ' ++
           'UserId =:= MemberId].',
         [],
-        final_bindings
+        MemberHandle: qlc_handle(),
+        UserHandle: UserCache.qlc_handle(),
+        RequestedGuildId: guild_id
       )
 
     Stream.resource(
