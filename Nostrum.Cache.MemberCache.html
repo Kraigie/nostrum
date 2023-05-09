@@ -13,7 +13,7 @@
 
     <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
     <script src="dist/handlebars.templates-XWGFFSCD.js"></script>
-    <script src="dist/sidebar_items-EFDD8497.js"></script>
+    <script src="dist/sidebar_items-9773C1CF.js"></script>
 
       <script src="docs_config.js"></script>
 
@@ -245,6 +245,16 @@ details on how to implement your own.</p>
       </div>
 
         <div class="summary-synopsis"><p>See <a href="Nostrum.Cache.MemberCache.ETS.html#get/2"><code class="inline">Nostrum.Cache.MemberCache.ETS.get/2</code></a>.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#get_with_user/2" translate="no">get_with_user(guild_id, member_id)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Return a member together with its user via the user cache.</p></div>
 
     </div>
 
@@ -622,6 +632,37 @@ Functions
 <p>See <a href="Nostrum.Cache.MemberCache.ETS.html#get/2"><code class="inline">Nostrum.Cache.MemberCache.ETS.get/2</code></a>.</p>
   </section>
 </section>
+<section class="detail" id="get_with_user/2">
+
+  <div class="detail-header">
+    <a href="#get_with_user/2" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">get_with_user(guild_id, member_id)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/member_cache.ex#L119" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+      <span class="note">(since 0.7.0)</span>
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> get_with_user(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(), <a href="Nostrum.Struct.Guild.Member.html#t:user_id/0">Nostrum.Struct.Guild.Member.user_id</a>()) ::
+  {<a href="Nostrum.Struct.Guild.Member.html#t:t/0">Nostrum.Struct.Guild.Member.t</a>(), <a href="Nostrum.Struct.User.html#t:t/0">Nostrum.Struct.User.t</a>() | nil} | nil</pre>
+
+      </div>
+
+<p>Return a member together with its user via the user cache.</p>
+  </section>
+</section>
 <section class="detail" id="get_with_users/1">
 
   <div class="detail-header">
@@ -631,7 +672,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">get_with_users(guild_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/member_cache.ex#L132" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/member_cache.ex#L152" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
