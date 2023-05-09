@@ -5,9 +5,9 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="ExDoc v0.29.4">
-    <meta name="project" content="Nostrum v0.7.0-rc1">
+    <meta name="project" content="Nostrum v0.7.0-rc2">
 
-    <title>Nostrum.Consumer — Nostrum v0.7.0-rc1</title>
+    <title>Nostrum.Consumer — Nostrum v0.7.0-rc2</title>
     <link rel="stylesheet" href="dist/html-elixir-HHVY3JYD.css" />
 
 
@@ -68,7 +68,7 @@
 Nostrum
       </a>
       <div class="sidebar-projectVersion" translate="no">
-        v0.7.0-rc1
+        v0.7.0-rc2
       </div>
     </div>
     <ul class="sidebar-listNav">
@@ -104,7 +104,7 @@ Nostrum
     </a>
 
   <span translate="no">Nostrum.Consumer</span> <small>behaviour</small>
-  <small class="app-vsn" translate="no">(Nostrum v0.7.0-rc1)</small>
+  <small class="app-vsn" translate="no">(Nostrum v0.7.0-rc2)</small>
 
 </h1>
 
@@ -2714,9 +2714,9 @@ Callbacks
   Event
 </h2>
 <p><code class="inline">event</code> is a tuple describing the event. The tuple will include information in
-the following format:</p><pre><code class="makeup elixir" translate="no"><span class="p" data-group-id="2581765066-1">{</span><span class="n">event_name</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="2581765066-2">{</span><span class="n">event_payload</span><span class="p" data-group-id="2581765066-3">(</span><span class="n">s</span><span class="p" data-group-id="2581765066-3">)</span><span class="p" data-group-id="2581765066-2">}</span><span class="p">,</span><span class="w"> </span><span class="nc">WSState</span><span class="o">.</span><span class="n">t</span><span class="p" data-group-id="2581765066-1">}</span></code></pre><p>For example, a message create will look like this</p><pre><code class="makeup elixir" translate="no"><span class="p" data-group-id="6087538979-1">{</span><span class="ss">:MESSAGE_CREATE</span><span class="p">,</span><span class="w"> </span><span class="nc">Nostrum.Struct.Message</span><span class="o">.</span><span class="n">t</span><span class="p">,</span><span class="w"> </span><span class="nc">WSState</span><span class="o">.</span><span class="n">t</span><span class="p" data-group-id="6087538979-1">}</span></code></pre><p>In some cases there will be multiple payloads when something is updated, so as
+the following format:</p><pre><code class="makeup elixir" translate="no"><span class="p" data-group-id="6271281862-1">{</span><span class="n">event_name</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="6271281862-2">{</span><span class="n">event_payload</span><span class="p" data-group-id="6271281862-3">(</span><span class="n">s</span><span class="p" data-group-id="6271281862-3">)</span><span class="p" data-group-id="6271281862-2">}</span><span class="p">,</span><span class="w"> </span><span class="nc">WSState</span><span class="o">.</span><span class="n">t</span><span class="p" data-group-id="6271281862-1">}</span></code></pre><p>For example, a message create will look like this</p><pre><code class="makeup elixir" translate="no"><span class="p" data-group-id="3791158523-1">{</span><span class="ss">:MESSAGE_CREATE</span><span class="p">,</span><span class="w"> </span><span class="nc">Nostrum.Struct.Message</span><span class="o">.</span><span class="n">t</span><span class="p">,</span><span class="w"> </span><span class="nc">WSState</span><span class="o">.</span><span class="n">t</span><span class="p" data-group-id="3791158523-1">}</span></code></pre><p>In some cases there will be multiple payloads when something is updated, so as
 to include the new and the old versions. In the event of there being two payloads,
-the old payload will always be first, followed by the new payload.</p><pre><code class="makeup elixir" translate="no"><span class="p" data-group-id="4750448881-1">{</span><span class="ss">:USER_UPDATE</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="4750448881-2">{</span><span class="n">old_user</span><span class="w"> </span><span class="o">::</span><span class="w"> </span><span class="nc">Nostrum.Struct.User</span><span class="o">.</span><span class="n">t</span><span class="p">,</span><span class="w"> </span><span class="n">new_user</span><span class="w"> </span><span class="o">::</span><span class="w"> </span><span class="nc">Nostrum.Struct.User</span><span class="o">.</span><span class="n">t</span><span class="p" data-group-id="4750448881-2">}</span><span class="p">,</span><span class="w"> </span><span class="nc">WSState</span><span class="o">.</span><span class="n">t</span><span class="p" data-group-id="4750448881-3">(</span><span class="p" data-group-id="4750448881-3">)</span><span class="p" data-group-id="4750448881-1">}</span></code></pre><p>For a full listing of events, please see <a href="#t:event/0"><code class="inline">Nostrum.Consumer.event/0</code></a>.</p>
+the old payload will always be first, followed by the new payload.</p><pre><code class="makeup elixir" translate="no"><span class="p" data-group-id="0403990929-1">{</span><span class="ss">:USER_UPDATE</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="0403990929-2">{</span><span class="n">old_user</span><span class="w"> </span><span class="o">::</span><span class="w"> </span><span class="nc">Nostrum.Struct.User</span><span class="o">.</span><span class="n">t</span><span class="p">,</span><span class="w"> </span><span class="n">new_user</span><span class="w"> </span><span class="o">::</span><span class="w"> </span><span class="nc">Nostrum.Struct.User</span><span class="o">.</span><span class="n">t</span><span class="p" data-group-id="0403990929-2">}</span><span class="p">,</span><span class="w"> </span><span class="nc">WSState</span><span class="o">.</span><span class="n">t</span><span class="p" data-group-id="0403990929-3">(</span><span class="p" data-group-id="0403990929-3">)</span><span class="p" data-group-id="0403990929-1">}</span></code></pre><p>For a full listing of events, please see <a href="#t:event/0"><code class="inline">Nostrum.Consumer.event/0</code></a>.</p>
   </section>
 </section>
 
@@ -2727,11 +2727,11 @@ the old payload will always be first, followed by the new payload.</p><pre><code
         <p>
 
             <span class="line">
-              <a href="https://hex.pm/packages/nostrum/0.7.0-rc1" class="footer-hex-package">Hex Package</a>
+              <a href="https://hex.pm/packages/nostrum/0.7.0-rc2" class="footer-hex-package">Hex Package</a>
 
-              <a href="https://preview.hex.pm/preview/nostrum/0.7.0-rc1">Hex Preview</a>
+              <a href="https://preview.hex.pm/preview/nostrum/0.7.0-rc2">Hex Preview</a>
 
-                (<a href="https://preview.hex.pm/preview/nostrum/0.7.0-rc1/show/lib/nostrum/consumer.ex">current file</a>)
+                (<a href="https://preview.hex.pm/preview/nostrum/0.7.0-rc2/show/lib/nostrum/consumer.ex">current file</a>)
 
             </span>
 
