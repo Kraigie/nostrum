@@ -96,6 +96,11 @@ defmodule Nostrum.Voice.Session do
     end
   end
 
+  def handle_info({:gun_ws, _conn, _stream, :close}, state) do
+    Logger.info("Voice websocket closed (unknown reason)")
+    {:noreply, state}
+  end
+
   def handle_info({:gun_ws, _conn, _stream, {:close, errno, reason}}, state) do
     Logger.info("Voice websocket closed (errno #{errno}, reason #{inspect(reason)})")
 
@@ -210,13 +215,10 @@ defmodule Nostrum.Voice.Session do
     spawn(fn ->
       Process.monitor(state.conn_pid)
 
-      %VoiceState{channel_id: chan, self_mute: mute, self_deaf: deaf, persist_source: persist} =
-        Voice.get_voice(state.guild_id)
+      %VoiceState{} = voice = Voice.get_voice(state.guild_id)
 
       receive do
-        _ ->
-          Voice.leave_channel(state.guild_id)
-          Voice.join_channel(state.guild_id, chan, mute, deaf, persist)
+        _ -> Voice.restart_session(voice)
       end
     end)
   end

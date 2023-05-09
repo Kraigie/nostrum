@@ -808,17 +808,25 @@ defmodule Nostrum.Voice do
         self_deaf: p.self_deaf,
         token: nil,
         gateway: nil
-      ] ++
-        if(voice.persist_source,
-          do: [
-            ffmpeg_proc: voice.ffmpeg_proc,
-            raw_audio: voice.raw_audio,
-            raw_stateful: voice.raw_stateful,
-            current_url: voice.current_url,
-            persist_playback: voice.persist_playback
-          ],
-          else: []
-        )
+      ] ++ persistent_args(voice)
     )
   end
+
+  @doc false
+  def restart_session(p) do
+    leave_channel(p.guild_id)
+    join_channel(p.guild_id, p.channel_id, p.self_mute, p.self_deaf)
+  end
+
+  defp persistent_args(%{persist_source: true} = voice) do
+    [
+      ffmpeg_proc: voice.ffmpeg_proc,
+      raw_audio: voice.raw_audio,
+      raw_stateful: voice.raw_stateful,
+      current_url: voice.current_url,
+      persist_playback: voice.persist_playback
+    ]
+  end
+
+  defp persistent_args(_voice), do: []
 end
