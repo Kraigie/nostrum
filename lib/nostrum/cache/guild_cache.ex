@@ -25,7 +25,7 @@ defmodule Nostrum.Cache.GuildCache do
   instead.
 
   You need to implement both of them for nostrum to work with your custom
-  cache. **You also need to implement `Supervisor` callbacks**, which will
+  cache. You also need to implement `c:child_spec/1` to allow nostrum to
   start your cache as a child under `Nostrum.Cache.CacheSupervisor`: As an
   example, the `Nostrum.Cache.GuildCache.ETS` implementation uses this to to
   set up its ETS table it uses for caching. See the callbacks section for every
@@ -73,10 +73,6 @@ defmodule Nostrum.Cache.GuildCache do
 
   ## Supervisor callbacks
   # These set up the backing cache.
-  @doc false
-  defdelegate init(init_arg), to: @configured_cache
-  @doc false
-  defdelegate start_link(init_arg), to: @configured_cache
   @doc false
   defdelegate child_spec(opts), to: @configured_cache
 

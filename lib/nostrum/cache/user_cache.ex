@@ -24,12 +24,6 @@ defmodule Nostrum.Cache.UserCache do
   ## Supervisor callbacks
 
   @doc false
-  defdelegate init(init_arg), to: @configured_cache
-
-  @doc false
-  defdelegate start_link(init_arg), to: @configured_cache
-
-  @doc false
   defdelegate child_spec(opts), to: @configured_cache
 
   ## Behaviour specification

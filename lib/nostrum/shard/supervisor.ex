@@ -3,10 +3,10 @@ defmodule Nostrum.Shard.Supervisor do
 
   use Supervisor
 
-  alias Nostrum.Cache.Mapping.GuildShard
   alias Nostrum.Error.CacheError
   alias Nostrum.Shard
   alias Nostrum.Shard.Session
+  alias Nostrum.Store.GuildShardMapping
   alias Nostrum.Util
 
   require Logger
@@ -54,7 +54,7 @@ defmodule Nostrum.Shard.Supervisor do
   end
 
   def update_voice_state(guild_id, channel_id, self_mute, self_deaf) do
-    case GuildShard.get_shard(guild_id) do
+    case GuildShardMapping.get(guild_id) do
       {:ok, shard_num} ->
         :"Shard-#{shard_num}"
         |> Supervisor.which_children()

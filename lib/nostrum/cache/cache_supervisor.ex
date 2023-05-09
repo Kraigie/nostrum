@@ -21,6 +21,7 @@ defmodule Nostrum.Cache.CacheSupervisor do
     children = [
       Nostrum.Cache.Me,
       # Uses the configured cache implementations.
+      Nostrum.Cache.ChannelGuildMapping,
       Nostrum.Cache.GuildCache,
       Nostrum.Cache.MemberCache,
       Nostrum.Cache.UserCache,

@@ -19,8 +19,8 @@ defmodule Nostrum.Cache.GuildCache.ETS do
 
   @behaviour Nostrum.Cache.GuildCache
 
+  alias Nostrum.Cache.ChannelGuildMapping
   alias Nostrum.Cache.GuildCache
-  alias Nostrum.Cache.Mapping.ChannelGuild
   alias Nostrum.Snowflake
   alias Nostrum.Struct.Channel
   alias Nostrum.Struct.Emoji
@@ -110,9 +110,9 @@ defmodule Nostrum.Cache.GuildCache.ETS do
 
   def select_by(%{channel_id: channel_id}, selector)
       when is_snowflake(channel_id) and is_selector(selector) do
-    case ChannelGuild.get_guild(channel_id) do
-      {:ok, guild_id} -> select_by(%{id: guild_id}, selector)
-      {:error, _} = error -> error
+    case ChannelGuildMapping.get(channel_id) do
+      nil -> {:error, :channel_not_found}
+      guild_id -> select_by(%{id: guild_id}, selector)
     end
   end
 

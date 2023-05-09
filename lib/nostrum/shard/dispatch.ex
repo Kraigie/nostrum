@@ -1,9 +1,19 @@
 defmodule Nostrum.Shard.Dispatch do
   @moduledoc false
 
-  alias Nostrum.Cache.{ChannelCache, GuildCache, MemberCache, PresenceCache, UserCache}
+  alias Nostrum.Cache.{
+    ChannelCache,
+    ChannelGuildMapping,
+    GuildCache,
+    MemberCache,
+    PresenceCache,
+    UserCache
+  }
+
   alias Nostrum.Cache.Me
   alias Nostrum.Shard.{Intents, Session}
+  alias Nostrum.Store.GuildShardMapping
+  alias Nostrum.Store.UnavailableGuild, as: UnavailableGuildStore
 
   alias Nostrum.Struct.Event.{
     AutoModerationRuleExecute,
@@ -60,9 +70,10 @@ defmodule Nostrum.Shard.Dispatch do
   defp format_event(:noop), do: :noop
 
   defp check_new_or_unavailable(guild_id) do
-    case :ets.lookup(:unavailable_guilds, guild_id) do
-      [] -> :GUILD_CREATE
-      [_] -> :GUILD_AVAILABLE
+    if UnavailableGuildStore.is?(guild_id) do
+      :GUILD_AVAILABLE
+    else
+      :GUILD_CREATE
     end
   end
 
@@ -83,7 +94,7 @@ defmodule Nostrum.Shard.Dispatch do
   end
 
   def handle_event(:CHANNEL_CREATE = event, %{type: t} = p, state) when t in [0, 2] do
-    :ets.insert(:channel_guild_map, {p.id, p.guild_id})
+    ChannelGuildMapping.create(p.id, p.guild_id)
     {event, GuildCache.channel_create(p.guild_id, p), state}
   end
 
@@ -97,7 +108,7 @@ defmodule Nostrum.Shard.Dispatch do
   end
 
   def handle_event(:CHANNEL_DELETE = event, %{type: t} = p, state) when t in [0, 2] do
-    :ets.delete(:channel_guild_map, p.id)
+    ChannelGuildMapping.delete(p.id)
     {event, GuildCache.channel_delete(p.guild_id, p.id), state}
   end
 
@@ -128,7 +139,7 @@ defmodule Nostrum.Shard.Dispatch do
   end
 
   def handle_event(:GUILD_CREATE, %{unavailable: true} = guild, state) do
-    :ets.insert(:unavailable_guilds, {guild.id, guild})
+    UnavailableGuildStore.create(guild.id)
     {:GUILD_UNAVAILABLE, UnavailableGuild.to_struct(guild), state}
   end
 
@@ -143,10 +154,10 @@ defmodule Nostrum.Shard.Dispatch do
     Enum.each(guild.members, fn member -> UserCache.create(member.user) end)
     MemberCache.bulk_create(guild.id, guild.members)
 
-    :ets.insert(:guild_shard_map, {guild.id, state.shard_num})
+    GuildShardMapping.create(guild.id, state.shard_num)
 
     Enum.each(guild.channels, fn channel ->
-      :ets.insert(:channel_guild_map, {channel.id, guild.id})
+      ChannelGuildMapping.create(channel.id, guild.id)
     end)
 
     has_members = Intents.has_intent?(:guild_members)
@@ -173,7 +184,7 @@ defmodule Nostrum.Shard.Dispatch do
   def handle_event(:GUILD_UPDATE = event, p, state), do: {event, GuildCache.update(p), state}
 
   def handle_event(:GUILD_DELETE = event, p, state) do
-    :ets.delete(:guild_shard_map, p.id)
+    GuildShardMapping.delete(p.id)
     {event, {GuildCache.delete(p.id), Map.get(p, :unavailable, false)}, state}
   end
 
