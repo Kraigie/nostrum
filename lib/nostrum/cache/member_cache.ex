@@ -107,6 +107,11 @@ defmodule Nostrum.Cache.MemberCache do
   """
   @callback qlc_handle() :: :qlc.query_handle()
 
+  @doc """
+  Retrieve the child specification for starting this mapping under a supervisor.
+  """
+  @callback child_spec(term()) :: Supervisor.child_spec()
+
   # User-facing
   defdelegate get(guild_id), to: @configured_cache
   defdelegate get(guild_id, member_id), to: @configured_cache

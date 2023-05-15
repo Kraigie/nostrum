@@ -64,7 +64,7 @@ defmodule Nostrum.Store.GuildShardMapping do
   @callback create(Guild.id(), WSState.shard_num()) :: true
 
   @doc """
-  Delete any stored mappings for the given guild ID.
+  Delete any stored mapping for the given guild ID.
   """
   @callback delete(Guild.id()) :: true
 
