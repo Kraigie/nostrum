@@ -13,7 +13,7 @@
 
     <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
     <script src="dist/handlebars.templates-XWGFFSCD.js"></script>
-    <script src="dist/sidebar_items-C9764633.js"></script>
+    <script src="dist/sidebar_items-659D51F5.js"></script>
 
       <script src="docs_config.js"></script>
 
@@ -126,10 +126,10 @@ These <strong>do not create any objects in the Discord API</strong>, they are pu
 created to update the cached data from data that Discord sends us. If you
 want to create objects on Discord, use the functions exposed by <a href="Nostrum.Api.html"><code class="inline">Nostrum.Api</code></a>
 instead.</p></li></ul><p>You need to implement both of them for nostrum to work with your custom
-cache. <strong>You also need to implement <a href="https://hexdocs.pm/elixir/Supervisor.html"><code class="inline">Supervisor</code></a> callbacks</strong>, which will
-start your cache as a child under <a href="Nostrum.Cache.CacheSupervisor.html"><code class="inline">Nostrum.Cache.CacheSupervisor</code></a>: As an
-example, the <a href="Nostrum.Cache.PresenceCache.ETS.html"><code class="inline">Nostrum.Cache.PresenceCache.ETS</code></a> implementation uses this to to
-set up its ETS table it uses for caching. See the callbacks section for every
+cache, along with <code class="inline">cchild_spec/1</code> to allow nostrum to start your cache as a
+child under <a href="Nostrum.Cache.CacheSupervisor.html"><code class="inline">Nostrum.Cache.CacheSupervisor</code></a>: As an example, the
+<a href="Nostrum.Cache.PresenceCache.ETS.html"><code class="inline">Nostrum.Cache.PresenceCache.ETS</code></a> implementation uses this to to set up its
+ETS table it uses for caching. See the callbacks section for every
 nostrum-related callback you need to implement.</p>
   </section>
 
@@ -171,6 +171,16 @@ See <a href="https://discord.com/developers/docs/topics/gateway#presence-update"
       </div>
 
         <div class="summary-synopsis"><p>Bulk create multiple presences for the given guild in the cache.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#c:child_spec/1" translate="no">child_spec(term)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Retrieve the child specification for starting this mapping under a supervisor.</p></div>
 
     </div>
 
@@ -253,7 +263,7 @@ Types
     </a>
     <h1 class="signature" translate="no">presence()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache.ex#L60" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache.ex#L51" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -299,7 +309,7 @@ Callbacks
     </a>
     <h1 class="signature" translate="no">bulk_create(id, list)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache.ex#L88" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache.ex#L79" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -320,6 +330,36 @@ Callbacks
 <p>Bulk create multiple presences for the given guild in the cache.</p>
   </section>
 </section>
+<section class="detail" id="c:child_spec/1">
+
+  <div class="detail-header">
+    <a href="#c:child_spec/1" class="detail-link" title="Link to this callback">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this callback</span>
+    </a>
+    <h1 class="signature" translate="no">child_spec(term)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache.ex#L96" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+      <span class="note">(since 0.5.0)</span>
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@callback</span> child_spec(<a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()) :: <a href="https://hexdocs.pm/elixir/Supervisor.html#t:child_spec/0">Supervisor.child_spec</a>()</pre>
+
+      </div>
+
+<p>Retrieve the child specification for starting this mapping under a supervisor.</p>
+  </section>
+</section>
 <section class="detail" id="c:create/1">
 
   <div class="detail-header">
@@ -329,7 +369,7 @@ Callbacks
     </a>
     <h1 class="signature" translate="no">create(presence)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache.ex#L83" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache.ex#L74" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -359,7 +399,7 @@ Callbacks
     </a>
     <h1 class="signature" translate="no">get(id, id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache.ex#L78" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache.ex#L69" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -384,12 +424,12 @@ Callbacks
   </a>
   Example
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="k">case</span><span class="w"> </span><span class="nc">Nostrum.Cache.PresenceCache</span><span class="o">.</span><span class="n">get</span><span class="p" data-group-id="5122180088-1">(</span><span class="mi">111133335555</span><span class="p">,</span><span class="w"> </span><span class="mi">222244446666</span><span class="p" data-group-id="5122180088-1">)</span><span class="w"> </span><span class="k" data-group-id="5122180088-2">do</span><span class="w">
-  </span><span class="p" data-group-id="5122180088-3">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">presence</span><span class="p" data-group-id="5122180088-3">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
-    </span><span class="s">&quot;They&#39;re </span><span class="si" data-group-id="5122180088-4">#{</span><span class="n">presence</span><span class="o">.</span><span class="n">status</span><span class="si" data-group-id="5122180088-4">}</span><span class="s">&quot;</span><span class="w">
-  </span><span class="p" data-group-id="5122180088-5">{</span><span class="ss">:error</span><span class="p">,</span><span class="w"> </span><span class="c">_reason</span><span class="p" data-group-id="5122180088-5">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+<pre><code class="makeup elixir" translate="no"><span class="k">case</span><span class="w"> </span><span class="nc">Nostrum.Cache.PresenceCache</span><span class="o">.</span><span class="n">get</span><span class="p" data-group-id="2364442476-1">(</span><span class="mi">111133335555</span><span class="p">,</span><span class="w"> </span><span class="mi">222244446666</span><span class="p" data-group-id="2364442476-1">)</span><span class="w"> </span><span class="k" data-group-id="2364442476-2">do</span><span class="w">
+  </span><span class="p" data-group-id="2364442476-3">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">presence</span><span class="p" data-group-id="2364442476-3">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+    </span><span class="s">&quot;They&#39;re </span><span class="si" data-group-id="2364442476-4">#{</span><span class="n">presence</span><span class="o">.</span><span class="n">status</span><span class="si" data-group-id="2364442476-4">}</span><span class="s">&quot;</span><span class="w">
+  </span><span class="p" data-group-id="2364442476-5">{</span><span class="ss">:error</span><span class="p">,</span><span class="w"> </span><span class="c">_reason</span><span class="p" data-group-id="2364442476-5">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
     </span><span class="s">&quot;They&#39;re dead Jim&quot;</span><span class="w">
-</span><span class="k" data-group-id="5122180088-2">end</span></code></pre>
+</span><span class="k" data-group-id="2364442476-2">end</span></code></pre>
   </section>
 </section>
 <section class="detail" id="c:update/1">
@@ -401,7 +441,7 @@ Callbacks
     </a>
     <h1 class="signature" translate="no">update(map)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache.ex#L99" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache.ex#L90" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -455,7 +495,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">get(user_id, guild_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache.ex#L104" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache.ex#L100" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -479,7 +519,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">get!(user_id, guild_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache.ex#L116" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache.ex#L114" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
