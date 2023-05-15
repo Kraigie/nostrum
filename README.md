@@ -20,7 +20,7 @@ version from Hex:
 
 ```elixir
 def deps do
-  [{:nostrum, "~> 0.7-rc2"}]
+  [{:nostrum, "~> 0.7"}]
 end
 ```
 
