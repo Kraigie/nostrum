@@ -262,7 +262,7 @@ defmodule Nostrum.Util do
   """
   @spec get_all_shard_latencies :: %{WSState.shard_num() => non_neg_integer | nil}
   def get_all_shard_latencies do
-    ShardSupervisor
+    Nostrum.Shard.Supervisor
     |> Supervisor.which_children()
     |> Enum.filter(fn {_id, _pid, _type, [modules]} -> modules == Nostrum.Shard end)
     |> Enum.map(fn {_id, pid, _type, _modules} -> Supervisor.which_children(pid) end)

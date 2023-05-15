@@ -98,7 +98,7 @@ defmodule Nostrum.Voice do
 
   @doc false
   def start_link(_args) do
-    GenServer.start_link(__MODULE__, %{}, name: VoiceStateMap)
+    GenServer.start_link(__MODULE__, %{}, name: Nostrum.VoiceStateMap)
   end
 
   @doc false
@@ -108,17 +108,17 @@ defmodule Nostrum.Voice do
 
   @doc false
   def update_voice(guild_id, args \\ []) do
-    GenServer.call(VoiceStateMap, {:update, guild_id, args})
+    GenServer.call(Nostrum.VoiceStateMap, {:update, guild_id, args})
   end
 
   @doc false
   def get_voice(guild_id) do
-    GenServer.call(VoiceStateMap, {:get, guild_id})
+    GenServer.call(Nostrum.VoiceStateMap, {:get, guild_id})
   end
 
   @doc false
   def remove_voice(guild_id, pre_cleanup_args \\ []) do
-    GenServer.cast(VoiceStateMap, {:remove, guild_id, pre_cleanup_args})
+    GenServer.cast(Nostrum.VoiceStateMap, {:remove, guild_id, pre_cleanup_args})
   end
 
   @doc """
