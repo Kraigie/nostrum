@@ -11,7 +11,6 @@ defmodule Nostrum.Application do
   def start(_type, _args) do
     Token.check_token!()
     check_executables()
-    setup_ets_tables()
 
     children = [
       Nostrum.Store.Supervisor,
@@ -26,11 +25,6 @@ defmodule Nostrum.Application do
     if Application.get_env(:nostrum, :dev),
       do: Supervisor.start_link(children ++ [DummySupervisor], strategy: :one_for_one),
       else: Supervisor.start_link(children, strategy: :one_for_one)
-  end
-
-  @doc false
-  def setup_ets_tables do
-    :ets.new(:gateway_url, [:set, :public, :named_table])
   end
 
   defp check_executables do
