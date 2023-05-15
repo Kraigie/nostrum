@@ -256,6 +256,11 @@ defmodule Nostrum.Cache.GuildCache do
   @doc since: "0.7.0"
   @callback member_count_down(Guild.id()) :: true
 
+  @doc """
+  Retrieve the child specification for starting this mapping under a supervisor.
+  """
+  @callback child_spec(term()) :: Supervisor.child_spec()
+
   # Dispatching logic.
   defdelegate all, to: @configured_cache
   defdelegate select_all(selector), to: @configured_cache

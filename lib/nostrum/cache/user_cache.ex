@@ -21,11 +21,6 @@ defmodule Nostrum.Cache.UserCache do
   @configured_cache :nostrum
                     |> Application.compile_env([:caches, :users], @default_cache_implementation)
 
-  ## Supervisor callbacks
-
-  @doc false
-  defdelegate child_spec(opts), to: @configured_cache
-
   ## Behaviour specification
 
   @doc ~s"""
@@ -92,6 +87,11 @@ defmodule Nostrum.Cache.UserCache do
   @doc since: "0.7.0"
   @callback qlc_handle() :: :qlc.query_handle()
 
+  @doc """
+  Retrieve the child specification for starting this mapping under a supervisor.
+  """
+  @callback child_spec(term()) :: Supervisor.child_spec()
+
   ## Dispatching
   defdelegate get(id), to: @configured_cache
   @doc false
@@ -104,6 +104,8 @@ defmodule Nostrum.Cache.UserCache do
   defdelegate delete(snowflake), to: @configured_cache
   @doc false
   defdelegate qlc_handle(), to: @configured_cache
+  @doc false
+  defdelegate child_spec(opts), to: @configured_cache
 
   @doc """
   Same as `c:get/1`, but raises `Nostrum.Error.CacheError` in case of a failure.

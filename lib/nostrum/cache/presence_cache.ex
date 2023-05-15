@@ -23,10 +23,10 @@ defmodule Nostrum.Cache.PresenceCache do
   instead.
 
   You need to implement both of them for nostrum to work with your custom
-  cache. **You also need to implement `Supervisor` callbacks**, which will
-  start your cache as a child under `Nostrum.Cache.CacheSupervisor`: As an
-  example, the `Nostrum.Cache.PresenceCache.ETS` implementation uses this to to
-  set up its ETS table it uses for caching. See the callbacks section for every
+  cache, along with `cchild_spec/1` to allow nostrum to start your cache as a
+  child under `Nostrum.Cache.CacheSupervisor`: As an example, the
+  `Nostrum.Cache.PresenceCache.ETS` implementation uses this to to set up its
+  ETS table it uses for caching. See the callbacks section for every
   nostrum-related callback you need to implement.
   """
 
@@ -41,15 +41,6 @@ defmodule Nostrum.Cache.PresenceCache do
   alias Nostrum.Struct.{Guild, User}
   alias Nostrum.Util
   import Nostrum.Snowflake, only: [is_snowflake: 1]
-
-  ## Supervisor callbacks
-  # These set up the backing cache.
-  @doc false
-  defdelegate init(init_arg), to: @configured_cache
-  @doc false
-  defdelegate start_link(init_arg), to: @configured_cache
-  @doc false
-  defdelegate child_spec(opts), to: @configured_cache
 
   # Types
   @typedoc """
@@ -99,6 +90,11 @@ defmodule Nostrum.Cache.PresenceCache do
   @callback update(map()) ::
               {Guild.id(), old_presence :: presence() | nil, new_presence :: presence()} | :noop
 
+  @doc """
+  Retrieve the child specification for starting this mapping under a supervisor.
+  """
+  @callback child_spec(term()) :: Supervisor.child_spec()
+
   # Dispatch
   @doc section: :reading
   defdelegate get(user_id, guild_id), to: @configured_cache
@@ -108,6 +104,8 @@ defmodule Nostrum.Cache.PresenceCache do
   defdelegate update(presence), to: @configured_cache
   @doc false
   defdelegate bulk_create(guild_id, presences), to: @configured_cache
+  @doc false
+  defdelegate child_spec(opts), to: @configured_cache
 
   # Dispatch helpers
   @doc "Same as `get/1`, but raise `Nostrum.Error.CacheError` in case of a failure."

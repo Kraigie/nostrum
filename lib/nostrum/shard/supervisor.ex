@@ -55,15 +55,15 @@ defmodule Nostrum.Shard.Supervisor do
 
   def update_voice_state(guild_id, channel_id, self_mute, self_deaf) do
     case GuildShardMapping.get(guild_id) do
-      {:ok, shard_num} ->
+      nil ->
+        raise CacheError, key: guild_id, cache_name: GuildShardMapping
+
+      shard_num ->
         :"Nostrum.Shard-#{shard_num}"
         |> Supervisor.which_children()
         |> Enum.find(fn {id, _pid, _type, _modules} -> id == Nostrum.Shard.Session end)
         |> elem(1)
         |> Session.update_voice_state(guild_id, channel_id, self_mute, self_deaf)
-
-      {:error, :id_not_found} ->
-        raise CacheError, key: guild_id, cache_name: GuildShardMapping
     end
   end
 
