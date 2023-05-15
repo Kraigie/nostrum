@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.29.4">
+    <meta name="project" content="Nostrum v0.7.0">
+
+    <title>Nostrum.Store.RatelimitBucket — Nostrum v0.7.0</title>
+    <link rel="stylesheet" href="dist/html-elixir-HHVY3JYD.css" />
+
+
+    <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
+    <script src="dist/handlebars.templates-XWGFFSCD.js"></script>
+    <script src="dist/sidebar_items-28BA8BD7.js"></script>
+
+      <script src="docs_config.js"></script>
+
+    <script async src="dist/html-JDI3AVDD.js"></script>
+
+
+  </head>
+  <body data-type="modules" class="page-behaviour">
+    <script>
+
+      try {
+        var settings = JSON.parse(localStorage.getItem('ex_doc:settings') || '{}');
+
+        if (settings.theme === 'dark' ||
+           ((settings.theme === 'system' || settings.theme == null) &&
+             window.matchMedia('(prefers-color-scheme: dark)').matches)
+           ) {
+          document.body.classList.add('dark')
+        }
+      } catch (error) { }
+    </script>
+
+<div class="main">
+
+<button class="sidebar-button sidebar-toggle" aria-label="toggle sidebar">
+  <i class="ri-menu-line ri-lg" title="Collapse/expand sidebar"></i>
+</button>
+
+<section class="sidebar">
+  <form class="sidebar-search" action="search.html">
+    <button type="submit" class="search-button" aria-label="Submit Search">
+      <i class="ri-search-2-line" aria-hidden="true" title="Submit search"></i>
+    </button>
+    <button type="button" tabindex="-1" class="search-close-button" aria-label="Cancel Search">
+      <i class="ri-close-line ri-lg" aria-hidden="true" title="Cancel search"></i>
+    </button>
+    <label class="search-label">
+      <p class="sr-only">Search</p>
+      <input name="q" type="text" class="search-input" placeholder="Search..." aria-label="Input your search terms" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+    </label>
+  </form>
+
+  <div class="autocomplete">
+    <div class="autocomplete-results">
+    </div>
+  </div>
+
+  <div class="sidebar-header">
+
+    <div class="sidebar-projectDetails">
+      <a href="https://github.com/Kraigie/nostrum" class="sidebar-projectName" translate="no">
+Nostrum
+      </a>
+      <div class="sidebar-projectVersion" translate="no">
+        v0.7.0
+      </div>
+    </div>
+    <ul class="sidebar-listNav">
+      <li><a id="extras-list-link" href="#full-list">Pages</a></li>
+
+        <li><a id="modules-list-link" href="#full-list">Modules</a></li>
+
+
+        <li><a id="tasks-list-link" href="#full-list"><span translate="no">Mix</span> Tasks</a></li>
+
+    </ul>
+  </div>
+
+  <div class="gradient"></div>
+  <ul id="full-list"></ul>
+</section>
+
+<section class="content">
+  <output role="status" id="toast"></output>
+  <div class="content-outer">
+    <div id="content" class="content-inner">
+
+<h1>
+<button class="icon-action display-settings">
+  <i class="ri-settings-3-line"></i>
+  <span class="sr-only">Settings</span>
+</button>
+
+
+    <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/store/ratelimit_bucket.ex#L1" title="View Source" class="icon-action" rel="help">
+      <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+      <span class="sr-only">View Source</span>
+    </a>
+
+  <span translate="no">Nostrum.Store.RatelimitBucket</span> <small>behaviour</small>
+  <small class="app-vsn" translate="no">(Nostrum v0.7.0)</small>
+
+</h1>
+
+
+  <section id="moduledoc">
+<p>Behaviour &amp; dispatcher for storing ratelimit buckets.</p><h2 id="module-purpose" class="section-heading">
+  <a href="#module-purpose" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">purpose</p>
+  </a>
+  Purpose
+</h2>
+<p>Calls to Discord's API are ratelimited, and we are informed about our
+remaining calls by Discord after issuing them. This module concerns itself
+with storing this information to prevent running into HTTP 429 errors. As
+this is used mainly by <a href="Nostrum.Api.Ratelimiter.html"><code class="inline">Nostrum.Api.Ratelimiter</code></a>, it is unlikely you need to
+use it directly yourself.</p><h2 id="module-configuration" class="section-heading">
+  <a href="#module-configuration" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">configuration</p>
+  </a>
+  Configuration
+</h2>
+<p>By default, nostrum will use <a href="Nostrum.Store.RatelimitBucket.ETS.html"><code class="inline">Elixir.Nostrum.Store.RatelimitBucket.ETS</code></a> to store ratelimit
+buckets. To override this, set the <code class="inline">[:stores, :ratelimit_buckets]</code> setting on
+nostrum's application configuration:</p><pre><code class="makeup elixir" translate="no"><span class="n">config</span><span class="w"> </span><span class="ss">:nostrum</span><span class="p">,</span><span class="w">
+  </span><span class="ss">stores</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="5470285335-1">%{</span><span class="w">
+    </span><span class="ss">ratelimit_buckets</span><span class="p">:</span><span class="w"> </span><span class="nc">MyBot.Nostrum.Store.RatelimitBucket</span><span class="w">
+  </span><span class="p" data-group-id="5470285335-1">}</span></code></pre><p>This setting must be set at compile time.</p><h2 id="module-implementation" class="section-heading">
+  <a href="#module-implementation" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">implementation</p>
+  </a>
+  Implementation
+</h2>
+<p>If implementing your own ratelimit bucket store, in addition to the callbacks
+of this module, you must also provide the function <code class="inline">child_spec/1</code>. The
+recommended approach is to spawn a <a href="https://hexdocs.pm/elixir/Supervisor.html"><code class="inline">Supervisor</code></a> to manage your store.</p>
+  </section>
+
+
+  <section id="summary" class="details-list">
+    <h1 class="section-heading">
+      <a class="hover-link" href="#summary">
+        <i class="ri-link-m" aria-hidden="true"></i>
+        <span class="sr-only">Link to this section</span>
+      </a>
+      Summary
+    </h1>
+<div class="summary-types summary">
+  <h2>
+    <a href="#types">Types</a>
+  </h2>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:bucket/0" translate="no">bucket()</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Individual bucket information for a route.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:latency/0" translate="no">latency()</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Latency between us and our latest call for this bucket, in milliseconds.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:remaining/0" translate="no">remaining()</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Remaining calls for a bucket.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:reset_time/0" translate="no">reset_time()</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Time at which a bucket resets, in milliseconds.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:route/0" translate="no">route()</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>The route a bucket applies to.</p></div>
+
+    </div>
+
+</div>
+<div class="summary-callbacks summary">
+  <h2>
+    <a href="#callbacks">Callbacks</a>
+  </h2>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#c:child_spec/1" translate="no">child_spec(term)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Retrieve the child specification for starting this mapping under a supervisor.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#c:cleanup/1" translate="no">cleanup(pos_integer)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Clean up entries in the bucket older than the given amount of milliseconds.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#c:lookup/1" translate="no">lookup(route)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Retrieve bucket information by route.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#c:update/2" translate="no">update(route, remaining)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Update the given bucket to have the given remaining calls.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#c:update/4" translate="no">update(route, remaining, reset_time, latency)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Update the given bucket with full rate limit information.</p></div>
+
+    </div>
+
+</div>
+<div class="summary-functions summary">
+  <h2>
+    <a href="#functions">Functions</a>
+  </h2>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#cleanup/1" translate="no">cleanup(age)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>See <a href="Nostrum.Store.RatelimitBucket.ETS.html#cleanup/1"><code class="inline">Nostrum.Store.RatelimitBucket.ETS.cleanup/1</code></a>.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#lookup/1" translate="no">lookup(route)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>See <a href="Nostrum.Store.RatelimitBucket.ETS.html#lookup/1"><code class="inline">Nostrum.Store.RatelimitBucket.ETS.lookup/1</code></a>.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#timeout_for/1" translate="no">timeout_for(route)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Receive the time to wait before issuing more calls to the given route.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#update/2" translate="no">update(route, remaining)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>See <a href="Nostrum.Store.RatelimitBucket.ETS.html#update/2"><code class="inline">Nostrum.Store.RatelimitBucket.ETS.update/2</code></a>.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#update/4" translate="no">update(route, remaining, reset_time, latency)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>See <a href="Nostrum.Store.RatelimitBucket.ETS.html#update/4"><code class="inline">Nostrum.Store.RatelimitBucket.ETS.update/4</code></a>.</p></div>
+
+    </div>
+
+</div>
+
+  </section>
+
+
+  <section id="types" class="details-list">
+    <h1 class="section-heading">
+      <a class="hover-link" href="#types">
+        <i class="ri-link-m" aria-hidden="true"></i>
+        <span class="sr-only">Link to this section</span>
+      </a>
+Types
+    </h1>
+    <div class="types-list">
+<section class="detail" id="t:bucket/0">
+
+  <div class="detail-header">
+    <a href="#t:bucket/0" class="detail-link" title="Link to this type">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature" translate="no">bucket()</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/store/ratelimit_bucket.ex#L62" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+      <span class="note">(since 0.8.0)</span>
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@type</span> bucket() :: {<a href="#t:route/0">route</a>(), <a href="#t:remaining/0">remaining</a>(), <a href="#t:reset_time/0">reset_time</a>(), <a href="#t:latency/0">latency</a>()}</pre>
+
+      </div>
+
+<p>Individual bucket information for a route.</p>
+  </section>
+</section>
+<section class="detail" id="t:latency/0">
+
+  <div class="detail-header">
+    <a href="#t:latency/0" class="detail-link" title="Link to this type">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature" translate="no">latency()</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/store/ratelimit_bucket.ex#L59" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+      <span class="note">(since 0.8.0)</span>
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@type</span> latency() :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pos_integer</a>()</pre>
+
+      </div>
+
+<p>Latency between us and our latest call for this bucket, in milliseconds.</p>
+  </section>
+</section>
+<section class="detail" id="t:remaining/0">
+
+  <div class="detail-header">
+    <a href="#t:remaining/0" class="detail-link" title="Link to this type">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature" translate="no">remaining()</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/store/ratelimit_bucket.ex#L53" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+      <span class="note">(since 0.8.0)</span>
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@type</span> remaining() :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">non_neg_integer</a>()</pre>
+
+      </div>
+
+<p>Remaining calls for a bucket.</p>
+  </section>
+</section>
+<section class="detail" id="t:reset_time/0">
+
+  <div class="detail-header">
+    <a href="#t:reset_time/0" class="detail-link" title="Link to this type">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature" translate="no">reset_time()</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/store/ratelimit_bucket.ex#L56" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+      <span class="note">(since 0.8.0)</span>
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@type</span> reset_time() :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pos_integer</a>()</pre>
+
+      </div>
+
+<p>Time at which a bucket resets, in milliseconds.</p>
+  </section>
+</section>
+<section class="detail" id="t:route/0">
+
+  <div class="detail-header">
+    <a href="#t:route/0" class="detail-link" title="Link to this type">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature" translate="no">route()</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/store/ratelimit_bucket.ex#L50" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+      <span class="note">(since 0.8.0)</span>
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@type</span> route() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()</pre>
+
+      </div>
+
+<p>The route a bucket applies to.</p><p>The constant value <code class="inline">&quot;GLOBAL&quot;</code> is used for the global bucket.</p>
+  </section>
+</section>
+
+    </div>
+  </section>
+
+  <section id="callbacks" class="details-list">
+    <h1 class="section-heading">
+      <a class="hover-link" href="#callbacks">
+        <i class="ri-link-m" aria-hidden="true"></i>
+        <span class="sr-only">Link to this section</span>
+      </a>
+Callbacks
+    </h1>
+    <div class="callbacks-list">
+<section class="detail" id="c:child_spec/1">
+
+  <div class="detail-header">
+    <a href="#c:child_spec/1" class="detail-link" title="Link to this callback">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this callback</span>
+    </a>
+    <h1 class="signature" translate="no">child_spec(term)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/store/ratelimit_bucket.ex#L102" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+      <span class="note">(since 0.8.0)</span>
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@callback</span> child_spec(<a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()) :: <a href="https://hexdocs.pm/elixir/Supervisor.html#t:child_spec/0">Supervisor.child_spec</a>()</pre>
+
+      </div>
+
+<p>Retrieve the child specification for starting this mapping under a supervisor.</p>
+  </section>
+</section>
+<section class="detail" id="c:cleanup/1">
+
+  <div class="detail-header">
+    <a href="#c:cleanup/1" class="detail-link" title="Link to this callback">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this callback</span>
+    </a>
+    <h1 class="signature" translate="no">cleanup(pos_integer)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/store/ratelimit_bucket.ex#L97" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+      <span class="note">(since 0.8.0)</span>
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@callback</span> cleanup(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pos_integer</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">non_neg_integer</a>()</pre>
+
+      </div>
+
+<p>Clean up entries in the bucket older than the given amount of milliseconds.</p><p>This function is called automatically by the ratelimiter in regular
+intervals.</p><p>Return the amount of deleted entries.</p>
+  </section>
+</section>
+<section class="detail" id="c:lookup/1">
+
+  <div class="detail-header">
+    <a href="#c:lookup/1" class="detail-link" title="Link to this callback">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this callback</span>
+    </a>
+    <h1 class="signature" translate="no">lookup(route)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/store/ratelimit_bucket.ex#L87" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+      <span class="note">(since 0.8.0)</span>
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@callback</span> lookup(<a href="#t:route/0">route</a>()) :: <a href="#t:bucket/0">bucket</a>() | nil</pre>
+
+      </div>
+
+<p>Retrieve bucket information by route.</p><p>If no information is available, return <code class="inline">nil</code>.</p>
+  </section>
+</section>
+<section class="detail" id="c:update/2">
+
+  <div class="detail-header">
+    <a href="#c:update/2" class="detail-link" title="Link to this callback">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this callback</span>
+    </a>
+    <h1 class="signature" translate="no">update(route, remaining)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/store/ratelimit_bucket.ex#L71" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+      <span class="note">(since 0.8.0)</span>
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@callback</span> update(<a href="#t:route/0">route</a>(), <a href="#t:remaining/0">remaining</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">boolean</a>()</pre>
+
+      </div>
+
+<p>Update the given bucket to have the given remaining calls.</p><p>Return whether the update has affected anything.</p><p>Normally used after issuing an API call for a previously used route.</p>
+  </section>
+</section>
+<section class="detail" id="c:update/4">
+
+  <div class="detail-header">
+    <a href="#c:update/4" class="detail-link" title="Link to this callback">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this callback</span>
+    </a>
+    <h1 class="signature" translate="no">update(route, remaining, reset_time, latency)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/store/ratelimit_bucket.ex#L80" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+      <span class="note">(since 0.8.0)</span>
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@callback</span> update(<a href="#t:route/0">route</a>(), <a href="#t:remaining/0">remaining</a>(), <a href="#t:reset_time/0">reset_time</a>(), <a href="#t:latency/0">latency</a>()) :: true</pre>
+
+      </div>
+
+<p>Update the given bucket with full rate limit information.</p><p>Whilst <a href="#c:update/2"><code class="inline">update/2</code></a> is based around the assumption that you only know the
+remaining calls (for instance, after issuing one), this function is used
+after receiving full rate limiting information after an API call.</p>
+  </section>
+</section>
+
+    </div>
+  </section>
+
+  <section id="functions" class="details-list">
+    <h1 class="section-heading">
+      <a class="hover-link" href="#functions">
+        <i class="ri-link-m" aria-hidden="true"></i>
+        <span class="sr-only">Link to this section</span>
+      </a>
+Functions
+    </h1>
+    <div class="functions-list">
+<section class="detail" id="cleanup/1">
+
+  <div class="detail-header">
+    <a href="#cleanup/1" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">cleanup(age)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/store/ratelimit_bucket.ex#L149" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+      <span class="note">(since 0.8.0)</span>
+
+  </div>
+
+  <section class="docstring">
+
+<p>See <a href="Nostrum.Store.RatelimitBucket.ETS.html#cleanup/1"><code class="inline">Nostrum.Store.RatelimitBucket.ETS.cleanup/1</code></a>.</p>
+  </section>
+</section>
+<section class="detail" id="lookup/1">
+
+  <div class="detail-header">
+    <a href="#lookup/1" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">lookup(route)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/store/ratelimit_bucket.ex#L148" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+      <span class="note">(since 0.8.0)</span>
+
+  </div>
+
+  <section class="docstring">
+
+<p>See <a href="Nostrum.Store.RatelimitBucket.ETS.html#lookup/1"><code class="inline">Nostrum.Store.RatelimitBucket.ETS.lookup/1</code></a>.</p>
+  </section>
+</section>
+<section class="detail" id="timeout_for/1">
+
+  <div class="detail-header">
+    <a href="#timeout_for/1" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">timeout_for(route)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/store/ratelimit_bucket.ex#L116" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+      <span class="note">(since 0.8.0)</span>
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> timeout_for(<a href="#t:route/0">route</a>()) :: <a href="#t:remaining/0">remaining</a>() | :now</pre>
+
+      </div>
+
+<p>Receive the time to wait before issuing more calls to the given route.</p><p>This function must only be called prior to issuing the actual API call: it
+will decrement the remaining calls counter from the given bucket.</p><p>Nostrum takes the API latency into account when issuing these calls, and uses
+the current time to determine when it expires. It is therefore assumed that
+each node has a relatively equal latency to the API, and the nodes have
+little to no time drift.</p>
+  </section>
+</section>
+<section class="detail" id="update/2">
+
+  <div class="detail-header">
+    <a href="#update/2" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">update(route, remaining)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/store/ratelimit_bucket.ex#L146" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+      <span class="note">(since 0.8.0)</span>
+
+  </div>
+
+  <section class="docstring">
+
+<p>See <a href="Nostrum.Store.RatelimitBucket.ETS.html#update/2"><code class="inline">Nostrum.Store.RatelimitBucket.ETS.update/2</code></a>.</p>
+  </section>
+</section>
+<section class="detail" id="update/4">
+
+  <div class="detail-header">
+    <a href="#update/4" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">update(route, remaining, reset_time, latency)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/store/ratelimit_bucket.ex#L147" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+      <span class="note">(since 0.8.0)</span>
+
+  </div>
+
+  <section class="docstring">
+
+<p>See <a href="Nostrum.Store.RatelimitBucket.ETS.html#update/4"><code class="inline">Nostrum.Store.RatelimitBucket.ETS.update/4</code></a>.</p>
+  </section>
+</section>
+
+    </div>
+  </section>
+
+      <footer class="footer">
+        <p>
+
+            <span class="line">
+              <a href="https://hex.pm/packages/nostrum/0.7.0" class="footer-hex-package">Hex Package</a>
+
+              <a href="https://preview.hex.pm/preview/nostrum/0.7.0">Hex Preview</a>
+
+                (<a href="https://preview.hex.pm/preview/nostrum/0.7.0/show/lib/nostrum/store/ratelimit_bucket.ex">current file</a>)
+
+            </span>
+
+          <span class="line">
+            <button class="a-main footer-button display-quick-switch" title="Search HexDocs packages">
+              Search HexDocs
+            </button>
+
+              <a href="Nostrum.epub" title="ePub version">
+                Download ePub version
+              </a>
+
+          </span>
+        </p>
+
+        <p class="built-using">
+          Built using
+          <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.29.4) for the
+
+            <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
+
+        </p>
+      </footer>
+    </div>
+  </div>
+</section>
+</div>
+
+
+  </body>
+</html>

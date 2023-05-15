@@ -7,13 +7,13 @@
     <meta name="generator" content="ExDoc v0.29.4">
     <meta name="project" content="Nostrum v0.7.0">
 
-    <title>Nostrum.Cache.Mapping.ChannelGuild — Nostrum v0.7.0</title>
+    <title>Nostrum.Store.Supervisor — Nostrum v0.7.0</title>
     <link rel="stylesheet" href="dist/html-elixir-HHVY3JYD.css" />
 
 
     <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
     <script src="dist/handlebars.templates-XWGFFSCD.js"></script>
-    <script src="dist/sidebar_items-9773C1CF.js"></script>
+    <script src="dist/sidebar_items-28BA8BD7.js"></script>
 
       <script src="docs_config.js"></script>
 
@@ -98,20 +98,19 @@ Nostrum
 </button>
 
 
-    <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/mapping/channel_guild.ex#L1" title="View Source" class="icon-action" rel="help">
+    <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/store/supervisor.ex#L1" title="View Source" class="icon-action" rel="help">
       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
       <span class="sr-only">View Source</span>
     </a>
 
-  <span translate="no">Nostrum.Cache.Mapping.ChannelGuild</span> 
+  <span translate="no">Nostrum.Store.Supervisor</span> 
   <small class="app-vsn" translate="no">(Nostrum v0.7.0)</small>
 
 </h1>
 
 
   <section id="moduledoc">
-<p>Mapping of channel -&gt; guild relationships.</p><p>Given just the <code class="inline">id</code> of a guild channel, there's no way to know what guild it
-belongs to. This mapping is an ETS table that stores this information.</p>
+<p>Supervises processes managing nostrum's internal state.</p><p>Please see the following modules for more details:</p><ul><li><a href="Nostrum.Store.GuildShardMapping.html"><code class="inline">Nostrum.Store.GuildShardMapping</code></a></li><li><a href="Nostrum.Store.RatelimitBucket.html"><code class="inline">Nostrum.Store.RatelimitBucket</code></a></li><li><a href="Nostrum.Store.UnavailableGuild.html"><code class="inline">Nostrum.Store.UnavailableGuild</code></a></li></ul>
   </section>
 
 
@@ -130,11 +129,29 @@ belongs to. This mapping is an ETS table that stores this information.</p>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#get_guild/1" translate="no">get_guild(channel_id)</a>
+        <a href="#child_spec/1" translate="no">child_spec(init_arg)</a>
 
       </div>
 
-        <div class="summary-synopsis"><p>Gets a <code class="inline">guild_id</code> from a <code class="inline">channel_id</code>.</p></div>
+        <div class="summary-synopsis"><p>Returns a specification to start this module under a supervisor.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#init/1" translate="no">init(list)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Callback implementation for <a href="https://hexdocs.pm/elixir/Supervisor.html#c:init/1"><code class="inline">Supervisor.init/1</code></a>.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#start_link/1" translate="no">start_link(list)</a>
+
+      </div>
 
     </div>
 
@@ -152,33 +169,76 @@ belongs to. This mapping is an ETS table that stores this information.</p>
 Functions
     </h1>
     <div class="functions-list">
-<section class="detail" id="get_guild/1">
+<section class="detail" id="child_spec/1">
 
   <div class="detail-header">
-    <a href="#get_guild/1" class="detail-link" title="Link to this function">
+    <a href="#child_spec/1" class="detail-link" title="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">get_guild(channel_id)</h1>
+    <h1 class="signature" translate="no">child_spec(init_arg)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/mapping/channel_guild.ex#L16" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/store/supervisor.ex#L12" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
 
 
+      <span class="note">(since 0.8.0)</span>
+
   </div>
 
   <section class="docstring">
 
-      <div class="specs">
+<p>Returns a specification to start this module under a supervisor.</p><p>See <a href="https://hexdocs.pm/elixir/Supervisor.html"><code class="inline">Supervisor</code></a>.</p>
+  </section>
+</section>
+<section class="detail" id="init/1">
 
-          <pre translate="no"><span class="attribute">@spec</span> get_guild(<a href="Nostrum.Struct.Channel.html#t:id/0">Nostrum.Struct.Channel.id</a>()) ::
-  {:ok, <a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>()} | {:error, :id_not_found}</pre>
+  <div class="detail-header">
+    <a href="#init/1" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">init(list)</h1>
 
-      </div>
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/store/supervisor.ex#L18" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
 
-<p>Gets a <code class="inline">guild_id</code> from a <code class="inline">channel_id</code>.</p>
+
+      <span class="note">(since 0.8.0)</span>
+
+  </div>
+
+  <section class="docstring">
+
+<p>Callback implementation for <a href="https://hexdocs.pm/elixir/Supervisor.html#c:init/1"><code class="inline">Supervisor.init/1</code></a>.</p>
+  </section>
+</section>
+<section class="detail" id="start_link/1">
+
+  <div class="detail-header">
+    <a href="#start_link/1" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">start_link(list)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/store/supervisor.ex#L14" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+      <span class="note">(since 0.8.0)</span>
+
+  </div>
+
+  <section class="docstring">
+
+
   </section>
 </section>
 
@@ -193,7 +253,7 @@ Functions
 
               <a href="https://preview.hex.pm/preview/nostrum/0.7.0">Hex Preview</a>
 
-                (<a href="https://preview.hex.pm/preview/nostrum/0.7.0/show/lib/nostrum/cache/mapping/channel_guild.ex">current file</a>)
+                (<a href="https://preview.hex.pm/preview/nostrum/0.7.0/show/lib/nostrum/store/supervisor.ex">current file</a>)
 
             </span>
 

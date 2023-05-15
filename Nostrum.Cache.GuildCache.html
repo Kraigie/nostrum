@@ -13,7 +13,7 @@
 
     <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
     <script src="dist/handlebars.templates-XWGFFSCD.js"></script>
-    <script src="dist/sidebar_items-9773C1CF.js"></script>
+    <script src="dist/sidebar_items-28BA8BD7.js"></script>
 
       <script src="docs_config.js"></script>
 
@@ -126,7 +126,7 @@ These <strong>do not create any objects in the Discord API</strong>, they are pu
 created to update the cached data from data that Discord sends us. If you
 want to create objects on Discord, use the functions exposed by <a href="Nostrum.Api.html"><code class="inline">Nostrum.Api</code></a>
 instead.</p></li></ul><p>You need to implement both of them for nostrum to work with your custom
-cache. <strong>You also need to implement <a href="https://hexdocs.pm/elixir/Supervisor.html"><code class="inline">Supervisor</code></a> callbacks</strong>, which will
+cache. You also need to implement <code class="inline">c:child_spec/1</code> to allow nostrum to
 start your cache as a child under <a href="Nostrum.Cache.CacheSupervisor.html"><code class="inline">Nostrum.Cache.CacheSupervisor</code></a>: As an
 example, the <a href="Nostrum.Cache.GuildCache.ETS.html"><code class="inline">Nostrum.Cache.GuildCache.ETS</code></a> implementation uses this to to
 set up its ETS table it uses for caching. See the callbacks section for every
@@ -649,7 +649,7 @@ Callbacks
     </a>
     <h1 class="signature" translate="no">all()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L88" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L84" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -677,7 +677,7 @@ Callbacks
     </a>
     <h1 class="signature" translate="no">channel_create(id, channel)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L189" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L185" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -706,7 +706,7 @@ Callbacks
     </a>
     <h1 class="signature" translate="no">channel_delete(id, id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L197" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L193" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -736,7 +736,7 @@ otherwise.</p>
     </a>
     <h1 class="signature" translate="no">channel_update(id, channel)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L204" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L200" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -766,7 +766,7 @@ otherwise.</p>
     </a>
     <h1 class="signature" translate="no">create(t)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L168" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L164" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -794,7 +794,7 @@ otherwise.</p>
     </a>
     <h1 class="signature" translate="no">delete(id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L182" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L178" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -822,7 +822,7 @@ otherwise.</p>
     </a>
     <h1 class="signature" translate="no">emoji_update(id, emojis)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L215" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L211" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -853,7 +853,7 @@ emojis.</p>
     </a>
     <h1 class="signature" translate="no">get(id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L110" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L106" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -876,11 +876,11 @@ emojis.</p>
   </a>
   Examples
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Cache.GuildCache</span><span class="o">.</span><span class="n">get</span><span class="p" data-group-id="3944894628-1">(</span><span class="mi">0</span><span class="p" data-group-id="3944894628-1">)</span><span class="w">
-</span><span class="p" data-group-id="3944894628-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="3944894628-3">%</span><span class="nc" data-group-id="3944894628-3">Nostrum.Struct.Guild</span><span class="p" data-group-id="3944894628-3">{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p" data-group-id="3944894628-3">}</span><span class="p" data-group-id="3944894628-2">}</span><span class="w">
+<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Cache.GuildCache</span><span class="o">.</span><span class="n">get</span><span class="p" data-group-id="5352049462-1">(</span><span class="mi">0</span><span class="p" data-group-id="5352049462-1">)</span><span class="w">
+</span><span class="p" data-group-id="5352049462-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="5352049462-3">%</span><span class="nc" data-group-id="5352049462-3">Nostrum.Struct.Guild</span><span class="p" data-group-id="5352049462-3">{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p" data-group-id="5352049462-3">}</span><span class="p" data-group-id="5352049462-2">}</span><span class="w">
 
-</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Cache.GuildCache</span><span class="o">.</span><span class="n">get</span><span class="p" data-group-id="3944894628-4">(</span><span class="mi">10</span><span class="p" data-group-id="3944894628-4">)</span><span class="w">
-</span><span class="p" data-group-id="3944894628-5">{</span><span class="ss">:error</span><span class="p">,</span><span class="w"> </span><span class="ss">:id_not_found_on_guild_lookup</span><span class="p" data-group-id="3944894628-5">}</span></code></pre>
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Cache.GuildCache</span><span class="o">.</span><span class="n">get</span><span class="p" data-group-id="5352049462-4">(</span><span class="mi">10</span><span class="p" data-group-id="5352049462-4">)</span><span class="w">
+</span><span class="p" data-group-id="5352049462-5">{</span><span class="ss">:error</span><span class="p">,</span><span class="w"> </span><span class="ss">:id_not_found_on_guild_lookup</span><span class="p" data-group-id="5352049462-5">}</span></code></pre>
   </section>
 </section>
 <section class="detail" id="c:get_by/1">
@@ -892,7 +892,7 @@ emojis.</p>
     </a>
     <h1 class="signature" translate="no">get_by(clauses)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L128" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L124" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -908,14 +908,14 @@ emojis.</p>
 
       </div>
 
-<p>Retrieves a single <a href="Nostrum.Struct.Guild.html"><code class="inline">Nostrum.Struct.Guild</code></a> where it matches the <code class="inline">clauses</code>.</p><p>Returns <code class="inline">{:error, reason}</code> if no result was found.</p><pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Cache.GuildCache</span><span class="o">.</span><span class="n">get_by</span><span class="p" data-group-id="7175847036-1">(</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p" data-group-id="7175847036-1">)</span><span class="w">
-</span><span class="p" data-group-id="7175847036-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="7175847036-3">%</span><span class="nc" data-group-id="7175847036-3">Nostrum.Struct.Guild</span><span class="p" data-group-id="7175847036-3">{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p" data-group-id="7175847036-3">}</span><span class="p" data-group-id="7175847036-2">}</span><span class="w">
+<p>Retrieves a single <a href="Nostrum.Struct.Guild.html"><code class="inline">Nostrum.Struct.Guild</code></a> where it matches the <code class="inline">clauses</code>.</p><p>Returns <code class="inline">{:error, reason}</code> if no result was found.</p><pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Cache.GuildCache</span><span class="o">.</span><span class="n">get_by</span><span class="p" data-group-id="0931348286-1">(</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p" data-group-id="0931348286-1">)</span><span class="w">
+</span><span class="p" data-group-id="0931348286-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="0931348286-3">%</span><span class="nc" data-group-id="0931348286-3">Nostrum.Struct.Guild</span><span class="p" data-group-id="0931348286-3">{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p" data-group-id="0931348286-3">}</span><span class="p" data-group-id="0931348286-2">}</span><span class="w">
 
-</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Cache.GuildCache</span><span class="o">.</span><span class="n">get_by</span><span class="p" data-group-id="7175847036-4">(</span><span class="p" data-group-id="7175847036-5">%{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p" data-group-id="7175847036-5">}</span><span class="p" data-group-id="7175847036-4">)</span><span class="w">
-</span><span class="p" data-group-id="7175847036-6">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="7175847036-7">%</span><span class="nc" data-group-id="7175847036-7">Nostrum.Struct.Guild</span><span class="p" data-group-id="7175847036-7">{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p" data-group-id="7175847036-7">}</span><span class="p" data-group-id="7175847036-6">}</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Cache.GuildCache</span><span class="o">.</span><span class="n">get_by</span><span class="p" data-group-id="0931348286-4">(</span><span class="p" data-group-id="0931348286-5">%{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p" data-group-id="0931348286-5">}</span><span class="p" data-group-id="0931348286-4">)</span><span class="w">
+</span><span class="p" data-group-id="0931348286-6">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="0931348286-7">%</span><span class="nc" data-group-id="0931348286-7">Nostrum.Struct.Guild</span><span class="p" data-group-id="0931348286-7">{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p" data-group-id="0931348286-7">}</span><span class="p" data-group-id="0931348286-6">}</span><span class="w">
 
-</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Cache.GuildCache</span><span class="o">.</span><span class="n">get_by</span><span class="p" data-group-id="7175847036-8">(</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p" data-group-id="7175847036-8">)</span><span class="w">
-</span><span class="p" data-group-id="7175847036-9">{</span><span class="ss">:error</span><span class="p">,</span><span class="w"> </span><span class="ss">:id_not_found_on_guild_lookup</span><span class="p" data-group-id="7175847036-9">}</span></code></pre>
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Cache.GuildCache</span><span class="o">.</span><span class="n">get_by</span><span class="p" data-group-id="0931348286-8">(</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p" data-group-id="0931348286-8">)</span><span class="w">
+</span><span class="p" data-group-id="0931348286-9">{</span><span class="ss">:error</span><span class="p">,</span><span class="w"> </span><span class="ss">:id_not_found_on_guild_lookup</span><span class="p" data-group-id="0931348286-9">}</span></code></pre>
   </section>
 </section>
 <section class="detail" id="c:member_count_down/1">
@@ -927,7 +927,7 @@ emojis.</p>
     </a>
     <h1 class="signature" translate="no">member_count_down(id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L261" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L257" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -957,7 +957,7 @@ emojis.</p>
     </a>
     <h1 class="signature" translate="no">member_count_up(id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L255" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L251" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -987,7 +987,7 @@ emojis.</p>
     </a>
     <h1 class="signature" translate="no">role_create(id, role)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L223" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L219" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1016,7 +1016,7 @@ emojis.</p>
     </a>
     <h1 class="signature" translate="no">role_delete(id, id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L230" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L226" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1045,7 +1045,7 @@ emojis.</p>
     </a>
     <h1 class="signature" translate="no">role_update(id, role)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L237" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L233" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1075,7 +1075,7 @@ emojis.</p>
     </a>
     <h1 class="signature" translate="no">select(id, selector)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L145" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L141" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1098,11 +1098,11 @@ emojis.</p>
   </a>
   Examples
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Cache.GuildCache</span><span class="o">.</span><span class="n">select</span><span class="p" data-group-id="9248820001-1">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="k" data-group-id="9248820001-2">fn</span><span class="w"> </span><span class="n">guild</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">guild</span><span class="o">.</span><span class="n">id</span><span class="w"> </span><span class="k" data-group-id="9248820001-2">end</span><span class="p" data-group-id="9248820001-1">)</span><span class="w">
-</span><span class="p" data-group-id="9248820001-3">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p" data-group-id="9248820001-3">}</span><span class="w">
+<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Cache.GuildCache</span><span class="o">.</span><span class="n">select</span><span class="p" data-group-id="6502951961-1">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="k" data-group-id="6502951961-2">fn</span><span class="w"> </span><span class="n">guild</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">guild</span><span class="o">.</span><span class="n">id</span><span class="w"> </span><span class="k" data-group-id="6502951961-2">end</span><span class="p" data-group-id="6502951961-1">)</span><span class="w">
+</span><span class="p" data-group-id="6502951961-3">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p" data-group-id="6502951961-3">}</span><span class="w">
 
-</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Cache.GuildCache</span><span class="o">.</span><span class="n">select</span><span class="p" data-group-id="9248820001-4">(</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="k" data-group-id="9248820001-5">fn</span><span class="w"> </span><span class="n">guild</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">guild</span><span class="o">.</span><span class="n">id</span><span class="w"> </span><span class="k" data-group-id="9248820001-5">end</span><span class="p" data-group-id="9248820001-4">)</span><span class="w">
-</span><span class="p" data-group-id="9248820001-6">{</span><span class="ss">:error</span><span class="p">,</span><span class="w"> </span><span class="ss">:id_not_found_on_guild_lookup</span><span class="p" data-group-id="9248820001-6">}</span></code></pre>
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Cache.GuildCache</span><span class="o">.</span><span class="n">select</span><span class="p" data-group-id="6502951961-4">(</span><span class="mi">10</span><span class="p">,</span><span class="w"> </span><span class="k" data-group-id="6502951961-5">fn</span><span class="w"> </span><span class="n">guild</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">guild</span><span class="o">.</span><span class="n">id</span><span class="w"> </span><span class="k" data-group-id="6502951961-5">end</span><span class="p" data-group-id="6502951961-4">)</span><span class="w">
+</span><span class="p" data-group-id="6502951961-6">{</span><span class="ss">:error</span><span class="p">,</span><span class="w"> </span><span class="ss">:id_not_found_on_guild_lookup</span><span class="p" data-group-id="6502951961-6">}</span></code></pre>
   </section>
 </section>
 <section class="detail" id="c:select_all/1">
@@ -1114,7 +1114,7 @@ emojis.</p>
     </a>
     <h1 class="signature" translate="no">select_all(selector)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L93" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L89" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1142,7 +1142,7 @@ emojis.</p>
     </a>
     <h1 class="signature" translate="no">select_by(clauses, selector)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L164" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L160" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1159,14 +1159,14 @@ emojis.</p>
       </div>
 
 <p>Selects values using a <code class="inline">selector</code> from a <a href="Nostrum.Struct.Guild.html"><code class="inline">Nostrum.Struct.Guild</code></a> that matches
-the <code class="inline">clauses</code>.</p><p>Returns <code class="inline">{:error, reason}</code> if no result was found.</p><pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Cache.GuildCache</span><span class="o">.</span><span class="n">select_by</span><span class="p" data-group-id="7355140228-1">(</span><span class="p" data-group-id="7355140228-2">[</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p" data-group-id="7355140228-2">]</span><span class="p">,</span><span class="w"> </span><span class="k" data-group-id="7355140228-3">fn</span><span class="w"> </span><span class="n">guild</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">guild</span><span class="o">.</span><span class="n">id</span><span class="w"> </span><span class="k" data-group-id="7355140228-3">end</span><span class="p" data-group-id="7355140228-1">)</span><span class="w">
-</span><span class="p" data-group-id="7355140228-4">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p" data-group-id="7355140228-4">}</span><span class="w">
+the <code class="inline">clauses</code>.</p><p>Returns <code class="inline">{:error, reason}</code> if no result was found.</p><pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Cache.GuildCache</span><span class="o">.</span><span class="n">select_by</span><span class="p" data-group-id="7712765289-1">(</span><span class="p" data-group-id="7712765289-2">[</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p" data-group-id="7712765289-2">]</span><span class="p">,</span><span class="w"> </span><span class="k" data-group-id="7712765289-3">fn</span><span class="w"> </span><span class="n">guild</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">guild</span><span class="o">.</span><span class="n">id</span><span class="w"> </span><span class="k" data-group-id="7712765289-3">end</span><span class="p" data-group-id="7712765289-1">)</span><span class="w">
+</span><span class="p" data-group-id="7712765289-4">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p" data-group-id="7712765289-4">}</span><span class="w">
 
-</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Cache.GuildCache</span><span class="o">.</span><span class="n">select_by</span><span class="p" data-group-id="7355140228-5">(</span><span class="p" data-group-id="7355140228-6">%{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p" data-group-id="7355140228-6">}</span><span class="p">,</span><span class="w"> </span><span class="k" data-group-id="7355140228-7">fn</span><span class="w"> </span><span class="n">guild</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">guild</span><span class="o">.</span><span class="n">id</span><span class="w"> </span><span class="k" data-group-id="7355140228-7">end</span><span class="p" data-group-id="7355140228-5">)</span><span class="w">
-</span><span class="p" data-group-id="7355140228-8">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p" data-group-id="7355140228-8">}</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Cache.GuildCache</span><span class="o">.</span><span class="n">select_by</span><span class="p" data-group-id="7712765289-5">(</span><span class="p" data-group-id="7712765289-6">%{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p" data-group-id="7712765289-6">}</span><span class="p">,</span><span class="w"> </span><span class="k" data-group-id="7712765289-7">fn</span><span class="w"> </span><span class="n">guild</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">guild</span><span class="o">.</span><span class="n">id</span><span class="w"> </span><span class="k" data-group-id="7712765289-7">end</span><span class="p" data-group-id="7712765289-5">)</span><span class="w">
+</span><span class="p" data-group-id="7712765289-8">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p" data-group-id="7712765289-8">}</span><span class="w">
 
-</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Cache.GuildCache</span><span class="o">.</span><span class="n">select_by</span><span class="p" data-group-id="7355140228-9">(</span><span class="p" data-group-id="7355140228-10">[</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p" data-group-id="7355140228-10">]</span><span class="p">,</span><span class="w"> </span><span class="k" data-group-id="7355140228-11">fn</span><span class="w"> </span><span class="n">guild</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">guild</span><span class="o">.</span><span class="n">id</span><span class="w"> </span><span class="k" data-group-id="7355140228-11">end</span><span class="p" data-group-id="7355140228-9">)</span><span class="w">
-</span><span class="p" data-group-id="7355140228-12">{</span><span class="ss">:error</span><span class="p">,</span><span class="w"> </span><span class="ss">:id_not_found_on_guild_lookup</span><span class="p" data-group-id="7355140228-12">}</span></code></pre>
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Cache.GuildCache</span><span class="o">.</span><span class="n">select_by</span><span class="p" data-group-id="7712765289-9">(</span><span class="p" data-group-id="7712765289-10">[</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p" data-group-id="7712765289-10">]</span><span class="p">,</span><span class="w"> </span><span class="k" data-group-id="7712765289-11">fn</span><span class="w"> </span><span class="n">guild</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">guild</span><span class="o">.</span><span class="n">id</span><span class="w"> </span><span class="k" data-group-id="7712765289-11">end</span><span class="p" data-group-id="7712765289-9">)</span><span class="w">
+</span><span class="p" data-group-id="7712765289-12">{</span><span class="ss">:error</span><span class="p">,</span><span class="w"> </span><span class="ss">:id_not_found_on_guild_lookup</span><span class="p" data-group-id="7712765289-12">}</span></code></pre>
   </section>
 </section>
 <section class="detail" id="c:update/1">
@@ -1178,7 +1178,7 @@ the <code class="inline">clauses</code>.</p><p>Returns <code class="inline">{:er
     </a>
     <h1 class="signature" translate="no">update(map)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L175" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L171" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1208,7 +1208,7 @@ the <code class="inline">clauses</code>.</p><p>Returns <code class="inline">{:er
     </a>
     <h1 class="signature" translate="no">voice_state_update(id, state)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L249" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L245" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1252,7 +1252,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">all()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L264" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L260" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1274,7 +1274,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">get(guild_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L266" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L262" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1296,7 +1296,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">get!(guild_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L303" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L299" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1324,7 +1324,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">get_by(clauses)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L267" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L263" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1346,7 +1346,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">get_by!(clauses)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L313" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L309" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1374,7 +1374,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">select(guild_id, selector)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L268" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L264" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1396,7 +1396,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">select!(guild_id, selector)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L323" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L319" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1424,7 +1424,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">select_all(selector)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L265" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L261" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1446,7 +1446,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">select_by(clauses, selector)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L269" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L265" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1468,7 +1468,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">select_by!(clauses, selector)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L332" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L328" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>

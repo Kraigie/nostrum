@@ -7,13 +7,13 @@
     <meta name="generator" content="ExDoc v0.29.4">
     <meta name="project" content="Nostrum v0.7.0">
 
-    <title>Nostrum.Cache.Mapping.GuildShard — Nostrum v0.7.0</title>
+    <title>Nostrum.Store.GuildShardMapping.ETS — Nostrum v0.7.0</title>
     <link rel="stylesheet" href="dist/html-elixir-HHVY3JYD.css" />
 
 
     <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
     <script src="dist/handlebars.templates-XWGFFSCD.js"></script>
-    <script src="dist/sidebar_items-9773C1CF.js"></script>
+    <script src="dist/sidebar_items-28BA8BD7.js"></script>
 
       <script src="docs_config.js"></script>
 
@@ -98,20 +98,22 @@ Nostrum
 </button>
 
 
-    <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/mapping/guild_shard.ex#L1" title="View Source" class="icon-action" rel="help">
+    <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/store/guild_shard_mapping/ets.ex#L1" title="View Source" class="icon-action" rel="help">
       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
       <span class="sr-only">View Source</span>
     </a>
 
-  <span translate="no">Nostrum.Cache.Mapping.GuildShard</span> 
+  <span translate="no">Nostrum.Store.GuildShardMapping.ETS</span> 
   <small class="app-vsn" translate="no">(Nostrum v0.7.0)</small>
 
 </h1>
 
 
   <section id="moduledoc">
-<p>Mapping of guild -&gt; shard relationships.</p><p>Guild servers do not inherently know which shard they came from. This mapping
-is an ETS table that stores this information.</p>
+<p>Stores a mapping of guild IDs to their shard numbers using <code class="inline">:ets</code>.</p><p>If programmatic access to the ETS table is needed, please use the <a href="#table/0"><code class="inline">table/0</code></a>
+function.</p><p>Please do not use this module directly, apart from special functions such as
+<a href="#table/0"><code class="inline">table/0</code></a>. Use <a href="Nostrum.Store.GuildShardMapping.html"><code class="inline">Nostrum.Store.GuildShardMapping</code></a> to call the configured
+mapping instead.</p>
   </section>
 
 
@@ -130,11 +132,41 @@ is an ETS table that stores this information.</p>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#get_shard/1" translate="no">get_shard(guild_id)</a>
+        <a href="#child_spec/1" translate="no">child_spec(init_arg)</a>
 
       </div>
 
-        <div class="summary-synopsis"><p>Gets the a shard num from a <code class="inline">guild_id</code>.</p></div>
+        <div class="summary-synopsis"><p>Returns a specification to start this module under a supervisor.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#init/1" translate="no">init(init_arg)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Set up the store's ETS table.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#start_link/1" translate="no">start_link(init_arg)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Start the supervisor.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#table/0" translate="no">table()</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Retrieve the ETS table reference used for the store.</p></div>
 
     </div>
 
@@ -152,20 +184,94 @@ is an ETS table that stores this information.</p>
 Functions
     </h1>
     <div class="functions-list">
-<section class="detail" id="get_shard/1">
+<section class="detail" id="child_spec/1">
 
   <div class="detail-header">
-    <a href="#get_shard/1" class="detail-link" title="Link to this function">
+    <a href="#child_spec/1" class="detail-link" title="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">get_shard(guild_id)</h1>
+    <h1 class="signature" translate="no">child_spec(init_arg)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/mapping/guild_shard.ex#L15" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/store/guild_shard_mapping/ets.ex#L20" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
 
+
+      <span class="note">(since 0.8.0)</span>
+
+  </div>
+
+  <section class="docstring">
+
+<p>Returns a specification to start this module under a supervisor.</p><p>See <a href="https://hexdocs.pm/elixir/Supervisor.html"><code class="inline">Supervisor</code></a>.</p>
+  </section>
+</section>
+<section class="detail" id="init/1">
+
+  <div class="detail-header">
+    <a href="#init/1" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">init(init_arg)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/store/guild_shard_mapping/ets.ex#L33" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+      <span class="note">(since 0.8.0)</span>
+
+  </div>
+
+  <section class="docstring">
+
+<p>Set up the store's ETS table.</p>
+  </section>
+</section>
+<section class="detail" id="start_link/1">
+
+  <div class="detail-header">
+    <a href="#start_link/1" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">start_link(init_arg)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/store/guild_shard_mapping/ets.ex#L27" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+      <span class="note">(since 0.8.0)</span>
+
+  </div>
+
+  <section class="docstring">
+
+<p>Start the supervisor.</p>
+  </section>
+</section>
+<section class="detail" id="table/0">
+
+  <div class="detail-header">
+    <a href="#table/0" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">table()</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/store/guild_shard_mapping/ets.ex#L24" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+      <span class="note">(since 0.8.0)</span>
 
   </div>
 
@@ -173,12 +279,11 @@ Functions
 
       <div class="specs">
 
-          <pre translate="no"><span class="attribute">@spec</span> get_shard(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>()) ::
-  {:ok, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>()} | {:error, :id_not_found}</pre>
+          <pre translate="no"><span class="attribute">@spec</span> table() :: <a href="https://www.erlang.org/doc/man/ets.html#type-table">:ets.table</a>()</pre>
 
       </div>
 
-<p>Gets the a shard num from a <code class="inline">guild_id</code>.</p>
+<p>Retrieve the ETS table reference used for the store.</p>
   </section>
 </section>
 
@@ -193,7 +298,7 @@ Functions
 
               <a href="https://preview.hex.pm/preview/nostrum/0.7.0">Hex Preview</a>
 
-                (<a href="https://preview.hex.pm/preview/nostrum/0.7.0/show/lib/nostrum/cache/mapping/guild_shard.ex">current file</a>)
+                (<a href="https://preview.hex.pm/preview/nostrum/0.7.0/show/lib/nostrum/store/guild_shard_mapping/ets.ex">current file</a>)
 
             </span>
 
