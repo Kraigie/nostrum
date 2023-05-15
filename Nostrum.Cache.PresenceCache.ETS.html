@@ -13,7 +13,7 @@
 
     <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
     <script src="dist/handlebars.templates-XWGFFSCD.js"></script>
-    <script src="dist/sidebar_items-28BA8BD7.js"></script>
+    <script src="dist/sidebar_items-C9764633.js"></script>
 
       <script src="docs_config.js"></script>
 
@@ -110,20 +110,8 @@ Nostrum
 
 
   <section id="moduledoc">
-<p>ETS-based cache for user presences.</p><p>The ETS table name associated with the User Cache is <code class="inline">presences</code>. Besides
-the methods provided below you can call any other ETS methods on the table.
-If you need to access the name of the presence cache's table
-programmatically, use the <a href="#tabname/0"><code class="inline">tabname/0</code></a> function instead of hardcoding it in
-your application.</p><h2 id="module-example" class="section-heading">
-  <a href="#module-example" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
-  <p class="sr-only">example</p>
-  </a>
-  Example
-</h2>
-<pre><code class="makeup elixir" translate="no"><span class="n">info</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">:ets</span><span class="o">.</span><span class="n">info</span><span class="p" data-group-id="9054716885-1">(</span><span class="n">presences</span><span class="p" data-group-id="9054716885-1">)</span><span class="w">
-</span><span class="p" data-group-id="9054716885-2">[</span><span class="n">...</span><span class="p">,</span><span class="w"> </span><span class="ss">heir</span><span class="p">:</span><span class="w"> </span><span class="ss">:none</span><span class="p">,</span><span class="w"> </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="n">presences</span><span class="p">,</span><span class="w"> </span><span class="ss">size</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">...</span><span class="p" data-group-id="9054716885-2">]</span><span class="w">
-</span><span class="n">size</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">info</span><span class="p" data-group-id="9054716885-3">[</span><span class="ss">:size</span><span class="p" data-group-id="9054716885-3">]</span><span class="w">
-</span><span class="mi">1</span></code></pre>
+<p>ETS-based cache for user presences.</p><p>If you need to get the table reference for the table used by this module,
+please use the <a href="#table/0"><code class="inline">table/0</code></a> function.</p>
   </section>
 
 
@@ -202,11 +190,11 @@ your application.</p><h2 id="module-example" class="section-heading">
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#tabname/0" translate="no">tabname()</a>
+        <a href="#table/0" translate="no">table()</a>
 
       </div>
 
-        <div class="summary-synopsis"><p>Return the ETS table name used for this cache.</p></div>
+        <div class="summary-synopsis"><p>Retrieve the ETS table reference used for the cache.</p></div>
 
     </div>
 
@@ -243,7 +231,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">bulk_create(guild_id, presences)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache/ets.ex#L86" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache/ets.ex#L75" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -273,7 +261,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">child_spec(init_arg)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache/ets.ex#L26" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache/ets.ex#L16" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -297,7 +285,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">create(presence)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache/ets.ex#L59" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache/ets.ex#L48" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -327,7 +315,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">get(user_id, guild_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache/ets.ex#L49" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache/ets.ex#L38" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -358,7 +346,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">init(init_arg)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache/ets.ex#L35" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache/ets.ex#L30" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -382,7 +370,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">start_link(init_arg)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache/ets.ex#L29" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache/ets.ex#L19" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -397,22 +385,22 @@ Functions
 <p>Start the supervisor.</p>
   </section>
 </section>
-<section class="detail" id="tabname/0">
+<section class="detail" id="table/0">
 
   <div class="detail-header">
-    <a href="#tabname/0" class="detail-link" title="Link to this function">
+    <a href="#table/0" class="detail-link" title="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">tabname()</h1>
+    <h1 class="signature" translate="no">table()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache/ets.ex#L42" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache/ets.ex#L26" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
 
 
-      <span class="note">(since 0.5.0)</span>
+      <span class="note">(since 0.8.0)</span>
 
   </div>
 
@@ -420,11 +408,11 @@ Functions
 
       <div class="specs">
 
-          <pre translate="no"><span class="attribute">@spec</span> tabname() :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">atom</a>()</pre>
+          <pre translate="no"><span class="attribute">@spec</span> table() :: <a href="https://www.erlang.org/doc/man/ets.html#type-table">:ets.table</a>()</pre>
 
       </div>
 
-<p>Return the ETS table name used for this cache.</p>
+<p>Retrieve the ETS table reference used for the cache.</p>
   </section>
 </section>
 <section class="detail" id="update/1">
@@ -436,7 +424,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">update(presence)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache/ets.ex#L67" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache/ets.ex#L56" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>

@@ -13,7 +13,7 @@
 
     <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
     <script src="dist/handlebars.templates-XWGFFSCD.js"></script>
-    <script src="dist/sidebar_items-28BA8BD7.js"></script>
+    <script src="dist/sidebar_items-C9764633.js"></script>
 
       <script src="docs_config.js"></script>
 
@@ -110,14 +110,8 @@ Nostrum
 
 
   <section id="moduledoc">
-<p>An ETS-based cache for members.</p><p>The supervisor defined by this module will set up the ETS table associated
-with it.</p><p>The default table name under which guilds are cached is <code class="inline">nostrum_members</code>. In
-addition to the cache behaviour implementations provided by this module, you
-can also call regular ETS table methods on it, such as <code class="inline">:ets.info</code>. Use the
-<a href="#tabname/0"><code class="inline">tabname/0</code></a> function for retrieving the table name at runtime.</p><p>Note that users should not call the functions not related to this specific
-implementation of the cache directly. Instead, call the functions of
-<a href="Nostrum.Cache.MemberCache.html"><code class="inline">Nostrum.Cache.MemberCache</code></a> directly, which will dispatch to the configured
-cache.</p>
+<p>An ETS-based cache for members.</p><p>If you need to get the table reference for the table used by this module,
+please use the <a href="#table/0"><code class="inline">table/0</code></a> function.</p>
   </section>
 
 
@@ -236,11 +230,11 @@ cache.</p>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#tabname/0" translate="no">tabname()</a>
+        <a href="#table/0" translate="no">table()</a>
 
       </div>
 
-        <div class="summary-synopsis"><p>Retrieve the ETS table name used for the cache.</p></div>
+        <div class="summary-synopsis"><p>Retrieve the ETS table reference used for the cache.</p></div>
 
     </div>
 
@@ -277,7 +271,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">bulk_create(guild_id, members)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/member_cache/ets.ex#L153" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/member_cache/ets.ex#L145" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -301,7 +295,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">by_user(user_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/member_cache/ets.ex#L79" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/member_cache/ets.ex#L71" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -332,7 +326,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">child_spec(init_arg)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/member_cache/ets.ex#L27" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/member_cache/ets.ex#L18" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -356,7 +350,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">create(guild_id, payload)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/member_cache/ets.ex#L115" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/member_cache/ets.ex#L107" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -386,7 +380,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">delete(guild_id, user)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/member_cache/ets.ex#L141" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/member_cache/ets.ex#L133" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -417,7 +411,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">get(guild_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/member_cache/ets.ex#L58" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/member_cache/ets.ex#L50" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -451,7 +445,7 @@ to finish your business quickly.</p>
     </a>
     <h1 class="signature" translate="no">get(guild_id, user_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/member_cache/ets.ex#L65" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/member_cache/ets.ex#L57" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -482,7 +476,7 @@ to finish your business quickly.</p>
     </a>
     <h1 class="signature" translate="no">init(init_arg)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/member_cache/ets.ex#L36" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/member_cache/ets.ex#L27" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -506,7 +500,7 @@ to finish your business quickly.</p>
     </a>
     <h1 class="signature" translate="no">qlc_handle()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/member_cache/ets.ex#L163" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/member_cache/ets.ex#L155" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -536,7 +530,7 @@ to finish your business quickly.</p>
     </a>
     <h1 class="signature" translate="no">start_link(init_arg)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/member_cache/ets.ex#L30" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/member_cache/ets.ex#L21" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -551,22 +545,22 @@ to finish your business quickly.</p>
 <p>Start the supervisor.</p>
   </section>
 </section>
-<section class="detail" id="tabname/0">
+<section class="detail" id="table/0">
 
   <div class="detail-header">
-    <a href="#tabname/0" class="detail-link" title="Link to this function">
+    <a href="#table/0" class="detail-link" title="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">tabname()</h1>
+    <h1 class="signature" translate="no">table()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/member_cache/ets.ex#L43" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/member_cache/ets.ex#L35" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
 
 
-      <span class="note">(since 0.7.0)</span>
+      <span class="note">(since 0.8.0)</span>
 
   </div>
 
@@ -574,11 +568,11 @@ to finish your business quickly.</p>
 
       <div class="specs">
 
-          <pre translate="no"><span class="attribute">@spec</span> tabname() :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">atom</a>()</pre>
+          <pre translate="no"><span class="attribute">@spec</span> table() :: <a href="https://www.erlang.org/doc/man/ets.html#type-table">:ets.table</a>()</pre>
 
       </div>
 
-<p>Retrieve the ETS table name used for the cache.</p>
+<p>Retrieve the ETS table reference used for the cache.</p>
   </section>
 </section>
 <section class="detail" id="update/2">
@@ -590,7 +584,7 @@ to finish your business quickly.</p>
     </a>
     <h1 class="signature" translate="no">update(guild_id, payload)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/member_cache/ets.ex#L125" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/member_cache/ets.ex#L117" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
