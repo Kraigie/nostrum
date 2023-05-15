@@ -38,12 +38,12 @@ defmodule Nostrum.Shard.Supervisor do
     Supervisor.start_link(
       __MODULE__,
       [url, num_shards],
-      name: ShardSupervisor
+      name: __MODULE__
     )
   end
 
   def update_status(status, game, stream, type) do
-    ShardSupervisor
+    __MODULE__
     |> Supervisor.which_children()
     |> Enum.filter(fn {_id, _pid, _type, [modules]} -> modules == Nostrum.Shard end)
     |> Enum.map(fn {_id, pid, _type, _modules} -> Supervisor.which_children(pid) end)
@@ -56,7 +56,7 @@ defmodule Nostrum.Shard.Supervisor do
   def update_voice_state(guild_id, channel_id, self_mute, self_deaf) do
     case GuildShardMapping.get(guild_id) do
       {:ok, shard_num} ->
-        :"Shard-#{shard_num}"
+        :"Nostrum.Shard-#{shard_num}"
         |> Supervisor.which_children()
         |> Enum.find(fn {id, _pid, _type, _modules} -> id == Nostrum.Shard.Session end)
         |> elem(1)

@@ -24,7 +24,7 @@ defmodule Nostrum.Api.Ratelimiter do
 
   @major_parameters ["channels", "guilds", "webhooks"]
   @gregorian_epoch 62_167_219_200
-  @registered_name Ratelimiter
+  @registered_name __MODULE__
 
   @doc """
   Starts the ratelimiter.

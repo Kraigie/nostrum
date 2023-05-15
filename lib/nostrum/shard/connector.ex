@@ -10,7 +10,7 @@ defmodule Nostrum.Shard.Connector do
   @wait_time 5500
 
   def start_link([]) do
-    GenServer.start_link(__MODULE__, %{last_connect: 0}, name: ShardConnectionManager)
+    GenServer.start_link(__MODULE__, %{last_connect: 0}, name: __MODULE__)
   end
 
   def init(args) do
@@ -18,7 +18,7 @@ defmodule Nostrum.Shard.Connector do
   end
 
   def block_until_connect do
-    GenServer.call(ShardConnectionManager, {:blocking_connect}, :infinity)
+    GenServer.call(__MODULE__, {:blocking_connect}, :infinity)
   end
 
   def handle_call({:blocking_connect}, _from, %{last_connect: 0} = state), do: wait(0, state)

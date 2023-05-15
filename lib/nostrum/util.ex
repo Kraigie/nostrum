@@ -3,6 +3,8 @@ defmodule Nostrum.Util do
   Utility functions
   """
 
+  @gateway_url_key :nostrum_gateway_url
+
   alias Nostrum.{Api, Constants, Snowflake}
   alias Nostrum.Shard.Session
   alias Nostrum.Struct.WSState
@@ -88,9 +90,9 @@ defmodule Nostrum.Util do
   """
   @spec gateway() :: {String.t(), integer}
   def gateway do
-    case :ets.lookup(:gateway_url, "url") do
+    case :persistent_term.get(@gateway_url_key) do
       [] -> get_new_gateway_url()
-      [{"url", url, shards}] -> {url, shards}
+      [result] -> result
     end
   end
 
@@ -108,7 +110,7 @@ defmodule Nostrum.Util do
         "wss://" <> url = body["url"]
         shards = if body["shards"], do: body["shards"], else: 1
 
-        :ets.insert(:gateway_url, {"url", url, shards})
+        :persistent_term.put(@gateway_url_key, {url, shards})
         {url, shards}
     end
   end
@@ -260,7 +262,7 @@ defmodule Nostrum.Util do
   """
   @spec get_all_shard_latencies :: %{WSState.shard_num() => non_neg_integer | nil}
   def get_all_shard_latencies do
-    ShardSupervisor
+    Nostrum.Shard.Supervisor
     |> Supervisor.which_children()
     |> Enum.filter(fn {_id, _pid, _type, [modules]} -> modules == Nostrum.Shard end)
     |> Enum.map(fn {_id, pid, _type, _modules} -> Supervisor.which_children(pid) end)
