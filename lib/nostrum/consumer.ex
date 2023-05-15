@@ -351,6 +351,17 @@ defmodule Nostrum.Consumer do
     quote location: :keep do
       use GenServer
 
+      def child_spec(opts) do
+        %{
+          id: __MODULE__,
+          start: {__MODULE__, :start_link, [opts]},
+          type: :worker,
+          restart: :permanent,
+          max_restarts: 0,
+          shutdown: 500
+        }
+      end
+
       def start_link(opts) do
         GenServer.start_link(__MODULE__, [], opts)
       end
@@ -364,17 +375,6 @@ defmodule Nostrum.Consumer do
         {:noreply, state}
       end
 
-      def child_spec(opts) do
-        %{
-          id: __MODULE__,
-          start: {__MODULE__, :start_link, [opts]},
-          type: :worker,
-          restart: :permanent,
-          max_restarts: 0,
-          shutdown: 500
-        }
-      end
-
       def handle_info({:event, event}, state) do
         Task.start_link(fn ->
           __MODULE__.handle_event(event)
@@ -382,6 +382,8 @@ defmodule Nostrum.Consumer do
 
         {:noreply, state}
       end
+
+      defoverridable child_spec: 1, start_link: 1, init: 1, handle_continue: 2, handle_info: 2
     end
   end
 end
