@@ -1,24 +1,15 @@
 defmodule Nostrum.Cache.MemberCache.ETS do
-  @table_name :nostrum_members
   @moduledoc """
   An ETS-based cache for members.
 
-  The supervisor defined by this module will set up the ETS table associated
-  with it.
-
-  The default table name under which guilds are cached is `#{@table_name}`. In
-  addition to the cache behaviour implementations provided by this module, you
-  can also call regular ETS table methods on it, such as `:ets.info`. Use the
-  `tabname/0` function for retrieving the table name at runtime.
-
-  Note that users should not call the functions not related to this specific
-  implementation of the cache directly. Instead, call the functions of
-  `Nostrum.Cache.MemberCache` directly, which will dispatch to the configured
-  cache.
+  If you need to get the table reference for the table used by this module,
+  please use the `table/0` function.
   """
   @moduledoc since: "0.7.0"
 
   @behaviour Nostrum.Cache.MemberCache
+
+  @table_name :nostrum_members
 
   alias Nostrum.Cache.MemberCache
   alias Nostrum.Struct.Guild
@@ -34,13 +25,14 @@ defmodule Nostrum.Cache.MemberCache.ETS do
   @doc "Set up the cache's ETS table."
   @impl Supervisor
   def init(_init_arg) do
-    :ets.new(tabname(), [:set, :public, :named_table])
+    :ets.new(@table_name, [:set, :public, :named_table])
     Supervisor.init([], strategy: :one_for_one)
   end
 
-  @doc "Retrieve the ETS table name used for the cache."
-  @spec tabname :: atom()
-  def tabname, do: @table_name
+  @doc "Retrieve the ETS table reference used for the cache."
+  @doc since: "0.8.0"
+  @spec table :: :ets.table()
+  def table, do: @table_name
 
   # Used by clients
 

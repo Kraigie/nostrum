@@ -1,15 +1,15 @@
 defmodule Nostrum.Cache.UserCache.ETS do
-  @table_name :nostrum_users
   @moduledoc """
   An ETS-based cache for users.
 
-  The default table name under which users are cached is `#{@table_name}`.
-  In addition to the cache behaviour implementations provided by this module,
-  you can also call regular ETS table methods on it, such as `:ets.info`.
+  If you need to get the table reference for the table used by this module,
+  please use the `table/0` function.
   """
   @moduledoc since: "0.5.0"
 
   @behaviour Nostrum.Cache.UserCache
+
+  @table_name :nostrum_users
 
   alias Nostrum.Struct.User
   use Supervisor
@@ -26,9 +26,10 @@ defmodule Nostrum.Cache.UserCache.ETS do
     Supervisor.init([], strategy: :one_for_one)
   end
 
-  @doc "Retrieve the ETS table name used for the cache."
-  @spec tabname :: atom()
-  def tabname, do: @table_name
+  @doc "Retrieve the ETS table reference used for the cache."
+  @doc since: "0.8.0"
+  @spec table :: :ets.table()
+  def table, do: @table_name
 
   @doc "Bulk create a list of users from upstream data."
   @impl Nostrum.Cache.UserCache

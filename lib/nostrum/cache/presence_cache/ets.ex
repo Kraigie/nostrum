@@ -1,25 +1,15 @@
 defmodule Nostrum.Cache.PresenceCache.ETS do
-  @tablename :presences
   @moduledoc """
   ETS-based cache for user presences.
 
-  The ETS table name associated with the User Cache is `#{@tablename}`. Besides
-  the methods provided below you can call any other ETS methods on the table.
-  If you need to access the name of the presence cache's table
-  programmatically, use the `tabname/0` function instead of hardcoding it in
-  your application.
-
-  ## Example
-  ```elixir
-  info = :ets.info(#{@tablename})
-  [..., heir: :none, name: #{@tablename}, size: 1, ...]
-  size = info[:size]
-  1
-  ```
+  If you need to get the table reference for the table used by this module,
+  please use the `table/0` function.
   """
   @moduledoc since: "0.5.0"
 
   @behaviour Nostrum.Cache.PresenceCache
+
+  @table_name :nostrum_presences
 
   alias Nostrum.Struct.{Guild, User}
   import Nostrum.Snowflake, only: [is_snowflake: 1]
@@ -30,24 +20,23 @@ defmodule Nostrum.Cache.PresenceCache.ETS do
     Supervisor.start_link(__MODULE__, init_arg, name: __MODULE__)
   end
 
+  @doc "Retrieve the ETS table reference used for the cache."
+  @doc since: "0.8.0"
+  @spec table :: :ets.table()
+  def table, do: @table_name
+
   @doc "Set up the cache's ETS table."
   @impl Supervisor
   def init(_init_arg) do
-    :ets.new(@tablename, [:set, :public, :named_table])
+    :ets.new(@table_name, [:set, :public, :named_table])
     Supervisor.init([], strategy: :one_for_one)
-  end
-
-  @doc "Return the ETS table name used for this cache."
-  @spec tabname :: atom()
-  def tabname do
-    @tablename
   end
 
   @impl Nostrum.Cache.PresenceCache
   @doc "Retrieves a presence for a user from the cache by guild and id."
   @spec get(User.id(), Guild.id()) :: {:error, :presence_not_found} | {:ok, map}
   def get(user_id, guild_id) when is_snowflake(user_id) and is_snowflake(guild_id) do
-    case :ets.lookup(@tablename, {user_id, guild_id}) do
+    case :ets.lookup(@table_name, {user_id, guild_id}) do
       [] -> {:error, :presence_not_found}
       [{{^user_id, ^guild_id}, presence}] -> {:ok, presence}
     end
@@ -57,7 +46,7 @@ defmodule Nostrum.Cache.PresenceCache.ETS do
   @doc "Add the given presence data to the cache."
   @spec create(map) :: :ok
   def create(presence) do
-    :ets.insert(@tablename, {{presence.user.id, presence.guild_id}, presence})
+    :ets.insert(@table_name, {{presence.user.id, presence.guild_id}, presence})
     :ok
   end
 
@@ -87,7 +76,7 @@ defmodule Nostrum.Cache.PresenceCache.ETS do
 
   def bulk_create(guild_id, presences) when is_list(presences) do
     Enum.each(presences, fn p ->
-      :ets.insert(@tablename, {{p.user.id, guild_id}, p})
+      :ets.insert(@table_name, {{p.user.id, guild_id}, p})
     end)
   end
 end

@@ -1,14 +1,12 @@
 defmodule Nostrum.Cache.ChannelCache.ETS do
-  @table_name :nostrum_channels
   @moduledoc """
   An ETS-based cache for channels outside of guilds.
 
   The supervisor defined by this module will set up the ETS table associated
   with it.
 
-  The default table name under which channels are cached is `#{@table_name}`.
-  In addition to the cache behaviour implementations provided by this module,
-  you can also call regular ETS table methods on it, such as `:ets.info`.
+  If you need to get the table reference for the table used by this module,
+  please use the `table/0` function.
 
   Note that users should not call the functions not related to this specific
   implementation of the cache directly. Instead, call the functions of
@@ -18,6 +16,8 @@ defmodule Nostrum.Cache.ChannelCache.ETS do
   @moduledoc since: "0.5.0"
 
   @behaviour Nostrum.Cache.ChannelCache
+
+  @table_name :nostrum_channels
 
   alias Nostrum.Cache.ChannelCache
   alias Nostrum.Cache.GuildCache
@@ -33,13 +33,14 @@ defmodule Nostrum.Cache.ChannelCache.ETS do
   @doc "Set up the cache's ETS table."
   @impl Supervisor
   def init(_init_arg) do
-    :ets.new(tabname(), [:set, :public, :named_table])
+    :ets.new(@table_name, [:set, :public, :named_table])
     Supervisor.init([], strategy: :one_for_one)
   end
 
-  @doc "Retrieve the ETS table name used for the cache."
-  @spec tabname :: atom()
-  def tabname, do: @table_name
+  @doc "Retrieve the ETS table reference used for the cache."
+  @doc since: "0.8.0"
+  @spec table :: :ets.table()
+  def table, do: @table_name
 
   # IMPLEMENTATION
   @doc "Retrieve a channel from the cache by ID."
@@ -56,7 +57,7 @@ defmodule Nostrum.Cache.ChannelCache.ETS do
   @impl ChannelCache
   @spec create(map) :: Channel.t()
   def create(channel) do
-    :ets.insert(tabname(), {channel.id, channel})
+    :ets.insert(@table_name, {channel.id, channel})
     convert(channel)
   end
 
@@ -82,7 +83,7 @@ defmodule Nostrum.Cache.ChannelCache.ETS do
   def delete(id) do
     case lookup(id) do
       {:ok, channel} ->
-        :ets.delete(tabname(), id)
+        :ets.delete(@table_name, id)
         convert(channel)
 
       _ ->
@@ -94,7 +95,7 @@ defmodule Nostrum.Cache.ChannelCache.ETS do
   @impl ChannelCache
   @spec lookup(Channel.id()) :: {:error, :channel_not_found} | {:ok, map}
   def lookup(id) do
-    case :ets.lookup(tabname(), id) do
+    case :ets.lookup(@table_name, id) do
       [] ->
         [channel_id: id]
         |> GuildCache.select_by(fn %{channels: channels} ->
