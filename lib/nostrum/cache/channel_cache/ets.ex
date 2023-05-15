@@ -101,7 +101,7 @@ defmodule Nostrum.Cache.ChannelCache.ETS do
           Map.get(channels, id, {:error, :id_not_found})
         end)
         |> case do
-          {:error, :id_not_found} ->
+          {:error, :id_not_found_on_guild_lookup} ->
             {:error, :channel_not_found}
 
           res ->

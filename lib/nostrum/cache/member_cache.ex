@@ -194,9 +194,5 @@ defmodule Nostrum.Cache.MemberCache do
   ## Supervisor callbacks
   # These set up the backing cache.
   @doc false
-  defdelegate init(init_arg), to: @configured_cache
-  @doc false
-  defdelegate start_link(init_arg), to: @configured_cache
-  @doc false
   defdelegate child_spec(opts), to: @configured_cache
 end

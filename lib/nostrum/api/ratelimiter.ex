@@ -6,9 +6,10 @@ defmodule Nostrum.Api.Ratelimiter do
 
   use GenServer
 
-  alias Nostrum.Api.{Base, Bucket}
+  alias Nostrum.Api.Base
   alias Nostrum.Constants
   alias Nostrum.Error.ApiError
+  alias Nostrum.Store.RatelimitBucket
   alias Nostrum.Util
 
   require Logger
@@ -34,7 +35,6 @@ defmodule Nostrum.Api.Ratelimiter do
   end
 
   def init([]) do
-    :ets.new(:ratelimit_buckets, [:set, :public, :named_table])
     domain = to_charlist(Constants.domain())
 
     open_opts = %{retry: 1_000_000_000, tls_opts: Constants.gun_tls_opts()}
@@ -48,18 +48,10 @@ defmodule Nostrum.Api.Ratelimiter do
     {:ok, conn_pid}
   end
 
-  @doc """
-  Empties all buckets, voiding any saved ratelimit values.
-  """
-  @spec empty_buckets() :: true
-  def empty_buckets do
-    :ets.delete_all_objects(:ratelimit_buckets)
-  end
-
   defp get_retry_time(route, method) do
     route
     |> get_endpoint(method)
-    |> Bucket.get_ratelimit_timeout()
+    |> RatelimitBucket.timeout_for()
   end
 
   def queue(request) do
@@ -82,9 +74,6 @@ defmodule Nostrum.Api.Ratelimiter do
   def handle_call({:queue, request}, _from, conn) do
     case get_retry_time(request.route, request.method) do
       :now ->
-        {:reply, do_request(request, conn), conn}
-
-      time when time < 0 ->
         {:reply, do_request(request, conn), conn}
 
       time ->
@@ -114,7 +103,7 @@ defmodule Nostrum.Api.Ratelimiter do
   end
 
   def handle_info(:remove_old_buckets, state) do
-    Bucket.remove_old_buckets()
+    RatelimitBucket.cleanup(:timer.hours(1))
     Process.send_after(self(), :remove_old_buckets, :timer.hours(1))
     {:noreply, state}
   end
@@ -148,7 +137,7 @@ defmodule Nostrum.Api.Ratelimiter do
     remaining = unless is_nil(remaining), do: String.to_integer(remaining)
 
     reset = header_value(headers, "x-ratelimit-reset")
-    reset = unless is_nil(reset), do: String.to_float(reset)
+    reset = unless is_nil(reset), do: :erlang.trunc(:math.ceil(String.to_float(reset)))
     retry_after = header_value(headers, "retry-after")
 
     retry_after =
@@ -156,7 +145,7 @@ defmodule Nostrum.Api.Ratelimiter do
         # Since for some reason this might not contain a "."
         # and String.to_float raises if it doesn't
         {retry_after, ""} = Float.parse(retry_after)
-        retry_after
+        :erlang.trunc(:math.ceil(retry_after))
       end
 
     origin_timestamp =
@@ -179,11 +168,11 @@ defmodule Nostrum.Api.Ratelimiter do
   end
 
   defp update_bucket(route, remaining, reset_time, latency) do
-    Bucket.update_bucket(route, remaining, reset_time * 1000, latency)
+    RatelimitBucket.update(route, remaining, reset_time * 1000, latency)
   end
 
   defp update_global_bucket(_route, _remaining, retry_after, latency) do
-    Bucket.update_bucket("GLOBAL", 0, retry_after + Util.now(), latency)
+    RatelimitBucket.update("GLOBAL", 0, retry_after + Util.now(), latency)
   end
 
   defp date_string_to_unix(header) do

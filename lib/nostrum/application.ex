@@ -14,8 +14,9 @@ defmodule Nostrum.Application do
     setup_ets_tables()
 
     children = [
-      Nostrum.Api.Ratelimiter,
+      Nostrum.Store.Supervisor,
       Nostrum.ConsumerGroup,
+      Nostrum.Api.Ratelimiter,
       Nostrum.Shard.Connector,
       Nostrum.Cache.CacheSupervisor,
       Nostrum.Shard.Supervisor,
@@ -30,9 +31,6 @@ defmodule Nostrum.Application do
   @doc false
   def setup_ets_tables do
     :ets.new(:gateway_url, [:set, :public, :named_table])
-    :ets.new(:unavailable_guilds, [:set, :public, :named_table])
-    :ets.new(:guild_shard_map, [:set, :public, :named_table])
-    :ets.new(:channel_guild_map, [:set, :public, :named_table])
   end
 
   defp check_executables do

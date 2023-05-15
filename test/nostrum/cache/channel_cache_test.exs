@@ -1,7 +1,6 @@
 defmodule Nostrum.Cache.ChannelCacheTest do
   alias Nostrum.Struct.Channel
   alias Nostrum.Struct.Message
-  alias Nostrum.Application
   use ExUnit.Case
 
   @cache_modules [
@@ -24,8 +23,8 @@ defmodule Nostrum.Cache.ChannelCacheTest do
 
       describe "with an empty cache" do
         setup do
-          Application.setup_ets_tables()
-          [pid: start_supervised!(@cache)]
+          mapping_pid = start_supervised!(Nostrum.Cache.ChannelGuildMapping)
+          [pid: start_supervised!(@cache), mapping_pid: mapping_pid]
         end
 
         test "get/1 returns channel not found" do
@@ -44,10 +43,10 @@ defmodule Nostrum.Cache.ChannelCacheTest do
 
       describe "with cached channel" do
         setup do
-          Application.setup_ets_tables()
+          mapping_pid = start_supervised!(Nostrum.Cache.ChannelGuildMapping)
           pid = start_supervised!(@cache)
           @cache.create(@test_channel)
-          [pid: pid]
+          [pid: pid, mapping_pid: mapping_pid]
         end
 
         test "get/1 on dispatch module with message returns channel" do
