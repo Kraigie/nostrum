@@ -90,9 +90,9 @@ defmodule Nostrum.Util do
   """
   @spec gateway() :: {String.t(), integer}
   def gateway do
-    case :persistent_term.get(@gateway_url_key) do
-      [] -> get_new_gateway_url()
-      [result] -> result
+    case :persistent_term.get(@gateway_url_key, nil) do
+      nil -> get_new_gateway_url()
+      result -> result
     end
   end
 
