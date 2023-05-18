@@ -149,6 +149,11 @@ defmodule Nostrum.Cache.GuildCacheTest do
           assert @cache.member_count_down(@test_guild.id)
           assert {:ok, %{member_count: 0}} = @cache.get(@test_guild.id)
         end
+
+        test "member count operations for uncached guild" do
+          assert @cache.member_count_up(@test_guild.id + 1)
+          assert @cache.member_count_down(@test_guild.id + 1)
+        end
       end
     end
   end
