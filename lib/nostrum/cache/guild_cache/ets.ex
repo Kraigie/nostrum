@@ -256,8 +256,14 @@ defmodule Nostrum.Cache.GuildCache.ETS do
   @impl GuildCache
   @spec member_count_up(Guild.id()) :: true
   def member_count_up(guild_id) do
-    [{^guild_id, guild}] = :ets.lookup(@table_name, guild_id)
-    :ets.insert(@table_name, {guild_id, %{guild | member_count: guild.member_count + 1}})
+    case :ets.lookup(@table_name, guild_id) do
+      [{^guild_id, guild}] ->
+        :ets.insert(@table_name, {guild_id, %{guild | member_count: guild.member_count + 1}})
+
+      _ ->
+        # Guilds caching disabled but member caching isn't
+        true
+    end
   end
 
   @doc "Decrement the guild member count by one."
@@ -265,8 +271,14 @@ defmodule Nostrum.Cache.GuildCache.ETS do
   @impl GuildCache
   @spec member_count_down(Guild.id()) :: true
   def member_count_down(guild_id) do
-    [{^guild_id, guild}] = :ets.lookup(@table_name, guild_id)
-    :ets.insert(@table_name, {guild_id, %{guild | member_count: guild.member_count - 1}})
+    case :ets.lookup(@table_name, guild_id) do
+      [{^guild_id, guild}] ->
+        :ets.insert(@table_name, {guild_id, %{guild | member_count: guild.member_count - 1}})
+
+      _ ->
+        # Guilds caching disabled but member caching isn't
+        true
+    end
   end
 
   @spec upsert(%{required(Snowflake.t()) => struct}, Snowflake.t(), map, atom) ::
