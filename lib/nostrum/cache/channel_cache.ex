@@ -85,7 +85,6 @@ defmodule Nostrum.Cache.ChannelCache do
   end
   ```
   """
-  @doc section: :reading
   @callback get(Channel.id()) :: {:ok, Channel.t()} | {:error, reason}
 
   # Functions called from nostrum.
