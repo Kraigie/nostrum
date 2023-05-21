@@ -61,6 +61,7 @@ defmodule Nostrum.Cache.UserCache.ETS do
     else
       {:error, _} ->
         # User just came online, make sure to cache if possible
+        # TODO: check for `:global_name` once fully rolled out?
         if Enum.all?([:username, :discriminator], &Map.has_key?(info, &1)),
           do: :ets.insert(@table_name, {info.id, info})
 
