@@ -30,7 +30,8 @@ defmodule Nostrum.Cache.UserCacheMetaTest do
       @test_user_two %{
         id: 54321,
         username: "test two",
-        discriminator: "4321",
+        discriminator: "0",
+        global_name: "test_two"
         avatar: nil,
         bot: true,
         mfa_enabled: nil,

@@ -28,6 +28,7 @@ defmodule Nostrum.Struct.User do
     :id,
     :username,
     :discriminator,
+    :global_name,
     :avatar,
     :bot,
     :mfa_enabled,
@@ -48,6 +49,9 @@ defmodule Nostrum.Struct.User do
 
   @typedoc "The user's 4--digit discord-tag"
   @type discriminator :: String.t()
+
+  @typedoc "The user's display name, if it is set"
+  @type global_name :: String.t() | nil
 
   @typedoc "User's avatar hash"
   @type avatar :: String.t() | nil
@@ -71,6 +75,7 @@ defmodule Nostrum.Struct.User do
           id: id,
           username: username,
           discriminator: discriminator,
+          global_name: global_name,
           avatar: avatar,
           bot: bot,
           mfa_enabled: mfa_enabled,
@@ -132,9 +137,18 @@ defmodule Nostrum.Struct.User do
     do: URI.encode(Constants.cdn_url() <> Constants.cdn_avatar(id, avatar, image_format))
 
   @doc """
-  Returns a user's `:username` and `:discriminator` separated by a hashtag.
+  Returns a user's `:global_name` if present, otherwise returns their
+  `:username` and `:discriminator` separated by a hashtag.
 
   ## Examples
+
+  ```elixir
+  iex> user = %Nostrum.Struct.User{global_name: "TheRealJason",
+  ...>                             username: "therealjason",
+  ...>                             discriminator: "0"}
+  iex> Nostrum.Struct.User.full_name(user)
+  "TheRealJason"
+  ```
 
   ```elixir
   iex> user = %Nostrum.Struct.User{username: "b1nzy",
@@ -144,6 +158,9 @@ defmodule Nostrum.Struct.User do
   ```
   """
   @spec full_name(t) :: String.t()
+  def full_name(%__MODULE__{global_name: global_name}) when global_name != nil,
+    do: global_name
+
   def full_name(%__MODULE__{username: username, discriminator: disc}),
     do: "#{username}##{disc}"
 
