@@ -23,17 +23,19 @@ retry_time =
 ```
 
 ## Issues and Pull Requests
-Before you submit any code, please run the following commands from your terminal.
 
-```elixir
-mix compile --force
-```
-When applicable, please fix any warnings this brings up.
+Before you submit any code, please run the following commands from your terminal:
 
-```elixir
-mix credo --strict
+- `mix compile --force`
+- `mix format`
+- `mix credo --strict --ignore 'TagTODO'`
+- `mix test --no-start`
+- `mix dialyzer`
+
+or simply:
+
+```sh
+mix compile --force && mix format && mix credo --strict --ignore 'TagTODO' && mix test --no-start && mix dialyzer
 ```
-If there are any warnings please handle them to the best of your ability. If you're
-unsure of what anything means, feel free to ask or consult the credo docs. As of the
-time of this writing, there are multiple non-warning issues that still need to be
-addressed, but those are much lower priority.
+
+Please fix any warnings that appear.
