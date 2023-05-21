@@ -124,10 +124,12 @@ defmodule Nostrum.Struct.User do
   @spec avatar_url(t, String.t()) :: String.t()
   def avatar_url(user, image_format \\ "webp")
 
-  def avatar_url(%__MODULE__{avatar: nil, discriminator: disc}, _) do
+  def avatar_url(%__MODULE__{id: id, avatar: nil, discriminator: disc}, _) do
     image_name =
-      disc
-      |> String.to_integer()
+      case disc do
+        "0" -> Bitwise.bsr(id, 22)
+        disc -> String.to_integer(disc)
+      end
       |> rem(5)
 
     URI.encode(Constants.cdn_url() <> Constants.cdn_embed_avatar(image_name))
@@ -158,11 +160,11 @@ defmodule Nostrum.Struct.User do
   ```
   """
   @spec full_name(t) :: String.t()
-  def full_name(%__MODULE__{global_name: global_name}) when global_name != nil,
-    do: global_name
-
-  def full_name(%__MODULE__{username: username, discriminator: disc}),
+  def full_name(%__MODULE__{global_name: nil, username: username, discriminator: disc}),
     do: "#{username}##{disc}"
+
+  def full_name(%__MODULE__{global_name: global_name}),
+    do: global_name
 
   @doc false
   def p_encode do
