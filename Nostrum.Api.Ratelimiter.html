@@ -13,7 +13,7 @@
 
     <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
     <script src="dist/handlebars.templates-XWGFFSCD.js"></script>
-    <script src="dist/sidebar_items-7A762AB3.js"></script>
+    <script src="dist/sidebar_items-B39C065A.js"></script>
 
       <script src="docs_config.js"></script>
 
@@ -176,9 +176,11 @@ Only to be used when starting in a rest-only manner.</p>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#queue/1" translate="no">queue(request)</a>
+        <a href="#queue/2" translate="no">queue(request, attempts_remaining \\ 3)</a>
 
       </div>
+
+        <div class="summary-synopsis"><p>Queue the given request.</p></div>
 
     </div>
 
@@ -215,7 +217,7 @@ Types
     </a>
     <h1 class="signature" translate="no">on_start()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L20" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L22" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -279,7 +281,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">get_endpoint(route, method)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L193" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L207" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -307,7 +309,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">init(list)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L37" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L39" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -320,16 +322,18 @@ Functions
 <p>Callback implementation for <a href="https://hexdocs.pm/elixir/GenServer.html#c:init/1"><code class="inline">GenServer.init/1</code></a>.</p>
   </section>
 </section>
-<section class="detail" id="queue/1">
+<section class="detail" id="queue/2">
+
+    <span id="queue/1"></span>
 
   <div class="detail-header">
-    <a href="#queue/1" class="detail-link" title="Link to this function">
+    <a href="#queue/2" class="detail-link" title="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">queue(request)</h1>
+    <h1 class="signature" translate="no">queue(request, attempts_remaining \\ 3)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L57" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L67" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -339,7 +343,9 @@ Functions
 
   <section class="docstring">
 
-
+<p>Queue the given request.</p><p>If the ratelimiter tells us to sit it out and we have more than <code class="inline">0</code> attempts
+remaining, we sleep out the given retry time and ask it to queue again
+afterwards.</p>
   </section>
 </section>
 <section class="detail" id="start_link/1">
@@ -351,7 +357,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">start_link(list)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L33" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L35" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
