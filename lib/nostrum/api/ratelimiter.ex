@@ -14,6 +14,8 @@ defmodule Nostrum.Api.Ratelimiter do
 
   require Logger
 
+  @default_attempts_to_requeue 3
+
   @typedoc """
   Return values of start functions.
   """
@@ -54,9 +56,17 @@ defmodule Nostrum.Api.Ratelimiter do
     |> RatelimitBucket.timeout_for()
   end
 
-  def queue(request) do
+  @doc """
+  Queue the given request.
+
+  If the ratelimiter tells us to sit it out and we have more than `0` attempts
+  remaining, we sleep out the given retry time and ask it to queue again
+  afterwards.
+
+  """
+  def queue(request, attempts_remaining \\ @default_attempts_to_requeue) do
     case GenServer.call(@registered_name, {:queue, request}) do
-      {:error, {:retry_after, time}} ->
+      {:error, {:retry_after, time}} when attempts_remaining > 0 ->
         truncated = :erlang.ceil(time)
 
         Logger.info(
@@ -64,7 +74,11 @@ defmodule Nostrum.Api.Ratelimiter do
         )
 
         Process.sleep(truncated)
-        GenServer.call(@registered_name, {:queue, request})
+        queue(request, attempts_remaining - 1)
+
+      # We've had enough. Bail.
+      {:error, {:retry_after, _time}} when attempts_remaining == 0 ->
+        {:error, :max_retry_attempts_exceeded}
 
       result ->
         result

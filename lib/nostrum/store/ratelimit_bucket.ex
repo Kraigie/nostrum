@@ -134,7 +134,7 @@ defmodule Nostrum.Store.RatelimitBucket do
         # know what I'm doing anymore?
 
         case reset_time - Util.now() + latency do
-          time when time < 0 -> :now
+          time when time <= 0 -> :now
           time -> time
         end
 
