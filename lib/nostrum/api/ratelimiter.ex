@@ -14,7 +14,7 @@ defmodule Nostrum.Api.Ratelimiter do
 
   require Logger
 
-  @default_attempts_to_requeue 3
+  @default_attempts_to_requeue 50
 
   @typedoc """
   Return values of start functions.
@@ -69,8 +69,10 @@ defmodule Nostrum.Api.Ratelimiter do
       {:error, {:retry_after, time}} when attempts_remaining > 0 ->
         truncated = :erlang.ceil(time)
 
+        attempt = @default_attempts_to_requeue - attempts_remaining + 1
+
         Logger.info(
-          "RATELIMITER: Waiting #{truncated}ms to process request with route #{request.route}"
+          "RATELIMITER: Waiting #{truncated}ms to process request with route #{request.route} (try #{attempt} / #{@default_attempts_to_requeue})"
         )
 
         Process.sleep(truncated)
