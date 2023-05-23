@@ -19,16 +19,12 @@ defmodule Nostrum.Cache.GuildCache.ETS do
 
   @behaviour Nostrum.Cache.GuildCache
 
-  alias Nostrum.Cache.ChannelGuildMapping
   alias Nostrum.Cache.GuildCache
-  alias Nostrum.Snowflake
   alias Nostrum.Struct.Channel
   alias Nostrum.Struct.Emoji
   alias Nostrum.Struct.Guild
   alias Nostrum.Struct.Guild.Role
-  alias Nostrum.Struct.Message
   alias Nostrum.Util
-  import Nostrum.Snowflake, only: [is_snowflake: 1]
   use Supervisor
 
   @doc "Start the supervisor."
@@ -43,90 +39,19 @@ defmodule Nostrum.Cache.GuildCache.ETS do
     Supervisor.init([], strategy: :one_for_one)
   end
 
-  defguardp is_selector(term) when is_function(term, 1)
-
   @doc "Retrieve the ETS table name used for the cache."
   @spec tabname :: atom()
   def tabname, do: @table_name
 
-  @doc "Retrieve all guilds from the cache."
-  @impl GuildCache
-  @spec all() :: Enum.t()
-  def all do
-    @table_name
-    |> :ets.tab2list()
-    |> Stream.map(&elem(&1, 1))
-  end
-
-  @doc "Retrieve all guilds matching the given selector from the cache."
-  @impl GuildCache
-  @spec select_all(GuildCache.selector()) :: Enum.t()
-  def select_all(selector)
-
-  def select_all(selector) when is_selector(selector) do
-    :ets.foldl(fn {_id, guild}, acc -> [selector.(guild) | acc] end, [], @table_name)
-  end
-
-  @doc "Retrieve a guild from the cache by ID."
-  @impl GuildCache
-  @spec get(Guild.id()) :: {:ok, Guild.t()} | {:error, GuildCache.reason()}
-  def get(id) do
-    select(id, fn guild -> guild end)
-  end
-
-  @doc "Get a guild from the cache using the given selectors."
-  @impl GuildCache
-  @spec get_by(GuildCache.clauses()) :: {:ok, Guild.t()} | {:error, GuildCache.reason()}
-  def get_by(clauses) do
-    select_by(clauses, fn guild -> guild end)
-  end
-
-  @doc "Select values from the guild with the matching ID."
-  @impl GuildCache
-  @spec select(Guild.id(), GuildCache.selector()) :: {:ok, any} | {:error, GuildCache.reason()}
-  def select(id, selector) do
-    select_by(%{id: id}, selector)
-  end
-
-  @doc "Select values using a `selector` for a guild that matches the given `clauses`."
-  @impl GuildCache
-  @spec select_by(GuildCache.clauses(), GuildCache.selector()) ::
-          {:ok, any} | {:error, GuildCache.reason()}
-  def select_by(clauses, selector)
-
-  def select_by(clauses, selector) when is_list(clauses) and is_selector(selector),
-    do: select_by(Map.new(clauses), selector)
-
-  def select_by(%{id: id}, selector) when is_snowflake(id) and is_selector(selector) do
-    case :ets.lookup(@table_name, id) do
-      [{^id, guild}] ->
-        selection = selector.(guild)
-        {:ok, selection}
-
-      [] ->
-        {:error, :id_not_found_on_guild_lookup}
-    end
-  end
-
-  def select_by(%{channel_id: channel_id}, selector)
-      when is_snowflake(channel_id) and is_selector(selector) do
-    case ChannelGuildMapping.get(channel_id) do
-      nil -> {:error, :channel_not_found}
-      guild_id -> select_by(%{id: guild_id}, selector)
-    end
-  end
-
-  def select_by(%{message: %Message{channel_id: channel_id}}, selector) do
-    select_by(%{channel_id: channel_id}, selector)
-  end
-
   # IMPLEMENTATION
   @doc "Create the given guild in the cache."
   @impl GuildCache
-  @spec create(Guild.t()) :: true
-  def create(guild) do
+  @spec create(map()) :: Guild.t()
+  def create(payload) do
+    guild = Guild.to_struct(payload)
     # A duplicate guild insert is treated as a replace.
     true = :ets.insert(@table_name, {guild.id, guild})
+    guild
   end
 
   @doc "Update the given guild in the cache."
@@ -179,7 +104,10 @@ defmodule Nostrum.Cache.GuildCache.ETS do
   @spec channel_update(Guild.id(), map()) :: {Channel.t(), Channel.t()}
   def channel_update(guild_id, channel) do
     [{_id, guild}] = :ets.lookup(@table_name, guild_id)
-    {old, new, new_channels} = upsert(guild.channels, channel.id, channel, Channel)
+
+    {old, new, new_channels} =
+      GuildCache.Base.upsert(guild.channels, channel.id, channel, Channel)
+
     new_guild = %{guild | channels: new_channels}
     true = :ets.update_element(@table_name, guild_id, {2, new_guild})
     {old, new}
@@ -201,7 +129,7 @@ defmodule Nostrum.Cache.GuildCache.ETS do
   @spec role_create(Guild.id(), map()) :: {Guild.id(), Role.t()}
   def role_create(guild_id, role) do
     [{_id, guild}] = :ets.lookup(@table_name, guild_id)
-    {_old, new, new_roles} = upsert(guild.roles, role.id, role, Role)
+    {_old, new, new_roles} = GuildCache.Base.upsert(guild.roles, role.id, role, Role)
     new_guild = %{guild | roles: new_roles}
     true = :ets.update_element(@table_name, guild_id, {2, new_guild})
     {guild_id, new}
@@ -223,7 +151,7 @@ defmodule Nostrum.Cache.GuildCache.ETS do
   @spec role_update(Guild.id(), map()) :: {Guild.id(), Role.t(), Role.t()}
   def role_update(guild_id, role) do
     [{_id, guild}] = :ets.lookup(@table_name, guild_id)
-    {old, new_role, new_roles} = upsert(guild.roles, role.id, role, Role)
+    {old, new_role, new_roles} = GuildCache.Base.upsert(guild.roles, role.id, role, Role)
     new_guild = %{guild | roles: new_roles}
     true = :ets.update_element(@table_name, guild_id, {2, new_guild})
     {guild_id, old, new_role}
@@ -281,24 +209,11 @@ defmodule Nostrum.Cache.GuildCache.ETS do
     end
   end
 
-  @spec upsert(%{required(Snowflake.t()) => struct}, Snowflake.t(), map, atom) ::
-          {struct | nil, struct, %{required(Snowflake.t()) => struct}}
-  defp upsert(map, key, new, struct) do
-    if Map.has_key?(map, key) do
-      old = Map.get(map, key)
-
-      new =
-        old
-        |> Map.from_struct()
-        |> Map.merge(new)
-        |> Util.cast({:struct, struct})
-
-      new_map = Map.put(map, key, new)
-
-      {old, new, new_map}
-    else
-      new = Util.cast(new, {:struct, struct})
-      {nil, new, Map.put(map, key, new)}
-    end
+  @impl GuildCache
+  @doc "Get a QLC query handle for the guild cache."
+  @doc since: "0.8.0"
+  @spec query_handle :: :qlc.query_handle()
+  def query_handle do
+    :ets.table(@table_name)
   end
 end

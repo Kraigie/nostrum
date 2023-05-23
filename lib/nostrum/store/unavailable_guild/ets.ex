@@ -37,9 +37,10 @@ defmodule Nostrum.Store.UnavailableGuild.ETS do
 
   @impl UnavailableGuild
   @doc "Create the given guild as an unavailable guild."
-  @spec create(Guild.id()) :: true
+  @spec create(Guild.id()) :: :ok
   def create(guild_id) do
     :ets.insert(@table_name, {guild_id})
+    :ok
   end
 
   @impl UnavailableGuild

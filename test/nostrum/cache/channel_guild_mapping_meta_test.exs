@@ -1,12 +1,13 @@
 defmodule Nostrum.Cache.ChannelGuildMappingMetaTest do
   alias Nostrum.Cache.ChannelGuildMapping
-  use ExUnit.Case
+  use ExUnit.Case, async: true
 
   @cache_modules [
     # Dispatcher
     ChannelGuildMapping,
     # Implementations
-    ChannelGuildMapping.ETS
+    ChannelGuildMapping.ETS,
+    ChannelGuildMapping.Mnesia
   ]
 
   for cache <- @cache_modules do
@@ -16,6 +17,10 @@ defmodule Nostrum.Cache.ChannelGuildMappingMetaTest do
       doctest @cache
 
       setup do
+        if function_exported?(@cache, :teardown, 0) do
+          on_exit(:cleanup, fn -> apply(@cache, :teardown, []) end)
+        end
+
         [pid: start_supervised!(@cache)]
       end
 
@@ -23,14 +28,14 @@ defmodule Nostrum.Cache.ChannelGuildMappingMetaTest do
         channel_id = :erlang.unique_integer([:positive])
         guild_id = :erlang.unique_integer([:positive])
 
-        refute ChannelGuildMapping.get(channel_id)
-        assert ChannelGuildMapping.delete(channel_id)
+        refute @cache.get(channel_id)
+        assert @cache.delete(channel_id)
 
-        assert ChannelGuildMapping.create(channel_id, guild_id)
-        assert ^guild_id = ChannelGuildMapping.get(channel_id)
+        assert @cache.create(channel_id, guild_id)
+        assert ^guild_id = @cache.get(channel_id)
 
-        assert ChannelGuildMapping.delete(channel_id)
-        refute ChannelGuildMapping.get(channel_id)
+        assert @cache.delete(channel_id)
+        refute @cache.get(channel_id)
       end
     end
   end

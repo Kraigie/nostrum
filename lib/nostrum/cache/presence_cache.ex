@@ -14,20 +14,18 @@ defmodule Nostrum.Cache.PresenceCache do
 
   As with the other caches, the presence cache API consists of two parts:
 
-  - The functions that the user calls, currently only `c:get/2`.
-
   - The functions that nostrum calls, such as `c:create/1` or `c:update/1`.
   These **do not create any objects in the Discord API**, they are purely
   created to update the cached data from data that Discord sends us. If you
   want to create objects on Discord, use the functions exposed by `Nostrum.Api`
   instead.
 
+  - the QLC query handle for read operations, `c:query_handle/0`, and
+
+  - the `c:child_spec/1` callback for starting the cache under a supervisor.
+
   You need to implement both of them for nostrum to work with your custom
-  cache, along with `cchild_spec/1` to allow nostrum to start your cache as a
-  child under `Nostrum.Cache.CacheSupervisor`: As an example, the
-  `Nostrum.Cache.PresenceCache.ETS` implementation uses this to to set up its
-  ETS table it uses for caching. See the callbacks section for every
-  nostrum-related callback you need to implement.
+  cache.
   """
 
   @moduledoc since: "0.5.0"
@@ -66,7 +64,18 @@ defmodule Nostrum.Cache.PresenceCache do
   end
   ```
   """
-  @callback get(User.id(), Guild.id()) :: {:ok, presence()} | {:error, :presence_not_found}
+  @spec get(Guild.id(), User.id()) :: {:ok, presence()} | {:error, :presence_not_found}
+  @spec get(Guild.id(), User.id(), module()) :: {:ok, presence()} | {:error, :presence_not_found}
+  def get(guild_id, user_id, cache \\ @configured_cache) do
+    handle = :nostrum_presence_cache_qlc.get(guild_id, user_id, cache)
+
+    wrap_qlc(cache, fn ->
+      case :qlc.eval(handle) do
+        [presence] -> {:ok, presence}
+        [] -> {:error, :not_found}
+      end
+    end)
+  end
 
   @doc """
   Create a presence in the cache.
@@ -95,9 +104,44 @@ defmodule Nostrum.Cache.PresenceCache do
   """
   @callback child_spec(term()) :: Supervisor.child_spec()
 
+  @doc """
+  Return a QLC query handle for cache read operations.
+
+  This is used by nostrum to provide any read operations on the cache. Write
+  operations still need to be implemented separately.
+
+  The Erlang manual on [Implementing a QLC
+  Table](https://www.erlang.org/doc/man/qlc.html#implementing_a_qlc_table)
+  contains examples for implementation. To prevent full table scans, accept
+  match specifications in your `TraverseFun` and implement a `LookupFun` as
+  documented.
+
+  The query handle must return items in the form `{{guild_id, user_id}, presence}`, where:
+  - `guild_id` is a `t:Nostrum.Struct.Guild.id/0`, and
+  - `user_id` is a `t:Nostrum.Struct.User.id/0`, and
+  - `presence` is a `t:presence/0`.
+
+  If your cache needs some form of setup or teardown for QLC queries (such as
+  opening connections), see `c:wrap_qlc/1`.
+  """
+  @doc since: "0.8.0"
+  @callback query_handle() :: :qlc.query_handle()
+
+  @doc """
+  A function that should wrap any `:qlc` operations.
+
+  If you implement a cache that is backed by a database and want to perform
+  cleanup and teardown actions such as opening and closing connections,
+  managing transactions and so on, you want to implement this function. nostrum
+  will then effectively call `wrap_qlc(fn -> :qlc.e(...) end)`.
+
+  If your cache does not need any wrapping, you can omit this.
+  """
+  @doc since: "0.8.0"
+  @callback wrap_qlc((() -> result)) :: result when result: term()
+  @optional_callbacks wrap_qlc: 1
+
   # Dispatch
-  @doc section: :reading
-  defdelegate get(user_id, guild_id), to: @configured_cache
   @doc false
   defdelegate create(presence), to: @configured_cache
   @doc false
@@ -109,11 +153,34 @@ defmodule Nostrum.Cache.PresenceCache do
 
   # Dispatch helpers
   @doc "Same as `get/1`, but raise `Nostrum.Error.CacheError` in case of a failure."
-  @doc section: :reading
   @spec get!(User.id(), Guild.id()) :: presence() | no_return()
-  def get!(user_id, guild_id) when is_snowflake(user_id) and is_snowflake(guild_id) do
-    user_id
-    |> @configured_cache.get(guild_id)
-    |> Util.bangify_find({user_id, guild_id}, @configured_cache)
+  @spec get!(User.id(), Guild.id(), module()) :: presence() | no_return()
+  def get!(guild_id, user_id, cache \\ @configured_cache)
+      when is_snowflake(user_id) and is_snowflake(guild_id) do
+    guild_id
+    |> get(user_id, cache)
+    |> Util.bangify_find({guild_id, user_id}, cache)
   end
+
+  @doc """
+  Call `c:wrap_qlc/1` on the given cache, if implemented.
+
+  If no cache is given, calls out to the default cache.
+  """
+  @doc since: "0.8.0"
+  @spec wrap_qlc((() -> result)) :: result when result: term()
+  @spec wrap_qlc(module(), (() -> result)) :: result when result: term()
+  def wrap_qlc(cache \\ @configured_cache, fun) do
+    if function_exported?(cache, :wrap_qlc, 1) do
+      cache.wrap_qlc(fun)
+    else
+      fun.()
+    end
+  end
+
+  @doc """
+  Return the QLC handle of the configured cache.
+  """
+  @doc since: "0.8.0"
+  defdelegate query_handle(), to: @configured_cache
 end

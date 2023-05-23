@@ -20,9 +20,7 @@ defmodule Nostrum.Cache.ChannelCache.ETS do
   @table_name :nostrum_channels
 
   alias Nostrum.Cache.ChannelCache
-  alias Nostrum.Cache.GuildCache
   alias Nostrum.Struct.Channel
-  import Nostrum.Snowflake, only: [is_snowflake: 1]
   use Supervisor
 
   @doc "Start the supervisor."
@@ -42,38 +40,28 @@ defmodule Nostrum.Cache.ChannelCache.ETS do
   @spec table :: :ets.table()
   def table, do: @table_name
 
-  # IMPLEMENTATION
-  @doc "Retrieve a channel from the cache by ID."
-  @impl ChannelCache
-  @spec get(Channel.id()) :: {:ok, Channel.t()} | {:error, ChannelCache.reason()}
-  def get(id) when is_snowflake(id) do
-    case lookup(id) do
-      {:ok, channel} -> {:ok, convert(channel)}
-      error -> error
-    end
-  end
-
   @doc "Converts and creates the given map as a channel in the cache."
   @impl ChannelCache
   @spec create(map) :: Channel.t()
   def create(channel) do
-    :ets.insert(@table_name, {channel.id, channel})
-    convert(channel)
+    parsed = convert(channel)
+    :ets.insert(@table_name, {channel.id, parsed})
+    parsed
   end
 
   @doc "Update the given channel in the cache."
   @impl ChannelCache
-  @spec update(Channel.t()) :: :noop | {Channel.t(), Channel.t()}
+  @spec update(Channel.t()) :: {Channel.t() | nil, Channel.t()}
   def update(channel) do
-    case lookup(channel.id) do
-      {:ok, old_channel} ->
-        # XXX: this is incorrect. we always keep the old channel around.
-        # but updating it everytime would be wrong as well. we need to know
-        # the source that `lookup/1` got it from.
-        {convert(old_channel), convert(channel)}
+    parsed = convert(channel)
 
-      _ ->
-        :noop
+    case :ets.lookup(@table_name, channel.id) do
+      [{_id, old_channel}] ->
+        :ets.insert(@table_name, {channel.id, parsed})
+        {old_channel, parsed}
+
+      [] ->
+        {nil, parsed}
     end
   end
 
@@ -81,38 +69,21 @@ defmodule Nostrum.Cache.ChannelCache.ETS do
   @impl ChannelCache
   @spec delete(Channel.id()) :: :noop | Channel.t()
   def delete(id) do
-    case lookup(id) do
-      {:ok, channel} ->
+    case :ets.lookup(@table_name, id) do
+      [{_id, channel}] ->
         :ets.delete(@table_name, id)
-        convert(channel)
+        channel
 
-      _ ->
+      [] ->
         :noop
     end
   end
 
-  @doc "Lookup a channel from the cache by ID and if it does not exist try to get from GuildCache with select_by"
   @impl ChannelCache
-  @spec lookup(Channel.id()) :: {:error, :channel_not_found} | {:ok, map}
-  def lookup(id) do
-    case :ets.lookup(@table_name, id) do
-      [] ->
-        [channel_id: id]
-        |> GuildCache.select_by(fn %{channels: channels} ->
-          Map.get(channels, id, {:error, :id_not_found})
-        end)
-        |> case do
-          {:error, :id_not_found_on_guild_lookup} ->
-            {:error, :channel_not_found}
-
-          res ->
-            res
-        end
-
-      [{^id, channel}] ->
-        {:ok, channel}
-    end
-  end
+  @doc "Retrieve a query handle for usage with QLC."
+  @doc since: "0.8.0"
+  @spec query_handle() :: :qlc.query_handle()
+  def query_handle, do: :ets.table(@table_name)
 
   # Converts a map into a Channel
   defp convert(%{__struct__: _} = struct), do: struct

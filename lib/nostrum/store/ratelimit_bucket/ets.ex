@@ -37,9 +37,10 @@ defmodule Nostrum.Store.RatelimitBucket.ETS do
 
   @impl RatelimitBucket
   @doc "Update an existing routes remaining calls."
-  @spec update(RatelimitBucket.route(), RatelimitBucket.remaining()) :: boolean()
+  @spec update(RatelimitBucket.route(), RatelimitBucket.remaining()) :: :ok
   def update(route, remaining) do
     :ets.update_element(@table_name, route, {2, remaining})
+    :ok
   end
 
   @impl RatelimitBucket
@@ -49,9 +50,10 @@ defmodule Nostrum.Store.RatelimitBucket.ETS do
           RatelimitBucket.remaining(),
           RatelimitBucket.reset_time(),
           RatelimitBucket.latency()
-        ) :: true
+        ) :: :ok
   def update(route, remaining, reset_time, latency) do
     :ets.insert(@table_name, {route, remaining, reset_time, latency})
+    :ok
   end
 
   @impl RatelimitBucket

@@ -35,15 +35,52 @@ defmodule Nostrum.Cache.UserCache.ETS do
   @impl Nostrum.Cache.UserCache
   @spec bulk_create(Enum.t()) :: :ok
   def bulk_create(users) do
-    Enum.each(users, &:ets.insert(@table_name, {&1.id, &1}))
+    Enum.each(users, &:ets.insert(@table_name, {&1.id, User.to_struct(&1)}))
   end
 
   @doc "Create a user from upstream data."
   @impl Nostrum.Cache.UserCache
   @spec create(map()) :: User.t()
-  def create(user) do
-    :ets.insert(@table_name, {user.id, user})
-    User.to_struct(user)
+  def create(payload) do
+    parsed = User.to_struct(payload)
+    :ets.insert(@table_name, {parsed.id, parsed})
+    parsed
+  end
+
+  @impl Nostrum.Cache.UserCache
+  @doc "Update a user from upstream data."
+  @spec update(map()) :: {User.t() | nil, User.t()}
+  def update(info) do
+    converted = User.to_struct(info)
+
+    with {:ok, old_user} <- lookup(info.id),
+         new_user = Map.merge(old_user, info),
+         false <- old_user == new_user do
+      :ets.insert(@table_name, {new_user.id, new_user})
+      {old_user, new_user}
+    else
+      {:error, _} ->
+        # User just came online, make sure to cache if possible
+        if Enum.all?([:username, :discriminator], &Map.has_key?(info, &1)),
+          do: :ets.insert(@table_name, {info.id, info})
+
+        {nil, converted}
+
+      true ->
+        {nil, converted}
+    end
+  end
+
+  @doc false
+  @spec lookup(User.id()) :: {:error, :user_not_found} | {:ok, map}
+  defp lookup(id) do
+    case :ets.lookup(@table_name, id) do
+      [] ->
+        {:error, :user_not_found}
+
+      [{^id, user}] ->
+        {:ok, user}
+    end
   end
 
   @impl Nostrum.Cache.UserCache
@@ -52,62 +89,18 @@ defmodule Nostrum.Cache.UserCache.ETS do
     case lookup(id) do
       {:ok, user} ->
         :ets.delete(@table_name, id)
-        User.to_struct(user)
+        user
 
       _ ->
         :noop
     end
   end
 
-  @doc "Get a QLC handle for the backing table."
+  @doc "Get a QLC query handle for the user cache."
   @doc since: "0.7.0"
   @impl Nostrum.Cache.UserCache
-  @spec qlc_handle :: :qlc.query_handle()
-  def qlc_handle do
+  @spec query_handle :: :qlc.query_handle()
+  def query_handle do
     :ets.table(@table_name)
-  end
-
-  @doc "Get a user by ID."
-  @impl Nostrum.Cache.UserCache
-  @spec get(User.id()) :: {:ok, User.t()} | {:error, atom}
-  def get(id) do
-    case lookup(id) do
-      {:ok, user} -> {:ok, User.to_struct(user)}
-      error -> error
-    end
-  end
-
-  @doc "Update a user from upstream data."
-  @impl Nostrum.Cache.UserCache
-  @spec update(map()) :: {User.t(), User.t()} | :noop
-  def update(info) do
-    with {:ok, u} <- lookup(info.id),
-         new_user = Map.merge(u, info),
-         false <- u == new_user do
-      :ets.insert(@table_name, {new_user.id, new_user})
-      {User.to_struct(u), User.to_struct(new_user)}
-    else
-      {:error, _} ->
-        # User just came online, make sure to cache if possible
-        if Enum.all?([:username, :discriminator], &Map.has_key?(info, &1)),
-          do: :ets.insert(@table_name, {info.id, info})
-
-        :noop
-
-      true ->
-        :noop
-    end
-  end
-
-  @doc false
-  @spec lookup(User.id()) :: {:error, :user_not_found} | {:ok, map}
-  def lookup(id) do
-    case :ets.lookup(@table_name, id) do
-      [] ->
-        {:error, :user_not_found}
-
-      [{^id, user}] ->
-        {:ok, user}
-    end
   end
 end

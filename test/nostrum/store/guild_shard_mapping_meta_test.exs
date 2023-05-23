@@ -1,12 +1,13 @@
 defmodule Nostrum.Store.GuildShardMappingMetaTest do
   alias Nostrum.Store.GuildShardMapping
-  use ExUnit.Case
+  use ExUnit.Case, async: true
 
   @store_modules [
     # Dispatcher
     GuildShardMapping,
     # Implementations
-    GuildShardMapping.ETS
+    GuildShardMapping.ETS,
+    GuildShardMapping.Mnesia
   ]
 
   for store <- @store_modules do
@@ -16,6 +17,16 @@ defmodule Nostrum.Store.GuildShardMappingMetaTest do
       doctest @store
 
       setup do
+        on_exit(:cleanup, fn ->
+          try do
+            if function_exported?(@store, :teardown, 0) do
+              apply(@store, :teardown, [])
+            end
+          rescue
+            e -> e
+          end
+        end)
+
         [pid: start_supervised!(@store)]
       end
 
@@ -23,14 +34,14 @@ defmodule Nostrum.Store.GuildShardMappingMetaTest do
         guild_id = :erlang.unique_integer([:positive])
         shard_num = :erlang.unique_integer([:positive])
 
-        refute GuildShardMapping.get(guild_id)
-        assert GuildShardMapping.delete(guild_id)
+        refute @store.get(guild_id)
+        assert @store.delete(guild_id)
 
-        assert GuildShardMapping.create(guild_id, shard_num)
-        assert ^shard_num = GuildShardMapping.get(guild_id)
+        assert @store.create(guild_id, shard_num)
+        assert ^shard_num = @store.get(guild_id)
 
-        assert GuildShardMapping.delete(guild_id)
-        refute GuildShardMapping.get(guild_id)
+        assert @store.delete(guild_id)
+        refute @store.get(guild_id)
       end
     end
   end

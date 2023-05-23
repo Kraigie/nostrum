@@ -1,13 +1,17 @@
-defmodule Nostrum.Cache.GuildCacheTest do
+defmodule Nostrum.Cache.GuildCacheMetaTest do
+  alias Nostrum.Cache.GuildCache
   alias Nostrum.Struct.Channel
   alias Nostrum.Struct.Emoji
   alias Nostrum.Struct.Guild
   alias Nostrum.Struct.Guild.Role
-  use ExUnit.Case
+  use ExUnit.Case, async: true
 
   @cache_modules [
+    # Dispatcher
+    GuildCache,
     # Implementations
-    Nostrum.Cache.GuildCache.ETS
+    GuildCache.ETS,
+    GuildCache.Mnesia
   ]
 
   for cache <- @cache_modules do
@@ -35,30 +39,48 @@ defmodule Nostrum.Cache.GuildCacheTest do
 
       doctest @cache
 
+      setup do
+        on_exit(:cleanup, fn ->
+          try do
+            if function_exported?(@cache, :teardown, 0) do
+              apply(@cache, :teardown, [])
+            end
+          rescue
+            e -> e
+          end
+        end)
+
+        [pid: start_supervised!(@cache)]
+      end
+
+      @doc """
+      Collects all results from a `fold` query in the accumulator.
+      """
+      @doc since: "0.8.0"
+      def collector(item, acc) do
+        [item | acc]
+      end
+
       describe "with an empty cache" do
-        setup do
-          [pid: start_supervised!(@cache)]
+        test "fold/3 returns empty enum" do
+          assert Enum.to_list(GuildCache.fold([], &collector/2, @cache)) == []
         end
 
-        test "all/0 returns empty enum" do
-          assert Enum.to_list(@cache.all) == []
-        end
-
-        test "create/1 returns true" do
-          assert @cache.create(@test_guild) == true
+        test "create/1 returns guild" do
+          expected = Guild.to_struct(@test_guild)
+          assert ^expected = @cache.create(@test_guild)
         end
       end
 
       describe "with cached guild" do
-        setup do
-          pid = start_supervised!(@cache)
+        setup context do
           guild = Guild.to_struct(@test_guild)
-          true = @cache.create(guild)
-          [pid: pid]
+          ^guild = @cache.create(@test_guild)
+          context
         end
 
         test "all/0 returns guild" do
-          all_list = Enum.to_list(@cache.all())
+          all_list = Enum.to_list(GuildCache.fold([], &collector/2, @cache))
           expected = Guild.to_struct(@test_guild)
           assert [^expected] = all_list
         end
@@ -68,7 +90,7 @@ defmodule Nostrum.Cache.GuildCacheTest do
           created = @cache.channel_create(@test_guild.id, @test_channel)
           expected = Channel.to_struct(@test_channel)
           assert ^expected = created
-          {:ok, cached} = @cache.get(@test_guild.id)
+          {:ok, cached} = GuildCache.get(@test_guild.id, @cache)
           channels = %{expected.id => expected}
           assert ^channels = cached.channels
 
@@ -106,7 +128,7 @@ defmodule Nostrum.Cache.GuildCacheTest do
           assert ^expected_return = @cache.role_create(@test_guild.id, @test_role)
 
           assert {:ok, %Guild{roles: %{^role_id => ^expected_role_struct}}} =
-                   @cache.get(@test_guild.id)
+                   GuildCache.get(@test_guild.id, @cache)
 
           # role_update/2
           updated_payload = Map.put(@test_role, :name, "Higher Sharders")
@@ -117,17 +139,29 @@ defmodule Nostrum.Cache.GuildCacheTest do
 
           # role_delete/2
           {_guild_id, ^new_role} = @cache.role_delete(@test_guild.id, @test_role.id)
-          {:ok, guild} = @cache.get(@test_guild.id)
+          {:ok, guild} = GuildCache.get(@test_guild.id, @cache)
           assert guild.roles == %{}
         end
       end
 
       describe "guild" do
-        setup do
-          pid = start_supervised!(@cache)
+        setup context do
           guild = Guild.to_struct(@test_guild)
-          true = @cache.create(guild)
-          [pid: pid]
+          ^guild = @cache.create(@test_guild)
+          context
+        end
+
+        test "member count operations" do
+          assert {:ok, %{member_count: 0}} = GuildCache.get(@test_guild.id, @cache)
+          assert @cache.member_count_up(@test_guild.id)
+          assert {:ok, %{member_count: 1}} = GuildCache.get(@test_guild.id, @cache)
+          assert @cache.member_count_down(@test_guild.id)
+          assert {:ok, %{member_count: 0}} = GuildCache.get(@test_guild.id, @cache)
+        end
+
+        test "member count operations for uncached guild" do
+          assert @cache.member_count_up(@test_guild.id + 1)
+          assert @cache.member_count_down(@test_guild.id + 1)
         end
 
         test "update and delete" do
@@ -139,20 +173,7 @@ defmodule Nostrum.Cache.GuildCacheTest do
 
           # delete/1
           assert ^new = @cache.delete(@test_guild.id)
-          assert @cache.delete(@test_guild.id) == nil
-        end
-
-        test "member count operations" do
-          assert {:ok, %{member_count: 0}} = @cache.get(@test_guild.id)
-          assert @cache.member_count_up(@test_guild.id)
-          assert {:ok, %{member_count: 1}} = @cache.get(@test_guild.id)
-          assert @cache.member_count_down(@test_guild.id)
-          assert {:ok, %{member_count: 0}} = @cache.get(@test_guild.id)
-        end
-
-        test "member count operations for uncached guild" do
-          assert @cache.member_count_up(@test_guild.id + 1)
-          assert @cache.member_count_down(@test_guild.id + 1)
+          refute @cache.delete(@test_guild.id)
         end
       end
     end

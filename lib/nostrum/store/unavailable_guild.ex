@@ -46,7 +46,7 @@ defmodule Nostrum.Store.UnavailableGuild do
   @doc """
   Mark the given guild as unavailable.
   """
-  @callback create(Guild.id()) :: true
+  @callback create(Guild.id()) :: :ok
 
   @doc """
   Return whether the guild is unavailable.

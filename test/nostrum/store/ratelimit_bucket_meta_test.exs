@@ -1,12 +1,13 @@
 defmodule Nostrum.Store.RatelimitBucketMetaTest do
   alias Nostrum.Store.RatelimitBucket
-  use ExUnit.Case
+  use ExUnit.Case, async: true
 
   @store_modules [
     # Dispatcher
     RatelimitBucket,
     # Implementations
-    RatelimitBucket.ETS
+    RatelimitBucket.ETS,
+    RatelimitBucket.Mnesia
   ]
 
   for store <- @store_modules do
@@ -16,6 +17,11 @@ defmodule Nostrum.Store.RatelimitBucketMetaTest do
       doctest @store
 
       setup do
+        if function_exported?(@store, :teardown, 0) do
+          # Silence bogus warning with `apply`
+          on_exit(:teardown, fn -> apply(@store, :teardown, []) end)
+        end
+
         [pid: start_supervised!(@store)]
       end
 
@@ -37,12 +43,17 @@ defmodule Nostrum.Store.RatelimitBucketMetaTest do
       describe "updating existing bucket" do
         @route "TESTBUCKET"
 
-        setup do
+        setup context do
           reset_time = :erlang.unique_integer([:positive])
           remaining_calls = 3
           latency = 123
           @store.update(@route, remaining_calls, reset_time, latency)
-          [remaining: remaining_calls, reset_time: reset_time, latency: latency]
+
+          Map.merge(context, %{
+            remaining: remaining_calls,
+            reset_time: reset_time,
+            latency: latency
+          })
         end
 
         test "returns bucket", %{remaining: remaining, reset_time: reset_time, latency: latency} do
@@ -50,7 +61,7 @@ defmodule Nostrum.Store.RatelimitBucketMetaTest do
         end
 
         test "timeout_for/1" do
-          assert RatelimitBucket.timeout_for(@route)
+          assert RatelimitBucket.timeout_for(@route, @store)
         end
       end
     end
