@@ -594,7 +594,7 @@ types of objects returned by Discord, the amount of new atoms created <em>SHOULD
     </a>
     <h1 class="signature" translate="no">unused_atoms()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/util.ex#L280" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/util.ex#L282" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -607,7 +607,7 @@ types of objects returned by Discord, the amount of new atoms created <em>SHOULD
 <p>Since we're being sacrilegious and converting strings to atoms from the WS, there will be some
 atoms that we see that aren't defined in any Discord structs. This method mainly serves as a
 means to define those atoms once so the user isn't warned about them in the
-<a href="#maybe_to_atom/1"><code class="inline">Nostrum.Util.maybe_to_atom/1</code></a> function when they are in fact harmless.</p>
+<a href="#maybe_to_atom/1"><code class="inline">Nostrum.Util.maybe_to_atom/1</code></a> function when they are in fact harmless.</p><p>The function is public to prevent it from being optimized out at compile time.</p>
   </section>
 </section>
 <section class="detail" id="usec_now/0">
