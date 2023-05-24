@@ -276,11 +276,14 @@ defmodule Nostrum.Util do
   atoms that we see that aren't defined in any Discord structs. This method mainly serves as a
   means to define those atoms once so the user isn't warned about them in the
   `Nostrum.Util.maybe_to_atom/1` function when they are in fact harmless.
+
+  The function is public to prevent it from being optimized out at compile time.
   """
   def unused_atoms do
     [
       :active,
       :audio,
+      :app_permissions,
       :audio_codec,
       :audio_ssrc,
       :burst,
@@ -290,6 +293,8 @@ defmodule Nostrum.Util do
       :developer_mode,
       :enable_tts_command,
       :encodings,
+      :entitlement_sku_ids,
+      :entitlements,
       :experiments,
       :friend_source_flags,
       :friend_sync,
