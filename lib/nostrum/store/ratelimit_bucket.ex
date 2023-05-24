@@ -64,11 +64,9 @@ defmodule Nostrum.Store.RatelimitBucket do
   @doc """
   Update the given bucket to have the given remaining calls.
 
-  Return whether the update has affected anything.
-
   Normally used after issuing an API call for a previously used route.
   """
-  @callback update(route(), remaining()) :: boolean()
+  @callback update(route(), remaining()) :: :ok
 
   @doc """
   Update the given bucket with full rate limit information.
@@ -77,7 +75,7 @@ defmodule Nostrum.Store.RatelimitBucket do
   remaining calls (for instance, after issuing one), this function is used
   after receiving full rate limiting information after an API call.
   """
-  @callback update(route(), remaining(), reset_time(), latency()) :: true
+  @callback update(route(), remaining(), reset_time(), latency()) :: :ok
 
   @doc """
   Retrieve bucket information by route.
@@ -113,12 +111,13 @@ defmodule Nostrum.Store.RatelimitBucket do
   little to no time drift.
   """
   @spec timeout_for(route()) :: remaining() | :now
-  def timeout_for(route) do
-    case lookup(route) do
+  @spec timeout_for(route(), module()) :: remaining() | :now
+  def timeout_for(route, store \\ @configured_store) do
+    case store.lookup(route) do
       # XXX: In multi-node - or rather, with multiple rate limiter processes,
       # this poses a race condition. It needs to be atomic.
       {route, remaining, _reset_time, _latency} when remaining > 0 ->
-        update(route, remaining - 1)
+        store.update(route, remaining - 1)
         :now
 
       {_route, _remaining, reset_time, latency} ->

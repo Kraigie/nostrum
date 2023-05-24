@@ -7,12 +7,13 @@ defmodule Nostrum.Cache.PresenceCache.ETS do
   """
   @moduledoc since: "0.5.0"
 
-  @behaviour Nostrum.Cache.PresenceCache
+  alias Nostrum.Cache.PresenceCache
+
+  @behaviour PresenceCache
 
   @table_name :nostrum_presences
 
-  alias Nostrum.Struct.{Guild, User}
-  import Nostrum.Snowflake, only: [is_snowflake: 1]
+  alias Nostrum.Struct.Guild
   use Supervisor
 
   @doc "Start the supervisor."
@@ -32,51 +33,48 @@ defmodule Nostrum.Cache.PresenceCache.ETS do
     Supervisor.init([], strategy: :one_for_one)
   end
 
-  @impl Nostrum.Cache.PresenceCache
-  @doc "Retrieves a presence for a user from the cache by guild and id."
-  @spec get(User.id(), Guild.id()) :: {:error, :presence_not_found} | {:ok, map}
-  def get(user_id, guild_id) when is_snowflake(user_id) and is_snowflake(guild_id) do
-    case :ets.lookup(@table_name, {user_id, guild_id}) do
-      [] -> {:error, :presence_not_found}
-      [{{^user_id, ^guild_id}, presence}] -> {:ok, presence}
-    end
-  end
-
-  @impl Nostrum.Cache.PresenceCache
+  @impl PresenceCache
   @doc "Add the given presence data to the cache."
   @spec create(map) :: :ok
   def create(presence) do
-    :ets.insert(@table_name, {{presence.user.id, presence.guild_id}, presence})
+    :ets.insert(@table_name, {{presence.guild_id, presence.user.id}, presence})
     :ok
   end
 
-  @impl Nostrum.Cache.PresenceCache
+  @impl PresenceCache
   @doc "Update the given presence data in the cache."
-  @spec update(map) :: {Guild.id(), nil | map, map} | :noop
-  def update(presence) do
-    case get(presence.user.id, presence.guild_id) do
-      {:ok, p} ->
-        new_presence = Map.merge(p, presence)
-        create(new_presence)
+  @spec update(map()) :: {Guild.id(), presence | nil, presence} | :noop
+        when presence: PresenceCache.presence()
+  def update(new) do
+    case :ets.lookup(@table_name, {new.guild_id, new.user.id}) do
+      [{{guild_id, _}, old}] ->
+        merged = Map.merge(old, new)
+        create(merged)
 
-        if p.activities == new_presence.activities and p.status == new_presence.status,
+        if old.activities == merged.activities and old.status == merged.status,
           do: :noop,
-          else: {presence.guild_id, p, new_presence}
+          else: {guild_id, old, merged}
 
-      {:error, _} ->
-        create(presence)
-        {presence.guild_id, nil, presence}
+      [] ->
+        create(new)
+        {new.guild_id, nil, new}
     end
   end
 
-  @impl Nostrum.Cache.PresenceCache
+  @impl PresenceCache
   @doc "Bulk create multiple presences in the cache."
   @spec bulk_create(Guild.id(), [map]) :: :ok
   def bulk_create(_, []), do: :ok
 
   def bulk_create(guild_id, presences) when is_list(presences) do
     Enum.each(presences, fn p ->
-      :ets.insert(@table_name, {{p.user.id, guild_id}, p})
+      :ets.insert(@table_name, {{guild_id, p.user.id}, p})
     end)
   end
+
+  @impl PresenceCache
+  @doc "Retrieve a query handle for QLC queries."
+  @doc since: "0.8.0"
+  @spec query_handle :: :qlc.query_handle()
+  def query_handle, do: :ets.table(@table_name)
 end

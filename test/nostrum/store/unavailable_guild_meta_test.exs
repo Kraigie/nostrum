@@ -1,12 +1,13 @@
 defmodule Nostrum.Store.UnavailableGuildMetaTest do
   alias Nostrum.Store.UnavailableGuild
-  use ExUnit.Case
+  use ExUnit.Case, async: true
 
   @store_modules [
     # Dispatcher
     UnavailableGuild,
     # Implementations
-    UnavailableGuild.ETS
+    UnavailableGuild.ETS,
+    UnavailableGuild.Mnesia
   ]
 
   for store <- @store_modules do
@@ -16,14 +17,20 @@ defmodule Nostrum.Store.UnavailableGuildMetaTest do
       doctest @store
 
       setup do
+        on_exit(:cleanup, fn ->
+          if function_exported?(@store, :teardown, 0) do
+            apply(@store, :teardown, [])
+          end
+        end)
+
         [pid: start_supervised!(@store)]
       end
 
       test "create/1 and is?/1" do
         guild_id = :erlang.unique_integer([:positive])
-        refute UnavailableGuild.is?(guild_id)
-        UnavailableGuild.create(guild_id)
-        assert UnavailableGuild.is?(guild_id)
+        refute @store.is?(guild_id)
+        @store.create(guild_id)
+        assert @store.is?(guild_id)
       end
     end
   end

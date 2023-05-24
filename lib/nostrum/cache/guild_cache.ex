@@ -16,24 +16,18 @@ defmodule Nostrum.Cache.GuildCache do
 
   As with the other caches, the guild cache API consists of two parts:
 
-  - The functions that the user calls, such as `c:all/0` or `c:select_by/2`.
-
   - The functions that nostrum calls, such as `c:create/1` or `c:update/1`.
   These **do not create any objects in the Discord API**, they are purely
   created to update the cached data from data that Discord sends us. If you
   want to create objects on Discord, use the functions exposed by `Nostrum.Api`
   instead.
 
-  You need to implement both of them for nostrum to work with your custom
-  cache. You also need to implement `c:child_spec/1` to allow nostrum to
-  start your cache as a child under `Nostrum.Cache.CacheSupervisor`: As an
-  example, the `Nostrum.Cache.GuildCache.ETS` implementation uses this to to
-  set up its ETS table it uses for caching. See the callbacks section for every
-  nostrum-related callback you need to implement.
+  - the QLC query handle for read operations, `c:query_handle/0`, and
 
-  Note that this module also defines a few helper functions, such as `get!/1`
-  or `select_by!/2`, which call the backing cache's regular functions and
-  perform the result unwrapping by themselves.
+  - the `c:child_spec/1` callback for starting the cache under a supervisor.
+
+  You need to implement all of them for nostrum to work with your custom
+  cache. 
 
   The "upstream data" wording in this module references the fact that the
   data that the guild cache (and other caches) retrieves represents the raw
@@ -48,28 +42,13 @@ defmodule Nostrum.Cache.GuildCache do
   alias Nostrum.Struct.Emoji
   alias Nostrum.Struct.Guild
   alias Nostrum.Struct.Guild.Role
-  alias Nostrum.Struct.Message
   alias Nostrum.Util
 
   @configured_cache :nostrum
                     |> Application.compile_env([:caches, :guilds], @default_cache_implementation)
 
-  @typedoc "Specifies the reason for why a lookup operation has failed."
-  @type reason ::
-          :id_not_found
-          | :id_not_found_on_guild_lookup
-
   @typedoc "A selector for looking up entries in the cache."
   @type selector :: (Guild.t() -> any)
-
-  @typedoc "A clause for filtering guilds."
-  @type clause ::
-          {:id, Guild.id()}
-          | {:channel_id, Channel.id()}
-          | {:message, Message.t()}
-
-  @typedoc "A collection of `t:clause/0`s for filtering guilds."
-  @type clauses :: [clause] | map
 
   ## Supervisor callbacks
   # These set up the backing cache.
@@ -81,94 +60,94 @@ defmodule Nostrum.Cache.GuildCache do
   @doc """
   Retrieves all `Nostrum.Struct.Guild` from the cache.
   """
-  @callback all() :: Enum.t()
+  @doc deprecated: "Use fold/2-3 instead"
+  @deprecated "Use fold/2-3 instead"
+  def all(cache \\ @configured_cache) do
+    wrap_qlc(cache, fn ->
+      :qlc.e(:nostrum_guild_cache_qlc.all(cache))
+    end)
+  end
+
+  @doc """
+  Fold (reduce) over all guilds in the cache.
+
+  ## Parameters
+
+  - `acc`: The initial accumulator. Also returned if no guilds are cached.
+  - `fun`: Called for every guild in the result. Takes a pair in the form
+  `{guild, acc}`, and must return the updated accumulator.
+  - `cache` (optional): The cache to use. nostrum will use the cache configured
+  at compile time by default.
+  """
+  @doc since: "0.8.0"
+  @spec fold(acc, (Guild.t(), acc -> acc)) :: acc when acc: term()
+  @spec fold(acc, (Guild.t(), acc -> acc), module()) :: acc when acc: term()
+  def fold(acc, reducer, cache \\ @configured_cache) do
+    handle = :nostrum_guild_cache_qlc.all(cache)
+    wrap_qlc(cache, fn -> :qlc.fold(reducer, acc, handle) end)
+  end
 
   @doc """
   Selects guilds matching `selector` from all `Nostrum.Struct.Guild` in the cache.
   """
-  @callback select_all(selector :: (Guild.t() -> any())) :: Enum.t()
+  @doc deprecated: "Use fold/2-3 instead"
+  @deprecated "Use fold/2-3 instead"
+  @spec select_all(selector :: (Guild.t() -> any())) :: Enum.t()
+  def select_all(selector) when is_function(selector, 1) do
+    handle = :nostrum_guild_cache_qlc.all(@configured_cache)
+    folder = fn {_id, guild}, acc -> [selector.(guild) | acc] end
+    wrap_qlc(@configured_cache, fn -> :qlc.fold(folder, [], handle) end)
+  end
 
   @doc """
   Retrieves a single `Nostrum.Struct.Guild` from the cache via its `id`.
 
-  Returns `{:error, reason}` if no result was found.
-
-  ## Examples
-
-  ```elixir
-  iex> Nostrum.Cache.GuildCache.get(0)
-  {:ok, %Nostrum.Struct.Guild{id: 0}}
-
-  iex> Nostrum.Cache.GuildCache.get(10)
-  {:error, :id_not_found_on_guild_lookup}
-  ```
+  Returns `{:error, :not_found}` if no result was found.
   """
-  @callback get(Guild.id()) :: {:ok, Guild.t()} | {:error, reason}
+  @spec get(Guild.id()) :: {:ok, Guild.t()} | {:error, :not_found}
+  @spec get(Guild.id(), module()) :: {:ok, Guild.t()} | {:error, :not_found}
+  def get(guild_id, cache \\ @configured_cache) do
+    handle = :nostrum_guild_cache_qlc.get(guild_id, cache)
 
-  @doc """
-  Retrieves a single `Nostrum.Struct.Guild` where it matches the `clauses`.
-
-  Returns `{:error, reason}` if no result was found.
-
-  ```elixir
-  iex> Nostrum.Cache.GuildCache.get_by(id: 0)
-  {:ok, %Nostrum.Struct.Guild{id: 0}}
-
-  iex> Nostrum.Cache.GuildCache.get_by(%{id: 0})
-  {:ok, %Nostrum.Struct.Guild{id: 0}}
-
-  iex> Nostrum.Cache.GuildCache.get_by(id: 10)
-  {:error, :id_not_found_on_guild_lookup}
-  ```
-  """
-  @callback get_by(clauses) :: {:ok, Guild.t()} | {:error, reason()}
+    wrap_qlc(cache, fn ->
+      case :qlc.eval(handle) do
+        [guild] -> {:ok, guild}
+        [] -> {:error, :not_found}
+      end
+    end)
+  end
 
   @doc """
   Selects values using a `selector` from a `Nostrum.Struct.Guild`.
 
   Returns `{:error, reason}` if no result was found.
-
-  ## Examples
-
-  ```elixir
-  iex> Nostrum.Cache.GuildCache.select(0, fn guild -> guild.id end)
-  {:ok, 0}
-
-  iex> Nostrum.Cache.GuildCache.select(10, fn guild -> guild.id end)
-  {:error, :id_not_found_on_guild_lookup}
-  ```
   """
-  @callback select(Guild.id(), selector) :: {:ok, any} | {:error, reason}
+  @doc deprecated:
+         "Use `with {:ok, result} = GuildCache.get(guild_id), my_result = selector(result)` instead"
+  @deprecated "Use `with {:ok, result} = GuildCache.get(guild_id), my_result = selector(result)` instead"
+  @spec select(Guild.id(), selector) :: {:ok, any} | {:error, :not_found}
+  def select(guild_id, selector) do
+    case get(guild_id) do
+      {:ok, guild} ->
+        {:ok, selector.(guild)}
 
-  @doc """
-  Selects values using a `selector` from a `Nostrum.Struct.Guild` that matches
-  the `clauses`.
-
-  Returns `{:error, reason}` if no result was found.
-
-  ```elixir
-  iex> Nostrum.Cache.GuildCache.select_by([id: 0], fn guild -> guild.id end)
-  {:ok, 0}
-
-  iex> Nostrum.Cache.GuildCache.select_by(%{id: 0}, fn guild -> guild.id end)
-  {:ok, 0}
-
-  iex> Nostrum.Cache.GuildCache.select_by([id: 10], fn guild -> guild.id end)
-  {:error, :id_not_found_on_guild_lookup}
-  ```
-  """
-  @callback select_by(clauses, selector) :: {:ok, any} | {:error, reason}
+      error ->
+        error
+    end
+  end
 
   # Functions called from nostrum.
+
   @doc "Create a guild in the cache."
-  @callback create(Guild.t()) :: true
+  @callback create(map()) :: Guild.t()
 
   @doc """
   Update a guild from upstream data.
 
-  Return the original guild before the update, and the updated guild.
+  Return the original guild before the update (if it was cached) and the
+  updated guild.
   """
-  @callback update(map()) :: {old_guild :: Guild.t(), updated_guild :: Guild.t()}
+  @callback update(map()) :: {old_guild :: Guild.t() | nil, updated_guild :: Guild.t()}
 
   @doc """
   Delete a guild from the cache.
@@ -195,10 +174,11 @@ defmodule Nostrum.Cache.GuildCache do
   @doc """
   Update the given channel on the given guild from upstream data.
 
-  Return the original channel before the update, and the updated channel.
+  Return the original channel before the update if known, and the updated
+  channel.
   """
   @callback channel_update(Guild.id(), channel :: map()) ::
-              {old_channel :: Channel.t(), new_channel :: Channel.t()}
+              {old_channel :: Channel.t() | nil, new_channel :: Channel.t()}
 
   @doc """
   Update the emoji list of the given guild from upstream data.
@@ -231,7 +211,7 @@ defmodule Nostrum.Cache.GuildCache do
   Return the old role before the update and the updated role.
   """
   @callback role_update(Guild.id(), role :: map()) ::
-              {Guild.id(), old_role :: Role.t(), new_role :: Role.t()}
+              {Guild.id(), old_role :: Role.t() | nil, new_role :: Role.t()}
 
   @doc """
   Update the voice state of the given guild from upstream data.
@@ -257,17 +237,47 @@ defmodule Nostrum.Cache.GuildCache do
   @callback member_count_down(Guild.id()) :: true
 
   @doc """
+  Return a QLC query handle for cache read operations.
+
+  This is used by nostrum to provide any read operations on the cache. Write
+  operations still need to be implemented separately.
+
+  The Erlang manual on [Implementing a QLC
+  Table](https://www.erlang.org/doc/man/qlc.html#implementing_a_qlc_table)
+  contains examples for implementation. To prevent full table scans, accept
+  match specifications in your `TraverseFun` and implement a `LookupFun` as
+  documented.
+
+  The query handle must return items in the form `{guild_id, guild}`, where:
+  - `guild_id` is a `t:Nostrum.Struct.Guild.id/0`, and
+  - `guild` is a `t:Nostrum.Struct.Guild.t/0`.
+
+  If your cache needs some form of setup or teardown for QLC queries (such as
+  opening connections), see `c:wrap_qlc/1`.
+  """
+  @doc since: "0.8.0"
+  @callback query_handle() :: :qlc.query_handle()
+
+  @doc """
+  A function that should wrap any `:qlc` operations.
+
+  If you implement a cache that is backed by a database and want to perform
+  cleanup and teardown actions such as opening and closing connections,
+  managing transactions and so on, you want to implement this function. nostrum
+  will then effectively call `wrap_qlc(fn -> :qlc.e(...) end)`.
+
+  If your cache does not need any wrapping, you can omit this.
+  """
+  @doc since: "0.8.0"
+  @callback wrap_qlc((() -> result)) :: result when result: term()
+  @optional_callbacks wrap_qlc: 1
+
+  @doc """
   Retrieve the child specification for starting this mapping under a supervisor.
   """
   @callback child_spec(term()) :: Supervisor.child_spec()
 
   # Dispatching logic.
-  defdelegate all, to: @configured_cache
-  defdelegate select_all(selector), to: @configured_cache
-  defdelegate get(guild_id), to: @configured_cache
-  defdelegate get_by(clauses), to: @configured_cache
-  defdelegate select(guild_id, selector), to: @configured_cache
-  defdelegate select_by(clauses, selector), to: @configured_cache
   @doc false
   defdelegate create(guild), to: @configured_cache
   @doc false
@@ -308,16 +318,6 @@ defmodule Nostrum.Cache.GuildCache do
   end
 
   @doc """
-  Same as `get_by/1`, but raises `Nostrum.Error.CacheError` in case of failure.
-  """
-  @spec get_by!(clauses()) :: Guild.t() | no_return()
-  def get_by!(clauses) do
-    clauses
-    |> get_by
-    |> Util.bangify_find(clauses, __MODULE__)
-  end
-
-  @doc """
   Same as `select/2`, but raises `Nostrum.Error.CacheError` in case of failure.
   """
   @spec select!(Guild.id(), selector()) :: any() | no_return()
@@ -327,11 +327,24 @@ defmodule Nostrum.Cache.GuildCache do
   end
 
   @doc """
-  Same as `select_by/2`, but raises `Nostrum.Error.CacheError` in case of failure.
+  Call `c:wrap_qlc/1` on the given cache, if implemented.
+
+  If no cache is given, calls out to the default cache.
   """
-  @spec select_by!(clauses(), selector()) :: any() | no_return()
-  def select_by!(clauses, selector) do
-    select_by(clauses, selector)
-    |> Util.bangify_find(clauses, __MODULE__)
+  @doc since: "0.8.0"
+  @spec wrap_qlc((() -> result)) :: result when result: term()
+  @spec wrap_qlc(module(), (() -> result)) :: result when result: term()
+  def wrap_qlc(cache \\ @configured_cache, fun) do
+    if function_exported?(cache, :wrap_qlc, 1) do
+      cache.wrap_qlc(fun)
+    else
+      fun.()
+    end
   end
+
+  @doc """
+  Return the QLC handle of the configured cache.
+  """
+  @doc since: "0.8.0"
+  defdelegate query_handle(), to: @configured_cache
 end

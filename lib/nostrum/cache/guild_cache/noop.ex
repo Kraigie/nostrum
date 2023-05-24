@@ -27,31 +27,10 @@ defmodule Nostrum.Cache.GuildCache.NoOp do
   end
 
   @impl GuildCache
-  def all, do: []
+  def create(payload), do: Guild.to_struct(payload)
 
   @impl GuildCache
-  def select_all(_selector), do: []
-
-  @impl GuildCache
-  def get(_guild_id), do: {:error, :id_not_found_on_guild_lookup}
-
-  @impl GuildCache
-  def get_by(_clauses), do: {:error, :id_not_found_on_guild_lookup}
-
-  @impl GuildCache
-  def select(_guild_id, _selector), do: {:error, :id_not_found_on_guild_lookup}
-
-  @impl GuildCache
-  def select_by(_clauses, _selector), do: {:error, :id_not_found_on_guild_lookup}
-
-  @impl GuildCache
-  def create(_guild), do: true
-
-  @impl GuildCache
-  def update(guild) do
-    guild = Util.cast(guild, {:struct, Guild})
-    {guild, guild}
-  end
+  def update(payload), do: {nil, Guild.to_struct(payload)}
 
   @impl GuildCache
   def delete(_guild_id), do: nil
@@ -94,4 +73,7 @@ defmodule Nostrum.Cache.GuildCache.NoOp do
 
   @impl GuildCache
   def member_count_down(_guild_id), do: true
+
+  @impl GuildCache
+  def query_handle, do: :qlc.string_to_handle('[].')
 end

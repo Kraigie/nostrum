@@ -1,9 +1,13 @@
-defmodule Nostrum.Cache.UserCacheTest do
+defmodule Nostrum.Cache.UserCacheMetaTest do
+  alias Nostrum.Cache.UserCache
   use ExUnit.Case, async: true
 
   @cache_modules [
+    # Dispatcher
+    UserCache,
     # Implementations
-    Nostrum.Cache.UserCache.ETS
+    UserCache.ETS,
+    UserCache.Mnesia
   ]
 
   for cache <- @cache_modules do
@@ -34,6 +38,16 @@ defmodule Nostrum.Cache.UserCacheTest do
       }
 
       setup do
+        on_exit(:cleanup, fn ->
+          try do
+            if function_exported?(@cache, :teardown, 0) do
+              apply(@cache, :teardown, [])
+            end
+          rescue
+            e -> e
+          end
+        end)
+
         [pid: start_supervised!(@cache)]
       end
 
@@ -66,25 +80,26 @@ defmodule Nostrum.Cache.UserCacheTest do
 
       describe "get/1" do
         test "returns error tuple on unknown user" do
-          assert {:error, _reason} = @cache.get(120_815_092_581_902_580)
+          assert {:error, _reason} = UserCache.get(120_815_092_581_902_580, @cache)
         end
 
         test "returns cached user on known user" do
           expected = User.to_struct(@test_user)
           @cache.create(@test_user)
-          assert {:ok, ^expected} = @cache.get(@test_user.id)
+          assert {:ok, ^expected} = UserCache.get(@test_user.id, @cache)
         end
       end
 
       describe "update/1" do
-        test "returns `:noop` on uncached user" do
+        test "returns `{nil, after}` on uncached user" do
           payload = %{id: 8_284_967_893_178_597_859_421}
-          assert :noop = @cache.update(payload)
+          expected = {nil, User.to_struct(payload)}
+          assert ^expected = @cache.update(payload)
         end
 
         test "returns `{before, after}` on cached user" do
           expected_before = User.to_struct(@test_user)
-          updated_test_user = Map.put(@test_user, :name, "updated test user")
+          updated_test_user = Map.put(@test_user, :username, "updated test user")
           expected_after = User.to_struct(updated_test_user)
           @cache.create(@test_user)
 

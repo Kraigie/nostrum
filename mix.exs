@@ -5,7 +5,7 @@ defmodule Nostrum.Mixfile do
   def project do
     [
       app: :nostrum,
-      version: "0.7.0",
+      version: "0.8.0-dev",
       elixir: "~> 1.11",
       elixirc_paths: elixirc_paths(Mix.env()),
       build_embedded: Mix.env() == :prod,
@@ -27,7 +27,7 @@ defmodule Nostrum.Mixfile do
 
   def application do
     [
-      extra_applications: [:logger, :inets],
+      extra_applications: [:logger, :inets, mnesia: :optional],
       mod: {Nostrum.Application, []}
     ]
   end
@@ -42,7 +42,22 @@ defmodule Nostrum.Mixfile do
       groups_for_functions: groups_for_functions(),
       source_ref: "master",
       assets: "guides/assets",
-      nest_modules_by_prefix: [Nostrum.Cache, Nostrum.Constants, Nostrum.Struct]
+      nest_modules_by_prefix: [
+        Nostrum.Cache,
+        Nostrum.Cache.ChannelCache,
+        Nostrum.Cache.ChannelGuildMapping,
+        Nostrum.Cache.GuildCache,
+        Nostrum.Cache.MemberCache,
+        Nostrum.Cache.PresenceCache,
+        Nostrum.Cache.UserCache,
+        Nostrum.Constants,
+        Nostrum.Store,
+        Nostrum.Store.GuildShardMapping,
+        Nostrum.Store.RatelimitBucket,
+        Nostrum.Store.UnavailableGuild,
+        Nostrum.Struct,
+        Nostrum.Struct.Event
+      ]
     ]
   end
 
@@ -62,7 +77,9 @@ defmodule Nostrum.Mixfile do
   def groups_for_modules do
     [
       Api: [
-        ~r/Nostrum.Api/
+        ~r/Nostrum.Api/,
+        ~r/Nostrum.Consumer/,
+        ~r/Nostrum.(Permission|Voice)/
       ],
       Cache: [
         ~r/Nostrum.Cache/
@@ -72,6 +89,12 @@ defmodule Nostrum.Mixfile do
       ],
       Constants: [
         ~r/Nostrum.Constants/
+      ],
+      Utilities: [
+        ~r/Nostrum.(Snowflake|Token|Util)/
+      ],
+      Stores: [
+        ~r/Nostrum.Store/
       ]
     ]
   end
@@ -115,7 +138,7 @@ defmodule Nostrum.Mixfile do
   def dialyzer do
     [
       plt_add_deps: :transitive,
-      plt_add_apps: [:mix]
+      plt_add_apps: [:mix, :mnesia]
     ]
   end
 end

@@ -1,11 +1,14 @@
-defmodule Nostrum.Cache.ChannelCacheTest do
+defmodule Nostrum.Cache.ChannelCacheMetaTest do
+  alias Nostrum.Cache.ChannelCache
   alias Nostrum.Struct.Channel
-  alias Nostrum.Struct.Message
-  use ExUnit.Case
+  use ExUnit.Case, async: true
 
   @cache_modules [
+    # Dispatchers
+    ChannelCache,
     # Implementations
-    Nostrum.Cache.ChannelCache.ETS
+    ChannelCache.ETS,
+    ChannelCache.Mnesia
   ]
 
   for cache <- @cache_modules do
@@ -23,42 +26,44 @@ defmodule Nostrum.Cache.ChannelCacheTest do
 
       describe "with an empty cache" do
         setup do
-          mapping_pid = start_supervised!(Nostrum.Cache.ChannelGuildMapping)
-          [pid: start_supervised!(@cache), mapping_pid: mapping_pid]
+          if function_exported?(@cache, :teardown, 0) do
+            on_exit(:cleanup, fn -> apply(@cache, :teardown, []) end)
+          end
+
+          [pid: start_supervised!(@cache)]
         end
 
         test "get/1 returns channel not found" do
-          assert @cache.get(123) == {:error, :channel_not_found}
+          assert {:error, :not_found} = ChannelCache.get(123, @cache)
         end
 
-        test "create/1 returns true" do
+        test "create/1 returns channel" do
           expected = Channel.to_struct(@test_channel)
-          assert @cache.create(@test_channel) == expected
+          assert ^expected = @cache.create(@test_channel)
         end
 
         test "update/1 with a non-existing channel returns :noop" do
-          assert @cache.update(@test_channel) == :noop
+          updated_channel = %{@test_channel | id: @test_channel.id + 1}
+          expected = {nil, Channel.to_struct(updated_channel)}
+          assert ^expected = @cache.update(updated_channel)
         end
       end
 
       describe "with cached channel" do
         setup do
-          mapping_pid = start_supervised!(Nostrum.Cache.ChannelGuildMapping)
           pid = start_supervised!(@cache)
+
+          if function_exported?(@cache, :teardown, 0) do
+            on_exit(:cleanup, fn -> apply(@cache, :teardown, []) end)
+          end
+
           @cache.create(@test_channel)
-          [pid: pid, mapping_pid: mapping_pid]
-        end
-
-        test "get/1 on dispatch module with message returns channel" do
-          expected = Channel.to_struct(@test_channel)
-
-          assert Nostrum.Cache.ChannelCache.get(%Message{channel_id: @test_channel.id}) ==
-                   {:ok, expected}
+          [pid: pid]
         end
 
         test "get/1 returns channel" do
           expected = Channel.to_struct(@test_channel)
-          assert @cache.get(@test_channel.id) == {:ok, expected}
+          assert {:ok, ^expected} = ChannelCache.get(@test_channel.id, @cache)
         end
 
         test "update/1 updates a channel" do
@@ -76,7 +81,7 @@ defmodule Nostrum.Cache.ChannelCacheTest do
           deleted = @cache.delete(@test_channel.id)
           expected = Channel.to_struct(@test_channel)
           assert deleted == expected
-          assert @cache.get(@test_channel.id) == {:error, :channel_not_found}
+          assert {:error, :not_found} = ChannelCache.get(@test_channel.id, @cache)
 
           # double delete:
           assert :noop == @cache.delete(@test_channel.id)

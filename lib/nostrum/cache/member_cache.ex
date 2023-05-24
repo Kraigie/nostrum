@@ -11,8 +11,9 @@ defmodule Nostrum.Cache.MemberCache do
   application by setting the `:members` field to a different module
   implementing the behaviour defined by this module.
 
-  See the documentation for the `Nostrum.Cache.GuildCache` module for more
-  details on how to implement your own.
+  The user-facing functions of this module can be called with a custom cache as
+  the final argument. This is mainly useful if you want to test the cache: by
+  default, nostrum will use #{@default_cache_implementation}.
   """
   @moduledoc since: "0.7.0"
 
@@ -23,30 +24,6 @@ defmodule Nostrum.Cache.MemberCache do
 
   @configured_cache :nostrum
                     |> Application.compile_env([:caches, :members], @default_cache_implementation)
-
-  @doc """
-  Get members for a given guild ID.
-
-  The result is returned as a stream to accomodate for large guilds.
-  """
-  @callback get(Guild.id()) :: Enumerable.t(Member.t())
-
-  @doc """
-  Get a single member on the given guild ID.
-
-  The result should be returned as a stream to accomodate for large guilds.
-  """
-  @callback get(Guild.id(), Member.user_id()) :: {:ok, Member.t()} | {:error, atom()}
-
-  @doc """
-  Get all members cached for the given user ID.
-
-  The members will be returned alongside their guild ID as a pair in the
-  format `{guild_id, member}`.
-
-  The result is returned as a stream.
-  """
-  @callback by_user(Member.user_id()) :: Enumerable.t({Guild.id(), Member.t()})
 
   @doc """
   Add the member for the given guild from upstream data.
@@ -79,7 +56,7 @@ defmodule Nostrum.Cache.MemberCache do
   Return the guild ID and old member if the member was cached. Otherwise,
   return `:noop`.
   """
-  @callback delete(Guild.id(), user :: map()) ::
+  @callback delete(Guild.id(), Member.user_id()) ::
               {Guild.id(), old_member :: Member.t()} | :noop
 
   @doc """
@@ -90,39 +67,57 @@ defmodule Nostrum.Cache.MemberCache do
   @callback bulk_create(Guild.id(), members :: [member :: map()]) :: true
 
   @doc """
-  Return a query handle for usage with `:qlc`.
+  Return a QLC query handle for cache read operations.
 
-  This is used by nostrum to provide automatic joins between the member and the
-  user cache, and may be used for other functions in the future.
+  This is used by nostrum to provide any read operations on the cache. Write
+  operations still need to be implemented separately.
 
   The Erlang manual on [Implementing a QLC
   Table](https://www.erlang.org/doc/man/qlc.html#implementing_a_qlc_table)
-  contains examples for implementation.
+  contains examples for implementation. To prevent full table scans, accept
+  match specifications in your `TraverseFun` and implement a `LookupFun` as
+  documented.
 
   The query handle must return items in the form `{guild_id, user_id,
   member}`, where:
   - `guild_id` is a `t:Nostrum.Struct.Guild.id/0`,
   - `user_id` is a `t:Nostrum.Struct.User.id/0`, and
   - `member` is a `t:Nostrum.Struct.Guild.Member.t/0`.
+
+  If your cache needs some form of setup or teardown for QLC queries (such as
+  opening connections), see `c:wrap_qlc/1`.
   """
-  @callback qlc_handle() :: :qlc.query_handle()
+  @callback query_handle() :: :qlc.query_handle()
 
   @doc """
   Retrieve the child specification for starting this mapping under a supervisor.
   """
   @callback child_spec(term()) :: Supervisor.child_spec()
 
+  @doc """
+  A function that should wrap any `:qlc` operations.
+
+  If you implement a cache that is backed by a database and want to perform
+  cleanup and teardown actions such as opening and closing connections,
+  managing transactions and so on, you want to implement this function. nostrum
+  will then effectively call `wrap_qlc(fn -> :qlc.e(...) end)`.
+
+  If your cache does not need any wrapping, you can omit this.
+  """
+  @doc since: "0.8.0"
+  @callback wrap_qlc((() -> result)) :: result when result: term()
+  @optional_callbacks wrap_qlc: 1
+
   # User-facing
-  defdelegate get(guild_id), to: @configured_cache
-  defdelegate get(guild_id, member_id), to: @configured_cache
-  defdelegate by_user(member_id), to: @configured_cache
 
   @doc """
   Return a member together with its user via the user cache.
   """
   @spec get_with_user(Guild.id(), Member.user_id()) :: {Member.t(), User.t() | nil} | nil
-  def get_with_user(guild_id, member_id) do
-    case get(guild_id, member_id) do
+  @spec get_with_user(Guild.id(), Member.user_id(), module()) ::
+          {Member.t(), User.t() | nil} | nil
+  def get_with_user(guild_id, member_id, cache \\ @configured_cache) do
+    case get(guild_id, member_id, cache) do
       {:ok, member} ->
         case UserCache.get(member_id) do
           {:ok, user} ->
@@ -138,63 +133,136 @@ defmodule Nostrum.Cache.MemberCache do
   end
 
   @doc """
-  Return an enumerable of members with their users.
+  Reduce over all members cached for the given user ID.
+
+  The members will be returned alongside their guild ID as a pair in the
+  format `{guild_id, member}`.
+  """
+  @doc since: "0.8.0"
+  @spec fold_by_user(acc, Member.user_id(), ({Guild.id(), Member.t()}, acc -> acc)) :: acc
+        when acc: term()
+  @spec fold_by_user(acc, Member.user_id(), ({Guild.id(), Member.t()}, acc -> acc), module()) ::
+          acc
+        when acc: term()
+  def fold_by_user(acc, user_id, member_reducer, cache \\ @configured_cache) do
+    handle = :nostrum_member_cache_qlc.by_user(user_id, cache)
+    wrap_qlc(cache, fn -> :qlc.fold(member_reducer, acc, handle) end)
+  end
+
+  @doc """
+  Get a single member on the given guild ID.
+  """
+  @spec get(Guild.id(), Member.user_id()) :: {:ok, Member.t()} | {:error, atom()}
+  @spec get(Guild.id(), Member.user_id(), module()) :: {:ok, Member.t()} | {:error, atom()}
+  def get(guild_id, user_id, cache \\ @configured_cache) do
+    handle = :nostrum_member_cache_qlc.lookup(guild_id, user_id, cache)
+
+    wrap_qlc(cache, fn ->
+      case :qlc.e(handle) do
+        [result] ->
+          {:ok, result}
+
+        [] ->
+          {:error, :not_found}
+      end
+    end)
+  end
+
+  @doc """
+  Fold (reduce) over members for the given guild ID.
 
   ## Parameters
 
-  - `guild_id` (`t:Nostrum.Struct.Guild.id/0`): The guild for which to return members.
+  - `acc`: The initial accumulator. Also returned if no guild members were found.
+  - `guild_id`: The guild for which to reduce members.
+  - `fun`: Called for every element in the result. Takes a pair
+  in the form `{member, acc)`, and must return the updated accumulator.
 
   ## Return value
 
-  Returns an enumerable that can be consumed with any function in the `Stream`
-  or `Enumerable` module.
+  Returns the resulting accumulator via `fun`. Returns `acc` unchanged if no
+  results were found.
+  """
+  @doc since: "0.8.0"
+  @spec fold(acc, Guild.id(), (Member.t(), acc -> acc)) :: acc when acc: term()
+  @spec fold(acc, Guild.id(), (Member.t(), acc -> acc), module()) :: acc when acc: term()
+  def fold(acc, guild_id, member_reducer, cache \\ @configured_cache) do
+    handle = :nostrum_member_cache_qlc.by_guild(guild_id, cache)
+    wrap_qlc(cache, fn -> :qlc.fold(member_reducer, acc, handle) end)
+  end
 
-  If the user for a guild member is not found, the member and user won't be
+  @doc """
+  Calls `fun` on each member and its user on the given guild ID, with the given
+  accumulator.
+
+  ## Parameters
+
+  - `acc` (`term()`): The initial accumulator. Also returned if no guild
+  members were found.
+  - `guild_id` (`t:Nostrum.Struct.Guild.id/0`): The guild for which to reduce members.
+  - `fun` (`function()`): Called for every element in the result. Takes a pair
+  in the form `{{member, user}, acc)`, and must return the updated accumulator.
+
+  ## Return value
+
+  Returns the resulting accumulator via `fun`. Returns `acc` unchanged if no
+  results were found.
+
+  If the user for a guild member is not found, the member _and_ user won't be
   present in the result. Barring a bug in nostrum's caching, this should never
   happen in practice.
   """
-  @spec get_with_users(Guild.id()) :: Enumerable.t({Member.t(), User.t()})
-  def get_with_users(guild_id) do
-    joined_handle =
-      :qlc.string_to_handle(
-        '[{Member, User} || ' ++
-          '{GuildId, MemberId, Member} <- MemberHandle, ' ++
-          '{UserId, User} <- UserHandle, ' ++
-          'GuildId =:= RequestedGuildId, ' ++
-          'UserId =:= MemberId].',
-        [],
-        MemberHandle: qlc_handle(),
-        UserHandle: UserCache.qlc_handle(),
-        RequestedGuildId: guild_id
-      )
+  @doc since: "0.8.0"
+  @spec fold_with_users(acc, Guild.id(), ({Member.t(), User.t()}, acc -> acc)) :: acc
+        when acc: term()
+  @spec fold_with_users(acc, Guild.id(), ({Member.t(), User.t()}, acc -> acc), module()) ::
+          acc
+        when acc: term()
+  def fold_with_users(acc, guild_id, fun, cache \\ @configured_cache) do
+    joined_handle = :nostrum_member_cache_qlc.get_with_users(guild_id, cache, UserCache)
 
-    Stream.resource(
-      fn -> :qlc.cursor(joined_handle) end,
-      fn cursor -> cursor |> :qlc.next_answers(100) |> parse_qlc_answers(cursor) end,
-      fn cursor -> :qlc.delete_cursor(cursor) end
-    )
+    wrapped_fun = fn {member, user}, acc ->
+      fun.({member, user}, acc)
+    end
+
+    wrap_qlc(cache, fn ->
+      UserCache.wrap_qlc(fn ->
+        :qlc.fold(wrapped_fun, acc, joined_handle)
+      end)
+    end)
   end
 
-  defp parse_qlc_answers([], cursor) do
-    {:halt, cursor}
-  end
+  @doc """
+  Call `c:wrap_qlc/1` on the given cache, if implemented.
 
-  defp parse_qlc_answers(answers, cursor) do
-    parsed_answers = Enum.map(answers, fn {member, user} -> {member, User.to_struct(user)} end)
-    {parsed_answers, cursor}
+  If no cache is given, calls out to the default cache.
+  """
+  @doc since: "0.8.0"
+  @spec wrap_qlc((() -> result)) :: result when result: term()
+  @spec wrap_qlc(module(), (() -> result)) :: result when result: term()
+  def wrap_qlc(cache \\ @configured_cache, fun) do
+    if function_exported?(cache, :wrap_qlc, 1) do
+      cache.wrap_qlc(fun)
+    else
+      fun.()
+    end
   end
 
   # Nostrum-facing
   @doc false
   defdelegate create(guild_id, member), to: @configured_cache
   @doc false
-  defdelegate delete(guild_id, user), to: @configured_cache
+  defdelegate delete(guild_id, user_id), to: @configured_cache
   @doc false
   defdelegate update(guild_id, member), to: @configured_cache
   @doc false
   defdelegate bulk_create(guild_id, members), to: @configured_cache
-  @doc false
-  defdelegate qlc_handle(), to: @configured_cache
+
+  @doc """
+  Return the QLC handle of the configured cache.
+  """
+  @doc since: "0.8.0"
+  defdelegate query_handle(), to: @configured_cache
 
   ## Supervisor callbacks
   # These set up the backing cache.

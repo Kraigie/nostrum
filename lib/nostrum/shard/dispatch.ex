@@ -42,7 +42,7 @@ defmodule Nostrum.Shard.Dispatch do
     VoiceState
   }
 
-  alias Nostrum.Struct.{AutoModerationRule, Guild, Interaction, Message, ThreadMember, User}
+  alias Nostrum.Struct.{AutoModerationRule, Interaction, Message, ThreadMember, User}
   alias Nostrum.Struct.Guild.{AuditLogEntry, Integration, ScheduledEvent, UnavailableGuild}
   alias Nostrum.Util
   alias Nostrum.Voice
@@ -175,10 +175,8 @@ defmodule Nostrum.Shard.Dispatch do
     {presences, guild} = Map.pop(guild, :presences, [])
     PresenceCache.bulk_create(guild.id, presences)
 
-    guild = Util.cast(guild, {:struct, Guild})
-
-    true = GuildCache.create(guild)
-    {check_new_or_unavailable(guild.id), guild, state}
+    casted = GuildCache.create(guild)
+    {check_new_or_unavailable(casted.id), casted, state}
   end
 
   def handle_event(:GUILD_UPDATE = event, p, state), do: {event, GuildCache.update(p), state}
@@ -213,7 +211,7 @@ defmodule Nostrum.Shard.Dispatch do
 
   def handle_event(:GUILD_MEMBER_REMOVE = event, p, state) do
     GuildCache.member_count_down(p.guild_id)
-    {event, MemberCache.delete(p.guild_id, p.user), state}
+    {event, MemberCache.delete(p.guild_id, p.user.id), state}
   end
 
   def handle_event(:GUILD_MEMBER_UPDATE = event, %{guild_id: guild_id} = p, state) do

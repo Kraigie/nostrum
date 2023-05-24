@@ -1,6 +1,6 @@
 defmodule Nostrum.Store.GuildShardMapping.ETS do
   @moduledoc """
-  Stores a mapping of guild IDs to their shard numbers using `:ets`.
+  Maintains a mapping of guild IDs to their shard numbers using `:ets`.
 
   If programmatic access to the ETS table is needed, please use the `table/0`
   function.
@@ -39,16 +39,18 @@ defmodule Nostrum.Store.GuildShardMapping.ETS do
 
   @impl GuildShardMapping
   @doc "Create a new mapping for the given guild ID to the given shard ID."
-  @spec create(Guild.id(), WSState.shard_num()) :: true
+  @spec create(Guild.id(), WSState.shard_num()) :: :ok
   def create(guild_id, shard_num) do
     :ets.insert(@table_name, {guild_id, shard_num})
+    :ok
   end
 
   @impl GuildShardMapping
   @doc "Delete any stored mapping for the given guild ID."
-  @spec delete(Guild.id()) :: true
+  @spec delete(Guild.id()) :: :ok
   def delete(guild_id) do
     :ets.delete(@table_name, guild_id)
+    :ok
   end
 
   @impl GuildShardMapping

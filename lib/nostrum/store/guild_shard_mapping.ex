@@ -24,11 +24,6 @@ defmodule Nostrum.Store.GuildShardMapping do
   ```
 
   This setting must be set at compile time.
-
-  ## See also
-
-  The module `Nostrum.Registry.Shard` associates shard numbers with their
-  respective shard session processes.
   """
 
   # XXX: This module should really be storing the Shard.Session PID instead, as
@@ -45,8 +40,8 @@ defmodule Nostrum.Store.GuildShardMapping do
   # sessions register themselves via `:global`
   #
   # So we need to add another new mapping. Or actually: we don't, because we
-  # will basically reinvent `:global` at that point.
-  #
+  # will basically reinvent `:global` at that point, so let's use `:global`.
+
   @configured_store :nostrum
                     |> Application.compile_env(
                       [:stores, :guild_shard_mapping],
@@ -61,12 +56,12 @@ defmodule Nostrum.Store.GuildShardMapping do
   @doc """
   Create a new mapping for the given guild ID to the given shard ID.
   """
-  @callback create(Guild.id(), WSState.shard_num()) :: true
+  @callback create(Guild.id(), WSState.shard_num()) :: :ok
 
   @doc """
   Delete any stored mapping for the given guild ID.
   """
-  @callback delete(Guild.id()) :: true
+  @callback delete(Guild.id()) :: :ok
 
   @doc """
   Retrieve the shard number for the given guild ID.
