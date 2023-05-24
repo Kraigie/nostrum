@@ -5,15 +5,15 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="ExDoc v0.29.4">
-    <meta name="project" content="Nostrum v0.7.0">
+    <meta name="project" content="Nostrum v0.8.0-dev">
 
-    <title>State — Nostrum v0.7.0</title>
+    <title>State — Nostrum v0.8.0-dev</title>
     <link rel="stylesheet" href="dist/html-elixir-HHVY3JYD.css" />
 
 
     <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
     <script src="dist/handlebars.templates-XWGFFSCD.js"></script>
-    <script src="dist/sidebar_items-6D15D5E9.js"></script>
+    <script src="dist/sidebar_items-AE195700.js"></script>
 
       <script src="docs_config.js"></script>
 
@@ -68,7 +68,7 @@
 Nostrum
       </a>
       <div class="sidebar-projectVersion" translate="no">
-        v0.7.0
+        v0.8.0-dev
       </div>
     </div>
     <ul class="sidebar-listNav">
@@ -108,65 +108,114 @@ Nostrum
 </h1>
 
 <p>Nostrum keeps track of the state that your bot can see. This state is updated
-based on events from the WS connection. Most of the cache modules support only
-simple interactions with the cache. Feel free to suggest additional functionality.</p><h2 id="pluggable-caches" class="section-heading">
-  <a href="#pluggable-caches" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
-  <p class="sr-only">pluggable-caches</p>
+based on events from the WS connection. We differentiate between <em>caches</em>, which
+are optional and are used to provide your bot with fresh data, and <em>state</em>,
+which is mandatory state that we must track internally.</p><h2 id="pluggable-caching" class="section-heading">
+  <a href="#pluggable-caching" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">pluggable-caching</p>
   </a>
-  Pluggable caches
+  Pluggable caching
 </h2>
-<p>The default caches supplied by nostrum should work for most of your needs, but
-all of the caches can be exchanged for your own implementations. For this,
-implement the behaviours exported by the cache modules under <code class="inline">Nostrum.Cache</code>.</p><p>Use the <code class="inline">[:nostrum, :caches]</code> configuration for configuring which cache
+<p>The default ETS-based caches supplied by nostrum should work for most of your
+needs, but all of the caches can be exchanged for your own implementations. For
+this, implement the behaviours exported by the cache modules under
+<code class="inline">Nostrum.Cache</code>.</p><p>Use the <code class="inline">[:nostrum, :caches]</code> configuration for configuring which cache
 implementation you want to use. This can only be set at dependency compilation
 time. A common situation is that you don't want to cache presences in your bot,
 most likely you don't care about user's status, so you can disable it altogether
 by using the <code class="inline">NoOp</code> presence cache:</p><pre><code class="makeup elixir" translate="no"><span class="n">config</span><span class="w"> </span><span class="ss">:nostrum</span><span class="p">,</span><span class="w">
-  </span><span class="ss">caches</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="2438564392-1">%{</span><span class="w">
+  </span><span class="ss">caches</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="2254900732-1">%{</span><span class="w">
     </span><span class="ss">presences</span><span class="p">:</span><span class="w"> </span><span class="nc">Nostrum.Cache.PresenceCache.NoOp</span><span class="w">
-  </span><span class="p" data-group-id="2438564392-1">}</span></code></pre><h2 id="structs" class="section-heading">
-  <a href="#structs" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
-  <p class="sr-only">structs</p>
+  </span><span class="p" data-group-id="2254900732-1">}</span></code></pre><p>In addition to regular caches that associate Discord snowflakes with the proper
+&quot;full&quot; object, nostrum also maintains junction table-like mappings that allow
+you to find the matching object from one cache in another. One example for this
+is <a href="Nostrum.Cache.ChannelGuildMapping.html"><code class="inline">Nostrum.Cache.ChannelGuildMapping</code></a>.</p><p>Nostrum also ships with Mnesia-based caches. <strong>These are only compiled in when
+mnesia is available</strong>: they may not be available on Nerves or when Mnesia was
+not installed with OTP.</p><h3 id="implementations" class="section-heading">
+  <a href="#implementations" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">implementations</p>
   </a>
-  Structs
-</h2>
-<p>Nostrum uses structs when appropriate to pass around objects from Discord.</p><p>In some cases, the struct modules will include helper functions for interacting
-with the struct. See <a href="Nostrum.Struct.Emoji.html#image_url/1"><code class="inline">Nostrum.Struct.Emoji.image_url/1</code></a> for an example.</p><h2 id="guilds" class="section-heading">
-  <a href="#guilds" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
-  <p class="sr-only">guilds</p>
+  Implementations
+</h3>
+<h4>ETS caching</h4><p>Caching based on <code class="inline">:ets</code> is used by default. No configuration is required. Fast,
+light on memory, but does not support any form of distribution or secondary
+indexing: queries such as fetching all guild members for a guild by its ID will
+perform a full table scan. For smaller bots, this is perfectly acceptable.</p><h4>Mnesia caching</h4><p>Mnesia-based caching is mainly suggested for larger bots that require
+features such as cache distribution, fragmentation, secondary indexing and more.</p><p>The caches will attempt to create their tables automatically at startup:
+therefore, Mnesia must be started ahead of nostrum. Caches expose a function
+<code class="inline">table/0</code> that can be called to retrieve the table name used by the cache and
+perform schema operations on it, such as adding replicas or fragmenting them.</p><p>Access to Mnesia is presently done in <code class="inline">sync_transaction</code> mode for best
+consistency. If needed, a compile-time configuration option for the cache to
+switch this can be added.</p><p>Mnesia-based caching assumes the user is familar with usage and
+maintenance of Mnesia: the <a href="https://www.erlang.org/doc/apps/mnesia/users_guide.html">Mnesia User's
+Guide</a> is a good
+starting point.</p><h4>NoOp caching</h4><p>The NoOp cache adapters are supplied for the case where you do not want to cache
+specific data from Discord at all.</p><p>These cache adapters presently also don't send out any data they receive either:
+this means that for caches using the NoOp cache adapters, you won't receive any
+gateway events.</p><h3 id="cache-invalidation" class="section-heading">
+  <a href="#cache-invalidation" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">cache-invalidation</p>
   </a>
-  Guilds
-</h2>
-<p>By default, guilds are cached in an ETS table, keyed off their ID. You can
-obtain the table name of the backing ETS table using the <code class="inline">tabname</code> function
-exported by the <a href="Nostrum.Cache.GuildCache.ETS.html"><code class="inline">Nostrum.Cache.GuildCache.ETS</code></a> module.</p><p>If you do not have the <code class="inline">:guilds</code> intent enabled, it is recommended to use the <code class="inline">NoOp</code>
-cache for guilds.</p><p>Please see <a href="Nostrum.Cache.GuildCache.html"><code class="inline">Nostrum.Cache.GuildCache</code></a> for more information on interacting with
-guilds.</p><h2 id="channels" class="section-heading">
-  <a href="#channels" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
-  <p class="sr-only">channels</p>
+  Cache invalidation
+</h3>
+<p>nostrum does not invalidate cache in any special way: it will maintain it in
+response to gateway events (for instance by deleting a guild and its members
+upon leaving it), but won't regularly prune caches or associate expiration times
+with entries. For volatile (RAM-based) caches this is perfectly fine, however,
+when implementing your own cache backend that persists to disk in some way, you
+need to take care of this yourself.</p><h3 id="cache-performance" class="section-heading">
+  <a href="#cache-performance" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">cache-performance</p>
   </a>
-  Channels
-</h2>
-<p>By default, DM channels are stored in an ETS table, see
-<a href="Nostrum.Cache.ChannelCache.ETS.html"><code class="inline">Nostrum.Cache.ChannelCache.ETS</code></a>. Guild channels are stored in their respective
-guilds.</p><h2 id="users" class="section-heading">
-  <a href="#users" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
-  <p class="sr-only">users</p>
+  Cache performance
+</h3>
+<p>nostrum strives to provide the most performant caches on the Discord bot caching
+market. If you run into performance issues with caches that you feel are not
+adequately documented as such, please feel free to open an issue.</p><p>Benchmarks for caches can be found in the <a href="https://github.com/Kraigie/nostrum/tree/master/benchmarks"><code class="inline">benchmarks/</code>
+directory</a> of the
+source code tree. If you want to get a feeling for how the caches perform or
+implement optimizations, check them out.</p><h2 id="query-list-comprehensions" class="section-heading">
+  <a href="#query-list-comprehensions" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">query-list-comprehensions</p>
   </a>
-  Users
+  Query list comprehensions
 </h2>
-<p>By default, users are all stored in an ETS table, keyed off of their id.</p><p>To see the name of the ETS table associated with the user cache, and examples of
-interacting with it both directly and through the provided abstractions, please
-see <a href="Nostrum.Cache.UserCache.ETS.html"><code class="inline">Nostrum.Cache.UserCache.ETS</code></a>.</p><h2 id="mappings" class="section-heading">
-  <a href="#mappings" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
-  <p class="sr-only">mappings</p>
+<p>The caches makes extensive use of Erlang's excellent
+<a href="https://www.erlang.org/doc/man/qlc.html">qlc</a> module. By <a href="https://www.erlang.org/doc/man/qlc.html#implementing_a_qlc_table">implementing a QLC
+table</a>, all
+read operations from nostrum will be performed over your QLC table
+implementation alone, and nostrum's dispatcher modules can easily be expanded
+for more queries in the future. If you've never heard of QLC before, the
+<a href="https://github.com/savonarola/beam-lazy"><code class="inline">beam-lazy</code> repository</a> contains a
+good introduction.</p><p>As an example, <a href="Nostrum.Cache.MemberCache.html#fold_with_users/3"><code class="inline">Nostrum.Cache.MemberCache.fold_with_users/3</code></a> performs a join
+between the member and the user cache without the caches knowing their exact API
+(outside of the tuples yielded from the query handle). This is implemented via
+the following QLC query:</p><pre><code class="makeup erl" translate="no"><span class="nf">get_with_users</span><span class="p" data-group-id="7671667328-1">(</span><span class="n">RequestedGuildId</span><span class="p">,</span><span class="w"> </span><span class="n">MemberCache</span><span class="p">,</span><span class="w"> </span><span class="n">UserCache</span><span class="p" data-group-id="7671667328-1">)</span><span class="w"> </span><span class="p">-&gt;</span><span class="w">
+    </span><span class="nc">qlc</span><span class="p">:</span><span class="nf">q</span><span class="p" data-group-id="7671667328-2">(</span><span class="p" data-group-id="7671667328-3">[</span><span class="p" data-group-id="7671667328-4">{</span><span class="n">Member</span><span class="p">,</span><span class="w"> </span><span class="n">User</span><span class="p" data-group-id="7671667328-4">}</span><span class="w"> </span><span class="p">||</span><span class="w"> </span><span class="p" data-group-id="7671667328-5">{</span><span class="p" data-group-id="7671667328-6">{</span><span class="n">GuildId</span><span class="p">,</span><span class="w"> </span><span class="n">MemberId</span><span class="p" data-group-id="7671667328-6">}</span><span class="p">,</span><span class="w"> </span><span class="n">Member</span><span class="p" data-group-id="7671667328-5">}</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">MemberCache</span><span class="p">:</span><span class="nf">query_handle</span><span class="p" data-group-id="7671667328-7">(</span><span class="p" data-group-id="7671667328-7">)</span><span class="p">,</span><span class="w">
+                          </span><span class="n">GuildId</span><span class="w"> </span><span class="o">=:=</span><span class="w"> </span><span class="n">RequestedGuildId</span><span class="p">,</span><span class="w">
+                          </span><span class="p" data-group-id="7671667328-8">{</span><span class="n">UserId</span><span class="p">,</span><span class="w"> </span><span class="n">User</span><span class="p" data-group-id="7671667328-8">}</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">UserCache</span><span class="p">:</span><span class="nf">query_handle</span><span class="p" data-group-id="7671667328-9">(</span><span class="p" data-group-id="7671667328-9">)</span><span class="p">,</span><span class="w">
+                          </span><span class="n">MemberId</span><span class="w"> </span><span class="o">=:=</span><span class="w"> </span><span class="n">UserId</span><span class="p" data-group-id="7671667328-3">]</span><span class="p" data-group-id="7671667328-2">)</span><span class="p">.</span></code></pre><p>Using QLC bring a plethora of benefits. Implementation of a QLC table is
+relatively simple, and gives us compile-time query optimization and compilation
+in native Erlang list comprehension syntax. Furthermore, should you wish to
+perform queries on your caches beyond what nostrum offers out of the box, you
+can write your queries using the <code class="inline">query_handle/0</code> functions on our caches,
+without having to investigate their exact API.</p><p>There is one caveat to be aware of when writing cache adapters in Elixir that
+build on this functionality: While Erlang's QLC can perform intelligent query
+optimization, a lot of it is implemented via a parse transform and thus only
+available at compile time in Erlang modules. It is therefore recommended to
+write your QLC queries in Erlang modules: in Mix projects this can be achieved
+easily via the <code class="inline">src/</code> directory. Read the <a href="https://www.erlang.org/doc/man/qlc.html">QLC module
+documentation</a> for more details on the
+optimizations done.</p><h2 id="internal-state" class="section-heading">
+  <a href="#internal-state" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">internal-state</p>
   </a>
-  Mappings
+  Internal state
 </h2>
-<p>There are some use cases where given a <code class="inline">channel_id</code> or <code class="inline">guild_id</code> we may want to
-find the <code class="inline">guild</code> or <code class="inline">shard</code> that the <code class="inline">id</code> belongs to. For this purpose Nostrum
-stores these types of relations in ETS tables.</p><p>The following mappings exist:</p><pre><code class="makeup elixir" translate="no"><span class="n">guild_channel_id</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">guild_id</span><span class="w">
-</span><span class="n">guild_id</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">shard_num</span></code></pre><p>Please see <a href="Nostrum.Cache.ChannelGuildMapping.html"><code class="inline">Nostrum.Cache.ChannelGuildMapping</code></a> for one such map.</p>
+<p>In addition to the optional caching, nostrum also needs to keep track of
+internal state so it functions properly. State follows the same pattern as the
+pluggable caching functionality described above, but disabling state storage via
+<code class="inline">NoOp</code> as with caching is not possible.</p><p>The modules under <code class="inline">Nostrum.Store</code> are used for this functionality.</p>
 <div class="bottom-actions">
   <div class="bottom-actions-item">
 
@@ -197,11 +246,11 @@ Events
         <p>
 
             <span class="line">
-              <a href="https://hex.pm/packages/nostrum/0.7.0" class="footer-hex-package">Hex Package</a>
+              <a href="https://hex.pm/packages/nostrum/0.8.0-dev" class="footer-hex-package">Hex Package</a>
 
-              <a href="https://preview.hex.pm/preview/nostrum/0.7.0">Hex Preview</a>
+              <a href="https://preview.hex.pm/preview/nostrum/0.8.0-dev">Hex Preview</a>
 
-                (<a href="https://preview.hex.pm/preview/nostrum/0.7.0/show/guides/State.md">current file</a>)
+                (<a href="https://preview.hex.pm/preview/nostrum/0.8.0-dev/show/guides/State.md">current file</a>)
 
             </span>
 

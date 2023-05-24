@@ -5,15 +5,15 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="ExDoc v0.29.4">
-    <meta name="project" content="Nostrum v0.7.0">
+    <meta name="project" content="Nostrum v0.8.0-dev">
 
-    <title>Nostrum.Store.RatelimitBucket — Nostrum v0.7.0</title>
+    <title>Nostrum.Store.RatelimitBucket — Nostrum v0.8.0-dev</title>
     <link rel="stylesheet" href="dist/html-elixir-HHVY3JYD.css" />
 
 
     <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
     <script src="dist/handlebars.templates-XWGFFSCD.js"></script>
-    <script src="dist/sidebar_items-6D15D5E9.js"></script>
+    <script src="dist/sidebar_items-AE195700.js"></script>
 
       <script src="docs_config.js"></script>
 
@@ -68,7 +68,7 @@
 Nostrum
       </a>
       <div class="sidebar-projectVersion" translate="no">
-        v0.7.0
+        v0.8.0-dev
       </div>
     </div>
     <ul class="sidebar-listNav">
@@ -104,7 +104,7 @@ Nostrum
     </a>
 
   <span translate="no">Nostrum.Store.RatelimitBucket</span> <small>behaviour</small>
-  <small class="app-vsn" translate="no">(Nostrum v0.7.0)</small>
+  <small class="app-vsn" translate="no">(Nostrum v0.8.0-dev)</small>
 
 </h1>
 
@@ -129,9 +129,9 @@ use it directly yourself.</p><h2 id="module-configuration" class="section-headin
 <p>By default, nostrum will use <a href="Nostrum.Store.RatelimitBucket.ETS.html"><code class="inline">Elixir.Nostrum.Store.RatelimitBucket.ETS</code></a> to store ratelimit
 buckets. To override this, set the <code class="inline">[:stores, :ratelimit_buckets]</code> setting on
 nostrum's application configuration:</p><pre><code class="makeup elixir" translate="no"><span class="n">config</span><span class="w"> </span><span class="ss">:nostrum</span><span class="p">,</span><span class="w">
-  </span><span class="ss">stores</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="3143045531-1">%{</span><span class="w">
+  </span><span class="ss">stores</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="9475946156-1">%{</span><span class="w">
     </span><span class="ss">ratelimit_buckets</span><span class="p">:</span><span class="w"> </span><span class="nc">MyBot.Nostrum.Store.RatelimitBucket</span><span class="w">
-  </span><span class="p" data-group-id="3143045531-1">}</span></code></pre><p>This setting must be set at compile time.</p><h2 id="module-implementation" class="section-heading">
+  </span><span class="p" data-group-id="9475946156-1">}</span></code></pre><p>This setting must be set at compile time.</p><h2 id="module-implementation" class="section-heading">
   <a href="#module-implementation" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
   <p class="sr-only">implementation</p>
   </a>
@@ -290,7 +290,7 @@ recommended approach is to spawn a <a href="https://hexdocs.pm/elixir/Supervisor
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#timeout_for/1" translate="no">timeout_for(route)</a>
+        <a href="#timeout_for/2" translate="no">timeout_for(route, store \\ Nostrum.Store.RatelimitBucket.ETS)</a>
 
       </div>
 
@@ -504,7 +504,7 @@ Callbacks
     </a>
     <h1 class="signature" translate="no">child_spec(term)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/store/ratelimit_bucket.ex#L102" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/store/ratelimit_bucket.ex#L100" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -534,7 +534,7 @@ Callbacks
     </a>
     <h1 class="signature" translate="no">cleanup(pos_integer)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/store/ratelimit_bucket.ex#L97" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/store/ratelimit_bucket.ex#L95" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -565,7 +565,7 @@ intervals.</p><p>Return the amount of deleted entries.</p>
     </a>
     <h1 class="signature" translate="no">lookup(route)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/store/ratelimit_bucket.ex#L87" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/store/ratelimit_bucket.ex#L85" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -595,7 +595,7 @@ intervals.</p><p>Return the amount of deleted entries.</p>
     </a>
     <h1 class="signature" translate="no">update(route, remaining)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/store/ratelimit_bucket.ex#L71" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/store/ratelimit_bucket.ex#L69" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -609,11 +609,11 @@ intervals.</p><p>Return the amount of deleted entries.</p>
 
       <div class="specs">
 
-          <pre translate="no"><span class="attribute">@callback</span> update(<a href="#t:route/0">route</a>(), <a href="#t:remaining/0">remaining</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">boolean</a>()</pre>
+          <pre translate="no"><span class="attribute">@callback</span> update(<a href="#t:route/0">route</a>(), <a href="#t:remaining/0">remaining</a>()) :: :ok</pre>
 
       </div>
 
-<p>Update the given bucket to have the given remaining calls.</p><p>Return whether the update has affected anything.</p><p>Normally used after issuing an API call for a previously used route.</p>
+<p>Update the given bucket to have the given remaining calls.</p><p>Normally used after issuing an API call for a previously used route.</p>
   </section>
 </section>
 <section class="detail" id="c:update/4">
@@ -625,7 +625,7 @@ intervals.</p><p>Return the amount of deleted entries.</p>
     </a>
     <h1 class="signature" translate="no">update(route, remaining, reset_time, latency)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/store/ratelimit_bucket.ex#L80" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/store/ratelimit_bucket.ex#L78" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -639,7 +639,7 @@ intervals.</p><p>Return the amount of deleted entries.</p>
 
       <div class="specs">
 
-          <pre translate="no"><span class="attribute">@callback</span> update(<a href="#t:route/0">route</a>(), <a href="#t:remaining/0">remaining</a>(), <a href="#t:reset_time/0">reset_time</a>(), <a href="#t:latency/0">latency</a>()) :: true</pre>
+          <pre translate="no"><span class="attribute">@callback</span> update(<a href="#t:route/0">route</a>(), <a href="#t:remaining/0">remaining</a>(), <a href="#t:reset_time/0">reset_time</a>(), <a href="#t:latency/0">latency</a>()) :: :ok</pre>
 
       </div>
 
@@ -670,7 +670,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">cleanup(age)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/store/ratelimit_bucket.ex#L149" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/store/ratelimit_bucket.ex#L148" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -694,7 +694,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">lookup(route)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/store/ratelimit_bucket.ex#L148" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/store/ratelimit_bucket.ex#L147" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -709,16 +709,18 @@ Functions
 <p>See <a href="Nostrum.Store.RatelimitBucket.ETS.html#lookup/1"><code class="inline">Nostrum.Store.RatelimitBucket.ETS.lookup/1</code></a>.</p>
   </section>
 </section>
-<section class="detail" id="timeout_for/1">
+<section class="detail" id="timeout_for/2">
+
+    <span id="timeout_for/1"></span>
 
   <div class="detail-header">
-    <a href="#timeout_for/1" class="detail-link" title="Link to this function">
+    <a href="#timeout_for/2" class="detail-link" title="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">timeout_for(route)</h1>
+    <h1 class="signature" translate="no">timeout_for(route, store \\ Nostrum.Store.RatelimitBucket.ETS)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/store/ratelimit_bucket.ex#L116" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/store/ratelimit_bucket.ex#L115" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -732,7 +734,7 @@ Functions
 
       <div class="specs">
 
-          <pre translate="no"><span class="attribute">@spec</span> timeout_for(<a href="#t:route/0">route</a>()) :: <a href="#t:remaining/0">remaining</a>() | :now</pre>
+          <pre translate="no"><span class="attribute">@spec</span> timeout_for(<a href="#t:route/0">route</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">module</a>()) :: <a href="#t:remaining/0">remaining</a>() | :now</pre>
 
       </div>
 
@@ -752,7 +754,7 @@ little to no time drift.</p>
     </a>
     <h1 class="signature" translate="no">update(route, remaining)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/store/ratelimit_bucket.ex#L146" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/store/ratelimit_bucket.ex#L145" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -776,7 +778,7 @@ little to no time drift.</p>
     </a>
     <h1 class="signature" translate="no">update(route, remaining, reset_time, latency)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/store/ratelimit_bucket.ex#L147" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/store/ratelimit_bucket.ex#L146" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -799,11 +801,11 @@ little to no time drift.</p>
         <p>
 
             <span class="line">
-              <a href="https://hex.pm/packages/nostrum/0.7.0" class="footer-hex-package">Hex Package</a>
+              <a href="https://hex.pm/packages/nostrum/0.8.0-dev" class="footer-hex-package">Hex Package</a>
 
-              <a href="https://preview.hex.pm/preview/nostrum/0.7.0">Hex Preview</a>
+              <a href="https://preview.hex.pm/preview/nostrum/0.8.0-dev">Hex Preview</a>
 
-                (<a href="https://preview.hex.pm/preview/nostrum/0.7.0/show/lib/nostrum/store/ratelimit_bucket.ex">current file</a>)
+                (<a href="https://preview.hex.pm/preview/nostrum/0.8.0-dev/show/lib/nostrum/store/ratelimit_bucket.ex">current file</a>)
 
             </span>
 

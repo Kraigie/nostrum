@@ -5,15 +5,15 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="ExDoc v0.29.4">
-    <meta name="project" content="Nostrum v0.7.0">
+    <meta name="project" content="Nostrum v0.8.0-dev">
 
-    <title>Nostrum.Cache.ChannelCache.ETS — Nostrum v0.7.0</title>
+    <title>Nostrum.Cache.ChannelCache.ETS — Nostrum v0.8.0-dev</title>
     <link rel="stylesheet" href="dist/html-elixir-HHVY3JYD.css" />
 
 
     <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
     <script src="dist/handlebars.templates-XWGFFSCD.js"></script>
-    <script src="dist/sidebar_items-6D15D5E9.js"></script>
+    <script src="dist/sidebar_items-AE195700.js"></script>
 
       <script src="docs_config.js"></script>
 
@@ -68,7 +68,7 @@
 Nostrum
       </a>
       <div class="sidebar-projectVersion" translate="no">
-        v0.7.0
+        v0.8.0-dev
       </div>
     </div>
     <ul class="sidebar-listNav">
@@ -104,7 +104,7 @@ Nostrum
     </a>
 
   <span translate="no">Nostrum.Cache.ChannelCache.ETS</span> 
-  <small class="app-vsn" translate="no">(Nostrum v0.7.0)</small>
+  <small class="app-vsn" translate="no">(Nostrum v0.8.0-dev)</small>
 
 </h1>
 
@@ -164,16 +164,6 @@ cache.</p>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#get/1" translate="no">get(id)</a>
-
-      </div>
-
-        <div class="summary-synopsis"><p>Retrieve a channel from the cache by ID.</p></div>
-
-    </div>
-
-    <div class="summary-row">
-      <div class="summary-signature">
         <a href="#init/1" translate="no">init(init_arg)</a>
 
       </div>
@@ -184,11 +174,11 @@ cache.</p>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#lookup/1" translate="no">lookup(id)</a>
+        <a href="#query_handle/0" translate="no">query_handle()</a>
 
       </div>
 
-        <div class="summary-synopsis"><p>Lookup a channel from the cache by ID and if it does not exist try to get from GuildCache with select_by</p></div>
+        <div class="summary-synopsis"><p>Retrieve a query handle for usage with QLC.</p></div>
 
     </div>
 
@@ -245,7 +235,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">child_spec(init_arg)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/channel_cache/ets.ex#L26" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/channel_cache/ets.ex#L24" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -269,7 +259,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">create(channel)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/channel_cache/ets.ex#L59" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/channel_cache/ets.ex#L46" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -299,7 +289,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">delete(id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/channel_cache/ets.ex#L83" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/channel_cache/ets.ex#L71" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -320,38 +310,6 @@ Functions
 <p>Delete the channel from the cache by ID.</p>
   </section>
 </section>
-<section class="detail" id="get/1">
-
-  <div class="detail-header">
-    <a href="#get/1" class="detail-link" title="Link to this function">
-      <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
-    </a>
-    <h1 class="signature" translate="no">get(id)</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/channel_cache/ets.ex#L49" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
-
-
-      <span class="note">(since 0.5.0)</span>
-
-  </div>
-
-  <section class="docstring">
-
-      <div class="specs">
-
-          <pre translate="no"><span class="attribute">@spec</span> get(<a href="Nostrum.Struct.Channel.html#t:id/0">Nostrum.Struct.Channel.id</a>()) ::
-  {:ok, <a href="Nostrum.Struct.Channel.html#t:t/0">Nostrum.Struct.Channel.t</a>()}
-  | {:error, <a href="Nostrum.Cache.ChannelCache.html#t:reason/0">Nostrum.Cache.ChannelCache.reason</a>()}</pre>
-
-      </div>
-
-<p>Retrieve a channel from the cache by ID.</p>
-  </section>
-</section>
 <section class="detail" id="init/1">
 
   <div class="detail-header">
@@ -361,7 +319,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">init(init_arg)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/channel_cache/ets.ex#L35" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/channel_cache/ets.ex#L33" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -376,22 +334,22 @@ Functions
 <p>Set up the cache's ETS table.</p>
   </section>
 </section>
-<section class="detail" id="lookup/1">
+<section class="detail" id="query_handle/0">
 
   <div class="detail-header">
-    <a href="#lookup/1" class="detail-link" title="Link to this function">
+    <a href="#query_handle/0" class="detail-link" title="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">lookup(id)</h1>
+    <h1 class="signature" translate="no">query_handle()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/channel_cache/ets.ex#L97" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/channel_cache/ets.ex#L86" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
 
 
-      <span class="note">(since 0.5.0)</span>
+      <span class="note">(since 0.8.0)</span>
 
   </div>
 
@@ -399,12 +357,11 @@ Functions
 
       <div class="specs">
 
-          <pre translate="no"><span class="attribute">@spec</span> lookup(<a href="Nostrum.Struct.Channel.html#t:id/0">Nostrum.Struct.Channel.id</a>()) ::
-  {:error, :channel_not_found} | {:ok, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()}</pre>
+          <pre translate="no"><span class="attribute">@spec</span> query_handle() :: <a href="https://www.erlang.org/doc/man/qlc.html#type-query_handle">:qlc.query_handle</a>()</pre>
 
       </div>
 
-<p>Lookup a channel from the cache by ID and if it does not exist try to get from GuildCache with select_by</p>
+<p>Retrieve a query handle for usage with QLC.</p>
   </section>
 </section>
 <section class="detail" id="start_link/1">
@@ -416,7 +373,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">start_link(init_arg)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/channel_cache/ets.ex#L29" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/channel_cache/ets.ex#L27" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -440,7 +397,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">table()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/channel_cache/ets.ex#L43" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/channel_cache/ets.ex#L41" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -470,7 +427,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">update(channel)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/channel_cache/ets.ex#L67" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/channel_cache/ets.ex#L55" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -485,7 +442,7 @@ Functions
       <div class="specs">
 
           <pre translate="no"><span class="attribute">@spec</span> update(<a href="Nostrum.Struct.Channel.html#t:t/0">Nostrum.Struct.Channel.t</a>()) ::
-  :noop | {<a href="Nostrum.Struct.Channel.html#t:t/0">Nostrum.Struct.Channel.t</a>(), <a href="Nostrum.Struct.Channel.html#t:t/0">Nostrum.Struct.Channel.t</a>()}</pre>
+  {<a href="Nostrum.Struct.Channel.html#t:t/0">Nostrum.Struct.Channel.t</a>() | nil, <a href="Nostrum.Struct.Channel.html#t:t/0">Nostrum.Struct.Channel.t</a>()}</pre>
 
       </div>
 
@@ -500,11 +457,11 @@ Functions
         <p>
 
             <span class="line">
-              <a href="https://hex.pm/packages/nostrum/0.7.0" class="footer-hex-package">Hex Package</a>
+              <a href="https://hex.pm/packages/nostrum/0.8.0-dev" class="footer-hex-package">Hex Package</a>
 
-              <a href="https://preview.hex.pm/preview/nostrum/0.7.0">Hex Preview</a>
+              <a href="https://preview.hex.pm/preview/nostrum/0.8.0-dev">Hex Preview</a>
 
-                (<a href="https://preview.hex.pm/preview/nostrum/0.7.0/show/lib/nostrum/cache/channel_cache/ets.ex">current file</a>)
+                (<a href="https://preview.hex.pm/preview/nostrum/0.8.0-dev/show/lib/nostrum/cache/channel_cache/ets.ex">current file</a>)
 
             </span>
 

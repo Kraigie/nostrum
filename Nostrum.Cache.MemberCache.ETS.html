@@ -5,15 +5,15 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="ExDoc v0.29.4">
-    <meta name="project" content="Nostrum v0.7.0">
+    <meta name="project" content="Nostrum v0.8.0-dev">
 
-    <title>Nostrum.Cache.MemberCache.ETS — Nostrum v0.7.0</title>
+    <title>Nostrum.Cache.MemberCache.ETS — Nostrum v0.8.0-dev</title>
     <link rel="stylesheet" href="dist/html-elixir-HHVY3JYD.css" />
 
 
     <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
     <script src="dist/handlebars.templates-XWGFFSCD.js"></script>
-    <script src="dist/sidebar_items-6D15D5E9.js"></script>
+    <script src="dist/sidebar_items-AE195700.js"></script>
 
       <script src="docs_config.js"></script>
 
@@ -68,7 +68,7 @@
 Nostrum
       </a>
       <div class="sidebar-projectVersion" translate="no">
-        v0.7.0
+        v0.8.0-dev
       </div>
     </div>
     <ul class="sidebar-listNav">
@@ -104,7 +104,7 @@ Nostrum
     </a>
 
   <span translate="no">Nostrum.Cache.MemberCache.ETS</span> 
-  <small class="app-vsn" translate="no">(Nostrum v0.7.0)</small>
+  <small class="app-vsn" translate="no">(Nostrum v0.8.0-dev)</small>
 
 </h1>
 
@@ -140,21 +140,21 @@ please use the <a href="#table/0"><code class="inline">table/0</code></a> functi
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#by_user/1" translate="no">by_user(user_id)</a>
-
-      </div>
-
-        <div class="summary-synopsis"><p>Get all members for the given user ID.</p></div>
-
-    </div>
-
-    <div class="summary-row">
-      <div class="summary-signature">
         <a href="#child_spec/1" translate="no">child_spec(init_arg)</a>
 
       </div>
 
         <div class="summary-synopsis"><p>Returns a specification to start this module under a supervisor.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#clear/0" translate="no">clear()</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Clear any objects in the cache.</p></div>
 
     </div>
 
@@ -170,31 +170,11 @@ please use the <a href="#table/0"><code class="inline">table/0</code></a> functi
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#delete/2" translate="no">delete(guild_id, user)</a>
+        <a href="#delete/2" translate="no">delete(guild_id, user_id)</a>
 
       </div>
 
         <div class="summary-synopsis"><p>Remove the given member from the given guild in the cache.</p></div>
-
-    </div>
-
-    <div class="summary-row">
-      <div class="summary-signature">
-        <a href="#get/1" translate="no">get(guild_id)</a>
-
-      </div>
-
-        <div class="summary-synopsis"><p>Get all members for a given guild ID.</p></div>
-
-    </div>
-
-    <div class="summary-row">
-      <div class="summary-signature">
-        <a href="#get/2" translate="no">get(guild_id, user_id)</a>
-
-      </div>
-
-        <div class="summary-synopsis"><p>Fetch a single member from the cache.</p></div>
 
     </div>
 
@@ -210,11 +190,11 @@ please use the <a href="#table/0"><code class="inline">table/0</code></a> functi
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#qlc_handle/0" translate="no">qlc_handle()</a>
+        <a href="#query_handle/0" translate="no">query_handle()</a>
 
       </div>
 
-        <div class="summary-synopsis"><p>Get a QLC handle for the entire table.</p></div>
+        <div class="summary-synopsis"><p>Get a QLC query handle for the member cache.</p></div>
 
     </div>
 
@@ -248,6 +228,16 @@ please use the <a href="#table/0"><code class="inline">table/0</code></a> functi
 
     </div>
 
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#wrap_qlc/1" translate="no">wrap_qlc(fun)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Wrap QLC operations.</p></div>
+
+    </div>
+
 </div>
 
   </section>
@@ -271,7 +261,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">bulk_create(guild_id, members)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/member_cache/ets.ex#L145" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/member_cache/ets.ex#L106" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -284,37 +274,6 @@ Functions
   <section class="docstring">
 
 <p>Bulk create a chunk of members for the given guild in the cache.</p>
-  </section>
-</section>
-<section class="detail" id="by_user/1">
-
-  <div class="detail-header">
-    <a href="#by_user/1" class="detail-link" title="Link to this function">
-      <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
-    </a>
-    <h1 class="signature" translate="no">by_user(user_id)</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/member_cache/ets.ex#L71" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
-
-
-      <span class="note">(since 0.7.0)</span>
-
-  </div>
-
-  <section class="docstring">
-
-      <div class="specs">
-
-          <pre translate="no"><span class="attribute">@spec</span> by_user(<a href="Nostrum.Struct.Guild.Member.html#t:user_id/0">Nostrum.Struct.Guild.Member.user_id</a>()) ::
-  <a href="https://hexdocs.pm/elixir/Enumerable.html#t:t/1">Enumerable.t</a>({<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(), <a href="Nostrum.Struct.Guild.Member.html#t:t/0">Nostrum.Struct.Guild.Member.t</a>()})</pre>
-
-      </div>
-
-<p>Get all members for the given user ID.</p><p>The same implementation notes as for <a href="#get/1"><code class="inline">get/1</code></a> apply for this function.</p>
   </section>
 </section>
 <section class="detail" id="child_spec/1">
@@ -341,6 +300,36 @@ Functions
 <p>Returns a specification to start this module under a supervisor.</p><p>See <a href="https://hexdocs.pm/elixir/Supervisor.html"><code class="inline">Supervisor</code></a>.</p>
   </section>
 </section>
+<section class="detail" id="clear/0">
+
+  <div class="detail-header">
+    <a href="#clear/0" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">clear()</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/member_cache/ets.ex#L40" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+      <span class="note">(since 0.8.0)</span>
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> clear() :: :ok</pre>
+
+      </div>
+
+<p>Clear any objects in the cache.</p>
+  </section>
+</section>
 <section class="detail" id="create/2">
 
   <div class="detail-header">
@@ -350,7 +339,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">create(guild_id, payload)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/member_cache/ets.ex#L107" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/member_cache/ets.ex#L68" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -378,9 +367,9 @@ Functions
       <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">delete(guild_id, user)</h1>
+    <h1 class="signature" translate="no">delete(guild_id, user_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/member_cache/ets.ex#L133" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/member_cache/ets.ex#L94" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -394,77 +383,12 @@ Functions
 
       <div class="specs">
 
-          <pre translate="no"><span class="attribute">@spec</span> delete(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()) ::
+          <pre translate="no"><span class="attribute">@spec</span> delete(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(), <a href="Nostrum.Struct.Guild.Member.html#t:user_id/0">Nostrum.Struct.Guild.Member.user_id</a>()) ::
   {<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(), <a href="Nostrum.Struct.Guild.Member.html#t:t/0">Nostrum.Struct.Guild.Member.t</a>()} | :noop</pre>
 
       </div>
 
 <p>Remove the given member from the given guild in the cache.</p>
-  </section>
-</section>
-<section class="detail" id="get/1">
-
-  <div class="detail-header">
-    <a href="#get/1" class="detail-link" title="Link to this function">
-      <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
-    </a>
-    <h1 class="signature" translate="no">get(guild_id)</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/member_cache/ets.ex#L50" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
-
-
-      <span class="note">(since 0.7.0)</span>
-
-  </div>
-
-  <section class="docstring">
-
-      <div class="specs">
-
-          <pre translate="no"><span class="attribute">@spec</span> get(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>()) :: <a href="https://hexdocs.pm/elixir/Enumerable.html#t:t/1">Enumerable.t</a>(<a href="Nostrum.Struct.Guild.Member.html#t:t/0">Nostrum.Struct.Guild.Member.t</a>())</pre>
-
-      </div>
-
-<p>Get all members for a given guild ID.</p><p>Note that this implementation uses <a href="https://www.erlang.org/doc/man/ets.html#safe_fixtable-2"><code class="inline">:ets.safe_fixtable/2</code></a> to ensure safe
-traversal until the returned stream is exhausted or the calling process
-terminates. This also degrades performance for other table operations, and
-prevents table deletions from freeing up memory. It is therefore recommended
-to finish your business quickly.</p>
-  </section>
-</section>
-<section class="detail" id="get/2">
-
-  <div class="detail-header">
-    <a href="#get/2" class="detail-link" title="Link to this function">
-      <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
-    </a>
-    <h1 class="signature" translate="no">get(guild_id, user_id)</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/member_cache/ets.ex#L57" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
-
-
-      <span class="note">(since 0.7.0)</span>
-
-  </div>
-
-  <section class="docstring">
-
-      <div class="specs">
-
-          <pre translate="no"><span class="attribute">@spec</span> get(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(), <a href="Nostrum.Struct.Guild.Member.html#t:user_id/0">Nostrum.Struct.Guild.Member.user_id</a>()) ::
-  {:ok, <a href="Nostrum.Struct.Guild.Member.html#t:t/0">Nostrum.Struct.Guild.Member.t</a>()} | {:error, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">atom</a>()}</pre>
-
-      </div>
-
-<p>Fetch a single member from the cache.</p>
   </section>
 </section>
 <section class="detail" id="init/1">
@@ -491,16 +415,16 @@ to finish your business quickly.</p>
 <p>Set up the cache's ETS table.</p>
   </section>
 </section>
-<section class="detail" id="qlc_handle/0">
+<section class="detail" id="query_handle/0">
 
   <div class="detail-header">
-    <a href="#qlc_handle/0" class="detail-link" title="Link to this function">
+    <a href="#query_handle/0" class="detail-link" title="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">qlc_handle()</h1>
+    <h1 class="signature" translate="no">query_handle()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/member_cache/ets.ex#L155" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/member_cache/ets.ex#L116" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -514,11 +438,11 @@ to finish your business quickly.</p>
 
       <div class="specs">
 
-          <pre translate="no"><span class="attribute">@spec</span> qlc_handle() :: <a href="https://www.erlang.org/doc/man/qlc.html#type-query_handle">:qlc.query_handle</a>()</pre>
+          <pre translate="no"><span class="attribute">@spec</span> query_handle() :: <a href="https://www.erlang.org/doc/man/qlc.html#type-query_handle">:qlc.query_handle</a>()</pre>
 
       </div>
 
-<p>Get a QLC handle for the entire table.</p>
+<p>Get a QLC query handle for the member cache.</p>
   </section>
 </section>
 <section class="detail" id="start_link/1">
@@ -584,7 +508,7 @@ to finish your business quickly.</p>
     </a>
     <h1 class="signature" translate="no">update(guild_id, payload)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/member_cache/ets.ex#L117" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/member_cache/ets.ex#L78" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -607,6 +531,43 @@ to finish your business quickly.</p>
 <p>Update the given member for the given guild in the cache.</p>
   </section>
 </section>
+<section class="detail" id="wrap_qlc/1">
+
+  <div class="detail-header">
+    <a href="#wrap_qlc/1" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">wrap_qlc(fun)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/member_cache/ets.ex#L56" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+      <span class="note">(since 0.8.0)</span>
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> wrap_qlc((() -&gt; qlc_result)) :: qlc_result when qlc_result: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()</pre>
+
+      </div>
+
+<p>Wrap QLC operations.</p><h2 id="wrap_qlc/1-safety" class="note section-heading">
+  <a href="#wrap_qlc/1-safety" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">safety</p>
+  </a>
+  Safety
+</h2>
+<p>Any QLC operations are surrounded by <code class="inline">:ets.safe_fixtable</code>. It is therefore
+recommended to finish your read quickly.</p>
+  </section>
+</section>
 
     </div>
   </section>
@@ -615,11 +576,11 @@ to finish your business quickly.</p>
         <p>
 
             <span class="line">
-              <a href="https://hex.pm/packages/nostrum/0.7.0" class="footer-hex-package">Hex Package</a>
+              <a href="https://hex.pm/packages/nostrum/0.8.0-dev" class="footer-hex-package">Hex Package</a>
 
-              <a href="https://preview.hex.pm/preview/nostrum/0.7.0">Hex Preview</a>
+              <a href="https://preview.hex.pm/preview/nostrum/0.8.0-dev">Hex Preview</a>
 
-                (<a href="https://preview.hex.pm/preview/nostrum/0.7.0/show/lib/nostrum/cache/member_cache/ets.ex">current file</a>)
+                (<a href="https://preview.hex.pm/preview/nostrum/0.8.0-dev/show/lib/nostrum/cache/member_cache/ets.ex">current file</a>)
 
             </span>
 

@@ -5,15 +5,15 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="ExDoc v0.29.4">
-    <meta name="project" content="Nostrum v0.7.0">
+    <meta name="project" content="Nostrum v0.8.0-dev">
 
-    <title>API Reference — Nostrum v0.7.0</title>
+    <title>API Reference — Nostrum v0.8.0-dev</title>
     <link rel="stylesheet" href="dist/html-elixir-HHVY3JYD.css" />
 
 
     <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
     <script src="dist/handlebars.templates-XWGFFSCD.js"></script>
-    <script src="dist/sidebar_items-6D15D5E9.js"></script>
+    <script src="dist/sidebar_items-AE195700.js"></script>
 
       <script src="docs_config.js"></script>
 
@@ -68,7 +68,7 @@
 Nostrum
       </a>
       <div class="sidebar-projectVersion" translate="no">
-        v0.7.0
+        v0.8.0-dev
       </div>
     </div>
     <ul class="sidebar-listNav">
@@ -99,7 +99,7 @@ Nostrum
 
 
 
-  <span>API Reference <small class="app-vsn">Nostrum v0.7.0</small></span>
+  <span>API Reference <small class="app-vsn">Nostrum v0.8.0-dev</small></span>
 </h1>
 
 
@@ -146,7 +146,7 @@ Only to be used when starting in a rest-only manner.</p></div>
 
   </div>
 
-    <div class="summary-synopsis"><p>Cache behaviour &amp; dispatcher for channels outside of guilds.</p></div>
+    <div class="summary-synopsis"><p>Cache behaviour &amp; dispatcher for direct message channels.</p></div>
 
 </div>
 <div class="summary-row">
@@ -156,6 +156,15 @@ Only to be used when starting in a rest-only manner.</p></div>
   </div>
 
     <div class="summary-synopsis"><p>An ETS-based cache for channels outside of guilds.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Nostrum.Cache.ChannelCache.Mnesia.html" translate="no">Nostrum.Cache.ChannelCache.Mnesia</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>An Mnesia-based cache for channels outside of guilds.</p></div>
 
 </div>
 <div class="summary-row">
@@ -178,6 +187,15 @@ Only to be used when starting in a rest-only manner.</p></div>
 </div>
 <div class="summary-row">
   <div class="summary-signature">
+    <a href="Nostrum.Cache.ChannelGuildMapping.Mnesia.html" translate="no">Nostrum.Cache.ChannelGuildMapping.Mnesia</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>An Mnesia-based mapping between channel and guild IDs.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
     <a href="Nostrum.Cache.GuildCache.html" translate="no">Nostrum.Cache.GuildCache</a>
 
   </div>
@@ -192,6 +210,15 @@ Only to be used when starting in a rest-only manner.</p></div>
   </div>
 
     <div class="summary-synopsis"><p>An ETS-based cache for guilds.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Nostrum.Cache.GuildCache.Mnesia.html" translate="no">Nostrum.Cache.GuildCache.Mnesia</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>An Mnesia-based cache for guilds.</p></div>
 
 </div>
 <div class="summary-row">
@@ -232,6 +259,15 @@ Only to be used when starting in a rest-only manner.</p></div>
 </div>
 <div class="summary-row">
   <div class="summary-signature">
+    <a href="Nostrum.Cache.MemberCache.Mnesia.html" translate="no">Nostrum.Cache.MemberCache.Mnesia</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>An Mnesia-based cache for guild members.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
     <a href="Nostrum.Cache.PresenceCache.html" translate="no">Nostrum.Cache.PresenceCache</a>
 
   </div>
@@ -246,6 +282,15 @@ Only to be used when starting in a rest-only manner.</p></div>
   </div>
 
     <div class="summary-synopsis"><p>ETS-based cache for user presences.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Nostrum.Cache.PresenceCache.Mnesia.html" translate="no">Nostrum.Cache.PresenceCache.Mnesia</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>An Mnesia-based cache for presences.</p></div>
 
 </div>
 <div class="summary-row">
@@ -273,6 +318,15 @@ Only to be used when starting in a rest-only manner.</p></div>
   </div>
 
     <div class="summary-synopsis"><p>An ETS-based cache for users.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Nostrum.Cache.UserCache.Mnesia.html" translate="no">Nostrum.Cache.UserCache.Mnesia</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>An Mnesia-based cache for users.</p></div>
 
 </div>
 <div class="summary-row">
@@ -453,7 +507,16 @@ For more info please refer to <a href="https://discord.com/developers/docs/resou
 
   </div>
 
-    <div class="summary-synopsis"><p>Stores a mapping of guild IDs to their shard numbers using <code class="inline">:ets</code>.</p></div>
+    <div class="summary-synopsis"><p>Maintains a mapping of guild IDs to their shard numbers using <code class="inline">:ets</code>.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Nostrum.Store.GuildShardMapping.Mnesia.html" translate="no">Nostrum.Store.GuildShardMapping.Mnesia</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Maintains a mapping of guild IDs to their shard numbers using Mnesia.</p></div>
 
 </div>
 <div class="summary-row">
@@ -472,6 +535,15 @@ For more info please refer to <a href="https://discord.com/developers/docs/resou
   </div>
 
     <div class="summary-synopsis"><p>Stores ratelimit buckets via <code class="inline">:ets</code>.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Nostrum.Store.RatelimitBucket.Mnesia.html" translate="no">Nostrum.Store.RatelimitBucket.Mnesia</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Stores ratelimit buckets using Mnesia.</p></div>
 
 </div>
 <div class="summary-row">
@@ -499,6 +571,15 @@ For more info please refer to <a href="https://discord.com/developers/docs/resou
   </div>
 
     <div class="summary-synopsis"><p>Stores guilds that are currently unavailable using <code class="inline">:ets</code>.</p></div>
+
+</div>
+<div class="summary-row">
+  <div class="summary-signature">
+    <a href="Nostrum.Store.UnavailableGuild.Mnesia.html" translate="no">Nostrum.Store.UnavailableGuild.Mnesia</a>
+
+  </div>
+
+    <div class="summary-synopsis"><p>Keeps track of unavailable guilds.</p></div>
 
 </div>
 <div class="summary-row">
@@ -1306,9 +1387,9 @@ Intro
         <p>
 
             <span class="line">
-              <a href="https://hex.pm/packages/nostrum/0.7.0" class="footer-hex-package">Hex Package</a>
+              <a href="https://hex.pm/packages/nostrum/0.8.0-dev" class="footer-hex-package">Hex Package</a>
 
-              <a href="https://preview.hex.pm/preview/nostrum/0.7.0">Hex Preview</a>
+              <a href="https://preview.hex.pm/preview/nostrum/0.8.0-dev">Hex Preview</a>
 
             </span>
 

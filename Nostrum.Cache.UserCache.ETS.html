@@ -5,15 +5,15 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="ExDoc v0.29.4">
-    <meta name="project" content="Nostrum v0.7.0">
+    <meta name="project" content="Nostrum v0.8.0-dev">
 
-    <title>Nostrum.Cache.UserCache.ETS — Nostrum v0.7.0</title>
+    <title>Nostrum.Cache.UserCache.ETS — Nostrum v0.8.0-dev</title>
     <link rel="stylesheet" href="dist/html-elixir-HHVY3JYD.css" />
 
 
     <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
     <script src="dist/handlebars.templates-XWGFFSCD.js"></script>
-    <script src="dist/sidebar_items-6D15D5E9.js"></script>
+    <script src="dist/sidebar_items-AE195700.js"></script>
 
       <script src="docs_config.js"></script>
 
@@ -68,7 +68,7 @@
 Nostrum
       </a>
       <div class="sidebar-projectVersion" translate="no">
-        v0.7.0
+        v0.8.0-dev
       </div>
     </div>
     <ul class="sidebar-listNav">
@@ -104,7 +104,7 @@ Nostrum
     </a>
 
   <span translate="no">Nostrum.Cache.UserCache.ETS</span> 
-  <small class="app-vsn" translate="no">(Nostrum v0.7.0)</small>
+  <small class="app-vsn" translate="no">(Nostrum v0.8.0-dev)</small>
 
 </h1>
 
@@ -150,21 +150,11 @@ please use the <a href="#table/0"><code class="inline">table/0</code></a> functi
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#create/1" translate="no">create(user)</a>
+        <a href="#create/1" translate="no">create(payload)</a>
 
       </div>
 
         <div class="summary-synopsis"><p>Create a user from upstream data.</p></div>
-
-    </div>
-
-    <div class="summary-row">
-      <div class="summary-signature">
-        <a href="#get/1" translate="no">get(id)</a>
-
-      </div>
-
-        <div class="summary-synopsis"><p>Get a user by ID.</p></div>
 
     </div>
 
@@ -180,11 +170,11 @@ please use the <a href="#table/0"><code class="inline">table/0</code></a> functi
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#qlc_handle/0" translate="no">qlc_handle()</a>
+        <a href="#query_handle/0" translate="no">query_handle()</a>
 
       </div>
 
-        <div class="summary-synopsis"><p>Get a QLC handle for the backing table.</p></div>
+        <div class="summary-synopsis"><p>Get a QLC query handle for the user cache.</p></div>
 
     </div>
 
@@ -293,7 +283,7 @@ Functions
       <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">create(user)</h1>
+    <h1 class="signature" translate="no">create(payload)</h1>
 
       <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/user_cache/ets.ex#L44" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
@@ -314,37 +304,6 @@ Functions
       </div>
 
 <p>Create a user from upstream data.</p>
-  </section>
-</section>
-<section class="detail" id="get/1">
-
-  <div class="detail-header">
-    <a href="#get/1" class="detail-link" title="Link to this function">
-      <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
-    </a>
-    <h1 class="signature" translate="no">get(id)</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/user_cache/ets.ex#L73" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
-
-
-      <span class="note">(since 0.5.0)</span>
-
-  </div>
-
-  <section class="docstring">
-
-      <div class="specs">
-
-          <pre translate="no"><span class="attribute">@spec</span> get(<a href="Nostrum.Struct.User.html#t:id/0">Nostrum.Struct.User.id</a>()) ::
-  {:ok, <a href="Nostrum.Struct.User.html#t:t/0">Nostrum.Struct.User.t</a>()} | {:error, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">atom</a>()}</pre>
-
-      </div>
-
-<p>Get a user by ID.</p>
   </section>
 </section>
 <section class="detail" id="init/1">
@@ -371,16 +330,16 @@ Functions
 <p>Set up the ETS table.</p>
   </section>
 </section>
-<section class="detail" id="qlc_handle/0">
+<section class="detail" id="query_handle/0">
 
   <div class="detail-header">
-    <a href="#qlc_handle/0" class="detail-link" title="Link to this function">
+    <a href="#query_handle/0" class="detail-link" title="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">qlc_handle()</h1>
+    <h1 class="signature" translate="no">query_handle()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/user_cache/ets.ex#L66" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/user_cache/ets.ex#L103" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -394,11 +353,11 @@ Functions
 
       <div class="specs">
 
-          <pre translate="no"><span class="attribute">@spec</span> qlc_handle() :: <a href="https://www.erlang.org/doc/man/qlc.html#type-query_handle">:qlc.query_handle</a>()</pre>
+          <pre translate="no"><span class="attribute">@spec</span> query_handle() :: <a href="https://www.erlang.org/doc/man/qlc.html#type-query_handle">:qlc.query_handle</a>()</pre>
 
       </div>
 
-<p>Get a QLC handle for the backing table.</p>
+<p>Get a QLC query handle for the user cache.</p>
   </section>
 </section>
 <section class="detail" id="start_link/1">
@@ -464,7 +423,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">update(info)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/user_cache/ets.ex#L83" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/user_cache/ets.ex#L53" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -478,7 +437,7 @@ Functions
 
       <div class="specs">
 
-          <pre translate="no"><span class="attribute">@spec</span> update(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()) :: {<a href="Nostrum.Struct.User.html#t:t/0">Nostrum.Struct.User.t</a>(), <a href="Nostrum.Struct.User.html#t:t/0">Nostrum.Struct.User.t</a>()} | :noop</pre>
+          <pre translate="no"><span class="attribute">@spec</span> update(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()) :: {<a href="Nostrum.Struct.User.html#t:t/0">Nostrum.Struct.User.t</a>() | nil, <a href="Nostrum.Struct.User.html#t:t/0">Nostrum.Struct.User.t</a>()}</pre>
 
       </div>
 
@@ -493,11 +452,11 @@ Functions
         <p>
 
             <span class="line">
-              <a href="https://hex.pm/packages/nostrum/0.7.0" class="footer-hex-package">Hex Package</a>
+              <a href="https://hex.pm/packages/nostrum/0.8.0-dev" class="footer-hex-package">Hex Package</a>
 
-              <a href="https://preview.hex.pm/preview/nostrum/0.7.0">Hex Preview</a>
+              <a href="https://preview.hex.pm/preview/nostrum/0.8.0-dev">Hex Preview</a>
 
-                (<a href="https://preview.hex.pm/preview/nostrum/0.7.0/show/lib/nostrum/cache/user_cache/ets.ex">current file</a>)
+                (<a href="https://preview.hex.pm/preview/nostrum/0.8.0-dev/show/lib/nostrum/cache/user_cache/ets.ex">current file</a>)
 
             </span>
 

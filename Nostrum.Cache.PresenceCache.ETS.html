@@ -5,15 +5,15 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="ExDoc v0.29.4">
-    <meta name="project" content="Nostrum v0.7.0">
+    <meta name="project" content="Nostrum v0.8.0-dev">
 
-    <title>Nostrum.Cache.PresenceCache.ETS — Nostrum v0.7.0</title>
+    <title>Nostrum.Cache.PresenceCache.ETS — Nostrum v0.8.0-dev</title>
     <link rel="stylesheet" href="dist/html-elixir-HHVY3JYD.css" />
 
 
     <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
     <script src="dist/handlebars.templates-XWGFFSCD.js"></script>
-    <script src="dist/sidebar_items-6D15D5E9.js"></script>
+    <script src="dist/sidebar_items-AE195700.js"></script>
 
       <script src="docs_config.js"></script>
 
@@ -68,7 +68,7 @@
 Nostrum
       </a>
       <div class="sidebar-projectVersion" translate="no">
-        v0.7.0
+        v0.8.0-dev
       </div>
     </div>
     <ul class="sidebar-listNav">
@@ -104,7 +104,7 @@ Nostrum
     </a>
 
   <span translate="no">Nostrum.Cache.PresenceCache.ETS</span> 
-  <small class="app-vsn" translate="no">(Nostrum v0.7.0)</small>
+  <small class="app-vsn" translate="no">(Nostrum v0.8.0-dev)</small>
 
 </h1>
 
@@ -160,21 +160,21 @@ please use the <a href="#table/0"><code class="inline">table/0</code></a> functi
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#get/2" translate="no">get(user_id, guild_id)</a>
-
-      </div>
-
-        <div class="summary-synopsis"><p>Retrieves a presence for a user from the cache by guild and id.</p></div>
-
-    </div>
-
-    <div class="summary-row">
-      <div class="summary-signature">
         <a href="#init/1" translate="no">init(init_arg)</a>
 
       </div>
 
         <div class="summary-synopsis"><p>Set up the cache's ETS table.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#query_handle/0" translate="no">query_handle()</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Retrieve a query handle for QLC queries.</p></div>
 
     </div>
 
@@ -200,7 +200,7 @@ please use the <a href="#table/0"><code class="inline">table/0</code></a> functi
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#update/1" translate="no">update(presence)</a>
+        <a href="#update/1" translate="no">update(new)</a>
 
       </div>
 
@@ -231,7 +231,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">bulk_create(guild_id, presences)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache/ets.ex#L75" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache/ets.ex#L67" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -261,7 +261,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">child_spec(init_arg)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache/ets.ex#L16" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache/ets.ex#L17" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -285,7 +285,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">create(presence)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache/ets.ex#L48" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache/ets.ex#L39" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -306,37 +306,6 @@ Functions
 <p>Add the given presence data to the cache.</p>
   </section>
 </section>
-<section class="detail" id="get/2">
-
-  <div class="detail-header">
-    <a href="#get/2" class="detail-link" title="Link to this function">
-      <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
-    </a>
-    <h1 class="signature" translate="no">get(user_id, guild_id)</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache/ets.ex#L38" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
-
-
-      <span class="note">(since 0.5.0)</span>
-
-  </div>
-
-  <section class="docstring">
-
-      <div class="specs">
-
-          <pre translate="no"><span class="attribute">@spec</span> get(<a href="Nostrum.Struct.User.html#t:id/0">Nostrum.Struct.User.id</a>(), <a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>()) ::
-  {:error, :presence_not_found} | {:ok, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()}</pre>
-
-      </div>
-
-<p>Retrieves a presence for a user from the cache by guild and id.</p>
-  </section>
-</section>
 <section class="detail" id="init/1">
 
   <div class="detail-header">
@@ -346,7 +315,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">init(init_arg)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache/ets.ex#L30" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache/ets.ex#L31" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -361,6 +330,36 @@ Functions
 <p>Set up the cache's ETS table.</p>
   </section>
 </section>
+<section class="detail" id="query_handle/0">
+
+  <div class="detail-header">
+    <a href="#query_handle/0" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">query_handle()</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache/ets.ex#L79" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+      <span class="note">(since 0.8.0)</span>
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> query_handle() :: <a href="https://www.erlang.org/doc/man/qlc.html#type-query_handle">:qlc.query_handle</a>()</pre>
+
+      </div>
+
+<p>Retrieve a query handle for QLC queries.</p>
+  </section>
+</section>
 <section class="detail" id="start_link/1">
 
   <div class="detail-header">
@@ -370,7 +369,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">start_link(init_arg)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache/ets.ex#L19" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache/ets.ex#L20" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -394,7 +393,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">table()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache/ets.ex#L26" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache/ets.ex#L27" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -422,9 +421,9 @@ Functions
       <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">update(presence)</h1>
+    <h1 class="signature" translate="no">update(new)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache/ets.ex#L56" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache/ets.ex#L48" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -438,7 +437,8 @@ Functions
 
       <div class="specs">
 
-          <pre translate="no"><span class="attribute">@spec</span> update(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()) :: {<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(), nil | <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()} | :noop</pre>
+          <pre translate="no"><span class="attribute">@spec</span> update(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()) :: {<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(), presence | nil, presence} | :noop
+when presence: <a href="Nostrum.Cache.PresenceCache.html#t:presence/0">Nostrum.Cache.PresenceCache.presence</a>()</pre>
 
       </div>
 
@@ -453,11 +453,11 @@ Functions
         <p>
 
             <span class="line">
-              <a href="https://hex.pm/packages/nostrum/0.7.0" class="footer-hex-package">Hex Package</a>
+              <a href="https://hex.pm/packages/nostrum/0.8.0-dev" class="footer-hex-package">Hex Package</a>
 
-              <a href="https://preview.hex.pm/preview/nostrum/0.7.0">Hex Preview</a>
+              <a href="https://preview.hex.pm/preview/nostrum/0.8.0-dev">Hex Preview</a>
 
-                (<a href="https://preview.hex.pm/preview/nostrum/0.7.0/show/lib/nostrum/cache/presence_cache/ets.ex">current file</a>)
+                (<a href="https://preview.hex.pm/preview/nostrum/0.8.0-dev/show/lib/nostrum/cache/presence_cache/ets.ex">current file</a>)
 
             </span>
 

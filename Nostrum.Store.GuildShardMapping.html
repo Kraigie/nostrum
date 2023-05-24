@@ -5,15 +5,15 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="ExDoc v0.29.4">
-    <meta name="project" content="Nostrum v0.7.0">
+    <meta name="project" content="Nostrum v0.8.0-dev">
 
-    <title>Nostrum.Store.GuildShardMapping — Nostrum v0.7.0</title>
+    <title>Nostrum.Store.GuildShardMapping — Nostrum v0.8.0-dev</title>
     <link rel="stylesheet" href="dist/html-elixir-HHVY3JYD.css" />
 
 
     <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
     <script src="dist/handlebars.templates-XWGFFSCD.js"></script>
-    <script src="dist/sidebar_items-6D15D5E9.js"></script>
+    <script src="dist/sidebar_items-AE195700.js"></script>
 
       <script src="docs_config.js"></script>
 
@@ -68,7 +68,7 @@
 Nostrum
       </a>
       <div class="sidebar-projectVersion" translate="no">
-        v0.7.0
+        v0.8.0-dev
       </div>
     </div>
     <ul class="sidebar-listNav">
@@ -104,7 +104,7 @@ Nostrum
     </a>
 
   <span translate="no">Nostrum.Store.GuildShardMapping</span> <small>behaviour</small>
-  <small class="app-vsn" translate="no">(Nostrum v0.7.0)</small>
+  <small class="app-vsn" translate="no">(Nostrum v0.8.0-dev)</small>
 
 </h1>
 
@@ -128,16 +128,9 @@ unlikely you need to use this module directly yourself.</p><h2 id="module-config
 <p>By default, nostrum will use <a href="Nostrum.Store.GuildShardMapping.ETS.html"><code class="inline">Elixir.Nostrum.Store.GuildShardMapping.ETS</code></a> to store the
 mapping. To override this, set the <code class="inline">[:stores, :guild_shard_mapping]</code> setting
 on nostrum's application configuration:</p><pre><code class="makeup elixir" translate="no"><span class="n">config</span><span class="w"> </span><span class="ss">:nostrum</span><span class="p">,</span><span class="w">
-  </span><span class="ss">stores</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="7343562211-1">%{</span><span class="w">
+  </span><span class="ss">stores</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="9466807624-1">%{</span><span class="w">
     </span><span class="ss">guild_shard_mapping</span><span class="p">:</span><span class="w"> </span><span class="nc">MyBot.Nostrum.Store.GuildShardMapping</span><span class="w">
-  </span><span class="p" data-group-id="7343562211-1">}</span></code></pre><p>This setting must be set at compile time.</p><h2 id="module-see-also" class="section-heading">
-  <a href="#module-see-also" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
-  <p class="sr-only">see-also</p>
-  </a>
-  See also
-</h2>
-<p>The module <code class="inline">Nostrum.Registry.Shard</code> associates shard numbers with their
-respective shard session processes.</p>
+  </span><span class="p" data-group-id="9466807624-1">}</span></code></pre><p>This setting must be set at compile time.</p>
   </section>
 
 
@@ -253,7 +246,7 @@ Callbacks
     </a>
     <h1 class="signature" translate="no">child_spec(term)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/store/guild_shard_mapping.ex#L81" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/store/guild_shard_mapping.ex#L76" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -283,7 +276,7 @@ Callbacks
     </a>
     <h1 class="signature" translate="no">create(id, shard_num)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/store/guild_shard_mapping.ex#L64" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/store/guild_shard_mapping.ex#L59" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -297,7 +290,7 @@ Callbacks
 
       <div class="specs">
 
-          <pre translate="no"><span class="attribute">@callback</span> create(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(), <a href="Nostrum.Struct.WSState.html#t:shard_num/0">Nostrum.Struct.WSState.shard_num</a>()) :: true</pre>
+          <pre translate="no"><span class="attribute">@callback</span> create(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(), <a href="Nostrum.Struct.WSState.html#t:shard_num/0">Nostrum.Struct.WSState.shard_num</a>()) :: :ok</pre>
 
       </div>
 
@@ -313,7 +306,7 @@ Callbacks
     </a>
     <h1 class="signature" translate="no">delete(id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/store/guild_shard_mapping.ex#L69" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/store/guild_shard_mapping.ex#L64" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -327,7 +320,7 @@ Callbacks
 
       <div class="specs">
 
-          <pre translate="no"><span class="attribute">@callback</span> delete(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>()) :: true</pre>
+          <pre translate="no"><span class="attribute">@callback</span> delete(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>()) :: :ok</pre>
 
       </div>
 
@@ -343,7 +336,7 @@ Callbacks
     </a>
     <h1 class="signature" translate="no">get(id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/store/guild_shard_mapping.ex#L76" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/store/guild_shard_mapping.ex#L71" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -386,7 +379,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">create(guild_id, shard_num)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/store/guild_shard_mapping.ex#L83" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/store/guild_shard_mapping.ex#L78" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -410,7 +403,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">delete(guild_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/store/guild_shard_mapping.ex#L84" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/store/guild_shard_mapping.ex#L79" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -434,7 +427,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">get(guild_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/store/guild_shard_mapping.ex#L85" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/store/guild_shard_mapping.ex#L80" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -457,11 +450,11 @@ Functions
         <p>
 
             <span class="line">
-              <a href="https://hex.pm/packages/nostrum/0.7.0" class="footer-hex-package">Hex Package</a>
+              <a href="https://hex.pm/packages/nostrum/0.8.0-dev" class="footer-hex-package">Hex Package</a>
 
-              <a href="https://preview.hex.pm/preview/nostrum/0.7.0">Hex Preview</a>
+              <a href="https://preview.hex.pm/preview/nostrum/0.8.0-dev">Hex Preview</a>
 
-                (<a href="https://preview.hex.pm/preview/nostrum/0.7.0/show/lib/nostrum/store/guild_shard_mapping.ex">current file</a>)
+                (<a href="https://preview.hex.pm/preview/nostrum/0.8.0-dev/show/lib/nostrum/store/guild_shard_mapping.ex">current file</a>)
 
             </span>
 
