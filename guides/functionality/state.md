@@ -19,27 +19,30 @@ caching](../advanced/pluggable_caching.md) documentation.
 
 ## Query list comprehensions
 
-The caches makes extensive use of Erlang's excellent
-[qlc](https://www.erlang.org/doc/man/qlc.html) module. By [implementing a QLC
+nostrum's built-in functions to query the cache should be sufficient to cover
+common use cases. If you need more involved queries, it is recommended to use
+nostrum's [qlc](https://www.erlang.org/doc/man/qlc.html) support.
+
+As an example, Nosedrum has a function to find a guild member by username and
+discriminator. This is internally with the following query:
+
+```erl
+find_by(RequestedGuildId, Name, Discriminator, MemberCache, UserCache) ->
+    qlc:q([Member || {{GuildId, MemberId}, Member} <- MemberCache:query_handle(),
+                     GuildId =:= RequestedGuildId,
+                     {UserId, User} <- UserCache:query_handle(),
+                     MemberId =:= UserId,
+                     map_get(username, User)  =:= Name,
+                     map_get(discriminator, User) =:= Discriminator]).
+```
+
+By [implementing a QLC
 table](https://www.erlang.org/doc/man/qlc.html#implementing_a_qlc_table), all
 read operations from nostrum will be performed over your QLC table
 implementation alone, and nostrum's dispatcher modules can easily be expanded
 for more queries in the future. If you've never heard of QLC before, the
 [`beam-lazy` repository](https://github.com/savonarola/beam-lazy) contains a
 good introduction.
-
-As an example, `Nostrum.Cache.MemberCache.fold_with_users/3` performs a join
-between the member and the user cache without the caches knowing their exact API
-(outside of the tuples yielded from the query handle). This is implemented via
-the following QLC query:
-
-```erl
-get_with_users(RequestedGuildId, MemberCache, UserCache) ->
-    qlc:q([{Member, User} || {{GuildId, MemberId}, Member} <- MemberCache:query_handle(),
-                          GuildId =:= RequestedGuildId,
-                          {UserId, User} <- UserCache:query_handle(),
-                          MemberId =:= UserId]).
-```
 
 Using QLC bring a plethora of benefits. Implementation of a QLC table is
 relatively simple, and gives us compile-time query optimization and compilation
@@ -56,6 +59,13 @@ write your QLC queries in Erlang modules: in Mix projects this can be achieved
 easily via the `src/` directory. Read the [QLC module
 documentation](https://www.erlang.org/doc/man/qlc.html) for more details on the
 optimizations done.
+
+The reason why QLC is being used as opposed to the Elixir-traditional stream API
+is that the stream API does not support a number of features we are using here.
+Apart from that, nostrum's previous API (`select` and friends) gave users a
+false impression that nostrum was doing an efficient iteration under the hood,
+which caused issues for large bots.
+
 
 
 ## Internal state
