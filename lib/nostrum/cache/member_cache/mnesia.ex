@@ -4,8 +4,8 @@ if Code.ensure_loaded?(:mnesia) do
     An Mnesia-based cache for guild members.
 
     Please note that this module is only compiled if Mnesia is available on
-    your system. See the Mnesia section of the [State](State.md) documentation
-    for more information.
+    your system. See the Mnesia section of the [State](functionality/state.md)
+    documentation for more information.
 
     To retrieve the table name used by this cache, use `table/0`.
     """

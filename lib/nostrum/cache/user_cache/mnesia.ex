@@ -3,11 +3,7 @@ if Code.ensure_loaded?(:mnesia) do
     @moduledoc """
     An Mnesia-based cache for users.
 
-    Please note that this module is only compiled if Mnesia is available on
-    your system. See the Mnesia section of the [State](State.md) documentation
-    for more information.
-
-    To retrieve the table name used by this cache, use `table/0`.
+    #{Nostrum.Cache.Base.mnesia_note()}
     """
     @moduledoc since: "0.8.0"
 

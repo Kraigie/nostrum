@@ -40,6 +40,12 @@ defmodule Nostrum.Mixfile do
       extras: extras(),
       groups_for_modules: groups_for_modules(),
       groups_for_functions: groups_for_functions(),
+      groups_for_extras: [
+        Introduction: ~r"/introduction/",
+        Functionality: ~r"/functionality/",
+        Configuration: ~r"/configuration/",
+        Advanced: ~r"/advanced/"
+      ],
       source_ref: "master",
       assets: "guides/assets",
       nest_modules_by_prefix: [
@@ -63,14 +69,15 @@ defmodule Nostrum.Mixfile do
 
   def extras do
     [
-      "guides/Intro.md",
-      "guides/API.md",
-      "guides/Application Commands.md",
-      "guides/State.md",
-      "guides/Events.md",
-      "guides/Voice.md",
-      "guides/Gateway Intents.md",
-      "guides/multi_node.md"
+      "guides/intro/intro.md",
+      "guides/intro/api.md",
+      "guides/intro/application_commands.md",
+      "guides/intro/gateway_intents.md",
+      "guides/functionality/state.md",
+      "guides/functionality/event_handling.md",
+      "guides/functionality/voice.md",
+      "guides/advanced/multi_node.md",
+      "guides/advanced/pluggable_caching.md"
     ]
   end
 
@@ -82,7 +89,7 @@ defmodule Nostrum.Mixfile do
         ~r/Nostrum.(Permission|Voice)/
       ],
       Cache: [
-        ~r/Nostrum.Cache/
+        ~r/Nostrum.Cache.\w+$/
       ],
       Structs: [
         ~r/Nostrum.Struct/
@@ -94,7 +101,14 @@ defmodule Nostrum.Mixfile do
         ~r/Nostrum.(Snowflake|Token|Util)/
       ],
       Stores: [
-        ~r/Nostrum.Store/
+        ~r/Nostrum.Store.\w+$/
+      ],
+      "Pluggable caches & stores": [
+        ~r/Nostrum.Cache.\w+.\w+$/,
+        ~r/Nostrum.Store.\w+.\w+$/
+      ],
+      "Internal modules": [
+        ~r/Nostrum.Shard/
       ]
     ]
   end
@@ -112,6 +126,15 @@ defmodule Nostrum.Mixfile do
     [
       name: :nostrum,
       licenses: ["MIT"],
+      files: [
+        "examples",
+        "lib",
+        ".formatter.exs",
+        "mix.exs",
+        "README*",
+        "LICENSE*",
+        "src"
+      ],
       maintainers: ["Craig Dazey", "Johannes Christ", "Joe Banks"],
       links: %{
         "GitHub" => "https://github.com/Kraigie/nostrum/",

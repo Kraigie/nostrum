@@ -1,4 +1,8 @@
-## Voice Channels
+# Voice
+
+
+## Voice channels
+
 Discord voice channels allow audio data to be sent to the voice servers over UDP.
 A bot is able to connect to up to one voice channel per guild. One websocket
 connection will be opened and maintained for each voice channel the bot joins.
@@ -6,7 +10,9 @@ The websocket connection should reconnect automatically the same way that the
 main Discord gateway websocket connections do. For available voice functions and
 usage see the `Nostrum.Voice` module.
 
+
 ## FFmpeg
+
 Nostrum uses the powerful [ffmpeg](https://ffmpeg.org/) command line utility to
 encode any audio (or video) file for sending to Discord's voice servers.
 By default Nostrum will look for the executable `ffmpeg` in the system path.
@@ -19,7 +25,9 @@ of file on a remote server - [ffmpeg supports a ton of protocols](https://www.ff
 the most common of which are probably `http` or simply reading a file from the filesystem.
 It is also possible to send raw opus frames, bypassing ffmpeg, if desired.
 
+
 ## youtube-dl
+
 With only `ffmpeg` installed, Nostrum supports playing audio/video files or raw, piped
 data as discussed in the section above. Nostrum also has support for `youtube-dl`, another
 powerful command line utility for downloading audio/video from online video services.
@@ -30,7 +38,9 @@ executable is elsewhere, the path may be configured via `config :nostrum, :youtu
 When `Nostrum.Voice.play/4` is called with `:ytdl` for the `type` parameter, `youtube-dl` will be
 run with options `-f bestaudio -q -o -`, which will attempt to download the audio at the given url and pipe it to `ffmpeg`.
 
+
 ## streamlink
+
 Nostrum also has support for `streamlink`, yet another powerful command line utility 
 for downloading live streams from online video streaming services.
 By default Nostrum will look for the executable `streamlink` in the system path. 
@@ -49,7 +59,9 @@ you can attempt to get this URL by running the following:
 raw_url = raw_url |> String.trim()
 ```
 
+
 ## Audio Timeout
+
 Upon invoking `Nostrum.Voice.play/4`, the player process has a large configurable initial window
 (`20_000` milliseconds by default) that it must generate audio within before timing out. This is done to allow
 ample time for slow networks to download large audio/video files. This configurable timeout only applies to when
@@ -67,7 +79,9 @@ If your use case involves playing large files at a timestamp several hours in li
 as downloading a large youtube video and having `ffmpeg` seek through several hours
 of audio may take 15-20 seconds, even with a fast network connection.
 
+
 ## Audio Frames Per Burst
+
 The value `:audio_frames_per_burst` represents the number of consecutive packets to send before resting.
 When using `Nostrum.Voice.play/4` to play audio, Nostrum collects a number of opus frames from the 
 audio input source before sending them all to Discord as a "burst" of ordered frames. 
@@ -83,7 +97,9 @@ means that each opus frame from your audio source will be taken individually and
 player process sleeping between each; you likely won't notice a difference in audio playback quality compared to the 
 default value of `10` other than that your sub-200ms audio files will play as expected.
 
+
 ## Voice Events
+
 There are a few voice related events that bots can consume with a `Nostrum.Consumer` process:
   - `t:Nostrum.Consumer.voice_state_update/0`
   - `t:Nostrum.Consumer.voice_server_update/0`

@@ -2,19 +2,42 @@ defmodule Nostrum.Consumer do
   @moduledoc """
   Consumer process for gateway event handling.
 
-  # Consuming Gateway Events
+  ## Consuming gateway events
 
-  Events are first ingested by Nostrum's cache. Afterwards, they are sent to
+  Events are first ingested by nostrum's cache. Afterwards, they are sent to
   any subscribed consumers via `Nostrum.ConsumerGroup`.
 
   By default, nostrum will start a process for each event. This gives us free
   parallelism and isolation. You therefore do not need to start more than one
-  consumer in your supervision tree.
+  consumer in your supervision tree. If you want to override this behaviour,
+  implement the `handle_info/2` function in your consumer. For reference, this
+  is the default implementation:
 
-  ## Example
-  An example consumer can be found
-  [here](https://github.com/Kraigie/nostrum/blob/master/examples/event_consumer.ex).
+  ```elixir
+    def handle_info({:event, event}, state) do
+      Task.start_link(fn ->
+        __MODULE__.handle_event(event)
+      end)
+
+      {:noreply, state}
+    end
+  ``` 
+
+  ## Example consumer
+
+  An example consumer could look as follows:
+
+  ```elixir
+  # Sourced from examples/event_consumer.ex
+  #{File.read!("examples/event_consumer.ex")}
+  ```
+
+  nostrum's `use Nostrum.Consumer` will do the bulk of the work of process
+  setup. **Note that every process that is subscribed receives every event**:
+  it is therefore not recommended to create multiple consumers if a single one
+  could accomplish the job.
   """
+  @external_resource "examples/event_consumer.ex"
 
   alias Nostrum.ConsumerGroup
 

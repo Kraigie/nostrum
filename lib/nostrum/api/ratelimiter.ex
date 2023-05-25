@@ -1,7 +1,31 @@
 defmodule Nostrum.Api.Ratelimiter do
   @moduledoc """
-  Ratelimit implementation specific to Discord's API.
-  Only to be used when starting in a rest-only manner.
+  Handles REST calls to the Discord API while respecting ratelimits.
+
+  ## Purpose
+
+  Discord's API returns information about ratelimits that we must respect. This
+  module performs serialization of these requests through a single process,
+  thus preventing concurrency issues from arising if two processes make a
+  remote API call at the same time.
+
+  ## Inner workings
+
+  When a client process wants to perform some request on the Discord API, it
+  sends a request to the `GenServer` behind this module to ask it to `:queue`
+  the incoming request.
+
+  The server looks up the ratelimit buckets for the given endpoint using the
+  configured `Nostrum.Store.RatelimitBucket`. If no bucket is available, a
+  request will be sent out directly, and the server will wait for the response.
+
+  After receiving a response, the ratelimiter updates the matching ratelimit
+  bucket and return the response to the client.
+
+  If the client disconnects from the ratelimiter, or the request is dropped by
+  the ratelimiter for another reason - usually a timeout - while the request is
+  still existing on Discord's end, the Ratelimiter will log the response later
+  when it receives it.
   """
 
   use GenServer

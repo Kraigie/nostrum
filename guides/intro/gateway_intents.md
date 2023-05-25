@@ -11,8 +11,8 @@ To pass intents you should use the following configuration:
 config :nostrum,
   token: "bot_token",
   gateway_intents: [
-      :guilds,
-      # other gateway intents
+    :guilds,
+    # other gateway intents
   ]
 ```
 
