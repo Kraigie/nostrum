@@ -5,15 +5,22 @@
 [![hex.pm](https://img.shields.io/hexpm/v/nostrum.svg)](https://hex.pm/packages/nostrum/)
 
 
-An [Elixir](http://elixir-lang.org/) library for the Discord API.
+An [Elixir](http://elixir-lang.org/) library for the Discord API. nostrum
+supports the following:
 
-It is highly recommended to check out the
-[documentation](https://hexdocs.pm/nostrum/) first. It includes all of the
-information listed here and more.
+- Clean REST API implementation and ratelimiting.
+- Documented structs and abstractions over API objects.
+- Support for multi-node distribution of caches and internal state.
+- Listening and sending voice data, with helpers for common functionality.
+- Automatic, configurable maintenance of local caches of Discord data, with
+  extensive query support and cache swapping functionality.
 
-**This README is for the master branch**, which includes recent developments
-and may be unstable. If you want to live on the edge regardless, you can check
-the [pre-release documentation](https://kraigie.github.io/nostrum/).
+It is highly recommended to check out the [release
+documentation](https://hexdocs.pm/nostrum/) first. It includes all of the
+information listed here and more. **This README is for the master branch**,
+which includes recent developments and may be unstable. If you want to live on
+the edge regardless, you can check the [pre-release
+documentation](https://kraigie.github.io/nostrum/).
 
 ## Installation
 
