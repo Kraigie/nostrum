@@ -13,7 +13,7 @@
 
     <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
     <script src="dist/handlebars.templates-XWGFFSCD.js"></script>
-    <script src="dist/sidebar_items-AE195700.js"></script>
+    <script src="dist/sidebar_items-C694C5FD.js"></script>
 
       <script src="docs_config.js"></script>
 
@@ -110,8 +110,30 @@ Nostrum
 
 
   <section id="moduledoc">
-<p>Ratelimit implementation specific to Discord's API.
-Only to be used when starting in a rest-only manner.</p>
+<p>Handles REST calls to the Discord API while respecting ratelimits.</p><h2 id="module-purpose" class="section-heading">
+  <a href="#module-purpose" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">purpose</p>
+  </a>
+  Purpose
+</h2>
+<p>Discord's API returns information about ratelimits that we must respect. This
+module performs serialization of these requests through a single process,
+thus preventing concurrency issues from arising if two processes make a
+remote API call at the same time.</p><h2 id="module-inner-workings" class="section-heading">
+  <a href="#module-inner-workings" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">inner-workings</p>
+  </a>
+  Inner workings
+</h2>
+<p>When a client process wants to perform some request on the Discord API, it
+sends a request to the <a href="https://hexdocs.pm/elixir/GenServer.html"><code class="inline">GenServer</code></a> behind this module to ask it to <code class="inline">:queue</code>
+the incoming request.</p><p>The server looks up the ratelimit buckets for the given endpoint using the
+configured <a href="Nostrum.Store.RatelimitBucket.html"><code class="inline">Nostrum.Store.RatelimitBucket</code></a>. If no bucket is available, a
+request will be sent out directly, and the server will wait for the response.</p><p>After receiving a response, the ratelimiter updates the matching ratelimit
+bucket and return the response to the client.</p><p>If the client disconnects from the ratelimiter, or the request is dropped by
+the ratelimiter for another reason - usually a timeout - while the request is
+still existing on Discord's end, the Ratelimiter will log the response later
+when it receives it.</p>
   </section>
 
 
@@ -217,7 +239,7 @@ Types
     </a>
     <h1 class="signature" translate="no">on_start()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L22" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L46" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -259,7 +281,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">child_spec(init_arg)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L7" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L31" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -281,7 +303,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">get_endpoint(route, method)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L209" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L233" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -309,7 +331,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">init(list)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L39" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L63" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -333,7 +355,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">queue(request, attempts_remaining \\ 50)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L67" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L91" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -357,7 +379,7 @@ afterwards.</p>
     </a>
     <h1 class="signature" translate="no">start_link(list)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L35" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L59" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>

@@ -7,7 +7,7 @@
     <meta name="generator" content="ExDoc v0.29.4">
     <meta name="project" content="Nostrum v0.8.0-dev">
 
-    <title>Nostrum.Struct.Embed.Thumbnail — Nostrum v0.8.0-dev</title>
+    <title>Nostrum.Shard.Supervisor — Nostrum v0.8.0-dev</title>
     <link rel="stylesheet" href="dist/html-elixir-HHVY3JYD.css" />
 
 
@@ -98,19 +98,40 @@ Nostrum
 </button>
 
 
-    <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/embed/thumbnail.ex#L1" title="View Source" class="icon-action" rel="help">
+    <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/supervisor.ex#L1" title="View Source" class="icon-action" rel="help">
       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
       <span class="sr-only">View Source</span>
     </a>
 
-  <span translate="no">Nostrum.Struct.Embed.Thumbnail</span> 
+  <span translate="no">Nostrum.Shard.Supervisor</span> 
   <small class="app-vsn" translate="no">(Nostrum v0.8.0-dev)</small>
 
 </h1>
 
 
   <section id="moduledoc">
-<p>Struct representing a Discord embed thumbnail.</p>
+<p>Supervises shard processes.</p><h2 id="module-implementation" class="section-heading">
+  <a href="#module-implementation" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">implementation</p>
+  </a>
+  Implementation
+</h2>
+<p>As events are sent to the shard, the following happens:</p><ol><li><p>Shard looks to see what type of event it is, only dispatch events are sent
+to the producer.</p></li><li><p>If the event is a <code class="inline">Dispatch</code>, the payload is converted to an atom-keyed map.
+This is done because over ETF (which Nostrum uses), map keys are sometimes
+binaries and sometimes strings, making it a real headache. Additionally,
+with atom keys, we can use the <code class="inline">Map.key</code> notation. This is normally
+considered unsafe but a debug messages will be emitted if a key is unsafely
+converted to an atom. In this way we can ensure that our atom table is not
+growing unbounded.</p></li><li><p>The payload is then written to the cache. To make sure we're not overrunning
+the cache, especially at startup with <code class="inline">request_guild_members</code> or other heavy
+payloads, this is done in the shard itself. </p></li><li><p>The cache updates itself from the new data. In some cases, such as update or
+delete events, it may send out a second &quot;old&quot; object as well, that helps the
+library user to determine what changed.</p></li><li><p>After writing to the cache, the shard <code class="inline">send</code>s out the event after going
+through the cache to all subscribed processes. In general, the payload will
+often match the payload described by the official Discord API documentation.</p></li><li><p>The shard instructs the websocket client that it's ready to read more data.
+This prevents flooding the shard with messages that it may not be able to
+handle yet, thus growing the message queue and the memory usage.</p></li></ol>
   </section>
 
 
@@ -122,34 +143,24 @@ Nostrum
       </a>
       Summary
     </h1>
-<div class="summary-types summary">
+<div class="summary-functions summary">
   <h2>
-    <a href="#types">Types</a>
+    <a href="#functions">Functions</a>
   </h2>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#t:height/0" translate="no">height()</a>
+        <a href="#child_spec/1" translate="no">child_spec(init_arg)</a>
 
       </div>
 
-        <div class="summary-synopsis"><p>Height of the thumbnail</p></div>
+        <div class="summary-synopsis"><p>Returns a specification to start this module under a supervisor.</p></div>
 
     </div>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#t:proxy_url/0" translate="no">proxy_url()</a>
-
-      </div>
-
-        <div class="summary-synopsis"><p>URL of thumbnail icon</p></div>
-
-    </div>
-
-    <div class="summary-row">
-      <div class="summary-signature">
-        <a href="#t:t/0" translate="no">t()</a>
+        <a href="#start_link/1" translate="no">start_link(args)</a>
 
       </div>
 
@@ -157,21 +168,17 @@ Nostrum
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#t:url/0" translate="no">url()</a>
+        <a href="#update_status/4" translate="no">update_status(status, game, stream, type)</a>
 
       </div>
-
-        <div class="summary-synopsis"><p>Source URL of the thumbnail</p></div>
 
     </div>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#t:width/0" translate="no">width()</a>
+        <a href="#update_voice_state/4" translate="no">update_voice_state(guild_id, channel_id, self_mute, self_deaf)</a>
 
       </div>
-
-        <div class="summary-synopsis"><p>Width of the thumbnail</p></div>
 
     </div>
 
@@ -180,25 +187,25 @@ Nostrum
   </section>
 
 
-  <section id="types" class="details-list">
+  <section id="functions" class="details-list">
     <h1 class="section-heading">
-      <a class="hover-link" href="#types">
+      <a class="hover-link" href="#functions">
         <i class="ri-link-m" aria-hidden="true"></i>
         <span class="sr-only">Link to this section</span>
       </a>
-Types
+Functions
     </h1>
-    <div class="types-list">
-<section class="detail" id="t:height/0">
+    <div class="functions-list">
+<section class="detail" id="child_spec/1">
 
   <div class="detail-header">
-    <a href="#t:height/0" class="detail-link" title="Link to this type">
+    <a href="#child_spec/1" class="detail-link" title="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this type</span>
+      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">height()</h1>
+    <h1 class="signature" translate="no">child_spec(init_arg)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/embed/thumbnail.ex#L33" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/supervisor.ex#L37" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -208,25 +215,19 @@ Types
 
   <section class="docstring">
 
-      <div class="specs">
-
-          <pre translate="no"><span class="attribute">@type</span> height() :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>() | nil</pre>
-
-      </div>
-
-<p>Height of the thumbnail</p>
+<p>Returns a specification to start this module under a supervisor.</p><p>See <a href="https://hexdocs.pm/elixir/Supervisor.html"><code class="inline">Supervisor</code></a>.</p>
   </section>
 </section>
-<section class="detail" id="t:proxy_url/0">
+<section class="detail" id="start_link/1">
 
   <div class="detail-header">
-    <a href="#t:proxy_url/0" class="detail-link" title="Link to this type">
+    <a href="#start_link/1" class="detail-link" title="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this type</span>
+      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">proxy_url()</h1>
+    <h1 class="signature" translate="no">start_link(args)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/embed/thumbnail.ex#L30" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/supervisor.ex#L47" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -235,59 +236,20 @@ Types
   </div>
 
   <section class="docstring">
-
-      <div class="specs">
-
-          <pre translate="no"><span class="attribute">@type</span> proxy_url() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>() | nil</pre>
-
-      </div>
-
-<p>URL of thumbnail icon</p>
-  </section>
-</section>
-<section class="detail" id="t:t/0">
-
-  <div class="detail-header">
-    <a href="#t:t/0" class="detail-link" title="Link to this type">
-      <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this type</span>
-    </a>
-    <h1 class="signature" translate="no">t()</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/embed/thumbnail.ex#L38" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
-
-
-  </div>
-
-  <section class="docstring">
-
-      <div class="specs">
-
-          <pre translate="no"><span class="attribute">@type</span> t() :: %Nostrum.Struct.Embed.Thumbnail{
-  height: <a href="#t:height/0">height</a>(),
-  proxy_url: <a href="#t:proxy_url/0">proxy_url</a>(),
-  url: <a href="#t:url/0">url</a>(),
-  width: <a href="#t:width/0">width</a>()
-}</pre>
-
-      </div>
 
 
   </section>
 </section>
-<section class="detail" id="t:url/0">
+<section class="detail" id="update_status/4">
 
   <div class="detail-header">
-    <a href="#t:url/0" class="detail-link" title="Link to this type">
+    <a href="#update_status/4" class="detail-link" title="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this type</span>
+      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">url()</h1>
+    <h1 class="signature" translate="no">update_status(status, game, stream, type)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/embed/thumbnail.ex#L27" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/supervisor.ex#L78" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -297,25 +259,19 @@ Types
 
   <section class="docstring">
 
-      <div class="specs">
 
-          <pre translate="no"><span class="attribute">@type</span> url() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>() | nil</pre>
-
-      </div>
-
-<p>Source URL of the thumbnail</p>
   </section>
 </section>
-<section class="detail" id="t:width/0">
+<section class="detail" id="update_voice_state/4">
 
   <div class="detail-header">
-    <a href="#t:width/0" class="detail-link" title="Link to this type">
+    <a href="#update_voice_state/4" class="detail-link" title="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this type</span>
+      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">width()</h1>
+    <h1 class="signature" translate="no">update_voice_state(guild_id, channel_id, self_mute, self_deaf)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/embed/thumbnail.ex#L36" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/supervisor.ex#L89" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -325,13 +281,7 @@ Types
 
   <section class="docstring">
 
-      <div class="specs">
 
-          <pre translate="no"><span class="attribute">@type</span> width() :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>() | nil</pre>
-
-      </div>
-
-<p>Width of the thumbnail</p>
   </section>
 </section>
 
@@ -346,7 +296,7 @@ Types
 
               <a href="https://preview.hex.pm/preview/nostrum/0.8.0-dev">Hex Preview</a>
 
-                (<a href="https://preview.hex.pm/preview/nostrum/0.8.0-dev/show/lib/nostrum/struct/embed/thumbnail.ex">current file</a>)
+                (<a href="https://preview.hex.pm/preview/nostrum/0.8.0-dev/show/lib/nostrum/shard/supervisor.ex">current file</a>)
 
             </span>
 

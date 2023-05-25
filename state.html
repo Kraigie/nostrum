@@ -13,7 +13,7 @@
 
     <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
     <script src="dist/handlebars.templates-XWGFFSCD.js"></script>
-    <script src="dist/sidebar_items-AE195700.js"></script>
+    <script src="dist/sidebar_items-C694C5FD.js"></script>
 
       <script src="docs_config.js"></script>
 
@@ -98,7 +98,7 @@ Nostrum
 </button>
 
 
-    <a href="https://github.com/Kraigie/nostrum/blob/master/guides/State.md#L1" title="View Source" class="icon-action" rel="help">
+    <a href="https://github.com/Kraigie/nostrum/blob/master/guides/functionality/state.md#L1" title="View Source" class="icon-action" rel="help">
       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
       <span class="sr-only">View Source</span>
     </a>
@@ -107,74 +107,21 @@ Nostrum
   <span>State</span>
 </h1>
 
-<p>Nostrum keeps track of the state that your bot can see. This state is updated
-based on events from the WS connection. We differentiate between <em>caches</em>, which
-are optional and are used to provide your bot with fresh data, and <em>state</em>,
-which is mandatory state that we must track internally.</p><h2 id="pluggable-caching" class="section-heading">
-  <a href="#pluggable-caching" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
-  <p class="sr-only">pluggable-caching</p>
+<p>Nostrum keeps track of the state that your bot can see, which is updated based
+on events from the WS connection. We differentiate between <em>caches</em>, which are
+optional and are used to provide your bot with fresh data, and <em>state</em>, which is
+mandatory state that we must track internally.</p><h2 id="caches" class="section-heading">
+  <a href="#caches" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">caches</p>
   </a>
-  Pluggable caching
+  Caches
 </h2>
-<p>The default ETS-based caches supplied by nostrum should work for most of your
-needs, but all of the caches can be exchanged for your own implementations. For
-this, implement the behaviours exported by the cache modules under
-<code class="inline">Nostrum.Cache</code>.</p><p>Use the <code class="inline">[:nostrum, :caches]</code> configuration for configuring which cache
-implementation you want to use. This can only be set at dependency compilation
-time. A common situation is that you don't want to cache presences in your bot,
-most likely you don't care about user's status, so you can disable it altogether
-by using the <code class="inline">NoOp</code> presence cache:</p><pre><code class="makeup elixir" translate="no"><span class="n">config</span><span class="w"> </span><span class="ss">:nostrum</span><span class="p">,</span><span class="w">
-  </span><span class="ss">caches</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="7893933312-1">%{</span><span class="w">
-    </span><span class="ss">presences</span><span class="p">:</span><span class="w"> </span><span class="nc">Nostrum.Cache.PresenceCache.NoOp</span><span class="w">
-  </span><span class="p" data-group-id="7893933312-1">}</span></code></pre><p>In addition to regular caches that associate Discord snowflakes with the proper
-&quot;full&quot; object, nostrum also maintains junction table-like mappings that allow
-you to find the matching object from one cache in another. One example for this
-is <a href="Nostrum.Cache.ChannelGuildMapping.html"><code class="inline">Nostrum.Cache.ChannelGuildMapping</code></a>.</p><p>Nostrum also ships with Mnesia-based caches. <strong>These are only compiled in when
-mnesia is available</strong>: they may not be available on Nerves or when Mnesia was
-not installed with OTP.</p><h3 id="implementations" class="section-heading">
-  <a href="#implementations" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
-  <p class="sr-only">implementations</p>
-  </a>
-  Implementations
-</h3>
-<h4>ETS caching</h4><p>Caching based on <code class="inline">:ets</code> is used by default. No configuration is required. Fast,
-light on memory, but does not support any form of distribution or secondary
-indexing: queries such as fetching all guild members for a guild by its ID will
-perform a full table scan. For smaller bots, this is perfectly acceptable.</p><h4>Mnesia caching</h4><p>Mnesia-based caching is mainly suggested for larger bots that require
-features such as cache distribution, fragmentation, secondary indexing and more.</p><p>The caches will attempt to create their tables automatically at startup:
-therefore, Mnesia must be started ahead of nostrum. Caches expose a function
-<code class="inline">table/0</code> that can be called to retrieve the table name used by the cache and
-perform schema operations on it, such as adding replicas or fragmenting them.</p><p>Access to Mnesia is presently done in <code class="inline">sync_transaction</code> mode for best
-consistency. If needed, a compile-time configuration option for the cache to
-switch this can be added.</p><p>Mnesia-based caching assumes the user is familar with usage and
-maintenance of Mnesia: the <a href="https://www.erlang.org/doc/apps/mnesia/users_guide.html">Mnesia User's
-Guide</a> is a good
-starting point.</p><h4>NoOp caching</h4><p>The NoOp cache adapters are supplied for the case where you do not want to cache
-specific data from Discord at all.</p><p>These cache adapters presently also don't send out any data they receive either:
-this means that for caches using the NoOp cache adapters, you won't receive any
-gateway events.</p><h3 id="cache-invalidation" class="section-heading">
-  <a href="#cache-invalidation" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
-  <p class="sr-only">cache-invalidation</p>
-  </a>
-  Cache invalidation
-</h3>
-<p>nostrum does not invalidate cache in any special way: it will maintain it in
-response to gateway events (for instance by deleting a guild and its members
-upon leaving it), but won't regularly prune caches or associate expiration times
-with entries. For volatile (RAM-based) caches this is perfectly fine, however,
-when implementing your own cache backend that persists to disk in some way, you
-need to take care of this yourself.</p><h3 id="cache-performance" class="section-heading">
-  <a href="#cache-performance" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
-  <p class="sr-only">cache-performance</p>
-  </a>
-  Cache performance
-</h3>
-<p>nostrum strives to provide the most performant caches on the Discord bot caching
-market. If you run into performance issues with caches that you feel are not
-adequately documented as such, please feel free to open an issue.</p><p>Benchmarks for caches can be found in the <a href="https://github.com/Kraigie/nostrum/tree/master/benchmarks"><code class="inline">benchmarks/</code>
-directory</a> of the
-source code tree. If you want to get a feeling for how the caches perform or
-implement optimizations, check them out.</p><h2 id="query-list-comprehensions" class="section-heading">
+<p>Caching will by default use Erlang's ETS tables. Abstractions are provided for
+common operations. If you feel the caches are missing some abstraction, feel
+free to suggest it <a href="https://github.com/Kraigie/nostrum/issues">on GitHub</a>.</p><p>Should the default ETS-based caching not be enough for you - for instance, you
+want to integrate to some external caching mechanism or want to distribute your
+bot across multiple nodes, please see the <a href="pluggable_caching.html">pluggable
+caching</a> documentation.</p><h2 id="query-list-comprehensions" class="section-heading">
   <a href="#query-list-comprehensions" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
   <p class="sr-only">query-list-comprehensions</p>
   </a>
@@ -190,11 +137,11 @@ for more queries in the future. If you've never heard of QLC before, the
 good introduction.</p><p>As an example, <a href="Nostrum.Cache.MemberCache.html#fold_with_users/3"><code class="inline">Nostrum.Cache.MemberCache.fold_with_users/3</code></a> performs a join
 between the member and the user cache without the caches knowing their exact API
 (outside of the tuples yielded from the query handle). This is implemented via
-the following QLC query:</p><pre><code class="makeup erl" translate="no"><span class="nf">get_with_users</span><span class="p" data-group-id="7465035384-1">(</span><span class="n">RequestedGuildId</span><span class="p">,</span><span class="w"> </span><span class="n">MemberCache</span><span class="p">,</span><span class="w"> </span><span class="n">UserCache</span><span class="p" data-group-id="7465035384-1">)</span><span class="w"> </span><span class="p">-&gt;</span><span class="w">
-    </span><span class="nc">qlc</span><span class="p">:</span><span class="nf">q</span><span class="p" data-group-id="7465035384-2">(</span><span class="p" data-group-id="7465035384-3">[</span><span class="p" data-group-id="7465035384-4">{</span><span class="n">Member</span><span class="p">,</span><span class="w"> </span><span class="n">User</span><span class="p" data-group-id="7465035384-4">}</span><span class="w"> </span><span class="p">||</span><span class="w"> </span><span class="p" data-group-id="7465035384-5">{</span><span class="p" data-group-id="7465035384-6">{</span><span class="n">GuildId</span><span class="p">,</span><span class="w"> </span><span class="n">MemberId</span><span class="p" data-group-id="7465035384-6">}</span><span class="p">,</span><span class="w"> </span><span class="n">Member</span><span class="p" data-group-id="7465035384-5">}</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">MemberCache</span><span class="p">:</span><span class="nf">query_handle</span><span class="p" data-group-id="7465035384-7">(</span><span class="p" data-group-id="7465035384-7">)</span><span class="p">,</span><span class="w">
+the following QLC query:</p><pre><code class="makeup erl" translate="no"><span class="nf">get_with_users</span><span class="p" data-group-id="2568277702-1">(</span><span class="n">RequestedGuildId</span><span class="p">,</span><span class="w"> </span><span class="n">MemberCache</span><span class="p">,</span><span class="w"> </span><span class="n">UserCache</span><span class="p" data-group-id="2568277702-1">)</span><span class="w"> </span><span class="p">-&gt;</span><span class="w">
+    </span><span class="nc">qlc</span><span class="p">:</span><span class="nf">q</span><span class="p" data-group-id="2568277702-2">(</span><span class="p" data-group-id="2568277702-3">[</span><span class="p" data-group-id="2568277702-4">{</span><span class="n">Member</span><span class="p">,</span><span class="w"> </span><span class="n">User</span><span class="p" data-group-id="2568277702-4">}</span><span class="w"> </span><span class="p">||</span><span class="w"> </span><span class="p" data-group-id="2568277702-5">{</span><span class="p" data-group-id="2568277702-6">{</span><span class="n">GuildId</span><span class="p">,</span><span class="w"> </span><span class="n">MemberId</span><span class="p" data-group-id="2568277702-6">}</span><span class="p">,</span><span class="w"> </span><span class="n">Member</span><span class="p" data-group-id="2568277702-5">}</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">MemberCache</span><span class="p">:</span><span class="nf">query_handle</span><span class="p" data-group-id="2568277702-7">(</span><span class="p" data-group-id="2568277702-7">)</span><span class="p">,</span><span class="w">
                           </span><span class="n">GuildId</span><span class="w"> </span><span class="o">=:=</span><span class="w"> </span><span class="n">RequestedGuildId</span><span class="p">,</span><span class="w">
-                          </span><span class="p" data-group-id="7465035384-8">{</span><span class="n">UserId</span><span class="p">,</span><span class="w"> </span><span class="n">User</span><span class="p" data-group-id="7465035384-8">}</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">UserCache</span><span class="p">:</span><span class="nf">query_handle</span><span class="p" data-group-id="7465035384-9">(</span><span class="p" data-group-id="7465035384-9">)</span><span class="p">,</span><span class="w">
-                          </span><span class="n">MemberId</span><span class="w"> </span><span class="o">=:=</span><span class="w"> </span><span class="n">UserId</span><span class="p" data-group-id="7465035384-3">]</span><span class="p" data-group-id="7465035384-2">)</span><span class="p">.</span></code></pre><p>Using QLC bring a plethora of benefits. Implementation of a QLC table is
+                          </span><span class="p" data-group-id="2568277702-8">{</span><span class="n">UserId</span><span class="p">,</span><span class="w"> </span><span class="n">User</span><span class="p" data-group-id="2568277702-8">}</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">UserCache</span><span class="p">:</span><span class="nf">query_handle</span><span class="p" data-group-id="2568277702-9">(</span><span class="p" data-group-id="2568277702-9">)</span><span class="p">,</span><span class="w">
+                          </span><span class="n">MemberId</span><span class="w"> </span><span class="o">=:=</span><span class="w"> </span><span class="n">UserId</span><span class="p" data-group-id="2568277702-3">]</span><span class="p" data-group-id="2568277702-2">)</span><span class="p">.</span></code></pre><p>Using QLC bring a plethora of benefits. Implementation of a QLC table is
 relatively simple, and gives us compile-time query optimization and compilation
 in native Erlang list comprehension syntax. Furthermore, should you wish to
 perform queries on your caches beyond what nostrum offers out of the box, you
@@ -219,24 +166,24 @@ pluggable caching functionality described above, but disabling state storage via
 <div class="bottom-actions">
   <div class="bottom-actions-item">
 
-      <a href="application-commands.html" class="bottom-actions-button" rel="prev">
+      <a href="gateway_intents.html" class="bottom-actions-button" rel="prev">
         <span class="subheader">
           ← Previous Page
         </span>
         <span class="title">
-Application commands
+Gateway Intents
         </span>
       </a>
 
   </div>
   <div class="bottom-actions-item">
 
-      <a href="events.html" class="bottom-actions-button" rel="next">
+      <a href="event_handling.html" class="bottom-actions-button" rel="next">
         <span class="subheader">
           Next Page →
         </span>
         <span class="title">
-Events
+Event handling
         </span>
       </a>
 
@@ -250,7 +197,7 @@ Events
 
               <a href="https://preview.hex.pm/preview/nostrum/0.8.0-dev">Hex Preview</a>
 
-                (<a href="https://preview.hex.pm/preview/nostrum/0.8.0-dev/show/guides/State.md">current file</a>)
+                (<a href="https://preview.hex.pm/preview/nostrum/0.8.0-dev/show/guides/functionality/state.md">current file</a>)
 
             </span>
 

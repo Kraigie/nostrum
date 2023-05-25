@@ -13,7 +13,7 @@
 
     <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
     <script src="dist/handlebars.templates-XWGFFSCD.js"></script>
-    <script src="dist/sidebar_items-AE195700.js"></script>
+    <script src="dist/sidebar_items-C694C5FD.js"></script>
 
       <script src="docs_config.js"></script>
 
@@ -98,7 +98,7 @@ Nostrum
 </button>
 
 
-    <a href="https://github.com/Kraigie/nostrum/blob/master/guides/API.md#L1" title="View Source" class="icon-action" rel="help">
+    <a href="https://github.com/Kraigie/nostrum/blob/master/guides/intro/api.md#L1" title="View Source" class="icon-action" rel="help">
       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
       <span class="sr-only">View Source</span>
     </a>
@@ -107,60 +107,59 @@ Nostrum
   <span>API</span>
 </h1>
 
-<p>Nostrum includes a complete implementation of the endpoints supported by Discord's
-API. Method names are copied closely from the documentation to eliminate any
-confusion about what a method does, as well as allow users to easily lookup the
-endpoints in the official API documentation.</p><p>For a full listing of method definitions, please see <a href="Nostrum.Api.html"><code class="inline">Nostrum.Api</code></a></p><h2 id="what-does-the-mean" class="section-heading">
-  <a href="#what-does-the-mean" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
-  <p class="sr-only">what-does-the-mean</p>
+<p>nostrum includes a complete implementation of the endpoints supported by
+Discord's API. Method names are copied closely from the documentation to
+eliminate any confusion about what a method does, as well as to allow users to
+easily lookup the endpoints in the official API documentation.</p><p>For a full listing of method definitions, please see the <a href="Nostrum.Api.html"><code class="inline">Nostrum.Api</code></a> module.</p><h2 id="banged-api-methods" class="section-heading">
+  <a href="#banged-api-methods" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">banged-api-methods</p>
   </a>
-  What does the '!' mean?
+  Banged (<code class="inline">!</code>) API methods
 </h2>
-<p>(soon™) All methods have a <code class="inline">banged</code> version of themselves. This is a common Elixir
+<p>A lot of methods have a <code class="inline">banged</code> version of themselves. This is a common Elixir
 idiom hailing from Elixir's style of failing fast.</p><p>By default, the API method will return a tuple like one of the following:</p><pre><code class="makeup elixir" translate="no"><span class="c1"># Success</span><span class="w">
-</span><span class="p" data-group-id="7942907625-1">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">msg</span><span class="p" data-group-id="7942907625-1">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">create_message</span><span class="p" data-group-id="7942907625-2">(</span><span class="mi">179679229036724225</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;456&quot;</span><span class="p" data-group-id="7942907625-2">)</span><span class="w">
+</span><span class="p" data-group-id="8242680755-1">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">msg</span><span class="p" data-group-id="8242680755-1">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">create_message</span><span class="p" data-group-id="8242680755-2">(</span><span class="mi">179679229036724225</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;456&quot;</span><span class="p" data-group-id="8242680755-2">)</span><span class="w">
 
 </span><span class="c1"># Failure</span><span class="w">
-</span><span class="p" data-group-id="7942907625-3">{</span><span class="ss">:error</span><span class="p">,</span><span class="w"> </span><span class="n">reason</span><span class="p" data-group-id="7942907625-3">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">create_message</span><span class="p" data-group-id="7942907625-4">(</span><span class="mi">123</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;eat my shorts api&quot;</span><span class="p" data-group-id="7942907625-4">)</span></code></pre><p>A banged method, instead of returning an <code class="inline">error</code> tuple, will throw an error.
-If successful, it will directly return the response with no <code class="inline">:ok</code> tuple.</p><pre><code class="makeup elixir" translate="no"><span class="c1"># Success</span><span class="w">
-</span><span class="n">msg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">create_message!</span><span class="p" data-group-id="3130558225-1">(</span><span class="mi">179679229036724225</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;456&quot;</span><span class="p" data-group-id="3130558225-1">)</span><span class="w">
+</span><span class="p" data-group-id="8242680755-3">{</span><span class="ss">:error</span><span class="p">,</span><span class="w"> </span><span class="n">reason</span><span class="p" data-group-id="8242680755-3">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">create_message</span><span class="p" data-group-id="8242680755-4">(</span><span class="mi">123</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;eat my shorts api&quot;</span><span class="p" data-group-id="8242680755-4">)</span></code></pre><p>A banged method, instead of returning an <code class="inline">error</code> tuple, will throw an error. If
+successful, it will directly return the response with no <code class="inline">:ok</code> tuple.</p><pre><code class="makeup elixir" translate="no"><span class="c1"># Success</span><span class="w">
+</span><span class="n">msg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">create_message!</span><span class="p" data-group-id="5555950689-1">(</span><span class="mi">179679229036724225</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;456&quot;</span><span class="p" data-group-id="5555950689-1">)</span><span class="w">
 
 </span><span class="c1"># Failure - Throws an error</span><span class="w">
-</span><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">create_message!</span><span class="p" data-group-id="3130558225-2">(</span><span class="mi">123</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;eat my shorts api&quot;</span><span class="p" data-group-id="3130558225-2">)</span></code></pre><h2 id="helpers" class="section-heading">
-  <a href="#helpers" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
-  <p class="sr-only">helpers</p>
+</span><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">create_message!</span><span class="p" data-group-id="5555950689-2">(</span><span class="mi">123</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;eat my shorts api&quot;</span><span class="p" data-group-id="5555950689-2">)</span></code></pre><h2 id="abstractions" class="section-heading">
+  <a href="#abstractions" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">abstractions</p>
   </a>
-  Helpers
+  Abstractions
 </h2>
-<p>When appropriate, some helpers are defined to make interacting with the API simpler.
-An example of this is <a href="Nostrum.Api.html#get_channel_messages/3"><code class="inline">Nostrum.Api.get_channel_messages/3</code></a>. By default this endpoint
-only allows the retrieval of <code class="inline">100</code> messages at a time. A general use case will
-have a user wanting more messages than that, thus Nostrum handles the retrieval
-of any number of messages for the user.</p><p>There are other endpoints that could use grooming like above, feel free to suggest
-an interface and implementation for these methods.</p><h2 id="ratelimiting" class="section-heading">
+<p>When appropriate, some helpers are defined to make interacting with the API
+simpler. An example of this is <a href="Nostrum.Api.html#get_channel_messages/3"><code class="inline">Nostrum.Api.get_channel_messages/3</code></a>. By default
+this endpoint only allows the retrieval of <code class="inline">100</code> messages at a time. A general
+use case will have a user wanting more messages than that, thus nostrum handles
+the retrieval of any number of messages for the user.</p><p>There are other endpoints that could use grooming like above, feel free to
+suggest an interface and implementation for these methods.</p><h2 id="ratelimiting" class="section-heading">
   <a href="#ratelimiting" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
   <p class="sr-only">ratelimiting</p>
   </a>
   Ratelimiting
 </h2>
-<p>Ratelimiting is handled internally by Nostrum, so long as you use the methods
+<p>Ratelimiting is handled internally by nostrum, so long as you use the methods
 supplied in the <a href="Nostrum.Api.html"><code class="inline">Nostrum.Api</code></a> module. This means either calling the methods as
 they're given or using <a href="Nostrum.Api.html#request/4"><code class="inline">Nostrum.Api.request/4</code></a> to call an endpoint.</p><p>To ensure that every request is handled properly, no matter if they're called
-asynchronously or not, Nostrum funnels all requests through a single <a href="https://hexdocs.pm/elixir/GenServer.html"><code class="inline">GenServer</code></a>.</p><p>The ratelimiter at a high level works something like this:</p><ol><li>Request is sent to the serializer</li><li>Serializer checks to see if there's a current block on that endpoint.</li><li>If there is a block, the pid of the caller is stored, and a task is started
-to try the call again after a specified time stored from previous calls.</li><li>If the request goes through, the headers are processed to see if a block
-should be instantiated for that endpoint.</li></ol><h2 id="rest-only" class="section-heading">
+asynchronously or not, nostrum funnels all requests through the
+<a href="Nostrum.Api.Ratelimiter.html"><code class="inline">Nostrum.Api.Ratelimiter</code></a> GenServer.</p><h2 id="rest-only" class="section-heading">
   <a href="#rest-only" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
   <p class="sr-only">rest-only</p>
   </a>
-  Rest Only
+  REST-only
 </h2>
 <p>If you only want to use the REST portion of the provided API, the only process
-needed is the ratelimiter. This can be manually started by calling
-<a href="Nostrum.Api.Ratelimiter.html#start_link/1"><code class="inline">Nostrum.Api.Ratelimiter.start_link/1</code></a>. 
-If you don't want to start Nostrum you can add <code class="inline">runtime: false</code> to the dependency
-options. If you're using <a href="https://hexdocs.pm/mix/Mix.Tasks.Release.html"><code class="inline">mix release</code></a>, all <code class="inline">runtime: false</code> deps will be exluded
-from build, so you'll also need to add <code class="inline">:nostrum</code> app to <code class="inline">mix.exs</code>
-in <code class="inline">:included_applications</code> application option or in <code class="inline">releases</code> project option.</p>
+needed is the ratelimiter, which can be manually started by calling
+<a href="Nostrum.Api.Ratelimiter.html#start_link/1"><code class="inline">Nostrum.Api.Ratelimiter.start_link/1</code></a>. </p><p>If you don't want to start nostrum, you can add <code class="inline">runtime: false</code> to the
+dependency options. If you're using <a href="https://hexdocs.pm/mix/Mix.Tasks.Release.html"><code class="inline">mix release</code></a>, all <code class="inline">runtime: false</code> deps
+will be excluded from the build, so you'll also need to add <code class="inline">:nostrum</code> app to
+<code class="inline">mix.exs</code> in <code class="inline">:included_applications</code> application option or in the <code class="inline">releases</code>
+project option.</p>
 <div class="bottom-actions">
   <div class="bottom-actions-item">
 
@@ -169,14 +168,14 @@ in <code class="inline">:included_applications</code> application option or in <
           ← Previous Page
         </span>
         <span class="title">
-Intro
+Introduction
         </span>
       </a>
 
   </div>
   <div class="bottom-actions-item">
 
-      <a href="application-commands.html" class="bottom-actions-button" rel="next">
+      <a href="application_commands.html" class="bottom-actions-button" rel="next">
         <span class="subheader">
           Next Page →
         </span>
@@ -195,7 +194,7 @@ Application commands
 
               <a href="https://preview.hex.pm/preview/nostrum/0.8.0-dev">Hex Preview</a>
 
-                (<a href="https://preview.hex.pm/preview/nostrum/0.8.0-dev/show/guides/API.md">current file</a>)
+                (<a href="https://preview.hex.pm/preview/nostrum/0.8.0-dev/show/guides/intro/api.md">current file</a>)
 
             </span>
 
