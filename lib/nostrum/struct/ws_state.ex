@@ -5,6 +5,7 @@ defmodule Nostrum.Struct.WSState do
 
   defstruct [
     :shard_num,
+    :total_shards,
     :seq,
     :session,
     :shard_pid,
@@ -22,6 +23,15 @@ defmodule Nostrum.Struct.WSState do
 
   @typedoc "The shard number"
   @type shard_num :: non_neg_integer
+
+  @typedoc """
+  The highest shard number for this bot.
+
+  This may not be started locally, it is just used by nostrum to inform the
+  gateway which events we are interested in.
+  """
+  @typedoc since: "0.8.0"
+  @type total_shards :: non_neg_integer()
 
   @typedoc "The sequence number of the last event"
   @type seq :: integer | nil
@@ -71,6 +81,7 @@ defmodule Nostrum.Struct.WSState do
 
   @type t :: %__MODULE__{
           shard_num: shard_num,
+          total_shards: total_shards,
           seq: seq,
           session: session,
           shard_pid: shard_pid,

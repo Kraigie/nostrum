@@ -35,55 +35,73 @@ config :nostrum,
 
 ## Configuration options
 
-Apart from the fields mentioned above, the following fields are also supported:
+Apart from the `token` field mentioned above, the following fields are also supported:
 
- - `num_shards` - A fixed number of shards to run, or `:auto` to have Nostrum
-   determine it automatically. Defaults to `:auto`.
- - `ffmpeg` - Specifies the path to the `ffmpeg` executable for playing audio.
-   Defaults to `"ffmpeg"`.
- - `youtubedl` - Specifies the path to the `youtube-dl` executable for playing
-   audio with youtube-dl support. Defaults to `"youtube-dl"`.
- - `streamlink` - Specifies the path to the `streamlink` executable for playing
-   livestream audio with streamlink support. Defaults to `"streamlink"`.
- - `gateway_intents` - This field takes a list of atoms representing gateway
-   intents for Nostrum to subscribe to from the Discord API. More information
-   can be found in the [gateway intents](gateway-intents.html) documentation
-   page.
- - `audio_timeout` - Milliseconds that input must begin generating audio by
-   upon invoking `play`. More information about this option can be found in the
-   [voice](voice.html) documentation page. Defaults to `20_000` (20s).
- - `audio_frames_per_burst` - Number of opus frames to send at a time while
-   playing audio. More information about this option can be found in the
-   [voice](voice.html) documentation page. Defaults to `10`.
- - `voice_auto_connect` - This will determine if Nostrum automatically connects
-   to voice websockets gateways upon joining voice channels. If set to `false`
-   but you still wish to connect to the voice gateway, you can do so manually
-   by calling `Nostrum.Voice.connect_to_gateway/1` after joining a voice
-   channel. Defaults to `true`.
- - `dev` - This is added to enable Nostrum to be run completely stand alone for
-   development purposes. `true` will cause Nostrum to spawn its own event
-   consumers. If you have the dev flag set to true while running Nostrum
-   alongside your application some of your events will be consumed. Defaults to
-   `false`.
- - `log_full_events` - This will log the full payload received over the
-   websocket. This is included primarily for debugging and testing purposes.
-   Defaults to `false`.
- - `log_dispatch_events` - This will log dispatch events as they are received
-   from the gateway. This is included primarily for debugging and testing
-   purposes. Defaults to `false`. 
- - `request_guild_members` - This will perform member chunking to retrieve a
-   complete list of members for all guilds. This will increase start up time
-   and memory usage by quite a bit. Defaults to `false`.
- - `fullsweep_after_default` - Sets the `fullsweep_after` flag for processes
-   that can have irregularly high memory usage due to Discord payloads. This
-   options will dramatically reduce the amount of memory used by some processes
-   at the cost of increased CPU usage. This is useful if you're running your
-   application under a memory constrained environment. This comes at the cost
-   of increased CPU usage. By default, this option will only affect some
-   processes. You can set this flag for *all* processes using environment
-   variables or by [setting the system flag
-   yourself](http://erlang.org/doc/man/erlang.html#system_flag-2). Defaults to
-   whatever your system recommends, which is probably `65535`.
+- `num_shards` - the amount of shards to run. Can be one of the following:
+  - `:auto`: use the suggested amount of shards as provided by Discord.
+  - *`num`*: a number of shards to run. nostrum will warn if this is not the
+    recommended amount.
+  - `{lowest, highest, total}`: start shards `lowest` to `highest`. `total`
+    should contain the total amount of shards that your bot is expected to have.
+    Useful for splitting a single bot across multiple servers, but see also [the
+    multi-node documentation](../advanced/multi_node.md).
+- `gateway_intents` - a list of atoms representing gateway intents for Nostrum
+  to subscribe to from the Discord API. More information can be found in the
+  [gateway intents](./gateway_intents.md) documentation page.
+- `request_guild_members` - perform member chunking to retrieve a complete list
+  of members for all guilds at startup. Depending on your [cache
+  backend](../advanced/pluggable_caching.md), this may increase startup time
+  and, memory usage by quite a bit. Defaults to `false`.
+
+
+### Voice-specific
+
+- `ffmpeg` - Specifies the path to the `ffmpeg` executable for playing audio.
+  Defaults to `"ffmpeg"`.
+- `youtubedl` - Specifies the path to the `youtube-dl` executable for playing
+  audio with youtube-dl support. Defaults to `"youtube-dl"`.
+- `streamlink` - Specifies the path to the `streamlink` executable for playing
+  livestream audio with streamlink support. Defaults to `"streamlink"`.
+- `audio_timeout` - Milliseconds that input must begin generating audio by
+  upon invoking `play`. More information about this option can be found in the
+  [voice](./voice.html) documentation page. Defaults to `20_000` (20s).
+- `audio_frames_per_burst` - Number of opus frames to send at a time while
+  playing audio. More information about this option can be found in the
+  [voice](./voice.html) documentation page. Defaults to `10`.
+- `voice_auto_connect` - This will determine if Nostrum automatically connects
+  to voice websockets gateways upon joining voice channels. If set to `false`
+  but you still wish to connect to the voice gateway, you can do so manually
+  by calling `Nostrum.Voice.connect_to_gateway/1` after joining a voice
+  channel. Defaults to `true`.
+
+
+### Development & debugging
+
+- `log_full_events` - This will log the full payload received over the
+  websocket. Defaults to `false`.
+- `log_dispatch_events` - This will log dispatch events as they are received
+  from the gateway. Defaults to `false`.
+- `fullsweep_after_default` - Sets the `fullsweep_after` flag for processes
+  that can have irregularly high memory usage due to Discord payloads. This
+  options will dramatically reduce the amount of memory used by some processes
+  at the cost of increased CPU usage. This is useful if you're running your
+  application under a memory constrained environment. This comes at the cost
+  of increased CPU usage. By default, this option will only affect some
+  processes. You can set this flag for *all* processes using environment
+  variables or by [setting the system flag
+  yourself](http://erlang.org/doc/man/erlang.html#system_flag-2). Defaults to
+  whatever your system recommends, which is probably `65535`.
+
+
+### Internal options
+
+The following options are only used for testing nostrum itself.
+
+- `dev` - This is added to enable Nostrum to be run completely stand alone for
+  development purposes. `true` will cause Nostrum to spawn its own event
+  consumers. If you have the dev flag set to true while running Nostrum
+  alongside your application some of your events will be consumed. Defaults to
+  `false`.
 
 
 ## Logging

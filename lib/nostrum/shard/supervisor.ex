@@ -44,33 +44,34 @@ defmodule Nostrum.Shard.Supervisor do
 
   require Logger
 
+  defp cast_shard_range(gateway_shards, :auto), do: {1, gateway_shards, gateway_shards}
+  defp cast_shard_range(gateway_shards, gateway_shards), do: {1, gateway_shards, gateway_shards}
+
+  defp cast_shard_range(gateway_shards, count) when is_integer(count) and count > 0 do
+    Logger.warn(
+      "Configured shard count (#{count}) " <>
+        "differs from Discord Gateway's recommended shard count (#{gateway_shards}). " <>
+        "Consider using `num_shards: :auto` option in your Nostrum config."
+    )
+
+    {1, count, count}
+  end
+
+  defp cast_shard_range(_gateway_shards, {lowest, highest, total} = range)
+       when is_integer(lowest) and is_integer(highest) and is_integer(total) and
+              lowest <= highest and highest <= total do
+    range
+  end
+
   def start_link(_args) do
     {url, gateway_shard_count} = Util.gateway()
 
-    num_shards =
-      case Application.get_env(:nostrum, :num_shards, :auto) do
-        :auto ->
-          gateway_shard_count
-
-        ^gateway_shard_count ->
-          gateway_shard_count
-
-        shard_count when is_integer(shard_count) and shard_count > 0 ->
-          Logger.warn(
-            "Configured shard count (#{shard_count}) " <>
-              "differs from Discord Gateway's recommended shard count (#{gateway_shard_count}). " <>
-              "Consider using `num_shards: :auto` option in your Nostrum config."
-          )
-
-          shard_count
-
-        value ->
-          raise ~s("#{value}" is not a valid shard count)
-      end
+    value = Application.get_env(:nostrum, :num_shards, :auto)
+    shard_range = cast_shard_range(gateway_shard_count, value)
 
     Supervisor.start_link(
       __MODULE__,
-      [url, num_shards],
+      [url, shard_range],
       name: __MODULE__
     )
   end
@@ -101,16 +102,17 @@ defmodule Nostrum.Shard.Supervisor do
   end
 
   @doc false
-  def init([url, num_shards]) do
-    children = for i <- 0..(num_shards - 1), do: create_worker(url, i)
+  def init([url, {lowest, highest, total}]) do
+    shard_range = lowest..highest
+    children = for num <- shard_range, do: create_worker(url, num - 1, total)
 
     Supervisor.init(children, strategy: :one_for_one, max_restarts: 3, max_seconds: 60)
   end
 
   @doc false
-  def create_worker(gateway, shard_num) do
+  def create_worker(gateway, shard_num, total) do
     Supervisor.child_spec(
-      {Shard, [gateway, shard_num]},
+      {Shard, [gateway, shard_num, total]},
       id: shard_num
     )
   end
