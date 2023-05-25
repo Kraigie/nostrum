@@ -2,6 +2,8 @@
 
 [![Build Status](https://github.com/Kraigie/nostrum/workflows/Test%20&%20Lint/badge.svg)](https://github.com/Kraigie/nostrum/actions)
 [![Join Discord](https://img.shields.io/badge/discord-join-7289DA.svg)](https://discord.gg/2Bgn8nW)
+[![hex.pm](https://img.shields.io/hexpm/v/nostrum.svg)](https://hex.pm/packages/nostrum/)
+
 
 An [Elixir](http://elixir-lang.org/) library for the Discord API.
 
