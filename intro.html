@@ -13,7 +13,7 @@
 
     <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
     <script src="dist/handlebars.templates-XWGFFSCD.js"></script>
-    <script src="dist/sidebar_items-C694C5FD.js"></script>
+    <script src="dist/sidebar_items-D84393E0.js"></script>
 
       <script src="docs_config.js"></script>
 
@@ -116,11 +116,11 @@ the following:</p><ul><li><a href="api.html">API</a> - Methods to interact with 
 </h2>
 <p>There are two versions of nostrum, a stable version released on Hex and a dev
 version on GitHub. The dev version will be more up to date but will likely
-have more errors.</p><pre><code class="makeup elixir" translate="no"><span class="kd">def</span><span class="w"> </span><span class="nf">deps</span><span class="w"> </span><span class="k" data-group-id="1567104096-1">do</span><span class="w">
-  </span><span class="p" data-group-id="1567104096-2">[</span><span class="p" data-group-id="1567104096-3">{</span><span class="ss">:nostrum</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;~&gt; 0.7&quot;</span><span class="p" data-group-id="1567104096-3">}</span><span class="p" data-group-id="1567104096-2">]</span><span class="w">
+have more errors.</p><pre><code class="makeup elixir" translate="no"><span class="kd">def</span><span class="w"> </span><span class="nf">deps</span><span class="w"> </span><span class="k" data-group-id="8724022701-1">do</span><span class="w">
+  </span><span class="p" data-group-id="8724022701-2">[</span><span class="p" data-group-id="8724022701-3">{</span><span class="ss">:nostrum</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;~&gt; 0.7&quot;</span><span class="p" data-group-id="8724022701-3">}</span><span class="p" data-group-id="8724022701-2">]</span><span class="w">
   </span><span class="c1"># Or, for bleeding edge changes:</span><span class="w">
   </span><span class="c1"># [{:nostrum, github: &quot;Kraigie/nostrum&quot;}]</span><span class="w">
-</span><span class="k" data-group-id="1567104096-1">end</span></code></pre><p>Next up, you need to configure nostrum. The most basic configuration is simply
+</span><span class="k" data-group-id="8724022701-1">end</span></code></pre><p>Next up, you need to configure nostrum. The most basic configuration is simply
 setting a token to log in with:</p><pre><code class="makeup elixir" translate="no"><span class="n">config</span><span class="w"> </span><span class="ss">:nostrum</span><span class="p">,</span><span class="w">
   </span><span class="ss">token</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;666&quot;</span><span class="w">  </span><span class="c1"># The token of your bot as a string</span></code></pre><h2 id="configuration-options" class="section-heading">
   <a href="#configuration-options" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
@@ -128,32 +128,41 @@ setting a token to log in with:</p><pre><code class="makeup elixir" translate="n
   </a>
   Configuration options
 </h2>
-<p>Apart from the fields mentioned above, the following fields are also supported:</p><ul><li><code class="inline">num_shards</code> - A fixed number of shards to run, or <code class="inline">:auto</code> to have Nostrum
-determine it automatically. Defaults to <code class="inline">:auto</code>.</li><li><code class="inline">ffmpeg</code> - Specifies the path to the <code class="inline">ffmpeg</code> executable for playing audio.
+<p>Apart from the <code class="inline">token</code> field mentioned above, the following fields are also supported:</p><ul><li><code class="inline">num_shards</code> - the amount of shards to run. Can be one of the following:<ul><li><code class="inline">:auto</code>: use the suggested amount of shards as provided by Discord.</li><li><em><code class="inline">num</code></em>: a number of shards to run. nostrum will warn if this is not the
+recommended amount.</li><li><code class="inline">{lowest, highest, total}</code>: start shards <code class="inline">lowest</code> to <code class="inline">highest</code>. <code class="inline">total</code>
+should contain the total amount of shards that your bot is expected to have.
+Useful for splitting a single bot across multiple servers, but see also <a href="multi_node.html">the
+multi-node documentation</a>.</li></ul></li><li><code class="inline">gateway_intents</code> - a list of atoms representing gateway intents for Nostrum
+to subscribe to from the Discord API. More information can be found in the
+<a href="gateway_intents.html">gateway intents</a> documentation page.</li><li><code class="inline">request_guild_members</code> - perform member chunking to retrieve a complete list
+of members for all guilds at startup. Depending on your <a href="pluggable_caching.html">cache
+backend</a>, this may increase startup time
+and, memory usage by quite a bit. Defaults to <code class="inline">false</code>.</li></ul><h3 id="voice-specific" class="section-heading">
+  <a href="#voice-specific" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">voice-specific</p>
+  </a>
+  Voice-specific
+</h3>
+<ul><li><code class="inline">ffmpeg</code> - Specifies the path to the <code class="inline">ffmpeg</code> executable for playing audio.
 Defaults to <code class="inline">&quot;ffmpeg&quot;</code>.</li><li><code class="inline">youtubedl</code> - Specifies the path to the <code class="inline">youtube-dl</code> executable for playing
 audio with youtube-dl support. Defaults to <code class="inline">&quot;youtube-dl&quot;</code>.</li><li><code class="inline">streamlink</code> - Specifies the path to the <code class="inline">streamlink</code> executable for playing
-livestream audio with streamlink support. Defaults to <code class="inline">&quot;streamlink&quot;</code>.</li><li><code class="inline">gateway_intents</code> - This field takes a list of atoms representing gateway
-intents for Nostrum to subscribe to from the Discord API. More information
-can be found in the <a href="gateway-intents.html">gateway intents</a> documentation
-page.</li><li><code class="inline">audio_timeout</code> - Milliseconds that input must begin generating audio by
+livestream audio with streamlink support. Defaults to <code class="inline">&quot;streamlink&quot;</code>.</li><li><code class="inline">audio_timeout</code> - Milliseconds that input must begin generating audio by
 upon invoking <code class="inline">play</code>. More information about this option can be found in the
-<a href="voice.html">voice</a> documentation page. Defaults to <code class="inline">20_000</code> (20s).</li><li><code class="inline">audio_frames_per_burst</code> - Number of opus frames to send at a time while
+<a href="./voice.html">voice</a> documentation page. Defaults to <code class="inline">20_000</code> (20s).</li><li><code class="inline">audio_frames_per_burst</code> - Number of opus frames to send at a time while
 playing audio. More information about this option can be found in the
-<a href="voice.html">voice</a> documentation page. Defaults to <code class="inline">10</code>.</li><li><code class="inline">voice_auto_connect</code> - This will determine if Nostrum automatically connects
+<a href="./voice.html">voice</a> documentation page. Defaults to <code class="inline">10</code>.</li><li><code class="inline">voice_auto_connect</code> - This will determine if Nostrum automatically connects
 to voice websockets gateways upon joining voice channels. If set to <code class="inline">false</code>
 but you still wish to connect to the voice gateway, you can do so manually
 by calling <a href="Nostrum.Voice.html#connect_to_gateway/1"><code class="inline">Nostrum.Voice.connect_to_gateway/1</code></a> after joining a voice
-channel. Defaults to <code class="inline">true</code>.</li><li><code class="inline">dev</code> - This is added to enable Nostrum to be run completely stand alone for
-development purposes. <code class="inline">true</code> will cause Nostrum to spawn its own event
-consumers. If you have the dev flag set to true while running Nostrum
-alongside your application some of your events will be consumed. Defaults to
-<code class="inline">false</code>.</li><li><code class="inline">log_full_events</code> - This will log the full payload received over the
-websocket. This is included primarily for debugging and testing purposes.
-Defaults to <code class="inline">false</code>.</li><li><code class="inline">log_dispatch_events</code> - This will log dispatch events as they are received
-from the gateway. This is included primarily for debugging and testing
-purposes. Defaults to <code class="inline">false</code>. </li><li><code class="inline">request_guild_members</code> - This will perform member chunking to retrieve a
-complete list of members for all guilds. This will increase start up time
-and memory usage by quite a bit. Defaults to <code class="inline">false</code>.</li><li><code class="inline">fullsweep_after_default</code> - Sets the <code class="inline">fullsweep_after</code> flag for processes
+channel. Defaults to <code class="inline">true</code>.</li></ul><h3 id="development-debugging" class="section-heading">
+  <a href="#development-debugging" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">development-debugging</p>
+  </a>
+  Development &amp; debugging
+</h3>
+<ul><li><code class="inline">log_full_events</code> - This will log the full payload received over the
+websocket. Defaults to <code class="inline">false</code>.</li><li><code class="inline">log_dispatch_events</code> - This will log dispatch events as they are received
+from the gateway. Defaults to <code class="inline">false</code>.</li><li><code class="inline">fullsweep_after_default</code> - Sets the <code class="inline">fullsweep_after</code> flag for processes
 that can have irregularly high memory usage due to Discord payloads. This
 options will dramatically reduce the amount of memory used by some processes
 at the cost of increased CPU usage. This is useful if you're running your
@@ -162,7 +171,17 @@ of increased CPU usage. By default, this option will only affect some
 processes. You can set this flag for <em>all</em> processes using environment
 variables or by <a href="http://erlang.org/doc/man/erlang.html#system_flag-2">setting the system flag
 yourself</a>. Defaults to
-whatever your system recommends, which is probably <code class="inline">65535</code>.</li></ul><h2 id="logging" class="section-heading">
+whatever your system recommends, which is probably <code class="inline">65535</code>.</li></ul><h3 id="internal-options" class="section-heading">
+  <a href="#internal-options" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">internal-options</p>
+  </a>
+  Internal options
+</h3>
+<p>The following options are only used for testing nostrum itself.</p><ul><li><code class="inline">dev</code> - This is added to enable Nostrum to be run completely stand alone for
+development purposes. <code class="inline">true</code> will cause Nostrum to spawn its own event
+consumers. If you have the dev flag set to true while running Nostrum
+alongside your application some of your events will be consumed. Defaults to
+<code class="inline">false</code>.</li></ul><h2 id="logging" class="section-heading">
   <a href="#logging" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
   <p class="sr-only">logging</p>
   </a>
@@ -171,7 +190,7 @@ whatever your system recommends, which is probably <code class="inline">65535</c
 <p>nostrum uses Elixir's standard logger to inform you about regular and irregular
 events. Normal messages include Discord-requested shard reconnections,
 ratelimiter waits, and the <code class="inline">IDENTIFY</code> and <code class="inline">READY</code> events.</p><p>The following metadata fields through logger:</p><ul><li><code class="inline">shard</code> - Id of the shard on which the event occurred</li><li><code class="inline">guild</code> - Name of the guild on which the voice connection event occurred</li><li><code class="inline">channel</code> - Name of the channel on which the voice connection event occurred</li></ul><p>To enable this metadata, logger can be configured as such:</p><pre><code class="makeup elixir" translate="no"><span class="n">config</span><span class="w"> </span><span class="ss">:logger</span><span class="p">,</span><span class="w"> </span><span class="ss">:console</span><span class="p">,</span><span class="w">
-  </span><span class="ss">metadata</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="3671804696-1">[</span><span class="ss">:shard</span><span class="p">,</span><span class="w"> </span><span class="ss">:guild</span><span class="p">,</span><span class="w"> </span><span class="ss">:channel</span><span class="p" data-group-id="3671804696-1">]</span></code></pre><p>For more information on how this works, and how to change the logging
+  </span><span class="ss">metadata</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="9544032966-1">[</span><span class="ss">:shard</span><span class="p">,</span><span class="w"> </span><span class="ss">:guild</span><span class="p">,</span><span class="w"> </span><span class="ss">:channel</span><span class="p" data-group-id="9544032966-1">]</span></code></pre><p>For more information on how this works, and how to change the logging
 configuration for nostrum on its own, please see the <a href="https://hexdocs.pm/logger/Logger.html">Logger
 documentation</a></p><h3 id="why-elixir" class="section-heading">
   <a href="#why-elixir" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
