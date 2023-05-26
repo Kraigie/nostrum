@@ -48,15 +48,17 @@ defmodule Nostrum.Shard.Session do
     GenServer.call(pid, :get_ws_state)
   end
 
-  def start_link([gateway, shard_num]) do
-    GenServer.start_link(__MODULE__, [gateway, shard_num], spawn_opt: [Util.fullsweep_after()])
+  def start_link([gateway, shard_num, total]) do
+    GenServer.start_link(__MODULE__, [gateway, shard_num, total],
+      spawn_opt: [Util.fullsweep_after()]
+    )
   end
 
-  def init([_gateway, _shard_num] = args) do
+  def init([_gateway, _shard_num, _total] = args) do
     {:ok, nil, {:continue, args}}
   end
 
-  def handle_continue([gateway, shard_num], nil) do
+  def handle_continue([gateway, shard_num, total_shards], nil) do
     Connector.block_until_connect()
     Logger.metadata(shard: shard_num)
 
@@ -73,6 +75,7 @@ defmodule Nostrum.Shard.Session do
       conn_pid: self(),
       conn: worker,
       shard_num: shard_num,
+      total_shards: total_shards,
       stream: stream,
       gateway: gateway <> @gateway_qs,
       last_heartbeat_ack: DateTime.utc_now(),
