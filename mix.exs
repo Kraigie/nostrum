@@ -5,7 +5,9 @@ defmodule Nostrum.Mixfile do
   def project do
     [
       app: :nostrum,
-      version: "0.8.0",
+      appup: "appup.ex",
+      compilers: Mix.compilers() ++ [:appup],
+      version: "0.9.0-dev",
       elixir: "~> 1.11",
       elixirc_paths: elixirc_paths(Mix.env()),
       build_embedded: Mix.env() == :prod,
@@ -76,8 +78,9 @@ defmodule Nostrum.Mixfile do
       "guides/functionality/state.md",
       "guides/functionality/event_handling.md",
       "guides/functionality/voice.md",
+      "guides/advanced/pluggable_caching.md",
       "guides/advanced/multi_node.md",
-      "guides/advanced/pluggable_caching.md"
+      "guides/advanced/hot_code_upgrade.md"
     ]
   end
 
@@ -127,6 +130,7 @@ defmodule Nostrum.Mixfile do
       name: :nostrum,
       licenses: ["MIT"],
       files: [
+        "appup.ex",
         "examples",
         "lib",
         ".formatter.exs",
@@ -150,6 +154,7 @@ defmodule Nostrum.Mixfile do
       {:certifi, "~> 2.8"},
       {:kcl, "~> 1.4"},
       {:mime, "~> 1.6 or ~> 2.0"},
+      {:castle, "~> 0.3.0", runtime: false},
       {:ex_doc, "~> 0.28", only: :dev, runtime: false},
       {:credo, "~> 1.4", only: [:dev, :test], runtime: false},
       {:dialyxir, "~> 1.1", only: [:dev], runtime: false},
