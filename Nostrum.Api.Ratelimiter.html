@@ -133,7 +133,24 @@ request will be sent out directly, and the server will wait for the response.</p
 bucket and return the response to the client.</p><p>If the client disconnects from the ratelimiter, or the request is dropped by
 the ratelimiter for another reason - usually a timeout - while the request is
 still existing on Discord's end, the Ratelimiter will log the response later
-when it receives it.</p>
+when it receives it.</p><h3 id="module-serialization-and-buckets" class="section-heading">
+  <a href="#module-serialization-and-buckets" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">serialization-and-buckets</p>
+  </a>
+  Serialization and buckets
+</h3>
+<p>We serialize all REST requests in nostrum through this process to prevent
+concurrency issues arising from multiple clients exhausting the bucket (e.g.
+going to a <a href="Nostrum.Store.RatelimitBucket.html#t:remaining/0"><code class="inline">Nostrum.Store.RatelimitBucket.remaining/0</code></a> value below <code class="inline">0</code>).
+This critical spot only needs to happen shortly before running the request,
+but <strong>only if we already have a bucket for the coming request</strong>. If we do not
+have a bucket already, we must serialize it and not make further requests for
+the same bucket until we have received information from Discord on the
+ratelimits on the given endpoint. Otherwise, we may end up running multiple
+requests to the same endpoint because no bucket was stored to tell us that we
+shouldn't. A more efficient alternative may be only blocking requests to the
+specific bucket we have sent a request to by keeping track of &quot;unbucketed
+running requests&quot; and removing elements as we retrieve bucket information.</p>
   </section>
 
 
@@ -239,7 +256,7 @@ Types
     </a>
     <h1 class="signature" translate="no">on_start()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L46" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L80" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -281,7 +298,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">child_spec(init_arg)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L31" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L46" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -303,7 +320,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">get_endpoint(route, method)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L233" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L271" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -331,7 +348,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">init(list)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L63" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L97" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -355,7 +372,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">queue(request, attempts_remaining \\ 50)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L91" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L124" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -379,7 +396,7 @@ afterwards.</p>
     </a>
     <h1 class="signature" translate="no">start_link(list)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L59" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L93" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
