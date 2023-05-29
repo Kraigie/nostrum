@@ -16,6 +16,7 @@ defmodule Nostrum.Struct.Interaction do
     :data,
     :guild_id,
     :channel_id,
+    :channel,
     :member,
     :user,
     :token,
@@ -59,6 +60,14 @@ defmodule Nostrum.Struct.Interaction do
 
   @typedoc "ID of the channel where the command was invoked"
   @type channel_id :: Channel.id()
+
+  @typedoc """
+  PartialChannel object for the channel where the command was invoked
+
+  At the time of writing, only the fields `:type` and `:id` are guaranteed to be present.
+  """
+  @typedoc since: "0.8.0"
+  @type channel :: Channel.t() | nil
 
   @typedoc "Member information about the invoker, if invoked on a guild"
   @type member :: Member.t() | nil
@@ -112,6 +121,7 @@ defmodule Nostrum.Struct.Interaction do
           data: data,
           guild_id: guild_id,
           channel_id: channel_id,
+          channel: channel,
           member: member,
           user: user,
           token: token,
@@ -131,6 +141,7 @@ defmodule Nostrum.Struct.Interaction do
       |> Map.update(:application_id, nil, &Util.cast(&1, Snowflake))
       |> Map.update(:guild_id, nil, &Util.cast(&1, Snowflake))
       |> Map.update(:channel_id, nil, &Util.cast(&1, Snowflake))
+      |> Map.update(:channel, nil, &Util.cast(&1, {:struct, Channel}))
       |> Map.update(:data, nil, &Util.cast(&1, {:struct, ApplicationCommandInteractionData}))
       |> Map.update(:member, nil, &Util.cast(&1, {:struct, Guild.Member}))
       |> Map.put_new(:user, map[:member][:user])
