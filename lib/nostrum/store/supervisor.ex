@@ -4,7 +4,6 @@ defmodule Nostrum.Store.Supervisor do
 
   Please see the following modules for more details:
   - `Nostrum.Store.GuildShardMapping`
-  - `Nostrum.Store.RatelimitBucket`
   - `Nostrum.Store.UnavailableGuild`
   """
   @moduledoc since: "0.8.0"
@@ -17,7 +16,6 @@ defmodule Nostrum.Store.Supervisor do
 
   def init([]) do
     children = [
-      Nostrum.Store.RatelimitBucket,
       Nostrum.Store.GuildShardMapping,
       Nostrum.Store.UnavailableGuild
     ]

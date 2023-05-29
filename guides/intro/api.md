@@ -55,7 +55,7 @@ they're given or using `Nostrum.Api.request/4` to call an endpoint.
 
 To ensure that every request is handled properly, no matter if they're called
 asynchronously or not, nostrum funnels all requests through the
-`Nostrum.Api.Ratelimiter` GenServer.
+`Nostrum.Api.Ratelimiter` state machine.
 
 
 ## REST-only

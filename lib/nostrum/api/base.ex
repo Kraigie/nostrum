@@ -9,8 +9,7 @@ defmodule Nostrum.Api.Base do
   @type methods :: :get | :post | :put | :delete
 
   @spec request(pid, methods(), String.t(), iodata(), [{String.t(), String.t()}], Enum.t()) ::
-          {:error, :timeout | {:connection_error, any} | {:down, any} | {:stream_error, any}}
-          | {:ok, {non_neg_integer, [{String.t(), String.t()}], binary}}
+          :gun.stream_ref()
   def request(conn, method, route, body, raw_headers, params) do
     headers = process_request_headers(raw_headers)
     # Convert method from atom to string for `:gun`
@@ -23,23 +22,7 @@ defmodule Nostrum.Api.Base do
 
     full_route = "#{base_route()}#{route}?#{query_string}"
     headers = process_request_headers(headers, body)
-    stream = :gun.request(conn, method, full_route, headers, process_request_body(body))
-
-    case :gun.await(conn, stream) do
-      {:response, :fin, status, headers} ->
-        {:ok, {status, headers, ""}}
-
-      {:response, :nofin, status, headers} ->
-        {:ok, body} = :gun.await_body(conn, stream)
-        {:ok, {status, headers, body}}
-
-      {:error, :timeout} = result ->
-        Logger.debug("Request for #{inspect(full_route)} timed out")
-        result
-
-      {:error, _reason} = result ->
-        result
-    end
+    :gun.request(conn, method, full_route, headers, process_request_body(body))
   end
 
   def process_request_headers(headers, ""), do: :proplists.delete("content-type", headers)
