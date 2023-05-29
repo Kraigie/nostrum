@@ -26,6 +26,21 @@ defmodule Nostrum.Api.Ratelimiter do
   the ratelimiter for another reason - usually a timeout - while the request is
   still existing on Discord's end, the Ratelimiter will log the response later
   when it receives it.
+
+  ### Serialization and buckets
+
+  We serialize all REST requests in nostrum through this process to prevent
+  concurrency issues arising from multiple clients exhausting the bucket (e.g.
+  going to a `t:Nostrum.Store.RatelimitBucket.remaining/0` value below `0`).
+  This critical spot only needs to happen shortly before running the request,
+  but **only if we already have a bucket for the coming request**. If we do not
+  have a bucket already, we must serialize it and not make further requests for
+  the same bucket until we have received information from Discord on the
+  ratelimits on the given endpoint. Otherwise, we may end up running multiple
+  requests to the same endpoint because no bucket was stored to tell us that we
+  shouldn't. A more efficient alternative may be only blocking requests to the
+  specific bucket we have sent a request to by keeping track of "unbucketed
+  running requests" and removing elements as we retrieve bucket information.
   """
 
   use GenServer
@@ -38,7 +53,26 @@ defmodule Nostrum.Api.Ratelimiter do
 
   require Logger
 
+  # Ratelimits are waited out on client-side. This constant determines the
+  # attempts to requeue an individual request if the ratelimiter told us that
+  # we should wait. Once this many attempts have been made at queueing a
+  # request, further attempts are aborted.
   @default_attempts_to_requeue 50
+
+  # Total attempts to try to reconnect to the API in case it is not reachable.
+  # The current amount of reconnect attempts is intentionally geared to
+  # basically reconnect forever, because the ratelimiter process currently
+  # always assumes a working connection. The `handle_info` callbacks for the
+  # `:gun_up` and `:gun_down` events may be of interest.
+  @reconnect_attempts 1_000_000_000
+
+  # How often to prune stale buckets in the ratelimiter bucket storage.
+  @bucket_cleanup_interval :timer.hours(1)
+
+  # How far back to prune when running a stale bucket cleanup. Any ratelimiter
+  # buckets older than the interval given here will be removed every
+  # `@bucket_cleanup_interval` milliseconds.
+  @bucket_cleanup_window @bucket_cleanup_interval
 
   @typedoc """
   Return values of start functions.
@@ -63,13 +97,13 @@ defmodule Nostrum.Api.Ratelimiter do
   def init([]) do
     domain = to_charlist(Constants.domain())
 
-    open_opts = %{retry: 1_000_000_000, tls_opts: Constants.gun_tls_opts()}
+    open_opts = %{retry: @reconnect_attempts, tls_opts: Constants.gun_tls_opts()}
     {:ok, conn_pid} = :gun.open(domain, 443, open_opts)
 
     {:ok, :http2} = :gun.await_up(conn_pid)
 
     # Start the old route cleanup loop
-    Process.send_after(self(), :remove_old_buckets, :timer.hours(1))
+    Process.send_after(self(), :remove_old_buckets, @bucket_cleanup_interval)
 
     {:ok, conn_pid}
   end
@@ -86,7 +120,6 @@ defmodule Nostrum.Api.Ratelimiter do
   If the ratelimiter tells us to sit it out and we have more than `0` attempts
   remaining, we sleep out the given retry time and ask it to queue again
   afterwards.
-
   """
   def queue(request, attempts_remaining \\ @default_attempts_to_requeue) do
     case GenServer.call(@registered_name, {:queue, request}) do
@@ -112,6 +145,8 @@ defmodule Nostrum.Api.Ratelimiter do
   end
 
   def handle_call({:queue, request}, _from, conn) do
+    # Do the final serialized double-take of ratelimits to prevent races.
+    # The client already did it, but, you know.
     case get_retry_time(request.route, request.method) do
       :now ->
         {:reply, do_request(request, conn), conn}
@@ -121,10 +156,13 @@ defmodule Nostrum.Api.Ratelimiter do
     end
   end
 
+  # The gun connection went down. Any requests in `_killed_streams` are definitely gone.
+  # Other streams may also be gone. Gun will reconnect automatically for us.
   def handle_info({:gun_down, _conn, _proto, _reason, _killed_streams}, state) do
     {:noreply, state}
   end
 
+  # Gun automatically reconnected after the connection went down previously.
   def handle_info({:gun_up, _conn, _proto}, state) do
     {:noreply, state}
   end
@@ -143,8 +181,8 @@ defmodule Nostrum.Api.Ratelimiter do
   end
 
   def handle_info(:remove_old_buckets, state) do
-    RatelimitBucket.cleanup(:timer.hours(1))
-    Process.send_after(self(), :remove_old_buckets, :timer.hours(1))
+    RatelimitBucket.cleanup(@bucket_cleanup_window)
+    Process.send_after(self(), :remove_old_buckets, @bucket_cleanup_interval)
     {:noreply, state}
   end
 
