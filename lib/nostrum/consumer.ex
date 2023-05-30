@@ -376,6 +376,8 @@ defmodule Nostrum.Consumer do
 
       @behaviour Nostrum.Consumer
 
+      @before_compile Nostrum.Consumer
+
       def child_spec(opts) do
         %{
           id: __MODULE__,
@@ -412,6 +414,13 @@ defmodule Nostrum.Consumer do
       end
 
       defoverridable GenServer
+    end
+  end
+
+  defmacro __before_compile__(_env) do
+    quote location: :keep do
+      @impl Nostrum.Consumer
+      def handle_event(_), do: :noop
     end
   end
 end
