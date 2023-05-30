@@ -374,6 +374,8 @@ defmodule Nostrum.Consumer do
     quote location: :keep do
       use GenServer
 
+      @behaviour Nostrum.Consumer
+
       def child_spec(opts) do
         %{
           id: __MODULE__,
