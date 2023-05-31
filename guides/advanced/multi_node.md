@@ -53,8 +53,8 @@ as command frameworks like `:nosedrum`:
 ```elixir
   defp deps do
     [
-      {:nostrum, "~> 0.7", runtime: false},
-      # {:nosedrum, "~> 0.5", runtime: false},
+      {:nostrum, "~> 0.8", runtime: false},
+      # {:nosedrum, "~> 0.6", runtime: false},
     ]
   end
 ```
