@@ -21,7 +21,7 @@ defmodule Nostrum.Consumer do
 
       {:noreply, state}
     end
-  ``` 
+  ```
 
   ## Example consumer
 
@@ -374,6 +374,10 @@ defmodule Nostrum.Consumer do
     quote location: :keep do
       use GenServer
 
+      @behaviour Nostrum.Consumer
+
+      @before_compile Nostrum.Consumer
+
       def child_spec(opts) do
         %{
           id: __MODULE__,
@@ -389,15 +393,18 @@ defmodule Nostrum.Consumer do
         GenServer.start_link(__MODULE__, [], opts)
       end
 
+      @impl GenServer
       def init([]) do
         {:ok, nil, {:continue, nil}}
       end
 
+      @impl GenServer
       def handle_continue(_args, state) do
         ConsumerGroup.join(self())
         {:noreply, state}
       end
 
+      @impl GenServer
       def handle_info({:event, event}, state) do
         Task.start_link(fn ->
           __MODULE__.handle_event(event)
@@ -406,7 +413,14 @@ defmodule Nostrum.Consumer do
         {:noreply, state}
       end
 
-      defoverridable child_spec: 1, start_link: 1, init: 1, handle_continue: 2, handle_info: 2
+      defoverridable GenServer
+    end
+  end
+
+  defmacro __before_compile__(_env) do
+    quote location: :keep do
+      @impl Nostrum.Consumer
+      def handle_event(_), do: :noop
     end
   end
 end
