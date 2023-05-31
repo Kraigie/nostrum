@@ -23,6 +23,12 @@ defmodule Nostrum.Consumer do
     end
   ```
 
+  ## Running multiple consumers
+
+  **Every process that is in a `Nostrum.ConsumerGroup` receives every event**:
+  it is therefore not recommended to create multiple consumers if a single one
+  could accomplish the job.
+
   ## Example consumer
 
   An example consumer could look as follows:
@@ -32,10 +38,17 @@ defmodule Nostrum.Consumer do
   #{File.read!("examples/event_consumer.ex")}
   ```
 
-  nostrum's `use Nostrum.Consumer` will do the bulk of the work of process
-  setup. **Note that every process that is subscribed receives every event**:
-  it is therefore not recommended to create multiple consumers if a single one
-  could accomplish the job.
+  > ### `use Nostrum.Consumer` {: .info}
+  >
+  > Using `Nostrum.Consumer` will:
+  >
+  > - `use GenServer` (as the consumer is built on `GenServer`)
+  > - set the behaviour to `Nostrum.Consumer`
+  > - define `child_spec/1`, `start_link/1` and `init/1` for the `GenServer` to
+  > automatically join the `Nostrum.ConsumerGroup` on boot
+  > - define `handle_info/2` to automatically dispatch any events to your
+  > `c:handle_event/1` via a `Task`
+  > - inject a default `handle_event/1` clause to ignore any unhandled events.
   """
   @external_resource "examples/event_consumer.ex"
 
