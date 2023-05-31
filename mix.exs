@@ -98,7 +98,8 @@ defmodule Nostrum.Mixfile do
         ~r/Nostrum.Constants/
       ],
       Utilities: [
-        ~r/Nostrum.(Snowflake|Token|Util)/
+        ~r/Nostrum.(Snowflake|Token|Util)/,
+        ~r/^Nostrum\.StateMachineTranslator$/
       ],
       Stores: [
         ~r/Nostrum.Store.\w+$/
