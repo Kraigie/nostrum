@@ -408,13 +408,8 @@ defmodule Nostrum.Consumer do
 
       @impl GenServer
       def init([]) do
-        {:ok, nil, {:continue, nil}}
-      end
-
-      @impl GenServer
-      def handle_continue(_args, state) do
         ConsumerGroup.join(self())
-        {:noreply, state}
+        {:ok, nil}
       end
 
       @impl GenServer
