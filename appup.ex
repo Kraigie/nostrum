@@ -6,7 +6,9 @@
     # Upgrade instructions
     {'0.9.0-alpha1',
      [
-       {:load_module, Nostrum.Cache.GuildCache}
+       # Top shard supervisor was not registered, so could not restart shard
+       # supervisor to load new gateway logic
+       {:restart_application, :nostrum}
      ]},
     {'0.8.0',
      [
@@ -17,7 +19,7 @@
     # Downgrade instructions
     {'0.9.0-alpha1',
      [
-       {:load_module, Nostrum.Cache.GuildCache}
+       {:restart_application, :nostrum}
      ]},
     {'0.8.0',
      [
