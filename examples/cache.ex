@@ -24,15 +24,6 @@ defmodule CacheExampleConsumer do
   def handle_event({:MESSAGE_CREATE, message, _ws_state}) do
     ExampleCommands.command(message)
   end
-
-  # The catch-all event case that takes the rest of the events.
-  # If you do not have this, or have not defined literally
-  # every event case yourself (what an absolute madlad if you have),
-  # the consumer will crash, not having any function signature to match upon.
-  # By the way, the return atom stands for "no-op", shorthand for "no operation",
-  # however, if you read it as "noop" and quietly chuckle to yourself every time you see it,
-  # since it just sounds like a silly way of saying "nope", know, that you are not alone.
-  def handle_event(_event), do: :noop
 end
 
 # Our basic, example command handler that will be taking the message
