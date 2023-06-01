@@ -8,7 +8,6 @@ defmodule Nostrum.Struct.WSState do
     :total_shards,
     :seq,
     :session,
-    :shard_pid,
     :conn,
     :conn_pid,
     :stream,
@@ -17,7 +16,6 @@ defmodule Nostrum.Struct.WSState do
     :last_heartbeat_ack,
     :heartbeat_ack,
     :heartbeat_interval,
-    :heartbeat_ref,
     :zlib_ctx
   ]
 
@@ -38,9 +36,6 @@ defmodule Nostrum.Struct.WSState do
 
   @typedoc "The session id"
   @type session :: integer | nil
-
-  @typedoc "PID of the shard containing this state"
-  @type shard_pid :: pid
 
   @typedoc "PID of the `:gun` worker connected to the websocket"
   @type conn :: pid
@@ -73,9 +68,6 @@ defmodule Nostrum.Struct.WSState do
   @typedoc "Interval at which heartbeats are sent"
   @type heartbeat_interval :: pos_integer() | nil
 
-  @typedoc "Time ref for the heartbeat"
-  @type heartbeat_ref :: :timer.tref() | nil
-
   @typedoc "Reference to the current zlib context"
   @type zlib_ctx :: reference | nil
 
@@ -84,7 +76,6 @@ defmodule Nostrum.Struct.WSState do
           total_shards: total_shards,
           seq: seq,
           session: session,
-          shard_pid: shard_pid,
           conn: conn,
           conn_pid: conn_pid,
           stream: stream,
@@ -93,7 +84,6 @@ defmodule Nostrum.Struct.WSState do
           last_heartbeat_ack: last_heartbeat_ack,
           heartbeat_ack: heartbeat_ack,
           heartbeat_interval: heartbeat_interval,
-          heartbeat_ref: heartbeat_ref,
           zlib_ctx: zlib_ctx
         }
 end
