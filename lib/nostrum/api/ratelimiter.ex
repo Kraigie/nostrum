@@ -555,6 +555,9 @@ defmodule Nostrum.Api.Ratelimiter do
   end
 
   def connected(:info, {:gun_down, conn, :http2, reason, killed_streams}, %{running: running}) do
+    # Even with `retry: 0`, gun seems to try and reconnect, potentially because
+    # of WebSocket. Force the connectio to die.
+    :ok = :gun.close(conn)
     :ok = :gun.flush(conn)
 
     replies =
