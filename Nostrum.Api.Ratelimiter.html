@@ -13,7 +13,7 @@
 
     <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
     <script src="dist/handlebars.templates-XWGFFSCD.js"></script>
-    <script src="dist/sidebar_items-2A5BC9FA.js"></script>
+    <script src="dist/sidebar_items-376F7356.js"></script>
 
       <script src="docs_config.js"></script>
 
@@ -119,38 +119,121 @@ Nostrum
 <p>Discord's API returns information about ratelimits that we must respect. This
 module performs serialization of these requests through a single process,
 thus preventing concurrency issues from arising if two processes make a
-remote API call at the same time.</p><h2 id="module-inner-workings" class="section-heading">
+remote API call at the same time.</p><blockquote><h3 id="module-internal-module" class="info section-heading">
+  <a href="#module-internal-module" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">internal-module</p>
+  </a>
+  Internal module
+</h3>
+<p>This module is intended for exclusive usage inside of nostrum, and is
+documented for completeness and people curious to look behind the covers.</p></blockquote><h2 id="module-asynchronous-requests" class="section-heading">
+  <a href="#module-asynchronous-requests" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">asynchronous-requests</p>
+  </a>
+  Asynchronous requests
+</h2>
+<p>The ratelimiter is fully asynchronous internally. In theory, it also supports
+queueing requests in an asynchronous manner. However, support for this is
+currently not implemented in <a href="Nostrum.Api.html"><code class="inline">Nostrum.Api</code></a>.</p><p>If you want to make one or multiple asynchronous requests manually, you can
+use the following pattern:</p><pre><code class="makeup elixir" translate="no"><span class="n">req</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">:gen_statem</span><span class="o">.</span><span class="n">send_request</span><span class="p" data-group-id="7704787628-1">(</span><span class="nc">Nostrum.Api.Ratelimiter</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="7704787628-2">{</span><span class="ss">:queue</span><span class="p">,</span><span class="w"> </span><span class="n">request</span><span class="p" data-group-id="7704787628-2">}</span><span class="p" data-group-id="7704787628-1">)</span><span class="w">
+</span><span class="c1"># ...</span><span class="w">
+</span><span class="n">response</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">:gen_statem</span><span class="o">.</span><span class="n">receive_response</span><span class="p" data-group-id="7704787628-3">(</span><span class="n">req</span><span class="p">,</span><span class="w"> </span><span class="n">timeout</span><span class="p" data-group-id="7704787628-3">)</span></code></pre><p>where <code class="inline">request</code> is a map describing the request to run - see <a href="Nostrum.Api.html"><code class="inline">Nostrum.Api</code></a>
+for more information. You can also send multiple requests at the same time
+and wait for their response: see <a href="https://www.erlang.org/doc/man/gen_statem.html#reqids_add-3"><code class="inline">:gen_statem.reqids_add/3</code></a> and
+<a href="https://www.erlang.org/doc/man/gen_statem.html#wait_response-3"><code class="inline">:gen_statem.wait_response/3</code></a> for more information.</p><h2 id="module-multi-node" class="section-heading">
+  <a href="#module-multi-node" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">multi-node</p>
+  </a>
+  Multi-node
+</h2>
+<p>If a single global process is desired to handle all ratelimiting, the
+ratelimiter can theoretically be adjusted to start registered via <code class="inline">:global</code>.
+In practice, it may be more beneficial to have a local ratelimiter process on
+each node and either using the local one for any API calls, or using a
+consistent hash mechanism to distribute API requests around the cluster as
+needed.</p><h2 id="module-inner-workings" class="section-heading">
   <a href="#module-inner-workings" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
   <p class="sr-only">inner-workings</p>
   </a>
   Inner workings
 </h2>
 <p>When a client process wants to perform some request on the Discord API, it
-sends a request to the <a href="https://hexdocs.pm/elixir/GenServer.html"><code class="inline">GenServer</code></a> behind this module to ask it to <code class="inline">:queue</code>
-the incoming request.</p><p>The server looks up the ratelimit buckets for the given endpoint using the
-configured <a href="Nostrum.Store.RatelimitBucket.html"><code class="inline">Nostrum.Store.RatelimitBucket</code></a>. If no bucket is available, a
-request will be sent out directly, and the server will wait for the response.</p><p>After receiving a response, the ratelimiter updates the matching ratelimit
-bucket and return the response to the client.</p><p>If the client disconnects from the ratelimiter, or the request is dropped by
-the ratelimiter for another reason - usually a timeout - while the request is
-still existing on Discord's end, the Ratelimiter will log the response later
-when it receives it.</p><h3 id="module-serialization-and-buckets" class="section-heading">
-  <a href="#module-serialization-and-buckets" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
-  <p class="sr-only">serialization-and-buckets</p>
+sends a request to the <code class="inline">:gen_statem</code> behind this module to ask it to <code class="inline">:queue</code>
+the incoming request.</p><h3 id="module-connection-setup" class="section-heading">
+  <a href="#module-connection-setup" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">connection-setup</p>
   </a>
-  Serialization and buckets
+  Connection setup
 </h3>
-<p>We serialize all REST requests in nostrum through this process to prevent
-concurrency issues arising from multiple clients exhausting the bucket (e.g.
-going to a <a href="Nostrum.Store.RatelimitBucket.html#t:remaining/0"><code class="inline">Nostrum.Store.RatelimitBucket.remaining/0</code></a> value below <code class="inline">0</code>).
-This critical spot only needs to happen shortly before running the request,
-but <strong>only if we already have a bucket for the coming request</strong>. If we do not
-have a bucket already, we must serialize it and not make further requests for
-the same bucket until we have received information from Discord on the
-ratelimits on the given endpoint. Otherwise, we may end up running multiple
-requests to the same endpoint because no bucket was stored to tell us that we
-shouldn't. A more efficient alternative may be only blocking requests to the
-specific bucket we have sent a request to by keeping track of &quot;unbucketed
-running requests&quot; and removing elements as we retrieve bucket information.</p>
+<p>If the state machine is not connected to the HTTP endpoint, it will
+transition to the <code class="inline">:connecting</code> state and try to open the connection. If this
+succeeds, it transitions to the <code class="inline">:connected</code> state.</p><p>The state machine associates a <a href="https://www.erlang.org/doc/man/queue.html#type-queue"><code class="inline">:queue.queue/1</code></a> of <a href="#t:queued_request/0"><code class="inline">queued_request/0</code></a> to
+each individual bucket, together with an internal count of remaining calls.
+If an entry is found with remaining calls above 0, the request is scheduled
+for immediate execution. If an entry is found with remaining calls of 0, or
+with the special <code class="inline">:initial</code> value (indicating that the initial request to
+find the ratelimit just headed out), it is queued. Otherwise, if no entry is
+found, a new queue is created with an <code class="inline">:initial</code> remaining call count, and
+the request scheduled for immediate execution.</p><p>The request starting function, <code class="inline">:next</code>, will start new requests from the
+queue as long as more calls are possible in the timeframe. Any requests are
+then started asynchronously. Bookkeeping is set up to associate the resulting
+<a href="https://hexdocs.pm/gun/2.0.1/gun.html#t:stream_ref/0"><code class="inline">:gun.stream_ref/0</code></a> with the original client along with its request and the
+ratelimiter bucket.</p><p>Results from the HTTP connection are delivered non-blocking: simple responses
+with purely status codes and no body (code <code class="inline">204</code>) will be sent in a single
+message, other requests will be sent to us incrementally. To finally deliver
+the full response body to the client with the final package, an internal
+buffer of the body is kept. A possible future optimization could be having a
+way for <code class="inline">:gun</code> to only send the ratelimiter state machine the initial
+<code class="inline">:gun_response</code> and forward any item of the body directly to the client.</p><p>When the headers for a request have been received, the ratelimiter parses the
+ratelimit information and starts off an internal timer expiring when the
+ratelimits expire. It will also reschedule calls with the <code class="inline">:next</code> internal
+event for as many remaining calls as it knows about. Once the timer expires
+for the current bucket, two cases can happen:</p><ul><li><p>The queue has items: Schedule all items and repeat this later.</p></li><li><p>The queue is empty: Delete the queue and remaining calls from the outstanding buckets.</p></li></ul><p>In practice, this means that we never store more information than we need,
+and removes the previous regular bucket sweeping functionality that the
+ratelimit buckets required.</p><p><strong>Global ratelimits</strong> are handled with the special <code class="inline">global_limit</code> state. This
+state is only entered with a state timeout, the state timeout being the
+<code class="inline">X-Ratelimit-Reset-After</code> value provided in the global ratelimit response.
+This state does nothing apart from postponing any events it receives and
+returning to the previous state (<code class="inline">:connected</code>) once the global timeout is
+gone.</p><h3 id="module-failure-modes" class="section-heading">
+  <a href="#module-failure-modes" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">failure-modes</p>
+  </a>
+  Failure modes
+</h3>
+<h4>HTTP connection death</h4><p>If the HTTP connection dies, the ratelimiter will inform each affected client
+by replying with <code class="inline">{:error, {:connection_died, reason}}</code>, where <code class="inline">reason</code> is
+the reason as provided by the <code class="inline">:gun_down</code> event. It will then transition to
+<code class="inline">:disconnected</code> state. If no requests were running at time the connection was
+shut down - for instance, because we simply reached the maximum idle time on
+the HTTP/2 connection - we will simply move on.</p><h4>Other internal issues</h4><p>Any other internal problems that are not handled appropriately in the
+ratelimiter will crash it, effectively resulting in the complete loss of any
+queued requests.</p><h3 id="module-implementation-benefits-drawbacks" class="section-heading">
+  <a href="#module-implementation-benefits-drawbacks" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">implementation-benefits-drawbacks</p>
+  </a>
+  Implementation benefits &amp; drawbacks
+</h3>
+<h4>A history of ratelimiting</h4><p>First, it is important to give a short history of nostrum's ratelimiting: pre
+<code class="inline">0.8</code>, nostrum used to use a <a href="https://hexdocs.pm/elixir/GenServer.html"><code class="inline">GenServer</code></a> that would call out to ETS tables to
+look up ratelimiting buckets for requests. If it needed to sleep before
+issuing a request due to the bucket being exhausted, it would do so in the
+server process and block other callers. </p><p>In nostrum 0.8, the existing ratelimiter bucket storage architecture was
+refactored to be based around the <a href="pluggable_caching.html">pluggable caching
+functionality</a>, and buckets with no
+remaining calls were adjusted to be slept out on the client-side by having
+the <a href="https://hexdocs.pm/elixir/GenServer.html"><code class="inline">GenServer</code></a> respond to the client with <code class="inline">{:error, {:retry_after, millis}}</code>
+and the client trying again and again to schedule its requests. This allowed
+users to distribute their ratelimit buckets around however they wish, out of
+the box, nostrum shipped with an ETS and a Mnesia-based ratelimit bucket
+store.</p><h4>Problems we solved</h4><p>The approach above still came with a few problems:</p><ul><li><p>Requests were still being done synchronously in the ratelimiter, and it was
+blocked from anything else whilst running the requests, even though we are
+theoretically free to start requests for other buckets while one is still
+running.</p></li><li><p>The ratelimiter itself was half working on its own, but half required the
+external storage mechanisms, which made the code hard to follow and required
+regular automatic pruning because the store had no idea when a bucket was no
+longer relevant on its own.</p></li><li><p>Requests would not be pipelined to run as soon as ideally possible.</p></li><li><p>The ratelimiter did not inform clients if their request died in-flight.</p></li><li><p>If the client disconnected before we returned the response, we had to
+handle this explicitly via <code class="inline">handle_info</code>.</p></li></ul><p>The new state machine-based ratelimiter solves these problems.</p>
   </section>
 
 
@@ -169,11 +252,51 @@ running requests&quot; and removing elements as we retrieve bucket information.<
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#t:on_start/0" translate="no">on_start()</a>
+        <a href="#t:bucket/0" translate="no">bucket()</a>
 
       </div>
 
-        <div class="summary-synopsis"><p>Return values of start functions.</p></div>
+        <div class="summary-synopsis"><p>A bucket for endpoints unter the same ratelimit.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:queued_request/0" translate="no">queued_request()</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>A bucket-specific request waiting to be queued, alongside its client.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:remaining/0" translate="no">remaining()</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Remaining calls on a route, as provided by the API response.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:request/0" translate="no">request()</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>A request to make in the ratelimiter.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:state/0" translate="no">state()</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>The state of the ratelimiter.</p></div>
 
     </div>
 
@@ -185,11 +308,43 @@ running requests&quot; and removing elements as we retrieve bucket information.<
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#child_spec/1" translate="no">child_spec(init_arg)</a>
+        <a href="#callback_mode/0" translate="no">callback_mode()</a>
 
       </div>
 
-        <div class="summary-synopsis"><p>Returns a specification to start this module under a supervisor.</p></div>
+        <div class="summary-synopsis"><p>Callback implementation for <a href="https://www.erlang.org/doc/man/gen_statem.html#Module:callback_mode-0"><code class="inline">:gen_statem.callback_mode/0</code></a>.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#child_spec/1" translate="no">child_spec(opts)</a>
+
+      </div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#connected/3" translate="no">connected(arg1, arg2, data)</a>
+
+      </div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#connecting/3" translate="no">connecting(arg1, arg2, data)</a>
+
+      </div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#disconnected/3" translate="no">disconnected(arg, request, data)</a>
+
+      </div>
 
     </div>
 
@@ -205,27 +360,35 @@ running requests&quot; and removing elements as we retrieve bucket information.<
 
     <div class="summary-row">
       <div class="summary-signature">
+        <a href="#global_limit/3" translate="no">global_limit(arg1, next, data)</a>
+
+      </div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
         <a href="#init/1" translate="no">init(list)</a>
 
       </div>
 
-        <div class="summary-synopsis"><p>Callback implementation for <a href="https://hexdocs.pm/elixir/GenServer.html#c:init/1"><code class="inline">GenServer.init/1</code></a>.</p></div>
+        <div class="summary-synopsis"><p>Callback implementation for <a href="https://www.erlang.org/doc/man/gen_statem.html#Module:init-1"><code class="inline">:gen_statem.init/1</code></a>.</p></div>
 
     </div>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#queue/2" translate="no">queue(request, attempts_remaining \\ 50)</a>
+        <a href="#queue/1" translate="no">queue(request)</a>
 
       </div>
 
-        <div class="summary-synopsis"><p>Queue the given request.</p></div>
+        <div class="summary-synopsis"><p>Queue the given request and wait for the response synchronously.</p></div>
 
     </div>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#start_link/1" translate="no">start_link(list)</a>
+        <a href="#start_link/1" translate="no">start_link(opts)</a>
 
       </div>
 
@@ -247,20 +410,22 @@ running requests&quot; and removing elements as we retrieve bucket information.<
 Types
     </h1>
     <div class="types-list">
-<section class="detail" id="t:on_start/0">
+<section class="detail" id="t:bucket/0">
 
   <div class="detail-header">
-    <a href="#t:on_start/0" class="detail-link" title="Link to this type">
+    <a href="#t:bucket/0" class="detail-link" title="Link to this type">
       <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature" translate="no">on_start()</h1>
+    <h1 class="signature" translate="no">bucket()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L80" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L187" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
 
+
+      <span class="note">(since 0.9.0)</span>
 
   </div>
 
@@ -268,12 +433,167 @@ Types
 
       <div class="specs">
 
-          <pre translate="no"><span class="attribute">@type</span> on_start() ::
-  {:ok, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pid</a>()} | :ignore | {:error, {:already_started, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pid</a>()} | <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()}</pre>
+          <pre translate="no"><span class="attribute">@type</span> bucket() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()</pre>
 
       </div>
 
-<p>Return values of start functions.</p>
+<p>A bucket for endpoints unter the same ratelimit.</p>
+  </section>
+</section>
+<section class="detail" id="t:queued_request/0">
+
+  <div class="detail-header">
+    <a href="#t:queued_request/0" class="detail-link" title="Link to this type">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature" translate="no">queued_request()</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L205" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+      <span class="note">(since 0.9.0)</span>
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@type</span> queued_request() :: {<a href="#t:request/0">request</a>(), client :: <a href="https://www.erlang.org/doc/man/gen_statem.html#type-from">:gen_statem.from</a>()}</pre>
+
+      </div>
+
+<p>A bucket-specific request waiting to be queued, alongside its client.</p>
+  </section>
+</section>
+<section class="detail" id="t:remaining/0">
+
+  <div class="detail-header">
+    <a href="#t:remaining/0" class="detail-link" title="Link to this type">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature" translate="no">remaining()</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L220" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+      <span class="note">(since 0.9.0)</span>
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@type</span> remaining() :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">non_neg_integer</a>() | :initial</pre>
+
+      </div>
+
+<p>Remaining calls on a route, as provided by the API response.</p><p>The ratelimiter internally counts the remaining calls per route to dispatch
+new requests as soon as it's capable of doing so, but this is only possible
+if the API already provided us with ratelimit information for an endpoint.</p><p>Therefore, if the initial call on an endpoint is made, the special <code class="inline">:initial</code>
+value is specified. This is used by the limit parsing function to set the
+remaining calls if and only if it is the response for the initial call -
+otherwise, the value won't represent the truth anymore.</p>
+  </section>
+</section>
+<section class="detail" id="t:request/0">
+
+  <div class="detail-header">
+    <a href="#t:request/0" class="detail-link" title="Link to this type">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature" translate="no">request()</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L193" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+      <span class="note">(since 0.9.0)</span>
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@type</span> request() :: %{
+  method: :get | :post | :put | :delete,
+  route: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>(),
+  body: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">iodata</a>(),
+  headers: [{<a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>(), <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()}],
+  params: <a href="https://hexdocs.pm/elixir/Enum.html#t:t/0">Enum.t</a>()
+}</pre>
+
+      </div>
+
+<p>A request to make in the ratelimiter.</p>
+  </section>
+</section>
+<section class="detail" id="t:state/0">
+
+  <div class="detail-header">
+    <a href="#t:state/0" class="detail-link" title="Link to this type">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature" translate="no">state()</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L244" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+      <span class="note">(since 0.9.0)</span>
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@type</span> state() :: %{
+  outstanding: %{
+    required(<a href="#t:bucket/0">bucket</a>()) =&gt; {<a href="#t:remaining/0">remaining</a>(), <a href="https://www.erlang.org/doc/man/queue.html#type-queue">:queue.queue</a>(<a href="#t:queued_request/0">queued_request</a>())}
+  },
+  running: %{
+    required(<a href="https://hexdocs.pm/gun/2.0.1/gun.html#t:stream_ref/0">:gun.stream_ref</a>()) =&gt; {<a href="#t:bucket/0">bucket</a>(), <a href="#t:request/0">request</a>(), <a href="https://www.erlang.org/doc/man/gen_statem.html#type-from">:gen_statem.from</a>()}
+  },
+  inflight: %{
+    required(<a href="https://hexdocs.pm/gun/2.0.1/gun.html#t:stream_ref/0">:gun.stream_ref</a>()) =&gt;
+      {status :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">non_neg_integer</a>(), headers :: [{<a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>(), <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()}],
+       body :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()}
+  },
+  conn: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pid</a>() | nil
+}</pre>
+
+      </div>
+
+<p>The state of the ratelimiter.</p><p>While this has no public use, it is still documented here to provide help
+when tracing the ratelimiter via <a href="https://www.erlang.org/doc/man/sys.html#trace-2"><code class="inline">:sys.trace/2</code></a> or other means.</p><h2 id="t:state/0-fields" class="section-heading">
+  <a href="#t:state/0-fields" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">fields</p>
+  </a>
+  Fields
+</h2>
+<ul><li><p><code class="inline">:outstanding</code>: Outstanding (unqueued) requests per bucket alongside with
+the remaining calls that may be made on said bucket.</p></li><li><p><code class="inline">:running</code>: Requests that have been sent off. Used to associate back the
+client with a request when the response comes in.</p></li><li><p><code class="inline">:inflight</code>: Requests for which we have started getting a response, but we
+have not fully received it yet. For responses that have a body, this will
+buffer their body until we can send it back to the client.</p></li><li><p><code class="inline">:conn</code>: The <code class="inline">:gun</code> connection backing the server. Used for making new
+requests, and updated as the state changes.</p></li></ul>
   </section>
 </section>
 
@@ -289,16 +609,16 @@ Types
 Functions
     </h1>
     <div class="functions-list">
-<section class="detail" id="child_spec/1">
+<section class="detail" id="callback_mode/0">
 
   <div class="detail-header">
-    <a href="#child_spec/1" class="detail-link" title="Link to this function">
+    <a href="#callback_mode/0" class="detail-link" title="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">child_spec(init_arg)</h1>
+    <h1 class="signature" translate="no">callback_mode()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L46" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L275" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -308,7 +628,95 @@ Functions
 
   <section class="docstring">
 
-<p>Returns a specification to start this module under a supervisor.</p><p>See <a href="https://hexdocs.pm/elixir/Supervisor.html"><code class="inline">Supervisor</code></a>.</p>
+<p>Callback implementation for <a href="https://www.erlang.org/doc/man/gen_statem.html#Module:callback_mode-0"><code class="inline">:gen_statem.callback_mode/0</code></a>.</p>
+  </section>
+</section>
+<section class="detail" id="child_spec/1">
+
+  <div class="detail-header">
+    <a href="#child_spec/1" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">child_spec(opts)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L277" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+
+  </section>
+</section>
+<section class="detail" id="connected/3">
+
+  <div class="detail-header">
+    <a href="#connected/3" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">connected(arg1, arg2, data)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L327" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+
+  </section>
+</section>
+<section class="detail" id="connecting/3">
+
+  <div class="detail-header">
+    <a href="#connecting/3" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">connecting(arg1, arg2, data)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L300" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+
+  </section>
+</section>
+<section class="detail" id="disconnected/3">
+
+  <div class="detail-header">
+    <a href="#disconnected/3" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">disconnected(arg, request, data)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L291" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+
   </section>
 </section>
 <section class="detail" id="get_endpoint/2">
@@ -320,7 +728,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">get_endpoint(route, method)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L271" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L633" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -339,6 +747,28 @@ Functions
 <p>Retrieves a proper ratelimit endpoint from a given route and url.</p>
   </section>
 </section>
+<section class="detail" id="global_limit/3">
+
+  <div class="detail-header">
+    <a href="#global_limit/3" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">global_limit(arg1, next, data)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L565" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+
+  </section>
+</section>
 <section class="detail" id="init/1">
 
   <div class="detail-header">
@@ -348,7 +778,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">init(list)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L97" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L267" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -358,21 +788,19 @@ Functions
 
   <section class="docstring">
 
-<p>Callback implementation for <a href="https://hexdocs.pm/elixir/GenServer.html#c:init/1"><code class="inline">GenServer.init/1</code></a>.</p>
+<p>Callback implementation for <a href="https://www.erlang.org/doc/man/gen_statem.html#Module:init-1"><code class="inline">:gen_statem.init/1</code></a>.</p>
   </section>
 </section>
-<section class="detail" id="queue/2">
-
-    <span id="queue/1"></span>
+<section class="detail" id="queue/1">
 
   <div class="detail-header">
-    <a href="#queue/2" class="detail-link" title="Link to this function">
+    <a href="#queue/1" class="detail-link" title="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">queue(request, attempts_remaining \\ 50)</h1>
+    <h1 class="signature" translate="no">queue(request)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L124" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L595" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -382,9 +810,8 @@ Functions
 
   <section class="docstring">
 
-<p>Queue the given request.</p><p>If the ratelimiter tells us to sit it out and we have more than <code class="inline">0</code> attempts
-remaining, we sleep out the given retry time and ask it to queue again
-afterwards.</p>
+<p>Queue the given request and wait for the response synchronously.</p><p>Ratelimits on the endpoint are handled by the ratelimiter. Global ratelimits
+will cause this to return an error.</p>
   </section>
 </section>
 <section class="detail" id="start_link/1">
@@ -394,9 +821,9 @@ afterwards.</p>
       <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">start_link(list)</h1>
+    <h1 class="signature" translate="no">start_link(opts)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L93" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L263" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -408,7 +835,7 @@ afterwards.</p>
 
       <div class="specs">
 
-          <pre translate="no"><span class="attribute">@spec</span> start_link([]) :: <a href="#t:on_start/0">on_start</a>()</pre>
+          <pre translate="no"><span class="attribute">@spec</span> start_link([<a href="https://www.erlang.org/doc/man/gen_statem.html#type-start_opt">:gen_statem.start_opt</a>()]) :: <a href="https://www.erlang.org/doc/man/gen_statem.html#type-start_ret">:gen_statem.start_ret</a>()</pre>
 
       </div>
 
