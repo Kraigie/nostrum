@@ -7,7 +7,7 @@
     <meta name="generator" content="ExDoc v0.29.4">
     <meta name="project" content="Nostrum v0.9.0-dev">
 
-    <title>Nostrum.Error.VoiceError — Nostrum v0.9.0-dev</title>
+    <title>Hot code upgrade — Nostrum v0.9.0-dev</title>
     <link rel="stylesheet" href="dist/html-elixir-HHVY3JYD.css" />
 
 
@@ -21,7 +21,7 @@
 
 
   </head>
-  <body data-type="modules" class="page-exception">
+  <body data-type="extras" class="page-extra">
     <script>
 
       try {
@@ -98,24 +98,64 @@ Nostrum
 </button>
 
 
-    <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/error/voice_error.ex#L1" title="View Source" class="icon-action" rel="help">
+    <a href="https://github.com/Kraigie/nostrum/blob/master/guides/advanced/hot_code_upgrade.md#L1" title="View Source" class="icon-action" rel="help">
       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
       <span class="sr-only">View Source</span>
     </a>
 
-  <span translate="no">Nostrum.Error.VoiceError</span> <small>exception</small>
-  <small class="app-vsn" translate="no">(Nostrum v0.9.0-dev)</small>
 
+  <span>Hot code upgrade</span>
 </h1>
 
+<p>For the library users whose Discord bot can afford absolutely no downtime due to
+restarts, nostrum ships with <a href="https://www.erlang.org/doc/man/appup.html"><code class="inline">appup</code>
+files</a> via the
+<a href="https://github.com/ausimian/castle"><code class="inline">castle</code></a> library.</p><blockquote><h3 id="maintenance" class="info section-heading">
+  <a href="#maintenance" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">maintenance</p>
+  </a>
+  Maintenance
+</h3>
+<p>The appups are maintained on a best-effort basis. While they are expected to
+work and be present and documented as such, no guarantee can be made that they
+will choose the most optimal path to upgrade and downgrade releases.
+Contributions in this regard are welcome.</p></blockquote><h3 id="usage" class="section-heading">
+  <a href="#usage" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">usage</p>
+  </a>
+  Usage
+</h3>
+<p>To make use of nostrum's hot code upgrade support, please follow the
+instructions to install the <a href="https://github.com/ausimian/castle"><code class="inline">castle</code></a>
+library in order to configure your release appropriately. Outside of shipping
+the appup, nostrum does not provide further functionality to facilitate this.</p><h3 id="nostrum-as-included-application" class="section-heading">
+  <a href="#nostrum-as-included-application" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">nostrum-as-included-application</p>
+  </a>
+  nostrum as included application
+</h3>
+<p>When nostrum is run as an included application as documented in <a href="multi_node.html">the
+multi-node support document</a>, nostrum's default appup won't
+be read on generation of the release upgrade file.</p><p>Please see the OTP documentation on <a href="https://www.erlang.org/doc/design_principles/appup_cookbook.html#changing-included-applications">Changing Included
+Applications</a>
+for information on how to deal with upgrades in this case.</p>
+<div class="bottom-actions">
+  <div class="bottom-actions-item">
 
-  <section id="moduledoc">
-<p>Represents an error when playing sound through voice channels.</p><p>This occurs when attempting to play audio and the file can't be found
-for the ffmpeg, youtube-dl, or streamlink executables.</p>
-  </section>
+      <a href="multi_node.html" class="bottom-actions-button" rel="prev">
+        <span class="subheader">
+          ← Previous Page
+        </span>
+        <span class="title">
+Multi-node
+        </span>
+      </a>
 
+  </div>
+  <div class="bottom-actions-item">
 
-
+  </div>
+</div>
       <footer class="footer">
         <p>
 
@@ -124,7 +164,7 @@ for the ffmpeg, youtube-dl, or streamlink executables.</p>
 
               <a href="https://preview.hex.pm/preview/nostrum/0.9.0-dev">Hex Preview</a>
 
-                (<a href="https://preview.hex.pm/preview/nostrum/0.9.0-dev/show/lib/nostrum/error/voice_error.ex">current file</a>)
+                (<a href="https://preview.hex.pm/preview/nostrum/0.9.0-dev/show/guides/advanced/hot_code_upgrade.md">current file</a>)
 
             </span>
 
