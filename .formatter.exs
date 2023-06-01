@@ -1,3 +1,3 @@
 [
-  inputs: ["mix.exs", "{benchmarks,config,examples,lib,test}/**/*.{ex,exs}"]
+  inputs: ["appup.ex", "mix.exs", "{benchmarks,config,examples,lib,test}/**/*.{ex,exs}"]
 ]

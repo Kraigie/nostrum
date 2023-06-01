@@ -1,15 +1,25 @@
 {
-  '0.9.0-alpha1',
+  '0.9.0-alpha2',
   [
-    {'0.8.0', [
-      # Upgrade instructions from 0.8.0
-      {:restart_application, :nostrum}
-    ]}
+    # Upgrade instructions
+    {'0.9.0-alpha1',
+     [
+       {:load_module, Nostrum.Cache.GuildCache}
+     ]},
+    {'0.8.0',
+     [
+       {:restart_application, :nostrum}
+     ]}
   ],
   [
-    {'0.8.0', [
-      # Down instructions to 0.8.0
-      {:restart_application, :nostrum}
-    ]}
+    # Downgrade instructions
+    {'0.9.0-alpha1',
+     [
+       {:load_module, Nostrum.Cache.GuildCache}
+     ]},
+    {'0.8.0',
+     [
+       {:restart_application, :nostrum}
+     ]}
   ]
 }

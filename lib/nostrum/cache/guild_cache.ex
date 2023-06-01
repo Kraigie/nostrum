@@ -47,26 +47,12 @@ defmodule Nostrum.Cache.GuildCache do
   @configured_cache :nostrum
                     |> Application.compile_env([:caches, :guilds], @default_cache_implementation)
 
-  @typedoc "A selector for looking up entries in the cache."
-  @type selector :: (Guild.t() -> any)
-
   ## Supervisor callbacks
   # These set up the backing cache.
   @doc false
   defdelegate child_spec(opts), to: @configured_cache
 
   ## Behaviour specification
-
-  @doc """
-  Retrieves all `Nostrum.Struct.Guild` from the cache.
-  """
-  @doc deprecated: "Use fold/2-3 instead"
-  @deprecated "Use fold/2-3 instead"
-  def all(cache \\ @configured_cache) do
-    wrap_qlc(cache, fn ->
-      :qlc.e(:nostrum_guild_cache_qlc.all(cache))
-    end)
-  end
 
   @doc """
   Fold (reduce) over all guilds in the cache.
@@ -88,18 +74,6 @@ defmodule Nostrum.Cache.GuildCache do
   end
 
   @doc """
-  Selects guilds matching `selector` from all `Nostrum.Struct.Guild` in the cache.
-  """
-  @doc deprecated: "Use fold/2-3 instead"
-  @deprecated "Use fold/2-3 instead"
-  @spec select_all(selector :: (Guild.t() -> any())) :: Enum.t()
-  def select_all(selector) when is_function(selector, 1) do
-    handle = :nostrum_guild_cache_qlc.all(@configured_cache)
-    folder = fn {_id, guild}, acc -> [selector.(guild) | acc] end
-    wrap_qlc(@configured_cache, fn -> :qlc.fold(folder, [], handle) end)
-  end
-
-  @doc """
   Retrieves a single `Nostrum.Struct.Guild` from the cache via its `id`.
 
   Returns `{:error, :not_found}` if no result was found.
@@ -115,25 +89,6 @@ defmodule Nostrum.Cache.GuildCache do
         [] -> {:error, :not_found}
       end
     end)
-  end
-
-  @doc """
-  Selects values using a `selector` from a `Nostrum.Struct.Guild`.
-
-  Returns `{:error, reason}` if no result was found.
-  """
-  @doc deprecated:
-         "Use `with {:ok, result} = GuildCache.get(guild_id), my_result = selector(result)` instead"
-  @deprecated "Use `with {:ok, result} = GuildCache.get(guild_id), my_result = selector(result)` instead"
-  @spec select(Guild.id(), selector) :: {:ok, any} | {:error, :not_found}
-  def select(guild_id, selector) do
-    case get(guild_id) do
-      {:ok, guild} ->
-        {:ok, selector.(guild)}
-
-      error ->
-        error
-    end
   end
 
   # Functions called from nostrum.
@@ -314,15 +269,6 @@ defmodule Nostrum.Cache.GuildCache do
   def get!(guild_id) do
     guild_id
     |> get
-    |> Util.bangify_find(guild_id, __MODULE__)
-  end
-
-  @doc """
-  Same as `select/2`, but raises `Nostrum.Error.CacheError` in case of failure.
-  """
-  @spec select!(Guild.id(), selector()) :: any() | no_return()
-  def select!(guild_id, selector) do
-    select(guild_id, selector)
     |> Util.bangify_find(guild_id, __MODULE__)
   end
 
