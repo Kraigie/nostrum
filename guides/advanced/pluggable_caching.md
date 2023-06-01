@@ -27,9 +27,9 @@ Nostrum also ships with Mnesia-based caches. **These are only compiled in when
 mnesia is available**: they may not be available on Nerves or when Mnesia was
 not installed with OTP.
 
-### Implementations
+## Implementations
 
-#### ETS caching
+### ETS caching
 
 Caching based on `:ets` is used by default. No configuration is required. Fast,
 light on memory, but does not support any form of distribution or secondary
@@ -37,7 +37,7 @@ indexing: queries such as fetching all guild members for a guild by its ID will
 perform a full table scan. For smaller bots, this is perfectly acceptable.
 
 
-#### Mnesia caching
+### Mnesia caching
 
 Mnesia-based caching is mainly suggested for larger bots that require
 features such as cache distribution, fragmentation, secondary indexing and more.
@@ -60,7 +60,7 @@ Guide](https://www.erlang.org/doc/apps/mnesia/users_guide.html) is a good
 starting point.
 
 
-#### NoOp caching
+### NoOp caching
 
 The NoOp cache adapters are supplied for the case where you do not want to cache
 specific data from Discord at all.
@@ -70,7 +70,7 @@ this means that for caches using the NoOp cache adapters, you won't receive any
 gateway events.
 
 
-### Cache invalidation
+## Cache invalidation
 
 nostrum does not invalidate cache in any special way: it will maintain it in
 response to gateway events (for instance by deleting a guild and its members
@@ -80,7 +80,7 @@ when implementing your own cache backend that persists to disk in some way, you
 need to take care of this yourself.
 
 
-### Cache performance
+## Cache performance
 
 nostrum strives to provide the most performant caches on the Discord bot caching
 market. If you run into performance issues with caches that you feel are not
@@ -90,5 +90,3 @@ Benchmarks for caches can be found in the [`benchmarks/`
 directory](https://github.com/Kraigie/nostrum/tree/master/benchmarks) of the
 source code tree. If you want to get a feeling for how the caches perform or
 implement optimizations, check them out.
-
-
