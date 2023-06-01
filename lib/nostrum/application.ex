@@ -22,6 +22,7 @@ defmodule Nostrum.Application do
   def start(_type, _args) do
     Token.check_token!()
     check_executables()
+    Logger.add_translator({Nostrum.StateMachineTranslator, :translate})
 
     children = [
       Nostrum.Store.Supervisor,
