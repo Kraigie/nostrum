@@ -107,8 +107,8 @@ The following options are only used for testing nostrum itself.
 ## Logging
 
 nostrum uses Elixir's standard logger to inform you about regular and irregular
-events. Normal messages include Discord-requested shard reconnections,
-ratelimiter waits, and the `IDENTIFY` and `READY` events.
+events. Normal messages include Discord-requested shard reconnections and the
+`IDENTIFY` and `READY` events.
 
 The following metadata fields through logger:
 

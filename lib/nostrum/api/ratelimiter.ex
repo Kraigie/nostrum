@@ -2,6 +2,7 @@ defmodule Nostrum.Api.Ratelimiter do
   @moduledoc """
   Handles REST calls to the Discord API while respecting ratelimits.
 
+
   ## Purpose
 
   Discord's API returns information about ratelimits that we must respect. This
@@ -9,188 +10,590 @@ defmodule Nostrum.Api.Ratelimiter do
   thus preventing concurrency issues from arising if two processes make a
   remote API call at the same time.
 
+
+  > ### Internal module {: .info}
+  >
+  > This module is intended for exclusive usage inside of nostrum, and is
+  > documented for completeness and people curious to look behind the covers.
+
+
+  ## Asynchronous requests
+
+  The ratelimiter is fully asynchronous internally. In theory, it also supports
+  queueing requests in an asynchronous manner. However, support for this is
+  currently not implemented in `Nostrum.Api`.
+
+  If you want to make one or multiple asynchronous requests manually, you can
+  use the following pattern:
+
+  ```elixir
+  req = :gen_statem.send_request(Nostrum.Api.Ratelimiter, {:queue, request})
+  # ...
+  response = :gen_statem.receive_response(req, timeout)
+  ```
+
+  where `request` is a map describing the request to run - see `Nostrum.Api`
+  for more information. You can also send multiple requests at the same time
+  and wait for their response: see `:gen_statem.reqids_add/3` and
+  `:gen_statem.wait_response/3` for more information.
+
+
+  ## Multi-node
+
+  If a single global process is desired to handle all ratelimiting, the
+  ratelimiter can theoretically be adjusted to start registered via `:global`.
+  In practice, it may be more beneficial to have a local ratelimiter process on
+  each node and either using the local one for any API calls, or using a
+  consistent hash mechanism to distribute API requests around the cluster as
+  needed.
+
+
   ## Inner workings
 
   When a client process wants to perform some request on the Discord API, it
-  sends a request to the `GenServer` behind this module to ask it to `:queue`
+  sends a request to the `:gen_statem` behind this module to ask it to `:queue`
   the incoming request.
 
-  The server looks up the ratelimit buckets for the given endpoint using the
-  configured `Nostrum.Store.RatelimitBucket`. If no bucket is available, a
-  request will be sent out directly, and the server will wait for the response.
 
-  After receiving a response, the ratelimiter updates the matching ratelimit
-  bucket and return the response to the client.
+  ### Connection setup
 
-  If the client disconnects from the ratelimiter, or the request is dropped by
-  the ratelimiter for another reason - usually a timeout - while the request is
-  still existing on Discord's end, the Ratelimiter will log the response later
-  when it receives it.
+  If the state machine is not connected to the HTTP endpoint, it will
+  transition to the `:connecting` state and try to open the connection. If this
+  succeeds, it transitions to the `:connected` state.
 
-  ### Serialization and buckets
+  The state machine associates a `t::queue.queue/1` of `t:queued_request/0` to
+  each individual bucket, together with an internal count of remaining calls.
+  If an entry is found with remaining calls above 0, the request is scheduled
+  for immediate execution. If an entry is found with remaining calls of 0, or
+  with the special `:initial` value (indicating that the initial request to
+  find the ratelimit just headed out), it is queued. Otherwise, if no entry is
+  found, a new queue is created with an `:initial` remaining call count, and
+  the request scheduled for immediate execution.
 
-  We serialize all REST requests in nostrum through this process to prevent
-  concurrency issues arising from multiple clients exhausting the bucket (e.g.
-  going to a `t:Nostrum.Store.RatelimitBucket.remaining/0` value below `0`).
-  This critical spot only needs to happen shortly before running the request,
-  but **only if we already have a bucket for the coming request**. If we do not
-  have a bucket already, we must serialize it and not make further requests for
-  the same bucket until we have received information from Discord on the
-  ratelimits on the given endpoint. Otherwise, we may end up running multiple
-  requests to the same endpoint because no bucket was stored to tell us that we
-  shouldn't. A more efficient alternative may be only blocking requests to the
-  specific bucket we have sent a request to by keeping track of "unbucketed
-  running requests" and removing elements as we retrieve bucket information.
+  The request starting function, `:next`, will start new requests from the
+  queue as long as more calls are possible in the timeframe. Any requests are
+  then started asynchronously. Bookkeeping is set up to associate the resulting
+  `t::gun.stream_ref/0` with the original client along with its request and the
+  ratelimiter bucket.
+
+  Results from the HTTP connection are delivered non-blocking: simple responses
+  with purely status codes and no body (code `204`) will be sent in a single
+  message, other requests will be sent to us incrementally. To finally deliver
+  the full response body to the client with the final package, an internal
+  buffer of the body is kept. A possible future optimization could be having a
+  way for `:gun` to only send the ratelimiter state machine the initial
+  `:gun_response` and forward any item of the body directly to the client.
+
+  When the headers for a request have been received, the ratelimiter parses the
+  ratelimit information and starts off an internal timer expiring when the
+  ratelimits expire. It will also reschedule calls with the `:next` internal
+  event for as many remaining calls as it knows about. Once the timer expires
+  for the current bucket, two cases can happen:
+
+  - The queue has items: Schedule all items and repeat this later.
+
+  - The queue is empty: Delete the queue and remaining calls from the outstanding buckets.
+
+  In practice, this means that we never store more information than we need,
+  and removes the previous regular bucket sweeping functionality that the
+  ratelimit buckets required.
+
+  **Global ratelimits** are handled with the special `global_limit` state. This
+  state is only entered with a state timeout, the state timeout being the
+  `X-Ratelimit-Reset-After` value provided in the global ratelimit response.
+  This state does nothing apart from postponing any events it receives and
+  returning to the previous state (`:connected`) once the global timeout is
+  gone.
+
+
+  ### Failure modes
+
+  #### HTTP connection death
+
+  If the HTTP connection dies, the ratelimiter will inform each affected client
+  by replying with `{:error, {:connection_died, reason}}`, where `reason` is
+  the reason as provided by the `:gun_down` event. It will then transition to
+  `:disconnected` state. If no requests were running at time the connection was
+  shut down - for instance, because we simply reached the maximum idle time on
+  the HTTP/2 connection - we will simply move on.
+
+  #### Other internal issues
+
+  Any other internal problems that are not handled appropriately in the
+  ratelimiter will crash it, effectively resulting in the complete loss of any
+  queued requests.
+
+
+  ### Implementation benefits & drawbacks
+
+  #### A history of ratelimiting
+
+  First, it is important to give a short history of nostrum's ratelimiting: pre
+  `0.8`, nostrum used to use a `GenServer` that would call out to ETS tables to
+  look up ratelimiting buckets for requests. If it needed to sleep before
+  issuing a request due to the bucket being exhausted, it would do so in the
+  server process and block other callers. 
+
+  In nostrum 0.8, the existing ratelimiter bucket storage architecture was
+  refactored to be based around the [pluggable caching
+  functionality](../advanced/pluggable_caching.md), and buckets with no
+  remaining calls were adjusted to be slept out on the client-side by having
+  the `GenServer` respond to the client with `{:error, {:retry_after, millis}}`
+  and the client trying again and again to schedule its requests. This allowed
+  users to distribute their ratelimit buckets around however they wish, out of
+  the box, nostrum shipped with an ETS and a Mnesia-based ratelimit bucket
+  store.
+
+
+  #### Problems we solved
+
+  The approach above still came with a few problems:
+
+  - Requests were still being done synchronously in the ratelimiter, and it was
+  blocked from anything else whilst running the requests, even though we are
+  theoretically free to start requests for other buckets while one is still
+  running.
+
+  - The ratelimiter itself was half working on its own, but half required the
+  external storage mechanisms, which made the code hard to follow and required
+  regular automatic pruning because the store had no idea when a bucket was no
+  longer relevant on its own.
+
+  - Requests would not be pipelined to run as soon as ideally possible.
+
+  - The ratelimiter did not inform clients if their request died in-flight.
+
+  - If the client disconnected before we returned the response, we had to
+  handle this explicitly via `handle_info`.
+
+  The new state machine-based ratelimiter solves these problems.
   """
 
-  use GenServer
+  @behaviour :gen_statem
 
   alias Nostrum.Api.Base
   alias Nostrum.Constants
   alias Nostrum.Error.ApiError
-  alias Nostrum.Store.RatelimitBucket
-  alias Nostrum.Util
 
   require Logger
 
-  # Ratelimits are waited out on client-side. This constant determines the
-  # attempts to requeue an individual request if the ratelimiter told us that
-  # we should wait. Once this many attempts have been made at queueing a
-  # request, further attempts are aborted.
-  @default_attempts_to_requeue 50
-
-  # Total attempts to try to reconnect to the API in case it is not reachable.
-  # The current amount of reconnect attempts is intentionally geared to
-  # basically reconnect forever, because the ratelimiter process currently
-  # always assumes a working connection. The `handle_info` callbacks for the
-  # `:gun_up` and `:gun_down` events may be of interest.
-  @reconnect_attempts 1_000_000_000
-
-  # How often to prune stale buckets in the ratelimiter bucket storage.
-  @bucket_cleanup_interval :timer.hours(1)
-
-  # How far back to prune when running a stale bucket cleanup. Any ratelimiter
-  # buckets older than the interval given here will be removed every
-  # `@bucket_cleanup_interval` milliseconds.
-  @bucket_cleanup_window @bucket_cleanup_interval
+  @major_parameters ["channels", "guilds", "webhooks"]
+  @registered_name __MODULE__
 
   @typedoc """
-  Return values of start functions.
+  A bucket for endpoints unter the same ratelimit.
   """
-  @type on_start ::
-          {:ok, pid}
-          | :ignore
-          | {:error, {:already_started, pid} | term}
+  @typedoc since: "0.9.0"
+  @type bucket :: String.t()
 
-  @major_parameters ["channels", "guilds", "webhooks"]
-  @gregorian_epoch 62_167_219_200
-  @registered_name __MODULE__
+  @typedoc """
+  A request to make in the ratelimiter.
+  """
+  @typedoc since: "0.9.0"
+  @type request :: %{
+          method: :get | :post | :put | :delete,
+          route: String.t(),
+          body: iodata(),
+          headers: [{String.t(), String.t()}],
+          params: Enum.t()
+        }
+
+  @typedoc """
+  A bucket-specific request waiting to be queued, alongside its client.
+  """
+  @typedoc since: "0.9.0"
+  @type queued_request :: {request(), client :: :gen_statem.from()}
+
+  @typedoc """
+  Remaining calls on a route, as provided by the API response.
+
+  The ratelimiter internally counts the remaining calls per route to dispatch
+  new requests as soon as it's capable of doing so, but this is only possible
+  if the API already provided us with ratelimit information for an endpoint.
+
+  Therefore, if the initial call on an endpoint is made, the special `:initial`
+  value is specified. This is used by the limit parsing function to set the
+  remaining calls if and only if it is the response for the initial call -
+  otherwise, the value won't represent the truth anymore.
+  """
+  @typedoc since: "0.9.0"
+  @type remaining :: non_neg_integer() | :initial
+
+  @typedoc """
+  The state of the ratelimiter.
+
+  While this has no public use, it is still documented here to provide help
+  when tracing the ratelimiter via `:sys.trace/2` or other means.
+
+  ## Fields
+
+  - `:outstanding`: Outstanding (unqueued) requests per bucket alongside with
+  the remaining calls that may be made on said bucket.
+
+  - `:running`: Requests that have been sent off. Used to associate back the
+  client with a request when the response comes in.
+
+  - `:inflight`: Requests for which we have started getting a response, but we
+  have not fully received it yet. For responses that have a body, this will
+  buffer their body until we can send it back to the client.
+
+  - `:conn`: The `:gun` connection backing the server. Used for making new
+  requests, and updated as the state changes.
+  """
+  @typedoc since: "0.9.0"
+  @type state :: %{
+          outstanding: %{
+            bucket => {remaining, :queue.queue(queued_request)}
+          },
+          running: %{
+            :gun.stream_ref() => {bucket(), request(), :gen_statem.from()}
+          },
+          inflight: %{
+            :gun.stream_ref() =>
+              {status :: non_neg_integer(), headers :: [{String.t(), String.t()}],
+               body :: String.t()}
+          },
+          conn: pid() | nil
+        }
 
   @doc """
   Starts the ratelimiter.
   """
-  @spec start_link([]) :: on_start
-  def start_link([]) do
-    GenServer.start_link(__MODULE__, [], name: @registered_name)
+  @spec start_link([:gen_statem.start_opt()]) :: :gen_statem.start_ret()
+  def start_link(opts) do
+    :gen_statem.start_link({:local, @registered_name}, __MODULE__, [], opts)
   end
 
   def init([]) do
+    # Uncomment the following to trace everything the ratelimiter is doing:
+    #   me = self()
+    #   spawn(fn -> :sys.trace(me, true) end)
+    # See more examples in the `sys` docs.
+    {:ok, :disconnected, empty_state()}
+  end
+
+  def callback_mode, do: :state_functions
+
+  def child_spec(opts) do
+    %{
+      id: __MODULE__,
+      start: {__MODULE__, :start_link, [opts]},
+      type: :worker,
+      restart: :permanent,
+      shutdown: 500
+    }
+  end
+
+  # The Glorious State Machine
+  # Inspired by Peter Morgan's "Postpone: Resource Allocation on Demand"
+  #   https://shortishly.com/blog/postpone-resource-allocation-on-demand/
+
+  def disconnected({:call, _from}, _request, data) do
+    {:next_state, :connecting, data,
+     [
+       {:next_event, :internal, :open},
+       {:state_timeout, :timer.seconds(10), :connect_timeout},
+       :postpone
+     ]}
+  end
+
+  def connecting(:internal, :open, data) do
     domain = to_charlist(Constants.domain())
 
-    open_opts = %{retry: @reconnect_attempts, tls_opts: Constants.gun_tls_opts()}
+    open_opts = %{
+      connect_timeout: :timer.seconds(5),
+      domain_lookup_timeout: :timer.seconds(5),
+      retry: 3,
+      tls_handshake_timeout: :timer.seconds(5),
+      tls_opts: Constants.gun_tls_opts()
+    }
+
     {:ok, conn_pid} = :gun.open(domain, 443, open_opts)
-
-    {:ok, :http2} = :gun.await_up(conn_pid)
-
-    # Start the old route cleanup loop
-    Process.send_after(self(), :remove_old_buckets, @bucket_cleanup_interval)
-
-    {:ok, conn_pid}
+    {:keep_state, %{data | conn: conn_pid}}
   end
 
-  defp get_retry_time(route, method) do
-    route
-    |> get_endpoint(method)
-    |> RatelimitBucket.timeout_for()
+  def connecting(:info, {:gun_up, conn_pid, :http2}, %{conn: conn_pid} = data) do
+    {:next_state, :connected, data}
   end
+
+  def connecting({:call, _from}, _request, _data) do
+    {:keep_state_and_data, :postpone}
+  end
+
+  def connecting(:state_timeout, :connect_timeout, _data) do
+    {:stop, :connect_timeout}
+  end
+
+  def connected({:call, from}, {:queue, request}, %{outstanding: outstanding} = data) do
+    bucket = get_endpoint(request.route, request.method)
+
+    # The outstanding maps contains pairs in the form `{remaining, queue}`,
+    # where `remaining` is the amount of remaining calls we may make, and
+    # `queue` is the waiting line of requests. If the ratelimit on the bucket
+    # expires, the internal timeout event will automatically reschedule queued
+    # requests (starting with a single one to get the calls we may make).
+    case Map.get(outstanding, bucket) do
+      # We have no remaining calls, or the initial call to get rate limiting
+      # information is in flight. Let's join the waiting line.
+      {remaining, queue} when remaining in [0, :initial] ->
+        entry = {request, from}
+
+        data_with_this_queued =
+          put_in(data, [:outstanding, bucket], {remaining, :queue.in(entry, queue)})
+
+        {:keep_state, data_with_this_queued}
+
+      # There is an entry - so somebody did find some ratelimiting information
+      # here recently - but that entry tells us we may make a call right away.
+      {remaining, queue} when remaining > 0 ->
+        # Sanity check. This can be removed after release is considered stable.
+        # Why should this be empty?
+        # Because when we receive ratelimit information and see that there are
+        # still items in the queue, we should internally schedule them right away.
+        # Otherwise, we are mixing up the order.
+        true = :queue.is_empty(queue)
+        {:keep_state_and_data, [{:next_event, :internal, {:run, request, bucket, from}}]}
+
+      # There is no entry. We are the pioneer for this bucket.
+      nil ->
+        # Since we don't have any explicit ratelimiting information for this
+        # bucket yet, we set the remaining calls to zero. While the first
+        # request is in flight, we do not want any further requests to be sent
+        # out until we have ratelimit information from it, at which point other
+        # requests are ran from the queue.
+        run_request = {:next_event, :internal, {:run, request, bucket, from}}
+        data_with_new_queue = put_in(data, [:outstanding, bucket], {0, :queue.new()})
+        {:keep_state, data_with_new_queue, [run_request]}
+    end
+  end
+
+  # Run the given request right now, and do any bookkeeping.
+  def connected(:internal, {:run, request, bucket, from}, %{conn: conn} = data) do
+    stream =
+      Base.request(
+        conn,
+        request.method,
+        request.route,
+        request.body,
+        request.headers,
+        request.params
+      )
+
+    data_with_this_running = put_in(data, [:running, stream], {bucket, request, from})
+    {:keep_state, data_with_this_running}
+  end
+
+  # `:next` will run the next `remaining` requests for the given bucket's
+  # queue, and stop as soon as no more entries are found.
+  def connected(:internal, {:next, 0, _bucket}, _data) do
+    :keep_state_and_data
+  end
+
+  def connected(:internal, {:next, remaining, bucket}, %{outstanding: outstanding} = data) do
+    {^remaining, queue} = Map.fetch!(outstanding, bucket)
+
+    case :queue.out(queue) do
+      {:empty, _queue} ->
+        # Nobody wants to run anything on the bucket. We can hop out.
+        :keep_state_and_data
+
+      {{:value, {request, from}}, updated_queue} ->
+        # We found a request we can queue. Account for the request, start it,
+        # and then try and see if we can queue another one, repeating the cycle
+        # until we have either exhausted the queue of waiting requests or the
+        # remaining calls on the endpoint.
+        accounted_remaining = remaining - 1
+
+        outstanding_without_this =
+          Map.put(outstanding, bucket, {accounted_remaining, updated_queue})
+
+        run_request = {:next_event, :internal, {:run, request, bucket, from}}
+        try_starting_next = {:next_event, :internal, {:next, accounted_remaining, bucket}}
+
+        {:keep_state, %{data | outstanding: outstanding_without_this},
+         [run_request, try_starting_next]}
+    end
+  end
+
+  # The bucket's ratelimit window has expired: we may make calls again. Or, to
+  # be more specific, we may make a single call to find out how many calls we
+  # will have remaining in the next window. If there are waiting entries, we
+  # start scheduling.
+  def connected(
+        {:timeout, bucket},
+        :expired,
+        %{outstanding: outstanding} = data
+      )
+      when is_map_key(outstanding, bucket) do
+    # "remaining" is mostly worthless here, since the bucket's remaining calls
+    # have now reset anyways.
+    {_remaining, queue} = Map.fetch!(outstanding, bucket)
+
+    case :queue.out(queue) do
+      {:empty, _queue} ->
+        # Nobody else has anything to queue, so we're good on cleaning up the bucket.
+        {:keep_state, %{data | outstanding: Map.delete(outstanding, bucket)}}
+
+      {{:value, {request, from}}, updated_queue} ->
+        # There's more where that came from. Update the stored queue and
+        # schedule the request to run instantly. Since this is the initial
+        # request to get the new ratelimit, we also set the special marker.
+        outstanding_with_this = Map.put(outstanding, bucket, {:initial, updated_queue})
+        run_request = {:next_event, :internal, {:run, request, bucket, from}}
+        {:keep_state, %{data | outstanding: outstanding_with_this}, [run_request]}
+    end
+  end
+
+  # Beginning of the response. For responses without a body, this is the
+  # complete response. For responses with a body, we set up the buffer here. In
+  # either case, we parse the retrieved ratelimiting information here.
+  # The "status != 429" should probably be removed on release such that we can
+  # deal with global ratelimits properly.
+  def connected(
+        :info,
+        {:gun_response, _conn, stream, kind, status, headers},
+        %{inflight: inflight, running: running} = data
+      )
+      when status != 429 do
+    {bucket, _request, from} = Map.fetch!(running, stream)
+    response = parse_response(status, headers)
+    limits = parse_headers(response)
+    parse_limits = {:next_event, :internal, {:parse_limits, limits, bucket}}
+
+    case kind do
+      :nofin ->
+        inflight_with_this = Map.put(inflight, stream, {status, headers, ""})
+        {:keep_state, %{data | inflight: inflight_with_this}, parse_limits}
+
+      :fin ->
+        running_without_this = Map.delete(running, stream)
+
+        {:keep_state, %{data | running: running_without_this},
+         [
+           {:reply, from, format_response(response)},
+           parse_limits
+         ]}
+    end
+  end
+
+  def connected(:info, {:gun_data, _conn, stream, :nofin, body}, %{inflight: inflight} = data) do
+    inflight_with_buffer =
+      Map.update!(
+        inflight,
+        stream,
+        fn {status, headers, buffer} ->
+          {status, headers, <<buffer::binary, body::binary>>}
+        end
+      )
+
+    {:keep_state, %{data | inflight: inflight_with_buffer}}
+  end
+
+  def connected(
+        :info,
+        {:gun_data, _conn, stream, :fin, body},
+        %{inflight: inflight, running: running} = data
+      ) do
+    {{_bucket, _request, from}, running_without_this} = Map.pop(running, stream)
+    {{status, headers, buffer}, inflight_without_this} = Map.pop(inflight, stream)
+    full_buffer = <<buffer::binary, body::binary>>
+    unparsed = parse_response(status, headers, full_buffer)
+    response = format_response(unparsed)
+
+    {:keep_state, %{data | inflight: inflight_without_this, running: running_without_this},
+     {:reply, from, response}}
+  end
+
+  # Parse limits and deal with them accordingly by scheduling the bucket expiry
+  # timeout and scheduling the next requests to run as appropriate.
+  def connected(
+        :internal,
+        {:parse_limits, {:bucket_limit, {remaining, reset_after}}, bucket},
+        %{outstanding: outstanding} = data
+      ) do
+    expire_bucket = {{:timeout, bucket}, reset_after, :expired}
+
+    case Map.fetch!(outstanding, bucket) do
+      # This is the first response we got for the absolute initial call.
+      # Update the remaining value to the reported value.
+      {:initial, queue} ->
+        updated_outstanding = Map.put(outstanding, bucket, {remaining, queue})
+
+        {:keep_state, %{data | outstanding: updated_outstanding},
+         [
+           expire_bucket,
+           {:next_event, :internal, {:next, remaining, bucket}}
+         ]}
+
+      # We already have some information about the remaining calls saved. In
+      # that case, don't touch it - just try to reschedule and `:next` will do
+      # the rest.
+      # Why not update the `remaining` value? If we update it to the value
+      # reported in the response, it may jump up again, but the remaining
+      # value, once set, must strictly monotonically decrease. We count the
+      # requests we have running down to zero in the state machine, but when
+      # the first response from Discord comes in, it may tell us we have four
+      # remaining calls while in reality multiple other requests are already in
+      # flight and ready to cause their ratelimiter engineers some headaches.
+      # Therefore, we must rely on our own value (and on the API to not decide
+      # to change the ratelimit halfway through the bucket lifetime).
+      {stored_remaining, _queue} ->
+        {:keep_state_and_data,
+         [
+           expire_bucket,
+           {:next_event, :internal, {:next, stored_remaining, bucket}}
+         ]}
+    end
+  end
+
+  def connected(:internal, {:parse_limits, {:global_limit, retry_after}, _bucket}, data) do
+    {:next_state, :global_limit, data, [{:state_timeout, retry_after, :connected}]}
+  end
+
+  def connected(:info, {:gun_down, conn, :http2, reason, killed_streams}, %{running: running}) do
+    :ok = :gun.flush(conn)
+
+    replies =
+      Enum.map(
+        killed_streams,
+        &{:reply, Map.fetch!(running, &1), {:error, {:connection_died, reason}}}
+      )
+
+    {:next_state, :disconnected, empty_state(), replies}
+  end
+
+  def global_limit(:state_timeout, next, _data) do
+    {:next_state, next}
+  end
+
+  def global_limit(_event, _request, _data) do
+    {:keep_state_and_data, :postpone}
+  end
+
+  defp parse_response(status, headers), do: {:ok, {status, headers, ""}}
+
+  defp parse_response(status, headers, buffer),
+    do: {:ok, {status, headers, buffer}}
+
+  @spec empty_state :: state()
+  defp empty_state,
+    do: %{
+      outstanding: %{},
+      running: %{},
+      inflight: %{},
+      conn: nil
+    }
+
+  # Helper functions
 
   @doc """
-  Queue the given request.
+  Queue the given request and wait for the response synchronously.
 
-  If the ratelimiter tells us to sit it out and we have more than `0` attempts
-  remaining, we sleep out the given retry time and ask it to queue again
-  afterwards.
+  Ratelimits on the endpoint are handled by the ratelimiter. Global ratelimits
+  will cause this to return an error.
   """
-  def queue(request, attempts_remaining \\ @default_attempts_to_requeue) do
-    case GenServer.call(@registered_name, {:queue, request}) do
-      {:error, {:retry_after, time}} when attempts_remaining > 0 ->
-        truncated = :erlang.ceil(time)
-
-        attempt = @default_attempts_to_requeue - attempts_remaining + 1
-
-        Logger.info(
-          "RATELIMITER: Waiting #{truncated}ms to process request with route #{request.route} (try #{attempt} / #{@default_attempts_to_requeue})"
-        )
-
-        Process.sleep(truncated)
-        queue(request, attempts_remaining - 1)
-
-      # We've had enough. Bail.
-      {:error, {:retry_after, _time}} when attempts_remaining == 0 ->
-        {:error, :max_retry_attempts_exceeded}
-
-      result ->
-        result
-    end
-  end
-
-  def handle_call({:queue, request}, _from, conn) do
-    # Do the final serialized double-take of ratelimits to prevent races.
-    # The client already did it, but, you know.
-    case get_retry_time(request.route, request.method) do
-      :now ->
-        {:reply, do_request(request, conn), conn}
-
-      time ->
-        {:reply, {:error, {:retry_after, time}}, conn}
-    end
-  end
-
-  # The gun connection went down. Any requests in `_killed_streams` are definitely gone.
-  # Other streams may also be gone. Gun will reconnect automatically for us.
-  def handle_info({:gun_down, _conn, _proto, _reason, _killed_streams}, state) do
-    {:noreply, state}
-  end
-
-  # Gun automatically reconnected after the connection went down previously.
-  def handle_info({:gun_up, _conn, _proto}, state) do
-    {:noreply, state}
-  end
-
-  def handle_info({:gun_response, _conn, _ref, :nofin, status, _headers}, state) do
-    Logger.debug(
-      "Got unexpected (probably late) HTTP response with status #{status}, discarding it"
-    )
-
-    {:noreply, state}
-  end
-
-  def handle_info({:gun_data, _conn, _ref, _conn_state, _data}, state) do
-    Logger.debug("Got unexpected (probably late) data from a HTTP response, discarding it")
-    {:noreply, state}
-  end
-
-  def handle_info(:remove_old_buckets, state) do
-    RatelimitBucket.cleanup(@bucket_cleanup_window)
-    Process.send_after(self(), :remove_old_buckets, @bucket_cleanup_interval)
-    {:noreply, state}
-  end
-
-  defp do_request(request, conn) do
-    conn
-    |> Base.request(request.method, request.route, request.body, request.headers, request.params)
-    |> handle_headers(get_endpoint(request.route, request.method))
-    |> format_response
+  def queue(request) do
+    :gen_statem.call(@registered_name, {:queue, request})
   end
 
   @spec value_from_rltuple({String.t(), String.t()}) :: String.t() | nil
@@ -203,65 +606,24 @@ defmodule Nostrum.Api.Ratelimiter do
     |> value_from_rltuple()
   end
 
-  defp handle_headers({:error, reason}, _route), do: {:error, reason}
+  # defp parse_headers({:error, _reason} = result), do: result
 
-  defp handle_headers({:ok, {_status, headers, _body}} = response, route) do
-    # Per https://discord.com/developers/docs/topics/rate-limits, all of these
-    # headers are optional, which is why we supply a default of 0.
-
+  defp parse_headers({:ok, {_status, headers, _body}}) do
     global_limit = header_value(headers, "x-ratelimit-global")
-
     remaining = header_value(headers, "x-ratelimit-remaining")
     remaining = unless is_nil(remaining), do: String.to_integer(remaining)
 
-    reset = header_value(headers, "x-ratelimit-reset")
-    reset = unless is_nil(reset), do: :erlang.trunc(:math.ceil(String.to_float(reset)))
-    retry_after = header_value(headers, "retry-after")
+    reset_after = header_value(headers, "x-ratelimit-reset-after")
 
-    retry_after =
-      unless is_nil(retry_after) do
-        # Since for some reason this might not contain a "."
-        # and String.to_float raises if it doesn't
-        {retry_after, ""} = Float.parse(retry_after)
-        :erlang.trunc(:math.ceil(retry_after))
-      end
+    reset_after =
+      unless is_nil(reset_after),
+        do: :erlang.trunc(:math.ceil(String.to_float(reset_after) * 1000))
 
-    origin_timestamp =
-      headers
-      |> header_value("date", "0")
-      |> date_string_to_unix
-
-    latency = abs(origin_timestamp - Util.now())
-
-    # If we have hit a global limit, Discord responds with a 429 and informs
-    # us when we can retry. Our global bucket keeps track of this ratelimit.
-    unless is_nil(global_limit), do: update_global_bucket(route, 0, retry_after, latency)
-
-    # If Discord did send us other ratelimit information, we can also update
-    # the ratelimiter bucket for this route. For some endpoints, such as
-    # when creating a DM with a user, we may not retrieve ratelimit headers.
-    unless is_nil(reset) or is_nil(remaining), do: update_bucket(route, remaining, reset, latency)
-
-    response
-  end
-
-  defp update_bucket(route, remaining, reset_time, latency) do
-    RatelimitBucket.update(route, remaining, reset_time * 1000, latency)
-  end
-
-  defp update_global_bucket(_route, _remaining, retry_after, latency) do
-    RatelimitBucket.update("GLOBAL", 0, retry_after + Util.now(), latency)
-  end
-
-  defp date_string_to_unix(header) do
-    header
-    |> String.to_charlist()
-    |> :httpd_util.convert_request_date()
-    |> erl_datetime_to_timestamp
-  end
-
-  defp erl_datetime_to_timestamp(datetime) do
-    (:calendar.datetime_to_gregorian_seconds(datetime) - @gregorian_epoch) * 1000
+    if is_nil(global_limit) do
+      {:bucket_limit, {remaining, reset_after}}
+    else
+      {:global_limit, reset_after}
+    end
   end
 
   @doc """
@@ -291,8 +653,8 @@ defmodule Nostrum.Api.Ratelimiter do
 
   defp format_response(response) do
     case response do
-      {:error, error} ->
-        {:error, error}
+      # {:error, error} ->
+      #  {:error, error}
 
       {:ok, {status, _, body}} when status in [200, 201] ->
         {:ok, body}

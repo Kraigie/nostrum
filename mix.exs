@@ -61,7 +61,6 @@ defmodule Nostrum.Mixfile do
         Nostrum.Constants,
         Nostrum.Store,
         Nostrum.Store.GuildShardMapping,
-        Nostrum.Store.RatelimitBucket,
         Nostrum.Store.UnavailableGuild,
         Nostrum.Struct,
         Nostrum.Struct.Event
@@ -87,7 +86,7 @@ defmodule Nostrum.Mixfile do
   def groups_for_modules do
     [
       Api: [
-        ~r/Nostrum.Api/,
+        ~r/Nostrum.Api$/,
         ~r/Nostrum.Consumer/,
         ~r/Nostrum.(Permission|Voice)/
       ],
@@ -112,6 +111,7 @@ defmodule Nostrum.Mixfile do
         ~r/Nostrum.Store.\w+.\w+$/
       ],
       "Internal modules": [
+        ~r/Nostrum.Api.Ratelimiter/,
         ~r/Nostrum.Shard/
       ]
     ]
