@@ -303,7 +303,11 @@ defmodule Nostrum.Api.Ratelimiter do
     open_opts = %{
       connect_timeout: :timer.seconds(5),
       domain_lookup_timeout: :timer.seconds(5),
-      retry: 3,
+      # Do not retry here. If we retry, it is possible that after the state
+      # machine heads into disconnected state, it receives an unexpected
+      # `:gun_up` message. We want the state machine to manage the connection
+      # lifecycle fully on its own.
+      retry: 0,
       tls_handshake_timeout: :timer.seconds(5),
       tls_opts: Constants.gun_tls_opts()
     }
