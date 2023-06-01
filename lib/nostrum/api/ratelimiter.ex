@@ -563,7 +563,10 @@ defmodule Nostrum.Api.Ratelimiter do
     replies =
       Enum.map(
         killed_streams,
-        &{:reply, Map.fetch!(running, &1), {:error, {:connection_died, reason}}}
+        fn stream ->
+          {_bucket, _request, client} = Map.fetch!(running, stream)
+          {:reply, client, {:error, {:connection_died, reason}}}
+        end
       )
 
     {:next_state, :disconnected, empty_state(), replies}
