@@ -1,3 +1,5 @@
+# See the appup cookbook for instructions:
+# https://www.erlang.org/doc/design_principles/appup_cookbook.html
 {
   '0.9.0-alpha2',
   [

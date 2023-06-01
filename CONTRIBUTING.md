@@ -39,3 +39,9 @@ mix compile --force && mix format && mix credo --strict --ignore 'TagTODO' && mi
 ```
 
 Please fix any warnings that appear.
+
+If you want to go the extra mile for your pull request (and save the
+maintainers some work), you can update the [`appup` file](./appup.ex) according
+to your changes, see the [Appup
+Cookbook](https://www.erlang.org/doc/design_principles/appup_cookbook.html) for
+details.
