@@ -7,7 +7,7 @@
     <meta name="generator" content="ExDoc v0.29.4">
     <meta name="project" content="Nostrum v0.9.0-dev">
 
-    <title>Nostrum.Struct.Embed.Provider — Nostrum v0.9.0-dev</title>
+    <title>Nostrum.StateMachineTranslator — Nostrum v0.9.0-dev</title>
     <link rel="stylesheet" href="dist/html-elixir-HHVY3JYD.css" />
 
 
@@ -98,19 +98,24 @@ Nostrum
 </button>
 
 
-    <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/embed/provider.ex#L1" title="View Source" class="icon-action" rel="help">
+    <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/state_machine_translator.ex#L1" title="View Source" class="icon-action" rel="help">
       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
       <span class="sr-only">View Source</span>
     </a>
 
-  <span translate="no">Nostrum.Struct.Embed.Provider</span> 
+  <span translate="no">Nostrum.StateMachineTranslator</span> 
   <small class="app-vsn" translate="no">(Nostrum v0.9.0-dev)</small>
 
 </h1>
 
 
   <section id="moduledoc">
-<p>Struct representing a Discord embed provider.</p>
+<p>Translate error reports for <code class="inline">:gen_statem</code> modules in Elixir.</p><p>By default, Elixir will ignore these messages altogether, see <a href="https://elixirforum.com/t/why-does-logger-translator-ignore-gen-statem-reports/37418">this
+ElixirForum
+post</a>.
+A possible workaround seems to be using the <code class="inline">gen_state_machine</code> library, but
+pulling in a library purely to have error reporting for something built-in to
+OTP seems pretty strange to me.</p>
   </section>
 
 
@@ -122,36 +127,16 @@ Nostrum
       </a>
       Summary
     </h1>
-<div class="summary-types summary">
+<div class="summary-functions summary">
   <h2>
-    <a href="#types">Types</a>
+    <a href="#functions">Functions</a>
   </h2>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#t:name/0" translate="no">name()</a>
+        <a href="#translate/4" translate="no">translate(min_level, arg2, arg3, arg4)</a>
 
       </div>
-
-        <div class="summary-synopsis"><p>Name of the provider</p></div>
-
-    </div>
-
-    <div class="summary-row">
-      <div class="summary-signature">
-        <a href="#t:t/0" translate="no">t()</a>
-
-      </div>
-
-    </div>
-
-    <div class="summary-row">
-      <div class="summary-signature">
-        <a href="#t:url/0" translate="no">url()</a>
-
-      </div>
-
-        <div class="summary-synopsis"><p>URL of provider</p></div>
 
     </div>
 
@@ -160,97 +145,37 @@ Nostrum
   </section>
 
 
-  <section id="types" class="details-list">
+  <section id="functions" class="details-list">
     <h1 class="section-heading">
-      <a class="hover-link" href="#types">
+      <a class="hover-link" href="#functions">
         <i class="ri-link-m" aria-hidden="true"></i>
         <span class="sr-only">Link to this section</span>
       </a>
-Types
+Functions
     </h1>
-    <div class="types-list">
-<section class="detail" id="t:name/0">
+    <div class="functions-list">
+<section class="detail" id="translate/4">
 
   <div class="detail-header">
-    <a href="#t:name/0" class="detail-link" title="Link to this type">
+    <a href="#translate/4" class="detail-link" title="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this type</span>
+      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">name()</h1>
+    <h1 class="signature" translate="no">translate(min_level, arg2, arg3, arg4)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/embed/provider.ex#L25" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/state_machine_translator.ex#L15" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
 
 
-  </div>
-
-  <section class="docstring">
-
-      <div class="specs">
-
-          <pre translate="no"><span class="attribute">@type</span> name() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>() | nil</pre>
-
-      </div>
-
-<p>Name of the provider</p>
-  </section>
-</section>
-<section class="detail" id="t:t/0">
-
-  <div class="detail-header">
-    <a href="#t:t/0" class="detail-link" title="Link to this type">
-      <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this type</span>
-    </a>
-    <h1 class="signature" translate="no">t()</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/embed/provider.ex#L30" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
-
+      <span class="note">(since 0.9.0)</span>
 
   </div>
 
   <section class="docstring">
 
-      <div class="specs">
 
-          <pre translate="no"><span class="attribute">@type</span> t() :: %Nostrum.Struct.Embed.Provider{name: <a href="#t:name/0">name</a>(), url: <a href="#t:url/0">url</a>()}</pre>
-
-      </div>
-
-
-  </section>
-</section>
-<section class="detail" id="t:url/0">
-
-  <div class="detail-header">
-    <a href="#t:url/0" class="detail-link" title="Link to this type">
-      <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this type</span>
-    </a>
-    <h1 class="signature" translate="no">url()</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/embed/provider.ex#L28" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
-
-
-  </div>
-
-  <section class="docstring">
-
-      <div class="specs">
-
-          <pre translate="no"><span class="attribute">@type</span> url() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>() | nil</pre>
-
-      </div>
-
-<p>URL of provider</p>
   </section>
 </section>
 
@@ -265,7 +190,7 @@ Types
 
               <a href="https://preview.hex.pm/preview/nostrum/0.9.0-dev">Hex Preview</a>
 
-                (<a href="https://preview.hex.pm/preview/nostrum/0.9.0-dev/show/lib/nostrum/struct/embed/provider.ex">current file</a>)
+                (<a href="https://preview.hex.pm/preview/nostrum/0.9.0-dev/show/lib/nostrum/state_machine_translator.ex">current file</a>)
 
             </span>
 
