@@ -13,7 +13,7 @@
 
     <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
     <script src="dist/handlebars.templates-XWGFFSCD.js"></script>
-    <script src="dist/sidebar_items-0D78A9C8.js"></script>
+    <script src="dist/sidebar_items-E2AFCB65.js"></script>
 
       <script src="docs_config.js"></script>
 
@@ -115,23 +115,35 @@ implementation you want to use. This can only be set at dependency compilation
 time. A common situation is that you don't want to cache presences in your bot,
 most likely you don't care about user's status, so you can disable it altogether
 by using the <code class="inline">NoOp</code> presence cache:</p><pre><code class="makeup elixir" translate="no"><span class="n">config</span><span class="w"> </span><span class="ss">:nostrum</span><span class="p">,</span><span class="w">
-  </span><span class="ss">caches</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="6099092113-1">%{</span><span class="w">
+  </span><span class="ss">caches</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="1210404713-1">%{</span><span class="w">
     </span><span class="ss">presences</span><span class="p">:</span><span class="w"> </span><span class="nc">Nostrum.Cache.PresenceCache.NoOp</span><span class="w">
-  </span><span class="p" data-group-id="6099092113-1">}</span></code></pre><p>In addition to regular caches that associate Discord snowflakes with the proper
+  </span><span class="p" data-group-id="1210404713-1">}</span></code></pre><p>In addition to regular caches that associate Discord snowflakes with the proper
 &quot;full&quot; object, nostrum also maintains junction table-like mappings that allow
 you to find the matching object from one cache in another. One example for this
 is <a href="Nostrum.Cache.ChannelGuildMapping.html"><code class="inline">Nostrum.Cache.ChannelGuildMapping</code></a>.</p><p>Nostrum also ships with Mnesia-based caches. <strong>These are only compiled in when
 mnesia is available</strong>: they may not be available on Nerves or when Mnesia was
-not installed with OTP.</p><h3 id="implementations" class="section-heading">
+not installed with OTP.</p><h2 id="implementations" class="section-heading">
   <a href="#implementations" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
   <p class="sr-only">implementations</p>
   </a>
   Implementations
+</h2>
+<h3 id="ets-caching" class="section-heading">
+  <a href="#ets-caching" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">ets-caching</p>
+  </a>
+  ETS caching
 </h3>
-<h4>ETS caching</h4><p>Caching based on <code class="inline">:ets</code> is used by default. No configuration is required. Fast,
+<p>Caching based on <code class="inline">:ets</code> is used by default. No configuration is required. Fast,
 light on memory, but does not support any form of distribution or secondary
 indexing: queries such as fetching all guild members for a guild by its ID will
-perform a full table scan. For smaller bots, this is perfectly acceptable.</p><h4>Mnesia caching</h4><p>Mnesia-based caching is mainly suggested for larger bots that require
+perform a full table scan. For smaller bots, this is perfectly acceptable.</p><h3 id="mnesia-caching" class="section-heading">
+  <a href="#mnesia-caching" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">mnesia-caching</p>
+  </a>
+  Mnesia caching
+</h3>
+<p>Mnesia-based caching is mainly suggested for larger bots that require
 features such as cache distribution, fragmentation, secondary indexing and more.</p><p>The caches will attempt to create their tables automatically at startup:
 therefore, Mnesia must be started ahead of nostrum. Caches expose a function
 <code class="inline">table/0</code> that can be called to retrieve the table name used by the cache and
@@ -140,26 +152,32 @@ consistency. If needed, a compile-time configuration option for the cache to
 switch this can be added.</p><p>Mnesia-based caching assumes the user is familar with usage and
 maintenance of Mnesia: the <a href="https://www.erlang.org/doc/apps/mnesia/users_guide.html">Mnesia User's
 Guide</a> is a good
-starting point.</p><h4>NoOp caching</h4><p>The NoOp cache adapters are supplied for the case where you do not want to cache
+starting point.</p><h3 id="noop-caching" class="section-heading">
+  <a href="#noop-caching" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">noop-caching</p>
+  </a>
+  NoOp caching
+</h3>
+<p>The NoOp cache adapters are supplied for the case where you do not want to cache
 specific data from Discord at all.</p><p>These cache adapters presently also don't send out any data they receive either:
 this means that for caches using the NoOp cache adapters, you won't receive any
-gateway events.</p><h3 id="cache-invalidation" class="section-heading">
+gateway events.</p><h2 id="cache-invalidation" class="section-heading">
   <a href="#cache-invalidation" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
   <p class="sr-only">cache-invalidation</p>
   </a>
   Cache invalidation
-</h3>
+</h2>
 <p>nostrum does not invalidate cache in any special way: it will maintain it in
 response to gateway events (for instance by deleting a guild and its members
 upon leaving it), but won't regularly prune caches or associate expiration times
 with entries. For volatile (RAM-based) caches this is perfectly fine, however,
 when implementing your own cache backend that persists to disk in some way, you
-need to take care of this yourself.</p><h3 id="cache-performance" class="section-heading">
+need to take care of this yourself.</p><h2 id="cache-performance" class="section-heading">
   <a href="#cache-performance" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
   <p class="sr-only">cache-performance</p>
   </a>
   Cache performance
-</h3>
+</h2>
 <p>nostrum strives to provide the most performant caches on the Discord bot caching
 market. If you run into performance issues with caches that you feel are not
 adequately documented as such, please feel free to open an issue.</p><p>Benchmarks for caches can be found in the <a href="https://github.com/Kraigie/nostrum/tree/master/benchmarks"><code class="inline">benchmarks/</code>
