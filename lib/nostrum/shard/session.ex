@@ -145,6 +145,13 @@ defmodule Nostrum.Shard.Session do
     {:keep_state_and_data, :postpone}
   end
 
+  # If we've been here before, we want to use the resume gateway URL to connect
+  # instead of the regular gateway URL.
+  def connecting_http(:enter, from, %{resume_gateway: resume_gateway} = data)
+      when resume_gateway != nil do
+    connecting_http(:enter, from, %{data | gateway: resume_gateway})
+  end
+
   def connecting_http(:enter, _from, %{gateway: gateway} = data) do
     set_timeout = {:state_timeout, @timeout_connect, :connect_timeout}
 

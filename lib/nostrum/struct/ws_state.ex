@@ -12,6 +12,7 @@ defmodule Nostrum.Struct.WSState do
     :conn_pid,
     :stream,
     :gateway,
+    :resume_gateway,
     :last_heartbeat_send,
     :last_heartbeat_ack,
     :heartbeat_ack,
@@ -50,6 +51,10 @@ defmodule Nostrum.Struct.WSState do
   @typedoc "Gateway URL"
   @type gateway :: String.t()
 
+  @typedoc "Gateway URL to use for resuming."
+  @typedoc since: "0.9.0"
+  @type resume_gateway :: String.t() | nil
+
   @typedoc """
   The time the last heartbeat was sent, if a heartbeat hasn't been sent it
   will be the time the websocket process was started
@@ -80,6 +85,7 @@ defmodule Nostrum.Struct.WSState do
           conn_pid: conn_pid,
           stream: stream,
           gateway: gateway,
+          resume_gateway: resume_gateway,
           last_heartbeat_send: last_heartbeat_send,
           last_heartbeat_ack: last_heartbeat_ack,
           heartbeat_ack: heartbeat_ack,

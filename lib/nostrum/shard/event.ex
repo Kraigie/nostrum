@@ -20,7 +20,9 @@ defmodule Nostrum.Shard.Event do
 
     if payload.t == :READY do
       Logger.info("READY")
-      {%{state | session: payload.d.session_id}, []}
+
+      {%{state | session: payload.d.session_id, resume_gateway: payload.d.resume_gateway_url},
+       []}
     else
       {state, []}
     end
