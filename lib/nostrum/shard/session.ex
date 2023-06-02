@@ -266,7 +266,11 @@ defmodule Nostrum.Shard.Session do
         %{conn: conn} = data
       ) do
     Logger.info("Lost complete shard connection. Attempting reconnect.")
-    :gun.flush(conn)
+    # Brutally close to make sure we don't mess up the state machine
+    # due to gun reconnecting automatically. For the WebSocket disconnect
+    # case, this is fine.
+    :ok = :gun.close(conn)
+    :ok = :gun.flush(conn)
     connect = {:next_event, :internal, :connect}
     {:next_state, :disconnected, %{data | conn: nil, stream: nil}, connect}
   end
