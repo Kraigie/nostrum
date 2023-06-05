@@ -656,10 +656,10 @@ defmodule Nostrum.Api.Ratelimiter do
       is_nil(remaining) and is_nil(reset_after) ->
         :congratulations_you_killed_upstream
 
-      is_nil(global_limit) ->
+      !is_nil(remaining) and !is_nil(reset_after) ->
         {:bucket_limit, {remaining, reset_after}}
 
-      true ->
+      !is_nil(global_limit) ->
         {:global_limit, reset_after}
     end
   end
