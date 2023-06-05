@@ -117,6 +117,13 @@ defmodule Nostrum.Api.Ratelimiter do
   shut down - for instance, because we simply reached the maximum idle time on
   the HTTP/2 connection - we will simply move on.
 
+  #### Upstream errors
+
+  The ratelimiter works by queueing requests aggressively as soon as it has
+  ratelimit information to do so. If no ratelimit information is available, for
+  instance, because Discord returned us a 502 status code, the ratelimiter will
+  not automatically kick the queue to start further running requests.
+
   #### Other internal issues
 
   Any other internal problems that are not handled appropriately in the
@@ -554,9 +561,25 @@ defmodule Nostrum.Api.Ratelimiter do
     {:next_state, :global_limit, data, [{:state_timeout, retry_after, :connected}]}
   end
 
+  # If we did not get any ratelimit headers let's not send further requests to
+  # this endpoint until we get another request to send requests to it. This
+  # means that the request queue is effectively paused until another response
+  # receives ratelimit headers - so individual requests resulting in 500s
+  # (which don't send ratelimit headers) will just stop and not cause a train
+  # of hurt. New requests that result in positive feedback will then kick the
+  # queue again.
+  def connected(:internal, {:parse_limits, :congratulations_you_killed_upstream, bucket}, _data) do
+    Logger.warning(
+      "No ratelimits received on bucket #{bucket}, likely due to a server error. " <>
+        "Holding off request queue pipelining until next client request."
+    )
+
+    :keep_state_and_data
+  end
+
   def connected(:info, {:gun_down, conn, :http2, reason, killed_streams}, %{running: running}) do
     # Even with `retry: 0`, gun seems to try and reconnect, potentially because
-    # of WebSocket. Force the connectio to die.
+    # of WebSocket. Force the connection to die.
     :ok = :gun.close(conn)
     :ok = :gun.flush(conn)
 
@@ -629,10 +652,15 @@ defmodule Nostrum.Api.Ratelimiter do
       unless is_nil(reset_after),
         do: :erlang.trunc(:math.ceil(String.to_float(reset_after) * 1000))
 
-    if is_nil(global_limit) do
-      {:bucket_limit, {remaining, reset_after}}
-    else
-      {:global_limit, reset_after}
+    cond do
+      is_nil(remaining) and is_nil(reset_after) ->
+        :congratulations_you_killed_upstream
+
+      is_nil(global_limit) ->
+        {:bucket_limit, {remaining, reset_after}}
+
+      true ->
+        {:global_limit, reset_after}
     end
   end
 
