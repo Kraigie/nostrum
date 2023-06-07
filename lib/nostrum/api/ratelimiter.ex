@@ -396,7 +396,24 @@ defmodule Nostrum.Api.Ratelimiter do
 
   # `:next` will run the next `remaining` requests for the given bucket's
   # queue, and stop as soon as no more entries are found.
-  def connected(:internal, {:next, 0, _bucket}, _data) do
+  def connected(:internal, {:next, 0, bucket}, %{outstanding: outstanding}) do
+    # Purely for debug logging purposes, we check if we have more here.
+    # As we don't have remaining calls, no queueing is done.
+    {_remaining, queue} = Map.fetch!(outstanding, bucket)
+
+    case :queue.peek(queue) do
+      {:value, {%{route: route}, _from}} ->
+        total = :queue.len(queue)
+
+        Logger.debug(
+          "Request to #{inspect(route)} and #{total - 1} other request(s) for " <>
+            "bucket #{inspect(bucket)} are waiting in queue for ratelimits to expire."
+        )
+
+      :empty ->
+        :ok
+    end
+
     :keep_state_and_data
   end
 
