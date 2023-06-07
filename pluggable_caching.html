@@ -13,7 +13,7 @@
 
     <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
     <script src="dist/handlebars.templates-XWGFFSCD.js"></script>
-    <script src="dist/sidebar_items-ADECEE3C.js"></script>
+    <script src="dist/sidebar_items-56817812.js"></script>
 
       <script src="docs_config.js"></script>
 
@@ -115,9 +115,9 @@ implementation you want to use. This can only be set at dependency compilation
 time. A common situation is that you don't want to cache presences in your bot,
 most likely you don't care about user's status, so you can disable it altogether
 by using the <code class="inline">NoOp</code> presence cache:</p><pre><code class="makeup elixir" translate="no"><span class="n">config</span><span class="w"> </span><span class="ss">:nostrum</span><span class="p">,</span><span class="w">
-  </span><span class="ss">caches</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="2741964840-1">%{</span><span class="w">
+  </span><span class="ss">caches</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="6162051659-1">%{</span><span class="w">
     </span><span class="ss">presences</span><span class="p">:</span><span class="w"> </span><span class="nc">Nostrum.Cache.PresenceCache.NoOp</span><span class="w">
-  </span><span class="p" data-group-id="2741964840-1">}</span></code></pre><p>In addition to regular caches that associate Discord snowflakes with the proper
+  </span><span class="p" data-group-id="6162051659-1">}</span></code></pre><p>In addition to regular caches that associate Discord snowflakes with the proper
 &quot;full&quot; object, nostrum also maintains junction table-like mappings that allow
 you to find the matching object from one cache in another. One example for this
 is <a href="Nostrum.Cache.ChannelGuildMapping.html"><code class="inline">Nostrum.Cache.ChannelGuildMapping</code></a>.</p><p>Nostrum also ships with Mnesia-based caches. <strong>These are only compiled in when

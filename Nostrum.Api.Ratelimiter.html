@@ -13,7 +13,7 @@
 
     <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
     <script src="dist/handlebars.templates-XWGFFSCD.js"></script>
-    <script src="dist/sidebar_items-ADECEE3C.js"></script>
+    <script src="dist/sidebar_items-56817812.js"></script>
 
       <script src="docs_config.js"></script>
 
@@ -135,9 +135,9 @@ documented for completeness and people curious to look behind the covers.</p></b
 <p>The ratelimiter is fully asynchronous internally. In theory, it also supports
 queueing requests in an asynchronous manner. However, support for this is
 currently not implemented in <a href="Nostrum.Api.html"><code class="inline">Nostrum.Api</code></a>.</p><p>If you want to make one or multiple asynchronous requests manually, you can
-use the following pattern:</p><pre><code class="makeup elixir" translate="no"><span class="n">req</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">:gen_statem</span><span class="o">.</span><span class="n">send_request</span><span class="p" data-group-id="9580626024-1">(</span><span class="nc">Nostrum.Api.Ratelimiter</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="9580626024-2">{</span><span class="ss">:queue</span><span class="p">,</span><span class="w"> </span><span class="n">request</span><span class="p" data-group-id="9580626024-2">}</span><span class="p" data-group-id="9580626024-1">)</span><span class="w">
+use the following pattern:</p><pre><code class="makeup elixir" translate="no"><span class="n">req</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">:gen_statem</span><span class="o">.</span><span class="n">send_request</span><span class="p" data-group-id="4028523052-1">(</span><span class="nc">Nostrum.Api.Ratelimiter</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="4028523052-2">{</span><span class="ss">:queue</span><span class="p">,</span><span class="w"> </span><span class="n">request</span><span class="p" data-group-id="4028523052-2">}</span><span class="p" data-group-id="4028523052-1">)</span><span class="w">
 </span><span class="c1"># ...</span><span class="w">
-</span><span class="n">response</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">:gen_statem</span><span class="o">.</span><span class="n">receive_response</span><span class="p" data-group-id="9580626024-3">(</span><span class="n">req</span><span class="p">,</span><span class="w"> </span><span class="n">timeout</span><span class="p" data-group-id="9580626024-3">)</span></code></pre><p>where <code class="inline">request</code> is a map describing the request to run - see <a href="Nostrum.Api.html"><code class="inline">Nostrum.Api</code></a>
+</span><span class="n">response</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">:gen_statem</span><span class="o">.</span><span class="n">receive_response</span><span class="p" data-group-id="4028523052-3">(</span><span class="n">req</span><span class="p">,</span><span class="w"> </span><span class="n">timeout</span><span class="p" data-group-id="4028523052-3">)</span></code></pre><p>where <code class="inline">request</code> is a map describing the request to run - see <a href="Nostrum.Api.html"><code class="inline">Nostrum.Api</code></a>
 for more information. You can also send multiple requests at the same time
 and wait for their response: see <a href="https://www.erlang.org/doc/man/gen_statem.html#reqids_add-3"><code class="inline">:gen_statem.reqids_add/3</code></a> and
 <a href="https://www.erlang.org/doc/man/gen_statem.html#wait_response-3"><code class="inline">:gen_statem.wait_response/3</code></a> for more information.</p><h2 id="module-multi-node" class="section-heading">
@@ -324,6 +324,16 @@ handle this explicitly via <code class="inline">handle_info</code>.</p></li></ul
         <a href="#child_spec/1" translate="no">child_spec(opts)</a>
 
       </div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#code_change/4" translate="no">code_change(version, state, data, extra)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Callback implementation for <a href="https://www.erlang.org/doc/man/gen_statem.html#Module:code_change-4"><code class="inline">:gen_statem.code_change/4</code></a>.</p></div>
 
     </div>
 
@@ -656,6 +666,28 @@ Functions
 
   </section>
 </section>
+<section class="detail" id="code_change/4">
+
+  <div class="detail-header">
+    <a href="#code_change/4" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">code_change(version, state, data, extra)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L608" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>Callback implementation for <a href="https://www.erlang.org/doc/man/gen_statem.html#Module:code_change-4"><code class="inline">:gen_statem.code_change/4</code></a>.</p>
+  </section>
+</section>
 <section class="detail" id="connected/3">
 
   <div class="detail-header">
@@ -731,7 +763,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">get_endpoint(route, method)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L671" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L679" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -803,7 +835,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">queue(request)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L628" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L636" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
