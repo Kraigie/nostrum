@@ -603,6 +603,14 @@ defmodule Nostrum.Api.Ratelimiter do
     {:keep_state_and_data, :postpone}
   end
 
+  # End of state functions
+
+  def code_change(_version, state, data, _extra) do
+    {:ok, state, data}
+  end
+
+  # End of callback functions
+
   defp parse_response(status, headers), do: {:ok, {status, headers, ""}}
 
   defp parse_response(status, headers, buffer),
