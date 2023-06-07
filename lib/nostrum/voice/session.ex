@@ -1,7 +1,7 @@
 defmodule Nostrum.Voice.Session do
   @moduledoc false
 
-  alias Nostrum.Cache.{ChannelCache, GuildCache}
+  alias Nostrum.Cache.GuildCache
   alias Nostrum.Constants
   alias Nostrum.ConsumerGroup
   alias Nostrum.Shard.Dispatch
@@ -27,10 +27,13 @@ defmodule Nostrum.Voice.Session do
     {:ok, nil, {:continue, args}}
   end
 
-  def handle_continue(%VoiceState{} = voice, nil) do
+  def handle_continue(%VoiceState{channel_id: channel_id, guild_id: guild_id} = voice, nil) do
+    %{name: guild_name, channels: %{^channel_id => %{name: channel_name}}} =
+      GuildCache.get!(guild_id)
+
     Logger.metadata(
-      guild: ~s|"#{GuildCache.get!(voice.guild_id).name}"|,
-      channel: ~s|"#{ChannelCache.get!(voice.channel_id).name}"|
+      guild: ~s|"#{guild_name}"|,
+      channel: ~s|"#{channel_name}"|
     )
 
     [host, port] = String.split(voice.gateway, ":")
