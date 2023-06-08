@@ -30,6 +30,6 @@ defmodule Nostrum.StateMachineTranslator do
     # raw erlang format. you know it, you love it.
     # thanks to OTP for exposing this in the first place.
     log = :gen_statem.format_log(report, %{})
-    {:ok, log, []}
+    {:ok, :erlang.list_to_binary(log), []}
   end
 end
