@@ -28,6 +28,7 @@ defmodule Nostrum.Struct.User do
     :id,
     :username,
     :discriminator,
+    :global_name,
     :avatar,
     :bot,
     :mfa_enabled,
@@ -48,6 +49,9 @@ defmodule Nostrum.Struct.User do
 
   @typedoc "The user's 4--digit discord-tag"
   @type discriminator :: String.t()
+
+  @typedoc "The user's display name, if it is set"
+  @type global_name :: String.t() | nil
 
   @typedoc "User's avatar hash"
   @type avatar :: String.t() | nil
@@ -71,6 +75,7 @@ defmodule Nostrum.Struct.User do
           id: id,
           username: username,
           discriminator: discriminator,
+          global_name: global_name,
           avatar: avatar,
           bot: bot,
           mfa_enabled: mfa_enabled,
@@ -111,6 +116,12 @@ defmodule Nostrum.Struct.User do
   "https://cdn.discordapp.com/avatars/80351110224678912/8342729096ea3675442027381ff50dfe.png"
 
   iex> user = %Nostrum.Struct.User{avatar: nil,
+  ...>                             id: 80351110224678912,
+  ...>                             discriminator: "0"}
+  iex> Nostrum.Struct.User.avatar_url(user)
+  "https://cdn.discordapp.com/embed/avatars/5.png"
+
+  iex> user = %Nostrum.Struct.User{avatar: nil,
   ...>                             discriminator: "1337"}
   iex> Nostrum.Struct.User.avatar_url(user)
   "https://cdn.discordapp.com/embed/avatars/2.png"
@@ -119,11 +130,14 @@ defmodule Nostrum.Struct.User do
   @spec avatar_url(t, String.t()) :: String.t()
   def avatar_url(user, image_format \\ "webp")
 
-  def avatar_url(%__MODULE__{avatar: nil, discriminator: disc}, _) do
+  def avatar_url(%__MODULE__{id: id, avatar: nil, discriminator: disc}, _) do
+    # Calculation is different for pomelo users vs non
+    # https://github.com/discord/discord-api-docs/pull/6218#discussion_r1221914451
     image_name =
-      disc
-      |> String.to_integer()
-      |> rem(5)
+      case disc do
+        "0" -> Bitwise.bsr(id, 22) |> rem(6)
+        disc -> String.to_integer(disc) |> rem(5)
+      end
 
     URI.encode(Constants.cdn_url() <> Constants.cdn_embed_avatar(image_name))
   end
@@ -132,9 +146,18 @@ defmodule Nostrum.Struct.User do
     do: URI.encode(Constants.cdn_url() <> Constants.cdn_avatar(id, avatar, image_format))
 
   @doc """
-  Returns a user's `:username` and `:discriminator` separated by a hashtag.
+  Returns a user's `:global_name` if present, otherwise returns their
+  `:username` and `:discriminator` separated by a hashtag.
 
   ## Examples
+
+  ```elixir
+  iex> user = %Nostrum.Struct.User{global_name: "TheRealJason",
+  ...>                             username: "therealjason",
+  ...>                             discriminator: "0"}
+  iex> Nostrum.Struct.User.full_name(user)
+  "TheRealJason"
+  ```
 
   ```elixir
   iex> user = %Nostrum.Struct.User{username: "b1nzy",
@@ -144,8 +167,11 @@ defmodule Nostrum.Struct.User do
   ```
   """
   @spec full_name(t) :: String.t()
-  def full_name(%__MODULE__{username: username, discriminator: disc}),
+  def full_name(%__MODULE__{global_name: nil, username: username, discriminator: disc}),
     do: "#{username}##{disc}"
+
+  def full_name(%__MODULE__{global_name: global_name}),
+    do: global_name
 
   @doc false
   def p_encode do
