@@ -524,10 +524,10 @@ defmodule Nostrum.Api.Ratelimiter do
       ) do
     expire_bucket = {{:timeout, bucket}, reset_after, :expired}
 
-    case Map.fetch!(outstanding, bucket) do
+    case Map.fetch(outstanding, bucket) do
       # This is the first response we got for the absolute initial call.
       # Update the remaining value to the reported value.
-      {:initial, queue} ->
+      {:ok, {:initial, queue}} ->
         updated_outstanding = Map.put(outstanding, bucket, {remaining, queue})
 
         {:keep_state, %{data | outstanding: updated_outstanding},
@@ -548,12 +548,22 @@ defmodule Nostrum.Api.Ratelimiter do
       # flight and ready to cause their ratelimiter engineers some headaches.
       # Therefore, we must rely on our own value (and on the API to not decide
       # to change the ratelimit halfway through the bucket lifetime).
-      {stored_remaining, _queue} ->
+      {:ok, {stored_remaining, _queue}} ->
         {:keep_state_and_data,
          [
            expire_bucket,
            {:next_event, :internal, {:next, stored_remaining, bucket}}
          ]}
+
+      # There is no more bucket with outstanding requests anymore.
+      # This can happen if the ratelimiter reset - emptying the ratelimiter
+      # info - occurs before we receive and parse the response here.
+      # In that case, it means that there are also no ratelimits
+      # on the route anymore, under the assumption that the ratelimiter's
+      # internal remaining -> 0 counting worked properly. In that case,
+      # we also don't need to reschedule.
+      :error ->
+        :keep_state_and_data
     end
   end
 
