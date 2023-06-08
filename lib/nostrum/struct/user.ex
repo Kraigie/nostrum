@@ -116,6 +116,12 @@ defmodule Nostrum.Struct.User do
   "https://cdn.discordapp.com/avatars/80351110224678912/8342729096ea3675442027381ff50dfe.png"
 
   iex> user = %Nostrum.Struct.User{avatar: nil,
+  ...>                             id: 80351110224678912,
+  ...>                             discriminator: "0"}
+  iex> Nostrum.Struct.User.avatar_url(user)
+  "https://cdn.discordapp.com/embed/avatars/5.png"
+
+  iex> user = %Nostrum.Struct.User{avatar: nil,
   ...>                             discriminator: "1337"}
   iex> Nostrum.Struct.User.avatar_url(user)
   "https://cdn.discordapp.com/embed/avatars/2.png"
@@ -125,12 +131,13 @@ defmodule Nostrum.Struct.User do
   def avatar_url(user, image_format \\ "webp")
 
   def avatar_url(%__MODULE__{id: id, avatar: nil, discriminator: disc}, _) do
+    # Calculation is different for pomelo users vs non
+    # https://github.com/discord/discord-api-docs/pull/6218#discussion_r1221914451
     image_name =
       case disc do
-        "0" -> Bitwise.bsr(id, 22)
-        disc -> String.to_integer(disc)
+        "0" -> Bitwise.bsr(id, 22) |> rem(6)
+        disc -> String.to_integer(disc) |> rem(5)
       end
-      |> rem(5)
 
     URI.encode(Constants.cdn_url() <> Constants.cdn_embed_avatar(image_name))
   end
