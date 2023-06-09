@@ -36,7 +36,7 @@ defmodule Nostrum.Application do
 
     if Application.get_env(:nostrum, :dev),
       do: Supervisor.start_link(children ++ [DummySupervisor], strategy: :one_for_one),
-      else: Supervisor.start_link(children, strategy: :one_for_one)
+      else: Supervisor.start_link(children, strategy: :one_for_one, name: Nostrum.Supervisor)
   end
 
   defp check_executables do
