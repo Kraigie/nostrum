@@ -373,7 +373,7 @@ defmodule Nostrum.Api.Ratelimiter do
         # out until we have ratelimit information from it, at which point other
         # requests are ran from the queue.
         run_request = {:next_event, :internal, {:run, request, bucket, from}}
-        data_with_new_queue = put_in(data, [:outstanding, bucket], {0, :queue.new()})
+        data_with_new_queue = put_in(data, [:outstanding, bucket], {:initial, :queue.new()})
         {:keep_state, data_with_new_queue, [run_request]}
     end
   end
