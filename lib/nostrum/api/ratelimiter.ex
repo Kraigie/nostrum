@@ -368,10 +368,10 @@ defmodule Nostrum.Api.Ratelimiter do
       # There is no entry. We are the pioneer for this bucket.
       nil ->
         # Since we don't have any explicit ratelimiting information for this
-        # bucket yet, we set the remaining calls to zero. While the first
-        # request is in flight, we do not want any further requests to be sent
-        # out until we have ratelimit information from it, at which point other
-        # requests are ran from the queue.
+        # bucket yet, we set the remaining calls to the special `:initial`
+        # value. The ratelimit response header parser uses this value to know
+        # when it should update ratelimit information from upstream, and new
+        # incoming requests will be held off appropriately.
         run_request = {:next_event, :internal, {:run, request, bucket, from}}
         data_with_new_queue = put_in(data, [:outstanding, bucket], {:initial, :queue.new()})
         {:keep_state, data_with_new_queue, [run_request]}
