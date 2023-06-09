@@ -1,9 +1,10 @@
 # See the appup cookbook for instructions:
 # https://www.erlang.org/doc/design_principles/appup_cookbook.html
 {
-  '0.9.0-alpha2',
+  '0.9.0-alpha3',
   [
     # Upgrade instructions
+    {'0.9.0-alpha2', []},
     {'0.9.0-alpha1',
      [
        # Top shard supervisor was not registered, so could not restart shard
@@ -17,6 +18,7 @@
   ],
   [
     # Downgrade instructions
+    {'0.9.0-alpha2', []},
     {'0.9.0-alpha1',
      [
        {:restart_application, :nostrum}
