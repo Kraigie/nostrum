@@ -214,6 +214,10 @@ defmodule Nostrum.Voice.Session do
     :gun.close(state.conn)
   end
 
+  def code_change(_old_vsn, state, _extra) do
+    {:ok, state}
+  end
+
   def restart_session_async(state) do
     spawn(fn ->
       Process.monitor(state.conn_pid)

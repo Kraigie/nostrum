@@ -39,4 +39,8 @@ defmodule Nostrum.Shard.Connector do
     Process.sleep(@wait_time - time)
     {:reply, :ok, %{state | last_connect: Util.now()}}
   end
+
+  def code_change(_version, state, _extra) do
+    {:ok, state}
+  end
 end

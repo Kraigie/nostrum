@@ -774,6 +774,11 @@ defmodule Nostrum.Voice do
   end
 
   @doc false
+  def code_change(_version, state, data, _extra) do
+    {:ok, state, data}
+  end
+
+  @doc false
   def start_if_ready(%VoiceState{} = voice) do
     if VoiceState.ready_for_ws?(voice) do
       VoiceSupervisor.create_session(voice)

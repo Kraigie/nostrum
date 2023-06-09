@@ -160,4 +160,8 @@ defmodule Nostrum.Voice.Ports do
   def handle_info(_, state) do
     {:noreply, state}
   end
+
+  def code_change(_version, state, data, _extra) do
+    {:ok, state, data}
+  end
 end
