@@ -287,7 +287,7 @@ defmodule Nostrum.Util do
     |> Enum.map(fn {_id, pid, _type, _modules} -> Supervisor.which_children(pid) end)
     |> List.flatten()
     |> Enum.map(fn {_id, pid, _type, _modules} -> Session.get_ws_state(pid) end)
-    |> Enum.reduce(%{}, fn s, m -> Map.put(m, s.shard_num, get_shard_latency(s)) end)
+    |> Enum.reduce(%{}, fn {_, s}, m -> Map.put(m, s.shard_num, get_shard_latency(s)) end)
   end
 
   @doc """
