@@ -7,7 +7,7 @@
     <meta name="generator" content="ExDoc v0.29.4">
     <meta name="project" content="Nostrum v0.9.0-alpha2">
 
-    <title>Nostrum.Cache.ChannelCache.Mnesia — Nostrum v0.9.0-alpha2</title>
+    <title>Nostrum.Shard.Session — Nostrum v0.9.0-alpha2</title>
     <link rel="stylesheet" href="dist/html-elixir-HHVY3JYD.css" />
 
 
@@ -98,21 +98,53 @@ Nostrum
 </button>
 
 
-    <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/channel_cache/mnesia.ex#L2" title="View Source" class="icon-action" rel="help">
+    <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/session.ex#L1" title="View Source" class="icon-action" rel="help">
       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
       <span class="sr-only">View Source</span>
     </a>
 
-  <span translate="no">Nostrum.Cache.ChannelCache.Mnesia</span> 
+  <span translate="no">Nostrum.Shard.Session</span> 
   <small class="app-vsn" translate="no">(Nostrum v0.9.0-alpha2)</small>
 
 </h1>
 
 
   <section id="moduledoc">
-<p>An Mnesia-based cache for channels outside of guilds.</p><p>Please note that this module is only compiled if Mnesia is available on
-your system. See the Mnesia section of the <a href="state.html">State</a>
-documentation for more information.</p><p>To retrieve the table name used by this cache, use <a href="#table/0"><code class="inline">table/0</code></a>.</p>
+<p>Manages a single shard's gateway connection.</p><h2 id="module-purpose" class="section-heading">
+  <a href="#module-purpose" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">purpose</p>
+  </a>
+  Purpose
+</h2>
+<p>Discord's gateway sends us events over websocket. The shard session state
+machine concerns it self with parsing these events and dispatching them to
+clients as appropriate.</p><blockquote><h3 id="module-internal-module" class="info section-heading">
+  <a href="#module-internal-module" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">internal-module</p>
+  </a>
+  Internal module
+</h3>
+<p>This module is intended for exclusive usage inside of nostrum, and is
+documented for completeness and people curious to look behind the covers.</p></blockquote><h2 id="module-inner-workings" class="section-heading">
+  <a href="#module-inner-workings" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">inner-workings</p>
+  </a>
+  Inner workings
+</h2>
+<p>The session is implemented via <code class="inline">:gen_statem</code> and can be in one of the
+following states:</p><ul><li><p><code class="inline">disconnected</code>: when no connection is up at all. On initial connection of
+the session (e.g. no <code class="inline">seq</code> field is available), this will block if we need to
+wait a moment to respect the session startup concurrency limits. Afterwards,
+it will transition to <code class="inline">connecting_http</code>.</p></li><li><p><code class="inline">connecting_http</code>: We are setting up a HTTP connection to the API. This
+means that no connection was available previously at all, and we need to open
+it from scratch. Once <code class="inline">:gun</code> notifies us that the connection is up, we
+transition to the <code class="inline">connecting_ws</code> state.</p></li><li><p><code class="inline">connecting_ws</code>: We are turning the HTTP connection into a WebSocket
+connection. This is used both for the initial connection and also for later
+gateway-requested reconnections. If this succeeds, we head into the
+<code class="inline">connected</code> state.</p></li><li><p><code class="inline">connected</code>: The WebSocket connection is up. This state actively deals with
+new data from the gateway, and takes care of heartbeating. If Discord fails
+to respond to our heartbeats, we close down the full connection and attempt
+to re-establish and resume events.</p></li></ul>
   </section>
 
 
@@ -131,111 +163,101 @@ documentation for more information.</p><p>To retrieve the table name used by thi
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#child_spec/1" translate="no">child_spec(init_arg)</a>
+        <a href="#callback_mode/0" translate="no">callback_mode()</a>
 
       </div>
 
-        <div class="summary-synopsis"><p>Returns a specification to start this module under a supervisor.</p></div>
+        <div class="summary-synopsis"><p>Callback implementation for <a href="https://www.erlang.org/doc/man/gen_statem.html#Module:callback_mode-0"><code class="inline">:gen_statem.callback_mode/0</code></a>.</p></div>
 
     </div>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#clear/0" translate="no">clear()</a>
+        <a href="#child_spec/1" translate="no">child_spec(opts)</a>
 
       </div>
-
-        <div class="summary-synopsis"><p>Clear any objects in the cache.</p></div>
 
     </div>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#create/1" translate="no">create(channel)</a>
+        <a href="#connected/3" translate="no">connected(atom, request, data)</a>
 
       </div>
-
-        <div class="summary-synopsis"><p>Creates the given channel in the cache.</p></div>
 
     </div>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#delete/1" translate="no">delete(id)</a>
+        <a href="#connecting_http/3" translate="no">connecting_http(arg1, from, data)</a>
 
       </div>
-
-        <div class="summary-synopsis"><p>Delete the channel from the cache by ID.</p></div>
 
     </div>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#init/1" translate="no">init(init_arg)</a>
+        <a href="#connecting_ws/3" translate="no">connecting_ws(arg1, arg2, data)</a>
 
       </div>
-
-        <div class="summary-synopsis"><p>Set up the cache's Mnesia table.</p></div>
 
     </div>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#query_handle/0" translate="no">query_handle()</a>
+        <a href="#disconnected/3" translate="no">disconnected(arg1, arg2, data)</a>
 
       </div>
-
-        <div class="summary-synopsis"><p>Retrieve a QLC query handle for the channel cache.</p></div>
 
     </div>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#start_link/1" translate="no">start_link(init_arg)</a>
+        <a href="#get_ws_state/1" translate="no">get_ws_state(pid)</a>
 
       </div>
-
-        <div class="summary-synopsis"><p>Start the supervisor.</p></div>
 
     </div>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#table/0" translate="no">table()</a>
+        <a href="#init/1" translate="no">init(list)</a>
 
       </div>
 
-        <div class="summary-synopsis"><p>Retrieve the table name used by the cache.</p></div>
+        <div class="summary-synopsis"><p>Callback implementation for <a href="https://www.erlang.org/doc/man/gen_statem.html#Module:init-1"><code class="inline">:gen_statem.init/1</code></a>.</p></div>
 
     </div>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#teardown/0" translate="no">teardown()</a>
+        <a href="#request_guild_members/3" translate="no">request_guild_members(pid, guild_id, limit \\ 0)</a>
 
       </div>
-
-        <div class="summary-synopsis"><p>Drop the table used for caching.</p></div>
 
     </div>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#update/1" translate="no">update(channel)</a>
+        <a href="#start_link/2" translate="no">start_link(shard_opts, statem_opts)</a>
 
       </div>
-
-        <div class="summary-synopsis"><p>Update the given channel in the cache.</p></div>
 
     </div>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#wrap_qlc/1" translate="no">wrap_qlc(fun)</a>
+        <a href="#update_status/5" translate="no">update_status(pid, status, game, stream, type)</a>
 
       </div>
 
-        <div class="summary-synopsis"><p>Wrap QLC operations in a transaction.</p></div>
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#update_voice_state/5" translate="no">update_voice_state(pid, guild_id, channel_id, self_mute, self_deaf)</a>
+
+      </div>
 
     </div>
 
@@ -253,6 +275,28 @@ documentation for more information.</p><p>To retrieve the table name used by thi
 Functions
     </h1>
     <div class="functions-list">
+<section class="detail" id="callback_mode/0">
+
+  <div class="detail-header">
+    <a href="#callback_mode/0" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">callback_mode()</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/session.ex#L113" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>Callback implementation for <a href="https://www.erlang.org/doc/man/gen_statem.html#Module:callback_mode-0"><code class="inline">:gen_statem.callback_mode/0</code></a>.</p>
+  </section>
+</section>
 <section class="detail" id="child_spec/1">
 
   <div class="detail-header">
@@ -260,111 +304,129 @@ Functions
       <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">child_spec(init_arg)</h1>
+    <h1 class="signature" translate="no">child_spec(opts)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/channel_cache/mnesia.ex#L17" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/session.ex#L115" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
 
 
-      <span class="note">(since 0.8.0)</span>
-
   </div>
 
   <section class="docstring">
 
-<p>Returns a specification to start this module under a supervisor.</p><p>See <a href="https://hexdocs.pm/elixir/Supervisor.html"><code class="inline">Supervisor</code></a>.</p>
+
   </section>
 </section>
-<section class="detail" id="clear/0">
+<section class="detail" id="connected/3">
 
   <div class="detail-header">
-    <a href="#clear/0" class="detail-link" title="Link to this function">
+    <a href="#connected/3" class="detail-link" title="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">clear()</h1>
+    <h1 class="signature" translate="no">connected(atom, request, data)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/channel_cache/mnesia.ex#L25" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/session.ex#L221" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
 
 
-      <span class="note">(since 0.8.0)</span>
-
   </div>
 
   <section class="docstring">
 
-      <div class="specs">
 
-          <pre translate="no"><span class="attribute">@spec</span> clear() :: {:atomic, :ok} | {:aborted, <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()}</pre>
-
-      </div>
-
-<p>Clear any objects in the cache.</p>
   </section>
 </section>
-<section class="detail" id="create/1">
+<section class="detail" id="connecting_http/3">
 
   <div class="detail-header">
-    <a href="#create/1" class="detail-link" title="Link to this function">
+    <a href="#connecting_http/3" class="detail-link" title="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">create(channel)</h1>
+    <h1 class="signature" translate="no">connecting_http(arg1, from, data)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/channel_cache/mnesia.ex#L52" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/session.ex#L150" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
 
 
-      <span class="note">(since 0.8.0)</span>
-
   </div>
 
   <section class="docstring">
 
-      <div class="specs">
 
-          <pre translate="no"><span class="attribute">@spec</span> create(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()) :: <a href="Nostrum.Struct.Channel.html#t:t/0">Nostrum.Struct.Channel.t</a>()</pre>
-
-      </div>
-
-<p>Creates the given channel in the cache.</p>
   </section>
 </section>
-<section class="detail" id="delete/1">
+<section class="detail" id="connecting_ws/3">
 
   <div class="detail-header">
-    <a href="#delete/1" class="detail-link" title="Link to this function">
+    <a href="#connecting_ws/3" class="detail-link" title="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">delete(id)</h1>
+    <h1 class="signature" translate="no">connecting_ws(arg1, arg2, data)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/channel_cache/mnesia.ex#L80" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/session.ex#L181" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
 
 
-      <span class="note">(since 0.8.0)</span>
+  </div>
+
+  <section class="docstring">
+
+
+  </section>
+</section>
+<section class="detail" id="disconnected/3">
+
+  <div class="detail-header">
+    <a href="#disconnected/3" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">disconnected(arg1, arg2, data)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/session.ex#L127" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
 
   </div>
 
   <section class="docstring">
 
-      <div class="specs">
 
-          <pre translate="no"><span class="attribute">@spec</span> delete(<a href="Nostrum.Struct.Channel.html#t:id/0">Nostrum.Struct.Channel.id</a>()) :: :noop | <a href="Nostrum.Struct.Channel.html#t:t/0">Nostrum.Struct.Channel.t</a>()</pre>
+  </section>
+</section>
+<section class="detail" id="get_ws_state/1">
 
-      </div>
+  <div class="detail-header">
+    <a href="#get_ws_state/1" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">get_ws_state(pid)</h1>
 
-<p>Delete the channel from the cache by ID.</p>
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/session.ex#L89" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+
   </section>
 </section>
 <section class="detail" id="init/1">
@@ -374,190 +436,109 @@ Functions
       <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">init(init_arg)</h1>
+    <h1 class="signature" translate="no">init(list)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/channel_cache/mnesia.ex#L38" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/session.ex#L99" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
 
 
-      <span class="note">(since 0.8.0)</span>
-
   </div>
 
   <section class="docstring">
 
-<p>Set up the cache's Mnesia table.</p>
+<p>Callback implementation for <a href="https://www.erlang.org/doc/man/gen_statem.html#Module:init-1"><code class="inline">:gen_statem.init/1</code></a>.</p>
   </section>
 </section>
-<section class="detail" id="query_handle/0">
+<section class="detail" id="request_guild_members/3">
+
+    <span id="request_guild_members/2"></span>
 
   <div class="detail-header">
-    <a href="#query_handle/0" class="detail-link" title="Link to this function">
+    <a href="#request_guild_members/3" class="detail-link" title="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">query_handle()</h1>
+    <h1 class="signature" translate="no">request_guild_members(pid, guild_id, limit \\ 0)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/channel_cache/mnesia.ex#L97" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/session.ex#L84" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
 
 
-      <span class="note">(since 0.8.0)</span>
-
   </div>
 
   <section class="docstring">
 
-      <div class="specs">
 
-          <pre translate="no"><span class="attribute">@spec</span> query_handle() :: <a href="https://www.erlang.org/doc/man/qlc.html#type-query_handle">:qlc.query_handle</a>()</pre>
-
-      </div>
-
-<p>Retrieve a QLC query handle for the channel cache.</p>
   </section>
 </section>
-<section class="detail" id="start_link/1">
+<section class="detail" id="start_link/2">
 
   <div class="detail-header">
-    <a href="#start_link/1" class="detail-link" title="Link to this function">
+    <a href="#start_link/2" class="detail-link" title="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">start_link(init_arg)</h1>
+    <h1 class="signature" translate="no">start_link(shard_opts, statem_opts)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/channel_cache/mnesia.ex#L32" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/session.ex#L95" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
 
 
-      <span class="note">(since 0.8.0)</span>
-
   </div>
 
   <section class="docstring">
 
-<p>Start the supervisor.</p>
+
   </section>
 </section>
-<section class="detail" id="table/0">
+<section class="detail" id="update_status/5">
 
   <div class="detail-header">
-    <a href="#table/0" class="detail-link" title="Link to this function">
+    <a href="#update_status/5" class="detail-link" title="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">table()</h1>
+    <h1 class="signature" translate="no">update_status(pid, status, game, stream, type)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/channel_cache/mnesia.ex#L21" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/session.ex#L65" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
 
 
-      <span class="note">(since 0.8.0)</span>
-
   </div>
 
   <section class="docstring">
 
-      <div class="specs">
 
-          <pre translate="no"><span class="attribute">@spec</span> table() :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">atom</a>()</pre>
-
-      </div>
-
-<p>Retrieve the table name used by the cache.</p>
   </section>
 </section>
-<section class="detail" id="teardown/0">
+<section class="detail" id="update_voice_state/5">
 
   <div class="detail-header">
-    <a href="#teardown/0" class="detail-link" title="Link to this function">
+    <a href="#update_voice_state/5" class="detail-link" title="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">teardown()</h1>
+    <h1 class="signature" translate="no">update_voice_state(pid, guild_id, channel_id, self_mute, self_deaf)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/channel_cache/mnesia.ex#L29" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/session.ex#L79" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
 
 
-      <span class="note">(since 0.8.0)</span>
-
   </div>
 
   <section class="docstring">
 
-      <div class="specs">
 
-          <pre translate="no"><span class="attribute">@spec</span> teardown() :: {:atomic, :ok} | {:aborted, <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()}</pre>
-
-      </div>
-
-<p>Drop the table used for caching.</p>
-  </section>
-</section>
-<section class="detail" id="update/1">
-
-  <div class="detail-header">
-    <a href="#update/1" class="detail-link" title="Link to this function">
-      <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
-    </a>
-    <h1 class="signature" translate="no">update(channel)</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/channel_cache/mnesia.ex#L62" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
-
-
-      <span class="note">(since 0.8.0)</span>
-
-  </div>
-
-  <section class="docstring">
-
-      <div class="specs">
-
-          <pre translate="no"><span class="attribute">@spec</span> update(<a href="Nostrum.Struct.Channel.html#t:t/0">Nostrum.Struct.Channel.t</a>()) ::
-  {<a href="Nostrum.Struct.Channel.html#t:t/0">Nostrum.Struct.Channel.t</a>() | nil, <a href="Nostrum.Struct.Channel.html#t:t/0">Nostrum.Struct.Channel.t</a>()}</pre>
-
-      </div>
-
-<p>Update the given channel in the cache.</p>
-  </section>
-</section>
-<section class="detail" id="wrap_qlc/1">
-
-  <div class="detail-header">
-    <a href="#wrap_qlc/1" class="detail-link" title="Link to this function">
-      <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
-    </a>
-    <h1 class="signature" translate="no">wrap_qlc(fun)</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/channel_cache/mnesia.ex#L105" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
-
-
-      <span class="note">(since 0.8.0)</span>
-
-  </div>
-
-  <section class="docstring">
-
-<p>Wrap QLC operations in a transaction.</p>
   </section>
 </section>
 
@@ -572,7 +553,7 @@ Functions
 
               <a href="https://preview.hex.pm/preview/nostrum/0.9.0-alpha2">Hex Preview</a>
 
-                (<a href="https://preview.hex.pm/preview/nostrum/0.9.0-alpha2/show/lib/nostrum/cache/channel_cache/mnesia.ex">current file</a>)
+                (<a href="https://preview.hex.pm/preview/nostrum/0.9.0-alpha2/show/lib/nostrum/shard/session.ex">current file</a>)
 
             </span>
 
