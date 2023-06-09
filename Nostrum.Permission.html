@@ -114,13 +114,13 @@ Nostrum
 to work with permissions:</p><pre><code class="makeup elixir" translate="no"><span class="kn">alias</span><span class="w"> </span><span class="nc">Nostrum.Cache.GuildCache</span><span class="w">
 </span><span class="kn">alias</span><span class="w"> </span><span class="nc">Nostrum.Struct.Guild.Member</span><span class="w">
 
-</span><span class="n">guild</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">GuildCache</span><span class="o">.</span><span class="n">get!</span><span class="p" data-group-id="7529106512-1">(</span><span class="mi">279093381723062272</span><span class="p" data-group-id="7529106512-1">)</span><span class="w">
-</span><span class="n">member</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Map</span><span class="o">.</span><span class="n">get</span><span class="p" data-group-id="7529106512-2">(</span><span class="n">guild</span><span class="o">.</span><span class="n">members</span><span class="p">,</span><span class="w"> </span><span class="mi">177888205536886784</span><span class="p" data-group-id="7529106512-2">)</span><span class="w">
-</span><span class="n">member_perms</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Member</span><span class="o">.</span><span class="n">guild_permissions</span><span class="p" data-group-id="7529106512-3">(</span><span class="n">member</span><span class="p">,</span><span class="w"> </span><span class="n">guild</span><span class="p" data-group-id="7529106512-3">)</span><span class="w">
+</span><span class="n">guild</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">GuildCache</span><span class="o">.</span><span class="n">get!</span><span class="p" data-group-id="6680416834-1">(</span><span class="mi">279093381723062272</span><span class="p" data-group-id="6680416834-1">)</span><span class="w">
+</span><span class="n">member</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Map</span><span class="o">.</span><span class="n">get</span><span class="p" data-group-id="6680416834-2">(</span><span class="n">guild</span><span class="o">.</span><span class="n">members</span><span class="p">,</span><span class="w"> </span><span class="mi">177888205536886784</span><span class="p" data-group-id="6680416834-2">)</span><span class="w">
+</span><span class="n">member_perms</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Member</span><span class="o">.</span><span class="n">guild_permissions</span><span class="p" data-group-id="6680416834-3">(</span><span class="n">member</span><span class="p">,</span><span class="w"> </span><span class="n">guild</span><span class="p" data-group-id="6680416834-3">)</span><span class="w">
 
-</span><span class="k">if</span><span class="w"> </span><span class="ss">:administrator</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">member_perms</span><span class="w"> </span><span class="k" data-group-id="7529106512-4">do</span><span class="w">
-  </span><span class="nc">IO</span><span class="o">.</span><span class="n">puts</span><span class="p" data-group-id="7529106512-5">(</span><span class="s">&quot;This user has the administrator permission.&quot;</span><span class="p" data-group-id="7529106512-5">)</span><span class="w">
-</span><span class="k" data-group-id="7529106512-4">end</span></code></pre>
+</span><span class="k">if</span><span class="w"> </span><span class="ss">:administrator</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">member_perms</span><span class="w"> </span><span class="k" data-group-id="6680416834-4">do</span><span class="w">
+  </span><span class="nc">IO</span><span class="o">.</span><span class="n">puts</span><span class="p" data-group-id="6680416834-5">(</span><span class="s">&quot;This user has the administrator permission.&quot;</span><span class="p" data-group-id="6680416834-5">)</span><span class="w">
+</span><span class="k" data-group-id="6680416834-4">end</span></code></pre>
   </section>
 
 
@@ -560,10 +560,10 @@ Functions
   </a>
   Examples
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Permission</span><span class="o">.</span><span class="n">from_bit</span><span class="p" data-group-id="2900550592-1">(</span><span class="mh">0x04000000</span><span class="p" data-group-id="2900550592-1">)</span><span class="w">
-</span><span class="p" data-group-id="2900550592-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="ss">:change_nickname</span><span class="p" data-group-id="2900550592-2">}</span><span class="w">
+<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Permission</span><span class="o">.</span><span class="n">from_bit</span><span class="p" data-group-id="8883421644-1">(</span><span class="mh">0x04000000</span><span class="p" data-group-id="8883421644-1">)</span><span class="w">
+</span><span class="p" data-group-id="8883421644-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="ss">:change_nickname</span><span class="p" data-group-id="8883421644-2">}</span><span class="w">
 
-</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Permission</span><span class="o">.</span><span class="n">from_bit</span><span class="p" data-group-id="2900550592-3">(</span><span class="mi">0</span><span class="p" data-group-id="2900550592-3">)</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Permission</span><span class="o">.</span><span class="n">from_bit</span><span class="p" data-group-id="8883421644-3">(</span><span class="mi">0</span><span class="p" data-group-id="8883421644-3">)</span><span class="w">
 </span><span class="ss">:error</span></code></pre>
   </section>
 </section>
@@ -598,10 +598,10 @@ Functions
   </a>
   Examples
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Permission</span><span class="o">.</span><span class="n">from_bit!</span><span class="p" data-group-id="5423257143-1">(</span><span class="mh">0x04000000</span><span class="p" data-group-id="5423257143-1">)</span><span class="w">
+<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Permission</span><span class="o">.</span><span class="n">from_bit!</span><span class="p" data-group-id="9282857884-1">(</span><span class="mh">0x04000000</span><span class="p" data-group-id="9282857884-1">)</span><span class="w">
 </span><span class="ss">:change_nickname</span><span class="w">
 
-</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Permission</span><span class="o">.</span><span class="n">from_bit!</span><span class="p" data-group-id="5423257143-2">(</span><span class="mi">0</span><span class="p" data-group-id="5423257143-2">)</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Permission</span><span class="o">.</span><span class="n">from_bit!</span><span class="p" data-group-id="9282857884-2">(</span><span class="mi">0</span><span class="p" data-group-id="9282857884-2">)</span><span class="w">
 </span><span class="gt">** (ArgumentError) expected a valid bit, got: `0`</span></code></pre>
   </section>
 </section>
@@ -636,11 +636,11 @@ Functions
   </a>
   Examples
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Permission</span><span class="o">.</span><span class="n">from_bitset</span><span class="p" data-group-id="9419791819-1">(</span><span class="mh">0x08000002</span><span class="p" data-group-id="9419791819-1">)</span><span class="w">
-</span><span class="p" data-group-id="9419791819-2">[</span><span class="ss">:manage_nicknames</span><span class="p">,</span><span class="w"> </span><span class="ss">:kick_members</span><span class="p" data-group-id="9419791819-2">]</span><span class="w">
+<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Permission</span><span class="o">.</span><span class="n">from_bitset</span><span class="p" data-group-id="5399415313-1">(</span><span class="mh">0x08000002</span><span class="p" data-group-id="5399415313-1">)</span><span class="w">
+</span><span class="p" data-group-id="5399415313-2">[</span><span class="ss">:manage_nicknames</span><span class="p">,</span><span class="w"> </span><span class="ss">:kick_members</span><span class="p" data-group-id="5399415313-2">]</span><span class="w">
 
-</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Permission</span><span class="o">.</span><span class="n">from_bitset</span><span class="p" data-group-id="9419791819-3">(</span><span class="mh">0x4000000000000</span><span class="p" data-group-id="9419791819-3">)</span><span class="w">
-</span><span class="p" data-group-id="9419791819-4">[</span><span class="p" data-group-id="9419791819-4">]</span></code></pre>
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Permission</span><span class="o">.</span><span class="n">from_bitset</span><span class="p" data-group-id="5399415313-3">(</span><span class="mh">0x4000000000000</span><span class="p" data-group-id="5399415313-3">)</span><span class="w">
+</span><span class="p" data-group-id="5399415313-4">[</span><span class="p" data-group-id="5399415313-4">]</span></code></pre>
   </section>
 </section>
 <section class="detail" id="is_permission/1">
@@ -670,10 +670,10 @@ Functions
   </a>
   Examples
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Permission</span><span class="o">.</span><span class="n">is_permission</span><span class="p" data-group-id="8992840172-1">(</span><span class="ss">:administrator</span><span class="p" data-group-id="8992840172-1">)</span><span class="w">
+<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Permission</span><span class="o">.</span><span class="n">is_permission</span><span class="p" data-group-id="1303295050-1">(</span><span class="ss">:administrator</span><span class="p" data-group-id="1303295050-1">)</span><span class="w">
 </span><span class="no">true</span><span class="w">
 
-</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Permission</span><span class="o">.</span><span class="n">is_permission</span><span class="p" data-group-id="8992840172-2">(</span><span class="ss">:not_a_permission</span><span class="p" data-group-id="8992840172-2">)</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Permission</span><span class="o">.</span><span class="n">is_permission</span><span class="p" data-group-id="1303295050-2">(</span><span class="ss">:not_a_permission</span><span class="p" data-group-id="1303295050-2">)</span><span class="w">
 </span><span class="no">false</span></code></pre>
   </section>
 </section>
@@ -708,7 +708,7 @@ Functions
   </a>
   Examples
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Permission</span><span class="o">.</span><span class="n">to_bit</span><span class="p" data-group-id="6615773207-1">(</span><span class="ss">:administrator</span><span class="p" data-group-id="6615773207-1">)</span><span class="w">
+<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Permission</span><span class="o">.</span><span class="n">to_bit</span><span class="p" data-group-id="8799857509-1">(</span><span class="ss">:administrator</span><span class="p" data-group-id="8799857509-1">)</span><span class="w">
 </span><span class="mi">8</span></code></pre>
   </section>
 </section>
@@ -743,7 +743,7 @@ Functions
   </a>
   Examples
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Permission</span><span class="o">.</span><span class="n">to_bitset</span><span class="p" data-group-id="3273225695-1">(</span><span class="p" data-group-id="3273225695-2">[</span><span class="ss">:administrator</span><span class="p">,</span><span class="w"> </span><span class="ss">:create_instant_invite</span><span class="p" data-group-id="3273225695-2">]</span><span class="p" data-group-id="3273225695-1">)</span><span class="w">
+<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Permission</span><span class="o">.</span><span class="n">to_bitset</span><span class="p" data-group-id="9768333193-1">(</span><span class="p" data-group-id="9768333193-2">[</span><span class="ss">:administrator</span><span class="p">,</span><span class="w"> </span><span class="ss">:create_instant_invite</span><span class="p" data-group-id="9768333193-2">]</span><span class="p" data-group-id="9768333193-1">)</span><span class="w">
 </span><span class="mi">9</span></code></pre>
   </section>
 </section>
