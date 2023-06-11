@@ -22,8 +22,6 @@ defmodule Nostrum.Voice.Ports do
     end
   end
 
-  alias Nostrum.Voice.Ports.State
-
   require Logger
 
   use GenServer
@@ -41,7 +39,7 @@ defmodule Nostrum.Voice.Ports do
 
     # Spawn process to asynchronously send input to port
     unless is_nil(input) do
-      Task.start(fn -> send_input(port, input) end)
+      {:ok, _pid} = Task.start(fn -> send_input(port, input) end)
     end
 
     # Store reference if input is another process
