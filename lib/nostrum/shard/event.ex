@@ -4,10 +4,13 @@ defmodule Nostrum.Shard.Event do
   alias Nostrum.ConsumerGroup
   alias Nostrum.Shard.Dispatch
   alias Nostrum.Shard.Payload
+  alias Nostrum.Struct.WSState
   alias Nostrum.Util
 
   require Logger
 
+  @spec handle(atom(), map(), WSState.t()) ::
+          {WSState.t() | {WSState.t(), reply :: iodata()}, [:gen_statem.action()]}
   def handle(:dispatch, payload, state) do
     payload = Util.safe_atom_map(payload)
 
@@ -60,12 +63,12 @@ defmodule Nostrum.Shard.Event do
 
   def handle(:reconnect, _payload, state) do
     Logger.info("RECONNECT")
-    state
+    {state, []}
   end
 
   def handle(event, _payload, state) do
     Logger.warn("UNHANDLED GATEWAY EVENT #{event}")
-    state
+    {state, []}
   end
 
   def session_exists?(state) do
