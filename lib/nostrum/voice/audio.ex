@@ -288,6 +288,8 @@ defmodule Nostrum.Voice.Audio do
     if Process.alive?(player) and is_pid(ffmpeg), do: Ports.close(ffmpeg)
   end
 
+  # Allow to exit here
+  @dialyzer {:nowarn_function, on_complete: 2}
   def on_complete(%VoiceState{} = voice, timed_out) do
     voice = Voice.update_voice(voice.guild_id, ffmpeg_proc: nil, raw_audio: nil)
     Opus.generate_silence(5) |> send_frames(voice)

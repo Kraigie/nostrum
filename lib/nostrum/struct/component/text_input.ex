@@ -63,8 +63,4 @@ defmodule Nostrum.Struct.Component.TextInput do
     text_input
     |> update([{:style, style}])
   end
-
-  def put_style(_, _), do: text_input_only()
-
-  defp text_input_only, do: raise("This operation is only available to text input components.")
 end
