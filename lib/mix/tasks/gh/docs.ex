@@ -17,6 +17,7 @@ defmodule Mix.Tasks.Gh.Docs do
 
   # Taken from https://gist.github.com/jjh42/5737777 with some modifications
   @shortdoc "Mix task to publish gh-pages site."
+  @dialyzer {:nowarn_function, run: 1}
   def run(_) do
     File.rm_rf("doc")
     Mix.Task.run("docs")
