@@ -113,25 +113,25 @@ Nostrum
 <p>Interface for Discord's rest API.</p><p>By default all methods in this module are ran synchronously. If you wish to
 have async rest operations I recommend you execute these functions inside of a
 task.</p><p><strong>Examples</strong></p><pre><code class="makeup elixir" translate="no"><span class="c1"># Async Task</span><span class="w">
-</span><span class="n">t</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Task</span><span class="o">.</span><span class="n">async</span><span class="w"> </span><span class="k" data-group-id="3391326997-1">fn</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
-  </span><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">get_channel_messages</span><span class="p" data-group-id="3391326997-2">(</span><span class="mi">12345678912345</span><span class="p">,</span><span class="w"> </span><span class="ss">:infinity</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="3391326997-3">{</span><span class="p" data-group-id="3391326997-3">}</span><span class="p" data-group-id="3391326997-2">)</span><span class="w">
-</span><span class="k" data-group-id="3391326997-1">end</span><span class="w">
+</span><span class="n">t</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Task</span><span class="o">.</span><span class="n">async</span><span class="w"> </span><span class="k" data-group-id="8030132693-1">fn</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+  </span><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">get_channel_messages</span><span class="p" data-group-id="8030132693-2">(</span><span class="mi">12345678912345</span><span class="p">,</span><span class="w"> </span><span class="ss">:infinity</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="8030132693-3">{</span><span class="p" data-group-id="8030132693-3">}</span><span class="p" data-group-id="8030132693-2">)</span><span class="w">
+</span><span class="k" data-group-id="8030132693-1">end</span><span class="w">
 </span><span class="n">messages</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Task</span><span class="o">.</span><span class="n">await</span><span class="w"> </span><span class="n">t</span><span class="w">
 
 </span><span class="c1"># A lot of times we don&#39;t care about the return value of the function</span><span class="w">
-</span><span class="nc">Task</span><span class="o">.</span><span class="n">start</span><span class="w"> </span><span class="k" data-group-id="3391326997-4">fn</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
-  </span><span class="n">messages</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="3391326997-5">[</span><span class="s">&quot;in&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;the&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;end&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;it&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;doesn&#39;t&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;even&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;matter&quot;</span><span class="p" data-group-id="3391326997-5">]</span><span class="w">
-  </span><span class="nc">Enum</span><span class="o">.</span><span class="n">each</span><span class="w"> </span><span class="n">messages</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">create_message!</span><span class="p" data-group-id="3391326997-6">(</span><span class="mi">12345678912345</span><span class="p">,</span><span class="w"> </span><span class="ni">&amp;1</span><span class="p" data-group-id="3391326997-6">)</span><span class="w">
-</span><span class="k" data-group-id="3391326997-4">end</span></code></pre><h4>A note about Strings and Ints</h4><p>Currently, responses from the REST api will have <code class="inline">id</code> fields as <code class="inline">string</code>.
+</span><span class="nc">Task</span><span class="o">.</span><span class="n">start</span><span class="w"> </span><span class="k" data-group-id="8030132693-4">fn</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+  </span><span class="n">messages</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="8030132693-5">[</span><span class="s">&quot;in&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;the&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;end&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;it&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;doesn&#39;t&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;even&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;matter&quot;</span><span class="p" data-group-id="8030132693-5">]</span><span class="w">
+  </span><span class="nc">Enum</span><span class="o">.</span><span class="n">each</span><span class="w"> </span><span class="n">messages</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">create_message!</span><span class="p" data-group-id="8030132693-6">(</span><span class="mi">12345678912345</span><span class="p">,</span><span class="w"> </span><span class="ni">&amp;1</span><span class="p" data-group-id="8030132693-6">)</span><span class="w">
+</span><span class="k" data-group-id="8030132693-4">end</span></code></pre><h4>A note about Strings and Ints</h4><p>Currently, responses from the REST api will have <code class="inline">id</code> fields as <code class="inline">string</code>.
 Everything received from the WS connection will have <code class="inline">id</code> fields as <code class="inline">int</code>.</p><p>If you're processing a response from the API and trying to access something in the cache
 based off of an <code class="inline">id</code> in the response, you will need to convert it to an <code class="inline">int</code> using
-<a href="https://hexdocs.pm/elixir/String.html#to_integer/1"><code class="inline">String.to_integer/1</code></a>. I'm open to suggestions for how this should be handled going forward.</p><p><strong>Example</strong></p><pre><code class="makeup elixir" translate="no"><span class="n">messages</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">get_pinned_messages!</span><span class="p" data-group-id="9566695454-1">(</span><span class="mi">12345678912345</span><span class="p" data-group-id="9566695454-1">)</span><span class="w">
+<a href="https://hexdocs.pm/elixir/String.html#to_integer/1"><code class="inline">String.to_integer/1</code></a>. I'm open to suggestions for how this should be handled going forward.</p><p><strong>Example</strong></p><pre><code class="makeup elixir" translate="no"><span class="n">messages</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">get_pinned_messages!</span><span class="p" data-group-id="3075003421-1">(</span><span class="mi">12345678912345</span><span class="p" data-group-id="3075003421-1">)</span><span class="w">
 
 </span><span class="n">authors</span><span class="w"> </span><span class="o">=</span><span class="w">
-  </span><span class="nc">Enum</span><span class="o">.</span><span class="n">map</span><span class="w"> </span><span class="n">messages</span><span class="p">,</span><span class="w"> </span><span class="k" data-group-id="9566695454-2">fn</span><span class="w"> </span><span class="n">msg</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
-    </span><span class="n">author_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">String</span><span class="o">.</span><span class="n">to_integer</span><span class="p" data-group-id="9566695454-3">(</span><span class="n">msg</span><span class="o">.</span><span class="n">author</span><span class="o">.</span><span class="n">id</span><span class="p" data-group-id="9566695454-3">)</span><span class="w">
-    </span><span class="nc">Nostrum.Cache.User</span><span class="o">.</span><span class="n">get!</span><span class="p" data-group-id="9566695454-4">(</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="n">author_id</span><span class="p" data-group-id="9566695454-4">)</span><span class="w">
-  </span><span class="k" data-group-id="9566695454-2">end</span></code></pre>
+  </span><span class="nc">Enum</span><span class="o">.</span><span class="n">map</span><span class="w"> </span><span class="n">messages</span><span class="p">,</span><span class="w"> </span><span class="k" data-group-id="3075003421-2">fn</span><span class="w"> </span><span class="n">msg</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+    </span><span class="n">author_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">String</span><span class="o">.</span><span class="n">to_integer</span><span class="p" data-group-id="3075003421-3">(</span><span class="n">msg</span><span class="o">.</span><span class="n">author</span><span class="o">.</span><span class="n">id</span><span class="p" data-group-id="3075003421-3">)</span><span class="w">
+    </span><span class="nc">Nostrum.Cache.User</span><span class="o">.</span><span class="n">get!</span><span class="p" data-group-id="3075003421-4">(</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="n">author_id</span><span class="p" data-group-id="3075003421-4">)</span><span class="w">
+  </span><span class="k" data-group-id="3075003421-2">end</span></code></pre>
   </section>
 
 
@@ -2578,7 +2578,7 @@ The tuple can also be empty to search from the most recent message in the channe
     </a>
     <h1 class="signature" translate="no">matrix()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3025" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3026" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2663,7 +2663,7 @@ supports or needs.</p>
     </a>
     <h1 class="signature" translate="no">thread_with_message_params()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3790" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3791" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2695,7 +2695,7 @@ supports or needs.</p>
     </a>
     <h1 class="signature" translate="no">thread_without_message_params()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3830" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3831" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2775,13 +2775,13 @@ guild. Otherwise, returns a <a href="#t:error/0"><code class="inline">Nostrum.Ap
   </a>
   Examples
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">add_guild_member</span><span class="p" data-group-id="4351888565-1">(</span><span class="w">
+<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">add_guild_member</span><span class="p" data-group-id="2490795586-1">(</span><span class="w">
   </span><span class="mi">41771983423143937</span><span class="p">,</span><span class="w">
   </span><span class="mi">18374719829378473</span><span class="p">,</span><span class="w">
   </span><span class="ss">access_token</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;6qrZcUqja7812RVdnEKjpzOL4CvHBFG&quot;</span><span class="p">,</span><span class="w">
   </span><span class="ss">nick</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;nostrum&quot;</span><span class="p">,</span><span class="w">
-  </span><span class="ss">roles</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="4351888565-2">[</span><span class="mi">431849301</span><span class="p">,</span><span class="w"> </span><span class="mi">913809431</span><span class="p" data-group-id="4351888565-2">]</span><span class="w">
-</span><span class="p" data-group-id="4351888565-1">)</span></code></pre>
+  </span><span class="ss">roles</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="2490795586-2">[</span><span class="mi">431849301</span><span class="p">,</span><span class="w"> </span><span class="mi">913809431</span><span class="p" data-group-id="2490795586-2">]</span><span class="w">
+</span><span class="p" data-group-id="2490795586-1">)</span></code></pre>
   </section>
 </section>
 <section class="detail" id="add_guild_member!/3">
@@ -2892,7 +2892,7 @@ An optional <code class="inline">reason</code> can be given for the audit log.</
   </a>
   Examples
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">add_pinned_channel_message</span><span class="p" data-group-id="3457749122-1">(</span><span class="mi">43189401384091</span><span class="p">,</span><span class="w"> </span><span class="mi">18743893102394</span><span class="p" data-group-id="3457749122-1">)</span></code></pre>
+<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">add_pinned_channel_message</span><span class="p" data-group-id="7441512627-1">(</span><span class="mi">43189401384091</span><span class="p">,</span><span class="w"> </span><span class="mi">18743893102394</span><span class="p" data-group-id="7441512627-1">)</span></code></pre>
   </section>
 </section>
 <section class="detail" id="add_pinned_channel_message!/2">
@@ -2936,7 +2936,7 @@ An optional <code class="inline">reason</code> can be given for the audit log.</
     </a>
     <h1 class="signature" translate="no">add_thread_member(thread_id, user_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L4091" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L4092" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2962,7 +2962,7 @@ An optional <code class="inline">reason</code> can be given for the audit log.</
     </a>
     <h1 class="signature" translate="no">batch_edit_application_command_permissions(application_id \\ Me.get().id, guild_id, permissions)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3777" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3778" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -3046,8 +3046,8 @@ If not given, this will be fetched from <code class="inline">Me</code>.</li><li>
   </a>
   Examples
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">begin_guild_prune</span><span class="p" data-group-id="2406913917-1">(</span><span class="mi">81384788765712384</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p" data-group-id="2406913917-1">)</span><span class="w">
-</span><span class="p" data-group-id="2406913917-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="2406913917-3">%{</span><span class="ss">pruned</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p" data-group-id="2406913917-3">}</span><span class="p" data-group-id="2406913917-2">}</span></code></pre>
+<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">begin_guild_prune</span><span class="p" data-group-id="1433442544-1">(</span><span class="mi">81384788765712384</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p" data-group-id="1433442544-1">)</span><span class="w">
+</span><span class="p" data-group-id="1433442544-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="1433442544-3">%{</span><span class="ss">pruned</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p" data-group-id="1433442544-3">}</span><span class="p" data-group-id="1433442544-2">}</span></code></pre>
   </section>
 </section>
 <section class="detail" id="begin_guild_prune!/3">
@@ -3163,7 +3163,7 @@ two weeks ago should be filtered out; defaults to <code class="inline">true</cod
     </a>
     <h1 class="signature" translate="no">bulk_overwrite_global_application_commands(application_id \\ Me.get().id, commands)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3293" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3294" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -3213,7 +3213,7 @@ If not given, this will be fetched from <code class="inline">Me</code>.</li><li>
     </a>
     <h1 class="signature" translate="no">bulk_overwrite_guild_application_commands(application_id \\ Me.get().id, guild_id, commands)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3436" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3437" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -3303,11 +3303,11 @@ membership. (default: <code class="inline">false</code>)</li><li><code class="in
   </a>
   Examples
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">create_channel_invite</span><span class="p" data-group-id="7117118927-1">(</span><span class="mi">41771983423143933</span><span class="p" data-group-id="7117118927-1">)</span><span class="w">
-</span><span class="p" data-group-id="7117118927-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="nc">Nostrum.Struct.Invite</span><span class="p" data-group-id="7117118927-3">{</span><span class="p" data-group-id="7117118927-3">}</span><span class="p" data-group-id="7117118927-2">}</span><span class="w">
+<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">create_channel_invite</span><span class="p" data-group-id="8863888604-1">(</span><span class="mi">41771983423143933</span><span class="p" data-group-id="8863888604-1">)</span><span class="w">
+</span><span class="p" data-group-id="8863888604-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="nc">Nostrum.Struct.Invite</span><span class="p" data-group-id="8863888604-3">{</span><span class="p" data-group-id="8863888604-3">}</span><span class="p" data-group-id="8863888604-2">}</span><span class="w">
 
-</span><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">create_channel_invite</span><span class="p" data-group-id="7117118927-4">(</span><span class="mi">41771983423143933</span><span class="p">,</span><span class="w"> </span><span class="ss">max_uses</span><span class="p">:</span><span class="w"> </span><span class="mi">20</span><span class="p" data-group-id="7117118927-4">)</span><span class="w">
-</span><span class="p" data-group-id="7117118927-5">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="7117118927-6">%</span><span class="nc" data-group-id="7117118927-6">Nostrum.Struct.Invite</span><span class="p" data-group-id="7117118927-6">{</span><span class="p" data-group-id="7117118927-6">}</span><span class="p" data-group-id="7117118927-5">}</span></code></pre>
+</span><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">create_channel_invite</span><span class="p" data-group-id="8863888604-4">(</span><span class="mi">41771983423143933</span><span class="p">,</span><span class="w"> </span><span class="ss">max_uses</span><span class="p">:</span><span class="w"> </span><span class="mi">20</span><span class="p" data-group-id="8863888604-4">)</span><span class="w">
+</span><span class="p" data-group-id="8863888604-5">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="8863888604-6">%</span><span class="nc" data-group-id="8863888604-6">Nostrum.Struct.Invite</span><span class="p" data-group-id="8863888604-6">{</span><span class="p" data-group-id="8863888604-6">}</span><span class="p" data-group-id="8863888604-5">}</span></code></pre>
   </section>
 </section>
 <section class="detail" id="create_channel_invite!/3">
@@ -3355,7 +3355,7 @@ membership. (default: <code class="inline">false</code>)</li><li><code class="in
     </a>
     <h1 class="signature" translate="no">create_dm(user_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2746" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2747" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -3378,8 +3378,8 @@ membership. (default: <code class="inline">false</code>)</li><li><code class="in
   </a>
   Examples
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">create_dm</span><span class="p" data-group-id="6535928777-1">(</span><span class="mi">150061853001777154</span><span class="p" data-group-id="6535928777-1">)</span><span class="w">
-</span><span class="p" data-group-id="6535928777-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="6535928777-3">%</span><span class="nc" data-group-id="6535928777-3">Nostrum.Struct.Channel</span><span class="p" data-group-id="6535928777-3">{</span><span class="ss">type</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p" data-group-id="6535928777-3">}</span><span class="p" data-group-id="6535928777-2">}</span></code></pre>
+<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">create_dm</span><span class="p" data-group-id="4758764915-1">(</span><span class="mi">150061853001777154</span><span class="p" data-group-id="4758764915-1">)</span><span class="w">
+</span><span class="p" data-group-id="4758764915-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="4758764915-3">%</span><span class="nc" data-group-id="4758764915-3">Nostrum.Struct.Channel</span><span class="p" data-group-id="4758764915-3">{</span><span class="ss">type</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p" data-group-id="4758764915-3">}</span><span class="p" data-group-id="4758764915-2">}</span></code></pre>
   </section>
 </section>
 <section class="detail" id="create_dm!/1">
@@ -3391,7 +3391,7 @@ membership. (default: <code class="inline">false</code>)</li><li><code class="in
     </a>
     <h1 class="signature" translate="no">create_dm!(user_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2755" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2756" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -3422,7 +3422,7 @@ membership. (default: <code class="inline">false</code>)</li><li><code class="in
     </a>
     <h1 class="signature" translate="no">create_followup_message(application_id \\ Me.get().id, token, webhook_payload)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3611" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3612" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -3457,7 +3457,7 @@ membership. (default: <code class="inline">false</code>)</li><li><code class="in
     </a>
     <h1 class="signature" translate="no">create_followup_message!(application_id \\ Me.get().id, token, webhook_payload)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3621" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3622" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -3494,7 +3494,7 @@ membership. (default: <code class="inline">false</code>)</li><li><code class="in
     </a>
     <h1 class="signature" translate="no">create_global_application_command(application_id \\ Me.get().id, command)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3215" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3216" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -3536,9 +3536,9 @@ If not given, this will be fetched from <code class="inline">Me</code>.</li><li>
   </a>
   Example
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">create_application_command</span><span class="p" data-group-id="7850172131-1">(</span><span class="w">
-  </span><span class="p" data-group-id="7850172131-2">%{</span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;edit&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">description</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ed, man! man, ed&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">options</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="7850172131-3">[</span><span class="p" data-group-id="7850172131-3">]</span><span class="p" data-group-id="7850172131-2">}</span><span class="w">
-</span><span class="p" data-group-id="7850172131-1">)</span></code></pre>
+<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">create_application_command</span><span class="p" data-group-id="9797450940-1">(</span><span class="w">
+  </span><span class="p" data-group-id="9797450940-2">%{</span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;edit&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">description</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ed, man! man, ed&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">options</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="9797450940-3">[</span><span class="p" data-group-id="9797450940-3">]</span><span class="p" data-group-id="9797450940-2">}</span><span class="w">
+</span><span class="p" data-group-id="9797450940-1">)</span></code></pre>
   </section>
 </section>
 <section class="detail" id="create_group_dm/2">
@@ -3550,7 +3550,7 @@ If not given, this will be fetched from <code class="inline">Me</code>.</li><li>
     </a>
     <h1 class="signature" translate="no">create_group_dm(access_tokens, nicks)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2777" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2778" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -3576,8 +3576,8 @@ to a nickname.</p><h2 id="create_group_dm/2-examples" class="section-heading">
   </a>
   Examples
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">create_group_dm</span><span class="p" data-group-id="4777876628-1">(</span><span class="p" data-group-id="4777876628-2">[</span><span class="s">&quot;6qrZcUqja7812RVdnEKjpzOL4CvHBFG&quot;</span><span class="p" data-group-id="4777876628-2">]</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="4777876628-3">%{</span><span class="mi">41771983423143937</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="s">&quot;My Nickname&quot;</span><span class="p" data-group-id="4777876628-3">}</span><span class="p" data-group-id="4777876628-1">)</span><span class="w">
-</span><span class="p" data-group-id="4777876628-4">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="4777876628-5">%</span><span class="nc" data-group-id="4777876628-5">Nostrum.Struct.Channel</span><span class="p" data-group-id="4777876628-5">{</span><span class="ss">type</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p" data-group-id="4777876628-5">}</span><span class="p" data-group-id="4777876628-4">}</span></code></pre>
+<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">create_group_dm</span><span class="p" data-group-id="2864663269-1">(</span><span class="p" data-group-id="2864663269-2">[</span><span class="s">&quot;6qrZcUqja7812RVdnEKjpzOL4CvHBFG&quot;</span><span class="p" data-group-id="2864663269-2">]</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="2864663269-3">%{</span><span class="mi">41771983423143937</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="s">&quot;My Nickname&quot;</span><span class="p" data-group-id="2864663269-3">}</span><span class="p" data-group-id="2864663269-1">)</span><span class="w">
+</span><span class="p" data-group-id="2864663269-4">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="2864663269-5">%</span><span class="nc" data-group-id="2864663269-5">Nostrum.Struct.Channel</span><span class="p" data-group-id="2864663269-5">{</span><span class="ss">type</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p" data-group-id="2864663269-5">}</span><span class="p" data-group-id="2864663269-4">}</span></code></pre>
   </section>
 </section>
 <section class="detail" id="create_group_dm!/2">
@@ -3589,7 +3589,7 @@ to a nickname.</p><h2 id="create_group_dm/2-examples" class="section-heading">
     </a>
     <h1 class="signature" translate="no">create_group_dm!(access_tokens, nicks)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2787" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2788" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -3622,7 +3622,7 @@ to a nickname.</p><h2 id="create_group_dm/2-examples" class="section-heading">
     </a>
     <h1 class="signature" translate="no">create_guild_application_command(application_id \\ Me.get().id, guild_id, command)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3340" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3341" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -3668,7 +3668,7 @@ If not given, this will be fetched from <code class="inline">Me</code>.</li><li>
     </a>
     <h1 class="signature" translate="no">create_guild_auto_moderation_rule(guild_id, options)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L4156" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L4157" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -3773,8 +3773,8 @@ the channel's permission overwrites</li><li><code class="inline">:parent_id</cod
   </a>
   Examples
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">create_guild_channel</span><span class="p" data-group-id="4584378583-1">(</span><span class="mi">81384788765712384</span><span class="p">,</span><span class="w"> </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;elixir-nostrum&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">topic</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;craig&#39;s domain&quot;</span><span class="p" data-group-id="4584378583-1">)</span><span class="w">
-</span><span class="p" data-group-id="4584378583-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="4584378583-3">%</span><span class="nc" data-group-id="4584378583-3">Nostrum.Struct.Channel</span><span class="p" data-group-id="4584378583-3">{</span><span class="ss">guild_id</span><span class="p">:</span><span class="w"> </span><span class="mi">81384788765712384</span><span class="p" data-group-id="4584378583-3">}</span><span class="p" data-group-id="4584378583-2">}</span></code></pre>
+<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">create_guild_channel</span><span class="p" data-group-id="9444916888-1">(</span><span class="mi">81384788765712384</span><span class="p">,</span><span class="w"> </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;elixir-nostrum&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">topic</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;craig&#39;s domain&quot;</span><span class="p" data-group-id="9444916888-1">)</span><span class="w">
+</span><span class="p" data-group-id="9444916888-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="9444916888-3">%</span><span class="nc" data-group-id="9444916888-3">Nostrum.Struct.Channel</span><span class="p" data-group-id="9444916888-3">{</span><span class="ss">guild_id</span><span class="p">:</span><span class="w"> </span><span class="mi">81384788765712384</span><span class="p" data-group-id="9444916888-3">}</span><span class="p" data-group-id="9444916888-2">}</span></code></pre>
   </section>
 </section>
 <section class="detail" id="create_guild_channel!/2">
@@ -3853,7 +3853,7 @@ the channel's permission overwrites</li><li><code class="inline">:parent_id</cod
 </h2>
 <pre><code class="makeup elixir" translate="no"><span class="n">image</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;data:image/png;base64,YXl5IGJieSB1IGx1a2luIDQgc3VtIGZ1az8=&quot;</span><span class="w">
 
-</span><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">create_guild_emoji</span><span class="p" data-group-id="2674540161-1">(</span><span class="mi">43189401384091</span><span class="p">,</span><span class="w"> </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;nostrum&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">image</span><span class="p">:</span><span class="w"> </span><span class="n">image</span><span class="p">,</span><span class="w"> </span><span class="ss">roles</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="2674540161-2">[</span><span class="p" data-group-id="2674540161-2">]</span><span class="p" data-group-id="2674540161-1">)</span></code></pre>
+</span><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">create_guild_emoji</span><span class="p" data-group-id="6881388258-1">(</span><span class="mi">43189401384091</span><span class="p">,</span><span class="w"> </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;nostrum&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">image</span><span class="p">:</span><span class="w"> </span><span class="n">image</span><span class="p">,</span><span class="w"> </span><span class="ss">roles</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="6881388258-2">[</span><span class="p" data-group-id="6881388258-2">]</span><span class="p" data-group-id="6881388258-1">)</span></code></pre>
   </section>
 </section>
 <section class="detail" id="create_guild_emoji!/3">
@@ -3963,7 +3963,7 @@ the channel's permission overwrites</li><li><code class="inline">:parent_id</cod
   </a>
   Examples
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">create_guild_role</span><span class="p" data-group-id="8053480165-1">(</span><span class="mi">41771983423143937</span><span class="p">,</span><span class="w"> </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;nostrum-club&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">hoist</span><span class="p">:</span><span class="w"> </span><span class="no">true</span><span class="p" data-group-id="8053480165-1">)</span></code></pre>
+<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">create_guild_role</span><span class="p" data-group-id="0481298853-1">(</span><span class="mi">41771983423143937</span><span class="p">,</span><span class="w"> </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;nostrum-club&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">hoist</span><span class="p">:</span><span class="w"> </span><span class="no">true</span><span class="p" data-group-id="0481298853-1">)</span></code></pre>
   </section>
 </section>
 <section class="detail" id="create_guild_role!/3">
@@ -4011,7 +4011,7 @@ the channel's permission overwrites</li><li><code class="inline">:parent_id</cod
     </a>
     <h1 class="signature" translate="no">create_guild_scheduled_event(guild_id, reason \\ nil, options)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2391" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2392" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -4051,7 +4051,7 @@ the channel's permission overwrites</li><li><code class="inline">:parent_id</cod
     </a>
     <h1 class="signature" translate="no">create_interaction_response(interaction, response)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3456" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3457" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -4081,7 +4081,7 @@ the channel's permission overwrites</li><li><code class="inline">:parent_id</cod
     </a>
     <h1 class="signature" translate="no">create_interaction_response(id, token, options)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3504" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3505" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -4121,13 +4121,13 @@ This field expects a list of attachments which can be in either of the following
   </a>
   Example
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="n">response</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="7581769778-1">%{</span><span class="w">
+<pre><code class="makeup elixir" translate="no"><span class="n">response</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="7439616985-1">%{</span><span class="w">
   </span><span class="ss">type</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w">
-  </span><span class="ss">data</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="7581769778-2">%{</span><span class="w">
+  </span><span class="ss">data</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="7439616985-2">%{</span><span class="w">
     </span><span class="ss">content</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;I copy and pasted this code.&quot;</span><span class="w">
-  </span><span class="p" data-group-id="7581769778-2">}</span><span class="w">
-</span><span class="p" data-group-id="7581769778-1">}</span><span class="w">
-</span><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">create_interaction_response</span><span class="p" data-group-id="7581769778-3">(</span><span class="n">interaction</span><span class="p">,</span><span class="w"> </span><span class="n">response</span><span class="p" data-group-id="7581769778-3">)</span></code></pre><p>As an alternative to passing the interaction ID and token, the
+  </span><span class="p" data-group-id="7439616985-2">}</span><span class="w">
+</span><span class="p" data-group-id="7439616985-1">}</span><span class="w">
+</span><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">create_interaction_response</span><span class="p" data-group-id="7439616985-3">(</span><span class="n">interaction</span><span class="p">,</span><span class="w"> </span><span class="n">response</span><span class="p" data-group-id="7439616985-3">)</span></code></pre><p>As an alternative to passing the interaction ID and token, the
 original <a href="Nostrum.Struct.Interaction.html#t:t/0"><code class="inline">Nostrum.Struct.Interaction.t/0</code></a> can also be passed
 directly. See <a href="#create_interaction_response/2"><code class="inline">create_interaction_response/2</code></a>.</p>
   </section>
@@ -4141,7 +4141,7 @@ directly. See <a href="#create_interaction_response/2"><code class="inline">crea
     </a>
     <h1 class="signature" translate="no">create_interaction_response!(interaction, response)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3465" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3466" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -4172,7 +4172,7 @@ directly. See <a href="#create_interaction_response/2"><code class="inline">crea
     </a>
     <h1 class="signature" translate="no">create_interaction_response!(id, token, response)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3508" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3509" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -4236,35 +4236,35 @@ that you have the <code class="inline">VIEW_MESSAGE_HISTORY</code> permission. T
 <code class="inline">message_reference</code> field in your call. The complete structure
 documentation can be found <a href="https://discord.com/developers/docs/resources/channel#message-object-message-reference-structure">on the Discord Developer
 Portal</a>,
-but simply passing <code class="inline">message_id</code> will suffice:</p><pre><code class="makeup elixir" translate="no"><span class="kd">def</span><span class="w"> </span><span class="nf">my_command</span><span class="p" data-group-id="3156074418-1">(</span><span class="n">msg</span><span class="p" data-group-id="3156074418-1">)</span><span class="w"> </span><span class="k" data-group-id="3156074418-2">do</span><span class="w">
+but simply passing <code class="inline">message_id</code> will suffice:</p><pre><code class="makeup elixir" translate="no"><span class="kd">def</span><span class="w"> </span><span class="nf">my_command</span><span class="p" data-group-id="9276800759-1">(</span><span class="n">msg</span><span class="p" data-group-id="9276800759-1">)</span><span class="w"> </span><span class="k" data-group-id="9276800759-2">do</span><span class="w">
   </span><span class="c1"># Reply to the author - ``msg`` is a ``Nostrum.Struct.Message``</span><span class="w">
-  </span><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">create_message</span><span class="p" data-group-id="3156074418-3">(</span><span class="w">
+  </span><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">create_message</span><span class="p" data-group-id="9276800759-3">(</span><span class="w">
     </span><span class="n">msg</span><span class="o">.</span><span class="n">channel_id</span><span class="p">,</span><span class="w">
     </span><span class="ss">content</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Hello&quot;</span><span class="p">,</span><span class="w">
-    </span><span class="ss">message_reference</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="3156074418-4">%{</span><span class="ss">message_id</span><span class="p">:</span><span class="w"> </span><span class="n">msg</span><span class="o">.</span><span class="n">id</span><span class="p" data-group-id="3156074418-4">}</span><span class="w">
-  </span><span class="p" data-group-id="3156074418-3">)</span><span class="w">
-</span><span class="k" data-group-id="3156074418-2">end</span></code></pre><p>Passing a list will merge the settings provided</p><h2 id="create_message/2-examples" class="section-heading">
+    </span><span class="ss">message_reference</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="9276800759-4">%{</span><span class="ss">message_id</span><span class="p">:</span><span class="w"> </span><span class="n">msg</span><span class="o">.</span><span class="n">id</span><span class="p" data-group-id="9276800759-4">}</span><span class="w">
+  </span><span class="p" data-group-id="9276800759-3">)</span><span class="w">
+</span><span class="k" data-group-id="9276800759-2">end</span></code></pre><p>Passing a list will merge the settings provided</p><h2 id="create_message/2-examples" class="section-heading">
   <a href="#create_message/2-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
   <p class="sr-only">examples</p>
   </a>
   Examples
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">create_message</span><span class="p" data-group-id="9422076835-1">(</span><span class="mi">43189401384091</span><span class="p">,</span><span class="w"> </span><span class="ss">content</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;hello world!&quot;</span><span class="p" data-group-id="9422076835-1">)</span><span class="w">
+<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">create_message</span><span class="p" data-group-id="3782828264-1">(</span><span class="mi">43189401384091</span><span class="p">,</span><span class="w"> </span><span class="ss">content</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;hello world!&quot;</span><span class="p" data-group-id="3782828264-1">)</span><span class="w">
 
-</span><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">create_message</span><span class="p" data-group-id="9422076835-2">(</span><span class="mi">43189401384091</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;hello world!&quot;</span><span class="p" data-group-id="9422076835-2">)</span><span class="w">
+</span><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">create_message</span><span class="p" data-group-id="3782828264-2">(</span><span class="mi">43189401384091</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;hello world!&quot;</span><span class="p" data-group-id="3782828264-2">)</span><span class="w">
 
 </span><span class="kn">import</span><span class="w"> </span><span class="nc">Nostrum.Struct.Embed</span><span class="w">
 </span><span class="n">embed</span><span class="w"> </span><span class="o">=</span><span class="w">
-  </span><span class="p" data-group-id="9422076835-3">%</span><span class="nc" data-group-id="9422076835-3">Nostrum.Struct.Embed</span><span class="p" data-group-id="9422076835-3">{</span><span class="p" data-group-id="9422076835-3">}</span><span class="w">
-  </span><span class="o">|&gt;</span><span class="w"> </span><span class="n">put_title</span><span class="p" data-group-id="9422076835-4">(</span><span class="s">&quot;embed&quot;</span><span class="p" data-group-id="9422076835-4">)</span><span class="w">
-  </span><span class="o">|&gt;</span><span class="w"> </span><span class="n">put_description</span><span class="p" data-group-id="9422076835-5">(</span><span class="s">&quot;new desc&quot;</span><span class="p" data-group-id="9422076835-5">)</span><span class="w">
-</span><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">create_message</span><span class="p" data-group-id="9422076835-6">(</span><span class="mi">43189401384091</span><span class="p">,</span><span class="w"> </span><span class="ss">embeds</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="9422076835-7">[</span><span class="n">embed</span><span class="p" data-group-id="9422076835-7">]</span><span class="p" data-group-id="9422076835-6">)</span><span class="w">
+  </span><span class="p" data-group-id="3782828264-3">%</span><span class="nc" data-group-id="3782828264-3">Nostrum.Struct.Embed</span><span class="p" data-group-id="3782828264-3">{</span><span class="p" data-group-id="3782828264-3">}</span><span class="w">
+  </span><span class="o">|&gt;</span><span class="w"> </span><span class="n">put_title</span><span class="p" data-group-id="3782828264-4">(</span><span class="s">&quot;embed&quot;</span><span class="p" data-group-id="3782828264-4">)</span><span class="w">
+  </span><span class="o">|&gt;</span><span class="w"> </span><span class="n">put_description</span><span class="p" data-group-id="3782828264-5">(</span><span class="s">&quot;new desc&quot;</span><span class="p" data-group-id="3782828264-5">)</span><span class="w">
+</span><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">create_message</span><span class="p" data-group-id="3782828264-6">(</span><span class="mi">43189401384091</span><span class="p">,</span><span class="w"> </span><span class="ss">embeds</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="3782828264-7">[</span><span class="n">embed</span><span class="p" data-group-id="3782828264-7">]</span><span class="p" data-group-id="3782828264-6">)</span><span class="w">
 
-</span><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">create_message</span><span class="p" data-group-id="9422076835-8">(</span><span class="mi">43189401384091</span><span class="p">,</span><span class="w"> </span><span class="ss">file</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;/path/to/file.txt&quot;</span><span class="p" data-group-id="9422076835-8">)</span><span class="w">
+</span><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">create_message</span><span class="p" data-group-id="3782828264-8">(</span><span class="mi">43189401384091</span><span class="p">,</span><span class="w"> </span><span class="ss">file</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;/path/to/file.txt&quot;</span><span class="p" data-group-id="3782828264-8">)</span><span class="w">
 
-</span><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">create_message</span><span class="p" data-group-id="9422076835-9">(</span><span class="mi">43189401384091</span><span class="p">,</span><span class="w"> </span><span class="ss">content</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;hello world!&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">embeds</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="9422076835-10">[</span><span class="n">embed</span><span class="p" data-group-id="9422076835-10">]</span><span class="p">,</span><span class="w"> </span><span class="ss">file</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;/path/to/file.txt&quot;</span><span class="p" data-group-id="9422076835-9">)</span><span class="w">
+</span><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">create_message</span><span class="p" data-group-id="3782828264-9">(</span><span class="mi">43189401384091</span><span class="p">,</span><span class="w"> </span><span class="ss">content</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;hello world!&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">embeds</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="3782828264-10">[</span><span class="n">embed</span><span class="p" data-group-id="3782828264-10">]</span><span class="p">,</span><span class="w"> </span><span class="ss">file</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;/path/to/file.txt&quot;</span><span class="p" data-group-id="3782828264-9">)</span><span class="w">
 
-</span><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">create_message</span><span class="p" data-group-id="9422076835-11">(</span><span class="mi">43189401384091</span><span class="p">,</span><span class="w"> </span><span class="ss">content</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Hello @everyone&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">allowed_mentions</span><span class="p">:</span><span class="w"> </span><span class="ss">:none</span><span class="p" data-group-id="9422076835-11">)</span></code></pre>
+</span><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">create_message</span><span class="p" data-group-id="3782828264-11">(</span><span class="mi">43189401384091</span><span class="p">,</span><span class="w"> </span><span class="ss">content</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Hello @everyone&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">allowed_mentions</span><span class="p">:</span><span class="w"> </span><span class="ss">:none</span><span class="p" data-group-id="3782828264-11">)</span></code></pre>
   </section>
 </section>
 <section class="detail" id="create_message!/2">
@@ -4339,11 +4339,11 @@ fires a <a href="Nostrum.Consumer.html#t:message_reaction_add/0"><code class="in
   Examples
 </h2>
 <pre><code class="makeup elixir" translate="no"><span class="c1"># Using a Nostrum.Struct.Emoji.</span><span class="w">
-</span><span class="n">emoji</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="0591879699-1">%</span><span class="nc" data-group-id="0591879699-1">Nostrum.Struct.Emoji</span><span class="p" data-group-id="0591879699-1">{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">43819043108</span><span class="p">,</span><span class="w"> </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;foxbot&quot;</span><span class="p" data-group-id="0591879699-1">}</span><span class="w">
-</span><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">create_reaction</span><span class="p" data-group-id="0591879699-2">(</span><span class="mi">123123123123</span><span class="p">,</span><span class="w"> </span><span class="mi">321321321321</span><span class="p">,</span><span class="w"> </span><span class="n">emoji</span><span class="p" data-group-id="0591879699-2">)</span><span class="w">
+</span><span class="n">emoji</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="0866567082-1">%</span><span class="nc" data-group-id="0866567082-1">Nostrum.Struct.Emoji</span><span class="p" data-group-id="0866567082-1">{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">43819043108</span><span class="p">,</span><span class="w"> </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;foxbot&quot;</span><span class="p" data-group-id="0866567082-1">}</span><span class="w">
+</span><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">create_reaction</span><span class="p" data-group-id="0866567082-2">(</span><span class="mi">123123123123</span><span class="p">,</span><span class="w"> </span><span class="mi">321321321321</span><span class="p">,</span><span class="w"> </span><span class="n">emoji</span><span class="p" data-group-id="0866567082-2">)</span><span class="w">
 
 </span><span class="c1"># Using a base 16 emoji string.</span><span class="w">
-</span><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">create_reaction</span><span class="p" data-group-id="0591879699-3">(</span><span class="mi">123123123123</span><span class="p">,</span><span class="w"> </span><span class="mi">321321321321</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\x</span><span class="s">F0</span><span class="se">\x</span><span class="s">9F</span><span class="se">\x</span><span class="s">98</span><span class="se">\x</span><span class="s">81&quot;</span><span class="p" data-group-id="0591879699-3">)</span><span class="w">
+</span><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">create_reaction</span><span class="p" data-group-id="0866567082-3">(</span><span class="mi">123123123123</span><span class="p">,</span><span class="w"> </span><span class="mi">321321321321</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\x</span><span class="s">F0</span><span class="se">\x</span><span class="s">9F</span><span class="se">\x</span><span class="s">98</span><span class="se">\x</span><span class="s">81&quot;</span><span class="p" data-group-id="0866567082-3">)</span><span class="w">
 </span></code></pre><p>For other emoji string examples, see <a href="Nostrum.Struct.Emoji.html#t:api_name/0"><code class="inline">Nostrum.Struct.Emoji.api_name/0</code></a>.</p>
   </section>
 </section>
@@ -4391,7 +4391,7 @@ fires a <a href="Nostrum.Consumer.html#t:message_reaction_add/0"><code class="in
     </a>
     <h1 class="signature" translate="no">create_webhook(channel_id, args, reason \\ nil)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2828" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2829" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -4520,8 +4520,8 @@ for each channel under the category.</p><p>If successful, returns <code class="i
   </a>
   Examples
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">delete_channel</span><span class="p" data-group-id="7123473543-1">(</span><span class="mi">421533712753360896</span><span class="p" data-group-id="7123473543-1">)</span><span class="w">
-</span><span class="p" data-group-id="7123473543-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="7123473543-3">%</span><span class="nc" data-group-id="7123473543-3">Nostrum.Struct.Channel</span><span class="p" data-group-id="7123473543-3">{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">421533712753360896</span><span class="p" data-group-id="7123473543-3">}</span><span class="p" data-group-id="7123473543-2">}</span></code></pre>
+<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">delete_channel</span><span class="p" data-group-id="1939839614-1">(</span><span class="mi">421533712753360896</span><span class="p" data-group-id="1939839614-1">)</span><span class="w">
+</span><span class="p" data-group-id="1939839614-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="1939839614-3">%</span><span class="nc" data-group-id="1939839614-3">Nostrum.Struct.Channel</span><span class="p" data-group-id="1939839614-3">{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">421533712753360896</span><span class="p" data-group-id="1939839614-3">}</span><span class="p" data-group-id="1939839614-2">}</span></code></pre>
   </section>
 </section>
 <section class="detail" id="delete_channel!/2">
@@ -4605,7 +4605,7 @@ An optional <code class="inline">reason</code> can be given for the audit log.</
     </a>
     <h1 class="signature" translate="no">delete_global_application_command(application_id \\ Me.get().id, command_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3263" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3264" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -4667,8 +4667,8 @@ It fires the <a href="Nostrum.Consumer.html#t:guild_delete/0"><code class="inlin
   </a>
   Examples
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">delete_guild</span><span class="p" data-group-id="4236569659-1">(</span><span class="mi">81384788765712384</span><span class="p" data-group-id="4236569659-1">)</span><span class="w">
-</span><span class="p" data-group-id="4236569659-2">{</span><span class="ss">:ok</span><span class="p" data-group-id="4236569659-2">}</span></code></pre>
+<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">delete_guild</span><span class="p" data-group-id="6271007093-1">(</span><span class="mi">81384788765712384</span><span class="p" data-group-id="6271007093-1">)</span><span class="w">
+</span><span class="p" data-group-id="6271007093-2">{</span><span class="ss">:ok</span><span class="p" data-group-id="6271007093-2">}</span></code></pre>
   </section>
 </section>
 <section class="detail" id="delete_guild!/1">
@@ -4710,7 +4710,7 @@ It fires the <a href="Nostrum.Consumer.html#t:guild_delete/0"><code class="inlin
     </a>
     <h1 class="signature" translate="no">delete_guild_application_command(application_id \\ Me.get().id, guild_id, command_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3402" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3403" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -4749,7 +4749,7 @@ If not given, this will be fetched from <code class="inline">Me</code>.</li><li>
     </a>
     <h1 class="signature" translate="no">delete_guild_auto_moderation_rule(guild_id, rule_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L4185" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L4186" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -4908,7 +4908,7 @@ If not given, this will be fetched from <code class="inline">Me</code>.</li><li>
   </a>
   Examples
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">delete_guild_role</span><span class="p" data-group-id="4510670932-1">(</span><span class="mi">41771983423143937</span><span class="p">,</span><span class="w"> </span><span class="mi">392817238471936</span><span class="p" data-group-id="4510670932-1">)</span></code></pre>
+<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">delete_guild_role</span><span class="p" data-group-id="3319552833-1">(</span><span class="mi">41771983423143937</span><span class="p">,</span><span class="w"> </span><span class="mi">392817238471936</span><span class="p" data-group-id="3319552833-1">)</span></code></pre>
   </section>
 </section>
 <section class="detail" id="delete_guild_role!/3">
@@ -4954,7 +4954,7 @@ If not given, this will be fetched from <code class="inline">Me</code>.</li><li>
     </a>
     <h1 class="signature" translate="no">delete_guild_scheduled_event(guild_id, event_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2439" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2440" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -4990,7 +4990,7 @@ If not given, this will be fetched from <code class="inline">Me</code>.</li><li>
     </a>
     <h1 class="signature" translate="no">delete_interaction_followup_message(application_id \\ Me.get().id, token, message_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3637" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3638" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -5031,7 +5031,7 @@ If not given, this will be fetched from <code class="inline">Me</code>.</li><li>
     </a>
     <h1 class="signature" translate="no">delete_interaction_followup_message!(application_id \\ Me.get().id, token, message_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3651" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3652" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -5065,7 +5065,7 @@ If not given, this will be fetched from <code class="inline">Me</code>.</li><li>
     </a>
     <h1 class="signature" translate="no">delete_interaction_response(interaction)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3574" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3575" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -5096,7 +5096,7 @@ If not given, this will be fetched from <code class="inline">Me</code>.</li><li>
     </a>
     <h1 class="signature" translate="no">delete_interaction_response(id \\ Me.get().id, token)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3590" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3591" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -5130,7 +5130,7 @@ If not given, this will be fetched from <code class="inline">Me</code>.</li><li>
     </a>
     <h1 class="signature" translate="no">delete_interaction_response!(interaction)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3580" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3581" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -5161,7 +5161,7 @@ If not given, this will be fetched from <code class="inline">Me</code>.</li><li>
     </a>
     <h1 class="signature" translate="no">delete_interaction_response!(id \\ Me.get().id, token)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3599" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3600" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -5195,7 +5195,7 @@ If not given, this will be fetched from <code class="inline">Me</code>.</li><li>
     </a>
     <h1 class="signature" translate="no">delete_invite(invite_code)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2554" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2555" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -5219,7 +5219,7 @@ If not given, this will be fetched from <code class="inline">Me</code>.</li><li>
   </a>
   Examples
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">delete_invite</span><span class="p" data-group-id="7583255370-1">(</span><span class="s">&quot;zsjUsC&quot;</span><span class="p" data-group-id="7583255370-1">)</span></code></pre>
+<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">delete_invite</span><span class="p" data-group-id="3755022459-1">(</span><span class="s">&quot;zsjUsC&quot;</span><span class="p" data-group-id="3755022459-1">)</span></code></pre>
   </section>
 </section>
 <section class="detail" id="delete_invite!/1">
@@ -5231,7 +5231,7 @@ If not given, this will be fetched from <code class="inline">Me</code>.</li><li>
     </a>
     <h1 class="signature" translate="no">delete_invite!(invite_code)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2563" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2564" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -5313,7 +5313,7 @@ fires the <code class="inline">MESSAGE_DELETE</code> event.</p><p>If successful,
   </a>
   Examples
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">delete_message</span><span class="p" data-group-id="8140695908-1">(</span><span class="mi">43189401384091</span><span class="p">,</span><span class="w"> </span><span class="mi">43189401384091</span><span class="p" data-group-id="8140695908-1">)</span></code></pre>
+<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">delete_message</span><span class="p" data-group-id="3091684843-1">(</span><span class="mi">43189401384091</span><span class="p">,</span><span class="w"> </span><span class="mi">43189401384091</span><span class="p" data-group-id="3091684843-1">)</span></code></pre>
   </section>
 </section>
 <section class="detail" id="delete_message!/1">
@@ -5651,7 +5651,7 @@ permissions. It fires a <a href="Nostrum.Consumer.html#t:message_reaction_remove
     </a>
     <h1 class="signature" translate="no">delete_webhook(webhook_id, reason \\ nil)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2977" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2978" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -5691,7 +5691,7 @@ permissions. It fires a <a href="Nostrum.Consumer.html#t:message_reaction_remove
     </a>
     <h1 class="signature" translate="no">edit_application_command_permissions(application_id \\ Me.get().id, guild_id, command_id, permissions)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3733" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3734" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -5821,7 +5821,7 @@ If not given, this will be fetched from <code class="inline">Me</code>.</li><li>
     </a>
     <h1 class="signature" translate="no">edit_global_application_command(application_id \\ Me.get().id, command_id, command)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3244" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3245" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -5869,7 +5869,7 @@ If not given, this will be fetched from <code class="inline">Me</code>.</li><li>
     </a>
     <h1 class="signature" translate="no">edit_guild_application_command(application_id \\ Me.get().id, guild_id, command_id, command)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3377" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3378" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -5916,7 +5916,7 @@ If not given, this will be fetched from <code class="inline">Me</code>.</li><li>
     </a>
     <h1 class="signature" translate="no">edit_interaction_response(interaction, response)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3531" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3532" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -5948,7 +5948,7 @@ If not given, this will be fetched from <code class="inline">Me</code>.</li><li>
     </a>
     <h1 class="signature" translate="no">edit_interaction_response(id \\ Me.get().id, token, response)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3552" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3553" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -5983,7 +5983,7 @@ If not given, this will be fetched from <code class="inline">Me</code>.</li><li>
     </a>
     <h1 class="signature" translate="no">edit_interaction_response!(interaction, response)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3540" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3541" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -6014,7 +6014,7 @@ If not given, this will be fetched from <code class="inline">Me</code>.</li><li>
     </a>
     <h1 class="signature" translate="no">edit_interaction_response!(id \\ Me.get().id, token, response)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3563" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3564" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -6117,18 +6117,18 @@ includes attachments that were sent in the original request.</p><h2 id="edit_mes
   </a>
   Examples
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">edit_message</span><span class="p" data-group-id="0544496942-1">(</span><span class="mi">43189401384091</span><span class="p">,</span><span class="w"> </span><span class="mi">1894013840914098</span><span class="p">,</span><span class="w"> </span><span class="ss">content</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;hello world!&quot;</span><span class="p" data-group-id="0544496942-1">)</span><span class="w">
+<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">edit_message</span><span class="p" data-group-id="0056872722-1">(</span><span class="mi">43189401384091</span><span class="p">,</span><span class="w"> </span><span class="mi">1894013840914098</span><span class="p">,</span><span class="w"> </span><span class="ss">content</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;hello world!&quot;</span><span class="p" data-group-id="0056872722-1">)</span><span class="w">
 
-</span><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">edit_message</span><span class="p" data-group-id="0544496942-2">(</span><span class="mi">43189401384091</span><span class="p">,</span><span class="w"> </span><span class="mi">1894013840914098</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;hello world!&quot;</span><span class="p" data-group-id="0544496942-2">)</span><span class="w">
+</span><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">edit_message</span><span class="p" data-group-id="0056872722-2">(</span><span class="mi">43189401384091</span><span class="p">,</span><span class="w"> </span><span class="mi">1894013840914098</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;hello world!&quot;</span><span class="p" data-group-id="0056872722-2">)</span><span class="w">
 
 </span><span class="kn">import</span><span class="w"> </span><span class="nc">Nostrum.Struct.Embed</span><span class="w">
 </span><span class="n">embed</span><span class="w"> </span><span class="o">=</span><span class="w">
-  </span><span class="p" data-group-id="0544496942-3">%</span><span class="nc" data-group-id="0544496942-3">Nostrum.Struct.Embed</span><span class="p" data-group-id="0544496942-3">{</span><span class="p" data-group-id="0544496942-3">}</span><span class="w">
-  </span><span class="o">|&gt;</span><span class="w"> </span><span class="n">put_title</span><span class="p" data-group-id="0544496942-4">(</span><span class="s">&quot;embed&quot;</span><span class="p" data-group-id="0544496942-4">)</span><span class="w">
-  </span><span class="o">|&gt;</span><span class="w"> </span><span class="n">put_description</span><span class="p" data-group-id="0544496942-5">(</span><span class="s">&quot;new desc&quot;</span><span class="p" data-group-id="0544496942-5">)</span><span class="w">
-</span><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">edit_message</span><span class="p" data-group-id="0544496942-6">(</span><span class="mi">43189401384091</span><span class="p">,</span><span class="w"> </span><span class="mi">1894013840914098</span><span class="p">,</span><span class="w"> </span><span class="ss">embeds</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="0544496942-7">[</span><span class="n">embed</span><span class="p" data-group-id="0544496942-7">]</span><span class="p" data-group-id="0544496942-6">)</span><span class="w">
+  </span><span class="p" data-group-id="0056872722-3">%</span><span class="nc" data-group-id="0056872722-3">Nostrum.Struct.Embed</span><span class="p" data-group-id="0056872722-3">{</span><span class="p" data-group-id="0056872722-3">}</span><span class="w">
+  </span><span class="o">|&gt;</span><span class="w"> </span><span class="n">put_title</span><span class="p" data-group-id="0056872722-4">(</span><span class="s">&quot;embed&quot;</span><span class="p" data-group-id="0056872722-4">)</span><span class="w">
+  </span><span class="o">|&gt;</span><span class="w"> </span><span class="n">put_description</span><span class="p" data-group-id="0056872722-5">(</span><span class="s">&quot;new desc&quot;</span><span class="p" data-group-id="0056872722-5">)</span><span class="w">
+</span><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">edit_message</span><span class="p" data-group-id="0056872722-6">(</span><span class="mi">43189401384091</span><span class="p">,</span><span class="w"> </span><span class="mi">1894013840914098</span><span class="p">,</span><span class="w"> </span><span class="ss">embeds</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="0056872722-7">[</span><span class="n">embed</span><span class="p" data-group-id="0056872722-7">]</span><span class="p" data-group-id="0056872722-6">)</span><span class="w">
 
-</span><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">edit_message</span><span class="p" data-group-id="0544496942-8">(</span><span class="mi">43189401384091</span><span class="p">,</span><span class="w"> </span><span class="mi">1894013840914098</span><span class="p">,</span><span class="w"> </span><span class="ss">content</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;hello world!&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">embeds</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="0544496942-9">[</span><span class="n">embed</span><span class="p" data-group-id="0544496942-9">]</span><span class="p" data-group-id="0544496942-8">)</span></code></pre>
+</span><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">edit_message</span><span class="p" data-group-id="0056872722-8">(</span><span class="mi">43189401384091</span><span class="p">,</span><span class="w"> </span><span class="mi">1894013840914098</span><span class="p">,</span><span class="w"> </span><span class="ss">content</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;hello world!&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">embeds</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="0056872722-9">[</span><span class="n">embed</span><span class="p" data-group-id="0056872722-9">]</span><span class="p" data-group-id="0056872722-8">)</span></code></pre>
   </section>
 </section>
 <section class="detail" id="edit_message!/2">
@@ -6202,7 +6202,7 @@ includes attachments that were sent in the original request.</p><h2 id="edit_mes
     </a>
     <h1 class="signature" translate="no">edit_webhook_message(webhook_id, webhook_token, message_id, args)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3091" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3092" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -6241,7 +6241,7 @@ however all fields are optional.</p>
     </a>
     <h1 class="signature" translate="no">execute_git_webhook(webhook_id, webhook_token, wait \\ false)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3120" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3121" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -6282,7 +6282,7 @@ however all fields are optional.</p>
     </a>
     <h1 class="signature" translate="no">execute_slack_webhook(webhook_id, webhook_token, wait \\ false)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3108" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3109" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -6323,7 +6323,7 @@ however all fields are optional.</p>
     </a>
     <h1 class="signature" translate="no">execute_webhook(webhook_id, webhook_token, args, wait \\ false)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3058" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3059" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -6364,7 +6364,7 @@ however all fields are optional.</p>
     </a>
     <h1 class="signature" translate="no">get_application_command_permissions(application_id \\ Me.get().id, guild_id, command_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3699" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3700" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -6411,7 +6411,7 @@ If not given, this will be fetched from <code class="inline">Me</code>.</li><li>
     </a>
     <h1 class="signature" translate="no">get_application_information()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3148" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3149" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -6434,21 +6434,21 @@ If not given, this will be fetched from <code class="inline">Me</code>.</li><li>
   Example
 </h2>
 <pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">get_application_information</span><span class="w">
-</span><span class="p" data-group-id="8652028206-1">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w">
-</span><span class="p" data-group-id="8652028206-2">%{</span><span class="w">
+</span><span class="p" data-group-id="3610835358-1">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w">
+</span><span class="p" data-group-id="3610835358-2">%{</span><span class="w">
   </span><span class="ss">bot_public</span><span class="p">:</span><span class="w"> </span><span class="no">false</span><span class="p">,</span><span class="w">
   </span><span class="ss">bot_require_code_grant</span><span class="p">:</span><span class="w"> </span><span class="no">false</span><span class="p">,</span><span class="w">
   </span><span class="ss">description</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Test&quot;</span><span class="p">,</span><span class="w">
   </span><span class="ss">icon</span><span class="p">:</span><span class="w"> </span><span class="no">nil</span><span class="p">,</span><span class="w">
   </span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;172150183260323840&quot;</span><span class="p">,</span><span class="w">
   </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Baba O-Riley&quot;</span><span class="p">,</span><span class="w">
-  </span><span class="ss">owner</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="8652028206-3">%{</span><span class="w">
+  </span><span class="ss">owner</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="3610835358-3">%{</span><span class="w">
     </span><span class="ss">avatar</span><span class="p">:</span><span class="w"> </span><span class="no">nil</span><span class="p">,</span><span class="w">
     </span><span class="ss">discriminator</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;0042&quot;</span><span class="p">,</span><span class="w">
     </span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;172150183260323840&quot;</span><span class="p">,</span><span class="w">
     </span><span class="ss">username</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;i own a bot&quot;</span><span class="w">
-  </span><span class="p" data-group-id="8652028206-3">}</span><span class="p">,</span><span class="w">
-</span><span class="p" data-group-id="8652028206-2">}</span><span class="p" data-group-id="8652028206-1">}</span></code></pre>
+  </span><span class="p" data-group-id="3610835358-3">}</span><span class="p">,</span><span class="w">
+</span><span class="p" data-group-id="3610835358-2">}</span><span class="p" data-group-id="3610835358-1">}</span></code></pre>
   </section>
 </section>
 <section class="detail" id="get_channel/1">
@@ -6483,8 +6483,8 @@ If not given, this will be fetched from <code class="inline">Me</code>.</li><li>
   </a>
   Examples
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">get_channel</span><span class="p" data-group-id="2244454845-1">(</span><span class="mi">381889573426429952</span><span class="p" data-group-id="2244454845-1">)</span><span class="w">
-</span><span class="p" data-group-id="2244454845-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="2244454845-3">%</span><span class="nc" data-group-id="2244454845-3">Nostrum.Struct.Channel</span><span class="p" data-group-id="2244454845-3">{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">381889573426429952</span><span class="p" data-group-id="2244454845-3">}</span><span class="p" data-group-id="2244454845-2">}</span></code></pre>
+<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">get_channel</span><span class="p" data-group-id="1430576103-1">(</span><span class="mi">381889573426429952</span><span class="p" data-group-id="1430576103-1">)</span><span class="w">
+</span><span class="p" data-group-id="1430576103-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="1430576103-3">%</span><span class="nc" data-group-id="1430576103-3">Nostrum.Struct.Channel</span><span class="p" data-group-id="1430576103-3">{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">381889573426429952</span><span class="p" data-group-id="1430576103-3">}</span><span class="p" data-group-id="1430576103-2">}</span></code></pre>
   </section>
 </section>
 <section class="detail" id="get_channel!/1">
@@ -6549,8 +6549,8 @@ If not given, this will be fetched from <code class="inline">Me</code>.</li><li>
   </a>
   Examples
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">get_channel_invites</span><span class="p" data-group-id="1034076272-1">(</span><span class="mi">43189401384091</span><span class="p" data-group-id="1034076272-1">)</span><span class="w">
-</span><span class="p" data-group-id="1034076272-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="1034076272-3">[</span><span class="p" data-group-id="1034076272-4">%</span><span class="nc" data-group-id="1034076272-4">Nostrum.Struct.Invite</span><span class="p" data-group-id="1034076272-4">{</span><span class="p" data-group-id="1034076272-4">}</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="bp">_</span><span class="p" data-group-id="1034076272-3">]</span><span class="p" data-group-id="1034076272-2">}</span></code></pre>
+<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">get_channel_invites</span><span class="p" data-group-id="7150657846-1">(</span><span class="mi">43189401384091</span><span class="p" data-group-id="7150657846-1">)</span><span class="w">
+</span><span class="p" data-group-id="7150657846-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="7150657846-3">[</span><span class="p" data-group-id="7150657846-4">%</span><span class="nc" data-group-id="7150657846-4">Nostrum.Struct.Invite</span><span class="p" data-group-id="7150657846-4">{</span><span class="p" data-group-id="7150657846-4">}</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="bp">_</span><span class="p" data-group-id="7150657846-3">]</span><span class="p" data-group-id="7150657846-2">}</span></code></pre>
   </section>
 </section>
 <section class="detail" id="get_channel_invites!/1">
@@ -6614,7 +6614,7 @@ If not given, this will be fetched from <code class="inline">Me</code>.</li><li>
   </a>
   Examples
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">get_channel_message</span><span class="p" data-group-id="0122636528-1">(</span><span class="mi">43189401384091</span><span class="p">,</span><span class="w"> </span><span class="mi">198238475613443</span><span class="p" data-group-id="0122636528-1">)</span></code></pre>
+<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">get_channel_message</span><span class="p" data-group-id="9223779036-1">(</span><span class="mi">43189401384091</span><span class="p">,</span><span class="w"> </span><span class="mi">198238475613443</span><span class="p" data-group-id="9223779036-1">)</span></code></pre>
   </section>
 </section>
 <section class="detail" id="get_channel_message!/2">
@@ -6682,7 +6682,7 @@ return no messages.</p><p>If successful, returns <code class="inline">{:ok, mess
   </a>
   Examples
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">get_channel_messages</span><span class="p" data-group-id="3855937500-1">(</span><span class="mi">43189401384091</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="3855937500-2">{</span><span class="ss">:before</span><span class="p">,</span><span class="w"> </span><span class="mi">130230401384</span><span class="p" data-group-id="3855937500-2">}</span><span class="p" data-group-id="3855937500-1">)</span></code></pre>
+<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">get_channel_messages</span><span class="p" data-group-id="8187022913-1">(</span><span class="mi">43189401384091</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="8187022913-2">{</span><span class="ss">:before</span><span class="p">,</span><span class="w"> </span><span class="mi">130230401384</span><span class="p" data-group-id="8187022913-2">}</span><span class="p" data-group-id="8187022913-1">)</span></code></pre>
   </section>
 </section>
 <section class="detail" id="get_channel_messages!/3">
@@ -6725,7 +6725,7 @@ return no messages.</p><p>If successful, returns <code class="inline">{:ok, mess
     </a>
     <h1 class="signature" translate="no">get_channel_webhooks(channel_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2858" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2859" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -6760,7 +6760,7 @@ return no messages.</p><p>If successful, returns <code class="inline">{:ok, mess
     </a>
     <h1 class="signature" translate="no">get_current_user()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2600" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2601" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -6791,7 +6791,7 @@ than pulling from our cache.</p><p>If the request is successful, this function r
     </a>
     <h1 class="signature" translate="no">get_current_user!()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2609" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2610" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -6821,7 +6821,7 @@ than pulling from our cache.</p><p>If the request is successful, this function r
     </a>
     <h1 class="signature" translate="no">get_current_user_guilds(options \\ [])</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2671" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2672" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -6852,8 +6852,8 @@ ID</li><li><code class="inline">:limit</code> (integer) - max number of guilds t
   </a>
   Examples
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">get_current_user_guilds</span><span class="p" data-group-id="7210237681-1">(</span><span class="ss">limit</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p" data-group-id="7210237681-1">)</span><span class="w">
-</span><span class="p" data-group-id="7210237681-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="7210237681-3">[</span><span class="p" data-group-id="7210237681-4">%</span><span class="nc" data-group-id="7210237681-4">Nostrum.Struct.Guild</span><span class="p" data-group-id="7210237681-4">{</span><span class="p" data-group-id="7210237681-4">}</span><span class="p" data-group-id="7210237681-3">]</span><span class="p" data-group-id="7210237681-2">}</span></code></pre>
+<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">get_current_user_guilds</span><span class="p" data-group-id="0551737322-1">(</span><span class="ss">limit</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p" data-group-id="0551737322-1">)</span><span class="w">
+</span><span class="p" data-group-id="0551737322-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="0551737322-3">[</span><span class="p" data-group-id="0551737322-4">%</span><span class="nc" data-group-id="0551737322-4">Nostrum.Struct.Guild</span><span class="p" data-group-id="0551737322-4">{</span><span class="p" data-group-id="0551737322-4">}</span><span class="p" data-group-id="0551737322-3">]</span><span class="p" data-group-id="0551737322-2">}</span></code></pre>
   </section>
 </section>
 <section class="detail" id="get_current_user_guilds!/1">
@@ -6867,7 +6867,7 @@ ID</li><li><code class="inline">:limit</code> (integer) - max number of guilds t
     </a>
     <h1 class="signature" translate="no">get_current_user_guilds!(options \\ [])</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2685" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2686" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -6898,7 +6898,7 @@ ID</li><li><code class="inline">:limit</code> (integer) - max number of guilds t
     </a>
     <h1 class="signature" translate="no">get_global_application_commands(application_id \\ Me.get().id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3181" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3182" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -6936,15 +6936,15 @@ If not given, this will be fetched from <code class="inline">Me</code>.</li></ul
   Example
 </h2>
 <pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">get_global_application_commands</span><span class="w">
-</span><span class="p" data-group-id="0254998869-1">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w">
- </span><span class="p" data-group-id="0254998869-2">[</span><span class="w">
-   </span><span class="p" data-group-id="0254998869-3">%{</span><span class="w">
+</span><span class="p" data-group-id="2085269633-1">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w">
+ </span><span class="p" data-group-id="2085269633-2">[</span><span class="w">
+   </span><span class="p" data-group-id="2085269633-3">%{</span><span class="w">
      </span><span class="ss">application_id</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;455589479713865749&quot;</span><span class="p">,</span><span class="w">
      </span><span class="ss">description</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ed, man! man, ed&quot;</span><span class="p">,</span><span class="w">
      </span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;789841753196331029&quot;</span><span class="p">,</span><span class="w">
      </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;edit&quot;</span><span class="w">
-   </span><span class="p" data-group-id="0254998869-3">}</span><span class="w">
- </span><span class="p" data-group-id="0254998869-2">]</span><span class="p" data-group-id="0254998869-1">}</span></code></pre>
+   </span><span class="p" data-group-id="2085269633-3">}</span><span class="w">
+ </span><span class="p" data-group-id="2085269633-2">]</span><span class="p" data-group-id="2085269633-1">}</span></code></pre>
   </section>
 </section>
 <section class="detail" id="get_guild/1">
@@ -6979,8 +6979,8 @@ If not given, this will be fetched from <code class="inline">Me</code>.</li></ul
   </a>
   Examples
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">get_guild</span><span class="p" data-group-id="6502319732-1">(</span><span class="mi">81384788765712384</span><span class="p" data-group-id="6502319732-1">)</span><span class="w">
-</span><span class="p" data-group-id="6502319732-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="6502319732-3">%</span><span class="nc" data-group-id="6502319732-3">Nostrum.Struct.Guild</span><span class="p" data-group-id="6502319732-3">{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">81384788765712384</span><span class="p" data-group-id="6502319732-3">}</span><span class="p" data-group-id="6502319732-2">}</span></code></pre>
+<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">get_guild</span><span class="p" data-group-id="1115390589-1">(</span><span class="mi">81384788765712384</span><span class="p" data-group-id="1115390589-1">)</span><span class="w">
+</span><span class="p" data-group-id="1115390589-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="1115390589-3">%</span><span class="nc" data-group-id="1115390589-3">Nostrum.Struct.Guild</span><span class="p" data-group-id="1115390589-3">{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">81384788765712384</span><span class="p" data-group-id="1115390589-3">}</span><span class="p" data-group-id="1115390589-2">}</span></code></pre>
   </section>
 </section>
 <section class="detail" id="get_guild!/1">
@@ -7023,7 +7023,7 @@ If not given, this will be fetched from <code class="inline">Me</code>.</li></ul
     </a>
     <h1 class="signature" translate="no">get_guild_application_command_permissions(application_id \\ Me.get().id, guild_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3674" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3675" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -7072,7 +7072,7 @@ If not given, this will be fetched from <code class="inline">Me</code>.</li><li>
     </a>
     <h1 class="signature" translate="no">get_guild_application_commands(application_id \\ Me.get().id, guild_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3313" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3314" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -7156,7 +7156,7 @@ should be requested.</li></ul><h2 id="get_guild_application_commands/2-return-va
     </a>
     <h1 class="signature" translate="no">get_guild_auto_moderation_rule(guild_id, rule_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L4131" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L4132" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -7190,7 +7190,7 @@ should be requested.</li></ul><h2 id="get_guild_application_commands/2-return-va
     </a>
     <h1 class="signature" translate="no">get_guild_auto_moderation_rules(guild_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L4120" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L4121" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -7303,8 +7303,8 @@ should be requested.</li></ul><h2 id="get_guild_application_commands/2-return-va
   </a>
   Examples
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">get_guild_channels</span><span class="p" data-group-id="2495781051-1">(</span><span class="mi">81384788765712384</span><span class="p" data-group-id="2495781051-1">)</span><span class="w">
-</span><span class="p" data-group-id="2495781051-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="2495781051-3">[</span><span class="p" data-group-id="2495781051-4">%</span><span class="nc" data-group-id="2495781051-4">Nostrum.Struct.Channel</span><span class="p" data-group-id="2495781051-4">{</span><span class="ss">guild_id</span><span class="p">:</span><span class="w"> </span><span class="mi">81384788765712384</span><span class="p" data-group-id="2495781051-4">}</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="bp">_</span><span class="p" data-group-id="2495781051-3">]</span><span class="p" data-group-id="2495781051-2">}</span></code></pre>
+<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">get_guild_channels</span><span class="p" data-group-id="5848200077-1">(</span><span class="mi">81384788765712384</span><span class="p" data-group-id="5848200077-1">)</span><span class="w">
+</span><span class="p" data-group-id="5848200077-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="5848200077-3">[</span><span class="p" data-group-id="5848200077-4">%</span><span class="nc" data-group-id="5848200077-4">Nostrum.Struct.Channel</span><span class="p" data-group-id="5848200077-4">{</span><span class="ss">guild_id</span><span class="p">:</span><span class="w"> </span><span class="mi">81384788765712384</span><span class="p" data-group-id="5848200077-4">}</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="bp">_</span><span class="p" data-group-id="5848200077-3">]</span><span class="p" data-group-id="5848200077-2">}</span></code></pre>
   </section>
 </section>
 <section class="detail" id="get_guild_channels!/1">
@@ -7455,8 +7455,8 @@ should be requested.</li></ul><h2 id="get_guild_application_commands/2-return-va
   </a>
   Examples
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">get_guild_invites</span><span class="p" data-group-id="3178404303-1">(</span><span class="mi">81384788765712384</span><span class="p" data-group-id="3178404303-1">)</span><span class="w">
-</span><span class="p" data-group-id="3178404303-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="3178404303-3">[</span><span class="p" data-group-id="3178404303-4">%</span><span class="nc" data-group-id="3178404303-4">Nostrum.Struct.Invite</span><span class="p" data-group-id="3178404303-4">{</span><span class="p" data-group-id="3178404303-4">}</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="bp">_</span><span class="p" data-group-id="3178404303-3">]</span><span class="p" data-group-id="3178404303-2">}</span></code></pre>
+<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">get_guild_invites</span><span class="p" data-group-id="0863201616-1">(</span><span class="mi">81384788765712384</span><span class="p" data-group-id="0863201616-1">)</span><span class="w">
+</span><span class="p" data-group-id="0863201616-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="0863201616-3">[</span><span class="p" data-group-id="0863201616-4">%</span><span class="nc" data-group-id="0863201616-4">Nostrum.Struct.Invite</span><span class="p" data-group-id="0863201616-4">{</span><span class="p" data-group-id="0863201616-4">}</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="bp">_</span><span class="p" data-group-id="0863201616-3">]</span><span class="p" data-group-id="0863201616-2">}</span></code></pre>
   </section>
 </section>
 <section class="detail" id="get_guild_invites!/1">
@@ -7520,7 +7520,7 @@ should be requested.</li></ul><h2 id="get_guild_application_commands/2-return-va
   </a>
   Examples
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">get_guild_member</span><span class="p" data-group-id="3077156309-1">(</span><span class="mi">4019283754613</span><span class="p">,</span><span class="w"> </span><span class="mi">184937267485</span><span class="p" data-group-id="3077156309-1">)</span></code></pre>
+<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">get_guild_member</span><span class="p" data-group-id="0373767180-1">(</span><span class="mi">4019283754613</span><span class="p">,</span><span class="w"> </span><span class="mi">184937267485</span><span class="p" data-group-id="0373767180-1">)</span></code></pre>
   </section>
 </section>
 <section class="detail" id="get_guild_member!/2">
@@ -7584,8 +7584,8 @@ should be requested.</li></ul><h2 id="get_guild_application_commands/2-return-va
   </a>
   Examples
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">get_guild_prune_count</span><span class="p" data-group-id="8679720227-1">(</span><span class="mi">81384788765712384</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p" data-group-id="8679720227-1">)</span><span class="w">
-</span><span class="p" data-group-id="8679720227-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="8679720227-3">%{</span><span class="ss">pruned</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p" data-group-id="8679720227-3">}</span><span class="p" data-group-id="8679720227-2">}</span></code></pre>
+<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">get_guild_prune_count</span><span class="p" data-group-id="0682686318-1">(</span><span class="mi">81384788765712384</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p" data-group-id="0682686318-1">)</span><span class="w">
+</span><span class="p" data-group-id="0682686318-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="0682686318-3">%{</span><span class="ss">pruned</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p" data-group-id="0682686318-3">}</span><span class="p" data-group-id="0682686318-2">}</span></code></pre>
   </section>
 </section>
 <section class="detail" id="get_guild_prune_count!/2">
@@ -7649,7 +7649,7 @@ should be requested.</li></ul><h2 id="get_guild_application_commands/2-return-va
   </a>
   Examples
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">get_guild_roles</span><span class="p" data-group-id="3100342754-1">(</span><span class="mi">147362948571673</span><span class="p" data-group-id="3100342754-1">)</span></code></pre>
+<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">get_guild_roles</span><span class="p" data-group-id="9633116704-1">(</span><span class="mi">147362948571673</span><span class="p" data-group-id="9633116704-1">)</span></code></pre>
   </section>
 </section>
 <section class="detail" id="get_guild_roles!/1">
@@ -7690,7 +7690,7 @@ should be requested.</li></ul><h2 id="get_guild_application_commands/2-return-va
     </a>
     <h1 class="signature" translate="no">get_guild_scheduled_event(guild_id, event_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2428" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2429" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -7726,7 +7726,7 @@ should be requested.</li></ul><h2 id="get_guild_application_commands/2-return-va
     </a>
     <h1 class="signature" translate="no">get_guild_scheduled_event_users(guild_id, event_id, params \\ [])</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2501" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2502" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -7766,7 +7766,7 @@ should be requested.</li></ul><h2 id="get_guild_application_commands/2-return-va
     </a>
     <h1 class="signature" translate="no">get_guild_scheduled_events(guild_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2417" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2418" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -7797,7 +7797,7 @@ should be requested.</li></ul><h2 id="get_guild_application_commands/2-return-va
     </a>
     <h1 class="signature" translate="no">get_guild_webhooks(guild_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2870" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2871" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -7862,7 +7862,7 @@ should be requested.</li></ul><h2 id="get_guild_application_commands/2-return-va
     </a>
     <h1 class="signature" translate="no">get_invite(invite_code, options \\ [])</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2525" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2526" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -7892,9 +7892,9 @@ should be requested.</li></ul><h2 id="get_guild_application_commands/2-return-va
   </a>
   Examples
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">get_invite</span><span class="p" data-group-id="0348090091-1">(</span><span class="s">&quot;zsjUsC&quot;</span><span class="p" data-group-id="0348090091-1">)</span><span class="w">
+<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">get_invite</span><span class="p" data-group-id="6070168673-1">(</span><span class="s">&quot;zsjUsC&quot;</span><span class="p" data-group-id="6070168673-1">)</span><span class="w">
 
-</span><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">get_invite</span><span class="p" data-group-id="0348090091-2">(</span><span class="s">&quot;zsjUsC&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">with_counts</span><span class="p">:</span><span class="w"> </span><span class="no">true</span><span class="p" data-group-id="0348090091-2">)</span></code></pre>
+</span><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">get_invite</span><span class="p" data-group-id="6070168673-2">(</span><span class="s">&quot;zsjUsC&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">with_counts</span><span class="p">:</span><span class="w"> </span><span class="no">true</span><span class="p" data-group-id="6070168673-2">)</span></code></pre>
   </section>
 </section>
 <section class="detail" id="get_invite!/2">
@@ -7908,7 +7908,7 @@ should be requested.</li></ul><h2 id="get_guild_application_commands/2-return-va
     </a>
     <h1 class="signature" translate="no">get_invite!(invite_code, options \\ [])</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2534" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2535" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -7937,7 +7937,7 @@ should be requested.</li></ul><h2 id="get_guild_application_commands/2-return-va
     </a>
     <h1 class="signature" translate="no">get_original_interaction_response(interaction)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3518" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3519" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -7991,7 +7991,7 @@ should be requested.</li></ul><h2 id="get_guild_application_commands/2-return-va
   </a>
   Examples
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">get_pinned_messages</span><span class="p" data-group-id="2586202728-1">(</span><span class="mi">43189401384091</span><span class="p" data-group-id="2586202728-1">)</span></code></pre>
+<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">get_pinned_messages</span><span class="p" data-group-id="9408462279-1">(</span><span class="mi">43189401384091</span><span class="p" data-group-id="9408462279-1">)</span></code></pre>
   </section>
 </section>
 <section class="detail" id="get_pinned_messages!/1">
@@ -8105,7 +8105,7 @@ and <code class="inline">limit</code>, the max number of users to return, 1-100,
     </a>
     <h1 class="signature" translate="no">get_thread_member(thread_id, user_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3935" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3936" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -8136,7 +8136,7 @@ and <code class="inline">limit</code>, the max number of users to return, 1-100,
     </a>
     <h1 class="signature" translate="no">get_thread_members(thread_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3947" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3948" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -8167,7 +8167,7 @@ and <code class="inline">limit</code>, the max number of users to return, 1-100,
     </a>
     <h1 class="signature" translate="no">get_token()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L4290" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L4291" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -8195,7 +8195,7 @@ and <code class="inline">limit</code>, the max number of users to return, 1-100,
     </a>
     <h1 class="signature" translate="no">get_user(user_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2575" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2576" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -8224,7 +8224,7 @@ and <code class="inline">limit</code>, the max number of users to return, 1-100,
     </a>
     <h1 class="signature" translate="no">get_user!(user_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2584" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2585" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -8252,7 +8252,7 @@ and <code class="inline">limit</code>, the max number of users to return, 1-100,
     </a>
     <h1 class="signature" translate="no">get_user_connections()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2796" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2797" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -8280,7 +8280,7 @@ and <code class="inline">limit</code>, the max number of users to return, 1-100,
     </a>
     <h1 class="signature" translate="no">get_user_dms()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2719" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2720" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -8302,8 +8302,8 @@ and <code class="inline">limit</code>, the max number of users to return, 1-100,
   </a>
   Examples
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">get_user_dms</span><span class="p" data-group-id="5980800211-1">(</span><span class="p" data-group-id="5980800211-1">)</span><span class="w">
-</span><span class="p" data-group-id="5980800211-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="5980800211-3">[</span><span class="p" data-group-id="5980800211-4">%</span><span class="nc" data-group-id="5980800211-4">Nostrum.Struct.Channel</span><span class="p" data-group-id="5980800211-4">{</span><span class="ss">type</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p" data-group-id="5980800211-4">}</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="bp">_</span><span class="p" data-group-id="5980800211-3">]</span><span class="p" data-group-id="5980800211-2">}</span></code></pre>
+<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">get_user_dms</span><span class="p" data-group-id="0240128362-1">(</span><span class="p" data-group-id="0240128362-1">)</span><span class="w">
+</span><span class="p" data-group-id="0240128362-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="0240128362-3">[</span><span class="p" data-group-id="0240128362-4">%</span><span class="nc" data-group-id="0240128362-4">Nostrum.Struct.Channel</span><span class="p" data-group-id="0240128362-4">{</span><span class="ss">type</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p" data-group-id="0240128362-4">}</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="bp">_</span><span class="p" data-group-id="0240128362-3">]</span><span class="p" data-group-id="0240128362-2">}</span></code></pre>
   </section>
 </section>
 <section class="detail" id="get_user_dms!/0">
@@ -8315,7 +8315,7 @@ and <code class="inline">limit</code>, the max number of users to return, 1-100,
     </a>
     <h1 class="signature" translate="no">get_user_dms!()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2728" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2729" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -8371,7 +8371,7 @@ and <code class="inline">limit</code>, the max number of users to return, 1-100,
     </a>
     <h1 class="signature" translate="no">get_webhook(webhook_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2882" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2883" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -8406,7 +8406,7 @@ and <code class="inline">limit</code>, the max number of users to return, 1-100,
     </a>
     <h1 class="signature" translate="no">get_webhook_message(webhook, message_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2846" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2847" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -8437,7 +8437,7 @@ and <code class="inline">limit</code>, the max number of users to return, 1-100,
     </a>
     <h1 class="signature" translate="no">get_webhook_with_token(webhook_id, webhook_token)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2899" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2900" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -8476,7 +8476,7 @@ authentication.</p><h2 id="get_webhook_with_token/2-parameters" class="section-h
     </a>
     <h1 class="signature" translate="no">join_thread(thread_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L4083" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L4084" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -8506,7 +8506,7 @@ authentication.</p><h2 id="get_webhook_with_token/2-parameters" class="section-h
     </a>
     <h1 class="signature" translate="no">leave_guild(guild_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2696" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2697" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -8534,7 +8534,7 @@ authentication.</p><h2 id="get_webhook_with_token/2-parameters" class="section-h
     </a>
     <h1 class="signature" translate="no">leave_thread(thread_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L4100" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L4101" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -8653,7 +8653,7 @@ authentication.</p><h2 id="get_webhook_with_token/2-parameters" class="section-h
   </a>
   Examples
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">list_guild_members</span><span class="p" data-group-id="7346619313-1">(</span><span class="mi">41771983423143937</span><span class="p">,</span><span class="w"> </span><span class="ss">limit</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p" data-group-id="7346619313-1">)</span></code></pre>
+<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">list_guild_members</span><span class="p" data-group-id="2948600690-1">(</span><span class="mi">41771983423143937</span><span class="p">,</span><span class="w"> </span><span class="ss">limit</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p" data-group-id="2948600690-1">)</span></code></pre>
   </section>
 </section>
 <section class="detail" id="list_guild_members!/2">
@@ -8696,7 +8696,7 @@ authentication.</p><h2 id="get_webhook_with_token/2-parameters" class="section-h
     </a>
     <h1 class="signature" translate="no">list_guild_threads(guild_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3962" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3963" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -8734,7 +8734,7 @@ authentication.</p><h2 id="get_webhook_with_token/2-parameters" class="section-h
     </a>
     <h1 class="signature" translate="no">list_joined_private_archived_threads(channel_id, options \\ [])</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L4038" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L4039" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -8773,7 +8773,7 @@ authentication.</p><h2 id="get_webhook_with_token/2-parameters" class="section-h
     </a>
     <h1 class="signature" translate="no">list_private_archived_threads(channel_id, options \\ [])</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L4019" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L4020" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -8812,7 +8812,7 @@ authentication.</p><h2 id="get_webhook_with_token/2-parameters" class="section-h
     </a>
     <h1 class="signature" translate="no">list_public_archived_threads(channel_id, options \\ [])</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L4000" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L4001" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -8861,7 +8861,7 @@ authentication.</p><h2 id="get_webhook_with_token/2-parameters" class="section-h
     </a>
     <h1 class="signature" translate="no">list_voice_regions()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2805" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2806" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -8933,11 +8933,11 @@ id of the new parent category for a channel</li></ul><h2 id="modify_channel/3-ex
   </a>
   Examples
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">modify_channel</span><span class="p" data-group-id="8742568696-1">(</span><span class="mi">41771983423143933</span><span class="p">,</span><span class="w"> </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;elixir-nostrum&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">topic</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;nostrum discussion&quot;</span><span class="p" data-group-id="8742568696-1">)</span><span class="w">
-</span><span class="p" data-group-id="8742568696-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="8742568696-3">%</span><span class="nc" data-group-id="8742568696-3">Nostrum.Struct.Channel</span><span class="p" data-group-id="8742568696-3">{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">41771983423143933</span><span class="p">,</span><span class="w"> </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;elixir-nostrum&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">topic</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;nostrum discussion&quot;</span><span class="p" data-group-id="8742568696-3">}</span><span class="p" data-group-id="8742568696-2">}</span><span class="w">
+<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">modify_channel</span><span class="p" data-group-id="6776567362-1">(</span><span class="mi">41771983423143933</span><span class="p">,</span><span class="w"> </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;elixir-nostrum&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">topic</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;nostrum discussion&quot;</span><span class="p" data-group-id="6776567362-1">)</span><span class="w">
+</span><span class="p" data-group-id="6776567362-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="6776567362-3">%</span><span class="nc" data-group-id="6776567362-3">Nostrum.Struct.Channel</span><span class="p" data-group-id="6776567362-3">{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">41771983423143933</span><span class="p">,</span><span class="w"> </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;elixir-nostrum&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">topic</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;nostrum discussion&quot;</span><span class="p" data-group-id="6776567362-3">}</span><span class="p" data-group-id="6776567362-2">}</span><span class="w">
 
-</span><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">modify_channel</span><span class="p" data-group-id="8742568696-4">(</span><span class="mi">41771983423143933</span><span class="p" data-group-id="8742568696-4">)</span><span class="w">
-</span><span class="p" data-group-id="8742568696-5">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="8742568696-6">%</span><span class="nc" data-group-id="8742568696-6">Nostrum.Struct.Channel</span><span class="p" data-group-id="8742568696-6">{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">41771983423143933</span><span class="p" data-group-id="8742568696-6">}</span><span class="p" data-group-id="8742568696-5">}</span></code></pre>
+</span><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">modify_channel</span><span class="p" data-group-id="6776567362-4">(</span><span class="mi">41771983423143933</span><span class="p" data-group-id="6776567362-4">)</span><span class="w">
+</span><span class="p" data-group-id="6776567362-5">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="6776567362-6">%</span><span class="nc" data-group-id="6776567362-6">Nostrum.Struct.Channel</span><span class="p" data-group-id="6776567362-6">{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">41771983423143933</span><span class="p" data-group-id="6776567362-6">}</span><span class="p" data-group-id="6776567362-5">}</span></code></pre>
   </section>
 </section>
 <section class="detail" id="modify_channel!/3">
@@ -8983,7 +8983,7 @@ id of the new parent category for a channel</li></ul><h2 id="modify_channel/3-ex
     </a>
     <h1 class="signature" translate="no">modify_current_user(options)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2629" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2630" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -9011,7 +9011,7 @@ id of the new parent category for a channel</li></ul><h2 id="modify_channel/3-ex
   </a>
   Examples
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">modify_current_user</span><span class="p" data-group-id="1819475437-1">(</span><span class="ss">avatar</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;data:image/jpeg;base64,YXl5IGJieSB1IGx1a2luIDQgc3VtIGZ1az8=&quot;</span><span class="p" data-group-id="1819475437-1">)</span></code></pre>
+<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">modify_current_user</span><span class="p" data-group-id="3375234441-1">(</span><span class="ss">avatar</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;data:image/jpeg;base64,YXl5IGJieSB1IGx1a2luIDQgc3VtIGZ1az8=&quot;</span><span class="p" data-group-id="3375234441-1">)</span></code></pre>
   </section>
 </section>
 <section class="detail" id="modify_current_user!/1">
@@ -9023,7 +9023,7 @@ id of the new parent category for a channel</li></ul><h2 id="modify_channel/3-ex
     </a>
     <h1 class="signature" translate="no">modify_current_user!(options)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2643" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2644" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -9082,8 +9082,8 @@ id of the new parent category for a channel</li></ul><h2 id="modify_channel/3-ex
   </a>
   Examples
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">modify_current_user_nick</span><span class="p" data-group-id="9012955837-1">(</span><span class="mi">41771983423143937</span><span class="p">,</span><span class="w"> </span><span class="ss">nick</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Nostrum&quot;</span><span class="p" data-group-id="9012955837-1">)</span><span class="w">
-</span><span class="p" data-group-id="9012955837-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="9012955837-3">%{</span><span class="ss">nick</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Nostrum&quot;</span><span class="p" data-group-id="9012955837-3">}</span><span class="p" data-group-id="9012955837-2">}</span></code></pre>
+<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">modify_current_user_nick</span><span class="p" data-group-id="1028531975-1">(</span><span class="mi">41771983423143937</span><span class="p">,</span><span class="w"> </span><span class="ss">nick</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Nostrum&quot;</span><span class="p" data-group-id="1028531975-1">)</span><span class="w">
+</span><span class="p" data-group-id="1028531975-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="1028531975-3">%{</span><span class="ss">nick</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Nostrum&quot;</span><span class="p" data-group-id="1028531975-3">}</span><span class="p" data-group-id="1028531975-2">}</span></code></pre>
   </section>
 </section>
 <section class="detail" id="modify_current_user_nick!/2">
@@ -9170,8 +9170,8 @@ where admins and moderators receive notices from Discord in public guilds</li></
   </a>
   Examples
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">modify_guild</span><span class="p" data-group-id="4901296124-1">(</span><span class="mi">451824027976073216</span><span class="p">,</span><span class="w"> </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Nose Drum&quot;</span><span class="p" data-group-id="4901296124-1">)</span><span class="w">
-</span><span class="p" data-group-id="4901296124-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="4901296124-3">%</span><span class="nc" data-group-id="4901296124-3">Nostrum.Struct.Guild</span><span class="p" data-group-id="4901296124-3">{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">451824027976073216</span><span class="p">,</span><span class="w"> </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Nose Drum&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">...</span><span class="p" data-group-id="4901296124-3">}</span><span class="p" data-group-id="4901296124-2">}</span></code></pre>
+<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">modify_guild</span><span class="p" data-group-id="1471224513-1">(</span><span class="mi">451824027976073216</span><span class="p">,</span><span class="w"> </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Nose Drum&quot;</span><span class="p" data-group-id="1471224513-1">)</span><span class="w">
+</span><span class="p" data-group-id="1471224513-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="1471224513-3">%</span><span class="nc" data-group-id="1471224513-3">Nostrum.Struct.Guild</span><span class="p" data-group-id="1471224513-3">{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">451824027976073216</span><span class="p">,</span><span class="w"> </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Nose Drum&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">...</span><span class="p" data-group-id="1471224513-3">}</span><span class="p" data-group-id="1471224513-2">}</span></code></pre>
   </section>
 </section>
 <section class="detail" id="modify_guild!/2">
@@ -9214,7 +9214,7 @@ where admins and moderators receive notices from Discord in public guilds</li></
     </a>
     <h1 class="signature" translate="no">modify_guild_auto_moderation_rule(guild_id, rule_id, options)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L4172" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L4173" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -9274,8 +9274,8 @@ where admins and moderators receive notices from Discord in public guilds</li></
   </a>
   Examples
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">modify_guild_channel_positions</span><span class="p" data-group-id="8173080352-1">(</span><span class="mi">279093381723062272</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="8173080352-2">[</span><span class="p" data-group-id="8173080352-3">%{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">351500354581692420</span><span class="p">,</span><span class="w"> </span><span class="ss">position</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p" data-group-id="8173080352-3">}</span><span class="p" data-group-id="8173080352-2">]</span><span class="p" data-group-id="8173080352-1">)</span><span class="w">
-</span><span class="p" data-group-id="8173080352-4">{</span><span class="ss">:ok</span><span class="p" data-group-id="8173080352-4">}</span></code></pre>
+<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">modify_guild_channel_positions</span><span class="p" data-group-id="5856973460-1">(</span><span class="mi">279093381723062272</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="5856973460-2">[</span><span class="p" data-group-id="5856973460-3">%{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">351500354581692420</span><span class="p">,</span><span class="w"> </span><span class="ss">position</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p" data-group-id="5856973460-3">}</span><span class="p" data-group-id="5856973460-2">]</span><span class="p" data-group-id="5856973460-1">)</span><span class="w">
+</span><span class="p" data-group-id="5856973460-4">{</span><span class="ss">:ok</span><span class="p" data-group-id="5856973460-4">}</span></code></pre>
   </section>
 </section>
 <section class="detail" id="modify_guild_channel_positions!/2">
@@ -9356,7 +9356,7 @@ where admins and moderators receive notices from Discord in public guilds</li></
   </a>
   Examples
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">modify_guild_emoji</span><span class="p" data-group-id="3991142461-1">(</span><span class="mi">43189401384091</span><span class="p">,</span><span class="w"> </span><span class="mi">4314301984301</span><span class="p">,</span><span class="w"> </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;elixir&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">roles</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="3991142461-2">[</span><span class="p" data-group-id="3991142461-2">]</span><span class="p" data-group-id="3991142461-1">)</span></code></pre>
+<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">modify_guild_emoji</span><span class="p" data-group-id="6047850312-1">(</span><span class="mi">43189401384091</span><span class="p">,</span><span class="w"> </span><span class="mi">4314301984301</span><span class="p">,</span><span class="w"> </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;elixir&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">roles</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="6047850312-2">[</span><span class="p" data-group-id="6047850312-2">]</span><span class="p" data-group-id="6047850312-1">)</span></code></pre>
   </section>
 </section>
 <section class="detail" id="modify_guild_emoji!/4">
@@ -9474,8 +9474,8 @@ It situationally requires the <code class="inline">MANAGE_NICKNAMES</code>, <cod
   </a>
   Examples
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">modify_guild_member</span><span class="p" data-group-id="9780061110-1">(</span><span class="mi">41771983423143937</span><span class="p">,</span><span class="w"> </span><span class="mi">637162356451</span><span class="p">,</span><span class="w"> </span><span class="ss">nick</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Nostrum&quot;</span><span class="p" data-group-id="9780061110-1">)</span><span class="w">
-</span><span class="p" data-group-id="9780061110-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="9780061110-3">%</span><span class="nc" data-group-id="9780061110-3">Nostrum.Struct.Member</span><span class="p" data-group-id="9780061110-3">{</span><span class="p" data-group-id="9780061110-3">}</span><span class="p" data-group-id="9780061110-2">}</span></code></pre>
+<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">modify_guild_member</span><span class="p" data-group-id="4772515891-1">(</span><span class="mi">41771983423143937</span><span class="p">,</span><span class="w"> </span><span class="mi">637162356451</span><span class="p">,</span><span class="w"> </span><span class="ss">nick</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Nostrum&quot;</span><span class="p" data-group-id="4772515891-1">)</span><span class="w">
+</span><span class="p" data-group-id="4772515891-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="4772515891-3">%</span><span class="nc" data-group-id="4772515891-3">Nostrum.Struct.Member</span><span class="p" data-group-id="4772515891-3">{</span><span class="p" data-group-id="4772515891-3">}</span><span class="p" data-group-id="4772515891-2">}</span></code></pre>
   </section>
 </section>
 <section class="detail" id="modify_guild_member!/4">
@@ -9560,7 +9560,7 @@ It situationally requires the <code class="inline">MANAGE_NICKNAMES</code>, <cod
   </a>
   Examples
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">modify_guild_role</span><span class="p" data-group-id="1351408176-1">(</span><span class="mi">41771983423143937</span><span class="p">,</span><span class="w"> </span><span class="mi">392817238471936</span><span class="p">,</span><span class="w"> </span><span class="ss">hoist</span><span class="p">:</span><span class="w"> </span><span class="no">false</span><span class="p">,</span><span class="w"> </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;foo-bar&quot;</span><span class="p" data-group-id="1351408176-1">)</span></code></pre>
+<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">modify_guild_role</span><span class="p" data-group-id="6961196964-1">(</span><span class="mi">41771983423143937</span><span class="p">,</span><span class="w"> </span><span class="mi">392817238471936</span><span class="p">,</span><span class="w"> </span><span class="ss">hoist</span><span class="p">:</span><span class="w"> </span><span class="no">false</span><span class="p">,</span><span class="w"> </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;foo-bar&quot;</span><span class="p" data-group-id="6961196964-1">)</span></code></pre>
   </section>
 </section>
 <section class="detail" id="modify_guild_role!/4">
@@ -9636,7 +9636,7 @@ It situationally requires the <code class="inline">MANAGE_NICKNAMES</code>, <cod
   </a>
   Examples
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">modify_guild_role_positions</span><span class="p" data-group-id="7404638098-1">(</span><span class="mi">41771983423143937</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="7404638098-2">[</span><span class="p" data-group-id="7404638098-3">%{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">41771983423143936</span><span class="p">,</span><span class="w"> </span><span class="ss">position</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p" data-group-id="7404638098-3">}</span><span class="p" data-group-id="7404638098-2">]</span><span class="p" data-group-id="7404638098-1">)</span></code></pre>
+<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">modify_guild_role_positions</span><span class="p" data-group-id="9010591679-1">(</span><span class="mi">41771983423143937</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="9010591679-2">[</span><span class="p" data-group-id="9010591679-3">%{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">41771983423143936</span><span class="p">,</span><span class="w"> </span><span class="ss">position</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p" data-group-id="9010591679-3">}</span><span class="p" data-group-id="9010591679-2">]</span><span class="p" data-group-id="9010591679-1">)</span></code></pre>
   </section>
 </section>
 <section class="detail" id="modify_guild_role_positions!/3">
@@ -9684,7 +9684,7 @@ It situationally requires the <code class="inline">MANAGE_NICKNAMES</code>, <cod
     </a>
     <h1 class="signature" translate="no">modify_guild_scheduled_event(guild_id, event_id, reason \\ nil, options)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2467" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2468" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -9720,7 +9720,7 @@ with the additional optional integer field <code class="inline">:status</code> w
     </a>
     <h1 class="signature" translate="no">modify_guild_widget(guild_id, options)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2362" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2363" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -9750,7 +9750,7 @@ with the additional optional integer field <code class="inline">:status</code> w
     </a>
     <h1 class="signature" translate="no">modify_webhook(webhook_id, args, reason \\ nil)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2922" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2923" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -9790,7 +9790,7 @@ with the additional optional integer field <code class="inline">:status</code> w
     </a>
     <h1 class="signature" translate="no">modify_webhook_with_token(webhook_id, webhook_token, args, reason \\ nil)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2957" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2958" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -9895,8 +9895,8 @@ An optional <code class="inline">reason</code> can be specified for the audit lo
   </a>
   Examples
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">remove_guild_member</span><span class="p" data-group-id="1755939883-1">(</span><span class="mi">1453827904102291</span><span class="p">,</span><span class="w"> </span><span class="mi">18739485766253</span><span class="p" data-group-id="1755939883-1">)</span><span class="w">
-</span><span class="p" data-group-id="1755939883-2">{</span><span class="ss">:ok</span><span class="p" data-group-id="1755939883-2">}</span></code></pre>
+<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">remove_guild_member</span><span class="p" data-group-id="8462394991-1">(</span><span class="mi">1453827904102291</span><span class="p">,</span><span class="w"> </span><span class="mi">18739485766253</span><span class="p" data-group-id="8462394991-1">)</span><span class="w">
+</span><span class="p" data-group-id="8462394991-2">{</span><span class="ss">:ok</span><span class="p" data-group-id="8462394991-2">}</span></code></pre>
   </section>
 </section>
 <section class="detail" id="remove_guild_member!/3">
@@ -9979,7 +9979,7 @@ An optional <code class="inline">reason</code> can be given for the audit log.</
     </a>
     <h1 class="signature" translate="no">remove_thread_member(thread_id, user_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L4111" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L4112" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -10010,7 +10010,7 @@ An optional <code class="inline">reason</code> can be given for the audit log.</
     </a>
     <h1 class="signature" translate="no">request(request)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L4204" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L4205" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -10042,7 +10042,7 @@ An optional <code class="inline">reason</code> can be given for the audit log.</
     </a>
     <h1 class="signature" translate="no">request(method, route, body \\ &quot;&quot;, params \\ [])</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L4209" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L4210" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -10073,7 +10073,7 @@ An optional <code class="inline">reason</code> can be given for the audit log.</
     </a>
     <h1 class="signature" translate="no">request_multipart(method, route, body, params \\ [])</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L4230" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L4231" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -10104,7 +10104,7 @@ An optional <code class="inline">reason</code> can be given for the audit log.</
     </a>
     <h1 class="signature" translate="no">start_thread(channel_id, options, reason \\ nil)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3855" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3856" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -10146,7 +10146,7 @@ An optional <code class="inline">reason</code> can be given for the audit log.</
     </a>
     <h1 class="signature" translate="no">start_thread_in_forum_channel(channel_id, options, reason \\ nil)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3894" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3895" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -10195,7 +10195,7 @@ An optional <code class="inline">reason</code> can be given for the audit log.</
     </a>
     <h1 class="signature" translate="no">start_thread_with_message(channel_id, message_id, options, reason \\ nil)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3819" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L3820" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
