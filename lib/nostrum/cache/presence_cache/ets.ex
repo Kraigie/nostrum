@@ -6,6 +6,7 @@ defmodule Nostrum.Cache.PresenceCache.ETS do
   please use the `table/0` function.
   """
   @moduledoc since: "0.5.0"
+  @dialyzer {:nowarn_function, update: 1}
 
   alias Nostrum.Cache.PresenceCache
 

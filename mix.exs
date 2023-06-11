@@ -167,7 +167,9 @@ defmodule Nostrum.Mixfile do
   def dialyzer do
     [
       plt_add_deps: :transitive,
-      plt_add_apps: [:mix, :mnesia]
+      plt_add_apps: [:mix, :mnesia],
+      # "-Wmissing_return"]
+      flags: ["-Wextra_return"]
     ]
   end
 end

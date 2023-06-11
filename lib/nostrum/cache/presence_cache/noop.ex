@@ -27,7 +27,7 @@ defmodule Nostrum.Cache.PresenceCache.NoOp do
   def create(_presence), do: :ok
 
   @impl PresenceCache
-  @spec update(map) :: {Guild.id(), nil | map, map} | :noop
+  @spec update(map) :: {Guild.id(), nil | map, map}
   def update(presence), do: {presence.guild_id, nil, presence}
 
   @impl PresenceCache

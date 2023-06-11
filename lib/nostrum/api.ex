@@ -2353,6 +2353,7 @@ defmodule Nostrum.Api do
   @spec get_guild_widget(integer) :: error | {:ok, map}
   def get_guild_widget(guild_id) do
     request(:get, Constants.guild_widget(guild_id))
+    |> handle_request_with_decode
   end
 
   @doc """
