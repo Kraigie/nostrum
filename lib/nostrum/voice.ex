@@ -565,7 +565,7 @@ defmodule Nostrum.Voice do
     voice = get_voice(guild_id)
 
     if VoiceState.ready_for_rtp?(voice) do
-      Audio.send_frames(frames, voice)
+      {_, _sent_all?} = Audio.send_frames(frames, voice)
       :ok
     else
       {:error, "Must be connected to voice channel to send frames."}
@@ -585,7 +585,7 @@ defmodule Nostrum.Voice do
 
     cond do
       VoiceState.ready_for_ws?(voice) ->
-        VoiceSupervisor.create_session(voice)
+        {:ok, _pid} = VoiceSupervisor.create_session(voice)
         :ok
 
       is_nil(voice) ->
@@ -765,7 +765,7 @@ defmodule Nostrum.Voice do
     state = Map.put(state, guild_id, voice)
 
     if Application.get_env(:nostrum, :voice_auto_connect, true),
-      do: start_if_ready(voice)
+      do: _result = start_if_ready(voice)
 
     {:reply, voice, state}
   end

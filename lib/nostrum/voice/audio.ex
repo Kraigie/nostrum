@@ -117,7 +117,7 @@ defmodule Nostrum.Voice.Audio do
       |> Enum.take(frames_per_burst())
       |> send_frames(voice)
 
-    :timer.cancel(watchdog)
+    {:ok, :cancel} = :timer.cancel(watchdog)
 
     if done,
       do: on_complete(voice, init?),
@@ -129,12 +129,13 @@ defmodule Nostrum.Voice.Audio do
   def send_frames(frames, %VoiceState{} = voice) do
     voice =
       Enum.reduce(frames, voice, fn f, v ->
-        :gen_udp.send(
-          v.udp_socket,
-          v.ip |> ip_to_tuple(),
-          v.port,
-          Crypto.encrypt(v, f)
-        )
+        :ok =
+          :gen_udp.send(
+            v.udp_socket,
+            v.ip |> ip_to_tuple(),
+            v.port,
+            Crypto.encrypt(v, f)
+          )
 
         %{
           v

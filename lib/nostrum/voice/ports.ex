@@ -22,6 +22,8 @@ defmodule Nostrum.Voice.Ports do
     end
   end
 
+  @dialyzer {:nowarn_function, init: 1}
+
   alias Nostrum.Voice.Ports.State
 
   require Logger
@@ -41,7 +43,7 @@ defmodule Nostrum.Voice.Ports do
 
     # Spawn process to asynchronously send input to port
     unless is_nil(input) do
-      Task.start(fn -> send_input(port, input) end)
+      {:ok, _pid} = Task.start(fn -> send_input(port, input) end)
     end
 
     # Store reference if input is another process

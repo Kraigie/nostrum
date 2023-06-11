@@ -32,6 +32,6 @@ defmodule Nostrum.Voice.Supervisor do
       restart: :transient
     }
 
-    DynamicSupervisor.start_child(Nostrum.Voice.SessionSupervisor, child)
+    {:ok, _pid} = DynamicSupervisor.start_child(Nostrum.Voice.SessionSupervisor, child)
   end
 end
