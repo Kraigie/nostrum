@@ -151,23 +151,14 @@ defmodule Nostrum.Shard.Session do
 
   # If we've been here before, we want to use the resume gateway URL to connect
   # instead of the regular gateway URL.
-  def connecting_http(:enter, from, %{resume_gateway: resume_gateway} = data)
-      when resume_gateway != nil do
+  #
+  # We also have to strip the "wss://" prefix from the URL, as `:gun` doesn't
+  # currently understand it.
+  def connecting_http(:enter, from, %{resume_gateway: "wss://" <> resume_gateway} = data) do
     Logger.debug("Resuming on #{inspect(resume_gateway)}")
 
-    # strip off the wss:// prefix if it's there
-    # since :gun doesn't know how to handle it
-    resume_url =
-      case resume_gateway do
-        <<"wss://", gateway_url::binary>> ->
-          gateway_url
-
-        gateway_url ->
-          gateway_url
-      end
-
     # if we don't set resume_gateway to nil, we'll have an infinite loop
-    connecting_http(:enter, from, %{data | gateway: resume_url, resume_gateway: nil})
+    connecting_http(:enter, from, %{data | gateway: resume_gateway, resume_gateway: nil})
   end
 
   def connecting_http(:enter, _from, %{gateway: gateway} = data) do
