@@ -154,7 +154,20 @@ defmodule Nostrum.Shard.Session do
   def connecting_http(:enter, from, %{resume_gateway: resume_gateway} = data)
       when resume_gateway != nil do
     Logger.debug("Resuming on #{inspect(resume_gateway)}")
-    connecting_http(:enter, from, %{data | gateway: resume_gateway})
+
+    # strip off the wss:// prefix if it's there
+    # since :gun doesn't know how to handle it
+    resume_url =
+      case resume_gateway do
+        <<"wss://", gateway_url::binary>> ->
+          gateway_url
+
+        gateway_url ->
+          gateway_url
+      end
+
+    # if we don't set resume_gateway to nil, we'll have an infinite loop
+    connecting_http(:enter, from, %{data | gateway: resume_url, resume_gateway: nil})
   end
 
   def connecting_http(:enter, _from, %{gateway: gateway} = data) do
@@ -250,6 +263,13 @@ defmodule Nostrum.Shard.Session do
     :ok = :gun.update_flow(data_with_seq.conn, stream, @standard_flow)
 
     case from_handle do
+      {updated_data, :reconnect} ->
+        :gun.close(data_with_seq.conn)
+        :gun.flush(data_with_seq.conn)
+        connect = {:next_event, :internal, :connect}
+        new_data = %{updated_data | conn: nil, stream: nil}
+        {:next_state, :disconnected, new_data, connect}
+
       {updated_data, reply} ->
         :ok = :gun.ws_send(data_with_seq.conn, stream, {:binary, reply})
         {:keep_state, updated_data, heartbeat_actions}
