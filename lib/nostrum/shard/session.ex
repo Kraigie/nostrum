@@ -145,9 +145,9 @@ defmodule Nostrum.Shard.Session do
     {:next_state, :connecting_http, data}
   end
 
-  def disconnected(_kind, _request, _data) do
-    {:keep_state_and_data, :postpone}
-  end
+  #def disconnected(_kind, _request, _data) do
+  #  {:keep_state_and_data, :postpone}
+  #end
 
   # If we've been here before, we want to use the resume gateway URL to connect
   # instead of the regular gateway URL.
@@ -183,9 +183,9 @@ defmodule Nostrum.Shard.Session do
     {:stop, :connect_http_timeout}
   end
 
-  def connecting_http(_kind, _request, _data) do
-    {:keep_state_and_data, :postpone}
-  end
+  #def connecting_http(_kind, _request, _data) do
+  #  {:keep_state_and_data, :postpone}
+  #end
 
   def connecting_ws(:enter, _from, %{conn: conn} = data) do
     Logger.debug("Upgrading connection to websocket")
