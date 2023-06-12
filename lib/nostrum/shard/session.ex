@@ -156,8 +156,12 @@ defmodule Nostrum.Shard.Session do
     set_timeout = {:state_timeout, @timeout_connect, :connect_timeout}
 
     gun_opts = %{
-      retry: 3,
+      connect_timeout: :timer.seconds(5),
+      domain_lookup_timeout: :timer.seconds(5),
+      # Do not retry. The state machine wants to keep track of this on its own terms.
+      retry: 0,
       protocols: [:http],
+      tls_handshake_timeout: :timer.seconds(5),
       tls_opts: Constants.gun_tls_opts()
     }
 
