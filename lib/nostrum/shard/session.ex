@@ -106,6 +106,8 @@ defmodule Nostrum.Shard.Session do
       gateway: gateway
     }
 
+    Logger.put_module_level(__MODULE__, :debug)
+
     connect = {:next_event, :internal, :connect}
     {:ok, :disconnected, state, connect}
   end
@@ -126,6 +128,7 @@ defmodule Nostrum.Shard.Session do
   # we need to wait for the shard connector to tell us it's okay to connect.
   def disconnected(:enter, _previous_state, %{seq: nil} = data) do
     # XXX: Should this be non-blocking?
+    Logger.debug("Establishing initial connection")
     :ok = Connector.block_until_connect()
     {:next_state, :disconnected, data}
   end
@@ -134,6 +137,7 @@ defmodule Nostrum.Shard.Session do
   # but with RESUME, we don't need to respect the concurrency limit, as
   # it only applies to identify.
   def disconnected(:enter, _previous_state, data) do
+    Logger.debug("Reconnecting with seq token")
     {:next_state, :disconnected, data}
   end
 
@@ -149,6 +153,7 @@ defmodule Nostrum.Shard.Session do
   # instead of the regular gateway URL.
   def connecting_http(:enter, from, %{resume_gateway: resume_gateway} = data)
       when resume_gateway != nil do
+    Logger.debug("Resuming on #{inspect(resume_gateway)}")
     connecting_http(:enter, from, %{data | gateway: resume_gateway})
   end
 
@@ -183,6 +188,7 @@ defmodule Nostrum.Shard.Session do
   end
 
   def connecting_ws(:enter, _from, %{conn: conn} = data) do
+    Logger.debug("Upgrading connection to websocket")
     set_timeout = {:state_timeout, @timeout_ws_upgrade, :upgrade_timeout}
     stream = :gun.ws_upgrade(conn, @gateway_qs, [], %{flow: @standard_flow})
     {:keep_state, %{data | stream: stream}, set_timeout}
@@ -216,13 +222,14 @@ defmodule Nostrum.Shard.Session do
     {:stop, :connect_ws_timeout}
   end
 
-  def connecting_ws(_kind, _request, _data) do
-    {:keep_state_and_data, :postpone}
-  end
+  # def connecting_ws(_kind, _request, _data) do
+  #   {:keep_state_and_data, :postpone}
+  # end
 
   # We don't need to specially handle resuming here, because Shard.Event will
   # adjust our initial payload accordingly.
   def connected(:enter, _from, _data) do
+    Logger.debug("Shard connection up")
     :keep_state_and_data
   end
 
