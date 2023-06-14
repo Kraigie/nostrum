@@ -63,7 +63,7 @@ defmodule Nostrum.Shard.Event do
 
   def handle(:reconnect, _payload, state) do
     Logger.info("RECONNECT")
-    {state, []}
+    {{state, :reconnect}, []}
   end
 
   def handle(event, _payload, state) do

@@ -145,16 +145,20 @@ defmodule Nostrum.Shard.Session do
     {:next_state, :connecting_http, data}
   end
 
-  #def disconnected(_kind, _request, _data) do
+  # def disconnected(_kind, _request, _data) do
   #  {:keep_state_and_data, :postpone}
-  #end
+  # end
 
   # If we've been here before, we want to use the resume gateway URL to connect
   # instead of the regular gateway URL.
-  def connecting_http(:enter, from, %{resume_gateway: resume_gateway} = data)
-      when resume_gateway != nil do
+  #
+  # We also have to strip the "wss://" prefix from the URL, as `:gun` doesn't
+  # currently understand it.
+  def connecting_http(:enter, from, %{resume_gateway: "wss://" <> resume_gateway} = data) do
     Logger.debug("Resuming on #{inspect(resume_gateway)}")
-    connecting_http(:enter, from, %{data | gateway: resume_gateway})
+
+    # if we don't set resume_gateway to nil, we'll have an infinite loop
+    connecting_http(:enter, from, %{data | gateway: resume_gateway, resume_gateway: nil})
   end
 
   def connecting_http(:enter, _from, %{gateway: gateway} = data) do
@@ -183,9 +187,9 @@ defmodule Nostrum.Shard.Session do
     {:stop, :connect_http_timeout}
   end
 
-  #def connecting_http(_kind, _request, _data) do
+  # def connecting_http(_kind, _request, _data) do
   #  {:keep_state_and_data, :postpone}
-  #end
+  # end
 
   def connecting_ws(:enter, _from, %{conn: conn} = data) do
     Logger.debug("Upgrading connection to websocket")
@@ -250,6 +254,13 @@ defmodule Nostrum.Shard.Session do
     :ok = :gun.update_flow(data_with_seq.conn, stream, @standard_flow)
 
     case from_handle do
+      {updated_data, :reconnect} ->
+        :gun.close(data_with_seq.conn)
+        :gun.flush(data_with_seq.conn)
+        connect = {:next_event, :internal, :connect}
+        new_data = %{updated_data | conn: nil, stream: nil}
+        {:next_state, :disconnected, new_data, connect}
+
       {updated_data, reply} ->
         :ok = :gun.ws_send(data_with_seq.conn, stream, {:binary, reply})
         {:keep_state, updated_data, heartbeat_actions}
