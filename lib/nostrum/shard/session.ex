@@ -106,8 +106,6 @@ defmodule Nostrum.Shard.Session do
       gateway: gateway
     }
 
-    Logger.put_module_level(__MODULE__, :debug)
-
     connect = {:next_event, :internal, :connect}
     {:ok, :disconnected, state, connect}
   end
