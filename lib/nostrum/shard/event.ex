@@ -10,7 +10,7 @@ defmodule Nostrum.Shard.Event do
   require Logger
 
   @spec handle(atom(), map(), WSState.t()) ::
-          {WSState.t() | {WSState.t(), reply :: iodata()}, [:gen_statem.action()]}
+          {WSState.t() | {WSState.t(), reply :: iodata() | :reconnect}, [:gen_statem.action()]}
   def handle(:dispatch, payload, state) do
     payload = Util.safe_atom_map(payload)
 
