@@ -13,7 +13,7 @@
 
     <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
     <script src="dist/handlebars.templates-XWGFFSCD.js"></script>
-    <script src="dist/sidebar_items-9E58B5FD.js"></script>
+    <script src="dist/sidebar_items-08EF4290.js"></script>
 
       <script src="docs_config.js"></script>
 
@@ -137,11 +137,11 @@ the session (e.g. no <code class="inline">seq</code> field is available), this w
 wait a moment to respect the session startup concurrency limits. Afterwards,
 it will transition to <code class="inline">connecting_http</code>.</p></li><li><p><code class="inline">connecting_http</code>: We are setting up a HTTP connection to the API. This
 means that no connection was available previously at all, and we need to open
-it from scratch. Once <code class="inline">:gun</code> notifies us that the connection is up, we
-transition to the <code class="inline">connecting_ws</code> state.</p></li><li><p><code class="inline">connecting_ws</code>: We are turning the HTTP connection into a WebSocket
-connection. This is used both for the initial connection and also for later
-gateway-requested reconnections. If this succeeds, we head into the
-<code class="inline">connected</code> state.</p></li><li><p><code class="inline">connected</code>: The WebSocket connection is up. This state actively deals with
+it from scratch. Used for gateway-initiated reconnect requests (&quot;Cloudflare
+Websocket proxy restarting&quot;) and on <code class="inline">:gun_down</code> notifications for the
+connection in connected state. Once <code class="inline">:gun</code> notifies us that the connection is
+up, we transition to the <code class="inline">connecting_ws</code> state.</p></li><li><p><code class="inline">connecting_ws</code>: We are turning the HTTP connection into a WebSocket
+connection. If this succeeds, we head into the <code class="inline">connected</code> state.</p></li><li><p><code class="inline">connected</code>: The WebSocket connection is up. This state actively deals with
 new data from the gateway, and takes care of heartbeating. If Discord fails
 to respond to our heartbeats, we close down the full connection and attempt
 to re-establish and resume events.</p></li></ul>
@@ -181,7 +181,7 @@ to re-establish and resume events.</p></li></ul>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#connected/3" translate="no">connected(atom, request, data)</a>
+        <a href="#connected/3" translate="no">connected(arg1, request, data)</a>
 
       </div>
 
@@ -326,7 +326,7 @@ Functions
       <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">connected(atom, request, data)</h1>
+    <h1 class="signature" translate="no">connected(arg1, request, data)</h1>
 
       <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/session.ex#L233" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
