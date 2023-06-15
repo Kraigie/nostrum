@@ -28,13 +28,13 @@ defmodule Nostrum.Shard.Session do
 
   - `connecting_http`: We are setting up a HTTP connection to the API. This
   means that no connection was available previously at all, and we need to open
-  it from scratch. Once `:gun` notifies us that the connection is up, we
-  transition to the `connecting_ws` state.
+  it from scratch. Used for gateway-initiated reconnect requests ("Cloudflare
+  Websocket proxy restarting") and on `:gun_down` notifications for the
+  connection in connected state. Once `:gun` notifies us that the connection is
+  up, we transition to the `connecting_ws` state.
 
   - `connecting_ws`: We are turning the HTTP connection into a WebSocket
-  connection. This is used both for the initial connection and also for later
-  gateway-requested reconnections. If this succeeds, we head into the
-  `connected` state.
+  connection. If this succeeds, we head into the `connected` state.
 
   - `connected`: The WebSocket connection is up. This state actively deals with
   new data from the gateway, and takes care of heartbeating. If Discord fails
@@ -268,31 +268,23 @@ defmodule Nostrum.Shard.Session do
     end
   end
 
-  def connected(:info, {:gun_ws, conn, stream, :close}, %{stream: stream} = data) do
+  def connected(:info, {:gun_ws, conn, stream, :close}, %{conn: conn, stream: stream}) do
     Logger.info("Shard websocket closed (unknown reason)")
-    :gun.flush(conn)
-    {:next_state, :connecting_ws, %{data | stream: nil}}
+    {:keep_state_and_data, {:next_event, :internal, :reconnect}}
   end
 
-  def connected(:info, {:gun_ws, conn, _stream, {:close, errno, reason}}, data) do
+  def connected(:info, {:gun_ws, conn, _stream, {:close, errno, reason}}, %{conn: conn}) do
     Logger.info("Shard websocket closed (errno #{errno}, reason #{inspect(reason)})")
-    :gun.flush(conn)
-    {:next_state, :connecting_ws, %{data | stream: nil}}
+    {:keep_state_and_data, {:next_event, :internal, :reconnect}}
   end
 
   def connected(
         :info,
         {:gun_down, conn, _proto, _reason, _killed_streams},
-        %{conn: conn} = data
+        %{conn: conn}
       ) do
     Logger.info("Lost complete shard connection. Attempting reconnect.")
-    # Brutally close to make sure we don't mess up the state machine
-    # due to gun reconnecting automatically. For the WebSocket disconnect
-    # case, this is fine.
-    :ok = :gun.close(conn)
-    :ok = :gun.flush(conn)
-    connect = {:next_event, :internal, :connect}
-    {:next_state, :disconnected, %{data | conn: nil, stream: nil}, connect}
+    {:keep_state_and_data, {:next_event, :internal, :reconnect}}
   end
 
   def connected(:cast, {request, payload}, %{conn: conn, stream: stream})
@@ -326,5 +318,14 @@ defmodule Nostrum.Shard.Session do
       connect = {:next_event, :internal, :connect}
       {:next_state, :disconnected, %{data | stream: nil}, connect}
     end
+  end
+
+  # Internal event to force a complete reconnection from the connected state.
+  # Useful when the gateway told us to do so.
+  def connected(:internal, :reconnect, %{conn: conn} = data) do
+    :ok = :gun.close(conn)
+    :ok = :gun.flush(conn)
+    connect = {:next_event, :internal, :connect}
+    {:next_state, :disconnected, %{data | conn: nil, stream: nil}, connect}
   end
 end
