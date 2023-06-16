@@ -148,14 +148,26 @@ defmodule Nostrum.Util do
   """
   @spec safe_atom_map(map) :: map
   def safe_atom_map(term) do
-    cond do
-      is_map(term) ->
+    case term do
+      # to handle the rare occasion that discord leaks a `:__struct__` key
+      # rather than outright crashing, we'll just log a warning and continue
+      %{__struct__: struct_name} ->
+        Logger.warning(
+          "Discord's gateway leaked a struct with name #{inspect(struct_name)}, please report this to the library maintainer"
+        )
+
+        term = Map.from_struct(term)
         for {key, value} <- term, into: %{}, do: {maybe_to_atom(key), safe_atom_map(value)}
 
-      is_list(term) ->
+      # if we have a regular map
+      %{} ->
+        for {key, value} <- term, into: %{}, do: {maybe_to_atom(key), safe_atom_map(value)}
+
+      # if we have a non-empty list
+      [_ | _] ->
         Enum.map(term, fn item -> safe_atom_map(item) end)
 
-      true ->
+      _ ->
         term
     end
   end
