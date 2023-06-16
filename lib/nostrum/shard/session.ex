@@ -173,7 +173,7 @@ defmodule Nostrum.Shard.Session do
     }
 
     {:ok, worker} = :gun.open(:binary.bin_to_list(gateway), 443, gun_opts)
-    _monitor = :erlang.monitor(:process, worker)
+    # _monitor = :erlang.monitor(:process, worker)
     {:keep_state, %{data | conn: worker}, set_timeout}
   end
 
@@ -253,11 +253,7 @@ defmodule Nostrum.Shard.Session do
 
     case from_handle do
       {updated_data, :reconnect} ->
-        :gun.close(data_with_seq.conn)
-        :gun.flush(data_with_seq.conn)
-        connect = {:next_event, :internal, :connect}
-        new_data = %{updated_data | conn: nil, stream: nil}
-        {:next_state, :disconnected, new_data, connect}
+        {:keep_state, updated_data, {:next_event, :internal, :reconnect}}
 
       {updated_data, reply} ->
         :ok = :gun.ws_send(data_with_seq.conn, stream, {:binary, reply})
