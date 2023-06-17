@@ -7,7 +7,7 @@
     <meta name="generator" content="ExDoc v0.29.4">
     <meta name="project" content="Nostrum v0.9.0-alpha3">
 
-    <title>Nostrum.Constants.ButtonStyle — Nostrum v0.9.0-alpha3</title>
+    <title>Nostrum.Cache.ChannelCache.NoOp — Nostrum v0.9.0-alpha3</title>
     <link rel="stylesheet" href="dist/html-elixir-HHVY3JYD.css" />
 
 
@@ -98,20 +98,19 @@ Nostrum
 </button>
 
 
-    <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/constants.ex#L343" title="View Source" class="icon-action" rel="help">
+    <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/channel_cache/noop.ex#L1" title="View Source" class="icon-action" rel="help">
       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
       <span class="sr-only">View Source</span>
     </a>
 
-  <span translate="no">Nostrum.Constants.ButtonStyle</span> 
+  <span translate="no">Nostrum.Cache.ChannelCache.NoOp</span> 
   <small class="app-vsn" translate="no">(Nostrum v0.9.0-alpha3)</small>
 
 </h1>
 
 
   <section id="moduledoc">
-<p>Defines available styles for button message components
-For more info please refer to <a href="https://discord.com/developers/docs/interactions/message-components#button-object-button-styles">https://discord.com/developers/docs/interactions/message-components#button-object-button-styles</a></p>
+<p>A NoOp implementation for the ChannelCache</p><p>This cache does nothing, enable it if you dont need to cache channels</p>
   </section>
 
 
@@ -130,41 +129,21 @@ For more info please refer to <a href="https://discord.com/developers/docs/inter
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#danger/0" translate="no">danger()</a>
+        <a href="#child_spec/1" translate="no">child_spec(init_arg)</a>
 
       </div>
+
+        <div class="summary-synopsis"><p>Returns a specification to start this module under a supervisor.</p></div>
 
     </div>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#link/0" translate="no">link()</a>
+        <a href="#start_link/1" translate="no">start_link(init_arg)</a>
 
       </div>
 
-    </div>
-
-    <div class="summary-row">
-      <div class="summary-signature">
-        <a href="#primary/0" translate="no">primary()</a>
-
-      </div>
-
-    </div>
-
-    <div class="summary-row">
-      <div class="summary-signature">
-        <a href="#secondary/0" translate="no">secondary()</a>
-
-      </div>
-
-    </div>
-
-    <div class="summary-row">
-      <div class="summary-signature">
-        <a href="#success/0" translate="no">success()</a>
-
-      </div>
+        <div class="summary-synopsis"><p>Start the supervisor.</p></div>
 
     </div>
 
@@ -182,16 +161,16 @@ For more info please refer to <a href="https://discord.com/developers/docs/inter
 Functions
     </h1>
     <div class="functions-list">
-<section class="detail" id="danger/0">
+<section class="detail" id="child_spec/1">
 
   <div class="detail-header">
-    <a href="#danger/0" class="detail-link" title="Link to this function">
+    <a href="#child_spec/1" class="detail-link" title="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">danger()</h1>
+    <h1 class="signature" translate="no">child_spec(init_arg)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/constants.ex#L352" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/channel_cache/noop.ex#L12" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -201,19 +180,19 @@ Functions
 
   <section class="docstring">
 
-
+<p>Returns a specification to start this module under a supervisor.</p><p>See <a href="https://hexdocs.pm/elixir/Supervisor.html"><code class="inline">Supervisor</code></a>.</p>
   </section>
 </section>
-<section class="detail" id="link/0">
+<section class="detail" id="start_link/1">
 
   <div class="detail-header">
-    <a href="#link/0" class="detail-link" title="Link to this function">
+    <a href="#start_link/1" class="detail-link" title="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">link()</h1>
+    <h1 class="signature" translate="no">start_link(init_arg)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/constants.ex#L353" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/channel_cache/noop.ex#L15" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -223,73 +202,7 @@ Functions
 
   <section class="docstring">
 
-
-  </section>
-</section>
-<section class="detail" id="primary/0">
-
-  <div class="detail-header">
-    <a href="#primary/0" class="detail-link" title="Link to this function">
-      <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
-    </a>
-    <h1 class="signature" translate="no">primary()</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/constants.ex#L349" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
-
-
-  </div>
-
-  <section class="docstring">
-
-
-  </section>
-</section>
-<section class="detail" id="secondary/0">
-
-  <div class="detail-header">
-    <a href="#secondary/0" class="detail-link" title="Link to this function">
-      <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
-    </a>
-    <h1 class="signature" translate="no">secondary()</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/constants.ex#L350" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
-
-
-  </div>
-
-  <section class="docstring">
-
-
-  </section>
-</section>
-<section class="detail" id="success/0">
-
-  <div class="detail-header">
-    <a href="#success/0" class="detail-link" title="Link to this function">
-      <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
-    </a>
-    <h1 class="signature" translate="no">success()</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/constants.ex#L351" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
-
-
-  </div>
-
-  <section class="docstring">
-
-
+<p>Start the supervisor.</p>
   </section>
 </section>
 
@@ -304,7 +217,7 @@ Functions
 
               <a href="https://preview.hex.pm/preview/nostrum/0.9.0-alpha3">Hex Preview</a>
 
-                (<a href="https://preview.hex.pm/preview/nostrum/0.9.0-alpha3/show/lib/nostrum/constants.ex">current file</a>)
+                (<a href="https://preview.hex.pm/preview/nostrum/0.9.0-alpha3/show/lib/nostrum/cache/channel_cache/noop.ex">current file</a>)
 
             </span>
 
