@@ -30,37 +30,70 @@ defmodule Nostrum.Api.Async do
     callback.(response)
   end
 
-  @doc """
-  Awaits on a list of promises, returning a list with the responses.
+  # `:gen_statem.reqids_new/0` is only available in OTP 25+
+  # however we support OTP 23+ so we can use a fallback
+  # for OTP 23-24
+  if function_exported?(:gen_statem, :reqids_new, 0) do
+    @doc """
+    Awaits on a list of promises, returning a list with the responses.
 
-  If a timout is given, it will return a `:timeout` tuple with any responses that were received
-  should the timeout be reached before all promises are fulfilled.
-  """
-  @spec await_many([Promise.t()], :infinity | non_neg_integer | {:abs, integer}) ::
-          {:ok, [any()]} | {:timeout, [any()]}
-  def await_many(promises, timeout \\ :infinity) do
-    {req_id_collection, promise_map} =
-      Enum.reduce(promises, {:gen_statem.reqids_new(), %{}}, fn promise, {req_ids, map} ->
-        req_id = promise.request_id
-        handle = promise.handle
-        callback = promise.callback
-        {:gen_statem.reqids_add(req_id, handle, req_ids), Map.put(map, handle, callback)}
-      end)
+    If a timout is given, it will return a `:timeout` tuple with any responses that were received
+    should the timeout be reached before all promises are fulfilled.
+    """
+    @spec await_many([Promise.t()], :infinity | non_neg_integer | {:abs, integer}) ::
+            {:ok, [any()]} | {:timeout, [any()]}
+    def await_many(promises, timeout \\ :infinity) do
+      {req_id_collection, promise_map} =
+        Enum.reduce(promises, {:gen_statem.reqids_new(), %{}}, fn promise, {req_ids, map} ->
+          req_id = promise.request_id
+          handle = promise.handle
+          callback = promise.callback
+          {:gen_statem.reqids_add(req_id, handle, req_ids), Map.put(map, handle, callback)}
+        end)
 
-    _await_many(req_id_collection, promise_map, timeout, [])
-  end
+      _await_many(req_id_collection, promise_map, timeout, [])
+    end
 
-  defp _await_many(req_id_collection, promise_map, timeout, results) do
-    case :gen_statem.wait_response(req_id_collection, timeout, true) do
-      {{:reply, resp}, handle, new_collection} ->
-        callback = Map.get(promise_map, handle)
-        _await_many(new_collection, promise_map, timeout, [callback.(resp) | results])
+    defp _await_many(req_id_collection, promise_map, timeout, results) do
+      case :gen_statem.wait_response(req_id_collection, timeout, true) do
+        {{:reply, resp}, handle, new_collection} ->
+          callback = Map.get(promise_map, handle)
+          _await_many(new_collection, promise_map, timeout, [callback.(resp) | results])
 
-      :no_request ->
-        {:ok, results}
+        :no_request ->
+          {:ok, results}
 
-      :timeout ->
-        {:timeout, results}
+        :timeout ->
+          {:timeout, results}
+      end
+    end
+  else
+    # fallback for OTP versions < 25
+    @doc """
+    Awaits on a list of promises, returning a list with the responses.
+
+    If a timout is given, it will return a `:timeout` tuple with any responses that were received
+    should the timeout be reached before all promises are fulfilled.
+    """
+    @spec await_many([Promise.t()], :infinity | non_neg_integer | {:abs, integer}) ::
+            {:ok, [any()]} | {:timeout, [any()]}
+    def await_many(promises, timeout \\ :infinity) do
+      _await_many(promises, timeout, [])
+    end
+
+    defp _await_many([], _promise_map, _timeout, results) do
+      {:ok, results}
+    end
+
+    defp _await_many([promise | remaining_promises], timeout, results) do
+      case :gen_statem.wait_response(promise.request_id, timeout) do
+        {:reply, resp} ->
+          callback = promise.callback
+          _await_many(remaining_promises, timeout, [callback.(resp) | results])
+
+        :timeout ->
+          {:timeout, results}
+      end
     end
   end
 
