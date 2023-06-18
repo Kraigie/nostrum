@@ -4,6 +4,7 @@ defmodule Nostrum.Cache.ChannelCache.NoOp do
 
   This cache does nothing, enable it if you dont need to cache channels
   """
+  @moduledoc since: "0.9.0"
 
   @behaviour Nostrum.Cache.ChannelCache
 

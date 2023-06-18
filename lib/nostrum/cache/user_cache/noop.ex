@@ -4,6 +4,7 @@ defmodule Nostrum.Cache.UserCache.NoOp do
 
   This cache does nothing, enable it if you dont need to cache users
   """
+  @moduledoc since: "0.9.0"
   @behaviour Nostrum.Cache.UserCache
 
   alias Nostrum.Struct.User

@@ -4,6 +4,7 @@ defmodule Nostrum.Cache.MemberCache.NoOp do
 
   This cache does nothing, enable it if you dont need to cache members
   """
+  @moduledoc since: "0.9.0"
   @behaviour Nostrum.Cache.MemberCache
 
   alias Nostrum.Cache.MemberCache

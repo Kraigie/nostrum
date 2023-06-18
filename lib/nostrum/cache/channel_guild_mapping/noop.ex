@@ -2,6 +2,7 @@ defmodule Nostrum.Cache.ChannelGuildMapping.NoOp do
   @moduledoc """
   NoOp implementation for the Channel Guild map
   """
+  @moduledoc since: "0.9.0"
 
   alias Nostrum.Cache.ChannelGuildMapping
 
