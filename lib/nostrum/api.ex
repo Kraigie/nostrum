@@ -65,6 +65,9 @@ defmodule Nostrum.Api do
   alias Nostrum.Struct.Guild.{AuditLog, AuditLogEntry, Member, Role, ScheduledEvent}
   alias Nostrum.Shard.{Session, Supervisor}
 
+  use Nostrum.UnsafeHelpers,
+    handler: :bangify
+
   @typedoc """
   Represents a failed response from the API.
 
@@ -162,6 +165,7 @@ defmodule Nostrum.Api do
     - `type` - The type of status to show. 0 (Playing) | 1 (Streaming) | 2 (Listening) | 3 (Watching)
     - `stream` - URL of twitch.tv stream
   """
+  @unsafe {:update_status, [:pid, :status, :game, :type, :stream]}
   @spec update_shard_status(pid, status, String.t(), integer, String.t() | nil) :: :ok
   def update_shard_status(pid, status, game, type \\ 0, stream \\ nil) do
     Session.update_status(pid, to_string(status), game, stream, type)
