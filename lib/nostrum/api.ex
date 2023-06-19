@@ -66,7 +66,8 @@ defmodule Nostrum.Api do
   alias Nostrum.Shard.{Session, Supervisor}
 
   use Nostrum.UnsafeHelpers,
-    handler: :bangify
+    handler: :bangify,
+    docs: true
 
   @typedoc """
   Represents a failed response from the API.
