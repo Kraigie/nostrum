@@ -304,6 +304,26 @@ defmodule Nostrum.Api.Ratelimiter do
      ]}
   end
 
+  # We were informed that a bucket expired, and we have outstanding requests
+  # (that were previously ratelimited) for that bucket. We need to connect and
+  # run it - just like when receiving a queue request above.
+  def disconnected({:timeout, bucket}, :expired, %{outstanding: outstanding} = data)
+      when is_map_key(outstanding, bucket) do
+    {:next_state, :connecting, data,
+     [
+       {:next_event, :internal, :open},
+       {:state_timeout, :timer.seconds(10), :connect_timeout},
+       :postpone
+     ]}
+  end
+
+  # We received a timeout for a bucket that does not have any pending requests.
+  # This means that the remaining requests got to exactly 0 before we ceased
+  # sending further requests.
+  def disconnected({:timeout, _bucket}, :expired, _data) do
+    :keep_state_and_data
+  end
+
   def connecting(:internal, :open, data) do
     domain = to_charlist(Constants.domain())
 
@@ -328,6 +348,10 @@ defmodule Nostrum.Api.Ratelimiter do
   end
 
   def connecting({:call, _from}, _request, _data) do
+    {:keep_state_and_data, :postpone}
+  end
+
+  def connecting({:timeout, _bucket}, :expired, _data) do
     {:keep_state_and_data, :postpone}
   end
 
