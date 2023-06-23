@@ -402,6 +402,11 @@ defmodule Nostrum.Api.Ratelimiter do
     end
   end
 
+  def connected(:internal, {:requeue, {request, from}}, data) do
+    Logger.warning("Requeueing request to #{request.method} #{inspect(request.route)} due to 429")
+    connected({:call, from}, {:queue, request}, data)
+  end
+
   # Run the given request right now, and do any bookkeeping.
   def connected(:internal, {:run, request, bucket, from}, %{conn: conn} = data) do
     stream =
@@ -482,25 +487,36 @@ defmodule Nostrum.Api.Ratelimiter do
   # Beginning of the response. For responses without a body, this is the
   # complete response. For responses with a body, we set up the buffer here. In
   # either case, we parse the retrieved ratelimiting information here.
-  # The "status != 429" should probably be removed on release such that we can
-  # deal with global ratelimits properly.
   def connected(
         :info,
         {:gun_response, _conn, stream, kind, status, headers},
         %{inflight: inflight, running: running} = data
-      )
-      when status != 429 do
-    {bucket, _request, from} = Map.fetch!(running, stream)
+      ) do
+    {bucket, request, from} = Map.fetch!(running, stream)
     response = parse_response(status, headers)
     limits = parse_headers(response)
     parse_limits = {:next_event, :internal, {:parse_limits, limits, bucket}}
 
-    case kind do
-      :nofin ->
-        inflight_with_this = Map.put(inflight, stream, {status, headers, ""})
-        {:keep_state, %{data | inflight: inflight_with_this}, parse_limits}
+    cond do
+      kind == :fin and status == 429 ->
+        # Uh oh. This better be a user or global ratelimit because our
+        # ratelimiter is fast, and not because we've actually exhausted a
+        # "standard" bucket.
+        running_without_this = Map.delete(running, stream)
 
-      :fin ->
+        {:keep_state, %{data | running: running_without_this},
+         [
+           # parse_limits will transition to the ratelimit state appropriately
+           # for us, and event ordering guarantees that this will be the next
+           # event that we deal with, regardless of how many clients are
+           # sending requests to us in the meantime. Afterwards, the global limit
+           # state will need to deal with the requeue request (most likely by
+           # postponing it).
+           parse_limits,
+           {:next_event, :internal, {:requeue, {request, from}}}
+         ]}
+
+      kind == :fin ->
         running_without_this = Map.delete(running, stream)
 
         {:keep_state, %{data | running: running_without_this},
@@ -508,6 +524,10 @@ defmodule Nostrum.Api.Ratelimiter do
            {:reply, from, format_response(response)},
            parse_limits
          ]}
+
+      kind == :nofin ->
+        inflight_with_this = Map.put(inflight, stream, {status, headers, ""})
+        {:keep_state, %{data | inflight: inflight_with_this}, parse_limits}
     end
   end
 
@@ -529,14 +549,26 @@ defmodule Nostrum.Api.Ratelimiter do
         {:gun_data, _conn, stream, :fin, body},
         %{inflight: inflight, running: running} = data
       ) do
-    {{_bucket, _request, from}, running_without_this} = Map.pop(running, stream)
+    {{_bucket, request, from}, running_without_this} = Map.pop(running, stream)
     {{status, headers, buffer}, inflight_without_this} = Map.pop(inflight, stream)
     full_buffer = <<buffer::binary, body::binary>>
     unparsed = parse_response(status, headers, full_buffer)
     response = format_response(unparsed)
+    new_data = %{data | inflight: inflight_without_this, running: running_without_this}
 
-    {:keep_state, %{data | inflight: inflight_without_this, running: running_without_this},
-     {:reply, from, response}}
+    case status do
+      429 ->
+        # Not great - this should ideally be a global or user ratelimit, both
+        # things which we don't receive any anticipation about from the API.
+        # Give the request a second chance.
+        {:keep_state, new_data,
+         [
+           {:next_event, :internal, {:requeue, {request, from}}}
+         ]}
+
+      _ ->
+        {:keep_state, new_data, {:reply, from, response}}
+    end
   end
 
   # Parse limits and deal with them accordingly by scheduling the bucket expiry
@@ -545,7 +577,8 @@ defmodule Nostrum.Api.Ratelimiter do
         :internal,
         {:parse_limits, {:bucket_limit, {remaining, reset_after}}, bucket},
         %{outstanding: outstanding} = data
-      ) do
+      )
+      when remaining >= 0 do
     expire_bucket = {{:timeout, bucket}, reset_after, :expired}
 
     case Map.fetch(outstanding, bucket) do
@@ -591,7 +624,19 @@ defmodule Nostrum.Api.Ratelimiter do
     end
   end
 
+  def connected(:internal, {:parse_limits, {:user_limit, retry_after}, _bucket}, data) do
+    Logger.warning(
+      "Hit user limit, transitioning into global limit state for #{retry_after / 1000} seconds"
+    )
+
+    {:next_state, :global_limit, data, [{:state_timeout, retry_after, :connected}]}
+  end
+
   def connected(:internal, {:parse_limits, {:global_limit, retry_after}, _bucket}, data) do
+    Logger.warning(
+      "Hit global limit, transitioning into global limit state for #{retry_after / 1000} seconds"
+    )
+
     {:next_state, :global_limit, data, [{:state_timeout, retry_after, :connected}]}
   end
 
@@ -629,11 +674,36 @@ defmodule Nostrum.Api.Ratelimiter do
     {:next_state, :disconnected, empty_state(), replies}
   end
 
-  def global_limit(:state_timeout, next, _data) do
-    {:next_state, next}
+  def global_limit(:state_timeout, next, data) do
+    {:next_state, next, data}
   end
 
-  def global_limit(_event, _request, _data) do
+  # We got a some more data after heading into global limit state. This
+  # normally happens when we receive a 429 from a request that is marked
+  # `:nofin` (so a body will arrive with it), the internal `parse_limits` event
+  # puts us into global limit state, and then the response comes in. Let
+  # somebody else deal with it.
+  def global_limit(:info, {:gun_response, _conn, _stream, _kind, _status, _headers}, _data) do
+    {:keep_state_and_data, :postpone}
+  end
+
+  # Same as above.
+  def global_limit(:info, {:gun_data, _conn, _stream, _fin_or_nofin, _body}, _data) do
+    {:keep_state_and_data, :postpone}
+  end
+
+  def global_limit({:call, _from}, {:queue, _request}, _data) do
+    {:keep_state_and_data, :postpone}
+  end
+
+  # Requeue is sent when a regular request is met with a 429. Instead of
+  # returning an error to the client we put it back into the queue and retry
+  # later.
+  def global_limit(:internal, {:requeue, {request, from}}, data) do
+    global_limit({:call, from}, {:queue, request}, data)
+  end
+
+  def global_limit({:timeout, _bucket}, :expired, _data) do
     {:keep_state_and_data, :postpone}
   end
 
@@ -684,25 +754,30 @@ defmodule Nostrum.Api.Ratelimiter do
   # defp parse_headers({:error, _reason} = result), do: result
 
   defp parse_headers({:ok, {_status, headers, _body}}) do
-    global_limit = header_value(headers, "x-ratelimit-global")
+    limit_scope = header_value(headers, "x-ratelimit-scope")
     remaining = header_value(headers, "x-ratelimit-remaining")
     remaining = unless is_nil(remaining), do: String.to_integer(remaining)
 
     reset_after = header_value(headers, "x-ratelimit-reset-after")
 
-    reset_after =
-      unless is_nil(reset_after),
-        do: :erlang.trunc(:math.ceil(String.to_float(reset_after) * 1000))
-
     cond do
       is_nil(remaining) and is_nil(reset_after) ->
         :congratulations_you_killed_upstream
 
-      !is_nil(remaining) and !is_nil(reset_after) ->
-        {:bucket_limit, {remaining, reset_after}}
+      # We should add an internal timer for the following to properly track:
+      # https://discord.com/developers/docs/topics/rate-limits
+      # "All bots can make up to 50 requests per second to our API."
+      limit_scope == "user" and remaining == 0 ->
+        # Per bot or user limit.
+        {:user_limit, reset_after}
 
-      !is_nil(global_limit) ->
+      limit_scope == "global" and remaining == 0 ->
+        # Per bot or user global limit.
         {:global_limit, reset_after}
+
+      !is_nil(remaining) and !is_nil(reset_after) ->
+        parsed_reset = :erlang.trunc(String.to_float(reset_after) * 1000)
+        {:bucket_limit, {remaining, parsed_reset}}
     end
   end
 
