@@ -359,8 +359,14 @@ defmodule Nostrum.Api.Ratelimiter do
     {:stop, :connect_timeout}
   end
 
-  def connected({:call, from}, {:queue, request}, %{outstanding: outstanding} = data) do
-    bucket = get_endpoint(request.route, request.method)
+  # Client request: Queue the given request, and respond when we have the response.
+  def connected({:call, from}, {:queue, request}, _data) do
+    {:keep_state_and_data, {:next_event, :internal, {:queue, {request, from}}}}
+  end
+
+  # Enqueue the passed request.
+  def connected(:internal, {:queue, {payload, from}}, %{outstanding: outstanding} = data) do
+    bucket = get_endpoint(payload.route, payload.method)
 
     # The outstanding maps contains pairs in the form `{remaining, queue}`,
     # where `remaining` is the amount of remaining calls we may make, and
@@ -371,7 +377,7 @@ defmodule Nostrum.Api.Ratelimiter do
       # We have no remaining calls, or the initial call to get rate limiting
       # information is in flight. Let's join the waiting line.
       {remaining, queue} when remaining in [0, :initial] ->
-        entry = {request, from}
+        entry = {payload, from}
 
         data_with_this_queued =
           put_in(data, [:outstanding, bucket], {remaining, :queue.in(entry, queue)})
@@ -387,7 +393,7 @@ defmodule Nostrum.Api.Ratelimiter do
         # still items in the queue, we should internally schedule them right away.
         # Otherwise, we are mixing up the order.
         true = :queue.is_empty(queue)
-        {:keep_state_and_data, [{:next_event, :internal, {:run, request, bucket, from}}]}
+        {:keep_state_and_data, [{:next_event, :internal, {:run, payload, bucket, from}}]}
 
       # There is no entry. We are the pioneer for this bucket.
       nil ->
@@ -396,15 +402,15 @@ defmodule Nostrum.Api.Ratelimiter do
         # value. The ratelimit response header parser uses this value to know
         # when it should update ratelimit information from upstream, and new
         # incoming requests will be held off appropriately.
-        run_request = {:next_event, :internal, {:run, request, bucket, from}}
+        run_request = {:next_event, :internal, {:run, payload, bucket, from}}
         data_with_new_queue = put_in(data, [:outstanding, bucket], {:initial, :queue.new()})
         {:keep_state, data_with_new_queue, [run_request]}
     end
   end
 
-  def connected(:internal, {:requeue, {request, from}}, data) do
-    Logger.warning("Requeueing request to #{request.method} #{inspect(request.route)} due to 429")
-    connected({:call, from}, {:queue, request}, data)
+  def connected(:internal, {:requeue, {payload, _from} = request}, _data) do
+    Logger.warning("Requeueing request to #{payload.method} #{inspect(payload.route)} due to 429")
+    {:keep_state_and_data, {:next_event, :internal, {:queue, request}}}
   end
 
   # Run the given request right now, and do any bookkeeping.
@@ -560,7 +566,9 @@ defmodule Nostrum.Api.Ratelimiter do
       429 ->
         # Not great - this should ideally be a global or user ratelimit, both
         # things which we don't receive any anticipation about from the API.
-        # Give the request a second chance.
+        # Give the request a second chance. Note that dealing with entering the
+        # global or user ratelimit was already performed by `parse_limits` in
+        # an earlier step.
         {:keep_state, new_data,
          [
            {:next_event, :internal, {:requeue, {request, from}}}
@@ -696,11 +704,12 @@ defmodule Nostrum.Api.Ratelimiter do
     {:keep_state_and_data, :postpone}
   end
 
-  # Requeue is sent when a regular request is met with a 429. Instead of
-  # returning an error to the client we put it back into the queue and retry
-  # later.
-  def global_limit(:internal, {:requeue, {request, from}}, data) do
-    global_limit({:call, from}, {:queue, request}, data)
+  # Requeue is sent when a regular request is met with a 429, and this path is
+  # always hit at least once after entering the global limit state. Instead of
+  # returning an error to the client we postpone it until we can deal with it
+  # again.
+  def global_limit(:internal, {:requeue, {_request, _from}}, _data) do
+    {:keep_state_and_data, :postpone}
   end
 
   def global_limit({:timeout, _bucket}, :expired, _data) do
