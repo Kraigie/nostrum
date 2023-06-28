@@ -45,7 +45,10 @@ defmodule Nostrum.Api.Ratelimiter do
   In practice, it may be more beneficial to have a local ratelimiter process on
   each node and either using the local one for any API calls, or using a
   consistent hash mechanism to distribute API requests around the cluster as
-  needed.
+  needed. **Do note that the API enforces a global user ratelimit across all
+  requests**. With a single process, the ratelimiter can track this without
+  hitting 429s at all, with multiple ratelimiters, the built-in requeue
+  functionality may or may not help.
 
 
   ## Inner workings
@@ -61,14 +64,31 @@ defmodule Nostrum.Api.Ratelimiter do
   transition to the `:connecting` state and try to open the connection. If this
   succeeds, it transitions to the `:connected` state.
 
+  ### Queueing requests
+
   The state machine associates a `t::queue.queue/1` of `t:queued_request/0` to
   each individual bucket, together with an internal count of remaining calls.
-  If an entry is found with remaining calls above 0, the request is scheduled
-  for immediate execution. If an entry is found with remaining calls of 0, or
-  with the special `:initial` value (indicating that the initial request to
-  find the ratelimit just headed out), it is queued. Otherwise, if no entry is
-  found, a new queue is created with an `:initial` remaining call count, and
-  the request scheduled for immediate execution.
+  When queueing requests, the following cases occur:
+
+  - If there are no remaining calls in the bot's global ratelimit bucket or
+  there are no remaining calls in the bucket, the request is put into the
+  bucket's queue.
+
+  - If there is an `:initial` running request to the bucket, the request is put
+  into the bucket's queue.
+
+  - If there are more than 0 remaining calls on both the request-specific
+  bucket and the global bucket, the request is started right away. This allows
+  nostrum to dispatch multiple requests to the same endpoint as soon as
+  possible as long as calls remain.
+
+  - If no ratelimit information is known for the bucket and remaining calls on
+  the global bucket, the request is sent out as the "pioneer" request that will
+  retrieve how many calls we have for this bucket (`:initial`, see above).
+
+  - If none of the above is true, a new queue is created and the pending
+  rqeuest marked as the `:initial` request. It will be run as soon as the bot's
+  global limit limit expires.
 
   The request starting function, `:next`, will start new requests from the
   queue as long as more calls are possible in the timeframe. Any requests are
@@ -92,18 +112,21 @@ defmodule Nostrum.Api.Ratelimiter do
 
   - The queue has items: Schedule all items and repeat this later.
 
-  - The queue is empty: Delete the queue and remaining calls from the outstanding buckets.
+  - The queue is empty: Delete the queue and remaining calls from the
+  outstanding buckets.
 
   In practice, this means that we never store more information than we need,
   and removes the previous regular bucket sweeping functionality that the
   ratelimit buckets required.
 
-  **Global ratelimits** are handled with the special `global_limit` state. This
-  state is only entered with a state timeout, the state timeout being the
-  `X-Ratelimit-Reset-After` value provided in the global ratelimit response.
-  This state does nothing apart from postponing any events it receives and
-  returning to the previous state (`:connected`) once the global timeout is
-  gone.
+  **Global ratelimits** (note this is a distinct ratelimit from the bot's
+  "global", per-user ratelimit) are handled with the special `global_limit`
+  state. This state is entered for exactly the the `X-Ratelimit-Reset-After`
+  time provided in the global ratelimit response. This state does nothing apart
+  from postponing any events it receives and returning to the previous state
+  (`:connected`) once the global timeout is gone. Requests that failed because
+  of the global ratelimit are requeued after returning back into the regular
+  state: a warning is logged to inform you of this.
 
 
   ### Failure modes
@@ -442,33 +465,14 @@ defmodule Nostrum.Api.Ratelimiter do
     {:keep_state_and_data, {:next_event, :internal, {:queue, request}}}
   end
 
-  # Run the given request right now, and do any bookkeeping. First case: We are
-  # at the maximum amount of remaining calls. Start the timer to reset it
-  # later, and delegate to the actual runner method.
-  def connected(
-        :internal,
-        {:run, _request, _bucket, _from} = event,
-        %{remaining_in_window: @bot_calls_per_window} = data
-      ) do
-    new_data = %{data | remaining_in_window: @bot_calls_per_window - 1}
-
-    {:keep_state, new_data,
-     [
-       {:timeout, @bot_calls_time_window, @bot_calls_timeout_event},
-       {:next_event, :internal, event}
-     ]}
-  end
-
-  # Second case: We are good on remaining calls (and the timer is already
-  # running), so we can just run the request.
+  # Run the given request right now, and do any bookkeeping. We assert we are
+  # good on remaining calls, so we can just run the request.
   def connected(
         :internal,
         {:run, request, bucket, from},
         %{conn: conn, outstanding: outstanding, remaining_in_window: remaining_for_user} = data
       )
       when remaining_for_user > 0 and is_map_key(outstanding, bucket) do
-    %{^bucket => {remaining_for_bucket, queue}} = outstanding
-
     stream =
       Base.request(
         conn,
@@ -479,21 +483,51 @@ defmodule Nostrum.Api.Ratelimiter do
         request.params
       )
 
-    new_outstanding =
-      if remaining_for_bucket == :initial do
-        outstanding
-      else
-        %{outstanding | bucket => {remaining_for_bucket - 1, queue}}
-      end
-
     data_with_this_running = put_in(data, [:running, stream], {bucket, request, from})
+    {:keep_state, data_with_this_running, {:next_event, :internal, {:account_request, bucket}}}
+  end
 
-    {:keep_state,
-     %{
-       data_with_this_running
-       | remaining_in_window: remaining_for_user - 1,
-         outstanding: new_outstanding
-     }}
+  # Account for the request on the given bucket. At a full user (global)
+  # bucket, start the timer to empty it after the timeout. Regardless of the
+  # user bucket, account for the individual request.
+  def connected(
+        :internal,
+        {:account_request, _bucket} = request,
+        %{remaining_in_window: @bot_calls_per_window} = data
+      ) do
+    Logger.debug(
+      "Accounting for request with #{@bot_calls_per_window} remaining user calls (initial)"
+    )
+
+    {:keep_state, %{data | remaining_in_window: @bot_calls_per_window - 1},
+     [
+       {{:timeout, @bot_calls_timeout_event}, @bot_calls_time_window, :expired},
+       {:next_event, :internal, request}
+     ]}
+  end
+
+  def connected(
+        :internal,
+        {:account_request, bucket},
+        %{remaining_in_window: remaining_in_window, outstanding: outstanding} = data
+      )
+      when remaining_in_window > 0 do
+    Logger.debug("Accounting for request with #{remaining_in_window} remaining user calls")
+    %{^bucket => entry} = outstanding
+
+    case entry do
+      {:initial, _queue} ->
+        # This was the first request here, we just need to account the use requests.
+        {:keep_state, %{data | remaining_in_window: remaining_in_window - 1}}
+
+      {remaining_in_bucket, queue} ->
+        {:keep_state,
+         %{
+           data
+           | outstanding: %{outstanding | bucket => {remaining_in_bucket - 1, queue}},
+             remaining_in_window: remaining_in_window - 1
+         }}
+    end
   end
 
   # `:next` will run the next `remaining` requests for the given bucket's
@@ -507,8 +541,21 @@ defmodule Nostrum.Api.Ratelimiter do
     :keep_state_and_data
   end
 
+  # This is the initial request to this bucket, and we want to run the next
+  # request. That happens if the request's bucket was not affected by the
+  # ratelimits at time of queueing, but the bot was in the user ratelimit
+  # state. Treat it as a "we have one request remaining", because that initial
+  # request will probe for how many remaining requests we actually have (and
+  # the marker value will prevent further requests from executing)
+  def connected(:internal, {:next, :initial, bucket}, _data) do
+    {:keep_state_and_data, {:next_event, :internal, {:next, 1, bucket}}}
+  end
+
+  # Run the next request for the given bucket, with > 0 and non-initial remaining calls.
   def connected(:internal, {:next, remaining, bucket}, %{outstanding: outstanding} = data) do
-    {^remaining, queue} = Map.fetch!(outstanding, bucket)
+    # "_remaining" here could be either the `remaining` value from above
+    # or `:initial` in the case where we're doing a global-limit requeue.
+    {_remaining, queue} = Map.fetch!(outstanding, bucket)
 
     case :queue.out(queue) do
       {:empty, _queue} ->
@@ -516,10 +563,10 @@ defmodule Nostrum.Api.Ratelimiter do
         :keep_state_and_data
 
       {{:value, {request, from}}, updated_queue} ->
-        # We found a request we can queue. Account for the request, start it,
-        # and then try and see if we can queue another one, repeating the cycle
-        # until we have either exhausted the queue of waiting requests or the
-        # remaining calls on the endpoint.
+        # We found a request we can queue. Start it, and then try and see if we
+        # can queue another one, repeating the cycle until we have either
+        # exhausted the queue of waiting requests or the remaining calls on the
+        # endpoint.
         accounted_remaining = remaining - 1
 
         # The `:run` function will take care of updating the remaining calls in
@@ -542,6 +589,7 @@ defmodule Nostrum.Api.Ratelimiter do
       })
       when remaining > 0 do
     {stored_remaining, _queue} = Map.fetch!(outstanding, bucket)
+    Logger.debug("Requeueing request to #{inspect(bucket)} after user limit")
     # Due to the way that `:next` is implemented, if we have a large queue on a
     # single bucket we may quickly exhaust the user calls for this second
     # instantly.
@@ -552,32 +600,42 @@ defmodule Nostrum.Api.Ratelimiter do
      ]}
   end
 
-  # Hmm, we'll try again later.
-  def connected(:internal, {:unpause_requests, []}, %{remaining_in_window: 0}) do
+  # No more things to unpause.
+  def connected(:internal, {:unpause_requests, []}, _data) do
     :keep_state_and_data
   end
 
+  # Hmm, we'll try again later.
   def connected(:internal, {:unpause_requests, buckets}, %{remaining_in_window: 0}) do
     Logger.warning(
-      "Unpaused a few requests since the user ratelimit has reset, but #{length(buckets)} buckets are left in the outstanding queue. If a backlog grows, the default ratelimit may be insufficient."
+      "Unpaused a few requests since the user ratelimit has reset, but #{length(buckets)} bucket(s) are left in the outstanding queue. If the amount of requests stays above the user ratelimit, a backlog may grow"
     )
+
+    :keep_state_and_data
   end
 
   # Our user timeout has reset - put it back to Discord's documented value.
   # Case 1: We still had some calls remaining, so no request queues paused
   # themselves.
-  def connected(:timeout, @bot_calls_timeout_event, %{remaining_in_window: remaining} = data)
+  def connected(
+        {:timeout, @bot_calls_timeout_event},
+        :expired,
+        %{remaining_in_window: remaining} = data
+      )
       when remaining > 0 do
+    Logger.debug("Received user call window reset with remaining requests, nothing to unpause")
     {:keep_state, %{data | remaining_in_window: @bot_calls_per_window}}
   end
 
   # Case 2: We did not have any calls remaining. In addition to resetting it,
   # we need to kickstart our requests again.
   def connected(
-        :timeout,
-        @bot_calls_timeout_event,
+        {:timeout, @bot_calls_timeout_event},
+        :expired,
         %{remaining_in_window: 0, outstanding: outstanding} = data
       ) do
+    Logger.debug("Received user call window reset with no remaining requests, unpausing")
+
     {:keep_state, %{data | remaining_in_window: @bot_calls_per_window},
      {:next_event, :internal, {:unpause_requests, Map.keys(outstanding)}}}
   end
@@ -587,7 +645,11 @@ defmodule Nostrum.Api.Ratelimiter do
   # will have remaining in the next window. If there are waiting entries, we
   # start scheduling, unless we are out of requests for this time window on all
   # bot requests.
-  def connected({:timeout, _bucket}, :expired, %{remaining_in_window: 0}) do
+  def connected({:timeout, bucket}, :expired, %{remaining_in_window: 0}) do
+    Logger.debug(
+      "Ratelimits on #{inspect(bucket)} have expired but we may not queue more requests due to the bot user limit."
+    )
+
     :keep_state_and_data
   end
 
@@ -904,9 +966,6 @@ defmodule Nostrum.Api.Ratelimiter do
       is_nil(remaining) and is_nil(reset_after) ->
         :congratulations_you_killed_upstream
 
-      # We should add an internal timer for the following to properly track:
-      # https://discord.com/developers/docs/topics/rate-limits
-      # "All bots can make up to 50 requests per second to our API."
       limit_scope == "user" and remaining == 0 ->
         # Per bot or user limit.
         {:user_limit, reset_after}
