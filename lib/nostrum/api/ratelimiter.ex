@@ -460,8 +460,7 @@ defmodule Nostrum.Api.Ratelimiter do
     end
   end
 
-  def connected(:internal, {:requeue, {payload, _from} = request}, _data) do
-    Logger.warning("Requeueing request to #{payload.method} #{inspect(payload.route)} due to 429")
+  def connected(:internal, {:requeue, {_payload, _from} = request}, _data) do
     {:keep_state_and_data, {:next_event, :internal, {:queue, request}}}
   end
 
@@ -698,6 +697,10 @@ defmodule Nostrum.Api.Ratelimiter do
         # "standard" bucket.
         running_without_this = Map.delete(running, stream)
 
+        Logger.warning(
+          "Requeueing request to #{request.method} #{inspect(request.route)} due to 429"
+        )
+
         {:keep_state, %{data | running: running_without_this},
          [
            # parse_limits will transition to the ratelimit state appropriately
@@ -850,6 +853,19 @@ defmodule Nostrum.Api.Ratelimiter do
     )
 
     :keep_state_and_data
+  end
+
+  # A running request was killed - suboptimal. Log a warning and try again.
+  def connected(:info, {:gun_error, _conn, stream, :closed}, %{running: running} = data)
+      when is_map_key(running, stream) do
+    # Ensure that we do not get further garbage for this stream
+    :ok = :gun.flush(stream)
+
+    {{_bucket, request, from}, running_without_it} = Map.pop(running, stream)
+    Logger.warning("Request to #{inspect(request.route)} was closed abnormally, requeueing")
+
+    {:keep_state, %{data | running: running_without_it},
+     {:next_event, :internal, {:requeue, {request, from}}}}
   end
 
   def connected(:info, {:gun_down, conn, :http2, reason, killed_streams}, %{running: running}) do
