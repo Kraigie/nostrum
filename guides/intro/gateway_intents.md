@@ -36,7 +36,8 @@ guild_members*:
   - GUILD_MEMBER_UPDATE
   - GUILD_MEMBER_REMOVE
 
-guild_bans:
+guild_moderation:
+  - GUILD_AUDIT_LOG_ENTRY_CREATE
   - GUILD_BAN_ADD
   - GUILD_BAN_REMOVE
 

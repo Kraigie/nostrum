@@ -14,7 +14,9 @@ defmodule Nostrum.Shard.Intents do
     [
       guilds: 1 <<< 0,
       guild_members: 1 <<< 1,
+      # Backwards-compatible value
       guild_bans: 1 <<< 2,
+      guild_moderation: 1 <<< 2,
       guild_emojis: 1 <<< 3,
       guild_integrations: 1 <<< 4,
       guild_webhooks: 1 <<< 5,
