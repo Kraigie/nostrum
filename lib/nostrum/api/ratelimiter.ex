@@ -874,14 +874,20 @@ defmodule Nostrum.Api.Ratelimiter do
     :ok = :gun.close(conn)
     :ok = :gun.flush(conn)
 
+    # Streams that we previously received `:gun_error` notifications for have
+    # been requeued already, and we won't find them in the `running` list.
+    # Respond to any client whose request we won't retry.
+    # Note that if other code than the `:gun_error` clause for a closed stream
+    # removes the request from the `running` map _and does not requeue it on
+    # its own terms_, a client may hang indefinitely.
     replies =
-      Enum.map(
-        killed_streams,
-        fn stream ->
-          {_bucket, _request, client} = Map.fetch!(running, stream)
-          {:reply, client, {:error, {:connection_died, reason}}}
-        end
-      )
+      killed_streams
+      |> Stream.map(&Map.get(running, &1))
+      |> Stream.reject(&(&1 == nil))
+      |> Enum.map(fn stream ->
+        {_bucket, _request, client} = Map.fetch!(running, stream)
+        {:reply, client, {:error, {:connection_died, reason}}}
+      end)
 
     {:next_state, :disconnected, empty_state(), replies}
   end
