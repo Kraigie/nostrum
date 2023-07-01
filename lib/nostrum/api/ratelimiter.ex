@@ -494,10 +494,6 @@ defmodule Nostrum.Api.Ratelimiter do
         {:account_request, _bucket} = request,
         %{remaining_in_window: @bot_calls_per_window} = data
       ) do
-    Logger.debug(
-      "Accounting for request with #{@bot_calls_per_window} remaining user calls (initial)"
-    )
-
     {:keep_state, %{data | remaining_in_window: @bot_calls_per_window - 1},
      [
        {{:timeout, @bot_calls_timeout_event}, @bot_calls_time_window, :expired},
@@ -511,7 +507,6 @@ defmodule Nostrum.Api.Ratelimiter do
         %{remaining_in_window: remaining_in_window, outstanding: outstanding} = data
       )
       when remaining_in_window > 0 do
-    Logger.debug("Accounting for request with #{remaining_in_window} remaining user calls")
     %{^bucket => entry} = outstanding
 
     case entry do
@@ -622,7 +617,6 @@ defmodule Nostrum.Api.Ratelimiter do
         %{remaining_in_window: remaining} = data
       )
       when remaining > 0 do
-    Logger.debug("Received user call window reset with remaining requests, nothing to unpause")
     {:keep_state, %{data | remaining_in_window: @bot_calls_per_window}}
   end
 
