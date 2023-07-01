@@ -583,7 +583,7 @@ defmodule Nostrum.Api.Ratelimiter do
       })
       when remaining > 0 do
     {stored_remaining, _queue} = Map.fetch!(outstanding, bucket)
-    Logger.debug("Requeueing request to #{inspect(bucket)} after user limit")
+    Logger.warning("Requeueing request to #{inspect(bucket)} after user limit")
     # Due to the way that `:next` is implemented, if we have a large queue on a
     # single bucket we may quickly exhaust the user calls for this second
     # instantly.
