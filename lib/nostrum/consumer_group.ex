@@ -10,6 +10,29 @@ defmodule Nostrum.ConsumerGroup do
   @group_name :consumers
 
   @doc """
+  Monitor the consumer group for changes.
+
+  Return the initial state of the group on first call. Further updates are
+  delivered as messages to the calling process, see `:pg.monitor/2` for
+  details. The returned `t:reference/0` must be saved for later calls to
+  `demonitor/1`.
+  """
+  @doc since: "0.9.0"
+  @spec monitor :: {reference(), [pid()]}
+  def monitor do
+    :pg.monitor(@scope_name, @group_name)
+  end
+
+  @doc """
+  Stop monitoring the given reference.
+  """
+  @doc since: "0.9.0"
+  @spec demonitor(reference()) :: :ok | false
+  def demonitor(ref) do
+    :pg.demonitor(@scope_name, ref)
+  end
+
+  @doc """
   Dispatch the given event(s) to all consumers.
 
   This is called by nostrum internally, you likely won't need to call this

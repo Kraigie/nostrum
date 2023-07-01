@@ -42,7 +42,7 @@ defmodule Nostrum.Shard.Session do
   to re-establish and resume events.
   """
 
-  alias Nostrum.{Constants, Util}
+  alias Nostrum.{Constants, ConsumerGroup, Util}
   alias Nostrum.Shard.{Connector, Event, Payload}
   alias Nostrum.Struct.WSState
 
@@ -231,7 +231,19 @@ defmodule Nostrum.Shard.Session do
   # We don't need to specially handle resuming here, because Shard.Event will
   # adjust our initial payload accordingly.
   def connected(:enter, _from, _data) do
-    Logger.debug("Shard connection up")
+    {reference, consumers} = ConsumerGroup.monitor()
+
+    case consumers do
+      [] ->
+        Logger.debug("Shard connection up, waiting for consumers to boot")
+        :ok = wait_for_consumer_boot(reference, :timer.seconds(5))
+        Logger.debug("Consumer up, we are ready to rumble")
+
+      _consumers ->
+        Logger.debug("Shard connection up")
+    end
+
+    :ok = ConsumerGroup.demonitor(reference)
     :keep_state_and_data
   end
 
@@ -323,5 +335,15 @@ defmodule Nostrum.Shard.Session do
     :ok = :gun.flush(conn)
     connect = {:next_event, :internal, :connect}
     {:next_state, :disconnected, %{data | conn: nil, stream: nil}, connect}
+  end
+
+  # Internal helper. Wait for consumers to start up.
+  defp wait_for_consumer_boot(reference, timeout) do
+    receive do
+      {^reference, :join, _group, _who} ->
+        :ok
+    after
+      timeout -> :timeout
+    end
   end
 end
