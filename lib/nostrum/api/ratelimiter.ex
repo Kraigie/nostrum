@@ -162,7 +162,7 @@ defmodule Nostrum.Api.Ratelimiter do
   `0.8`, nostrum used to use a `GenServer` that would call out to ETS tables to
   look up ratelimiting buckets for requests. If it needed to sleep before
   issuing a request due to the bucket being exhausted, it would do so in the
-  server process and block other callers. 
+  server process and block other callers.
 
   In nostrum 0.8, the existing ratelimiter bucket storage architecture was
   refactored to be based around the [pluggable caching
@@ -971,7 +971,7 @@ defmodule Nostrum.Api.Ratelimiter do
   # defp parse_headers({:error, _reason} = result), do: result
 
   # credo:disable-for-next-line
-  defp parse_headers({:ok, {_status, headers, _body}}) do
+  defp parse_headers({:ok, {status, headers, body}}) do
     limit_scope = header_value(headers, "x-ratelimit-scope")
     remaining = header_value(headers, "x-ratelimit-remaining")
     remaining = unless is_nil(remaining), do: String.to_integer(remaining)
@@ -983,6 +983,10 @@ defmodule Nostrum.Api.Ratelimiter do
 
     cond do
       is_nil(remaining) and is_nil(reset_after) ->
+        Logger.warning(
+          "Congrats, you killed upstream? (#{status}) #{inspect(headers)} #{inspect(body)}"
+        )
+
         :congratulations_you_killed_upstream
 
       limit_scope == "user" and remaining == 0 ->
