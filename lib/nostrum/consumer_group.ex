@@ -59,6 +59,12 @@ defmodule Nostrum.ConsumerGroup do
   def dispatch(:noop), do: :ok
 
   @doc """
+  Equivalent to `ConsumerGroup.join(self())`. See `join/1`.
+  """
+  @spec join :: :ok
+  def join, do: join(self())
+
+  @doc """
   Join the given process to the consumers.
 
   If no process is given, joins the current process to the consumers. This can
@@ -99,10 +105,7 @@ defmodule Nostrum.ConsumerGroup do
   end
   ```
   """
-  @spec join :: :ok
   @spec join(pid()) :: :ok
-  def join, do: join(self())
-
   def join(pid) do
     :pg.join(@scope_name, @group_name, pid)
   end
