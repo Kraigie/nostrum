@@ -161,7 +161,7 @@ Nostrum
 
       </div>
 
-        <div class="summary-synopsis"><p>Join the given process to the consumers.</p></div>
+        <div class="summary-synopsis"><p>Equivalent to <code class="inline">ConsumerGroup.join(self())</code>. See <a href="#join/1"><code class="inline">join/1</code></a>.</p></div>
 
     </div>
 
@@ -170,6 +170,8 @@ Nostrum
         <a href="#join/1" translate="no">join(pid)</a>
 
       </div>
+
+        <div class="summary-synopsis"><p>Join the given process to the consumers.</p></div>
 
     </div>
 
@@ -214,7 +216,7 @@ Functions
     </a>
     <h1 class="signature" translate="no">child_spec(opts)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer_group.ex#L114" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer_group.ex#L117" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -301,7 +303,7 @@ manually.</p>
     </a>
     <h1 class="signature" translate="no">join()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer_group.ex#L104" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer_group.ex#L65" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -319,36 +321,7 @@ manually.</p>
 
       </div>
 
-<p>Join the given process to the consumers.</p><p>If no process is given, joins the current process to the consumers. This can
-be used for subscribing to gateway events and awaiting them inline.</p><p>After the process has joined, it will receive any events sent by nostrum's
-gateway dispatch. These events are sent as messages <code class="inline">{:event, t:Consumer.Event.t/0}</code>. The given <code class="inline">pid</code> is automatically unsubscribed when it
-terminates.</p><p>Note that there is currently no filtering done. If the gateway sends a lot of
-messages and the event subscriber does not terminate swiftly, its message
-queue will keep growing.</p><h2 id="join/0-example" class="section-heading">
-  <a href="#join/0-example" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
-  <p class="sr-only">example</p>
-  </a>
-  Example
-</h2>
-<p>The following example illustrates how to use this to implement inline event
-awaiting:</p><pre><code class="makeup elixir" translate="no"><span class="kd">defmodule</span><span class="w"> </span><span class="nc">MyBot.Command</span><span class="w">
-  </span><span class="kn">alias</span><span class="w"> </span><span class="nc">Nostrum.Api</span><span class="w">
-  </span><span class="kn">alias</span><span class="w"> </span><span class="nc">Nostrum.ConsumerGroup</span><span class="w">
-  </span><span class="kn">alias</span><span class="w"> </span><span class="nc">Nostrum.Struct.Message</span><span class="w">
-  </span><span class="kn">alias</span><span class="w"> </span><span class="nc">Nostrum.Struct.User</span><span class="w">
-
-  </span><span class="kd">def</span><span class="w"> </span><span class="nf">command</span><span class="p" data-group-id="4639150613-1">(</span><span class="p" data-group-id="4639150613-2">%</span><span class="nc" data-group-id="4639150613-2">Message</span><span class="p" data-group-id="4639150613-2">{</span><span class="ss">author</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="4639150613-3">%</span><span class="nc" data-group-id="4639150613-3">User</span><span class="p" data-group-id="4639150613-3">{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="n">author_id</span><span class="p" data-group-id="4639150613-3">}</span><span class="p" data-group-id="4639150613-2">}</span><span class="p" data-group-id="4639150613-1">)</span><span class="w"> </span><span class="k" data-group-id="4639150613-4">do</span><span class="w">
-    </span><span class="nc">Api</span><span class="o">.</span><span class="n">create_message!</span><span class="p" data-group-id="4639150613-5">(</span><span class="n">msg</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Reply &#39;y&#39; in 5 seconds to confirm ordering a large burger menu.&quot;</span><span class="p" data-group-id="4639150613-5">)</span><span class="w">
-    </span><span class="nc">ConsumerGroup</span><span class="o">.</span><span class="n">join</span><span class="p" data-group-id="4639150613-6">(</span><span class="p" data-group-id="4639150613-6">)</span><span class="w">
-    </span><span class="k">receive</span><span class="w"> </span><span class="k" data-group-id="4639150613-7">do</span><span class="w">
-      </span><span class="p" data-group-id="4639150613-8">{</span><span class="ss">:event</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="4639150613-9">{</span><span class="ss">:MESSAGE_CREATE</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="4639150613-10">%</span><span class="nc" data-group-id="4639150613-10">Message</span><span class="p" data-group-id="4639150613-10">{</span><span class="ss">author</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="4639150613-11">%</span><span class="nc" data-group-id="4639150613-11">User</span><span class="p" data-group-id="4639150613-11">{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="n">author_id</span><span class="p" data-group-id="4639150613-11">}</span><span class="p">,</span><span class="w"> </span><span class="ss">content</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;y&quot;</span><span class="p" data-group-id="4639150613-10">}</span><span class="p">,</span><span class="w"> </span><span class="bp">_</span><span class="p" data-group-id="4639150613-9">}</span><span class="p" data-group-id="4639150613-8">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
-        </span><span class="nc">Api</span><span class="o">.</span><span class="n">create_message!</span><span class="p" data-group-id="4639150613-12">(</span><span class="n">msg</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;The large burger menu is coming.&quot;</span><span class="p" data-group-id="4639150613-12">)</span><span class="w">
-    </span><span class="k" data-group-id="4639150613-7">after</span><span class="w">
-      </span><span class="mi">5_000</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
-        </span><span class="nc">Api</span><span class="o">.</span><span class="n">create_message!</span><span class="p" data-group-id="4639150613-13">(</span><span class="n">msg</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Too slow!&quot;</span><span class="p" data-group-id="4639150613-13">)</span><span class="w">
-    </span><span class="k" data-group-id="4639150613-7">end</span><span class="w">
-  </span><span class="k" data-group-id="4639150613-4">end</span><span class="w">
-</span><span class="k">end</span></code></pre>
+<p>Equivalent to <code class="inline">ConsumerGroup.join(self())</code>. See <a href="#join/1"><code class="inline">join/1</code></a>.</p>
   </section>
 </section>
 <section class="detail" id="join/1">
@@ -360,7 +333,7 @@ awaiting:</p><pre><code class="makeup elixir" translate="no"><span class="kd">de
     </a>
     <h1 class="signature" translate="no">join(pid)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer_group.ex#L106" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer_group.ex#L109" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -378,7 +351,36 @@ awaiting:</p><pre><code class="makeup elixir" translate="no"><span class="kd">de
 
       </div>
 
+<p>Join the given process to the consumers.</p><p>If no process is given, joins the current process to the consumers. This can
+be used for subscribing to gateway events and awaiting them inline.</p><p>After the process has joined, it will receive any events sent by nostrum's
+gateway dispatch. These events are sent as messages <code class="inline">{:event, t:Consumer.Event.t/0}</code>. The given <code class="inline">pid</code> is automatically unsubscribed when it
+terminates.</p><p>Note that there is currently no filtering done. If the gateway sends a lot of
+messages and the event subscriber does not terminate swiftly, its message
+queue will keep growing.</p><h2 id="join/1-example" class="section-heading">
+  <a href="#join/1-example" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">example</p>
+  </a>
+  Example
+</h2>
+<p>The following example illustrates how to use this to implement inline event
+awaiting:</p><pre><code class="makeup elixir" translate="no"><span class="kd">defmodule</span><span class="w"> </span><span class="nc">MyBot.Command</span><span class="w">
+  </span><span class="kn">alias</span><span class="w"> </span><span class="nc">Nostrum.Api</span><span class="w">
+  </span><span class="kn">alias</span><span class="w"> </span><span class="nc">Nostrum.ConsumerGroup</span><span class="w">
+  </span><span class="kn">alias</span><span class="w"> </span><span class="nc">Nostrum.Struct.Message</span><span class="w">
+  </span><span class="kn">alias</span><span class="w"> </span><span class="nc">Nostrum.Struct.User</span><span class="w">
 
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">command</span><span class="p" data-group-id="4684025317-1">(</span><span class="p" data-group-id="4684025317-2">%</span><span class="nc" data-group-id="4684025317-2">Message</span><span class="p" data-group-id="4684025317-2">{</span><span class="ss">author</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="4684025317-3">%</span><span class="nc" data-group-id="4684025317-3">User</span><span class="p" data-group-id="4684025317-3">{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="n">author_id</span><span class="p" data-group-id="4684025317-3">}</span><span class="p" data-group-id="4684025317-2">}</span><span class="p" data-group-id="4684025317-1">)</span><span class="w"> </span><span class="k" data-group-id="4684025317-4">do</span><span class="w">
+    </span><span class="nc">Api</span><span class="o">.</span><span class="n">create_message!</span><span class="p" data-group-id="4684025317-5">(</span><span class="n">msg</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Reply &#39;y&#39; in 5 seconds to confirm ordering a large burger menu.&quot;</span><span class="p" data-group-id="4684025317-5">)</span><span class="w">
+    </span><span class="nc">ConsumerGroup</span><span class="o">.</span><span class="n">join</span><span class="p" data-group-id="4684025317-6">(</span><span class="p" data-group-id="4684025317-6">)</span><span class="w">
+    </span><span class="k">receive</span><span class="w"> </span><span class="k" data-group-id="4684025317-7">do</span><span class="w">
+      </span><span class="p" data-group-id="4684025317-8">{</span><span class="ss">:event</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="4684025317-9">{</span><span class="ss">:MESSAGE_CREATE</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="4684025317-10">%</span><span class="nc" data-group-id="4684025317-10">Message</span><span class="p" data-group-id="4684025317-10">{</span><span class="ss">author</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="4684025317-11">%</span><span class="nc" data-group-id="4684025317-11">User</span><span class="p" data-group-id="4684025317-11">{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="n">author_id</span><span class="p" data-group-id="4684025317-11">}</span><span class="p">,</span><span class="w"> </span><span class="ss">content</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;y&quot;</span><span class="p" data-group-id="4684025317-10">}</span><span class="p">,</span><span class="w"> </span><span class="bp">_</span><span class="p" data-group-id="4684025317-9">}</span><span class="p" data-group-id="4684025317-8">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+        </span><span class="nc">Api</span><span class="o">.</span><span class="n">create_message!</span><span class="p" data-group-id="4684025317-12">(</span><span class="n">msg</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;The large burger menu is coming.&quot;</span><span class="p" data-group-id="4684025317-12">)</span><span class="w">
+    </span><span class="k" data-group-id="4684025317-7">after</span><span class="w">
+      </span><span class="mi">5_000</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+        </span><span class="nc">Api</span><span class="o">.</span><span class="n">create_message!</span><span class="p" data-group-id="4684025317-13">(</span><span class="n">msg</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Too slow!&quot;</span><span class="p" data-group-id="4684025317-13">)</span><span class="w">
+    </span><span class="k" data-group-id="4684025317-7">end</span><span class="w">
+  </span><span class="k" data-group-id="4684025317-4">end</span><span class="w">
+</span><span class="k">end</span></code></pre>
   </section>
 </section>
 <section class="detail" id="monitor/0">
@@ -423,7 +425,7 @@ details. The returned <a href="https://hexdocs.pm/elixir/typespecs.html#basic-ty
     </a>
     <h1 class="signature" translate="no">start_link(opts)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer_group.ex#L110" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer_group.ex#L113" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
