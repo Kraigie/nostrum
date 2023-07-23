@@ -81,7 +81,9 @@ if Code.ensure_loaded?(:mnesia) do
         :mnesia.activity(:sync_transaction, fn ->
           case :mnesia.read(@table_name, new_guild.id, :write) do
             [{_tag, _id, old_guild} = entry] ->
-              :mnesia.write(put_elem(entry, 2, new_guild))
+              updated_guild = Guild.merge(old_guild, new_guild)
+
+              :mnesia.write(put_elem(entry, 2, updated_guild))
               old_guild
 
             [] ->
