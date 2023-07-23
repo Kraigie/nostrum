@@ -971,7 +971,7 @@ defmodule Nostrum.Api.Ratelimiter do
   # defp parse_headers({:error, _reason} = result), do: result
 
   # credo:disable-for-next-line
-  defp parse_headers({:ok, {status, headers, body}}) do
+  defp parse_headers({:ok, {_status, headers, _body}}) do
     limit_scope = header_value(headers, "x-ratelimit-scope")
     remaining = header_value(headers, "x-ratelimit-remaining")
     remaining = unless is_nil(remaining), do: String.to_integer(remaining)
@@ -983,10 +983,6 @@ defmodule Nostrum.Api.Ratelimiter do
 
     cond do
       is_nil(remaining) and is_nil(reset_after) ->
-        Logger.warning(
-          "Congrats, you killed upstream? (#{status}) #{inspect(headers)} #{inspect(body)}"
-        )
-
         :congratulations_you_killed_upstream
 
       limit_scope == "user" and remaining == 0 ->

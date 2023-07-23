@@ -20,6 +20,8 @@ if Code.ensure_loaded?(:mnesia) do
     alias Nostrum.Util
     use Supervisor
 
+    require Logger
+
     @doc "Start the supervisor."
     def start_link(init_arg) do
       Supervisor.start_link(__MODULE__, init_arg, name: __MODULE__)
@@ -222,7 +224,12 @@ if Code.ensure_loaded?(:mnesia) do
     def member_count_up(guild_id) do
       # May not be `update_guild!` for the case where guild intent is off.
       update_guild(guild_id, fn guild ->
-        {%{guild | member_count: guild.member_count + 1}, true}
+        if is_nil(guild.member_count) do
+          Logger.warning("Unexpected nil member_count for guild #{guild_id} when incrementing")
+          {guild, true}
+        else
+          {%{guild | member_count: guild.member_count + 1}, true}
+        end
       end)
 
       true
@@ -235,7 +242,12 @@ if Code.ensure_loaded?(:mnesia) do
     def member_count_down(guild_id) do
       # May not be `update_guild!` for the case where guild intent is off.
       update_guild(guild_id, fn guild ->
-        {%{guild | member_count: guild.member_count - 1}, true}
+        if is_nil(guild.member_count) do
+          Logger.warning("Unexpected nil member_count for guild #{guild_id} when decrementing")
+          {guild, true}
+        else
+          {%{guild | member_count: guild.member_count - 1}, true}
+        end
       end)
 
       true

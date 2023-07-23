@@ -27,6 +27,8 @@ defmodule Nostrum.Cache.GuildCache.ETS do
   alias Nostrum.Util
   use Supervisor
 
+  require Logger
+
   @doc "Start the supervisor."
   def start_link(init_arg) do
     Supervisor.start_link(__MODULE__, init_arg, name: __MODULE__)
@@ -185,6 +187,11 @@ defmodule Nostrum.Cache.GuildCache.ETS do
   @spec member_count_up(Guild.id()) :: true
   def member_count_up(guild_id) do
     case :ets.lookup(@table_name, guild_id) do
+      [{^guild_id, %{member_count: nil}}] ->
+        # no-op if member_count is nil
+        Logger.warning("Unexpected nil member_count for guild #{guild_id} when incrementing")
+        true
+
       [{^guild_id, guild}] ->
         :ets.insert(@table_name, {guild_id, %{guild | member_count: guild.member_count + 1}})
 
@@ -200,6 +207,11 @@ defmodule Nostrum.Cache.GuildCache.ETS do
   @spec member_count_down(Guild.id()) :: true
   def member_count_down(guild_id) do
     case :ets.lookup(@table_name, guild_id) do
+      [{^guild_id, %{member_count: nil}}] ->
+        # no-op if member_count is nil
+        Logger.warning("Unexpected nil member_count for guild #{guild_id} when decrementing")
+        true
+
       [{^guild_id, guild}] ->
         :ets.insert(@table_name, {guild_id, %{guild | member_count: guild.member_count - 1}})
 
