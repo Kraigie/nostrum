@@ -162,7 +162,7 @@ defmodule Nostrum.Api.Ratelimiter do
   `0.8`, nostrum used to use a `GenServer` that would call out to ETS tables to
   look up ratelimiting buckets for requests. If it needed to sleep before
   issuing a request due to the bucket being exhausted, it would do so in the
-  server process and block other callers. 
+  server process and block other callers.
 
   In nostrum 0.8, the existing ratelimiter bucket storage architecture was
   refactored to be based around the [pluggable caching
@@ -377,7 +377,7 @@ defmodule Nostrum.Api.Ratelimiter do
     {:keep_state, %{data | conn: conn_pid}}
   end
 
-  def connecting(:info, {:gun_up, conn_pid, :http2}, %{conn: conn_pid} = data) do
+  def connecting(:info, {:gun_up, conn_pid, _}, %{conn: conn_pid} = data) do
     {:next_state, :connected, data}
   end
 
@@ -865,7 +865,7 @@ defmodule Nostrum.Api.Ratelimiter do
      {:next_event, :internal, {:requeue, {request, from}}}}
   end
 
-  def connected(:info, {:gun_down, conn, :http2, reason, killed_streams}, %{running: running}) do
+  def connected(:info, {:gun_down, conn, _, reason, killed_streams}, %{running: running}) do
     # Even with `retry: 0`, gun seems to try and reconnect, potentially because
     # of WebSocket. Force the connection to die.
     :ok = :gun.close(conn)
