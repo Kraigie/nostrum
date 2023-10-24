@@ -52,7 +52,7 @@ defmodule Nostrum.Cache.MemberCache.ETS do
   """
   @doc since: "0.8.0"
   @impl MemberCache
-  @spec wrap_qlc((() -> qlc_result)) :: qlc_result when qlc_result: term()
+  @spec wrap_qlc((-> qlc_result)) :: qlc_result when qlc_result: term()
   def wrap_qlc(fun) do
     :ets.safe_fixtable(@table_name, true)
     fun.()

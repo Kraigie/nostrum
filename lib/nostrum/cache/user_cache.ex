@@ -114,7 +114,7 @@ defmodule Nostrum.Cache.UserCache do
   If your cache does not need any wrapping, you can omit this.
   """
   @doc since: "0.8.0"
-  @callback wrap_qlc((() -> result)) :: result when result: term()
+  @callback wrap_qlc((-> result)) :: result when result: term()
   @optional_callbacks wrap_qlc: 1
 
   @doc """
@@ -139,8 +139,8 @@ defmodule Nostrum.Cache.UserCache do
   If no cache is given, calls out to the default cache.
   """
   @doc since: "0.8.0"
-  @spec wrap_qlc((() -> result)) :: result when result: term()
-  @spec wrap_qlc(module(), (() -> result)) :: result when result: term()
+  @spec wrap_qlc((-> result)) :: result when result: term()
+  @spec wrap_qlc(module(), (-> result)) :: result when result: term()
   def wrap_qlc(cache \\ @configured_cache, fun) do
     if function_exported?(cache, :wrap_qlc, 1) do
       cache.wrap_qlc(fun)

@@ -53,25 +53,25 @@ qhtraverse = :ets.table(tab, traverse: {:select, ms})
 
 # Elixir queries
 qh0 =
-  :qlc.string_to_handle('[{Id, Id, Value} || {Id, Value} <- Handle, Id =:= RequestedId].', [],
+  :qlc.string_to_handle(~c"[{Id, Id, Value} || {Id, Value} <- Handle, Id =:= RequestedId].", [],
     Handle: qh,
     RequestedId: 500_000
   )
 
 qh1a =
-  :qlc.string_to_handle('[{Id, Id, Value} || {Id, Value} <- Handle].', [],
+  :qlc.string_to_handle(~c"[{Id, Id, Value} || {Id, Value} <- Handle].", [],
     Handle: qh,
     RequestedId: 500_000
   )
 
 qh1b =
-  :qlc.string_to_handle('[Value || {Id, _, Value} <- Handle, Id =:= RequestedId].', [],
+  :qlc.string_to_handle(~c"[Value || {Id, _, Value} <- Handle, Id =:= RequestedId].", [],
     Handle: qh1a,
     RequestedId: 500_000
   )
 
 qh2a =
-  :qlc.string_to_handle('[{Id, Id, Value} || {Id, Value} <- Handle, Id =:= RequestedId].', [],
+  :qlc.string_to_handle(~c"[{Id, Id, Value} || {Id, Value} <- Handle, Id =:= RequestedId].", [],
     Handle: qhtraverse,
     RequestedId: 500_000
   )

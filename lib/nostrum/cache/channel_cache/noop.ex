@@ -32,7 +32,7 @@ defmodule Nostrum.Cache.ChannelCache.NoOp do
   def delete(_id), do: :noop
 
   @impl ChannelCache
-  def query_handle, do: :qlc.string_to_handle('[].')
+  def query_handle, do: :qlc.string_to_handle(~c"[].")
 
   defp convert(%{__struct__: _} = struct), do: struct
   defp convert(map), do: Channel.to_struct(map)

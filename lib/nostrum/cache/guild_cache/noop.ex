@@ -75,5 +75,5 @@ defmodule Nostrum.Cache.GuildCache.NoOp do
   def member_count_down(_guild_id), do: true
 
   @impl GuildCache
-  def query_handle, do: :qlc.string_to_handle('[].')
+  def query_handle, do: :qlc.string_to_handle(~c"[].")
 end
