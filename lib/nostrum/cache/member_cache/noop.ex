@@ -35,5 +35,5 @@ defmodule Nostrum.Cache.MemberCache.NoOp do
   def bulk_create(_guild_id, _members), do: true
 
   @impl MemberCache
-  def query_handle, do: :qlc.string_to_handle('[].')
+  def query_handle, do: :qlc.string_to_handle(~c"[].")
 end
