@@ -28,13 +28,13 @@ defmodule Nostrum.Voice.Session do
   end
 
   def handle_continue(%VoiceState{channel_id: channel_id, guild_id: guild_id} = voice, nil) do
-    %{name: guild_name, channels: %{^channel_id => %{name: channel_name}}} =
-      GuildCache.get!(guild_id)
+    case GuildCache.get(guild_id) do
+      {:ok, %{name: guild_name, channels: %{^channel_id => %{name: channel_name}}}} ->
+        Logger.metadata(guild: ~s|"#{guild_name}"|, channel: ~s|"#{channel_name}"|)
 
-    Logger.metadata(
-      guild: ~s|"#{guild_name}"|,
-      channel: ~s|"#{channel_name}"|
-    )
+      _error ->
+        Logger.metadata(guild: guild_id, channel: channel_id)
+    end
 
     [host, port] = String.split(voice.gateway, ":")
 
@@ -128,7 +128,7 @@ defmodule Nostrum.Voice.Session do
   def handle_info({:gun_up, worker, _proto}, state) do
     stream = :gun.ws_upgrade(worker, @gateway_qs)
     {:upgrade, ["websocket"], _} = :gun.await(worker, stream, @timeout_ws_upgrade)
-    Logger.warn("Reconnected after connection broke")
+    Logger.warning("Reconnected after connection broke")
     {:noreply, %{state | heartbeat_ack: true}}
   end
 
@@ -154,7 +154,7 @@ defmodule Nostrum.Voice.Session do
   end
 
   def handle_cast(:heartbeat, %{heartbeat_ack: false, heartbeat_ref: timer_ref} = state) do
-    Logger.warn("heartbeat_ack not received in time, disconnecting")
+    Logger.warning("heartbeat_ack not received in time, disconnecting")
     {:ok, :cancel} = :timer.cancel(timer_ref)
     :gun.ws_send(state.conn, state.stream, :close)
     {:noreply, state}

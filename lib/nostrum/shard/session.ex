@@ -321,7 +321,7 @@ defmodule Nostrum.Shard.Session do
        heartbeat_later}
     else
       # Our last heartbeat was not acknowledged. Disconnect and try to resume.
-      Logger.warn("Heartbeat ack not received in time, reconnecting")
+      Logger.warning("Heartbeat ack not received in time, reconnecting")
       :ok = :gun.ws_send(conn, stream, :close)
       connect = {:next_event, :internal, :connect}
       {:next_state, :disconnected, %{data | stream: nil}, connect}

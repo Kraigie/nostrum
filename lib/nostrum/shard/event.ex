@@ -67,7 +67,7 @@ defmodule Nostrum.Shard.Event do
   end
 
   def handle(event, _payload, state) do
-    Logger.warn("UNHANDLED GATEWAY EVENT #{event}")
+    Logger.warning("UNHANDLED GATEWAY EVENT #{event}")
     {state, []}
   end
 

@@ -405,7 +405,7 @@ defmodule Nostrum.Shard.Dispatch do
   end
 
   def handle_event(event, p, state) do
-    Logger.warn("UNHANDLED GATEWAY DISPATCH EVENT TYPE: #{event}, #{inspect(p)}")
+    Logger.warning("UNHANDLED GATEWAY DISPATCH EVENT TYPE: #{event}, #{inspect(p)}")
     {event, p, state}
   end
 end
