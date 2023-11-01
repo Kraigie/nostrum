@@ -69,7 +69,7 @@ defmodule Nostrum.Application do
     end
   end
 
-  defp check_otp_version() do
+  defp check_otp_version do
     _module_info = :pg.module_info()
 
     unless function_exported?(:pg, :monitor, 2) do
