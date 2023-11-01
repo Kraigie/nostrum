@@ -125,7 +125,7 @@ considered unsafe but a debug messages will be emitted if a key is unsafely
 converted to an atom. In this way we can ensure that our atom table is not
 growing unbounded.</p></li><li><p>The payload is then written to the cache. To make sure we're not overrunning
 the cache, especially at startup with <code class="inline">request_guild_members</code> or other heavy
-payloads, this is done in the shard itself. </p></li><li><p>The cache updates itself from the new data. In some cases, such as update or
+payloads, this is done in the shard itself.</p></li><li><p>The cache updates itself from the new data. In some cases, such as update or
 delete events, it may send out a second &quot;old&quot; object as well, that helps the
 library user to determine what changed.</p></li><li><p>After writing to the cache, the shard <code class="inline">send</code>s out the event after going
 through the cache to all subscribed processes. In general, the payload will
