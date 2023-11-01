@@ -28,13 +28,13 @@ defmodule Nostrum.Voice.Session do
   end
 
   def handle_continue(%VoiceState{channel_id: channel_id, guild_id: guild_id} = voice, nil) do
-    %{name: guild_name, channels: %{^channel_id => %{name: channel_name}}} =
-      GuildCache.get!(guild_id)
+    case GuildCache.get(guild_id) do
+      {:ok, %{name: guild_name, channels: %{^channel_id => %{name: channel_name}}}} ->
+        Logger.metadata(guild: ~s|"#{guild_name}"|, channel: ~s|"#{channel_name}"|)
 
-    Logger.metadata(
-      guild: ~s|"#{guild_name}"|,
-      channel: ~s|"#{channel_name}"|
-    )
+      _error ->
+        Logger.metadata(guild: guild_id, channel: channel_id)
+    end
 
     [host, port] = String.split(voice.gateway, ":")
 
