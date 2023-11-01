@@ -99,7 +99,7 @@ defmodule Nostrum.Voice.Event do
   end
 
   def handle(event, _payload, state) do
-    Logger.warn("UNHANDLED VOICE GATEWAY EVENT #{event}")
+    Logger.debug("UNHANDLED VOICE GATEWAY EVENT #{event}")
     state
   end
 end

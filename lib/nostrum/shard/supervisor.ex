@@ -19,7 +19,7 @@ defmodule Nostrum.Shard.Supervisor do
 
   3. The payload is then written to the cache. To make sure we're not overrunning
      the cache, especially at startup with `request_guild_members` or other heavy
-     payloads, this is done in the shard itself. 
+     payloads, this is done in the shard itself.
 
   4. The cache updates itself from the new data. In some cases, such as update or
      delete events, it may send out a second "old" object as well, that helps the
@@ -48,7 +48,7 @@ defmodule Nostrum.Shard.Supervisor do
   defp cast_shard_range(gateway_shards, gateway_shards), do: {1, gateway_shards, gateway_shards}
 
   defp cast_shard_range(gateway_shards, count) when is_integer(count) and count > 0 do
-    Logger.warn(
+    Logger.warning(
       "Configured shard count (#{count}) " <>
         "differs from Discord Gateway's recommended shard count (#{gateway_shards}). " <>
         "Consider using `num_shards: :auto` option in your Nostrum config."
