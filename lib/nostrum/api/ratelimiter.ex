@@ -274,8 +274,14 @@ defmodule Nostrum.Api.Ratelimiter do
   have not fully received it yet. For responses that have a body, this will
   buffer their body until we can send it back to the client.
 
-  - `:conn`: The `:gun` connection backing the server. Used for making new
+  - `:conn_pool`: A queue of `:gun` connection backing the server. Used for making new
   requests, and updated as the state changes.
+
+  - `:pending_conns`: A set of `:gun` connections that will be added to the pool once we receive a `:gun_up` event.
+
+  - `:pool_size`: The configured number of connections to try to keep in the pool at a time. For most people,
+  this value should be left at the `1`, anything higher is experimental and meant as a workaround for users
+  with bots that are making a lot of requests while Discord has http2 disabled.
 
   - `:remaining_in_window`: How many calls we may still make to the API during
   this time window. Reset automatically via timeouts.
@@ -293,7 +299,9 @@ defmodule Nostrum.Api.Ratelimiter do
               {status :: non_neg_integer(), headers :: [{String.t(), String.t()}],
                body :: String.t()}
           },
-          conn: pid() | nil,
+          conn_pool: :queue.queue(pid()),
+          pending_conns: MapSet.t(pid()),
+          pool_size: non_neg_integer(),
           remaining_in_window: non_neg_integer()
         }
 
@@ -358,27 +366,44 @@ defmodule Nostrum.Api.Ratelimiter do
     :keep_state_and_data
   end
 
-  def connecting(:internal, :open, data) do
-    domain = to_charlist(Constants.domain())
-
-    open_opts = %{
-      connect_timeout: :timer.seconds(5),
-      domain_lookup_timeout: :timer.seconds(5),
-      # Do not retry here. If we retry, it is possible that after the state
-      # machine heads into disconnected state, it receives an unexpected
-      # `:gun_up` message. We want the state machine to manage the connection
-      # lifecycle fully on its own.
-      retry: 0,
-      tls_handshake_timeout: :timer.seconds(5),
-      tls_opts: Constants.gun_tls_opts()
+  def disconnected(:info, {:gun_up, conn_pid, _}, %{conn_pool: pool} = data) do
+    data = %{
+      data
+      | conn_pool: :queue.in(conn_pid, pool),
+        pending_conns: MapSet.delete(data.pending_conns, conn_pid)
     }
 
-    {:ok, conn_pid} = :gun.open(domain, 443, open_opts)
-    {:keep_state, %{data | conn: conn_pid}}
+    {:next_state, :connecting, data,
+     [
+       {:next_event, :internal, :open},
+       {:state_timeout, :timer.seconds(10), :connect_timeout},
+       :postpone
+     ]}
   end
 
-  def connecting(:info, {:gun_up, conn_pid, _}, %{conn: conn_pid} = data) do
-    {:next_state, :connected, data}
+  def connecting(:internal, :open, data) do
+    # count how many connections we need to open
+    open_count = :queue.len(data.conn_pool)
+    pending_count = MapSet.size(data.pending_conns)
+
+    to_open = data.pool_size - open_count - pending_count
+
+    pending_conns =
+      Enum.reduce(1..to_open, data.pending_conns, fn _i, acc ->
+        conn = open_connection()
+        MapSet.put(acc, conn)
+      end)
+
+    {:keep_state, %{data | pending_conns: pending_conns}}
+  end
+
+  def connecting(:info, {:gun_up, conn_pid, _}, %{conn_pool: pool} = data) do
+    {:next_state, :connected,
+     %{
+       data
+       | conn_pool: :queue.in(conn_pid, pool),
+         pending_conns: MapSet.delete(data.pending_conns, conn_pid)
+     }}
   end
 
   def connecting({:call, _from}, _request, _data) do
@@ -469,9 +494,18 @@ defmodule Nostrum.Api.Ratelimiter do
   def connected(
         :internal,
         {:run, request, bucket, from},
-        %{conn: conn, outstanding: outstanding, remaining_in_window: remaining_for_user} = data
+        %{
+          conn_pool: pool,
+          outstanding: outstanding,
+          remaining_in_window: remaining_for_user
+        } = data
       )
       when remaining_for_user > 0 and is_map_key(outstanding, bucket) do
+    # pull out a connection from the pool queue
+    # and then put it in the back of the queue
+    {{:value, conn}, pool} = :queue.out(pool)
+    pool = :queue.in(conn, pool)
+
     stream =
       Base.request(
         conn,
@@ -483,7 +517,9 @@ defmodule Nostrum.Api.Ratelimiter do
       )
 
     data_with_this_running = put_in(data, [:running, stream], {bucket, request, from})
-    {:keep_state, data_with_this_running, {:next_event, :internal, {:account_request, bucket}}}
+
+    {:keep_state, %{data_with_this_running | conn_pool: pool},
+     {:next_event, :internal, {:account_request, bucket}}}
   end
 
   # Account for the request on the given bucket. At a full user (global)
@@ -669,6 +705,20 @@ defmodule Nostrum.Api.Ratelimiter do
         run_request = {:next_event, :internal, {:run, request, bucket, from}}
         {:keep_state, %{data | outstanding: outstanding_with_this}, [run_request]}
     end
+  end
+
+  # a new connection was opened, so we need to update our pool of connections
+  def connected(
+        :info,
+        {:gun_up, new_conn, _},
+        %{conn_pool: conn_pool, pending_conns: pending_conns} = data
+      ) do
+    {:keep_state,
+     %{
+       data
+       | conn_pool: :queue.in(new_conn, conn_pool),
+         pending_conns: MapSet.delete(pending_conns, new_conn)
+     }}
   end
 
   # Beginning of the response. For responses without a body, this is the
@@ -865,11 +915,23 @@ defmodule Nostrum.Api.Ratelimiter do
      {:next_event, :internal, {:requeue, {request, from}}}}
   end
 
-  def connected(:info, {:gun_down, conn, _, reason, killed_streams}, %{running: running}) do
+  def connected(
+        :info,
+        {:gun_down, conn, _, reason, killed_streams},
+        %{running: running, conn_pool: pool} = data
+      ) do
     # Even with `retry: 0`, gun seems to try and reconnect, potentially because
     # of WebSocket. Force the connection to die.
     :ok = :gun.close(conn)
     :ok = :gun.flush(conn)
+
+    updated_pool = :queue.delete(conn, pool)
+
+    Logger.info(
+      "Connection to Discord API lost with reason #{inspect(reason)}, killing #{length(killed_streams)} in-flight requests"
+    )
+
+    {removed_streams, remaining_streams} = Map.split(running, killed_streams)
 
     # Streams that we previously received `:gun_error` notifications for have
     # been requeued already, and we won't find them in the `running` list.
@@ -878,15 +940,28 @@ defmodule Nostrum.Api.Ratelimiter do
     # removes the request from the `running` map _and does not requeue it on
     # its own terms_, a client may hang indefinitely.
     replies =
-      killed_streams
-      |> Stream.map(&Map.get(running, &1))
-      |> Stream.reject(&(&1 == nil))
-      |> Enum.map(fn stream ->
-        {_bucket, _request, client} = Map.fetch!(running, stream)
+      Map.values(removed_streams)
+      |> Enum.map(fn {_bucket, _request, client} ->
         {:reply, client, {:error, {:connection_died, reason}}}
       end)
 
-    {:next_state, :disconnected, empty_state(), replies}
+    # if we have no more available connections, we reset
+    # else open a new connection and keep going
+    if :queue.is_empty(updated_pool) do
+      new_state = %{data | conn_pool: updated_pool, running: remaining_streams}
+      {:next_state, :disconnected, new_state, replies}
+    else
+      pid = open_connection()
+      pending_conns = MapSet.put(data.pending_conns, pid)
+
+      {:keep_state,
+       %{
+         data
+         | running: remaining_streams,
+           conn_pool: updated_pool,
+           pending_conns: pending_conns
+       }, replies}
+    end
   end
 
   def global_limit(:state_timeout, next, data) do
@@ -942,7 +1017,9 @@ defmodule Nostrum.Api.Ratelimiter do
       outstanding: %{},
       running: %{},
       inflight: %{},
-      conn: nil,
+      conn_pool: :queue.new(),
+      pool_size: pool_size(),
+      pending_conns: MapSet.new(),
       remaining_in_window: @bot_calls_per_window
     }
 
@@ -1060,5 +1137,29 @@ defmodule Nostrum.Api.Ratelimiter do
       endpoint,
       "/webhooks/\\g{1}/_token/"
     )
+  end
+
+  defp open_connection do
+    domain = to_charlist(Constants.domain())
+
+    open_opts = %{
+      connect_timeout: :timer.seconds(5),
+      domain_lookup_timeout: :timer.seconds(5),
+      # Do not retry here. If we retry, it is possible that after the state
+      # machine heads into disconnected state, it receives an unexpected
+      # `:gun_up` message. We want the state machine to manage the connection
+      # lifecycle fully on its own.
+      retry: 0,
+      tls_handshake_timeout: :timer.seconds(5),
+      tls_opts: Constants.gun_tls_opts()
+    }
+
+    {:ok, conn_pid} = :gun.open(domain, 443, open_opts)
+
+    conn_pid
+  end
+
+  defp pool_size do
+    Application.get_env(:nostrum, :pool_size, 1)
   end
 end
