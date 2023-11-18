@@ -279,12 +279,17 @@ defmodule Nostrum.Api.Ratelimiter do
 
   - `:pending_conns`: A set of `:gun` connections that will be added to the pool once we receive a `:gun_up` event.
 
-  - `:pool_size`: The configured number of connections to try to keep in the pool at a time. For most people,
+  - `:maximum_connections`: The maximum number of connections to keep in the pool at a time. For most people,
   this value should be left at the `1`, anything higher is experimental and meant as a workaround for users
-  with bots that are making a lot of requests while Discord has http2 disabled.
+  with bots that are making a lot of requests while Discord has http2 disabled. Additional connections will
+  only be opened when the number of in-flight requests exceeds the number of connections in the pool.
 
   - `:remaining_in_window`: How many calls we may still make to the API during
   this time window. Reset automatically via timeouts.
+
+  - `:connection_type`: The type of the most recently opened `:gun` connection. This is used to determine
+  if we need to more connections to handle the number of in-flight requests, as we only have this issue
+  when using http1 connections.
   """
   @typedoc since: "0.9.0"
   @type state :: %{
@@ -301,8 +306,9 @@ defmodule Nostrum.Api.Ratelimiter do
           },
           conn_pool: :queue.queue(pid()),
           pending_conns: MapSet.t(pid()),
-          pool_size: non_neg_integer(),
-          remaining_in_window: non_neg_integer()
+          maximum_connections: non_neg_integer(),
+          remaining_in_window: non_neg_integer(),
+          connection_type: :gun.protocol() | nil
         }
 
   @doc """
@@ -366,12 +372,17 @@ defmodule Nostrum.Api.Ratelimiter do
     :keep_state_and_data
   end
 
-  def disconnected(:info, {:gun_up, conn_pid, _}, %{conn_pool: pool} = data) do
+  def disconnected(:info, {:gun_up, conn_pid, protocol}, %{conn_pool: pool} = data) do
     data = %{
       data
       | conn_pool: :queue.in(conn_pid, pool),
-        pending_conns: MapSet.delete(data.pending_conns, conn_pid)
+        pending_conns: MapSet.delete(data.pending_conns, conn_pid),
+        connection_type: protocol
     }
+
+    Logger.debug(
+      "New connection #{inspect(conn_pid)} using #{protocol} is now up, #{:queue.len(pool) + 1} connections in the pool"
+    )
 
     {:next_state, :connecting, data,
      [
@@ -382,27 +393,22 @@ defmodule Nostrum.Api.Ratelimiter do
   end
 
   def connecting(:internal, :open, data) do
-    # count how many connections we need to open
-    open_count = :queue.len(data.conn_pool)
-    pending_count = MapSet.size(data.pending_conns)
-
-    to_open = data.pool_size - open_count - pending_count
-
-    pending_conns =
-      Enum.reduce(1..to_open, data.pending_conns, fn _i, acc ->
-        conn = open_connection()
-        MapSet.put(acc, conn)
-      end)
+    pending_conns = MapSet.put(data.pending_conns, open_connection())
 
     {:keep_state, %{data | pending_conns: pending_conns}}
   end
 
-  def connecting(:info, {:gun_up, conn_pid, _}, %{conn_pool: pool} = data) do
+  def connecting(:info, {:gun_up, conn_pid, protocol}, %{conn_pool: pool} = data) do
+    Logger.debug(
+      "New connection #{inspect(conn_pid)} using #{protocol} is now up, #{:queue.len(pool) + 1} connections in the pool"
+    )
+
     {:next_state, :connected,
      %{
        data
        | conn_pool: :queue.in(conn_pid, pool),
-         pending_conns: MapSet.delete(data.pending_conns, conn_pid)
+         pending_conns: MapSet.delete(data.pending_conns, conn_pid),
+         connection_type: protocol
      }}
   end
 
@@ -446,7 +452,8 @@ defmodule Nostrum.Api.Ratelimiter do
         data_with_this_queued =
           put_in(data, [:outstanding, bucket], {remaining, :queue.in(entry, queue)})
 
-        {:keep_state, data_with_this_queued}
+        data = maybe_open_new_connection(data_with_this_queued)
+        {:keep_state, data}
 
       # There is an entry - so somebody did find some ratelimiting information
       # here recently - but that entry tells us we may make a call right away.
@@ -457,7 +464,9 @@ defmodule Nostrum.Api.Ratelimiter do
         # still items in the queue, we should internally schedule them right away.
         # Otherwise, we are mixing up the order.
         true = :queue.is_empty(queue)
-        {:keep_state_and_data, [{:next_event, :internal, {:run, payload, bucket, from}}]}
+
+        data = maybe_open_new_connection(data)
+        {:keep_state, data, [{:next_event, :internal, {:run, payload, bucket, from}}]}
 
       # There is no entry. We are the pioneer for this bucket...
       nil when remaining_in_window > 0 ->
@@ -470,7 +479,9 @@ defmodule Nostrum.Api.Ratelimiter do
         # incoming requests will be held off appropriately.
         run_request = {:next_event, :internal, {:run, payload, bucket, from}}
         data_with_new_queue = put_in(data, [:outstanding, bucket], {:initial, :queue.new()})
-        {:keep_state, data_with_new_queue, [run_request]}
+
+        data = maybe_open_new_connection(data_with_new_queue)
+        {:keep_state, data, [run_request]}
 
       nil ->
         # ... but we are not good on the bot ratelimits! Add this to the queue.
@@ -606,6 +617,8 @@ defmodule Nostrum.Api.Ratelimiter do
         run_request = {:next_event, :internal, {:run, request, bucket, from}}
         try_starting_next = {:next_event, :internal, {:next, accounted_remaining, bucket}}
 
+        data = maybe_open_new_connection(data)
+
         {:keep_state, %{data | outstanding: outstanding_without_this},
          [run_request, try_starting_next]}
     end
@@ -710,14 +723,15 @@ defmodule Nostrum.Api.Ratelimiter do
   # a new connection was opened, so we need to update our pool of connections
   def connected(
         :info,
-        {:gun_up, new_conn, _},
+        {:gun_up, new_conn, protocol},
         %{conn_pool: conn_pool, pending_conns: pending_conns} = data
       ) do
     {:keep_state,
      %{
        data
        | conn_pool: :queue.in(new_conn, conn_pool),
-         pending_conns: MapSet.delete(pending_conns, new_conn)
+         pending_conns: MapSet.delete(pending_conns, new_conn),
+         connection_type: protocol
      }}
   end
 
@@ -927,7 +941,7 @@ defmodule Nostrum.Api.Ratelimiter do
 
     updated_pool = :queue.delete(conn, pool)
 
-    Logger.info(
+    Logger.debug(
       "Connection to Discord API lost with reason #{inspect(reason)}, killing #{length(killed_streams)} in-flight requests"
     )
 
@@ -945,21 +959,16 @@ defmodule Nostrum.Api.Ratelimiter do
         {:reply, client, {:error, {:connection_died, reason}}}
       end)
 
-    # if we have no more available connections, we reset
-    # else open a new connection and keep going
+    # if we have no more available connections, we go back to disconnected
     if :queue.is_empty(updated_pool) do
       new_state = %{data | conn_pool: updated_pool, running: remaining_streams}
       {:next_state, :disconnected, new_state, replies}
     else
-      pid = open_connection()
-      pending_conns = MapSet.put(data.pending_conns, pid)
-
       {:keep_state,
        %{
          data
          | running: remaining_streams,
-           conn_pool: updated_pool,
-           pending_conns: pending_conns
+           conn_pool: updated_pool
        }, replies}
     end
   end
@@ -1018,9 +1027,10 @@ defmodule Nostrum.Api.Ratelimiter do
       running: %{},
       inflight: %{},
       conn_pool: :queue.new(),
-      pool_size: pool_size(),
+      maximum_connections: maximum_connections(),
       pending_conns: MapSet.new(),
-      remaining_in_window: @bot_calls_per_window
+      remaining_in_window: @bot_calls_per_window,
+      connection_type: nil
     }
 
   # Helper functions
@@ -1139,6 +1149,31 @@ defmodule Nostrum.Api.Ratelimiter do
     )
   end
 
+  # only open a new connection if we have less connections than the maximum
+  # and we are using http1 rather than http2
+  defp maybe_open_new_connection(%{connection_type: :http} = data) do
+    total_running = map_size(data.running) + map_size(data.inflight)
+
+    open_connections = :queue.len(data.conn_pool) + MapSet.size(data.pending_conns)
+
+    if total_running >= open_connections && open_connections < data.maximum_connections do
+      Logger.debug(
+        "We're running #{total_running} requests on http1, " <>
+          "but only have #{open_connections} connections. Opening a new connection to meet demand."
+      )
+
+      pid = open_connection()
+      pending_conns = MapSet.put(data.pending_conns, pid)
+      %{data | pending_conns: pending_conns}
+    else
+      data
+    end
+  end
+
+  defp maybe_open_new_connection(data) do
+    data
+  end
+
   defp open_connection do
     domain = to_charlist(Constants.domain())
 
@@ -1159,7 +1194,7 @@ defmodule Nostrum.Api.Ratelimiter do
     conn_pid
   end
 
-  defp pool_size do
-    Application.get_env(:nostrum, :pool_size, 1)
+  defp maximum_connections do
+    Application.get_env(:nostrum, :maximum_connections, 1)
   end
 end
