@@ -275,7 +275,7 @@ defmodule Nostrum.Api.Ratelimiter do
   buffer their body until we can send it back to the client.
 
   - `:conn_pool`: A queue of `:gun` connection backing the server. Used for making new
-  requests, and updated as the state changes.
+  requests and updated as the state changes.
 
   - `:pending_conns`: A set of `:gun` connections that will be added to the pool once we receive a `:gun_up` event.
 
@@ -288,8 +288,8 @@ defmodule Nostrum.Api.Ratelimiter do
   this time window. Reset automatically via timeouts.
 
   - `:connection_type`: The type of the most recently opened `:gun` connection. This is used to determine
-  if we need to more connections to handle the number of in-flight requests, as we only have this issue
-  when using http1 connections.
+  if we would benefit from opening more connections to handle the number of requests being issued,
+  with http2 opening more connections is unnecessary.
   """
   @typedoc since: "0.9.0"
   @type state :: %{
