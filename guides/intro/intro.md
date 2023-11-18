@@ -1,6 +1,6 @@
 # Introduction
 
-nostrum is a an Elixir library that can be used to interact with Discord.
+nostrum is an Elixir library that can be used to interact with Discord.
 
 To see documentation about a specific part of the library, please visit one of
 the following:
@@ -51,7 +51,7 @@ Apart from the `token` field mentioned above, the following fields are also supp
 - `request_guild_members` - perform member chunking to retrieve a complete list
   of members for all guilds at startup. Depending on your [cache
   backend](../advanced/pluggable_caching.md), this may increase startup time
-  and, memory usage by quite a bit. Defaults to `false`.
+  and memory usage by quite a bit. Defaults to `false`.
 
 
 ### Voice-specific
