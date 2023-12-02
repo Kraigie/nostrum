@@ -343,7 +343,14 @@ defmodule Nostrum.Shard.Session do
       {^reference, :join, _group, _who} ->
         :ok
     after
-      timeout -> :timeout
+      timeout ->
+        Logger.error(
+          "No consumers were running nor did any start up in time " <>
+            "for shard session startup. Is a consumer started as " <>
+            "part of your supervision tree?"
+        )
+
+        :timeout
     end
   end
 end
