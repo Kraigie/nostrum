@@ -52,6 +52,9 @@ Apart from the `token` field mentioned above, the following fields are also supp
   of members for all guilds at startup. Depending on your [cache
   backend](../advanced/pluggable_caching.md), this may increase startup time
   and memory usage by quite a bit. Defaults to `false`.
+- `maximum_connections` - experimental option to configure the maximum amount of
+  concurrent connections that may be opened to Discord's API at once when using
+  http1.1, ignored when using http2. Defaults to `1`.
 
 
 ### Voice-specific

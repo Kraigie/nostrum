@@ -274,11 +274,22 @@ defmodule Nostrum.Api.Ratelimiter do
   have not fully received it yet. For responses that have a body, this will
   buffer their body until we can send it back to the client.
 
-  - `:conn`: The `:gun` connection backing the server. Used for making new
-  requests, and updated as the state changes.
+  - `:conn_pool`: A queue of `:gun` connection backing the server. Used for making new
+  requests and updated as the state changes.
+
+  - `:pending_conns`: A set of `:gun` connections that will be added to the pool once we receive a `:gun_up` event.
+
+  - `:maximum_connections`: The maximum number of connections to keep in the pool at a time. For most people,
+  this value should be left at the `1`, anything higher is experimental and meant as a workaround for users
+  with bots that are making a lot of requests while Discord has http2 disabled. Additional connections will
+  only be opened when the number of in-flight requests exceeds the number of connections in the pool.
 
   - `:remaining_in_window`: How many calls we may still make to the API during
   this time window. Reset automatically via timeouts.
+
+  - `:connection_type`: The type of the most recently opened `:gun` connection. This is used to determine
+  if we would benefit from opening more connections to handle the number of requests being issued,
+  with http2 opening more connections is unnecessary.
   """
   @typedoc since: "0.9.0"
   @type state :: %{
@@ -293,8 +304,11 @@ defmodule Nostrum.Api.Ratelimiter do
               {status :: non_neg_integer(), headers :: [{String.t(), String.t()}],
                body :: String.t()}
           },
-          conn: pid() | nil,
-          remaining_in_window: non_neg_integer()
+          conn_pool: :queue.queue(pid()),
+          pending_conns: MapSet.t(pid()),
+          maximum_connections: non_neg_integer(),
+          remaining_in_window: non_neg_integer(),
+          connection_type: :gun.protocol() | nil
         }
 
   @doc """
@@ -358,27 +372,44 @@ defmodule Nostrum.Api.Ratelimiter do
     :keep_state_and_data
   end
 
-  def connecting(:internal, :open, data) do
-    domain = to_charlist(Constants.domain())
-
-    open_opts = %{
-      connect_timeout: :timer.seconds(5),
-      domain_lookup_timeout: :timer.seconds(5),
-      # Do not retry here. If we retry, it is possible that after the state
-      # machine heads into disconnected state, it receives an unexpected
-      # `:gun_up` message. We want the state machine to manage the connection
-      # lifecycle fully on its own.
-      retry: 0,
-      tls_handshake_timeout: :timer.seconds(5),
-      tls_opts: Constants.gun_tls_opts()
+  def disconnected(:info, {:gun_up, conn_pid, protocol}, %{conn_pool: pool} = data) do
+    data = %{
+      data
+      | conn_pool: :queue.in(conn_pid, pool),
+        pending_conns: MapSet.delete(data.pending_conns, conn_pid),
+        connection_type: protocol
     }
 
-    {:ok, conn_pid} = :gun.open(domain, 443, open_opts)
-    {:keep_state, %{data | conn: conn_pid}}
+    Logger.debug(
+      "New connection #{inspect(conn_pid)} using #{protocol} is now up, #{:queue.len(pool) + 1} connections in the pool"
+    )
+
+    {:next_state, :connecting, data,
+     [
+       {:next_event, :internal, :open},
+       {:state_timeout, :timer.seconds(10), :connect_timeout},
+       :postpone
+     ]}
   end
 
-  def connecting(:info, {:gun_up, conn_pid, _}, %{conn: conn_pid} = data) do
-    {:next_state, :connected, data}
+  def connecting(:internal, :open, data) do
+    pending_conns = MapSet.put(data.pending_conns, open_connection())
+
+    {:keep_state, %{data | pending_conns: pending_conns}}
+  end
+
+  def connecting(:info, {:gun_up, conn_pid, protocol}, %{conn_pool: pool} = data) do
+    Logger.debug(
+      "New connection #{inspect(conn_pid)} using #{protocol} is now up, #{:queue.len(pool) + 1} connections in the pool"
+    )
+
+    {:next_state, :connected,
+     %{
+       data
+       | conn_pool: :queue.in(conn_pid, pool),
+         pending_conns: MapSet.delete(data.pending_conns, conn_pid),
+         connection_type: protocol
+     }}
   end
 
   def connecting({:call, _from}, _request, _data) do
@@ -421,7 +452,8 @@ defmodule Nostrum.Api.Ratelimiter do
         data_with_this_queued =
           put_in(data, [:outstanding, bucket], {remaining, :queue.in(entry, queue)})
 
-        {:keep_state, data_with_this_queued}
+        data = maybe_open_new_connection(data_with_this_queued)
+        {:keep_state, data}
 
       # There is an entry - so somebody did find some ratelimiting information
       # here recently - but that entry tells us we may make a call right away.
@@ -432,7 +464,9 @@ defmodule Nostrum.Api.Ratelimiter do
         # still items in the queue, we should internally schedule them right away.
         # Otherwise, we are mixing up the order.
         true = :queue.is_empty(queue)
-        {:keep_state_and_data, [{:next_event, :internal, {:run, payload, bucket, from}}]}
+
+        data = maybe_open_new_connection(data)
+        {:keep_state, data, [{:next_event, :internal, {:run, payload, bucket, from}}]}
 
       # There is no entry. We are the pioneer for this bucket...
       nil when remaining_in_window > 0 ->
@@ -445,7 +479,9 @@ defmodule Nostrum.Api.Ratelimiter do
         # incoming requests will be held off appropriately.
         run_request = {:next_event, :internal, {:run, payload, bucket, from}}
         data_with_new_queue = put_in(data, [:outstanding, bucket], {:initial, :queue.new()})
-        {:keep_state, data_with_new_queue, [run_request]}
+
+        data = maybe_open_new_connection(data_with_new_queue)
+        {:keep_state, data, [run_request]}
 
       nil ->
         # ... but we are not good on the bot ratelimits! Add this to the queue.
@@ -469,9 +505,18 @@ defmodule Nostrum.Api.Ratelimiter do
   def connected(
         :internal,
         {:run, request, bucket, from},
-        %{conn: conn, outstanding: outstanding, remaining_in_window: remaining_for_user} = data
+        %{
+          conn_pool: pool,
+          outstanding: outstanding,
+          remaining_in_window: remaining_for_user
+        } = data
       )
       when remaining_for_user > 0 and is_map_key(outstanding, bucket) do
+    # pull out a connection from the pool queue
+    # and then put it in the back of the queue
+    {{:value, conn}, pool} = :queue.out(pool)
+    pool = :queue.in(conn, pool)
+
     stream =
       Base.request(
         conn,
@@ -483,7 +528,9 @@ defmodule Nostrum.Api.Ratelimiter do
       )
 
     data_with_this_running = put_in(data, [:running, stream], {bucket, request, from})
-    {:keep_state, data_with_this_running, {:next_event, :internal, {:account_request, bucket}}}
+
+    {:keep_state, %{data_with_this_running | conn_pool: pool},
+     {:next_event, :internal, {:account_request, bucket}}}
   end
 
   # Account for the request on the given bucket. At a full user (global)
@@ -569,6 +616,8 @@ defmodule Nostrum.Api.Ratelimiter do
 
         run_request = {:next_event, :internal, {:run, request, bucket, from}}
         try_starting_next = {:next_event, :internal, {:next, accounted_remaining, bucket}}
+
+        data = maybe_open_new_connection(data)
 
         {:keep_state, %{data | outstanding: outstanding_without_this},
          [run_request, try_starting_next]}
@@ -669,6 +718,21 @@ defmodule Nostrum.Api.Ratelimiter do
         run_request = {:next_event, :internal, {:run, request, bucket, from}}
         {:keep_state, %{data | outstanding: outstanding_with_this}, [run_request]}
     end
+  end
+
+  # a new connection was opened, so we need to update our pool of connections
+  def connected(
+        :info,
+        {:gun_up, new_conn, protocol},
+        %{conn_pool: conn_pool, pending_conns: pending_conns} = data
+      ) do
+    {:keep_state,
+     %{
+       data
+       | conn_pool: :queue.in(new_conn, conn_pool),
+         pending_conns: MapSet.delete(pending_conns, new_conn),
+         connection_type: protocol
+     }}
   end
 
   # Beginning of the response. For responses without a body, this is the
@@ -865,11 +929,23 @@ defmodule Nostrum.Api.Ratelimiter do
      {:next_event, :internal, {:requeue, {request, from}}}}
   end
 
-  def connected(:info, {:gun_down, conn, _, reason, killed_streams}, %{running: running}) do
+  def connected(
+        :info,
+        {:gun_down, conn, _, reason, killed_streams},
+        %{running: running, conn_pool: pool} = data
+      ) do
     # Even with `retry: 0`, gun seems to try and reconnect, potentially because
     # of WebSocket. Force the connection to die.
     :ok = :gun.close(conn)
     :ok = :gun.flush(conn)
+
+    updated_pool = :queue.delete(conn, pool)
+
+    Logger.debug(
+      "Connection to Discord API lost with reason #{inspect(reason)}, killing #{length(killed_streams)} in-flight requests"
+    )
+
+    {removed_streams, remaining_streams} = Map.split(running, killed_streams)
 
     # Streams that we previously received `:gun_error` notifications for have
     # been requeued already, and we won't find them in the `running` list.
@@ -878,15 +954,23 @@ defmodule Nostrum.Api.Ratelimiter do
     # removes the request from the `running` map _and does not requeue it on
     # its own terms_, a client may hang indefinitely.
     replies =
-      killed_streams
-      |> Stream.map(&Map.get(running, &1))
-      |> Stream.reject(&(&1 == nil))
-      |> Enum.map(fn stream ->
-        {_bucket, _request, client} = Map.fetch!(running, stream)
+      Map.values(removed_streams)
+      |> Enum.map(fn {_bucket, _request, client} ->
         {:reply, client, {:error, {:connection_died, reason}}}
       end)
 
-    {:next_state, :disconnected, empty_state(), replies}
+    # if we have no more available connections, we go back to disconnected
+    if :queue.is_empty(updated_pool) do
+      new_state = %{data | conn_pool: updated_pool, running: remaining_streams}
+      {:next_state, :disconnected, new_state, replies}
+    else
+      {:keep_state,
+       %{
+         data
+         | running: remaining_streams,
+           conn_pool: updated_pool
+       }, replies}
+    end
   end
 
   def global_limit(:state_timeout, next, data) do
@@ -942,8 +1026,11 @@ defmodule Nostrum.Api.Ratelimiter do
       outstanding: %{},
       running: %{},
       inflight: %{},
-      conn: nil,
-      remaining_in_window: @bot_calls_per_window
+      conn_pool: :queue.new(),
+      maximum_connections: maximum_connections(),
+      pending_conns: MapSet.new(),
+      remaining_in_window: @bot_calls_per_window,
+      connection_type: nil
     }
 
   # Helper functions
@@ -1060,5 +1147,54 @@ defmodule Nostrum.Api.Ratelimiter do
       endpoint,
       "/webhooks/\\g{1}/_token/"
     )
+  end
+
+  # only open a new connection if we have less connections than the maximum
+  # and we are using http1 rather than http2
+  defp maybe_open_new_connection(%{connection_type: :http} = data) do
+    total_running = map_size(data.running) + map_size(data.inflight)
+
+    open_connections = :queue.len(data.conn_pool) + MapSet.size(data.pending_conns)
+
+    if total_running >= open_connections && open_connections < data.maximum_connections do
+      Logger.debug(
+        "We're running #{total_running} requests on http1, " <>
+          "but only have #{open_connections} connections. Opening a new connection to meet demand."
+      )
+
+      pid = open_connection()
+      pending_conns = MapSet.put(data.pending_conns, pid)
+      %{data | pending_conns: pending_conns}
+    else
+      data
+    end
+  end
+
+  defp maybe_open_new_connection(data) do
+    data
+  end
+
+  defp open_connection do
+    domain = to_charlist(Constants.domain())
+
+    open_opts = %{
+      connect_timeout: :timer.seconds(5),
+      domain_lookup_timeout: :timer.seconds(5),
+      # Do not retry here. If we retry, it is possible that after the state
+      # machine heads into disconnected state, it receives an unexpected
+      # `:gun_up` message. We want the state machine to manage the connection
+      # lifecycle fully on its own.
+      retry: 0,
+      tls_handshake_timeout: :timer.seconds(5),
+      tls_opts: Constants.gun_tls_opts()
+    }
+
+    {:ok, conn_pid} = :gun.open(domain, 443, open_opts)
+
+    conn_pid
+  end
+
+  defp maximum_connections do
+    Application.get_env(:nostrum, :maximum_connections, 1)
   end
 end
