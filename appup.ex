@@ -1,9 +1,14 @@
 # See the appup cookbook for instructions:
 # https://www.erlang.org/doc/design_principles/appup_cookbook.html
 {
-  ~c"0.9.0-alpha3",
+  ~c"0.9.0",
   [
     # Upgrade instructions
+    {~c"0.9.0-alpha3",
+     [
+       # needed to add back http1.1 support
+       {:restart_application, :nostrum}
+     ]},
     {~c"0.9.0-alpha2", []},
     {~c"0.9.0-alpha1",
      [
@@ -18,6 +23,10 @@
   ],
   [
     # Downgrade instructions
+    {~c"0.9.0-alpha3",
+     [
+       {:restart_application, :nostrum}
+     ]},
     {~c"0.9.0-alpha2", []},
     {~c"0.9.0-alpha1",
      [
