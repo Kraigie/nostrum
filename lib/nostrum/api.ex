@@ -175,7 +175,7 @@ defmodule Nostrum.Api do
   """
   @spec update_status(status, String.t(), integer, String.t() | nil) :: :ok
   def update_status(status, game, type \\ 0, stream \\ nil) do
-    Supervisor.update_status(to_string(status), game, stream, type)
+    _result = Supervisor.update_status(to_string(status), game, stream, type)
     :ok
   end
 

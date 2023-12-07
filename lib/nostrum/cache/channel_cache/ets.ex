@@ -31,7 +31,7 @@ defmodule Nostrum.Cache.ChannelCache.ETS do
   @doc "Set up the cache's ETS table."
   @impl Supervisor
   def init(_init_arg) do
-    :ets.new(@table_name, [:set, :public, :named_table])
+    _tid = :ets.new(@table_name, [:set, :public, :named_table])
     Supervisor.init([], strategy: :one_for_one)
   end
 

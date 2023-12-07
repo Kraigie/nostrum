@@ -195,7 +195,7 @@ defmodule Nostrum.Shard.Dispatch do
 
   def handle_event(:GUILD_MEMBER_ADD = event, p, state) do
     GuildCache.member_count_up(p.guild_id)
-    UserCache.create(p.user)
+    _new_user = UserCache.create(p.user)
     {event, {p.guild_id, MemberCache.create(p.guild_id, p)}, state}
   end
 
@@ -344,7 +344,7 @@ defmodule Nostrum.Shard.Dispatch do
     voice = Voice.get_voice(p.guild_id)
 
     if voice.persist_playback,
-      do: Voice.resume(p.guild_id)
+      do: _result = Voice.resume(p.guild_id)
 
     {event, VoiceReady.to_struct(p), state}
   end
@@ -385,7 +385,7 @@ defmodule Nostrum.Shard.Dispatch do
       end
     end
 
-    GuildCache.voice_state_update(p.guild_id, p)
+    {_updated, _states} = GuildCache.voice_state_update(p.guild_id, p)
     {event, VoiceState.to_struct(p), state}
   end
 

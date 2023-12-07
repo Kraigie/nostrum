@@ -118,15 +118,15 @@ defmodule Nostrum.Voice.Audio do
     wait = if(init?, do: Application.get_env(:nostrum, :audio_timeout, 20_000), else: 500)
     {:ok, watchdog} = :timer.apply_after(wait, __MODULE__, :on_stall, [voice, self()])
 
-    {voice, done} =
+    {voice, done?} =
       voice
       |> get_source()
       |> Enum.take(frames_per_burst())
       |> send_frames(voice)
 
-    :timer.cancel(watchdog)
+    {:ok, :cancel} = :timer.cancel(watchdog)
 
-    if done,
+    if done?,
       do: on_complete(voice, init?),
       else: voice
   end
@@ -136,12 +136,13 @@ defmodule Nostrum.Voice.Audio do
   def send_frames(frames, %VoiceState{} = voice) do
     voice =
       Enum.reduce(frames, voice, fn f, v ->
-        :gen_udp.send(
-          v.udp_socket,
-          v.ip |> ip_to_tuple(),
-          v.port,
-          encrypt_packet(v, f)
-        )
+        :ok =
+          :gen_udp.send(
+            v.udp_socket,
+            v.ip |> ip_to_tuple(),
+            v.port,
+            encrypt_packet(v, f)
+          )
 
         %{
           v

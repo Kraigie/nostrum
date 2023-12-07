@@ -553,7 +553,7 @@ defmodule Nostrum.Voice do
     voice = get_voice(guild_id)
 
     if VoiceState.ready_for_rtp?(voice) do
-      Audio.send_frames(frames, voice)
+      {_voice, _done?} = Audio.send_frames(frames, voice)
       :ok
     else
       {:error, "Must be connected to voice channel to send frames."}
@@ -573,7 +573,7 @@ defmodule Nostrum.Voice do
 
     cond do
       VoiceState.ready_for_ws?(voice) ->
-        VoiceSupervisor.create_session(voice)
+        {:ok, _pid} = VoiceSupervisor.create_session(voice)
         :ok
 
       is_nil(voice) ->

@@ -169,7 +169,7 @@ defmodule Nostrum.Mixfile do
       plt_add_deps: :transitive,
       plt_add_apps: [:mix, :mnesia],
       # "-Wmissing_return"]
-      flags: ["-Wextra_return", "-Werror_handling"]
+      flags: ["-Wextra_return", "-Werror_handling", "-Wunmatched_returns"]
     ]
   end
 end
