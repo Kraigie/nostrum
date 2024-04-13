@@ -14,10 +14,10 @@ defmodule Nostrum.Struct.Message do
     Application,
     Attachment,
     Component,
+    Poll,
     Reaction,
     Reference,
-    Sticker,
-    Poll
+    Sticker
   }
 
   alias Nostrum.{Snowflake, Util}

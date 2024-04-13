@@ -5,7 +5,7 @@ defmodule Nostrum.Struct.Message.Poll do
 
   alias Nostrum.Util
 
-  alias Nostrum.Struct.Message.Poll.{MediaObject, Answer, Results}
+  alias Nostrum.Struct.Message.Poll.{Answer, MediaObject, Results}
 
   @derive Jason.Encoder
   defstruct [
