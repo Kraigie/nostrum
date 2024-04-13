@@ -89,6 +89,11 @@ defmodule Nostrum.Struct.Message.Poll do
     }
   end
 
+  @spec create_poll(String.t(),
+          duration: duration,
+          allow_multiselect: allow_multiselect,
+          answers: [Answer.t()]
+        ) :: t()
   def create_poll(question_text,
         duration: duration,
         allow_multiselect: allow_multiselect,
