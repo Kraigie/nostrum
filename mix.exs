@@ -157,7 +157,7 @@ defmodule Nostrum.Mixfile do
       {:mime, "~> 1.6 or ~> 2.0"},
       {:castle, "~> 0.3.0", runtime: false},
       {:ex_doc, "~> 0.28", only: :dev, runtime: false},
-      {:credo, "~> 1.4", only: [:dev, :test], runtime: false},
+      {:credo, "~> 1.7.5", only: [:dev, :test], runtime: false},
       {:dialyxir, "~> 1.1", only: [:dev], runtime: false},
       {:benchee, "~> 1.1", only: :dev, runtime: false},
       {:recon, "~> 2.3", only: :dev, optional: true}
