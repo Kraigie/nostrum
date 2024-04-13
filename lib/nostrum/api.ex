@@ -219,8 +219,9 @@ defmodule Nostrum.Api do
     * `:embeds` (`t:Nostrum.Struct.Embed.t/0`) - a list of embedded rich content
     * `:allowed_mentions` (`t:allowed_mentions/0`) - see the allowed mentions type documentation
     * `:message_reference` (`map`) - See "Message references" below
+    * `:poll` (`t:Nostrum.Struct.Message.Poll.t/0`) - A poll object to send with the message
 
-    At least one of the following is required: `:content`, `:file`, `:embeds`.
+    At least one of the following is required: `:content`, `:file`, `:embeds`, `:poll`.
 
   ### Message reference
 
