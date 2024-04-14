@@ -83,6 +83,7 @@ defmodule Nostrum.Consumer do
     MessageReactionRemove,
     MessageReactionRemoveAll,
     MessageReactionRemoveEmoji,
+    PollVoteChange,
     Ready,
     SpeakingUpdate,
     ThreadListSync,
@@ -325,6 +326,17 @@ defmodule Nostrum.Consumer do
   Dispatched when member(s) are added or removed from a thread
   """
   @type thread_members_update :: {:THREAD_MEMBERS_UPDATE, ThreadMembersUpdate.t(), WSState.t()}
+
+  @typedoc """
+  Dispatched when a user adds a vote to a poll.
+  """
+  @type message_poll_vote_add :: {:MESSAGE_POLL_VOTE_ADD, PollVoteChange.t(), WSState.t()}
+
+  @typedoc """
+  Dispatched when a user removes a vote from a poll.
+  """
+  @type message_poll_vote_remove :: {:MESSAGE_POLL_VOTE_REMVE, PollVoteChange.t(), WSState.t()}
+
   @type event ::
           auto_moderation_rule_create
           | auto_moderation_rule_delete
@@ -364,6 +376,8 @@ defmodule Nostrum.Consumer do
           | message_reaction_remove
           | message_reaction_remove_all
           | message_ack
+          | message_poll_vote_add
+          | message_poll_vote_remove
           | presence_update
           | ready
           | resumed

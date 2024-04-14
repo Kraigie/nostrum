@@ -26,6 +26,16 @@ defmodule Nostrum.Struct.Event.PollVoteChange do
   @typedoc "Whether the vote was an add or removal for the option"
   @type type :: :add | :remove
 
+  @typedoc "Event representing a add/removal of a vote from a poll"
+  @type t :: %__MODULE__{
+          user_id: user_id,
+          channel_id: channel_id,
+          message_id: message_id,
+          guild_id: guild_id,
+          answer_id: answer_id,
+          type: type
+        }
+
   @doc false
   def to_struct(map) do
     new =
