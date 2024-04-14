@@ -24,7 +24,7 @@ common use cases. If you need more involved queries, it is recommended to use
 nostrum's [qlc](https://www.erlang.org/doc/man/qlc.html) support.
 
 As an example, Nosedrum has a function to find a guild member by username and
-discriminator. This is internally with the following query:
+discriminator. This is internally implemented with the following query:
 
 ```erl
 find_by(RequestedGuildId, Name, Discriminator, MemberCache, UserCache) ->
