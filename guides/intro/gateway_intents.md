@@ -90,15 +90,31 @@ direct_message_reactions:
 direct_message_typing:
   - TYPING_START
 
-GUILD_SCHEDULED_EVENTS:
+message_content*:
+  - MESSAGE_CONTENT
+
+guild_scheduled_events:
   - GUILD_SCHEDULED_EVENT_CREATE
   - GUILD_SCHEDULED_EVENT_UPDATE
   - GUILD_SCHEDULED_EVENT_DELETE
   - GUILD_SCHEDULED_EVENT_USER_ADD
   - GUILD_SCHEDULED_EVENT_USER_REMOVE
 
-message_content*:
-  - MESSAGE_CONTENT
+auto_moderation_configuration:
+  - AUTO_MODERATION_RULE_CREATE
+  - AUTO_MODERATION_RULE_DELETE
+  - AUTO_MODERATION_RULE_UPDATE
+
+auto_moderation_execution:
+  - AUTO_MODERATION_RULE_EXECUTION
+
+guild_message_polls:
+  - MESSAGE_POLL_VOTE_ADD
+  - MESSAGE_POLL_VOTE_REMOVE
+
+direct_message_polls:
+  - MESSAGE_POLL_VOTE_ADD
+  - MESSAGE_POLL_VOTE_REMOVE
 ```
 
 Besides an explicit list of atoms, acceptable configuration values are `:all` and `:nonprivileged`.

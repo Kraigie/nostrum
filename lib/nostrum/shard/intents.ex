@@ -32,7 +32,9 @@ defmodule Nostrum.Shard.Intents do
       message_content: 1 <<< 15,
       guild_scheduled_events: 1 <<< 16,
       auto_moderation_configuration: 1 <<< 20,
-      auto_moderation_execution: 1 <<< 21
+      auto_moderation_execution: 1 <<< 21,
+      guild_message_polls: 1 <<< 24,
+      direct_message_polls: 1 <<< 25
     ]
   end
 
