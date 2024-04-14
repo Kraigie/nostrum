@@ -650,6 +650,24 @@ defmodule Nostrum.Api do
   end
 
   @doc ~S"""
+  Expire (close voting on) a poll before the scheduled end time. Returns a message object.
+  """
+  @spec expire_poll(Channel.id(), Message.id()) :: error | {:ok, Message.t()}
+  def expire_poll(channel_id, message_id) do
+    request(:post, Constants.poll_expire(channel_id, message_id))
+    |> handle_request_with_decode({:struct, Message})
+  end
+
+  @doc ~S"""
+  Same as `expire_poll/2`, but raises `Nostrum.Error.ApiError` in case of failure.
+  """
+  @spec expire_poll!(Channel.id(), Message.id()) :: Message.t()
+  def expire_poll!(channel_id, message_id) do
+    expire_poll(channel_id, message_id)
+    |> bangify
+  end
+
+  @doc ~S"""
   Gets a channel.
 
   If successful, returns `{:ok, channel}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
