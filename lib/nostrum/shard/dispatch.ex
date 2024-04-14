@@ -32,6 +32,7 @@ defmodule Nostrum.Shard.Dispatch do
     MessageReactionRemove,
     MessageReactionRemoveAll,
     MessageReactionRemoveEmoji,
+    PollVoteChange,
     Ready,
     SpeakingUpdate,
     ThreadListSync,
@@ -402,6 +403,14 @@ defmodule Nostrum.Shard.Dispatch do
 
   def handle_event(:INTERACTION_CREATE = event, p, state) do
     {event, Interaction.to_struct(p), state}
+  end
+
+  def handle_event(:MESSAGE_POLL_VOTE_ADD = event, p, state) do
+    {event, PollVoteChange.to_struct(Map.merge(p, %{type: :add})), state}
+  end
+
+  def handle_event(:MESSAGE_POLL_VOTE_REMOVE = event, p, state) do
+    {event, PollVoteChange.to_struct(Map.merge(p, %{type: :remove})), state}
   end
 
   def handle_event(event, p, state) do
