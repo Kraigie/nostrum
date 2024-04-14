@@ -174,6 +174,9 @@ defmodule Nostrum.Constants do
   def guild_auto_moderation_rule(guild_id, rule_id),
     do: "/guilds/#{guild_id}/auto-moderation/rules/#{rule_id}"
 
+  def poll_answer_voters(channel_id, message_id, answer_id),
+    do: "/channels/#{channel_id}/polls/#{message_id}/answers/#{answer_id}"
+
   def discord_epoch, do: 1_420_070_400_000
 
   def opcodes do
