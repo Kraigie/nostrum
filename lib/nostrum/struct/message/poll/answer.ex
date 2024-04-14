@@ -19,7 +19,7 @@ defmodule Nostrum.Struct.Message.Poll.Answer do
   @type answer_id :: integer | nil
 
   @typedoc """
-
+  Object representing how the answer is displayed visually, with the text and optional emojis.
   """
   @type poll_media :: MediaObject.t()
 
