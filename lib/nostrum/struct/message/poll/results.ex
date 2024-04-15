@@ -11,13 +11,18 @@ defmodule Nostrum.Struct.Message.Poll.Results do
   ]
 
   @typedoc """
-  A flag on whether the poll has finished counting. If this is set to true, the counts are guaranteed to be accurate from Discord.
+  A flag on whether the poll has finished counting.
+  
+  If this is set to true, the counts are guaranteed to be accurate from Discord.
   """
   @type is_finalized :: boolean
 
   @typedoc """
-  A list of objects representing the counts for each of the potential answers in the poll, with the `id` property corresponding to the `answer_id`
-  of the poll answers. If an option is not present in this list then there were no votes for that answer.
+  A list of objects representing the counts for each of the potential answers in the poll.
+  
+  The `id` property of each item corresponds to the `answer_id`
+  of the poll answers. If an option is not present in this list, then
+  there were no votes for that answer.
   """
   @type answer_counts :: [%{id: integer, count: integer, me_voted: boolean}]
 
