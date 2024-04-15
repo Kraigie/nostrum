@@ -625,7 +625,8 @@ defmodule Nostrum.Api do
   If successful, returns `{:ok, users}`. Otherwise, returns `t:Nostrum.Api.error/0`.
 
   The optional `params` are `after`, the user ID to query after, absent by default,
-  and `limit`, the max number of users to return, 1-100, 25 by default.
+  and `limit`, the max number of users to return, 1-100, 25 by default. Results are
+  sorted by Discord user snowflake (ID).
   """
   @spec get_poll_answer_voters(Channel.id(), Message.id(), Poll.Answer.answer_id()) ::
           error | {:ok, [User.t()]}
