@@ -6,7 +6,7 @@ defmodule Nostrum.Struct.Event.PollVoteChange do
   """
   alias Nostrum.Util
 
-  alias Nostrum.Struct.{User, Channel, Message, Guild}
+  alias Nostrum.Struct.{Channel, Guild, Message, User}
 
   defstruct [:user_id, :channel_id, :message_id, :guild_id, :answer_id, :type]
 
