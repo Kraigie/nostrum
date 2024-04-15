@@ -6,19 +6,21 @@ defmodule Nostrum.Struct.Event.PollVoteChange do
   """
   alias Nostrum.Util
 
+  alias Nostrum.Struct.{User, Channel, Message, Guild}
+
   defstruct [:user_id, :channel_id, :message_id, :guild_id, :answer_id, :type]
 
   @typedoc "ID of the user that has voted"
-  @type user_id :: integer
+  @type user_id :: User.id()
 
   @typedoc "ID of the channel the vote took place in"
-  @type channel_id :: integer
+  @type channel_id :: Channel.id()
 
   @typedoc "ID of the message the poll was attached to"
-  @type message_id :: integer
+  @type message_id :: Message.id()
 
   @typedoc "ID of the guild the poll is in (unless it is a private channel)"
-  @type guild_id :: integer
+  @type guild_id :: Guild.id()
 
   @typedoc "ID of the answer index on the poll object that was voted for"
   @type answer_id :: integer
