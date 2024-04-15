@@ -81,7 +81,7 @@ defmodule Nostrum.Struct.Message.Poll do
 
   @doc ~S"""
   Create a new poll struct.
-  
+
   Use `Nostrum.Api.create_message` to send it once you've populated it.
 
   Accepts a `question_text` parameter which is the string to use as the poll title.
@@ -136,7 +136,7 @@ defmodule Nostrum.Struct.Message.Poll do
 
   @doc ~S"""
   Add an answer to the provided poll.
-  
+
   See `create_poll/2` for a code sample of this function.
 
   Takes a required "answer" text field, as well as either of the optional arguments:
