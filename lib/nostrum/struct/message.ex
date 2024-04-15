@@ -113,10 +113,10 @@ defmodule Nostrum.Struct.Message do
   @typedoc """
   Message interaction object
   """
-  @type interaction :: Interaction.t()
+  @type interaction :: Interaction.t() | nil
 
   @typedoc "The poll object attached to the message"
-  @type poll :: Poll.t()
+  @type poll :: Poll.t() | nil
 
   @typedoc "List of embedded content in the message"
   @type embeds :: [Embed.t()]
