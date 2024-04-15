@@ -1,6 +1,6 @@
 defmodule Nostrum.Struct.Message.Poll do
   @moduledoc """
-  Struct representing a poll object in a Discord chat.
+  Struct representing a poll in a Discord chat.
 
   There are various helper methods on this structure to create new poll, see `create_poll/2` and `put_answer/2` & `put_answer/3` for code samples.
   """
@@ -42,12 +42,12 @@ defmodule Nostrum.Struct.Message.Poll do
   @type duration :: integer | nil
 
   @typedoc """
-  Whether the poll allows selection of multiple ansewrs
+  Whether the poll allows selection of multiple answers
   """
   @type allow_multiselect :: boolean
 
   @typedoc """
-  Layout type for the poll, currently only 1 (DEFAULT) is supported here.
+  Layout type for the poll, currently only 1 (`DEFAULT`) is supported here.
   """
   @type layout_type :: 1 | nil
 
