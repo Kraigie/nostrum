@@ -644,9 +644,9 @@ defmodule Nostrum.Api do
   @doc ~S"""
   Same as `get_poll_answer_voters/4`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
-  @spec get_answer_voters!(Channel.id(), Message.id(), Poll.Answer.answer_id()) :: [User.t()]
+  @spec get_poll_answer_voters!(Channel.id(), Message.id(), Poll.Answer.answer_id()) :: [User.t()]
   def get_poll_answer_voters!(channel_id, message_id, answer_id, params \\ []) do
-    get_answer_voters(channel_id, message_id, answer_id, params)
+    get_poll_answer_voters(channel_id, message_id, answer_id, params)
     |> bangify
   end
 
