@@ -22,7 +22,7 @@ defmodule Nostrum.Struct.Event.PollVoteChange do
   @typedoc "ID of the guild the poll is in (unless it is a private channel)"
   @type guild_id :: Guild.id()
 
-  @typedoc "ID of the answer index on the poll object that was voted for"
+  @typedoc "ID corresponding to the answer_id in the `t:Nostrum.Struct.Message.Poll.answers/0` list"
   @type answer_id :: integer
 
   @typedoc "Whether the vote was an addition or removal for a vote of the option"
