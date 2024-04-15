@@ -1,6 +1,6 @@
 defmodule Nostrum.Struct.Event.PollVoteChange do
   @moduledoc """
-  Represents an add/removal of a vote from a Discord poll.
+  Represents an addition or removal of a vote from a Discord poll.
 
   For polls where multiple answers were selected, one of these events will be fired for each vote.
   """
@@ -23,10 +23,10 @@ defmodule Nostrum.Struct.Event.PollVoteChange do
   @typedoc "ID of the answer index on the poll object that was voted for"
   @type answer_id :: integer
 
-  @typedoc "Whether the vote was an add or removal for the option"
+  @typedoc "Whether the vote was an addition or removal for a vote of the option"
   @type type :: :add | :remove
 
-  @typedoc "Event representing a add/removal of a vote from a poll"
+  @typedoc "Event representing a addition or removal of a vote from a poll"
   @type t :: %__MODULE__{
           user_id: user_id,
           channel_id: channel_id,
