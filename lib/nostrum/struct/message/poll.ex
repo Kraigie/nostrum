@@ -52,7 +52,12 @@ defmodule Nostrum.Struct.Message.Poll do
   @type layout_type :: 1 | nil
 
   @typedoc """
-  Results of the poll, assuming the poll is from Discord. Empty for a newly created Poll structure.
+  Result counts of a poll that has been voted on.
+
+  This field is only present for poll objects received over the gateway or Discord API.
+
+  As mentioned in the `Nostrum.Struct.Message.Poll.Results` documentation, if an answer has not been voted on it
+  will not be in this object.
   """
   @type results :: Results.t() | nil
 
