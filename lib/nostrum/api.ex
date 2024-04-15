@@ -627,9 +627,9 @@ defmodule Nostrum.Api do
   The optional `params` are `after`, the user ID to query after, absent by default,
   and `limit`, the max number of users to return, 1-100, 25 by default.
   """
-  @spec get_answer_voters(Channel.id(), Message.id(), Poll.Answer.answer_id()) ::
+  @spec get_poll_answer_voters(Channel.id(), Message.id(), Poll.Answer.answer_id()) ::
           error | {:ok, [User.t()]}
-  def get_answer_voters(channel_id, message_id, answer_id, params \\ []) do
+  def get_poll_answer_voters(channel_id, message_id, answer_id, params \\ []) do
     result =
       request(:get, Constants.poll_answer_voters(channel_id, message_id, answer_id), "", params)
       |> handle_request_with_decode()
@@ -650,7 +650,9 @@ defmodule Nostrum.Api do
   end
 
   @doc ~S"""
-  Expire (close voting on) a poll before the scheduled end time. Returns a message object.
+  Expire (close voting on) a poll before the scheduled end time.
+  
+  Returns the original message containing the poll.
   """
   @spec expire_poll(Channel.id(), Message.id()) :: error | {:ok, Message.t()}
   def expire_poll(channel_id, message_id) do
