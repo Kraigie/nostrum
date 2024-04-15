@@ -112,5 +112,19 @@ If you need help, visit `#elixir_nostrum` on the unofficial Discord API guild!
 
 [![Discord API](https://discord.com/api/guilds/81384788765712384/embed.png?style=banner3)](https://discord.gg/2Bgn8nW)
 
+## Testimonials
+
+> my first choice is always nostrum
+> 
+> **- big nutty, javascript developer**
+
+> i would feed my baby the latest nostrum release
+>
+> **- also big nutty**
+
+> i've used nostrum for 6 years and i have never been let down. [...]
+>
+> **- Broman, Discord API Expert**
+
 ## License
 [MIT](https://opensource.org/licenses/MIT)
