@@ -80,13 +80,15 @@ defmodule Nostrum.Struct.Message.Poll do
   end
 
   @doc ~S"""
-  Helper method to create a new poll.
+  Create a new poll struct.
+  
+  Use `Nostrum.Api.create_message` to send it once you've populated it.
 
   Accepts a `question_text` parameter which is the string to use as the poll title.
 
   Keyword arguments:
-  - duration: duration (in hours) the poll should be open for
-  - allow_multiselect: whether users should be able to select multiple answers
+  - `duration`: duration (in hours) the poll should be open for
+  - `allow_multiselect`: whether users should be able to select multiple answers
 
   You can also pass an `answers` key with answers, though `put_answer/2` and `put_answer/3` are advised.
 
@@ -133,7 +135,9 @@ defmodule Nostrum.Struct.Message.Poll do
   end
 
   @doc ~S"""
-  Add an answer to the provided poll, see `create_poll/2` for a code sample of this function.
+  Add an answer to the provided poll.
+  
+  See `create_poll/2` for a code sample of this function.
 
   Takes a required "answer" text field, as well as either of the optional arguments:
   - `custom_emoji`: An integer representing the snowflake of an emoji to display with the option
