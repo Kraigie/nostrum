@@ -38,9 +38,7 @@ defmodule Nostrum.Struct.Event.PollVoteChange do
 
   @doc false
   def to_struct(map) do
-    new =
-      map
-      |> Map.new(fn {k, v} -> {Util.maybe_to_atom(k), v} end)
+    new = Map.new(map, fn {k, v} -> {Util.maybe_to_atom(k), v} end)
 
     struct(__MODULE__, new)
   end
