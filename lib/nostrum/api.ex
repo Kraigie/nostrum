@@ -641,17 +641,17 @@ defmodule Nostrum.Api do
   end
 
   @doc ~S"""
-  Same as `get_answer_voters/4`, but raises `Nostrum.Error.ApiError` in case of failure.
+  Same as `get_poll_answer_voters/4`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
   @spec get_answer_voters!(Channel.id(), Message.id(), Poll.Answer.answer_id()) :: [User.t()]
-  def get_answer_voters!(channel_id, message_id, answer_id, params \\ []) do
+  def get_poll_answer_voters!(channel_id, message_id, answer_id, params \\ []) do
     get_answer_voters(channel_id, message_id, answer_id, params)
     |> bangify
   end
 
   @doc ~S"""
   Expire (close voting on) a poll before the scheduled end time.
-  
+
   Returns the original message containing the poll.
   """
   @spec expire_poll(Channel.id(), Message.id()) :: error | {:ok, Message.t()}
