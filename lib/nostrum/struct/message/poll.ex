@@ -48,6 +48,8 @@ defmodule Nostrum.Struct.Message.Poll do
 
   @typedoc """
   Layout type for the poll, currently only 1 (`DEFAULT`) is supported here.
+
+  If set to `nil`, the value will default to `1` at the Discord API.
   """
   @type layout_type :: 1 | nil
 
