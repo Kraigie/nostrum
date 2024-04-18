@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.29.4">
+    <meta name="project" content="Nostrum v0.9.0-alpha3">
+
+    <title>Nostrum.Struct.Message.Poll — Nostrum v0.9.0-alpha3</title>
+    <link rel="stylesheet" href="dist/html-elixir-HHVY3JYD.css" />
+
+
+    <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
+    <script src="dist/handlebars.templates-XWGFFSCD.js"></script>
+    <script src="dist/sidebar_items-20EA4034.js"></script>
+
+      <script src="docs_config.js"></script>
+
+    <script async src="dist/html-JDI3AVDD.js"></script>
+
+
+  </head>
+  <body data-type="modules" class="page-module">
+    <script>
+
+      try {
+        var settings = JSON.parse(localStorage.getItem('ex_doc:settings') || '{}');
+
+        if (settings.theme === 'dark' ||
+           ((settings.theme === 'system' || settings.theme == null) &&
+             window.matchMedia('(prefers-color-scheme: dark)').matches)
+           ) {
+          document.body.classList.add('dark')
+        }
+      } catch (error) { }
+    </script>
+
+<div class="main">
+
+<button class="sidebar-button sidebar-toggle" aria-label="toggle sidebar">
+  <i class="ri-menu-line ri-lg" title="Collapse/expand sidebar"></i>
+</button>
+
+<section class="sidebar">
+  <form class="sidebar-search" action="search.html">
+    <button type="submit" class="search-button" aria-label="Submit Search">
+      <i class="ri-search-2-line" aria-hidden="true" title="Submit search"></i>
+    </button>
+    <button type="button" tabindex="-1" class="search-close-button" aria-label="Cancel Search">
+      <i class="ri-close-line ri-lg" aria-hidden="true" title="Cancel search"></i>
+    </button>
+    <label class="search-label">
+      <p class="sr-only">Search</p>
+      <input name="q" type="text" class="search-input" placeholder="Search..." aria-label="Input your search terms" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+    </label>
+  </form>
+
+  <div class="autocomplete">
+    <div class="autocomplete-results">
+    </div>
+  </div>
+
+  <div class="sidebar-header">
+
+    <div class="sidebar-projectDetails">
+      <a href="https://github.com/Kraigie/nostrum" class="sidebar-projectName" translate="no">
+Nostrum
+      </a>
+      <div class="sidebar-projectVersion" translate="no">
+        v0.9.0-alpha3
+      </div>
+    </div>
+    <ul class="sidebar-listNav">
+      <li><a id="extras-list-link" href="#full-list">Pages</a></li>
+
+        <li><a id="modules-list-link" href="#full-list">Modules</a></li>
+
+
+        <li><a id="tasks-list-link" href="#full-list"><span translate="no">Mix</span> Tasks</a></li>
+
+    </ul>
+  </div>
+
+  <div class="gradient"></div>
+  <ul id="full-list"></ul>
+</section>
+
+<section class="content">
+  <output role="status" id="toast"></output>
+  <div class="content-outer">
+    <div id="content" class="content-inner">
+
+<h1>
+<button class="icon-action display-settings">
+  <i class="ri-settings-3-line"></i>
+  <span class="sr-only">Settings</span>
+</button>
+
+
+    <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/message/poll.ex#L1" title="View Source" class="icon-action" rel="help">
+      <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+      <span class="sr-only">View Source</span>
+    </a>
+
+  <span translate="no">Nostrum.Struct.Message.Poll</span> 
+  <small class="app-vsn" translate="no">(Nostrum v0.9.0-alpha3)</small>
+
+</h1>
+
+
+  <section id="moduledoc">
+<p>Struct representing a poll in a Discord chat.</p><p>There are various helper methods on this structure to create new poll, see <a href="#create_poll/2"><code class="inline">create_poll/2</code></a> and <a href="#put_answer/2"><code class="inline">put_answer/2</code></a> &amp; <a href="#put_answer/3"><code class="inline">put_answer/3</code></a> for code samples.</p>
+  </section>
+
+
+  <section id="summary" class="details-list">
+    <h1 class="section-heading">
+      <a class="hover-link" href="#summary">
+        <i class="ri-link-m" aria-hidden="true"></i>
+        <span class="sr-only">Link to this section</span>
+      </a>
+      Summary
+    </h1>
+<div class="summary-types summary">
+  <h2>
+    <a href="#types">Types</a>
+  </h2>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:allow_multiselect/0" translate="no">allow_multiselect()</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Whether the poll allows selection of multiple answers</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:answers/0" translate="no">answers()</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>List of potential answers for the poll</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:duration/0" translate="no">duration()</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Duration of poll in hours</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:expiry/0" translate="no">expiry()</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Expiry time of the poll</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:layout_type/0" translate="no">layout_type()</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Layout type for the poll, currently only 1 (<code class="inline">DEFAULT</code>) is supported here.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:question/0" translate="no">question()</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Question for the poll</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:results/0" translate="no">results()</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Result counts of a poll that has been voted on.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:t/0" translate="no">t()</a>
+
+      </div>
+
+    </div>
+
+</div>
+<div class="summary-functions summary">
+  <h2>
+    <a href="#functions">Functions</a>
+  </h2>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#create_poll/2" translate="no">create_poll(question_text, list)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Create a new poll struct.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#put_answer/2" translate="no">put_answer(poll, answer)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Add an answer to the provided poll.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#put_answer/3" translate="no">put_answer(poll, answer, list)</a>
+
+      </div>
+
+    </div>
+
+</div>
+
+  </section>
+
+
+  <section id="types" class="details-list">
+    <h1 class="section-heading">
+      <a class="hover-link" href="#types">
+        <i class="ri-link-m" aria-hidden="true"></i>
+        <span class="sr-only">Link to this section</span>
+      </a>
+Types
+    </h1>
+    <div class="types-list">
+<section class="detail" id="t:allow_multiselect/0">
+
+  <div class="detail-header">
+    <a href="#t:allow_multiselect/0" class="detail-link" title="Link to this type">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature" translate="no">allow_multiselect()</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/message/poll.ex#L47" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@type</span> allow_multiselect() :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">boolean</a>()</pre>
+
+      </div>
+
+<p>Whether the poll allows selection of multiple answers</p>
+  </section>
+</section>
+<section class="detail" id="t:answers/0">
+
+  <div class="detail-header">
+    <a href="#t:answers/0" class="detail-link" title="Link to this type">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature" translate="no">answers()</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/message/poll.ex#L32" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@type</span> answers() :: [<a href="Nostrum.Struct.Message.Poll.Answer.html#t:t/0">Nostrum.Struct.Message.Poll.Answer.t</a>()]</pre>
+
+      </div>
+
+<p>List of potential answers for the poll</p>
+  </section>
+</section>
+<section class="detail" id="t:duration/0">
+
+  <div class="detail-header">
+    <a href="#t:duration/0" class="detail-link" title="Link to this type">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature" translate="no">duration()</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/message/poll.ex#L42" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@type</span> duration() :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>() | nil</pre>
+
+      </div>
+
+<p>Duration of poll in hours</p>
+  </section>
+</section>
+<section class="detail" id="t:expiry/0">
+
+  <div class="detail-header">
+    <a href="#t:expiry/0" class="detail-link" title="Link to this type">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature" translate="no">expiry()</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/message/poll.ex#L37" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@type</span> expiry() :: <a href="https://hexdocs.pm/elixir/DateTime.html#t:t/0">DateTime.t</a>() | nil</pre>
+
+      </div>
+
+<p>Expiry time of the poll</p>
+  </section>
+</section>
+<section class="detail" id="t:layout_type/0">
+
+  <div class="detail-header">
+    <a href="#t:layout_type/0" class="detail-link" title="Link to this type">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature" translate="no">layout_type()</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/message/poll.ex#L54" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@type</span> layout_type() :: 1 | nil</pre>
+
+      </div>
+
+<p>Layout type for the poll, currently only 1 (<code class="inline">DEFAULT</code>) is supported here.</p><p>If set to <code class="inline">nil</code>, the value will default to <code class="inline">1</code> at the Discord API.</p>
+  </section>
+</section>
+<section class="detail" id="t:question/0">
+
+  <div class="detail-header">
+    <a href="#t:question/0" class="detail-link" title="Link to this type">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature" translate="no">question()</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/message/poll.ex#L27" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@type</span> question() :: <a href="Nostrum.Struct.Message.Poll.MediaObject.html#t:t/0">Nostrum.Struct.Message.Poll.MediaObject.t</a>()</pre>
+
+      </div>
+
+<p>Question for the poll</p>
+  </section>
+</section>
+<section class="detail" id="t:results/0">
+
+  <div class="detail-header">
+    <a href="#t:results/0" class="detail-link" title="Link to this type">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature" translate="no">results()</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/message/poll.ex#L64" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@type</span> results() :: <a href="Nostrum.Struct.Message.Poll.Results.html#t:t/0">Nostrum.Struct.Message.Poll.Results.t</a>() | nil</pre>
+
+      </div>
+
+<p>Result counts of a poll that has been voted on.</p><p>This field is only present for poll objects received over the gateway or Discord API.</p><p>As mentioned in the <a href="Nostrum.Struct.Message.Poll.Results.html"><code class="inline">Nostrum.Struct.Message.Poll.Results</code></a> documentation, if an answer has not been voted on it
+will not be in this object.</p>
+  </section>
+</section>
+<section class="detail" id="t:t/0">
+
+  <div class="detail-header">
+    <a href="#t:t/0" class="detail-link" title="Link to this type">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature" translate="no">t()</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/message/poll.ex#L66" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@type</span> t() :: %Nostrum.Struct.Message.Poll{
+  allow_multiselect: <a href="#t:allow_multiselect/0">allow_multiselect</a>(),
+  answers: <a href="#t:answers/0">answers</a>(),
+  duration: <a href="#t:duration/0">duration</a>(),
+  expiry: <a href="#t:expiry/0">expiry</a>(),
+  layout_type: <a href="#t:layout_type/0">layout_type</a>(),
+  question: <a href="#t:question/0">question</a>(),
+  results: <a href="#t:results/0">results</a>()
+}</pre>
+
+      </div>
+
+
+  </section>
+</section>
+
+    </div>
+  </section>
+
+  <section id="functions" class="details-list">
+    <h1 class="section-heading">
+      <a class="hover-link" href="#functions">
+        <i class="ri-link-m" aria-hidden="true"></i>
+        <span class="sr-only">Link to this section</span>
+      </a>
+Functions
+    </h1>
+    <div class="functions-list">
+<section class="detail" id="create_poll/2">
+
+  <div class="detail-header">
+    <a href="#create_poll/2" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">create_poll(question_text, list)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/message/poll.ex#L113" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> create_poll(<a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>(),
+  duration: <a href="#t:duration/0">duration</a>(),
+  allow_multiselect: <a href="#t:allow_multiselect/0">allow_multiselect</a>()
+) :: <a href="#t:t/0">t</a>()</pre>
+
+          <pre translate="no"><span class="attribute">@spec</span> create_poll(<a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>(),
+  duration: <a href="#t:duration/0">duration</a>(),
+  allow_multiselect: <a href="#t:allow_multiselect/0">allow_multiselect</a>(),
+  answers: [<a href="Nostrum.Struct.Message.Poll.Answer.html#t:t/0">Nostrum.Struct.Message.Poll.Answer.t</a>()]
+) :: <a href="#t:t/0">t</a>()</pre>
+
+      </div>
+
+<p>Create a new poll struct.</p><p>Use <code class="inline">Nostrum.Api.create_message</code> to send it once you've populated it.</p><p>Accepts a <code class="inline">question_text</code> parameter which is the string to use as the poll title.</p><p>Keyword arguments:</p><ul><li><code class="inline">duration</code>: duration (in hours) the poll should be open for</li><li><code class="inline">allow_multiselect</code>: whether users should be able to select multiple answers</li></ul><p>You can also pass an <code class="inline">answers</code> key with answers, though <a href="#put_answer/2"><code class="inline">put_answer/2</code></a> and <a href="#put_answer/3"><code class="inline">put_answer/3</code></a> are advised.</p><h2 id="create_poll/2-examples" class="section-heading">
+  <a href="#create_poll/2-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
+  <p class="sr-only">examples</p>
+  </a>
+  Examples
+</h2>
+<pre><code class="makeup elixir" translate="no"><span class="n">poll</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Poll</span><span class="o">.</span><span class="n">create_poll</span><span class="p" data-group-id="1191255961-1">(</span><span class="s">&quot;Do you enjoy pineapple on pizza?&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">duration</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w"> </span><span class="ss">allow_multiselect</span><span class="p">:</span><span class="w"> </span><span class="no">false</span><span class="p" data-group-id="1191255961-1">)</span><span class="w">
+        </span><span class="o">|&gt;</span><span class="w"> </span><span class="nc">Poll</span><span class="o">.</span><span class="n">put_answer</span><span class="p" data-group-id="1191255961-2">(</span><span class="s">&quot;Yes!&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">default_emoji</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\u2705</span><span class="s">&quot;</span><span class="p" data-group-id="1191255961-2">)</span><span class="w"> </span><span class="c1"># check mark emoji</span><span class="w">
+        </span><span class="o">|&gt;</span><span class="w"> </span><span class="nc">Poll</span><span class="o">.</span><span class="n">put_answer</span><span class="p" data-group-id="1191255961-3">(</span><span class="s">&quot;No!&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">default_emoji</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\u274C</span><span class="s">&quot;</span><span class="p" data-group-id="1191255961-3">)</span><span class="w"> </span><span class="c1"># cross emoji</span><span class="w">
+
+</span><span class="nc">Api</span><span class="o">.</span><span class="n">create_message</span><span class="p" data-group-id="1191255961-4">(</span><span class="n">channel_id</span><span class="p">,</span><span class="w"> </span><span class="ss">poll</span><span class="p">:</span><span class="w"> </span><span class="n">poll</span><span class="p" data-group-id="1191255961-4">)</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="put_answer/2">
+
+  <div class="detail-header">
+    <a href="#put_answer/2" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">put_answer(poll, answer)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/message/poll.ex#L154" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> put_answer(<a href="#t:t/0">t</a>(), <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()) :: <a href="#t:t/0">t</a>()</pre>
+
+      </div>
+
+<p>Add an answer to the provided poll.</p><p>See <a href="#create_poll/2"><code class="inline">create_poll/2</code></a> for a code sample of this function.</p><p>Takes a required &quot;answer&quot; text field, as well as either of the optional arguments:</p><ul><li><code class="inline">custom_emoji</code>: An integer representing the snowflake of an emoji to display with the option</li><li><code class="inline">default_emoji</code>: A default platform emoji represented as a unicode character</li></ul>
+  </section>
+</section>
+<section class="detail" id="put_answer/3">
+
+  <div class="detail-header">
+    <a href="#put_answer/3" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">put_answer(poll, answer, list)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/message/poll.ex#L165" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> put_answer(<a href="#t:t/0">t</a>(), <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>(), [{:custom_emoji, <a href="Nostrum.Snowflake.html#t:t/0">Nostrum.Snowflake.t</a>()}]) :: <a href="#t:t/0">t</a>()</pre>
+
+          <pre translate="no"><span class="attribute">@spec</span> put_answer(<a href="#t:t/0">t</a>(), <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>(), [{:default_emoji, <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()}]) :: <a href="#t:t/0">t</a>()</pre>
+
+      </div>
+
+
+  </section>
+</section>
+
+    </div>
+  </section>
+
+      <footer class="footer">
+        <p>
+
+            <span class="line">
+              <a href="https://hex.pm/packages/nostrum/0.9.0-alpha3" class="footer-hex-package">Hex Package</a>
+
+              <a href="https://preview.hex.pm/preview/nostrum/0.9.0-alpha3">Hex Preview</a>
+
+                (<a href="https://preview.hex.pm/preview/nostrum/0.9.0-alpha3/show/lib/nostrum/struct/message/poll.ex">current file</a>)
+
+            </span>
+
+          <span class="line">
+            <button class="a-main footer-button display-quick-switch" title="Search HexDocs packages">
+              Search HexDocs
+            </button>
+
+              <a href="Nostrum.epub" title="ePub version">
+                Download ePub version
+              </a>
+
+          </span>
+        </p>
+
+        <p class="built-using">
+          Built using
+          <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.29.4) for the
+
+            <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
+
+        </p>
+      </footer>
+    </div>
+  </div>
+</section>
+</div>
+
+
+  </body>
+</html>
