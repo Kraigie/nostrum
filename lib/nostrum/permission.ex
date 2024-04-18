@@ -48,6 +48,7 @@ defmodule Nostrum.Permission do
           | :view_guild_insights
           | :use_application_commands
           | :moderate_members
+          | :send_polls
 
   @type text_permission ::
           :add_reactions
@@ -124,7 +125,8 @@ defmodule Nostrum.Permission do
     use_external_stickers: 1 <<< 37,
     send_messages_in_threads: 1 <<< 38,
     use_embedded_activities: 1 <<< 39,
-    moderate_members: 1 <<< 40
+    moderate_members: 1 <<< 40,
+    send_polls: 1 <<< 49
   }
 
   @bit_to_permission_map Map.new(@permission_to_bit_map, fn {k, v} -> {v, k} end)

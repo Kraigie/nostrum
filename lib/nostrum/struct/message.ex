@@ -14,6 +14,7 @@ defmodule Nostrum.Struct.Message do
     Application,
     Attachment,
     Component,
+    Poll,
     Reaction,
     Reference,
     Sticker
@@ -43,6 +44,7 @@ defmodule Nostrum.Struct.Message do
     :message_reference,
     :nonce,
     :pinned,
+    :poll,
     :reactions,
     :referenced_message,
     :sticker_items,
@@ -111,7 +113,10 @@ defmodule Nostrum.Struct.Message do
   @typedoc """
   Message interaction object
   """
-  @type interaction :: Interaction.t()
+  @type interaction :: Interaction.t() | nil
+
+  @typedoc "The poll object attached to the message"
+  @type poll :: Poll.t() | nil
 
   @typedoc "List of embedded content in the message"
   @type embeds :: [Embed.t()]
@@ -217,6 +222,7 @@ defmodule Nostrum.Struct.Message do
           message_reference: message_reference,
           nonce: nonce,
           pinned: pinned,
+          poll: poll,
           reactions: reactions,
           referenced_message: referenced_message,
           sticker_items: sticker_items,
@@ -250,6 +256,7 @@ defmodule Nostrum.Struct.Message do
       |> Map.update(:mentions, nil, &Util.cast(&1, {:list, {:struct, User}}))
       |> Map.update(:message_reference, nil, &Util.cast(&1, {:struct, Reference}))
       |> Map.update(:nonce, nil, &Util.cast(&1, Snowflake))
+      |> Map.update(:poll, nil, &Util.cast(&1, {:struct, Poll}))
       |> Map.update(:reactions, nil, &Util.cast(&1, {:list, {:struct, Reaction}}))
       |> Map.update(:referenced_message, nil, &Util.cast(&1, {:struct, __MODULE__}))
       |> Map.update(:sticker_items, nil, &Util.cast(&1, {:list, {:struct, Sticker}}))

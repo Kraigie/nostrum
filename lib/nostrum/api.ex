@@ -57,6 +57,7 @@ defmodule Nostrum.Api do
     Interaction,
     Invite,
     Message,
+    Message.Poll,
     ThreadMember,
     User,
     Webhook
@@ -219,8 +220,9 @@ defmodule Nostrum.Api do
     * `:embeds` (`t:Nostrum.Struct.Embed.t/0`) - a list of embedded rich content
     * `:allowed_mentions` (`t:allowed_mentions/0`) - see the allowed mentions type documentation
     * `:message_reference` (`map`) - See "Message references" below
+    * `:poll` (`t:Nostrum.Struct.Message.Poll.t/0`) - A poll object to send with the message
 
-    At least one of the following is required: `:content`, `:file`, `:embeds`.
+    At least one of the following is required: `:content`, `:file`, `:embeds`, `:poll`.
 
   ### Message reference
 
@@ -614,6 +616,57 @@ defmodule Nostrum.Api do
   @spec delete_all_reactions!(Channel.id(), Message.id()) :: no_return | {:ok}
   def delete_all_reactions!(channel_id, message_id) do
     delete_all_reactions(channel_id, message_id)
+    |> bangify
+  end
+
+  @doc ~S"""
+  Get voters for the provided answer on the poll attached to the provided message.
+
+  If successful, returns `{:ok, users}`. Otherwise, returns `t:Nostrum.Api.error/0`.
+
+  The optional `params` are `after`, the user ID to query after, absent by default,
+  and `limit`, the max number of users to return, 1-100, 25 by default. Results are
+  sorted by Discord user snowflake (ID) in ascending order.
+  """
+  @spec get_poll_answer_voters(Channel.id(), Message.id(), Poll.Answer.answer_id()) ::
+          error | {:ok, [User.t()]}
+  def get_poll_answer_voters(channel_id, message_id, answer_id, params \\ []) do
+    result =
+      request(:get, Constants.poll_answer_voters(channel_id, message_id, answer_id), "", params)
+      |> handle_request_with_decode()
+
+    case result do
+      {:ok, %{users: users}} -> {:ok, Util.cast(users, {:list, {:struct, User}})}
+      _ -> result
+    end
+  end
+
+  @doc ~S"""
+  Same as `get_poll_answer_voters/4`, but raises `Nostrum.Error.ApiError` in case of failure.
+  """
+  @spec get_poll_answer_voters!(Channel.id(), Message.id(), Poll.Answer.answer_id()) :: [User.t()]
+  def get_poll_answer_voters!(channel_id, message_id, answer_id, params \\ []) do
+    get_poll_answer_voters(channel_id, message_id, answer_id, params)
+    |> bangify
+  end
+
+  @doc ~S"""
+  Expire (close voting on) a poll before the scheduled end time.
+
+  Returns the original message containing the poll.
+  """
+  @spec expire_poll(Channel.id(), Message.id()) :: error | {:ok, Message.t()}
+  def expire_poll(channel_id, message_id) do
+    request(:post, Constants.poll_expire(channel_id, message_id))
+    |> handle_request_with_decode({:struct, Message})
+  end
+
+  @doc ~S"""
+  Same as `expire_poll/2`, but raises `Nostrum.Error.ApiError` in case of failure.
+  """
+  @spec expire_poll!(Channel.id(), Message.id()) :: Message.t()
+  def expire_poll!(channel_id, message_id) do
+    expire_poll(channel_id, message_id)
     |> bangify
   end
 
