@@ -4,20 +4,19 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="ExDoc v0.29.4">
+    <meta name="generator" content="ExDoc v0.32.1">
     <meta name="project" content="Nostrum v0.9.0-alpha3">
 
+
     <title>Nostrum.Struct.Guild.Role — Nostrum v0.9.0-alpha3</title>
-    <link rel="stylesheet" href="dist/html-elixir-HHVY3JYD.css" />
+    <link rel="stylesheet" href="dist/html-elixir-2C5PUTIB.css" />
 
 
     <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
-    <script src="dist/handlebars.templates-XWGFFSCD.js"></script>
-    <script src="dist/sidebar_items-FF0CC478.js"></script>
-
-      <script src="docs_config.js"></script>
-
-    <script async src="dist/html-JDI3AVDD.js"></script>
+    <script src="dist/handlebars.templates-IHH6HKET.js"></script>
+    <script src="dist/sidebar_items-7079D557.js"></script>
+    <script src="docs_config.js"></script>
+    <script async src="dist/html-GXQ6W6IF.js"></script>
 
 
   </head>
@@ -36,104 +35,134 @@
       } catch (error) { }
     </script>
 
-<div class="main">
+<div class="body-wrapper">
 
-<button class="sidebar-button sidebar-toggle" aria-label="toggle sidebar">
+<button id="sidebar-menu" class="sidebar-button sidebar-toggle" aria-label="toggle sidebar" aria-controls="sidebar">
   <i class="ri-menu-line ri-lg" title="Collapse/expand sidebar"></i>
 </button>
 
-<section class="sidebar">
-  <form class="sidebar-search" action="search.html">
-    <button type="submit" class="search-button" aria-label="Submit Search">
-      <i class="ri-search-2-line" aria-hidden="true" title="Submit search"></i>
-    </button>
-    <button type="button" tabindex="-1" class="search-close-button" aria-label="Cancel Search">
-      <i class="ri-close-line ri-lg" aria-hidden="true" title="Cancel search"></i>
-    </button>
-    <label class="search-label">
-      <p class="sr-only">Search</p>
-      <input name="q" type="text" class="search-input" placeholder="Search..." aria-label="Input your search terms" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
-    </label>
-  </form>
-
-  <div class="autocomplete">
-    <div class="autocomplete-results">
-    </div>
-  </div>
+<nav id="sidebar" class="sidebar">
 
   <div class="sidebar-header">
+    <div class="sidebar-projectInfo">
 
-    <div class="sidebar-projectDetails">
-      <a href="https://github.com/Kraigie/nostrum" class="sidebar-projectName" translate="no">
+        <a href="https://github.com/Kraigie/nostrum" class="sidebar-projectImage">
+          <img src="assets/logo.png" alt="Nostrum" />
+        </a>
+
+      <div>
+        <a href="https://github.com/Kraigie/nostrum" class="sidebar-projectName" translate="no">
 Nostrum
-      </a>
-      <div class="sidebar-projectVersion" translate="no">
-        v0.9.0-alpha3
+        </a>
+        <div class="sidebar-projectVersion" translate="no">
+          v0.9.0-alpha3
+        </div>
       </div>
     </div>
-    <ul class="sidebar-listNav">
-      <li><a id="extras-list-link" href="#full-list">Pages</a></li>
+    <ul id="sidebar-listNav" class="sidebar-listNav" role="tablist">
+      <li>
+        <button id="extras-list-tab-button" role="tab" data-type="extras" aria-controls="extras-tab-panel" aria-selected="true" tabindex="0">
+Pages
+        </button>
+      </li>
 
-        <li><a id="modules-list-link" href="#full-list">Modules</a></li>
+        <li>
+          <button id="modules-list-tab-button" role="tab" data-type="modules" aria-controls="modules-tab-panel" aria-selected="false" tabindex="-1">
+            Modules
+          </button>
+        </li>
 
 
-        <li><a id="tasks-list-link" href="#full-list"><span translate="no">Mix</span> Tasks</a></li>
+        <li>
+          <button id="tasks-list-tab-button" role="tab" data-type="tasks" aria-controls="tasks-tab-panel" aria-selected="false" tabindex="-1">
+            <span translate="no">Mix</span> Tasks
+          </button>
+        </li>
 
     </ul>
   </div>
 
-  <div class="gradient"></div>
-  <ul id="full-list"></ul>
-</section>
+  <div id="extras-tab-panel" class="sidebar-tabpanel" role="tabpanel" aria-labelledby="extras-list-tab-button">
+    <ul id="extras-full-list" class="full-list"></ul>
+  </div>
 
-<section class="content">
+    <div id="modules-tab-panel" class="sidebar-tabpanel" role="tabpanel" aria-labelledby="modules-list-tab-button" hidden>
+      <ul id="modules-full-list" class="full-list"></ul>
+    </div>
+
+
+    <div id="tasks-tab-panel" class="sidebar-tabpanel" role="tabpanel" aria-labelledby="tasks-list-tab-button" hidden>
+      <ul id="tasks-full-list" class="full-list"></ul>
+    </div>
+
+</nav>
+
+<main class="content">
   <output role="status" id="toast"></output>
-  <div class="content-outer">
-    <div id="content" class="content-inner">
 
-<h1>
-<button class="icon-action display-settings">
-  <i class="ri-settings-3-line"></i>
-  <span class="sr-only">Settings</span>
-</button>
+  <div id="content" class="content-inner">
+    <div class="top-search">
+      <div class="search-settings">
+        <form class="search-bar" action="search.html">
+          <label class="search-label">
+            <span class="sr-only">Search documentation of Nostrum</span>
+            <input name="q" type="text" class="search-input" placeholder="Press / to search" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+          </label>
+          <button type="submit" class="search-button" aria-label="Submit Search">
+            <i class="ri-search-2-line ri-lg" aria-hidden="true" title="Submit search"></i>
+          </button>
+          <button type="button" tabindex="-1" class="search-close-button" aria-hidden="true">
+            <i class="ri-close-line ri-lg" title="Cancel search"></i>
+          </button>
+        </form>
+        <div class="autocomplete">
+        </div>
+        <button class="icon-settings display-settings">
+          <i class="ri-settings-3-line"></i>
+          <span class="sr-only">Settings</span>
+        </button>
+      </div>
+    </div>
+
+<div id="top-content">
+  <h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/guild/role.ex#L1" title="View Source" class="icon-action" rel="help">
+        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        <span class="sr-only">View Source</span>
+      </a>
+
+    <span translate="no">Nostrum.Struct.Guild.Role</span> 
+    <small class="app-vsn" translate="no">(Nostrum v0.9.0-alpha3)</small>
+
+  </h1>
 
 
-    <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/guild/role.ex#L1" title="View Source" class="icon-action" rel="help">
-      <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-      <span class="sr-only">View Source</span>
-    </a>
-
-  <span translate="no">Nostrum.Struct.Guild.Role</span> 
-  <small class="app-vsn" translate="no">(Nostrum v0.9.0-alpha3)</small>
-
-</h1>
-
-
-  <section id="moduledoc">
+    <section id="moduledoc">
 <p>Struct representing a Discord role.</p><h2 id="module-mentioning-roles-in-messages" class="section-heading">
-  <a href="#module-mentioning-roles-in-messages" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
-  <p class="sr-only">mentioning-roles-in-messages</p>
+  <a href="#module-mentioning-roles-in-messages" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
   </a>
-  Mentioning Roles in Messages
+  <span class="text">Mentioning Roles in Messages</span>
 </h2>
 <p>A <a href="Nostrum.Struct.Guild.Role.html#content"><code class="inline">Nostrum.Struct.Guild.Role</code></a> can be mentioned in message content using the <a href="https://hexdocs.pm/elixir/String.Chars.html"><code class="inline">String.Chars</code></a>
-protocol or <a href="#mention/1"><code class="inline">mention/1</code></a>.</p><pre><code class="makeup elixir" translate="no"><span class="n">role</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="7609944409-1">%</span><span class="nc" data-group-id="7609944409-1">Nostrum.Struct.Guild.Role</span><span class="p" data-group-id="7609944409-1">{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">431886897539973131</span><span class="p" data-group-id="7609944409-1">}</span><span class="w">
-</span><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">create_message!</span><span class="p" data-group-id="7609944409-2">(</span><span class="mi">184046599834435585</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;</span><span class="si" data-group-id="7609944409-3">#{</span><span class="n">role</span><span class="si" data-group-id="7609944409-3">}</span><span class="s">&quot;</span><span class="p" data-group-id="7609944409-2">)</span><span class="w">
-</span><span class="p" data-group-id="7609944409-4">%</span><span class="nc" data-group-id="7609944409-4">Nostrum.Struct.Message</span><span class="p" data-group-id="7609944409-4">{</span><span class="p" data-group-id="7609944409-4">}</span><span class="w">
+protocol or <a href="#mention/1"><code class="inline">mention/1</code></a>.</p><pre><code class="makeup elixir" translate="no"><span class="n">role</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="9284739771-1">%</span><span class="nc" data-group-id="9284739771-1">Nostrum.Struct.Guild.Role</span><span class="p" data-group-id="9284739771-1">{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">431886897539973131</span><span class="p" data-group-id="9284739771-1">}</span><span class="w">
+</span><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">create_message!</span><span class="p" data-group-id="9284739771-2">(</span><span class="mi">184046599834435585</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;</span><span class="si" data-group-id="9284739771-3">#{</span><span class="n">role</span><span class="si" data-group-id="9284739771-3">}</span><span class="s">&quot;</span><span class="p" data-group-id="9284739771-2">)</span><span class="w">
+</span><span class="p" data-group-id="9284739771-4">%</span><span class="nc" data-group-id="9284739771-4">Nostrum.Struct.Message</span><span class="p" data-group-id="9284739771-4">{</span><span class="p" data-group-id="9284739771-4">}</span><span class="w">
 
-</span><span class="n">role</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="7609944409-5">%</span><span class="nc" data-group-id="7609944409-5">Nostrum.Struct.Guild.Role</span><span class="p" data-group-id="7609944409-5">{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">431884023535632398</span><span class="p" data-group-id="7609944409-5">}</span><span class="w">
-</span><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">create_message!</span><span class="p" data-group-id="7609944409-6">(</span><span class="mi">280085880452939778</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;</span><span class="si" data-group-id="7609944409-7">#{</span><span class="nc">Nostrum.Struct.Guild.Role</span><span class="o">.</span><span class="n">mention</span><span class="p" data-group-id="7609944409-8">(</span><span class="n">role</span><span class="p" data-group-id="7609944409-8">)</span><span class="si" data-group-id="7609944409-7">}</span><span class="s">&quot;</span><span class="p" data-group-id="7609944409-6">)</span><span class="w">
-</span><span class="p" data-group-id="7609944409-9">%</span><span class="nc" data-group-id="7609944409-9">Nostrum.Struct.Message</span><span class="p" data-group-id="7609944409-9">{</span><span class="p" data-group-id="7609944409-9">}</span></code></pre>
-  </section>
+</span><span class="n">role</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="9284739771-5">%</span><span class="nc" data-group-id="9284739771-5">Nostrum.Struct.Guild.Role</span><span class="p" data-group-id="9284739771-5">{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">431884023535632398</span><span class="p" data-group-id="9284739771-5">}</span><span class="w">
+</span><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">create_message!</span><span class="p" data-group-id="9284739771-6">(</span><span class="mi">280085880452939778</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;</span><span class="si" data-group-id="9284739771-7">#{</span><span class="nc">Nostrum.Struct.Guild.Role</span><span class="o">.</span><span class="n">mention</span><span class="p" data-group-id="9284739771-8">(</span><span class="n">role</span><span class="p" data-group-id="9284739771-8">)</span><span class="si" data-group-id="9284739771-7">}</span><span class="s">&quot;</span><span class="p" data-group-id="9284739771-6">)</span><span class="w">
+</span><span class="p" data-group-id="9284739771-9">%</span><span class="nc" data-group-id="9284739771-9">Nostrum.Struct.Message</span><span class="p" data-group-id="9284739771-9">{</span><span class="p" data-group-id="9284739771-9">}</span></code></pre>
+    </section>
 
+</div>
 
   <section id="summary" class="details-list">
     <h1 class="section-heading">
       <a class="hover-link" href="#summary">
         <i class="ri-link-m" aria-hidden="true"></i>
-        <span class="sr-only">Link to this section</span>
       </a>
-      Summary
+      <span class="text">Summary</span>
     </h1>
 <div class="summary-types summary">
   <h2>
@@ -273,9 +302,8 @@ protocol or <a href="#mention/1"><code class="inline">mention/1</code></a>.</p><
     <h1 class="section-heading">
       <a class="hover-link" href="#types">
         <i class="ri-link-m" aria-hidden="true"></i>
-        <span class="sr-only">Link to this section</span>
       </a>
-Types
+      <span class="text">Types</span>
     </h1>
     <div class="types-list">
 <section class="detail" id="t:color/0">
@@ -609,9 +637,8 @@ Types
     <h1 class="section-heading">
       <a class="hover-link" href="#functions">
         <i class="ri-link-m" aria-hidden="true"></i>
-        <span class="sr-only">Link to this section</span>
       </a>
-Functions
+      <span class="text">Functions</span>
     </h1>
     <div class="functions-list">
 <section class="detail" id="mention/1">
@@ -640,13 +667,13 @@ Functions
       </div>
 
 <p>Formats an <code class="inline">Nostrum.Struct.Role</code> into a mention.</p><h2 id="mention/1-examples" class="section-heading">
-  <a href="#mention/1-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
-  <p class="sr-only">examples</p>
+  <a href="#mention/1-examples" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
   </a>
-  Examples
+  <span class="text">Examples</span>
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="n">role</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="9865566885-1">%</span><span class="nc" data-group-id="9865566885-1">Nostrum.Struct.Guild.Role</span><span class="p" data-group-id="9865566885-1">{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">431886639627763722</span><span class="p" data-group-id="9865566885-1">}</span><span class="w">
-</span><span class="gp unselectable">...&gt; </span><span class="nc">Nostrum.Struct.Guild.Role</span><span class="o">.</span><span class="n">mention</span><span class="p" data-group-id="9865566885-2">(</span><span class="n">role</span><span class="p" data-group-id="9865566885-2">)</span><span class="w">
+<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="n">role</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="9018495639-1">%</span><span class="nc" data-group-id="9018495639-1">Nostrum.Struct.Guild.Role</span><span class="p" data-group-id="9018495639-1">{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">431886639627763722</span><span class="p" data-group-id="9018495639-1">}</span><span class="w">
+</span><span class="gp unselectable">...&gt; </span><span class="nc">Nostrum.Struct.Guild.Role</span><span class="o">.</span><span class="n">mention</span><span class="p" data-group-id="9018495639-2">(</span><span class="n">role</span><span class="p" data-group-id="9018495639-2">)</span><span class="w">
 </span><span class="s">&quot;&lt;@&amp;431886639627763722&gt;&quot;</span></code></pre>
   </section>
 </section>
@@ -654,41 +681,39 @@ Functions
     </div>
   </section>
 
-      <footer class="footer">
-        <p>
-
-            <span class="line">
-              <a href="https://hex.pm/packages/nostrum/0.9.0-alpha3" class="footer-hex-package">Hex Package</a>
-
-              <a href="https://preview.hex.pm/preview/nostrum/0.9.0-alpha3">Hex Preview</a>
-
-                (<a href="https://preview.hex.pm/preview/nostrum/0.9.0-alpha3/show/lib/nostrum/struct/guild/role.ex">current file</a>)
-
-            </span>
+    <footer class="footer">
+      <p>
 
           <span class="line">
-            <button class="a-main footer-button display-quick-switch" title="Search HexDocs packages">
-              Search HexDocs
-            </button>
+            <a href="https://hex.pm/packages/nostrum/0.9.0-alpha3" class="footer-hex-package">Hex Package</a>
 
-              <a href="Nostrum.epub" title="ePub version">
-                Download ePub version
-              </a>
+            <a href="https://preview.hex.pm/preview/nostrum/0.9.0-alpha3">Hex Preview</a>
 
           </span>
-        </p>
 
-        <p class="built-using">
-          Built using
-          <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.29.4) for the
+        <span class="line">
+          <button class="a-main footer-button display-quick-switch" title="Search HexDocs packages">
+            Search HexDocs
+          </button>
 
-            <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
+            <a href="Nostrum.epub" title="ePub version">
+              Download ePub version
+            </a>
 
-        </p>
-      </footer>
-    </div>
+        </span>
+      </p>
+
+      <p class="built-using">
+        Built using
+        <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.32.1) for the
+
+          <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
+
+      </p>
+
+    </footer>
   </div>
-</section>
+</main>
 </div>
 
 

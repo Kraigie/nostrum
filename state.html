@@ -4,20 +4,19 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="ExDoc v0.29.4">
+    <meta name="generator" content="ExDoc v0.32.1">
     <meta name="project" content="Nostrum v0.9.0-alpha3">
 
+
     <title>State — Nostrum v0.9.0-alpha3</title>
-    <link rel="stylesheet" href="dist/html-elixir-HHVY3JYD.css" />
+    <link rel="stylesheet" href="dist/html-elixir-2C5PUTIB.css" />
 
 
     <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
-    <script src="dist/handlebars.templates-XWGFFSCD.js"></script>
-    <script src="dist/sidebar_items-FF0CC478.js"></script>
-
-      <script src="docs_config.js"></script>
-
-    <script async src="dist/html-JDI3AVDD.js"></script>
+    <script src="dist/handlebars.templates-IHH6HKET.js"></script>
+    <script src="dist/sidebar_items-7079D557.js"></script>
+    <script src="docs_config.js"></script>
+    <script async src="dist/html-GXQ6W6IF.js"></script>
 
 
   </head>
@@ -36,85 +35,115 @@
       } catch (error) { }
     </script>
 
-<div class="main">
+<div class="body-wrapper">
 
-<button class="sidebar-button sidebar-toggle" aria-label="toggle sidebar">
+<button id="sidebar-menu" class="sidebar-button sidebar-toggle" aria-label="toggle sidebar" aria-controls="sidebar">
   <i class="ri-menu-line ri-lg" title="Collapse/expand sidebar"></i>
 </button>
 
-<section class="sidebar">
-  <form class="sidebar-search" action="search.html">
-    <button type="submit" class="search-button" aria-label="Submit Search">
-      <i class="ri-search-2-line" aria-hidden="true" title="Submit search"></i>
-    </button>
-    <button type="button" tabindex="-1" class="search-close-button" aria-label="Cancel Search">
-      <i class="ri-close-line ri-lg" aria-hidden="true" title="Cancel search"></i>
-    </button>
-    <label class="search-label">
-      <p class="sr-only">Search</p>
-      <input name="q" type="text" class="search-input" placeholder="Search..." aria-label="Input your search terms" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
-    </label>
-  </form>
-
-  <div class="autocomplete">
-    <div class="autocomplete-results">
-    </div>
-  </div>
+<nav id="sidebar" class="sidebar">
 
   <div class="sidebar-header">
+    <div class="sidebar-projectInfo">
 
-    <div class="sidebar-projectDetails">
-      <a href="https://github.com/Kraigie/nostrum" class="sidebar-projectName" translate="no">
+        <a href="https://github.com/Kraigie/nostrum" class="sidebar-projectImage">
+          <img src="assets/logo.png" alt="Nostrum" />
+        </a>
+
+      <div>
+        <a href="https://github.com/Kraigie/nostrum" class="sidebar-projectName" translate="no">
 Nostrum
-      </a>
-      <div class="sidebar-projectVersion" translate="no">
-        v0.9.0-alpha3
+        </a>
+        <div class="sidebar-projectVersion" translate="no">
+          v0.9.0-alpha3
+        </div>
       </div>
     </div>
-    <ul class="sidebar-listNav">
-      <li><a id="extras-list-link" href="#full-list">Pages</a></li>
+    <ul id="sidebar-listNav" class="sidebar-listNav" role="tablist">
+      <li>
+        <button id="extras-list-tab-button" role="tab" data-type="extras" aria-controls="extras-tab-panel" aria-selected="true" tabindex="0">
+Pages
+        </button>
+      </li>
 
-        <li><a id="modules-list-link" href="#full-list">Modules</a></li>
+        <li>
+          <button id="modules-list-tab-button" role="tab" data-type="modules" aria-controls="modules-tab-panel" aria-selected="false" tabindex="-1">
+            Modules
+          </button>
+        </li>
 
 
-        <li><a id="tasks-list-link" href="#full-list"><span translate="no">Mix</span> Tasks</a></li>
+        <li>
+          <button id="tasks-list-tab-button" role="tab" data-type="tasks" aria-controls="tasks-tab-panel" aria-selected="false" tabindex="-1">
+            <span translate="no">Mix</span> Tasks
+          </button>
+        </li>
 
     </ul>
   </div>
 
-  <div class="gradient"></div>
-  <ul id="full-list"></ul>
-</section>
+  <div id="extras-tab-panel" class="sidebar-tabpanel" role="tabpanel" aria-labelledby="extras-list-tab-button">
+    <ul id="extras-full-list" class="full-list"></ul>
+  </div>
 
-<section class="content">
+    <div id="modules-tab-panel" class="sidebar-tabpanel" role="tabpanel" aria-labelledby="modules-list-tab-button" hidden>
+      <ul id="modules-full-list" class="full-list"></ul>
+    </div>
+
+
+    <div id="tasks-tab-panel" class="sidebar-tabpanel" role="tabpanel" aria-labelledby="tasks-list-tab-button" hidden>
+      <ul id="tasks-full-list" class="full-list"></ul>
+    </div>
+
+</nav>
+
+<main class="content">
   <output role="status" id="toast"></output>
-  <div class="content-outer">
-    <div id="content" class="content-inner">
 
-<h1>
-<button class="icon-action display-settings">
-  <i class="ri-settings-3-line"></i>
-  <span class="sr-only">Settings</span>
-</button>
+  <div id="content" class="content-inner">
+    <div class="top-search">
+      <div class="search-settings">
+        <form class="search-bar" action="search.html">
+          <label class="search-label">
+            <span class="sr-only">Search documentation of Nostrum</span>
+            <input name="q" type="text" class="search-input" placeholder="Press / to search" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+          </label>
+          <button type="submit" class="search-button" aria-label="Submit Search">
+            <i class="ri-search-2-line ri-lg" aria-hidden="true" title="Submit search"></i>
+          </button>
+          <button type="button" tabindex="-1" class="search-close-button" aria-hidden="true">
+            <i class="ri-close-line ri-lg" title="Cancel search"></i>
+          </button>
+        </form>
+        <div class="autocomplete">
+        </div>
+        <button class="icon-settings display-settings">
+          <i class="ri-settings-3-line"></i>
+          <span class="sr-only">Settings</span>
+        </button>
+      </div>
+    </div>
+
+<div id="top-content">
+  <h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/guides/functionality/state.md#L1" title="View Source" class="icon-action" rel="help">
+        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        <span class="sr-only">View Source</span>
+      </a>
 
 
-    <a href="https://github.com/Kraigie/nostrum/blob/master/guides/functionality/state.md#L1" title="View Source" class="icon-action" rel="help">
-      <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-      <span class="sr-only">View Source</span>
-    </a>
-
-
-  <span>State</span>
-</h1>
+    <span>State</span>
+  </h1>
 
 <p>Nostrum keeps track of the state that your bot can see, which is updated based
 on events from the WS connection. We differentiate between <em>caches</em>, which are
 optional and are used to provide your bot with fresh data, and <em>state</em>, which is
 mandatory state that we must track internally.</p><h2 id="caches" class="section-heading">
-  <a href="#caches" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
-  <p class="sr-only">caches</p>
+  <a href="#caches" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
   </a>
-  Caches
+  <span class="text">Caches</span>
 </h2>
 <p>Caching will by default use Erlang's ETS tables. Abstractions are provided for
 common operations. If you feel the caches are missing some abstraction, feel
@@ -122,21 +151,21 @@ free to suggest it <a href="https://github.com/Kraigie/nostrum/issues">on GitHub
 want to integrate to some external caching mechanism or want to distribute your
 bot across multiple nodes, please see the <a href="pluggable_caching.html">pluggable
 caching</a> documentation.</p><h2 id="query-list-comprehensions" class="section-heading">
-  <a href="#query-list-comprehensions" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
-  <p class="sr-only">query-list-comprehensions</p>
+  <a href="#query-list-comprehensions" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
   </a>
-  Query list comprehensions
+  <span class="text">Query list comprehensions</span>
 </h2>
 <p>nostrum's built-in functions to query the cache should be sufficient to cover
 common use cases. If you need more involved queries, it is recommended to use
 nostrum's <a href="https://www.erlang.org/doc/man/qlc.html">qlc</a> support.</p><p>As an example, Nosedrum has a function to find a guild member by username and
-discriminator. This is internally implemented with the following query:</p><pre><code class="makeup erl" translate="no"><span class="nf">find_by</span><span class="p" data-group-id="7197201182-1">(</span><span class="n">RequestedGuildId</span><span class="p">,</span><span class="w"> </span><span class="n">Name</span><span class="p">,</span><span class="w"> </span><span class="n">Discriminator</span><span class="p">,</span><span class="w"> </span><span class="n">MemberCache</span><span class="p">,</span><span class="w"> </span><span class="n">UserCache</span><span class="p" data-group-id="7197201182-1">)</span><span class="w"> </span><span class="p">-&gt;</span><span class="w">
-    </span><span class="nc">qlc</span><span class="p">:</span><span class="nf">q</span><span class="p" data-group-id="7197201182-2">(</span><span class="p" data-group-id="7197201182-3">[</span><span class="n">Member</span><span class="w"> </span><span class="p">||</span><span class="w"> </span><span class="p" data-group-id="7197201182-4">{</span><span class="p" data-group-id="7197201182-5">{</span><span class="n">GuildId</span><span class="p">,</span><span class="w"> </span><span class="n">MemberId</span><span class="p" data-group-id="7197201182-5">}</span><span class="p">,</span><span class="w"> </span><span class="n">Member</span><span class="p" data-group-id="7197201182-4">}</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">MemberCache</span><span class="p">:</span><span class="nf">query_handle</span><span class="p" data-group-id="7197201182-6">(</span><span class="p" data-group-id="7197201182-6">)</span><span class="p">,</span><span class="w">
+discriminator. This is internally implemented with the following query:</p><pre><code class="makeup erl" translate="no"><span class="nf">find_by</span><span class="p" data-group-id="8126379746-1">(</span><span class="n">RequestedGuildId</span><span class="p">,</span><span class="w"> </span><span class="n">Name</span><span class="p">,</span><span class="w"> </span><span class="n">Discriminator</span><span class="p">,</span><span class="w"> </span><span class="n">MemberCache</span><span class="p">,</span><span class="w"> </span><span class="n">UserCache</span><span class="p" data-group-id="8126379746-1">)</span><span class="w"> </span><span class="p">-&gt;</span><span class="w">
+    </span><span class="nc">qlc</span><span class="p">:</span><span class="nf">q</span><span class="p" data-group-id="8126379746-2">(</span><span class="p" data-group-id="8126379746-3">[</span><span class="n">Member</span><span class="w"> </span><span class="p">||</span><span class="w"> </span><span class="p" data-group-id="8126379746-4">{</span><span class="p" data-group-id="8126379746-5">{</span><span class="n">GuildId</span><span class="p">,</span><span class="w"> </span><span class="n">MemberId</span><span class="p" data-group-id="8126379746-5">}</span><span class="p">,</span><span class="w"> </span><span class="n">Member</span><span class="p" data-group-id="8126379746-4">}</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">MemberCache</span><span class="p">:</span><span class="nf">query_handle</span><span class="p" data-group-id="8126379746-6">(</span><span class="p" data-group-id="8126379746-6">)</span><span class="p">,</span><span class="w">
                      </span><span class="n">GuildId</span><span class="w"> </span><span class="o">=:=</span><span class="w"> </span><span class="n">RequestedGuildId</span><span class="p">,</span><span class="w">
-                     </span><span class="p" data-group-id="7197201182-7">{</span><span class="n">UserId</span><span class="p">,</span><span class="w"> </span><span class="n">User</span><span class="p" data-group-id="7197201182-7">}</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">UserCache</span><span class="p">:</span><span class="nf">query_handle</span><span class="p" data-group-id="7197201182-8">(</span><span class="p" data-group-id="7197201182-8">)</span><span class="p">,</span><span class="w">
+                     </span><span class="p" data-group-id="8126379746-7">{</span><span class="n">UserId</span><span class="p">,</span><span class="w"> </span><span class="n">User</span><span class="p" data-group-id="8126379746-7">}</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">UserCache</span><span class="p">:</span><span class="nf">query_handle</span><span class="p" data-group-id="8126379746-8">(</span><span class="p" data-group-id="8126379746-8">)</span><span class="p">,</span><span class="w">
                      </span><span class="n">MemberId</span><span class="w"> </span><span class="o">=:=</span><span class="w"> </span><span class="n">UserId</span><span class="p">,</span><span class="w">
-                     </span><span class="nf">map_get</span><span class="p" data-group-id="7197201182-9">(</span><span class="ss">username</span><span class="p">,</span><span class="w"> </span><span class="n">User</span><span class="p" data-group-id="7197201182-9">)</span><span class="w">  </span><span class="o">=:=</span><span class="w"> </span><span class="n">Name</span><span class="p">,</span><span class="w">
-                     </span><span class="nf">map_get</span><span class="p" data-group-id="7197201182-10">(</span><span class="ss">discriminator</span><span class="p">,</span><span class="w"> </span><span class="n">User</span><span class="p" data-group-id="7197201182-10">)</span><span class="w"> </span><span class="o">=:=</span><span class="w"> </span><span class="n">Discriminator</span><span class="p" data-group-id="7197201182-3">]</span><span class="p" data-group-id="7197201182-2">)</span><span class="p">.</span></code></pre><p>By <a href="https://www.erlang.org/doc/man/qlc.html#implementing_a_qlc_table">implementing a QLC
+                     </span><span class="nf">map_get</span><span class="p" data-group-id="8126379746-9">(</span><span class="ss">username</span><span class="p">,</span><span class="w"> </span><span class="n">User</span><span class="p" data-group-id="8126379746-9">)</span><span class="w">  </span><span class="o">=:=</span><span class="w"> </span><span class="n">Name</span><span class="p">,</span><span class="w">
+                     </span><span class="nf">map_get</span><span class="p" data-group-id="8126379746-10">(</span><span class="ss">discriminator</span><span class="p">,</span><span class="w"> </span><span class="n">User</span><span class="p" data-group-id="8126379746-10">)</span><span class="w"> </span><span class="o">=:=</span><span class="w"> </span><span class="n">Discriminator</span><span class="p" data-group-id="8126379746-3">]</span><span class="p" data-group-id="8126379746-2">)</span><span class="p">.</span></code></pre><p>By <a href="https://www.erlang.org/doc/man/qlc.html#implementing_a_qlc_table">implementing a QLC
 table</a>, all
 read operations from nostrum will be performed over your QLC table
 implementation alone, and nostrum's dispatcher modules can easily be expanded
@@ -159,16 +188,18 @@ is that the stream API does not support a number of features we are using here.
 Apart from that, nostrum's previous API (<code class="inline">select</code> and friends) gave users a
 false impression that nostrum was doing an efficient iteration under the hood,
 which caused issues for large bots.</p><h2 id="internal-state" class="section-heading">
-  <a href="#internal-state" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
-  <p class="sr-only">internal-state</p>
+  <a href="#internal-state" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
   </a>
-  Internal state
+  <span class="text">Internal state</span>
 </h2>
 <p>In addition to the optional caching, nostrum also needs to keep track of
 internal state so it functions properly. State follows the same pattern as the
 pluggable caching functionality described above, but disabling state storage via
-<code class="inline">NoOp</code> as with caching is not possible.</p><p>The modules under <code class="inline">Nostrum.Store</code> are used for this functionality.</p>
-<div class="bottom-actions">
+<code class="inline">NoOp</code> as with caching is not possible.</p><p>The modules under <code class="inline">Nostrum.Store</code> are used for this functionality.</p><!-- vim: set textwidth=80 sw=2 ts=2: -->
+</div>
+
+<div class="bottom-actions" id="bottom-actions">
   <div class="bottom-actions-item">
 
       <a href="gateway_intents.html" class="bottom-actions-button" rel="prev">
@@ -194,41 +225,41 @@ Event handling
 
   </div>
 </div>
-      <footer class="footer">
-        <p>
-
-            <span class="line">
-              <a href="https://hex.pm/packages/nostrum/0.9.0-alpha3" class="footer-hex-package">Hex Package</a>
-
-              <a href="https://preview.hex.pm/preview/nostrum/0.9.0-alpha3">Hex Preview</a>
-
-                (<a href="https://preview.hex.pm/preview/nostrum/0.9.0-alpha3/show/guides/functionality/state.md">current file</a>)
-
-            </span>
+    <footer class="footer">
+      <p>
 
           <span class="line">
-            <button class="a-main footer-button display-quick-switch" title="Search HexDocs packages">
-              Search HexDocs
-            </button>
+            <a href="https://hex.pm/packages/nostrum/0.9.0-alpha3" class="footer-hex-package">Hex Package</a>
 
-              <a href="Nostrum.epub" title="ePub version">
-                Download ePub version
-              </a>
+            <a href="https://preview.hex.pm/preview/nostrum/0.9.0-alpha3">Hex Preview</a>
+
+              (<a href="https://preview.hex.pm/preview/nostrum/0.9.0-alpha3/show/guides/functionality/state.md">current file</a>)
 
           </span>
-        </p>
 
-        <p class="built-using">
-          Built using
-          <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.29.4) for the
+        <span class="line">
+          <button class="a-main footer-button display-quick-switch" title="Search HexDocs packages">
+            Search HexDocs
+          </button>
 
-            <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
+            <a href="Nostrum.epub" title="ePub version">
+              Download ePub version
+            </a>
 
-        </p>
-      </footer>
-    </div>
+        </span>
+      </p>
+
+      <p class="built-using">
+        Built using
+        <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.32.1) for the
+
+          <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
+
+      </p>
+
+    </footer>
   </div>
-</section>
+</main>
 </div>
 
 

@@ -4,20 +4,19 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="ExDoc v0.29.4">
+    <meta name="generator" content="ExDoc v0.32.1">
     <meta name="project" content="Nostrum v0.9.0-alpha3">
 
+
     <title>Pluggable caching — Nostrum v0.9.0-alpha3</title>
-    <link rel="stylesheet" href="dist/html-elixir-HHVY3JYD.css" />
+    <link rel="stylesheet" href="dist/html-elixir-2C5PUTIB.css" />
 
 
     <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
-    <script src="dist/handlebars.templates-XWGFFSCD.js"></script>
-    <script src="dist/sidebar_items-FF0CC478.js"></script>
-
-      <script src="docs_config.js"></script>
-
-    <script async src="dist/html-JDI3AVDD.js"></script>
+    <script src="dist/handlebars.templates-IHH6HKET.js"></script>
+    <script src="dist/sidebar_items-7079D557.js"></script>
+    <script src="docs_config.js"></script>
+    <script async src="dist/html-GXQ6W6IF.js"></script>
 
 
   </head>
@@ -36,76 +35,106 @@
       } catch (error) { }
     </script>
 
-<div class="main">
+<div class="body-wrapper">
 
-<button class="sidebar-button sidebar-toggle" aria-label="toggle sidebar">
+<button id="sidebar-menu" class="sidebar-button sidebar-toggle" aria-label="toggle sidebar" aria-controls="sidebar">
   <i class="ri-menu-line ri-lg" title="Collapse/expand sidebar"></i>
 </button>
 
-<section class="sidebar">
-  <form class="sidebar-search" action="search.html">
-    <button type="submit" class="search-button" aria-label="Submit Search">
-      <i class="ri-search-2-line" aria-hidden="true" title="Submit search"></i>
-    </button>
-    <button type="button" tabindex="-1" class="search-close-button" aria-label="Cancel Search">
-      <i class="ri-close-line ri-lg" aria-hidden="true" title="Cancel search"></i>
-    </button>
-    <label class="search-label">
-      <p class="sr-only">Search</p>
-      <input name="q" type="text" class="search-input" placeholder="Search..." aria-label="Input your search terms" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
-    </label>
-  </form>
-
-  <div class="autocomplete">
-    <div class="autocomplete-results">
-    </div>
-  </div>
+<nav id="sidebar" class="sidebar">
 
   <div class="sidebar-header">
+    <div class="sidebar-projectInfo">
 
-    <div class="sidebar-projectDetails">
-      <a href="https://github.com/Kraigie/nostrum" class="sidebar-projectName" translate="no">
+        <a href="https://github.com/Kraigie/nostrum" class="sidebar-projectImage">
+          <img src="assets/logo.png" alt="Nostrum" />
+        </a>
+
+      <div>
+        <a href="https://github.com/Kraigie/nostrum" class="sidebar-projectName" translate="no">
 Nostrum
-      </a>
-      <div class="sidebar-projectVersion" translate="no">
-        v0.9.0-alpha3
+        </a>
+        <div class="sidebar-projectVersion" translate="no">
+          v0.9.0-alpha3
+        </div>
       </div>
     </div>
-    <ul class="sidebar-listNav">
-      <li><a id="extras-list-link" href="#full-list">Pages</a></li>
+    <ul id="sidebar-listNav" class="sidebar-listNav" role="tablist">
+      <li>
+        <button id="extras-list-tab-button" role="tab" data-type="extras" aria-controls="extras-tab-panel" aria-selected="true" tabindex="0">
+Pages
+        </button>
+      </li>
 
-        <li><a id="modules-list-link" href="#full-list">Modules</a></li>
+        <li>
+          <button id="modules-list-tab-button" role="tab" data-type="modules" aria-controls="modules-tab-panel" aria-selected="false" tabindex="-1">
+            Modules
+          </button>
+        </li>
 
 
-        <li><a id="tasks-list-link" href="#full-list"><span translate="no">Mix</span> Tasks</a></li>
+        <li>
+          <button id="tasks-list-tab-button" role="tab" data-type="tasks" aria-controls="tasks-tab-panel" aria-selected="false" tabindex="-1">
+            <span translate="no">Mix</span> Tasks
+          </button>
+        </li>
 
     </ul>
   </div>
 
-  <div class="gradient"></div>
-  <ul id="full-list"></ul>
-</section>
+  <div id="extras-tab-panel" class="sidebar-tabpanel" role="tabpanel" aria-labelledby="extras-list-tab-button">
+    <ul id="extras-full-list" class="full-list"></ul>
+  </div>
 
-<section class="content">
+    <div id="modules-tab-panel" class="sidebar-tabpanel" role="tabpanel" aria-labelledby="modules-list-tab-button" hidden>
+      <ul id="modules-full-list" class="full-list"></ul>
+    </div>
+
+
+    <div id="tasks-tab-panel" class="sidebar-tabpanel" role="tabpanel" aria-labelledby="tasks-list-tab-button" hidden>
+      <ul id="tasks-full-list" class="full-list"></ul>
+    </div>
+
+</nav>
+
+<main class="content">
   <output role="status" id="toast"></output>
-  <div class="content-outer">
-    <div id="content" class="content-inner">
 
-<h1>
-<button class="icon-action display-settings">
-  <i class="ri-settings-3-line"></i>
-  <span class="sr-only">Settings</span>
-</button>
+  <div id="content" class="content-inner">
+    <div class="top-search">
+      <div class="search-settings">
+        <form class="search-bar" action="search.html">
+          <label class="search-label">
+            <span class="sr-only">Search documentation of Nostrum</span>
+            <input name="q" type="text" class="search-input" placeholder="Press / to search" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+          </label>
+          <button type="submit" class="search-button" aria-label="Submit Search">
+            <i class="ri-search-2-line ri-lg" aria-hidden="true" title="Submit search"></i>
+          </button>
+          <button type="button" tabindex="-1" class="search-close-button" aria-hidden="true">
+            <i class="ri-close-line ri-lg" title="Cancel search"></i>
+          </button>
+        </form>
+        <div class="autocomplete">
+        </div>
+        <button class="icon-settings display-settings">
+          <i class="ri-settings-3-line"></i>
+          <span class="sr-only">Settings</span>
+        </button>
+      </div>
+    </div>
+
+<div id="top-content">
+  <h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/guides/advanced/pluggable_caching.md#L1" title="View Source" class="icon-action" rel="help">
+        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        <span class="sr-only">View Source</span>
+      </a>
 
 
-    <a href="https://github.com/Kraigie/nostrum/blob/master/guides/advanced/pluggable_caching.md#L1" title="View Source" class="icon-action" rel="help">
-      <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-      <span class="sr-only">View Source</span>
-    </a>
-
-
-  <span>Pluggable caching</span>
-</h1>
+    <span>Pluggable caching</span>
+  </h1>
 
 <p>The default ETS-based caches supplied by nostrum should work for most of your
 needs, but all of the caches can be exchanged for your own implementations. For
@@ -115,57 +144,57 @@ implementation you want to use. This can only be set at dependency compilation
 time. A common situation is that you don't want to cache presences in your bot,
 most likely you don't care about user's status, so you can disable it altogether
 by using the <code class="inline">NoOp</code> presence cache:</p><pre><code class="makeup elixir" translate="no"><span class="n">config</span><span class="w"> </span><span class="ss">:nostrum</span><span class="p">,</span><span class="w">
-  </span><span class="ss">caches</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="1099354139-1">%{</span><span class="w">
+  </span><span class="ss">caches</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="3883709045-1">%{</span><span class="w">
     </span><span class="ss">presences</span><span class="p">:</span><span class="w"> </span><span class="nc">Nostrum.Cache.PresenceCache.NoOp</span><span class="w">
-  </span><span class="p" data-group-id="1099354139-1">}</span></code></pre><p>In addition to regular caches that associate Discord snowflakes with the proper
+  </span><span class="p" data-group-id="3883709045-1">}</span></code></pre><p>In addition to regular caches that associate Discord snowflakes with the proper
 &quot;full&quot; object, nostrum also maintains junction table-like mappings that allow
 you to find the matching object from one cache in another. One example for this
 is <a href="Nostrum.Cache.ChannelGuildMapping.html"><code class="inline">Nostrum.Cache.ChannelGuildMapping</code></a>.</p><p>Nostrum also ships with Mnesia-based caches. <strong>These are only compiled in when
 mnesia is available</strong>: they may not be available on Nerves or when Mnesia was
 not installed with OTP.</p><h2 id="implementations" class="section-heading">
-  <a href="#implementations" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
-  <p class="sr-only">implementations</p>
+  <a href="#implementations" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
   </a>
-  Implementations
+  <span class="text">Implementations</span>
 </h2>
 <h3 id="ets-caching" class="section-heading">
-  <a href="#ets-caching" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
-  <p class="sr-only">ets-caching</p>
+  <a href="#ets-caching" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
   </a>
-  ETS caching
+  <span class="text">ETS caching</span>
 </h3>
 <p>Caching based on <code class="inline">:ets</code> is used by default. No configuration is required. Fast,
 light on memory, but does not support any form of distribution or secondary
 indexing: queries such as fetching all guild members for a guild by its ID will
 perform a full table scan. For smaller bots, this is perfectly acceptable.</p><h3 id="mnesia-caching" class="section-heading">
-  <a href="#mnesia-caching" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
-  <p class="sr-only">mnesia-caching</p>
+  <a href="#mnesia-caching" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
   </a>
-  Mnesia caching
+  <span class="text">Mnesia caching</span>
 </h3>
 <p>Mnesia-based caching is mainly suggested for larger bots that require
 features such as cache distribution, fragmentation, secondary indexing and more.</p><p>The caches will attempt to create their tables automatically at startup:
 therefore, Mnesia must be started ahead of nostrum. Caches expose a function
 <code class="inline">table/0</code> that can be called to retrieve the table name used by the cache and
-perform schema operations on it, such as adding replicas or fragmenting them.</p><p>Access to Mnesia is presently done in <code class="inline">sync_transaction</code> mode for best
+perform schema operations on it, such as adding replicas or fragmenting them.</p><!-- From 1.0, add the following: Any future schema migrations that nostrumneeds to perform will be automatically performed at cache startup. --><p>Access to Mnesia is presently done in <code class="inline">sync_transaction</code> mode for best
 consistency. If needed, a compile-time configuration option for the cache to
 switch this can be added.</p><p>Mnesia-based caching assumes the user is familar with usage and
 maintenance of Mnesia: the <a href="https://www.erlang.org/doc/apps/mnesia/users_guide.html">Mnesia User's
 Guide</a> is a good
 starting point.</p><h3 id="noop-caching" class="section-heading">
-  <a href="#noop-caching" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
-  <p class="sr-only">noop-caching</p>
+  <a href="#noop-caching" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
   </a>
-  NoOp caching
+  <span class="text">NoOp caching</span>
 </h3>
 <p>The NoOp cache adapters are supplied for the case where you do not want to cache
 specific data from Discord at all.</p><p>These cache adapters presently also don't send out any data they receive either:
 this means that for caches using the NoOp cache adapters, you won't receive any
 gateway events.</p><h2 id="cache-invalidation" class="section-heading">
-  <a href="#cache-invalidation" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
-  <p class="sr-only">cache-invalidation</p>
+  <a href="#cache-invalidation" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
   </a>
-  Cache invalidation
+  <span class="text">Cache invalidation</span>
 </h2>
 <p>nostrum does not invalidate cache in any special way: it will maintain it in
 response to gateway events (for instance by deleting a guild and its members
@@ -173,10 +202,10 @@ upon leaving it), but won't regularly prune caches or associate expiration times
 with entries. For volatile (RAM-based) caches this is perfectly fine, however,
 when implementing your own cache backend that persists to disk in some way, you
 need to take care of this yourself.</p><h2 id="cache-performance" class="section-heading">
-  <a href="#cache-performance" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
-  <p class="sr-only">cache-performance</p>
+  <a href="#cache-performance" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
   </a>
-  Cache performance
+  <span class="text">Cache performance</span>
 </h2>
 <p>nostrum strives to provide the most performant caches on the Discord bot caching
 market. If you run into performance issues with caches that you feel are not
@@ -184,7 +213,9 @@ adequately documented as such, please feel free to open an issue.</p><p>Benchmar
 directory</a> of the
 source code tree. If you want to get a feeling for how the caches perform or
 implement optimizations, check them out.</p>
-<div class="bottom-actions">
+</div>
+
+<div class="bottom-actions" id="bottom-actions">
   <div class="bottom-actions-item">
 
       <a href="voice.html" class="bottom-actions-button" rel="prev">
@@ -210,41 +241,41 @@ Multi-node
 
   </div>
 </div>
-      <footer class="footer">
-        <p>
-
-            <span class="line">
-              <a href="https://hex.pm/packages/nostrum/0.9.0-alpha3" class="footer-hex-package">Hex Package</a>
-
-              <a href="https://preview.hex.pm/preview/nostrum/0.9.0-alpha3">Hex Preview</a>
-
-                (<a href="https://preview.hex.pm/preview/nostrum/0.9.0-alpha3/show/guides/advanced/pluggable_caching.md">current file</a>)
-
-            </span>
+    <footer class="footer">
+      <p>
 
           <span class="line">
-            <button class="a-main footer-button display-quick-switch" title="Search HexDocs packages">
-              Search HexDocs
-            </button>
+            <a href="https://hex.pm/packages/nostrum/0.9.0-alpha3" class="footer-hex-package">Hex Package</a>
 
-              <a href="Nostrum.epub" title="ePub version">
-                Download ePub version
-              </a>
+            <a href="https://preview.hex.pm/preview/nostrum/0.9.0-alpha3">Hex Preview</a>
+
+              (<a href="https://preview.hex.pm/preview/nostrum/0.9.0-alpha3/show/guides/advanced/pluggable_caching.md">current file</a>)
 
           </span>
-        </p>
 
-        <p class="built-using">
-          Built using
-          <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.29.4) for the
+        <span class="line">
+          <button class="a-main footer-button display-quick-switch" title="Search HexDocs packages">
+            Search HexDocs
+          </button>
 
-            <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
+            <a href="Nostrum.epub" title="ePub version">
+              Download ePub version
+            </a>
 
-        </p>
-      </footer>
-    </div>
+        </span>
+      </p>
+
+      <p class="built-using">
+        Built using
+        <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.32.1) for the
+
+          <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
+
+      </p>
+
+    </footer>
   </div>
-</section>
+</main>
 </div>
 
 

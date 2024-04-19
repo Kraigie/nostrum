@@ -4,20 +4,19 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="ExDoc v0.29.4">
+    <meta name="generator" content="ExDoc v0.32.1">
     <meta name="project" content="Nostrum v0.9.0-alpha3">
 
+
     <title>Nostrum.Api.Ratelimiter — Nostrum v0.9.0-alpha3</title>
-    <link rel="stylesheet" href="dist/html-elixir-HHVY3JYD.css" />
+    <link rel="stylesheet" href="dist/html-elixir-2C5PUTIB.css" />
 
 
     <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
-    <script src="dist/handlebars.templates-XWGFFSCD.js"></script>
-    <script src="dist/sidebar_items-FF0CC478.js"></script>
-
-      <script src="docs_config.js"></script>
-
-    <script async src="dist/html-JDI3AVDD.js"></script>
+    <script src="dist/handlebars.templates-IHH6HKET.js"></script>
+    <script src="dist/sidebar_items-7079D557.js"></script>
+    <script src="docs_config.js"></script>
+    <script async src="dist/html-GXQ6W6IF.js"></script>
 
 
   </head>
@@ -36,115 +35,145 @@
       } catch (error) { }
     </script>
 
-<div class="main">
+<div class="body-wrapper">
 
-<button class="sidebar-button sidebar-toggle" aria-label="toggle sidebar">
+<button id="sidebar-menu" class="sidebar-button sidebar-toggle" aria-label="toggle sidebar" aria-controls="sidebar">
   <i class="ri-menu-line ri-lg" title="Collapse/expand sidebar"></i>
 </button>
 
-<section class="sidebar">
-  <form class="sidebar-search" action="search.html">
-    <button type="submit" class="search-button" aria-label="Submit Search">
-      <i class="ri-search-2-line" aria-hidden="true" title="Submit search"></i>
-    </button>
-    <button type="button" tabindex="-1" class="search-close-button" aria-label="Cancel Search">
-      <i class="ri-close-line ri-lg" aria-hidden="true" title="Cancel search"></i>
-    </button>
-    <label class="search-label">
-      <p class="sr-only">Search</p>
-      <input name="q" type="text" class="search-input" placeholder="Search..." aria-label="Input your search terms" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
-    </label>
-  </form>
-
-  <div class="autocomplete">
-    <div class="autocomplete-results">
-    </div>
-  </div>
+<nav id="sidebar" class="sidebar">
 
   <div class="sidebar-header">
+    <div class="sidebar-projectInfo">
 
-    <div class="sidebar-projectDetails">
-      <a href="https://github.com/Kraigie/nostrum" class="sidebar-projectName" translate="no">
+        <a href="https://github.com/Kraigie/nostrum" class="sidebar-projectImage">
+          <img src="assets/logo.png" alt="Nostrum" />
+        </a>
+
+      <div>
+        <a href="https://github.com/Kraigie/nostrum" class="sidebar-projectName" translate="no">
 Nostrum
-      </a>
-      <div class="sidebar-projectVersion" translate="no">
-        v0.9.0-alpha3
+        </a>
+        <div class="sidebar-projectVersion" translate="no">
+          v0.9.0-alpha3
+        </div>
       </div>
     </div>
-    <ul class="sidebar-listNav">
-      <li><a id="extras-list-link" href="#full-list">Pages</a></li>
+    <ul id="sidebar-listNav" class="sidebar-listNav" role="tablist">
+      <li>
+        <button id="extras-list-tab-button" role="tab" data-type="extras" aria-controls="extras-tab-panel" aria-selected="true" tabindex="0">
+Pages
+        </button>
+      </li>
 
-        <li><a id="modules-list-link" href="#full-list">Modules</a></li>
+        <li>
+          <button id="modules-list-tab-button" role="tab" data-type="modules" aria-controls="modules-tab-panel" aria-selected="false" tabindex="-1">
+            Modules
+          </button>
+        </li>
 
 
-        <li><a id="tasks-list-link" href="#full-list"><span translate="no">Mix</span> Tasks</a></li>
+        <li>
+          <button id="tasks-list-tab-button" role="tab" data-type="tasks" aria-controls="tasks-tab-panel" aria-selected="false" tabindex="-1">
+            <span translate="no">Mix</span> Tasks
+          </button>
+        </li>
 
     </ul>
   </div>
 
-  <div class="gradient"></div>
-  <ul id="full-list"></ul>
-</section>
+  <div id="extras-tab-panel" class="sidebar-tabpanel" role="tabpanel" aria-labelledby="extras-list-tab-button">
+    <ul id="extras-full-list" class="full-list"></ul>
+  </div>
 
-<section class="content">
+    <div id="modules-tab-panel" class="sidebar-tabpanel" role="tabpanel" aria-labelledby="modules-list-tab-button" hidden>
+      <ul id="modules-full-list" class="full-list"></ul>
+    </div>
+
+
+    <div id="tasks-tab-panel" class="sidebar-tabpanel" role="tabpanel" aria-labelledby="tasks-list-tab-button" hidden>
+      <ul id="tasks-full-list" class="full-list"></ul>
+    </div>
+
+</nav>
+
+<main class="content">
   <output role="status" id="toast"></output>
-  <div class="content-outer">
-    <div id="content" class="content-inner">
 
-<h1>
-<button class="icon-action display-settings">
-  <i class="ri-settings-3-line"></i>
-  <span class="sr-only">Settings</span>
-</button>
+  <div id="content" class="content-inner">
+    <div class="top-search">
+      <div class="search-settings">
+        <form class="search-bar" action="search.html">
+          <label class="search-label">
+            <span class="sr-only">Search documentation of Nostrum</span>
+            <input name="q" type="text" class="search-input" placeholder="Press / to search" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+          </label>
+          <button type="submit" class="search-button" aria-label="Submit Search">
+            <i class="ri-search-2-line ri-lg" aria-hidden="true" title="Submit search"></i>
+          </button>
+          <button type="button" tabindex="-1" class="search-close-button" aria-hidden="true">
+            <i class="ri-close-line ri-lg" title="Cancel search"></i>
+          </button>
+        </form>
+        <div class="autocomplete">
+        </div>
+        <button class="icon-settings display-settings">
+          <i class="ri-settings-3-line"></i>
+          <span class="sr-only">Settings</span>
+        </button>
+      </div>
+    </div>
+
+<div id="top-content">
+  <h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L1" title="View Source" class="icon-action" rel="help">
+        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        <span class="sr-only">View Source</span>
+      </a>
+
+    <span translate="no">Nostrum.Api.Ratelimiter</span> 
+    <small class="app-vsn" translate="no">(Nostrum v0.9.0-alpha3)</small>
+
+  </h1>
 
 
-    <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L1" title="View Source" class="icon-action" rel="help">
-      <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-      <span class="sr-only">View Source</span>
-    </a>
-
-  <span translate="no">Nostrum.Api.Ratelimiter</span> 
-  <small class="app-vsn" translate="no">(Nostrum v0.9.0-alpha3)</small>
-
-</h1>
-
-
-  <section id="moduledoc">
+    <section id="moduledoc">
 <p>Handles REST calls to the Discord API while respecting ratelimits.</p><h2 id="module-purpose" class="section-heading">
-  <a href="#module-purpose" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
-  <p class="sr-only">purpose</p>
+  <a href="#module-purpose" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
   </a>
-  Purpose
+  <span class="text">Purpose</span>
 </h2>
 <p>Discord's API returns information about ratelimits that we must respect. This
 module performs serialization of these requests through a single process,
 thus preventing concurrency issues from arising if two processes make a
 remote API call at the same time.</p><blockquote><h3 id="module-internal-module" class="info section-heading">
-  <a href="#module-internal-module" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
-  <p class="sr-only">internal-module</p>
+  <a href="#module-internal-module" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
   </a>
-  Internal module
+  <span class="text">Internal module</span>
 </h3>
 <p>This module is intended for exclusive usage inside of nostrum, and is
 documented for completeness and people curious to look behind the covers.</p></blockquote><h2 id="module-asynchronous-requests" class="section-heading">
-  <a href="#module-asynchronous-requests" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
-  <p class="sr-only">asynchronous-requests</p>
+  <a href="#module-asynchronous-requests" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
   </a>
-  Asynchronous requests
+  <span class="text">Asynchronous requests</span>
 </h2>
 <p>The ratelimiter is fully asynchronous internally. In theory, it also supports
 queueing requests in an asynchronous manner. However, support for this is
 currently not implemented in <a href="Nostrum.Api.html"><code class="inline">Nostrum.Api</code></a>.</p><p>If you want to make one or multiple asynchronous requests manually, you can
-use the following pattern:</p><pre><code class="makeup elixir" translate="no"><span class="n">req</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">:gen_statem</span><span class="o">.</span><span class="n">send_request</span><span class="p" data-group-id="4401687494-1">(</span><span class="nc">Nostrum.Api.Ratelimiter</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="4401687494-2">{</span><span class="ss">:queue</span><span class="p">,</span><span class="w"> </span><span class="n">request</span><span class="p" data-group-id="4401687494-2">}</span><span class="p" data-group-id="4401687494-1">)</span><span class="w">
+use the following pattern:</p><pre><code class="makeup elixir" translate="no"><span class="n">req</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">:gen_statem</span><span class="o">.</span><span class="n">send_request</span><span class="p" data-group-id="0638679399-1">(</span><span class="nc">Nostrum.Api.Ratelimiter</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="0638679399-2">{</span><span class="ss">:queue</span><span class="p">,</span><span class="w"> </span><span class="n">request</span><span class="p" data-group-id="0638679399-2">}</span><span class="p" data-group-id="0638679399-1">)</span><span class="w">
 </span><span class="c1"># ...</span><span class="w">
-</span><span class="n">response</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">:gen_statem</span><span class="o">.</span><span class="n">receive_response</span><span class="p" data-group-id="4401687494-3">(</span><span class="n">req</span><span class="p">,</span><span class="w"> </span><span class="n">timeout</span><span class="p" data-group-id="4401687494-3">)</span></code></pre><p>where <code class="inline">request</code> is a map describing the request to run - see <a href="Nostrum.Api.html"><code class="inline">Nostrum.Api</code></a>
+</span><span class="n">response</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">:gen_statem</span><span class="o">.</span><span class="n">receive_response</span><span class="p" data-group-id="0638679399-3">(</span><span class="n">req</span><span class="p">,</span><span class="w"> </span><span class="n">timeout</span><span class="p" data-group-id="0638679399-3">)</span></code></pre><p>where <code class="inline">request</code> is a map describing the request to run - see <a href="Nostrum.Api.html"><code class="inline">Nostrum.Api</code></a>
 for more information. You can also send multiple requests at the same time
 and wait for their response: see <a href="https://www.erlang.org/doc/man/gen_statem.html#reqids_add-3"><code class="inline">:gen_statem.reqids_add/3</code></a> and
 <a href="https://www.erlang.org/doc/man/gen_statem.html#wait_response-3"><code class="inline">:gen_statem.wait_response/3</code></a> for more information.</p><h2 id="module-multi-node" class="section-heading">
-  <a href="#module-multi-node" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
-  <p class="sr-only">multi-node</p>
+  <a href="#module-multi-node" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
   </a>
-  Multi-node
+  <span class="text">Multi-node</span>
 </h2>
 <p>If a single global process is desired to handle all ratelimiting, the
 ratelimiter can theoretically be adjusted to start registered via <code class="inline">:global</code>.
@@ -155,26 +184,26 @@ needed. <strong>Do note that the API enforces a global user ratelimit across all
 requests</strong>. With a single process, the ratelimiter can track this without
 hitting 429s at all, with multiple ratelimiters, the built-in requeue
 functionality may or may not help.</p><h2 id="module-inner-workings" class="section-heading">
-  <a href="#module-inner-workings" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
-  <p class="sr-only">inner-workings</p>
+  <a href="#module-inner-workings" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
   </a>
-  Inner workings
+  <span class="text">Inner workings</span>
 </h2>
 <p>When a client process wants to perform some request on the Discord API, it
 sends a request to the <code class="inline">:gen_statem</code> behind this module to ask it to <code class="inline">:queue</code>
 the incoming request.</p><h3 id="module-connection-setup" class="section-heading">
-  <a href="#module-connection-setup" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
-  <p class="sr-only">connection-setup</p>
+  <a href="#module-connection-setup" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
   </a>
-  Connection setup
+  <span class="text">Connection setup</span>
 </h3>
 <p>If the state machine is not connected to the HTTP endpoint, it will
 transition to the <code class="inline">:connecting</code> state and try to open the connection. If this
 succeeds, it transitions to the <code class="inline">:connected</code> state.</p><h3 id="module-queueing-requests" class="section-heading">
-  <a href="#module-queueing-requests" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
-  <p class="sr-only">queueing-requests</p>
+  <a href="#module-queueing-requests" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
   </a>
-  Queueing requests
+  <span class="text">Queueing requests</span>
 </h3>
 <p>The state machine associates a <a href="https://www.erlang.org/doc/man/queue.html#type-queue"><code class="inline">:queue.queue/1</code></a> of <a href="#t:queued_request/0"><code class="inline">queued_request/0</code></a> to
 each individual bucket, together with an internal count of remaining calls.
@@ -213,10 +242,10 @@ from postponing any events it receives and returning to the previous state
 (<code class="inline">:connected</code>) once the global timeout is gone. Requests that failed because
 of the global ratelimit are requeued after returning back into the regular
 state: a warning is logged to inform you of this.</p><h3 id="module-failure-modes" class="section-heading">
-  <a href="#module-failure-modes" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
-  <p class="sr-only">failure-modes</p>
+  <a href="#module-failure-modes" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
   </a>
-  Failure modes
+  <span class="text">Failure modes</span>
 </h3>
 <h4>HTTP connection death</h4><p>If the HTTP connection dies, the ratelimiter will inform each affected client
 by replying with <code class="inline">{:error, {:connection_died, reason}}</code>, where <code class="inline">reason</code> is
@@ -229,10 +258,10 @@ instance, because Discord returned us a 502 status code, the ratelimiter will
 not automatically kick the queue to start further running requests.</p><h4>Other internal issues</h4><p>Any other internal problems that are not handled appropriately in the
 ratelimiter will crash it, effectively resulting in the complete loss of any
 queued requests.</p><h3 id="module-implementation-benefits-drawbacks" class="section-heading">
-  <a href="#module-implementation-benefits-drawbacks" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
-  <p class="sr-only">implementation-benefits-drawbacks</p>
+  <a href="#module-implementation-benefits-drawbacks" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
   </a>
-  Implementation benefits &amp; drawbacks
+  <span class="text">Implementation benefits &amp; drawbacks</span>
 </h3>
 <h4>A history of ratelimiting</h4><p>First, it is important to give a short history of nostrum's ratelimiting: pre
 <code class="inline">0.8</code>, nostrum used to use a <a href="https://hexdocs.pm/elixir/GenServer.html"><code class="inline">GenServer</code></a> that would call out to ETS tables to
@@ -254,16 +283,16 @@ external storage mechanisms, which made the code hard to follow and required
 regular automatic pruning because the store had no idea when a bucket was no
 longer relevant on its own.</p></li><li><p>Requests would not be pipelined to run as soon as ideally possible.</p></li><li><p>The ratelimiter did not inform clients if their request died in-flight.</p></li><li><p>If the client disconnected before we returned the response, we had to
 handle this explicitly via <code class="inline">handle_info</code>.</p></li></ul><p>The new state machine-based ratelimiter solves these problems.</p>
-  </section>
+    </section>
 
+</div>
 
   <section id="summary" class="details-list">
     <h1 class="section-heading">
       <a class="hover-link" href="#summary">
         <i class="ri-link-m" aria-hidden="true"></i>
-        <span class="sr-only">Link to this section</span>
       </a>
-      Summary
+      <span class="text">Summary</span>
     </h1>
 <div class="summary-types summary">
   <h2>
@@ -435,9 +464,8 @@ handle this explicitly via <code class="inline">handle_info</code>.</p></li></ul
     <h1 class="section-heading">
       <a class="hover-link" href="#types">
         <i class="ri-link-m" aria-hidden="true"></i>
-        <span class="sr-only">Link to this section</span>
       </a>
-Types
+      <span class="text">Types</span>
     </h1>
     <div class="types-list">
 <section class="detail" id="t:bucket/0">
@@ -614,10 +642,10 @@ otherwise, the value won't represent the truth anymore.</p>
 
 <p>The state of the ratelimiter.</p><p>While this has no public use, it is still documented here to provide help
 when tracing the ratelimiter via <a href="https://www.erlang.org/doc/man/sys.html#trace-2"><code class="inline">:sys.trace/2</code></a> or other means.</p><h2 id="t:state/0-fields" class="section-heading">
-  <a href="#t:state/0-fields" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
-  <p class="sr-only">fields</p>
+  <a href="#t:state/0-fields" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
   </a>
-  Fields
+  <span class="text">Fields</span>
 </h2>
 <ul><li><p><code class="inline">:outstanding</code>: Outstanding (unqueued) requests per bucket alongside with
 the remaining calls that may be made on said bucket.</p></li><li><p><code class="inline">:running</code>: Requests that have been sent off. Used to associate back the
@@ -636,9 +664,8 @@ this time window. Reset automatically via timeouts.</p></li></ul>
     <h1 class="section-heading">
       <a class="hover-link" href="#functions">
         <i class="ri-link-m" aria-hidden="true"></i>
-        <span class="sr-only">Link to this section</span>
       </a>
-Functions
+      <span class="text">Functions</span>
     </h1>
     <div class="functions-list">
 <section class="detail" id="callback_mode/0">
@@ -900,41 +927,39 @@ will cause this to return an error.</p>
     </div>
   </section>
 
-      <footer class="footer">
-        <p>
-
-            <span class="line">
-              <a href="https://hex.pm/packages/nostrum/0.9.0-alpha3" class="footer-hex-package">Hex Package</a>
-
-              <a href="https://preview.hex.pm/preview/nostrum/0.9.0-alpha3">Hex Preview</a>
-
-                (<a href="https://preview.hex.pm/preview/nostrum/0.9.0-alpha3/show/lib/nostrum/api/ratelimiter.ex">current file</a>)
-
-            </span>
+    <footer class="footer">
+      <p>
 
           <span class="line">
-            <button class="a-main footer-button display-quick-switch" title="Search HexDocs packages">
-              Search HexDocs
-            </button>
+            <a href="https://hex.pm/packages/nostrum/0.9.0-alpha3" class="footer-hex-package">Hex Package</a>
 
-              <a href="Nostrum.epub" title="ePub version">
-                Download ePub version
-              </a>
+            <a href="https://preview.hex.pm/preview/nostrum/0.9.0-alpha3">Hex Preview</a>
 
           </span>
-        </p>
 
-        <p class="built-using">
-          Built using
-          <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.29.4) for the
+        <span class="line">
+          <button class="a-main footer-button display-quick-switch" title="Search HexDocs packages">
+            Search HexDocs
+          </button>
 
-            <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
+            <a href="Nostrum.epub" title="ePub version">
+              Download ePub version
+            </a>
 
-        </p>
-      </footer>
-    </div>
+        </span>
+      </p>
+
+      <p class="built-using">
+        Built using
+        <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.32.1) for the
+
+          <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
+
+      </p>
+
+    </footer>
   </div>
-</section>
+</main>
 </div>
 
 

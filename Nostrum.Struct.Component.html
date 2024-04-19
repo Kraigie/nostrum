@@ -4,20 +4,19 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="ExDoc v0.29.4">
+    <meta name="generator" content="ExDoc v0.32.1">
     <meta name="project" content="Nostrum v0.9.0-alpha3">
 
+
     <title>Nostrum.Struct.Component — Nostrum v0.9.0-alpha3</title>
-    <link rel="stylesheet" href="dist/html-elixir-HHVY3JYD.css" />
+    <link rel="stylesheet" href="dist/html-elixir-2C5PUTIB.css" />
 
 
     <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
-    <script src="dist/handlebars.templates-XWGFFSCD.js"></script>
-    <script src="dist/sidebar_items-FF0CC478.js"></script>
-
-      <script src="docs_config.js"></script>
-
-    <script async src="dist/html-JDI3AVDD.js"></script>
+    <script src="dist/handlebars.templates-IHH6HKET.js"></script>
+    <script src="dist/sidebar_items-7079D557.js"></script>
+    <script src="docs_config.js"></script>
+    <script async src="dist/html-GXQ6W6IF.js"></script>
 
 
   </head>
@@ -36,133 +35,163 @@
       } catch (error) { }
     </script>
 
-<div class="main">
+<div class="body-wrapper">
 
-<button class="sidebar-button sidebar-toggle" aria-label="toggle sidebar">
+<button id="sidebar-menu" class="sidebar-button sidebar-toggle" aria-label="toggle sidebar" aria-controls="sidebar">
   <i class="ri-menu-line ri-lg" title="Collapse/expand sidebar"></i>
 </button>
 
-<section class="sidebar">
-  <form class="sidebar-search" action="search.html">
-    <button type="submit" class="search-button" aria-label="Submit Search">
-      <i class="ri-search-2-line" aria-hidden="true" title="Submit search"></i>
-    </button>
-    <button type="button" tabindex="-1" class="search-close-button" aria-label="Cancel Search">
-      <i class="ri-close-line ri-lg" aria-hidden="true" title="Cancel search"></i>
-    </button>
-    <label class="search-label">
-      <p class="sr-only">Search</p>
-      <input name="q" type="text" class="search-input" placeholder="Search..." aria-label="Input your search terms" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
-    </label>
-  </form>
-
-  <div class="autocomplete">
-    <div class="autocomplete-results">
-    </div>
-  </div>
+<nav id="sidebar" class="sidebar">
 
   <div class="sidebar-header">
+    <div class="sidebar-projectInfo">
 
-    <div class="sidebar-projectDetails">
-      <a href="https://github.com/Kraigie/nostrum" class="sidebar-projectName" translate="no">
+        <a href="https://github.com/Kraigie/nostrum" class="sidebar-projectImage">
+          <img src="assets/logo.png" alt="Nostrum" />
+        </a>
+
+      <div>
+        <a href="https://github.com/Kraigie/nostrum" class="sidebar-projectName" translate="no">
 Nostrum
-      </a>
-      <div class="sidebar-projectVersion" translate="no">
-        v0.9.0-alpha3
+        </a>
+        <div class="sidebar-projectVersion" translate="no">
+          v0.9.0-alpha3
+        </div>
       </div>
     </div>
-    <ul class="sidebar-listNav">
-      <li><a id="extras-list-link" href="#full-list">Pages</a></li>
+    <ul id="sidebar-listNav" class="sidebar-listNav" role="tablist">
+      <li>
+        <button id="extras-list-tab-button" role="tab" data-type="extras" aria-controls="extras-tab-panel" aria-selected="true" tabindex="0">
+Pages
+        </button>
+      </li>
 
-        <li><a id="modules-list-link" href="#full-list">Modules</a></li>
+        <li>
+          <button id="modules-list-tab-button" role="tab" data-type="modules" aria-controls="modules-tab-panel" aria-selected="false" tabindex="-1">
+            Modules
+          </button>
+        </li>
 
 
-        <li><a id="tasks-list-link" href="#full-list"><span translate="no">Mix</span> Tasks</a></li>
+        <li>
+          <button id="tasks-list-tab-button" role="tab" data-type="tasks" aria-controls="tasks-tab-panel" aria-selected="false" tabindex="-1">
+            <span translate="no">Mix</span> Tasks
+          </button>
+        </li>
 
     </ul>
   </div>
 
-  <div class="gradient"></div>
-  <ul id="full-list"></ul>
-</section>
+  <div id="extras-tab-panel" class="sidebar-tabpanel" role="tabpanel" aria-labelledby="extras-list-tab-button">
+    <ul id="extras-full-list" class="full-list"></ul>
+  </div>
 
-<section class="content">
+    <div id="modules-tab-panel" class="sidebar-tabpanel" role="tabpanel" aria-labelledby="modules-list-tab-button" hidden>
+      <ul id="modules-full-list" class="full-list"></ul>
+    </div>
+
+
+    <div id="tasks-tab-panel" class="sidebar-tabpanel" role="tabpanel" aria-labelledby="tasks-list-tab-button" hidden>
+      <ul id="tasks-full-list" class="full-list"></ul>
+    </div>
+
+</nav>
+
+<main class="content">
   <output role="status" id="toast"></output>
-  <div class="content-outer">
-    <div id="content" class="content-inner">
 
-<h1>
-<button class="icon-action display-settings">
-  <i class="ri-settings-3-line"></i>
-  <span class="sr-only">Settings</span>
-</button>
+  <div id="content" class="content-inner">
+    <div class="top-search">
+      <div class="search-settings">
+        <form class="search-bar" action="search.html">
+          <label class="search-label">
+            <span class="sr-only">Search documentation of Nostrum</span>
+            <input name="q" type="text" class="search-input" placeholder="Press / to search" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+          </label>
+          <button type="submit" class="search-button" aria-label="Submit Search">
+            <i class="ri-search-2-line ri-lg" aria-hidden="true" title="Submit search"></i>
+          </button>
+          <button type="button" tabindex="-1" class="search-close-button" aria-hidden="true">
+            <i class="ri-close-line ri-lg" title="Cancel search"></i>
+          </button>
+        </form>
+        <div class="autocomplete">
+        </div>
+        <button class="icon-settings display-settings">
+          <i class="ri-settings-3-line"></i>
+          <span class="sr-only">Settings</span>
+        </button>
+      </div>
+    </div>
+
+<div id="top-content">
+  <h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/component.ex#L1" title="View Source" class="icon-action" rel="help">
+        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        <span class="sr-only">View Source</span>
+      </a>
+
+    <span translate="no">Nostrum.Struct.Component</span> <small>behaviour</small>
+    <small class="app-vsn" translate="no">(Nostrum v0.9.0-alpha3)</small>
+
+  </h1>
 
 
-    <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/component.ex#L1" title="View Source" class="icon-action" rel="help">
-      <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-      <span class="sr-only">View Source</span>
-    </a>
-
-  <span translate="no">Nostrum.Struct.Component</span> <small>behaviour</small>
-  <small class="app-vsn" translate="no">(Nostrum v0.9.0-alpha3)</small>
-
-</h1>
-
-
-  <section id="moduledoc">
+    <section id="moduledoc">
 <p>Components are a framework for adding interactive elements to the messages your app or bot sends. They're accessible, customizable, and easy to use. There are several different types of components; this documentation will outline the basics of this new framework and each example.</p><blockquote><p>Components have been broken out into individual modules for easy distinction between them and to separate helper functions and individual type checking between component types - especially as more components are added by Discord.</p></blockquote><p>Each of the components are provided all of the valid types through this module to avoid repetition and allow new components to be added quicker and easier.</p><h2 id="module-action-row" class="section-heading">
-  <a href="#module-action-row" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
-  <p class="sr-only">action-row</p>
+  <a href="#module-action-row" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
   </a>
-  Action Row
+  <span class="text">Action Row</span>
 </h2>
 <p>An Action Row is a non-interactive container component for other types of components. It has a <code class="inline">type: 1</code> and a sub-array of <code class="inline">components</code> of other types.</p><ul><li>You can have up to 5 Action Rows per message</li><li>An Action Row cannot contain another Action Row</li><li>An Action Row containing buttons cannot also contain a select menu</li></ul><h2 id="module-buttons" class="section-heading">
-  <a href="#module-buttons" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
-  <p class="sr-only">buttons</p>
+  <a href="#module-buttons" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
   </a>
-  Buttons
+  <span class="text">Buttons</span>
 </h2>
 <p>Buttons are interactive components that render on messages. They have a <code class="inline">type: 2</code>, They can be clicked by users. Buttons in Nostrum are further separated into two types, detailed below. Only the <a href="#module-interaction-buttons-non-link-buttons">Interaction Button</a> will fire a <a href="Nostrum.Struct.Interaction.html"><code class="inline">Nostrum.Struct.Interaction</code></a> when pressed.</p><p><img src="./assets/buttons.png" alt="Discord Buttons"/></p><ul><li>Buttons must exist inside an Action Row</li><li>An Action Row can contain up to 5 buttons</li><li>An Action Row containing buttons cannot also contain a select menu</li></ul><p>For more information check out the <a href="https://discord.com/developers/docs/interactions/message-components#button-object-button-styles">Discord API Button Styles</a> for more information.</p><h2 id="module-link-buttons" class="section-heading">
-  <a href="#module-link-buttons" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
-  <p class="sr-only">link-buttons</p>
+  <a href="#module-link-buttons" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
   </a>
-  Link Buttons
+  <span class="text">Link Buttons</span>
 </h2>
 <ul><li>Link buttons <strong>do not</strong> send an <code class="inline">interaction</code> to your app when clicked</li><li>Link buttons <strong>must</strong> have a <code class="inline">url</code>, and <strong>cannot</strong> have a <code class="inline">custom_id</code></li><li>Link buttons will <strong>always</strong> use <code class="inline">style: 5</code></li></ul><h4>Link <code class="inline">style: 5</code></h4><p><img src="./assets/secondary_button.png" alt="Link Button"/></p><h2 id="module-interaction-buttons-non-link-buttons" class="section-heading">
-  <a href="#module-interaction-buttons-non-link-buttons" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
-  <p class="sr-only">interaction-buttons-non-link-buttons</p>
+  <a href="#module-interaction-buttons-non-link-buttons" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
   </a>
-  Interaction Buttons ( Non-link Buttons )
+  <span class="text">Interaction Buttons ( Non-link Buttons )</span>
 </h2>
 <blockquote><p>Discord calls these buttons &quot;Non-link Buttons&quot;  due to the fact that they do not contain a url. However it would be more accurate to call them an &quot;Interaction Button&quot; as they <strong>do</strong> fire an interaction when clicked which is far more useful for your applications interactivity. As such they are referred to as &quot;Interaction Button&quot; throughout the rest of this module.</p></blockquote><ul><li>Interaction buttons <strong>must</strong> have a <code class="inline">custom_id</code>, and <strong>cannot</strong> have a <code class="inline">url</code></li><li>Can have one of the below <code class="inline">:style</code> applied.</li></ul><h4>Primary <code class="inline">style: 1</code></h4><p><img src="./assets/primary_button.png" alt="Primary"/></p><h4>Secondary <code class="inline">style: 2</code></h4><p><img src="./assets/secondary_button.png" alt="Secondary"/></p><h4>Success <code class="inline">style: 3</code></h4><p><img src="./assets/success_button.png" alt="Success"/></p><h4>Danger <code class="inline">style: 4</code></h4><p><img src="./assets/danger_button.png" alt="Danger (1)"/></p><h2 id="module-emoji-buttons" class="section-heading">
-  <a href="#module-emoji-buttons" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
-  <p class="sr-only">emoji-buttons</p>
+  <a href="#module-emoji-buttons" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
   </a>
-  🐼 <del>Emoji Buttons</del>
+  <span class="text">🐼 <del>Emoji Buttons</del></span>
 </h2>
 <blockquote><p>Note: The discord documentation and marketing material in relation to buttons indicates that there are three kinds of buttons: 🐼 <strong>Emoji Buttons</strong>, <strong>Link Buttons</strong> &amp; <strong>Non-Link Buttons</strong>. When in fact all buttons can contain an emoji. Because of this reason 🐼 <strong>Emoji Buttons</strong> are not included as a separate type. Emojis will be instead handled by the two included ( superior ) button types.</p></blockquote><p><img src="./assets/emoji_button.png" alt="emoji buttons in action"/></p><blockquote><p>The field requirements are already becoming convoluted especially considering everything so far is all still a &quot;Component&quot;. Using the sub types and helper functions will ensure all of the rules are followed when creating components.</p></blockquote><h2 id="module-select-menu" class="section-heading">
-  <a href="#module-select-menu" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
-  <p class="sr-only">select-menu</p>
+  <a href="#module-select-menu" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
   </a>
-  Select Menu
+  <span class="text">Select Menu</span>
 </h2>
 <p>Select menus are another interactive component that renders on messages. On desktop, clicking on a select menu opens a dropdown-style UI; on mobile, tapping a select menu opens up a half-sheet with the options.</p><p><img src="./assets/select_menu.png" alt="Discord Selects"/></p><p>Select menus support single-select and multi-select behavior, meaning you can prompt a user to choose just one item from a list, or multiple. When a user finishes making their choice by clicking out of the dropdown or closing the half-sheet, your app will receive an interaction.</p><ul><li>Select menus <strong>must</strong> be sent inside an Action Row</li><li>An Action Row can contain <strong>only one</strong> select menu</li><li>An Action Row containing a select menu <strong>cannot</strong> also contain buttons</li></ul><h2 id="module-text-input" class="section-heading">
-  <a href="#module-text-input" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
-  <p class="sr-only">text-input</p>
+  <a href="#module-text-input" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
   </a>
-  Text Input
+  <span class="text">Text Input</span>
 </h2>
 <p>Text inputs are an interactive component that render on modals. They can be used to collect short-form or long-form text.</p><ul><li>Text inputs <strong>must</strong> be sent inside an Action Row</li><li>An Action Row can contain <strong>only one</strong> text input</li><li>An Action Row containing a text input <strong>cannot</strong> also contain buttons or a select menu</li></ul><p>Can be used to collect short-form or long-form text.</p><ul><li>For short-form text, use <code class="inline">style: 1</code></li><li>For long-form text, use <code class="inline">style: 2</code></li></ul><p>Text inputs are only allowed to be sent as part of an Interaction response that opens a MODAL.</p>
-  </section>
+    </section>
 
+</div>
 
   <section id="summary" class="details-list">
     <h1 class="section-heading">
       <a class="hover-link" href="#summary">
         <i class="ri-link-m" aria-hidden="true"></i>
-        <span class="sr-only">Link to this section</span>
       </a>
-      Summary
+      <span class="text">Summary</span>
     </h1>
 <div class="summary-types summary">
   <h2>
@@ -388,9 +417,8 @@ Nostrum
     <h1 class="section-heading">
       <a class="hover-link" href="#types">
         <i class="ri-link-m" aria-hidden="true"></i>
-        <span class="sr-only">Link to this section</span>
       </a>
-Types
+      <span class="text">Types</span>
     </h1>
     <div class="types-list">
 <section class="detail" id="t:components/0">
@@ -925,9 +953,8 @@ Types
     <h1 class="section-heading">
       <a class="hover-link" href="#callbacks">
         <i class="ri-link-m" aria-hidden="true"></i>
-        <span class="sr-only">Link to this section</span>
       </a>
-Callbacks
+      <span class="text">Callbacks</span>
     </h1>
     <div class="callbacks-list">
 <section class="detail" id="c:new/1">
@@ -998,9 +1025,8 @@ Callbacks
     <h1 class="section-heading">
       <a class="hover-link" href="#functions">
         <i class="ri-link-m" aria-hidden="true"></i>
-        <span class="sr-only">Link to this section</span>
       </a>
-Functions
+      <span class="text">Functions</span>
     </h1>
     <div class="functions-list">
 <section class="detail" id="to_struct/1">
@@ -1037,41 +1063,39 @@ Functions
     </div>
   </section>
 
-      <footer class="footer">
-        <p>
-
-            <span class="line">
-              <a href="https://hex.pm/packages/nostrum/0.9.0-alpha3" class="footer-hex-package">Hex Package</a>
-
-              <a href="https://preview.hex.pm/preview/nostrum/0.9.0-alpha3">Hex Preview</a>
-
-                (<a href="https://preview.hex.pm/preview/nostrum/0.9.0-alpha3/show/lib/nostrum/struct/component.ex">current file</a>)
-
-            </span>
+    <footer class="footer">
+      <p>
 
           <span class="line">
-            <button class="a-main footer-button display-quick-switch" title="Search HexDocs packages">
-              Search HexDocs
-            </button>
+            <a href="https://hex.pm/packages/nostrum/0.9.0-alpha3" class="footer-hex-package">Hex Package</a>
 
-              <a href="Nostrum.epub" title="ePub version">
-                Download ePub version
-              </a>
+            <a href="https://preview.hex.pm/preview/nostrum/0.9.0-alpha3">Hex Preview</a>
 
           </span>
-        </p>
 
-        <p class="built-using">
-          Built using
-          <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.29.4) for the
+        <span class="line">
+          <button class="a-main footer-button display-quick-switch" title="Search HexDocs packages">
+            Search HexDocs
+          </button>
 
-            <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
+            <a href="Nostrum.epub" title="ePub version">
+              Download ePub version
+            </a>
 
-        </p>
-      </footer>
-    </div>
+        </span>
+      </p>
+
+      <p class="built-using">
+        Built using
+        <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.32.1) for the
+
+          <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
+
+      </p>
+
+    </footer>
   </div>
-</section>
+</main>
 </div>
 
 

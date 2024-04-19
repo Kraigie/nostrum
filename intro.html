@@ -4,20 +4,19 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="ExDoc v0.29.4">
+    <meta name="generator" content="ExDoc v0.32.1">
     <meta name="project" content="Nostrum v0.9.0-alpha3">
 
+
     <title>Introduction — Nostrum v0.9.0-alpha3</title>
-    <link rel="stylesheet" href="dist/html-elixir-HHVY3JYD.css" />
+    <link rel="stylesheet" href="dist/html-elixir-2C5PUTIB.css" />
 
 
     <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
-    <script src="dist/handlebars.templates-XWGFFSCD.js"></script>
-    <script src="dist/sidebar_items-FF0CC478.js"></script>
-
-      <script src="docs_config.js"></script>
-
-    <script async src="dist/html-JDI3AVDD.js"></script>
+    <script src="dist/handlebars.templates-IHH6HKET.js"></script>
+    <script src="dist/sidebar_items-7079D557.js"></script>
+    <script src="docs_config.js"></script>
+    <script async src="dist/html-GXQ6W6IF.js"></script>
 
 
   </head>
@@ -36,97 +35,127 @@
       } catch (error) { }
     </script>
 
-<div class="main">
+<div class="body-wrapper">
 
-<button class="sidebar-button sidebar-toggle" aria-label="toggle sidebar">
+<button id="sidebar-menu" class="sidebar-button sidebar-toggle" aria-label="toggle sidebar" aria-controls="sidebar">
   <i class="ri-menu-line ri-lg" title="Collapse/expand sidebar"></i>
 </button>
 
-<section class="sidebar">
-  <form class="sidebar-search" action="search.html">
-    <button type="submit" class="search-button" aria-label="Submit Search">
-      <i class="ri-search-2-line" aria-hidden="true" title="Submit search"></i>
-    </button>
-    <button type="button" tabindex="-1" class="search-close-button" aria-label="Cancel Search">
-      <i class="ri-close-line ri-lg" aria-hidden="true" title="Cancel search"></i>
-    </button>
-    <label class="search-label">
-      <p class="sr-only">Search</p>
-      <input name="q" type="text" class="search-input" placeholder="Search..." aria-label="Input your search terms" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
-    </label>
-  </form>
-
-  <div class="autocomplete">
-    <div class="autocomplete-results">
-    </div>
-  </div>
+<nav id="sidebar" class="sidebar">
 
   <div class="sidebar-header">
+    <div class="sidebar-projectInfo">
 
-    <div class="sidebar-projectDetails">
-      <a href="https://github.com/Kraigie/nostrum" class="sidebar-projectName" translate="no">
+        <a href="https://github.com/Kraigie/nostrum" class="sidebar-projectImage">
+          <img src="assets/logo.png" alt="Nostrum" />
+        </a>
+
+      <div>
+        <a href="https://github.com/Kraigie/nostrum" class="sidebar-projectName" translate="no">
 Nostrum
-      </a>
-      <div class="sidebar-projectVersion" translate="no">
-        v0.9.0-alpha3
+        </a>
+        <div class="sidebar-projectVersion" translate="no">
+          v0.9.0-alpha3
+        </div>
       </div>
     </div>
-    <ul class="sidebar-listNav">
-      <li><a id="extras-list-link" href="#full-list">Pages</a></li>
+    <ul id="sidebar-listNav" class="sidebar-listNav" role="tablist">
+      <li>
+        <button id="extras-list-tab-button" role="tab" data-type="extras" aria-controls="extras-tab-panel" aria-selected="true" tabindex="0">
+Pages
+        </button>
+      </li>
 
-        <li><a id="modules-list-link" href="#full-list">Modules</a></li>
+        <li>
+          <button id="modules-list-tab-button" role="tab" data-type="modules" aria-controls="modules-tab-panel" aria-selected="false" tabindex="-1">
+            Modules
+          </button>
+        </li>
 
 
-        <li><a id="tasks-list-link" href="#full-list"><span translate="no">Mix</span> Tasks</a></li>
+        <li>
+          <button id="tasks-list-tab-button" role="tab" data-type="tasks" aria-controls="tasks-tab-panel" aria-selected="false" tabindex="-1">
+            <span translate="no">Mix</span> Tasks
+          </button>
+        </li>
 
     </ul>
   </div>
 
-  <div class="gradient"></div>
-  <ul id="full-list"></ul>
-</section>
+  <div id="extras-tab-panel" class="sidebar-tabpanel" role="tabpanel" aria-labelledby="extras-list-tab-button">
+    <ul id="extras-full-list" class="full-list"></ul>
+  </div>
 
-<section class="content">
+    <div id="modules-tab-panel" class="sidebar-tabpanel" role="tabpanel" aria-labelledby="modules-list-tab-button" hidden>
+      <ul id="modules-full-list" class="full-list"></ul>
+    </div>
+
+
+    <div id="tasks-tab-panel" class="sidebar-tabpanel" role="tabpanel" aria-labelledby="tasks-list-tab-button" hidden>
+      <ul id="tasks-full-list" class="full-list"></ul>
+    </div>
+
+</nav>
+
+<main class="content">
   <output role="status" id="toast"></output>
-  <div class="content-outer">
-    <div id="content" class="content-inner">
 
-<h1>
-<button class="icon-action display-settings">
-  <i class="ri-settings-3-line"></i>
-  <span class="sr-only">Settings</span>
-</button>
+  <div id="content" class="content-inner">
+    <div class="top-search">
+      <div class="search-settings">
+        <form class="search-bar" action="search.html">
+          <label class="search-label">
+            <span class="sr-only">Search documentation of Nostrum</span>
+            <input name="q" type="text" class="search-input" placeholder="Press / to search" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+          </label>
+          <button type="submit" class="search-button" aria-label="Submit Search">
+            <i class="ri-search-2-line ri-lg" aria-hidden="true" title="Submit search"></i>
+          </button>
+          <button type="button" tabindex="-1" class="search-close-button" aria-hidden="true">
+            <i class="ri-close-line ri-lg" title="Cancel search"></i>
+          </button>
+        </form>
+        <div class="autocomplete">
+        </div>
+        <button class="icon-settings display-settings">
+          <i class="ri-settings-3-line"></i>
+          <span class="sr-only">Settings</span>
+        </button>
+      </div>
+    </div>
+
+<div id="top-content">
+  <h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/guides/intro/intro.md#L1" title="View Source" class="icon-action" rel="help">
+        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        <span class="sr-only">View Source</span>
+      </a>
 
 
-    <a href="https://github.com/Kraigie/nostrum/blob/master/guides/intro/intro.md#L1" title="View Source" class="icon-action" rel="help">
-      <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-      <span class="sr-only">View Source</span>
-    </a>
-
-
-  <span>Introduction</span>
-</h1>
+    <span>Introduction</span>
+  </h1>
 
 <p>nostrum is an Elixir library that can be used to interact with Discord.</p><p>To see documentation about a specific part of the library, please visit one of
 the following:</p><ul><li><a href="api.html">API</a> - Methods to interact with the RESTful API (and some other goodies).</li><li><a href="state.html">State</a> - Caches that keep information from Discord fresh at your disposal.</li><li><a href="events.html">Events</a> - Handling events from Discord as they come in.</li><li><a href="voice.html">Voice</a> - Playing audio through Discord voice channels.</li></ul><h2 id="setup" class="section-heading">
-  <a href="#setup" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
-  <p class="sr-only">setup</p>
+  <a href="#setup" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
   </a>
-  Setup
+  <span class="text">Setup</span>
 </h2>
 <p>There are two versions of nostrum, a stable version released on Hex and a dev
 version on GitHub. The dev version will be more up to date but will likely
-have more errors.</p><pre><code class="makeup elixir" translate="no"><span class="kd">def</span><span class="w"> </span><span class="nf">deps</span><span class="w"> </span><span class="k" data-group-id="9904068080-1">do</span><span class="w">
-  </span><span class="p" data-group-id="9904068080-2">[</span><span class="p" data-group-id="9904068080-3">{</span><span class="ss">:nostrum</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;~&gt; 0.8&quot;</span><span class="p" data-group-id="9904068080-3">}</span><span class="p" data-group-id="9904068080-2">]</span><span class="w">
+have more errors.</p><pre><code class="makeup elixir" translate="no"><span class="kd">def</span><span class="w"> </span><span class="nf">deps</span><span class="w"> </span><span class="k" data-group-id="9766466056-1">do</span><span class="w">
+  </span><span class="p" data-group-id="9766466056-2">[</span><span class="p" data-group-id="9766466056-3">{</span><span class="ss">:nostrum</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;~&gt; 0.8&quot;</span><span class="p" data-group-id="9766466056-3">}</span><span class="p" data-group-id="9766466056-2">]</span><span class="w">
   </span><span class="c1"># Or, for bleeding edge changes:</span><span class="w">
   </span><span class="c1"># [{:nostrum, github: &quot;Kraigie/nostrum&quot;}]</span><span class="w">
-</span><span class="k" data-group-id="9904068080-1">end</span></code></pre><p>Next up, you need to configure nostrum. The most basic configuration is simply
+</span><span class="k" data-group-id="9766466056-1">end</span></code></pre><p>Next up, you need to configure nostrum. The most basic configuration is simply
 setting a token to log in with:</p><pre><code class="makeup elixir" translate="no"><span class="n">config</span><span class="w"> </span><span class="ss">:nostrum</span><span class="p">,</span><span class="w">
   </span><span class="ss">token</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;666&quot;</span><span class="w">  </span><span class="c1"># The token of your bot as a string</span></code></pre><h2 id="configuration-options" class="section-heading">
-  <a href="#configuration-options" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
-  <p class="sr-only">configuration-options</p>
+  <a href="#configuration-options" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
   </a>
-  Configuration options
+  <span class="text">Configuration options</span>
 </h2>
 <p>Apart from the <code class="inline">token</code> field mentioned above, the following fields are also supported:</p><ul><li><code class="inline">num_shards</code> - the amount of shards to run. Can be one of the following:<ul><li><code class="inline">:auto</code>: use the suggested amount of shards as provided by Discord.</li><li><em><code class="inline">num</code></em>: a number of shards to run. nostrum will warn if this is not the
 recommended amount.</li><li><code class="inline">{lowest, highest, total}</code>: start shards <code class="inline">lowest</code> to <code class="inline">highest</code>. <code class="inline">total</code>
@@ -138,10 +167,10 @@ to subscribe to from the Discord API. More information can be found in the
 of members for all guilds at startup. Depending on your <a href="pluggable_caching.html">cache
 backend</a>, this may increase startup time
 and memory usage by quite a bit. Defaults to <code class="inline">false</code>.</li></ul><h3 id="voice-specific" class="section-heading">
-  <a href="#voice-specific" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
-  <p class="sr-only">voice-specific</p>
+  <a href="#voice-specific" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
   </a>
-  Voice-specific
+  <span class="text">Voice-specific</span>
 </h3>
 <ul><li><code class="inline">ffmpeg</code> - Specifies the path to the <code class="inline">ffmpeg</code> executable for playing audio.
 Defaults to <code class="inline">&quot;ffmpeg&quot;</code>.</li><li><code class="inline">youtubedl</code> - Specifies the path to the <code class="inline">youtube-dl</code> executable for playing
@@ -155,10 +184,10 @@ to voice websockets gateways upon joining voice channels. If set to <code class=
 but you still wish to connect to the voice gateway, you can do so manually
 by calling <a href="Nostrum.Voice.html#connect_to_gateway/1"><code class="inline">Nostrum.Voice.connect_to_gateway/1</code></a> after joining a voice
 channel. Defaults to <code class="inline">true</code>.</li></ul><h3 id="development-debugging" class="section-heading">
-  <a href="#development-debugging" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
-  <p class="sr-only">development-debugging</p>
+  <a href="#development-debugging" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
   </a>
-  Development &amp; debugging
+  <span class="text">Development &amp; debugging</span>
 </h3>
 <ul><li><code class="inline">log_full_events</code> - This will log the full payload received over the
 websocket. Defaults to <code class="inline">false</code>.</li><li><code class="inline">log_dispatch_events</code> - This will log dispatch events as they are received
@@ -172,31 +201,31 @@ processes. You can set this flag for <em>all</em> processes using environment
 variables or by <a href="http://erlang.org/doc/man/erlang.html#system_flag-2">setting the system flag
 yourself</a>. Defaults to
 whatever your system recommends, which is probably <code class="inline">65535</code>.</li></ul><h3 id="internal-options" class="section-heading">
-  <a href="#internal-options" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
-  <p class="sr-only">internal-options</p>
+  <a href="#internal-options" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
   </a>
-  Internal options
+  <span class="text">Internal options</span>
 </h3>
 <p>The following options are only used for testing nostrum itself.</p><ul><li><code class="inline">dev</code> - This is added to enable Nostrum to be run completely stand alone for
 development purposes. <code class="inline">true</code> will cause Nostrum to spawn its own event
 consumers. If you have the dev flag set to true while running Nostrum
 alongside your application some of your events will be consumed. Defaults to
 <code class="inline">false</code>.</li></ul><h2 id="logging" class="section-heading">
-  <a href="#logging" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
-  <p class="sr-only">logging</p>
+  <a href="#logging" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
   </a>
-  Logging
+  <span class="text">Logging</span>
 </h2>
 <p>nostrum uses Elixir's standard logger to inform you about regular and irregular
 events. Normal messages include Discord-requested shard reconnections and the
 <code class="inline">IDENTIFY</code> and <code class="inline">READY</code> events.</p><p>The following metadata fields through logger:</p><ul><li><code class="inline">shard</code> - Id of the shard on which the event occurred</li><li><code class="inline">guild</code> - Name of the guild on which the voice connection event occurred</li><li><code class="inline">channel</code> - Name of the channel on which the voice connection event occurred</li></ul><p>To enable this metadata, logger can be configured as such:</p><pre><code class="makeup elixir" translate="no"><span class="n">config</span><span class="w"> </span><span class="ss">:logger</span><span class="p">,</span><span class="w"> </span><span class="ss">:console</span><span class="p">,</span><span class="w">
-  </span><span class="ss">metadata</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="6265674151-1">[</span><span class="ss">:shard</span><span class="p">,</span><span class="w"> </span><span class="ss">:guild</span><span class="p">,</span><span class="w"> </span><span class="ss">:channel</span><span class="p" data-group-id="6265674151-1">]</span></code></pre><p>For more information on how this works, and how to change the logging
+  </span><span class="ss">metadata</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="4371359701-1">[</span><span class="ss">:shard</span><span class="p">,</span><span class="w"> </span><span class="ss">:guild</span><span class="p">,</span><span class="w"> </span><span class="ss">:channel</span><span class="p" data-group-id="4371359701-1">]</span></code></pre><p>For more information on how this works, and how to change the logging
 configuration for nostrum on its own, please see the <a href="https://hexdocs.pm/logger/Logger.html">Logger
 documentation</a></p><h3 id="why-elixir" class="section-heading">
-  <a href="#why-elixir" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
-  <p class="sr-only">why-elixir</p>
+  <a href="#why-elixir" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
   </a>
-  Why Elixir?
+  <span class="text">Why Elixir?</span>
 </h3>
 <p>From the Elixir website -</p><blockquote><p>Elixir is a dynamic, functional language designed for building scalable and
 maintainable applications.</p></blockquote><blockquote><p>Elixir leverages the Erlang VM, known for running low-latency, distributed
@@ -211,15 +240,17 @@ through the application quickly.</p></li><li><p><strong>Distributed</strong>: no
 components out of the box - that would fall out of the scope of the library.
 However, see the <a href="multi_node.html">multi-node</a> document for
 provided functionality. </p></li></ul><h2 id="example-bots" class="section-heading">
-  <a href="#example-bots" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
-  <p class="sr-only">example-bots</p>
+  <a href="#example-bots" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
   </a>
-  Example bots
+  <span class="text">Example bots</span>
 </h2>
 <ul><li><p>A simple bot that consumes events from the gateway can be found <a href="https://github.com/Kraigie/nostrum/blob/master/examples/event_consumer.ex">at
 <code class="inline">examples/event_consumer.ex</code></a>.</p></li><li><p>A more complex and active bot, bolt, can be found <a href="https://github.com/jchristgit/bolt">here</a>.</p></li><li><p>An example bot that plays audio through voice channels can be found <a href="https://github.com/Kraigie/nostrum/blob/master/examples/audio_player_example.ex">at
-<code class="inline">examples/audio_player_example.ex</code></a>.</p></li></ul>
-<div class="bottom-actions">
+<code class="inline">examples/audio_player_example.ex</code></a>.</p></li></ul><!-- vim: set textwidth=80 sw=2 ts=2: -->
+</div>
+
+<div class="bottom-actions" id="bottom-actions">
   <div class="bottom-actions-item">
 
       <a href="api-reference.html" class="bottom-actions-button" rel="prev">
@@ -245,41 +276,41 @@ API
 
   </div>
 </div>
-      <footer class="footer">
-        <p>
-
-            <span class="line">
-              <a href="https://hex.pm/packages/nostrum/0.9.0-alpha3" class="footer-hex-package">Hex Package</a>
-
-              <a href="https://preview.hex.pm/preview/nostrum/0.9.0-alpha3">Hex Preview</a>
-
-                (<a href="https://preview.hex.pm/preview/nostrum/0.9.0-alpha3/show/guides/intro/intro.md">current file</a>)
-
-            </span>
+    <footer class="footer">
+      <p>
 
           <span class="line">
-            <button class="a-main footer-button display-quick-switch" title="Search HexDocs packages">
-              Search HexDocs
-            </button>
+            <a href="https://hex.pm/packages/nostrum/0.9.0-alpha3" class="footer-hex-package">Hex Package</a>
 
-              <a href="Nostrum.epub" title="ePub version">
-                Download ePub version
-              </a>
+            <a href="https://preview.hex.pm/preview/nostrum/0.9.0-alpha3">Hex Preview</a>
+
+              (<a href="https://preview.hex.pm/preview/nostrum/0.9.0-alpha3/show/guides/intro/intro.md">current file</a>)
 
           </span>
-        </p>
 
-        <p class="built-using">
-          Built using
-          <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.29.4) for the
+        <span class="line">
+          <button class="a-main footer-button display-quick-switch" title="Search HexDocs packages">
+            Search HexDocs
+          </button>
 
-            <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
+            <a href="Nostrum.epub" title="ePub version">
+              Download ePub version
+            </a>
 
-        </p>
-      </footer>
-    </div>
+        </span>
+      </p>
+
+      <p class="built-using">
+        Built using
+        <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.32.1) for the
+
+          <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
+
+      </p>
+
+    </footer>
   </div>
-</section>
+</main>
 </div>
 
 

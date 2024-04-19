@@ -4,20 +4,19 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="ExDoc v0.29.4">
+    <meta name="generator" content="ExDoc v0.32.1">
     <meta name="project" content="Nostrum v0.9.0-alpha3">
 
+
     <title>Nostrum.Struct.User — Nostrum v0.9.0-alpha3</title>
-    <link rel="stylesheet" href="dist/html-elixir-HHVY3JYD.css" />
+    <link rel="stylesheet" href="dist/html-elixir-2C5PUTIB.css" />
 
 
     <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
-    <script src="dist/handlebars.templates-XWGFFSCD.js"></script>
-    <script src="dist/sidebar_items-FF0CC478.js"></script>
-
-      <script src="docs_config.js"></script>
-
-    <script async src="dist/html-JDI3AVDD.js"></script>
+    <script src="dist/handlebars.templates-IHH6HKET.js"></script>
+    <script src="dist/sidebar_items-7079D557.js"></script>
+    <script src="docs_config.js"></script>
+    <script async src="dist/html-GXQ6W6IF.js"></script>
 
 
   </head>
@@ -36,111 +35,141 @@
       } catch (error) { }
     </script>
 
-<div class="main">
+<div class="body-wrapper">
 
-<button class="sidebar-button sidebar-toggle" aria-label="toggle sidebar">
+<button id="sidebar-menu" class="sidebar-button sidebar-toggle" aria-label="toggle sidebar" aria-controls="sidebar">
   <i class="ri-menu-line ri-lg" title="Collapse/expand sidebar"></i>
 </button>
 
-<section class="sidebar">
-  <form class="sidebar-search" action="search.html">
-    <button type="submit" class="search-button" aria-label="Submit Search">
-      <i class="ri-search-2-line" aria-hidden="true" title="Submit search"></i>
-    </button>
-    <button type="button" tabindex="-1" class="search-close-button" aria-label="Cancel Search">
-      <i class="ri-close-line ri-lg" aria-hidden="true" title="Cancel search"></i>
-    </button>
-    <label class="search-label">
-      <p class="sr-only">Search</p>
-      <input name="q" type="text" class="search-input" placeholder="Search..." aria-label="Input your search terms" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
-    </label>
-  </form>
-
-  <div class="autocomplete">
-    <div class="autocomplete-results">
-    </div>
-  </div>
+<nav id="sidebar" class="sidebar">
 
   <div class="sidebar-header">
+    <div class="sidebar-projectInfo">
 
-    <div class="sidebar-projectDetails">
-      <a href="https://github.com/Kraigie/nostrum" class="sidebar-projectName" translate="no">
+        <a href="https://github.com/Kraigie/nostrum" class="sidebar-projectImage">
+          <img src="assets/logo.png" alt="Nostrum" />
+        </a>
+
+      <div>
+        <a href="https://github.com/Kraigie/nostrum" class="sidebar-projectName" translate="no">
 Nostrum
-      </a>
-      <div class="sidebar-projectVersion" translate="no">
-        v0.9.0-alpha3
+        </a>
+        <div class="sidebar-projectVersion" translate="no">
+          v0.9.0-alpha3
+        </div>
       </div>
     </div>
-    <ul class="sidebar-listNav">
-      <li><a id="extras-list-link" href="#full-list">Pages</a></li>
+    <ul id="sidebar-listNav" class="sidebar-listNav" role="tablist">
+      <li>
+        <button id="extras-list-tab-button" role="tab" data-type="extras" aria-controls="extras-tab-panel" aria-selected="true" tabindex="0">
+Pages
+        </button>
+      </li>
 
-        <li><a id="modules-list-link" href="#full-list">Modules</a></li>
+        <li>
+          <button id="modules-list-tab-button" role="tab" data-type="modules" aria-controls="modules-tab-panel" aria-selected="false" tabindex="-1">
+            Modules
+          </button>
+        </li>
 
 
-        <li><a id="tasks-list-link" href="#full-list"><span translate="no">Mix</span> Tasks</a></li>
+        <li>
+          <button id="tasks-list-tab-button" role="tab" data-type="tasks" aria-controls="tasks-tab-panel" aria-selected="false" tabindex="-1">
+            <span translate="no">Mix</span> Tasks
+          </button>
+        </li>
 
     </ul>
   </div>
 
-  <div class="gradient"></div>
-  <ul id="full-list"></ul>
-</section>
+  <div id="extras-tab-panel" class="sidebar-tabpanel" role="tabpanel" aria-labelledby="extras-list-tab-button">
+    <ul id="extras-full-list" class="full-list"></ul>
+  </div>
 
-<section class="content">
+    <div id="modules-tab-panel" class="sidebar-tabpanel" role="tabpanel" aria-labelledby="modules-list-tab-button" hidden>
+      <ul id="modules-full-list" class="full-list"></ul>
+    </div>
+
+
+    <div id="tasks-tab-panel" class="sidebar-tabpanel" role="tabpanel" aria-labelledby="tasks-list-tab-button" hidden>
+      <ul id="tasks-full-list" class="full-list"></ul>
+    </div>
+
+</nav>
+
+<main class="content">
   <output role="status" id="toast"></output>
-  <div class="content-outer">
-    <div id="content" class="content-inner">
 
-<h1>
-<button class="icon-action display-settings">
-  <i class="ri-settings-3-line"></i>
-  <span class="sr-only">Settings</span>
-</button>
+  <div id="content" class="content-inner">
+    <div class="top-search">
+      <div class="search-settings">
+        <form class="search-bar" action="search.html">
+          <label class="search-label">
+            <span class="sr-only">Search documentation of Nostrum</span>
+            <input name="q" type="text" class="search-input" placeholder="Press / to search" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+          </label>
+          <button type="submit" class="search-button" aria-label="Submit Search">
+            <i class="ri-search-2-line ri-lg" aria-hidden="true" title="Submit search"></i>
+          </button>
+          <button type="button" tabindex="-1" class="search-close-button" aria-hidden="true">
+            <i class="ri-close-line ri-lg" title="Cancel search"></i>
+          </button>
+        </form>
+        <div class="autocomplete">
+        </div>
+        <button class="icon-settings display-settings">
+          <i class="ri-settings-3-line"></i>
+          <span class="sr-only">Settings</span>
+        </button>
+      </div>
+    </div>
+
+<div id="top-content">
+  <h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/user.ex#L1" title="View Source" class="icon-action" rel="help">
+        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        <span class="sr-only">View Source</span>
+      </a>
+
+    <span translate="no">Nostrum.Struct.User</span> 
+    <small class="app-vsn" translate="no">(Nostrum v0.9.0-alpha3)</small>
+
+  </h1>
 
 
-    <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/user.ex#L1" title="View Source" class="icon-action" rel="help">
-      <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-      <span class="sr-only">View Source</span>
-    </a>
-
-  <span translate="no">Nostrum.Struct.User</span> 
-  <small class="app-vsn" translate="no">(Nostrum v0.9.0-alpha3)</small>
-
-</h1>
-
-
-  <section id="moduledoc">
+    <section id="moduledoc">
 <p>Struct representing a Discord user.</p><h2 id="module-mentioning-users-in-messages" class="section-heading">
-  <a href="#module-mentioning-users-in-messages" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
-  <p class="sr-only">mentioning-users-in-messages</p>
+  <a href="#module-mentioning-users-in-messages" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
   </a>
-  Mentioning Users in Messages
+  <span class="text">Mentioning Users in Messages</span>
 </h2>
 <p>A <a href="Nostrum.Struct.User.html#content"><code class="inline">Nostrum.Struct.User</code></a> can be mentioned in message content using the <a href="https://hexdocs.pm/elixir/String.Chars.html"><code class="inline">String.Chars</code></a>
-protocol or <a href="#mention/1"><code class="inline">mention/1</code></a>.</p><pre><code class="makeup elixir" translate="no"><span class="n">user</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="6590892989-1">%</span><span class="nc" data-group-id="6590892989-1">Nostrum.Struct.User</span><span class="p" data-group-id="6590892989-1">{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">120571255635181568</span><span class="p" data-group-id="6590892989-1">}</span><span class="w">
-</span><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">create_message!</span><span class="p" data-group-id="6590892989-2">(</span><span class="mi">184046599834435585</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;</span><span class="si" data-group-id="6590892989-3">#{</span><span class="n">user</span><span class="si" data-group-id="6590892989-3">}</span><span class="s">&quot;</span><span class="p" data-group-id="6590892989-2">)</span><span class="w">
-</span><span class="p" data-group-id="6590892989-4">%</span><span class="nc" data-group-id="6590892989-4">Nostrum.Struct.Message</span><span class="p" data-group-id="6590892989-4">{</span><span class="ss">content</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&lt;@120571255635181568&gt;&quot;</span><span class="p" data-group-id="6590892989-4">}</span><span class="w">
+protocol or <a href="#mention/1"><code class="inline">mention/1</code></a>.</p><pre><code class="makeup elixir" translate="no"><span class="n">user</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="9399114957-1">%</span><span class="nc" data-group-id="9399114957-1">Nostrum.Struct.User</span><span class="p" data-group-id="9399114957-1">{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">120571255635181568</span><span class="p" data-group-id="9399114957-1">}</span><span class="w">
+</span><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">create_message!</span><span class="p" data-group-id="9399114957-2">(</span><span class="mi">184046599834435585</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;</span><span class="si" data-group-id="9399114957-3">#{</span><span class="n">user</span><span class="si" data-group-id="9399114957-3">}</span><span class="s">&quot;</span><span class="p" data-group-id="9399114957-2">)</span><span class="w">
+</span><span class="p" data-group-id="9399114957-4">%</span><span class="nc" data-group-id="9399114957-4">Nostrum.Struct.Message</span><span class="p" data-group-id="9399114957-4">{</span><span class="ss">content</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&lt;@120571255635181568&gt;&quot;</span><span class="p" data-group-id="9399114957-4">}</span><span class="w">
 
-</span><span class="n">user</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="6590892989-5">%</span><span class="nc" data-group-id="6590892989-5">Nostrum.Struct.User</span><span class="p" data-group-id="6590892989-5">{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">89918932789497856</span><span class="p" data-group-id="6590892989-5">}</span><span class="w">
-</span><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">create_message!</span><span class="p" data-group-id="6590892989-6">(</span><span class="mi">280085880452939778</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;</span><span class="si" data-group-id="6590892989-7">#{</span><span class="nc">Nostrum.Struct.User</span><span class="o">.</span><span class="n">mention</span><span class="p" data-group-id="6590892989-8">(</span><span class="n">user</span><span class="p" data-group-id="6590892989-8">)</span><span class="si" data-group-id="6590892989-7">}</span><span class="s">&quot;</span><span class="p" data-group-id="6590892989-6">)</span><span class="w">
-</span><span class="p" data-group-id="6590892989-9">%</span><span class="nc" data-group-id="6590892989-9">Nostrum.Struct.Message</span><span class="p" data-group-id="6590892989-9">{</span><span class="ss">content</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&lt;@89918932789497856&gt;&quot;</span><span class="p" data-group-id="6590892989-9">}</span></code></pre><h2 id="module-user-vs-member" class="section-heading">
-  <a href="#module-user-vs-member" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
-  <p class="sr-only">user-vs-member</p>
+</span><span class="n">user</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="9399114957-5">%</span><span class="nc" data-group-id="9399114957-5">Nostrum.Struct.User</span><span class="p" data-group-id="9399114957-5">{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">89918932789497856</span><span class="p" data-group-id="9399114957-5">}</span><span class="w">
+</span><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">create_message!</span><span class="p" data-group-id="9399114957-6">(</span><span class="mi">280085880452939778</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;</span><span class="si" data-group-id="9399114957-7">#{</span><span class="nc">Nostrum.Struct.User</span><span class="o">.</span><span class="n">mention</span><span class="p" data-group-id="9399114957-8">(</span><span class="n">user</span><span class="p" data-group-id="9399114957-8">)</span><span class="si" data-group-id="9399114957-7">}</span><span class="s">&quot;</span><span class="p" data-group-id="9399114957-6">)</span><span class="w">
+</span><span class="p" data-group-id="9399114957-9">%</span><span class="nc" data-group-id="9399114957-9">Nostrum.Struct.Message</span><span class="p" data-group-id="9399114957-9">{</span><span class="ss">content</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&lt;@89918932789497856&gt;&quot;</span><span class="p" data-group-id="9399114957-9">}</span></code></pre><h2 id="module-user-vs-member" class="section-heading">
+  <a href="#module-user-vs-member" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
   </a>
-  User vs. Member
+  <span class="text">User vs. Member</span>
 </h2>
 <p>A <code class="inline">user</code> contains only general information about that user such as a <code class="inline">username</code> and an <code class="inline">avatar</code>.
 A <code class="inline">member</code> has everything that a <code class="inline">user</code> has, but also additional information on a per guild basis. This includes things like a <code class="inline">nickname</code> and a list of <code class="inline">roles</code>.</p>
-  </section>
+    </section>
 
+</div>
 
   <section id="summary" class="details-list">
     <h1 class="section-heading">
       <a class="hover-link" href="#summary">
         <i class="ri-link-m" aria-hidden="true"></i>
-        <span class="sr-only">Link to this section</span>
       </a>
-      Summary
+      <span class="text">Summary</span>
     </h1>
 <div class="summary-types summary">
   <h2>
@@ -301,9 +330,8 @@ A <code class="inline">member</code> has everything that a <code class="inline">
     <h1 class="section-heading">
       <a class="hover-link" href="#types">
         <i class="ri-link-m" aria-hidden="true"></i>
-        <span class="sr-only">Link to this section</span>
       </a>
-Types
+      <span class="text">Types</span>
     </h1>
     <div class="types-list">
 <section class="detail" id="t:avatar/0">
@@ -633,9 +661,8 @@ Types
     <h1 class="section-heading">
       <a class="hover-link" href="#functions">
         <i class="ri-link-m" aria-hidden="true"></i>
-        <span class="sr-only">Link to this section</span>
       </a>
-Functions
+      <span class="text">Functions</span>
     </h1>
     <div class="functions-list">
 <section class="detail" id="avatar_url/2">
@@ -666,27 +693,27 @@ Functions
       </div>
 
 <p>Returns the URL of a user's display avatar.</p><p>If <code class="inline">:avatar</code> is <code class="inline">nil</code>, the default avatar url is returned.</p><p>Supported image formats are PNG, JPEG, WebP, and GIF.</p><h2 id="avatar_url/2-examples" class="section-heading">
-  <a href="#avatar_url/2-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
-  <p class="sr-only">examples</p>
+  <a href="#avatar_url/2-examples" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
   </a>
-  Examples
+  <span class="text">Examples</span>
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="n">user</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="8344762051-1">%</span><span class="nc" data-group-id="8344762051-1">Nostrum.Struct.User</span><span class="p" data-group-id="8344762051-1">{</span><span class="ss">avatar</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;8342729096ea3675442027381ff50dfe&quot;</span><span class="p">,</span><span class="w">
-</span><span class="gp unselectable">...&gt; </span><span class="w">                            </span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">80351110224678912</span><span class="p" data-group-id="8344762051-1">}</span><span class="w">
-</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Struct.User</span><span class="o">.</span><span class="n">avatar_url</span><span class="p" data-group-id="8344762051-2">(</span><span class="n">user</span><span class="p" data-group-id="8344762051-2">)</span><span class="w">
+<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="n">user</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="4586828871-1">%</span><span class="nc" data-group-id="4586828871-1">Nostrum.Struct.User</span><span class="p" data-group-id="4586828871-1">{</span><span class="ss">avatar</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;8342729096ea3675442027381ff50dfe&quot;</span><span class="p">,</span><span class="w">
+</span><span class="gp unselectable">...&gt; </span><span class="w">                            </span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">80351110224678912</span><span class="p" data-group-id="4586828871-1">}</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Struct.User</span><span class="o">.</span><span class="n">avatar_url</span><span class="p" data-group-id="4586828871-2">(</span><span class="n">user</span><span class="p" data-group-id="4586828871-2">)</span><span class="w">
 </span><span class="s">&quot;https://cdn.discordapp.com/avatars/80351110224678912/8342729096ea3675442027381ff50dfe.webp&quot;</span><span class="w">
-</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Struct.User</span><span class="o">.</span><span class="n">avatar_url</span><span class="p" data-group-id="8344762051-3">(</span><span class="n">user</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;png&quot;</span><span class="p" data-group-id="8344762051-3">)</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Struct.User</span><span class="o">.</span><span class="n">avatar_url</span><span class="p" data-group-id="4586828871-3">(</span><span class="n">user</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;png&quot;</span><span class="p" data-group-id="4586828871-3">)</span><span class="w">
 </span><span class="s">&quot;https://cdn.discordapp.com/avatars/80351110224678912/8342729096ea3675442027381ff50dfe.png&quot;</span><span class="w">
 
-</span><span class="gp unselectable">iex&gt; </span><span class="n">user</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="8344762051-4">%</span><span class="nc" data-group-id="8344762051-4">Nostrum.Struct.User</span><span class="p" data-group-id="8344762051-4">{</span><span class="ss">avatar</span><span class="p">:</span><span class="w"> </span><span class="no">nil</span><span class="p">,</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="n">user</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="4586828871-4">%</span><span class="nc" data-group-id="4586828871-4">Nostrum.Struct.User</span><span class="p" data-group-id="4586828871-4">{</span><span class="ss">avatar</span><span class="p">:</span><span class="w"> </span><span class="no">nil</span><span class="p">,</span><span class="w">
 </span><span class="gp unselectable">...&gt; </span><span class="w">                            </span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">80351110224678912</span><span class="p">,</span><span class="w">
-</span><span class="gp unselectable">...&gt; </span><span class="w">                            </span><span class="ss">discriminator</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;0&quot;</span><span class="p" data-group-id="8344762051-4">}</span><span class="w">
-</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Struct.User</span><span class="o">.</span><span class="n">avatar_url</span><span class="p" data-group-id="8344762051-5">(</span><span class="n">user</span><span class="p" data-group-id="8344762051-5">)</span><span class="w">
+</span><span class="gp unselectable">...&gt; </span><span class="w">                            </span><span class="ss">discriminator</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;0&quot;</span><span class="p" data-group-id="4586828871-4">}</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Struct.User</span><span class="o">.</span><span class="n">avatar_url</span><span class="p" data-group-id="4586828871-5">(</span><span class="n">user</span><span class="p" data-group-id="4586828871-5">)</span><span class="w">
 </span><span class="s">&quot;https://cdn.discordapp.com/embed/avatars/5.png&quot;</span><span class="w">
 
-</span><span class="gp unselectable">iex&gt; </span><span class="n">user</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="8344762051-6">%</span><span class="nc" data-group-id="8344762051-6">Nostrum.Struct.User</span><span class="p" data-group-id="8344762051-6">{</span><span class="ss">avatar</span><span class="p">:</span><span class="w"> </span><span class="no">nil</span><span class="p">,</span><span class="w">
-</span><span class="gp unselectable">...&gt; </span><span class="w">                            </span><span class="ss">discriminator</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;1337&quot;</span><span class="p" data-group-id="8344762051-6">}</span><span class="w">
-</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Struct.User</span><span class="o">.</span><span class="n">avatar_url</span><span class="p" data-group-id="8344762051-7">(</span><span class="n">user</span><span class="p" data-group-id="8344762051-7">)</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="n">user</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="4586828871-6">%</span><span class="nc" data-group-id="4586828871-6">Nostrum.Struct.User</span><span class="p" data-group-id="4586828871-6">{</span><span class="ss">avatar</span><span class="p">:</span><span class="w"> </span><span class="no">nil</span><span class="p">,</span><span class="w">
+</span><span class="gp unselectable">...&gt; </span><span class="w">                            </span><span class="ss">discriminator</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;1337&quot;</span><span class="p" data-group-id="4586828871-6">}</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Struct.User</span><span class="o">.</span><span class="n">avatar_url</span><span class="p" data-group-id="4586828871-7">(</span><span class="n">user</span><span class="p" data-group-id="4586828871-7">)</span><span class="w">
 </span><span class="s">&quot;https://cdn.discordapp.com/embed/avatars/2.png&quot;</span></code></pre>
   </section>
 </section>
@@ -717,18 +744,18 @@ Functions
 
 <p>Returns a user's <code class="inline">:global_name</code> if present, otherwise returns their
 <code class="inline">:username</code> and <code class="inline">:discriminator</code> separated by a hashtag.</p><h2 id="full_name/1-examples" class="section-heading">
-  <a href="#full_name/1-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
-  <p class="sr-only">examples</p>
+  <a href="#full_name/1-examples" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
   </a>
-  Examples
+  <span class="text">Examples</span>
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="n">user</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="4370114634-1">%</span><span class="nc" data-group-id="4370114634-1">Nostrum.Struct.User</span><span class="p" data-group-id="4370114634-1">{</span><span class="ss">global_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;TheRealJason&quot;</span><span class="p">,</span><span class="w">
+<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="n">user</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="8607873268-1">%</span><span class="nc" data-group-id="8607873268-1">Nostrum.Struct.User</span><span class="p" data-group-id="8607873268-1">{</span><span class="ss">global_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;TheRealJason&quot;</span><span class="p">,</span><span class="w">
 </span><span class="gp unselectable">...&gt; </span><span class="w">                            </span><span class="ss">username</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;therealjason&quot;</span><span class="p">,</span><span class="w">
-</span><span class="gp unselectable">...&gt; </span><span class="w">                            </span><span class="ss">discriminator</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;0&quot;</span><span class="p" data-group-id="4370114634-1">}</span><span class="w">
-</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Struct.User</span><span class="o">.</span><span class="n">full_name</span><span class="p" data-group-id="4370114634-2">(</span><span class="n">user</span><span class="p" data-group-id="4370114634-2">)</span><span class="w">
-</span><span class="s">&quot;TheRealJason&quot;</span></code></pre><pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="n">user</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="5724033385-1">%</span><span class="nc" data-group-id="5724033385-1">Nostrum.Struct.User</span><span class="p" data-group-id="5724033385-1">{</span><span class="ss">username</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;b1nzy&quot;</span><span class="p">,</span><span class="w">
-</span><span class="gp unselectable">...&gt; </span><span class="w">                            </span><span class="ss">discriminator</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;0852&quot;</span><span class="p" data-group-id="5724033385-1">}</span><span class="w">
-</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Struct.User</span><span class="o">.</span><span class="n">full_name</span><span class="p" data-group-id="5724033385-2">(</span><span class="n">user</span><span class="p" data-group-id="5724033385-2">)</span><span class="w">
+</span><span class="gp unselectable">...&gt; </span><span class="w">                            </span><span class="ss">discriminator</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;0&quot;</span><span class="p" data-group-id="8607873268-1">}</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Struct.User</span><span class="o">.</span><span class="n">full_name</span><span class="p" data-group-id="8607873268-2">(</span><span class="n">user</span><span class="p" data-group-id="8607873268-2">)</span><span class="w">
+</span><span class="s">&quot;TheRealJason&quot;</span></code></pre><pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="n">user</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="3709729955-1">%</span><span class="nc" data-group-id="3709729955-1">Nostrum.Struct.User</span><span class="p" data-group-id="3709729955-1">{</span><span class="ss">username</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;b1nzy&quot;</span><span class="p">,</span><span class="w">
+</span><span class="gp unselectable">...&gt; </span><span class="w">                            </span><span class="ss">discriminator</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;0852&quot;</span><span class="p" data-group-id="3709729955-1">}</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Struct.User</span><span class="o">.</span><span class="n">full_name</span><span class="p" data-group-id="3709729955-2">(</span><span class="n">user</span><span class="p" data-group-id="3709729955-2">)</span><span class="w">
 </span><span class="s">&quot;b1nzy#0852&quot;</span></code></pre>
   </section>
 </section>
@@ -758,13 +785,13 @@ Functions
       </div>
 
 <p>Formats an <a href="Nostrum.Struct.User.html#content"><code class="inline">Nostrum.Struct.User</code></a> into a mention.</p><h2 id="mention/1-examples" class="section-heading">
-  <a href="#mention/1-examples" class="hover-link"><i class="ri-link-m" aria-hidden="true"></i>
-  <p class="sr-only">examples</p>
+  <a href="#mention/1-examples" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
   </a>
-  Examples
+  <span class="text">Examples</span>
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="n">user</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="3008466106-1">%</span><span class="nc" data-group-id="3008466106-1">Nostrum.Struct.User</span><span class="p" data-group-id="3008466106-1">{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">177888205536886784</span><span class="p" data-group-id="3008466106-1">}</span><span class="w">
-</span><span class="gp unselectable">...&gt; </span><span class="nc">Nostrum.Struct.User</span><span class="o">.</span><span class="n">mention</span><span class="p" data-group-id="3008466106-2">(</span><span class="n">user</span><span class="p" data-group-id="3008466106-2">)</span><span class="w">
+<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="n">user</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="8688375411-1">%</span><span class="nc" data-group-id="8688375411-1">Nostrum.Struct.User</span><span class="p" data-group-id="8688375411-1">{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">177888205536886784</span><span class="p" data-group-id="8688375411-1">}</span><span class="w">
+</span><span class="gp unselectable">...&gt; </span><span class="nc">Nostrum.Struct.User</span><span class="o">.</span><span class="n">mention</span><span class="p" data-group-id="8688375411-2">(</span><span class="n">user</span><span class="p" data-group-id="8688375411-2">)</span><span class="w">
 </span><span class="s">&quot;&lt;@177888205536886784&gt;&quot;</span></code></pre>
   </section>
 </section>
@@ -772,41 +799,39 @@ Functions
     </div>
   </section>
 
-      <footer class="footer">
-        <p>
-
-            <span class="line">
-              <a href="https://hex.pm/packages/nostrum/0.9.0-alpha3" class="footer-hex-package">Hex Package</a>
-
-              <a href="https://preview.hex.pm/preview/nostrum/0.9.0-alpha3">Hex Preview</a>
-
-                (<a href="https://preview.hex.pm/preview/nostrum/0.9.0-alpha3/show/lib/nostrum/struct/user.ex">current file</a>)
-
-            </span>
+    <footer class="footer">
+      <p>
 
           <span class="line">
-            <button class="a-main footer-button display-quick-switch" title="Search HexDocs packages">
-              Search HexDocs
-            </button>
+            <a href="https://hex.pm/packages/nostrum/0.9.0-alpha3" class="footer-hex-package">Hex Package</a>
 
-              <a href="Nostrum.epub" title="ePub version">
-                Download ePub version
-              </a>
+            <a href="https://preview.hex.pm/preview/nostrum/0.9.0-alpha3">Hex Preview</a>
 
           </span>
-        </p>
 
-        <p class="built-using">
-          Built using
-          <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.29.4) for the
+        <span class="line">
+          <button class="a-main footer-button display-quick-switch" title="Search HexDocs packages">
+            Search HexDocs
+          </button>
 
-            <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
+            <a href="Nostrum.epub" title="ePub version">
+              Download ePub version
+            </a>
 
-        </p>
-      </footer>
-    </div>
+        </span>
+      </p>
+
+      <p class="built-using">
+        Built using
+        <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.32.1) for the
+
+          <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
+
+      </p>
+
+    </footer>
   </div>
-</section>
+</main>
 </div>
 
 
