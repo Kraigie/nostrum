@@ -2,6 +2,13 @@ defmodule Nostrum.StateMachineTranslator do
   @moduledoc """
   Translate error reports for `:gen_statem` modules in Elixir.
 
+  > ### Internal module {: .info}
+  >
+  > This module is intended for exclusive usage inside of nostrum, and is
+  > documented for completeness and people curious to look behind the covers.
+
+  ## Reasoning
+
   By default, Elixir will ignore these messages altogether, see [this
   ElixirForum
   post](https://elixirforum.com/t/why-does-logger-translator-ignore-gen-statem-reports/37418).
