@@ -5,10 +5,10 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="ExDoc v0.32.1">
-    <meta name="project" content="Nostrum v0.9.0-alpha3">
+    <meta name="project" content="Nostrum v0.9.0-rc1">
 
 
-    <title>Nostrum.Struct.User — Nostrum v0.9.0-alpha3</title>
+    <title>Nostrum.Struct.User — Nostrum v0.9.0-rc1</title>
     <link rel="stylesheet" href="dist/html-elixir-2C5PUTIB.css" />
 
 
@@ -55,7 +55,7 @@
 Nostrum
         </a>
         <div class="sidebar-projectVersion" translate="no">
-          v0.9.0-alpha3
+          v0.9.0-rc1
         </div>
       </div>
     </div>
@@ -133,7 +133,7 @@ Pages
       </a>
 
     <span translate="no">Nostrum.Struct.User</span> 
-    <small class="app-vsn" translate="no">(Nostrum v0.9.0-alpha3)</small>
+    <small class="app-vsn" translate="no">(Nostrum v0.9.0-rc1)</small>
 
   </h1>
 
@@ -146,13 +146,13 @@ Pages
   <span class="text">Mentioning Users in Messages</span>
 </h2>
 <p>A <a href="Nostrum.Struct.User.html#content"><code class="inline">Nostrum.Struct.User</code></a> can be mentioned in message content using the <a href="https://hexdocs.pm/elixir/String.Chars.html"><code class="inline">String.Chars</code></a>
-protocol or <a href="#mention/1"><code class="inline">mention/1</code></a>.</p><pre><code class="makeup elixir" translate="no"><span class="n">user</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="3933379780-1">%</span><span class="nc" data-group-id="3933379780-1">Nostrum.Struct.User</span><span class="p" data-group-id="3933379780-1">{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">120571255635181568</span><span class="p" data-group-id="3933379780-1">}</span><span class="w">
-</span><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">create_message!</span><span class="p" data-group-id="3933379780-2">(</span><span class="mi">184046599834435585</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;</span><span class="si" data-group-id="3933379780-3">#{</span><span class="n">user</span><span class="si" data-group-id="3933379780-3">}</span><span class="s">&quot;</span><span class="p" data-group-id="3933379780-2">)</span><span class="w">
-</span><span class="p" data-group-id="3933379780-4">%</span><span class="nc" data-group-id="3933379780-4">Nostrum.Struct.Message</span><span class="p" data-group-id="3933379780-4">{</span><span class="ss">content</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&lt;@120571255635181568&gt;&quot;</span><span class="p" data-group-id="3933379780-4">}</span><span class="w">
+protocol or <a href="#mention/1"><code class="inline">mention/1</code></a>.</p><pre><code class="makeup elixir" translate="no"><span class="n">user</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="5488210765-1">%</span><span class="nc" data-group-id="5488210765-1">Nostrum.Struct.User</span><span class="p" data-group-id="5488210765-1">{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">120571255635181568</span><span class="p" data-group-id="5488210765-1">}</span><span class="w">
+</span><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">create_message!</span><span class="p" data-group-id="5488210765-2">(</span><span class="mi">184046599834435585</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;</span><span class="si" data-group-id="5488210765-3">#{</span><span class="n">user</span><span class="si" data-group-id="5488210765-3">}</span><span class="s">&quot;</span><span class="p" data-group-id="5488210765-2">)</span><span class="w">
+</span><span class="p" data-group-id="5488210765-4">%</span><span class="nc" data-group-id="5488210765-4">Nostrum.Struct.Message</span><span class="p" data-group-id="5488210765-4">{</span><span class="ss">content</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&lt;@120571255635181568&gt;&quot;</span><span class="p" data-group-id="5488210765-4">}</span><span class="w">
 
-</span><span class="n">user</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="3933379780-5">%</span><span class="nc" data-group-id="3933379780-5">Nostrum.Struct.User</span><span class="p" data-group-id="3933379780-5">{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">89918932789497856</span><span class="p" data-group-id="3933379780-5">}</span><span class="w">
-</span><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">create_message!</span><span class="p" data-group-id="3933379780-6">(</span><span class="mi">280085880452939778</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;</span><span class="si" data-group-id="3933379780-7">#{</span><span class="nc">Nostrum.Struct.User</span><span class="o">.</span><span class="n">mention</span><span class="p" data-group-id="3933379780-8">(</span><span class="n">user</span><span class="p" data-group-id="3933379780-8">)</span><span class="si" data-group-id="3933379780-7">}</span><span class="s">&quot;</span><span class="p" data-group-id="3933379780-6">)</span><span class="w">
-</span><span class="p" data-group-id="3933379780-9">%</span><span class="nc" data-group-id="3933379780-9">Nostrum.Struct.Message</span><span class="p" data-group-id="3933379780-9">{</span><span class="ss">content</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&lt;@89918932789497856&gt;&quot;</span><span class="p" data-group-id="3933379780-9">}</span></code></pre><h2 id="module-user-vs-member" class="section-heading">
+</span><span class="n">user</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="5488210765-5">%</span><span class="nc" data-group-id="5488210765-5">Nostrum.Struct.User</span><span class="p" data-group-id="5488210765-5">{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">89918932789497856</span><span class="p" data-group-id="5488210765-5">}</span><span class="w">
+</span><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">create_message!</span><span class="p" data-group-id="5488210765-6">(</span><span class="mi">280085880452939778</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;</span><span class="si" data-group-id="5488210765-7">#{</span><span class="nc">Nostrum.Struct.User</span><span class="o">.</span><span class="n">mention</span><span class="p" data-group-id="5488210765-8">(</span><span class="n">user</span><span class="p" data-group-id="5488210765-8">)</span><span class="si" data-group-id="5488210765-7">}</span><span class="s">&quot;</span><span class="p" data-group-id="5488210765-6">)</span><span class="w">
+</span><span class="p" data-group-id="5488210765-9">%</span><span class="nc" data-group-id="5488210765-9">Nostrum.Struct.Message</span><span class="p" data-group-id="5488210765-9">{</span><span class="ss">content</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;&lt;@89918932789497856&gt;&quot;</span><span class="p" data-group-id="5488210765-9">}</span></code></pre><h2 id="module-user-vs-member" class="section-heading">
   <a href="#module-user-vs-member" class="hover-link">
     <i class="ri-link-m" aria-hidden="true"></i>
   </a>
@@ -698,22 +698,22 @@ A <code class="inline">member</code> has everything that a <code class="inline">
   </a>
   <span class="text">Examples</span>
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="n">user</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="1334316796-1">%</span><span class="nc" data-group-id="1334316796-1">Nostrum.Struct.User</span><span class="p" data-group-id="1334316796-1">{</span><span class="ss">avatar</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;8342729096ea3675442027381ff50dfe&quot;</span><span class="p">,</span><span class="w">
-</span><span class="gp unselectable">...&gt; </span><span class="w">                            </span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">80351110224678912</span><span class="p" data-group-id="1334316796-1">}</span><span class="w">
-</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Struct.User</span><span class="o">.</span><span class="n">avatar_url</span><span class="p" data-group-id="1334316796-2">(</span><span class="n">user</span><span class="p" data-group-id="1334316796-2">)</span><span class="w">
+<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="n">user</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="9817546400-1">%</span><span class="nc" data-group-id="9817546400-1">Nostrum.Struct.User</span><span class="p" data-group-id="9817546400-1">{</span><span class="ss">avatar</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;8342729096ea3675442027381ff50dfe&quot;</span><span class="p">,</span><span class="w">
+</span><span class="gp unselectable">...&gt; </span><span class="w">                            </span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">80351110224678912</span><span class="p" data-group-id="9817546400-1">}</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Struct.User</span><span class="o">.</span><span class="n">avatar_url</span><span class="p" data-group-id="9817546400-2">(</span><span class="n">user</span><span class="p" data-group-id="9817546400-2">)</span><span class="w">
 </span><span class="s">&quot;https://cdn.discordapp.com/avatars/80351110224678912/8342729096ea3675442027381ff50dfe.webp&quot;</span><span class="w">
-</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Struct.User</span><span class="o">.</span><span class="n">avatar_url</span><span class="p" data-group-id="1334316796-3">(</span><span class="n">user</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;png&quot;</span><span class="p" data-group-id="1334316796-3">)</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Struct.User</span><span class="o">.</span><span class="n">avatar_url</span><span class="p" data-group-id="9817546400-3">(</span><span class="n">user</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;png&quot;</span><span class="p" data-group-id="9817546400-3">)</span><span class="w">
 </span><span class="s">&quot;https://cdn.discordapp.com/avatars/80351110224678912/8342729096ea3675442027381ff50dfe.png&quot;</span><span class="w">
 
-</span><span class="gp unselectable">iex&gt; </span><span class="n">user</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="1334316796-4">%</span><span class="nc" data-group-id="1334316796-4">Nostrum.Struct.User</span><span class="p" data-group-id="1334316796-4">{</span><span class="ss">avatar</span><span class="p">:</span><span class="w"> </span><span class="no">nil</span><span class="p">,</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="n">user</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="9817546400-4">%</span><span class="nc" data-group-id="9817546400-4">Nostrum.Struct.User</span><span class="p" data-group-id="9817546400-4">{</span><span class="ss">avatar</span><span class="p">:</span><span class="w"> </span><span class="no">nil</span><span class="p">,</span><span class="w">
 </span><span class="gp unselectable">...&gt; </span><span class="w">                            </span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">80351110224678912</span><span class="p">,</span><span class="w">
-</span><span class="gp unselectable">...&gt; </span><span class="w">                            </span><span class="ss">discriminator</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;0&quot;</span><span class="p" data-group-id="1334316796-4">}</span><span class="w">
-</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Struct.User</span><span class="o">.</span><span class="n">avatar_url</span><span class="p" data-group-id="1334316796-5">(</span><span class="n">user</span><span class="p" data-group-id="1334316796-5">)</span><span class="w">
+</span><span class="gp unselectable">...&gt; </span><span class="w">                            </span><span class="ss">discriminator</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;0&quot;</span><span class="p" data-group-id="9817546400-4">}</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Struct.User</span><span class="o">.</span><span class="n">avatar_url</span><span class="p" data-group-id="9817546400-5">(</span><span class="n">user</span><span class="p" data-group-id="9817546400-5">)</span><span class="w">
 </span><span class="s">&quot;https://cdn.discordapp.com/embed/avatars/5.png&quot;</span><span class="w">
 
-</span><span class="gp unselectable">iex&gt; </span><span class="n">user</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="1334316796-6">%</span><span class="nc" data-group-id="1334316796-6">Nostrum.Struct.User</span><span class="p" data-group-id="1334316796-6">{</span><span class="ss">avatar</span><span class="p">:</span><span class="w"> </span><span class="no">nil</span><span class="p">,</span><span class="w">
-</span><span class="gp unselectable">...&gt; </span><span class="w">                            </span><span class="ss">discriminator</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;1337&quot;</span><span class="p" data-group-id="1334316796-6">}</span><span class="w">
-</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Struct.User</span><span class="o">.</span><span class="n">avatar_url</span><span class="p" data-group-id="1334316796-7">(</span><span class="n">user</span><span class="p" data-group-id="1334316796-7">)</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="n">user</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="9817546400-6">%</span><span class="nc" data-group-id="9817546400-6">Nostrum.Struct.User</span><span class="p" data-group-id="9817546400-6">{</span><span class="ss">avatar</span><span class="p">:</span><span class="w"> </span><span class="no">nil</span><span class="p">,</span><span class="w">
+</span><span class="gp unselectable">...&gt; </span><span class="w">                            </span><span class="ss">discriminator</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;1337&quot;</span><span class="p" data-group-id="9817546400-6">}</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Struct.User</span><span class="o">.</span><span class="n">avatar_url</span><span class="p" data-group-id="9817546400-7">(</span><span class="n">user</span><span class="p" data-group-id="9817546400-7">)</span><span class="w">
 </span><span class="s">&quot;https://cdn.discordapp.com/embed/avatars/2.png&quot;</span></code></pre>
   </section>
 </section>
@@ -749,13 +749,13 @@ A <code class="inline">member</code> has everything that a <code class="inline">
   </a>
   <span class="text">Examples</span>
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="n">user</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="2258193246-1">%</span><span class="nc" data-group-id="2258193246-1">Nostrum.Struct.User</span><span class="p" data-group-id="2258193246-1">{</span><span class="ss">global_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;TheRealJason&quot;</span><span class="p">,</span><span class="w">
+<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="n">user</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="6174079969-1">%</span><span class="nc" data-group-id="6174079969-1">Nostrum.Struct.User</span><span class="p" data-group-id="6174079969-1">{</span><span class="ss">global_name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;TheRealJason&quot;</span><span class="p">,</span><span class="w">
 </span><span class="gp unselectable">...&gt; </span><span class="w">                            </span><span class="ss">username</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;therealjason&quot;</span><span class="p">,</span><span class="w">
-</span><span class="gp unselectable">...&gt; </span><span class="w">                            </span><span class="ss">discriminator</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;0&quot;</span><span class="p" data-group-id="2258193246-1">}</span><span class="w">
-</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Struct.User</span><span class="o">.</span><span class="n">full_name</span><span class="p" data-group-id="2258193246-2">(</span><span class="n">user</span><span class="p" data-group-id="2258193246-2">)</span><span class="w">
-</span><span class="s">&quot;TheRealJason&quot;</span></code></pre><pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="n">user</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="7020043281-1">%</span><span class="nc" data-group-id="7020043281-1">Nostrum.Struct.User</span><span class="p" data-group-id="7020043281-1">{</span><span class="ss">username</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;b1nzy&quot;</span><span class="p">,</span><span class="w">
-</span><span class="gp unselectable">...&gt; </span><span class="w">                            </span><span class="ss">discriminator</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;0852&quot;</span><span class="p" data-group-id="7020043281-1">}</span><span class="w">
-</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Struct.User</span><span class="o">.</span><span class="n">full_name</span><span class="p" data-group-id="7020043281-2">(</span><span class="n">user</span><span class="p" data-group-id="7020043281-2">)</span><span class="w">
+</span><span class="gp unselectable">...&gt; </span><span class="w">                            </span><span class="ss">discriminator</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;0&quot;</span><span class="p" data-group-id="6174079969-1">}</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Struct.User</span><span class="o">.</span><span class="n">full_name</span><span class="p" data-group-id="6174079969-2">(</span><span class="n">user</span><span class="p" data-group-id="6174079969-2">)</span><span class="w">
+</span><span class="s">&quot;TheRealJason&quot;</span></code></pre><pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="n">user</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="2734958836-1">%</span><span class="nc" data-group-id="2734958836-1">Nostrum.Struct.User</span><span class="p" data-group-id="2734958836-1">{</span><span class="ss">username</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;b1nzy&quot;</span><span class="p">,</span><span class="w">
+</span><span class="gp unselectable">...&gt; </span><span class="w">                            </span><span class="ss">discriminator</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;0852&quot;</span><span class="p" data-group-id="2734958836-1">}</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Struct.User</span><span class="o">.</span><span class="n">full_name</span><span class="p" data-group-id="2734958836-2">(</span><span class="n">user</span><span class="p" data-group-id="2734958836-2">)</span><span class="w">
 </span><span class="s">&quot;b1nzy#0852&quot;</span></code></pre>
   </section>
 </section>
@@ -790,8 +790,8 @@ A <code class="inline">member</code> has everything that a <code class="inline">
   </a>
   <span class="text">Examples</span>
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="n">user</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="4325515008-1">%</span><span class="nc" data-group-id="4325515008-1">Nostrum.Struct.User</span><span class="p" data-group-id="4325515008-1">{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">177888205536886784</span><span class="p" data-group-id="4325515008-1">}</span><span class="w">
-</span><span class="gp unselectable">...&gt; </span><span class="nc">Nostrum.Struct.User</span><span class="o">.</span><span class="n">mention</span><span class="p" data-group-id="4325515008-2">(</span><span class="n">user</span><span class="p" data-group-id="4325515008-2">)</span><span class="w">
+<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="n">user</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="7515033923-1">%</span><span class="nc" data-group-id="7515033923-1">Nostrum.Struct.User</span><span class="p" data-group-id="7515033923-1">{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">177888205536886784</span><span class="p" data-group-id="7515033923-1">}</span><span class="w">
+</span><span class="gp unselectable">...&gt; </span><span class="nc">Nostrum.Struct.User</span><span class="o">.</span><span class="n">mention</span><span class="p" data-group-id="7515033923-2">(</span><span class="n">user</span><span class="p" data-group-id="7515033923-2">)</span><span class="w">
 </span><span class="s">&quot;&lt;@177888205536886784&gt;&quot;</span></code></pre>
   </section>
 </section>
@@ -803,9 +803,9 @@ A <code class="inline">member</code> has everything that a <code class="inline">
       <p>
 
           <span class="line">
-            <a href="https://hex.pm/packages/nostrum/0.9.0-alpha3" class="footer-hex-package">Hex Package</a>
+            <a href="https://hex.pm/packages/nostrum/0.9.0-rc1" class="footer-hex-package">Hex Package</a>
 
-            <a href="https://preview.hex.pm/preview/nostrum/0.9.0-alpha3">Hex Preview</a>
+            <a href="https://preview.hex.pm/preview/nostrum/0.9.0-rc1">Hex Preview</a>
 
           </span>
 
