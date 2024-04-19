@@ -1,14 +1,14 @@
-defmodule Nostrum.Cache.ChannelCacheMetaTest do
-  alias Nostrum.Cache.ChannelCache
+defmodule Nostrum.Cache.DMChannelCacheMetaTest do
+  alias Nostrum.Cache.DMChannelCache
   alias Nostrum.Struct.Channel
   use ExUnit.Case, async: true
 
   @cache_modules [
     # Dispatchers
-    ChannelCache,
+    DMChannelCache,
     # Implementations
-    ChannelCache.ETS,
-    ChannelCache.Mnesia
+    DMChannelCache.ETS,
+    DMChannelCache.Mnesia
   ]
 
   for cache <- @cache_modules do
@@ -34,7 +34,7 @@ defmodule Nostrum.Cache.ChannelCacheMetaTest do
         end
 
         test "get/1 returns channel not found" do
-          assert {:error, :not_found} = ChannelCache.get(123, @cache)
+          assert {:error, :not_found} = DMChannelCache.get(123, @cache)
         end
 
         test "create/1 returns channel" do
@@ -63,7 +63,7 @@ defmodule Nostrum.Cache.ChannelCacheMetaTest do
 
         test "get/1 returns channel" do
           expected = Channel.to_struct(@test_channel)
-          assert {:ok, ^expected} = ChannelCache.get(@test_channel.id, @cache)
+          assert {:ok, ^expected} = DMChannelCache.get(@test_channel.id, @cache)
         end
 
         test "update/1 updates a channel" do
@@ -81,7 +81,7 @@ defmodule Nostrum.Cache.ChannelCacheMetaTest do
           deleted = @cache.delete(@test_channel.id)
           expected = Channel.to_struct(@test_channel)
           assert deleted == expected
-          assert {:error, :not_found} = ChannelCache.get(@test_channel.id, @cache)
+          assert {:error, :not_found} = DMChannelCache.get(@test_channel.id, @cache)
 
           # double delete:
           assert :noop == @cache.delete(@test_channel.id)

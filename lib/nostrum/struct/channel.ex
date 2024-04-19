@@ -19,7 +19,7 @@ defmodule Nostrum.Struct.Channel do
     permission_overwrites: [],
     position: 1,
     type: 5,
-  }
+  }x
   ```
 
   The channel struct implements `String.Chars` protocol through the `mention/1` function. This example uses our channel from the previous code block.

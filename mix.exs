@@ -53,7 +53,7 @@ defmodule Nostrum.Mixfile do
       assets: "guides/assets",
       nest_modules_by_prefix: [
         Nostrum.Cache,
-        Nostrum.Cache.ChannelCache,
+        Nostrum.Cache.DMChannelCache,
         Nostrum.Cache.ChannelGuildMapping,
         Nostrum.Cache.GuildCache,
         Nostrum.Cache.MemberCache,

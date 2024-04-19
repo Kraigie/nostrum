@@ -4,7 +4,7 @@ defmodule Nostrum.Cache.CacheSupervisor do
 
   See the documentation for the relevant submodules for details:
 
-  - `Nostrum.Cache.ChannelCache`
+  - `Nostrum.Cache.DMChannelCache`
   - `Nostrum.Cache.GuildCache`
   - `Nostrum.Cache.Me`
   - `Nostrum.Cache.PresenceCache`
@@ -25,7 +25,7 @@ defmodule Nostrum.Cache.CacheSupervisor do
       Nostrum.Cache.GuildCache,
       Nostrum.Cache.MemberCache,
       Nostrum.Cache.UserCache,
-      Nostrum.Cache.ChannelCache,
+      Nostrum.Cache.DMChannelCache,
       Nostrum.Cache.PresenceCache
     ]
 

@@ -1,5 +1,5 @@
-defmodule Nostrum.Cache.ChannelCache do
-  @default_cache_implementation Nostrum.Cache.ChannelCache.ETS
+defmodule Nostrum.Cache.DMChannelCache do
+  @default_cache_implementation Nostrum.Cache.DMChannelCache.ETS
   @moduledoc """
   Cache behaviour & dispatcher for direct message channels.
 
@@ -8,13 +8,21 @@ defmodule Nostrum.Cache.ChannelCache do
   The user-facing functions for reading the cache can be found in the "Reading
   the cache" section.
 
-  By default, #{@default_cache_implementation} will be used for caching channels.
-  You can override this in the `:caches` option of the `:nostrum` application
-  by setting the `:channels` field to a different module implementing the
-  `Nostrum.Cache.ChannelCache` behaviour. Any module below
-  `Nostrum.Cache.ChannelCache` can be used as a cache.
+  > ### Channels vs. DM Channels {: .info}
+  >
+  > This module only stores cached copies of direct message channels. All other
+  > channels will be attributed to a guild. You can map a channel ID to a guild
+  > with the `Nostrum.Cache.ChannelGuildMapping` cache, once you have a guild
+  > ID, you can look at the `t:Nostrum.Struct.Guild.channels/0` map to
+  > find your channel.
 
-  ## Writing your own channel cache
+  By default, #{@default_cache_implementation} will be used for caching DM channels.
+  You can override this in the `:caches` option of the `:nostrum` application
+  by setting the `:dm_channels` field to a different module implementing the
+  `Nostrum.Cache.DMChannelCache` behaviour. Any module below
+  `Nostrum.Cache.DMChannelCache` can be used as a cache.
+
+  ## Writing your own DM channel cache
 
   As with the other caches, the channel cache API consists of three parts:
 
@@ -45,7 +53,7 @@ defmodule Nostrum.Cache.ChannelCache do
 
   @configured_cache :nostrum
                     |> Application.compile_env(
-                      [:caches, :channels],
+                      [:caches, :dm_channels],
                       @default_cache_implementation
                     )
 
@@ -55,18 +63,18 @@ defmodule Nostrum.Cache.ChannelCache do
   ## Behaviour specification
 
   # Functions called from nostrum.
-  @doc "Create a channel in the cache."
+  @doc "Create a DM channel in the cache."
   @callback create(map) :: Channel.t()
 
   @doc """
-  Update a channel from upstream data.
+  Update a DM channel from upstream data.
 
   Return the original channel before the update, and the updated channel.
   """
   @callback update(Channel.t()) :: {Channel.t() | nil, Channel.t()}
 
   @doc """
-  Delete a channel from the cache.
+  Delete a DM channel from the cache.
 
   Return the old channel if it was cached, or `nil` otherwise.
   """
@@ -112,7 +120,7 @@ defmodule Nostrum.Cache.ChannelCache do
   @callback child_spec(term()) :: Supervisor.child_spec()
 
   @doc """
-  Look up a channel in the cache, by message or ID.
+  Look up a DM channel in the cache, by message or ID.
 
   An optional second argument can be passed to select the cache to read from.
   """
@@ -122,7 +130,7 @@ defmodule Nostrum.Cache.ChannelCache do
   def get(%Message{channel_id: channel_id}, cache), do: get(channel_id, cache)
 
   def get(channel_id, cache) do
-    handle = :nostrum_channel_cache_qlc.get(channel_id, cache)
+    handle = :nostrum_dmchannel_cache_qlc.get(channel_id, cache)
 
     wrap_qlc(cache, fn ->
       case :qlc.eval(handle) do

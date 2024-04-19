@@ -1,14 +1,14 @@
-defmodule Nostrum.Cache.ChannelCache.NoOp do
+defmodule Nostrum.Cache.DMChannelCache.NoOp do
   @moduledoc """
-  A NoOp implementation for the ChannelCache
+  A NoOp implementation for the DMChannelCache
 
-  This cache does nothing, enable it if you dont need to cache channels
+  This cache does nothing, enable it if you dont need to cache DM channels
   """
   @moduledoc since: "0.9.0"
 
-  @behaviour Nostrum.Cache.ChannelCache
+  @behaviour Nostrum.Cache.DMChannelCache
 
-  alias Nostrum.Cache.ChannelCache
+  alias Nostrum.Cache.DMChannelCache
   alias Nostrum.Struct.Channel
   use Supervisor
 
@@ -22,16 +22,16 @@ defmodule Nostrum.Cache.ChannelCache.NoOp do
     Supervisor.init([], strategy: :one_for_one)
   end
 
-  @impl ChannelCache
+  @impl DMChannelCache
   def create(channel), do: convert(channel)
 
-  @impl ChannelCache
+  @impl DMChannelCache
   def update(channel), do: {nil, convert(channel)}
 
-  @impl ChannelCache
+  @impl DMChannelCache
   def delete(_id), do: :noop
 
-  @impl ChannelCache
+  @impl DMChannelCache
   def query_handle, do: :qlc.string_to_handle(~c"[].")
 
   defp convert(%{__struct__: _} = struct), do: struct

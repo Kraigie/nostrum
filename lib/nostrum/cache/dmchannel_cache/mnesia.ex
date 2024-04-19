@@ -1,5 +1,5 @@
 if Code.ensure_loaded?(:mnesia) do
-  defmodule Nostrum.Cache.ChannelCache.Mnesia do
+  defmodule Nostrum.Cache.DMChannelCache.Mnesia do
     @moduledoc """
     An Mnesia-based cache for channels outside of guilds.
 
@@ -10,9 +10,9 @@ if Code.ensure_loaded?(:mnesia) do
     @table_name :nostrum_channels
     @record_name @table_name
 
-    @behaviour Nostrum.Cache.ChannelCache
+    @behaviour Nostrum.Cache.DMChannelCache
 
-    alias Nostrum.Cache.ChannelCache
+    alias Nostrum.Cache.DMChannelCache
     alias Nostrum.Struct.Channel
     use Supervisor
 
@@ -46,7 +46,7 @@ if Code.ensure_loaded?(:mnesia) do
       Supervisor.init([], strategy: :one_for_one)
     end
 
-    @impl ChannelCache
+    @impl DMChannelCache
     @doc "Creates the given channel in the cache."
     @spec create(map) :: Channel.t()
     def create(channel) do
@@ -56,7 +56,7 @@ if Code.ensure_loaded?(:mnesia) do
       parsed
     end
 
-    @impl ChannelCache
+    @impl DMChannelCache
     @doc "Update the given channel in the cache."
     @spec update(Channel.t()) :: {Channel.t() | nil, Channel.t()}
     def update(channel) do
@@ -74,7 +74,7 @@ if Code.ensure_loaded?(:mnesia) do
       end)
     end
 
-    @impl ChannelCache
+    @impl DMChannelCache
     @doc "Delete the channel from the cache by ID."
     @spec delete(Channel.id()) :: :noop | Channel.t()
     def delete(id) do
@@ -90,7 +90,7 @@ if Code.ensure_loaded?(:mnesia) do
       end)
     end
 
-    @impl ChannelCache
+    @impl DMChannelCache
     @doc "Retrieve a QLC query handle for the channel cache."
     @doc since: "0.8.0"
     @spec query_handle :: :qlc.query_handle()
@@ -99,7 +99,7 @@ if Code.ensure_loaded?(:mnesia) do
       :mnesia.table(@table_name, {:traverse, {:select, ms}})
     end
 
-    @impl ChannelCache
+    @impl DMChannelCache
     @doc "Wrap QLC operations in a transaction."
     @doc since: "0.8.0"
     def wrap_qlc(fun) do

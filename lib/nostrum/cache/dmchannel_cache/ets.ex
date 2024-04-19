@@ -1,4 +1,4 @@
-defmodule Nostrum.Cache.ChannelCache.ETS do
+defmodule Nostrum.Cache.DMChannelCache.ETS do
   @moduledoc """
   An ETS-based cache for channels outside of guilds.
 
@@ -10,16 +10,16 @@ defmodule Nostrum.Cache.ChannelCache.ETS do
 
   Note that users should not call the functions not related to this specific
   implementation of the cache directly. Instead, call the functions of
-  `Nostrum.Cache.ChannelCache` directly, which will dispatch to the configured
+  `Nostrum.Cache.DMChannelCache` directly, which will dispatch to the configured
   cache.
   """
   @moduledoc since: "0.5.0"
 
-  @behaviour Nostrum.Cache.ChannelCache
+  @behaviour Nostrum.Cache.DMChannelCache
 
   @table_name :nostrum_channels
 
-  alias Nostrum.Cache.ChannelCache
+  alias Nostrum.Cache.DMChannelCache
   alias Nostrum.Struct.Channel
   use Supervisor
 
@@ -41,7 +41,7 @@ defmodule Nostrum.Cache.ChannelCache.ETS do
   def table, do: @table_name
 
   @doc "Converts and creates the given map as a channel in the cache."
-  @impl ChannelCache
+  @impl DMChannelCache
   @spec create(map) :: Channel.t()
   def create(channel) do
     parsed = convert(channel)
@@ -50,7 +50,7 @@ defmodule Nostrum.Cache.ChannelCache.ETS do
   end
 
   @doc "Update the given channel in the cache."
-  @impl ChannelCache
+  @impl DMChannelCache
   @spec update(Channel.t()) :: {Channel.t() | nil, Channel.t()}
   def update(channel) do
     parsed = convert(channel)
@@ -66,7 +66,7 @@ defmodule Nostrum.Cache.ChannelCache.ETS do
   end
 
   @doc "Delete the channel from the cache by ID."
-  @impl ChannelCache
+  @impl DMChannelCache
   @spec delete(Channel.id()) :: :noop | Channel.t()
   def delete(id) do
     case :ets.lookup(@table_name, id) do
@@ -79,7 +79,7 @@ defmodule Nostrum.Cache.ChannelCache.ETS do
     end
   end
 
-  @impl ChannelCache
+  @impl DMChannelCache
   @doc "Retrieve a query handle for usage with QLC."
   @doc since: "0.8.0"
   @spec query_handle() :: :qlc.query_handle()
