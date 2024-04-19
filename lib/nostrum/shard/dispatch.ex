@@ -89,28 +89,18 @@ defmodule Nostrum.Shard.Dispatch do
   def handle_event(:AUTO_MODERATION_RULE_EXECUTION = event, p, state),
     do: {event, AutoModerationRuleExecute.to_struct(p), state}
 
-  def handle_event(:CHANNEL_CREATE = event, %{type: t} = p, state) when t in [0, 2] do
+  def handle_event(:CHANNEL_CREATE = event, p, state) do
     ChannelGuildMapping.create(p.id, p.guild_id)
     {event, GuildCache.channel_create(p.guild_id, p), state}
   end
 
-  # Ignore group channels
-  def handle_event(:CHANNEL_CREATE, _p, _state) do
-    :noop
-  end
-
-  def handle_event(:CHANNEL_DELETE = event, %{type: t} = p, state) when t in [0, 2] do
+  def handle_event(:CHANNEL_DELETE = event, p, state) do
     ChannelGuildMapping.delete(p.id)
     {event, GuildCache.channel_delete(p.guild_id, p.id), state}
   end
 
   def handle_event(:CHANNEL_UPDATE = event, p, state) do
     {event, GuildCache.channel_update(p.guild_id, p), state}
-  end
-
-  def handle_event(:CHANNEL_DELETE, _p, _state) do
-    # Ignore group channels
-    :noop
   end
 
   def handle_event(:CHANNEL_PINS_ACK = event, p, state), do: {event, p, state}
