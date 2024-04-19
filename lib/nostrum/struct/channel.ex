@@ -29,43 +29,29 @@ defmodule Nostrum.Struct.Channel do
   "<#766435015768539156>"
   ```
 
-  ## Channel Cache
+  ## Channel Caching
 
-  The [`ChannelCache`](`Nostrum.Cache.ChannelCache`) module provides functionality for you to retrieve information about any channel that your application can see. It provides two functions: [`get/1`](`Nostrum.Cache.ChannelCache.get/1`) and [`get!/1`](`Nostrum.Cache.ChannelCache.get!/1`).
+  Channels are cached within the guild object they are a member of. To fetch a cached channel you should use the `Nostrum.Cache.ChannelGuildMapping` cache to map a cache to a guild ID.
 
-  ## Example
+  Once you have a guild ID, you can use the `Nostrum.Cache.GuildCache` to fetch the guild and all channels, then use the `t:Nostrum.Struct.Guild.channels/0` field to find the channel.
+
+  ### Example
 
   ```elixir
-  Nostrum.Cache.ChannelCache.get!(827333533688397865)
-  %Nostrum.Struct.Channel{
-    application_id: nil,
-    bitrate: nil,
-    guild_id: 766435015768539156,
-    icon: nil,
-    id: 827333533688397865,
-    last_message_id: nil,
-    last_pin_timestamp: nil,
-    name: "announcements",
-    nsfw: false,
-    owner_id: nil,
-    parent_id: nil,
-    permission_overwrites: [
-      %Nostrum.Struct.Overwrite{
-        allow: 0,
-        deny: 2048,
-        id: 766435015768539156,
-        type: :role
-      }
-    ],
-    position: 1,
-    recipients: nil,
-    topic: nil,
-    type: 5,
-    user_limit: nil
-  }
+  iex(20)> channel_id = 1229955694258684005
+  1229955694258684005
+  iex(21)> guild_id = Nostrum.Cache.ChannelGuildMapping.get(channel_id)
+  1226944827137069107
+  iex(22)> {:ok, guild} = Nostrum.Cache.GuildCache.get(guild_id)
+  {:ok,
+    %Nostrum.Struct.Guild{
+      id: 1226944827137069107,
+      name: "nostrum test",
+      ...
+  }}
+  iex(24)> guild.channels[channel_id].name
+  "test"
   ```
-
-  More details of the cache can be found at `Nostrum.Cache.ChannelCache`.
 
   ## Helper Functions
 
@@ -695,7 +681,7 @@ defmodule Nostrum.Struct.Channel do
   ## Examples
 
   ```elixir
-  Nostrum.Cache.ChannelCache.get(381889573426429952)
+  channel
   |> Nostrum.Struct.Channel.mention()
   "<#381889573426429952>"
 
