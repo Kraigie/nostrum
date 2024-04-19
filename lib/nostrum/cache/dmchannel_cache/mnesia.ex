@@ -7,7 +7,7 @@ if Code.ensure_loaded?(:mnesia) do
     """
     @moduledoc since: "0.8.0"
 
-    @table_name :nostrum_channels
+    @table_name :nostrum_dm_channels
     @record_name @table_name
 
     @behaviour Nostrum.Cache.DMChannelCache

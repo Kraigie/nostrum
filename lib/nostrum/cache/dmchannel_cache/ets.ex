@@ -17,7 +17,7 @@ defmodule Nostrum.Cache.DMChannelCache.ETS do
 
   @behaviour Nostrum.Cache.DMChannelCache
 
-  @table_name :nostrum_channels
+  @table_name :nostrum_dm_channels
 
   alias Nostrum.Cache.DMChannelCache
   alias Nostrum.Struct.Channel
