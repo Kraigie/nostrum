@@ -2,7 +2,6 @@ defmodule Nostrum.Shard.Dispatch do
   @moduledoc false
 
   alias Nostrum.Cache.{
-    ChannelCache,
     ChannelGuildMapping,
     GuildCache,
     MemberCache,
@@ -90,10 +89,6 @@ defmodule Nostrum.Shard.Dispatch do
   def handle_event(:AUTO_MODERATION_RULE_EXECUTION = event, p, state),
     do: {event, AutoModerationRuleExecute.to_struct(p), state}
 
-  def handle_event(:CHANNEL_CREATE = event, %{type: 1} = p, state) do
-    {event, ChannelCache.create(p), state}
-  end
-
   def handle_event(:CHANNEL_CREATE = event, %{type: t} = p, state) when t in [0, 2] do
     ChannelGuildMapping.create(p.id, p.guild_id)
     {event, GuildCache.channel_create(p.guild_id, p), state}
@@ -102,10 +97,6 @@ defmodule Nostrum.Shard.Dispatch do
   # Ignore group channels
   def handle_event(:CHANNEL_CREATE, _p, _state) do
     :noop
-  end
-
-  def handle_event(:CHANNEL_DELETE = event, %{type: 1} = p, state) do
-    {event, ChannelCache.delete(p.id), state}
   end
 
   def handle_event(:CHANNEL_DELETE = event, %{type: t} = p, state) when t in [0, 2] do
@@ -294,9 +285,6 @@ defmodule Nostrum.Shard.Dispatch do
   end
 
   def handle_event(:READY = event, p, state) do
-    p.private_channels
-    |> Enum.each(fn dm_channel -> ChannelCache.create(dm_channel) end)
-
     ready_guilds =
       p.guilds
       |> Enum.map(fn guild -> handle_event(:GUILD_CREATE, guild, state) end)

@@ -32,7 +32,7 @@ defmodule ExampleCommands do
   import Nostrum.Snowflake, only: [is_snowflake: 1]
 
   alias Nostrum.Api
-  alias Nostrum.Cache.{ChannelCache, GuildCache, UserCache}
+  alias Nostrum.Cache.{GuildCache, UserCache}
   alias Nostrum.Struct.User
 
   # Fetch the defined prefix from our config, however,
@@ -66,15 +66,12 @@ defmodule ExampleCommands do
            {Integer.parse(message_user_id), :parse_id},
          {:ok, user} <-
            get_cached_with_fallback(user_id, &UserCache.get/1, &Api.get_user/1),
-         {:ok, %{name: channel_name}} <-
-           get_cached_with_fallback(channel_id, &ChannelCache.get/1, &Api.get_channel/1),
          {:ok, %{name: guild_name}} <-
            get_cached_with_fallback(guild_id, &GuildCache.get/1, &Api.get_guild/1) do
       Api.create_message(
         channel_id,
         """
         ID #{message_user_id} belongs to: #{User.full_name(user)}
-        Message sent in channel: ##{channel_name}
         Channel belongs to guild: #{guild_name}
         """
       )
