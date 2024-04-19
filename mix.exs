@@ -8,7 +8,7 @@ defmodule Nostrum.Mixfile do
       appup: "appup.ex",
       compilers: Mix.compilers() ++ [:appup],
       version: "0.9.0-alpha3",
-      elixir: "~> 1.13",
+      elixir: "~> 1.14",
       elixirc_paths: elixirc_paths(Mix.env()),
       build_embedded: Mix.env() == :prod,
       start_permanent: Mix.env() == :prod,
@@ -150,13 +150,13 @@ defmodule Nostrum.Mixfile do
 
   defp deps do
     [
-      {:jason, "~> 1.2"},
+      {:jason, "~> 1.4"},
       {:gun, "~> 2.0"},
-      {:certifi, "~> 2.8"},
+      {:certifi, "~> 2.13"},
       {:kcl, "~> 1.4"},
       {:mime, "~> 1.6 or ~> 2.0"},
       {:castle, "~> 0.3.0", runtime: false},
-      {:ex_doc, "~> 0.28", only: :dev, runtime: false},
+      {:ex_doc, "~> 0.32", only: :dev, runtime: false},
       {:credo, "~> 1.7.5", only: [:dev, :test], runtime: false},
       {:dialyxir, "~> 1.1", only: [:dev], runtime: false},
       {:benchee, "~> 1.1", only: :dev, runtime: false},
