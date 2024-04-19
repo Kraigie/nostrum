@@ -38,19 +38,17 @@ defmodule Nostrum.Struct.Channel do
   ### Example
 
   ```elixir
-  iex(20)> channel_id = 1229955694258684005
-  1229955694258684005
-  iex(21)> guild_id = Nostrum.Cache.ChannelGuildMapping.get(channel_id)
+  > guild_id = Nostrum.Cache.ChannelGuildMapping.get(1229955694258684005)
   1226944827137069107
-  iex(22)> {:ok, guild} = Nostrum.Cache.GuildCache.get(guild_id)
+  > {:ok, guild} = Nostrum.Cache.GuildCache.get(guild_id)
   {:ok,
     %Nostrum.Struct.Guild{
       id: 1226944827137069107,
-      name: "nostrum test",
+      name: "Craig Cat Zone",
       ...
   }}
-  iex(24)> guild.channels[channel_id].name
-  "test"
+  > guild.channels[channel_id].name
+  "cat-general"
   ```
 
   ## Helper Functions
