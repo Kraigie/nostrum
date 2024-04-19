@@ -100,8 +100,7 @@ defmodule Nostrum.Mixfile do
         ~r/Nostrum.Constants/
       ],
       Utilities: [
-        ~r/Nostrum.(Snowflake|Token|Util)/,
-        ~r/^Nostrum\.StateMachineTranslator$/
+        ~r/Nostrum.(Snowflake|Token|Util)/
       ],
       Stores: [
         ~r/Nostrum.Store.\w+$/
@@ -112,7 +111,8 @@ defmodule Nostrum.Mixfile do
       ],
       "Internal modules": [
         ~r/Nostrum.Api.Ratelimiter/,
-        ~r/Nostrum.Shard/
+        ~r/Nostrum.Shard/,
+        ~r/^Nostrum\.StateMachineTranslator$/
       ]
     ]
   end
