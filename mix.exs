@@ -40,8 +40,9 @@ defmodule Nostrum.Mixfile do
     [
       main: "intro",
       extras: extras(),
+      logo: "assets/icon.png",
       groups_for_modules: groups_for_modules(),
-      groups_for_functions: groups_for_functions(),
+      groups_for_docs: groups_for_docs(),
       groups_for_extras: [
         Introduction: ~r"/introduction/",
         Functionality: ~r"/functionality/",
@@ -117,7 +118,7 @@ defmodule Nostrum.Mixfile do
     ]
   end
 
-  defp groups_for_functions,
+  defp groups_for_docs,
     do: []
 
   def aliases do
