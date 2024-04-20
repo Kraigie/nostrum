@@ -18,7 +18,7 @@ have more errors.
 
 ```elixir
 def deps do
-  [{:nostrum, "~> 0.8"}]
+  [{:nostrum, "~> 0.9"}]
   # Or, for bleeding edge changes:
   # [{:nostrum, github: "Kraigie/nostrum"}]
 end

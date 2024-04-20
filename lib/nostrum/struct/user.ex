@@ -51,6 +51,7 @@ defmodule Nostrum.Struct.User do
   @type discriminator :: String.t()
 
   @typedoc "The user's display name, if it is set"
+  @typedoc since: "0.9.0"
   @type global_name :: String.t() | nil
 
   @typedoc "User's avatar hash"

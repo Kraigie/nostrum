@@ -4,6 +4,7 @@ defmodule Nostrum.Struct.Message.Poll do
 
   There are various helper methods on this structure to create new poll, see `create_poll/2` and `put_answer/2` & `put_answer/3` for code samples.
   """
+  @moduledoc since: "0.9.0"
 
   alias Nostrum.Util
 
