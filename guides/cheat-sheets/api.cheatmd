@@ -1,0 +1,139 @@
+# API Usage
+
+This cheat sheet covers basic use of the Discord API through the `Nostrum.Api` module.
+
+## Messages
+{: .col-2}
+
+### Sending a message
+
+```elixir
+utc_now = DateTime.now!("Etc/UTC")
+atom_count = :erlang.system_info(:atom_count)
+
+content = """
+UTC time is: #{DateTime.to_iso8601(utc_now)}
+Atom table size is: #{atom_count}
+"""
+
+Nostrum.Api.create_message(msg.channel_id, content)
+```
+
+### Sending a message with an embed
+
+```elixir
+import Nostrum.Struct.Embed
+
+embed =
+  %Nostrum.Struct.Embed{}
+  |> put_title("Craig's Cats")
+  |> put_description("nostrum")
+  |> put_url("https://google.com/")
+  |> put_timestamp("2016-05-05T21:04:13.203Z")
+  |> put_color(431_948)
+  |> put_field("Field 1", "Test")
+  # set inline attribute to true
+  |> put_field("Field 2", "More test", true)
+
+Nostrum.Api.create_message(msg.channel_id, embeds: [embed])
+```
+
+You can look at the documentation in `m:Nostrum.Struct.Embed#module-using-structs` for more advanced usage.
+
+### Upload an attachment
+
+```elixir
+Nostrum.Api.create_message(
+  msg.channel_id,
+  files: [
+    # file from filesystem
+    "/path/to/file.txt",
+    # file from memory
+    %{body: "test file", name: "example.txt"}
+  ]
+)
+```
+
+### Reply to a message
+
+With a mention:
+
+```elixir
+Nostrum.Api.create_message(
+    msg.channel_id,
+    content: "Hello!",
+    message_reference: %{message_id: msg.id}
+)
+```
+
+Without a mention:
+
+```elixir
+Nostrum.Api.create_message(
+    msg.channel_id,
+    content: "Hello!",
+    message_reference: %{message_id: msg.id},
+    allowed_mentions: :none
+)
+```
+
+### Send a poll
+
+```elixir
+poll = Poll.create_poll(
+     "Do you enjoy pineapple on pizza?",
+     duration: 2,
+     allow_multiselect: false
+)
+|> Poll.put_answer("Yes!", default_emoji: "\u2705")
+|> Poll.put_answer("No!", default_emoji: "\u274C")
+
+Api.create_message(channel_id, poll: poll)
+```
+
+### React to a message
+
+Using a default emoji (unicode representation):
+```elixir
+Nostrum.Api.create_reaction(
+    msg.channel_id,
+    msg.id,
+    "\xF0\x9F\x98\x80"
+)
+```
+
+Using a custom Discord emoji:
+```elixir
+emoji = %Nostrum.Struct.Emoji{
+      name: "emojiname",
+      id: 1228698654022434866
+}
+
+Nostrum.Api.create_reaction(msg.channel_id, msg.id, emoji)
+```
+
+## Miscellaneous
+{: .col-2}
+
+### Update the bot status
+
+```elixir
+Nostrum.Api.update_status(
+    :dnd,
+    "craigs cats",
+    3 # Watching status
+)
+```
+You can also update a single shard with `Nostrum.Api.update_shard_status/5`.
+
+### Create a guild emoji
+
+```elixir
+image = "data:image/png;base64,..."
+
+Nostrum.Api.create_guild_emoji(
+    msg.guild_id,
+    name: "nostrum",
+    image: image
+)
+```
