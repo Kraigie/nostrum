@@ -281,7 +281,7 @@ defmodule Nostrum.Api do
     do: create_message(channel_id, Map.new(options))
 
   def create_message(channel_id, %{} = options) when is_snowflake(channel_id) do
-    options = prepare_allowed_mentions(options) |> combine_embeds()
+    options = prepare_allowed_mentions(options) |> combine_embeds() |> combine_files()
 
     request(:post, Constants.channel_messages(channel_id), options)
     |> handle_request_with_decode({:struct, Message})
@@ -348,7 +348,7 @@ defmodule Nostrum.Api do
 
   def edit_message(channel_id, message_id, %{} = options)
       when is_snowflake(channel_id) and is_snowflake(message_id) do
-    options = prepare_allowed_mentions(options) |> combine_embeds()
+    options = prepare_allowed_mentions(options) |> combine_embeds() |> combine_files()
 
     request(:patch, Constants.channel_message(channel_id, message_id), options)
     |> handle_request_with_decode({:struct, Message})
@@ -3123,7 +3123,7 @@ defmodule Nostrum.Api do
     request(
       :post,
       Constants.webhook_token(webhook_id, webhook_token),
-      combine_embeds(args),
+      combine_embeds(args) |> combine_files(),
       params
     )
     |> handle_request_with_decode({:struct, Message})
@@ -3146,7 +3146,7 @@ defmodule Nostrum.Api do
     request(
       :patch,
       Constants.webhook_message_edit(webhook_id, webhook_token, message_id),
-      combine_embeds(args)
+      combine_embeds(args) |> combine_files()
     )
     |> handle_request_with_decode({:struct, Message})
   end
@@ -3556,7 +3556,11 @@ defmodule Nostrum.Api do
   """
   @spec create_interaction_response(Interaction.id(), Interaction.token(), map()) :: {:ok} | error
   def create_interaction_response(id, token, options) do
-    request(:post, Constants.interaction_callback(id, token), combine_embeds(options))
+    request(
+      :post,
+      Constants.interaction_callback(id, token),
+      combine_embeds(options) |> combine_files()
+    )
   end
 
   def create_interaction_response!(id, token, response) do
@@ -3604,7 +3608,11 @@ defmodule Nostrum.Api do
   @spec edit_interaction_response(User.id(), Interaction.token(), map()) ::
           {:ok, Message.t()} | error
   def edit_interaction_response(id \\ Me.get().id, token, response) do
-    request(:patch, Constants.interaction_callback_original(id, token), combine_embeds(response))
+    request(
+      :patch,
+      Constants.interaction_callback_original(id, token),
+      combine_embeds(response) |> combine_files()
+    )
     |> handle_request_with_decode({:struct, Message})
   end
 
