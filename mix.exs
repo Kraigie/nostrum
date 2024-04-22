@@ -47,7 +47,8 @@ defmodule Nostrum.Mixfile do
         Introduction: ~r"/introduction/",
         Functionality: ~r"/functionality/",
         Configuration: ~r"/configuration/",
-        Advanced: ~r"/advanced/"
+        Advanced: ~r"/advanced/",
+        "Cheat Sheets": ~r"/cheat-sheets/"
       ],
       source_ref: "master",
       assets: "guides/assets",
@@ -79,7 +80,8 @@ defmodule Nostrum.Mixfile do
       "guides/functionality/voice.md",
       "guides/advanced/pluggable_caching.md",
       "guides/advanced/multi_node.md",
-      "guides/advanced/hot_code_upgrade.md"
+      "guides/advanced/hot_code_upgrade.md",
+      "guides/cheat-sheets/api.cheatmd"
     ]
   end
 
