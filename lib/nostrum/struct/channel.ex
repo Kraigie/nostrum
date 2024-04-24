@@ -35,6 +35,16 @@ defmodule Nostrum.Struct.Channel do
 
   Once you have a guild ID, you can use the `Nostrum.Cache.GuildCache` to fetch the guild and all channels, then use the `t:Nostrum.Struct.Guild.channels/0` field to find the channel.
 
+  > #### Note on DM Channels {: .tip}
+  >
+  > The `Nostrum.Cache.ChannelGuildMapping` by design only caches a mapping of channels to their respective guilds, and the stored channel object sits within the `Nostrum.Cache.GuildCache`.
+  >
+  > Due to how Direct Message channels work (no `CHANNEL_CREATE` events, not sent in any gateway events, etc.), we make no attempt to store direct message channels within any of the
+  > built-in Nostrum caching adapters.
+  >
+  > If you wish to implement this functionality yourself, you will have to fetch the channel details from the API by looking at the `channel_id` field of received message objects,
+  > you can then store these details in your own choice of caching system (ETS, Mnesia, etc.).
+
   ### Example
 
   ```elixir
