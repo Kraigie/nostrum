@@ -43,7 +43,7 @@ defmodule Nostrum.Struct.Channel do
   > built-in Nostrum caching adapters.
   >
   > If you wish to implement this functionality yourself, you will have to fetch the channel details from the API by looking at the `channel_id` field of received message objects,
-  > you can then store these details in your own choice of caching system (ETC, Mnesia, etc.).
+  > you can then store these details in your own choice of caching system (ETS, Mnesia, etc.).
 
   ### Example
 
