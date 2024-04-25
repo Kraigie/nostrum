@@ -48,7 +48,10 @@ jobs:
     strategy:
       matrix:
         elixir-version: ['1.14', '1.15', '1.16']
-        otp-version: ['25', '26']
+        otp-version: ['25', '26', '27.0-rc3']
+        exclude:
+          - elixir-version: '1.14'
+            otp-version: '27.0-rc3'
     steps:
       - uses: actions/checkout@v2
 
