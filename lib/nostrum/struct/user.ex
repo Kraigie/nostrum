@@ -31,9 +31,6 @@ defmodule Nostrum.Struct.User do
     :global_name,
     :avatar,
     :bot,
-    :mfa_enabled,
-    :verified,
-    :email,
     :public_flags
   ]
 
@@ -60,15 +57,6 @@ defmodule Nostrum.Struct.User do
   @typedoc "Whether the user is a bot"
   @type bot :: boolean | nil
 
-  @typedoc "Whether the user has two factor enabled"
-  @type mfa_enabled :: boolean | nil
-
-  @typedoc "Whether the email on the account has been verified"
-  @type verified :: boolean | nil
-
-  @typedoc "The user's email"
-  @type email :: String.t() | nil
-
   @typedoc """
   The user's public flags, as a bitset.
 
@@ -83,9 +71,6 @@ defmodule Nostrum.Struct.User do
           global_name: global_name,
           avatar: avatar,
           bot: bot,
-          mfa_enabled: mfa_enabled,
-          verified: verified,
-          email: email,
           public_flags: public_flags
         }
 
