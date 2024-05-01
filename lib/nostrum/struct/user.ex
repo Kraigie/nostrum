@@ -69,8 +69,12 @@ defmodule Nostrum.Struct.User do
   @typedoc "The user's email"
   @type email :: String.t() | nil
 
-  @typedoc "The user's public flags"
-  @type public_flags :: Flags.t()
+  @typedoc """
+  The user's public flags, as a bitset.
+
+  To parse these, use `Nostrum.Struct.User.Flags.from_integer/1`.
+  """
+  @type public_flags :: Flags.raw_flags()
 
   @type t :: %__MODULE__{
           id: id,
@@ -185,7 +189,6 @@ defmodule Nostrum.Struct.User do
       map
       |> Map.new(fn {k, v} -> {Util.maybe_to_atom(k), v} end)
       |> Map.update(:id, nil, &Util.cast(&1, Snowflake))
-      |> Map.update(:public_flags, %Flags{}, &Flags.from_integer(&1))
 
     struct(__MODULE__, new)
   end
