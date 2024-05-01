@@ -195,7 +195,7 @@ defmodule Nostrum.Struct.Component do
   @type type :: integer()
 
   @typedoc """
-  Used to identify the command when the interaction is sent to you from the user.
+  Used to identify the component when the interaction is sent to you from the user.
 
   Valid for [Interaction Buttons](#module-interaction-button), [Select Menus](#module-select-menu), and [Text Input](#module-text-input).
   """
