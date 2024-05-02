@@ -4345,14 +4345,6 @@ defmodule Nostrum.Api do
     end
   end
 
-  @doc """
-  Returns the token of the bot.
-  """
-  @spec get_token() :: String.t()
-  def get_token do
-    Application.get_env(:nostrum, :token)
-  end
-
   defp handle_request_with_decode(response)
   defp handle_request_with_decode({:ok, body}), do: {:ok, Jason.decode!(body, keys: :atoms)}
   defp handle_request_with_decode({:error, _} = error), do: error
