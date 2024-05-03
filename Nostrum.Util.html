@@ -360,7 +360,7 @@ for future use.</p>
     </a>
     <h1 class="signature" translate="no">get_all_shard_latencies()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/util.ex#L295" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/util.ex#L302" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -391,7 +391,7 @@ shard nums and whose values are latencies in milliseconds.</p>
     </a>
     <h1 class="signature" translate="no">get_shard_latency(state)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/util.ex#L279" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/util.ex#L286" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -419,7 +419,7 @@ shard nums and whose values are latencies in milliseconds.</p>
     </a>
     <h1 class="signature" translate="no">maybe_to_atom(token)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/util.ex#L184" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/util.ex#L187" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -431,12 +431,13 @@ shard nums and whose values are latencies in milliseconds.</p>
 
       <div class="specs">
 
-          <pre translate="no"><span class="attribute">@spec</span> maybe_to_atom(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">atom</a>() | <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">atom</a>() | <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>()</pre>
+          <pre translate="no"><span class="attribute">@spec</span> maybe_to_atom(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">atom</a>() | <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>() | <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">atom</a>() | <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>()</pre>
 
       </div>
 
 <p>Attempts to convert a string to an atom.</p><p>Binary <code class="inline">token</code>s that consist of digits are assumed to be snowflakes, and will
-be parsed as such.</p><p>If atom does not currently exist, will warn that we're doing an unsafe conversion.</p>
+be parsed as such.</p><p>Some maps sent from Discord are integer-indexed, for these we just return the integer
+provided.</p><p>If atom does not currently exist, will warn that we're doing an unsafe conversion.</p>
   </section>
 </section>
 <section class="detail" id="maybe_to_datetime/1">
@@ -448,7 +449,7 @@ be parsed as such.</p><p>If atom does not currently exist, will warn that we're 
     </a>
     <h1 class="signature" translate="no">maybe_to_datetime(stamp)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/util.ex#L208" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/util.ex#L215" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -476,7 +477,7 @@ be parsed as such.</p><p>If atom does not currently exist, will warn that we're 
     </a>
     <h1 class="signature" translate="no">maybe_to_unixtime(stamp)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/util.ex#L221" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/util.ex#L228" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -633,7 +634,7 @@ types of objects returned by Discord, the amount of new atoms created <em>SHOULD
     </a>
     <h1 class="signature" translate="no">unused_atoms()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/util.ex#L313" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/util.ex#L320" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
