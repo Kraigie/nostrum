@@ -21,21 +21,23 @@ defmodule Nostrum.Struct.Guild.Member do
   ```
   """
 
-  alias Nostrum.Permission
   alias Nostrum.Struct.{Channel, Guild, User}
   alias Nostrum.Struct.Guild.Role
-  alias Nostrum.{Snowflake, Util}
+  alias Nostrum.{Constants, Permission, Snowflake, Util}
   import Bitwise
 
   defstruct [
-    :user_id,
-    :nick,
-    :roles,
-    :joined_at,
-    :deaf,
-    :mute,
+    :avatar,
     :communication_disabled_until,
-    :premium_since
+    :deaf,
+    :flags,
+    :joined_at,
+    :mute,
+    :nick,
+    :pending,
+    :premium_since,
+    :roles,
+    :user_id
   ]
 
   defimpl String.Chars do
@@ -93,15 +95,40 @@ defmodule Nostrum.Struct.Guild.Member do
   """
   @type premium_since :: DateTime.t() | nil
 
+  @typedoc """
+  Avatar hash of the custom avatar set by the user in the guild.
+
+  If animated, this is prefixed with `a_`.
+
+  You can use `avatar_url/3` to fetch a full-formed URL of this asset.
+  """
+  @type avatar :: String.t() | nil
+
+  @typedoc """
+  Current guild member gate status. `false` if user has yet to pass the membership screening
+  configuration for the guild, `true` if the member has passed.
+  """
+  @type pending :: boolean | nil
+
+  @typedoc """
+  Guild member flags represented as a bitset.
+
+  Look at the `Nostrum.Struct.Guild.Member.Flags` module for guidance parsing this value.
+  """
+  @type flags :: pos_integer() | nil
+
   @type t :: %__MODULE__{
-          user_id: user_id,
-          nick: nick,
-          roles: roles,
-          joined_at: joined_at,
-          deaf: deaf,
-          mute: mute,
+          avatar: avatar,
           communication_disabled_until: communication_disabled_until,
-          premium_since: premium_since
+          deaf: deaf,
+          flags: flags,
+          joined_at: joined_at,
+          mute: mute,
+          nick: nick,
+          pending: pending,
+          premium_since: premium_since,
+          roles: roles,
+          user_id: user_id
         }
 
   @doc ~S"""
@@ -118,6 +145,43 @@ defmodule Nostrum.Struct.Guild.Member do
   @spec mention(t) :: String.t()
   def mention(%__MODULE__{user_id: user_id}) do
     "<@#{user_id}>"
+  end
+
+  @doc ~S"""
+  Returns a guild-specific avatar URL for a `Nostrum.Struct.Guild.Member`.
+
+  Supported formats are `png` (default), `jpg`, `webp` and `gif`.
+
+  As mentioned in the avatar hash typedoc, if the avatar hash begins with `a_`, the
+  avatar is animated and can be returned as a gif.
+
+  ## Examples
+
+  ```elixir
+  iex> member = %Nostrum.Struct.Guild.Member{
+  ...>   user_id: 165023948638126080,
+  ...>   avatar: "4c8319db8ea745275a1399f8f8aa74ab"
+  ...> }
+  iex> guild_id = 1226944827137069107
+  iex> Nostrum.Struct.Guild.Member.avatar_url(member, guild_id)
+  "https://cdn.discordapp.com/guilds/1226944827137069107/users/165023948638126080/avatars/4c8319db8ea745275a1399f8f8aa74ab.png"
+  ```
+  """
+  @spec avatar_url(t, Nostrum.Struct.Guild.id()) :: String.t() | nil
+  def avatar_url(member, guild_id, image_format \\ "png")
+
+  def avatar_url(%{avatar: nil}, _, _) do
+    nil
+  end
+
+  def avatar_url(%{user_id: user_id, avatar: avatar}, guild_id, image_format) do
+    Constants.cdn_url() <>
+      Constants.cdn_guild_avatar(
+        guild_id,
+        user_id,
+        avatar,
+        image_format
+      )
   end
 
   @doc """
