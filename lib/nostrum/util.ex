@@ -178,12 +178,19 @@ defmodule Nostrum.Util do
   Binary `token`s that consist of digits are assumed to be snowflakes, and will
   be parsed as such.
 
+  Some maps sent from Discord are integer-indexed, for these we just return the integer
+  provided.
+
   If atom does not currently exist, will warn that we're doing an unsafe conversion.
   """
-  @spec maybe_to_atom(atom | String.t()) :: atom | integer
+  @spec maybe_to_atom(atom | String.t() | integer) :: atom | integer
   def maybe_to_atom(token) when is_atom(token), do: token
 
-  def maybe_to_atom(<<head, _rest::binary>> = token) when head in ?1..?9 do
+  def maybe_to_atom(token) when is_integer(token), do: token
+
+  # We include a check for zero in this overload for 0 in case we have an integer
+  # indexed map, the variable is still named snowflake for brevity.
+  def maybe_to_atom(<<head, _rest::binary>> = token) when head in ?0..?9 do
     case Integer.parse(token) do
       {snowflake, ""} ->
         snowflake
