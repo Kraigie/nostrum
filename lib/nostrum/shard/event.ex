@@ -42,16 +42,16 @@ defmodule Nostrum.Shard.Event do
 
   def handle(:hello, payload, old_state) do
     state = Map.put(old_state, :heartbeat_interval, payload.d.heartbeat_interval)
-    # Jitter it as documented. But only for Hello - the subsequent timeouts
-    # must not jitter it anymore, but send out at this interval.
+    # Jitter the heartbeat as documented. But only for Hello - the subsequent
+    # timeouts must not jitter it anymore, but send out at this interval.
     heartbeat_next = :rand.uniform(state.heartbeat_interval)
     heartbeat_action = {:state_timeout, heartbeat_next, :send_heartbeat}
 
     if session_exists?(state) do
-      Logger.info("RESUMING")
+      Logger.info("Resuming on shard session #{state.session}")
       {{state, Payload.resume_payload(state)}, heartbeat_action}
     else
-      Logger.info("IDENTIFYING")
+      Logger.debug("Identifying with new shard session")
       {{state, Payload.identity_payload(state)}, heartbeat_action}
     end
   end
@@ -62,7 +62,7 @@ defmodule Nostrum.Shard.Event do
   end
 
   def handle(:reconnect, _payload, state) do
-    Logger.info("RECONNECT")
+    Logger.info("Asked to reconnect with session #{state.session}")
     {{state, :reconnect}, []}
   end
 
