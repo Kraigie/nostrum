@@ -23,18 +23,60 @@ nostrum's built-in functions to query the cache should be sufficient to cover
 common use cases. If you need more involved queries, it is recommended to use
 nostrum's [qlc](https://www.erlang.org/doc/man/qlc.html) support.
 
-As an example, Nosedrum has a function to find a guild member by username and
-discriminator. This is internally implemented with the following query:
+### Examples
+
+Below you can find some example queries using QLC.
 
 ```erl
-find_by(RequestedGuildId, Name, Discriminator, MemberCache, UserCache) ->
-    qlc:q([Member || {{GuildId, MemberId}, Member} <- MemberCache:query_handle(),
-                     GuildId =:= RequestedGuildId,
-                     {UserId, User} <- UserCache:query_handle(),
-                     MemberId =:= UserId,
-                     map_get(username, User)  =:= Name,
-                     map_get(discriminator, User) =:= Discriminator]).
+% src/nostrum_queries.erl
+
+-module(nostrum_queries).
+-export([find_role_users/4, find_large_communities/2]).
+
+-include_lib("stdlib/include/qlc.hrl").
+
+% Find the Nostrum.Struct.User and Member objects of all members in a specific guild role.
+find_role_users(RequestedGuildId, RoleId, MemberCache, UserCache) ->
+    qlc:q([{User, Member} || {{GuildId, MemberId}, Member} <- MemberCache:query_handle(),
+                   % Filter to member objects of the selected guild
+                   GuildId =:= RequestedGuildId,
+                   % Filter to members of the provided role
+                   lists:member(RoleId, map_get(roles, Member)),
+                   % Get a handle on the UserCache table
+                   {UserId, User} <- UserCache:query_handle(),
+                   % Find the User struct that matches the found Member
+                   MemberId =:= UserId]).
+
+% Find all communities in the Guild cache with the COMMUNITY guild feature
+% that are over a certain threshold in user size
+find_large_communities(Threshold, GuildCache) ->
+    qlc:q([Guild || {_, Guild} <- GuildCache:query_handle(),
+                    % Filter for guilds that are over the provided size
+                    map_get(member_count, Guild) > Threshold,
+                    % Filter for guilds that have COMMUNITY in the features field
+                    lists:member(<<"COMMUNITY">>, map_get(features, Guild))]).
 ```
+
+`nostrum_queries:find_role_users/4` fetches all users in the specified guild
+(`RequestedGuildId`) with the role `RoleId`. The code is annotated, but
+step-by-step the flow is: the member cache is filtered down to all members in
+the guild, then using `lists:member/2` we check for role membership, and finally
+we join against the user cache to return full user objects in the result.
+
+`nostrum_queries:find_large_communities/2` fetches all guilds in the guild cache
+that meet the criteria of having at least `Threshold` members *and* having the
+`COMMUNITY` guild feature set to true in the Discord UI. It is easy to follow
+the flow of this query by the annotations, with only some minor things to note
+such as needing to use `<<"bitstring">>` bit syntax to represent the strings,
+which is implicit in Elixir.
+
+In Elixir, you can call these queries like so using `:qlc.eval/1`:
+
+```elixir
+matching_guilds = :qlc.eval(:nostrum_queries.find_large_communities(50, Nostrum.Cache.GuildCache))
+```
+
+### Implementing your own queries and caches
 
 By [implementing a QLC
 table](https://www.erlang.org/doc/man/qlc.html#implementing_a_qlc_table), all
