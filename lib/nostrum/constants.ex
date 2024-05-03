@@ -148,6 +148,10 @@ defmodule Nostrum.Constants do
   def cdn_icon(id, icon, image_format), do: "/icons/#{id}/#{icon}.#{image_format}"
   def cdn_splash(id, splash, image_format), do: "/splashes/#{id}/#{splash}.#{image_format}"
 
+  def cdn_guild_avatar(guild_id, user_id, avatar_hash, image_format) do
+    "/guilds/#{guild_id}/users/#{user_id}/avatars/#{avatar_hash}.#{image_format}"
+  end
+
   def thread_with_message(channel_id, message_id),
     do: "/channels/#{channel_id}/messages/#{message_id}/threads"
 
