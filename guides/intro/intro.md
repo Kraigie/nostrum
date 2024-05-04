@@ -160,10 +160,16 @@ From the Elixir website -
 - A simple bot that consumes events from the gateway can be found [at
   `examples/event_consumer.ex`](https://github.com/Kraigie/nostrum/blob/master/examples/event_consumer.ex).
 
-- A more complex and active bot, bolt, can be found [here](https://github.com/jchristgit/bolt).
-
 - An example bot that plays audio through voice channels can be found [at
   `examples/audio_player_example.ex`](https://github.com/Kraigie/nostrum/blob/master/examples/audio_player_example.ex).
+
+- A properly structured bot with commands utilizing
+  [nosedrum](https://github.com/jchristgit/nosedrum) can be found [in this
+  GitHub repository](https://github.com/kshannoninnes/sample_bot)
+
+- A rather large and complex bot, bolt, can be found
+  [here](https://github.com/jchristgit/bolt).
+
 
 
 <!-- vim: set textwidth=80 sw=2 ts=2: -->
