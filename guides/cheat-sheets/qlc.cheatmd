@@ -1,0 +1,60 @@
+# QLC Usage
+
+This cheat sheet covers some example queries using Query-List Comprehensions in Erlang, as well as some debugging tips.
+
+QLC modules must include this library include as part of their prelude:
+
+```erl
+-include_lib("stdlib/include/qlc.hrl").
+```
+
+As per the Erlang docs for QLC:
+
+> This causes a parse transform to substitute a fun for the QLC. The (compiled) fun is called when the query handle is evaluated.
+
+## Examples
+
+### Fetch role members
+
+```erl
+find_role_users(RequestedGuildId, RoleId, MemberCache) ->
+    qlc:q([{User, Member} || {{GuildId, MemberId}, Member} <- MemberCache:query_handle(),
+                   % Filter to member objects of the selected guild
+                   GuildId =:= RequestedGuildId,
+                   % Filter to members of the provided role
+                   lists:member(RoleId, map_get(roles, Member))]).
+```
+
+### Fetch guilds over a certain size
+
+```erl
+find_large_communities(Threshold, GuildCache) ->
+    qlc:q([Guild || {_, Guild} <- GuildCache:query_handle(),
+                    % Filter for guilds that are over the provided size
+                    map_get(member_count, Guild) > Threshold]).
+```
+
+## Debugging QLC
+
+{: .col-2 }
+
+### View query info
+
+You can use `:qlc.info/1` to evaluate how Erlang will parse a query. You can read the Erlang docs for an explanation of the value returned by this call
+
+```elixir
+:qlc.info(
+    :my_queries.find_users(..., Nostrum.Cache.UserCache)
+)
+```
+
+### Sampling a query
+
+You can return only X records that match a query using `:qlc.next_answers/2`, passing in the query as the first argument and the number of answers to return as the second argument.
+
+```elixir
+:qlc.next_answers(
+    :my_queries.find_users(..., Nostrum.Cache.UserCache),
+    5
+)
+```

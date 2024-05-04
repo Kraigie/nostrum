@@ -81,7 +81,8 @@ defmodule Nostrum.Mixfile do
       "guides/advanced/pluggable_caching.md",
       "guides/advanced/multi_node.md",
       "guides/advanced/hot_code_upgrade.md",
-      "guides/cheat-sheets/api.cheatmd"
+      "guides/cheat-sheets/api.cheatmd",
+      "guides/cheat-sheets/qlc.cheatmd"
     ]
   end
 
