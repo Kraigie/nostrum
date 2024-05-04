@@ -14,7 +14,7 @@
 
     <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
     <script src="dist/handlebars.templates-IHH6HKET.js"></script>
-    <script src="dist/sidebar_items-77477869.js"></script>
+    <script src="dist/sidebar_items-F09595C4.js"></script>
     <script src="docs_config.js"></script>
     <script async src="dist/html-GXQ6W6IF.js"></script>
 
@@ -241,6 +241,16 @@ Pages
       </div>
 
         <div class="summary-synopsis"><p>Discord Partner</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:raw_flags/0" translate="no">raw_flags()</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Raw user flags as sent by the Discord API</p></div>
 
     </div>
 
@@ -607,6 +617,34 @@ Pages
 <p>Discord Partner</p>
   </section>
 </section>
+<section class="detail" id="t:raw_flags/0">
+
+  <div class="detail-header">
+    <a href="#t:raw_flags/0" class="detail-link" title="Link to this type">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature" translate="no">raw_flags()</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/user/flags.ex#L106" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@type</span> raw_flags() :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>()</pre>
+
+      </div>
+
+<p>Raw user flags as sent by the Discord API</p>
+  </section>
+</section>
 <section class="detail" id="t:staff/0">
 
   <div class="detail-header">
@@ -796,7 +834,7 @@ Pages
     </a>
     <h1 class="signature" translate="no">from_integer(flag_value)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/user/flags.ex#L146" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/user/flags.ex#L149" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -808,7 +846,7 @@ Pages
 
       <div class="specs">
 
-          <pre translate="no"><span class="attribute">@spec</span> from_integer(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>()) :: <a href="#t:t/0">t</a>()</pre>
+          <pre translate="no"><span class="attribute">@spec</span> from_integer(<a href="#t:raw_flags/0">raw_flags</a>()) :: <a href="#t:t/0">t</a>()</pre>
 
       </div>
 
@@ -818,8 +856,8 @@ Pages
   </a>
   <span class="text">Examples</span>
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Struct.User.Flags</span><span class="o">.</span><span class="n">from_integer</span><span class="p" data-group-id="1537819241-1">(</span><span class="mi">131842</span><span class="p" data-group-id="1537819241-1">)</span><span class="w">
-</span><span class="p" data-group-id="1537819241-2">%</span><span class="nc" data-group-id="1537819241-2">Nostrum.Struct.User.Flags</span><span class="p" data-group-id="1537819241-2">{</span><span class="w">
+<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Struct.User.Flags</span><span class="o">.</span><span class="n">from_integer</span><span class="p" data-group-id="8158522849-1">(</span><span class="mi">131842</span><span class="p" data-group-id="8158522849-1">)</span><span class="w">
+</span><span class="p" data-group-id="8158522849-2">%</span><span class="nc" data-group-id="8158522849-2">Nostrum.Struct.User.Flags</span><span class="p" data-group-id="8158522849-2">{</span><span class="w">
   </span><span class="ss">bug_hunter_level_1</span><span class="p">:</span><span class="w"> </span><span class="no">false</span><span class="p">,</span><span class="w">
   </span><span class="ss">bug_hunter_level_2</span><span class="p">:</span><span class="w"> </span><span class="no">false</span><span class="p">,</span><span class="w">
   </span><span class="ss">early_supporter</span><span class="p">:</span><span class="w"> </span><span class="no">true</span><span class="p">,</span><span class="w">
@@ -833,7 +871,7 @@ Pages
   </span><span class="ss">team_user</span><span class="p">:</span><span class="w"> </span><span class="no">false</span><span class="p">,</span><span class="w">
   </span><span class="ss">verified_bot</span><span class="p">:</span><span class="w"> </span><span class="no">false</span><span class="p">,</span><span class="w">
   </span><span class="ss">verified_developer</span><span class="p">:</span><span class="w"> </span><span class="no">true</span><span class="w">
-</span><span class="p" data-group-id="1537819241-2">}</span></code></pre>
+</span><span class="p" data-group-id="8158522849-2">}</span></code></pre>
   </section>
 </section>
 <section class="detail" id="to_integer/1">
@@ -845,7 +883,7 @@ Pages
     </a>
     <h1 class="signature" translate="no">to_integer(flag_struct)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/user/flags.ex#L181" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/user/flags.ex#L184" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -857,7 +895,7 @@ Pages
 
       <div class="specs">
 
-          <pre translate="no"><span class="attribute">@spec</span> to_integer(<a href="#t:t/0">t</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>()</pre>
+          <pre translate="no"><span class="attribute">@spec</span> to_integer(<a href="#t:t/0">t</a>()) :: <a href="#t:raw_flags/0">raw_flags</a>()</pre>
 
       </div>
 
@@ -867,7 +905,7 @@ Pages
   </a>
   <span class="text">Examples</span>
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="n">my_flags</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="7475108292-1">%</span><span class="nc" data-group-id="7475108292-1">Nostrum.Struct.User.Flags</span><span class="p" data-group-id="7475108292-1">{</span><span class="w">
+<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="n">my_flags</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="6610822940-1">%</span><span class="nc" data-group-id="6610822940-1">Nostrum.Struct.User.Flags</span><span class="p" data-group-id="6610822940-1">{</span><span class="w">
 </span><span class="gp unselectable">...&gt; </span><span class="w"> </span><span class="ss">bug_hunter_level_1</span><span class="p">:</span><span class="w"> </span><span class="no">false</span><span class="p">,</span><span class="w">
 </span><span class="gp unselectable">...&gt; </span><span class="w"> </span><span class="ss">bug_hunter_level_2</span><span class="p">:</span><span class="w"> </span><span class="no">false</span><span class="p">,</span><span class="w">
 </span><span class="gp unselectable">...&gt; </span><span class="w"> </span><span class="ss">early_supporter</span><span class="p">:</span><span class="w"> </span><span class="no">true</span><span class="p">,</span><span class="w">
@@ -881,8 +919,8 @@ Pages
 </span><span class="gp unselectable">...&gt; </span><span class="w"> </span><span class="ss">team_user</span><span class="p">:</span><span class="w"> </span><span class="no">false</span><span class="p">,</span><span class="w">
 </span><span class="gp unselectable">...&gt; </span><span class="w"> </span><span class="ss">verified_bot</span><span class="p">:</span><span class="w"> </span><span class="no">false</span><span class="p">,</span><span class="w">
 </span><span class="gp unselectable">...&gt; </span><span class="w"> </span><span class="ss">verified_developer</span><span class="p">:</span><span class="w"> </span><span class="no">true</span><span class="w">
-</span><span class="gp unselectable">...&gt; </span><span class="p" data-group-id="7475108292-1">}</span><span class="w">
-</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Struct.User.Flags</span><span class="o">.</span><span class="n">to_integer</span><span class="p" data-group-id="7475108292-2">(</span><span class="n">my_flags</span><span class="p" data-group-id="7475108292-2">)</span><span class="w">
+</span><span class="gp unselectable">...&gt; </span><span class="p" data-group-id="6610822940-1">}</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Struct.User.Flags</span><span class="o">.</span><span class="n">to_integer</span><span class="p" data-group-id="6610822940-2">(</span><span class="n">my_flags</span><span class="p" data-group-id="6610822940-2">)</span><span class="w">
 </span><span class="mi">131842</span></code></pre>
   </section>
 </section>
