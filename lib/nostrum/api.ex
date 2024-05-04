@@ -3257,7 +3257,7 @@ defmodule Nostrum.Api do
   ## Example
 
   ```elixir
-  Nostrum.Api.create_application_command(
+  Nostrum.Api.create_global_application_command(
     %{name: "edit", description: "ed, man! man, ed", options: []}
   )
   ```
