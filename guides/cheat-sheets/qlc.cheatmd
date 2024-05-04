@@ -18,7 +18,7 @@ As per the Erlang docs for QLC:
 
 ```erl
 find_role_users(RequestedGuildId, RoleId, MemberCache) ->
-    qlc:q([{User, Member} || {{GuildId, MemberId}, Member} <- MemberCache:query_handle(),
+    qlc:q([Member || {{GuildId, MemberId}, Member} <- MemberCache:query_handle(),
                    % Filter to member objects of the selected guild
                    GuildId =:= RequestedGuildId,
                    % Filter to members of the provided role
