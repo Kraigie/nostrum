@@ -63,7 +63,7 @@ defmodule Nostrum.Shard.Event do
 
   def handle(:invalid_session, %{d: _can_resume? = false}, state) do
     Logger.info("Invalid and un-resumable session at #{state.session}. Events may be lost.")
-    {{state, :reconnect}, []}
+    {{%{state | session: nil}, :reconnect}, []}
   end
 
   def handle(:reconnect, _payload, state) do
