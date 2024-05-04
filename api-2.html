@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.32.1">
+    <meta name="project" content="Nostrum v0.9.0">
+
+
+    <title>API Usage — Nostrum v0.9.0</title>
+    <link rel="stylesheet" href="dist/html-elixir-2C5PUTIB.css" />
+
+      <style>@media print { @page { size: landscape; } }</style>
+
+
+    <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
+    <script src="dist/handlebars.templates-IHH6HKET.js"></script>
+    <script src="dist/sidebar_items-DB3F66C0.js"></script>
+    <script src="docs_config.js"></script>
+    <script async src="dist/html-GXQ6W6IF.js"></script>
+
+
+  </head>
+  <body data-type="extras" class="page-cheatmd">
+    <script>
+
+      try {
+        var settings = JSON.parse(localStorage.getItem('ex_doc:settings') || '{}');
+
+        if (settings.theme === 'dark' ||
+           ((settings.theme === 'system' || settings.theme == null) &&
+             window.matchMedia('(prefers-color-scheme: dark)').matches)
+           ) {
+          document.body.classList.add('dark')
+        }
+      } catch (error) { }
+    </script>
+
+<div class="body-wrapper">
+
+<button id="sidebar-menu" class="sidebar-button sidebar-toggle" aria-label="toggle sidebar" aria-controls="sidebar">
+  <i class="ri-menu-line ri-lg" title="Collapse/expand sidebar"></i>
+</button>
+
+<nav id="sidebar" class="sidebar">
+
+  <div class="sidebar-header">
+    <div class="sidebar-projectInfo">
+
+        <a href="https://github.com/Kraigie/nostrum" class="sidebar-projectImage">
+          <img src="assets/logo.png" alt="Nostrum" />
+        </a>
+
+      <div>
+        <a href="https://github.com/Kraigie/nostrum" class="sidebar-projectName" translate="no">
+Nostrum
+        </a>
+        <div class="sidebar-projectVersion" translate="no">
+          v0.9.0
+        </div>
+      </div>
+    </div>
+    <ul id="sidebar-listNav" class="sidebar-listNav" role="tablist">
+      <li>
+        <button id="extras-list-tab-button" role="tab" data-type="extras" aria-controls="extras-tab-panel" aria-selected="true" tabindex="0">
+Pages
+        </button>
+      </li>
+
+        <li>
+          <button id="modules-list-tab-button" role="tab" data-type="modules" aria-controls="modules-tab-panel" aria-selected="false" tabindex="-1">
+            Modules
+          </button>
+        </li>
+
+
+        <li>
+          <button id="tasks-list-tab-button" role="tab" data-type="tasks" aria-controls="tasks-tab-panel" aria-selected="false" tabindex="-1">
+            <span translate="no">Mix</span> Tasks
+          </button>
+        </li>
+
+    </ul>
+  </div>
+
+  <div id="extras-tab-panel" class="sidebar-tabpanel" role="tabpanel" aria-labelledby="extras-list-tab-button">
+    <ul id="extras-full-list" class="full-list"></ul>
+  </div>
+
+    <div id="modules-tab-panel" class="sidebar-tabpanel" role="tabpanel" aria-labelledby="modules-list-tab-button" hidden>
+      <ul id="modules-full-list" class="full-list"></ul>
+    </div>
+
+
+    <div id="tasks-tab-panel" class="sidebar-tabpanel" role="tabpanel" aria-labelledby="tasks-list-tab-button" hidden>
+      <ul id="tasks-full-list" class="full-list"></ul>
+    </div>
+
+</nav>
+
+<main class="content">
+  <output role="status" id="toast"></output>
+
+  <div id="content" class="content-inner">
+    <div class="top-search">
+      <div class="search-settings">
+        <form class="search-bar" action="search.html">
+          <label class="search-label">
+            <span class="sr-only">Search documentation of Nostrum</span>
+            <input name="q" type="text" class="search-input" placeholder="Press / to search" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+          </label>
+          <button type="submit" class="search-button" aria-label="Submit Search">
+            <i class="ri-search-2-line ri-lg" aria-hidden="true" title="Submit search"></i>
+          </button>
+          <button type="button" tabindex="-1" class="search-close-button" aria-hidden="true">
+            <i class="ri-close-line ri-lg" title="Cancel search"></i>
+          </button>
+        </form>
+        <div class="autocomplete">
+        </div>
+        <button class="icon-settings display-settings">
+          <i class="ri-settings-3-line"></i>
+          <span class="sr-only">Settings</span>
+        </button>
+      </div>
+    </div>
+
+<div id="top-content">
+  <h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/guides/cheat-sheets/api.cheatmd#L1" title="View Source" class="icon-action" rel="help">
+        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        <span class="sr-only">View Source</span>
+      </a>
+
+
+      <button onclick="window.print()" title="Print Cheatsheet" class="icon-action" rel="print">
+        <i class="ri-printer-line" aria-hidden="true"></i>
+        <span class="sr-only">Print cheatsheet</span>
+      </button>
+
+    <span>API Usage</span>
+  </h1>
+
+<p>This cheat sheet covers basic use of the Discord API through the <a href="Nostrum.Api.html"><code class="inline">Nostrum.Api</code></a> module.</p><section class="h2 col-2"><h2 id="messages" class="col-2 section-heading">
+  <a href="#messages" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Messages</span>
+</h2>
+<section class="h3"><h3 id="sending-a-message" class="section-heading">
+  <a href="#sending-a-message" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Sending a message</span>
+</h3>
+<pre><code class="makeup elixir" translate="no"><span class="n">utc_now</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">DateTime</span><span class="o">.</span><span class="n">utc_now</span><span class="w">
+</span><span class="n">atom_count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">:erlang</span><span class="o">.</span><span class="n">system_info</span><span class="p" data-group-id="3465790453-1">(</span><span class="ss">:atom_count</span><span class="p" data-group-id="3465790453-1">)</span><span class="w">
+
+</span><span class="n">content</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;&quot;&quot;
+UTC time is: </span><span class="si" data-group-id="3465790453-2">#{</span><span class="nc">DateTime</span><span class="o">.</span><span class="n">to_iso8601</span><span class="p" data-group-id="3465790453-3">(</span><span class="n">utc_now</span><span class="p" data-group-id="3465790453-3">)</span><span class="si" data-group-id="3465790453-2">}</span><span class="s">
+Atom table size is: </span><span class="si" data-group-id="3465790453-4">#{</span><span class="n">atom_count</span><span class="si" data-group-id="3465790453-4">}</span><span class="s">
+&quot;&quot;&quot;</span><span class="w">
+
+</span><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">create_message</span><span class="p" data-group-id="3465790453-5">(</span><span class="n">msg</span><span class="o">.</span><span class="n">channel_id</span><span class="p">,</span><span class="w"> </span><span class="n">content</span><span class="p" data-group-id="3465790453-5">)</span></code></pre></section><section class="h3"><h3 id="sending-a-message-with-an-embed" class="section-heading">
+  <a href="#sending-a-message-with-an-embed" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Sending a message with an embed</span>
+</h3>
+<pre><code class="makeup elixir" translate="no"><span class="kn">import</span><span class="w"> </span><span class="nc">Nostrum.Struct.Embed</span><span class="w">
+
+</span><span class="n">embed</span><span class="w"> </span><span class="o">=</span><span class="w">
+  </span><span class="p" data-group-id="2194272634-1">%</span><span class="nc" data-group-id="2194272634-1">Nostrum.Struct.Embed</span><span class="p" data-group-id="2194272634-1">{</span><span class="p" data-group-id="2194272634-1">}</span><span class="w">
+  </span><span class="o">|&gt;</span><span class="w"> </span><span class="n">put_title</span><span class="p" data-group-id="2194272634-2">(</span><span class="s">&quot;Craig&#39;s Cats&quot;</span><span class="p" data-group-id="2194272634-2">)</span><span class="w">
+  </span><span class="o">|&gt;</span><span class="w"> </span><span class="n">put_description</span><span class="p" data-group-id="2194272634-3">(</span><span class="s">&quot;nostrum&quot;</span><span class="p" data-group-id="2194272634-3">)</span><span class="w">
+  </span><span class="o">|&gt;</span><span class="w"> </span><span class="n">put_url</span><span class="p" data-group-id="2194272634-4">(</span><span class="s">&quot;https://google.com/&quot;</span><span class="p" data-group-id="2194272634-4">)</span><span class="w">
+  </span><span class="o">|&gt;</span><span class="w"> </span><span class="n">put_timestamp</span><span class="p" data-group-id="2194272634-5">(</span><span class="s">&quot;2016-05-05T21:04:13.203Z&quot;</span><span class="p" data-group-id="2194272634-5">)</span><span class="w">
+  </span><span class="o">|&gt;</span><span class="w"> </span><span class="n">put_color</span><span class="p" data-group-id="2194272634-6">(</span><span class="mi">431_948</span><span class="p" data-group-id="2194272634-6">)</span><span class="w">
+  </span><span class="o">|&gt;</span><span class="w"> </span><span class="n">put_field</span><span class="p" data-group-id="2194272634-7">(</span><span class="s">&quot;Field 1&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Test&quot;</span><span class="p" data-group-id="2194272634-7">)</span><span class="w">
+  </span><span class="c1"># set inline attribute to true</span><span class="w">
+  </span><span class="o">|&gt;</span><span class="w"> </span><span class="n">put_field</span><span class="p" data-group-id="2194272634-8">(</span><span class="s">&quot;Field 2&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;More test&quot;</span><span class="p">,</span><span class="w"> </span><span class="no">true</span><span class="p" data-group-id="2194272634-8">)</span><span class="w">
+
+</span><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">create_message</span><span class="p" data-group-id="2194272634-9">(</span><span class="n">msg</span><span class="o">.</span><span class="n">channel_id</span><span class="p">,</span><span class="w"> </span><span class="ss">embeds</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="2194272634-10">[</span><span class="n">embed</span><span class="p" data-group-id="2194272634-10">]</span><span class="p" data-group-id="2194272634-9">)</span></code></pre><p>You can look at the documentation in <a href="Nostrum.Struct.Embed.html#module-using-structs"><code class="inline">Nostrum.Struct.Embed</code></a> for more advanced usage.</p></section><section class="h3"><h3 id="upload-an-attachment" class="section-heading">
+  <a href="#upload-an-attachment" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Upload an attachment</span>
+</h3>
+<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">create_message</span><span class="p" data-group-id="3506379721-1">(</span><span class="w">
+  </span><span class="n">msg</span><span class="o">.</span><span class="n">channel_id</span><span class="p">,</span><span class="w">
+  </span><span class="ss">files</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="3506379721-2">[</span><span class="w">
+    </span><span class="c1"># file from filesystem</span><span class="w">
+    </span><span class="s">&quot;/path/to/file.txt&quot;</span><span class="p">,</span><span class="w">
+    </span><span class="c1"># file from memory</span><span class="w">
+    </span><span class="p" data-group-id="3506379721-3">%{</span><span class="ss">body</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;test file&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;example.txt&quot;</span><span class="p" data-group-id="3506379721-3">}</span><span class="w">
+  </span><span class="p" data-group-id="3506379721-2">]</span><span class="w">
+</span><span class="p" data-group-id="3506379721-1">)</span></code></pre></section><section class="h3"><h3 id="reply-to-a-message" class="section-heading">
+  <a href="#reply-to-a-message" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Reply to a message</span>
+</h3>
+<p>With a mention:</p><pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">create_message</span><span class="p" data-group-id="6852008589-1">(</span><span class="w">
+    </span><span class="n">msg</span><span class="o">.</span><span class="n">channel_id</span><span class="p">,</span><span class="w">
+    </span><span class="ss">content</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Hello!&quot;</span><span class="p">,</span><span class="w">
+    </span><span class="ss">message_reference</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="6852008589-2">%{</span><span class="ss">message_id</span><span class="p">:</span><span class="w"> </span><span class="n">msg</span><span class="o">.</span><span class="n">id</span><span class="p" data-group-id="6852008589-2">}</span><span class="w">
+</span><span class="p" data-group-id="6852008589-1">)</span></code></pre><p>Without a mention:</p><pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">create_message</span><span class="p" data-group-id="1887546529-1">(</span><span class="w">
+    </span><span class="n">msg</span><span class="o">.</span><span class="n">channel_id</span><span class="p">,</span><span class="w">
+    </span><span class="ss">content</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Hello!&quot;</span><span class="p">,</span><span class="w">
+    </span><span class="ss">message_reference</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="1887546529-2">%{</span><span class="ss">message_id</span><span class="p">:</span><span class="w"> </span><span class="n">msg</span><span class="o">.</span><span class="n">id</span><span class="p" data-group-id="1887546529-2">}</span><span class="p">,</span><span class="w">
+    </span><span class="ss">allowed_mentions</span><span class="p">:</span><span class="w"> </span><span class="ss">:none</span><span class="w">
+</span><span class="p" data-group-id="1887546529-1">)</span></code></pre></section><section class="h3"><h3 id="send-a-poll" class="section-heading">
+  <a href="#send-a-poll" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Send a poll</span>
+</h3>
+<pre><code class="makeup elixir" translate="no"><span class="n">poll</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Poll</span><span class="o">.</span><span class="n">create_poll</span><span class="p" data-group-id="7835880940-1">(</span><span class="w">
+     </span><span class="s">&quot;Do you enjoy pineapple on pizza?&quot;</span><span class="p">,</span><span class="w">
+     </span><span class="ss">duration</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
+     </span><span class="ss">allow_multiselect</span><span class="p">:</span><span class="w"> </span><span class="no">false</span><span class="w">
+</span><span class="p" data-group-id="7835880940-1">)</span><span class="w">
+</span><span class="o">|&gt;</span><span class="w"> </span><span class="nc">Poll</span><span class="o">.</span><span class="n">put_answer</span><span class="p" data-group-id="7835880940-2">(</span><span class="s">&quot;Yes!&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">default_emoji</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\u2705</span><span class="s">&quot;</span><span class="p" data-group-id="7835880940-2">)</span><span class="w">
+</span><span class="o">|&gt;</span><span class="w"> </span><span class="nc">Poll</span><span class="o">.</span><span class="n">put_answer</span><span class="p" data-group-id="7835880940-3">(</span><span class="s">&quot;No!&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">default_emoji</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\u274C</span><span class="s">&quot;</span><span class="p" data-group-id="7835880940-3">)</span><span class="w">
+
+</span><span class="nc">Api</span><span class="o">.</span><span class="n">create_message</span><span class="p" data-group-id="7835880940-4">(</span><span class="n">channel_id</span><span class="p">,</span><span class="w"> </span><span class="ss">poll</span><span class="p">:</span><span class="w"> </span><span class="n">poll</span><span class="p" data-group-id="7835880940-4">)</span></code></pre></section><section class="h3"><h3 id="react-to-a-message" class="section-heading">
+  <a href="#react-to-a-message" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">React to a message</span>
+</h3>
+<p>Using a default emoji (unicode representation):</p><pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">create_reaction</span><span class="p" data-group-id="0757456558-1">(</span><span class="w">
+    </span><span class="n">msg</span><span class="o">.</span><span class="n">channel_id</span><span class="p">,</span><span class="w">
+    </span><span class="n">msg</span><span class="o">.</span><span class="n">id</span><span class="p">,</span><span class="w">
+    </span><span class="s">&quot;👾&quot;</span><span class="w">
+</span><span class="p" data-group-id="0757456558-1">)</span></code></pre><p>Using a custom Discord emoji:</p><pre><code class="makeup elixir" translate="no"><span class="n">emoji</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="6340644453-1">%</span><span class="nc" data-group-id="6340644453-1">Nostrum.Struct.Emoji</span><span class="p" data-group-id="6340644453-1">{</span><span class="w">
+      </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;emojiname&quot;</span><span class="p">,</span><span class="w">
+      </span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">1228698654022434866</span><span class="w">
+</span><span class="p" data-group-id="6340644453-1">}</span><span class="w">
+
+</span><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">create_reaction</span><span class="p" data-group-id="6340644453-2">(</span><span class="n">msg</span><span class="o">.</span><span class="n">channel_id</span><span class="p">,</span><span class="w"> </span><span class="n">msg</span><span class="o">.</span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">emoji</span><span class="p" data-group-id="6340644453-2">)</span></code></pre></section></section><section class="h2 col-2"><h2 id="miscellaneous" class="col-2 section-heading">
+  <a href="#miscellaneous" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Miscellaneous</span>
+</h2>
+<section class="h3"><h3 id="update-the-bot-status" class="section-heading">
+  <a href="#update-the-bot-status" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Update the bot status</span>
+</h3>
+<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">update_status</span><span class="p" data-group-id="6562419224-1">(</span><span class="w">
+    </span><span class="ss">:dnd</span><span class="p">,</span><span class="w">
+    </span><span class="s">&quot;craigs cats&quot;</span><span class="p">,</span><span class="w">
+    </span><span class="mi">3</span><span class="w"> </span><span class="c1"># Watching status</span><span class="w">
+</span><span class="p" data-group-id="6562419224-1">)</span></code></pre><p>You can also update a single shard with <a href="Nostrum.Api.html#update_shard_status/5"><code class="inline">Nostrum.Api.update_shard_status/5</code></a>.</p></section><section class="h3"><h3 id="create-a-guild-emoji" class="section-heading">
+  <a href="#create-a-guild-emoji" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Create a guild emoji</span>
+</h3>
+<pre><code class="makeup elixir" translate="no"><span class="n">image</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;data:image/png;base64,...&quot;</span><span class="w">
+
+</span><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">create_guild_emoji</span><span class="p" data-group-id="9545345781-1">(</span><span class="w">
+    </span><span class="n">msg</span><span class="o">.</span><span class="n">guild_id</span><span class="p">,</span><span class="w">
+    </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;nostrum&quot;</span><span class="p">,</span><span class="w">
+    </span><span class="ss">image</span><span class="p">:</span><span class="w"> </span><span class="n">image</span><span class="w">
+</span><span class="p" data-group-id="9545345781-1">)</span></code></pre></section></section>
+</div>
+
+<div class="bottom-actions" id="bottom-actions">
+  <div class="bottom-actions-item">
+
+      <a href="hot_code_upgrade.html" class="bottom-actions-button" rel="prev">
+        <span class="subheader">
+          ← Previous Page
+        </span>
+        <span class="title">
+Hot code upgrade
+        </span>
+      </a>
+
+  </div>
+  <div class="bottom-actions-item">
+
+      <a href="qlc.html" class="bottom-actions-button" rel="next">
+        <span class="subheader">
+          Next Page →
+        </span>
+        <span class="title">
+QLC Usage
+        </span>
+      </a>
+
+  </div>
+</div>
+    <footer class="footer">
+      <p>
+
+          <span class="line">
+            <a href="https://hex.pm/packages/nostrum/0.9.0" class="footer-hex-package">Hex Package</a>
+
+            <a href="https://preview.hex.pm/preview/nostrum/0.9.0">Hex Preview</a>
+
+              (<a href="https://preview.hex.pm/preview/nostrum/0.9.0/show/guides/cheat-sheets/api.cheatmd">current file</a>)
+
+          </span>
+
+        <span class="line">
+          <button class="a-main footer-button display-quick-switch" title="Search HexDocs packages">
+            Search HexDocs
+          </button>
+
+            <a href="Nostrum.epub" title="ePub version">
+              Download ePub version
+            </a>
+
+        </span>
+      </p>
+
+      <p class="built-using">
+        Built using
+        <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.32.1) for the
+
+          <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
+
+      </p>
+
+    </footer>
+  </div>
+</main>
+</div>
+
+
+  </body>
+</html>
