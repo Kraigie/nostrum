@@ -31,9 +31,6 @@ defmodule Nostrum.Struct.User do
     :global_name,
     :avatar,
     :bot,
-    :mfa_enabled,
-    :verified,
-    :email,
     :public_flags
   ]
 
@@ -60,17 +57,12 @@ defmodule Nostrum.Struct.User do
   @typedoc "Whether the user is a bot"
   @type bot :: boolean | nil
 
-  @typedoc "Whether the user has two factor enabled"
-  @type mfa_enabled :: boolean | nil
+  @typedoc """
+  The user's public flags, as a bitset.
 
-  @typedoc "Whether the email on the account has been verified"
-  @type verified :: boolean | nil
-
-  @typedoc "The user's email"
-  @type email :: String.t() | nil
-
-  @typedoc "The user's public flags"
-  @type public_flags :: Flags.t()
+  To parse these, use `Nostrum.Struct.User.Flags.from_integer/1`.
+  """
+  @type public_flags :: Flags.raw_flags()
 
   @type t :: %__MODULE__{
           id: id,
@@ -79,9 +71,6 @@ defmodule Nostrum.Struct.User do
           global_name: global_name,
           avatar: avatar,
           bot: bot,
-          mfa_enabled: mfa_enabled,
-          verified: verified,
-          email: email,
           public_flags: public_flags
         }
 
@@ -185,7 +174,6 @@ defmodule Nostrum.Struct.User do
       map
       |> Map.new(fn {k, v} -> {Util.maybe_to_atom(k), v} end)
       |> Map.update(:id, nil, &Util.cast(&1, Snowflake))
-      |> Map.update(:public_flags, %Flags{}, &Flags.from_integer(&1))
 
     struct(__MODULE__, new)
   end

@@ -102,6 +102,9 @@ defmodule Nostrum.Struct.User.Flags do
 
   @type t :: flags
 
+  @typedoc "Raw user flags as sent by the Discord API"
+  @type raw_flags :: integer()
+
   @flag_values [
     staff: 1 <<< 0,
     partner: 1 <<< 1,
@@ -142,7 +145,7 @@ defmodule Nostrum.Struct.User.Flags do
   }
   ```
   """
-  @spec from_integer(integer()) :: t
+  @spec from_integer(raw_flags()) :: t
   def from_integer(flag_value) do
     boolean_list =
       Enum.map(@flag_values, fn {flag, value} ->
@@ -177,7 +180,7 @@ defmodule Nostrum.Struct.User.Flags do
   131842
   ```
   """
-  @spec to_integer(t) :: integer()
+  @spec to_integer(t) :: raw_flags()
   def to_integer(flag_struct) do
     booleans =
       flag_struct
