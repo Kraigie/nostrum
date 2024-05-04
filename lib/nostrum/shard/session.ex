@@ -240,7 +240,7 @@ defmodule Nostrum.Shard.Session do
         Logger.debug("Consumer up, we are ready to rumble")
 
       _consumers ->
-        Logger.debug("Shard connection up")
+        Logger.info("Shard connection armed and ready")
     end
 
     :ok = ConsumerGroup.demonitor(reference)
