@@ -102,12 +102,14 @@ defmodule Nostrum.Struct.Guild.Member do
 
   You can use `avatar_url/3` to fetch a full-formed URL of this asset.
   """
+  @typedoc since: "0.9.1"
   @type avatar :: String.t() | nil
 
   @typedoc """
   Current guild member gate status. `false` if user has yet to pass the membership screening
   configuration for the guild, `true` if the member has passed.
   """
+  @typedoc since: "0.9.1"
   @type pending :: boolean | nil
 
   @typedoc """
@@ -115,6 +117,7 @@ defmodule Nostrum.Struct.Guild.Member do
 
   Look at the `Nostrum.Struct.Guild.Member.Flags` module for guidance parsing this value.
   """
+  @typedoc since: "0.9.1"
   @type flags :: pos_integer() | nil
 
   @type t :: %__MODULE__{
@@ -167,6 +170,7 @@ defmodule Nostrum.Struct.Guild.Member do
   "https://cdn.discordapp.com/guilds/1226944827137069107/users/165023948638126080/avatars/4c8319db8ea745275a1399f8f8aa74ab.png"
   ```
   """
+  @doc since: "0.9.1"
   @spec avatar_url(t, Nostrum.Struct.Guild.id()) :: String.t() | nil
   def avatar_url(member, guild_id, image_format \\ "png")
 

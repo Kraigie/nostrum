@@ -2,6 +2,7 @@ defmodule Nostrum.Struct.Guild.Member.Flags do
   @moduledoc """
   Struct representing the flags a guild member can have.
   """
+  @moduledoc since: "0.9.1"
 
   import Bitwise
 
