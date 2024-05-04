@@ -34,6 +34,23 @@ find_large_communities(Threshold, GuildCache) ->
                     map_get(member_count, Guild) > Threshold]).
 ```
 
+### Find all online users in a guild
+
+```erl
+find_online_users(RequestedGuildId, PresenceCache, UserCache) ->
+    qlc:q([User || {{GuildId, PresenceUserId}, Presence} <- PresenceCache:query_handle(),
+                   % Filter to members in the requested guild ID
+                   GuildId =:= RequestedGuildId,
+                   % Fetch any members where the status is not offline
+                   map_get(status, Presence) /= offline,
+                   % Join the found users on the UserCache
+                   {UserId, User} <- UserCache:query_handle(),
+                   % Return the users that match the found presences
+                   UserId =:= PresenceUserId]).
+```
+
+This depends on the guild presences intent being enabled and the bot storing received presences in the presence cache.
+
 ## Debugging QLC
 
 {: .col-2 }
