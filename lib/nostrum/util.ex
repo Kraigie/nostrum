@@ -209,11 +209,17 @@ defmodule Nostrum.Util do
   end
 
   @doc """
-  Converts possibly nil ISO8601 timestamp to a `DateTime`
+  Converts possibly nil ISO8601 timestamp to a `DateTime`.
+
+  If a `DateTime` is provided, return it as-is.
   """
-  @spec maybe_to_datetime(String.t() | nil) :: DateTime.t() | nil
+  @spec maybe_to_datetime(String.t() | nil | DateTime.t()) :: DateTime.t() | nil
   def maybe_to_datetime(nil) do
     nil
+  end
+
+  def maybe_to_datetime(%DateTime{} = dt) do
+    dt
   end
 
   def maybe_to_datetime(stamp) do
