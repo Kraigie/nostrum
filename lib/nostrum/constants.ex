@@ -68,6 +68,10 @@ defmodule Nostrum.Constants do
   def guild_emojis(guild_id), do: "/guilds/#{guild_id}/emojis"
   def guild_emoji(guild_id, emoji_id), do: "/guilds/#{guild_id}/emojis/#{emoji_id}"
 
+  def sticker(sticker_id), do: "/stickers/#{sticker_id}"
+  def guild_stickers(guild_id), do: "/guilds/#{guild_id}/stickers"
+  def guild_sticker(guild_id, sticker_id), do: "/guilds/#{guild_id}/stickers/#{sticker_id}"
+
   def guild_scheduled_events(guild_id), do: "/guilds/#{guild_id}/scheduled-events"
 
   def guild_scheduled_event(guild_id, event_id),

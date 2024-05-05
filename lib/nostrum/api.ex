@@ -41,6 +41,8 @@ defmodule Nostrum.Api do
   ```
   """
 
+  @crlf "\r\n"
+
   import Nostrum.Snowflake, only: [is_snowflake: 1]
 
   alias Nostrum.Api.Ratelimiter
@@ -58,6 +60,7 @@ defmodule Nostrum.Api do
     Invite,
     Message,
     Message.Poll,
+    Sticker,
     ThreadMember,
     User,
     Webhook
@@ -1414,6 +1417,135 @@ defmodule Nostrum.Api do
   def delete_guild_emoji!(guild_id, emoji_id, reason \\ nil) do
     delete_guild_emoji(guild_id, emoji_id, reason)
     |> bangify
+  end
+
+  @doc ~S"""
+  Fetch a sticker with the provided ID.
+
+  Returns a `t:Nostrum.Struct.Sticker.t/0`.
+  """
+  @spec get_sticker(Snowflake.t()) :: {:ok, Sticker.t()} | error
+  def get_sticker(sticker_id) do
+    request(:get, Constants.sticker(sticker_id))
+    |> handle_request_with_decode({:struct, Sticker})
+  end
+
+  @doc ~S"""
+  List all stickers in the provided guild.
+
+  Returns a list of `t:Nostrum.Struct.Sticker.t/0`.
+  """
+  @spec list_guild_stickers(Guild.id()) :: {:ok, [Sticker.t()]} | error
+  def list_guild_stickers(guild_id) do
+    request(:get, Constants.guild_stickers(guild_id))
+    |> handle_request_with_decode({:list, {:struct, Sticker}})
+  end
+
+  @doc ~S"""
+  Return the specified sticker from the specified guild.
+
+  Returns a `t:Nostrum.Struct.Sticker.t/0`.
+  """
+  @spec get_guild_sticker(Guild.id(), Sticker.id()) :: Sticker.t() | error
+  def get_guild_sticker(guild_id, sticker_id) do
+    request(:get, Constants.guild_sticker(guild_id, sticker_id))
+    |> handle_request_with_decode({:struct, Sticker})
+  end
+
+  @doc ~S"""
+  Create a sticker in a guild.
+
+  Every guild has five free sticker slots by default, and each Boost level will
+  grant access to more slots.
+
+  Uploaded stickers are constrained to 5 seconds in length for animated stickers, and 320 x 320 pixels.
+
+  Stickers in the [Lottie file format](https://airbnb.design/lottie/) can only
+  be uploaded on guilds that have either the `VERIFIED` and/or the `PARTNERED`
+  guild feature.
+
+  ## Parameters
+
+  - `name`: Name of the sticker (2-30 characters)
+  - `description`: Description of the sticker (2-100 characters)
+  - `tags`: Autocomplete/suggestion tags for the sticker (max 200 characters)
+  - `file`: A path to a file to upload or a map of `name` (file name) and `body` (file data).
+  - `reason` (optional): audit log reason to attach to this event
+
+  ## Returns
+
+  Returns a `t:Nostrum.Struct.Sticker.t/0` on success.
+  """
+  @spec create_guild_sticker(
+          Guild.id(),
+          Sticker.name(),
+          Sticker.description(),
+          Sticker.tags(),
+          String.t() | %{body: iodata(), name: String.t()},
+          String.t() | nil
+        ) :: {:ok, Sticker.t()} | error
+  def create_guild_sticker(guild_id, name, description, tags, file, reason \\ nil) do
+    opts = %{
+      name: name,
+      description: description,
+      tags: tags
+    }
+
+    boundary = generate_boundary()
+
+    multipart = create_multipart([], Jason.encode_to_iodata!(opts), boundary)
+
+    headers =
+      maybe_add_reason(reason, [
+        {"content-type", "multipart/form-data; boundary=#{boundary}"}
+      ])
+
+    file = create_file_part_for_multipart(file, nil, boundary, "file")
+
+    %{
+      method: :post,
+      route: Constants.guild_stickers(guild_id),
+      body:
+        {:multipart,
+         [
+           ~s|--#{boundary}#{@crlf}|,
+           file
+           | multipart
+         ]},
+      params: [],
+      headers: headers
+    }
+    |> request()
+    |> handle_request_with_decode({:struct, Sticker})
+  end
+
+  @doc ~S"""
+  Modify a guild sticker with the specified ID.
+
+  Pass in a map of properties to update, with any of the following keys:
+
+  - `name`: Name of the sticker (2-30 characters)
+  - `description`: Description of the sticker (2-100 characters)
+  - `tags`: Autocomplete/suggestion tags for the sticker (max 200 characters)
+
+  Returns an updated sticker on update completion.
+  """
+  @spec modify_guild_sticker(Guild.id(), Sticker.id(), %{
+          name: Sticker.name() | nil,
+          description: Sticker.description() | nil,
+          tags: Sticker.tags() | nil
+        }) :: {:ok, Sticker.t()} | error
+  def modify_guild_sticker(guild_id, sticker_id, options) do
+    request(:patch, Constants.guild_sticker(guild_id, sticker_id), options)
+    |> handle_request_with_decode({:struct, Sticker})
+  end
+
+  @doc ~S"""
+  Delete a guild sticker with the specified ID.
+  """
+  @spec delete_guild_sticker(Guild.id(), Sticker.id()) :: {:ok} | error
+  def delete_guild_sticker(guild_id, sticker_id) do
+    request(:delete, Constants.guild_sticker(guild_id, sticker_id))
   end
 
   @doc ~S"""
@@ -4373,8 +4505,6 @@ defmodule Nostrum.Api do
     end
   end
 
-  @crlf "\r\n"
-
   defp create_multipart(files, json, boundary) do
     json_mime = MIME.type("json")
     json_size = :erlang.iolist_size(json)
@@ -4397,16 +4527,23 @@ defmodule Nostrum.Api do
     ]
   end
 
-  defp create_file_part_for_multipart(file, index, boundary) do
+  defp create_file_part_for_multipart(file, index, boundary, name_override \\ nil) do
     {body, name} = get_file_contents(file)
 
     file_mime = MIME.from_path(name)
     file_size = :erlang.iolist_size(body)
 
+    field_name =
+      if name_override do
+        name_override
+      else
+        "files[#{index}]"
+      end
+
     [
       ~s|content-length: #{file_size}#{@crlf}|,
       ~s|content-type: #{file_mime}#{@crlf}|,
-      ~s|content-disposition: form-data; name="files[#{index}]"; filename="#{name}"#{@crlf}#{@crlf}|,
+      ~s|content-disposition: form-data; name="#{field_name}"; filename="#{name}"#{@crlf}#{@crlf}|,
       body,
       ~s|#{@crlf}--#{boundary}#{@crlf}|
     ]
