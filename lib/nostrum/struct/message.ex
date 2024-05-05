@@ -6,7 +6,7 @@ defmodule Nostrum.Struct.Message do
   [Discord API Message Object Documentation](https://discord.com/developers/docs/resources/channel#message-object).
   """
 
-  alias Nostrum.Struct.{Channel, Embed, Guild, Interaction, User}
+  alias Nostrum.Struct.{Channel, Embed, Guild, Interaction, Sticker, User}
   alias Nostrum.Struct.Guild.{Member, Role}
 
   alias Nostrum.Struct.Message.{
@@ -16,8 +16,7 @@ defmodule Nostrum.Struct.Message do
     Component,
     Poll,
     Reaction,
-    Reference,
-    Sticker
+    Reference
   }
 
   alias Nostrum.{Snowflake, Util}
