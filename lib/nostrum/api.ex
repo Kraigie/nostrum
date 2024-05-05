@@ -1549,6 +1549,21 @@ defmodule Nostrum.Api do
   end
 
   @doc ~S"""
+  Get a list of available sticker packs.
+  """
+  @spec get_sticker_packs() :: {:ok, [Sticker.Pack.t()]} | error
+  def get_sticker_packs do
+    resp =
+      request(:get, Constants.sticker_packs())
+      |> handle_request_with_decode()
+
+    case resp do
+      {:ok, %{sticker_packs: packs}} -> {:ok, Util.cast(packs, {:list, {:struct, Sticker.Pack}})}
+      _ -> resp
+    end
+  end
+
+  @doc ~S"""
   Get the `t:Nostrum.Struct.Guild.AuditLog.t/0` for the given `guild_id`.
 
   ## Options

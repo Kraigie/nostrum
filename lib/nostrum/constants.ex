@@ -72,6 +72,8 @@ defmodule Nostrum.Constants do
   def guild_stickers(guild_id), do: "/guilds/#{guild_id}/stickers"
   def guild_sticker(guild_id, sticker_id), do: "/guilds/#{guild_id}/stickers/#{sticker_id}"
 
+  def sticker_packs, do: "/sticker-packs"
+
   def guild_scheduled_events(guild_id), do: "/guilds/#{guild_id}/scheduled-events"
 
   def guild_scheduled_event(guild_id, event_id),
@@ -158,6 +160,7 @@ defmodule Nostrum.Constants do
   end
 
   def cdn_sticker(id, image_format), do: "/stickers/#{id}.#{image_format}"
+  def cdn_sticker_pack(id), do: "/app-assets/710982414301790216/store/#{id}.png"
 
   def thread_with_message(channel_id, message_id),
     do: "/channels/#{channel_id}/messages/#{message_id}/threads"
