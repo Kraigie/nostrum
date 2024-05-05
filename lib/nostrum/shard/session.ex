@@ -337,6 +337,27 @@ defmodule Nostrum.Shard.Session do
     {:next_state, :disconnected, %{data | conn: nil, stream: nil}, connect}
   end
 
+  # :gen_statem callback helper that removes the huge zlib data blob from any
+  # errors experienced by the shard session state machine. This zlib blob is
+  # only decodable by the zlib context that the error ocurred in anyway so it's
+  # inclusion in bug reports only hinders. It has also already been decoded by
+  # the time it reaches this call so we cannot attempt to decode it here.
+  def format_status(%{queue: queue} = state) do
+    queue =
+      Enum.map(queue, fn queue_item ->
+        case queue_item do
+          # match gun websocket messages and remove the data blob
+          {:info, {:gun_ws, conn, stream, {:binary, _payload}}} ->
+            {:info, {:gun_ws, conn, stream, {:binary, "PAYLOAD REMOVED"}}}
+
+          _ ->
+            queue_item
+        end
+      end)
+
+    %{state | queue: queue}
+  end
+
   # Internal helper. Wait for consumers to start up.
   defp wait_for_consumer_boot(reference, timeout) do
     receive do
