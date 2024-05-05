@@ -5,6 +5,7 @@ defmodule Nostrum.Constants do
   def base_route, do: "/api/v10"
   def base_url, do: "https://#{domain()}#{base_route()}"
   def cdn_url, do: "https://cdn.discordapp.com"
+  def media_url, do: "https://media.discordapp.net"
   def gateway, do: "/gateway"
   def gateway_bot, do: "/gateway/bot"
 
@@ -151,6 +152,8 @@ defmodule Nostrum.Constants do
   def cdn_guild_avatar(guild_id, user_id, avatar_hash, image_format) do
     "/guilds/#{guild_id}/users/#{user_id}/avatars/#{avatar_hash}.#{image_format}"
   end
+
+  def cdn_sticker(id, image_format), do: "/stickers/#{id}.#{image_format}"
 
   def thread_with_message(channel_id, message_id),
     do: "/channels/#{channel_id}/messages/#{message_id}/threads"
