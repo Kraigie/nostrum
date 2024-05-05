@@ -44,10 +44,11 @@ defmodule Nostrum.Permission do
           | :manage_nicknames
           | :manage_roles
           | :manage_webhooks
-          | :manage_emojis_and_stickers
+          | :manage_guild_expressions
           | :view_guild_insights
           | :use_application_commands
           | :moderate_members
+          | :create_guild_expressions
           | :send_polls
 
   @type text_permission ::
@@ -115,7 +116,7 @@ defmodule Nostrum.Permission do
     manage_nicknames: 1 <<< 27,
     manage_roles: 1 <<< 28,
     manage_webhooks: 1 <<< 29,
-    manage_emojis_and_stickers: 1 <<< 30,
+    manage_guild_expressions: 1 <<< 30,
     use_application_commands: 1 <<< 31,
     request_to_speak: 1 <<< 32,
     manage_events: 1 <<< 33,
@@ -126,7 +127,12 @@ defmodule Nostrum.Permission do
     send_messages_in_threads: 1 <<< 38,
     use_embedded_activities: 1 <<< 39,
     moderate_members: 1 <<< 40,
+    create_guild_expressions: 1 <<< 43,
     send_polls: 1 <<< 49
+  }
+
+  @legacy_perm_names %{
+    manage_emojis_and_stickers: :manage_guild_expressions
   }
 
   @bit_to_permission_map Map.new(@permission_to_bit_map, fn {k, v} -> {v, k} end)
@@ -233,6 +239,9 @@ defmodule Nostrum.Permission do
   ```
   """
   @spec to_bit(t) :: bit
+  def to_bit(permission) when is_map_key(@legacy_perm_names, permission),
+    do: to_bit(@legacy_perm_names[permission])
+
   def to_bit(permission) when is_permission(permission), do: @permission_to_bit_map[permission]
 
   @doc """
