@@ -17,6 +17,7 @@ if Code.ensure_loaded?(:mnesia) do
     alias Nostrum.Struct.Emoji
     alias Nostrum.Struct.Guild
     alias Nostrum.Struct.Guild.Role
+    alias Nostrum.Struct.Sticker
     alias Nostrum.Util
     use Supervisor
 
@@ -159,6 +160,20 @@ if Code.ensure_loaded?(:mnesia) do
         end)
 
       {old_emojis, new_emojis}
+    end
+
+    @impl GuildCache
+    @doc "Update the sticker list for the given guild in the cache."
+    @spec stickers_update(Guild.id(), [map()]) :: {[Sticker.t()], [Sticker.t()]}
+    def stickers_update(guild_id, stickers) do
+      new_stickers = Util.cast(stickers, {:list, {:struct, Sticker}})
+
+      old_stickers =
+        update_guild!(guild_id, fn guild ->
+          {%{guild | stickers: new_stickers}, guild.stickers}
+        end)
+
+      {old_stickers, new_stickers}
     end
 
     @impl GuildCache
