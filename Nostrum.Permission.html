@@ -14,7 +14,7 @@
 
     <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
     <script src="dist/handlebars.templates-IHH6HKET.js"></script>
-    <script src="dist/sidebar_items-D3F6F781.js"></script>
+    <script src="dist/sidebar_items-2B68D8E2.js"></script>
     <script src="docs_config.js"></script>
     <script async src="dist/html-GXQ6W6IF.js"></script>
 
@@ -143,13 +143,13 @@ Pages
 to work with permissions:</p><pre><code class="makeup elixir" translate="no"><span class="kn">alias</span><span class="w"> </span><span class="nc">Nostrum.Cache.GuildCache</span><span class="w">
 </span><span class="kn">alias</span><span class="w"> </span><span class="nc">Nostrum.Struct.Guild.Member</span><span class="w">
 
-</span><span class="n">guild</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">GuildCache</span><span class="o">.</span><span class="n">get!</span><span class="p" data-group-id="1280277379-1">(</span><span class="mi">279093381723062272</span><span class="p" data-group-id="1280277379-1">)</span><span class="w">
-</span><span class="n">member</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Map</span><span class="o">.</span><span class="n">get</span><span class="p" data-group-id="1280277379-2">(</span><span class="n">guild</span><span class="o">.</span><span class="n">members</span><span class="p">,</span><span class="w"> </span><span class="mi">177888205536886784</span><span class="p" data-group-id="1280277379-2">)</span><span class="w">
-</span><span class="n">member_perms</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Member</span><span class="o">.</span><span class="n">guild_permissions</span><span class="p" data-group-id="1280277379-3">(</span><span class="n">member</span><span class="p">,</span><span class="w"> </span><span class="n">guild</span><span class="p" data-group-id="1280277379-3">)</span><span class="w">
+</span><span class="n">guild</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">GuildCache</span><span class="o">.</span><span class="n">get!</span><span class="p" data-group-id="2386329700-1">(</span><span class="mi">279093381723062272</span><span class="p" data-group-id="2386329700-1">)</span><span class="w">
+</span><span class="n">member</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Map</span><span class="o">.</span><span class="n">get</span><span class="p" data-group-id="2386329700-2">(</span><span class="n">guild</span><span class="o">.</span><span class="n">members</span><span class="p">,</span><span class="w"> </span><span class="mi">177888205536886784</span><span class="p" data-group-id="2386329700-2">)</span><span class="w">
+</span><span class="n">member_perms</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Member</span><span class="o">.</span><span class="n">guild_permissions</span><span class="p" data-group-id="2386329700-3">(</span><span class="n">member</span><span class="p">,</span><span class="w"> </span><span class="n">guild</span><span class="p" data-group-id="2386329700-3">)</span><span class="w">
 
-</span><span class="k">if</span><span class="w"> </span><span class="ss">:administrator</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">member_perms</span><span class="w"> </span><span class="k" data-group-id="1280277379-4">do</span><span class="w">
-  </span><span class="nc">IO</span><span class="o">.</span><span class="n">puts</span><span class="p" data-group-id="1280277379-5">(</span><span class="s">&quot;This user has the administrator permission.&quot;</span><span class="p" data-group-id="1280277379-5">)</span><span class="w">
-</span><span class="k" data-group-id="1280277379-4">end</span></code></pre>
+</span><span class="k">if</span><span class="w"> </span><span class="ss">:administrator</span><span class="w"> </span><span class="ow">in</span><span class="w"> </span><span class="n">member_perms</span><span class="w"> </span><span class="k" data-group-id="2386329700-4">do</span><span class="w">
+  </span><span class="nc">IO</span><span class="o">.</span><span class="n">puts</span><span class="p" data-group-id="2386329700-5">(</span><span class="s">&quot;This user has the administrator permission.&quot;</span><span class="p" data-group-id="2386329700-5">)</span><span class="w">
+</span><span class="k" data-group-id="2386329700-4">end</span></code></pre>
     </section>
 
 </div>
@@ -397,10 +397,11 @@ to work with permissions:</p><pre><code class="makeup elixir" translate="no"><sp
   | :manage_nicknames
   | :manage_roles
   | :manage_webhooks
-  | :manage_emojis_and_stickers
+  | :manage_guild_expressions
   | :view_guild_insights
   | :use_application_commands
   | :moderate_members
+  | :create_guild_expressions
   | :send_polls</pre>
 
       </div>
@@ -417,7 +418,7 @@ to work with permissions:</p><pre><code class="makeup elixir" translate="no"><sp
     </a>
     <h1 class="signature" translate="no">t()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/permission.ex#L82" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/permission.ex#L83" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -445,7 +446,7 @@ to work with permissions:</p><pre><code class="makeup elixir" translate="no"><sp
     </a>
     <h1 class="signature" translate="no">text_permission()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/permission.ex#L53" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/permission.ex#L54" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -487,7 +488,7 @@ to work with permissions:</p><pre><code class="makeup elixir" translate="no"><sp
     </a>
     <h1 class="signature" translate="no">voice_permission()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/permission.ex#L69" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/permission.ex#L70" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -538,7 +539,7 @@ to work with permissions:</p><pre><code class="makeup elixir" translate="no"><sp
     </a>
     <h1 class="signature" translate="no">all()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/permission.ex#L154" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/permission.ex#L160" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -566,7 +567,7 @@ to work with permissions:</p><pre><code class="makeup elixir" translate="no"><sp
     </a>
     <h1 class="signature" translate="no">from_bit(bit)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/permission.ex#L172" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/permission.ex#L178" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -588,10 +589,10 @@ to work with permissions:</p><pre><code class="makeup elixir" translate="no"><sp
   </a>
   <span class="text">Examples</span>
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Permission</span><span class="o">.</span><span class="n">from_bit</span><span class="p" data-group-id="7929353001-1">(</span><span class="mh">0x04000000</span><span class="p" data-group-id="7929353001-1">)</span><span class="w">
-</span><span class="p" data-group-id="7929353001-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="ss">:change_nickname</span><span class="p" data-group-id="7929353001-2">}</span><span class="w">
+<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Permission</span><span class="o">.</span><span class="n">from_bit</span><span class="p" data-group-id="6614486673-1">(</span><span class="mh">0x04000000</span><span class="p" data-group-id="6614486673-1">)</span><span class="w">
+</span><span class="p" data-group-id="6614486673-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="ss">:change_nickname</span><span class="p" data-group-id="6614486673-2">}</span><span class="w">
 
-</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Permission</span><span class="o">.</span><span class="n">from_bit</span><span class="p" data-group-id="7929353001-3">(</span><span class="mi">0</span><span class="p" data-group-id="7929353001-3">)</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Permission</span><span class="o">.</span><span class="n">from_bit</span><span class="p" data-group-id="6614486673-3">(</span><span class="mi">0</span><span class="p" data-group-id="6614486673-3">)</span><span class="w">
 </span><span class="ss">:error</span></code></pre>
   </section>
 </section>
@@ -604,7 +605,7 @@ to work with permissions:</p><pre><code class="makeup elixir" translate="no"><sp
     </a>
     <h1 class="signature" translate="no">from_bit!(bit)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/permission.ex#L190" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/permission.ex#L196" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -626,10 +627,10 @@ to work with permissions:</p><pre><code class="makeup elixir" translate="no"><sp
   </a>
   <span class="text">Examples</span>
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Permission</span><span class="o">.</span><span class="n">from_bit!</span><span class="p" data-group-id="8181080616-1">(</span><span class="mh">0x04000000</span><span class="p" data-group-id="8181080616-1">)</span><span class="w">
+<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Permission</span><span class="o">.</span><span class="n">from_bit!</span><span class="p" data-group-id="0798672592-1">(</span><span class="mh">0x04000000</span><span class="p" data-group-id="0798672592-1">)</span><span class="w">
 </span><span class="ss">:change_nickname</span><span class="w">
 
-</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Permission</span><span class="o">.</span><span class="n">from_bit!</span><span class="p" data-group-id="8181080616-2">(</span><span class="mi">0</span><span class="p" data-group-id="8181080616-2">)</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Permission</span><span class="o">.</span><span class="n">from_bit!</span><span class="p" data-group-id="0798672592-2">(</span><span class="mi">0</span><span class="p" data-group-id="0798672592-2">)</span><span class="w">
 </span><span class="gt">** (ArgumentError) expected a valid bit, got: `0`</span></code></pre>
   </section>
 </section>
@@ -642,7 +643,7 @@ to work with permissions:</p><pre><code class="makeup elixir" translate="no"><sp
     </a>
     <h1 class="signature" translate="no">from_bitset(bitset)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/permission.ex#L213" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/permission.ex#L219" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -664,11 +665,11 @@ to work with permissions:</p><pre><code class="makeup elixir" translate="no"><sp
   </a>
   <span class="text">Examples</span>
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Permission</span><span class="o">.</span><span class="n">from_bitset</span><span class="p" data-group-id="7343246768-1">(</span><span class="mh">0x08000002</span><span class="p" data-group-id="7343246768-1">)</span><span class="w">
-</span><span class="p" data-group-id="7343246768-2">[</span><span class="ss">:manage_nicknames</span><span class="p">,</span><span class="w"> </span><span class="ss">:kick_members</span><span class="p" data-group-id="7343246768-2">]</span><span class="w">
+<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Permission</span><span class="o">.</span><span class="n">from_bitset</span><span class="p" data-group-id="5680591932-1">(</span><span class="mh">0x08000002</span><span class="p" data-group-id="5680591932-1">)</span><span class="w">
+</span><span class="p" data-group-id="5680591932-2">[</span><span class="ss">:manage_nicknames</span><span class="p">,</span><span class="w"> </span><span class="ss">:kick_members</span><span class="p" data-group-id="5680591932-2">]</span><span class="w">
 
-</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Permission</span><span class="o">.</span><span class="n">from_bitset</span><span class="p" data-group-id="7343246768-3">(</span><span class="mh">0x4000000000000</span><span class="p" data-group-id="7343246768-3">)</span><span class="w">
-</span><span class="p" data-group-id="7343246768-4">[</span><span class="p" data-group-id="7343246768-4">]</span></code></pre>
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Permission</span><span class="o">.</span><span class="n">from_bitset</span><span class="p" data-group-id="5680591932-3">(</span><span class="mh">0x4000000000000</span><span class="p" data-group-id="5680591932-3">)</span><span class="w">
+</span><span class="p" data-group-id="5680591932-4">[</span><span class="p" data-group-id="5680591932-4">]</span></code></pre>
   </section>
 </section>
 <section class="detail" id="is_permission/1">
@@ -680,7 +681,7 @@ to work with permissions:</p><pre><code class="makeup elixir" translate="no"><sp
     </a>
     <h1 class="signature" translate="no">is_permission(term)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/permission.ex#L148" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/permission.ex#L154" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -698,10 +699,10 @@ to work with permissions:</p><pre><code class="makeup elixir" translate="no"><sp
   </a>
   <span class="text">Examples</span>
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Permission</span><span class="o">.</span><span class="n">is_permission</span><span class="p" data-group-id="3610322031-1">(</span><span class="ss">:administrator</span><span class="p" data-group-id="3610322031-1">)</span><span class="w">
+<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Permission</span><span class="o">.</span><span class="n">is_permission</span><span class="p" data-group-id="8780128052-1">(</span><span class="ss">:administrator</span><span class="p" data-group-id="8780128052-1">)</span><span class="w">
 </span><span class="no">true</span><span class="w">
 
-</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Permission</span><span class="o">.</span><span class="n">is_permission</span><span class="p" data-group-id="3610322031-2">(</span><span class="ss">:not_a_permission</span><span class="p" data-group-id="3610322031-2">)</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Permission</span><span class="o">.</span><span class="n">is_permission</span><span class="p" data-group-id="8780128052-2">(</span><span class="ss">:not_a_permission</span><span class="p" data-group-id="8780128052-2">)</span><span class="w">
 </span><span class="no">false</span></code></pre>
   </section>
 </section>
@@ -714,7 +715,7 @@ to work with permissions:</p><pre><code class="makeup elixir" translate="no"><sp
     </a>
     <h1 class="signature" translate="no">to_bit(permission)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/permission.ex#L236" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/permission.ex#L242" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -736,7 +737,7 @@ to work with permissions:</p><pre><code class="makeup elixir" translate="no"><sp
   </a>
   <span class="text">Examples</span>
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Permission</span><span class="o">.</span><span class="n">to_bit</span><span class="p" data-group-id="8763402177-1">(</span><span class="ss">:administrator</span><span class="p" data-group-id="8763402177-1">)</span><span class="w">
+<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Permission</span><span class="o">.</span><span class="n">to_bit</span><span class="p" data-group-id="3094000961-1">(</span><span class="ss">:administrator</span><span class="p" data-group-id="3094000961-1">)</span><span class="w">
 </span><span class="mi">8</span></code></pre>
   </section>
 </section>
@@ -749,7 +750,7 @@ to work with permissions:</p><pre><code class="makeup elixir" translate="no"><sp
     </a>
     <h1 class="signature" translate="no">to_bitset(permissions)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/permission.ex#L249" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/permission.ex#L258" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -771,7 +772,7 @@ to work with permissions:</p><pre><code class="makeup elixir" translate="no"><sp
   </a>
   <span class="text">Examples</span>
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Permission</span><span class="o">.</span><span class="n">to_bitset</span><span class="p" data-group-id="6629944655-1">(</span><span class="p" data-group-id="6629944655-2">[</span><span class="ss">:administrator</span><span class="p">,</span><span class="w"> </span><span class="ss">:create_instant_invite</span><span class="p" data-group-id="6629944655-2">]</span><span class="p" data-group-id="6629944655-1">)</span><span class="w">
+<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Permission</span><span class="o">.</span><span class="n">to_bitset</span><span class="p" data-group-id="0418407147-1">(</span><span class="p" data-group-id="0418407147-2">[</span><span class="ss">:administrator</span><span class="p">,</span><span class="w"> </span><span class="ss">:create_instant_invite</span><span class="p" data-group-id="0418407147-2">]</span><span class="p" data-group-id="0418407147-1">)</span><span class="w">
 </span><span class="mi">9</span></code></pre>
   </section>
 </section>

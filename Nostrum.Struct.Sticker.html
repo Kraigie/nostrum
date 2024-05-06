@@ -8,13 +8,13 @@
     <meta name="project" content="Nostrum v0.9.1">
 
 
-    <title>Nostrum.Struct.Message.Sticker — Nostrum v0.9.1</title>
+    <title>Nostrum.Struct.Sticker — Nostrum v0.9.1</title>
     <link rel="stylesheet" href="dist/html-elixir-2C5PUTIB.css" />
 
 
     <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
     <script src="dist/handlebars.templates-IHH6HKET.js"></script>
-    <script src="dist/sidebar_items-D3F6F781.js"></script>
+    <script src="dist/sidebar_items-2B68D8E2.js"></script>
     <script src="docs_config.js"></script>
     <script async src="dist/html-GXQ6W6IF.js"></script>
 
@@ -127,19 +127,20 @@ Pages
 <div id="top-content">
   <h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/message/sticker.ex#L1" title="View Source" class="icon-action" rel="help">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/sticker.ex#L1" title="View Source" class="icon-action" rel="help">
         <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         <span class="sr-only">View Source</span>
       </a>
 
-    <span translate="no">Nostrum.Struct.Message.Sticker</span> 
+    <span translate="no">Nostrum.Struct.Sticker</span> 
     <small class="app-vsn" translate="no">(Nostrum v0.9.1)</small>
 
   </h1>
 
 
     <section id="moduledoc">
-<p>A <a href="Nostrum.Struct.Message.Sticker.html#content"><code class="inline">Nostrum.Struct.Message.Sticker</code></a> represents a sticker that can be sent inside a <a href="Nostrum.Struct.Message.html"><code class="inline">Nostrum.Struct.Message</code></a>.</p><p>More information can be found on the <a href="https://discord.com/developers/docs/resources/sticker#sticker-object-sticker-structure">Discord API Sticker Object Documentation.</a></p>
+<p>A <a href="Nostrum.Struct.Sticker.html#content"><code class="inline">Nostrum.Struct.Sticker</code></a> represents a sticker that can be sent inside a
+<a href="Nostrum.Struct.Message.html"><code class="inline">Nostrum.Struct.Message</code></a>.</p>
     </section>
 
 </div>
@@ -162,7 +163,7 @@ Pages
 
       </div>
 
-        <div class="summary-synopsis"><p>Whether this guild sticker can be used, may be false due to loss of Server Boosts</p></div>
+        <div class="summary-synopsis"><p>Whether this guild sticker can be used.</p></div>
 
     </div>
 
@@ -182,7 +183,7 @@ Pages
 
       </div>
 
-        <div class="summary-synopsis"><p><a href="https://discord.com/developers/docs/resources/sticker#sticker-object-sticker-format-types">Discord API Sticker Object Format Type Documentation</a></p></div>
+        <div class="summary-synopsis"><p>Format of the sticker.</p></div>
 
     </div>
 
@@ -192,7 +193,7 @@ Pages
 
       </div>
 
-        <div class="summary-synopsis"><p>Id of the guild that owns this sticker</p></div>
+        <div class="summary-synopsis"><p>ID of the guild that owns this sticker.</p></div>
 
     </div>
 
@@ -202,7 +203,7 @@ Pages
 
       </div>
 
-        <div class="summary-synopsis"><p>Id of the sticker</p></div>
+        <div class="summary-synopsis"><p>ID of the sticker</p></div>
 
     </div>
 
@@ -222,7 +223,7 @@ Pages
 
       </div>
 
-        <div class="summary-synopsis"><p>Id of the pack the sticker is from</p></div>
+        <div class="summary-synopsis"><p>ID of the pack the sticker is from</p></div>
 
     </div>
 
@@ -232,7 +233,7 @@ Pages
 
       </div>
 
-        <div class="summary-synopsis"><p>The sticker's sort order within its pack</p></div>
+        <div class="summary-synopsis"><p>The sticker's sort order within its pack.</p></div>
 
     </div>
 
@@ -250,7 +251,7 @@ Pages
 
       </div>
 
-        <div class="summary-synopsis"><p>Discord name of a unicode emoji representing the sticker's expression. for standard stickers, a comma-separated list of related expressions.</p></div>
+        <div class="summary-synopsis"><p>Tags used by the Discord client to auto-complete a sticker.</p></div>
 
     </div>
 
@@ -260,7 +261,7 @@ Pages
 
       </div>
 
-        <div class="summary-synopsis"><p><a href="https://discord.com/developers/docs/resources/sticker#sticker-object-sticker-types">Discord API Sticker Object Type Documentation</a></p></div>
+        <div class="summary-synopsis"><p>Whether the sticker is a standard (platform made) sticker or a custom guild sticker.</p></div>
 
     </div>
 
@@ -270,7 +271,23 @@ Pages
 
       </div>
 
-        <div class="summary-synopsis"><p>User that uploaded the guild sticker</p></div>
+        <div class="summary-synopsis"><p>User that uploaded the guild sticker.</p></div>
+
+    </div>
+
+</div>
+<div class="summary-functions summary">
+  <h2>
+    <a href="#functions">Functions</a>
+  </h2>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#cdn_url/1" translate="no">cdn_url(map)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Fetch a CDN URL for the sticker object.</p></div>
 
     </div>
 
@@ -296,13 +313,11 @@ Pages
     </a>
     <h1 class="signature" translate="no">available()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/message/sticker.ex#L71" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/sticker.ex#L72" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
 
-
-      <span class="note">(since 0.5.0)</span>
 
   </div>
 
@@ -314,7 +329,7 @@ Pages
 
       </div>
 
-<p>Whether this guild sticker can be used, may be false due to loss of Server Boosts</p>
+<p>Whether this guild sticker can be used.</p><p>May be false due to loss of Server Boosts</p>
   </section>
 </section>
 <section class="detail" id="t:description/0">
@@ -326,13 +341,11 @@ Pages
     </a>
     <h1 class="signature" translate="no">description()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/message/sticker.ex#L44" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/sticker.ex#L42" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
 
-
-      <span class="note">(since 0.5.0)</span>
 
   </div>
 
@@ -356,13 +369,11 @@ Pages
     </a>
     <h1 class="signature" translate="no">format_type()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/message/sticker.ex#L66" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/sticker.ex#L65" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
 
-
-      <span class="note">(since 0.5.0)</span>
 
   </div>
 
@@ -370,11 +381,11 @@ Pages
 
       <div class="specs">
 
-          <pre translate="no"><span class="attribute">@type</span> format_type() :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>()</pre>
+          <pre translate="no"><span class="attribute">@type</span> format_type() :: :png | :apng | :lottie | :gif</pre>
 
       </div>
 
-<p><a href="https://discord.com/developers/docs/resources/sticker#sticker-object-sticker-format-types">Discord API Sticker Object Format Type Documentation</a></p><ul><li><code class="inline">1</code>  - <code class="inline">PNG</code></li><li><code class="inline">2</code>  - <code class="inline">APNG</code></li><li><code class="inline">3</code>  - <code class="inline">LOTTIE</code></li></ul>
+<p>Format of the sticker.</p><p>This field is used to determine the return URL in <a href="#cdn_url/1"><code class="inline">cdn_url/1</code></a>.</p>
   </section>
 </section>
 <section class="detail" id="t:guild_id/0">
@@ -386,13 +397,11 @@ Pages
     </a>
     <h1 class="signature" translate="no">guild_id()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/message/sticker.ex#L76" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/sticker.ex#L79" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
 
-
-      <span class="note">(since 0.5.0)</span>
 
   </div>
 
@@ -404,7 +413,7 @@ Pages
 
       </div>
 
-<p>Id of the guild that owns this sticker</p>
+<p>ID of the guild that owns this sticker.</p><p><code class="inline">nil</code> if the sticker is a built-in (type <code class="inline">:standard</code>) sticker.</p>
   </section>
 </section>
 <section class="detail" id="t:id/0">
@@ -416,13 +425,11 @@ Pages
     </a>
     <h1 class="signature" translate="no">id()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/message/sticker.ex#L29" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/sticker.ex#L27" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
 
-
-      <span class="note">(since 0.5.0)</span>
 
   </div>
 
@@ -434,7 +441,7 @@ Pages
 
       </div>
 
-<p>Id of the sticker</p>
+<p>ID of the sticker</p>
   </section>
 </section>
 <section class="detail" id="t:name/0">
@@ -446,13 +453,11 @@ Pages
     </a>
     <h1 class="signature" translate="no">name()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/message/sticker.ex#L39" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/sticker.ex#L37" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
 
-
-      <span class="note">(since 0.5.0)</span>
 
   </div>
 
@@ -476,13 +481,11 @@ Pages
     </a>
     <h1 class="signature" translate="no">pack_id()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/message/sticker.ex#L34" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/sticker.ex#L32" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
 
-
-      <span class="note">(since 0.5.0)</span>
 
   </div>
 
@@ -494,7 +497,7 @@ Pages
 
       </div>
 
-<p>Id of the pack the sticker is from</p>
+<p>ID of the pack the sticker is from</p>
   </section>
 </section>
 <section class="detail" id="t:sort_value/0">
@@ -506,13 +509,11 @@ Pages
     </a>
     <h1 class="signature" translate="no">sort_value()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/message/sticker.ex#L86" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/sticker.ex#L93" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
 
-
-      <span class="note">(since 0.5.0)</span>
 
   </div>
 
@@ -520,11 +521,11 @@ Pages
 
       <div class="specs">
 
-          <pre translate="no"><span class="attribute">@type</span> sort_value() :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>()</pre>
+          <pre translate="no"><span class="attribute">@type</span> sort_value() :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>() | nil</pre>
 
       </div>
 
-<p>The sticker's sort order within its pack</p>
+<p>The sticker's sort order within its pack.</p><p>Sometimes provided for stickers with type <code class="inline">:standard</code> that are in a pack.</p>
   </section>
 </section>
 <section class="detail" id="t:t/0">
@@ -536,13 +537,11 @@ Pages
     </a>
     <h1 class="signature" translate="no">t()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/message/sticker.ex#L88" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/sticker.ex#L95" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
 
-
-      <span class="note">(since 0.5.0)</span>
 
   </div>
 
@@ -550,7 +549,7 @@ Pages
 
       <div class="specs">
 
-          <pre translate="no"><span class="attribute">@type</span> t() :: %Nostrum.Struct.Message.Sticker{
+          <pre translate="no"><span class="attribute">@type</span> t() :: %Nostrum.Struct.Sticker{
   available: <a href="#t:available/0">available</a>(),
   description: <a href="#t:description/0">description</a>(),
   format_type: <a href="#t:format_type/0">format_type</a>(),
@@ -578,13 +577,11 @@ Pages
     </a>
     <h1 class="signature" translate="no">tags()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/message/sticker.ex#L49" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/sticker.ex#L53" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
 
-
-      <span class="note">(since 0.5.0)</span>
 
   </div>
 
@@ -592,11 +589,13 @@ Pages
 
       <div class="specs">
 
-          <pre translate="no"><span class="attribute">@type</span> tags() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>() | nil</pre>
+          <pre translate="no"><span class="attribute">@type</span> tags() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()</pre>
 
       </div>
 
-<p>Discord name of a unicode emoji representing the sticker's expression. for standard stickers, a comma-separated list of related expressions.</p>
+<p>Tags used by the Discord client to auto-complete a sticker.</p><p>For default sticker packs, this is a comma-separated list. For guild stickers,
+this is the name of the unicode emoji associated by the sticker creator with
+the sticker.</p><p>This is technically a free-text field so consistency in formatting is not guaranteed.</p>
   </section>
 </section>
 <section class="detail" id="t:type/0">
@@ -608,13 +607,11 @@ Pages
     </a>
     <h1 class="signature" translate="no">type()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/message/sticker.ex#L57" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/sticker.ex#L58" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
 
-
-      <span class="note">(since 0.5.0)</span>
 
   </div>
 
@@ -622,11 +619,11 @@ Pages
 
       <div class="specs">
 
-          <pre translate="no"><span class="attribute">@type</span> type() :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>()</pre>
+          <pre translate="no"><span class="attribute">@type</span> type() :: :standard | :guild</pre>
 
       </div>
 
-<p><a href="https://discord.com/developers/docs/resources/sticker#sticker-object-sticker-types">Discord API Sticker Object Type Documentation</a></p><ul><li><code class="inline">1</code>  - <code class="inline">STANDARD</code>       an official sticker in a pack, part of Nitro or in a removed purchasable pack</li><li><code class="inline">2</code>  - <code class="inline">GUILD</code>          a sticker uploaded to a Boosted guild for the guild's members</li></ul>
+<p>Whether the sticker is a standard (platform made) sticker or a custom guild sticker.</p>
   </section>
 </section>
 <section class="detail" id="t:user/0">
@@ -638,13 +635,11 @@ Pages
     </a>
     <h1 class="signature" translate="no">user()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/message/sticker.ex#L81" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/sticker.ex#L86" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
 
-
-      <span class="note">(since 0.5.0)</span>
 
   </div>
 
@@ -652,11 +647,62 @@ Pages
 
       <div class="specs">
 
-          <pre translate="no"><span class="attribute">@type</span> user() :: <a href="Nostrum.Struct.User.html#t:t/0">Nostrum.Struct.User.t</a>()</pre>
+          <pre translate="no"><span class="attribute">@type</span> user() :: <a href="Nostrum.Struct.User.html#t:t/0">Nostrum.Struct.User.t</a>() | nil</pre>
 
       </div>
 
-<p>User that uploaded the guild sticker</p>
+<p>User that uploaded the guild sticker.</p><p><code class="inline">nil</code> if the sticker is a built-in (type <code class="inline">:standard</code>) sticker.</p>
+  </section>
+</section>
+
+    </div>
+  </section>
+
+  <section id="functions" class="details-list">
+    <h1 class="section-heading">
+      <a class="hover-link" href="#functions">
+        <i class="ri-link-m" aria-hidden="true"></i>
+      </a>
+      <span class="text">Functions</span>
+    </h1>
+    <div class="functions-list">
+<section class="detail" id="cdn_url/1">
+
+  <div class="detail-header">
+    <a href="#cdn_url/1" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">cdn_url(map)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/sticker.ex#L163" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> cdn_url(<a href="#t:t/0">t</a>()) :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()</pre>
+
+      </div>
+
+<p>Fetch a CDN URL for the sticker object.</p><p><code class="inline">:png</code> and <code class="inline">:apng</code> stickers will return a <code class="inline">.png</code> URL, <code class="inline">:gif</code> will return a
+<code class="inline">.gif</code> URL and <code class="inline">:lottie</code> will return a <code class="inline">.json</code> URL.</p><h3 id="cdn_url/1-examples" class="section-heading">
+  <a href="#cdn_url/1-examples" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Examples</span>
+</h3>
+<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="n">sticker</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="1574229577-1">%</span><span class="nc" data-group-id="1574229577-1">Nostrum.Struct.Sticker</span><span class="p" data-group-id="1574229577-1">{</span><span class="ss">format_type</span><span class="p">:</span><span class="w"> </span><span class="ss">:gif</span><span class="p">,</span><span class="w"> </span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">112233445566778899</span><span class="p" data-group-id="1574229577-1">}</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Struct.Sticker</span><span class="o">.</span><span class="n">cdn_url</span><span class="w"> </span><span class="n">sticker</span><span class="w">
+</span><span class="s">&quot;https://media.discordapp.net/stickers/112233445566778899.gif&quot;</span></code></pre><pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="n">sticker</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="1371869193-1">%</span><span class="nc" data-group-id="1371869193-1">Nostrum.Struct.Sticker</span><span class="p" data-group-id="1371869193-1">{</span><span class="ss">format_type</span><span class="p">:</span><span class="w"> </span><span class="ss">:apng</span><span class="p">,</span><span class="w"> </span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">998877665544332211</span><span class="p" data-group-id="1371869193-1">}</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Struct.Sticker</span><span class="o">.</span><span class="n">cdn_url</span><span class="w"> </span><span class="n">sticker</span><span class="w">
+</span><span class="s">&quot;https://cdn.discordapp.com/stickers/998877665544332211.png&quot;</span></code></pre>
   </section>
 </section>
 

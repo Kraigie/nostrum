@@ -14,7 +14,7 @@
 
     <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
     <script src="dist/handlebars.templates-IHH6HKET.js"></script>
-    <script src="dist/sidebar_items-D3F6F781.js"></script>
+    <script src="dist/sidebar_items-2B68D8E2.js"></script>
     <script src="docs_config.js"></script>
     <script async src="dist/html-GXQ6W6IF.js"></script>
 
@@ -145,11 +145,11 @@ the following:</p><ul><li><a href="api.html">API</a> - Methods to interact with 
 </h2>
 <p>There are two versions of nostrum, a stable version released on Hex and a dev
 version on GitHub. The dev version will be more up to date but will likely
-have more errors.</p><pre><code class="makeup elixir" translate="no"><span class="kd">def</span><span class="w"> </span><span class="nf">deps</span><span class="w"> </span><span class="k" data-group-id="2788157944-1">do</span><span class="w">
-  </span><span class="p" data-group-id="2788157944-2">[</span><span class="p" data-group-id="2788157944-3">{</span><span class="ss">:nostrum</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;~&gt; 0.9&quot;</span><span class="p" data-group-id="2788157944-3">}</span><span class="p" data-group-id="2788157944-2">]</span><span class="w">
+have more errors.</p><pre><code class="makeup elixir" translate="no"><span class="kd">def</span><span class="w"> </span><span class="nf">deps</span><span class="w"> </span><span class="k" data-group-id="7961166718-1">do</span><span class="w">
+  </span><span class="p" data-group-id="7961166718-2">[</span><span class="p" data-group-id="7961166718-3">{</span><span class="ss">:nostrum</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;~&gt; 0.9&quot;</span><span class="p" data-group-id="7961166718-3">}</span><span class="p" data-group-id="7961166718-2">]</span><span class="w">
   </span><span class="c1"># Or, for bleeding edge changes:</span><span class="w">
   </span><span class="c1"># [{:nostrum, github: &quot;Kraigie/nostrum&quot;}]</span><span class="w">
-</span><span class="k" data-group-id="2788157944-1">end</span></code></pre><p>Next up, you need to configure nostrum. The most basic configuration is simply
+</span><span class="k" data-group-id="7961166718-1">end</span></code></pre><p>Next up, you need to configure nostrum. The most basic configuration is simply
 setting a token to log in with:</p><pre><code class="makeup elixir" translate="no"><span class="n">config</span><span class="w"> </span><span class="ss">:nostrum</span><span class="p">,</span><span class="w">
   </span><span class="ss">token</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;666&quot;</span><span class="w">  </span><span class="c1"># The token of your bot as a string</span></code></pre><h2 id="configuration-options" class="section-heading">
   <a href="#configuration-options" class="hover-link">
@@ -219,7 +219,7 @@ alongside your application some of your events will be consumed. Defaults to
 <p>nostrum uses Elixir's standard logger to inform you about regular and irregular
 events. Normal messages include Discord-requested shard reconnections and the
 <code class="inline">IDENTIFY</code> and <code class="inline">READY</code> events.</p><p>The following metadata fields through logger:</p><ul><li><code class="inline">shard</code> - Id of the shard on which the event occurred</li><li><code class="inline">guild</code> - Name of the guild on which the voice connection event occurred</li><li><code class="inline">channel</code> - Name of the channel on which the voice connection event occurred</li></ul><p>To enable this metadata, logger can be configured as such:</p><pre><code class="makeup elixir" translate="no"><span class="n">config</span><span class="w"> </span><span class="ss">:logger</span><span class="p">,</span><span class="w"> </span><span class="ss">:console</span><span class="p">,</span><span class="w">
-  </span><span class="ss">metadata</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="5100551638-1">[</span><span class="ss">:shard</span><span class="p">,</span><span class="w"> </span><span class="ss">:guild</span><span class="p">,</span><span class="w"> </span><span class="ss">:channel</span><span class="p" data-group-id="5100551638-1">]</span></code></pre><p>For more information on how this works, and how to change the logging
+  </span><span class="ss">metadata</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="9001057850-1">[</span><span class="ss">:shard</span><span class="p">,</span><span class="w"> </span><span class="ss">:guild</span><span class="p">,</span><span class="w"> </span><span class="ss">:channel</span><span class="p" data-group-id="9001057850-1">]</span></code></pre><p>For more information on how this works, and how to change the logging
 configuration for nostrum on its own, please see the <a href="https://hexdocs.pm/logger/Logger.html">Logger
 documentation</a></p><h3 id="why-elixir" class="section-heading">
   <a href="#why-elixir" class="hover-link">

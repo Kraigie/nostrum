@@ -8,7 +8,7 @@
     <meta name="project" content="Nostrum v0.9.1">
 
 
-    <title>Nostrum.Struct.Message.Attachment — Nostrum v0.9.1</title>
+    <title>Nostrum.Struct.Sticker.Pack — Nostrum v0.9.1</title>
     <link rel="stylesheet" href="dist/html-elixir-2C5PUTIB.css" />
 
 
@@ -127,19 +127,19 @@ Pages
 <div id="top-content">
   <h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/message/attachment.ex#L1" title="View Source" class="icon-action" rel="help">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/sticker/pack.ex#L1" title="View Source" class="icon-action" rel="help">
         <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         <span class="sr-only">View Source</span>
       </a>
 
-    <span translate="no">Nostrum.Struct.Message.Attachment</span> 
+    <span translate="no">Nostrum.Struct.Sticker.Pack</span> 
     <small class="app-vsn" translate="no">(Nostrum v0.9.1)</small>
 
   </h1>
 
 
     <section id="moduledoc">
-<p>Struct representing a Discord message attachment.</p>
+<p>Represents a platform-curated sticker pack on Discord</p>
     </section>
 
 </div>
@@ -158,21 +158,31 @@ Pages
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#t:filename/0" translate="no">filename()</a>
+        <a href="#t:banner_asset_id/0" translate="no">banner_asset_id()</a>
 
       </div>
 
-        <div class="summary-synopsis"><p>Name of attached file</p></div>
+        <div class="summary-synopsis"><p>Asset ID of the banner for this sticker pack.</p></div>
 
     </div>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#t:height/0" translate="no">height()</a>
+        <a href="#t:cover_sticker_id/0" translate="no">cover_sticker_id()</a>
 
       </div>
 
-        <div class="summary-synopsis"><p>Height of the file (if image)</p></div>
+        <div class="summary-synopsis"><p>ID of a sticker contained within the pack that should be the cover.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:description/0" translate="no">description()</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Marketing description of the sticker pack.</p></div>
 
     </div>
 
@@ -182,27 +192,37 @@ Pages
 
       </div>
 
-        <div class="summary-synopsis"><p>Attachment id</p></div>
+        <div class="summary-synopsis"><p>ID of the sticker pack.</p></div>
 
     </div>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#t:proxy_url/0" translate="no">proxy_url()</a>
+        <a href="#t:name/0" translate="no">name()</a>
 
       </div>
 
-        <div class="summary-synopsis"><p>Proxy url of the file</p></div>
+        <div class="summary-synopsis"><p>Name of the pack.</p></div>
 
     </div>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#t:size/0" translate="no">size()</a>
+        <a href="#t:sku_id/0" translate="no">sku_id()</a>
 
       </div>
 
-        <div class="summary-synopsis"><p>Size of the file in bytes</p></div>
+        <div class="summary-synopsis"><p>SKU ID of the sticker pack.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:stickers/0" translate="no">stickers()</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>A list of stickers contained within the pack.</p></div>
 
     </div>
 
@@ -214,23 +234,19 @@ Pages
 
     </div>
 
-    <div class="summary-row">
-      <div class="summary-signature">
-        <a href="#t:url/0" translate="no">url()</a>
-
-      </div>
-
-        <div class="summary-synopsis"><p>Source url of the file</p></div>
-
-    </div>
+</div>
+<div class="summary-functions summary">
+  <h2>
+    <a href="#functions">Functions</a>
+  </h2>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#t:width/0" translate="no">width()</a>
+        <a href="#banner_url/1" translate="no">banner_url(map)</a>
 
       </div>
 
-        <div class="summary-synopsis"><p>Width of the file (if image)</p></div>
+        <div class="summary-synopsis"><p>Return the banner pack URL for a given sticker pack.</p></div>
 
     </div>
 
@@ -247,16 +263,16 @@ Pages
       <span class="text">Types</span>
     </h1>
     <div class="types-list">
-<section class="detail" id="t:filename/0">
+<section class="detail" id="t:banner_asset_id/0">
 
   <div class="detail-header">
-    <a href="#t:filename/0" class="detail-link" title="Link to this type">
+    <a href="#t:banner_asset_id/0" class="detail-link" title="Link to this type">
       <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature" translate="no">filename()</h1>
+    <h1 class="signature" translate="no">banner_asset_id()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/message/attachment.ex#L22" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/sticker/pack.ex#L52" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -268,23 +284,23 @@ Pages
 
       <div class="specs">
 
-          <pre translate="no"><span class="attribute">@type</span> filename() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()</pre>
+          <pre translate="no"><span class="attribute">@type</span> banner_asset_id() :: <a href="Nostrum.Snowflake.html#t:t/0">Nostrum.Snowflake.t</a>()</pre>
 
       </div>
 
-<p>Name of attached file</p>
+<p>Asset ID of the banner for this sticker pack.</p>
   </section>
 </section>
-<section class="detail" id="t:height/0">
+<section class="detail" id="t:cover_sticker_id/0">
 
   <div class="detail-header">
-    <a href="#t:height/0" class="detail-link" title="Link to this type">
+    <a href="#t:cover_sticker_id/0" class="detail-link" title="Link to this type">
       <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature" translate="no">height()</h1>
+    <h1 class="signature" translate="no">cover_sticker_id()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/message/attachment.ex#L34" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/sticker/pack.ex#L42" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -296,11 +312,39 @@ Pages
 
       <div class="specs">
 
-          <pre translate="no"><span class="attribute">@type</span> height() :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>() | nil</pre>
+          <pre translate="no"><span class="attribute">@type</span> cover_sticker_id() :: <a href="Nostrum.Struct.Sticker.html#t:id/0">Nostrum.Struct.Sticker.id</a>()</pre>
 
       </div>
 
-<p>Height of the file (if image)</p>
+<p>ID of a sticker contained within the pack that should be the cover.</p>
+  </section>
+</section>
+<section class="detail" id="t:description/0">
+
+  <div class="detail-header">
+    <a href="#t:description/0" class="detail-link" title="Link to this type">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature" translate="no">description()</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/sticker/pack.ex#L47" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@type</span> description() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()</pre>
+
+      </div>
+
+<p>Marketing description of the sticker pack.</p>
   </section>
 </section>
 <section class="detail" id="t:id/0">
@@ -312,7 +356,7 @@ Pages
     </a>
     <h1 class="signature" translate="no">id()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/message/attachment.ex#L19" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/sticker/pack.ex#L22" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -328,19 +372,19 @@ Pages
 
       </div>
 
-<p>Attachment id</p>
+<p>ID of the sticker pack.</p>
   </section>
 </section>
-<section class="detail" id="t:proxy_url/0">
+<section class="detail" id="t:name/0">
 
   <div class="detail-header">
-    <a href="#t:proxy_url/0" class="detail-link" title="Link to this type">
+    <a href="#t:name/0" class="detail-link" title="Link to this type">
       <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature" translate="no">proxy_url()</h1>
+    <h1 class="signature" translate="no">name()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/message/attachment.ex#L31" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/sticker/pack.ex#L32" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -352,23 +396,23 @@ Pages
 
       <div class="specs">
 
-          <pre translate="no"><span class="attribute">@type</span> proxy_url() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()</pre>
+          <pre translate="no"><span class="attribute">@type</span> name() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()</pre>
 
       </div>
 
-<p>Proxy url of the file</p>
+<p>Name of the pack.</p>
   </section>
 </section>
-<section class="detail" id="t:size/0">
+<section class="detail" id="t:sku_id/0">
 
   <div class="detail-header">
-    <a href="#t:size/0" class="detail-link" title="Link to this type">
+    <a href="#t:sku_id/0" class="detail-link" title="Link to this type">
       <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature" translate="no">size()</h1>
+    <h1 class="signature" translate="no">sku_id()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/message/attachment.ex#L25" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/sticker/pack.ex#L37" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -380,11 +424,39 @@ Pages
 
       <div class="specs">
 
-          <pre translate="no"><span class="attribute">@type</span> size() :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>()</pre>
+          <pre translate="no"><span class="attribute">@type</span> sku_id() :: <a href="Nostrum.Snowflake.html#t:t/0">Nostrum.Snowflake.t</a>()</pre>
 
       </div>
 
-<p>Size of the file in bytes</p>
+<p>SKU ID of the sticker pack.</p>
+  </section>
+</section>
+<section class="detail" id="t:stickers/0">
+
+  <div class="detail-header">
+    <a href="#t:stickers/0" class="detail-link" title="Link to this type">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature" translate="no">stickers()</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/sticker/pack.ex#L27" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@type</span> stickers() :: [<a href="Nostrum.Struct.Sticker.html#t:t/0">Nostrum.Struct.Sticker.t</a>()]</pre>
+
+      </div>
+
+<p>A list of stickers contained within the pack.</p>
   </section>
 </section>
 <section class="detail" id="t:t/0">
@@ -396,7 +468,7 @@ Pages
     </a>
     <h1 class="signature" translate="no">t()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/message/attachment.ex#L39" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/sticker/pack.ex#L54" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -408,14 +480,14 @@ Pages
 
       <div class="specs">
 
-          <pre translate="no"><span class="attribute">@type</span> t() :: %Nostrum.Struct.Message.Attachment{
-  filename: <a href="#t:filename/0">filename</a>(),
-  height: <a href="#t:height/0">height</a>(),
+          <pre translate="no"><span class="attribute">@type</span> t() :: %Nostrum.Struct.Sticker.Pack{
+  banner_asset_id: <a href="#t:banner_asset_id/0">banner_asset_id</a>(),
+  cover_sticker_id: <a href="#t:cover_sticker_id/0">cover_sticker_id</a>(),
+  description: <a href="#t:description/0">description</a>(),
   id: <a href="#t:id/0">id</a>(),
-  proxy_url: <a href="#t:proxy_url/0">proxy_url</a>(),
-  size: <a href="#t:size/0">size</a>(),
-  url: <a href="#t:url/0">url</a>(),
-  width: <a href="#t:width/0">width</a>()
+  name: <a href="#t:name/0">name</a>(),
+  sku_id: <a href="#t:sku_id/0">sku_id</a>(),
+  stickers: <a href="#t:stickers/0">stickers</a>()
 }</pre>
 
       </div>
@@ -423,44 +495,28 @@ Pages
 
   </section>
 </section>
-<section class="detail" id="t:url/0">
 
-  <div class="detail-header">
-    <a href="#t:url/0" class="detail-link" title="Link to this type">
-      <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this type</span>
-    </a>
-    <h1 class="signature" translate="no">url()</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/message/attachment.ex#L28" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
-
-
-  </div>
-
-  <section class="docstring">
-
-      <div class="specs">
-
-          <pre translate="no"><span class="attribute">@type</span> url() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()</pre>
-
-      </div>
-
-<p>Source url of the file</p>
+    </div>
   </section>
-</section>
-<section class="detail" id="t:width/0">
+
+  <section id="functions" class="details-list">
+    <h1 class="section-heading">
+      <a class="hover-link" href="#functions">
+        <i class="ri-link-m" aria-hidden="true"></i>
+      </a>
+      <span class="text">Functions</span>
+    </h1>
+    <div class="functions-list">
+<section class="detail" id="banner_url/1">
 
   <div class="detail-header">
-    <a href="#t:width/0" class="detail-link" title="Link to this type">
+    <a href="#banner_url/1" class="detail-link" title="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this type</span>
+      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">width()</h1>
+    <h1 class="signature" translate="no">banner_url(map)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/message/attachment.ex#L37" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/sticker/pack.ex#L92" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -472,11 +528,19 @@ Pages
 
       <div class="specs">
 
-          <pre translate="no"><span class="attribute">@type</span> width() :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>() | nil</pre>
+          <pre translate="no"><span class="attribute">@spec</span> banner_url(<a href="#t:t/0">t</a>()) :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()</pre>
 
       </div>
 
-<p>Width of the file (if image)</p>
+<p>Return the banner pack URL for a given sticker pack.</p><p>This is a marketing banner provided by Discord for their platform curated sticker packs.</p><h3 id="banner_url/1-examples" class="section-heading">
+  <a href="#banner_url/1-examples" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Examples</span>
+</h3>
+<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="n">pack</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="6607509822-1">%</span><span class="nc" data-group-id="6607509822-1">Nostrum.Struct.Sticker.Pack</span><span class="p" data-group-id="6607509822-1">{</span><span class="ss">banner_asset_id</span><span class="p">:</span><span class="w"> </span><span class="mi">112233445566778899</span><span class="p" data-group-id="6607509822-1">}</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Struct.Sticker.Pack</span><span class="o">.</span><span class="n">banner_url</span><span class="w"> </span><span class="n">pack</span><span class="w">
+</span><span class="s">&quot;https://cdn.discordapp.com/app-assets/710982414301790216/store/112233445566778899.png&quot;</span></code></pre>
   </section>
 </section>
 
