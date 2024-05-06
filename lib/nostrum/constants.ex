@@ -5,6 +5,7 @@ defmodule Nostrum.Constants do
   def base_route, do: "/api/v10"
   def base_url, do: "https://#{domain()}#{base_route()}"
   def cdn_url, do: "https://cdn.discordapp.com"
+  def media_url, do: "https://media.discordapp.net"
   def gateway, do: "/gateway"
   def gateway_bot, do: "/gateway/bot"
 
@@ -66,6 +67,12 @@ defmodule Nostrum.Constants do
 
   def guild_emojis(guild_id), do: "/guilds/#{guild_id}/emojis"
   def guild_emoji(guild_id, emoji_id), do: "/guilds/#{guild_id}/emojis/#{emoji_id}"
+
+  def sticker(sticker_id), do: "/stickers/#{sticker_id}"
+  def guild_stickers(guild_id), do: "/guilds/#{guild_id}/stickers"
+  def guild_sticker(guild_id, sticker_id), do: "/guilds/#{guild_id}/stickers/#{sticker_id}"
+
+  def sticker_packs, do: "/sticker-packs"
 
   def guild_scheduled_events(guild_id), do: "/guilds/#{guild_id}/scheduled-events"
 
@@ -151,6 +158,9 @@ defmodule Nostrum.Constants do
   def cdn_guild_avatar(guild_id, user_id, avatar_hash, image_format) do
     "/guilds/#{guild_id}/users/#{user_id}/avatars/#{avatar_hash}.#{image_format}"
   end
+
+  def cdn_sticker(id, image_format), do: "/stickers/#{id}.#{image_format}"
+  def cdn_sticker_pack(id), do: "/app-assets/710982414301790216/store/#{id}.png"
 
   def thread_with_message(channel_id, message_id),
     do: "/channels/#{channel_id}/messages/#{message_id}/threads"

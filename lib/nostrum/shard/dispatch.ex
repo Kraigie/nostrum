@@ -171,6 +171,9 @@ defmodule Nostrum.Shard.Dispatch do
   def handle_event(:GUILD_EMOJIS_UPDATE = event, p, state),
     do: {event, GuildCache.emoji_update(p.guild_id, p.emojis), state}
 
+  def handle_event(:GUILD_STICKERS_UPDATE = event, p, state),
+    do: {event, GuildCache.stickers_update(p.guild_id, p.stickers), state}
+
   def handle_event(:GUILD_INTEGRATIONS_UPDATE = event, p, state) do
     {event, GuildIntegrationsUpdate.to_struct(p), state}
   end

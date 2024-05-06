@@ -54,6 +54,12 @@ defmodule Nostrum.Cache.GuildCache.NoOp do
   end
 
   @impl GuildCache
+  def stickers_update(_guild_id, stickers) do
+    casted = Util.cast(stickers, {:list, {:struct, Sticker}})
+    {[], casted}
+  end
+
+  @impl GuildCache
   def role_create(guild_id, role), do: {guild_id, Util.cast(role, {:struct, Role})}
 
   @impl GuildCache

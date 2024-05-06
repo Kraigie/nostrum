@@ -15,7 +15,7 @@ defmodule Nostrum.Struct.Guild do
   Struct representing a Discord guild.
   """
 
-  alias Nostrum.Struct.{Channel, Emoji, User}
+  alias Nostrum.Struct.{Channel, Emoji, Sticker, User}
   alias Nostrum.Struct.Guild.{Role, ScheduledEvent}
   alias Nostrum.{Constants, Snowflake, Util}
 
@@ -49,7 +49,8 @@ defmodule Nostrum.Struct.Guild do
     :channels,
     :guild_scheduled_events,
     :vanity_url_code,
-    :threads
+    :threads,
+    :stickers
   ]
 
   @typedoc "The guild's id"
@@ -161,6 +162,9 @@ defmodule Nostrum.Struct.Guild do
   @typedoc since: "0.5.1"
   @type threads :: %{required(Channel.id()) => Channel.t()} | nil
 
+  @typedoc "Custom stickers registered to the guild"
+  @type stickers :: [Sticker.t()]
+
   @typedoc """
   A `Nostrum.Struct.Guild` that is sent on user-specific rest endpoints.
   """
@@ -193,7 +197,8 @@ defmodule Nostrum.Struct.Guild do
           voice_states: nil,
           channels: nil,
           vanity_url_code: nil,
-          threads: nil
+          threads: nil,
+          stickers: nil
         }
 
   @typedoc """
@@ -222,6 +227,7 @@ defmodule Nostrum.Struct.Guild do
           rules_channel_id: rules_channel_id,
           public_updates_channel_id: public_updates_channel_id,
           vanity_url_code: vanity_url_code,
+          stickers: stickers,
           joined_at: nil,
           large: nil,
           unavailable: nil,
@@ -265,7 +271,8 @@ defmodule Nostrum.Struct.Guild do
           channels: nil,
           guild_scheduled_events: nil,
           vanity_url_code: nil,
-          threads: nil
+          threads: nil,
+          stickers: nil
         }
 
   @typedoc """
@@ -301,7 +308,8 @@ defmodule Nostrum.Struct.Guild do
           channels: channels,
           guild_scheduled_events: guild_scheduled_events,
           vanity_url_code: vanity_url_code,
-          threads: threads
+          threads: threads,
+          stickers: stickers
         }
 
   @type t ::
@@ -379,6 +387,7 @@ defmodule Nostrum.Struct.Guild do
       |> Map.update(:afk_channel_id, nil, &Util.cast(&1, Snowflake))
       |> Map.update(:roles, nil, &Util.cast(&1, {:index, [:id], {:struct, Role}}))
       |> Map.update(:emojis, nil, &Util.cast(&1, {:list, {:struct, Emoji}}))
+      |> Map.update(:stickers, nil, &Util.cast(&1, {:list, {:struct, Sticker}}))
       |> Map.update(:application_id, nil, &Util.cast(&1, Snowflake))
       |> Map.update(:widget_channel_id, nil, &Util.cast(&1, Snowflake))
       |> Map.update(:system_channel_id, nil, &Util.cast(&1, Snowflake))

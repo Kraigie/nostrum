@@ -24,6 +24,7 @@ defmodule Nostrum.Cache.GuildCache.ETS do
   alias Nostrum.Struct.Emoji
   alias Nostrum.Struct.Guild
   alias Nostrum.Struct.Guild.Role
+  alias Nostrum.Struct.Sticker
   alias Nostrum.Util
   use Supervisor
 
@@ -122,6 +123,17 @@ defmodule Nostrum.Cache.GuildCache.ETS do
     new = %{guild | emojis: casted}
     true = :ets.update_element(@table_name, guild_id, {2, new})
     {guild.emojis, casted}
+  end
+
+  @doc "Update the sticker list for the given guild in the cache."
+  @impl GuildCache
+  @spec stickers_update(Guild.id(), [map()]) :: {[Sticker.t()], [Sticker.t()]}
+  def stickers_update(guild_id, stickers) do
+    [{_id, guild}] = :ets.lookup(@table_name, guild_id)
+    casted = Util.cast(stickers, {:list, {:struct, Sticker}})
+    new = %{guild | stickers: casted}
+    true = :ets.update_element(@table_name, guild_id, {2, new})
+    {guild.stickers, casted}
   end
 
   @doc "Create the given role in the given guild in the cache."

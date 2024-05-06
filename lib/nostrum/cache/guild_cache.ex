@@ -42,6 +42,7 @@ defmodule Nostrum.Cache.GuildCache do
   alias Nostrum.Struct.Emoji
   alias Nostrum.Struct.Guild
   alias Nostrum.Struct.Guild.Role
+  alias Nostrum.Struct.Sticker
   alias Nostrum.Util
 
   @configured_cache :nostrum
@@ -147,6 +148,16 @@ defmodule Nostrum.Cache.GuildCache do
               {old_emojis :: [Emoji.t()], new_emojis :: [Emoji.t()]}
 
   @doc """
+  Update the sticker list of the given guild from upstream data.
+
+  Discord sends us a complete list of stickers on an update, which is passed here.
+
+  Return the old list of stickers before the update, and the updated list of stickers.
+  """
+  @callback stickers_update(Guild.id(), stickers :: [map()]) ::
+              {old_stickers :: [Sticker.t()], new_stickers :: [Sticker.t()]}
+
+  @doc """
   Create a role on the given guild from upstream data.
 
   Return the casted role.
@@ -247,6 +258,8 @@ defmodule Nostrum.Cache.GuildCache do
   defdelegate channel_update(guild_id, channel), to: @configured_cache
   @doc false
   defdelegate emoji_update(guild_id, emojis), to: @configured_cache
+  @doc false
+  defdelegate stickers_update(guild_id, stickers), to: @configured_cache
   @doc false
   defdelegate role_create(guild_id, role), to: @configured_cache
   @doc false
