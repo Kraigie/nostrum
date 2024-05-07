@@ -41,6 +41,7 @@ defmodule Nostrum.Struct.Guild do
     :system_channel_id,
     :rules_channel_id,
     :public_updates_channel_id,
+    :safety_alerts_channel_id,
     :joined_at,
     :large,
     :unavailable,
@@ -50,7 +51,21 @@ defmodule Nostrum.Struct.Guild do
     :guild_scheduled_events,
     :vanity_url_code,
     :threads,
-    :stickers
+    :stickers,
+    :discovery_splash,
+    :system_channel_flags,
+    :max_presences,
+    :max_members,
+    :description,
+    :banner,
+    :premium_tier,
+    :premium_subscription_count,
+    :preferred_locale,
+    :max_video_channel_users,
+    :max_stage_video_channel_users,
+    :welcome_screen,
+    :nsfw_level,
+    :premium_progress_bar_enabled
   ]
 
   @typedoc "The guild's id"
@@ -165,6 +180,63 @@ defmodule Nostrum.Struct.Guild do
   @typedoc "Custom stickers registered to the guild"
   @type stickers :: [Sticker.t()]
 
+  @typedoc "Hash of the Discovery splash screen"
+  @type discovery_splash :: String.t() | nil
+
+  @typedoc """
+  Bitset representing the system channel flags
+
+  See `Nostrum.Struct.Guild.SystemChannelFlags` for more information on the flag
+  contents as well as methods to parse and create your own values for this
+  field.
+  """
+  @type system_channel_flags :: pos_integer()
+
+  @typedoc """
+  Maximum number of presences for the guild.
+
+  This will be unset for most guilds, except for in Discord's terms, the
+  "largest of guilds", where the field will be set to the maximum number of
+  online (gateway connected) members.
+  """
+  @type max_presences :: pos_integer() | nil
+
+  @typedoc "Maximum members for the guild"
+  @type max_members :: pos_integer() | nil
+
+  @typedoc "User-set description of the guild"
+  @type description :: String.t() | nil
+
+  @typedoc "Banner hash for the guild, if prefixed with `a_` an animated GIF is available."
+  @type banner :: String.t() | nil
+
+  @typedoc "Premium tier of the guild (0-3)"
+  @type premium_tier :: 0..3
+
+  @typedoc "Number of boosts received by the guild"
+  @type premium_subscription_count :: pos_integer()
+
+  @typedoc "Preferred locale for the guild, set by the user"
+  @type preferred_locale :: String.t() | nil
+
+  @typedoc "The maximum amount of users in a video channel"
+  @type max_video_channel_users :: pos_integer() | nil
+
+  @typedoc "The maximum amount of users in a stage video channel"
+  @type max_stage_video_channel_users :: pos_integer() | nil
+
+  @typedoc "The welcome screen of a Community guild, shown to new members, returned in an Invite's guild object"
+  @type welcome_screen :: map() | nil
+
+  @typedoc "NSFW level for the guild, unrated guilds have `:default`"
+  @type nsfw_level :: :default | :explicit | :safe | :age_restricted
+
+  @typedoc "Whether the guild has the boost progress bar enabled"
+  @type premium_progress_bar_enabled :: boolean
+
+  @typedoc "The id of the channel where admins and moderators of Community guilds receive safety alerts from Discord"
+  @type safety_alerts_channel_id :: Channel.id() | nil
+
   @typedoc """
   A `Nostrum.Struct.Guild` that is sent on user-specific rest endpoints.
   """
@@ -198,7 +270,22 @@ defmodule Nostrum.Struct.Guild do
           channels: nil,
           vanity_url_code: nil,
           threads: nil,
-          stickers: nil
+          stickers: nil,
+          discovery_splash: nil,
+          system_channel_flags: nil,
+          max_presences: nil,
+          max_members: nil,
+          description: nil,
+          banner: nil,
+          premium_tier: nil,
+          premium_subscription_count: nil,
+          preferred_locale: nil,
+          max_video_channel_users: nil,
+          max_stage_video_channel_users: nil,
+          welcome_screen: nil,
+          nsfw_level: nil,
+          premium_progress_bar_enabled: nil,
+          safety_alerts_channel_id: nil
         }
 
   @typedoc """
@@ -235,7 +322,22 @@ defmodule Nostrum.Struct.Guild do
           voice_states: nil,
           channels: nil,
           guild_scheduled_events: nil,
-          threads: nil
+          threads: nil,
+          discovery_splash: nil,
+          system_channel_flags: nil,
+          max_presences: nil,
+          max_members: nil,
+          description: nil,
+          banner: nil,
+          premium_tier: nil,
+          premium_subscription_count: nil,
+          preferred_locale: nil,
+          max_video_channel_users: nil,
+          max_stage_video_channel_users: nil,
+          welcome_screen: nil,
+          nsfw_level: nil,
+          premium_progress_bar_enabled: nil,
+          safety_alerts_channel_id: nil
         }
 
   @typedoc """
@@ -272,7 +374,22 @@ defmodule Nostrum.Struct.Guild do
           guild_scheduled_events: nil,
           vanity_url_code: nil,
           threads: nil,
-          stickers: nil
+          stickers: nil,
+          discovery_splash: nil,
+          system_channel_flags: nil,
+          max_presences: nil,
+          max_members: nil,
+          description: nil,
+          banner: nil,
+          premium_tier: nil,
+          premium_subscription_count: nil,
+          preferred_locale: nil,
+          max_video_channel_users: nil,
+          max_stage_video_channel_users: nil,
+          welcome_screen: nil,
+          nsfw_level: nil,
+          premium_progress_bar_enabled: nil,
+          safety_alerts_channel_id: nil
         }
 
   @typedoc """
@@ -309,7 +426,22 @@ defmodule Nostrum.Struct.Guild do
           guild_scheduled_events: guild_scheduled_events,
           vanity_url_code: vanity_url_code,
           threads: threads,
-          stickers: stickers
+          stickers: stickers,
+          discovery_splash: discovery_splash,
+          system_channel_flags: system_channel_flags,
+          max_presences: max_presences,
+          max_members: max_members,
+          description: description,
+          banner: banner,
+          premium_tier: premium_tier,
+          premium_subscription_count: premium_subscription_count,
+          preferred_locale: preferred_locale,
+          max_video_channel_users: max_video_channel_users,
+          max_stage_video_channel_users: max_stage_video_channel_users,
+          welcome_screen: welcome_screen,
+          nsfw_level: nsfw_level,
+          premium_progress_bar_enabled: premium_progress_bar_enabled,
+          safety_alerts_channel_id: safety_alerts_channel_id
         }
 
   @type t ::
@@ -372,6 +504,52 @@ defmodule Nostrum.Struct.Guild do
   def splash_url(%__MODULE__{splash: splash, id: id}, image_format),
     do: URI.encode(Constants.cdn_url() <> Constants.cdn_splash(id, splash, image_format))
 
+  @doc ~S"""
+  Returns the URL of the guild's discovery splash, or `nil` if no discovery splash.
+
+  Supported image formats are PNG, JPEG and WebP.
+
+  ## Examples
+
+  ```elixir
+  iex> guild = %Nostrum.Struct.Guild{discovery_splash: "656477617264736e6f7764656e",
+  ...>                               id: 112233445566778899}
+  iex> Nostrum.Struct.Guild.discovery_splash_url(guild)
+  "https://cdn.discordapp.com/discovery-splashes/112233445566778899/656477617264736e6f7764656e.webp"
+  iex> Nostrum.Struct.Guild.discovery_splash_url(guild, "png")
+  "https://cdn.discordapp.com/discovery-splashes/112233445566778899/656477617264736e6f7764656e.png"
+  ```
+  """
+  @spec discovery_splash_url(t, String.t()) :: String.t() | nil
+  def discovery_splash_url(guild, image_format \\ "webp")
+  def discovery_splash_url(%__MODULE__{discovery_splash: nil}, _), do: nil
+
+  def discovery_splash_url(%__MODULE__{discovery_splash: dsp, id: id}, image_format),
+    do: Constants.cdn_url() <> Constants.cdn_discovery_splash(id, dsp, image_format)
+
+  @doc ~S"""
+  Returns the URL of the guild's banner, or `nil` if no guild banner has been set.
+
+  Supported image formats are PNG, GIF, JPEG and WebP.
+
+  ## Examples
+
+  ```elixir
+  iex> guild = %Nostrum.Struct.Guild{banner: "656477617264736e6f7764656e",
+  ...>                               id: 112233445566778899}
+  iex> Nostrum.Struct.Guild.banner_url(guild)
+  "https://cdn.discordapp.com/banners/112233445566778899/656477617264736e6f7764656e.webp"
+  iex> Nostrum.Struct.Guild.banner_url(guild, "png")
+  "https://cdn.discordapp.com/banners/112233445566778899/656477617264736e6f7764656e.png"
+  ```
+  """
+  @spec discovery_splash_url(t, String.t()) :: String.t() | nil
+  def banner_url(guild, image_format \\ "webp")
+  def banner_url(%__MODULE__{banner: nil}, _), do: nil
+
+  def banner_url(%__MODULE__{banner: banner, id: id}, image_format),
+    do: Constants.cdn_url() <> Constants.cdn_guild_banner(id, banner, image_format)
+
   @doc false
   def p_encode do
     %__MODULE__{}
@@ -401,8 +579,21 @@ defmodule Nostrum.Struct.Guild do
         &Util.cast(&1, {:list, {:struct, ScheduledEvent}})
       )
       |> Map.update(:threads, nil, &Util.cast(&1, {:index, [:id], {:struct, Channel}}))
+      |> Map.update(:safety_alerts_channel_id, nil, &Util.cast(&1, Snowflake))
+      |> Map.update(:nsfw_level, nil, &cast_nsfw_level/1)
+      |> Map.put_new(:premium_subscription_count, 0)
 
     struct(__MODULE__, new)
+  end
+
+  @doc false
+  defp cast_nsfw_level(level) do
+    case level do
+      0 -> :default
+      1 -> :explicit
+      2 -> :safe
+      3 -> :age_restricted
+    end
   end
 
   @doc false

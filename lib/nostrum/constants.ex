@@ -154,6 +154,10 @@ defmodule Nostrum.Constants do
   def cdn_emoji(id, image_format), do: "/emojis/#{id}.#{image_format}"
   def cdn_icon(id, icon, image_format), do: "/icons/#{id}/#{icon}.#{image_format}"
   def cdn_splash(id, splash, image_format), do: "/splashes/#{id}/#{splash}.#{image_format}"
+  def cdn_guild_banner(id, banner, image_format), do: "/banners/#{id}/#{banner}.#{image_format}"
+
+  def cdn_discovery_splash(id, splash, image_format),
+    do: "/discovery-splashes/#{id}/#{splash}.#{image_format}"
 
   def cdn_guild_avatar(guild_id, user_id, avatar_hash, image_format) do
     "/guilds/#{guild_id}/users/#{user_id}/avatars/#{avatar_hash}.#{image_format}"
