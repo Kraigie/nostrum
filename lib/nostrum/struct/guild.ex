@@ -520,6 +520,7 @@ defmodule Nostrum.Struct.Guild do
   "https://cdn.discordapp.com/discovery-splashes/112233445566778899/656477617264736e6f7764656e.png"
   ```
   """
+  @spec discovery_splash_url(t) :: String.t() | nil
   @spec discovery_splash_url(t, String.t()) :: String.t() | nil
   def discovery_splash_url(guild, image_format \\ "webp")
   def discovery_splash_url(%__MODULE__{discovery_splash: nil}, _), do: nil
@@ -543,6 +544,7 @@ defmodule Nostrum.Struct.Guild do
   "https://cdn.discordapp.com/banners/112233445566778899/656477617264736e6f7764656e.png"
   ```
   """
+  @spec banner_url(t) :: String.t() | nil
   @spec banner_url(t, String.t()) :: String.t() | nil
   def banner_url(guild, image_format \\ "webp")
   def banner_url(%__MODULE__{banner: nil}, _), do: nil
