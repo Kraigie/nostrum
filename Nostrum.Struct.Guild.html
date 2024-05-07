@@ -2386,17 +2386,23 @@ field.</p>
 
   <section class="docstring">
 
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> banner_url(<a href="#t:t/0">t</a>(), <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()) :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>() | nil</pre>
+
+      </div>
+
 <p>Returns the URL of the guild's banner, or <code class="inline">nil</code> if no guild banner has been set.</p><p>Supported image formats are PNG, GIF, JPEG and WebP.</p><h2 id="banner_url/2-examples" class="section-heading">
   <a href="#banner_url/2-examples" class="hover-link">
     <i class="ri-link-m" aria-hidden="true"></i>
   </a>
   <span class="text">Examples</span>
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="n">guild</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="1352661809-1">%</span><span class="nc" data-group-id="1352661809-1">Nostrum.Struct.Guild</span><span class="p" data-group-id="1352661809-1">{</span><span class="ss">banner</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;656477617264736e6f7764656e&quot;</span><span class="p">,</span><span class="w">
-</span><span class="gp unselectable">...&gt; </span><span class="w">                              </span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">112233445566778899</span><span class="p" data-group-id="1352661809-1">}</span><span class="w">
-</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Struct.Guild</span><span class="o">.</span><span class="n">banner_url</span><span class="p" data-group-id="1352661809-2">(</span><span class="n">guild</span><span class="p" data-group-id="1352661809-2">)</span><span class="w">
+<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="n">guild</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="6390226730-1">%</span><span class="nc" data-group-id="6390226730-1">Nostrum.Struct.Guild</span><span class="p" data-group-id="6390226730-1">{</span><span class="ss">banner</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;656477617264736e6f7764656e&quot;</span><span class="p">,</span><span class="w">
+</span><span class="gp unselectable">...&gt; </span><span class="w">                              </span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">112233445566778899</span><span class="p" data-group-id="6390226730-1">}</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Struct.Guild</span><span class="o">.</span><span class="n">banner_url</span><span class="p" data-group-id="6390226730-2">(</span><span class="n">guild</span><span class="p" data-group-id="6390226730-2">)</span><span class="w">
 </span><span class="s">&quot;https://cdn.discordapp.com/banners/112233445566778899/656477617264736e6f7764656e.webp&quot;</span><span class="w">
-</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Struct.Guild</span><span class="o">.</span><span class="n">banner_url</span><span class="p" data-group-id="1352661809-3">(</span><span class="n">guild</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;png&quot;</span><span class="p" data-group-id="1352661809-3">)</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Struct.Guild</span><span class="o">.</span><span class="n">banner_url</span><span class="p" data-group-id="6390226730-3">(</span><span class="n">guild</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;png&quot;</span><span class="p" data-group-id="6390226730-3">)</span><span class="w">
 </span><span class="s">&quot;https://cdn.discordapp.com/banners/112233445566778899/656477617264736e6f7764656e.png&quot;</span></code></pre>
   </section>
 </section>
@@ -2425,8 +2431,6 @@ field.</p>
 
           <pre translate="no"><span class="attribute">@spec</span> discovery_splash_url(<a href="#t:t/0">t</a>(), <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()) :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>() | nil</pre>
 
-          <pre translate="no"><span class="attribute">@spec</span> discovery_splash_url(<a href="#t:t/0">t</a>(), <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()) :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>() | nil</pre>
-
       </div>
 
 <p>Returns the URL of the guild's discovery splash, or <code class="inline">nil</code> if no discovery splash.</p><p>Supported image formats are PNG, JPEG and WebP.</p><h2 id="discovery_splash_url/2-examples" class="section-heading">
@@ -2435,11 +2439,11 @@ field.</p>
   </a>
   <span class="text">Examples</span>
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="n">guild</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="4871329185-1">%</span><span class="nc" data-group-id="4871329185-1">Nostrum.Struct.Guild</span><span class="p" data-group-id="4871329185-1">{</span><span class="ss">discovery_splash</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;656477617264736e6f7764656e&quot;</span><span class="p">,</span><span class="w">
-</span><span class="gp unselectable">...&gt; </span><span class="w">                              </span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">112233445566778899</span><span class="p" data-group-id="4871329185-1">}</span><span class="w">
-</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Struct.Guild</span><span class="o">.</span><span class="n">discovery_splash_url</span><span class="p" data-group-id="4871329185-2">(</span><span class="n">guild</span><span class="p" data-group-id="4871329185-2">)</span><span class="w">
+<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="n">guild</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="8984880000-1">%</span><span class="nc" data-group-id="8984880000-1">Nostrum.Struct.Guild</span><span class="p" data-group-id="8984880000-1">{</span><span class="ss">discovery_splash</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;656477617264736e6f7764656e&quot;</span><span class="p">,</span><span class="w">
+</span><span class="gp unselectable">...&gt; </span><span class="w">                              </span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">112233445566778899</span><span class="p" data-group-id="8984880000-1">}</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Struct.Guild</span><span class="o">.</span><span class="n">discovery_splash_url</span><span class="p" data-group-id="8984880000-2">(</span><span class="n">guild</span><span class="p" data-group-id="8984880000-2">)</span><span class="w">
 </span><span class="s">&quot;https://cdn.discordapp.com/discovery-splashes/112233445566778899/656477617264736e6f7764656e.webp&quot;</span><span class="w">
-</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Struct.Guild</span><span class="o">.</span><span class="n">discovery_splash_url</span><span class="p" data-group-id="4871329185-3">(</span><span class="n">guild</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;png&quot;</span><span class="p" data-group-id="4871329185-3">)</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Struct.Guild</span><span class="o">.</span><span class="n">discovery_splash_url</span><span class="p" data-group-id="8984880000-3">(</span><span class="n">guild</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;png&quot;</span><span class="p" data-group-id="8984880000-3">)</span><span class="w">
 </span><span class="s">&quot;https://cdn.discordapp.com/discovery-splashes/112233445566778899/656477617264736e6f7764656e.png&quot;</span></code></pre>
   </section>
 </section>
@@ -2476,15 +2480,15 @@ field.</p>
   </a>
   <span class="text">Examples</span>
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="n">guild</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="0920990158-1">%</span><span class="nc" data-group-id="0920990158-1">Nostrum.Struct.Guild</span><span class="p" data-group-id="0920990158-1">{</span><span class="ss">icon</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;86e39f7ae3307e811784e2ffd11a7310&quot;</span><span class="p">,</span><span class="w">
-</span><span class="gp unselectable">...&gt; </span><span class="w">                              </span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">41771983423143937</span><span class="p" data-group-id="0920990158-1">}</span><span class="w">
-</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Struct.Guild</span><span class="o">.</span><span class="n">icon_url</span><span class="p" data-group-id="0920990158-2">(</span><span class="n">guild</span><span class="p" data-group-id="0920990158-2">)</span><span class="w">
+<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="n">guild</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="2909122675-1">%</span><span class="nc" data-group-id="2909122675-1">Nostrum.Struct.Guild</span><span class="p" data-group-id="2909122675-1">{</span><span class="ss">icon</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;86e39f7ae3307e811784e2ffd11a7310&quot;</span><span class="p">,</span><span class="w">
+</span><span class="gp unselectable">...&gt; </span><span class="w">                              </span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">41771983423143937</span><span class="p" data-group-id="2909122675-1">}</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Struct.Guild</span><span class="o">.</span><span class="n">icon_url</span><span class="p" data-group-id="2909122675-2">(</span><span class="n">guild</span><span class="p" data-group-id="2909122675-2">)</span><span class="w">
 </span><span class="s">&quot;https://cdn.discordapp.com/icons/41771983423143937/86e39f7ae3307e811784e2ffd11a7310.webp&quot;</span><span class="w">
-</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Struct.Guild</span><span class="o">.</span><span class="n">icon_url</span><span class="p" data-group-id="0920990158-3">(</span><span class="n">guild</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;png&quot;</span><span class="p" data-group-id="0920990158-3">)</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Struct.Guild</span><span class="o">.</span><span class="n">icon_url</span><span class="p" data-group-id="2909122675-3">(</span><span class="n">guild</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;png&quot;</span><span class="p" data-group-id="2909122675-3">)</span><span class="w">
 </span><span class="s">&quot;https://cdn.discordapp.com/icons/41771983423143937/86e39f7ae3307e811784e2ffd11a7310.png&quot;</span><span class="w">
 
-</span><span class="gp unselectable">iex&gt; </span><span class="n">guild</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="0920990158-4">%</span><span class="nc" data-group-id="0920990158-4">Nostrum.Struct.Guild</span><span class="p" data-group-id="0920990158-4">{</span><span class="ss">icon</span><span class="p">:</span><span class="w"> </span><span class="no">nil</span><span class="p" data-group-id="0920990158-4">}</span><span class="w">
-</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Struct.Guild</span><span class="o">.</span><span class="n">icon_url</span><span class="p" data-group-id="0920990158-5">(</span><span class="n">guild</span><span class="p" data-group-id="0920990158-5">)</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="n">guild</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="2909122675-4">%</span><span class="nc" data-group-id="2909122675-4">Nostrum.Struct.Guild</span><span class="p" data-group-id="2909122675-4">{</span><span class="ss">icon</span><span class="p">:</span><span class="w"> </span><span class="no">nil</span><span class="p" data-group-id="2909122675-4">}</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Struct.Guild</span><span class="o">.</span><span class="n">icon_url</span><span class="p" data-group-id="2909122675-5">(</span><span class="n">guild</span><span class="p" data-group-id="2909122675-5">)</span><span class="w">
 </span><span class="no">nil</span></code></pre>
   </section>
 </section>
@@ -2521,15 +2525,15 @@ field.</p>
   </a>
   <span class="text">Examples</span>
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="n">guild</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="7451737273-1">%</span><span class="nc" data-group-id="7451737273-1">Nostrum.Struct.Guild</span><span class="p" data-group-id="7451737273-1">{</span><span class="ss">splash</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;86e39f7ae3307e811784e2ffd11a7310&quot;</span><span class="p">,</span><span class="w">
-</span><span class="gp unselectable">...&gt; </span><span class="w">                              </span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">41771983423143937</span><span class="p" data-group-id="7451737273-1">}</span><span class="w">
-</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Struct.Guild</span><span class="o">.</span><span class="n">splash_url</span><span class="p" data-group-id="7451737273-2">(</span><span class="n">guild</span><span class="p" data-group-id="7451737273-2">)</span><span class="w">
+<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="n">guild</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="8041434586-1">%</span><span class="nc" data-group-id="8041434586-1">Nostrum.Struct.Guild</span><span class="p" data-group-id="8041434586-1">{</span><span class="ss">splash</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;86e39f7ae3307e811784e2ffd11a7310&quot;</span><span class="p">,</span><span class="w">
+</span><span class="gp unselectable">...&gt; </span><span class="w">                              </span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">41771983423143937</span><span class="p" data-group-id="8041434586-1">}</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Struct.Guild</span><span class="o">.</span><span class="n">splash_url</span><span class="p" data-group-id="8041434586-2">(</span><span class="n">guild</span><span class="p" data-group-id="8041434586-2">)</span><span class="w">
 </span><span class="s">&quot;https://cdn.discordapp.com/splashes/41771983423143937/86e39f7ae3307e811784e2ffd11a7310.webp&quot;</span><span class="w">
-</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Struct.Guild</span><span class="o">.</span><span class="n">splash_url</span><span class="p" data-group-id="7451737273-3">(</span><span class="n">guild</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;png&quot;</span><span class="p" data-group-id="7451737273-3">)</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Struct.Guild</span><span class="o">.</span><span class="n">splash_url</span><span class="p" data-group-id="8041434586-3">(</span><span class="n">guild</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;png&quot;</span><span class="p" data-group-id="8041434586-3">)</span><span class="w">
 </span><span class="s">&quot;https://cdn.discordapp.com/splashes/41771983423143937/86e39f7ae3307e811784e2ffd11a7310.png&quot;</span><span class="w">
 
-</span><span class="gp unselectable">iex&gt; </span><span class="n">guild</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="7451737273-4">%</span><span class="nc" data-group-id="7451737273-4">Nostrum.Struct.Guild</span><span class="p" data-group-id="7451737273-4">{</span><span class="ss">splash</span><span class="p">:</span><span class="w"> </span><span class="no">nil</span><span class="p" data-group-id="7451737273-4">}</span><span class="w">
-</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Struct.Guild</span><span class="o">.</span><span class="n">splash_url</span><span class="p" data-group-id="7451737273-5">(</span><span class="n">guild</span><span class="p" data-group-id="7451737273-5">)</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="n">guild</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="8041434586-4">%</span><span class="nc" data-group-id="8041434586-4">Nostrum.Struct.Guild</span><span class="p" data-group-id="8041434586-4">{</span><span class="ss">splash</span><span class="p">:</span><span class="w"> </span><span class="no">nil</span><span class="p" data-group-id="8041434586-4">}</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Struct.Guild</span><span class="o">.</span><span class="n">splash_url</span><span class="p" data-group-id="8041434586-5">(</span><span class="n">guild</span><span class="p" data-group-id="8041434586-5">)</span><span class="w">
 </span><span class="no">nil</span></code></pre>
   </section>
 </section>
