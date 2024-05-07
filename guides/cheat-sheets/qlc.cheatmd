@@ -51,6 +51,20 @@ find_online_users(RequestedGuildId, PresenceCache, UserCache) ->
 
 This depends on the guild presences intent being enabled and the bot storing received presences in the presence cache.
 
+### Getting the largest N guilds
+
+```erl
+top_guilds(N, GuildCache) ->
+  Q = qlc:q([{MemberCount, Guild} || {_Id, #{member_count := MemberCount} = Guild} <- GuildCache:query_handle()]),
+  Q2 = qlc:keysort(1, Q, [{order, descending}]),
+  GuildCache:wrap_qlc(fun () ->
+    C = qlc:cursor(Q2),
+    R = qlc:next_answers(C, N),
+    ok = qlc:delete_cursor(C),
+    R
+  end).
+```
+
 ## Debugging QLC
 
 {: .col-2 }
