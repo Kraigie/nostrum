@@ -1,0 +1,168 @@
+# Voice Usage
+
+This cheat sheet covers basic use of the Discord Voice API through the `Nostrum.Voice` module.
+
+## Playing Audio
+{: .col-2}
+
+### Playing immediately with a `try_play` function
+
+```elixir
+def try_play(guild_id, url, type, opts \\ []) do
+  case Voice.play(guild_id, url, type, opts) do
+    {:error, _msg} ->
+      # Wait for handshaking to complete
+      Process.sleep(100)
+      try_play(guild_id, url, type, opts)
+
+    _ ->
+      :ok
+  end
+end
+```
+
+```elixir
+iex> Voice.join_channel(guild_id, channel_id)
+iex> try_play(guild_id, "./song.mp3", :url)
+```
+
+### Playing immediately using `Nostrum.Voice.ready?/1`
+
+```elixir
+def play_when_ready(guild_id, url, type, opts \\ []) do
+  if Voice.ready?(guild_id) do
+    Voice.play(guild_id, url, type, opts)
+  else
+    # Wait for handshaking to complete
+    Process.sleep(25)
+    play_when_ready(guild_id, url, type, opts)
+  end
+end
+```
+
+```elixir
+iex> Voice.join_channel(guild_id, channel_id)
+iex> play_when_ready(guild_id, "https://youtu.be/b4RJ-QGOtw4", :ytdl)
+```
+
+### Playing immediately by using events
+
+```elixir
+alias Nostrum.Struct.Event.VoiceReady
+alias Nostrum.Voice
+
+def handle_event({:VOICE_READY, %VoiceReady{guild_id: guild_id} = _event, _v_ws_state}) do
+  Voice.play(guild_id, "~/loud_noise.mp3", :url, volume: 10)
+end
+```
+
+Once the voice handshake has completed, audio will begin playing
+without the need for polling functions like `try_play/4` or `play_when_ready/4`
+as shown in the other examples
+
+```elixir
+iex> Voice.join_channel(guild_id, channel_id)
+# Playback will start automatically when ready
+```
+
+## Audio FFmpeg options
+{: .col-2}
+
+### Volume
+
+#### Half volume
+
+```elixir
+Voice.play(guild_id, "~/final_mix.wav", :url, 
+  volume: 0.5
+)
+```
+
+#### Extreme clipping
+
+```elixir
+Voice.play(guild_id, "~/boost_this.m4a", :url, 
+  volume: 100
+)
+```
+
+#### Normal volume with inverted phase
+
+```elixir
+Voice.play(guild_id, "~/music.mp3", :url, 
+  volume: -1.0
+)
+```
+
+### Start position and duration
+
+Start at 37.8 seconds
+
+```elixir
+Voice.play(guild_id, "https://youtu.be/b4RJ-QGOtw4", :ytdl, 
+  start_pos: "0:37.8"
+)
+```
+
+Play the first at 15.3 seconds from the beginning
+
+```elixir
+Voice.play(guild_id, "https://youtu.be/b4RJ-QGOtw4", :ytdl, 
+  duration: "15.3"
+)
+```
+
+Play for 80 seconds (equivalently 1:20) starting from 90 seconds (equivalently 1:30) in
+
+```elixir
+Voice.play(guild_id, "~/music.mp3", :url, 
+  start_pos: "90", 
+  duration: "80"
+)
+```
+
+### Advanced audio filtering
+
+#### Cutoff filters
+
+Low-pass filter at 1200 Hz, high-pass filter at 300 Hz
+
+```elixir
+Voice.play(guild_id, "https://youtu.be/0ngcL_5ekXo", :ytdl,
+  filter: "lowpass=f=1200",
+  filter: "highpass=f=300"
+)
+```
+
+#### Sample rate
+
+Play at half tempo and pitch (assumes a 48kHz sample rate)
+
+```elixir
+Voice.play(guild_id, "https://youtu.be/0ngcL_5ekXo", :ytdl,
+  filter: "asetrate=48000*0.5"
+)
+```
+
+Play at 30% higher tempo and pitch. Realtime must be set to `false` for ffmpeg to keep up with faster-than-normal playback.
+
+```elixir
+Voice.play(guild_id, "https://youtu.be/0ngcL_5ekXo", :ytdl,
+  realtime: false,
+  filter: "asetrate=48000*1.3"
+)
+```
+
+#### Heavily distorted and effected lo-fi FX chain
+
+```elixir
+Voice.play(guild_id, "https://youtu.be/Hd_giv-wcJU", :ytdl,
+  volume: 3,
+  start_pos: "0:55",
+  filter: "asetrate=48000*0.73",
+  filter: "vibrato=d=0.05:f=698.46",
+  filter: "vibrato=f=1:d=0.8",
+  filter: "lowpass=f=1200",
+  filter: "aphaser=in_gain=0.4:out_gain=0.5:delay=3.0:decay=0.3:speed=0.3:type=t"
+)
+```

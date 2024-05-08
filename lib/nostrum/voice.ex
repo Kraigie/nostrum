@@ -186,7 +186,7 @@ defmodule Nostrum.Voice do
 
   ## Options
     - `:start_pos` (string) - The start position of the audio to be played. Defaults to beginning.
-    - `:duration` (string) - The duration to of the audio to be played . Defaults to entire duration.
+    - `:duration` (string) - The duration to of the audio to be played. Defaults to entire duration.
     - `:realtime` (boolean) - Make ffmpeg process the input in realtime instead of as fast as possible. Defaults to true.
     - `:volume` (number) - The output volume of the audio. Default volume is 1.0.
     - `:filter` (string) - Filter(s) to be applied to the audio. No filters applied by default.

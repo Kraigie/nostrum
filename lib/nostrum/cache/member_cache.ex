@@ -176,7 +176,7 @@ defmodule Nostrum.Cache.MemberCache do
   - `acc`: The initial accumulator. Also returned if no guild members were found.
   - `guild_id`: The guild for which to reduce members.
   - `fun`: Called for every element in the result. Takes a pair
-  in the form `{member, acc)`, and must return the updated accumulator.
+  in the form `(member, acc)`, and must return the updated accumulator.
 
   ## Return value
 
@@ -201,7 +201,7 @@ defmodule Nostrum.Cache.MemberCache do
   members were found.
   - `guild_id` (`t:Nostrum.Struct.Guild.id/0`): The guild for which to reduce members.
   - `fun` (`function()`): Called for every element in the result. Takes a pair
-  in the form `{{member, user}, acc)`, and must return the updated accumulator.
+  in the form `({member, user}, acc)`, and must return the updated accumulator.
 
   ## Return value
 
