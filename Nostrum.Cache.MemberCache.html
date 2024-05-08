@@ -14,7 +14,7 @@
 
     <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
     <script src="dist/handlebars.templates-IHH6HKET.js"></script>
-    <script src="dist/sidebar_items-CC4931ED.js"></script>
+    <script src="dist/sidebar_items-66D180A5.js"></script>
     <script src="docs_config.js"></script>
     <script async src="dist/html-GXQ6W6IF.js"></script>
 
@@ -617,7 +617,7 @@ when acc: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term
   <span class="text">Parameters</span>
 </h2>
 <ul><li><code class="inline">acc</code>: The initial accumulator. Also returned if no guild members were found.</li><li><code class="inline">guild_id</code>: The guild for which to reduce members.</li><li><code class="inline">fun</code>: Called for every element in the result. Takes a pair
-in the form <code class="inline">{member, acc)</code>, and must return the updated accumulator.</li></ul><h2 id="fold/4-return-value" class="section-heading">
+in the form <code class="inline">(member, acc)</code>, and must return the updated accumulator.</li></ul><h2 id="fold/4-return-value" class="section-heading">
   <a href="#fold/4-return-value" class="hover-link">
     <i class="ri-link-m" aria-hidden="true"></i>
   </a>
@@ -710,7 +710,7 @@ accumulator.</p><h2 id="fold_with_users/4-parameters" class="section-heading">
 </h2>
 <ul><li><code class="inline">acc</code> (<code class="inline">term()</code>): The initial accumulator. Also returned if no guild
 members were found.</li><li><code class="inline">guild_id</code> (<a href="Nostrum.Struct.Guild.html#t:id/0"><code class="inline">Nostrum.Struct.Guild.id/0</code></a>): The guild for which to reduce members.</li><li><code class="inline">fun</code> (<code class="inline">function()</code>): Called for every element in the result. Takes a pair
-in the form <code class="inline">{{member, user}, acc)</code>, and must return the updated accumulator.</li></ul><h2 id="fold_with_users/4-return-value" class="section-heading">
+in the form <code class="inline">({member, user}, acc)</code>, and must return the updated accumulator.</li></ul><h2 id="fold_with_users/4-return-value" class="section-heading">
   <a href="#fold_with_users/4-return-value" class="hover-link">
     <i class="ri-link-m" aria-hidden="true"></i>
   </a>
