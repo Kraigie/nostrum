@@ -38,6 +38,11 @@ executable is elsewhere, the path may be configured via `config :nostrum, :youtu
 When `Nostrum.Voice.play/4` is called with `:ytdl` for the `type` parameter, `youtube-dl` will be
 run with options `-f bestaudio -q -o -`, which will attempt to download the audio at the given url and pipe it to `ffmpeg`.
 
+> #### Forks {: .warning}
+> More recently `youtube-dl` hasn't been maintained regularly enough to keep up with YouTube's changes.
+> The use of the `yt-dlp` fork is recommended in its place.
+>
+> `config :nostrum, :youtubedl, "yt-dlp"`
 
 ## streamlink
 
