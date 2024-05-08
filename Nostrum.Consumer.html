@@ -14,7 +14,7 @@
 
     <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
     <script src="dist/handlebars.templates-IHH6HKET.js"></script>
-    <script src="dist/sidebar_items-E3DCEB96.js"></script>
+    <script src="dist/sidebar_items-AA0F28A1.js"></script>
     <script src="docs_config.js"></script>
     <script async src="dist/html-GXQ6W6IF.js"></script>
 
@@ -150,13 +150,13 @@ any subscribed consumers via <a href="Nostrum.ConsumerGroup.html"><code class="i
 parallelism and isolation. You therefore do not need to start more than one
 consumer in your supervision tree. If you want to override this behaviour,
 implement the <code class="inline">handle_info/2</code> function in your consumer. For reference, this
-is the default implementation:</p><pre><code class="makeup elixir" translate="no"><span class="w">  </span><span class="kd">def</span><span class="w"> </span><span class="nf">handle_info</span><span class="p" data-group-id="5521481363-1">(</span><span class="p" data-group-id="5521481363-2">{</span><span class="ss">:event</span><span class="p">,</span><span class="w"> </span><span class="n">event</span><span class="p" data-group-id="5521481363-2">}</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="p" data-group-id="5521481363-1">)</span><span class="w"> </span><span class="k" data-group-id="5521481363-3">do</span><span class="w">
-    </span><span class="nc">Task</span><span class="o">.</span><span class="n">start_link</span><span class="p" data-group-id="5521481363-4">(</span><span class="k" data-group-id="5521481363-5">fn</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
-      </span><span class="bp">__MODULE__</span><span class="o">.</span><span class="n">handle_event</span><span class="p" data-group-id="5521481363-6">(</span><span class="n">event</span><span class="p" data-group-id="5521481363-6">)</span><span class="w">
-    </span><span class="k" data-group-id="5521481363-5">end</span><span class="p" data-group-id="5521481363-4">)</span><span class="w">
+is the default implementation:</p><pre><code class="makeup elixir" translate="no"><span class="w">  </span><span class="kd">def</span><span class="w"> </span><span class="nf">handle_info</span><span class="p" data-group-id="6057471024-1">(</span><span class="p" data-group-id="6057471024-2">{</span><span class="ss">:event</span><span class="p">,</span><span class="w"> </span><span class="n">event</span><span class="p" data-group-id="6057471024-2">}</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="p" data-group-id="6057471024-1">)</span><span class="w"> </span><span class="k" data-group-id="6057471024-3">do</span><span class="w">
+    </span><span class="nc">Task</span><span class="o">.</span><span class="n">start_link</span><span class="p" data-group-id="6057471024-4">(</span><span class="k" data-group-id="6057471024-5">fn</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+      </span><span class="bp">__MODULE__</span><span class="o">.</span><span class="n">handle_event</span><span class="p" data-group-id="6057471024-6">(</span><span class="n">event</span><span class="p" data-group-id="6057471024-6">)</span><span class="w">
+    </span><span class="k" data-group-id="6057471024-5">end</span><span class="p" data-group-id="6057471024-4">)</span><span class="w">
 
-    </span><span class="p" data-group-id="5521481363-7">{</span><span class="ss">:noreply</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="p" data-group-id="5521481363-7">}</span><span class="w">
-  </span><span class="k" data-group-id="5521481363-3">end</span></code></pre><h2 id="module-running-multiple-consumers" class="section-heading">
+    </span><span class="p" data-group-id="6057471024-7">{</span><span class="ss">:noreply</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="p" data-group-id="6057471024-7">}</span><span class="w">
+  </span><span class="k" data-group-id="6057471024-3">end</span></code></pre><h2 id="module-running-multiple-consumers" class="section-heading">
   <a href="#module-running-multiple-consumers" class="hover-link">
     <i class="ri-link-m" aria-hidden="true"></i>
   </a>
@@ -171,35 +171,35 @@ could accomplish the job.</p><h2 id="module-example-consumer" class="section-hea
   <span class="text">Example consumer</span>
 </h2>
 <p>An example consumer could look as follows:</p><pre><code class="makeup elixir" translate="no"><span class="c1"># Sourced from examples/event_consumer.ex</span><span class="w">
-</span><span class="kd">defmodule</span><span class="w"> </span><span class="nc">ExampleSupervisor</span><span class="w"> </span><span class="k" data-group-id="5179685735-1">do</span><span class="w">
+</span><span class="kd">defmodule</span><span class="w"> </span><span class="nc">ExampleSupervisor</span><span class="w"> </span><span class="k" data-group-id="4704673673-1">do</span><span class="w">
   </span><span class="kn">use</span><span class="w"> </span><span class="nc">Supervisor</span><span class="w">
 
-  </span><span class="kd">def</span><span class="w"> </span><span class="nf">start_link</span><span class="p" data-group-id="5179685735-2">(</span><span class="n">args</span><span class="p" data-group-id="5179685735-2">)</span><span class="w"> </span><span class="k" data-group-id="5179685735-3">do</span><span class="w">
-    </span><span class="nc">Supervisor</span><span class="o">.</span><span class="n">start_link</span><span class="p" data-group-id="5179685735-4">(</span><span class="bp">__MODULE__</span><span class="p">,</span><span class="w"> </span><span class="n">args</span><span class="p">,</span><span class="w"> </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="bp">__MODULE__</span><span class="p" data-group-id="5179685735-4">)</span><span class="w">
-  </span><span class="k" data-group-id="5179685735-3">end</span><span class="w">
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">start_link</span><span class="p" data-group-id="4704673673-2">(</span><span class="n">args</span><span class="p" data-group-id="4704673673-2">)</span><span class="w"> </span><span class="k" data-group-id="4704673673-3">do</span><span class="w">
+    </span><span class="nc">Supervisor</span><span class="o">.</span><span class="n">start_link</span><span class="p" data-group-id="4704673673-4">(</span><span class="bp">__MODULE__</span><span class="p">,</span><span class="w"> </span><span class="n">args</span><span class="p">,</span><span class="w"> </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="bp">__MODULE__</span><span class="p" data-group-id="4704673673-4">)</span><span class="w">
+  </span><span class="k" data-group-id="4704673673-3">end</span><span class="w">
 
   </span><span class="na">@impl</span><span class="w"> </span><span class="no">true</span><span class="w">
-  </span><span class="kd">def</span><span class="w"> </span><span class="nf">init</span><span class="p" data-group-id="5179685735-5">(</span><span class="c">_init_arg</span><span class="p" data-group-id="5179685735-5">)</span><span class="w"> </span><span class="k" data-group-id="5179685735-6">do</span><span class="w">
-    </span><span class="n">children</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="5179685735-7">[</span><span class="nc">ExampleConsumer</span><span class="p" data-group-id="5179685735-7">]</span><span class="w">
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">init</span><span class="p" data-group-id="4704673673-5">(</span><span class="c">_init_arg</span><span class="p" data-group-id="4704673673-5">)</span><span class="w"> </span><span class="k" data-group-id="4704673673-6">do</span><span class="w">
+    </span><span class="n">children</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="4704673673-7">[</span><span class="nc">ExampleConsumer</span><span class="p" data-group-id="4704673673-7">]</span><span class="w">
 
-    </span><span class="nc">Supervisor</span><span class="o">.</span><span class="n">init</span><span class="p" data-group-id="5179685735-8">(</span><span class="n">children</span><span class="p">,</span><span class="w"> </span><span class="ss">strategy</span><span class="p">:</span><span class="w"> </span><span class="ss">:one_for_one</span><span class="p" data-group-id="5179685735-8">)</span><span class="w">
-  </span><span class="k" data-group-id="5179685735-6">end</span><span class="w">
-</span><span class="k" data-group-id="5179685735-1">end</span><span class="w">
+    </span><span class="nc">Supervisor</span><span class="o">.</span><span class="n">init</span><span class="p" data-group-id="4704673673-8">(</span><span class="n">children</span><span class="p">,</span><span class="w"> </span><span class="ss">strategy</span><span class="p">:</span><span class="w"> </span><span class="ss">:one_for_one</span><span class="p" data-group-id="4704673673-8">)</span><span class="w">
+  </span><span class="k" data-group-id="4704673673-6">end</span><span class="w">
+</span><span class="k" data-group-id="4704673673-1">end</span><span class="w">
 
-</span><span class="kd">defmodule</span><span class="w"> </span><span class="nc">ExampleConsumer</span><span class="w"> </span><span class="k" data-group-id="5179685735-9">do</span><span class="w">
+</span><span class="kd">defmodule</span><span class="w"> </span><span class="nc">ExampleConsumer</span><span class="w"> </span><span class="k" data-group-id="4704673673-9">do</span><span class="w">
   </span><span class="kn">use</span><span class="w"> </span><span class="nc">Nostrum.Consumer</span><span class="w">
 
   </span><span class="kn">alias</span><span class="w"> </span><span class="nc">Nostrum.Api</span><span class="w">
 
-  </span><span class="kd">def</span><span class="w"> </span><span class="nf">handle_event</span><span class="p" data-group-id="5179685735-10">(</span><span class="p" data-group-id="5179685735-11">{</span><span class="ss">:MESSAGE_CREATE</span><span class="p">,</span><span class="w"> </span><span class="n">msg</span><span class="p">,</span><span class="w"> </span><span class="c">_ws_state</span><span class="p" data-group-id="5179685735-11">}</span><span class="p" data-group-id="5179685735-10">)</span><span class="w"> </span><span class="k" data-group-id="5179685735-12">do</span><span class="w">
-    </span><span class="k">case</span><span class="w"> </span><span class="n">msg</span><span class="o">.</span><span class="n">content</span><span class="w"> </span><span class="k" data-group-id="5179685735-13">do</span><span class="w">
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">handle_event</span><span class="p" data-group-id="4704673673-10">(</span><span class="p" data-group-id="4704673673-11">{</span><span class="ss">:MESSAGE_CREATE</span><span class="p">,</span><span class="w"> </span><span class="n">msg</span><span class="p">,</span><span class="w"> </span><span class="c">_ws_state</span><span class="p" data-group-id="4704673673-11">}</span><span class="p" data-group-id="4704673673-10">)</span><span class="w"> </span><span class="k" data-group-id="4704673673-12">do</span><span class="w">
+    </span><span class="k">case</span><span class="w"> </span><span class="n">msg</span><span class="o">.</span><span class="n">content</span><span class="w"> </span><span class="k" data-group-id="4704673673-13">do</span><span class="w">
       </span><span class="s">&quot;!sleep&quot;</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
-        </span><span class="nc">Api</span><span class="o">.</span><span class="n">create_message</span><span class="p" data-group-id="5179685735-14">(</span><span class="n">msg</span><span class="o">.</span><span class="n">channel_id</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Going to sleep...&quot;</span><span class="p" data-group-id="5179685735-14">)</span><span class="w">
+        </span><span class="nc">Api</span><span class="o">.</span><span class="n">create_message</span><span class="p" data-group-id="4704673673-14">(</span><span class="n">msg</span><span class="o">.</span><span class="n">channel_id</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Going to sleep...&quot;</span><span class="p" data-group-id="4704673673-14">)</span><span class="w">
         </span><span class="c1"># This won&#39;t stop other events from being handled.</span><span class="w">
-        </span><span class="nc">Process</span><span class="o">.</span><span class="n">sleep</span><span class="p" data-group-id="5179685735-15">(</span><span class="mi">3000</span><span class="p" data-group-id="5179685735-15">)</span><span class="w">
+        </span><span class="nc">Process</span><span class="o">.</span><span class="n">sleep</span><span class="p" data-group-id="4704673673-15">(</span><span class="mi">3000</span><span class="p" data-group-id="4704673673-15">)</span><span class="w">
 
       </span><span class="s">&quot;!ping&quot;</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
-        </span><span class="nc">Api</span><span class="o">.</span><span class="n">create_message</span><span class="p" data-group-id="5179685735-16">(</span><span class="n">msg</span><span class="o">.</span><span class="n">channel_id</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;pyongyang!&quot;</span><span class="p" data-group-id="5179685735-16">)</span><span class="w">
+        </span><span class="nc">Api</span><span class="o">.</span><span class="n">create_message</span><span class="p" data-group-id="4704673673-16">(</span><span class="n">msg</span><span class="o">.</span><span class="n">channel_id</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;pyongyang!&quot;</span><span class="p" data-group-id="4704673673-16">)</span><span class="w">
 
       </span><span class="s">&quot;!raise&quot;</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
         </span><span class="c1"># This won&#39;t crash the entire Consumer.</span><span class="w">
@@ -207,9 +207,9 @@ could accomplish the job.</p><h2 id="module-example-consumer" class="section-hea
 
       </span><span class="bp">_</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
         </span><span class="ss">:ignore</span><span class="w">
-    </span><span class="k" data-group-id="5179685735-13">end</span><span class="w">
-  </span><span class="k" data-group-id="5179685735-12">end</span><span class="w">
-</span><span class="k" data-group-id="5179685735-9">end</span><span class="w">
+    </span><span class="k" data-group-id="4704673673-13">end</span><span class="w">
+  </span><span class="k" data-group-id="4704673673-12">end</span><span class="w">
+</span><span class="k" data-group-id="4704673673-9">end</span><span class="w">
 </span></code></pre><blockquote><h3 id="module-use-nostrum-consumer" class="info section-heading">
   <a href="#module-use-nostrum-consumer" class="hover-link">
     <i class="ri-link-m" aria-hidden="true"></i>
@@ -480,6 +480,14 @@ automatically join the <a href="Nostrum.ConsumerGroup.html"><code class="inline"
     <div class="summary-row">
       <div class="summary-signature">
         <a href="#t:guild_scheduled_event_user_remove/0" translate="no">guild_scheduled_event_user_remove()</a>
+
+      </div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:guild_stickers_update/0" translate="no">guild_stickers_update()</a>
 
       </div>
 
@@ -1098,7 +1106,7 @@ this will never be sent for a DM.</p>
     </a>
     <h1 class="signature" translate="no">event()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L340" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L344" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1129,6 +1137,7 @@ this will never be sent for a DM.</p>
   | <a href="#t:guild_update/0">guild_update</a>()
   | <a href="#t:guild_delete/0">guild_delete</a>()
   | <a href="#t:guild_emojis_update/0">guild_emojis_update</a>()
+  | <a href="#t:guild_stickers_update/0">guild_stickers_update</a>()
   | <a href="#t:guild_integrations_update/0">guild_integrations_update</a>()
   | <a href="#t:guild_member_add/0">guild_member_add</a>()
   | <a href="#t:guild_members_chunk/0">guild_members_chunk</a>()
@@ -1396,7 +1405,7 @@ this will never be sent for a DM.</p>
     </a>
     <h1 class="signature" translate="no">guild_integrations_update()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L173" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L177" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1426,7 +1435,7 @@ this will never be sent for a DM.</p>
     </a>
     <h1 class="signature" translate="no">guild_member_add()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L175" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L179" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1457,7 +1466,7 @@ this will never be sent for a DM.</p>
     </a>
     <h1 class="signature" translate="no">guild_member_remove()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L188" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L192" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1492,7 +1501,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
     </a>
     <h1 class="signature" translate="no">guild_member_update()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L196" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L200" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1523,7 +1532,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
     </a>
     <h1 class="signature" translate="no">guild_members_chunk()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L178" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L182" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1552,7 +1561,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
     </a>
     <h1 class="signature" translate="no">guild_role_create()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L200" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L204" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1583,7 +1592,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
     </a>
     <h1 class="signature" translate="no">guild_role_delete()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L203" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L207" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1614,7 +1623,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
     </a>
     <h1 class="signature" translate="no">guild_role_update()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L211" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L215" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1645,7 +1654,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
     </a>
     <h1 class="signature" translate="no">guild_scheduled_event_create()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L215" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L219" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1675,7 +1684,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
     </a>
     <h1 class="signature" translate="no">guild_scheduled_event_delete()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L217" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L221" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1705,7 +1714,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
     </a>
     <h1 class="signature" translate="no">guild_scheduled_event_update()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L219" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L223" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1735,7 +1744,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
     </a>
     <h1 class="signature" translate="no">guild_scheduled_event_user_add()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L221" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L225" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1766,7 +1775,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
     </a>
     <h1 class="signature" translate="no">guild_scheduled_event_user_remove()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L223" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L227" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1782,6 +1791,37 @@ provided by Discord, but no information about the user's state on the guild.</p>
   {:GUILD_SCHEDULED_EVENT_USER_REMOVE,
    <a href="Nostrum.Struct.Event.GuildScheduledEventUserRemove.html#t:t/0">Nostrum.Struct.Event.GuildScheduledEventUserRemove.t</a>(),
    <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
+
+      </div>
+
+
+  </section>
+</section>
+<section class="detail" id="t:guild_stickers_update/0">
+
+  <div class="detail-header">
+    <a href="#t:guild_stickers_update/0" class="detail-link" title="Link to this type">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature" translate="no">guild_stickers_update()</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L173" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@type</span> guild_stickers_update() ::
+  {:GUILD_STICKERS_UPDATE,
+   {guild_id :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>(), old_stickers :: [<a href="Nostrum.Struct.Sticker.html#t:t/0">Nostrum.Struct.Sticker.t</a>()],
+    new_stickers :: [<a href="Nostrum.Struct.Sticker.html#t:t/0">Nostrum.Struct.Sticker.t</a>()]}, <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
 
       </div>
 
@@ -1859,7 +1899,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
     </a>
     <h1 class="signature" translate="no">integration_create()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L227" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L231" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1891,7 +1931,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
     </a>
     <h1 class="signature" translate="no">integration_delete()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L235" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L239" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1923,7 +1963,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
     </a>
     <h1 class="signature" translate="no">integration_update()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L233" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L237" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1955,7 +1995,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
     </a>
     <h1 class="signature" translate="no">interaction_create()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L236" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L240" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1985,7 +2025,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
     </a>
     <h1 class="signature" translate="no">message_ack()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L249" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L253" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2013,7 +2053,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
     </a>
     <h1 class="signature" translate="no">message_create()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L237" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L241" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2043,7 +2083,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
     </a>
     <h1 class="signature" translate="no">message_delete()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L238" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L242" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2073,7 +2113,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
     </a>
     <h1 class="signature" translate="no">message_delete_bulk()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L239" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L243" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2103,7 +2143,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
     </a>
     <h1 class="signature" translate="no">message_poll_vote_add()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L333" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L337" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2133,7 +2173,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
     </a>
     <h1 class="signature" translate="no">message_poll_vote_remove()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L338" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L342" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2163,7 +2203,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
     </a>
     <h1 class="signature" translate="no">message_reaction_add()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L242" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L246" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2193,7 +2233,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
     </a>
     <h1 class="signature" translate="no">message_reaction_remove()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L243" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L247" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2223,7 +2263,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
     </a>
     <h1 class="signature" translate="no">message_reaction_remove_all()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L245" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L249" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2254,7 +2294,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
     </a>
     <h1 class="signature" translate="no">message_reaction_remove_emoji()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L247" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L251" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2285,7 +2325,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
     </a>
     <h1 class="signature" translate="no">message_update()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L240" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L244" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2315,7 +2355,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
     </a>
     <h1 class="signature" translate="no">presence_update()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L255" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L259" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2346,7 +2386,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
     </a>
     <h1 class="signature" translate="no">ready()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L258" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L262" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2374,7 +2414,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
     </a>
     <h1 class="signature" translate="no">resumed()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L259" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L263" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2402,7 +2442,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
     </a>
     <h1 class="signature" translate="no">thread_create()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L305" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L309" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2431,7 +2471,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
     </a>
     <h1 class="signature" translate="no">thread_delete()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L310" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L314" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2461,7 +2501,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
     </a>
     <h1 class="signature" translate="no">thread_list_sync()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L318" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L322" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2491,7 +2531,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
     </a>
     <h1 class="signature" translate="no">thread_member_update()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L323" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L327" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2521,7 +2561,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
     </a>
     <h1 class="signature" translate="no">thread_members_update()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L328" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L332" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2551,7 +2591,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
     </a>
     <h1 class="signature" translate="no">thread_update()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L311" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L315" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2582,7 +2622,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
     </a>
     <h1 class="signature" translate="no">typing_start()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L260" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L264" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2612,7 +2652,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
     </a>
     <h1 class="signature" translate="no">user_settings_update()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L261" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L265" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2640,7 +2680,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
     </a>
     <h1 class="signature" translate="no">user_update()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L267" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L271" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2671,7 +2711,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
     </a>
     <h1 class="signature" translate="no">voice_incoming_packet()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L296" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L300" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2707,7 +2747,7 @@ on the SSRC.</p>
     </a>
     <h1 class="signature" translate="no">voice_ready()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L277" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L281" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2739,7 +2779,7 @@ on the SSRC.</p>
     </a>
     <h1 class="signature" translate="no">voice_server_update()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L299" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L303" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2769,7 +2809,7 @@ on the SSRC.</p>
     </a>
     <h1 class="signature" translate="no">voice_speaking_update()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L283" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L287" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2799,7 +2839,7 @@ on the SSRC.</p>
     </a>
     <h1 class="signature" translate="no">voice_state_update()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L298" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L302" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2829,7 +2869,7 @@ on the SSRC.</p>
     </a>
     <h1 class="signature" translate="no">webhooks_update()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L300" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/consumer.ex#L304" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -2892,9 +2932,9 @@ on the SSRC.</p>
   <span class="text">Event</span>
 </h2>
 <p><code class="inline">event</code> is a tuple describing the event. The tuple will include information in
-the following format:</p><pre><code class="makeup elixir" translate="no"><span class="p" data-group-id="9909004759-1">{</span><span class="n">event_name</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="9909004759-2">{</span><span class="n">event_payload</span><span class="p" data-group-id="9909004759-3">(</span><span class="n">s</span><span class="p" data-group-id="9909004759-3">)</span><span class="p" data-group-id="9909004759-2">}</span><span class="p">,</span><span class="w"> </span><span class="nc">WSState</span><span class="o">.</span><span class="n">t</span><span class="p" data-group-id="9909004759-1">}</span></code></pre><p>For example, a message create will look like this</p><pre><code class="makeup elixir" translate="no"><span class="p" data-group-id="8023391391-1">{</span><span class="ss">:MESSAGE_CREATE</span><span class="p">,</span><span class="w"> </span><span class="nc">Nostrum.Struct.Message</span><span class="o">.</span><span class="n">t</span><span class="p">,</span><span class="w"> </span><span class="nc">WSState</span><span class="o">.</span><span class="n">t</span><span class="p" data-group-id="8023391391-1">}</span></code></pre><p>In some cases there will be multiple payloads when something is updated, so as
+the following format:</p><pre><code class="makeup elixir" translate="no"><span class="p" data-group-id="9707746216-1">{</span><span class="n">event_name</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="9707746216-2">{</span><span class="n">event_payload</span><span class="p" data-group-id="9707746216-3">(</span><span class="n">s</span><span class="p" data-group-id="9707746216-3">)</span><span class="p" data-group-id="9707746216-2">}</span><span class="p">,</span><span class="w"> </span><span class="nc">WSState</span><span class="o">.</span><span class="n">t</span><span class="p" data-group-id="9707746216-1">}</span></code></pre><p>For example, a message create will look like this</p><pre><code class="makeup elixir" translate="no"><span class="p" data-group-id="1645121949-1">{</span><span class="ss">:MESSAGE_CREATE</span><span class="p">,</span><span class="w"> </span><span class="nc">Nostrum.Struct.Message</span><span class="o">.</span><span class="n">t</span><span class="p">,</span><span class="w"> </span><span class="nc">WSState</span><span class="o">.</span><span class="n">t</span><span class="p" data-group-id="1645121949-1">}</span></code></pre><p>In some cases there will be multiple payloads when something is updated, so as
 to include the new and the old versions. In the event of there being two payloads,
-the old payload will always be first, followed by the new payload.</p><pre><code class="makeup elixir" translate="no"><span class="p" data-group-id="0380535399-1">{</span><span class="ss">:USER_UPDATE</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="0380535399-2">{</span><span class="n">old_user</span><span class="w"> </span><span class="o">::</span><span class="w"> </span><span class="nc">Nostrum.Struct.User</span><span class="o">.</span><span class="n">t</span><span class="p">,</span><span class="w"> </span><span class="n">new_user</span><span class="w"> </span><span class="o">::</span><span class="w"> </span><span class="nc">Nostrum.Struct.User</span><span class="o">.</span><span class="n">t</span><span class="p" data-group-id="0380535399-2">}</span><span class="p">,</span><span class="w"> </span><span class="nc">WSState</span><span class="o">.</span><span class="n">t</span><span class="p" data-group-id="0380535399-3">(</span><span class="p" data-group-id="0380535399-3">)</span><span class="p" data-group-id="0380535399-1">}</span></code></pre><p>For a full listing of events, please see <a href="#t:event/0"><code class="inline">Nostrum.Consumer.event/0</code></a>.</p>
+the old payload will always be first, followed by the new payload.</p><pre><code class="makeup elixir" translate="no"><span class="p" data-group-id="7231687694-1">{</span><span class="ss">:USER_UPDATE</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="7231687694-2">{</span><span class="n">old_user</span><span class="w"> </span><span class="o">::</span><span class="w"> </span><span class="nc">Nostrum.Struct.User</span><span class="o">.</span><span class="n">t</span><span class="p">,</span><span class="w"> </span><span class="n">new_user</span><span class="w"> </span><span class="o">::</span><span class="w"> </span><span class="nc">Nostrum.Struct.User</span><span class="o">.</span><span class="n">t</span><span class="p" data-group-id="7231687694-2">}</span><span class="p">,</span><span class="w"> </span><span class="nc">WSState</span><span class="o">.</span><span class="n">t</span><span class="p" data-group-id="7231687694-3">(</span><span class="p" data-group-id="7231687694-3">)</span><span class="p" data-group-id="7231687694-1">}</span></code></pre><p>For a full listing of events, please see <a href="#t:event/0"><code class="inline">Nostrum.Consumer.event/0</code></a>.</p>
   </section>
 </section>
 
