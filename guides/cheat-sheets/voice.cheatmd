@@ -9,7 +9,7 @@ This cheat sheet covers basic use of the Discord Voice API through the `Nostrum.
 
 ```elixir
 def try_play(guild_id, url, type, opts \\ []) do
-  case Nostrum.Voice.play(guild_id, url, type, opts) do
+  case Voice.play(guild_id, url, type, opts) do
     {:error, _msg} ->
       # Wait for handshaking to complete
       Process.sleep(100)
@@ -22,16 +22,16 @@ end
 ```
 
 ```elixir
-Nostrum.Voice.join_channel(guild_id, channel_id)
-try_play(guild_id, "./song.mp3", :url)
+iex> Voice.join_channel(guild_id, channel_id)
+iex> try_play(guild_id, "./song.mp3", :url)
 ```
 
 ### Playing immediately using `Nostrum.Voice.ready?/1`
 
 ```elixir
 def play_when_ready(guild_id, url, type, opts \\ []) do
-  if Nostrum.Voice.ready?(guild_id) do
-    Nostrum.Voice.play(guild_id, url, type, opts)
+  if Voice.ready?(guild_id) do
+    Voice.play(guild_id, url, type, opts)
   else
     # Wait for handshaking to complete
     Process.sleep(25)
@@ -41,8 +41,8 @@ end
 ```
 
 ```elixir
-Nostrum.Voice.join_channel(guild_id, channel_id)
-play_when_ready(guild_id, "https://youtu.be/b4RJ-QGOtw4", :ytdl)
+iex> Voice.join_channel(guild_id, channel_id)
+iex> play_when_ready(guild_id, "https://youtu.be/b4RJ-QGOtw4", :ytdl)
 ```
 
 ### Playing immediately by using events
@@ -50,22 +50,18 @@ play_when_ready(guild_id, "https://youtu.be/b4RJ-QGOtw4", :ytdl)
 ```elixir
 alias Nostrum.Struct.Event.VoiceReady
 alias Nostrum.Voice
-```
 
-In your consumer module
-
-```elixir
 def handle_event({:VOICE_READY, %VoiceReady{guild_id: guild_id} = _event, _v_ws_state}) do
   Voice.play(guild_id, "~/loud_noise.mp3", :url, volume: 10)
 end
 ```
 
-Once voice connection handshaking is complete, audio will begin playing
+Once the voice handshake has completed, audio will begin playing
 without the need for polling functions like `try_play/4` or `play_when_ready/4`
 as shown in the other examples
 
 ```elixir
-Voice.join_channel(guild_id, channel_id)
+iex> Voice.join_channel(guild_id, channel_id)
 # Playback will start automatically when ready
 ```
 
@@ -74,11 +70,7 @@ Voice.join_channel(guild_id, channel_id)
 
 ### Volume
 
-```elixir
-alias Nostrum.Voice
-```
-
-Half volume
+#### Half volume
 
 ```elixir
 Voice.play(guild_id, "~/final_mix.wav", :url, 
@@ -86,7 +78,7 @@ Voice.play(guild_id, "~/final_mix.wav", :url,
 )
 ```
 
-Extreme clipping
+#### Extreme clipping
 
 ```elixir
 Voice.play(guild_id, "~/boost_this.m4a", :url, 
@@ -94,7 +86,7 @@ Voice.play(guild_id, "~/boost_this.m4a", :url,
 )
 ```
 
-Normal volume with inverted phase
+#### Normal volume with inverted phase
 
 ```elixir
 Voice.play(guild_id, "~/music.mp3", :url, 
@@ -103,10 +95,6 @@ Voice.play(guild_id, "~/music.mp3", :url,
 ```
 
 ### Start position and duration
-
-```elixir
-alias Nostrum.Voice
-```
 
 Start at 37.8 seconds
 
@@ -135,21 +123,28 @@ Voice.play(guild_id, "~/music.mp3", :url,
 
 ### Advanced audio filtering
 
-```elixir
-alias Nostrum.Voice
-```
+#### Cutoff filters
 
-Low-pass filter at 1200 Hz, high-pass filter at 300 Hz, and play at half tempo and pitch (assumes a 48kHz sample rate)
+Low-pass filter at 1200 Hz, high-pass filter at 300 Hz
 
 ```elixir
 Voice.play(guild_id, "https://youtu.be/0ngcL_5ekXo", :ytdl,
   filter: "lowpass=f=1200",
-  filter: "highpass=f=300",
+  filter: "highpass=f=300"
+)
+```
+
+#### Sample rate
+
+Play at half tempo and pitch (assumes a 48kHz sample rate)
+
+```elixir
+Voice.play(guild_id, "https://youtu.be/0ngcL_5ekXo", :ytdl,
   filter: "asetrate=48000*0.5"
 )
 ```
 
-Play at 30% higher tempo and pitch. Realtime is false so ffmpeg can keep up with faster-than-normal playback.
+Play at 30% higher tempo and pitch. Realtime must be set to `false` for ffmpeg to keep up with faster-than-normal playback.
 
 ```elixir
 Voice.play(guild_id, "https://youtu.be/0ngcL_5ekXo", :ytdl,
@@ -158,7 +153,7 @@ Voice.play(guild_id, "https://youtu.be/0ngcL_5ekXo", :ytdl,
 )
 ```
 
-Heavily distorted and effected lo-fi FX chain
+#### Heavily distorted and effected lo-fi FX chain
 
 ```elixir
 Voice.play(guild_id, "https://youtu.be/Hd_giv-wcJU", :ytdl,
