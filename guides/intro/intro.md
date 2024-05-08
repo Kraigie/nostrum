@@ -7,7 +7,7 @@ the following:
 
 * [API](api.html) - Methods to interact with the RESTful API (and some other goodies).
 * [State](state.html) - Caches that keep information from Discord fresh at your disposal.
-* [Events](events.html) - Handling events from Discord as they come in.
+* [Events](event_handling.html) - Handling events from Discord as they come in.
 * [Voice](voice.html) - Playing audio through Discord voice channels.
 
 ## Setup
