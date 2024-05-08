@@ -170,6 +170,10 @@ defmodule Nostrum.Consumer do
           {:GUILD_EMOJIS_UPDATE,
            {guild_id :: integer, old_emojis :: [Nostrum.Struct.Emoji.t()],
             new_emojis :: [Nostrum.Struct.Emoji.t()]}, WSState.t()}
+  @type guild_stickers_update ::
+          {:GUILD_STICKERS_UPDATE,
+           {guild_id :: integer, old_stickers :: [Nostrum.Struct.Sticker.t()],
+            new_stickers :: [Nostrum.Struct.Sticker.t()]}, WSState.t()}
   @type guild_integrations_update ::
           {:GUILD_INTEGRATIONS_UPDATE, GuildIntegrationsUpdate.t(), WSState.t()}
   @type guild_member_add ::
@@ -356,6 +360,7 @@ defmodule Nostrum.Consumer do
           | guild_update
           | guild_delete
           | guild_emojis_update
+          | guild_stickers_update
           | guild_integrations_update
           | guild_member_add
           | guild_members_chunk
