@@ -8,7 +8,7 @@ application can perform an action as a result of that event.
 Nostrum uses [Erlang's `:pg` module](https://www.erlang.org/doc/man/pg.html) to
 determine which consumers are interested in events, via
 `Nostrum.ConsumerGroup`. This allows dynamic subscriptions at runtime, even
-across nodes. Events are dispatched to group members as they appear fromthe
+across nodes. Events are dispatched to group members as they appear from the
 Discord Gateway after ingestion into the cache.
 
 To see the documentation on handling events of provided consumers, please see
