@@ -14,7 +14,7 @@
 
     <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
     <script src="dist/handlebars.templates-IHH6HKET.js"></script>
-    <script src="dist/sidebar_items-F48F446B.js"></script>
+    <script src="dist/sidebar_items-CC4931ED.js"></script>
     <script src="docs_config.js"></script>
     <script async src="dist/html-GXQ6W6IF.js"></script>
 
@@ -178,6 +178,17 @@ Pages
 
     <div class="summary-row">
       <div class="summary-signature">
+        <a href="#t:resume_gateway_url/0" translate="no">resume_gateway_url()</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Similar to <a href="#t:session_id/0"><code class="inline">session_id/0</code></a>, this is the URL that Discord has requested
+reconnection attempts to be made against.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
         <a href="#t:session_id/0" translate="no">session_id()</a>
 
       </div>
@@ -249,7 +260,7 @@ See <a href="https://discord.com/developers/docs/topics/gateway#gateways-gateway
     </a>
     <h1 class="signature" translate="no">application()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/event/ready.ex#L41" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/event/ready.ex#L50" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -300,6 +311,38 @@ See <a href="https://discord.com/developers/docs/topics/gateway#gateways-gateway
 <p>The guilds that the bot user is in</p>
   </section>
 </section>
+<section class="detail" id="t:resume_gateway_url/0">
+
+  <div class="detail-header">
+    <a href="#t:resume_gateway_url/0" class="detail-link" title="Link to this type">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature" translate="no">resume_gateway_url()</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/event/ready.ex#L39" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+      <span class="note">(since 0.5.0)</span>
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@type</span> resume_gateway_url() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()</pre>
+
+      </div>
+
+<p>Similar to <a href="#t:session_id/0"><code class="inline">session_id/0</code></a>, this is the URL that Discord has requested
+reconnection attempts to be made against.</p><p>Nostrum stores and handles this for you, this value is provided for
+debugging purposes.</p>
+  </section>
+</section>
 <section class="detail" id="t:session_id/0">
 
   <div class="detail-header">
@@ -340,7 +383,7 @@ Nostrum handles reconnections for you.</p>
     </a>
     <h1 class="signature" translate="no">shard()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/event/ready.ex#L38" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/event/ready.ex#L47" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -371,7 +414,7 @@ Nostrum handles reconnections for you.</p>
     </a>
     <h1 class="signature" translate="no">t()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/event/ready.ex#L44" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/event/ready.ex#L53" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -388,6 +431,7 @@ Nostrum handles reconnections for you.</p>
           <pre translate="no"><span class="attribute">@type</span> t() :: %Nostrum.Struct.Event.Ready{
   application: <a href="#t:application/0">application</a>(),
   guilds: <a href="#t:guilds/0">guilds</a>(),
+  resume_gateway_url: <a href="#t:resume_gateway_url/0">resume_gateway_url</a>(),
   session_id: <a href="#t:session_id/0">session_id</a>(),
   shard: <a href="#t:shard/0">shard</a>(),
   user: <a href="#t:user/0">user</a>(),
