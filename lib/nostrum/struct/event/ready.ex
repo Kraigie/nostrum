@@ -7,7 +7,7 @@ defmodule Nostrum.Struct.Event.Ready do
   alias Nostrum.Struct.User
   alias Nostrum.Util
 
-  defstruct [:v, :user, :guilds, :session_id, :shard, :application]
+  defstruct [:v, :user, :guilds, :session_id, :shard, :application, :resume_gateway_url]
 
   @typedoc """
   Gateway version.
@@ -30,6 +30,15 @@ defmodule Nostrum.Struct.Event.Ready do
   @type session_id :: String.t()
 
   @typedoc """
+  Similar to `t:session_id/0`, this is the URL that Discord has requested
+  reconnection attempts to be made against.
+
+  Nostrum stores and handles this for you, this value is provided for
+  debugging purposes.
+  """
+  @type resume_gateway_url :: String.t()
+
+  @typedoc """
   A pair of two integers ``{shard_id, num_shards}``.
 
   For more information, see
@@ -47,7 +56,8 @@ defmodule Nostrum.Struct.Event.Ready do
           guilds: guilds,
           session_id: session_id,
           shard: shard,
-          application: application
+          application: application,
+          resume_gateway_url: resume_gateway_url
         }
 
   @doc false
