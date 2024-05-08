@@ -3702,11 +3702,11 @@ defmodule Nostrum.Api do
   directly. See `create_interaction_response/2`.
   """
   @spec create_interaction_response(Interaction.id(), Interaction.token(), map()) :: {:ok} | error
-  def create_interaction_response(id, token, options) do
+  def create_interaction_response(id, token, response) do
     request(
       :post,
       Constants.interaction_callback(id, token),
-      combine_embeds(options) |> combine_files()
+      combine_embeds(response) |> combine_files()
     )
   end
 
