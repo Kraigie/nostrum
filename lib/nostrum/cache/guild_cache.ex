@@ -62,7 +62,7 @@ defmodule Nostrum.Cache.GuildCache do
 
   - `acc`: The initial accumulator. Also returned if no guilds are cached.
   - `fun`: Called for every guild in the result. Takes a pair in the form
-  `{guild, acc}`, and must return the updated accumulator.
+  `(guild, acc)`, and must return the updated accumulator.
   - `cache` (optional): The cache to use. nostrum will use the cache configured
   at compile time by default.
   """
