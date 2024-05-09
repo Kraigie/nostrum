@@ -27,7 +27,8 @@ defmodule Nostrum.Struct.VoiceState do
     :current_url,
     :player_pid,
     :persist_source,
-    :persist_playback
+    :persist_playback,
+    :type
   ]
 
   def new, do: %__MODULE__{}

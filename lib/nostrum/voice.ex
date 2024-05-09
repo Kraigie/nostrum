@@ -44,6 +44,8 @@ defmodule Nostrum.Voice do
 
   use GenServer
 
+  @should_warn_ytdl not Application.compile_env(:nostrum, :suppress_youtubedl_version, false)
+
   @typedoc """
   RTP sequence
   """
@@ -98,7 +100,9 @@ defmodule Nostrum.Voice do
 
   @doc false
   def start_link(_args) do
-    GenServer.start_link(__MODULE__, %{}, name: Nostrum.VoiceStateMap)
+    GenServer.start_link(__MODULE__, %{voice_states: %{}, has_warned_ytdl: false},
+      name: Nostrum.VoiceStateMap
+    )
   end
 
   @doc false
@@ -108,7 +112,7 @@ defmodule Nostrum.Voice do
 
   @doc false
   def update_voice(guild_id, args \\ []) do
-    GenServer.call(Nostrum.VoiceStateMap, {:update, guild_id, args})
+    GenServer.call(Nostrum.VoiceStateMap, {:update, guild_id, Map.new(args)})
   end
 
   @doc false
@@ -259,7 +263,8 @@ defmodule Nostrum.Voice do
             current_url: if(type in @url_types, do: input),
             ffmpeg_proc: if(type in @ffm_types, do: Audio.spawn_ffmpeg(input, type, options)),
             raw_audio: if(type in @raw_types, do: input),
-            raw_stateful: type === :raw_s
+            raw_stateful: type === :raw_s,
+            type: type
           )
 
         set_speaking(voice, true)
@@ -743,34 +748,84 @@ defmodule Nostrum.Voice do
   @spec pad_opus(nonempty_list(rtp_opus())) :: [opus_packet()]
   defdelegate pad_opus(packets), to: Opus
 
-  @doc false
-  def handle_call({:update, guild_id, args}, _from, state) do
-    voice =
-      state
-      |> Map.get(guild_id, VoiceState.new(guild_id: guild_id))
-      |> Map.merge(Map.new(args))
+  # youtube-dl has not received active maintenance in the form of a new release
+  # since 2021, as a result of this it no longer works with youtube (though it
+  # DOES work with some other services)
+  #
+  # We opt here to give users the choice on what library to use, and allow for
+  # suppresssion of this warning, but we advise that using the default
+  # youtube-dl install may not work with YouTube.
+  defp check_youtubedl do
+    outdated_version = 2021
 
-    state = Map.put(state, guild_id, voice)
+    with bin when is_binary(bin) <-
+           System.find_executable(Application.get_env(:nostrum, :youtubedl, "youtube-dl")),
+         {version, 0} <- System.cmd(bin, ["--version"], stderr_to_stdout: true),
+         {:ok, version_year} when version_year <= outdated_version <-
+           get_youtubedl_version_year(version) do
+      Logger.warning("""
+      Located youtube-dl installation at '#{bin}' is version #{version |> String.trim_trailing()}.
+
+      This version is known to not support recent YouTube updates preventing it from being able to stream content.
+
+      It is advised to move to a maintained fork such as yt-dlp and configure :nostrum, :youtubedl to point to this version.
+
+      If you know what you are doing, configure :nostrum, :suppress_youtubedl_version to true to silence this warning
+      """)
+    end
+  end
+
+  # Helper to parse 2021 out of "2021.12.17"
+  defp get_youtubedl_version_year(version) do
+    with [year | _rest] <- String.split(version, "."),
+         {year, ""} <- Integer.parse(year) do
+      {:ok, year}
+    end
+  end
+
+  @doc false
+  def handle_call(
+        {:update, _, %{type: :ytdl}} = call_args,
+        from,
+        %{has_warned_ytdl: false} = state
+      )
+      when @should_warn_ytdl do
+    if String.contains?(Application.get_env(:nostrum, :youtubedl, "youtube-dl"), "youtube-dl"),
+      do: Task.start(fn -> check_youtubedl() end)
+
+    handle_call(call_args, from, %{state | has_warned_ytdl: true})
+  end
+
+  @doc false
+  def handle_call({:update, guild_id, args}, _from, %{voice_states: states} = state) do
+    voice =
+      states
+      |> Map.get(guild_id, VoiceState.new(guild_id: guild_id))
+      |> Map.merge(args)
+
+    new_states = Map.put(states, guild_id, voice)
 
     if Application.get_env(:nostrum, :voice_auto_connect, true),
       do: start_if_ready(voice)
 
-    {:reply, voice, state}
+    {:reply, voice, %{state | voice_states: new_states}}
   end
 
   @doc false
-  def handle_call({:get, guild_id}, _from, state) do
-    {:reply, Map.get(state, guild_id), state}
+  def handle_call({:get, guild_id}, _from, %{voice_states: states} = state) do
+    {:reply, Map.get(states, guild_id), state}
   end
 
   @doc false
-  def handle_cast({:remove, guild_id, pre_cleanup_args}, state) do
-    state
+  def handle_cast({:remove, guild_id, pre_cleanup_args}, %{voice_states: states} = state) do
+    states
     |> Map.get(guild_id, %{})
     |> Map.merge(Map.new(pre_cleanup_args))
     |> VoiceState.cleanup()
 
-    {:noreply, Map.delete(state, guild_id)}
+    new_states = Map.delete(states, guild_id)
+
+    {:noreply, %{state | voice_states: new_states}}
   end
 
   @doc false
