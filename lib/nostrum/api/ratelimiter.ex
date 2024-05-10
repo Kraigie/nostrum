@@ -279,6 +279,10 @@ defmodule Nostrum.Api.Ratelimiter do
 
   - `:remaining_in_window`: How many calls we may still make to the API during
   this time window. Reset automatically via timeouts.
+
+  - `:wrapped_token`: An anonymous function that is internally used to retrieve
+  the token. This is wrapped to ensure that it is not accidentally exposed in
+  stacktraces.
   """
   @typedoc since: "0.9.0"
   @type state :: %{
@@ -294,23 +298,24 @@ defmodule Nostrum.Api.Ratelimiter do
                body :: String.t()}
           },
           conn: pid() | nil,
-          remaining_in_window: non_neg_integer()
+          remaining_in_window: non_neg_integer(),
+          wrapped_token: Base.wrapped_token()
         }
 
   @doc """
   Starts the ratelimiter.
   """
-  @spec start_link([:gen_statem.start_opt()]) :: :gen_statem.start_ret()
-  def start_link(opts) do
-    :gen_statem.start_link({:local, @registered_name}, __MODULE__, [], opts)
+  @spec start_link({String.t(), [:gen_statem.start_opt()]}) :: :gen_statem.start_ret()
+  def start_link({token, opts}) do
+    :gen_statem.start_link({:local, @registered_name}, __MODULE__, token, opts)
   end
 
-  def init([]) do
+  def init(token) when is_binary(token) do
     # Uncomment the following to trace everything the ratelimiter is doing:
     #   me = self()
     #   spawn(fn -> :sys.trace(me, true) end)
     # See more examples in the `sys` docs.
-    {:ok, :disconnected, empty_state()}
+    {:ok, :disconnected, empty_state(token)}
   end
 
   def callback_mode, do: :state_functions
@@ -469,7 +474,12 @@ defmodule Nostrum.Api.Ratelimiter do
   def connected(
         :internal,
         {:run, request, bucket, from},
-        %{conn: conn, outstanding: outstanding, remaining_in_window: remaining_for_user} = data
+        %{
+          conn: conn,
+          outstanding: outstanding,
+          remaining_in_window: remaining_for_user,
+          wrapped_token: wrapped_token
+        } = data
       )
       when remaining_for_user > 0 and is_map_key(outstanding, bucket) do
     stream =
@@ -479,7 +489,8 @@ defmodule Nostrum.Api.Ratelimiter do
         request.route,
         request.body,
         request.headers,
-        request.params
+        request.params,
+        wrapped_token
       )
 
     data_with_this_running = put_in(data, [:running, stream], {bucket, request, from})
@@ -865,7 +876,10 @@ defmodule Nostrum.Api.Ratelimiter do
      {:next_event, :internal, {:requeue, {request, from}}}}
   end
 
-  def connected(:info, {:gun_down, conn, _, reason, killed_streams}, %{running: running}) do
+  def connected(:info, {:gun_down, conn, _, reason, killed_streams}, %{
+        running: running,
+        wrapped_token: wrapped_token
+      }) do
     # Even with `retry: 0`, gun seems to try and reconnect, potentially because
     # of WebSocket. Force the connection to die.
     :ok = :gun.close(conn)
@@ -886,7 +900,7 @@ defmodule Nostrum.Api.Ratelimiter do
         {:reply, client, {:error, {:connection_died, reason}}}
       end)
 
-    {:next_state, :disconnected, empty_state(), replies}
+    {:next_state, :disconnected, empty_state(wrapped_token.()), replies}
   end
 
   def global_limit(:state_timeout, next, data) do
@@ -936,14 +950,15 @@ defmodule Nostrum.Api.Ratelimiter do
   defp parse_response(status, headers, buffer),
     do: {:ok, {status, headers, buffer}}
 
-  @spec empty_state :: state()
-  defp empty_state,
+  @spec empty_state(String.t()) :: state()
+  defp empty_state(token),
     do: %{
       outstanding: %{},
       running: %{},
       inflight: %{},
       conn: nil,
-      remaining_in_window: @bot_calls_per_window
+      remaining_in_window: @bot_calls_per_window,
+      wrapped_token: fn -> token end
     }
 
   # Helper functions
