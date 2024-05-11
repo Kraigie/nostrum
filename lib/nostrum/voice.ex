@@ -868,8 +868,8 @@ defmodule Nostrum.Voice do
     end
 
     defp maybe_warn(:ytdl) do
-      unless :persistent_term.get(:has_checked_youtubedl_version, false) do
-        :persistent_term.put(:has_checked_youtubedl_version, true)
+      unless :persistent_term.get(:nostrum_has_checked_youtubedl_version, false) do
+        :persistent_term.put(:nostrum_has_checked_youtubedl_version, true)
         {:ok, _pid} = Task.start(fn -> check_youtubedl_version() end)
       end
     end
