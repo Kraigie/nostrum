@@ -22,6 +22,10 @@ defmodule Nostrum.Voice.Audio do
 
   def encryption_mode, do: @encryption_mode
 
+  def ffmpeg_executable, do: Application.get_env(:nostrum, :ffmpeg, @ffmpeg)
+  def youtubedl_executable, do: Application.get_env(:nostrum, :youtubedl, @ytdl)
+  def streamlink_executable, do: Application.get_env(:nostrum, :streamlink, @streamlink)
+
   # How many consecutive packets to send before resting
   def frames_per_burst,
     do: Application.get_env(:nostrum, :audio_frames_per_burst, @frames_per_burst)
@@ -166,7 +170,7 @@ defmodule Nostrum.Voice.Audio do
   def spawn_youtubedl(url) do
     res =
       Ports.execute(
-        Application.get_env(:nostrum, :youtubedl, @ytdl),
+        youtubedl_executable(),
         [
           ["-f", "bestaudio"],
           ["-o", "-"],
@@ -189,7 +193,7 @@ defmodule Nostrum.Voice.Audio do
   def spawn_streamlink(url) do
     res =
       Ports.execute(
-        Application.get_env(:nostrum, :streamlink, @streamlink),
+        streamlink_executable(),
         [
           ["--stdout"],
           ["--quiet"],
@@ -226,7 +230,7 @@ defmodule Nostrum.Voice.Audio do
 
     res =
       Ports.execute(
-        Application.get_env(:nostrum, :ffmpeg, @ffmpeg),
+        ffmpeg_executable(),
         [
           ffmpeg_options(options, input_url),
           ["-ac", "2"],
