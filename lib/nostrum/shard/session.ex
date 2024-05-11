@@ -265,6 +265,7 @@ defmodule Nostrum.Shard.Session do
 
     case from_handle do
       {updated_data, :reconnect} ->
+        Logger.info("Will reconnect in response to gateway event")
         {:keep_state, updated_data, {:next_event, :internal, :reconnect}}
 
       {updated_data, reply} ->

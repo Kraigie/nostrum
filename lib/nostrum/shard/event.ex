@@ -48,7 +48,7 @@ defmodule Nostrum.Shard.Event do
     heartbeat_action = {:state_timeout, heartbeat_next, :send_heartbeat}
 
     if session_exists?(state) do
-      Logger.info("Resuming on shard session #{state.session}")
+      Logger.info("Resuming on shard session #{state.session} with seq #{state.seq}")
       {{state, Payload.resume_payload(state)}, heartbeat_action}
     else
       Logger.debug("Identifying with new shard session")
@@ -57,13 +57,19 @@ defmodule Nostrum.Shard.Event do
   end
 
   def handle(:invalid_session, %{d: _can_resume? = true}, state) do
-    Logger.info("Invalid but resumable session. Attempting to resume at #{state.session}")
+    Logger.info(
+      "Invalid but resumable session. Attempting to resume at #{state.session} with seq #{state.seq}"
+    )
+
     {{state, Payload.resume_payload(state)}, []}
   end
 
   def handle(:invalid_session, %{d: _can_resume? = false}, state) do
-    Logger.info("Invalid and un-resumable session at #{state.session}. Events may be lost.")
-    {{%{state | session: nil}, :reconnect}, []}
+    Logger.info(
+      "Invalid and un-resumable session at #{state.session} with seq #{state.seq}. Events may be lost."
+    )
+
+    {{%{state | session: nil, seq: nil}, :reconnect}, []}
   end
 
   def handle(:reconnect, _payload, state) do
