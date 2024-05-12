@@ -33,7 +33,10 @@ defmodule Nostrum.Voice do
   """
 
   alias Nostrum.Api
-  alias Nostrum.Struct.{Channel, Guild, VoiceState, VoiceWSState}
+  alias Nostrum.Struct.Channel
+  alias Nostrum.Struct.Guild
+  alias Nostrum.Struct.VoiceState
+  alias Nostrum.Struct.VoiceWSState
   alias Nostrum.Voice.Audio
   alias Nostrum.Voice.Opus
   alias Nostrum.Voice.Ports
@@ -120,6 +123,13 @@ defmodule Nostrum.Voice do
   def remove_voice(guild_id, pre_cleanup_args \\ []) do
     GenServer.cast(Nostrum.VoiceStateMap, {:remove, guild_id, pre_cleanup_args})
   end
+
+  @doc false
+  defdelegate ffmpeg_executable, to: Audio
+  @doc false
+  defdelegate youtubedl_executable, to: Audio
+  @doc false
+  defdelegate streamlink_executable, to: Audio
 
   @doc """
   Joins or moves the bot to a voice channel.
@@ -242,6 +252,8 @@ defmodule Nostrum.Voice do
   """
   @spec play(Guild.id(), play_input(), play_type(), keyword()) :: :ok | {:error, String.t()}
   def play(guild_id, input, type \\ :url, options \\ []) do
+    maybe_warn(type)
+
     voice = get_voice(guild_id)
 
     cond do
@@ -834,4 +846,34 @@ defmodule Nostrum.Voice do
   end
 
   defp persistent_args(_voice), do: []
+
+  unless Application.compile_env(:nostrum, :suppress_youtubedl_version, false) do
+    @ytdl_old_version "2021.12.17"
+
+    defp check_youtubedl_version do
+      with ytdl when is_binary(ytdl) <- youtubedl_executable(),
+           ["youtube-dl" | _] <- ytdl |> Path.basename() |> String.split("."),
+           {version, 0} <- System.cmd(ytdl, ["--version"]),
+           version when version <= @ytdl_old_version <- String.trim(version) do
+        Logger.warning("""
+        Configured youtube-dl installation '#{System.find_executable(ytdl)}' is version #{version}.
+
+        This version no longer compatible with recent YouTube updates.
+
+        It is recommended to configure :nostrum, :youtubedl to point to a maintained fork such as 'yt-dlp'.
+
+        If you know what you are doing, configure :nostrum, :suppress_youtubedl_version to `true` to suppress this.
+        """)
+      end
+    end
+
+    defp maybe_warn(:ytdl) do
+      unless :persistent_term.get(:nostrum_has_checked_youtubedl_version, false) do
+        :persistent_term.put(:nostrum_has_checked_youtubedl_version, true)
+        {:ok, _pid} = Task.start(fn -> check_youtubedl_version() end)
+      end
+    end
+  end
+
+  defp maybe_warn(_type), do: :noop
 end

@@ -1,9 +1,7 @@
 import Config
 
 config :nostrum,
-  token: "",
-  ffmpeg: "ffmpeg",
-  youtubedl: "youtube-dl"
+  token: ""
 
 config :logger, :console, metadata: [:shard, :guild, :channel]
 

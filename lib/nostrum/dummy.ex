@@ -12,7 +12,7 @@ defmodule DummySupervisor do
   end
 
   def init(_args) do
-    children = for id <- 0..1, do: Supervisor.child_spec({DummyConsumer, []}, id: id)
+    children = [DummyConsumer]
     Supervisor.init(children, strategy: :one_for_one)
   end
 end
