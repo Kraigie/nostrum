@@ -272,6 +272,21 @@ defmodule Nostrum.Util do
     end
   end
 
+  @doc """
+  Updates a map with a new value if the key is present.
+  Otherwise, returns the map unchanged.
+  """
+  @spec map_update_if_present(map(), term(), (term() -> term())) :: map()
+  def map_update_if_present(map, key, fun) do
+    case map do
+      %{^key => value} ->
+        fun.(value) |> Map.put(key, map)
+
+      _ ->
+        map
+    end
+  end
+
   @doc false
   @spec fullsweep_after() :: {:fullsweep_after, non_neg_integer}
   def fullsweep_after do
