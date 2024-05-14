@@ -12,7 +12,7 @@
 % I assume this is caused by the Erlang parse transform doing smart things at compile time.
 
 -module(nostrum_message_cache_qlc).
--export([by_channel/2, by_channel_and_author/3, by_author/2, by_author/4, sorted_by_age/1]).
+-export([by_channel/2, by_channel_and_author/3, by_author/2, by_author/4, sorted_by_age_with_limit/2]).
 
 -include_lib("stdlib/include/qlc.hrl").
 
@@ -87,11 +87,29 @@ by_author(RequestedUserId, Before, After, Cache) ->
     qlc:keysort(1, Q1).
 
 % Lookup the id of cached messages sorted by message id.
--spec sorted_by_age(module()) -> qlc:query_handle().
-sorted_by_age(?MNESIA_CACHE) ->
+-spec sorted_by_age_with_limit(module(), non_neg_integer()) -> list().
+sorted_by_age_with_limit(?MNESIA_CACHE, Limit) ->
     Q1 = qlc:q([ MessageId || {_Tag, MessageId, _ChannelId, _AuthorId, _Message} <- ?MNESIA_CACHE:query_handle()]),
-    qlc:sort(Q1);
+    sort_with_limit(Q1, Limit);
 
-sorted_by_age(Cache) ->
+sorted_by_age_with_limit(Cache, Limit) ->
     Q1 = qlc:q([MessageId || {MessageId, _Message} <- Cache:query_handle()]),
-    qlc:sort(Q1).
+    sort_with_limit(Q1, Limit).
+
+sort_with_limit(Q1, Limit) ->
+    Fn = fun (MessageId, {Count1, Set1, Largest1}) ->
+        if (MessageId < Largest1) and (Count1 >= Limit) ->
+            Set2 = gb_sets:delete(Largest1, Set1),
+            Set3 = gb_sets:insert(MessageId, Set2),
+            Largest2 = gb_sets:largest(Set3),
+            {Count1, Set3, Largest2};
+        (Count1 < Limit) ->
+            Set2 = gb_sets:insert(MessageId, Set1),
+            Largest2 = gb_sets:largest(Set2),
+            {Count1 + 1, Set2, Largest2};
+        true ->
+            {Count1, Set1, Largest1}
+        end
+    end,
+    {_, Set, _} = qlc:fold(Fn, {0, gb_sets:new(), 0}, Q1),
+    lists:reverse(gb_sets:to_list(Set)).

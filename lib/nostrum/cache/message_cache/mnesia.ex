@@ -25,8 +25,10 @@ if Code.ensure_loaded?(:mnesia) do
     @table_name :nostrum_messages
     @record_name @table_name
 
-    @maximum_size :nostrum |> Application.compile_env([:caches, :message_cache_size_limit], 10_000)
-    @eviction_count :nostrum |> Application.compile_env([:caches, :message_cache_eviction_count], 100)
+    @maximum_size :nostrum
+                  |> Application.compile_env([:caches, :message_cache_size_limit], 10_000)
+    @eviction_count :nostrum
+                    |> Application.compile_env([:caches, :message_cache_eviction_count], 100)
 
     @behaviour Nostrum.Cache.MessageCache
 
@@ -97,21 +99,18 @@ if Code.ensure_loaded?(:mnesia) do
       message = Message.to_struct(payload)
 
       record =
-        {@record_name, message.id, message.channel_id, message.author.id,
-         message}
+        {@record_name, message.id, message.channel_id, message.author.id, message}
 
       writer = fn ->
         size = :mnesia.table_info(@table_name, :size)
+
         if size >= @maximum_size do
-          handle = :nostrum_message_cache_qlc.sorted_by_age(__MODULE__)
-          cursor = :qlc.cursor(handle)
-          oldest_message_ids = :qlc.next_answers(cursor, @eviction_count)
+          oldest_message_ids =
+            :nostrum_message_cache_qlc.sorted_by_age_with_limit(__MODULE__, @eviction_count)
 
           Enum.each(oldest_message_ids, fn message_id ->
             :mnesia.delete(@table_name, message_id, :write)
           end)
-
-          :qlc.delete_cursor(cursor)
 
           :mnesia.write(record)
         end
