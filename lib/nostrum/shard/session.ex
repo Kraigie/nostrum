@@ -86,17 +86,38 @@ defmodule Nostrum.Shard.Session do
     :gen_statem.cast(pid, {:request_guild_members, payload})
   end
 
+  def disconnect(pid) do
+    :gen_statem.call(pid, {:disconnect, nil})
+  end
+
+  def disconnect(pid, timeout) do
+    :gen_statem.call(pid, {:disconnect, nil}, timeout)
+  end
+
   def get_ws_state(pid) do
     :sys.get_state(pid)
   end
 
   # State machine API
 
+  def start_link({:connect, [_gateway, _shard_num, _total]} = opts, statem_opts) do
+    :gen_statem.start_link(__MODULE__, opts, statem_opts)
+  end
+
+  def start_link(
+        {:reconnect,
+         %{shard: [_gateway, _shard_num, _total], resume_gateway: _resume_gateway, seq: _seq}} =
+          opts,
+        statem_opts
+      ) do
+    :gen_statem.start_link(__MODULE__, opts, statem_opts)
+  end
+
   def start_link([_gateway, _shard_num, _total] = shard_opts, statem_opts) do
     :gen_statem.start_link(__MODULE__, shard_opts, statem_opts)
   end
 
-  def init([gateway, shard_num, total]) do
+  def init({:connect, [gateway, shard_num, total]}) do
     Logger.metadata(shard: shard_num)
 
     state = %WSState{
@@ -108,6 +129,35 @@ defmodule Nostrum.Shard.Session do
 
     connect = {:next_event, :internal, :connect}
     {:ok, :disconnected, state, connect}
+  end
+
+  def init(
+        {:reconnect,
+         %{
+           shard: [gateway, shard_num, total],
+           resume_gateway: resume_gateway,
+           seq: seq,
+           session: session
+         }}
+      ) do
+    Logger.metadata(shard: shard_num)
+
+    state = %WSState{
+      conn_pid: self(),
+      shard_num: shard_num,
+      total_shards: total,
+      gateway: gateway,
+      resume_gateway: resume_gateway,
+      session: session,
+      seq: seq
+    }
+
+    connect = {:next_event, :internal, :connect}
+    {:ok, :disconnected, state, connect}
+  end
+
+  def init([gateway, shard_num, total]) do
+    init({:connect, [gateway, shard_num, total]})
   end
 
   def callback_mode, do: [:state_functions, :state_enter]
@@ -300,6 +350,28 @@ defmodule Nostrum.Shard.Session do
       when request in [:status_update, :update_voice_state, :request_guild_members] do
     :ok = :gun.ws_send(conn, stream, {:binary, payload})
     :keep_state_and_data
+  end
+
+  def connected({:call, from}, {:disconnect, nil}, %{
+        conn: conn,
+        shard_num: shard_num,
+        total_shards: total,
+        gateway: gateway,
+        resume_gateway: resume_gateway,
+        seq: seq,
+        session: session
+      }) do
+    :ok = :gun.close(conn)
+    :ok = :gun.flush(conn)
+
+    {:stop_and_reply, :disconnect,
+     {:reply, from,
+      %{
+        shard: [gateway, shard_num, total],
+        resume_gateway: resume_gateway,
+        session: session,
+        seq: seq
+      }}}
   end
 
   def connected(

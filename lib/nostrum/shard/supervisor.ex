@@ -34,7 +34,7 @@ defmodule Nostrum.Shard.Supervisor do
      handle yet, thus growing the message queue and the memory usage.
   """
 
-  use Supervisor
+  use DynamicSupervisor
 
   alias Nostrum.Error.CacheError
   alias Nostrum.Shard
@@ -66,19 +66,31 @@ defmodule Nostrum.Shard.Supervisor do
   def start_link(_args) do
     {url, gateway_shard_count} = Util.gateway()
 
-    value = Application.get_env(:nostrum, :num_shards, :auto)
-    shard_range = cast_shard_range(gateway_shard_count, value)
+    on_start =
+      DynamicSupervisor.start_link(
+        __MODULE__,
+        nil,
+        name: __MODULE__
+      )
 
-    Supervisor.start_link(
-      __MODULE__,
-      [url, shard_range],
-      name: __MODULE__
-    )
+    case Application.get_env(:nostrum, :num_shards, :auto) do
+      :unstable_manual ->
+        on_start
+
+      value ->
+        {lowest, highest, total} = cast_shard_range(gateway_shard_count, value)
+
+        shard_range = lowest..highest
+
+        for num <- shard_range, do: connect(url, num - 1, total)
+    end
+
+    on_start
   end
 
   def update_status(status, game, stream, type) do
     __MODULE__
-    |> Supervisor.which_children()
+    |> DynamicSupervisor.which_children()
     |> Enum.filter(fn {_id, _pid, _type, [modules]} -> modules == Nostrum.Shard end)
     |> Enum.map(fn {_id, pid, _type, _modules} -> Supervisor.which_children(pid) end)
     |> List.flatten()
@@ -102,18 +114,49 @@ defmodule Nostrum.Shard.Supervisor do
   end
 
   @doc false
-  def init([url, {lowest, highest, total}]) do
-    shard_range = lowest..highest
-    children = for num <- shard_range, do: create_worker(url, num - 1, total)
-
-    Supervisor.init(children, strategy: :one_for_one, max_restarts: 3, max_seconds: 60)
+  def init(_) do
+    DynamicSupervisor.init(strategy: :one_for_one, max_restarts: 3, max_seconds: 60)
   end
 
   @doc false
   def create_worker(gateway, shard_num, total) do
-    Supervisor.child_spec(
-      {Shard, [gateway, shard_num, total]},
-      id: shard_num
+    {Shard, [gateway, shard_num, total]}
+  end
+
+  def disconnect(shard_num) do
+    name = :"Nostrum.Shard-#{shard_num}"
+
+    children =
+      name
+      |> Supervisor.which_children()
+
+    resume_info =
+      children
+      |> Enum.find(fn {id, _pid, _type, _modules} -> id == Nostrum.Shard.Session end)
+      |> elem(1)
+      |> Session.disconnect()
+
+    shard = Process.whereis(name)
+    DynamicSupervisor.terminate_child(__MODULE__, shard)
+
+    resume_info
+  end
+
+  def connect(url, num, total) do
+    DynamicSupervisor.start_child(__MODULE__, create_worker(url, num, total))
+  end
+
+  def reconnect(
+        %{
+          shard: [_gateway, _shard_num, _total],
+          resume_gateway: _resume_gateway,
+          seq: _seq,
+          session: _session
+        } = opts
+      ) do
+    DynamicSupervisor.start_child(
+      __MODULE__,
+      {Shard, {:reconnect, opts}}
     )
   end
 end
