@@ -82,7 +82,7 @@ defmodule Nostrum.Shard.Supervisor do
 
         shard_range = lowest..highest
 
-        for num <- shard_range, do: connect(url, num - 1, total)
+        for num <- shard_range, do: connect([url, num - 1, total])
     end
 
     on_start
@@ -142,7 +142,7 @@ defmodule Nostrum.Shard.Supervisor do
     resume_info
   end
 
-  def connect(url, num, total) do
+  def connect([url, num, total]) do
     DynamicSupervisor.start_child(__MODULE__, create_worker(url, num, total))
   end
 
