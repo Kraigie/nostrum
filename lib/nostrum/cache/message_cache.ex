@@ -68,6 +68,23 @@ defmodule Nostrum.Cache.MessageCache do
   @callback delete(Channel.id(), Message.id()) :: Message.t() | :noop
 
   @doc """
+  Deletes multiple messages from the cache, any message id's given
+  will always be for the same channel.
+
+  Returns a list of the deleted messages,
+  if a message was not found in the cache, it will
+  still be included in the returned list with
+  only the id and channel_id set.
+  """
+  @callback bulk_delete(Channel.id(), [Message.id()]) :: [Message.t()]
+
+  @doc """
+  Callback for when a channel is deleted
+  any messages in the cache for that channel should be removed.
+  """
+  @callback channel_delete(Channel.id()) :: :ok
+
+  @doc """
   Return a QLC query handle for the cache for read operations.
 
   This is used by nostrum to provide any read operations on the cache. Write
@@ -140,6 +157,10 @@ defmodule Nostrum.Cache.MessageCache do
   defdelegate update(message), to: @configured_cache
   @doc false
   defdelegate delete(channel_id, message_id), to: @configured_cache
+  @doc false
+  defdelegate bulk_delete(channel_id, message_ids), to: @configured_cache
+  @doc false
+  defdelegate channel_delete(channel_id), to: @configured_cache
 
   @doc """
   Return the QLC handle of the configured cache.

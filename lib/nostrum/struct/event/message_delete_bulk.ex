@@ -6,6 +6,7 @@ defmodule Nostrum.Struct.Event.MessageDeleteBulk do
   alias Nostrum.Struct.{Channel, Guild, Message}
 
   defstruct [
+    :deleted_messages,
     :channel_id,
     :guild_id,
     :ids
@@ -24,7 +25,13 @@ defmodule Nostrum.Struct.Event.MessageDeleteBulk do
   @typedoc "Ids of the deleted messages"
   @type ids :: [Message.id(), ...]
 
+  @typedoc """
+  The deleted messages, if any were not found
+  in the message cache they will only have the id and channel_id set.
+  """
+  @type deleted_messages :: [Message.t(), ...]
   @type t :: %__MODULE__{
+          deleted_messages: deleted_messages,
           channel_id: channel_id,
           guild_id: guild_id,
           ids: ids

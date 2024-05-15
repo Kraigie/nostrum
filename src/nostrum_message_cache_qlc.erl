@@ -34,8 +34,7 @@ by_channel(RequestedChannelId, ?MNESIA_CACHE) ->
     qlc:keysort(1, Q1);
 
 by_channel(RequestedChannelId, Cache) ->
-    Q1 = qlc:q([{MessageId, Message} || {MessageId, Message} <- Cache:query_handle(),
-                                ChannelId = map_get(channel_id, Message),
+    Q1 = qlc:q([{MessageId, Message} || {MessageId, #{channel_id := ChannelId} = Message} <- Cache:query_handle(),
                                 ChannelId =:= RequestedChannelId]),
     qlc:keysort(1, Q1).
 
@@ -61,9 +60,7 @@ by_author(RequestedUserId, ?MNESIA_CACHE) ->
     qlc:keysort(1, Q1);
 
 by_author(RequestedUserId, Cache) ->
-    Q1 = qlc:q([{MessageId, Message} || {MessageId, Message} <- Cache:query_handle(),
-                                Author = map_get(author, Message),
-                                AuthorId = map_get(id, Author),
+    Q1 = qlc:q([{MessageId, Message} || {MessageId, #{author := #{id := AuthorId}} = Message} <- Cache:query_handle(),
                                 AuthorId =:= RequestedUserId]),
     qlc:keysort(1, Q1).
 
@@ -78,9 +75,7 @@ by_author(RequestedUserId, Before, After, ?MNESIA_CACHE) ->
     qlc:keysort(1, Q1);
 
 by_author(RequestedUserId, Before, After, Cache) ->
-    Q1 = qlc:q([{MessageId, Message} || {MessageId, Message} <- Cache:query_handle(),
-                                Author = map_get(author, Message),
-                                AuthorId = map_get(id, Author),
+    Q1 = qlc:q([{MessageId, Message} || {MessageId, #{author := #{id := AuthorId}} = Message} <- Cache:query_handle(),
                                 AuthorId =:= RequestedUserId,
                                 MessageId =< Before,
                                 MessageId >= After]),

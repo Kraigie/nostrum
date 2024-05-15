@@ -36,6 +36,16 @@ defmodule Nostrum.Cache.MessageCache.Noop do
   @impl MessageCache
   def delete(_channel_id, _message_id), do: :noop
 
+  @impl MessageCache
+  def bulk_delete(channel_id, message_ids) do
+    Enum.map(message_ids, fn message_id ->
+      Message.to_struct(%{id: message_id, channel_id: channel_id})
+    end)
+  end
+
+  @impl MessageCache
+  def channel_delete(_channel_id), do: :ok
+
   @impl Nostrum.Cache.MessageCache
   def query_handle, do: :qlc.string_to_handle(~c"[].")
 end

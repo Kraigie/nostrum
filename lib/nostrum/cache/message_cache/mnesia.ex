@@ -33,6 +33,7 @@ if Code.ensure_loaded?(:mnesia) do
     @behaviour Nostrum.Cache.MessageCache
 
     alias Nostrum.Cache.MessageCache
+    alias Nostrum.Snowflake
     alias Nostrum.Struct.Channel
     alias Nostrum.Struct.Message
     alias Nostrum.Util
@@ -129,7 +130,7 @@ if Code.ensure_loaded?(:mnesia) do
         |> Map.new(fn {k, v} -> {Util.maybe_to_atom(k), v} end)
 
       %{id: id} = atomized_payload
-      id = Nostrum.Snowflake.cast!(id)
+      id = Snowflake.cast!(id)
 
       :mnesia.activity(:sync_transaction, fn ->
         case :mnesia.read(@table_name, id, :write) do
@@ -164,6 +165,35 @@ if Code.ensure_loaded?(:mnesia) do
             :noop
         end
       end)
+    end
+
+    @impl MessageCache
+    @doc "Removes and returns a list of messages from the cache."
+    @spec bulk_delete(Channel.id(), [Message.id()]) :: [Message.t()]
+    def bulk_delete(channel_id, message_ids) do
+      Enum.map(message_ids, fn message_id ->
+        case delete(channel_id, message_id) do
+          :noop ->
+            Message.to_struct(%{id: message_id, channel_id: channel_id})
+
+          message ->
+            message
+        end
+      end)
+    end
+
+    @impl MessageCache
+    @doc "Removes all messages for a channel which was deleted."
+    @spec channel_delete(Channel.id()) :: :ok
+    def channel_delete(channel_id) do
+      :mnesia.activity(:sync_transaction, fn ->
+        :mnesia.index_read(@table_name, channel_id, :channel_id)
+        |> Enum.each(fn {_tag, message_id, _channel_id, _author_id, _data} ->
+          :mnesia.delete(@table_name, message_id, :write)
+        end)
+      end)
+
+      :ok
     end
 
     @impl MessageCache

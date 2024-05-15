@@ -9,7 +9,8 @@ defmodule Nostrum.Struct.Event.MessageDelete do
   defstruct [
     :id,
     :channel_id,
-    :guild_id
+    :guild_id,
+    :deleted_message
   ]
 
   @typedoc "Id of the deleted message"
@@ -25,20 +26,28 @@ defmodule Nostrum.Struct.Event.MessageDelete do
   """
   @type guild_id :: Guild.id() | nil
 
+  @typedoc """
+  The deleted message, if it was found
+  in the message cache.
+  """
+  @type deleted_message :: Message.t() | nil
+
   @type t :: %__MODULE__{
           id: id,
           channel_id: channel_id,
-          guild_id: guild_id
+          guild_id: guild_id,
+          deleted_message: deleted_message
         }
 
   @doc false
-  def to_struct(map) do
+  def to_struct(map, deleted_message \\ nil) do
     new =
       map
       |> Map.new(fn {k, v} -> {Util.maybe_to_atom(k), v} end)
       |> Map.update(:id, nil, &Util.cast(&1, Snowflake))
       |> Map.update(:channel_id, nil, &Util.cast(&1, Snowflake))
       |> Map.update(:guild_id, nil, &Util.cast(&1, Snowflake))
+      |> Map.put(:deleted_message, deleted_message)
 
     struct(__MODULE__, new)
   end

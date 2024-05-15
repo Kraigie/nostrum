@@ -5,6 +5,7 @@ defmodule Nostrum.Shard.Dispatch do
     ChannelGuildMapping,
     GuildCache,
     MemberCache,
+    MessageCache,
     PresenceCache,
     UserCache
   }
@@ -42,7 +43,7 @@ defmodule Nostrum.Shard.Dispatch do
     VoiceState
   }
 
-  alias Nostrum.Struct.{AutoModerationRule, Interaction, Message, ThreadMember, User}
+  alias Nostrum.Struct.{AutoModerationRule, Interaction, ThreadMember, User}
   alias Nostrum.Struct.Guild.{AuditLogEntry, Integration, ScheduledEvent, UnavailableGuild}
   alias Nostrum.Util
   alias Nostrum.Voice
@@ -95,7 +96,13 @@ defmodule Nostrum.Shard.Dispatch do
   end
 
   def handle_event(:CHANNEL_DELETE = event, p, state) do
-    ChannelGuildMapping.delete(p.id)
+    channel_id = p.id
+
+    # Starting this as a task to avoid blocking the dispatch process
+    # since this is a potentially long operation
+    Task.start(fn -> MessageCache.channel_delete(channel_id) end)
+
+    ChannelGuildMapping.delete(channel_id)
     {event, GuildCache.channel_delete(p.guild_id, p.id), state}
   end
 
@@ -242,15 +249,28 @@ defmodule Nostrum.Shard.Dispatch do
   def handle_event(:INVITE_DELETE = event, p, state),
     do: {event, InviteDelete.to_struct(p), state}
 
-  def handle_event(:MESSAGE_CREATE = event, p, state), do: {event, Message.to_struct(p), state}
+  def handle_event(:MESSAGE_CREATE = event, p, state),
+    do: {event, MessageCache.create(p), state}
 
-  def handle_event(:MESSAGE_DELETE = event, p, state),
-    do: {event, MessageDelete.to_struct(p), state}
+  def handle_event(:MESSAGE_DELETE = event, p, state) do
+    case MessageCache.delete(p.channel_id, p.id) do
+      {:ok, message} ->
+        {event, MessageDelete.to_struct(p, message), state}
 
-  def handle_event(:MESSAGE_DELETE_BULK = event, p, state),
-    do: {event, MessageDeleteBulk.to_struct(p), state}
+      :noop ->
+        {event, MessageDelete.to_struct(p), state}
+    end
+  end
 
-  def handle_event(:MESSAGE_UPDATE = event, p, state), do: {event, Message.to_struct(p), state}
+  def handle_event(:MESSAGE_DELETE_BULK = event, p, state) do
+    deleted_messages = MessageCache.bulk_delete(p.channel_id, p.ids)
+    p = Map.put(p, :deleted_messages, deleted_messages)
+    {event, MessageDeleteBulk.to_struct(p), state}
+  end
+
+  def handle_event(:MESSAGE_UPDATE = event, p, state) do
+    {event, MessageCache.update(p), state}
+  end
 
   def handle_event(:MESSAGE_REACTION_ADD = event, p, state) do
     {event, MessageReactionAdd.to_struct(p), state}
