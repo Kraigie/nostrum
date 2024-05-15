@@ -167,7 +167,7 @@ defmodule Nostrum.Shard.Session do
       id: __MODULE__,
       start: {__MODULE__, :start_link, [opts, []]},
       type: :worker,
-      restart: :permanent,
+      restart: :transient,
       shutdown: 500
     }
   end
@@ -364,7 +364,7 @@ defmodule Nostrum.Shard.Session do
     :ok = :gun.close(conn)
     :ok = :gun.flush(conn)
 
-    {:stop_and_reply, :disconnect,
+    {:stop_and_reply, :normal,
      {:reply, from,
       %{
         shard: [gateway, shard_num, total],
