@@ -1,7 +1,7 @@
 defmodule Nostrum.Shard do
   @moduledoc false
 
-  use Supervisor
+  use Supervisor, restart: :transient
 
   alias Nostrum.Shard.Session
 
@@ -28,6 +28,11 @@ defmodule Nostrum.Shard do
       # TODO: Add per shard cache
     ]
 
-    Supervisor.init(children, strategy: :one_for_all, max_restarts: 3, max_seconds: 60)
+    Supervisor.init(children,
+      strategy: :one_for_all,
+      max_restarts: 3,
+      max_seconds: 60,
+      auto_shutdown: :any_significant
+    )
   end
 end

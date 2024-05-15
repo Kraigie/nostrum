@@ -124,22 +124,11 @@ defmodule Nostrum.Shard.Supervisor do
   end
 
   def disconnect(shard_num) do
-    name = :"Nostrum.Shard-#{shard_num}"
-
-    children =
-      name
-      |> Supervisor.which_children()
-
-    resume_info =
-      children
-      |> Enum.find(fn {id, _pid, _type, _modules} -> id == Nostrum.Shard.Session end)
-      |> elem(1)
-      |> Session.disconnect()
-
-    shard = Process.whereis(name)
-    DynamicSupervisor.terminate_child(__MODULE__, shard)
-
-    resume_info
+    :"Nostrum.Shard-#{shard_num}"
+    |> Supervisor.which_children()
+    |> Enum.find(fn {id, _pid, _type, _modules} -> id == Nostrum.Shard.Session end)
+    |> elem(1)
+    |> Session.disconnect()
   end
 
   def connect([url, num, total]) do

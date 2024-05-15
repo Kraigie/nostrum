@@ -168,6 +168,7 @@ defmodule Nostrum.Shard.Session do
       start: {__MODULE__, :start_link, [opts, []]},
       type: :worker,
       restart: :transient,
+      significant: true,
       shutdown: 500
     }
   end
