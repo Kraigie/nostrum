@@ -7,10 +7,9 @@ defmodule Nostrum.Voice.Audio do
   alias Nostrum.Struct.VoiceState
   alias Nostrum.Util
   alias Nostrum.Voice
+  alias Nostrum.Voice.Crypto
   alias Nostrum.Voice.Opus
   alias Nostrum.Voice.Ports
-
-  @encryption_mode "xsalsa20_poly1305"
 
   # Default value
   @frames_per_burst 10
@@ -19,8 +18,6 @@ defmodule Nostrum.Voice.Audio do
   @ffmpeg "ffmpeg"
   @ytdl "youtube-dl"
   @streamlink "streamlink"
-
-  def encryption_mode, do: @encryption_mode
 
   def ffmpeg_executable, do: Application.get_env(:nostrum, :ffmpeg, @ffmpeg)
   def youtubedl_executable, do: Application.get_env(:nostrum, :youtubedl, @ytdl)
@@ -40,13 +37,6 @@ defmodule Nostrum.Voice.Audio do
     >>
   end
 
-  def encrypt_packet(%VoiceState{} = voice, data) do
-    header = rtp_header(voice)
-    # 12 byte header + 12 null bytes
-    nonce = header <> <<0::8*12>>
-    header <> Kcl.secretbox(data, nonce, voice.secret_key)
-  end
-
   def open_udp do
     {:ok, socket} =
       :gen_udp.open(0, [
@@ -58,7 +48,7 @@ defmodule Nostrum.Voice.Audio do
     socket
   end
 
-  def get_rtp_packet(%VoiceState{secret_key: key, udp_socket: socket} = v) do
+  def get_rtp_packet(%VoiceState{udp_socket: socket} = v) do
     {:ok, {_ip, _port, payload}} = :gen_udp.recv(socket, 1024)
 
     case payload do
@@ -66,9 +56,8 @@ defmodule Nostrum.Voice.Audio do
       <<2::2, 0::1, 1::5, 201::8, _rest::binary>> ->
         get_rtp_packet(v)
 
-      <<header::binary-size(12), data::binary>> ->
-        nonce = header <> <<0::8*12>>
-        {header, Kcl.secretunbox(data, nonce, key)}
+      <<header::bytes-size(12), _::binary>> = data ->
+        {header, Crypto.decrypt(v, data)}
     end
   end
 
@@ -144,7 +133,7 @@ defmodule Nostrum.Voice.Audio do
           v.udp_socket,
           v.ip |> ip_to_tuple(),
           v.port,
-          encrypt_packet(v, f)
+          Crypto.encrypt(v, f)
         )
 
         %{
