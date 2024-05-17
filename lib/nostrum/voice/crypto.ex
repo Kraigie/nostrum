@@ -4,6 +4,7 @@ defmodule Nostrum.Voice.Crypto do
   alias Nostrum.Struct.VoiceState
   alias Nostrum.Voice.Audio
   alias Nostrum.Voice.Crypto.Chacha
+  alias Nostrum.Voice.Crypto.Salsa
 
   @type cipher :: :xchacha20_poly1305 | :xsalsa20_poly1305 | :aes256_gcm
 
@@ -49,7 +50,7 @@ defmodule Nostrum.Voice.Crypto do
         _encrypt = true
       )
 
-    header <> cipher_text <> tag <> unpadded_nonce
+    [header, cipher_text, tag, unpadded_nonce]
   end
 
   def decrypt_xchacha20_poly1305(%VoiceState{secret_key: key}, data) do
@@ -78,12 +79,12 @@ defmodule Nostrum.Voice.Crypto do
     # 24 byte nonce
     nonce = unpadded_nonce <> <<0::unit(8)-size(20)>>
 
-    header <> Kcl.secretbox(data, nonce, key) <> unpadded_nonce
+    [header, Salsa.encrypt(data, key, nonce), unpadded_nonce]
   end
 
   def decrypt_xsalsa20_poly1305(%VoiceState{secret_key: key}, data) do
     {_header, cipher_text, _tag, nonce, ext_len} = decode_packet(data, 24, 0)
-    <<_exts::unit(32)-size(ext_len), opus::binary>> = Kcl.secretunbox(cipher_text, nonce, key)
+    <<_exts::unit(32)-size(ext_len), opus::binary>> = Salsa.decrypt(cipher_text, key, nonce)
     opus
   end
 
@@ -98,7 +99,7 @@ defmodule Nostrum.Voice.Crypto do
     {cipher_text, tag} =
       :crypto.crypto_one_time_aead(:aes_256_gcm, key, nonce, data, _aad = header, _encrypt = true)
 
-    header <> cipher_text <> tag <> unpadded_nonce
+    [header, cipher_text, tag, unpadded_nonce]
   end
 
   def decrypt_aes256_gcm(%VoiceState{secret_key: key}, data) do

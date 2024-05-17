@@ -60,7 +60,7 @@ defmodule Nostrum.Voice.Crypto.Chacha do
     |> put_elem(index_d, d)
   end
 
-  # 4 column quarter rounds followed by 4 diagonal quarter rounds
+  # Column round followed by diagonal round
   defp double_round(tuple) do
     tuple
     |> quarter_round_on(0, 4, 8, 12)
@@ -77,8 +77,13 @@ defmodule Nostrum.Voice.Crypto.Chacha do
     Enum.reduce(1..10, block, fn _, t -> double_round(t) end)
   end
 
+  defp expand(<<key::bytes-32>> = _k, <<nonce::bytes-16>> = _n) do
+    @chacha_constant <> key <> nonce
+  end
+
   defp hchacha20(<<key::bytes-32>> = _k, <<first_sixteen::bytes-16, _last::bytes-8>> = _n) do
-    (@chacha_constant <> key <> first_sixteen)
+    key
+    |> expand(first_sixteen)
     |> block_binary_to_tuple()
     |> twenty_rounds()
     |> hchacha20_block_tuple_to_binary()
