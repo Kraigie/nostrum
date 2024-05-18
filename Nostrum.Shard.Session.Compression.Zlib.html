@@ -8,7 +8,7 @@
     <meta name="project" content="Nostrum v0.9.1">
 
 
-    <title>Nostrum.Struct.Guild.ScheduledEvent.User — Nostrum v0.9.1</title>
+    <title>Nostrum.Shard.Session.Compression.Zlib — Nostrum v0.9.1</title>
     <link rel="stylesheet" href="dist/html-elixir-2C5PUTIB.css" />
 
 
@@ -127,19 +127,26 @@ Pages
 <div id="top-content">
   <h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/guild/scheduled_event/event_user.ex#L1" title="View Source" class="icon-action" rel="help">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/session/compression/zlib.ex#L1" title="View Source" class="icon-action" rel="help">
         <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         <span class="sr-only">View Source</span>
       </a>
 
-    <span translate="no">Nostrum.Struct.Guild.ScheduledEvent.User</span> 
+    <span translate="no">Nostrum.Shard.Session.Compression.Zlib</span> 
     <small class="app-vsn" translate="no">(Nostrum v0.9.1)</small>
 
   </h1>
 
 
     <section id="moduledoc">
-<p>Struct representing a user in a guild's scheduled event.</p>
+<p>Implementation of compression methods for the <code class="inline">zlib</code> compression algorithm.</p><blockquote><h3 id="module-internal-module" class="info section-heading">
+  <a href="#module-internal-module" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Internal module</span>
+</h3>
+<p>This module is intended for exclusive usage inside of nostrum, and is
+documented for completeness and people curious to look behind the covers.</p></blockquote>
     </section>
 
 </div>
@@ -151,50 +158,6 @@ Pages
       </a>
       <span class="text">Summary</span>
     </h1>
-<div class="summary-types summary">
-  <h2>
-    <a href="#types">Types</a>
-  </h2>
-
-    <div class="summary-row">
-      <div class="summary-signature">
-        <a href="#t:event_id/0" translate="no">event_id()</a>
-
-      </div>
-
-        <div class="summary-synopsis"><p>The ID of the guild scheduled event.</p></div>
-
-    </div>
-
-    <div class="summary-row">
-      <div class="summary-signature">
-        <a href="#t:member/0" translate="no">member()</a>
-
-      </div>
-
-        <div class="summary-synopsis"><p>The guild member for the event</p></div>
-
-    </div>
-
-    <div class="summary-row">
-      <div class="summary-signature">
-        <a href="#t:t/0" translate="no">t()</a>
-
-      </div>
-
-    </div>
-
-    <div class="summary-row">
-      <div class="summary-signature">
-        <a href="#t:user/0" translate="no">user()</a>
-
-      </div>
-
-        <div class="summary-synopsis"><p>The user which is subscribed to the event.</p></div>
-
-    </div>
-
-</div>
 <div class="summary-functions summary">
   <h2>
     <a href="#functions">Functions</a>
@@ -202,9 +165,31 @@ Pages
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#to_struct/1" translate="no">to_struct(map)</a>
+        <a href="#create_context/0" translate="no">create_context()</a>
 
       </div>
+
+        <div class="summary-synopsis"><p>Callback implementation for <a href="Nostrum.Shard.Session.Compression.html#c:create_context/0"><code class="inline">Nostrum.Shard.Session.Compression.create_context/0</code></a>.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#inflate/2" translate="no">inflate(ctx, frame)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Callback implementation for <a href="Nostrum.Shard.Session.Compression.html#c:inflate/2"><code class="inline">Nostrum.Shard.Session.Compression.inflate/2</code></a>.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#reset_context/1" translate="no">reset_context(ctx)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Callback implementation for <a href="Nostrum.Shard.Session.Compression.html#c:reset_context/1"><code class="inline">Nostrum.Shard.Session.Compression.reset_context/1</code></a>.</p></div>
 
     </div>
 
@@ -212,142 +197,6 @@ Pages
 
   </section>
 
-
-  <section id="types" class="details-list">
-    <h1 class="section-heading">
-      <a class="hover-link" href="#types">
-        <i class="ri-link-m" aria-hidden="true"></i>
-      </a>
-      <span class="text">Types</span>
-    </h1>
-    <div class="types-list">
-<section class="detail" id="t:event_id/0">
-
-  <div class="detail-header">
-    <a href="#t:event_id/0" class="detail-link" title="Link to this type">
-      <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this type</span>
-    </a>
-    <h1 class="signature" translate="no">event_id()</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/guild/scheduled_event/event_user.ex#L18" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
-
-
-      <span class="note">(since 0.5.0)</span>
-
-  </div>
-
-  <section class="docstring">
-
-      <div class="specs">
-
-          <pre translate="no"><span class="attribute">@type</span> event_id() :: <a href="Nostrum.Struct.Guild.ScheduledEvent.html#t:id/0">Nostrum.Struct.Guild.ScheduledEvent.id</a>()</pre>
-
-      </div>
-
-<p>The ID of the guild scheduled event.</p>
-  </section>
-</section>
-<section class="detail" id="t:member/0">
-
-  <div class="detail-header">
-    <a href="#t:member/0" class="detail-link" title="Link to this type">
-      <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this type</span>
-    </a>
-    <h1 class="signature" translate="no">member()</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/guild/scheduled_event/event_user.ex#L24" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
-
-
-      <span class="note">(since 0.5.0)</span>
-
-  </div>
-
-  <section class="docstring">
-
-      <div class="specs">
-
-          <pre translate="no"><span class="attribute">@type</span> member() :: <a href="Nostrum.Struct.Guild.Member.html#t:t/0">Nostrum.Struct.Guild.Member.t</a>() | nil</pre>
-
-      </div>
-
-<p>The guild member for the event</p>
-  </section>
-</section>
-<section class="detail" id="t:t/0">
-
-  <div class="detail-header">
-    <a href="#t:t/0" class="detail-link" title="Link to this type">
-      <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this type</span>
-    </a>
-    <h1 class="signature" translate="no">t()</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/guild/scheduled_event/event_user.ex#L26" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
-
-
-      <span class="note">(since 0.5.0)</span>
-
-  </div>
-
-  <section class="docstring">
-
-      <div class="specs">
-
-          <pre translate="no"><span class="attribute">@type</span> t() :: %Nostrum.Struct.Guild.ScheduledEvent.User{
-  guild_scheduled_event_id: <a href="#t:event_id/0">event_id</a>(),
-  member: <a href="#t:member/0">member</a>(),
-  user: <a href="#t:user/0">user</a>()
-}</pre>
-
-      </div>
-
-
-  </section>
-</section>
-<section class="detail" id="t:user/0">
-
-  <div class="detail-header">
-    <a href="#t:user/0" class="detail-link" title="Link to this type">
-      <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this type</span>
-    </a>
-    <h1 class="signature" translate="no">user()</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/guild/scheduled_event/event_user.ex#L21" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
-
-
-      <span class="note">(since 0.5.0)</span>
-
-  </div>
-
-  <section class="docstring">
-
-      <div class="specs">
-
-          <pre translate="no"><span class="attribute">@type</span> user() :: <a href="Nostrum.Struct.User.html#t:t/0">Nostrum.Struct.User.t</a>()</pre>
-
-      </div>
-
-<p>The user which is subscribed to the event.</p>
-  </section>
-</section>
-
-    </div>
-  </section>
 
   <section id="functions" class="details-list">
     <h1 class="section-heading">
@@ -357,28 +206,88 @@ Pages
       <span class="text">Functions</span>
     </h1>
     <div class="functions-list">
-<section class="detail" id="to_struct/1">
+<section class="detail" id="create_context/0">
 
   <div class="detail-header">
-    <a href="#to_struct/1" class="detail-link" title="Link to this function">
+    <a href="#create_context/0" class="detail-link" title="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">to_struct(map)</h1>
+    <h1 class="signature" translate="no">create_context()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/guild/scheduled_event/event_user.ex#L32" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/session/compression/zlib.ex#L14" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
 
 
-      <span class="note">(since 0.5.0)</span>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> create_context() :: <a href="https://www.erlang.org/doc/man/zlib.html#type-zstream">:zlib.zstream</a>()</pre>
+
+      </div>
+
+<p>Callback implementation for <a href="Nostrum.Shard.Session.Compression.html#c:create_context/0"><code class="inline">Nostrum.Shard.Session.Compression.create_context/0</code></a>.</p>
+  </section>
+</section>
+<section class="detail" id="inflate/2">
+
+  <div class="detail-header">
+    <a href="#inflate/2" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">inflate(ctx, frame)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/session/compression/zlib.ex#L22" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
 
   </div>
 
   <section class="docstring">
 
+      <div class="specs">
 
+          <pre translate="no"><span class="attribute">@spec</span> inflate(<a href="https://www.erlang.org/doc/man/zlib.html#type-zstream">:zlib.zstream</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">iodata</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">iolist</a>()</pre>
+
+      </div>
+
+<p>Callback implementation for <a href="Nostrum.Shard.Session.Compression.html#c:inflate/2"><code class="inline">Nostrum.Shard.Session.Compression.inflate/2</code></a>.</p>
+  </section>
+</section>
+<section class="detail" id="reset_context/1">
+
+  <div class="detail-header">
+    <a href="#reset_context/1" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">reset_context(ctx)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/session/compression/zlib.ex#L27" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> reset_context(<a href="https://www.erlang.org/doc/man/zlib.html#type-zstream">:zlib.zstream</a>()) :: <a href="https://www.erlang.org/doc/man/zlib.html#type-zstream">:zlib.zstream</a>()</pre>
+
+      </div>
+
+<p>Callback implementation for <a href="Nostrum.Shard.Session.Compression.html#c:reset_context/1"><code class="inline">Nostrum.Shard.Session.Compression.reset_context/1</code></a>.</p>
   </section>
 </section>
 

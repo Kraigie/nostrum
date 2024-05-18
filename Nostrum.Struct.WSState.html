@@ -14,7 +14,7 @@
 
     <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
     <script src="dist/handlebars.templates-IHH6HKET.js"></script>
-    <script src="dist/sidebar_items-66D180A5.js"></script>
+    <script src="dist/sidebar_items-125F8E10.js"></script>
     <script src="docs_config.js"></script>
     <script async src="dist/html-GXQ6W6IF.js"></script>
 
@@ -158,6 +158,16 @@ Pages
 
     <div class="summary-row">
       <div class="summary-signature">
+        <a href="#t:compress_ctx/0" translate="no">compress_ctx()</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Reference to the current compression context</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
         <a href="#t:conn/0" translate="no">conn()</a>
 
       </div>
@@ -296,16 +306,6 @@ will be the time the websocket process was started</p></div>
 
     </div>
 
-    <div class="summary-row">
-      <div class="summary-signature">
-        <a href="#t:zlib_ctx/0" translate="no">zlib_ctx()</a>
-
-      </div>
-
-        <div class="summary-synopsis"><p>Reference to the current zlib context</p></div>
-
-    </div>
-
 </div>
 
   </section>
@@ -319,6 +319,34 @@ will be the time the websocket process was started</p></div>
       <span class="text">Types</span>
     </h1>
     <div class="types-list">
+<section class="detail" id="t:compress_ctx/0">
+
+  <div class="detail-header">
+    <a href="#t:compress_ctx/0" class="detail-link" title="Link to this type">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature" translate="no">compress_ctx()</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/ws_state.ex#L77" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@type</span> compress_ctx() :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">reference</a>() | nil</pre>
+
+      </div>
+
+<p>Reference to the current compression context</p>
+  </section>
+</section>
 <section class="detail" id="t:conn/0">
 
   <div class="detail-header">
@@ -683,6 +711,7 @@ will be the time the websocket process was started</p>
       <div class="specs">
 
           <pre translate="no"><span class="attribute">@type</span> t() :: %Nostrum.Struct.WSState{
+  compress_ctx: <a href="#t:compress_ctx/0">compress_ctx</a>(),
   conn: <a href="#t:conn/0">conn</a>(),
   conn_pid: <a href="#t:conn_pid/0">conn_pid</a>(),
   gateway: <a href="#t:gateway/0">gateway</a>(),
@@ -695,8 +724,7 @@ will be the time the websocket process was started</p>
   session: <a href="#t:session/0">session</a>(),
   shard_num: <a href="#t:shard_num/0">shard_num</a>(),
   stream: <a href="#t:stream/0">stream</a>(),
-  total_shards: <a href="#t:total_shards/0">total_shards</a>(),
-  zlib_ctx: <a href="#t:zlib_ctx/0">zlib_ctx</a>()
+  total_shards: <a href="#t:total_shards/0">total_shards</a>()
 }</pre>
 
       </div>
@@ -733,34 +761,6 @@ will be the time the websocket process was started</p>
 
 <p>The highest shard number for this bot.</p><p>This may not be started locally, it is just used by nostrum to inform the
 gateway which events we are interested in.</p>
-  </section>
-</section>
-<section class="detail" id="t:zlib_ctx/0">
-
-  <div class="detail-header">
-    <a href="#t:zlib_ctx/0" class="detail-link" title="Link to this type">
-      <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this type</span>
-    </a>
-    <h1 class="signature" translate="no">zlib_ctx()</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/ws_state.ex#L77" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
-
-
-  </div>
-
-  <section class="docstring">
-
-      <div class="specs">
-
-          <pre translate="no"><span class="attribute">@type</span> zlib_ctx() :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">reference</a>() | nil</pre>
-
-      </div>
-
-<p>Reference to the current zlib context</p>
   </section>
 </section>
 

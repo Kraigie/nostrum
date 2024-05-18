@@ -8,7 +8,7 @@
     <meta name="project" content="Nostrum v0.9.1">
 
 
-    <title>Nostrum.Struct.Guild.ScheduledEvent.User — Nostrum v0.9.1</title>
+    <title>Nostrum.Shard.Session.Compression — Nostrum v0.9.1</title>
     <link rel="stylesheet" href="dist/html-elixir-2C5PUTIB.css" />
 
 
@@ -20,7 +20,7 @@
 
 
   </head>
-  <body data-type="modules" class="page-module">
+  <body data-type="modules" class="page-behaviour">
     <script>
 
       try {
@@ -127,19 +127,26 @@ Pages
 <div id="top-content">
   <h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/guild/scheduled_event/event_user.ex#L1" title="View Source" class="icon-action" rel="help">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/session/compression.ex#L1" title="View Source" class="icon-action" rel="help">
         <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         <span class="sr-only">View Source</span>
       </a>
 
-    <span translate="no">Nostrum.Struct.Guild.ScheduledEvent.User</span> 
+    <span translate="no">Nostrum.Shard.Session.Compression</span> <small>behaviour</small>
     <small class="app-vsn" translate="no">(Nostrum v0.9.1)</small>
 
   </h1>
 
 
     <section id="moduledoc">
-<p>Struct representing a user in a guild's scheduled event.</p>
+<p>A behaviour for compression methods supported by the Discord gateway to implement.</p><p>See the modules nested under this behaviour for reference implementations.</p><blockquote><h3 id="module-internal-module" class="info section-heading">
+  <a href="#module-internal-module" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Internal module</span>
+</h3>
+<p>This module is intended for exclusive usage inside of nostrum, and is
+documented for completeness and people curious to look behind the covers.</p></blockquote>
     </section>
 
 </div>
@@ -151,60 +158,43 @@ Pages
       </a>
       <span class="text">Summary</span>
     </h1>
-<div class="summary-types summary">
+<div class="summary-callbacks summary">
   <h2>
-    <a href="#types">Types</a>
+    <a href="#callbacks">Callbacks</a>
   </h2>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#t:event_id/0" translate="no">event_id()</a>
+        <a href="#c:create_context/0" translate="no">create_context()</a>
 
       </div>
 
-        <div class="summary-synopsis"><p>The ID of the guild scheduled event.</p></div>
+        <div class="summary-synopsis"><p>Create a new compression context that can be passed as an argument to other
+methods within the behaviour to inflate data or reset the context to a
+blank state.</p></div>
 
     </div>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#t:member/0" translate="no">member()</a>
+        <a href="#c:inflate/2" translate="no">inflate(reference, iodata)</a>
 
       </div>
 
-        <div class="summary-synopsis"><p>The guild member for the event</p></div>
+        <div class="summary-synopsis"><p>Decompress a frame received from Discord over the gateway. Should return an
+iolist of the decompressed data.</p></div>
 
     </div>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#t:t/0" translate="no">t()</a>
+        <a href="#c:reset_context/1" translate="no">reset_context(reference)</a>
 
       </div>
 
-    </div>
-
-    <div class="summary-row">
-      <div class="summary-signature">
-        <a href="#t:user/0" translate="no">user()</a>
-
-      </div>
-
-        <div class="summary-synopsis"><p>The user which is subscribed to the event.</p></div>
-
-    </div>
-
-</div>
-<div class="summary-functions summary">
-  <h2>
-    <a href="#functions">Functions</a>
-  </h2>
-
-    <div class="summary-row">
-      <div class="summary-signature">
-        <a href="#to_struct/1" translate="no">to_struct(map)</a>
-
-      </div>
+        <div class="summary-synopsis"><p>Reset a decompression context to a blank slate, this is useful after a websocket
+resume has taken place or something similar requiring the reset of the state
+for a shard.</p></div>
 
     </div>
 
@@ -213,30 +203,28 @@ Pages
   </section>
 
 
-  <section id="types" class="details-list">
+  <section id="callbacks" class="details-list">
     <h1 class="section-heading">
-      <a class="hover-link" href="#types">
+      <a class="hover-link" href="#callbacks">
         <i class="ri-link-m" aria-hidden="true"></i>
       </a>
-      <span class="text">Types</span>
+      <span class="text">Callbacks</span>
     </h1>
-    <div class="types-list">
-<section class="detail" id="t:event_id/0">
+    <div class="callbacks-list">
+<section class="detail" id="c:create_context/0">
 
   <div class="detail-header">
-    <a href="#t:event_id/0" class="detail-link" title="Link to this type">
+    <a href="#c:create_context/0" class="detail-link" title="Link to this callback">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this type</span>
+      <span class="sr-only">Link to this callback</span>
     </a>
-    <h1 class="signature" translate="no">event_id()</h1>
+    <h1 class="signature" translate="no">create_context()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/guild/scheduled_event/event_user.ex#L18" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/session/compression.ex#L18" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
 
-
-      <span class="note">(since 0.5.0)</span>
 
   </div>
 
@@ -244,29 +232,29 @@ Pages
 
       <div class="specs">
 
-          <pre translate="no"><span class="attribute">@type</span> event_id() :: <a href="Nostrum.Struct.Guild.ScheduledEvent.html#t:id/0">Nostrum.Struct.Guild.ScheduledEvent.id</a>()</pre>
+          <pre translate="no"><span class="attribute">@callback</span> create_context() :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">reference</a>()</pre>
 
       </div>
 
-<p>The ID of the guild scheduled event.</p>
+<p>Create a new compression context that can be passed as an argument to other
+methods within the behaviour to inflate data or reset the context to a
+blank state.</p>
   </section>
 </section>
-<section class="detail" id="t:member/0">
+<section class="detail" id="c:inflate/2">
 
   <div class="detail-header">
-    <a href="#t:member/0" class="detail-link" title="Link to this type">
+    <a href="#c:inflate/2" class="detail-link" title="Link to this callback">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this type</span>
+      <span class="sr-only">Link to this callback</span>
     </a>
-    <h1 class="signature" translate="no">member()</h1>
+    <h1 class="signature" translate="no">inflate(reference, iodata)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/guild/scheduled_event/event_user.ex#L24" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/session/compression.ex#L24" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
 
-
-      <span class="note">(since 0.5.0)</span>
 
   </div>
 
@@ -274,29 +262,28 @@ Pages
 
       <div class="specs">
 
-          <pre translate="no"><span class="attribute">@type</span> member() :: <a href="Nostrum.Struct.Guild.Member.html#t:t/0">Nostrum.Struct.Guild.Member.t</a>() | nil</pre>
+          <pre translate="no"><span class="attribute">@callback</span> inflate(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">reference</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">iodata</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">iolist</a>()</pre>
 
       </div>
 
-<p>The guild member for the event</p>
+<p>Decompress a frame received from Discord over the gateway. Should return an
+iolist of the decompressed data.</p>
   </section>
 </section>
-<section class="detail" id="t:t/0">
+<section class="detail" id="c:reset_context/1">
 
   <div class="detail-header">
-    <a href="#t:t/0" class="detail-link" title="Link to this type">
+    <a href="#c:reset_context/1" class="detail-link" title="Link to this callback">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this type</span>
+      <span class="sr-only">Link to this callback</span>
     </a>
-    <h1 class="signature" translate="no">t()</h1>
+    <h1 class="signature" translate="no">reset_context(reference)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/guild/scheduled_event/event_user.ex#L26" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/session/compression.ex#L31" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
 
-
-      <span class="note">(since 0.5.0)</span>
 
   </div>
 
@@ -304,81 +291,13 @@ Pages
 
       <div class="specs">
 
-          <pre translate="no"><span class="attribute">@type</span> t() :: %Nostrum.Struct.Guild.ScheduledEvent.User{
-  guild_scheduled_event_id: <a href="#t:event_id/0">event_id</a>(),
-  member: <a href="#t:member/0">member</a>(),
-  user: <a href="#t:user/0">user</a>()
-}</pre>
+          <pre translate="no"><span class="attribute">@callback</span> reset_context(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">reference</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">reference</a>()</pre>
 
       </div>
 
-
-  </section>
-</section>
-<section class="detail" id="t:user/0">
-
-  <div class="detail-header">
-    <a href="#t:user/0" class="detail-link" title="Link to this type">
-      <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this type</span>
-    </a>
-    <h1 class="signature" translate="no">user()</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/guild/scheduled_event/event_user.ex#L21" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
-
-
-      <span class="note">(since 0.5.0)</span>
-
-  </div>
-
-  <section class="docstring">
-
-      <div class="specs">
-
-          <pre translate="no"><span class="attribute">@type</span> user() :: <a href="Nostrum.Struct.User.html#t:t/0">Nostrum.Struct.User.t</a>()</pre>
-
-      </div>
-
-<p>The user which is subscribed to the event.</p>
-  </section>
-</section>
-
-    </div>
-  </section>
-
-  <section id="functions" class="details-list">
-    <h1 class="section-heading">
-      <a class="hover-link" href="#functions">
-        <i class="ri-link-m" aria-hidden="true"></i>
-      </a>
-      <span class="text">Functions</span>
-    </h1>
-    <div class="functions-list">
-<section class="detail" id="to_struct/1">
-
-  <div class="detail-header">
-    <a href="#to_struct/1" class="detail-link" title="Link to this function">
-      <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
-    </a>
-    <h1 class="signature" translate="no">to_struct(map)</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/guild/scheduled_event/event_user.ex#L32" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
-
-
-      <span class="note">(since 0.5.0)</span>
-
-  </div>
-
-  <section class="docstring">
-
-
+<p>Reset a decompression context to a blank slate, this is useful after a websocket
+resume has taken place or something similar requiring the reset of the state
+for a shard.</p>
   </section>
 </section>
 

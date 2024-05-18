@@ -8,7 +8,7 @@
     <meta name="project" content="Nostrum v0.9.1">
 
 
-    <title>Nostrum.Cache.GuildCache.NoOp — Nostrum v0.9.1</title>
+    <title>Gateway Compression — Nostrum v0.9.1</title>
     <link rel="stylesheet" href="dist/html-elixir-2C5PUTIB.css" />
 
 
@@ -20,7 +20,7 @@
 
 
   </head>
-  <body data-type="modules" class="page-module">
+  <body data-type="extras" class="page-extra">
     <script>
 
       try {
@@ -127,154 +127,70 @@ Pages
 <div id="top-content">
   <h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache/noop.ex#L1" title="View Source" class="icon-action" rel="help">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/guides/advanced/gateway_compression.md#L1" title="View Source" class="icon-action" rel="help">
         <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         <span class="sr-only">View Source</span>
       </a>
 
-    <span translate="no">Nostrum.Cache.GuildCache.NoOp</span> 
-    <small class="app-vsn" translate="no">(Nostrum v0.9.1)</small>
 
+    <span>Gateway Compression</span>
   </h1>
 
-
-    <section id="moduledoc">
-<p>A cache module that does nothing.</p><p>Useful for bots that don't need to cache guilds.</p>
-    </section>
-
+<p>Nostrum supports either the <code class="inline">zlib-stream</code> or <code class="inline">zstd-stream</code> gateway compression
+methods, as documented
+<a href="https://discord.com/developers/docs/topics/gateway#encoding-and-compression">here</a></p><p>Most users are fine to leave the <code class="inline">gateway_compression</code> configuration option set
+to <code class="inline">:zlib</code> (default), but users looking for a potential reduction in payload
+sizes from the Discord gateway can optionally set <code class="inline">:zstd</code> here.</p><h2 id="using-zstd-compression" class="section-heading">
+  <a href="#using-zstd-compression" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Using <code class="inline">:zstd</code> compression</span>
+</h2>
+<p>Using <code class="inline">:zstd</code> depends on the <a href="https://hex.pm/packages/ezstd"><code class="inline">:ezstd</code></a> library,
+so you will have to add this dependency to your <code class="inline">mix.exs</code> file:</p><pre><code class="makeup elixir" translate="no"><span class="w">  </span><span class="kd">defp</span><span class="w"> </span><span class="nf">deps</span><span class="w"> </span><span class="k" data-group-id="2837952923-1">do</span><span class="w">
+    </span><span class="p" data-group-id="2837952923-2">[</span><span class="w">
+      </span><span class="p" data-group-id="2837952923-3">{</span><span class="ss">:nostrum</span><span class="p">,</span><span class="w"> </span><span class="n">...</span><span class="p" data-group-id="2837952923-3">}</span><span class="p">,</span><span class="w">
+      </span><span class="p" data-group-id="2837952923-4">{</span><span class="ss">:ezstd</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;~&gt; 1.1&quot;</span><span class="p" data-group-id="2837952923-4">}</span><span class="w"> </span><span class="c1"># new dependency</span><span class="w">
+    </span><span class="p" data-group-id="2837952923-2">]</span><span class="w">
+  </span><span class="k" data-group-id="2837952923-1">end</span></code></pre><blockquote><h4 class="info"><code class="inline">:ezstd</code> NIFs</h4><p>Some functionality of <code class="inline">:ezstd</code> depends on Erlang NIFs (Natively Implemented
+Functions). This means that a proper compiler installation as well as other
+build tools like <code class="inline">git</code> may be necessary at the stage where you compile your
+dependencies.</p><p>It may be useful to run <a href="https://hexdocs.pm/mix/Mix.Tasks.Deps.Compile.html"><code class="inline">mix deps.compile</code></a> in any build systems to ensure that
+your application does not need build utilities in the built application image.</p></blockquote><p>Once you have this additional dependency installed in your project, set the
+<code class="inline">:nostrum</code>, <code class="inline">:gateway_compression</code> configuration option to <code class="inline">:zstd</code> and Nostrum
+should pick up on it.</p><p>You will need to run <a href="https://hexdocs.pm/mix/Mix.Tasks.Deps.Get.html"><code class="inline">mix deps.get</code></a> and <a href="https://hexdocs.pm/mix/Mix.Tasks.Deps.Compile.html"><code class="inline">mix deps.compile</code></a> to install and
+compile the new <code class="inline">:ezstd</code> dependency.</p><blockquote><h4 class="tip">Nostrum detection of <code class="inline">:ezstd</code></h4><p>Since the check for <code class="inline">:ezstd</code> takes place when you compile Nostrum, you might
+need to run <code class="inline">mix deps.compile --force nostrum</code> to ensure that Nostrum is
+recompiled and recognises the newly installed <code class="inline">:ezstd</code> dependency.</p><p>Not doing this may mean that your compiled Nostrum version is still using
+dummy handlers that will error out even when <code class="inline">:ezstd</code> is installed.</p></blockquote>
 </div>
 
-  <section id="summary" class="details-list">
-    <h1 class="section-heading">
-      <a class="hover-link" href="#summary">
-        <i class="ri-link-m" aria-hidden="true"></i>
+<div class="bottom-actions" id="bottom-actions">
+  <div class="bottom-actions-item">
+
+      <a href="hot_code_upgrade.html" class="bottom-actions-button" rel="prev">
+        <span class="subheader">
+          ← Previous Page
+        </span>
+        <span class="title">
+Hot code upgrade
+        </span>
       </a>
-      <span class="text">Summary</span>
-    </h1>
-<div class="summary-functions summary">
-  <h2>
-    <a href="#functions">Functions</a>
-  </h2>
 
-    <div class="summary-row">
-      <div class="summary-signature">
-        <a href="#child_spec/1" translate="no">child_spec(init_arg)</a>
+  </div>
+  <div class="bottom-actions-item">
 
-      </div>
+      <a href="api-3.html" class="bottom-actions-button" rel="next">
+        <span class="subheader">
+          Next Page →
+        </span>
+        <span class="title">
+API Usage
+        </span>
+      </a>
 
-        <div class="summary-synopsis"><p>Returns a specification to start this module under a supervisor.</p></div>
-
-    </div>
-
-    <div class="summary-row">
-      <div class="summary-signature">
-        <a href="#init/1" translate="no">init(init_arg)</a>
-
-      </div>
-
-        <div class="summary-synopsis"><p>Start up the cache supervisor.</p></div>
-
-    </div>
-
-    <div class="summary-row">
-      <div class="summary-signature">
-        <a href="#start_link/1" translate="no">start_link(init_arg)</a>
-
-      </div>
-
-        <div class="summary-synopsis"><p>Start the supervisor.</p></div>
-
-    </div>
-
+  </div>
 </div>
-
-  </section>
-
-
-  <section id="functions" class="details-list">
-    <h1 class="section-heading">
-      <a class="hover-link" href="#functions">
-        <i class="ri-link-m" aria-hidden="true"></i>
-      </a>
-      <span class="text">Functions</span>
-    </h1>
-    <div class="functions-list">
-<section class="detail" id="child_spec/1">
-
-  <div class="detail-header">
-    <a href="#child_spec/1" class="detail-link" title="Link to this function">
-      <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
-    </a>
-    <h1 class="signature" translate="no">child_spec(init_arg)</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache/noop.ex#L16" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
-
-
-      <span class="note">(since 0.6.0)</span>
-
-  </div>
-
-  <section class="docstring">
-
-<p>Returns a specification to start this module under a supervisor.</p><p>See <a href="https://hexdocs.pm/elixir/Supervisor.html"><code class="inline">Supervisor</code></a>.</p>
-  </section>
-</section>
-<section class="detail" id="init/1">
-
-  <div class="detail-header">
-    <a href="#init/1" class="detail-link" title="Link to this function">
-      <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
-    </a>
-    <h1 class="signature" translate="no">init(init_arg)</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache/noop.ex#L25" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
-
-
-      <span class="note">(since 0.6.0)</span>
-
-  </div>
-
-  <section class="docstring">
-
-<p>Start up the cache supervisor.</p>
-  </section>
-</section>
-<section class="detail" id="start_link/1">
-
-  <div class="detail-header">
-    <a href="#start_link/1" class="detail-link" title="Link to this function">
-      <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
-    </a>
-    <h1 class="signature" translate="no">start_link(init_arg)</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache/noop.ex#L19" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
-
-
-      <span class="note">(since 0.6.0)</span>
-
-  </div>
-
-  <section class="docstring">
-
-<p>Start the supervisor.</p>
-  </section>
-</section>
-
-    </div>
-  </section>
-
     <footer class="footer">
       <p>
 
@@ -282,6 +198,8 @@ Pages
             <a href="https://hex.pm/packages/nostrum/0.9.1" class="footer-hex-package">Hex Package</a>
 
             <a href="https://preview.hex.pm/preview/nostrum/0.9.1">Hex Preview</a>
+
+              (<a href="https://preview.hex.pm/preview/nostrum/0.9.1/show/guides/advanced/gateway_compression.md">current file</a>)
 
           </span>
 
