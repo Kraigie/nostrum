@@ -5,10 +5,10 @@ nostrum is an Elixir library that can be used to interact with Discord.
 To see documentation about a specific part of the library, please visit one of
 the following:
 
-* [API](api.html) - Methods to interact with the RESTful API (and some other goodies).
+* [API](api-1.html) - Methods to interact with the RESTful API (and some other goodies).
 * [State](state.html) - Caches that keep information from Discord fresh at your disposal.
 * [Events](event_handling.html) - Handling events from Discord as they come in.
-* [Voice](voice.html) - Playing audio through Discord voice channels.
+* [Voice](voice-2.html) - Playing audio through Discord voice channels.
 
 ## Setup
 
@@ -67,16 +67,17 @@ Apart from the `token` field mentioned above, the following fields are also supp
   livestream audio with streamlink support. Defaults to `"streamlink"`.
 - `audio_timeout` - Milliseconds that input must begin generating audio by
   upon invoking `play`. More information about this option can be found in the
-  [voice](./voice.html) documentation page. Defaults to `20_000` (20s).
+  [voice](./voice-2.html) documentation page. Defaults to `20_000` (20s).
 - `audio_frames_per_burst` - Number of opus frames to send at a time while
   playing audio. More information about this option can be found in the
-  [voice](./voice.html) documentation page. Defaults to `10`.
+  [voice](./voice-2.html) documentation page. Defaults to `10`.
 - `voice_auto_connect` - This will determine if Nostrum automatically connects
   to voice websockets gateways upon joining voice channels. If set to `false`
   but you still wish to connect to the voice gateway, you can do so manually
   by calling `Nostrum.Voice.connect_to_gateway/1` after joining a voice
   channel. Defaults to `true`.
-- `voice_encryption_mode` - Defaults to `:aes256_gcm`
+- `voice_encryption_mode` - Defaults to `:aes256_gcm`. More information about this
+  option can be found [here](./voice-2.html#encryption-modes).
 
 
 ### Development & debugging

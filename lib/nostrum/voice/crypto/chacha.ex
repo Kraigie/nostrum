@@ -123,7 +123,7 @@ defmodule Nostrum.Voice.Crypto.Chacha do
   end
 
   @spec decrypt(binary(), <<_::256>>, <<_::192>>, binary(), <<_::128>>) :: binary() | :error
-  def decrypt(cipher_text, <<key::bytes-32>>, <<nonce::bytes-24>>, aad, tag) do
+  def decrypt(cipher_text, <<key::bytes-32>> = _key, <<nonce::bytes-24>> = _nonce, aad, tag) do
     {xchacha_key, xchacha_nonce} = xchacha20_key_and_nonce(key, nonce)
 
     :crypto.crypto_one_time_aead(

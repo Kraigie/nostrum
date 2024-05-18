@@ -23,76 +23,67 @@ defmodule Nostrum.Voice.Crypto do
 
   @type cipher :: cipher_non_rtpsize() | cipher_alias() | cipher_rtpsize()
 
-  defp mode, do: Application.get_env(:nostrum, :voice_encryption_mode, :aes256_gcm)
+  @mode Application.compile_env(:nostrum, :voice_encryption_mode, :aes256_gcm)
 
   def encryption_mode do
-    mode = mode()
-
     Map.get(
       %{
         xchacha20_poly1305: "aead_xchacha20_poly1305_rtpsize",
         aes256_gcm: "aead_aes256_gcm_rtpsize"
       },
-      mode,
-      "#{mode}"
+      @mode,
+      "#{@mode}"
     )
   end
 
   def encrypt(voice, data) do
-    apply(__MODULE__, :"encrypt_#{mode()}", [voice, data])
+    header = Audio.rtp_header(voice)
+    apply(__MODULE__, :"encrypt_#{@mode}", [voice, data, header])
   end
 
   def decrypt(%VoiceState{secret_key: key}, data), do: decrypt(key, data)
   def decrypt(%VoiceWSState{secret_key: key}, data), do: decrypt(key, data)
 
   def decrypt(key, data) do
-    apply(__MODULE__, :"decrypt_#{mode()}", [key, data])
+    apply(__MODULE__, :"decrypt_#{@mode}", [key, data])
   end
 
-  def encrypt_xsalsa20_poly1305(%VoiceState{secret_key: key} = voice, data) do
-    header = Audio.rtp_header(voice)
-
+  def encrypt_xsalsa20_poly1305(%VoiceState{secret_key: key}, data, header) do
     nonce = header <> <<0::unit(8)-size(12)>>
 
     [header, Salsa.encrypt(data, key, nonce)]
   end
 
-  def encrypt_xsalsa20_poly1305_suffix(%VoiceState{secret_key: key} = voice, data) do
-    header = Audio.rtp_header(voice)
-
+  def encrypt_xsalsa20_poly1305_suffix(%VoiceState{secret_key: key}, data, header) do
     nonce = :crypto.strong_rand_bytes(24)
 
     [header, Salsa.encrypt(data, key, nonce), nonce]
   end
 
-  def encrypt_xsalsa20_poly1305_lite(%VoiceState{secret_key: key} = voice, data) do
-    header = Audio.rtp_header(voice)
-
+  def encrypt_xsalsa20_poly1305_lite(%VoiceState{secret_key: key} = voice, data, header) do
     {unpadded_nonce, nonce} = lite_nonce(voice)
 
     [header, Salsa.encrypt(data, key, nonce), unpadded_nonce]
   end
 
-  def encrypt_xsalsa20_poly1305_lite_rtpsize(voice, data),
-    do: encrypt_xsalsa20_poly1305_lite(voice, data)
+  def encrypt_xsalsa20_poly1305_lite_rtpsize(voice, data, header),
+    do: encrypt_xsalsa20_poly1305_lite(voice, data, header)
 
-  def encrypt_xchacha20_poly1305(voice, data),
-    do: encrypt_aead_xchacha20_poly1305_rtpsize(voice, data)
+  def encrypt_xchacha20_poly1305(voice, data, header),
+    do: encrypt_aead_xchacha20_poly1305_rtpsize(voice, data, header)
 
-  def encrypt_aead_xchacha20_poly1305_rtpsize(%VoiceState{secret_key: key} = voice, data) do
-    header = Audio.rtp_header(voice)
-
+  def encrypt_aead_xchacha20_poly1305_rtpsize(%VoiceState{secret_key: key} = voice, data, header) do
     {unpadded_nonce, nonce} = lite_nonce(voice)
 
     [header, Chacha.encrypt(data, key, nonce, _aad = header), unpadded_nonce]
   end
 
-  def encrypt_aead_aes256_gcm(voice, data), do: encrypt_aes256_gcm(voice, data)
-  def encrypt_aead_aes256_gcm_rtpsize(voice, data), do: encrypt_aes256_gcm(voice, data)
+  def encrypt_aead_aes256_gcm(voice, data, header), do: encrypt_aes256_gcm(voice, data, header)
 
-  def encrypt_aes256_gcm(%VoiceState{secret_key: key} = voice, data) do
-    header = Audio.rtp_header(voice)
+  def encrypt_aead_aes256_gcm_rtpsize(voice, data, header),
+    do: encrypt_aes256_gcm(voice, data, header)
 
+  def encrypt_aes256_gcm(%VoiceState{secret_key: key} = voice, data, header) do
     {unpadded_nonce, nonce} = lite_nonce(voice, 12)
 
     [header, Aes.encrypt(data, key, nonce, _aad = header), unpadded_nonce]
@@ -161,34 +152,32 @@ defmodule Nostrum.Voice.Crypto do
     {unpadded_nonce, nonce}
   end
 
-  @doc """
-  Discord's newer encryption modes ending in '_rtpsize' leave the first 4 bytes of the RTP
-  header extension in plaintext while encrypting the elements themselves. The AAD is the
-  12-byte RTP header concatenated with the first 4 bytes of the RTP header extension.
+  # Discord's newer encryption modes ending in '_rtpsize' leave the first 4 bytes of the RTP
+  # header extension in plaintext while encrypting the elements themselves. The AAD is the
+  # 12-byte RTP header concatenated with the first 4 bytes of the RTP header extension.
 
-  Much like is done within the function `Nostrum.Voice.Opus.strip_rtp_ext/1`, we pattern match
-  on the `0xBEDE` constant and the 16-bit big-endian extension length that denotes the length
-  in 32-bit words of the extension elements. Because the elements are a part of the cipher text,
-  the extension length is the number of 32-bit words to discard after decryption to obtain
-  solely the opus packet.
+  # Much like is done within the function `Nostrum.Voice.Opus.strip_rtp_ext/1`, we pattern match
+  # on the `0xBEDE` constant and the 16-bit big-endian extension length that denotes the length
+  # in 32-bit words of the extension elements. Because the elements are a part of the cipher text,
+  # the extension length is the number of 32-bit words to discard after decryption to obtain
+  # solely the opus packet.
 
-  This function returns a 5-element tuple with
-  - RTP header
-    - Fixed 12 byte header concatenated with the first 4 bytes of the extension
-    - Used as the AAD for AEAD ciphers
-  - cipher text
-    - RTP extension elements prepended to the opus packet
-  - cipher tag (MAC)
-  - nonce (padded)
-  - RTP header extension length
-    - for isolating the opus after decryption
-  """
-  def decode_packet_rtpsize(
-        <<header::bytes-size(12), 0xBE, 0xDE, ext_len::integer-16, rest::binary>>,
-        nonce_length \\ 24,
-        tag_length \\ 16
-      )
-      when byte_size(rest) - (@lite_nonce_length + tag_length) > ext_len * 4 do
+  # This function returns a 5-element tuple with
+  # - RTP header
+  #   - Fixed 12 byte header concatenated with the first 4 bytes of the extension
+  #   - Used as the AAD for AEAD ciphers
+  # - cipher text
+  #   - RTP extension elements prepended to the opus packet
+  # - cipher tag (MAC)
+  # - nonce (padded)
+  # - RTP header extension length
+  #   - for isolating the opus after decryption
+  defp decode_packet_rtpsize(
+         <<header::bytes-size(12), 0xBE, 0xDE, ext_len::integer-16, rest::binary>>,
+         nonce_length \\ 24,
+         tag_length \\ 16
+       )
+       when byte_size(rest) - (@lite_nonce_length + tag_length) > ext_len * 4 do
     header = header <> <<0xBE, 0xDE, ext_len::integer-16>>
 
     {cipher_text, tag, unpadded_nonce} = split_data(rest, @lite_nonce_length, tag_length)
@@ -199,12 +188,12 @@ defmodule Nostrum.Voice.Crypto do
   end
 
   # Non "rtpsize" modes where everything is encrypted beyond the 12-byte header
-  def decode_packet(
-        <<header::bytes-size(12), rest::binary>>,
-        unpadded_nonce_length \\ @lite_nonce_length,
-        nonce_length \\ 24,
-        tag_length \\ 16
-      ) do
+  defp decode_packet(
+         <<header::bytes-size(12), rest::binary>>,
+         unpadded_nonce_length \\ @lite_nonce_length,
+         nonce_length \\ 24,
+         tag_length \\ 16
+       ) do
     {cipher_text, tag, unpadded_nonce} = split_data(rest, unpadded_nonce_length, tag_length)
 
     nonce = unpadded_nonce <> <<0::unit(8)-size(nonce_length - unpadded_nonce_length)>>

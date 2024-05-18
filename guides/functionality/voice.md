@@ -188,6 +188,9 @@ hardware architecture your bot is running on. If you're interested, keep reading
 
 #### Encryption Mode Configuration Options
 
+This is a compile-time configuration option, so should you wish to set it,
+do it in `config.exs` or one of its imported config files, *not* `runtime.exs`.
+
 ```elixir
 config :nostrum, :voice_encryption_mode, :aes256_gcm # Default
 ```
@@ -196,14 +199,16 @@ Available configuration options are as follows:
 - `:xsalsa20_poly1305`
 - `:xsalsa20_poly1305_suffix`
 - `:xsalsa20_poly1305_lite`
-- `:xsalsa20_poly1305_lite_rtpsize` (not yet documented by Discord)
-- `:aead_xchacha20_poly1305_rtpsize` (not yet documented by Discord)
-- `:aead_aes256_gcm` (not yet documented by Discord)
-- `:aead_aes256_gcm_rtpsize` (not yet documented by Discord)
+- `:xsalsa20_poly1305_lite_rtpsize` *(not yet documented by Discord)*
+- `:aead_xchacha20_poly1305_rtpsize` *(not yet documented by Discord)*
+- `:aead_aes256_gcm` *(not yet documented by Discord)*
+- `:aead_aes256_gcm_rtpsize` *(not yet documented by Discord)*
 - `:xchacha20_poly1305` (alias for `:aead_xchacha20_poly1305_rtpsize`)
 - `:aes256_gcm` (alias for `:aead_aes256_gcm_rtpsize`)
 
 The first seven are Discord's available options, while the last two are shorter aliases.
+
+The latter four of Discord's seven modes are not yet documented, but [will be soon](https://github.com/discord/discord-api-docs/pull/6801).
 
 #### Implementation Details
 

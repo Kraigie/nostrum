@@ -149,8 +149,7 @@ defmodule Nostrum.Voice.Crypto.Salsa do
 
   defp crypt(key, nonce, <<message::binary>>, block_count, outputs) do
     output_block = crypt_block(key, nonce, message, block_count)
-    outputs = Enum.reverse([output_block | outputs])
-    IO.iodata_to_binary(outputs)
+    _final_outputs = Enum.reverse([output_block | outputs])
   end
 
   defp crypt_block(key, nonce, message, block_count) do
@@ -162,23 +161,33 @@ defmodule Nostrum.Voice.Crypto.Salsa do
   def encrypt(plain_text, <<key::bytes-32>> = _key, <<nonce::bytes-24>> = _nonce) do
     {xsalsa_key, xsalsa_nonce} = xsalsa20_key_and_nonce(key, nonce)
     message = <<0::unit(8)-size(32)>> <> plain_text
-    <<mac_otp::bytes-32, cipher_text::binary>> = crypt(xsalsa_key, xsalsa_nonce, message)
+
+    # First block is guaranteed to be at least 32 bytes
+    [<<mac_otp::bytes-32, cipher_text_head::binary>> | cipher_text_tail] =
+      crypt(xsalsa_key, xsalsa_nonce, message)
+
+    cipher_text = [cipher_text_head | cipher_text_tail]
+
     cipher_tag = :crypto.mac(:poly1305, mac_otp, cipher_text)
-    [cipher_tag, cipher_text]
+
+    [cipher_tag | cipher_text]
   end
 
   @spec decrypt(binary(), <<_::256>>, <<_::192>>) :: binary() | :error
   def decrypt(
         <<cipher_tag::bytes-16, cipher_text::binary>> = _encrypted_message,
-        <<key::bytes-32>>,
-        <<nonce::bytes-24>>
+        <<key::bytes-32>> = _key,
+        <<nonce::bytes-24>> = _nonce
       ) do
     {xsalsa_key, xsalsa_nonce} = xsalsa20_key_and_nonce(key, nonce)
     message = <<0::unit(8)-size(32)>> <> cipher_text
-    <<mac_otp::bytes-32, plain_text::binary>> = crypt(xsalsa_key, xsalsa_nonce, message)
+
+    # First block is guaranteed to be at least 32 bytes
+    [<<mac_otp::bytes-32, plain_text_head::binary>> | plain_text_tail] =
+      crypt(xsalsa_key, xsalsa_nonce, message)
 
     case :crypto.mac(:poly1305, mac_otp, cipher_text) do
-      ^cipher_tag -> plain_text
+      ^cipher_tag -> IO.iodata_to_binary([plain_text_head | plain_text_tail])
       _error -> :error
     end
   end
