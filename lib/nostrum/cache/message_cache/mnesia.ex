@@ -22,13 +22,21 @@ if Code.ensure_loaded?(:mnesia) do
     operations, so a full table scan + sort is required to find the oldest messages.
     """
 
-    @table_name :nostrum_messages
+    # allow us to override the table name for testing
+    # without accidentally overwriting the production table
+    @table_name Application.compile_env(
+                  :nostrum,
+                  [:caches, :message_cache_table_name],
+                  :nostrum_messages
+                )
     @record_name @table_name
 
-    @maximum_size :nostrum
-                  |> Application.compile_env([:caches, :message_cache_size_limit], 10_000)
-    @eviction_count :nostrum
-                    |> Application.compile_env([:caches, :message_cache_eviction_count], 100)
+    @maximum_size Application.compile_env(:nostrum, [:caches, :message_cache_size_limit], 10_000)
+    @eviction_count Application.compile_env(
+                      :nostrum,
+                      [:caches, :message_cache_eviction_count],
+                      100
+                    )
 
     @behaviour Nostrum.Cache.MessageCache
 
@@ -103,18 +111,8 @@ if Code.ensure_loaded?(:mnesia) do
         {@record_name, message.id, message.channel_id, message.author.id, message}
 
       writer = fn ->
-        size = :mnesia.table_info(@table_name, :size)
-
-        if size >= @maximum_size do
-          oldest_message_ids =
-            :nostrum_message_cache_qlc.sorted_by_age_with_limit(__MODULE__, @eviction_count)
-
-          Enum.each(oldest_message_ids, fn message_id ->
-            :mnesia.delete(@table_name, message_id, :write)
-          end)
-
-          :mnesia.write(record)
-        end
+        maybe_evict_records()
+        :mnesia.write(record)
       end
 
       {:atomic, :ok} = :mnesia.sync_transaction(writer)
@@ -136,7 +134,8 @@ if Code.ensure_loaded?(:mnesia) do
         case :mnesia.read(@table_name, id, :write) do
           [] ->
             # we don't have the old message, so we shouldn't
-            # save it in the cache
+            # save it in the cache as updates are not guaranteed
+            # to have the full message payload
             updated_message = Message.to_struct(atomized_payload)
             {nil, updated_message}
 
@@ -153,12 +152,13 @@ if Code.ensure_loaded?(:mnesia) do
     @doc "Removes a message from the cache."
     @spec delete(Channel.id(), Message.id()) :: Message.t() | :noop
     def delete(channel_id, message_id) do
-      key = {channel_id, message_id}
-
       :mnesia.activity(:sync_transaction, fn ->
-        case :mnesia.read(@table_name, key, :write) do
-          [{_tag, _key, _channel_id, _author_id, message}] ->
-            :mnesia.delete(@table_name, key, :write)
+        case :mnesia.read(@table_name, message_id, :write) do
+          # as a safety measure, we check the channel_id
+          # before deleting the message from the cache
+          # to prevent deleting messages from the wrong channel
+          [{_tag, _id, ^channel_id, _author_id, message}] ->
+            :mnesia.delete(@table_name, message_id, :write)
             message
 
           _ ->
@@ -168,18 +168,22 @@ if Code.ensure_loaded?(:mnesia) do
     end
 
     @impl MessageCache
-    @doc "Removes and returns a list of messages from the cache."
+    @doc """
+    Removes and returns a list of messages from the cache.
+    Messages not found in the cache will not be included in the returned list.
+    """
     @spec bulk_delete(Channel.id(), [Message.id()]) :: [Message.t()]
     def bulk_delete(channel_id, message_ids) do
-      Enum.map(message_ids, fn message_id ->
+      Enum.reduce(message_ids, [], fn message_id, list ->
         case delete(channel_id, message_id) do
           :noop ->
-            Message.to_struct(%{id: message_id, channel_id: channel_id})
+            list
 
           message ->
-            message
+            [message | list]
         end
       end)
+      |> Enum.reverse()
     end
 
     @impl MessageCache
@@ -207,6 +211,20 @@ if Code.ensure_loaded?(:mnesia) do
     @doc "Wrap QLC operations in a transaction"
     def wrap_qlc(fun) do
       :mnesia.activity(:sync_transaction, fun)
+    end
+
+    # assumes its called from within a transaction
+    defp maybe_evict_records do
+      size = :mnesia.table_info(@table_name, :size)
+
+      if size >= @maximum_size do
+        oldest_message_ids =
+          :nostrum_message_cache_qlc.sorted_by_age_with_limit(__MODULE__, @eviction_count)
+
+        Enum.each(oldest_message_ids, fn message_id ->
+          :mnesia.delete(@table_name, message_id, :write)
+        end)
+      end
     end
   end
 end

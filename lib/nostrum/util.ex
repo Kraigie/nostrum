@@ -280,7 +280,8 @@ defmodule Nostrum.Util do
   def map_update_if_present(map, key, fun) do
     case map do
       %{^key => value} ->
-        fun.(value) |> Map.put(key, map)
+        new_value = fun.(value)
+        Map.put(map, key, new_value)
 
       _ ->
         map
