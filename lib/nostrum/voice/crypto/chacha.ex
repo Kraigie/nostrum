@@ -11,7 +11,7 @@ defmodule Nostrum.Voice.Crypto.Chacha do
   # use the :crypto module's chacha20_poly1305 functionality in the capacity of xchacha20
   # as is required by Discord with that encryption mode selected.
   #
-  # This is to all in service of leveraging the performance benefits of the the NIF crypto
+  # This is all in service of leveraging the performance benefits of the the NIF crypto
   # functions, which are necessarily going to be more performant than anything implemented
   # in pure elixir/erlang like the `:kcl` package.
   #
@@ -23,6 +23,8 @@ defmodule Nostrum.Voice.Crypto.Chacha do
   # https://datatracker.ietf.org/doc/html/draft-irtf-cfrg-xchacha
 
   import Bitwise
+
+  import Nostrum.Voice.Crypto.Salsa, only: [block_binary_to_tuple: 1]
 
   @chacha_constant "expand 32-byte k"
 
@@ -89,20 +91,11 @@ defmodule Nostrum.Voice.Crypto.Chacha do
     |> hchacha20_block_tuple_to_binary()
   end
 
-  def xchacha20_key_and_nonce(<<key::bytes-32>> = _k, <<nonce::bytes-24>> = _n) do
+  defp xchacha20_key_and_nonce(<<key::bytes-32>> = _k, <<nonce::bytes-24>> = _n) do
     xchacha20_key = hchacha20(key, nonce)
     <<_first_sixteen::bytes-16, last_eight::bytes-8>> = nonce
     xchacha20_nonce = <<0, 0, 0, 0>> <> last_eight
     {xchacha20_key, xchacha20_nonce}
-  end
-
-  defp block_binary_to_tuple(
-         <<x0::little-32, x1::little-32, x2::little-32, x3::little-32, x4::little-32,
-           x5::little-32, x6::little-32, x7::little-32, x8::little-32, x9::little-32,
-           x10::little-32, x11::little-32, x12::little-32, x13::little-32, x14::little-32,
-           x15::little-32>>
-       ) do
-    {x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15}
   end
 
   defp hchacha20_block_tuple_to_binary(
@@ -110,5 +103,37 @@ defmodule Nostrum.Voice.Crypto.Chacha do
        ) do
     <<x0::little-32, x1::little-32, x2::little-32, x3::little-32, x12::little-32, x13::little-32,
       x14::little-32, x15::little-32>>
+  end
+
+  @spec encrypt(binary(), <<_::256>>, <<_::192>>, binary()) :: iodata()
+  def encrypt(plain_text, <<key::bytes-32>> = _key, <<nonce::bytes-24>> = _nonce, aad) do
+    {xchacha_key, xchacha_nonce} = xchacha20_key_and_nonce(key, nonce)
+
+    {cipher_text, tag} =
+      :crypto.crypto_one_time_aead(
+        :chacha20_poly1305,
+        xchacha_key,
+        xchacha_nonce,
+        plain_text,
+        aad,
+        _encrypt = true
+      )
+
+    [cipher_text, tag]
+  end
+
+  @spec decrypt(binary(), <<_::256>>, <<_::192>>, binary(), <<_::128>>) :: binary() | :error
+  def decrypt(cipher_text, <<key::bytes-32>>, <<nonce::bytes-24>>, aad, tag) do
+    {xchacha_key, xchacha_nonce} = xchacha20_key_and_nonce(key, nonce)
+
+    :crypto.crypto_one_time_aead(
+      :chacha20_poly1305,
+      xchacha_key,
+      xchacha_nonce,
+      cipher_text,
+      aad,
+      tag,
+      _encrypt = false
+    )
   end
 end

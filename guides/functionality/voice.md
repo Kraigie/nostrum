@@ -177,3 +177,30 @@ packets returned per invocation and the option to return the raw RTP packet. In 
 likely won't be missed when consuming incoming voice packets asynchronously.
 Note that the third element in the event is of type
 `t:Nostrum.Struct.VoiceWSState.t/0` and not `t:Nostrum.Struct.WSState.t/0`.
+
+## Encryption Modes
+
+Nostrum supports all of Discord's available encryption modes for voice channels.
+The encryption mode is invisible to the user, and you will likely never need to touch it.
+
+Different encryption modes may have different performance characteristics depending on the
+hardware architecture your bot is running on. If you're interested, keep reading.
+
+#### Encryption Mode Configuration Options
+
+```elixir
+config :nostrum, :voice_encryption_mode, :aes256_gcm # Default
+```
+
+Available configuration options are as follows:
+- `:xsalsa20_poly1305`
+- `:xsalsa20_poly1305_suffix`
+- `:xsalsa20_poly1305_lite`
+- `:xsalsa20_poly1305_lite_rtpsize` (not yet documented by Discord)
+- `:aead_xchacha20_poly1305_rtpsize` (not yet documented by Discord)
+- `:aead_aes256_gcm` (not yet documented by Discord)
+- `:aead_aes256_gcm_rtpsize` (not yet documented by Discord)
+- `:xchacha20_poly1305` (alias for `:aead_xchacha20_poly1305_rtpsize`)
+- `:aes256_gcm` (alias for `:aead_aes256_gcm_rtpsize`)
+
+The first seven are Discord's available options, while the last two are shorter aliases.

@@ -76,6 +76,7 @@ Apart from the `token` field mentioned above, the following fields are also supp
   but you still wish to connect to the voice gateway, you can do so manually
   by calling `Nostrum.Voice.connect_to_gateway/1` after joining a voice
   channel. Defaults to `true`.
+- `voice_encryption_mode` - Defaults to `:aes256_gcm`
 
 
 ### Development & debugging

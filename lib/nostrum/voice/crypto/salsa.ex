@@ -26,7 +26,7 @@ defmodule Nostrum.Voice.Crypto.Salsa do
   defp sum(a, b), do: a + b &&& 0xFFFFFFFF
   defp rotl(a, b), do: (a <<< b ||| a >>> (32 - b)) &&& 0xFFFFFFFF
 
-  def quarter_round(a, b, c, d) do
+  defp quarter_round(a, b, c, d) do
     b = a |> sum(d) |> rotl(7) |> bxor(b)
     c = b |> sum(a) |> rotl(9) |> bxor(c)
     d = c |> sum(b) |> rotl(13) |> bxor(d)
@@ -63,11 +63,11 @@ defmodule Nostrum.Voice.Crypto.Salsa do
     |> quarter_round_on(15, 12, 13, 14)
   end
 
-  def twenty_rounds(block) do
+  defp twenty_rounds(block) do
     Enum.reduce(1..10, block, fn _, t -> double_round(t) end)
   end
 
-  def expand(<<key::bytes-32>>, <<nonce::bytes-8>>, block_count) when is_integer(block_count) do
+  defp expand(<<key::bytes-32>>, <<nonce::bytes-8>>, block_count) when is_integer(block_count) do
     # Full input is 64-bit nonce concatenated with little endian block count
     input = nonce <> <<block_count::little-64>>
     expand(key, input)
@@ -87,18 +87,18 @@ defmodule Nostrum.Voice.Crypto.Salsa do
     |> hsalsa20_block_tuple_to_binary()
   end
 
-  def xsalsa20_key_and_nonce(<<key::bytes-32>> = _k, <<nonce::bytes-24>> = _n) do
+  defp xsalsa20_key_and_nonce(<<key::bytes-32>> = _k, <<nonce::bytes-24>> = _n) do
     xsalsa20_key = hsalsa20(key, nonce)
     <<_first_sixteen::bytes-16, xsalsa20_nonce::bytes-8>> = nonce
     {xsalsa20_key, xsalsa20_nonce}
   end
 
-  defp block_binary_to_tuple(
-         <<x0::little-32, x1::little-32, x2::little-32, x3::little-32, x4::little-32,
-           x5::little-32, x6::little-32, x7::little-32, x8::little-32, x9::little-32,
-           x10::little-32, x11::little-32, x12::little-32, x13::little-32, x14::little-32,
-           x15::little-32>>
-       ) do
+  def block_binary_to_tuple(
+        <<x0::little-32, x1::little-32, x2::little-32, x3::little-32, x4::little-32,
+          x5::little-32, x6::little-32, x7::little-32, x8::little-32, x9::little-32,
+          x10::little-32, x11::little-32, x12::little-32, x13::little-32, x14::little-32,
+          x15::little-32>>
+      ) do
     {x0, x1, x2, x3, x4, x5, x6, x7, x8, x9, x10, x11, x12, x13, x14, x15}
   end
 
@@ -119,17 +119,17 @@ defmodule Nostrum.Voice.Crypto.Salsa do
       sum(x15, y15)::little-32>>
   end
 
-  def bxor_block(<<keystream::bytes-64>>, <<message::bytes-64>>) do
+  defp bxor_block(<<keystream::bytes-64>>, <<message::bytes-64>>) do
     :crypto.exor(keystream, message)
   end
 
-  def bxor_block(<<keystream::bytes-64>>, message) when byte_size(message) < 64 do
+  defp bxor_block(<<keystream::bytes-64>>, message) when byte_size(message) < 64 do
     keystream
     |> binary_part(0, byte_size(message))
     |> :crypto.exor(message)
   end
 
-  def keystream_block(key, nonce, block_count) do
+  defp keystream_block(key, nonce, block_count) do
     block =
       key
       |> expand(nonce, block_count)
@@ -158,14 +158,16 @@ defmodule Nostrum.Voice.Crypto.Salsa do
     bxor_block(keystream, message)
   end
 
+  @spec encrypt(binary(), <<_::256>>, <<_::192>>) :: iodata()
   def encrypt(plain_text, <<key::bytes-32>> = _key, <<nonce::bytes-24>> = _nonce) do
     {xsalsa_key, xsalsa_nonce} = xsalsa20_key_and_nonce(key, nonce)
     message = <<0::unit(8)-size(32)>> <> plain_text
     <<mac_otp::bytes-32, cipher_text::binary>> = crypt(xsalsa_key, xsalsa_nonce, message)
     cipher_tag = :crypto.mac(:poly1305, mac_otp, cipher_text)
-    cipher_tag <> cipher_text
+    [cipher_tag, cipher_text]
   end
 
+  @spec decrypt(binary(), <<_::256>>, <<_::192>>) :: binary() | :error
   def decrypt(
         <<cipher_tag::bytes-16, cipher_text::binary>> = _encrypted_message,
         <<key::bytes-32>>,

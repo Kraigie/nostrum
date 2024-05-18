@@ -2,124 +2,164 @@ defmodule Nostrum.Voice.Crypto do
   @moduledoc false
 
   alias Nostrum.Struct.VoiceState
+  alias Nostrum.Struct.VoiceWSState
   alias Nostrum.Voice.Audio
+  alias Nostrum.Voice.Crypto.Aes
   alias Nostrum.Voice.Crypto.Chacha
   alias Nostrum.Voice.Crypto.Salsa
 
-  @type cipher :: :xchacha20_poly1305 | :xsalsa20_poly1305 | :aes256_gcm
+  @type cipher_rtpsize ::
+          :xsalsa20_poly1305_lite_rtpsize
+          | :aead_xchacha20_poly1305_rtpsize
+          | :aead_aes256_gcm_rtpsize
 
-  @cipher Application.compile_env(:nostrum, :voice_encryption_mode, :aes256_gcm)
+  @type cipher_alias :: :aes256_gcm | :xchacha20_poly1305
 
-  @encryption_mode Map.get(
-                     %{
-                       xchacha20_poly1305: "aead_xchacha20_poly1305_rtpsize",
-                       xsalsa20_poly1305: "xsalsa20_poly1305_lite_rtpsize",
-                       aes256_gcm: "aead_aes256_gcm_rtpsize"
-                     },
-                     @cipher,
-                     "aead_aes256_gcm_rtpsize"
-                   )
+  @type cipher_non_rtpsize ::
+          :xsalsa20_poly1305
+          | :xsalsa20_poly1305_suffix
+          | :xsalsa20_poly1305_lite
+          | :aead_aes256_gcm
 
-  def encryption_mode, do: @encryption_mode
+  @type cipher :: cipher_non_rtpsize() | cipher_alias() | cipher_rtpsize()
+
+  defp mode, do: Application.get_env(:nostrum, :voice_encryption_mode, :aes256_gcm)
+
+  def encryption_mode do
+    mode = mode()
+
+    Map.get(
+      %{
+        xchacha20_poly1305: "aead_xchacha20_poly1305_rtpsize",
+        aes256_gcm: "aead_aes256_gcm_rtpsize"
+      },
+      mode,
+      "#{mode}"
+    )
+  end
 
   def encrypt(voice, data) do
-    apply(__MODULE__, :"encrypt_#{@cipher}", [voice, data])
+    apply(__MODULE__, :"encrypt_#{mode()}", [voice, data])
   end
 
-  def decrypt(voice, data) do
-    apply(__MODULE__, :"decrypt_#{@cipher}", [voice, data])
+  def decrypt(%VoiceState{secret_key: key}, data), do: decrypt(key, data)
+  def decrypt(%VoiceWSState{secret_key: key}, data), do: decrypt(key, data)
+
+  def decrypt(key, data) do
+    apply(__MODULE__, :"decrypt_#{mode()}", [key, data])
   end
 
-  def encrypt_xchacha20_poly1305(%VoiceState{secret_key: key, rtp_sequence: seq} = voice, data) do
+  def encrypt_xsalsa20_poly1305(%VoiceState{secret_key: key} = voice, data) do
     header = Audio.rtp_header(voice)
 
-    unpadded_nonce = <<seq::32>>
+    nonce = header <> <<0::unit(8)-size(12)>>
 
-    # 24 byte nonce
-    nonce = unpadded_nonce <> <<0::unit(8)-size(20)>>
-
-    {xchacha_key, xchacha_nonce} = Chacha.xchacha20_key_and_nonce(key, nonce)
-
-    {cipher_text, tag} =
-      :crypto.crypto_one_time_aead(
-        :chacha20_poly1305,
-        xchacha_key,
-        xchacha_nonce,
-        data,
-        _aad = header,
-        _encrypt = true
-      )
-
-    [header, cipher_text, tag, unpadded_nonce]
+    [header, Salsa.encrypt(data, key, nonce)]
   end
 
-  def decrypt_xchacha20_poly1305(%VoiceState{secret_key: key}, data) do
-    {header, cipher_text, tag, nonce, ext_len} = decode_packet(data, 24)
-    {xchacha_key, xchacha_nonce} = Chacha.xchacha20_key_and_nonce(key, nonce)
-
-    <<_exts::unit(32)-size(ext_len), opus::binary>> =
-      :crypto.crypto_one_time_aead(
-        :chacha20_poly1305,
-        xchacha_key,
-        xchacha_nonce,
-        cipher_text,
-        _aad = header,
-        tag,
-        _encrypt = false
-      )
-
-    opus
-  end
-
-  def encrypt_xsalsa20_poly1305(%VoiceState{secret_key: key, rtp_sequence: seq} = voice, data) do
+  def encrypt_xsalsa20_poly1305_suffix(%VoiceState{secret_key: key} = voice, data) do
     header = Audio.rtp_header(voice)
 
-    unpadded_nonce = <<seq::32>>
+    nonce = :crypto.strong_rand_bytes(24)
 
-    # 24 byte nonce
-    nonce = unpadded_nonce <> <<0::unit(8)-size(20)>>
+    [header, Salsa.encrypt(data, key, nonce), nonce]
+  end
+
+  def encrypt_xsalsa20_poly1305_lite(%VoiceState{secret_key: key} = voice, data) do
+    header = Audio.rtp_header(voice)
+
+    {unpadded_nonce, nonce} = lite_nonce(voice)
 
     [header, Salsa.encrypt(data, key, nonce), unpadded_nonce]
   end
 
-  def decrypt_xsalsa20_poly1305(%VoiceState{secret_key: key}, data) do
-    {_header, cipher_text, _tag, nonce, ext_len} = decode_packet(data, 24, 0)
-    <<_exts::unit(32)-size(ext_len), opus::binary>> = Salsa.decrypt(cipher_text, key, nonce)
-    opus
-  end
+  def encrypt_xsalsa20_poly1305_lite_rtpsize(voice, data),
+    do: encrypt_xsalsa20_poly1305_lite(voice, data)
 
-  def encrypt_aes256_gcm(%VoiceState{secret_key: key, rtp_sequence: seq} = voice, data) do
+  def encrypt_xchacha20_poly1305(voice, data),
+    do: encrypt_aead_xchacha20_poly1305_rtpsize(voice, data)
+
+  def encrypt_aead_xchacha20_poly1305_rtpsize(%VoiceState{secret_key: key} = voice, data) do
     header = Audio.rtp_header(voice)
 
-    unpadded_nonce = <<seq::32>>
+    {unpadded_nonce, nonce} = lite_nonce(voice)
 
-    # 12 byte nonce
-    nonce = unpadded_nonce <> <<0::unit(8)-size(8)>>
-
-    {cipher_text, tag} =
-      :crypto.crypto_one_time_aead(:aes_256_gcm, key, nonce, data, _aad = header, _encrypt = true)
-
-    [header, cipher_text, tag, unpadded_nonce]
+    [header, Chacha.encrypt(data, key, nonce, _aad = header), unpadded_nonce]
   end
 
-  def decrypt_aes256_gcm(%VoiceState{secret_key: key}, data) do
-    {header, cipher_text, tag, nonce, ext_len} = decode_packet(data, 12)
+  def encrypt_aead_aes256_gcm(voice, data), do: encrypt_aes256_gcm(voice, data)
+  def encrypt_aead_aes256_gcm_rtpsize(voice, data), do: encrypt_aes256_gcm(voice, data)
 
-    <<_exts::unit(32)-size(ext_len), opus::binary>> =
-      :crypto.crypto_one_time_aead(
-        :aes_256_gcm,
-        key,
-        nonce,
-        cipher_text,
-        _aad = header,
-        tag,
-        _encrypt = false
-      )
+  def encrypt_aes256_gcm(%VoiceState{secret_key: key} = voice, data) do
+    header = Audio.rtp_header(voice)
+
+    {unpadded_nonce, nonce} = lite_nonce(voice, 12)
+
+    [header, Aes.encrypt(data, key, nonce, _aad = header), unpadded_nonce]
+  end
+
+  def decrypt_xsalsa20_poly1305(key, <<header::bytes-size(12), cipher_text::binary>>) do
+    nonce = header <> <<0::unit(8)-size(12)>>
+
+    Salsa.decrypt(cipher_text, key, nonce)
+  end
+
+  def decrypt_xsalsa20_poly1305_lite(key, data) do
+    {_header, cipher_text, _tag = <<>>, nonce} = decode_packet(data, 4, 24, 0)
+
+    Salsa.decrypt(cipher_text, key, nonce)
+  end
+
+  def decrypt_xsalsa20_poly1305_suffix(key, data) do
+    {_header, cipher_text, _tag = <<>>, nonce} = decode_packet(data, 24, 24, 0)
+
+    Salsa.decrypt(cipher_text, key, nonce)
+  end
+
+  def decrypt_xsalsa20_poly1305_lite_rtpsize(key, data) do
+    {_header, cipher_text, _tag, nonce, ext_len} = decode_packet_rtpsize(data, 24, 0)
+
+    <<_exts::unit(32)-size(ext_len), opus::binary>> = Salsa.decrypt(cipher_text, key, nonce)
 
     opus
   end
 
-  @unpadded_nonce_length 4
+  def decrypt_xchacha20_poly1305(key, data),
+    do: decrypt_aead_xchacha20_poly1305_rtpsize(key, data)
+
+  def decrypt_aead_xchacha20_poly1305_rtpsize(key, data) do
+    {header, cipher_text, tag, nonce, ext_len} = decode_packet_rtpsize(data, 24)
+
+    <<_exts::unit(32)-size(ext_len), opus::binary>> =
+      Chacha.decrypt(cipher_text, key, nonce, _aad = header, tag)
+
+    opus
+  end
+
+  def decrypt_aes256_gcm(key, data), do: decrypt_aead_aes256_gcm_rtpsize(key, data)
+
+  def decrypt_aead_aes256_gcm_rtpsize(key, data) do
+    {header, cipher_text, tag, nonce, ext_len} = decode_packet_rtpsize(data, 12)
+
+    <<_exts::unit(32)-size(ext_len), opus::binary>> =
+      Aes.decrypt(cipher_text, key, nonce, _aad = header, tag)
+
+    opus
+  end
+
+  def decrypt_aead_aes256_gcm(key, data) do
+    {header, cipher_text, tag, nonce} = decode_packet(data, 4, 12, 16)
+
+    Aes.decrypt(cipher_text, key, nonce, _aad = header, tag)
+  end
+
+  @lite_nonce_length 4
+
+  defp lite_nonce(%VoiceState{rtp_sequence: rtp_sequence}, nonce_length \\ 24) do
+    unpadded_nonce = <<rtp_sequence::32>>
+    nonce = unpadded_nonce <> <<0::unit(8)-size(nonce_length - @lite_nonce_length)>>
+    {unpadded_nonce, nonce}
+  end
 
   @doc """
   Discord's newer encryption modes ending in '_rtpsize' leave the first 4 bytes of the RTP
@@ -143,20 +183,41 @@ defmodule Nostrum.Voice.Crypto do
   - RTP header extension length
     - for isolating the opus after decryption
   """
-  def decode_packet(
+  def decode_packet_rtpsize(
         <<header::bytes-size(12), 0xBE, 0xDE, ext_len::integer-16, rest::binary>>,
         nonce_length \\ 24,
         tag_length \\ 16
       )
-      when byte_size(rest) - (@unpadded_nonce_length + tag_length) > ext_len * 4 do
+      when byte_size(rest) - (@lite_nonce_length + tag_length) > ext_len * 4 do
     header = header <> <<0xBE, 0xDE, ext_len::integer-16>>
-    cipher_text_len = byte_size(rest) - (tag_length + @unpadded_nonce_length)
 
-    <<cipher_text::bytes-size(cipher_text_len), tag::bytes-size(tag_length),
-      unpadded_nonce::bytes-size(@unpadded_nonce_length)>> = rest
+    {cipher_text, tag, unpadded_nonce} = split_data(rest, @lite_nonce_length, tag_length)
 
-    nonce = unpadded_nonce <> <<0::unit(8)-size(nonce_length - @unpadded_nonce_length)>>
+    nonce = unpadded_nonce <> <<0::unit(8)-size(nonce_length - @lite_nonce_length)>>
 
     {header, cipher_text, tag, nonce, ext_len}
+  end
+
+  # Non "rtpsize" modes where everything is encrypted beyond the 12-byte header
+  def decode_packet(
+        <<header::bytes-size(12), rest::binary>>,
+        unpadded_nonce_length \\ @lite_nonce_length,
+        nonce_length \\ 24,
+        tag_length \\ 16
+      ) do
+    {cipher_text, tag, unpadded_nonce} = split_data(rest, unpadded_nonce_length, tag_length)
+
+    nonce = unpadded_nonce <> <<0::unit(8)-size(nonce_length - unpadded_nonce_length)>>
+
+    {header, cipher_text, tag, nonce}
+  end
+
+  defp split_data(data, unpadded_nonce_length, tag_length) do
+    cipher_text_length = byte_size(data) - (unpadded_nonce_length + tag_length)
+
+    <<cipher_text::bytes-size(cipher_text_length), tag::bytes-size(tag_length),
+      unpadded_nonce::bytes-size(unpadded_nonce_length)>> = data
+
+    {cipher_text, tag, unpadded_nonce}
   end
 end
