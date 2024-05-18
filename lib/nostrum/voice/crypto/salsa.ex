@@ -158,7 +158,7 @@ defmodule Nostrum.Voice.Crypto.Salsa do
     bxor_block(keystream, message)
   end
 
-  @spec encrypt(binary(), <<_::256>>, <<_::192>>) :: iodata()
+  @spec encrypt(binary(), <<_::256>>, <<_::192>>) :: iolist()
   def encrypt(plain_text, <<key::bytes-32>> = _key, <<nonce::bytes-24>> = _nonce) do
     {xsalsa_key, xsalsa_nonce} = xsalsa20_key_and_nonce(key, nonce)
     message = <<0::unit(8)-size(32)>> <> plain_text

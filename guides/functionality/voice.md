@@ -204,3 +204,28 @@ Available configuration options are as follows:
 - `:aes256_gcm` (alias for `:aead_aes256_gcm_rtpsize`)
 
 The first seven are Discord's available options, while the last two are shorter aliases.
+
+#### Implementation Details
+
+Of the seven supported modes, three different ciphers are used. The remaining differences
+are variations in how the nonce is determined and where the encrypted portion of the RTP packet begins.
+
+Erlang's `:crypto` module is leveraged as much as possible as the ciphers are NIFs.
+
+##### xsalsa20_poly1305
+
+The entire Salsa20/XSalsa20 cipher is implemented in elixir. The poly1305 MAC function is handled by the `:crypto` module.
+As a result, xsalsa_poly1305 modes will likely have the slowest performance.
+
+##### xchacha20_poly1305
+
+The `:crypto` module supports the `chacha20_poly1305` AEAD cipher. The only thing implemented in elixir 
+is the HChaCha20 hash function that generates a sub-key from the key and the longer nonce that XChaCha20 
+specifies, which is then passed to the `chacha20_poly1305` cipher.
+If your hardware doesn't have AES hardware acceleration, the `chacha` option may perform
+the best for you.
+
+##### aes256_gcm
+
+The `:crypto` module completely supports AES256 in GCM mode requiring no implementation in elixir. 
+Many CPUs have hardware acceleration specifically for AES. For these reasons, Nostrum defaults to `aes256_gcm`.

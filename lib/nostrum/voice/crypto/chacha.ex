@@ -105,7 +105,7 @@ defmodule Nostrum.Voice.Crypto.Chacha do
       x14::little-32, x15::little-32>>
   end
 
-  @spec encrypt(binary(), <<_::256>>, <<_::192>>, binary()) :: iodata()
+  @spec encrypt(binary(), <<_::256>>, <<_::192>>, binary()) :: iolist()
   def encrypt(plain_text, <<key::bytes-32>> = _key, <<nonce::bytes-24>> = _nonce, aad) do
     {xchacha_key, xchacha_nonce} = xchacha20_key_and_nonce(key, nonce)
 
