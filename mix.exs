@@ -81,6 +81,7 @@ defmodule Nostrum.Mixfile do
       "guides/advanced/pluggable_caching.md",
       "guides/advanced/multi_node.md",
       "guides/advanced/hot_code_upgrade.md",
+      "guides/advanced/gateway_compression.md",
       "guides/cheat-sheets/api.cheatmd",
       "guides/cheat-sheets/qlc.cheatmd",
       "guides/cheat-sheets/voice.cheatmd"
@@ -159,6 +160,7 @@ defmodule Nostrum.Mixfile do
       {:certifi, "~> 2.13"},
       {:kcl, "~> 1.4"},
       {:mime, "~> 1.6 or ~> 2.0"},
+      {:ezstd, "~> 1.1", optional: true},
       {:castle, "~> 0.3.0", runtime: false},
       {:ex_doc, "~> 0.32", only: :dev, runtime: false},
       {:credo, "~> 1.7.5", only: [:dev, :test], runtime: false},

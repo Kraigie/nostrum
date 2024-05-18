@@ -17,7 +17,7 @@ defmodule Nostrum.Struct.WSState do
     :last_heartbeat_ack,
     :heartbeat_ack,
     :heartbeat_interval,
-    :zlib_ctx
+    :compress_ctx
   ]
 
   @typedoc "The shard number"
@@ -73,8 +73,8 @@ defmodule Nostrum.Struct.WSState do
   @typedoc "Interval at which heartbeats are sent"
   @type heartbeat_interval :: pos_integer() | nil
 
-  @typedoc "Reference to the current zlib context"
-  @type zlib_ctx :: reference | nil
+  @typedoc "Reference to the current compression context"
+  @type compress_ctx :: reference | nil
 
   @type t :: %__MODULE__{
           shard_num: shard_num,
@@ -90,6 +90,6 @@ defmodule Nostrum.Struct.WSState do
           last_heartbeat_ack: last_heartbeat_ack,
           heartbeat_ack: heartbeat_ack,
           heartbeat_interval: heartbeat_interval,
-          zlib_ctx: zlib_ctx
+          compress_ctx: compress_ctx
         }
 end

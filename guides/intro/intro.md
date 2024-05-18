@@ -52,6 +52,9 @@ Apart from the `token` field mentioned above, the following fields are also supp
   of members for all guilds at startup. Depending on your [cache
   backend](../advanced/pluggable_caching.md), this may increase startup time
   and memory usage by quite a bit. Defaults to `false`.
+- `gateway_compression` - use either `:zlib` (default) or `:zstd` for compression
+  of messages from the Discord gateway. See the documentation on
+  [Gateway Compression](../advanced/gateway_compression.md) for more information.
 
 
 ### Voice-specific
