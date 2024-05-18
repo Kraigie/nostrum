@@ -46,12 +46,33 @@ defmodule Nostrum.Shard.Session do
   alias Nostrum.Shard.{Connector, Event, Payload}
   alias Nostrum.Struct.WSState
 
+  alias Nostrum.Shard.Session.Compression
+
   require Logger
 
   @behaviour :gen_statem
 
   # Query string to connect to when upgrading the connection.
-  @gateway_qs "/?compress=zlib-stream&encoding=etf&v=10"
+  @gateway_qs "/?encoding=etf&v=10"
+
+  @gateway_compress Application.compile_env(
+                      :nostrum,
+                      :gateway_compression,
+                      :zlib
+                    )
+
+  @compression_module (case @gateway_compress do
+                         :zlib ->
+                           Compression.Zlib
+
+                         :zstd ->
+                           Compression.Zstd.check_available!()
+                           Compression.Zstd
+
+                         _ ->
+                           raise ArgumentError,
+                                 "Unsupported compression type: #{@gateway_compress}"
+                       end)
 
   # Maximum time the initial connection may take.
   @timeout_connect :timer.seconds(5)
@@ -190,34 +211,44 @@ defmodule Nostrum.Shard.Session do
   # end
 
   def connecting_ws(:enter, _from, %{conn: conn} = data) do
-    Logger.debug("Upgrading connection to websocket")
+    Logger.debug("Upgrading connection to websocket with #{@gateway_compress} compression")
     set_timeout = {:state_timeout, @timeout_ws_upgrade, :upgrade_timeout}
-    stream = :gun.ws_upgrade(conn, @gateway_qs, [], %{flow: @standard_flow})
+    stream = :gun.ws_upgrade(conn, @gateway_qs <> compression_qs(), [], %{flow: @standard_flow})
     {:keep_state, %{data | stream: stream}, set_timeout}
   end
 
   def connecting_ws(
         :info,
         {:gun_upgrade, _conn, _stream, ["websocket"], _headers},
-        %{zlib_ctx: nil} = data
+        %{compress_ctx: nil} = data
       ) do
-    zlib_context = :zlib.open()
-    :zlib.inflateInit(zlib_context)
+    context = @compression_module.create_context()
 
     {:next_state, :connected,
-     %{data | zlib_ctx: zlib_context, last_heartbeat_ack: DateTime.utc_now(), heartbeat_ack: true}}
+     %{
+       data
+       | compress_ctx: context,
+         last_heartbeat_ack: DateTime.utc_now(),
+         heartbeat_ack: true
+     }}
   end
 
   def connecting_ws(
         :info,
         {:gun_upgrade, _conn, _stream, ["websocket"], _headers},
-        %{zlib_ctx: zlib_ctx} = data
+        %{compress_ctx: compress_ctx} = data
       ) do
     Logger.info("Re-established websocket connection")
-    :ok = :zlib.inflateReset(zlib_ctx)
+
+    compress_ctx = @compression_module.reset_context(compress_ctx)
 
     {:next_state, :connected,
-     %{data | last_heartbeat_ack: DateTime.utc_now(), heartbeat_ack: true}}
+     %{
+       data
+       | last_heartbeat_ack: DateTime.utc_now(),
+         heartbeat_ack: true,
+         compress_ctx: compress_ctx
+     }}
   end
 
   def connecting_ws(:state_timeout, :upgrade_timeout, _data) do
@@ -248,9 +279,10 @@ defmodule Nostrum.Shard.Session do
   end
 
   def connected(:info, {:gun_ws, _worker, stream, {:binary, frame}}, data) do
+    payload_decompressed = @compression_module.inflate(data.compress_ctx, frame)
+
     payload =
-      data.zlib_ctx
-      |> :zlib.inflate(frame)
+      payload_decompressed
       |> :erlang.iolist_to_binary()
       |> :erlang.binary_to_term()
 
@@ -374,5 +406,9 @@ defmodule Nostrum.Shard.Session do
 
         :timeout
     end
+  end
+
+  defp compression_qs do
+    "&compress=" <> Atom.to_string(@gateway_compress) <> "-stream"
   end
 end
