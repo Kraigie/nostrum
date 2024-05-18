@@ -144,7 +144,7 @@ defmodule Nostrum.Shard.Supervisor do
 
   @doc """
   Disconnects the shard with the given shard number from the Gateway.
-  This function returns resume_information given to `Nostrum.Shard.Supervisor.reconnect/1`.
+  This function returns `resume_information` given to `Nostrum.Shard.Supervisor.reconnect/1`.
   """
   @spec disconnect(shard_num()) :: resume_information()
   def disconnect(shard_num) do
@@ -164,7 +164,7 @@ defmodule Nostrum.Shard.Supervisor do
   end
 
   @doc """
-  Reconnect to the gateway using the given resume information.
+  Reconnect to the gateway using the given `resume_information`.
   In the unlikely event that a shard or session crashes, the connection will resume after a restart, potentially causing events to be delivered more than once.
   For more information about resume, please visit [the Discord Developer Portal](https://discord.com/developers/docs/topics/gateway#resuming).
   """
