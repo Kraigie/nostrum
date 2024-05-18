@@ -34,7 +34,7 @@ defmodule Nostrum.Cache.MessageCache.Noop do
   def update(payload), do: {nil, Util.cast(payload, {:struct, Message})}
 
   @impl MessageCache
-  def delete(_channel_id, _message_id), do: :noop
+  def delete(_channel_id, _message_id), do: nil
 
   @impl MessageCache
   def bulk_delete(_channel_id, _message_ids), do: []

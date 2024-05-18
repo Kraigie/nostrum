@@ -150,7 +150,7 @@ if Code.ensure_loaded?(:mnesia) do
 
     @impl MessageCache
     @doc "Removes a message from the cache."
-    @spec delete(Channel.id(), Message.id()) :: Message.t() | :noop
+    @spec delete(Channel.id(), Message.id()) :: Message.t() | nil
     def delete(channel_id, message_id) do
       :mnesia.activity(:sync_transaction, fn ->
         case :mnesia.read(@table_name, message_id, :write) do
@@ -162,7 +162,7 @@ if Code.ensure_loaded?(:mnesia) do
             message
 
           _ ->
-            :noop
+            nil
         end
       end)
     end
@@ -176,7 +176,7 @@ if Code.ensure_loaded?(:mnesia) do
     def bulk_delete(channel_id, message_ids) do
       Enum.reduce(message_ids, [], fn message_id, list ->
         case delete(channel_id, message_id) do
-          :noop ->
+          nil ->
             list
 
           message ->

@@ -253,13 +253,8 @@ defmodule Nostrum.Shard.Dispatch do
     do: {event, MessageCache.create(p), state}
 
   def handle_event(:MESSAGE_DELETE = event, p, state) do
-    case MessageCache.delete(p.channel_id, p.id) do
-      {:ok, message} ->
-        {event, MessageDelete.to_struct(p, message), state}
-
-      :noop ->
-        {event, MessageDelete.to_struct(p), state}
-    end
+    deleted_message = MessageCache.delete(p.channel_id, p.id)
+    {event, MessageDelete.to_struct(p, deleted_message), state}
   end
 
   def handle_event(:MESSAGE_DELETE_BULK = event, p, state) do

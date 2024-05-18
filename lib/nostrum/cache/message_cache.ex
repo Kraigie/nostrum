@@ -65,7 +65,7 @@ defmodule Nostrum.Cache.MessageCache do
 
   Expects the deleted message to be returned if it was found.
   """
-  @callback delete(Channel.id(), Message.id()) :: Message.t() | :noop
+  @callback delete(Channel.id(), Message.id()) :: Message.t() | nil
 
   @doc """
   Deletes multiple messages from the cache, any message id's given

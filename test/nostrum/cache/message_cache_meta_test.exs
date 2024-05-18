@@ -108,8 +108,8 @@ defmodule Nostrum.Cache.MessageCacheMetaTest do
       end
 
       describe "delete/2" do
-        test "returns :noop on an uncached message" do
-          assert :noop == @cache.delete(10_258_109_258_109_258_125, 10_258_109_258_109_258_125)
+        test "returns nil on an uncached message" do
+          assert nil == @cache.delete(10_258_109_258_109_258_125, 10_258_109_258_109_258_125)
         end
       end
     end
