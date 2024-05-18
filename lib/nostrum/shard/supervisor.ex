@@ -34,6 +34,25 @@ defmodule Nostrum.Shard.Supervisor do
      handle yet, thus growing the message queue and the memory usage.
   """
 
+  @typedoc """
+  Shard number. Range is `0..total_shard_count-1`.
+  """
+  @type shard_num :: non_neg_integer()
+  @typedoc """
+  Represents gateway connect information.
+  [gateway_url, shard_num, total_shard_count]
+  """
+  @type shard_information :: list(any())
+
+  @typedoc """
+  Represents gateway resume information.
+  """
+  @type resume_information :: %{
+          shard: shard_information(),
+          resume_gateway: String.t() | nil,
+          session: String.t(),
+          seq: pos_integer()
+        }
   use DynamicSupervisor
 
   alias Nostrum.Error.CacheError
@@ -123,6 +142,11 @@ defmodule Nostrum.Shard.Supervisor do
     {Shard, [gateway, shard_num, total]}
   end
 
+  @doc """
+  Disconnects the shard with the given shard number from the Gateway.
+  This function returns resume_information given to `Nostrum.Shard.Supervisor.reconnect/1`.
+  """
+  @spec disconnect(shard_num()) :: resume_information()
   def disconnect(shard_num) do
     :"Nostrum.Shard-#{shard_num}"
     |> Supervisor.which_children()
@@ -131,10 +155,20 @@ defmodule Nostrum.Shard.Supervisor do
     |> Session.disconnect()
   end
 
+  @doc """
+  Spawns a shard with the specified number and connects it to the discord gateway.
+  """
+  @spec connect(shard_information()) :: DynamicSupervisor.on_start_child()
   def connect([url, num, total]) do
     DynamicSupervisor.start_child(__MODULE__, create_worker(url, num, total))
   end
 
+  @doc """
+  Reconnect to the gateway using the given resume information.
+  In the unlikely event that a shard or session crashes, the connection will resume after a restart, potentially causing events to be delivered more than once.
+  For more information about resume, please visit [the Discord Developer Portal](https://discord.com/developers/docs/topics/gateway#resuming).
+  """
+  @spec reconnect(resume_information()) :: DynamicSupervisor.on_start_child()
   def reconnect(
         %{
           shard: [_gateway, _shard_num, _total],
