@@ -191,10 +191,15 @@ if Code.ensure_loaded?(:mnesia) do
     @spec channel_delete(Channel.id()) :: :ok
     def channel_delete(channel_id) do
       :mnesia.activity(:sync_transaction, fn ->
-        :mnesia.index_read(@table_name, channel_id, :channel_id)
-        |> Enum.each(fn {_tag, message_id, _channel_id, _author_id, _data} ->
-          :mnesia.delete(@table_name, message_id, :write)
-        end)
+        handle = :nostrum_message_cache_qlc.all_message_ids_in_channel(channel_id, __MODULE__)
+
+        :qlc.fold(
+          fn message_id, _ ->
+            :mnesia.delete(@table_name, message_id, :write)
+          end,
+          nil,
+          handle
+        )
       end)
 
       :ok

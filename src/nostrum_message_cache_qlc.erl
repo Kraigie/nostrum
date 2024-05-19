@@ -12,7 +12,7 @@
 % I assume this is caused by the Erlang parse transform doing smart things at compile time.
 
 -module(nostrum_message_cache_qlc).
--export([by_channel/2, by_channel_and_author/3, by_author/2, by_author/4, sorted_by_age_with_limit/2]).
+-export([by_channel/2, by_channel_and_author/3, by_author/2, by_author/4, sorted_by_age_with_limit/2, all_message_ids_in_channel/2]).
 
 -include_lib("stdlib/include/qlc.hrl").
 
@@ -37,6 +37,16 @@ by_channel(RequestedChannelId, Cache) ->
     Q1 = qlc:q([{MessageId, Message} || {MessageId, #{channel_id := ChannelId} = Message} <- Cache:query_handle(),
                                 ChannelId =:= RequestedChannelId]),
     qlc:keysort(1, Q1).
+
+% lookup the ids of all cached messages for a given channel.
+-spec all_message_ids_in_channel('Elixir.Nostrum.Struct.Channel':id(), module()) -> qlc:query_handle().
+all_message_ids_in_channel(RequestedChannelId, ?MNESIA_CACHE) ->
+    qlc:q([MessageId || {_Tag, MessageId, ChannelId, _, _Message} <- ?MNESIA_CACHE:query_handle(),
+                                ChannelId =:= RequestedChannelId]);
+
+all_message_ids_in_channel(RequestedChannelId, Cache) ->
+    qlc:q([MessageId || {MessageId, #{channel_id := ChannelId} = _Message} <- Cache:query_handle(),
+                                ChannelId =:= RequestedChannelId]).
 
 % Lookup all cached messages in a channel by a specific user.
 % The output is not sorted.
