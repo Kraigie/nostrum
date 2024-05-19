@@ -3,11 +3,7 @@ if Code.ensure_loaded?(:mnesia) do
     @moduledoc """
     An Mnesia-based cache for messages.
 
-    Please note that this module is only compiled if Mnesia is available on
-    your system. See the Mnesia section of the [State](functionality/state.md)
-    documentation for more information.
-
-    To retrieve the table name used by this cache, use `table/0`.
+    #{Nostrum.Cache.Base.mnesia_note()}
 
     By default, the cache will store up to 10,000 messages.
     To change this limit, add the `:message_cache_size_limit` key to the `:caches`

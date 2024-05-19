@@ -40,7 +40,7 @@ defmodule Nostrum.Cache.MessageCache do
   # callbacks
 
   @doc """
-  Retrieve a single `Nostrum.Struct.Message` from the cache by channel id and message id.
+  Retrieve a single `Nostrum.Struct.Message` from the cache by its ID.
   """
   @callback get(Message.id()) :: {:ok, Message.t()} | {:error, :not_found}
 
@@ -68,19 +68,19 @@ defmodule Nostrum.Cache.MessageCache do
   @callback delete(Channel.id(), Message.id()) :: Message.t() | nil
 
   @doc """
-  Deletes multiple messages from the cache, any message id's given
+  Deletes multiple messages from the cache, any message IDs given
   will always be for the same channel.
 
-  Returns a list of the deleted messages,
-  if a message was not found in the cache, it will
-  still be included in the returned list with
-  only the id and channel_id set.
+  Returns a list of the deleted messages.
+  Note that if a message was not found in the cache, it will
+  not be included in the returned list.
   """
   @callback bulk_delete(Channel.id(), [Message.id()]) :: [Message.t()]
 
   @doc """
-  Callback for when a channel is deleted
-  any messages in the cache for that channel should be removed.
+  Called when a channel is deleted.
+
+  Any messages in the cache for the channel should be removed.
   """
   @callback channel_delete(Channel.id()) :: :ok
 

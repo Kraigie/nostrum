@@ -38,7 +38,7 @@ by_channel(RequestedChannelId, Cache) ->
                                 ChannelId =:= RequestedChannelId]),
     qlc:keysort(1, Q1).
 
-% lookup the ids of all cached messages for a given channel.
+% lookup the IDs of all cached messages for a given channel.
 -spec all_message_ids_in_channel('Elixir.Nostrum.Struct.Channel':id(), module()) -> qlc:query_handle().
 all_message_ids_in_channel(RequestedChannelId, ?MNESIA_CACHE) ->
     qlc:q([MessageId || {_Tag, MessageId, ChannelId, _, _Message} <- ?MNESIA_CACHE:query_handle(),
@@ -103,7 +103,7 @@ sorted_by_age_with_limit(Cache, Limit) ->
 
 sort_with_limit(Q1, Limit) ->
     Fn = fun (MessageId, {Count1, Set1, Largest1}) ->
-        if (MessageId < Largest1) and (Count1 >= Limit) ->
+        if (MessageId < Largest1) andalso (Count1 >= Limit) ->
             Set2 = gb_sets:delete(Largest1, Set1),
             Set3 = gb_sets:insert(MessageId, Set2),
             Largest2 = gb_sets:largest(Set3),
