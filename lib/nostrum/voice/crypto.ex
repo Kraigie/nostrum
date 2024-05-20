@@ -25,28 +25,25 @@ defmodule Nostrum.Voice.Crypto do
 
   @mode Application.compile_env(:nostrum, :voice_encryption_mode, :aes256_gcm)
 
-  def encryption_mode do
-    Map.get(
-      %{
-        xchacha20_poly1305: "aead_xchacha20_poly1305_rtpsize",
-        aes256_gcm: "aead_aes256_gcm_rtpsize"
-      },
-      @mode,
-      "#{@mode}"
-    )
-  end
+  @mode_string Map.get(
+                 %{
+                   xchacha20_poly1305: "aead_xchacha20_poly1305_rtpsize",
+                   aes256_gcm: "aead_aes256_gcm_rtpsize"
+                 },
+                 @mode,
+                 "#{@mode}"
+               )
+
+  def encryption_mode, do: @mode_string
 
   def encrypt(voice, data) do
     header = Audio.rtp_header(voice)
-    apply(__MODULE__, :"encrypt_#{@mode}", [voice, data, header])
+    unquote(:"encrypt_#{@mode}")(voice, data, header)
   end
 
   def decrypt(%VoiceState{secret_key: key}, data), do: decrypt(key, data)
   def decrypt(%VoiceWSState{secret_key: key}, data), do: decrypt(key, data)
-
-  def decrypt(key, data) do
-    apply(__MODULE__, :"decrypt_#{@mode}", [key, data])
-  end
+  def decrypt(key, data), do: unquote(:"decrypt_#{@mode}")(key, data)
 
   def encrypt_xsalsa20_poly1305(%VoiceState{secret_key: key}, data, header) do
     nonce = header <> <<0::unit(8)-size(12)>>
