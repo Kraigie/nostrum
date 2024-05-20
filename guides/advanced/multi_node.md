@@ -40,7 +40,7 @@ changing your application definition in `mix.exs` as follows:
       mod: {MyBot.Application, []},
       included_applications: [:nostrum],
       # You can see this with `mix app.tree nostrum`
-      extra_applications: [:certifi, :gun, :inets, :jason, :kcl, :mime]
+      extra_applications: [:certifi, :gun, :inets, :jason, :mime]
       # ...
     ]
   end
@@ -53,7 +53,7 @@ as command frameworks like `:nosedrum`:
 ```elixir
   defp deps do
     [
-      {:nostrum, "~> 0.8", runtime: false},
+      {:nostrum, "~> 0.9", runtime: false},
       # {:nosedrum, "~> 0.6", runtime: false},
     ]
   end

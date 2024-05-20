@@ -177,3 +177,60 @@ packets returned per invocation and the option to return the raw RTP packet. In 
 likely won't be missed when consuming incoming voice packets asynchronously.
 Note that the third element in the event is of type
 `t:Nostrum.Struct.VoiceWSState.t/0` and not `t:Nostrum.Struct.WSState.t/0`.
+
+## Encryption Modes
+
+Nostrum supports all of Discord's available encryption modes for voice channels.
+The encryption mode is invisible to the user, and you will likely never need to touch it.
+
+Different encryption modes may have different performance characteristics depending on the
+hardware architecture your bot is running on. If you're interested, keep reading.
+
+#### Encryption Mode Configuration Options
+
+This is a compile-time configuration option, so should you wish to set it,
+do it in `config.exs` or one of its imported config files, *not* `runtime.exs`.
+
+```elixir
+config :nostrum, :voice_encryption_mode, :aes256_gcm # Default
+```
+
+Available configuration options are as follows:
+- `:xsalsa20_poly1305`
+- `:xsalsa20_poly1305_suffix`
+- `:xsalsa20_poly1305_lite`
+- `:xsalsa20_poly1305_lite_rtpsize` *(not yet documented by Discord)*
+- `:aead_xchacha20_poly1305_rtpsize` *(not yet documented by Discord)*
+- `:aead_aes256_gcm` *(not yet documented by Discord)*
+- `:aead_aes256_gcm_rtpsize` *(not yet documented by Discord)*
+- `:xchacha20_poly1305` (alias for `:aead_xchacha20_poly1305_rtpsize`)
+- `:aes256_gcm` (alias for `:aead_aes256_gcm_rtpsize`)
+
+The first seven are Discord's available options, while the last two are shorter aliases.
+
+The latter four of Discord's seven modes are not yet documented, but [will be soon](https://github.com/discord/discord-api-docs/pull/6801).
+
+#### Implementation Details
+
+Of the seven supported modes, three different ciphers are used. The remaining differences
+are variations in how the nonce is determined and where the encrypted portion of the RTP packet begins.
+
+Erlang's `:crypto` module is leveraged as much as possible as the ciphers are NIFs.
+
+##### xsalsa20_poly1305
+
+The entire Salsa20/XSalsa20 cipher is implemented in elixir. The poly1305 MAC function is handled by the `:crypto` module.
+As a result, xsalsa_poly1305 modes will likely have the slowest performance.
+
+##### xchacha20_poly1305
+
+The `:crypto` module supports the `chacha20_poly1305` AEAD cipher. The only thing implemented in elixir 
+is the HChaCha20 hash function that generates a sub-key from the key and the longer nonce that XChaCha20 
+specifies, which is then passed to the `chacha20_poly1305` cipher.
+If your hardware doesn't have AES hardware acceleration, the `chacha` option may perform
+the best for you.
+
+##### aes256_gcm
+
+The `:crypto` module completely supports AES256 in GCM mode requiring no implementation in elixir. 
+Many CPUs have hardware acceleration specifically for AES. For these reasons, Nostrum defaults to `aes256_gcm`.

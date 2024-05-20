@@ -158,7 +158,6 @@ defmodule Nostrum.Mixfile do
       {:jason, "~> 1.4"},
       {:gun, "~> 2.0"},
       {:certifi, "~> 2.13"},
-      {:kcl, "~> 1.4"},
       {:mime, "~> 1.6 or ~> 2.0"},
       {:ezstd, "~> 1.1", optional: true},
       {:castle, "~> 0.3.0", runtime: false},

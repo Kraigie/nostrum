@@ -3,8 +3,9 @@ defmodule Nostrum.Voice.Payload do
 
   alias Nostrum.Cache.Me
   alias Nostrum.Constants
-  alias Nostrum.Voice.Audio
-  alias Nostrum.Struct.{VoiceState, VoiceWSState}
+  alias Nostrum.Struct.VoiceState
+  alias Nostrum.Struct.VoiceWSState
+  alias Nostrum.Voice.Crypto
 
   require Logger
 
@@ -45,7 +46,7 @@ defmodule Nostrum.Voice.Payload do
       data: %{
         address: ip,
         port: port,
-        mode: Audio.encryption_mode()
+        mode: Crypto.encryption_mode()
       }
     }
     |> build_payload("SELECT_PROTOCOL")

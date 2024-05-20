@@ -5,9 +5,13 @@ defmodule Nostrum.Voice.Session do
   alias Nostrum.Constants
   alias Nostrum.ConsumerGroup
   alias Nostrum.Shard.Dispatch
-  alias Nostrum.Struct.{VoiceState, VoiceWSState}
+  alias Nostrum.Struct.VoiceState
+  alias Nostrum.Struct.VoiceWSState
   alias Nostrum.Voice
-  alias Nostrum.Voice.{Event, Opus, Payload}
+  alias Nostrum.Voice.Crypto
+  alias Nostrum.Voice.Event
+  alias Nostrum.Voice.Opus
+  alias Nostrum.Voice.Payload
 
   require Logger
 
@@ -138,9 +142,8 @@ defmodule Nostrum.Voice.Session do
       <<2::2, 0::1, 1::5, 201::8, _rest::binary>> ->
         :noop
 
-      <<header::binary-size(12), data::binary>> ->
-        nonce = header <> <<0::8*12>>
-        payload = Kcl.secretunbox(data, nonce, state.secret_key)
+      <<header::bytes-size(12), _::binary>> = data ->
+        payload = Crypto.decrypt(state, data)
         <<_::16, seq::integer-16, time::integer-32, ssrc::integer-32>> = header
         opus = Opus.strip_rtp_ext(payload)
         incoming_packet = Payload.voice_incoming_packet({{seq, time, ssrc}, opus})
