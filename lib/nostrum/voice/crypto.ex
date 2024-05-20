@@ -116,7 +116,7 @@ defmodule Nostrum.Voice.Crypto do
     do: decrypt_aead_xchacha20_poly1305_rtpsize(key, data)
 
   def decrypt_aead_xchacha20_poly1305_rtpsize(key, data) do
-    {header, cipher_text, tag, nonce, ext_len} = decode_packet_rtpsize(data, 24)
+    {header, cipher_text, tag, nonce, ext_len} = decode_packet_rtpsize(data, 24, 16)
 
     <<_exts::unit(32)-size(ext_len), opus::binary>> =
       Chacha.decrypt(cipher_text, key, nonce, _aad = header, tag)
@@ -127,7 +127,7 @@ defmodule Nostrum.Voice.Crypto do
   def decrypt_aes256_gcm(key, data), do: decrypt_aead_aes256_gcm_rtpsize(key, data)
 
   def decrypt_aead_aes256_gcm_rtpsize(key, data) do
-    {header, cipher_text, tag, nonce, ext_len} = decode_packet_rtpsize(data, 12)
+    {header, cipher_text, tag, nonce, ext_len} = decode_packet_rtpsize(data, 12, 16)
 
     <<_exts::unit(32)-size(ext_len), opus::binary>> =
       Aes.decrypt(cipher_text, key, nonce, _aad = header, tag)
@@ -171,8 +171,8 @@ defmodule Nostrum.Voice.Crypto do
   #   - for isolating the opus after decryption
   defp decode_packet_rtpsize(
          <<header::bytes-size(12), 0xBE, 0xDE, ext_len::integer-16, rest::binary>>,
-         nonce_length \\ 24,
-         tag_length \\ 16
+         nonce_length,
+         tag_length
        )
        when byte_size(rest) - (@lite_nonce_length + tag_length) > ext_len * 4 do
     header = header <> <<0xBE, 0xDE, ext_len::integer-16>>
@@ -187,9 +187,9 @@ defmodule Nostrum.Voice.Crypto do
   # Non "rtpsize" modes where everything is encrypted beyond the 12-byte header
   defp decode_packet(
          <<header::bytes-size(12), rest::binary>>,
-         unpadded_nonce_length \\ @lite_nonce_length,
-         nonce_length \\ 24,
-         tag_length \\ 16
+         unpadded_nonce_length,
+         nonce_length,
+         tag_length
        ) do
     {cipher_text, tag, unpadded_nonce} = split_data(rest, unpadded_nonce_length, tag_length)
 
