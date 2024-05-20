@@ -14,7 +14,7 @@
 
     <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
     <script src="dist/handlebars.templates-IHH6HKET.js"></script>
-    <script src="dist/sidebar_items-125F8E10.js"></script>
+    <script src="dist/sidebar_items-2C1026A5.js"></script>
     <script src="docs_config.js"></script>
     <script async src="dist/html-GXQ6W6IF.js"></script>
 
@@ -137,7 +137,7 @@ Pages
   </h1>
 
 <p>nostrum is an Elixir library that can be used to interact with Discord.</p><p>To see documentation about a specific part of the library, please visit one of
-the following:</p><ul><li><a href="api.html">API</a> - Methods to interact with the RESTful API (and some other goodies).</li><li><a href="state.html">State</a> - Caches that keep information from Discord fresh at your disposal.</li><li><a href="event_handling.html">Events</a> - Handling events from Discord as they come in.</li><li><a href="voice.html">Voice</a> - Playing audio through Discord voice channels.</li></ul><h2 id="setup" class="section-heading">
+the following:</p><ul><li><a href="api-1.html">API</a> - Methods to interact with the RESTful API (and some other goodies).</li><li><a href="state.html">State</a> - Caches that keep information from Discord fresh at your disposal.</li><li><a href="event_handling.html">Events</a> - Handling events from Discord as they come in.</li><li><a href="voice-2.html">Voice</a> - Playing audio through Discord voice channels.</li></ul><h2 id="setup" class="section-heading">
   <a href="#setup" class="hover-link">
     <i class="ri-link-m" aria-hidden="true"></i>
   </a>
@@ -145,11 +145,11 @@ the following:</p><ul><li><a href="api.html">API</a> - Methods to interact with 
 </h2>
 <p>There are two versions of nostrum, a stable version released on Hex and a dev
 version on GitHub. The dev version will be more up to date but will likely
-have more errors.</p><pre><code class="makeup elixir" translate="no"><span class="kd">def</span><span class="w"> </span><span class="nf">deps</span><span class="w"> </span><span class="k" data-group-id="5147906389-1">do</span><span class="w">
-  </span><span class="p" data-group-id="5147906389-2">[</span><span class="p" data-group-id="5147906389-3">{</span><span class="ss">:nostrum</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;~&gt; 0.9&quot;</span><span class="p" data-group-id="5147906389-3">}</span><span class="p" data-group-id="5147906389-2">]</span><span class="w">
+have more errors.</p><pre><code class="makeup elixir" translate="no"><span class="kd">def</span><span class="w"> </span><span class="nf">deps</span><span class="w"> </span><span class="k" data-group-id="8581523950-1">do</span><span class="w">
+  </span><span class="p" data-group-id="8581523950-2">[</span><span class="p" data-group-id="8581523950-3">{</span><span class="ss">:nostrum</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;~&gt; 0.9&quot;</span><span class="p" data-group-id="8581523950-3">}</span><span class="p" data-group-id="8581523950-2">]</span><span class="w">
   </span><span class="c1"># Or, for bleeding edge changes:</span><span class="w">
   </span><span class="c1"># [{:nostrum, github: &quot;Kraigie/nostrum&quot;}]</span><span class="w">
-</span><span class="k" data-group-id="5147906389-1">end</span></code></pre><p>Next up, you need to configure nostrum. The most basic configuration is simply
+</span><span class="k" data-group-id="8581523950-1">end</span></code></pre><p>Next up, you need to configure nostrum. The most basic configuration is simply
 setting a token to log in with:</p><pre><code class="makeup elixir" translate="no"><span class="n">config</span><span class="w"> </span><span class="ss">:nostrum</span><span class="p">,</span><span class="w">
   </span><span class="ss">token</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;666&quot;</span><span class="w">  </span><span class="c1"># The token of your bot as a string</span></code></pre><h2 id="configuration-options" class="section-heading">
   <a href="#configuration-options" class="hover-link">
@@ -179,13 +179,14 @@ Defaults to <code class="inline">&quot;ffmpeg&quot;</code>.</li><li><code class=
 audio with youtube-dl support. Defaults to <code class="inline">&quot;youtube-dl&quot;</code>.</li><li><code class="inline">streamlink</code> - Specifies the path to the <code class="inline">streamlink</code> executable for playing
 livestream audio with streamlink support. Defaults to <code class="inline">&quot;streamlink&quot;</code>.</li><li><code class="inline">audio_timeout</code> - Milliseconds that input must begin generating audio by
 upon invoking <code class="inline">play</code>. More information about this option can be found in the
-<a href="./voice.html">voice</a> documentation page. Defaults to <code class="inline">20_000</code> (20s).</li><li><code class="inline">audio_frames_per_burst</code> - Number of opus frames to send at a time while
+<a href="./voice-2.html">voice</a> documentation page. Defaults to <code class="inline">20_000</code> (20s).</li><li><code class="inline">audio_frames_per_burst</code> - Number of opus frames to send at a time while
 playing audio. More information about this option can be found in the
-<a href="./voice.html">voice</a> documentation page. Defaults to <code class="inline">10</code>.</li><li><code class="inline">voice_auto_connect</code> - This will determine if Nostrum automatically connects
+<a href="./voice-2.html">voice</a> documentation page. Defaults to <code class="inline">10</code>.</li><li><code class="inline">voice_auto_connect</code> - This will determine if Nostrum automatically connects
 to voice websockets gateways upon joining voice channels. If set to <code class="inline">false</code>
 but you still wish to connect to the voice gateway, you can do so manually
 by calling <a href="Nostrum.Voice.html#connect_to_gateway/1"><code class="inline">Nostrum.Voice.connect_to_gateway/1</code></a> after joining a voice
-channel. Defaults to <code class="inline">true</code>.</li></ul><h3 id="development-debugging" class="section-heading">
+channel. Defaults to <code class="inline">true</code>.</li><li><code class="inline">voice_encryption_mode</code> - Defaults to <code class="inline">:aes256_gcm</code>. More information about this
+option can be found <a href="./voice-2.html#encryption-modes">here</a>.</li></ul><h3 id="development-debugging" class="section-heading">
   <a href="#development-debugging" class="hover-link">
     <i class="ri-link-m" aria-hidden="true"></i>
   </a>
@@ -221,7 +222,7 @@ alongside your application some of your events will be consumed. Defaults to
 <p>nostrum uses Elixir's standard logger to inform you about regular and irregular
 events. Normal messages include Discord-requested shard reconnections and the
 <code class="inline">IDENTIFY</code> and <code class="inline">READY</code> events.</p><p>The following metadata fields through logger:</p><ul><li><code class="inline">shard</code> - Id of the shard on which the event occurred</li><li><code class="inline">guild</code> - Name of the guild on which the voice connection event occurred</li><li><code class="inline">channel</code> - Name of the channel on which the voice connection event occurred</li></ul><p>To enable this metadata, logger can be configured as such:</p><pre><code class="makeup elixir" translate="no"><span class="n">config</span><span class="w"> </span><span class="ss">:logger</span><span class="p">,</span><span class="w"> </span><span class="ss">:console</span><span class="p">,</span><span class="w">
-  </span><span class="ss">metadata</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="5987902841-1">[</span><span class="ss">:shard</span><span class="p">,</span><span class="w"> </span><span class="ss">:guild</span><span class="p">,</span><span class="w"> </span><span class="ss">:channel</span><span class="p" data-group-id="5987902841-1">]</span></code></pre><p>For more information on how this works, and how to change the logging
+  </span><span class="ss">metadata</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="7099077093-1">[</span><span class="ss">:shard</span><span class="p">,</span><span class="w"> </span><span class="ss">:guild</span><span class="p">,</span><span class="w"> </span><span class="ss">:channel</span><span class="p" data-group-id="7099077093-1">]</span></code></pre><p>For more information on how this works, and how to change the logging
 configuration for nostrum on its own, please see the <a href="https://hexdocs.pm/logger/Logger.html">Logger
 documentation</a></p><h3 id="why-elixir" class="section-heading">
   <a href="#why-elixir" class="hover-link">

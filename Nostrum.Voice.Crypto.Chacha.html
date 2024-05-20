@@ -8,7 +8,7 @@
     <meta name="project" content="Nostrum v0.9.1">
 
 
-    <title>Nostrum.Struct.Event.VoiceServerUpdate — Nostrum v0.9.1</title>
+    <title>Nostrum.Voice.Crypto.Chacha — Nostrum v0.9.1</title>
     <link rel="stylesheet" href="dist/html-elixir-2C5PUTIB.css" />
 
 
@@ -127,19 +127,60 @@ Pages
 <div id="top-content">
   <h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/event/voice_server_update.ex#L1" title="View Source" class="icon-action" rel="help">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice/crypto/chacha.ex#L1" title="View Source" class="icon-action" rel="help">
         <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         <span class="sr-only">View Source</span>
       </a>
 
-    <span translate="no">Nostrum.Struct.Event.VoiceServerUpdate</span> 
+    <span translate="no">Nostrum.Voice.Crypto.Chacha</span> 
     <small class="app-vsn" translate="no">(Nostrum v0.9.1)</small>
 
   </h1>
 
 
     <section id="moduledoc">
-<p>Sent when a guild's voice server is updated</p>
+<p>Handles encryption and decryption of outgoing and incoming voice data when a ChaCha encryption mode is selected</p><blockquote><h3 id="module-internal-module" class="info section-heading">
+  <a href="#module-internal-module" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Internal module</span>
+</h3>
+<p>This module is intended for exclusive usage inside of nostrum, and is
+documented for completeness and curious cryptographic cats.</p></blockquote><h3 id="module-purpose" class="section-heading">
+  <a href="#module-purpose" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Purpose</span>
+</h3>
+<p>Erlang's <code class="inline">:crypto</code> module supports the chacha20_poly1305 AEAD stream cipher.
+Analogously to Salsa20 and XSalsa20, XChaCha20 is a way to use 192-bit nonces
+with ChaCha20 by hashing the key and part of the extended nonce to generate a
+sub-key, which is used as the input key for ChaCha20.</p><p>To leverage the crypto module, we had to implement the HChaCha20 hash function
+in elixir to then pass the resulting sub-key to the <code class="inline">crypto_one_time_aead</code>.</p><h3 id="module-implementation" class="section-heading">
+  <a href="#module-implementation" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Implementation</span>
+</h3>
+<p>The HChaCha20 function takes the first 16-bytes of the extended 24-byte XChaCha20 nonce,
+expands the key and the 16-byte nonce slice into a block in place of the block count and
+usual smaller nonce. That block has 20 rounds of mutation, and instead of summing the block
+with its starting state as is done with keystream generation, 8 of the 16 bytes are taken
+and used as the sub-key, which is the input key for the standard chacha20 cipher.</p><p>Even though we've implemented the bulk of what's needed to generate chacha20 key streams
+for encryption and decryption, we're only using this module to generate the inputs to
+use the :crypto module's chacha20_poly1305 functionality in the capacity of xchacha20
+as is required by Discord with that encryption mode selected.</p><p>This is all in service of leveraging the performance benefits of the the NIF crypto
+functions, which are necessarily going to be more performant than anything implemented
+in pure elixir/erlang like the <code class="inline">:kcl</code> package.</p><p><em>ChaCha20 is a variant of the Salsa20 cipher. I will discuss in greater detail the implementation
+in the <a href="Nostrum.Voice.Crypto.Salsa.html"><code class="inline">Nostrum.Voice.Crypto.Salsa</code></a> module, where much is applicable here.</em></p><p>References for Salsa family of ciphers</p><ul><li><a href="https://cr.yp.to/snuffle/spec.pdf">https://cr.yp.to/snuffle/spec.pdf</a></li><li><a href="https://cr.yp.to/chacha/chacha-20080128.pdf">https://cr.yp.to/chacha/chacha-20080128.pdf</a></li><li><a href="https://cr.yp.to/snuffle/xsalsa-20110204.pdf">https://cr.yp.to/snuffle/xsalsa-20110204.pdf</a></li><li><a href="https://datatracker.ietf.org/doc/html/rfc7539">https://datatracker.ietf.org/doc/html/rfc7539</a></li><li><a href="https://datatracker.ietf.org/doc/html/draft-irtf-cfrg-xchacha">https://datatracker.ietf.org/doc/html/draft-irtf-cfrg-xchacha</a></li></ul><h3 id="module-performance-considerations" class="section-heading">
+  <a href="#module-performance-considerations" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Performance considerations</span>
+</h3>
+<p>After the XChaCha20 sub-key is generated in elixir, the crypto NIF function performs the
+heavy lifting. If your bot is running on a machine without AES hardware acceleration, you
+may find that using the chacha encryption mode yields better performance.</p>
     </section>
 
 </div>
@@ -151,48 +192,24 @@ Pages
       </a>
       <span class="text">Summary</span>
     </h1>
-<div class="summary-types summary">
+<div class="summary-functions summary">
   <h2>
-    <a href="#types">Types</a>
+    <a href="#functions">Functions</a>
   </h2>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#t:endpoint/0" translate="no">endpoint()</a>
+        <a href="#decrypt/5" translate="no">decrypt(cipher_text, key, nonce, aad, tag)</a>
 
       </div>
-
-        <div class="summary-synopsis"><p>The voice server host</p></div>
 
     </div>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#t:guild_id/0" translate="no">guild_id()</a>
+        <a href="#encrypt/4" translate="no">encrypt(plain_text, key, nonce, aad)</a>
 
       </div>
-
-        <div class="summary-synopsis"><p>Guild this voice server update is for</p></div>
-
-    </div>
-
-    <div class="summary-row">
-      <div class="summary-signature">
-        <a href="#t:t/0" translate="no">t()</a>
-
-      </div>
-
-        <div class="summary-synopsis"><p>Event sent when a guild's voice server is updated</p></div>
-
-    </div>
-
-    <div class="summary-row">
-      <div class="summary-signature">
-        <a href="#t:token/0" translate="no">token()</a>
-
-      </div>
-
-        <div class="summary-synopsis"><p>Voice connection token</p></div>
 
     </div>
 
@@ -201,30 +218,28 @@ Pages
   </section>
 
 
-  <section id="types" class="details-list">
+  <section id="functions" class="details-list">
     <h1 class="section-heading">
-      <a class="hover-link" href="#types">
+      <a class="hover-link" href="#functions">
         <i class="ri-link-m" aria-hidden="true"></i>
       </a>
-      <span class="text">Types</span>
+      <span class="text">Functions</span>
     </h1>
-    <div class="types-list">
-<section class="detail" id="t:endpoint/0">
+    <div class="functions-list">
+<section class="detail" id="decrypt/5">
 
   <div class="detail-header">
-    <a href="#t:endpoint/0" class="detail-link" title="Link to this type">
+    <a href="#decrypt/5" class="detail-link" title="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this type</span>
+      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">endpoint()</h1>
+    <h1 class="signature" translate="no">decrypt(cipher_text, key, nonce, aad, tag)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/event/voice_server_update.ex#L16" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice/crypto/chacha.ex#L155" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
 
-
-      <span class="note">(since 0.5.0)</span>
 
   </div>
 
@@ -232,29 +247,28 @@ Pages
 
       <div class="specs">
 
-          <pre translate="no"><span class="attribute">@type</span> endpoint() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>() | nil</pre>
+          <pre translate="no"><span class="attribute">@spec</span> decrypt(<a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">binary</a>(), &lt;&lt;_::256&gt;&gt;, &lt;&lt;_::192&gt;&gt;, <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">binary</a>(), &lt;&lt;_::128&gt;&gt;) ::
+  <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">binary</a>() | :error</pre>
 
       </div>
 
-<p>The voice server host</p>
+
   </section>
 </section>
-<section class="detail" id="t:guild_id/0">
+<section class="detail" id="encrypt/4">
 
   <div class="detail-header">
-    <a href="#t:guild_id/0" class="detail-link" title="Link to this type">
+    <a href="#encrypt/4" class="detail-link" title="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this type</span>
+      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">guild_id()</h1>
+    <h1 class="signature" translate="no">encrypt(plain_text, key, nonce, aad)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/event/voice_server_update.ex#L13" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice/crypto/chacha.ex#L138" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
 
-
-      <span class="note">(since 0.5.0)</span>
 
   </div>
 
@@ -262,75 +276,11 @@ Pages
 
       <div class="specs">
 
-          <pre translate="no"><span class="attribute">@type</span> guild_id() :: <a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>()</pre>
+          <pre translate="no"><span class="attribute">@spec</span> encrypt(<a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">binary</a>(), &lt;&lt;_::256&gt;&gt;, &lt;&lt;_::192&gt;&gt;, <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">binary</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">iolist</a>()</pre>
 
       </div>
 
-<p>Guild this voice server update is for</p>
-  </section>
-</section>
-<section class="detail" id="t:t/0">
 
-  <div class="detail-header">
-    <a href="#t:t/0" class="detail-link" title="Link to this type">
-      <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this type</span>
-    </a>
-    <h1 class="signature" translate="no">t()</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/event/voice_server_update.ex#L19" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
-
-
-      <span class="note">(since 0.5.0)</span>
-
-  </div>
-
-  <section class="docstring">
-
-      <div class="specs">
-
-          <pre translate="no"><span class="attribute">@type</span> t() :: %Nostrum.Struct.Event.VoiceServerUpdate{
-  endpoint: <a href="#t:endpoint/0">endpoint</a>(),
-  guild_id: <a href="#t:guild_id/0">guild_id</a>(),
-  token: <a href="#t:token/0">token</a>()
-}</pre>
-
-      </div>
-
-<p>Event sent when a guild's voice server is updated</p>
-  </section>
-</section>
-<section class="detail" id="t:token/0">
-
-  <div class="detail-header">
-    <a href="#t:token/0" class="detail-link" title="Link to this type">
-      <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this type</span>
-    </a>
-    <h1 class="signature" translate="no">token()</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/event/voice_server_update.ex#L10" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
-
-
-      <span class="note">(since 0.5.0)</span>
-
-  </div>
-
-  <section class="docstring">
-
-      <div class="specs">
-
-          <pre translate="no"><span class="attribute">@type</span> token() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()</pre>
-
-      </div>
-
-<p>Voice connection token</p>
   </section>
 </section>
 

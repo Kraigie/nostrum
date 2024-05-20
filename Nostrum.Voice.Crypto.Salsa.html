@@ -8,7 +8,7 @@
     <meta name="project" content="Nostrum v0.9.1">
 
 
-    <title>Nostrum.Store.UnavailableGuild.ETS — Nostrum v0.9.1</title>
+    <title>Nostrum.Voice.Crypto.Salsa — Nostrum v0.9.1</title>
     <link rel="stylesheet" href="dist/html-elixir-2C5PUTIB.css" />
 
 
@@ -127,22 +127,63 @@ Pages
 <div id="top-content">
   <h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/store/unavailable_guild/ets.ex#L1" title="View Source" class="icon-action" rel="help">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice/crypto/salsa.ex#L1" title="View Source" class="icon-action" rel="help">
         <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         <span class="sr-only">View Source</span>
       </a>
 
-    <span translate="no">Nostrum.Store.UnavailableGuild.ETS</span> 
+    <span translate="no">Nostrum.Voice.Crypto.Salsa</span> 
     <small class="app-vsn" translate="no">(Nostrum v0.9.1)</small>
 
   </h1>
 
 
     <section id="moduledoc">
-<p>Stores guilds that are currently unavailable using <code class="inline">:ets</code>.</p><p>If programmatic access to the ETS table is needed, please use the <a href="#table/0"><code class="inline">table/0</code></a>
-function.</p><p>Please do not use this module directly, apart from special functions such as
-<code class="inline">tabname/0</code>. Use <a href="Nostrum.Store.UnavailableGuild.html"><code class="inline">Nostrum.Store.UnavailableGuild</code></a> to call the configured
-mapping instead.</p>
+<p>Handles encryption and decryption of outgoing and incoming voice data when a ChaCha encryption mode is selected</p><blockquote><h3 id="module-internal-module" class="info section-heading">
+  <a href="#module-internal-module" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Internal module</span>
+</h3>
+<p>This module is intended for exclusive usage inside of nostrum, and is
+documented for completeness and curious cryptographic cats.</p></blockquote><h3 id="module-purpose" class="section-heading">
+  <a href="#module-purpose" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Purpose</span>
+</h3>
+<p>To support xsalsa20_poly1305 without a NIF, we have to implement the
+Salsa20 cipher and HSalsa20 hash function to use 192-bit nonces in the capacity
+of XSalsa20.</p><p>Along with leveraging the :crypto module to perform the poly1305 MAC function
+and xor'ing arbitrary-length binaries, by being more thoughtful and explicit
+with our implementation, we should be able to eek out better performance
+than the <code class="inline">:kcl</code> package provides.</p><h3 id="module-implementation" class="section-heading">
+  <a href="#module-implementation" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Implementation</span>
+</h3>
+<p>The <code class="inline">:kcl</code> package is an impressive pure-elixir NaCl/libsodium compatible library
+that Nostrum previously used for voice encryption. For our usage with Discord voice,
+we only need the ability to encrypt and decrypt with 32-byte keys using 24-byte
+XSalsa20 nonces.</p><p>Some of the key differences in our implementation compared to Kcl</p><ul><li>Heavy use of explicit binary pattern matching instead of more traditional implicit enumeration</li><li>Intermediate block state stored in a 16-element tuple that is mutated during the 20-round hot loop instead of lists</li><li>Minimized the number binary copies, returning iolists when appropriate, instead of concatenating binaries</li><li>XOR whole keystream and message blocks instead of XOR'ing one byte at a time</li><li>Poly1305 MAC handled by crypto module instead of implemented in elixir</li><li>Only support 32-byte keys and 24-byte nonces (XSalsa20) instead of full NaCl/libsodium</li></ul><p>Additionally there appears to be a bug in how the 16-byte block count is serialized during key expansion:
+It's supposed to be little endian, and it happens to be for blocks 0-255, but for larger block counts,
+Kcl may become incompatible with NaCl/libsodium-type libraries. For Discord's use case of encrypting short
+20 millisecond compressed audio packets, block counts were well-below this suspected problem threshold.</p><p>The cipher functions were implemented in the order they're defined in the original Salsa specification,
+and though it's using a lot of explicit binary pattern matching, it turned out to be quite legible.
+In a single statement of binary pattern matching, the 512-bit initial block state is cast into 16
+little-endian 32-bit words. Standard elixir patterns might have you iterate through the binary until the
+end was reached, but matching and casting all sixteen block elements in a single statement then returning
+a tuple is explicit, clear, and simple to understand when referenced against the spec.</p><p>Readers interested in cryptography are encouraged to read more about the Salsa20/ChaCha20 ciphers.</p><p>References for Salsa family of ciphers</p><ul><li><a href="https://cr.yp.to/snuffle/spec.pdf">https://cr.yp.to/snuffle/spec.pdf</a></li><li><a href="https://cr.yp.to/chacha/chacha-20080128.pdf">https://cr.yp.to/chacha/chacha-20080128.pdf</a></li><li><a href="https://cr.yp.to/snuffle/xsalsa-20110204.pdf">https://cr.yp.to/snuffle/xsalsa-20110204.pdf</a></li><li><a href="https://datatracker.ietf.org/doc/html/rfc7539">https://datatracker.ietf.org/doc/html/rfc7539</a></li><li><a href="https://datatracker.ietf.org/doc/html/draft-irtf-cfrg-xchacha">https://datatracker.ietf.org/doc/html/draft-irtf-cfrg-xchacha</a></li></ul><h3 id="module-performance-considerations" class="section-heading">
+  <a href="#module-performance-considerations" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Performance considerations</span>
+</h3>
+<p>The entire keystream generation and xor'ing the message with the stream is done in elixir,
+only performing the Poly1305 MAC function through the crypto module. Although it was implemented
+as thoughtfully and explicitly as possible with memory usage and performance in mind, using any
+of the Salsa modes will likely be less performant than ChaCha or AES.</p>
     </section>
 
 </div>
@@ -161,61 +202,25 @@ mapping instead.</p>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#child_spec/1" translate="no">child_spec(init_arg)</a>
+        <a href="#block_binary_to_tuple/1" translate="no">block_binary_to_tuple(arg)</a>
 
       </div>
-
-        <div class="summary-synopsis"><p>Returns a specification to start this module under a supervisor.</p></div>
 
     </div>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#create/1" translate="no">create(guild_id)</a>
+        <a href="#decrypt/3" translate="no">decrypt(encrypted_message, key, nonce)</a>
 
       </div>
-
-        <div class="summary-synopsis"><p>Create the given guild as an unavailable guild.</p></div>
 
     </div>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#init/1" translate="no">init(init_arg)</a>
+        <a href="#encrypt/3" translate="no">encrypt(plain_text, key, nonce)</a>
 
       </div>
-
-        <div class="summary-synopsis"><p>Set up the store's ETS table.</p></div>
-
-    </div>
-
-    <div class="summary-row">
-      <div class="summary-signature">
-        <a href="#is?/1" translate="no">is?(guild_id)</a>
-
-      </div>
-
-        <div class="summary-synopsis"><p>Return whether the given guild is unavailable.</p></div>
-
-    </div>
-
-    <div class="summary-row">
-      <div class="summary-signature">
-        <a href="#start_link/1" translate="no">start_link(init_arg)</a>
-
-      </div>
-
-        <div class="summary-synopsis"><p>Start the supervisor.</p></div>
-
-    </div>
-
-    <div class="summary-row">
-      <div class="summary-signature">
-        <a href="#table/0" translate="no">table()</a>
-
-      </div>
-
-        <div class="summary-synopsis"><p>Retrieve the ETS table reference used for the store.</p></div>
 
     </div>
 
@@ -232,46 +237,42 @@ mapping instead.</p>
       <span class="text">Functions</span>
     </h1>
     <div class="functions-list">
-<section class="detail" id="child_spec/1">
+<section class="detail" id="block_binary_to_tuple/1">
 
   <div class="detail-header">
-    <a href="#child_spec/1" class="detail-link" title="Link to this function">
+    <a href="#block_binary_to_tuple/1" class="detail-link" title="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">child_spec(init_arg)</h1>
+    <h1 class="signature" translate="no">block_binary_to_tuple(arg)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/store/unavailable_guild/ets.ex#L16" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice/crypto/salsa.ex#L142" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
 
-
-      <span class="note">(since 0.8.0)</span>
 
   </div>
 
   <section class="docstring">
 
-<p>Returns a specification to start this module under a supervisor.</p><p>See <a href="https://hexdocs.pm/elixir/Supervisor.html"><code class="inline">Supervisor</code></a>.</p>
+
   </section>
 </section>
-<section class="detail" id="create/1">
+<section class="detail" id="decrypt/3">
 
   <div class="detail-header">
-    <a href="#create/1" class="detail-link" title="Link to this function">
+    <a href="#decrypt/3" class="detail-link" title="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">create(guild_id)</h1>
+    <h1 class="signature" translate="no">decrypt(encrypted_message, key, nonce)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/store/unavailable_guild/ets.ex#L41" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice/crypto/salsa.ex#L223" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
 
-
-      <span class="note">(since 0.8.0)</span>
 
   </div>
 
@@ -279,53 +280,27 @@ mapping instead.</p>
 
       <div class="specs">
 
-          <pre translate="no"><span class="attribute">@spec</span> create(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>()) :: :ok</pre>
+          <pre translate="no"><span class="attribute">@spec</span> decrypt(<a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">binary</a>(), &lt;&lt;_::256&gt;&gt;, &lt;&lt;_::192&gt;&gt;) :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">binary</a>() | :error</pre>
 
       </div>
 
-<p>Create the given guild as an unavailable guild.</p>
+
   </section>
 </section>
-<section class="detail" id="init/1">
+<section class="detail" id="encrypt/3">
 
   <div class="detail-header">
-    <a href="#init/1" class="detail-link" title="Link to this function">
+    <a href="#encrypt/3" class="detail-link" title="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">init(init_arg)</h1>
+    <h1 class="signature" translate="no">encrypt(plain_text, key, nonce)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/store/unavailable_guild/ets.ex#L33" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/voice/crypto/salsa.ex#L207" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
 
-
-      <span class="note">(since 0.8.0)</span>
-
-  </div>
-
-  <section class="docstring">
-
-<p>Set up the store's ETS table.</p>
-  </section>
-</section>
-<section class="detail" id="is?/1">
-
-  <div class="detail-header">
-    <a href="#is?/1" class="detail-link" title="Link to this function">
-      <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
-    </a>
-    <h1 class="signature" translate="no">is?(guild_id)</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/store/unavailable_guild/ets.ex#L49" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
-
-
-      <span class="note">(since 0.8.0)</span>
 
   </div>
 
@@ -333,65 +308,11 @@ mapping instead.</p>
 
       <div class="specs">
 
-          <pre translate="no"><span class="attribute">@spec</span> is?(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">boolean</a>()</pre>
+          <pre translate="no"><span class="attribute">@spec</span> encrypt(<a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">binary</a>(), &lt;&lt;_::256&gt;&gt;, &lt;&lt;_::192&gt;&gt;) :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">iolist</a>()</pre>
 
       </div>
 
-<p>Return whether the given guild is unavailable.</p>
-  </section>
-</section>
-<section class="detail" id="start_link/1">
 
-  <div class="detail-header">
-    <a href="#start_link/1" class="detail-link" title="Link to this function">
-      <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
-    </a>
-    <h1 class="signature" translate="no">start_link(init_arg)</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/store/unavailable_guild/ets.ex#L27" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
-
-
-      <span class="note">(since 0.8.0)</span>
-
-  </div>
-
-  <section class="docstring">
-
-<p>Start the supervisor.</p>
-  </section>
-</section>
-<section class="detail" id="table/0">
-
-  <div class="detail-header">
-    <a href="#table/0" class="detail-link" title="Link to this function">
-      <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
-    </a>
-    <h1 class="signature" translate="no">table()</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/store/unavailable_guild/ets.ex#L24" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
-
-
-      <span class="note">(since 0.8.0)</span>
-
-  </div>
-
-  <section class="docstring">
-
-      <div class="specs">
-
-          <pre translate="no"><span class="attribute">@spec</span> table() :: <a href="https://www.erlang.org/doc/man/ets.html#type-table">:ets.table</a>()</pre>
-
-      </div>
-
-<p>Retrieve the ETS table reference used for the store.</p>
   </section>
 </section>
 
