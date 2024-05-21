@@ -11,9 +11,11 @@ if Mix.env() == :test do
   config :nostrum,
     # constrain the size of the message cache in tests
     # to make it easier to test eviction
+    # and to make sure we don't accidentally modify a production table
+    # when running tests, use a different table name
     caches: [
-      message_cache_size_limit: 10,
-      message_cache_eviction_count: 4,
-      message_cache_table_name: :nostrum_messages_test
+      messages:
+        {Nostrum.Cache.MessageCache.Noop,
+         size_limit: 10, eviction_count: 4, table_name: :nostrum_messages_test}
     ]
 end

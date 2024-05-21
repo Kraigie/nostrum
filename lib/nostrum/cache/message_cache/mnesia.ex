@@ -5,34 +5,35 @@ if Code.ensure_loaded?(:mnesia) do
 
     #{Nostrum.Cache.Base.mnesia_note()}
 
-    By default, the cache will store up to 10,000 messages.
-    To change this limit, add the `:message_cache_size_limit` key to the `:caches`
-    key in your Nostrum compile-time configuration.
+    By default, the cache will store up to 10,000 messages,
+    and will evict the 100 oldest messages when the limit is reached.
+    To change this configuration, you can add the following to your
+    `config.exs`:
 
-    When the cache reaches its limit, the 100 oldest messages will be removed
-    to make room for new messages.
-    To change the number of messages removed, add the `:message_cache_eviction_count`
-    key to the `:caches` key in your Nostrum compile-time configuration.
+    ```elixir
+    config :nostrum,
+      caches: %{
+        messages: {Nostrum.Cache.MessageCache.Mnesia,
+                   size_limit: 1000, eviction_count: 50}
+      }
+    ```
+    The reason for the eviction count is that with mnesia it is more efficient to
+    find X oldest records and delete them all at once than to find the oldest
+    record and delete it each time a new record is added.
 
-    The reason for this is that `:qlc` queries do not optimize for sort + limit
-    operations, so a full table scan + sort is required to find the oldest messages.
+    You can also change the table name used by the cache by setting the
+    `table_name` field in the configuration for the `messages` cache.
     """
+
+    @config Nostrum.Cache.Base.get_cache_options(:messages)
 
     # allow us to override the table name for testing
     # without accidentally overwriting the production table
-    @table_name Application.compile_env(
-                  :nostrum,
-                  [:caches, :message_cache_table_name],
-                  :nostrum_messages
-                )
+    @table_name @config[:table_name] || :nostrum_messages
     @record_name @table_name
 
-    @maximum_size Application.compile_env(:nostrum, [:caches, :message_cache_size_limit], 10_000)
-    @eviction_count Application.compile_env(
-                      :nostrum,
-                      [:caches, :message_cache_eviction_count],
-                      100
-                    )
+    @maximum_size @config[:size_limit] || 10_000
+    @eviction_count @config[:eviction_count] || 100
 
     @behaviour Nostrum.Cache.MessageCache
 

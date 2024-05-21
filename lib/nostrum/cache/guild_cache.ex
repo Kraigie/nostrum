@@ -27,7 +27,7 @@ defmodule Nostrum.Cache.GuildCache do
   - the `c:child_spec/1` callback for starting the cache under a supervisor.
 
   You need to implement all of them for nostrum to work with your custom
-  cache. 
+  cache.
 
   The "upstream data" wording in this module references the fact that the
   data that the guild cache (and other caches) retrieves represents the raw
@@ -45,8 +45,7 @@ defmodule Nostrum.Cache.GuildCache do
   alias Nostrum.Struct.Sticker
   alias Nostrum.Util
 
-  @configured_cache :nostrum
-                    |> Application.compile_env([:caches, :guilds], @default_cache_implementation)
+  @configured_cache Nostrum.Cache.Base.get_cache_module(:guilds, @default_cache_implementation)
 
   ## Supervisor callbacks
   # These set up the backing cache.

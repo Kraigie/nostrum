@@ -6,7 +6,9 @@ defmodule Nostrum.Cache.MessageCache do
 
   By default, #{@default_cache_implementation} will be used for caching
   messages. You can override this in the `:caches` option of the `nostrum`
-  application by setting the `:messages` field to a different module.
+  application by setting the `:messages` field to a different module, or
+  to the tuple `{module, config}` where `module` is the module to use and
+  `config` is any compile-time configuration to pass to the module.
 
   Unlike the other caches, the default is a no-op cache, as messages take
   up a lot of memory and most bots do not need messages to be cached.
@@ -29,13 +31,10 @@ defmodule Nostrum.Cache.MessageCache do
   cache.
   """
 
-  @configured_cache :nostrum
-                    |> Application.compile_env(
-                      [:caches, :messages],
-                      @default_cache_implementation
-                    )
+  @configured_cache Nostrum.Cache.Base.get_cache_module(:messages, @default_cache_implementation)
 
-  alias Nostrum.Struct.{Channel, Message}
+  alias Nostrum.Snowflake
+  alias Nostrum.Struct.{Channel, Message, User}
 
   # callbacks
 
@@ -127,12 +126,110 @@ defmodule Nostrum.Cache.MessageCache do
   @callback wrap_qlc((-> result)) :: result when result: term()
   @optional_callbacks wrap_qlc: 1
 
+  @typedoc """
+  Used to constrain the return values of functions that can return
+  a list of messages from the cache.
+  """
+  @type timestamp_like :: integer() | DateTime.t()
+
   # User-facing
 
   @doc """
   Retrieve a message from the cache by channel and message id.
   """
   defdelegate get(message_id), to: @configured_cache
+
+  @doc """
+  Retrieve a list of messages from the cache with a given channel ID,
+  after a given date, and before a given date.
+
+  Integers are treated as snowflakes, and the atom `:infinity` when given
+  as a before date will be treated as the maximum possible date.
+  """
+  @spec get_by_channel(Channel.id(), timestamp_like(), timestamp_like() | :infinity) :: [
+          Message.t()
+        ]
+  def get_by_channel(channel_id, after_timestamp \\ 0, before_timestamp \\ :infinity) do
+    after_timestamp = timestamp_like_to_snowflake(after_timestamp)
+    before_timestamp = timestamp_like_to_snowflake(before_timestamp)
+
+    unsorted_result =
+      wrap_qlc(fn ->
+        :nostrum_message_cache_qlc.by_channel(
+          channel_id,
+          after_timestamp,
+          before_timestamp,
+          @configured_cache
+        )
+        |> :qlc.e()
+      end)
+
+    Enum.sort_by(unsorted_result, & &1.id)
+  end
+
+  @doc """
+  Retrieve a list of messages from the cache with a given author ID,
+  optionally after a given date, and before a given date.
+
+  Integers are treated as snowflakes, and the atom `:infinity` when given
+  as a before date will be treated as the maximum possible date.
+  """
+  @spec get_by_author(User.id(), timestamp_like(), timestamp_like() | :infinity) :: [
+          Message.t()
+        ]
+  def get_by_author(author_id, after_timestamp \\ 0, before_timestamp \\ :infinity) do
+    after_timestamp = timestamp_like_to_snowflake(after_timestamp)
+    before_timestamp = timestamp_like_to_snowflake(before_timestamp)
+
+    unsorted_result =
+      wrap_qlc(fn ->
+        :nostrum_message_cache_qlc.by_author(
+          author_id,
+          after_timestamp,
+          before_timestamp,
+          @configured_cache
+        )
+        |> :qlc.e()
+      end)
+
+    Enum.sort_by(unsorted_result, & &1.id)
+  end
+
+  @doc """
+  Retrieve a list of messages from the cache with a given channel ID and author ID,
+  optionally after a given date, and before a given date.
+  """
+  @spec get_by_channel_and_author(
+          Channel.id(),
+          User.id(),
+          timestamp_like(),
+          timestamp_like() | :infinity
+        ) :: [
+          Message.t()
+        ]
+  def get_by_channel_and_author(
+        channel_id,
+        author_id,
+        after_timestamp \\ 0,
+        before_timestamp \\ :infinity
+      ) do
+    after_timestamp = timestamp_like_to_snowflake(after_timestamp)
+    before_timestamp = timestamp_like_to_snowflake(before_timestamp)
+
+    unsorted_result =
+      wrap_qlc(fn ->
+        :nostrum_message_cache_qlc.by_channel_and_author(
+          channel_id,
+          author_id,
+          after_timestamp,
+          before_timestamp,
+          @configured_cache
+        )
+        |> :qlc.e()
+      end)
+
+    Enum.sort_by(unsorted_result, & &1.id)
+  end
 
   @doc """
   Call `c:wrap_qlc/1` on the given cache, if implemented.
@@ -171,4 +268,15 @@ defmodule Nostrum.Cache.MessageCache do
   # These set up the backing cache.
   @doc false
   defdelegate child_spec(opts), to: @configured_cache
+
+  defp timestamp_like_to_snowflake(:infinity), do: :infinity
+  defp timestamp_like_to_snowflake(snowflake) when is_integer(snowflake), do: snowflake
+
+  defp timestamp_like_to_snowflake(%DateTime{} = dt) do
+    case Snowflake.from_datetime(dt) do
+      {:ok, snowflake} -> snowflake
+      # The date we got was before Discord's epoch, so we'll just treat it as 0
+      :error -> 0
+    end
+  end
 end

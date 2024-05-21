@@ -10,9 +10,19 @@
 % Erlang, see
 % https://elixirforum.com/t/performance-discrepancies-with-using-qlc-queries-written-in-erlang-and-elixir/56006.
 % I assume this is caused by the Erlang parse transform doing smart things at compile time.
+%
+% NOTE: None of the functions in this module make any guarantees about the
+% sorting of the output. If you need a specific order, you must sort the output
+% yourself either by using `qlc:keysort` or by using `lists:sort` on the output.
 
 -module(nostrum_message_cache_qlc).
--export([by_channel/2, by_channel_and_author/3, by_author/2, by_author/4, sorted_by_age_with_limit/2, all_message_ids_in_channel/2]).
+-export([
+    by_channel/4,
+    by_channel_and_author/5,
+    by_author/4,
+    sorted_by_age_with_limit/2,
+    all_message_ids_in_channel/2
+]).
 
 -include_lib("stdlib/include/qlc.hrl").
 
@@ -24,96 +34,120 @@
 % These must be selected carefully so that QLC can plan using the indices properly.
 -define(MNESIA_FORMAT, {_Tag, MessageId, ChannelId, AuthorId, Message}).
 
-% The returned query handle is sorted by message id, however, due to
-% limitations of QLC, this means the result is a list of tuples of the form
-% {MessageId, Message}.
--spec by_channel('Elixir.Nostrum.Struct.Channel':id(), module()) -> qlc:query_handle().
-by_channel(RequestedChannelId, ?MNESIA_CACHE) ->
-    Q1 = qlc:q([{MessageId, Message} || {_Tag, MessageId, ChannelId, _, Message} <- ?MNESIA_CACHE:query_handle(),
-                                ChannelId =:= RequestedChannelId]),
-    qlc:keysort(1, Q1);
-
-by_channel(RequestedChannelId, Cache) ->
-    Q1 = qlc:q([{MessageId, Message} || {MessageId, #{channel_id := ChannelId} = Message} <- Cache:query_handle(),
-                                ChannelId =:= RequestedChannelId]),
-    qlc:keysort(1, Q1).
+% Fetch all messages in a channel before a given message id,
+% and after another given message id. Accepts infinity as a before
+% value since erlang term ordering makes atoms always larger than integers.
+-spec by_channel(
+    'Elixir.Nostrum.Struct.Channel':id(), non_neg_integer() | infinity, non_neg_integer(), module()
+) -> qlc:query_handle().
+by_channel(RequestedChannelId, After, Before, ?MNESIA_CACHE) ->
+    qlc:q([
+        Message
+     || {_Tag, MessageId, ChannelId, _, Message} <- ?MNESIA_CACHE:query_handle(),
+        ChannelId =:= RequestedChannelId,
+        MessageId =< Before,
+        MessageId >= After
+    ]);
+by_channel(RequestedChannelId, After, Before, Cache) ->
+    qlc:q([
+        Message
+     || {MessageId, #{channel_id := ChannelId} = Message} <- Cache:query_handle(),
+        ChannelId =:= RequestedChannelId,
+        MessageId =< Before,
+        MessageId >= After
+    ]).
 
 % lookup the IDs of all cached messages for a given channel.
--spec all_message_ids_in_channel('Elixir.Nostrum.Struct.Channel':id(), module()) -> qlc:query_handle().
+-spec all_message_ids_in_channel('Elixir.Nostrum.Struct.Channel':id(), module()) ->
+    qlc:query_handle().
 all_message_ids_in_channel(RequestedChannelId, ?MNESIA_CACHE) ->
-    qlc:q([MessageId || {_Tag, MessageId, ChannelId, _, _Message} <- ?MNESIA_CACHE:query_handle(),
-                                ChannelId =:= RequestedChannelId]);
-
+    qlc:q([
+        MessageId
+     || {_Tag, MessageId, ChannelId, _, _Message} <- ?MNESIA_CACHE:query_handle(),
+        ChannelId =:= RequestedChannelId
+    ]);
 all_message_ids_in_channel(RequestedChannelId, Cache) ->
-    qlc:q([MessageId || {MessageId, #{channel_id := ChannelId} = _Message} <- Cache:query_handle(),
-                                ChannelId =:= RequestedChannelId]).
+    qlc:q([
+        MessageId
+     || {MessageId, #{channel_id := ChannelId} = _Message} <- Cache:query_handle(),
+        ChannelId =:= RequestedChannelId
+    ]).
 
 % Lookup all cached messages in a channel by a specific user.
 % The output is not sorted.
--spec by_channel_and_author('Elixir.Nostrum.Struct.Channel':id(), 'Elixir.Nostrum.Struct.Message':id(), module()) -> qlc:query_handle().
-by_channel_and_author(RequestedChannelId, RequestedUserId, ?MNESIA_CACHE) ->
-    qlc:q([Message || {_Tag, {_ChannelId, _MessageId}, ChannelId, AuthorId, Message} <- ?MNESIA_CACHE:query_handle(),
-                                ChannelId =:= RequestedChannelId,
-                                AuthorId =:= RequestedUserId]);
-
-by_channel_and_author(RequestedChannelId, RequestedUserId, Cache) ->
-    qlc:q([Message || {{ChannelId, AuthorId}, Message} <- Cache:query_handle(),
-                                ChannelId =:= RequestedChannelId,
-                                AuthorId =:= RequestedUserId]).
-
-% Lookup all cached messages by a specific user.
-% The output is sorted by message id.
--spec by_author('Elixir.Nostrum.Struct.User':id(), module()) -> qlc:query_handle().
-by_author(RequestedUserId, ?MNESIA_CACHE) ->
-    Q1 = qlc:q([{MessageId, Message} || {_Tag, MessageId, _ChannelId, AuthorId, Message} <- ?MNESIA_CACHE:query_handle(),
-                                AuthorId =:= RequestedUserId]),
-    qlc:keysort(1, Q1);
-
-by_author(RequestedUserId, Cache) ->
-    Q1 = qlc:q([{MessageId, Message} || {MessageId, #{author := #{id := AuthorId}} = Message} <- Cache:query_handle(),
-                                AuthorId =:= RequestedUserId]),
-    qlc:keysort(1, Q1).
+-spec by_channel_and_author(
+    'Elixir.Nostrum.Struct.Channel':id(), 'Elixir.Nostrum.Struct.Message':id(), non_neg_integer(), non_neg_integer() | infinity, module()
+) -> qlc:query_handle().
+by_channel_and_author(RequestedChannelId, RequestedUserId, After, Before, ?MNESIA_CACHE) ->
+    qlc:q([
+        Message
+     || {_Tag, MessageId, ChannelId, AuthorId, Message} <- ?MNESIA_CACHE:query_handle(),
+        ChannelId =:= RequestedChannelId,
+        AuthorId =:= RequestedUserId,
+        MessageId =< Before,
+        MessageId >= After
+    ]);
+by_channel_and_author(RequestedChannelId, RequestedUserId, After, Before, Cache) ->
+    qlc:q([
+        Message
+     || {MessageId, #{channel_id := ChannelId, author := #{id := AuthorId}} = Message} <- Cache:query_handle(),
+        ChannelId =:= RequestedChannelId,
+        AuthorId =:= RequestedUserId,
+        MessageId =< Before,
+        MessageId >= After
+    ]).
 
 % Lookup all cached messages by a specific user.
 % with a message id greater than After and less than Before.
--spec by_author('Elixir.Nostrum.Struct.User':id(), Before :: non_neg_integer(), After :: non_neg_integer(), module()) -> qlc:query_handle().
+-spec by_author(
+    'Elixir.Nostrum.Struct.User':id(),
+    Before :: non_neg_integer(),
+    After :: non_neg_integer(),
+    module()
+) -> qlc:query_handle().
 by_author(RequestedUserId, Before, After, ?MNESIA_CACHE) ->
-    Q1 = qlc:q([{MessageId, Message} || {_Tag, MessageId, _ChannelId, AuthorId, Message} <- ?MNESIA_CACHE:query_handle(),
-                                AuthorId =:= RequestedUserId,
-                                MessageId =< Before,
-                                MessageId >= After]),
-    qlc:keysort(1, Q1);
-
+    qlc:q([
+        {MessageId, Message}
+     || {_Tag, MessageId, _ChannelId, AuthorId, Message} <- ?MNESIA_CACHE:query_handle(),
+        AuthorId =:= RequestedUserId,
+        MessageId =< Before,
+        MessageId >= After
+    ]);
 by_author(RequestedUserId, Before, After, Cache) ->
-    Q1 = qlc:q([{MessageId, Message} || {MessageId, #{author := #{id := AuthorId}} = Message} <- Cache:query_handle(),
-                                AuthorId =:= RequestedUserId,
-                                MessageId =< Before,
-                                MessageId >= After]),
-    qlc:keysort(1, Q1).
+    qlc:q([
+        {MessageId, Message}
+     || {MessageId, #{author := #{id := AuthorId}} = Message} <- Cache:query_handle(),
+        AuthorId =:= RequestedUserId,
+        MessageId =< Before,
+        MessageId >= After
+    ]).
 
 % Lookup the id of cached messages sorted by message id.
 -spec sorted_by_age_with_limit(module(), non_neg_integer()) -> list().
 sorted_by_age_with_limit(?MNESIA_CACHE, Limit) ->
-    Q1 = qlc:q([ MessageId || {_Tag, MessageId, _ChannelId, _AuthorId, _Message} <- ?MNESIA_CACHE:query_handle()]),
+    Q1 = qlc:q([
+        MessageId
+     || {_Tag, MessageId, _ChannelId, _AuthorId, _Message} <- ?MNESIA_CACHE:query_handle()
+    ]),
     sort_with_limit(Q1, Limit);
-
 sorted_by_age_with_limit(Cache, Limit) ->
     Q1 = qlc:q([MessageId || {MessageId, _Message} <- Cache:query_handle()]),
     sort_with_limit(Q1, Limit).
 
 sort_with_limit(Q1, Limit) ->
-    Fn = fun (MessageId, {Count1, Set1, Largest1}) ->
-        if (MessageId < Largest1) andalso (Count1 >= Limit) ->
-            Set2 = gb_sets:delete(Largest1, Set1),
-            Set3 = gb_sets:insert(MessageId, Set2),
-            Largest2 = gb_sets:largest(Set3),
-            {Count1, Set3, Largest2};
-        (Count1 < Limit) ->
-            Set2 = gb_sets:insert(MessageId, Set1),
-            Largest2 = gb_sets:largest(Set2),
-            {Count1 + 1, Set2, Largest2};
-        true ->
-            {Count1, Set1, Largest1}
+    Fn = fun(MessageId, {Count1, Set1, Largest1}) ->
+        if
+            (MessageId < Largest1) andalso (Count1 >= Limit) ->
+                Set2 = gb_sets:delete(Largest1, Set1),
+                Set3 = gb_sets:insert(MessageId, Set2),
+                Largest2 = gb_sets:largest(Set3),
+                {Count1, Set3, Largest2};
+            (Count1 < Limit) ->
+                Set2 = gb_sets:insert(MessageId, Set1),
+                Largest2 = gb_sets:largest(Set2),
+                {Count1 + 1, Set2, Largest2};
+            true ->
+                {Count1, Set1, Largest1}
         end
     end,
     {_, Set, _} = qlc:fold(Fn, {0, gb_sets:new(), 0}, Q1),

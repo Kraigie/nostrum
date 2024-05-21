@@ -18,8 +18,7 @@ defmodule Nostrum.Cache.UserCache do
   alias Nostrum.Util
   import Nostrum.Snowflake, only: [is_snowflake: 1]
 
-  @configured_cache :nostrum
-                    |> Application.compile_env([:caches, :users], @default_cache_implementation)
+  @configured_cache Nostrum.Cache.Base.get_cache_module(:users, @default_cache_implementation)
 
   ## Behaviour specification
 
