@@ -166,7 +166,6 @@ defmodule Nostrum.Shard.Supervisor do
 
   @doc """
   Reconnect to the gateway using the given `resume_information`.
-  In the unlikely event that a shard or session crashes, the connection will resume after a restart, potentially causing events to be delivered more than once.
   For more information about resume, please visit [the Discord Developer Portal](https://discord.com/developers/docs/topics/gateway#resuming).
   """
   @spec reconnect(resume_information()) :: DynamicSupervisor.on_start_child()
