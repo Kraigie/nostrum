@@ -11,7 +11,13 @@ defmodule Nostrum.Shard do
 
   def start_link(
         {:reconnect,
-         %{shard: [_gateway, shard_num, _total], resume_gateway: _resume_gateway, seq: _seq}} =
+         %{
+           shard_num: shard_num,
+           total_shards: _total_shards,
+           gateway: _gateway,
+           resume_gateway: _resume_gateway,
+           seq: _seq
+         }} =
           opts
       ) do
     Supervisor.start_link(__MODULE__, opts, name: :"Nostrum.Shard-#{shard_num}")

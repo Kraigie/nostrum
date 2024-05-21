@@ -106,7 +106,14 @@ defmodule Nostrum.Shard.Session do
 
   def start_link(
         {:reconnect,
-         %{shard: [_gateway, _shard_num, _total], resume_gateway: _resume_gateway, seq: _seq}} =
+         %{
+           shard_num: _shard_num,
+           total_shards: _total_shards,
+           gateway: _gateway,
+           resume_gateway: _resume_gateway,
+           seq: _seq,
+           session: _session
+         }} =
           opts,
         statem_opts
       ) do
@@ -134,7 +141,9 @@ defmodule Nostrum.Shard.Session do
   def init(
         {:reconnect,
          %{
-           shard: [gateway, shard_num, total],
+           shard_num: shard_num,
+           total_shards: total_shards,
+           gateway: gateway,
            resume_gateway: resume_gateway,
            seq: seq,
            session: session
@@ -145,7 +154,7 @@ defmodule Nostrum.Shard.Session do
     state = %WSState{
       conn_pid: self(),
       shard_num: shard_num,
-      total_shards: total,
+      total_shards: total_shards,
       gateway: gateway,
       resume_gateway: resume_gateway,
       session: session,
@@ -368,7 +377,9 @@ defmodule Nostrum.Shard.Session do
     {:stop_and_reply, :normal,
      {:reply, from,
       %{
-        shard: [gateway, shard_num, total],
+        shard_num: shard_num,
+        total_shards: total,
+        gateway: gateway,
         resume_gateway: resume_gateway,
         session: session,
         seq: seq

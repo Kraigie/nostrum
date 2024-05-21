@@ -35,20 +35,20 @@ defmodule Nostrum.Shard.Supervisor do
   """
 
   @typedoc """
-  Shard number. Range is `0..total_shard_count-1`.
+  Shard number(`shard_id`). Range is `0..total_shards-1`.
   """
   @type shard_num :: non_neg_integer()
   @typedoc """
-  Represents gateway connect information.
-  [gateway_url, shard_num, total_shard_count]
+  Total shard count(`num_shards`).
   """
-  @type shard_information :: list(any())
-
+  @type total_shards :: pos_integer()
   @typedoc """
   Represents gateway resume information.
   """
   @type resume_information :: %{
-          shard: shard_information(),
+          shard_num: shard_num(),
+          total_shards: total_shards(),
+          gateway: String.t(),
           resume_gateway: String.t() | nil,
           session: String.t(),
           seq: pos_integer()
@@ -83,7 +83,7 @@ defmodule Nostrum.Shard.Supervisor do
   end
 
   def start_link(_args) do
-    {url, gateway_shard_count} = Util.gateway()
+    {_url, gateway_shard_count} = Util.gateway()
 
     on_start =
       DynamicSupervisor.start_link(
@@ -101,7 +101,7 @@ defmodule Nostrum.Shard.Supervisor do
 
         shard_range = lowest..highest
 
-        for num <- shard_range, do: connect([url, num - 1, total])
+        for num <- shard_range, do: connect(num - 1, total)
     end
 
     on_start
@@ -138,7 +138,8 @@ defmodule Nostrum.Shard.Supervisor do
   end
 
   @doc false
-  def create_worker(gateway, shard_num, total) do
+  def create_worker(shard_num, total) do
+    {gateway, _gateway_shard_count} = Util.gateway()
     {Shard, [gateway, shard_num, total]}
   end
 
@@ -158,9 +159,9 @@ defmodule Nostrum.Shard.Supervisor do
   @doc """
   Spawns a shard with the specified number and connects it to the discord gateway.
   """
-  @spec connect(shard_information()) :: DynamicSupervisor.on_start_child()
-  def connect([url, num, total]) do
-    DynamicSupervisor.start_child(__MODULE__, create_worker(url, num, total))
+  @spec connect(shard_num(), total_shards()) :: DynamicSupervisor.on_start_child()
+  def connect(shard_num, total_shards) do
+    DynamicSupervisor.start_child(__MODULE__, create_worker(shard_num, total_shards))
   end
 
   @doc """
@@ -171,7 +172,9 @@ defmodule Nostrum.Shard.Supervisor do
   @spec reconnect(resume_information()) :: DynamicSupervisor.on_start_child()
   def reconnect(
         %{
-          shard: [_gateway, _shard_num, _total],
+          shard_num: _shard_num,
+          total_shards: _total_shards,
+          gateway: _gateway,
           resume_gateway: _resume_gateway,
           seq: _seq,
           session: _session
