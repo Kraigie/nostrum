@@ -46,7 +46,7 @@ Apart from the `token` field mentioned above, the following fields are also supp
     Useful for splitting a single bot across multiple servers, but see also [the
     multi-node documentation](../advanced/multi_node.md).
   - `:manual`: nostrum does not automatically spawn shards. You should use
-    `Nostrum.Shard.Supervisor.connect/1` to spawn shards instead.
+    `Nostrum.Shard.Supervisor.connect/2` to spawn shards instead.
 - `gateway_intents` - a list of atoms representing gateway intents for Nostrum
   to subscribe to from the Discord API. More information can be found in the
   [gateway intents](./gateway_intents.md) documentation page.
