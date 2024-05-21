@@ -83,6 +83,7 @@ defmodule Nostrum.Util do
 
     case num do
       {_lowest, _highest, total} -> total
+      :unstable_manual -> 0
       nil -> 1
     end
   end
