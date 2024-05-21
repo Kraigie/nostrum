@@ -16,7 +16,8 @@ defmodule Nostrum.Shard do
            total_shards: _total_shards,
            gateway: _gateway,
            resume_gateway: _resume_gateway,
-           seq: _seq
+           seq: _seq,
+           session: _session
          }} =
           opts
       ) do
