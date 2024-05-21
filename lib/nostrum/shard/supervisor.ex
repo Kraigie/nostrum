@@ -93,7 +93,7 @@ defmodule Nostrum.Shard.Supervisor do
       )
 
     case Application.get_env(:nostrum, :num_shards, :auto) do
-      :unstable_manual ->
+      :manual ->
         on_start
 
       value ->
