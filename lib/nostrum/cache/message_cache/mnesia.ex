@@ -7,6 +7,21 @@ if Code.ensure_loaded?(:mnesia) do
 
     By default, the cache will store up to 10,000 messages,
     and will evict the 100 oldest messages when the limit is reached.
+
+    The reason for the eviction count is that with mnesia it is more efficient to
+    find X oldest records and delete them all at once than to find the oldest
+    record and delete it each time a new record is added.
+
+    The Mnesia cache supports the following configuration options:
+    - `size_limit`: The maximum number of messages to store in the cache.
+    default: 10,000
+    - `eviction_count`: The number of messages to evict when the cache is full.
+    default: 100
+    - `table_name`: The name of the Mnesia table to use for the cache.
+    default: `:nostrum_messages`
+    - `compressed`: Whether to use compressed in memory storage for the table.
+    default: false
+
     To change this configuration, you can add the following to your
     `config.exs`:
 
@@ -14,12 +29,11 @@ if Code.ensure_loaded?(:mnesia) do
     config :nostrum,
       caches: %{
         messages: {Nostrum.Cache.MessageCache.Mnesia,
-                   size_limit: 1000, eviction_count: 50}
+                   size_limit: 1000, eviction_count: 50,
+                   table_name: :my_custom_messages_table_name,
+                   compressed: true}
       }
     ```
-    The reason for the eviction count is that with mnesia it is more efficient to
-    find X oldest records and delete them all at once than to find the oldest
-    record and delete it each time a new record is added.
 
     You can also change the table name used by the cache by setting the
     `table_name` field in the configuration for the `messages` cache.
@@ -34,6 +48,7 @@ if Code.ensure_loaded?(:mnesia) do
 
     @maximum_size @config[:size_limit] || 10_000
     @eviction_count @config[:eviction_count] || 100
+    @compressed_table @config[:compressed] || false
 
     @behaviour Nostrum.Cache.MessageCache
 
@@ -52,10 +67,18 @@ if Code.ensure_loaded?(:mnesia) do
     @impl Supervisor
     @doc "Set up the cache's Mnesia table."
     def init(_init_arg) do
+      ets_props =
+        if @compressed_table do
+          [:compressed]
+        else
+          []
+        end
+
       options = [
         attributes: [:message_id, :channel_id, :author_id, :data],
         index: [:channel_id, :author_id],
-        record_name: @record_name
+        record_name: @record_name,
+        storage_properties: [ets: ets_props]
       ]
 
       case :mnesia.create_table(@table_name, options) do
