@@ -149,17 +149,22 @@ defmodule Nostrum.Cache.MessageCache do
   @spec get_by_channel(Channel.id(), timestamp_like(), timestamp_like() | :infinity) :: [
           Message.t()
         ]
-  def get_by_channel(channel_id, after_timestamp \\ 0, before_timestamp \\ :infinity) do
+  def get_by_channel(
+        channel_id,
+        after_timestamp \\ 0,
+        before_timestamp \\ :infinity,
+        cache \\ @configured_cache
+      ) do
     after_timestamp = timestamp_like_to_snowflake(after_timestamp)
     before_timestamp = timestamp_like_to_snowflake(before_timestamp)
 
     unsorted_result =
-      wrap_qlc(fn ->
+      wrap_qlc(cache, fn ->
         :nostrum_message_cache_qlc.by_channel(
           channel_id,
           after_timestamp,
           before_timestamp,
-          @configured_cache
+          cache
         )
         |> :qlc.e()
       end)
@@ -177,17 +182,22 @@ defmodule Nostrum.Cache.MessageCache do
   @spec get_by_author(User.id(), timestamp_like(), timestamp_like() | :infinity) :: [
           Message.t()
         ]
-  def get_by_author(author_id, after_timestamp \\ 0, before_timestamp \\ :infinity) do
+  def get_by_author(
+        author_id,
+        after_timestamp \\ 0,
+        before_timestamp \\ :infinity,
+        cache \\ @configured_cache
+      ) do
     after_timestamp = timestamp_like_to_snowflake(after_timestamp)
     before_timestamp = timestamp_like_to_snowflake(before_timestamp)
 
     unsorted_result =
-      wrap_qlc(fn ->
+      wrap_qlc(cache, fn ->
         :nostrum_message_cache_qlc.by_author(
           author_id,
           after_timestamp,
           before_timestamp,
-          @configured_cache
+          cache
         )
         |> :qlc.e()
       end)
@@ -211,19 +221,20 @@ defmodule Nostrum.Cache.MessageCache do
         channel_id,
         author_id,
         after_timestamp \\ 0,
-        before_timestamp \\ :infinity
+        before_timestamp \\ :infinity,
+        cache \\ @configured_cache
       ) do
     after_timestamp = timestamp_like_to_snowflake(after_timestamp)
     before_timestamp = timestamp_like_to_snowflake(before_timestamp)
 
     unsorted_result =
-      wrap_qlc(fn ->
+      wrap_qlc(cache, fn ->
         :nostrum_message_cache_qlc.by_channel_and_author(
           channel_id,
           author_id,
           after_timestamp,
           before_timestamp,
-          @configured_cache
+          cache
         )
         |> :qlc.e()
       end)

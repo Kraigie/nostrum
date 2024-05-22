@@ -101,21 +101,21 @@ by_channel_and_author(RequestedChannelId, RequestedUserId, After, Before, Cache)
 % with a message id greater than After and less than Before.
 -spec by_author(
     'Elixir.Nostrum.Struct.User':id(),
-    Before :: non_neg_integer(),
     After :: non_neg_integer(),
+    Before :: non_neg_integer(),
     module()
 ) -> qlc:query_handle().
-by_author(RequestedUserId, Before, After, ?MNESIA_CACHE) ->
+by_author(RequestedUserId, After, Before, ?MNESIA_CACHE) ->
     qlc:q([
-        {MessageId, Message}
+        Message
      || {_Tag, MessageId, _ChannelId, AuthorId, Message} <- ?MNESIA_CACHE:query_handle(),
         AuthorId =:= RequestedUserId,
         MessageId =< Before,
         MessageId >= After
     ]);
-by_author(RequestedUserId, Before, After, Cache) ->
+by_author(RequestedUserId, After, Before, Cache) ->
     qlc:q([
-        {MessageId, Message}
+        Message
      || {MessageId, #{author := #{id := AuthorId}} = Message} <- Cache:query_handle(),
         AuthorId =:= RequestedUserId,
         MessageId =< Before,
