@@ -9,8 +9,8 @@ this, implement the behaviours exported by the cache modules under
 >
 > The exception to the above is the `Nostrum.Cache.MessageCache`, which does not
 > include an ETS-based implementation, and defaults to a NoOp cache. This is
-> because messages consume a lot more memory than other objects, and are often
-> not needed by most users.
+> an intentional design decision because caching messages consumes a
+> lot more memory than other objects, and are often not needed by most users.
 
 Use the `[:nostrum, :caches]` configuration for configuring which cache
 implementation you want to use. This can only be set at dependency compilation
@@ -63,7 +63,7 @@ switch this can be added.
 
 Mnesia-based caching assumes the user is familar with usage and
 maintenance of Mnesia: the [Mnesia User's
-Guide](https://www.erlang.org/doc/apps/mnesia/users_guide.html) is a good
+Guide](https://www.erlang.org/doc/apps/mnesia/mnesia_chap1.html) is a good
 starting point.
 
 
