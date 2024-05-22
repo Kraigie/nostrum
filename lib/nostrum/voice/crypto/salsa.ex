@@ -189,6 +189,10 @@ defmodule Nostrum.Voice.Crypto.Salsa do
   defp crypt(key, nonce, message, block_count \\ 0, outputs \\ [])
 
   defp crypt(key, nonce, <<message::bytes-64, rest::binary>>, block_count, outputs) do
+    crypt(key, nonce, {message, rest}, block_count, outputs)
+  end
+
+  defp crypt(key, nonce, {<<message::bytes-64>>, <<rest::binary>>}, block_count, outputs) do
     output_block = crypt_block(key, nonce, message, block_count)
     crypt(key, nonce, rest, block_count + 1, [output_block | outputs])
   end
@@ -203,10 +207,23 @@ defmodule Nostrum.Voice.Crypto.Salsa do
     bxor_block(keystream, message)
   end
 
+  # NaCl/libsodium use the first 32-bytes of the first Salsa20 keystream block as the OTP
+  # for the Poly1305 MAC function. This is accomplished by prepending the messages with 32
+  # zeros, so the XOR'ing yields just the keystream for those bytes. Only concatenate the
+  # zeros with the first half block of the message to avoid copying entire message binary.
+  defp prepare_message(<<first_thirty_two::bytes-32, rest::binary>>) when byte_size(rest) > 0 do
+    {<<0::unit(8)-size(32), first_thirty_two::bytes-32>>, rest}
+  end
+
+  defp prepare_message(<<whole_message::binary>>) do
+    <<0::unit(8)-size(32), whole_message::binary>>
+  end
+
   @spec encrypt(binary(), <<_::256>>, <<_::192>>) :: iolist()
   def encrypt(plain_text, <<key::bytes-32>> = _key, <<nonce::bytes-24>> = _nonce) do
     {xsalsa_key, xsalsa_nonce} = xsalsa20_key_and_nonce(key, nonce)
-    message = <<0::unit(8)-size(32)>> <> plain_text
+
+    message = prepare_message(plain_text)
 
     # First block is guaranteed to be at least 32 bytes
     [<<mac_otp::bytes-32, cipher_text_head::binary>> | cipher_text_tail] =
@@ -226,7 +243,8 @@ defmodule Nostrum.Voice.Crypto.Salsa do
         <<nonce::bytes-24>> = _nonce
       ) do
     {xsalsa_key, xsalsa_nonce} = xsalsa20_key_and_nonce(key, nonce)
-    message = <<0::unit(8)-size(32)>> <> cipher_text
+
+    message = prepare_message(cipher_text)
 
     # First block is guaranteed to be at least 32 bytes
     [<<mac_otp::bytes-32, plain_text_head::binary>> | plain_text_tail] =
