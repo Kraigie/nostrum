@@ -14,7 +14,7 @@
 
     <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
     <script src="dist/handlebars.templates-IHH6HKET.js"></script>
-    <script src="dist/sidebar_items-2C1026A5.js"></script>
+    <script src="dist/sidebar_items-9825982C.js"></script>
     <script src="docs_config.js"></script>
     <script async src="dist/html-GXQ6W6IF.js"></script>
 
@@ -172,6 +172,42 @@ handle yet, thus growing the message queue and the memory usage.</p></li></ol>
       </a>
       <span class="text">Summary</span>
     </h1>
+<div class="summary-types summary">
+  <h2>
+    <a href="#types">Types</a>
+  </h2>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:resume_information/0" translate="no">resume_information()</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Represents gateway resume information.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:shard_num/0" translate="no">shard_num()</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Shard number(<code class="inline">shard_id</code>). Range is <code class="inline">0..total_shards-1</code>.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:total_shards/0" translate="no">total_shards()</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Total shard count(<code class="inline">num_shards</code>).</p></div>
+
+    </div>
+
+</div>
 <div class="summary-functions summary">
   <h2>
     <a href="#functions">Functions</a>
@@ -179,11 +215,43 @@ handle yet, thus growing the message queue and the memory usage.</p></li></ol>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#child_spec/1" translate="no">child_spec(init_arg)</a>
+        <a href="#child_spec/1" translate="no">child_spec(arg)</a>
 
       </div>
 
         <div class="summary-synopsis"><p>Returns a specification to start this module under a supervisor.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#connect/2" translate="no">connect(shard_num, total_shards)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Spawns a shard with the specified number and connects it to the discord gateway.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#disconnect/1" translate="no">disconnect(shard_num)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Disconnects the shard with the given shard number from the Gateway.
+This function returns <code class="inline">resume_information</code> given to <a href="#reconnect/1"><code class="inline">Nostrum.Shard.Supervisor.reconnect/1</code></a>.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#reconnect/1" translate="no">reconnect(opts)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Reconnect to the gateway using the given <code class="inline">resume_information</code>.
+For more information about resume, please visit <a href="https://discord.com/developers/docs/topics/gateway#resuming">the Discord Developer Portal</a>.</p></div>
 
     </div>
 
@@ -216,6 +284,109 @@ handle yet, thus growing the message queue and the memory usage.</p></li></ol>
   </section>
 
 
+  <section id="types" class="details-list">
+    <h1 class="section-heading">
+      <a class="hover-link" href="#types">
+        <i class="ri-link-m" aria-hidden="true"></i>
+      </a>
+      <span class="text">Types</span>
+    </h1>
+    <div class="types-list">
+<section class="detail" id="t:resume_information/0">
+
+  <div class="detail-header">
+    <a href="#t:resume_information/0" class="detail-link" title="Link to this type">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature" translate="no">resume_information()</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/supervisor.ex#L48" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@type</span> resume_information() :: %{
+  shard_num: <a href="#t:shard_num/0">shard_num</a>(),
+  total_shards: <a href="#t:total_shards/0">total_shards</a>(),
+  gateway: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>(),
+  resume_gateway: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>() | nil,
+  session: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>(),
+  seq: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pos_integer</a>()
+}</pre>
+
+      </div>
+
+<p>Represents gateway resume information.</p>
+  </section>
+</section>
+<section class="detail" id="t:shard_num/0">
+
+  <div class="detail-header">
+    <a href="#t:shard_num/0" class="detail-link" title="Link to this type">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature" translate="no">shard_num()</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/supervisor.ex#L40" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@type</span> shard_num() :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">non_neg_integer</a>()</pre>
+
+      </div>
+
+<p>Shard number(<code class="inline">shard_id</code>). Range is <code class="inline">0..total_shards-1</code>.</p>
+  </section>
+</section>
+<section class="detail" id="t:total_shards/0">
+
+  <div class="detail-header">
+    <a href="#t:total_shards/0" class="detail-link" title="Link to this type">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature" translate="no">total_shards()</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/supervisor.ex#L44" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@type</span> total_shards() :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pos_integer</a>()</pre>
+
+      </div>
+
+<p>Total shard count(<code class="inline">num_shards</code>).</p>
+  </section>
+</section>
+
+    </div>
+  </section>
+
   <section id="functions" class="details-list">
     <h1 class="section-heading">
       <a class="hover-link" href="#functions">
@@ -231,9 +402,9 @@ handle yet, thus growing the message queue and the memory usage.</p></li></ol>
       <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">child_spec(init_arg)</h1>
+    <h1 class="signature" translate="no">child_spec(arg)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/supervisor.ex#L37" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/supervisor.ex#L56" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -246,6 +417,92 @@ handle yet, thus growing the message queue and the memory usage.</p></li></ol>
 <p>Returns a specification to start this module under a supervisor.</p><p>See <a href="https://hexdocs.pm/elixir/Supervisor.html"><code class="inline">Supervisor</code></a>.</p>
   </section>
 </section>
+<section class="detail" id="connect/2">
+
+  <div class="detail-header">
+    <a href="#connect/2" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">connect(shard_num, total_shards)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/supervisor.ex#L163" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> connect(<a href="#t:shard_num/0">shard_num</a>(), <a href="#t:total_shards/0">total_shards</a>()) :: <a href="https://hexdocs.pm/elixir/DynamicSupervisor.html#t:on_start_child/0">DynamicSupervisor.on_start_child</a>()</pre>
+
+      </div>
+
+<p>Spawns a shard with the specified number and connects it to the discord gateway.</p>
+  </section>
+</section>
+<section class="detail" id="disconnect/1">
+
+  <div class="detail-header">
+    <a href="#disconnect/1" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">disconnect(shard_num)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/supervisor.ex#L151" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> disconnect(<a href="#t:shard_num/0">shard_num</a>()) :: <a href="#t:resume_information/0">resume_information</a>()</pre>
+
+      </div>
+
+<p>Disconnects the shard with the given shard number from the Gateway.
+This function returns <code class="inline">resume_information</code> given to <a href="#reconnect/1"><code class="inline">Nostrum.Shard.Supervisor.reconnect/1</code></a>.</p>
+  </section>
+</section>
+<section class="detail" id="reconnect/1">
+
+  <div class="detail-header">
+    <a href="#reconnect/1" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">reconnect(opts)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/supervisor.ex#L172" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> reconnect(<a href="#t:resume_information/0">resume_information</a>()) :: <a href="https://hexdocs.pm/elixir/DynamicSupervisor.html#t:on_start_child/0">DynamicSupervisor.on_start_child</a>()</pre>
+
+      </div>
+
+<p>Reconnect to the gateway using the given <code class="inline">resume_information</code>.
+For more information about resume, please visit <a href="https://discord.com/developers/docs/topics/gateway#resuming">the Discord Developer Portal</a>.</p>
+  </section>
+</section>
 <section class="detail" id="start_link/1">
 
   <div class="detail-header">
@@ -255,7 +512,7 @@ handle yet, thus growing the message queue and the memory usage.</p></li></ol>
     </a>
     <h1 class="signature" translate="no">start_link(args)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/supervisor.ex#L66" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/supervisor.ex#L85" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -277,7 +534,7 @@ handle yet, thus growing the message queue and the memory usage.</p></li></ol>
     </a>
     <h1 class="signature" translate="no">update_status(status, game, stream, type)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/supervisor.ex#L79" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/supervisor.ex#L110" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -299,7 +556,7 @@ handle yet, thus growing the message queue and the memory usage.</p></li></ol>
     </a>
     <h1 class="signature" translate="no">update_voice_state(guild_id, channel_id, self_mute, self_deaf)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/supervisor.ex#L90" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/supervisor.ex#L121" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
