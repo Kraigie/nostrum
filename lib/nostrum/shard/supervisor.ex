@@ -177,10 +177,11 @@ defmodule Nostrum.Shard.Supervisor do
   @doc """
   Reconnect to the gateway using the provided `t:resume_information/0`.
 
-  Resuming is performed by the gateway on a best effort basis, it is not guaranteed
-  that a resume will work (though Nostrum will handle failed attempts at a resumption),
-  it is also not guaranteed that missed events will be delivered, or delivered events may
-  be received multiple times after a resumption.
+  Resuming is performed by the gateway on a best effort basis, it is not
+  guaranteed that a resume will work (though Nostrum will handle failed attempts
+  at a resumption). If a reconnect is successful, any events received during the
+  reconnection period should be received. If the reconnect fails, events
+  received between the disconnect and re-authentication may be lost.
 
   For more information about resuming sessions, visit
   [the Discord Developer Portal](https://discord.com/developers/docs/topics/gateway#resuming).

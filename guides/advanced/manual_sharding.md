@@ -22,5 +22,6 @@ iex> Nostrum.Shard.Supervisor.reconnect(resume_info)
 ```
 
 Discord will perform a best effort attempt to resume the gateway from the time
-of disconnection, relaying any missed events. Note that this can result in some
-events being missed or some events being delivered twice.
+of disconnection, relaying any missed events. Resumption is not guaranteed to
+work, in the event it fails Nostrum will reconnect the shard from scratch,
+though this may mean some events are missed.
