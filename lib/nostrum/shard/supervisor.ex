@@ -145,7 +145,17 @@ defmodule Nostrum.Shard.Supervisor do
 
   @doc """
   Disconnects the shard with the given shard number from the Gateway.
-  This function returns `resume_information` given to `Nostrum.Shard.Supervisor.reconnect/1`.
+
+  This function returns `t:resume_information/0` which can be provided
+  to `reconnect/1` to reconnect a shard to the gateway and (attempt) to
+  catch up on any missed events.
+
+  ### Examples
+
+  ```elixir
+  iex> Nostrum.Shard.Supervisor.disconnect(4)
+  %{shard_num: 4, ...}
+  ```
   """
   @spec disconnect(shard_num()) :: resume_information()
   def disconnect(shard_num) do
@@ -165,8 +175,23 @@ defmodule Nostrum.Shard.Supervisor do
   end
 
   @doc """
-  Reconnect to the gateway using the given `resume_information`.
-  For more information about resume, please visit [the Discord Developer Portal](https://discord.com/developers/docs/topics/gateway#resuming).
+  Reconnect to the gateway using the provided `t:resume_information/0`.
+
+  Resuming is performed by the gateway on a best effort basis, it is not guaranteed
+  that a resume will work (though Nostrum will handle failed attempts at a resumption),
+  it is also not guaranteed that missed events will be delivered, or delivered events may
+  be received multiple times after a resumption.
+
+  For more information about resuming sessions, visit
+  [the Discord Developer Portal](https://discord.com/developers/docs/topics/gateway#resuming).
+
+  ### Examples
+
+  ```elixir
+  iex> resume = Nostrum.Shard.Supervisor.disconnect(4)
+  %{shard_num: 4, ...}
+  iex> Nostrum.Shard.Supervisor.reconnect(resume)
+  ```
   """
   @spec reconnect(resume_information()) :: DynamicSupervisor.on_start_child()
   def reconnect(
