@@ -70,23 +70,10 @@ defmodule Nostrum.Mixfile do
   end
 
   def extras do
-    [
-      "guides/intro/intro.md",
-      "guides/intro/api.md",
-      "guides/intro/application_commands.md",
-      "guides/intro/gateway_intents.md",
-      "guides/functionality/state.md",
-      "guides/functionality/event_handling.md",
-      "guides/functionality/voice.md",
-      "guides/advanced/pluggable_caching.md",
-      "guides/advanced/multi_node.md",
-      "guides/advanced/hot_code_upgrade.md",
-      "guides/advanced/gateway_compression.md",
-      "guides/advanced/manual_sharding.md",
-      "guides/cheat-sheets/api.cheatmd",
-      "guides/cheat-sheets/qlc.cheatmd",
-      "guides/cheat-sheets/voice.cheatmd"
-    ]
+    # We manually move the `intro.md` document to the top of the list so it
+    # remains first on the navigation sidebar
+    ["guides/intro/intro.md"] ++
+      (Path.wildcard("guides/**/*.{md,cheatmd}") -- ["guides/intro/intro.md"])
   end
 
   def groups_for_modules do
