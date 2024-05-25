@@ -14,7 +14,7 @@
 
     <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
     <script src="dist/handlebars.templates-IHH6HKET.js"></script>
-    <script src="dist/sidebar_items-4C45684A.js"></script>
+    <script src="dist/sidebar_items-A50A0817.js"></script>
     <script src="docs_config.js"></script>
     <script async src="dist/html-GXQ6W6IF.js"></script>
 
@@ -164,9 +164,9 @@ documented for completeness and people curious to look behind the covers.</p></b
 <p>The ratelimiter is fully asynchronous internally. In theory, it also supports
 queueing requests in an asynchronous manner. However, support for this is
 currently not implemented in <a href="Nostrum.Api.html"><code class="inline">Nostrum.Api</code></a>.</p><p>If you want to make one or multiple asynchronous requests manually, you can
-use the following pattern:</p><pre><code class="makeup elixir" translate="no"><span class="n">req</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">:gen_statem</span><span class="o">.</span><span class="n">send_request</span><span class="p" data-group-id="5647971801-1">(</span><span class="nc">Nostrum.Api.Ratelimiter</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="5647971801-2">{</span><span class="ss">:queue</span><span class="p">,</span><span class="w"> </span><span class="n">request</span><span class="p" data-group-id="5647971801-2">}</span><span class="p" data-group-id="5647971801-1">)</span><span class="w">
+use the following pattern:</p><pre><code class="makeup elixir" translate="no"><span class="n">req</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">:gen_statem</span><span class="o">.</span><span class="n">send_request</span><span class="p" data-group-id="8811108651-1">(</span><span class="nc">Nostrum.Api.Ratelimiter</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="8811108651-2">{</span><span class="ss">:queue</span><span class="p">,</span><span class="w"> </span><span class="n">request</span><span class="p" data-group-id="8811108651-2">}</span><span class="p" data-group-id="8811108651-1">)</span><span class="w">
 </span><span class="c1"># ...</span><span class="w">
-</span><span class="n">response</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">:gen_statem</span><span class="o">.</span><span class="n">receive_response</span><span class="p" data-group-id="5647971801-3">(</span><span class="n">req</span><span class="p">,</span><span class="w"> </span><span class="n">timeout</span><span class="p" data-group-id="5647971801-3">)</span></code></pre><p>where <code class="inline">request</code> is a map describing the request to run - see <a href="Nostrum.Api.html"><code class="inline">Nostrum.Api</code></a>
+</span><span class="n">response</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">:gen_statem</span><span class="o">.</span><span class="n">receive_response</span><span class="p" data-group-id="8811108651-3">(</span><span class="n">req</span><span class="p">,</span><span class="w"> </span><span class="n">timeout</span><span class="p" data-group-id="8811108651-3">)</span></code></pre><p>where <code class="inline">request</code> is a map describing the request to run - see <a href="Nostrum.Api.html"><code class="inline">Nostrum.Api</code></a>
 for more information. You can also send multiple requests at the same time
 and wait for their response: see <a href="https://www.erlang.org/doc/man/gen_statem.html#reqids_add-3"><code class="inline">:gen_statem.reqids_add/3</code></a> and
 <a href="https://www.erlang.org/doc/man/gen_statem.html#wait_response-3"><code class="inline">:gen_statem.wait_response/3</code></a> for more information.</p><h2 id="module-multi-node" class="section-heading">
@@ -427,7 +427,7 @@ handle this explicitly via <code class="inline">handle_info</code>.</p></li></ul
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#init/1" translate="no">init(list)</a>
+        <a href="#init/1" translate="no">init(token)</a>
 
       </div>
 
@@ -447,7 +447,7 @@ handle this explicitly via <code class="inline">handle_info</code>.</p></li></ul
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#start_link/1" translate="no">start_link(opts)</a>
+        <a href="#start_link/1" translate="no">start_link(arg)</a>
 
       </div>
 
@@ -608,7 +608,7 @@ otherwise, the value won't represent the truth anymore.</p>
     </a>
     <h1 class="signature" translate="no">state()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L284" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L288" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -635,7 +635,8 @@ otherwise, the value won't represent the truth anymore.</p>
        body :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()}
   },
   conn: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pid</a>() | nil,
-  remaining_in_window: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">non_neg_integer</a>()
+  remaining_in_window: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">non_neg_integer</a>(),
+  wrapped_token: Nostrum.Api.Base.wrapped_token()
 }</pre>
 
       </div>
@@ -653,7 +654,9 @@ client with a request when the response comes in.</p></li><li><p><code class="in
 have not fully received it yet. For responses that have a body, this will
 buffer their body until we can send it back to the client.</p></li><li><p><code class="inline">:conn</code>: The <code class="inline">:gun</code> connection backing the server. Used for making new
 requests, and updated as the state changes.</p></li><li><p><code class="inline">:remaining_in_window</code>: How many calls we may still make to the API during
-this time window. Reset automatically via timeouts.</p></li></ul>
+this time window. Reset automatically via timeouts.</p></li><li><p><code class="inline">:wrapped_token</code>: An anonymous function that is internally used to retrieve
+the token. This is wrapped to ensure that it is not accidentally exposed in
+stacktraces.</p></li></ul>
   </section>
 </section>
 
@@ -677,7 +680,7 @@ this time window. Reset automatically via timeouts.</p></li></ul>
     </a>
     <h1 class="signature" translate="no">callback_mode()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L316" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L321" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -699,7 +702,7 @@ this time window. Reset automatically via timeouts.</p></li></ul>
     </a>
     <h1 class="signature" translate="no">child_spec(opts)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L318" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L323" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -721,7 +724,7 @@ this time window. Reset automatically via timeouts.</p></li></ul>
     </a>
     <h1 class="signature" translate="no">code_change(version, state, data, extra)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L928" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L942" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -743,7 +746,7 @@ this time window. Reset automatically via timeouts.</p></li></ul>
     </a>
     <h1 class="signature" translate="no">connected(arg1, request, data)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L397" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L402" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -765,7 +768,7 @@ this time window. Reset automatically via timeouts.</p></li></ul>
     </a>
     <h1 class="signature" translate="no">connecting(arg1, arg2, data)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L361" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L366" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -787,7 +790,7 @@ this time window. Reset automatically via timeouts.</p></li></ul>
     </a>
     <h1 class="signature" translate="no">disconnected(arg, arg2, data)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L332" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L337" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -809,7 +812,7 @@ this time window. Reset automatically via timeouts.</p></li></ul>
     </a>
     <h1 class="signature" translate="no">get_endpoint(route, method)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L1006" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L1021" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -837,7 +840,7 @@ this time window. Reset automatically via timeouts.</p></li></ul>
     </a>
     <h1 class="signature" translate="no">global_limit(arg1, next, data)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L892" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L906" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -857,9 +860,9 @@ this time window. Reset automatically via timeouts.</p></li></ul>
       <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">init(list)</h1>
+    <h1 class="signature" translate="no">init(token)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L308" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L313" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -881,7 +884,7 @@ this time window. Reset automatically via timeouts.</p></li></ul>
     </a>
     <h1 class="signature" translate="no">queue(request)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L957" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L972" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -902,9 +905,9 @@ will cause this to return an error.</p>
       <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">start_link(opts)</h1>
+    <h1 class="signature" translate="no">start_link(arg)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L304" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L309" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -916,7 +919,7 @@ will cause this to return an error.</p>
 
       <div class="specs">
 
-          <pre translate="no"><span class="attribute">@spec</span> start_link([<a href="https://www.erlang.org/doc/man/gen_statem.html#type-start_opt">:gen_statem.start_opt</a>()]) :: <a href="https://www.erlang.org/doc/man/gen_statem.html#type-start_ret">:gen_statem.start_ret</a>()</pre>
+          <pre translate="no"><span class="attribute">@spec</span> start_link({<a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>(), [<a href="https://www.erlang.org/doc/man/gen_statem.html#type-start_opt">:gen_statem.start_opt</a>()]}) :: <a href="https://www.erlang.org/doc/man/gen_statem.html#type-start_ret">:gen_statem.start_ret</a>()</pre>
 
       </div>
 
