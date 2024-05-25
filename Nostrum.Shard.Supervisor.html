@@ -14,7 +14,7 @@
 
     <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
     <script src="dist/handlebars.templates-IHH6HKET.js"></script>
-    <script src="dist/sidebar_items-9825982C.js"></script>
+    <script src="dist/sidebar_items-4C45684A.js"></script>
     <script src="docs_config.js"></script>
     <script async src="dist/html-GXQ6W6IF.js"></script>
 
@@ -239,8 +239,7 @@ handle yet, thus growing the message queue and the memory usage.</p></li></ol>
 
       </div>
 
-        <div class="summary-synopsis"><p>Disconnects the shard with the given shard number from the Gateway.
-This function returns <code class="inline">resume_information</code> given to <a href="#reconnect/1"><code class="inline">Nostrum.Shard.Supervisor.reconnect/1</code></a>.</p></div>
+        <div class="summary-synopsis"><p>Disconnects the shard with the given shard number from the Gateway.</p></div>
 
     </div>
 
@@ -250,8 +249,7 @@ This function returns <code class="inline">resume_information</code> given to <a
 
       </div>
 
-        <div class="summary-synopsis"><p>Reconnect to the gateway using the given <code class="inline">resume_information</code>.
-For more information about resume, please visit <a href="https://discord.com/developers/docs/topics/gateway#resuming">the Discord Developer Portal</a>.</p></div>
+        <div class="summary-synopsis"><p>Reconnect to the gateway using the provided <a href="#t:resume_information/0"><code class="inline">resume_information/0</code></a>.</p></div>
 
     </div>
 
@@ -426,7 +424,7 @@ For more information about resume, please visit <a href="https://discord.com/dev
     </a>
     <h1 class="signature" translate="no">connect(shard_num, total_shards)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/supervisor.ex#L163" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/supervisor.ex#L173" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -454,7 +452,7 @@ For more information about resume, please visit <a href="https://discord.com/dev
     </a>
     <h1 class="signature" translate="no">disconnect(shard_num)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/supervisor.ex#L151" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/supervisor.ex#L161" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -470,8 +468,16 @@ For more information about resume, please visit <a href="https://discord.com/dev
 
       </div>
 
-<p>Disconnects the shard with the given shard number from the Gateway.
-This function returns <code class="inline">resume_information</code> given to <a href="#reconnect/1"><code class="inline">Nostrum.Shard.Supervisor.reconnect/1</code></a>.</p>
+<p>Disconnects the shard with the given shard number from the Gateway.</p><p>This function returns <a href="#t:resume_information/0"><code class="inline">resume_information/0</code></a> which can be provided
+to <a href="#reconnect/1"><code class="inline">reconnect/1</code></a> to reconnect a shard to the gateway and (attempt) to
+catch up on any missed events.</p><h3 id="disconnect/1-examples" class="section-heading">
+  <a href="#disconnect/1-examples" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Examples</span>
+</h3>
+<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Shard.Supervisor</span><span class="o">.</span><span class="n">disconnect</span><span class="p" data-group-id="3042266425-1">(</span><span class="mi">4</span><span class="p" data-group-id="3042266425-1">)</span><span class="w">
+</span><span class="p" data-group-id="3042266425-2">%{</span><span class="ss">shard_num</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="n">...</span><span class="p" data-group-id="3042266425-2">}</span></code></pre>
   </section>
 </section>
 <section class="detail" id="reconnect/1">
@@ -483,7 +489,7 @@ This function returns <code class="inline">resume_information</code> given to <a
     </a>
     <h1 class="signature" translate="no">reconnect(opts)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/supervisor.ex#L172" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/supervisor.ex#L198" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -499,8 +505,20 @@ This function returns <code class="inline">resume_information</code> given to <a
 
       </div>
 
-<p>Reconnect to the gateway using the given <code class="inline">resume_information</code>.
-For more information about resume, please visit <a href="https://discord.com/developers/docs/topics/gateway#resuming">the Discord Developer Portal</a>.</p>
+<p>Reconnect to the gateway using the provided <a href="#t:resume_information/0"><code class="inline">resume_information/0</code></a>.</p><p>Resuming is performed by the gateway on a best effort basis, it is not
+guaranteed that a resume will work (though Nostrum will handle failed attempts
+at a resumption). If a reconnect is successful, any events received during the
+reconnection period should be received. If the reconnect fails, events
+received between the disconnect and re-authentication may be lost.</p><p>For more information about resuming sessions, visit
+<a href="https://discord.com/developers/docs/topics/gateway#resuming">the Discord Developer Portal</a>.</p><h3 id="reconnect/1-examples" class="section-heading">
+  <a href="#reconnect/1-examples" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Examples</span>
+</h3>
+<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="n">resume</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Nostrum.Shard.Supervisor</span><span class="o">.</span><span class="n">disconnect</span><span class="p" data-group-id="2496503717-1">(</span><span class="mi">4</span><span class="p" data-group-id="2496503717-1">)</span><span class="w">
+</span><span class="p" data-group-id="2496503717-2">%{</span><span class="ss">shard_num</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="n">...</span><span class="p" data-group-id="2496503717-2">}</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Shard.Supervisor</span><span class="o">.</span><span class="n">reconnect</span><span class="p" data-group-id="2496503717-3">(</span><span class="n">resume</span><span class="p" data-group-id="2496503717-3">)</span></code></pre>
   </section>
 </section>
 <section class="detail" id="start_link/1">

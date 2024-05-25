@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.32.1">
+    <meta name="project" content="Nostrum v0.9.1">
+
+
+    <title>API — Nostrum v0.9.1</title>
+    <link rel="stylesheet" href="dist/html-elixir-2C5PUTIB.css" />
+
+
+    <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
+    <script src="dist/handlebars.templates-IHH6HKET.js"></script>
+    <script src="dist/sidebar_items-4C45684A.js"></script>
+    <script src="docs_config.js"></script>
+    <script async src="dist/html-GXQ6W6IF.js"></script>
+
+
+  </head>
+  <body data-type="extras" class="page-extra">
+    <script>
+
+      try {
+        var settings = JSON.parse(localStorage.getItem('ex_doc:settings') || '{}');
+
+        if (settings.theme === 'dark' ||
+           ((settings.theme === 'system' || settings.theme == null) &&
+             window.matchMedia('(prefers-color-scheme: dark)').matches)
+           ) {
+          document.body.classList.add('dark')
+        }
+      } catch (error) { }
+    </script>
+
+<div class="body-wrapper">
+
+<button id="sidebar-menu" class="sidebar-button sidebar-toggle" aria-label="toggle sidebar" aria-controls="sidebar">
+  <i class="ri-menu-line ri-lg" title="Collapse/expand sidebar"></i>
+</button>
+
+<nav id="sidebar" class="sidebar">
+
+  <div class="sidebar-header">
+    <div class="sidebar-projectInfo">
+
+        <a href="https://github.com/Kraigie/nostrum" class="sidebar-projectImage">
+          <img src="assets/logo.png" alt="Nostrum" />
+        </a>
+
+      <div>
+        <a href="https://github.com/Kraigie/nostrum" class="sidebar-projectName" translate="no">
+Nostrum
+        </a>
+        <div class="sidebar-projectVersion" translate="no">
+          v0.9.1
+        </div>
+      </div>
+    </div>
+    <ul id="sidebar-listNav" class="sidebar-listNav" role="tablist">
+      <li>
+        <button id="extras-list-tab-button" role="tab" data-type="extras" aria-controls="extras-tab-panel" aria-selected="true" tabindex="0">
+Pages
+        </button>
+      </li>
+
+        <li>
+          <button id="modules-list-tab-button" role="tab" data-type="modules" aria-controls="modules-tab-panel" aria-selected="false" tabindex="-1">
+            Modules
+          </button>
+        </li>
+
+
+        <li>
+          <button id="tasks-list-tab-button" role="tab" data-type="tasks" aria-controls="tasks-tab-panel" aria-selected="false" tabindex="-1">
+            <span translate="no">Mix</span> Tasks
+          </button>
+        </li>
+
+    </ul>
+  </div>
+
+  <div id="extras-tab-panel" class="sidebar-tabpanel" role="tabpanel" aria-labelledby="extras-list-tab-button">
+    <ul id="extras-full-list" class="full-list"></ul>
+  </div>
+
+    <div id="modules-tab-panel" class="sidebar-tabpanel" role="tabpanel" aria-labelledby="modules-list-tab-button" hidden>
+      <ul id="modules-full-list" class="full-list"></ul>
+    </div>
+
+
+    <div id="tasks-tab-panel" class="sidebar-tabpanel" role="tabpanel" aria-labelledby="tasks-list-tab-button" hidden>
+      <ul id="tasks-full-list" class="full-list"></ul>
+    </div>
+
+</nav>
+
+<main class="content">
+  <output role="status" id="toast"></output>
+
+  <div id="content" class="content-inner">
+    <div class="top-search">
+      <div class="search-settings">
+        <form class="search-bar" action="search.html">
+          <label class="search-label">
+            <span class="sr-only">Search documentation of Nostrum</span>
+            <input name="q" type="text" class="search-input" placeholder="Press / to search" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+          </label>
+          <button type="submit" class="search-button" aria-label="Submit Search">
+            <i class="ri-search-2-line ri-lg" aria-hidden="true" title="Submit search"></i>
+          </button>
+          <button type="button" tabindex="-1" class="search-close-button" aria-hidden="true">
+            <i class="ri-close-line ri-lg" title="Cancel search"></i>
+          </button>
+        </form>
+        <div class="autocomplete">
+        </div>
+        <button class="icon-settings display-settings">
+          <i class="ri-settings-3-line"></i>
+          <span class="sr-only">Settings</span>
+        </button>
+      </div>
+    </div>
+
+<div id="top-content">
+  <h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/guides/intro/api.md#L1" title="View Source" class="icon-action" rel="help">
+        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        <span class="sr-only">View Source</span>
+      </a>
+
+
+    <span>API</span>
+  </h1>
+
+<p>nostrum includes a complete implementation of the endpoints supported by
+Discord's API. Method names are copied closely from the documentation to
+eliminate any confusion about what a method does, as well as to allow users to
+easily lookup the endpoints in the official API documentation.</p><p>For a full listing of method definitions, please see the <a href="Nostrum.Api.html"><code class="inline">Nostrum.Api</code></a> module.</p><h2 id="banged-api-methods" class="section-heading">
+  <a href="#banged-api-methods" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Banged (<code class="inline">!</code>) API methods</span>
+</h2>
+<p>A lot of methods have a <code class="inline">banged</code> version of themselves. This is a common Elixir
+idiom hailing from Elixir's style of failing fast.</p><p>By default, the API method will return a tuple like one of the following:</p><pre><code class="makeup elixir" translate="no"><span class="c1"># Success</span><span class="w">
+</span><span class="p" data-group-id="3731195376-1">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">msg</span><span class="p" data-group-id="3731195376-1">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">create_message</span><span class="p" data-group-id="3731195376-2">(</span><span class="mi">179679229036724225</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;456&quot;</span><span class="p" data-group-id="3731195376-2">)</span><span class="w">
+
+</span><span class="c1"># Failure</span><span class="w">
+</span><span class="p" data-group-id="3731195376-3">{</span><span class="ss">:error</span><span class="p">,</span><span class="w"> </span><span class="n">reason</span><span class="p" data-group-id="3731195376-3">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">create_message</span><span class="p" data-group-id="3731195376-4">(</span><span class="mi">123</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;eat my shorts api&quot;</span><span class="p" data-group-id="3731195376-4">)</span></code></pre><p>A banged method, instead of returning an <code class="inline">error</code> tuple, will throw an error. If
+successful, it will directly return the response with no <code class="inline">:ok</code> tuple.</p><pre><code class="makeup elixir" translate="no"><span class="c1"># Success</span><span class="w">
+</span><span class="n">msg</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">create_message!</span><span class="p" data-group-id="5280527908-1">(</span><span class="mi">179679229036724225</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;456&quot;</span><span class="p" data-group-id="5280527908-1">)</span><span class="w">
+
+</span><span class="c1"># Failure - Throws an error</span><span class="w">
+</span><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">create_message!</span><span class="p" data-group-id="5280527908-2">(</span><span class="mi">123</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;eat my shorts api&quot;</span><span class="p" data-group-id="5280527908-2">)</span></code></pre><h2 id="abstractions" class="section-heading">
+  <a href="#abstractions" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Abstractions</span>
+</h2>
+<p>When appropriate, some helpers are defined to make interacting with the API
+simpler. An example of this is <a href="Nostrum.Api.html#get_channel_messages/3"><code class="inline">Nostrum.Api.get_channel_messages/3</code></a>. By default
+this endpoint only allows the retrieval of <code class="inline">100</code> messages at a time. A general
+use case will have a user wanting more messages than that, thus nostrum handles
+the retrieval of any number of messages for the user.</p><p>There are other endpoints that could use grooming like above, feel free to
+suggest an interface and implementation for these methods.</p><h2 id="ratelimiting" class="section-heading">
+  <a href="#ratelimiting" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Ratelimiting</span>
+</h2>
+<p>Ratelimiting is handled internally by nostrum, so long as you use the methods
+supplied in the <a href="Nostrum.Api.html"><code class="inline">Nostrum.Api</code></a> module. This means either calling the methods as
+they're given or using <a href="Nostrum.Api.html#request/4"><code class="inline">Nostrum.Api.request/4</code></a> to call an endpoint.</p><p>To ensure that every request is handled properly, no matter if they're called
+asynchronously or not, nostrum funnels all requests through the
+<a href="Nostrum.Api.Ratelimiter.html"><code class="inline">Nostrum.Api.Ratelimiter</code></a> state machine.</p><h2 id="rest-only" class="section-heading">
+  <a href="#rest-only" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">REST-only</span>
+</h2>
+<p>If you only want to use the REST portion of the provided API, the only process
+needed is the ratelimiter, which can be manually started by calling
+<a href="Nostrum.Api.Ratelimiter.html#start_link/1"><code class="inline">Nostrum.Api.Ratelimiter.start_link/1</code></a>. </p><p>If you don't want to start nostrum, you can add <code class="inline">runtime: false</code> to the
+dependency options. If you're using <a href="https://hexdocs.pm/mix/Mix.Tasks.Release.html"><code class="inline">mix release</code></a>, all <code class="inline">runtime: false</code> deps
+will be excluded from the build, so you'll also need to add <code class="inline">:nostrum</code> app to
+<code class="inline">mix.exs</code> in <code class="inline">:included_applications</code> application option or in the <code class="inline">releases</code>
+project option.</p><!-- vim: set textwidth=80 sw=2 ts=2: -->
+</div>
+
+<div class="bottom-actions" id="bottom-actions">
+  <div class="bottom-actions-item">
+
+      <a href="intro.html" class="bottom-actions-button" rel="prev">
+        <span class="subheader">
+          ← Previous Page
+        </span>
+        <span class="title">
+Introduction
+        </span>
+      </a>
+
+  </div>
+  <div class="bottom-actions-item">
+
+      <a href="application_commands.html" class="bottom-actions-button" rel="next">
+        <span class="subheader">
+          Next Page →
+        </span>
+        <span class="title">
+Application commands
+        </span>
+      </a>
+
+  </div>
+</div>
+    <footer class="footer">
+      <p>
+
+          <span class="line">
+            <a href="https://hex.pm/packages/nostrum/0.9.1" class="footer-hex-package">Hex Package</a>
+
+            <a href="https://preview.hex.pm/preview/nostrum/0.9.1">Hex Preview</a>
+
+              (<a href="https://preview.hex.pm/preview/nostrum/0.9.1/show/guides/intro/api.md">current file</a>)
+
+          </span>
+
+        <span class="line">
+          <button class="a-main footer-button display-quick-switch" title="Search HexDocs packages">
+            Search HexDocs
+          </button>
+
+            <a href="Nostrum.epub" title="ePub version">
+              Download ePub version
+            </a>
+
+        </span>
+      </p>
+
+      <p class="built-using">
+        Built using
+        <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.32.1) for the
+
+          <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
+
+      </p>
+
+    </footer>
+  </div>
+</main>
+</div>
+
+
+  </body>
+</html>
