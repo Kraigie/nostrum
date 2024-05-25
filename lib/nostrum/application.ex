@@ -29,7 +29,7 @@ defmodule Nostrum.Application do
     children = [
       Nostrum.Store.Supervisor,
       Nostrum.ConsumerGroup,
-      Nostrum.Api.Ratelimiter,
+      {Nostrum.Api.Ratelimiter, {Application.fetch_env!(:nostrum, :token), []}},
       Nostrum.Shard.Connector,
       Nostrum.Cache.CacheSupervisor,
       Nostrum.Shard.Supervisor,
