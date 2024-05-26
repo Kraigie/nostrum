@@ -8,7 +8,7 @@
     <meta name="project" content="Nostrum v0.9.1">
 
 
-    <title>Nostrum.Cache.UserCache.Mnesia — Nostrum v0.9.1</title>
+    <title>Nostrum.Cache.MessageCache.Mnesia — Nostrum v0.9.1</title>
     <link rel="stylesheet" href="dist/html-elixir-2C5PUTIB.css" />
 
 
@@ -127,21 +127,40 @@ Pages
 <div id="top-content">
   <h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/user_cache/mnesia.ex#L2" title="View Source" class="icon-action" rel="help">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/message_cache/mnesia.ex#L2" title="View Source" class="icon-action" rel="help">
         <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         <span class="sr-only">View Source</span>
       </a>
 
-    <span translate="no">Nostrum.Cache.UserCache.Mnesia</span> 
+    <span translate="no">Nostrum.Cache.MessageCache.Mnesia</span> 
     <small class="app-vsn" translate="no">(Nostrum v0.9.1)</small>
 
   </h1>
 
 
     <section id="moduledoc">
-<p>An Mnesia-based cache for users.</p><p>Please note that this module is only compiled if Mnesia is available on
+<p>An Mnesia-based cache for messages.</p><p>Please note that this module is only compiled if Mnesia is available on
 your system. See the Mnesia section of the <a href="state.html">State</a>
-documentation for more information.</p><p>To retrieve the table name used by this cache, use <a href="#table/0"><code class="inline">table/0</code></a>.</p>
+documentation for more information.</p><p>To retrieve the table name used by this cache, use <a href="#table/0"><code class="inline">table/0</code></a>.</p><p>By default, the cache will store up to <code class="inline">10_000</code> messages,
+and will evict the <code class="inline">100</code> oldest messages when the limit is reached.</p><p>The reason for the eviction count is that with mnesia it is more efficient to
+find X oldest records and delete them all at once than to find the oldest
+record and delete it each time a new record is added.</p><p>The Mnesia cache supports the following configuration options:</p><ul><li><code class="inline">size_limit</code>: The maximum number of messages to store in the cache.
+default: <code class="inline">10_000</code></li><li><code class="inline">eviction_count</code>: The number of messages to evict when the cache is full.
+default: <code class="inline">100</code></li><li><code class="inline">table_name</code>: The name of the Mnesia table to use for the cache.
+default: <code class="inline">:nostrum_messages</code></li><li><code class="inline">compressed</code>: Whether to use compressed in memory storage for the table.
+default: <code class="inline">false</code></li><li><code class="inline">type</code>: Sets the type of Mnesia table created to cache messages.
+Can be either <code class="inline">:set</code> or <code class="inline">:ordered_set</code>, by choosing <code class="inline">:ordered_set</code> the
+eviction of the oldest messages will be more efficient, however it means
+that the table cannot be changed to only store its contents on disk later.
+default: <code class="inline">:ordered_set</code></li></ul><p>To change this configuration, you can add the following to your
+<code class="inline">config.exs</code>:</p><pre><code class="makeup elixir" translate="no"><span class="n">config</span><span class="w"> </span><span class="ss">:nostrum</span><span class="p">,</span><span class="w">
+  </span><span class="ss">caches</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="6988752493-1">%{</span><span class="w">
+    </span><span class="ss">messages</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="6988752493-2">{</span><span class="nc">Nostrum.Cache.MessageCache.Mnesia</span><span class="p">,</span><span class="w">
+               </span><span class="ss">size_limit</span><span class="p">:</span><span class="w"> </span><span class="mi">1000</span><span class="p">,</span><span class="w"> </span><span class="ss">eviction_count</span><span class="p">:</span><span class="w"> </span><span class="mi">50</span><span class="p">,</span><span class="w">
+               </span><span class="ss">table_name</span><span class="p">:</span><span class="w"> </span><span class="ss">:my_custom_messages_table_name</span><span class="p">,</span><span class="w">
+               </span><span class="ss">compressed</span><span class="p">:</span><span class="w"> </span><span class="no">true</span><span class="p">,</span><span class="w"> </span><span class="ss">type</span><span class="p">:</span><span class="w"> </span><span class="ss">:set</span><span class="p" data-group-id="6988752493-2">}</span><span class="w">
+  </span><span class="p" data-group-id="6988752493-1">}</span></code></pre><p>You can also change the table name used by the cache by setting the
+<code class="inline">table_name</code> field in the configuration for the <code class="inline">messages</code> cache.</p>
     </section>
 
 </div>
@@ -160,11 +179,22 @@ documentation for more information.</p><p>To retrieve the table name used by thi
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#bulk_create/1" translate="no">bulk_create(users)</a>
+        <a href="#bulk_delete/2" translate="no">bulk_delete(channel_id, message_ids)</a>
 
       </div>
 
-        <div class="summary-synopsis"><p>Bulk create a chunk of users in the cache.</p></div>
+        <div class="summary-synopsis"><p>Removes and returns a list of messages from the cache.
+Messages not found in the cache will not be included in the returned list.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#channel_delete/1" translate="no">channel_delete(channel_id)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Removes all messages for a channel which was deleted.</p></div>
 
     </div>
 
@@ -194,17 +224,27 @@ documentation for more information.</p><p>To retrieve the table name used by thi
 
       </div>
 
-        <div class="summary-synopsis"><p>Create a user from upstream data.</p></div>
+        <div class="summary-synopsis"><p>Adds a message to the cache.</p></div>
 
     </div>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#delete/1" translate="no">delete(user_id)</a>
+        <a href="#delete/2" translate="no">delete(channel_id, message_id)</a>
 
       </div>
 
-        <div class="summary-synopsis"><p>Remove the given user from cache.</p></div>
+        <div class="summary-synopsis"><p>Removes a message from the cache.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#get/1" translate="no">get(message_id)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Retrieve a single message from the cache by id.</p></div>
 
     </div>
 
@@ -224,7 +264,7 @@ documentation for more information.</p><p>To retrieve the table name used by thi
 
       </div>
 
-        <div class="summary-synopsis"><p>Get a QLC query handle for the user cache.</p></div>
+        <div class="summary-synopsis"><p>Return a QLC query handle for the cache for read operations.</p></div>
 
     </div>
 
@@ -264,7 +304,7 @@ documentation for more information.</p><p>To retrieve the table name used by thi
 
       </div>
 
-        <div class="summary-synopsis"><p>Update the given member for the given guild in the cache.</p></div>
+        <div class="summary-synopsis"><p>Updates a message in the cache.</p></div>
 
     </div>
 
@@ -274,7 +314,7 @@ documentation for more information.</p><p>To retrieve the table name used by thi
 
       </div>
 
-        <div class="summary-synopsis"><p>Wrap QLC operations in a transaction.</p></div>
+        <div class="summary-synopsis"><p>Wrap QLC operations in a transaction</p></div>
 
     </div>
 
@@ -291,28 +331,63 @@ documentation for more information.</p><p>To retrieve the table name used by thi
       <span class="text">Functions</span>
     </h1>
     <div class="functions-list">
-<section class="detail" id="bulk_create/1">
+<section class="detail" id="bulk_delete/2">
 
   <div class="detail-header">
-    <a href="#bulk_create/1" class="detail-link" title="Link to this function">
+    <a href="#bulk_delete/2" class="detail-link" title="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">bulk_create(users)</h1>
+    <h1 class="signature" translate="no">bulk_delete(channel_id, message_ids)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/user_cache/mnesia.ex#L70" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/message_cache/mnesia.ex#L190" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
 
 
-      <span class="note">(since 0.8.0)</span>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> bulk_delete(<a href="Nostrum.Struct.Channel.html#t:id/0">Nostrum.Struct.Channel.id</a>(), [<a href="Nostrum.Struct.Message.html#t:id/0">Nostrum.Struct.Message.id</a>()]) :: [
+  <a href="Nostrum.Struct.Message.html#t:t/0">Nostrum.Struct.Message.t</a>()
+]</pre>
+
+      </div>
+
+<p>Removes and returns a list of messages from the cache.
+Messages not found in the cache will not be included in the returned list.</p>
+  </section>
+</section>
+<section class="detail" id="channel_delete/1">
+
+  <div class="detail-header">
+    <a href="#channel_delete/1" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">channel_delete(channel_id)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/message_cache/mnesia.ex#L206" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
 
   </div>
 
   <section class="docstring">
 
-<p>Bulk create a chunk of users in the cache.</p>
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> channel_delete(<a href="Nostrum.Struct.Channel.html#t:id/0">Nostrum.Struct.Channel.id</a>()) :: :ok</pre>
+
+      </div>
+
+<p>Removes all messages for a channel which was deleted.</p>
   </section>
 </section>
 <section class="detail" id="child_spec/1">
@@ -324,13 +399,11 @@ documentation for more information.</p><p>To retrieve the table name used by thi
     </a>
     <h1 class="signature" translate="no">child_spec(init_arg)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/user_cache/mnesia.ex#L17" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/message_cache/mnesia.ex#L66" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
 
-
-      <span class="note">(since 0.8.0)</span>
 
   </div>
 
@@ -348,13 +421,11 @@ documentation for more information.</p><p>To retrieve the table name used by thi
     </a>
     <h1 class="signature" translate="no">clear()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/user_cache/mnesia.ex#L50" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/message_cache/mnesia.ex#L96" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
 
-
-      <span class="note">(since 0.8.0)</span>
 
   </div>
 
@@ -378,13 +449,11 @@ documentation for more information.</p><p>To retrieve the table name used by thi
     </a>
     <h1 class="signature" translate="no">create(payload)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/user_cache/mnesia.ex#L60" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/message_cache/mnesia.ex#L121" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
 
-
-      <span class="note">(since 0.8.0)</span>
 
   </div>
 
@@ -392,29 +461,27 @@ documentation for more information.</p><p>To retrieve the table name used by thi
 
       <div class="specs">
 
-          <pre translate="no"><span class="attribute">@spec</span> create(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()) :: <a href="Nostrum.Struct.User.html#t:t/0">Nostrum.Struct.User.t</a>()</pre>
+          <pre translate="no"><span class="attribute">@spec</span> create(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()) :: <a href="Nostrum.Struct.Message.html#t:t/0">Nostrum.Struct.Message.t</a>()</pre>
 
       </div>
 
-<p>Create a user from upstream data.</p>
+<p>Adds a message to the cache.</p>
   </section>
 </section>
-<section class="detail" id="delete/1">
+<section class="detail" id="delete/2">
 
   <div class="detail-header">
-    <a href="#delete/1" class="detail-link" title="Link to this function">
+    <a href="#delete/2" class="detail-link" title="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">delete(user_id)</h1>
+    <h1 class="signature" translate="no">delete(channel_id, message_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/user_cache/mnesia.ex#L106" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/message_cache/mnesia.ex#L168" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
 
-
-      <span class="note">(since 0.8.0)</span>
 
   </div>
 
@@ -422,11 +489,41 @@ documentation for more information.</p><p>To retrieve the table name used by thi
 
       <div class="specs">
 
-          <pre translate="no"><span class="attribute">@spec</span> delete(<a href="Nostrum.Struct.User.html#t:id/0">Nostrum.Struct.User.id</a>()) :: <a href="Nostrum.Struct.User.html#t:t/0">Nostrum.Struct.User.t</a>() | :noop</pre>
+          <pre translate="no"><span class="attribute">@spec</span> delete(<a href="Nostrum.Struct.Channel.html#t:id/0">Nostrum.Struct.Channel.id</a>(), <a href="Nostrum.Struct.Message.html#t:id/0">Nostrum.Struct.Message.id</a>()) ::
+  <a href="Nostrum.Struct.Message.html#t:t/0">Nostrum.Struct.Message.t</a>() | nil</pre>
 
       </div>
 
-<p>Remove the given user from cache.</p>
+<p>Removes a message from the cache.</p>
+  </section>
+</section>
+<section class="detail" id="get/1">
+
+  <div class="detail-header">
+    <a href="#get/1" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">get(message_id)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/message_cache/mnesia.ex#L106" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> get(<a href="Nostrum.Struct.Message.html#t:id/0">Nostrum.Struct.Message.id</a>()) ::
+  {:ok, <a href="Nostrum.Struct.Message.html#t:t/0">Nostrum.Struct.Message.t</a>()} | {:error, :not_found}</pre>
+
+      </div>
+
+<p>Retrieve a single message from the cache by id.</p>
   </section>
 </section>
 <section class="detail" id="init/1">
@@ -438,13 +535,11 @@ documentation for more information.</p><p>To retrieve the table name used by thi
     </a>
     <h1 class="signature" translate="no">init(init_arg)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/user_cache/mnesia.ex#L26" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/message_cache/mnesia.ex#L75" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
 
-
-      <span class="note">(since 0.8.0)</span>
 
   </div>
 
@@ -462,13 +557,11 @@ documentation for more information.</p><p>To retrieve the table name used by thi
     </a>
     <h1 class="signature" translate="no">query_handle()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/user_cache/mnesia.ex#L122" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/message_cache/mnesia.ex#L225" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
 
-
-      <span class="note">(since 0.8.0)</span>
 
   </div>
 
@@ -480,7 +573,7 @@ documentation for more information.</p><p>To retrieve the table name used by thi
 
       </div>
 
-<p>Get a QLC query handle for the user cache.</p>
+<p>Return a QLC query handle for the cache for read operations.</p>
   </section>
 </section>
 <section class="detail" id="start_link/1">
@@ -492,13 +585,11 @@ documentation for more information.</p><p>To retrieve the table name used by thi
     </a>
     <h1 class="signature" translate="no">start_link(init_arg)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/user_cache/mnesia.ex#L20" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/message_cache/mnesia.ex#L69" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
 
-
-      <span class="note">(since 0.8.0)</span>
 
   </div>
 
@@ -516,13 +607,11 @@ documentation for more information.</p><p>To retrieve the table name used by thi
     </a>
     <h1 class="signature" translate="no">table()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/user_cache/mnesia.ex#L42" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/message_cache/mnesia.ex#L88" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
 
-
-      <span class="note">(since 0.8.0)</span>
 
   </div>
 
@@ -546,13 +635,11 @@ documentation for more information.</p><p>To retrieve the table name used by thi
     </a>
     <h1 class="signature" translate="no">teardown()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/user_cache/mnesia.ex#L46" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/message_cache/mnesia.ex#L92" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
 
-
-      <span class="note">(since 0.8.0)</span>
 
   </div>
 
@@ -576,13 +663,11 @@ documentation for more information.</p><p>To retrieve the table name used by thi
     </a>
     <h1 class="signature" translate="no">update(payload)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/user_cache/mnesia.ex#L85" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/message_cache/mnesia.ex#L139" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
 
-
-      <span class="note">(since 0.8.0)</span>
 
   </div>
 
@@ -590,11 +675,13 @@ documentation for more information.</p><p>To retrieve the table name used by thi
 
       <div class="specs">
 
-          <pre translate="no"><span class="attribute">@spec</span> update(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()) :: {<a href="Nostrum.Struct.User.html#t:t/0">Nostrum.Struct.User.t</a>() | nil, <a href="Nostrum.Struct.User.html#t:t/0">Nostrum.Struct.User.t</a>()}</pre>
+          <pre translate="no"><span class="attribute">@spec</span> update(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()) ::
+  {old_message :: <a href="Nostrum.Struct.Message.html#t:t/0">Nostrum.Struct.Message.t</a>() | nil,
+   updated_message :: <a href="Nostrum.Struct.Message.html#t:t/0">Nostrum.Struct.Message.t</a>()}</pre>
 
       </div>
 
-<p>Update the given member for the given guild in the cache.</p>
+<p>Updates a message in the cache.</p>
   </section>
 </section>
 <section class="detail" id="wrap_qlc/1">
@@ -606,19 +693,17 @@ documentation for more information.</p><p>To retrieve the table name used by thi
     </a>
     <h1 class="signature" translate="no">wrap_qlc(fun)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/user_cache/mnesia.ex#L128" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/message_cache/mnesia.ex#L231" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
 
 
-      <span class="note">(since 0.8.0)</span>
-
   </div>
 
   <section class="docstring">
 
-<p>Wrap QLC operations in a transaction.</p>
+<p>Wrap QLC operations in a transaction</p>
   </section>
 </section>
 

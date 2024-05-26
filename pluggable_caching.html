@@ -14,7 +14,7 @@
 
     <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
     <script src="dist/handlebars.templates-IHH6HKET.js"></script>
-    <script src="dist/sidebar_items-A50A0817.js"></script>
+    <script src="dist/sidebar_items-9312FB79.js"></script>
     <script src="docs_config.js"></script>
     <script async src="dist/html-GXQ6W6IF.js"></script>
 
@@ -139,14 +139,23 @@ Pages
 <p>The default ETS-based caches supplied by nostrum should work for most of your
 needs, but all of the caches can be exchanged for your own implementations. For
 this, implement the behaviours exported by the cache modules under
-<code class="inline">Nostrum.Cache</code>.</p><p>Use the <code class="inline">[:nostrum, :caches]</code> configuration for configuring which cache
+<code class="inline">Nostrum.Cache</code>.</p><blockquote><h3 id="exception" class="info section-heading">
+  <a href="#exception" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Exception</span>
+</h3>
+<p>The exception to the above is the <a href="Nostrum.Cache.MessageCache.html"><code class="inline">Nostrum.Cache.MessageCache</code></a>, which does not
+include an ETS-based implementation, and defaults to a NoOp cache. This is
+an intentional design decision because caching messages consumes a
+lot more memory than other objects, and is often not needed by most users.</p></blockquote><p>Use the <code class="inline">[:nostrum, :caches]</code> configuration for configuring which cache
 implementation you want to use. This can only be set at dependency compilation
 time. A common situation is that you don't want to cache presences in your bot,
 most likely you don't care about user's status, so you can disable it altogether
 by using the <code class="inline">NoOp</code> presence cache:</p><pre><code class="makeup elixir" translate="no"><span class="n">config</span><span class="w"> </span><span class="ss">:nostrum</span><span class="p">,</span><span class="w">
-  </span><span class="ss">caches</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="8383497052-1">%{</span><span class="w">
+  </span><span class="ss">caches</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="2593455708-1">%{</span><span class="w">
     </span><span class="ss">presences</span><span class="p">:</span><span class="w"> </span><span class="nc">Nostrum.Cache.PresenceCache.NoOp</span><span class="w">
-  </span><span class="p" data-group-id="8383497052-1">}</span></code></pre><p>In addition to regular caches that associate Discord snowflakes with the proper
+  </span><span class="p" data-group-id="2593455708-1">}</span></code></pre><p>In addition to regular caches that associate Discord snowflakes with the proper
 &quot;full&quot; object, nostrum also maintains junction table-like mappings that allow
 you to find the matching object from one cache in another. One example for this
 is <a href="Nostrum.Cache.ChannelGuildMapping.html"><code class="inline">Nostrum.Cache.ChannelGuildMapping</code></a>.</p><p>Nostrum also ships with Mnesia-based caches. <strong>These are only compiled in when
@@ -179,7 +188,7 @@ therefore, Mnesia must be started ahead of nostrum. Caches expose a function
 perform schema operations on it, such as adding replicas or fragmenting them.</p><!-- From 1.0, add the following: Any future schema migrations that nostrumneeds to perform will be automatically performed at cache startup. --><p>Access to Mnesia is presently done in <code class="inline">sync_transaction</code> mode for best
 consistency. If needed, a compile-time configuration option for the cache to
 switch this can be added.</p><p>Mnesia-based caching assumes the user is familar with usage and
-maintenance of Mnesia: the <a href="https://www.erlang.org/doc/apps/mnesia/users_guide.html">Mnesia User's
+maintenance of Mnesia: the <a href="https://www.erlang.org/doc/apps/mnesia/mnesia_chap1.html">Mnesia User's
 Guide</a> is a good
 starting point.</p><h3 id="noop-caching" class="section-heading">
   <a href="#noop-caching" class="hover-link">
@@ -188,20 +197,21 @@ starting point.</p><h3 id="noop-caching" class="section-heading">
   <span class="text">NoOp caching</span>
 </h3>
 <p>The NoOp cache adapters are supplied for the case where you do not want to cache
-specific data from Discord at all.</p><p>These cache adapters presently also don't send out any data they receive either:
-this means that for caches using the NoOp cache adapters, you won't receive any
-gateway events.</p><h2 id="cache-invalidation" class="section-heading">
+specific data from Discord at all.</p><h2 id="cache-invalidation" class="section-heading">
   <a href="#cache-invalidation" class="hover-link">
     <i class="ri-link-m" aria-hidden="true"></i>
   </a>
   <span class="text">Cache invalidation</span>
 </h2>
-<p>nostrum does not invalidate cache in any special way: it will maintain it in
+<p>Nostrum does not invalidate most caches in any special way: it will maintain it in
 response to gateway events (for instance by deleting a guild and its members
 upon leaving it), but won't regularly prune caches or associate expiration times
 with entries. For volatile (RAM-based) caches this is perfectly fine, however,
 when implementing your own cache backend that persists to disk in some way, you
-need to take care of this yourself.</p><h2 id="cache-performance" class="section-heading">
+need to take care of this yourself.</p><p>The exception to this is the <a href="Nostrum.Cache.MessageCache.Mnesia.html"><code class="inline">Nostrum.Cache.MessageCache.Mnesia</code></a> module, which has a
+default size limit of 10,000 and will automatically remove the 100 oldest
+messages when this limit is reached as well as delete all cached messages for a
+channel when the channel is deleted.</p><h2 id="cache-performance" class="section-heading">
   <a href="#cache-performance" class="hover-link">
     <i class="ri-link-m" aria-hidden="true"></i>
   </a>

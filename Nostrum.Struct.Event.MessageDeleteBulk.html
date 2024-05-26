@@ -14,7 +14,7 @@
 
     <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
     <script src="dist/handlebars.templates-IHH6HKET.js"></script>
-    <script src="dist/sidebar_items-A50A0817.js"></script>
+    <script src="dist/sidebar_items-9312FB79.js"></script>
     <script src="docs_config.js"></script>
     <script async src="dist/html-GXQ6W6IF.js"></script>
 
@@ -168,6 +168,17 @@ Pages
 
     <div class="summary-row">
       <div class="summary-signature">
+        <a href="#t:deleted_messages/0" translate="no">deleted_messages()</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>The deleted messages, if any were not found
+in the message cache they will only have the id and channel_id set.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
         <a href="#t:guild_id/0" translate="no">guild_id()</a>
 
       </div>
@@ -216,7 +227,7 @@ Pages
     </a>
     <h1 class="signature" translate="no">channel_id()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/event/message_delete_bulk.ex#L15" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/event/message_delete_bulk.ex#L16" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -235,6 +246,35 @@ Pages
 <p>Channel id of the deleted message</p>
   </section>
 </section>
+<section class="detail" id="t:deleted_messages/0">
+
+  <div class="detail-header">
+    <a href="#t:deleted_messages/0" class="detail-link" title="Link to this type">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature" translate="no">deleted_messages()</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/event/message_delete_bulk.ex#L32" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@type</span> deleted_messages() :: [<a href="Nostrum.Struct.Message.html#t:t/0">Nostrum.Struct.Message.t</a>(), ...]</pre>
+
+      </div>
+
+<p>The deleted messages, if any were not found
+in the message cache they will only have the id and channel_id set.</p>
+  </section>
+</section>
 <section class="detail" id="t:guild_id/0">
 
   <div class="detail-header">
@@ -244,7 +284,7 @@ Pages
     </a>
     <h1 class="signature" translate="no">guild_id()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/event/message_delete_bulk.ex#L22" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/event/message_delete_bulk.ex#L23" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -272,7 +312,7 @@ Pages
     </a>
     <h1 class="signature" translate="no">ids()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/event/message_delete_bulk.ex#L25" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/event/message_delete_bulk.ex#L26" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -300,7 +340,7 @@ Pages
     </a>
     <h1 class="signature" translate="no">t()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/event/message_delete_bulk.ex#L27" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/event/message_delete_bulk.ex#L33" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -314,6 +354,7 @@ Pages
 
           <pre translate="no"><span class="attribute">@type</span> t() :: %Nostrum.Struct.Event.MessageDeleteBulk{
   channel_id: <a href="#t:channel_id/0">channel_id</a>(),
+  deleted_messages: <a href="#t:deleted_messages/0">deleted_messages</a>(),
   guild_id: <a href="#t:guild_id/0">guild_id</a>(),
   ids: <a href="#t:ids/0">ids</a>()
 }</pre>
