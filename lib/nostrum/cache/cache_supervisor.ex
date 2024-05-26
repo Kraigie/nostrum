@@ -24,6 +24,7 @@ defmodule Nostrum.Cache.CacheSupervisor do
       Nostrum.Cache.ChannelGuildMapping,
       Nostrum.Cache.GuildCache,
       Nostrum.Cache.MemberCache,
+      Nostrum.Cache.MessageCache,
       Nostrum.Cache.UserCache,
       Nostrum.Cache.PresenceCache
     ]

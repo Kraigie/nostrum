@@ -5,6 +5,13 @@ needs, but all of the caches can be exchanged for your own implementations. For
 this, implement the behaviours exported by the cache modules under
 `Nostrum.Cache`.
 
+> ### Exception {: .info}
+>
+> The exception to the above is the `Nostrum.Cache.MessageCache`, which does not
+> include an ETS-based implementation, and defaults to a NoOp cache. This is
+> an intentional design decision because caching messages consumes a
+> lot more memory than other objects, and is often not needed by most users.
+
 Use the `[:nostrum, :caches]` configuration for configuring which cache
 implementation you want to use. This can only be set at dependency compilation
 time. A common situation is that you don't want to cache presences in your bot,
@@ -56,7 +63,7 @@ switch this can be added.
 
 Mnesia-based caching assumes the user is familar with usage and
 maintenance of Mnesia: the [Mnesia User's
-Guide](https://www.erlang.org/doc/apps/mnesia/users_guide.html) is a good
+Guide](https://www.erlang.org/doc/apps/mnesia/mnesia_chap1.html) is a good
 starting point.
 
 
@@ -65,19 +72,19 @@ starting point.
 The NoOp cache adapters are supplied for the case where you do not want to cache
 specific data from Discord at all.
 
-These cache adapters presently also don't send out any data they receive either:
-this means that for caches using the NoOp cache adapters, you won't receive any
-gateway events.
-
-
 ## Cache invalidation
 
-nostrum does not invalidate cache in any special way: it will maintain it in
+Nostrum does not invalidate most caches in any special way: it will maintain it in
 response to gateway events (for instance by deleting a guild and its members
 upon leaving it), but won't regularly prune caches or associate expiration times
 with entries. For volatile (RAM-based) caches this is perfectly fine, however,
 when implementing your own cache backend that persists to disk in some way, you
 need to take care of this yourself.
+
+The exception to this is the `Nostrum.Cache.MessageCache.Mnesia` module, which has a
+default size limit of 10,000 and will automatically remove the 100 oldest
+messages when this limit is reached as well as delete all cached messages for a
+channel when the channel is deleted.
 
 
 ## Cache performance

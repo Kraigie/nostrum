@@ -22,8 +22,7 @@ defmodule Nostrum.Cache.MemberCache do
   alias Nostrum.Struct.Guild.Member
   alias Nostrum.Struct.User
 
-  @configured_cache :nostrum
-                    |> Application.compile_env([:caches, :members], @default_cache_implementation)
+  @configured_cache Nostrum.Cache.Base.get_cache_module(:members, @default_cache_implementation)
 
   @doc """
   Add the member for the given guild from upstream data.

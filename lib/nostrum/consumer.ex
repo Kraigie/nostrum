@@ -242,7 +242,9 @@ defmodule Nostrum.Consumer do
   @type message_delete :: {:MESSAGE_DELETE, MessageDelete.t(), WSState.t()}
   @type message_delete_bulk :: {:MESSAGE_DELETE_BULK, MessageDeleteBulk.t(), WSState.t()}
   @type message_update ::
-          {:MESSAGE_UPDATE, updated_message :: Nostrum.Struct.Message.t(), WSState.t()}
+          {:MESSAGE_UPDATE,
+           {old_message :: Nostrum.Struct.Message.t() | nil,
+            updated_message :: Nostrum.Struct.Message.t()}, WSState.t()}
   @type message_reaction_add :: {:MESSAGE_REACTION_ADD, MessageReactionAdd.t(), WSState.t()}
   @type message_reaction_remove ::
           {:MESSAGE_REACTION_REMOVE, MessageReactionRemove.t(), WSState.t()}

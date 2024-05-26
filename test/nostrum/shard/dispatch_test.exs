@@ -25,7 +25,7 @@ defmodule Nostrum.Shard.DispatchTest do
       {key, event, _} = Dispatch.handle_event(:MESSAGE_DELETE_BULK, payload, %{})
 
       assert(^key = :MESSAGE_DELETE_BULK)
-      assert(^event = struct(MessageDeleteBulk, payload))
+      assert(^event = struct(MessageDeleteBulk, Map.put(payload, :deleted_messages, [])))
     end
   end
 end

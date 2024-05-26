@@ -27,9 +27,8 @@ defmodule Nostrum.Cache.ChannelGuildMapping do
   """
   @moduledoc since: "0.8.0"
 
-  @configured_cache :nostrum
-                    |> Application.compile_env(
-                      [:caches, :channel_guild_mapping],
+  @configured_cache Nostrum.Cache.Base.get_cache_module(
+                      :channel_guild_mapping,
                       @default_implementation
                     )
 

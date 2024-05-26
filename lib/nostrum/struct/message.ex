@@ -266,6 +266,51 @@ defmodule Nostrum.Struct.Message do
     struct(__MODULE__, new)
   end
 
+  # differs from the above in that
+  # for message updates we have the old message
+  # and want to merge in the unchanged fields.
+  # Discord's docs say that for updates, we'll
+  # only get a subset of the fields.
+  @doc false
+  @spec to_struct(map :: map(), old_message :: __MODULE__.t() | nil) :: __MODULE__.t()
+  def to_struct(map, nil), do: to_struct(map)
+
+  def to_struct(map, old_message) do
+    new =
+      map
+      |> Map.new(fn {k, v} -> {Util.maybe_to_atom(k), v} end)
+      |> Util.map_update_if_present(:activity, &Util.cast(&1, {:struct, Activity}))
+      |> Util.map_update_if_present(:application_id, &Util.cast(&1, Snowflake))
+      |> Util.map_update_if_present(:application, &Util.cast(&1, {:struct, Application}))
+      |> Util.map_update_if_present(:attachments, &Util.cast(&1, {:list, {:struct, Attachment}}))
+      |> Util.map_update_if_present(:author, &Util.cast(&1, {:struct, User}))
+      |> Util.map_update_if_present(:channel_id, &Util.cast(&1, Snowflake))
+      |> Util.map_update_if_present(:components, &Util.cast(&1, {:list, {:struct, Component}}))
+      |> Util.map_update_if_present(:edited_timestamp, &Util.maybe_to_datetime/1)
+      |> Util.map_update_if_present(:embeds, &Util.cast(&1, {:list, {:struct, Embed}}))
+      |> Util.map_update_if_present(:guild_id, &Util.cast(&1, Snowflake))
+      |> Util.map_update_if_present(:id, &Util.cast(&1, Snowflake))
+      |> Util.map_update_if_present(:interaction, &Util.cast(&1, {:struct, Interaction}))
+      |> Util.map_update_if_present(:member, &Util.cast(&1, {:struct, Member}))
+      |> Util.map_update_if_present(
+        :mention_channels,
+        &Util.cast(&1, {:list, {:struct, Channel}})
+      )
+      |> Util.map_update_if_present(:mention_roles, &Util.cast(&1, {:list, Snowflake}))
+      |> Util.map_update_if_present(:mentions, &Util.cast(&1, {:list, {:struct, User}}))
+      |> Util.map_update_if_present(:message_reference, &Util.cast(&1, {:struct, Reference}))
+      |> Util.map_update_if_present(:nonce, &Util.cast(&1, Snowflake))
+      |> Util.map_update_if_present(:poll, &Util.cast(&1, {:struct, Poll}))
+      |> Util.map_update_if_present(:reactions, &Util.cast(&1, {:list, {:struct, Reaction}}))
+      |> Util.map_update_if_present(:referenced_message, &Util.cast(&1, {:struct, __MODULE__}))
+      |> Util.map_update_if_present(:sticker_items, &Util.cast(&1, {:list, {:struct, Sticker}}))
+      |> Util.map_update_if_present(:thread, &Util.cast(&1, {:struct, Channel}))
+      |> Util.map_update_if_present(:timestamp, &Util.maybe_to_datetime/1)
+      |> Util.map_update_if_present(:webhook_id, &Util.cast(&1, Snowflake))
+
+    struct(old_message, new)
+  end
+
   @doc """
   Takes the message and produces a URL that, when clicked from the user client, will
   jump them to that message, assuming they have access to the message and the message
