@@ -83,6 +83,27 @@ defmodule Nostrum.Cache.MessageCache.MnesiaAdditionalTest do
         assert {:ok, %Message{id: ^id}} = MessageCache.Mnesia.get(id)
       end
     end
+
+    test "eviction for tables of type set works as well" do
+      # drop and recreate the table with a different type
+      MessageCache.Mnesia.teardown()
+
+      table_create_attributes =
+        MessageCache.Mnesia.table_create_attributes()
+        |> Keyword.put(:type, :set)
+
+      {:atomic, :ok} = :mnesia.create_table(MessageCache.Mnesia.table(), table_create_attributes)
+
+      for id <- 1..11, do: MessageCache.Mnesia.create(Map.put(@test_message, :id, id))
+
+      for id <- 1..4 do
+        assert MessageCache.Mnesia.get(id) == {:error, :not_found}
+      end
+
+      for id <- 5..11 do
+        assert {:ok, %Message{id: ^id}} = MessageCache.Mnesia.get(id)
+      end
+    end
   end
 
   describe "update/1" do

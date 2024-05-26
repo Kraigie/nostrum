@@ -95,10 +95,9 @@ defmodule Nostrum.Cache.MessageCache do
   match specifications in your `TraverseFun` and implement a `LookupFun` as
   documented.
 
-  The query handle must return items in the form `{channel_id, author_id, message}`, where:
-  - `channel_id` is a `t:Nostrum.Struct.Channel.id/0`,
-  - `author_id` is a `t:Nostrum.Struct.User.id/0`, and
-  - `message` is a `t:Nostrum.Struct.Message.t/0`.
+  The query handle must return items in the form `{message_id, message}`, where:
+  - `message_id` is a `t:Nostrum.Struct.Message.id/0`
+  - `message` is a `t:Nostrum.Struct.Message.t/0`
 
   If your cache needs some form of setup or teardown for QLC queries (such as
   opening connections), see `c:wrap_qlc/1`.
@@ -130,7 +129,7 @@ defmodule Nostrum.Cache.MessageCache do
   Used to constrain the return values of functions that can return
   a list of messages from the cache.
   """
-  @type timestamp_like :: integer() | DateTime.t()
+  @type timestamp_like() :: Snowflake.t() | DateTime.t()
 
   # User-facing
 

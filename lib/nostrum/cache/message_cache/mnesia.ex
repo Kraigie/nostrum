@@ -5,8 +5,8 @@ if Code.ensure_loaded?(:mnesia) do
 
     #{Nostrum.Cache.Base.mnesia_note()}
 
-    By default, the cache will store up to 10,000 messages,
-    and will evict the 100 oldest messages when the limit is reached.
+    By default, the cache will store up to `10_000` messages,
+    and will evict the `100` oldest messages when the limit is reached.
 
     The reason for the eviction count is that with mnesia it is more efficient to
     find X oldest records and delete them all at once than to find the oldest
@@ -14,13 +14,18 @@ if Code.ensure_loaded?(:mnesia) do
 
     The Mnesia cache supports the following configuration options:
     - `size_limit`: The maximum number of messages to store in the cache.
-    default: 10,000
+    default: `10_000`
     - `eviction_count`: The number of messages to evict when the cache is full.
-    default: 100
+    default: `100`
     - `table_name`: The name of the Mnesia table to use for the cache.
     default: `:nostrum_messages`
     - `compressed`: Whether to use compressed in memory storage for the table.
-    default: false
+    default: `false`
+    - `type`: Sets the type of Mnesia table created to cache messages.
+    Can be either `:set` or `:ordered_set`, by choosing `:ordered_set` the
+    eviction of the oldest messages will be more efficient, however it means
+    that the table cannot be changed to only store its contents on disk later.
+    default: `:ordered_set`
 
     To change this configuration, you can add the following to your
     `config.exs`:
@@ -31,7 +36,7 @@ if Code.ensure_loaded?(:mnesia) do
         messages: {Nostrum.Cache.MessageCache.Mnesia,
                    size_limit: 1000, eviction_count: 50,
                    table_name: :my_custom_messages_table_name,
-                   compressed: true}
+                   compressed: true, type: :set}
       }
     ```
 
@@ -49,6 +54,7 @@ if Code.ensure_loaded?(:mnesia) do
     @maximum_size @config[:size_limit] || 10_000
     @eviction_count @config[:eviction_count] || 100
     @compressed_table @config[:compressed] || false
+    @table_type @config[:type] || :ordered_set
 
     @behaviour Nostrum.Cache.MessageCache
 
@@ -67,19 +73,7 @@ if Code.ensure_loaded?(:mnesia) do
     @impl Supervisor
     @doc "Set up the cache's Mnesia table."
     def init(_init_arg) do
-      ets_props =
-        if @compressed_table do
-          [:compressed]
-        else
-          []
-        end
-
-      options = [
-        attributes: [:message_id, :channel_id, :author_id, :data],
-        index: [:channel_id, :author_id],
-        record_name: @record_name,
-        storage_properties: [ets: ets_props]
-      ]
+      options = table_create_attributes()
 
       case :mnesia.create_table(@table_name, options) do
         {:atomic, :ok} -> :ok
@@ -238,18 +232,58 @@ if Code.ensure_loaded?(:mnesia) do
       :mnesia.activity(:sync_transaction, fun)
     end
 
+    @doc false
+    def table_create_attributes do
+      ets_props =
+        if @compressed_table do
+          [:compressed]
+        else
+          []
+        end
+
+      [
+        attributes: [:message_id, :channel_id, :author_id, :data],
+        index: [:channel_id, :author_id],
+        record_name: @record_name,
+        storage_properties: [ets: ets_props],
+        type: @table_type
+      ]
+    end
+
     # assumes its called from within a transaction
     defp maybe_evict_records do
       size = :mnesia.table_info(@table_name, :size)
 
       if size >= @maximum_size do
-        oldest_message_ids =
-          :nostrum_message_cache_qlc.sorted_by_age_with_limit(__MODULE__, @eviction_count)
+        case :mnesia.table_info(@table_name, :type) do
+          :set ->
+            evict_set_records()
 
-        Enum.each(oldest_message_ids, fn message_id ->
-          :mnesia.delete(@table_name, message_id, :write)
-        end)
+          :ordered_set ->
+            evict_ordered_set_records()
+        end
       end
+    end
+
+    defp evict_set_records do
+      oldest_message_ids =
+        :nostrum_message_cache_qlc.sorted_by_age_with_limit(__MODULE__, @eviction_count)
+
+      Enum.each(oldest_message_ids, fn message_id ->
+        :mnesia.delete(@table_name, message_id, :write)
+      end)
+    end
+
+    defp evict_ordered_set_records do
+      first = :mnesia.first(@table_name)
+
+      Enum.reduce(1..(@eviction_count - 1), [first], fn _i, [key | _rest] = list ->
+        next_key = :mnesia.next(@table_name, key)
+        [next_key | list]
+      end)
+      |> Enum.each(fn key ->
+        :mnesia.delete(@table_name, key, :write)
+      end)
     end
   end
 end
