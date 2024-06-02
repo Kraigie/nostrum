@@ -178,6 +178,7 @@ defmodule Nostrum.Struct.Guild do
   @type threads :: %{required(Channel.id()) => Channel.t()} | nil
 
   @typedoc "Custom stickers registered to the guild"
+  @typedoc since: "0.10.0"
   @type stickers :: [Sticker.t()]
 
   @typedoc "Hash of the Discovery splash screen"

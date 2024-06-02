@@ -30,6 +30,7 @@ defmodule Nostrum.Cache.MessageCache do
   You need to implement both of them for nostrum to work with your custom
   cache.
   """
+  @moduledoc since: "0.10.0"
 
   @configured_cache Nostrum.Cache.Base.get_cache_module(:messages, @default_cache_implementation)
 

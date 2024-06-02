@@ -50,6 +50,7 @@ defmodule Nostrum.Voice.Crypto.Chacha do
   heavy lifting. If your bot is running on a machine without AES hardware acceleration, you
   may find that using the chacha encryption mode yields better performance.
   """
+  @moduledoc since: "0.10.0"
 
   import Bitwise
 

@@ -3,6 +3,7 @@ defmodule Nostrum.Struct.Sticker do
   A `Nostrum.Struct.Sticker` represents a sticker that can be sent inside a
   `Nostrum.Struct.Message`.
   """
+  @moduledoc since: "0.10.0"
 
   alias Nostrum.Struct.{Guild, User}
   alias Nostrum.{Constants, Snowflake, Util}

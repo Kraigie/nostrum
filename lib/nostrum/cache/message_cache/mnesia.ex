@@ -43,6 +43,7 @@ if Code.ensure_loaded?(:mnesia) do
     You can also change the table name used by the cache by setting the
     `table_name` field in the configuration for the `messages` cache.
     """
+    @moduledoc since: "0.10.0"
 
     @config Nostrum.Cache.Base.get_cache_options(:messages)
 

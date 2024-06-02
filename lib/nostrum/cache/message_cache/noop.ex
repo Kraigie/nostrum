@@ -5,6 +5,7 @@ defmodule Nostrum.Cache.MessageCache.Noop do
   This cache does not store any messages and always returns `{:error, :not_found}`
   for any operation.
   """
+  @moduledoc since: "0.10.0"
 
   @behaviour Nostrum.Cache.MessageCache
 

@@ -30,6 +30,7 @@ defmodule Nostrum.Voice.Crypto.Aes do
   AES operations. While the Salsa20 and ChaCha20 stream ciphers are typically faster with pure
   software implementations, hardware acceleration will typically give AES the leg up for performance.
   """
+  @moduledoc since: "0.10.0"
 
   @spec encrypt(binary(), <<_::256>>, <<_::96>>, binary()) :: iolist()
   def encrypt(plain_text, <<key::bytes-32>> = _key, <<nonce::bytes-12>> = _nonce, aad) do
