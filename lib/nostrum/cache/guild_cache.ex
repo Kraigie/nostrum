@@ -153,6 +153,7 @@ defmodule Nostrum.Cache.GuildCache do
 
   Return the old list of stickers before the update, and the updated list of stickers.
   """
+  @doc since: "0.10.0"
   @callback stickers_update(Guild.id(), stickers :: [map()]) ::
               {old_stickers :: [Sticker.t()], new_stickers :: [Sticker.t()]}
 

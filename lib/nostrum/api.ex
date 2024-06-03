@@ -1424,6 +1424,7 @@ defmodule Nostrum.Api do
 
   Returns a `t:Nostrum.Struct.Sticker.t/0`.
   """
+  @doc since: "0.10.0"
   @spec get_sticker(Snowflake.t()) :: {:ok, Sticker.t()} | error
   def get_sticker(sticker_id) do
     request(:get, Constants.sticker(sticker_id))
@@ -1435,6 +1436,7 @@ defmodule Nostrum.Api do
 
   Returns a list of `t:Nostrum.Struct.Sticker.t/0`.
   """
+  @doc since: "0.10.0"
   @spec list_guild_stickers(Guild.id()) :: {:ok, [Sticker.t()]} | error
   def list_guild_stickers(guild_id) do
     request(:get, Constants.guild_stickers(guild_id))
@@ -1446,6 +1448,7 @@ defmodule Nostrum.Api do
 
   Returns a `t:Nostrum.Struct.Sticker.t/0`.
   """
+  @doc since: "0.10.0"
   @spec get_guild_sticker(Guild.id(), Sticker.id()) :: Sticker.t() | error
   def get_guild_sticker(guild_id, sticker_id) do
     request(:get, Constants.guild_sticker(guild_id, sticker_id))
@@ -1476,6 +1479,7 @@ defmodule Nostrum.Api do
 
   Returns a `t:Nostrum.Struct.Sticker.t/0` on success.
   """
+  @doc since: "0.10.0"
   @spec create_guild_sticker(
           Guild.id(),
           Sticker.name(),
@@ -1530,6 +1534,7 @@ defmodule Nostrum.Api do
 
   Returns an updated sticker on update completion.
   """
+  @doc since: "0.10.0"
   @spec modify_guild_sticker(Guild.id(), Sticker.id(), %{
           name: Sticker.name() | nil,
           description: Sticker.description() | nil,
@@ -1543,6 +1548,7 @@ defmodule Nostrum.Api do
   @doc ~S"""
   Delete a guild sticker with the specified ID.
   """
+  @doc since: "0.10.0"
   @spec delete_guild_sticker(Guild.id(), Sticker.id()) :: {:ok} | error
   def delete_guild_sticker(guild_id, sticker_id) do
     request(:delete, Constants.guild_sticker(guild_id, sticker_id))
@@ -1551,6 +1557,7 @@ defmodule Nostrum.Api do
   @doc ~S"""
   Get a list of available sticker packs.
   """
+  @doc since: "0.10.0"
   @spec get_sticker_packs() :: {:ok, [Sticker.Pack.t()]} | error
   def get_sticker_packs do
     resp =

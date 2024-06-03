@@ -157,6 +157,7 @@ defmodule Nostrum.Shard.Supervisor do
   %{shard_num: 4, ...}
   ```
   """
+  @doc since: "0.10.0"
   @spec disconnect(shard_num()) :: resume_information()
   def disconnect(shard_num) do
     :"Nostrum.Shard-#{shard_num}"
@@ -194,6 +195,7 @@ defmodule Nostrum.Shard.Supervisor do
   iex> Nostrum.Shard.Supervisor.reconnect(resume)
   ```
   """
+  @doc since: "0.10.0"
   @spec reconnect(resume_information()) :: DynamicSupervisor.on_start_child()
   def reconnect(
         %{

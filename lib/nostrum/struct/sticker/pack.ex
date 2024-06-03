@@ -2,6 +2,7 @@ defmodule Nostrum.Struct.Sticker.Pack do
   @moduledoc """
   Represents a platform-curated sticker pack on Discord
   """
+  @moduledoc since: "0.10.0"
 
   defstruct [
     :id,

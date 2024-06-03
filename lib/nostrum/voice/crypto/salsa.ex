@@ -61,6 +61,7 @@ defmodule Nostrum.Voice.Crypto.Salsa do
   as thoughtfully and explicitly as possible with memory usage and performance in mind, using any
   of the Salsa modes will likely be less performant than ChaCha or AES.
   """
+  @moduledoc since: "0.10.0"
 
   import Bitwise
 
