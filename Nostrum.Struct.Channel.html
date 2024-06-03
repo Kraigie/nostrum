@@ -145,15 +145,15 @@ Pages
   </a>
   <span class="text">Channel Struct</span>
 </h2>
-<p>The channel struct is used by Nostrum to represent a <em>Discord Channel Object</em>. More information can be found on the <a href="https://discord.com/developers/docs/resources/channel#channels-resource">Discord API Channel Documentation</a>.</p><p>The struct can have one of several forms depending on the type of channel. You can read more about the individual channel types <a href="#module-channel-types">below</a>.</p><p>A typical channel would appear as:</p><pre><code class="makeup elixir" translate="no"><span class="p" data-group-id="2010064736-1">%</span><span class="nc" data-group-id="2010064736-1">Nostrum.Struct.Channel</span><span class="p" data-group-id="2010064736-1">{</span><span class="w">
+<p>The channel struct is used by Nostrum to represent a <em>Discord Channel Object</em>. More information can be found on the <a href="https://discord.com/developers/docs/resources/channel#channels-resource">Discord API Channel Documentation</a>.</p><p>The struct can have one of several forms depending on the type of channel. You can read more about the individual channel types <a href="#module-channel-types">below</a>.</p><p>A typical channel would appear as:</p><pre><code class="makeup elixir" translate="no"><span class="p" data-group-id="9908399916-1">%</span><span class="nc" data-group-id="9908399916-1">Nostrum.Struct.Channel</span><span class="p" data-group-id="9908399916-1">{</span><span class="w">
   </span><span class="ss">guild_id</span><span class="p">:</span><span class="w"> </span><span class="mi">766435015768539156</span><span class="p">,</span><span class="w">
   </span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">827333533688397865</span><span class="p">,</span><span class="w">
   </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;announcements&quot;</span><span class="p">,</span><span class="w">
   </span><span class="ss">nsfw</span><span class="p">:</span><span class="w"> </span><span class="no">false</span><span class="p">,</span><span class="w">
-  </span><span class="ss">permission_overwrites</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="2010064736-2">[</span><span class="p" data-group-id="2010064736-2">]</span><span class="p">,</span><span class="w">
+  </span><span class="ss">permission_overwrites</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="9908399916-2">[</span><span class="p" data-group-id="9908399916-2">]</span><span class="p">,</span><span class="w">
   </span><span class="ss">position</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w">
   </span><span class="ss">type</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w">
-</span><span class="p" data-group-id="2010064736-1">}</span></code></pre><p>The channel struct implements <a href="https://hexdocs.pm/elixir/String.Chars.html"><code class="inline">String.Chars</code></a> protocol through the <a href="#mention/1"><code class="inline">mention/1</code></a> function. This example uses our channel from the previous code block.</p><pre><code class="makeup elixir" translate="no"><span class="n">channel</span><span class="w"> </span><span class="o">|&gt;</span><span class="w"> </span><span class="n">to_string</span><span class="p" data-group-id="0842539086-1">(</span><span class="p" data-group-id="0842539086-1">)</span><span class="w">
+</span><span class="p" data-group-id="9908399916-1">}</span></code></pre><p>The channel struct implements <a href="https://hexdocs.pm/elixir/String.Chars.html"><code class="inline">String.Chars</code></a> protocol through the <a href="#mention/1"><code class="inline">mention/1</code></a> function. This example uses our channel from the previous code block.</p><pre><code class="makeup elixir" translate="no"><span class="n">channel</span><span class="w"> </span><span class="o">|&gt;</span><span class="w"> </span><span class="n">to_string</span><span class="p" data-group-id="1794637977-1">(</span><span class="p" data-group-id="1794637977-1">)</span><span class="w">
 </span><span class="s">&quot;&lt;#766435015768539156&gt;&quot;</span></code></pre><h2 id="module-channel-caching" class="section-heading">
   <a href="#module-channel-caching" class="hover-link">
     <i class="ri-link-m" aria-hidden="true"></i>
@@ -168,16 +168,16 @@ you can then store these details in your own choice of caching system (ETS, Mnes
   </a>
   <span class="text">Example</span>
 </h3>
-<pre><code class="makeup elixir" translate="no"><span class="o">&gt;</span><span class="w"> </span><span class="n">guild_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Nostrum.Cache.ChannelGuildMapping</span><span class="o">.</span><span class="n">get</span><span class="p" data-group-id="8124088795-1">(</span><span class="mi">1229955694258684005</span><span class="p" data-group-id="8124088795-1">)</span><span class="w">
+<pre><code class="makeup elixir" translate="no"><span class="o">&gt;</span><span class="w"> </span><span class="n">guild_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Nostrum.Cache.ChannelGuildMapping</span><span class="o">.</span><span class="n">get</span><span class="p" data-group-id="4430619028-1">(</span><span class="mi">1229955694258684005</span><span class="p" data-group-id="4430619028-1">)</span><span class="w">
 </span><span class="mi">1226944827137069107</span><span class="w">
-</span><span class="o">&gt;</span><span class="w"> </span><span class="p" data-group-id="8124088795-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">guild</span><span class="p" data-group-id="8124088795-2">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Nostrum.Cache.GuildCache</span><span class="o">.</span><span class="n">get</span><span class="p" data-group-id="8124088795-3">(</span><span class="n">guild_id</span><span class="p" data-group-id="8124088795-3">)</span><span class="w">
-</span><span class="p" data-group-id="8124088795-4">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w">
-  </span><span class="p" data-group-id="8124088795-5">%</span><span class="nc" data-group-id="8124088795-5">Nostrum.Struct.Guild</span><span class="p" data-group-id="8124088795-5">{</span><span class="w">
+</span><span class="o">&gt;</span><span class="w"> </span><span class="p" data-group-id="4430619028-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">guild</span><span class="p" data-group-id="4430619028-2">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Nostrum.Cache.GuildCache</span><span class="o">.</span><span class="n">get</span><span class="p" data-group-id="4430619028-3">(</span><span class="n">guild_id</span><span class="p" data-group-id="4430619028-3">)</span><span class="w">
+</span><span class="p" data-group-id="4430619028-4">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w">
+  </span><span class="p" data-group-id="4430619028-5">%</span><span class="nc" data-group-id="4430619028-5">Nostrum.Struct.Guild</span><span class="p" data-group-id="4430619028-5">{</span><span class="w">
     </span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">1226944827137069107</span><span class="p">,</span><span class="w">
     </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Craig Cat Zone&quot;</span><span class="p">,</span><span class="w">
     </span><span class="n">...</span><span class="w">
-</span><span class="p" data-group-id="8124088795-5">}</span><span class="p" data-group-id="8124088795-4">}</span><span class="w">
-</span><span class="o">&gt;</span><span class="w"> </span><span class="n">guild</span><span class="o">.</span><span class="n">channels</span><span class="p" data-group-id="8124088795-6">[</span><span class="n">channel_id</span><span class="p" data-group-id="8124088795-6">]</span><span class="o">.</span><span class="n">name</span><span class="w">
+</span><span class="p" data-group-id="4430619028-5">}</span><span class="p" data-group-id="4430619028-4">}</span><span class="w">
+</span><span class="o">&gt;</span><span class="w"> </span><span class="n">guild</span><span class="o">.</span><span class="n">channels</span><span class="p" data-group-id="4430619028-6">[</span><span class="n">channel_id</span><span class="p" data-group-id="4430619028-6">]</span><span class="o">.</span><span class="n">name</span><span class="w">
 </span><span class="s">&quot;cat-general&quot;</span></code></pre><h2 id="module-helper-functions" class="section-heading">
   <a href="#module-helper-functions" class="hover-link">
     <i class="ri-link-m" aria-hidden="true"></i>
@@ -2904,7 +2904,7 @@ Documentation</a>.</p>
   <span class="text">Examples</span>
 </h2>
 <pre><code class="makeup elixir" translate="no"><span class="n">channel</span><span class="w">
-</span><span class="o">|&gt;</span><span class="w"> </span><span class="nc">Nostrum.Struct.Channel</span><span class="o">.</span><span class="n">mention</span><span class="p" data-group-id="0415467145-1">(</span><span class="p" data-group-id="0415467145-1">)</span><span class="w">
+</span><span class="o">|&gt;</span><span class="w"> </span><span class="nc">Nostrum.Struct.Channel</span><span class="o">.</span><span class="n">mention</span><span class="p" data-group-id="7451239741-1">(</span><span class="p" data-group-id="7451239741-1">)</span><span class="w">
 </span><span class="s">&quot;&lt;#381889573426429952&gt;&quot;</span><span class="w">
 </span></code></pre>
   </section>
