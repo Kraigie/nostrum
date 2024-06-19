@@ -869,7 +869,7 @@ defmodule Nostrum.Api.Ratelimiter do
     {{_bucket, request, from}, running_without_it} = Map.pop(running, stream)
 
     Logger.warning(
-      "Request to #{inspect(request.route)} queued by #{request.from} was closed abnormally, requeueing"
+      "Request to #{inspect(request.route)} queued by #{from} was closed abnormally, requeueing"
     )
 
     {:keep_state, %{data | running: running_without_it},
