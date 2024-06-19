@@ -125,7 +125,7 @@ defmodule Nostrum.Voice.Session do
       ) do
     # Try to cancel the internal timer, but
     # do not explode if it was already cancelled.
-    :timer.cancel(state.heartbeat_ref)
+    _cancel_result = :timer.cancel(state.heartbeat_ref)
     {:noreply, state}
   end
 
