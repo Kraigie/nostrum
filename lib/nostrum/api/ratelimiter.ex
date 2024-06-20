@@ -366,17 +366,7 @@ defmodule Nostrum.Api.Ratelimiter do
   def connecting(:internal, :open, data) do
     domain = to_charlist(Constants.domain())
 
-    open_opts = %{
-      connect_timeout: :timer.seconds(5),
-      domain_lookup_timeout: :timer.seconds(5),
-      # Do not retry here. If we retry, it is possible that after the state
-      # machine heads into disconnected state, it receives an unexpected
-      # `:gun_up` message. We want the state machine to manage the connection
-      # lifecycle fully on its own.
-      retry: 0,
-      tls_handshake_timeout: :timer.seconds(5),
-      tls_opts: Constants.gun_tls_opts()
-    }
+    open_opts = get_open_opts()
 
     {:ok, conn_pid} = :gun.open(domain, 443, open_opts)
     {:keep_state, %{data | conn: conn_pid}}
@@ -944,6 +934,26 @@ defmodule Nostrum.Api.Ratelimiter do
   end
 
   # End of callback functions
+
+  defp get_open_opts do
+    default_opts = %{
+      connect_timeout: :timer.seconds(5),
+      domain_lookup_timeout: :timer.seconds(5),
+      # Do not retry here. If we retry, it is possible that after the state
+      # machine heads into disconnected state, it receives an unexpected
+      # `:gun_up` message. We want the state machine to manage the connection
+      # lifecycle fully on its own.
+      retry: 0,
+      tls_handshake_timeout: :timer.seconds(5),
+      tls_opts: Constants.gun_tls_opts()
+    }
+
+    if Application.get_env(:nostrum, :force_http1, false) do
+      Map.put(default_opts, :protocols, [:http])
+    else
+      default_opts
+    end
+  end
 
   defp parse_response(status, headers), do: {:ok, {status, headers, ""}}
 

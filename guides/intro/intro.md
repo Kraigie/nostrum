@@ -98,6 +98,9 @@ Apart from the `token` field mentioned above, the following fields are also supp
   variables or by [setting the system flag
   yourself](http://erlang.org/doc/man/erlang.html#system_flag-2). Defaults to
   whatever your system recommends, which is probably `65535`.
+- `force_http1` - Set to `true` if you wish to disable automatic use of HTTP 2
+  or newer HTTP versions for API requests to Discord. Useful to diagnose issues
+  with ratelimiter connections during abnormal network conditions.
 
 
 ### Internal options
