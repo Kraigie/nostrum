@@ -150,7 +150,7 @@ defmodule Nostrum.Mixfile do
       {:ezstd, "~> 1.1", optional: true},
       {:castle, "~> 0.3.0", runtime: false},
       {:ex_doc, "~> 0.32", only: :dev, runtime: false},
-      {:credo, "~> 1.7.5", only: [:dev, :test], runtime: false},
+      {:credo, "~> 1.7.7", only: [:dev, :test], runtime: false},
       {:dialyxir, "~> 1.1", only: [:dev], runtime: false},
       {:benchee, "~> 1.1", only: :dev, runtime: false},
       {:recon, "~> 2.3", only: :dev, optional: true}

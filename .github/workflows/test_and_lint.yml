@@ -16,12 +16,12 @@ jobs:
 
       - uses: erlef/setup-beam@v1
         with:
-          otp-version: 26
-          elixir-version: 1.16
+          otp-version: 27
+          elixir-version: 1.17
 
       - uses: actions/cache@v4
         env:
-          base-key: 26-1.16
+          base-key: 27-1.17
         with:
           path: |
             _build
@@ -47,11 +47,15 @@ jobs:
     runs-on: ubuntu-20.04
     strategy:
       matrix:
-        elixir-version: ['1.14', '1.15', '1.16']
-        otp-version: ['25', '26', '27.0-rc3']
+        elixir-version: ['1.14', '1.15', '1.16', '1.17']
+        otp-version: ['25', '26', '27']
         exclude:
           - elixir-version: '1.14'
-            otp-version: '27.0-rc3'
+            otp-version: '27'
+          - elixir-version: '1.15'
+            otp-version: '27'
+          - elixir-version: '1.16'
+            otp-version: '27'
     steps:
       - uses: actions/checkout@v4
 
