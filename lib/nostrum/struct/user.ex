@@ -177,4 +177,17 @@ defmodule Nostrum.Struct.User do
 
     struct(__MODULE__, new)
   end
+
+  @doc false
+  @spec to_struct(map(), nil) :: __MODULE__.t()
+  def to_struct(map, nil), do: to_struct(map)
+
+  def to_struct(map, old_user) do
+    new =
+      map
+      |> Map.new(fn {k, v} -> {Util.maybe_to_atom(k), v} end)
+      |> Map.update(:id, nil, &Util.cast(&1, Snowflake))
+
+    struct(old_user, new)
+  end
 end

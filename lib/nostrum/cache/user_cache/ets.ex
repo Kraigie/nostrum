@@ -51,10 +51,13 @@ defmodule Nostrum.Cache.UserCache.ETS do
   @doc "Update a user from upstream data."
   @spec update(map()) :: {User.t() | nil, User.t()}
   def update(info) do
-    converted = User.to_struct(info)
+    # We don't know if the user_id is an atom or a string here.
+    user_id =
+      (Map.get(info, :id) || Map.get(info, "id"))
+      |> Nostrum.Snowflake.cast!()
 
-    with {:ok, old_user} <- lookup(info.id),
-         new_user = Map.merge(old_user, converted),
+    with {:ok, old_user} <- lookup(user_id),
+         new_user = User.to_struct(info, old_user),
          false <- old_user == new_user do
       :ets.insert(@table_name, {new_user.id, new_user})
       {old_user, new_user}
@@ -62,13 +65,17 @@ defmodule Nostrum.Cache.UserCache.ETS do
       {:error, _} ->
         # User just came online, make sure to cache if possible
         # TODO: check for `:global_name` once fully rolled out?
-        if Enum.all?([:username, :discriminator], & is_map_key(info, &1)),
+
+        converted = User.to_struct(info)
+
+        if Enum.all?([:username, :discriminator], &is_map_key(info, &1)),
           do: :ets.insert(@table_name, {converted.id, converted})
 
         {nil, converted}
 
       true ->
-        {nil, converted}
+        {:ok, old_user} = lookup(user_id)
+        {old_user, old_user}
     end
   end
 

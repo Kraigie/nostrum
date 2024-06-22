@@ -80,24 +80,26 @@ if Code.ensure_loaded?(:mnesia) do
     end
 
     @impl UserCache
-    @doc "Update the given member for the given guild in the cache."
+    @doc "Update a User if it exists in the cache."
     @spec update(map()) :: {User.t() | nil, User.t()}
     def update(payload) do
-      new_user = User.to_struct(payload)
+      # We don't know if the user_id is an atom or a string here.
+      user_id =
+        (Map.get(payload, :id) || Map.get(payload, "id"))
+        |> Nostrum.Snowflake.cast!()
 
-      old_user =
-        :mnesia.activity(:sync_transaction, fn ->
-          case :mnesia.read(@table_name, new_user.id, :write) do
-            [{_tag, _id, old_user} = entry] ->
-              :mnesia.write(put_elem(entry, 2, new_user))
-              old_user
+      :mnesia.activity(:sync_transaction, fn ->
+        case :mnesia.read(@table_name, user_id, :write) do
+          [{_tag, _id, old_user} = entry] ->
+            new_user = User.to_struct(payload, old_user)
 
-            [] ->
-              nil
-          end
-        end)
+            :mnesia.write(put_elem(entry, 2, new_user))
+            {old_user, new_user}
 
-      {old_user, new_user}
+          [] ->
+            {nil, User.to_struct(payload)}
+        end
+      end)
     end
 
     @impl UserCache
