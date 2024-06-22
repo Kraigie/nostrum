@@ -11,6 +11,7 @@ defmodule Nostrum.Cache.UserCache.ETS do
 
   @table_name :nostrum_users
 
+  alias Nostrum.Snowflake
   alias Nostrum.Struct.User
   use Supervisor
 
@@ -54,7 +55,7 @@ defmodule Nostrum.Cache.UserCache.ETS do
     # We don't know if the user_id is an atom or a string here.
     user_id =
       (Map.get(info, :id) || Map.get(info, "id"))
-      |> Nostrum.Snowflake.cast!()
+      |> Snowflake.cast!()
 
     with {:ok, old_user} <- lookup(user_id),
          new_user = User.to_struct(info, old_user),

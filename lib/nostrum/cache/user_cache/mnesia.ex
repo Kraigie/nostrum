@@ -13,6 +13,7 @@ if Code.ensure_loaded?(:mnesia) do
     @behaviour Nostrum.Cache.UserCache
 
     alias Nostrum.Cache.UserCache
+    alias Nostrum.Snowflake
     alias Nostrum.Struct.User
     use Supervisor
 
@@ -86,7 +87,7 @@ if Code.ensure_loaded?(:mnesia) do
       # We don't know if the user_id is an atom or a string here.
       user_id =
         (Map.get(payload, :id) || Map.get(payload, "id"))
-        |> Nostrum.Snowflake.cast!()
+        |> Snowflake.cast!()
 
       :mnesia.activity(:sync_transaction, fn ->
         case :mnesia.read(@table_name, user_id, :write) do

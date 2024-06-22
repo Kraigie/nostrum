@@ -179,7 +179,7 @@ defmodule Nostrum.Struct.User do
   end
 
   @doc false
-  @spec to_struct(map(), nil) :: __MODULE__.t()
+  @spec to_struct(map(), nil | __MODULE__.t()) :: __MODULE__.t()
   def to_struct(map, nil), do: to_struct(map)
 
   def to_struct(map, old_user) do
