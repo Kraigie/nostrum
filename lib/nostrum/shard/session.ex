@@ -388,6 +388,18 @@ defmodule Nostrum.Shard.Session do
     {:keep_state_and_data, {:next_event, :internal, :reconnect}}
   end
 
+  def connected(
+        :info,
+        {:gun_down, old_conn, _proto, _reason, _killed_streams},
+        %{conn: new_conn}
+        # technically the guard is not needed because of the above clause,
+        # but it makes the intent a bit clearer
+      )
+      when old_conn != new_conn do
+    Logger.debug("Received gun_down message for a previous shard connection. Ignoring message.")
+    :keep_state_and_data
+  end
+
   def connected(:cast, {request, payload}, %{conn: conn, stream: stream})
       when request in [:status_update, :update_voice_state, :request_guild_members] do
     :ok = :gun.ws_send(conn, stream, {:binary, payload})
