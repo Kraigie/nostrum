@@ -17,6 +17,7 @@ if Code.ensure_loaded?(:mnesia) do
     @behaviour Nostrum.Cache.MemberCache
 
     alias Nostrum.Cache.MemberCache
+    alias Nostrum.Snowflake
     alias Nostrum.Struct.Guild
     alias Nostrum.Struct.Guild.Member
     alias Nostrum.Util
@@ -76,18 +77,28 @@ if Code.ensure_loaded?(:mnesia) do
     @doc "Update the given member for the given guild in the cache."
     @spec update(Guild.id(), map()) :: {Guild.id(), Member.t() | nil, Member.t()}
     def update(guild_id, payload) do
-      new_member = Util.cast(payload, {:struct, Member})
-      key = {guild_id, new_member.user_id}
+      # Force keys to be atoms before casting just to simplify finding the user_id
+      # because of the atom/string ambiguity issues from the gateway that Discord
+      # won't fix.
 
-      old_member =
+      member_payload = Map.new(payload, fn {k, v} -> {Util.maybe_to_atom(k), v} end)
+
+      member_id = Util.cast(member_payload[:user][:id], Snowflake)
+
+      key = {guild_id, member_id}
+
+      {old_member, new_member} =
         :mnesia.activity(:sync_transaction, fn ->
           case :mnesia.read(@table_name, key, :write) do
             [{_tag, _key, _guild_id, _user_id, old_member} = entry] ->
+              new_member = Member.to_struct(member_payload, old_member)
+
               :mnesia.write(put_elem(entry, 4, new_member))
-              old_member
+              {old_member, new_member}
 
             [] ->
-              nil
+              new_member = Member.to_struct(member_payload)
+              {nil, new_member}
           end
         end)
 

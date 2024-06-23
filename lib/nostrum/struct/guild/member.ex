@@ -308,4 +308,21 @@ defmodule Nostrum.Struct.Guild.Member do
 
     struct(__MODULE__, new)
   end
+
+  @doc false
+  @spec to_struct(map(), nil | __MODULE__.t()) :: __MODULE__.t()
+  def to_struct(map, nil), do: to_struct(map)
+
+  def to_struct(map, old_user) do
+    new =
+      map
+      |> Map.new(fn {k, v} -> {Util.maybe_to_atom(k), v} end)
+      |> Util.map_update_if_present(:roles, &Util.cast(&1, {:list, Snowflake}))
+      |> Util.map_update_if_present(:communication_disabled_until, &Util.maybe_to_datetime/1)
+      |> Util.map_update_if_present(:premium_since, &Util.maybe_to_datetime/1)
+      |> Util.map_update_if_present(:joined_at, &Util.maybe_to_unixtime/1)
+      |> Map.put(:user_id, Util.cast(map[:user][:id], Snowflake))
+
+    struct(old_user, new)
+  end
 end
