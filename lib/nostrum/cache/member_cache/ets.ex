@@ -12,6 +12,7 @@ defmodule Nostrum.Cache.MemberCache.ETS do
   @table_name :nostrum_guild_members
 
   alias Nostrum.Cache.MemberCache
+  alias Nostrum.Snowflake
   alias Nostrum.Struct.Guild
   alias Nostrum.Struct.Guild.Member
   alias Nostrum.Util
@@ -76,14 +77,22 @@ defmodule Nostrum.Cache.MemberCache.ETS do
   @impl MemberCache
   @spec update(Guild.id(), map()) :: {Guild.id(), Member.t() | nil, Member.t()}
   def update(guild_id, payload) do
-    new_member = Util.cast(payload, {:struct, Member})
+    # Force keys to be atoms before casting just to simplify finding the user_id
+    # because of the atom/string ambiguity issues from the gateway that Discord
+    # won't fix.
 
-    case :ets.lookup(@table_name, {guild_id, new_member.user_id}) do
+    member_payload = Map.new(payload, fn {k, v} -> {Util.maybe_to_atom(k), v} end)
+
+    member_id = Util.cast(member_payload[:user][:id], Snowflake)
+
+    case :ets.lookup(@table_name, {guild_id, member_id}) do
       [{key, old_member}] ->
+        new_member = Member.to_struct(member_payload, old_member)
         true = :ets.update_element(@table_name, key, {2, new_member})
         {guild_id, old_member, new_member}
 
       [] ->
+        new_member = Util.cast(member_payload, {:struct, Member})
         {guild_id, nil, new_member}
     end
   end
