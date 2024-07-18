@@ -89,7 +89,7 @@ defmodule Nostrum.Cache.UserCacheMetaTest do
 
       describe "update/1" do
         test "returns `{nil, after}` on uncached user" do
-          payload = %{id: 8_284_967_893_178_597_859_421}
+          payload = %{id: 8_284_967_893_178_597}
           expected = {nil, User.to_struct(payload)}
           assert ^expected = @cache.update(payload)
         end
