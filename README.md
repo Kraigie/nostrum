@@ -29,7 +29,7 @@ version from Hex:
 
 ```elixir
 def deps do
-  [{:nostrum, "~> 0.9"}]
+  [{:nostrum, "~> 0.10"}]
 end
 ```
 
