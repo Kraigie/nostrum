@@ -115,7 +115,7 @@ defmodule Nostrum.Api.RatelimitTest do
           with {:ok, _} <- Nostrum.Api.get_guild(@test_guild),
                {:ok, _} <- Nostrum.Api.create_message(@test_channel, "#{x}"),
                {:ok, _} <- Nostrum.Api.get_channel_message(@test_channel, @test_message),
-               {:ok} <- Nostrum.Api.start_typing(@test_channel) do
+               :ok <- Nostrum.Api.start_typing(@test_channel) do
             :ok
           else
             _ ->
