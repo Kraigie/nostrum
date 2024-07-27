@@ -1,4 +1,5 @@
 defmodule Nostrum.Struct.Component.DefaultValue do
+  @derive Jason.Encoder
   defstruct [
     :id,
     :type,
