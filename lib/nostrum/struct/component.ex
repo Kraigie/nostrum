@@ -152,6 +152,7 @@ defmodule Nostrum.Struct.Component do
   alias Nostrum.Struct.Emoji
   alias Nostrum.Util
 
+
   @derive Jason.Encoder
   defstruct [
     :type,

@@ -28,14 +28,14 @@ defmodule Nostrum.Struct.Component.ChannelSelect do
           | {:disabled, Component.disabled()}
           | {:channel_types, Component.channel_types()}
 
-  @types opts :: [opt]
+  @type opts :: [opt]
 
   def channel_select(custom_id, opts \\ []) when is_binary(custom_id) do
     [
       {:custom_id, custom_id},
       {:disabled, opts[:disabled]},
       {:min_values, opts[:min_values]},
-      {:max_values, opts[:max_values]}
+      {:max_values, opts[:max_values]},
       {:channel_types, opts[:channel_types]}
     ]
     |> new()
