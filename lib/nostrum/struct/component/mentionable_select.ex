@@ -1,4 +1,8 @@
 defmodule Nostrum.Struct.Component.MentionableSelect do
+  @moduledoc """
+  Mentionable Select 
+  """
+
   alias Nostrum.Struct.Component.SelectMenu
   alias Nostrum.Constants.ComponentType
 

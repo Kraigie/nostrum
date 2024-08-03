@@ -1,4 +1,8 @@
 defmodule Nostrum.Struct.Component.DefaultValue do
+  @moduledoc """
+  Default Value
+  """
+
   @derive Jason.Encoder
   defstruct [
     :id,

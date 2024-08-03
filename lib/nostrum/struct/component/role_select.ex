@@ -1,4 +1,7 @@
 defmodule Nostrum.Struct.Component.RoleSelect do
+  @moduledoc """
+  Role Select
+  """
   alias Nostrum.Struct.Component.SelectMenu
   alias Nostrum.Constants.ComponentType
 
