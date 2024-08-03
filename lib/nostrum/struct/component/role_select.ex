@@ -29,11 +29,11 @@ defmodule Nostrum.Struct.Component.RoleSelect do
 
   def mentionable_select(custom_id, opts \\ []) when is_binary(custom_id) do
     [
-      {:custom_id, custom_id},
-      {:disabled, opts[:disabled]},
-      {:placeholder, opts[:placeholder]},
-      {:min_values, opts[:min_values]},
-      {:max_values, opts[:max_values]}
+      custom_id: custom_id,
+      disabled: opts[:disabled],
+      placeholder: opts[:placeholder],
+      min_values: opts[:min_values],
+      max_values: opts[:max_values],
     ]
     |> new()
   end
