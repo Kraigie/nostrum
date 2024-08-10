@@ -23,7 +23,7 @@ defmodule Nostrum.Struct.Component.ActionRow do
   """
   def action_row(opts \\ [])
 
-  def action_row(%Component{type: type} = component) when type in [3, 4] do
+  def action_row(%Component{type: type} = component) when type in [3, 4, 5, 6, 7, 8] do
     [
       {:components, [component]}
     ]
