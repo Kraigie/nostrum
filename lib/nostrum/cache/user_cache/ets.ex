@@ -32,6 +32,11 @@ defmodule Nostrum.Cache.UserCache.ETS do
   @spec table :: :ets.table()
   def table, do: @table_name
 
+  @doc "Retrieve a user from the cache."
+  @impl Nostrum.Cache.UserCache
+  @spec get(User.id()) :: {:ok, User.t()} | {:error, :user_not_found}
+  def get(id), do: lookup(id)
+
   @doc "Bulk create a list of users from upstream data."
   @impl Nostrum.Cache.UserCache
   @spec bulk_create(Enum.t()) :: :ok
