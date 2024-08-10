@@ -77,7 +77,7 @@ defmodule Nostrum.Cache.UserCacheMetaTest do
 
       describe "get/1" do
         test "returns error tuple on unknown user" do
-          assert {:error, _reason} = @cache.get(120_815_092_581_902_580, @cache)
+          assert {:error, _reason} = @cache.get(120_815_092_581_902_580)
         end
 
         test "returns cached user on known user" do
