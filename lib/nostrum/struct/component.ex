@@ -152,7 +152,6 @@ defmodule Nostrum.Struct.Component do
   alias Nostrum.Struct.Emoji
   alias Nostrum.Util
 
-
   @derive Jason.Encoder
   defstruct [
     :type,
@@ -172,7 +171,7 @@ defmodule Nostrum.Struct.Component do
     :value,
     :components,
     :channel_types,
-    :default_values,
+    :default_values
   ]
 
   @typedoc """

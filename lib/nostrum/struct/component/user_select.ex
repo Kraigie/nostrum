@@ -2,8 +2,8 @@ defmodule Nostrum.Struct.Component.UserSelect do
   @moduledoc """
   User Select
   """
-  alias Nostrum.Struct.Component.SelectMenu
   alias Nostrum.Constants.ComponentType
+  alias Nostrum.Struct.Component.SelectMenu
 
   @defaults %{
     custom_id: nil,
@@ -17,8 +17,8 @@ defmodule Nostrum.Struct.Component.UserSelect do
   use Nostrum.Struct.Component
 
   @type t :: SelectMenu.t()
- 
- @type opt ::
+
+  @type opt ::
           {:custom_id, Component.custom_id()}
           | {:placeholder, Component.placeholder()}
           | {:min_values, Component.min_values()}
@@ -33,7 +33,7 @@ defmodule Nostrum.Struct.Component.UserSelect do
       disable: opts[:disabled],
       placeholder: opts[:placeholder],
       min_values: opts[:min_values],
-      max_values: opts[:max_values],
+      max_values: opts[:max_values]
     ]
     |> new()
   end

@@ -1,4 +1,7 @@
 defmodule Nostrum.Struct.Component.ChannelSelect do
+  @moduledoc """
+  Channel Select
+  """
   alias Nostrum.Constants.ComponentType
 
   @defaults %{
@@ -13,13 +16,13 @@ defmodule Nostrum.Struct.Component.ChannelSelect do
   use Nostrum.Struct.Component
 
   @type t :: %Component{
-    custom_id: Component.custom_id(),
-    disabled: Component.disabled(),
-    min_values: Component.min_values(),
-    max_values: Component.max_values(),
-    channel_types: Component.channel_types(),
-    type: Component.type()
-  }
+          custom_id: Component.custom_id(),
+          disabled: Component.disabled(),
+          min_values: Component.min_values(),
+          max_values: Component.max_values(),
+          channel_types: Component.channel_types(),
+          type: Component.type()
+        }
 
   @type opt ::
           {:custom_id, Component.custom_id()}
@@ -36,7 +39,7 @@ defmodule Nostrum.Struct.Component.ChannelSelect do
       disabled: opts[:disabled],
       min_values: opts[:min_values],
       max_values: opts[:max_values],
-      channel_types: opts[:channel_types],
+      channel_types: opts[:channel_types]
     ]
     |> new()
   end
