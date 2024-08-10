@@ -45,6 +45,17 @@ defmodule Nostrum.Cache.GuildCache.ETS do
   def tabname, do: @table_name
 
   # IMPLEMENTATION
+
+  @doc "Get a guild from the cache."
+  @impl GuildCache
+  @spec get(Guild.id()) :: {:ok, Guild.t()} | {:error, :not_found}
+  def get(guild_id) do
+    case :ets.lookup(@table_name, guild_id) do
+      [{_id, guild}] -> {:ok, guild}
+      [] -> {:error, :not_found}
+    end
+  end
+
   @doc "Create the given guild in the cache."
   @impl GuildCache
   @spec create(map()) :: Guild.t()

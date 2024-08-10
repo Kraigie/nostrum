@@ -63,6 +63,19 @@ defmodule Nostrum.Cache.MemberCache.ETS do
 
   # Used by dispatch
 
+  @impl MemberCache
+  @doc "Retrieve the member for the given guild and user in the cache."
+  @spec get(Guild.id(), Member.user_id()) :: {:ok, Member.t()} | {:error, any()}
+  def get(guild_id, user_id) do
+    case :ets.lookup(@table_name, {guild_id, user_id}) do
+      [{_, member}] ->
+        {:ok, member}
+
+      [] ->
+        {:error, :member_not_found}
+    end
+  end
+
   @doc "Add the given member to the given guild in the cache."
   @impl MemberCache
   @spec create(Guild.id(), map()) :: Member.t()

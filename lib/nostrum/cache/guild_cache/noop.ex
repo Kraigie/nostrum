@@ -27,6 +27,9 @@ defmodule Nostrum.Cache.GuildCache.NoOp do
   end
 
   @impl GuildCache
+  def get(_guild_id), do: {:error, :not_found}
+
+  @impl GuildCache
   def create(payload), do: Guild.to_struct(payload)
 
   @impl GuildCache

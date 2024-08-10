@@ -13,7 +13,10 @@ if Code.ensure_loaded?(:mnesia) do
     @behaviour Nostrum.Cache.PresenceCache
 
     alias Nostrum.Cache.PresenceCache
+
     alias Nostrum.Struct.Guild
+    alias Nostrum.Struct.User
+
     use Supervisor
 
     @doc "Retrieve the table name used by the cache."
@@ -44,6 +47,18 @@ if Code.ensure_loaded?(:mnesia) do
       end
 
       Supervisor.init([], strategy: :one_for_one)
+    end
+
+    @impl PresenceCache
+    @doc "Retrieve a presence from the cache."
+    @spec get(Guild.id(), User.id()) :: {:ok, PresenceCache.presence()} | {:error, any}
+    def get(guild_id, user_id) do
+      :mnesia.activity(:sync_transaction, fn ->
+        case :mnesia.read(@table_name, {guild_id, user_id}) do
+          [{_tag, _key, presence}] -> {:ok, presence}
+          [] -> {:error, :presence_not_found}
+        end
+      end)
     end
 
     @impl PresenceCache

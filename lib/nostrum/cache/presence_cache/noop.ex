@@ -8,7 +8,10 @@ defmodule Nostrum.Cache.PresenceCache.NoOp do
   @behaviour Nostrum.Cache.PresenceCache
 
   alias Nostrum.Cache.PresenceCache
+
   alias Nostrum.Struct.Guild
+  alias Nostrum.Struct.User
+
   use Supervisor
 
   @doc "Start the supervisor."
@@ -21,6 +24,10 @@ defmodule Nostrum.Cache.PresenceCache.NoOp do
   def init(_init_arg) do
     Supervisor.init([], strategy: :one_for_one)
   end
+
+  @impl PresenceCache
+  @spec get(Guild.id(), User.id()) :: {:error, :presence_not_found}
+  def get(_guild_id, _user_id), do: {:error, :presence_not_found}
 
   @impl PresenceCache
   @spec create(map) :: :ok

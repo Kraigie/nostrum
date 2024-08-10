@@ -60,18 +60,10 @@ defmodule Nostrum.Cache.PresenceCache do
   end
   ```
   """
-  @spec get(Guild.id(), User.id()) :: {:ok, presence()} | {:error, :presence_not_found}
-  @spec get(Guild.id(), User.id(), module()) :: {:ok, presence()} | {:error, :presence_not_found}
-  def get(guild_id, user_id, cache \\ @configured_cache) do
-    handle = :nostrum_presence_cache_qlc.get(guild_id, user_id, cache)
+  @spec get(Guild.id(), User.id()) :: {:ok, presence()} | {:error, any()}
+  defdelegate get(guild_id, user_id), to: @configured_cache
 
-    wrap_qlc(cache, fn ->
-      case :qlc.eval(handle) do
-        [presence] -> {:ok, presence}
-        [] -> {:error, :not_found}
-      end
-    end)
-  end
+  @callback get(Guild.id(), User.id()) :: {:ok, presence()} | {:error, any()}
 
   @doc """
   Create a presence in the cache.
@@ -154,7 +146,7 @@ defmodule Nostrum.Cache.PresenceCache do
   def get!(guild_id, user_id, cache \\ @configured_cache)
       when is_snowflake(user_id) and is_snowflake(guild_id) do
     guild_id
-    |> get(user_id, cache)
+    |> get(user_id)
     |> Util.bangify_find({guild_id, user_id}, cache)
   end
 

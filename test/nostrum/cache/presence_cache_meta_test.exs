@@ -58,8 +58,8 @@ defmodule Nostrum.Cache.PresenceCacheMetaTest do
 
       describe "empty cache" do
         test "lookup of nonexistent user" do
-          assert {:error, :not_found} =
-                   PresenceCache.get(@test_guild_id, @test_presence.user.id + 1, @cache)
+          assert {:error, :presence_not_found} =
+                   @cache.get(@test_guild_id, @test_presence.user.id + 1)
         end
 
         test "create, update, delete" do
@@ -71,7 +71,7 @@ defmodule Nostrum.Cache.PresenceCacheMetaTest do
           assert :noop = @cache.update(@test_presence)
 
           assert {:ok, ^test_presence} =
-                   PresenceCache.get(@test_guild_id, test_presence.user.id, @cache)
+                   @cache.get(@test_guild_id, test_presence.user.id)
 
           updated_presence = Map.put(@test_presence, :status, :offline)
 
@@ -87,8 +87,8 @@ defmodule Nostrum.Cache.PresenceCacheMetaTest do
           user_2_presence = %{status: :offline, user: %{id: user_2_id}}
           presences = [user_1_presence, user_2_presence]
           assert :ok = @cache.bulk_create(guild_id, presences)
-          assert {:ok, ^user_1_presence} = PresenceCache.get(guild_id, user_1_id, @cache)
-          assert {:ok, ^user_2_presence} = PresenceCache.get(guild_id, user_2_id, @cache)
+          assert {:ok, ^user_1_presence} = @cache.get(guild_id, user_1_id)
+          assert {:ok, ^user_2_presence} = @cache.get(guild_id, user_2_id)
         end
 
         test "bulk_create/2 with empty presences" do

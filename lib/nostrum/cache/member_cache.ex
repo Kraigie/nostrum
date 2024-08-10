@@ -25,6 +25,11 @@ defmodule Nostrum.Cache.MemberCache do
   @configured_cache Nostrum.Cache.Base.get_cache_module(:members, @default_cache_implementation)
 
   @doc """
+  Retrieve a member from the cache by guild and user ID.
+  """
+  @callback get(Guild.id(), Member.user_id()) :: {:ok, Member.t()} | {:error, atom()}
+
+  @doc """
   Add the member for the given guild from upstream data.
 
   Return the casted member structure.
@@ -116,7 +121,7 @@ defmodule Nostrum.Cache.MemberCache do
   @spec get_with_user(Guild.id(), Member.user_id(), module()) ::
           {Member.t(), User.t() | nil} | nil
   def get_with_user(guild_id, member_id, cache \\ @configured_cache) do
-    case get(guild_id, member_id, cache) do
+    case cache.get(guild_id, member_id) do
       {:ok, member} ->
         case UserCache.get(member_id) do
           {:ok, user} ->
@@ -152,20 +157,7 @@ defmodule Nostrum.Cache.MemberCache do
   Get a single member on the given guild ID.
   """
   @spec get(Guild.id(), Member.user_id()) :: {:ok, Member.t()} | {:error, atom()}
-  @spec get(Guild.id(), Member.user_id(), module()) :: {:ok, Member.t()} | {:error, atom()}
-  def get(guild_id, user_id, cache \\ @configured_cache) do
-    handle = :nostrum_member_cache_qlc.lookup(guild_id, user_id, cache)
-
-    wrap_qlc(cache, fn ->
-      case :qlc.e(handle) do
-        [result] ->
-          {:ok, result}
-
-        [] ->
-          {:error, :not_found}
-      end
-    end)
-  end
+  defdelegate get(guild_id, member_id), to: @configured_cache
 
   @doc """
   Fold (reduce) over members for the given guild ID.
