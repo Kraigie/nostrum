@@ -94,6 +94,8 @@ defmodule Nostrum.Cache.UserCache do
   @callback child_spec(term()) :: Supervisor.child_spec()
 
   @doc """
+  Retrieve a user from the cache by ID.
+
   ## Example
 
   ```elixir

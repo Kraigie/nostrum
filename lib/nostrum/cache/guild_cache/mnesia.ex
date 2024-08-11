@@ -58,7 +58,7 @@ if Code.ensure_loaded?(:mnesia) do
     end
 
     @impl GuildCache
-    @doc "get a guild from the cache."
+    @doc "Get a guild from the cache."
     @spec get(Guild.id()) :: {:ok, Guild.t()} | {:error, :not_found}
     def get(guild_id) do
       :mnesia.activity(:sync_transaction, fn ->
