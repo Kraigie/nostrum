@@ -93,7 +93,7 @@ defmodule Nostrum.Constants do
     do: "/webhooks/#{webhook_id}/#{webhook_token}/messages/#{message_id}"
 
   def webhook_message_edit(webhook_id, webhook_token, message_id),
-    do: "/webhooks/#{webhook_id}/#{webhook_token}/#{message_id}"
+    do: "/webhooks/#{webhook_id}/#{webhook_token}/messages/#{message_id}"
 
   def webhook_git(webhook_id, webhook_token),
     do: "/webhooks/#{webhook_id}/#{webhook_token}/github"
