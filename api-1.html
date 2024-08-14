@@ -16,7 +16,7 @@
 
     <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
     <script src="dist/handlebars.templates-IHH6HKET.js"></script>
-    <script src="dist/sidebar_items-9312FB79.js"></script>
+    <script src="dist/sidebar_items-1B1415BF.js"></script>
     <script src="docs_config.js"></script>
     <script async src="dist/html-GXQ6W6IF.js"></script>
 
@@ -156,14 +156,14 @@ Pages
   <span class="text">Sending a message</span>
 </h3>
 <pre><code class="makeup elixir" translate="no"><span class="n">utc_now</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">DateTime</span><span class="o">.</span><span class="n">utc_now</span><span class="w">
-</span><span class="n">atom_count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">:erlang</span><span class="o">.</span><span class="n">system_info</span><span class="p" data-group-id="5913972473-1">(</span><span class="ss">:atom_count</span><span class="p" data-group-id="5913972473-1">)</span><span class="w">
+</span><span class="n">atom_count</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">:erlang</span><span class="o">.</span><span class="n">system_info</span><span class="p" data-group-id="9385943921-1">(</span><span class="ss">:atom_count</span><span class="p" data-group-id="9385943921-1">)</span><span class="w">
 
 </span><span class="n">content</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;&quot;&quot;
-UTC time is: </span><span class="si" data-group-id="5913972473-2">#{</span><span class="nc">DateTime</span><span class="o">.</span><span class="n">to_iso8601</span><span class="p" data-group-id="5913972473-3">(</span><span class="n">utc_now</span><span class="p" data-group-id="5913972473-3">)</span><span class="si" data-group-id="5913972473-2">}</span><span class="s">
-Atom table size is: </span><span class="si" data-group-id="5913972473-4">#{</span><span class="n">atom_count</span><span class="si" data-group-id="5913972473-4">}</span><span class="s">
+UTC time is: </span><span class="si" data-group-id="9385943921-2">#{</span><span class="nc">DateTime</span><span class="o">.</span><span class="n">to_iso8601</span><span class="p" data-group-id="9385943921-3">(</span><span class="n">utc_now</span><span class="p" data-group-id="9385943921-3">)</span><span class="si" data-group-id="9385943921-2">}</span><span class="s">
+Atom table size is: </span><span class="si" data-group-id="9385943921-4">#{</span><span class="n">atom_count</span><span class="si" data-group-id="9385943921-4">}</span><span class="s">
 &quot;&quot;&quot;</span><span class="w">
 
-</span><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">create_message</span><span class="p" data-group-id="5913972473-5">(</span><span class="n">msg</span><span class="o">.</span><span class="n">channel_id</span><span class="p">,</span><span class="w"> </span><span class="n">content</span><span class="p" data-group-id="5913972473-5">)</span></code></pre></section><section class="h3"><h3 id="sending-a-message-with-an-embed" class="section-heading">
+</span><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">create_message</span><span class="p" data-group-id="9385943921-5">(</span><span class="n">msg</span><span class="o">.</span><span class="n">channel_id</span><span class="p">,</span><span class="w"> </span><span class="n">content</span><span class="p" data-group-id="9385943921-5">)</span></code></pre></section><section class="h3"><h3 id="sending-a-message-with-an-embed" class="section-heading">
   <a href="#sending-a-message-with-an-embed" class="hover-link">
     <i class="ri-link-m" aria-hidden="true"></i>
   </a>
@@ -172,75 +172,75 @@ Atom table size is: </span><span class="si" data-group-id="5913972473-4">#{</spa
 <pre><code class="makeup elixir" translate="no"><span class="kn">import</span><span class="w"> </span><span class="nc">Nostrum.Struct.Embed</span><span class="w">
 
 </span><span class="n">embed</span><span class="w"> </span><span class="o">=</span><span class="w">
-  </span><span class="p" data-group-id="3534360969-1">%</span><span class="nc" data-group-id="3534360969-1">Nostrum.Struct.Embed</span><span class="p" data-group-id="3534360969-1">{</span><span class="p" data-group-id="3534360969-1">}</span><span class="w">
-  </span><span class="o">|&gt;</span><span class="w"> </span><span class="n">put_title</span><span class="p" data-group-id="3534360969-2">(</span><span class="s">&quot;Craig&#39;s Cats&quot;</span><span class="p" data-group-id="3534360969-2">)</span><span class="w">
-  </span><span class="o">|&gt;</span><span class="w"> </span><span class="n">put_description</span><span class="p" data-group-id="3534360969-3">(</span><span class="s">&quot;nostrum&quot;</span><span class="p" data-group-id="3534360969-3">)</span><span class="w">
-  </span><span class="o">|&gt;</span><span class="w"> </span><span class="n">put_url</span><span class="p" data-group-id="3534360969-4">(</span><span class="s">&quot;https://google.com/&quot;</span><span class="p" data-group-id="3534360969-4">)</span><span class="w">
-  </span><span class="o">|&gt;</span><span class="w"> </span><span class="n">put_timestamp</span><span class="p" data-group-id="3534360969-5">(</span><span class="s">&quot;2016-05-05T21:04:13.203Z&quot;</span><span class="p" data-group-id="3534360969-5">)</span><span class="w">
-  </span><span class="o">|&gt;</span><span class="w"> </span><span class="n">put_color</span><span class="p" data-group-id="3534360969-6">(</span><span class="mi">431_948</span><span class="p" data-group-id="3534360969-6">)</span><span class="w">
-  </span><span class="o">|&gt;</span><span class="w"> </span><span class="n">put_field</span><span class="p" data-group-id="3534360969-7">(</span><span class="s">&quot;Field 1&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Test&quot;</span><span class="p" data-group-id="3534360969-7">)</span><span class="w">
+  </span><span class="p" data-group-id="8981239326-1">%</span><span class="nc" data-group-id="8981239326-1">Nostrum.Struct.Embed</span><span class="p" data-group-id="8981239326-1">{</span><span class="p" data-group-id="8981239326-1">}</span><span class="w">
+  </span><span class="o">|&gt;</span><span class="w"> </span><span class="n">put_title</span><span class="p" data-group-id="8981239326-2">(</span><span class="s">&quot;Craig&#39;s Cats&quot;</span><span class="p" data-group-id="8981239326-2">)</span><span class="w">
+  </span><span class="o">|&gt;</span><span class="w"> </span><span class="n">put_description</span><span class="p" data-group-id="8981239326-3">(</span><span class="s">&quot;nostrum&quot;</span><span class="p" data-group-id="8981239326-3">)</span><span class="w">
+  </span><span class="o">|&gt;</span><span class="w"> </span><span class="n">put_url</span><span class="p" data-group-id="8981239326-4">(</span><span class="s">&quot;https://google.com/&quot;</span><span class="p" data-group-id="8981239326-4">)</span><span class="w">
+  </span><span class="o">|&gt;</span><span class="w"> </span><span class="n">put_timestamp</span><span class="p" data-group-id="8981239326-5">(</span><span class="s">&quot;2016-05-05T21:04:13.203Z&quot;</span><span class="p" data-group-id="8981239326-5">)</span><span class="w">
+  </span><span class="o">|&gt;</span><span class="w"> </span><span class="n">put_color</span><span class="p" data-group-id="8981239326-6">(</span><span class="mi">431_948</span><span class="p" data-group-id="8981239326-6">)</span><span class="w">
+  </span><span class="o">|&gt;</span><span class="w"> </span><span class="n">put_field</span><span class="p" data-group-id="8981239326-7">(</span><span class="s">&quot;Field 1&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Test&quot;</span><span class="p" data-group-id="8981239326-7">)</span><span class="w">
   </span><span class="c1"># set inline attribute to true</span><span class="w">
-  </span><span class="o">|&gt;</span><span class="w"> </span><span class="n">put_field</span><span class="p" data-group-id="3534360969-8">(</span><span class="s">&quot;Field 2&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;More test&quot;</span><span class="p">,</span><span class="w"> </span><span class="no">true</span><span class="p" data-group-id="3534360969-8">)</span><span class="w">
+  </span><span class="o">|&gt;</span><span class="w"> </span><span class="n">put_field</span><span class="p" data-group-id="8981239326-8">(</span><span class="s">&quot;Field 2&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;More test&quot;</span><span class="p">,</span><span class="w"> </span><span class="no">true</span><span class="p" data-group-id="8981239326-8">)</span><span class="w">
 
-</span><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">create_message</span><span class="p" data-group-id="3534360969-9">(</span><span class="n">msg</span><span class="o">.</span><span class="n">channel_id</span><span class="p">,</span><span class="w"> </span><span class="ss">embeds</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="3534360969-10">[</span><span class="n">embed</span><span class="p" data-group-id="3534360969-10">]</span><span class="p" data-group-id="3534360969-9">)</span></code></pre><p>You can look at the documentation in <a href="Nostrum.Struct.Embed.html#module-using-structs"><code class="inline">Nostrum.Struct.Embed</code></a> for more advanced usage.</p></section><section class="h3"><h3 id="upload-an-attachment" class="section-heading">
+</span><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">create_message</span><span class="p" data-group-id="8981239326-9">(</span><span class="n">msg</span><span class="o">.</span><span class="n">channel_id</span><span class="p">,</span><span class="w"> </span><span class="ss">embeds</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="8981239326-10">[</span><span class="n">embed</span><span class="p" data-group-id="8981239326-10">]</span><span class="p" data-group-id="8981239326-9">)</span></code></pre><p>You can look at the documentation in <a href="Nostrum.Struct.Embed.html#module-using-structs"><code class="inline">Nostrum.Struct.Embed</code></a> for more advanced usage.</p></section><section class="h3"><h3 id="upload-an-attachment" class="section-heading">
   <a href="#upload-an-attachment" class="hover-link">
     <i class="ri-link-m" aria-hidden="true"></i>
   </a>
   <span class="text">Upload an attachment</span>
 </h3>
-<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">create_message</span><span class="p" data-group-id="1080573592-1">(</span><span class="w">
+<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">create_message</span><span class="p" data-group-id="7413948031-1">(</span><span class="w">
   </span><span class="n">msg</span><span class="o">.</span><span class="n">channel_id</span><span class="p">,</span><span class="w">
-  </span><span class="ss">files</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="1080573592-2">[</span><span class="w">
+  </span><span class="ss">files</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="7413948031-2">[</span><span class="w">
     </span><span class="c1"># file from filesystem</span><span class="w">
     </span><span class="s">&quot;/path/to/file.txt&quot;</span><span class="p">,</span><span class="w">
     </span><span class="c1"># file from memory</span><span class="w">
-    </span><span class="p" data-group-id="1080573592-3">%{</span><span class="ss">body</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;test file&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;example.txt&quot;</span><span class="p" data-group-id="1080573592-3">}</span><span class="w">
-  </span><span class="p" data-group-id="1080573592-2">]</span><span class="w">
-</span><span class="p" data-group-id="1080573592-1">)</span></code></pre></section><section class="h3"><h3 id="reply-to-a-message" class="section-heading">
+    </span><span class="p" data-group-id="7413948031-3">%{</span><span class="ss">body</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;test file&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;example.txt&quot;</span><span class="p" data-group-id="7413948031-3">}</span><span class="w">
+  </span><span class="p" data-group-id="7413948031-2">]</span><span class="w">
+</span><span class="p" data-group-id="7413948031-1">)</span></code></pre></section><section class="h3"><h3 id="reply-to-a-message" class="section-heading">
   <a href="#reply-to-a-message" class="hover-link">
     <i class="ri-link-m" aria-hidden="true"></i>
   </a>
   <span class="text">Reply to a message</span>
 </h3>
-<p>With a mention:</p><pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">create_message</span><span class="p" data-group-id="5487719066-1">(</span><span class="w">
+<p>With a mention:</p><pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">create_message</span><span class="p" data-group-id="2138237906-1">(</span><span class="w">
     </span><span class="n">msg</span><span class="o">.</span><span class="n">channel_id</span><span class="p">,</span><span class="w">
     </span><span class="ss">content</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Hello!&quot;</span><span class="p">,</span><span class="w">
-    </span><span class="ss">message_reference</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="5487719066-2">%{</span><span class="ss">message_id</span><span class="p">:</span><span class="w"> </span><span class="n">msg</span><span class="o">.</span><span class="n">id</span><span class="p" data-group-id="5487719066-2">}</span><span class="w">
-</span><span class="p" data-group-id="5487719066-1">)</span></code></pre><p>Without a mention:</p><pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">create_message</span><span class="p" data-group-id="8550329660-1">(</span><span class="w">
+    </span><span class="ss">message_reference</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="2138237906-2">%{</span><span class="ss">message_id</span><span class="p">:</span><span class="w"> </span><span class="n">msg</span><span class="o">.</span><span class="n">id</span><span class="p" data-group-id="2138237906-2">}</span><span class="w">
+</span><span class="p" data-group-id="2138237906-1">)</span></code></pre><p>Without a mention:</p><pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">create_message</span><span class="p" data-group-id="9036315278-1">(</span><span class="w">
     </span><span class="n">msg</span><span class="o">.</span><span class="n">channel_id</span><span class="p">,</span><span class="w">
     </span><span class="ss">content</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Hello!&quot;</span><span class="p">,</span><span class="w">
-    </span><span class="ss">message_reference</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="8550329660-2">%{</span><span class="ss">message_id</span><span class="p">:</span><span class="w"> </span><span class="n">msg</span><span class="o">.</span><span class="n">id</span><span class="p" data-group-id="8550329660-2">}</span><span class="p">,</span><span class="w">
+    </span><span class="ss">message_reference</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="9036315278-2">%{</span><span class="ss">message_id</span><span class="p">:</span><span class="w"> </span><span class="n">msg</span><span class="o">.</span><span class="n">id</span><span class="p" data-group-id="9036315278-2">}</span><span class="p">,</span><span class="w">
     </span><span class="ss">allowed_mentions</span><span class="p">:</span><span class="w"> </span><span class="ss">:none</span><span class="w">
-</span><span class="p" data-group-id="8550329660-1">)</span></code></pre></section><section class="h3"><h3 id="send-a-poll" class="section-heading">
+</span><span class="p" data-group-id="9036315278-1">)</span></code></pre></section><section class="h3"><h3 id="send-a-poll" class="section-heading">
   <a href="#send-a-poll" class="hover-link">
     <i class="ri-link-m" aria-hidden="true"></i>
   </a>
   <span class="text">Send a poll</span>
 </h3>
-<pre><code class="makeup elixir" translate="no"><span class="n">poll</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Poll</span><span class="o">.</span><span class="n">create_poll</span><span class="p" data-group-id="6043350085-1">(</span><span class="w">
+<pre><code class="makeup elixir" translate="no"><span class="n">poll</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Poll</span><span class="o">.</span><span class="n">create_poll</span><span class="p" data-group-id="2201478350-1">(</span><span class="w">
      </span><span class="s">&quot;Do you enjoy pineapple on pizza?&quot;</span><span class="p">,</span><span class="w">
      </span><span class="ss">duration</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
      </span><span class="ss">allow_multiselect</span><span class="p">:</span><span class="w"> </span><span class="no">false</span><span class="w">
-</span><span class="p" data-group-id="6043350085-1">)</span><span class="w">
-</span><span class="o">|&gt;</span><span class="w"> </span><span class="nc">Poll</span><span class="o">.</span><span class="n">put_answer</span><span class="p" data-group-id="6043350085-2">(</span><span class="s">&quot;Yes!&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">default_emoji</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\u2705</span><span class="s">&quot;</span><span class="p" data-group-id="6043350085-2">)</span><span class="w">
-</span><span class="o">|&gt;</span><span class="w"> </span><span class="nc">Poll</span><span class="o">.</span><span class="n">put_answer</span><span class="p" data-group-id="6043350085-3">(</span><span class="s">&quot;No!&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">default_emoji</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\u274C</span><span class="s">&quot;</span><span class="p" data-group-id="6043350085-3">)</span><span class="w">
+</span><span class="p" data-group-id="2201478350-1">)</span><span class="w">
+</span><span class="o">|&gt;</span><span class="w"> </span><span class="nc">Poll</span><span class="o">.</span><span class="n">put_answer</span><span class="p" data-group-id="2201478350-2">(</span><span class="s">&quot;Yes!&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">default_emoji</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\u2705</span><span class="s">&quot;</span><span class="p" data-group-id="2201478350-2">)</span><span class="w">
+</span><span class="o">|&gt;</span><span class="w"> </span><span class="nc">Poll</span><span class="o">.</span><span class="n">put_answer</span><span class="p" data-group-id="2201478350-3">(</span><span class="s">&quot;No!&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">default_emoji</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;</span><span class="se">\u274C</span><span class="s">&quot;</span><span class="p" data-group-id="2201478350-3">)</span><span class="w">
 
-</span><span class="nc">Api</span><span class="o">.</span><span class="n">create_message</span><span class="p" data-group-id="6043350085-4">(</span><span class="n">channel_id</span><span class="p">,</span><span class="w"> </span><span class="ss">poll</span><span class="p">:</span><span class="w"> </span><span class="n">poll</span><span class="p" data-group-id="6043350085-4">)</span></code></pre></section><section class="h3"><h3 id="react-to-a-message" class="section-heading">
+</span><span class="nc">Api</span><span class="o">.</span><span class="n">create_message</span><span class="p" data-group-id="2201478350-4">(</span><span class="n">channel_id</span><span class="p">,</span><span class="w"> </span><span class="ss">poll</span><span class="p">:</span><span class="w"> </span><span class="n">poll</span><span class="p" data-group-id="2201478350-4">)</span></code></pre></section><section class="h3"><h3 id="react-to-a-message" class="section-heading">
   <a href="#react-to-a-message" class="hover-link">
     <i class="ri-link-m" aria-hidden="true"></i>
   </a>
   <span class="text">React to a message</span>
 </h3>
-<p>Using a default emoji (unicode representation):</p><pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">create_reaction</span><span class="p" data-group-id="8338467450-1">(</span><span class="w">
+<p>Using a default emoji (unicode representation):</p><pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">create_reaction</span><span class="p" data-group-id="0991515892-1">(</span><span class="w">
     </span><span class="n">msg</span><span class="o">.</span><span class="n">channel_id</span><span class="p">,</span><span class="w">
     </span><span class="n">msg</span><span class="o">.</span><span class="n">id</span><span class="p">,</span><span class="w">
     </span><span class="s">&quot;👾&quot;</span><span class="w">
-</span><span class="p" data-group-id="8338467450-1">)</span></code></pre><p>Using a custom Discord emoji:</p><pre><code class="makeup elixir" translate="no"><span class="n">emoji</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="3941603758-1">%</span><span class="nc" data-group-id="3941603758-1">Nostrum.Struct.Emoji</span><span class="p" data-group-id="3941603758-1">{</span><span class="w">
+</span><span class="p" data-group-id="0991515892-1">)</span></code></pre><p>Using a custom Discord emoji:</p><pre><code class="makeup elixir" translate="no"><span class="n">emoji</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="2340340040-1">%</span><span class="nc" data-group-id="2340340040-1">Nostrum.Struct.Emoji</span><span class="p" data-group-id="2340340040-1">{</span><span class="w">
       </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;emojiname&quot;</span><span class="p">,</span><span class="w">
       </span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">1228698654022434866</span><span class="w">
-</span><span class="p" data-group-id="3941603758-1">}</span><span class="w">
+</span><span class="p" data-group-id="2340340040-1">}</span><span class="w">
 
-</span><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">create_reaction</span><span class="p" data-group-id="3941603758-2">(</span><span class="n">msg</span><span class="o">.</span><span class="n">channel_id</span><span class="p">,</span><span class="w"> </span><span class="n">msg</span><span class="o">.</span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">emoji</span><span class="p" data-group-id="3941603758-2">)</span></code></pre></section></section><section class="h2 col-2"><h2 id="miscellaneous" class="col-2 section-heading">
+</span><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">create_reaction</span><span class="p" data-group-id="2340340040-2">(</span><span class="n">msg</span><span class="o">.</span><span class="n">channel_id</span><span class="p">,</span><span class="w"> </span><span class="n">msg</span><span class="o">.</span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">emoji</span><span class="p" data-group-id="2340340040-2">)</span></code></pre></section></section><section class="h2 col-2"><h2 id="miscellaneous" class="col-2 section-heading">
   <a href="#miscellaneous" class="hover-link">
     <i class="ri-link-m" aria-hidden="true"></i>
   </a>
@@ -252,11 +252,11 @@ Atom table size is: </span><span class="si" data-group-id="5913972473-4">#{</spa
   </a>
   <span class="text">Update the bot status</span>
 </h3>
-<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">update_status</span><span class="p" data-group-id="7350380484-1">(</span><span class="w">
+<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">update_status</span><span class="p" data-group-id="2468458322-1">(</span><span class="w">
     </span><span class="ss">:dnd</span><span class="p">,</span><span class="w">
     </span><span class="s">&quot;craigs cats&quot;</span><span class="p">,</span><span class="w">
     </span><span class="mi">3</span><span class="w"> </span><span class="c1"># Watching status</span><span class="w">
-</span><span class="p" data-group-id="7350380484-1">)</span></code></pre><p>You can also update a single shard with <a href="Nostrum.Api.html#update_shard_status/5"><code class="inline">Nostrum.Api.update_shard_status/5</code></a>.</p></section><section class="h3"><h3 id="create-a-guild-emoji" class="section-heading">
+</span><span class="p" data-group-id="2468458322-1">)</span></code></pre><p>You can also update a single shard with <a href="Nostrum.Api.html#update_shard_status/5"><code class="inline">Nostrum.Api.update_shard_status/5</code></a>.</p></section><section class="h3"><h3 id="create-a-guild-emoji" class="section-heading">
   <a href="#create-a-guild-emoji" class="hover-link">
     <i class="ri-link-m" aria-hidden="true"></i>
   </a>
@@ -264,11 +264,11 @@ Atom table size is: </span><span class="si" data-group-id="5913972473-4">#{</spa
 </h3>
 <pre><code class="makeup elixir" translate="no"><span class="n">image</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;data:image/png;base64,...&quot;</span><span class="w">
 
-</span><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">create_guild_emoji</span><span class="p" data-group-id="4059919036-1">(</span><span class="w">
+</span><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">create_guild_emoji</span><span class="p" data-group-id="1402307713-1">(</span><span class="w">
     </span><span class="n">msg</span><span class="o">.</span><span class="n">guild_id</span><span class="p">,</span><span class="w">
     </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;nostrum&quot;</span><span class="p">,</span><span class="w">
     </span><span class="ss">image</span><span class="p">:</span><span class="w"> </span><span class="n">image</span><span class="w">
-</span><span class="p" data-group-id="4059919036-1">)</span></code></pre></section></section>
+</span><span class="p" data-group-id="1402307713-1">)</span></code></pre></section></section>
 </div>
 
 <div class="bottom-actions" id="bottom-actions">
