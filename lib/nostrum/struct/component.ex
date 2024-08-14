@@ -84,6 +84,8 @@ defmodule Nostrum.Struct.Component do
   """
   @moduledoc since: "0.5.0"
 
+  alias Nostrum.Struct.Channel
+
   defmacro __using__(_opts) do
     quote do
       alias Nostrum.Struct.Component.{ActionRow, Button, Option, SelectMenu, TextInput}
@@ -167,7 +169,9 @@ defmodule Nostrum.Struct.Component do
     :max_length,
     :required,
     :value,
-    :components
+    :components,
+    :channel_types,
+    :default_values
   ]
 
   @typedoc """
@@ -307,6 +311,10 @@ defmodule Nostrum.Struct.Component do
   Valid for [Action Row](#module-action-row).
   """
   @type components :: [SelectMenu.t() | Button.t() | nil]
+
+  @type channel_types :: [Channel.type()]
+
+  @type default_values :: [DefaultValue.t()]
 
   @spec to_struct(map()) :: struct
   def to_struct(%{} = map) do
