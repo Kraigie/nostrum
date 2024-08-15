@@ -154,6 +154,13 @@ defmodule Nostrum.Voice.Session do
     end
 
     {:noreply, state}
+  rescue
+    _error ->
+      Logger.warning(
+        "Received bad voice packet in guild_id #{state.guild_id}: #{inspect(packet)}"
+      )
+
+      {:noreply, state}
   end
 
   def handle_cast(:heartbeat, %{heartbeat_ack: false, heartbeat_ref: timer_ref} = state) do
