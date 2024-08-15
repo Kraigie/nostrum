@@ -10,5 +10,9 @@ all(Cache) ->
 
 
 get(RequestedGuildId, Cache) ->
-    qlc:q([Guild || {GuildId, Guild} <- Cache:query_handle(),
+    QH = case erlang:function_exported(Cache, query_handle, 1) of
+             true -> Cache:query_handle([{'==', '$1', {const, RequestedGuildId}}]);
+             false -> Cache:query_handle()
+         end,
+    qlc:q([Guild || {GuildId, Guild} <- QH,
                     GuildId =:= RequestedGuildId]).

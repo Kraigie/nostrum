@@ -21,52 +21,53 @@
 %
 % Implement https://github.com/erlang/otp/issues/7268 to improve it.
 
--define(MNESIA_CACHE, 'Elixir.Nostrum.Cache.MemberCache.Mnesia').
-
-% These must be selected carefully so that QLC can plan using the indices properly.
--define(MNESIA_FORMAT, {_Tag, {GuildId, MemberId}, GuildId, MemberId, Member}).
--define(MNESIA_FORMAT_NOMEMBERID, {_Tag, {_GuildId, _MemberId}, GuildId, _, Member}).
-
 
 -spec by_user('Elixir.Nostrum.Struct.User':id(), module()) -> qlc:query_handle().
-by_user(UserId, ?MNESIA_CACHE) ->
-    qlc:q([{GuildId, Member} || ?MNESIA_FORMAT <- ?MNESIA_CACHE:query_handle(),
-                                MemberId =:= UserId]);
-
 by_user(UserId, Cache) ->
-    qlc:q([{GuildId, Member} || {{GuildId, MemberId}, Member} <- Cache:query_handle(),
+    QH = case erlang:function_exported(Cache, query_handle, 1) of
+             true -> Cache:query_handle([{'==', '$2', {const, UserId}}]);
+             false -> Cache:query_handle()
+         end,
+
+    qlc:q([{GuildId, Member} || {{GuildId, MemberId}, Member} <- QH,
                                 MemberId =:= UserId]).
 
 -spec by_guild('Elixir.Nostrum.Struct.Guild':id(), module()) -> qlc:query_handle().
-by_guild(RequestedGuildId, ?MNESIA_CACHE) ->
-    qlc:q([Member || ?MNESIA_FORMAT_NOMEMBERID <- ?MNESIA_CACHE:query_handle(),
-                     GuildId =:= RequestedGuildId]);
-
 by_guild(RequestedGuildId, Cache) ->
-    qlc:q([Member || {{GuildId, _MemberId}, Member} <- Cache:query_handle(),
+    QH = case erlang:function_exported(Cache, query_handle, 1) of
+             true -> Cache:query_handle([{'==', '$1', {const, RequestedGuildId}}]);
+             false -> Cache:query_handle()
+         end,
+
+    qlc:q([Member || {{GuildId, _MemberId}, Member} <- QH,
                      GuildId =:= RequestedGuildId]).
 
--spec lookup('Elixir.Nostrum.Struct.Guild':id(), 'Elixir.Nostrum.Struct.User':id(), module()) -> qlc:query_handle().
-lookup(RequestedGuildId, RequestedUserId, ?MNESIA_CACHE) ->
-    qlc:q([Member || ?MNESIA_FORMAT <- ?MNESIA_CACHE:query_handle(),
-                     GuildId =:= RequestedGuildId,
-                     MemberId =:= RequestedUserId]);
+-spec by_guild_with_user_id('Elixir.Nostrum.Struct.Guild':id(), module()) -> qlc:query_handle().
+by_guild_with_user_id(RequestedGuildId, Cache) ->
+    QH = case erlang:function_exported(Cache, query_handle, 1) of
+             true -> Cache:query_handle([{'==', '$1', {const, RequestedGuildId}}]);
+             false -> Cache:query_handle()
+         end,
 
+    qlc:q([{MemberId, Member} || {{GuildId, MemberId}, Member} <- QH,
+                                 GuildId =:= RequestedGuildId]).
+
+-spec lookup('Elixir.Nostrum.Struct.Guild':id(), 'Elixir.Nostrum.Struct.User':id(), module()) -> qlc:query_handle().
 lookup(RequestedGuildId, RequestedUserId, Cache) ->
-    qlc:q([Member || {{GuildId, MemberId}, Member} <- Cache:query_handle(),
+    QH = case erlang:function_exported(Cache, query_handle, 1) of
+             true ->
+                 Cache:query_handle([{'==', '$1', {const, RequestedGuildId}},
+                                     {'==', '$2', {const, RequestedUserId}}]);
+             false -> Cache:query_handle()
+         end,
+
+    qlc:q([Member || {{GuildId, MemberId}, Member} <- QH,
                      GuildId =:= RequestedGuildId,
                      MemberId =:= RequestedUserId]).
 
 
 -spec get_with_users('Elixir.Nostrum.Struct.Guild':id(), module(), module()) -> qlc:query_handle().
-get_with_users(RequestedGuildId, ?MNESIA_CACHE, UserCache) ->
-    qlc:q([{Member, User} || ?MNESIA_FORMAT <- ?MNESIA_CACHE:query_handle(),
-                          GuildId =:= RequestedGuildId,
-                          {UserId, User} <- UserCache:query_handle(),
-                          MemberId =:= UserId]);
-
 get_with_users(RequestedGuildId, MemberCache, UserCache) ->
-    qlc:q([{Member, User} || {{GuildId, MemberId}, Member} <- MemberCache:query_handle(),
-                          GuildId =:= RequestedGuildId,
+    qlc:q([{Member, User} || {MemberId, Member} <- by_guild_with_user_id(RequestedGuildId, MemberCache),
                           {UserId, User} <- UserCache:query_handle(),
                           MemberId =:= UserId]).

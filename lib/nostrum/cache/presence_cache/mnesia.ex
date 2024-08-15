@@ -100,8 +100,22 @@ if Code.ensure_loaded?(:mnesia) do
     @doc since: "0.8.0"
     @spec query_handle :: :qlc.query_handle()
     def query_handle do
-      # Note: :"$1" holds a pair here (`{guild_id, user_id}`).
-      ms = [{{:_, :"$1", :"$2"}, [], [{{:"$1", :"$2"}}]}]
+      query_handle([])
+    end
+
+    @doc """
+    Retrieve a query handle for the table with optional match specification guards.
+
+    ## Match specification variables
+
+    - `$1`: The guild ID the presence is stored on
+    - `$2`: The user associated with the presence
+    - `$3`: The user presence itself
+    """
+    @doc since: "0.10.0"
+    @spec query_handle([term()]) :: :qlc.query_handle()
+    def query_handle(guards) do
+      ms = [{{:_, {:"$1", :"$2"}, :"$3"}, guards, [{{{{:"$1", :"$2"}}, :"$3"}}]}]
       :mnesia.table(@table_name, {:traverse, {:select, ms}})
     end
 

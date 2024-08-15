@@ -291,7 +291,20 @@ if Code.ensure_loaded?(:mnesia) do
     @doc "Get a QLC handle for the guild cache."
     @spec query_handle :: :qlc.query_handle()
     def query_handle do
-      ms = [{{:_, :"$1", :"$2"}, [], [{{:"$1", :"$2"}}]}]
+      query_handle([])
+    end
+
+    @doc """
+    Retrieve a query handle for the table with optional match specification guards.
+
+    ## Match specification variables
+
+    - `$1`: The guild ID
+    - `$2` The guild object itself
+    """
+    @doc since: "0.10.0"
+    def query_handle(guards) do
+      ms = [{{:_, :"$1", :"$2"}, guards, [{{:"$1", :"$2"}}]}]
       :mnesia.table(@table_name, {:traverse, {:select, ms}})
     end
 
