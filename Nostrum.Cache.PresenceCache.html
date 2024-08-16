@@ -14,7 +14,7 @@
 
     <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
     <script src="dist/handlebars.templates-IHH6HKET.js"></script>
-    <script src="dist/sidebar_items-1B1415BF.js"></script>
+    <script src="dist/sidebar_items-6111A093.js"></script>
     <script src="docs_config.js"></script>
     <script async src="dist/html-GXQ6W6IF.js"></script>
 
@@ -221,6 +221,14 @@ See <a href="https://discord.com/developers/docs/topics/gateway#presence-update"
 
     <div class="summary-row">
       <div class="summary-signature">
+        <a href="#c:get/2" translate="no">get(id, id)</a>
+
+      </div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
         <a href="#c:query_handle/0" translate="no">query_handle()</a>
 
       </div>
@@ -257,7 +265,7 @@ See <a href="https://discord.com/developers/docs/topics/gateway#presence-update"
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#get/3" translate="no">get(guild_id, user_id, cache \\ Nostrum.Cache.PresenceCache.ETS)</a>
+        <a href="#get/2" translate="no">get(guild_id, user_id)</a>
 
       </div>
 
@@ -360,7 +368,7 @@ See <a href="https://discord.com/developers/docs/topics/gateway#presence-update"
     </a>
     <h1 class="signature" translate="no">bulk_create(id, list)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache.ex#L84" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache.ex#L76" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -390,7 +398,7 @@ See <a href="https://discord.com/developers/docs/topics/gateway#presence-update"
     </a>
     <h1 class="signature" translate="no">child_spec(term)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache.ex#L101" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache.ex#L93" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -420,7 +428,7 @@ See <a href="https://discord.com/developers/docs/topics/gateway#presence-update"
     </a>
     <h1 class="signature" translate="no">create(presence)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache.ex#L79" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache.ex#L71" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -441,6 +449,37 @@ See <a href="https://discord.com/developers/docs/topics/gateway#presence-update"
 <p>Create a presence in the cache.</p>
   </section>
 </section>
+<section class="detail" id="c:get/2">
+
+  <div class="detail-header">
+    <a href="#c:get/2" class="detail-link" title="Link to this callback">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this callback</span>
+    </a>
+    <h1 class="signature" translate="no">get(id, id)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache.ex#L66" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+      <span class="note">(since 0.5.0)</span>
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@callback</span> get(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(), <a href="Nostrum.Struct.User.html#t:id/0">Nostrum.Struct.User.id</a>()) ::
+  {:ok, <a href="#t:presence/0">presence</a>()} | {:error, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">any</a>()}</pre>
+
+      </div>
+
+
+  </section>
+</section>
 <section class="detail" id="c:query_handle/0">
 
   <div class="detail-header">
@@ -450,7 +489,7 @@ See <a href="https://discord.com/developers/docs/topics/gateway#presence-update"
     </a>
     <h1 class="signature" translate="no">query_handle()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache.ex#L124" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache.ex#L116" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -486,7 +525,7 @@ opening connections), see <a href="#c:wrap_qlc/1"><code class="inline">wrap_qlc/
     </a>
     <h1 class="signature" translate="no">update(map)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache.ex#L95" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache.ex#L87" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -527,7 +566,7 @@ fields of the presence did not change, return <code class="inline">:noop</code>.
     </a>
     <h1 class="signature" translate="no">wrap_qlc(function)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache.ex#L137" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache.ex#L129" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -565,18 +604,16 @@ will then effectively call <code class="inline">wrap_qlc(fn -&gt; :qlc.e(...) en
       <span class="text">Functions</span>
     </h1>
     <div class="functions-list">
-<section class="detail" id="get/3">
-
-    <span id="get/2"></span>
+<section class="detail" id="get/2">
 
   <div class="detail-header">
-    <a href="#get/3" class="detail-link" title="Link to this function">
+    <a href="#get/2" class="detail-link" title="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">get(guild_id, user_id, cache \\ Nostrum.Cache.PresenceCache.ETS)</h1>
+    <h1 class="signature" translate="no">get(guild_id, user_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache.ex#L65" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache.ex#L64" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -590,23 +627,23 @@ will then effectively call <code class="inline">wrap_qlc(fn -&gt; :qlc.e(...) en
 
       <div class="specs">
 
-          <pre translate="no"><span class="attribute">@spec</span> get(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(), <a href="Nostrum.Struct.User.html#t:id/0">Nostrum.Struct.User.id</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">module</a>()) ::
-  {:ok, <a href="#t:presence/0">presence</a>()} | {:error, :presence_not_found}</pre>
+          <pre translate="no"><span class="attribute">@spec</span> get(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(), <a href="Nostrum.Struct.User.html#t:id/0">Nostrum.Struct.User.id</a>()) ::
+  {:ok, <a href="#t:presence/0">presence</a>()} | {:error, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">any</a>()}</pre>
 
       </div>
 
-<p>Retrieves a presence for a user from the cache by guild and id.</p><p>If successful, returns <code class="inline">{:ok, presence}</code>. Otherwise returns <code class="inline">{:error, reason}</code>.</p><h2 id="get/3-example" class="section-heading">
-  <a href="#get/3-example" class="hover-link">
+<p>Retrieves a presence for a user from the cache by guild and id.</p><p>If successful, returns <code class="inline">{:ok, presence}</code>. Otherwise returns <code class="inline">{:error, reason}</code>.</p><h2 id="get/2-example" class="section-heading">
+  <a href="#get/2-example" class="hover-link">
     <i class="ri-link-m" aria-hidden="true"></i>
   </a>
   <span class="text">Example</span>
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="k">case</span><span class="w"> </span><span class="nc">Nostrum.Cache.PresenceCache</span><span class="o">.</span><span class="n">get</span><span class="p" data-group-id="1218002921-1">(</span><span class="mi">111133335555</span><span class="p">,</span><span class="w"> </span><span class="mi">222244446666</span><span class="p" data-group-id="1218002921-1">)</span><span class="w"> </span><span class="k" data-group-id="1218002921-2">do</span><span class="w">
-  </span><span class="p" data-group-id="1218002921-3">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">presence</span><span class="p" data-group-id="1218002921-3">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
-    </span><span class="s">&quot;They&#39;re </span><span class="si" data-group-id="1218002921-4">#{</span><span class="n">presence</span><span class="o">.</span><span class="n">status</span><span class="si" data-group-id="1218002921-4">}</span><span class="s">&quot;</span><span class="w">
-  </span><span class="p" data-group-id="1218002921-5">{</span><span class="ss">:error</span><span class="p">,</span><span class="w"> </span><span class="c">_reason</span><span class="p" data-group-id="1218002921-5">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+<pre><code class="makeup elixir" translate="no"><span class="k">case</span><span class="w"> </span><span class="nc">Nostrum.Cache.PresenceCache</span><span class="o">.</span><span class="n">get</span><span class="p" data-group-id="9503678035-1">(</span><span class="mi">111133335555</span><span class="p">,</span><span class="w"> </span><span class="mi">222244446666</span><span class="p" data-group-id="9503678035-1">)</span><span class="w"> </span><span class="k" data-group-id="9503678035-2">do</span><span class="w">
+  </span><span class="p" data-group-id="9503678035-3">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">presence</span><span class="p" data-group-id="9503678035-3">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+    </span><span class="s">&quot;They&#39;re </span><span class="si" data-group-id="9503678035-4">#{</span><span class="n">presence</span><span class="o">.</span><span class="n">status</span><span class="si" data-group-id="9503678035-4">}</span><span class="s">&quot;</span><span class="w">
+  </span><span class="p" data-group-id="9503678035-5">{</span><span class="ss">:error</span><span class="p">,</span><span class="w"> </span><span class="c">_reason</span><span class="p" data-group-id="9503678035-5">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
     </span><span class="s">&quot;They&#39;re dead Jim&quot;</span><span class="w">
-</span><span class="k" data-group-id="1218002921-2">end</span></code></pre>
+</span><span class="k" data-group-id="9503678035-2">end</span></code></pre>
   </section>
 </section>
 <section class="detail" id="get!/3">
@@ -620,7 +657,7 @@ will then effectively call <code class="inline">wrap_qlc(fn -&gt; :qlc.e(...) en
     </a>
     <h1 class="signature" translate="no">get!(guild_id, user_id, cache \\ Nostrum.Cache.PresenceCache.ETS)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache.ex#L154" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache.ex#L146" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -651,7 +688,7 @@ will then effectively call <code class="inline">wrap_qlc(fn -&gt; :qlc.e(...) en
     </a>
     <h1 class="signature" translate="no">query_handle()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache.ex#L181" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache.ex#L173" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -677,7 +714,7 @@ will then effectively call <code class="inline">wrap_qlc(fn -&gt; :qlc.e(...) en
     </a>
     <h1 class="signature" translate="no">wrap_qlc(cache \\ Nostrum.Cache.PresenceCache.ETS, fun)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache.ex#L169" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache.ex#L161" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>

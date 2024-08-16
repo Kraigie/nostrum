@@ -14,7 +14,7 @@
 
     <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
     <script src="dist/handlebars.templates-IHH6HKET.js"></script>
-    <script src="dist/sidebar_items-1B1415BF.js"></script>
+    <script src="dist/sidebar_items-6111A093.js"></script>
     <script src="docs_config.js"></script>
     <script async src="dist/html-GXQ6W6IF.js"></script>
 
@@ -210,6 +210,16 @@ documentation for more information.</p><p>To retrieve the table name used by thi
 
     <div class="summary-row">
       <div class="summary-signature">
+        <a href="#get/2" translate="no">get(guild_id, user_id)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Retrieve the member for the given guild and user in the cache.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
         <a href="#init/1" translate="no">init(init_arg)</a>
 
       </div>
@@ -300,7 +310,7 @@ documentation for more information.</p><p>To retrieve the table name used by thi
     </a>
     <h1 class="signature" translate="no">bulk_create(guild_id, members)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/member_cache/mnesia.ex#L128" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/member_cache/mnesia.ex#L142" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -378,7 +388,7 @@ documentation for more information.</p><p>To retrieve the table name used by thi
     </a>
     <h1 class="signature" translate="no">create(guild_id, payload)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/member_cache/mnesia.ex#L68" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/member_cache/mnesia.ex#L82" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -408,7 +418,7 @@ documentation for more information.</p><p>To retrieve the table name used by thi
     </a>
     <h1 class="signature" translate="no">delete(guild_id, user_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/member_cache/mnesia.ex#L111" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/member_cache/mnesia.ex#L125" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -428,6 +438,37 @@ documentation for more information.</p><p>To retrieve the table name used by thi
       </div>
 
 <p>Remove the given member from the given guild in the cache.</p>
+  </section>
+</section>
+<section class="detail" id="get/2">
+
+  <div class="detail-header">
+    <a href="#get/2" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">get(guild_id, user_id)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/member_cache/mnesia.ex#L68" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+      <span class="note">(since 0.8.0)</span>
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> get(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(), <a href="Nostrum.Struct.Guild.Member.html#t:user_id/0">Nostrum.Struct.Guild.Member.user_id</a>()) ::
+  {:ok, <a href="Nostrum.Struct.Guild.Member.html#t:t/0">Nostrum.Struct.Guild.Member.t</a>()} | {:error, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">any</a>()}</pre>
+
+      </div>
+
+<p>Retrieve the member for the given guild and user in the cache.</p>
   </section>
 </section>
 <section class="detail" id="init/1">
@@ -463,7 +504,7 @@ documentation for more information.</p><p>To retrieve the table name used by thi
     </a>
     <h1 class="signature" translate="no">query_handle()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/member_cache/mnesia.ex#L149" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/member_cache/mnesia.ex#L163" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -577,7 +618,7 @@ documentation for more information.</p><p>To retrieve the table name used by thi
     </a>
     <h1 class="signature" translate="no">update(guild_id, payload)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/member_cache/mnesia.ex#L79" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/member_cache/mnesia.ex#L93" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -609,7 +650,7 @@ documentation for more information.</p><p>To retrieve the table name used by thi
     </a>
     <h1 class="signature" translate="no">wrap_qlc(fun)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/member_cache/mnesia.ex#L156" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/member_cache/mnesia.ex#L170" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>

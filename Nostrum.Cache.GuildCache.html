@@ -14,7 +14,7 @@
 
     <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
     <script src="dist/handlebars.templates-IHH6HKET.js"></script>
-    <script src="dist/sidebar_items-1B1415BF.js"></script>
+    <script src="dist/sidebar_items-6111A093.js"></script>
     <script src="docs_config.js"></script>
     <script async src="dist/html-GXQ6W6IF.js"></script>
 
@@ -250,6 +250,16 @@ backing cache implementation is called.</p>
 
     <div class="summary-row">
       <div class="summary-signature">
+        <a href="#c:get/1" translate="no">get(id)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Retrieves a single <a href="Nostrum.Struct.Guild.html"><code class="inline">Nostrum.Struct.Guild</code></a> from the cache via its <code class="inline">id</code>.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
         <a href="#c:member_count_down/1" translate="no">member_count_down(id)</a>
 
       </div>
@@ -366,7 +376,7 @@ backing cache implementation is called.</p>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#get/2" translate="no">get(guild_id, cache \\ Nostrum.Cache.GuildCache.ETS)</a>
+        <a href="#get/1" translate="no">get(guild_id)</a>
 
       </div>
 
@@ -426,7 +436,7 @@ backing cache implementation is called.</p>
     </a>
     <h1 class="signature" translate="no">channel_create(id, channel)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L119" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L115" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -455,7 +465,7 @@ backing cache implementation is called.</p>
     </a>
     <h1 class="signature" translate="no">channel_delete(id, id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L127" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L123" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -485,7 +495,7 @@ otherwise.</p>
     </a>
     <h1 class="signature" translate="no">channel_update(id, channel)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L135" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L131" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -516,7 +526,7 @@ channel.</p>
     </a>
     <h1 class="signature" translate="no">child_spec(term)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L244" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L240" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -544,7 +554,7 @@ channel.</p>
     </a>
     <h1 class="signature" translate="no">create(map)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L97" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L93" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -572,7 +582,7 @@ channel.</p>
     </a>
     <h1 class="signature" translate="no">delete(id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L112" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L108" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -600,7 +610,7 @@ channel.</p>
     </a>
     <h1 class="signature" translate="no">emoji_update(id, emojis)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L146" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L142" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -622,6 +632,35 @@ channel.</p>
 emojis.</p>
   </section>
 </section>
+<section class="detail" id="c:get/1">
+
+  <div class="detail-header">
+    <a href="#c:get/1" class="detail-link" title="Link to this callback">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this callback</span>
+    </a>
+    <h1 class="signature" translate="no">get(id)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L81" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@callback</span> get(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>()) ::
+  {:ok, <a href="Nostrum.Struct.Guild.html#t:t/0">Nostrum.Struct.Guild.t</a>()} | {:error, :not_found}</pre>
+
+      </div>
+
+<p>Retrieves a single <a href="Nostrum.Struct.Guild.html"><code class="inline">Nostrum.Struct.Guild</code></a> from the cache via its <code class="inline">id</code>.</p><p>Returns <code class="inline">{:error, :not_found}</code> if no result was found.</p>
+  </section>
+</section>
 <section class="detail" id="c:member_count_down/1">
 
   <div class="detail-header">
@@ -631,7 +670,7 @@ emojis.</p>
     </a>
     <h1 class="signature" translate="no">member_count_down(id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L203" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L199" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -661,7 +700,7 @@ emojis.</p>
     </a>
     <h1 class="signature" translate="no">member_count_up(id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L197" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L193" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -691,7 +730,7 @@ emojis.</p>
     </a>
     <h1 class="signature" translate="no">query_handle()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L225" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L221" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -727,7 +766,7 @@ opening connections), see <a href="#c:wrap_qlc/1"><code class="inline">wrap_qlc/
     </a>
     <h1 class="signature" translate="no">role_create(id, role)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L165" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L161" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -756,7 +795,7 @@ opening connections), see <a href="#c:wrap_qlc/1"><code class="inline">wrap_qlc/
     </a>
     <h1 class="signature" translate="no">role_delete(id, id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L172" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L168" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -785,7 +824,7 @@ opening connections), see <a href="#c:wrap_qlc/1"><code class="inline">wrap_qlc/
     </a>
     <h1 class="signature" translate="no">role_update(id, role)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L179" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L175" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -815,7 +854,7 @@ opening connections), see <a href="#c:wrap_qlc/1"><code class="inline">wrap_qlc/
     </a>
     <h1 class="signature" translate="no">stickers_update(id, stickers)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L157" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L153" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -847,7 +886,7 @@ opening connections), see <a href="#c:wrap_qlc/1"><code class="inline">wrap_qlc/
     </a>
     <h1 class="signature" translate="no">update(map)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L105" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L101" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -878,7 +917,7 @@ updated guild.</p>
     </a>
     <h1 class="signature" translate="no">voice_state_update(id, state)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L191" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L187" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -909,7 +948,7 @@ that is being kept in the guild cache already.</p><p>Return the guild ID and the
     </a>
     <h1 class="signature" translate="no">wrap_qlc(function)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L238" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L234" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -988,18 +1027,16 @@ when acc: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term
 at compile time by default.</li></ul>
   </section>
 </section>
-<section class="detail" id="get/2">
-
-    <span id="get/1"></span>
+<section class="detail" id="get/1">
 
   <div class="detail-header">
-    <a href="#get/2" class="detail-link" title="Link to this function">
+    <a href="#get/1" class="detail-link" title="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">get(guild_id, cache \\ Nostrum.Cache.GuildCache.ETS)</h1>
+    <h1 class="signature" translate="no">get(guild_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L83" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L88" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1008,13 +1045,6 @@ at compile time by default.</li></ul>
   </div>
 
   <section class="docstring">
-
-      <div class="specs">
-
-          <pre translate="no"><span class="attribute">@spec</span> get(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">module</a>()) ::
-  {:ok, <a href="Nostrum.Struct.Guild.html#t:t/0">Nostrum.Struct.Guild.t</a>()} | {:error, :not_found}</pre>
-
-      </div>
 
 <p>Retrieves a single <a href="Nostrum.Struct.Guild.html"><code class="inline">Nostrum.Struct.Guild</code></a> from the cache via its <code class="inline">id</code>.</p><p>Returns <code class="inline">{:error, :not_found}</code> if no result was found.</p>
   </section>
@@ -1028,7 +1058,7 @@ at compile time by default.</li></ul>
     </a>
     <h1 class="signature" translate="no">get!(guild_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L282" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L278" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1056,7 +1086,7 @@ at compile time by default.</li></ul>
     </a>
     <h1 class="signature" translate="no">query_handle()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L308" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L304" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -1082,7 +1112,7 @@ at compile time by default.</li></ul>
     </a>
     <h1 class="signature" translate="no">wrap_qlc(cache \\ Nostrum.Cache.GuildCache.ETS, fun)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L296" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/guild_cache.ex#L292" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>

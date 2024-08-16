@@ -14,7 +14,7 @@
 
     <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
     <script src="dist/handlebars.templates-IHH6HKET.js"></script>
-    <script src="dist/sidebar_items-1B1415BF.js"></script>
+    <script src="dist/sidebar_items-6111A093.js"></script>
     <script src="docs_config.js"></script>
     <script async src="dist/html-GXQ6W6IF.js"></script>
 
@@ -189,6 +189,16 @@ please use the <a href="#table/0"><code class="inline">table/0</code></a> functi
 
     <div class="summary-row">
       <div class="summary-signature">
+        <a href="#get/2" translate="no">get(guild_id, user_id)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Retrieve a presence from the cache.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
         <a href="#init/1" translate="no">init(init_arg)</a>
 
       </div>
@@ -259,7 +269,7 @@ please use the <a href="#table/0"><code class="inline">table/0</code></a> functi
     </a>
     <h1 class="signature" translate="no">bulk_create(guild_id, presences)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache/ets.ex#L68" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache/ets.ex#L80" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -289,7 +299,7 @@ please use the <a href="#table/0"><code class="inline">table/0</code></a> functi
     </a>
     <h1 class="signature" translate="no">child_spec(init_arg)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache/ets.ex#L18" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache/ets.ex#L20" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -313,7 +323,7 @@ please use the <a href="#table/0"><code class="inline">table/0</code></a> functi
     </a>
     <h1 class="signature" translate="no">create(presence)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache/ets.ex#L40" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache/ets.ex#L52" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -334,6 +344,37 @@ please use the <a href="#table/0"><code class="inline">table/0</code></a> functi
 <p>Add the given presence data to the cache.</p>
   </section>
 </section>
+<section class="detail" id="get/2">
+
+  <div class="detail-header">
+    <a href="#get/2" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">get(guild_id, user_id)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache/ets.ex#L42" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+      <span class="note">(since 0.5.0)</span>
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> get(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(), <a href="Nostrum.Struct.User.html#t:id/0">Nostrum.Struct.User.id</a>()) ::
+  {:ok, <a href="Nostrum.Cache.PresenceCache.html#t:presence/0">Nostrum.Cache.PresenceCache.presence</a>()} | {:error, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">any</a>()}</pre>
+
+      </div>
+
+<p>Retrieve a presence from the cache.</p>
+  </section>
+</section>
 <section class="detail" id="init/1">
 
   <div class="detail-header">
@@ -343,7 +384,7 @@ please use the <a href="#table/0"><code class="inline">table/0</code></a> functi
     </a>
     <h1 class="signature" translate="no">init(init_arg)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache/ets.ex#L32" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache/ets.ex#L34" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -367,7 +408,7 @@ please use the <a href="#table/0"><code class="inline">table/0</code></a> functi
     </a>
     <h1 class="signature" translate="no">query_handle()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache/ets.ex#L80" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache/ets.ex#L92" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -397,7 +438,7 @@ please use the <a href="#table/0"><code class="inline">table/0</code></a> functi
     </a>
     <h1 class="signature" translate="no">start_link(init_arg)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache/ets.ex#L21" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache/ets.ex#L23" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -421,7 +462,7 @@ please use the <a href="#table/0"><code class="inline">table/0</code></a> functi
     </a>
     <h1 class="signature" translate="no">table()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache/ets.ex#L28" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache/ets.ex#L30" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -451,7 +492,7 @@ please use the <a href="#table/0"><code class="inline">table/0</code></a> functi
     </a>
     <h1 class="signature" translate="no">update(new)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache/ets.ex#L49" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache/ets.ex#L61" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>

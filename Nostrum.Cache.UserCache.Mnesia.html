@@ -14,7 +14,7 @@
 
     <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
     <script src="dist/handlebars.templates-IHH6HKET.js"></script>
-    <script src="dist/sidebar_items-1B1415BF.js"></script>
+    <script src="dist/sidebar_items-6111A093.js"></script>
     <script src="docs_config.js"></script>
     <script async src="dist/html-GXQ6W6IF.js"></script>
 
@@ -210,6 +210,16 @@ documentation for more information.</p><p>To retrieve the table name used by thi
 
     <div class="summary-row">
       <div class="summary-signature">
+        <a href="#get/1" translate="no">get(user_id)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Retrieve a user from the cache.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
         <a href="#init/1" translate="no">init(init_arg)</a>
 
       </div>
@@ -300,7 +310,7 @@ documentation for more information.</p><p>To retrieve the table name used by thi
     </a>
     <h1 class="signature" translate="no">bulk_create(users)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/user_cache/mnesia.ex#L71" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/user_cache/mnesia.ex#L86" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -378,7 +388,7 @@ documentation for more information.</p><p>To retrieve the table name used by thi
     </a>
     <h1 class="signature" translate="no">create(payload)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/user_cache/mnesia.ex#L61" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/user_cache/mnesia.ex#L76" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -408,7 +418,7 @@ documentation for more information.</p><p>To retrieve the table name used by thi
     </a>
     <h1 class="signature" translate="no">delete(user_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/user_cache/mnesia.ex#L109" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/user_cache/mnesia.ex#L124" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -427,6 +437,37 @@ documentation for more information.</p><p>To retrieve the table name used by thi
       </div>
 
 <p>Remove the given user from cache.</p>
+  </section>
+</section>
+<section class="detail" id="get/1">
+
+  <div class="detail-header">
+    <a href="#get/1" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">get(user_id)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/user_cache/mnesia.ex#L59" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+      <span class="note">(since 0.8.0)</span>
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> get(<a href="Nostrum.Struct.User.html#t:id/0">Nostrum.Struct.User.id</a>()) ::
+  {:ok, <a href="Nostrum.Struct.User.html#t:t/0">Nostrum.Struct.User.t</a>()} | {:error, :user_not_found}</pre>
+
+      </div>
+
+<p>Retrieve a user from the cache.</p>
   </section>
 </section>
 <section class="detail" id="init/1">
@@ -462,7 +503,7 @@ documentation for more information.</p><p>To retrieve the table name used by thi
     </a>
     <h1 class="signature" translate="no">query_handle()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/user_cache/mnesia.ex#L125" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/user_cache/mnesia.ex#L140" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -576,7 +617,7 @@ documentation for more information.</p><p>To retrieve the table name used by thi
     </a>
     <h1 class="signature" translate="no">update(payload)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/user_cache/mnesia.ex#L86" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/user_cache/mnesia.ex#L101" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -606,7 +647,7 @@ documentation for more information.</p><p>To retrieve the table name used by thi
     </a>
     <h1 class="signature" translate="no">wrap_qlc(fun)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/user_cache/mnesia.ex#L131" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/user_cache/mnesia.ex#L146" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
