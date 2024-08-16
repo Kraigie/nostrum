@@ -15,6 +15,8 @@ defmodule Nostrum.Cache.PresenceCache.ETS do
   @table_name :nostrum_presences
 
   alias Nostrum.Struct.Guild
+  alias Nostrum.Struct.User
+
   use Supervisor
 
   @doc "Start the supervisor."
@@ -32,6 +34,16 @@ defmodule Nostrum.Cache.PresenceCache.ETS do
   def init(_init_arg) do
     _tid = :ets.new(@table_name, [:set, :public, :named_table])
     Supervisor.init([], strategy: :one_for_one)
+  end
+
+  @impl PresenceCache
+  @doc "Retrieve a presence from the cache."
+  @spec get(Guild.id(), User.id()) :: {:ok, PresenceCache.presence()} | {:error, any}
+  def get(guild_id, user_id) do
+    case :ets.lookup(@table_name, {guild_id, user_id}) do
+      [{_, presence}] -> {:ok, presence}
+      [] -> {:error, :presence_not_found}
+    end
   end
 
   @impl PresenceCache

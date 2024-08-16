@@ -90,7 +90,7 @@ defmodule Nostrum.Cache.GuildCacheMetaTest do
           created = @cache.channel_create(@test_guild.id, @test_channel)
           expected = Channel.to_struct(@test_channel)
           assert ^expected = created
-          {:ok, cached} = GuildCache.get(@test_guild.id, @cache)
+          {:ok, cached} = @cache.get(@test_guild.id)
           channels = %{expected.id => expected}
           assert ^channels = cached.channels
 
@@ -128,7 +128,7 @@ defmodule Nostrum.Cache.GuildCacheMetaTest do
           assert ^expected_return = @cache.role_create(@test_guild.id, @test_role)
 
           assert {:ok, %Guild{roles: %{^role_id => ^expected_role_struct}}} =
-                   GuildCache.get(@test_guild.id, @cache)
+                   @cache.get(@test_guild.id)
 
           # role_update/2
           updated_payload = Map.put(@test_role, :name, "Higher Sharders")
@@ -139,7 +139,7 @@ defmodule Nostrum.Cache.GuildCacheMetaTest do
 
           # role_delete/2
           {_guild_id, ^new_role} = @cache.role_delete(@test_guild.id, @test_role.id)
-          {:ok, guild} = GuildCache.get(@test_guild.id, @cache)
+          {:ok, guild} = @cache.get(@test_guild.id)
           assert guild.roles == %{}
         end
       end
@@ -152,11 +152,11 @@ defmodule Nostrum.Cache.GuildCacheMetaTest do
         end
 
         test "member count operations" do
-          assert {:ok, %{member_count: 0}} = GuildCache.get(@test_guild.id, @cache)
+          assert {:ok, %{member_count: 0}} = @cache.get(@test_guild.id)
           assert @cache.member_count_up(@test_guild.id)
-          assert {:ok, %{member_count: 1}} = GuildCache.get(@test_guild.id, @cache)
+          assert {:ok, %{member_count: 1}} = @cache.get(@test_guild.id)
           assert @cache.member_count_down(@test_guild.id)
-          assert {:ok, %{member_count: 0}} = GuildCache.get(@test_guild.id, @cache)
+          assert {:ok, %{member_count: 0}} = @cache.get(@test_guild.id)
         end
 
         test "member count operations for uncached guild" do

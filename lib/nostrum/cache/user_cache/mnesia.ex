@@ -53,6 +53,21 @@ if Code.ensure_loaded?(:mnesia) do
       :ok
     end
 
+    @doc "Retrieve a user from the cache."
+    @impl UserCache
+    @spec get(User.id()) :: {:ok, User.t()} | {:error, :user_not_found}
+    def get(user_id) do
+      :mnesia.activity(:sync_transaction, fn ->
+        case :mnesia.read(@table_name, user_id) do
+          [{_tag, _id, user}] ->
+            {:ok, user}
+
+          _ ->
+            {:error, :user_not_found}
+        end
+      end)
+    end
+
     # Used by dispatch
 
     @impl UserCache

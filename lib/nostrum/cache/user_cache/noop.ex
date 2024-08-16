@@ -24,6 +24,9 @@ defmodule Nostrum.Cache.UserCache.NoOp do
   def bulk_create(_users), do: :ok
 
   @impl Nostrum.Cache.UserCache
+  def get(_id), do: {:error, :user_not_found}
+
+  @impl Nostrum.Cache.UserCache
   def create(payload), do: User.to_struct(payload)
 
   @impl Nostrum.Cache.UserCache

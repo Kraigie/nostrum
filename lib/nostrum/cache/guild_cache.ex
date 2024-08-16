@@ -78,18 +78,14 @@ defmodule Nostrum.Cache.GuildCache do
 
   Returns `{:error, :not_found}` if no result was found.
   """
-  @spec get(Guild.id()) :: {:ok, Guild.t()} | {:error, :not_found}
-  @spec get(Guild.id(), module()) :: {:ok, Guild.t()} | {:error, :not_found}
-  def get(guild_id, cache \\ @configured_cache) do
-    handle = :nostrum_guild_cache_qlc.get(guild_id, cache)
+  @callback get(Guild.id()) :: {:ok, Guild.t()} | {:error, :not_found}
 
-    wrap_qlc(cache, fn ->
-      case :qlc.eval(handle) do
-        [guild] -> {:ok, guild}
-        [] -> {:error, :not_found}
-      end
-    end)
-  end
+  @doc """
+  Retrieves a single `Nostrum.Struct.Guild` from the cache via its `id`.
+
+  Returns `{:error, :not_found}` if no result was found.
+  """
+  defdelegate get(guild_id), to: @configured_cache
 
   # Functions called from nostrum.
 

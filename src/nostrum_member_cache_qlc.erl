@@ -12,7 +12,7 @@
 % I assume this is caused by the Erlang parse transform doing smart things at compile time.
 
 -module(nostrum_member_cache_qlc).
--export([by_user/2, by_guild/2, lookup/3, get_with_users/3]).
+-export([by_user/2, by_guild/2, get_with_users/3]).
 
 -include_lib("stdlib/include/qlc.hrl").
 
@@ -45,17 +45,6 @@ by_guild(RequestedGuildId, ?MNESIA_CACHE) ->
 by_guild(RequestedGuildId, Cache) ->
     qlc:q([Member || {{GuildId, _MemberId}, Member} <- Cache:query_handle(),
                      GuildId =:= RequestedGuildId]).
-
--spec lookup('Elixir.Nostrum.Struct.Guild':id(), 'Elixir.Nostrum.Struct.User':id(), module()) -> qlc:query_handle().
-lookup(RequestedGuildId, RequestedUserId, ?MNESIA_CACHE) ->
-    qlc:q([Member || ?MNESIA_FORMAT <- ?MNESIA_CACHE:query_handle(),
-                     GuildId =:= RequestedGuildId,
-                     MemberId =:= RequestedUserId]);
-
-lookup(RequestedGuildId, RequestedUserId, Cache) ->
-    qlc:q([Member || {{GuildId, MemberId}, Member} <- Cache:query_handle(),
-                     GuildId =:= RequestedGuildId,
-                     MemberId =:= RequestedUserId]).
 
 
 -spec get_with_users('Elixir.Nostrum.Struct.Guild':id(), module(), module()) -> qlc:query_handle().

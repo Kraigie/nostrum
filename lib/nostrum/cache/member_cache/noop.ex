@@ -23,6 +23,9 @@ defmodule Nostrum.Cache.MemberCache.NoOp do
   end
 
   @impl MemberCache
+  def get(_guild_id, _user_id), do: {:error, :member_not_found}
+
+  @impl MemberCache
   def create(_guild_id, payload), do: Util.cast(payload, {:struct, Member})
 
   @impl MemberCache

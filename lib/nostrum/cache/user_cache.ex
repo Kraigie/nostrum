@@ -23,37 +23,9 @@ defmodule Nostrum.Cache.UserCache do
   ## Behaviour specification
 
   @doc ~s"""
-  Retrieves a user from the cache by id.
-
-  This function can be called with the cache to use as an optional argument. By
-  default, the cache configured at compile time is used.
-
-  ## Example
-
-  ```elixir
-  case Nostrum.Cache.UserCache.get(1111222233334444) do
-    {:ok, user} ->
-      "We found " <> user.username
-    {:error, _reason} ->
-      "No es bueno"
-  end
-  ```
+  Retrieve a user from the cache by id.
   """
-  @spec get(User.id()) :: {:ok, User.t()} | {:error, atom}
-  @spec get(User.id(), module()) :: {:ok, User.t()} | {:error, atom}
-  def get(user_id, cache \\ @configured_cache) do
-    handle = :nostrum_user_cache_qlc.get(user_id, cache)
-
-    wrap_qlc(cache, fn ->
-      case :qlc.eval(handle) do
-        [{_user_id, user}] ->
-          {:ok, user}
-
-        [] ->
-          {:error, :not_found}
-      end
-    end)
-  end
+  @callback get(User.id()) :: {:ok, User.t()} | {:error, atom()}
 
   @doc ~S"""
   Add a new user to the cache based on the Discord Gateway payload.
@@ -122,10 +94,27 @@ defmodule Nostrum.Cache.UserCache do
   @callback child_spec(term()) :: Supervisor.child_spec()
 
   @doc """
+  Retrieve a user from the cache by ID.
+
+  ## Example
+
+  ```elixir
+  case Nostrum.Cache.UserCache.get(1111222233334444) do
+    {:ok, user} ->
+      "We found " <> user.username
+    {:error, _reason} ->
+      "No es bueno"
+  end
+  ```
+  """
+  @spec get(User.id()) :: {:ok, User.t()} | {:error, atom()}
+  defdelegate get(id), to: @configured_cache
+
+  @doc """
   Same as `get/1`, but raises `Nostrum.Error.CacheError` in case of a failure.
   """
   @spec get!(User.id()) :: no_return | User.t()
-  def get!(id) when is_snowflake(id), do: id |> get |> Util.bangify_find(id, __MODULE__)
+  def get!(id) when is_snowflake(id), do: id |> get() |> Util.bangify_find(id, __MODULE__)
 
   @doc "Call `c:query_handle/0` on the configured cache."
   @doc since: "0.8.0"

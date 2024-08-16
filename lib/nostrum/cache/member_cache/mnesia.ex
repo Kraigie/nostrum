@@ -63,6 +63,20 @@ if Code.ensure_loaded?(:mnesia) do
     # Used by dispatch
 
     @impl MemberCache
+    @doc "Retrieve the member for the given guild and user in the cache."
+    @spec get(Guild.id(), Member.user_id()) :: {:ok, Member.t()} | {:error, any()}
+    def get(guild_id, user_id) do
+      key = {guild_id, user_id}
+
+      :mnesia.activity(:sync_transaction, fn ->
+        case :mnesia.read(@table_name, key) do
+          [{_tag, _key, _guild_id, _user_id, member}] -> {:ok, member}
+          [] -> {:error, :member_not_found}
+        end
+      end)
+    end
+
+    @impl MemberCache
     @doc "Add the given member to the given guild in the cache."
     @spec create(Guild.id(), map()) :: Member.t()
     def create(guild_id, payload) do
