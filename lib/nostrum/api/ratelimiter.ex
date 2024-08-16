@@ -40,15 +40,11 @@ defmodule Nostrum.Api.Ratelimiter do
 
   ## Multi-node
 
-  If a single global process is desired to handle all ratelimiting, the
-  ratelimiter can theoretically be adjusted to start registered via `:global`.
-  In practice, it may be more beneficial to have a local ratelimiter process on
-  each node and either using the local one for any API calls, or using a
-  consistent hash mechanism to distribute API requests around the cluster as
-  needed. **Do note that the API enforces a global user ratelimit across all
-  requests**. With a single process, the ratelimiter can track this without
-  hitting 429s at all, with multiple ratelimiters, the built-in requeue
-  functionality may or may not help.
+  nostrum will transparently distribute client requests across all ratelimiter
+  clusters running in the cluster. This allows us to account for per-route
+  ratelimits whilst still distributing work across cluster nodes. **Note that
+  the API enforces a global user ratelimit across all requests**, which we
+  cannot account for using this method.
 
 
   ## Inner workings
@@ -202,6 +198,7 @@ defmodule Nostrum.Api.Ratelimiter do
   @behaviour :gen_statem
 
   alias Nostrum.Api.Base
+  alias Nostrum.Api.RatelimiterGroup
   alias Nostrum.Constants
   alias Nostrum.Error.ApiError
 
@@ -311,6 +308,7 @@ defmodule Nostrum.Api.Ratelimiter do
   end
 
   def init(token) when is_binary(token) do
+    :ok = RatelimiterGroup.join(self())
     # Uncomment the following to trace everything the ratelimiter is doing:
     #   me = self()
     #   spawn(fn -> :sys.trace(me, true) end)
@@ -980,7 +978,9 @@ defmodule Nostrum.Api.Ratelimiter do
   will cause this to return an error.
   """
   def queue(request) do
-    :gen_statem.call(@registered_name, {:queue, request})
+    bucket = get_endpoint(request.route, request.method)
+    limiter = RatelimiterGroup.limiter_for_bucket(bucket)
+    :gen_statem.call(limiter, {:queue, request})
   end
 
   @spec value_from_rltuple({String.t(), String.t()}) :: String.t() | nil
@@ -1027,7 +1027,7 @@ defmodule Nostrum.Api.Ratelimiter do
   @doc """
   Retrieves a proper ratelimit endpoint from a given route and url.
   """
-  @spec get_endpoint(String.t(), String.t()) :: String.t()
+  @spec get_endpoint(String.t(), atom()) :: String.t()
   def get_endpoint(route, method) do
     endpoint =
       Regex.replace(~r/\/([a-z-]+)\/(?:[0-9]{17,19})/i, route, fn capture, param ->
