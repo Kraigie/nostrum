@@ -148,7 +148,7 @@ defmodule Nostrum.Struct.Component do
   """
   @callback update(t(), opts :: [keyword()]) :: t()
 
-  alias Nostrum.Struct.Component.{ActionRow, Button, Option, SelectMenu, TextInput}
+  alias Nostrum.Struct.Component.{ActionRow, Button, DefaultValue, Option, SelectMenu, TextInput}
   alias Nostrum.Struct.Emoji
   alias Nostrum.Util
 
