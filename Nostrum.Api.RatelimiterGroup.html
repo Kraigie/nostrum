@@ -8,7 +8,7 @@
     <meta name="project" content="Nostrum v0.10.0">
 
 
-    <title>Nostrum.Constants.ChannelType — Nostrum v0.10.0</title>
+    <title>Nostrum.Api.RatelimiterGroup — Nostrum v0.10.0</title>
     <link rel="stylesheet" href="dist/html-elixir-2C5PUTIB.css" />
 
 
@@ -127,20 +127,49 @@ Pages
 <div id="top-content">
   <h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/constants.ex#L418" title="View Source" class="icon-action" rel="help">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter_group.ex#L1" title="View Source" class="icon-action" rel="help">
         <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         <span class="sr-only">View Source</span>
       </a>
 
-    <span translate="no">Nostrum.Constants.ChannelType</span> 
+    <span translate="no">Nostrum.Api.RatelimiterGroup</span> 
     <small class="app-vsn" translate="no">(Nostrum v0.10.0)</small>
 
   </h1>
 
 
     <section id="moduledoc">
-<p>Defines available types for channels
-For more info please refer to <a href="https://discord.com/developers/docs/resources/channel#channel-object-channel-types">https://discord.com/developers/docs/resources/channel#channel-object-channel-types</a></p>
+<p>Tracks ratelimiters and determines correct ratelimiters to use per request.</p><h2 id="module-purpose" class="section-heading">
+  <a href="#module-purpose" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Purpose</span>
+</h2>
+<p>In a multi-node setup, users want to be able to make API requests from any
+node in the cluster without having to worry about hitting ratelimits. This
+module serves as the mediator between API clients on any nodes and their
+target ratelimiter.</p><blockquote><h3 id="module-internal-module" class="info section-heading">
+  <a href="#module-internal-module" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Internal module</span>
+</h3>
+<p>This module is intended for exclusive usage inside of nostrum, and is
+documented for completeness and people curious to look behind the covers.</p></blockquote><h2 id="module-approach" class="section-heading">
+  <a href="#module-approach" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Approach</span>
+</h2>
+<p>A naive implementation might simply forward requests to the locally (on the
+same node) running ratelimiter. However, this falls short when modules on
+other nodes want to make API requests, as they then effectively begin
+tracking their own ratelimit state, rendering it inconsistent.</p><p>Instead, the approach is that we have a locally running ratelimiter on each
+node, all of which are registered via the <code class="inline">:pg</code> process group managed by this
+module. When an API request comes in, we determine its ratelimit bucket (see
+<a href="Nostrum.Api.Ratelimiter.html#get_endpoint/2"><code class="inline">Nostrum.Api.Ratelimiter.get_endpoint/2</code></a>) and based on that, determine the
+target ratelimiter by selecting it from the list of known ratelimiters via
+<a href="https://www.erlang.org/doc/man/erlang.html#phash2-2"><code class="inline">:erlang.phash2/2</code></a>.</p>
     </section>
 
 </div>
@@ -159,7 +188,7 @@ For more info please refer to <a href="https://discord.com/developers/docs/resou
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#announcement_thread/0" translate="no">announcement_thread()</a>
+        <a href="#child_spec/1" translate="no">child_spec(opts)</a>
 
       </div>
 
@@ -167,79 +196,27 @@ For more info please refer to <a href="https://discord.com/developers/docs/resou
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#dm/0" translate="no">dm()</a>
+        <a href="#join/1" translate="no">join(pid)</a>
 
       </div>
+
+        <div class="summary-synopsis"><p>Join the given ratelimiter to the group.</p></div>
 
     </div>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#group_db/0" translate="no">group_db()</a>
+        <a href="#limiter_for_bucket/1" translate="no">limiter_for_bucket(bucket)</a>
 
       </div>
+
+        <div class="summary-synopsis"><p>Return a ratelimiter PID to use for requests to the given ratelimiter <code class="inline">bucket</code>.</p></div>
 
     </div>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#guild_announcement/0" translate="no">guild_announcement()</a>
-
-      </div>
-
-    </div>
-
-    <div class="summary-row">
-      <div class="summary-signature">
-        <a href="#guild_category/0" translate="no">guild_category()</a>
-
-      </div>
-
-    </div>
-
-    <div class="summary-row">
-      <div class="summary-signature">
-        <a href="#guild_directory/0" translate="no">guild_directory()</a>
-
-      </div>
-
-    </div>
-
-    <div class="summary-row">
-      <div class="summary-signature">
-        <a href="#guild_forum/0" translate="no">guild_forum()</a>
-
-      </div>
-
-    </div>
-
-    <div class="summary-row">
-      <div class="summary-signature">
-        <a href="#guild_text/0" translate="no">guild_text()</a>
-
-      </div>
-
-    </div>
-
-    <div class="summary-row">
-      <div class="summary-signature">
-        <a href="#guild_voice/0" translate="no">guild_voice()</a>
-
-      </div>
-
-    </div>
-
-    <div class="summary-row">
-      <div class="summary-signature">
-        <a href="#private_thread/0" translate="no">private_thread()</a>
-
-      </div>
-
-    </div>
-
-    <div class="summary-row">
-      <div class="summary-signature">
-        <a href="#public_thread/0" translate="no">public_thread()</a>
+        <a href="#start_link/1" translate="no">start_link(opts)</a>
 
       </div>
 
@@ -258,16 +235,16 @@ For more info please refer to <a href="https://discord.com/developers/docs/resou
       <span class="text">Functions</span>
     </h1>
     <div class="functions-list">
-<section class="detail" id="announcement_thread/0">
+<section class="detail" id="child_spec/1">
 
   <div class="detail-header">
-    <a href="#announcement_thread/0" class="detail-link" title="Link to this function">
+    <a href="#child_spec/1" class="detail-link" title="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">announcement_thread()</h1>
+    <h1 class="signature" translate="no">child_spec(opts)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/constants.ex#L430" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter_group.ex#L59" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -280,16 +257,16 @@ For more info please refer to <a href="https://discord.com/developers/docs/resou
 
   </section>
 </section>
-<section class="detail" id="dm/0">
+<section class="detail" id="join/1">
 
   <div class="detail-header">
-    <a href="#dm/0" class="detail-link" title="Link to this function">
+    <a href="#join/1" class="detail-link" title="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">dm()</h1>
+    <h1 class="signature" translate="no">join(pid)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/constants.ex#L425" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter_group.ex#L50" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -299,19 +276,25 @@ For more info please refer to <a href="https://discord.com/developers/docs/resou
 
   <section class="docstring">
 
+      <div class="specs">
 
+          <pre translate="no"><span class="attribute">@spec</span> join(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pid</a>()) :: :ok</pre>
+
+      </div>
+
+<p>Join the given ratelimiter to the group.</p>
   </section>
 </section>
-<section class="detail" id="group_db/0">
+<section class="detail" id="limiter_for_bucket/1">
 
   <div class="detail-header">
-    <a href="#group_db/0" class="detail-link" title="Link to this function">
+    <a href="#limiter_for_bucket/1" class="detail-link" title="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">group_db()</h1>
+    <h1 class="signature" translate="no">limiter_for_bucket(bucket)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/constants.ex#L427" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter_group.ex#L39" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -321,173 +304,25 @@ For more info please refer to <a href="https://discord.com/developers/docs/resou
 
   <section class="docstring">
 
+      <div class="specs">
 
+          <pre translate="no"><span class="attribute">@spec</span> limiter_for_bucket(<a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pid</a>()</pre>
+
+      </div>
+
+<p>Return a ratelimiter PID to use for requests to the given ratelimiter <code class="inline">bucket</code>.</p>
   </section>
 </section>
-<section class="detail" id="guild_announcement/0">
+<section class="detail" id="start_link/1">
 
   <div class="detail-header">
-    <a href="#guild_announcement/0" class="detail-link" title="Link to this function">
+    <a href="#start_link/1" class="detail-link" title="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">guild_announcement()</h1>
+    <h1 class="signature" translate="no">start_link(opts)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/constants.ex#L429" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
-
-
-  </div>
-
-  <section class="docstring">
-
-
-  </section>
-</section>
-<section class="detail" id="guild_category/0">
-
-  <div class="detail-header">
-    <a href="#guild_category/0" class="detail-link" title="Link to this function">
-      <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
-    </a>
-    <h1 class="signature" translate="no">guild_category()</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/constants.ex#L428" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
-
-
-  </div>
-
-  <section class="docstring">
-
-
-  </section>
-</section>
-<section class="detail" id="guild_directory/0">
-
-  <div class="detail-header">
-    <a href="#guild_directory/0" class="detail-link" title="Link to this function">
-      <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
-    </a>
-    <h1 class="signature" translate="no">guild_directory()</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/constants.ex#L433" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
-
-
-  </div>
-
-  <section class="docstring">
-
-
-  </section>
-</section>
-<section class="detail" id="guild_forum/0">
-
-  <div class="detail-header">
-    <a href="#guild_forum/0" class="detail-link" title="Link to this function">
-      <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
-    </a>
-    <h1 class="signature" translate="no">guild_forum()</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/constants.ex#L434" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
-
-
-  </div>
-
-  <section class="docstring">
-
-
-  </section>
-</section>
-<section class="detail" id="guild_text/0">
-
-  <div class="detail-header">
-    <a href="#guild_text/0" class="detail-link" title="Link to this function">
-      <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
-    </a>
-    <h1 class="signature" translate="no">guild_text()</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/constants.ex#L424" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
-
-
-  </div>
-
-  <section class="docstring">
-
-
-  </section>
-</section>
-<section class="detail" id="guild_voice/0">
-
-  <div class="detail-header">
-    <a href="#guild_voice/0" class="detail-link" title="Link to this function">
-      <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
-    </a>
-    <h1 class="signature" translate="no">guild_voice()</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/constants.ex#L426" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
-
-
-  </div>
-
-  <section class="docstring">
-
-
-  </section>
-</section>
-<section class="detail" id="private_thread/0">
-
-  <div class="detail-header">
-    <a href="#private_thread/0" class="detail-link" title="Link to this function">
-      <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
-    </a>
-    <h1 class="signature" translate="no">private_thread()</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/constants.ex#L432" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
-
-
-  </div>
-
-  <section class="docstring">
-
-
-  </section>
-</section>
-<section class="detail" id="public_thread/0">
-
-  <div class="detail-header">
-    <a href="#public_thread/0" class="detail-link" title="Link to this function">
-      <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
-    </a>
-    <h1 class="signature" translate="no">public_thread()</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/constants.ex#L431" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter_group.ex#L55" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
