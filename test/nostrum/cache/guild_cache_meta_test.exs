@@ -70,6 +70,15 @@ defmodule Nostrum.Cache.GuildCacheMetaTest do
           expected = Guild.to_struct(@test_guild)
           assert ^expected = @cache.create(@test_guild)
         end
+
+        test "update/1 returns {nil, guild}" do
+          expected = Guild.to_struct(@test_guild)
+          assert {nil, ^expected} = @cache.update(@test_guild)
+        end
+
+        test "delete/1 returns nil" do
+          assert nil == @cache.delete(@test_guild.id)
+        end
       end
 
       describe "with cached guild" do

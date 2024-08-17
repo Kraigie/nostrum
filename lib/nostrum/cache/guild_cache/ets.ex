@@ -68,13 +68,19 @@ defmodule Nostrum.Cache.GuildCache.ETS do
 
   @doc "Update the given guild in the cache."
   @impl GuildCache
-  @spec update(map()) :: {Guild.t(), Guild.t()}
+  @spec update(map()) :: {Guild.t() | nil, Guild.t()}
   def update(payload) do
-    [{_id, old_guild}] = :ets.lookup(@table_name, payload.id)
     casted = Util.cast(payload, {:struct, Guild})
-    new_guild = Guild.merge(old_guild, casted)
-    true = :ets.update_element(@table_name, payload.id, {2, new_guild})
-    {old_guild, new_guild}
+
+    case :ets.lookup(@table_name, payload.id) do
+      [{_id, old_guild}] ->
+        new_guild = Guild.merge(old_guild, casted)
+        true = :ets.update_element(@table_name, payload.id, {2, new_guild})
+        {old_guild, new_guild}
+
+      [] ->
+        {nil, casted}
+    end
   end
 
   @doc "Delete the given guild from the cache."
