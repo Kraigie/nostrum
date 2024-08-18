@@ -69,6 +69,23 @@ if Code.ensure_loaded?(:mnesia) do
       end)
     end
 
+  @impl GuildCache
+  @doc since: "0.10.0"
+  @spec all() :: Enumerable.t(Guild.t())
+  def all do
+      ms = [{{:_, :_, :"$1"}, [], [:"$1"]}]
+      Stream.resource(
+        fn -> :mnesia.select(@table_name, ms, 100, :read) end,
+        fn items ->
+          case items do
+            {matches, cont} ->
+              {matches, :mnesia.select(cont)}
+            :"$end_of_table" -> {:halt, nil} end
+        end,
+          fn _cont -> :ok end
+      )
+  end
+
     # Used by dispatch
 
     @impl GuildCache
@@ -300,16 +317,8 @@ if Code.ensure_loaded?(:mnesia) do
     end
 
     @impl GuildCache
-    @doc "Get a QLC handle for the guild cache."
-    @spec query_handle :: :qlc.query_handle()
-    def query_handle do
-      ms = [{{:_, :"$1", :"$2"}, [], [{{:"$1", :"$2"}}]}]
-      :mnesia.table(@table_name, {:traverse, {:select, ms}})
-    end
-
-    @impl GuildCache
-    @doc "Wrap QLC operations in a transaction."
-    def wrap_qlc(fun) do
+    @doc "Wrap queries in a transaction."
+    def wrap_query(fun) do
       :mnesia.activity(:sync_transaction, fun)
     end
   end

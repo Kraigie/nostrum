@@ -77,6 +77,38 @@ if Code.ensure_loaded?(:mnesia) do
     end
 
     @impl MemberCache
+    @doc since: "0.10.0"
+    def by_user(user_id) do
+      ms = [{{:_, :_, :"$1", user_id, :"$2"}, [], [{{:"$1", :"$2"}}]}]
+      Stream.resource(
+        fn -> :mnesia.select(@table_name, ms, 100, :read) end,
+        fn items ->
+          case items do
+            {matches, cont} ->
+              {matches, :mnesia.select(cont)}
+            :"$end_of_table" -> {:halt, nil} end
+        end,
+          fn _cont -> :ok end
+      )
+    end
+
+    @impl MemberCache
+    @doc since: "0.10.0"
+    def by_guild(guild_id) do
+      ms = [{{:_, :_, guild_id, :_, :"$1"}, [], [:"$1"]}]
+      Stream.resource(
+        fn -> :mnesia.select(@table_name, ms, 100, :read) end,
+        fn items ->
+          case items do
+            {matches, cont} ->
+              {matches, :mnesia.select(cont)}
+            :"$end_of_table" -> {:halt, nil} end
+        end,
+          fn _cont -> :ok end
+      )
+    end
+
+    @impl MemberCache
     @doc "Add the given member to the given guild in the cache."
     @spec create(Guild.id(), map()) :: Member.t()
     def create(guild_id, payload) do
@@ -158,16 +190,9 @@ if Code.ensure_loaded?(:mnesia) do
     end
 
     @impl MemberCache
-    @doc "Get a QLC query handle for the member cache."
-    @spec query_handle :: :qlc.query_handle()
-    def query_handle do
-      :mnesia.table(@table_name)
-    end
-
-    @impl MemberCache
-    @doc "Wrap QLC operations in a transaction."
-    @doc since: "0.8.0"
-    def wrap_qlc(fun) do
+    @doc "Wrap long-running queries in a transaction."
+    @doc since: "0.10.0"
+    def wrap_query(fun) do
       :mnesia.activity(:sync_transaction, fun)
     end
   end

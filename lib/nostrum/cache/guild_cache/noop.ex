@@ -30,6 +30,9 @@ defmodule Nostrum.Cache.GuildCache.NoOp do
   def get(_guild_id), do: {:error, :not_found}
 
   @impl GuildCache
+  def all, do: []
+
+  @impl GuildCache
   def create(payload), do: Guild.to_struct(payload)
 
   @impl GuildCache
@@ -82,7 +85,4 @@ defmodule Nostrum.Cache.GuildCache.NoOp do
 
   @impl GuildCache
   def member_count_down(_guild_id), do: true
-
-  @impl GuildCache
-  def query_handle, do: :qlc.string_to_handle(~c"[].")
 end

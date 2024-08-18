@@ -59,10 +59,10 @@ defmodule Nostrum.Cache.MemberCacheMetaTest do
         [pid: start_supervised!(@cache)]
       end
 
-      if function_exported?(@cache, :wrap_qlc, 1) do
-        defdelegate wrap_qlc(fun), to: @cache
+      if function_exported?(@cache, :wrap_query, 1) do
+        defdelegate wrap_query(fun), to: @cache
       else
-        defp wrap_qlc(fun), do: fun.()
+        defp wrap_query(fun), do: fun.()
       end
 
       defp all_entries do

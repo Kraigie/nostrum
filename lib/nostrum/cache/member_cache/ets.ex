@@ -44,17 +44,17 @@ defmodule Nostrum.Cache.MemberCache.ETS do
   end
 
   @doc """
-  Wrap QLC operations.
+  Wrap long-running queries operations.
 
   ## Safety {: .note}
 
-  Any QLC operations are surrounded by `:ets.safe_fixtable`. It is therefore
+  Any operations are surrounded by `:ets.safe_fixtable`. It is therefore
   recommended to finish your read quickly.
   """
-  @doc since: "0.8.0"
+  @doc since: "0.10.0"
   @impl MemberCache
-  @spec wrap_qlc((-> qlc_result)) :: qlc_result when qlc_result: term()
-  def wrap_qlc(fun) do
+  @spec wrap_query((-> query_result)) :: query_result when query_result: term()
+  def wrap_query(fun) do
     :ets.safe_fixtable(@table_name, true)
     fun.()
   after
@@ -74,6 +74,40 @@ defmodule Nostrum.Cache.MemberCache.ETS do
       [] ->
         {:error, :member_not_found}
     end
+  end
+
+  @impl MemberCache
+  @doc since: "0.10.0"
+  def by_user(user_id) do
+      ms = [{{{:"$1", user_id}, :"$2"}, [], [{{:"$1", :"$2"}}]}]
+      Stream.resource(
+        fn -> :ets.select(@table_name, ms, 100)
+        end,
+        fn items ->
+          case items do
+            {matches, cont} ->
+              {matches, :ets.select(cont)}
+            :"$end_of_table" -> {:halt, nil} end
+        end,
+          fn _cont -> :ok end
+      )
+  end
+
+  @impl MemberCache
+  @doc since: "0.10.0"
+  def by_guild(guild_id) do
+      ms = [{{{guild_id, :_}, :"$1"}, [], [:"$1"]}]
+      Stream.resource(
+        fn -> :ets.select(@table_name, ms, 100)
+        end,
+        fn items ->
+          case items do
+            {matches, cont} ->
+              {matches, :ets.select(cont)}
+            :"$end_of_table" -> {:halt, nil} end
+        end,
+          fn _cont -> :ok end
+      )
   end
 
   @doc "Add the given member to the given guild in the cache."
@@ -129,13 +163,5 @@ defmodule Nostrum.Cache.MemberCache.ETS do
     # CHONK like that one cat of craig
     new_members = Enum.map(members, &{{guild_id, &1.user.id}, Util.cast(&1, {:struct, Member})})
     true = :ets.insert(@table_name, new_members)
-  end
-
-  @impl MemberCache
-  @doc "Get a QLC query handle for the member cache."
-  @doc since: "0.7.0"
-  @spec query_handle :: :qlc.query_handle()
-  def query_handle do
-    :ets.table(@table_name)
   end
 end
