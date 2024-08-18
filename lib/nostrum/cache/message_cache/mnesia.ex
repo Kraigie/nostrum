@@ -363,12 +363,39 @@ if Code.ensure_loaded?(:mnesia) do
     end
 
     defp evict_set_records do
-      oldest_message_ids =
-        :nostrum_message_cache_qlc.sorted_by_age_with_limit(query_handle(), @eviction_count)
+      {_, set, _} =
+        :mnesia.foldl(
+          &evict_set_fold_func/2,
+          {0, :gb_sets.new(), 0},
+          @table_name
+        )
 
-      Enum.each(oldest_message_ids, fn message_id ->
+      ids = :gb_sets.to_list(set)
+
+      Enum.each(ids, fn message_id ->
         :mnesia.delete(@table_name, message_id, :write)
       end)
+    end
+
+    defp evict_set_fold_func(
+           {_tag, message_id, _channel_id, _author_id, _message},
+           {count, set, largest}
+         ) do
+      cond do
+        message_id < largest and count >= @eviction_count ->
+          set = :gb_sets.delete(largest, set)
+          set = :gb_sets.insert(message_id, set)
+          largest = :gb_sets.largest(set)
+          {count, set, largest}
+
+        count < @eviction_count ->
+          set = :gb_sets.insert(message_id, set)
+          largest = :gb_sets.largest(set)
+          {count + 1, set, largest}
+
+        true ->
+          {count, set, largest}
+      end
     end
 
     defp evict_ordered_set_records do

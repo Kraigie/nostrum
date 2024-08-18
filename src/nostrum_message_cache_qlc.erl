@@ -20,7 +20,6 @@
     by_channel/4,
     by_channel_and_author/5,
     by_author/4,
-    sorted_by_age_with_limit/2,
     all_message_ids_in_channel/2
 ]).
 
@@ -89,30 +88,3 @@ by_author(RequestedUserId, After, Before, Handle) ->
         MessageId >= After
     ]).
 
-% Lookup the id of cached messages sorted by message id.
--spec sorted_by_age_with_limit(qlc:query_handle(), non_neg_integer()) -> list().
-sorted_by_age_with_limit(Handle, Limit) ->
-    Q1 = qlc:q([
-        MessageId
-     || {_Tag, MessageId, _ChannelId, _AuthorId, _Message} <- Handle
-    ]),
-    sort_with_limit(Q1, Limit).
-
-sort_with_limit(Q1, Limit) ->
-    Fn = fun(MessageId, {Count1, Set1, Largest1}) ->
-        if
-            (MessageId < Largest1) andalso (Count1 >= Limit) ->
-                Set2 = gb_sets:delete(Largest1, Set1),
-                Set3 = gb_sets:insert(MessageId, Set2),
-                Largest2 = gb_sets:largest(Set3),
-                {Count1, Set3, Largest2};
-            (Count1 < Limit) ->
-                Set2 = gb_sets:insert(MessageId, Set1),
-                Largest2 = gb_sets:largest(Set2),
-                {Count1 + 1, Set2, Largest2};
-            true ->
-                {Count1, Set1, Largest1}
-        end
-    end,
-    {_, Set, _} = qlc:fold(Fn, {0, gb_sets:new(), 0}, Q1),
-    lists:reverse(gb_sets:to_list(Set)).
