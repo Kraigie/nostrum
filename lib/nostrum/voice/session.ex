@@ -155,10 +155,8 @@ defmodule Nostrum.Voice.Session do
 
     {:noreply, state}
   rescue
-    _error ->
-      Logger.warning(
-        "Received bad voice packet in guild_id #{state.guild_id}: #{inspect(packet)}"
-      )
+    error ->
+      Logger.warning("Received bad voice packet in guild_id #{state.guild_id}: #{inspect(error)}")
 
       {:noreply, state}
   end
