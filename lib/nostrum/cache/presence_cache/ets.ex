@@ -84,10 +84,4 @@ defmodule Nostrum.Cache.PresenceCache.ETS do
       :ets.insert(@table_name, {{guild_id, p.user.id}, p})
     end)
   end
-
-  @impl PresenceCache
-  @doc "Retrieve a query handle for QLC queries."
-  @doc since: "0.8.0"
-  @spec query_handle :: :qlc.query_handle()
-  def query_handle, do: :ets.table(@table_name)
 end

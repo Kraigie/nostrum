@@ -40,7 +40,4 @@ defmodule Nostrum.Cache.PresenceCache.NoOp do
   @impl PresenceCache
   @spec bulk_create(Guild.id(), [map]) :: :ok
   def bulk_create(_guild_id, _presences), do: :ok
-
-  @impl PresenceCache
-  def query_handle, do: :qlc.string_to_handle(~c"[].")
 end

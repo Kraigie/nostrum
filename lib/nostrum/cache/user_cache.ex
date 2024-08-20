@@ -58,35 +58,18 @@ defmodule Nostrum.Cache.UserCache do
   @callback delete(snowflake :: User.id()) :: :noop | User.t()
 
   @doc """
-  Return a query handle for usage with `:qlc`.
-
-  This is used by nostrum to provide automatic joins between the member and the
-  user cache, and may be used for other functions in the future.
-
-  The Erlang manual on [Implementing a QLC
-  Table](https://www.erlang.org/doc/man/qlc.html#implementing_a_qlc_table)
-  contains examples for implementation.
-
-  The query handle must return items in the form `{user_id, user}`, where
-  `user_id` is a `t:Nostrum.Struct.User.id/0` and `user` is a
-  `t:Nostrum.Struct.User.t/0`.
-  """
-  @doc since: "0.7.0"
-  @callback query_handle() :: :qlc.query_handle()
-
-  @doc """
   A function that should wrap any `:qlc` operations.
 
   If you implement a cache that is backed by a database and want to perform
   cleanup and teardown actions such as opening and closing connections,
   managing transactions and so on, you want to implement this function. Nostrum
-  will then effectively call `wrap_qlc(fn -> :qlc.e(...) end)`.
+  will then effectively call `wrap_query(fn -> ... end)`.
 
   If your cache does not need any wrapping, you can omit this.
   """
   @doc since: "0.8.0"
-  @callback wrap_qlc((-> result)) :: result when result: term()
-  @optional_callbacks wrap_qlc: 1
+  @callback wrap_query((-> result)) :: result when result: term()
+  @optional_callbacks wrap_query: 1
 
   @doc """
   Retrieve the child specification for starting this mapping under a supervisor.
@@ -116,22 +99,17 @@ defmodule Nostrum.Cache.UserCache do
   @spec get!(User.id()) :: no_return | User.t()
   def get!(id) when is_snowflake(id), do: id |> get() |> Util.bangify_find(id, __MODULE__)
 
-  @doc "Call `c:query_handle/0` on the configured cache."
-  @doc since: "0.8.0"
-  @spec query_handle() :: :qlc.query_handle()
-  defdelegate query_handle, to: @configured_cache
-
   @doc """
-  Call `c:wrap_qlc/1` on the given cache, if implemented.
+  Call `c:wrap_query/1` on the given cache, if implemented.
 
   If no cache is given, calls out to the default cache.
   """
   @doc since: "0.8.0"
-  @spec wrap_qlc((-> result)) :: result when result: term()
-  @spec wrap_qlc(module(), (-> result)) :: result when result: term()
-  def wrap_qlc(cache \\ @configured_cache, fun) do
-    if function_exported?(cache, :wrap_qlc, 1) do
-      cache.wrap_qlc(fun)
+  @spec wrap_query((-> result)) :: result when result: term()
+  @spec wrap_query(module(), (-> result)) :: result when result: term()
+  def wrap_query(cache \\ @configured_cache, fun) do
+    if function_exported?(cache, :wrap_query, 1) do
+      cache.wrap_query(fun)
     else
       fun.()
     end
