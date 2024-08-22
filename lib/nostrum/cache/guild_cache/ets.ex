@@ -60,18 +60,21 @@ defmodule Nostrum.Cache.GuildCache.ETS do
   @doc since: "0.10.0"
   @spec all() :: Enumerable.t(Guild.t())
   def all do
-      ms = [{{:_, :"$1"}, [], [:"$1"]}]
-      Stream.resource(
-        fn -> :ets.select(@table_name, ms, 100)
-        end,
-        fn items ->
-          case items do
-            {matches, cont} ->
-              {matches, :ets.select(cont)}
-            :"$end_of_table" -> {:halt, nil} end
-        end,
-          fn _cont -> :ok end
-      )
+    ms = [{{:_, :"$1"}, [], [:"$1"]}]
+
+    Stream.resource(
+      fn -> :ets.select(@table_name, ms, 100) end,
+      fn items ->
+        case items do
+          {matches, cont} ->
+            {matches, :ets.select(cont)}
+
+          :"$end_of_table" ->
+            {:halt, nil}
+        end
+      end,
+      fn _cont -> :ok end
+    )
   end
 
   @doc "Create the given guild in the cache."

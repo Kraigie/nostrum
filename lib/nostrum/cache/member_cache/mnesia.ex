@@ -80,15 +80,19 @@ if Code.ensure_loaded?(:mnesia) do
     @doc since: "0.10.0"
     def by_user(user_id) do
       ms = [{{:_, :_, :"$1", user_id, :"$2"}, [], [{{:"$1", :"$2"}}]}]
+
       Stream.resource(
         fn -> :mnesia.select(@table_name, ms, 100, :read) end,
         fn items ->
           case items do
             {matches, cont} ->
               {matches, :mnesia.select(cont)}
-            :"$end_of_table" -> {:halt, nil} end
+
+            :"$end_of_table" ->
+              {:halt, nil}
+          end
         end,
-          fn _cont -> :ok end
+        fn _cont -> :ok end
       )
     end
 
@@ -96,15 +100,19 @@ if Code.ensure_loaded?(:mnesia) do
     @doc since: "0.10.0"
     def by_guild(guild_id) do
       ms = [{{:_, :_, guild_id, :_, :"$1"}, [], [:"$1"]}]
+
       Stream.resource(
         fn -> :mnesia.select(@table_name, ms, 100, :read) end,
         fn items ->
           case items do
             {matches, cont} ->
               {matches, :mnesia.select(cont)}
-            :"$end_of_table" -> {:halt, nil} end
+
+            :"$end_of_table" ->
+              {:halt, nil}
+          end
         end,
-          fn _cont -> :ok end
+        fn _cont -> :ok end
       )
     end
 

@@ -69,22 +69,26 @@ if Code.ensure_loaded?(:mnesia) do
       end)
     end
 
-  @impl GuildCache
-  @doc since: "0.10.0"
-  @spec all() :: Enumerable.t(Guild.t())
-  def all do
+    @impl GuildCache
+    @doc since: "0.10.0"
+    @spec all() :: Enumerable.t(Guild.t())
+    def all do
       ms = [{{:_, :_, :"$1"}, [], [:"$1"]}]
+
       Stream.resource(
         fn -> :mnesia.select(@table_name, ms, 100, :read) end,
         fn items ->
           case items do
             {matches, cont} ->
               {matches, :mnesia.select(cont)}
-            :"$end_of_table" -> {:halt, nil} end
+
+            :"$end_of_table" ->
+              {:halt, nil}
+          end
         end,
-          fn _cont -> :ok end
+        fn _cont -> :ok end
       )
-  end
+    end
 
     # Used by dispatch
 
