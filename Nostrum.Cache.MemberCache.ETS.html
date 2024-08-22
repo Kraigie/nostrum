@@ -14,7 +14,7 @@
 
     <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
     <script src="dist/handlebars.templates-IHH6HKET.js"></script>
-    <script src="dist/sidebar_items-35424368.js"></script>
+    <script src="dist/sidebar_items-463C511D.js"></script>
     <script src="docs_config.js"></script>
     <script async src="dist/html-GXQ6W6IF.js"></script>
 
@@ -229,16 +229,6 @@ please use the <a href="#table/0"><code class="inline">table/0</code></a> functi
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#query_handle/0" translate="no">query_handle()</a>
-
-      </div>
-
-        <div class="summary-synopsis"><p>Get a QLC query handle for the member cache.</p></div>
-
-    </div>
-
-    <div class="summary-row">
-      <div class="summary-signature">
         <a href="#start_link/1" translate="no">start_link(init_arg)</a>
 
       </div>
@@ -269,11 +259,11 @@ please use the <a href="#table/0"><code class="inline">table/0</code></a> functi
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#wrap_qlc/1" translate="no">wrap_qlc(fun)</a>
+        <a href="#wrap_query/1" translate="no">wrap_query(fun)</a>
 
       </div>
 
-        <div class="summary-synopsis"><p>Wrap QLC operations.</p></div>
+        <div class="summary-synopsis"><p>Wrap long-running queries operations.</p></div>
 
     </div>
 
@@ -299,7 +289,7 @@ please use the <a href="#table/0"><code class="inline">table/0</code></a> functi
     </a>
     <h1 class="signature" translate="no">bulk_create(guild_id, members)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/member_cache/ets.ex#L128" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/member_cache/ets.ex#L162" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -377,7 +367,7 @@ please use the <a href="#table/0"><code class="inline">table/0</code></a> functi
     </a>
     <h1 class="signature" translate="no">create(guild_id, payload)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/member_cache/ets.ex#L82" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/member_cache/ets.ex#L116" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -407,7 +397,7 @@ please use the <a href="#table/0"><code class="inline">table/0</code></a> functi
     </a>
     <h1 class="signature" translate="no">delete(guild_id, user_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/member_cache/ets.ex#L116" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/member_cache/ets.ex#L150" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -484,36 +474,6 @@ please use the <a href="#table/0"><code class="inline">table/0</code></a> functi
 <p>Set up the cache's ETS table.</p>
   </section>
 </section>
-<section class="detail" id="query_handle/0">
-
-  <div class="detail-header">
-    <a href="#query_handle/0" class="detail-link" title="Link to this function">
-      <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
-    </a>
-    <h1 class="signature" translate="no">query_handle()</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/member_cache/ets.ex#L138" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
-
-
-      <span class="note">(since 0.7.0)</span>
-
-  </div>
-
-  <section class="docstring">
-
-      <div class="specs">
-
-          <pre translate="no"><span class="attribute">@spec</span> query_handle() :: <a href="https://www.erlang.org/doc/man/qlc.html#type-query_handle">:qlc.query_handle</a>()</pre>
-
-      </div>
-
-<p>Get a QLC query handle for the member cache.</p>
-  </section>
-</section>
 <section class="detail" id="start_link/1">
 
   <div class="detail-header">
@@ -577,7 +537,7 @@ please use the <a href="#table/0"><code class="inline">table/0</code></a> functi
     </a>
     <h1 class="signature" translate="no">update(guild_id, payload)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/member_cache/ets.ex#L92" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/member_cache/ets.ex#L126" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -600,14 +560,14 @@ please use the <a href="#table/0"><code class="inline">table/0</code></a> functi
 <p>Update the given member for the given guild in the cache.</p>
   </section>
 </section>
-<section class="detail" id="wrap_qlc/1">
+<section class="detail" id="wrap_query/1">
 
   <div class="detail-header">
-    <a href="#wrap_qlc/1" class="detail-link" title="Link to this function">
+    <a href="#wrap_query/1" class="detail-link" title="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">wrap_qlc(fun)</h1>
+    <h1 class="signature" translate="no">wrap_query(fun)</h1>
 
       <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/member_cache/ets.ex#L57" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
@@ -615,7 +575,7 @@ please use the <a href="#table/0"><code class="inline">table/0</code></a> functi
      </a>
 
 
-      <span class="note">(since 0.8.0)</span>
+      <span class="note">(since 0.10.0)</span>
 
   </div>
 
@@ -623,17 +583,17 @@ please use the <a href="#table/0"><code class="inline">table/0</code></a> functi
 
       <div class="specs">
 
-          <pre translate="no"><span class="attribute">@spec</span> wrap_qlc((-&gt; qlc_result)) :: qlc_result when qlc_result: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()</pre>
+          <pre translate="no"><span class="attribute">@spec</span> wrap_query((-&gt; query_result)) :: query_result when query_result: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()</pre>
 
       </div>
 
-<p>Wrap QLC operations.</p><h2 id="wrap_qlc/1-safety" class="note section-heading">
-  <a href="#wrap_qlc/1-safety" class="hover-link">
+<p>Wrap long-running queries operations.</p><h2 id="wrap_query/1-safety" class="note section-heading">
+  <a href="#wrap_query/1-safety" class="hover-link">
     <i class="ri-link-m" aria-hidden="true"></i>
   </a>
   <span class="text">Safety</span>
 </h2>
-<p>Any QLC operations are surrounded by <code class="inline">:ets.safe_fixtable</code>. It is therefore
+<p>Any operations are surrounded by <code class="inline">:ets.safe_fixtable</code>. It is therefore
 recommended to finish your read quickly.</p>
   </section>
 </section>

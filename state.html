@@ -14,7 +14,7 @@
 
     <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
     <script src="dist/handlebars.templates-IHH6HKET.js"></script>
-    <script src="dist/sidebar_items-35424368.js"></script>
+    <script src="dist/sidebar_items-463C511D.js"></script>
     <script src="docs_config.js"></script>
     <script async src="dist/html-GXQ6W6IF.js"></script>
 
@@ -149,85 +149,18 @@ mandatory state that we must track internally.</p><h2 id="caches" class="section
 common operations. If you feel the caches are missing some abstraction, feel
 free to suggest it <a href="https://github.com/Kraigie/nostrum/issues">on GitHub</a>.</p><p>Should the default ETS-based caching not be enough for you - for instance, you
 want to integrate to some external caching mechanism or want to distribute your
-bot across multiple nodes, please see the <a href="pluggable_caching.html">pluggable
-caching</a> documentation.</p><h2 id="query-list-comprehensions" class="section-heading">
-  <a href="#query-list-comprehensions" class="hover-link">
+bot across multiple nodes, and the built-in Mnesia-based caching is not enough
+for you either, please see the <a href="pluggable_caching.html">pluggable
+caching</a> documentation.</p><h2 id="implementing-your-own-caches" class="section-heading">
+  <a href="#implementing-your-own-caches" class="hover-link">
     <i class="ri-link-m" aria-hidden="true"></i>
   </a>
-  <span class="text">Query list comprehensions</span>
+  <span class="text">Implementing your own caches</span>
 </h2>
-<p>nostrum's built-in functions to query the cache should be sufficient to cover
-common use cases. If you need more involved queries, it is recommended to use
-nostrum's <a href="https://www.erlang.org/doc/man/qlc.html">qlc</a> support.</p><h3 id="examples" class="section-heading">
-  <a href="#examples" class="hover-link">
-    <i class="ri-link-m" aria-hidden="true"></i>
-  </a>
-  <span class="text">Examples</span>
-</h3>
-<p>Below you can find some example queries using QLC.</p><pre><code class="makeup erl" translate="no"><span class="c1">% src/nostrum_queries.erl</span><span class="w">
-</span><span class="w">
-</span><span class="p">-</span><span class="na">module</span><span class="p" data-group-id="4899847377-1">(</span><span class="ss">nostrum_queries</span><span class="p" data-group-id="4899847377-1">)</span><span class="p">.</span><span class="w">
-</span><span class="p">-</span><span class="na">export</span><span class="p" data-group-id="4899847377-2">(</span><span class="p" data-group-id="4899847377-3">[</span><span class="ss">find_role_users</span><span class="p">/</span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="ss">find_large_communities</span><span class="p">/</span><span class="mi">2</span><span class="p" data-group-id="4899847377-3">]</span><span class="p" data-group-id="4899847377-2">)</span><span class="p">.</span><span class="w">
-</span><span class="w">
-</span><span class="p">-</span><span class="na">include_lib</span><span class="p" data-group-id="4899847377-4">(</span><span class="s">&quot;stdlib/include/qlc.hrl&quot;</span><span class="p" data-group-id="4899847377-4">)</span><span class="p">.</span><span class="w">
-
-</span><span class="c1">% Find the Nostrum.Struct.User and Member objects of all members in a specific guild role.</span><span class="w">
-</span><span class="nf">find_role_users</span><span class="p" data-group-id="4899847377-5">(</span><span class="n">RequestedGuildId</span><span class="p">,</span><span class="w"> </span><span class="n">RoleId</span><span class="p">,</span><span class="w"> </span><span class="n">MemberCache</span><span class="p">,</span><span class="w"> </span><span class="n">UserCache</span><span class="p" data-group-id="4899847377-5">)</span><span class="w"> </span><span class="p">-&gt;</span><span class="w">
-    </span><span class="nc">qlc</span><span class="p">:</span><span class="nf">q</span><span class="p" data-group-id="4899847377-6">(</span><span class="p" data-group-id="4899847377-7">[</span><span class="p" data-group-id="4899847377-8">{</span><span class="n">User</span><span class="p">,</span><span class="w"> </span><span class="n">Member</span><span class="p" data-group-id="4899847377-8">}</span><span class="w"> </span><span class="p">||</span><span class="w"> </span><span class="p" data-group-id="4899847377-9">{</span><span class="p" data-group-id="4899847377-10">{</span><span class="n">GuildId</span><span class="p">,</span><span class="w"> </span><span class="n">MemberId</span><span class="p" data-group-id="4899847377-10">}</span><span class="p">,</span><span class="w"> </span><span class="n">Member</span><span class="p" data-group-id="4899847377-9">}</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">MemberCache</span><span class="p">:</span><span class="nf">query_handle</span><span class="p" data-group-id="4899847377-11">(</span><span class="p" data-group-id="4899847377-11">)</span><span class="p">,</span><span class="w">
-                   </span><span class="c1">% Filter to member objects of the selected guild</span><span class="w">
-                   </span><span class="n">GuildId</span><span class="w"> </span><span class="o">=:=</span><span class="w"> </span><span class="n">RequestedGuildId</span><span class="p">,</span><span class="w">
-                   </span><span class="c1">% Filter to members of the provided role</span><span class="w">
-                   </span><span class="nc">lists</span><span class="p">:</span><span class="nf">member</span><span class="p" data-group-id="4899847377-12">(</span><span class="n">RoleId</span><span class="p">,</span><span class="w"> </span><span class="nf">map_get</span><span class="p" data-group-id="4899847377-13">(</span><span class="ss">roles</span><span class="p">,</span><span class="w"> </span><span class="n">Member</span><span class="p" data-group-id="4899847377-13">)</span><span class="p" data-group-id="4899847377-12">)</span><span class="p">,</span><span class="w">
-                   </span><span class="c1">% Get a handle on the UserCache table</span><span class="w">
-                   </span><span class="p" data-group-id="4899847377-14">{</span><span class="n">UserId</span><span class="p">,</span><span class="w"> </span><span class="n">User</span><span class="p" data-group-id="4899847377-14">}</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">UserCache</span><span class="p">:</span><span class="nf">query_handle</span><span class="p" data-group-id="4899847377-15">(</span><span class="p" data-group-id="4899847377-15">)</span><span class="p">,</span><span class="w">
-                   </span><span class="c1">% Find the User struct that matches the found Member</span><span class="w">
-                   </span><span class="n">MemberId</span><span class="w"> </span><span class="o">=:=</span><span class="w"> </span><span class="n">UserId</span><span class="p" data-group-id="4899847377-7">]</span><span class="p" data-group-id="4899847377-6">)</span><span class="p">.</span><span class="w">
-
-</span><span class="c1">% Find all communities in the Guild cache with the COMMUNITY guild feature</span><span class="w">
-</span><span class="c1">% that are over a certain threshold in user size</span><span class="w">
-</span><span class="nf">find_large_communities</span><span class="p" data-group-id="4899847377-16">(</span><span class="n">Threshold</span><span class="p">,</span><span class="w"> </span><span class="n">GuildCache</span><span class="p" data-group-id="4899847377-16">)</span><span class="w"> </span><span class="p">-&gt;</span><span class="w">
-    </span><span class="nc">qlc</span><span class="p">:</span><span class="nf">q</span><span class="p" data-group-id="4899847377-17">(</span><span class="p" data-group-id="4899847377-18">[</span><span class="n">Guild</span><span class="w"> </span><span class="p">||</span><span class="w"> </span><span class="p" data-group-id="4899847377-19">{</span><span class="p">_</span><span class="p">,</span><span class="w"> </span><span class="n">Guild</span><span class="p" data-group-id="4899847377-19">}</span><span class="w"> </span><span class="o">&lt;-</span><span class="w"> </span><span class="n">GuildCache</span><span class="p">:</span><span class="nf">query_handle</span><span class="p" data-group-id="4899847377-20">(</span><span class="p" data-group-id="4899847377-20">)</span><span class="p">,</span><span class="w">
-                    </span><span class="c1">% Filter for guilds that are over the provided size</span><span class="w">
-                    </span><span class="nf">map_get</span><span class="p" data-group-id="4899847377-21">(</span><span class="ss">member_count</span><span class="p">,</span><span class="w"> </span><span class="n">Guild</span><span class="p" data-group-id="4899847377-21">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="n">Threshold</span><span class="p">,</span><span class="w">
-                    </span><span class="c1">% Filter for guilds that have COMMUNITY in the features field</span><span class="w">
-                    </span><span class="nc">lists</span><span class="p">:</span><span class="nf">member</span><span class="p" data-group-id="4899847377-22">(</span><span class="p">&lt;&lt;</span><span class="s">&quot;COMMUNITY&quot;</span><span class="p">&gt;&gt;</span><span class="p">,</span><span class="w"> </span><span class="nf">map_get</span><span class="p" data-group-id="4899847377-23">(</span><span class="ss">features</span><span class="p">,</span><span class="w"> </span><span class="n">Guild</span><span class="p" data-group-id="4899847377-23">)</span><span class="p" data-group-id="4899847377-22">)</span><span class="p" data-group-id="4899847377-18">]</span><span class="p" data-group-id="4899847377-17">)</span><span class="p">.</span></code></pre><p><code class="inline">nostrum_queries:find_role_users/4</code> fetches all users in the specified guild
-(<code class="inline">RequestedGuildId</code>) with the role <code class="inline">RoleId</code>. The code is annotated, but
-step-by-step the flow is: the member cache is filtered down to all members in
-the guild, then using <code class="inline">lists:member/2</code> we check for role membership, and finally
-we join against the user cache to return full user objects in the result.</p><p><code class="inline">nostrum_queries:find_large_communities/2</code> fetches all guilds in the guild cache
-that meet the criteria of having at least <code class="inline">Threshold</code> members <em>and</em> having the
-<code class="inline">COMMUNITY</code> guild feature set to true in the Discord UI. It is easy to follow
-the flow of this query by the annotations, with only some minor things to note
-such as needing to use <code class="inline">&lt;&lt;&quot;bitstring&quot;&gt;&gt;</code> bit syntax to represent the strings,
-which is implicit in Elixir.</p><p>In Elixir, you can call these queries like so using <a href="https://www.erlang.org/doc/man/qlc.html#eval-1"><code class="inline">:qlc.eval/1</code></a>:</p><pre><code class="makeup elixir" translate="no"><span class="n">matching_guilds</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">:qlc</span><span class="o">.</span><span class="n">eval</span><span class="p" data-group-id="7161672554-1">(</span><span class="nc">:nostrum_queries</span><span class="o">.</span><span class="n">find_large_communities</span><span class="p" data-group-id="7161672554-2">(</span><span class="mi">50</span><span class="p">,</span><span class="w"> </span><span class="nc">Nostrum.Cache.GuildCache</span><span class="p" data-group-id="7161672554-2">)</span><span class="p" data-group-id="7161672554-1">)</span></code></pre><h3 id="implementing-your-own-queries-and-caches" class="section-heading">
-  <a href="#implementing-your-own-queries-and-caches" class="hover-link">
-    <i class="ri-link-m" aria-hidden="true"></i>
-  </a>
-  <span class="text">Implementing your own queries and caches</span>
-</h3>
-<p>By <a href="https://www.erlang.org/doc/man/qlc.html#implementing_a_qlc_table">implementing a QLC
-table</a>, all
-read operations from nostrum will be performed over your QLC table
-implementation alone, and nostrum's dispatcher modules can easily be expanded
-for more queries in the future. If you've never heard of QLC before, the
-<a href="https://github.com/savonarola/beam-lazy"><code class="inline">beam-lazy</code> repository</a> contains a
-good introduction.</p><p>Using QLC bring a plethora of benefits. Implementation of a QLC table is
-relatively simple, and gives us compile-time query optimization and compilation
-in native Erlang list comprehension syntax. Furthermore, should you wish to
-perform queries on your caches beyond what nostrum offers out of the box, you
-can write your queries using the <code class="inline">query_handle/0</code> functions on our caches,
-without having to investigate their exact API.</p><p>There is one caveat to be aware of when writing cache adapters in Elixir that
-build on this functionality: While Erlang's QLC can perform intelligent query
-optimization, a lot of it is implemented via a parse transform and thus only
-available at compile time in Erlang modules. It is therefore recommended to
-write your QLC queries in Erlang modules: in Mix projects this can be achieved
-easily via the <code class="inline">src/</code> directory. Read the <a href="https://www.erlang.org/doc/man/qlc.html">QLC module
-documentation</a> for more details on the
-optimizations done.</p><p>The reason why QLC is being used as opposed to the Elixir-traditional stream API
-is that the stream API does not support a number of features we are using here.
-Apart from that, nostrum's previous API (<code class="inline">select</code> and friends) gave users a
-false impression that nostrum was doing an efficient iteration under the hood,
-which caused issues for large bots.</p><h2 id="internal-state" class="section-heading">
+<p>To implement custom caches, implement the behaviour defined by the cache
+module, such as <a href="Nostrum.Cache.GuildCache.html"><code class="inline">Nostrum.Cache.GuildCache</code></a>. For ease of use, these modules
+define both a user-facing API to obtain objects from the configured cache, as
+well as the developer-facing behaviour description.</p><h2 id="internal-state" class="section-heading">
   <a href="#internal-state" class="hover-link">
     <i class="ri-link-m" aria-hidden="true"></i>
   </a>
