@@ -333,6 +333,23 @@ defmodule Nostrum.Util do
   end
 
   @doc """
+  Helper function for converting a DateTime to a Snowflake.
+  While allowing Snowflakes to be returned as-is and `:infinity`
+  is also passed through as-is since it's used as a special value
+  by some cache lookup functions to indicate no upper bound.
+  """
+  def timestamp_like_to_snowflake(:infinity), do: :infinity
+  def timestamp_like_to_snowflake(snowflake) when is_integer(snowflake), do: snowflake
+
+  def timestamp_like_to_snowflake(%DateTime{} = dt) do
+    case Snowflake.from_datetime(dt) do
+      {:ok, snowflake} -> snowflake
+      # The date we got was before Discord's epoch, so we'll just treat it as 0
+      :error -> 0
+    end
+  end
+
+  @doc """
   Since we're being sacrilegious and converting strings to atoms from the WS, there will be some
   atoms that we see that aren't defined in any Discord structs. This method mainly serves as a
   means to define those atoms once so the user isn't warned about them in the

@@ -43,6 +43,12 @@ defmodule Nostrum.Cache.MessageCache.Noop do
   @impl MessageCache
   def channel_delete(_channel_id), do: :ok
 
-  @impl Nostrum.Cache.MessageCache
-  def query_handle, do: :qlc.string_to_handle(~c"[].")
+  @impl MessageCache
+  def get_by_author(_author, _after_timestamp, _before_timestamp), do: []
+
+  @impl MessageCache
+  def get_by_channel(_channel_id, _after_timestamp, _before_timestamp), do: []
+
+  @impl MessageCache
+  def get_by_channel_and_author(_channel_id, _author, _after_timestamp, _before_timestamp), do: []
 end

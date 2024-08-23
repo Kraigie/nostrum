@@ -205,11 +205,10 @@ defmodule Nostrum.Cache.MessageCache.MnesiaAdditionalTest do
         Message.to_struct(%{@test_message_two | channel_id: @test_message.channel_id})
 
       assert [expected_message_one, expected_message_two] ==
-               MessageCache.get_by_channel(
+               MessageCache.Mnesia.get_by_channel(
                  @test_message.channel_id,
                  0,
-                 :infinity,
-                 MessageCache.Mnesia
+                 :infinity
                )
     end
 
@@ -217,11 +216,10 @@ defmodule Nostrum.Cache.MessageCache.MnesiaAdditionalTest do
       expected_message_one = Message.to_struct(@test_message)
 
       assert [expected_message_one] ==
-               MessageCache.get_by_channel(
+               MessageCache.Mnesia.get_by_channel(
                  @test_message.channel_id,
                  0,
-                 5_000_000_000_000,
-                 MessageCache.Mnesia
+                 5_000_000_000_000
                )
     end
 
@@ -229,11 +227,10 @@ defmodule Nostrum.Cache.MessageCache.MnesiaAdditionalTest do
       expected_message_one = Message.to_struct(@test_message)
 
       assert [expected_message_one] ==
-               MessageCache.get_by_channel(
+               MessageCache.Mnesia.get_by_channel(
                  @test_message.channel_id,
                  ~U[2015-01-01 00:00:00.0000Z],
-                 ~U[2015-01-02 00:00:00.0000Z],
-                 MessageCache.Mnesia
+                 ~U[2015-01-02 00:00:00.0000Z]
                )
     end
   end
@@ -259,11 +256,10 @@ defmodule Nostrum.Cache.MessageCache.MnesiaAdditionalTest do
       expected_message_two = Message.to_struct(@test_message_two)
 
       assert [expected_message_one, expected_message_two] ==
-               MessageCache.get_by_author(
+               MessageCache.Mnesia.get_by_author(
                  @test_message_two.author.id,
                  0,
-                 :infinity,
-                 MessageCache.Mnesia
+                 :infinity
                )
     end
 
@@ -271,11 +267,10 @@ defmodule Nostrum.Cache.MessageCache.MnesiaAdditionalTest do
       expected_message_one = Message.to_struct(@test_message_two)
 
       assert [expected_message_one] ==
-               MessageCache.get_by_author(
+               MessageCache.Mnesia.get_by_author(
                  @test_message_two.author.id,
                  5_000_000_000_000_000,
-                 11_000_000_000_000_000,
-                 MessageCache.Mnesia
+                 11_000_000_000_000_000
                )
     end
 
@@ -283,11 +278,10 @@ defmodule Nostrum.Cache.MessageCache.MnesiaAdditionalTest do
       expected_message_one = Message.to_struct(@test_message_two)
 
       assert [expected_message_one] ==
-               MessageCache.get_by_author(
+               MessageCache.Mnesia.get_by_author(
                  @test_message_two.author.id,
                  ~U[2015-01-20 00:00:00.0000Z],
-                 ~U[2015-01-25 00:00:00.0000Z],
-                 MessageCache.Mnesia
+                 ~U[2015-01-25 00:00:00.0000Z]
                )
     end
   end
@@ -305,12 +299,11 @@ defmodule Nostrum.Cache.MessageCache.MnesiaAdditionalTest do
       expected_message_one = Message.to_struct(@test_message)
 
       assert [expected_message_one] ==
-               MessageCache.get_by_channel_and_author(
+               MessageCache.Mnesia.get_by_channel_and_author(
                  @test_message.channel_id,
                  @test_message.author.id,
                  0,
-                 :infinity,
-                 MessageCache.Mnesia
+                 :infinity
                )
     end
 
@@ -318,12 +311,11 @@ defmodule Nostrum.Cache.MessageCache.MnesiaAdditionalTest do
       expected_message_one = Message.to_struct(@test_message)
 
       assert [expected_message_one] ==
-               MessageCache.get_by_channel_and_author(
+               MessageCache.Mnesia.get_by_channel_and_author(
                  @test_message.channel_id,
                  @test_message.author.id,
                  0,
-                 5_000_000_000_000,
-                 MessageCache.Mnesia
+                 5_000_000_000_000
                )
     end
 
@@ -331,12 +323,11 @@ defmodule Nostrum.Cache.MessageCache.MnesiaAdditionalTest do
       expected_message_one = Message.to_struct(@test_message)
 
       assert [expected_message_one] ==
-               MessageCache.get_by_channel_and_author(
+               MessageCache.Mnesia.get_by_channel_and_author(
                  @test_message.channel_id,
                  @test_message.author.id,
                  ~U[2015-01-01 00:00:00.0000Z],
-                 ~U[2015-01-02 00:00:00.0000Z],
-                 MessageCache.Mnesia
+                 ~U[2015-01-02 00:00:00.0000Z]
                )
     end
   end

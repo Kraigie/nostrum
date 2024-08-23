@@ -37,13 +37,13 @@ defmodule Nostrum.Cache.MemberCache do
   to wrap calls to this function in `wrap_query/1`.
   """
   @doc since: "0.10.0"
-  @callback by_user(User.id()) :: {:ok, Enumerable.t({Guild.id(), Member.t()})} | {:error. atom()}
+  @callback by_user(User.id()) :: Enumerable.t({Guild.id(), Member.t()})
 
   @doc """
   Yield an enumerable of members associated with the given guild ID.
   """
   @doc since: "0.10.0"
-  @callback by_guild(Guild.id()) :: {:ok, Enumerable.t(Member.t())} | {:error. atom()}
+  @callback by_guild(Guild.id()) :: Enumerable.t(Member.t())
 
   @doc """
   Add the member for the given guild from upstream data.
@@ -221,13 +221,13 @@ defmodule Nostrum.Cache.MemberCache do
       Enum.reduce(
         enumerable,
         acc,
-        fn (%Member{user_id: user_id} = member, acc) ->
+        fn %Member{user_id: user_id} = member, acc ->
           # credo:disable-for-next-line
           case UserCache.get(user_id) do
             {:ok, user} -> fun.({member, user}, acc)
             _error -> acc
           end
-          end
+        end
       )
     end)
   end

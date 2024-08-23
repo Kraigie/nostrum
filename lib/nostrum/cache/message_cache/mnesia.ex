@@ -63,6 +63,7 @@ if Code.ensure_loaded?(:mnesia) do
     alias Nostrum.Snowflake
     alias Nostrum.Struct.Channel
     alias Nostrum.Struct.Message
+    alias Nostrum.Struct.User
     alias Nostrum.Util
     use Supervisor
 
@@ -206,7 +207,7 @@ if Code.ensure_loaded?(:mnesia) do
     @spec channel_delete(Channel.id()) :: :ok
     def channel_delete(channel_id) do
       :mnesia.activity(:sync_transaction, fn ->
-        handle = :nostrum_message_cache_qlc.all_message_ids_in_channel(channel_id, __MODULE__)
+        handle = :nostrum_message_cache_qlc.all_message_ids_in_channel(channel_id, query_handle())
 
         :qlc.fold(
           fn message_id, _ ->
@@ -221,16 +222,111 @@ if Code.ensure_loaded?(:mnesia) do
     end
 
     @impl MessageCache
+    @doc """
+    Retrieve a list of messages from the cache with a given channel ID,
+    optionally after a given date, and before a given date.
+    """
+    @spec get_by_channel(
+            Channel.id(),
+            MessageCache.timestamp_like(),
+            MessageCache.timestamp_like() | :infinity
+          ) :: [
+            Message.t()
+          ]
+    def get_by_channel(
+          channel_id,
+          after_timestamp \\ 0,
+          before_timestamp \\ :infinity
+        ) do
+      after_timestamp = Util.timestamp_like_to_snowflake(after_timestamp)
+      before_timestamp = Util.timestamp_like_to_snowflake(before_timestamp)
+
+      :mnesia.activity(:sync_transaction, fn ->
+        :nostrum_message_cache_qlc.by_channel(
+          channel_id,
+          after_timestamp,
+          before_timestamp,
+          query_handle()
+        )
+        |> :qlc.e()
+      end)
+      |> Enum.sort_by(& &1.id)
+    end
+
+    @impl MessageCache
+    @doc """
+    Retrieve a list of messages from the cache with a given channel ID and author ID,
+    optionally after a given date, and before a given date.
+    """
+    @spec get_by_channel_and_author(
+            Channel.id(),
+            User.id(),
+            MessageCache.timestamp_like(),
+            MessageCache.timestamp_like() | :infinity
+          ) :: [
+            Message.t()
+          ]
+    def get_by_channel_and_author(
+          channel_id,
+          author_id,
+          after_timestamp \\ 0,
+          before_timestamp \\ :infinity
+        ) do
+      after_timestamp = Util.timestamp_like_to_snowflake(after_timestamp)
+      before_timestamp = Util.timestamp_like_to_snowflake(before_timestamp)
+
+      :mnesia.activity(:sync_transaction, fn ->
+        :nostrum_message_cache_qlc.by_channel_and_author(
+          channel_id,
+          author_id,
+          after_timestamp,
+          before_timestamp,
+          query_handle()
+        )
+        |> :qlc.e()
+      end)
+      |> Enum.sort_by(& &1.id)
+    end
+
+    @impl MessageCache
+    @doc """
+    Retrieve a list of messages from the cache with a given author ID,
+    optionally after a given date, and before a given date.
+
+    Integers are treated as snowflakes, and the atom `:infinity` when given
+    as a before date will be treated as the maximum possible date.
+    """
+    @spec get_by_author(
+            User.id(),
+            MessageCache.timestamp_like(),
+            MessageCache.timestamp_like() | :infinity
+          ) :: [
+            Message.t()
+          ]
+    def get_by_author(
+          author_id,
+          after_timestamp \\ 0,
+          before_timestamp \\ :infinity
+        ) do
+      after_timestamp = Util.timestamp_like_to_snowflake(after_timestamp)
+      before_timestamp = Util.timestamp_like_to_snowflake(before_timestamp)
+
+      :mnesia.activity(:sync_transaction, fn ->
+        :nostrum_message_cache_qlc.by_author(
+          author_id,
+          after_timestamp,
+          before_timestamp,
+          query_handle()
+        )
+        |> :qlc.e()
+      end)
+      |> Enum.sort_by(& &1.id)
+    end
+
     @doc "Return a QLC query handle for the cache for read operations."
     @spec query_handle() :: :qlc.query_handle()
     def query_handle do
       :mnesia.table(@table_name)
-    end
-
-    @impl MessageCache
-    @doc "Wrap QLC operations in a transaction"
-    def wrap_qlc(fun) do
-      :mnesia.activity(:sync_transaction, fun)
     end
 
     @doc false
@@ -267,12 +363,39 @@ if Code.ensure_loaded?(:mnesia) do
     end
 
     defp evict_set_records do
-      oldest_message_ids =
-        :nostrum_message_cache_qlc.sorted_by_age_with_limit(__MODULE__, @eviction_count)
+      {_, set, _} =
+        :mnesia.foldl(
+          &evict_set_fold_func/2,
+          {0, :gb_sets.new(), 0},
+          @table_name
+        )
 
-      Enum.each(oldest_message_ids, fn message_id ->
+      ids = :gb_sets.to_list(set)
+
+      Enum.each(ids, fn message_id ->
         :mnesia.delete(@table_name, message_id, :write)
       end)
+    end
+
+    defp evict_set_fold_func(
+           {_tag, message_id, _channel_id, _author_id, _message},
+           {count, set, largest}
+         ) do
+      cond do
+        message_id < largest and count >= @eviction_count ->
+          set = :gb_sets.delete(largest, set)
+          set = :gb_sets.insert(message_id, set)
+          largest = :gb_sets.largest(set)
+          {count, set, largest}
+
+        count < @eviction_count ->
+          set = :gb_sets.insert(message_id, set)
+          largest = :gb_sets.largest(set)
+          {count + 1, set, largest}
+
+        true ->
+          {count, set, largest}
+      end
     end
 
     defp evict_ordered_set_records do

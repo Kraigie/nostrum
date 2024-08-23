@@ -135,15 +135,8 @@ if Code.ensure_loaded?(:mnesia) do
     end
 
     @impl UserCache
-    @doc "Get a QLC query handle for the user cache."
-    @spec query_handle :: :qlc.query_handle()
-    def query_handle do
-      :mnesia.table(@table_name)
-    end
-
-    @impl UserCache
     @doc "Wrap QLC operations in a transaction."
-    def wrap_qlc(fun) do
+    def wrap_query(fun) do
       :mnesia.activity(:sync_transaction, fun)
     end
   end

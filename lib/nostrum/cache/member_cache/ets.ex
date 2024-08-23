@@ -79,35 +79,41 @@ defmodule Nostrum.Cache.MemberCache.ETS do
   @impl MemberCache
   @doc since: "0.10.0"
   def by_user(user_id) do
-      ms = [{{{:"$1", user_id}, :"$2"}, [], [{{:"$1", :"$2"}}]}]
-      Stream.resource(
-        fn -> :ets.select(@table_name, ms, 100)
-        end,
-        fn items ->
-          case items do
-            {matches, cont} ->
-              {matches, :ets.select(cont)}
-            :"$end_of_table" -> {:halt, nil} end
-        end,
-          fn _cont -> :ok end
-      )
+    ms = [{{{:"$1", user_id}, :"$2"}, [], [{{:"$1", :"$2"}}]}]
+
+    Stream.resource(
+      fn -> :ets.select(@table_name, ms, 100) end,
+      fn items ->
+        case items do
+          {matches, cont} ->
+            {matches, :ets.select(cont)}
+
+          :"$end_of_table" ->
+            {:halt, nil}
+        end
+      end,
+      fn _cont -> :ok end
+    )
   end
 
   @impl MemberCache
   @doc since: "0.10.0"
   def by_guild(guild_id) do
-      ms = [{{{guild_id, :_}, :"$1"}, [], [:"$1"]}]
-      Stream.resource(
-        fn -> :ets.select(@table_name, ms, 100)
-        end,
-        fn items ->
-          case items do
-            {matches, cont} ->
-              {matches, :ets.select(cont)}
-            :"$end_of_table" -> {:halt, nil} end
-        end,
-          fn _cont -> :ok end
-      )
+    ms = [{{{guild_id, :_}, :"$1"}, [], [:"$1"]}]
+
+    Stream.resource(
+      fn -> :ets.select(@table_name, ms, 100) end,
+      fn items ->
+        case items do
+          {matches, cont} ->
+            {matches, :ets.select(cont)}
+
+          :"$end_of_table" ->
+            {:halt, nil}
+        end
+      end,
+      fn _cont -> :ok end
+    )
   end
 
   @doc "Add the given member to the given guild in the cache."

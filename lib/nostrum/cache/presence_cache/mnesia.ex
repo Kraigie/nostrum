@@ -111,19 +111,9 @@ if Code.ensure_loaded?(:mnesia) do
     end
 
     @impl PresenceCache
-    @doc "Retrieve a query handle for the table."
+    @doc "Wrap query operations in a transaction."
     @doc since: "0.8.0"
-    @spec query_handle :: :qlc.query_handle()
-    def query_handle do
-      # Note: :"$1" holds a pair here (`{guild_id, user_id}`).
-      ms = [{{:_, :"$1", :"$2"}, [], [{{:"$1", :"$2"}}]}]
-      :mnesia.table(@table_name, {:traverse, {:select, ms}})
-    end
-
-    @impl PresenceCache
-    @doc "Wrap QLC operations in a transaction."
-    @doc since: "0.8.0"
-    def wrap_qlc(fun) do
+    def wrap_query(fun) do
       :mnesia.activity(:sync_transaction, fun)
     end
   end

@@ -109,12 +109,4 @@ defmodule Nostrum.Cache.UserCache.ETS do
         :noop
     end
   end
-
-  @doc "Get a QLC query handle for the user cache."
-  @doc since: "0.7.0"
-  @impl Nostrum.Cache.UserCache
-  @spec query_handle :: :qlc.query_handle()
-  def query_handle do
-    :ets.table(@table_name)
-  end
 end

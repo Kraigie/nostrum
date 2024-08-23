@@ -34,7 +34,4 @@ defmodule Nostrum.Cache.UserCache.NoOp do
 
   @impl Nostrum.Cache.UserCache
   def delete(_id), do: :noop
-
-  @impl Nostrum.Cache.UserCache
-  def query_handle, do: :qlc.string_to_handle(~c"[].")
 end
