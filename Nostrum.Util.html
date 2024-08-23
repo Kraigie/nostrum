@@ -14,7 +14,7 @@
 
     <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
     <script src="dist/handlebars.templates-IHH6HKET.js"></script>
-    <script src="dist/sidebar_items-463C511D.js"></script>
+    <script src="dist/sidebar_items-E9C8C345.js"></script>
     <script src="docs_config.js"></script>
     <script async src="dist/html-GXQ6W6IF.js"></script>
 
@@ -272,6 +272,19 @@ Otherwise, returns the map unchanged.</p></div>
       </div>
 
         <div class="summary-synopsis"><p>Converts a map into an atom-keyed map.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#timestamp_like_to_snowflake/1" translate="no">timestamp_like_to_snowflake(snowflake)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Helper function for converting a DateTime to a Snowflake.
+While allowing Snowflakes to be returned as-is and <code class="inline">:infinity</code>
+is also passed through as-is since it's used as a special value
+by some cache lookup functions to indicate no upper bound.</p></div>
 
     </div>
 
@@ -665,6 +678,31 @@ if any results from Discord are giving variable keys. Since we <em>will</em> def
 types of objects returned by Discord, the amount of new atoms created <em>SHOULD</em> be 0. 👀</p>
   </section>
 </section>
+<section class="detail" id="timestamp_like_to_snowflake/1">
+
+  <div class="detail-header">
+    <a href="#timestamp_like_to_snowflake/1" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">timestamp_like_to_snowflake(snowflake)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/util.ex#L341" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+<p>Helper function for converting a DateTime to a Snowflake.
+While allowing Snowflakes to be returned as-is and <code class="inline">:infinity</code>
+is also passed through as-is since it's used as a special value
+by some cache lookup functions to indicate no upper bound.</p>
+  </section>
+</section>
 <section class="detail" id="unused_atoms/0">
 
   <div class="detail-header">
@@ -674,7 +712,7 @@ types of objects returned by Discord, the amount of new atoms created <em>SHOULD
     </a>
     <h1 class="signature" translate="no">unused_atoms()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/util.ex#L343" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/util.ex#L360" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>

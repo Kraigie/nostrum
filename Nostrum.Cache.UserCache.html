@@ -14,7 +14,7 @@
 
     <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
     <script src="dist/handlebars.templates-IHH6HKET.js"></script>
-    <script src="dist/sidebar_items-463C511D.js"></script>
+    <script src="dist/sidebar_items-E9C8C345.js"></script>
     <script src="docs_config.js"></script>
     <script async src="dist/html-GXQ6W6IF.js"></script>
 
@@ -212,16 +212,6 @@ defined by this module.</p><p>See the documentation for the <a href="Nostrum.Cac
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#c:query_handle/0" translate="no">query_handle()</a>
-
-      </div>
-
-        <div class="summary-synopsis"><p>Return a query handle for usage with <code class="inline">:qlc</code>.</p></div>
-
-    </div>
-
-    <div class="summary-row">
-      <div class="summary-signature">
         <a href="#c:update/1" translate="no">update(payload)</a>
 
       </div>
@@ -232,7 +222,7 @@ defined by this module.</p><p>See the documentation for the <a href="Nostrum.Cac
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#c:wrap_qlc/1" translate="no">wrap_qlc(function)</a>
+        <a href="#c:wrap_query/1" translate="no">wrap_query(function)</a>
 
       </div>
 
@@ -268,21 +258,11 @@ defined by this module.</p><p>See the documentation for the <a href="Nostrum.Cac
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#query_handle/0" translate="no">query_handle()</a>
+        <a href="#wrap_query/2" translate="no">wrap_query(cache \\ Nostrum.Cache.UserCache.ETS, fun)</a>
 
       </div>
 
-        <div class="summary-synopsis"><p>Call <a href="#c:query_handle/0"><code class="inline">query_handle/0</code></a> on the configured cache.</p></div>
-
-    </div>
-
-    <div class="summary-row">
-      <div class="summary-signature">
-        <a href="#wrap_qlc/2" translate="no">wrap_qlc(cache \\ Nostrum.Cache.UserCache.ETS, fun)</a>
-
-      </div>
-
-        <div class="summary-synopsis"><p>Call <a href="#c:wrap_qlc/1"><code class="inline">wrap_qlc/1</code></a> on the given cache, if implemented.</p></div>
+        <div class="summary-synopsis"><p>Call <a href="#c:wrap_query/1"><code class="inline">wrap_query/1</code></a> on the given cache, if implemented.</p></div>
 
     </div>
 
@@ -336,7 +316,7 @@ defined by this module.</p><p>See the documentation for the <a href="Nostrum.Cac
     </a>
     <h1 class="signature" translate="no">child_spec(term)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/user_cache.ex#L94" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/user_cache.ex#L77" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -441,41 +421,6 @@ defined by this module.</p><p>See the documentation for the <a href="Nostrum.Cac
 <p>Retrieve a user from the cache by id.</p>
   </section>
 </section>
-<section class="detail" id="c:query_handle/0">
-
-  <div class="detail-header">
-    <a href="#c:query_handle/0" class="detail-link" title="Link to this callback">
-      <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this callback</span>
-    </a>
-    <h1 class="signature" translate="no">query_handle()</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/user_cache.ex#L75" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
-
-
-      <span class="note">(since 0.7.0)</span>
-
-  </div>
-
-  <section class="docstring">
-
-      <div class="specs">
-
-          <pre translate="no"><span class="attribute">@callback</span> query_handle() :: <a href="https://www.erlang.org/doc/man/qlc.html#type-query_handle">:qlc.query_handle</a>()</pre>
-
-      </div>
-
-<p>Return a query handle for usage with <code class="inline">:qlc</code>.</p><p>This is used by nostrum to provide automatic joins between the member and the
-user cache, and may be used for other functions in the future.</p><p>The Erlang manual on <a href="https://www.erlang.org/doc/man/qlc.html#implementing_a_qlc_table">Implementing a QLC
-Table</a>
-contains examples for implementation.</p><p>The query handle must return items in the form <code class="inline">{user_id, user}</code>, where
-<code class="inline">user_id</code> is a <a href="Nostrum.Struct.User.html#t:id/0"><code class="inline">Nostrum.Struct.User.id/0</code></a> and <code class="inline">user</code> is a
-<a href="Nostrum.Struct.User.html#t:t/0"><code class="inline">Nostrum.Struct.User.t/0</code></a>.</p>
-  </section>
-</section>
 <section class="detail" id="c:update/1">
 
   <div class="detail-header">
@@ -506,16 +451,16 @@ contains examples for implementation.</p><p>The query handle must return items i
 <code class="inline">{old_user, new_user}</code> is the user has been written to the cache.</p>
   </section>
 </section>
-<section class="detail" id="c:wrap_qlc/1">
+<section class="detail" id="c:wrap_query/1">
 
   <div class="detail-header">
-    <a href="#c:wrap_qlc/1" class="detail-link" title="Link to this callback">
+    <a href="#c:wrap_query/1" class="detail-link" title="Link to this callback">
       <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this callback</span>
     </a>
-    <h1 class="signature" translate="no">wrap_qlc(function)</h1>
+    <h1 class="signature" translate="no">wrap_query(function)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/user_cache.ex#L88" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/user_cache.ex#L71" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -531,14 +476,14 @@ contains examples for implementation.</p><p>The query handle must return items i
 
       <div class="specs">
 
-          <pre translate="no"><span class="attribute">@callback</span> wrap_qlc((-&gt; result)) :: result when result: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()</pre>
+          <pre translate="no"><span class="attribute">@callback</span> wrap_query((-&gt; result)) :: result when result: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()</pre>
 
       </div>
 
 <p>A function that should wrap any <code class="inline">:qlc</code> operations.</p><p>If you implement a cache that is backed by a database and want to perform
 cleanup and teardown actions such as opening and closing connections,
 managing transactions and so on, you want to implement this function. Nostrum
-will then effectively call <code class="inline">wrap_qlc(fn -&gt; :qlc.e(...) end)</code>.</p><p>If your cache does not need any wrapping, you can omit this.</p>
+will then effectively call <code class="inline">wrap_query(fn -&gt; ... end)</code>.</p><p>If your cache does not need any wrapping, you can omit this.</p>
   </section>
 </section>
 
@@ -562,7 +507,7 @@ will then effectively call <code class="inline">wrap_qlc(fn -&gt; :qlc.e(...) en
     </a>
     <h1 class="signature" translate="no">get(id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/user_cache.ex#L111" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/user_cache.ex#L94" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -585,12 +530,12 @@ will then effectively call <code class="inline">wrap_qlc(fn -&gt; :qlc.e(...) en
   </a>
   <span class="text">Example</span>
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="k">case</span><span class="w"> </span><span class="nc">Nostrum.Cache.UserCache</span><span class="o">.</span><span class="n">get</span><span class="p" data-group-id="0206830551-1">(</span><span class="mi">1111222233334444</span><span class="p" data-group-id="0206830551-1">)</span><span class="w"> </span><span class="k" data-group-id="0206830551-2">do</span><span class="w">
-  </span><span class="p" data-group-id="0206830551-3">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">user</span><span class="p" data-group-id="0206830551-3">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+<pre><code class="makeup elixir" translate="no"><span class="k">case</span><span class="w"> </span><span class="nc">Nostrum.Cache.UserCache</span><span class="o">.</span><span class="n">get</span><span class="p" data-group-id="9152194666-1">(</span><span class="mi">1111222233334444</span><span class="p" data-group-id="9152194666-1">)</span><span class="w"> </span><span class="k" data-group-id="9152194666-2">do</span><span class="w">
+  </span><span class="p" data-group-id="9152194666-3">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">user</span><span class="p" data-group-id="9152194666-3">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
     </span><span class="s">&quot;We found &quot;</span><span class="w"> </span><span class="o">&lt;&gt;</span><span class="w"> </span><span class="n">user</span><span class="o">.</span><span class="n">username</span><span class="w">
-  </span><span class="p" data-group-id="0206830551-4">{</span><span class="ss">:error</span><span class="p">,</span><span class="w"> </span><span class="c">_reason</span><span class="p" data-group-id="0206830551-4">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+  </span><span class="p" data-group-id="9152194666-4">{</span><span class="ss">:error</span><span class="p">,</span><span class="w"> </span><span class="c">_reason</span><span class="p" data-group-id="9152194666-4">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
     </span><span class="s">&quot;No es bueno&quot;</span><span class="w">
-</span><span class="k" data-group-id="0206830551-2">end</span></code></pre>
+</span><span class="k" data-group-id="9152194666-2">end</span></code></pre>
   </section>
 </section>
 <section class="detail" id="get!/1">
@@ -602,7 +547,7 @@ will then effectively call <code class="inline">wrap_qlc(fn -&gt; :qlc.e(...) en
     </a>
     <h1 class="signature" translate="no">get!(id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/user_cache.ex#L117" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/user_cache.ex#L100" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -621,16 +566,18 @@ will then effectively call <code class="inline">wrap_qlc(fn -&gt; :qlc.e(...) en
 <p>Same as <a href="#get/1"><code class="inline">get/1</code></a>, but raises <a href="Nostrum.Error.CacheError.html"><code class="inline">Nostrum.Error.CacheError</code></a> in case of a failure.</p>
   </section>
 </section>
-<section class="detail" id="query_handle/0">
+<section class="detail" id="wrap_query/2">
+
+    <span id="wrap_query/1"></span>
 
   <div class="detail-header">
-    <a href="#query_handle/0" class="detail-link" title="Link to this function">
+    <a href="#wrap_query/2" class="detail-link" title="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">query_handle()</h1>
+    <h1 class="signature" translate="no">wrap_query(cache \\ Nostrum.Cache.UserCache.ETS, fun)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/user_cache.ex#L122" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/user_cache.ex#L110" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -644,43 +591,11 @@ will then effectively call <code class="inline">wrap_qlc(fn -&gt; :qlc.e(...) en
 
       <div class="specs">
 
-          <pre translate="no"><span class="attribute">@spec</span> query_handle() :: <a href="https://www.erlang.org/doc/man/qlc.html#type-query_handle">:qlc.query_handle</a>()</pre>
+          <pre translate="no"><span class="attribute">@spec</span> wrap_query(<a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">module</a>(), (-&gt; result)) :: result when result: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()</pre>
 
       </div>
 
-<p>Call <a href="#c:query_handle/0"><code class="inline">query_handle/0</code></a> on the configured cache.</p>
-  </section>
-</section>
-<section class="detail" id="wrap_qlc/2">
-
-    <span id="wrap_qlc/1"></span>
-
-  <div class="detail-header">
-    <a href="#wrap_qlc/2" class="detail-link" title="Link to this function">
-      <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
-    </a>
-    <h1 class="signature" translate="no">wrap_qlc(cache \\ Nostrum.Cache.UserCache.ETS, fun)</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/user_cache.ex#L132" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
-
-
-      <span class="note">(since 0.8.0)</span>
-
-  </div>
-
-  <section class="docstring">
-
-      <div class="specs">
-
-          <pre translate="no"><span class="attribute">@spec</span> wrap_qlc(<a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">module</a>(), (-&gt; result)) :: result when result: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()</pre>
-
-      </div>
-
-<p>Call <a href="#c:wrap_qlc/1"><code class="inline">wrap_qlc/1</code></a> on the given cache, if implemented.</p><p>If no cache is given, calls out to the default cache.</p>
+<p>Call <a href="#c:wrap_query/1"><code class="inline">wrap_query/1</code></a> on the given cache, if implemented.</p><p>If no cache is given, calls out to the default cache.</p>
   </section>
 </section>
 

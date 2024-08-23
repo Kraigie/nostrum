@@ -14,7 +14,7 @@
 
     <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
     <script src="dist/handlebars.templates-IHH6HKET.js"></script>
-    <script src="dist/sidebar_items-463C511D.js"></script>
+    <script src="dist/sidebar_items-E9C8C345.js"></script>
     <script src="docs_config.js"></script>
     <script async src="dist/html-GXQ6W6IF.js"></script>
 
@@ -154,12 +154,12 @@ eviction of the oldest messages will be more efficient, however it means
 that the table cannot be changed to only store its contents on disk later.
 default: <code class="inline">:ordered_set</code></li></ul><p>To change this configuration, you can add the following to your
 <code class="inline">config.exs</code>:</p><pre><code class="makeup elixir" translate="no"><span class="n">config</span><span class="w"> </span><span class="ss">:nostrum</span><span class="p">,</span><span class="w">
-  </span><span class="ss">caches</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="5589283225-1">%{</span><span class="w">
-    </span><span class="ss">messages</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="5589283225-2">{</span><span class="nc">Nostrum.Cache.MessageCache.Mnesia</span><span class="p">,</span><span class="w">
+  </span><span class="ss">caches</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="5770483619-1">%{</span><span class="w">
+    </span><span class="ss">messages</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="5770483619-2">{</span><span class="nc">Nostrum.Cache.MessageCache.Mnesia</span><span class="p">,</span><span class="w">
                </span><span class="ss">size_limit</span><span class="p">:</span><span class="w"> </span><span class="mi">1000</span><span class="p">,</span><span class="w"> </span><span class="ss">eviction_count</span><span class="p">:</span><span class="w"> </span><span class="mi">50</span><span class="p">,</span><span class="w">
                </span><span class="ss">table_name</span><span class="p">:</span><span class="w"> </span><span class="ss">:my_custom_messages_table_name</span><span class="p">,</span><span class="w">
-               </span><span class="ss">compressed</span><span class="p">:</span><span class="w"> </span><span class="no">true</span><span class="p">,</span><span class="w"> </span><span class="ss">type</span><span class="p">:</span><span class="w"> </span><span class="ss">:set</span><span class="p" data-group-id="5589283225-2">}</span><span class="w">
-  </span><span class="p" data-group-id="5589283225-1">}</span></code></pre><p>You can also change the table name used by the cache by setting the
+               </span><span class="ss">compressed</span><span class="p">:</span><span class="w"> </span><span class="no">true</span><span class="p">,</span><span class="w"> </span><span class="ss">type</span><span class="p">:</span><span class="w"> </span><span class="ss">:set</span><span class="p" data-group-id="5770483619-2">}</span><span class="w">
+  </span><span class="p" data-group-id="5770483619-1">}</span></code></pre><p>You can also change the table name used by the cache by setting the
 <code class="inline">table_name</code> field in the configuration for the <code class="inline">messages</code> cache.</p>
     </section>
 
@@ -250,6 +250,39 @@ Messages not found in the cache will not be included in the returned list.</p></
 
     <div class="summary-row">
       <div class="summary-signature">
+        <a href="#get_by_author/3" translate="no">get_by_author(author_id, after_timestamp \\ 0, before_timestamp \\ :infinity)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Retrieve a list of messages from the cache with a given author ID,
+optionally after a given date, and before a given date.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#get_by_channel/3" translate="no">get_by_channel(channel_id, after_timestamp \\ 0, before_timestamp \\ :infinity)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Retrieve a list of messages from the cache with a given channel ID,
+optionally after a given date, and before a given date.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#get_by_channel_and_author/4" translate="no">get_by_channel_and_author(channel_id, author_id, after_timestamp \\ 0, before_timestamp \\ :infinity)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Retrieve a list of messages from the cache with a given channel ID and author ID,
+optionally after a given date, and before a given date.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
         <a href="#init/1" translate="no">init(init_arg)</a>
 
       </div>
@@ -308,16 +341,6 @@ Messages not found in the cache will not be included in the returned list.</p></
 
     </div>
 
-    <div class="summary-row">
-      <div class="summary-signature">
-        <a href="#wrap_qlc/1" translate="no">wrap_qlc(fun)</a>
-
-      </div>
-
-        <div class="summary-synopsis"><p>Wrap QLC operations in a transaction</p></div>
-
-    </div>
-
 </div>
 
   </section>
@@ -340,7 +363,7 @@ Messages not found in the cache will not be included in the returned list.</p></
     </a>
     <h1 class="signature" translate="no">bulk_delete(channel_id, message_ids)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/message_cache/mnesia.ex#L191" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/message_cache/mnesia.ex#L192" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -373,7 +396,7 @@ Messages not found in the cache will not be included in the returned list.</p>
     </a>
     <h1 class="signature" translate="no">channel_delete(channel_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/message_cache/mnesia.ex#L207" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/message_cache/mnesia.ex#L208" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -403,7 +426,7 @@ Messages not found in the cache will not be included in the returned list.</p>
     </a>
     <h1 class="signature" translate="no">child_spec(init_arg)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/message_cache/mnesia.ex#L67" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/message_cache/mnesia.ex#L68" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -427,7 +450,7 @@ Messages not found in the cache will not be included in the returned list.</p>
     </a>
     <h1 class="signature" translate="no">clear()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/message_cache/mnesia.ex#L97" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/message_cache/mnesia.ex#L98" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -457,7 +480,7 @@ Messages not found in the cache will not be included in the returned list.</p>
     </a>
     <h1 class="signature" translate="no">create(payload)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/message_cache/mnesia.ex#L122" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/message_cache/mnesia.ex#L123" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -487,7 +510,7 @@ Messages not found in the cache will not be included in the returned list.</p>
     </a>
     <h1 class="signature" translate="no">delete(channel_id, message_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/message_cache/mnesia.ex#L169" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/message_cache/mnesia.ex#L170" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -518,7 +541,7 @@ Messages not found in the cache will not be included in the returned list.</p>
     </a>
     <h1 class="signature" translate="no">get(message_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/message_cache/mnesia.ex#L107" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/message_cache/mnesia.ex#L108" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -540,6 +563,125 @@ Messages not found in the cache will not be included in the returned list.</p>
 <p>Retrieve a single message from the cache by id.</p>
   </section>
 </section>
+<section class="detail" id="get_by_author/3">
+
+    <span id="get_by_author/1"></span>
+
+    <span id="get_by_author/2"></span>
+
+  <div class="detail-header">
+    <a href="#get_by_author/3" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">get_by_author(author_id, after_timestamp \\ 0, before_timestamp \\ :infinity)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/message_cache/mnesia.ex#L306" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+      <span class="note">(since 0.10.0)</span>
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> get_by_author(
+  <a href="Nostrum.Struct.User.html#t:id/0">Nostrum.Struct.User.id</a>(),
+  <a href="Nostrum.Cache.MessageCache.html#t:timestamp_like/0">Nostrum.Cache.MessageCache.timestamp_like</a>(),
+  <a href="Nostrum.Cache.MessageCache.html#t:timestamp_like/0">Nostrum.Cache.MessageCache.timestamp_like</a>() | :infinity
+) :: [<a href="Nostrum.Struct.Message.html#t:t/0">Nostrum.Struct.Message.t</a>()]</pre>
+
+      </div>
+
+<p>Retrieve a list of messages from the cache with a given author ID,
+optionally after a given date, and before a given date.</p><p>Integers are treated as snowflakes, and the atom <code class="inline">:infinity</code> when given
+as a before date will be treated as the maximum possible date.</p>
+  </section>
+</section>
+<section class="detail" id="get_by_channel/3">
+
+    <span id="get_by_channel/1"></span>
+
+    <span id="get_by_channel/2"></span>
+
+  <div class="detail-header">
+    <a href="#get_by_channel/3" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">get_by_channel(channel_id, after_timestamp \\ 0, before_timestamp \\ :infinity)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/message_cache/mnesia.ex#L236" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+      <span class="note">(since 0.10.0)</span>
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> get_by_channel(
+  <a href="Nostrum.Struct.Channel.html#t:id/0">Nostrum.Struct.Channel.id</a>(),
+  <a href="Nostrum.Cache.MessageCache.html#t:timestamp_like/0">Nostrum.Cache.MessageCache.timestamp_like</a>(),
+  <a href="Nostrum.Cache.MessageCache.html#t:timestamp_like/0">Nostrum.Cache.MessageCache.timestamp_like</a>() | :infinity
+) :: [<a href="Nostrum.Struct.Message.html#t:t/0">Nostrum.Struct.Message.t</a>()]</pre>
+
+      </div>
+
+<p>Retrieve a list of messages from the cache with a given channel ID,
+optionally after a given date, and before a given date.</p>
+  </section>
+</section>
+<section class="detail" id="get_by_channel_and_author/4">
+
+    <span id="get_by_channel_and_author/2"></span>
+
+    <span id="get_by_channel_and_author/3"></span>
+
+  <div class="detail-header">
+    <a href="#get_by_channel_and_author/4" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">get_by_channel_and_author(channel_id, author_id, after_timestamp \\ 0, before_timestamp \\ :infinity)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/message_cache/mnesia.ex#L269" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+      <span class="note">(since 0.10.0)</span>
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> get_by_channel_and_author(
+  <a href="Nostrum.Struct.Channel.html#t:id/0">Nostrum.Struct.Channel.id</a>(),
+  <a href="Nostrum.Struct.User.html#t:id/0">Nostrum.Struct.User.id</a>(),
+  <a href="Nostrum.Cache.MessageCache.html#t:timestamp_like/0">Nostrum.Cache.MessageCache.timestamp_like</a>(),
+  <a href="Nostrum.Cache.MessageCache.html#t:timestamp_like/0">Nostrum.Cache.MessageCache.timestamp_like</a>() | :infinity
+) :: [<a href="Nostrum.Struct.Message.html#t:t/0">Nostrum.Struct.Message.t</a>()]</pre>
+
+      </div>
+
+<p>Retrieve a list of messages from the cache with a given channel ID and author ID,
+optionally after a given date, and before a given date.</p>
+  </section>
+</section>
 <section class="detail" id="init/1">
 
   <div class="detail-header">
@@ -549,7 +691,7 @@ Messages not found in the cache will not be included in the returned list.</p>
     </a>
     <h1 class="signature" translate="no">init(init_arg)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/message_cache/mnesia.ex#L76" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/message_cache/mnesia.ex#L77" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -573,7 +715,7 @@ Messages not found in the cache will not be included in the returned list.</p>
     </a>
     <h1 class="signature" translate="no">query_handle()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/message_cache/mnesia.ex#L226" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/message_cache/mnesia.ex#L328" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -603,7 +745,7 @@ Messages not found in the cache will not be included in the returned list.</p>
     </a>
     <h1 class="signature" translate="no">start_link(init_arg)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/message_cache/mnesia.ex#L70" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/message_cache/mnesia.ex#L71" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -627,7 +769,7 @@ Messages not found in the cache will not be included in the returned list.</p>
     </a>
     <h1 class="signature" translate="no">table()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/message_cache/mnesia.ex#L89" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/message_cache/mnesia.ex#L90" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -657,7 +799,7 @@ Messages not found in the cache will not be included in the returned list.</p>
     </a>
     <h1 class="signature" translate="no">teardown()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/message_cache/mnesia.ex#L93" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/message_cache/mnesia.ex#L94" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -687,7 +829,7 @@ Messages not found in the cache will not be included in the returned list.</p>
     </a>
     <h1 class="signature" translate="no">update(payload)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/message_cache/mnesia.ex#L140" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/message_cache/mnesia.ex#L141" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -708,30 +850,6 @@ Messages not found in the cache will not be included in the returned list.</p>
       </div>
 
 <p>Updates a message in the cache.</p>
-  </section>
-</section>
-<section class="detail" id="wrap_qlc/1">
-
-  <div class="detail-header">
-    <a href="#wrap_qlc/1" class="detail-link" title="Link to this function">
-      <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
-    </a>
-    <h1 class="signature" translate="no">wrap_qlc(fun)</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/message_cache/mnesia.ex#L232" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
-
-
-      <span class="note">(since 0.10.0)</span>
-
-  </div>
-
-  <section class="docstring">
-
-<p>Wrap QLC operations in a transaction</p>
   </section>
 </section>
 

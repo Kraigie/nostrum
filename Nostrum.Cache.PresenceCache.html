@@ -14,7 +14,7 @@
 
     <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
     <script src="dist/handlebars.templates-IHH6HKET.js"></script>
-    <script src="dist/sidebar_items-463C511D.js"></script>
+    <script src="dist/sidebar_items-E9C8C345.js"></script>
     <script src="docs_config.js"></script>
     <script async src="dist/html-GXQ6W6IF.js"></script>
 
@@ -154,7 +154,7 @@ cache.</p><h2 id="module-writing-your-own-presence-cache" class="section-heading
 These <strong>do not create any objects in the Discord API</strong>, they are purely
 created to update the cached data from data that Discord sends us. If you
 want to create objects on Discord, use the functions exposed by <a href="Nostrum.Api.html"><code class="inline">Nostrum.Api</code></a>
-instead.</p></li><li><p>the QLC query handle for read operations, <a href="#c:query_handle/0"><code class="inline">query_handle/0</code></a>, and</p></li><li><p>the <a href="#c:child_spec/1"><code class="inline">child_spec/1</code></a> callback for starting the cache under a supervisor.</p></li></ul><p>You need to implement both of them for nostrum to work with your custom
+instead.</p></li><li><p>the QLC query handle for read operations, <code class="inline">c:query_handle/0</code>, and</p></li><li><p>the <a href="#c:child_spec/1"><code class="inline">child_spec/1</code></a> callback for starting the cache under a supervisor.</p></li></ul><p>You need to implement both of them for nostrum to work with your custom
 cache.</p>
     </section>
 
@@ -229,16 +229,6 @@ See <a href="https://discord.com/developers/docs/topics/gateway#presence-update"
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#c:query_handle/0" translate="no">query_handle()</a>
-
-      </div>
-
-        <div class="summary-synopsis"><p>Return a QLC query handle for cache read operations.</p></div>
-
-    </div>
-
-    <div class="summary-row">
-      <div class="summary-signature">
         <a href="#c:update/1" translate="no">update(map)</a>
 
       </div>
@@ -249,7 +239,7 @@ See <a href="https://discord.com/developers/docs/topics/gateway#presence-update"
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#c:wrap_qlc/1" translate="no">wrap_qlc(function)</a>
+        <a href="#c:wrap_query/1" translate="no">wrap_query(function)</a>
 
       </div>
 
@@ -285,21 +275,11 @@ See <a href="https://discord.com/developers/docs/topics/gateway#presence-update"
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#query_handle/0" translate="no">query_handle()</a>
+        <a href="#wrap_query/2" translate="no">wrap_query(cache \\ Nostrum.Cache.PresenceCache.ETS, fun)</a>
 
       </div>
 
-        <div class="summary-synopsis"><p>Return the QLC handle of the configured cache.</p></div>
-
-    </div>
-
-    <div class="summary-row">
-      <div class="summary-signature">
-        <a href="#wrap_qlc/2" translate="no">wrap_qlc(cache \\ Nostrum.Cache.PresenceCache.ETS, fun)</a>
-
-      </div>
-
-        <div class="summary-synopsis"><p>Call <a href="#c:wrap_qlc/1"><code class="inline">wrap_qlc/1</code></a> on the given cache, if implemented.</p></div>
+        <div class="summary-synopsis"><p>Call <a href="#c:wrap_query/1"><code class="inline">wrap_query/1</code></a> on the given cache, if implemented.</p></div>
 
     </div>
 
@@ -480,42 +460,6 @@ See <a href="https://discord.com/developers/docs/topics/gateway#presence-update"
 
   </section>
 </section>
-<section class="detail" id="c:query_handle/0">
-
-  <div class="detail-header">
-    <a href="#c:query_handle/0" class="detail-link" title="Link to this callback">
-      <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this callback</span>
-    </a>
-    <h1 class="signature" translate="no">query_handle()</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache.ex#L116" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
-
-
-      <span class="note">(since 0.8.0)</span>
-
-  </div>
-
-  <section class="docstring">
-
-      <div class="specs">
-
-          <pre translate="no"><span class="attribute">@callback</span> query_handle() :: <a href="https://www.erlang.org/doc/man/qlc.html#type-query_handle">:qlc.query_handle</a>()</pre>
-
-      </div>
-
-<p>Return a QLC query handle for cache read operations.</p><p>This is used by nostrum to provide any read operations on the cache. Write
-operations still need to be implemented separately.</p><p>The Erlang manual on <a href="https://www.erlang.org/doc/man/qlc.html#implementing_a_qlc_table">Implementing a QLC
-Table</a>
-contains examples for implementation. To prevent full table scans, accept
-match specifications in your <code class="inline">TraverseFun</code> and implement a <code class="inline">LookupFun</code> as
-documented.</p><p>The query handle must return items in the form <code class="inline">{{guild_id, user_id}, presence}</code>, where:</p><ul><li><code class="inline">guild_id</code> is a <a href="Nostrum.Struct.Guild.html#t:id/0"><code class="inline">Nostrum.Struct.Guild.id/0</code></a>, and</li><li><code class="inline">user_id</code> is a <a href="Nostrum.Struct.User.html#t:id/0"><code class="inline">Nostrum.Struct.User.id/0</code></a>, and</li><li><code class="inline">presence</code> is a <a href="#t:presence/0"><code class="inline">presence/0</code></a>.</li></ul><p>If your cache needs some form of setup or teardown for QLC queries (such as
-opening connections), see <a href="#c:wrap_qlc/1"><code class="inline">wrap_qlc/1</code></a>.</p>
-  </section>
-</section>
 <section class="detail" id="c:update/1">
 
   <div class="detail-header">
@@ -557,16 +501,16 @@ opening connections), see <a href="#c:wrap_qlc/1"><code class="inline">wrap_qlc/
 fields of the presence did not change, return <code class="inline">:noop</code>.</p>
   </section>
 </section>
-<section class="detail" id="c:wrap_qlc/1">
+<section class="detail" id="c:wrap_query/1">
 
   <div class="detail-header">
-    <a href="#c:wrap_qlc/1" class="detail-link" title="Link to this callback">
+    <a href="#c:wrap_query/1" class="detail-link" title="Link to this callback">
       <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this callback</span>
     </a>
-    <h1 class="signature" translate="no">wrap_qlc(function)</h1>
+    <h1 class="signature" translate="no">wrap_query(function)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache.ex#L129" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache.ex#L106" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -582,14 +526,14 @@ fields of the presence did not change, return <code class="inline">:noop</code>.
 
       <div class="specs">
 
-          <pre translate="no"><span class="attribute">@callback</span> wrap_qlc((-&gt; result)) :: result when result: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()</pre>
+          <pre translate="no"><span class="attribute">@callback</span> wrap_query((-&gt; result)) :: result when result: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()</pre>
 
       </div>
 
 <p>A function that should wrap any <code class="inline">:qlc</code> operations.</p><p>If you implement a cache that is backed by a database and want to perform
 cleanup and teardown actions such as opening and closing connections,
 managing transactions and so on, you want to implement this function. nostrum
-will then effectively call <code class="inline">wrap_qlc(fn -&gt; :qlc.e(...) end)</code>.</p><p>If your cache does not need any wrapping, you can omit this.</p>
+will then effectively call <code class="inline">wrap_query(fn -&gt; ... end)</code>.</p><p>If your cache does not need any wrapping, you can omit this.</p>
   </section>
 </section>
 
@@ -638,12 +582,12 @@ will then effectively call <code class="inline">wrap_qlc(fn -&gt; :qlc.e(...) en
   </a>
   <span class="text">Example</span>
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="k">case</span><span class="w"> </span><span class="nc">Nostrum.Cache.PresenceCache</span><span class="o">.</span><span class="n">get</span><span class="p" data-group-id="9599069854-1">(</span><span class="mi">111133335555</span><span class="p">,</span><span class="w"> </span><span class="mi">222244446666</span><span class="p" data-group-id="9599069854-1">)</span><span class="w"> </span><span class="k" data-group-id="9599069854-2">do</span><span class="w">
-  </span><span class="p" data-group-id="9599069854-3">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">presence</span><span class="p" data-group-id="9599069854-3">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
-    </span><span class="s">&quot;They&#39;re </span><span class="si" data-group-id="9599069854-4">#{</span><span class="n">presence</span><span class="o">.</span><span class="n">status</span><span class="si" data-group-id="9599069854-4">}</span><span class="s">&quot;</span><span class="w">
-  </span><span class="p" data-group-id="9599069854-5">{</span><span class="ss">:error</span><span class="p">,</span><span class="w"> </span><span class="c">_reason</span><span class="p" data-group-id="9599069854-5">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+<pre><code class="makeup elixir" translate="no"><span class="k">case</span><span class="w"> </span><span class="nc">Nostrum.Cache.PresenceCache</span><span class="o">.</span><span class="n">get</span><span class="p" data-group-id="5845340559-1">(</span><span class="mi">111133335555</span><span class="p">,</span><span class="w"> </span><span class="mi">222244446666</span><span class="p" data-group-id="5845340559-1">)</span><span class="w"> </span><span class="k" data-group-id="5845340559-2">do</span><span class="w">
+  </span><span class="p" data-group-id="5845340559-3">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">presence</span><span class="p" data-group-id="5845340559-3">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+    </span><span class="s">&quot;They&#39;re </span><span class="si" data-group-id="5845340559-4">#{</span><span class="n">presence</span><span class="o">.</span><span class="n">status</span><span class="si" data-group-id="5845340559-4">}</span><span class="s">&quot;</span><span class="w">
+  </span><span class="p" data-group-id="5845340559-5">{</span><span class="ss">:error</span><span class="p">,</span><span class="w"> </span><span class="c">_reason</span><span class="p" data-group-id="5845340559-5">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
     </span><span class="s">&quot;They&#39;re dead Jim&quot;</span><span class="w">
-</span><span class="k" data-group-id="9599069854-2">end</span></code></pre>
+</span><span class="k" data-group-id="5845340559-2">end</span></code></pre>
   </section>
 </section>
 <section class="detail" id="get!/3">
@@ -657,7 +601,7 @@ will then effectively call <code class="inline">wrap_qlc(fn -&gt; :qlc.e(...) en
     </a>
     <h1 class="signature" translate="no">get!(guild_id, user_id, cache \\ Nostrum.Cache.PresenceCache.ETS)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache.ex#L146" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache.ex#L123" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -679,42 +623,18 @@ will then effectively call <code class="inline">wrap_qlc(fn -&gt; :qlc.e(...) en
 <p>Same as <code class="inline">get/1</code>, but raise <a href="Nostrum.Error.CacheError.html"><code class="inline">Nostrum.Error.CacheError</code></a> in case of a failure.</p>
   </section>
 </section>
-<section class="detail" id="query_handle/0">
+<section class="detail" id="wrap_query/2">
+
+    <span id="wrap_query/1"></span>
 
   <div class="detail-header">
-    <a href="#query_handle/0" class="detail-link" title="Link to this function">
+    <a href="#wrap_query/2" class="detail-link" title="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">query_handle()</h1>
+    <h1 class="signature" translate="no">wrap_query(cache \\ Nostrum.Cache.PresenceCache.ETS, fun)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache.ex#L173" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
-
-
-      <span class="note">(since 0.8.0)</span>
-
-  </div>
-
-  <section class="docstring">
-
-<p>Return the QLC handle of the configured cache.</p>
-  </section>
-</section>
-<section class="detail" id="wrap_qlc/2">
-
-    <span id="wrap_qlc/1"></span>
-
-  <div class="detail-header">
-    <a href="#wrap_qlc/2" class="detail-link" title="Link to this function">
-      <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
-    </a>
-    <h1 class="signature" translate="no">wrap_qlc(cache \\ Nostrum.Cache.PresenceCache.ETS, fun)</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache.ex#L161" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/presence_cache.ex#L138" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -728,11 +648,11 @@ will then effectively call <code class="inline">wrap_qlc(fn -&gt; :qlc.e(...) en
 
       <div class="specs">
 
-          <pre translate="no"><span class="attribute">@spec</span> wrap_qlc(<a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">module</a>(), (-&gt; result)) :: result when result: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()</pre>
+          <pre translate="no"><span class="attribute">@spec</span> wrap_query(<a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">module</a>(), (-&gt; result)) :: result when result: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">term</a>()</pre>
 
       </div>
 
-<p>Call <a href="#c:wrap_qlc/1"><code class="inline">wrap_qlc/1</code></a> on the given cache, if implemented.</p><p>If no cache is given, calls out to the default cache.</p>
+<p>Call <a href="#c:wrap_query/1"><code class="inline">wrap_query/1</code></a> on the given cache, if implemented.</p><p>If no cache is given, calls out to the default cache.</p>
   </section>
 </section>
 
