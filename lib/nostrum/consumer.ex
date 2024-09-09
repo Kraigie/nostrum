@@ -15,8 +15,13 @@ defmodule Nostrum.Consumer do
 
   ```elixir
     def handle_info({:event, event}, state) do
-      Task.start_link(fn ->
-        __MODULE__.handle_event(event)
+      Task.start(fn ->
+        try do
+          __MODULE__.handle_event(event)
+        rescue
+          e ->
+            Logger.error("Error in event handler: \#{Exception.format_error(e, __STACKTRACE__)}")
+        end
       end)
 
       {:noreply, state}
@@ -408,6 +413,8 @@ defmodule Nostrum.Consumer do
     quote location: :keep do
       use GenServer
 
+      require Logger
+
       @behaviour Nostrum.Consumer
 
       @before_compile Nostrum.Consumer
@@ -436,8 +443,15 @@ defmodule Nostrum.Consumer do
       @impl GenServer
       def handle_info({:event, event}, state) do
         {:ok, _pid} =
-          Task.start_link(fn ->
-            __MODULE__.handle_event(event)
+          Task.start(fn ->
+            try do
+              __MODULE__.handle_event(event)
+            rescue
+              e ->
+                Logger.error(
+                  "Error in event handler: #{Exception.format_error(e, __STACKTRACE__)}"
+                )
+            end
           end)
 
         {:noreply, state}
