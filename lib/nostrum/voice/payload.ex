@@ -15,9 +15,11 @@ defmodule Nostrum.Voice.Payload do
   # Other functions which return a map with keys `:t` and `:d` are for
   # generating voice-related events to be consumed by a Consumer process.
 
-  def heartbeat_payload do
-    DateTime.utc_now()
-    |> DateTime.to_unix()
+  def heartbeat_payload(%VoiceWSState{} = state) do
+    %{
+      t: DateTime.utc_now() |> DateTime.to_unix(:millisecond),
+      seq_ack: state.seq
+    }
     |> build_payload("HEARTBEAT")
   end
 
@@ -35,7 +37,8 @@ defmodule Nostrum.Voice.Payload do
     %{
       server_id: state.guild_id,
       token: state.token,
-      session_id: state.session
+      session_id: state.session,
+      seq_ack: state.seq
     }
     |> build_payload("RESUME")
   end

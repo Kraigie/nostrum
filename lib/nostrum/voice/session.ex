@@ -17,7 +17,7 @@ defmodule Nostrum.Voice.Session do
 
   use GenServer
 
-  @gateway_qs "/?v=4"
+  @gateway_qs "/?v=8"
 
   @timeout_connect 10_000
 
@@ -58,6 +58,7 @@ defmodule Nostrum.Voice.Session do
       session: voice.session,
       token: voice.token,
       gateway: voice.gateway,
+      seq: -1,
       stream: stream,
       last_heartbeat_ack: DateTime.utc_now(),
       heartbeat_ack: true
@@ -85,13 +86,10 @@ defmodule Nostrum.Voice.Session do
   end
 
   def handle_info({:gun_ws, _worker, stream, {:text, frame}}, state) do
-    # Jason.decode calls iodata_to_binary internally
-    payload = Jason.decode!(frame)
-
     from_handle =
-      payload["op"]
-      |> Constants.atom_from_voice_opcode()
-      |> Event.handle(payload, state)
+      frame
+      |> Jason.decode!()
+      |> Event.handle(state)
 
     case from_handle do
       {new_state, reply} ->
@@ -175,7 +173,7 @@ defmodule Nostrum.Voice.Session do
         :heartbeat
       ])
 
-    :ok = :gun.ws_send(state.conn, state.stream, {:text, Payload.heartbeat_payload()})
+    :ok = :gun.ws_send(state.conn, state.stream, {:text, Payload.heartbeat_payload(state)})
 
     {:noreply,
      %{state | heartbeat_ref: ref, heartbeat_ack: false, last_heartbeat_send: DateTime.utc_now()}}

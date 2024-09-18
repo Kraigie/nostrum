@@ -15,6 +15,7 @@ defmodule Nostrum.Struct.VoiceWSState do
     :stream,
     :gateway,
     :identified,
+    :seq,
     :last_heartbeat_send,
     :last_heartbeat_ack,
     :heartbeat_ack,
@@ -49,10 +50,10 @@ defmodule Nostrum.Struct.VoiceWSState do
   @type secret_key :: binary() | nil
 
   @typedoc "PID of the `:gun` worker connected to the websocket"
-  @type conn :: pid
+  @type conn :: pid()
 
   @typedoc "PID of the connection process"
-  @type conn_pid :: pid
+  @type conn_pid :: pid()
 
   @typedoc "Stream reference for `:gun`"
   @type stream :: :gun.stream_ref()
@@ -62,6 +63,9 @@ defmodule Nostrum.Struct.VoiceWSState do
 
   @typedoc "Whether the session has been identified"
   @type identified :: boolean()
+
+  @typedoc "Sequence number for buffering server-sent events"
+  @type seq :: integer()
 
   @typedoc """
   The time the last heartbeat was sent, if a heartbeat hasn't been sent it
@@ -76,10 +80,10 @@ defmodule Nostrum.Struct.VoiceWSState do
   @type last_heartbeat_ack :: DateTime.t() | nil
 
   @typedoc "Whether or not the last heartbeat sent was ACK'd"
-  @type heartbeat_ack :: boolean
+  @type heartbeat_ack :: boolean()
 
   @typedoc "Interval at which heartbeats are sent"
-  @type heartbeat_interval :: integer | nil
+  @type heartbeat_interval :: integer() | nil
 
   @typedoc "Time ref for the heartbeat"
   @type heartbeat_ref :: :timer.tref() | nil
@@ -96,6 +100,7 @@ defmodule Nostrum.Struct.VoiceWSState do
           stream: stream,
           gateway: gateway,
           identified: identified,
+          seq: seq,
           last_heartbeat_send: last_heartbeat_send,
           last_heartbeat_ack: last_heartbeat_ack,
           heartbeat_ack: heartbeat_ack,
