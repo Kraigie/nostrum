@@ -43,13 +43,13 @@ defmodule Nostrum.Voice.Payload do
     |> build_payload("RESUME")
   end
 
-  def select_protocol_payload(ip, port) do
+  def select_protocol_payload(ip, port, mode) do
     %{
       protocol: "udp",
       data: %{
         address: ip,
         port: port,
-        mode: Crypto.encryption_mode()
+        mode: "#{mode}"
       }
     }
     |> build_payload("SELECT_PROTOCOL")

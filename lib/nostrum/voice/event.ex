@@ -6,6 +6,7 @@ defmodule Nostrum.Voice.Event do
   alias Nostrum.Struct.VoiceWSState
   alias Nostrum.Voice
   alias Nostrum.Voice.Audio
+  alias Nostrum.Voice.Crypto
   alias Nostrum.Voice.Payload
   alias Nostrum.Voice.Session
 
@@ -27,17 +28,20 @@ defmodule Nostrum.Voice.Event do
   defp handle_event(:ready, payload, state) do
     Logger.debug("VOICE READY")
 
+    mode = Crypto.encryption_mode(payload["d"]["modes"])
+
     voice =
       Voice.update_voice(state.guild_id,
         ssrc: payload["d"]["ssrc"],
         ip: payload["d"]["ip"],
         port: payload["d"]["port"],
+        encryption_mode: mode,
         udp_socket: Audio.open_udp()
       )
 
     {my_ip, my_port} = Audio.discover_ip(voice.udp_socket, voice.ip, voice.port, voice.ssrc)
 
-    {state, Payload.select_protocol_payload(my_ip, my_port)}
+    {%{state | encryption_mode: mode}, Payload.select_protocol_payload(my_ip, my_port, mode)}
   end
 
   defp handle_event(:session_description, payload, state) do

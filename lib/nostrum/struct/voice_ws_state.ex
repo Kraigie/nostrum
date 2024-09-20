@@ -16,6 +16,7 @@ defmodule Nostrum.Struct.VoiceWSState do
     :gateway,
     :identified,
     :seq,
+    :encryption_mode,
     :last_heartbeat_send,
     :last_heartbeat_ack,
     :heartbeat_ack,
@@ -67,6 +68,9 @@ defmodule Nostrum.Struct.VoiceWSState do
   @typedoc "Sequence number for buffering server-sent events"
   @type seq :: integer()
 
+  @typedoc "Encryption mode selected for voice channel"
+  @type encryption_mode :: Nostrum.Voice.Crypto.cipher()
+
   @typedoc """
   The time the last heartbeat was sent, if a heartbeat hasn't been sent it
   will be the time the websocket process was started
@@ -101,6 +105,7 @@ defmodule Nostrum.Struct.VoiceWSState do
           gateway: gateway,
           identified: identified,
           seq: seq,
+          encryption_mode: encryption_mode,
           last_heartbeat_send: last_heartbeat_send,
           last_heartbeat_ack: last_heartbeat_ack,
           heartbeat_ack: heartbeat_ack,
