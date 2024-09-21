@@ -2,7 +2,6 @@ defmodule Nostrum.Voice.Crypto do
   @moduledoc false
 
   alias Nostrum.Struct.VoiceState
-  alias Nostrum.Struct.VoiceWSState
   alias Nostrum.Voice.Audio
   alias Nostrum.Voice.Crypto.Aes
   alias Nostrum.Voice.Crypto.Chacha
@@ -23,27 +22,34 @@ defmodule Nostrum.Voice.Crypto do
 
   @type cipher :: cipher_non_rtpsize() | cipher_alias() | cipher_rtpsize()
 
-  @mode Application.compile_env(:nostrum, :voice_encryption_mode, :aes256_gcm)
+  @fallback_mode :aead_xchacha20_poly1305_rtpsize
 
-  @mode_string Map.get(
-                 %{
-                   xchacha20_poly1305: "aead_xchacha20_poly1305_rtpsize",
-                   aes256_gcm: "aead_aes256_gcm_rtpsize"
-                 },
-                 @mode,
-                 "#{@mode}"
-               )
+  @mode_aliases %{
+    xchacha20_poly1305: :aead_xchacha20_poly1305_rtpsize,
+    aes256_gcm: :aead_aes256_gcm_rtpsize
+  }
 
-  def encryption_mode, do: @mode_string
+  @spec encryption_mode(list(String.t())) :: cipher()
+  def encryption_mode(available_modes) do
+    mode = Application.get_env(:nostrum, :voice_encryption_mode, :aes256_gcm)
 
-  def encrypt(voice, data) do
-    header = Audio.rtp_header(voice)
-    unquote(:"encrypt_#{@mode}")(voice, data, header)
+    mode = Map.get(@mode_aliases, mode, mode)
+
+    if "#{mode}" in available_modes do
+      mode
+    else
+      @fallback_mode
+    end
   end
 
-  def decrypt(%VoiceState{secret_key: key}, data), do: decrypt(key, data)
-  def decrypt(%VoiceWSState{secret_key: key}, data), do: decrypt(key, data)
-  def decrypt(key, data), do: unquote(:"decrypt_#{@mode}")(key, data)
+  def encrypt(%VoiceState{encryption_mode: mode} = voice, data) do
+    header = Audio.rtp_header(voice)
+    apply(__MODULE__, :"encrypt_#{mode}", [voice, data, header])
+  end
+
+  def decrypt(%{secret_key: key, encryption_mode: mode}, data) do
+    apply(__MODULE__, :"decrypt_#{mode}", [key, data])
+  end
 
   def encrypt_xsalsa20_poly1305(%VoiceState{secret_key: key}, data, header) do
     nonce = header <> <<0::unit(8)-size(12)>>
