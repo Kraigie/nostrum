@@ -1058,7 +1058,7 @@ defmodule Nostrum.Api.Ratelimiter do
         {:ok, body}
 
       {:ok, {204, _, _}} ->
-        {:ok}
+        :ok
 
       {:ok, {status, _, body}} ->
         response =
