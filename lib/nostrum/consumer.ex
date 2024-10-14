@@ -346,7 +346,7 @@ defmodule Nostrum.Consumer do
   @typedoc """
   Dispatched when a user removes a vote from a poll.
   """
-  @type message_poll_vote_remove :: {:MESSAGE_POLL_VOTE_REMVE, PollVoteChange.t(), WSState.t()}
+  @type message_poll_vote_remove :: {:MESSAGE_POLL_VOTE_REMOVE, PollVoteChange.t(), WSState.t()}
 
   @type event ::
           auto_moderation_rule_create
