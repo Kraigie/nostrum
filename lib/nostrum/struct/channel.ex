@@ -148,7 +148,9 @@ defmodule Nostrum.Struct.Channel do
     :available_tags,
     :applied_tags,
     :default_reaction_emoji,
-    :default_thread_rate_limit_per_user
+    :default_thread_rate_limit_per_user,
+    :default_sort_order,
+    :default_forum_layout
   ]
 
   @typedoc """
@@ -218,6 +220,18 @@ defmodule Nostrum.Struct.Channel do
   """
   @typedoc since: "0.7.0"
   @type default_thread_rate_limit_per_user :: integer() | nil
+
+  @typedoc """
+  The default sort order for posts in a `GUILD_FORUM` (`15`)  channel.
+  """
+  @typedoc since: "0.11.0"
+  @type default_sort_order :: integer() | nil
+
+  @typedoc """
+  The default layout for posts in a `GUILD_FORUM` (`15`) channel.
+  """
+  @typedoc since: "0.11.0"
+  @type default_forum_layout :: integer() | nil
 
   @typedoc """
   The user limit of a voice channel.
@@ -620,7 +634,9 @@ defmodule Nostrum.Struct.Channel do
           available_tags: [forum_tag],
           rate_limit_per_user: rate_limit_per_user,
           default_reaction_emoji: default_reaction_emoji,
-          default_thread_rate_limit_per_user: default_thread_rate_limit_per_user
+          default_thread_rate_limit_per_user: default_thread_rate_limit_per_user,
+          default_sort_order: default_sort_order,
+          default_forum_layout: default_forum_layout
         }
 
   @typedoc """
