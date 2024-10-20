@@ -222,13 +222,13 @@ defmodule Nostrum.Struct.Channel do
   @type default_thread_rate_limit_per_user :: integer() | nil
 
   @typedoc """
-  The default sort order for posts in a `GUILD_FORUM` (`15`)  channel.
+  The default sort order for posts in a `GUILD_FORUM` channel.
   """
   @typedoc since: "0.11.0"
   @type default_sort_order :: integer() | nil
 
   @typedoc """
-  The default layout for posts in a `GUILD_FORUM` (`15`) channel.
+  The default layout for posts in a `GUILD_FORUM` channel.
   """
   @typedoc since: "0.11.0"
   @type default_forum_layout :: integer() | nil
