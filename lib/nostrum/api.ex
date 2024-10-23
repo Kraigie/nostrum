@@ -69,6 +69,41 @@ defmodule Nostrum.Api do
   alias Nostrum.Struct.Guild.{AuditLog, AuditLogEntry, Member, Role, ScheduledEvent}
   alias Nostrum.Shard.{Session, Supervisor}
 
+  defguardp has_files(args) when is_map_key(args, :files) or is_map_key(args, :file)
+
+  def handle_request_with_decode(response)
+  def handle_request_with_decode({:ok, body}), do: {:ok, Jason.decode!(body, keys: :atoms)}
+  def handle_request_with_decode({:error, _} = error), do: error
+
+  def handle_request_with_decode(response, type)
+  # add_guild_member/3 can return both a 201 and a 204
+  def handle_request_with_decode({:ok}, _type), do: {:ok}
+  def handle_request_with_decode({:error, _} = error, _type), do: error
+
+  def handle_request_with_decode({:ok, body}, type) do
+    convert =
+      body
+      |> Jason.decode!(keys: :atoms)
+      |> Util.cast(type)
+
+    {:ok, convert}
+  end
+
+  def handle_request_with_decode!(response)
+  def handle_request_with_decode!({:ok, body}), do: Jason.decode!(body, keys: :atoms)
+  def handle_request_with_decode!({:error, error}), do: raise(error)
+
+  def handle_request_with_decode!(response, type)
+  # add_guild_member/3 can return both a 201 and a 204
+  def handle_request_with_decode!({:ok}, _type), do: {:ok}
+  def handle_request_with_decode!({:error, error}, _type), do: raise(error)
+
+  def handle_request_with_decode!({:ok, body}, type) do
+    body
+    |> Jason.decode!(keys: :atoms)
+    |> Util.cast(type)
+  end
+
   @typedoc """
   Represents a failed response from the API.
 
@@ -153,8 +188,6 @@ defmodule Nostrum.Api do
   """
   @typedoc since: "0.7.0"
   @type allowed_mentions :: allowed_mention | [allowed_mention]
-
-  defguardp has_files(args) when is_map_key(args, :files) or is_map_key(args, :file)
 
   @doc """
   Updates the status of the bot for a certain shard.
@@ -687,8 +720,7 @@ defmodule Nostrum.Api do
   """
   @spec get_channel(Channel.id()) :: error | {:ok, Channel.t()}
   def get_channel(channel_id) when is_snowflake(channel_id) do
-    request(:get, Constants.channel(channel_id))
-    |> handle_request_with_decode({:struct, Channel})
+    Nostrum.Api.Channel.get(channel_id)
   end
 
   @doc ~S"""
@@ -742,21 +774,8 @@ defmodule Nostrum.Api do
   """
   @spec modify_channel(Channel.id(), options, AuditLogEntry.reason()) ::
           error | {:ok, Channel.t()}
-  def modify_channel(channel_id, options, reason \\ nil)
-
-  def modify_channel(channel_id, options, reason) when is_list(options),
-    do: modify_channel(channel_id, Map.new(options), reason)
-
-  def modify_channel(channel_id, %{} = options, reason) when is_snowflake(channel_id) do
-    %{
-      method: :patch,
-      route: Constants.channel(channel_id),
-      body: options,
-      params: [],
-      headers: maybe_add_reason(reason)
-    }
-    |> request
-    |> handle_request_with_decode({:struct, Channel})
+  def modify_channel(channel_id, options, reason \\ nil) do
+    Nostrum.Api.Channel.modify(channel_id, options, reason)
   end
 
   @doc ~S"""
@@ -790,15 +809,7 @@ defmodule Nostrum.Api do
   """
   @spec delete_channel(Channel.id(), AuditLogEntry.reason()) :: error | {:ok, Channel.t()}
   def delete_channel(channel_id, reason \\ nil) when is_snowflake(channel_id) do
-    %{
-      method: :delete,
-      route: Constants.channel(channel_id),
-      body: "",
-      params: [],
-      headers: maybe_add_reason(reason)
-    }
-    |> request()
-    |> handle_request_with_decode({:struct, Channel})
+    Nostrum.Api.Channel.delete(channel_id, reason)
   end
 
   @doc ~S"""
@@ -827,48 +838,7 @@ defmodule Nostrum.Api do
   """
   @spec get_channel_messages(Channel.id(), limit, locator) :: error | {:ok, [Message.t()]}
   def get_channel_messages(channel_id, limit, locator \\ {}) when is_snowflake(channel_id) do
-    get_messages_sync(channel_id, limit, [], locator)
-  end
-
-  defp get_messages_sync(channel_id, limit, messages, locator) when limit <= 100 do
-    case get_channel_messages_call(channel_id, limit, locator) do
-      {:ok, new_messages} -> {:ok, messages ++ new_messages}
-      other -> other
-    end
-  end
-
-  defp get_messages_sync(channel_id, limit, messages, locator) do
-    case get_channel_messages_call(channel_id, 100, locator) do
-      {:error, message} ->
-        {:error, message}
-
-      {:ok, []} ->
-        {:ok, messages}
-
-      {:ok, new_messages} ->
-        new_limit = get_new_limit(limit, length(new_messages))
-        new_locator = get_new_locator(locator, List.last(new_messages))
-        get_messages_sync(channel_id, new_limit, messages ++ new_messages, new_locator)
-    end
-  end
-
-  defp get_new_locator({}, last_message), do: {:before, last_message.id}
-  defp get_new_locator(locator, last_message), do: put_elem(locator, 1, last_message.id)
-
-  defp get_new_limit(:infinity, _new_message_count), do: :infinity
-  defp get_new_limit(limit, message_count), do: limit - message_count
-
-  # We're decoding the response at each call to catch any errors
-  @doc false
-  def get_channel_messages_call(channel_id, limit, locator) do
-    qs_params =
-      case locator do
-        {} -> [{:limit, limit}]
-        non_empty_locator -> [{:limit, limit}, non_empty_locator]
-      end
-
-    request(:get, Constants.channel_messages(channel_id), "", qs_params)
-    |> handle_request_with_decode({:list, {:struct, Message}})
+    Nostrum.Api.Channel.get_messages(channel_id, limit, locator)
   end
 
   @doc ~S"""
@@ -924,42 +894,8 @@ defmodule Nostrum.Api do
   two weeks ago should be filtered out; defaults to `true`.
   """
   @spec bulk_delete_messages(integer, [Nostrum.Struct.Message.id()], boolean) :: error | {:ok}
-  def bulk_delete_messages(channel_id, messages, filter \\ true)
-
-  def bulk_delete_messages(channel_id, messages, false),
-    do: send_chunked_delete(messages, channel_id)
-
-  def bulk_delete_messages(channel_id, messages, true) do
-    alias Nostrum.Snowflake
-
-    snowflake_two_weeks_ago =
-      DateTime.utc_now()
-      |> DateTime.to_unix()
-      # 60 seconds * 60 * 24 * 14 = 14 days / 2 weeks
-      |> Kernel.-(60 * 60 * 24 * 14)
-      |> DateTime.from_unix!()
-      |> Snowflake.from_datetime!()
-
-    messages
-    |> Stream.filter(&(&1 > snowflake_two_weeks_ago))
-    |> send_chunked_delete(channel_id)
-  end
-
-  @spec send_chunked_delete(
-          [Nostrum.Struct.Message.id()] | Enum.t(),
-          Nostrum.Snowflake.t()
-        ) :: error | {:ok}
-  defp send_chunked_delete(messages, channel_id) do
-    messages
-    |> Stream.chunk_every(100)
-    |> Stream.map(fn message_chunk ->
-      request(
-        :post,
-        Constants.channel_bulk_delete(channel_id),
-        %{messages: message_chunk}
-      )
-    end)
-    |> Enum.find({:ok}, &match?({:error, _}, &1))
+  def bulk_delete_messages(channel_id, messages, filter) do
+    Nostrum.Api.Channel.bulk_delete_messages(channel_id, messages, filter)
   end
 
   @doc """
@@ -1000,13 +936,7 @@ defmodule Nostrum.Api do
           AuditLogEntry.reason()
         ) :: error | {:ok}
   def edit_channel_permissions(channel_id, overwrite_id, permission_info, reason \\ nil) do
-    request(%{
-      method: :put,
-      route: Constants.channel_permission(channel_id, overwrite_id),
-      body: permission_info,
-      params: [],
-      headers: maybe_add_reason(reason)
-    })
+    Nostrum.Api.Channel.edit_permissions(channel_id, overwrite_id, permission_info, reason)
   end
 
   @doc """
@@ -1035,13 +965,7 @@ defmodule Nostrum.Api do
   """
   @spec delete_channel_permissions(integer, integer, AuditLogEntry.reason()) :: error | {:ok}
   def delete_channel_permissions(channel_id, overwrite_id, reason \\ nil) do
-    request(%{
-      method: :delete,
-      route: Constants.channel_permission(channel_id, overwrite_id),
-      body: "",
-      params: [],
-      headers: maybe_add_reason(reason)
-    })
+    Nostrum.Api.Channel.delete_permissions(channel_id, overwrite_id, reason)
   end
 
   @doc ~S"""
@@ -1144,7 +1068,7 @@ defmodule Nostrum.Api do
   """
   @spec start_typing(integer) :: error | {:ok}
   def start_typing(channel_id) do
-    request(:post, Constants.channel_typing(channel_id))
+    Nostrum.Api.Channel.start_typing(channel_id)
   end
 
   @doc """
@@ -1171,8 +1095,7 @@ defmodule Nostrum.Api do
   """
   @spec get_pinned_messages(Channel.id()) :: error | {:ok, [Message.t()]}
   def get_pinned_messages(channel_id) when is_snowflake(channel_id) do
-    request(:get, Constants.channel_pins(channel_id))
-    |> handle_request_with_decode({:list, {:struct, Message}})
+    Nostrum.Api.Channel.get_pinned_messages(channel_id)
   end
 
   @doc ~S"""
@@ -1203,7 +1126,7 @@ defmodule Nostrum.Api do
   @spec add_pinned_channel_message(Channel.id(), Message.id()) :: error | {:ok}
   def add_pinned_channel_message(channel_id, message_id)
       when is_snowflake(channel_id) and is_snowflake(message_id) do
-    request(:put, Constants.channel_pin(channel_id, message_id))
+    Nostrum.Api.Channel.pin_message(channel_id, message_id)
   end
 
   @doc ~S"""
@@ -1228,7 +1151,7 @@ defmodule Nostrum.Api do
   @spec delete_pinned_channel_message(Channel.id(), Message.id()) :: error | {:ok}
   def delete_pinned_channel_message(channel_id, message_id)
       when is_snowflake(channel_id) and is_snowflake(message_id) do
-    request(:delete, Constants.channel_pin(channel_id, message_id))
+    Nostrum.Api.Channel.unpin_message(channel_id, message_id)
   end
 
   @doc ~S"""
@@ -1768,14 +1691,8 @@ defmodule Nostrum.Api do
   ```
   """
   @spec create_guild_channel(Guild.id(), options) :: error | {:ok, Channel.guild_channel()}
-  def create_guild_channel(guild_id, options)
-
-  def create_guild_channel(guild_id, options) when is_list(options),
-    do: create_guild_channel(guild_id, Map.new(options))
-
-  def create_guild_channel(guild_id, %{} = options) when is_snowflake(guild_id) do
-    request(:post, Constants.guild_channels(guild_id), options)
-    |> handle_request_with_decode({:struct, Channel})
+  def create_guild_channel(guild_id, options) do
+    Nostrum.Api.Channel.create(guild_id, options)
   end
 
   @doc ~S"""
@@ -1917,15 +1834,8 @@ defmodule Nostrum.Api do
   ```
   """
   @spec add_guild_member(Guild.id(), User.id(), options) :: error | {:ok, Member.t()} | {:ok}
-  def add_guild_member(guild_id, user_id, options)
-
-  def add_guild_member(guild_id, user_id, options) when is_list(options),
-    do: add_guild_member(guild_id, user_id, Map.new(options))
-
-  def add_guild_member(guild_id, user_id, %{} = options)
-      when is_snowflake(guild_id) and is_snowflake(user_id) do
-    request(:put, Constants.guild_member(guild_id, user_id), options)
-    |> handle_request_with_decode({:struct, Member})
+  def add_guild_member(guild_id, user_id, options) do
+    Nostrum.Api.Guild.add_member(guild_id, user_id, options)
   end
 
   @doc """
@@ -3064,8 +2974,7 @@ defmodule Nostrum.Api do
   """
   @spec get_channel_webhooks(Channel.id()) :: error | {:ok, [Nostrum.Struct.Webhook.t()]}
   def get_channel_webhooks(channel_id) do
-    request(:get, Constants.webhooks_channel(channel_id))
-    |> handle_request_with_decode
+    Nostrum.Api.Channel.get_webhooks(channel_id)
   end
 
   @doc """
@@ -3387,8 +3296,7 @@ defmodule Nostrum.Api do
   @spec get_global_application_commands() :: {:ok, [map()]} | error
   @spec get_global_application_commands(User.id()) :: {:ok, [map()]} | error
   def get_global_application_commands(application_id \\ Me.get().id) do
-    request(:get, Constants.global_application_commands(application_id))
-    |> handle_request_with_decode
+    Nostrum.Api.ApplicationCommand.get_global_commands(application_id)
   end
 
   @doc """
@@ -3421,8 +3329,7 @@ defmodule Nostrum.Api do
   @spec create_global_application_command(User.id(), ApplicationCommand.application_command_map()) ::
           {:ok, map()} | error
   def create_global_application_command(application_id \\ Me.get().id, command) do
-    request(:post, Constants.global_application_commands(application_id), command)
-    |> handle_request_with_decode
+    Nostrum.Api.ApplicationCommand.create_global_command(application_id, command)
   end
 
   @doc """
@@ -3454,8 +3361,7 @@ defmodule Nostrum.Api do
         command_id,
         command
       ) do
-    request(:patch, Constants.global_application_command(application_id, command_id), command)
-    |> handle_request_with_decode
+    Nostrum.Api.ApplicationCommand.edit_global_command(application_id, command_id, command)
   end
 
   @doc """
@@ -3469,7 +3375,7 @@ defmodule Nostrum.Api do
   @spec delete_global_application_command(Snowflake.t()) :: {:ok} | error
   @spec delete_global_application_command(User.id(), Snowflake.t()) :: {:ok} | error
   def delete_global_application_command(application_id \\ Me.get().id, command_id) do
-    request(:delete, Constants.global_application_command(application_id, command_id))
+    Nostrum.Api.ApplicationCommand.delete_global_command(application_id, command_id)
   end
 
   @doc """
@@ -3499,8 +3405,7 @@ defmodule Nostrum.Api do
           ApplicationCommand.application_command_map()
         ]) :: {:ok, [map()]} | error
   def bulk_overwrite_global_application_commands(application_id \\ Me.get().id, commands) do
-    request(:put, Constants.global_application_commands(application_id), commands)
-    |> handle_request_with_decode
+    Nostrum.Api.ApplicationCommand.bulk_overwrite_global_commands(application_id, commands)
   end
 
   @doc """
@@ -3519,8 +3424,7 @@ defmodule Nostrum.Api do
   @spec get_guild_application_commands(Guild.id()) :: {:ok, [map()]} | error
   @spec get_guild_application_commands(User.id(), Guild.id()) :: {:ok, [map()]} | error
   def get_guild_application_commands(application_id \\ Me.get().id, guild_id) do
-    request(:get, Constants.guild_application_commands(application_id, guild_id))
-    |> handle_request_with_decode
+    Nostrum.Api.ApplicationCommand.get_guild_commands(application_id, guild_id)
   end
 
   @doc """
@@ -3550,8 +3454,7 @@ defmodule Nostrum.Api do
         guild_id,
         command
       ) do
-    request(:post, Constants.guild_application_commands(application_id, guild_id), command)
-    |> handle_request_with_decode
+    Nostrum.Api.ApplicationCommand.create_guild_command(application_id, guild_id, command)
   end
 
   @doc """
@@ -3588,12 +3491,12 @@ defmodule Nostrum.Api do
         command_id,
         command
       ) do
-    request(
-      :patch,
-      Constants.guild_application_command(application_id, guild_id, command_id),
+    Nostrum.Api.ApplicationCommand.edit_guild_command(
+      application_id,
+      guild_id,
+      command_id,
       command
     )
-    |> handle_request_with_decode
   end
 
   @doc """
@@ -3612,7 +3515,7 @@ defmodule Nostrum.Api do
         guild_id,
         command_id
       ) do
-    request(:delete, Constants.guild_application_command(application_id, guild_id, command_id))
+    Nostrum.Api.ApplicationCommand.delete_guild_command(application_id, guild_id, command_id)
   end
 
   @doc """
@@ -3917,11 +3820,7 @@ defmodule Nostrum.Api do
         guild_id,
         command_id
       ) do
-    request(
-      :get,
-      Constants.guild_application_command_permissions(application_id, guild_id, command_id)
-    )
-    |> handle_request_with_decode
+    Nostrum.Api.ApplicationCommand.get_command_permissions(application_id, guild_id, command_id)
   end
 
   @doc """
@@ -3952,14 +3851,12 @@ defmodule Nostrum.Api do
         command_id,
         permissions
       ) do
-    request(
-      :put,
-      Constants.guild_application_command_permissions(application_id, guild_id, command_id),
-      %{
-        permissions: permissions
-      }
+    Nostrum.Api.ApplicationCommand.edit_command_permissions(
+      application_id,
+      guild_id,
+      command_id,
+      permissions
     )
-    |> handle_request_with_decode
   end
 
   @doc """
@@ -3995,12 +3892,11 @@ defmodule Nostrum.Api do
         guild_id,
         permissions
       ) do
-    request(
-      :put,
-      Constants.guild_application_command_permissions(application_id, guild_id),
+    Nostrum.Api.ApplicationCommand.batch_edit_permissions(
+      application_id,
+      guild_id,
       permissions
     )
-    |> handle_request_with_decode
   end
 
   @type thread_with_message_params :: %{
@@ -4345,8 +4241,7 @@ defmodule Nostrum.Api do
   @spec get_guild_auto_moderation_rule(Guild.id(), AutoModerationRule.id()) ::
           {:ok, AutoModerationRule.t()} | error
   def get_guild_auto_moderation_rule(guild_id, rule_id) do
-    request(:get, Constants.guild_auto_moderation_rule(guild_id, rule_id))
-    |> handle_request_with_decode({:struct, AutoModerationRule})
+    Nostrum.Api.AutoModeration.get_auto_moderation_rule(guild_id, rule_id)
   end
 
   @doc """
@@ -4373,8 +4268,7 @@ defmodule Nostrum.Api do
     do: create_guild_auto_moderation_rule(guild_id, Map.new(options))
 
   def create_guild_auto_moderation_rule(guild_id, options) do
-    request(:post, Constants.guild_auto_moderation_rule(guild_id), options)
-    |> handle_request_with_decode({:struct, AutoModerationRule})
+    Nostrum.Api.AutoModeration.create_auto_moderation_rule(guild_id, options)
   end
 
   @doc """
@@ -4389,8 +4283,7 @@ defmodule Nostrum.Api do
     do: modify_guild_auto_moderation_rule(guild_id, rule_id, Map.new(options))
 
   def modify_guild_auto_moderation_rule(guild_id, rule_id, options) do
-    request(:patch, Constants.guild_auto_moderation_rule(guild_id, rule_id), options)
-    |> handle_request_with_decode({:struct, AutoModerationRule})
+    Nostrum.Api.AutoModeration.modify_auto_moderation_rule(guild_id, rule_id, options)
   end
 
   @doc """
@@ -4399,20 +4292,20 @@ defmodule Nostrum.Api do
   @doc since: "0.7.0"
   @spec delete_guild_auto_moderation_rule(Guild.id(), AutoModerationRule.id()) :: {:ok} | error
   def delete_guild_auto_moderation_rule(guild_id, rule_id) do
-    request(:delete, Constants.guild_auto_moderation_rule(guild_id, rule_id))
+    Nostrum.Api.AutoModeration.delete_auto_moderation_rule(guild_id, rule_id)
   end
 
   @spec maybe_add_reason(String.t() | nil) :: list()
-  defp maybe_add_reason(reason) do
+  def maybe_add_reason(reason) do
     maybe_add_reason(reason, [{"content-type", "application/json"}])
   end
 
   @spec maybe_add_reason(String.t() | nil, list()) :: list()
-  defp maybe_add_reason(nil, headers) do
+  def maybe_add_reason(nil, headers) do
     headers
   end
 
-  defp maybe_add_reason(reason, headers) do
+  def maybe_add_reason(reason, headers) do
     [{"x-audit-log-reason", reason} | headers]
   end
 
@@ -4497,24 +4390,6 @@ defmodule Nostrum.Api do
       {:ok} ->
         {:ok}
     end
-  end
-
-  defp handle_request_with_decode(response)
-  defp handle_request_with_decode({:ok, body}), do: {:ok, Jason.decode!(body, keys: :atoms)}
-  defp handle_request_with_decode({:error, _} = error), do: error
-
-  defp handle_request_with_decode(response, type)
-  # add_guild_member/3 can return both a 201 and a 204
-  defp handle_request_with_decode({:ok}, _type), do: {:ok}
-  defp handle_request_with_decode({:error, _} = error, _type), do: error
-
-  defp handle_request_with_decode({:ok, body}, type) do
-    convert =
-      body
-      |> Jason.decode!(keys: :atoms)
-      |> Util.cast(type)
-
-    {:ok, convert}
   end
 
   defp prepare_allowed_mentions(options) do
