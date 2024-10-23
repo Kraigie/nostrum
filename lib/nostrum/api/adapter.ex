@@ -1,6 +1,4 @@
-defmodule Nostrum.Api.Base do
-  @moduledoc false
-
+defmodule Nostrum.Api.Adapter do
   @version Nostrum.Mixfile.project()[:version]
 
   import Nostrum.Constants, only: [base_route: 0]
