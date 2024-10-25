@@ -70,7 +70,7 @@ defmodule Nostrum.Api do
 
   alias Nostrum.Struct.Guild.{AuditLog, AuditLogEntry, Member, Role, ScheduledEvent}
 
-  defguardp has_files(args) when is_map_key(args, :files) or is_map_key(args, :file)
+  defguard has_files(args) when is_map_key(args, :files) or is_map_key(args, :file)
 
   def handle_request_with_decode(response)
   def handle_request_with_decode({:ok, body}), do: {:ok, Jason.decode!(body, keys: :atoms)}
@@ -3661,50 +3661,7 @@ defmodule Nostrum.Api do
         ) ::
           {:ok, Channel.t()} | error
   def start_thread_with_message(channel_id, message_id, options, reason \\ nil) do
-    request(%{
-      method: :post,
-      route: Constants.thread_with_message(channel_id, message_id),
-      body: options,
-      params: [],
-      headers: maybe_add_reason(reason)
-    })
-    |> handle_request_with_decode({:struct, Channel})
-  end
-
-  @type thread_without_message_params :: %{
-          required(:name) => String.t(),
-          required(:type) => non_neg_integer(),
-          optional(:auto_archive_duration) => 60 | 1440 | 4320 | 10_080,
-          optional(:invitable) => boolean(),
-          optional(:rate_limit_per_user) => 0..21_600
-        }
-
-  @doc """
-  Create a thread on a channel without an associated message.
-
-  If successful, returns `{:ok, Channel}`. Otherwise returns a `t:Nostrum.Api.error/0`.
-
-  An optional `reason` argument can be given for the audit log.
-
-  ## Options
-  - `name`: Name of the thread, max 100 characters.
-  - `type`: Type of thread, can be either 11 (`GUILD_PUBLIC_THREAD`) or 12 (`GUILD_PRIVATE_THREAD`).
-  - `auto_archive_duration`: Duration in minutes to auto-archive the thread after it has been inactive, can be set to 60, 1440, 4320, or 10080.
-  - `invitable`: whether non-moderators can add other non-moderators to a thread; only available when creating a private thread defaults to `false`.
-  - `rate_limit_per_user`: Rate limit per user in seconds, can be set to any value in `0..21600`.
-  """
-  @doc since: "0.5.1"
-  @spec start_thread(Channel.id(), thread_without_message_params, AuditLogEntry.reason()) ::
-          {:ok, Channel.t()} | error
-  def start_thread(channel_id, options, reason \\ nil) do
-    request(%{
-      method: :post,
-      route: Constants.thread_without_message(channel_id),
-      body: options,
-      params: [],
-      headers: maybe_add_reason(reason)
-    })
-    |> handle_request_with_decode({:struct, Channel})
+    Nostrum.Api.Thread.create_with_message(channel_id, message_id, options, reason)
   end
 
   @doc """
@@ -3735,40 +3692,8 @@ defmodule Nostrum.Api do
   @doc since: "0.7.0"
   @spec start_thread_in_forum_channel(Channel.id(), map(), AuditLogEntry.reason()) ::
           {:ok, Channel.t()} | error
-  def start_thread_in_forum_channel(channel_id, options, reason \\ nil)
-
-  def start_thread_in_forum_channel(channel_id, %{message: data} = body, reason)
-      when has_files(data) do
-    # done this way to avoid breaking changes to support audit log reasons in multipart requests
-    boundary = generate_boundary()
-    {files, json} = combine_files(body) |> pop_files()
-    body = Jason.encode_to_iodata!(json)
-
-    headers =
-      maybe_add_reason(reason, [
-        {"content-type", "multipart/form-data; boundary=#{boundary}"}
-      ])
-
-    %{
-      method: :post,
-      route: Constants.thread_without_message(channel_id),
-      body: {:multipart, create_multipart(files, body, boundary)},
-      params: [],
-      headers: headers
-    }
-    |> request()
-    |> handle_request_with_decode({:struct, Channel})
-  end
-
-  def start_thread_in_forum_channel(channel_id, options, reason) do
-    request(%{
-      method: :post,
-      route: Constants.thread_without_message(channel_id),
-      body: options,
-      params: [],
-      headers: maybe_add_reason(reason)
-    })
-    |> handle_request_with_decode({:struct, Channel})
+  def start_thread_in_forum_channel(channel_id, options, reason \\ nil) do
+    Nostrum.Api.Thread.create_in_forum(channel_id, options, reason)
   end
 
   @doc """
@@ -3802,22 +3727,7 @@ defmodule Nostrum.Api do
   @spec list_guild_threads(Guild.id()) ::
           {:ok, %{threads: [Channel.t()], members: [ThreadMember.t()]}} | error
   def list_guild_threads(guild_id) do
-    res =
-      request(:get, Constants.guild_active_threads(guild_id))
-      |> handle_request_with_decode
-
-    case res do
-      {:ok, %{threads: channels, members: thread_members}} ->
-        map = %{
-          threads: Util.cast(channels, {:list, {:struct, Channel}}),
-          members: Util.cast(thread_members, {:list, {:struct, ThreadMember}})
-        }
-
-        {:ok, map}
-
-      {:error, e} ->
-        {:error, e}
-    end
+    Nostrum.Api.Thread.list(guild_id)
   end
 
   @doc """
@@ -3839,16 +3749,8 @@ defmodule Nostrum.Api do
   @spec list_public_archived_threads(Channel.id(), options) ::
           {:ok, %{threads: [Channel.t()], members: [ThreadMember.t()], has_more: boolean()}}
           | error
-  def list_public_archived_threads(channel_id, options \\ [])
-
-  def list_public_archived_threads(channel_id, options) when is_map(options) do
-    Constants.public_archived_threads(channel_id)
-    |> list_archived_threads(Map.to_list(options))
-  end
-
-  def list_public_archived_threads(channel_id, options) when is_list(options) do
-    Constants.public_archived_threads(channel_id)
-    |> list_archived_threads(options)
+  def list_public_archived_threads(channel_id, options \\ []) do
+    Nostrum.Api.Thread.public_archived_threads(channel_id, options)
   end
 
   @doc """
@@ -3858,16 +3760,8 @@ defmodule Nostrum.Api do
   @spec list_private_archived_threads(Channel.id(), options) ::
           {:ok, %{threads: [Channel.t()], members: [ThreadMember.t()], has_more: boolean()}}
           | error
-  def list_private_archived_threads(channel_id, options \\ [])
-
-  def list_private_archived_threads(channel_id, options) when is_map(options) do
-    Constants.private_archived_threads(channel_id)
-    |> list_archived_threads(Map.to_list(options))
-  end
-
-  def list_private_archived_threads(channel_id, options) when is_list(options) do
-    Constants.private_archived_threads(channel_id)
-    |> list_archived_threads(options)
+  def list_private_archived_threads(channel_id, options \\ []) do
+    Nostrum.Api.Thread.private_archived_threads(channel_id, options)
   end
 
   @doc """
@@ -3877,16 +3771,8 @@ defmodule Nostrum.Api do
   @spec list_joined_private_archived_threads(Channel.id(), options) ::
           {:ok, %{threads: [Channel.t()], members: [ThreadMember.t()], has_more: boolean()}}
           | error
-  def list_joined_private_archived_threads(channel_id, options \\ [])
-
-  def list_joined_private_archived_threads(channel_id, options) when is_map(options) do
-    Constants.private_joined_archived_threads(channel_id)
-    |> list_archived_threads(Map.to_list(options))
-  end
-
-  def list_joined_private_archived_threads(channel_id, options) when is_list(options) do
-    Constants.private_joined_archived_threads(channel_id)
-    |> list_archived_threads(options)
+  def list_joined_private_archived_threads(channel_id, options \\ []) do
+    Nostrum.Api.Thread.joined_private_archived_threads(channel_id, options)
   end
 
   defp list_archived_threads(route, options) do
@@ -3923,7 +3809,7 @@ defmodule Nostrum.Api do
   @doc since: "0.5.1"
   @spec join_thread(Channel.id()) :: {:ok} | error
   def join_thread(thread_id) do
-    request(:put, Constants.thread_member_me(thread_id))
+    Nostrum.Api.Thread.join(thread_id)
   end
 
   @doc """
@@ -3940,7 +3826,7 @@ defmodule Nostrum.Api do
   @doc since: "0.5.1"
   @spec leave_thread(Channel.id()) :: {:ok} | error
   def leave_thread(thread_id) do
-    request(:delete, Constants.thread_member_me(thread_id))
+    Nostrum.Api.Thread.leave(thread_id)
   end
 
   @doc """
@@ -3951,7 +3837,7 @@ defmodule Nostrum.Api do
   @doc since: "0.5.1"
   @spec remove_thread_member(Channel.id(), User.id()) :: {:ok} | error
   def remove_thread_member(thread_id, user_id) do
-    request(:delete, Constants.thread_member(thread_id, user_id))
+    Nostrum.Api.Thread.remove_member(thread_id, user_id)
   end
 
   @doc """
@@ -4099,13 +3985,13 @@ defmodule Nostrum.Api do
   def combine_files(%{message: data} = args), do: %{args | message: combine_files(data)}
   def combine_files(args), do: args
 
-  defp pop_files(%{data: data} = args),
+  def pop_files(%{data: data} = args),
     do: {data.files, %{args | data: Map.delete(data, :files)}}
 
-  defp pop_files(%{message: data} = args),
+  def pop_files(%{message: data} = args),
     do: {data.files, %{args | message: Map.delete(data, :files)}}
 
-  defp pop_files(args), do: Map.pop!(args, :files)
+  def pop_files(args), do: Map.pop!(args, :files)
 
   @doc false
   def bangify(to_bang) do
@@ -4136,7 +4022,7 @@ defmodule Nostrum.Api do
     end
   end
 
-  defp create_multipart(files, json, boundary) do
+  def create_multipart(files, json, boundary) do
     json_mime = MIME.type("json")
     json_size = :erlang.iolist_size(json)
 
@@ -4186,7 +4072,7 @@ defmodule Nostrum.Api do
 
   defp get_file_contents(%{body: body, name: name}), do: {body, name}
 
-  defp generate_boundary do
+  def generate_boundary do
     String.duplicate("-", 20) <>
       "KraigieNostrumCat_" <>
       Base.encode16(:crypto.strong_rand_bytes(10))
