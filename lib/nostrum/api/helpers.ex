@@ -1,7 +1,5 @@
 defmodule Nostrum.Api.Helpers do
-  @moduledoc """
-  Helper functions for the Nostrum API.
-  """
+  @moduledoc false
 
   alias Nostrum.Util
 
