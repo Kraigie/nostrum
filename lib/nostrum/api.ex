@@ -1251,8 +1251,7 @@ defmodule Nostrum.Api do
   @doc since: "0.10.0"
   @spec get_sticker(Snowflake.t()) :: {:ok, Sticker.t()} | error
   def get_sticker(sticker_id) do
-    request(:get, Constants.sticker(sticker_id))
-    |> handle_request_with_decode({:struct, Sticker})
+    Nostrum.Api.Sticker.get(sticker_id)
   end
 
   @doc ~S"""
@@ -1263,8 +1262,7 @@ defmodule Nostrum.Api do
   @doc since: "0.10.0"
   @spec list_guild_stickers(Guild.id()) :: {:ok, [Sticker.t()]} | error
   def list_guild_stickers(guild_id) do
-    request(:get, Constants.guild_stickers(guild_id))
-    |> handle_request_with_decode({:list, {:struct, Sticker}})
+    Nostrum.Api.Sticker.list(guild_id)
   end
 
   @doc ~S"""
@@ -1275,8 +1273,7 @@ defmodule Nostrum.Api do
   @doc since: "0.10.0"
   @spec get_guild_sticker(Guild.id(), Sticker.id()) :: Sticker.t() | error
   def get_guild_sticker(guild_id, sticker_id) do
-    request(:get, Constants.guild_sticker(guild_id, sticker_id))
-    |> handle_request_with_decode({:struct, Sticker})
+    Nostrum.Api.Sticker.get(guild_id, sticker_id)
   end
 
   @doc ~S"""
@@ -1313,38 +1310,7 @@ defmodule Nostrum.Api do
           String.t() | nil
         ) :: {:ok, Sticker.t()} | error
   def create_guild_sticker(guild_id, name, description, tags, file, reason \\ nil) do
-    opts = %{
-      name: name,
-      description: description,
-      tags: tags
-    }
-
-    boundary = generate_boundary()
-
-    multipart = create_multipart([], Jason.encode_to_iodata!(opts), boundary)
-
-    headers =
-      maybe_add_reason(reason, [
-        {"content-type", "multipart/form-data; boundary=#{boundary}"}
-      ])
-
-    file = create_file_part_for_multipart(file, nil, boundary, "file")
-
-    %{
-      method: :post,
-      route: Constants.guild_stickers(guild_id),
-      body:
-        {:multipart,
-         [
-           ~s|--#{boundary}#{@crlf}|,
-           file
-           | multipart
-         ]},
-      params: [],
-      headers: headers
-    }
-    |> request()
-    |> handle_request_with_decode({:struct, Sticker})
+    Nostrum.Api.Sticker.create(guild_id, name, description, tags, file, reason)
   end
 
   @doc ~S"""
@@ -1365,8 +1331,7 @@ defmodule Nostrum.Api do
           tags: Sticker.tags() | nil
         }) :: {:ok, Sticker.t()} | error
   def modify_guild_sticker(guild_id, sticker_id, options) do
-    request(:patch, Constants.guild_sticker(guild_id, sticker_id), options)
-    |> handle_request_with_decode({:struct, Sticker})
+    Nostrum.Api.Sticker.modify(guild_id, sticker_id, options)
   end
 
   @doc ~S"""
@@ -1375,7 +1340,7 @@ defmodule Nostrum.Api do
   @doc since: "0.10.0"
   @spec delete_guild_sticker(Guild.id(), Sticker.id()) :: {:ok} | error
   def delete_guild_sticker(guild_id, sticker_id) do
-    request(:delete, Constants.guild_sticker(guild_id, sticker_id))
+    Nostrum.Api.Sticker.delete(guild_id, sticker_id)
   end
 
   @doc ~S"""
@@ -1384,14 +1349,7 @@ defmodule Nostrum.Api do
   @doc since: "0.10.0"
   @spec get_sticker_packs() :: {:ok, [Sticker.Pack.t()]} | error
   def get_sticker_packs do
-    resp =
-      request(:get, Constants.sticker_packs())
-      |> handle_request_with_decode()
-
-    case resp do
-      {:ok, %{sticker_packs: packs}} -> {:ok, Util.cast(packs, {:list, {:struct, Sticker.Pack}})}
-      _ -> resp
-    end
+    Nostrum.Api.Sticker.packs()
   end
 
   @doc ~S"""
@@ -1907,8 +1865,7 @@ defmodule Nostrum.Api do
   """
   @spec get_guild_roles(Guild.id()) :: error | {:ok, [Role.t()]}
   def get_guild_roles(guild_id) when is_snowflake(guild_id) do
-    request(:get, Constants.guild_roles(guild_id))
-    |> handle_request_with_decode({:list, {:struct, Role}})
+    Nostrum.Api.Guild.roles(guild_id)
   end
 
   @doc ~S"""
@@ -2025,22 +1982,8 @@ defmodule Nostrum.Api do
   """
   @spec modify_guild_role(Guild.id(), Role.id(), options, AuditLogEntry.reason()) ::
           error | {:ok, Role.t()}
-  def modify_guild_role(guild_id, role_id, options, reason \\ nil)
-
-  def modify_guild_role(guild_id, role_id, options, reason) when is_list(options),
-    do: modify_guild_role(guild_id, role_id, Map.new(options), reason)
-
-  def modify_guild_role(guild_id, role_id, %{} = options, reason)
-      when is_snowflake(guild_id) and is_snowflake(role_id) do
-    %{
-      method: :patch,
-      route: Constants.guild_role(guild_id, role_id),
-      body: options,
-      params: [],
-      headers: maybe_add_reason(reason)
-    }
-    |> request()
-    |> handle_request_with_decode({:struct, Role})
+  def modify_guild_role(guild_id, role_id, options, reason \\ nil) do
+    Nostrum.Api.Role.modify(guild_id, role_id, options, reason)
   end
 
   @doc ~S"""
@@ -2100,8 +2043,7 @@ defmodule Nostrum.Api do
   """
   @spec get_guild_prune_count(Guild.id(), 1..30) :: error | {:ok, %{pruned: integer}}
   def get_guild_prune_count(guild_id, days) when is_snowflake(guild_id) and days in 1..30 do
-    request(:get, Constants.guild_prune(guild_id), "", days: days)
-    |> handle_request_with_decode
+    Nostrum.Api.Guild.estimate_prune_count(guild_id, days)
   end
 
   @doc ~S"""
@@ -2154,8 +2096,7 @@ defmodule Nostrum.Api do
   """
   @spec get_voice_region(integer) :: error | {:ok, [Nostrum.Struct.VoiceRegion.t()]}
   def get_voice_region(guild_id) do
-    request(:get, Constants.guild_voice_regions(guild_id))
-    |> handle_request_with_decode
+    Nostrum.Api.Guild.voice_region(guild_id)
   end
 
   @doc ~S"""
@@ -2194,8 +2135,7 @@ defmodule Nostrum.Api do
   @spec get_guild_integrations(Guild.id()) ::
           error | {:ok, [Nostrum.Struct.Guild.Integration.t()]}
   def get_guild_integrations(guild_id) do
-    request(:get, Constants.guild_integrations(guild_id))
-    |> handle_request_with_decode
+    Nostrum.Api.Guild.integrations(guild_id)
   end
 
   @doc """
@@ -3284,11 +3224,7 @@ defmodule Nostrum.Api do
   """
   @spec create_interaction_response(Interaction.id(), Interaction.token(), map()) :: {:ok} | error
   def create_interaction_response(id, token, response) do
-    request(
-      :post,
-      Constants.interaction_callback(id, token),
-      combine_embeds(response) |> combine_files()
-    )
+    Nostrum.Api.Interaction.create_response(id, token, response)
   end
 
   def create_interaction_response!(id, token, response) do
@@ -3302,10 +3238,7 @@ defmodule Nostrum.Api do
   @doc since: "0.7.0"
   @spec get_original_interaction_response(Interaction.t()) :: error | {:ok, Message.t()}
   def get_original_interaction_response(interaction) do
-    path = Constants.original_interaction_response(interaction.application_id, interaction.token)
-
-    request(:get, path)
-    |> handle_request_with_decode({:struct, Message})
+    Nostrum.Api.Interaction.original_response(interaction.application_id, interaction.token)
   end
 
   @doc """
@@ -3336,12 +3269,7 @@ defmodule Nostrum.Api do
   @spec edit_interaction_response(User.id(), Interaction.token(), map()) ::
           {:ok, Message.t()} | error
   def edit_interaction_response(id \\ Me.get().id, token, response) do
-    request(
-      :patch,
-      Constants.interaction_callback_original(id, token),
-      combine_embeds(response) |> combine_files()
-    )
-    |> handle_request_with_decode({:struct, Message})
+    Nostrum.Api.Interaction.edit_response(id, token, response)
   end
 
   @doc """
@@ -3378,7 +3306,7 @@ defmodule Nostrum.Api do
   @doc since: "0.5.0"
   @spec delete_interaction_response(User.id(), Interaction.token()) :: {:ok} | error
   def delete_interaction_response(id \\ Me.get().id, token) do
-    request(:delete, Constants.interaction_callback_original(id, token))
+    Nostrum.Api.Interaction.delete_response(id, token)
   end
 
   @doc """
@@ -3399,7 +3327,7 @@ defmodule Nostrum.Api do
   @spec create_followup_message(User.id(), Interaction.token(), map()) ::
           {:ok, Message.t()} | error
   def create_followup_message(application_id \\ Me.get().id, token, webhook_payload) do
-    execute_webhook(application_id, token, webhook_payload)
+    Nostrum.Api.Interaction.create_followup_message(application_id, token, webhook_payload)
   end
 
   @doc """
@@ -3429,7 +3357,7 @@ defmodule Nostrum.Api do
         token,
         message_id
       ) do
-    request(:delete, Constants.interaction_followup_message(application_id, token, message_id))
+    Nostrum.Api.Interaction.delete_followup_message(application_id, token, message_id)
   end
 
   @doc """
@@ -3954,7 +3882,7 @@ defmodule Nostrum.Api do
     ]
   end
 
-  defp create_file_part_for_multipart(file, index, boundary, name_override \\ nil) do
+  def create_file_part_for_multipart(file, index, boundary, name_override \\ nil) do
     {body, name} = get_file_contents(file)
 
     file_mime = MIME.from_path(name)
