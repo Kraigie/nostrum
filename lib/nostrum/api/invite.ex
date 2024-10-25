@@ -1,5 +1,6 @@
 defmodule Nostrum.Api.Invite do
   alias Nostrum.Api
+  alias Nostrum.Api.Helpers
   alias Nostrum.Constants
   alias Nostrum.Struct.Invite
   alias Nostrum.Struct.Guild
@@ -29,7 +30,7 @@ defmodule Nostrum.Api.Invite do
   @spec get(Invite.code(), Api.options()) :: Api.error() | {:ok, Invite.simple_invite()}
   def get(invite_code, options \\ []) when is_binary(invite_code) do
     Api.request(:get, Constants.invite(invite_code), "", options)
-    |> Api.handle_request_with_decode({:struct, Invite})
+    |> Helpers.handle_request_with_decode({:struct, Invite})
   end
 
   @doc ~S"""
@@ -49,7 +50,7 @@ defmodule Nostrum.Api.Invite do
   @spec delete(Invite.code()) :: Api.error() | {:ok, Invite.simple_invite()}
   def delete(invite_code) when is_binary(invite_code) do
     Api.request(:delete, Constants.invite(invite_code))
-    |> Api.handle_request_with_decode({:struct, Invite})
+    |> Helpers.handle_request_with_decode({:struct, Invite})
   end
 
   @doc ~S"""
@@ -69,7 +70,7 @@ defmodule Nostrum.Api.Invite do
   @spec guild_invites(Guild.id()) :: Api.error() | {:ok, [Invite.detailed_invite()]}
   def guild_invites(guild_id) when is_snowflake(guild_id) do
     Api.request(:get, Constants.guild_invites(guild_id))
-    |> Api.handle_request_with_decode({:list, {:struct, Invite}})
+    |> Helpers.handle_request_with_decode({:list, {:struct, Invite}})
   end
 
   @doc ~S"""
@@ -119,7 +120,7 @@ defmodule Nostrum.Api.Invite do
       headers: Api.maybe_add_reason(reason)
     }
     |> Api.request()
-    |> Api.handle_request_with_decode({:struct, Invite})
+    |> Helpers.handle_request_with_decode({:struct, Invite})
   end
 
   @doc ~S"""
@@ -140,6 +141,6 @@ defmodule Nostrum.Api.Invite do
   @spec channel_invites(Channel.id()) :: Api.error() | {:ok, [Invite.detailed_invite()]}
   def channel_invites(channel_id) when is_snowflake(channel_id) do
     Api.request(:get, Constants.channel_invites(channel_id))
-    |> Api.handle_request_with_decode({:list, {:struct, Invite}})
+    |> Helpers.handle_request_with_decode({:list, {:struct, Invite}})
   end
 end

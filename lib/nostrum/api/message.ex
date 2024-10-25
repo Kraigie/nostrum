@@ -1,5 +1,6 @@
 defmodule Nostrum.Api.Message do
   alias Nostrum.Api
+  alias Nostrum.Api.Helpers
   alias Nostrum.Constants
   alias Nostrum.Struct.Message
   alias Nostrum.Struct.Channel
@@ -101,7 +102,7 @@ defmodule Nostrum.Api.Message do
       |> Api.combine_files()
 
     Api.request(:post, Constants.channel_messages(channel_id), prepared_options)
-    |> Api.handle_request_with_decode({:struct, Message})
+    |> Helpers.handle_request_with_decode({:struct, Message})
   end
 
   @doc ~S"""
@@ -303,7 +304,7 @@ defmodule Nostrum.Api.Message do
       |> Api.combine_files()
 
     Api.request(:patch, Constants.channel_message(channel_id, message_id), prepared_options)
-    |> Api.handle_request_with_decode({:struct, Message})
+    |> Helpers.handle_request_with_decode({:struct, Message})
   end
 
   @doc ~S"""
@@ -332,7 +333,7 @@ defmodule Nostrum.Api.Message do
   def get(channel_id, message_id)
       when is_snowflake(channel_id) and is_snowflake(message_id) do
     Api.request(:get, Constants.channel_message(channel_id, message_id))
-    |> Api.handle_request_with_decode({:struct, Message})
+    |> Helpers.handle_request_with_decode({:struct, Message})
   end
 
   @doc ~S"""
@@ -361,6 +362,6 @@ defmodule Nostrum.Api.Message do
       "",
       params
     )
-    |> Api.handle_request_with_decode({:list, {:struct, User}})
+    |> Helpers.handle_request_with_decode({:list, {:struct, User}})
   end
 end

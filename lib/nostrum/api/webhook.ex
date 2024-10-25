@@ -1,5 +1,6 @@
 defmodule Nostrum.Api.Webhook do
   alias Nostrum.Api
+  alias Nostrum.Api.Helpers
   alias Nostrum.Constants
   alias Nostrum.Struct.Channel
   alias Nostrum.Struct.Webhook
@@ -35,7 +36,7 @@ defmodule Nostrum.Api.Webhook do
       headers: Api.maybe_add_reason(reason)
     }
     |> Api.request()
-    |> Api.handle_request_with_decode()
+    |> Helpers.handle_request_with_decode()
   end
 
   @doc """
@@ -75,7 +76,7 @@ defmodule Nostrum.Api.Webhook do
       Constants.webhook_message_edit(webhook_id, webhook_token, message_id),
       Api.combine_embeds(args) |> Api.combine_files()
     )
-    |> Api.handle_request_with_decode({:struct, Message})
+    |> Helpers.handle_request_with_decode({:struct, Message})
   end
 
   @doc """
@@ -148,7 +149,7 @@ defmodule Nostrum.Api.Webhook do
       Api.combine_embeds(args) |> Api.combine_files(),
       params
     )
-    |> Api.handle_request_with_decode({:struct, Message})
+    |> Helpers.handle_request_with_decode({:struct, Message})
   end
 
   @doc """
@@ -160,7 +161,7 @@ defmodule Nostrum.Api.Webhook do
   @spec get(Webhook.id()) :: Api.error() | {:ok, Webhook.t()}
   def get(webhook_id) do
     Api.request(:get, Constants.webhook(webhook_id))
-    |> Api.handle_request_with_decode({:struct, Webhook})
+    |> Helpers.handle_request_with_decode({:struct, Webhook})
   end
 
   @doc """
@@ -171,7 +172,7 @@ defmodule Nostrum.Api.Webhook do
           Api.error() | {:ok, Message.t()}
   def get_message(webhook, message_id) do
     Api.request(:get, Constants.webhook_message(webhook.id, webhook.token, message_id))
-    |> Api.handle_request_with_decode({:struct, Message})
+    |> Helpers.handle_request_with_decode({:struct, Message})
   end
 
   @doc """
@@ -188,7 +189,7 @@ defmodule Nostrum.Api.Webhook do
           Api.error() | {:ok, Webhook.t()}
   def get_with_token(webhook_id, webhook_token) do
     Api.request(:get, Constants.webhook_token(webhook_id, webhook_token))
-    |> Api.handle_request_with_decode({:struct, Webhook})
+    |> Helpers.handle_request_with_decode({:struct, Webhook})
   end
 
   @doc """
@@ -218,7 +219,7 @@ defmodule Nostrum.Api.Webhook do
       headers: Api.maybe_add_reason(reason)
     }
     |> Api.request()
-    |> Api.handle_request_with_decode({:struct, Webhook})
+    |> Helpers.handle_request_with_decode({:struct, Webhook})
   end
 
   @doc """
@@ -253,6 +254,6 @@ defmodule Nostrum.Api.Webhook do
       headers: Api.maybe_add_reason(reason)
     }
     |> Api.request()
-    |> Api.handle_request_with_decode()
+    |> Helpers.handle_request_with_decode()
   end
 end

@@ -1,5 +1,6 @@
 defmodule Nostrum.Api.Poll do
   alias Nostrum.Api
+  alias Nostrum.Api.Helpers
   alias Nostrum.Constants
   alias Nostrum.Util
   alias Nostrum.Struct.Message
@@ -15,7 +16,7 @@ defmodule Nostrum.Api.Poll do
   @spec expire(Channel.id(), Message.id()) :: Api.error() | {:ok, Message.t()}
   def expire(channel_id, message_id) do
     Api.request(:post, Constants.poll_expire(channel_id, message_id))
-    |> Api.handle_request_with_decode({:struct, Message})
+    |> Helpers.handle_request_with_decode({:struct, Message})
   end
 
   @doc ~S"""
@@ -37,7 +38,7 @@ defmodule Nostrum.Api.Poll do
         "",
         params
       )
-      |> Api.handle_request_with_decode()
+      |> Helpers.handle_request_with_decode()
 
     case result do
       {:ok, %{users: users}} -> {:ok, Util.cast(users, {:list, {:struct, User}})}

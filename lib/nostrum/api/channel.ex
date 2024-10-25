@@ -1,5 +1,6 @@
 defmodule Nostrum.Api.Channel do
   alias Nostrum.Api
+  alias Nostrum.Api.Helpers
   alias Nostrum.Constants
   alias Nostrum.Snowflake
   alias Nostrum.Struct.Channel
@@ -120,7 +121,7 @@ defmodule Nostrum.Api.Channel do
 
   def create(guild_id, %{} = options) when is_snowflake(guild_id) do
     Api.request(:post, Constants.guild_channels(guild_id), options)
-    |> Api.handle_request_with_decode({:struct, Channel})
+    |> Helpers.handle_request_with_decode({:struct, Channel})
   end
 
   @doc ~S"""
@@ -153,7 +154,7 @@ defmodule Nostrum.Api.Channel do
       headers: Api.maybe_add_reason(reason)
     }
     |> Api.request()
-    |> Api.handle_request_with_decode({:struct, Channel})
+    |> Helpers.handle_request_with_decode({:struct, Channel})
   end
 
   @doc """
@@ -241,7 +242,7 @@ defmodule Nostrum.Api.Channel do
   @spec get(Channel.id()) :: Api.error() | {:ok, Channel.t()}
   def get(channel_id) when is_snowflake(channel_id) do
     Api.request(:get, Constants.channel(channel_id))
-    |> Api.handle_request_with_decode({:struct, Channel})
+    |> Helpers.handle_request_with_decode({:struct, Channel})
   end
 
   @doc ~S"""
@@ -303,7 +304,7 @@ defmodule Nostrum.Api.Channel do
       end
 
     Api.request(:get, Constants.channel_messages(channel_id), "", qs_params)
-    |> Api.handle_request_with_decode({:list, {:struct, Message}})
+    |> Helpers.handle_request_with_decode({:list, {:struct, Message}})
   end
 
   @doc """
@@ -315,7 +316,7 @@ defmodule Nostrum.Api.Channel do
   @spec webhooks(Channel.id()) :: Api.error() | {:ok, [Webhook.t()]}
   def webhooks(channel_id) do
     Api.request(:get, Constants.webhooks_channel(channel_id))
-    |> Api.handle_request_with_decode()
+    |> Helpers.handle_request_with_decode()
   end
 
   @doc ~S"""
@@ -334,7 +335,7 @@ defmodule Nostrum.Api.Channel do
   @spec pinned_messages(Channel.id()) :: Api.error() | {:ok, [Message.t()]}
   def pinned_messages(channel_id) when is_snowflake(channel_id) do
     Api.request(:get, Constants.channel_pins(channel_id))
-    |> Api.handle_request_with_decode({:list, {:struct, Message}})
+    |> Helpers.handle_request_with_decode({:list, {:struct, Message}})
   end
 
   @doc ~S"""
@@ -393,7 +394,7 @@ defmodule Nostrum.Api.Channel do
       headers: Api.maybe_add_reason(reason)
     }
     |> Api.request()
-    |> Api.handle_request_with_decode({:struct, Channel})
+    |> Helpers.handle_request_with_decode({:struct, Channel})
   end
 
   @doc """

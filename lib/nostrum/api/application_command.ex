@@ -1,5 +1,6 @@
 defmodule Nostrum.Api.ApplicationCommand do
   alias Nostrum.Api
+  alias Nostrum.Api.Helpers
   alias Nostrum.Constants
   alias Nostrum.Snowflake
   alias Nostrum.Cache.Me
@@ -45,7 +46,7 @@ defmodule Nostrum.Api.ApplicationCommand do
       Constants.guild_application_command_permissions(application_id, guild_id),
       permissions
     )
-    |> Api.handle_request_with_decode()
+    |> Helpers.handle_request_with_decode()
   end
 
   @doc """
@@ -78,7 +79,7 @@ defmodule Nostrum.Api.ApplicationCommand do
         ]) :: {:ok, [map()]} | Api.error()
   def bulk_overwrite_global_commands(application_id \\ Me.get().id, commands) do
     Api.request(:put, Constants.global_application_commands(application_id), commands)
-    |> Api.handle_request_with_decode()
+    |> Helpers.handle_request_with_decode()
   end
 
   @doc """
@@ -113,7 +114,7 @@ defmodule Nostrum.Api.ApplicationCommand do
         commands
       ) do
     Api.request(:put, Constants.guild_application_commands(application_id, guild_id), commands)
-    |> Api.handle_request_with_decode()
+    |> Helpers.handle_request_with_decode()
   end
 
   @doc """
@@ -150,7 +151,7 @@ defmodule Nostrum.Api.ApplicationCommand do
           {:ok, map()} | Api.error()
   def create_global_command(application_id \\ Me.get().id, command) do
     Api.request(:post, Constants.global_application_commands(application_id), command)
-    |> Api.handle_request_with_decode()
+    |> Helpers.handle_request_with_decode()
   end
 
   @doc """
@@ -181,7 +182,7 @@ defmodule Nostrum.Api.ApplicationCommand do
         command
       ) do
     Api.request(:post, Constants.guild_application_commands(application_id, guild_id), command)
-    |> Api.handle_request_with_decode()
+    |> Helpers.handle_request_with_decode()
   end
 
   @doc """
@@ -256,7 +257,7 @@ defmodule Nostrum.Api.ApplicationCommand do
         permissions: permissions
       }
     )
-    |> Api.handle_request_with_decode()
+    |> Helpers.handle_request_with_decode()
   end
 
   @doc """
@@ -289,7 +290,7 @@ defmodule Nostrum.Api.ApplicationCommand do
         command
       ) do
     Api.request(:patch, Constants.global_application_command(application_id, command_id), command)
-    |> Api.handle_request_with_decode()
+    |> Helpers.handle_request_with_decode()
   end
 
   @doc """
@@ -331,7 +332,7 @@ defmodule Nostrum.Api.ApplicationCommand do
       Constants.guild_application_command(application_id, guild_id, command_id),
       command
     )
-    |> Api.handle_request_with_decode()
+    |> Helpers.handle_request_with_decode()
   end
 
   @doc """
@@ -360,7 +361,7 @@ defmodule Nostrum.Api.ApplicationCommand do
       :get,
       Constants.guild_application_command_permissions(application_id, guild_id, command_id)
     )
-    |> Api.handle_request_with_decode()
+    |> Helpers.handle_request_with_decode()
   end
 
   @doc """
@@ -393,7 +394,7 @@ defmodule Nostrum.Api.ApplicationCommand do
   @spec global_commands(User.id()) :: {:ok, [map()]} | Api.error()
   def global_commands(application_id \\ Me.get().id) do
     Api.request(:get, Constants.global_application_commands(application_id))
-    |> Api.handle_request_with_decode()
+    |> Helpers.handle_request_with_decode()
   end
 
   @doc """
@@ -416,7 +417,7 @@ defmodule Nostrum.Api.ApplicationCommand do
         guild_id
       ) do
     Api.request(:get, Constants.guild_application_command_permissions(application_id, guild_id))
-    |> Api.handle_request_with_decode()
+    |> Helpers.handle_request_with_decode()
   end
 
   @doc """
@@ -436,6 +437,6 @@ defmodule Nostrum.Api.ApplicationCommand do
   @spec guild_commands(User.id(), Guild.id()) :: {:ok, [map()]} | Api.error()
   def guild_commands(application_id \\ Me.get().id, guild_id) do
     Api.request(:get, Constants.guild_application_commands(application_id, guild_id))
-    |> Api.handle_request_with_decode()
+    |> Helpers.handle_request_with_decode()
   end
 end

@@ -1,5 +1,6 @@
 defmodule Nostrum.Api.Role do
   alias Nostrum.Api
+  alias Nostrum.Api.Helpers
   alias Nostrum.Constants
   alias Nostrum.Struct.Guild.AuditLogEntry
   alias Nostrum.Struct.Guild.Role
@@ -68,7 +69,7 @@ defmodule Nostrum.Api.Role do
       headers: Api.maybe_add_reason(reason)
     }
     |> Api.request()
-    |> Api.handle_request_with_decode({:struct, Role})
+    |> Helpers.handle_request_with_decode({:struct, Role})
   end
 
   @doc ~S"""
@@ -140,7 +141,7 @@ defmodule Nostrum.Api.Role do
       headers: Api.maybe_add_reason(reason)
     }
     |> Api.request()
-    |> Api.handle_request_with_decode({:struct, Role})
+    |> Helpers.handle_request_with_decode({:struct, Role})
   end
 
   @doc """

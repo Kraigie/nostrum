@@ -1,5 +1,6 @@
 defmodule Nostrum.Api.Guild do
   alias Nostrum.Api
+  alias Nostrum.Api.Helpers
   alias Nostrum.Constants
   alias Nostrum.Struct.Channel
   alias Nostrum.Struct.Emoji
@@ -60,7 +61,7 @@ defmodule Nostrum.Api.Guild do
   def add_member(guild_id, user_id, %{} = options)
       when is_snowflake(guild_id) and is_snowflake(user_id) do
     Api.request(:put, Constants.guild_member(guild_id, user_id), options)
-    |> Api.handle_request_with_decode({:struct, Member})
+    |> Helpers.handle_request_with_decode({:struct, Member})
   end
 
   @doc """
@@ -92,7 +93,7 @@ defmodule Nostrum.Api.Guild do
       headers: Api.maybe_add_reason(reason)
     }
     |> Api.request()
-    |> Api.handle_request_with_decode()
+    |> Helpers.handle_request_with_decode()
   end
 
   @doc """
@@ -156,7 +157,7 @@ defmodule Nostrum.Api.Guild do
       headers: Api.maybe_add_reason(reason)
     }
     |> Api.request()
-    |> Api.handle_request_with_decode({:struct, Emoji})
+    |> Helpers.handle_request_with_decode({:struct, Emoji})
   end
 
   @doc """
@@ -243,7 +244,7 @@ defmodule Nostrum.Api.Guild do
   @spec get(Guild.id()) :: Api.error() | {:ok, Guild.rest_guild()}
   def get(guild_id) when is_snowflake(guild_id) do
     Api.request(:get, Constants.guild(guild_id))
-    |> Api.handle_request_with_decode({:struct, Guild})
+    |> Helpers.handle_request_with_decode({:struct, Guild})
   end
 
   @doc ~S"""
@@ -259,7 +260,7 @@ defmodule Nostrum.Api.Guild do
   @spec audit_log(Guild.id(), Api.options()) :: {:ok, AuditLog.t()} | Api.error()
   def audit_log(guild_id, options \\ []) do
     Api.request(:get, Constants.guild_audit_logs(guild_id), "", options)
-    |> Api.handle_request_with_decode({:struct, AuditLog})
+    |> Helpers.handle_request_with_decode({:struct, AuditLog})
   end
 
   @doc """
@@ -269,7 +270,7 @@ defmodule Nostrum.Api.Guild do
   @spec ban(Guild.id(), User.id()) :: Api.error() | {:ok, Ban.t()}
   def ban(guild_id, user_id) do
     Api.request(:get, Constants.guild_ban(guild_id, user_id))
-    |> Api.handle_request_with_decode({:struct, Ban})
+    |> Helpers.handle_request_with_decode({:struct, Ban})
   end
 
   @doc """
@@ -280,7 +281,7 @@ defmodule Nostrum.Api.Guild do
   @spec bans(Guild.id()) :: Api.error() | {:ok, [User.t()]}
   def bans(guild_id) do
     Api.request(:get, Constants.guild_bans(guild_id))
-    |> Api.handle_request_with_decode({:list, {:struct, User}})
+    |> Helpers.handle_request_with_decode({:list, {:struct, User}})
   end
 
   @doc ~S"""
@@ -298,7 +299,7 @@ defmodule Nostrum.Api.Guild do
   @spec channels(Guild.id()) :: Api.error() | {:ok, [Channel.guild_channel()]}
   def channels(guild_id) when is_snowflake(guild_id) do
     Api.request(:get, Constants.guild_channels(guild_id))
-    |> Api.handle_request_with_decode({:list, {:struct, Channel}})
+    |> Helpers.handle_request_with_decode({:list, {:struct, Channel}})
   end
 
   @doc ~S"""
@@ -311,7 +312,7 @@ defmodule Nostrum.Api.Guild do
   @spec emoji(Guild.id(), Emoji.id()) :: Api.error() | {:ok, Emoji.t()}
   def emoji(guild_id, emoji_id) do
     Api.request(:get, Constants.guild_emoji(guild_id, emoji_id))
-    |> Api.handle_request_with_decode({:struct, Emoji})
+    |> Helpers.handle_request_with_decode({:struct, Emoji})
   end
 
   @doc """
@@ -323,7 +324,7 @@ defmodule Nostrum.Api.Guild do
           Api.error() | {:ok, [Integration.t()]}
   def integrations(guild_id) do
     Api.request(:get, Constants.guild_integrations(guild_id))
-    |> Api.handle_request_with_decode()
+    |> Helpers.handle_request_with_decode()
   end
 
   @doc """
@@ -340,7 +341,7 @@ defmodule Nostrum.Api.Guild do
   @spec member(Guild.id(), User.id()) :: Api.error() | {:ok, Member.t()}
   def member(guild_id, user_id) when is_snowflake(guild_id) and is_snowflake(user_id) do
     Api.request(:get, Constants.guild_member(guild_id, user_id))
-    |> Api.handle_request_with_decode({:struct, Member})
+    |> Helpers.handle_request_with_decode({:struct, Member})
   end
 
   @doc """
@@ -360,7 +361,7 @@ defmodule Nostrum.Api.Guild do
   @spec estimate_prune_count(Guild.id(), 1..30) :: Api.error() | {:ok, %{pruned: integer}}
   def estimate_prune_count(guild_id, days) when is_snowflake(guild_id) and days in 1..30 do
     Api.request(:get, Constants.guild_prune(guild_id), "", days: days)
-    |> Api.handle_request_with_decode()
+    |> Helpers.handle_request_with_decode()
   end
 
   @doc ~S"""
@@ -377,7 +378,7 @@ defmodule Nostrum.Api.Guild do
   @spec roles(Guild.id()) :: Api.error() | {:ok, [Role.t()]}
   def roles(guild_id) when is_snowflake(guild_id) do
     Api.request(:get, Constants.guild_roles(guild_id))
-    |> Api.handle_request_with_decode({:list, {:struct, Role}})
+    |> Helpers.handle_request_with_decode({:list, {:struct, Role}})
   end
 
   @doc """
@@ -387,7 +388,7 @@ defmodule Nostrum.Api.Guild do
   @spec scheduled_events(Guild.id()) :: Api.error() | {:ok, [ScheduledEvent.t()]}
   def scheduled_events(guild_id) do
     Api.request(:get, Constants.guild_scheduled_events(guild_id))
-    |> Api.handle_request_with_decode({:list, {:struct, ScheduledEvent}})
+    |> Helpers.handle_request_with_decode({:list, {:struct, ScheduledEvent}})
   end
 
   @doc """
@@ -399,7 +400,7 @@ defmodule Nostrum.Api.Guild do
   @spec webhooks(Guild.id()) :: Api.error() | {:ok, [Webhook.t()]}
   def webhooks(guild_id) do
     Api.request(:get, Constants.webhooks_guild(guild_id))
-    |> Api.handle_request_with_decode({:list, {:struct, Webhook}})
+    |> Helpers.handle_request_with_decode({:list, {:struct, Webhook}})
   end
 
   @doc """
@@ -408,7 +409,7 @@ defmodule Nostrum.Api.Guild do
   @spec widget(Guild.id()) :: Api.error() | {:ok, map}
   def widget(guild_id) do
     Api.request(:get, Constants.guild_widget(guild_id))
-    |> Api.handle_request_with_decode()
+    |> Helpers.handle_request_with_decode()
   end
 
   @doc """
@@ -419,7 +420,7 @@ defmodule Nostrum.Api.Guild do
   @spec voice_region(Guild.id()) :: Api.error() | {:ok, [VoiceRegion.t()]}
   def voice_region(guild_id) do
     Api.request(:get, Constants.guild_voice_regions(guild_id))
-    |> Api.handle_request_with_decode({:list, {:struct, VoiceRegion}})
+    |> Helpers.handle_request_with_decode({:list, {:struct, VoiceRegion}})
   end
 
   @doc """
@@ -448,7 +449,7 @@ defmodule Nostrum.Api.Guild do
   @spec emojis(Guild.id()) :: Api.error() | {:ok, [Emoji.t()]}
   def emojis(guild_id) do
     Api.request(:get, Constants.guild_emojis(guild_id))
-    |> Api.handle_request_with_decode({:list, {:struct, Emoji}})
+    |> Helpers.handle_request_with_decode({:list, {:struct, Emoji}})
   end
 
   @doc """
@@ -475,7 +476,7 @@ defmodule Nostrum.Api.Guild do
 
   def members(guild_id, %{} = options) when is_snowflake(guild_id) do
     Api.request(:get, Constants.guild_members(guild_id), "", options)
-    |> Api.handle_request_with_decode({:list, {:struct, Member}})
+    |> Helpers.handle_request_with_decode({:list, {:struct, Member}})
   end
 
   @doc """
@@ -484,7 +485,7 @@ defmodule Nostrum.Api.Guild do
   @spec voice_regions() :: Api.error() | {:ok, [VoiceRegion.t()]}
   def voice_regions do
     Api.request(:get, Constants.regions())
-    |> Api.handle_request_with_decode({:list, {:struct, VoiceRegion}})
+    |> Helpers.handle_request_with_decode({:list, {:struct, VoiceRegion}})
   end
 
   @doc """
@@ -506,7 +507,7 @@ defmodule Nostrum.Api.Guild do
   @spec modify_self_nick(Guild.id(), Api.options()) :: Api.error() | {:ok, %{nick: String.t()}}
   def modify_self_nick(guild_id, options \\ %{}) do
     Api.request(:patch, Constants.guild_me_nick(guild_id), options)
-    |> Api.handle_request_with_decode()
+    |> Helpers.handle_request_with_decode()
   end
 
   @doc """
@@ -564,7 +565,7 @@ defmodule Nostrum.Api.Guild do
       headers: Api.maybe_add_reason(reason)
     }
     |> Api.request()
-    |> Api.handle_request_with_decode({:struct, Guild})
+    |> Helpers.handle_request_with_decode({:struct, Guild})
   end
 
   @doc """
@@ -628,7 +629,7 @@ defmodule Nostrum.Api.Guild do
       headers: Api.maybe_add_reason(reason)
     }
     |> Api.request()
-    |> Api.handle_request_with_decode({:struct, Emoji})
+    |> Helpers.handle_request_with_decode({:struct, Emoji})
   end
 
   @doc """
@@ -697,7 +698,7 @@ defmodule Nostrum.Api.Guild do
       params: [],
       headers: Api.maybe_add_reason(reason)
     })
-    |> Api.handle_request_with_decode({:struct, Member})
+    |> Helpers.handle_request_with_decode({:struct, Member})
   end
 
   @doc ~S"""
@@ -731,7 +732,7 @@ defmodule Nostrum.Api.Guild do
       headers: Api.maybe_add_reason(reason)
     }
     |> Api.request()
-    |> Api.handle_request_with_decode({:list, {:struct, Role}})
+    |> Helpers.handle_request_with_decode({:list, {:struct, Role}})
   end
 
   @doc """
@@ -740,7 +741,7 @@ defmodule Nostrum.Api.Guild do
   @spec modify_widget(Guild.id(), map) :: Api.error() | {:ok, map}
   def modify_widget(guild_id, options) do
     Api.request(:patch, Constants.guild_widget(guild_id), options)
-    |> Api.handle_request_with_decode()
+    |> Helpers.handle_request_with_decode()
   end
 
   @doc """

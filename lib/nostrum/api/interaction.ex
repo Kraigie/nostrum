@@ -1,5 +1,6 @@
 defmodule Nostrum.Api.Interaction do
   alias Nostrum.Api
+  alias Nostrum.Api.Helpers
   alias Nostrum.Constants
   alias Nostrum.Cache.Me
   alias Nostrum.Struct.Interaction
@@ -135,7 +136,7 @@ defmodule Nostrum.Api.Interaction do
       Constants.interaction_callback_original(id, token),
       Api.combine_embeds(response) |> Api.combine_files()
     )
-    |> Api.handle_request_with_decode({:struct, Message})
+    |> Helpers.handle_request_with_decode({:struct, Message})
   end
 
   @doc """
@@ -154,6 +155,6 @@ defmodule Nostrum.Api.Interaction do
   @spec original_response(Interaction.t()) :: Api.error() | {:ok, Message.t()}
   def original_response(id \\ Me.get().id, token) do
     Api.request(:get, Constants.original_interaction_response(id, token))
-    |> Api.handle_request_with_decode({:struct, Message})
+    |> Helpers.handle_request_with_decode({:struct, Message})
   end
 end

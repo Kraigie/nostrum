@@ -1,5 +1,6 @@
 defmodule Nostrum.Api.Self do
   alias Nostrum.Api
+  alias Nostrum.Api.Helpers
   alias Nostrum.Constants
   alias Nostrum.Struct.User
   alias Nostrum.Struct.Channel
@@ -33,7 +34,7 @@ defmodule Nostrum.Api.Self do
   @spec application_information() :: Api.error() | {:ok, map()}
   def application_information do
     Api.request(:get, Constants.application_information())
-    |> Api.handle_request_with_decode()
+    |> Helpers.handle_request_with_decode()
   end
 
   @doc """
@@ -49,7 +50,7 @@ defmodule Nostrum.Api.Self do
   @spec get() :: Api.error() | {:ok, User.t()}
   def get do
     Api.request(:get, Constants.me())
-    |> Api.handle_request_with_decode({:struct, User})
+    |> Helpers.handle_request_with_decode({:struct, User})
   end
 
   @doc """
@@ -67,7 +68,7 @@ defmodule Nostrum.Api.Self do
   @spec dms() :: Api.error() | {:ok, [Channel.dm_channel()]}
   def dms do
     Api.request(:get, Constants.me_channels())
-    |> Api.handle_request_with_decode({:list, {:struct, Channel}})
+    |> Helpers.handle_request_with_decode({:list, {:struct, Channel}})
   end
 
   @doc ~S"""
@@ -92,7 +93,7 @@ defmodule Nostrum.Api.Self do
 
   def modify(options) when is_map(options) do
     Api.request(:patch, Constants.me(), options)
-    |> Api.handle_request_with_decode({:struct, User})
+    |> Helpers.handle_request_with_decode({:struct, User})
   end
 
   @doc """
@@ -166,7 +167,7 @@ defmodule Nostrum.Api.Self do
 
   def guilds(options) when is_map(options) do
     Api.request(:get, Constants.me_guilds(), "", options)
-    |> Api.handle_request_with_decode({:list, {:struct, Guild}})
+    |> Helpers.handle_request_with_decode({:list, {:struct, Guild}})
   end
 
   @doc """
@@ -175,6 +176,6 @@ defmodule Nostrum.Api.Self do
   @spec connections() :: Api.error() | {:ok, list()}
   def connections do
     Api.request(:get, Constants.me_connections())
-    |> Api.handle_request_with_decode()
+    |> Helpers.handle_request_with_decode()
   end
 end

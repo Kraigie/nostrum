@@ -1,5 +1,6 @@
 defmodule Nostrum.Api.User do
   alias Nostrum.Api
+  alias Nostrum.Api.Helpers
   alias Nostrum.Constants
   alias Nostrum.Struct.User
   alias Nostrum.Struct.Channel
@@ -21,7 +22,7 @@ defmodule Nostrum.Api.User do
   @spec create_dm(User.id()) :: Api.error() | {:ok, Channel.dm_channel()}
   def create_dm(user_id) when is_snowflake(user_id) do
     Api.request(:post, Constants.me_channels(), %{recipient_id: user_id})
-    |> Api.handle_request_with_decode({:struct, Channel})
+    |> Helpers.handle_request_with_decode({:struct, Channel})
   end
 
   @doc """
@@ -43,7 +44,7 @@ defmodule Nostrum.Api.User do
           Api.error() | {:ok, Channel.group_dm_channel()}
   def create_group_dm(access_tokens, nicks) when is_list(access_tokens) and is_map(nicks) do
     Api.request(:post, Constants.me_channels(), %{access_tokens: access_tokens, nicks: nicks})
-    |> Api.handle_request_with_decode({:struct, Channel})
+    |> Helpers.handle_request_with_decode({:struct, Channel})
   end
 
   @doc """
@@ -55,6 +56,6 @@ defmodule Nostrum.Api.User do
   @spec get(User.id()) :: Api.error() | {:ok, User.t()}
   def get(user_id) do
     Api.request(:get, Constants.user(user_id))
-    |> Api.handle_request_with_decode({:struct, User})
+    |> Helpers.handle_request_with_decode({:struct, User})
   end
 end

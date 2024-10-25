@@ -1,5 +1,6 @@
 defmodule Nostrum.Api.Thread do
   alias Nostrum.Api
+  alias Nostrum.Api.Helpers
   alias Nostrum.Util
   alias Nostrum.Constants
   alias Nostrum.Struct.Channel
@@ -9,7 +10,7 @@ defmodule Nostrum.Api.Thread do
   alias Nostrum.Struct.ThreadMember
   alias Nostrum.Struct.Message
 
-  import Api, only: [has_files: 1]
+  import Api.Helpers, only: [has_files: 1]
 
   @doc """
   Add a user to a thread, requires the ability to send messages in the thread.
@@ -27,7 +28,7 @@ defmodule Nostrum.Api.Thread do
   @spec member(Channel.id(), User.id()) :: {:ok, ThreadMember.t()} | Api.error()
   def member(thread_id, user_id) do
     Api.request(:get, Constants.thread_member(thread_id, user_id))
-    |> Api.handle_request_with_decode({:struct, ThreadMember})
+    |> Helpers.handle_request_with_decode({:struct, ThreadMember})
   end
 
   @doc """
@@ -39,7 +40,7 @@ defmodule Nostrum.Api.Thread do
   @spec members(Channel.id()) :: {:ok, [ThreadMember.t()]} | Api.error()
   def members(thread_id) do
     Api.request(:get, Constants.thread_members(thread_id))
-    |> Api.handle_request_with_decode({:list, {:struct, ThreadMember}})
+    |> Helpers.handle_request_with_decode({:list, {:struct, ThreadMember}})
   end
 
   @doc """
@@ -73,7 +74,7 @@ defmodule Nostrum.Api.Thread do
   def list(guild_id) do
     res =
       Api.request(:get, Constants.guild_active_threads(guild_id))
-      |> Api.handle_request_with_decode()
+      |> Helpers.handle_request_with_decode()
 
     case res do
       {:ok, %{threads: channels, members: thread_members}} ->
@@ -119,7 +120,7 @@ defmodule Nostrum.Api.Thread do
         params: options,
         headers: []
       })
-      |> Api.handle_request_with_decode()
+      |> Helpers.handle_request_with_decode()
 
     case res do
       {:ok, %{threads: channels, members: thread_members, has_more: has_more}} ->
@@ -230,7 +231,7 @@ defmodule Nostrum.Api.Thread do
       params: [],
       headers: Api.maybe_add_reason(reason)
     })
-    |> Api.handle_request_with_decode({:struct, Channel})
+    |> Helpers.handle_request_with_decode({:struct, Channel})
   end
 
   @doc """
@@ -283,7 +284,7 @@ defmodule Nostrum.Api.Thread do
       headers: headers
     }
     |> Api.request()
-    |> Api.handle_request_with_decode({:struct, Channel})
+    |> Helpers.handle_request_with_decode({:struct, Channel})
   end
 
   def create_in_forum(channel_id, options, reason) do
@@ -294,7 +295,7 @@ defmodule Nostrum.Api.Thread do
       params: [],
       headers: Api.maybe_add_reason(reason)
     })
-    |> Api.handle_request_with_decode({:struct, Channel})
+    |> Helpers.handle_request_with_decode({:struct, Channel})
   end
 
   @type thread_with_message_params :: %{
@@ -334,6 +335,6 @@ defmodule Nostrum.Api.Thread do
       params: [],
       headers: Api.maybe_add_reason(reason)
     })
-    |> Api.handle_request_with_decode({:struct, Channel})
+    |> Helpers.handle_request_with_decode({:struct, Channel})
   end
 end

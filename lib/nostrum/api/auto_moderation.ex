@@ -1,5 +1,6 @@
 defmodule Nostrum.Api.AutoModeration do
   alias Nostrum.Api
+  alias Nostrum.Api.Helpers
   alias Nostrum.Constants
   alias Nostrum.Struct.AutoModerationRule
   alias Nostrum.Struct.Guild
@@ -29,7 +30,7 @@ defmodule Nostrum.Api.AutoModeration do
 
   def create_rule(guild_id, options) do
     Api.request(:post, Constants.guild_auto_moderation_rule(guild_id), options)
-    |> Api.handle_request_with_decode({:struct, AutoModerationRule})
+    |> Helpers.handle_request_with_decode({:struct, AutoModerationRule})
   end
 
   @doc """
@@ -49,7 +50,7 @@ defmodule Nostrum.Api.AutoModeration do
   @spec rules(Guild.id()) :: {:ok, [AutoModerationRule.t()]} | Api.error()
   def rules(guild_id) do
     Api.request(:get, Constants.guild_auto_moderation_rule(guild_id))
-    |> Api.handle_request_with_decode({:list, {:struct, AutoModerationRule}})
+    |> Helpers.handle_request_with_decode({:list, {:struct, AutoModerationRule}})
   end
 
   @doc """
@@ -60,7 +61,7 @@ defmodule Nostrum.Api.AutoModeration do
           {:ok, AutoModerationRule.t()} | Api.error()
   def rule(guild_id, rule_id) do
     Api.request(:get, Constants.guild_auto_moderation_rule(guild_id, rule_id))
-    |> Api.handle_request_with_decode({:struct, AutoModerationRule})
+    |> Helpers.handle_request_with_decode({:struct, AutoModerationRule})
   end
 
   @doc """
@@ -76,6 +77,6 @@ defmodule Nostrum.Api.AutoModeration do
 
   def modify_rule(guild_id, rule_id, options) do
     Api.request(:patch, Constants.guild_auto_moderation_rule(guild_id, rule_id), options)
-    |> Api.handle_request_with_decode({:struct, AutoModerationRule})
+    |> Helpers.handle_request_with_decode({:struct, AutoModerationRule})
   end
 end

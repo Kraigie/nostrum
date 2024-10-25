@@ -1,5 +1,6 @@
 defmodule Nostrum.Api.ScheduledEvent do
   alias Nostrum.Api
+  alias Nostrum.Api.Helpers
   alias Nostrum.Constants
   alias Nostrum.Struct.Guild
   alias Nostrum.Struct.Guild.AuditLogEntry
@@ -47,7 +48,7 @@ defmodule Nostrum.Api.ScheduledEvent do
       params: [],
       headers: Api.maybe_add_reason(reason)
     })
-    |> Api.handle_request_with_decode({:struct, ScheduledEvent})
+    |> Helpers.handle_request_with_decode({:struct, ScheduledEvent})
   end
 
   @doc """
@@ -68,7 +69,7 @@ defmodule Nostrum.Api.ScheduledEvent do
           Api.error() | {:ok, ScheduledEvent.t()}
   def get(guild_id, event_id) do
     Api.request(:get, Constants.guild_scheduled_event(guild_id, event_id))
-    |> Api.handle_request_with_decode({:struct, ScheduledEvent})
+    |> Helpers.handle_request_with_decode({:struct, ScheduledEvent})
   end
 
   @doc """
@@ -86,7 +87,7 @@ defmodule Nostrum.Api.ScheduledEvent do
           Api.error() | {:ok, [ScheduledEvent.User.t()]}
   def users(guild_id, event_id, params \\ []) do
     Api.request(:get, Constants.guild_scheduled_event_users(guild_id, event_id), "", params)
-    |> Api.handle_request_with_decode({:list, {:struct, ScheduledEvent.User}})
+    |> Helpers.handle_request_with_decode({:list, {:struct, ScheduledEvent.User}})
   end
 
   @doc """
@@ -131,6 +132,6 @@ defmodule Nostrum.Api.ScheduledEvent do
       params: [],
       headers: Api.maybe_add_reason(reason)
     })
-    |> Api.handle_request_with_decode({:struct, ScheduledEvent})
+    |> Helpers.handle_request_with_decode({:struct, ScheduledEvent})
   end
 end

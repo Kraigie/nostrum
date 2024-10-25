@@ -46,10 +46,11 @@ defmodule Nostrum.Api do
   require Logger
 
   import Nostrum.Snowflake, only: [is_snowflake: 1]
+  import Nostrum.Api.Helpers, only: [has_files: 1]
 
   alias Nostrum.Api.Ratelimiter
   alias Nostrum.Cache.Me
-  alias Nostrum.{Snowflake, Util}
+  alias Nostrum.Snowflake
 
   alias Nostrum.Struct.{
     ApplicationCommand,
@@ -69,41 +70,6 @@ defmodule Nostrum.Api do
   }
 
   alias Nostrum.Struct.Guild.{AuditLog, AuditLogEntry, Member, Role, ScheduledEvent}
-
-  defguard has_files(args) when is_map_key(args, :files) or is_map_key(args, :file)
-
-  def handle_request_with_decode(response)
-  def handle_request_with_decode({:ok, body}), do: {:ok, Jason.decode!(body, keys: :atoms)}
-  def handle_request_with_decode({:error, _} = error), do: error
-
-  def handle_request_with_decode(response, type)
-  # add_guild_member/3 can return both a 201 and a 204
-  def handle_request_with_decode({:ok}, _type), do: {:ok}
-  def handle_request_with_decode({:error, _} = error, _type), do: error
-
-  def handle_request_with_decode({:ok, body}, type) do
-    convert =
-      body
-      |> Jason.decode!(keys: :atoms)
-      |> Util.cast(type)
-
-    {:ok, convert}
-  end
-
-  def handle_request_with_decode!(response)
-  def handle_request_with_decode!({:ok, body}), do: Jason.decode!(body, keys: :atoms)
-  def handle_request_with_decode!({:error, error}), do: raise(error)
-
-  def handle_request_with_decode!(response, type)
-  # add_guild_member/3 can return both a 201 and a 204
-  def handle_request_with_decode!({:ok}, _type), do: {:ok}
-  def handle_request_with_decode!({:error, error}, _type), do: raise(error)
-
-  def handle_request_with_decode!({:ok, body}, type) do
-    body
-    |> Jason.decode!(keys: :atoms)
-    |> Util.cast(type)
-  end
 
   @typedoc """
   Represents a failed response from the API.

@@ -1,5 +1,6 @@
 defmodule Nostrum.Api.Sticker do
   alias Nostrum.Api
+  alias Nostrum.Api.Helpers
   alias Nostrum.Util
   alias Nostrum.Snowflake
   alias Nostrum.Constants
@@ -74,7 +75,7 @@ defmodule Nostrum.Api.Sticker do
       headers: headers
     }
     |> Api.request()
-    |> Api.handle_request_with_decode({:struct, Sticker})
+    |> Helpers.handle_request_with_decode({:struct, Sticker})
   end
 
   @doc ~S"""
@@ -95,7 +96,7 @@ defmodule Nostrum.Api.Sticker do
   @spec get(Sticker.id()) :: {:ok, Sticker.t()} | Api.error()
   def get(sticker_id) do
     Api.request(:get, Constants.sticker(sticker_id))
-    |> Api.handle_request_with_decode({:struct, Sticker})
+    |> Helpers.handle_request_with_decode({:struct, Sticker})
   end
 
   @doc ~S"""
@@ -107,7 +108,7 @@ defmodule Nostrum.Api.Sticker do
   @spec get(Guild.id(), Sticker.id()) :: Sticker.t() | Api.error()
   def get(guild_id, sticker_id) do
     Api.request(:get, Constants.guild_sticker(guild_id, sticker_id))
-    |> Api.handle_request_with_decode({:struct, Sticker})
+    |> Helpers.handle_request_with_decode({:struct, Sticker})
   end
 
   @doc ~S"""
@@ -119,7 +120,7 @@ defmodule Nostrum.Api.Sticker do
   @spec pack(Snowflake.t()) :: {:ok, Sticker.Pack.t()} | Api.error()
   def pack(id) do
     Api.request(:get, Constants.sticker_pack(id))
-    |> Api.handle_request_with_decode({:struct, Sticker.Pack})
+    |> Helpers.handle_request_with_decode({:struct, Sticker.Pack})
   end
 
   @doc ~S"""
@@ -129,7 +130,7 @@ defmodule Nostrum.Api.Sticker do
   @spec packs() :: {:ok, [Sticker.Pack.t()]} | Api.error()
   def packs do
     Api.request(:get, Constants.sticker_packs())
-    |> Api.handle_request_with_decode()
+    |> Helpers.handle_request_with_decode()
     |> case do
       {:ok, %{sticker_packs: packs}} -> {:ok, Util.cast(packs, {:list, {:struct, Sticker.Pack}})}
       resp -> resp
@@ -145,7 +146,7 @@ defmodule Nostrum.Api.Sticker do
   @spec list(Guild.id()) :: {:ok, [Sticker.t()]} | Api.error()
   def list(guild_id) do
     Api.request(:get, Constants.guild_stickers(guild_id))
-    |> Api.handle_request_with_decode({:list, {:struct, Sticker}})
+    |> Helpers.handle_request_with_decode({:list, {:struct, Sticker}})
   end
 
   @doc ~S"""
@@ -167,6 +168,6 @@ defmodule Nostrum.Api.Sticker do
         }) :: {:ok, Sticker.t()} | Api.error()
   def modify(guild_id, sticker_id, options) do
     Api.request(:patch, Constants.guild_sticker(guild_id, sticker_id), options)
-    |> Api.handle_request_with_decode({:struct, Sticker})
+    |> Helpers.handle_request_with_decode({:struct, Sticker})
   end
 end
