@@ -49,7 +49,7 @@ defmodule Nostrum.Api do
 
   alias Nostrum.Api.Ratelimiter
   alias Nostrum.Cache.Me
-  alias Nostrum.{Constants, Snowflake, Util}
+  alias Nostrum.{Snowflake, Util}
 
   alias Nostrum.Struct.{
     ApplicationCommand,
