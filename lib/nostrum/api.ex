@@ -2441,8 +2441,7 @@ defmodule Nostrum.Api do
   """
   @spec get_user(User.id()) :: error | {:ok, User.t()}
   def get_user(user_id) do
-    request(:get, Constants.user(user_id))
-    |> handle_request_with_decode({:struct, User})
+    Nostrum.Api.User.get(user_id)
   end
 
   @doc """
@@ -2529,14 +2528,8 @@ defmodule Nostrum.Api do
   ```
   """
   @spec get_current_user_guilds(options) :: error | {:ok, [Guild.user_guild()]}
-  def get_current_user_guilds(options \\ [])
-
-  def get_current_user_guilds(options) when is_list(options),
-    do: get_current_user_guilds(Map.new(options))
-
-  def get_current_user_guilds(options) when is_map(options) do
-    request(:get, Constants.me_guilds(), "", options)
-    |> handle_request_with_decode({:list, {:struct, Guild}})
+  def get_current_user_guilds(options \\ []) do
+    Nostrum.Api.Self.guilds(options)
   end
 
   @doc ~S"""
@@ -2598,8 +2591,7 @@ defmodule Nostrum.Api do
   """
   @spec create_dm(User.id()) :: error | {:ok, Channel.dm_channel()}
   def create_dm(user_id) when is_snowflake(user_id) do
-    request(:post, Constants.me_channels(), %{recipient_id: user_id})
-    |> handle_request_with_decode({:struct, Channel})
+    Nostrum.Api.User.create_dm(user_id)
   end
 
   @doc ~S"""
@@ -2629,8 +2621,7 @@ defmodule Nostrum.Api do
   @spec create_group_dm([String.t()], %{optional(User.id()) => String.t()}) ::
           error | {:ok, Channel.group_dm_channel()}
   def create_group_dm(access_tokens, nicks) when is_list(access_tokens) and is_map(nicks) do
-    request(:post, Constants.me_channels(), %{access_tokens: access_tokens, nicks: nicks})
-    |> handle_request_with_decode({:struct, Channel})
+    Nostrum.Api.User.create_group_dm(access_tokens, nicks)
   end
 
   @doc ~S"""
@@ -2648,8 +2639,7 @@ defmodule Nostrum.Api do
   """
   @spec get_user_connections() :: error | {:ok, list()}
   def get_user_connections do
-    request(:get, Constants.me_connections())
-    |> handle_request_with_decode
+    Nostrum.Api.Self.connections()
   end
 
   @doc """

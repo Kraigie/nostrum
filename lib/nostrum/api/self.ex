@@ -5,6 +5,7 @@ defmodule Nostrum.Api.Self do
   alias Nostrum.Struct.Channel
   alias Nostrum.Shard.Session
   alias Nostrum.Shard.Supervisor
+  alias Nostrum.Struct.Guild
 
   @doc """
   Gets the bot's OAuth2 application info.
@@ -133,5 +134,47 @@ defmodule Nostrum.Api.Self do
   @spec update_voice_state(Guild.id(), Channel.id() | nil, boolean, boolean) :: no_return | :ok
   def update_voice_state(guild_id, channel_id, self_mute \\ false, self_deaf \\ false) do
     Supervisor.update_voice_state(guild_id, channel_id, self_mute, self_deaf)
+  end
+
+  @doc """
+  Gets a list of guilds the user is currently in.
+
+  This endpoint requires the `guilds` OAuth2 scope.
+
+  If successful, returns `{:ok, guilds}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
+
+  ## Options
+
+    * `:before` (`t:Nostrum.Snowflake.t/0`) - get guilds before this
+    guild ID
+    * `:after` (`t:Nostrum.Snowflake.t/0`) - get guilds after this guild
+    ID
+    * `:limit` (integer) - max number of guilds to return (1-100)
+
+  ## Examples
+
+  ```elixir
+  iex> Nostrum.Api.Self.guilds(limit: 1)
+  {:ok, [%Nostrum.Struct.Guild{}]}
+  ```
+  """
+  @spec guilds(Api.options()) :: Api.error() | {:ok, [Guild.user_guild()]}
+  def guilds(options \\ [])
+
+  def guilds(options) when is_list(options),
+    do: guilds(Map.new(options))
+
+  def guilds(options) when is_map(options) do
+    Api.request(:get, Constants.me_guilds(), "", options)
+    |> Api.handle_request_with_decode({:list, {:struct, Guild}})
+  end
+
+  @doc """
+  Gets a list of user connections.
+  """
+  @spec connections() :: Api.error() | {:ok, list()}
+  def connections do
+    Api.request(:get, Constants.me_connections())
+    |> Api.handle_request_with_decode()
   end
 end
