@@ -22,12 +22,12 @@ defmodule Nostrum.Api.AutoModeration do
       - optional, defaults to `[]`, maximum of 50.
   """
   @doc since: "0.7.0"
-  @spec create_auto_moderation_rule(Guild.id(), Api.options()) ::
+  @spec create_rule(Guild.id(), Api.options()) ::
           {:ok, AutoModerationRule.t()} | Api.error()
-  def create_auto_moderation_rule(guild_id, options) when is_list(options),
-    do: create_auto_moderation_rule(guild_id, Map.new(options))
+  def create_rule(guild_id, options) when is_list(options),
+    do: create_rule(guild_id, Map.new(options))
 
-  def create_auto_moderation_rule(guild_id, options) do
+  def create_rule(guild_id, options) do
     Api.request(:post, Constants.guild_auto_moderation_rule(guild_id), options)
     |> Api.handle_request_with_decode({:struct, AutoModerationRule})
   end
@@ -36,9 +36,9 @@ defmodule Nostrum.Api.AutoModeration do
   Delete an auto-moderation rule for a guild.
   """
   @doc since: "0.7.0"
-  @spec delete_auto_moderation_rule(Guild.id(), AutoModerationRule.id()) ::
+  @spec delete_rule(Guild.id(), AutoModerationRule.id()) ::
           {:ok} | Api.error()
-  def delete_auto_moderation_rule(guild_id, rule_id) do
+  def delete_rule(guild_id, rule_id) do
     Api.request(:delete, Constants.guild_auto_moderation_rule(guild_id, rule_id))
   end
 
@@ -46,9 +46,8 @@ defmodule Nostrum.Api.AutoModeration do
   Get a list of all auto-moderation rules for a guild.
   """
   @doc since: "0.7.0"
-  @spec get_auto_moderation_rules(Guild.id()) ::
-          {:ok, [AutoModerationRule.t()]} | Api.error()
-  def get_auto_moderation_rules(guild_id) do
+  @spec rules(Guild.id()) :: {:ok, [AutoModerationRule.t()]} | Api.error()
+  def rules(guild_id) do
     Api.request(:get, Constants.guild_auto_moderation_rule(guild_id))
     |> Api.handle_request_with_decode({:list, {:struct, AutoModerationRule}})
   end
@@ -57,9 +56,9 @@ defmodule Nostrum.Api.AutoModeration do
   Get a single auto-moderation rule for a guild.
   """
   @doc since: "0.7.0"
-  @spec get_auto_moderation_rule(Guild.id(), AutoModerationRule.id()) ::
+  @spec rule(Guild.id(), AutoModerationRule.id()) ::
           {:ok, AutoModerationRule.t()} | Api.error()
-  def get_auto_moderation_rule(guild_id, rule_id) do
+  def rule(guild_id, rule_id) do
     Api.request(:get, Constants.guild_auto_moderation_rule(guild_id, rule_id))
     |> Api.handle_request_with_decode({:struct, AutoModerationRule})
   end
@@ -67,15 +66,15 @@ defmodule Nostrum.Api.AutoModeration do
   @doc """
   Modify an auto-moderation rule for a guild.
 
-  Takes the same options as `create_auto_moderation_rule/2`, however all fields are optional.
+  Takes the same options as `create_rule/2`, however all fields are optional.
   """
   @doc since: "0.7.0"
-  @spec modify_auto_moderation_rule(Guild.id(), AutoModerationRule.id(), Api.options()) ::
+  @spec modify_rule(Guild.id(), AutoModerationRule.id(), Api.options()) ::
           {:ok, AutoModerationRule.t()} | Api.error()
-  def modify_auto_moderation_rule(guild_id, rule_id, options) when is_list(options),
-    do: modify_auto_moderation_rule(guild_id, rule_id, Map.new(options))
+  def modify_rule(guild_id, rule_id, options) when is_list(options),
+    do: modify_rule(guild_id, rule_id, Map.new(options))
 
-  def modify_auto_moderation_rule(guild_id, rule_id, options) do
+  def modify_rule(guild_id, rule_id, options) do
     Api.request(:patch, Constants.guild_auto_moderation_rule(guild_id, rule_id), options)
     |> Api.handle_request_with_decode({:struct, AutoModerationRule})
   end

@@ -32,41 +32,6 @@ defmodule Nostrum.Api.Channel do
     Api.request(:put, Constants.channel_pin(channel_id, message_id))
   end
 
-  @doc ~S"""
-  Retrieves all pinned messages from a channel.
-
-  This endpoint requires the 'VIEW_CHANNEL' and 'READ_MESSAGE_HISTORY' permissions.
-
-  If successful, returns `{:ok, messages}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
-
-  ## Examples
-
-  ```elixir
-  Nostrum.Api.Channel.get_pinned_messages(43189401384091)
-  ```
-  """
-  @spec get_pinned_messages(Channel.id()) :: Api.error() | {:ok, [Message.t()]}
-  def get_pinned_messages(channel_id) when is_snowflake(channel_id) do
-    Api.request(:get, Constants.channel_pins(channel_id))
-    |> Api.handle_request_with_decode({:list, {:struct, Message}})
-  end
-
-  @doc """
-  Unpins a message in a channel.
-
-  This endpoint requires the 'VIEW_CHANNEL', 'READ_MESSAGE_HISTORY', and
-  'MANAGE_MESSAGES' permissions. It fires the
-  `t:Nostrum.Consumer.message_update/0` and
-  `t:Nostrum.Consumer.channel_pins_update/0` events.
-
-  Returns `{:ok}` if successful. `error` otherwise.
-  """
-  @spec unpin_message(Channel.id(), Message.id()) :: Api.error() | {:ok}
-  def unpin_message(channel_id, message_id)
-      when is_snowflake(channel_id) and is_snowflake(message_id) do
-    Api.request(:delete, Constants.channel_pin(channel_id, message_id))
-  end
-
   @doc """
   Deletes multiple messages from a channel.
 
@@ -159,6 +124,109 @@ defmodule Nostrum.Api.Channel do
   end
 
   @doc ~S"""
+  Deletes a channel.
+
+  An optional `reason` can be provided for the guild audit log.
+
+  If deleting a `t:Nostrum.Struct.Channel.guild_channel/0`, this endpoint requires
+  the `MANAGE_CHANNELS` permission. It fires a
+  `t:Nostrum.Consumer.channel_delete/0`. If a `t:Nostrum.Struct.Channel.guild_category_channel/0`
+  is deleted, then a `t:Nostrum.Consumer.channel_update/0` event will fire
+  for each channel under the category.
+
+  If successful, returns `{:ok, channel}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
+
+  ## Examples
+
+  ```elixir
+  Nostrum.Api.Channel.delete(421533712753360896)
+  {:ok, %Nostrum.Struct.Channel{id: 421533712753360896}}
+  ```
+  """
+  @spec delete(Channel.id(), AuditLogEntry.reason()) :: Api.error() | {:ok, Channel.t()}
+  def delete(channel_id, reason \\ nil) when is_snowflake(channel_id) do
+    %{
+      method: :delete,
+      route: Constants.channel(channel_id),
+      body: "",
+      params: [],
+      headers: Api.maybe_add_reason(reason)
+    }
+    |> Api.request()
+    |> Api.handle_request_with_decode({:struct, Channel})
+  end
+
+  @doc """
+  Delete a channel permission for a user or role.
+
+  Role or user overwrite to delete is specified by `channel_id` and `overwrite_id`.
+  An optional `reason` can be given for the audit log.
+  """
+  @spec delete_permissions(Channel.id(), integer, AuditLogEntry.reason()) :: Api.error() | {:ok}
+  def delete_permissions(channel_id, overwrite_id, reason \\ nil) do
+    Api.request(%{
+      method: :delete,
+      route: Constants.channel_permission(channel_id, overwrite_id),
+      body: "",
+      params: [],
+      headers: Api.maybe_add_reason(reason)
+    })
+  end
+
+  @doc """
+  Unpins a message in a channel.
+
+  This endpoint requires the 'VIEW_CHANNEL', 'READ_MESSAGE_HISTORY', and
+  'MANAGE_MESSAGES' permissions. It fires the
+  `t:Nostrum.Consumer.message_update/0` and
+  `t:Nostrum.Consumer.channel_pins_update/0` events.
+
+  Returns `{:ok}` if successful. `error` otherwise.
+  """
+  @spec unpin_message(Channel.id(), Message.id()) :: Api.error() | {:ok}
+  def unpin_message(channel_id, message_id)
+      when is_snowflake(channel_id) and is_snowflake(message_id) do
+    Api.request(:delete, Constants.channel_pin(channel_id, message_id))
+  end
+
+  @doc """
+  Edit the permission overwrites for a user or role.
+
+  Role or user to overwrite is specified by `overwrite_id`.
+
+  `permission_info` is a map with the following keys:
+   * `type` - Required; `member` if editing a user, `role` if editing a role.
+   * `allow` - Bitwise value of allowed permissions.
+   * `deny` - Bitwise value of denied permissions.
+   * `type` - `member` if editing a user, `role` if editing a role.
+
+  An optional `reason` can be provided for the audit log.
+
+   `allow` and `deny` are defaulted to `0`, meaning that even if you don't
+   specify them, they will override their respective former values in an
+   existing overwrite.
+  """
+  @spec edit_permissions(
+          Channel.id(),
+          integer,
+          %{
+            required(:type) => String.t(),
+            optional(:allow) => integer,
+            optional(:deny) => integer
+          },
+          AuditLogEntry.reason()
+        ) :: Api.error() | {:ok}
+  def edit_permissions(channel_id, overwrite_id, permission_info, reason \\ nil) do
+    Api.request(%{
+      method: :put,
+      route: Constants.channel_permission(channel_id, overwrite_id),
+      body: permission_info,
+      params: [],
+      headers: Api.maybe_add_reason(reason)
+    })
+  end
+
+  @doc ~S"""
   Gets a channel.
 
   If successful, returns `{:ok, channel}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
@@ -174,6 +242,99 @@ defmodule Nostrum.Api.Channel do
   def get(channel_id) when is_snowflake(channel_id) do
     Api.request(:get, Constants.channel(channel_id))
     |> Api.handle_request_with_decode({:struct, Channel})
+  end
+
+  @doc ~S"""
+  Retrieves a channel's messages around a `locator` up to a `limit`.
+
+  This endpoint requires the 'VIEW_CHANNEL' permission. If the current user
+  is missing the 'READ_MESSAGE_HISTORY' permission, then this function will
+  return no messages.
+
+  If successful, returns `{:ok, messages}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
+
+  ## Examples
+
+  ```elixir
+  Nostrum.Api.Channel.messages(43189401384091, 5, {:before, 130230401384})
+  ```
+  """
+  @spec messages(Channel.id(), Api.limit(), Api.locator()) ::
+          Api.error() | {:ok, [Message.t()]}
+  def messages(channel_id, limit, locator \\ {}) when is_snowflake(channel_id) do
+    messages_sync(channel_id, limit, [], locator)
+  end
+
+  defp messages_sync(channel_id, limit, messages, locator) when limit <= 100 do
+    case messages_call(channel_id, limit, locator) do
+      {:ok, new_messages} -> {:ok, messages ++ new_messages}
+      other -> other
+    end
+  end
+
+  defp messages_sync(channel_id, limit, messages, locator) do
+    case messages_call(channel_id, 100, locator) do
+      {:error, message} ->
+        {:error, message}
+
+      {:ok, []} ->
+        {:ok, messages}
+
+      {:ok, new_messages} ->
+        new_limit = get_new_limit(limit, length(new_messages))
+        new_locator = get_new_locator(locator, List.last(new_messages))
+        messages_sync(channel_id, new_limit, messages ++ new_messages, new_locator)
+    end
+  end
+
+  defp get_new_locator({}, last_message), do: {:before, last_message.id}
+  defp get_new_locator(locator, last_message), do: put_elem(locator, 1, last_message.id)
+
+  defp get_new_limit(:infinity, _new_message_count), do: :infinity
+  defp get_new_limit(limit, message_count), do: limit - message_count
+
+  # We're decoding the response at each call to catch any errors
+  @doc false
+  def messages_call(channel_id, limit, locator) do
+    qs_params =
+      case locator do
+        {} -> [{:limit, limit}]
+        non_empty_locator -> [{:limit, limit}, non_empty_locator]
+      end
+
+    Api.request(:get, Constants.channel_messages(channel_id), "", qs_params)
+    |> Api.handle_request_with_decode({:list, {:struct, Message}})
+  end
+
+  @doc """
+  Gets a list of webhooks for a channel.
+
+  ## Parameters
+    - `channel_id` - Channel to get webhooks for.
+  """
+  @spec webhooks(Channel.id()) :: Api.error() | {:ok, [Webhook.t()]}
+  def webhooks(channel_id) do
+    Api.request(:get, Constants.webhooks_channel(channel_id))
+    |> Api.handle_request_with_decode()
+  end
+
+  @doc ~S"""
+  Retrieves all pinned messages from a channel.
+
+  This endpoint requires the 'VIEW_CHANNEL' and 'READ_MESSAGE_HISTORY' permissions.
+
+  If successful, returns `{:ok, messages}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
+
+  ## Examples
+
+  ```elixir
+  Nostrum.Api.Channel.pinned_messages(43189401384091)
+  ```
+  """
+  @spec pinned_messages(Channel.id()) :: Api.error() | {:ok, [Message.t()]}
+  def pinned_messages(channel_id) when is_snowflake(channel_id) do
+    Api.request(:get, Constants.channel_pins(channel_id))
+    |> Api.handle_request_with_decode({:list, {:struct, Message}})
   end
 
   @doc ~S"""
@@ -233,167 +394,6 @@ defmodule Nostrum.Api.Channel do
     }
     |> Api.request()
     |> Api.handle_request_with_decode({:struct, Channel})
-  end
-
-  @doc ~S"""
-  Deletes a channel.
-
-  An optional `reason` can be provided for the guild audit log.
-
-  If deleting a `t:Nostrum.Struct.Channel.guild_channel/0`, this endpoint requires
-  the `MANAGE_CHANNELS` permission. It fires a
-  `t:Nostrum.Consumer.channel_delete/0`. If a `t:Nostrum.Struct.Channel.guild_category_channel/0`
-  is deleted, then a `t:Nostrum.Consumer.channel_update/0` event will fire
-  for each channel under the category.
-
-  If successful, returns `{:ok, channel}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
-
-  ## Examples
-
-  ```elixir
-  Nostrum.Api.Channel.delete(421533712753360896)
-  {:ok, %Nostrum.Struct.Channel{id: 421533712753360896}}
-  ```
-  """
-  @spec delete(Channel.id(), AuditLogEntry.reason()) :: Api.error() | {:ok, Channel.t()}
-  def delete(channel_id, reason \\ nil) when is_snowflake(channel_id) do
-    %{
-      method: :delete,
-      route: Constants.channel(channel_id),
-      body: "",
-      params: [],
-      headers: Api.maybe_add_reason(reason)
-    }
-    |> Api.request()
-    |> Api.handle_request_with_decode({:struct, Channel})
-  end
-
-  @doc """
-  Edit the permission overwrites for a user or role.
-
-  Role or user to overwrite is specified by `overwrite_id`.
-
-  `permission_info` is a map with the following keys:
-   * `type` - Required; `member` if editing a user, `role` if editing a role.
-   * `allow` - Bitwise value of allowed permissions.
-   * `deny` - Bitwise value of denied permissions.
-   * `type` - `member` if editing a user, `role` if editing a role.
-
-  An optional `reason` can be provided for the audit log.
-
-   `allow` and `deny` are defaulted to `0`, meaning that even if you don't
-   specify them, they will override their respective former values in an
-   existing overwrite.
-  """
-  @spec edit_permissions(
-          Channel.id(),
-          integer,
-          %{
-            required(:type) => String.t(),
-            optional(:allow) => integer,
-            optional(:deny) => integer
-          },
-          AuditLogEntry.reason()
-        ) :: Api.error() | {:ok}
-  def edit_permissions(channel_id, overwrite_id, permission_info, reason \\ nil) do
-    Api.request(%{
-      method: :put,
-      route: Constants.channel_permission(channel_id, overwrite_id),
-      body: permission_info,
-      params: [],
-      headers: Api.maybe_add_reason(reason)
-    })
-  end
-
-  @doc """
-  Delete a channel permission for a user or role.
-
-  Role or user overwrite to delete is specified by `channel_id` and `overwrite_id`.
-  An optional `reason` can be given for the audit log.
-  """
-  @spec delete_permissions(Channel.id(), integer, AuditLogEntry.reason()) :: Api.error() | {:ok}
-  def delete_permissions(channel_id, overwrite_id, reason \\ nil) do
-    Api.request(%{
-      method: :delete,
-      route: Constants.channel_permission(channel_id, overwrite_id),
-      body: "",
-      params: [],
-      headers: Api.maybe_add_reason(reason)
-    })
-  end
-
-  @doc ~S"""
-  Retrieves a channel's messages around a `locator` up to a `limit`.
-
-  This endpoint requires the 'VIEW_CHANNEL' permission. If the current user
-  is missing the 'READ_MESSAGE_HISTORY' permission, then this function will
-  return no messages.
-
-  If successful, returns `{:ok, messages}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
-
-  ## Examples
-
-  ```elixir
-  Nostrum.Api.Channel.get_messages(43189401384091, 5, {:before, 130230401384})
-  ```
-  """
-  @spec get_messages(Channel.id(), Api.limit(), Api.locator()) ::
-          Api.error() | {:ok, [Message.t()]}
-  def get_messages(channel_id, limit, locator \\ {}) when is_snowflake(channel_id) do
-    get_messages_sync(channel_id, limit, [], locator)
-  end
-
-  defp get_messages_sync(channel_id, limit, messages, locator) when limit <= 100 do
-    case get_messages_call(channel_id, limit, locator) do
-      {:ok, new_messages} -> {:ok, messages ++ new_messages}
-      other -> other
-    end
-  end
-
-  defp get_messages_sync(channel_id, limit, messages, locator) do
-    case get_messages_call(channel_id, 100, locator) do
-      {:error, message} ->
-        {:error, message}
-
-      {:ok, []} ->
-        {:ok, messages}
-
-      {:ok, new_messages} ->
-        new_limit = get_new_limit(limit, length(new_messages))
-        new_locator = get_new_locator(locator, List.last(new_messages))
-        get_messages_sync(channel_id, new_limit, messages ++ new_messages, new_locator)
-    end
-  end
-
-  defp get_new_locator({}, last_message), do: {:before, last_message.id}
-  defp get_new_locator(locator, last_message), do: put_elem(locator, 1, last_message.id)
-
-  defp get_new_limit(:infinity, _new_message_count), do: :infinity
-  defp get_new_limit(limit, message_count), do: limit - message_count
-
-  # We're decoding the response at each call to catch any errors
-  @doc false
-  def get_messages_call(channel_id, limit, locator) do
-    qs_params =
-      case locator do
-        {} -> [{:limit, limit}]
-        non_empty_locator -> [{:limit, limit}, non_empty_locator]
-      end
-
-    Api.request(:get, Constants.channel_messages(channel_id), "", qs_params)
-    |> Api.handle_request_with_decode({:list, {:struct, Message}})
-  end
-
-  @doc """
-  Gets a list of webhooks for a channel.
-
-  ## Parameters
-    - `channel_id` - Channel to get webhooks for.
-  """
-  @spec get_webhooks(Channel.id()) :: Api.error() | {:ok, [Webhook.t()]}
-  def get_webhooks(channel_id) do
-    Api.request(:get, Constants.webhooks_channel(channel_id))
-    |> Api.handle_request_with_decode()
   end
 
   @doc """

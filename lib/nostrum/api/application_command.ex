@@ -312,11 +312,11 @@ defmodule Nostrum.Api.ApplicationCommand do
   This method returns a single guild application command permission object, see all available values on the [Discord API docs](https://discord.com/developers/docs/interactions/application-commands#application-command-permissions-object-guild-application-command-permissions-structure).
   """
   @doc since: "0.5.0"
-  @spec get_command_permissions(Guild.id(), Snowflake.t()) ::
+  @spec permissions(Guild.id(), Snowflake.t()) ::
           {:ok, map()} | Api.error()
-  @spec get_command_permissions(User.id(), Guild.id(), Snowflake.t()) ::
+  @spec permissions(User.id(), Guild.id(), Snowflake.t()) ::
           {:ok, map()} | Api.error()
-  def get_command_permissions(
+  def permissions(
         application_id \\ Me.get().id,
         guild_id,
         command_id
@@ -342,7 +342,7 @@ defmodule Nostrum.Api.ApplicationCommand do
   ## Example
 
   ```elixir
-  iex> Nostrum.Api.get_global_commands
+  iex> Nostrum.Api.global_commands
   {:ok,
    [
      %{
@@ -354,9 +354,9 @@ defmodule Nostrum.Api.ApplicationCommand do
    ]}
   ```
   """
-  @spec get_global_commands() :: {:ok, [map()]} | Api.error()
-  @spec get_global_commands(User.id()) :: {:ok, [map()]} | Api.error()
-  def get_global_commands(application_id \\ Me.get().id) do
+  @spec global_commands() :: {:ok, [map()]} | Api.error()
+  @spec global_commands(User.id()) :: {:ok, [map()]} | Api.error()
+  def global_commands(application_id \\ Me.get().id) do
     Api.request(:get, Constants.global_application_commands(application_id))
     |> Api.handle_request_with_decode()
   end
@@ -373,10 +373,10 @@ defmodule Nostrum.Api.ApplicationCommand do
   This method returns a list of guild application command permission objects, see all available values on the [Discord API docs](https://discord.com/developers/docs/interactions/application-commands#application-command-permissions-object-guild-application-command-permissions-structure).
   """
   @doc since: "0.5.0"
-  @spec get_guild_command_permissions(Guild.id()) :: {:ok, [map()]} | Api.error()
-  @spec get_guild_command_permissions(User.id(), Guild.id()) ::
+  @spec guild_permissions(Guild.id()) :: {:ok, [map()]} | Api.error()
+  @spec guild_permissions(User.id(), Guild.id()) ::
           {:ok, [map()]} | Api.error()
-  def get_guild_command_permissions(
+  def guild_permissions(
         application_id \\ Me.get().id,
         guild_id
       ) do
@@ -397,9 +397,9 @@ defmodule Nostrum.Api.ApplicationCommand do
   A list of ``ApplicationCommand``s on success. See the official reference:
   https://discord.com/developers/docs/interactions/application-commands#application-command-object-application-command-structure
   """
-  @spec get_guild_commands(Guild.id()) :: {:ok, [map()]} | Api.error()
-  @spec get_guild_commands(User.id(), Guild.id()) :: {:ok, [map()]} | Api.error()
-  def get_guild_commands(application_id \\ Me.get().id, guild_id) do
+  @spec guild_commands(Guild.id()) :: {:ok, [map()]} | Api.error()
+  @spec guild_commands(User.id(), Guild.id()) :: {:ok, [map()]} | Api.error()
+  def guild_commands(application_id \\ Me.get().id, guild_id) do
     Api.request(:get, Constants.guild_application_commands(application_id, guild_id))
     |> Api.handle_request_with_decode()
   end
