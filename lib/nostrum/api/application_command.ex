@@ -1,11 +1,11 @@
 defmodule Nostrum.Api.ApplicationCommand do
   alias Nostrum.Api
-  alias Nostrum.Struct
   alias Nostrum.Constants
   alias Nostrum.Snowflake
   alias Nostrum.Cache.Me
   alias Nostrum.Struct.User
   alias Nostrum.Struct.Guild
+  alias Nostrum.Struct.ApplicationCommand
 
   @doc """
   Edits command permissions for a specific command for your application in a guild. You can only add up to 10 permission overwrites for a command.
@@ -24,14 +24,14 @@ defmodule Nostrum.Api.ApplicationCommand do
   @spec batch_edit_permissions(Guild.id(), [
           %{
             id: Snowflake.t(),
-            permissions: [Struct.ApplicationCommand.application_command_permissions()]
+            permissions: [ApplicationCommand.application_command_permissions()]
           }
         ]) ::
           {:ok, map()} | Api.error()
   @spec batch_edit_permissions(User.id(), Guild.id(), [
           %{
             id: Snowflake.t(),
-            permissions: [Struct.ApplicationCommand.application_command_permissions()]
+            permissions: [ApplicationCommand.application_command_permissions()]
           }
         ]) ::
           {:ok, map()} | Api.error()
@@ -70,14 +70,49 @@ defmodule Nostrum.Api.ApplicationCommand do
   """
   @doc since: "0.5.0"
   @spec bulk_overwrite_global_commands([
-          Struct.ApplicationCommand.application_command_map()
+          ApplicationCommand.application_command_map()
         ]) ::
           {:ok, [map()]} | Api.error()
   @spec bulk_overwrite_global_commands(User.id(), [
-          Struct.ApplicationCommand.application_command_map()
+          ApplicationCommand.application_command_map()
         ]) :: {:ok, [map()]} | Api.error()
   def bulk_overwrite_global_commands(application_id \\ Me.get().id, commands) do
     Api.request(:put, Constants.global_application_commands(application_id), commands)
+    |> Api.handle_request_with_decode()
+  end
+
+  @doc """
+  Overwrite the existing guild application commands on the specified guild.
+
+  This action will:
+  - Create any command that was provided and did not already exist
+  - Update any command that was provided and already existed if its configuration changed
+  - Delete any command that was not provided but existed on Discord's end
+
+  ## Parameters
+  - `application_id`: Application ID for which to overwrite the commands.
+    If not given, this will be fetched from `Me`.
+  - `guild_id`: Guild on which to overwrite the commands.
+  - `commands`: List of command configurations, see the linked API documentation for reference.
+
+  ## Return value
+  Updated list of guild application commands. See the official reference:
+  https://discord.com/developers/docs/interactions/application-commands#bulk-overwrite-guild-application-commands
+  """
+  @doc since: "0.5.0"
+  @spec bulk_overwrite_guild_commands(Guild.id(), [
+          ApplicationCommand.application_command_map()
+        ]) :: {:ok, [map()]} | Api.error()
+  @spec bulk_overwrite_guild_commands(User.id(), Guild.id(), [
+          ApplicationCommand.application_command_map()
+        ]) ::
+          {:ok, [map()]} | Api.error()
+  def bulk_overwrite_guild_commands(
+        application_id \\ Me.get().id,
+        guild_id,
+        commands
+      ) do
+    Api.request(:put, Constants.guild_application_commands(application_id, guild_id), commands)
     |> Api.handle_request_with_decode()
   end
 
@@ -106,11 +141,11 @@ defmodule Nostrum.Api.ApplicationCommand do
   )
   ```
   """
-  @spec create_global_command(Struct.ApplicationCommand.application_command_map()) ::
+  @spec create_global_command(ApplicationCommand.application_command_map()) ::
           {:ok, map()} | Api.error()
   @spec create_global_command(
           User.id(),
-          Struct.ApplicationCommand.application_command_map()
+          ApplicationCommand.application_command_map()
         ) ::
           {:ok, map()} | Api.error()
   def create_global_command(application_id \\ Me.get().id, command) do
@@ -133,12 +168,12 @@ defmodule Nostrum.Api.ApplicationCommand do
   The created command. See the official reference:
   https://discord.com/developers/docs/interactions/application-commands#create-guild-application-command
   """
-  @spec create_guild_command(Guild.id(), Struct.ApplicationCommand.application_command_map()) ::
+  @spec create_guild_command(Guild.id(), ApplicationCommand.application_command_map()) ::
           {:ok, map()} | Api.error()
   @spec create_guild_command(
           User.id(),
           Guild.id(),
-          Struct.ApplicationCommand.application_command_map()
+          ApplicationCommand.application_command_map()
         ) :: {:ok, map()} | Api.error()
   def create_guild_command(
         application_id \\ Me.get().id,
@@ -201,11 +236,11 @@ defmodule Nostrum.Api.ApplicationCommand do
   """
   @doc since: "0.5.0"
   @spec edit_command_permissions(Guild.id(), Snowflake.t(), [
-          Struct.ApplicationCommand.application_command_permissions()
+          ApplicationCommand.application_command_permissions()
         ]) ::
           {:ok, map()} | Api.error()
   @spec edit_command_permissions(User.id(), Guild.id(), Snowflake.t(), [
-          Struct.ApplicationCommand.application_command_permissions()
+          ApplicationCommand.application_command_permissions()
         ]) ::
           {:ok, map()} | Api.error()
   def edit_command_permissions(
@@ -241,12 +276,12 @@ defmodule Nostrum.Api.ApplicationCommand do
   """
   @spec edit_global_command(
           Snowflake.t(),
-          Struct.ApplicationCommand.application_command_edit_map()
+          ApplicationCommand.application_command_edit_map()
         ) :: {:ok, map()} | Api.error()
   @spec edit_global_command(
           User.id(),
           Snowflake.t(),
-          Struct.ApplicationCommand.application_command_edit_map()
+          ApplicationCommand.application_command_edit_map()
         ) :: {:ok, map()} | Api.error()
   def edit_global_command(
         application_id \\ Me.get().id,
@@ -276,13 +311,13 @@ defmodule Nostrum.Api.ApplicationCommand do
   @spec edit_guild_command(
           Guild.id(),
           Snowflake.t(),
-          Struct.ApplicationCommand.application_command_edit_map()
+          ApplicationCommand.application_command_edit_map()
         ) :: {:ok, map()} | Api.error()
   @spec edit_guild_command(
           User.id(),
           Guild.id(),
           Snowflake.t(),
-          Struct.ApplicationCommand.application_command_edit_map()
+          ApplicationCommand.application_command_edit_map()
         ) ::
           {:ok, map()} | Api.error()
   def edit_guild_command(

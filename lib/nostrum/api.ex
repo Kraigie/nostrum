@@ -2304,8 +2304,7 @@ defmodule Nostrum.Api do
   @doc since: "0.5.0"
   @spec get_guild_scheduled_events(Guild.id()) :: error | {:ok, [ScheduledEvent.t()]}
   def get_guild_scheduled_events(guild_id) do
-    request(:get, Constants.guild_scheduled_events(guild_id))
-    |> handle_request_with_decode({:list, {:struct, ScheduledEvent}})
+    Nostrum.Api.Guild.scheduled_events(guild_id)
   end
 
   @doc """
@@ -2669,15 +2668,7 @@ defmodule Nostrum.Api do
           AuditLogEntry.reason()
         ) :: error | {:ok, Nostrum.Struct.Webhook.t()}
   def create_webhook(channel_id, args, reason \\ nil) do
-    %{
-      method: :post,
-      route: Constants.webhooks_channel(channel_id),
-      body: args,
-      params: [],
-      headers: maybe_add_reason(reason)
-    }
-    |> request()
-    |> handle_request_with_decode
+    Nostrum.Api.Webhook.create(channel_id, args, reason)
   end
 
   @doc """
@@ -2687,8 +2678,7 @@ defmodule Nostrum.Api do
   @spec get_webhook_message(Webhook.t(), Message.id()) ::
           error | {:ok, Message.t()}
   def get_webhook_message(webhook, message_id) do
-    request(:get, Constants.webhook_message(webhook.id, webhook.token, message_id))
-    |> handle_request_with_decode({:struct, Message})
+    Nostrum.Api.Webhook.get_message(webhook, message_id)
   end
 
   @doc """
@@ -2721,8 +2711,7 @@ defmodule Nostrum.Api do
   """
   @spec get_webhook(Webhook.id()) :: error | {:ok, Nostrum.Struct.Webhook.t()}
   def get_webhook(webhook_id) do
-    request(:get, Constants.webhook(webhook_id))
-    |> handle_request_with_decode
+    Nostrum.Api.Webhook.get(webhook_id)
   end
 
   @doc """
@@ -2738,8 +2727,7 @@ defmodule Nostrum.Api do
   @spec get_webhook_with_token(Webhook.id(), Webhook.token()) ::
           error | {:ok, Nostrum.Struct.Webhook.t()}
   def get_webhook_with_token(webhook_id, webhook_token) do
-    request(:get, Constants.webhook_token(webhook_id, webhook_token))
-    |> handle_request_with_decode
+    Nostrum.Api.Webhook.get_with_token(webhook_id, webhook_token)
   end
 
   @doc """
@@ -2761,15 +2749,7 @@ defmodule Nostrum.Api do
           AuditLogEntry.reason()
         ) :: error | {:ok, Nostrum.Struct.Webhook.t()}
   def modify_webhook(webhook_id, args, reason \\ nil) do
-    %{
-      method: :patch,
-      route: Constants.webhook(webhook_id),
-      body: args,
-      params: [],
-      headers: maybe_add_reason(reason)
-    }
-    |> request()
-    |> handle_request_with_decode
+    Nostrum.Api.Webhook.modify(webhook_id, args, reason)
   end
 
   @doc """
@@ -2796,15 +2776,7 @@ defmodule Nostrum.Api do
           AuditLogEntry.reason()
         ) :: error | {:ok, Nostrum.Struct.Webhook.t()}
   def modify_webhook_with_token(webhook_id, webhook_token, args, reason \\ nil) do
-    %{
-      method: :patch,
-      route: Constants.webhook_token(webhook_id, webhook_token),
-      body: args,
-      params: [],
-      headers: maybe_add_reason(reason)
-    }
-    |> request()
-    |> handle_request_with_decode
+    Nostrum.Api.Webhook.modify_with_token(webhook_id, webhook_token, args, reason)
   end
 
   @doc """
@@ -2816,13 +2788,7 @@ defmodule Nostrum.Api do
   """
   @spec delete_webhook(Webhook.id(), AuditLogEntry.reason()) :: error | {:ok}
   def delete_webhook(webhook_id, reason \\ nil) do
-    request(%{
-      method: :delete,
-      route: Constants.webhook(webhook_id),
-      body: "",
-      params: [],
-      headers: maybe_add_reason(reason)
-    })
+    Nostrum.Api.Webhook.delete(webhook_id, reason)
   end
 
   @typep m1 :: %{
@@ -2896,24 +2862,8 @@ defmodule Nostrum.Api do
   At least one of `content`, `files` or `embeds` should be supplied in the `args` parameter.
   """
 
-  def execute_webhook(webhook_id, webhook_token, args, wait \\ false)
-
-  def execute_webhook(webhook_id, webhook_token, args, wait) do
-    {thread_id, args} = Map.pop(args, :thread_id)
-    args = prepare_allowed_mentions(args)
-
-    params =
-      if is_nil(thread_id),
-        do: [wait: wait],
-        else: [wait: wait, thread_id: thread_id]
-
-    request(
-      :post,
-      Constants.webhook_token(webhook_id, webhook_token),
-      combine_embeds(args) |> combine_files(),
-      params
-    )
-    |> handle_request_with_decode({:struct, Message})
+  def execute_webhook(webhook_id, webhook_token, args, wait \\ false) do
+    Nostrum.Api.Webhook.execute(webhook_id, webhook_token, args, wait)
   end
 
   @doc """
@@ -2930,12 +2880,7 @@ defmodule Nostrum.Api do
         ) ::
           error | {:ok, Message.t()}
   def edit_webhook_message(webhook_id, webhook_token, message_id, args) do
-    request(
-      :patch,
-      Constants.webhook_message_edit(webhook_id, webhook_token, message_id),
-      combine_embeds(args) |> combine_files()
-    )
-    |> handle_request_with_decode({:struct, Message})
+    Nostrum.Api.Webhook.edit_message(webhook_id, webhook_token, message_id, args)
   end
 
   @doc """
@@ -2947,7 +2892,7 @@ defmodule Nostrum.Api do
   """
   @spec execute_slack_webhook(Webhook.id(), Webhook.token(), boolean) :: error | {:ok}
   def execute_slack_webhook(webhook_id, webhook_token, wait \\ false) do
-    request(:post, Constants.webhook_slack(webhook_id, webhook_token), wait: wait)
+    Nostrum.Api.Webhook.execute_slack(webhook_id, webhook_token, wait)
   end
 
   @doc """
@@ -2959,7 +2904,7 @@ defmodule Nostrum.Api do
   """
   @spec execute_git_webhook(Webhook.id(), Webhook.token(), boolean) :: error | {:ok}
   def execute_git_webhook(webhook_id, webhook_token, wait \\ false) do
-    request(:post, Constants.webhook_git(webhook_id, webhook_token), wait: wait)
+    Nostrum.Api.Webhook.execute_git(webhook_id, webhook_token, wait)
   end
 
   @doc """
@@ -3272,8 +3217,11 @@ defmodule Nostrum.Api do
         guild_id,
         commands
       ) do
-    request(:put, Constants.guild_application_commands(application_id, guild_id), commands)
-    |> handle_request_with_decode
+    Nostrum.Api.ApplicationCommand.bulk_overwrite_guild_commands(
+      application_id,
+      guild_id,
+      commands
+    )
   end
 
   # Why the two separate functions here?
@@ -3763,34 +3711,6 @@ defmodule Nostrum.Api do
           | error
   def list_joined_private_archived_threads(channel_id, options \\ []) do
     Nostrum.Api.Thread.joined_private_archived_threads(channel_id, options)
-  end
-
-  defp list_archived_threads(route, options) do
-    options = options |> maybe_convert_date_time(:before)
-
-    res =
-      request(%{
-        method: :get,
-        route: route,
-        body: "",
-        params: options,
-        headers: []
-      })
-      |> handle_request_with_decode
-
-    case res do
-      {:ok, %{threads: channels, members: thread_members, has_more: has_more}} ->
-        map = %{
-          threads: Util.cast(channels, {:list, {:struct, Channel}}),
-          members: Util.cast(thread_members, {:list, {:struct, ThreadMember}}),
-          has_more: has_more
-        }
-
-        {:ok, map}
-
-      {:error, e} ->
-        {:error, e}
-    end
   end
 
   @doc """
