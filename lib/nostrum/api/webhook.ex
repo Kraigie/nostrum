@@ -103,6 +103,46 @@ defmodule Nostrum.Api.Webhook do
     Api.request(:post, Constants.webhook_slack(webhook_id, webhook_token), wait: wait)
   end
 
+  @typep m1 :: %{
+           required(:content) => String.t(),
+           optional(:username) => String.t(),
+           optional(:avatar_url) => String.t(),
+           optional(:tts) => boolean,
+           optional(:files) => [String.t() | %{body: iodata(), name: String.t()}],
+           optional(:flags) => non_neg_integer(),
+           optional(:thread_id) => Snowflake.t(),
+           optional(:embeds) => nonempty_list(Embed.t()) | nil,
+           optional(:allowed_mentions) => Api.allowed_mentions()
+         }
+
+  @typep m2 ::
+           %{
+             optional(:content) => String.t() | nil,
+             optional(:username) => String.t(),
+             optional(:avatar_url) => String.t(),
+             optional(:tts) => boolean,
+             required(:files) => [String.t() | %{body: iodata(), name: String.t()}],
+             optional(:flags) => non_neg_integer(),
+             optional(:thread_id) => Snowflake.t(),
+             optional(:embeds) => nonempty_list(Embed.t()) | nil,
+             optional(:allowed_mentions) => Api.allowed_mentions()
+           }
+
+  @typep m3 ::
+           %{
+             optional(:content) => String.t() | nil,
+             optional(:username) => String.t(),
+             optional(:avatar_url) => String.t(),
+             optional(:tts) => boolean,
+             optional(:files) => [String.t() | %{body: iodata(), name: String.t()}],
+             optional(:flags) => non_neg_integer(),
+             optional(:thread_id) => Snowflake.t(),
+             required(:embeds) => nonempty_list(Embed.t()),
+             optional(:allowed_mentions) => Api.allowed_mentions()
+           }
+
+  @type matrix :: m1 | m2 | m3
+
   @doc """
   Executes a webhook.
 
@@ -128,7 +168,7 @@ defmodule Nostrum.Api.Webhook do
   @spec execute(
           Webhook.id() | User.id(),
           Webhook.token() | Interaction.token(),
-          Api.matrix(),
+          matrix,
           boolean
         ) ::
           Api.error() | {:ok} | {:ok, Message.t()}
