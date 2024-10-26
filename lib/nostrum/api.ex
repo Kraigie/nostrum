@@ -63,13 +63,12 @@ defmodule Nostrum.Api do
     Invite,
     Message,
     Message.Poll,
-    Sticker,
     ThreadMember,
     User,
     Webhook
   }
 
-  alias Nostrum.Struct.Guild.{AuditLog, AuditLogEntry, Member, Role, ScheduledEvent}
+  alias Nostrum.Struct.Guild.{AuditLogEntry, Member, Role, ScheduledEvent}
 
   @typedoc """
   Represents a failed response from the API.
@@ -156,127 +155,39 @@ defmodule Nostrum.Api do
   @typedoc since: "0.7.0"
   @type allowed_mentions :: allowed_mention | [allowed_mention]
 
-  @doc """
-  Updates the status of the bot for a certain shard.
-
-  ## Parameters
-    - `pid` - Pid of the shard.
-    - `status` - Status of the bot.
-    - `game` - The 'playing' text of the bot. Empty will clear.
-    - `type` - The type of status to show. 0 (Playing) | 1 (Streaming) | 2 (Listening) | 3 (Watching)
-    - `stream` - URL of twitch.tv stream
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Self.update_shard_status/5` directly instead.
   """
-  @spec update_shard_status(pid, status, String.t(), integer, String.t() | nil) :: :ok
-  def update_shard_status(pid, status, game, type \\ 0, stream \\ nil) do
-    Nostrum.Api.Self.update_shard_status(pid, status, game, type, stream)
-  end
+  defdelegate update_shard_status(pid, status, game, type \\ 0, stream \\ nil),
+    to: Nostrum.Api.Self
 
-  @doc """
-  Updates the status of the bot for all shards.
-
-  See `update_shard_status/5` for usage.
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Self.update_status/4` directly instead.
   """
-  @spec update_status(status, String.t(), integer, String.t() | nil) :: :ok
-  def update_status(status, game, type \\ 0, stream \\ nil) do
-    Nostrum.Api.Self.update_status(status, game, type, stream)
-  end
+  defdelegate update_status(status, game, type \\ 0, stream \\ nil),
+    to: Nostrum.Api.Self
 
-  @doc """
-  Joins, moves, or disconnects the bot from a voice channel.
-
-  The correct shard to send the update to will be inferred from the
-  `guild_id`. If a corresponding `guild_id` is not found a cache error will be
-  raised.
-
-  To disconnect from a channel, `channel_id` should be set to `nil`.
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Self.update_voice_state/4` directly instead.
   """
-  @spec update_voice_state(Guild.id(), Channel.id() | nil, boolean, boolean) :: no_return | :ok
-  def update_voice_state(guild_id, channel_id, self_mute \\ false, self_deaf \\ false) do
-    Nostrum.Api.Self.update_voice_state(guild_id, channel_id, self_mute, self_deaf)
-  end
+  defdelegate update_voice_state(guild_id, channel_id, self_mute \\ false, self_deaf \\ false),
+    to: Nostrum.Api.Self
 
-  @doc ~S"""
-  Posts a message to a guild text or DM channel.
-
-  This endpoint requires the `VIEW_CHANNEL` and `SEND_MESSAGES` permissions. It
-  may situationally need the `SEND_MESSAGES_TTS` permission. It fires the
-  `t:Nostrum.Consumer.message_create/0` event.
-
-  If `options` is a string, `options` will be used as the message's content.
-
-  If successful, returns `{:ok, message}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
-
-  ## Options
-
-    * `:content` (string) - the message contents (up to 2000 characters)
-    * `:nonce` (`t:Nostrum.Snowflake.t/0`) - a nonce that can be used for
-    optimistic message sending
-    * `:tts` (boolean) - true if this is a TTS message
-    * `:file` (`t:Path.t/0` | map) - the path of the file being sent, or a map with the following keys
-    if sending a binary from memory
-      * `:name` (string) - the name of the file
-      * `:body` (string) - binary you wish to send
-    * `:files` - a list of files where each element is the same format as the `:file` option. If both
-    `:file` and `:files` are specified, `:file` will be prepended to the `:files` list.
-    * `:embeds` (`t:Nostrum.Struct.Embed.t/0`) - a list of embedded rich content
-    * `:allowed_mentions` (`t:allowed_mentions/0`) - see the allowed mentions type documentation
-    * `:message_reference` (`map`) - See "Message references" below
-    * `:poll` (`t:Nostrum.Struct.Message.Poll.t/0`) - A poll object to send with the message
-
-    At least one of the following is required: `:content`, `:file`, `:embeds`, `:poll`.
-
-  ### Message reference
-
-  You can create a reply to another message on guilds using this option, given
-  that you have the ``VIEW_MESSAGE_HISTORY`` permission. To do so, include the
-  ``message_reference`` field in your call. The complete structure
-  documentation can be found [on the Discord Developer
-  Portal](https://discord.com/developers/docs/resources/channel#message-object-message-reference-structure),
-  but simply passing ``message_id`` will suffice:
-
-  ```elixir
-  def my_command(msg) do
-    # Reply to the author - ``msg`` is a ``Nostrum.Struct.Message``
-    Nostrum.Api.create_message(
-      msg.channel_id,
-      content: "Hello",
-      message_reference: %{message_id: msg.id}
-    )
-  end
-  ```
-
-  Passing a list will merge the settings provided
-
-  ## Examples
-
-  ```elixir
-  Nostrum.Api.create_message(43189401384091, content: "hello world!")
-
-  Nostrum.Api.create_message(43189401384091, "hello world!")
-
-  import Nostrum.Struct.Embed
-  embed =
-    %Nostrum.Struct.Embed{}
-    |> put_title("embed")
-    |> put_description("new desc")
-  Nostrum.Api.create_message(43189401384091, embeds: [embed])
-
-  Nostrum.Api.create_message(43189401384091, file: "/path/to/file.txt")
-
-  Nostrum.Api.create_message(43189401384091, content: "hello world!", embeds: [embed], file: "/path/to/file.txt")
-
-  Nostrum.Api.create_message(43189401384091, content: "Hello @everyone", allowed_mentions: :none)
-  ```
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Message.create/2` directly instead.
   """
-  @spec create_message(Channel.id() | Message.t(), options | String.t()) ::
-          error | {:ok, Message.t()}
-  def create_message(channel_id, options) do
-    Nostrum.Api.Message.create(channel_id, options)
-  end
+  defdelegate create_message(channel_id, options),
+    to: Nostrum.Api.Message,
+    as: :create
 
   @doc ~S"""
   Same as `create_message/2`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
+  @deprecated "Bang functions will be removed in v1.0"
   @spec create_message!(Channel.id() | Message.t(), options | String.t()) ::
           no_return | Message.t()
   def create_message!(channel_id, options) do
@@ -284,54 +195,18 @@ defmodule Nostrum.Api do
     |> bangify
   end
 
-  @doc ~S"""
-  Edits a previously sent message in a channel.
-
-  This endpoint requires the `VIEW_CHANNEL` permission. It fires the
-  `t:Nostrum.Consumer.message_update/0` event.
-
-  If `options` is a string, `options` will be used as the message's content.
-
-  If successful, returns `{:ok, message}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
-
-  ## Options
-
-  * `:content` (string) - the message contents (up to 2000 characters)
-  * `:embeds` (`t:Nostrum.Struct.Embed.t/0`) - a list of embedded rich content
-  * `:files` - a list of files where each element is the same format as the
-  `:file` option. If both `:file` and `:files` are specified, `:file` will be
-  prepended to the `:files` list. See `create_message/2` for more information.
-
-  Note that if you edit a message with attachments, all attachments that should
-  be present after edit **must** be included in your request body. This
-  includes attachments that were sent in the original request.
-
-  ## Examples
-
-  ```elixir
-  Nostrum.Api.edit_message(43189401384091, 1894013840914098, content: "hello world!")
-
-  Nostrum.Api.edit_message(43189401384091, 1894013840914098, "hello world!")
-
-  import Nostrum.Struct.Embed
-  embed =
-    %Nostrum.Struct.Embed{}
-    |> put_title("embed")
-    |> put_description("new desc")
-  Nostrum.Api.edit_message(43189401384091, 1894013840914098, embeds: [embed])
-
-  Nostrum.Api.edit_message(43189401384091, 1894013840914098, content: "hello world!", embeds: [embed])
-  ```
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Message.edit/3` directly instead.
   """
-  @spec edit_message(Channel.id(), Message.id(), options | String.t()) ::
-          error | {:ok, Message.t()}
-  def edit_message(channel_id, message_id, options) do
-    Nostrum.Api.Message.edit(channel_id, message_id, options)
-  end
+  defdelegate edit_message(channel_id, message_id, options),
+    to: Nostrum.Api.Message,
+    as: :edit
 
   @doc ~S"""
   Same as `edit_message/3`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
+  @deprecated "Bang functions will be removed in v1.0"
   @spec edit_message!(Channel.id(), Message.id(), options) :: no_return | Message.t()
   def edit_message!(channel_id, message_id, options) do
     edit_message(channel_id, message_id, options)
@@ -350,6 +225,7 @@ defmodule Nostrum.Api do
   @doc ~S"""
   Same as `edit_message/2`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
+  @deprecated "Bang functions will be removed in v1.0"
   @spec edit_message!(Message.t(), options) :: no_return | Message.t()
   def edit_message!(message, options) do
     edit_message(message, options)
@@ -365,29 +241,18 @@ defmodule Nostrum.Api do
     delete_message(c_id, id)
   end
 
-  @doc ~S"""
-  Deletes a message.
-
-  This endpoint requires the 'VIEW_CHANNEL' and 'MANAGE_MESSAGES' permission. It
-  fires the `MESSAGE_DELETE` event.
-
-  If successful, returns `{:ok}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
-
-  ## Examples
-
-  ```elixir
-  Nostrum.Api.delete_message(43189401384091, 43189401384091)
-  ```
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Message.delete/2` directly instead.
   """
-  @spec delete_message(Channel.id(), Message.id()) :: error | {:ok}
-  def delete_message(channel_id, message_id)
-      when is_snowflake(channel_id) and is_snowflake(message_id) do
-    Nostrum.Api.Message.delete(channel_id, message_id)
-  end
+  defdelegate delete_message(channel_id, message_id),
+    to: Nostrum.Api.Message,
+    as: :delete
 
   @doc ~S"""
   Same as `delete_message/1`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
+  @deprecated "Bang functions will be removed in v1.0"
   @spec delete_message!(Message.t()) :: error | {:ok}
   def delete_message!(%Message{id: id, channel_id: c_id}) do
     delete_message(c_id, id)
@@ -397,426 +262,257 @@ defmodule Nostrum.Api do
   @doc ~S"""
   Same as `delete_message/2`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
+  @deprecated "Bang functions will be removed in v1.0"
   @spec delete_message!(Channel.id(), Message.id()) :: no_return | {:ok}
   def delete_message!(channel_id, message_id) do
     delete_message(channel_id, message_id)
     |> bangify
   end
 
-  @doc ~S"""
-  Creates a reaction for a message.
-
-  This endpoint requires the `VIEW_CHANNEL` and `READ_MESSAGE_HISTORY`
-  permissions. Additionally, if nobody else has reacted to the message with
-  the `emoji`, this endpoint requires the `ADD_REACTIONS` permission. It
-  fires a `t:Nostrum.Consumer.message_reaction_add/0` event.
-
-  If successful, returns `{:ok}`. Otherwise, returns `t:Nostrum.Api.error/0`.
-
-  ## Examples
-
-  ```elixir
-  # Using a Nostrum.Struct.Emoji.
-  emoji = %Nostrum.Struct.Emoji{id: 43819043108, name: "foxbot"}
-  Nostrum.Api.create_reaction(123123123123, 321321321321, emoji)
-
-  # Using a base 16 emoji string.
-  Nostrum.Api.create_reaction(123123123123, 321321321321, "\xF0\x9F\x98\x81")
-
-  ```
-
-  For other emoji string examples, see `t:Nostrum.Struct.Emoji.api_name/0`.
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Message.react/3` directly instead.
   """
-  @spec create_reaction(Channel.id(), Message.id(), emoji) :: error | {:ok}
-  def create_reaction(channel_id, message_id, emoji) do
-    Nostrum.Api.Message.react(channel_id, message_id, emoji)
-  end
+  defdelegate create_reaction(channel_id, message_id, emoji),
+    to: Nostrum.Api.Message,
+    as: :react
 
   @doc ~S"""
   Same as `create_reaction/3`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
+  @deprecated "Bang functions will be removed in v1.0"
   @spec create_reaction!(Channel.id(), Message.id(), emoji) :: no_return | {:ok}
   def create_reaction!(channel_id, message_id, emoji) do
     create_reaction(channel_id, message_id, emoji)
     |> bangify
   end
 
-  @doc ~S"""
-  Deletes a reaction the current user has made for the message.
-
-  This endpoint requires the `VIEW_CHANNEL` and `READ_MESSAGE_HISTORY`
-  permissions. It fires a `t:Nostrum.Consumer.message_reaction_remove/0` event.
-
-  If successful, returns `{:ok}`. Otherwise, returns `t:Nostrum.Api.error/0`.
-
-  See `create_reaction/3` for similar examples.
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Message.unreact/3` directly instead.
   """
-  @spec delete_own_reaction(Channel.id(), Message.id(), emoji) :: error | {:ok}
-  def delete_own_reaction(channel_id, message_id, emoji)
-
-  def delete_own_reaction(channel_id, message_id, %Emoji{} = emoji),
-    do: delete_own_reaction(channel_id, message_id, Emoji.api_name(emoji))
-
-  def delete_own_reaction(channel_id, message_id, emoji_api_name) do
-    Nostrum.Api.Message.unreact(channel_id, message_id, emoji_api_name)
-  end
+  defdelegate delete_own_reaction(channel_id, message_id, emoji),
+    to: Nostrum.Api.Message,
+    as: :unreact
 
   @doc ~S"""
   Same as `delete_own_reaction/3`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
+  @deprecated "Bang functions will be removed in v1.0"
   @spec delete_own_reaction!(Channel.id(), Message.id(), emoji) :: no_return | {:ok}
   def delete_own_reaction!(channel_id, message_id, emoji) do
     delete_own_reaction(channel_id, message_id, emoji)
     |> bangify
   end
 
-  @doc ~S"""
-  Deletes another user's reaction from a message.
-
-  This endpoint requires the `VIEW_CHANNEL`, `READ_MESSAGE_HISTORY`, and
-  `MANAGE_MESSAGES` permissions. It fires a `t:Nostrum.Consumer.message_reaction_remove/0` event.
-
-  If successful, returns `{:ok}`. Otherwise, returns `t:Nostrum.Api.error/0`.
-
-  See `create_reaction/3` for similar examples.
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Message.delete_user_reaction/4` directly instead.
   """
-  @spec delete_user_reaction(Channel.id(), Message.id(), emoji, User.id()) :: error | {:ok}
-  def delete_user_reaction(channel_id, message_id, emoji, user_id)
-
-  def delete_user_reaction(channel_id, message_id, %Emoji{} = emoji, user_id),
-    do: delete_user_reaction(channel_id, message_id, Emoji.api_name(emoji), user_id)
-
-  def delete_user_reaction(channel_id, message_id, emoji_api_name, user_id) do
-    Nostrum.Api.Message.delete_user_reaction(channel_id, message_id, emoji_api_name, user_id)
-  end
+  defdelegate delete_user_reaction(channel_id, message_id, emoji, user_id),
+    to: Nostrum.Api.Message
 
   @doc ~S"""
   Same as `delete_user_reaction/4`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
+  @deprecated "Bang functions will be removed in v1.0"
   @spec delete_user_reaction!(Channel.id(), Message.id(), emoji, User.id()) :: no_return | {:ok}
   def delete_user_reaction!(channel_id, message_id, emoji, user_id) do
     delete_user_reaction(channel_id, message_id, emoji, user_id)
     |> bangify
   end
 
-  @doc ~S"""
-  Deletes all reactions of a given emoji from a message.
-
-  This endpoint requires the `MANAGE_MESSAGES` permissions. It fires a `t:Nostrum.Consumer.message_reaction_remove_emoji/0` event.
-
-  If successful, returns `{:ok}`. Otherwise, returns `t:Nostrum.Api.error/0`.
-
-  See `create_reaction/3` for similar examples.
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Message.delete_emoji_reactions/3` directly instead.
   """
-  @spec delete_reaction(Channel.id(), Message.id(), emoji) :: error | {:ok}
-  def delete_reaction(channel_id, message_id, emoji)
-
-  def delete_reaction(channel_id, message_id, %Emoji{} = emoji),
-    do: delete_reaction(channel_id, message_id, Emoji.api_name(emoji))
-
-  def delete_reaction(channel_id, message_id, emoji_api_name) do
-    Nostrum.Api.Message.delete_emoji_reactions(channel_id, message_id, emoji_api_name)
-  end
+  defdelegate delete_reaction(channel_id, message_id, emoji),
+    to: Nostrum.Api.Message,
+    as: :delete_emoji_reactions
 
   @doc ~S"""
   Same as `delete_reaction/3`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
+  @deprecated "Bang functions will be removed in v1.0"
   @spec delete_reaction!(Channel.id(), Message.id(), emoji) :: no_return | {:ok}
   def delete_reaction!(channel_id, message_id, emoji) do
     delete_reaction(channel_id, message_id, emoji)
     |> bangify
   end
 
-  @doc ~S"""
-  Gets all users who reacted with an emoji.
-
-  This endpoint requires the `VIEW_CHANNEL` and `READ_MESSAGE_HISTORY` permissions.
-
-  If successful, returns `{:ok, users}`. Otherwise, returns `t:Nostrum.Api.error/0`.
-
-  The optional `params` are `after`, the user ID to query after, absent by default,
-  and `limit`, the max number of users to return, 1-100, 25 by default.
-
-  See `create_reaction/3` for similar examples.
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Message.reactions/4` directly instead.
   """
-  @spec get_reactions(Channel.id(), Message.id(), emoji, keyword()) :: error | {:ok, [User.t()]}
-  def get_reactions(channel_id, message_id, emoji, params \\ [])
-
-  def get_reactions(channel_id, message_id, %Emoji{} = emoji, params),
-    do: get_reactions(channel_id, message_id, Emoji.api_name(emoji), params)
-
-  def get_reactions(channel_id, message_id, emoji_api_name, params) do
-    Nostrum.Api.Message.reactions(channel_id, message_id, emoji_api_name, params)
-  end
+  defdelegate get_reactions(channel_id, message_id, emoji, params \\ []),
+    to: Nostrum.Api.Message,
+    as: :reactions
 
   @doc ~S"""
   Same as `get_reactions/4`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
+  @deprecated "Bang functions will be removed in v1.0"
   @spec get_reactions!(Channel.id(), Message.id(), emoji, keyword()) :: no_return | [User.t()]
   def get_reactions!(channel_id, message_id, emoji, params \\ []) do
     get_reactions(channel_id, message_id, emoji, params)
     |> bangify
   end
 
-  @doc ~S"""
-  Deletes all reactions from a message.
-
-  This endpoint requires the `VIEW_CHANNEL`, `READ_MESSAGE_HISTORY`, and
-  `MANAGE_MESSAGES` permissions. It fires a `t:Nostrum.Consumer.message_reaction_remove_all/0` event.
-
-  If successful, returns `{:ok}`. Otherwise, return `t:Nostrum.Api.error/0`.
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Message.clear_reactions/2` directly instead.
   """
-  @spec delete_all_reactions(Channel.id(), Message.id()) :: error | {:ok}
-  def delete_all_reactions(channel_id, message_id) do
-    Nostrum.Api.Message.clear_reactions(channel_id, message_id)
-  end
+  defdelegate delete_all_reactions(channel_id, message_id),
+    to: Nostrum.Api.Message,
+    as: :clear_reactions
 
   @doc ~S"""
   Same as `delete_all_reactions/2`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
+  @deprecated "Bang functions will be removed in v1.0"
   @spec delete_all_reactions!(Channel.id(), Message.id()) :: no_return | {:ok}
   def delete_all_reactions!(channel_id, message_id) do
     delete_all_reactions(channel_id, message_id)
     |> bangify
   end
 
-  @doc ~S"""
-  Get voters for the provided answer on the poll attached to the provided message.
-
-  If successful, returns `{:ok, users}`. Otherwise, returns `t:Nostrum.Api.error/0`.
-
-  The optional `params` are `after`, the user ID to query after, absent by default,
-  and `limit`, the max number of users to return, 1-100, 25 by default. Results are
-  sorted by Discord user snowflake (ID) in ascending order.
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Poll.answer_voters/4` directly instead.
   """
-  @spec get_poll_answer_voters(Channel.id(), Message.id(), Poll.Answer.answer_id()) ::
-          error | {:ok, [User.t()]}
-  def get_poll_answer_voters(channel_id, message_id, answer_id, params \\ []) do
-    Nostrum.Api.Poll.answer_voters(channel_id, message_id, answer_id, params)
-  end
+  defdelegate get_poll_answer_voters(channel_id, message_id, answer_id, params \\ []),
+    to: Nostrum.Api.Poll,
+    as: :answer_voters
 
   @doc ~S"""
   Same as `get_poll_answer_voters/4`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
+  @deprecated "Bang functions will be removed in v1.0"
   @spec get_poll_answer_voters!(Channel.id(), Message.id(), Poll.Answer.answer_id()) :: [User.t()]
   def get_poll_answer_voters!(channel_id, message_id, answer_id, params \\ []) do
     get_poll_answer_voters(channel_id, message_id, answer_id, params)
     |> bangify
   end
 
-  @doc ~S"""
-  Expire (close voting on) a poll before the scheduled end time.
-
-  Returns the original message containing the poll.
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Poll.expire/2` directly instead.
   """
-  @spec expire_poll(Channel.id(), Message.id()) :: error | {:ok, Message.t()}
-  def expire_poll(channel_id, message_id) do
-    Nostrum.Api.Poll.expire(channel_id, message_id)
-  end
+  defdelegate expire_poll(channel_id, message_id),
+    to: Nostrum.Api.Poll,
+    as: :expire
 
   @doc ~S"""
   Same as `expire_poll/2`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
+  @deprecated "Bang functions will be removed in v1.0"
   @spec expire_poll!(Channel.id(), Message.id()) :: Message.t()
   def expire_poll!(channel_id, message_id) do
     expire_poll(channel_id, message_id)
     |> bangify
   end
 
-  @doc ~S"""
-  Gets a channel.
-
-  If successful, returns `{:ok, channel}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
-
-  ## Examples
-
-  ```elixir
-  Nostrum.Api.get_channel(381889573426429952)
-  {:ok, %Nostrum.Struct.Channel{id: 381889573426429952}}
-  ```
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Channel.get/1` directly instead.
   """
-  @spec get_channel(Channel.id()) :: error | {:ok, Channel.t()}
-  def get_channel(channel_id) when is_snowflake(channel_id) do
-    Nostrum.Api.Channel.get(channel_id)
-  end
+  defdelegate get_channel(channel_id),
+    to: Nostrum.Api.Channel,
+    as: :get
 
   @doc ~S"""
   Same as `get_channel/1`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
+  @deprecated "Bang functions will be removed in v1.0"
   @spec get_channel!(Channel.id()) :: no_return | Channel.t()
   def get_channel!(channel_id) do
     get_channel(channel_id)
     |> bangify
   end
 
-  @doc ~S"""
-  Modifies a channel's settings.
-
-  An optional `reason` can be given for the guild audit log.
-
-  If a `t:Nostrum.Struct.Channel.guild_channel/0` is being modified, this
-  endpoint requires the `MANAGE_CHANNEL` permission. It fires a
-  `t:Nostrum.Consumer.channel_update/0` event. If a
-  `t:Nostrum.Struct.Channel.guild_category_channel/0` is being modified, then this
-  endpoint fires multiple `t:Nostrum.Consumer.channel_update/0` events.
-
-  If successful, returns `{:ok, channel}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
-
-  ## Options
-
-    * `:name` (string) - 2-100 character channel name
-    * `:position` (integer) - the position of the channel in the left-hand listing
-    * `:topic` (string) (`t:Nostrum.Struct.Channel.text_channel/0` only) -
-    0-1024 character channel topic
-    * `:nsfw` (boolean) (`t:Nostrum.Struct.Channel.text_channel/0` only) -
-    if the channel is nsfw
-    * `:bitrate` (integer) (`t:Nostrum.Struct.Channel.voice_channel/0` only) -
-    the bitrate (in bits) of the voice channel; 8000 to 96000 (128000 for VIP servers)
-    * `:user_limit` (integer) (`t:Nostrum.Struct.Channel.voice_channel/0` only) -
-    the user limit of the voice channel; 0 refers to no limit, 1 to 99 refers to a user limit
-    * `:permission_overwrites` (list of `t:Nostrum.Struct.Overwrite.t/0` or equivalent map) -
-    channel or category-specific permissions
-    * `:parent_id` (`t:Nostrum.Struct.Channel.id/0`) (`t:Nostrum.Struct.Channel.guild_channel/0` only) -
-    id of the new parent category for a channel
-
-  ## Examples
-
-  ```elixir
-  Nostrum.Api.modify_channel(41771983423143933, name: "elixir-nostrum", topic: "nostrum discussion")
-  {:ok, %Nostrum.Struct.Channel{id: 41771983423143933, name: "elixir-nostrum", topic: "nostrum discussion"}}
-
-  Nostrum.Api.modify_channel(41771983423143933)
-  {:ok, %Nostrum.Struct.Channel{id: 41771983423143933}}
-  ```
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Channel.modify/3` directly instead.
   """
-  @spec modify_channel(Channel.id(), options, AuditLogEntry.reason()) ::
-          error | {:ok, Channel.t()}
-  def modify_channel(channel_id, options, reason \\ nil) do
-    Nostrum.Api.Channel.modify(channel_id, options, reason)
-  end
+  defdelegate modify_channel(channel_id, options, reason \\ nil),
+    to: Nostrum.Api.Channel,
+    as: :modify
 
   @doc ~S"""
   Same as `modify_channel/2`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
+  @deprecated "Bang functions will be removed in v1.0"
   @spec modify_channel!(Channel.id(), options, AuditLogEntry.reason()) :: no_return | Channel.t()
   def modify_channel!(channel_id, options, reason \\ nil) do
     modify_channel(channel_id, options, reason)
     |> bangify
   end
 
-  @doc ~S"""
-  Deletes a channel.
-
-  An optional `reason` can be provided for the guild audit log.
-
-  If deleting a `t:Nostrum.Struct.Channel.guild_channel/0`, this endpoint requires
-  the `MANAGE_CHANNELS` permission. It fires a
-  `t:Nostrum.Consumer.channel_delete/0`. If a `t:Nostrum.Struct.Channel.guild_category_channel/0`
-  is deleted, then a `t:Nostrum.Consumer.channel_update/0` event will fire
-  for each channel under the category.
-
-  If successful, returns `{:ok, channel}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
-
-  ## Examples
-
-  ```elixir
-  Nostrum.Api.delete_channel(421533712753360896)
-  {:ok, %Nostrum.Struct.Channel{id: 421533712753360896}}
-  ```
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Channel.delete/2` directly instead.
   """
-  @spec delete_channel(Channel.id(), AuditLogEntry.reason()) :: error | {:ok, Channel.t()}
-  def delete_channel(channel_id, reason \\ nil) when is_snowflake(channel_id) do
-    Nostrum.Api.Channel.delete(channel_id, reason)
-  end
+  defdelegate delete_channel(channel_id, reason \\ nil),
+    to: Nostrum.Api.Channel,
+    as: :delete
 
   @doc ~S"""
   Same as `delete_channel/1`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
+  @deprecated "Bang functions will be removed in v1.0"
   @spec delete_channel!(Channel.id(), AuditLogEntry.reason()) :: no_return | Channel.t()
   def delete_channel!(channel_id, reason \\ nil) do
     delete_channel(channel_id, reason)
     |> bangify
   end
 
-  @doc ~S"""
-  Retrieves a channel's messages around a `locator` up to a `limit`.
-
-  This endpoint requires the 'VIEW_CHANNEL' permission. If the current user
-  is missing the 'READ_MESSAGE_HISTORY' permission, then this function will
-  return no messages.
-
-  If successful, returns `{:ok, messages}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
-
-  ## Examples
-
-  ```elixir
-  Nostrum.Api.get_channel_messages(43189401384091, 5, {:before, 130230401384})
-  ```
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Channel.messages/3` directly instead.
   """
-  @spec get_channel_messages(Channel.id(), limit, locator) :: error | {:ok, [Message.t()]}
-  def get_channel_messages(channel_id, limit, locator \\ {}) when is_snowflake(channel_id) do
-    Nostrum.Api.Channel.messages(channel_id, limit, locator)
-  end
+  defdelegate get_channel_messages(channel_id, limit, locator \\ {}),
+    to: Nostrum.Api.Channel,
+    as: :messages
 
   @doc ~S"""
   Same as `get_channel_messages/3`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
+  @deprecated "Bang functions will be removed in v1.0"
   @spec get_channel_messages!(Channel.id(), limit, locator) :: no_return | [Message.t()]
   def get_channel_messages!(channel_id, limit, locator \\ {}) do
     get_channel_messages(channel_id, limit, locator)
     |> bangify
   end
 
-  @doc ~S"""
-  Retrieves a message from a channel.
-
-  This endpoint requires the 'VIEW_CHANNEL' and 'READ_MESSAGE_HISTORY' permissions.
-
-  If successful, returns `{:ok, message}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
-
-  ## Examples
-
-  ```elixir
-  Nostrum.Api.get_channel_message(43189401384091, 198238475613443)
-  ```
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Message.get/2` directly instead.
   """
-  @spec get_channel_message(Channel.id(), Message.id()) :: error | {:ok, Message.t()}
-  def get_channel_message(channel_id, message_id)
-      when is_snowflake(channel_id) and is_snowflake(message_id) do
-    Nostrum.Api.Message.get(channel_id, message_id)
-  end
+  defdelegate get_channel_message(channel_id, message_id),
+    to: Nostrum.Api.Message,
+    as: :get
 
   @doc ~S"""
   Same as `get_channel_message/2`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
+  @deprecated "Bang functions will be removed in v1.0"
   @spec get_channel_message!(Channel.id(), Message.id()) :: no_return | Message.t()
   def get_channel_message!(channel_id, message_id) do
     get_channel_message(channel_id, message_id)
     |> bangify
   end
 
-  @doc """
-  Deletes multiple messages from a channel.
-
-  `messages` is a list of `Nostrum.Struct.Message.id` that you wish to delete.
-  When given more than 100 messages, this function will chunk the given message
-  list into blocks of 100 and send them off to the API. It will stop deleting
-  on the first error that occurs. Keep in mind that deleting thousands of
-  messages will take a pretty long time and it may be proper to just delete
-  the channel you want to bulk delete in and recreate it.
-
-  This method can only delete messages sent within the last two weeks.
-  `Filter` is an optional parameter that specifies whether messages sent over
-  two weeks ago should be filtered out; defaults to `true`.
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Channel.bulk_delete_messages/3` directly instead.
   """
-  @spec bulk_delete_messages(integer, [Nostrum.Struct.Message.id()], boolean) :: error | {:ok}
-  def bulk_delete_messages(channel_id, messages, filter) do
-    Nostrum.Api.Channel.bulk_delete_messages(channel_id, messages, filter)
-  end
+  defdelegate bulk_delete_messages(channel_id, messages, filter),
+    to: Nostrum.Api.Channel
 
   @doc """
   Same as `bulk_delete_messages/2`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
+  @deprecated "Bang functions will be removed in v1.0"
   @spec bulk_delete_messages!(integer, [Nostrum.Struct.Message.id()], boolean) ::
           no_return | {:ok}
   def bulk_delete_messages!(channel_id, messages, filter \\ true) do
@@ -824,40 +520,18 @@ defmodule Nostrum.Api do
     |> bangify
   end
 
-  @doc """
-  Edit the permission overwrites for a user or role.
-
-  Role or user to overwrite is specified by `overwrite_id`.
-
-  `permission_info` is a map with the following keys:
-   * `type` - Required; `member` if editing a user, `role` if editing a role.
-   * `allow` - Bitwise value of allowed permissions.
-   * `deny` - Bitwise value of denied permissions.
-   * `type` - `member` if editing a user, `role` if editing a role.
-
-  An optional `reason` can be provided for the audit log.
-
-   `allow` and `deny` are defaulted to `0`, meaning that even if you don't
-   specify them, they will override their respective former values in an
-   existing overwrite.
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Channel.edit_permissions/4` directly instead.
   """
-  @spec edit_channel_permissions(
-          integer,
-          integer,
-          %{
-            required(:type) => String.t(),
-            optional(:allow) => integer,
-            optional(:deny) => integer
-          },
-          AuditLogEntry.reason()
-        ) :: error | {:ok}
-  def edit_channel_permissions(channel_id, overwrite_id, permission_info, reason \\ nil) do
-    Nostrum.Api.Channel.edit_permissions(channel_id, overwrite_id, permission_info, reason)
-  end
+  defdelegate edit_channel_permissions(channel_id, overwrite_id, permission_info, reason \\ nil),
+    to: Nostrum.Api.Channel,
+    as: :edit_permissions
 
   @doc """
   Same as `edit_channel_permissions/3`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
+  @deprecated "Bang functions will be removed in v1.0"
   @spec edit_channel_permissions!(
           integer,
           integer,
@@ -873,85 +547,44 @@ defmodule Nostrum.Api do
     |> bangify
   end
 
-  @doc """
-  Delete a channel permission for a user or role.
-
-  Role or user overwrite to delete is specified by `channel_id` and `overwrite_id`.
-  An optional `reason` can be given for the audit log.
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Channel.delete_permissions/3` directly instead.
   """
-  @spec delete_channel_permissions(integer, integer, AuditLogEntry.reason()) :: error | {:ok}
-  def delete_channel_permissions(channel_id, overwrite_id, reason \\ nil) do
-    Nostrum.Api.Channel.delete_permissions(channel_id, overwrite_id, reason)
-  end
+  defdelegate delete_channel_permissions(channel_id, overwrite_id, reason \\ nil),
+    to: Nostrum.Api.Channel,
+    as: :delete_permissions
 
-  @doc ~S"""
-  Gets a list of invites for a channel.
-
-  This endpoint requires the 'VIEW_CHANNEL' and 'MANAGE_CHANNELS' permissions.
-
-  If successful, returns `{:ok, invite}`. Otherwise, returns a
-  `t:Nostrum.Api.error/0`.
-
-  ## Examples
-
-  ```elixir
-  Nostrum.Api.get_channel_invites(43189401384091)
-  {:ok, [%Nostrum.Struct.Invite{} | _]}
-  ```
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Invite.channel_invites/1` directly instead.
   """
-  @spec get_channel_invites(Channel.id()) :: error | {:ok, [Invite.detailed_invite()]}
-  def get_channel_invites(channel_id) when is_snowflake(channel_id) do
-    Nostrum.Api.Invite.channel_invites(channel_id)
-  end
+  defdelegate get_channel_invites(channel_id),
+    to: Nostrum.Api.Invite,
+    as: :channel_invites
 
   @doc ~S"""
   Same as `get_channel_invites/1`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
+  @deprecated "Bang functions will be removed in v1.0"
   @spec get_channel_invites!(Channel.id()) :: no_return | [Invite.detailed_invite()]
   def get_channel_invites!(channel_id) do
     get_channel_invites(channel_id)
     |> bangify
   end
 
-  @doc ~S"""
-  Creates an invite for a guild channel.
-
-  An optional `reason` can be provided for the audit log.
-
-  This endpoint requires the `CREATE_INSTANT_INVITE` permission.
-
-  If successful, returns `{:ok, invite}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
-
-  ## Options
-
-    * `:max_age` (integer) - duration of invite in seconds before expiry, or 0 for never.
-      (default: `86400`)
-    * `:max_uses` (integer) - max number of uses or 0 for unlimited.
-      (default: `0`)
-    * `:temporary` (boolean) - Whether the invite should grant temporary
-      membership. (default: `false`)
-    * `:unique` (boolean) - used when creating unique one time use invites.
-      (default: `false`)
-
-  ## Examples
-
-  ```elixir
-  Nostrum.Api.create_channel_invite(41771983423143933)
-  {:ok, Nostrum.Struct.Invite{}}
-
-  Nostrum.Api.create_channel_invite(41771983423143933, max_uses: 20)
-  {:ok, %Nostrum.Struct.Invite{}}
-  ```
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Invite.create/3` directly instead.
   """
-  @spec create_channel_invite(Channel.id(), options, AuditLogEntry.reason()) ::
-          error | {:ok, Invite.detailed_invite()}
-  def create_channel_invite(channel_id, options \\ [], reason \\ nil) do
-    Nostrum.Api.Invite.create(channel_id, options, reason)
-  end
+  defdelegate create_channel_invite(channel_id, options \\ [], reason \\ nil),
+    to: Nostrum.Api.Invite,
+    as: :create
 
   @doc ~S"""
   Same as `create_channel_invite/2`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
+  @deprecated "Bang functions will be removed in v1.0"
   @spec create_channel_invite!(Channel.id(), options, AuditLogEntry.reason()) ::
           no_return | Invite.detailed_invite()
   def create_channel_invite!(channel_id, options \\ [], reason \\ nil) do
@@ -959,225 +592,143 @@ defmodule Nostrum.Api do
     |> bangify
   end
 
-  @doc """
-  Triggers the typing indicator.
-
-  Triggers the typing indicator in the channel specified by `channel_id`.
-  The typing indicator lasts for about 8 seconds and then automatically stops.
-
-  Returns `{:ok}` if successful. `error` otherwise.
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Channel.start_typing/1` directly instead.
   """
-  @spec start_typing(integer) :: error | {:ok}
-  def start_typing(channel_id) do
-    Nostrum.Api.Channel.start_typing(channel_id)
-  end
+  defdelegate start_typing(channel_id),
+    to: Nostrum.Api.Channel
 
   @doc """
   Same as `start_typing/1`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
+  @deprecated "Bang functions will be removed in v1.0"
   @spec start_typing!(integer) :: no_return | {:ok}
   def start_typing!(channel_id) do
     start_typing(channel_id)
     |> bangify
   end
 
-  @doc ~S"""
-  Retrieves all pinned messages from a channel.
-
-  This endpoint requires the 'VIEW_CHANNEL' and 'READ_MESSAGE_HISTORY' permissions.
-
-  If successful, returns `{:ok, messages}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
-
-  ## Examples
-
-  ```elixir
-  Nostrum.Api.get_pinned_messages(43189401384091)
-  ```
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Channel.pinned_messages/1` directly instead.
   """
-  @spec get_pinned_messages(Channel.id()) :: error | {:ok, [Message.t()]}
-  def get_pinned_messages(channel_id) when is_snowflake(channel_id) do
-    Nostrum.Api.Channel.pinned_messages(channel_id)
-  end
+  defdelegate get_pinned_messages(channel_id),
+    to: Nostrum.Api.Channel,
+    as: :pinned_messages
 
   @doc ~S"""
   Same as `get_pinned_messages/1`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
+  @deprecated "Bang functions will be removed in v1.0"
   @spec get_pinned_messages!(Channel.id()) :: no_return | [Message.t()]
   def get_pinned_messages!(channel_id) do
     get_pinned_messages(channel_id)
     |> bangify
   end
 
-  @doc ~S"""
-  Pins a message in a channel.
-
-  This endpoint requires the 'VIEW_CHANNEL', 'READ_MESSAGE_HISTORY', and
-  'MANAGE_MESSAGES' permissions. It fires the
-  `t:Nostrum.Consumer.message_update/0` and
-  `t:Nostrum.Consumer.channel_pins_update/0` events.
-
-  If successful, returns `{:ok}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
-
-  ## Examples
-
-  ```elixir
-  Nostrum.Api.add_pinned_channel_message(43189401384091, 18743893102394)
-  ```
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Channel.pin_message/2` directly instead.
   """
-  @spec add_pinned_channel_message(Channel.id(), Message.id()) :: error | {:ok}
-  def add_pinned_channel_message(channel_id, message_id)
-      when is_snowflake(channel_id) and is_snowflake(message_id) do
-    Nostrum.Api.Channel.pin_message(channel_id, message_id)
-  end
+  defdelegate add_pinned_channel_message(channel_id, message_id),
+    to: Nostrum.Api.Channel,
+    as: :pin_message
 
   @doc ~S"""
   Same as `add_pinned_channel_message/2`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
+  @deprecated "Bang functions will be removed in v1.0"
   @spec add_pinned_channel_message!(Channel.id(), Message.id()) :: no_return | {:ok}
   def add_pinned_channel_message!(channel_id, message_id) do
     add_pinned_channel_message(channel_id, message_id)
     |> bangify
   end
 
-  @doc """
-  Unpins a message in a channel.
-
-  This endpoint requires the 'VIEW_CHANNEL', 'READ_MESSAGE_HISTORY', and
-  'MANAGE_MESSAGES' permissions. It fires the
-  `t:Nostrum.Consumer.message_update/0` and
-  `t:Nostrum.Consumer.channel_pins_update/0` events.
-
-  Returns `{:ok}` if successful. `error` otherwise.
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Channel.unpin_message/2` directly instead.
   """
-  @spec delete_pinned_channel_message(Channel.id(), Message.id()) :: error | {:ok}
-  def delete_pinned_channel_message(channel_id, message_id)
-      when is_snowflake(channel_id) and is_snowflake(message_id) do
-    Nostrum.Api.Channel.unpin_message(channel_id, message_id)
-  end
+  defdelegate delete_pinned_channel_message(channel_id, message_id),
+    to: Nostrum.Api.Channel,
+    as: :unpin_message
 
   @doc ~S"""
   Same as `delete_pinned_channel_message/2`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
+  @deprecated "Bang functions will be removed in v1.0"
   @spec delete_pinned_channel_message!(Channel.id(), Message.id()) :: no_return | {:ok}
   def delete_pinned_channel_message!(channel_id, message_id) do
     delete_pinned_channel_message(channel_id, message_id)
     |> bangify
   end
 
-  @doc ~S"""
-  Gets a list of emojis for a given guild.
-
-  This endpoint requires the `MANAGE_EMOJIS` permission.
-
-  If successful, returns `{:ok, emojis}`. Otherwise, returns `t:Nostrum.Api.error/0`.
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Guild.emojis/1` directly instead.
   """
-  @spec list_guild_emojis(Guild.id()) :: error | {:ok, [Emoji.t()]}
-  def list_guild_emojis(guild_id) do
-    Nostrum.Api.Guild.emojis(guild_id)
-  end
+  defdelegate list_guild_emojis(guild_id),
+    to: Nostrum.Api.Guild,
+    as: :emojis
 
   @doc ~S"""
   Same as `list_guild_emojis/1`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
+  @deprecated "Bang functions will be removed in v1.0"
   @spec list_guild_emojis!(Guild.id()) :: no_return | [Emoji.t()]
   def list_guild_emojis!(guild_id) do
     list_guild_emojis(guild_id)
     |> bangify
   end
 
-  @doc ~S"""
-  Gets an emoji for the given guild and emoji ids.
-
-  This endpoint requires the `MANAGE_EMOJIS` permission.
-
-  If successful, returns `{:ok, emoji}`. Otherwise, returns `t:Nostrum.Api.error/0`.
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Guild.emoji/2` directly instead.
   """
-  @spec get_guild_emoji(Guild.id(), Emoji.id()) :: error | {:ok, Emoji.t()}
-  def get_guild_emoji(guild_id, emoji_id) do
-    Nostrum.Api.Guild.emoji(guild_id, emoji_id)
-  end
+  defdelegate get_guild_emoji(guild_id, emoji_id),
+    to: Nostrum.Api.Guild,
+    as: :emoji
 
   @doc ~S"""
   Same as `get_guild_emoji/2`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
+  @deprecated "Bang functions will be removed in v1.0"
   @spec get_guild_emoji!(Guild.id(), Emoji.id()) :: no_return | Emoji.t()
   def get_guild_emoji!(guild_id, emoji_id) do
     get_guild_emoji(guild_id, emoji_id)
     |> bangify
   end
 
-  @doc ~S"""
-  Creates a new emoji for the given guild.
-
-  This endpoint requires the `MANAGE_EMOJIS` permission. It fires a
-  `t:Nostrum.Consumer.guild_emojis_update/0` event.
-
-  An optional `reason` can be provided for the audit log.
-
-  If successful, returns `{:ok, emoji}`. Otherwise, returns `t:Nostrum.Api.error/0`.
-
-  ## Options
-
-    * `:name` (string) - name of the emoji
-    * `:image` (base64 data URI) - the 128x128 emoji image. Maximum size of 256kb
-    * `:roles` (list of `t:Nostrum.Snowflake.t/0`) - roles for which this emoji will be whitelisted
-    (default: [])
-
-  `:name` and `:image` are always required.
-
-  ## Examples
-
-  ```elixir
-  image = "data:image/png;base64,YXl5IGJieSB1IGx1a2luIDQgc3VtIGZ1az8="
-
-  Nostrum.Api.create_guild_emoji(43189401384091, name: "nostrum", image: image, roles: [])
-  ```
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Guild.create_emoji/3` directly instead.
   """
-  @spec create_guild_emoji(Guild.id(), options, AuditLogEntry.reason()) ::
-          error | {:ok, Emoji.t()}
-  def create_guild_emoji(guild_id, options, reason \\ nil) do
-    Nostrum.Api.Guild.create_emoji(guild_id, options, reason)
-  end
+  defdelegate create_guild_emoji(guild_id, options, reason \\ nil),
+    to: Nostrum.Api.Guild,
+    as: :create_emoji
 
   @doc ~S"""
   Same as `create_guild_emoji/2`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
+  @deprecated "Bang functions will be removed in v1.0"
   @spec create_guild_emoji!(Guild.id(), options, AuditLogEntry.reason()) :: no_return | Emoji.t()
   def create_guild_emoji!(guild_id, params, reason \\ nil) do
     create_guild_emoji(guild_id, params, reason)
     |> bangify
   end
 
-  @doc ~S"""
-  Modify the given emoji.
-
-  This endpoint requires the `MANAGE_EMOJIS` permission. It fires a
-  `t:Nostrum.Consumer.guild_emojis_update/0` event.
-
-  An optional `reason` can be provided for the audit log.
-
-  If successful, returns `{:ok, emoji}`. Otherwise, returns `t:Nostrum.Api.error/0`.
-
-  ## Options
-
-    * `:name` (string) - name of the emoji
-    * `:roles` (list of `t:Nostrum.Snowflake.t/0`) - roles to which this emoji will be whitelisted
-
-  ## Examples
-
-  ```elixir
-  Nostrum.Api.modify_guild_emoji(43189401384091, 4314301984301, name: "elixir", roles: [])
-  ```
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Guild.modify_emoji/4` directly instead.
   """
-  @spec modify_guild_emoji(Guild.id(), Emoji.id(), options, AuditLogEntry.reason()) ::
-          error | {:ok, Emoji.t()}
-  def modify_guild_emoji(guild_id, emoji_id, options \\ %{}, reason \\ nil) do
-    Nostrum.Api.Guild.modify_emoji(guild_id, emoji_id, options, reason)
-  end
+  defdelegate modify_guild_emoji(guild_id, emoji_id, options \\ %{}, reason \\ nil),
+    to: Nostrum.Api.Guild,
+    as: :modify_emoji
 
   @doc ~S"""
   Same as `modify_guild_emoji/3`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
+  @deprecated "Bang functions will be removed in v1.0"
   @spec modify_guild_emoji!(Guild.id(), Emoji.id(), options, AuditLogEntry.reason()) ::
           no_return | Emoji.t()
   def modify_guild_emoji!(guild_id, emoji_id, options, reason \\ nil) do
@@ -1185,359 +736,190 @@ defmodule Nostrum.Api do
     |> bangify
   end
 
-  @doc ~S"""
-  Deletes the given emoji.
-
-  An optional `reason` can be provided for the audit log.
-
-  This endpoint requires the `MANAGE_EMOJIS` permission. It fires a
-  `t:Nostrum.Consumer.guild_emojis_update/0` event.
-
-  If successful, returns `{:ok}`. Otherwise, returns `t:Nostrum.Api.error/0`.
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Guild.delete_emoji/3` directly instead.
   """
-  @spec delete_guild_emoji(Guild.id(), Emoji.id(), AuditLogEntry.reason()) :: error | {:ok}
-  def delete_guild_emoji(guild_id, emoji_id, reason \\ nil) do
-    Nostrum.Api.Guild.delete_emoji(guild_id, emoji_id, reason)
-  end
+  defdelegate delete_guild_emoji(guild_id, emoji_id, reason \\ nil),
+    to: Nostrum.Api.Guild,
+    as: :delete_emoji
 
   @doc ~S"""
   Same as `delete_guild_emoji/2`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
+  @deprecated "Bang functions will be removed in v1.0"
   @spec delete_guild_emoji!(Guild.id(), Emoji.id(), AuditLogEntry.reason()) :: no_return | {:ok}
   def delete_guild_emoji!(guild_id, emoji_id, reason \\ nil) do
     delete_guild_emoji(guild_id, emoji_id, reason)
     |> bangify
   end
 
-  @doc ~S"""
-  Fetch a sticker with the provided ID.
-
-  Returns a `t:Nostrum.Struct.Sticker.t/0`.
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Sticker.get/1` directly instead.
   """
-  @doc since: "0.10.0"
-  @spec get_sticker(Snowflake.t()) :: {:ok, Sticker.t()} | error
-  def get_sticker(sticker_id) do
-    Nostrum.Api.Sticker.get(sticker_id)
-  end
+  defdelegate get_sticker(sticker_id),
+    to: Nostrum.Api.Sticker,
+    as: :get
 
-  @doc ~S"""
-  List all stickers in the provided guild.
-
-  Returns a list of `t:Nostrum.Struct.Sticker.t/0`.
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Sticker.list/1` directly instead.
   """
-  @doc since: "0.10.0"
-  @spec list_guild_stickers(Guild.id()) :: {:ok, [Sticker.t()]} | error
-  def list_guild_stickers(guild_id) do
-    Nostrum.Api.Sticker.list(guild_id)
-  end
+  defdelegate list_guild_stickers(guild_id),
+    to: Nostrum.Api.Sticker,
+    as: :list
 
-  @doc ~S"""
-  Return the specified sticker from the specified guild.
-
-  Returns a `t:Nostrum.Struct.Sticker.t/0`.
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Sticker.get/2` directly instead.
   """
-  @doc since: "0.10.0"
-  @spec get_guild_sticker(Guild.id(), Sticker.id()) :: Sticker.t() | error
-  def get_guild_sticker(guild_id, sticker_id) do
-    Nostrum.Api.Sticker.get(guild_id, sticker_id)
-  end
+  defdelegate get_guild_sticker(guild_id, sticker_id),
+    to: Nostrum.Api.Sticker,
+    as: :get
 
-  @doc ~S"""
-  Create a sticker in a guild.
-
-  Every guild has five free sticker slots by default, and each Boost level will
-  grant access to more slots.
-
-  Uploaded stickers are constrained to 5 seconds in length for animated stickers, and 320 x 320 pixels.
-
-  Stickers in the [Lottie file format](https://airbnb.design/lottie/) can only
-  be uploaded on guilds that have either the `VERIFIED` and/or the `PARTNERED`
-  guild feature.
-
-  ## Parameters
-
-  - `name`: Name of the sticker (2-30 characters)
-  - `description`: Description of the sticker (2-100 characters)
-  - `tags`: Autocomplete/suggestion tags for the sticker (max 200 characters)
-  - `file`: A path to a file to upload or a map of `name` (file name) and `body` (file data).
-  - `reason` (optional): audit log reason to attach to this event
-
-  ## Returns
-
-  Returns a `t:Nostrum.Struct.Sticker.t/0` on success.
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Sticker.create/6` directly instead.
   """
-  @doc since: "0.10.0"
-  @spec create_guild_sticker(
-          Guild.id(),
-          Sticker.name(),
-          Sticker.description(),
-          Sticker.tags(),
-          String.t() | %{body: iodata(), name: String.t()},
-          String.t() | nil
-        ) :: {:ok, Sticker.t()} | error
-  def create_guild_sticker(guild_id, name, description, tags, file, reason \\ nil) do
-    Nostrum.Api.Sticker.create(guild_id, name, description, tags, file, reason)
-  end
+  defdelegate create_guild_sticker(guild_id, name, description, tags, file, reason \\ nil),
+    to: Nostrum.Api.Sticker,
+    as: :create
 
-  @doc ~S"""
-  Modify a guild sticker with the specified ID.
-
-  Pass in a map of properties to update, with any of the following keys:
-
-  - `name`: Name of the sticker (2-30 characters)
-  - `description`: Description of the sticker (2-100 characters)
-  - `tags`: Autocomplete/suggestion tags for the sticker (max 200 characters)
-
-  Returns an updated sticker on update completion.
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Sticker.modify/3` directly instead.
   """
-  @doc since: "0.10.0"
-  @spec modify_guild_sticker(Guild.id(), Sticker.id(), %{
-          name: Sticker.name() | nil,
-          description: Sticker.description() | nil,
-          tags: Sticker.tags() | nil
-        }) :: {:ok, Sticker.t()} | error
-  def modify_guild_sticker(guild_id, sticker_id, options) do
-    Nostrum.Api.Sticker.modify(guild_id, sticker_id, options)
-  end
+  defdelegate modify_guild_sticker(guild_id, sticker_id, options),
+    to: Nostrum.Api.Sticker,
+    as: :modify
 
-  @doc ~S"""
-  Delete a guild sticker with the specified ID.
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Sticker.delete/2` directly instead.
   """
-  @doc since: "0.10.0"
-  @spec delete_guild_sticker(Guild.id(), Sticker.id()) :: {:ok} | error
-  def delete_guild_sticker(guild_id, sticker_id) do
-    Nostrum.Api.Sticker.delete(guild_id, sticker_id)
-  end
+  defdelegate delete_guild_sticker(guild_id, sticker_id),
+    to: Nostrum.Api.Sticker,
+    as: :delete
 
-  @doc ~S"""
-  Get a list of available sticker packs.
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Sticker.packs/0` directly instead.
   """
-  @doc since: "0.10.0"
-  @spec get_sticker_packs() :: {:ok, [Sticker.Pack.t()]} | error
-  def get_sticker_packs do
-    Nostrum.Api.Sticker.packs()
-  end
+  defdelegate get_sticker_packs,
+    to: Nostrum.Api.Sticker,
+    as: :packs
 
-  @doc ~S"""
-  Get the `t:Nostrum.Struct.Guild.AuditLog.t/0` for the given `guild_id`.
-
-  ## Options
-
-    * `:user_id` (`t:Nostrum.Struct.User.id/0`) - filter the log for a user ID
-    * `:action_type` (`t:integer/0`) - filter the log by audit log type, see [Audit Log Events](https://discord.com/developers/docs/resources/audit-log#audit-log-entry-object-audit-log-events)
-    * `:before` (`t:Nostrum.Struct.Snowflake.t/0`) - filter the log before a certain entry ID
-    * `:limit` (`t:pos_integer/0`) - how many entries are returned (default 50, minimum 1, maximum 100)
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Guild.audit_log/2` directly instead.
   """
-  @spec get_guild_audit_log(Guild.id(), options) :: {:ok, AuditLog.t()} | error
-  def get_guild_audit_log(guild_id, options \\ []) do
-    Nostrum.Api.Guild.audit_log(guild_id, options)
-  end
+  defdelegate get_guild_audit_log(guild_id, options \\ []),
+    to: Nostrum.Api.Guild,
+    as: :audit_log
 
-  @doc ~S"""
-  Gets a guild.
-
-  If successful, returns `{:ok, guild}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
-
-  ## Examples
-
-  ```elixir
-  Nostrum.Api.get_guild(81384788765712384)
-  {:ok, %Nostrum.Struct.Guild{id: 81384788765712384}}
-  ```
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Guild.get/1` directly instead.
   """
-  @spec get_guild(Guild.id()) :: error | {:ok, Guild.rest_guild()}
-  def get_guild(guild_id) when is_snowflake(guild_id) do
-    Nostrum.Api.Guild.get(guild_id)
-  end
+  defdelegate get_guild(guild_id),
+    to: Nostrum.Api.Guild,
+    as: :get
 
   @doc """
   Same as `get_guild/1`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
+  @deprecated "Bang functions will be removed in v1.0"
   @spec get_guild!(Guild.id()) :: no_return | Guild.rest_guild()
   def get_guild!(guild_id) do
     get_guild(guild_id)
     |> bangify
   end
 
-  @doc """
-  Modifies a guild's settings.
-
-  This endpoint requires the `MANAGE_GUILD` permission. It fires the
-  `t:Nostrum.Consumer.guild_update/0` event.
-
-  An optional `reason` can be provided for the audit log.
-
-  If successful, returns `{:ok, guild}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
-
-  ## Options
-
-    * `:name` (string) - guild name
-    * `:region` (string) - guild voice region id
-    * `:verification_level` (integer) - verification level
-    * `:default_message_notifications` (integer) - default message
-    notification level
-    * `:explicit_content_filter` (integer) - explicit content filter level
-    * `:afk_channel_id` (`t:Nostrum.Snowflake.t/0`) - id for afk channel
-    * `:afk_timeout` (integer) - afk timeout in seconds
-    * `:icon` (base64 data URI) - 128x128 jpeg image for the guild icon
-    * `:owner_id` (`t:Nostrum.Snowflake.t/0`) - user id to transfer
-    guild ownership to (must be owner)
-    * `:splash` (base64 data URI) - 128x128 jpeg image for the guild splash
-    (VIP only)
-    * `:system_channel_id` (`t:Nostrum.Snowflake.t/0`) - the id of the
-    channel to which system messages are sent
-    * `:rules_channel_id` (`t:Nostrum.Snowflake.t/0`) - the id of the channel that
-    is used for rules in public guilds
-    * `:public_updates_channel_id` (`t:Nostrum.Snowflake.t/0`) - the id of the channel
-    where admins and moderators receive notices from Discord in public guilds
-
-  ## Examples
-
-  ```elixir
-  Nostrum.Api.modify_guild(451824027976073216, name: "Nose Drum")
-  {:ok, %Nostrum.Struct.Guild{id: 451824027976073216, name: "Nose Drum", ...}}
-  ```
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Guild.modify/3` directly instead.
   """
-  @spec modify_guild(Guild.id(), options, AuditLogEntry.reason()) ::
-          error | {:ok, Guild.rest_guild()}
-  def modify_guild(guild_id, options \\ [], reason \\ nil) do
-    Nostrum.Api.Guild.modify(guild_id, options, reason)
-  end
+  defdelegate modify_guild(guild_id, options \\ [], reason \\ nil),
+    to: Nostrum.Api.Guild,
+    as: :modify
 
   @doc """
   Same as `modify_guild/2`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
+  @deprecated "Bang functions will be removed in v1.0"
   @spec modify_guild!(Guild.id(), options) :: no_return | Guild.rest_guild()
   def modify_guild!(guild_id, options \\ []) do
     modify_guild(guild_id, options)
     |> bangify
   end
 
-  @doc ~S"""
-  Deletes a guild.
-
-  This endpoint requires that the current user is the owner of the guild.
-  It fires the `t:Nostrum.Consumer.guild_delete/0` event.
-
-  If successful, returns `{:ok}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
-
-  ## Examples
-
-  ```elixir
-  Nostrum.Api.delete_guild(81384788765712384)
-  {:ok}
-  ```
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Guild.delete/1` directly instead.
   """
-  @spec delete_guild(Guild.id()) :: error | {:ok}
-  def delete_guild(guild_id) when is_snowflake(guild_id) do
-    Nostrum.Api.Guild.delete(guild_id)
-  end
+  defdelegate delete_guild(guild_id),
+    to: Nostrum.Api.Guild,
+    as: :delete
 
   @doc ~S"""
   Same as `delete_guild/1`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
+  @deprecated "Bang functions will be removed in v1.0"
   @spec delete_guild!(Guild.id()) :: no_return | {:ok}
   def delete_guild!(guild_id) do
     delete_guild(guild_id)
     |> bangify
   end
 
-  @doc ~S"""
-  Gets a list of guild channels.
-
-  If successful, returns `{:ok, channels}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
-
-  ## Examples
-
-  ```elixir
-  Nostrum.Api.get_guild_channels(81384788765712384)
-  {:ok, [%Nostrum.Struct.Channel{guild_id: 81384788765712384} | _]}
-  ```
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Guild.channels/1` directly instead.
   """
-  @spec get_guild_channels(Guild.id()) :: error | {:ok, [Channel.guild_channel()]}
-  def get_guild_channels(guild_id) when is_snowflake(guild_id) do
-    Nostrum.Api.Guild.channels(guild_id)
-  end
+  defdelegate get_guild_channels(guild_id),
+    to: Nostrum.Api.Guild,
+    as: :channels
 
   @doc ~S"""
   Same as `get_guild_channels/1`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
+  @deprecated "Bang functions will be removed in v1.0"
   @spec get_guild_channels!(Guild.id()) :: no_return | [Channel.guild_channel()]
   def get_guild_channels!(guild_id) do
     get_guild_channels(guild_id)
     |> bangify
   end
 
-  @doc """
-  Creates a channel for a guild.
-
-  This endpoint requires the `MANAGE_CHANNELS` permission. It fires a
-  `t:Nostrum.Consumer.channel_create/0` event.
-
-  If successful, returns `{:ok, channel}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
-
-  ## Options
-
-    * `:name` (string) - channel name (2-100 characters)
-    * `:type` (integer) - the type of channel (See `Nostrum.Struct.Channel`)
-    * `:topic` (string) - channel topic (0-1024 characters)
-    * `:bitrate` (integer) - the bitrate (in bits) of the voice channel (voice only)
-    * `:user_limit` (integer) - the user limit of the voice channel (voice only)
-    * `:permission_overwrites` (list of `t:Nostrum.Struct.Overwrite.t/0` or equivalent map) -
-    the channel's permission overwrites
-    * `:parent_id` (`t:Nostrum.Struct.Channel.id/0`) - id of the parent category for a channel
-    * `:nsfw` (boolean) - if the channel is nsfw
-
-  `:name` is always required.
-
-  ## Examples
-
-  ```elixir
-  Nostrum.Api.create_guild_channel(81384788765712384, name: "elixir-nostrum", topic: "craig's domain")
-  {:ok, %Nostrum.Struct.Channel{guild_id: 81384788765712384}}
-  ```
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Channel.create/2` directly instead.
   """
-  @spec create_guild_channel(Guild.id(), options) :: error | {:ok, Channel.guild_channel()}
-  def create_guild_channel(guild_id, options) do
-    Nostrum.Api.Channel.create(guild_id, options)
-  end
+  defdelegate create_guild_channel(guild_id, options),
+    to: Nostrum.Api.Channel,
+    as: :create
 
   @doc ~S"""
   Same as `create_guild_channel/2`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
+  @deprecated "Bang functions will be removed in v1.0"
   @spec create_guild_channel!(Guild.id(), options) :: no_return | Channel.guild_channel()
   def create_guild_channel!(guild_id, options) do
     create_guild_channel(guild_id, options)
     |> bangify
   end
 
-  @doc """
-  Reorders a guild's channels.
-
-  This endpoint requires the `MANAGE_CHANNELS` permission. It fires multiple
-  `t:Nostrum.Consumer.channel_update/0` events.
-
-  If successful, returns `{:ok, channels}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
-
-  `positions` is a list of maps that each map a channel id with a position.
-
-  ## Examples
-
-  ```elixir
-  Nostrum.Api.modify_guild_channel_positions(279093381723062272, [%{id: 351500354581692420, position: 2}])
-  {:ok}
-  ```
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Guild.modify_channel_positions/2` directly instead.
   """
-  @spec modify_guild_channel_positions(Guild.id(), [%{id: integer, position: integer}]) ::
-          error | {:ok}
-  def modify_guild_channel_positions(guild_id, positions)
-      when is_snowflake(guild_id) and is_list(positions) do
-    Nostrum.Api.Guild.modify_channel_positions(guild_id, positions)
-  end
+  defdelegate modify_guild_channel_positions(guild_id, positions),
+    to: Nostrum.Api.Guild,
+    as: :modify_channel_positions
 
   @doc ~S"""
   Same as `modify_guild_channel_positions/2`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
+  @deprecated "Bang functions will be removed in v1.0"
   @spec modify_guild_channel_positions!(Guild.id(), [%{id: integer, position: integer}]) ::
           no_return | {:ok}
   def modify_guild_channel_positions!(guild_id, positions) do
@@ -1545,144 +927,72 @@ defmodule Nostrum.Api do
     |> bangify
   end
 
-  @doc """
-  Gets a guild member.
-
-  If successful, returns `{:ok, member}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
-
-  ## Examples
-
-  ```elixir
-  Nostrum.Api.get_guild_member(4019283754613, 184937267485)
-  ```
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Guild.member/2` directly instead.
   """
-  @spec get_guild_member(Guild.id(), User.id()) :: error | {:ok, Member.t()}
-  def get_guild_member(guild_id, user_id) when is_snowflake(guild_id) and is_snowflake(user_id) do
-    Nostrum.Api.Guild.member(guild_id, user_id)
-  end
+  defdelegate get_guild_member(guild_id, user_id),
+    to: Nostrum.Api.Guild,
+    as: :member
 
   @doc """
   Same as `get_guild_member/2`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
+  @deprecated "Bang functions will be removed in v1.0"
   @spec get_guild_member!(Guild.id(), User.id()) :: no_return | Member.t()
   def get_guild_member!(guild_id, user_id) do
     get_guild_member(guild_id, user_id)
     |> bangify
   end
 
-  @doc """
-  Gets a list of a guild's members.
-
-  If successful, returns `{:ok, members}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
-
-  ## Options
-
-    * `:limit` (integer) - max number of members to return (1-1000) (default: 1)
-    * `:after` (`t:Nostrum.Struct.User.id/0`) - the highest user id in the previous page (default: 0)
-
-  ## Examples
-
-  ```elixir
-  Nostrum.Api.list_guild_members(41771983423143937, limit: 1)
-  ```
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Guild.members/2` directly instead.
   """
-  @spec list_guild_members(Guild.id(), options) :: error | {:ok, [Member.t()]}
-  def list_guild_members(guild_id, options \\ %{}) do
-    Nostrum.Api.Guild.members(guild_id, options)
-  end
+  defdelegate list_guild_members(guild_id, options \\ %{}),
+    to: Nostrum.Api.Guild,
+    as: :members
 
   @doc """
   Same as `list_guild_members/2`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
+  @deprecated "Bang functions will be removed in v1.0"
   @spec list_guild_members!(Guild.id(), options) :: no_return | [Member.t()]
   def list_guild_members!(guild_id, options \\ %{}) do
     list_guild_members(guild_id, options)
     |> bangify
   end
 
-  @doc ~S"""
-  Puts a user in a guild.
-
-  This endpoint fires the `t:Nostrum.Consumer.guild_member_add/0` event.
-  It requires the `CREATE_INSTANT_INVITE` permission. Additionally, it
-  situationally requires the `MANAGE_NICKNAMES`, `MANAGE_ROLES`,
-  `MUTE_MEMBERS`, and `DEAFEN_MEMBERS` permissions.
-
-  If successful, returns `{:ok, member}` or `{:ok}` if the user was already a member of the
-  guild. Otherwise, returns a `t:Nostrum.Api.error/0`.
-
-  ## Options
-
-    * `:access_token` (string) - the user's oauth2 access token
-    * `:nick` (string) - value to set users nickname to
-    * `:roles` (list of `t:Nostrum.Struct.Guild.Role.id/0`) - array of role ids the member is assigned
-    * `:mute` (boolean) - if the user is muted
-    * `:deaf` (boolean) - if the user is deafened
-
-  `:access_token` is always required.
-
-  ## Examples
-
-  ```elixir
-  Nostrum.Api.add_guild_member(
-    41771983423143937,
-    18374719829378473,
-    access_token: "6qrZcUqja7812RVdnEKjpzOL4CvHBFG",
-    nick: "nostrum",
-    roles: [431849301, 913809431]
-  )
-  ```
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Guild.add_member/3` directly instead.
   """
-  @spec add_guild_member(Guild.id(), User.id(), options) :: error | {:ok, Member.t()} | {:ok}
-  def add_guild_member(guild_id, user_id, options) do
-    Nostrum.Api.Guild.add_member(guild_id, user_id, options)
-  end
+  defdelegate add_guild_member(guild_id, user_id, options),
+    to: Nostrum.Api.Guild,
+    as: :add_member
 
   @doc """
   Same as `add_guild_member/3`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
+  @deprecated "Bang functions will be removed in v1.0"
   @spec add_guild_member!(Guild.id(), User.id(), options) :: no_return | Member.t() | {:ok}
   def add_guild_member!(guild_id, user_id, options) do
     add_guild_member(guild_id, user_id, options)
     |> bangify
   end
 
-  @doc ~S"""
-  Modifies a guild member's attributes.
-
-  This endpoint fires the `t:Nostrum.Consumer.guild_member_update/0` event.
-  It situationally requires the `MANAGE_NICKNAMES`, `MANAGE_ROLES`,
-  `MUTE_MEMBERS`, `DEAFEN_MEMBERS`, and `MOVE_MEMBERS` permissions.
-
-  If successful, returns `{:ok, member}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
-
-  An optional `reason` argument can be given for the audit log.
-
-  ## Options
-
-    * `:nick` (string) - value to set users nickname to
-    * `:roles` (list of `t:Nostrum.Snowflake.t/0`) - array of role ids the member is assigned
-    * `:mute` (boolean) - if the user is muted
-    * `:deaf` (boolean) - if the user is deafened
-    * `:channel_id` (`t:Nostrum.Snowflake.t/0`) - id of channel to move user to (if they are connected to voice)
-    * `:communication_disabled_until` (`t:DateTime.t/0` or `nil`) - datetime to disable user communication (timeout) until, or `nil` to remove timeout.
-
-  ## Examples
-
-  ```elixir
-  Nostrum.Api.modify_guild_member(41771983423143937, 637162356451, nick: "Nostrum")
-  {:ok, %Nostrum.Struct.Member{}}
-  ```
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Guild.modify_member/4` directly instead.
   """
-  @spec modify_guild_member(Guild.id(), User.id(), options, AuditLogEntry.reason()) ::
-          error | {:ok, Member.t()}
-  def modify_guild_member(guild_id, user_id, options \\ %{}, reason \\ nil) do
-    Nostrum.Api.Guild.modify_member(guild_id, user_id, options, reason)
-  end
+  defdelegate modify_guild_member(guild_id, user_id, options \\ %{}, reason \\ nil),
+    to: Nostrum.Api.Guild,
+    as: :modify_member
 
   @doc """
   Same as `modify_guild_member/3`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
+  @deprecated "Bang functions will be removed in v1.0"
   @spec modify_guild_member!(Guild.id(), User.id(), options, AuditLogEntry.reason()) ::
           error | {:ok}
   def modify_guild_member!(guild_id, user_id, options \\ %{}, reason \\ nil) do
@@ -1690,228 +1000,138 @@ defmodule Nostrum.Api do
     |> bangify
   end
 
-  @doc """
-  Modifies the nickname of the current user in a guild.
-
-  If successful, returns `{:ok, %{nick: nick}}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
-
-  ## Options
-
-    * `:nick` (string) - value to set users nickname to
-
-  ## Examples
-
-  ```elixir
-  Nostrum.Api.modify_current_user_nick(41771983423143937, nick: "Nostrum")
-  {:ok, %{nick: "Nostrum"}}
-  ```
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Guild.modify_self_nick/2` directly instead.
   """
-  @spec modify_current_user_nick(Guild.id(), options) :: error | {:ok, %{nick: String.t()}}
-  def modify_current_user_nick(guild_id, options \\ %{}) do
-    Nostrum.Api.Guild.modify_self_nick(guild_id, options)
-  end
+  defdelegate modify_current_user_nick(guild_id, options \\ %{}),
+    to: Nostrum.Api.Guild,
+    as: :modify_self_nick
 
   @doc """
   Same as `modify_current_user_nick/2`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
+  @deprecated "Bang functions will be removed in v1.0"
   @spec modify_current_user_nick!(Guild.id(), options) :: no_return | %{nick: String.t()}
   def modify_current_user_nick!(guild_id, options \\ %{}) do
     modify_current_user_nick(guild_id, options)
     |> bangify()
   end
 
-  @doc """
-  Adds a role to a member.
-
-  Role to add is specified by `role_id`.
-  User to add role to is specified by `guild_id` and `user_id`.
-  An optional `reason` can be given for the audit log.
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Role.add_member/4` directly instead.
   """
-  @spec add_guild_member_role(integer, integer, integer, AuditLogEntry.reason()) :: error | {:ok}
-  def add_guild_member_role(guild_id, user_id, role_id, reason \\ nil) do
-    Nostrum.Api.Role.add_member(guild_id, user_id, role_id, reason)
-  end
+  defdelegate add_guild_member_role(guild_id, user_id, role_id, reason \\ nil),
+    to: Nostrum.Api.Role,
+    as: :add_member
 
-  @doc """
-  Removes a role from a member.
-
-  Role to remove is specified by `role_id`.
-  User to remove role from is specified by `guild_id` and `user_id`.
-  An optional `reason` can be given for the audit log.
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Role.remove_member/4` directly instead.
   """
-  @spec remove_guild_member_role(integer, integer, integer, AuditLogEntry.reason()) ::
-          error | {:ok}
-  def remove_guild_member_role(guild_id, user_id, role_id, reason \\ nil) do
-    Nostrum.Api.Role.remove_member(guild_id, user_id, role_id, reason)
-  end
+  defdelegate remove_guild_member_role(guild_id, user_id, role_id, reason \\ nil),
+    to: Nostrum.Api.Role,
+    as: :remove_member
 
-  @doc """
-  Removes a member from a guild.
-
-  This event requires the `KICK_MEMBERS` permission. It fires a
-  `t:Nostrum.Consumer.guild_member_remove/0` event.
-
-  An optional reason can be provided for the audit log with `reason`.
-
-  If successful, returns `{:ok}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
-
-  ## Examples
-
-  ```elixir
-  Nostrum.Api.remove_guild_member(1453827904102291, 18739485766253)
-  {:ok}
-  ```
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Guild.kick_member/3` directly instead.
   """
-  @spec remove_guild_member(Guild.id(), User.id(), AuditLogEntry.reason()) :: error | {:ok}
-  def remove_guild_member(guild_id, user_id, reason \\ nil)
-      when is_snowflake(guild_id) and is_snowflake(user_id) do
-    Nostrum.Api.Guild.kick_member(guild_id, user_id, reason)
-  end
+  defdelegate remove_guild_member(guild_id, user_id, reason \\ nil),
+    to: Nostrum.Api.Guild,
+    as: :kick_member
 
   @doc """
   Same as `remove_guild_member/2`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
+  @deprecated "Bang functions will be removed in v1.0"
   @spec remove_guild_member!(Guild.id(), User.id(), AuditLogEntry.reason()) :: no_return | {:ok}
   def remove_guild_member!(guild_id, user_id, reason \\ nil) do
     remove_guild_member(guild_id, user_id, reason)
     |> bangify
   end
 
-  @doc """
-  Gets a ban object for the given user from a guild.
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Guild.ban/2` directly instead.
   """
-  @doc since: "0.5.0"
-  @spec get_guild_ban(integer, integer) :: error | {:ok, Guild.Ban.t()}
-  def get_guild_ban(guild_id, user_id) do
-    Nostrum.Api.Guild.ban(guild_id, user_id)
-  end
+  defdelegate get_guild_ban(guild_id, user_id),
+    to: Nostrum.Api.Guild,
+    as: :ban
 
-  @doc """
-  Gets a list of users banned from a guild.
-
-  Guild to get bans for is specified by `guild_id`.
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Guild.bans/1` directly instead.
   """
-  @spec get_guild_bans(integer) :: error | {:ok, [Nostrum.Struct.User.t()]}
-  def get_guild_bans(guild_id) do
-    Nostrum.Api.Guild.bans(guild_id)
-  end
+  defdelegate get_guild_bans(guild_id),
+    to: Nostrum.Api.Guild,
+    as: :bans
 
-  @doc """
-  Bans a user from a guild.
-
-  User to delete is specified by `guild_id` and `user_id`.
-  An optional `reason` can be specified for the audit log.
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Guild.ban_member/4` directly instead.
   """
-  @spec create_guild_ban(integer, integer, integer, AuditLogEntry.reason()) :: error | {:ok}
-  def create_guild_ban(guild_id, user_id, days_to_delete, reason \\ nil) do
-    Nostrum.Api.Guild.ban_member(guild_id, user_id, days_to_delete, reason)
-  end
+  defdelegate create_guild_ban(guild_id, user_id, days_to_delete, reason \\ nil),
+    to: Nostrum.Api.Guild,
+    as: :ban_member
 
-  @doc """
-  Removes a ban for a user.
-
-  User to unban is specified by `guild_id` and `user_id`.
-  An optional `reason` can be specified for the audit log.
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Guild.unban_member/3` directly instead.
   """
-  @spec remove_guild_ban(integer, integer, AuditLogEntry.reason()) :: error | {:ok}
-  def remove_guild_ban(guild_id, user_id, reason \\ nil) do
-    Nostrum.Api.Guild.unban_member(guild_id, user_id, reason)
-  end
+  defdelegate remove_guild_ban(guild_id, user_id, reason \\ nil),
+    to: Nostrum.Api.Guild,
+    as: :unban_member
 
-  @doc ~S"""
-  Gets a guild's roles.
-
-  If successful, returns `{:ok, roles}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
-
-  ## Examples
-
-  ```elixir
-  Nostrum.Api.get_guild_roles(147362948571673)
-  ```
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Guild.roles/1` directly instead.
   """
-  @spec get_guild_roles(Guild.id()) :: error | {:ok, [Role.t()]}
-  def get_guild_roles(guild_id) when is_snowflake(guild_id) do
-    Nostrum.Api.Guild.roles(guild_id)
-  end
+  defdelegate get_guild_roles(guild_id),
+    to: Nostrum.Api.Guild,
+    as: :roles
 
   @doc ~S"""
   Same as `get_guild_roles/1`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
+  @deprecated "Bang functions will be removed in v1.0"
   @spec get_guild_roles!(Guild.id()) :: no_return | [Role.t()]
   def get_guild_roles!(guild_id) do
     get_guild_roles(guild_id)
     |> bangify
   end
 
-  @doc ~S"""
-  Creates a guild role.
-
-  An optional reason for the audit log can be provided via `reason`.
-
-  This endpoint requires the `MANAGE_ROLES` permission. It fires a
-  `t:Nostrum.Consumer.guild_role_create/0` event.
-
-  If successful, returns `{:ok, role}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
-
-  ## Options
-
-    * `:name` (string) - name of the role (default: "new role")
-    * `:permissions` (integer) - bitwise of the enabled/disabled permissions (default: @everyone perms)
-    * `:color` (integer) - RGB color value (default: 0)
-    * `:hoist` (boolean) - whether the role should be displayed separately in the sidebar (default: false)
-    * `:mentionable` (boolean) - whether the role should be mentionable (default: false)
-    * `:icon` (string) - URL role icon (default: `nil`)
-    * `:unicode_emoji` (string) - standard unicode character emoji role icon (default: `nil`)
-
-  ## Examples
-
-  ```elixir
-  Nostrum.Api.create_guild_role(41771983423143937, name: "nostrum-club", hoist: true)
-  ```
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Role.create/3` directly instead.
   """
-  @spec create_guild_role(Guild.id(), options, AuditLogEntry.reason()) :: error | {:ok, Role.t()}
-  def create_guild_role(guild_id, options, reason \\ nil) do
-    Nostrum.Api.Role.create(guild_id, options, reason)
-  end
+  defdelegate create_guild_role(guild_id, options, reason \\ nil),
+    to: Nostrum.Api.Role,
+    as: :create
 
   @doc ~S"""
   Same as `create_guild_role/2`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
+  @deprecated "Bang functions will be removed in v1.0"
   @spec create_guild_role!(Guild.id(), options, AuditLogEntry.reason()) :: no_return | Role.t()
   def create_guild_role!(guild_id, options, reason \\ nil) do
     create_guild_role(guild_id, options, reason)
     |> bangify
   end
 
-  @doc ~S"""
-  Reorders a guild's roles.
-
-  This endpoint requires the `MANAGE_ROLES` permission. It fires multiple
-  `t:Nostrum.Consumer.guild_role_update/0` events.
-
-  If successful, returns `{:ok, roles}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
-
-  `positions` is a list of maps that each map a role id with a position.
-
-  ## Examples
-
-  ```elixir
-  Nostrum.Api.modify_guild_role_positions(41771983423143937, [%{id: 41771983423143936, position: 2}])
-  ```
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Guild.modify_role_positions/3` directly instead.
   """
-  @spec modify_guild_role_positions(
-          Guild.id(),
-          [%{id: Role.id(), position: integer}],
-          AuditLogEntry.reason()
-        ) :: error | {:ok, [Role.t()]}
-  def modify_guild_role_positions(guild_id, positions, reason \\ nil)
-      when is_snowflake(guild_id) and is_list(positions) do
-    Nostrum.Api.Guild.modify_role_positions(guild_id, positions, reason)
-  end
+  defdelegate modify_guild_role_positions(guild_id, positions, reason \\ nil),
+    to: Nostrum.Api.Guild,
+    as: :modify_role_positions
 
   @doc ~S"""
   Same as `modify_guild_role_positions/2`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
+  @deprecated "Bang functions will be removed in v1.0"
   @spec modify_guild_role_positions!(
           Guild.id(),
           [%{id: Role.id(), position: integer}],
@@ -1922,39 +1142,18 @@ defmodule Nostrum.Api do
     |> bangify
   end
 
-  @doc ~S"""
-  Modifies a guild role.
-
-  This endpoint requires the `MANAGE_ROLES` permission. It fires a
-  `t:Nostrum.Consumer.guild_role_update/0` event.
-
-  An optional `reason` can be specified for the audit log.
-
-  If successful, returns `{:ok, role}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
-
-  ## Options
-
-    * `:name` (string) - name of the role
-    * `:permissions` (integer) - bitwise of the enabled/disabled permissions
-    * `:color` (integer) - RGB color value (default: 0)
-    * `:hoist` (boolean) - whether the role should be displayed separately in the sidebar
-    * `:mentionable` (boolean) - whether the role should be mentionable
-
-  ## Examples
-
-  ```elixir
-  Nostrum.Api.modify_guild_role(41771983423143937, 392817238471936, hoist: false, name: "foo-bar")
-  ```
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Role.modify/4` directly instead.
   """
-  @spec modify_guild_role(Guild.id(), Role.id(), options, AuditLogEntry.reason()) ::
-          error | {:ok, Role.t()}
-  def modify_guild_role(guild_id, role_id, options, reason \\ nil) do
-    Nostrum.Api.Role.modify(guild_id, role_id, options, reason)
-  end
+  defdelegate modify_guild_role(guild_id, role_id, options, reason \\ nil),
+    to: Nostrum.Api.Role,
+    as: :modify
 
   @doc ~S"""
   Same as `modify_guild_role/3`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
+  @deprecated "Bang functions will be removed in v1.0"
   @spec modify_guild_role!(Guild.id(), Role.id(), options, AuditLogEntry.reason()) ::
           no_return | Role.t()
   def modify_guild_role!(guild_id, role_id, options, reason \\ nil) do
@@ -1962,92 +1161,54 @@ defmodule Nostrum.Api do
     |> bangify
   end
 
-  @doc ~S"""
-  Deletes a role from a guild.
-
-  An optional `reason` can be specified for the audit log.
-
-  This endpoint requires the `MANAGE_ROLES` permission. It fires a
-  `t:Nostrum.Consumer.guild_role_delete/0` event.
-
-  If successful, returns `{:ok}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
-
-  ## Examples
-
-  ```elixir
-  Nostrum.Api.delete_guild_role(41771983423143937, 392817238471936)
-  ```
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Role.delete/3` directly instead.
   """
-  @spec delete_guild_role(Guild.id(), Role.id(), AuditLogEntry.reason()) :: error | {:ok}
-  def delete_guild_role(guild_id, role_id, reason \\ nil)
-      when is_snowflake(guild_id) and is_snowflake(role_id) do
-    Nostrum.Api.Role.delete(guild_id, role_id, reason)
-  end
+  defdelegate delete_guild_role(guild_id, role_id, reason \\ nil),
+    to: Nostrum.Api.Role,
+    as: :delete
 
   @doc ~S"""
   Same as `delete_guild_role/2`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
+  @deprecated "Bang functions will be removed in v1.0"
   @spec delete_guild_role!(Guild.id(), Role.id(), AuditLogEntry.reason()) :: no_return | {:ok}
   def delete_guild_role!(guild_id, role_id, reason \\ nil) do
     delete_guild_role(guild_id, role_id, reason)
     |> bangify
   end
 
-  @doc """
-  Gets the number of members that would be removed in a prune given `days`.
-
-  This endpoint requires the `KICK_MEMBERS` permission.
-
-  If successful, returns `{:ok, %{pruned: pruned}}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
-
-  ## Examples
-
-  ```elixir
-  Nostrum.Api.get_guild_prune_count(81384788765712384, 1)
-  {:ok, %{pruned: 0}}
-  ```
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Guild.estimate_prune_count/2` directly instead.
   """
-  @spec get_guild_prune_count(Guild.id(), 1..30) :: error | {:ok, %{pruned: integer}}
-  def get_guild_prune_count(guild_id, days) when is_snowflake(guild_id) and days in 1..30 do
-    Nostrum.Api.Guild.estimate_prune_count(guild_id, days)
-  end
+  defdelegate get_guild_prune_count(guild_id, days),
+    to: Nostrum.Api.Guild,
+    as: :estimate_prune_count
 
   @doc ~S"""
   Same as `get_guild_prune_count/2`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
+  @deprecated "Bang functions will be removed in v1.0"
   @spec get_guild_prune_count!(Guild.id(), 1..30) :: no_return | %{pruned: integer}
   def get_guild_prune_count!(guild_id, days) do
     get_guild_prune_count(guild_id, days)
     |> bangify
   end
 
-  @doc """
-  Begins a guild prune to prune members within `days`.
-
-  An optional `reason` can be provided for the guild audit log.
-
-  This endpoint requires the `KICK_MEMBERS` permission. It fires multiple
-  `t:Nostrum.Consumer.guild_member_remove/0` events.
-
-  If successful, returns `{:ok, %{pruned: pruned}}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
-
-  ## Examples
-
-  ```elixir
-  Nostrum.Api.begin_guild_prune(81384788765712384, 1)
-  {:ok, %{pruned: 0}}
-  ```
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Guild.begin_prune/3` directly instead.
   """
-  @spec begin_guild_prune(Guild.id(), 1..30, AuditLogEntry.reason()) ::
-          error | {:ok, %{pruned: integer}}
-  def begin_guild_prune(guild_id, days, reason \\ nil)
-      when is_snowflake(guild_id) and days in 1..30 do
-    Nostrum.Api.Guild.begin_prune(guild_id, days, reason)
-  end
+  defdelegate begin_guild_prune(guild_id, days, reason \\ nil),
+    to: Nostrum.Api.Guild,
+    as: :begin_prune
 
   @doc ~S"""
   Same as `begin_guild_prune/2`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
+  @deprecated "Bang functions will be removed in v1.0"
   @spec begin_guild_prune!(Guild.id(), 1..30, AuditLogEntry.reason()) ::
           no_return | %{pruned: integer}
   def begin_guild_prune!(guild_id, days, reason) do
@@ -2055,483 +1216,298 @@ defmodule Nostrum.Api do
     |> bangify
   end
 
-  @doc """
-  Gets a list of voice regions for the guild.
-
-  Guild to get voice regions for is specified by `guild_id`.
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Guild.voice_region/1` directly instead.
   """
-  @spec get_voice_region(integer) :: error | {:ok, [Nostrum.Struct.VoiceRegion.t()]}
-  def get_voice_region(guild_id) do
-    Nostrum.Api.Guild.voice_region(guild_id)
-  end
+  defdelegate get_voice_region(guild_id),
+    to: Nostrum.Api.Guild,
+    as: :voice_region
 
-  @doc ~S"""
-  Gets a list of invites for a guild.
-
-  This endpoint requires the `MANAGE_GUILD` permission.
-
-  If successful, returns `{:ok, invites}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
-
-  ## Examples
-
-  ```elixir
-  Nostrum.Api.get_guild_invites(81384788765712384)
-  {:ok, [%Nostrum.Struct.Invite{} | _]}
-  ```
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Invite.guild_invites/1` directly instead.
   """
-  @spec get_guild_invites(Guild.id()) :: error | {:ok, [Invite.detailed_invite()]}
-  def get_guild_invites(guild_id) when is_snowflake(guild_id) do
-    Nostrum.Api.Invite.guild_invites(guild_id)
-  end
+  defdelegate get_guild_invites(guild_id),
+    to: Nostrum.Api.Invite,
+    as: :guild_invites
 
   @doc ~S"""
   Same as `get_guild_invites/1`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
+  @deprecated "Bang functions will be removed in v1.0"
   @spec get_guild_invites!(Guild.id()) :: no_return | [Invite.detailed_invite()]
   def get_guild_invites!(guild_id) do
     get_guild_invites(guild_id)
     |> bangify
   end
 
-  @doc """
-  Gets a list of guild integerations.
-
-  Guild to get integrations for is specified by `guild_id`.
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Guild.integrations/1` directly instead.
   """
-  @spec get_guild_integrations(Guild.id()) ::
-          error | {:ok, [Nostrum.Struct.Guild.Integration.t()]}
-  def get_guild_integrations(guild_id) do
-    Nostrum.Api.Guild.integrations(guild_id)
-  end
+  defdelegate get_guild_integrations(guild_id),
+    to: Nostrum.Api.Guild,
+    as: :integrations
 
-  @doc """
-  Creates a new guild integeration.
-
-  Guild to create integration with is specified by `guild_id`.
-
-  `options` is a map with the following requires keys:
-   * `type` - Integration type.
-   * `id` - Integeration id.
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Guild.create_integration/2` directly instead.
   """
-  @spec create_guild_integrations(integer, %{
-          type: String.t(),
-          id: integer
-        }) :: error | {:ok}
-  def create_guild_integrations(guild_id, options) do
-    Nostrum.Api.Guild.create_integration(guild_id, options)
-  end
+  defdelegate create_guild_integrations(guild_id, options),
+    to: Nostrum.Api.Guild,
+    as: :create_integration
 
-  @doc """
-  Changes the settings and behaviours for a guild integeration.
-
-  Integration to modify is specified by `guild_id` and `integeration_id`.
-
-  `options` is a map with the following keys:
-   * `expire_behavior` - Expiry behavior.
-   * `expire_grace_period` - Period where the integration will ignore elapsed subs.
-   * `enable_emoticons` - Whether emoticons should be synced.
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Guild.modify_integration/3` directly instead.
   """
-  @spec modify_guild_integrations(integer, integer, %{
-          expire_behaviour: integer,
-          expire_grace_period: integer,
-          enable_emoticons: boolean
-        }) :: error | {:ok}
-  def modify_guild_integrations(guild_id, integration_id, options) do
-    Nostrum.Api.Guild.modify_integration(guild_id, integration_id, options)
-  end
+  defdelegate modify_guild_integrations(guild_id, integration_id, options),
+    to: Nostrum.Api.Guild,
+    as: :modify_integration
 
-  @doc """
-  Deletes a guild integeration.
-
-  Integration to delete is specified by `guild_id` and `integeration_id`.
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Guild.delete_integration/2` directly instead.
   """
-  @spec delete_guild_integrations(integer, integer) :: error | {:ok}
-  def delete_guild_integrations(guild_id, integration_id) do
-    Nostrum.Api.Guild.delete_integration(guild_id, integration_id)
-  end
+  defdelegate delete_guild_integrations(guild_id, integration_id),
+    to: Nostrum.Api.Guild,
+    as: :delete_integration
 
-  @doc """
-  Syncs a guild integration.
-
-  Integration to sync is specified by `guild_id` and `integeration_id`.
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Guild.sync_integration/2` directly instead.
   """
-  @spec sync_guild_integrations(integer, integer) :: error | {:ok}
-  def sync_guild_integrations(guild_id, integration_id) do
-    Nostrum.Api.Guild.sync_integration(guild_id, integration_id)
-  end
+  defdelegate sync_guild_integrations(guild_id, integration_id),
+    to: Nostrum.Api.Guild,
+    as: :sync_integration
 
-  @doc """
-  Gets a guild embed.
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Guild.widget/1` directly instead.
   """
-  @spec get_guild_widget(integer) :: error | {:ok, map}
-  def get_guild_widget(guild_id) do
-    Nostrum.Api.Guild.widget(guild_id)
-  end
+  defdelegate get_guild_widget(guild_id),
+    to: Nostrum.Api.Guild,
+    as: :widget
 
-  @doc """
-  Modifies a guild embed.
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Guild.modify_widget/2` directly instead.
   """
-  @spec modify_guild_widget(integer, map) :: error | {:ok, map}
-  def modify_guild_widget(guild_id, options) do
-    Nostrum.Api.Guild.modify_widget(guild_id, options)
-  end
+  defdelegate modify_guild_widget(guild_id, options),
+    to: Nostrum.Api.Guild,
+    as: :modify_widget
 
-  @doc """
-  Creates a new scheduled event for the guild.
-
-  ## Options
-    * `:channel_id` - (`t:Nostrum.Snowflake.t/0`) optional channel id for the event
-    * `:entity_metadata` - (`t:Nostrum.Struct.Guild.ScheduledEvent.EntityMetadata.t/0`) metadata for the event
-    * `:name` - (string) required name for the event
-    * `:privacy_level` - (integer) at the time of writing, this must always be 2 for `GUILD_ONLY`
-    * `:scheduled_start_time` - required time for the event to start as a `DateTime` or (ISO8601 timestamp)[`DateTime.to_iso8601/3`]
-    * `:scheduled_end_time` - optional time for the event to end as a `DateTime` or (ISO8601 timestamp)[`DateTime.to_iso8601/3`]
-    * `:description` - (string) optional description for the event
-    * `:entity_type` - (integer) an integer representing the type of entity the event is for
-      * `1` - `STAGE_INSTANCE`
-      * `2` - `VOICE`
-      * `3` - `EXTERNAL`
-
-  See the (official documentation)[https://discord.com/developers/docs/resources/guild-scheduled-event] for more information.
-
-
-  An optional `reason` can be specified for the audit log.
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.ScheduledEvent.create/3` directly instead.
   """
-  @doc since: "0.5.0"
-  @spec create_guild_scheduled_event(Guild.id(), reason :: AuditLogEntry.reason(), options) ::
-          {:ok, ScheduledEvent.t()} | error
-  def create_guild_scheduled_event(guild_id, reason \\ nil, options) do
-    Nostrum.Api.ScheduledEvent.create(guild_id, reason, options)
-  end
+  defdelegate create_guild_scheduled_event(guild_id, reason \\ nil, options),
+    to: Nostrum.Api.ScheduledEvent,
+    as: :create
 
-  @doc """
-  Get a list of scheduled events for a guild.
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Guild.scheduled_events/1` directly instead.
   """
-  @doc since: "0.5.0"
-  @spec get_guild_scheduled_events(Guild.id()) :: error | {:ok, [ScheduledEvent.t()]}
-  def get_guild_scheduled_events(guild_id) do
-    Nostrum.Api.Guild.scheduled_events(guild_id)
-  end
+  defdelegate get_guild_scheduled_events(guild_id),
+    to: Nostrum.Api.Guild,
+    as: :scheduled_events
 
-  @doc """
-  Get a scheduled event for a guild.
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.ScheduledEvent.get/2` directly instead.
   """
-  @doc since: "0.5.0"
-  @spec get_guild_scheduled_event(Guild.id(), ScheduledEvent.id()) ::
-          error | {:ok, ScheduledEvent.t()}
-  def get_guild_scheduled_event(guild_id, event_id) do
-    Nostrum.Api.ScheduledEvent.get(guild_id, event_id)
-  end
+  defdelegate get_guild_scheduled_event(guild_id, event_id),
+    to: Nostrum.Api.ScheduledEvent,
+    as: :get
 
-  @doc """
-  Delete a scheduled event for a guild.
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.ScheduledEvent.delete/2` directly instead.
   """
-  @doc since: "0.5.0"
-  @spec delete_guild_scheduled_event(Guild.id(), ScheduledEvent.id()) ::
-          error | {:ok}
-  def delete_guild_scheduled_event(guild_id, event_id) do
-    Nostrum.Api.ScheduledEvent.delete(guild_id, event_id)
-  end
+  defdelegate delete_guild_scheduled_event(guild_id, event_id),
+    to: Nostrum.Api.ScheduledEvent,
+    as: :delete
 
-  @doc """
-  Modify a scheduled event for a guild.
-
-  Options are the same as for `create_guild_scheduled_event/2` except all fields are optional,
-  with the additional optional integer field `:status` which can be one of:
-
-    * `1` - `SCHEDULED`
-    * `2` - `ACTIVE`
-    * `3` - `COMPLETED`
-    * `4` - `CANCELLED`
-
-  Copied from the official documentation:
-  * If updating entity_type to `EXTERNAL`:
-    * `channel_id` is required and must be set to null
-    * `entity_metadata` with a `location` field must be provided
-    * `scheduled_end_time` must be provided
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.ScheduledEvent.modify/4` directly instead.
   """
-  @doc since: "0.5.0"
-  @spec modify_guild_scheduled_event(
-          Guild.id(),
-          ScheduledEvent.id(),
-          reason :: AuditLogEntry.reason(),
-          options
-        ) :: error | {:ok, ScheduledEvent.t()}
-  def modify_guild_scheduled_event(guild_id, event_id, reason \\ nil, options) do
-    Nostrum.Api.ScheduledEvent.modify(guild_id, event_id, reason, options)
-  end
+  defdelegate modify_guild_scheduled_event(guild_id, event_id, reason \\ nil, options),
+    to: Nostrum.Api.ScheduledEvent,
+    as: :modify
 
-  @doc """
-  Get a list of users who have subscribed to an event.
-
-  ## Options
-  All are optional, with their default values listed.
-  * `:limit` (integer) maximum number of users to return, defaults to `100`
-  * `:with_member` (boolean) whether to include the member object for each user, defaults to `false`
-  * `:before` (`t:Nostrum.Snowflake.t/0`) return only users before this user id, defaults to `nil`
-  * `:after` (`t:Nostrum.Snowflake.t/0`) return only users after this user id, defaults to `nil`
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.ScheduledEvent.users/3` directly instead.
   """
-  @doc since: "0.5.0"
-  @spec get_guild_scheduled_event_users(Guild.id(), ScheduledEvent.id(), options) ::
-          error | {:ok, [ScheduledEvent.User.t()]}
-  def get_guild_scheduled_event_users(guild_id, event_id, params \\ []) do
-    Nostrum.Api.ScheduledEvent.users(guild_id, event_id, params)
-  end
+  defdelegate get_guild_scheduled_event_users(guild_id, event_id, params \\ []),
+    to: Nostrum.Api.ScheduledEvent,
+    as: :users
 
-  @doc ~S"""
-  Gets an invite by its `invite_code`.
-
-  If successful, returns `{:ok, invite}`. Otherwise, returns a
-  `t:Nostrum.Api.error/0`.
-
-  ## Options
-
-    * `:with_counts` (boolean) - whether to include member count fields
-
-  ## Examples
-
-  ```elixir
-  Nostrum.Api.get_invite("zsjUsC")
-
-  Nostrum.Api.get_invite("zsjUsC", with_counts: true)
-  ```
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Invite.get/2` directly instead.
   """
-  @spec get_invite(Invite.code(), options) :: error | {:ok, Invite.simple_invite()}
-  def get_invite(invite_code, options \\ []) when is_binary(invite_code) do
-    Nostrum.Api.Invite.get(invite_code, options)
-  end
+  defdelegate get_invite(invite_code, options \\ []),
+    to: Nostrum.Api.Invite,
+    as: :get
 
   @doc ~S"""
   Same as `get_invite/1`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
+  @deprecated "Bang functions will be removed in v1.0"
   @spec get_invite!(Invite.code(), options) :: no_return | Invite.simple_invite()
   def get_invite!(invite_code, options \\ []) do
     get_invite(invite_code, options)
     |> bangify
   end
 
-  @doc ~S"""
-  Deletes an invite by its `invite_code`.
-
-  This endpoint requires the `MANAGE_CHANNELS` permission.
-
-  If successful, returns `{:ok, invite}`. Otherwise, returns a
-  `t:Nostrum.Api.error/0`.
-
-  ## Examples
-
-  ```elixir
-  Nostrum.Api.delete_invite("zsjUsC")
-  ```
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Invite.delete/1` directly instead.
   """
-  @spec delete_invite(Invite.code()) :: error | {:ok, Invite.simple_invite()}
-  def delete_invite(invite_code) when is_binary(invite_code) do
-    Nostrum.Api.Invite.delete(invite_code)
-  end
+  defdelegate delete_invite(invite_code),
+    to: Nostrum.Api.Invite,
+    as: :delete
 
   @doc ~S"""
   Same as `delete_invite/1`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
+  @deprecated "Bang functions will be removed in v1.0"
   @spec delete_invite!(Invite.code()) :: no_return | Invite.simple_invite()
   def delete_invite!(invite_code) do
     delete_invite(invite_code)
     |> bangify
   end
 
-  @doc """
-  Gets a user by its `t:Nostrum.Struct.User.id/0`.
-
-  If the request is successful, this function returns `{:ok, user}`, where
-  `user` is a `Nostrum.Struct.User`. Otherwise, returns `{:error, reason}`.
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.User.get/1` directly instead.
   """
-  @spec get_user(User.id()) :: error | {:ok, User.t()}
-  def get_user(user_id) do
-    Nostrum.Api.User.get(user_id)
-  end
+  defdelegate get_user(user_id),
+    to: Nostrum.Api.User,
+    as: :get
 
   @doc """
   Same as `get_user/1`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
+  @deprecated "Bang functions will be removed in v1.0"
   @spec get_user!(User.id()) :: no_return | User.t()
   def get_user!(user_id) do
     get_user(user_id)
     |> bangify
   end
 
-  @doc """
-  Gets info on the current user.
-
-  If nostrum's caching is enabled, it is recommended to use `Me.get/0`
-  instead of this function. This is because sending out an API request is much slower
-  than pulling from our cache.
-
-  If the request is successful, this function returns `{:ok, user}`, where
-  `user` is nostrum's `Nostrum.Struct.User`. Otherwise, returns `{:error, reason}`.
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Self.get/0` directly instead.
   """
-  @spec get_current_user() :: error | {:ok, User.t()}
-  def get_current_user do
-    Nostrum.Api.Self.get()
-  end
+  defdelegate get_current_user,
+    to: Nostrum.Api.Self,
+    as: :get
 
   @doc """
   Same as `get_current_user/0`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
+  @deprecated "Bang functions will be removed in v1.0"
   @spec get_current_user!() :: no_return | User.t()
   def get_current_user! do
     get_current_user()
     |> bangify
   end
 
-  @doc ~S"""
-  Changes the username or avatar of the current user.
-
-  ## Options
-
-    * `:username` (string) - new username
-    * `:avatar` (string) - the user's avatar as [avatar data](https://discord.com/developers/docs/resources/user#avatar-data)
-
-  ## Examples
-
-  ```elixir
-  Nostrum.Api.modify_current_user(avatar: "data:image/jpeg;base64,YXl5IGJieSB1IGx1a2luIDQgc3VtIGZ1az8=")
-  ```
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Self.modify/1` directly instead.
   """
-  @spec modify_current_user(options) :: error | {:ok, User.t()}
-  def modify_current_user(options) do
-    Nostrum.Api.Self.modify(options)
-  end
+  defdelegate modify_current_user(options),
+    to: Nostrum.Api.Self,
+    as: :modify
 
   @doc """
   Same as `modify_current_user/1`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
+  @deprecated "Bang functions will be removed in v1.0"
   @spec modify_current_user!(options) :: no_return | User.t()
   def modify_current_user!(options) do
     modify_current_user(options)
     |> bangify
   end
 
-  @doc """
-  Gets a list of guilds the user is currently in.
-
-  This endpoint requires the `guilds` OAuth2 scope.
-
-  If successful, returns `{:ok, guilds}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
-
-  ## Options
-
-    * `:before` (`t:Nostrum.Snowflake.t/0`) - get guilds before this
-    guild ID
-    * `:after` (`t:Nostrum.Snowflake.t/0`) - get guilds after this guild
-    ID
-    * `:limit` (integer) - max number of guilds to return (1-100)
-
-  ## Examples
-
-  ```elixir
-  iex> Nostrum.Api.get_current_user_guilds(limit: 1)
-  {:ok, [%Nostrum.Struct.Guild{}]}
-  ```
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Self.guilds/1` directly instead.
   """
-  @spec get_current_user_guilds(options) :: error | {:ok, [Guild.user_guild()]}
-  def get_current_user_guilds(options \\ []) do
-    Nostrum.Api.Self.guilds(options)
-  end
+  defdelegate get_current_user_guilds(options \\ []),
+    to: Nostrum.Api.Self,
+    as: :guilds
 
   @doc ~S"""
   Same as `get_current_user_guilds/1`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
+  @deprecated "Bang functions will be removed in v1.0"
   @spec get_current_user_guilds!(options) :: no_return | [Guild.user_guild()]
   def get_current_user_guilds!(options \\ []) do
     get_current_user_guilds(options)
     |> bangify
   end
 
-  @doc """
-  Leaves a guild.
-
-  Guild to leave is specified by `guild_id`.
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Guild.leave/1` directly instead.
   """
-  @spec leave_guild(integer) :: error | {:ok}
-  def leave_guild(guild_id) do
-    Nostrum.Api.Guild.leave(guild_id)
-  end
+  defdelegate leave_guild(guild_id),
+    to: Nostrum.Api.Guild,
+    as: :leave
 
-  @doc """
-  Gets a list of our user's DM channels.
-
-  If successful, returns `{:ok, dm_channels}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
-
-  ## Examples
-
-  ```elixir
-  Nostrum.Api.get_user_dms()
-  {:ok, [%Nostrum.Struct.Channel{type: 1} | _]}
-  ```
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Self.dms/0` directly instead.
   """
-  @spec get_user_dms() :: error | {:ok, [Channel.dm_channel()]}
-  def get_user_dms do
-    Nostrum.Api.Self.dms()
-  end
+  defdelegate get_user_dms,
+    to: Nostrum.Api.Self,
+    as: :dms
 
   @doc ~S"""
   Same as `get_user_dms/0`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
+  @deprecated "Bang functions will be removed in v1.0"
   @spec get_user_dms!() :: no_return | [Channel.dm_channel()]
   def get_user_dms! do
     get_user_dms()
     |> bangify
   end
 
-  @doc ~S"""
-  Create a new DM channel with a user.
-
-  If successful, returns `{:ok, dm_channel}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
-
-  ## Examples
-
-  ```elixir
-  Nostrum.Api.create_dm(150061853001777154)
-  {:ok, %Nostrum.Struct.Channel{type: 1}}
-  ```
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.User.create_dm/1` directly instead.
   """
-  @spec create_dm(User.id()) :: error | {:ok, Channel.dm_channel()}
-  def create_dm(user_id) when is_snowflake(user_id) do
-    Nostrum.Api.User.create_dm(user_id)
-  end
+  defdelegate create_dm(user_id),
+    to: Nostrum.Api.User
 
   @doc ~S"""
   Same as `create_dm/1`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
+  @deprecated "Bang functions will be removed in v1.0"
   @spec create_dm!(User.id()) :: no_return | Channel.dm_channel()
   def create_dm!(user_id) do
     create_dm(user_id)
     |> bangify
   end
 
-  @doc """
-  Creates a new group DM channel.
-
-  If successful, returns `{:ok, group_dm_channel}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
-
-  `access_tokens` are user oauth2 tokens. `nicks` is a map that maps a user id
-  to a nickname.
-
-  ## Examples
-
-  ```elixir
-  Nostrum.Api.create_group_dm(["6qrZcUqja7812RVdnEKjpzOL4CvHBFG"], %{41771983423143937 => "My Nickname"})
-  {:ok, %Nostrum.Struct.Channel{type: 3}}
-  ```
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.User.create_group_dm/2` directly instead.
   """
-  @spec create_group_dm([String.t()], %{optional(User.id()) => String.t()}) ::
-          error | {:ok, Channel.group_dm_channel()}
-  def create_group_dm(access_tokens, nicks) when is_list(access_tokens) and is_map(nicks) do
-    Nostrum.Api.User.create_group_dm(access_tokens, nicks)
-  end
+  defdelegate create_group_dm(access_tokens, nicks),
+    to: Nostrum.Api.User
 
   @doc ~S"""
   Same as `create_group_dm/2`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
+  @deprecated "Bang functions will be removed in v1.0"
   @spec create_group_dm!([String.t()], %{optional(User.id()) => String.t()}) ::
           no_return | Channel.group_dm_channel()
   def create_group_dm!(access_tokens, nicks) do
@@ -2539,43 +1515,29 @@ defmodule Nostrum.Api do
     |> bangify
   end
 
-  @doc """
-  Gets a list of user connections.
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Self.connections/0` directly instead.
   """
-  @spec get_user_connections() :: error | {:ok, list()}
-  def get_user_connections do
-    Nostrum.Api.Self.connections()
-  end
+  defdelegate get_user_connections,
+    to: Nostrum.Api.Self,
+    as: :connections
 
-  @doc """
-  Gets a list of voice regions.
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Guild.voice_regions/0` directly instead.
   """
-  @spec list_voice_regions() :: error | {:ok, [Nostrum.Struct.VoiceRegion.t()]}
-  def list_voice_regions do
-    Nostrum.Api.Guild.voice_regions()
-  end
+  defdelegate list_voice_regions,
+    to: Nostrum.Api.Guild,
+    as: :voice_regions
 
-  @doc """
-  Creates a webhook.
-
-  ## Parameters
-    - `channel_id` - Id of the channel to send the message to.
-    - `args` - Map with the following **required** keys:
-      - `name` - Name of the webhook.
-      - `avatar` - Base64 128x128 jpeg image for the default avatar.
-    - `reason` - An optional reason for the guild audit log.
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Webhook.create/3` directly instead.
   """
-  @spec create_webhook(
-          Channel.id(),
-          %{
-            name: String.t(),
-            avatar: String.t()
-          },
-          AuditLogEntry.reason()
-        ) :: error | {:ok, Nostrum.Struct.Webhook.t()}
-  def create_webhook(channel_id, args, reason \\ nil) do
-    Nostrum.Api.Webhook.create(channel_id, args, reason)
-  end
+  defdelegate create_webhook(channel_id, args, reason \\ nil),
+    to: Nostrum.Api.Webhook,
+    as: :create
 
   @doc """
   Retrieves the original message of a webhook.
@@ -3149,6 +2111,7 @@ defmodule Nostrum.Api do
   Same as `create_interaction_response/2`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
   @doc since: "0.5.0"
+  @deprecated "Bang functions will be removed in v1.0"
   @spec create_interaction_response!(Interaction.t(), map()) :: no_return() | {:ok}
   def create_interaction_response!(interaction, response) do
     create_interaction_response!(interaction.id, interaction.token, response)
@@ -3221,6 +2184,7 @@ defmodule Nostrum.Api do
   Same as `edit_interaction_response/2`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
   @doc since: "0.5.0"
+  @deprecated "Bang functions will be removed in v1.0"
   @spec edit_interaction_response!(Interaction.t(), map()) :: no_return() | Message.t()
   def edit_interaction_response!(%Interaction{} = interaction, response) do
     edit_interaction_response!(interaction.application_id, interaction.token, response)
@@ -3242,6 +2206,7 @@ defmodule Nostrum.Api do
   Same as `edit_interaction_response/3`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
   @doc since: "0.5.0"
+  @deprecated "Bang functions will be removed in v1.0"
   @spec edit_interaction_response!(User.id(), Interaction.token(), map()) ::
           no_return() | Message.t()
   def edit_interaction_response!(id \\ Me.get().id, token, response) do
@@ -3260,6 +2225,7 @@ defmodule Nostrum.Api do
   end
 
   @doc since: "0.5.0"
+  @deprecated "Bang functions will be removed in v1.0"
   @spec delete_interaction_response!(Interaction.t()) :: no_return() | {:ok}
   def delete_interaction_response!(%Interaction{} = interaction) do
     delete_interaction_response(interaction.application_id, interaction.token)
@@ -3279,6 +2245,7 @@ defmodule Nostrum.Api do
   Same as `delete_interaction_response/2`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
   @doc since: "0.5.0"
+  @deprecated "Bang functions will be removed in v1.0"
   @spec delete_interaction_response!(User.id(), Interaction.token()) :: no_return() | {:ok}
   def delete_interaction_response!(id \\ Me.get().id, token) do
     delete_interaction_response(id, token)
@@ -3300,6 +2267,7 @@ defmodule Nostrum.Api do
   Same as `create_followup_message/3`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
   @doc since: "0.5.0"
+  @deprecated "Bang functions will be removed in v1.0"
   @spec create_followup_message!(User.id(), Interaction.token(), map()) ::
           no_return() | Message.t()
   def create_followup_message!(application_id \\ Me.get().id, token, webhook_payload) do
@@ -3330,6 +2298,7 @@ defmodule Nostrum.Api do
   Same as `delete_interaction_followup_message/3`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
   @doc since: "0.5.0"
+  @deprecated "Bang functions will be removed in v1.0"
   @spec delete_interaction_followup_message!(User.id(), Interaction.token(), Message.id()) ::
           no_return() | {:ok}
   def delete_interaction_followup_message!(
@@ -3798,23 +2767,9 @@ defmodule Nostrum.Api do
   def pop_files(args), do: Map.pop!(args, :files)
 
   @doc false
-  def bangify(to_bang) do
-    Logger.warning("""
-    Using the bangified version of the Api call is deprecated and will be removed in the next major release.
-    Please use the non-bangified version and handle the error case yourself.
-    """)
-
-    case to_bang do
-      {:error, error} ->
-        raise(error)
-
-      {:ok, body} ->
-        body
-
-      {:ok} ->
-        {:ok}
-    end
-  end
+  def bangify({:error, error}), do: raise(error)
+  def bangify({:ok, body}), do: body
+  def bangify({:ok}), do: {:ok}
 
   def prepare_allowed_mentions(options) do
     with raw_options when raw_options != :all <- Map.get(options, :allowed_mentions, :all),
