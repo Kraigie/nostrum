@@ -45,30 +45,23 @@ defmodule Nostrum.Api do
 
   require Logger
 
-  import Nostrum.Snowflake, only: [is_snowflake: 1]
   import Nostrum.Api.Helpers, only: [has_files: 1]
 
   alias Nostrum.Api.Ratelimiter
   alias Nostrum.Cache.Me
-  alias Nostrum.Snowflake
 
   alias Nostrum.Struct.{
-    ApplicationCommand,
-    AutoModerationRule,
     Channel,
-    Embed,
     Emoji,
     Guild,
     Interaction,
     Invite,
     Message,
     Message.Poll,
-    ThreadMember,
-    User,
-    Webhook
+    User
   }
 
-  alias Nostrum.Struct.Guild.{AuditLogEntry, Member, Role, ScheduledEvent}
+  alias Nostrum.Struct.Guild.{AuditLogEntry, Member, Role}
 
   @typedoc """
   Represents a failed response from the API.
@@ -1539,558 +1532,202 @@ defmodule Nostrum.Api do
     to: Nostrum.Api.Webhook,
     as: :create
 
-  @doc """
-  Retrieves the original message of a webhook.
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Webhook.get_message/2` directly instead.
   """
-  @doc since: "0.7.0"
-  @spec get_webhook_message(Webhook.t(), Message.id()) ::
-          error | {:ok, Message.t()}
-  def get_webhook_message(webhook, message_id) do
-    Nostrum.Api.Webhook.get_message(webhook, message_id)
-  end
+  defdelegate get_webhook_message(webhook, message_id),
+    to: Nostrum.Api.Webhook,
+    as: :get_message
 
-  @doc """
-  Gets a list of webhooks for a channel.
-
-  ## Parameters
-    - `channel_id` - Channel to get webhooks for.
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Channel.webhooks/1` directly instead.
   """
-  @spec get_channel_webhooks(Channel.id()) :: error | {:ok, [Nostrum.Struct.Webhook.t()]}
-  def get_channel_webhooks(channel_id) do
-    Nostrum.Api.Channel.webhooks(channel_id)
-  end
+  defdelegate get_channel_webhooks(channel_id),
+    to: Nostrum.Api.Channel,
+    as: :webhooks
 
-  @doc """
-  Gets a list of webhooks for a guild.
-
-  ## Parameters
-    - `guild_id` - Guild to get webhooks for.
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Guild.webhooks/1` directly instead.
   """
-  @spec get_guild_webhooks(Guild.id()) :: error | {:ok, [Nostrum.Struct.Webhook.t()]}
-  def get_guild_webhooks(guild_id) do
-    Nostrum.Api.Guild.webhooks(guild_id)
-  end
+  defdelegate get_guild_webhooks(guild_id),
+    to: Nostrum.Api.Guild,
+    as: :webhooks
 
-  @doc """
-  Gets a webhook by id.
-
-  ## Parameters
-    - `webhook_id` - Id of the webhook to get.
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Webhook.get/1` directly instead.
   """
-  @spec get_webhook(Webhook.id()) :: error | {:ok, Nostrum.Struct.Webhook.t()}
-  def get_webhook(webhook_id) do
-    Nostrum.Api.Webhook.get(webhook_id)
-  end
+  defdelegate get_webhook(webhook_id),
+    to: Nostrum.Api.Webhook,
+    as: :get
 
-  @doc """
-  Gets a webhook by id and token.
-
-  This method is exactly like `get_webhook/1` but does not require
-  authentication.
-
-  ## Parameters
-    - `webhook_id` - Id of the webhook to get.
-    - `webhook_token` - Token of the webhook to get.
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Webhook.get_with_token/2` directly instead.
   """
-  @spec get_webhook_with_token(Webhook.id(), Webhook.token()) ::
-          error | {:ok, Nostrum.Struct.Webhook.t()}
-  def get_webhook_with_token(webhook_id, webhook_token) do
-    Nostrum.Api.Webhook.get_with_token(webhook_id, webhook_token)
-  end
+  defdelegate get_webhook_with_token(webhook_id, webhook_token),
+    to: Nostrum.Api.Webhook,
+    as: :get_with_token
 
-  @doc """
-  Modifies a webhook.
-
-  ## Parameters
-    - `webhook_id` - Id of the webhook to modify.
-    - `args` - Map with the following *optional* keys:
-      - `name` - Name of the webhook.
-      - `avatar` - Base64 128x128 jpeg image for the default avatar.
-    - `reason` - An optional reason for the guild audit log.
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Webhook.modify/3` directly instead.
   """
-  @spec modify_webhook(
-          Webhook.id(),
-          %{
-            name: String.t(),
-            avatar: String.t()
-          },
-          AuditLogEntry.reason()
-        ) :: error | {:ok, Nostrum.Struct.Webhook.t()}
-  def modify_webhook(webhook_id, args, reason \\ nil) do
-    Nostrum.Api.Webhook.modify(webhook_id, args, reason)
-  end
+  defdelegate modify_webhook(webhook_id, args, reason \\ nil),
+    to: Nostrum.Api.Webhook,
+    as: :modify
 
-  @doc """
-  Modifies a webhook with a token.
-
-  This method is exactly like `modify_webhook/1` but does not require
-  authentication.
-
-  ## Parameters
-    - `webhook_id` - Id of the webhook to modify.
-    - `webhook_token` - Token of the webhook to get.
-    - `args` - Map with the following *optional* keys:
-      - `name` - Name of the webhook.
-      - `avatar` - Base64 128x128 jpeg image for the default avatar.
-    - `reason` - An optional reason for the guild audit log.
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Webhook.modify_with_token/4` directly instead.
   """
-  @spec modify_webhook_with_token(
-          Webhook.id(),
-          Webhook.token(),
-          %{
-            name: String.t(),
-            avatar: String.t()
-          },
-          AuditLogEntry.reason()
-        ) :: error | {:ok, Nostrum.Struct.Webhook.t()}
-  def modify_webhook_with_token(webhook_id, webhook_token, args, reason \\ nil) do
-    Nostrum.Api.Webhook.modify_with_token(webhook_id, webhook_token, args, reason)
-  end
+  defdelegate modify_webhook_with_token(webhook_id, webhook_token, args, reason \\ nil),
+    to: Nostrum.Api.Webhook,
+    as: :modify_with_token
 
-  @doc """
-  Deletes a webhook.
-
-  ## Parameters
-    - `webhook_id` - Id of webhook to delete.
-    - `reason` - An optional reason for the guild audit log.
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Webhook.delete/2` directly instead.
   """
-  @spec delete_webhook(Webhook.id(), AuditLogEntry.reason()) :: error | {:ok}
-  def delete_webhook(webhook_id, reason \\ nil) do
-    Nostrum.Api.Webhook.delete(webhook_id, reason)
-  end
+  defdelegate delete_webhook(webhook_id, reason \\ nil),
+    to: Nostrum.Api.Webhook,
+    as: :delete
 
-  @typep m1 :: %{
-           required(:content) => String.t(),
-           optional(:username) => String.t(),
-           optional(:avatar_url) => String.t(),
-           optional(:tts) => boolean,
-           optional(:files) => [String.t() | %{body: iodata(), name: String.t()}],
-           optional(:flags) => non_neg_integer(),
-           optional(:thread_id) => Snowflake.t(),
-           optional(:embeds) => nonempty_list(Embed.t()) | nil,
-           optional(:allowed_mentions) => allowed_mentions()
-         }
-
-  @typep m2 ::
-           %{
-             optional(:content) => String.t() | nil,
-             optional(:username) => String.t(),
-             optional(:avatar_url) => String.t(),
-             optional(:tts) => boolean,
-             required(:files) => [String.t() | %{body: iodata(), name: String.t()}],
-             optional(:flags) => non_neg_integer(),
-             optional(:thread_id) => Snowflake.t(),
-             optional(:embeds) => nonempty_list(Embed.t()) | nil,
-             optional(:allowed_mentions) => allowed_mentions()
-           }
-
-  @typep m3 ::
-           %{
-             optional(:content) => String.t() | nil,
-             optional(:username) => String.t(),
-             optional(:avatar_url) => String.t(),
-             optional(:tts) => boolean,
-             optional(:files) => [String.t() | %{body: iodata(), name: String.t()}],
-             optional(:flags) => non_neg_integer(),
-             optional(:thread_id) => Snowflake.t(),
-             required(:embeds) => nonempty_list(Embed.t()),
-             optional(:allowed_mentions) => allowed_mentions()
-           }
-
-  @type matrix :: m1 | m2 | m3
-
-  @spec execute_webhook(
-          Webhook.id() | User.id(),
-          Webhook.token() | Interaction.token(),
-          matrix,
-          boolean
-        ) ::
-          error | {:ok} | {:ok, Message.t()}
-
-  @doc """
-  Executes a webhook.
-
-  ## Parameters
-  - `webhook_id` - Id of the webhook to execute.
-  - `webhook_token` - Token of the webhook to execute.
-  - `args` - Map with the following allowed keys:
-    - `content` - Message content.
-    - `files` - List of Files to send.
-    - `embeds` - List of embeds to send.
-    - `username` - Overrides the default name of the webhook.
-    - `avatar_url` - Overrides the default avatar of the webhook.
-    - `tts` - Whether the message should be read over text to speech.
-    - `flags` - Bitwise flags.
-    - `thread_id` - Send a message to the specified thread within the webhook's channel.
-    - `allowed_mentions` - Mentions to allow in the webhook message
-  - `wait` - Whether to return an error or not. Defaults to `false`.
-
-  **Note**: If `wait` is `true`, this method will return a `Message.t()` on success.
-
-  At least one of `content`, `files` or `embeds` should be supplied in the `args` parameter.
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Webhook.execute/4` directly instead.
   """
+  defdelegate execute_webhook(webhook_id, webhook_token, args, wait \\ false),
+    to: Nostrum.Api.Webhook,
+    as: :execute
 
-  def execute_webhook(webhook_id, webhook_token, args, wait \\ false) do
-    Nostrum.Api.Webhook.execute(webhook_id, webhook_token, args, wait)
-  end
-
-  @doc """
-  Edits a message previously created by the same webhook,
-  args are the same as `execute_webhook/3`,
-  however all fields are optional.
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Webhook.edit_message/4` directly instead.
   """
-  @doc since: "0.5.0"
-  @spec edit_webhook_message(
-          Webhook.id(),
-          Webhook.token(),
-          Message.id(),
-          map()
-        ) ::
-          error | {:ok, Message.t()}
-  def edit_webhook_message(webhook_id, webhook_token, message_id, args) do
-    Nostrum.Api.Webhook.edit_message(webhook_id, webhook_token, message_id, args)
-  end
+  defdelegate edit_webhook_message(webhook_id, webhook_token, message_id, args),
+    to: Nostrum.Api.Webhook,
+    as: :edit_message
 
-  @doc """
-  Executes a slack webhook.
-
-  ## Parameters
-    - `webhook_id` - Id of the webhook to execute.
-    - `webhook_token` - Token of the webhook to execute.
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Webhook.execute_slack/3` directly instead.
   """
-  @spec execute_slack_webhook(Webhook.id(), Webhook.token(), boolean) :: error | {:ok}
-  def execute_slack_webhook(webhook_id, webhook_token, wait \\ false) do
-    Nostrum.Api.Webhook.execute_slack(webhook_id, webhook_token, wait)
-  end
+  defdelegate execute_slack_webhook(webhook_id, webhook_token, wait \\ false),
+    to: Nostrum.Api.Webhook,
+    as: :execute_slack
 
-  @doc """
-  Executes a git webhook.
-
-  ## Parameters
-    - `webhook_id` - Id of the webhook to execute.
-    - `webhook_token` - Token of the webhook to execute.
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Webhook.execute_git/3` directly instead.
   """
-  @spec execute_git_webhook(Webhook.id(), Webhook.token(), boolean) :: error | {:ok}
-  def execute_git_webhook(webhook_id, webhook_token, wait \\ false) do
-    Nostrum.Api.Webhook.execute_git(webhook_id, webhook_token, wait)
-  end
+  defdelegate execute_git_webhook(webhook_id, webhook_token, wait \\ false),
+    to: Nostrum.Api.Webhook,
+    as: :execute_git
 
-  @doc """
-  Gets the bot's OAuth2 application info.
-
-  ## Example
-  ```elixir
-  Nostrum.Api.get_application_information
-  {:ok,
-  %{
-    bot_public: false,
-    bot_require_code_grant: false,
-    description: "Test",
-    icon: nil,
-    id: "172150183260323840",
-    name: "Baba O-Riley",
-    owner: %{
-      avatar: nil,
-      discriminator: "0042",
-      id: "172150183260323840",
-      username: "i own a bot"
-    },
-  }}
-  ```
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Self.application_information/0` directly instead.
   """
-  @spec get_application_information() :: error | {:ok, map()}
-  def get_application_information do
-    Nostrum.Api.Self.application_information()
-  end
+  defdelegate get_application_information,
+    to: Nostrum.Api.Self,
+    as: :application_information
 
-  @doc """
-  Fetch all global commands.
-
-  ## Parameters
-  - `application_id`: Application ID for which to search commands.
-    If not given, this will be fetched from `Me`.
-
-  ## Return value
-  A list of ``ApplicationCommand``s on success. See the official reference:
-  https://discord.com/developers/docs/interactions/application-commands#application-command-object-application-command-structure
-
-  ## Example
-
-  ```elixir
-  iex> Nostrum.Api.get_global_application_commands
-  {:ok,
-   [
-     %{
-       application_id: "455589479713865749",
-       description: "ed, man! man, ed",
-       id: "789841753196331029",
-       name: "edit"
-     }
-   ]}
-  ```
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.ApplicationCommand.global_commands/1` directly instead.
   """
-  @spec get_global_application_commands() :: {:ok, [map()]} | error
-  @spec get_global_application_commands(User.id()) :: {:ok, [map()]} | error
-  def get_global_application_commands(application_id \\ Me.get().id) do
-    Nostrum.Api.ApplicationCommand.global_commands(application_id)
-  end
+  defdelegate get_global_application_commands(application_id \\ Me.get().id),
+    to: Nostrum.Api.ApplicationCommand,
+    as: :global_commands
 
-  @doc """
-  Create a new global application command.
-
-  The new command will be available on all guilds in around an hour.
-  If you want to test commands, use `create_guild_application_command/2` instead,
-  as commands will become available instantly there.
-  If an existing command with the same name exists, it will be overwritten.
-
-  ## Parameters
-  - `application_id`: Application ID for which to create the command.
-    If not given, this will be fetched from `Me`.
-  - `command`: Command configuration, see the linked API documentation for reference.
-
-  ## Return value
-  The created command. See the official reference:
-  https://discord.com/developers/docs/interactions/application-commands#create-global-application-command
-
-  ## Example
-
-  ```elixir
-  Nostrum.Api.create_global_application_command(
-    %{name: "edit", description: "ed, man! man, ed", options: []}
-  )
-  ```
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.ApplicationCommand.create_global_command/2` directly instead.
   """
-  @spec create_global_application_command(ApplicationCommand.application_command_map()) ::
-          {:ok, map()} | error
-  @spec create_global_application_command(User.id(), ApplicationCommand.application_command_map()) ::
-          {:ok, map()} | error
-  def create_global_application_command(application_id \\ Me.get().id, command) do
-    Nostrum.Api.ApplicationCommand.create_global_command(application_id, command)
-  end
+  defdelegate create_global_application_command(application_id \\ Me.get().id, command),
+    to: Nostrum.Api.ApplicationCommand,
+    as: :create_global_command
 
-  @doc """
-  Update an existing global application command.
-
-  The updated command will be available on all guilds in around an hour.
-
-  ## Parameters
-  - `application_id`: Application ID for which to edit the command.
-    If not given, this will be fetched from `Me`.
-  - `command_id`: The current snowflake of the command.
-  - `command`: Command configuration, see the linked API documentation for reference.
-
-  ## Return value
-  The updated command. See the official reference:
-  https://discord.com/developers/docs/interactions/application-commands#edit-global-application-command
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.ApplicationCommand.edit_global_command/3` directly instead.
   """
-  @spec edit_global_application_command(
-          Snowflake.t(),
-          ApplicationCommand.application_command_edit_map()
-        ) :: {:ok, map()} | error
-  @spec edit_global_application_command(
-          User.id(),
-          Snowflake.t(),
-          ApplicationCommand.application_command_edit_map()
-        ) :: {:ok, map()} | error
-  def edit_global_application_command(
-        application_id \\ Me.get().id,
-        command_id,
-        command
-      ) do
-    Nostrum.Api.ApplicationCommand.edit_global_command(application_id, command_id, command)
-  end
+  defdelegate edit_global_application_command(application_id \\ Me.get().id, command_id, command),
+    to: Nostrum.Api.ApplicationCommand,
+    as: :edit_global_command
 
-  @doc """
-  Delete an existing global application command.
-
-  ## Parameters
-  - `application_id`: Application ID for which to create the command.
-    If not given, this will be fetched from `Me`.
-  - `command_id`: The current snowflake of the command.
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.ApplicationCommand.delete_global_command/2` directly instead.
   """
-  @spec delete_global_application_command(Snowflake.t()) :: {:ok} | error
-  @spec delete_global_application_command(User.id(), Snowflake.t()) :: {:ok} | error
-  def delete_global_application_command(application_id \\ Me.get().id, command_id) do
-    Nostrum.Api.ApplicationCommand.delete_global_command(application_id, command_id)
-  end
+  defdelegate delete_global_application_command(application_id \\ Me.get().id, command_id),
+    to: Nostrum.Api.ApplicationCommand,
+    as: :delete_global_command
 
-  @doc """
-  Overwrite the existing global application commands.
-
-  This action will:
-  - Create any command that was provided and did not already exist
-  - Update any command that was provided and already existed if its configuration changed
-  - Delete any command that was not provided but existed on Discord's end
-
-  Updates will be available in all guilds after 1 hour.
-  Commands that do not already exist will count toward daily application command create limits.
-
-  ## Parameters
-  - `application_id`: Application ID for which to overwrite the commands.
-    If not given, this will be fetched from `Me`.
-  - `commands`: List of command configurations, see the linked API documentation for reference.
-
-  ## Return value
-  Updated list of global application commands. See the official reference:
-  https://discord.com/developers/docs/interactions/application-commands#bulk-overwrite-global-application-commands
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.ApplicationCommand.bulk_overwrite_global_commands/2` directly instead.
   """
-  @doc since: "0.5.0"
-  @spec bulk_overwrite_global_application_commands([ApplicationCommand.application_command_map()]) ::
-          {:ok, [map()]} | error
-  @spec bulk_overwrite_global_application_commands(User.id(), [
-          ApplicationCommand.application_command_map()
-        ]) :: {:ok, [map()]} | error
-  def bulk_overwrite_global_application_commands(application_id \\ Me.get().id, commands) do
-    Nostrum.Api.ApplicationCommand.bulk_overwrite_global_commands(application_id, commands)
-  end
+  defdelegate bulk_overwrite_global_application_commands(application_id \\ Me.get().id, commands),
+    to: Nostrum.Api.ApplicationCommand,
+    as: :bulk_overwrite_global_commands
 
-  @doc """
-  Fetch all guild application commands for the given guild.
-
-  ## Parameters
-  - `application_id`: Application ID for which to fetch commands.
-    If not given, this will be fetched from `Me`.
-  - `guild_id`: The guild ID for which guild application commands
-    should be requested.
-
-  ## Return value
-  A list of ``ApplicationCommand``s on success. See the official reference:
-  https://discord.com/developers/docs/interactions/application-commands#application-command-object-application-command-structure
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.ApplicationCommand.guild_commands/2` directly instead.
   """
-  @spec get_guild_application_commands(Guild.id()) :: {:ok, [map()]} | error
-  @spec get_guild_application_commands(User.id(), Guild.id()) :: {:ok, [map()]} | error
-  def get_guild_application_commands(application_id \\ Me.get().id, guild_id) do
-    Nostrum.Api.ApplicationCommand.guild_commands(application_id, guild_id)
-  end
+  defdelegate get_guild_application_commands(application_id \\ Me.get().id, guild_id),
+    to: Nostrum.Api.ApplicationCommand,
+    as: :guild_commands
 
-  @doc """
-  Create a guild application command on the specified guild.
-
-  The new command will be available immediately.
-
-  ## Parameters
-  - `application_id`: Application ID for which to create the command.
-    If not given, this will be fetched from `Me`.
-  - `guild_id`: Guild on which to create the command.
-  - `command`: Command configuration, see the linked API documentation for reference.
-
-  ## Return value
-  The created command. See the official reference:
-  https://discord.com/developers/docs/interactions/application-commands#create-guild-application-command
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.ApplicationCommand.create_guild_command/3` directly instead.
   """
-  @spec create_guild_application_command(Guild.id(), ApplicationCommand.application_command_map()) ::
-          {:ok, map()} | error
-  @spec create_guild_application_command(
-          User.id(),
-          Guild.id(),
-          ApplicationCommand.application_command_map()
-        ) :: {:ok, map()} | error
-  def create_guild_application_command(
-        application_id \\ Me.get().id,
-        guild_id,
-        command
-      ) do
-    Nostrum.Api.ApplicationCommand.create_guild_command(application_id, guild_id, command)
-  end
+  defdelegate create_guild_application_command(application_id \\ Me.get().id, guild_id, command),
+    to: Nostrum.Api.ApplicationCommand,
+    as: :create_guild_command
 
-  @doc """
-  Update an existing guild application command.
-
-  The updated command will be available immediately.
-
-  ## Parameters
-  - `application_id`: Application ID for which to edit the command.
-    If not given, this will be fetched from `Me`.
-  - `guild_id`: Guild for which to update the command.
-  - `command_id`: The current snowflake of the command.
-  - `command`: Command configuration, see the linked API documentation for reference.
-
-  ## Return value
-  The updated command. See the official reference:
-  https://discord.com/developers/docs/interactions/application-commands#edit-guild-application-command
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.ApplicationCommand.edit_guild_command/4` directly instead.
   """
-  @spec edit_guild_application_command(
-          Guild.id(),
-          Snowflake.t(),
-          ApplicationCommand.application_command_edit_map()
-        ) :: {:ok, map()} | error
-  @spec edit_guild_application_command(
-          User.id(),
-          Guild.id(),
-          Snowflake.t(),
-          ApplicationCommand.application_command_edit_map()
-        ) ::
-          {:ok, map()} | error
-  def edit_guild_application_command(
-        application_id \\ Me.get().id,
-        guild_id,
-        command_id,
-        command
-      ) do
-    Nostrum.Api.ApplicationCommand.edit_guild_command(
-      application_id,
-      guild_id,
-      command_id,
-      command
-    )
-  end
+  defdelegate edit_guild_application_command(
+                application_id \\ Me.get().id,
+                guild_id,
+                command_id,
+                command
+              ),
+              to: Nostrum.Api.ApplicationCommand,
+              as: :edit_guild_command
 
-  @doc """
-  Delete an existing guild application command.
-
-  ## Parameters
-  - `application_id`: Application ID for which to create the command.
-    If not given, this will be fetched from `Me`.
-  - `guild_id`: The guild on which the command exists.
-  - `command_id`: The current snowflake of the command.
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.ApplicationCommand.delete_guild_command/3` directly instead.
   """
-  @spec delete_guild_application_command(Guild.id(), Snowflake.t()) :: {:ok} | error
-  @spec delete_guild_application_command(User.id(), Guild.id(), Snowflake.t()) :: {:ok} | error
-  def delete_guild_application_command(
-        application_id \\ Me.get().id,
-        guild_id,
-        command_id
-      ) do
-    Nostrum.Api.ApplicationCommand.delete_guild_command(application_id, guild_id, command_id)
-  end
+  defdelegate delete_guild_application_command(
+                application_id \\ Me.get().id,
+                guild_id,
+                command_id
+              ),
+              to: Nostrum.Api.ApplicationCommand,
+              as: :delete_guild_command
 
-  @doc """
-  Overwrite the existing guild application commands on the specified guild.
-
-  This action will:
-  - Create any command that was provided and did not already exist
-  - Update any command that was provided and already existed if its configuration changed
-  - Delete any command that was not provided but existed on Discord's end
-
-  ## Parameters
-  - `application_id`: Application ID for which to overwrite the commands.
-    If not given, this will be fetched from `Me`.
-  - `guild_id`: Guild on which to overwrite the commands.
-  - `commands`: List of command configurations, see the linked API documentation for reference.
-
-  ## Return value
-  Updated list of guild application commands. See the official reference:
-  https://discord.com/developers/docs/interactions/application-commands#bulk-overwrite-guild-application-commands
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.ApplicationCommand.bulk_overwrite_guild_commands/3` directly instead.
   """
-  @doc since: "0.5.0"
-  @spec bulk_overwrite_guild_application_commands(Guild.id(), [
-          ApplicationCommand.application_command_map()
-        ]) :: {:ok, [map()]} | error
-  @spec bulk_overwrite_guild_application_commands(User.id(), Guild.id(), [
-          ApplicationCommand.application_command_map()
-        ]) ::
-          {:ok, [map()]} | error
-  def bulk_overwrite_guild_application_commands(
-        application_id \\ Me.get().id,
-        guild_id,
-        commands
-      ) do
-    Nostrum.Api.ApplicationCommand.bulk_overwrite_guild_commands(
-      application_id,
-      guild_id,
-      commands
-    )
-  end
+  defdelegate bulk_overwrite_guild_application_commands(
+                application_id \\ Me.get().id,
+                guild_id,
+                commands
+              ),
+              to: Nostrum.Api.ApplicationCommand,
+              as: :bulk_overwrite_guild_commands
 
   # Why the two separate functions here?
   # For the standard use case of "responding to an interaction retrieved
@@ -2117,58 +1754,27 @@ defmodule Nostrum.Api do
     create_interaction_response!(interaction.id, interaction.token, response)
   end
 
-  @doc """
-  Create a response to an interaction received from the gateway.
-
-  ## Parameters
-  - `id`: The interaction ID to which the response should be created.
-  - `token`: The interaction token.
-  - `response`: An [`InteractionResponse`](https://discord.com/developers/docs/interactions/receiving-and-responding#interaction-response-object)
-    object. See the linked documentation.
-
-
-  ### Attachments
-  To include attachments in the response, you can include a `:files` field in the response.
-  This field expects a list of attachments which can be in either of the following formats:
-  - A path to the file to upload.
-  - A map with the following fields:
-    - `:body` The file contents.
-    - `:name` The filename of the file.
-
-  ## Example
-
-  ```elixir
-  response = %{
-    type: 4,
-    data: %{
-      content: "I copy and pasted this code."
-    }
-  }
-  Nostrum.Api.create_interaction_response(interaction, response)
-  ```
-
-  As an alternative to passing the interaction ID and token, the
-  original `t:Nostrum.Struct.Interaction.t/0` can also be passed
-  directly. See `create_interaction_response/2`.
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Interaction.create_response/3` directly instead.
   """
-  @spec create_interaction_response(Interaction.id(), Interaction.token(), map()) :: {:ok} | error
-  def create_interaction_response(id, token, response) do
-    Nostrum.Api.Interaction.create_response(id, token, response)
-  end
+  defdelegate create_interaction_response(id, token, response),
+    to: Nostrum.Api.Interaction,
+    as: :create_response
 
+  @deprecated "Bang functions will be removed in v1.0"
   def create_interaction_response!(id, token, response) do
     create_interaction_response(id, token, response)
     |> bangify
   end
 
-  @doc """
-  Retrieves the original message of an interaction.
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Interaction.original_response/2` directly instead.
   """
-  @doc since: "0.7.0"
-  @spec get_original_interaction_response(Interaction.t()) :: error | {:ok, Message.t()}
-  def get_original_interaction_response(interaction) do
-    Nostrum.Api.Interaction.original_response(interaction.application_id, interaction.token)
-  end
+  defdelegate get_original_interaction_response(interaction),
+    to: Nostrum.Api.Interaction,
+    as: :original_response
 
   @doc """
   Same as `edit_interaction_response/3`, but directly takes the
@@ -2190,17 +1796,13 @@ defmodule Nostrum.Api do
     edit_interaction_response!(interaction.application_id, interaction.token, response)
   end
 
-  @doc """
-  Edits the original interaction response.
-
-  Functions the same as `edit_webhook_message/3`
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Interaction.edit_response/3` directly instead.
   """
-  @doc since: "0.5.0"
-  @spec edit_interaction_response(User.id(), Interaction.token(), map()) ::
-          {:ok, Message.t()} | error
-  def edit_interaction_response(id \\ Me.get().id, token, response) do
-    Nostrum.Api.Interaction.edit_response(id, token, response)
-  end
+  defdelegate edit_interaction_response(id \\ Me.get().id, token, response),
+    to: Nostrum.Api.Interaction,
+    as: :edit_response
 
   @doc """
   Same as `edit_interaction_response/3`, but raises `Nostrum.Error.ApiError` in case of failure.
@@ -2232,14 +1834,13 @@ defmodule Nostrum.Api do
     |> bangify
   end
 
-  @doc """
-  Deletes the original interaction response.
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Interaction.delete_response/2` directly instead.
   """
-  @doc since: "0.5.0"
-  @spec delete_interaction_response(User.id(), Interaction.token()) :: {:ok} | error
-  def delete_interaction_response(id \\ Me.get().id, token) do
-    Nostrum.Api.Interaction.delete_response(id, token)
-  end
+  defdelegate delete_interaction_response(id \\ Me.get().id, token),
+    to: Nostrum.Api.Interaction,
+    as: :delete_response
 
   @doc """
   Same as `delete_interaction_response/2`, but raises `Nostrum.Error.ApiError` in case of failure.
@@ -2252,16 +1853,13 @@ defmodule Nostrum.Api do
     |> bangify
   end
 
-  @doc """
-  Create a followup message for an interaction.
-
-  Delegates to ``execute_webhook/3``, see the function for more details.
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Interaction.create_followup_message/3` directly instead.
   """
-  @spec create_followup_message(User.id(), Interaction.token(), map()) ::
-          {:ok, Message.t()} | error
-  def create_followup_message(application_id \\ Me.get().id, token, webhook_payload) do
-    Nostrum.Api.Interaction.create_followup_message(application_id, token, webhook_payload)
-  end
+  defdelegate create_followup_message(application_id \\ Me.get().id, token, webhook_payload),
+    to: Nostrum.Api.Interaction,
+    as: :create_followup_message
 
   @doc """
   Same as `create_followup_message/3`, but raises `Nostrum.Error.ApiError` in case of failure.
@@ -2275,24 +1873,17 @@ defmodule Nostrum.Api do
     |> bangify
   end
 
-  @doc """
-  Delete a followup message for an interaction.
-
-  ## Parameters
-  - `application_id`: Application ID for which to create the command.
-    If not given, this will be fetched from `Me`.
-  - `token`: Interaction token.
-  - `message_id`: Followup message ID.
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Interaction.delete_followup_message/3` directly instead.
   """
-  @spec delete_interaction_followup_message(User.id(), Interaction.token(), Message.id()) ::
-          {:ok} | error
-  def delete_interaction_followup_message(
-        application_id \\ Me.get().id,
-        token,
-        message_id
-      ) do
-    Nostrum.Api.Interaction.delete_followup_message(application_id, token, message_id)
-  end
+  defdelegate delete_interaction_followup_message(
+                application_id \\ Me.get().id,
+                token,
+                message_id
+              ),
+              to: Nostrum.Api.Interaction,
+              as: :delete_followup_message
 
   @doc """
   Same as `delete_interaction_followup_message/3`, but raises `Nostrum.Error.ApiError` in case of failure.
@@ -2310,378 +1901,186 @@ defmodule Nostrum.Api do
     |> bangify
   end
 
-  @doc """
-  Fetches command permissions for all commands for your application in a guild.
-
-  ## Parameters
-  - `application_id`: Application ID commands are registered under.
-    If not given, this will be fetched from `Me`.
-  - `guild_id`: Guild ID to fetch command permissions from.
-
-  ## Return value
-  This method returns a list of guild application command permission objects, see all available values on the [Discord API docs](https://discord.com/developers/docs/interactions/application-commands#application-command-permissions-object-guild-application-command-permissions-structure).
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.ApplicationCommand.guild_permissions/2` directly instead.
   """
-  @doc since: "0.5.0"
-  @spec get_guild_application_command_permissions(Guild.id()) :: {:ok, [map()]} | error
-  @spec get_guild_application_command_permissions(User.id(), Guild.id()) :: {:ok, [map()]} | error
-  def get_guild_application_command_permissions(
-        application_id \\ Me.get().id,
-        guild_id
-      ) do
-    Nostrum.Api.ApplicationCommand.guild_permissions(application_id, guild_id)
-  end
+  defdelegate get_guild_application_command_permissions(application_id \\ Me.get().id, guild_id),
+    to: Nostrum.Api.ApplicationCommand,
+    as: :guild_permissions
 
-  @doc """
-  Fetches command permissions for a specific command for your application in a guild.
-
-  ## Parameters
-  - `application_id`: Application ID commands are registered under.
-    If not given, this will be fetched from `Me`.
-  - `guild_id`: Guild ID to fetch command permissions from.
-  - `command_id`: Command ID to fetch permissions for.
-
-  ## Return value
-  This method returns a single guild application command permission object, see all available values on the [Discord API docs](https://discord.com/developers/docs/interactions/application-commands#application-command-permissions-object-guild-application-command-permissions-structure).
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.ApplicationCommand.permissions/3` directly instead.
   """
-  @doc since: "0.5.0"
-  @spec get_application_command_permissions(Guild.id(), Snowflake.t()) ::
-          {:ok, map()} | error
-  @spec get_application_command_permissions(User.id(), Guild.id(), Snowflake.t()) ::
-          {:ok, map()} | error
-  def get_application_command_permissions(
-        application_id \\ Me.get().id,
-        guild_id,
-        command_id
-      ) do
-    Nostrum.Api.ApplicationCommand.permissions(application_id, guild_id, command_id)
-  end
+  defdelegate get_application_command_permissions(
+                application_id \\ Me.get().id,
+                guild_id,
+                command_id
+              ),
+              to: Nostrum.Api.ApplicationCommand,
+              as: :permissions
 
-  @doc """
-  Edits command permissions for a specific command for your application in a guild. You can only add up to 10 permission overwrites for a command.
-
-  ## Parameters
-  - `application_id`: Application ID commands are registered under.
-    If not given, this will be fetched from `Me`.
-  - `guild_id`: Guild ID to fetch command permissions from.
-  - `command_id`: Command ID to fetch permissions for.
-  - `permissions`: List of [application command permissions](https://discord.com/developers/docs/interactions/application-commands#application-command-permissions-object-application-command-permissions-structure)
-
-  ## Return value
-  This method returns a guild application command permission object, see all available values on the [Discord API docs](https://discord.com/developers/docs/interactions/application-commands#application-command-permissions-object-guild-application-command-permissions-structure).
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.ApplicationCommand.edit_command_permissions/4` directly instead.
   """
-  @doc since: "0.5.0"
-  @spec edit_application_command_permissions(Guild.id(), Snowflake.t(), [
-          ApplicationCommand.application_command_permissions()
-        ]) ::
-          {:ok, map()} | error
-  @spec edit_application_command_permissions(User.id(), Guild.id(), Snowflake.t(), [
-          ApplicationCommand.application_command_permissions()
-        ]) ::
-          {:ok, map()} | error
-  def edit_application_command_permissions(
-        application_id \\ Me.get().id,
-        guild_id,
-        command_id,
-        permissions
-      ) do
-    Nostrum.Api.ApplicationCommand.edit_command_permissions(
-      application_id,
-      guild_id,
-      command_id,
-      permissions
-    )
-  end
+  defdelegate edit_application_command_permissions(
+                application_id \\ Me.get().id,
+                guild_id,
+                command_id,
+                permissions
+              ),
+              to: Nostrum.Api.ApplicationCommand,
+              as: :edit_command_permissions
 
-  @doc """
-  Edits command permissions for a specific command for your application in a guild. You can only add up to 10 permission overwrites for a command.
-
-  ## Parameters
-  - `application_id`: Application ID commands are registered under.
-    If not given, this will be fetched from `Me`.
-  - `guild_id`: Guild ID to fetch command permissions from.
-  - `command_id`: Command ID to fetch permissions for.
-  - `permissions`: List of partial [guild application command permissions](hhttps://discord.com/developers/docs/interactions/application-commands#application-command-permissions-object-guild-application-command-permissions-structure) with `id` and `permissions`. You can add up to 10 overwrites per command.
-
-  ## Return value
-  This method returns a guild application command permission object, see all available values on the [Discord API docs](https://discord.com/developers/docs/interactions/application-commands#application-command-permissions-object-guild-application-command-permissions-structure).
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.ApplicationCommand.batch_edit_permissions/3` directly instead.
   """
-  @doc since: "0.5.0"
-  @spec batch_edit_application_command_permissions(Guild.id(), [
-          %{
-            id: Snowflake.t(),
-            permissions: [ApplicationCommand.application_command_permissions()]
-          }
-        ]) ::
-          {:ok, map()} | error
-  @spec batch_edit_application_command_permissions(User.id(), Guild.id(), [
-          %{
-            id: Snowflake.t(),
-            permissions: [ApplicationCommand.application_command_permissions()]
-          }
-        ]) ::
-          {:ok, map()} | error
-  def batch_edit_application_command_permissions(
-        application_id \\ Me.get().id,
-        guild_id,
-        permissions
-      ) do
-    Nostrum.Api.ApplicationCommand.batch_edit_permissions(
-      application_id,
-      guild_id,
-      permissions
-    )
-  end
+  defdelegate batch_edit_application_command_permissions(
+                application_id \\ Me.get().id,
+                guild_id,
+                permissions
+              ),
+              to: Nostrum.Api.ApplicationCommand,
+              as: :batch_edit_permissions
 
-  @type thread_with_message_params :: %{
-          required(:name) => String.t(),
-          optional(:auto_archive_duration) => 60 | 1440 | 4320 | 10_080,
-          optional(:rate_limit_per_user) => 0..21_600
-        }
-
-  @doc """
-  Create a thread on a channel message.
-
-  The `thread_id` will be the same as the id of the message, as such no message can have more than one thread.
-
-  If successful, returns `{:ok, Channel}`. Otherwise returns a `t:Nostrum.Api.error/0`.
-
-  An optional `reason` argument can be given for the audit log.
-
-  ## Options
-  - `name`: Name of the thread, max 100 characters.
-  - `auto_archive_duration`: Duration in minutes to auto-archive the thread after it has been inactive, can be set to 60, 1440, 4320, or 10080.
-  - `rate_limit_per_user`: Rate limit per user in seconds, can be set to any value in `0..21600`.
-
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Thread.create_with_message/4` directly instead.
   """
-  @doc since: "0.5.1"
-  @spec start_thread_with_message(
-          Channel.id(),
-          Message.id(),
-          thread_with_message_params,
-          AuditLogEntry.reason()
-        ) ::
-          {:ok, Channel.t()} | error
-  def start_thread_with_message(channel_id, message_id, options, reason \\ nil) do
-    Nostrum.Api.Thread.create_with_message(channel_id, message_id, options, reason)
-  end
+  defdelegate start_thread_with_message(channel_id, message_id, options, reason \\ nil),
+    to: Nostrum.Api.Thread,
+    as: :create_with_message
 
-  @doc """
-  Create a new thread in a forum channel.
-
-  If successful, returns `{:ok, Channel}`. Otherwise returns a `t:Nostrum.Api.error/0`.
-
-  An optional `reason` argument can be given for the audit log.
-
-  ## Options
-  - `name`: Name of the thread, max 100 characters.
-  - `auto_archive_duration`: Duration in minutes to auto-archive the thread after it has been inactive, can be set to 60, 1440, 4320, or 10080.
-  - `rate_limit_per_user`: Rate limit per user in seconds, can be set to any value in `0..21600`.
-  - `applied_tags`: An array of tag ids to apply to the thread.
-  - `message`: The first message in the created thread.
-
-  ### Thread Message Options
-  - `content`: The content of the message.
-  - `embeds`: A list of embeds.
-  - `allowed_mentions`: Allowed mentions object.
-  - `components`: A list of components.
-  - `sticker_ids`: A list of sticker ids.
-  - `:files` - a list of files where each element is the same format as the `:file` option. If both
-    `:file` and `:files` are specified, `:file` will be prepended to the `:files` list.
-
-  At least one of `content`, `embeds`, `sticker_ids`, or `files` must be specified.
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Thread.create_in_forum/3` directly instead.
   """
-  @doc since: "0.7.0"
-  @spec start_thread_in_forum_channel(Channel.id(), map(), AuditLogEntry.reason()) ::
-          {:ok, Channel.t()} | error
-  def start_thread_in_forum_channel(channel_id, options, reason \\ nil) do
-    Nostrum.Api.Thread.create_in_forum(channel_id, options, reason)
-  end
+  defdelegate start_thread_in_forum_channel(channel_id, options, reason \\ nil),
+    to: Nostrum.Api.Thread,
+    as: :create_in_forum
 
-  @doc """
-  Returns a thread member object for the specified user if they are a member of the thread
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Thread.member/2` directly instead.
   """
-  @doc since: "0.5.1"
-  @spec get_thread_member(Channel.id(), User.id()) :: {:ok, ThreadMember.t()} | error
-  def get_thread_member(thread_id, user_id) do
-    Nostrum.Api.Thread.member(thread_id, user_id)
-  end
+  defdelegate get_thread_member(thread_id, user_id),
+    to: Nostrum.Api.Thread,
+    as: :member
 
-  @doc """
-  Returns a list of thread members for the specified thread.
-
-  This endpoint is restricted according to whether the `GUILD_MEMBERS` privileged intent is enabled.
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Thread.members/1` directly instead.
   """
-  @doc since: "0.5.1"
-  @spec get_thread_members(Channel.id()) :: {:ok, [ThreadMember.t()]} | error
-  def get_thread_members(thread_id) do
-    Nostrum.Api.Thread.members(thread_id)
-  end
+  defdelegate get_thread_members(thread_id),
+    to: Nostrum.Api.Thread,
+    as: :members
 
-  @doc """
-  Return all active threads for the current guild.
-
-  Response body is a map with the following keys:
-  - `threads`: A list of channel objects.
-  - `members`: A list of `ThreadMember` objects, one for each returned thread the current user has joined.
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Thread.list/1` directly instead.
   """
-  @doc since: "0.5.1"
-  @spec list_guild_threads(Guild.id()) ::
-          {:ok, %{threads: [Channel.t()], members: [ThreadMember.t()]}} | error
-  def list_guild_threads(guild_id) do
-    Nostrum.Api.Thread.list(guild_id)
-  end
+  defdelegate list_guild_threads(guild_id),
+    to: Nostrum.Api.Thread,
+    as: :list
 
-  @doc """
-  Returns a list of archived threads for a given channel.
-
-  Threads are sorted by the `archive_timestamp` field, in descending order.
-
-  ## Response body
-  Response body is a map with the following keys:
-  - `threads`: A list of channel objects.
-  - `members`: A list of `ThreadMember` objects, one for each returned thread the current user has joined.
-  - `has_more`: A boolean indicating whether there are more archived threads that can be fetched.
-
-  ## Options
-  - `before`: Returns threads before this timestamp, can be either a `DateTime` or [ISO8601 timestamp](`DateTime.to_iso8601/3`).
-  - `limit`: Optional maximum number of threads to return.
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Thread.public_archived_threads/2` directly instead.
   """
-  @doc since: "0.5.1"
-  @spec list_public_archived_threads(Channel.id(), options) ::
-          {:ok, %{threads: [Channel.t()], members: [ThreadMember.t()], has_more: boolean()}}
-          | error
-  def list_public_archived_threads(channel_id, options \\ []) do
-    Nostrum.Api.Thread.public_archived_threads(channel_id, options)
-  end
+  defdelegate list_public_archived_threads(channel_id, options \\ []),
+    to: Nostrum.Api.Thread,
+    as: :public_archived_threads
 
-  @doc """
-  Same as `list_public_archived_threads/2`, but for private threads instead of public.
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Thread.private_archived_threads/2` directly instead.
   """
-  @doc since: "0.5.1"
-  @spec list_private_archived_threads(Channel.id(), options) ::
-          {:ok, %{threads: [Channel.t()], members: [ThreadMember.t()], has_more: boolean()}}
-          | error
-  def list_private_archived_threads(channel_id, options \\ []) do
-    Nostrum.Api.Thread.private_archived_threads(channel_id, options)
-  end
+  defdelegate list_private_archived_threads(channel_id, options \\ []),
+    to: Nostrum.Api.Thread,
+    as: :private_archived_threads
 
-  @doc """
-  Same as `list_public_archived_threads/2`, but only returns private threads that the current user has joined.
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Thread.joined_private_archived_threads/2` directly instead.
   """
-  @doc since: "0.5.1"
-  @spec list_joined_private_archived_threads(Channel.id(), options) ::
-          {:ok, %{threads: [Channel.t()], members: [ThreadMember.t()], has_more: boolean()}}
-          | error
-  def list_joined_private_archived_threads(channel_id, options \\ []) do
-    Nostrum.Api.Thread.joined_private_archived_threads(channel_id, options)
-  end
+  defdelegate list_joined_private_archived_threads(channel_id, options \\ []),
+    to: Nostrum.Api.Thread,
+    as: :joined_private_archived_threads
 
-  @doc """
-  Join an existing thread, requires that the thread is not archived.
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Thread.join/1` directly instead.
   """
-  @doc since: "0.5.1"
-  @spec join_thread(Channel.id()) :: {:ok} | error
-  def join_thread(thread_id) do
-    Nostrum.Api.Thread.join(thread_id)
-  end
+  defdelegate join_thread(thread_id),
+    to: Nostrum.Api.Thread,
+    as: :join
 
-  @doc """
-  Add a user to a thread, requires the ability to send messages in the thread.
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Thread.add_member/2` directly instead.
   """
-  @doc since: "0.5.1"
-  def add_thread_member(thread_id, user_id) do
-    Nostrum.Api.Thread.add_member(thread_id, user_id)
-  end
+  defdelegate add_thread_member(thread_id, user_id),
+    to: Nostrum.Api.Thread,
+    as: :add_member
 
-  @doc """
-  Leave a thread, requires that the thread is not archived.
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Thread.leave/1` directly instead.
   """
-  @doc since: "0.5.1"
-  @spec leave_thread(Channel.id()) :: {:ok} | error
-  def leave_thread(thread_id) do
-    Nostrum.Api.Thread.leave(thread_id)
-  end
+  defdelegate leave_thread(thread_id),
+    to: Nostrum.Api.Thread,
+    as: :leave
 
-  @doc """
-  Removes another user from a thread, requires that the thread is not archived.
-
-  Also requires the `MANAGE_THREADS` permission, or the creator of the thread if the thread is private.
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.Thread.remove_member/2` directly instead.
   """
-  @doc since: "0.5.1"
-  @spec remove_thread_member(Channel.id(), User.id()) :: {:ok} | error
-  def remove_thread_member(thread_id, user_id) do
-    Nostrum.Api.Thread.remove_member(thread_id, user_id)
-  end
+  defdelegate remove_thread_member(thread_id, user_id),
+    to: Nostrum.Api.Thread,
+    as: :remove_member
 
-  @doc """
-  Get a list of all auto-moderation rules for a guild.
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.AutoModeration.rules/1` directly instead.
   """
-  @doc since: "0.7.0"
-  @spec get_guild_auto_moderation_rules(Guild.id()) :: {:ok, [AutoModerationRule.t()]} | error
-  def get_guild_auto_moderation_rules(guild_id) do
-    Nostrum.Api.AutoModeration.rules(guild_id)
-  end
+  defdelegate get_guild_auto_moderation_rules(guild_id),
+    to: Nostrum.Api.AutoModeration,
+    as: :rules
 
-  @doc """
-  Get a single auto-moderation rule for a guild.
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.AutoModeration.rule/2` directly instead.
   """
-  @doc since: "0.7.0"
-  @spec get_guild_auto_moderation_rule(Guild.id(), AutoModerationRule.id()) ::
-          {:ok, AutoModerationRule.t()} | error
-  def get_guild_auto_moderation_rule(guild_id, rule_id) do
-    Nostrum.Api.AutoModeration.rule(guild_id, rule_id)
-  end
+  defdelegate get_guild_auto_moderation_rule(guild_id, rule_id),
+    to: Nostrum.Api.AutoModeration,
+    as: :rule
 
-  @doc """
-  Create a new auto-moderation rule for a guild.
-
-  ## Options
-    * `:name` (`t:String.t/0`) - The name of the rule.
-    * `:event_type` (`t:AutoModerationRule.event_type/0`) - The type of event that triggers the rule.
-    * `:trigger_type` (`t:AutoModerationRule.trigger_type/0`) - The type of content that triggers the rule.
-    * `:trigger_metadata` (`t:AutoModerationRule.trigger_metadata/0`) - The metadata associated with the rule trigger.
-      - optional, based on the `:trigger_type`.
-    * `:actions` (`t:AutoModerationRule.actions/0`) - The actions to take when the rule is triggered.
-    * `:enabled` (`t:AutoModerationRule.enabled/0`) - Whether the rule is enabled or not.
-      - optional, defaults to `false`.
-    * `:exempt_roles` - (`t:AutoModerationRule.exempt_roles/0`) - A list of role id's that are exempt from the rule.
-      - optional, defaults to `[]`, maximum of 20.
-    * `:exempt_channels` - (`t:AutoModerationRule.exempt_channels/0`) - A list of channel id's that are exempt from the rule.
-      - optional, defaults to `[]`, maximum of 50.
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.AutoModeration.create_rule/2` directly instead.
   """
-  @doc since: "0.7.0"
-  @spec create_guild_auto_moderation_rule(Guild.id(), options()) ::
-          {:ok, AutoModerationRule.t()} | error
-  def create_guild_auto_moderation_rule(guild_id, options) when is_list(options),
-    do: create_guild_auto_moderation_rule(guild_id, Map.new(options))
+  defdelegate create_guild_auto_moderation_rule(guild_id, options),
+    to: Nostrum.Api.AutoModeration,
+    as: :create_rule
 
-  def create_guild_auto_moderation_rule(guild_id, options) do
-    Nostrum.Api.AutoModeration.create_rule(guild_id, options)
-  end
-
-  @doc """
-  Modify an auto-moderation rule for a guild.
-
-  Takes the same options as `create_guild_auto_moderation_rule/2`, however all fields are optional.
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.AutoModeration.modify_rule/3` directly instead.
   """
-  @doc since: "0.7.0"
-  @spec modify_guild_auto_moderation_rule(Guild.id(), AutoModerationRule.id(), options()) ::
-          {:ok, AutoModerationRule.t()} | error
-  def modify_guild_auto_moderation_rule(guild_id, rule_id, options) when is_list(options),
-    do: modify_guild_auto_moderation_rule(guild_id, rule_id, Map.new(options))
+  defdelegate modify_guild_auto_moderation_rule(guild_id, rule_id, options),
+    to: Nostrum.Api.AutoModeration,
+    as: :modify_rule
 
-  def modify_guild_auto_moderation_rule(guild_id, rule_id, options) do
-    Nostrum.Api.AutoModeration.modify_rule(guild_id, rule_id, options)
-  end
-
-  @doc """
-  Delete an auto-moderation rule for a guild.
+  @deprecated """
+  Calling `Nostrum.Api` functions directly will be removed in v1.0
+  Use `Nostrum.Api.AutoModeration.delete_rule/2` directly instead.
   """
-  @doc since: "0.7.0"
-  @spec delete_guild_auto_moderation_rule(Guild.id(), AutoModerationRule.id()) :: {:ok} | error
-  def delete_guild_auto_moderation_rule(guild_id, rule_id) do
-    Nostrum.Api.AutoModeration.delete_rule(guild_id, rule_id)
-  end
+  defdelegate delete_guild_auto_moderation_rule(guild_id, rule_id),
+    to: Nostrum.Api.AutoModeration,
+    as: :delete_rule
 
   @spec maybe_add_reason(String.t() | nil) :: list()
   def maybe_add_reason(reason) do
