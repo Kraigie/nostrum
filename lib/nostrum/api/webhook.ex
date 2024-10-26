@@ -2,12 +2,14 @@ defmodule Nostrum.Api.Webhook do
   alias Nostrum.Api
   alias Nostrum.Api.Helpers
   alias Nostrum.Constants
+  alias Nostrum.Snowflake
   alias Nostrum.Struct.Channel
   alias Nostrum.Struct.Webhook
   alias Nostrum.Struct.Guild.AuditLogEntry
   alias Nostrum.Struct.Message
   alias Nostrum.Struct.Interaction
   alias Nostrum.Struct.User
+  alias Nostrum.Struct.Embed
 
   @doc """
   Creates a webhook.
