@@ -34,7 +34,7 @@ defmodule Nostrum.Api.Sticker do
 
   Returns a `t:Nostrum.Struct.Sticker.t/0` on success.
   """
-  @doc since: "0.10.0"
+  @doc since: "1.x.x"
   @spec create(
           Guild.id(),
           Sticker.name(),
@@ -81,7 +81,7 @@ defmodule Nostrum.Api.Sticker do
   @doc ~S"""
   Delete a guild sticker with the specified ID.
   """
-  @doc since: "0.10.0"
+  @doc since: "1.x.x"
   @spec delete(Guild.id(), Sticker.id()) :: {:ok} | Api.error()
   def delete(guild_id, sticker_id) do
     Api.request(:delete, Constants.guild_sticker(guild_id, sticker_id))
@@ -92,7 +92,7 @@ defmodule Nostrum.Api.Sticker do
 
   Returns a `t:Nostrum.Struct.Sticker.t/0`.
   """
-  @doc since: "0.10.0"
+  @doc since: "1.x.x"
   @spec get(Sticker.id()) :: {:ok, Sticker.t()} | Api.error()
   def get(sticker_id) do
     Api.request(:get, Constants.sticker(sticker_id))
@@ -104,7 +104,7 @@ defmodule Nostrum.Api.Sticker do
 
   Returns a `t:Nostrum.Struct.Sticker.t/0`.
   """
-  @doc since: "0.10.0"
+  @doc since: "1.x.x"
   @spec get(Guild.id(), Sticker.id()) :: Sticker.t() | Api.error()
   def get(guild_id, sticker_id) do
     Api.request(:get, Constants.guild_sticker(guild_id, sticker_id))
@@ -116,7 +116,7 @@ defmodule Nostrum.Api.Sticker do
 
   Returns a `t:Nostrum.Struct.Sticker.Pack.t/0`.
   """
-  @doc since: "0.11.0"
+  @doc since: "1.x.x"
   @spec pack(Snowflake.t()) :: {:ok, Sticker.Pack.t()} | Api.error()
   def pack(id) do
     Api.request(:get, Constants.sticker_pack(id))
@@ -126,7 +126,7 @@ defmodule Nostrum.Api.Sticker do
   @doc ~S"""
   Get a list of available sticker packs.
   """
-  @doc since: "0.10.0"
+  @doc since: "1.x.x"
   @spec packs() :: {:ok, [Sticker.Pack.t()]} | Api.error()
   def packs do
     Api.request(:get, Constants.sticker_packs())
@@ -142,7 +142,7 @@ defmodule Nostrum.Api.Sticker do
 
   Returns a list of `t:Nostrum.Struct.Sticker.t/0`.
   """
-  @doc since: "0.10.0"
+  @doc since: "1.x.x"
   @spec list(Guild.id()) :: {:ok, [Sticker.t()]} | Api.error()
   def list(guild_id) do
     Api.request(:get, Constants.guild_stickers(guild_id))
@@ -160,7 +160,7 @@ defmodule Nostrum.Api.Sticker do
 
   Returns an updated sticker on update completion.
   """
-  @doc since: "0.10.0"
+  @doc since: "1.x.x"
   @spec modify(Guild.id(), Sticker.id(), %{
           name: Sticker.name() | nil,
           description: Sticker.description() | nil,

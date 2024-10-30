@@ -266,7 +266,7 @@ defmodule Nostrum.Api.Guild do
   @doc """
   Gets a ban object for the given user from a guild.
   """
-  @doc since: "0.5.0"
+  @doc since: "1.x.x"
   @spec ban(Guild.id(), User.id()) :: Api.error() | {:ok, Ban.t()}
   def ban(guild_id, user_id) do
     Api.request(:get, Constants.guild_ban(guild_id, user_id))
@@ -384,7 +384,7 @@ defmodule Nostrum.Api.Guild do
   @doc """
   Get a list of scheduled events for a guild.
   """
-  @doc since: "0.5.0"
+  @doc since: "1.x.x"
   @spec scheduled_events(Guild.id()) :: Api.error() | {:ok, [ScheduledEvent.t()]}
   def scheduled_events(guild_id) do
     Api.request(:get, Constants.guild_scheduled_events(guild_id))

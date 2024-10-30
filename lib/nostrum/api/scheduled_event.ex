@@ -27,7 +27,7 @@ defmodule Nostrum.Api.ScheduledEvent do
 
   An optional `reason` can be specified for the audit log.
   """
-  @doc since: "0.5.0"
+  @doc since: "1.x.x"
   @spec create(Guild.id(), AuditLogEntry.reason(), Api.options()) ::
           {:ok, ScheduledEvent.t()} | Api.error()
   def create(guild_id, reason \\ nil, options)
@@ -54,7 +54,7 @@ defmodule Nostrum.Api.ScheduledEvent do
   @doc """
   Delete a scheduled event for a guild.
   """
-  @doc since: "0.5.0"
+  @doc since: "1.x.x"
   @spec delete(Guild.id(), ScheduledEvent.id()) ::
           Api.error() | {:ok}
   def delete(guild_id, event_id) do
@@ -64,7 +64,7 @@ defmodule Nostrum.Api.ScheduledEvent do
   @doc """
   Get a scheduled event for a guild.
   """
-  @doc since: "0.5.0"
+  @doc since: "1.x.x"
   @spec get(Guild.id(), ScheduledEvent.id()) ::
           Api.error() | {:ok, ScheduledEvent.t()}
   def get(guild_id, event_id) do
@@ -82,7 +82,7 @@ defmodule Nostrum.Api.ScheduledEvent do
   * `:before` (`t:Nostrum.Snowflake.t/0`) return only users before this user id, defaults to `nil`
   * `:after` (`t:Nostrum.Snowflake.t/0`) return only users after this user id, defaults to `nil`
   """
-  @doc since: "0.5.0"
+  @doc since: "1.x.x"
   @spec users(Guild.id(), ScheduledEvent.id(), Api.options()) ::
           Api.error() | {:ok, [ScheduledEvent.User.t()]}
   def users(guild_id, event_id, params \\ []) do
@@ -107,7 +107,7 @@ defmodule Nostrum.Api.ScheduledEvent do
     * `entity_metadata` with a `location` field must be provided
     * `scheduled_end_time` must be provided
   """
-  @doc since: "0.5.0"
+  @doc since: "1.x.x"
   @spec modify(
           Guild.id(),
           ScheduledEvent.id(),

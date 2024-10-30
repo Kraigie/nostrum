@@ -97,7 +97,7 @@ defmodule Nostrum.Api.Interaction do
   Same as `delete_response/3`, but directly takes the
   `t:Nostrum.Struct.Interaction.t/0` received from the gateway.
   """
-  @doc since: "0.5.0"
+  @doc since: "1.x.x"
   @spec delete_response(Interaction.t()) :: {:ok} | Api.error()
   def delete_response(%Interaction{application_id: application_id, token: token}) do
     delete_response(application_id, token)
@@ -106,7 +106,7 @@ defmodule Nostrum.Api.Interaction do
   @doc """
   Deletes the original interaction response.
   """
-  @doc since: "0.5.0"
+  @doc since: "1.x.x"
   @spec delete_response(User.id(), Interaction.token()) :: {:ok} | Api.error()
   def delete_response(id \\ Me.get().id, token) do
     Api.request(:delete, Constants.interaction_callback_original(id, token))
@@ -116,7 +116,7 @@ defmodule Nostrum.Api.Interaction do
   Same as `edit_response/3`, but directly takes the
   `t:Nostrum.Struct.Interaction.t/0` received from the gateway.
   """
-  @doc since: "0.5.0"
+  @doc since: "1.x.x"
   @spec edit_response(Interaction.t(), map()) :: {:ok, Message.t()} | Api.error()
   def edit_response(%Interaction{application_id: application_id, token: token}, response) do
     edit_response(application_id, token, response)
@@ -127,7 +127,7 @@ defmodule Nostrum.Api.Interaction do
 
   Functions the same as `edit_webhook_message/3`
   """
-  @doc since: "0.5.0"
+  @doc since: "1.x.x"
   @spec edit_response(User.id(), Interaction.token(), map()) ::
           {:ok, Message.t()} | Api.error()
   def edit_response(id \\ Me.get().id, token, response) do
@@ -142,7 +142,7 @@ defmodule Nostrum.Api.Interaction do
   @doc """
   Retrieves the original message of an interaction.
   """
-  @doc since: "0.7.0"
+  @doc since: "1.x.x"
   @spec original_response(Interaction.t()) :: Api.error() | {:ok, Message.t()}
   def original_response(%Interaction{application_id: application_id, token: token}) do
     original_response(application_id, token)
@@ -151,7 +151,7 @@ defmodule Nostrum.Api.Interaction do
   @doc """
   Retrieves the original message of an interaction.
   """
-  @doc since: "0.7.0"
+  @doc since: "1.x.x"
   @spec original_response(Interaction.t()) :: Api.error() | {:ok, Message.t()}
   def original_response(id \\ Me.get().id, token) do
     Api.request(:get, Constants.original_interaction_response(id, token))

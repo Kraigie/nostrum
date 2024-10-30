@@ -15,7 +15,7 @@ defmodule Nostrum.Api.Thread do
   @doc """
   Add a user to a thread, requires the ability to send messages in the thread.
   """
-  @doc since: "0.5.1"
+  @doc since: "1.x.x"
   @spec add_member(Channel.id(), User.id()) :: {:ok} | Api.error()
   def add_member(thread_id, user_id) do
     Api.request(:put, Constants.thread_member(thread_id, user_id))
@@ -24,7 +24,7 @@ defmodule Nostrum.Api.Thread do
   @doc """
   Returns a thread member object for the specified user if they are a member of the thread
   """
-  @doc since: "0.5.1"
+  @doc since: "1.x.x"
   @spec member(Channel.id(), User.id()) :: {:ok, ThreadMember.t()} | Api.error()
   def member(thread_id, user_id) do
     Api.request(:get, Constants.thread_member(thread_id, user_id))
@@ -36,7 +36,7 @@ defmodule Nostrum.Api.Thread do
 
   This endpoint is restricted according to whether the `GUILD_MEMBERS` privileged intent is enabled.
   """
-  @doc since: "0.5.1"
+  @doc since: "1.x.x"
   @spec members(Channel.id()) :: {:ok, [ThreadMember.t()]} | Api.error()
   def members(thread_id) do
     Api.request(:get, Constants.thread_members(thread_id))
@@ -46,7 +46,7 @@ defmodule Nostrum.Api.Thread do
   @doc """
   Join an existing thread, requires that the thread is not archived.
   """
-  @doc since: "0.5.1"
+  @doc since: "1.x.x"
   @spec join(Channel.id()) :: {:ok} | Api.error()
   def join(thread_id) do
     Api.request(:put, Constants.thread_member_me(thread_id))
@@ -55,7 +55,7 @@ defmodule Nostrum.Api.Thread do
   @doc """
   Leave a thread, requires that the thread is not archived.
   """
-  @doc since: "0.5.1"
+  @doc since: "1.x.x"
   @spec leave(Channel.id()) :: {:ok} | Api.error()
   def leave(thread_id) do
     Api.request(:delete, Constants.thread_member_me(thread_id))
@@ -68,7 +68,7 @@ defmodule Nostrum.Api.Thread do
   - `threads`: A list of channel objects.
   - `members`: A list of `ThreadMember` objects, one for each returned thread the current user has joined.
   """
-  @doc since: "0.5.1"
+  @doc since: "1.x.x"
   @spec list(Guild.id()) ::
           {:ok, %{threads: [Channel.t()], members: [ThreadMember.t()]}} | Api.error()
   def list(guild_id) do
@@ -93,7 +93,7 @@ defmodule Nostrum.Api.Thread do
   @doc """
   Same as `public_archived_threads/2`, but only returns private threads that the current user has joined.
   """
-  @doc since: "0.5.1"
+  @doc since: "1.x.x"
   @spec joined_private_archived_threads(Channel.id(), Api.options()) ::
           {:ok, %{threads: [Channel.t()], members: [ThreadMember.t()], has_more: boolean()}}
           | Api.error()
@@ -140,7 +140,7 @@ defmodule Nostrum.Api.Thread do
   @doc """
   Same as `public_archived_threads/2`, but for private threads instead of public.
   """
-  @doc since: "0.5.1"
+  @doc since: "1.x.x"
   @spec private_archived_threads(Channel.id(), Api.options()) ::
           {:ok, %{threads: [Channel.t()], members: [ThreadMember.t()], has_more: boolean()}}
           | Api.error()
@@ -171,7 +171,7 @@ defmodule Nostrum.Api.Thread do
   - `before`: Returns threads before this timestamp, can be either a `DateTime` or [ISO8601 timestamp](`DateTime.to_iso8601/3`).
   - `limit`: Optional maximum number of threads to return.
   """
-  @doc since: "0.5.1"
+  @doc since: "1.x.x"
   @spec public_archived_threads(Channel.id(), Api.options()) ::
           {:ok, %{threads: [Channel.t()], members: [ThreadMember.t()], has_more: boolean()}}
           | Api.error()
@@ -192,7 +192,7 @@ defmodule Nostrum.Api.Thread do
 
   Also requires the `MANAGE_THREADS` permission, or the creator of the thread if the thread is private.
   """
-  @doc since: "0.5.1"
+  @doc since: "1.x.x"
   @spec remove_member(Channel.id(), User.id()) :: {:ok} | Api.error()
   def remove_member(thread_id, user_id) do
     Api.request(:delete, Constants.thread_member(thread_id, user_id))
@@ -220,7 +220,7 @@ defmodule Nostrum.Api.Thread do
   - `invitable`: whether non-moderators can add other non-moderators to a thread; only available when creating a private thread defaults to `false`.
   - `rate_limit_per_user`: Rate limit per user in seconds, can be set to any value in `0..21600`.
   """
-  @doc since: "0.5.1"
+  @doc since: "1.x.x"
   @spec create(Channel.id(), thread_without_message_params, AuditLogEntry.reason()) ::
           {:ok, Channel.t()} | Api.error()
   def create(channel_id, options, reason \\ nil) do
@@ -259,7 +259,7 @@ defmodule Nostrum.Api.Thread do
 
   At least one of `content`, `embeds`, `sticker_ids`, or `files` must be specified.
   """
-  @doc since: "0.7.0"
+  @doc since: "1.x.x"
   @spec create_in_forum(Channel.id(), map(), AuditLogEntry.reason()) ::
           {:ok, Channel.t()} | Api.error()
   def create_in_forum(channel_id, options, reason \\ nil)
@@ -319,7 +319,7 @@ defmodule Nostrum.Api.Thread do
   - `rate_limit_per_user`: Rate limit per user in seconds, can be set to any value in `0..21600`.
 
   """
-  @doc since: "0.5.1"
+  @doc since: "1.x.x"
   @spec create_with_message(
           Channel.id(),
           Message.id(),

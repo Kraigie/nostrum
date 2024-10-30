@@ -22,7 +22,7 @@ defmodule Nostrum.Api.AutoModeration do
     * `:exempt_channels` - (`t:AutoModerationRule.exempt_channels/0`) - A list of channel id's that are exempt from the rule.
       - optional, defaults to `[]`, maximum of 50.
   """
-  @doc since: "0.7.0"
+  @doc since: "1.x.x"
   @spec create_rule(Guild.id(), Api.options()) ::
           {:ok, AutoModerationRule.t()} | Api.error()
   def create_rule(guild_id, options) when is_list(options),
@@ -36,7 +36,7 @@ defmodule Nostrum.Api.AutoModeration do
   @doc """
   Delete an auto-moderation rule for a guild.
   """
-  @doc since: "0.7.0"
+  @doc since: "1.x.x"
   @spec delete_rule(Guild.id(), AutoModerationRule.id()) ::
           {:ok} | Api.error()
   def delete_rule(guild_id, rule_id) do
@@ -46,7 +46,7 @@ defmodule Nostrum.Api.AutoModeration do
   @doc """
   Get a list of all auto-moderation rules for a guild.
   """
-  @doc since: "0.7.0"
+  @doc since: "1.x.x"
   @spec rules(Guild.id()) :: {:ok, [AutoModerationRule.t()]} | Api.error()
   def rules(guild_id) do
     Api.request(:get, Constants.guild_auto_moderation_rule(guild_id))
@@ -56,7 +56,7 @@ defmodule Nostrum.Api.AutoModeration do
   @doc """
   Get a single auto-moderation rule for a guild.
   """
-  @doc since: "0.7.0"
+  @doc since: "1.x.x"
   @spec rule(Guild.id(), AutoModerationRule.id()) ::
           {:ok, AutoModerationRule.t()} | Api.error()
   def rule(guild_id, rule_id) do
@@ -69,7 +69,7 @@ defmodule Nostrum.Api.AutoModeration do
 
   Takes the same options as `create_rule/2`, however all fields are optional.
   """
-  @doc since: "0.7.0"
+  @doc since: "1.x.x"
   @spec modify_rule(Guild.id(), AutoModerationRule.id(), Api.options()) ::
           {:ok, AutoModerationRule.t()} | Api.error()
   def modify_rule(guild_id, rule_id, options) when is_list(options),

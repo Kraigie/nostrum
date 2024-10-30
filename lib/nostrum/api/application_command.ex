@@ -21,7 +21,7 @@ defmodule Nostrum.Api.ApplicationCommand do
   ## Return value
   This method returns a guild application command permission object, see all available values on the [Discord API docs](https://discord.com/developers/docs/interactions/application-commands#application-command-permissions-object-guild-application-command-permissions-structure).
   """
-  @doc since: "0.5.0"
+  @doc since: "1.x.x"
   @spec batch_edit_permissions(Guild.id(), [
           %{
             id: Snowflake.t(),
@@ -69,7 +69,7 @@ defmodule Nostrum.Api.ApplicationCommand do
   Updated list of global application commands. See the official reference:
   https://discord.com/developers/docs/interactions/application-commands#bulk-overwrite-global-application-commands
   """
-  @doc since: "0.5.0"
+  @doc since: "1.x.x"
   @spec bulk_overwrite_global_commands([
           ApplicationCommand.application_command_map()
         ]) ::
@@ -100,7 +100,7 @@ defmodule Nostrum.Api.ApplicationCommand do
   Updated list of guild application commands. See the official reference:
   https://discord.com/developers/docs/interactions/application-commands#bulk-overwrite-guild-application-commands
   """
-  @doc since: "0.5.0"
+  @doc since: "1.x.x"
   @spec bulk_overwrite_guild_commands(Guild.id(), [
           ApplicationCommand.application_command_map()
         ]) :: {:ok, [map()]} | Api.error()
@@ -235,7 +235,7 @@ defmodule Nostrum.Api.ApplicationCommand do
   ## Return value
   This method returns a guild application command permission object, see all available values on the [Discord API docs](https://discord.com/developers/docs/interactions/application-commands#application-command-permissions-object-guild-application-command-permissions-structure).
   """
-  @doc since: "0.5.0"
+  @doc since: "1.x.x"
   @spec edit_command_permissions(Guild.id(), Snowflake.t(), [
           ApplicationCommand.application_command_permissions()
         ]) ::
@@ -347,7 +347,7 @@ defmodule Nostrum.Api.ApplicationCommand do
   ## Return value
   This method returns a single guild application command permission object, see all available values on the [Discord API docs](https://discord.com/developers/docs/interactions/application-commands#application-command-permissions-object-guild-application-command-permissions-structure).
   """
-  @doc since: "0.5.0"
+  @doc since: "1.x.x"
   @spec permissions(Guild.id(), Snowflake.t()) ::
           {:ok, map()} | Api.error()
   @spec permissions(User.id(), Guild.id(), Snowflake.t()) ::
@@ -408,7 +408,7 @@ defmodule Nostrum.Api.ApplicationCommand do
   ## Return value
   This method returns a list of guild application command permission objects, see all available values on the [Discord API docs](https://discord.com/developers/docs/interactions/application-commands#application-command-permissions-object-guild-application-command-permissions-structure).
   """
-  @doc since: "0.5.0"
+  @doc since: "1.x.x"
   @spec guild_permissions(Guild.id()) :: {:ok, [map()]} | Api.error()
   @spec guild_permissions(User.id(), Guild.id()) ::
           {:ok, [map()]} | Api.error()

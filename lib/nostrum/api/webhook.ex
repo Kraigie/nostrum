@@ -64,7 +64,7 @@ defmodule Nostrum.Api.Webhook do
   args are the same as `execute/3`,
   however all fields are optional.
   """
-  @doc since: "0.5.0"
+  @doc since: "1.x.x"
   @spec edit_message(
           Webhook.id(),
           Webhook.token(),
@@ -209,7 +209,7 @@ defmodule Nostrum.Api.Webhook do
   @doc """
   Retrieves the original message of a webhook.
   """
-  @doc since: "0.7.0"
+  @doc since: "1.x.x"
   @spec get_message(Webhook.t(), Message.id()) ::
           Api.error() | {:ok, Message.t()}
   def get_message(webhook, message_id) do
