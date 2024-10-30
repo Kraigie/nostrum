@@ -124,8 +124,9 @@ defmodule Nostrum.Struct.ApplicationCommand do
   - `1` for `ROLE`
   - `2` for `USER`
   - `3` for `CHANNEL`
+  - `4` for `PRIMARY_ENTRY_POINT`
 
   You can use one of the `Nostrum.Constants.ApplicationCommandPermissionType` methods.
   """
-  @type application_command_permission_type :: 1..3
+  @type application_command_permission_type :: 1..4
 end

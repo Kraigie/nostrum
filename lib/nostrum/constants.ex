@@ -301,6 +301,7 @@ defmodule Nostrum.Constants do
     def chat_input, do: 1
     def user, do: 2
     def message, do: 3
+    def primary_entry_point, do: 4
   end
 
   defmodule ApplicationCommandOptionType do
