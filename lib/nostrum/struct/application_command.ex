@@ -54,10 +54,11 @@ defmodule Nostrum.Struct.ApplicationCommand do
   - `8` for `ROLE`
   - `9` for `MENTIONABLE` *Note*: Includes users and roles
   - `10` for `NUMBER` *Note*: This has the same limitations as `​INTEGER`
+  - `11` for `ATTACHMENT`
 
   You may use one of the `Nostrum.Constants.ApplicationCommandOptionType` methods.
   """
-  @type command_option_type :: 1..10
+  @type command_option_type :: 1..11
 
   @typedoc """
   This defines a command's parameters. Only valid for `CHAT_INPUT` commands.
