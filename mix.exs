@@ -153,8 +153,7 @@ defmodule Nostrum.Mixfile do
       {:credo, "~> 1.7.7", only: [:dev, :test], runtime: false},
       {:dialyxir, "~> 1.1", only: [:dev], runtime: false},
       {:benchee, "~> 1.1", only: :dev, runtime: false},
-      {:recon, "~> 2.3", only: :dev, optional: true},
-      {:bypass, "~> 2.1", only: :test}
+      {:recon, "~> 2.3", only: :dev, optional: true}
     ]
   end
 
