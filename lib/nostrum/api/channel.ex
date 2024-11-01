@@ -29,7 +29,7 @@ defmodule Nostrum.Api.Channel do
   ## Examples
 
   ```elixir
-  Nostrum.Api.pin_message(43189401384091, 18743893102394)
+  Nostrum.Api.Channel.pin_message(43189401384091, 18743893102394)
   ```
   """
   @spec pin_message(Channel.id(), Message.id()) :: Api.error() | {:ok}

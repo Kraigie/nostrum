@@ -10,14 +10,14 @@ defmodule Nostrum.Api do
   ```elixir
   # Async Task
   t = Task.async fn ->
-    Nostrum.Api.get_channel_messages(12345678912345, :infinity, {})
+    Nostrum.Api.Channel.messages(12345678912345, :infinity, {})
   end
   messages = Task.await t
 
   # A lot of times we don't care about the return value of the function
   Task.start fn ->
     messages = ["in", "the", "end", "it", "doesn't", "even", "matter"]
-    Enum.each messages, &Nostrum.Api.create_message!(12345678912345, &1)
+    Enum.each messages, &Nostrum.Api.Message.create(12345678912345, &1)
   end
   ```
 
@@ -31,7 +31,7 @@ defmodule Nostrum.Api do
 
   **Example**
   ```elixir
-  messages = Nostrum.Api.get_pinned_messages!(12345678912345)
+  messages = Nostrum.Api.Channel.pinned_messages!(12345678912345)
 
   authors =
     Enum.map messages, fn msg ->

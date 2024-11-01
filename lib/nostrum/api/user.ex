@@ -20,7 +20,7 @@ defmodule Nostrum.Api.User do
   ## Examples
 
   ```elixir
-  Nostrum.Api.create_dm(150061853001777154)
+  Nostrum.Api.User.create_dm(150061853001777154)
   {:ok, %Nostrum.Struct.Channel{type: 1}}
   ```
   """
@@ -41,7 +41,7 @@ defmodule Nostrum.Api.User do
   ## Examples
 
   ```elixir
-  Nostrum.Api.create_group_dm(["6qrZcUqja7812RVdnEKjpzOL4CvHBFG"], %{41771983423143937 => "My Nickname"})
+  Nostrum.Api.User.create_group_dm(["6qrZcUqja7812RVdnEKjpzOL4CvHBFG"], %{41771983423143937 => "My Nickname"})
   {:ok, %Nostrum.Struct.Channel{type: 3}}
   ```
   """

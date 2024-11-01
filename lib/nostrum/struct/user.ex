@@ -9,11 +9,11 @@ defmodule Nostrum.Struct.User do
 
   ```elixir
   user = %Nostrum.Struct.User{id: 120571255635181568}
-  Nostrum.Api.create_message!(184046599834435585, "#{user}")
+  Nostrum.Api.Message.create(184046599834435585, "#{user}")
   %Nostrum.Struct.Message{content: "<@120571255635181568>"}
 
   user = %Nostrum.Struct.User{id: 89918932789497856}
-  Nostrum.Api.create_message!(280085880452939778, "#{Nostrum.Struct.User.mention(user)}")
+  Nostrum.Api.Message.create(280085880452939778, "#{Nostrum.Struct.User.mention(user)}")
   %Nostrum.Struct.Message{content: "<@89918932789497856>"}
   ```
 

@@ -31,7 +31,7 @@ end
 defmodule ExampleCommands do
   import Nostrum.Snowflake, only: [is_snowflake: 1]
 
-  alias Nostrum.Api
+  alias Nostrum.Api.Message
   alias Nostrum.Cache.{GuildCache, UserCache}
   alias Nostrum.Struct.User
 
@@ -68,7 +68,7 @@ defmodule ExampleCommands do
            get_cached_with_fallback(user_id, &UserCache.get/1, &Api.get_user/1),
          {:ok, %{name: guild_name}} <-
            get_cached_with_fallback(guild_id, &GuildCache.get/1, &Api.get_guild/1) do
-      Api.create_message(
+      Message.create(
         channel_id,
         """
         ID #{message_user_id} belongs to: #{User.full_name(user)}
@@ -79,12 +79,12 @@ defmodule ExampleCommands do
       # Since we have multiple failure patterns from the combination of `Integer.parse/2`
       # and `is_snowflake/1`, we'll use the identifier as the term to match on instead.
       {_invalid_id, :parse_id} ->
-        Api.create_message(channel_id, "Make sure you entered a valid User ID")
+        Message.create(channel_id, "Make sure you entered a valid User ID")
 
       # The cache + API failure case. For now, lets just return the stringified failure
       # reason of whatever the API returned. Up to you if you want to make it all nice and pretty.
       {:error, reason} ->
-        Api.create_message(channel_id, "Failed to retrieve all required info: #{inspect(reason)}")
+        Message.create(channel_id, "Failed to retrieve all required info: #{inspect(reason)}")
     end
   end
 

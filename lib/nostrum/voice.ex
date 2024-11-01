@@ -32,7 +32,6 @@ defmodule Nostrum.Voice do
       - Send packets on your own time using `send_frames/2`
   """
 
-  alias Nostrum.Api
   alias Nostrum.Api.Self
   alias Nostrum.Struct.Channel
   alias Nostrum.Struct.Guild
@@ -168,7 +167,7 @@ defmodule Nostrum.Voice do
   @doc """
   Leaves the voice channel of the given guild id.
 
-  This function is equivalent to calling `Nostrum.Api.update_voice_state(guild_id, nil)`.
+  This function is equivalent to calling `Nostrum.Api.Self.update_voice_state(guild_id, nil)`.
   """
   @spec leave_channel(Guild.id()) :: no_return | :ok
   def leave_channel(guild_id) do

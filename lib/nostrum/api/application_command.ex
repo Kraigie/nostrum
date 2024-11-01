@@ -142,7 +142,7 @@ defmodule Nostrum.Api.ApplicationCommand do
   ## Example
 
   ```elixir
-  Nostrum.Api.create_global_command(
+  Nostrum.Api.ApplicationCommand.create_global_command(
     %{name: "edit", description: "ed, man! man, ed", options: []}
   )
   ```

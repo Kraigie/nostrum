@@ -5,34 +5,7 @@ Discord's API. Method names are copied closely from the documentation to
 eliminate any confusion about what a method does, as well as to allow users to
 easily lookup the endpoints in the official API documentation.
 
-For a full listing of method definitions, please see the `Nostrum.Api` module.
-
-
-## Banged (`!`) API methods
-
-A lot of methods have a `banged` version of themselves. This is a common Elixir
-idiom hailing from Elixir's style of failing fast.
-
-By default, the API method will return a tuple like one of the following:
-
-```elixir
-# Success
-{:ok, msg} = Nostrum.Api.create_message(179679229036724225, "456")
-
-# Failure
-{:error, reason} = Nostrum.Api.create_message(123, "eat my shorts api")
-```
-
-A banged method, instead of returning an `error` tuple, will throw an error. If
-successful, it will directly return the response with no `:ok` tuple.
-
-```elixir
-# Success
-msg = Nostrum.Api.create_message!(179679229036724225, "456")
-
-# Failure - Throws an error
-Nostrum.Api.create_message!(123, "eat my shorts api")
-```
+For a listing of method definitions, please see the submodules of `Nostrum.Api`.
 
 
 ## Abstractions
