@@ -1,4 +1,4 @@
-defmodule Nostrum.Api.Base do
+defmodule Nostrum.Api.Adapter do
   @moduledoc false
 
   @version Nostrum.Mixfile.project()[:version]
