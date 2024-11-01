@@ -161,7 +161,7 @@ defmodule Nostrum.Voice do
       )
     end
 
-    Api.update_voice_state(guild_id, channel_id, self_mute, self_deaf)
+    Api.Self.update_voice_state(guild_id, channel_id, self_mute, self_deaf)
   end
 
   @doc """
@@ -171,7 +171,7 @@ defmodule Nostrum.Voice do
   """
   @spec leave_channel(Guild.id()) :: no_return | :ok
   def leave_channel(guild_id) do
-    Api.update_voice_state(guild_id, nil)
+    Api.Self.update_voice_state(guild_id, nil)
   end
 
   @doc """
