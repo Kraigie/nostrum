@@ -1,4 +1,9 @@
 defmodule Nostrum.Api.Interaction do
+  @moduledoc """
+  Functions for interacting with the Discord API's interaction endpoints.
+
+  See: https://discord.com/developers/docs/interactions/overview
+  """
   alias Nostrum.Api
   alias Nostrum.Api.Helpers
   alias Nostrum.Api.Webhook

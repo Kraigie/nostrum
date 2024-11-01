@@ -1,4 +1,9 @@
 defmodule Nostrum.Api.Self do
+  @moduledoc """
+  Module for interacting with the current user.
+
+  See the endpoints containing @me in the Discord API documentation: https://discord.com/developers/docs/resources/user
+  """
   alias Nostrum.Api
   alias Nostrum.Api.Helpers
   alias Nostrum.Constants

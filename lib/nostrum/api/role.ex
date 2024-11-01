@@ -1,4 +1,9 @@
 defmodule Nostrum.Api.Role do
+  @moduledoc """
+  Module for interacting with the Discord API's role endpoints.
+
+  See: https://discord.com/developers/docs/resources/guild#get-guild-roles
+  """
   alias Nostrum.Api
   alias Nostrum.Api.Helpers
   alias Nostrum.Constants

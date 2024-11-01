@@ -1,4 +1,9 @@
 defmodule Nostrum.Api.Webhook do
+  @moduledoc """
+  Functions for interacting with the Discord API's webhook endpoints.
+
+  See: https://discord.com/developers/docs/resources/webhook
+  """
   alias Nostrum.Api
   alias Nostrum.Api.Helpers
   alias Nostrum.Constants

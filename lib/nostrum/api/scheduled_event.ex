@@ -1,4 +1,9 @@
 defmodule Nostrum.Api.ScheduledEvent do
+  @moduledoc """
+  Module for interacting with the Discord API's scheduled event endpoints.
+
+  See: https://discord.com/developers/docs/resources/guild-scheduled-event
+  """
   alias Nostrum.Api
   alias Nostrum.Api.Helpers
   alias Nostrum.Constants

@@ -1,4 +1,9 @@
 defmodule Nostrum.Api.User do
+  @moduledoc """
+  Functions for interacting with the Discord API's user endpoints.
+
+  See: https://discord.com/developers/docs/resources/user
+  """
   alias Nostrum.Api
   alias Nostrum.Api.Helpers
   alias Nostrum.Constants

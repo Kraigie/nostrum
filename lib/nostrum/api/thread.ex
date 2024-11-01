@@ -1,4 +1,9 @@
 defmodule Nostrum.Api.Thread do
+  @moduledoc """
+  Functions for interacting with the Discord API's thread endpoints.
+
+  Endpoints related to threads in the Discord Channels API: https://discord.com/developers/docs/resources/channel#start-thread-from-message
+  """
   alias Nostrum.Api
   alias Nostrum.Api.Helpers
   alias Nostrum.Constants

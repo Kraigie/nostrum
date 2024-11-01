@@ -1,4 +1,9 @@
 defmodule Nostrum.Api.Invite do
+  @moduledoc """
+  Functions for interacting with the Discord API's invite endpoints.
+
+  See: https://discord.com/developers/docs/resources/invite
+  """
   alias Nostrum.Api
   alias Nostrum.Api.Helpers
   alias Nostrum.Constants

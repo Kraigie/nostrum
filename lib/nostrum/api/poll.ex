@@ -1,4 +1,9 @@
 defmodule Nostrum.Api.Poll do
+  @moduledoc """
+  Module for interacting with the Discord API's poll endpoints.
+
+  See: https://discord.com/developers/docs/resources/poll
+  """
   alias Nostrum.Api
   alias Nostrum.Api.Helpers
   alias Nostrum.Constants

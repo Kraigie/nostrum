@@ -1,4 +1,9 @@
 defmodule Nostrum.Api.Channel do
+  @moduledoc """
+  Functions for interacting with the Discord API's channel endpoints.
+
+  See: https://discord.com/developers/docs/resources/channel
+  """
   alias Nostrum.Api
   alias Nostrum.Api.Helpers
   alias Nostrum.Constants

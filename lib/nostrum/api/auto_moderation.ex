@@ -1,4 +1,9 @@
 defmodule Nostrum.Api.AutoModeration do
+  @moduledoc """
+  Functions for interacting with the Discord API's auto-moderation endpoints.
+
+  See: https://discord.com/developers/docs/resources/auto-moderation
+  """
   alias Nostrum.Api
   alias Nostrum.Api.Helpers
   alias Nostrum.Constants

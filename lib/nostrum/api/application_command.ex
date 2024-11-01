@@ -1,4 +1,9 @@
 defmodule Nostrum.Api.ApplicationCommand do
+  @moduledoc """
+  Module for interacting with Discord's application commands.
+
+  See: https://discord.com/developers/docs/interactions/application-commands
+  """
   alias Nostrum.Api
   alias Nostrum.Api.Helpers
   alias Nostrum.Cache.Me

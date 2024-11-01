@@ -1,4 +1,9 @@
 defmodule Nostrum.Api.Message do
+  @moduledoc """
+  Module for interacting with the Discord API's message endpoints.
+
+  See: https://discord.com/developers/docs/resources/message
+  """
   alias Nostrum.Api
   alias Nostrum.Api.Helpers
   alias Nostrum.Constants

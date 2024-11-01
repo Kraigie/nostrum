@@ -1,4 +1,9 @@
 defmodule Nostrum.Api.Guild do
+  @moduledoc """
+  Functions for interacting with the Discord API's guild endpoints.
+
+  See: https://discord.com/developers/docs/resources/guild
+  """
   alias Nostrum.Api
   alias Nostrum.Api.Helpers
   alias Nostrum.Constants

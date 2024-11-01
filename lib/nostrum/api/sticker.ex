@@ -1,4 +1,9 @@
 defmodule Nostrum.Api.Sticker do
+  @moduledoc """
+  Functions for interacting with the Discord API's sticker endpoints.
+
+  See: https://discord.com/developers/docs/resources/sticker
+  """
   alias Nostrum.Api
   alias Nostrum.Api.Helpers
   alias Nostrum.Constants
