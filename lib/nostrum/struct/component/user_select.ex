@@ -27,7 +27,7 @@ defmodule Nostrum.Struct.Component.UserSelect do
 
   @type opts :: [opt]
 
-  def mentionable_select(custom_id, opts \\ []) when is_binary(custom_id) do
+  def user_select(custom_id, opts \\ []) when is_binary(custom_id) do
     [
       custom_id: custom_id,
       disable: opts[:disabled],
