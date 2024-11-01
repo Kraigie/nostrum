@@ -17,7 +17,7 @@ defmodule Nostrum.Struct.AutoModerationRule.TriggerMetadata do
   | value | type | description
   | ---- | ---- | -----------
   | `1` | `PROFANITY` | Words which may be considered profane
-  | `2` | `HARMFUL_LINK` | Words that refer to sexually explicit behavior or activity
+  | `2` | `SEXUAL_CONTENT` | Words that refer to sexually explicit behavior or activity
   | `3` | `SLURS` | Personal insults or words that may be considered hate speech
   """
   @type preset_value_metadata :: %__MODULE__{
