@@ -37,8 +37,7 @@ defmodule Nostrum.Voice.Ports do
         :binary,
         :exit_status,
         :use_stdio,
-        :stream,
-        :stderr_to_stdout
+        :stream
       ])
 
     # Spawn process to asynchronously send input to port
