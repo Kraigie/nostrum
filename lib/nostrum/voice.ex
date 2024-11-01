@@ -33,6 +33,7 @@ defmodule Nostrum.Voice do
   """
 
   alias Nostrum.Api
+  alias Nostrum.Api.Self
   alias Nostrum.Struct.Channel
   alias Nostrum.Struct.Guild
   alias Nostrum.Struct.VoiceState
@@ -161,7 +162,7 @@ defmodule Nostrum.Voice do
       )
     end
 
-    Api.Self.update_voice_state(guild_id, channel_id, self_mute, self_deaf)
+    Self.update_voice_state(guild_id, channel_id, self_mute, self_deaf)
   end
 
   @doc """
@@ -171,7 +172,7 @@ defmodule Nostrum.Voice do
   """
   @spec leave_channel(Guild.id()) :: no_return | :ok
   def leave_channel(guild_id) do
-    Api.Self.update_voice_state(guild_id, nil)
+    Self.update_voice_state(guild_id, nil)
   end
 
   @doc """
