@@ -11,7 +11,7 @@ For a listing of method definitions, please see the submodules of `Nostrum.Api`.
 ## Abstractions
 
 When appropriate, some helpers are defined to make interacting with the API
-simpler. An example of this is `Nostrum.Api.get_channel_messages/3`. By default
+simpler. An example of this is `Nostrum.Api.Channel.messages/3`. By default
 this endpoint only allows the retrieval of `100` messages at a time. A general
 use case will have a user wanting more messages than that, thus nostrum handles
 the retrieval of any number of messages for the user.
@@ -35,7 +35,7 @@ asynchronously or not, nostrum funnels all requests through the
 
 If you only want to use the REST portion of the provided API, the only process
 needed is the ratelimiter, which can be manually started by calling
-`Nostrum.Api.Ratelimiter.start_link/1`. 
+`Nostrum.Api.Ratelimiter.start_link/1`.
 
 If you don't want to start nostrum, you can add `runtime: false` to the
 dependency options. If you're using `mix release`, all `runtime: false` deps
