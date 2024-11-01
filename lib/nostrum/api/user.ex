@@ -2,8 +2,8 @@ defmodule Nostrum.Api.User do
   alias Nostrum.Api
   alias Nostrum.Api.Helpers
   alias Nostrum.Constants
-  alias Nostrum.Struct.User
   alias Nostrum.Struct.Channel
+  alias Nostrum.Struct.User
 
   import Nostrum.Snowflake, only: [is_snowflake: 1]
 

@@ -2,10 +2,10 @@ defmodule Nostrum.Api.Invite do
   alias Nostrum.Api
   alias Nostrum.Api.Helpers
   alias Nostrum.Constants
-  alias Nostrum.Struct.Invite
-  alias Nostrum.Struct.Guild
   alias Nostrum.Struct.Channel
+  alias Nostrum.Struct.Guild
   alias Nostrum.Struct.Guild.AuditLogEntry
+  alias Nostrum.Struct.Invite
 
   import Nostrum.Snowflake, only: [is_snowflake: 1]
 

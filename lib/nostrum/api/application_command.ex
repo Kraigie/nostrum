@@ -1,12 +1,12 @@
 defmodule Nostrum.Api.ApplicationCommand do
   alias Nostrum.Api
   alias Nostrum.Api.Helpers
+  alias Nostrum.Cache.Me
   alias Nostrum.Constants
   alias Nostrum.Snowflake
-  alias Nostrum.Cache.Me
-  alias Nostrum.Struct.User
-  alias Nostrum.Struct.Guild
   alias Nostrum.Struct.ApplicationCommand
+  alias Nostrum.Struct.Guild
+  alias Nostrum.Struct.User
 
   @doc """
   Edits command permissions for a specific command for your application in a guild. You can only add up to 10 permission overwrites for a command.

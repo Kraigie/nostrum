@@ -1,14 +1,14 @@
 defmodule Nostrum.Api.Thread do
   alias Nostrum.Api
   alias Nostrum.Api.Helpers
-  alias Nostrum.Util
   alias Nostrum.Constants
   alias Nostrum.Struct.Channel
   alias Nostrum.Struct.Guild
   alias Nostrum.Struct.Guild.AuditLogEntry
-  alias Nostrum.Struct.User
-  alias Nostrum.Struct.ThreadMember
   alias Nostrum.Struct.Message
+  alias Nostrum.Struct.ThreadMember
+  alias Nostrum.Struct.User
+  alias Nostrum.Util
 
   import Api.Helpers, only: [has_files: 1]
 

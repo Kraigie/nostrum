@@ -1,10 +1,10 @@
 defmodule Nostrum.Api.Interaction do
   alias Nostrum.Api
   alias Nostrum.Api.Helpers
-  alias Nostrum.Constants
-  alias Nostrum.Cache.Me
-  alias Nostrum.Struct.Interaction
   alias Nostrum.Api.Webhook
+  alias Nostrum.Cache.Me
+  alias Nostrum.Constants
+  alias Nostrum.Struct.Interaction
   alias Nostrum.Struct.Message
   alias Nostrum.Struct.User
 

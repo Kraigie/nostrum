@@ -1,12 +1,12 @@
 defmodule Nostrum.Api.Sticker do
   alias Nostrum.Api
   alias Nostrum.Api.Helpers
-  alias Nostrum.Util
-  alias Nostrum.Snowflake
   alias Nostrum.Constants
-  alias Nostrum.Struct.Sticker
+  alias Nostrum.Snowflake
   alias Nostrum.Struct.Guild
   alias Nostrum.Struct.Guild.AuditLogEntry
+  alias Nostrum.Struct.Sticker
+  alias Nostrum.Util
 
   @crlf "\r\n"
 

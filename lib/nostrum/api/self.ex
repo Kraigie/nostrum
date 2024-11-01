@@ -2,11 +2,11 @@ defmodule Nostrum.Api.Self do
   alias Nostrum.Api
   alias Nostrum.Api.Helpers
   alias Nostrum.Constants
-  alias Nostrum.Struct.User
-  alias Nostrum.Struct.Channel
   alias Nostrum.Shard.Session
   alias Nostrum.Shard.Supervisor
+  alias Nostrum.Struct.Channel
   alias Nostrum.Struct.Guild
+  alias Nostrum.Struct.User
 
   @doc """
   Gets the bot's OAuth2 application info.

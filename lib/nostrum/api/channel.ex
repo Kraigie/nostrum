@@ -5,9 +5,9 @@ defmodule Nostrum.Api.Channel do
   alias Nostrum.Snowflake
   alias Nostrum.Struct.Channel
   alias Nostrum.Struct.Guild
+  alias Nostrum.Struct.Guild.AuditLogEntry
   alias Nostrum.Struct.Message
   alias Nostrum.Struct.Webhook
-  alias Nostrum.Struct.Guild.AuditLogEntry
 
   import Nostrum.Snowflake, only: [is_snowflake: 1]
 

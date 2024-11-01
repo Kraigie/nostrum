@@ -2,9 +2,9 @@ defmodule Nostrum.Api.Role do
   alias Nostrum.Api
   alias Nostrum.Api.Helpers
   alias Nostrum.Constants
+  alias Nostrum.Struct.Guild
   alias Nostrum.Struct.Guild.AuditLogEntry
   alias Nostrum.Struct.Guild.Role
-  alias Nostrum.Struct.Guild
   alias Nostrum.Struct.User
 
   import Nostrum.Snowflake, only: [is_snowflake: 1]

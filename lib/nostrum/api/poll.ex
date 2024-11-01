@@ -2,11 +2,11 @@ defmodule Nostrum.Api.Poll do
   alias Nostrum.Api
   alias Nostrum.Api.Helpers
   alias Nostrum.Constants
-  alias Nostrum.Util
-  alias Nostrum.Struct.Message
   alias Nostrum.Struct.Channel
+  alias Nostrum.Struct.Message
   alias Nostrum.Struct.Message.Poll.Answer
   alias Nostrum.Struct.User
+  alias Nostrum.Util
 
   @doc ~S"""
   Expire (close voting on) a poll before the scheduled end time.
