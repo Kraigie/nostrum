@@ -92,14 +92,14 @@ defmodule Nostrum.ConsumerGroup do
     alias Nostrum.Struct.User
 
     def command(%Message{author: %User{id: author_id}}) do
-      Api.create_message!(msg, "Reply 'y' in 5 seconds to confirm ordering a large burger menu.")
+      Api.Message.create(msg, "Reply 'y' in 5 seconds to confirm ordering a large burger menu.")
       ConsumerGroup.join()
       receive do
         {:event, {:MESSAGE_CREATE, %Message{author: %User{id: author_id}, content: "y"}, _}} ->
-          Api.create_message!(msg, "The large burger menu is coming.")
+          Api.Message.create(msg, "The large burger menu is coming.")
       after
         5_000 ->
-          Api.create_message!(msg, "Too slow!")
+          Api.Message.create(msg, "Too slow!")
       end
     end
   end

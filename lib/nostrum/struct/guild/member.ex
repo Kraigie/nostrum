@@ -12,11 +12,11 @@ defmodule Nostrum.Struct.Guild.Member do
 
   ```elixir
   member = %Nostrum.Struct.Guild.Member{user_id: 120571255635181568}
-  Nostrum.Api.create_message!(184046599834435585, "#{member}")
+  Nostrum.Api.Message.create(184046599834435585, "#{member}")
   %Nostrum.Struct.Message{content: "<@120571255635181568>"}
 
   member = %Nostrum.Struct.Guild.Member{user_id: 89918932789497856}
-  Nostrum.Api.create_message!(280085880452939778, "#{Nostrum.Struct.Guild.Member.mention(member)}")
+  Nostrum.Api.Message.create(280085880452939778, "#{Nostrum.Struct.Guild.Member.mention(member)}")
   %Nostrum.Struct.Message{content: "<@89918932789497856>"}
   ```
   """

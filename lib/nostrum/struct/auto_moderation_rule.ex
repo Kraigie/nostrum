@@ -51,14 +51,13 @@ defmodule Nostrum.Struct.AutoModerationRule do
 
   | value | type | max per guild | description
   | ---- | ---- | ----- | -----------
-  |`1` | `​KEYWORD` | 3 | check if content contains words from a user defined list of keywords
-  | `2` | `HARMFUL_LINK` | 1 | check if the content contains any harmful links
+  |`1` | `​KEYWORD` | 6 | check if content contains words from a user defined list of keywords
   | `3` | `SPAM` | 1 | check if the content represents generic spam
-  | `4` | `KEYWORD_PRESET `| 1 | check if the content contains a list of discord defined keywords
-
-  note: `HARMFUL_LINK` and `SPAM` are not yet offically released at the time of this writing.
+  | `4` | `KEYWORD_PRESET` | 1 | check if the content contains a list of discord defined keywords
+  | `5` | `MENTION_SPAM` | 1 | check if content contains more unique mentions than allowed
+  | `6` | `MEMBER_PROFILE` | 1 | 	check if member profile contains words from a user defined list of keywords
   """
-  @type trigger_type :: 1..4
+  @type trigger_type :: 1 | 3..6
 
   @typedoc """
   Values which represent the different presets defined by Discord
@@ -66,7 +65,7 @@ defmodule Nostrum.Struct.AutoModerationRule do
   | value | type | description
   | ---- | ---- | -----------
   |`1` | `PROFANITY` | Words which may be considered profane
-  | `2` | `HARMFUL_LINK` | Words that refer to sexually explicit behavior or activity
+  | `2` | `SEXUAL_CONTENT` | Words that refer to sexually explicit behavior or activity
   | `3` | `SLURS` | Personal insults or words that may be considered hate speech
   """
   @type preset_values :: 1..3

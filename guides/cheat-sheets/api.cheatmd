@@ -16,7 +16,7 @@ UTC time is: #{DateTime.to_iso8601(utc_now)}
 Atom table size is: #{atom_count}
 """
 
-Nostrum.Api.create_message(msg.channel_id, content)
+Nostrum.Api.Message.create(msg.channel_id, content)
 ```
 
 ### Sending a message with an embed
@@ -35,7 +35,7 @@ embed =
   # set inline attribute to true
   |> put_field("Field 2", "More test", true)
 
-Nostrum.Api.create_message(msg.channel_id, embeds: [embed])
+Nostrum.Api.Message.create(msg.channel_id, embeds: [embed])
 ```
 
 You can look at the documentation in `m:Nostrum.Struct.Embed#module-using-structs` for more advanced usage.
@@ -43,7 +43,7 @@ You can look at the documentation in `m:Nostrum.Struct.Embed#module-using-struct
 ### Upload an attachment
 
 ```elixir
-Nostrum.Api.create_message(
+Nostrum.Api.Message.create(
   msg.channel_id,
   files: [
     # file from filesystem
@@ -59,7 +59,7 @@ Nostrum.Api.create_message(
 With a mention:
 
 ```elixir
-Nostrum.Api.create_message(
+Nostrum.Api.Message.create(
     msg.channel_id,
     content: "Hello!",
     message_reference: %{message_id: msg.id}
@@ -69,7 +69,7 @@ Nostrum.Api.create_message(
 Without a mention:
 
 ```elixir
-Nostrum.Api.create_message(
+Nostrum.Api.Message.create(
     msg.channel_id,
     content: "Hello!",
     message_reference: %{message_id: msg.id},
@@ -88,14 +88,14 @@ poll = Poll.create_poll(
 |> Poll.put_answer("Yes!", default_emoji: "\u2705")
 |> Poll.put_answer("No!", default_emoji: "\u274C")
 
-Api.create_message(channel_id, poll: poll)
+Nostrum.Api.Message.create(channel_id, poll: poll)
 ```
 
 ### React to a message
 
 Using a default emoji (unicode representation):
 ```elixir
-Nostrum.Api.create_reaction(
+Nostrum.Api.Message.react(
     msg.channel_id,
     msg.id,
     "👾"
@@ -109,7 +109,7 @@ emoji = %Nostrum.Struct.Emoji{
       id: 1228698654022434866
 }
 
-Nostrum.Api.create_reaction(msg.channel_id, msg.id, emoji)
+Nostrum.Api.Message.react(msg.channel_id, msg.id, emoji)
 ```
 
 ## Miscellaneous
@@ -118,7 +118,7 @@ Nostrum.Api.create_reaction(msg.channel_id, msg.id, emoji)
 ### Update the bot status
 
 ```elixir
-Nostrum.Api.update_status(
+Nostrum.Api.Self.update_status(
     :dnd,
     "craigs cats",
     3 # Watching status
@@ -131,7 +131,7 @@ You can also update a single shard with `Nostrum.Api.update_shard_status/5`.
 ```elixir
 image = "data:image/png;base64,..."
 
-Nostrum.Api.create_guild_emoji(
+Nostrum.Api.Guild.create_emoji(
     msg.guild_id,
     name: "nostrum",
     image: image

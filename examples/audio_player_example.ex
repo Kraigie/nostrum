@@ -18,7 +18,8 @@ end
 defmodule AudioPlayerConsumer do
   use Nostrum.Consumer
 
-  alias Nostrum.Api
+  alias Nostrum.Api.ApplicationCommand
+  alias Nostrum.Api.Interaction
   alias Nostrum.Cache.GuildCache
   alias Nostrum.Voice
 
@@ -66,7 +67,7 @@ defmodule AudioPlayerConsumer do
   # with your guild_id as the argument
   def create_guild_commands(guild_id) do
     Enum.each(@commands, fn {name, description, options} ->
-      Api.create_guild_application_command(guild_id, %{
+      ApplicationCommand.create_guild_command(guild_id, %{
         name: name,
         description: description,
         options: options
@@ -88,7 +89,7 @@ defmodule AudioPlayerConsumer do
         _ -> ":white_check_mark:"
       end
 
-    Api.create_interaction_response(interaction, %{type: 4, data: %{content: message}})
+    Interaction.create_response(interaction, %{type: 4, data: %{content: message}})
   end
 
   def handle_event({:VOICE_SPEAKING_UPDATE, payload, _ws_state}) do

@@ -9,11 +9,11 @@ defmodule Nostrum.Struct.Guild.Role do
 
   ```elixir
   role = %Nostrum.Struct.Guild.Role{id: 431886897539973131}
-  Nostrum.Api.create_message!(184046599834435585, "#{role}")
+  Nostrum.Api.Message.create(184046599834435585, "#{role}")
   %Nostrum.Struct.Message{}
 
   role = %Nostrum.Struct.Guild.Role{id: 431884023535632398}
-  Nostrum.Api.create_message!(280085880452939778, "#{Nostrum.Struct.Guild.Role.mention(role)}")
+  Nostrum.Api.Message.create(280085880452939778, "#{Nostrum.Struct.Guild.Role.mention(role)}")
   %Nostrum.Struct.Message{}
   ```
   """

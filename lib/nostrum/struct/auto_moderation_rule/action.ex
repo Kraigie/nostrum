@@ -20,8 +20,9 @@ defmodule Nostrum.Struct.AutoModerationRule.Action do
   |`1` | `BLOCK_MESSAGE` | Blocks the message from being created
   | `2` | `SEND_ALERT_MESSAGE` | Logs the content of the message in the specified channel
   | `3` | `TIMEOUT` | timeout a user for a specified duration
+  | `4` | `BLOCK_MEMBER_INTERACTION` | prevents a member from using text, voice, or other interactions
   """
-  @type action_type :: 1..3
+  @type action_type :: 1..4
 
   @type metadata :: ActionMetadata.t()
 

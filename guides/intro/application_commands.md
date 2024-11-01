@@ -62,10 +62,10 @@ command = %{
 ```
 
 To register this command on the guild, we simply pass it to
-`Nostrum.Api.create_guild_application_command/2`:
+`Nostrum.Api.ApplicationCommand.create_guild_command/2`:
 
 ```elixir
-Nostrum.Api.create_guild_application_command(guild_id, command)
+Nostrum.Api.ApplicationCommand.create_guild_command(guild_id, command)
 ```
 
 You can register the command in the ``:READY`` gateway event handler.
@@ -97,14 +97,15 @@ separate operation modes:
 
 ```elixir
 alias Nostrum.Api
+alias Nostrum.Api.Role
 alias Nostrum.Struct.Interaction
 
 defp manage_role(%Interaction{data: %{options: [%{value: role_id}, %{value: "assign"}]}} = interaction) do
-  Api.add_guild_member_role(interaction.guild_id, interaction.member.user_id, role_id)
+  Role.add_member(interaction.guild_id, interaction.member.user_id, role_id)
 end
 
 defp manage_role(%Interaction{data: %{options: [%{value: role_id}, %{value: "remove"}]}} = interaction) do
-  Api.remove_guild_member_role(interaction.guild_id, interaction.member.user_id, role_id)
+  Role.remove_member(interaction.guild_id, interaction.member.user_id, role_id)
 end
 
 def handle_event({:INTERACTION_CREATE, %Interaction{data: %{name: "role"}} = interaction, _ws_state}) do
@@ -118,18 +119,18 @@ that you would use for regular commands.
 
 ## Responding to interactions
 
-To respond to interactions, use ``Nostrum.Api.create_interaction_response/2``:
+To respond to interactions, use ``Nostrum.Api.Interaction.create_response/2``:
 
 ```elixir
 defp manage_role(%Interaction{data: %{options: [%{value: role_id}, %{value: "assign"}]}} = interaction) do
-  Api.add_guild_member_role(interaction.guild_id, interaction.member.user_id, role_id)
+  Role.add_member(interaction.guild_id, interaction.member.user_id, role_id)
   response = %{
     type: 4,  # ChannelMessageWithSource
     data: %{
       content: "role assigned"
     }
   }
-  Api.create_interaction_response(interaction, response)
+  Api.Interaction.create_response(interaction, response)
 end
 ```
 
