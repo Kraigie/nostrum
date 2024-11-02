@@ -5,7 +5,6 @@ defmodule Nostrum.Voice.Payload do
   alias Nostrum.Constants
   alias Nostrum.Struct.VoiceState
   alias Nostrum.Struct.VoiceWSState
-  alias Nostrum.Voice.Crypto
 
   require Logger
 
