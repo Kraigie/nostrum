@@ -147,12 +147,12 @@ sizes from the Discord gateway can optionally set <code class="inline">:zstd</co
   <span class="text">Using <code class="inline">:zstd</code> compression</span>
 </h2>
 <p>Using <code class="inline">:zstd</code> depends on the <a href="https://hex.pm/packages/ezstd"><code class="inline">:ezstd</code></a> library,
-so you will have to add this dependency to your <code class="inline">mix.exs</code> file:</p><pre><code class="makeup elixir" translate="no"><span class="w">  </span><span class="kd">defp</span><span class="w"> </span><span class="nf">deps</span><span class="w"> </span><span class="k" data-group-id="7349958745-1">do</span><span class="w">
-    </span><span class="p" data-group-id="7349958745-2">[</span><span class="w">
-      </span><span class="p" data-group-id="7349958745-3">{</span><span class="ss">:nostrum</span><span class="p">,</span><span class="w"> </span><span class="n">...</span><span class="p" data-group-id="7349958745-3">}</span><span class="p">,</span><span class="w">
-      </span><span class="p" data-group-id="7349958745-4">{</span><span class="ss">:ezstd</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;~&gt; 1.1&quot;</span><span class="p" data-group-id="7349958745-4">}</span><span class="w"> </span><span class="c1"># new dependency</span><span class="w">
-    </span><span class="p" data-group-id="7349958745-2">]</span><span class="w">
-  </span><span class="k" data-group-id="7349958745-1">end</span></code></pre><blockquote><h4 class="info"><code class="inline">:ezstd</code> NIFs</h4><p>Some functionality of <code class="inline">:ezstd</code> depends on Erlang NIFs (Natively Implemented
+so you will have to add this dependency to your <code class="inline">mix.exs</code> file:</p><pre><code class="makeup elixir" translate="no"><span class="w">  </span><span class="kd">defp</span><span class="w"> </span><span class="nf">deps</span><span class="w"> </span><span class="k" data-group-id="6169622468-1">do</span><span class="w">
+    </span><span class="p" data-group-id="6169622468-2">[</span><span class="w">
+      </span><span class="p" data-group-id="6169622468-3">{</span><span class="ss">:nostrum</span><span class="p">,</span><span class="w"> </span><span class="n">...</span><span class="p" data-group-id="6169622468-3">}</span><span class="p">,</span><span class="w">
+      </span><span class="p" data-group-id="6169622468-4">{</span><span class="ss">:ezstd</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;~&gt; 1.1&quot;</span><span class="p" data-group-id="6169622468-4">}</span><span class="w"> </span><span class="c1"># new dependency</span><span class="w">
+    </span><span class="p" data-group-id="6169622468-2">]</span><span class="w">
+  </span><span class="k" data-group-id="6169622468-1">end</span></code></pre><blockquote><h4 class="info"><code class="inline">:ezstd</code> NIFs</h4><p>Some functionality of <code class="inline">:ezstd</code> depends on Erlang NIFs (Natively Implemented
 Functions). This means that a proper compiler installation as well as other
 build tools like <code class="inline">git</code> may be necessary at the stage where you compile your
 dependencies.</p><p>It may be useful to run <a href="https://hexdocs.pm/mix/Mix.Tasks.Deps.Compile.html"><code class="inline">mix deps.compile</code></a> in any build systems to ensure that
