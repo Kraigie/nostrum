@@ -43,8 +43,8 @@ defmodule Nostrum.Api.ScheduledEvent do
   def create(guild_id, reason, %{} = options) do
     options =
       options
-      |> Api.maybe_convert_date_time(:scheduled_start_time)
-      |> Api.maybe_convert_date_time(:scheduled_end_time)
+      |> Helpers.maybe_convert_date_time(:scheduled_start_time)
+      |> Helpers.maybe_convert_date_time(:scheduled_end_time)
 
     Api.request(%{
       method: :post,
@@ -127,8 +127,8 @@ defmodule Nostrum.Api.ScheduledEvent do
   def modify(guild_id, event_id, reason, options) when is_map(options) do
     prepared_options =
       options
-      |> Api.maybe_convert_date_time(:scheduled_start_time)
-      |> Api.maybe_convert_date_time(:scheduled_end_time)
+      |> Helpers.maybe_convert_date_time(:scheduled_start_time)
+      |> Helpers.maybe_convert_date_time(:scheduled_end_time)
 
     Api.request(%{
       method: :patch,

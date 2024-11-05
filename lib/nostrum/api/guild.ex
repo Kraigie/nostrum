@@ -694,7 +694,7 @@ defmodule Nostrum.Api.Guild do
       when is_snowflake(guild_id) and is_snowflake(user_id) do
     options =
       options
-      |> Api.maybe_convert_date_time(:communication_disabled_until)
+      |> Helpers.maybe_convert_date_time(:communication_disabled_until)
 
     Api.request(%{
       method: :patch,

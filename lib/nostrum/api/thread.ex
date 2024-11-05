@@ -115,7 +115,7 @@ defmodule Nostrum.Api.Thread do
   end
 
   defp list_archived_threads(route, options) do
-    options = options |> Api.maybe_convert_date_time(:before)
+    options = options |> Helpers.maybe_convert_date_time(:before)
 
     res =
       Api.request(%{
