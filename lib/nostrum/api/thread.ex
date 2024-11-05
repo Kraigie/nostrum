@@ -234,7 +234,7 @@ defmodule Nostrum.Api.Thread do
       route: Constants.thread_without_message(channel_id),
       body: options,
       params: [],
-      headers: Api.maybe_add_reason(reason)
+      headers: Helpers.maybe_add_reason(reason)
     })
     |> Helpers.handle_request_with_decode({:struct, Channel})
   end
@@ -272,12 +272,16 @@ defmodule Nostrum.Api.Thread do
   def create_in_forum(channel_id, %{message: data} = body, reason)
       when has_files(data) do
     # done this way to avoid breaking changes to support audit log reasons in multipart requests
-    boundary = Api.generate_boundary()
-    {files, json} = Api.combine_files(body) |> Api.pop_files()
+    boundary = Helpers.generate_boundary()
+
+    {files, json} =
+      Helpers.combine_files(body)
+      |> Helpers.pop_files()
+
     body = Jason.encode_to_iodata!(json)
 
     headers =
-      Api.maybe_add_reason(reason, [
+      Helpers.maybe_add_reason(reason, [
         {"content-type", "multipart/form-data; boundary=#{boundary}"}
       ])
 
@@ -298,7 +302,7 @@ defmodule Nostrum.Api.Thread do
       route: Constants.thread_without_message(channel_id),
       body: options,
       params: [],
-      headers: Api.maybe_add_reason(reason)
+      headers: Helpers.maybe_add_reason(reason)
     })
     |> Helpers.handle_request_with_decode({:struct, Channel})
   end
@@ -338,7 +342,7 @@ defmodule Nostrum.Api.Thread do
       route: Constants.thread_with_message(channel_id, message_id),
       body: options,
       params: [],
-      headers: Api.maybe_add_reason(reason)
+      headers: Helpers.maybe_add_reason(reason)
     })
     |> Helpers.handle_request_with_decode({:struct, Channel})
   end

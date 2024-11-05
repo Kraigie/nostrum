@@ -55,12 +55,12 @@ defmodule Nostrum.Api.Sticker do
       tags: tags
     }
 
-    boundary = Api.generate_boundary()
+    boundary = Helpers.generate_boundary()
 
     multipart = Api.create_multipart([], Jason.encode_to_iodata!(opts), boundary)
 
     headers =
-      Api.maybe_add_reason(reason, [
+      Helpers.maybe_add_reason(reason, [
         {"content-type", "multipart/form-data; boundary=#{boundary}"}
       ])
 

@@ -40,7 +40,7 @@ defmodule Nostrum.Api.Webhook do
       route: Constants.webhooks_channel(channel_id),
       body: args,
       params: [],
-      headers: Api.maybe_add_reason(reason)
+      headers: Helpers.maybe_add_reason(reason)
     }
     |> Api.request()
     |> Helpers.handle_request_with_decode()
@@ -60,7 +60,7 @@ defmodule Nostrum.Api.Webhook do
       route: Constants.webhook(webhook_id),
       body: "",
       params: [],
-      headers: Api.maybe_add_reason(reason)
+      headers: Helpers.maybe_add_reason(reason)
     })
   end
 
@@ -81,7 +81,8 @@ defmodule Nostrum.Api.Webhook do
     Api.request(
       :patch,
       Constants.webhook_message_edit(webhook_id, webhook_token, message_id),
-      Api.combine_embeds(args) |> Api.combine_files()
+      Helpers.combine_embeds(args)
+      |> Helpers.combine_files()
     )
     |> Helpers.handle_request_with_decode({:struct, Message})
   end
@@ -183,7 +184,7 @@ defmodule Nostrum.Api.Webhook do
 
   def execute(webhook_id, webhook_token, args, wait) do
     {thread_id, args} = Map.pop(args, :thread_id)
-    args = Api.prepare_allowed_mentions(args)
+    args = Helpers.prepare_allowed_mentions(args)
 
     params =
       if is_nil(thread_id),
@@ -193,7 +194,8 @@ defmodule Nostrum.Api.Webhook do
     Api.request(
       :post,
       Constants.webhook_token(webhook_id, webhook_token),
-      Api.combine_embeds(args) |> Api.combine_files(),
+      Helpers.combine_embeds(args)
+      |> Helpers.combine_files(),
       params
     )
     |> Helpers.handle_request_with_decode({:struct, Message})
@@ -263,7 +265,7 @@ defmodule Nostrum.Api.Webhook do
       route: Constants.webhook(webhook_id),
       body: args,
       params: [],
-      headers: Api.maybe_add_reason(reason)
+      headers: Helpers.maybe_add_reason(reason)
     }
     |> Api.request()
     |> Helpers.handle_request_with_decode({:struct, Webhook})
@@ -298,7 +300,7 @@ defmodule Nostrum.Api.Webhook do
       route: Constants.webhook_token(webhook_id, webhook_token),
       body: args,
       params: [],
-      headers: Api.maybe_add_reason(reason)
+      headers: Helpers.maybe_add_reason(reason)
     }
     |> Api.request()
     |> Helpers.handle_request_with_decode()

@@ -51,7 +51,7 @@ defmodule Nostrum.Api.ScheduledEvent do
       route: Constants.guild_scheduled_events(guild_id),
       body: options,
       params: [],
-      headers: Api.maybe_add_reason(reason)
+      headers: Helpers.maybe_add_reason(reason)
     })
     |> Helpers.handle_request_with_decode({:struct, ScheduledEvent})
   end
@@ -135,7 +135,7 @@ defmodule Nostrum.Api.ScheduledEvent do
       route: Constants.guild_scheduled_event(guild_id, event_id),
       body: prepared_options,
       params: [],
-      headers: Api.maybe_add_reason(reason)
+      headers: Helpers.maybe_add_reason(reason)
     })
     |> Helpers.handle_request_with_decode({:struct, ScheduledEvent})
   end

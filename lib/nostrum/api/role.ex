@@ -29,7 +29,7 @@ defmodule Nostrum.Api.Role do
       route: Constants.guild_member_role(guild_id, user_id, role_id),
       body: "",
       params: [],
-      headers: Api.maybe_add_reason(reason)
+      headers: Helpers.maybe_add_reason(reason)
     })
   end
 
@@ -71,7 +71,7 @@ defmodule Nostrum.Api.Role do
       route: Constants.guild_roles(guild_id),
       body: options,
       params: [],
-      headers: Api.maybe_add_reason(reason)
+      headers: Helpers.maybe_add_reason(reason)
     }
     |> Api.request()
     |> Helpers.handle_request_with_decode({:struct, Role})
@@ -101,7 +101,7 @@ defmodule Nostrum.Api.Role do
       route: Constants.guild_role(guild_id, role_id),
       body: "",
       params: [],
-      headers: Api.maybe_add_reason(reason)
+      headers: Helpers.maybe_add_reason(reason)
     })
   end
 
@@ -143,7 +143,7 @@ defmodule Nostrum.Api.Role do
       route: Constants.guild_role(guild_id, role_id),
       body: options,
       params: [],
-      headers: Api.maybe_add_reason(reason)
+      headers: Helpers.maybe_add_reason(reason)
     }
     |> Api.request()
     |> Helpers.handle_request_with_decode({:struct, Role})
@@ -164,7 +164,7 @@ defmodule Nostrum.Api.Role do
       route: Constants.guild_member_role(guild_id, user_id, role_id),
       body: "",
       params: [],
-      headers: Api.maybe_add_reason(reason)
+      headers: Helpers.maybe_add_reason(reason)
     })
   end
 end

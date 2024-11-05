@@ -102,9 +102,9 @@ defmodule Nostrum.Api.Message do
 
   def create(channel_id, options) when is_snowflake(channel_id) and is_map(options) do
     prepared_options =
-      Api.prepare_allowed_mentions(options)
-      |> Api.combine_embeds()
-      |> Api.combine_files()
+      Helpers.prepare_allowed_mentions(options)
+      |> Helpers.combine_embeds()
+      |> Helpers.combine_files()
 
     Api.request(:post, Constants.channel_messages(channel_id), prepared_options)
     |> Helpers.handle_request_with_decode({:struct, Message})
@@ -304,9 +304,9 @@ defmodule Nostrum.Api.Message do
   def edit(channel_id, message_id, %{} = options)
       when is_snowflake(channel_id) and is_snowflake(message_id) do
     prepared_options =
-      Api.prepare_allowed_mentions(options)
-      |> Api.combine_embeds()
-      |> Api.combine_files()
+      Helpers.prepare_allowed_mentions(options)
+      |> Helpers.combine_embeds()
+      |> Helpers.combine_files()
 
     Api.request(:patch, Constants.channel_message(channel_id, message_id), prepared_options)
     |> Helpers.handle_request_with_decode({:struct, Message})

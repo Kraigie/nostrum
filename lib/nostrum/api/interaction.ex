@@ -72,7 +72,8 @@ defmodule Nostrum.Api.Interaction do
     Api.request(
       :post,
       Constants.interaction_callback(id, token),
-      Api.combine_embeds(response) |> Api.combine_files()
+      Helpers.combine_embeds(response)
+      |> Helpers.combine_files()
     )
   end
 
@@ -139,7 +140,8 @@ defmodule Nostrum.Api.Interaction do
     Api.request(
       :patch,
       Constants.interaction_callback_original(id, token),
-      Api.combine_embeds(response) |> Api.combine_files()
+      Helpers.combine_embeds(response)
+      |> Helpers.combine_files()
     )
     |> Helpers.handle_request_with_decode({:struct, Message})
   end

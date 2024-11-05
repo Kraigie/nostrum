@@ -156,7 +156,7 @@ defmodule Nostrum.Api.Channel do
       route: Constants.channel(channel_id),
       body: "",
       params: [],
-      headers: Api.maybe_add_reason(reason)
+      headers: Helpers.maybe_add_reason(reason)
     }
     |> Api.request()
     |> Helpers.handle_request_with_decode({:struct, Channel})
@@ -175,7 +175,7 @@ defmodule Nostrum.Api.Channel do
       route: Constants.channel_permission(channel_id, overwrite_id),
       body: "",
       params: [],
-      headers: Api.maybe_add_reason(reason)
+      headers: Helpers.maybe_add_reason(reason)
     })
   end
 
@@ -228,7 +228,7 @@ defmodule Nostrum.Api.Channel do
       route: Constants.channel_permission(channel_id, overwrite_id),
       body: permission_info,
       params: [],
-      headers: Api.maybe_add_reason(reason)
+      headers: Helpers.maybe_add_reason(reason)
     })
   end
 
@@ -396,7 +396,7 @@ defmodule Nostrum.Api.Channel do
       route: Constants.channel(channel_id),
       body: options,
       params: [],
-      headers: Api.maybe_add_reason(reason)
+      headers: Helpers.maybe_add_reason(reason)
     }
     |> Api.request()
     |> Helpers.handle_request_with_decode({:struct, Channel})

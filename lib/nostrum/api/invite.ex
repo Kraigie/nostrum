@@ -122,7 +122,7 @@ defmodule Nostrum.Api.Invite do
       route: Constants.channel_invites(channel_id),
       body: options,
       params: [],
-      headers: Api.maybe_add_reason(reason)
+      headers: Helpers.maybe_add_reason(reason)
     }
     |> Api.request()
     |> Helpers.handle_request_with_decode({:struct, Invite})

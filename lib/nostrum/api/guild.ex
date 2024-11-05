@@ -95,7 +95,7 @@ defmodule Nostrum.Api.Guild do
       route: Constants.guild_prune(guild_id),
       body: "",
       params: [days: days],
-      headers: Api.maybe_add_reason(reason)
+      headers: Helpers.maybe_add_reason(reason)
     }
     |> Api.request()
     |> Helpers.handle_request_with_decode()
@@ -115,7 +115,7 @@ defmodule Nostrum.Api.Guild do
       route: Constants.guild_ban(guild_id, user_id),
       body: %{delete_message_days: days_to_delete},
       params: [],
-      headers: Api.maybe_add_reason(reason)
+      headers: Helpers.maybe_add_reason(reason)
     })
   end
 
@@ -159,7 +159,7 @@ defmodule Nostrum.Api.Guild do
       route: Constants.guild_emojis(guild_id),
       body: options,
       params: [],
-      headers: Api.maybe_add_reason(reason)
+      headers: Helpers.maybe_add_reason(reason)
     }
     |> Api.request()
     |> Helpers.handle_request_with_decode({:struct, Emoji})
@@ -220,7 +220,7 @@ defmodule Nostrum.Api.Guild do
       route: Constants.guild_emoji(guild_id, emoji_id),
       body: "",
       params: [],
-      headers: Api.maybe_add_reason(reason)
+      headers: Helpers.maybe_add_reason(reason)
     })
   end
 
@@ -567,7 +567,7 @@ defmodule Nostrum.Api.Guild do
       route: Constants.guild(guild_id),
       body: options,
       params: [],
-      headers: Api.maybe_add_reason(reason)
+      headers: Helpers.maybe_add_reason(reason)
     }
     |> Api.request()
     |> Helpers.handle_request_with_decode({:struct, Guild})
@@ -631,7 +631,7 @@ defmodule Nostrum.Api.Guild do
       route: Constants.guild_emoji(guild_id, emoji_id),
       body: options,
       params: [],
-      headers: Api.maybe_add_reason(reason)
+      headers: Helpers.maybe_add_reason(reason)
     }
     |> Api.request()
     |> Helpers.handle_request_with_decode({:struct, Emoji})
@@ -701,7 +701,7 @@ defmodule Nostrum.Api.Guild do
       route: Constants.guild_member(guild_id, user_id),
       body: options,
       params: [],
-      headers: Api.maybe_add_reason(reason)
+      headers: Helpers.maybe_add_reason(reason)
     })
     |> Helpers.handle_request_with_decode({:struct, Member})
   end
@@ -734,7 +734,7 @@ defmodule Nostrum.Api.Guild do
       route: Constants.guild_roles(guild_id),
       body: positions,
       params: [],
-      headers: Api.maybe_add_reason(reason)
+      headers: Helpers.maybe_add_reason(reason)
     }
     |> Api.request()
     |> Helpers.handle_request_with_decode({:list, {:struct, Role}})
@@ -762,7 +762,7 @@ defmodule Nostrum.Api.Guild do
       route: Constants.guild_ban(guild_id, user_id),
       body: "",
       params: [],
-      headers: Api.maybe_add_reason(reason)
+      headers: Helpers.maybe_add_reason(reason)
     })
   end
 
@@ -791,7 +791,7 @@ defmodule Nostrum.Api.Guild do
       route: Constants.guild_member(guild_id, user_id),
       body: "",
       params: [],
-      headers: Api.maybe_add_reason(reason)
+      headers: Helpers.maybe_add_reason(reason)
     })
   end
 
