@@ -90,7 +90,7 @@ defmodule Nostrum.Struct.Message.Poll do
   @doc ~S"""
   Create a new poll struct.
 
-  Use `Nostrum.Api.create_message` to send it once you've populated it.
+  Use `Nostrum.Api.Message.create/2` to send it once you've populated it.
 
   Accepts a `question_text` parameter which is the string to use as the poll title.
 
@@ -107,7 +107,7 @@ defmodule Nostrum.Struct.Message.Poll do
           |> Poll.put_answer("Yes!", default_emoji: "\u2705") # check mark emoji
           |> Poll.put_answer("No!", default_emoji: "\u274C") # cross emoji
 
-  Api.create_message(channel_id, poll: poll)
+  Nostrum.Api.Message.create(channel_id, poll: poll)
   ```
   """
   @spec create_poll(String.t(), duration: duration, allow_multiselect: allow_multiselect) :: t()

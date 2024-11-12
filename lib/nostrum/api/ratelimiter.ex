@@ -197,7 +197,7 @@ defmodule Nostrum.Api.Ratelimiter do
 
   @behaviour :gen_statem
 
-  alias Nostrum.Api.Base
+  alias Nostrum.Api.Adapter
   alias Nostrum.Api.RatelimiterGroup
   alias Nostrum.Constants
   alias Nostrum.Error.ApiError
@@ -296,7 +296,7 @@ defmodule Nostrum.Api.Ratelimiter do
           },
           conn: pid() | nil,
           remaining_in_window: non_neg_integer(),
-          wrapped_token: Base.wrapped_token()
+          wrapped_token: Adapter.wrapped_token()
         }
 
   @doc """
@@ -471,7 +471,7 @@ defmodule Nostrum.Api.Ratelimiter do
       )
       when remaining_for_user > 0 and is_map_key(outstanding, bucket) do
     stream =
-      Base.request(
+      Adapter.request(
         conn,
         request.method,
         request.route,

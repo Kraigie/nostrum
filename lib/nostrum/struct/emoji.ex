@@ -9,11 +9,11 @@ defmodule Nostrum.Struct.Emoji do
 
   ```elixir
   emoji = %Nostrum.Struct.Emoji{id: 437093487582642177, name: "foxbot"}
-  Nostrum.Api.create_message!(184046599834435585, "#{emoji}")
+  Nostrum.Api.Message.create(184046599834435585, "#{emoji}")
   %Nostrum.Struct.Message{content: "<:foxbot:437093487582642177>"}
 
   emoji = %Nostrum.Struct.Emoji{id: 436885297037312001, name: "tealixir"}
-  Nostrum.Api.create_message!(280085880452939778, "#{Nostrum.Struct.Emoji.mention(emoji)}")
+  Nostrum.Api.Message.create(280085880452939778, "#{Nostrum.Struct.Emoji.mention(emoji)}")
   %Nostrum.Struct.Message{content: "<:tealixir:436885297037312001>"}
   ```
 
@@ -24,11 +24,11 @@ defmodule Nostrum.Struct.Emoji do
 
   ```elixir
   emoji = %Nostrum.Struct.Emoji{id: 436885297037312001, name: "tealixir"}
-  Nostrum.Api.create_reaction(381889573426429952, 436247584349356032, Nostrum.Struct.Emoji.api_name(emoji))
+  Nostrum.Api.Message.react(381889573426429952, 436247584349356032, Nostrum.Struct.Emoji.api_name(emoji))
   {:ok}
 
   emoji = %Nostrum.Struct.Emoji{id: 436189601820966923, name: "elixir"}
-  Nostrum.Api.create_reaction(381889573426429952, 436247584349356032, emoji)
+  Nostrum.Api.Message.react(381889573426429952, 436247584349356032, emoji)
   {:ok}
   ```
 
