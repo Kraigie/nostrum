@@ -97,15 +97,14 @@ separate operation modes:
 
 ```elixir
 alias Nostrum.Api
-alias Nostrum.Api.Role
 alias Nostrum.Struct.Interaction
 
 defp manage_role(%Interaction{data: %{options: [%{value: role_id}, %{value: "assign"}]}} = interaction) do
-  Role.add_member(interaction.guild_id, interaction.member.user_id, role_id)
+  Guild.add_member_role(interaction.guild_id, interaction.member.user_id, role_id)
 end
 
 defp manage_role(%Interaction{data: %{options: [%{value: role_id}, %{value: "remove"}]}} = interaction) do
-  Role.remove_member(interaction.guild_id, interaction.member.user_id, role_id)
+  Guild.remove_member_role(interaction.guild_id, interaction.member.user_id, role_id)
 end
 
 def handle_event({:INTERACTION_CREATE, %Interaction{data: %{name: "role"}} = interaction, _ws_state}) do
@@ -123,7 +122,7 @@ To respond to interactions, use ``Nostrum.Api.Interaction.create_response/2``:
 
 ```elixir
 defp manage_role(%Interaction{data: %{options: [%{value: role_id}, %{value: "assign"}]}} = interaction) do
-  Role.add_member(interaction.guild_id, interaction.member.user_id, role_id)
+  Guild.add_member_role(interaction.guild_id, interaction.member.user_id, role_id)
   response = %{
     type: 4,  # ChannelMessageWithSource
     data: %{

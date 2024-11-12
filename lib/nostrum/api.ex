@@ -1014,19 +1014,19 @@ defmodule Nostrum.Api do
 
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
-  Use `Nostrum.Api.Role.add_member/4` directly instead.
+  Use `Nostrum.Api.Guild.add_member_role/4` directly instead.
   """
   defdelegate add_guild_member_role(guild_id, user_id, role_id, reason \\ nil),
-    to: Nostrum.Api.Role,
-    as: :add_member
+    to: Nostrum.Api.Guild,
+    as: :add_member_role
 
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
-  Use `Nostrum.Api.Role.remove_member/4` directly instead.
+  Use `Nostrum.Api.Guild.remove_member_role/4` directly instead.
   """
   defdelegate remove_guild_member_role(guild_id, user_id, role_id, reason \\ nil),
-    to: Nostrum.Api.Role,
-    as: :remove_member
+    to: Nostrum.Api.Guild,
+    as: :remove_member_role
 
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
@@ -1098,11 +1098,11 @@ defmodule Nostrum.Api do
 
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
-  Use `Nostrum.Api.Role.create/3` directly instead.
+  Use `Nostrum.Api.Guild.create_role/3` directly instead.
   """
   defdelegate create_guild_role(guild_id, options, reason \\ nil),
-    to: Nostrum.Api.Role,
-    as: :create
+    to: Nostrum.Api.Guild,
+    as: :create_role
 
   @doc ~S"""
   Same as `create_guild_role/2`, but raises `Nostrum.Error.ApiError` in case of failure.
@@ -1138,11 +1138,11 @@ defmodule Nostrum.Api do
 
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
-  Use `Nostrum.Api.Role.modify/4` directly instead.
+  Use `Nostrum.Api.Guild.modify_role/4` directly instead.
   """
   defdelegate modify_guild_role(guild_id, role_id, options, reason \\ nil),
-    to: Nostrum.Api.Role,
-    as: :modify
+    to: Nostrum.Api.Guild,
+    as: :modify_role
 
   @doc ~S"""
   Same as `modify_guild_role/3`, but raises `Nostrum.Error.ApiError` in case of failure.
@@ -1157,11 +1157,11 @@ defmodule Nostrum.Api do
 
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
-  Use `Nostrum.Api.Role.delete/3` directly instead.
+  Use `Nostrum.Api.Guild.delete_role/3` directly instead.
   """
   defdelegate delete_guild_role(guild_id, role_id, reason \\ nil),
-    to: Nostrum.Api.Role,
-    as: :delete
+    to: Nostrum.Api.Guild,
+    as: :delete_role
 
   @doc ~S"""
   Same as `delete_guild_role/2`, but raises `Nostrum.Error.ApiError` in case of failure.
