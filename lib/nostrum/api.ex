@@ -388,7 +388,7 @@ defmodule Nostrum.Api do
   Same as `delete_message/2`, but takes a `Nostrum.Struct.Message` instead of a
   `channel_id` and `message_id`.
   """
-  @spec delete_message(Message.t()) :: error | {:ok}
+  @spec delete_message(Message.t()) :: error | :ok
   def delete_message(%Message{id: id, channel_id: c_id}) do
     delete_message(c_id, id)
   end
@@ -399,7 +399,7 @@ defmodule Nostrum.Api do
   This endpoint requires the 'VIEW_CHANNEL' and 'MANAGE_MESSAGES' permission. It
   fires the `MESSAGE_DELETE` event.
 
-  If successful, returns `{:ok}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
+  If successful, returns `:ok`. Otherwise, returns a `t:Nostrum.Api.error/0`.
 
   ## Examples
 
@@ -407,7 +407,7 @@ defmodule Nostrum.Api do
   Nostrum.Api.delete_message(43189401384091, 43189401384091)
   ```
   """
-  @spec delete_message(Channel.id(), Message.id()) :: error | {:ok}
+  @spec delete_message(Channel.id(), Message.id()) :: error | :ok
   def delete_message(channel_id, message_id)
       when is_snowflake(channel_id) and is_snowflake(message_id) do
     request(:delete, Constants.channel_message(channel_id, message_id))
@@ -416,7 +416,7 @@ defmodule Nostrum.Api do
   @doc ~S"""
   Same as `delete_message/1`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
-  @spec delete_message!(Message.t()) :: error | {:ok}
+  @spec delete_message!(Message.t()) :: error | :ok
   def delete_message!(%Message{id: id, channel_id: c_id}) do
     delete_message(c_id, id)
     |> bangify
@@ -425,7 +425,7 @@ defmodule Nostrum.Api do
   @doc ~S"""
   Same as `delete_message/2`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
-  @spec delete_message!(Channel.id(), Message.id()) :: no_return | {:ok}
+  @spec delete_message!(Channel.id(), Message.id()) :: no_return | :ok
   def delete_message!(channel_id, message_id) do
     delete_message(channel_id, message_id)
     |> bangify
@@ -439,7 +439,7 @@ defmodule Nostrum.Api do
   the `emoji`, this endpoint requires the `ADD_REACTIONS` permission. It
   fires a `t:Nostrum.Consumer.message_reaction_add/0` event.
 
-  If successful, returns `{:ok}`. Otherwise, returns `t:Nostrum.Api.error/0`.
+  If successful, returns `:ok`. Otherwise, returns `t:Nostrum.Api.error/0`.
 
   ## Examples
 
@@ -455,7 +455,7 @@ defmodule Nostrum.Api do
 
   For other emoji string examples, see `t:Nostrum.Struct.Emoji.api_name/0`.
   """
-  @spec create_reaction(Channel.id(), Message.id(), emoji) :: error | {:ok}
+  @spec create_reaction(Channel.id(), Message.id(), emoji) :: error | :ok
   def create_reaction(channel_id, message_id, emoji)
 
   def create_reaction(channel_id, message_id, %Emoji{} = emoji),
@@ -468,7 +468,7 @@ defmodule Nostrum.Api do
   @doc ~S"""
   Same as `create_reaction/3`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
-  @spec create_reaction!(Channel.id(), Message.id(), emoji) :: no_return | {:ok}
+  @spec create_reaction!(Channel.id(), Message.id(), emoji) :: no_return | :ok
   def create_reaction!(channel_id, message_id, emoji) do
     create_reaction(channel_id, message_id, emoji)
     |> bangify
@@ -480,11 +480,11 @@ defmodule Nostrum.Api do
   This endpoint requires the `VIEW_CHANNEL` and `READ_MESSAGE_HISTORY`
   permissions. It fires a `t:Nostrum.Consumer.message_reaction_remove/0` event.
 
-  If successful, returns `{:ok}`. Otherwise, returns `t:Nostrum.Api.error/0`.
+  If successful, returns `:ok`. Otherwise, returns `t:Nostrum.Api.error/0`.
 
   See `create_reaction/3` for similar examples.
   """
-  @spec delete_own_reaction(Channel.id(), Message.id(), emoji) :: error | {:ok}
+  @spec delete_own_reaction(Channel.id(), Message.id(), emoji) :: error | :ok
   def delete_own_reaction(channel_id, message_id, emoji)
 
   def delete_own_reaction(channel_id, message_id, %Emoji{} = emoji),
@@ -497,7 +497,7 @@ defmodule Nostrum.Api do
   @doc ~S"""
   Same as `delete_own_reaction/3`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
-  @spec delete_own_reaction!(Channel.id(), Message.id(), emoji) :: no_return | {:ok}
+  @spec delete_own_reaction!(Channel.id(), Message.id(), emoji) :: no_return | :ok
   def delete_own_reaction!(channel_id, message_id, emoji) do
     delete_own_reaction(channel_id, message_id, emoji)
     |> bangify
@@ -509,11 +509,11 @@ defmodule Nostrum.Api do
   This endpoint requires the `VIEW_CHANNEL`, `READ_MESSAGE_HISTORY`, and
   `MANAGE_MESSAGES` permissions. It fires a `t:Nostrum.Consumer.message_reaction_remove/0` event.
 
-  If successful, returns `{:ok}`. Otherwise, returns `t:Nostrum.Api.error/0`.
+  If successful, returns `:ok`. Otherwise, returns `t:Nostrum.Api.error/0`.
 
   See `create_reaction/3` for similar examples.
   """
-  @spec delete_user_reaction(Channel.id(), Message.id(), emoji, User.id()) :: error | {:ok}
+  @spec delete_user_reaction(Channel.id(), Message.id(), emoji, User.id()) :: error | :ok
   def delete_user_reaction(channel_id, message_id, emoji, user_id)
 
   def delete_user_reaction(channel_id, message_id, %Emoji{} = emoji, user_id),
@@ -526,7 +526,7 @@ defmodule Nostrum.Api do
   @doc ~S"""
   Same as `delete_user_reaction/4`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
-  @spec delete_user_reaction!(Channel.id(), Message.id(), emoji, User.id()) :: no_return | {:ok}
+  @spec delete_user_reaction!(Channel.id(), Message.id(), emoji, User.id()) :: no_return | :ok
   def delete_user_reaction!(channel_id, message_id, emoji, user_id) do
     delete_user_reaction(channel_id, message_id, emoji, user_id)
     |> bangify
@@ -537,11 +537,11 @@ defmodule Nostrum.Api do
 
   This endpoint requires the `MANAGE_MESSAGES` permissions. It fires a `t:Nostrum.Consumer.message_reaction_remove_emoji/0` event.
 
-  If successful, returns `{:ok}`. Otherwise, returns `t:Nostrum.Api.error/0`.
+  If successful, returns `:ok`. Otherwise, returns `t:Nostrum.Api.error/0`.
 
   See `create_reaction/3` for similar examples.
   """
-  @spec delete_reaction(Channel.id(), Message.id(), emoji) :: error | {:ok}
+  @spec delete_reaction(Channel.id(), Message.id(), emoji) :: error | :ok
   def delete_reaction(channel_id, message_id, emoji)
 
   def delete_reaction(channel_id, message_id, %Emoji{} = emoji),
@@ -557,7 +557,7 @@ defmodule Nostrum.Api do
   @doc ~S"""
   Same as `delete_reaction/3`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
-  @spec delete_reaction!(Channel.id(), Message.id(), emoji) :: no_return | {:ok}
+  @spec delete_reaction!(Channel.id(), Message.id(), emoji) :: no_return | :ok
   def delete_reaction!(channel_id, message_id, emoji) do
     delete_reaction(channel_id, message_id, emoji)
     |> bangify
@@ -606,9 +606,9 @@ defmodule Nostrum.Api do
   This endpoint requires the `VIEW_CHANNEL`, `READ_MESSAGE_HISTORY`, and
   `MANAGE_MESSAGES` permissions. It fires a `t:Nostrum.Consumer.message_reaction_remove_all/0` event.
 
-  If successful, returns `{:ok}`. Otherwise, return `t:Nostrum.Api.error/0`.
+  If successful, returns `:ok`. Otherwise, return `t:Nostrum.Api.error/0`.
   """
-  @spec delete_all_reactions(Channel.id(), Message.id()) :: error | {:ok}
+  @spec delete_all_reactions(Channel.id(), Message.id()) :: error | :ok
   def delete_all_reactions(channel_id, message_id) do
     request(:delete, Constants.channel_reactions_delete(channel_id, message_id))
   end
@@ -616,7 +616,7 @@ defmodule Nostrum.Api do
   @doc ~S"""
   Same as `delete_all_reactions/2`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
-  @spec delete_all_reactions!(Channel.id(), Message.id()) :: no_return | {:ok}
+  @spec delete_all_reactions!(Channel.id(), Message.id()) :: no_return | :ok
   def delete_all_reactions!(channel_id, message_id) do
     delete_all_reactions(channel_id, message_id)
     |> bangify
@@ -923,7 +923,7 @@ defmodule Nostrum.Api do
   `Filter` is an optional parameter that specifies whether messages sent over
   two weeks ago should be filtered out; defaults to `true`.
   """
-  @spec bulk_delete_messages(integer, [Nostrum.Struct.Message.id()], boolean) :: error | {:ok}
+  @spec bulk_delete_messages(integer, [Nostrum.Struct.Message.id()], boolean) :: error | :ok
   def bulk_delete_messages(channel_id, messages, filter \\ true)
 
   def bulk_delete_messages(channel_id, messages, false),
@@ -948,7 +948,7 @@ defmodule Nostrum.Api do
   @spec send_chunked_delete(
           [Nostrum.Struct.Message.id()] | Enum.t(),
           Nostrum.Snowflake.t()
-        ) :: error | {:ok}
+        ) :: error | :ok
   defp send_chunked_delete(messages, channel_id) do
     messages
     |> Stream.chunk_every(100)
@@ -959,14 +959,14 @@ defmodule Nostrum.Api do
         %{messages: message_chunk}
       )
     end)
-    |> Enum.find({:ok}, &match?({:error, _}, &1))
+    |> Enum.find(:ok, &match?({:error, _}, &1))
   end
 
   @doc """
   Same as `bulk_delete_messages/2`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
   @spec bulk_delete_messages!(integer, [Nostrum.Struct.Message.id()], boolean) ::
-          no_return | {:ok}
+          no_return | :ok
   def bulk_delete_messages!(channel_id, messages, filter \\ true) do
     bulk_delete_messages(channel_id, messages, filter)
     |> bangify
@@ -998,7 +998,7 @@ defmodule Nostrum.Api do
             optional(:deny) => integer
           },
           AuditLogEntry.reason()
-        ) :: error | {:ok}
+        ) :: error | :ok
   def edit_channel_permissions(channel_id, overwrite_id, permission_info, reason \\ nil) do
     request(%{
       method: :put,
@@ -1021,7 +1021,7 @@ defmodule Nostrum.Api do
             optional(:deny) => integer
           },
           AuditLogEntry.reason()
-        ) :: no_return | {:ok}
+        ) :: no_return | :ok
   def edit_channel_permissions!(channel_id, overwrite_id, permission_info, reason \\ nil) do
     edit_channel_permissions(channel_id, overwrite_id, permission_info, reason)
     |> bangify
@@ -1033,7 +1033,7 @@ defmodule Nostrum.Api do
   Role or user overwrite to delete is specified by `channel_id` and `overwrite_id`.
   An optional `reason` can be given for the audit log.
   """
-  @spec delete_channel_permissions(integer, integer, AuditLogEntry.reason()) :: error | {:ok}
+  @spec delete_channel_permissions(integer, integer, AuditLogEntry.reason()) :: error | :ok
   def delete_channel_permissions(channel_id, overwrite_id, reason \\ nil) do
     request(%{
       method: :delete,
@@ -1140,9 +1140,9 @@ defmodule Nostrum.Api do
   Triggers the typing indicator in the channel specified by `channel_id`.
   The typing indicator lasts for about 8 seconds and then automatically stops.
 
-  Returns `{:ok}` if successful. `error` otherwise.
+  Returns `:ok` if successful. `error` otherwise.
   """
-  @spec start_typing(integer) :: error | {:ok}
+  @spec start_typing(integer) :: error | :ok
   def start_typing(channel_id) do
     request(:post, Constants.channel_typing(channel_id))
   end
@@ -1150,7 +1150,7 @@ defmodule Nostrum.Api do
   @doc """
   Same as `start_typing/1`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
-  @spec start_typing!(integer) :: no_return | {:ok}
+  @spec start_typing!(integer) :: no_return | :ok
   def start_typing!(channel_id) do
     start_typing(channel_id)
     |> bangify
@@ -1192,7 +1192,7 @@ defmodule Nostrum.Api do
   `t:Nostrum.Consumer.message_update/0` and
   `t:Nostrum.Consumer.channel_pins_update/0` events.
 
-  If successful, returns `{:ok}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
+  If successful, returns `:ok`. Otherwise, returns a `t:Nostrum.Api.error/0`.
 
   ## Examples
 
@@ -1200,7 +1200,7 @@ defmodule Nostrum.Api do
   Nostrum.Api.add_pinned_channel_message(43189401384091, 18743893102394)
   ```
   """
-  @spec add_pinned_channel_message(Channel.id(), Message.id()) :: error | {:ok}
+  @spec add_pinned_channel_message(Channel.id(), Message.id()) :: error | :ok
   def add_pinned_channel_message(channel_id, message_id)
       when is_snowflake(channel_id) and is_snowflake(message_id) do
     request(:put, Constants.channel_pin(channel_id, message_id))
@@ -1209,7 +1209,7 @@ defmodule Nostrum.Api do
   @doc ~S"""
   Same as `add_pinned_channel_message/2`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
-  @spec add_pinned_channel_message!(Channel.id(), Message.id()) :: no_return | {:ok}
+  @spec add_pinned_channel_message!(Channel.id(), Message.id()) :: no_return | :ok
   def add_pinned_channel_message!(channel_id, message_id) do
     add_pinned_channel_message(channel_id, message_id)
     |> bangify
@@ -1223,9 +1223,9 @@ defmodule Nostrum.Api do
   `t:Nostrum.Consumer.message_update/0` and
   `t:Nostrum.Consumer.channel_pins_update/0` events.
 
-  Returns `{:ok}` if successful. `error` otherwise.
+  Returns `:ok` if successful. `error` otherwise.
   """
-  @spec delete_pinned_channel_message(Channel.id(), Message.id()) :: error | {:ok}
+  @spec delete_pinned_channel_message(Channel.id(), Message.id()) :: error | :ok
   def delete_pinned_channel_message(channel_id, message_id)
       when is_snowflake(channel_id) and is_snowflake(message_id) do
     request(:delete, Constants.channel_pin(channel_id, message_id))
@@ -1234,7 +1234,7 @@ defmodule Nostrum.Api do
   @doc ~S"""
   Same as `delete_pinned_channel_message/2`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
-  @spec delete_pinned_channel_message!(Channel.id(), Message.id()) :: no_return | {:ok}
+  @spec delete_pinned_channel_message!(Channel.id(), Message.id()) :: no_return | :ok
   def delete_pinned_channel_message!(channel_id, message_id) do
     delete_pinned_channel_message(channel_id, message_id)
     |> bangify
@@ -1397,9 +1397,9 @@ defmodule Nostrum.Api do
   This endpoint requires the `MANAGE_EMOJIS` permission. It fires a
   `t:Nostrum.Consumer.guild_emojis_update/0` event.
 
-  If successful, returns `{:ok}`. Otherwise, returns `t:Nostrum.Api.error/0`.
+  If successful, returns `:ok`. Otherwise, returns `t:Nostrum.Api.error/0`.
   """
-  @spec delete_guild_emoji(Guild.id(), Emoji.id(), AuditLogEntry.reason()) :: error | {:ok}
+  @spec delete_guild_emoji(Guild.id(), Emoji.id(), AuditLogEntry.reason()) :: error | :ok
   def delete_guild_emoji(guild_id, emoji_id, reason \\ nil),
     do:
       request(%{
@@ -1413,7 +1413,7 @@ defmodule Nostrum.Api do
   @doc ~S"""
   Same as `delete_guild_emoji/2`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
-  @spec delete_guild_emoji!(Guild.id(), Emoji.id(), AuditLogEntry.reason()) :: no_return | {:ok}
+  @spec delete_guild_emoji!(Guild.id(), Emoji.id(), AuditLogEntry.reason()) :: no_return | :ok
   def delete_guild_emoji!(guild_id, emoji_id, reason \\ nil) do
     delete_guild_emoji(guild_id, emoji_id, reason)
     |> bangify
@@ -1549,7 +1549,7 @@ defmodule Nostrum.Api do
   Delete a guild sticker with the specified ID.
   """
   @doc since: "0.10.0"
-  @spec delete_guild_sticker(Guild.id(), Sticker.id()) :: {:ok} | error
+  @spec delete_guild_sticker(Guild.id(), Sticker.id()) :: :ok | error
   def delete_guild_sticker(guild_id, sticker_id) do
     request(:delete, Constants.guild_sticker(guild_id, sticker_id))
   end
@@ -1688,16 +1688,16 @@ defmodule Nostrum.Api do
   This endpoint requires that the current user is the owner of the guild.
   It fires the `t:Nostrum.Consumer.guild_delete/0` event.
 
-  If successful, returns `{:ok}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
+  If successful, returns `:ok`. Otherwise, returns a `t:Nostrum.Api.error/0`.
 
   ## Examples
 
   ```elixir
   Nostrum.Api.delete_guild(81384788765712384)
-  {:ok}
+  :ok
   ```
   """
-  @spec delete_guild(Guild.id()) :: error | {:ok}
+  @spec delete_guild(Guild.id()) :: error | :ok
   def delete_guild(guild_id) when is_snowflake(guild_id) do
     request(:delete, Constants.guild(guild_id))
   end
@@ -1705,7 +1705,7 @@ defmodule Nostrum.Api do
   @doc ~S"""
   Same as `delete_guild/1`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
-  @spec delete_guild!(Guild.id()) :: no_return | {:ok}
+  @spec delete_guild!(Guild.id()) :: no_return | :ok
   def delete_guild!(guild_id) do
     delete_guild(guild_id)
     |> bangify
@@ -1801,11 +1801,11 @@ defmodule Nostrum.Api do
 
   ```elixir
   Nostrum.Api.modify_guild_channel_positions(279093381723062272, [%{id: 351500354581692420, position: 2}])
-  {:ok}
+  :ok
   ```
   """
   @spec modify_guild_channel_positions(Guild.id(), [%{id: integer, position: integer}]) ::
-          error | {:ok}
+          error | :ok
   def modify_guild_channel_positions(guild_id, positions)
       when is_snowflake(guild_id) and is_list(positions) do
     request(:patch, Constants.guild_channels(guild_id), positions)
@@ -1815,7 +1815,7 @@ defmodule Nostrum.Api do
   Same as `modify_guild_channel_positions/2`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
   @spec modify_guild_channel_positions!(Guild.id(), [%{id: integer, position: integer}]) ::
-          no_return | {:ok}
+          no_return | :ok
   def modify_guild_channel_positions!(guild_id, positions) do
     modify_guild_channel_positions(guild_id, positions)
     |> bangify
@@ -1891,7 +1891,7 @@ defmodule Nostrum.Api do
   situationally requires the `MANAGE_NICKNAMES`, `MANAGE_ROLES`,
   `MUTE_MEMBERS`, and `DEAFEN_MEMBERS` permissions.
 
-  If successful, returns `{:ok, member}` or `{:ok}` if the user was already a member of the
+  If successful, returns `{:ok, member}` or `:ok` if the user was already a member of the
   guild. Otherwise, returns a `t:Nostrum.Api.error/0`.
 
   ## Options
@@ -1916,7 +1916,7 @@ defmodule Nostrum.Api do
   )
   ```
   """
-  @spec add_guild_member(Guild.id(), User.id(), options) :: error | {:ok, Member.t()} | {:ok}
+  @spec add_guild_member(Guild.id(), User.id(), options) :: error | {:ok, Member.t()} | :ok
   def add_guild_member(guild_id, user_id, options)
 
   def add_guild_member(guild_id, user_id, options) when is_list(options),
@@ -1931,7 +1931,7 @@ defmodule Nostrum.Api do
   @doc """
   Same as `add_guild_member/3`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
-  @spec add_guild_member!(Guild.id(), User.id(), options) :: no_return | Member.t() | {:ok}
+  @spec add_guild_member!(Guild.id(), User.id(), options) :: no_return | Member.t() | :ok
   def add_guild_member!(guild_id, user_id, options) do
     add_guild_member(guild_id, user_id, options)
     |> bangify
@@ -1991,7 +1991,7 @@ defmodule Nostrum.Api do
   Same as `modify_guild_member/3`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
   @spec modify_guild_member!(Guild.id(), User.id(), options, AuditLogEntry.reason()) ::
-          error | {:ok}
+          error | :ok
   def modify_guild_member!(guild_id, user_id, options \\ %{}, reason \\ nil) do
     modify_guild_member(guild_id, user_id, options, reason)
     |> bangify
@@ -2035,7 +2035,7 @@ defmodule Nostrum.Api do
   User to add role to is specified by `guild_id` and `user_id`.
   An optional `reason` can be given for the audit log.
   """
-  @spec add_guild_member_role(integer, integer, integer, AuditLogEntry.reason()) :: error | {:ok}
+  @spec add_guild_member_role(integer, integer, integer, AuditLogEntry.reason()) :: error | :ok
   def add_guild_member_role(guild_id, user_id, role_id, reason \\ nil) do
     request(%{
       method: :put,
@@ -2054,7 +2054,7 @@ defmodule Nostrum.Api do
   An optional `reason` can be given for the audit log.
   """
   @spec remove_guild_member_role(integer, integer, integer, AuditLogEntry.reason()) ::
-          error | {:ok}
+          error | :ok
   def remove_guild_member_role(guild_id, user_id, role_id, reason \\ nil) do
     request(%{
       method: :delete,
@@ -2073,16 +2073,16 @@ defmodule Nostrum.Api do
 
   An optional reason can be provided for the audit log with `reason`.
 
-  If successful, returns `{:ok}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
+  If successful, returns `:ok`. Otherwise, returns a `t:Nostrum.Api.error/0`.
 
   ## Examples
 
   ```elixir
   Nostrum.Api.remove_guild_member(1453827904102291, 18739485766253)
-  {:ok}
+  :ok
   ```
   """
-  @spec remove_guild_member(Guild.id(), User.id(), AuditLogEntry.reason()) :: error | {:ok}
+  @spec remove_guild_member(Guild.id(), User.id(), AuditLogEntry.reason()) :: error | :ok
   def remove_guild_member(guild_id, user_id, reason \\ nil)
       when is_snowflake(guild_id) and is_snowflake(user_id) do
     request(%{
@@ -2097,7 +2097,7 @@ defmodule Nostrum.Api do
   @doc """
   Same as `remove_guild_member/2`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
-  @spec remove_guild_member!(Guild.id(), User.id(), AuditLogEntry.reason()) :: no_return | {:ok}
+  @spec remove_guild_member!(Guild.id(), User.id(), AuditLogEntry.reason()) :: no_return | :ok
   def remove_guild_member!(guild_id, user_id, reason \\ nil) do
     remove_guild_member(guild_id, user_id, reason)
     |> bangify
@@ -2130,7 +2130,7 @@ defmodule Nostrum.Api do
   User to delete is specified by `guild_id` and `user_id`.
   An optional `reason` can be specified for the audit log.
   """
-  @spec create_guild_ban(integer, integer, integer, AuditLogEntry.reason()) :: error | {:ok}
+  @spec create_guild_ban(integer, integer, integer, AuditLogEntry.reason()) :: error | :ok
   def create_guild_ban(guild_id, user_id, days_to_delete, reason \\ nil) do
     request(%{
       method: :put,
@@ -2147,7 +2147,7 @@ defmodule Nostrum.Api do
   User to unban is specified by `guild_id` and `user_id`.
   An optional `reason` can be specified for the audit log.
   """
-  @spec remove_guild_ban(integer, integer, AuditLogEntry.reason()) :: error | {:ok}
+  @spec remove_guild_ban(integer, integer, AuditLogEntry.reason()) :: error | :ok
   def remove_guild_ban(guild_id, user_id, reason \\ nil) do
     request(%{
       method: :delete,
@@ -2346,7 +2346,7 @@ defmodule Nostrum.Api do
   This endpoint requires the `MANAGE_ROLES` permission. It fires a
   `t:Nostrum.Consumer.guild_role_delete/0` event.
 
-  If successful, returns `{:ok}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
+  If successful, returns `:ok`. Otherwise, returns a `t:Nostrum.Api.error/0`.
 
   ## Examples
 
@@ -2354,7 +2354,7 @@ defmodule Nostrum.Api do
   Nostrum.Api.delete_guild_role(41771983423143937, 392817238471936)
   ```
   """
-  @spec delete_guild_role(Guild.id(), Role.id(), AuditLogEntry.reason()) :: error | {:ok}
+  @spec delete_guild_role(Guild.id(), Role.id(), AuditLogEntry.reason()) :: error | :ok
   def delete_guild_role(guild_id, role_id, reason \\ nil)
       when is_snowflake(guild_id) and is_snowflake(role_id) do
     request(%{
@@ -2369,7 +2369,7 @@ defmodule Nostrum.Api do
   @doc ~S"""
   Same as `delete_guild_role/2`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
-  @spec delete_guild_role!(Guild.id(), Role.id(), AuditLogEntry.reason()) :: no_return | {:ok}
+  @spec delete_guild_role!(Guild.id(), Role.id(), AuditLogEntry.reason()) :: no_return | :ok
   def delete_guild_role!(guild_id, role_id, reason \\ nil) do
     delete_guild_role(guild_id, role_id, reason)
     |> bangify
@@ -2510,7 +2510,7 @@ defmodule Nostrum.Api do
   @spec create_guild_integrations(integer, %{
           type: String.t(),
           id: integer
-        }) :: error | {:ok}
+        }) :: error | :ok
   def create_guild_integrations(guild_id, options) do
     request(:post, Constants.guild_integrations(guild_id), options)
   end
@@ -2529,7 +2529,7 @@ defmodule Nostrum.Api do
           expire_behaviour: integer,
           expire_grace_period: integer,
           enable_emoticons: boolean
-        }) :: error | {:ok}
+        }) :: error | :ok
   def modify_guild_integrations(guild_id, integration_id, options) do
     request(:patch, Constants.guild_integration(guild_id, integration_id), options)
   end
@@ -2539,7 +2539,7 @@ defmodule Nostrum.Api do
 
   Integration to delete is specified by `guild_id` and `integeration_id`.
   """
-  @spec delete_guild_integrations(integer, integer) :: error | {:ok}
+  @spec delete_guild_integrations(integer, integer) :: error | :ok
   def delete_guild_integrations(guild_id, integration_id) do
     request(:delete, Constants.guild_integration(guild_id, integration_id))
   end
@@ -2549,7 +2549,7 @@ defmodule Nostrum.Api do
 
   Integration to sync is specified by `guild_id` and `integeration_id`.
   """
-  @spec sync_guild_integrations(integer, integer) :: error | {:ok}
+  @spec sync_guild_integrations(integer, integer) :: error | :ok
   def sync_guild_integrations(guild_id, integration_id) do
     request(:post, Constants.guild_integration_sync(guild_id, integration_id))
   end
@@ -2643,7 +2643,7 @@ defmodule Nostrum.Api do
   """
   @doc since: "0.5.0"
   @spec delete_guild_scheduled_event(Guild.id(), ScheduledEvent.id()) ::
-          error | {:ok}
+          error | :ok
   def delete_guild_scheduled_event(guild_id, event_id) do
     request(:delete, Constants.guild_scheduled_event(guild_id, event_id))
   end
@@ -2900,7 +2900,7 @@ defmodule Nostrum.Api do
 
   Guild to leave is specified by `guild_id`.
   """
-  @spec leave_guild(integer) :: error | {:ok}
+  @spec leave_guild(integer) :: error | :ok
   def leave_guild(guild_id) do
     request(%{
       method: :delete,
@@ -3181,7 +3181,7 @@ defmodule Nostrum.Api do
     - `webhook_id` - Id of webhook to delete.
     - `reason` - An optional reason for the guild audit log.
   """
-  @spec delete_webhook(Webhook.id(), AuditLogEntry.reason()) :: error | {:ok}
+  @spec delete_webhook(Webhook.id(), AuditLogEntry.reason()) :: error | :ok
   def delete_webhook(webhook_id, reason \\ nil) do
     request(%{
       method: :delete,
@@ -3238,7 +3238,7 @@ defmodule Nostrum.Api do
           matrix,
           boolean
         ) ::
-          error | {:ok} | {:ok, Message.t()}
+          error | :ok | {:ok, Message.t()}
 
   @doc """
   Executes a webhook.
@@ -3312,7 +3312,7 @@ defmodule Nostrum.Api do
     - `webhook_id` - Id of the webhook to execute.
     - `webhook_token` - Token of the webhook to execute.
   """
-  @spec execute_slack_webhook(Webhook.id(), Webhook.token(), boolean) :: error | {:ok}
+  @spec execute_slack_webhook(Webhook.id(), Webhook.token(), boolean) :: error | :ok
   def execute_slack_webhook(webhook_id, webhook_token, wait \\ false) do
     request(:post, Constants.webhook_slack(webhook_id, webhook_token), wait: wait)
   end
@@ -3324,7 +3324,7 @@ defmodule Nostrum.Api do
     - `webhook_id` - Id of the webhook to execute.
     - `webhook_token` - Token of the webhook to execute.
   """
-  @spec execute_git_webhook(Webhook.id(), Webhook.token(), boolean) :: error | {:ok}
+  @spec execute_git_webhook(Webhook.id(), Webhook.token(), boolean) :: error | :ok
   def execute_git_webhook(webhook_id, webhook_token, wait \\ false) do
     request(:post, Constants.webhook_git(webhook_id, webhook_token), wait: wait)
   end
@@ -3466,8 +3466,8 @@ defmodule Nostrum.Api do
     If not given, this will be fetched from `Me`.
   - `command_id`: The current snowflake of the command.
   """
-  @spec delete_global_application_command(Snowflake.t()) :: {:ok} | error
-  @spec delete_global_application_command(User.id(), Snowflake.t()) :: {:ok} | error
+  @spec delete_global_application_command(Snowflake.t()) :: :ok | error
+  @spec delete_global_application_command(User.id(), Snowflake.t()) :: :ok | error
   def delete_global_application_command(application_id \\ Me.get().id, command_id) do
     request(:delete, Constants.global_application_command(application_id, command_id))
   end
@@ -3605,8 +3605,8 @@ defmodule Nostrum.Api do
   - `guild_id`: The guild on which the command exists.
   - `command_id`: The current snowflake of the command.
   """
-  @spec delete_guild_application_command(Guild.id(), Snowflake.t()) :: {:ok} | error
-  @spec delete_guild_application_command(User.id(), Guild.id(), Snowflake.t()) :: {:ok} | error
+  @spec delete_guild_application_command(Guild.id(), Snowflake.t()) :: :ok | error
+  @spec delete_guild_application_command(User.id(), Guild.id(), Snowflake.t()) :: :ok | error
   def delete_guild_application_command(
         application_id \\ Me.get().id,
         guild_id,
@@ -3660,7 +3660,7 @@ defmodule Nostrum.Api do
   Same as `create_interaction_response/3`, but directly takes the
   `t:Nostrum.Struct.Interaction.t/0` received from the gateway.
   """
-  @spec create_interaction_response(Interaction.t(), map()) :: {:ok} | error
+  @spec create_interaction_response(Interaction.t(), map()) :: :ok | error
   def create_interaction_response(interaction, response) do
     create_interaction_response(interaction.id, interaction.token, response)
   end
@@ -3669,7 +3669,7 @@ defmodule Nostrum.Api do
   Same as `create_interaction_response/2`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
   @doc since: "0.5.0"
-  @spec create_interaction_response!(Interaction.t(), map()) :: no_return() | {:ok}
+  @spec create_interaction_response!(Interaction.t(), map()) :: no_return() | :ok
   def create_interaction_response!(interaction, response) do
     create_interaction_response!(interaction.id, interaction.token, response)
   end
@@ -3708,7 +3708,7 @@ defmodule Nostrum.Api do
   original `t:Nostrum.Struct.Interaction.t/0` can also be passed
   directly. See `create_interaction_response/2`.
   """
-  @spec create_interaction_response(Interaction.id(), Interaction.token(), map()) :: {:ok} | error
+  @spec create_interaction_response(Interaction.id(), Interaction.token(), map()) :: :ok | error
   def create_interaction_response(id, token, response) do
     request(
       :post,
@@ -3786,13 +3786,13 @@ defmodule Nostrum.Api do
   `t:Nostrum.Struct.Interaction.t/0` received from the gateway.
   """
   @doc since: "0.5.0"
-  @spec delete_interaction_response(Interaction.t()) :: {:ok} | error
+  @spec delete_interaction_response(Interaction.t()) :: :ok | error
   def delete_interaction_response(%Interaction{} = interaction) do
     delete_interaction_response(interaction.application_id, interaction.token)
   end
 
   @doc since: "0.5.0"
-  @spec delete_interaction_response!(Interaction.t()) :: no_return() | {:ok}
+  @spec delete_interaction_response!(Interaction.t()) :: no_return() | :ok
   def delete_interaction_response!(%Interaction{} = interaction) do
     delete_interaction_response(interaction.application_id, interaction.token)
     |> bangify
@@ -3802,7 +3802,7 @@ defmodule Nostrum.Api do
   Deletes the original interaction response.
   """
   @doc since: "0.5.0"
-  @spec delete_interaction_response(User.id(), Interaction.token()) :: {:ok} | error
+  @spec delete_interaction_response(User.id(), Interaction.token()) :: :ok | error
   def delete_interaction_response(id \\ Me.get().id, token) do
     request(:delete, Constants.interaction_callback_original(id, token))
   end
@@ -3811,7 +3811,7 @@ defmodule Nostrum.Api do
   Same as `delete_interaction_response/2`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
   @doc since: "0.5.0"
-  @spec delete_interaction_response!(User.id(), Interaction.token()) :: no_return() | {:ok}
+  @spec delete_interaction_response!(User.id(), Interaction.token()) :: no_return() | :ok
   def delete_interaction_response!(id \\ Me.get().id, token) do
     delete_interaction_response(id, token)
     |> bangify
@@ -3849,7 +3849,7 @@ defmodule Nostrum.Api do
   - `message_id`: Followup message ID.
   """
   @spec delete_interaction_followup_message(User.id(), Interaction.token(), Message.id()) ::
-          {:ok} | error
+          :ok | error
   def delete_interaction_followup_message(
         application_id \\ Me.get().id,
         token,
@@ -3863,7 +3863,7 @@ defmodule Nostrum.Api do
   """
   @doc since: "0.5.0"
   @spec delete_interaction_followup_message!(User.id(), Interaction.token(), Message.id()) ::
-          no_return() | {:ok}
+          no_return() | :ok
   def delete_interaction_followup_message!(
         application_id \\ Me.get().id,
         token,
@@ -4295,7 +4295,7 @@ defmodule Nostrum.Api do
   Join an existing thread, requires that the thread is not archived.
   """
   @doc since: "0.5.1"
-  @spec join_thread(Channel.id()) :: {:ok} | error
+  @spec join_thread(Channel.id()) :: :ok | error
   def join_thread(thread_id) do
     request(:put, Constants.thread_member_me(thread_id))
   end
@@ -4312,7 +4312,7 @@ defmodule Nostrum.Api do
   Leave a thread, requires that the thread is not archived.
   """
   @doc since: "0.5.1"
-  @spec leave_thread(Channel.id()) :: {:ok} | error
+  @spec leave_thread(Channel.id()) :: :ok | error
   def leave_thread(thread_id) do
     request(:delete, Constants.thread_member_me(thread_id))
   end
@@ -4323,7 +4323,7 @@ defmodule Nostrum.Api do
   Also requires the `MANAGE_THREADS` permission, or the creator of the thread if the thread is private.
   """
   @doc since: "0.5.1"
-  @spec remove_thread_member(Channel.id(), User.id()) :: {:ok} | error
+  @spec remove_thread_member(Channel.id(), User.id()) :: :ok | error
   def remove_thread_member(thread_id, user_id) do
     request(:delete, Constants.thread_member(thread_id, user_id))
   end
@@ -4397,7 +4397,7 @@ defmodule Nostrum.Api do
   Delete an auto-moderation rule for a guild.
   """
   @doc since: "0.7.0"
-  @spec delete_guild_auto_moderation_rule(Guild.id(), AutoModerationRule.id()) :: {:ok} | error
+  @spec delete_guild_auto_moderation_rule(Guild.id(), AutoModerationRule.id()) :: :ok | error
   def delete_guild_auto_moderation_rule(guild_id, rule_id) do
     request(:delete, Constants.guild_auto_moderation_rule(guild_id, rule_id))
   end
@@ -4416,12 +4416,12 @@ defmodule Nostrum.Api do
     [{"x-audit-log-reason", reason} | headers]
   end
 
-  @spec request(map()) :: {:ok} | {:ok, String.t()} | error
+  @spec request(map()) :: :ok | {:ok, String.t()} | error
   def request(request) do
     Ratelimiter.queue(request)
   end
 
-  @spec request(atom(), String.t(), any, keyword() | map()) :: {:ok} | {:ok, String.t()} | error
+  @spec request(atom(), String.t(), any, keyword() | map()) :: :ok | {:ok, String.t()} | error
   def request(method, route, body \\ "", params \\ [])
 
   def request(method, route, %{} = body, params) when has_files(body),
@@ -4442,7 +4442,7 @@ defmodule Nostrum.Api do
   end
 
   @spec request_multipart(atom(), String.t(), any, keyword() | map()) ::
-          {:ok} | {:ok, String.t()} | error
+          :ok | {:ok, String.t()} | error
   def request_multipart(method, route, body, params \\ []) do
     boundary = generate_boundary()
     {files, body} = combine_files(body) |> pop_files()
@@ -4494,8 +4494,8 @@ defmodule Nostrum.Api do
       {:ok, body} ->
         body
 
-      {:ok} ->
-        {:ok}
+      :ok ->
+        :ok
     end
   end
 
@@ -4505,7 +4505,7 @@ defmodule Nostrum.Api do
 
   defp handle_request_with_decode(response, type)
   # add_guild_member/3 can return both a 201 and a 204
-  defp handle_request_with_decode({:ok}, _type), do: {:ok}
+  defp handle_request_with_decode(:ok, _type), do: :ok
   defp handle_request_with_decode({:error, _} = error, _type), do: error
 
   defp handle_request_with_decode({:ok, body}, type) do
