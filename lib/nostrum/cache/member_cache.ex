@@ -14,6 +14,8 @@ defmodule Nostrum.Cache.MemberCache do
   The user-facing functions of this module can be called with a custom cache as
   the final argument. This is mainly useful if you want to test the cache: by
   default, nostrum will use #{@default_cache_implementation}.
+
+  In order to use this cache, you must enable the `:guild_members` intent, and you must also enable the `request_guild_members: true` configuration option.
   """
   @moduledoc since: "0.7.0"
 
