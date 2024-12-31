@@ -417,6 +417,17 @@ defmodule Nostrum.Constants do
     def modal, do: 9
   end
 
+  defmodule InteractionContextType do
+    @moduledoc """
+    Defines available types for Interaction Context types
+    For more info please refer to https://discord.com/developers/docs/interactions/receiving-and-responding#interaction-object-interaction-context-types
+    """
+
+    def guild, do: 0
+    def bot_dm, do: 1
+    def private_channel, do: 2
+  end
+
   defmodule ChannelType do
     @moduledoc """
     Defines available types for channels
