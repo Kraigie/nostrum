@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.32.1">
+    <meta name="project" content="Nostrum v0.10.0">
+
+
+    <title>Nostrum.Api.Invite — Nostrum v0.10.0</title>
+    <link rel="stylesheet" href="dist/html-elixir-2C5PUTIB.css" />
+
+
+    <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
+    <script src="dist/handlebars.templates-IHH6HKET.js"></script>
+    <script src="dist/sidebar_items-86DB4ED6.js"></script>
+    <script src="docs_config.js"></script>
+    <script async src="dist/html-GXQ6W6IF.js"></script>
+
+
+  </head>
+  <body data-type="modules" class="page-module">
+    <script>
+
+      try {
+        var settings = JSON.parse(localStorage.getItem('ex_doc:settings') || '{}');
+
+        if (settings.theme === 'dark' ||
+           ((settings.theme === 'system' || settings.theme == null) &&
+             window.matchMedia('(prefers-color-scheme: dark)').matches)
+           ) {
+          document.body.classList.add('dark')
+        }
+      } catch (error) { }
+    </script>
+
+<div class="body-wrapper">
+
+<button id="sidebar-menu" class="sidebar-button sidebar-toggle" aria-label="toggle sidebar" aria-controls="sidebar">
+  <i class="ri-menu-line ri-lg" title="Collapse/expand sidebar"></i>
+</button>
+
+<nav id="sidebar" class="sidebar">
+
+  <div class="sidebar-header">
+    <div class="sidebar-projectInfo">
+
+        <a href="https://github.com/Kraigie/nostrum" class="sidebar-projectImage">
+          <img src="assets/logo.png" alt="Nostrum" />
+        </a>
+
+      <div>
+        <a href="https://github.com/Kraigie/nostrum" class="sidebar-projectName" translate="no">
+Nostrum
+        </a>
+        <div class="sidebar-projectVersion" translate="no">
+          v0.10.0
+        </div>
+      </div>
+    </div>
+    <ul id="sidebar-listNav" class="sidebar-listNav" role="tablist">
+      <li>
+        <button id="extras-list-tab-button" role="tab" data-type="extras" aria-controls="extras-tab-panel" aria-selected="true" tabindex="0">
+Pages
+        </button>
+      </li>
+
+        <li>
+          <button id="modules-list-tab-button" role="tab" data-type="modules" aria-controls="modules-tab-panel" aria-selected="false" tabindex="-1">
+            Modules
+          </button>
+        </li>
+
+
+        <li>
+          <button id="tasks-list-tab-button" role="tab" data-type="tasks" aria-controls="tasks-tab-panel" aria-selected="false" tabindex="-1">
+            <span translate="no">Mix</span> Tasks
+          </button>
+        </li>
+
+    </ul>
+  </div>
+
+  <div id="extras-tab-panel" class="sidebar-tabpanel" role="tabpanel" aria-labelledby="extras-list-tab-button">
+    <ul id="extras-full-list" class="full-list"></ul>
+  </div>
+
+    <div id="modules-tab-panel" class="sidebar-tabpanel" role="tabpanel" aria-labelledby="modules-list-tab-button" hidden>
+      <ul id="modules-full-list" class="full-list"></ul>
+    </div>
+
+
+    <div id="tasks-tab-panel" class="sidebar-tabpanel" role="tabpanel" aria-labelledby="tasks-list-tab-button" hidden>
+      <ul id="tasks-full-list" class="full-list"></ul>
+    </div>
+
+</nav>
+
+<main class="content">
+  <output role="status" id="toast"></output>
+
+  <div id="content" class="content-inner">
+    <div class="top-search">
+      <div class="search-settings">
+        <form class="search-bar" action="search.html">
+          <label class="search-label">
+            <span class="sr-only">Search documentation of Nostrum</span>
+            <input name="q" type="text" class="search-input" placeholder="Press / to search" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+          </label>
+          <button type="submit" class="search-button" aria-label="Submit Search">
+            <i class="ri-search-2-line ri-lg" aria-hidden="true" title="Submit search"></i>
+          </button>
+          <button type="button" tabindex="-1" class="search-close-button" aria-hidden="true">
+            <i class="ri-close-line ri-lg" title="Cancel search"></i>
+          </button>
+        </form>
+        <div class="autocomplete">
+        </div>
+        <button class="icon-settings display-settings">
+          <i class="ri-settings-3-line"></i>
+          <span class="sr-only">Settings</span>
+        </button>
+      </div>
+    </div>
+
+<div id="top-content">
+  <h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/invite.ex#L1" title="View Source" class="icon-action" rel="help">
+        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        <span class="sr-only">View Source</span>
+      </a>
+
+    <span translate="no">Nostrum.Api.Invite</span> 
+    <small class="app-vsn" translate="no">(Nostrum v0.10.0)</small>
+
+  </h1>
+
+
+    <section id="moduledoc">
+<p>Functions for interacting with the Discord API's invite endpoints.</p><p>See: <a href="https://discord.com/developers/docs/resources/invite">https://discord.com/developers/docs/resources/invite</a></p>
+    </section>
+
+</div>
+
+  <section id="summary" class="details-list">
+    <h1 class="section-heading">
+      <a class="hover-link" href="#summary">
+        <i class="ri-link-m" aria-hidden="true"></i>
+      </a>
+      <span class="text">Summary</span>
+    </h1>
+<div class="summary-functions summary">
+  <h2>
+    <a href="#functions">Functions</a>
+  </h2>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#channel_invites/1" translate="no">channel_invites(channel_id)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Gets a list of invites for a channel.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#create/3" translate="no">create(channel_id, options \\ [], reason \\ nil)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Creates an invite for a guild channel.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#delete/1" translate="no">delete(invite_code)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Deletes an invite by its <code class="inline">invite_code</code>.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#get/2" translate="no">get(invite_code, options \\ [])</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Gets an invite by its <code class="inline">invite_code</code>.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#guild_invites/1" translate="no">guild_invites(guild_id)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Gets a list of invites for a guild.</p></div>
+
+    </div>
+
+</div>
+
+  </section>
+
+
+  <section id="functions" class="details-list">
+    <h1 class="section-heading">
+      <a class="hover-link" href="#functions">
+        <i class="ri-link-m" aria-hidden="true"></i>
+      </a>
+      <span class="text">Functions</span>
+    </h1>
+    <div class="functions-list">
+<section class="detail" id="channel_invites/1">
+
+  <div class="detail-header">
+    <a href="#channel_invites/1" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">channel_invites(channel_id)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/invite.ex#L147" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> channel_invites(<a href="Nostrum.Struct.Channel.html#t:id/0">Nostrum.Struct.Channel.id</a>()) ::
+  <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>() | {:ok, [<a href="Nostrum.Struct.Invite.html#t:detailed_invite/0">Nostrum.Struct.Invite.detailed_invite</a>()]}</pre>
+
+      </div>
+
+<p>Gets a list of invites for a channel.</p><p>This endpoint requires the 'VIEW_CHANNEL' and 'MANAGE_CHANNELS' permissions.</p><p>If successful, returns <code class="inline">{:ok, invite}</code>. Otherwise, returns a
+<a href="Nostrum.Api.html#t:error/0"><code class="inline">Nostrum.Api.error/0</code></a>.</p><h2 id="channel_invites/1-examples" class="section-heading">
+  <a href="#channel_invites/1-examples" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Examples</span>
+</h2>
+<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Api.Invite</span><span class="o">.</span><span class="n">channel_invites</span><span class="p" data-group-id="8211755697-1">(</span><span class="mi">43189401384091</span><span class="p" data-group-id="8211755697-1">)</span><span class="w">
+</span><span class="p" data-group-id="8211755697-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="8211755697-3">[</span><span class="p" data-group-id="8211755697-4">%</span><span class="nc" data-group-id="8211755697-4">Nostrum.Struct.Invite</span><span class="p" data-group-id="8211755697-4">{</span><span class="p" data-group-id="8211755697-4">}</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="bp">_</span><span class="p" data-group-id="8211755697-3">]</span><span class="p" data-group-id="8211755697-2">}</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="create/3">
+
+    <span id="create/1"></span>
+
+    <span id="create/2"></span>
+
+  <div class="detail-header">
+    <a href="#create/3" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">create(channel_id, options \\ [], reason \\ nil)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/invite.ex#L113" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> create(
+  <a href="Nostrum.Struct.Channel.html#t:id/0">Nostrum.Struct.Channel.id</a>(),
+  <a href="Nostrum.Api.html#t:options/0">Nostrum.Api.options</a>(),
+  <a href="Nostrum.Struct.Guild.AuditLogEntry.html#t:reason/0">Nostrum.Struct.Guild.AuditLogEntry.reason</a>()
+) :: <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>() | {:ok, <a href="Nostrum.Struct.Invite.html#t:detailed_invite/0">Nostrum.Struct.Invite.detailed_invite</a>()}</pre>
+
+      </div>
+
+<p>Creates an invite for a guild channel.</p><p>An optional <code class="inline">reason</code> can be provided for the audit log.</p><p>This endpoint requires the <code class="inline">CREATE_INSTANT_INVITE</code> permission.</p><p>If successful, returns <code class="inline">{:ok, invite}</code>. Otherwise, returns a <a href="Nostrum.Api.html#t:error/0"><code class="inline">Nostrum.Api.error/0</code></a>.</p><h2 id="create/3-options" class="section-heading">
+  <a href="#create/3-options" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Options</span>
+</h2>
+<ul><li><code class="inline">:max_age</code> (integer) - duration of invite in seconds before expiry, or 0 for never.
+(default: <code class="inline">86400</code>)</li><li><code class="inline">:max_uses</code> (integer) - max number of uses or 0 for unlimited.
+(default: <code class="inline">0</code>)</li><li><code class="inline">:temporary</code> (boolean) - Whether the invite should grant temporary
+membership. (default: <code class="inline">false</code>)</li><li><code class="inline">:unique</code> (boolean) - used when creating unique one time use invites.
+(default: <code class="inline">false</code>)</li></ul><h2 id="create/3-examples" class="section-heading">
+  <a href="#create/3-examples" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Examples</span>
+</h2>
+<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api.Invite</span><span class="o">.</span><span class="n">create</span><span class="p" data-group-id="7825380288-1">(</span><span class="mi">41771983423143933</span><span class="p" data-group-id="7825380288-1">)</span><span class="w">
+</span><span class="p" data-group-id="7825380288-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="nc">Nostrum.Struct.Invite</span><span class="p" data-group-id="7825380288-3">{</span><span class="p" data-group-id="7825380288-3">}</span><span class="p" data-group-id="7825380288-2">}</span><span class="w">
+
+</span><span class="nc">Nostrum.Api.Invite</span><span class="o">.</span><span class="n">create</span><span class="p" data-group-id="7825380288-4">(</span><span class="mi">41771983423143933</span><span class="p">,</span><span class="w"> </span><span class="ss">max_uses</span><span class="p">:</span><span class="w"> </span><span class="mi">20</span><span class="p" data-group-id="7825380288-4">)</span><span class="w">
+</span><span class="p" data-group-id="7825380288-5">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="7825380288-6">%</span><span class="nc" data-group-id="7825380288-6">Nostrum.Struct.Invite</span><span class="p" data-group-id="7825380288-6">{</span><span class="p" data-group-id="7825380288-6">}</span><span class="p" data-group-id="7825380288-5">}</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="delete/1">
+
+  <div class="detail-header">
+    <a href="#delete/1" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">delete(invite_code)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/invite.ex#L56" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> delete(<a href="Nostrum.Struct.Invite.html#t:code/0">Nostrum.Struct.Invite.code</a>()) ::
+  <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>() | {:ok, <a href="Nostrum.Struct.Invite.html#t:simple_invite/0">Nostrum.Struct.Invite.simple_invite</a>()}</pre>
+
+      </div>
+
+<p>Deletes an invite by its <code class="inline">invite_code</code>.</p><p>This endpoint requires the <code class="inline">MANAGE_CHANNELS</code> permission.</p><p>If successful, returns <code class="inline">{:ok, invite}</code>. Otherwise, returns a
+<a href="Nostrum.Api.html#t:error/0"><code class="inline">Nostrum.Api.error/0</code></a>.</p><h2 id="delete/1-examples" class="section-heading">
+  <a href="#delete/1-examples" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Examples</span>
+</h2>
+<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api.Invite</span><span class="o">.</span><span class="n">delete</span><span class="p" data-group-id="4927571548-1">(</span><span class="s">&quot;zsjUsC&quot;</span><span class="p" data-group-id="4927571548-1">)</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="get/2">
+
+    <span id="get/1"></span>
+
+  <div class="detail-header">
+    <a href="#get/2" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">get(invite_code, options \\ [])</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/invite.ex#L36" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> get(<a href="Nostrum.Struct.Invite.html#t:code/0">Nostrum.Struct.Invite.code</a>(), <a href="Nostrum.Api.html#t:options/0">Nostrum.Api.options</a>()) ::
+  <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>() | {:ok, <a href="Nostrum.Struct.Invite.html#t:simple_invite/0">Nostrum.Struct.Invite.simple_invite</a>()}</pre>
+
+      </div>
+
+<p>Gets an invite by its <code class="inline">invite_code</code>.</p><p>If successful, returns <code class="inline">{:ok, invite}</code>. Otherwise, returns a
+<a href="Nostrum.Api.html#t:error/0"><code class="inline">Nostrum.Api.error/0</code></a>.</p><h2 id="get/2-options" class="section-heading">
+  <a href="#get/2-options" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Options</span>
+</h2>
+<ul><li><code class="inline">:with_counts</code> (boolean) - whether to include member count fields</li></ul><h2 id="get/2-examples" class="section-heading">
+  <a href="#get/2-examples" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Examples</span>
+</h2>
+<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api.Invite</span><span class="o">.</span><span class="n">get</span><span class="p" data-group-id="2154321056-1">(</span><span class="s">&quot;zsjUsC&quot;</span><span class="p" data-group-id="2154321056-1">)</span><span class="w">
+
+</span><span class="nc">Nostrum.Api.Invite</span><span class="o">.</span><span class="n">get</span><span class="p" data-group-id="2154321056-2">(</span><span class="s">&quot;zsjUsC&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">with_counts</span><span class="p">:</span><span class="w"> </span><span class="no">true</span><span class="p" data-group-id="2154321056-2">)</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="guild_invites/1">
+
+  <div class="detail-header">
+    <a href="#guild_invites/1" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">guild_invites(guild_id)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/invite.ex#L76" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> guild_invites(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>()) ::
+  <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>() | {:ok, [<a href="Nostrum.Struct.Invite.html#t:detailed_invite/0">Nostrum.Struct.Invite.detailed_invite</a>()]}</pre>
+
+      </div>
+
+<p>Gets a list of invites for a guild.</p><p>This endpoint requires the <code class="inline">MANAGE_GUILD</code> permission.</p><p>If successful, returns <code class="inline">{:ok, invites}</code>. Otherwise, returns a <a href="Nostrum.Api.html#t:error/0"><code class="inline">Nostrum.Api.error/0</code></a>.</p><h2 id="guild_invites/1-examples" class="section-heading">
+  <a href="#guild_invites/1-examples" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Examples</span>
+</h2>
+<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api.Invite</span><span class="o">.</span><span class="n">guild_invites</span><span class="p" data-group-id="0621379749-1">(</span><span class="mi">81384788765712384</span><span class="p" data-group-id="0621379749-1">)</span><span class="w">
+</span><span class="p" data-group-id="0621379749-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="0621379749-3">[</span><span class="p" data-group-id="0621379749-4">%</span><span class="nc" data-group-id="0621379749-4">Nostrum.Struct.Invite</span><span class="p" data-group-id="0621379749-4">{</span><span class="p" data-group-id="0621379749-4">}</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="bp">_</span><span class="p" data-group-id="0621379749-3">]</span><span class="p" data-group-id="0621379749-2">}</span></code></pre>
+  </section>
+</section>
+
+    </div>
+  </section>
+
+    <footer class="footer">
+      <p>
+
+          <span class="line">
+            <a href="https://hex.pm/packages/nostrum/0.10.0" class="footer-hex-package">Hex Package</a>
+
+            <a href="https://preview.hex.pm/preview/nostrum/0.10.0">Hex Preview</a>
+
+          </span>
+
+        <span class="line">
+          <button class="a-main footer-button display-quick-switch" title="Search HexDocs packages">
+            Search HexDocs
+          </button>
+
+            <a href="Nostrum.epub" title="ePub version">
+              Download ePub version
+            </a>
+
+        </span>
+      </p>
+
+      <p class="built-using">
+        Built using
+        <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.32.1) for the
+
+          <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
+
+      </p>
+
+    </footer>
+  </div>
+</main>
+</div>
+
+
+  </body>
+</html>

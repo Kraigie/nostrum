@@ -1,0 +1,2195 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.32.1">
+    <meta name="project" content="Nostrum v0.10.0">
+
+
+    <title>Nostrum.Api.Guild — Nostrum v0.10.0</title>
+    <link rel="stylesheet" href="dist/html-elixir-2C5PUTIB.css" />
+
+
+    <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
+    <script src="dist/handlebars.templates-IHH6HKET.js"></script>
+    <script src="dist/sidebar_items-86DB4ED6.js"></script>
+    <script src="docs_config.js"></script>
+    <script async src="dist/html-GXQ6W6IF.js"></script>
+
+
+  </head>
+  <body data-type="modules" class="page-module">
+    <script>
+
+      try {
+        var settings = JSON.parse(localStorage.getItem('ex_doc:settings') || '{}');
+
+        if (settings.theme === 'dark' ||
+           ((settings.theme === 'system' || settings.theme == null) &&
+             window.matchMedia('(prefers-color-scheme: dark)').matches)
+           ) {
+          document.body.classList.add('dark')
+        }
+      } catch (error) { }
+    </script>
+
+<div class="body-wrapper">
+
+<button id="sidebar-menu" class="sidebar-button sidebar-toggle" aria-label="toggle sidebar" aria-controls="sidebar">
+  <i class="ri-menu-line ri-lg" title="Collapse/expand sidebar"></i>
+</button>
+
+<nav id="sidebar" class="sidebar">
+
+  <div class="sidebar-header">
+    <div class="sidebar-projectInfo">
+
+        <a href="https://github.com/Kraigie/nostrum" class="sidebar-projectImage">
+          <img src="assets/logo.png" alt="Nostrum" />
+        </a>
+
+      <div>
+        <a href="https://github.com/Kraigie/nostrum" class="sidebar-projectName" translate="no">
+Nostrum
+        </a>
+        <div class="sidebar-projectVersion" translate="no">
+          v0.10.0
+        </div>
+      </div>
+    </div>
+    <ul id="sidebar-listNav" class="sidebar-listNav" role="tablist">
+      <li>
+        <button id="extras-list-tab-button" role="tab" data-type="extras" aria-controls="extras-tab-panel" aria-selected="true" tabindex="0">
+Pages
+        </button>
+      </li>
+
+        <li>
+          <button id="modules-list-tab-button" role="tab" data-type="modules" aria-controls="modules-tab-panel" aria-selected="false" tabindex="-1">
+            Modules
+          </button>
+        </li>
+
+
+        <li>
+          <button id="tasks-list-tab-button" role="tab" data-type="tasks" aria-controls="tasks-tab-panel" aria-selected="false" tabindex="-1">
+            <span translate="no">Mix</span> Tasks
+          </button>
+        </li>
+
+    </ul>
+  </div>
+
+  <div id="extras-tab-panel" class="sidebar-tabpanel" role="tabpanel" aria-labelledby="extras-list-tab-button">
+    <ul id="extras-full-list" class="full-list"></ul>
+  </div>
+
+    <div id="modules-tab-panel" class="sidebar-tabpanel" role="tabpanel" aria-labelledby="modules-list-tab-button" hidden>
+      <ul id="modules-full-list" class="full-list"></ul>
+    </div>
+
+
+    <div id="tasks-tab-panel" class="sidebar-tabpanel" role="tabpanel" aria-labelledby="tasks-list-tab-button" hidden>
+      <ul id="tasks-full-list" class="full-list"></ul>
+    </div>
+
+</nav>
+
+<main class="content">
+  <output role="status" id="toast"></output>
+
+  <div id="content" class="content-inner">
+    <div class="top-search">
+      <div class="search-settings">
+        <form class="search-bar" action="search.html">
+          <label class="search-label">
+            <span class="sr-only">Search documentation of Nostrum</span>
+            <input name="q" type="text" class="search-input" placeholder="Press / to search" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+          </label>
+          <button type="submit" class="search-button" aria-label="Submit Search">
+            <i class="ri-search-2-line ri-lg" aria-hidden="true" title="Submit search"></i>
+          </button>
+          <button type="button" tabindex="-1" class="search-close-button" aria-hidden="true">
+            <i class="ri-close-line ri-lg" title="Cancel search"></i>
+          </button>
+        </form>
+        <div class="autocomplete">
+        </div>
+        <button class="icon-settings display-settings">
+          <i class="ri-settings-3-line"></i>
+          <span class="sr-only">Settings</span>
+        </button>
+      </div>
+    </div>
+
+<div id="top-content">
+  <h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L1" title="View Source" class="icon-action" rel="help">
+        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        <span class="sr-only">View Source</span>
+      </a>
+
+    <span translate="no">Nostrum.Api.Guild</span> 
+    <small class="app-vsn" translate="no">(Nostrum v0.10.0)</small>
+
+  </h1>
+
+
+    <section id="moduledoc">
+<p>Functions for interacting with the Discord API's guild endpoints.</p><p>See: <a href="https://discord.com/developers/docs/resources/guild">https://discord.com/developers/docs/resources/guild</a></p>
+    </section>
+
+</div>
+
+  <section id="summary" class="details-list">
+    <h1 class="section-heading">
+      <a class="hover-link" href="#summary">
+        <i class="ri-link-m" aria-hidden="true"></i>
+      </a>
+      <span class="text">Summary</span>
+    </h1>
+<div class="summary-functions summary">
+  <h2>
+    <a href="#functions">Functions</a>
+  </h2>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#add_member/3" translate="no">add_member(guild_id, user_id, options)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Puts a user in a guild.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#add_member_role/4" translate="no">add_member_role(guild_id, user_id, role_id, reason \\ nil)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Adds a role to a member.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#audit_log/2" translate="no">audit_log(guild_id, options \\ [])</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Get the <a href="Nostrum.Struct.Guild.AuditLog.html#t:t/0"><code class="inline">Nostrum.Struct.Guild.AuditLog.t/0</code></a> for the given <code class="inline">guild_id</code>.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#ban/2" translate="no">ban(guild_id, user_id)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Gets a ban object for the given user from a guild.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#ban_member/4" translate="no">ban_member(guild_id, user_id, days_to_delete, reason \\ nil)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Bans a user from a guild.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#bans/1" translate="no">bans(guild_id)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Gets a list of users banned from a guild.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#begin_prune/3" translate="no">begin_prune(guild_id, days, reason \\ nil)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Begins a guild prune to prune members within <code class="inline">days</code>.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#channels/1" translate="no">channels(guild_id)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Gets a list of guild channels.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#create_emoji/3" translate="no">create_emoji(guild_id, options, reason \\ nil)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Creates a new emoji for the given guild.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#create_integration/2" translate="no">create_integration(guild_id, options)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Creates a new guild integeration.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#create_role/3" translate="no">create_role(guild_id, options, reason \\ nil)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Creates a guild role.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#delete/1" translate="no">delete(guild_id)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Deletes a guild.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#delete_emoji/3" translate="no">delete_emoji(guild_id, emoji_id, reason \\ nil)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Deletes the given emoji.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#delete_integration/2" translate="no">delete_integration(guild_id, integration_id)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Deletes a guild integeration.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#delete_role/3" translate="no">delete_role(guild_id, role_id, reason \\ nil)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Deletes a role from a guild.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#emoji/2" translate="no">emoji(guild_id, emoji_id)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Gets an emoji for the given guild and emoji ids.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#emojis/1" translate="no">emojis(guild_id)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Gets a list of emojis for a given guild.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#estimate_prune_count/2" translate="no">estimate_prune_count(guild_id, days)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Gets the number of members that would be removed in a prune given <code class="inline">days</code>.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#get/1" translate="no">get(guild_id)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Gets a guild.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#integrations/1" translate="no">integrations(guild_id)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Gets a list of guild integerations.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#kick_member/3" translate="no">kick_member(guild_id, user_id, reason \\ nil)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Removes a member from a guild.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#leave/1" translate="no">leave(guild_id)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Leaves a guild.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#member/2" translate="no">member(guild_id, user_id)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Gets a guild member.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#members/2" translate="no">members(guild_id, options \\ %{})</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Gets a list of a guild's members.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#modify/3" translate="no">modify(guild_id, options \\ [], reason \\ nil)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Modifies a guild's settings.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#modify_channel_positions/2" translate="no">modify_channel_positions(guild_id, positions)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Reorders a guild's channels.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#modify_emoji/4" translate="no">modify_emoji(guild_id, emoji_id, options \\ %{}, reason \\ nil)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Modify the given emoji.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#modify_integration/3" translate="no">modify_integration(guild_id, integration_id, options)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Changes the settings and behaviours for a guild integeration.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#modify_member/4" translate="no">modify_member(guild_id, user_id, options \\ %{}, reason \\ nil)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Modifies a guild member's attributes.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#modify_role/4" translate="no">modify_role(guild_id, role_id, options, reason \\ nil)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Modifies a guild role.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#modify_role_positions/3" translate="no">modify_role_positions(guild_id, positions, reason \\ nil)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Reorders a guild's roles.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#modify_self_nick/2" translate="no">modify_self_nick(guild_id, options \\ %{})</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Modifies the nickname of the current user in a guild.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#modify_widget/2" translate="no">modify_widget(guild_id, options)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Modifies a guild embed.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#remove_member_role/4" translate="no">remove_member_role(guild_id, user_id, role_id, reason \\ nil)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Removes a role from a member.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#roles/1" translate="no">roles(guild_id)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Gets a guild's roles.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#scheduled_events/1" translate="no">scheduled_events(guild_id)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Get a list of scheduled events for a guild.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#sync_integration/2" translate="no">sync_integration(guild_id, integration_id)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Syncs a guild integration.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#unban_member/3" translate="no">unban_member(guild_id, user_id, reason \\ nil)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Removes a ban for a user.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#voice_region/1" translate="no">voice_region(guild_id)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Gets a list of voice regions for the guild.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#voice_regions/0" translate="no">voice_regions()</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Gets a list of voice regions.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#webhooks/1" translate="no">webhooks(guild_id)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Gets a list of webhooks for a guild.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#widget/1" translate="no">widget(guild_id)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Gets a guild embed.</p></div>
+
+    </div>
+
+</div>
+
+  </section>
+
+
+  <section id="functions" class="details-list">
+    <h1 class="section-heading">
+      <a class="hover-link" href="#functions">
+        <i class="ri-link-m" aria-hidden="true"></i>
+      </a>
+      <span class="text">Functions</span>
+    </h1>
+    <div class="functions-list">
+<section class="detail" id="add_member/3">
+
+  <div class="detail-header">
+    <a href="#add_member/3" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">add_member(guild_id, user_id, options)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L61" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> add_member(
+  <a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(),
+  <a href="Nostrum.Struct.User.html#t:id/0">Nostrum.Struct.User.id</a>(),
+  <a href="Nostrum.Api.html#t:options/0">Nostrum.Api.options</a>()
+) ::
+  <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>() | {:ok, <a href="Nostrum.Struct.Guild.Member.html#t:t/0">Nostrum.Struct.Guild.Member.t</a>()} | {:ok}</pre>
+
+      </div>
+
+<p>Puts a user in a guild.</p><p>This endpoint fires the <a href="Nostrum.Consumer.html#t:guild_member_add/0"><code class="inline">Nostrum.Consumer.guild_member_add/0</code></a> event.
+It requires the <code class="inline">CREATE_INSTANT_INVITE</code> permission. Additionally, it
+situationally requires the <code class="inline">MANAGE_NICKNAMES</code>, <code class="inline">MANAGE_ROLES</code>,
+<code class="inline">MUTE_MEMBERS</code>, and <code class="inline">DEAFEN_MEMBERS</code> permissions.</p><p>If successful, returns <code class="inline">{:ok, member}</code> or <code class="inline">{:ok}</code> if the user was already a member of the
+guild. Otherwise, returns a <a href="Nostrum.Api.html#t:error/0"><code class="inline">Nostrum.Api.error/0</code></a>.</p><h2 id="add_member/3-options" class="section-heading">
+  <a href="#add_member/3-options" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Options</span>
+</h2>
+<ul><li><code class="inline">:access_token</code> (string) - the user's oauth2 access token</li><li><code class="inline">:nick</code> (string) - value to set users nickname to</li><li><code class="inline">:roles</code> (list of <a href="Nostrum.Struct.Guild.Role.html#t:id/0"><code class="inline">Nostrum.Struct.Guild.Role.id/0</code></a>) - array of role ids the member is assigned</li><li><code class="inline">:mute</code> (boolean) - if the user is muted</li><li><code class="inline">:deaf</code> (boolean) - if the user is deafened</li></ul><p><code class="inline">:access_token</code> is always required.</p><h2 id="add_member/3-examples" class="section-heading">
+  <a href="#add_member/3-examples" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Examples</span>
+</h2>
+<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api.Guild</span><span class="o">.</span><span class="n">add_member</span><span class="p" data-group-id="6202898634-1">(</span><span class="w">
+  </span><span class="mi">41771983423143937</span><span class="p">,</span><span class="w">
+  </span><span class="mi">18374719829378473</span><span class="p">,</span><span class="w">
+  </span><span class="ss">access_token</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;6qrZcUqja7812RVdnEKjpzOL4CvHBFG&quot;</span><span class="p">,</span><span class="w">
+  </span><span class="ss">nick</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;nostrum&quot;</span><span class="p">,</span><span class="w">
+  </span><span class="ss">roles</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="6202898634-2">[</span><span class="mi">431849301</span><span class="p">,</span><span class="w"> </span><span class="mi">913809431</span><span class="p" data-group-id="6202898634-2">]</span><span class="w">
+</span><span class="p" data-group-id="6202898634-1">)</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="add_member_role/4">
+
+    <span id="add_member_role/3"></span>
+
+  <div class="detail-header">
+    <a href="#add_member_role/4" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">add_member_role(guild_id, user_id, role_id, reason \\ nil)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L81" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> add_member_role(
+  <a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(),
+  <a href="Nostrum.Struct.User.html#t:id/0">Nostrum.Struct.User.id</a>(),
+  <a href="Nostrum.Struct.Guild.Role.html#t:id/0">Nostrum.Struct.Guild.Role.id</a>(),
+  <a href="Nostrum.Struct.Guild.AuditLogEntry.html#t:reason/0">Nostrum.Struct.Guild.AuditLogEntry.reason</a>()
+) :: <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>() | {:ok}</pre>
+
+      </div>
+
+<p>Adds a role to a member.</p><p>Role to add is specified by <code class="inline">role_id</code>.
+User to add role to is specified by <code class="inline">guild_id</code> and <code class="inline">user_id</code>.
+An optional <code class="inline">reason</code> can be given for the audit log.</p>
+  </section>
+</section>
+<section class="detail" id="audit_log/2">
+
+    <span id="audit_log/1"></span>
+
+  <div class="detail-header">
+    <a href="#audit_log/2" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">audit_log(guild_id, options \\ [])</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L358" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> audit_log(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(), <a href="Nostrum.Api.html#t:options/0">Nostrum.Api.options</a>()) ::
+  {:ok, <a href="Nostrum.Struct.Guild.AuditLog.html#t:t/0">Nostrum.Struct.Guild.AuditLog.t</a>()} | <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>()</pre>
+
+      </div>
+
+<p>Get the <a href="Nostrum.Struct.Guild.AuditLog.html#t:t/0"><code class="inline">Nostrum.Struct.Guild.AuditLog.t/0</code></a> for the given <code class="inline">guild_id</code>.</p><h2 id="audit_log/2-options" class="section-heading">
+  <a href="#audit_log/2-options" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Options</span>
+</h2>
+<ul><li><code class="inline">:user_id</code> (<a href="Nostrum.Struct.User.html#t:id/0"><code class="inline">Nostrum.Struct.User.id/0</code></a>) - filter the log for a user ID</li><li><code class="inline">:action_type</code> (<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types"><code class="inline">integer/0</code></a>) - filter the log by audit log type, see <a href="https://discord.com/developers/docs/resources/audit-log#audit-log-entry-object-audit-log-events">Audit Log Events</a></li><li><code class="inline">:before</code> (<code class="inline">t:Nostrum.Struct.Snowflake.t/0</code>) - filter the log before a certain entry ID</li><li><code class="inline">:limit</code> (<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types"><code class="inline">pos_integer/0</code></a>) - how many entries are returned (default 50, minimum 1, maximum 100)</li></ul>
+  </section>
+</section>
+<section class="detail" id="ban/2">
+
+  <div class="detail-header">
+    <a href="#ban/2" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">ban(guild_id, user_id)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L368" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+      <span class="note">(since 1.x.x)</span>
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> ban(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(), <a href="Nostrum.Struct.User.html#t:id/0">Nostrum.Struct.User.id</a>()) ::
+  <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>() | {:ok, <a href="Nostrum.Struct.Guild.Ban.html#t:t/0">Nostrum.Struct.Guild.Ban.t</a>()}</pre>
+
+      </div>
+
+<p>Gets a ban object for the given user from a guild.</p>
+  </section>
+</section>
+<section class="detail" id="ban_member/4">
+
+    <span id="ban_member/3"></span>
+
+  <div class="detail-header">
+    <a href="#ban_member/4" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">ban_member(guild_id, user_id, days_to_delete, reason \\ nil)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L131" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> ban_member(
+  <a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(),
+  <a href="Nostrum.Struct.User.html#t:id/0">Nostrum.Struct.User.id</a>(),
+  <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>(),
+  <a href="Nostrum.Struct.Guild.AuditLogEntry.html#t:reason/0">Nostrum.Struct.Guild.AuditLogEntry.reason</a>()
+) :: <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>() | {:ok}</pre>
+
+      </div>
+
+<p>Bans a user from a guild.</p><p>User to delete is specified by <code class="inline">guild_id</code> and <code class="inline">user_id</code>.
+An optional <code class="inline">reason</code> can be specified for the audit log.</p>
+  </section>
+</section>
+<section class="detail" id="bans/1">
+
+  <div class="detail-header">
+    <a href="#bans/1" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">bans(guild_id)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L379" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> bans(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>()) ::
+  <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>() | {:ok, [<a href="Nostrum.Struct.User.html#t:t/0">Nostrum.Struct.User.t</a>()]}</pre>
+
+      </div>
+
+<p>Gets a list of users banned from a guild.</p><p>Guild to get bans for is specified by <code class="inline">guild_id</code>.</p>
+  </section>
+</section>
+<section class="detail" id="begin_prune/3">
+
+    <span id="begin_prune/2"></span>
+
+  <div class="detail-header">
+    <a href="#begin_prune/3" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">begin_prune(guild_id, days, reason \\ nil)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L110" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> begin_prune(
+  <a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(),
+  1..30,
+  <a href="Nostrum.Struct.Guild.AuditLogEntry.html#t:reason/0">Nostrum.Struct.Guild.AuditLogEntry.reason</a>()
+) ::
+  <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>() | {:ok, %{pruned: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>()}}</pre>
+
+      </div>
+
+<p>Begins a guild prune to prune members within <code class="inline">days</code>.</p><p>An optional <code class="inline">reason</code> can be provided for the guild audit log.</p><p>This endpoint requires the <code class="inline">KICK_MEMBERS</code> permission. It fires multiple
+<a href="Nostrum.Consumer.html#t:guild_member_remove/0"><code class="inline">Nostrum.Consumer.guild_member_remove/0</code></a> events.</p><p>If successful, returns <code class="inline">{:ok, %{pruned: pruned}}</code>. Otherwise, returns a <a href="Nostrum.Api.html#t:error/0"><code class="inline">Nostrum.Api.error/0</code></a>.</p><h2 id="begin_prune/3-examples" class="section-heading">
+  <a href="#begin_prune/3-examples" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Examples</span>
+</h2>
+<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api.Guild</span><span class="o">.</span><span class="n">begin_prune</span><span class="p" data-group-id="0116280571-1">(</span><span class="mi">81384788765712384</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p" data-group-id="0116280571-1">)</span><span class="w">
+</span><span class="p" data-group-id="0116280571-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="0116280571-3">%{</span><span class="ss">pruned</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p" data-group-id="0116280571-3">}</span><span class="p" data-group-id="0116280571-2">}</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="channels/1">
+
+  <div class="detail-header">
+    <a href="#channels/1" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">channels(guild_id)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L397" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> channels(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>()) ::
+  <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>() | {:ok, [<a href="Nostrum.Struct.Channel.html#t:guild_channel/0">Nostrum.Struct.Channel.guild_channel</a>()]}</pre>
+
+      </div>
+
+<p>Gets a list of guild channels.</p><p>If successful, returns <code class="inline">{:ok, channels}</code>. Otherwise, returns a <a href="Nostrum.Api.html#t:error/0"><code class="inline">Nostrum.Api.error/0</code></a>.</p><h2 id="channels/1-examples" class="section-heading">
+  <a href="#channels/1-examples" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Examples</span>
+</h2>
+<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api.Guild</span><span class="o">.</span><span class="n">channels</span><span class="p" data-group-id="7639256802-1">(</span><span class="mi">81384788765712384</span><span class="p" data-group-id="7639256802-1">)</span><span class="w">
+</span><span class="p" data-group-id="7639256802-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="7639256802-3">[</span><span class="p" data-group-id="7639256802-4">%</span><span class="nc" data-group-id="7639256802-4">Nostrum.Struct.Channel</span><span class="p" data-group-id="7639256802-4">{</span><span class="ss">guild_id</span><span class="p">:</span><span class="w"> </span><span class="mi">81384788765712384</span><span class="p" data-group-id="7639256802-4">}</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="bp">_</span><span class="p" data-group-id="7639256802-3">]</span><span class="p" data-group-id="7639256802-2">}</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="create_emoji/3">
+
+    <span id="create_emoji/2"></span>
+
+  <div class="detail-header">
+    <a href="#create_emoji/3" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">create_emoji(guild_id, options, reason \\ nil)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L170" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> create_emoji(
+  <a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(),
+  <a href="Nostrum.Api.html#t:options/0">Nostrum.Api.options</a>(),
+  <a href="Nostrum.Struct.Guild.AuditLogEntry.html#t:reason/0">Nostrum.Struct.Guild.AuditLogEntry.reason</a>()
+) :: <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>() | {:ok, <a href="Nostrum.Struct.Emoji.html#t:t/0">Nostrum.Struct.Emoji.t</a>()}</pre>
+
+      </div>
+
+<p>Creates a new emoji for the given guild.</p><p>This endpoint requires the <code class="inline">MANAGE_EMOJIS</code> permission. It fires a
+<a href="Nostrum.Consumer.html#t:guild_emojis_update/0"><code class="inline">Nostrum.Consumer.guild_emojis_update/0</code></a> event.</p><p>An optional <code class="inline">reason</code> can be provided for the audit log.</p><p>If successful, returns <code class="inline">{:ok, emoji}</code>. Otherwise, returns <a href="Nostrum.Api.html#t:error/0"><code class="inline">Nostrum.Api.error/0</code></a>.</p><h2 id="create_emoji/3-options" class="section-heading">
+  <a href="#create_emoji/3-options" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Options</span>
+</h2>
+<ul><li><code class="inline">:name</code> (string) - name of the emoji</li><li><code class="inline">:image</code> (base64 data URI) - the 128x128 emoji image. Maximum size of 256kb</li><li><code class="inline">:roles</code> (list of <a href="Nostrum.Snowflake.html#t:t/0"><code class="inline">Nostrum.Snowflake.t/0</code></a>) - roles for which this emoji will be whitelisted
+(default: [])</li></ul><p><code class="inline">:name</code> and <code class="inline">:image</code> are always required.</p><h2 id="create_emoji/3-examples" class="section-heading">
+  <a href="#create_emoji/3-examples" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Examples</span>
+</h2>
+<pre><code class="makeup elixir" translate="no"><span class="n">image</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;data:image/png;base64,YXl5IGJieSB1IGx1a2luIDQgc3VtIGZ1az8=&quot;</span><span class="w">
+
+</span><span class="nc">Nostrum.Api.Guild</span><span class="o">.</span><span class="n">create_emoji</span><span class="p" data-group-id="9932415003-1">(</span><span class="mi">43189401384091</span><span class="p">,</span><span class="w"> </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;nostrum&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">image</span><span class="p">:</span><span class="w"> </span><span class="n">image</span><span class="p">,</span><span class="w"> </span><span class="ss">roles</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="9932415003-2">[</span><span class="p" data-group-id="9932415003-2">]</span><span class="p" data-group-id="9932415003-1">)</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="create_integration/2">
+
+  <div class="detail-header">
+    <a href="#create_integration/2" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">create_integration(guild_id, options)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L200" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> create_integration(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>(), %{type: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>(), id: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>()}) ::
+  <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>() | {:ok}</pre>
+
+      </div>
+
+<p>Creates a new guild integeration.</p><p>Guild to create integration with is specified by <code class="inline">guild_id</code>.</p><p><code class="inline">options</code> is a map with the following requires keys:</p><ul><li><code class="inline">type</code> - Integration type.</li><li><code class="inline">id</code> - Integeration id.</li></ul>
+  </section>
+</section>
+<section class="detail" id="create_role/3">
+
+    <span id="create_role/2"></span>
+
+  <div class="detail-header">
+    <a href="#create_role/3" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">create_role(guild_id, options, reason \\ nil)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L232" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> create_role(
+  <a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(),
+  <a href="Nostrum.Api.html#t:options/0">Nostrum.Api.options</a>(),
+  <a href="Nostrum.Struct.Guild.AuditLogEntry.html#t:reason/0">Nostrum.Struct.Guild.AuditLogEntry.reason</a>()
+) :: <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>() | {:ok, <a href="Nostrum.Struct.Guild.Role.html#t:t/0">Nostrum.Struct.Guild.Role.t</a>()}</pre>
+
+      </div>
+
+<p>Creates a guild role.</p><p>An optional reason for the audit log can be provided via <code class="inline">reason</code>.</p><p>This endpoint requires the <code class="inline">MANAGE_ROLES</code> permission. It fires a
+<a href="Nostrum.Consumer.html#t:guild_role_create/0"><code class="inline">Nostrum.Consumer.guild_role_create/0</code></a> event.</p><p>If successful, returns <code class="inline">{:ok, role}</code>. Otherwise, returns a <a href="Nostrum.Api.html#t:error/0"><code class="inline">Nostrum.Api.error/0</code></a>.</p><h2 id="create_role/3-options" class="section-heading">
+  <a href="#create_role/3-options" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Options</span>
+</h2>
+<ul><li><code class="inline">:name</code> (string) - name of the role (default: &quot;new role&quot;)</li><li><code class="inline">:permissions</code> (integer) - bitwise of the enabled/disabled permissions (default: @everyone perms)</li><li><code class="inline">:color</code> (integer) - RGB color value (default: 0)</li><li><code class="inline">:hoist</code> (boolean) - whether the role should be displayed separately in the sidebar (default: false)</li><li><code class="inline">:mentionable</code> (boolean) - whether the role should be mentionable (default: false)</li><li><code class="inline">:icon</code> (string) - URL role icon (default: <code class="inline">nil</code>)</li><li><code class="inline">:unicode_emoji</code> (string) - standard unicode character emoji role icon (default: <code class="inline">nil</code>)</li></ul><h2 id="create_role/3-examples" class="section-heading">
+  <a href="#create_role/3-examples" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Examples</span>
+</h2>
+<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api.Guild</span><span class="o">.</span><span class="n">create_role</span><span class="p" data-group-id="6014823646-1">(</span><span class="mi">41771983423143937</span><span class="p">,</span><span class="w"> </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;nostrum-club&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">hoist</span><span class="p">:</span><span class="w"> </span><span class="no">true</span><span class="p" data-group-id="6014823646-1">)</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="delete/1">
+
+  <div class="detail-header">
+    <a href="#delete/1" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">delete(guild_id)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L265" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> delete(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>()) :: <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>() | {:ok}</pre>
+
+      </div>
+
+<p>Deletes a guild.</p><p>This endpoint requires that the current user is the owner of the guild.
+It fires the <a href="Nostrum.Consumer.html#t:guild_delete/0"><code class="inline">Nostrum.Consumer.guild_delete/0</code></a> event.</p><p>If successful, returns <code class="inline">{:ok}</code>. Otherwise, returns a <a href="Nostrum.Api.html#t:error/0"><code class="inline">Nostrum.Api.error/0</code></a>.</p><h2 id="delete/1-examples" class="section-heading">
+  <a href="#delete/1-examples" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Examples</span>
+</h2>
+<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api.Guild</span><span class="o">.</span><span class="n">delete</span><span class="p" data-group-id="9585323633-1">(</span><span class="mi">81384788765712384</span><span class="p" data-group-id="9585323633-1">)</span><span class="w">
+</span><span class="p" data-group-id="9585323633-2">{</span><span class="ss">:ok</span><span class="p" data-group-id="9585323633-2">}</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="delete_emoji/3">
+
+    <span id="delete_emoji/2"></span>
+
+  <div class="detail-header">
+    <a href="#delete_emoji/3" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">delete_emoji(guild_id, emoji_id, reason \\ nil)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L281" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> delete_emoji(
+  <a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(),
+  <a href="Nostrum.Struct.Emoji.html#t:id/0">Nostrum.Struct.Emoji.id</a>(),
+  <a href="Nostrum.Struct.Guild.AuditLogEntry.html#t:reason/0">Nostrum.Struct.Guild.AuditLogEntry.reason</a>()
+) :: <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>() | {:ok}</pre>
+
+      </div>
+
+<p>Deletes the given emoji.</p><p>An optional <code class="inline">reason</code> can be provided for the audit log.</p><p>This endpoint requires the <code class="inline">MANAGE_EMOJIS</code> permission. It fires a
+<a href="Nostrum.Consumer.html#t:guild_emojis_update/0"><code class="inline">Nostrum.Consumer.guild_emojis_update/0</code></a> event.</p><p>If successful, returns <code class="inline">{:ok}</code>. Otherwise, returns <a href="Nostrum.Api.html#t:error/0"><code class="inline">Nostrum.Api.error/0</code></a>.</p>
+  </section>
+</section>
+<section class="detail" id="delete_integration/2">
+
+  <div class="detail-header">
+    <a href="#delete_integration/2" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">delete_integration(guild_id, integration_id)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L297" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> delete_integration(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>()) ::
+  <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>() | {:ok}</pre>
+
+      </div>
+
+<p>Deletes a guild integeration.</p><p>Integration to delete is specified by <code class="inline">guild_id</code> and <code class="inline">integeration_id</code>.</p>
+  </section>
+</section>
+<section class="detail" id="delete_role/3">
+
+    <span id="delete_role/2"></span>
+
+  <div class="detail-header">
+    <a href="#delete_role/3" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">delete_role(guild_id, role_id, reason \\ nil)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L318" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> delete_role(
+  <a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(),
+  <a href="Nostrum.Struct.Guild.Role.html#t:id/0">Nostrum.Struct.Guild.Role.id</a>(),
+  <a href="Nostrum.Struct.Guild.AuditLogEntry.html#t:reason/0">Nostrum.Struct.Guild.AuditLogEntry.reason</a>()
+) :: <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>() | {:ok}</pre>
+
+      </div>
+
+<p>Deletes a role from a guild.</p><p>An optional <code class="inline">reason</code> can be specified for the audit log.</p><p>This endpoint requires the <code class="inline">MANAGE_ROLES</code> permission. It fires a
+<a href="Nostrum.Consumer.html#t:guild_role_delete/0"><code class="inline">Nostrum.Consumer.guild_role_delete/0</code></a> event.</p><p>If successful, returns <code class="inline">{:ok}</code>. Otherwise, returns a <a href="Nostrum.Api.html#t:error/0"><code class="inline">Nostrum.Api.error/0</code></a>.</p><h2 id="delete_role/3-examples" class="section-heading">
+  <a href="#delete_role/3-examples" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Examples</span>
+</h2>
+<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api.Guild</span><span class="o">.</span><span class="n">delete_role</span><span class="p" data-group-id="5874579824-1">(</span><span class="mi">41771983423143937</span><span class="p">,</span><span class="w"> </span><span class="mi">392817238471936</span><span class="p" data-group-id="5874579824-1">)</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="emoji/2">
+
+  <div class="detail-header">
+    <a href="#emoji/2" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">emoji(guild_id, emoji_id)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L410" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> emoji(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(), <a href="Nostrum.Struct.Emoji.html#t:id/0">Nostrum.Struct.Emoji.id</a>()) ::
+  <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>() | {:ok, <a href="Nostrum.Struct.Emoji.html#t:t/0">Nostrum.Struct.Emoji.t</a>()}</pre>
+
+      </div>
+
+<p>Gets an emoji for the given guild and emoji ids.</p><p>This endpoint requires the <code class="inline">MANAGE_EMOJIS</code> permission.</p><p>If successful, returns <code class="inline">{:ok, emoji}</code>. Otherwise, returns <a href="Nostrum.Api.html#t:error/0"><code class="inline">Nostrum.Api.error/0</code></a>.</p>
+  </section>
+</section>
+<section class="detail" id="emojis/1">
+
+  <div class="detail-header">
+    <a href="#emojis/1" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">emojis(guild_id)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L610" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> emojis(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>()) ::
+  <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>() | {:ok, [<a href="Nostrum.Struct.Emoji.html#t:t/0">Nostrum.Struct.Emoji.t</a>()]}</pre>
+
+      </div>
+
+<p>Gets a list of emojis for a given guild.</p><p>This endpoint requires the <code class="inline">MANAGE_EMOJIS</code> permission.</p><p>If successful, returns <code class="inline">{:ok, emojis}</code>. Otherwise, returns <a href="Nostrum.Api.html#t:error/0"><code class="inline">Nostrum.Api.error/0</code></a>.</p>
+  </section>
+</section>
+<section class="detail" id="estimate_prune_count/2">
+
+  <div class="detail-header">
+    <a href="#estimate_prune_count/2" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">estimate_prune_count(guild_id, days)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L459" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> estimate_prune_count(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(), 1..30) ::
+  <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>() | {:ok, %{pruned: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>()}}</pre>
+
+      </div>
+
+<p>Gets the number of members that would be removed in a prune given <code class="inline">days</code>.</p><p>This endpoint requires the <code class="inline">KICK_MEMBERS</code> permission.</p><p>If successful, returns <code class="inline">{:ok, %{pruned: pruned}}</code>. Otherwise, returns a <a href="Nostrum.Api.html#t:error/0"><code class="inline">Nostrum.Api.error/0</code></a>.</p><h2 id="estimate_prune_count/2-examples" class="section-heading">
+  <a href="#estimate_prune_count/2-examples" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Examples</span>
+</h2>
+<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api.Guild</span><span class="o">.</span><span class="n">estimate_prune_count</span><span class="p" data-group-id="6070183055-1">(</span><span class="mi">81384788765712384</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p" data-group-id="6070183055-1">)</span><span class="w">
+</span><span class="p" data-group-id="6070183055-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="6070183055-3">%{</span><span class="ss">pruned</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p" data-group-id="6070183055-3">}</span><span class="p" data-group-id="6070183055-2">}</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="get/1">
+
+  <div class="detail-header">
+    <a href="#get/1" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">get(guild_id)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L342" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> get(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>()) ::
+  <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>() | {:ok, <a href="Nostrum.Struct.Guild.html#t:rest_guild/0">Nostrum.Struct.Guild.rest_guild</a>()}</pre>
+
+      </div>
+
+<p>Gets a guild.</p><p>If successful, returns <code class="inline">{:ok, guild}</code>. Otherwise, returns a <a href="Nostrum.Api.html#t:error/0"><code class="inline">Nostrum.Api.error/0</code></a>.</p><h2 id="get/1-examples" class="section-heading">
+  <a href="#get/1-examples" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Examples</span>
+</h2>
+<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api.Guild</span><span class="o">.</span><span class="n">get</span><span class="p" data-group-id="4279641681-1">(</span><span class="mi">81384788765712384</span><span class="p" data-group-id="4279641681-1">)</span><span class="w">
+</span><span class="p" data-group-id="4279641681-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="4279641681-3">%</span><span class="nc" data-group-id="4279641681-3">Nostrum.Struct.Guild</span><span class="p" data-group-id="4279641681-3">{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">81384788765712384</span><span class="p" data-group-id="4279641681-3">}</span><span class="p" data-group-id="4279641681-2">}</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="integrations/1">
+
+  <div class="detail-header">
+    <a href="#integrations/1" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">integrations(guild_id)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L422" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> integrations(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>()) ::
+  <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>() | {:ok, [<a href="Nostrum.Struct.Guild.Integration.html#t:t/0">Nostrum.Struct.Guild.Integration.t</a>()]}</pre>
+
+      </div>
+
+<p>Gets a list of guild integerations.</p><p>Guild to get integrations for is specified by <code class="inline">guild_id</code>.</p>
+  </section>
+</section>
+<section class="detail" id="kick_member/3">
+
+    <span id="kick_member/2"></span>
+
+  <div class="detail-header">
+    <a href="#kick_member/3" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">kick_member(guild_id, user_id, reason \\ nil)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L942" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> kick_member(
+  <a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(),
+  <a href="Nostrum.Struct.User.html#t:id/0">Nostrum.Struct.User.id</a>(),
+  <a href="Nostrum.Struct.Guild.AuditLogEntry.html#t:reason/0">Nostrum.Struct.Guild.AuditLogEntry.reason</a>()
+) :: <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>() | {:ok}</pre>
+
+      </div>
+
+<p>Removes a member from a guild.</p><p>This event requires the <code class="inline">KICK_MEMBERS</code> permission. It fires a
+<a href="Nostrum.Consumer.html#t:guild_member_remove/0"><code class="inline">Nostrum.Consumer.guild_member_remove/0</code></a> event.</p><p>An optional reason can be provided for the audit log with <code class="inline">reason</code>.</p><p>If successful, returns <code class="inline">{:ok}</code>. Otherwise, returns a <a href="Nostrum.Api.html#t:error/0"><code class="inline">Nostrum.Api.error/0</code></a>.</p><h2 id="kick_member/3-examples" class="section-heading">
+  <a href="#kick_member/3-examples" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Examples</span>
+</h2>
+<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Api.Guild</span><span class="o">.</span><span class="n">kick_member</span><span class="p" data-group-id="4348001001-1">(</span><span class="mi">1453827904102291</span><span class="p">,</span><span class="w"> </span><span class="mi">18739485766253</span><span class="p" data-group-id="4348001001-1">)</span><span class="w">
+</span><span class="p" data-group-id="4348001001-2">{</span><span class="ss">:ok</span><span class="p" data-group-id="4348001001-2">}</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="leave/1">
+
+  <div class="detail-header">
+    <a href="#leave/1" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">leave(guild_id)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L592" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> leave(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>()) :: <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>() | {:ok}</pre>
+
+      </div>
+
+<p>Leaves a guild.</p><p>Guild to leave is specified by <code class="inline">guild_id</code>.</p>
+  </section>
+</section>
+<section class="detail" id="member/2">
+
+  <div class="detail-header">
+    <a href="#member/2" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">member(guild_id, user_id)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L439" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> member(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(), <a href="Nostrum.Struct.User.html#t:id/0">Nostrum.Struct.User.id</a>()) ::
+  <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>() | {:ok, <a href="Nostrum.Struct.Guild.Member.html#t:t/0">Nostrum.Struct.Guild.Member.t</a>()}</pre>
+
+      </div>
+
+<p>Gets a guild member.</p><p>If successful, returns <code class="inline">{:ok, member}</code>. Otherwise, returns a <a href="Nostrum.Api.html#t:error/0"><code class="inline">Nostrum.Api.error/0</code></a>.</p><h2 id="member/2-examples" class="section-heading">
+  <a href="#member/2-examples" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Examples</span>
+</h2>
+<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api.Guild</span><span class="o">.</span><span class="n">member</span><span class="p" data-group-id="2836332778-1">(</span><span class="mi">4019283754613</span><span class="p">,</span><span class="w"> </span><span class="mi">184937267485</span><span class="p" data-group-id="2836332778-1">)</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="members/2">
+
+    <span id="members/1"></span>
+
+  <div class="detail-header">
+    <a href="#members/2" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">members(guild_id, options \\ %{})</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L632" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> members(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(), <a href="Nostrum.Api.html#t:options/0">Nostrum.Api.options</a>()) ::
+  <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>() | {:ok, [<a href="Nostrum.Struct.Guild.Member.html#t:t/0">Nostrum.Struct.Guild.Member.t</a>()]}</pre>
+
+      </div>
+
+<p>Gets a list of a guild's members.</p><p>If successful, returns <code class="inline">{:ok, members}</code>. Otherwise, returns a <a href="Nostrum.Api.html#t:error/0"><code class="inline">Nostrum.Api.error/0</code></a>.</p><h2 id="members/2-options" class="section-heading">
+  <a href="#members/2-options" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Options</span>
+</h2>
+<ul><li><code class="inline">:limit</code> (integer) - max number of members to return (1-1000) (default: 1)</li><li><code class="inline">:after</code> (<a href="Nostrum.Struct.User.html#t:id/0"><code class="inline">Nostrum.Struct.User.id/0</code></a>) - the highest user id in the previous page (default: 0)</li></ul><h2 id="members/2-examples" class="section-heading">
+  <a href="#members/2-examples" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Examples</span>
+</h2>
+<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api.Guild</span><span class="o">.</span><span class="n">members</span><span class="p" data-group-id="0347137055-1">(</span><span class="mi">41771983423143937</span><span class="p">,</span><span class="w"> </span><span class="ss">limit</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p" data-group-id="0347137055-1">)</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="modify/3">
+
+    <span id="modify/1"></span>
+
+    <span id="modify/2"></span>
+
+  <div class="detail-header">
+    <a href="#modify/3" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">modify(guild_id, options \\ [], reason \\ nil)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L714" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> modify(
+  <a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(),
+  <a href="Nostrum.Api.html#t:options/0">Nostrum.Api.options</a>(),
+  <a href="Nostrum.Struct.Guild.AuditLogEntry.html#t:reason/0">Nostrum.Struct.Guild.AuditLogEntry.reason</a>()
+) :: <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>() | {:ok, <a href="Nostrum.Struct.Guild.html#t:rest_guild/0">Nostrum.Struct.Guild.rest_guild</a>()}</pre>
+
+      </div>
+
+<p>Modifies a guild's settings.</p><p>This endpoint requires the <code class="inline">MANAGE_GUILD</code> permission. It fires the
+<a href="Nostrum.Consumer.html#t:guild_update/0"><code class="inline">Nostrum.Consumer.guild_update/0</code></a> event.</p><p>An optional <code class="inline">reason</code> can be provided for the audit log.</p><p>If successful, returns <code class="inline">{:ok, guild}</code>. Otherwise, returns a <a href="Nostrum.Api.html#t:error/0"><code class="inline">Nostrum.Api.error/0</code></a>.</p><h2 id="modify/3-options" class="section-heading">
+  <a href="#modify/3-options" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Options</span>
+</h2>
+<ul><li><code class="inline">:name</code> (string) - guild name</li><li><code class="inline">:region</code> (string) - guild voice region id</li><li><code class="inline">:verification_level</code> (integer) - verification level</li><li><code class="inline">:default_message_notifications</code> (integer) - default message
+notification level</li><li><code class="inline">:explicit_content_filter</code> (integer) - explicit content filter level</li><li><code class="inline">:afk_channel_id</code> (<a href="Nostrum.Snowflake.html#t:t/0"><code class="inline">Nostrum.Snowflake.t/0</code></a>) - id for afk channel</li><li><code class="inline">:afk_timeout</code> (integer) - afk timeout in seconds</li><li><code class="inline">:icon</code> (base64 data URI) - 128x128 jpeg image for the guild icon</li><li><code class="inline">:owner_id</code> (<a href="Nostrum.Snowflake.html#t:t/0"><code class="inline">Nostrum.Snowflake.t/0</code></a>) - user id to transfer
+guild ownership to (must be owner)</li><li><code class="inline">:splash</code> (base64 data URI) - 128x128 jpeg image for the guild splash
+(VIP only)</li><li><code class="inline">:system_channel_id</code> (<a href="Nostrum.Snowflake.html#t:t/0"><code class="inline">Nostrum.Snowflake.t/0</code></a>) - the id of the
+channel to which system messages are sent</li><li><code class="inline">:rules_channel_id</code> (<a href="Nostrum.Snowflake.html#t:t/0"><code class="inline">Nostrum.Snowflake.t/0</code></a>) - the id of the channel that
+is used for rules in public guilds</li><li><code class="inline">:public_updates_channel_id</code> (<a href="Nostrum.Snowflake.html#t:t/0"><code class="inline">Nostrum.Snowflake.t/0</code></a>) - the id of the channel
+where admins and moderators receive notices from Discord in public guilds</li></ul><h2 id="modify/3-examples" class="section-heading">
+  <a href="#modify/3-examples" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Examples</span>
+</h2>
+<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api.Guild</span><span class="o">.</span><span class="n">modify</span><span class="p" data-group-id="6783951270-1">(</span><span class="mi">451824027976073216</span><span class="p">,</span><span class="w"> </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Nose Drum&quot;</span><span class="p" data-group-id="6783951270-1">)</span><span class="w">
+</span><span class="p" data-group-id="6783951270-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="6783951270-3">%</span><span class="nc" data-group-id="6783951270-3">Nostrum.Struct.Guild</span><span class="p" data-group-id="6783951270-3">{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">451824027976073216</span><span class="p">,</span><span class="w"> </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Nose Drum&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">...</span><span class="p" data-group-id="6783951270-3">}</span><span class="p" data-group-id="6783951270-2">}</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="modify_channel_positions/2">
+
+  <div class="detail-header">
+    <a href="#modify_channel_positions/2" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">modify_channel_positions(guild_id, positions)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L750" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> modify_channel_positions(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(), [
+  %{id: <a href="Nostrum.Struct.Channel.html#t:id/0">Nostrum.Struct.Channel.id</a>(), position: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>()}
+]) :: <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>() | {:ok}</pre>
+
+      </div>
+
+<p>Reorders a guild's channels.</p><p>This endpoint requires the <code class="inline">MANAGE_CHANNELS</code> permission. It fires multiple
+<a href="Nostrum.Consumer.html#t:channel_update/0"><code class="inline">Nostrum.Consumer.channel_update/0</code></a> events.</p><p>If successful, returns <code class="inline">{:ok, channels}</code>. Otherwise, returns a <a href="Nostrum.Api.html#t:error/0"><code class="inline">Nostrum.Api.error/0</code></a>.</p><p><code class="inline">positions</code> is a list of maps that each map a channel id with a position.</p><h2 id="modify_channel_positions/2-examples" class="section-heading">
+  <a href="#modify_channel_positions/2-examples" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Examples</span>
+</h2>
+<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api.Guild</span><span class="o">.</span><span class="n">modify_channel_positions</span><span class="p" data-group-id="7385610664-1">(</span><span class="mi">279093381723062272</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="7385610664-2">[</span><span class="p" data-group-id="7385610664-3">%{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">351500354581692420</span><span class="p">,</span><span class="w"> </span><span class="ss">position</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p" data-group-id="7385610664-3">}</span><span class="p" data-group-id="7385610664-2">]</span><span class="p" data-group-id="7385610664-1">)</span><span class="w">
+</span><span class="p" data-group-id="7385610664-4">{</span><span class="ss">:ok</span><span class="p" data-group-id="7385610664-4">}</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="modify_emoji/4">
+
+    <span id="modify_emoji/2"></span>
+
+    <span id="modify_emoji/3"></span>
+
+  <div class="detail-header">
+    <a href="#modify_emoji/4" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">modify_emoji(guild_id, emoji_id, options \\ %{}, reason \\ nil)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L778" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> modify_emoji(
+  <a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(),
+  <a href="Nostrum.Struct.Emoji.html#t:id/0">Nostrum.Struct.Emoji.id</a>(),
+  <a href="Nostrum.Api.html#t:options/0">Nostrum.Api.options</a>(),
+  <a href="Nostrum.Struct.Guild.AuditLogEntry.html#t:reason/0">Nostrum.Struct.Guild.AuditLogEntry.reason</a>()
+) :: <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>() | {:ok, <a href="Nostrum.Struct.Emoji.html#t:t/0">Nostrum.Struct.Emoji.t</a>()}</pre>
+
+      </div>
+
+<p>Modify the given emoji.</p><p>This endpoint requires the <code class="inline">MANAGE_EMOJIS</code> permission. It fires a
+<a href="Nostrum.Consumer.html#t:guild_emojis_update/0"><code class="inline">Nostrum.Consumer.guild_emojis_update/0</code></a> event.</p><p>An optional <code class="inline">reason</code> can be provided for the audit log.</p><p>If successful, returns <code class="inline">{:ok, emoji}</code>. Otherwise, returns <a href="Nostrum.Api.html#t:error/0"><code class="inline">Nostrum.Api.error/0</code></a>.</p><h2 id="modify_emoji/4-options" class="section-heading">
+  <a href="#modify_emoji/4-options" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Options</span>
+</h2>
+<ul><li><code class="inline">:name</code> (string) - name of the emoji</li><li><code class="inline">:roles</code> (list of <a href="Nostrum.Snowflake.html#t:t/0"><code class="inline">Nostrum.Snowflake.t/0</code></a>) - roles to which this emoji will be whitelisted</li></ul><h2 id="modify_emoji/4-examples" class="section-heading">
+  <a href="#modify_emoji/4-examples" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Examples</span>
+</h2>
+<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api.Guild</span><span class="o">.</span><span class="n">modify_emoji</span><span class="p" data-group-id="2026818127-1">(</span><span class="mi">43189401384091</span><span class="p">,</span><span class="w"> </span><span class="mi">4314301984301</span><span class="p">,</span><span class="w"> </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;elixir&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">roles</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="2026818127-2">[</span><span class="p" data-group-id="2026818127-2">]</span><span class="p" data-group-id="2026818127-1">)</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="modify_integration/3">
+
+  <div class="detail-header">
+    <a href="#modify_integration/3" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">modify_integration(guild_id, integration_id, options)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L810" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> modify_integration(
+  <a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(),
+  <a href="Nostrum.Struct.Guild.Integration.html#t:id/0">Nostrum.Struct.Guild.Integration.id</a>(),
+  %{
+    expire_behaviour: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>(),
+    expire_grace_period: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>(),
+    enable_emoticons: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">boolean</a>()
+  }
+) :: <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>() | {:ok}</pre>
+
+      </div>
+
+<p>Changes the settings and behaviours for a guild integeration.</p><p>Integration to modify is specified by <code class="inline">guild_id</code> and <code class="inline">integeration_id</code>.</p><p><code class="inline">options</code> is a map with the following keys:</p><ul><li><code class="inline">expire_behavior</code> - Expiry behavior.</li><li><code class="inline">expire_grace_period</code> - Period where the integration will ignore elapsed subs.</li><li><code class="inline">enable_emoticons</code> - Whether emoticons should be synced.</li></ul>
+  </section>
+</section>
+<section class="detail" id="modify_member/4">
+
+    <span id="modify_member/2"></span>
+
+    <span id="modify_member/3"></span>
+
+  <div class="detail-header">
+    <a href="#modify_member/4" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">modify_member(guild_id, user_id, options \\ %{}, reason \\ nil)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L843" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> modify_member(
+  <a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(),
+  <a href="Nostrum.Struct.User.html#t:id/0">Nostrum.Struct.User.id</a>(),
+  <a href="Nostrum.Api.html#t:options/0">Nostrum.Api.options</a>(),
+  <a href="Nostrum.Struct.Guild.AuditLogEntry.html#t:reason/0">Nostrum.Struct.Guild.AuditLogEntry.reason</a>()
+) :: <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>() | {:ok, <a href="Nostrum.Struct.Guild.Member.html#t:t/0">Nostrum.Struct.Guild.Member.t</a>()}</pre>
+
+      </div>
+
+<p>Modifies a guild member's attributes.</p><p>This endpoint fires the <a href="Nostrum.Consumer.html#t:guild_member_update/0"><code class="inline">Nostrum.Consumer.guild_member_update/0</code></a> event.
+It situationally requires the <code class="inline">MANAGE_NICKNAMES</code>, <code class="inline">MANAGE_ROLES</code>,
+<code class="inline">MUTE_MEMBERS</code>, <code class="inline">DEAFEN_MEMBERS</code>, and <code class="inline">MOVE_MEMBERS</code> permissions.</p><p>If successful, returns <code class="inline">{:ok, member}</code>. Otherwise, returns a <a href="Nostrum.Api.html#t:error/0"><code class="inline">Nostrum.Api.error/0</code></a>.</p><p>An optional <code class="inline">reason</code> argument can be given for the audit log.</p><h2 id="modify_member/4-options" class="section-heading">
+  <a href="#modify_member/4-options" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Options</span>
+</h2>
+<ul><li><code class="inline">:nick</code> (string) - value to set users nickname to</li><li><code class="inline">:roles</code> (list of <a href="Nostrum.Snowflake.html#t:t/0"><code class="inline">Nostrum.Snowflake.t/0</code></a>) - array of role ids the member is assigned</li><li><code class="inline">:mute</code> (boolean) - if the user is muted</li><li><code class="inline">:deaf</code> (boolean) - if the user is deafened</li><li><code class="inline">:channel_id</code> (<a href="Nostrum.Snowflake.html#t:t/0"><code class="inline">Nostrum.Snowflake.t/0</code></a>) - id of channel to move user to (if they are connected to voice)</li><li><code class="inline">:communication_disabled_until</code> (<a href="https://hexdocs.pm/elixir/DateTime.html#t:t/0"><code class="inline">DateTime.t/0</code></a> or <code class="inline">nil</code>) - datetime to disable user communication (timeout) until, or <code class="inline">nil</code> to remove timeout.</li></ul><h2 id="modify_member/4-examples" class="section-heading">
+  <a href="#modify_member/4-examples" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Examples</span>
+</h2>
+<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api.Guild</span><span class="o">.</span><span class="n">modify_member</span><span class="p" data-group-id="4099401787-1">(</span><span class="mi">41771983423143937</span><span class="p">,</span><span class="w"> </span><span class="mi">637162356451</span><span class="p">,</span><span class="w"> </span><span class="ss">nick</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Nostrum&quot;</span><span class="p" data-group-id="4099401787-1">)</span><span class="w">
+</span><span class="p" data-group-id="4099401787-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="4099401787-3">%</span><span class="nc" data-group-id="4099401787-3">Nostrum.Struct.Member</span><span class="p" data-group-id="4099401787-3">{</span><span class="p" data-group-id="4099401787-3">}</span><span class="p" data-group-id="4099401787-2">}</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="modify_role/4">
+
+    <span id="modify_role/3"></span>
+
+  <div class="detail-header">
+    <a href="#modify_role/4" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">modify_role(guild_id, role_id, options, reason \\ nil)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L490" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> modify_role(
+  <a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(),
+  <a href="Nostrum.Struct.Guild.Role.html#t:id/0">Nostrum.Struct.Guild.Role.id</a>(),
+  <a href="Nostrum.Api.html#t:options/0">Nostrum.Api.options</a>(),
+  <a href="Nostrum.Struct.Guild.AuditLogEntry.html#t:reason/0">Nostrum.Struct.Guild.AuditLogEntry.reason</a>()
+) :: <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>() | {:ok, <a href="Nostrum.Struct.Guild.Role.html#t:t/0">Nostrum.Struct.Guild.Role.t</a>()}</pre>
+
+      </div>
+
+<p>Modifies a guild role.</p><p>This endpoint requires the <code class="inline">MANAGE_ROLES</code> permission. It fires a
+<a href="Nostrum.Consumer.html#t:guild_role_update/0"><code class="inline">Nostrum.Consumer.guild_role_update/0</code></a> event.</p><p>An optional <code class="inline">reason</code> can be specified for the audit log.</p><p>If successful, returns <code class="inline">{:ok, role}</code>. Otherwise, returns a <a href="Nostrum.Api.html#t:error/0"><code class="inline">Nostrum.Api.error/0</code></a>.</p><h2 id="modify_role/4-options" class="section-heading">
+  <a href="#modify_role/4-options" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Options</span>
+</h2>
+<ul><li><code class="inline">:name</code> (string) - name of the role</li><li><code class="inline">:permissions</code> (integer) - bitwise of the enabled/disabled permissions</li><li><code class="inline">:color</code> (integer) - RGB color value (default: 0)</li><li><code class="inline">:hoist</code> (boolean) - whether the role should be displayed separately in the sidebar</li><li><code class="inline">:mentionable</code> (boolean) - whether the role should be mentionable</li></ul><h2 id="modify_role/4-examples" class="section-heading">
+  <a href="#modify_role/4-examples" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Examples</span>
+</h2>
+<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api.Guild</span><span class="o">.</span><span class="n">modify_role</span><span class="p" data-group-id="7467130310-1">(</span><span class="mi">41771983423143937</span><span class="p">,</span><span class="w"> </span><span class="mi">392817238471936</span><span class="p">,</span><span class="w"> </span><span class="ss">hoist</span><span class="p">:</span><span class="w"> </span><span class="no">false</span><span class="p">,</span><span class="w"> </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;foo-bar&quot;</span><span class="p" data-group-id="7467130310-1">)</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="modify_role_positions/3">
+
+    <span id="modify_role_positions/2"></span>
+
+  <div class="detail-header">
+    <a href="#modify_role_positions/3" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">modify_role_positions(guild_id, positions, reason \\ nil)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L885" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> modify_role_positions(
+  <a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(),
+  [%{id: <a href="Nostrum.Struct.Guild.Role.html#t:id/0">Nostrum.Struct.Guild.Role.id</a>(), position: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>()}],
+  <a href="Nostrum.Struct.Guild.AuditLogEntry.html#t:reason/0">Nostrum.Struct.Guild.AuditLogEntry.reason</a>()
+) :: <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>() | {:ok, [<a href="Nostrum.Struct.Guild.Role.html#t:t/0">Nostrum.Struct.Guild.Role.t</a>()]}</pre>
+
+      </div>
+
+<p>Reorders a guild's roles.</p><p>This endpoint requires the <code class="inline">MANAGE_ROLES</code> permission. It fires multiple
+<a href="Nostrum.Consumer.html#t:guild_role_update/0"><code class="inline">Nostrum.Consumer.guild_role_update/0</code></a> events.</p><p>If successful, returns <code class="inline">{:ok, roles}</code>. Otherwise, returns a <a href="Nostrum.Api.html#t:error/0"><code class="inline">Nostrum.Api.error/0</code></a>.</p><p><code class="inline">positions</code> is a list of maps that each map a role id with a position.</p><h2 id="modify_role_positions/3-examples" class="section-heading">
+  <a href="#modify_role_positions/3-examples" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Examples</span>
+</h2>
+<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api.Guild</span><span class="o">.</span><span class="n">modify_role_positions</span><span class="p" data-group-id="7018869293-1">(</span><span class="mi">41771983423143937</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="7018869293-2">[</span><span class="p" data-group-id="7018869293-3">%{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">41771983423143936</span><span class="p">,</span><span class="w"> </span><span class="ss">position</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p" data-group-id="7018869293-3">}</span><span class="p" data-group-id="7018869293-2">]</span><span class="p" data-group-id="7018869293-1">)</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="modify_self_nick/2">
+
+    <span id="modify_self_nick/1"></span>
+
+  <div class="detail-header">
+    <a href="#modify_self_nick/2" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">modify_self_nick(guild_id, options \\ %{})</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L668" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> modify_self_nick(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(), <a href="Nostrum.Api.html#t:options/0">Nostrum.Api.options</a>()) ::
+  <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>() | {:ok, %{nick: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()}}</pre>
+
+      </div>
+
+<p>Modifies the nickname of the current user in a guild.</p><p>If successful, returns <code class="inline">{:ok, %{nick: nick}}</code>. Otherwise, returns a <a href="Nostrum.Api.html#t:error/0"><code class="inline">Nostrum.Api.error/0</code></a>.</p><h2 id="modify_self_nick/2-options" class="section-heading">
+  <a href="#modify_self_nick/2-options" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Options</span>
+</h2>
+<ul><li><code class="inline">:nick</code> (string) - value to set users nickname to</li></ul><h2 id="modify_self_nick/2-examples" class="section-heading">
+  <a href="#modify_self_nick/2-examples" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Examples</span>
+</h2>
+<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api.Guild</span><span class="o">.</span><span class="n">modify_self_nick</span><span class="p" data-group-id="8405772707-1">(</span><span class="mi">41771983423143937</span><span class="p">,</span><span class="w"> </span><span class="ss">nick</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Nostrum&quot;</span><span class="p" data-group-id="8405772707-1">)</span><span class="w">
+</span><span class="p" data-group-id="8405772707-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="8405772707-3">%{</span><span class="ss">nick</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Nostrum&quot;</span><span class="p" data-group-id="8405772707-3">}</span><span class="p" data-group-id="8405772707-2">}</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="modify_widget/2">
+
+  <div class="detail-header">
+    <a href="#modify_widget/2" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">modify_widget(guild_id, options)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L902" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> modify_widget(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()) ::
+  <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>() | {:ok, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()}</pre>
+
+      </div>
+
+<p>Modifies a guild embed.</p>
+  </section>
+</section>
+<section class="detail" id="remove_member_role/4">
+
+    <span id="remove_member_role/3"></span>
+
+  <div class="detail-header">
+    <a href="#remove_member_role/4" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">remove_member_role(guild_id, user_id, role_id, reason \\ nil)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L517" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> remove_member_role(
+  <a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(),
+  <a href="Nostrum.Struct.User.html#t:id/0">Nostrum.Struct.User.id</a>(),
+  <a href="Nostrum.Struct.Guild.Role.html#t:id/0">Nostrum.Struct.Guild.Role.id</a>(),
+  <a href="Nostrum.Struct.Guild.AuditLogEntry.html#t:reason/0">Nostrum.Struct.Guild.AuditLogEntry.reason</a>()
+) :: <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>() | {:ok}</pre>
+
+      </div>
+
+<p>Removes a role from a member.</p><p>Role to remove is specified by <code class="inline">role_id</code>.
+User to remove role from is specified by <code class="inline">guild_id</code> and <code class="inline">user_id</code>.
+An optional <code class="inline">reason</code> can be given for the audit log.</p>
+  </section>
+</section>
+<section class="detail" id="roles/1">
+
+  <div class="detail-header">
+    <a href="#roles/1" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">roles(guild_id)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L539" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> roles(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>()) ::
+  <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>() | {:ok, [<a href="Nostrum.Struct.Guild.Role.html#t:t/0">Nostrum.Struct.Guild.Role.t</a>()]}</pre>
+
+      </div>
+
+<p>Gets a guild's roles.</p><p>If successful, returns <code class="inline">{:ok, roles}</code>. Otherwise, returns a <a href="Nostrum.Api.html#t:error/0"><code class="inline">Nostrum.Api.error/0</code></a>.</p><h2 id="roles/1-examples" class="section-heading">
+  <a href="#roles/1-examples" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Examples</span>
+</h2>
+<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api.Guild</span><span class="o">.</span><span class="n">roles</span><span class="p" data-group-id="8474846638-1">(</span><span class="mi">147362948571673</span><span class="p" data-group-id="8474846638-1">)</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="scheduled_events/1">
+
+  <div class="detail-header">
+    <a href="#scheduled_events/1" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">scheduled_events(guild_id)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L549" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+      <span class="note">(since 1.x.x)</span>
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> scheduled_events(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>()) ::
+  <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>() | {:ok, [<a href="Nostrum.Struct.Guild.ScheduledEvent.html#t:t/0">Nostrum.Struct.Guild.ScheduledEvent.t</a>()]}</pre>
+
+      </div>
+
+<p>Get a list of scheduled events for a guild.</p>
+  </section>
+</section>
+<section class="detail" id="sync_integration/2">
+
+  <div class="detail-header">
+    <a href="#sync_integration/2" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">sync_integration(guild_id, integration_id)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L959" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> sync_integration(
+  <a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(),
+  <a href="Nostrum.Struct.Guild.Integration.html#t:id/0">Nostrum.Struct.Guild.Integration.id</a>()
+) ::
+  <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>() | {:ok}</pre>
+
+      </div>
+
+<p>Syncs a guild integration.</p><p>Integration to sync is specified by <code class="inline">guild_id</code> and <code class="inline">integeration_id</code>.</p>
+  </section>
+</section>
+<section class="detail" id="unban_member/3">
+
+    <span id="unban_member/2"></span>
+
+  <div class="detail-header">
+    <a href="#unban_member/3" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">unban_member(guild_id, user_id, reason \\ nil)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L914" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> unban_member(
+  <a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(),
+  <a href="Nostrum.Struct.User.html#t:id/0">Nostrum.Struct.User.id</a>(),
+  <a href="Nostrum.Struct.Guild.AuditLogEntry.html#t:reason/0">Nostrum.Struct.Guild.AuditLogEntry.reason</a>()
+) :: <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>() | {:ok}</pre>
+
+      </div>
+
+<p>Removes a ban for a user.</p><p>User to unban is specified by <code class="inline">guild_id</code> and <code class="inline">user_id</code>.
+An optional <code class="inline">reason</code> can be specified for the audit log.</p>
+  </section>
+</section>
+<section class="detail" id="voice_region/1">
+
+  <div class="detail-header">
+    <a href="#voice_region/1" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">voice_region(guild_id)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L581" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> voice_region(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>()) ::
+  <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>() | {:ok, [<a href="Nostrum.Struct.VoiceRegion.html#t:t/0">Nostrum.Struct.VoiceRegion.t</a>()]}</pre>
+
+      </div>
+
+<p>Gets a list of voice regions for the guild.</p><p>Guild to get voice regions for is specified by <code class="inline">guild_id</code>.</p>
+  </section>
+</section>
+<section class="detail" id="voice_regions/0">
+
+  <div class="detail-header">
+    <a href="#voice_regions/0" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">voice_regions()</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L646" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> voice_regions() :: <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>() | {:ok, [<a href="Nostrum.Struct.VoiceRegion.html#t:t/0">Nostrum.Struct.VoiceRegion.t</a>()]}</pre>
+
+      </div>
+
+<p>Gets a list of voice regions.</p>
+  </section>
+</section>
+<section class="detail" id="webhooks/1">
+
+  <div class="detail-header">
+    <a href="#webhooks/1" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">webhooks(guild_id)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L561" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> webhooks(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>()) ::
+  <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>() | {:ok, [<a href="Nostrum.Struct.Webhook.html#t:t/0">Nostrum.Struct.Webhook.t</a>()]}</pre>
+
+      </div>
+
+<p>Gets a list of webhooks for a guild.</p><h2 id="webhooks/1-parameters" class="section-heading">
+  <a href="#webhooks/1-parameters" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Parameters</span>
+</h2>
+<ul><li><code class="inline">guild_id</code> - Guild to get webhooks for.</li></ul>
+  </section>
+</section>
+<section class="detail" id="widget/1">
+
+  <div class="detail-header">
+    <a href="#widget/1" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">widget(guild_id)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L570" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> widget(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>()) :: <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>() | {:ok, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()}</pre>
+
+      </div>
+
+<p>Gets a guild embed.</p>
+  </section>
+</section>
+
+    </div>
+  </section>
+
+    <footer class="footer">
+      <p>
+
+          <span class="line">
+            <a href="https://hex.pm/packages/nostrum/0.10.0" class="footer-hex-package">Hex Package</a>
+
+            <a href="https://preview.hex.pm/preview/nostrum/0.10.0">Hex Preview</a>
+
+          </span>
+
+        <span class="line">
+          <button class="a-main footer-button display-quick-switch" title="Search HexDocs packages">
+            Search HexDocs
+          </button>
+
+            <a href="Nostrum.epub" title="ePub version">
+              Download ePub version
+            </a>
+
+        </span>
+      </p>
+
+      <p class="built-using">
+        Built using
+        <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.32.1) for the
+
+          <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
+
+      </p>
+
+    </footer>
+  </div>
+</main>
+</div>
+
+
+  </body>
+</html>

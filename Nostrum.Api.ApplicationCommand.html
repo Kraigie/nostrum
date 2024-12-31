@@ -1,0 +1,1042 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.32.1">
+    <meta name="project" content="Nostrum v0.10.0">
+
+
+    <title>Nostrum.Api.ApplicationCommand — Nostrum v0.10.0</title>
+    <link rel="stylesheet" href="dist/html-elixir-2C5PUTIB.css" />
+
+
+    <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
+    <script src="dist/handlebars.templates-IHH6HKET.js"></script>
+    <script src="dist/sidebar_items-86DB4ED6.js"></script>
+    <script src="docs_config.js"></script>
+    <script async src="dist/html-GXQ6W6IF.js"></script>
+
+
+  </head>
+  <body data-type="modules" class="page-module">
+    <script>
+
+      try {
+        var settings = JSON.parse(localStorage.getItem('ex_doc:settings') || '{}');
+
+        if (settings.theme === 'dark' ||
+           ((settings.theme === 'system' || settings.theme == null) &&
+             window.matchMedia('(prefers-color-scheme: dark)').matches)
+           ) {
+          document.body.classList.add('dark')
+        }
+      } catch (error) { }
+    </script>
+
+<div class="body-wrapper">
+
+<button id="sidebar-menu" class="sidebar-button sidebar-toggle" aria-label="toggle sidebar" aria-controls="sidebar">
+  <i class="ri-menu-line ri-lg" title="Collapse/expand sidebar"></i>
+</button>
+
+<nav id="sidebar" class="sidebar">
+
+  <div class="sidebar-header">
+    <div class="sidebar-projectInfo">
+
+        <a href="https://github.com/Kraigie/nostrum" class="sidebar-projectImage">
+          <img src="assets/logo.png" alt="Nostrum" />
+        </a>
+
+      <div>
+        <a href="https://github.com/Kraigie/nostrum" class="sidebar-projectName" translate="no">
+Nostrum
+        </a>
+        <div class="sidebar-projectVersion" translate="no">
+          v0.10.0
+        </div>
+      </div>
+    </div>
+    <ul id="sidebar-listNav" class="sidebar-listNav" role="tablist">
+      <li>
+        <button id="extras-list-tab-button" role="tab" data-type="extras" aria-controls="extras-tab-panel" aria-selected="true" tabindex="0">
+Pages
+        </button>
+      </li>
+
+        <li>
+          <button id="modules-list-tab-button" role="tab" data-type="modules" aria-controls="modules-tab-panel" aria-selected="false" tabindex="-1">
+            Modules
+          </button>
+        </li>
+
+
+        <li>
+          <button id="tasks-list-tab-button" role="tab" data-type="tasks" aria-controls="tasks-tab-panel" aria-selected="false" tabindex="-1">
+            <span translate="no">Mix</span> Tasks
+          </button>
+        </li>
+
+    </ul>
+  </div>
+
+  <div id="extras-tab-panel" class="sidebar-tabpanel" role="tabpanel" aria-labelledby="extras-list-tab-button">
+    <ul id="extras-full-list" class="full-list"></ul>
+  </div>
+
+    <div id="modules-tab-panel" class="sidebar-tabpanel" role="tabpanel" aria-labelledby="modules-list-tab-button" hidden>
+      <ul id="modules-full-list" class="full-list"></ul>
+    </div>
+
+
+    <div id="tasks-tab-panel" class="sidebar-tabpanel" role="tabpanel" aria-labelledby="tasks-list-tab-button" hidden>
+      <ul id="tasks-full-list" class="full-list"></ul>
+    </div>
+
+</nav>
+
+<main class="content">
+  <output role="status" id="toast"></output>
+
+  <div id="content" class="content-inner">
+    <div class="top-search">
+      <div class="search-settings">
+        <form class="search-bar" action="search.html">
+          <label class="search-label">
+            <span class="sr-only">Search documentation of Nostrum</span>
+            <input name="q" type="text" class="search-input" placeholder="Press / to search" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+          </label>
+          <button type="submit" class="search-button" aria-label="Submit Search">
+            <i class="ri-search-2-line ri-lg" aria-hidden="true" title="Submit search"></i>
+          </button>
+          <button type="button" tabindex="-1" class="search-close-button" aria-hidden="true">
+            <i class="ri-close-line ri-lg" title="Cancel search"></i>
+          </button>
+        </form>
+        <div class="autocomplete">
+        </div>
+        <button class="icon-settings display-settings">
+          <i class="ri-settings-3-line"></i>
+          <span class="sr-only">Settings</span>
+        </button>
+      </div>
+    </div>
+
+<div id="top-content">
+  <h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/application_command.ex#L1" title="View Source" class="icon-action" rel="help">
+        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        <span class="sr-only">View Source</span>
+      </a>
+
+    <span translate="no">Nostrum.Api.ApplicationCommand</span> 
+    <small class="app-vsn" translate="no">(Nostrum v0.10.0)</small>
+
+  </h1>
+
+
+    <section id="moduledoc">
+<p>Module for interacting with Discord's application commands.</p><p>See: <a href="https://discord.com/developers/docs/interactions/application-commands">https://discord.com/developers/docs/interactions/application-commands</a></p>
+    </section>
+
+</div>
+
+  <section id="summary" class="details-list">
+    <h1 class="section-heading">
+      <a class="hover-link" href="#summary">
+        <i class="ri-link-m" aria-hidden="true"></i>
+      </a>
+      <span class="text">Summary</span>
+    </h1>
+<div class="summary-functions summary">
+  <h2>
+    <a href="#functions">Functions</a>
+  </h2>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#batch_edit_permissions/3" translate="no">batch_edit_permissions(application_id \\ Me.get().id, guild_id, permissions)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Edits command permissions for a specific command for your application in a guild. You can only add up to 10 permission overwrites for a command.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#bulk_overwrite_global_commands/2" translate="no">bulk_overwrite_global_commands(application_id \\ Me.get().id, commands)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Overwrite the existing global application commands.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#bulk_overwrite_guild_commands/3" translate="no">bulk_overwrite_guild_commands(application_id \\ Me.get().id, guild_id, commands)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Overwrite the existing guild application commands on the specified guild.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#create_global_command/2" translate="no">create_global_command(application_id \\ Me.get().id, command)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Create a new global application command.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#create_guild_command/3" translate="no">create_guild_command(application_id \\ Me.get().id, guild_id, command)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Create a guild application command on the specified guild.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#delete_global_command/2" translate="no">delete_global_command(application_id \\ Me.get().id, command_id)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Delete an existing global application command.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#delete_guild_command/3" translate="no">delete_guild_command(application_id \\ Me.get().id, guild_id, command_id)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Delete an existing guild application command.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#edit_command_permissions/4" translate="no">edit_command_permissions(application_id \\ Me.get().id, guild_id, command_id, permissions)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Edits command permissions for a specific command for your application in a guild. You can only add up to 10 permission overwrites for a command.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#edit_global_command/3" translate="no">edit_global_command(application_id \\ Me.get().id, command_id, command)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Update an existing global application command.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#edit_guild_command/4" translate="no">edit_guild_command(application_id \\ Me.get().id, guild_id, command_id, command)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Update an existing guild application command.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#global_commands/1" translate="no">global_commands(application_id \\ Me.get().id)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Fetch all global commands.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#guild_commands/2" translate="no">guild_commands(application_id \\ Me.get().id, guild_id)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Fetch all guild application commands for the given guild.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#guild_permissions/2" translate="no">guild_permissions(application_id \\ Me.get().id, guild_id)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Fetches command permissions for all commands for your application in a guild.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#permissions/3" translate="no">permissions(application_id \\ Me.get().id, guild_id, command_id)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Fetches command permissions for a specific command for your application in a guild.</p></div>
+
+    </div>
+
+</div>
+
+  </section>
+
+
+  <section id="functions" class="details-list">
+    <h1 class="section-heading">
+      <a class="hover-link" href="#functions">
+        <i class="ri-link-m" aria-hidden="true"></i>
+      </a>
+      <span class="text">Functions</span>
+    </h1>
+    <div class="functions-list">
+<section class="detail" id="batch_edit_permissions/3">
+
+    <span id="batch_edit_permissions/2"></span>
+
+  <div class="detail-header">
+    <a href="#batch_edit_permissions/3" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">batch_edit_permissions(application_id \\ Me.get().id, guild_id, permissions)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/application_command.ex#L44" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+      <span class="note">(since 1.x.x)</span>
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> batch_edit_permissions(<a href="Nostrum.Struct.User.html#t:id/0">Nostrum.Struct.User.id</a>(), <a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(), [
+  %{
+    id: <a href="Nostrum.Snowflake.html#t:t/0">Nostrum.Snowflake.t</a>(),
+    permissions: [
+      <a href="Nostrum.Struct.ApplicationCommand.html#t:application_command_permissions/0">Nostrum.Struct.ApplicationCommand.application_command_permissions</a>()
+    ]
+  }
+]) :: {:ok, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()} | <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>()</pre>
+
+      </div>
+
+<p>Edits command permissions for a specific command for your application in a guild. You can only add up to 10 permission overwrites for a command.</p><h2 id="batch_edit_permissions/3-parameters" class="section-heading">
+  <a href="#batch_edit_permissions/3-parameters" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Parameters</span>
+</h2>
+<ul><li><code class="inline">application_id</code>: Application ID commands are registered under.
+If not given, this will be fetched from <code class="inline">Me</code>.</li><li><code class="inline">guild_id</code>: Guild ID to fetch command permissions from.</li><li><code class="inline">command_id</code>: Command ID to fetch permissions for.</li><li><code class="inline">permissions</code>: List of partial <a href="hhttps://discord.com/developers/docs/interactions/application-commands#application-command-permissions-object-guild-application-command-permissions-structure">guild application command permissions</a> with <code class="inline">id</code> and <code class="inline">permissions</code>. You can add up to 10 overwrites per command.</li></ul><h2 id="batch_edit_permissions/3-return-value" class="section-heading">
+  <a href="#batch_edit_permissions/3-return-value" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Return value</span>
+</h2>
+<p>This method returns a guild application command permission object, see all available values on the <a href="https://discord.com/developers/docs/interactions/application-commands#application-command-permissions-object-guild-application-command-permissions-structure">Discord API docs</a>.</p>
+  </section>
+</section>
+<section class="detail" id="bulk_overwrite_global_commands/2">
+
+    <span id="bulk_overwrite_global_commands/1"></span>
+
+  <div class="detail-header">
+    <a href="#bulk_overwrite_global_commands/2" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">bulk_overwrite_global_commands(application_id \\ Me.get().id, commands)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/application_command.ex#L85" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+      <span class="note">(since 1.x.x)</span>
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> bulk_overwrite_global_commands(
+  <a href="Nostrum.Struct.User.html#t:id/0">Nostrum.Struct.User.id</a>(),
+  [<a href="Nostrum.Struct.ApplicationCommand.html#t:application_command_map/0">Nostrum.Struct.ApplicationCommand.application_command_map</a>()]
+) :: {:ok, [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()]} | <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>()</pre>
+
+      </div>
+
+<p>Overwrite the existing global application commands.</p><p>This action will:</p><ul><li>Create any command that was provided and did not already exist</li><li>Update any command that was provided and already existed if its configuration changed</li><li>Delete any command that was not provided but existed on Discord's end</li></ul><p>Updates will be available in all guilds after 1 hour.
+Commands that do not already exist will count toward daily application command create limits.</p><h2 id="bulk_overwrite_global_commands/2-parameters" class="section-heading">
+  <a href="#bulk_overwrite_global_commands/2-parameters" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Parameters</span>
+</h2>
+<ul><li><code class="inline">application_id</code>: Application ID for which to overwrite the commands.
+If not given, this will be fetched from <code class="inline">Me</code>.</li><li><code class="inline">commands</code>: List of command configurations, see the linked API documentation for reference.</li></ul><h2 id="bulk_overwrite_global_commands/2-return-value" class="section-heading">
+  <a href="#bulk_overwrite_global_commands/2-return-value" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Return value</span>
+</h2>
+<p>Updated list of global application commands. See the official reference:
+<a href="https://discord.com/developers/docs/interactions/application-commands#bulk-overwrite-global-application-commands">https://discord.com/developers/docs/interactions/application-commands#bulk-overwrite-global-application-commands</a></p>
+  </section>
+</section>
+<section class="detail" id="bulk_overwrite_guild_commands/3">
+
+    <span id="bulk_overwrite_guild_commands/2"></span>
+
+  <div class="detail-header">
+    <a href="#bulk_overwrite_guild_commands/3" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">bulk_overwrite_guild_commands(application_id \\ Me.get().id, guild_id, commands)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/application_command.ex#L116" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+      <span class="note">(since 1.x.x)</span>
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> bulk_overwrite_guild_commands(
+  <a href="Nostrum.Struct.User.html#t:id/0">Nostrum.Struct.User.id</a>(),
+  <a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(),
+  [
+    <a href="Nostrum.Struct.ApplicationCommand.html#t:application_command_map/0">Nostrum.Struct.ApplicationCommand.application_command_map</a>()
+  ]
+) :: {:ok, [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()]} | <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>()</pre>
+
+      </div>
+
+<p>Overwrite the existing guild application commands on the specified guild.</p><p>This action will:</p><ul><li>Create any command that was provided and did not already exist</li><li>Update any command that was provided and already existed if its configuration changed</li><li>Delete any command that was not provided but existed on Discord's end</li></ul><h2 id="bulk_overwrite_guild_commands/3-parameters" class="section-heading">
+  <a href="#bulk_overwrite_guild_commands/3-parameters" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Parameters</span>
+</h2>
+<ul><li><code class="inline">application_id</code>: Application ID for which to overwrite the commands.
+If not given, this will be fetched from <code class="inline">Me</code>.</li><li><code class="inline">guild_id</code>: Guild on which to overwrite the commands.</li><li><code class="inline">commands</code>: List of command configurations, see the linked API documentation for reference.</li></ul><h2 id="bulk_overwrite_guild_commands/3-return-value" class="section-heading">
+  <a href="#bulk_overwrite_guild_commands/3-return-value" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Return value</span>
+</h2>
+<p>Updated list of guild application commands. See the official reference:
+<a href="https://discord.com/developers/docs/interactions/application-commands#bulk-overwrite-guild-application-commands">https://discord.com/developers/docs/interactions/application-commands#bulk-overwrite-guild-application-commands</a></p>
+  </section>
+</section>
+<section class="detail" id="create_global_command/2">
+
+    <span id="create_global_command/1"></span>
+
+  <div class="detail-header">
+    <a href="#create_global_command/2" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">create_global_command(application_id \\ Me.get().id, command)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/application_command.ex#L157" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> create_global_command(
+  <a href="Nostrum.Struct.User.html#t:id/0">Nostrum.Struct.User.id</a>(),
+  <a href="Nostrum.Struct.ApplicationCommand.html#t:application_command_map/0">Nostrum.Struct.ApplicationCommand.application_command_map</a>()
+) :: {:ok, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()} | <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>()</pre>
+
+      </div>
+
+<p>Create a new global application command.</p><p>The new command will be available on all guilds in around an hour.
+If you want to test commands, use <a href="#create_guild_command/2"><code class="inline">create_guild_command/2</code></a> instead,
+as commands will become available instantly there.
+If an existing command with the same name exists, it will be overwritten.</p><h2 id="create_global_command/2-parameters" class="section-heading">
+  <a href="#create_global_command/2-parameters" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Parameters</span>
+</h2>
+<ul><li><code class="inline">application_id</code>: Application ID for which to create the command.
+If not given, this will be fetched from <code class="inline">Me</code>.</li><li><code class="inline">command</code>: Command configuration, see the linked API documentation for reference.</li></ul><h2 id="create_global_command/2-return-value" class="section-heading">
+  <a href="#create_global_command/2-return-value" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Return value</span>
+</h2>
+<p>The created command. See the official reference:
+<a href="https://discord.com/developers/docs/interactions/application-commands#create-global-application-command">https://discord.com/developers/docs/interactions/application-commands#create-global-application-command</a></p><h2 id="create_global_command/2-example" class="section-heading">
+  <a href="#create_global_command/2-example" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Example</span>
+</h2>
+<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api.ApplicationCommand</span><span class="o">.</span><span class="n">create_global_command</span><span class="p" data-group-id="7890103889-1">(</span><span class="w">
+  </span><span class="p" data-group-id="7890103889-2">%{</span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;edit&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">description</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ed, man! man, ed&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">options</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="7890103889-3">[</span><span class="p" data-group-id="7890103889-3">]</span><span class="p" data-group-id="7890103889-2">}</span><span class="w">
+</span><span class="p" data-group-id="7890103889-1">)</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="create_guild_command/3">
+
+    <span id="create_guild_command/2"></span>
+
+  <div class="detail-header">
+    <a href="#create_guild_command/3" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">create_guild_command(application_id \\ Me.get().id, guild_id, command)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/application_command.ex#L184" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> create_guild_command(
+  <a href="Nostrum.Struct.User.html#t:id/0">Nostrum.Struct.User.id</a>(),
+  <a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(),
+  <a href="Nostrum.Struct.ApplicationCommand.html#t:application_command_map/0">Nostrum.Struct.ApplicationCommand.application_command_map</a>()
+) :: {:ok, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()} | <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>()</pre>
+
+      </div>
+
+<p>Create a guild application command on the specified guild.</p><p>The new command will be available immediately.</p><h2 id="create_guild_command/3-parameters" class="section-heading">
+  <a href="#create_guild_command/3-parameters" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Parameters</span>
+</h2>
+<ul><li><code class="inline">application_id</code>: Application ID for which to create the command.
+If not given, this will be fetched from <code class="inline">Me</code>.</li><li><code class="inline">guild_id</code>: Guild on which to create the command.</li><li><code class="inline">command</code>: Command configuration, see the linked API documentation for reference.</li></ul><h2 id="create_guild_command/3-return-value" class="section-heading">
+  <a href="#create_guild_command/3-return-value" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Return value</span>
+</h2>
+<p>The created command. See the official reference:
+<a href="https://discord.com/developers/docs/interactions/application-commands#create-guild-application-command">https://discord.com/developers/docs/interactions/application-commands#create-guild-application-command</a></p>
+  </section>
+</section>
+<section class="detail" id="delete_global_command/2">
+
+    <span id="delete_global_command/1"></span>
+
+  <div class="detail-header">
+    <a href="#delete_global_command/2" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">delete_global_command(application_id \\ Me.get().id, command_id)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/application_command.ex#L203" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> delete_global_command(<a href="Nostrum.Struct.User.html#t:id/0">Nostrum.Struct.User.id</a>(), <a href="Nostrum.Snowflake.html#t:t/0">Nostrum.Snowflake.t</a>()) ::
+  {:ok} | <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>()</pre>
+
+      </div>
+
+<p>Delete an existing global application command.</p><h2 id="delete_global_command/2-parameters" class="section-heading">
+  <a href="#delete_global_command/2-parameters" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Parameters</span>
+</h2>
+<ul><li><code class="inline">application_id</code>: Application ID for which to create the command.
+If not given, this will be fetched from <code class="inline">Me</code>.</li><li><code class="inline">command_id</code>: The current snowflake of the command.</li></ul>
+  </section>
+</section>
+<section class="detail" id="delete_guild_command/3">
+
+    <span id="delete_guild_command/2"></span>
+
+  <div class="detail-header">
+    <a href="#delete_guild_command/3" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">delete_guild_command(application_id \\ Me.get().id, guild_id, command_id)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/application_command.ex#L219" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> delete_guild_command(
+  <a href="Nostrum.Struct.User.html#t:id/0">Nostrum.Struct.User.id</a>(),
+  <a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(),
+  <a href="Nostrum.Snowflake.html#t:t/0">Nostrum.Snowflake.t</a>()
+) ::
+  {:ok} | <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>()</pre>
+
+      </div>
+
+<p>Delete an existing guild application command.</p><h2 id="delete_guild_command/3-parameters" class="section-heading">
+  <a href="#delete_guild_command/3-parameters" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Parameters</span>
+</h2>
+<ul><li><code class="inline">application_id</code>: Application ID for which to create the command.
+If not given, this will be fetched from <code class="inline">Me</code>.</li><li><code class="inline">guild_id</code>: The guild on which the command exists.</li><li><code class="inline">command_id</code>: The current snowflake of the command.</li></ul>
+  </section>
+</section>
+<section class="detail" id="edit_command_permissions/4">
+
+    <span id="edit_command_permissions/3"></span>
+
+  <div class="detail-header">
+    <a href="#edit_command_permissions/4" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">edit_command_permissions(application_id \\ Me.get().id, guild_id, command_id, permissions)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/application_command.ex#L252" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+      <span class="note">(since 1.x.x)</span>
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> edit_command_permissions(
+  <a href="Nostrum.Struct.User.html#t:id/0">Nostrum.Struct.User.id</a>(),
+  <a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(),
+  <a href="Nostrum.Snowflake.html#t:t/0">Nostrum.Snowflake.t</a>(),
+  [<a href="Nostrum.Struct.ApplicationCommand.html#t:application_command_permissions/0">Nostrum.Struct.ApplicationCommand.application_command_permissions</a>()]
+) :: {:ok, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()} | <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>()</pre>
+
+      </div>
+
+<p>Edits command permissions for a specific command for your application in a guild. You can only add up to 10 permission overwrites for a command.</p><h2 id="edit_command_permissions/4-parameters" class="section-heading">
+  <a href="#edit_command_permissions/4-parameters" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Parameters</span>
+</h2>
+<ul><li><code class="inline">application_id</code>: Application ID commands are registered under.
+If not given, this will be fetched from <code class="inline">Me</code>.</li><li><code class="inline">guild_id</code>: Guild ID to fetch command permissions from.</li><li><code class="inline">command_id</code>: Command ID to fetch permissions for.</li><li><code class="inline">permissions</code>: List of <a href="https://discord.com/developers/docs/interactions/application-commands#application-command-permissions-object-application-command-permissions-structure">application command permissions</a></li></ul><h2 id="edit_command_permissions/4-return-value" class="section-heading">
+  <a href="#edit_command_permissions/4-return-value" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Return value</span>
+</h2>
+<p>This method returns a guild application command permission object, see all available values on the <a href="https://discord.com/developers/docs/interactions/application-commands#application-command-permissions-object-guild-application-command-permissions-structure">Discord API docs</a>.</p>
+  </section>
+</section>
+<section class="detail" id="edit_global_command/3">
+
+    <span id="edit_global_command/2"></span>
+
+  <div class="detail-header">
+    <a href="#edit_global_command/3" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">edit_global_command(application_id \\ Me.get().id, command_id, command)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/application_command.ex#L292" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> edit_global_command(
+  <a href="Nostrum.Struct.User.html#t:id/0">Nostrum.Struct.User.id</a>(),
+  <a href="Nostrum.Snowflake.html#t:t/0">Nostrum.Snowflake.t</a>(),
+  <a href="Nostrum.Struct.ApplicationCommand.html#t:application_command_edit_map/0">Nostrum.Struct.ApplicationCommand.application_command_edit_map</a>()
+) :: {:ok, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()} | <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>()</pre>
+
+      </div>
+
+<p>Update an existing global application command.</p><p>The updated command will be available on all guilds in around an hour.</p><h2 id="edit_global_command/3-parameters" class="section-heading">
+  <a href="#edit_global_command/3-parameters" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Parameters</span>
+</h2>
+<ul><li><code class="inline">application_id</code>: Application ID for which to edit the command.
+If not given, this will be fetched from <code class="inline">Me</code>.</li><li><code class="inline">command_id</code>: The current snowflake of the command.</li><li><code class="inline">command</code>: Command configuration, see the linked API documentation for reference.</li></ul><h2 id="edit_global_command/3-return-value" class="section-heading">
+  <a href="#edit_global_command/3-return-value" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Return value</span>
+</h2>
+<p>The updated command. See the official reference:
+<a href="https://discord.com/developers/docs/interactions/application-commands#edit-global-application-command">https://discord.com/developers/docs/interactions/application-commands#edit-global-application-command</a></p>
+  </section>
+</section>
+<section class="detail" id="edit_guild_command/4">
+
+    <span id="edit_guild_command/3"></span>
+
+  <div class="detail-header">
+    <a href="#edit_guild_command/4" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">edit_guild_command(application_id \\ Me.get().id, guild_id, command_id, command)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/application_command.ex#L329" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> edit_guild_command(
+  <a href="Nostrum.Struct.User.html#t:id/0">Nostrum.Struct.User.id</a>(),
+  <a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(),
+  <a href="Nostrum.Snowflake.html#t:t/0">Nostrum.Snowflake.t</a>(),
+  <a href="Nostrum.Struct.ApplicationCommand.html#t:application_command_edit_map/0">Nostrum.Struct.ApplicationCommand.application_command_edit_map</a>()
+) :: {:ok, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()} | <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>()</pre>
+
+      </div>
+
+<p>Update an existing guild application command.</p><p>The updated command will be available immediately.</p><h2 id="edit_guild_command/4-parameters" class="section-heading">
+  <a href="#edit_guild_command/4-parameters" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Parameters</span>
+</h2>
+<ul><li><code class="inline">application_id</code>: Application ID for which to edit the command.
+If not given, this will be fetched from <code class="inline">Me</code>.</li><li><code class="inline">guild_id</code>: Guild for which to update the command.</li><li><code class="inline">command_id</code>: The current snowflake of the command.</li><li><code class="inline">command</code>: Command configuration, see the linked API documentation for reference.</li></ul><h2 id="edit_guild_command/4-return-value" class="section-heading">
+  <a href="#edit_guild_command/4-return-value" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Return value</span>
+</h2>
+<p>The updated command. See the official reference:
+<a href="https://discord.com/developers/docs/interactions/application-commands#edit-guild-application-command">https://discord.com/developers/docs/interactions/application-commands#edit-guild-application-command</a></p>
+  </section>
+</section>
+<section class="detail" id="global_commands/1">
+
+    <span id="global_commands/0"></span>
+
+  <div class="detail-header">
+    <a href="#global_commands/1" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">global_commands(application_id \\ Me.get().id)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/application_command.ex#L400" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> global_commands(<a href="Nostrum.Struct.User.html#t:id/0">Nostrum.Struct.User.id</a>()) ::
+  {:ok, [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()]} | <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>()</pre>
+
+      </div>
+
+<p>Fetch all global commands.</p><h2 id="global_commands/1-parameters" class="section-heading">
+  <a href="#global_commands/1-parameters" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Parameters</span>
+</h2>
+<ul><li><code class="inline">application_id</code>: Application ID for which to search commands.
+If not given, this will be fetched from <code class="inline">Me</code>.</li></ul><h2 id="global_commands/1-return-value" class="section-heading">
+  <a href="#global_commands/1-return-value" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Return value</span>
+</h2>
+<p>A list of <code class="inline">ApplicationCommand</code>s on success. See the official reference:
+<a href="https://discord.com/developers/docs/interactions/application-commands#application-command-object-application-command-structure">https://discord.com/developers/docs/interactions/application-commands#application-command-object-application-command-structure</a></p><h2 id="global_commands/1-example" class="section-heading">
+  <a href="#global_commands/1-example" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Example</span>
+</h2>
+<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Api</span><span class="o">.</span><span class="n">global_commands</span><span class="w">
+</span><span class="p" data-group-id="6445556592-1">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w">
+ </span><span class="p" data-group-id="6445556592-2">[</span><span class="w">
+   </span><span class="p" data-group-id="6445556592-3">%{</span><span class="w">
+     </span><span class="ss">application_id</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;455589479713865749&quot;</span><span class="p">,</span><span class="w">
+     </span><span class="ss">description</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;ed, man! man, ed&quot;</span><span class="p">,</span><span class="w">
+     </span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;789841753196331029&quot;</span><span class="p">,</span><span class="w">
+     </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;edit&quot;</span><span class="w">
+   </span><span class="p" data-group-id="6445556592-3">}</span><span class="w">
+ </span><span class="p" data-group-id="6445556592-2">]</span><span class="p" data-group-id="6445556592-1">}</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="guild_commands/2">
+
+    <span id="guild_commands/1"></span>
+
+  <div class="detail-header">
+    <a href="#guild_commands/2" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">guild_commands(application_id \\ Me.get().id, guild_id)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/application_command.ex#L443" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> guild_commands(<a href="Nostrum.Struct.User.html#t:id/0">Nostrum.Struct.User.id</a>(), <a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>()) ::
+  {:ok, [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()]} | <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>()</pre>
+
+      </div>
+
+<p>Fetch all guild application commands for the given guild.</p><h2 id="guild_commands/2-parameters" class="section-heading">
+  <a href="#guild_commands/2-parameters" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Parameters</span>
+</h2>
+<ul><li><code class="inline">application_id</code>: Application ID for which to fetch commands.
+If not given, this will be fetched from <code class="inline">Me</code>.</li><li><code class="inline">guild_id</code>: The guild ID for which guild application commands
+should be requested.</li></ul><h2 id="guild_commands/2-return-value" class="section-heading">
+  <a href="#guild_commands/2-return-value" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Return value</span>
+</h2>
+<p>A list of <code class="inline">ApplicationCommand</code>s on success. See the official reference:
+<a href="https://discord.com/developers/docs/interactions/application-commands#application-command-object-application-command-structure">https://discord.com/developers/docs/interactions/application-commands#application-command-object-application-command-structure</a></p>
+  </section>
+</section>
+<section class="detail" id="guild_permissions/2">
+
+    <span id="guild_permissions/1"></span>
+
+  <div class="detail-header">
+    <a href="#guild_permissions/2" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">guild_permissions(application_id \\ Me.get().id, guild_id)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/application_command.ex#L420" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+      <span class="note">(since 1.x.x)</span>
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> guild_permissions(<a href="Nostrum.Struct.User.html#t:id/0">Nostrum.Struct.User.id</a>(), <a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>()) ::
+  {:ok, [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()]} | <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>()</pre>
+
+      </div>
+
+<p>Fetches command permissions for all commands for your application in a guild.</p><h2 id="guild_permissions/2-parameters" class="section-heading">
+  <a href="#guild_permissions/2-parameters" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Parameters</span>
+</h2>
+<ul><li><code class="inline">application_id</code>: Application ID commands are registered under.
+If not given, this will be fetched from <code class="inline">Me</code>.</li><li><code class="inline">guild_id</code>: Guild ID to fetch command permissions from.</li></ul><h2 id="guild_permissions/2-return-value" class="section-heading">
+  <a href="#guild_permissions/2-return-value" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Return value</span>
+</h2>
+<p>This method returns a list of guild application command permission objects, see all available values on the <a href="https://discord.com/developers/docs/interactions/application-commands#application-command-permissions-object-guild-application-command-permissions-structure">Discord API docs</a>.</p>
+  </section>
+</section>
+<section class="detail" id="permissions/3">
+
+    <span id="permissions/2"></span>
+
+  <div class="detail-header">
+    <a href="#permissions/3" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">permissions(application_id \\ Me.get().id, guild_id, command_id)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/application_command.ex#L360" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+      <span class="note">(since 1.x.x)</span>
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> permissions(
+  <a href="Nostrum.Struct.User.html#t:id/0">Nostrum.Struct.User.id</a>(),
+  <a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(),
+  <a href="Nostrum.Snowflake.html#t:t/0">Nostrum.Snowflake.t</a>()
+) ::
+  {:ok, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()} | <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>()</pre>
+
+      </div>
+
+<p>Fetches command permissions for a specific command for your application in a guild.</p><h2 id="permissions/3-parameters" class="section-heading">
+  <a href="#permissions/3-parameters" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Parameters</span>
+</h2>
+<ul><li><code class="inline">application_id</code>: Application ID commands are registered under.
+If not given, this will be fetched from <code class="inline">Me</code>.</li><li><code class="inline">guild_id</code>: Guild ID to fetch command permissions from.</li><li><code class="inline">command_id</code>: Command ID to fetch permissions for.</li></ul><h2 id="permissions/3-return-value" class="section-heading">
+  <a href="#permissions/3-return-value" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Return value</span>
+</h2>
+<p>This method returns a single guild application command permission object, see all available values on the <a href="https://discord.com/developers/docs/interactions/application-commands#application-command-permissions-object-guild-application-command-permissions-structure">Discord API docs</a>.</p>
+  </section>
+</section>
+
+    </div>
+  </section>
+
+    <footer class="footer">
+      <p>
+
+          <span class="line">
+            <a href="https://hex.pm/packages/nostrum/0.10.0" class="footer-hex-package">Hex Package</a>
+
+            <a href="https://preview.hex.pm/preview/nostrum/0.10.0">Hex Preview</a>
+
+          </span>
+
+        <span class="line">
+          <button class="a-main footer-button display-quick-switch" title="Search HexDocs packages">
+            Search HexDocs
+          </button>
+
+            <a href="Nostrum.epub" title="ePub version">
+              Download ePub version
+            </a>
+
+        </span>
+      </p>
+
+      <p class="built-using">
+        Built using
+        <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.32.1) for the
+
+          <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
+
+      </p>
+
+    </footer>
+  </div>
+</main>
+</div>
+
+
+  </body>
+</html>

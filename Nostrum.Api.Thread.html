@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.32.1">
+    <meta name="project" content="Nostrum v0.10.0">
+
+
+    <title>Nostrum.Api.Thread — Nostrum v0.10.0</title>
+    <link rel="stylesheet" href="dist/html-elixir-2C5PUTIB.css" />
+
+
+    <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
+    <script src="dist/handlebars.templates-IHH6HKET.js"></script>
+    <script src="dist/sidebar_items-86DB4ED6.js"></script>
+    <script src="docs_config.js"></script>
+    <script async src="dist/html-GXQ6W6IF.js"></script>
+
+
+  </head>
+  <body data-type="modules" class="page-module">
+    <script>
+
+      try {
+        var settings = JSON.parse(localStorage.getItem('ex_doc:settings') || '{}');
+
+        if (settings.theme === 'dark' ||
+           ((settings.theme === 'system' || settings.theme == null) &&
+             window.matchMedia('(prefers-color-scheme: dark)').matches)
+           ) {
+          document.body.classList.add('dark')
+        }
+      } catch (error) { }
+    </script>
+
+<div class="body-wrapper">
+
+<button id="sidebar-menu" class="sidebar-button sidebar-toggle" aria-label="toggle sidebar" aria-controls="sidebar">
+  <i class="ri-menu-line ri-lg" title="Collapse/expand sidebar"></i>
+</button>
+
+<nav id="sidebar" class="sidebar">
+
+  <div class="sidebar-header">
+    <div class="sidebar-projectInfo">
+
+        <a href="https://github.com/Kraigie/nostrum" class="sidebar-projectImage">
+          <img src="assets/logo.png" alt="Nostrum" />
+        </a>
+
+      <div>
+        <a href="https://github.com/Kraigie/nostrum" class="sidebar-projectName" translate="no">
+Nostrum
+        </a>
+        <div class="sidebar-projectVersion" translate="no">
+          v0.10.0
+        </div>
+      </div>
+    </div>
+    <ul id="sidebar-listNav" class="sidebar-listNav" role="tablist">
+      <li>
+        <button id="extras-list-tab-button" role="tab" data-type="extras" aria-controls="extras-tab-panel" aria-selected="true" tabindex="0">
+Pages
+        </button>
+      </li>
+
+        <li>
+          <button id="modules-list-tab-button" role="tab" data-type="modules" aria-controls="modules-tab-panel" aria-selected="false" tabindex="-1">
+            Modules
+          </button>
+        </li>
+
+
+        <li>
+          <button id="tasks-list-tab-button" role="tab" data-type="tasks" aria-controls="tasks-tab-panel" aria-selected="false" tabindex="-1">
+            <span translate="no">Mix</span> Tasks
+          </button>
+        </li>
+
+    </ul>
+  </div>
+
+  <div id="extras-tab-panel" class="sidebar-tabpanel" role="tabpanel" aria-labelledby="extras-list-tab-button">
+    <ul id="extras-full-list" class="full-list"></ul>
+  </div>
+
+    <div id="modules-tab-panel" class="sidebar-tabpanel" role="tabpanel" aria-labelledby="modules-list-tab-button" hidden>
+      <ul id="modules-full-list" class="full-list"></ul>
+    </div>
+
+
+    <div id="tasks-tab-panel" class="sidebar-tabpanel" role="tabpanel" aria-labelledby="tasks-list-tab-button" hidden>
+      <ul id="tasks-full-list" class="full-list"></ul>
+    </div>
+
+</nav>
+
+<main class="content">
+  <output role="status" id="toast"></output>
+
+  <div id="content" class="content-inner">
+    <div class="top-search">
+      <div class="search-settings">
+        <form class="search-bar" action="search.html">
+          <label class="search-label">
+            <span class="sr-only">Search documentation of Nostrum</span>
+            <input name="q" type="text" class="search-input" placeholder="Press / to search" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+          </label>
+          <button type="submit" class="search-button" aria-label="Submit Search">
+            <i class="ri-search-2-line ri-lg" aria-hidden="true" title="Submit search"></i>
+          </button>
+          <button type="button" tabindex="-1" class="search-close-button" aria-hidden="true">
+            <i class="ri-close-line ri-lg" title="Cancel search"></i>
+          </button>
+        </form>
+        <div class="autocomplete">
+        </div>
+        <button class="icon-settings display-settings">
+          <i class="ri-settings-3-line"></i>
+          <span class="sr-only">Settings</span>
+        </button>
+      </div>
+    </div>
+
+<div id="top-content">
+  <h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/thread.ex#L1" title="View Source" class="icon-action" rel="help">
+        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        <span class="sr-only">View Source</span>
+      </a>
+
+    <span translate="no">Nostrum.Api.Thread</span> 
+    <small class="app-vsn" translate="no">(Nostrum v0.10.0)</small>
+
+  </h1>
+
+
+    <section id="moduledoc">
+<p>Functions for interacting with the Discord API's thread endpoints.</p><p>Endpoints related to threads in the Discord Channels API: <a href="https://discord.com/developers/docs/resources/channel#start-thread-from-message">https://discord.com/developers/docs/resources/channel#start-thread-from-message</a></p>
+    </section>
+
+</div>
+
+  <section id="summary" class="details-list">
+    <h1 class="section-heading">
+      <a class="hover-link" href="#summary">
+        <i class="ri-link-m" aria-hidden="true"></i>
+      </a>
+      <span class="text">Summary</span>
+    </h1>
+<div class="summary-types summary">
+  <h2>
+    <a href="#types">Types</a>
+  </h2>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:thread_with_message_params/0" translate="no">thread_with_message_params()</a>
+
+      </div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:thread_without_message_params/0" translate="no">thread_without_message_params()</a>
+
+      </div>
+
+    </div>
+
+</div>
+<div class="summary-functions summary">
+  <h2>
+    <a href="#functions">Functions</a>
+  </h2>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#add_member/2" translate="no">add_member(thread_id, user_id)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Add a user to a thread, requires the ability to send messages in the thread.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#create/3" translate="no">create(channel_id, options, reason \\ nil)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Create a thread on a channel without an associated message.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#create_in_forum/3" translate="no">create_in_forum(channel_id, options, reason \\ nil)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Create a new thread in a forum channel.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#create_with_message/4" translate="no">create_with_message(channel_id, message_id, options, reason \\ nil)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Create a thread on a channel message.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#join/1" translate="no">join(thread_id)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Join an existing thread, requires that the thread is not archived.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#joined_private_archived_threads/2" translate="no">joined_private_archived_threads(channel_id, options \\ [])</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Same as <a href="#public_archived_threads/2"><code class="inline">public_archived_threads/2</code></a>, but only returns private threads that the current user has joined.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#leave/1" translate="no">leave(thread_id)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Leave a thread, requires that the thread is not archived.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#list/1" translate="no">list(guild_id)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Return all active threads for the current guild.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#member/2" translate="no">member(thread_id, user_id)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Returns a thread member object for the specified user if they are a member of the thread</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#members/1" translate="no">members(thread_id)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Returns a list of thread members for the specified thread.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#private_archived_threads/2" translate="no">private_archived_threads(channel_id, options \\ [])</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Same as <a href="#public_archived_threads/2"><code class="inline">public_archived_threads/2</code></a>, but for private threads instead of public.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#public_archived_threads/2" translate="no">public_archived_threads(channel_id, options \\ [])</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Returns a list of archived threads for a given channel.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#remove_member/2" translate="no">remove_member(thread_id, user_id)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Removes another user from a thread, requires that the thread is not archived.</p></div>
+
+    </div>
+
+</div>
+
+  </section>
+
+
+  <section id="types" class="details-list">
+    <h1 class="section-heading">
+      <a class="hover-link" href="#types">
+        <i class="ri-link-m" aria-hidden="true"></i>
+      </a>
+      <span class="text">Types</span>
+    </h1>
+    <div class="types-list">
+<section class="detail" id="t:thread_with_message_params/0">
+
+  <div class="detail-header">
+    <a href="#t:thread_with_message_params/0" class="detail-link" title="Link to this type">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature" translate="no">thread_with_message_params()</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/thread.ex#L310" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@type</span> thread_with_message_params() :: %{
+  :name =&gt; <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>(),
+  optional(:auto_archive_duration) =&gt; 60 | 1440 | 4320 | 10080,
+  optional(:rate_limit_per_user) =&gt; 0..21600
+}</pre>
+
+      </div>
+
+
+  </section>
+</section>
+<section class="detail" id="t:thread_without_message_params/0">
+
+  <div class="detail-header">
+    <a href="#t:thread_without_message_params/0" class="detail-link" title="Link to this type">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature" translate="no">thread_without_message_params()</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/thread.ex#L206" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@type</span> thread_without_message_params() :: %{
+  :name =&gt; <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>(),
+  :type =&gt; <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">non_neg_integer</a>(),
+  optional(:auto_archive_duration) =&gt; 60 | 1440 | 4320 | 10080,
+  optional(:invitable) =&gt; <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">boolean</a>(),
+  optional(:rate_limit_per_user) =&gt; 0..21600
+}</pre>
+
+      </div>
+
+
+  </section>
+</section>
+
+    </div>
+  </section>
+
+  <section id="functions" class="details-list">
+    <h1 class="section-heading">
+      <a class="hover-link" href="#functions">
+        <i class="ri-link-m" aria-hidden="true"></i>
+      </a>
+      <span class="text">Functions</span>
+    </h1>
+    <div class="functions-list">
+<section class="detail" id="add_member/2">
+
+  <div class="detail-header">
+    <a href="#add_member/2" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">add_member(thread_id, user_id)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/thread.ex#L25" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+      <span class="note">(since 1.x.x)</span>
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> add_member(<a href="Nostrum.Struct.Channel.html#t:id/0">Nostrum.Struct.Channel.id</a>(), <a href="Nostrum.Struct.User.html#t:id/0">Nostrum.Struct.User.id</a>()) ::
+  {:ok} | <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>()</pre>
+
+      </div>
+
+<p>Add a user to a thread, requires the ability to send messages in the thread.</p>
+  </section>
+</section>
+<section class="detail" id="create/3">
+
+    <span id="create/2"></span>
+
+  <div class="detail-header">
+    <a href="#create/3" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">create(channel_id, options, reason \\ nil)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/thread.ex#L231" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+      <span class="note">(since 1.x.x)</span>
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> create(
+  <a href="Nostrum.Struct.Channel.html#t:id/0">Nostrum.Struct.Channel.id</a>(),
+  <a href="#t:thread_without_message_params/0">thread_without_message_params</a>(),
+  <a href="Nostrum.Struct.Guild.AuditLogEntry.html#t:reason/0">Nostrum.Struct.Guild.AuditLogEntry.reason</a>()
+) :: {:ok, <a href="Nostrum.Struct.Channel.html#t:t/0">Nostrum.Struct.Channel.t</a>()} | <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>()</pre>
+
+      </div>
+
+<p>Create a thread on a channel without an associated message.</p><p>If successful, returns <code class="inline">{:ok, Channel}</code>. Otherwise returns a <a href="Nostrum.Api.html#t:error/0"><code class="inline">Nostrum.Api.error/0</code></a>.</p><p>An optional <code class="inline">reason</code> argument can be given for the audit log.</p><h2 id="create/3-options" class="section-heading">
+  <a href="#create/3-options" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Options</span>
+</h2>
+<ul><li><code class="inline">name</code>: Name of the thread, max 100 characters.</li><li><code class="inline">type</code>: Type of thread, can be either 11 (<code class="inline">GUILD_PUBLIC_THREAD</code>) or 12 (<code class="inline">GUILD_PRIVATE_THREAD</code>).</li><li><code class="inline">auto_archive_duration</code>: Duration in minutes to auto-archive the thread after it has been inactive, can be set to 60, 1440, 4320, or 10080.</li><li><code class="inline">invitable</code>: whether non-moderators can add other non-moderators to a thread; only available when creating a private thread defaults to <code class="inline">false</code>.</li><li><code class="inline">rate_limit_per_user</code>: Rate limit per user in seconds, can be set to any value in <code class="inline">0..21600</code>.</li></ul>
+  </section>
+</section>
+<section class="detail" id="create_in_forum/3">
+
+    <span id="create_in_forum/2"></span>
+
+  <div class="detail-header">
+    <a href="#create_in_forum/3" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">create_in_forum(channel_id, options, reason \\ nil)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/thread.ex#L270" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+      <span class="note">(since 1.x.x)</span>
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> create_in_forum(
+  <a href="Nostrum.Struct.Channel.html#t:id/0">Nostrum.Struct.Channel.id</a>(),
+  <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>(),
+  <a href="Nostrum.Struct.Guild.AuditLogEntry.html#t:reason/0">Nostrum.Struct.Guild.AuditLogEntry.reason</a>()
+) ::
+  {:ok, <a href="Nostrum.Struct.Channel.html#t:t/0">Nostrum.Struct.Channel.t</a>()} | <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>()</pre>
+
+      </div>
+
+<p>Create a new thread in a forum channel.</p><p>If successful, returns <code class="inline">{:ok, Channel}</code>. Otherwise returns a <a href="Nostrum.Api.html#t:error/0"><code class="inline">Nostrum.Api.error/0</code></a>.</p><p>An optional <code class="inline">reason</code> argument can be given for the audit log.</p><h2 id="create_in_forum/3-options" class="section-heading">
+  <a href="#create_in_forum/3-options" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Options</span>
+</h2>
+<ul><li><code class="inline">name</code>: Name of the thread, max 100 characters.</li><li><code class="inline">auto_archive_duration</code>: Duration in minutes to auto-archive the thread after it has been inactive, can be set to 60, 1440, 4320, or 10080.</li><li><code class="inline">rate_limit_per_user</code>: Rate limit per user in seconds, can be set to any value in <code class="inline">0..21600</code>.</li><li><code class="inline">applied_tags</code>: An array of tag ids to apply to the thread.</li><li><code class="inline">message</code>: The first message in the created thread.</li></ul><h3 id="create_in_forum/3-thread-message-options" class="section-heading">
+  <a href="#create_in_forum/3-thread-message-options" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Thread Message Options</span>
+</h3>
+<ul><li><code class="inline">content</code>: The content of the message.</li><li><code class="inline">embeds</code>: A list of embeds.</li><li><code class="inline">allowed_mentions</code>: Allowed mentions object.</li><li><code class="inline">components</code>: A list of components.</li><li><code class="inline">sticker_ids</code>: A list of sticker ids.</li><li><code class="inline">:files</code> - a list of files where each element is the same format as the <code class="inline">:file</code> option. If both
+<code class="inline">:file</code> and <code class="inline">:files</code> are specified, <code class="inline">:file</code> will be prepended to the <code class="inline">:files</code> list.</li></ul><p>At least one of <code class="inline">content</code>, <code class="inline">embeds</code>, <code class="inline">sticker_ids</code>, or <code class="inline">files</code> must be specified.</p>
+  </section>
+</section>
+<section class="detail" id="create_with_message/4">
+
+    <span id="create_with_message/3"></span>
+
+  <div class="detail-header">
+    <a href="#create_with_message/4" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">create_with_message(channel_id, message_id, options, reason \\ nil)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/thread.ex#L339" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+      <span class="note">(since 1.x.x)</span>
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> create_with_message(
+  <a href="Nostrum.Struct.Channel.html#t:id/0">Nostrum.Struct.Channel.id</a>(),
+  <a href="Nostrum.Struct.Message.html#t:id/0">Nostrum.Struct.Message.id</a>(),
+  <a href="#t:thread_with_message_params/0">thread_with_message_params</a>(),
+  <a href="Nostrum.Struct.Guild.AuditLogEntry.html#t:reason/0">Nostrum.Struct.Guild.AuditLogEntry.reason</a>()
+) :: {:ok, <a href="Nostrum.Struct.Channel.html#t:t/0">Nostrum.Struct.Channel.t</a>()} | <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>()</pre>
+
+      </div>
+
+<p>Create a thread on a channel message.</p><p>The <code class="inline">thread_id</code> will be the same as the id of the message, as such no message can have more than one thread.</p><p>If successful, returns <code class="inline">{:ok, Channel}</code>. Otherwise returns a <a href="Nostrum.Api.html#t:error/0"><code class="inline">Nostrum.Api.error/0</code></a>.</p><p>An optional <code class="inline">reason</code> argument can be given for the audit log.</p><h2 id="create_with_message/4-options" class="section-heading">
+  <a href="#create_with_message/4-options" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Options</span>
+</h2>
+<ul><li><code class="inline">name</code>: Name of the thread, max 100 characters.</li><li><code class="inline">auto_archive_duration</code>: Duration in minutes to auto-archive the thread after it has been inactive, can be set to 60, 1440, 4320, or 10080.</li><li><code class="inline">rate_limit_per_user</code>: Rate limit per user in seconds, can be set to any value in <code class="inline">0..21600</code>.</li></ul>
+  </section>
+</section>
+<section class="detail" id="join/1">
+
+  <div class="detail-header">
+    <a href="#join/1" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">join(thread_id)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/thread.ex#L56" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+      <span class="note">(since 1.x.x)</span>
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> join(<a href="Nostrum.Struct.Channel.html#t:id/0">Nostrum.Struct.Channel.id</a>()) :: {:ok} | <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>()</pre>
+
+      </div>
+
+<p>Join an existing thread, requires that the thread is not archived.</p>
+  </section>
+</section>
+<section class="detail" id="joined_private_archived_threads/2">
+
+    <span id="joined_private_archived_threads/1"></span>
+
+  <div class="detail-header">
+    <a href="#joined_private_archived_threads/2" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">joined_private_archived_threads(channel_id, options \\ [])</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/thread.ex#L105" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+      <span class="note">(since 1.x.x)</span>
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> joined_private_archived_threads(
+  <a href="Nostrum.Struct.Channel.html#t:id/0">Nostrum.Struct.Channel.id</a>(),
+  <a href="Nostrum.Api.html#t:options/0">Nostrum.Api.options</a>()
+) ::
+  {:ok,
+   %{
+     threads: [<a href="Nostrum.Struct.Channel.html#t:t/0">Nostrum.Struct.Channel.t</a>()],
+     members: [<a href="Nostrum.Struct.ThreadMember.html#t:t/0">Nostrum.Struct.ThreadMember.t</a>()],
+     has_more: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">boolean</a>()
+   }}
+  | <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>()</pre>
+
+      </div>
+
+<p>Same as <a href="#public_archived_threads/2"><code class="inline">public_archived_threads/2</code></a>, but only returns private threads that the current user has joined.</p>
+  </section>
+</section>
+<section class="detail" id="leave/1">
+
+  <div class="detail-header">
+    <a href="#leave/1" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">leave(thread_id)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/thread.ex#L65" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+      <span class="note">(since 1.x.x)</span>
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> leave(<a href="Nostrum.Struct.Channel.html#t:id/0">Nostrum.Struct.Channel.id</a>()) :: {:ok} | <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>()</pre>
+
+      </div>
+
+<p>Leave a thread, requires that the thread is not archived.</p>
+  </section>
+</section>
+<section class="detail" id="list/1">
+
+  <div class="detail-header">
+    <a href="#list/1" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">list(guild_id)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/thread.ex#L79" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+      <span class="note">(since 1.x.x)</span>
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> list(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>()) ::
+  {:ok,
+   %{
+     threads: [<a href="Nostrum.Struct.Channel.html#t:t/0">Nostrum.Struct.Channel.t</a>()],
+     members: [<a href="Nostrum.Struct.ThreadMember.html#t:t/0">Nostrum.Struct.ThreadMember.t</a>()]
+   }}
+  | <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>()</pre>
+
+      </div>
+
+<p>Return all active threads for the current guild.</p><p>Response body is a map with the following keys:</p><ul><li><code class="inline">threads</code>: A list of channel objects.</li><li><code class="inline">members</code>: A list of <code class="inline">ThreadMember</code> objects, one for each returned thread the current user has joined.</li></ul>
+  </section>
+</section>
+<section class="detail" id="member/2">
+
+  <div class="detail-header">
+    <a href="#member/2" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">member(thread_id, user_id)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/thread.ex#L34" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+      <span class="note">(since 1.x.x)</span>
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> member(<a href="Nostrum.Struct.Channel.html#t:id/0">Nostrum.Struct.Channel.id</a>(), <a href="Nostrum.Struct.User.html#t:id/0">Nostrum.Struct.User.id</a>()) ::
+  {:ok, <a href="Nostrum.Struct.ThreadMember.html#t:t/0">Nostrum.Struct.ThreadMember.t</a>()} | <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>()</pre>
+
+      </div>
+
+<p>Returns a thread member object for the specified user if they are a member of the thread</p>
+  </section>
+</section>
+<section class="detail" id="members/1">
+
+  <div class="detail-header">
+    <a href="#members/1" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">members(thread_id)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/thread.ex#L46" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+      <span class="note">(since 1.x.x)</span>
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> members(<a href="Nostrum.Struct.Channel.html#t:id/0">Nostrum.Struct.Channel.id</a>()) ::
+  {:ok, [<a href="Nostrum.Struct.ThreadMember.html#t:t/0">Nostrum.Struct.ThreadMember.t</a>()]} | <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>()</pre>
+
+      </div>
+
+<p>Returns a list of thread members for the specified thread.</p><p>This endpoint is restricted according to whether the <code class="inline">GUILD_MEMBERS</code> privileged intent is enabled.</p>
+  </section>
+</section>
+<section class="detail" id="private_archived_threads/2">
+
+    <span id="private_archived_threads/1"></span>
+
+  <div class="detail-header">
+    <a href="#private_archived_threads/2" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">private_archived_threads(channel_id, options \\ [])</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/thread.ex#L152" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+      <span class="note">(since 1.x.x)</span>
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> private_archived_threads(<a href="Nostrum.Struct.Channel.html#t:id/0">Nostrum.Struct.Channel.id</a>(), <a href="Nostrum.Api.html#t:options/0">Nostrum.Api.options</a>()) ::
+  {:ok,
+   %{
+     threads: [<a href="Nostrum.Struct.Channel.html#t:t/0">Nostrum.Struct.Channel.t</a>()],
+     members: [<a href="Nostrum.Struct.ThreadMember.html#t:t/0">Nostrum.Struct.ThreadMember.t</a>()],
+     has_more: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">boolean</a>()
+   }}
+  | <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>()</pre>
+
+      </div>
+
+<p>Same as <a href="#public_archived_threads/2"><code class="inline">public_archived_threads/2</code></a>, but for private threads instead of public.</p>
+  </section>
+</section>
+<section class="detail" id="public_archived_threads/2">
+
+    <span id="public_archived_threads/1"></span>
+
+  <div class="detail-header">
+    <a href="#public_archived_threads/2" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">public_archived_threads(channel_id, options \\ [])</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/thread.ex#L183" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+      <span class="note">(since 1.x.x)</span>
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> public_archived_threads(<a href="Nostrum.Struct.Channel.html#t:id/0">Nostrum.Struct.Channel.id</a>(), <a href="Nostrum.Api.html#t:options/0">Nostrum.Api.options</a>()) ::
+  {:ok,
+   %{
+     threads: [<a href="Nostrum.Struct.Channel.html#t:t/0">Nostrum.Struct.Channel.t</a>()],
+     members: [<a href="Nostrum.Struct.ThreadMember.html#t:t/0">Nostrum.Struct.ThreadMember.t</a>()],
+     has_more: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">boolean</a>()
+   }}
+  | <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>()</pre>
+
+      </div>
+
+<p>Returns a list of archived threads for a given channel.</p><p>Threads are sorted by the <code class="inline">archive_timestamp</code> field, in descending order.</p><h2 id="public_archived_threads/2-response-body" class="section-heading">
+  <a href="#public_archived_threads/2-response-body" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Response body</span>
+</h2>
+<p>Response body is a map with the following keys:</p><ul><li><code class="inline">threads</code>: A list of channel objects.</li><li><code class="inline">members</code>: A list of <code class="inline">ThreadMember</code> objects, one for each returned thread the current user has joined.</li><li><code class="inline">has_more</code>: A boolean indicating whether there are more archived threads that can be fetched.</li></ul><h2 id="public_archived_threads/2-options" class="section-heading">
+  <a href="#public_archived_threads/2-options" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Options</span>
+</h2>
+<ul><li><code class="inline">before</code>: Returns threads before this timestamp, can be either a <a href="https://hexdocs.pm/elixir/DateTime.html"><code class="inline">DateTime</code></a> or <a href="https://hexdocs.pm/elixir/DateTime.html#to_iso8601/3">ISO8601 timestamp</a>.</li><li><code class="inline">limit</code>: Optional maximum number of threads to return.</li></ul>
+  </section>
+</section>
+<section class="detail" id="remove_member/2">
+
+  <div class="detail-header">
+    <a href="#remove_member/2" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">remove_member(thread_id, user_id)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/thread.ex#L202" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+      <span class="note">(since 1.x.x)</span>
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> remove_member(<a href="Nostrum.Struct.Channel.html#t:id/0">Nostrum.Struct.Channel.id</a>(), <a href="Nostrum.Struct.User.html#t:id/0">Nostrum.Struct.User.id</a>()) ::
+  {:ok} | <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>()</pre>
+
+      </div>
+
+<p>Removes another user from a thread, requires that the thread is not archived.</p><p>Also requires the <code class="inline">MANAGE_THREADS</code> permission, or the creator of the thread if the thread is private.</p>
+  </section>
+</section>
+
+    </div>
+  </section>
+
+    <footer class="footer">
+      <p>
+
+          <span class="line">
+            <a href="https://hex.pm/packages/nostrum/0.10.0" class="footer-hex-package">Hex Package</a>
+
+            <a href="https://preview.hex.pm/preview/nostrum/0.10.0">Hex Preview</a>
+
+          </span>
+
+        <span class="line">
+          <button class="a-main footer-button display-quick-switch" title="Search HexDocs packages">
+            Search HexDocs
+          </button>
+
+            <a href="Nostrum.epub" title="ePub version">
+              Download ePub version
+            </a>
+
+        </span>
+      </p>
+
+      <p class="built-using">
+        Built using
+        <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.32.1) for the
+
+          <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
+
+      </p>
+
+    </footer>
+  </div>
+</main>
+</div>
+
+
+  </body>
+</html>

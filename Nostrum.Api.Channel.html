@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.32.1">
+    <meta name="project" content="Nostrum v0.10.0">
+
+
+    <title>Nostrum.Api.Channel — Nostrum v0.10.0</title>
+    <link rel="stylesheet" href="dist/html-elixir-2C5PUTIB.css" />
+
+
+    <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
+    <script src="dist/handlebars.templates-IHH6HKET.js"></script>
+    <script src="dist/sidebar_items-86DB4ED6.js"></script>
+    <script src="docs_config.js"></script>
+    <script async src="dist/html-GXQ6W6IF.js"></script>
+
+
+  </head>
+  <body data-type="modules" class="page-module">
+    <script>
+
+      try {
+        var settings = JSON.parse(localStorage.getItem('ex_doc:settings') || '{}');
+
+        if (settings.theme === 'dark' ||
+           ((settings.theme === 'system' || settings.theme == null) &&
+             window.matchMedia('(prefers-color-scheme: dark)').matches)
+           ) {
+          document.body.classList.add('dark')
+        }
+      } catch (error) { }
+    </script>
+
+<div class="body-wrapper">
+
+<button id="sidebar-menu" class="sidebar-button sidebar-toggle" aria-label="toggle sidebar" aria-controls="sidebar">
+  <i class="ri-menu-line ri-lg" title="Collapse/expand sidebar"></i>
+</button>
+
+<nav id="sidebar" class="sidebar">
+
+  <div class="sidebar-header">
+    <div class="sidebar-projectInfo">
+
+        <a href="https://github.com/Kraigie/nostrum" class="sidebar-projectImage">
+          <img src="assets/logo.png" alt="Nostrum" />
+        </a>
+
+      <div>
+        <a href="https://github.com/Kraigie/nostrum" class="sidebar-projectName" translate="no">
+Nostrum
+        </a>
+        <div class="sidebar-projectVersion" translate="no">
+          v0.10.0
+        </div>
+      </div>
+    </div>
+    <ul id="sidebar-listNav" class="sidebar-listNav" role="tablist">
+      <li>
+        <button id="extras-list-tab-button" role="tab" data-type="extras" aria-controls="extras-tab-panel" aria-selected="true" tabindex="0">
+Pages
+        </button>
+      </li>
+
+        <li>
+          <button id="modules-list-tab-button" role="tab" data-type="modules" aria-controls="modules-tab-panel" aria-selected="false" tabindex="-1">
+            Modules
+          </button>
+        </li>
+
+
+        <li>
+          <button id="tasks-list-tab-button" role="tab" data-type="tasks" aria-controls="tasks-tab-panel" aria-selected="false" tabindex="-1">
+            <span translate="no">Mix</span> Tasks
+          </button>
+        </li>
+
+    </ul>
+  </div>
+
+  <div id="extras-tab-panel" class="sidebar-tabpanel" role="tabpanel" aria-labelledby="extras-list-tab-button">
+    <ul id="extras-full-list" class="full-list"></ul>
+  </div>
+
+    <div id="modules-tab-panel" class="sidebar-tabpanel" role="tabpanel" aria-labelledby="modules-list-tab-button" hidden>
+      <ul id="modules-full-list" class="full-list"></ul>
+    </div>
+
+
+    <div id="tasks-tab-panel" class="sidebar-tabpanel" role="tabpanel" aria-labelledby="tasks-list-tab-button" hidden>
+      <ul id="tasks-full-list" class="full-list"></ul>
+    </div>
+
+</nav>
+
+<main class="content">
+  <output role="status" id="toast"></output>
+
+  <div id="content" class="content-inner">
+    <div class="top-search">
+      <div class="search-settings">
+        <form class="search-bar" action="search.html">
+          <label class="search-label">
+            <span class="sr-only">Search documentation of Nostrum</span>
+            <input name="q" type="text" class="search-input" placeholder="Press / to search" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+          </label>
+          <button type="submit" class="search-button" aria-label="Submit Search">
+            <i class="ri-search-2-line ri-lg" aria-hidden="true" title="Submit search"></i>
+          </button>
+          <button type="button" tabindex="-1" class="search-close-button" aria-hidden="true">
+            <i class="ri-close-line ri-lg" title="Cancel search"></i>
+          </button>
+        </form>
+        <div class="autocomplete">
+        </div>
+        <button class="icon-settings display-settings">
+          <i class="ri-settings-3-line"></i>
+          <span class="sr-only">Settings</span>
+        </button>
+      </div>
+    </div>
+
+<div id="top-content">
+  <h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/channel.ex#L1" title="View Source" class="icon-action" rel="help">
+        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        <span class="sr-only">View Source</span>
+      </a>
+
+    <span translate="no">Nostrum.Api.Channel</span> 
+    <small class="app-vsn" translate="no">(Nostrum v0.10.0)</small>
+
+  </h1>
+
+
+    <section id="moduledoc">
+<p>Functions for interacting with the Discord API's channel endpoints.</p><p>See: <a href="https://discord.com/developers/docs/resources/channel">https://discord.com/developers/docs/resources/channel</a></p>
+    </section>
+
+</div>
+
+  <section id="summary" class="details-list">
+    <h1 class="section-heading">
+      <a class="hover-link" href="#summary">
+        <i class="ri-link-m" aria-hidden="true"></i>
+      </a>
+      <span class="text">Summary</span>
+    </h1>
+<div class="summary-functions summary">
+  <h2>
+    <a href="#functions">Functions</a>
+  </h2>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#bulk_delete_messages/3" translate="no">bulk_delete_messages(channel_id, messages, filter \\ true)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Deletes multiple messages from a channel.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#create/2" translate="no">create(guild_id, options)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Creates a channel for a guild.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#delete/2" translate="no">delete(channel_id, reason \\ nil)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Deletes a channel.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#delete_permissions/3" translate="no">delete_permissions(channel_id, overwrite_id, reason \\ nil)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Delete a channel permission for a user or role.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#edit_permissions/4" translate="no">edit_permissions(channel_id, overwrite_id, permission_info, reason \\ nil)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Edit the permission overwrites for a user or role.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#get/1" translate="no">get(channel_id)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Gets a channel.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#messages/3" translate="no">messages(channel_id, limit, locator \\ {})</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Retrieves a channel's messages around a <code class="inline">locator</code> up to a <code class="inline">limit</code>.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#modify/3" translate="no">modify(channel_id, options, reason \\ nil)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Modifies a channel's settings.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#pin_message/2" translate="no">pin_message(channel_id, message_id)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Pins a message in a channel.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#pinned_messages/1" translate="no">pinned_messages(channel_id)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Retrieves all pinned messages from a channel.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#start_typing/1" translate="no">start_typing(channel_id)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Triggers the typing indicator.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#unpin_message/2" translate="no">unpin_message(channel_id, message_id)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Unpins a message in a channel.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#webhooks/1" translate="no">webhooks(channel_id)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Gets a list of webhooks for a channel.</p></div>
+
+    </div>
+
+</div>
+
+  </section>
+
+
+  <section id="functions" class="details-list">
+    <h1 class="section-heading">
+      <a class="hover-link" href="#functions">
+        <i class="ri-link-m" aria-hidden="true"></i>
+      </a>
+      <span class="text">Functions</span>
+    </h1>
+    <div class="functions-list">
+<section class="detail" id="bulk_delete_messages/3">
+
+    <span id="bulk_delete_messages/2"></span>
+
+  <div class="detail-header">
+    <a href="#bulk_delete_messages/3" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">bulk_delete_messages(channel_id, messages, filter \\ true)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/channel.ex#L56" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> bulk_delete_messages(
+  <a href="Nostrum.Struct.Channel.html#t:id/0">Nostrum.Struct.Channel.id</a>(),
+  [<a href="Nostrum.Struct.Message.html#t:id/0">Nostrum.Struct.Message.id</a>()],
+  <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">boolean</a>()
+) ::
+  <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>() | {:ok}</pre>
+
+      </div>
+
+<p>Deletes multiple messages from a channel.</p><p><code class="inline">messages</code> is a list of <code class="inline">Nostrum.Struct.Message.id</code> that you wish to delete.
+When given more than 100 messages, this function will chunk the given message
+list into blocks of 100 and send them off to the API. It will stop deleting
+on the first error that occurs. Keep in mind that deleting thousands of
+messages will take a pretty long time and it may be proper to just delete
+the channel you want to bulk delete in and recreate it.</p><p>This method can only delete messages sent within the last two weeks.
+<code class="inline">Filter</code> is an optional parameter that specifies whether messages sent over
+two weeks ago should be filtered out; defaults to <code class="inline">true</code>.</p>
+  </section>
+</section>
+<section class="detail" id="create/2">
+
+  <div class="detail-header">
+    <a href="#create/2" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">create(guild_id, options)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/channel.ex#L122" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> create(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(), <a href="Nostrum.Api.html#t:options/0">Nostrum.Api.options</a>()) ::
+  <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>() | {:ok, <a href="Nostrum.Struct.Channel.html#t:guild_channel/0">Nostrum.Struct.Channel.guild_channel</a>()}</pre>
+
+      </div>
+
+<p>Creates a channel for a guild.</p><p>This endpoint requires the <code class="inline">MANAGE_CHANNELS</code> permission. It fires a
+<a href="Nostrum.Consumer.html#t:channel_create/0"><code class="inline">Nostrum.Consumer.channel_create/0</code></a> event.</p><p>If successful, returns <code class="inline">{:ok, channel}</code>. Otherwise, returns a <a href="Nostrum.Api.html#t:error/0"><code class="inline">Nostrum.Api.error/0</code></a>.</p><h2 id="create/2-options" class="section-heading">
+  <a href="#create/2-options" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Options</span>
+</h2>
+<ul><li><code class="inline">:name</code> (string) - channel name (2-100 characters)</li><li><code class="inline">:type</code> (integer) - the type of channel (See <a href="Nostrum.Struct.Channel.html"><code class="inline">Nostrum.Struct.Channel</code></a>)</li><li><code class="inline">:topic</code> (string) - channel topic (0-1024 characters)</li><li><code class="inline">:bitrate</code> (integer) - the bitrate (in bits) of the voice channel (voice only)</li><li><code class="inline">:user_limit</code> (integer) - the user limit of the voice channel (voice only)</li><li><code class="inline">:permission_overwrites</code> (list of <a href="Nostrum.Struct.Overwrite.html#t:t/0"><code class="inline">Nostrum.Struct.Overwrite.t/0</code></a> or equivalent map) -
+the channel's permission overwrites</li><li><code class="inline">:parent_id</code> (<a href="Nostrum.Struct.Channel.html#t:id/0"><code class="inline">Nostrum.Struct.Channel.id/0</code></a>) - id of the parent category for a channel</li><li><code class="inline">:nsfw</code> (boolean) - if the channel is nsfw</li></ul><p><code class="inline">:name</code> is always required.</p><h2 id="create/2-examples" class="section-heading">
+  <a href="#create/2-examples" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Examples</span>
+</h2>
+<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api.Channel</span><span class="o">.</span><span class="n">create</span><span class="p" data-group-id="0786157343-1">(</span><span class="mi">81384788765712384</span><span class="p">,</span><span class="w"> </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;elixir-nostrum&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">topic</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;craig&#39;s domain&quot;</span><span class="p" data-group-id="0786157343-1">)</span><span class="w">
+</span><span class="p" data-group-id="0786157343-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="0786157343-3">%</span><span class="nc" data-group-id="0786157343-3">Nostrum.Struct.Channel</span><span class="p" data-group-id="0786157343-3">{</span><span class="ss">guild_id</span><span class="p">:</span><span class="w"> </span><span class="mi">81384788765712384</span><span class="p" data-group-id="0786157343-3">}</span><span class="p" data-group-id="0786157343-2">}</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="delete/2">
+
+    <span id="delete/1"></span>
+
+  <div class="detail-header">
+    <a href="#delete/2" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">delete(channel_id, reason \\ nil)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/channel.ex#L153" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> delete(<a href="Nostrum.Struct.Channel.html#t:id/0">Nostrum.Struct.Channel.id</a>(), <a href="Nostrum.Struct.Guild.AuditLogEntry.html#t:reason/0">Nostrum.Struct.Guild.AuditLogEntry.reason</a>()) ::
+  <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>() | {:ok, <a href="Nostrum.Struct.Channel.html#t:t/0">Nostrum.Struct.Channel.t</a>()}</pre>
+
+      </div>
+
+<p>Deletes a channel.</p><p>An optional <code class="inline">reason</code> can be provided for the guild audit log.</p><p>If deleting a <a href="Nostrum.Struct.Channel.html#t:guild_channel/0"><code class="inline">Nostrum.Struct.Channel.guild_channel/0</code></a>, this endpoint requires
+the <code class="inline">MANAGE_CHANNELS</code> permission. It fires a
+<a href="Nostrum.Consumer.html#t:channel_delete/0"><code class="inline">Nostrum.Consumer.channel_delete/0</code></a>. If a <a href="Nostrum.Struct.Channel.html#t:guild_category_channel/0"><code class="inline">Nostrum.Struct.Channel.guild_category_channel/0</code></a>
+is deleted, then a <a href="Nostrum.Consumer.html#t:channel_update/0"><code class="inline">Nostrum.Consumer.channel_update/0</code></a> event will fire
+for each channel under the category.</p><p>If successful, returns <code class="inline">{:ok, channel}</code>. Otherwise, returns a <a href="Nostrum.Api.html#t:error/0"><code class="inline">Nostrum.Api.error/0</code></a>.</p><h2 id="delete/2-examples" class="section-heading">
+  <a href="#delete/2-examples" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Examples</span>
+</h2>
+<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api.Channel</span><span class="o">.</span><span class="n">delete</span><span class="p" data-group-id="5806320248-1">(</span><span class="mi">421533712753360896</span><span class="p" data-group-id="5806320248-1">)</span><span class="w">
+</span><span class="p" data-group-id="5806320248-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="5806320248-3">%</span><span class="nc" data-group-id="5806320248-3">Nostrum.Struct.Channel</span><span class="p" data-group-id="5806320248-3">{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">421533712753360896</span><span class="p" data-group-id="5806320248-3">}</span><span class="p" data-group-id="5806320248-2">}</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="delete_permissions/3">
+
+    <span id="delete_permissions/2"></span>
+
+  <div class="detail-header">
+    <a href="#delete_permissions/3" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">delete_permissions(channel_id, overwrite_id, reason \\ nil)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/channel.ex#L172" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> delete_permissions(
+  <a href="Nostrum.Struct.Channel.html#t:id/0">Nostrum.Struct.Channel.id</a>(),
+  <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>(),
+  <a href="Nostrum.Struct.Guild.AuditLogEntry.html#t:reason/0">Nostrum.Struct.Guild.AuditLogEntry.reason</a>()
+) :: <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>() | {:ok}</pre>
+
+      </div>
+
+<p>Delete a channel permission for a user or role.</p><p>Role or user overwrite to delete is specified by <code class="inline">channel_id</code> and <code class="inline">overwrite_id</code>.
+An optional <code class="inline">reason</code> can be given for the audit log.</p>
+  </section>
+</section>
+<section class="detail" id="edit_permissions/4">
+
+    <span id="edit_permissions/3"></span>
+
+  <div class="detail-header">
+    <a href="#edit_permissions/4" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">edit_permissions(channel_id, overwrite_id, permission_info, reason \\ nil)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/channel.ex#L225" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> edit_permissions(
+  <a href="Nostrum.Struct.Channel.html#t:id/0">Nostrum.Struct.Channel.id</a>(),
+  <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>(),
+  %{
+    :type =&gt; <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>(),
+    optional(:allow) =&gt; <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>(),
+    optional(:deny) =&gt; <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>()
+  },
+  <a href="Nostrum.Struct.Guild.AuditLogEntry.html#t:reason/0">Nostrum.Struct.Guild.AuditLogEntry.reason</a>()
+) :: <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>() | {:ok}</pre>
+
+      </div>
+
+<p>Edit the permission overwrites for a user or role.</p><p>Role or user to overwrite is specified by <code class="inline">overwrite_id</code>.</p><p><code class="inline">permission_info</code> is a map with the following keys:</p><ul><li><code class="inline">type</code> - Required; <code class="inline">member</code> if editing a user, <code class="inline">role</code> if editing a role.</li><li><code class="inline">allow</code> - Bitwise value of allowed permissions.</li><li><code class="inline">deny</code> - Bitwise value of denied permissions.</li><li><code class="inline">type</code> - <code class="inline">member</code> if editing a user, <code class="inline">role</code> if editing a role.</li></ul><p>An optional <code class="inline">reason</code> can be provided for the audit log.</p><p> <code class="inline">allow</code> and <code class="inline">deny</code> are defaulted to <code class="inline">0</code>, meaning that even if you don't
+ specify them, they will override their respective former values in an
+ existing overwrite.</p>
+  </section>
+</section>
+<section class="detail" id="get/1">
+
+  <div class="detail-header">
+    <a href="#get/1" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">get(channel_id)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/channel.ex#L248" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> get(<a href="Nostrum.Struct.Channel.html#t:id/0">Nostrum.Struct.Channel.id</a>()) ::
+  <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>() | {:ok, <a href="Nostrum.Struct.Channel.html#t:t/0">Nostrum.Struct.Channel.t</a>()}</pre>
+
+      </div>
+
+<p>Gets a channel.</p><p>If successful, returns <code class="inline">{:ok, channel}</code>. Otherwise, returns a <a href="Nostrum.Api.html#t:error/0"><code class="inline">Nostrum.Api.error/0</code></a>.</p><h2 id="get/1-examples" class="section-heading">
+  <a href="#get/1-examples" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Examples</span>
+</h2>
+<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api.Channel</span><span class="o">.</span><span class="n">get</span><span class="p" data-group-id="3789769992-1">(</span><span class="mi">381889573426429952</span><span class="p" data-group-id="3789769992-1">)</span><span class="w">
+</span><span class="p" data-group-id="3789769992-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="3789769992-3">%</span><span class="nc" data-group-id="3789769992-3">Nostrum.Struct.Channel</span><span class="p" data-group-id="3789769992-3">{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">381889573426429952</span><span class="p" data-group-id="3789769992-3">}</span><span class="p" data-group-id="3789769992-2">}</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="messages/3">
+
+    <span id="messages/2"></span>
+
+  <div class="detail-header">
+    <a href="#messages/3" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">messages(channel_id, limit, locator \\ {})</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/channel.ex#L270" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> messages(
+  <a href="Nostrum.Struct.Channel.html#t:id/0">Nostrum.Struct.Channel.id</a>(),
+  <a href="Nostrum.Api.html#t:limit/0">Nostrum.Api.limit</a>(),
+  <a href="Nostrum.Api.html#t:locator/0">Nostrum.Api.locator</a>()
+) ::
+  <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>() | {:ok, [<a href="Nostrum.Struct.Message.html#t:t/0">Nostrum.Struct.Message.t</a>()]}</pre>
+
+      </div>
+
+<p>Retrieves a channel's messages around a <code class="inline">locator</code> up to a <code class="inline">limit</code>.</p><p>This endpoint requires the 'VIEW_CHANNEL' permission. If the current user
+is missing the 'READ_MESSAGE_HISTORY' permission, then this function will
+return no messages.</p><p>If successful, returns <code class="inline">{:ok, messages}</code>. Otherwise, returns a <a href="Nostrum.Api.html#t:error/0"><code class="inline">Nostrum.Api.error/0</code></a>.</p><h2 id="messages/3-examples" class="section-heading">
+  <a href="#messages/3-examples" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Examples</span>
+</h2>
+<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api.Channel</span><span class="o">.</span><span class="n">messages</span><span class="p" data-group-id="2933703559-1">(</span><span class="mi">43189401384091</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="2933703559-2">{</span><span class="ss">:before</span><span class="p">,</span><span class="w"> </span><span class="mi">130230401384</span><span class="p" data-group-id="2933703559-2">}</span><span class="p" data-group-id="2933703559-1">)</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="modify/3">
+
+    <span id="modify/2"></span>
+
+  <div class="detail-header">
+    <a href="#modify/3" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">modify(channel_id, options, reason \\ nil)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/channel.ex#L388" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> modify(
+  <a href="Nostrum.Struct.Channel.html#t:id/0">Nostrum.Struct.Channel.id</a>(),
+  <a href="Nostrum.Api.html#t:options/0">Nostrum.Api.options</a>(),
+  <a href="Nostrum.Struct.Guild.AuditLogEntry.html#t:reason/0">Nostrum.Struct.Guild.AuditLogEntry.reason</a>()
+) :: <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>() | {:ok, <a href="Nostrum.Struct.Channel.html#t:t/0">Nostrum.Struct.Channel.t</a>()}</pre>
+
+      </div>
+
+<p>Modifies a channel's settings.</p><p>An optional <code class="inline">reason</code> can be given for the guild audit log.</p><p>If a <a href="Nostrum.Struct.Channel.html#t:guild_channel/0"><code class="inline">Nostrum.Struct.Channel.guild_channel/0</code></a> is being modified, this
+endpoint requires the <code class="inline">MANAGE_CHANNEL</code> permission. It fires a
+<a href="Nostrum.Consumer.html#t:channel_update/0"><code class="inline">Nostrum.Consumer.channel_update/0</code></a> event. If a
+<a href="Nostrum.Struct.Channel.html#t:guild_category_channel/0"><code class="inline">Nostrum.Struct.Channel.guild_category_channel/0</code></a> is being modified, then this
+endpoint fires multiple <a href="Nostrum.Consumer.html#t:channel_update/0"><code class="inline">Nostrum.Consumer.channel_update/0</code></a> events.</p><p>If successful, returns <code class="inline">{:ok, channel}</code>. Otherwise, returns a <a href="Nostrum.Api.html#t:error/0"><code class="inline">Nostrum.Api.error/0</code></a>.</p><h2 id="modify/3-options" class="section-heading">
+  <a href="#modify/3-options" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Options</span>
+</h2>
+<ul><li><code class="inline">:name</code> (string) - 2-100 character channel name</li><li><code class="inline">:position</code> (integer) - the position of the channel in the left-hand listing</li><li><code class="inline">:topic</code> (string) (<a href="Nostrum.Struct.Channel.html#t:text_channel/0"><code class="inline">Nostrum.Struct.Channel.text_channel/0</code></a> only) -
+0-1024 character channel topic</li><li><code class="inline">:nsfw</code> (boolean) (<a href="Nostrum.Struct.Channel.html#t:text_channel/0"><code class="inline">Nostrum.Struct.Channel.text_channel/0</code></a> only) -
+if the channel is nsfw</li><li><code class="inline">:bitrate</code> (integer) (<a href="Nostrum.Struct.Channel.html#t:voice_channel/0"><code class="inline">Nostrum.Struct.Channel.voice_channel/0</code></a> only) -
+the bitrate (in bits) of the voice channel; 8000 to 96000 (128000 for VIP servers)</li><li><code class="inline">:user_limit</code> (integer) (<a href="Nostrum.Struct.Channel.html#t:voice_channel/0"><code class="inline">Nostrum.Struct.Channel.voice_channel/0</code></a> only) -
+the user limit of the voice channel; 0 refers to no limit, 1 to 99 refers to a user limit</li><li><code class="inline">:permission_overwrites</code> (list of <a href="Nostrum.Struct.Overwrite.html#t:t/0"><code class="inline">Nostrum.Struct.Overwrite.t/0</code></a> or equivalent map) -
+channel or category-specific permissions</li><li><code class="inline">:parent_id</code> (<a href="Nostrum.Struct.Channel.html#t:id/0"><code class="inline">Nostrum.Struct.Channel.id/0</code></a>) (<a href="Nostrum.Struct.Channel.html#t:guild_channel/0"><code class="inline">Nostrum.Struct.Channel.guild_channel/0</code></a> only) -
+id of the new parent category for a channel</li></ul><h2 id="modify/3-examples" class="section-heading">
+  <a href="#modify/3-examples" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Examples</span>
+</h2>
+<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api.Channel</span><span class="o">.</span><span class="n">modify</span><span class="p" data-group-id="7713616159-1">(</span><span class="mi">41771983423143933</span><span class="p">,</span><span class="w"> </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;elixir-nostrum&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">topic</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;nostrum discussion&quot;</span><span class="p" data-group-id="7713616159-1">)</span><span class="w">
+</span><span class="p" data-group-id="7713616159-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="7713616159-3">%</span><span class="nc" data-group-id="7713616159-3">Nostrum.Struct.Channel</span><span class="p" data-group-id="7713616159-3">{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">41771983423143933</span><span class="p">,</span><span class="w"> </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;elixir-nostrum&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">topic</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;nostrum discussion&quot;</span><span class="p" data-group-id="7713616159-3">}</span><span class="p" data-group-id="7713616159-2">}</span><span class="w">
+
+</span><span class="nc">Nostrum.Api.Channel</span><span class="o">.</span><span class="n">modify</span><span class="p" data-group-id="7713616159-4">(</span><span class="mi">41771983423143933</span><span class="p" data-group-id="7713616159-4">)</span><span class="w">
+</span><span class="p" data-group-id="7713616159-5">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="7713616159-6">%</span><span class="nc" data-group-id="7713616159-6">Nostrum.Struct.Channel</span><span class="p" data-group-id="7713616159-6">{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">41771983423143933</span><span class="p" data-group-id="7713616159-6">}</span><span class="p" data-group-id="7713616159-5">}</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="pin_message/2">
+
+  <div class="detail-header">
+    <a href="#pin_message/2" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">pin_message(channel_id, message_id)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/channel.ex#L36" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> pin_message(<a href="Nostrum.Struct.Channel.html#t:id/0">Nostrum.Struct.Channel.id</a>(), <a href="Nostrum.Struct.Message.html#t:id/0">Nostrum.Struct.Message.id</a>()) ::
+  <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>() | {:ok}</pre>
+
+      </div>
+
+<p>Pins a message in a channel.</p><p>This endpoint requires the 'VIEW_CHANNEL', 'READ_MESSAGE_HISTORY', and
+'MANAGE_MESSAGES' permissions. It fires the
+<a href="Nostrum.Consumer.html#t:message_update/0"><code class="inline">Nostrum.Consumer.message_update/0</code></a> and
+<a href="Nostrum.Consumer.html#t:channel_pins_update/0"><code class="inline">Nostrum.Consumer.channel_pins_update/0</code></a> events.</p><p>If successful, returns <code class="inline">{:ok}</code>. Otherwise, returns a <a href="Nostrum.Api.html#t:error/0"><code class="inline">Nostrum.Api.error/0</code></a>.</p><h2 id="pin_message/2-examples" class="section-heading">
+  <a href="#pin_message/2-examples" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Examples</span>
+</h2>
+<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api.Channel</span><span class="o">.</span><span class="n">pin_message</span><span class="p" data-group-id="9831520639-1">(</span><span class="mi">43189401384091</span><span class="p">,</span><span class="w"> </span><span class="mi">18743893102394</span><span class="p" data-group-id="9831520639-1">)</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="pinned_messages/1">
+
+  <div class="detail-header">
+    <a href="#pinned_messages/1" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">pinned_messages(channel_id)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/channel.ex#L341" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> pinned_messages(<a href="Nostrum.Struct.Channel.html#t:id/0">Nostrum.Struct.Channel.id</a>()) ::
+  <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>() | {:ok, [<a href="Nostrum.Struct.Message.html#t:t/0">Nostrum.Struct.Message.t</a>()]}</pre>
+
+      </div>
+
+<p>Retrieves all pinned messages from a channel.</p><p>This endpoint requires the 'VIEW_CHANNEL' and 'READ_MESSAGE_HISTORY' permissions.</p><p>If successful, returns <code class="inline">{:ok, messages}</code>. Otherwise, returns a <a href="Nostrum.Api.html#t:error/0"><code class="inline">Nostrum.Api.error/0</code></a>.</p><h2 id="pinned_messages/1-examples" class="section-heading">
+  <a href="#pinned_messages/1-examples" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Examples</span>
+</h2>
+<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api.Channel</span><span class="o">.</span><span class="n">pinned_messages</span><span class="p" data-group-id="2100544989-1">(</span><span class="mi">43189401384091</span><span class="p" data-group-id="2100544989-1">)</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="start_typing/1">
+
+  <div class="detail-header">
+    <a href="#start_typing/1" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">start_typing(channel_id)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/channel.ex#L414" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> start_typing(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>()) :: <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>() | {:ok}</pre>
+
+      </div>
+
+<p>Triggers the typing indicator.</p><p>Triggers the typing indicator in the channel specified by <code class="inline">channel_id</code>.
+The typing indicator lasts for about 8 seconds and then automatically stops.</p><p>Returns <code class="inline">{:ok}</code> if successful. <code class="inline">error</code> otherwise.</p>
+  </section>
+</section>
+<section class="detail" id="unpin_message/2">
+
+  <div class="detail-header">
+    <a href="#unpin_message/2" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">unpin_message(channel_id, message_id)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/channel.ex#L193" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> unpin_message(<a href="Nostrum.Struct.Channel.html#t:id/0">Nostrum.Struct.Channel.id</a>(), <a href="Nostrum.Struct.Message.html#t:id/0">Nostrum.Struct.Message.id</a>()) ::
+  <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>() | {:ok}</pre>
+
+      </div>
+
+<p>Unpins a message in a channel.</p><p>This endpoint requires the 'VIEW_CHANNEL', 'READ_MESSAGE_HISTORY', and
+'MANAGE_MESSAGES' permissions. It fires the
+<a href="Nostrum.Consumer.html#t:message_update/0"><code class="inline">Nostrum.Consumer.message_update/0</code></a> and
+<a href="Nostrum.Consumer.html#t:channel_pins_update/0"><code class="inline">Nostrum.Consumer.channel_pins_update/0</code></a> events.</p><p>Returns <code class="inline">{:ok}</code> if successful. <code class="inline">error</code> otherwise.</p>
+  </section>
+</section>
+<section class="detail" id="webhooks/1">
+
+  <div class="detail-header">
+    <a href="#webhooks/1" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">webhooks(channel_id)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/channel.ex#L322" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> webhooks(<a href="Nostrum.Struct.Channel.html#t:id/0">Nostrum.Struct.Channel.id</a>()) ::
+  <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>() | {:ok, [<a href="Nostrum.Struct.Webhook.html#t:t/0">Nostrum.Struct.Webhook.t</a>()]}</pre>
+
+      </div>
+
+<p>Gets a list of webhooks for a channel.</p><h2 id="webhooks/1-parameters" class="section-heading">
+  <a href="#webhooks/1-parameters" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Parameters</span>
+</h2>
+<ul><li><code class="inline">channel_id</code> - Channel to get webhooks for.</li></ul>
+  </section>
+</section>
+
+    </div>
+  </section>
+
+    <footer class="footer">
+      <p>
+
+          <span class="line">
+            <a href="https://hex.pm/packages/nostrum/0.10.0" class="footer-hex-package">Hex Package</a>
+
+            <a href="https://preview.hex.pm/preview/nostrum/0.10.0">Hex Preview</a>
+
+          </span>
+
+        <span class="line">
+          <button class="a-main footer-button display-quick-switch" title="Search HexDocs packages">
+            Search HexDocs
+          </button>
+
+            <a href="Nostrum.epub" title="ePub version">
+              Download ePub version
+            </a>
+
+        </span>
+      </p>
+
+      <p class="built-using">
+        Built using
+        <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.32.1) for the
+
+          <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
+
+      </p>
+
+    </footer>
+  </div>
+</main>
+</div>
+
+
+  </body>
+</html>

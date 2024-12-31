@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.32.1">
+    <meta name="project" content="Nostrum v0.10.0">
+
+
+    <title>Nostrum.Api.ScheduledEvent — Nostrum v0.10.0</title>
+    <link rel="stylesheet" href="dist/html-elixir-2C5PUTIB.css" />
+
+
+    <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
+    <script src="dist/handlebars.templates-IHH6HKET.js"></script>
+    <script src="dist/sidebar_items-86DB4ED6.js"></script>
+    <script src="docs_config.js"></script>
+    <script async src="dist/html-GXQ6W6IF.js"></script>
+
+
+  </head>
+  <body data-type="modules" class="page-module">
+    <script>
+
+      try {
+        var settings = JSON.parse(localStorage.getItem('ex_doc:settings') || '{}');
+
+        if (settings.theme === 'dark' ||
+           ((settings.theme === 'system' || settings.theme == null) &&
+             window.matchMedia('(prefers-color-scheme: dark)').matches)
+           ) {
+          document.body.classList.add('dark')
+        }
+      } catch (error) { }
+    </script>
+
+<div class="body-wrapper">
+
+<button id="sidebar-menu" class="sidebar-button sidebar-toggle" aria-label="toggle sidebar" aria-controls="sidebar">
+  <i class="ri-menu-line ri-lg" title="Collapse/expand sidebar"></i>
+</button>
+
+<nav id="sidebar" class="sidebar">
+
+  <div class="sidebar-header">
+    <div class="sidebar-projectInfo">
+
+        <a href="https://github.com/Kraigie/nostrum" class="sidebar-projectImage">
+          <img src="assets/logo.png" alt="Nostrum" />
+        </a>
+
+      <div>
+        <a href="https://github.com/Kraigie/nostrum" class="sidebar-projectName" translate="no">
+Nostrum
+        </a>
+        <div class="sidebar-projectVersion" translate="no">
+          v0.10.0
+        </div>
+      </div>
+    </div>
+    <ul id="sidebar-listNav" class="sidebar-listNav" role="tablist">
+      <li>
+        <button id="extras-list-tab-button" role="tab" data-type="extras" aria-controls="extras-tab-panel" aria-selected="true" tabindex="0">
+Pages
+        </button>
+      </li>
+
+        <li>
+          <button id="modules-list-tab-button" role="tab" data-type="modules" aria-controls="modules-tab-panel" aria-selected="false" tabindex="-1">
+            Modules
+          </button>
+        </li>
+
+
+        <li>
+          <button id="tasks-list-tab-button" role="tab" data-type="tasks" aria-controls="tasks-tab-panel" aria-selected="false" tabindex="-1">
+            <span translate="no">Mix</span> Tasks
+          </button>
+        </li>
+
+    </ul>
+  </div>
+
+  <div id="extras-tab-panel" class="sidebar-tabpanel" role="tabpanel" aria-labelledby="extras-list-tab-button">
+    <ul id="extras-full-list" class="full-list"></ul>
+  </div>
+
+    <div id="modules-tab-panel" class="sidebar-tabpanel" role="tabpanel" aria-labelledby="modules-list-tab-button" hidden>
+      <ul id="modules-full-list" class="full-list"></ul>
+    </div>
+
+
+    <div id="tasks-tab-panel" class="sidebar-tabpanel" role="tabpanel" aria-labelledby="tasks-list-tab-button" hidden>
+      <ul id="tasks-full-list" class="full-list"></ul>
+    </div>
+
+</nav>
+
+<main class="content">
+  <output role="status" id="toast"></output>
+
+  <div id="content" class="content-inner">
+    <div class="top-search">
+      <div class="search-settings">
+        <form class="search-bar" action="search.html">
+          <label class="search-label">
+            <span class="sr-only">Search documentation of Nostrum</span>
+            <input name="q" type="text" class="search-input" placeholder="Press / to search" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+          </label>
+          <button type="submit" class="search-button" aria-label="Submit Search">
+            <i class="ri-search-2-line ri-lg" aria-hidden="true" title="Submit search"></i>
+          </button>
+          <button type="button" tabindex="-1" class="search-close-button" aria-hidden="true">
+            <i class="ri-close-line ri-lg" title="Cancel search"></i>
+          </button>
+        </form>
+        <div class="autocomplete">
+        </div>
+        <button class="icon-settings display-settings">
+          <i class="ri-settings-3-line"></i>
+          <span class="sr-only">Settings</span>
+        </button>
+      </div>
+    </div>
+
+<div id="top-content">
+  <h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/scheduled_event.ex#L1" title="View Source" class="icon-action" rel="help">
+        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        <span class="sr-only">View Source</span>
+      </a>
+
+    <span translate="no">Nostrum.Api.ScheduledEvent</span> 
+    <small class="app-vsn" translate="no">(Nostrum v0.10.0)</small>
+
+  </h1>
+
+
+    <section id="moduledoc">
+<p>Module for interacting with the Discord API's scheduled event endpoints.</p><p>See: <a href="https://discord.com/developers/docs/resources/guild-scheduled-event">https://discord.com/developers/docs/resources/guild-scheduled-event</a></p>
+    </section>
+
+</div>
+
+  <section id="summary" class="details-list">
+    <h1 class="section-heading">
+      <a class="hover-link" href="#summary">
+        <i class="ri-link-m" aria-hidden="true"></i>
+      </a>
+      <span class="text">Summary</span>
+    </h1>
+<div class="summary-functions summary">
+  <h2>
+    <a href="#functions">Functions</a>
+  </h2>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#create/3" translate="no">create(guild_id, reason \\ nil, options)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Creates a new scheduled event for the guild.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#delete/2" translate="no">delete(guild_id, event_id)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Delete a scheduled event for a guild.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#get/2" translate="no">get(guild_id, event_id)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Get a scheduled event for a guild.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#modify/4" translate="no">modify(guild_id, event_id, reason \\ nil, options)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Modify a scheduled event for a guild.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#users/3" translate="no">users(guild_id, event_id, params \\ [])</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Get a list of users who have subscribed to an event.</p></div>
+
+    </div>
+
+</div>
+
+  </section>
+
+
+  <section id="functions" class="details-list">
+    <h1 class="section-heading">
+      <a class="hover-link" href="#functions">
+        <i class="ri-link-m" aria-hidden="true"></i>
+      </a>
+      <span class="text">Functions</span>
+    </h1>
+    <div class="functions-list">
+<section class="detail" id="create/3">
+
+    <span id="create/2"></span>
+
+  <div class="detail-header">
+    <a href="#create/3" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">create(guild_id, reason \\ nil, options)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/scheduled_event.ex#L38" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+      <span class="note">(since 1.x.x)</span>
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> create(
+  <a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(),
+  <a href="Nostrum.Struct.Guild.AuditLogEntry.html#t:reason/0">Nostrum.Struct.Guild.AuditLogEntry.reason</a>(),
+  <a href="Nostrum.Api.html#t:options/0">Nostrum.Api.options</a>()
+) :: {:ok, <a href="Nostrum.Struct.Guild.ScheduledEvent.html#t:t/0">Nostrum.Struct.Guild.ScheduledEvent.t</a>()} | <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>()</pre>
+
+      </div>
+
+<p>Creates a new scheduled event for the guild.</p><h2 id="create/3-options" class="section-heading">
+  <a href="#create/3-options" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Options</span>
+</h2>
+<ul><li><code class="inline">:channel_id</code> - (<a href="Nostrum.Snowflake.html#t:t/0"><code class="inline">Nostrum.Snowflake.t/0</code></a>) optional channel id for the event</li><li><code class="inline">:entity_metadata</code> - (<a href="Nostrum.Struct.Guild.ScheduledEvent.EntityMetadata.html#t:t/0"><code class="inline">Nostrum.Struct.Guild.ScheduledEvent.EntityMetadata.t/0</code></a>) metadata for the event</li><li><code class="inline">:name</code> - (string) required name for the event</li><li><code class="inline">:privacy_level</code> - (integer) at the time of writing, this must always be 2 for <code class="inline">GUILD_ONLY</code></li><li><code class="inline">:scheduled_start_time</code> - required time for the event to start as a <a href="https://hexdocs.pm/elixir/DateTime.html"><code class="inline">DateTime</code></a> or (ISO8601 timestamp)[<a href="https://hexdocs.pm/elixir/DateTime.html#to_iso8601/3"><code class="inline">DateTime.to_iso8601/3</code></a>]</li><li><code class="inline">:scheduled_end_time</code> - optional time for the event to end as a <a href="https://hexdocs.pm/elixir/DateTime.html"><code class="inline">DateTime</code></a> or (ISO8601 timestamp)[<a href="https://hexdocs.pm/elixir/DateTime.html#to_iso8601/3"><code class="inline">DateTime.to_iso8601/3</code></a>]</li><li><code class="inline">:description</code> - (string) optional description for the event</li><li><code class="inline">:entity_type</code> - (integer) an integer representing the type of entity the event is for<ul><li><code class="inline">1</code> - <code class="inline">STAGE_INSTANCE</code></li><li><code class="inline">2</code> - <code class="inline">VOICE</code></li><li><code class="inline">3</code> - <code class="inline">EXTERNAL</code></li></ul></li></ul><p>See the (official documentation)[<a href="https://discord.com/developers/docs/resources/guild-scheduled-event]">https://discord.com/developers/docs/resources/guild-scheduled-event]</a> for more information.</p><p>An optional <code class="inline">reason</code> can be specified for the audit log.</p>
+  </section>
+</section>
+<section class="detail" id="delete/2">
+
+  <div class="detail-header">
+    <a href="#delete/2" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">delete(guild_id, event_id)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/scheduled_event.ex#L65" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+      <span class="note">(since 1.x.x)</span>
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> delete(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(), <a href="Nostrum.Struct.Guild.ScheduledEvent.html#t:id/0">Nostrum.Struct.Guild.ScheduledEvent.id</a>()) ::
+  <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>() | {:ok}</pre>
+
+      </div>
+
+<p>Delete a scheduled event for a guild.</p>
+  </section>
+</section>
+<section class="detail" id="get/2">
+
+  <div class="detail-header">
+    <a href="#get/2" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">get(guild_id, event_id)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/scheduled_event.ex#L75" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+      <span class="note">(since 1.x.x)</span>
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> get(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(), <a href="Nostrum.Struct.Guild.ScheduledEvent.html#t:id/0">Nostrum.Struct.Guild.ScheduledEvent.id</a>()) ::
+  <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>() | {:ok, <a href="Nostrum.Struct.Guild.ScheduledEvent.html#t:t/0">Nostrum.Struct.Guild.ScheduledEvent.t</a>()}</pre>
+
+      </div>
+
+<p>Get a scheduled event for a guild.</p>
+  </section>
+</section>
+<section class="detail" id="modify/4">
+
+    <span id="modify/3"></span>
+
+  <div class="detail-header">
+    <a href="#modify/4" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">modify(guild_id, event_id, reason \\ nil, options)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/scheduled_event.ex#L122" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+      <span class="note">(since 1.x.x)</span>
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> modify(
+  <a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(),
+  <a href="Nostrum.Struct.Guild.ScheduledEvent.html#t:id/0">Nostrum.Struct.Guild.ScheduledEvent.id</a>(),
+  <a href="Nostrum.Struct.Guild.AuditLogEntry.html#t:reason/0">Nostrum.Struct.Guild.AuditLogEntry.reason</a>(),
+  <a href="Nostrum.Api.html#t:options/0">Nostrum.Api.options</a>()
+) :: <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>() | {:ok, <a href="Nostrum.Struct.Guild.ScheduledEvent.html#t:t/0">Nostrum.Struct.Guild.ScheduledEvent.t</a>()}</pre>
+
+      </div>
+
+<p>Modify a scheduled event for a guild.</p><p>Options are the same as for <code class="inline">create_guild_scheduled_event/2</code> except all fields are optional,
+with the additional optional integer field <code class="inline">:status</code> which can be one of:</p><ul><li><code class="inline">1</code> - <code class="inline">SCHEDULED</code></li><li><code class="inline">2</code> - <code class="inline">ACTIVE</code></li><li><code class="inline">3</code> - <code class="inline">COMPLETED</code></li><li><code class="inline">4</code> - <code class="inline">CANCELLED</code></li></ul><p>Copied from the official documentation:</p><ul><li>If updating entity_type to <code class="inline">EXTERNAL</code>:<ul><li><code class="inline">channel_id</code> is required and must be set to null</li><li><code class="inline">entity_metadata</code> with a <code class="inline">location</code> field must be provided</li><li><code class="inline">scheduled_end_time</code> must be provided</li></ul></li></ul>
+  </section>
+</section>
+<section class="detail" id="users/3">
+
+    <span id="users/2"></span>
+
+  <div class="detail-header">
+    <a href="#users/3" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">users(guild_id, event_id, params \\ [])</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/scheduled_event.ex#L93" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+      <span class="note">(since 1.x.x)</span>
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> users(
+  <a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(),
+  <a href="Nostrum.Struct.Guild.ScheduledEvent.html#t:id/0">Nostrum.Struct.Guild.ScheduledEvent.id</a>(),
+  <a href="Nostrum.Api.html#t:options/0">Nostrum.Api.options</a>()
+) ::
+  <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>() | {:ok, [<a href="Nostrum.Struct.Guild.ScheduledEvent.User.html#t:t/0">Nostrum.Struct.Guild.ScheduledEvent.User.t</a>()]}</pre>
+
+      </div>
+
+<p>Get a list of users who have subscribed to an event.</p><h2 id="users/3-options" class="section-heading">
+  <a href="#users/3-options" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Options</span>
+</h2>
+<p>All are optional, with their default values listed.</p><ul><li><code class="inline">:limit</code> (integer) maximum number of users to return, defaults to <code class="inline">100</code></li><li><code class="inline">:with_member</code> (boolean) whether to include the member object for each user, defaults to <code class="inline">false</code></li><li><code class="inline">:before</code> (<a href="Nostrum.Snowflake.html#t:t/0"><code class="inline">Nostrum.Snowflake.t/0</code></a>) return only users before this user id, defaults to <code class="inline">nil</code></li><li><code class="inline">:after</code> (<a href="Nostrum.Snowflake.html#t:t/0"><code class="inline">Nostrum.Snowflake.t/0</code></a>) return only users after this user id, defaults to <code class="inline">nil</code></li></ul>
+  </section>
+</section>
+
+    </div>
+  </section>
+
+    <footer class="footer">
+      <p>
+
+          <span class="line">
+            <a href="https://hex.pm/packages/nostrum/0.10.0" class="footer-hex-package">Hex Package</a>
+
+            <a href="https://preview.hex.pm/preview/nostrum/0.10.0">Hex Preview</a>
+
+          </span>
+
+        <span class="line">
+          <button class="a-main footer-button display-quick-switch" title="Search HexDocs packages">
+            Search HexDocs
+          </button>
+
+            <a href="Nostrum.epub" title="ePub version">
+              Download ePub version
+            </a>
+
+        </span>
+      </p>
+
+      <p class="built-using">
+        Built using
+        <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.32.1) for the
+
+          <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
+
+      </p>
+
+    </footer>
+  </div>
+</main>
+</div>
+
+
+  </body>
+</html>

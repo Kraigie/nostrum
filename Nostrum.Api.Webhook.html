@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.32.1">
+    <meta name="project" content="Nostrum v0.10.0">
+
+
+    <title>Nostrum.Api.Webhook — Nostrum v0.10.0</title>
+    <link rel="stylesheet" href="dist/html-elixir-2C5PUTIB.css" />
+
+
+    <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
+    <script src="dist/handlebars.templates-IHH6HKET.js"></script>
+    <script src="dist/sidebar_items-86DB4ED6.js"></script>
+    <script src="docs_config.js"></script>
+    <script async src="dist/html-GXQ6W6IF.js"></script>
+
+
+  </head>
+  <body data-type="modules" class="page-module">
+    <script>
+
+      try {
+        var settings = JSON.parse(localStorage.getItem('ex_doc:settings') || '{}');
+
+        if (settings.theme === 'dark' ||
+           ((settings.theme === 'system' || settings.theme == null) &&
+             window.matchMedia('(prefers-color-scheme: dark)').matches)
+           ) {
+          document.body.classList.add('dark')
+        }
+      } catch (error) { }
+    </script>
+
+<div class="body-wrapper">
+
+<button id="sidebar-menu" class="sidebar-button sidebar-toggle" aria-label="toggle sidebar" aria-controls="sidebar">
+  <i class="ri-menu-line ri-lg" title="Collapse/expand sidebar"></i>
+</button>
+
+<nav id="sidebar" class="sidebar">
+
+  <div class="sidebar-header">
+    <div class="sidebar-projectInfo">
+
+        <a href="https://github.com/Kraigie/nostrum" class="sidebar-projectImage">
+          <img src="assets/logo.png" alt="Nostrum" />
+        </a>
+
+      <div>
+        <a href="https://github.com/Kraigie/nostrum" class="sidebar-projectName" translate="no">
+Nostrum
+        </a>
+        <div class="sidebar-projectVersion" translate="no">
+          v0.10.0
+        </div>
+      </div>
+    </div>
+    <ul id="sidebar-listNav" class="sidebar-listNav" role="tablist">
+      <li>
+        <button id="extras-list-tab-button" role="tab" data-type="extras" aria-controls="extras-tab-panel" aria-selected="true" tabindex="0">
+Pages
+        </button>
+      </li>
+
+        <li>
+          <button id="modules-list-tab-button" role="tab" data-type="modules" aria-controls="modules-tab-panel" aria-selected="false" tabindex="-1">
+            Modules
+          </button>
+        </li>
+
+
+        <li>
+          <button id="tasks-list-tab-button" role="tab" data-type="tasks" aria-controls="tasks-tab-panel" aria-selected="false" tabindex="-1">
+            <span translate="no">Mix</span> Tasks
+          </button>
+        </li>
+
+    </ul>
+  </div>
+
+  <div id="extras-tab-panel" class="sidebar-tabpanel" role="tabpanel" aria-labelledby="extras-list-tab-button">
+    <ul id="extras-full-list" class="full-list"></ul>
+  </div>
+
+    <div id="modules-tab-panel" class="sidebar-tabpanel" role="tabpanel" aria-labelledby="modules-list-tab-button" hidden>
+      <ul id="modules-full-list" class="full-list"></ul>
+    </div>
+
+
+    <div id="tasks-tab-panel" class="sidebar-tabpanel" role="tabpanel" aria-labelledby="tasks-list-tab-button" hidden>
+      <ul id="tasks-full-list" class="full-list"></ul>
+    </div>
+
+</nav>
+
+<main class="content">
+  <output role="status" id="toast"></output>
+
+  <div id="content" class="content-inner">
+    <div class="top-search">
+      <div class="search-settings">
+        <form class="search-bar" action="search.html">
+          <label class="search-label">
+            <span class="sr-only">Search documentation of Nostrum</span>
+            <input name="q" type="text" class="search-input" placeholder="Press / to search" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+          </label>
+          <button type="submit" class="search-button" aria-label="Submit Search">
+            <i class="ri-search-2-line ri-lg" aria-hidden="true" title="Submit search"></i>
+          </button>
+          <button type="button" tabindex="-1" class="search-close-button" aria-hidden="true">
+            <i class="ri-close-line ri-lg" title="Cancel search"></i>
+          </button>
+        </form>
+        <div class="autocomplete">
+        </div>
+        <button class="icon-settings display-settings">
+          <i class="ri-settings-3-line"></i>
+          <span class="sr-only">Settings</span>
+        </button>
+      </div>
+    </div>
+
+<div id="top-content">
+  <h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/webhook.ex#L1" title="View Source" class="icon-action" rel="help">
+        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        <span class="sr-only">View Source</span>
+      </a>
+
+    <span translate="no">Nostrum.Api.Webhook</span> 
+    <small class="app-vsn" translate="no">(Nostrum v0.10.0)</small>
+
+  </h1>
+
+
+    <section id="moduledoc">
+<p>Functions for interacting with the Discord API's webhook endpoints.</p><p>See: <a href="https://discord.com/developers/docs/resources/webhook">https://discord.com/developers/docs/resources/webhook</a></p>
+    </section>
+
+</div>
+
+  <section id="summary" class="details-list">
+    <h1 class="section-heading">
+      <a class="hover-link" href="#summary">
+        <i class="ri-link-m" aria-hidden="true"></i>
+      </a>
+      <span class="text">Summary</span>
+    </h1>
+<div class="summary-types summary">
+  <h2>
+    <a href="#types">Types</a>
+  </h2>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#t:matrix/0" translate="no">matrix()</a>
+
+      </div>
+
+    </div>
+
+</div>
+<div class="summary-functions summary">
+  <h2>
+    <a href="#functions">Functions</a>
+  </h2>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#create/3" translate="no">create(channel_id, args, reason \\ nil)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Creates a webhook.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#delete/2" translate="no">delete(webhook_id, reason \\ nil)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Deletes a webhook.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#edit_message/4" translate="no">edit_message(webhook_id, webhook_token, message_id, args)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Edits a message previously created by the same webhook,
+args are the same as <a href="#execute/3"><code class="inline">execute/3</code></a>,
+however all fields are optional.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#execute/4" translate="no">execute(webhook_id, webhook_token, args, wait \\ false)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Executes a webhook.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#execute_git/3" translate="no">execute_git(webhook_id, webhook_token, wait \\ false)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Executes a git webhook.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#execute_slack/3" translate="no">execute_slack(webhook_id, webhook_token, wait \\ false)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Executes a slack webhook.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#get/1" translate="no">get(webhook_id)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Gets a webhook by id.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#get_message/2" translate="no">get_message(webhook, message_id)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Retrieves the original message of a webhook.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#get_with_token/2" translate="no">get_with_token(webhook_id, webhook_token)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Gets a webhook by id and token.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#modify/3" translate="no">modify(webhook_id, args, reason \\ nil)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Modifies a webhook.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#modify_with_token/4" translate="no">modify_with_token(webhook_id, webhook_token, args, reason \\ nil)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Modifies a webhook with a token.</p></div>
+
+    </div>
+
+</div>
+
+  </section>
+
+
+  <section id="types" class="details-list">
+    <h1 class="section-heading">
+      <a class="hover-link" href="#types">
+        <i class="ri-link-m" aria-hidden="true"></i>
+      </a>
+      <span class="text">Types</span>
+    </h1>
+    <div class="types-list">
+<section class="detail" id="t:matrix/0">
+
+  <div class="detail-header">
+    <a href="#t:matrix/0" class="detail-link" title="Link to this type">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this type</span>
+    </a>
+    <h1 class="signature" translate="no">matrix()</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/webhook.ex#L152" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@type</span> matrix() :: m1() | m2() | m3()</pre>
+
+      </div>
+
+
+  </section>
+</section>
+
+    </div>
+  </section>
+
+  <section id="functions" class="details-list">
+    <h1 class="section-heading">
+      <a class="hover-link" href="#functions">
+        <i class="ri-link-m" aria-hidden="true"></i>
+      </a>
+      <span class="text">Functions</span>
+    </h1>
+    <div class="functions-list">
+<section class="detail" id="create/3">
+
+    <span id="create/2"></span>
+
+  <div class="detail-header">
+    <a href="#create/3" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">create(channel_id, args, reason \\ nil)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/webhook.ex#L37" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> create(
+  <a href="Nostrum.Struct.Channel.html#t:id/0">Nostrum.Struct.Channel.id</a>(),
+  %{name: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>(), avatar: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()},
+  <a href="Nostrum.Struct.Guild.AuditLogEntry.html#t:reason/0">Nostrum.Struct.Guild.AuditLogEntry.reason</a>()
+) :: <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>() | {:ok, <a href="Nostrum.Struct.Webhook.html#t:t/0">Nostrum.Struct.Webhook.t</a>()}</pre>
+
+      </div>
+
+<p>Creates a webhook.</p><h2 id="create/3-parameters" class="section-heading">
+  <a href="#create/3-parameters" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Parameters</span>
+</h2>
+<ul><li><code class="inline">channel_id</code> - Id of the channel to send the message to.</li><li><code class="inline">args</code> - Map with the following <strong>required</strong> keys:<ul><li><code class="inline">name</code> - Name of the webhook.</li><li><code class="inline">avatar</code> - Base64 128x128 jpeg image for the default avatar.</li></ul></li><li><code class="inline">reason</code> - An optional reason for the guild audit log.</li></ul>
+  </section>
+</section>
+<section class="detail" id="delete/2">
+
+    <span id="delete/1"></span>
+
+  <div class="detail-header">
+    <a href="#delete/2" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">delete(webhook_id, reason \\ nil)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/webhook.ex#L57" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> delete(<a href="Nostrum.Struct.Webhook.html#t:id/0">Nostrum.Struct.Webhook.id</a>(), <a href="Nostrum.Struct.Guild.AuditLogEntry.html#t:reason/0">Nostrum.Struct.Guild.AuditLogEntry.reason</a>()) ::
+  <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>() | {:ok}</pre>
+
+      </div>
+
+<p>Deletes a webhook.</p><h2 id="delete/2-parameters" class="section-heading">
+  <a href="#delete/2-parameters" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Parameters</span>
+</h2>
+<ul><li><code class="inline">webhook_id</code> - Id of webhook to delete.</li><li><code class="inline">reason</code> - An optional reason for the guild audit log.</li></ul>
+  </section>
+</section>
+<section class="detail" id="edit_message/4">
+
+  <div class="detail-header">
+    <a href="#edit_message/4" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">edit_message(webhook_id, webhook_token, message_id, args)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/webhook.ex#L80" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+      <span class="note">(since 1.x.x)</span>
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> edit_message(
+  <a href="Nostrum.Struct.Webhook.html#t:id/0">Nostrum.Struct.Webhook.id</a>(),
+  <a href="Nostrum.Struct.Webhook.html#t:token/0">Nostrum.Struct.Webhook.token</a>(),
+  <a href="Nostrum.Struct.Message.html#t:id/0">Nostrum.Struct.Message.id</a>(),
+  <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()
+) :: <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>() | {:ok, <a href="Nostrum.Struct.Message.html#t:t/0">Nostrum.Struct.Message.t</a>()}</pre>
+
+      </div>
+
+<p>Edits a message previously created by the same webhook,
+args are the same as <a href="#execute/3"><code class="inline">execute/3</code></a>,
+however all fields are optional.</p>
+  </section>
+</section>
+<section class="detail" id="execute/4">
+
+    <span id="execute/3"></span>
+
+  <div class="detail-header">
+    <a href="#execute/4" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">execute(webhook_id, webhook_token, args, wait \\ false)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/webhook.ex#L183" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> execute(
+  <a href="Nostrum.Struct.Webhook.html#t:id/0">Nostrum.Struct.Webhook.id</a>() | <a href="Nostrum.Struct.User.html#t:id/0">Nostrum.Struct.User.id</a>(),
+  <a href="Nostrum.Struct.Webhook.html#t:token/0">Nostrum.Struct.Webhook.token</a>() | <a href="Nostrum.Struct.Interaction.html#t:token/0">Nostrum.Struct.Interaction.token</a>(),
+  <a href="#t:matrix/0">matrix</a>(),
+  <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">boolean</a>()
+) :: <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>() | {:ok} | {:ok, <a href="Nostrum.Struct.Message.html#t:t/0">Nostrum.Struct.Message.t</a>()}</pre>
+
+      </div>
+
+<p>Executes a webhook.</p><h2 id="execute/4-parameters" class="section-heading">
+  <a href="#execute/4-parameters" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Parameters</span>
+</h2>
+<ul><li><code class="inline">webhook_id</code> - Id of the webhook to execute.</li><li><code class="inline">webhook_token</code> - Token of the webhook to execute.</li><li><code class="inline">args</code> - Map with the following allowed keys:<ul><li><code class="inline">content</code> - Message content.</li><li><code class="inline">files</code> - List of Files to send.</li><li><code class="inline">embeds</code> - List of embeds to send.</li><li><code class="inline">username</code> - Overrides the default name of the webhook.</li><li><code class="inline">avatar_url</code> - Overrides the default avatar of the webhook.</li><li><code class="inline">tts</code> - Whether the message should be read over text to speech.</li><li><code class="inline">flags</code> - Bitwise flags.</li><li><code class="inline">thread_id</code> - Send a message to the specified thread within the webhook's channel.</li><li><code class="inline">allowed_mentions</code> - Mentions to allow in the webhook message</li></ul></li><li><code class="inline">wait</code> - Whether to return an error or not. Defaults to <code class="inline">false</code>.</li></ul><p><strong>Note</strong>: If <code class="inline">wait</code> is <code class="inline">true</code>, this method will return a <code class="inline">Message.t()</code> on success.</p><p>At least one of <code class="inline">content</code>, <code class="inline">files</code> or <code class="inline">embeds</code> should be supplied in the <code class="inline">args</code> parameter.</p>
+  </section>
+</section>
+<section class="detail" id="execute_git/3">
+
+    <span id="execute_git/2"></span>
+
+  <div class="detail-header">
+    <a href="#execute_git/3" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">execute_git(webhook_id, webhook_token, wait \\ false)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/webhook.ex#L98" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> execute_git(
+  <a href="Nostrum.Struct.Webhook.html#t:id/0">Nostrum.Struct.Webhook.id</a>(),
+  <a href="Nostrum.Struct.Webhook.html#t:token/0">Nostrum.Struct.Webhook.token</a>(),
+  <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">boolean</a>()
+) ::
+  <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>() | {:ok}</pre>
+
+      </div>
+
+<p>Executes a git webhook.</p><h2 id="execute_git/3-parameters" class="section-heading">
+  <a href="#execute_git/3-parameters" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Parameters</span>
+</h2>
+<ul><li><code class="inline">webhook_id</code> - Id of the webhook to execute.</li><li><code class="inline">webhook_token</code> - Token of the webhook to execute.</li></ul>
+  </section>
+</section>
+<section class="detail" id="execute_slack/3">
+
+    <span id="execute_slack/2"></span>
+
+  <div class="detail-header">
+    <a href="#execute_slack/3" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">execute_slack(webhook_id, webhook_token, wait \\ false)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/webhook.ex#L110" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> execute_slack(
+  <a href="Nostrum.Struct.Webhook.html#t:id/0">Nostrum.Struct.Webhook.id</a>(),
+  <a href="Nostrum.Struct.Webhook.html#t:token/0">Nostrum.Struct.Webhook.token</a>(),
+  <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">boolean</a>()
+) ::
+  <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>() | {:ok}</pre>
+
+      </div>
+
+<p>Executes a slack webhook.</p><h2 id="execute_slack/3-parameters" class="section-heading">
+  <a href="#execute_slack/3-parameters" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Parameters</span>
+</h2>
+<ul><li><code class="inline">webhook_id</code> - Id of the webhook to execute.</li><li><code class="inline">webhook_token</code> - Token of the webhook to execute.</li></ul>
+  </section>
+</section>
+<section class="detail" id="get/1">
+
+  <div class="detail-header">
+    <a href="#get/1" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">get(webhook_id)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/webhook.ex#L211" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> get(<a href="Nostrum.Struct.Webhook.html#t:id/0">Nostrum.Struct.Webhook.id</a>()) ::
+  <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>() | {:ok, <a href="Nostrum.Struct.Webhook.html#t:t/0">Nostrum.Struct.Webhook.t</a>()}</pre>
+
+      </div>
+
+<p>Gets a webhook by id.</p><h2 id="get/1-parameters" class="section-heading">
+  <a href="#get/1-parameters" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Parameters</span>
+</h2>
+<ul><li><code class="inline">webhook_id</code> - Id of the webhook to get.</li></ul>
+  </section>
+</section>
+<section class="detail" id="get_message/2">
+
+  <div class="detail-header">
+    <a href="#get_message/2" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">get_message(webhook, message_id)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/webhook.ex#L222" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+      <span class="note">(since 1.x.x)</span>
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> get_message(<a href="Nostrum.Struct.Webhook.html#t:t/0">Nostrum.Struct.Webhook.t</a>(), <a href="Nostrum.Struct.Message.html#t:id/0">Nostrum.Struct.Message.id</a>()) ::
+  <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>() | {:ok, <a href="Nostrum.Struct.Message.html#t:t/0">Nostrum.Struct.Message.t</a>()}</pre>
+
+      </div>
+
+<p>Retrieves the original message of a webhook.</p>
+  </section>
+</section>
+<section class="detail" id="get_with_token/2">
+
+  <div class="detail-header">
+    <a href="#get_with_token/2" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">get_with_token(webhook_id, webhook_token)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/webhook.ex#L239" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> get_with_token(<a href="Nostrum.Struct.Webhook.html#t:id/0">Nostrum.Struct.Webhook.id</a>(), <a href="Nostrum.Struct.Webhook.html#t:token/0">Nostrum.Struct.Webhook.token</a>()) ::
+  <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>() | {:ok, <a href="Nostrum.Struct.Webhook.html#t:t/0">Nostrum.Struct.Webhook.t</a>()}</pre>
+
+      </div>
+
+<p>Gets a webhook by id and token.</p><p>This method is exactly like <a href="#get/1"><code class="inline">get/1</code></a> but does not require
+authentication.</p><h2 id="get_with_token/2-parameters" class="section-heading">
+  <a href="#get_with_token/2-parameters" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Parameters</span>
+</h2>
+<ul><li><code class="inline">webhook_id</code> - Id of the webhook to get.</li><li><code class="inline">webhook_token</code> - Token of the webhook to get.</li></ul>
+  </section>
+</section>
+<section class="detail" id="modify/3">
+
+    <span id="modify/2"></span>
+
+  <div class="detail-header">
+    <a href="#modify/3" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">modify(webhook_id, args, reason \\ nil)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/webhook.ex#L262" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> modify(
+  <a href="Nostrum.Struct.Webhook.html#t:id/0">Nostrum.Struct.Webhook.id</a>(),
+  %{name: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>(), avatar: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()},
+  <a href="Nostrum.Struct.Guild.AuditLogEntry.html#t:reason/0">Nostrum.Struct.Guild.AuditLogEntry.reason</a>()
+) :: <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>() | {:ok, <a href="Nostrum.Struct.Webhook.html#t:t/0">Nostrum.Struct.Webhook.t</a>()}</pre>
+
+      </div>
+
+<p>Modifies a webhook.</p><h2 id="modify/3-parameters" class="section-heading">
+  <a href="#modify/3-parameters" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Parameters</span>
+</h2>
+<ul><li><code class="inline">webhook_id</code> - Id of the webhook to modify.</li><li><code class="inline">args</code> - Map with the following <em>optional</em> keys:<ul><li><code class="inline">name</code> - Name of the webhook.</li><li><code class="inline">avatar</code> - Base64 128x128 jpeg image for the default avatar.</li></ul></li><li><code class="inline">reason</code> - An optional reason for the guild audit log.</li></ul>
+  </section>
+</section>
+<section class="detail" id="modify_with_token/4">
+
+    <span id="modify_with_token/3"></span>
+
+  <div class="detail-header">
+    <a href="#modify_with_token/4" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">modify_with_token(webhook_id, webhook_token, args, reason \\ nil)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/webhook.ex#L297" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> modify_with_token(
+  <a href="Nostrum.Struct.Webhook.html#t:id/0">Nostrum.Struct.Webhook.id</a>(),
+  <a href="Nostrum.Struct.Webhook.html#t:token/0">Nostrum.Struct.Webhook.token</a>(),
+  %{name: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>(), avatar: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()},
+  <a href="Nostrum.Struct.Guild.AuditLogEntry.html#t:reason/0">Nostrum.Struct.Guild.AuditLogEntry.reason</a>()
+) :: <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>() | {:ok, <a href="Nostrum.Struct.Webhook.html#t:t/0">Nostrum.Struct.Webhook.t</a>()}</pre>
+
+      </div>
+
+<p>Modifies a webhook with a token.</p><p>This method is exactly like <code class="inline">modify_webhook/1</code> but does not require
+authentication.</p><h2 id="modify_with_token/4-parameters" class="section-heading">
+  <a href="#modify_with_token/4-parameters" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Parameters</span>
+</h2>
+<ul><li><code class="inline">webhook_id</code> - Id of the webhook to modify.</li><li><code class="inline">webhook_token</code> - Token of the webhook to get.</li><li><code class="inline">args</code> - Map with the following <em>optional</em> keys:<ul><li><code class="inline">name</code> - Name of the webhook.</li><li><code class="inline">avatar</code> - Base64 128x128 jpeg image for the default avatar.</li></ul></li><li><code class="inline">reason</code> - An optional reason for the guild audit log.</li></ul>
+  </section>
+</section>
+
+    </div>
+  </section>
+
+    <footer class="footer">
+      <p>
+
+          <span class="line">
+            <a href="https://hex.pm/packages/nostrum/0.10.0" class="footer-hex-package">Hex Package</a>
+
+            <a href="https://preview.hex.pm/preview/nostrum/0.10.0">Hex Preview</a>
+
+          </span>
+
+        <span class="line">
+          <button class="a-main footer-button display-quick-switch" title="Search HexDocs packages">
+            Search HexDocs
+          </button>
+
+            <a href="Nostrum.epub" title="ePub version">
+              Download ePub version
+            </a>
+
+        </span>
+      </p>
+
+      <p class="built-using">
+        Built using
+        <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.32.1) for the
+
+          <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
+
+      </p>
+
+    </footer>
+  </div>
+</main>
+</div>
+
+
+  </body>
+</html>

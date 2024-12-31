@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.32.1">
+    <meta name="project" content="Nostrum v0.10.0">
+
+
+    <title>Nostrum.Api.Self — Nostrum v0.10.0</title>
+    <link rel="stylesheet" href="dist/html-elixir-2C5PUTIB.css" />
+
+
+    <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
+    <script src="dist/handlebars.templates-IHH6HKET.js"></script>
+    <script src="dist/sidebar_items-86DB4ED6.js"></script>
+    <script src="docs_config.js"></script>
+    <script async src="dist/html-GXQ6W6IF.js"></script>
+
+
+  </head>
+  <body data-type="modules" class="page-module">
+    <script>
+
+      try {
+        var settings = JSON.parse(localStorage.getItem('ex_doc:settings') || '{}');
+
+        if (settings.theme === 'dark' ||
+           ((settings.theme === 'system' || settings.theme == null) &&
+             window.matchMedia('(prefers-color-scheme: dark)').matches)
+           ) {
+          document.body.classList.add('dark')
+        }
+      } catch (error) { }
+    </script>
+
+<div class="body-wrapper">
+
+<button id="sidebar-menu" class="sidebar-button sidebar-toggle" aria-label="toggle sidebar" aria-controls="sidebar">
+  <i class="ri-menu-line ri-lg" title="Collapse/expand sidebar"></i>
+</button>
+
+<nav id="sidebar" class="sidebar">
+
+  <div class="sidebar-header">
+    <div class="sidebar-projectInfo">
+
+        <a href="https://github.com/Kraigie/nostrum" class="sidebar-projectImage">
+          <img src="assets/logo.png" alt="Nostrum" />
+        </a>
+
+      <div>
+        <a href="https://github.com/Kraigie/nostrum" class="sidebar-projectName" translate="no">
+Nostrum
+        </a>
+        <div class="sidebar-projectVersion" translate="no">
+          v0.10.0
+        </div>
+      </div>
+    </div>
+    <ul id="sidebar-listNav" class="sidebar-listNav" role="tablist">
+      <li>
+        <button id="extras-list-tab-button" role="tab" data-type="extras" aria-controls="extras-tab-panel" aria-selected="true" tabindex="0">
+Pages
+        </button>
+      </li>
+
+        <li>
+          <button id="modules-list-tab-button" role="tab" data-type="modules" aria-controls="modules-tab-panel" aria-selected="false" tabindex="-1">
+            Modules
+          </button>
+        </li>
+
+
+        <li>
+          <button id="tasks-list-tab-button" role="tab" data-type="tasks" aria-controls="tasks-tab-panel" aria-selected="false" tabindex="-1">
+            <span translate="no">Mix</span> Tasks
+          </button>
+        </li>
+
+    </ul>
+  </div>
+
+  <div id="extras-tab-panel" class="sidebar-tabpanel" role="tabpanel" aria-labelledby="extras-list-tab-button">
+    <ul id="extras-full-list" class="full-list"></ul>
+  </div>
+
+    <div id="modules-tab-panel" class="sidebar-tabpanel" role="tabpanel" aria-labelledby="modules-list-tab-button" hidden>
+      <ul id="modules-full-list" class="full-list"></ul>
+    </div>
+
+
+    <div id="tasks-tab-panel" class="sidebar-tabpanel" role="tabpanel" aria-labelledby="tasks-list-tab-button" hidden>
+      <ul id="tasks-full-list" class="full-list"></ul>
+    </div>
+
+</nav>
+
+<main class="content">
+  <output role="status" id="toast"></output>
+
+  <div id="content" class="content-inner">
+    <div class="top-search">
+      <div class="search-settings">
+        <form class="search-bar" action="search.html">
+          <label class="search-label">
+            <span class="sr-only">Search documentation of Nostrum</span>
+            <input name="q" type="text" class="search-input" placeholder="Press / to search" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+          </label>
+          <button type="submit" class="search-button" aria-label="Submit Search">
+            <i class="ri-search-2-line ri-lg" aria-hidden="true" title="Submit search"></i>
+          </button>
+          <button type="button" tabindex="-1" class="search-close-button" aria-hidden="true">
+            <i class="ri-close-line ri-lg" title="Cancel search"></i>
+          </button>
+        </form>
+        <div class="autocomplete">
+        </div>
+        <button class="icon-settings display-settings">
+          <i class="ri-settings-3-line"></i>
+          <span class="sr-only">Settings</span>
+        </button>
+      </div>
+    </div>
+
+<div id="top-content">
+  <h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/self.ex#L1" title="View Source" class="icon-action" rel="help">
+        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        <span class="sr-only">View Source</span>
+      </a>
+
+    <span translate="no">Nostrum.Api.Self</span> 
+    <small class="app-vsn" translate="no">(Nostrum v0.10.0)</small>
+
+  </h1>
+
+
+    <section id="moduledoc">
+<p>Module for interacting with the current user.</p><p>See the endpoints containing @me in the Discord API documentation: <a href="https://discord.com/developers/docs/resources/user">https://discord.com/developers/docs/resources/user</a></p>
+    </section>
+
+</div>
+
+  <section id="summary" class="details-list">
+    <h1 class="section-heading">
+      <a class="hover-link" href="#summary">
+        <i class="ri-link-m" aria-hidden="true"></i>
+      </a>
+      <span class="text">Summary</span>
+    </h1>
+<div class="summary-functions summary">
+  <h2>
+    <a href="#functions">Functions</a>
+  </h2>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#application_information/0" translate="no">application_information()</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Gets the bot's OAuth2 application info.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#connections/0" translate="no">connections()</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Gets a list of user connections.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#dms/0" translate="no">dms()</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Gets a list of our user's DM channels.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#get/0" translate="no">get()</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Gets info on the current user.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#guilds/1" translate="no">guilds(options \\ [])</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Gets a list of guilds the user is currently in.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#modify/1" translate="no">modify(options)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Changes the username or avatar of the current user.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#update_shard_status/5" translate="no">update_shard_status(pid, status, game, type \\ 0, stream \\ nil)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Updates the status of the bot for a certain shard.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#update_status/4" translate="no">update_status(status, game, type \\ 0, stream \\ nil)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Updates the status of the bot for all shards.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#update_voice_state/4" translate="no">update_voice_state(guild_id, channel_id, self_mute \\ false, self_deaf \\ false)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Joins, moves, or disconnects the bot from a voice channel.</p></div>
+
+    </div>
+
+</div>
+
+  </section>
+
+
+  <section id="functions" class="details-list">
+    <h1 class="section-heading">
+      <a class="hover-link" href="#functions">
+        <i class="ri-link-m" aria-hidden="true"></i>
+      </a>
+      <span class="text">Functions</span>
+    </h1>
+    <div class="functions-list">
+<section class="detail" id="application_information/0">
+
+  <div class="detail-header">
+    <a href="#application_information/0" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">application_information()</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/self.ex#L40" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> application_information() :: <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>() | {:ok, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()}</pre>
+
+      </div>
+
+<p>Gets the bot's OAuth2 application info.</p><h2 id="application_information/0-example" class="section-heading">
+  <a href="#application_information/0-example" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Example</span>
+</h2>
+<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api.Self</span><span class="o">.</span><span class="n">application_information</span><span class="w">
+</span><span class="p" data-group-id="7299750398-1">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w">
+</span><span class="p" data-group-id="7299750398-2">%{</span><span class="w">
+  </span><span class="ss">bot_public</span><span class="p">:</span><span class="w"> </span><span class="no">false</span><span class="p">,</span><span class="w">
+  </span><span class="ss">bot_require_code_grant</span><span class="p">:</span><span class="w"> </span><span class="no">false</span><span class="p">,</span><span class="w">
+  </span><span class="ss">description</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Test&quot;</span><span class="p">,</span><span class="w">
+  </span><span class="ss">icon</span><span class="p">:</span><span class="w"> </span><span class="no">nil</span><span class="p">,</span><span class="w">
+  </span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;172150183260323840&quot;</span><span class="p">,</span><span class="w">
+  </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Baba O-Riley&quot;</span><span class="p">,</span><span class="w">
+  </span><span class="ss">owner</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="7299750398-3">%{</span><span class="w">
+    </span><span class="ss">avatar</span><span class="p">:</span><span class="w"> </span><span class="no">nil</span><span class="p">,</span><span class="w">
+    </span><span class="ss">discriminator</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;0042&quot;</span><span class="p">,</span><span class="w">
+    </span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;172150183260323840&quot;</span><span class="p">,</span><span class="w">
+    </span><span class="ss">username</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;i own a bot&quot;</span><span class="w">
+  </span><span class="p" data-group-id="7299750398-3">}</span><span class="p">,</span><span class="w">
+</span><span class="p" data-group-id="7299750398-2">}</span><span class="p" data-group-id="7299750398-1">}</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="connections/0">
+
+  <div class="detail-header">
+    <a href="#connections/0" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">connections()</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/self.ex#L182" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> connections() :: <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>() | {:ok, <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">list</a>()}</pre>
+
+      </div>
+
+<p>Gets a list of user connections.</p>
+  </section>
+</section>
+<section class="detail" id="dms/0">
+
+  <div class="detail-header">
+    <a href="#dms/0" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">dms()</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/self.ex#L74" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> dms() :: <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>() | {:ok, [<a href="Nostrum.Struct.Channel.html#t:dm_channel/0">Nostrum.Struct.Channel.dm_channel</a>()]}</pre>
+
+      </div>
+
+<p>Gets a list of our user's DM channels.</p><p>If successful, returns <code class="inline">{:ok, dm_channels}</code>. Otherwise, returns a <a href="Nostrum.Api.html#t:error/0"><code class="inline">Nostrum.Api.error/0</code></a>.</p><h2 id="dms/0-examples" class="section-heading">
+  <a href="#dms/0-examples" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Examples</span>
+</h2>
+<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api.Self</span><span class="o">.</span><span class="n">dms</span><span class="p" data-group-id="1641129985-1">(</span><span class="p" data-group-id="1641129985-1">)</span><span class="w">
+</span><span class="p" data-group-id="1641129985-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="1641129985-3">[</span><span class="p" data-group-id="1641129985-4">%</span><span class="nc" data-group-id="1641129985-4">Nostrum.Struct.Channel</span><span class="p" data-group-id="1641129985-4">{</span><span class="ss">type</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p" data-group-id="1641129985-4">}</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="bp">_</span><span class="p" data-group-id="1641129985-3">]</span><span class="p" data-group-id="1641129985-2">}</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="get/0">
+
+  <div class="detail-header">
+    <a href="#get/0" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">get()</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/self.ex#L56" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> get() :: <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>() | {:ok, <a href="Nostrum.Struct.User.html#t:t/0">Nostrum.Struct.User.t</a>()}</pre>
+
+      </div>
+
+<p>Gets info on the current user.</p><p>If nostrum's caching is enabled, it is recommended to use <code class="inline">Me.get/0</code>
+instead of this function. This is because sending out an API request is much slower
+than pulling from our cache.</p><p>If the request is successful, this function returns <code class="inline">{:ok, user}</code>, where
+<code class="inline">user</code> is nostrum's <a href="Nostrum.Struct.User.html"><code class="inline">Nostrum.Struct.User</code></a>. Otherwise, returns <code class="inline">{:error, reason}</code>.</p>
+  </section>
+</section>
+<section class="detail" id="guilds/1">
+
+    <span id="guilds/0"></span>
+
+  <div class="detail-header">
+    <a href="#guilds/1" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">guilds(options \\ [])</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/self.ex#L168" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> guilds(<a href="Nostrum.Api.html#t:options/0">Nostrum.Api.options</a>()) ::
+  <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>() | {:ok, [<a href="Nostrum.Struct.Guild.html#t:user_guild/0">Nostrum.Struct.Guild.user_guild</a>()]}</pre>
+
+      </div>
+
+<p>Gets a list of guilds the user is currently in.</p><p>This endpoint requires the <code class="inline">guilds</code> OAuth2 scope.</p><p>If successful, returns <code class="inline">{:ok, guilds}</code>. Otherwise, returns a <a href="Nostrum.Api.html#t:error/0"><code class="inline">Nostrum.Api.error/0</code></a>.</p><h2 id="guilds/1-options" class="section-heading">
+  <a href="#guilds/1-options" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Options</span>
+</h2>
+<ul><li><code class="inline">:before</code> (<a href="Nostrum.Snowflake.html#t:t/0"><code class="inline">Nostrum.Snowflake.t/0</code></a>) - get guilds before this
+guild ID</li><li><code class="inline">:after</code> (<a href="Nostrum.Snowflake.html#t:t/0"><code class="inline">Nostrum.Snowflake.t/0</code></a>) - get guilds after this guild
+ID</li><li><code class="inline">:limit</code> (integer) - max number of guilds to return (1-100)</li></ul><h2 id="guilds/1-examples" class="section-heading">
+  <a href="#guilds/1-examples" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Examples</span>
+</h2>
+<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Api.Self</span><span class="o">.</span><span class="n">guilds</span><span class="p" data-group-id="5470329157-1">(</span><span class="ss">limit</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p" data-group-id="5470329157-1">)</span><span class="w">
+</span><span class="p" data-group-id="5470329157-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="5470329157-3">[</span><span class="p" data-group-id="5470329157-4">%</span><span class="nc" data-group-id="5470329157-4">Nostrum.Struct.Guild</span><span class="p" data-group-id="5470329157-4">{</span><span class="p" data-group-id="5470329157-4">}</span><span class="p" data-group-id="5470329157-3">]</span><span class="p" data-group-id="5470329157-2">}</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="modify/1">
+
+  <div class="detail-header">
+    <a href="#modify/1" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">modify(options)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/self.ex#L94" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> modify(<a href="Nostrum.Api.html#t:options/0">Nostrum.Api.options</a>()) ::
+  <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>() | {:ok, <a href="Nostrum.Struct.User.html#t:t/0">Nostrum.Struct.User.t</a>()}</pre>
+
+      </div>
+
+<p>Changes the username or avatar of the current user.</p><h2 id="modify/1-options" class="section-heading">
+  <a href="#modify/1-options" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Options</span>
+</h2>
+<ul><li><code class="inline">:username</code> (string) - new username</li><li><code class="inline">:avatar</code> (string) - the user's avatar as <a href="https://discord.com/developers/docs/resources/user#avatar-data">avatar data</a></li></ul><h2 id="modify/1-examples" class="section-heading">
+  <a href="#modify/1-examples" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Examples</span>
+</h2>
+<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api.Self</span><span class="o">.</span><span class="n">modify</span><span class="p" data-group-id="0725214668-1">(</span><span class="ss">avatar</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;data:image/jpeg;base64,YXl5IGJieSB1IGx1a2luIDQgc3VtIGZ1az8=&quot;</span><span class="p" data-group-id="0725214668-1">)</span></code></pre>
+  </section>
+</section>
+<section class="detail" id="update_shard_status/5">
+
+    <span id="update_shard_status/3"></span>
+
+    <span id="update_shard_status/4"></span>
+
+  <div class="detail-header">
+    <a href="#update_shard_status/5" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">update_shard_status(pid, status, game, type \\ 0, stream \\ nil)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/self.ex#L115" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> update_shard_status(
+  <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pid</a>(),
+  <a href="Nostrum.Api.html#t:status/0">Nostrum.Api.status</a>(),
+  <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>(),
+  <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>(),
+  <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>() | nil
+) :: :ok</pre>
+
+      </div>
+
+<p>Updates the status of the bot for a certain shard.</p><h2 id="update_shard_status/5-parameters" class="section-heading">
+  <a href="#update_shard_status/5-parameters" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Parameters</span>
+</h2>
+<ul><li><code class="inline">pid</code> - Pid of the shard.</li><li><code class="inline">status</code> - Status of the bot.</li><li><code class="inline">game</code> - The 'playing' text of the bot. Empty will clear.</li><li><p><code class="inline">type</code> - The type of status to show. 0 (Playing) | 1 (Streaming) | 2 (Listening) | 3 (Watching)</p></li><li><code class="inline">stream</code> - URL of twitch.tv stream</li></ul>
+  </section>
+</section>
+<section class="detail" id="update_status/4">
+
+    <span id="update_status/2"></span>
+
+    <span id="update_status/3"></span>
+
+  <div class="detail-header">
+    <a href="#update_status/4" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">update_status(status, game, type \\ 0, stream \\ nil)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/self.ex#L126" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> update_status(<a href="Nostrum.Api.html#t:status/0">Nostrum.Api.status</a>(), <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>(), <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>() | nil) ::
+  :ok</pre>
+
+      </div>
+
+<p>Updates the status of the bot for all shards.</p><p>See <a href="#update_shard_status/5"><code class="inline">update_shard_status/5</code></a> for usage.</p>
+  </section>
+</section>
+<section class="detail" id="update_voice_state/4">
+
+    <span id="update_voice_state/2"></span>
+
+    <span id="update_voice_state/3"></span>
+
+  <div class="detail-header">
+    <a href="#update_voice_state/4" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">update_voice_state(guild_id, channel_id, self_mute \\ false, self_deaf \\ false)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/self.ex#L141" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> update_voice_state(
+  <a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(),
+  <a href="Nostrum.Struct.Channel.html#t:id/0">Nostrum.Struct.Channel.id</a>() | nil,
+  <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">boolean</a>(),
+  <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">boolean</a>()
+) :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">no_return</a>() | :ok</pre>
+
+      </div>
+
+<p>Joins, moves, or disconnects the bot from a voice channel.</p><p>The correct shard to send the update to will be inferred from the
+<code class="inline">guild_id</code>. If a corresponding <code class="inline">guild_id</code> is not found a cache error will be
+raised.</p><p>To disconnect from a channel, <code class="inline">channel_id</code> should be set to <code class="inline">nil</code>.</p>
+  </section>
+</section>
+
+    </div>
+  </section>
+
+    <footer class="footer">
+      <p>
+
+          <span class="line">
+            <a href="https://hex.pm/packages/nostrum/0.10.0" class="footer-hex-package">Hex Package</a>
+
+            <a href="https://preview.hex.pm/preview/nostrum/0.10.0">Hex Preview</a>
+
+          </span>
+
+        <span class="line">
+          <button class="a-main footer-button display-quick-switch" title="Search HexDocs packages">
+            Search HexDocs
+          </button>
+
+            <a href="Nostrum.epub" title="ePub version">
+              Download ePub version
+            </a>
+
+        </span>
+      </p>
+
+      <p class="built-using">
+        Built using
+        <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.32.1) for the
+
+          <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
+
+      </p>
+
+    </footer>
+  </div>
+</main>
+</div>
+
+
+  </body>
+</html>

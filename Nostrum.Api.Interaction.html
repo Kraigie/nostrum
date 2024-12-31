@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.32.1">
+    <meta name="project" content="Nostrum v0.10.0">
+
+
+    <title>Nostrum.Api.Interaction — Nostrum v0.10.0</title>
+    <link rel="stylesheet" href="dist/html-elixir-2C5PUTIB.css" />
+
+
+    <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
+    <script src="dist/handlebars.templates-IHH6HKET.js"></script>
+    <script src="dist/sidebar_items-86DB4ED6.js"></script>
+    <script src="docs_config.js"></script>
+    <script async src="dist/html-GXQ6W6IF.js"></script>
+
+
+  </head>
+  <body data-type="modules" class="page-module">
+    <script>
+
+      try {
+        var settings = JSON.parse(localStorage.getItem('ex_doc:settings') || '{}');
+
+        if (settings.theme === 'dark' ||
+           ((settings.theme === 'system' || settings.theme == null) &&
+             window.matchMedia('(prefers-color-scheme: dark)').matches)
+           ) {
+          document.body.classList.add('dark')
+        }
+      } catch (error) { }
+    </script>
+
+<div class="body-wrapper">
+
+<button id="sidebar-menu" class="sidebar-button sidebar-toggle" aria-label="toggle sidebar" aria-controls="sidebar">
+  <i class="ri-menu-line ri-lg" title="Collapse/expand sidebar"></i>
+</button>
+
+<nav id="sidebar" class="sidebar">
+
+  <div class="sidebar-header">
+    <div class="sidebar-projectInfo">
+
+        <a href="https://github.com/Kraigie/nostrum" class="sidebar-projectImage">
+          <img src="assets/logo.png" alt="Nostrum" />
+        </a>
+
+      <div>
+        <a href="https://github.com/Kraigie/nostrum" class="sidebar-projectName" translate="no">
+Nostrum
+        </a>
+        <div class="sidebar-projectVersion" translate="no">
+          v0.10.0
+        </div>
+      </div>
+    </div>
+    <ul id="sidebar-listNav" class="sidebar-listNav" role="tablist">
+      <li>
+        <button id="extras-list-tab-button" role="tab" data-type="extras" aria-controls="extras-tab-panel" aria-selected="true" tabindex="0">
+Pages
+        </button>
+      </li>
+
+        <li>
+          <button id="modules-list-tab-button" role="tab" data-type="modules" aria-controls="modules-tab-panel" aria-selected="false" tabindex="-1">
+            Modules
+          </button>
+        </li>
+
+
+        <li>
+          <button id="tasks-list-tab-button" role="tab" data-type="tasks" aria-controls="tasks-tab-panel" aria-selected="false" tabindex="-1">
+            <span translate="no">Mix</span> Tasks
+          </button>
+        </li>
+
+    </ul>
+  </div>
+
+  <div id="extras-tab-panel" class="sidebar-tabpanel" role="tabpanel" aria-labelledby="extras-list-tab-button">
+    <ul id="extras-full-list" class="full-list"></ul>
+  </div>
+
+    <div id="modules-tab-panel" class="sidebar-tabpanel" role="tabpanel" aria-labelledby="modules-list-tab-button" hidden>
+      <ul id="modules-full-list" class="full-list"></ul>
+    </div>
+
+
+    <div id="tasks-tab-panel" class="sidebar-tabpanel" role="tabpanel" aria-labelledby="tasks-list-tab-button" hidden>
+      <ul id="tasks-full-list" class="full-list"></ul>
+    </div>
+
+</nav>
+
+<main class="content">
+  <output role="status" id="toast"></output>
+
+  <div id="content" class="content-inner">
+    <div class="top-search">
+      <div class="search-settings">
+        <form class="search-bar" action="search.html">
+          <label class="search-label">
+            <span class="sr-only">Search documentation of Nostrum</span>
+            <input name="q" type="text" class="search-input" placeholder="Press / to search" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+          </label>
+          <button type="submit" class="search-button" aria-label="Submit Search">
+            <i class="ri-search-2-line ri-lg" aria-hidden="true" title="Submit search"></i>
+          </button>
+          <button type="button" tabindex="-1" class="search-close-button" aria-hidden="true">
+            <i class="ri-close-line ri-lg" title="Cancel search"></i>
+          </button>
+        </form>
+        <div class="autocomplete">
+        </div>
+        <button class="icon-settings display-settings">
+          <i class="ri-settings-3-line"></i>
+          <span class="sr-only">Settings</span>
+        </button>
+      </div>
+    </div>
+
+<div id="top-content">
+  <h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/interaction.ex#L1" title="View Source" class="icon-action" rel="help">
+        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        <span class="sr-only">View Source</span>
+      </a>
+
+    <span translate="no">Nostrum.Api.Interaction</span> 
+    <small class="app-vsn" translate="no">(Nostrum v0.10.0)</small>
+
+  </h1>
+
+
+    <section id="moduledoc">
+<p>Functions for interacting with the Discord API's interaction endpoints.</p><p>See: <a href="https://discord.com/developers/docs/interactions/overview">https://discord.com/developers/docs/interactions/overview</a></p>
+    </section>
+
+</div>
+
+  <section id="summary" class="details-list">
+    <h1 class="section-heading">
+      <a class="hover-link" href="#summary">
+        <i class="ri-link-m" aria-hidden="true"></i>
+      </a>
+      <span class="text">Summary</span>
+    </h1>
+<div class="summary-functions summary">
+  <h2>
+    <a href="#functions">Functions</a>
+  </h2>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#create_followup_message/3" translate="no">create_followup_message(application_id \\ Me.get().id, token, webhook_payload)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Create a followup message for an interaction.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#create_response/2" translate="no">create_response(interaction, response)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Same as <a href="#create_response/3"><code class="inline">create_response/3</code></a>, but directly takes the
+<a href="Nostrum.Struct.Interaction.html#t:t/0"><code class="inline">Nostrum.Struct.Interaction.t/0</code></a> received from the gateway.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#create_response/3" translate="no">create_response(id, token, response)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Create a response to an interaction received from the gateway.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#delete_followup_message/3" translate="no">delete_followup_message(application_id \\ Me.get().id, token, message_id)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Delete a followup message for an interaction.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#delete_response/1" translate="no">delete_response(interaction)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Same as <code class="inline">delete_response/3</code>, but directly takes the
+<a href="Nostrum.Struct.Interaction.html#t:t/0"><code class="inline">Nostrum.Struct.Interaction.t/0</code></a> received from the gateway.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#delete_response/2" translate="no">delete_response(id \\ Me.get().id, token)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Deletes the original interaction response.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#edit_response/2" translate="no">edit_response(interaction, response)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Same as <a href="#edit_response/3"><code class="inline">edit_response/3</code></a>, but directly takes the
+<a href="Nostrum.Struct.Interaction.html#t:t/0"><code class="inline">Nostrum.Struct.Interaction.t/0</code></a> received from the gateway.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#edit_response/3" translate="no">edit_response(id \\ Me.get().id, token, response)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Edits the original interaction response.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#original_response/1" translate="no">original_response(interaction)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Retrieves the original message of an interaction.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#original_response/2" translate="no">original_response(id \\ Me.get().id, token)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Retrieves the original message of an interaction.</p></div>
+
+    </div>
+
+</div>
+
+  </section>
+
+
+  <section id="functions" class="details-list">
+    <h1 class="section-heading">
+      <a class="hover-link" href="#functions">
+        <i class="ri-link-m" aria-hidden="true"></i>
+      </a>
+      <span class="text">Functions</span>
+    </h1>
+    <div class="functions-list">
+<section class="detail" id="create_followup_message/3">
+
+    <span id="create_followup_message/2"></span>
+
+  <div class="detail-header">
+    <a href="#create_followup_message/3" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">create_followup_message(application_id \\ Me.get().id, token, webhook_payload)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/interaction.ex#L23" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> create_followup_message(
+  <a href="Nostrum.Struct.User.html#t:id/0">Nostrum.Struct.User.id</a>(),
+  <a href="Nostrum.Struct.Interaction.html#t:token/0">Nostrum.Struct.Interaction.token</a>(),
+  <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()
+) ::
+  {:ok, <a href="Nostrum.Struct.Message.html#t:t/0">Nostrum.Struct.Message.t</a>()} | <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>()</pre>
+
+      </div>
+
+<p>Create a followup message for an interaction.</p><p>Delegates to <code class="inline">execute_webhook/3</code>, see the function for more details.</p>
+  </section>
+</section>
+<section class="detail" id="create_response/2">
+
+  <div class="detail-header">
+    <a href="#create_response/2" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">create_response(interaction, response)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/interaction.ex#L32" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> create_response(<a href="Nostrum.Struct.Interaction.html#t:t/0">Nostrum.Struct.Interaction.t</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()) ::
+  {:ok} | <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>()</pre>
+
+      </div>
+
+<p>Same as <a href="#create_response/3"><code class="inline">create_response/3</code></a>, but directly takes the
+<a href="Nostrum.Struct.Interaction.html#t:t/0"><code class="inline">Nostrum.Struct.Interaction.t/0</code></a> received from the gateway.</p>
+  </section>
+</section>
+<section class="detail" id="create_response/3">
+
+  <div class="detail-header">
+    <a href="#create_response/3" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">create_response(id, token, response)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/interaction.ex#L71" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> create_response(
+  <a href="Nostrum.Struct.Interaction.html#t:id/0">Nostrum.Struct.Interaction.id</a>(),
+  <a href="Nostrum.Struct.Interaction.html#t:token/0">Nostrum.Struct.Interaction.token</a>(),
+  <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()
+) ::
+  {:ok} | <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>()</pre>
+
+      </div>
+
+<p>Create a response to an interaction received from the gateway.</p><h2 id="create_response/3-parameters" class="section-heading">
+  <a href="#create_response/3-parameters" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Parameters</span>
+</h2>
+<ul><li><code class="inline">id</code>: The interaction ID to which the response should be created.</li><li><code class="inline">token</code>: The interaction token.</li><li><code class="inline">response</code>: An <a href="https://discord.com/developers/docs/interactions/receiving-and-responding#interaction-response-object"><code class="inline">InteractionResponse</code></a>
+object. See the linked documentation.</li></ul><h3 id="create_response/3-attachments" class="section-heading">
+  <a href="#create_response/3-attachments" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Attachments</span>
+</h3>
+<p>To include attachments in the response, you can include a <code class="inline">:files</code> field in the response.
+This field expects a list of attachments which can be in either of the following formats:</p><ul><li>A path to the file to upload.</li><li>A map with the following fields:<ul><li><code class="inline">:body</code> The file contents.</li><li><code class="inline">:name</code> The filename of the file.</li></ul></li></ul><h2 id="create_response/3-example" class="section-heading">
+  <a href="#create_response/3-example" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Example</span>
+</h2>
+<pre><code class="makeup elixir" translate="no"><span class="n">response</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="1050254547-1">%{</span><span class="w">
+  </span><span class="ss">type</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w">
+  </span><span class="ss">data</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="1050254547-2">%{</span><span class="w">
+    </span><span class="ss">content</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;I copy and pasted this code.&quot;</span><span class="w">
+  </span><span class="p" data-group-id="1050254547-2">}</span><span class="w">
+</span><span class="p" data-group-id="1050254547-1">}</span><span class="w">
+</span><span class="nc">Nostrum.Api.Interaction</span><span class="o">.</span><span class="n">create_response</span><span class="p" data-group-id="1050254547-3">(</span><span class="n">interaction</span><span class="p">,</span><span class="w"> </span><span class="n">response</span><span class="p" data-group-id="1050254547-3">)</span></code></pre><p>As an alternative to passing the interaction ID and token, the
+original <a href="Nostrum.Struct.Interaction.html#t:t/0"><code class="inline">Nostrum.Struct.Interaction.t/0</code></a> can also be passed
+directly. See <a href="#create_response/2"><code class="inline">create_response/2</code></a>.</p>
+  </section>
+</section>
+<section class="detail" id="delete_followup_message/3">
+
+    <span id="delete_followup_message/2"></span>
+
+  <div class="detail-header">
+    <a href="#delete_followup_message/3" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">delete_followup_message(application_id \\ Me.get().id, token, message_id)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/interaction.ex#L91" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> delete_followup_message(
+  <a href="Nostrum.Struct.User.html#t:id/0">Nostrum.Struct.User.id</a>(),
+  <a href="Nostrum.Struct.Interaction.html#t:token/0">Nostrum.Struct.Interaction.token</a>(),
+  <a href="Nostrum.Struct.Message.html#t:id/0">Nostrum.Struct.Message.id</a>()
+) :: {:ok} | <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>()</pre>
+
+      </div>
+
+<p>Delete a followup message for an interaction.</p><h2 id="delete_followup_message/3-parameters" class="section-heading">
+  <a href="#delete_followup_message/3-parameters" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Parameters</span>
+</h2>
+<ul><li><code class="inline">application_id</code>: Application ID for which to create the command.
+If not given, this will be fetched from <code class="inline">Me</code>.</li><li><code class="inline">token</code>: Interaction token.</li><li><code class="inline">message_id</code>: Followup message ID.</li></ul>
+  </section>
+</section>
+<section class="detail" id="delete_response/1">
+
+  <div class="detail-header">
+    <a href="#delete_response/1" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">delete_response(interaction)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/interaction.ex#L108" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+      <span class="note">(since 1.x.x)</span>
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> delete_response(<a href="Nostrum.Struct.Interaction.html#t:t/0">Nostrum.Struct.Interaction.t</a>()) :: {:ok} | <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>()</pre>
+
+      </div>
+
+<p>Same as <code class="inline">delete_response/3</code>, but directly takes the
+<a href="Nostrum.Struct.Interaction.html#t:t/0"><code class="inline">Nostrum.Struct.Interaction.t/0</code></a> received from the gateway.</p>
+  </section>
+</section>
+<section class="detail" id="delete_response/2">
+
+  <div class="detail-header">
+    <a href="#delete_response/2" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">delete_response(id \\ Me.get().id, token)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/interaction.ex#L117" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+      <span class="note">(since 1.x.x)</span>
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> delete_response(<a href="Nostrum.Struct.User.html#t:id/0">Nostrum.Struct.User.id</a>(), <a href="Nostrum.Struct.Interaction.html#t:token/0">Nostrum.Struct.Interaction.token</a>()) ::
+  {:ok} | <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>()</pre>
+
+      </div>
+
+<p>Deletes the original interaction response.</p>
+  </section>
+</section>
+<section class="detail" id="edit_response/2">
+
+  <div class="detail-header">
+    <a href="#edit_response/2" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">edit_response(interaction, response)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/interaction.ex#L127" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+      <span class="note">(since 1.x.x)</span>
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> edit_response(<a href="Nostrum.Struct.Interaction.html#t:t/0">Nostrum.Struct.Interaction.t</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()) ::
+  {:ok, <a href="Nostrum.Struct.Message.html#t:t/0">Nostrum.Struct.Message.t</a>()} | <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>()</pre>
+
+      </div>
+
+<p>Same as <a href="#edit_response/3"><code class="inline">edit_response/3</code></a>, but directly takes the
+<a href="Nostrum.Struct.Interaction.html#t:t/0"><code class="inline">Nostrum.Struct.Interaction.t/0</code></a> received from the gateway.</p>
+  </section>
+</section>
+<section class="detail" id="edit_response/3">
+
+  <div class="detail-header">
+    <a href="#edit_response/3" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">edit_response(id \\ Me.get().id, token, response)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/interaction.ex#L139" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+      <span class="note">(since 1.x.x)</span>
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> edit_response(
+  <a href="Nostrum.Struct.User.html#t:id/0">Nostrum.Struct.User.id</a>(),
+  <a href="Nostrum.Struct.Interaction.html#t:token/0">Nostrum.Struct.Interaction.token</a>(),
+  <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()
+) ::
+  {:ok, <a href="Nostrum.Struct.Message.html#t:t/0">Nostrum.Struct.Message.t</a>()} | <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>()</pre>
+
+      </div>
+
+<p>Edits the original interaction response.</p><p>Functions the same as <code class="inline">edit_webhook_message/3</code></p>
+  </section>
+</section>
+<section class="detail" id="original_response/1">
+
+  <div class="detail-header">
+    <a href="#original_response/1" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">original_response(interaction)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/interaction.ex#L154" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+      <span class="note">(since 1.x.x)</span>
+
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@spec</span> original_response(<a href="Nostrum.Struct.Interaction.html#t:t/0">Nostrum.Struct.Interaction.t</a>()) ::
+  <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>() | {:ok, <a href="Nostrum.Struct.Message.html#t:t/0">Nostrum.Struct.Message.t</a>()}</pre>
+
+          <pre translate="no"><span class="attribute">@spec</span> original_response(<a href="Nostrum.Struct.Interaction.html#t:t/0">Nostrum.Struct.Interaction.t</a>()) ::
+  <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>() | {:ok, <a href="Nostrum.Struct.Message.html#t:t/0">Nostrum.Struct.Message.t</a>()}</pre>
+
+      </div>
+
+<p>Retrieves the original message of an interaction.</p>
+  </section>
+</section>
+<section class="detail" id="original_response/2">
+
+  <div class="detail-header">
+    <a href="#original_response/2" class="detail-link" title="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+      <span class="sr-only">Link to this function</span>
+    </a>
+    <h1 class="signature" translate="no">original_response(id \\ Me.get().id, token)</h1>
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/interaction.ex#L163" class="icon-action" rel="help" title="View Source">
+       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+       <span class="sr-only">View Source</span>
+     </a>
+
+
+      <span class="note">(since 1.x.x)</span>
+
+  </div>
+
+  <section class="docstring">
+
+<p>Retrieves the original message of an interaction.</p>
+  </section>
+</section>
+
+    </div>
+  </section>
+
+    <footer class="footer">
+      <p>
+
+          <span class="line">
+            <a href="https://hex.pm/packages/nostrum/0.10.0" class="footer-hex-package">Hex Package</a>
+
+            <a href="https://preview.hex.pm/preview/nostrum/0.10.0">Hex Preview</a>
+
+          </span>
+
+        <span class="line">
+          <button class="a-main footer-button display-quick-switch" title="Search HexDocs packages">
+            Search HexDocs
+          </button>
+
+            <a href="Nostrum.epub" title="ePub version">
+              Download ePub version
+            </a>
+
+        </span>
+      </p>
+
+      <p class="built-using">
+        Built using
+        <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.32.1) for the
+
+          <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
+
+      </p>
+
+    </footer>
+  </div>
+</main>
+</div>
+
+
+  </body>
+</html>
