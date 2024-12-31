@@ -5,40 +5,13 @@ Discord's API. Method names are copied closely from the documentation to
 eliminate any confusion about what a method does, as well as to allow users to
 easily lookup the endpoints in the official API documentation.
 
-For a full listing of method definitions, please see the `Nostrum.Api` module.
-
-
-## Banged (`!`) API methods
-
-A lot of methods have a `banged` version of themselves. This is a common Elixir
-idiom hailing from Elixir's style of failing fast.
-
-By default, the API method will return a tuple like one of the following:
-
-```elixir
-# Success
-{:ok, msg} = Nostrum.Api.create_message(179679229036724225, "456")
-
-# Failure
-{:error, reason} = Nostrum.Api.create_message(123, "eat my shorts api")
-```
-
-A banged method, instead of returning an `error` tuple, will throw an error. If
-successful, it will directly return the response with no `:ok` tuple.
-
-```elixir
-# Success
-msg = Nostrum.Api.create_message!(179679229036724225, "456")
-
-# Failure - Throws an error
-Nostrum.Api.create_message!(123, "eat my shorts api")
-```
+For a listing of method definitions, please see the submodules of `Nostrum.Api`.
 
 
 ## Abstractions
 
 When appropriate, some helpers are defined to make interacting with the API
-simpler. An example of this is `Nostrum.Api.get_channel_messages/3`. By default
+simpler. An example of this is `Nostrum.Api.Channel.messages/3`. By default
 this endpoint only allows the retrieval of `100` messages at a time. A general
 use case will have a user wanting more messages than that, thus nostrum handles
 the retrieval of any number of messages for the user.
@@ -62,7 +35,7 @@ asynchronously or not, nostrum funnels all requests through the
 
 If you only want to use the REST portion of the provided API, the only process
 needed is the ratelimiter, which can be manually started by calling
-`Nostrum.Api.Ratelimiter.start_link/1`. 
+`Nostrum.Api.Ratelimiter.start_link/1`.
 
 If you don't want to start nostrum, you can add `runtime: false` to the
 dependency options. If you're using `mix release`, all `runtime: false` deps

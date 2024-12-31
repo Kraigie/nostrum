@@ -86,20 +86,20 @@ defmodule Nostrum.ConsumerGroup do
 
   ```elixir
   defmodule MyBot.Command
-    alias Nostrum.Api
+    alias Nostrum.Api.Message
     alias Nostrum.ConsumerGroup
     alias Nostrum.Struct.Message
     alias Nostrum.Struct.User
 
     def command(%Message{author: %User{id: author_id}}) do
-      Api.create_message!(msg, "Reply 'y' in 5 seconds to confirm ordering a large burger menu.")
+      Message.create(msg, "Reply 'y' in 5 seconds to confirm ordering a large burger menu.")
       ConsumerGroup.join()
       receive do
         {:event, {:MESSAGE_CREATE, %Message{author: %User{id: author_id}, content: "y"}, _}} ->
-          Api.create_message!(msg, "The large burger menu is coming.")
+          Message.create(msg, "The large burger menu is coming.")
       after
         5_000 ->
-          Api.create_message!(msg, "Too slow!")
+          Message.create(msg, "Too slow!")
       end
     end
   end

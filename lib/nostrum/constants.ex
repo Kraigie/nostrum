@@ -73,6 +73,7 @@ defmodule Nostrum.Constants do
   def guild_sticker(guild_id, sticker_id), do: "/guilds/#{guild_id}/stickers/#{sticker_id}"
 
   def sticker_packs, do: "/sticker-packs"
+  def sticker_pack(pack_id), do: "/sticker-packs/#{pack_id}"
 
   def guild_scheduled_events(guild_id), do: "/guilds/#{guild_id}/scheduled-events"
 
@@ -300,6 +301,7 @@ defmodule Nostrum.Constants do
     def chat_input, do: 1
     def user, do: 2
     def message, do: 3
+    def primary_entry_point, do: 4
   end
 
   defmodule ApplicationCommandOptionType do
