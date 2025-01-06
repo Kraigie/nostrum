@@ -24,7 +24,7 @@ defmodule Nostrum.Api.Helpers do
   end
 
   @spec maybe_add_reason(String.t() | nil, list()) :: list()
-  def maybe_add_reason(reason, headers \\ [])
+  def maybe_add_reason(reason, headers \\ [{"content-type", "application/json"}])
   def maybe_add_reason(nil, headers), do: headers
 
   def maybe_add_reason(reason, headers) do
