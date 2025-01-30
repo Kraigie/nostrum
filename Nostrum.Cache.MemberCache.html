@@ -145,7 +145,7 @@ members. You can override this in the <code class="inline">:caches</code> option
 application by setting the <code class="inline">:members</code> field to a different module
 implementing the behaviour defined by this module.</p><p>The user-facing functions of this module can be called with a custom cache as
 the final argument. This is mainly useful if you want to test the cache: by
-default, nostrum will use Elixir.Nostrum.Cache.MemberCache.ETS.</p>
+default, nostrum will use Elixir.Nostrum.Cache.MemberCache.ETS.</p><p>In order to use this cache, you must enable the <code class="inline">:guild_members</code> intent, and you must also enable the <code class="inline">request_guild_members: true</code> configuration option.</p>
     </section>
 
 </div>
@@ -361,7 +361,7 @@ accumulator.</p></div>
     </a>
     <h1 class="signature" translate="no">bulk_create(id, members)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/member_cache.ex#L87" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/member_cache.ex#L89" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -391,7 +391,7 @@ accumulator.</p></div>
     </a>
     <h1 class="signature" translate="no">by_guild(id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/member_cache.ex#L46" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/member_cache.ex#L48" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -422,7 +422,7 @@ accumulator.</p></div>
     </a>
     <h1 class="signature" translate="no">by_user(id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/member_cache.ex#L40" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/member_cache.ex#L42" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -454,7 +454,7 @@ to wrap calls to this function in <a href="#wrap_query/1"><code class="inline">w
     </a>
     <h1 class="signature" translate="no">child_spec(term)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/member_cache.ex#L92" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/member_cache.ex#L94" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -484,7 +484,7 @@ to wrap calls to this function in <a href="#wrap_query/1"><code class="inline">w
     </a>
     <h1 class="signature" translate="no">create(id, member)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/member_cache.ex#L53" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/member_cache.ex#L55" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -515,7 +515,7 @@ to wrap calls to this function in <a href="#wrap_query/1"><code class="inline">w
     </a>
     <h1 class="signature" translate="no">delete(id, user_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/member_cache.ex#L79" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/member_cache.ex#L81" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -548,7 +548,7 @@ return <code class="inline">:noop</code>.</p>
     </a>
     <h1 class="signature" translate="no">get(id, user_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/member_cache.ex#L31" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/member_cache.ex#L33" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -579,7 +579,7 @@ return <code class="inline">:noop</code>.</p>
     </a>
     <h1 class="signature" translate="no">update(id, member)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/member_cache.ex#L70" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/member_cache.ex#L72" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -624,7 +624,7 @@ predates the modern nostrum caching infrastructure.</p>
     </a>
     <h1 class="signature" translate="no">wrap_query(function)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/member_cache.ex#L105" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/member_cache.ex#L107" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -671,7 +671,7 @@ will then effectively call <code class="inline">wrap_query(fn -&gt; ... end)</co
     </a>
     <h1 class="signature" translate="no">by_guild(guild_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/member_cache.ex#L251" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/member_cache.ex#L253" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -695,7 +695,7 @@ will then effectively call <code class="inline">wrap_query(fn -&gt; ... end)</co
     </a>
     <h1 class="signature" translate="no">by_user(user_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/member_cache.ex#L252" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/member_cache.ex#L254" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -721,7 +721,7 @@ will then effectively call <code class="inline">wrap_query(fn -&gt; ... end)</co
     </a>
     <h1 class="signature" translate="no">fold(acc, guild_id, member_reducer, cache \\ Nostrum.Cache.MemberCache.ETS)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/member_cache.ex#L181" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/member_cache.ex#L183" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -780,7 +780,7 @@ results were found.</p><h2 id="fold/4-raises" class="section-heading">
     </a>
     <h1 class="signature" translate="no">fold_by_user(acc, user_id, member_reducer, cache \\ Nostrum.Cache.MemberCache.ETS)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/member_cache.ex#L148" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/member_cache.ex#L150" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -825,7 +825,7 @@ format <code class="inline">{guild_id, member}</code>.</p><h2 id="fold_by_user/4
     </a>
     <h1 class="signature" translate="no">fold_with_users(acc, guild_id, fun, cache \\ Nostrum.Cache.MemberCache.ETS)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/member_cache.ex#L217" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/member_cache.ex#L219" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -885,7 +885,7 @@ happen in practice.</p><h2 id="fold_with_users/4-raises" class="section-heading"
     </a>
     <h1 class="signature" translate="no">get(guild_id, member_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/member_cache.ex#L157" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/member_cache.ex#L159" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -918,7 +918,7 @@ happen in practice.</p><h2 id="fold_with_users/4-raises" class="section-heading"
     </a>
     <h1 class="signature" translate="no">get_with_user(guild_id, member_id, cache \\ Nostrum.Cache.MemberCache.ETS)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/member_cache.ex#L116" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/member_cache.ex#L118" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -955,7 +955,7 @@ happen in practice.</p><h2 id="fold_with_users/4-raises" class="section-heading"
     </a>
     <h1 class="signature" translate="no">wrap_query(cache \\ Nostrum.Cache.MemberCache.ETS, fun)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/member_cache.ex#L243" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/member_cache.ex#L245" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
