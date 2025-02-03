@@ -20,7 +20,7 @@ defmodule Nostrum.Consumer do
           __MODULE__.handle_event(event)
         rescue
           e ->
-            Logger.error("Error in event handler: \#{Exception.format_error(e, __STACKTRACE__)}")
+            Logger.error("Error in event handler: \#{Exception.format(:error, e, __STACKTRACE__)}")
         end
       end)
 
@@ -449,7 +449,7 @@ defmodule Nostrum.Consumer do
             rescue
               e ->
                 Logger.error(
-                  "Error in event handler: #{Exception.format_error(e, __STACKTRACE__)}"
+                  "Error in event handler: #{Exception.format(:error, e, __STACKTRACE__)}"
                 )
             end
           end)
