@@ -107,14 +107,14 @@ defmodule Nostrum.Shard.Supervisor do
     on_start
   end
 
-  def update_status(status, game, stream, type) do
+  def update_status(status, activity) do
     __MODULE__
     |> DynamicSupervisor.which_children()
     |> Enum.filter(fn {_id, _pid, _type, [modules]} -> modules == Nostrum.Shard end)
     |> Enum.map(fn {_id, pid, _type, _modules} -> Supervisor.which_children(pid) end)
     |> List.flatten()
     |> Enum.map(fn {_id, pid, _type, _modules} ->
-      Session.update_status(pid, status, game, stream, type)
+      Session.update_status(pid, status, activity)
     end)
   end
 
