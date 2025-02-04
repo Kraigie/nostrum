@@ -83,7 +83,7 @@ defmodule Nostrum.Shard.Session do
   # upstream. Equivalent to setting `{active, false}` on the socket at `0`.
   @standard_flow 10
 
-  def update_status(pid, status, game, stream, type) do
+  def update_status(pid, status, activity) do
     {idle_since, afk} =
       case status do
         "idle" ->
@@ -93,7 +93,17 @@ defmodule Nostrum.Shard.Session do
           {0, false}
       end
 
-    payload = Payload.status_update_payload(idle_since, game, stream, status, afk, type)
+    activity_payload =
+      case activity do
+        {:playing, name} -> %{"type" => 0, "name" => name}
+        {:streaming, name, url} -> %{"type" => 1, "name" => name, "url" => url}
+        {:listening, name} -> %{"type" => 2, "name" => name}
+        {:watching, name} -> %{"type" => 3, "name" => name}
+        {:custom, state} -> %{"type" => 4, "name" => "Custom Status", "state" => state}
+        {:competing, name} -> %{"type" => 5, "name" => name}
+      end
+
+    payload = Payload.status_update_payload(idle_since, status, afk, activity_payload)
     :gen_statem.cast(pid, {:status_update, payload})
   end
 

@@ -105,27 +105,28 @@ defmodule Nostrum.Api.Self do
   @doc """
   Updates the status of the bot for a certain shard.
 
-  ## Parameters
-    - `pid` - Pid of the shard.
-    - `status` - Status of the bot.
-    - `game` - The 'playing' text of the bot. Empty will clear.
-    - `type` - The type of status to show. 0 (Playing) | 1 (Streaming) | 2 (Listening) | 3 (Watching)
-    - `stream` - URL of twitch.tv stream
+  ## Activity Options
+    {:playing, name}
+    {:streaming, name, url}
+    {:listening, name}
+    {:watching, name}
+    {:custom, state}
+    {:competing, name} 
   """
-  @spec update_shard_status(pid, Api.status(), String.t(), integer, String.t() | nil) :: :ok
-  def update_shard_status(pid, status, game, type \\ 0, stream \\ nil) do
-    Session.update_status(pid, to_string(status), game, stream, type)
+  @spec update_shard_status(pid, Api.status(), Api.activity()) :: :ok
+  def update_shard_status(pid, status, activity) do
+    Session.update_status(pid, to_string(status), activity)
     :ok
   end
 
   @doc """
   Updates the status of the bot for all shards.
 
-  See `update_shard_status/5` for usage.
+  See `update_shard_status/3` for usage.
   """
-  @spec update_status(Api.status(), String.t(), integer, String.t() | nil) :: :ok
-  def update_status(status, game, type \\ 0, stream \\ nil) do
-    _result = Supervisor.update_status(to_string(status), game, stream, type)
+  @spec update_status(Api.status(), Api.activity()) :: :ok
+  def update_status(status, activity) do
+    Supervisor.update_status(to_string(status), activity)
     :ok
   end
 

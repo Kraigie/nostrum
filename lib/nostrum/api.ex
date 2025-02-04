@@ -102,6 +102,23 @@ defmodule Nostrum.Api do
   @type status :: :dnd | :idle | :online | :invisible
 
   @typedoc """
+  Represents different presence activites the bot can have
+  {:playing, name}
+  {:streaming, name, url}
+  {:listening, name}
+  {:watching, name}
+  {:custom, state}
+  {:competing, name}
+  """
+  @type activity ::
+          {:playing, String.t()}
+          | {:streaming, String.t(), String.t()}
+          | {:listening, String.t()}
+          | {:watching, String.t()}
+          | {:custom, String.t()}
+          | {:competing, String.t()}
+
+  @typedoc """
   Represents an emoji for interacting with reaction endpoints.
   """
   @type emoji :: Emoji.t() | Emoji.api_name()
@@ -151,16 +168,16 @@ defmodule Nostrum.Api do
 
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
-  Use `Nostrum.Api.Self.update_shard_status/5` directly instead.
+  Use `Nostrum.Api.Self.update_shard_status/3` directly instead.
   """
-  defdelegate update_shard_status(pid, status, game, type \\ 0, stream \\ nil),
+  defdelegate update_shard_status(pid, status, activity),
     to: Nostrum.Api.Self
 
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
-  Use `Nostrum.Api.Self.update_status/4` directly instead.
+  Use `Nostrum.Api.Self.update_status/2` directly instead.
   """
-  defdelegate update_status(status, game, type \\ 0, stream \\ nil),
+  defdelegate update_status(status, activity),
     to: Nostrum.Api.Self
 
   @deprecated """
