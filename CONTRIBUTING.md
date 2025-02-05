@@ -45,3 +45,34 @@ maintainers some work), you can update the [`appup` file](./appup.ex) according
 to your changes, see the [Appup
 Cookbook](https://www.erlang.org/doc/design_principles/appup_cookbook.html) for
 details.
+
+## New modules, types and functions
+
+When creating new modules, types or functions, please use the documentation
+system to annotate that they were newly added. Do not set an explicit version in
+there, rather set the placeholder `NEXTVERSION` in them such that the
+maintainers can properly replace it when the next release is due.
+
+For example:
+```elixir
+defmodule NewModule do
+  @moduledoc since: "NEXTVERSION"
+end
+```
+
+and
+
+```elixir
+defmodule Nostrum.Api do
+  @typedoc since: "NEXTVERSION"
+  @type new_type :: :ok
+
+  @doc since: "NEXTVERSION"
+  def new_function, do: :ok
+end
+```
+
+When you add a new module, please only set the attribute on the module.
+
+
+Thank you!
