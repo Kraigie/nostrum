@@ -14,7 +14,7 @@
 
     <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
     <script src="dist/handlebars.templates-IHH6HKET.js"></script>
-    <script src="dist/sidebar_items-86DB4ED6.js"></script>
+    <script src="dist/sidebar_items-2FCC37AB.js"></script>
     <script src="docs_config.js"></script>
     <script async src="dist/html-GXQ6W6IF.js"></script>
 
@@ -218,7 +218,7 @@ Pages
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#update_shard_status/5" translate="no">update_shard_status(pid, status, game, type \\ 0, stream \\ nil)</a>
+        <a href="#update_shard_status/3" translate="no">update_shard_status(pid, status, activity)</a>
 
       </div>
 
@@ -228,7 +228,7 @@ Pages
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#update_status/4" translate="no">update_status(status, game, type \\ 0, stream \\ nil)</a>
+        <a href="#update_status/2" translate="no">update_status(status, activity)</a>
 
       </div>
 
@@ -293,21 +293,21 @@ Pages
   <span class="text">Example</span>
 </h2>
 <pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api.Self</span><span class="o">.</span><span class="n">application_information</span><span class="w">
-</span><span class="p" data-group-id="2596424957-1">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w">
-</span><span class="p" data-group-id="2596424957-2">%{</span><span class="w">
+</span><span class="p" data-group-id="7405732463-1">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w">
+</span><span class="p" data-group-id="7405732463-2">%{</span><span class="w">
   </span><span class="ss">bot_public</span><span class="p">:</span><span class="w"> </span><span class="no">false</span><span class="p">,</span><span class="w">
   </span><span class="ss">bot_require_code_grant</span><span class="p">:</span><span class="w"> </span><span class="no">false</span><span class="p">,</span><span class="w">
   </span><span class="ss">description</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Test&quot;</span><span class="p">,</span><span class="w">
   </span><span class="ss">icon</span><span class="p">:</span><span class="w"> </span><span class="no">nil</span><span class="p">,</span><span class="w">
   </span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;172150183260323840&quot;</span><span class="p">,</span><span class="w">
   </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Baba O-Riley&quot;</span><span class="p">,</span><span class="w">
-  </span><span class="ss">owner</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="2596424957-3">%{</span><span class="w">
+  </span><span class="ss">owner</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="7405732463-3">%{</span><span class="w">
     </span><span class="ss">avatar</span><span class="p">:</span><span class="w"> </span><span class="no">nil</span><span class="p">,</span><span class="w">
     </span><span class="ss">discriminator</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;0042&quot;</span><span class="p">,</span><span class="w">
     </span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;172150183260323840&quot;</span><span class="p">,</span><span class="w">
     </span><span class="ss">username</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;i own a bot&quot;</span><span class="w">
-  </span><span class="p" data-group-id="2596424957-3">}</span><span class="p">,</span><span class="w">
-</span><span class="p" data-group-id="2596424957-2">}</span><span class="p" data-group-id="2596424957-1">}</span></code></pre>
+  </span><span class="p" data-group-id="7405732463-3">}</span><span class="p">,</span><span class="w">
+</span><span class="p" data-group-id="7405732463-2">}</span><span class="p" data-group-id="7405732463-1">}</span></code></pre>
   </section>
 </section>
 <section class="detail" id="connections/0">
@@ -319,7 +319,7 @@ Pages
     </a>
     <h1 class="signature" translate="no">connections()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/self.ex#L183" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/self.ex#L184" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -373,8 +373,8 @@ Pages
   </a>
   <span class="text">Examples</span>
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api.Self</span><span class="o">.</span><span class="n">dms</span><span class="p" data-group-id="9775611026-1">(</span><span class="p" data-group-id="9775611026-1">)</span><span class="w">
-</span><span class="p" data-group-id="9775611026-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="9775611026-3">[</span><span class="p" data-group-id="9775611026-4">%</span><span class="nc" data-group-id="9775611026-4">Nostrum.Struct.Channel</span><span class="p" data-group-id="9775611026-4">{</span><span class="ss">type</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p" data-group-id="9775611026-4">}</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="bp">_</span><span class="p" data-group-id="9775611026-3">]</span><span class="p" data-group-id="9775611026-2">}</span></code></pre>
+<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api.Self</span><span class="o">.</span><span class="n">dms</span><span class="p" data-group-id="9118923753-1">(</span><span class="p" data-group-id="9118923753-1">)</span><span class="w">
+</span><span class="p" data-group-id="9118923753-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="9118923753-3">[</span><span class="p" data-group-id="9118923753-4">%</span><span class="nc" data-group-id="9118923753-4">Nostrum.Struct.Channel</span><span class="p" data-group-id="9118923753-4">{</span><span class="ss">type</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p" data-group-id="9118923753-4">}</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="bp">_</span><span class="p" data-group-id="9118923753-3">]</span><span class="p" data-group-id="9118923753-2">}</span></code></pre>
   </section>
 </section>
 <section class="detail" id="get/0">
@@ -421,7 +421,7 @@ than pulling from our cache.</p><p>If the request is successful, this function r
     </a>
     <h1 class="signature" translate="no">guilds(options \\ [])</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/self.ex#L169" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/self.ex#L170" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -454,8 +454,8 @@ ID</li><li><code class="inline">:limit</code> (integer) - max number of guilds t
   </a>
   <span class="text">Examples</span>
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Api.Self</span><span class="o">.</span><span class="n">guilds</span><span class="p" data-group-id="5359746190-1">(</span><span class="ss">limit</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p" data-group-id="5359746190-1">)</span><span class="w">
-</span><span class="p" data-group-id="5359746190-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="5359746190-3">[</span><span class="p" data-group-id="5359746190-4">%</span><span class="nc" data-group-id="5359746190-4">Nostrum.Struct.Guild</span><span class="p" data-group-id="5359746190-4">{</span><span class="p" data-group-id="5359746190-4">}</span><span class="p" data-group-id="5359746190-3">]</span><span class="p" data-group-id="5359746190-2">}</span></code></pre>
+<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Api.Self</span><span class="o">.</span><span class="n">guilds</span><span class="p" data-group-id="1260357920-1">(</span><span class="ss">limit</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p" data-group-id="1260357920-1">)</span><span class="w">
+</span><span class="p" data-group-id="1260357920-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="1260357920-3">[</span><span class="p" data-group-id="1260357920-4">%</span><span class="nc" data-group-id="1260357920-4">Nostrum.Struct.Guild</span><span class="p" data-group-id="1260357920-4">{</span><span class="p" data-group-id="1260357920-4">}</span><span class="p" data-group-id="1260357920-3">]</span><span class="p" data-group-id="1260357920-2">}</span></code></pre>
   </section>
 </section>
 <section class="detail" id="modify/1">
@@ -498,23 +498,19 @@ ID</li><li><code class="inline">:limit</code> (integer) - max number of guilds t
   </a>
   <span class="text">Examples</span>
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api.Self</span><span class="o">.</span><span class="n">modify</span><span class="p" data-group-id="6583666803-1">(</span><span class="ss">avatar</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;data:image/jpeg;base64,YXl5IGJieSB1IGx1a2luIDQgc3VtIGZ1az8=&quot;</span><span class="p" data-group-id="6583666803-1">)</span></code></pre>
+<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api.Self</span><span class="o">.</span><span class="n">modify</span><span class="p" data-group-id="7854976525-1">(</span><span class="ss">avatar</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;data:image/jpeg;base64,YXl5IGJieSB1IGx1a2luIDQgc3VtIGZ1az8=&quot;</span><span class="p" data-group-id="7854976525-1">)</span></code></pre>
   </section>
 </section>
-<section class="detail" id="update_shard_status/5">
-
-    <span id="update_shard_status/3"></span>
-
-    <span id="update_shard_status/4"></span>
+<section class="detail" id="update_shard_status/3">
 
   <div class="detail-header">
-    <a href="#update_shard_status/5" class="detail-link" title="Link to this function">
+    <a href="#update_shard_status/3" class="detail-link" title="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">update_shard_status(pid, status, game, type \\ 0, stream \\ nil)</h1>
+    <h1 class="signature" translate="no">update_shard_status(pid, status, activity)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/self.ex#L116" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/self.ex#L117" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -528,39 +524,29 @@ ID</li><li><code class="inline">:limit</code> (integer) - max number of guilds t
 
       <div class="specs">
 
-          <pre translate="no"><span class="attribute">@spec</span> update_shard_status(
-  <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pid</a>(),
-  <a href="Nostrum.Api.html#t:status/0">Nostrum.Api.status</a>(),
-  <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>(),
-  <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>(),
-  <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>() | nil
-) :: :ok</pre>
+          <pre translate="no"><span class="attribute">@spec</span> update_shard_status(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pid</a>(), <a href="Nostrum.Api.html#t:status/0">Nostrum.Api.status</a>(), <a href="Nostrum.Api.html#t:activity/0">Nostrum.Api.activity</a>()) :: :ok</pre>
 
       </div>
 
-<p>Updates the status of the bot for a certain shard.</p><h2 id="update_shard_status/5-parameters" class="section-heading">
-  <a href="#update_shard_status/5-parameters" class="hover-link">
+<p>Updates the status of the bot for a certain shard.</p><h2 id="update_shard_status/3-activity-options" class="section-heading">
+  <a href="#update_shard_status/3-activity-options" class="hover-link">
     <i class="ri-link-m" aria-hidden="true"></i>
   </a>
-  <span class="text">Parameters</span>
+  <span class="text">Activity Options</span>
 </h2>
-<ul><li><code class="inline">pid</code> - Pid of the shard.</li><li><code class="inline">status</code> - Status of the bot.</li><li><code class="inline">game</code> - The 'playing' text of the bot. Empty will clear.</li><li><p><code class="inline">type</code> - The type of status to show. 0 (Playing) | 1 (Streaming) | 2 (Listening) | 3 (Watching)</p></li><li><code class="inline">stream</code> - URL of twitch.tv stream</li></ul>
+<p>{:playing, name}</p><p>{:listening, name}</p><p>{:custom, state}</p>
   </section>
 </section>
-<section class="detail" id="update_status/4">
-
-    <span id="update_status/2"></span>
-
-    <span id="update_status/3"></span>
+<section class="detail" id="update_status/2">
 
   <div class="detail-header">
-    <a href="#update_status/4" class="detail-link" title="Link to this function">
+    <a href="#update_status/2" class="detail-link" title="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">update_status(status, game, type \\ 0, stream \\ nil)</h1>
+    <h1 class="signature" translate="no">update_status(status, activity)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/self.ex#L127" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/self.ex#L128" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -574,12 +560,11 @@ ID</li><li><code class="inline">:limit</code> (integer) - max number of guilds t
 
       <div class="specs">
 
-          <pre translate="no"><span class="attribute">@spec</span> update_status(<a href="Nostrum.Api.html#t:status/0">Nostrum.Api.status</a>(), <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>(), <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>() | nil) ::
-  :ok</pre>
+          <pre translate="no"><span class="attribute">@spec</span> update_status(<a href="Nostrum.Api.html#t:status/0">Nostrum.Api.status</a>(), <a href="Nostrum.Api.html#t:activity/0">Nostrum.Api.activity</a>()) :: :ok</pre>
 
       </div>
 
-<p>Updates the status of the bot for all shards.</p><p>See <a href="#update_shard_status/5"><code class="inline">update_shard_status/5</code></a> for usage.</p>
+<p>Updates the status of the bot for all shards.</p><p>See <a href="#update_shard_status/3"><code class="inline">update_shard_status/3</code></a> for usage.</p>
   </section>
 </section>
 <section class="detail" id="update_voice_state/4">
@@ -595,7 +580,7 @@ ID</li><li><code class="inline">:limit</code> (integer) - max number of guilds t
     </a>
     <h1 class="signature" translate="no">update_voice_state(guild_id, channel_id, self_mute \\ false, self_deaf \\ false)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/self.ex#L142" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/self.ex#L143" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>

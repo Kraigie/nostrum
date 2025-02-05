@@ -14,7 +14,7 @@
 
     <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
     <script src="dist/handlebars.templates-IHH6HKET.js"></script>
-    <script src="dist/sidebar_items-86DB4ED6.js"></script>
+    <script src="dist/sidebar_items-2FCC37AB.js"></script>
     <script src="docs_config.js"></script>
     <script async src="dist/html-GXQ6W6IF.js"></script>
 
@@ -263,7 +263,7 @@ handle yet, thus growing the message queue and the memory usage.</p></li></ol>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#update_status/4" translate="no">update_status(status, game, stream, type)</a>
+        <a href="#update_status/2" translate="no">update_status(status, activity)</a>
 
       </div>
 
@@ -478,8 +478,8 @@ catch up on any missed events.</p><h3 id="disconnect/1-examples" class="section-
   </a>
   <span class="text">Examples</span>
 </h3>
-<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Shard.Supervisor</span><span class="o">.</span><span class="n">disconnect</span><span class="p" data-group-id="0871105259-1">(</span><span class="mi">4</span><span class="p" data-group-id="0871105259-1">)</span><span class="w">
-</span><span class="p" data-group-id="0871105259-2">%{</span><span class="ss">shard_num</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="n">...</span><span class="p" data-group-id="0871105259-2">}</span></code></pre>
+<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Shard.Supervisor</span><span class="o">.</span><span class="n">disconnect</span><span class="p" data-group-id="2387009462-1">(</span><span class="mi">4</span><span class="p" data-group-id="2387009462-1">)</span><span class="w">
+</span><span class="p" data-group-id="2387009462-2">%{</span><span class="ss">shard_num</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="n">...</span><span class="p" data-group-id="2387009462-2">}</span></code></pre>
   </section>
 </section>
 <section class="detail" id="reconnect/1">
@@ -520,9 +520,9 @@ received between the disconnect and re-authentication may be lost.</p><p>For mor
   </a>
   <span class="text">Examples</span>
 </h3>
-<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="n">resume</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Nostrum.Shard.Supervisor</span><span class="o">.</span><span class="n">disconnect</span><span class="p" data-group-id="0616698352-1">(</span><span class="mi">4</span><span class="p" data-group-id="0616698352-1">)</span><span class="w">
-</span><span class="p" data-group-id="0616698352-2">%{</span><span class="ss">shard_num</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="n">...</span><span class="p" data-group-id="0616698352-2">}</span><span class="w">
-</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Shard.Supervisor</span><span class="o">.</span><span class="n">reconnect</span><span class="p" data-group-id="0616698352-3">(</span><span class="n">resume</span><span class="p" data-group-id="0616698352-3">)</span></code></pre>
+<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="n">resume</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Nostrum.Shard.Supervisor</span><span class="o">.</span><span class="n">disconnect</span><span class="p" data-group-id="0808698328-1">(</span><span class="mi">4</span><span class="p" data-group-id="0808698328-1">)</span><span class="w">
+</span><span class="p" data-group-id="0808698328-2">%{</span><span class="ss">shard_num</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="n">...</span><span class="p" data-group-id="0808698328-2">}</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Shard.Supervisor</span><span class="o">.</span><span class="n">reconnect</span><span class="p" data-group-id="0808698328-3">(</span><span class="n">resume</span><span class="p" data-group-id="0808698328-3">)</span></code></pre>
   </section>
 </section>
 <section class="detail" id="start_link/1">
@@ -547,14 +547,14 @@ received between the disconnect and re-authentication may be lost.</p><p>For mor
 
   </section>
 </section>
-<section class="detail" id="update_status/4">
+<section class="detail" id="update_status/2">
 
   <div class="detail-header">
-    <a href="#update_status/4" class="detail-link" title="Link to this function">
+    <a href="#update_status/2" class="detail-link" title="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
       <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">update_status(status, game, stream, type)</h1>
+    <h1 class="signature" translate="no">update_status(status, activity)</h1>
 
       <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/supervisor.ex#L110" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
