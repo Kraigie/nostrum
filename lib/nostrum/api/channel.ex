@@ -4,6 +4,7 @@ defmodule Nostrum.Api.Channel do
 
   See: https://discord.com/developers/docs/resources/channel
   """
+  @moduledoc since: "0.10.1"
   alias Nostrum.Api
   alias Nostrum.Api.Helpers
   alias Nostrum.Constants

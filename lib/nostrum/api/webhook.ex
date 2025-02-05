@@ -4,6 +4,7 @@ defmodule Nostrum.Api.Webhook do
 
   See: https://discord.com/developers/docs/resources/webhook
   """
+  @moduledoc since: "0.10.1"
   alias Nostrum.Api
   alias Nostrum.Api.Helpers
   alias Nostrum.Constants

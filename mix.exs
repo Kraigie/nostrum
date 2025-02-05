@@ -7,7 +7,7 @@ defmodule Nostrum.Mixfile do
       app: :nostrum,
       appup: "appup.ex",
       compilers: Mix.compilers() ++ [:appup],
-      version: "0.10.0",
+      version: "0.10.1",
       elixir: "~> 1.14",
       elixirc_paths: elixirc_paths(Mix.env()),
       build_embedded: Mix.env() == :prod,

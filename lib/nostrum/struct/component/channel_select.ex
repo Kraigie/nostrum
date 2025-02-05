@@ -2,6 +2,7 @@ defmodule Nostrum.Struct.Component.ChannelSelect do
   @moduledoc """
   Channel Select
   """
+  @moduledoc since: "0.10.1"
   alias Nostrum.Constants.ComponentType
 
   @defaults %{

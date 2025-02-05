@@ -2,6 +2,7 @@ defmodule Nostrum.Struct.Component.UserSelect do
   @moduledoc """
   User Select
   """
+  @moduledoc since: "0.10.1"
   alias Nostrum.Constants.ComponentType
   alias Nostrum.Struct.Component.SelectMenu
 

@@ -1,14 +1,15 @@
 # See the appup cookbook for instructions:
 # https://www.erlang.org/doc/design_principles/appup_cookbook.html
 {
-  ~c"0.10.0",
+  ~c"0.10.1",
   [
     # Upgrade instructions
-    {~c"0.9.1", []},
-    {~c"0.9.0", []},
-    {~c"0.9.0-rc1", []},
-    {~c"0.9.0-alpha3", []},
-    {~c"0.9.0-alpha2", []},
+    {~c"0.10.0", [{:restart_application, :nostrum}]},
+    {~c"0.9.1", [{:restart_application, :nostrum}]},
+    {~c"0.9.0", [{:restart_application, :nostrum}]},
+    {~c"0.9.0-rc1", [{:restart_application, :nostrum}]},
+    {~c"0.9.0-alpha3", [{:restart_application, :nostrum}]},
+    {~c"0.9.0-alpha2", [{:restart_application, :nostrum}]},
     {~c"0.9.0-alpha1",
      [
        # Top shard supervisor was not registered, so could not restart shard

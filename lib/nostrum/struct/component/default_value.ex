@@ -2,6 +2,7 @@ defmodule Nostrum.Struct.Component.DefaultValue do
   @moduledoc """
   Default Value
   """
+  @moduledoc since: "0.10.1"
 
   @derive Jason.Encoder
   defstruct [

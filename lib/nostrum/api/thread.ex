@@ -4,6 +4,7 @@ defmodule Nostrum.Api.Thread do
 
   Endpoints related to threads in the Discord Channels API: https://discord.com/developers/docs/resources/channel#start-thread-from-message
   """
+  @moduledoc since: "0.10.1"
   alias Nostrum.Api
   alias Nostrum.Api.Helpers
   alias Nostrum.Constants

@@ -4,6 +4,7 @@ defmodule Nostrum.Api.Self do
 
   See the endpoints containing @me in the Discord API documentation: https://discord.com/developers/docs/resources/user
   """
+  @moduledoc since: "0.10.1"
   alias Nostrum.Api
   alias Nostrum.Api.Helpers
   alias Nostrum.Constants

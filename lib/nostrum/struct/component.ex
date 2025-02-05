@@ -312,8 +312,10 @@ defmodule Nostrum.Struct.Component do
   """
   @type components :: [SelectMenu.t() | Button.t() | nil]
 
+  @typedoc since: "0.10.1"
   @type channel_types :: [Channel.type()]
 
+  @typedoc since: "0.10.1"
   @type default_values :: [DefaultValue.t()]
 
   @spec to_struct(map()) :: struct

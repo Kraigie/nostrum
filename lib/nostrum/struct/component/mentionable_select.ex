@@ -2,6 +2,7 @@ defmodule Nostrum.Struct.Component.MentionableSelect do
   @moduledoc """
   Mentionable Select 
   """
+  @moduledoc since: "0.10.1"
   alias Nostrum.Constants.ComponentType
   alias Nostrum.Struct.Component.SelectMenu
 

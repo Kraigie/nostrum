@@ -224,13 +224,13 @@ defmodule Nostrum.Struct.Channel do
   @typedoc """
   The default sort order for posts in a `GUILD_FORUM` channel.
   """
-  @typedoc since: "0.11.0"
+  @typedoc since: "0.10.1"
   @type default_sort_order :: integer() | nil
 
   @typedoc """
   The default layout for posts in a `GUILD_FORUM` channel.
   """
-  @typedoc since: "0.11.0"
+  @typedoc since: "0.10.1"
   @type default_forum_layout :: integer() | nil
 
   @typedoc """
