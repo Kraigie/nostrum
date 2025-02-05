@@ -5,10 +5,10 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="ExDoc v0.32.1">
-    <meta name="project" content="Nostrum v0.10.1">
+    <meta name="project" content="Nostrum v0.11.0-dev">
 
 
-    <title>Nostrum.Consumer — Nostrum v0.10.1</title>
+    <title>Nostrum.Consumer — Nostrum v0.11.0-dev</title>
     <link rel="stylesheet" href="dist/html-elixir-2C5PUTIB.css" />
 
 
@@ -55,7 +55,7 @@
 Nostrum
         </a>
         <div class="sidebar-projectVersion" translate="no">
-          v0.10.1
+          v0.11.0-dev
         </div>
       </div>
     </div>
@@ -133,7 +133,7 @@ Pages
       </a>
 
     <span translate="no">Nostrum.Consumer</span> <small>behaviour</small>
-    <small class="app-vsn" translate="no">(Nostrum v0.10.1)</small>
+    <small class="app-vsn" translate="no">(Nostrum v0.11.0-dev)</small>
 
   </h1>
 
@@ -150,18 +150,18 @@ any subscribed consumers via <a href="Nostrum.ConsumerGroup.html"><code class="i
 parallelism and isolation. You therefore do not need to start more than one
 consumer in your supervision tree. If you want to override this behaviour,
 implement the <code class="inline">handle_info/2</code> function in your consumer. For reference, this
-is the default implementation:</p><pre><code class="makeup elixir" translate="no"><span class="w">  </span><span class="kd">def</span><span class="w"> </span><span class="nf">handle_info</span><span class="p" data-group-id="1134921808-1">(</span><span class="p" data-group-id="1134921808-2">{</span><span class="ss">:event</span><span class="p">,</span><span class="w"> </span><span class="n">event</span><span class="p" data-group-id="1134921808-2">}</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="p" data-group-id="1134921808-1">)</span><span class="w"> </span><span class="k" data-group-id="1134921808-3">do</span><span class="w">
-    </span><span class="nc">Task</span><span class="o">.</span><span class="n">start</span><span class="p" data-group-id="1134921808-4">(</span><span class="k" data-group-id="1134921808-5">fn</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
-      </span><span class="k">try</span><span class="w"> </span><span class="k" data-group-id="1134921808-6">do</span><span class="w">
-        </span><span class="bp">__MODULE__</span><span class="o">.</span><span class="n">handle_event</span><span class="p" data-group-id="1134921808-7">(</span><span class="n">event</span><span class="p" data-group-id="1134921808-7">)</span><span class="w">
-      </span><span class="k" data-group-id="1134921808-6">rescue</span><span class="w">
+is the default implementation:</p><pre><code class="makeup elixir" translate="no"><span class="w">  </span><span class="kd">def</span><span class="w"> </span><span class="nf">handle_info</span><span class="p" data-group-id="3716731050-1">(</span><span class="p" data-group-id="3716731050-2">{</span><span class="ss">:event</span><span class="p">,</span><span class="w"> </span><span class="n">event</span><span class="p" data-group-id="3716731050-2">}</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="p" data-group-id="3716731050-1">)</span><span class="w"> </span><span class="k" data-group-id="3716731050-3">do</span><span class="w">
+    </span><span class="nc">Task</span><span class="o">.</span><span class="n">start</span><span class="p" data-group-id="3716731050-4">(</span><span class="k" data-group-id="3716731050-5">fn</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+      </span><span class="k">try</span><span class="w"> </span><span class="k" data-group-id="3716731050-6">do</span><span class="w">
+        </span><span class="bp">__MODULE__</span><span class="o">.</span><span class="n">handle_event</span><span class="p" data-group-id="3716731050-7">(</span><span class="n">event</span><span class="p" data-group-id="3716731050-7">)</span><span class="w">
+      </span><span class="k" data-group-id="3716731050-6">rescue</span><span class="w">
         </span><span class="n">e</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
-          </span><span class="nc">Logger</span><span class="o">.</span><span class="n">error</span><span class="p" data-group-id="1134921808-8">(</span><span class="s">&quot;Error in event handler: </span><span class="si" data-group-id="1134921808-9">#{</span><span class="nc">Exception</span><span class="o">.</span><span class="n">format</span><span class="p" data-group-id="1134921808-10">(</span><span class="ss">:error</span><span class="p">,</span><span class="w"> </span><span class="n">e</span><span class="p">,</span><span class="w"> </span><span class="c">__STACKTRACE__</span><span class="p" data-group-id="1134921808-10">)</span><span class="si" data-group-id="1134921808-9">}</span><span class="s">&quot;</span><span class="p" data-group-id="1134921808-8">)</span><span class="w">
-      </span><span class="k" data-group-id="1134921808-6">end</span><span class="w">
-    </span><span class="k" data-group-id="1134921808-5">end</span><span class="p" data-group-id="1134921808-4">)</span><span class="w">
+          </span><span class="nc">Logger</span><span class="o">.</span><span class="n">error</span><span class="p" data-group-id="3716731050-8">(</span><span class="s">&quot;Error in event handler: </span><span class="si" data-group-id="3716731050-9">#{</span><span class="nc">Exception</span><span class="o">.</span><span class="n">format</span><span class="p" data-group-id="3716731050-10">(</span><span class="ss">:error</span><span class="p">,</span><span class="w"> </span><span class="n">e</span><span class="p">,</span><span class="w"> </span><span class="c">__STACKTRACE__</span><span class="p" data-group-id="3716731050-10">)</span><span class="si" data-group-id="3716731050-9">}</span><span class="s">&quot;</span><span class="p" data-group-id="3716731050-8">)</span><span class="w">
+      </span><span class="k" data-group-id="3716731050-6">end</span><span class="w">
+    </span><span class="k" data-group-id="3716731050-5">end</span><span class="p" data-group-id="3716731050-4">)</span><span class="w">
 
-    </span><span class="p" data-group-id="1134921808-11">{</span><span class="ss">:noreply</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="p" data-group-id="1134921808-11">}</span><span class="w">
-  </span><span class="k" data-group-id="1134921808-3">end</span></code></pre><h2 id="module-running-multiple-consumers" class="section-heading">
+    </span><span class="p" data-group-id="3716731050-11">{</span><span class="ss">:noreply</span><span class="p">,</span><span class="w"> </span><span class="n">state</span><span class="p" data-group-id="3716731050-11">}</span><span class="w">
+  </span><span class="k" data-group-id="3716731050-3">end</span></code></pre><h2 id="module-running-multiple-consumers" class="section-heading">
   <a href="#module-running-multiple-consumers" class="hover-link">
     <i class="ri-link-m" aria-hidden="true"></i>
   </a>
@@ -176,35 +176,35 @@ could accomplish the job.</p><h2 id="module-example-consumer" class="section-hea
   <span class="text">Example consumer</span>
 </h2>
 <p>An example consumer could look as follows:</p><pre><code class="makeup elixir" translate="no"><span class="c1"># Sourced from examples/event_consumer.ex</span><span class="w">
-</span><span class="kd">defmodule</span><span class="w"> </span><span class="nc">ExampleSupervisor</span><span class="w"> </span><span class="k" data-group-id="5074439990-1">do</span><span class="w">
+</span><span class="kd">defmodule</span><span class="w"> </span><span class="nc">ExampleSupervisor</span><span class="w"> </span><span class="k" data-group-id="2999578758-1">do</span><span class="w">
   </span><span class="kn">use</span><span class="w"> </span><span class="nc">Supervisor</span><span class="w">
 
-  </span><span class="kd">def</span><span class="w"> </span><span class="nf">start_link</span><span class="p" data-group-id="5074439990-2">(</span><span class="n">args</span><span class="p" data-group-id="5074439990-2">)</span><span class="w"> </span><span class="k" data-group-id="5074439990-3">do</span><span class="w">
-    </span><span class="nc">Supervisor</span><span class="o">.</span><span class="n">start_link</span><span class="p" data-group-id="5074439990-4">(</span><span class="bp">__MODULE__</span><span class="p">,</span><span class="w"> </span><span class="n">args</span><span class="p">,</span><span class="w"> </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="bp">__MODULE__</span><span class="p" data-group-id="5074439990-4">)</span><span class="w">
-  </span><span class="k" data-group-id="5074439990-3">end</span><span class="w">
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">start_link</span><span class="p" data-group-id="2999578758-2">(</span><span class="n">args</span><span class="p" data-group-id="2999578758-2">)</span><span class="w"> </span><span class="k" data-group-id="2999578758-3">do</span><span class="w">
+    </span><span class="nc">Supervisor</span><span class="o">.</span><span class="n">start_link</span><span class="p" data-group-id="2999578758-4">(</span><span class="bp">__MODULE__</span><span class="p">,</span><span class="w"> </span><span class="n">args</span><span class="p">,</span><span class="w"> </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="bp">__MODULE__</span><span class="p" data-group-id="2999578758-4">)</span><span class="w">
+  </span><span class="k" data-group-id="2999578758-3">end</span><span class="w">
 
   </span><span class="na">@impl</span><span class="w"> </span><span class="no">true</span><span class="w">
-  </span><span class="kd">def</span><span class="w"> </span><span class="nf">init</span><span class="p" data-group-id="5074439990-5">(</span><span class="c">_init_arg</span><span class="p" data-group-id="5074439990-5">)</span><span class="w"> </span><span class="k" data-group-id="5074439990-6">do</span><span class="w">
-    </span><span class="n">children</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="5074439990-7">[</span><span class="nc">ExampleConsumer</span><span class="p" data-group-id="5074439990-7">]</span><span class="w">
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">init</span><span class="p" data-group-id="2999578758-5">(</span><span class="c">_init_arg</span><span class="p" data-group-id="2999578758-5">)</span><span class="w"> </span><span class="k" data-group-id="2999578758-6">do</span><span class="w">
+    </span><span class="n">children</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="2999578758-7">[</span><span class="nc">ExampleConsumer</span><span class="p" data-group-id="2999578758-7">]</span><span class="w">
 
-    </span><span class="nc">Supervisor</span><span class="o">.</span><span class="n">init</span><span class="p" data-group-id="5074439990-8">(</span><span class="n">children</span><span class="p">,</span><span class="w"> </span><span class="ss">strategy</span><span class="p">:</span><span class="w"> </span><span class="ss">:one_for_one</span><span class="p" data-group-id="5074439990-8">)</span><span class="w">
-  </span><span class="k" data-group-id="5074439990-6">end</span><span class="w">
-</span><span class="k" data-group-id="5074439990-1">end</span><span class="w">
+    </span><span class="nc">Supervisor</span><span class="o">.</span><span class="n">init</span><span class="p" data-group-id="2999578758-8">(</span><span class="n">children</span><span class="p">,</span><span class="w"> </span><span class="ss">strategy</span><span class="p">:</span><span class="w"> </span><span class="ss">:one_for_one</span><span class="p" data-group-id="2999578758-8">)</span><span class="w">
+  </span><span class="k" data-group-id="2999578758-6">end</span><span class="w">
+</span><span class="k" data-group-id="2999578758-1">end</span><span class="w">
 
-</span><span class="kd">defmodule</span><span class="w"> </span><span class="nc">ExampleConsumer</span><span class="w"> </span><span class="k" data-group-id="5074439990-9">do</span><span class="w">
+</span><span class="kd">defmodule</span><span class="w"> </span><span class="nc">ExampleConsumer</span><span class="w"> </span><span class="k" data-group-id="2999578758-9">do</span><span class="w">
   </span><span class="kn">use</span><span class="w"> </span><span class="nc">Nostrum.Consumer</span><span class="w">
 
   </span><span class="kn">alias</span><span class="w"> </span><span class="nc">Nostrum.Api.Message</span><span class="w">
 
-  </span><span class="kd">def</span><span class="w"> </span><span class="nf">handle_event</span><span class="p" data-group-id="5074439990-10">(</span><span class="p" data-group-id="5074439990-11">{</span><span class="ss">:MESSAGE_CREATE</span><span class="p">,</span><span class="w"> </span><span class="n">msg</span><span class="p">,</span><span class="w"> </span><span class="c">_ws_state</span><span class="p" data-group-id="5074439990-11">}</span><span class="p" data-group-id="5074439990-10">)</span><span class="w"> </span><span class="k" data-group-id="5074439990-12">do</span><span class="w">
-    </span><span class="k">case</span><span class="w"> </span><span class="n">msg</span><span class="o">.</span><span class="n">content</span><span class="w"> </span><span class="k" data-group-id="5074439990-13">do</span><span class="w">
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">handle_event</span><span class="p" data-group-id="2999578758-10">(</span><span class="p" data-group-id="2999578758-11">{</span><span class="ss">:MESSAGE_CREATE</span><span class="p">,</span><span class="w"> </span><span class="n">msg</span><span class="p">,</span><span class="w"> </span><span class="c">_ws_state</span><span class="p" data-group-id="2999578758-11">}</span><span class="p" data-group-id="2999578758-10">)</span><span class="w"> </span><span class="k" data-group-id="2999578758-12">do</span><span class="w">
+    </span><span class="k">case</span><span class="w"> </span><span class="n">msg</span><span class="o">.</span><span class="n">content</span><span class="w"> </span><span class="k" data-group-id="2999578758-13">do</span><span class="w">
       </span><span class="s">&quot;!sleep&quot;</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
-        </span><span class="nc">Message</span><span class="o">.</span><span class="n">create</span><span class="p" data-group-id="5074439990-14">(</span><span class="n">msg</span><span class="o">.</span><span class="n">channel_id</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Going to sleep...&quot;</span><span class="p" data-group-id="5074439990-14">)</span><span class="w">
+        </span><span class="nc">Message</span><span class="o">.</span><span class="n">create</span><span class="p" data-group-id="2999578758-14">(</span><span class="n">msg</span><span class="o">.</span><span class="n">channel_id</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Going to sleep...&quot;</span><span class="p" data-group-id="2999578758-14">)</span><span class="w">
         </span><span class="c1"># This won&#39;t stop other events from being handled.</span><span class="w">
-        </span><span class="nc">Process</span><span class="o">.</span><span class="n">sleep</span><span class="p" data-group-id="5074439990-15">(</span><span class="mi">3000</span><span class="p" data-group-id="5074439990-15">)</span><span class="w">
+        </span><span class="nc">Process</span><span class="o">.</span><span class="n">sleep</span><span class="p" data-group-id="2999578758-15">(</span><span class="mi">3000</span><span class="p" data-group-id="2999578758-15">)</span><span class="w">
 
       </span><span class="s">&quot;!ping&quot;</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
-        </span><span class="nc">Message</span><span class="o">.</span><span class="n">create</span><span class="p" data-group-id="5074439990-16">(</span><span class="n">msg</span><span class="o">.</span><span class="n">channel_id</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;pyongyang!&quot;</span><span class="p" data-group-id="5074439990-16">)</span><span class="w">
+        </span><span class="nc">Message</span><span class="o">.</span><span class="n">create</span><span class="p" data-group-id="2999578758-16">(</span><span class="n">msg</span><span class="o">.</span><span class="n">channel_id</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;pyongyang!&quot;</span><span class="p" data-group-id="2999578758-16">)</span><span class="w">
 
       </span><span class="s">&quot;!raise&quot;</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
         </span><span class="c1"># This won&#39;t crash the entire Consumer.</span><span class="w">
@@ -212,9 +212,9 @@ could accomplish the job.</p><h2 id="module-example-consumer" class="section-hea
 
       </span><span class="bp">_</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
         </span><span class="ss">:ignore</span><span class="w">
-    </span><span class="k" data-group-id="5074439990-13">end</span><span class="w">
-  </span><span class="k" data-group-id="5074439990-12">end</span><span class="w">
-</span><span class="k" data-group-id="5074439990-9">end</span><span class="w">
+    </span><span class="k" data-group-id="2999578758-13">end</span><span class="w">
+  </span><span class="k" data-group-id="2999578758-12">end</span><span class="w">
+</span><span class="k" data-group-id="2999578758-9">end</span><span class="w">
 </span></code></pre><blockquote><h3 id="module-use-nostrum-consumer" class="info section-heading">
   <a href="#module-use-nostrum-consumer" class="hover-link">
     <i class="ri-link-m" aria-hidden="true"></i>
@@ -2938,9 +2938,9 @@ on the SSRC.</p>
   <span class="text">Event</span>
 </h2>
 <p><code class="inline">event</code> is a tuple describing the event. The tuple will include information in
-the following format:</p><pre><code class="makeup elixir" translate="no"><span class="p" data-group-id="1441215362-1">{</span><span class="n">event_name</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="1441215362-2">{</span><span class="n">event_payload</span><span class="p" data-group-id="1441215362-3">(</span><span class="n">s</span><span class="p" data-group-id="1441215362-3">)</span><span class="p" data-group-id="1441215362-2">}</span><span class="p">,</span><span class="w"> </span><span class="nc">WSState</span><span class="o">.</span><span class="n">t</span><span class="p" data-group-id="1441215362-1">}</span></code></pre><p>For example, a message create will look like this</p><pre><code class="makeup elixir" translate="no"><span class="p" data-group-id="5962428042-1">{</span><span class="ss">:MESSAGE_CREATE</span><span class="p">,</span><span class="w"> </span><span class="nc">Nostrum.Struct.Message</span><span class="o">.</span><span class="n">t</span><span class="p">,</span><span class="w"> </span><span class="nc">WSState</span><span class="o">.</span><span class="n">t</span><span class="p" data-group-id="5962428042-1">}</span></code></pre><p>In some cases there will be multiple payloads when something is updated, so as
+the following format:</p><pre><code class="makeup elixir" translate="no"><span class="p" data-group-id="7572884631-1">{</span><span class="n">event_name</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="7572884631-2">{</span><span class="n">event_payload</span><span class="p" data-group-id="7572884631-3">(</span><span class="n">s</span><span class="p" data-group-id="7572884631-3">)</span><span class="p" data-group-id="7572884631-2">}</span><span class="p">,</span><span class="w"> </span><span class="nc">WSState</span><span class="o">.</span><span class="n">t</span><span class="p" data-group-id="7572884631-1">}</span></code></pre><p>For example, a message create will look like this</p><pre><code class="makeup elixir" translate="no"><span class="p" data-group-id="6460013762-1">{</span><span class="ss">:MESSAGE_CREATE</span><span class="p">,</span><span class="w"> </span><span class="nc">Nostrum.Struct.Message</span><span class="o">.</span><span class="n">t</span><span class="p">,</span><span class="w"> </span><span class="nc">WSState</span><span class="o">.</span><span class="n">t</span><span class="p" data-group-id="6460013762-1">}</span></code></pre><p>In some cases there will be multiple payloads when something is updated, so as
 to include the new and the old versions. In the event of there being two payloads,
-the old payload will always be first, followed by the new payload.</p><pre><code class="makeup elixir" translate="no"><span class="p" data-group-id="3151627061-1">{</span><span class="ss">:USER_UPDATE</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="3151627061-2">{</span><span class="n">old_user</span><span class="w"> </span><span class="o">::</span><span class="w"> </span><span class="nc">Nostrum.Struct.User</span><span class="o">.</span><span class="n">t</span><span class="p">,</span><span class="w"> </span><span class="n">new_user</span><span class="w"> </span><span class="o">::</span><span class="w"> </span><span class="nc">Nostrum.Struct.User</span><span class="o">.</span><span class="n">t</span><span class="p" data-group-id="3151627061-2">}</span><span class="p">,</span><span class="w"> </span><span class="nc">WSState</span><span class="o">.</span><span class="n">t</span><span class="p" data-group-id="3151627061-3">(</span><span class="p" data-group-id="3151627061-3">)</span><span class="p" data-group-id="3151627061-1">}</span></code></pre><p>For a full listing of events, please see <a href="#t:event/0"><code class="inline">Nostrum.Consumer.event/0</code></a>.</p>
+the old payload will always be first, followed by the new payload.</p><pre><code class="makeup elixir" translate="no"><span class="p" data-group-id="5911850416-1">{</span><span class="ss">:USER_UPDATE</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="5911850416-2">{</span><span class="n">old_user</span><span class="w"> </span><span class="o">::</span><span class="w"> </span><span class="nc">Nostrum.Struct.User</span><span class="o">.</span><span class="n">t</span><span class="p">,</span><span class="w"> </span><span class="n">new_user</span><span class="w"> </span><span class="o">::</span><span class="w"> </span><span class="nc">Nostrum.Struct.User</span><span class="o">.</span><span class="n">t</span><span class="p" data-group-id="5911850416-2">}</span><span class="p">,</span><span class="w"> </span><span class="nc">WSState</span><span class="o">.</span><span class="n">t</span><span class="p" data-group-id="5911850416-3">(</span><span class="p" data-group-id="5911850416-3">)</span><span class="p" data-group-id="5911850416-1">}</span></code></pre><p>For a full listing of events, please see <a href="#t:event/0"><code class="inline">Nostrum.Consumer.event/0</code></a>.</p>
   </section>
 </section>
 
@@ -2951,9 +2951,9 @@ the old payload will always be first, followed by the new payload.</p><pre><code
       <p>
 
           <span class="line">
-            <a href="https://hex.pm/packages/nostrum/0.10.1" class="footer-hex-package">Hex Package</a>
+            <a href="https://hex.pm/packages/nostrum/0.11.0-dev" class="footer-hex-package">Hex Package</a>
 
-            <a href="https://preview.hex.pm/preview/nostrum/0.10.1">Hex Preview</a>
+            <a href="https://preview.hex.pm/preview/nostrum/0.11.0-dev">Hex Preview</a>
 
           </span>
 

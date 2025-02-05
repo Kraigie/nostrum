@@ -5,10 +5,10 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="ExDoc v0.32.1">
-    <meta name="project" content="Nostrum v0.10.1">
+    <meta name="project" content="Nostrum v0.11.0-dev">
 
 
-    <title>Nostrum.Api.Invite — Nostrum v0.10.1</title>
+    <title>Nostrum.Api.Invite — Nostrum v0.11.0-dev</title>
     <link rel="stylesheet" href="dist/html-elixir-2C5PUTIB.css" />
 
 
@@ -55,7 +55,7 @@
 Nostrum
         </a>
         <div class="sidebar-projectVersion" translate="no">
-          v0.10.1
+          v0.11.0-dev
         </div>
       </div>
     </div>
@@ -133,7 +133,7 @@ Pages
       </a>
 
     <span translate="no">Nostrum.Api.Invite</span> 
-    <small class="app-vsn" translate="no">(Nostrum v0.10.1)</small>
+    <small class="app-vsn" translate="no">(Nostrum v0.11.0-dev)</small>
 
   </h1>
 
@@ -254,8 +254,8 @@ Pages
   </a>
   <span class="text">Examples</span>
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Api.Invite</span><span class="o">.</span><span class="n">channel_invites</span><span class="p" data-group-id="8633469779-1">(</span><span class="mi">43189401384091</span><span class="p" data-group-id="8633469779-1">)</span><span class="w">
-</span><span class="p" data-group-id="8633469779-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="8633469779-3">[</span><span class="p" data-group-id="8633469779-4">%</span><span class="nc" data-group-id="8633469779-4">Nostrum.Struct.Invite</span><span class="p" data-group-id="8633469779-4">{</span><span class="p" data-group-id="8633469779-4">}</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="bp">_</span><span class="p" data-group-id="8633469779-3">]</span><span class="p" data-group-id="8633469779-2">}</span></code></pre>
+<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Api.Invite</span><span class="o">.</span><span class="n">channel_invites</span><span class="p" data-group-id="6137120523-1">(</span><span class="mi">43189401384091</span><span class="p" data-group-id="6137120523-1">)</span><span class="w">
+</span><span class="p" data-group-id="6137120523-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="6137120523-3">[</span><span class="p" data-group-id="6137120523-4">%</span><span class="nc" data-group-id="6137120523-4">Nostrum.Struct.Invite</span><span class="p" data-group-id="6137120523-4">{</span><span class="p" data-group-id="6137120523-4">}</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="bp">_</span><span class="p" data-group-id="6137120523-3">]</span><span class="p" data-group-id="6137120523-2">}</span></code></pre>
   </section>
 </section>
 <section class="detail" id="create/3">
@@ -309,11 +309,11 @@ membership. (default: <code class="inline">false</code>)</li><li><code class="in
   </a>
   <span class="text">Examples</span>
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api.Invite</span><span class="o">.</span><span class="n">create</span><span class="p" data-group-id="5209086377-1">(</span><span class="mi">41771983423143933</span><span class="p" data-group-id="5209086377-1">)</span><span class="w">
-</span><span class="p" data-group-id="5209086377-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="nc">Nostrum.Struct.Invite</span><span class="p" data-group-id="5209086377-3">{</span><span class="p" data-group-id="5209086377-3">}</span><span class="p" data-group-id="5209086377-2">}</span><span class="w">
+<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api.Invite</span><span class="o">.</span><span class="n">create</span><span class="p" data-group-id="0451012163-1">(</span><span class="mi">41771983423143933</span><span class="p" data-group-id="0451012163-1">)</span><span class="w">
+</span><span class="p" data-group-id="0451012163-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="nc">Nostrum.Struct.Invite</span><span class="p" data-group-id="0451012163-3">{</span><span class="p" data-group-id="0451012163-3">}</span><span class="p" data-group-id="0451012163-2">}</span><span class="w">
 
-</span><span class="nc">Nostrum.Api.Invite</span><span class="o">.</span><span class="n">create</span><span class="p" data-group-id="5209086377-4">(</span><span class="mi">41771983423143933</span><span class="p">,</span><span class="w"> </span><span class="ss">max_uses</span><span class="p">:</span><span class="w"> </span><span class="mi">20</span><span class="p" data-group-id="5209086377-4">)</span><span class="w">
-</span><span class="p" data-group-id="5209086377-5">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="5209086377-6">%</span><span class="nc" data-group-id="5209086377-6">Nostrum.Struct.Invite</span><span class="p" data-group-id="5209086377-6">{</span><span class="p" data-group-id="5209086377-6">}</span><span class="p" data-group-id="5209086377-5">}</span></code></pre>
+</span><span class="nc">Nostrum.Api.Invite</span><span class="o">.</span><span class="n">create</span><span class="p" data-group-id="0451012163-4">(</span><span class="mi">41771983423143933</span><span class="p">,</span><span class="w"> </span><span class="ss">max_uses</span><span class="p">:</span><span class="w"> </span><span class="mi">20</span><span class="p" data-group-id="0451012163-4">)</span><span class="w">
+</span><span class="p" data-group-id="0451012163-5">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="0451012163-6">%</span><span class="nc" data-group-id="0451012163-6">Nostrum.Struct.Invite</span><span class="p" data-group-id="0451012163-6">{</span><span class="p" data-group-id="0451012163-6">}</span><span class="p" data-group-id="0451012163-5">}</span></code></pre>
   </section>
 </section>
 <section class="detail" id="delete/1">
@@ -351,7 +351,7 @@ membership. (default: <code class="inline">false</code>)</li><li><code class="in
   </a>
   <span class="text">Examples</span>
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api.Invite</span><span class="o">.</span><span class="n">delete</span><span class="p" data-group-id="2263364340-1">(</span><span class="s">&quot;zsjUsC&quot;</span><span class="p" data-group-id="2263364340-1">)</span></code></pre>
+<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api.Invite</span><span class="o">.</span><span class="n">delete</span><span class="p" data-group-id="6575768093-1">(</span><span class="s">&quot;zsjUsC&quot;</span><span class="p" data-group-id="6575768093-1">)</span></code></pre>
   </section>
 </section>
 <section class="detail" id="get/2">
@@ -397,9 +397,9 @@ membership. (default: <code class="inline">false</code>)</li><li><code class="in
   </a>
   <span class="text">Examples</span>
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api.Invite</span><span class="o">.</span><span class="n">get</span><span class="p" data-group-id="1657782724-1">(</span><span class="s">&quot;zsjUsC&quot;</span><span class="p" data-group-id="1657782724-1">)</span><span class="w">
+<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api.Invite</span><span class="o">.</span><span class="n">get</span><span class="p" data-group-id="1332721731-1">(</span><span class="s">&quot;zsjUsC&quot;</span><span class="p" data-group-id="1332721731-1">)</span><span class="w">
 
-</span><span class="nc">Nostrum.Api.Invite</span><span class="o">.</span><span class="n">get</span><span class="p" data-group-id="1657782724-2">(</span><span class="s">&quot;zsjUsC&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">with_counts</span><span class="p">:</span><span class="w"> </span><span class="no">true</span><span class="p" data-group-id="1657782724-2">)</span></code></pre>
+</span><span class="nc">Nostrum.Api.Invite</span><span class="o">.</span><span class="n">get</span><span class="p" data-group-id="1332721731-2">(</span><span class="s">&quot;zsjUsC&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">with_counts</span><span class="p">:</span><span class="w"> </span><span class="no">true</span><span class="p" data-group-id="1332721731-2">)</span></code></pre>
   </section>
 </section>
 <section class="detail" id="guild_invites/1">
@@ -436,8 +436,8 @@ membership. (default: <code class="inline">false</code>)</li><li><code class="in
   </a>
   <span class="text">Examples</span>
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api.Invite</span><span class="o">.</span><span class="n">guild_invites</span><span class="p" data-group-id="8756859162-1">(</span><span class="mi">81384788765712384</span><span class="p" data-group-id="8756859162-1">)</span><span class="w">
-</span><span class="p" data-group-id="8756859162-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="8756859162-3">[</span><span class="p" data-group-id="8756859162-4">%</span><span class="nc" data-group-id="8756859162-4">Nostrum.Struct.Invite</span><span class="p" data-group-id="8756859162-4">{</span><span class="p" data-group-id="8756859162-4">}</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="bp">_</span><span class="p" data-group-id="8756859162-3">]</span><span class="p" data-group-id="8756859162-2">}</span></code></pre>
+<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api.Invite</span><span class="o">.</span><span class="n">guild_invites</span><span class="p" data-group-id="8291122980-1">(</span><span class="mi">81384788765712384</span><span class="p" data-group-id="8291122980-1">)</span><span class="w">
+</span><span class="p" data-group-id="8291122980-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="8291122980-3">[</span><span class="p" data-group-id="8291122980-4">%</span><span class="nc" data-group-id="8291122980-4">Nostrum.Struct.Invite</span><span class="p" data-group-id="8291122980-4">{</span><span class="p" data-group-id="8291122980-4">}</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="bp">_</span><span class="p" data-group-id="8291122980-3">]</span><span class="p" data-group-id="8291122980-2">}</span></code></pre>
   </section>
 </section>
 
@@ -448,9 +448,9 @@ membership. (default: <code class="inline">false</code>)</li><li><code class="in
       <p>
 
           <span class="line">
-            <a href="https://hex.pm/packages/nostrum/0.10.1" class="footer-hex-package">Hex Package</a>
+            <a href="https://hex.pm/packages/nostrum/0.11.0-dev" class="footer-hex-package">Hex Package</a>
 
-            <a href="https://preview.hex.pm/preview/nostrum/0.10.1">Hex Preview</a>
+            <a href="https://preview.hex.pm/preview/nostrum/0.11.0-dev">Hex Preview</a>
 
           </span>
 

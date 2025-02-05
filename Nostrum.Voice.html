@@ -5,10 +5,10 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="ExDoc v0.32.1">
-    <meta name="project" content="Nostrum v0.10.1">
+    <meta name="project" content="Nostrum v0.11.0-dev">
 
 
-    <title>Nostrum.Voice — Nostrum v0.10.1</title>
+    <title>Nostrum.Voice — Nostrum v0.11.0-dev</title>
     <link rel="stylesheet" href="dist/html-elixir-2C5PUTIB.css" />
 
 
@@ -55,7 +55,7 @@
 Nostrum
         </a>
         <div class="sidebar-projectVersion" translate="no">
-          v0.10.1
+          v0.11.0-dev
         </div>
       </div>
     </div>
@@ -133,7 +133,7 @@ Pages
       </a>
 
     <span translate="no">Nostrum.Voice</span> 
-    <small class="app-vsn" translate="no">(Nostrum v0.10.1)</small>
+    <small class="app-vsn" translate="no">(Nostrum v0.11.0-dev)</small>
 
   </h1>
 
@@ -782,10 +782,10 @@ understand how to use the data.</p><p>To get started, assuming you have a list o
 and consecutive opus packets from a single source that you want written
 to a file, you can run the following:</p><pre><code class="makeup elixir" translate="no"><span class="n">bitstream</span><span class="w"> </span><span class="o">=</span><span class="w">
   </span><span class="n">opus_packets</span><span class="w">
-  </span><span class="o">|&gt;</span><span class="w"> </span><span class="n">create_ogg_bitstream</span><span class="p" data-group-id="7749584556-1">(</span><span class="p" data-group-id="7749584556-1">)</span><span class="w">
-  </span><span class="o">|&gt;</span><span class="w"> </span><span class="nc">:binary</span><span class="o">.</span><span class="n">list_to_bin</span><span class="p" data-group-id="7749584556-2">(</span><span class="p" data-group-id="7749584556-2">)</span><span class="w">
+  </span><span class="o">|&gt;</span><span class="w"> </span><span class="n">create_ogg_bitstream</span><span class="p" data-group-id="6325835827-1">(</span><span class="p" data-group-id="6325835827-1">)</span><span class="w">
+  </span><span class="o">|&gt;</span><span class="w"> </span><span class="nc">:binary</span><span class="o">.</span><span class="n">list_to_bin</span><span class="p" data-group-id="6325835827-2">(</span><span class="p" data-group-id="6325835827-2">)</span><span class="w">
 
-</span><span class="nc">File</span><span class="o">.</span><span class="n">write!</span><span class="p" data-group-id="7749584556-3">(</span><span class="s">&quot;my_recording.ogg&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">bitstream</span><span class="p" data-group-id="7749584556-3">)</span></code></pre><p>When creating a logical bitstream, ensure that the packets are all from a single SSRC.
+</span><span class="nc">File</span><span class="o">.</span><span class="n">write!</span><span class="p" data-group-id="6325835827-3">(</span><span class="s">&quot;my_recording.ogg&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">bitstream</span><span class="p" data-group-id="6325835827-3">)</span></code></pre><p>When creating a logical bitstream, ensure that the packets are all from a single SSRC.
 When listening in a channel with multiple speakers, you should be storing the received
 packets in unique buckets for each SSRC so that the multiple audio sources don't become
 jumbled. A single logical bitstream should represent audio data from a single speaker.
@@ -793,9 +793,9 @@ An Ogg physical bitstream (e.g. a file) may be composed of multiple interleaved 
 logical bitstreams as each logical bitstream and its constituent pages contain a unique
 and randomly generated bitstream serial number, but this is a story for another time.</p><p>Assuming you have a list of <a href="#t:rtp_opus/0"><code class="inline">rtp_opus/0</code></a> packets that are not separated by ssrc, you
 may do the following:</p><pre><code class="makeup elixir" translate="no"><span class="n">jumbled_packets</span><span class="w">
-</span><span class="o">|&gt;</span><span class="w"> </span><span class="nc">Stream</span><span class="o">.</span><span class="n">filter</span><span class="p" data-group-id="5464699151-1">(</span><span class="k" data-group-id="5464699151-2">fn</span><span class="w"> </span><span class="p" data-group-id="5464699151-3">{</span><span class="p" data-group-id="5464699151-4">{</span><span class="c">_seq</span><span class="p">,</span><span class="w"> </span><span class="c">_time</span><span class="p">,</span><span class="w"> </span><span class="n">ssrc</span><span class="p" data-group-id="5464699151-4">}</span><span class="p">,</span><span class="w"> </span><span class="c">_opus</span><span class="p" data-group-id="5464699151-3">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">ssrc</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">particular_ssrc</span><span class="w"> </span><span class="k" data-group-id="5464699151-2">end</span><span class="p" data-group-id="5464699151-1">)</span><span class="w">
-</span><span class="o">|&gt;</span><span class="w"> </span><span class="nc">Enum</span><span class="o">.</span><span class="n">map</span><span class="p" data-group-id="5464699151-5">(</span><span class="k" data-group-id="5464699151-6">fn</span><span class="w"> </span><span class="p" data-group-id="5464699151-7">{</span><span class="p" data-group-id="5464699151-8">{</span><span class="c">_seq</span><span class="p">,</span><span class="w"> </span><span class="c">_time</span><span class="p">,</span><span class="w"> </span><span class="c">_ssrc</span><span class="p" data-group-id="5464699151-8">}</span><span class="p">,</span><span class="w"> </span><span class="n">opus</span><span class="p" data-group-id="5464699151-7">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">opus</span><span class="w"> </span><span class="k" data-group-id="5464699151-6">end</span><span class="p" data-group-id="5464699151-5">)</span><span class="w">
-</span><span class="o">|&gt;</span><span class="w"> </span><span class="n">create_ogg_bitstream</span><span class="p" data-group-id="5464699151-9">(</span><span class="p" data-group-id="5464699151-9">)</span></code></pre>
+</span><span class="o">|&gt;</span><span class="w"> </span><span class="nc">Stream</span><span class="o">.</span><span class="n">filter</span><span class="p" data-group-id="1065710598-1">(</span><span class="k" data-group-id="1065710598-2">fn</span><span class="w"> </span><span class="p" data-group-id="1065710598-3">{</span><span class="p" data-group-id="1065710598-4">{</span><span class="c">_seq</span><span class="p">,</span><span class="w"> </span><span class="c">_time</span><span class="p">,</span><span class="w"> </span><span class="n">ssrc</span><span class="p" data-group-id="1065710598-4">}</span><span class="p">,</span><span class="w"> </span><span class="c">_opus</span><span class="p" data-group-id="1065710598-3">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">ssrc</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">particular_ssrc</span><span class="w"> </span><span class="k" data-group-id="1065710598-2">end</span><span class="p" data-group-id="1065710598-1">)</span><span class="w">
+</span><span class="o">|&gt;</span><span class="w"> </span><span class="nc">Enum</span><span class="o">.</span><span class="n">map</span><span class="p" data-group-id="1065710598-5">(</span><span class="k" data-group-id="1065710598-6">fn</span><span class="w"> </span><span class="p" data-group-id="1065710598-7">{</span><span class="p" data-group-id="1065710598-8">{</span><span class="c">_seq</span><span class="p">,</span><span class="w"> </span><span class="c">_time</span><span class="p">,</span><span class="w"> </span><span class="c">_ssrc</span><span class="p" data-group-id="1065710598-8">}</span><span class="p">,</span><span class="w"> </span><span class="n">opus</span><span class="p" data-group-id="1065710598-7">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="n">opus</span><span class="w"> </span><span class="k" data-group-id="1065710598-6">end</span><span class="p" data-group-id="1065710598-5">)</span><span class="w">
+</span><span class="o">|&gt;</span><span class="w"> </span><span class="n">create_ogg_bitstream</span><span class="p" data-group-id="1065710598-9">(</span><span class="p" data-group-id="1065710598-9">)</span></code></pre>
   </section>
 </section>
 <section class="detail" id="extract_opus_packet/1">
@@ -866,14 +866,14 @@ RTP header extension, which must be stripped to retrieve the underlying opus pac
   </a>
   <span class="text">Examples</span>
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Voice</span><span class="o">.</span><span class="n">join_channel</span><span class="p" data-group-id="6755792553-1">(</span><span class="mi">123456789</span><span class="p">,</span><span class="w"> </span><span class="mi">420691337</span><span class="p" data-group-id="6755792553-1">)</span><span class="w">
+<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Voice</span><span class="o">.</span><span class="n">join_channel</span><span class="p" data-group-id="1272206045-1">(</span><span class="mi">123456789</span><span class="p">,</span><span class="w"> </span><span class="mi">420691337</span><span class="p" data-group-id="1272206045-1">)</span><span class="w">
 
-</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Voice</span><span class="o">.</span><span class="n">get_channel</span><span class="p" data-group-id="6755792553-2">(</span><span class="mi">123456789</span><span class="p" data-group-id="6755792553-2">)</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Voice</span><span class="o">.</span><span class="n">get_channel</span><span class="p" data-group-id="1272206045-2">(</span><span class="mi">123456789</span><span class="p" data-group-id="1272206045-2">)</span><span class="w">
 </span><span class="mi">420691337</span><span class="w">
 
-</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Voice</span><span class="o">.</span><span class="n">leave_channel</span><span class="p" data-group-id="6755792553-3">(</span><span class="mi">123456789</span><span class="p" data-group-id="6755792553-3">)</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Voice</span><span class="o">.</span><span class="n">leave_channel</span><span class="p" data-group-id="1272206045-3">(</span><span class="mi">123456789</span><span class="p" data-group-id="1272206045-3">)</span><span class="w">
 
-</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Voice</span><span class="o">.</span><span class="n">get_channel</span><span class="p" data-group-id="6755792553-4">(</span><span class="mi">123456789</span><span class="p" data-group-id="6755792553-4">)</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Voice</span><span class="o">.</span><span class="n">get_channel</span><span class="p" data-group-id="1272206045-4">(</span><span class="mi">123456789</span><span class="p" data-group-id="1272206045-4">)</span><span class="w">
 </span><span class="no">nil</span></code></pre>
   </section>
 </section>
@@ -1148,11 +1148,11 @@ resumed after being paused.</p><h2 id="pause/1-examples" class="section-heading"
   </a>
   <span class="text">Examples</span>
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Voice</span><span class="o">.</span><span class="n">join_channel</span><span class="p" data-group-id="9465169539-1">(</span><span class="mi">123456789</span><span class="p">,</span><span class="w"> </span><span class="mi">420691337</span><span class="p" data-group-id="9465169539-1">)</span><span class="w">
+<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Voice</span><span class="o">.</span><span class="n">join_channel</span><span class="p" data-group-id="5162116503-1">(</span><span class="mi">123456789</span><span class="p">,</span><span class="w"> </span><span class="mi">420691337</span><span class="p" data-group-id="5162116503-1">)</span><span class="w">
 
-</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Voice</span><span class="o">.</span><span class="n">play</span><span class="p" data-group-id="9465169539-2">(</span><span class="mi">123456789</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;~/files/twelve_hour_loop_of_waterfall_sounds.mp3&quot;</span><span class="p" data-group-id="9465169539-2">)</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Voice</span><span class="o">.</span><span class="n">play</span><span class="p" data-group-id="5162116503-2">(</span><span class="mi">123456789</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;~/files/twelve_hour_loop_of_waterfall_sounds.mp3&quot;</span><span class="p" data-group-id="5162116503-2">)</span><span class="w">
 
-</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Voice</span><span class="o">.</span><span class="n">pause</span><span class="p" data-group-id="9465169539-3">(</span><span class="mi">123456789</span><span class="p" data-group-id="9465169539-3">)</span></code></pre>
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Voice</span><span class="o">.</span><span class="n">pause</span><span class="p" data-group-id="5162116503-3">(</span><span class="mi">123456789</span><span class="p" data-group-id="5162116503-3">)</span></code></pre>
   </section>
 </section>
 <section class="detail" id="play/4">
@@ -1211,27 +1211,27 @@ resumed after being paused.</p><h2 id="pause/1-examples" class="section-heading"
   </a>
   <span class="text">Examples</span>
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Voice</span><span class="o">.</span><span class="n">join_channel</span><span class="p" data-group-id="0616722905-1">(</span><span class="mi">123456789</span><span class="p">,</span><span class="w"> </span><span class="mi">420691337</span><span class="p" data-group-id="0616722905-1">)</span><span class="w">
+<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Voice</span><span class="o">.</span><span class="n">join_channel</span><span class="p" data-group-id="5014308810-1">(</span><span class="mi">123456789</span><span class="p">,</span><span class="w"> </span><span class="mi">420691337</span><span class="p" data-group-id="5014308810-1">)</span><span class="w">
 
-</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Voice</span><span class="o">.</span><span class="n">play</span><span class="p" data-group-id="0616722905-2">(</span><span class="mi">123456789</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;~/music/FavoriteSong.mp3&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">:url</span><span class="p" data-group-id="0616722905-2">)</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Voice</span><span class="o">.</span><span class="n">play</span><span class="p" data-group-id="5014308810-2">(</span><span class="mi">123456789</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;~/music/FavoriteSong.mp3&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">:url</span><span class="p" data-group-id="5014308810-2">)</span><span class="w">
 
-</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Voice</span><span class="o">.</span><span class="n">play</span><span class="p" data-group-id="0616722905-3">(</span><span class="mi">123456789</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;~/music/NotFavoriteButStillGoodSong.mp3&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">:url</span><span class="p">,</span><span class="w"> </span><span class="ss">volume</span><span class="p">:</span><span class="w"> </span><span class="mf">0.5</span><span class="p" data-group-id="0616722905-3">)</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Voice</span><span class="o">.</span><span class="n">play</span><span class="p" data-group-id="5014308810-3">(</span><span class="mi">123456789</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;~/music/NotFavoriteButStillGoodSong.mp3&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">:url</span><span class="p">,</span><span class="w"> </span><span class="ss">volume</span><span class="p">:</span><span class="w"> </span><span class="mf">0.5</span><span class="p" data-group-id="5014308810-3">)</span><span class="w">
 
-</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Voice</span><span class="o">.</span><span class="n">play</span><span class="p" data-group-id="0616722905-4">(</span><span class="mi">123456789</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;~/music/ThisWillBeHeavilyDistorted.mp3&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">:url</span><span class="p">,</span><span class="w"> </span><span class="ss">volume</span><span class="p">:</span><span class="w"> </span><span class="mi">1000</span><span class="p" data-group-id="0616722905-4">)</span></code></pre><pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Voice</span><span class="o">.</span><span class="n">join_channel</span><span class="p" data-group-id="6572808721-1">(</span><span class="mi">123456789</span><span class="p">,</span><span class="w"> </span><span class="mi">420691337</span><span class="p" data-group-id="6572808721-1">)</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Voice</span><span class="o">.</span><span class="n">play</span><span class="p" data-group-id="5014308810-4">(</span><span class="mi">123456789</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;~/music/ThisWillBeHeavilyDistorted.mp3&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">:url</span><span class="p">,</span><span class="w"> </span><span class="ss">volume</span><span class="p">:</span><span class="w"> </span><span class="mi">1000</span><span class="p" data-group-id="5014308810-4">)</span></code></pre><pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Voice</span><span class="o">.</span><span class="n">join_channel</span><span class="p" data-group-id="2772389082-1">(</span><span class="mi">123456789</span><span class="p">,</span><span class="w"> </span><span class="mi">420691337</span><span class="p" data-group-id="2772389082-1">)</span><span class="w">
 
-</span><span class="gp unselectable">iex&gt; </span><span class="n">raw_data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">File</span><span class="o">.</span><span class="n">read!</span><span class="p" data-group-id="6572808721-2">(</span><span class="s">&quot;~/music/sound_effect.wav&quot;</span><span class="p" data-group-id="6572808721-2">)</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="n">raw_data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">File</span><span class="o">.</span><span class="n">read!</span><span class="p" data-group-id="2772389082-2">(</span><span class="s">&quot;~/music/sound_effect.wav&quot;</span><span class="p" data-group-id="2772389082-2">)</span><span class="w">
 
-</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Voice</span><span class="o">.</span><span class="n">play</span><span class="p" data-group-id="6572808721-3">(</span><span class="mi">123456789</span><span class="p">,</span><span class="w"> </span><span class="n">raw_data</span><span class="p">,</span><span class="w"> </span><span class="ss">:pipe</span><span class="p" data-group-id="6572808721-3">)</span></code></pre><pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Voice</span><span class="o">.</span><span class="n">join_channel</span><span class="p" data-group-id="1732450510-1">(</span><span class="mi">123456789</span><span class="p">,</span><span class="w"> </span><span class="mi">420691337</span><span class="p" data-group-id="1732450510-1">)</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Voice</span><span class="o">.</span><span class="n">play</span><span class="p" data-group-id="2772389082-3">(</span><span class="mi">123456789</span><span class="p">,</span><span class="w"> </span><span class="n">raw_data</span><span class="p">,</span><span class="w"> </span><span class="ss">:pipe</span><span class="p" data-group-id="2772389082-3">)</span></code></pre><pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Voice</span><span class="o">.</span><span class="n">join_channel</span><span class="p" data-group-id="2968835838-1">(</span><span class="mi">123456789</span><span class="p">,</span><span class="w"> </span><span class="mi">420691337</span><span class="p" data-group-id="2968835838-1">)</span><span class="w">
 
-</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Voice</span><span class="o">.</span><span class="n">play</span><span class="p" data-group-id="1732450510-2">(</span><span class="mi">123456789</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;https://www.youtube.com/watch?v=b4RJ-QGOtw4&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">:ytdl</span><span class="p">,</span><span class="w">
-</span><span class="gp unselectable">...&gt; </span><span class="w">  </span><span class="ss">realtime</span><span class="p">:</span><span class="w"> </span><span class="no">true</span><span class="p">,</span><span class="w"> </span><span class="ss">start_pos</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;0:17&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">duration</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;30&quot;</span><span class="p" data-group-id="1732450510-2">)</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Voice</span><span class="o">.</span><span class="n">play</span><span class="p" data-group-id="2968835838-2">(</span><span class="mi">123456789</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;https://www.youtube.com/watch?v=b4RJ-QGOtw4&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">:ytdl</span><span class="p">,</span><span class="w">
+</span><span class="gp unselectable">...&gt; </span><span class="w">  </span><span class="ss">realtime</span><span class="p">:</span><span class="w"> </span><span class="no">true</span><span class="p">,</span><span class="w"> </span><span class="ss">start_pos</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;0:17&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">duration</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;30&quot;</span><span class="p" data-group-id="2968835838-2">)</span><span class="w">
 
-</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Voice</span><span class="o">.</span><span class="n">play</span><span class="p" data-group-id="1732450510-3">(</span><span class="mi">123456789</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;https://www.youtube.com/watch?v=0ngcL_5ekXo&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">:ytdl</span><span class="p">,</span><span class="w">
-</span><span class="gp unselectable">...&gt; </span><span class="w">  </span><span class="ss">filter</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;lowpass=f=1200&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">filter</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;highpass=f=300&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">filter</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;asetrate=44100*0.5&quot;</span><span class="p" data-group-id="1732450510-3">)</span></code></pre><pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Voice</span><span class="o">.</span><span class="n">join_channel</span><span class="p" data-group-id="9819279461-1">(</span><span class="mi">123456789</span><span class="p">,</span><span class="w"> </span><span class="mi">420691337</span><span class="p" data-group-id="9819279461-1">)</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Voice</span><span class="o">.</span><span class="n">play</span><span class="p" data-group-id="2968835838-3">(</span><span class="mi">123456789</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;https://www.youtube.com/watch?v=0ngcL_5ekXo&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">:ytdl</span><span class="p">,</span><span class="w">
+</span><span class="gp unselectable">...&gt; </span><span class="w">  </span><span class="ss">filter</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;lowpass=f=1200&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">filter</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;highpass=f=300&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">filter</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;asetrate=44100*0.5&quot;</span><span class="p" data-group-id="2968835838-3">)</span></code></pre><pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Voice</span><span class="o">.</span><span class="n">join_channel</span><span class="p" data-group-id="1265749067-1">(</span><span class="mi">123456789</span><span class="p">,</span><span class="w"> </span><span class="mi">420691337</span><span class="p" data-group-id="1265749067-1">)</span><span class="w">
 
-</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Voice</span><span class="o">.</span><span class="n">play</span><span class="p" data-group-id="9819279461-2">(</span><span class="mi">123456789</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;https://www.twitch.tv/pestily&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">:stream</span><span class="p" data-group-id="9819279461-2">)</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Voice</span><span class="o">.</span><span class="n">play</span><span class="p" data-group-id="1265749067-2">(</span><span class="mi">123456789</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;https://www.twitch.tv/pestily&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">:stream</span><span class="p" data-group-id="1265749067-2">)</span><span class="w">
 
-</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Voice</span><span class="o">.</span><span class="n">play</span><span class="p" data-group-id="9819279461-3">(</span><span class="mi">123456789</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;https://youtu.be/LN4r-K8ZP5Q&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">:stream</span><span class="p" data-group-id="9819279461-3">)</span></code></pre>
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Voice</span><span class="o">.</span><span class="n">play</span><span class="p" data-group-id="1265749067-3">(</span><span class="mi">123456789</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;https://youtu.be/LN4r-K8ZP5Q&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">:stream</span><span class="p" data-group-id="1265749067-3">)</span></code></pre>
   </section>
 </section>
 <section class="detail" id="playing?/1">
@@ -1271,16 +1271,16 @@ resumed after being paused.</p><h2 id="pause/1-examples" class="section-heading"
   </a>
   <span class="text">Examples</span>
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Voice</span><span class="o">.</span><span class="n">join_channel</span><span class="p" data-group-id="7629361629-1">(</span><span class="mi">123456789</span><span class="p">,</span><span class="w"> </span><span class="mi">420691337</span><span class="p" data-group-id="7629361629-1">)</span><span class="w">
+<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Voice</span><span class="o">.</span><span class="n">join_channel</span><span class="p" data-group-id="3941701766-1">(</span><span class="mi">123456789</span><span class="p">,</span><span class="w"> </span><span class="mi">420691337</span><span class="p" data-group-id="3941701766-1">)</span><span class="w">
 
-</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Voice</span><span class="o">.</span><span class="n">play</span><span class="p" data-group-id="7629361629-2">(</span><span class="mi">123456789</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;https://a-real-site.biz/RickRoll.m4a&quot;</span><span class="p" data-group-id="7629361629-2">)</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Voice</span><span class="o">.</span><span class="n">play</span><span class="p" data-group-id="3941701766-2">(</span><span class="mi">123456789</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;https://a-real-site.biz/RickRoll.m4a&quot;</span><span class="p" data-group-id="3941701766-2">)</span><span class="w">
 
-</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Voice</span><span class="o">.</span><span class="n">playing?</span><span class="p" data-group-id="7629361629-3">(</span><span class="mi">123456789</span><span class="p" data-group-id="7629361629-3">)</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Voice</span><span class="o">.</span><span class="n">playing?</span><span class="p" data-group-id="3941701766-3">(</span><span class="mi">123456789</span><span class="p" data-group-id="3941701766-3">)</span><span class="w">
 </span><span class="no">true</span><span class="w">
 
-</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Voice</span><span class="o">.</span><span class="n">pause</span><span class="p" data-group-id="7629361629-4">(</span><span class="mi">123456789</span><span class="p" data-group-id="7629361629-4">)</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Voice</span><span class="o">.</span><span class="n">pause</span><span class="p" data-group-id="3941701766-4">(</span><span class="mi">123456789</span><span class="p" data-group-id="3941701766-4">)</span><span class="w">
 
-</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Voice</span><span class="o">.</span><span class="n">playing?</span><span class="p" data-group-id="7629361629-5">(</span><span class="mi">123456789</span><span class="p" data-group-id="7629361629-5">)</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Voice</span><span class="o">.</span><span class="n">playing?</span><span class="p" data-group-id="3941701766-5">(</span><span class="mi">123456789</span><span class="p" data-group-id="3941701766-5">)</span><span class="w">
 </span><span class="no">false</span></code></pre>
   </section>
 </section>
@@ -1321,14 +1321,14 @@ resumed after being paused.</p><h2 id="pause/1-examples" class="section-heading"
   </a>
   <span class="text">Examples</span>
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Voice</span><span class="o">.</span><span class="n">join_channel</span><span class="p" data-group-id="4850520346-1">(</span><span class="mi">123456789</span><span class="p">,</span><span class="w"> </span><span class="mi">420691337</span><span class="p" data-group-id="4850520346-1">)</span><span class="w">
+<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Voice</span><span class="o">.</span><span class="n">join_channel</span><span class="p" data-group-id="7499176098-1">(</span><span class="mi">123456789</span><span class="p">,</span><span class="w"> </span><span class="mi">420691337</span><span class="p" data-group-id="7499176098-1">)</span><span class="w">
 
-</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Voice</span><span class="o">.</span><span class="n">ready?</span><span class="p" data-group-id="4850520346-2">(</span><span class="mi">123456789</span><span class="p" data-group-id="4850520346-2">)</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Voice</span><span class="o">.</span><span class="n">ready?</span><span class="p" data-group-id="7499176098-2">(</span><span class="mi">123456789</span><span class="p" data-group-id="7499176098-2">)</span><span class="w">
 </span><span class="no">true</span><span class="w">
 
-</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Voice</span><span class="o">.</span><span class="n">leave_channel</span><span class="p" data-group-id="4850520346-3">(</span><span class="mi">123456789</span><span class="p" data-group-id="4850520346-3">)</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Voice</span><span class="o">.</span><span class="n">leave_channel</span><span class="p" data-group-id="7499176098-3">(</span><span class="mi">123456789</span><span class="p" data-group-id="7499176098-3">)</span><span class="w">
 
-</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Voice</span><span class="o">.</span><span class="n">ready?</span><span class="p" data-group-id="4850520346-4">(</span><span class="mi">123456789</span><span class="p" data-group-id="4850520346-4">)</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Voice</span><span class="o">.</span><span class="n">ready?</span><span class="p" data-group-id="7499176098-4">(</span><span class="mi">123456789</span><span class="p" data-group-id="7499176098-4">)</span><span class="w">
 </span><span class="no">false</span></code></pre>
   </section>
 </section>
@@ -1369,13 +1369,13 @@ resumed after being paused.</p><h2 id="pause/1-examples" class="section-heading"
   </a>
   <span class="text">Examples</span>
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Voice</span><span class="o">.</span><span class="n">join_channel</span><span class="p" data-group-id="9121844496-1">(</span><span class="mi">123456789</span><span class="p">,</span><span class="w"> </span><span class="mi">420691337</span><span class="p" data-group-id="9121844496-1">)</span><span class="w">
+<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Voice</span><span class="o">.</span><span class="n">join_channel</span><span class="p" data-group-id="9325443781-1">(</span><span class="mi">123456789</span><span class="p">,</span><span class="w"> </span><span class="mi">420691337</span><span class="p" data-group-id="9325443781-1">)</span><span class="w">
 
-</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Voice</span><span class="o">.</span><span class="n">play</span><span class="p" data-group-id="9121844496-2">(</span><span class="mi">123456789</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;~/stuff/Toto - Africa (Bass Boosted)&quot;</span><span class="p" data-group-id="9121844496-2">)</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Voice</span><span class="o">.</span><span class="n">play</span><span class="p" data-group-id="9325443781-2">(</span><span class="mi">123456789</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;~/stuff/Toto - Africa (Bass Boosted)&quot;</span><span class="p" data-group-id="9325443781-2">)</span><span class="w">
 
-</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Voice</span><span class="o">.</span><span class="n">pause</span><span class="p" data-group-id="9121844496-3">(</span><span class="mi">123456789</span><span class="p" data-group-id="9121844496-3">)</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Voice</span><span class="o">.</span><span class="n">pause</span><span class="p" data-group-id="9325443781-3">(</span><span class="mi">123456789</span><span class="p" data-group-id="9325443781-3">)</span><span class="w">
 
-</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Voice</span><span class="o">.</span><span class="n">resume</span><span class="p" data-group-id="9121844496-4">(</span><span class="mi">123456789</span><span class="p" data-group-id="9121844496-4">)</span></code></pre>
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Voice</span><span class="o">.</span><span class="n">resume</span><span class="p" data-group-id="9325443781-4">(</span><span class="mi">123456789</span><span class="p" data-group-id="9325443781-4">)</span></code></pre>
   </section>
 </section>
 <section class="detail" id="send_frames/2">
@@ -1513,11 +1513,11 @@ playing another sound.</p><h2 id="stop/1-examples" class="section-heading">
   </a>
   <span class="text">Examples</span>
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Voice</span><span class="o">.</span><span class="n">join_channel</span><span class="p" data-group-id="2793694448-1">(</span><span class="mi">123456789</span><span class="p">,</span><span class="w"> </span><span class="mi">420691337</span><span class="p" data-group-id="2793694448-1">)</span><span class="w">
+<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Voice</span><span class="o">.</span><span class="n">join_channel</span><span class="p" data-group-id="4177711209-1">(</span><span class="mi">123456789</span><span class="p">,</span><span class="w"> </span><span class="mi">420691337</span><span class="p" data-group-id="4177711209-1">)</span><span class="w">
 
-</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Voice</span><span class="o">.</span><span class="n">play</span><span class="p" data-group-id="2793694448-2">(</span><span class="mi">123456789</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;http://brandthill.com/files/weird_dubstep_noises.mp3&quot;</span><span class="p" data-group-id="2793694448-2">)</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Voice</span><span class="o">.</span><span class="n">play</span><span class="p" data-group-id="4177711209-2">(</span><span class="mi">123456789</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;http://brandthill.com/files/weird_dubstep_noises.mp3&quot;</span><span class="p" data-group-id="4177711209-2">)</span><span class="w">
 
-</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Voice</span><span class="o">.</span><span class="n">stop</span><span class="p" data-group-id="2793694448-3">(</span><span class="mi">123456789</span><span class="p" data-group-id="2793694448-3">)</span></code></pre>
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Voice</span><span class="o">.</span><span class="n">stop</span><span class="p" data-group-id="4177711209-3">(</span><span class="mi">123456789</span><span class="p" data-group-id="4177711209-3">)</span></code></pre>
   </section>
 </section>
 <section class="detail" id="stop_listen_async/1">
@@ -1558,9 +1558,9 @@ playing another sound.</p><h2 id="stop/1-examples" class="section-heading">
       <p>
 
           <span class="line">
-            <a href="https://hex.pm/packages/nostrum/0.10.1" class="footer-hex-package">Hex Package</a>
+            <a href="https://hex.pm/packages/nostrum/0.11.0-dev" class="footer-hex-package">Hex Package</a>
 
-            <a href="https://preview.hex.pm/preview/nostrum/0.10.1">Hex Preview</a>
+            <a href="https://preview.hex.pm/preview/nostrum/0.11.0-dev">Hex Preview</a>
 
           </span>
 
