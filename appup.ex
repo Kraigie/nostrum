@@ -1,9 +1,10 @@
 # See the appup cookbook for instructions:
 # https://www.erlang.org/doc/design_principles/appup_cookbook.html
 {
-  ~c"0.10.1",
+  ~c"0.11.0-dev",
   [
     # Upgrade instructions
+    {~c"0.10.1", [{:restart_application, :nostrum}]},
     {~c"0.10.0", [{:restart_application, :nostrum}]},
     {~c"0.9.1", [{:restart_application, :nostrum}]},
     {~c"0.9.0", [{:restart_application, :nostrum}]},
