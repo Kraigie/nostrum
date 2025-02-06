@@ -139,7 +139,7 @@ defmodule Nostrum.Cache.MemberCache do
 
   ## Raises
 
-  Fails when `by_user/1` of the selected cache returns an error.
+  Fails when `c:by_user/1` of the selected cache returns an error.
   """
   @doc since: "0.8.0"
   @spec fold_by_user(acc, Member.user_id(), ({Guild.id(), Member.t()}, acc -> acc)) :: acc
@@ -175,7 +175,7 @@ defmodule Nostrum.Cache.MemberCache do
 
   ## Raises
 
-  Fails when `by_guild/1` of the selected cache returns an error.
+  Fails when `c:by_guild/1` of the selected cache returns an error.
   """
   @doc since: "0.8.0"
   @spec fold(acc, Guild.id(), (Member.t(), acc -> acc)) :: acc when acc: term()

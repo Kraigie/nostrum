@@ -77,6 +77,7 @@ defmodule Nostrum.Cache.MemberCache.ETS do
   end
 
   @impl MemberCache
+  @doc "Stream all members with the given user ID."
   @doc since: "0.10.0"
   def by_user(user_id) do
     ms = [{{{:"$1", user_id}, :"$2"}, [], [{{:"$1", :"$2"}}]}]
@@ -97,6 +98,7 @@ defmodule Nostrum.Cache.MemberCache.ETS do
   end
 
   @impl MemberCache
+  @doc "Stream all members on the given guild."
   @doc since: "0.10.0"
   def by_guild(guild_id) do
     ms = [{{{guild_id, :_}, :"$1"}, [], [:"$1"]}]

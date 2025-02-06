@@ -12,7 +12,7 @@ defmodule Nostrum.Cache.PresenceCache do
 
   ## Writing your own presence cache
 
-  As with the other caches, the presence cache API consists of two parts:
+  As with the other caches, the presence cache API consists of three parts:
 
   - The functions that nostrum calls, such as `c:create/1` or `c:update/1`.
   These **do not create any objects in the Discord API**, they are purely
@@ -20,7 +20,7 @@ defmodule Nostrum.Cache.PresenceCache do
   want to create objects on Discord, use the functions exposed by `Nostrum.Api`
   instead.
 
-  - the QLC query handle for read operations, `c:query_handle/0`, and
+  - the callbacks for read operations, also documented in this module, and
 
   - the `c:child_spec/1` callback for starting the cache under a supervisor.
 

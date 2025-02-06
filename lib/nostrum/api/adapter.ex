@@ -6,9 +6,6 @@ defmodule Nostrum.Api.Adapter do
   import Nostrum.Constants, only: [base_route: 0]
   require Logger
 
-  @typedoc "An anonymous function that returns the bot token."
-  @type wrapped_token :: (-> String.t())
-
   @type methods :: :get | :post | :put | :delete
 
   @spec request(
@@ -18,7 +15,7 @@ defmodule Nostrum.Api.Adapter do
           iodata(),
           [{String.t(), String.t()}],
           Enum.t(),
-          wrapped_token()
+          Nostrum.Api.Ratelimiter.wrapped_token()
         ) ::
           :gun.stream_ref()
   def request(conn, method, route, body, raw_headers, params, wrapped_token) do

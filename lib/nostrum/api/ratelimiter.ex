@@ -253,6 +253,10 @@ defmodule Nostrum.Api.Ratelimiter do
   @typedoc since: "0.9.0"
   @type remaining :: non_neg_integer() | :initial
 
+  @typedoc "An anonymous function that returns the bot token."
+  @typedoc since: "0.11.0"
+  @type wrapped_token :: (-> String.t())
+
   @typedoc """
   The state of the ratelimiter.
 
@@ -296,7 +300,7 @@ defmodule Nostrum.Api.Ratelimiter do
           },
           conn: pid() | nil,
           remaining_in_window: non_neg_integer(),
-          wrapped_token: Adapter.wrapped_token()
+          wrapped_token: wrapped_token()
         }
 
   @doc """
