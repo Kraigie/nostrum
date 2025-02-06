@@ -14,7 +14,7 @@
 
     <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
     <script src="dist/handlebars.templates-IHH6HKET.js"></script>
-    <script src="dist/sidebar_items-2FCC37AB.js"></script>
+    <script src="dist/sidebar_items-7BAE9786.js"></script>
     <script src="docs_config.js"></script>
     <script async src="dist/html-GXQ6W6IF.js"></script>
 
@@ -142,25 +142,25 @@ Pages
 <p>Interface for Discord's rest API.</p><p>By default all methods in this module are ran synchronously. If you wish to
 have async rest operations I recommend you execute these functions inside of a
 task.</p><p><strong>Examples</strong></p><pre><code class="makeup elixir" translate="no"><span class="c1"># Async Task</span><span class="w">
-</span><span class="n">t</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Task</span><span class="o">.</span><span class="n">async</span><span class="w"> </span><span class="k" data-group-id="3444697235-1">fn</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
-  </span><span class="nc">Nostrum.Api.Channel</span><span class="o">.</span><span class="n">messages</span><span class="p" data-group-id="3444697235-2">(</span><span class="mi">12345678912345</span><span class="p">,</span><span class="w"> </span><span class="ss">:infinity</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="3444697235-3">{</span><span class="p" data-group-id="3444697235-3">}</span><span class="p" data-group-id="3444697235-2">)</span><span class="w">
-</span><span class="k" data-group-id="3444697235-1">end</span><span class="w">
+</span><span class="n">t</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Task</span><span class="o">.</span><span class="n">async</span><span class="w"> </span><span class="k" data-group-id="2173554079-1">fn</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+  </span><span class="nc">Nostrum.Api.Channel</span><span class="o">.</span><span class="n">messages</span><span class="p" data-group-id="2173554079-2">(</span><span class="mi">12345678912345</span><span class="p">,</span><span class="w"> </span><span class="ss">:infinity</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="2173554079-3">{</span><span class="p" data-group-id="2173554079-3">}</span><span class="p" data-group-id="2173554079-2">)</span><span class="w">
+</span><span class="k" data-group-id="2173554079-1">end</span><span class="w">
 </span><span class="n">messages</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Task</span><span class="o">.</span><span class="n">await</span><span class="w"> </span><span class="n">t</span><span class="w">
 
 </span><span class="c1"># A lot of times we don&#39;t care about the return value of the function</span><span class="w">
-</span><span class="nc">Task</span><span class="o">.</span><span class="n">start</span><span class="w"> </span><span class="k" data-group-id="3444697235-4">fn</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
-  </span><span class="n">messages</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="3444697235-5">[</span><span class="s">&quot;in&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;the&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;end&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;it&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;doesn&#39;t&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;even&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;matter&quot;</span><span class="p" data-group-id="3444697235-5">]</span><span class="w">
-  </span><span class="nc">Enum</span><span class="o">.</span><span class="n">each</span><span class="w"> </span><span class="n">messages</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="nc">Nostrum.Api.Message</span><span class="o">.</span><span class="n">create</span><span class="p" data-group-id="3444697235-6">(</span><span class="mi">12345678912345</span><span class="p">,</span><span class="w"> </span><span class="ni">&amp;1</span><span class="p" data-group-id="3444697235-6">)</span><span class="w">
-</span><span class="k" data-group-id="3444697235-4">end</span></code></pre><h4>A note about Strings and Ints</h4><p>Currently, responses from the REST api will have <code class="inline">id</code> fields as <code class="inline">string</code>.
+</span><span class="nc">Task</span><span class="o">.</span><span class="n">start</span><span class="w"> </span><span class="k" data-group-id="2173554079-4">fn</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+  </span><span class="n">messages</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="2173554079-5">[</span><span class="s">&quot;in&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;the&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;end&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;it&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;doesn&#39;t&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;even&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;matter&quot;</span><span class="p" data-group-id="2173554079-5">]</span><span class="w">
+  </span><span class="nc">Enum</span><span class="o">.</span><span class="n">each</span><span class="w"> </span><span class="n">messages</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="nc">Nostrum.Api.Message</span><span class="o">.</span><span class="n">create</span><span class="p" data-group-id="2173554079-6">(</span><span class="mi">12345678912345</span><span class="p">,</span><span class="w"> </span><span class="ni">&amp;1</span><span class="p" data-group-id="2173554079-6">)</span><span class="w">
+</span><span class="k" data-group-id="2173554079-4">end</span></code></pre><h4>A note about Strings and Ints</h4><p>Currently, responses from the REST api will have <code class="inline">id</code> fields as <code class="inline">string</code>.
 Everything received from the WS connection will have <code class="inline">id</code> fields as <code class="inline">int</code>.</p><p>If you're processing a response from the API and trying to access something in the cache
 based off of an <code class="inline">id</code> in the response, you will need to convert it to an <code class="inline">int</code> using
-<a href="https://hexdocs.pm/elixir/String.html#to_integer/1"><code class="inline">String.to_integer/1</code></a>. I'm open to suggestions for how this should be handled going forward.</p><p><strong>Example</strong></p><pre><code class="makeup elixir" translate="no"><span class="n">messages</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Nostrum.Api.Channel</span><span class="o">.</span><span class="n">pinned_messages!</span><span class="p" data-group-id="6023514272-1">(</span><span class="mi">12345678912345</span><span class="p" data-group-id="6023514272-1">)</span><span class="w">
+<a href="https://hexdocs.pm/elixir/String.html#to_integer/1"><code class="inline">String.to_integer/1</code></a>. I'm open to suggestions for how this should be handled going forward.</p><p><strong>Example</strong></p><pre><code class="makeup elixir" translate="no"><span class="n">messages</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Nostrum.Api.Channel</span><span class="o">.</span><span class="n">pinned_messages!</span><span class="p" data-group-id="7039245168-1">(</span><span class="mi">12345678912345</span><span class="p" data-group-id="7039245168-1">)</span><span class="w">
 
 </span><span class="n">authors</span><span class="w"> </span><span class="o">=</span><span class="w">
-  </span><span class="nc">Enum</span><span class="o">.</span><span class="n">map</span><span class="w"> </span><span class="n">messages</span><span class="p">,</span><span class="w"> </span><span class="k" data-group-id="6023514272-2">fn</span><span class="w"> </span><span class="n">msg</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
-    </span><span class="n">author_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">String</span><span class="o">.</span><span class="n">to_integer</span><span class="p" data-group-id="6023514272-3">(</span><span class="n">msg</span><span class="o">.</span><span class="n">author</span><span class="o">.</span><span class="n">id</span><span class="p" data-group-id="6023514272-3">)</span><span class="w">
-    </span><span class="nc">Nostrum.Cache.User</span><span class="o">.</span><span class="n">get!</span><span class="p" data-group-id="6023514272-4">(</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="n">author_id</span><span class="p" data-group-id="6023514272-4">)</span><span class="w">
-  </span><span class="k" data-group-id="6023514272-2">end</span></code></pre>
+  </span><span class="nc">Enum</span><span class="o">.</span><span class="n">map</span><span class="w"> </span><span class="n">messages</span><span class="p">,</span><span class="w"> </span><span class="k" data-group-id="7039245168-2">fn</span><span class="w"> </span><span class="n">msg</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+    </span><span class="n">author_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">String</span><span class="o">.</span><span class="n">to_integer</span><span class="p" data-group-id="7039245168-3">(</span><span class="n">msg</span><span class="o">.</span><span class="n">author</span><span class="o">.</span><span class="n">id</span><span class="p" data-group-id="7039245168-3">)</span><span class="w">
+    </span><span class="nc">Nostrum.Cache.User</span><span class="o">.</span><span class="n">get!</span><span class="p" data-group-id="7039245168-4">(</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="n">author_id</span><span class="p" data-group-id="7039245168-4">)</span><span class="w">
+  </span><span class="k" data-group-id="7039245168-2">end</span></code></pre>
     </section>
 
 </div>
@@ -183,7 +183,7 @@ based off of an <code class="inline">id</code> in the response, you will need to
 
       </div>
 
-        <div class="summary-synopsis"><p>Represents different presence activites the bot can have</p></div>
+        <div class="summary-synopsis"><p>Represents different presence activites the bot can have.</p></div>
 
     </div>
 
@@ -3218,11 +3218,13 @@ Use `Nostrum.Api.Self.update_voice_state/4` directly instead.
     </a>
     <h1 class="signature" translate="no">activity()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L113" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L117" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
 
+
+      <span class="note">(since 0.11.0)</span>
 
   </div>
 
@@ -3240,7 +3242,13 @@ Use `Nostrum.Api.Self.update_voice_state/4` directly instead.
 
       </div>
 
-<p>Represents different presence activites the bot can have</p><p>{:playing, name}</p><p>{:listening, name}</p><p>{:custom, state}</p>
+<p>Represents different presence activites the bot can have.</p><h2 id="t:activity/0-possible-values" class="section-heading">
+  <a href="#t:activity/0-possible-values" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Possible values</span>
+</h2>
+<ul><li><code class="inline">{:playing, name}</code></li><li><code class="inline">{:streaming, name, url}</code></li><li><code class="inline">{:listening, name}</code></li><li><code class="inline">{:watching, name}</code></li><li><code class="inline">{:custom, state}</code></li><li><code class="inline">{:competing, name}</code></li></ul>
   </section>
 </section>
 <section class="detail" id="t:allowed_mention/0">
@@ -3252,7 +3260,7 @@ Use `Nostrum.Api.Self.update_voice_state/4` directly instead.
     </a>
     <h1 class="signature" translate="no">allowed_mention()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L141" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L145" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -3290,7 +3298,7 @@ mentions in a message, see <a href="#t:allowed_mentions/0"><code class="inline">
     </a>
     <h1 class="signature" translate="no">allowed_mentions()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L167" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L171" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -3327,7 +3335,7 @@ Consider using this option when you are going to display user generated content.
     </a>
     <h1 class="signature" translate="no">emoji()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L124" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L128" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -3442,7 +3450,7 @@ The tuple can also be empty to search from the most recent message in the channe
     </a>
     <h1 class="signature" translate="no">options()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L132" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L136" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -3511,7 +3519,7 @@ supports or needs.</p>
     </a>
     <h1 class="signature" translate="no">add_guild_member(guild_id, user_id, options)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L981" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L985" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -3539,7 +3547,7 @@ Use `Nostrum.Api.Guild.add_member/3` directly instead.
     </a>
     <h1 class="signature" translate="no">add_guild_member!(guild_id, user_id, options)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L990" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L994" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -3578,7 +3586,7 @@ Use `Nostrum.Api.Guild.add_member/3` directly instead.
     </a>
     <h1 class="signature" translate="no">add_guild_member_role(guild_id, user_id, role_id, reason \\ nil)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1036" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1040" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -3606,7 +3614,7 @@ Use `Nostrum.Api.Guild.add_member_role/4` directly instead.
     </a>
     <h1 class="signature" translate="no">add_pinned_channel_message(channel_id, message_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L645" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L649" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -3634,7 +3642,7 @@ Use `Nostrum.Api.Channel.pin_message/2` directly instead.
     </a>
     <h1 class="signature" translate="no">add_pinned_channel_message!(channel_id, message_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L654" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L658" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -3670,7 +3678,7 @@ Use `Nostrum.Api.Channel.pin_message/2` directly instead.
     </a>
     <h1 class="signature" translate="no">add_thread_member(thread_id, user_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2043" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2047" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -3700,7 +3708,7 @@ Use `Nostrum.Api.Thread.add_member/2` directly instead.
     </a>
     <h1 class="signature" translate="no">batch_edit_application_command_permissions(application_id \\ Me.get().id, guild_id, permissions)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1959" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1963" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -3730,7 +3738,7 @@ Use `Nostrum.Api.ApplicationCommand.batch_edit_permissions/3` directly instead.
     </a>
     <h1 class="signature" translate="no">begin_guild_prune(guild_id, days, reason \\ nil)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1215" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1219" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -3758,7 +3766,7 @@ Use `Nostrum.Api.Guild.begin_prune/3` directly instead.
     </a>
     <h1 class="signature" translate="no">begin_guild_prune!(guild_id, days, reason)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1225" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1229" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -3795,7 +3803,7 @@ Use `Nostrum.Api.Guild.begin_prune/3` directly instead.
     </a>
     <h1 class="signature" translate="no">bulk_delete_messages(channel_id, messages, filter)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L520" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L524" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -3825,7 +3833,7 @@ Use `Nostrum.Api.Channel.bulk_delete_messages/3` directly instead.
     </a>
     <h1 class="signature" translate="no">bulk_delete_messages!(channel_id, messages, filter \\ true)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L529" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L533" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -3860,7 +3868,7 @@ Use `Nostrum.Api.Channel.bulk_delete_messages/3` directly instead.
     </a>
     <h1 class="signature" translate="no">bulk_overwrite_global_application_commands(application_id \\ Me.get().id, commands)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1693" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1697" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -3890,7 +3898,7 @@ Use `Nostrum.Api.ApplicationCommand.bulk_overwrite_global_commands/2` directly i
     </a>
     <h1 class="signature" translate="no">bulk_overwrite_guild_application_commands(application_id \\ Me.get().id, guild_id, commands)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1742" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1746" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -3922,7 +3930,7 @@ Use `Nostrum.Api.ApplicationCommand.bulk_overwrite_guild_commands/3` directly in
     </a>
     <h1 class="signature" translate="no">create_channel_invite(channel_id, options \\ [], reason \\ nil)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L591" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L595" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -3954,7 +3962,7 @@ Use `Nostrum.Api.Invite.create/3` directly instead.
     </a>
     <h1 class="signature" translate="no">create_channel_invite!(channel_id, options \\ [], reason \\ nil)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L601" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L605" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -3990,7 +3998,7 @@ Use `Nostrum.Api.Invite.create/3` directly instead.
     </a>
     <h1 class="signature" translate="no">create_dm(user_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1498" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1502" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -4018,7 +4026,7 @@ Use `Nostrum.Api.User.create_dm/1` directly instead.
     </a>
     <h1 class="signature" translate="no">create_dm!(user_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1506" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1510" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -4053,7 +4061,7 @@ Use `Nostrum.Api.User.create_dm/1` directly instead.
     </a>
     <h1 class="signature" translate="no">create_file_part_for_multipart(file, index, boundary, name_override \\ nil)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2180" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2184" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -4077,7 +4085,7 @@ Use `Nostrum.Api.User.create_dm/1` directly instead.
     </a>
     <h1 class="signature" translate="no">create_followup_message(application_id \\ Me.get().id, token, webhook_payload)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1878" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1882" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -4107,7 +4115,7 @@ Use `Nostrum.Api.Interaction.create_followup_message/3` directly instead.
     </a>
     <h1 class="signature" translate="no">create_followup_message!(application_id \\ Me.get().id, token, webhook_payload)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1889" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1893" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -4148,7 +4156,7 @@ Use `Nostrum.Api.Interaction.create_followup_message/3` directly instead.
     </a>
     <h1 class="signature" translate="no">create_global_application_command(application_id \\ Me.get().id, command)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1669" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1673" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -4176,7 +4184,7 @@ Use `Nostrum.Api.ApplicationCommand.create_global_command/2` directly instead.
     </a>
     <h1 class="signature" translate="no">create_group_dm(access_tokens, nicks)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1515" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1519" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -4204,7 +4212,7 @@ Use `Nostrum.Api.User.create_group_dm/2` directly instead.
     </a>
     <h1 class="signature" translate="no">create_group_dm!(access_tokens, nicks)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1524" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1528" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -4241,7 +4249,7 @@ Use `Nostrum.Api.User.create_group_dm/2` directly instead.
     </a>
     <h1 class="signature" translate="no">create_guild_application_command(application_id \\ Me.get().id, guild_id, command)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1709" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1713" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -4269,7 +4277,7 @@ Use `Nostrum.Api.ApplicationCommand.create_guild_command/3` directly instead.
     </a>
     <h1 class="signature" translate="no">create_guild_auto_moderation_rule(guild_id, options)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2083" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2087" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -4299,7 +4307,7 @@ Use `Nostrum.Api.AutoModeration.create_rule/2` directly instead.
     </a>
     <h1 class="signature" translate="no">create_guild_ban(guild_id, user_id, days_to_delete, reason \\ nil)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1086" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1090" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -4327,7 +4335,7 @@ Use `Nostrum.Api.Guild.ban_member/4` directly instead.
     </a>
     <h1 class="signature" translate="no">create_guild_channel(guild_id, options)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L908" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L912" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -4355,7 +4363,7 @@ Use `Nostrum.Api.Channel.create/2` directly instead.
     </a>
     <h1 class="signature" translate="no">create_guild_channel!(guild_id, options)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L917" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L921" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -4390,7 +4398,7 @@ Use `Nostrum.Api.Channel.create/2` directly instead.
     </a>
     <h1 class="signature" translate="no">create_guild_emoji(guild_id, options, reason \\ nil)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L717" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L721" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -4420,7 +4428,7 @@ Use `Nostrum.Api.Guild.create_emoji/3` directly instead.
     </a>
     <h1 class="signature" translate="no">create_guild_emoji!(guild_id, params, reason \\ nil)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L726" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L730" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -4456,7 +4464,7 @@ Use `Nostrum.Api.Guild.create_emoji/3` directly instead.
     </a>
     <h1 class="signature" translate="no">create_guild_integrations(guild_id, options)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1268" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1272" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -4486,7 +4494,7 @@ Use `Nostrum.Api.Guild.create_integration/2` directly instead.
     </a>
     <h1 class="signature" translate="no">create_guild_role(guild_id, options, reason \\ nil)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1120" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1124" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -4516,7 +4524,7 @@ Use `Nostrum.Api.Guild.create_role/3` directly instead.
     </a>
     <h1 class="signature" translate="no">create_guild_role!(guild_id, options, reason \\ nil)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1129" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1133" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -4554,7 +4562,7 @@ Use `Nostrum.Api.Guild.create_role/3` directly instead.
     </a>
     <h1 class="signature" translate="no">create_guild_scheduled_event(guild_id, reason \\ nil, options)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1316" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1320" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -4584,7 +4592,7 @@ Use `Nostrum.Api.ScheduledEvent.create/3` directly instead.
     </a>
     <h1 class="signature" translate="no">create_guild_sticker(guild_id, name, description, tags, file, reason \\ nil)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L796" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L800" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -4612,7 +4620,7 @@ Use `Nostrum.Api.Sticker.create/6` directly instead.
     </a>
     <h1 class="signature" translate="no">create_interaction_response(interaction, response)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1761" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1765" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -4642,7 +4650,7 @@ Use `Nostrum.Api.Sticker.create/6` directly instead.
     </a>
     <h1 class="signature" translate="no">create_interaction_response(id, token, response)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1779" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1783" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -4670,7 +4678,7 @@ Use `Nostrum.Api.Interaction.create_response/3` directly instead.
     </a>
     <h1 class="signature" translate="no">create_interaction_response!(interaction, response)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1771" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1775" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -4705,7 +4713,7 @@ Use `Nostrum.Api.Interaction.create_response/3` directly instead.
     </a>
     <h1 class="signature" translate="no">create_interaction_response!(id, token, response)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1784" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1788" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -4731,7 +4739,7 @@ Use `Nostrum.Api.Interaction.create_response/3` directly instead.
     </a>
     <h1 class="signature" translate="no">create_message(channel_id, options)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L194" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L198" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -4759,7 +4767,7 @@ Use `Nostrum.Api.Message.create/2` directly instead.
     </a>
     <h1 class="signature" translate="no">create_message!(channel_id, options)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L204" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L208" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -4795,7 +4803,7 @@ Use `Nostrum.Api.Message.create/2` directly instead.
     </a>
     <h1 class="signature" translate="no">create_multipart(files, json, boundary)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2158" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2162" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -4817,7 +4825,7 @@ Use `Nostrum.Api.Message.create/2` directly instead.
     </a>
     <h1 class="signature" translate="no">create_reaction(channel_id, message_id, emoji)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L287" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L291" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -4845,7 +4853,7 @@ Use `Nostrum.Api.Message.react/3` directly instead.
     </a>
     <h1 class="signature" translate="no">create_reaction!(channel_id, message_id, emoji)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L296" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L300" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -4884,7 +4892,7 @@ Use `Nostrum.Api.Message.react/3` directly instead.
     </a>
     <h1 class="signature" translate="no">create_webhook(channel_id, args, reason \\ nil)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1549" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1553" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -4912,7 +4920,7 @@ Use `Nostrum.Api.Webhook.create/3` directly instead.
     </a>
     <h1 class="signature" translate="no">delete_all_reactions(channel_id, message_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L376" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L380" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -4940,7 +4948,7 @@ Use `Nostrum.Api.Message.clear_reactions/2` directly instead.
     </a>
     <h1 class="signature" translate="no">delete_all_reactions!(channel_id, message_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L385" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L389" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -4975,7 +4983,7 @@ Use `Nostrum.Api.Message.clear_reactions/2` directly instead.
     </a>
     <h1 class="signature" translate="no">delete_channel(channel_id, reason \\ nil)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L466" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L470" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -5005,7 +5013,7 @@ Use `Nostrum.Api.Channel.delete/2` directly instead.
     </a>
     <h1 class="signature" translate="no">delete_channel!(channel_id, reason \\ nil)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L475" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L479" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -5043,7 +5051,7 @@ Use `Nostrum.Api.Channel.delete/2` directly instead.
     </a>
     <h1 class="signature" translate="no">delete_channel_permissions(channel_id, overwrite_id, reason \\ nil)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L565" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L569" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -5073,7 +5081,7 @@ Use `Nostrum.Api.Channel.delete_permissions/3` directly instead.
     </a>
     <h1 class="signature" translate="no">delete_global_application_command(application_id \\ Me.get().id, command_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1685" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1689" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -5101,7 +5109,7 @@ Use `Nostrum.Api.ApplicationCommand.delete_global_command/2` directly instead.
     </a>
     <h1 class="signature" translate="no">delete_guild(guild_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L872" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L876" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -5129,7 +5137,7 @@ Use `Nostrum.Api.Guild.delete/1` directly instead.
     </a>
     <h1 class="signature" translate="no">delete_guild!(guild_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L881" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L885" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -5163,7 +5171,7 @@ Use `Nostrum.Api.Guild.delete/1` directly instead.
     </a>
     <h1 class="signature" translate="no">delete_guild_application_command(application_id \\ Me.get().id, guild_id, command_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1730" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1734" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -5191,7 +5199,7 @@ Use `Nostrum.Api.ApplicationCommand.delete_guild_command/3` directly instead.
     </a>
     <h1 class="signature" translate="no">delete_guild_auto_moderation_rule(guild_id, rule_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2099" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2103" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -5221,7 +5229,7 @@ Use `Nostrum.Api.AutoModeration.delete_rule/2` directly instead.
     </a>
     <h1 class="signature" translate="no">delete_guild_emoji(guild_id, emoji_id, reason \\ nil)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L754" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L758" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -5251,7 +5259,7 @@ Use `Nostrum.Api.Guild.delete_emoji/3` directly instead.
     </a>
     <h1 class="signature" translate="no">delete_guild_emoji!(guild_id, emoji_id, reason \\ nil)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L763" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L767" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -5287,7 +5295,7 @@ Use `Nostrum.Api.Guild.delete_emoji/3` directly instead.
     </a>
     <h1 class="signature" translate="no">delete_guild_integrations(guild_id, integration_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1284" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1288" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -5317,7 +5325,7 @@ Use `Nostrum.Api.Guild.delete_integration/2` directly instead.
     </a>
     <h1 class="signature" translate="no">delete_guild_role(guild_id, role_id, reason \\ nil)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1179" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1183" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -5347,7 +5355,7 @@ Use `Nostrum.Api.Guild.delete_role/3` directly instead.
     </a>
     <h1 class="signature" translate="no">delete_guild_role!(guild_id, role_id, reason \\ nil)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1188" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1192" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -5383,7 +5391,7 @@ Use `Nostrum.Api.Guild.delete_role/3` directly instead.
     </a>
     <h1 class="signature" translate="no">delete_guild_scheduled_event(guild_id, event_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1340" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1344" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -5411,7 +5419,7 @@ Use `Nostrum.Api.ScheduledEvent.delete/2` directly instead.
     </a>
     <h1 class="signature" translate="no">delete_guild_sticker(guild_id, sticker_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L812" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L816" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -5441,7 +5449,7 @@ Use `Nostrum.Api.Sticker.delete/2` directly instead.
     </a>
     <h1 class="signature" translate="no">delete_interaction_followup_message(application_id \\ Me.get().id, token, message_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1898" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1902" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -5471,7 +5479,7 @@ Use `Nostrum.Api.Interaction.delete_followup_message/3` directly instead.
     </a>
     <h1 class="signature" translate="no">delete_interaction_followup_message!(application_id \\ Me.get().id, token, message_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1913" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1917" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -5509,7 +5517,7 @@ Use `Nostrum.Api.Interaction.delete_followup_message/3` directly instead.
     </a>
     <h1 class="signature" translate="no">delete_interaction_response(interaction)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1843" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1847" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -5540,7 +5548,7 @@ Use `Nostrum.Api.Interaction.delete_followup_message/3` directly instead.
     </a>
     <h1 class="signature" translate="no">delete_interaction_response(id \\ Me.get().id, token)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1859" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1863" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -5568,7 +5576,7 @@ Use `Nostrum.Api.Interaction.delete_response/2` directly instead.
     </a>
     <h1 class="signature" translate="no">delete_interaction_response!(interaction)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1850" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1854" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -5603,7 +5611,7 @@ Use `Nostrum.Api.Interaction.delete_response/2` directly instead.
     </a>
     <h1 class="signature" translate="no">delete_interaction_response!(id \\ Me.get().id, token)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1869" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1873" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -5641,7 +5649,7 @@ Use `Nostrum.Api.Interaction.delete_response/2` directly instead.
     </a>
     <h1 class="signature" translate="no">delete_invite(invite_code)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1382" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1386" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -5669,7 +5677,7 @@ Use `Nostrum.Api.Invite.delete/1` directly instead.
     </a>
     <h1 class="signature" translate="no">delete_invite!(invite_code)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1391" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1395" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -5702,7 +5710,7 @@ Use `Nostrum.Api.Invite.delete/1` directly instead.
     </a>
     <h1 class="signature" translate="no">delete_message(message)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L251" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L255" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -5731,7 +5739,7 @@ Use `Nostrum.Api.Invite.delete/1` directly instead.
     </a>
     <h1 class="signature" translate="no">delete_message(channel_id, message_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L259" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L263" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -5759,7 +5767,7 @@ Use `Nostrum.Api.Message.delete/2` directly instead.
     </a>
     <h1 class="signature" translate="no">delete_message!(message)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L268" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L272" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -5791,7 +5799,7 @@ Use `Nostrum.Api.Message.delete/2` directly instead.
     </a>
     <h1 class="signature" translate="no">delete_message!(channel_id, message_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L278" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L282" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -5824,7 +5832,7 @@ Use `Nostrum.Api.Message.delete/2` directly instead.
     </a>
     <h1 class="signature" translate="no">delete_own_reaction(channel_id, message_id, emoji)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L305" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L309" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -5852,7 +5860,7 @@ Use `Nostrum.Api.Message.unreact/3` directly instead.
     </a>
     <h1 class="signature" translate="no">delete_own_reaction!(channel_id, message_id, emoji)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L314" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L318" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -5889,7 +5897,7 @@ Use `Nostrum.Api.Message.unreact/3` directly instead.
     </a>
     <h1 class="signature" translate="no">delete_pinned_channel_message(channel_id, message_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L663" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L667" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -5917,7 +5925,7 @@ Use `Nostrum.Api.Channel.unpin_message/2` directly instead.
     </a>
     <h1 class="signature" translate="no">delete_pinned_channel_message!(channel_id, message_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L672" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L676" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -5953,7 +5961,7 @@ Use `Nostrum.Api.Channel.unpin_message/2` directly instead.
     </a>
     <h1 class="signature" translate="no">delete_reaction(channel_id, message_id, emoji)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L340" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L344" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -5981,7 +5989,7 @@ Use `Nostrum.Api.Message.delete_emoji_reactions/3` directly instead.
     </a>
     <h1 class="signature" translate="no">delete_reaction!(channel_id, message_id, emoji)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L349" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L353" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -6018,7 +6026,7 @@ Use `Nostrum.Api.Message.delete_emoji_reactions/3` directly instead.
     </a>
     <h1 class="signature" translate="no">delete_user_reaction(channel_id, message_id, emoji, user_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L323" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L327" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -6046,7 +6054,7 @@ Use `Nostrum.Api.Message.delete_user_reaction/4` directly instead.
     </a>
     <h1 class="signature" translate="no">delete_user_reaction!(channel_id, message_id, emoji, user_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L331" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L335" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -6085,7 +6093,7 @@ Use `Nostrum.Api.Message.delete_user_reaction/4` directly instead.
     </a>
     <h1 class="signature" translate="no">delete_webhook(webhook_id, reason \\ nil)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1613" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1617" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -6115,7 +6123,7 @@ Use `Nostrum.Api.Webhook.delete/2` directly instead.
     </a>
     <h1 class="signature" translate="no">edit_application_command_permissions(application_id \\ Me.get().id, guild_id, command_id, permissions)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1946" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1950" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -6145,7 +6153,7 @@ Use `Nostrum.Api.ApplicationCommand.edit_command_permissions/4` directly instead
     </a>
     <h1 class="signature" translate="no">edit_channel_permissions(channel_id, overwrite_id, permission_info, reason \\ nil)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L538" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L542" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -6175,7 +6183,7 @@ Use `Nostrum.Api.Channel.edit_permissions/4` directly instead.
     </a>
     <h1 class="signature" translate="no">edit_channel_permissions!(channel_id, overwrite_id, permission_info, reason \\ nil)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L556" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L560" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -6218,7 +6226,7 @@ Use `Nostrum.Api.Channel.edit_permissions/4` directly instead.
     </a>
     <h1 class="signature" translate="no">edit_global_application_command(application_id \\ Me.get().id, command_id, command)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1677" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1681" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -6248,7 +6256,7 @@ Use `Nostrum.Api.ApplicationCommand.edit_global_command/3` directly instead.
     </a>
     <h1 class="signature" translate="no">edit_guild_application_command(application_id \\ Me.get().id, guild_id, command_id, command)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1717" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1721" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -6276,7 +6284,7 @@ Use `Nostrum.Api.ApplicationCommand.edit_guild_command/4` directly instead.
     </a>
     <h1 class="signature" translate="no">edit_interaction_response(interaction, response)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1803" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1807" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -6308,7 +6316,7 @@ Use `Nostrum.Api.ApplicationCommand.edit_guild_command/4` directly instead.
     </a>
     <h1 class="signature" translate="no">edit_interaction_response(id \\ Me.get().id, token, response)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1821" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1825" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -6336,7 +6344,7 @@ Use `Nostrum.Api.Interaction.edit_response/3` directly instead.
     </a>
     <h1 class="signature" translate="no">edit_interaction_response!(interaction, response)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1813" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1817" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -6371,7 +6379,7 @@ Use `Nostrum.Api.Interaction.edit_response/3` directly instead.
     </a>
     <h1 class="signature" translate="no">edit_interaction_response!(id \\ Me.get().id, token, response)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1832" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1836" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -6410,7 +6418,7 @@ Use `Nostrum.Api.Interaction.edit_response/3` directly instead.
     </a>
     <h1 class="signature" translate="no">edit_message(message, options)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L232" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L236" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -6440,7 +6448,7 @@ Use `Nostrum.Api.Interaction.edit_response/3` directly instead.
     </a>
     <h1 class="signature" translate="no">edit_message(channel_id, message_id, options)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L213" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L217" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -6468,7 +6476,7 @@ Use `Nostrum.Api.Message.edit/3` directly instead.
     </a>
     <h1 class="signature" translate="no">edit_message!(message, options)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L241" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L245" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -6501,7 +6509,7 @@ Use `Nostrum.Api.Message.edit/3` directly instead.
     </a>
     <h1 class="signature" translate="no">edit_message!(channel_id, message_id, options)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L222" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L226" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -6538,7 +6546,7 @@ Use `Nostrum.Api.Message.edit/3` directly instead.
     </a>
     <h1 class="signature" translate="no">edit_webhook_message(webhook_id, webhook_token, message_id, args)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1629" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1633" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -6568,7 +6576,7 @@ Use `Nostrum.Api.Webhook.edit_message/4` directly instead.
     </a>
     <h1 class="signature" translate="no">execute_git_webhook(webhook_id, webhook_token, wait \\ false)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1645" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1649" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -6598,7 +6606,7 @@ Use `Nostrum.Api.Webhook.execute_git/3` directly instead.
     </a>
     <h1 class="signature" translate="no">execute_slack_webhook(webhook_id, webhook_token, wait \\ false)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1637" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1641" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -6628,7 +6636,7 @@ Use `Nostrum.Api.Webhook.execute_slack/3` directly instead.
     </a>
     <h1 class="signature" translate="no">execute_webhook(webhook_id, webhook_token, args, wait \\ false)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1621" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1625" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -6656,7 +6664,7 @@ Use `Nostrum.Api.Webhook.execute/4` directly instead.
     </a>
     <h1 class="signature" translate="no">expire_poll(channel_id, message_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L412" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L416" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -6684,7 +6692,7 @@ Use `Nostrum.Api.Poll.expire/2` directly instead.
     </a>
     <h1 class="signature" translate="no">expire_poll!(channel_id, message_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L421" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L425" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -6719,7 +6727,7 @@ Use `Nostrum.Api.Poll.expire/2` directly instead.
     </a>
     <h1 class="signature" translate="no">get_application_command_permissions(application_id \\ Me.get().id, guild_id, command_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1934" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1938" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -6747,7 +6755,7 @@ Use `Nostrum.Api.ApplicationCommand.permissions/3` directly instead.
     </a>
     <h1 class="signature" translate="no">get_application_information()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1653" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1657" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -6775,7 +6783,7 @@ Use `Nostrum.Api.Self.application_information/0` directly instead.
     </a>
     <h1 class="signature" translate="no">get_channel(channel_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L430" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L434" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -6803,7 +6811,7 @@ Use `Nostrum.Api.Channel.get/1` directly instead.
     </a>
     <h1 class="signature" translate="no">get_channel!(channel_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L439" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L443" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -6836,7 +6844,7 @@ Use `Nostrum.Api.Channel.get/1` directly instead.
     </a>
     <h1 class="signature" translate="no">get_channel_invites(channel_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L573" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L577" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -6864,7 +6872,7 @@ Use `Nostrum.Api.Invite.channel_invites/1` directly instead.
     </a>
     <h1 class="signature" translate="no">get_channel_invites!(channel_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L582" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L586" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -6897,7 +6905,7 @@ Use `Nostrum.Api.Invite.channel_invites/1` directly instead.
     </a>
     <h1 class="signature" translate="no">get_channel_message(channel_id, message_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L502" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L506" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -6925,7 +6933,7 @@ Use `Nostrum.Api.Message.get/2` directly instead.
     </a>
     <h1 class="signature" translate="no">get_channel_message!(channel_id, message_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L511" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L515" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -6960,7 +6968,7 @@ Use `Nostrum.Api.Message.get/2` directly instead.
     </a>
     <h1 class="signature" translate="no">get_channel_messages(channel_id, limit, locator \\ {})</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L484" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L488" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -6990,7 +6998,7 @@ Use `Nostrum.Api.Channel.messages/3` directly instead.
     </a>
     <h1 class="signature" translate="no">get_channel_messages!(channel_id, limit, locator \\ {})</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L493" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L497" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -7023,7 +7031,7 @@ Use `Nostrum.Api.Channel.messages/3` directly instead.
     </a>
     <h1 class="signature" translate="no">get_channel_webhooks(channel_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1565" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1569" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -7051,7 +7059,7 @@ Use `Nostrum.Api.Channel.webhooks/1` directly instead.
     </a>
     <h1 class="signature" translate="no">get_current_user()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1418" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1422" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -7079,7 +7087,7 @@ Use `Nostrum.Api.Self.get/0` directly instead.
     </a>
     <h1 class="signature" translate="no">get_current_user!()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1427" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1431" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -7113,7 +7121,7 @@ Use `Nostrum.Api.Self.get/0` directly instead.
     </a>
     <h1 class="signature" translate="no">get_current_user_guilds(options \\ [])</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1454" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1458" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -7143,7 +7151,7 @@ Use `Nostrum.Api.Self.guilds/1` directly instead.
     </a>
     <h1 class="signature" translate="no">get_current_user_guilds!(options \\ [])</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1463" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1467" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -7178,7 +7186,7 @@ Use `Nostrum.Api.Self.guilds/1` directly instead.
     </a>
     <h1 class="signature" translate="no">get_global_application_commands(application_id \\ Me.get().id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1661" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1665" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -7206,7 +7214,7 @@ Use `Nostrum.Api.ApplicationCommand.global_commands/1` directly instead.
     </a>
     <h1 class="signature" translate="no">get_guild(guild_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L836" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L840" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -7234,7 +7242,7 @@ Use `Nostrum.Api.Guild.get/1` directly instead.
     </a>
     <h1 class="signature" translate="no">get_guild!(guild_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L845" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L849" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -7269,7 +7277,7 @@ Use `Nostrum.Api.Guild.get/1` directly instead.
     </a>
     <h1 class="signature" translate="no">get_guild_application_command_permissions(application_id \\ Me.get().id, guild_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1926" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1930" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -7299,7 +7307,7 @@ Use `Nostrum.Api.ApplicationCommand.guild_permissions/2` directly instead.
     </a>
     <h1 class="signature" translate="no">get_guild_application_commands(application_id \\ Me.get().id, guild_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1701" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1705" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -7329,7 +7337,7 @@ Use `Nostrum.Api.ApplicationCommand.guild_commands/2` directly instead.
     </a>
     <h1 class="signature" translate="no">get_guild_audit_log(guild_id, options \\ [])</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L828" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L832" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -7357,7 +7365,7 @@ Use `Nostrum.Api.Guild.audit_log/2` directly instead.
     </a>
     <h1 class="signature" translate="no">get_guild_auto_moderation_rule(guild_id, rule_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2075" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2079" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -7385,7 +7393,7 @@ Use `Nostrum.Api.AutoModeration.rule/2` directly instead.
     </a>
     <h1 class="signature" translate="no">get_guild_auto_moderation_rules(guild_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2067" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2071" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -7413,7 +7421,7 @@ Use `Nostrum.Api.AutoModeration.rules/1` directly instead.
     </a>
     <h1 class="signature" translate="no">get_guild_ban(guild_id, user_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1070" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1074" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -7441,7 +7449,7 @@ Use `Nostrum.Api.Guild.ban/2` directly instead.
     </a>
     <h1 class="signature" translate="no">get_guild_bans(guild_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1078" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1082" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -7469,7 +7477,7 @@ Use `Nostrum.Api.Guild.bans/1` directly instead.
     </a>
     <h1 class="signature" translate="no">get_guild_channels(guild_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L890" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L894" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -7497,7 +7505,7 @@ Use `Nostrum.Api.Guild.channels/1` directly instead.
     </a>
     <h1 class="signature" translate="no">get_guild_channels!(guild_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L899" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L903" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -7530,7 +7538,7 @@ Use `Nostrum.Api.Guild.channels/1` directly instead.
     </a>
     <h1 class="signature" translate="no">get_guild_emoji(guild_id, emoji_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L699" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L703" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -7558,7 +7566,7 @@ Use `Nostrum.Api.Guild.emoji/2` directly instead.
     </a>
     <h1 class="signature" translate="no">get_guild_emoji!(guild_id, emoji_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L708" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L712" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -7591,7 +7599,7 @@ Use `Nostrum.Api.Guild.emoji/2` directly instead.
     </a>
     <h1 class="signature" translate="no">get_guild_integrations(guild_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1260" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1264" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -7619,7 +7627,7 @@ Use `Nostrum.Api.Guild.integrations/1` directly instead.
     </a>
     <h1 class="signature" translate="no">get_guild_invites(guild_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1242" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1246" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -7647,7 +7655,7 @@ Use `Nostrum.Api.Invite.guild_invites/1` directly instead.
     </a>
     <h1 class="signature" translate="no">get_guild_invites!(guild_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1251" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1255" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -7680,7 +7688,7 @@ Use `Nostrum.Api.Invite.guild_invites/1` directly instead.
     </a>
     <h1 class="signature" translate="no">get_guild_member(guild_id, user_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L945" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L949" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -7708,7 +7716,7 @@ Use `Nostrum.Api.Guild.member/2` directly instead.
     </a>
     <h1 class="signature" translate="no">get_guild_member!(guild_id, user_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L954" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L958" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -7741,7 +7749,7 @@ Use `Nostrum.Api.Guild.member/2` directly instead.
     </a>
     <h1 class="signature" translate="no">get_guild_prune_count(guild_id, days)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1197" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1201" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -7769,7 +7777,7 @@ Use `Nostrum.Api.Guild.estimate_prune_count/2` directly instead.
     </a>
     <h1 class="signature" translate="no">get_guild_prune_count!(guild_id, days)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1206" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1210" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -7802,7 +7810,7 @@ Use `Nostrum.Api.Guild.estimate_prune_count/2` directly instead.
     </a>
     <h1 class="signature" translate="no">get_guild_roles(guild_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1102" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1106" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -7830,7 +7838,7 @@ Use `Nostrum.Api.Guild.roles/1` directly instead.
     </a>
     <h1 class="signature" translate="no">get_guild_roles!(guild_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1111" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1115" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -7863,7 +7871,7 @@ Use `Nostrum.Api.Guild.roles/1` directly instead.
     </a>
     <h1 class="signature" translate="no">get_guild_scheduled_event(guild_id, event_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1332" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1336" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -7893,7 +7901,7 @@ Use `Nostrum.Api.ScheduledEvent.get/2` directly instead.
     </a>
     <h1 class="signature" translate="no">get_guild_scheduled_event_users(guild_id, event_id, params \\ [])</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1356" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1360" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -7921,7 +7929,7 @@ Use `Nostrum.Api.ScheduledEvent.users/3` directly instead.
     </a>
     <h1 class="signature" translate="no">get_guild_scheduled_events(guild_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1324" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1328" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -7949,7 +7957,7 @@ Use `Nostrum.Api.Guild.scheduled_events/1` directly instead.
     </a>
     <h1 class="signature" translate="no">get_guild_sticker(guild_id, sticker_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L788" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L792" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -7977,7 +7985,7 @@ Use `Nostrum.Api.Sticker.get/2` directly instead.
     </a>
     <h1 class="signature" translate="no">get_guild_webhooks(guild_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1573" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1577" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -8005,7 +8013,7 @@ Use `Nostrum.Api.Guild.webhooks/1` directly instead.
     </a>
     <h1 class="signature" translate="no">get_guild_widget(guild_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1300" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1304" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -8035,7 +8043,7 @@ Use `Nostrum.Api.Guild.widget/1` directly instead.
     </a>
     <h1 class="signature" translate="no">get_invite(invite_code, options \\ [])</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1364" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1368" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -8065,7 +8073,7 @@ Use `Nostrum.Api.Invite.get/2` directly instead.
     </a>
     <h1 class="signature" translate="no">get_invite!(invite_code, options \\ [])</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1373" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1377" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -8098,7 +8106,7 @@ Use `Nostrum.Api.Invite.get/2` directly instead.
     </a>
     <h1 class="signature" translate="no">get_original_interaction_response(interaction)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1793" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1797" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -8126,7 +8134,7 @@ Use `Nostrum.Api.Interaction.original_response/2` directly instead.
     </a>
     <h1 class="signature" translate="no">get_pinned_messages(channel_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L627" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L631" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -8154,7 +8162,7 @@ Use `Nostrum.Api.Channel.pinned_messages/1` directly instead.
     </a>
     <h1 class="signature" translate="no">get_pinned_messages!(channel_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L636" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L640" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -8189,7 +8197,7 @@ Use `Nostrum.Api.Channel.pinned_messages/1` directly instead.
     </a>
     <h1 class="signature" translate="no">get_poll_answer_voters(channel_id, message_id, answer_id, params \\ [])</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L394" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L398" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -8219,7 +8227,7 @@ Use `Nostrum.Api.Poll.answer_voters/4` directly instead.
     </a>
     <h1 class="signature" translate="no">get_poll_answer_voters!(channel_id, message_id, answer_id, params \\ [])</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L403" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L407" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -8247,7 +8255,7 @@ Use `Nostrum.Api.Poll.answer_voters/4` directly instead.
     </a>
     <h1 class="signature" translate="no">get_reactions(channel_id, message_id, emoji, params \\ [])</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L358" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L362" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -8277,7 +8285,7 @@ Use `Nostrum.Api.Message.reactions/4` directly instead.
     </a>
     <h1 class="signature" translate="no">get_reactions!(channel_id, message_id, emoji, params \\ [])</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L367" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L371" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -8315,7 +8323,7 @@ Use `Nostrum.Api.Message.reactions/4` directly instead.
     </a>
     <h1 class="signature" translate="no">get_sticker(sticker_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L772" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L776" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -8343,7 +8351,7 @@ Use `Nostrum.Api.Sticker.get/1` directly instead.
     </a>
     <h1 class="signature" translate="no">get_sticker_packs()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L820" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L824" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -8371,7 +8379,7 @@ Use `Nostrum.Api.Sticker.packs/0` directly instead.
     </a>
     <h1 class="signature" translate="no">get_thread_member(thread_id, user_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1987" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1991" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -8399,7 +8407,7 @@ Use `Nostrum.Api.Thread.member/2` directly instead.
     </a>
     <h1 class="signature" translate="no">get_thread_members(thread_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1995" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1999" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -8427,7 +8435,7 @@ Use `Nostrum.Api.Thread.members/1` directly instead.
     </a>
     <h1 class="signature" translate="no">get_user(user_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1400" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1404" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -8455,7 +8463,7 @@ Use `Nostrum.Api.User.get/1` directly instead.
     </a>
     <h1 class="signature" translate="no">get_user!(user_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1409" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1413" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -8487,7 +8495,7 @@ Use `Nostrum.Api.User.get/1` directly instead.
     </a>
     <h1 class="signature" translate="no">get_user_connections()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1533" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1537" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -8515,7 +8523,7 @@ Use `Nostrum.Api.Self.connections/0` directly instead.
     </a>
     <h1 class="signature" translate="no">get_user_dms()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1480" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1484" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -8543,7 +8551,7 @@ Use `Nostrum.Api.Self.dms/0` directly instead.
     </a>
     <h1 class="signature" translate="no">get_user_dms!()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1489" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1493" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -8575,7 +8583,7 @@ Use `Nostrum.Api.Self.dms/0` directly instead.
     </a>
     <h1 class="signature" translate="no">get_voice_region(guild_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1234" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1238" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -8603,7 +8611,7 @@ Use `Nostrum.Api.Guild.voice_region/1` directly instead.
     </a>
     <h1 class="signature" translate="no">get_webhook(webhook_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1581" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1585" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -8631,7 +8639,7 @@ Use `Nostrum.Api.Webhook.get/1` directly instead.
     </a>
     <h1 class="signature" translate="no">get_webhook_message(webhook, message_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1557" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1561" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -8659,7 +8667,7 @@ Use `Nostrum.Api.Webhook.get_message/2` directly instead.
     </a>
     <h1 class="signature" translate="no">get_webhook_with_token(webhook_id, webhook_token)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1589" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1593" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -8687,7 +8695,7 @@ Use `Nostrum.Api.Webhook.get_with_token/2` directly instead.
     </a>
     <h1 class="signature" translate="no">join_thread(thread_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2035" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2039" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -8715,7 +8723,7 @@ Use `Nostrum.Api.Thread.join/1` directly instead.
     </a>
     <h1 class="signature" translate="no">leave_guild(guild_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1472" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1476" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -8743,7 +8751,7 @@ Use `Nostrum.Api.Guild.leave/1` directly instead.
     </a>
     <h1 class="signature" translate="no">leave_thread(thread_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2051" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2055" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -8771,7 +8779,7 @@ Use `Nostrum.Api.Thread.leave/1` directly instead.
     </a>
     <h1 class="signature" translate="no">list_guild_emojis(guild_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L681" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L685" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -8799,7 +8807,7 @@ Use `Nostrum.Api.Guild.emojis/1` directly instead.
     </a>
     <h1 class="signature" translate="no">list_guild_emojis!(guild_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L690" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L694" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -8834,7 +8842,7 @@ Use `Nostrum.Api.Guild.emojis/1` directly instead.
     </a>
     <h1 class="signature" translate="no">list_guild_members(guild_id, options \\ %{})</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L963" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L967" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -8864,7 +8872,7 @@ Use `Nostrum.Api.Guild.members/2` directly instead.
     </a>
     <h1 class="signature" translate="no">list_guild_members!(guild_id, options \\ %{})</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L972" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L976" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -8897,7 +8905,7 @@ Use `Nostrum.Api.Guild.members/2` directly instead.
     </a>
     <h1 class="signature" translate="no">list_guild_stickers(guild_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L780" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L784" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -8925,7 +8933,7 @@ Use `Nostrum.Api.Sticker.list/1` directly instead.
     </a>
     <h1 class="signature" translate="no">list_guild_threads(guild_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2003" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2007" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -8955,7 +8963,7 @@ Use `Nostrum.Api.Thread.list/1` directly instead.
     </a>
     <h1 class="signature" translate="no">list_joined_private_archived_threads(channel_id, options \\ [])</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2027" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2031" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -8985,7 +8993,7 @@ Use `Nostrum.Api.Thread.joined_private_archived_threads/2` directly instead.
     </a>
     <h1 class="signature" translate="no">list_private_archived_threads(channel_id, options \\ [])</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2019" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2023" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -9015,7 +9023,7 @@ Use `Nostrum.Api.Thread.private_archived_threads/2` directly instead.
     </a>
     <h1 class="signature" translate="no">list_public_archived_threads(channel_id, options \\ [])</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2011" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2015" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -9043,7 +9051,7 @@ Use `Nostrum.Api.Thread.public_archived_threads/2` directly instead.
     </a>
     <h1 class="signature" translate="no">list_voice_regions()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1541" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1545" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -9073,7 +9081,7 @@ Use `Nostrum.Api.Guild.voice_regions/0` directly instead.
     </a>
     <h1 class="signature" translate="no">modify_channel(channel_id, options, reason \\ nil)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L448" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L452" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -9103,7 +9111,7 @@ Use `Nostrum.Api.Channel.modify/3` directly instead.
     </a>
     <h1 class="signature" translate="no">modify_channel!(channel_id, options, reason \\ nil)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L457" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L461" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -9139,7 +9147,7 @@ Use `Nostrum.Api.Channel.modify/3` directly instead.
     </a>
     <h1 class="signature" translate="no">modify_current_user(options)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1436" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1440" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -9167,7 +9175,7 @@ Use `Nostrum.Api.Self.modify/1` directly instead.
     </a>
     <h1 class="signature" translate="no">modify_current_user!(options)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1445" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1449" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -9201,7 +9209,7 @@ Use `Nostrum.Api.Self.modify/1` directly instead.
     </a>
     <h1 class="signature" translate="no">modify_current_user_nick(guild_id, options \\ %{})</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1018" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1022" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -9231,7 +9239,7 @@ Use `Nostrum.Api.Guild.modify_self_nick/2` directly instead.
     </a>
     <h1 class="signature" translate="no">modify_current_user_nick!(guild_id, options \\ %{})</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1027" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1031" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -9268,7 +9276,7 @@ Use `Nostrum.Api.Guild.modify_self_nick/2` directly instead.
     </a>
     <h1 class="signature" translate="no">modify_guild(guild_id, options \\ [], reason \\ nil)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L854" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L858" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -9298,7 +9306,7 @@ Use `Nostrum.Api.Guild.modify/3` directly instead.
     </a>
     <h1 class="signature" translate="no">modify_guild!(guild_id, options \\ [])</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L863" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L867" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -9331,7 +9339,7 @@ Use `Nostrum.Api.Guild.modify/3` directly instead.
     </a>
     <h1 class="signature" translate="no">modify_guild_auto_moderation_rule(guild_id, rule_id, options)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2091" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2095" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -9359,7 +9367,7 @@ Use `Nostrum.Api.AutoModeration.modify_rule/3` directly instead.
     </a>
     <h1 class="signature" translate="no">modify_guild_channel_positions(guild_id, positions)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L926" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L930" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -9387,7 +9395,7 @@ Use `Nostrum.Api.Guild.modify_channel_positions/2` directly instead.
     </a>
     <h1 class="signature" translate="no">modify_guild_channel_positions!(guild_id, positions)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L936" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L940" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -9426,7 +9434,7 @@ Use `Nostrum.Api.Guild.modify_channel_positions/2` directly instead.
     </a>
     <h1 class="signature" translate="no">modify_guild_emoji(guild_id, emoji_id, options \\ %{}, reason \\ nil)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L735" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L739" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -9456,7 +9464,7 @@ Use `Nostrum.Api.Guild.modify_emoji/4` directly instead.
     </a>
     <h1 class="signature" translate="no">modify_guild_emoji!(guild_id, emoji_id, options, reason \\ nil)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L745" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L749" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -9493,7 +9501,7 @@ Use `Nostrum.Api.Guild.modify_emoji/4` directly instead.
     </a>
     <h1 class="signature" translate="no">modify_guild_integrations(guild_id, integration_id, options)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1276" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1280" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -9525,7 +9533,7 @@ Use `Nostrum.Api.Guild.modify_integration/3` directly instead.
     </a>
     <h1 class="signature" translate="no">modify_guild_member(guild_id, user_id, options \\ %{}, reason \\ nil)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L999" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1003" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -9557,7 +9565,7 @@ Use `Nostrum.Api.Guild.modify_member/4` directly instead.
     </a>
     <h1 class="signature" translate="no">modify_guild_member!(guild_id, user_id, options \\ %{}, reason \\ nil)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1009" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1013" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -9596,7 +9604,7 @@ Use `Nostrum.Api.Guild.modify_member/4` directly instead.
     </a>
     <h1 class="signature" translate="no">modify_guild_role(guild_id, role_id, options, reason \\ nil)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1160" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1164" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -9626,7 +9634,7 @@ Use `Nostrum.Api.Guild.modify_role/4` directly instead.
     </a>
     <h1 class="signature" translate="no">modify_guild_role!(guild_id, role_id, options, reason \\ nil)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1170" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1174" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -9665,7 +9673,7 @@ Use `Nostrum.Api.Guild.modify_role/4` directly instead.
     </a>
     <h1 class="signature" translate="no">modify_guild_role_positions(guild_id, positions, reason \\ nil)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1138" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1142" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -9695,7 +9703,7 @@ Use `Nostrum.Api.Guild.modify_role_positions/3` directly instead.
     </a>
     <h1 class="signature" translate="no">modify_guild_role_positions!(guild_id, positions, reason \\ nil)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1151" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1155" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -9733,7 +9741,7 @@ Use `Nostrum.Api.Guild.modify_role_positions/3` directly instead.
     </a>
     <h1 class="signature" translate="no">modify_guild_scheduled_event(guild_id, event_id, reason \\ nil, options)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1348" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1352" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -9761,7 +9769,7 @@ Use `Nostrum.Api.ScheduledEvent.modify/4` directly instead.
     </a>
     <h1 class="signature" translate="no">modify_guild_sticker(guild_id, sticker_id, options)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L804" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L808" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -9789,7 +9797,7 @@ Use `Nostrum.Api.Sticker.modify/3` directly instead.
     </a>
     <h1 class="signature" translate="no">modify_guild_widget(guild_id, options)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1308" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1312" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -9819,7 +9827,7 @@ Use `Nostrum.Api.Guild.modify_widget/2` directly instead.
     </a>
     <h1 class="signature" translate="no">modify_webhook(webhook_id, args, reason \\ nil)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1597" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1601" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -9849,7 +9857,7 @@ Use `Nostrum.Api.Webhook.modify/3` directly instead.
     </a>
     <h1 class="signature" translate="no">modify_webhook_with_token(webhook_id, webhook_token, args, reason \\ nil)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1605" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1609" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -9879,7 +9887,7 @@ Use `Nostrum.Api.Webhook.modify_with_token/4` directly instead.
     </a>
     <h1 class="signature" translate="no">remove_guild_ban(guild_id, user_id, reason \\ nil)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1094" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1098" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -9909,7 +9917,7 @@ Use `Nostrum.Api.Guild.unban_member/3` directly instead.
     </a>
     <h1 class="signature" translate="no">remove_guild_member(guild_id, user_id, reason \\ nil)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1052" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1056" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -9939,7 +9947,7 @@ Use `Nostrum.Api.Guild.kick_member/3` directly instead.
     </a>
     <h1 class="signature" translate="no">remove_guild_member!(guild_id, user_id, reason \\ nil)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1061" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1065" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -9977,7 +9985,7 @@ Use `Nostrum.Api.Guild.kick_member/3` directly instead.
     </a>
     <h1 class="signature" translate="no">remove_guild_member_role(guild_id, user_id, role_id, reason \\ nil)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1044" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1048" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -10005,7 +10013,7 @@ Use `Nostrum.Api.Guild.remove_member_role/4` directly instead.
     </a>
     <h1 class="signature" translate="no">remove_thread_member(thread_id, user_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2059" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2063" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -10033,7 +10041,7 @@ Use `Nostrum.Api.Thread.remove_member/2` directly instead.
     </a>
     <h1 class="signature" translate="no">request(request)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2104" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2108" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -10065,7 +10073,7 @@ Use `Nostrum.Api.Thread.remove_member/2` directly instead.
     </a>
     <h1 class="signature" translate="no">request(method, route, body \\ &quot;&quot;, params \\ [])</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2110" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2114" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -10096,7 +10104,7 @@ Use `Nostrum.Api.Thread.remove_member/2` directly instead.
     </a>
     <h1 class="signature" translate="no">request_multipart(method, route, body, params \\ [])</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2131" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2135" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -10127,7 +10135,7 @@ Use `Nostrum.Api.Thread.remove_member/2` directly instead.
     </a>
     <h1 class="signature" translate="no">start_thread_in_forum_channel(channel_id, options, reason \\ nil)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1979" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1983" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -10157,7 +10165,7 @@ Use `Nostrum.Api.Thread.create_in_forum/3` directly instead.
     </a>
     <h1 class="signature" translate="no">start_thread_with_message(channel_id, message_id, options, reason \\ nil)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1971" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1975" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -10185,7 +10193,7 @@ Use `Nostrum.Api.Thread.create_with_message/4` directly instead.
     </a>
     <h1 class="signature" translate="no">start_typing(channel_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L610" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L614" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -10213,7 +10221,7 @@ Use `Nostrum.Api.Channel.start_typing/1` directly instead.
     </a>
     <h1 class="signature" translate="no">start_typing!(channel_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L618" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L622" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -10245,7 +10253,7 @@ Use `Nostrum.Api.Channel.start_typing/1` directly instead.
     </a>
     <h1 class="signature" translate="no">sync_guild_integrations(guild_id, integration_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1292" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1296" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -10273,7 +10281,7 @@ Use `Nostrum.Api.Guild.sync_integration/2` directly instead.
     </a>
     <h1 class="signature" translate="no">update_shard_status(pid, status, activity)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L173" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L177" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -10301,7 +10309,7 @@ Use `Nostrum.Api.Self.update_shard_status/3` directly instead.
     </a>
     <h1 class="signature" translate="no">update_status(status, activity)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L180" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L184" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>
@@ -10333,7 +10341,7 @@ Use `Nostrum.Api.Self.update_status/2` directly instead.
     </a>
     <h1 class="signature" translate="no">update_voice_state(guild_id, channel_id, self_mute \\ false, self_deaf \\ false)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L187" class="icon-action" rel="help" title="View Source">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L191" class="icon-action" rel="help" title="View Source">
        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
        <span class="sr-only">View Source</span>
      </a>

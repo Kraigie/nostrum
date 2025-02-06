@@ -14,7 +14,7 @@
 
     <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
     <script src="dist/handlebars.templates-IHH6HKET.js"></script>
-    <script src="dist/sidebar_items-2FCC37AB.js"></script>
+    <script src="dist/sidebar_items-7BAE9786.js"></script>
     <script src="docs_config.js"></script>
     <script async src="dist/html-GXQ6W6IF.js"></script>
 
@@ -150,11 +150,11 @@ cache.</p><h2 id="module-writing-your-own-presence-cache" class="section-heading
   </a>
   <span class="text">Writing your own presence cache</span>
 </h2>
-<p>As with the other caches, the presence cache API consists of two parts:</p><ul><li><p>The functions that nostrum calls, such as <a href="#c:create/1"><code class="inline">create/1</code></a> or <a href="#c:update/1"><code class="inline">update/1</code></a>.
+<p>As with the other caches, the presence cache API consists of three parts:</p><ul><li><p>The functions that nostrum calls, such as <a href="#c:create/1"><code class="inline">create/1</code></a> or <a href="#c:update/1"><code class="inline">update/1</code></a>.
 These <strong>do not create any objects in the Discord API</strong>, they are purely
 created to update the cached data from data that Discord sends us. If you
 want to create objects on Discord, use the functions exposed by <a href="Nostrum.Api.html"><code class="inline">Nostrum.Api</code></a>
-instead.</p></li><li><p>the QLC query handle for read operations, <code class="inline">c:query_handle/0</code>, and</p></li><li><p>the <a href="#c:child_spec/1"><code class="inline">child_spec/1</code></a> callback for starting the cache under a supervisor.</p></li></ul><p>You need to implement both of them for nostrum to work with your custom
+instead.</p></li><li><p>the callbacks for read operations, also documented in this module, and</p></li><li><p>the <a href="#c:child_spec/1"><code class="inline">child_spec/1</code></a> callback for starting the cache under a supervisor.</p></li></ul><p>You need to implement both of them for nostrum to work with your custom
 cache.</p>
     </section>
 
@@ -582,12 +582,12 @@ will then effectively call <code class="inline">wrap_query(fn -&gt; ... end)</co
   </a>
   <span class="text">Example</span>
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="k">case</span><span class="w"> </span><span class="nc">Nostrum.Cache.PresenceCache</span><span class="o">.</span><span class="n">get</span><span class="p" data-group-id="2751352117-1">(</span><span class="mi">111133335555</span><span class="p">,</span><span class="w"> </span><span class="mi">222244446666</span><span class="p" data-group-id="2751352117-1">)</span><span class="w"> </span><span class="k" data-group-id="2751352117-2">do</span><span class="w">
-  </span><span class="p" data-group-id="2751352117-3">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">presence</span><span class="p" data-group-id="2751352117-3">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
-    </span><span class="s">&quot;They&#39;re </span><span class="si" data-group-id="2751352117-4">#{</span><span class="n">presence</span><span class="o">.</span><span class="n">status</span><span class="si" data-group-id="2751352117-4">}</span><span class="s">&quot;</span><span class="w">
-  </span><span class="p" data-group-id="2751352117-5">{</span><span class="ss">:error</span><span class="p">,</span><span class="w"> </span><span class="c">_reason</span><span class="p" data-group-id="2751352117-5">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+<pre><code class="makeup elixir" translate="no"><span class="k">case</span><span class="w"> </span><span class="nc">Nostrum.Cache.PresenceCache</span><span class="o">.</span><span class="n">get</span><span class="p" data-group-id="3276874079-1">(</span><span class="mi">111133335555</span><span class="p">,</span><span class="w"> </span><span class="mi">222244446666</span><span class="p" data-group-id="3276874079-1">)</span><span class="w"> </span><span class="k" data-group-id="3276874079-2">do</span><span class="w">
+  </span><span class="p" data-group-id="3276874079-3">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">presence</span><span class="p" data-group-id="3276874079-3">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+    </span><span class="s">&quot;They&#39;re </span><span class="si" data-group-id="3276874079-4">#{</span><span class="n">presence</span><span class="o">.</span><span class="n">status</span><span class="si" data-group-id="3276874079-4">}</span><span class="s">&quot;</span><span class="w">
+  </span><span class="p" data-group-id="3276874079-5">{</span><span class="ss">:error</span><span class="p">,</span><span class="w"> </span><span class="c">_reason</span><span class="p" data-group-id="3276874079-5">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
     </span><span class="s">&quot;They&#39;re dead Jim&quot;</span><span class="w">
-</span><span class="k" data-group-id="2751352117-2">end</span></code></pre>
+</span><span class="k" data-group-id="3276874079-2">end</span></code></pre>
   </section>
 </section>
 <section class="detail" id="get!/3">
