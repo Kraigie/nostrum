@@ -105,13 +105,8 @@ defmodule Nostrum.Api.Self do
   @doc """
   Updates the status of the bot for a certain shard.
 
-  ## Activity Options
-    {:playing, name}
-    {:streaming, name, url}
-    {:listening, name}
-    {:watching, name}
-    {:custom, state}
-    {:competing, name} 
+  Please see the types `t:Api.status/0` and `t:Api.activity/0` for more
+  information.
   """
   @spec update_shard_status(pid, Api.status(), Api.activity()) :: :ok
   def update_shard_status(pid, status, activity) do

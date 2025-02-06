@@ -94,22 +94,26 @@ defmodule Nostrum.Api do
   @typedoc """
   Represents different statuses the bot can have.
 
-    - `:dnd` - Red circle.
-    - `:idle` - Yellow circle.
-    - `:online` - Green circle.
-    - `:invisible` - The bot will appear offline.
+  - `:dnd` - Red circle.
+  - `:idle` - Yellow circle.
+  - `:online` - Green circle.
+  - `:invisible` - The bot will appear offline.
   """
   @type status :: :dnd | :idle | :online | :invisible
 
   @typedoc """
-  Represents different presence activites the bot can have
-  {:playing, name}
-  {:streaming, name, url}
-  {:listening, name}
-  {:watching, name}
-  {:custom, state}
-  {:competing, name}
+  Represents different presence activites the bot can have.
+
+  ## Possible values
+
+  - `{:playing, name}`
+  - `{:streaming, name, url}`
+  - `{:listening, name}`
+  - `{:watching, name}`
+  - `{:custom, state}`
+  - `{:competing, name}`
   """
+  @typedoc since: "0.11.0"
   @type activity ::
           {:playing, String.t()}
           | {:streaming, String.t(), String.t()}
