@@ -51,7 +51,7 @@ defmodule Nostrum.Mixfile do
         "Cheat Sheets": ~r"/cheat-sheets/"
       ],
       source_ref: "master",
-      assets: "guides/assets",
+      assets: %{"guides/assets" => "assets"},
       nest_modules_by_prefix: [
         Nostrum.Cache,
         Nostrum.Cache.ChannelGuildMapping,
