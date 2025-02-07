@@ -53,6 +53,7 @@ defmodule Nostrum.Mixfile do
       source_ref: "master",
       assets: %{"guides/assets" => "assets"},
       nest_modules_by_prefix: [
+        Nostrum.Api,
         Nostrum.Cache,
         Nostrum.Cache.ChannelGuildMapping,
         Nostrum.Cache.GuildCache,
@@ -79,7 +80,7 @@ defmodule Nostrum.Mixfile do
   def groups_for_modules do
     [
       Api: [
-        ~r/Nostrum.Api$/,
+        ~r/Nostrum.Api/,
         ~r/Nostrum.Consumer/,
         ~r/Nostrum.(Permission|Voice)/
       ],
