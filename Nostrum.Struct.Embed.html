@@ -4,36 +4,22 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="ExDoc v0.32.1">
+    <meta name="generator" content="ExDoc v0.37.0">
     <meta name="project" content="Nostrum v0.11.0-dev">
 
 
     <title>Nostrum.Struct.Embed — Nostrum v0.11.0-dev</title>
-    <link rel="stylesheet" href="dist/html-elixir-2C5PUTIB.css" />
 
+    <link rel="stylesheet" href="dist/html-elixir-6X3L5KMG.css" />
 
-    <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
-    <script src="dist/handlebars.templates-IHH6HKET.js"></script>
-    <script src="dist/sidebar_items-7BAE9786.js"></script>
-    <script src="docs_config.js"></script>
-    <script async src="dist/html-GXQ6W6IF.js"></script>
-
+    <script defer src="dist/sidebar_items-7BAE9786.js"></script>
+    <script defer src="docs_config.js"></script>
+    <script defer src="dist/html-6VTPNSGQ.js"></script>
 
   </head>
-  <body data-type="modules" class="page-behaviour">
-    <script>
-
-      try {
-        var settings = JSON.parse(localStorage.getItem('ex_doc:settings') || '{}');
-
-        if (settings.theme === 'dark' ||
-           ((settings.theme === 'system' || settings.theme == null) &&
-             window.matchMedia('(prefers-color-scheme: dark)').matches)
-           ) {
-          document.body.classList.add('dark')
-        }
-      } catch (error) { }
-    </script>
+  <body>
+    <script>(()=>{var t="ex_doc:settings",e="dark";var o="dark",s="light";var E="sidebar_state",n="closed";var r="sidebar_width";var a="sidebar-open";var i=new URLSearchParams(window.location.search),S=i.get("theme")||JSON.parse(localStorage.getItem(t)||"{}").theme;(S===o||S!==s&&window.matchMedia("(prefers-color-scheme: dark)").matches)&&document.body.classList.add(e);var d=sessionStorage.getItem(E),A=d!==n&&!window.matchMedia(`screen and (max-width: ${768}px)`).matches;document.body.classList.toggle(a,A);var c=sessionStorage.getItem(r);c&&document.body.style.setProperty("--sidebarWidth",`${c}px`);var p=/(Macintosh|iPhone|iPad|iPod)/.test(window.navigator.userAgent);document.documentElement.classList.toggle("apple-os",p);})();
+</script>
 
 <div class="body-wrapper">
 
@@ -59,47 +45,13 @@ Nostrum
         </div>
       </div>
     </div>
-    <ul id="sidebar-listNav" class="sidebar-listNav" role="tablist">
-      <li>
-        <button id="extras-list-tab-button" role="tab" data-type="extras" aria-controls="extras-tab-panel" aria-selected="true" tabindex="0">
-Pages
-        </button>
-      </li>
-
-        <li>
-          <button id="modules-list-tab-button" role="tab" data-type="modules" aria-controls="modules-tab-panel" aria-selected="false" tabindex="-1">
-            Modules
-          </button>
-        </li>
-
-
-        <li>
-          <button id="tasks-list-tab-button" role="tab" data-type="tasks" aria-controls="tasks-tab-panel" aria-selected="false" tabindex="-1">
-            <span translate="no">Mix</span> Tasks
-          </button>
-        </li>
-
-    </ul>
+    <ul id="sidebar-list-nav" class="sidebar-list-nav" role="tablist" data-extras=""></ul>
   </div>
-
-  <div id="extras-tab-panel" class="sidebar-tabpanel" role="tabpanel" aria-labelledby="extras-list-tab-button">
-    <ul id="extras-full-list" class="full-list"></ul>
-  </div>
-
-    <div id="modules-tab-panel" class="sidebar-tabpanel" role="tabpanel" aria-labelledby="modules-list-tab-button" hidden>
-      <ul id="modules-full-list" class="full-list"></ul>
-    </div>
-
-
-    <div id="tasks-tab-panel" class="sidebar-tabpanel" role="tabpanel" aria-labelledby="tasks-list-tab-button" hidden>
-      <ul id="tasks-full-list" class="full-list"></ul>
-    </div>
-
 </nav>
 
-<main class="content">
-  <output role="status" id="toast"></output>
+<output role="status" id="toast"></output>
 
+<main class="content page-behaviour" id="main" data-type="modules">
   <div id="content" class="content-inner">
     <div class="top-search">
       <div class="search-settings">
@@ -108,8 +60,8 @@ Pages
             <span class="sr-only">Search documentation of Nostrum</span>
             <input name="q" type="text" class="search-input" placeholder="Press / to search" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
           </label>
-          <button type="submit" class="search-button" aria-label="Submit Search">
-            <i class="ri-search-2-line ri-lg" aria-hidden="true" title="Submit search"></i>
+          <button type="submit" class="search-button" aria-label="Submit Search" tabindex="-1">
+            <i class="ri-search-2-line ri-lg" aria-hidden="true"></i>
           </button>
           <button type="button" tabindex="-1" class="search-close-button" aria-hidden="true">
             <i class="ri-close-line ri-lg" title="Cancel search"></i>
@@ -125,17 +77,19 @@ Pages
     </div>
 
 <div id="top-content">
-  <h1>
+  <div class="heading-with-actions top-heading">
+    <h1>
+      <span translate="no">Nostrum.Struct.Embed</span> <small>behaviour</small>
+      <small class="app-vsn" translate="no">(Nostrum v0.11.0-dev)</small>
+
+    </h1>
 
       <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L1" title="View Source" class="icon-action" rel="help">
         <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         <span class="sr-only">View Source</span>
       </a>
 
-    <span translate="no">Nostrum.Struct.Embed</span> <small>behaviour</small>
-    <small class="app-vsn" translate="no">(Nostrum v0.11.0-dev)</small>
-
-  </h1>
+  </div>
 
 
     <section id="moduledoc">
@@ -145,66 +99,66 @@ Pages
   </a>
   <span class="text">Building Embeds</span>
 </h2>
-<p><a href="Nostrum.Struct.Embed.html#content"><code class="inline">Nostrum.Struct.Embed</code></a>s can be built using this module's builder functions
+<p><a href="Nostrum.Struct.Embed.html"><code class="inline">Nostrum.Struct.Embed</code></a>s can be built using this module's builder functions
 or standard <a href="https://hexdocs.pm/elixir/Map.html"><code class="inline">Map</code></a> syntax:</p><pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="kn">import</span><span class="w"> </span><span class="nc">Nostrum.Struct.Embed</span><span class="w">
 </span><span class="gp unselectable">...&gt; </span><span class="n">embed</span><span class="w"> </span><span class="o">=</span><span class="w">
-</span><span class="gp unselectable">...&gt; </span><span class="w">  </span><span class="p" data-group-id="6482377108-1">%</span><span class="nc" data-group-id="6482377108-1">Nostrum.Struct.Embed</span><span class="p" data-group-id="6482377108-1">{</span><span class="p" data-group-id="6482377108-1">}</span><span class="w">
-</span><span class="gp unselectable">...&gt; </span><span class="w">  </span><span class="o">|&gt;</span><span class="w"> </span><span class="n">put_title</span><span class="p" data-group-id="6482377108-2">(</span><span class="s">&quot;craig&quot;</span><span class="p" data-group-id="6482377108-2">)</span><span class="w">
-</span><span class="gp unselectable">...&gt; </span><span class="w">  </span><span class="o">|&gt;</span><span class="w"> </span><span class="n">put_description</span><span class="p" data-group-id="6482377108-3">(</span><span class="s">&quot;nostrum&quot;</span><span class="p" data-group-id="6482377108-3">)</span><span class="w">
-</span><span class="gp unselectable">...&gt; </span><span class="w">  </span><span class="o">|&gt;</span><span class="w"> </span><span class="n">put_url</span><span class="p" data-group-id="6482377108-4">(</span><span class="s">&quot;https://google.com/&quot;</span><span class="p" data-group-id="6482377108-4">)</span><span class="w">
-</span><span class="gp unselectable">...&gt; </span><span class="w">  </span><span class="o">|&gt;</span><span class="w"> </span><span class="n">put_timestamp</span><span class="p" data-group-id="6482377108-5">(</span><span class="s">&quot;2016-05-05T21:04:13.203Z&quot;</span><span class="p" data-group-id="6482377108-5">)</span><span class="w">
-</span><span class="gp unselectable">...&gt; </span><span class="w">  </span><span class="o">|&gt;</span><span class="w"> </span><span class="n">put_color</span><span class="p" data-group-id="6482377108-6">(</span><span class="mi">431_948</span><span class="p" data-group-id="6482377108-6">)</span><span class="w">
-</span><span class="gp unselectable">...&gt; </span><span class="w">  </span><span class="o">|&gt;</span><span class="w"> </span><span class="n">put_field</span><span class="p" data-group-id="6482377108-7">(</span><span class="s">&quot;Field 1&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Test&quot;</span><span class="p" data-group-id="6482377108-7">)</span><span class="w">
-</span><span class="gp unselectable">...&gt; </span><span class="w">  </span><span class="o">|&gt;</span><span class="w"> </span><span class="n">put_field</span><span class="p" data-group-id="6482377108-8">(</span><span class="s">&quot;Field 2&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;More test&quot;</span><span class="p">,</span><span class="w"> </span><span class="no">true</span><span class="p" data-group-id="6482377108-8">)</span><span class="w">
+</span><span class="gp unselectable">...&gt; </span><span class="w">  </span><span class="p" data-group-id="3928955429-1">%</span><span class="nc" data-group-id="3928955429-1">Nostrum.Struct.Embed</span><span class="p" data-group-id="3928955429-1">{</span><span class="p" data-group-id="3928955429-1">}</span><span class="w">
+</span><span class="gp unselectable">...&gt; </span><span class="w">  </span><span class="o">|&gt;</span><span class="w"> </span><span class="n">put_title</span><span class="p" data-group-id="3928955429-2">(</span><span class="s">&quot;craig&quot;</span><span class="p" data-group-id="3928955429-2">)</span><span class="w">
+</span><span class="gp unselectable">...&gt; </span><span class="w">  </span><span class="o">|&gt;</span><span class="w"> </span><span class="n">put_description</span><span class="p" data-group-id="3928955429-3">(</span><span class="s">&quot;nostrum&quot;</span><span class="p" data-group-id="3928955429-3">)</span><span class="w">
+</span><span class="gp unselectable">...&gt; </span><span class="w">  </span><span class="o">|&gt;</span><span class="w"> </span><span class="n">put_url</span><span class="p" data-group-id="3928955429-4">(</span><span class="s">&quot;https://google.com/&quot;</span><span class="p" data-group-id="3928955429-4">)</span><span class="w">
+</span><span class="gp unselectable">...&gt; </span><span class="w">  </span><span class="o">|&gt;</span><span class="w"> </span><span class="n">put_timestamp</span><span class="p" data-group-id="3928955429-5">(</span><span class="s">&quot;2016-05-05T21:04:13.203Z&quot;</span><span class="p" data-group-id="3928955429-5">)</span><span class="w">
+</span><span class="gp unselectable">...&gt; </span><span class="w">  </span><span class="o">|&gt;</span><span class="w"> </span><span class="n">put_color</span><span class="p" data-group-id="3928955429-6">(</span><span class="mi">431_948</span><span class="p" data-group-id="3928955429-6">)</span><span class="w">
+</span><span class="gp unselectable">...&gt; </span><span class="w">  </span><span class="o">|&gt;</span><span class="w"> </span><span class="n">put_field</span><span class="p" data-group-id="3928955429-7">(</span><span class="s">&quot;Field 1&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Test&quot;</span><span class="p" data-group-id="3928955429-7">)</span><span class="w">
+</span><span class="gp unselectable">...&gt; </span><span class="w">  </span><span class="o">|&gt;</span><span class="w"> </span><span class="n">put_field</span><span class="p" data-group-id="3928955429-8">(</span><span class="s">&quot;Field 2&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;More test&quot;</span><span class="p">,</span><span class="w"> </span><span class="no">true</span><span class="p" data-group-id="3928955429-8">)</span><span class="w">
 </span><span class="gp unselectable">...&gt; </span><span class="n">embed</span><span class="w">
-</span><span class="p" data-group-id="6482377108-9">%</span><span class="nc" data-group-id="6482377108-9">Nostrum.Struct.Embed</span><span class="p" data-group-id="6482377108-9">{</span><span class="w">
+</span><span class="p" data-group-id="3928955429-9">%</span><span class="nc" data-group-id="3928955429-9">Nostrum.Struct.Embed</span><span class="p" data-group-id="3928955429-9">{</span><span class="w">
   </span><span class="ss">title</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;craig&quot;</span><span class="p">,</span><span class="w">
   </span><span class="ss">description</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;nostrum&quot;</span><span class="p">,</span><span class="w">
   </span><span class="ss">url</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;https://google.com/&quot;</span><span class="p">,</span><span class="w">
   </span><span class="ss">timestamp</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;2016-05-05T21:04:13.203Z&quot;</span><span class="p">,</span><span class="w">
   </span><span class="ss">color</span><span class="p">:</span><span class="w"> </span><span class="mi">431_948</span><span class="p">,</span><span class="w">
-  </span><span class="ss">fields</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="6482377108-10">[</span><span class="w">
-    </span><span class="p" data-group-id="6482377108-11">%</span><span class="nc" data-group-id="6482377108-11">Nostrum.Struct.Embed.Field</span><span class="p" data-group-id="6482377108-11">{</span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Field 1&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">value</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Test&quot;</span><span class="p" data-group-id="6482377108-11">}</span><span class="p">,</span><span class="w">
-    </span><span class="p" data-group-id="6482377108-12">%</span><span class="nc" data-group-id="6482377108-12">Nostrum.Struct.Embed.Field</span><span class="p" data-group-id="6482377108-12">{</span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Field 2&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">value</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;More test&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">inline</span><span class="p">:</span><span class="w"> </span><span class="no">true</span><span class="p" data-group-id="6482377108-12">}</span><span class="w">
-  </span><span class="p" data-group-id="6482377108-10">]</span><span class="w">
-</span><span class="p" data-group-id="6482377108-9">}</span></code></pre><h2 id="module-using-structs" class="section-heading">
+  </span><span class="ss">fields</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="3928955429-10">[</span><span class="w">
+    </span><span class="p" data-group-id="3928955429-11">%</span><span class="nc" data-group-id="3928955429-11">Nostrum.Struct.Embed.Field</span><span class="p" data-group-id="3928955429-11">{</span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Field 1&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">value</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Test&quot;</span><span class="p" data-group-id="3928955429-11">}</span><span class="p">,</span><span class="w">
+    </span><span class="p" data-group-id="3928955429-12">%</span><span class="nc" data-group-id="3928955429-12">Nostrum.Struct.Embed.Field</span><span class="p" data-group-id="3928955429-12">{</span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Field 2&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">value</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;More test&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">inline</span><span class="p">:</span><span class="w"> </span><span class="no">true</span><span class="p" data-group-id="3928955429-12">}</span><span class="w">
+  </span><span class="p" data-group-id="3928955429-10">]</span><span class="w">
+</span><span class="p" data-group-id="3928955429-9">}</span></code></pre><h2 id="module-using-structs" class="section-heading">
   <a href="#module-using-structs" class="hover-link">
     <i class="ri-link-m" aria-hidden="true"></i>
   </a>
   <span class="text">Using structs</span>
 </h2>
-<p>You can also create <a href="Nostrum.Struct.Embed.html#content"><code class="inline">Nostrum.Struct.Embed</code></a>s from structs, by using the
-<a href="Nostrum.Struct.Embed.html#content"><code class="inline">Nostrum.Struct.Embed</code></a> module. Here's how the example above could be build using structs</p><pre><code class="makeup elixir" translate="no"><span class="w">  </span><span class="kd">defmodule</span><span class="w"> </span><span class="nc">MyApp.MyStruct</span><span class="w"> </span><span class="k" data-group-id="0992536619-1">do</span><span class="w">
+<p>You can also create <a href="Nostrum.Struct.Embed.html"><code class="inline">Nostrum.Struct.Embed</code></a>s from structs, by using the
+<a href="Nostrum.Struct.Embed.html"><code class="inline">Nostrum.Struct.Embed</code></a> module. Here's how the example above could be build using structs</p><pre><code class="makeup elixir" translate="no"><span class="w">  </span><span class="kd">defmodule</span><span class="w"> </span><span class="nc">MyApp.MyStruct</span><span class="w"> </span><span class="k" data-group-id="7661494577-1">do</span><span class="w">
     </span><span class="kn">use</span><span class="w"> </span><span class="nc">Nostrum.Struct.Embed</span><span class="w">
 
-    </span><span class="kd">defstruct</span><span class="w"> </span><span class="p" data-group-id="0992536619-2">[</span><span class="p" data-group-id="0992536619-2">]</span><span class="w">
+    </span><span class="kd">defstruct</span><span class="w"> </span><span class="p" data-group-id="7661494577-2">[</span><span class="p" data-group-id="7661494577-2">]</span><span class="w">
 
-    </span><span class="kd">def</span><span class="w"> </span><span class="nf">title</span><span class="p" data-group-id="0992536619-3">(</span><span class="bp">_</span><span class="p" data-group-id="0992536619-3">)</span><span class="p">,</span><span class="w"> </span><span class="ss">do</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;craig&quot;</span><span class="w">
-    </span><span class="kd">def</span><span class="w"> </span><span class="nf">description</span><span class="p" data-group-id="0992536619-4">(</span><span class="bp">_</span><span class="p" data-group-id="0992536619-4">)</span><span class="p">,</span><span class="w"> </span><span class="ss">do</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;nostrum&quot;</span><span class="w">
-    </span><span class="kd">def</span><span class="w"> </span><span class="nf">url</span><span class="p" data-group-id="0992536619-5">(</span><span class="bp">_</span><span class="p" data-group-id="0992536619-5">)</span><span class="p">,</span><span class="w"> </span><span class="ss">do</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;https://google.com/&quot;</span><span class="w">
-    </span><span class="kd">def</span><span class="w"> </span><span class="nf">timestamp</span><span class="p" data-group-id="0992536619-6">(</span><span class="bp">_</span><span class="p" data-group-id="0992536619-6">)</span><span class="p">,</span><span class="w"> </span><span class="ss">do</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;2016-05-05T21:04:13.203Z&quot;</span><span class="w">
-    </span><span class="kd">def</span><span class="w"> </span><span class="nf">color</span><span class="p" data-group-id="0992536619-7">(</span><span class="bp">_</span><span class="p" data-group-id="0992536619-7">)</span><span class="p">,</span><span class="w"> </span><span class="ss">do</span><span class="p">:</span><span class="w"> </span><span class="mi">431_948</span><span class="w">
+    </span><span class="kd">def</span><span class="w"> </span><span class="nf">title</span><span class="p" data-group-id="7661494577-3">(</span><span class="bp">_</span><span class="p" data-group-id="7661494577-3">)</span><span class="p">,</span><span class="w"> </span><span class="ss">do</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;craig&quot;</span><span class="w">
+    </span><span class="kd">def</span><span class="w"> </span><span class="nf">description</span><span class="p" data-group-id="7661494577-4">(</span><span class="bp">_</span><span class="p" data-group-id="7661494577-4">)</span><span class="p">,</span><span class="w"> </span><span class="ss">do</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;nostrum&quot;</span><span class="w">
+    </span><span class="kd">def</span><span class="w"> </span><span class="nf">url</span><span class="p" data-group-id="7661494577-5">(</span><span class="bp">_</span><span class="p" data-group-id="7661494577-5">)</span><span class="p">,</span><span class="w"> </span><span class="ss">do</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;https://google.com/&quot;</span><span class="w">
+    </span><span class="kd">def</span><span class="w"> </span><span class="nf">timestamp</span><span class="p" data-group-id="7661494577-6">(</span><span class="bp">_</span><span class="p" data-group-id="7661494577-6">)</span><span class="p">,</span><span class="w"> </span><span class="ss">do</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;2016-05-05T21:04:13.203Z&quot;</span><span class="w">
+    </span><span class="kd">def</span><span class="w"> </span><span class="nf">color</span><span class="p" data-group-id="7661494577-7">(</span><span class="bp">_</span><span class="p" data-group-id="7661494577-7">)</span><span class="p">,</span><span class="w"> </span><span class="ss">do</span><span class="p">:</span><span class="w"> </span><span class="mi">431_948</span><span class="w">
 
-    </span><span class="kd">def</span><span class="w"> </span><span class="nf">fields</span><span class="p" data-group-id="0992536619-8">(</span><span class="bp">_</span><span class="p" data-group-id="0992536619-8">)</span><span class="w"> </span><span class="k" data-group-id="0992536619-9">do</span><span class="w">
-      </span><span class="p" data-group-id="0992536619-10">[</span><span class="w">
-        </span><span class="p" data-group-id="0992536619-11">%</span><span class="nc" data-group-id="0992536619-11">Nostrum.Struct.Embed.Field</span><span class="p" data-group-id="0992536619-11">{</span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Field 1&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">value</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Test&quot;</span><span class="p" data-group-id="0992536619-11">}</span><span class="p">,</span><span class="w">
-        </span><span class="p" data-group-id="0992536619-12">%</span><span class="nc" data-group-id="0992536619-12">Nostrum.Struct.Embed.Field</span><span class="p" data-group-id="0992536619-12">{</span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Field 2&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">value</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;More test&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">inline</span><span class="p">:</span><span class="w"> </span><span class="no">true</span><span class="p" data-group-id="0992536619-12">}</span><span class="w">
-      </span><span class="p" data-group-id="0992536619-10">]</span><span class="w">
-    </span><span class="k" data-group-id="0992536619-9">end</span><span class="w">
-  </span><span class="k" data-group-id="0992536619-1">end</span><span class="w">
+    </span><span class="kd">def</span><span class="w"> </span><span class="nf">fields</span><span class="p" data-group-id="7661494577-8">(</span><span class="bp">_</span><span class="p" data-group-id="7661494577-8">)</span><span class="w"> </span><span class="k" data-group-id="7661494577-9">do</span><span class="w">
+      </span><span class="p" data-group-id="7661494577-10">[</span><span class="w">
+        </span><span class="p" data-group-id="7661494577-11">%</span><span class="nc" data-group-id="7661494577-11">Nostrum.Struct.Embed.Field</span><span class="p" data-group-id="7661494577-11">{</span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Field 1&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">value</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Test&quot;</span><span class="p" data-group-id="7661494577-11">}</span><span class="p">,</span><span class="w">
+        </span><span class="p" data-group-id="7661494577-12">%</span><span class="nc" data-group-id="7661494577-12">Nostrum.Struct.Embed.Field</span><span class="p" data-group-id="7661494577-12">{</span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Field 2&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">value</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;More test&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">inline</span><span class="p">:</span><span class="w"> </span><span class="no">true</span><span class="p" data-group-id="7661494577-12">}</span><span class="w">
+      </span><span class="p" data-group-id="7661494577-10">]</span><span class="w">
+    </span><span class="k" data-group-id="7661494577-9">end</span><span class="w">
+  </span><span class="k" data-group-id="7661494577-1">end</span><span class="w">
 
-</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Struct.Embed</span><span class="o">.</span><span class="n">from</span><span class="p" data-group-id="0992536619-13">(</span><span class="p" data-group-id="0992536619-14">%</span><span class="nc" data-group-id="0992536619-14">MyApp.MyStruct</span><span class="p" data-group-id="0992536619-14">{</span><span class="p" data-group-id="0992536619-14">}</span><span class="p" data-group-id="0992536619-13">)</span><span class="w">
-</span><span class="p" data-group-id="0992536619-15">%</span><span class="nc" data-group-id="0992536619-15">Nostrum.Struct.Embed</span><span class="p" data-group-id="0992536619-15">{</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Struct.Embed</span><span class="o">.</span><span class="n">from</span><span class="p" data-group-id="7661494577-13">(</span><span class="p" data-group-id="7661494577-14">%</span><span class="nc" data-group-id="7661494577-14">MyApp.MyStruct</span><span class="p" data-group-id="7661494577-14">{</span><span class="p" data-group-id="7661494577-14">}</span><span class="p" data-group-id="7661494577-13">)</span><span class="w">
+</span><span class="p" data-group-id="7661494577-15">%</span><span class="nc" data-group-id="7661494577-15">Nostrum.Struct.Embed</span><span class="p" data-group-id="7661494577-15">{</span><span class="w">
   </span><span class="ss">title</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;craig&quot;</span><span class="p">,</span><span class="w">
   </span><span class="ss">description</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;nostrum&quot;</span><span class="p">,</span><span class="w">
   </span><span class="ss">url</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;https://google.com/&quot;</span><span class="p">,</span><span class="w">
   </span><span class="ss">timestamp</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;2016-05-05T21:04:13.203Z&quot;</span><span class="p">,</span><span class="w">
   </span><span class="ss">color</span><span class="p">:</span><span class="w"> </span><span class="mi">431_948</span><span class="p">,</span><span class="w">
-  </span><span class="ss">fields</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="0992536619-16">[</span><span class="w">
-    </span><span class="p" data-group-id="0992536619-17">%</span><span class="nc" data-group-id="0992536619-17">Nostrum.Struct.Embed.Field</span><span class="p" data-group-id="0992536619-17">{</span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Field 1&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">value</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Test&quot;</span><span class="p" data-group-id="0992536619-17">}</span><span class="p">,</span><span class="w">
-    </span><span class="p" data-group-id="0992536619-18">%</span><span class="nc" data-group-id="0992536619-18">Nostrum.Struct.Embed.Field</span><span class="p" data-group-id="0992536619-18">{</span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Field 2&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">value</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;More test&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">inline</span><span class="p">:</span><span class="w"> </span><span class="no">true</span><span class="p" data-group-id="0992536619-18">}</span><span class="w">
-  </span><span class="p" data-group-id="0992536619-16">]</span><span class="w">
-</span><span class="p" data-group-id="0992536619-15">}</span></code></pre><p>See this modules callbacks for a list of all the functions that can be implemented.</p><p>The implementation of these callbacks is optional. Not implemented functions will simply
+  </span><span class="ss">fields</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="7661494577-16">[</span><span class="w">
+    </span><span class="p" data-group-id="7661494577-17">%</span><span class="nc" data-group-id="7661494577-17">Nostrum.Struct.Embed.Field</span><span class="p" data-group-id="7661494577-17">{</span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Field 1&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">value</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Test&quot;</span><span class="p" data-group-id="7661494577-17">}</span><span class="p">,</span><span class="w">
+    </span><span class="p" data-group-id="7661494577-18">%</span><span class="nc" data-group-id="7661494577-18">Nostrum.Struct.Embed.Field</span><span class="p" data-group-id="7661494577-18">{</span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Field 2&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">value</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;More test&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">inline</span><span class="p">:</span><span class="w"> </span><span class="no">true</span><span class="p" data-group-id="7661494577-18">}</span><span class="w">
+  </span><span class="p" data-group-id="7661494577-16">]</span><span class="w">
+</span><span class="p" data-group-id="7661494577-15">}</span></code></pre><p>See this modules callbacks for a list of all the functions that can be implemented.</p><p>The implementation of these callbacks is optional. Not implemented functions will simply
 be ignored.</p>
     </section>
 
@@ -224,7 +178,7 @@ be ignored.</p>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#t:author/0" translate="no">author()</a>
+        <a href="#t:author/0" data-no-tooltip="" translate="no">author()</a>
 
       </div>
 
@@ -234,7 +188,7 @@ be ignored.</p>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#t:color/0" translate="no">color()</a>
+        <a href="#t:color/0" data-no-tooltip="" translate="no">color()</a>
 
       </div>
 
@@ -244,7 +198,7 @@ be ignored.</p>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#t:description/0" translate="no">description()</a>
+        <a href="#t:description/0" data-no-tooltip="" translate="no">description()</a>
 
       </div>
 
@@ -254,7 +208,7 @@ be ignored.</p>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#t:fields/0" translate="no">fields()</a>
+        <a href="#t:fields/0" data-no-tooltip="" translate="no">fields()</a>
 
       </div>
 
@@ -264,7 +218,7 @@ be ignored.</p>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#t:footer/0" translate="no">footer()</a>
+        <a href="#t:footer/0" data-no-tooltip="" translate="no">footer()</a>
 
       </div>
 
@@ -274,7 +228,7 @@ be ignored.</p>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#t:image/0" translate="no">image()</a>
+        <a href="#t:image/0" data-no-tooltip="" translate="no">image()</a>
 
       </div>
 
@@ -284,7 +238,7 @@ be ignored.</p>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#t:provider/0" translate="no">provider()</a>
+        <a href="#t:provider/0" data-no-tooltip="" translate="no">provider()</a>
 
       </div>
 
@@ -294,7 +248,7 @@ be ignored.</p>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#t:t/0" translate="no">t()</a>
+        <a href="#t:t/0" data-no-tooltip="" translate="no">t()</a>
 
       </div>
 
@@ -302,7 +256,7 @@ be ignored.</p>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#t:thumbnail/0" translate="no">thumbnail()</a>
+        <a href="#t:thumbnail/0" data-no-tooltip="" translate="no">thumbnail()</a>
 
       </div>
 
@@ -312,7 +266,7 @@ be ignored.</p>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#t:timestamp/0" translate="no">timestamp()</a>
+        <a href="#t:timestamp/0" data-no-tooltip="" translate="no">timestamp()</a>
 
       </div>
 
@@ -322,7 +276,7 @@ be ignored.</p>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#t:title/0" translate="no">title()</a>
+        <a href="#t:title/0" data-no-tooltip="" translate="no">title()</a>
 
       </div>
 
@@ -332,7 +286,7 @@ be ignored.</p>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#t:type/0" translate="no">type()</a>
+        <a href="#t:type/0" data-no-tooltip="" translate="no">type()</a>
 
       </div>
 
@@ -342,7 +296,7 @@ be ignored.</p>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#t:url/0" translate="no">url()</a>
+        <a href="#t:url/0" data-no-tooltip="" translate="no">url()</a>
 
       </div>
 
@@ -352,7 +306,7 @@ be ignored.</p>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#t:video/0" translate="no">video()</a>
+        <a href="#t:video/0" data-no-tooltip="" translate="no">video()</a>
 
       </div>
 
@@ -368,7 +322,7 @@ be ignored.</p>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#c:author/1" translate="no">author(struct)</a>
+        <a href="#c:author/1" data-no-tooltip="" translate="no">author(struct)</a>
 
       </div>
 
@@ -376,7 +330,7 @@ be ignored.</p>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#c:color/1" translate="no">color(struct)</a>
+        <a href="#c:color/1" data-no-tooltip="" translate="no">color(struct)</a>
 
       </div>
 
@@ -384,7 +338,7 @@ be ignored.</p>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#c:description/1" translate="no">description(struct)</a>
+        <a href="#c:description/1" data-no-tooltip="" translate="no">description(struct)</a>
 
       </div>
 
@@ -392,7 +346,7 @@ be ignored.</p>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#c:fields/1" translate="no">fields(struct)</a>
+        <a href="#c:fields/1" data-no-tooltip="" translate="no">fields(struct)</a>
 
       </div>
 
@@ -400,7 +354,7 @@ be ignored.</p>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#c:footer/1" translate="no">footer(struct)</a>
+        <a href="#c:footer/1" data-no-tooltip="" translate="no">footer(struct)</a>
 
       </div>
 
@@ -408,7 +362,7 @@ be ignored.</p>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#c:image/1" translate="no">image(struct)</a>
+        <a href="#c:image/1" data-no-tooltip="" translate="no">image(struct)</a>
 
       </div>
 
@@ -416,7 +370,7 @@ be ignored.</p>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#c:thumbnail/1" translate="no">thumbnail(struct)</a>
+        <a href="#c:thumbnail/1" data-no-tooltip="" translate="no">thumbnail(struct)</a>
 
       </div>
 
@@ -424,7 +378,7 @@ be ignored.</p>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#c:timestamp/1" translate="no">timestamp(struct)</a>
+        <a href="#c:timestamp/1" data-no-tooltip="" translate="no">timestamp(struct)</a>
 
       </div>
 
@@ -432,7 +386,7 @@ be ignored.</p>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#c:title/1" translate="no">title(struct)</a>
+        <a href="#c:title/1" data-no-tooltip="" translate="no">title(struct)</a>
 
       </div>
 
@@ -440,7 +394,7 @@ be ignored.</p>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#c:url/1" translate="no">url(struct)</a>
+        <a href="#c:url/1" data-no-tooltip="" translate="no">url(struct)</a>
 
       </div>
 
@@ -454,17 +408,17 @@ be ignored.</p>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#from/1" translate="no">from(struct)</a>
+        <a href="#from/1" data-no-tooltip="" translate="no">from(struct)</a>
 
       </div>
 
-        <div class="summary-synopsis"><p>Create an embed from a struct that implements the <a href="Nostrum.Struct.Embed.html#content"><code class="inline">Nostrum.Struct.Embed</code></a> behaviour</p></div>
+        <div class="summary-synopsis"><p>Create an embed from a struct that implements the <a href="Nostrum.Struct.Embed.html"><code class="inline">Nostrum.Struct.Embed</code></a> behaviour</p></div>
 
     </div>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#put_author/4" translate="no">put_author(embed, name, url, icon_url)</a>
+        <a href="#put_author/4" data-no-tooltip="" translate="no">put_author(embed, name, url, icon_url)</a>
 
       </div>
 
@@ -474,7 +428,7 @@ be ignored.</p>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#put_color/2" translate="no">put_color(embed, value)</a>
+        <a href="#put_color/2" data-no-tooltip="" translate="no">put_color(embed, value)</a>
 
       </div>
 
@@ -484,7 +438,7 @@ be ignored.</p>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#put_description/2" translate="no">put_description(embed, value)</a>
+        <a href="#put_description/2" data-no-tooltip="" translate="no">put_description(embed, value)</a>
 
       </div>
 
@@ -494,7 +448,7 @@ be ignored.</p>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#put_field/4" translate="no">put_field(embed, name, value, inline \\ nil)</a>
+        <a href="#put_field/4" data-no-tooltip="" translate="no">put_field(embed, name, value, inline \\ nil)</a>
 
       </div>
 
@@ -504,7 +458,7 @@ be ignored.</p>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#put_footer/3" translate="no">put_footer(embed, text, icon_url \\ nil)</a>
+        <a href="#put_footer/3" data-no-tooltip="" translate="no">put_footer(embed, text, icon_url \\ nil)</a>
 
       </div>
 
@@ -514,7 +468,7 @@ be ignored.</p>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#put_image/2" translate="no">put_image(embed, url)</a>
+        <a href="#put_image/2" data-no-tooltip="" translate="no">put_image(embed, url)</a>
 
       </div>
 
@@ -524,7 +478,7 @@ be ignored.</p>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#put_thumbnail/2" translate="no">put_thumbnail(embed, url)</a>
+        <a href="#put_thumbnail/2" data-no-tooltip="" translate="no">put_thumbnail(embed, url)</a>
 
       </div>
 
@@ -534,7 +488,7 @@ be ignored.</p>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#put_timestamp/2" translate="no">put_timestamp(embed, value)</a>
+        <a href="#put_timestamp/2" data-no-tooltip="" translate="no">put_timestamp(embed, value)</a>
 
       </div>
 
@@ -544,7 +498,7 @@ be ignored.</p>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#put_title/2" translate="no">put_title(embed, value)</a>
+        <a href="#put_title/2" data-no-tooltip="" translate="no">put_title(embed, value)</a>
 
       </div>
 
@@ -554,7 +508,7 @@ be ignored.</p>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#put_url/2" translate="no">put_url(embed, value)</a>
+        <a href="#put_url/2" data-no-tooltip="" translate="no">put_url(embed, value)</a>
 
       </div>
 
@@ -578,18 +532,18 @@ be ignored.</p>
 <section class="detail" id="t:author/0">
 
   <div class="detail-header">
-    <a href="#t:author/0" class="detail-link" title="Link to this type">
+    <a href="#t:author/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature" translate="no">author()</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L143" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">author()</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L143" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -606,18 +560,18 @@ be ignored.</p>
 <section class="detail" id="t:color/0">
 
   <div class="detail-header">
-    <a href="#t:color/0" class="detail-link" title="Link to this type">
+    <a href="#t:color/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature" translate="no">color()</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L125" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">color()</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L125" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -634,18 +588,18 @@ be ignored.</p>
 <section class="detail" id="t:description/0">
 
   <div class="detail-header">
-    <a href="#t:description/0" class="detail-link" title="Link to this type">
+    <a href="#t:description/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature" translate="no">description()</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L116" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">description()</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L116" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -662,18 +616,18 @@ be ignored.</p>
 <section class="detail" id="t:fields/0">
 
   <div class="detail-header">
-    <a href="#t:fields/0" class="detail-link" title="Link to this type">
+    <a href="#t:fields/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature" translate="no">fields()</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L146" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">fields()</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L146" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -690,18 +644,18 @@ be ignored.</p>
 <section class="detail" id="t:footer/0">
 
   <div class="detail-header">
-    <a href="#t:footer/0" class="detail-link" title="Link to this type">
+    <a href="#t:footer/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature" translate="no">footer()</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L128" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">footer()</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L128" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -718,18 +672,18 @@ be ignored.</p>
 <section class="detail" id="t:image/0">
 
   <div class="detail-header">
-    <a href="#t:image/0" class="detail-link" title="Link to this type">
+    <a href="#t:image/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature" translate="no">image()</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L131" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">image()</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L131" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -746,18 +700,18 @@ be ignored.</p>
 <section class="detail" id="t:provider/0">
 
   <div class="detail-header">
-    <a href="#t:provider/0" class="detail-link" title="Link to this type">
+    <a href="#t:provider/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature" translate="no">provider()</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L140" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">provider()</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L140" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -774,18 +728,18 @@ be ignored.</p>
 <section class="detail" id="t:t/0">
 
   <div class="detail-header">
-    <a href="#t:t/0" class="detail-link" title="Link to this type">
+    <a href="#t:t/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature" translate="no">t()</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L148" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">t()</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L148" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -816,18 +770,18 @@ be ignored.</p>
 <section class="detail" id="t:thumbnail/0">
 
   <div class="detail-header">
-    <a href="#t:thumbnail/0" class="detail-link" title="Link to this type">
+    <a href="#t:thumbnail/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature" translate="no">thumbnail()</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L134" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">thumbnail()</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L134" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -844,18 +798,18 @@ be ignored.</p>
 <section class="detail" id="t:timestamp/0">
 
   <div class="detail-header">
-    <a href="#t:timestamp/0" class="detail-link" title="Link to this type">
+    <a href="#t:timestamp/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature" translate="no">timestamp()</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L122" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">timestamp()</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L122" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -872,18 +826,18 @@ be ignored.</p>
 <section class="detail" id="t:title/0">
 
   <div class="detail-header">
-    <a href="#t:title/0" class="detail-link" title="Link to this type">
+    <a href="#t:title/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature" translate="no">title()</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L110" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">title()</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L110" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -900,18 +854,18 @@ be ignored.</p>
 <section class="detail" id="t:type/0">
 
   <div class="detail-header">
-    <a href="#t:type/0" class="detail-link" title="Link to this type">
+    <a href="#t:type/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature" translate="no">type()</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L113" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">type()</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L113" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -928,18 +882,18 @@ be ignored.</p>
 <section class="detail" id="t:url/0">
 
   <div class="detail-header">
-    <a href="#t:url/0" class="detail-link" title="Link to this type">
+    <a href="#t:url/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature" translate="no">url()</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L119" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">url()</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L119" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -956,18 +910,18 @@ be ignored.</p>
 <section class="detail" id="t:video/0">
 
   <div class="detail-header">
-    <a href="#t:video/0" class="detail-link" title="Link to this type">
+    <a href="#t:video/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature" translate="no">video()</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L137" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">video()</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L137" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -996,18 +950,18 @@ be ignored.</p>
 <section class="detail" id="c:author/1">
 
   <div class="detail-header">
-    <a href="#c:author/1" class="detail-link" title="Link to this callback">
+    <a href="#c:author/1" class="detail-link" data-no-tooltip="" aria-label="Link to this callback">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this callback</span>
     </a>
-    <h1 class="signature" translate="no">author(struct)</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L164" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">author(struct)</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L164" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -1024,18 +978,18 @@ be ignored.</p>
 <section class="detail" id="c:color/1">
 
   <div class="detail-header">
-    <a href="#c:color/1" class="detail-link" title="Link to this callback">
+    <a href="#c:color/1" class="detail-link" data-no-tooltip="" aria-label="Link to this callback">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this callback</span>
     </a>
-    <h1 class="signature" translate="no">color(struct)</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L165" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">color(struct)</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L165" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -1052,18 +1006,18 @@ be ignored.</p>
 <section class="detail" id="c:description/1">
 
   <div class="detail-header">
-    <a href="#c:description/1" class="detail-link" title="Link to this callback">
+    <a href="#c:description/1" class="detail-link" data-no-tooltip="" aria-label="Link to this callback">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this callback</span>
     </a>
-    <h1 class="signature" translate="no">description(struct)</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L167" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">description(struct)</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L167" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -1080,18 +1034,18 @@ be ignored.</p>
 <section class="detail" id="c:fields/1">
 
   <div class="detail-header">
-    <a href="#c:fields/1" class="detail-link" title="Link to this callback">
+    <a href="#c:fields/1" class="detail-link" data-no-tooltip="" aria-label="Link to this callback">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this callback</span>
     </a>
-    <h1 class="signature" translate="no">fields(struct)</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L166" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">fields(struct)</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L166" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -1108,18 +1062,18 @@ be ignored.</p>
 <section class="detail" id="c:footer/1">
 
   <div class="detail-header">
-    <a href="#c:footer/1" class="detail-link" title="Link to this callback">
+    <a href="#c:footer/1" class="detail-link" data-no-tooltip="" aria-label="Link to this callback">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this callback</span>
     </a>
-    <h1 class="signature" translate="no">footer(struct)</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L168" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">footer(struct)</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L168" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -1136,18 +1090,18 @@ be ignored.</p>
 <section class="detail" id="c:image/1">
 
   <div class="detail-header">
-    <a href="#c:image/1" class="detail-link" title="Link to this callback">
+    <a href="#c:image/1" class="detail-link" data-no-tooltip="" aria-label="Link to this callback">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this callback</span>
     </a>
-    <h1 class="signature" translate="no">image(struct)</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L169" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">image(struct)</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L169" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -1164,18 +1118,18 @@ be ignored.</p>
 <section class="detail" id="c:thumbnail/1">
 
   <div class="detail-header">
-    <a href="#c:thumbnail/1" class="detail-link" title="Link to this callback">
+    <a href="#c:thumbnail/1" class="detail-link" data-no-tooltip="" aria-label="Link to this callback">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this callback</span>
     </a>
-    <h1 class="signature" translate="no">thumbnail(struct)</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L170" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">thumbnail(struct)</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L170" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -1192,18 +1146,18 @@ be ignored.</p>
 <section class="detail" id="c:timestamp/1">
 
   <div class="detail-header">
-    <a href="#c:timestamp/1" class="detail-link" title="Link to this callback">
+    <a href="#c:timestamp/1" class="detail-link" data-no-tooltip="" aria-label="Link to this callback">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this callback</span>
     </a>
-    <h1 class="signature" translate="no">timestamp(struct)</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L171" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">timestamp(struct)</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L171" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -1220,18 +1174,18 @@ be ignored.</p>
 <section class="detail" id="c:title/1">
 
   <div class="detail-header">
-    <a href="#c:title/1" class="detail-link" title="Link to this callback">
+    <a href="#c:title/1" class="detail-link" data-no-tooltip="" aria-label="Link to this callback">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this callback</span>
     </a>
-    <h1 class="signature" translate="no">title(struct)</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L172" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">title(struct)</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L172" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -1248,18 +1202,18 @@ be ignored.</p>
 <section class="detail" id="c:url/1">
 
   <div class="detail-header">
-    <a href="#c:url/1" class="detail-link" title="Link to this callback">
+    <a href="#c:url/1" class="detail-link" data-no-tooltip="" aria-label="Link to this callback">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this callback</span>
     </a>
-    <h1 class="signature" translate="no">url(struct)</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L173" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">url(struct)</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L173" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -1288,40 +1242,40 @@ be ignored.</p>
 <section class="detail" id="from/1">
 
   <div class="detail-header">
-    <a href="#from/1" class="detail-link" title="Link to this function">
+    <a href="#from/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">from(struct)</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L479" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">from(struct)</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L479" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
 
-<p>Create an embed from a struct that implements the <a href="Nostrum.Struct.Embed.html#content"><code class="inline">Nostrum.Struct.Embed</code></a> behaviour</p>
+<p>Create an embed from a struct that implements the <a href="Nostrum.Struct.Embed.html"><code class="inline">Nostrum.Struct.Embed</code></a> behaviour</p>
   </section>
 </section>
 <section class="detail" id="put_author/4">
 
   <div class="detail-header">
-    <a href="#put_author/4" class="detail-link" title="Link to this function">
+    <a href="#put_author/4" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">put_author(embed, name, url, icon_url)</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L421" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">put_author(embed, name, url, icon_url)</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L421" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -1343,32 +1297,32 @@ be ignored.</p>
   </a>
   <span class="text">Examples</span>
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="n">embed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="7609168530-1">%</span><span class="nc" data-group-id="7609168530-1">Nostrum.Struct.Embed</span><span class="p" data-group-id="7609168530-1">{</span><span class="p" data-group-id="7609168530-1">}</span><span class="w">
-</span><span class="gp unselectable">...&gt; </span><span class="nc">Nostrum.Struct.Embed</span><span class="o">.</span><span class="n">put_author</span><span class="p" data-group-id="7609168530-2">(</span><span class="n">embed</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;skippi&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;https://github.com/skippi&quot;</span><span class="p">,</span><span class="w"> </span><span class="no">nil</span><span class="p" data-group-id="7609168530-2">)</span><span class="w">
-</span><span class="p" data-group-id="7609168530-3">%</span><span class="nc" data-group-id="7609168530-3">Nostrum.Struct.Embed</span><span class="p" data-group-id="7609168530-3">{</span><span class="w">
-  </span><span class="ss">author</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="7609168530-4">%</span><span class="nc" data-group-id="7609168530-4">Nostrum.Struct.Embed.Author</span><span class="p" data-group-id="7609168530-4">{</span><span class="w">
+<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="n">embed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="7684377319-1">%</span><span class="nc" data-group-id="7684377319-1">Nostrum.Struct.Embed</span><span class="p" data-group-id="7684377319-1">{</span><span class="p" data-group-id="7684377319-1">}</span><span class="w">
+</span><span class="gp unselectable">...&gt; </span><span class="nc">Nostrum.Struct.Embed</span><span class="o">.</span><span class="n">put_author</span><span class="p" data-group-id="7684377319-2">(</span><span class="n">embed</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;skippi&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;https://github.com/skippi&quot;</span><span class="p">,</span><span class="w"> </span><span class="no">nil</span><span class="p" data-group-id="7684377319-2">)</span><span class="w">
+</span><span class="p" data-group-id="7684377319-3">%</span><span class="nc" data-group-id="7684377319-3">Nostrum.Struct.Embed</span><span class="p" data-group-id="7684377319-3">{</span><span class="w">
+  </span><span class="ss">author</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="7684377319-4">%</span><span class="nc" data-group-id="7684377319-4">Nostrum.Struct.Embed.Author</span><span class="p" data-group-id="7684377319-4">{</span><span class="w">
     </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;skippi&quot;</span><span class="p">,</span><span class="w">
     </span><span class="ss">url</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;https://github.com/skippi&quot;</span><span class="p">,</span><span class="w">
     </span><span class="ss">icon_url</span><span class="p">:</span><span class="w"> </span><span class="no">nil</span><span class="w">
-  </span><span class="p" data-group-id="7609168530-4">}</span><span class="w">
-</span><span class="p" data-group-id="7609168530-3">}</span></code></pre>
+  </span><span class="p" data-group-id="7684377319-4">}</span><span class="w">
+</span><span class="p" data-group-id="7684377319-3">}</span></code></pre>
   </section>
 </section>
 <section class="detail" id="put_color/2">
 
   <div class="detail-header">
-    <a href="#put_color/2" class="detail-link" title="Link to this function">
+    <a href="#put_color/2" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">put_color(embed, value)</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L287" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">put_color(embed, value)</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L287" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -1385,26 +1339,26 @@ be ignored.</p>
   </a>
   <span class="text">Examples</span>
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="n">embed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="2916701782-1">%</span><span class="nc" data-group-id="2916701782-1">Nostrum.Struct.Embed</span><span class="p" data-group-id="2916701782-1">{</span><span class="p" data-group-id="2916701782-1">}</span><span class="w">
-</span><span class="gp unselectable">...&gt; </span><span class="nc">Nostrum.Struct.Embed</span><span class="o">.</span><span class="n">put_color</span><span class="p" data-group-id="2916701782-2">(</span><span class="n">embed</span><span class="p">,</span><span class="w"> </span><span class="mi">431948</span><span class="p" data-group-id="2916701782-2">)</span><span class="w">
-</span><span class="p" data-group-id="2916701782-3">%</span><span class="nc" data-group-id="2916701782-3">Nostrum.Struct.Embed</span><span class="p" data-group-id="2916701782-3">{</span><span class="ss">color</span><span class="p">:</span><span class="w"> </span><span class="mi">431948</span><span class="p" data-group-id="2916701782-3">}</span></code></pre>
+<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="n">embed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="8578782691-1">%</span><span class="nc" data-group-id="8578782691-1">Nostrum.Struct.Embed</span><span class="p" data-group-id="8578782691-1">{</span><span class="p" data-group-id="8578782691-1">}</span><span class="w">
+</span><span class="gp unselectable">...&gt; </span><span class="nc">Nostrum.Struct.Embed</span><span class="o">.</span><span class="n">put_color</span><span class="p" data-group-id="8578782691-2">(</span><span class="n">embed</span><span class="p">,</span><span class="w"> </span><span class="mi">431948</span><span class="p" data-group-id="8578782691-2">)</span><span class="w">
+</span><span class="p" data-group-id="8578782691-3">%</span><span class="nc" data-group-id="8578782691-3">Nostrum.Struct.Embed</span><span class="p" data-group-id="8578782691-3">{</span><span class="ss">color</span><span class="p">:</span><span class="w"> </span><span class="mi">431948</span><span class="p" data-group-id="8578782691-3">}</span></code></pre>
   </section>
 </section>
 <section class="detail" id="put_description/2">
 
   <div class="detail-header">
-    <a href="#put_description/2" class="detail-link" title="Link to this function">
+    <a href="#put_description/2" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">put_description(embed, value)</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L239" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">put_description(embed, value)</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L239" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -1421,9 +1375,9 @@ be ignored.</p>
   </a>
   <span class="text">Examples</span>
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="n">embed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="9153547956-1">%</span><span class="nc" data-group-id="9153547956-1">Nostrum.Struct.Embed</span><span class="p" data-group-id="9153547956-1">{</span><span class="p" data-group-id="9153547956-1">}</span><span class="w">
-</span><span class="gp unselectable">...&gt; </span><span class="nc">Nostrum.Struct.Embed</span><span class="o">.</span><span class="n">put_description</span><span class="p" data-group-id="9153547956-2">(</span><span class="n">embed</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;An elixir library for the discord API.&quot;</span><span class="p" data-group-id="9153547956-2">)</span><span class="w">
-</span><span class="p" data-group-id="9153547956-3">%</span><span class="nc" data-group-id="9153547956-3">Nostrum.Struct.Embed</span><span class="p" data-group-id="9153547956-3">{</span><span class="ss">description</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;An elixir library for the discord API.&quot;</span><span class="p" data-group-id="9153547956-3">}</span></code></pre>
+<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="n">embed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="3655809904-1">%</span><span class="nc" data-group-id="3655809904-1">Nostrum.Struct.Embed</span><span class="p" data-group-id="3655809904-1">{</span><span class="p" data-group-id="3655809904-1">}</span><span class="w">
+</span><span class="gp unselectable">...&gt; </span><span class="nc">Nostrum.Struct.Embed</span><span class="o">.</span><span class="n">put_description</span><span class="p" data-group-id="3655809904-2">(</span><span class="n">embed</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;An elixir library for the discord API.&quot;</span><span class="p" data-group-id="3655809904-2">)</span><span class="w">
+</span><span class="p" data-group-id="3655809904-3">%</span><span class="nc" data-group-id="3655809904-3">Nostrum.Struct.Embed</span><span class="p" data-group-id="3655809904-3">{</span><span class="ss">description</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;An elixir library for the discord API.&quot;</span><span class="p" data-group-id="3655809904-3">}</span></code></pre>
   </section>
 </section>
 <section class="detail" id="put_field/4">
@@ -1431,18 +1385,18 @@ be ignored.</p>
     <span id="put_field/3"></span>
 
   <div class="detail-header">
-    <a href="#put_field/4" class="detail-link" title="Link to this function">
+    <a href="#put_field/4" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">put_field(embed, name, value, inline \\ nil)</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L460" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">put_field(embed, name, value, inline \\ nil)</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L460" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -1464,26 +1418,26 @@ be ignored.</p>
   </a>
   <span class="text">Examples</span>
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="n">embed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="7182184587-1">%</span><span class="nc" data-group-id="7182184587-1">Nostrum.Struct.Embed</span><span class="p" data-group-id="7182184587-1">{</span><span class="p" data-group-id="7182184587-1">}</span><span class="w">
-</span><span class="gp unselectable">...&gt; </span><span class="nc">Nostrum.Struct.Embed</span><span class="o">.</span><span class="n">put_field</span><span class="p" data-group-id="7182184587-2">(</span><span class="n">embed</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;First User&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;b1nzy&quot;</span><span class="p" data-group-id="7182184587-2">)</span><span class="w">
-</span><span class="p" data-group-id="7182184587-3">%</span><span class="nc" data-group-id="7182184587-3">Nostrum.Struct.Embed</span><span class="p" data-group-id="7182184587-3">{</span><span class="w">
-  </span><span class="ss">fields</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="7182184587-4">[</span><span class="w">
-    </span><span class="p" data-group-id="7182184587-5">%</span><span class="nc" data-group-id="7182184587-5">Nostrum.Struct.Embed.Field</span><span class="p" data-group-id="7182184587-5">{</span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;First User&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">value</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;b1nzy&quot;</span><span class="p" data-group-id="7182184587-5">}</span><span class="w">
-  </span><span class="p" data-group-id="7182184587-4">]</span><span class="w">
-</span><span class="p" data-group-id="7182184587-3">}</span><span class="w">
+<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="n">embed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="5857492144-1">%</span><span class="nc" data-group-id="5857492144-1">Nostrum.Struct.Embed</span><span class="p" data-group-id="5857492144-1">{</span><span class="p" data-group-id="5857492144-1">}</span><span class="w">
+</span><span class="gp unselectable">...&gt; </span><span class="nc">Nostrum.Struct.Embed</span><span class="o">.</span><span class="n">put_field</span><span class="p" data-group-id="5857492144-2">(</span><span class="n">embed</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;First User&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;b1nzy&quot;</span><span class="p" data-group-id="5857492144-2">)</span><span class="w">
+</span><span class="p" data-group-id="5857492144-3">%</span><span class="nc" data-group-id="5857492144-3">Nostrum.Struct.Embed</span><span class="p" data-group-id="5857492144-3">{</span><span class="w">
+  </span><span class="ss">fields</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="5857492144-4">[</span><span class="w">
+    </span><span class="p" data-group-id="5857492144-5">%</span><span class="nc" data-group-id="5857492144-5">Nostrum.Struct.Embed.Field</span><span class="p" data-group-id="5857492144-5">{</span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;First User&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">value</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;b1nzy&quot;</span><span class="p" data-group-id="5857492144-5">}</span><span class="w">
+  </span><span class="p" data-group-id="5857492144-4">]</span><span class="w">
+</span><span class="p" data-group-id="5857492144-3">}</span><span class="w">
 
-</span><span class="gp unselectable">iex&gt; </span><span class="n">embed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="7182184587-6">%</span><span class="nc" data-group-id="7182184587-6">Nostrum.Struct.Embed</span><span class="p" data-group-id="7182184587-6">{</span><span class="w">
-</span><span class="gp unselectable">...&gt; </span><span class="w">  </span><span class="ss">fields</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="7182184587-7">[</span><span class="w">
-</span><span class="gp unselectable">...&gt; </span><span class="w">    </span><span class="p" data-group-id="7182184587-8">%</span><span class="nc" data-group-id="7182184587-8">Nostrum.Struct.Embed.Field</span><span class="p" data-group-id="7182184587-8">{</span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;First User&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">value</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;b1nzy&quot;</span><span class="p" data-group-id="7182184587-8">}</span><span class="w">
-</span><span class="gp unselectable">...&gt; </span><span class="w">  </span><span class="p" data-group-id="7182184587-7">]</span><span class="w">
-</span><span class="gp unselectable">...&gt; </span><span class="p" data-group-id="7182184587-6">}</span><span class="w">
-</span><span class="gp unselectable">...&gt; </span><span class="nc">Nostrum.Struct.Embed</span><span class="o">.</span><span class="n">put_field</span><span class="p" data-group-id="7182184587-9">(</span><span class="n">embed</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Second User&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Danny&quot;</span><span class="p" data-group-id="7182184587-9">)</span><span class="w">
-</span><span class="p" data-group-id="7182184587-10">%</span><span class="nc" data-group-id="7182184587-10">Nostrum.Struct.Embed</span><span class="p" data-group-id="7182184587-10">{</span><span class="w">
-  </span><span class="ss">fields</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="7182184587-11">[</span><span class="w">
-    </span><span class="p" data-group-id="7182184587-12">%</span><span class="nc" data-group-id="7182184587-12">Nostrum.Struct.Embed.Field</span><span class="p" data-group-id="7182184587-12">{</span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;First User&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">value</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;b1nzy&quot;</span><span class="p" data-group-id="7182184587-12">}</span><span class="p">,</span><span class="w">
-    </span><span class="p" data-group-id="7182184587-13">%</span><span class="nc" data-group-id="7182184587-13">Nostrum.Struct.Embed.Field</span><span class="p" data-group-id="7182184587-13">{</span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Second User&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">value</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Danny&quot;</span><span class="p" data-group-id="7182184587-13">}</span><span class="w">
-  </span><span class="p" data-group-id="7182184587-11">]</span><span class="w">
-</span><span class="p" data-group-id="7182184587-10">}</span></code></pre>
+</span><span class="gp unselectable">iex&gt; </span><span class="n">embed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="5857492144-6">%</span><span class="nc" data-group-id="5857492144-6">Nostrum.Struct.Embed</span><span class="p" data-group-id="5857492144-6">{</span><span class="w">
+</span><span class="gp unselectable">...&gt; </span><span class="w">  </span><span class="ss">fields</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="5857492144-7">[</span><span class="w">
+</span><span class="gp unselectable">...&gt; </span><span class="w">    </span><span class="p" data-group-id="5857492144-8">%</span><span class="nc" data-group-id="5857492144-8">Nostrum.Struct.Embed.Field</span><span class="p" data-group-id="5857492144-8">{</span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;First User&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">value</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;b1nzy&quot;</span><span class="p" data-group-id="5857492144-8">}</span><span class="w">
+</span><span class="gp unselectable">...&gt; </span><span class="w">  </span><span class="p" data-group-id="5857492144-7">]</span><span class="w">
+</span><span class="gp unselectable">...&gt; </span><span class="p" data-group-id="5857492144-6">}</span><span class="w">
+</span><span class="gp unselectable">...&gt; </span><span class="nc">Nostrum.Struct.Embed</span><span class="o">.</span><span class="n">put_field</span><span class="p" data-group-id="5857492144-9">(</span><span class="n">embed</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Second User&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Danny&quot;</span><span class="p" data-group-id="5857492144-9">)</span><span class="w">
+</span><span class="p" data-group-id="5857492144-10">%</span><span class="nc" data-group-id="5857492144-10">Nostrum.Struct.Embed</span><span class="p" data-group-id="5857492144-10">{</span><span class="w">
+  </span><span class="ss">fields</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="5857492144-11">[</span><span class="w">
+    </span><span class="p" data-group-id="5857492144-12">%</span><span class="nc" data-group-id="5857492144-12">Nostrum.Struct.Embed.Field</span><span class="p" data-group-id="5857492144-12">{</span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;First User&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">value</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;b1nzy&quot;</span><span class="p" data-group-id="5857492144-12">}</span><span class="p">,</span><span class="w">
+    </span><span class="p" data-group-id="5857492144-13">%</span><span class="nc" data-group-id="5857492144-13">Nostrum.Struct.Embed.Field</span><span class="p" data-group-id="5857492144-13">{</span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Second User&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">value</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Danny&quot;</span><span class="p" data-group-id="5857492144-13">}</span><span class="w">
+  </span><span class="p" data-group-id="5857492144-11">]</span><span class="w">
+</span><span class="p" data-group-id="5857492144-10">}</span></code></pre>
   </section>
 </section>
 <section class="detail" id="put_footer/3">
@@ -1491,18 +1445,18 @@ be ignored.</p>
     <span id="put_footer/2"></span>
 
   <div class="detail-header">
-    <a href="#put_footer/3" class="detail-link" title="Link to this function">
+    <a href="#put_footer/3" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">put_footer(embed, text, icon_url \\ nil)</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L317" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">put_footer(embed, text, icon_url \\ nil)</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L317" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -1523,40 +1477,40 @@ be ignored.</p>
   </a>
   <span class="text">Examples</span>
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="n">embed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="0416380321-1">%</span><span class="nc" data-group-id="0416380321-1">Nostrum.Struct.Embed</span><span class="p" data-group-id="0416380321-1">{</span><span class="p" data-group-id="0416380321-1">}</span><span class="w">
-</span><span class="gp unselectable">...&gt; </span><span class="nc">Nostrum.Struct.Embed</span><span class="o">.</span><span class="n">put_footer</span><span class="p" data-group-id="0416380321-2">(</span><span class="n">embed</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Discord API&quot;</span><span class="p">,</span><span class="w"> </span><span class="no">nil</span><span class="p" data-group-id="0416380321-2">)</span><span class="w">
-</span><span class="p" data-group-id="0416380321-3">%</span><span class="nc" data-group-id="0416380321-3">Nostrum.Struct.Embed</span><span class="p" data-group-id="0416380321-3">{</span><span class="w">
-  </span><span class="ss">footer</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="0416380321-4">%</span><span class="nc" data-group-id="0416380321-4">Nostrum.Struct.Embed.Footer</span><span class="p" data-group-id="0416380321-4">{</span><span class="w">
+<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="n">embed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="1536879648-1">%</span><span class="nc" data-group-id="1536879648-1">Nostrum.Struct.Embed</span><span class="p" data-group-id="1536879648-1">{</span><span class="p" data-group-id="1536879648-1">}</span><span class="w">
+</span><span class="gp unselectable">...&gt; </span><span class="nc">Nostrum.Struct.Embed</span><span class="o">.</span><span class="n">put_footer</span><span class="p" data-group-id="1536879648-2">(</span><span class="n">embed</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Discord API&quot;</span><span class="p">,</span><span class="w"> </span><span class="no">nil</span><span class="p" data-group-id="1536879648-2">)</span><span class="w">
+</span><span class="p" data-group-id="1536879648-3">%</span><span class="nc" data-group-id="1536879648-3">Nostrum.Struct.Embed</span><span class="p" data-group-id="1536879648-3">{</span><span class="w">
+  </span><span class="ss">footer</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="1536879648-4">%</span><span class="nc" data-group-id="1536879648-4">Nostrum.Struct.Embed.Footer</span><span class="p" data-group-id="1536879648-4">{</span><span class="w">
     </span><span class="ss">text</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Discord API&quot;</span><span class="p">,</span><span class="w">
     </span><span class="ss">icon_url</span><span class="p">:</span><span class="w"> </span><span class="no">nil</span><span class="w">
-  </span><span class="p" data-group-id="0416380321-4">}</span><span class="w">
-</span><span class="p" data-group-id="0416380321-3">}</span><span class="w">
+  </span><span class="p" data-group-id="1536879648-4">}</span><span class="w">
+</span><span class="p" data-group-id="1536879648-3">}</span><span class="w">
 
-</span><span class="gp unselectable">iex&gt; </span><span class="n">embed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="0416380321-5">%</span><span class="nc" data-group-id="0416380321-5">Nostrum.Struct.Embed</span><span class="p" data-group-id="0416380321-5">{</span><span class="p" data-group-id="0416380321-5">}</span><span class="w">
-</span><span class="gp unselectable">...&gt; </span><span class="nc">Nostrum.Struct.Embed</span><span class="o">.</span><span class="n">put_footer</span><span class="p" data-group-id="0416380321-6">(</span><span class="n">embed</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;nostrum footer&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;https://discord.com/assets/53ef346458017da2062aca5c7955946b.svg&quot;</span><span class="p" data-group-id="0416380321-6">)</span><span class="w">
-</span><span class="p" data-group-id="0416380321-7">%</span><span class="nc" data-group-id="0416380321-7">Nostrum.Struct.Embed</span><span class="p" data-group-id="0416380321-7">{</span><span class="w">
-  </span><span class="ss">footer</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="0416380321-8">%</span><span class="nc" data-group-id="0416380321-8">Nostrum.Struct.Embed.Footer</span><span class="p" data-group-id="0416380321-8">{</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="n">embed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="1536879648-5">%</span><span class="nc" data-group-id="1536879648-5">Nostrum.Struct.Embed</span><span class="p" data-group-id="1536879648-5">{</span><span class="p" data-group-id="1536879648-5">}</span><span class="w">
+</span><span class="gp unselectable">...&gt; </span><span class="nc">Nostrum.Struct.Embed</span><span class="o">.</span><span class="n">put_footer</span><span class="p" data-group-id="1536879648-6">(</span><span class="n">embed</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;nostrum footer&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;https://discord.com/assets/53ef346458017da2062aca5c7955946b.svg&quot;</span><span class="p" data-group-id="1536879648-6">)</span><span class="w">
+</span><span class="p" data-group-id="1536879648-7">%</span><span class="nc" data-group-id="1536879648-7">Nostrum.Struct.Embed</span><span class="p" data-group-id="1536879648-7">{</span><span class="w">
+  </span><span class="ss">footer</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="1536879648-8">%</span><span class="nc" data-group-id="1536879648-8">Nostrum.Struct.Embed.Footer</span><span class="p" data-group-id="1536879648-8">{</span><span class="w">
     </span><span class="ss">text</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;nostrum footer&quot;</span><span class="p">,</span><span class="w">
     </span><span class="ss">icon_url</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;https://discord.com/assets/53ef346458017da2062aca5c7955946b.svg&quot;</span><span class="w">
-  </span><span class="p" data-group-id="0416380321-8">}</span><span class="w">
-</span><span class="p" data-group-id="0416380321-7">}</span></code></pre>
+  </span><span class="p" data-group-id="1536879648-8">}</span><span class="w">
+</span><span class="p" data-group-id="1536879648-7">}</span></code></pre>
   </section>
 </section>
 <section class="detail" id="put_image/2">
 
   <div class="detail-header">
-    <a href="#put_image/2" class="detail-link" title="Link to this function">
+    <a href="#put_image/2" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">put_image(embed, url)</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L342" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">put_image(embed, url)</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L342" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -1573,30 +1527,30 @@ be ignored.</p>
   </a>
   <span class="text">Examples</span>
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="n">embed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="2678870282-1">%</span><span class="nc" data-group-id="2678870282-1">Nostrum.Struct.Embed</span><span class="p" data-group-id="2678870282-1">{</span><span class="p" data-group-id="2678870282-1">}</span><span class="w">
-</span><span class="gp unselectable">...&gt; </span><span class="nc">Nostrum.Struct.Embed</span><span class="o">.</span><span class="n">put_image</span><span class="p" data-group-id="2678870282-2">(</span><span class="n">embed</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;https://discord.com/assets/af92e60c16b7019f34a467383b31490a.svg&quot;</span><span class="p" data-group-id="2678870282-2">)</span><span class="w">
-</span><span class="p" data-group-id="2678870282-3">%</span><span class="nc" data-group-id="2678870282-3">Nostrum.Struct.Embed</span><span class="p" data-group-id="2678870282-3">{</span><span class="w">
-  </span><span class="ss">image</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="2678870282-4">%</span><span class="nc" data-group-id="2678870282-4">Nostrum.Struct.Embed.Image</span><span class="p" data-group-id="2678870282-4">{</span><span class="w">
+<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="n">embed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="9990350174-1">%</span><span class="nc" data-group-id="9990350174-1">Nostrum.Struct.Embed</span><span class="p" data-group-id="9990350174-1">{</span><span class="p" data-group-id="9990350174-1">}</span><span class="w">
+</span><span class="gp unselectable">...&gt; </span><span class="nc">Nostrum.Struct.Embed</span><span class="o">.</span><span class="n">put_image</span><span class="p" data-group-id="9990350174-2">(</span><span class="n">embed</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;https://discord.com/assets/af92e60c16b7019f34a467383b31490a.svg&quot;</span><span class="p" data-group-id="9990350174-2">)</span><span class="w">
+</span><span class="p" data-group-id="9990350174-3">%</span><span class="nc" data-group-id="9990350174-3">Nostrum.Struct.Embed</span><span class="p" data-group-id="9990350174-3">{</span><span class="w">
+  </span><span class="ss">image</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="9990350174-4">%</span><span class="nc" data-group-id="9990350174-4">Nostrum.Struct.Embed.Image</span><span class="p" data-group-id="9990350174-4">{</span><span class="w">
     </span><span class="ss">url</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;https://discord.com/assets/af92e60c16b7019f34a467383b31490a.svg&quot;</span><span class="w">
-  </span><span class="p" data-group-id="2678870282-4">}</span><span class="w">
-</span><span class="p" data-group-id="2678870282-3">}</span></code></pre>
+  </span><span class="p" data-group-id="9990350174-4">}</span><span class="w">
+</span><span class="p" data-group-id="9990350174-3">}</span></code></pre>
   </section>
 </section>
 <section class="detail" id="put_thumbnail/2">
 
   <div class="detail-header">
-    <a href="#put_thumbnail/2" class="detail-link" title="Link to this function">
+    <a href="#put_thumbnail/2" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">put_thumbnail(embed, url)</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L370" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">put_thumbnail(embed, url)</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L370" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -1613,30 +1567,30 @@ be ignored.</p>
   </a>
   <span class="text">Examples</span>
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="n">embed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="3167035939-1">%</span><span class="nc" data-group-id="3167035939-1">Nostrum.Struct.Embed</span><span class="p" data-group-id="3167035939-1">{</span><span class="p" data-group-id="3167035939-1">}</span><span class="w">
-</span><span class="gp unselectable">...&gt; </span><span class="nc">Nostrum.Struct.Embed</span><span class="o">.</span><span class="n">put_thumbnail</span><span class="p" data-group-id="3167035939-2">(</span><span class="n">embed</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;https://discord.com/assets/af92e60c16b7019f34a467383b31490a.svg&quot;</span><span class="p" data-group-id="3167035939-2">)</span><span class="w">
-</span><span class="p" data-group-id="3167035939-3">%</span><span class="nc" data-group-id="3167035939-3">Nostrum.Struct.Embed</span><span class="p" data-group-id="3167035939-3">{</span><span class="w">
-  </span><span class="ss">thumbnail</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="3167035939-4">%</span><span class="nc" data-group-id="3167035939-4">Nostrum.Struct.Embed.Thumbnail</span><span class="p" data-group-id="3167035939-4">{</span><span class="w">
+<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="n">embed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="1154789707-1">%</span><span class="nc" data-group-id="1154789707-1">Nostrum.Struct.Embed</span><span class="p" data-group-id="1154789707-1">{</span><span class="p" data-group-id="1154789707-1">}</span><span class="w">
+</span><span class="gp unselectable">...&gt; </span><span class="nc">Nostrum.Struct.Embed</span><span class="o">.</span><span class="n">put_thumbnail</span><span class="p" data-group-id="1154789707-2">(</span><span class="n">embed</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;https://discord.com/assets/af92e60c16b7019f34a467383b31490a.svg&quot;</span><span class="p" data-group-id="1154789707-2">)</span><span class="w">
+</span><span class="p" data-group-id="1154789707-3">%</span><span class="nc" data-group-id="1154789707-3">Nostrum.Struct.Embed</span><span class="p" data-group-id="1154789707-3">{</span><span class="w">
+  </span><span class="ss">thumbnail</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="1154789707-4">%</span><span class="nc" data-group-id="1154789707-4">Nostrum.Struct.Embed.Thumbnail</span><span class="p" data-group-id="1154789707-4">{</span><span class="w">
     </span><span class="ss">url</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;https://discord.com/assets/af92e60c16b7019f34a467383b31490a.svg&quot;</span><span class="w">
-  </span><span class="p" data-group-id="3167035939-4">}</span><span class="w">
-</span><span class="p" data-group-id="3167035939-3">}</span></code></pre>
+  </span><span class="p" data-group-id="1154789707-4">}</span><span class="w">
+</span><span class="p" data-group-id="1154789707-3">}</span></code></pre>
   </section>
 </section>
 <section class="detail" id="put_timestamp/2">
 
   <div class="detail-header">
-    <a href="#put_timestamp/2" class="detail-link" title="Link to this function">
+    <a href="#put_timestamp/2" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">put_timestamp(embed, value)</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L271" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">put_timestamp(embed, value)</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L271" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -1653,26 +1607,26 @@ be ignored.</p>
   </a>
   <span class="text">Examples</span>
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="n">embed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="7885568901-1">%</span><span class="nc" data-group-id="7885568901-1">Nostrum.Struct.Embed</span><span class="p" data-group-id="7885568901-1">{</span><span class="p" data-group-id="7885568901-1">}</span><span class="w">
-</span><span class="gp unselectable">...&gt; </span><span class="nc">Nostrum.Struct.Embed</span><span class="o">.</span><span class="n">put_timestamp</span><span class="p" data-group-id="7885568901-2">(</span><span class="n">embed</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;2018-04-21T17:33:51.893000Z&quot;</span><span class="p" data-group-id="7885568901-2">)</span><span class="w">
-</span><span class="p" data-group-id="7885568901-3">%</span><span class="nc" data-group-id="7885568901-3">Nostrum.Struct.Embed</span><span class="p" data-group-id="7885568901-3">{</span><span class="ss">timestamp</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;2018-04-21T17:33:51.893000Z&quot;</span><span class="p" data-group-id="7885568901-3">}</span></code></pre>
+<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="n">embed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="3238542150-1">%</span><span class="nc" data-group-id="3238542150-1">Nostrum.Struct.Embed</span><span class="p" data-group-id="3238542150-1">{</span><span class="p" data-group-id="3238542150-1">}</span><span class="w">
+</span><span class="gp unselectable">...&gt; </span><span class="nc">Nostrum.Struct.Embed</span><span class="o">.</span><span class="n">put_timestamp</span><span class="p" data-group-id="3238542150-2">(</span><span class="n">embed</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;2018-04-21T17:33:51.893000Z&quot;</span><span class="p" data-group-id="3238542150-2">)</span><span class="w">
+</span><span class="p" data-group-id="3238542150-3">%</span><span class="nc" data-group-id="3238542150-3">Nostrum.Struct.Embed</span><span class="p" data-group-id="3238542150-3">{</span><span class="ss">timestamp</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;2018-04-21T17:33:51.893000Z&quot;</span><span class="p" data-group-id="3238542150-3">}</span></code></pre>
   </section>
 </section>
 <section class="detail" id="put_title/2">
 
   <div class="detail-header">
-    <a href="#put_title/2" class="detail-link" title="Link to this function">
+    <a href="#put_title/2" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">put_title(embed, value)</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L217" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">put_title(embed, value)</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L217" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -1689,26 +1643,26 @@ be ignored.</p>
   </a>
   <span class="text">Examples</span>
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="n">embed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="5318162536-1">%</span><span class="nc" data-group-id="5318162536-1">Nostrum.Struct.Embed</span><span class="p" data-group-id="5318162536-1">{</span><span class="p" data-group-id="5318162536-1">}</span><span class="w">
-</span><span class="gp unselectable">...&gt; </span><span class="nc">Nostrum.Struct.Embed</span><span class="o">.</span><span class="n">put_title</span><span class="p" data-group-id="5318162536-2">(</span><span class="n">embed</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;nostrum&quot;</span><span class="p" data-group-id="5318162536-2">)</span><span class="w">
-</span><span class="p" data-group-id="5318162536-3">%</span><span class="nc" data-group-id="5318162536-3">Nostrum.Struct.Embed</span><span class="p" data-group-id="5318162536-3">{</span><span class="ss">title</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;nostrum&quot;</span><span class="p" data-group-id="5318162536-3">}</span></code></pre>
+<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="n">embed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="3595429925-1">%</span><span class="nc" data-group-id="3595429925-1">Nostrum.Struct.Embed</span><span class="p" data-group-id="3595429925-1">{</span><span class="p" data-group-id="3595429925-1">}</span><span class="w">
+</span><span class="gp unselectable">...&gt; </span><span class="nc">Nostrum.Struct.Embed</span><span class="o">.</span><span class="n">put_title</span><span class="p" data-group-id="3595429925-2">(</span><span class="n">embed</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;nostrum&quot;</span><span class="p" data-group-id="3595429925-2">)</span><span class="w">
+</span><span class="p" data-group-id="3595429925-3">%</span><span class="nc" data-group-id="3595429925-3">Nostrum.Struct.Embed</span><span class="p" data-group-id="3595429925-3">{</span><span class="ss">title</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;nostrum&quot;</span><span class="p" data-group-id="3595429925-3">}</span></code></pre>
   </section>
 </section>
 <section class="detail" id="put_url/2">
 
   <div class="detail-header">
-    <a href="#put_url/2" class="detail-link" title="Link to this function">
+    <a href="#put_url/2" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">put_url(embed, value)</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L255" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">put_url(embed, value)</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/embed.ex#L255" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -1725,9 +1679,9 @@ be ignored.</p>
   </a>
   <span class="text">Examples</span>
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="n">embed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="1130316086-1">%</span><span class="nc" data-group-id="1130316086-1">Nostrum.Struct.Embed</span><span class="p" data-group-id="1130316086-1">{</span><span class="p" data-group-id="1130316086-1">}</span><span class="w">
-</span><span class="gp unselectable">...&gt; </span><span class="nc">Nostrum.Struct.Embed</span><span class="o">.</span><span class="n">put_url</span><span class="p" data-group-id="1130316086-2">(</span><span class="n">embed</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;https://github.com/Kraigie/nostrum&quot;</span><span class="p" data-group-id="1130316086-2">)</span><span class="w">
-</span><span class="p" data-group-id="1130316086-3">%</span><span class="nc" data-group-id="1130316086-3">Nostrum.Struct.Embed</span><span class="p" data-group-id="1130316086-3">{</span><span class="ss">url</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;https://github.com/Kraigie/nostrum&quot;</span><span class="p" data-group-id="1130316086-3">}</span></code></pre>
+<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="n">embed</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="2777342868-1">%</span><span class="nc" data-group-id="2777342868-1">Nostrum.Struct.Embed</span><span class="p" data-group-id="2777342868-1">{</span><span class="p" data-group-id="2777342868-1">}</span><span class="w">
+</span><span class="gp unselectable">...&gt; </span><span class="nc">Nostrum.Struct.Embed</span><span class="o">.</span><span class="n">put_url</span><span class="p" data-group-id="2777342868-2">(</span><span class="n">embed</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;https://github.com/Kraigie/nostrum&quot;</span><span class="p" data-group-id="2777342868-2">)</span><span class="w">
+</span><span class="p" data-group-id="2777342868-3">%</span><span class="nc" data-group-id="2777342868-3">Nostrum.Struct.Embed</span><span class="p" data-group-id="2777342868-3">{</span><span class="ss">url</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;https://github.com/Kraigie/nostrum&quot;</span><span class="p" data-group-id="2777342868-3">}</span></code></pre>
   </section>
 </section>
 
@@ -1758,7 +1712,7 @@ be ignored.</p>
 
       <p class="built-using">
         Built using
-        <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.32.1) for the
+        <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.37.0) for the
 
           <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
 
@@ -1768,7 +1722,6 @@ be ignored.</p>
   </div>
 </main>
 </div>
-
 
   </body>
 </html>

@@ -4,36 +4,22 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="ExDoc v0.32.1">
+    <meta name="generator" content="ExDoc v0.37.0">
     <meta name="project" content="Nostrum v0.11.0-dev">
 
 
     <title>Nostrum.Struct.Guild.Role — Nostrum v0.11.0-dev</title>
-    <link rel="stylesheet" href="dist/html-elixir-2C5PUTIB.css" />
 
+    <link rel="stylesheet" href="dist/html-elixir-6X3L5KMG.css" />
 
-    <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
-    <script src="dist/handlebars.templates-IHH6HKET.js"></script>
-    <script src="dist/sidebar_items-7BAE9786.js"></script>
-    <script src="docs_config.js"></script>
-    <script async src="dist/html-GXQ6W6IF.js"></script>
-
+    <script defer src="dist/sidebar_items-7BAE9786.js"></script>
+    <script defer src="docs_config.js"></script>
+    <script defer src="dist/html-6VTPNSGQ.js"></script>
 
   </head>
-  <body data-type="modules" class="page-module">
-    <script>
-
-      try {
-        var settings = JSON.parse(localStorage.getItem('ex_doc:settings') || '{}');
-
-        if (settings.theme === 'dark' ||
-           ((settings.theme === 'system' || settings.theme == null) &&
-             window.matchMedia('(prefers-color-scheme: dark)').matches)
-           ) {
-          document.body.classList.add('dark')
-        }
-      } catch (error) { }
-    </script>
+  <body>
+    <script>(()=>{var t="ex_doc:settings",e="dark";var o="dark",s="light";var E="sidebar_state",n="closed";var r="sidebar_width";var a="sidebar-open";var i=new URLSearchParams(window.location.search),S=i.get("theme")||JSON.parse(localStorage.getItem(t)||"{}").theme;(S===o||S!==s&&window.matchMedia("(prefers-color-scheme: dark)").matches)&&document.body.classList.add(e);var d=sessionStorage.getItem(E),A=d!==n&&!window.matchMedia(`screen and (max-width: ${768}px)`).matches;document.body.classList.toggle(a,A);var c=sessionStorage.getItem(r);c&&document.body.style.setProperty("--sidebarWidth",`${c}px`);var p=/(Macintosh|iPhone|iPad|iPod)/.test(window.navigator.userAgent);document.documentElement.classList.toggle("apple-os",p);})();
+</script>
 
 <div class="body-wrapper">
 
@@ -59,47 +45,13 @@ Nostrum
         </div>
       </div>
     </div>
-    <ul id="sidebar-listNav" class="sidebar-listNav" role="tablist">
-      <li>
-        <button id="extras-list-tab-button" role="tab" data-type="extras" aria-controls="extras-tab-panel" aria-selected="true" tabindex="0">
-Pages
-        </button>
-      </li>
-
-        <li>
-          <button id="modules-list-tab-button" role="tab" data-type="modules" aria-controls="modules-tab-panel" aria-selected="false" tabindex="-1">
-            Modules
-          </button>
-        </li>
-
-
-        <li>
-          <button id="tasks-list-tab-button" role="tab" data-type="tasks" aria-controls="tasks-tab-panel" aria-selected="false" tabindex="-1">
-            <span translate="no">Mix</span> Tasks
-          </button>
-        </li>
-
-    </ul>
+    <ul id="sidebar-list-nav" class="sidebar-list-nav" role="tablist" data-extras=""></ul>
   </div>
-
-  <div id="extras-tab-panel" class="sidebar-tabpanel" role="tabpanel" aria-labelledby="extras-list-tab-button">
-    <ul id="extras-full-list" class="full-list"></ul>
-  </div>
-
-    <div id="modules-tab-panel" class="sidebar-tabpanel" role="tabpanel" aria-labelledby="modules-list-tab-button" hidden>
-      <ul id="modules-full-list" class="full-list"></ul>
-    </div>
-
-
-    <div id="tasks-tab-panel" class="sidebar-tabpanel" role="tabpanel" aria-labelledby="tasks-list-tab-button" hidden>
-      <ul id="tasks-full-list" class="full-list"></ul>
-    </div>
-
 </nav>
 
-<main class="content">
-  <output role="status" id="toast"></output>
+<output role="status" id="toast"></output>
 
+<main class="content page-module" id="main" data-type="modules">
   <div id="content" class="content-inner">
     <div class="top-search">
       <div class="search-settings">
@@ -108,8 +60,8 @@ Pages
             <span class="sr-only">Search documentation of Nostrum</span>
             <input name="q" type="text" class="search-input" placeholder="Press / to search" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
           </label>
-          <button type="submit" class="search-button" aria-label="Submit Search">
-            <i class="ri-search-2-line ri-lg" aria-hidden="true" title="Submit search"></i>
+          <button type="submit" class="search-button" aria-label="Submit Search" tabindex="-1">
+            <i class="ri-search-2-line ri-lg" aria-hidden="true"></i>
           </button>
           <button type="button" tabindex="-1" class="search-close-button" aria-hidden="true">
             <i class="ri-close-line ri-lg" title="Cancel search"></i>
@@ -125,17 +77,19 @@ Pages
     </div>
 
 <div id="top-content">
-  <h1>
+  <div class="heading-with-actions top-heading">
+    <h1>
+      <span translate="no">Nostrum.Struct.Guild.Role</span> 
+      <small class="app-vsn" translate="no">(Nostrum v0.11.0-dev)</small>
+
+    </h1>
 
       <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/guild/role.ex#L1" title="View Source" class="icon-action" rel="help">
         <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         <span class="sr-only">View Source</span>
       </a>
 
-    <span translate="no">Nostrum.Struct.Guild.Role</span> 
-    <small class="app-vsn" translate="no">(Nostrum v0.11.0-dev)</small>
-
-  </h1>
+  </div>
 
 
     <section id="moduledoc">
@@ -145,14 +99,14 @@ Pages
   </a>
   <span class="text">Mentioning Roles in Messages</span>
 </h2>
-<p>A <a href="Nostrum.Struct.Guild.Role.html#content"><code class="inline">Nostrum.Struct.Guild.Role</code></a> can be mentioned in message content using the <a href="https://hexdocs.pm/elixir/String.Chars.html"><code class="inline">String.Chars</code></a>
-protocol or <a href="#mention/1"><code class="inline">mention/1</code></a>.</p><pre><code class="makeup elixir" translate="no"><span class="n">role</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="3030060444-1">%</span><span class="nc" data-group-id="3030060444-1">Nostrum.Struct.Guild.Role</span><span class="p" data-group-id="3030060444-1">{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">431886897539973131</span><span class="p" data-group-id="3030060444-1">}</span><span class="w">
-</span><span class="nc">Nostrum.Api.Message</span><span class="o">.</span><span class="n">create</span><span class="p" data-group-id="3030060444-2">(</span><span class="mi">184046599834435585</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;</span><span class="si" data-group-id="3030060444-3">#{</span><span class="n">role</span><span class="si" data-group-id="3030060444-3">}</span><span class="s">&quot;</span><span class="p" data-group-id="3030060444-2">)</span><span class="w">
-</span><span class="p" data-group-id="3030060444-4">%</span><span class="nc" data-group-id="3030060444-4">Nostrum.Struct.Message</span><span class="p" data-group-id="3030060444-4">{</span><span class="p" data-group-id="3030060444-4">}</span><span class="w">
+<p>A <a href="Nostrum.Struct.Guild.Role.html"><code class="inline">Nostrum.Struct.Guild.Role</code></a> can be mentioned in message content using the <a href="https://hexdocs.pm/elixir/String.Chars.html"><code class="inline">String.Chars</code></a>
+protocol or <a href="#mention/1"><code class="inline">mention/1</code></a>.</p><pre><code class="makeup elixir" translate="no"><span class="n">role</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="6584177453-1">%</span><span class="nc" data-group-id="6584177453-1">Nostrum.Struct.Guild.Role</span><span class="p" data-group-id="6584177453-1">{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">431886897539973131</span><span class="p" data-group-id="6584177453-1">}</span><span class="w">
+</span><span class="nc">Nostrum.Api.Message</span><span class="o">.</span><span class="n">create</span><span class="p" data-group-id="6584177453-2">(</span><span class="mi">184046599834435585</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;</span><span class="si" data-group-id="6584177453-3">#{</span><span class="n">role</span><span class="si" data-group-id="6584177453-3">}</span><span class="s">&quot;</span><span class="p" data-group-id="6584177453-2">)</span><span class="w">
+</span><span class="p" data-group-id="6584177453-4">%</span><span class="nc" data-group-id="6584177453-4">Nostrum.Struct.Message</span><span class="p" data-group-id="6584177453-4">{</span><span class="p" data-group-id="6584177453-4">}</span><span class="w">
 
-</span><span class="n">role</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="3030060444-5">%</span><span class="nc" data-group-id="3030060444-5">Nostrum.Struct.Guild.Role</span><span class="p" data-group-id="3030060444-5">{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">431884023535632398</span><span class="p" data-group-id="3030060444-5">}</span><span class="w">
-</span><span class="nc">Nostrum.Api.Message</span><span class="o">.</span><span class="n">create</span><span class="p" data-group-id="3030060444-6">(</span><span class="mi">280085880452939778</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;</span><span class="si" data-group-id="3030060444-7">#{</span><span class="nc">Nostrum.Struct.Guild.Role</span><span class="o">.</span><span class="n">mention</span><span class="p" data-group-id="3030060444-8">(</span><span class="n">role</span><span class="p" data-group-id="3030060444-8">)</span><span class="si" data-group-id="3030060444-7">}</span><span class="s">&quot;</span><span class="p" data-group-id="3030060444-6">)</span><span class="w">
-</span><span class="p" data-group-id="3030060444-9">%</span><span class="nc" data-group-id="3030060444-9">Nostrum.Struct.Message</span><span class="p" data-group-id="3030060444-9">{</span><span class="p" data-group-id="3030060444-9">}</span></code></pre>
+</span><span class="n">role</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="6584177453-5">%</span><span class="nc" data-group-id="6584177453-5">Nostrum.Struct.Guild.Role</span><span class="p" data-group-id="6584177453-5">{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">431884023535632398</span><span class="p" data-group-id="6584177453-5">}</span><span class="w">
+</span><span class="nc">Nostrum.Api.Message</span><span class="o">.</span><span class="n">create</span><span class="p" data-group-id="6584177453-6">(</span><span class="mi">280085880452939778</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;</span><span class="si" data-group-id="6584177453-7">#{</span><span class="nc">Nostrum.Struct.Guild.Role</span><span class="o">.</span><span class="n">mention</span><span class="p" data-group-id="6584177453-8">(</span><span class="n">role</span><span class="p" data-group-id="6584177453-8">)</span><span class="si" data-group-id="6584177453-7">}</span><span class="s">&quot;</span><span class="p" data-group-id="6584177453-6">)</span><span class="w">
+</span><span class="p" data-group-id="6584177453-9">%</span><span class="nc" data-group-id="6584177453-9">Nostrum.Struct.Message</span><span class="p" data-group-id="6584177453-9">{</span><span class="p" data-group-id="6584177453-9">}</span></code></pre>
     </section>
 
 </div>
@@ -171,7 +125,7 @@ protocol or <a href="#mention/1"><code class="inline">mention/1</code></a>.</p><
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#t:color/0" translate="no">color()</a>
+        <a href="#t:color/0" data-no-tooltip="" translate="no">color()</a>
 
       </div>
 
@@ -181,7 +135,7 @@ protocol or <a href="#mention/1"><code class="inline">mention/1</code></a>.</p><
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#t:hoist/0" translate="no">hoist()</a>
+        <a href="#t:hoist/0" data-no-tooltip="" translate="no">hoist()</a>
 
       </div>
 
@@ -191,7 +145,7 @@ protocol or <a href="#mention/1"><code class="inline">mention/1</code></a>.</p><
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#t:icon/0" translate="no">icon()</a>
+        <a href="#t:icon/0" data-no-tooltip="" translate="no">icon()</a>
 
       </div>
 
@@ -201,7 +155,7 @@ protocol or <a href="#mention/1"><code class="inline">mention/1</code></a>.</p><
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#t:id/0" translate="no">id()</a>
+        <a href="#t:id/0" data-no-tooltip="" translate="no">id()</a>
 
       </div>
 
@@ -211,7 +165,7 @@ protocol or <a href="#mention/1"><code class="inline">mention/1</code></a>.</p><
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#t:managed/0" translate="no">managed()</a>
+        <a href="#t:managed/0" data-no-tooltip="" translate="no">managed()</a>
 
       </div>
 
@@ -221,7 +175,7 @@ protocol or <a href="#mention/1"><code class="inline">mention/1</code></a>.</p><
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#t:mentionable/0" translate="no">mentionable()</a>
+        <a href="#t:mentionable/0" data-no-tooltip="" translate="no">mentionable()</a>
 
       </div>
 
@@ -231,7 +185,7 @@ protocol or <a href="#mention/1"><code class="inline">mention/1</code></a>.</p><
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#t:name/0" translate="no">name()</a>
+        <a href="#t:name/0" data-no-tooltip="" translate="no">name()</a>
 
       </div>
 
@@ -241,7 +195,7 @@ protocol or <a href="#mention/1"><code class="inline">mention/1</code></a>.</p><
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#t:permissions/0" translate="no">permissions()</a>
+        <a href="#t:permissions/0" data-no-tooltip="" translate="no">permissions()</a>
 
       </div>
 
@@ -251,7 +205,7 @@ protocol or <a href="#mention/1"><code class="inline">mention/1</code></a>.</p><
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#t:position/0" translate="no">position()</a>
+        <a href="#t:position/0" data-no-tooltip="" translate="no">position()</a>
 
       </div>
 
@@ -261,7 +215,7 @@ protocol or <a href="#mention/1"><code class="inline">mention/1</code></a>.</p><
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#t:t/0" translate="no">t()</a>
+        <a href="#t:t/0" data-no-tooltip="" translate="no">t()</a>
 
       </div>
 
@@ -269,7 +223,7 @@ protocol or <a href="#mention/1"><code class="inline">mention/1</code></a>.</p><
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#t:unicode_emoji/0" translate="no">unicode_emoji()</a>
+        <a href="#t:unicode_emoji/0" data-no-tooltip="" translate="no">unicode_emoji()</a>
 
       </div>
 
@@ -285,7 +239,7 @@ protocol or <a href="#mention/1"><code class="inline">mention/1</code></a>.</p><
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#mention/1" translate="no">mention(role)</a>
+        <a href="#mention/1" data-no-tooltip="" translate="no">mention(role)</a>
 
       </div>
 
@@ -309,18 +263,18 @@ protocol or <a href="#mention/1"><code class="inline">mention/1</code></a>.</p><
 <section class="detail" id="t:color/0">
 
   <div class="detail-header">
-    <a href="#t:color/0" class="detail-link" title="Link to this type">
+    <a href="#t:color/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature" translate="no">color()</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/guild/role.ex#L47" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">color()</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/guild/role.ex#L47" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -337,18 +291,18 @@ protocol or <a href="#mention/1"><code class="inline">mention/1</code></a>.</p><
 <section class="detail" id="t:hoist/0">
 
   <div class="detail-header">
-    <a href="#t:hoist/0" class="detail-link" title="Link to this type">
+    <a href="#t:hoist/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature" translate="no">hoist()</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/guild/role.ex#L50" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">hoist()</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/guild/role.ex#L50" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -365,20 +319,20 @@ protocol or <a href="#mention/1"><code class="inline">mention/1</code></a>.</p><
 <section class="detail" id="t:icon/0">
 
   <div class="detail-header">
-    <a href="#t:icon/0" class="detail-link" title="Link to this type">
+    <a href="#t:icon/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature" translate="no">icon()</h1>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">icon()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/guild/role.ex#L66" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+        <span class="note">(since 0.7.0)</span>
 
 
-      <span class="note">(since 0.7.0)</span>
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/guild/role.ex#L66" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
 
+    </div>
   </div>
 
   <section class="docstring">
@@ -395,18 +349,18 @@ protocol or <a href="#mention/1"><code class="inline">mention/1</code></a>.</p><
 <section class="detail" id="t:id/0">
 
   <div class="detail-header">
-    <a href="#t:id/0" class="detail-link" title="Link to this type">
+    <a href="#t:id/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature" translate="no">id()</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/guild/role.ex#L41" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">id()</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/guild/role.ex#L41" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -423,18 +377,18 @@ protocol or <a href="#mention/1"><code class="inline">mention/1</code></a>.</p><
 <section class="detail" id="t:managed/0">
 
   <div class="detail-header">
-    <a href="#t:managed/0" class="detail-link" title="Link to this type">
+    <a href="#t:managed/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature" translate="no">managed()</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/guild/role.ex#L59" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">managed()</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/guild/role.ex#L59" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -451,18 +405,18 @@ protocol or <a href="#mention/1"><code class="inline">mention/1</code></a>.</p><
 <section class="detail" id="t:mentionable/0">
 
   <div class="detail-header">
-    <a href="#t:mentionable/0" class="detail-link" title="Link to this type">
+    <a href="#t:mentionable/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature" translate="no">mentionable()</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/guild/role.ex#L62" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">mentionable()</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/guild/role.ex#L62" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -479,18 +433,18 @@ protocol or <a href="#mention/1"><code class="inline">mention/1</code></a>.</p><
 <section class="detail" id="t:name/0">
 
   <div class="detail-header">
-    <a href="#t:name/0" class="detail-link" title="Link to this type">
+    <a href="#t:name/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature" translate="no">name()</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/guild/role.ex#L44" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">name()</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/guild/role.ex#L44" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -507,18 +461,18 @@ protocol or <a href="#mention/1"><code class="inline">mention/1</code></a>.</p><
 <section class="detail" id="t:permissions/0">
 
   <div class="detail-header">
-    <a href="#t:permissions/0" class="detail-link" title="Link to this type">
+    <a href="#t:permissions/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature" translate="no">permissions()</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/guild/role.ex#L56" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">permissions()</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/guild/role.ex#L56" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -535,18 +489,18 @@ protocol or <a href="#mention/1"><code class="inline">mention/1</code></a>.</p><
 <section class="detail" id="t:position/0">
 
   <div class="detail-header">
-    <a href="#t:position/0" class="detail-link" title="Link to this type">
+    <a href="#t:position/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature" translate="no">position()</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/guild/role.ex#L53" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">position()</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/guild/role.ex#L53" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -563,18 +517,18 @@ protocol or <a href="#mention/1"><code class="inline">mention/1</code></a>.</p><
 <section class="detail" id="t:t/0">
 
   <div class="detail-header">
-    <a href="#t:t/0" class="detail-link" title="Link to this type">
+    <a href="#t:t/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature" translate="no">t()</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/guild/role.ex#L72" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">t()</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/guild/role.ex#L72" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -602,20 +556,20 @@ protocol or <a href="#mention/1"><code class="inline">mention/1</code></a>.</p><
 <section class="detail" id="t:unicode_emoji/0">
 
   <div class="detail-header">
-    <a href="#t:unicode_emoji/0" class="detail-link" title="Link to this type">
+    <a href="#t:unicode_emoji/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature" translate="no">unicode_emoji()</h1>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">unicode_emoji()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/guild/role.ex#L70" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+        <span class="note">(since 0.7.0)</span>
 
 
-      <span class="note">(since 0.7.0)</span>
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/guild/role.ex#L70" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
 
+    </div>
   </div>
 
   <section class="docstring">
@@ -644,18 +598,18 @@ protocol or <a href="#mention/1"><code class="inline">mention/1</code></a>.</p><
 <section class="detail" id="mention/1">
 
   <div class="detail-header">
-    <a href="#mention/1" class="detail-link" title="Link to this function">
+    <a href="#mention/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">mention(role)</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/guild/role.ex#L97" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">mention(role)</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/guild/role.ex#L97" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -672,8 +626,8 @@ protocol or <a href="#mention/1"><code class="inline">mention/1</code></a>.</p><
   </a>
   <span class="text">Examples</span>
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="n">role</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="8270332569-1">%</span><span class="nc" data-group-id="8270332569-1">Nostrum.Struct.Guild.Role</span><span class="p" data-group-id="8270332569-1">{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">431886639627763722</span><span class="p" data-group-id="8270332569-1">}</span><span class="w">
-</span><span class="gp unselectable">...&gt; </span><span class="nc">Nostrum.Struct.Guild.Role</span><span class="o">.</span><span class="n">mention</span><span class="p" data-group-id="8270332569-2">(</span><span class="n">role</span><span class="p" data-group-id="8270332569-2">)</span><span class="w">
+<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="n">role</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="6250391059-1">%</span><span class="nc" data-group-id="6250391059-1">Nostrum.Struct.Guild.Role</span><span class="p" data-group-id="6250391059-1">{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">431886639627763722</span><span class="p" data-group-id="6250391059-1">}</span><span class="w">
+</span><span class="gp unselectable">...&gt; </span><span class="nc">Nostrum.Struct.Guild.Role</span><span class="o">.</span><span class="n">mention</span><span class="p" data-group-id="6250391059-2">(</span><span class="n">role</span><span class="p" data-group-id="6250391059-2">)</span><span class="w">
 </span><span class="s">&quot;&lt;@&amp;431886639627763722&gt;&quot;</span></code></pre>
   </section>
 </section>
@@ -705,7 +659,7 @@ protocol or <a href="#mention/1"><code class="inline">mention/1</code></a>.</p><
 
       <p class="built-using">
         Built using
-        <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.32.1) for the
+        <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.37.0) for the
 
           <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
 
@@ -715,7 +669,6 @@ protocol or <a href="#mention/1"><code class="inline">mention/1</code></a>.</p><
   </div>
 </main>
 </div>
-
 
   </body>
 </html>

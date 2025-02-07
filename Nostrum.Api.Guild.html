@@ -4,36 +4,22 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="ExDoc v0.32.1">
+    <meta name="generator" content="ExDoc v0.37.0">
     <meta name="project" content="Nostrum v0.11.0-dev">
 
 
     <title>Nostrum.Api.Guild — Nostrum v0.11.0-dev</title>
-    <link rel="stylesheet" href="dist/html-elixir-2C5PUTIB.css" />
 
+    <link rel="stylesheet" href="dist/html-elixir-6X3L5KMG.css" />
 
-    <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
-    <script src="dist/handlebars.templates-IHH6HKET.js"></script>
-    <script src="dist/sidebar_items-7BAE9786.js"></script>
-    <script src="docs_config.js"></script>
-    <script async src="dist/html-GXQ6W6IF.js"></script>
-
+    <script defer src="dist/sidebar_items-7BAE9786.js"></script>
+    <script defer src="docs_config.js"></script>
+    <script defer src="dist/html-6VTPNSGQ.js"></script>
 
   </head>
-  <body data-type="modules" class="page-module">
-    <script>
-
-      try {
-        var settings = JSON.parse(localStorage.getItem('ex_doc:settings') || '{}');
-
-        if (settings.theme === 'dark' ||
-           ((settings.theme === 'system' || settings.theme == null) &&
-             window.matchMedia('(prefers-color-scheme: dark)').matches)
-           ) {
-          document.body.classList.add('dark')
-        }
-      } catch (error) { }
-    </script>
+  <body>
+    <script>(()=>{var t="ex_doc:settings",e="dark";var o="dark",s="light";var E="sidebar_state",n="closed";var r="sidebar_width";var a="sidebar-open";var i=new URLSearchParams(window.location.search),S=i.get("theme")||JSON.parse(localStorage.getItem(t)||"{}").theme;(S===o||S!==s&&window.matchMedia("(prefers-color-scheme: dark)").matches)&&document.body.classList.add(e);var d=sessionStorage.getItem(E),A=d!==n&&!window.matchMedia(`screen and (max-width: ${768}px)`).matches;document.body.classList.toggle(a,A);var c=sessionStorage.getItem(r);c&&document.body.style.setProperty("--sidebarWidth",`${c}px`);var p=/(Macintosh|iPhone|iPad|iPod)/.test(window.navigator.userAgent);document.documentElement.classList.toggle("apple-os",p);})();
+</script>
 
 <div class="body-wrapper">
 
@@ -59,47 +45,13 @@ Nostrum
         </div>
       </div>
     </div>
-    <ul id="sidebar-listNav" class="sidebar-listNav" role="tablist">
-      <li>
-        <button id="extras-list-tab-button" role="tab" data-type="extras" aria-controls="extras-tab-panel" aria-selected="true" tabindex="0">
-Pages
-        </button>
-      </li>
-
-        <li>
-          <button id="modules-list-tab-button" role="tab" data-type="modules" aria-controls="modules-tab-panel" aria-selected="false" tabindex="-1">
-            Modules
-          </button>
-        </li>
-
-
-        <li>
-          <button id="tasks-list-tab-button" role="tab" data-type="tasks" aria-controls="tasks-tab-panel" aria-selected="false" tabindex="-1">
-            <span translate="no">Mix</span> Tasks
-          </button>
-        </li>
-
-    </ul>
+    <ul id="sidebar-list-nav" class="sidebar-list-nav" role="tablist" data-extras=""></ul>
   </div>
-
-  <div id="extras-tab-panel" class="sidebar-tabpanel" role="tabpanel" aria-labelledby="extras-list-tab-button">
-    <ul id="extras-full-list" class="full-list"></ul>
-  </div>
-
-    <div id="modules-tab-panel" class="sidebar-tabpanel" role="tabpanel" aria-labelledby="modules-list-tab-button" hidden>
-      <ul id="modules-full-list" class="full-list"></ul>
-    </div>
-
-
-    <div id="tasks-tab-panel" class="sidebar-tabpanel" role="tabpanel" aria-labelledby="tasks-list-tab-button" hidden>
-      <ul id="tasks-full-list" class="full-list"></ul>
-    </div>
-
 </nav>
 
-<main class="content">
-  <output role="status" id="toast"></output>
+<output role="status" id="toast"></output>
 
+<main class="content page-module" id="main" data-type="modules">
   <div id="content" class="content-inner">
     <div class="top-search">
       <div class="search-settings">
@@ -108,8 +60,8 @@ Pages
             <span class="sr-only">Search documentation of Nostrum</span>
             <input name="q" type="text" class="search-input" placeholder="Press / to search" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
           </label>
-          <button type="submit" class="search-button" aria-label="Submit Search">
-            <i class="ri-search-2-line ri-lg" aria-hidden="true" title="Submit search"></i>
+          <button type="submit" class="search-button" aria-label="Submit Search" tabindex="-1">
+            <i class="ri-search-2-line ri-lg" aria-hidden="true"></i>
           </button>
           <button type="button" tabindex="-1" class="search-close-button" aria-hidden="true">
             <i class="ri-close-line ri-lg" title="Cancel search"></i>
@@ -125,17 +77,19 @@ Pages
     </div>
 
 <div id="top-content">
-  <h1>
+  <div class="heading-with-actions top-heading">
+    <h1>
+      <span translate="no">Nostrum.Api.Guild</span> 
+      <small class="app-vsn" translate="no">(Nostrum v0.11.0-dev)</small>
+
+    </h1>
 
       <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L1" title="View Source" class="icon-action" rel="help">
         <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         <span class="sr-only">View Source</span>
       </a>
 
-    <span translate="no">Nostrum.Api.Guild</span> 
-    <small class="app-vsn" translate="no">(Nostrum v0.11.0-dev)</small>
-
-  </h1>
+  </div>
 
 
     <section id="moduledoc">
@@ -158,7 +112,7 @@ Pages
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#add_member/3" translate="no">add_member(guild_id, user_id, options)</a>
+        <a href="#add_member/3" data-no-tooltip="" translate="no">add_member(guild_id, user_id, options)</a>
 
       </div>
 
@@ -168,7 +122,7 @@ Pages
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#add_member_role/4" translate="no">add_member_role(guild_id, user_id, role_id, reason \\ nil)</a>
+        <a href="#add_member_role/4" data-no-tooltip="" translate="no">add_member_role(guild_id, user_id, role_id, reason \\ nil)</a>
 
       </div>
 
@@ -178,7 +132,7 @@ Pages
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#audit_log/2" translate="no">audit_log(guild_id, options \\ [])</a>
+        <a href="#audit_log/2" data-no-tooltip="" translate="no">audit_log(guild_id, options \\ [])</a>
 
       </div>
 
@@ -188,7 +142,7 @@ Pages
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#ban/2" translate="no">ban(guild_id, user_id)</a>
+        <a href="#ban/2" data-no-tooltip="" translate="no">ban(guild_id, user_id)</a>
 
       </div>
 
@@ -198,7 +152,7 @@ Pages
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#ban_member/4" translate="no">ban_member(guild_id, user_id, days_to_delete, reason \\ nil)</a>
+        <a href="#ban_member/4" data-no-tooltip="" translate="no">ban_member(guild_id, user_id, days_to_delete, reason \\ nil)</a>
 
       </div>
 
@@ -208,7 +162,7 @@ Pages
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#bans/1" translate="no">bans(guild_id)</a>
+        <a href="#bans/1" data-no-tooltip="" translate="no">bans(guild_id)</a>
 
       </div>
 
@@ -218,7 +172,7 @@ Pages
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#begin_prune/3" translate="no">begin_prune(guild_id, days, reason \\ nil)</a>
+        <a href="#begin_prune/3" data-no-tooltip="" translate="no">begin_prune(guild_id, days, reason \\ nil)</a>
 
       </div>
 
@@ -228,7 +182,7 @@ Pages
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#channels/1" translate="no">channels(guild_id)</a>
+        <a href="#channels/1" data-no-tooltip="" translate="no">channels(guild_id)</a>
 
       </div>
 
@@ -238,7 +192,7 @@ Pages
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#create_emoji/3" translate="no">create_emoji(guild_id, options, reason \\ nil)</a>
+        <a href="#create_emoji/3" data-no-tooltip="" translate="no">create_emoji(guild_id, options, reason \\ nil)</a>
 
       </div>
 
@@ -248,7 +202,7 @@ Pages
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#create_integration/2" translate="no">create_integration(guild_id, options)</a>
+        <a href="#create_integration/2" data-no-tooltip="" translate="no">create_integration(guild_id, options)</a>
 
       </div>
 
@@ -258,7 +212,7 @@ Pages
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#create_role/3" translate="no">create_role(guild_id, options, reason \\ nil)</a>
+        <a href="#create_role/3" data-no-tooltip="" translate="no">create_role(guild_id, options, reason \\ nil)</a>
 
       </div>
 
@@ -268,7 +222,7 @@ Pages
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#delete/1" translate="no">delete(guild_id)</a>
+        <a href="#delete/1" data-no-tooltip="" translate="no">delete(guild_id)</a>
 
       </div>
 
@@ -278,7 +232,7 @@ Pages
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#delete_emoji/3" translate="no">delete_emoji(guild_id, emoji_id, reason \\ nil)</a>
+        <a href="#delete_emoji/3" data-no-tooltip="" translate="no">delete_emoji(guild_id, emoji_id, reason \\ nil)</a>
 
       </div>
 
@@ -288,7 +242,7 @@ Pages
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#delete_integration/2" translate="no">delete_integration(guild_id, integration_id)</a>
+        <a href="#delete_integration/2" data-no-tooltip="" translate="no">delete_integration(guild_id, integration_id)</a>
 
       </div>
 
@@ -298,7 +252,7 @@ Pages
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#delete_role/3" translate="no">delete_role(guild_id, role_id, reason \\ nil)</a>
+        <a href="#delete_role/3" data-no-tooltip="" translate="no">delete_role(guild_id, role_id, reason \\ nil)</a>
 
       </div>
 
@@ -308,7 +262,7 @@ Pages
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#emoji/2" translate="no">emoji(guild_id, emoji_id)</a>
+        <a href="#emoji/2" data-no-tooltip="" translate="no">emoji(guild_id, emoji_id)</a>
 
       </div>
 
@@ -318,7 +272,7 @@ Pages
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#emojis/1" translate="no">emojis(guild_id)</a>
+        <a href="#emojis/1" data-no-tooltip="" translate="no">emojis(guild_id)</a>
 
       </div>
 
@@ -328,7 +282,7 @@ Pages
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#estimate_prune_count/2" translate="no">estimate_prune_count(guild_id, days)</a>
+        <a href="#estimate_prune_count/2" data-no-tooltip="" translate="no">estimate_prune_count(guild_id, days)</a>
 
       </div>
 
@@ -338,7 +292,7 @@ Pages
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#get/1" translate="no">get(guild_id)</a>
+        <a href="#get/1" data-no-tooltip="" translate="no">get(guild_id)</a>
 
       </div>
 
@@ -348,7 +302,7 @@ Pages
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#integrations/1" translate="no">integrations(guild_id)</a>
+        <a href="#integrations/1" data-no-tooltip="" translate="no">integrations(guild_id)</a>
 
       </div>
 
@@ -358,7 +312,7 @@ Pages
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#kick_member/3" translate="no">kick_member(guild_id, user_id, reason \\ nil)</a>
+        <a href="#kick_member/3" data-no-tooltip="" translate="no">kick_member(guild_id, user_id, reason \\ nil)</a>
 
       </div>
 
@@ -368,7 +322,7 @@ Pages
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#leave/1" translate="no">leave(guild_id)</a>
+        <a href="#leave/1" data-no-tooltip="" translate="no">leave(guild_id)</a>
 
       </div>
 
@@ -378,7 +332,7 @@ Pages
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#member/2" translate="no">member(guild_id, user_id)</a>
+        <a href="#member/2" data-no-tooltip="" translate="no">member(guild_id, user_id)</a>
 
       </div>
 
@@ -388,7 +342,7 @@ Pages
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#members/2" translate="no">members(guild_id, options \\ %{})</a>
+        <a href="#members/2" data-no-tooltip="" translate="no">members(guild_id, options \\ %{})</a>
 
       </div>
 
@@ -398,7 +352,7 @@ Pages
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#modify/3" translate="no">modify(guild_id, options \\ [], reason \\ nil)</a>
+        <a href="#modify/3" data-no-tooltip="" translate="no">modify(guild_id, options \\ [], reason \\ nil)</a>
 
       </div>
 
@@ -408,7 +362,7 @@ Pages
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#modify_channel_positions/2" translate="no">modify_channel_positions(guild_id, positions)</a>
+        <a href="#modify_channel_positions/2" data-no-tooltip="" translate="no">modify_channel_positions(guild_id, positions)</a>
 
       </div>
 
@@ -418,7 +372,7 @@ Pages
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#modify_emoji/4" translate="no">modify_emoji(guild_id, emoji_id, options \\ %{}, reason \\ nil)</a>
+        <a href="#modify_emoji/4" data-no-tooltip="" translate="no">modify_emoji(guild_id, emoji_id, options \\ %{}, reason \\ nil)</a>
 
       </div>
 
@@ -428,7 +382,7 @@ Pages
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#modify_integration/3" translate="no">modify_integration(guild_id, integration_id, options)</a>
+        <a href="#modify_integration/3" data-no-tooltip="" translate="no">modify_integration(guild_id, integration_id, options)</a>
 
       </div>
 
@@ -438,7 +392,7 @@ Pages
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#modify_member/4" translate="no">modify_member(guild_id, user_id, options \\ %{}, reason \\ nil)</a>
+        <a href="#modify_member/4" data-no-tooltip="" translate="no">modify_member(guild_id, user_id, options \\ %{}, reason \\ nil)</a>
 
       </div>
 
@@ -448,7 +402,7 @@ Pages
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#modify_role/4" translate="no">modify_role(guild_id, role_id, options, reason \\ nil)</a>
+        <a href="#modify_role/4" data-no-tooltip="" translate="no">modify_role(guild_id, role_id, options, reason \\ nil)</a>
 
       </div>
 
@@ -458,7 +412,7 @@ Pages
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#modify_role_positions/3" translate="no">modify_role_positions(guild_id, positions, reason \\ nil)</a>
+        <a href="#modify_role_positions/3" data-no-tooltip="" translate="no">modify_role_positions(guild_id, positions, reason \\ nil)</a>
 
       </div>
 
@@ -468,7 +422,7 @@ Pages
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#modify_self_nick/2" translate="no">modify_self_nick(guild_id, options \\ %{})</a>
+        <a href="#modify_self_nick/2" data-no-tooltip="" translate="no">modify_self_nick(guild_id, options \\ %{})</a>
 
       </div>
 
@@ -478,7 +432,7 @@ Pages
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#modify_widget/2" translate="no">modify_widget(guild_id, options)</a>
+        <a href="#modify_widget/2" data-no-tooltip="" translate="no">modify_widget(guild_id, options)</a>
 
       </div>
 
@@ -488,7 +442,7 @@ Pages
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#remove_member_role/4" translate="no">remove_member_role(guild_id, user_id, role_id, reason \\ nil)</a>
+        <a href="#remove_member_role/4" data-no-tooltip="" translate="no">remove_member_role(guild_id, user_id, role_id, reason \\ nil)</a>
 
       </div>
 
@@ -498,7 +452,7 @@ Pages
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#roles/1" translate="no">roles(guild_id)</a>
+        <a href="#roles/1" data-no-tooltip="" translate="no">roles(guild_id)</a>
 
       </div>
 
@@ -508,7 +462,7 @@ Pages
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#scheduled_events/1" translate="no">scheduled_events(guild_id)</a>
+        <a href="#scheduled_events/1" data-no-tooltip="" translate="no">scheduled_events(guild_id)</a>
 
       </div>
 
@@ -518,7 +472,7 @@ Pages
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#sync_integration/2" translate="no">sync_integration(guild_id, integration_id)</a>
+        <a href="#sync_integration/2" data-no-tooltip="" translate="no">sync_integration(guild_id, integration_id)</a>
 
       </div>
 
@@ -528,7 +482,7 @@ Pages
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#unban_member/3" translate="no">unban_member(guild_id, user_id, reason \\ nil)</a>
+        <a href="#unban_member/3" data-no-tooltip="" translate="no">unban_member(guild_id, user_id, reason \\ nil)</a>
 
       </div>
 
@@ -538,7 +492,7 @@ Pages
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#voice_region/1" translate="no">voice_region(guild_id)</a>
+        <a href="#voice_region/1" data-no-tooltip="" translate="no">voice_region(guild_id)</a>
 
       </div>
 
@@ -548,7 +502,7 @@ Pages
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#voice_regions/0" translate="no">voice_regions()</a>
+        <a href="#voice_regions/0" data-no-tooltip="" translate="no">voice_regions()</a>
 
       </div>
 
@@ -558,7 +512,7 @@ Pages
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#webhooks/1" translate="no">webhooks(guild_id)</a>
+        <a href="#webhooks/1" data-no-tooltip="" translate="no">webhooks(guild_id)</a>
 
       </div>
 
@@ -568,7 +522,7 @@ Pages
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#widget/1" translate="no">widget(guild_id)</a>
+        <a href="#widget/1" data-no-tooltip="" translate="no">widget(guild_id)</a>
 
       </div>
 
@@ -592,20 +546,20 @@ Pages
 <section class="detail" id="add_member/3">
 
   <div class="detail-header">
-    <a href="#add_member/3" class="detail-link" title="Link to this function">
+    <a href="#add_member/3" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">add_member(guild_id, user_id, options)</h1>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">add_member(guild_id, user_id, options)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L62" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+        <span class="note">(since 0.10.1)</span>
 
 
-      <span class="note">(since 0.10.1)</span>
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L62" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
 
+    </div>
   </div>
 
   <section class="docstring">
@@ -637,13 +591,13 @@ guild. Otherwise, returns a <a href="Nostrum.Api.html#t:error/0"><code class="in
   </a>
   <span class="text">Examples</span>
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api.Guild</span><span class="o">.</span><span class="n">add_member</span><span class="p" data-group-id="5041678724-1">(</span><span class="w">
+<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api.Guild</span><span class="o">.</span><span class="n">add_member</span><span class="p" data-group-id="5425533317-1">(</span><span class="w">
   </span><span class="mi">41771983423143937</span><span class="p">,</span><span class="w">
   </span><span class="mi">18374719829378473</span><span class="p">,</span><span class="w">
   </span><span class="ss">access_token</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;6qrZcUqja7812RVdnEKjpzOL4CvHBFG&quot;</span><span class="p">,</span><span class="w">
   </span><span class="ss">nick</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;nostrum&quot;</span><span class="p">,</span><span class="w">
-  </span><span class="ss">roles</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="5041678724-2">[</span><span class="mi">431849301</span><span class="p">,</span><span class="w"> </span><span class="mi">913809431</span><span class="p" data-group-id="5041678724-2">]</span><span class="w">
-</span><span class="p" data-group-id="5041678724-1">)</span></code></pre>
+  </span><span class="ss">roles</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="5425533317-2">[</span><span class="mi">431849301</span><span class="p">,</span><span class="w"> </span><span class="mi">913809431</span><span class="p" data-group-id="5425533317-2">]</span><span class="w">
+</span><span class="p" data-group-id="5425533317-1">)</span></code></pre>
   </section>
 </section>
 <section class="detail" id="add_member_role/4">
@@ -651,20 +605,20 @@ guild. Otherwise, returns a <a href="Nostrum.Api.html#t:error/0"><code class="in
     <span id="add_member_role/3"></span>
 
   <div class="detail-header">
-    <a href="#add_member_role/4" class="detail-link" title="Link to this function">
+    <a href="#add_member_role/4" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">add_member_role(guild_id, user_id, role_id, reason \\ nil)</h1>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">add_member_role(guild_id, user_id, role_id, reason \\ nil)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L82" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+        <span class="note">(since 0.10.1)</span>
 
 
-      <span class="note">(since 0.10.1)</span>
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L82" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
 
+    </div>
   </div>
 
   <section class="docstring">
@@ -690,20 +644,20 @@ An optional <code class="inline">reason</code> can be given for the audit log.</
     <span id="audit_log/1"></span>
 
   <div class="detail-header">
-    <a href="#audit_log/2" class="detail-link" title="Link to this function">
+    <a href="#audit_log/2" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">audit_log(guild_id, options \\ [])</h1>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">audit_log(guild_id, options \\ [])</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L359" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+        <span class="note">(since 0.10.1)</span>
 
 
-      <span class="note">(since 0.10.1)</span>
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L359" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
 
+    </div>
   </div>
 
   <section class="docstring">
@@ -727,20 +681,20 @@ An optional <code class="inline">reason</code> can be given for the audit log.</
 <section class="detail" id="ban/2">
 
   <div class="detail-header">
-    <a href="#ban/2" class="detail-link" title="Link to this function">
+    <a href="#ban/2" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">ban(guild_id, user_id)</h1>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">ban(guild_id, user_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L369" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+        <span class="note">(since 1.x.x)</span>
 
 
-      <span class="note">(since 1.x.x)</span>
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L369" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
 
+    </div>
   </div>
 
   <section class="docstring">
@@ -760,20 +714,20 @@ An optional <code class="inline">reason</code> can be given for the audit log.</
     <span id="ban_member/3"></span>
 
   <div class="detail-header">
-    <a href="#ban_member/4" class="detail-link" title="Link to this function">
+    <a href="#ban_member/4" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">ban_member(guild_id, user_id, days_to_delete, reason \\ nil)</h1>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">ban_member(guild_id, user_id, days_to_delete, reason \\ nil)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L132" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+        <span class="note">(since 0.10.1)</span>
 
 
-      <span class="note">(since 0.10.1)</span>
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L132" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
 
+    </div>
   </div>
 
   <section class="docstring">
@@ -796,20 +750,20 @@ An optional <code class="inline">reason</code> can be specified for the audit lo
 <section class="detail" id="bans/1">
 
   <div class="detail-header">
-    <a href="#bans/1" class="detail-link" title="Link to this function">
+    <a href="#bans/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">bans(guild_id)</h1>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">bans(guild_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L380" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+        <span class="note">(since 0.10.1)</span>
 
 
-      <span class="note">(since 0.10.1)</span>
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L380" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
 
+    </div>
   </div>
 
   <section class="docstring">
@@ -829,20 +783,20 @@ An optional <code class="inline">reason</code> can be specified for the audit lo
     <span id="begin_prune/2"></span>
 
   <div class="detail-header">
-    <a href="#begin_prune/3" class="detail-link" title="Link to this function">
+    <a href="#begin_prune/3" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">begin_prune(guild_id, days, reason \\ nil)</h1>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">begin_prune(guild_id, days, reason \\ nil)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L111" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+        <span class="note">(since 0.10.1)</span>
 
 
-      <span class="note">(since 0.10.1)</span>
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L111" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
 
+    </div>
   </div>
 
   <section class="docstring">
@@ -865,27 +819,27 @@ An optional <code class="inline">reason</code> can be specified for the audit lo
   </a>
   <span class="text">Examples</span>
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api.Guild</span><span class="o">.</span><span class="n">begin_prune</span><span class="p" data-group-id="9615865793-1">(</span><span class="mi">81384788765712384</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p" data-group-id="9615865793-1">)</span><span class="w">
-</span><span class="p" data-group-id="9615865793-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="9615865793-3">%{</span><span class="ss">pruned</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p" data-group-id="9615865793-3">}</span><span class="p" data-group-id="9615865793-2">}</span></code></pre>
+<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api.Guild</span><span class="o">.</span><span class="n">begin_prune</span><span class="p" data-group-id="1205541485-1">(</span><span class="mi">81384788765712384</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p" data-group-id="1205541485-1">)</span><span class="w">
+</span><span class="p" data-group-id="1205541485-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="1205541485-3">%{</span><span class="ss">pruned</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p" data-group-id="1205541485-3">}</span><span class="p" data-group-id="1205541485-2">}</span></code></pre>
   </section>
 </section>
 <section class="detail" id="channels/1">
 
   <div class="detail-header">
-    <a href="#channels/1" class="detail-link" title="Link to this function">
+    <a href="#channels/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">channels(guild_id)</h1>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">channels(guild_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L398" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+        <span class="note">(since 0.10.1)</span>
 
 
-      <span class="note">(since 0.10.1)</span>
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L398" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
 
+    </div>
   </div>
 
   <section class="docstring">
@@ -903,8 +857,8 @@ An optional <code class="inline">reason</code> can be specified for the audit lo
   </a>
   <span class="text">Examples</span>
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api.Guild</span><span class="o">.</span><span class="n">channels</span><span class="p" data-group-id="9887604426-1">(</span><span class="mi">81384788765712384</span><span class="p" data-group-id="9887604426-1">)</span><span class="w">
-</span><span class="p" data-group-id="9887604426-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="9887604426-3">[</span><span class="p" data-group-id="9887604426-4">%</span><span class="nc" data-group-id="9887604426-4">Nostrum.Struct.Channel</span><span class="p" data-group-id="9887604426-4">{</span><span class="ss">guild_id</span><span class="p">:</span><span class="w"> </span><span class="mi">81384788765712384</span><span class="p" data-group-id="9887604426-4">}</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="bp">_</span><span class="p" data-group-id="9887604426-3">]</span><span class="p" data-group-id="9887604426-2">}</span></code></pre>
+<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api.Guild</span><span class="o">.</span><span class="n">channels</span><span class="p" data-group-id="1848748361-1">(</span><span class="mi">81384788765712384</span><span class="p" data-group-id="1848748361-1">)</span><span class="w">
+</span><span class="p" data-group-id="1848748361-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="1848748361-3">[</span><span class="p" data-group-id="1848748361-4">%</span><span class="nc" data-group-id="1848748361-4">Nostrum.Struct.Channel</span><span class="p" data-group-id="1848748361-4">{</span><span class="ss">guild_id</span><span class="p">:</span><span class="w"> </span><span class="mi">81384788765712384</span><span class="p" data-group-id="1848748361-4">}</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="bp">_</span><span class="p" data-group-id="1848748361-3">]</span><span class="p" data-group-id="1848748361-2">}</span></code></pre>
   </section>
 </section>
 <section class="detail" id="create_emoji/3">
@@ -912,20 +866,20 @@ An optional <code class="inline">reason</code> can be specified for the audit lo
     <span id="create_emoji/2"></span>
 
   <div class="detail-header">
-    <a href="#create_emoji/3" class="detail-link" title="Link to this function">
+    <a href="#create_emoji/3" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">create_emoji(guild_id, options, reason \\ nil)</h1>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">create_emoji(guild_id, options, reason \\ nil)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L171" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+        <span class="note">(since 0.10.1)</span>
 
 
-      <span class="note">(since 0.10.1)</span>
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L171" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
 
+    </div>
   </div>
 
   <section class="docstring">
@@ -956,26 +910,26 @@ An optional <code class="inline">reason</code> can be specified for the audit lo
 </h2>
 <pre><code class="makeup elixir" translate="no"><span class="n">image</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;data:image/png;base64,YXl5IGJieSB1IGx1a2luIDQgc3VtIGZ1az8=&quot;</span><span class="w">
 
-</span><span class="nc">Nostrum.Api.Guild</span><span class="o">.</span><span class="n">create_emoji</span><span class="p" data-group-id="7688354515-1">(</span><span class="mi">43189401384091</span><span class="p">,</span><span class="w"> </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;nostrum&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">image</span><span class="p">:</span><span class="w"> </span><span class="n">image</span><span class="p">,</span><span class="w"> </span><span class="ss">roles</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="7688354515-2">[</span><span class="p" data-group-id="7688354515-2">]</span><span class="p" data-group-id="7688354515-1">)</span></code></pre>
+</span><span class="nc">Nostrum.Api.Guild</span><span class="o">.</span><span class="n">create_emoji</span><span class="p" data-group-id="4023463531-1">(</span><span class="mi">43189401384091</span><span class="p">,</span><span class="w"> </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;nostrum&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">image</span><span class="p">:</span><span class="w"> </span><span class="n">image</span><span class="p">,</span><span class="w"> </span><span class="ss">roles</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="4023463531-2">[</span><span class="p" data-group-id="4023463531-2">]</span><span class="p" data-group-id="4023463531-1">)</span></code></pre>
   </section>
 </section>
 <section class="detail" id="create_integration/2">
 
   <div class="detail-header">
-    <a href="#create_integration/2" class="detail-link" title="Link to this function">
+    <a href="#create_integration/2" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">create_integration(guild_id, options)</h1>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">create_integration(guild_id, options)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L201" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+        <span class="note">(since 0.10.1)</span>
 
 
-      <span class="note">(since 0.10.1)</span>
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L201" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
 
+    </div>
   </div>
 
   <section class="docstring">
@@ -995,20 +949,20 @@ An optional <code class="inline">reason</code> can be specified for the audit lo
     <span id="create_role/2"></span>
 
   <div class="detail-header">
-    <a href="#create_role/3" class="detail-link" title="Link to this function">
+    <a href="#create_role/3" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">create_role(guild_id, options, reason \\ nil)</h1>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">create_role(guild_id, options, reason \\ nil)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L233" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+        <span class="note">(since 0.10.1)</span>
 
 
-      <span class="note">(since 0.10.1)</span>
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L233" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
 
+    </div>
   </div>
 
   <section class="docstring">
@@ -1036,26 +990,26 @@ An optional <code class="inline">reason</code> can be specified for the audit lo
   </a>
   <span class="text">Examples</span>
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api.Guild</span><span class="o">.</span><span class="n">create_role</span><span class="p" data-group-id="0624317436-1">(</span><span class="mi">41771983423143937</span><span class="p">,</span><span class="w"> </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;nostrum-club&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">hoist</span><span class="p">:</span><span class="w"> </span><span class="no">true</span><span class="p" data-group-id="0624317436-1">)</span></code></pre>
+<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api.Guild</span><span class="o">.</span><span class="n">create_role</span><span class="p" data-group-id="4864012288-1">(</span><span class="mi">41771983423143937</span><span class="p">,</span><span class="w"> </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;nostrum-club&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">hoist</span><span class="p">:</span><span class="w"> </span><span class="no">true</span><span class="p" data-group-id="4864012288-1">)</span></code></pre>
   </section>
 </section>
 <section class="detail" id="delete/1">
 
   <div class="detail-header">
-    <a href="#delete/1" class="detail-link" title="Link to this function">
+    <a href="#delete/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">delete(guild_id)</h1>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">delete(guild_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L266" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+        <span class="note">(since 0.10.1)</span>
 
 
-      <span class="note">(since 0.10.1)</span>
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L266" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
 
+    </div>
   </div>
 
   <section class="docstring">
@@ -1073,8 +1027,8 @@ It fires the <a href="Nostrum.Consumer.html#t:guild_delete/0"><code class="inlin
   </a>
   <span class="text">Examples</span>
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api.Guild</span><span class="o">.</span><span class="n">delete</span><span class="p" data-group-id="4782428740-1">(</span><span class="mi">81384788765712384</span><span class="p" data-group-id="4782428740-1">)</span><span class="w">
-</span><span class="p" data-group-id="4782428740-2">{</span><span class="ss">:ok</span><span class="p" data-group-id="4782428740-2">}</span></code></pre>
+<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api.Guild</span><span class="o">.</span><span class="n">delete</span><span class="p" data-group-id="9509207357-1">(</span><span class="mi">81384788765712384</span><span class="p" data-group-id="9509207357-1">)</span><span class="w">
+</span><span class="p" data-group-id="9509207357-2">{</span><span class="ss">:ok</span><span class="p" data-group-id="9509207357-2">}</span></code></pre>
   </section>
 </section>
 <section class="detail" id="delete_emoji/3">
@@ -1082,20 +1036,20 @@ It fires the <a href="Nostrum.Consumer.html#t:guild_delete/0"><code class="inlin
     <span id="delete_emoji/2"></span>
 
   <div class="detail-header">
-    <a href="#delete_emoji/3" class="detail-link" title="Link to this function">
+    <a href="#delete_emoji/3" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">delete_emoji(guild_id, emoji_id, reason \\ nil)</h1>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">delete_emoji(guild_id, emoji_id, reason \\ nil)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L282" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+        <span class="note">(since 0.10.1)</span>
 
 
-      <span class="note">(since 0.10.1)</span>
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L282" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
 
+    </div>
   </div>
 
   <section class="docstring">
@@ -1117,20 +1071,20 @@ It fires the <a href="Nostrum.Consumer.html#t:guild_delete/0"><code class="inlin
 <section class="detail" id="delete_integration/2">
 
   <div class="detail-header">
-    <a href="#delete_integration/2" class="detail-link" title="Link to this function">
+    <a href="#delete_integration/2" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">delete_integration(guild_id, integration_id)</h1>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">delete_integration(guild_id, integration_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L298" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+        <span class="note">(since 0.10.1)</span>
 
 
-      <span class="note">(since 0.10.1)</span>
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L298" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
 
+    </div>
   </div>
 
   <section class="docstring">
@@ -1150,20 +1104,20 @@ It fires the <a href="Nostrum.Consumer.html#t:guild_delete/0"><code class="inlin
     <span id="delete_role/2"></span>
 
   <div class="detail-header">
-    <a href="#delete_role/3" class="detail-link" title="Link to this function">
+    <a href="#delete_role/3" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">delete_role(guild_id, role_id, reason \\ nil)</h1>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">delete_role(guild_id, role_id, reason \\ nil)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L319" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+        <span class="note">(since 0.10.1)</span>
 
 
-      <span class="note">(since 0.10.1)</span>
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L319" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
 
+    </div>
   </div>
 
   <section class="docstring">
@@ -1185,26 +1139,26 @@ It fires the <a href="Nostrum.Consumer.html#t:guild_delete/0"><code class="inlin
   </a>
   <span class="text">Examples</span>
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api.Guild</span><span class="o">.</span><span class="n">delete_role</span><span class="p" data-group-id="3084409596-1">(</span><span class="mi">41771983423143937</span><span class="p">,</span><span class="w"> </span><span class="mi">392817238471936</span><span class="p" data-group-id="3084409596-1">)</span></code></pre>
+<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api.Guild</span><span class="o">.</span><span class="n">delete_role</span><span class="p" data-group-id="6738851204-1">(</span><span class="mi">41771983423143937</span><span class="p">,</span><span class="w"> </span><span class="mi">392817238471936</span><span class="p" data-group-id="6738851204-1">)</span></code></pre>
   </section>
 </section>
 <section class="detail" id="emoji/2">
 
   <div class="detail-header">
-    <a href="#emoji/2" class="detail-link" title="Link to this function">
+    <a href="#emoji/2" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">emoji(guild_id, emoji_id)</h1>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">emoji(guild_id, emoji_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L411" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+        <span class="note">(since 0.10.1)</span>
 
 
-      <span class="note">(since 0.10.1)</span>
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L411" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
 
+    </div>
   </div>
 
   <section class="docstring">
@@ -1222,20 +1176,20 @@ It fires the <a href="Nostrum.Consumer.html#t:guild_delete/0"><code class="inlin
 <section class="detail" id="emojis/1">
 
   <div class="detail-header">
-    <a href="#emojis/1" class="detail-link" title="Link to this function">
+    <a href="#emojis/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">emojis(guild_id)</h1>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">emojis(guild_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L611" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+        <span class="note">(since 0.10.1)</span>
 
 
-      <span class="note">(since 0.10.1)</span>
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L611" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
 
+    </div>
   </div>
 
   <section class="docstring">
@@ -1253,20 +1207,20 @@ It fires the <a href="Nostrum.Consumer.html#t:guild_delete/0"><code class="inlin
 <section class="detail" id="estimate_prune_count/2">
 
   <div class="detail-header">
-    <a href="#estimate_prune_count/2" class="detail-link" title="Link to this function">
+    <a href="#estimate_prune_count/2" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">estimate_prune_count(guild_id, days)</h1>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">estimate_prune_count(guild_id, days)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L460" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+        <span class="note">(since 0.10.1)</span>
 
 
-      <span class="note">(since 0.10.1)</span>
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L460" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
 
+    </div>
   </div>
 
   <section class="docstring">
@@ -1284,27 +1238,27 @@ It fires the <a href="Nostrum.Consumer.html#t:guild_delete/0"><code class="inlin
   </a>
   <span class="text">Examples</span>
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api.Guild</span><span class="o">.</span><span class="n">estimate_prune_count</span><span class="p" data-group-id="7301069302-1">(</span><span class="mi">81384788765712384</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p" data-group-id="7301069302-1">)</span><span class="w">
-</span><span class="p" data-group-id="7301069302-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="7301069302-3">%{</span><span class="ss">pruned</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p" data-group-id="7301069302-3">}</span><span class="p" data-group-id="7301069302-2">}</span></code></pre>
+<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api.Guild</span><span class="o">.</span><span class="n">estimate_prune_count</span><span class="p" data-group-id="6111642151-1">(</span><span class="mi">81384788765712384</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p" data-group-id="6111642151-1">)</span><span class="w">
+</span><span class="p" data-group-id="6111642151-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="6111642151-3">%{</span><span class="ss">pruned</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p" data-group-id="6111642151-3">}</span><span class="p" data-group-id="6111642151-2">}</span></code></pre>
   </section>
 </section>
 <section class="detail" id="get/1">
 
   <div class="detail-header">
-    <a href="#get/1" class="detail-link" title="Link to this function">
+    <a href="#get/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">get(guild_id)</h1>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">get(guild_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L343" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+        <span class="note">(since 0.10.1)</span>
 
 
-      <span class="note">(since 0.10.1)</span>
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L343" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
 
+    </div>
   </div>
 
   <section class="docstring">
@@ -1322,27 +1276,27 @@ It fires the <a href="Nostrum.Consumer.html#t:guild_delete/0"><code class="inlin
   </a>
   <span class="text">Examples</span>
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api.Guild</span><span class="o">.</span><span class="n">get</span><span class="p" data-group-id="5567382847-1">(</span><span class="mi">81384788765712384</span><span class="p" data-group-id="5567382847-1">)</span><span class="w">
-</span><span class="p" data-group-id="5567382847-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="5567382847-3">%</span><span class="nc" data-group-id="5567382847-3">Nostrum.Struct.Guild</span><span class="p" data-group-id="5567382847-3">{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">81384788765712384</span><span class="p" data-group-id="5567382847-3">}</span><span class="p" data-group-id="5567382847-2">}</span></code></pre>
+<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api.Guild</span><span class="o">.</span><span class="n">get</span><span class="p" data-group-id="0831890654-1">(</span><span class="mi">81384788765712384</span><span class="p" data-group-id="0831890654-1">)</span><span class="w">
+</span><span class="p" data-group-id="0831890654-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="0831890654-3">%</span><span class="nc" data-group-id="0831890654-3">Nostrum.Struct.Guild</span><span class="p" data-group-id="0831890654-3">{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">81384788765712384</span><span class="p" data-group-id="0831890654-3">}</span><span class="p" data-group-id="0831890654-2">}</span></code></pre>
   </section>
 </section>
 <section class="detail" id="integrations/1">
 
   <div class="detail-header">
-    <a href="#integrations/1" class="detail-link" title="Link to this function">
+    <a href="#integrations/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">integrations(guild_id)</h1>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">integrations(guild_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L423" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+        <span class="note">(since 0.10.1)</span>
 
 
-      <span class="note">(since 0.10.1)</span>
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L423" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
 
+    </div>
   </div>
 
   <section class="docstring">
@@ -1362,20 +1316,20 @@ It fires the <a href="Nostrum.Consumer.html#t:guild_delete/0"><code class="inlin
     <span id="kick_member/2"></span>
 
   <div class="detail-header">
-    <a href="#kick_member/3" class="detail-link" title="Link to this function">
+    <a href="#kick_member/3" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">kick_member(guild_id, user_id, reason \\ nil)</h1>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">kick_member(guild_id, user_id, reason \\ nil)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L943" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+        <span class="note">(since 0.10.1)</span>
 
 
-      <span class="note">(since 0.10.1)</span>
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L943" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
 
+    </div>
   </div>
 
   <section class="docstring">
@@ -1397,27 +1351,27 @@ It fires the <a href="Nostrum.Consumer.html#t:guild_delete/0"><code class="inlin
   </a>
   <span class="text">Examples</span>
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Api.Guild</span><span class="o">.</span><span class="n">kick_member</span><span class="p" data-group-id="0373395356-1">(</span><span class="mi">1453827904102291</span><span class="p">,</span><span class="w"> </span><span class="mi">18739485766253</span><span class="p" data-group-id="0373395356-1">)</span><span class="w">
-</span><span class="p" data-group-id="0373395356-2">{</span><span class="ss">:ok</span><span class="p" data-group-id="0373395356-2">}</span></code></pre>
+<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Api.Guild</span><span class="o">.</span><span class="n">kick_member</span><span class="p" data-group-id="2505316883-1">(</span><span class="mi">1453827904102291</span><span class="p">,</span><span class="w"> </span><span class="mi">18739485766253</span><span class="p" data-group-id="2505316883-1">)</span><span class="w">
+</span><span class="p" data-group-id="2505316883-2">{</span><span class="ss">:ok</span><span class="p" data-group-id="2505316883-2">}</span></code></pre>
   </section>
 </section>
 <section class="detail" id="leave/1">
 
   <div class="detail-header">
-    <a href="#leave/1" class="detail-link" title="Link to this function">
+    <a href="#leave/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">leave(guild_id)</h1>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">leave(guild_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L593" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+        <span class="note">(since 0.10.1)</span>
 
 
-      <span class="note">(since 0.10.1)</span>
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L593" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
 
+    </div>
   </div>
 
   <section class="docstring">
@@ -1434,20 +1388,20 @@ It fires the <a href="Nostrum.Consumer.html#t:guild_delete/0"><code class="inlin
 <section class="detail" id="member/2">
 
   <div class="detail-header">
-    <a href="#member/2" class="detail-link" title="Link to this function">
+    <a href="#member/2" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">member(guild_id, user_id)</h1>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">member(guild_id, user_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L440" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+        <span class="note">(since 0.10.1)</span>
 
 
-      <span class="note">(since 0.10.1)</span>
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L440" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
 
+    </div>
   </div>
 
   <section class="docstring">
@@ -1465,7 +1419,7 @@ It fires the <a href="Nostrum.Consumer.html#t:guild_delete/0"><code class="inlin
   </a>
   <span class="text">Examples</span>
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api.Guild</span><span class="o">.</span><span class="n">member</span><span class="p" data-group-id="8522202508-1">(</span><span class="mi">4019283754613</span><span class="p">,</span><span class="w"> </span><span class="mi">184937267485</span><span class="p" data-group-id="8522202508-1">)</span></code></pre>
+<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api.Guild</span><span class="o">.</span><span class="n">member</span><span class="p" data-group-id="6704130430-1">(</span><span class="mi">4019283754613</span><span class="p">,</span><span class="w"> </span><span class="mi">184937267485</span><span class="p" data-group-id="6704130430-1">)</span></code></pre>
   </section>
 </section>
 <section class="detail" id="members/2">
@@ -1473,20 +1427,20 @@ It fires the <a href="Nostrum.Consumer.html#t:guild_delete/0"><code class="inlin
     <span id="members/1"></span>
 
   <div class="detail-header">
-    <a href="#members/2" class="detail-link" title="Link to this function">
+    <a href="#members/2" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">members(guild_id, options \\ %{})</h1>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">members(guild_id, options \\ %{})</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L633" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+        <span class="note">(since 0.10.1)</span>
 
 
-      <span class="note">(since 0.10.1)</span>
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L633" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
 
+    </div>
   </div>
 
   <section class="docstring">
@@ -1510,7 +1464,7 @@ It fires the <a href="Nostrum.Consumer.html#t:guild_delete/0"><code class="inlin
   </a>
   <span class="text">Examples</span>
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api.Guild</span><span class="o">.</span><span class="n">members</span><span class="p" data-group-id="6494304516-1">(</span><span class="mi">41771983423143937</span><span class="p">,</span><span class="w"> </span><span class="ss">limit</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p" data-group-id="6494304516-1">)</span></code></pre>
+<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api.Guild</span><span class="o">.</span><span class="n">members</span><span class="p" data-group-id="6506215440-1">(</span><span class="mi">41771983423143937</span><span class="p">,</span><span class="w"> </span><span class="ss">limit</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p" data-group-id="6506215440-1">)</span></code></pre>
   </section>
 </section>
 <section class="detail" id="modify/3">
@@ -1520,20 +1474,20 @@ It fires the <a href="Nostrum.Consumer.html#t:guild_delete/0"><code class="inlin
     <span id="modify/2"></span>
 
   <div class="detail-header">
-    <a href="#modify/3" class="detail-link" title="Link to this function">
+    <a href="#modify/3" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">modify(guild_id, options \\ [], reason \\ nil)</h1>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">modify(guild_id, options \\ [], reason \\ nil)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L715" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+        <span class="note">(since 0.10.1)</span>
 
 
-      <span class="note">(since 0.10.1)</span>
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L715" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
 
+    </div>
   </div>
 
   <section class="docstring">
@@ -1567,27 +1521,27 @@ where admins and moderators receive notices from Discord in public guilds</li></
   </a>
   <span class="text">Examples</span>
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api.Guild</span><span class="o">.</span><span class="n">modify</span><span class="p" data-group-id="4309664008-1">(</span><span class="mi">451824027976073216</span><span class="p">,</span><span class="w"> </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Nose Drum&quot;</span><span class="p" data-group-id="4309664008-1">)</span><span class="w">
-</span><span class="p" data-group-id="4309664008-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="4309664008-3">%</span><span class="nc" data-group-id="4309664008-3">Nostrum.Struct.Guild</span><span class="p" data-group-id="4309664008-3">{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">451824027976073216</span><span class="p">,</span><span class="w"> </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Nose Drum&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">...</span><span class="p" data-group-id="4309664008-3">}</span><span class="p" data-group-id="4309664008-2">}</span></code></pre>
+<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api.Guild</span><span class="o">.</span><span class="n">modify</span><span class="p" data-group-id="6555225629-1">(</span><span class="mi">451824027976073216</span><span class="p">,</span><span class="w"> </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Nose Drum&quot;</span><span class="p" data-group-id="6555225629-1">)</span><span class="w">
+</span><span class="p" data-group-id="6555225629-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="6555225629-3">%</span><span class="nc" data-group-id="6555225629-3">Nostrum.Struct.Guild</span><span class="p" data-group-id="6555225629-3">{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">451824027976073216</span><span class="p">,</span><span class="w"> </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Nose Drum&quot;</span><span class="p">,</span><span class="w"> </span><span class="n">...</span><span class="p" data-group-id="6555225629-3">}</span><span class="p" data-group-id="6555225629-2">}</span></code></pre>
   </section>
 </section>
 <section class="detail" id="modify_channel_positions/2">
 
   <div class="detail-header">
-    <a href="#modify_channel_positions/2" class="detail-link" title="Link to this function">
+    <a href="#modify_channel_positions/2" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">modify_channel_positions(guild_id, positions)</h1>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">modify_channel_positions(guild_id, positions)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L751" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+        <span class="note">(since 0.10.1)</span>
 
 
-      <span class="note">(since 0.10.1)</span>
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L751" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
 
+    </div>
   </div>
 
   <section class="docstring">
@@ -1607,8 +1561,8 @@ where admins and moderators receive notices from Discord in public guilds</li></
   </a>
   <span class="text">Examples</span>
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api.Guild</span><span class="o">.</span><span class="n">modify_channel_positions</span><span class="p" data-group-id="7105659181-1">(</span><span class="mi">279093381723062272</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="7105659181-2">[</span><span class="p" data-group-id="7105659181-3">%{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">351500354581692420</span><span class="p">,</span><span class="w"> </span><span class="ss">position</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p" data-group-id="7105659181-3">}</span><span class="p" data-group-id="7105659181-2">]</span><span class="p" data-group-id="7105659181-1">)</span><span class="w">
-</span><span class="p" data-group-id="7105659181-4">{</span><span class="ss">:ok</span><span class="p" data-group-id="7105659181-4">}</span></code></pre>
+<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api.Guild</span><span class="o">.</span><span class="n">modify_channel_positions</span><span class="p" data-group-id="8096801457-1">(</span><span class="mi">279093381723062272</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="8096801457-2">[</span><span class="p" data-group-id="8096801457-3">%{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">351500354581692420</span><span class="p">,</span><span class="w"> </span><span class="ss">position</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p" data-group-id="8096801457-3">}</span><span class="p" data-group-id="8096801457-2">]</span><span class="p" data-group-id="8096801457-1">)</span><span class="w">
+</span><span class="p" data-group-id="8096801457-4">{</span><span class="ss">:ok</span><span class="p" data-group-id="8096801457-4">}</span></code></pre>
   </section>
 </section>
 <section class="detail" id="modify_emoji/4">
@@ -1618,20 +1572,20 @@ where admins and moderators receive notices from Discord in public guilds</li></
     <span id="modify_emoji/3"></span>
 
   <div class="detail-header">
-    <a href="#modify_emoji/4" class="detail-link" title="Link to this function">
+    <a href="#modify_emoji/4" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">modify_emoji(guild_id, emoji_id, options \\ %{}, reason \\ nil)</h1>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">modify_emoji(guild_id, emoji_id, options \\ %{}, reason \\ nil)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L779" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+        <span class="note">(since 0.10.1)</span>
 
 
-      <span class="note">(since 0.10.1)</span>
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L779" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
 
+    </div>
   </div>
 
   <section class="docstring">
@@ -1660,26 +1614,26 @@ where admins and moderators receive notices from Discord in public guilds</li></
   </a>
   <span class="text">Examples</span>
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api.Guild</span><span class="o">.</span><span class="n">modify_emoji</span><span class="p" data-group-id="4840086715-1">(</span><span class="mi">43189401384091</span><span class="p">,</span><span class="w"> </span><span class="mi">4314301984301</span><span class="p">,</span><span class="w"> </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;elixir&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">roles</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="4840086715-2">[</span><span class="p" data-group-id="4840086715-2">]</span><span class="p" data-group-id="4840086715-1">)</span></code></pre>
+<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api.Guild</span><span class="o">.</span><span class="n">modify_emoji</span><span class="p" data-group-id="4987361188-1">(</span><span class="mi">43189401384091</span><span class="p">,</span><span class="w"> </span><span class="mi">4314301984301</span><span class="p">,</span><span class="w"> </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;elixir&quot;</span><span class="p">,</span><span class="w"> </span><span class="ss">roles</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="4987361188-2">[</span><span class="p" data-group-id="4987361188-2">]</span><span class="p" data-group-id="4987361188-1">)</span></code></pre>
   </section>
 </section>
 <section class="detail" id="modify_integration/3">
 
   <div class="detail-header">
-    <a href="#modify_integration/3" class="detail-link" title="Link to this function">
+    <a href="#modify_integration/3" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">modify_integration(guild_id, integration_id, options)</h1>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">modify_integration(guild_id, integration_id, options)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L811" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+        <span class="note">(since 0.10.1)</span>
 
 
-      <span class="note">(since 0.10.1)</span>
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L811" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
 
+    </div>
   </div>
 
   <section class="docstring">
@@ -1708,20 +1662,20 @@ where admins and moderators receive notices from Discord in public guilds</li></
     <span id="modify_member/3"></span>
 
   <div class="detail-header">
-    <a href="#modify_member/4" class="detail-link" title="Link to this function">
+    <a href="#modify_member/4" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">modify_member(guild_id, user_id, options \\ %{}, reason \\ nil)</h1>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">modify_member(guild_id, user_id, options \\ %{}, reason \\ nil)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L844" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+        <span class="note">(since 0.10.1)</span>
 
 
-      <span class="note">(since 0.10.1)</span>
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L844" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
 
+    </div>
   </div>
 
   <section class="docstring">
@@ -1751,8 +1705,8 @@ It situationally requires the <code class="inline">MANAGE_NICKNAMES</code>, <cod
   </a>
   <span class="text">Examples</span>
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api.Guild</span><span class="o">.</span><span class="n">modify_member</span><span class="p" data-group-id="8964807018-1">(</span><span class="mi">41771983423143937</span><span class="p">,</span><span class="w"> </span><span class="mi">637162356451</span><span class="p">,</span><span class="w"> </span><span class="ss">nick</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Nostrum&quot;</span><span class="p" data-group-id="8964807018-1">)</span><span class="w">
-</span><span class="p" data-group-id="8964807018-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="8964807018-3">%</span><span class="nc" data-group-id="8964807018-3">Nostrum.Struct.Member</span><span class="p" data-group-id="8964807018-3">{</span><span class="p" data-group-id="8964807018-3">}</span><span class="p" data-group-id="8964807018-2">}</span></code></pre>
+<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api.Guild</span><span class="o">.</span><span class="n">modify_member</span><span class="p" data-group-id="1131804582-1">(</span><span class="mi">41771983423143937</span><span class="p">,</span><span class="w"> </span><span class="mi">637162356451</span><span class="p">,</span><span class="w"> </span><span class="ss">nick</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Nostrum&quot;</span><span class="p" data-group-id="1131804582-1">)</span><span class="w">
+</span><span class="p" data-group-id="1131804582-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="1131804582-3">%</span><span class="nc" data-group-id="1131804582-3">Nostrum.Struct.Member</span><span class="p" data-group-id="1131804582-3">{</span><span class="p" data-group-id="1131804582-3">}</span><span class="p" data-group-id="1131804582-2">}</span></code></pre>
   </section>
 </section>
 <section class="detail" id="modify_role/4">
@@ -1760,20 +1714,20 @@ It situationally requires the <code class="inline">MANAGE_NICKNAMES</code>, <cod
     <span id="modify_role/3"></span>
 
   <div class="detail-header">
-    <a href="#modify_role/4" class="detail-link" title="Link to this function">
+    <a href="#modify_role/4" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">modify_role(guild_id, role_id, options, reason \\ nil)</h1>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">modify_role(guild_id, role_id, options, reason \\ nil)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L491" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+        <span class="note">(since 0.10.1)</span>
 
 
-      <span class="note">(since 0.10.1)</span>
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L491" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
 
+    </div>
   </div>
 
   <section class="docstring">
@@ -1802,7 +1756,7 @@ It situationally requires the <code class="inline">MANAGE_NICKNAMES</code>, <cod
   </a>
   <span class="text">Examples</span>
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api.Guild</span><span class="o">.</span><span class="n">modify_role</span><span class="p" data-group-id="1751840154-1">(</span><span class="mi">41771983423143937</span><span class="p">,</span><span class="w"> </span><span class="mi">392817238471936</span><span class="p">,</span><span class="w"> </span><span class="ss">hoist</span><span class="p">:</span><span class="w"> </span><span class="no">false</span><span class="p">,</span><span class="w"> </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;foo-bar&quot;</span><span class="p" data-group-id="1751840154-1">)</span></code></pre>
+<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api.Guild</span><span class="o">.</span><span class="n">modify_role</span><span class="p" data-group-id="5542686378-1">(</span><span class="mi">41771983423143937</span><span class="p">,</span><span class="w"> </span><span class="mi">392817238471936</span><span class="p">,</span><span class="w"> </span><span class="ss">hoist</span><span class="p">:</span><span class="w"> </span><span class="no">false</span><span class="p">,</span><span class="w"> </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;foo-bar&quot;</span><span class="p" data-group-id="5542686378-1">)</span></code></pre>
   </section>
 </section>
 <section class="detail" id="modify_role_positions/3">
@@ -1810,20 +1764,20 @@ It situationally requires the <code class="inline">MANAGE_NICKNAMES</code>, <cod
     <span id="modify_role_positions/2"></span>
 
   <div class="detail-header">
-    <a href="#modify_role_positions/3" class="detail-link" title="Link to this function">
+    <a href="#modify_role_positions/3" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">modify_role_positions(guild_id, positions, reason \\ nil)</h1>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">modify_role_positions(guild_id, positions, reason \\ nil)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L886" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+        <span class="note">(since 0.10.1)</span>
 
 
-      <span class="note">(since 0.10.1)</span>
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L886" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
 
+    </div>
   </div>
 
   <section class="docstring">
@@ -1845,7 +1799,7 @@ It situationally requires the <code class="inline">MANAGE_NICKNAMES</code>, <cod
   </a>
   <span class="text">Examples</span>
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api.Guild</span><span class="o">.</span><span class="n">modify_role_positions</span><span class="p" data-group-id="6898284569-1">(</span><span class="mi">41771983423143937</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="6898284569-2">[</span><span class="p" data-group-id="6898284569-3">%{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">41771983423143936</span><span class="p">,</span><span class="w"> </span><span class="ss">position</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p" data-group-id="6898284569-3">}</span><span class="p" data-group-id="6898284569-2">]</span><span class="p" data-group-id="6898284569-1">)</span></code></pre>
+<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api.Guild</span><span class="o">.</span><span class="n">modify_role_positions</span><span class="p" data-group-id="5326127167-1">(</span><span class="mi">41771983423143937</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="5326127167-2">[</span><span class="p" data-group-id="5326127167-3">%{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">41771983423143936</span><span class="p">,</span><span class="w"> </span><span class="ss">position</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p" data-group-id="5326127167-3">}</span><span class="p" data-group-id="5326127167-2">]</span><span class="p" data-group-id="5326127167-1">)</span></code></pre>
   </section>
 </section>
 <section class="detail" id="modify_self_nick/2">
@@ -1853,20 +1807,20 @@ It situationally requires the <code class="inline">MANAGE_NICKNAMES</code>, <cod
     <span id="modify_self_nick/1"></span>
 
   <div class="detail-header">
-    <a href="#modify_self_nick/2" class="detail-link" title="Link to this function">
+    <a href="#modify_self_nick/2" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">modify_self_nick(guild_id, options \\ %{})</h1>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">modify_self_nick(guild_id, options \\ %{})</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L669" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+        <span class="note">(since 0.10.1)</span>
 
 
-      <span class="note">(since 0.10.1)</span>
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L669" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
 
+    </div>
   </div>
 
   <section class="docstring">
@@ -1890,27 +1844,27 @@ It situationally requires the <code class="inline">MANAGE_NICKNAMES</code>, <cod
   </a>
   <span class="text">Examples</span>
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api.Guild</span><span class="o">.</span><span class="n">modify_self_nick</span><span class="p" data-group-id="6689049574-1">(</span><span class="mi">41771983423143937</span><span class="p">,</span><span class="w"> </span><span class="ss">nick</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Nostrum&quot;</span><span class="p" data-group-id="6689049574-1">)</span><span class="w">
-</span><span class="p" data-group-id="6689049574-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="6689049574-3">%{</span><span class="ss">nick</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Nostrum&quot;</span><span class="p" data-group-id="6689049574-3">}</span><span class="p" data-group-id="6689049574-2">}</span></code></pre>
+<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api.Guild</span><span class="o">.</span><span class="n">modify_self_nick</span><span class="p" data-group-id="5428284245-1">(</span><span class="mi">41771983423143937</span><span class="p">,</span><span class="w"> </span><span class="ss">nick</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Nostrum&quot;</span><span class="p" data-group-id="5428284245-1">)</span><span class="w">
+</span><span class="p" data-group-id="5428284245-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="5428284245-3">%{</span><span class="ss">nick</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;Nostrum&quot;</span><span class="p" data-group-id="5428284245-3">}</span><span class="p" data-group-id="5428284245-2">}</span></code></pre>
   </section>
 </section>
 <section class="detail" id="modify_widget/2">
 
   <div class="detail-header">
-    <a href="#modify_widget/2" class="detail-link" title="Link to this function">
+    <a href="#modify_widget/2" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">modify_widget(guild_id, options)</h1>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">modify_widget(guild_id, options)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L903" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+        <span class="note">(since 0.10.1)</span>
 
 
-      <span class="note">(since 0.10.1)</span>
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L903" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
 
+    </div>
   </div>
 
   <section class="docstring">
@@ -1930,20 +1884,20 @@ It situationally requires the <code class="inline">MANAGE_NICKNAMES</code>, <cod
     <span id="remove_member_role/3"></span>
 
   <div class="detail-header">
-    <a href="#remove_member_role/4" class="detail-link" title="Link to this function">
+    <a href="#remove_member_role/4" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">remove_member_role(guild_id, user_id, role_id, reason \\ nil)</h1>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">remove_member_role(guild_id, user_id, role_id, reason \\ nil)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L518" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+        <span class="note">(since 0.10.1)</span>
 
 
-      <span class="note">(since 0.10.1)</span>
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L518" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
 
+    </div>
   </div>
 
   <section class="docstring">
@@ -1967,20 +1921,20 @@ An optional <code class="inline">reason</code> can be given for the audit log.</
 <section class="detail" id="roles/1">
 
   <div class="detail-header">
-    <a href="#roles/1" class="detail-link" title="Link to this function">
+    <a href="#roles/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">roles(guild_id)</h1>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">roles(guild_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L540" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+        <span class="note">(since 0.10.1)</span>
 
 
-      <span class="note">(since 0.10.1)</span>
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L540" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
 
+    </div>
   </div>
 
   <section class="docstring">
@@ -1998,26 +1952,26 @@ An optional <code class="inline">reason</code> can be given for the audit log.</
   </a>
   <span class="text">Examples</span>
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api.Guild</span><span class="o">.</span><span class="n">roles</span><span class="p" data-group-id="6891310607-1">(</span><span class="mi">147362948571673</span><span class="p" data-group-id="6891310607-1">)</span></code></pre>
+<pre><code class="makeup elixir" translate="no"><span class="nc">Nostrum.Api.Guild</span><span class="o">.</span><span class="n">roles</span><span class="p" data-group-id="5032575933-1">(</span><span class="mi">147362948571673</span><span class="p" data-group-id="5032575933-1">)</span></code></pre>
   </section>
 </section>
 <section class="detail" id="scheduled_events/1">
 
   <div class="detail-header">
-    <a href="#scheduled_events/1" class="detail-link" title="Link to this function">
+    <a href="#scheduled_events/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">scheduled_events(guild_id)</h1>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">scheduled_events(guild_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L550" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+        <span class="note">(since 1.x.x)</span>
 
 
-      <span class="note">(since 1.x.x)</span>
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L550" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
 
+    </div>
   </div>
 
   <section class="docstring">
@@ -2035,20 +1989,20 @@ An optional <code class="inline">reason</code> can be given for the audit log.</
 <section class="detail" id="sync_integration/2">
 
   <div class="detail-header">
-    <a href="#sync_integration/2" class="detail-link" title="Link to this function">
+    <a href="#sync_integration/2" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">sync_integration(guild_id, integration_id)</h1>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">sync_integration(guild_id, integration_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L960" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+        <span class="note">(since 0.10.1)</span>
 
 
-      <span class="note">(since 0.10.1)</span>
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L960" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
 
+    </div>
   </div>
 
   <section class="docstring">
@@ -2071,20 +2025,20 @@ An optional <code class="inline">reason</code> can be given for the audit log.</
     <span id="unban_member/2"></span>
 
   <div class="detail-header">
-    <a href="#unban_member/3" class="detail-link" title="Link to this function">
+    <a href="#unban_member/3" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">unban_member(guild_id, user_id, reason \\ nil)</h1>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">unban_member(guild_id, user_id, reason \\ nil)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L915" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+        <span class="note">(since 0.10.1)</span>
 
 
-      <span class="note">(since 0.10.1)</span>
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L915" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
 
+    </div>
   </div>
 
   <section class="docstring">
@@ -2106,20 +2060,20 @@ An optional <code class="inline">reason</code> can be specified for the audit lo
 <section class="detail" id="voice_region/1">
 
   <div class="detail-header">
-    <a href="#voice_region/1" class="detail-link" title="Link to this function">
+    <a href="#voice_region/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">voice_region(guild_id)</h1>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">voice_region(guild_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L582" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+        <span class="note">(since 0.10.1)</span>
 
 
-      <span class="note">(since 0.10.1)</span>
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L582" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
 
+    </div>
   </div>
 
   <section class="docstring">
@@ -2137,20 +2091,20 @@ An optional <code class="inline">reason</code> can be specified for the audit lo
 <section class="detail" id="voice_regions/0">
 
   <div class="detail-header">
-    <a href="#voice_regions/0" class="detail-link" title="Link to this function">
+    <a href="#voice_regions/0" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">voice_regions()</h1>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">voice_regions()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L647" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+        <span class="note">(since 0.10.1)</span>
 
 
-      <span class="note">(since 0.10.1)</span>
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L647" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
 
+    </div>
   </div>
 
   <section class="docstring">
@@ -2167,20 +2121,20 @@ An optional <code class="inline">reason</code> can be specified for the audit lo
 <section class="detail" id="webhooks/1">
 
   <div class="detail-header">
-    <a href="#webhooks/1" class="detail-link" title="Link to this function">
+    <a href="#webhooks/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">webhooks(guild_id)</h1>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">webhooks(guild_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L562" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+        <span class="note">(since 0.10.1)</span>
 
 
-      <span class="note">(since 0.10.1)</span>
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L562" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
 
+    </div>
   </div>
 
   <section class="docstring">
@@ -2204,20 +2158,20 @@ An optional <code class="inline">reason</code> can be specified for the audit lo
 <section class="detail" id="widget/1">
 
   <div class="detail-header">
-    <a href="#widget/1" class="detail-link" title="Link to this function">
+    <a href="#widget/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">widget(guild_id)</h1>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">widget(guild_id)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L571" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+        <span class="note">(since 0.10.1)</span>
 
 
-      <span class="note">(since 0.10.1)</span>
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/guild.ex#L571" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
 
+    </div>
   </div>
 
   <section class="docstring">
@@ -2259,7 +2213,7 @@ An optional <code class="inline">reason</code> can be specified for the audit lo
 
       <p class="built-using">
         Built using
-        <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.32.1) for the
+        <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.37.0) for the
 
           <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
 
@@ -2269,7 +2223,6 @@ An optional <code class="inline">reason</code> can be specified for the audit lo
   </div>
 </main>
 </div>
-
 
   </body>
 </html>

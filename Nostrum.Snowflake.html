@@ -4,36 +4,22 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="ExDoc v0.32.1">
+    <meta name="generator" content="ExDoc v0.37.0">
     <meta name="project" content="Nostrum v0.11.0-dev">
 
 
     <title>Nostrum.Snowflake — Nostrum v0.11.0-dev</title>
-    <link rel="stylesheet" href="dist/html-elixir-2C5PUTIB.css" />
 
+    <link rel="stylesheet" href="dist/html-elixir-6X3L5KMG.css" />
 
-    <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
-    <script src="dist/handlebars.templates-IHH6HKET.js"></script>
-    <script src="dist/sidebar_items-7BAE9786.js"></script>
-    <script src="docs_config.js"></script>
-    <script async src="dist/html-GXQ6W6IF.js"></script>
-
+    <script defer src="dist/sidebar_items-7BAE9786.js"></script>
+    <script defer src="docs_config.js"></script>
+    <script defer src="dist/html-6VTPNSGQ.js"></script>
 
   </head>
-  <body data-type="modules" class="page-module">
-    <script>
-
-      try {
-        var settings = JSON.parse(localStorage.getItem('ex_doc:settings') || '{}');
-
-        if (settings.theme === 'dark' ||
-           ((settings.theme === 'system' || settings.theme == null) &&
-             window.matchMedia('(prefers-color-scheme: dark)').matches)
-           ) {
-          document.body.classList.add('dark')
-        }
-      } catch (error) { }
-    </script>
+  <body>
+    <script>(()=>{var t="ex_doc:settings",e="dark";var o="dark",s="light";var E="sidebar_state",n="closed";var r="sidebar_width";var a="sidebar-open";var i=new URLSearchParams(window.location.search),S=i.get("theme")||JSON.parse(localStorage.getItem(t)||"{}").theme;(S===o||S!==s&&window.matchMedia("(prefers-color-scheme: dark)").matches)&&document.body.classList.add(e);var d=sessionStorage.getItem(E),A=d!==n&&!window.matchMedia(`screen and (max-width: ${768}px)`).matches;document.body.classList.toggle(a,A);var c=sessionStorage.getItem(r);c&&document.body.style.setProperty("--sidebarWidth",`${c}px`);var p=/(Macintosh|iPhone|iPad|iPod)/.test(window.navigator.userAgent);document.documentElement.classList.toggle("apple-os",p);})();
+</script>
 
 <div class="body-wrapper">
 
@@ -59,47 +45,13 @@ Nostrum
         </div>
       </div>
     </div>
-    <ul id="sidebar-listNav" class="sidebar-listNav" role="tablist">
-      <li>
-        <button id="extras-list-tab-button" role="tab" data-type="extras" aria-controls="extras-tab-panel" aria-selected="true" tabindex="0">
-Pages
-        </button>
-      </li>
-
-        <li>
-          <button id="modules-list-tab-button" role="tab" data-type="modules" aria-controls="modules-tab-panel" aria-selected="false" tabindex="-1">
-            Modules
-          </button>
-        </li>
-
-
-        <li>
-          <button id="tasks-list-tab-button" role="tab" data-type="tasks" aria-controls="tasks-tab-panel" aria-selected="false" tabindex="-1">
-            <span translate="no">Mix</span> Tasks
-          </button>
-        </li>
-
-    </ul>
+    <ul id="sidebar-list-nav" class="sidebar-list-nav" role="tablist" data-extras=""></ul>
   </div>
-
-  <div id="extras-tab-panel" class="sidebar-tabpanel" role="tabpanel" aria-labelledby="extras-list-tab-button">
-    <ul id="extras-full-list" class="full-list"></ul>
-  </div>
-
-    <div id="modules-tab-panel" class="sidebar-tabpanel" role="tabpanel" aria-labelledby="modules-list-tab-button" hidden>
-      <ul id="modules-full-list" class="full-list"></ul>
-    </div>
-
-
-    <div id="tasks-tab-panel" class="sidebar-tabpanel" role="tabpanel" aria-labelledby="tasks-list-tab-button" hidden>
-      <ul id="tasks-full-list" class="full-list"></ul>
-    </div>
-
 </nav>
 
-<main class="content">
-  <output role="status" id="toast"></output>
+<output role="status" id="toast"></output>
 
+<main class="content page-module" id="main" data-type="modules">
   <div id="content" class="content-inner">
     <div class="top-search">
       <div class="search-settings">
@@ -108,8 +60,8 @@ Pages
             <span class="sr-only">Search documentation of Nostrum</span>
             <input name="q" type="text" class="search-input" placeholder="Press / to search" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
           </label>
-          <button type="submit" class="search-button" aria-label="Submit Search">
-            <i class="ri-search-2-line ri-lg" aria-hidden="true" title="Submit search"></i>
+          <button type="submit" class="search-button" aria-label="Submit Search" tabindex="-1">
+            <i class="ri-search-2-line ri-lg" aria-hidden="true"></i>
           </button>
           <button type="button" tabindex="-1" class="search-close-button" aria-hidden="true">
             <i class="ri-close-line ri-lg" title="Cancel search"></i>
@@ -125,17 +77,19 @@ Pages
     </div>
 
 <div id="top-content">
-  <h1>
+  <div class="heading-with-actions top-heading">
+    <h1>
+      <span translate="no">Nostrum.Snowflake</span> 
+      <small class="app-vsn" translate="no">(Nostrum v0.11.0-dev)</small>
+
+    </h1>
 
       <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/snowflake.ex#L1" title="View Source" class="icon-action" rel="help">
         <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         <span class="sr-only">View Source</span>
       </a>
 
-    <span translate="no">Nostrum.Snowflake</span> 
-    <small class="app-vsn" translate="no">(Nostrum v0.11.0-dev)</small>
-
-  </h1>
+  </div>
 
 
     <section id="moduledoc">
@@ -158,7 +112,7 @@ Pages
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#t:external_snowflake/0" translate="no">external_snowflake()</a>
+        <a href="#t:external_snowflake/0" data-no-tooltip="" translate="no">external_snowflake()</a>
 
       </div>
 
@@ -168,7 +122,7 @@ Pages
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#t:t/0" translate="no">t()</a>
+        <a href="#t:t/0" data-no-tooltip="" translate="no">t()</a>
 
       </div>
 
@@ -184,7 +138,7 @@ Pages
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#cast/1" translate="no">cast(value)</a>
+        <a href="#cast/1" data-no-tooltip="" translate="no">cast(value)</a>
 
       </div>
 
@@ -194,7 +148,7 @@ Pages
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#cast!/1" translate="no">cast!(value)</a>
+        <a href="#cast!/1" data-no-tooltip="" translate="no">cast!(value)</a>
 
       </div>
 
@@ -204,7 +158,7 @@ Pages
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#creation_time/1" translate="no">creation_time(snowflake)</a>
+        <a href="#creation_time/1" data-no-tooltip="" translate="no">creation_time(snowflake)</a>
 
       </div>
 
@@ -214,7 +168,7 @@ Pages
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#dump/1" translate="no">dump(snowflake)</a>
+        <a href="#dump/1" data-no-tooltip="" translate="no">dump(snowflake)</a>
 
       </div>
 
@@ -224,7 +178,7 @@ Pages
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#from_datetime/1" translate="no">from_datetime(datetime)</a>
+        <a href="#from_datetime/1" data-no-tooltip="" translate="no">from_datetime(datetime)</a>
 
       </div>
 
@@ -234,7 +188,7 @@ Pages
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#from_datetime!/1" translate="no">from_datetime!(datetime)</a>
+        <a href="#from_datetime!/1" data-no-tooltip="" translate="no">from_datetime!(datetime)</a>
 
       </div>
 
@@ -244,7 +198,7 @@ Pages
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#is_snowflake/1" translate="no">is_snowflake(term)</a>
+        <a href="#is_snowflake/1" data-no-tooltip="" translate="no">is_snowflake(term)</a>
 
       </div>
 
@@ -268,18 +222,18 @@ Pages
 <section class="detail" id="t:external_snowflake/0">
 
   <div class="detail-header">
-    <a href="#t:external_snowflake/0" class="detail-link" title="Link to this type">
+    <a href="#t:external_snowflake/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature" translate="no">external_snowflake()</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/snowflake.ex#L15" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">external_snowflake()</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/snowflake.ex#L15" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -297,18 +251,18 @@ to some languages not being able to represent such a large number.</p>
 <section class="detail" id="t:t/0">
 
   <div class="detail-header">
-    <a href="#t:t/0" class="detail-link" title="Link to this type">
+    <a href="#t:t/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature" translate="no">t()</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/snowflake.ex#L23" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">t()</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/snowflake.ex#L23" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -338,18 +292,18 @@ object ids.</p>
 <section class="detail" id="cast/1">
 
   <div class="detail-header">
-    <a href="#cast/1" class="detail-link" title="Link to this function">
+    <a href="#cast/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">cast(value)</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/snowflake.ex#L70" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">cast(value)</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/snowflake.ex#L70" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -366,37 +320,37 @@ object ids.</p>
   </a>
   <span class="text">Examples</span>
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Snowflake</span><span class="o">.</span><span class="n">cast</span><span class="p" data-group-id="1474763914-1">(</span><span class="mi">200317799350927360</span><span class="p" data-group-id="1474763914-1">)</span><span class="w">
-</span><span class="p" data-group-id="1474763914-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="mi">200317799350927360</span><span class="p" data-group-id="1474763914-2">}</span><span class="w">
+<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Snowflake</span><span class="o">.</span><span class="n">cast</span><span class="p" data-group-id="0414687075-1">(</span><span class="mi">200317799350927360</span><span class="p" data-group-id="0414687075-1">)</span><span class="w">
+</span><span class="p" data-group-id="0414687075-2">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="mi">200317799350927360</span><span class="p" data-group-id="0414687075-2">}</span><span class="w">
 
-</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Snowflake</span><span class="o">.</span><span class="n">cast</span><span class="p" data-group-id="1474763914-3">(</span><span class="s">&quot;200317799350927360&quot;</span><span class="p" data-group-id="1474763914-3">)</span><span class="w">
-</span><span class="p" data-group-id="1474763914-4">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="mi">200317799350927360</span><span class="p" data-group-id="1474763914-4">}</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Snowflake</span><span class="o">.</span><span class="n">cast</span><span class="p" data-group-id="0414687075-3">(</span><span class="s">&quot;200317799350927360&quot;</span><span class="p" data-group-id="0414687075-3">)</span><span class="w">
+</span><span class="p" data-group-id="0414687075-4">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="mi">200317799350927360</span><span class="p" data-group-id="0414687075-4">}</span><span class="w">
 
-</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Snowflake</span><span class="o">.</span><span class="n">cast</span><span class="p" data-group-id="1474763914-5">(</span><span class="no">nil</span><span class="p" data-group-id="1474763914-5">)</span><span class="w">
-</span><span class="p" data-group-id="1474763914-6">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="no">nil</span><span class="p" data-group-id="1474763914-6">}</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Snowflake</span><span class="o">.</span><span class="n">cast</span><span class="p" data-group-id="0414687075-5">(</span><span class="no">nil</span><span class="p" data-group-id="0414687075-5">)</span><span class="w">
+</span><span class="p" data-group-id="0414687075-6">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="no">nil</span><span class="p" data-group-id="0414687075-6">}</span><span class="w">
 
-</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Snowflake</span><span class="o">.</span><span class="n">cast</span><span class="p" data-group-id="1474763914-7">(</span><span class="no">true</span><span class="p" data-group-id="1474763914-7">)</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Snowflake</span><span class="o">.</span><span class="n">cast</span><span class="p" data-group-id="0414687075-7">(</span><span class="no">true</span><span class="p" data-group-id="0414687075-7">)</span><span class="w">
 </span><span class="ss">:error</span><span class="w">
 
-</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Snowflake</span><span class="o">.</span><span class="n">cast</span><span class="p" data-group-id="1474763914-8">(</span><span class="o">-</span><span class="mi">1</span><span class="p" data-group-id="1474763914-8">)</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Snowflake</span><span class="o">.</span><span class="n">cast</span><span class="p" data-group-id="0414687075-8">(</span><span class="o">-</span><span class="mi">1</span><span class="p" data-group-id="0414687075-8">)</span><span class="w">
 </span><span class="ss">:error</span></code></pre>
   </section>
 </section>
 <section class="detail" id="cast!/1">
 
   <div class="detail-header">
-    <a href="#cast!/1" class="detail-link" title="Link to this function">
+    <a href="#cast!/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">cast!(value)</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/snowflake.ex#L87" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">cast!(value)</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/snowflake.ex#L87" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -413,18 +367,18 @@ object ids.</p>
 <section class="detail" id="creation_time/1">
 
   <div class="detail-header">
-    <a href="#creation_time/1" class="detail-link" title="Link to this function">
+    <a href="#creation_time/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">creation_time(snowflake)</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/snowflake.ex#L161" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">creation_time(snowflake)</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/snowflake.ex#L161" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -441,25 +395,25 @@ object ids.</p>
   </a>
   <span class="text">Examples</span>
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Snowflake</span><span class="o">.</span><span class="n">creation_time</span><span class="p" data-group-id="9527551336-1">(</span><span class="mi">177888205536886784</span><span class="p" data-group-id="9527551336-1">)</span><span class="w">
+<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Snowflake</span><span class="o">.</span><span class="n">creation_time</span><span class="p" data-group-id="4020399290-1">(</span><span class="mi">177888205536886784</span><span class="p" data-group-id="4020399290-1">)</span><span class="w">
 </span><span class="ld">~U[2016-05-05 21:04:13.203Z]</span></code></pre>
   </section>
 </section>
 <section class="detail" id="dump/1">
 
   <div class="detail-header">
-    <a href="#dump/1" class="detail-link" title="Link to this function">
+    <a href="#dump/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">dump(snowflake)</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/snowflake.ex#L105" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">dump(snowflake)</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/snowflake.ex#L105" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -476,25 +430,25 @@ object ids.</p>
   </a>
   <span class="text">Examples</span>
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Snowflake</span><span class="o">.</span><span class="n">dump</span><span class="p" data-group-id="8832782665-1">(</span><span class="mi">109112383011581952</span><span class="p" data-group-id="8832782665-1">)</span><span class="w">
+<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Snowflake</span><span class="o">.</span><span class="n">dump</span><span class="p" data-group-id="8810024461-1">(</span><span class="mi">109112383011581952</span><span class="p" data-group-id="8810024461-1">)</span><span class="w">
 </span><span class="s">&quot;109112383011581952&quot;</span></code></pre>
   </section>
 </section>
 <section class="detail" id="from_datetime/1">
 
   <div class="detail-header">
-    <a href="#from_datetime/1" class="detail-link" title="Link to this function">
+    <a href="#from_datetime/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">from_datetime(datetime)</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/snowflake.ex#L128" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">from_datetime(datetime)</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/snowflake.ex#L128" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -512,30 +466,30 @@ object ids.</p>
   </a>
   <span class="text">Examples</span>
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="p" data-group-id="4093559556-1">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">dt</span><span class="p">,</span><span class="w"> </span><span class="bp">_</span><span class="p" data-group-id="4093559556-1">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">DateTime</span><span class="o">.</span><span class="n">from_iso8601</span><span class="p" data-group-id="4093559556-2">(</span><span class="s">&quot;2016-05-05T21:04:13.203Z&quot;</span><span class="p" data-group-id="4093559556-2">)</span><span class="w">
-</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Snowflake</span><span class="o">.</span><span class="n">from_datetime</span><span class="p" data-group-id="4093559556-3">(</span><span class="n">dt</span><span class="p" data-group-id="4093559556-3">)</span><span class="w">
-</span><span class="p" data-group-id="4093559556-4">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="mi">177888205536755712</span><span class="p" data-group-id="4093559556-4">}</span><span class="w">
+<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="p" data-group-id="6354567323-1">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">dt</span><span class="p">,</span><span class="w"> </span><span class="bp">_</span><span class="p" data-group-id="6354567323-1">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">DateTime</span><span class="o">.</span><span class="n">from_iso8601</span><span class="p" data-group-id="6354567323-2">(</span><span class="s">&quot;2016-05-05T21:04:13.203Z&quot;</span><span class="p" data-group-id="6354567323-2">)</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Snowflake</span><span class="o">.</span><span class="n">from_datetime</span><span class="p" data-group-id="6354567323-3">(</span><span class="n">dt</span><span class="p" data-group-id="6354567323-3">)</span><span class="w">
+</span><span class="p" data-group-id="6354567323-4">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="mi">177888205536755712</span><span class="p" data-group-id="6354567323-4">}</span><span class="w">
 
-</span><span class="gp unselectable">iex&gt; </span><span class="p" data-group-id="4093559556-5">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">dt</span><span class="p">,</span><span class="w"> </span><span class="bp">_</span><span class="p" data-group-id="4093559556-5">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">DateTime</span><span class="o">.</span><span class="n">from_iso8601</span><span class="p" data-group-id="4093559556-6">(</span><span class="s">&quot;1998-12-25T00:00:00.000Z&quot;</span><span class="p" data-group-id="4093559556-6">)</span><span class="w">
-</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Snowflake</span><span class="o">.</span><span class="n">from_datetime</span><span class="p" data-group-id="4093559556-7">(</span><span class="n">dt</span><span class="p" data-group-id="4093559556-7">)</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="p" data-group-id="6354567323-5">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">dt</span><span class="p">,</span><span class="w"> </span><span class="bp">_</span><span class="p" data-group-id="6354567323-5">}</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">DateTime</span><span class="o">.</span><span class="n">from_iso8601</span><span class="p" data-group-id="6354567323-6">(</span><span class="s">&quot;1998-12-25T00:00:00.000Z&quot;</span><span class="p" data-group-id="6354567323-6">)</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Snowflake</span><span class="o">.</span><span class="n">from_datetime</span><span class="p" data-group-id="6354567323-7">(</span><span class="n">dt</span><span class="p" data-group-id="6354567323-7">)</span><span class="w">
 </span><span class="ss">:error</span></code></pre>
   </section>
 </section>
 <section class="detail" id="from_datetime!/1">
 
   <div class="detail-header">
-    <a href="#from_datetime!/1" class="detail-link" title="Link to this function">
+    <a href="#from_datetime!/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">from_datetime!(datetime)</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/snowflake.ex#L143" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">from_datetime!(datetime)</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/snowflake.ex#L143" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -552,20 +506,20 @@ object ids.</p>
 <section class="detail" id="is_snowflake/1">
 
   <div class="detail-header">
-    <a href="#is_snowflake/1" class="detail-link" title="Link to this macro">
+    <a href="#is_snowflake/1" class="detail-link" data-no-tooltip="" aria-label="Link to this macro">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this macro</span>
     </a>
-    <h1 class="signature" translate="no">is_snowflake(term)</h1>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">is_snowflake(term)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/snowflake.ex#L44" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+        <span class="note">(macro)</span>
 
 
-      <span class="note">(macro)</span>
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/snowflake.ex#L44" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
 
+    </div>
   </div>
 
   <section class="docstring">
@@ -576,16 +530,16 @@ object ids.</p>
   </a>
   <span class="text">Examples</span>
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Snowflake</span><span class="o">.</span><span class="n">is_snowflake</span><span class="p" data-group-id="1644834903-1">(</span><span class="mi">89918932789497856</span><span class="p" data-group-id="1644834903-1">)</span><span class="w">
+<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Snowflake</span><span class="o">.</span><span class="n">is_snowflake</span><span class="p" data-group-id="8258833353-1">(</span><span class="mi">89918932789497856</span><span class="p" data-group-id="8258833353-1">)</span><span class="w">
 </span><span class="no">true</span><span class="w">
 
-</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Snowflake</span><span class="o">.</span><span class="n">is_snowflake</span><span class="p" data-group-id="1644834903-2">(</span><span class="o">-</span><span class="mi">1</span><span class="p" data-group-id="1644834903-2">)</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Snowflake</span><span class="o">.</span><span class="n">is_snowflake</span><span class="p" data-group-id="8258833353-2">(</span><span class="o">-</span><span class="mi">1</span><span class="p" data-group-id="8258833353-2">)</span><span class="w">
 </span><span class="no">false</span><span class="w">
 
-</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Snowflake</span><span class="o">.</span><span class="n">is_snowflake</span><span class="p" data-group-id="1644834903-3">(</span><span class="mh">0xFFFFFFFFFFFFFFFF</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p" data-group-id="1644834903-3">)</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Snowflake</span><span class="o">.</span><span class="n">is_snowflake</span><span class="p" data-group-id="8258833353-3">(</span><span class="mh">0xFFFFFFFFFFFFFFFF</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="mi">1</span><span class="p" data-group-id="8258833353-3">)</span><span class="w">
 </span><span class="no">false</span><span class="w">
 
-</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Snowflake</span><span class="o">.</span><span class="n">is_snowflake</span><span class="p" data-group-id="1644834903-4">(</span><span class="s">&quot;117789813427535878&quot;</span><span class="p" data-group-id="1644834903-4">)</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Snowflake</span><span class="o">.</span><span class="n">is_snowflake</span><span class="p" data-group-id="8258833353-4">(</span><span class="s">&quot;117789813427535878&quot;</span><span class="p" data-group-id="8258833353-4">)</span><span class="w">
 </span><span class="no">false</span></code></pre>
   </section>
 </section>
@@ -617,7 +571,7 @@ object ids.</p>
 
       <p class="built-using">
         Built using
-        <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.32.1) for the
+        <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.37.0) for the
 
           <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
 
@@ -627,7 +581,6 @@ object ids.</p>
   </div>
 </main>
 </div>
-
 
   </body>
 </html>

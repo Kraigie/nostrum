@@ -4,36 +4,22 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="ExDoc v0.32.1">
+    <meta name="generator" content="ExDoc v0.37.0">
     <meta name="project" content="Nostrum v0.11.0-dev">
 
 
     <title>Nostrum.Api.Ratelimiter — Nostrum v0.11.0-dev</title>
-    <link rel="stylesheet" href="dist/html-elixir-2C5PUTIB.css" />
 
+    <link rel="stylesheet" href="dist/html-elixir-6X3L5KMG.css" />
 
-    <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
-    <script src="dist/handlebars.templates-IHH6HKET.js"></script>
-    <script src="dist/sidebar_items-7BAE9786.js"></script>
-    <script src="docs_config.js"></script>
-    <script async src="dist/html-GXQ6W6IF.js"></script>
-
+    <script defer src="dist/sidebar_items-7BAE9786.js"></script>
+    <script defer src="docs_config.js"></script>
+    <script defer src="dist/html-6VTPNSGQ.js"></script>
 
   </head>
-  <body data-type="modules" class="page-module">
-    <script>
-
-      try {
-        var settings = JSON.parse(localStorage.getItem('ex_doc:settings') || '{}');
-
-        if (settings.theme === 'dark' ||
-           ((settings.theme === 'system' || settings.theme == null) &&
-             window.matchMedia('(prefers-color-scheme: dark)').matches)
-           ) {
-          document.body.classList.add('dark')
-        }
-      } catch (error) { }
-    </script>
+  <body>
+    <script>(()=>{var t="ex_doc:settings",e="dark";var o="dark",s="light";var E="sidebar_state",n="closed";var r="sidebar_width";var a="sidebar-open";var i=new URLSearchParams(window.location.search),S=i.get("theme")||JSON.parse(localStorage.getItem(t)||"{}").theme;(S===o||S!==s&&window.matchMedia("(prefers-color-scheme: dark)").matches)&&document.body.classList.add(e);var d=sessionStorage.getItem(E),A=d!==n&&!window.matchMedia(`screen and (max-width: ${768}px)`).matches;document.body.classList.toggle(a,A);var c=sessionStorage.getItem(r);c&&document.body.style.setProperty("--sidebarWidth",`${c}px`);var p=/(Macintosh|iPhone|iPad|iPod)/.test(window.navigator.userAgent);document.documentElement.classList.toggle("apple-os",p);})();
+</script>
 
 <div class="body-wrapper">
 
@@ -59,47 +45,13 @@ Nostrum
         </div>
       </div>
     </div>
-    <ul id="sidebar-listNav" class="sidebar-listNav" role="tablist">
-      <li>
-        <button id="extras-list-tab-button" role="tab" data-type="extras" aria-controls="extras-tab-panel" aria-selected="true" tabindex="0">
-Pages
-        </button>
-      </li>
-
-        <li>
-          <button id="modules-list-tab-button" role="tab" data-type="modules" aria-controls="modules-tab-panel" aria-selected="false" tabindex="-1">
-            Modules
-          </button>
-        </li>
-
-
-        <li>
-          <button id="tasks-list-tab-button" role="tab" data-type="tasks" aria-controls="tasks-tab-panel" aria-selected="false" tabindex="-1">
-            <span translate="no">Mix</span> Tasks
-          </button>
-        </li>
-
-    </ul>
+    <ul id="sidebar-list-nav" class="sidebar-list-nav" role="tablist" data-extras=""></ul>
   </div>
-
-  <div id="extras-tab-panel" class="sidebar-tabpanel" role="tabpanel" aria-labelledby="extras-list-tab-button">
-    <ul id="extras-full-list" class="full-list"></ul>
-  </div>
-
-    <div id="modules-tab-panel" class="sidebar-tabpanel" role="tabpanel" aria-labelledby="modules-list-tab-button" hidden>
-      <ul id="modules-full-list" class="full-list"></ul>
-    </div>
-
-
-    <div id="tasks-tab-panel" class="sidebar-tabpanel" role="tabpanel" aria-labelledby="tasks-list-tab-button" hidden>
-      <ul id="tasks-full-list" class="full-list"></ul>
-    </div>
-
 </nav>
 
-<main class="content">
-  <output role="status" id="toast"></output>
+<output role="status" id="toast"></output>
 
+<main class="content page-module" id="main" data-type="modules">
   <div id="content" class="content-inner">
     <div class="top-search">
       <div class="search-settings">
@@ -108,8 +60,8 @@ Pages
             <span class="sr-only">Search documentation of Nostrum</span>
             <input name="q" type="text" class="search-input" placeholder="Press / to search" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
           </label>
-          <button type="submit" class="search-button" aria-label="Submit Search">
-            <i class="ri-search-2-line ri-lg" aria-hidden="true" title="Submit search"></i>
+          <button type="submit" class="search-button" aria-label="Submit Search" tabindex="-1">
+            <i class="ri-search-2-line ri-lg" aria-hidden="true"></i>
           </button>
           <button type="button" tabindex="-1" class="search-close-button" aria-hidden="true">
             <i class="ri-close-line ri-lg" title="Cancel search"></i>
@@ -125,17 +77,19 @@ Pages
     </div>
 
 <div id="top-content">
-  <h1>
+  <div class="heading-with-actions top-heading">
+    <h1>
+      <span translate="no">Nostrum.Api.Ratelimiter</span> 
+      <small class="app-vsn" translate="no">(Nostrum v0.11.0-dev)</small>
+
+    </h1>
 
       <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L1" title="View Source" class="icon-action" rel="help">
         <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         <span class="sr-only">View Source</span>
       </a>
 
-    <span translate="no">Nostrum.Api.Ratelimiter</span> 
-    <small class="app-vsn" translate="no">(Nostrum v0.11.0-dev)</small>
-
-  </h1>
+  </div>
 
 
     <section id="moduledoc">
@@ -148,14 +102,14 @@ Pages
 <p>Discord's API returns information about ratelimits that we must respect. This
 module performs serialization of these requests through a single process,
 thus preventing concurrency issues from arising if two processes make a
-remote API call at the same time.</p><blockquote><h3 id="module-internal-module" class="info section-heading">
+remote API call at the same time.</p><section role="note" class="admonition info"><h3 id="module-internal-module" class="admonition-title info section-heading">
   <a href="#module-internal-module" class="hover-link">
     <i class="ri-link-m" aria-hidden="true"></i>
   </a>
   <span class="text">Internal module</span>
 </h3>
 <p>This module is intended for exclusive usage inside of nostrum, and is
-documented for completeness and people curious to look behind the covers.</p></blockquote><h2 id="module-asynchronous-requests" class="section-heading">
+documented for completeness and people curious to look behind the covers.</p></section><h2 id="module-asynchronous-requests" class="section-heading">
   <a href="#module-asynchronous-requests" class="hover-link">
     <i class="ri-link-m" aria-hidden="true"></i>
   </a>
@@ -164,12 +118,12 @@ documented for completeness and people curious to look behind the covers.</p></b
 <p>The ratelimiter is fully asynchronous internally. In theory, it also supports
 queueing requests in an asynchronous manner. However, support for this is
 currently not implemented in <a href="Nostrum.Api.html"><code class="inline">Nostrum.Api</code></a>.</p><p>If you want to make one or multiple asynchronous requests manually, you can
-use the following pattern:</p><pre><code class="makeup elixir" translate="no"><span class="n">req</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">:gen_statem</span><span class="o">.</span><span class="n">send_request</span><span class="p" data-group-id="2849524744-1">(</span><span class="nc">Nostrum.Api.Ratelimiter</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="2849524744-2">{</span><span class="ss">:queue</span><span class="p">,</span><span class="w"> </span><span class="n">request</span><span class="p" data-group-id="2849524744-2">}</span><span class="p" data-group-id="2849524744-1">)</span><span class="w">
+use the following pattern:</p><pre><code class="makeup elixir" translate="no"><span class="n">req</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">:gen_statem</span><span class="o">.</span><span class="n">send_request</span><span class="p" data-group-id="4885656859-1">(</span><span class="nc">Nostrum.Api.Ratelimiter</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="4885656859-2">{</span><span class="ss">:queue</span><span class="p">,</span><span class="w"> </span><span class="n">request</span><span class="p" data-group-id="4885656859-2">}</span><span class="p" data-group-id="4885656859-1">)</span><span class="w">
 </span><span class="c1"># ...</span><span class="w">
-</span><span class="n">response</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">:gen_statem</span><span class="o">.</span><span class="n">receive_response</span><span class="p" data-group-id="2849524744-3">(</span><span class="n">req</span><span class="p">,</span><span class="w"> </span><span class="n">timeout</span><span class="p" data-group-id="2849524744-3">)</span></code></pre><p>where <code class="inline">request</code> is a map describing the request to run - see <a href="Nostrum.Api.html"><code class="inline">Nostrum.Api</code></a>
+</span><span class="n">response</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">:gen_statem</span><span class="o">.</span><span class="n">receive_response</span><span class="p" data-group-id="4885656859-3">(</span><span class="n">req</span><span class="p">,</span><span class="w"> </span><span class="n">timeout</span><span class="p" data-group-id="4885656859-3">)</span></code></pre><p>where <code class="inline">request</code> is a map describing the request to run - see <a href="Nostrum.Api.html"><code class="inline">Nostrum.Api</code></a>
 for more information. You can also send multiple requests at the same time
-and wait for their response: see <a href="https://www.erlang.org/doc/man/gen_statem.html#reqids_add-3"><code class="inline">:gen_statem.reqids_add/3</code></a> and
-<a href="https://www.erlang.org/doc/man/gen_statem.html#wait_response-3"><code class="inline">:gen_statem.wait_response/3</code></a> for more information.</p><h2 id="module-multi-node" class="section-heading">
+and wait for their response: see <a href="https://www.erlang.org/doc/apps/stdlib/gen_statem.html#reqids_add/3"><code class="inline">:gen_statem.reqids_add/3</code></a> and
+<a href="https://www.erlang.org/doc/apps/stdlib/gen_statem.html#wait_response/3"><code class="inline">:gen_statem.wait_response/3</code></a> for more information.</p><h2 id="module-multi-node" class="section-heading">
   <a href="#module-multi-node" class="hover-link">
     <i class="ri-link-m" aria-hidden="true"></i>
   </a>
@@ -201,7 +155,7 @@ succeeds, it transitions to the <code class="inline">:connected</code> state.</p
   </a>
   <span class="text">Queueing requests</span>
 </h3>
-<p>The state machine associates a <a href="https://www.erlang.org/doc/man/queue.html#type-queue"><code class="inline">:queue.queue/1</code></a> of <a href="#t:queued_request/0"><code class="inline">queued_request/0</code></a> to
+<p>The state machine associates a <a href="https://www.erlang.org/doc/apps/stdlib/queue.html#t:queue/1"><code class="inline">:queue.queue/1</code></a> of <a href="#t:queued_request/0"><code class="inline">queued_request/0</code></a> to
 each individual bucket, together with an internal count of remaining calls.
 When queueing requests, the following cases occur:</p><ul><li><p>If there are no remaining calls in the bot's global ratelimit bucket or
 there are no remaining calls in the bucket, the request is put into the
@@ -297,7 +251,7 @@ handle this explicitly via <code class="inline">handle_info</code>.</p></li></ul
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#t:bucket/0" translate="no">bucket()</a>
+        <a href="#t:bucket/0" data-no-tooltip="" translate="no">bucket()</a>
 
       </div>
 
@@ -307,7 +261,7 @@ handle this explicitly via <code class="inline">handle_info</code>.</p></li></ul
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#t:queued_request/0" translate="no">queued_request()</a>
+        <a href="#t:queued_request/0" data-no-tooltip="" translate="no">queued_request()</a>
 
       </div>
 
@@ -317,7 +271,7 @@ handle this explicitly via <code class="inline">handle_info</code>.</p></li></ul
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#t:remaining/0" translate="no">remaining()</a>
+        <a href="#t:remaining/0" data-no-tooltip="" translate="no">remaining()</a>
 
       </div>
 
@@ -327,7 +281,7 @@ handle this explicitly via <code class="inline">handle_info</code>.</p></li></ul
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#t:request/0" translate="no">request()</a>
+        <a href="#t:request/0" data-no-tooltip="" translate="no">request()</a>
 
       </div>
 
@@ -337,7 +291,7 @@ handle this explicitly via <code class="inline">handle_info</code>.</p></li></ul
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#t:state/0" translate="no">state()</a>
+        <a href="#t:state/0" data-no-tooltip="" translate="no">state()</a>
 
       </div>
 
@@ -347,7 +301,7 @@ handle this explicitly via <code class="inline">handle_info</code>.</p></li></ul
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#t:wrapped_token/0" translate="no">wrapped_token()</a>
+        <a href="#t:wrapped_token/0" data-no-tooltip="" translate="no">wrapped_token()</a>
 
       </div>
 
@@ -363,35 +317,17 @@ handle this explicitly via <code class="inline">handle_info</code>.</p></li></ul
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#callback_mode/0" translate="no">callback_mode()</a>
+        <a href="#callback_mode/0" data-no-tooltip="" translate="no">callback_mode()</a>
 
       </div>
 
-        <div class="summary-synopsis"><p>Callback implementation for <a href="https://www.erlang.org/doc/man/gen_statem.html#Module:callback_mode-0"><code class="inline">:gen_statem.callback_mode/0</code></a>.</p></div>
+        <div class="summary-synopsis"><p>Callback implementation for <a href="https://www.erlang.org/doc/apps/stdlib/gen_statem.html#c:callback_mode/0"><code class="inline">:gen_statem.callback_mode/0</code></a>.</p></div>
 
     </div>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#child_spec/1" translate="no">child_spec(opts)</a>
-
-      </div>
-
-    </div>
-
-    <div class="summary-row">
-      <div class="summary-signature">
-        <a href="#code_change/4" translate="no">code_change(version, state, data, extra)</a>
-
-      </div>
-
-        <div class="summary-synopsis"><p>Callback implementation for <a href="https://www.erlang.org/doc/man/gen_statem.html#Module:code_change-4"><code class="inline">:gen_statem.code_change/4</code></a>.</p></div>
-
-    </div>
-
-    <div class="summary-row">
-      <div class="summary-signature">
-        <a href="#connected/3" translate="no">connected(arg1, request, data)</a>
+        <a href="#child_spec/1" data-no-tooltip="" translate="no">child_spec(opts)</a>
 
       </div>
 
@@ -399,7 +335,17 @@ handle this explicitly via <code class="inline">handle_info</code>.</p></li></ul
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#connecting/3" translate="no">connecting(arg1, arg2, data)</a>
+        <a href="#code_change/4" data-no-tooltip="" translate="no">code_change(version, state, data, extra)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Callback implementation for <a href="https://www.erlang.org/doc/apps/stdlib/gen_statem.html#c:code_change/4"><code class="inline">:gen_statem.code_change/4</code></a>.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#connected/3" data-no-tooltip="" translate="no">connected(arg1, request, data)</a>
 
       </div>
 
@@ -407,7 +353,7 @@ handle this explicitly via <code class="inline">handle_info</code>.</p></li></ul
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#disconnected/3" translate="no">disconnected(arg, arg2, data)</a>
+        <a href="#connecting/3" data-no-tooltip="" translate="no">connecting(arg1, arg2, data)</a>
 
       </div>
 
@@ -415,7 +361,15 @@ handle this explicitly via <code class="inline">handle_info</code>.</p></li></ul
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#get_endpoint/2" translate="no">get_endpoint(route, method)</a>
+        <a href="#disconnected/3" data-no-tooltip="" translate="no">disconnected(arg, arg2, data)</a>
+
+      </div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#get_endpoint/2" data-no-tooltip="" translate="no">get_endpoint(route, method)</a>
 
       </div>
 
@@ -425,7 +379,7 @@ handle this explicitly via <code class="inline">handle_info</code>.</p></li></ul
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#global_limit/3" translate="no">global_limit(arg1, next, data)</a>
+        <a href="#global_limit/3" data-no-tooltip="" translate="no">global_limit(arg1, next, data)</a>
 
       </div>
 
@@ -433,17 +387,17 @@ handle this explicitly via <code class="inline">handle_info</code>.</p></li></ul
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#init/1" translate="no">init(token)</a>
+        <a href="#init/1" data-no-tooltip="" translate="no">init(token)</a>
 
       </div>
 
-        <div class="summary-synopsis"><p>Callback implementation for <a href="https://www.erlang.org/doc/man/gen_statem.html#Module:init-1"><code class="inline">:gen_statem.init/1</code></a>.</p></div>
+        <div class="summary-synopsis"><p>Callback implementation for <a href="https://www.erlang.org/doc/apps/stdlib/gen_statem.html#c:init/1"><code class="inline">:gen_statem.init/1</code></a>.</p></div>
 
     </div>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#queue/1" translate="no">queue(request)</a>
+        <a href="#queue/1" data-no-tooltip="" translate="no">queue(request)</a>
 
       </div>
 
@@ -453,7 +407,7 @@ handle this explicitly via <code class="inline">handle_info</code>.</p></li></ul
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#start_link/1" translate="no">start_link(arg)</a>
+        <a href="#start_link/1" data-no-tooltip="" translate="no">start_link(arg)</a>
 
       </div>
 
@@ -477,20 +431,20 @@ handle this explicitly via <code class="inline">handle_info</code>.</p></li></ul
 <section class="detail" id="t:bucket/0">
 
   <div class="detail-header">
-    <a href="#t:bucket/0" class="detail-link" title="Link to this type">
+    <a href="#t:bucket/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature" translate="no">bucket()</h1>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">bucket()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L221" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+        <span class="note">(since 0.9.0)</span>
 
 
-      <span class="note">(since 0.9.0)</span>
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L221" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
 
+    </div>
   </div>
 
   <section class="docstring">
@@ -507,27 +461,27 @@ handle this explicitly via <code class="inline">handle_info</code>.</p></li></ul
 <section class="detail" id="t:queued_request/0">
 
   <div class="detail-header">
-    <a href="#t:queued_request/0" class="detail-link" title="Link to this type">
+    <a href="#t:queued_request/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature" translate="no">queued_request()</h1>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">queued_request()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L239" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+        <span class="note">(since 0.9.0)</span>
 
 
-      <span class="note">(since 0.9.0)</span>
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L239" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
 
+    </div>
   </div>
 
   <section class="docstring">
 
       <div class="specs">
 
-          <pre translate="no"><span class="attribute">@type</span> queued_request() :: {<a href="#t:request/0">request</a>(), client :: <a href="https://www.erlang.org/doc/man/gen_statem.html#type-from">:gen_statem.from</a>()}</pre>
+          <pre translate="no"><span class="attribute">@type</span> queued_request() :: {<a href="#t:request/0">request</a>(), client :: <a href="https://www.erlang.org/doc/apps/stdlib/gen_statem.html#t:from/0">:gen_statem.from</a>()}</pre>
 
       </div>
 
@@ -537,20 +491,20 @@ handle this explicitly via <code class="inline">handle_info</code>.</p></li></ul
 <section class="detail" id="t:remaining/0">
 
   <div class="detail-header">
-    <a href="#t:remaining/0" class="detail-link" title="Link to this type">
+    <a href="#t:remaining/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature" translate="no">remaining()</h1>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">remaining()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L254" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+        <span class="note">(since 0.9.0)</span>
 
 
-      <span class="note">(since 0.9.0)</span>
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L254" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
 
+    </div>
   </div>
 
   <section class="docstring">
@@ -572,20 +526,20 @@ otherwise, the value won't represent the truth anymore.</p>
 <section class="detail" id="t:request/0">
 
   <div class="detail-header">
-    <a href="#t:request/0" class="detail-link" title="Link to this type">
+    <a href="#t:request/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature" translate="no">request()</h1>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">request()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L227" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+        <span class="note">(since 0.9.0)</span>
 
 
-      <span class="note">(since 0.9.0)</span>
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L227" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
 
+    </div>
   </div>
 
   <section class="docstring">
@@ -608,20 +562,20 @@ otherwise, the value won't represent the truth anymore.</p>
 <section class="detail" id="t:state/0">
 
   <div class="detail-header">
-    <a href="#t:state/0" class="detail-link" title="Link to this type">
+    <a href="#t:state/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature" translate="no">state()</h1>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">state()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L289" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+        <span class="note">(since 0.9.0)</span>
 
 
-      <span class="note">(since 0.9.0)</span>
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L289" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
 
+    </div>
   </div>
 
   <section class="docstring">
@@ -630,10 +584,10 @@ otherwise, the value won't represent the truth anymore.</p>
 
           <pre translate="no"><span class="attribute">@type</span> state() :: %{
   outstanding: %{
-    required(<a href="#t:bucket/0">bucket</a>()) =&gt; {<a href="#t:remaining/0">remaining</a>(), <a href="https://www.erlang.org/doc/man/queue.html#type-queue">:queue.queue</a>(<a href="#t:queued_request/0">queued_request</a>())}
+    required(<a href="#t:bucket/0">bucket</a>()) =&gt; {<a href="#t:remaining/0">remaining</a>(), <a href="https://www.erlang.org/doc/apps/stdlib/queue.html#t:queue/1">:queue.queue</a>(<a href="#t:queued_request/0">queued_request</a>())}
   },
   running: %{
-    required(<a href="https://hexdocs.pm/gun/2.0.1/gun.html#t:stream_ref/0">:gun.stream_ref</a>()) =&gt; {<a href="#t:bucket/0">bucket</a>(), <a href="#t:request/0">request</a>(), <a href="https://www.erlang.org/doc/man/gen_statem.html#type-from">:gen_statem.from</a>()}
+    required(<a href="https://hexdocs.pm/gun/2.0.1/gun.html#t:stream_ref/0">:gun.stream_ref</a>()) =&gt; {<a href="#t:bucket/0">bucket</a>(), <a href="#t:request/0">request</a>(), <a href="https://www.erlang.org/doc/apps/stdlib/gen_statem.html#t:from/0">:gen_statem.from</a>()}
   },
   inflight: %{
     required(<a href="https://hexdocs.pm/gun/2.0.1/gun.html#t:stream_ref/0">:gun.stream_ref</a>()) =&gt;
@@ -648,7 +602,7 @@ otherwise, the value won't represent the truth anymore.</p>
       </div>
 
 <p>The state of the ratelimiter.</p><p>While this has no public use, it is still documented here to provide help
-when tracing the ratelimiter via <a href="https://www.erlang.org/doc/man/sys.html#trace-2"><code class="inline">:sys.trace/2</code></a> or other means.</p><h2 id="t:state/0-fields" class="section-heading">
+when tracing the ratelimiter via <a href="https://www.erlang.org/doc/apps/stdlib/sys.html#trace/2"><code class="inline">:sys.trace/2</code></a> or other means.</p><h2 id="t:state/0-fields" class="section-heading">
   <a href="#t:state/0-fields" class="hover-link">
     <i class="ri-link-m" aria-hidden="true"></i>
   </a>
@@ -668,20 +622,20 @@ stacktraces.</p></li></ul>
 <section class="detail" id="t:wrapped_token/0">
 
   <div class="detail-header">
-    <a href="#t:wrapped_token/0" class="detail-link" title="Link to this type">
+    <a href="#t:wrapped_token/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature" translate="no">wrapped_token()</h1>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">wrapped_token()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L258" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+        <span class="note">(since 0.11.0)</span>
 
 
-      <span class="note">(since 0.11.0)</span>
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L258" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
 
+    </div>
   </div>
 
   <section class="docstring">
@@ -710,40 +664,40 @@ stacktraces.</p></li></ul>
 <section class="detail" id="callback_mode/0">
 
   <div class="detail-header">
-    <a href="#callback_mode/0" class="detail-link" title="Link to this function">
+    <a href="#callback_mode/0" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">callback_mode()</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L323" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">callback_mode()</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L323" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
 
-<p>Callback implementation for <a href="https://www.erlang.org/doc/man/gen_statem.html#Module:callback_mode-0"><code class="inline">:gen_statem.callback_mode/0</code></a>.</p>
+<p>Callback implementation for <a href="https://www.erlang.org/doc/apps/stdlib/gen_statem.html#c:callback_mode/0"><code class="inline">:gen_statem.callback_mode/0</code></a>.</p>
   </section>
 </section>
 <section class="detail" id="child_spec/1">
 
   <div class="detail-header">
-    <a href="#child_spec/1" class="detail-link" title="Link to this function">
+    <a href="#child_spec/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">child_spec(opts)</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L325" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">child_spec(opts)</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L325" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -754,40 +708,40 @@ stacktraces.</p></li></ul>
 <section class="detail" id="code_change/4">
 
   <div class="detail-header">
-    <a href="#code_change/4" class="detail-link" title="Link to this function">
+    <a href="#code_change/4" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">code_change(version, state, data, extra)</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L934" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">code_change(version, state, data, extra)</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L934" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
 
-<p>Callback implementation for <a href="https://www.erlang.org/doc/man/gen_statem.html#Module:code_change-4"><code class="inline">:gen_statem.code_change/4</code></a>.</p>
+<p>Callback implementation for <a href="https://www.erlang.org/doc/apps/stdlib/gen_statem.html#c:code_change/4"><code class="inline">:gen_statem.code_change/4</code></a>.</p>
   </section>
 </section>
 <section class="detail" id="connected/3">
 
   <div class="detail-header">
-    <a href="#connected/3" class="detail-link" title="Link to this function">
+    <a href="#connected/3" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">connected(arg1, request, data)</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L394" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">connected(arg1, request, data)</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L394" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -798,18 +752,18 @@ stacktraces.</p></li></ul>
 <section class="detail" id="connecting/3">
 
   <div class="detail-header">
-    <a href="#connecting/3" class="detail-link" title="Link to this function">
+    <a href="#connecting/3" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">connecting(arg1, arg2, data)</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L368" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">connecting(arg1, arg2, data)</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L368" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -820,18 +774,18 @@ stacktraces.</p></li></ul>
 <section class="detail" id="disconnected/3">
 
   <div class="detail-header">
-    <a href="#disconnected/3" class="detail-link" title="Link to this function">
+    <a href="#disconnected/3" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">disconnected(arg, arg2, data)</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L339" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">disconnected(arg, arg2, data)</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L339" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -842,18 +796,18 @@ stacktraces.</p></li></ul>
 <section class="detail" id="get_endpoint/2">
 
   <div class="detail-header">
-    <a href="#get_endpoint/2" class="detail-link" title="Link to this function">
+    <a href="#get_endpoint/2" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">get_endpoint(route, method)</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L1035" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">get_endpoint(route, method)</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L1035" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -870,18 +824,18 @@ stacktraces.</p></li></ul>
 <section class="detail" id="global_limit/3">
 
   <div class="detail-header">
-    <a href="#global_limit/3" class="detail-link" title="Link to this function">
+    <a href="#global_limit/3" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">global_limit(arg1, next, data)</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L898" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">global_limit(arg1, next, data)</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L898" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -892,40 +846,40 @@ stacktraces.</p></li></ul>
 <section class="detail" id="init/1">
 
   <div class="detail-header">
-    <a href="#init/1" class="detail-link" title="Link to this function">
+    <a href="#init/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">init(token)</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L314" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">init(token)</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L314" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
 
-<p>Callback implementation for <a href="https://www.erlang.org/doc/man/gen_statem.html#Module:init-1"><code class="inline">:gen_statem.init/1</code></a>.</p>
+<p>Callback implementation for <a href="https://www.erlang.org/doc/apps/stdlib/gen_statem.html#c:init/1"><code class="inline">:gen_statem.init/1</code></a>.</p>
   </section>
 </section>
 <section class="detail" id="queue/1">
 
   <div class="detail-header">
-    <a href="#queue/1" class="detail-link" title="Link to this function">
+    <a href="#queue/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">queue(request)</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L984" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">queue(request)</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L984" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -937,25 +891,25 @@ will cause this to return an error.</p>
 <section class="detail" id="start_link/1">
 
   <div class="detail-header">
-    <a href="#start_link/1" class="detail-link" title="Link to this function">
+    <a href="#start_link/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">start_link(arg)</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L310" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">start_link(arg)</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L310" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
 
       <div class="specs">
 
-          <pre translate="no"><span class="attribute">@spec</span> start_link({<a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>(), [<a href="https://www.erlang.org/doc/man/gen_statem.html#type-start_opt">:gen_statem.start_opt</a>()]}) :: <a href="https://www.erlang.org/doc/man/gen_statem.html#type-start_ret">:gen_statem.start_ret</a>()</pre>
+          <pre translate="no"><span class="attribute">@spec</span> start_link({<a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>(), [<a href="https://www.erlang.org/doc/apps/stdlib/gen_statem.html#t:start_opt/0">:gen_statem.start_opt</a>()]}) :: <a href="https://www.erlang.org/doc/apps/stdlib/gen_statem.html#t:start_ret/0">:gen_statem.start_ret</a>()</pre>
 
       </div>
 
@@ -990,7 +944,7 @@ will cause this to return an error.</p>
 
       <p class="built-using">
         Built using
-        <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.32.1) for the
+        <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.37.0) for the
 
           <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
 
@@ -1000,7 +954,6 @@ will cause this to return an error.</p>
   </div>
 </main>
 </div>
-
 
   </body>
 </html>

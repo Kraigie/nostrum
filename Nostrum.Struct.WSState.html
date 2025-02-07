@@ -4,36 +4,22 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="ExDoc v0.32.1">
+    <meta name="generator" content="ExDoc v0.37.0">
     <meta name="project" content="Nostrum v0.11.0-dev">
 
 
     <title>Nostrum.Struct.WSState — Nostrum v0.11.0-dev</title>
-    <link rel="stylesheet" href="dist/html-elixir-2C5PUTIB.css" />
 
+    <link rel="stylesheet" href="dist/html-elixir-6X3L5KMG.css" />
 
-    <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
-    <script src="dist/handlebars.templates-IHH6HKET.js"></script>
-    <script src="dist/sidebar_items-7BAE9786.js"></script>
-    <script src="docs_config.js"></script>
-    <script async src="dist/html-GXQ6W6IF.js"></script>
-
+    <script defer src="dist/sidebar_items-7BAE9786.js"></script>
+    <script defer src="docs_config.js"></script>
+    <script defer src="dist/html-6VTPNSGQ.js"></script>
 
   </head>
-  <body data-type="modules" class="page-module">
-    <script>
-
-      try {
-        var settings = JSON.parse(localStorage.getItem('ex_doc:settings') || '{}');
-
-        if (settings.theme === 'dark' ||
-           ((settings.theme === 'system' || settings.theme == null) &&
-             window.matchMedia('(prefers-color-scheme: dark)').matches)
-           ) {
-          document.body.classList.add('dark')
-        }
-      } catch (error) { }
-    </script>
+  <body>
+    <script>(()=>{var t="ex_doc:settings",e="dark";var o="dark",s="light";var E="sidebar_state",n="closed";var r="sidebar_width";var a="sidebar-open";var i=new URLSearchParams(window.location.search),S=i.get("theme")||JSON.parse(localStorage.getItem(t)||"{}").theme;(S===o||S!==s&&window.matchMedia("(prefers-color-scheme: dark)").matches)&&document.body.classList.add(e);var d=sessionStorage.getItem(E),A=d!==n&&!window.matchMedia(`screen and (max-width: ${768}px)`).matches;document.body.classList.toggle(a,A);var c=sessionStorage.getItem(r);c&&document.body.style.setProperty("--sidebarWidth",`${c}px`);var p=/(Macintosh|iPhone|iPad|iPod)/.test(window.navigator.userAgent);document.documentElement.classList.toggle("apple-os",p);})();
+</script>
 
 <div class="body-wrapper">
 
@@ -59,47 +45,13 @@ Nostrum
         </div>
       </div>
     </div>
-    <ul id="sidebar-listNav" class="sidebar-listNav" role="tablist">
-      <li>
-        <button id="extras-list-tab-button" role="tab" data-type="extras" aria-controls="extras-tab-panel" aria-selected="true" tabindex="0">
-Pages
-        </button>
-      </li>
-
-        <li>
-          <button id="modules-list-tab-button" role="tab" data-type="modules" aria-controls="modules-tab-panel" aria-selected="false" tabindex="-1">
-            Modules
-          </button>
-        </li>
-
-
-        <li>
-          <button id="tasks-list-tab-button" role="tab" data-type="tasks" aria-controls="tasks-tab-panel" aria-selected="false" tabindex="-1">
-            <span translate="no">Mix</span> Tasks
-          </button>
-        </li>
-
-    </ul>
+    <ul id="sidebar-list-nav" class="sidebar-list-nav" role="tablist" data-extras=""></ul>
   </div>
-
-  <div id="extras-tab-panel" class="sidebar-tabpanel" role="tabpanel" aria-labelledby="extras-list-tab-button">
-    <ul id="extras-full-list" class="full-list"></ul>
-  </div>
-
-    <div id="modules-tab-panel" class="sidebar-tabpanel" role="tabpanel" aria-labelledby="modules-list-tab-button" hidden>
-      <ul id="modules-full-list" class="full-list"></ul>
-    </div>
-
-
-    <div id="tasks-tab-panel" class="sidebar-tabpanel" role="tabpanel" aria-labelledby="tasks-list-tab-button" hidden>
-      <ul id="tasks-full-list" class="full-list"></ul>
-    </div>
-
 </nav>
 
-<main class="content">
-  <output role="status" id="toast"></output>
+<output role="status" id="toast"></output>
 
+<main class="content page-module" id="main" data-type="modules">
   <div id="content" class="content-inner">
     <div class="top-search">
       <div class="search-settings">
@@ -108,8 +60,8 @@ Pages
             <span class="sr-only">Search documentation of Nostrum</span>
             <input name="q" type="text" class="search-input" placeholder="Press / to search" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
           </label>
-          <button type="submit" class="search-button" aria-label="Submit Search">
-            <i class="ri-search-2-line ri-lg" aria-hidden="true" title="Submit search"></i>
+          <button type="submit" class="search-button" aria-label="Submit Search" tabindex="-1">
+            <i class="ri-search-2-line ri-lg" aria-hidden="true"></i>
           </button>
           <button type="button" tabindex="-1" class="search-close-button" aria-hidden="true">
             <i class="ri-close-line ri-lg" title="Cancel search"></i>
@@ -125,17 +77,19 @@ Pages
     </div>
 
 <div id="top-content">
-  <h1>
+  <div class="heading-with-actions top-heading">
+    <h1>
+      <span translate="no">Nostrum.Struct.WSState</span> 
+      <small class="app-vsn" translate="no">(Nostrum v0.11.0-dev)</small>
+
+    </h1>
 
       <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/ws_state.ex#L1" title="View Source" class="icon-action" rel="help">
         <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         <span class="sr-only">View Source</span>
       </a>
 
-    <span translate="no">Nostrum.Struct.WSState</span> 
-    <small class="app-vsn" translate="no">(Nostrum v0.11.0-dev)</small>
-
-  </h1>
+  </div>
 
 
     <section id="moduledoc">
@@ -158,7 +112,7 @@ Pages
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#t:compress_ctx/0" translate="no">compress_ctx()</a>
+        <a href="#t:compress_ctx/0" data-no-tooltip="" translate="no">compress_ctx()</a>
 
       </div>
 
@@ -168,7 +122,7 @@ Pages
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#t:conn/0" translate="no">conn()</a>
+        <a href="#t:conn/0" data-no-tooltip="" translate="no">conn()</a>
 
       </div>
 
@@ -178,7 +132,7 @@ Pages
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#t:conn_pid/0" translate="no">conn_pid()</a>
+        <a href="#t:conn_pid/0" data-no-tooltip="" translate="no">conn_pid()</a>
 
       </div>
 
@@ -188,7 +142,7 @@ Pages
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#t:gateway/0" translate="no">gateway()</a>
+        <a href="#t:gateway/0" data-no-tooltip="" translate="no">gateway()</a>
 
       </div>
 
@@ -198,7 +152,7 @@ Pages
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#t:heartbeat_ack/0" translate="no">heartbeat_ack()</a>
+        <a href="#t:heartbeat_ack/0" data-no-tooltip="" translate="no">heartbeat_ack()</a>
 
       </div>
 
@@ -208,7 +162,7 @@ Pages
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#t:heartbeat_interval/0" translate="no">heartbeat_interval()</a>
+        <a href="#t:heartbeat_interval/0" data-no-tooltip="" translate="no">heartbeat_interval()</a>
 
       </div>
 
@@ -218,7 +172,7 @@ Pages
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#t:last_heartbeat_ack/0" translate="no">last_heartbeat_ack()</a>
+        <a href="#t:last_heartbeat_ack/0" data-no-tooltip="" translate="no">last_heartbeat_ack()</a>
 
       </div>
 
@@ -229,7 +183,7 @@ hasn't been ACK'd yet</p></div>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#t:last_heartbeat_send/0" translate="no">last_heartbeat_send()</a>
+        <a href="#t:last_heartbeat_send/0" data-no-tooltip="" translate="no">last_heartbeat_send()</a>
 
       </div>
 
@@ -240,7 +194,7 @@ will be the time the websocket process was started</p></div>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#t:resume_gateway/0" translate="no">resume_gateway()</a>
+        <a href="#t:resume_gateway/0" data-no-tooltip="" translate="no">resume_gateway()</a>
 
       </div>
 
@@ -250,7 +204,7 @@ will be the time the websocket process was started</p></div>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#t:seq/0" translate="no">seq()</a>
+        <a href="#t:seq/0" data-no-tooltip="" translate="no">seq()</a>
 
       </div>
 
@@ -260,7 +214,7 @@ will be the time the websocket process was started</p></div>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#t:session/0" translate="no">session()</a>
+        <a href="#t:session/0" data-no-tooltip="" translate="no">session()</a>
 
       </div>
 
@@ -270,7 +224,7 @@ will be the time the websocket process was started</p></div>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#t:shard_num/0" translate="no">shard_num()</a>
+        <a href="#t:shard_num/0" data-no-tooltip="" translate="no">shard_num()</a>
 
       </div>
 
@@ -280,7 +234,7 @@ will be the time the websocket process was started</p></div>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#t:stream/0" translate="no">stream()</a>
+        <a href="#t:stream/0" data-no-tooltip="" translate="no">stream()</a>
 
       </div>
 
@@ -290,7 +244,7 @@ will be the time the websocket process was started</p></div>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#t:t/0" translate="no">t()</a>
+        <a href="#t:t/0" data-no-tooltip="" translate="no">t()</a>
 
       </div>
 
@@ -298,7 +252,7 @@ will be the time the websocket process was started</p></div>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#t:total_shards/0" translate="no">total_shards()</a>
+        <a href="#t:total_shards/0" data-no-tooltip="" translate="no">total_shards()</a>
 
       </div>
 
@@ -322,18 +276,18 @@ will be the time the websocket process was started</p></div>
 <section class="detail" id="t:compress_ctx/0">
 
   <div class="detail-header">
-    <a href="#t:compress_ctx/0" class="detail-link" title="Link to this type">
+    <a href="#t:compress_ctx/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature" translate="no">compress_ctx()</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/ws_state.ex#L77" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">compress_ctx()</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/ws_state.ex#L77" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -350,18 +304,18 @@ will be the time the websocket process was started</p></div>
 <section class="detail" id="t:conn/0">
 
   <div class="detail-header">
-    <a href="#t:conn/0" class="detail-link" title="Link to this type">
+    <a href="#t:conn/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature" translate="no">conn()</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/ws_state.ex#L42" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">conn()</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/ws_state.ex#L42" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -378,18 +332,18 @@ will be the time the websocket process was started</p></div>
 <section class="detail" id="t:conn_pid/0">
 
   <div class="detail-header">
-    <a href="#t:conn_pid/0" class="detail-link" title="Link to this type">
+    <a href="#t:conn_pid/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature" translate="no">conn_pid()</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/ws_state.ex#L45" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">conn_pid()</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/ws_state.ex#L45" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -406,18 +360,18 @@ will be the time the websocket process was started</p></div>
 <section class="detail" id="t:gateway/0">
 
   <div class="detail-header">
-    <a href="#t:gateway/0" class="detail-link" title="Link to this type">
+    <a href="#t:gateway/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature" translate="no">gateway()</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/ws_state.ex#L52" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">gateway()</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/ws_state.ex#L52" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -434,18 +388,18 @@ will be the time the websocket process was started</p></div>
 <section class="detail" id="t:heartbeat_ack/0">
 
   <div class="detail-header">
-    <a href="#t:heartbeat_ack/0" class="detail-link" title="Link to this type">
+    <a href="#t:heartbeat_ack/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature" translate="no">heartbeat_ack()</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/ws_state.ex#L71" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">heartbeat_ack()</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/ws_state.ex#L71" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -462,18 +416,18 @@ will be the time the websocket process was started</p></div>
 <section class="detail" id="t:heartbeat_interval/0">
 
   <div class="detail-header">
-    <a href="#t:heartbeat_interval/0" class="detail-link" title="Link to this type">
+    <a href="#t:heartbeat_interval/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature" translate="no">heartbeat_interval()</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/ws_state.ex#L74" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">heartbeat_interval()</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/ws_state.ex#L74" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -490,18 +444,18 @@ will be the time the websocket process was started</p></div>
 <section class="detail" id="t:last_heartbeat_ack/0">
 
   <div class="detail-header">
-    <a href="#t:last_heartbeat_ack/0" class="detail-link" title="Link to this type">
+    <a href="#t:last_heartbeat_ack/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature" translate="no">last_heartbeat_ack()</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/ws_state.ex#L68" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">last_heartbeat_ack()</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/ws_state.ex#L68" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -519,18 +473,18 @@ hasn't been ACK'd yet</p>
 <section class="detail" id="t:last_heartbeat_send/0">
 
   <div class="detail-header">
-    <a href="#t:last_heartbeat_send/0" class="detail-link" title="Link to this type">
+    <a href="#t:last_heartbeat_send/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature" translate="no">last_heartbeat_send()</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/ws_state.ex#L62" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">last_heartbeat_send()</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/ws_state.ex#L62" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -548,20 +502,20 @@ will be the time the websocket process was started</p>
 <section class="detail" id="t:resume_gateway/0">
 
   <div class="detail-header">
-    <a href="#t:resume_gateway/0" class="detail-link" title="Link to this type">
+    <a href="#t:resume_gateway/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature" translate="no">resume_gateway()</h1>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">resume_gateway()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/ws_state.ex#L56" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+        <span class="note">(since 0.9.0)</span>
 
 
-      <span class="note">(since 0.9.0)</span>
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/ws_state.ex#L56" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
 
+    </div>
   </div>
 
   <section class="docstring">
@@ -578,18 +532,18 @@ will be the time the websocket process was started</p>
 <section class="detail" id="t:seq/0">
 
   <div class="detail-header">
-    <a href="#t:seq/0" class="detail-link" title="Link to this type">
+    <a href="#t:seq/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature" translate="no">seq()</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/ws_state.ex#L36" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">seq()</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/ws_state.ex#L36" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -606,18 +560,18 @@ will be the time the websocket process was started</p>
 <section class="detail" id="t:session/0">
 
   <div class="detail-header">
-    <a href="#t:session/0" class="detail-link" title="Link to this type">
+    <a href="#t:session/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature" translate="no">session()</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/ws_state.ex#L39" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">session()</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/ws_state.ex#L39" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -634,18 +588,18 @@ will be the time the websocket process was started</p>
 <section class="detail" id="t:shard_num/0">
 
   <div class="detail-header">
-    <a href="#t:shard_num/0" class="detail-link" title="Link to this type">
+    <a href="#t:shard_num/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature" translate="no">shard_num()</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/ws_state.ex#L24" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">shard_num()</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/ws_state.ex#L24" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -662,20 +616,20 @@ will be the time the websocket process was started</p>
 <section class="detail" id="t:stream/0">
 
   <div class="detail-header">
-    <a href="#t:stream/0" class="detail-link" title="Link to this type">
+    <a href="#t:stream/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature" translate="no">stream()</h1>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">stream()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/ws_state.ex#L49" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+        <span class="note">(since 0.5.0)</span>
 
 
-      <span class="note">(since 0.5.0)</span>
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/ws_state.ex#L49" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
 
+    </div>
   </div>
 
   <section class="docstring">
@@ -692,18 +646,18 @@ will be the time the websocket process was started</p>
 <section class="detail" id="t:t/0">
 
   <div class="detail-header">
-    <a href="#t:t/0" class="detail-link" title="Link to this type">
+    <a href="#t:t/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature" translate="no">t()</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/ws_state.ex#L79" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">t()</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/ws_state.ex#L79" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -735,20 +689,20 @@ will be the time the websocket process was started</p>
 <section class="detail" id="t:total_shards/0">
 
   <div class="detail-header">
-    <a href="#t:total_shards/0" class="detail-link" title="Link to this type">
+    <a href="#t:total_shards/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature" translate="no">total_shards()</h1>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">total_shards()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/ws_state.ex#L33" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+        <span class="note">(since 0.8.0)</span>
 
 
-      <span class="note">(since 0.8.0)</span>
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/ws_state.ex#L33" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
 
+    </div>
   </div>
 
   <section class="docstring">
@@ -791,7 +745,7 @@ gateway which events we are interested in.</p>
 
       <p class="built-using">
         Built using
-        <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.32.1) for the
+        <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.37.0) for the
 
           <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
 
@@ -801,7 +755,6 @@ gateway which events we are interested in.</p>
   </div>
 </main>
 </div>
-
 
   </body>
 </html>

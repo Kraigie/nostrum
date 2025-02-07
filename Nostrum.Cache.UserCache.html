@@ -4,36 +4,22 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="ExDoc v0.32.1">
+    <meta name="generator" content="ExDoc v0.37.0">
     <meta name="project" content="Nostrum v0.11.0-dev">
 
 
     <title>Nostrum.Cache.UserCache — Nostrum v0.11.0-dev</title>
-    <link rel="stylesheet" href="dist/html-elixir-2C5PUTIB.css" />
 
+    <link rel="stylesheet" href="dist/html-elixir-6X3L5KMG.css" />
 
-    <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
-    <script src="dist/handlebars.templates-IHH6HKET.js"></script>
-    <script src="dist/sidebar_items-7BAE9786.js"></script>
-    <script src="docs_config.js"></script>
-    <script async src="dist/html-GXQ6W6IF.js"></script>
-
+    <script defer src="dist/sidebar_items-7BAE9786.js"></script>
+    <script defer src="docs_config.js"></script>
+    <script defer src="dist/html-6VTPNSGQ.js"></script>
 
   </head>
-  <body data-type="modules" class="page-behaviour">
-    <script>
-
-      try {
-        var settings = JSON.parse(localStorage.getItem('ex_doc:settings') || '{}');
-
-        if (settings.theme === 'dark' ||
-           ((settings.theme === 'system' || settings.theme == null) &&
-             window.matchMedia('(prefers-color-scheme: dark)').matches)
-           ) {
-          document.body.classList.add('dark')
-        }
-      } catch (error) { }
-    </script>
+  <body>
+    <script>(()=>{var t="ex_doc:settings",e="dark";var o="dark",s="light";var E="sidebar_state",n="closed";var r="sidebar_width";var a="sidebar-open";var i=new URLSearchParams(window.location.search),S=i.get("theme")||JSON.parse(localStorage.getItem(t)||"{}").theme;(S===o||S!==s&&window.matchMedia("(prefers-color-scheme: dark)").matches)&&document.body.classList.add(e);var d=sessionStorage.getItem(E),A=d!==n&&!window.matchMedia(`screen and (max-width: ${768}px)`).matches;document.body.classList.toggle(a,A);var c=sessionStorage.getItem(r);c&&document.body.style.setProperty("--sidebarWidth",`${c}px`);var p=/(Macintosh|iPhone|iPad|iPod)/.test(window.navigator.userAgent);document.documentElement.classList.toggle("apple-os",p);})();
+</script>
 
 <div class="body-wrapper">
 
@@ -59,47 +45,13 @@ Nostrum
         </div>
       </div>
     </div>
-    <ul id="sidebar-listNav" class="sidebar-listNav" role="tablist">
-      <li>
-        <button id="extras-list-tab-button" role="tab" data-type="extras" aria-controls="extras-tab-panel" aria-selected="true" tabindex="0">
-Pages
-        </button>
-      </li>
-
-        <li>
-          <button id="modules-list-tab-button" role="tab" data-type="modules" aria-controls="modules-tab-panel" aria-selected="false" tabindex="-1">
-            Modules
-          </button>
-        </li>
-
-
-        <li>
-          <button id="tasks-list-tab-button" role="tab" data-type="tasks" aria-controls="tasks-tab-panel" aria-selected="false" tabindex="-1">
-            <span translate="no">Mix</span> Tasks
-          </button>
-        </li>
-
-    </ul>
+    <ul id="sidebar-list-nav" class="sidebar-list-nav" role="tablist" data-extras=""></ul>
   </div>
-
-  <div id="extras-tab-panel" class="sidebar-tabpanel" role="tabpanel" aria-labelledby="extras-list-tab-button">
-    <ul id="extras-full-list" class="full-list"></ul>
-  </div>
-
-    <div id="modules-tab-panel" class="sidebar-tabpanel" role="tabpanel" aria-labelledby="modules-list-tab-button" hidden>
-      <ul id="modules-full-list" class="full-list"></ul>
-    </div>
-
-
-    <div id="tasks-tab-panel" class="sidebar-tabpanel" role="tabpanel" aria-labelledby="tasks-list-tab-button" hidden>
-      <ul id="tasks-full-list" class="full-list"></ul>
-    </div>
-
 </nav>
 
-<main class="content">
-  <output role="status" id="toast"></output>
+<output role="status" id="toast"></output>
 
+<main class="content page-behaviour" id="main" data-type="modules">
   <div id="content" class="content-inner">
     <div class="top-search">
       <div class="search-settings">
@@ -108,8 +60,8 @@ Pages
             <span class="sr-only">Search documentation of Nostrum</span>
             <input name="q" type="text" class="search-input" placeholder="Press / to search" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
           </label>
-          <button type="submit" class="search-button" aria-label="Submit Search">
-            <i class="ri-search-2-line ri-lg" aria-hidden="true" title="Submit search"></i>
+          <button type="submit" class="search-button" aria-label="Submit Search" tabindex="-1">
+            <i class="ri-search-2-line ri-lg" aria-hidden="true"></i>
           </button>
           <button type="button" tabindex="-1" class="search-close-button" aria-hidden="true">
             <i class="ri-close-line ri-lg" title="Cancel search"></i>
@@ -125,17 +77,19 @@ Pages
     </div>
 
 <div id="top-content">
-  <h1>
+  <div class="heading-with-actions top-heading">
+    <h1>
+      <span translate="no">Nostrum.Cache.UserCache</span> <small>behaviour</small>
+      <small class="app-vsn" translate="no">(Nostrum v0.11.0-dev)</small>
+
+    </h1>
 
       <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/user_cache.ex#L1" title="View Source" class="icon-action" rel="help">
         <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         <span class="sr-only">View Source</span>
       </a>
 
-    <span translate="no">Nostrum.Cache.UserCache</span> <small>behaviour</small>
-    <small class="app-vsn" translate="no">(Nostrum v0.11.0-dev)</small>
-
-  </h1>
+  </div>
 
 
     <section id="moduledoc">
@@ -162,7 +116,7 @@ defined by this module.</p><p>See the documentation for the <a href="Nostrum.Cac
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#c:bulk_create/1" translate="no">bulk_create(user_payloads)</a>
+        <a href="#c:bulk_create/1" data-no-tooltip="" translate="no">bulk_create(user_payloads)</a>
 
       </div>
 
@@ -172,7 +126,7 @@ defined by this module.</p><p>See the documentation for the <a href="Nostrum.Cac
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#c:child_spec/1" translate="no">child_spec(term)</a>
+        <a href="#c:child_spec/1" data-no-tooltip="" translate="no">child_spec(term)</a>
 
       </div>
 
@@ -182,7 +136,7 @@ defined by this module.</p><p>See the documentation for the <a href="Nostrum.Cac
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#c:create/1" translate="no">create(payload)</a>
+        <a href="#c:create/1" data-no-tooltip="" translate="no">create(payload)</a>
 
       </div>
 
@@ -192,7 +146,7 @@ defined by this module.</p><p>See the documentation for the <a href="Nostrum.Cac
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#c:delete/1" translate="no">delete(snowflake)</a>
+        <a href="#c:delete/1" data-no-tooltip="" translate="no">delete(snowflake)</a>
 
       </div>
 
@@ -202,7 +156,7 @@ defined by this module.</p><p>See the documentation for the <a href="Nostrum.Cac
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#c:get/1" translate="no">get(id)</a>
+        <a href="#c:get/1" data-no-tooltip="" translate="no">get(id)</a>
 
       </div>
 
@@ -212,7 +166,7 @@ defined by this module.</p><p>See the documentation for the <a href="Nostrum.Cac
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#c:update/1" translate="no">update(payload)</a>
+        <a href="#c:update/1" data-no-tooltip="" translate="no">update(payload)</a>
 
       </div>
 
@@ -222,7 +176,7 @@ defined by this module.</p><p>See the documentation for the <a href="Nostrum.Cac
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#c:wrap_query/1" translate="no">wrap_query(function)</a>
+        <a href="#c:wrap_query/1" data-no-tooltip="" translate="no">wrap_query(function)</a>
 
       </div>
 
@@ -238,7 +192,7 @@ defined by this module.</p><p>See the documentation for the <a href="Nostrum.Cac
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#get/1" translate="no">get(id)</a>
+        <a href="#get/1" data-no-tooltip="" translate="no">get(id)</a>
 
       </div>
 
@@ -248,7 +202,7 @@ defined by this module.</p><p>See the documentation for the <a href="Nostrum.Cac
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#get!/1" translate="no">get!(id)</a>
+        <a href="#get!/1" data-no-tooltip="" translate="no">get!(id)</a>
 
       </div>
 
@@ -258,7 +212,7 @@ defined by this module.</p><p>See the documentation for the <a href="Nostrum.Cac
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#wrap_query/2" translate="no">wrap_query(cache \\ Nostrum.Cache.UserCache.ETS, fun)</a>
+        <a href="#wrap_query/2" data-no-tooltip="" translate="no">wrap_query(cache \\ Nostrum.Cache.UserCache.ETS, fun)</a>
 
       </div>
 
@@ -282,18 +236,18 @@ defined by this module.</p><p>See the documentation for the <a href="Nostrum.Cac
 <section class="detail" id="c:bulk_create/1">
 
   <div class="detail-header">
-    <a href="#c:bulk_create/1" class="detail-link" title="Link to this callback">
+    <a href="#c:bulk_create/1" class="detail-link" data-no-tooltip="" aria-label="Link to this callback">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this callback</span>
     </a>
-    <h1 class="signature" translate="no">bulk_create(user_payloads)</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/user_cache.ex#L42" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">bulk_create(user_payloads)</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/user_cache.ex#L42" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -310,18 +264,18 @@ defined by this module.</p><p>See the documentation for the <a href="Nostrum.Cac
 <section class="detail" id="c:child_spec/1">
 
   <div class="detail-header">
-    <a href="#c:child_spec/1" class="detail-link" title="Link to this callback">
+    <a href="#c:child_spec/1" class="detail-link" data-no-tooltip="" aria-label="Link to this callback">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this callback</span>
     </a>
-    <h1 class="signature" translate="no">child_spec(term)</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/user_cache.ex#L77" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">child_spec(term)</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/user_cache.ex#L77" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -338,18 +292,18 @@ defined by this module.</p><p>See the documentation for the <a href="Nostrum.Cac
 <section class="detail" id="c:create/1">
 
   <div class="detail-header">
-    <a href="#c:create/1" class="detail-link" title="Link to this callback">
+    <a href="#c:create/1" class="detail-link" data-no-tooltip="" aria-label="Link to this callback">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this callback</span>
     </a>
-    <h1 class="signature" translate="no">create(payload)</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/user_cache.ex#L35" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">create(payload)</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/user_cache.ex#L35" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -366,18 +320,18 @@ defined by this module.</p><p>See the documentation for the <a href="Nostrum.Cac
 <section class="detail" id="c:delete/1">
 
   <div class="detail-header">
-    <a href="#c:delete/1" class="detail-link" title="Link to this callback">
+    <a href="#c:delete/1" class="detail-link" data-no-tooltip="" aria-label="Link to this callback">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this callback</span>
     </a>
-    <h1 class="signature" translate="no">delete(snowflake)</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/user_cache.ex#L58" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">delete(snowflake)</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/user_cache.ex#L58" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -395,18 +349,18 @@ defined by this module.</p><p>See the documentation for the <a href="Nostrum.Cac
 <section class="detail" id="c:get/1">
 
   <div class="detail-header">
-    <a href="#c:get/1" class="detail-link" title="Link to this callback">
+    <a href="#c:get/1" class="detail-link" data-no-tooltip="" aria-label="Link to this callback">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this callback</span>
     </a>
-    <h1 class="signature" translate="no">get(id)</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/user_cache.ex#L28" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">get(id)</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/user_cache.ex#L28" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -424,18 +378,18 @@ defined by this module.</p><p>See the documentation for the <a href="Nostrum.Cac
 <section class="detail" id="c:update/1">
 
   <div class="detail-header">
-    <a href="#c:update/1" class="detail-link" title="Link to this callback">
+    <a href="#c:update/1" class="detail-link" data-no-tooltip="" aria-label="Link to this callback">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this callback</span>
     </a>
-    <h1 class="signature" translate="no">update(payload)</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/user_cache.ex#L50" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">update(payload)</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/user_cache.ex#L50" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -454,22 +408,22 @@ defined by this module.</p><p>See the documentation for the <a href="Nostrum.Cac
 <section class="detail" id="c:wrap_query/1">
 
   <div class="detail-header">
-    <a href="#c:wrap_query/1" class="detail-link" title="Link to this callback">
+    <a href="#c:wrap_query/1" class="detail-link" data-no-tooltip="" aria-label="Link to this callback">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this callback</span>
     </a>
-    <h1 class="signature" translate="no">wrap_query(function)</h1>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">wrap_query(function)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/user_cache.ex#L71" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+        <span class="note">(since 0.8.0)</span>
+
+        <span class="note">(optional)</span>
 
 
-      <span class="note">(optional)</span>
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/user_cache.ex#L71" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
 
-      <span class="note">(since 0.8.0)</span>
-
+    </div>
   </div>
 
   <section class="docstring">
@@ -501,18 +455,18 @@ will then effectively call <code class="inline">wrap_query(fn -&gt; ... end)</co
 <section class="detail" id="get/1">
 
   <div class="detail-header">
-    <a href="#get/1" class="detail-link" title="Link to this function">
+    <a href="#get/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">get(id)</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/user_cache.ex#L94" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">get(id)</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/user_cache.ex#L94" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -530,29 +484,29 @@ will then effectively call <code class="inline">wrap_query(fn -&gt; ... end)</co
   </a>
   <span class="text">Example</span>
 </h2>
-<pre><code class="makeup elixir" translate="no"><span class="k">case</span><span class="w"> </span><span class="nc">Nostrum.Cache.UserCache</span><span class="o">.</span><span class="n">get</span><span class="p" data-group-id="3380283622-1">(</span><span class="mi">1111222233334444</span><span class="p" data-group-id="3380283622-1">)</span><span class="w"> </span><span class="k" data-group-id="3380283622-2">do</span><span class="w">
-  </span><span class="p" data-group-id="3380283622-3">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">user</span><span class="p" data-group-id="3380283622-3">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+<pre><code class="makeup elixir" translate="no"><span class="k">case</span><span class="w"> </span><span class="nc">Nostrum.Cache.UserCache</span><span class="o">.</span><span class="n">get</span><span class="p" data-group-id="9439195573-1">(</span><span class="mi">1111222233334444</span><span class="p" data-group-id="9439195573-1">)</span><span class="w"> </span><span class="k" data-group-id="9439195573-2">do</span><span class="w">
+  </span><span class="p" data-group-id="9439195573-3">{</span><span class="ss">:ok</span><span class="p">,</span><span class="w"> </span><span class="n">user</span><span class="p" data-group-id="9439195573-3">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
     </span><span class="s">&quot;We found &quot;</span><span class="w"> </span><span class="o">&lt;&gt;</span><span class="w"> </span><span class="n">user</span><span class="o">.</span><span class="n">username</span><span class="w">
-  </span><span class="p" data-group-id="3380283622-4">{</span><span class="ss">:error</span><span class="p">,</span><span class="w"> </span><span class="c">_reason</span><span class="p" data-group-id="3380283622-4">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+  </span><span class="p" data-group-id="9439195573-4">{</span><span class="ss">:error</span><span class="p">,</span><span class="w"> </span><span class="c">_reason</span><span class="p" data-group-id="9439195573-4">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
     </span><span class="s">&quot;No es bueno&quot;</span><span class="w">
-</span><span class="k" data-group-id="3380283622-2">end</span></code></pre>
+</span><span class="k" data-group-id="9439195573-2">end</span></code></pre>
   </section>
 </section>
 <section class="detail" id="get!/1">
 
   <div class="detail-header">
-    <a href="#get!/1" class="detail-link" title="Link to this function">
+    <a href="#get!/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">get!(id)</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/user_cache.ex#L100" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">get!(id)</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/user_cache.ex#L100" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -568,23 +522,21 @@ will then effectively call <code class="inline">wrap_query(fn -&gt; ... end)</co
 </section>
 <section class="detail" id="wrap_query/2">
 
-    <span id="wrap_query/1"></span>
-
   <div class="detail-header">
-    <a href="#wrap_query/2" class="detail-link" title="Link to this function">
+    <a href="#wrap_query/2" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">wrap_query(cache \\ Nostrum.Cache.UserCache.ETS, fun)</h1>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">wrap_query(cache \\ Nostrum.Cache.UserCache.ETS, fun)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/user_cache.ex#L110" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+        <span class="note">(since 0.8.0)</span>
 
 
-      <span class="note">(since 0.8.0)</span>
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/cache/user_cache.ex#L110" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
 
+    </div>
   </div>
 
   <section class="docstring">
@@ -626,7 +578,7 @@ will then effectively call <code class="inline">wrap_query(fn -&gt; ... end)</co
 
       <p class="built-using">
         Built using
-        <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.32.1) for the
+        <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.37.0) for the
 
           <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
 
@@ -636,7 +588,6 @@ will then effectively call <code class="inline">wrap_query(fn -&gt; ... end)</co
   </div>
 </main>
 </div>
-
 
   </body>
 </html>

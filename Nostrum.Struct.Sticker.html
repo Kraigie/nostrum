@@ -4,36 +4,22 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="ExDoc v0.32.1">
+    <meta name="generator" content="ExDoc v0.37.0">
     <meta name="project" content="Nostrum v0.11.0-dev">
 
 
     <title>Nostrum.Struct.Sticker — Nostrum v0.11.0-dev</title>
-    <link rel="stylesheet" href="dist/html-elixir-2C5PUTIB.css" />
 
+    <link rel="stylesheet" href="dist/html-elixir-6X3L5KMG.css" />
 
-    <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
-    <script src="dist/handlebars.templates-IHH6HKET.js"></script>
-    <script src="dist/sidebar_items-7BAE9786.js"></script>
-    <script src="docs_config.js"></script>
-    <script async src="dist/html-GXQ6W6IF.js"></script>
-
+    <script defer src="dist/sidebar_items-7BAE9786.js"></script>
+    <script defer src="docs_config.js"></script>
+    <script defer src="dist/html-6VTPNSGQ.js"></script>
 
   </head>
-  <body data-type="modules" class="page-module">
-    <script>
-
-      try {
-        var settings = JSON.parse(localStorage.getItem('ex_doc:settings') || '{}');
-
-        if (settings.theme === 'dark' ||
-           ((settings.theme === 'system' || settings.theme == null) &&
-             window.matchMedia('(prefers-color-scheme: dark)').matches)
-           ) {
-          document.body.classList.add('dark')
-        }
-      } catch (error) { }
-    </script>
+  <body>
+    <script>(()=>{var t="ex_doc:settings",e="dark";var o="dark",s="light";var E="sidebar_state",n="closed";var r="sidebar_width";var a="sidebar-open";var i=new URLSearchParams(window.location.search),S=i.get("theme")||JSON.parse(localStorage.getItem(t)||"{}").theme;(S===o||S!==s&&window.matchMedia("(prefers-color-scheme: dark)").matches)&&document.body.classList.add(e);var d=sessionStorage.getItem(E),A=d!==n&&!window.matchMedia(`screen and (max-width: ${768}px)`).matches;document.body.classList.toggle(a,A);var c=sessionStorage.getItem(r);c&&document.body.style.setProperty("--sidebarWidth",`${c}px`);var p=/(Macintosh|iPhone|iPad|iPod)/.test(window.navigator.userAgent);document.documentElement.classList.toggle("apple-os",p);})();
+</script>
 
 <div class="body-wrapper">
 
@@ -59,47 +45,13 @@ Nostrum
         </div>
       </div>
     </div>
-    <ul id="sidebar-listNav" class="sidebar-listNav" role="tablist">
-      <li>
-        <button id="extras-list-tab-button" role="tab" data-type="extras" aria-controls="extras-tab-panel" aria-selected="true" tabindex="0">
-Pages
-        </button>
-      </li>
-
-        <li>
-          <button id="modules-list-tab-button" role="tab" data-type="modules" aria-controls="modules-tab-panel" aria-selected="false" tabindex="-1">
-            Modules
-          </button>
-        </li>
-
-
-        <li>
-          <button id="tasks-list-tab-button" role="tab" data-type="tasks" aria-controls="tasks-tab-panel" aria-selected="false" tabindex="-1">
-            <span translate="no">Mix</span> Tasks
-          </button>
-        </li>
-
-    </ul>
+    <ul id="sidebar-list-nav" class="sidebar-list-nav" role="tablist" data-extras=""></ul>
   </div>
-
-  <div id="extras-tab-panel" class="sidebar-tabpanel" role="tabpanel" aria-labelledby="extras-list-tab-button">
-    <ul id="extras-full-list" class="full-list"></ul>
-  </div>
-
-    <div id="modules-tab-panel" class="sidebar-tabpanel" role="tabpanel" aria-labelledby="modules-list-tab-button" hidden>
-      <ul id="modules-full-list" class="full-list"></ul>
-    </div>
-
-
-    <div id="tasks-tab-panel" class="sidebar-tabpanel" role="tabpanel" aria-labelledby="tasks-list-tab-button" hidden>
-      <ul id="tasks-full-list" class="full-list"></ul>
-    </div>
-
 </nav>
 
-<main class="content">
-  <output role="status" id="toast"></output>
+<output role="status" id="toast"></output>
 
+<main class="content page-module" id="main" data-type="modules">
   <div id="content" class="content-inner">
     <div class="top-search">
       <div class="search-settings">
@@ -108,8 +60,8 @@ Pages
             <span class="sr-only">Search documentation of Nostrum</span>
             <input name="q" type="text" class="search-input" placeholder="Press / to search" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
           </label>
-          <button type="submit" class="search-button" aria-label="Submit Search">
-            <i class="ri-search-2-line ri-lg" aria-hidden="true" title="Submit search"></i>
+          <button type="submit" class="search-button" aria-label="Submit Search" tabindex="-1">
+            <i class="ri-search-2-line ri-lg" aria-hidden="true"></i>
           </button>
           <button type="button" tabindex="-1" class="search-close-button" aria-hidden="true">
             <i class="ri-close-line ri-lg" title="Cancel search"></i>
@@ -125,21 +77,23 @@ Pages
     </div>
 
 <div id="top-content">
-  <h1>
+  <div class="heading-with-actions top-heading">
+    <h1>
+      <span translate="no">Nostrum.Struct.Sticker</span> 
+      <small class="app-vsn" translate="no">(Nostrum v0.11.0-dev)</small>
+
+    </h1>
 
       <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/sticker.ex#L1" title="View Source" class="icon-action" rel="help">
         <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         <span class="sr-only">View Source</span>
       </a>
 
-    <span translate="no">Nostrum.Struct.Sticker</span> 
-    <small class="app-vsn" translate="no">(Nostrum v0.11.0-dev)</small>
-
-  </h1>
+  </div>
 
 
     <section id="moduledoc">
-<p>A <a href="Nostrum.Struct.Sticker.html#content"><code class="inline">Nostrum.Struct.Sticker</code></a> represents a sticker that can be sent inside a
+<p>A <a href="Nostrum.Struct.Sticker.html"><code class="inline">Nostrum.Struct.Sticker</code></a> represents a sticker that can be sent inside a
 <a href="Nostrum.Struct.Message.html"><code class="inline">Nostrum.Struct.Message</code></a>.</p>
     </section>
 
@@ -159,7 +113,7 @@ Pages
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#t:available/0" translate="no">available()</a>
+        <a href="#t:available/0" data-no-tooltip="" translate="no">available()</a>
 
       </div>
 
@@ -169,7 +123,7 @@ Pages
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#t:description/0" translate="no">description()</a>
+        <a href="#t:description/0" data-no-tooltip="" translate="no">description()</a>
 
       </div>
 
@@ -179,7 +133,7 @@ Pages
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#t:format_type/0" translate="no">format_type()</a>
+        <a href="#t:format_type/0" data-no-tooltip="" translate="no">format_type()</a>
 
       </div>
 
@@ -189,7 +143,7 @@ Pages
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#t:guild_id/0" translate="no">guild_id()</a>
+        <a href="#t:guild_id/0" data-no-tooltip="" translate="no">guild_id()</a>
 
       </div>
 
@@ -199,7 +153,7 @@ Pages
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#t:id/0" translate="no">id()</a>
+        <a href="#t:id/0" data-no-tooltip="" translate="no">id()</a>
 
       </div>
 
@@ -209,7 +163,7 @@ Pages
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#t:name/0" translate="no">name()</a>
+        <a href="#t:name/0" data-no-tooltip="" translate="no">name()</a>
 
       </div>
 
@@ -219,7 +173,7 @@ Pages
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#t:pack_id/0" translate="no">pack_id()</a>
+        <a href="#t:pack_id/0" data-no-tooltip="" translate="no">pack_id()</a>
 
       </div>
 
@@ -229,7 +183,7 @@ Pages
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#t:sort_value/0" translate="no">sort_value()</a>
+        <a href="#t:sort_value/0" data-no-tooltip="" translate="no">sort_value()</a>
 
       </div>
 
@@ -239,7 +193,7 @@ Pages
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#t:t/0" translate="no">t()</a>
+        <a href="#t:t/0" data-no-tooltip="" translate="no">t()</a>
 
       </div>
 
@@ -247,7 +201,7 @@ Pages
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#t:tags/0" translate="no">tags()</a>
+        <a href="#t:tags/0" data-no-tooltip="" translate="no">tags()</a>
 
       </div>
 
@@ -257,7 +211,7 @@ Pages
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#t:type/0" translate="no">type()</a>
+        <a href="#t:type/0" data-no-tooltip="" translate="no">type()</a>
 
       </div>
 
@@ -267,7 +221,7 @@ Pages
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#t:user/0" translate="no">user()</a>
+        <a href="#t:user/0" data-no-tooltip="" translate="no">user()</a>
 
       </div>
 
@@ -283,7 +237,7 @@ Pages
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#cdn_url/1" translate="no">cdn_url(map)</a>
+        <a href="#cdn_url/1" data-no-tooltip="" translate="no">cdn_url(map)</a>
 
       </div>
 
@@ -307,20 +261,20 @@ Pages
 <section class="detail" id="t:available/0">
 
   <div class="detail-header">
-    <a href="#t:available/0" class="detail-link" title="Link to this type">
+    <a href="#t:available/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature" translate="no">available()</h1>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">available()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/sticker.ex#L73" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+        <span class="note">(since 0.10.0)</span>
 
 
-      <span class="note">(since 0.10.0)</span>
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/sticker.ex#L73" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
 
+    </div>
   </div>
 
   <section class="docstring">
@@ -337,20 +291,20 @@ Pages
 <section class="detail" id="t:description/0">
 
   <div class="detail-header">
-    <a href="#t:description/0" class="detail-link" title="Link to this type">
+    <a href="#t:description/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature" translate="no">description()</h1>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">description()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/sticker.ex#L43" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+        <span class="note">(since 0.10.0)</span>
 
 
-      <span class="note">(since 0.10.0)</span>
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/sticker.ex#L43" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
 
+    </div>
   </div>
 
   <section class="docstring">
@@ -367,20 +321,20 @@ Pages
 <section class="detail" id="t:format_type/0">
 
   <div class="detail-header">
-    <a href="#t:format_type/0" class="detail-link" title="Link to this type">
+    <a href="#t:format_type/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature" translate="no">format_type()</h1>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">format_type()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/sticker.ex#L66" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+        <span class="note">(since 0.10.0)</span>
 
 
-      <span class="note">(since 0.10.0)</span>
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/sticker.ex#L66" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
 
+    </div>
   </div>
 
   <section class="docstring">
@@ -397,20 +351,20 @@ Pages
 <section class="detail" id="t:guild_id/0">
 
   <div class="detail-header">
-    <a href="#t:guild_id/0" class="detail-link" title="Link to this type">
+    <a href="#t:guild_id/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature" translate="no">guild_id()</h1>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">guild_id()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/sticker.ex#L80" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+        <span class="note">(since 0.10.0)</span>
 
 
-      <span class="note">(since 0.10.0)</span>
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/sticker.ex#L80" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
 
+    </div>
   </div>
 
   <section class="docstring">
@@ -427,20 +381,20 @@ Pages
 <section class="detail" id="t:id/0">
 
   <div class="detail-header">
-    <a href="#t:id/0" class="detail-link" title="Link to this type">
+    <a href="#t:id/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature" translate="no">id()</h1>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">id()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/sticker.ex#L28" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+        <span class="note">(since 0.10.0)</span>
 
 
-      <span class="note">(since 0.10.0)</span>
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/sticker.ex#L28" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
 
+    </div>
   </div>
 
   <section class="docstring">
@@ -457,20 +411,20 @@ Pages
 <section class="detail" id="t:name/0">
 
   <div class="detail-header">
-    <a href="#t:name/0" class="detail-link" title="Link to this type">
+    <a href="#t:name/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature" translate="no">name()</h1>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">name()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/sticker.ex#L38" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+        <span class="note">(since 0.10.0)</span>
 
 
-      <span class="note">(since 0.10.0)</span>
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/sticker.ex#L38" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
 
+    </div>
   </div>
 
   <section class="docstring">
@@ -487,20 +441,20 @@ Pages
 <section class="detail" id="t:pack_id/0">
 
   <div class="detail-header">
-    <a href="#t:pack_id/0" class="detail-link" title="Link to this type">
+    <a href="#t:pack_id/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature" translate="no">pack_id()</h1>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">pack_id()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/sticker.ex#L33" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+        <span class="note">(since 0.10.0)</span>
 
 
-      <span class="note">(since 0.10.0)</span>
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/sticker.ex#L33" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
 
+    </div>
   </div>
 
   <section class="docstring">
@@ -517,20 +471,20 @@ Pages
 <section class="detail" id="t:sort_value/0">
 
   <div class="detail-header">
-    <a href="#t:sort_value/0" class="detail-link" title="Link to this type">
+    <a href="#t:sort_value/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature" translate="no">sort_value()</h1>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">sort_value()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/sticker.ex#L94" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+        <span class="note">(since 0.10.0)</span>
 
 
-      <span class="note">(since 0.10.0)</span>
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/sticker.ex#L94" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
 
+    </div>
   </div>
 
   <section class="docstring">
@@ -547,20 +501,20 @@ Pages
 <section class="detail" id="t:t/0">
 
   <div class="detail-header">
-    <a href="#t:t/0" class="detail-link" title="Link to this type">
+    <a href="#t:t/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature" translate="no">t()</h1>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">t()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/sticker.ex#L96" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+        <span class="note">(since 0.10.0)</span>
 
 
-      <span class="note">(since 0.10.0)</span>
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/sticker.ex#L96" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
 
+    </div>
   </div>
 
   <section class="docstring">
@@ -589,20 +543,20 @@ Pages
 <section class="detail" id="t:tags/0">
 
   <div class="detail-header">
-    <a href="#t:tags/0" class="detail-link" title="Link to this type">
+    <a href="#t:tags/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature" translate="no">tags()</h1>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">tags()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/sticker.ex#L54" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+        <span class="note">(since 0.10.0)</span>
 
 
-      <span class="note">(since 0.10.0)</span>
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/sticker.ex#L54" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
 
+    </div>
   </div>
 
   <section class="docstring">
@@ -621,20 +575,20 @@ the sticker.</p><p>This is technically a free-text field so consistency in forma
 <section class="detail" id="t:type/0">
 
   <div class="detail-header">
-    <a href="#t:type/0" class="detail-link" title="Link to this type">
+    <a href="#t:type/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature" translate="no">type()</h1>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">type()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/sticker.ex#L59" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+        <span class="note">(since 0.10.0)</span>
 
 
-      <span class="note">(since 0.10.0)</span>
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/sticker.ex#L59" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
 
+    </div>
   </div>
 
   <section class="docstring">
@@ -651,20 +605,20 @@ the sticker.</p><p>This is technically a free-text field so consistency in forma
 <section class="detail" id="t:user/0">
 
   <div class="detail-header">
-    <a href="#t:user/0" class="detail-link" title="Link to this type">
+    <a href="#t:user/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this type</span>
     </a>
-    <h1 class="signature" translate="no">user()</h1>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">user()</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/sticker.ex#L87" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+        <span class="note">(since 0.10.0)</span>
 
 
-      <span class="note">(since 0.10.0)</span>
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/sticker.ex#L87" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
 
+    </div>
   </div>
 
   <section class="docstring">
@@ -693,20 +647,20 @@ the sticker.</p><p>This is technically a free-text field so consistency in forma
 <section class="detail" id="cdn_url/1">
 
   <div class="detail-header">
-    <a href="#cdn_url/1" class="detail-link" title="Link to this function">
+    <a href="#cdn_url/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">cdn_url(map)</h1>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">cdn_url(map)</h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/sticker.ex#L164" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+        <span class="note">(since 0.10.0)</span>
 
 
-      <span class="note">(since 0.10.0)</span>
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/sticker.ex#L164" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
 
+    </div>
   </div>
 
   <section class="docstring">
@@ -724,9 +678,9 @@ the sticker.</p><p>This is technically a free-text field so consistency in forma
   </a>
   <span class="text">Examples</span>
 </h3>
-<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="n">sticker</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="5949570307-1">%</span><span class="nc" data-group-id="5949570307-1">Nostrum.Struct.Sticker</span><span class="p" data-group-id="5949570307-1">{</span><span class="ss">format_type</span><span class="p">:</span><span class="w"> </span><span class="ss">:gif</span><span class="p">,</span><span class="w"> </span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">112233445566778899</span><span class="p" data-group-id="5949570307-1">}</span><span class="w">
+<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="n">sticker</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="3264252165-1">%</span><span class="nc" data-group-id="3264252165-1">Nostrum.Struct.Sticker</span><span class="p" data-group-id="3264252165-1">{</span><span class="ss">format_type</span><span class="p">:</span><span class="w"> </span><span class="ss">:gif</span><span class="p">,</span><span class="w"> </span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">112233445566778899</span><span class="p" data-group-id="3264252165-1">}</span><span class="w">
 </span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Struct.Sticker</span><span class="o">.</span><span class="n">cdn_url</span><span class="w"> </span><span class="n">sticker</span><span class="w">
-</span><span class="s">&quot;https://media.discordapp.net/stickers/112233445566778899.gif&quot;</span></code></pre><pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="n">sticker</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="4193020459-1">%</span><span class="nc" data-group-id="4193020459-1">Nostrum.Struct.Sticker</span><span class="p" data-group-id="4193020459-1">{</span><span class="ss">format_type</span><span class="p">:</span><span class="w"> </span><span class="ss">:apng</span><span class="p">,</span><span class="w"> </span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">998877665544332211</span><span class="p" data-group-id="4193020459-1">}</span><span class="w">
+</span><span class="s">&quot;https://media.discordapp.net/stickers/112233445566778899.gif&quot;</span></code></pre><pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="n">sticker</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="2807410128-1">%</span><span class="nc" data-group-id="2807410128-1">Nostrum.Struct.Sticker</span><span class="p" data-group-id="2807410128-1">{</span><span class="ss">format_type</span><span class="p">:</span><span class="w"> </span><span class="ss">:apng</span><span class="p">,</span><span class="w"> </span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="mi">998877665544332211</span><span class="p" data-group-id="2807410128-1">}</span><span class="w">
 </span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Struct.Sticker</span><span class="o">.</span><span class="n">cdn_url</span><span class="w"> </span><span class="n">sticker</span><span class="w">
 </span><span class="s">&quot;https://cdn.discordapp.com/stickers/998877665544332211.png&quot;</span></code></pre>
   </section>
@@ -759,7 +713,7 @@ the sticker.</p><p>This is technically a free-text field so consistency in forma
 
       <p class="built-using">
         Built using
-        <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.32.1) for the
+        <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.37.0) for the
 
           <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
 
@@ -769,7 +723,6 @@ the sticker.</p><p>This is technically a free-text field so consistency in forma
   </div>
 </main>
 </div>
-
 
   </body>
 </html>

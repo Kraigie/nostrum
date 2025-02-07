@@ -4,36 +4,22 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="ExDoc v0.32.1">
+    <meta name="generator" content="ExDoc v0.37.0">
     <meta name="project" content="Nostrum v0.11.0-dev">
 
 
     <title>Nostrum.Shard.Session — Nostrum v0.11.0-dev</title>
-    <link rel="stylesheet" href="dist/html-elixir-2C5PUTIB.css" />
 
+    <link rel="stylesheet" href="dist/html-elixir-6X3L5KMG.css" />
 
-    <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
-    <script src="dist/handlebars.templates-IHH6HKET.js"></script>
-    <script src="dist/sidebar_items-7BAE9786.js"></script>
-    <script src="docs_config.js"></script>
-    <script async src="dist/html-GXQ6W6IF.js"></script>
-
+    <script defer src="dist/sidebar_items-7BAE9786.js"></script>
+    <script defer src="docs_config.js"></script>
+    <script defer src="dist/html-6VTPNSGQ.js"></script>
 
   </head>
-  <body data-type="modules" class="page-module">
-    <script>
-
-      try {
-        var settings = JSON.parse(localStorage.getItem('ex_doc:settings') || '{}');
-
-        if (settings.theme === 'dark' ||
-           ((settings.theme === 'system' || settings.theme == null) &&
-             window.matchMedia('(prefers-color-scheme: dark)').matches)
-           ) {
-          document.body.classList.add('dark')
-        }
-      } catch (error) { }
-    </script>
+  <body>
+    <script>(()=>{var t="ex_doc:settings",e="dark";var o="dark",s="light";var E="sidebar_state",n="closed";var r="sidebar_width";var a="sidebar-open";var i=new URLSearchParams(window.location.search),S=i.get("theme")||JSON.parse(localStorage.getItem(t)||"{}").theme;(S===o||S!==s&&window.matchMedia("(prefers-color-scheme: dark)").matches)&&document.body.classList.add(e);var d=sessionStorage.getItem(E),A=d!==n&&!window.matchMedia(`screen and (max-width: ${768}px)`).matches;document.body.classList.toggle(a,A);var c=sessionStorage.getItem(r);c&&document.body.style.setProperty("--sidebarWidth",`${c}px`);var p=/(Macintosh|iPhone|iPad|iPod)/.test(window.navigator.userAgent);document.documentElement.classList.toggle("apple-os",p);})();
+</script>
 
 <div class="body-wrapper">
 
@@ -59,47 +45,13 @@ Nostrum
         </div>
       </div>
     </div>
-    <ul id="sidebar-listNav" class="sidebar-listNav" role="tablist">
-      <li>
-        <button id="extras-list-tab-button" role="tab" data-type="extras" aria-controls="extras-tab-panel" aria-selected="true" tabindex="0">
-Pages
-        </button>
-      </li>
-
-        <li>
-          <button id="modules-list-tab-button" role="tab" data-type="modules" aria-controls="modules-tab-panel" aria-selected="false" tabindex="-1">
-            Modules
-          </button>
-        </li>
-
-
-        <li>
-          <button id="tasks-list-tab-button" role="tab" data-type="tasks" aria-controls="tasks-tab-panel" aria-selected="false" tabindex="-1">
-            <span translate="no">Mix</span> Tasks
-          </button>
-        </li>
-
-    </ul>
+    <ul id="sidebar-list-nav" class="sidebar-list-nav" role="tablist" data-extras=""></ul>
   </div>
-
-  <div id="extras-tab-panel" class="sidebar-tabpanel" role="tabpanel" aria-labelledby="extras-list-tab-button">
-    <ul id="extras-full-list" class="full-list"></ul>
-  </div>
-
-    <div id="modules-tab-panel" class="sidebar-tabpanel" role="tabpanel" aria-labelledby="modules-list-tab-button" hidden>
-      <ul id="modules-full-list" class="full-list"></ul>
-    </div>
-
-
-    <div id="tasks-tab-panel" class="sidebar-tabpanel" role="tabpanel" aria-labelledby="tasks-list-tab-button" hidden>
-      <ul id="tasks-full-list" class="full-list"></ul>
-    </div>
-
 </nav>
 
-<main class="content">
-  <output role="status" id="toast"></output>
+<output role="status" id="toast"></output>
 
+<main class="content page-module" id="main" data-type="modules">
   <div id="content" class="content-inner">
     <div class="top-search">
       <div class="search-settings">
@@ -108,8 +60,8 @@ Pages
             <span class="sr-only">Search documentation of Nostrum</span>
             <input name="q" type="text" class="search-input" placeholder="Press / to search" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
           </label>
-          <button type="submit" class="search-button" aria-label="Submit Search">
-            <i class="ri-search-2-line ri-lg" aria-hidden="true" title="Submit search"></i>
+          <button type="submit" class="search-button" aria-label="Submit Search" tabindex="-1">
+            <i class="ri-search-2-line ri-lg" aria-hidden="true"></i>
           </button>
           <button type="button" tabindex="-1" class="search-close-button" aria-hidden="true">
             <i class="ri-close-line ri-lg" title="Cancel search"></i>
@@ -125,17 +77,19 @@ Pages
     </div>
 
 <div id="top-content">
-  <h1>
+  <div class="heading-with-actions top-heading">
+    <h1>
+      <span translate="no">Nostrum.Shard.Session</span> 
+      <small class="app-vsn" translate="no">(Nostrum v0.11.0-dev)</small>
+
+    </h1>
 
       <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/session.ex#L1" title="View Source" class="icon-action" rel="help">
         <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         <span class="sr-only">View Source</span>
       </a>
 
-    <span translate="no">Nostrum.Shard.Session</span> 
-    <small class="app-vsn" translate="no">(Nostrum v0.11.0-dev)</small>
-
-  </h1>
+  </div>
 
 
     <section id="moduledoc">
@@ -147,14 +101,14 @@ Pages
 </h2>
 <p>Discord's gateway sends us events over websocket. The shard session state
 machine concerns it self with parsing these events and dispatching them to
-clients as appropriate.</p><blockquote><h3 id="module-internal-module" class="info section-heading">
+clients as appropriate.</p><section role="note" class="admonition info"><h3 id="module-internal-module" class="admonition-title info section-heading">
   <a href="#module-internal-module" class="hover-link">
     <i class="ri-link-m" aria-hidden="true"></i>
   </a>
   <span class="text">Internal module</span>
 </h3>
 <p>This module is intended for exclusive usage inside of nostrum, and is
-documented for completeness and people curious to look behind the covers.</p></blockquote><h2 id="module-inner-workings" class="section-heading">
+documented for completeness and people curious to look behind the covers.</p></section><h2 id="module-inner-workings" class="section-heading">
   <a href="#module-inner-workings" class="hover-link">
     <i class="ri-link-m" aria-hidden="true"></i>
   </a>
@@ -192,25 +146,17 @@ to re-establish and resume events.</p></li></ul>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#callback_mode/0" translate="no">callback_mode()</a>
+        <a href="#callback_mode/0" data-no-tooltip="" translate="no">callback_mode()</a>
 
       </div>
 
-        <div class="summary-synopsis"><p>Callback implementation for <a href="https://www.erlang.org/doc/man/gen_statem.html#Module:callback_mode-0"><code class="inline">:gen_statem.callback_mode/0</code></a>.</p></div>
+        <div class="summary-synopsis"><p>Callback implementation for <a href="https://www.erlang.org/doc/apps/stdlib/gen_statem.html#c:callback_mode/0"><code class="inline">:gen_statem.callback_mode/0</code></a>.</p></div>
 
     </div>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#child_spec/1" translate="no">child_spec(opts)</a>
-
-      </div>
-
-    </div>
-
-    <div class="summary-row">
-      <div class="summary-signature">
-        <a href="#connected/3" translate="no">connected(arg1, request, data)</a>
+        <a href="#child_spec/1" data-no-tooltip="" translate="no">child_spec(opts)</a>
 
       </div>
 
@@ -218,7 +164,7 @@ to re-establish and resume events.</p></li></ul>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#connecting_http/3" translate="no">connecting_http(arg1, from, data)</a>
+        <a href="#connected/3" data-no-tooltip="" translate="no">connected(arg1, request, data)</a>
 
       </div>
 
@@ -226,7 +172,7 @@ to re-establish and resume events.</p></li></ul>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#connecting_ws/3" translate="no">connecting_ws(arg1, arg2, data)</a>
+        <a href="#connecting_http/3" data-no-tooltip="" translate="no">connecting_http(arg1, from, data)</a>
 
       </div>
 
@@ -234,7 +180,7 @@ to re-establish and resume events.</p></li></ul>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#disconnect/1" translate="no">disconnect(pid)</a>
+        <a href="#connecting_ws/3" data-no-tooltip="" translate="no">connecting_ws(arg1, arg2, data)</a>
 
       </div>
 
@@ -242,7 +188,7 @@ to re-establish and resume events.</p></li></ul>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#disconnect/2" translate="no">disconnect(pid, timeout)</a>
+        <a href="#disconnect/1" data-no-tooltip="" translate="no">disconnect(pid)</a>
 
       </div>
 
@@ -250,7 +196,7 @@ to re-establish and resume events.</p></li></ul>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#disconnected/3" translate="no">disconnected(arg1, arg2, data)</a>
+        <a href="#disconnect/2" data-no-tooltip="" translate="no">disconnect(pid, timeout)</a>
 
       </div>
 
@@ -258,17 +204,7 @@ to re-establish and resume events.</p></li></ul>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#format_status/1" translate="no">format_status(state)</a>
-
-      </div>
-
-        <div class="summary-synopsis"><p>Callback implementation for <a href="https://www.erlang.org/doc/man/gen_statem.html#Module:format_status-1"><code class="inline">:gen_statem.format_status/1</code></a>.</p></div>
-
-    </div>
-
-    <div class="summary-row">
-      <div class="summary-signature">
-        <a href="#get_ws_state/1" translate="no">get_ws_state(pid)</a>
+        <a href="#disconnected/3" data-no-tooltip="" translate="no">disconnected(arg1, arg2, data)</a>
 
       </div>
 
@@ -276,25 +212,17 @@ to re-establish and resume events.</p></li></ul>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#init/1" translate="no">init(arg1)</a>
+        <a href="#format_status/1" data-no-tooltip="" translate="no">format_status(state)</a>
 
       </div>
 
-        <div class="summary-synopsis"><p>Callback implementation for <a href="https://www.erlang.org/doc/man/gen_statem.html#Module:init-1"><code class="inline">:gen_statem.init/1</code></a>.</p></div>
+        <div class="summary-synopsis"><p>Callback implementation for <a href="https://www.erlang.org/doc/apps/stdlib/gen_statem.html#c:format_status/1"><code class="inline">:gen_statem.format_status/1</code></a>.</p></div>
 
     </div>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#request_guild_members/3" translate="no">request_guild_members(pid, guild_id, limit \\ 0)</a>
-
-      </div>
-
-    </div>
-
-    <div class="summary-row">
-      <div class="summary-signature">
-        <a href="#start_link/2" translate="no">start_link(opts, statem_opts)</a>
+        <a href="#get_ws_state/1" data-no-tooltip="" translate="no">get_ws_state(pid)</a>
 
       </div>
 
@@ -302,7 +230,17 @@ to re-establish and resume events.</p></li></ul>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#update_status/3" translate="no">update_status(pid, status, activity)</a>
+        <a href="#init/1" data-no-tooltip="" translate="no">init(arg1)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Callback implementation for <a href="https://www.erlang.org/doc/apps/stdlib/gen_statem.html#c:init/1"><code class="inline">:gen_statem.init/1</code></a>.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#request_guild_members/3" data-no-tooltip="" translate="no">request_guild_members(pid, guild_id, limit \\ 0)</a>
 
       </div>
 
@@ -310,7 +248,23 @@ to re-establish and resume events.</p></li></ul>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#update_voice_state/5" translate="no">update_voice_state(pid, guild_id, channel_id, self_mute, self_deaf)</a>
+        <a href="#start_link/2" data-no-tooltip="" translate="no">start_link(opts, statem_opts)</a>
+
+      </div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#update_status/3" data-no-tooltip="" translate="no">update_status(pid, status, activity)</a>
+
+      </div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#update_voice_state/5" data-no-tooltip="" translate="no">update_voice_state(pid, guild_id, channel_id, self_mute, self_deaf)</a>
 
       </div>
 
@@ -332,40 +286,40 @@ to re-establish and resume events.</p></li></ul>
 <section class="detail" id="callback_mode/0">
 
   <div class="detail-header">
-    <a href="#callback_mode/0" class="detail-link" title="Link to this function">
+    <a href="#callback_mode/0" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">callback_mode()</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/session.ex#L203" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">callback_mode()</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/session.ex#L203" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
 
-<p>Callback implementation for <a href="https://www.erlang.org/doc/man/gen_statem.html#Module:callback_mode-0"><code class="inline">:gen_statem.callback_mode/0</code></a>.</p>
+<p>Callback implementation for <a href="https://www.erlang.org/doc/apps/stdlib/gen_statem.html#c:callback_mode/0"><code class="inline">:gen_statem.callback_mode/0</code></a>.</p>
   </section>
 </section>
 <section class="detail" id="child_spec/1">
 
   <div class="detail-header">
-    <a href="#child_spec/1" class="detail-link" title="Link to this function">
+    <a href="#child_spec/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">child_spec(opts)</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/session.ex#L205" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">child_spec(opts)</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/session.ex#L205" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -376,18 +330,18 @@ to re-establish and resume events.</p></li></ul>
 <section class="detail" id="connected/3">
 
   <div class="detail-header">
-    <a href="#connected/3" class="detail-link" title="Link to this function">
+    <a href="#connected/3" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">connected(arg1, request, data)</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/session.ex#L334" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">connected(arg1, request, data)</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/session.ex#L334" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -398,18 +352,18 @@ to re-establish and resume events.</p></li></ul>
 <section class="detail" id="connecting_http/3">
 
   <div class="detail-header">
-    <a href="#connecting_http/3" class="detail-link" title="Link to this function">
+    <a href="#connecting_http/3" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">connecting_http(arg1, from, data)</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/session.ex#L246" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">connecting_http(arg1, from, data)</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/session.ex#L246" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -420,18 +374,18 @@ to re-establish and resume events.</p></li></ul>
 <section class="detail" id="connecting_ws/3">
 
   <div class="detail-header">
-    <a href="#connecting_ws/3" class="detail-link" title="Link to this function">
+    <a href="#connecting_ws/3" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">connecting_ws(arg1, arg2, data)</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/session.ex#L283" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">connecting_ws(arg1, arg2, data)</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/session.ex#L283" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -442,18 +396,18 @@ to re-establish and resume events.</p></li></ul>
 <section class="detail" id="disconnect/1">
 
   <div class="detail-header">
-    <a href="#disconnect/1" class="detail-link" title="Link to this function">
+    <a href="#disconnect/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">disconnect(pid)</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/session.ex#L120" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">disconnect(pid)</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/session.ex#L120" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -464,18 +418,18 @@ to re-establish and resume events.</p></li></ul>
 <section class="detail" id="disconnect/2">
 
   <div class="detail-header">
-    <a href="#disconnect/2" class="detail-link" title="Link to this function">
+    <a href="#disconnect/2" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">disconnect(pid, timeout)</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/session.ex#L124" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">disconnect(pid, timeout)</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/session.ex#L124" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -486,18 +440,18 @@ to re-establish and resume events.</p></li></ul>
 <section class="detail" id="disconnected/3">
 
   <div class="detail-header">
-    <a href="#disconnected/3" class="detail-link" title="Link to this function">
+    <a href="#disconnected/3" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">disconnected(arg1, arg2, data)</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/session.ex#L218" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">disconnected(arg1, arg2, data)</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/session.ex#L218" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -508,40 +462,40 @@ to re-establish and resume events.</p></li></ul>
 <section class="detail" id="format_status/1">
 
   <div class="detail-header">
-    <a href="#format_status/1" class="detail-link" title="Link to this function">
+    <a href="#format_status/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">format_status(state)</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/session.ex#L484" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">format_status(state)</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/session.ex#L484" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
 
-<p>Callback implementation for <a href="https://www.erlang.org/doc/man/gen_statem.html#Module:format_status-1"><code class="inline">:gen_statem.format_status/1</code></a>.</p>
+<p>Callback implementation for <a href="https://www.erlang.org/doc/apps/stdlib/gen_statem.html#c:format_status/1"><code class="inline">:gen_statem.format_status/1</code></a>.</p>
   </section>
 </section>
 <section class="detail" id="get_ws_state/1">
 
   <div class="detail-header">
-    <a href="#get_ws_state/1" class="detail-link" title="Link to this function">
+    <a href="#get_ws_state/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">get_ws_state(pid)</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/session.ex#L128" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">get_ws_state(pid)</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/session.ex#L128" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -552,23 +506,23 @@ to re-establish and resume events.</p></li></ul>
 <section class="detail" id="init/1">
 
   <div class="detail-header">
-    <a href="#init/1" class="detail-link" title="Link to this function">
+    <a href="#init/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">init(arg1)</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/session.ex#L158" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">init(arg1)</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/session.ex#L158" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
 
-<p>Callback implementation for <a href="https://www.erlang.org/doc/man/gen_statem.html#Module:init-1"><code class="inline">:gen_statem.init/1</code></a>.</p>
+<p>Callback implementation for <a href="https://www.erlang.org/doc/apps/stdlib/gen_statem.html#c:init/1"><code class="inline">:gen_statem.init/1</code></a>.</p>
   </section>
 </section>
 <section class="detail" id="request_guild_members/3">
@@ -576,18 +530,18 @@ to re-establish and resume events.</p></li></ul>
     <span id="request_guild_members/2"></span>
 
   <div class="detail-header">
-    <a href="#request_guild_members/3" class="detail-link" title="Link to this function">
+    <a href="#request_guild_members/3" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">request_guild_members(pid, guild_id, limit \\ 0)</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/session.ex#L115" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">request_guild_members(pid, guild_id, limit \\ 0)</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/session.ex#L115" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -598,18 +552,18 @@ to re-establish and resume events.</p></li></ul>
 <section class="detail" id="start_link/2">
 
   <div class="detail-header">
-    <a href="#start_link/2" class="detail-link" title="Link to this function">
+    <a href="#start_link/2" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">start_link(opts, statem_opts)</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/session.ex#L134" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">start_link(opts, statem_opts)</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/session.ex#L134" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -620,18 +574,18 @@ to re-establish and resume events.</p></li></ul>
 <section class="detail" id="update_status/3">
 
   <div class="detail-header">
-    <a href="#update_status/3" class="detail-link" title="Link to this function">
+    <a href="#update_status/3" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">update_status(pid, status, activity)</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/session.ex#L86" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">update_status(pid, status, activity)</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/session.ex#L86" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -642,18 +596,18 @@ to re-establish and resume events.</p></li></ul>
 <section class="detail" id="update_voice_state/5">
 
   <div class="detail-header">
-    <a href="#update_voice_state/5" class="detail-link" title="Link to this function">
+    <a href="#update_voice_state/5" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">update_voice_state(pid, guild_id, channel_id, self_mute, self_deaf)</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/session.ex#L110" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">update_voice_state(pid, guild_id, channel_id, self_mute, self_deaf)</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/session.ex#L110" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -689,7 +643,7 @@ to re-establish and resume events.</p></li></ul>
 
       <p class="built-using">
         Built using
-        <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.32.1) for the
+        <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.37.0) for the
 
           <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
 
@@ -699,7 +653,6 @@ to re-establish and resume events.</p></li></ul>
   </div>
 </main>
 </div>
-
 
   </body>
 </html>

@@ -4,36 +4,22 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="ExDoc v0.32.1">
+    <meta name="generator" content="ExDoc v0.37.0">
     <meta name="project" content="Nostrum v0.11.0-dev">
 
 
     <title>Nostrum.Util — Nostrum v0.11.0-dev</title>
-    <link rel="stylesheet" href="dist/html-elixir-2C5PUTIB.css" />
 
+    <link rel="stylesheet" href="dist/html-elixir-6X3L5KMG.css" />
 
-    <script src="dist/handlebars.runtime-NWIB6V2M.js"></script>
-    <script src="dist/handlebars.templates-IHH6HKET.js"></script>
-    <script src="dist/sidebar_items-7BAE9786.js"></script>
-    <script src="docs_config.js"></script>
-    <script async src="dist/html-GXQ6W6IF.js"></script>
-
+    <script defer src="dist/sidebar_items-7BAE9786.js"></script>
+    <script defer src="docs_config.js"></script>
+    <script defer src="dist/html-6VTPNSGQ.js"></script>
 
   </head>
-  <body data-type="modules" class="page-module">
-    <script>
-
-      try {
-        var settings = JSON.parse(localStorage.getItem('ex_doc:settings') || '{}');
-
-        if (settings.theme === 'dark' ||
-           ((settings.theme === 'system' || settings.theme == null) &&
-             window.matchMedia('(prefers-color-scheme: dark)').matches)
-           ) {
-          document.body.classList.add('dark')
-        }
-      } catch (error) { }
-    </script>
+  <body>
+    <script>(()=>{var t="ex_doc:settings",e="dark";var o="dark",s="light";var E="sidebar_state",n="closed";var r="sidebar_width";var a="sidebar-open";var i=new URLSearchParams(window.location.search),S=i.get("theme")||JSON.parse(localStorage.getItem(t)||"{}").theme;(S===o||S!==s&&window.matchMedia("(prefers-color-scheme: dark)").matches)&&document.body.classList.add(e);var d=sessionStorage.getItem(E),A=d!==n&&!window.matchMedia(`screen and (max-width: ${768}px)`).matches;document.body.classList.toggle(a,A);var c=sessionStorage.getItem(r);c&&document.body.style.setProperty("--sidebarWidth",`${c}px`);var p=/(Macintosh|iPhone|iPad|iPod)/.test(window.navigator.userAgent);document.documentElement.classList.toggle("apple-os",p);})();
+</script>
 
 <div class="body-wrapper">
 
@@ -59,47 +45,13 @@ Nostrum
         </div>
       </div>
     </div>
-    <ul id="sidebar-listNav" class="sidebar-listNav" role="tablist">
-      <li>
-        <button id="extras-list-tab-button" role="tab" data-type="extras" aria-controls="extras-tab-panel" aria-selected="true" tabindex="0">
-Pages
-        </button>
-      </li>
-
-        <li>
-          <button id="modules-list-tab-button" role="tab" data-type="modules" aria-controls="modules-tab-panel" aria-selected="false" tabindex="-1">
-            Modules
-          </button>
-        </li>
-
-
-        <li>
-          <button id="tasks-list-tab-button" role="tab" data-type="tasks" aria-controls="tasks-tab-panel" aria-selected="false" tabindex="-1">
-            <span translate="no">Mix</span> Tasks
-          </button>
-        </li>
-
-    </ul>
+    <ul id="sidebar-list-nav" class="sidebar-list-nav" role="tablist" data-extras=""></ul>
   </div>
-
-  <div id="extras-tab-panel" class="sidebar-tabpanel" role="tabpanel" aria-labelledby="extras-list-tab-button">
-    <ul id="extras-full-list" class="full-list"></ul>
-  </div>
-
-    <div id="modules-tab-panel" class="sidebar-tabpanel" role="tabpanel" aria-labelledby="modules-list-tab-button" hidden>
-      <ul id="modules-full-list" class="full-list"></ul>
-    </div>
-
-
-    <div id="tasks-tab-panel" class="sidebar-tabpanel" role="tabpanel" aria-labelledby="tasks-list-tab-button" hidden>
-      <ul id="tasks-full-list" class="full-list"></ul>
-    </div>
-
 </nav>
 
-<main class="content">
-  <output role="status" id="toast"></output>
+<output role="status" id="toast"></output>
 
+<main class="content page-module" id="main" data-type="modules">
   <div id="content" class="content-inner">
     <div class="top-search">
       <div class="search-settings">
@@ -108,8 +60,8 @@ Pages
             <span class="sr-only">Search documentation of Nostrum</span>
             <input name="q" type="text" class="search-input" placeholder="Press / to search" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
           </label>
-          <button type="submit" class="search-button" aria-label="Submit Search">
-            <i class="ri-search-2-line ri-lg" aria-hidden="true" title="Submit search"></i>
+          <button type="submit" class="search-button" aria-label="Submit Search" tabindex="-1">
+            <i class="ri-search-2-line ri-lg" aria-hidden="true"></i>
           </button>
           <button type="button" tabindex="-1" class="search-close-button" aria-hidden="true">
             <i class="ri-close-line ri-lg" title="Cancel search"></i>
@@ -125,17 +77,19 @@ Pages
     </div>
 
 <div id="top-content">
-  <h1>
+  <div class="heading-with-actions top-heading">
+    <h1>
+      <span translate="no">Nostrum.Util</span> 
+      <small class="app-vsn" translate="no">(Nostrum v0.11.0-dev)</small>
+
+    </h1>
 
       <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/util.ex#L1" title="View Source" class="icon-action" rel="help">
         <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         <span class="sr-only">View Source</span>
       </a>
 
-    <span translate="no">Nostrum.Util</span> 
-    <small class="app-vsn" translate="no">(Nostrum v0.11.0-dev)</small>
-
-  </h1>
+  </div>
 
 
     <section id="moduledoc">
@@ -158,7 +112,7 @@ Pages
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#enum_to_struct/2" translate="no">enum_to_struct(enum, struct)</a>
+        <a href="#enum_to_struct/2" data-no-tooltip="" translate="no">enum_to_struct(enum, struct)</a>
 
       </div>
 
@@ -166,7 +120,7 @@ Pages
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#gateway/0" translate="no">gateway()</a>
+        <a href="#gateway/0" data-no-tooltip="" translate="no">gateway()</a>
 
       </div>
 
@@ -176,7 +130,7 @@ Pages
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#get_all_shard_latencies/0" translate="no">get_all_shard_latencies()</a>
+        <a href="#get_all_shard_latencies/0" data-no-tooltip="" translate="no">get_all_shard_latencies()</a>
 
       </div>
 
@@ -186,7 +140,7 @@ Pages
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#get_shard_latency/1" translate="no">get_shard_latency(state)</a>
+        <a href="#get_shard_latency/1" data-no-tooltip="" translate="no">get_shard_latency(state)</a>
 
       </div>
 
@@ -196,7 +150,7 @@ Pages
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#map_update_if_present/3" translate="no">map_update_if_present(map, key, fun)</a>
+        <a href="#map_update_if_present/3" data-no-tooltip="" translate="no">map_update_if_present(map, key, fun)</a>
 
       </div>
 
@@ -207,7 +161,7 @@ Otherwise, returns the map unchanged.</p></div>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#maybe_to_atom/1" translate="no">maybe_to_atom(token)</a>
+        <a href="#maybe_to_atom/1" data-no-tooltip="" translate="no">maybe_to_atom(token)</a>
 
       </div>
 
@@ -217,7 +171,7 @@ Otherwise, returns the map unchanged.</p></div>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#maybe_to_datetime/1" translate="no">maybe_to_datetime(dt)</a>
+        <a href="#maybe_to_datetime/1" data-no-tooltip="" translate="no">maybe_to_datetime(dt)</a>
 
       </div>
 
@@ -227,7 +181,7 @@ Otherwise, returns the map unchanged.</p></div>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#maybe_to_unixtime/1" translate="no">maybe_to_unixtime(stamp)</a>
+        <a href="#maybe_to_unixtime/1" data-no-tooltip="" translate="no">maybe_to_unixtime(stamp)</a>
 
       </div>
 
@@ -237,7 +191,7 @@ Otherwise, returns the map unchanged.</p></div>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#now/0" translate="no">now()</a>
+        <a href="#now/0" data-no-tooltip="" translate="no">now()</a>
 
       </div>
 
@@ -247,7 +201,7 @@ Otherwise, returns the map unchanged.</p></div>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#now_iso/0" translate="no">now_iso()</a>
+        <a href="#now_iso/0" data-no-tooltip="" translate="no">now_iso()</a>
 
       </div>
 
@@ -257,7 +211,7 @@ Otherwise, returns the map unchanged.</p></div>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#num_shards/0" translate="no">num_shards()</a>
+        <a href="#num_shards/0" data-no-tooltip="" translate="no">num_shards()</a>
 
       </div>
 
@@ -267,7 +221,7 @@ Otherwise, returns the map unchanged.</p></div>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#safe_atom_map/1" translate="no">safe_atom_map(term)</a>
+        <a href="#safe_atom_map/1" data-no-tooltip="" translate="no">safe_atom_map(term)</a>
 
       </div>
 
@@ -277,7 +231,7 @@ Otherwise, returns the map unchanged.</p></div>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#timestamp_like_to_snowflake/1" translate="no">timestamp_like_to_snowflake(snowflake)</a>
+        <a href="#timestamp_like_to_snowflake/1" data-no-tooltip="" translate="no">timestamp_like_to_snowflake(snowflake)</a>
 
       </div>
 
@@ -290,7 +244,7 @@ by some cache lookup functions to indicate no upper bound.</p></div>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#unused_atoms/0" translate="no">unused_atoms()</a>
+        <a href="#unused_atoms/0" data-no-tooltip="" translate="no">unused_atoms()</a>
 
       </div>
 
@@ -303,7 +257,7 @@ means to define those atoms once so the user isn't warned about them in the
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#usec_now/0" translate="no">usec_now()</a>
+        <a href="#usec_now/0" data-no-tooltip="" translate="no">usec_now()</a>
 
       </div>
 
@@ -327,18 +281,18 @@ means to define those atoms once so the user isn't warned about them in the
 <section class="detail" id="enum_to_struct/2">
 
   <div class="detail-header">
-    <a href="#enum_to_struct/2" class="detail-link" title="Link to this function">
+    <a href="#enum_to_struct/2" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">enum_to_struct(enum, struct)</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/util.ex#L46" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">enum_to_struct(enum, struct)</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/util.ex#L46" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -349,18 +303,18 @@ means to define those atoms once so the user isn't warned about them in the
 <section class="detail" id="gateway/0">
 
   <div class="detail-header">
-    <a href="#gateway/0" class="detail-link" title="Link to this function">
+    <a href="#gateway/0" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">gateway()</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/util.ex#L112" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">gateway()</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/util.ex#L112" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -378,18 +332,18 @@ for future use.</p>
 <section class="detail" id="get_all_shard_latencies/0">
 
   <div class="detail-header">
-    <a href="#get_all_shard_latencies/0" class="detail-link" title="Link to this function">
+    <a href="#get_all_shard_latencies/0" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">get_all_shard_latencies()</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/util.ex#L325" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">get_all_shard_latencies()</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/util.ex#L325" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -409,18 +363,18 @@ shard nums and whose values are latencies in milliseconds.</p>
 <section class="detail" id="get_shard_latency/1">
 
   <div class="detail-header">
-    <a href="#get_shard_latency/1" class="detail-link" title="Link to this function">
+    <a href="#get_shard_latency/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">get_shard_latency(state)</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/util.ex#L309" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">get_shard_latency(state)</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/util.ex#L309" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -437,18 +391,18 @@ shard nums and whose values are latencies in milliseconds.</p>
 <section class="detail" id="map_update_if_present/3">
 
   <div class="detail-header">
-    <a href="#map_update_if_present/3" class="detail-link" title="Link to this function">
+    <a href="#map_update_if_present/3" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">map_update_if_present(map, key, fun)</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/util.ex#L281" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">map_update_if_present(map, key, fun)</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/util.ex#L281" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -466,18 +420,18 @@ Otherwise, returns the map unchanged.</p>
 <section class="detail" id="maybe_to_atom/1">
 
   <div class="detail-header">
-    <a href="#maybe_to_atom/1" class="detail-link" title="Link to this function">
+    <a href="#maybe_to_atom/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">maybe_to_atom(token)</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/util.ex#L188" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">maybe_to_atom(token)</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/util.ex#L188" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -496,18 +450,18 @@ provided.</p><p>If atom does not currently exist, will warn that we're doing an 
 <section class="detail" id="maybe_to_datetime/1">
 
   <div class="detail-header">
-    <a href="#maybe_to_datetime/1" class="detail-link" title="Link to this function">
+    <a href="#maybe_to_datetime/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">maybe_to_datetime(dt)</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/util.ex#L218" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">maybe_to_datetime(dt)</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/util.ex#L218" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -524,18 +478,18 @@ provided.</p><p>If atom does not currently exist, will warn that we're doing an 
 <section class="detail" id="maybe_to_unixtime/1">
 
   <div class="detail-header">
-    <a href="#maybe_to_unixtime/1" class="detail-link" title="Link to this function">
+    <a href="#maybe_to_unixtime/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">maybe_to_unixtime(stamp)</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/util.ex#L235" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">maybe_to_unixtime(stamp)</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/util.ex#L235" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -552,18 +506,18 @@ provided.</p><p>If atom does not currently exist, will warn that we're doing an 
 <section class="detail" id="now/0">
 
   <div class="detail-header">
-    <a href="#now/0" class="detail-link" title="Link to this function">
+    <a href="#now/0" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">now()</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/util.ex#L18" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">now()</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/util.ex#L18" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -580,18 +534,18 @@ provided.</p><p>If atom does not currently exist, will warn that we're doing an 
 <section class="detail" id="now_iso/0">
 
   <div class="detail-header">
-    <a href="#now_iso/0" class="detail-link" title="Link to this function">
+    <a href="#now_iso/0" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">now_iso()</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/util.ex#L36" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">now_iso()</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/util.ex#L36" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -608,18 +562,18 @@ provided.</p><p>If atom does not currently exist, will warn that we're doing an 
 <section class="detail" id="num_shards/0">
 
   <div class="detail-header">
-    <a href="#num_shards/0" class="detail-link" title="Link to this function">
+    <a href="#num_shards/0" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">num_shards()</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/util.ex#L77" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">num_shards()</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/util.ex#L77" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -648,18 +602,18 @@ of shards specified in your config.</p>
 <section class="detail" id="safe_atom_map/1">
 
   <div class="detail-header">
-    <a href="#safe_atom_map/1" class="detail-link" title="Link to this function">
+    <a href="#safe_atom_map/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">safe_atom_map(term)</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/util.ex#L151" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">safe_atom_map(term)</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/util.ex#L151" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -681,18 +635,18 @@ types of objects returned by Discord, the amount of new atoms created <em>SHOULD
 <section class="detail" id="timestamp_like_to_snowflake/1">
 
   <div class="detail-header">
-    <a href="#timestamp_like_to_snowflake/1" class="detail-link" title="Link to this function">
+    <a href="#timestamp_like_to_snowflake/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">timestamp_like_to_snowflake(snowflake)</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/util.ex#L341" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">timestamp_like_to_snowflake(snowflake)</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/util.ex#L341" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -706,18 +660,18 @@ by some cache lookup functions to indicate no upper bound.</p>
 <section class="detail" id="unused_atoms/0">
 
   <div class="detail-header">
-    <a href="#unused_atoms/0" class="detail-link" title="Link to this function">
+    <a href="#unused_atoms/0" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">unused_atoms()</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/util.ex#L360" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">unused_atoms()</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/util.ex#L360" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -731,18 +685,18 @@ means to define those atoms once so the user isn't warned about them in the
 <section class="detail" id="usec_now/0">
 
   <div class="detail-header">
-    <a href="#usec_now/0" class="detail-link" title="Link to this function">
+    <a href="#usec_now/0" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
-      <span class="sr-only">Link to this function</span>
     </a>
-    <h1 class="signature" translate="no">usec_now()</h1>
-
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/util.ex#L27" class="icon-action" rel="help" title="View Source">
-       <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-       <span class="sr-only">View Source</span>
-     </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">usec_now()</h1>
 
 
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/util.ex#L27" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
   </div>
 
   <section class="docstring">
@@ -784,7 +738,7 @@ means to define those atoms once so the user isn't warned about them in the
 
       <p class="built-using">
         Built using
-        <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.32.1) for the
+        <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.37.0) for the
 
           <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
 
@@ -794,7 +748,6 @@ means to define those atoms once so the user isn't warned about them in the
   </div>
 </main>
 </div>
-
 
   </body>
 </html>
