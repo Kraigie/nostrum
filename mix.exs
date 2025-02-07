@@ -82,7 +82,7 @@ defmodule Nostrum.Mixfile do
       Api: [
         ~r/Nostrum.Api/,
         ~r/Nostrum.Consumer/,
-        ~r/Nostrum.(Permission|Voice)/
+        ~r/Nostrum.(Permission|Voice)$/
       ],
       Cache: [
         ~r/Nostrum.Cache.\w+$/
@@ -106,7 +106,8 @@ defmodule Nostrum.Mixfile do
       "Internal modules": [
         ~r/Nostrum.Api.Ratelimiter/,
         ~r/Nostrum.Shard/,
-        ~r/^Nostrum\.StateMachineTranslator$/
+        ~r/^Nostrum\.StateMachineTranslator$/,
+        ~r/Nostrum.Voice.Crypto.\w+$/
       ]
     ]
   end
