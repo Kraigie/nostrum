@@ -64,7 +64,7 @@ if Code.ensure_loaded?(:mnesia) do
 
     @impl MemberCache
     @doc "Retrieve the member for the given guild and user in the cache."
-    @spec get(Guild.id(), Member.user_id()) :: {:ok, Member.t()} | {:error, any()}
+    @spec get(Guild.id(), Member.user_id()) :: {:ok, Member.t()} | {:error, atom()}
     def get(guild_id, user_id) do
       key = {guild_id, user_id}
 
