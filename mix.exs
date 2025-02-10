@@ -155,7 +155,9 @@ defmodule Nostrum.Mixfile do
       {:credo, "~> 1.7.7", only: [:dev, :test], runtime: false},
       {:dialyxir, "~> 1.4", only: [:dev], runtime: false},
       {:benchee, "~> 1.1", only: :dev, runtime: false},
-      {:recon, "~> 2.5", only: :dev, optional: true}
+      {:recon, "~> 2.5", only: :dev, optional: true},
+      # Temporary dependencies for the source code migration tool.
+      {:igniter, "~> 0.5", optional: true}
     ]
   end
 
