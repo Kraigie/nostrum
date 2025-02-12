@@ -366,6 +366,7 @@ defmodule Nostrum.Util do
       :audio_ssrc,
       :burst,
       :channel_overrides,
+      :content_scan_version,
       :convert_emoticons,
       :detect_platform_accounts,
       :developer_mode,
