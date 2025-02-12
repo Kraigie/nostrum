@@ -101,7 +101,7 @@ defmodule Nostrum.Shard.Supervisor do
 
         shard_range = lowest..highest
 
-        for num <- shard_range, do: connect(num - 1, total)
+        for num <- shard_range, do: {:ok, _pid} = connect(num - 1, total)
     end
 
     on_start
