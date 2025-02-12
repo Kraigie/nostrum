@@ -108,12 +108,12 @@ eviction of the oldest messages will be more efficient, however it means
 that the table cannot be changed to only store its contents on disk later.
 default: <code class="inline">:ordered_set</code></li></ul><p>To change this configuration, you can add the following to your
 <code class="inline">config.exs</code>:</p><pre><code class="makeup elixir" translate="no"><span class="n">config</span><span class="w"> </span><span class="ss">:nostrum</span><span class="p">,</span><span class="w">
-  </span><span class="ss">caches</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="0046467236-1">%{</span><span class="w">
-    </span><span class="ss">messages</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="0046467236-2">{</span><span class="nc">Nostrum.Cache.MessageCache.Mnesia</span><span class="p">,</span><span class="w">
+  </span><span class="ss">caches</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="9666543383-1">%{</span><span class="w">
+    </span><span class="ss">messages</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="9666543383-2">{</span><span class="nc">Nostrum.Cache.MessageCache.Mnesia</span><span class="p">,</span><span class="w">
                </span><span class="ss">size_limit</span><span class="p">:</span><span class="w"> </span><span class="mi">1000</span><span class="p">,</span><span class="w"> </span><span class="ss">eviction_count</span><span class="p">:</span><span class="w"> </span><span class="mi">50</span><span class="p">,</span><span class="w">
                </span><span class="ss">table_name</span><span class="p">:</span><span class="w"> </span><span class="ss">:my_custom_messages_table_name</span><span class="p">,</span><span class="w">
-               </span><span class="ss">compressed</span><span class="p">:</span><span class="w"> </span><span class="no">true</span><span class="p">,</span><span class="w"> </span><span class="ss">type</span><span class="p">:</span><span class="w"> </span><span class="ss">:set</span><span class="p" data-group-id="0046467236-2">}</span><span class="w">
-  </span><span class="p" data-group-id="0046467236-1">}</span></code></pre><p>You can also change the table name used by the cache by setting the
+               </span><span class="ss">compressed</span><span class="p">:</span><span class="w"> </span><span class="no">true</span><span class="p">,</span><span class="w"> </span><span class="ss">type</span><span class="p">:</span><span class="w"> </span><span class="ss">:set</span><span class="p" data-group-id="9666543383-2">}</span><span class="w">
+  </span><span class="p" data-group-id="9666543383-1">}</span></code></pre><p>You can also change the table name used by the cache by setting the
 <code class="inline">table_name</code> field in the configuration for the <code class="inline">messages</code> cache.</p>
     </section>
 
