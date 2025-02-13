@@ -41,10 +41,10 @@ defmodule Nostrum.Api.Ratelimiter do
   ## Multi-node
 
   nostrum will transparently distribute client requests across all ratelimiter
-  clusters running in the cluster. This allows us to account for per-route
-  ratelimits whilst still distributing work across cluster nodes. **Note that
-  the API enforces a global user ratelimit across all requests**, which we
-  cannot account for using this method.
+  running in the cluster. This allows us to account for per-route ratelimits
+  whilst still distributing work across cluster nodes. **Note that the API
+  enforces a global user ratelimit across all requests**, which we cannot
+  account for using this method.
 
 
   ## Inner workings
