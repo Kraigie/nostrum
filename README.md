@@ -114,13 +114,18 @@ If you need help, visit `#elixir_nostrum` on the unofficial Discord API guild!
 
 ## Testimonials
 
-> my first choice is always nostrum
+> I figured you'd all love to here that I've once again harnessed the great
+> power of the nostrum library to develop an (undistributed) discord bot,
+> leveraging the newest AI TTS models and the lovely work inside of
+> `lib/nostrum/voice.ex` done by our very own BrandtHill™️, to supply my mute
+> friend with a voice for the the low low cost of absolutely nothing.
 > 
-> **- big nutty, javascript developer**
+> **- Craig, original nostrum maintainer, 2025-02-11**
 
-> i would feed my baby the latest nostrum release
+> Nostrum just released v0.9? Wow, I didn't know that, you're telling me now for
+> the first time. It was an amazing release you know, really amazing.
 >
-> **- also big nutty**
+> **- Donald Trump upon hearing about the nostrum 0.9 release**
 
 > i've used nostrum for 6 years and i have never been let down. [...]
 >
