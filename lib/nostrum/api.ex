@@ -173,6 +173,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Self.update_shard_status/3` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate update_shard_status(pid, status, activity),
     to: Nostrum.Api.Self
@@ -180,6 +181,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Self.update_status/2` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate update_status(status, activity),
     to: Nostrum.Api.Self
@@ -187,6 +189,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Self.update_voice_state/4` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate update_voice_state(guild_id, channel_id, self_mute \\ false, self_deaf \\ false),
     to: Nostrum.Api.Self
@@ -194,6 +197,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Message.create/2` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate create_message(channel_id, options),
     to: Nostrum.Api.Message,
@@ -213,6 +217,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Message.edit/3` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate edit_message(channel_id, message_id, options),
     to: Nostrum.Api.Message,
@@ -259,6 +264,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Message.delete/2` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate delete_message(channel_id, message_id),
     to: Nostrum.Api.Message,
@@ -287,6 +293,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Message.react/3` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate create_reaction(channel_id, message_id, emoji),
     to: Nostrum.Api.Message,
@@ -305,6 +312,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Message.unreact/3` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate delete_own_reaction(channel_id, message_id, emoji),
     to: Nostrum.Api.Message,
@@ -323,6 +331,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Message.delete_user_reaction/4` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate delete_user_reaction(channel_id, message_id, emoji, user_id),
     to: Nostrum.Api.Message
@@ -340,6 +349,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Message.delete_emoji_reactions/3` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate delete_reaction(channel_id, message_id, emoji),
     to: Nostrum.Api.Message,
@@ -358,6 +368,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Message.reactions/4` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate get_reactions(channel_id, message_id, emoji, params \\ []),
     to: Nostrum.Api.Message,
@@ -376,6 +387,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Message.clear_reactions/2` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate delete_all_reactions(channel_id, message_id),
     to: Nostrum.Api.Message,
@@ -394,6 +406,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Poll.answer_voters/4` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate get_poll_answer_voters(channel_id, message_id, answer_id, params \\ []),
     to: Nostrum.Api.Poll,
@@ -412,6 +425,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Poll.expire/2` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate expire_poll(channel_id, message_id),
     to: Nostrum.Api.Poll,
@@ -430,6 +444,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Channel.get/1` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate get_channel(channel_id),
     to: Nostrum.Api.Channel,
@@ -448,6 +463,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Channel.modify/3` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate modify_channel(channel_id, options, reason \\ nil),
     to: Nostrum.Api.Channel,
@@ -466,6 +482,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Channel.delete/2` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate delete_channel(channel_id, reason \\ nil),
     to: Nostrum.Api.Channel,
@@ -484,6 +501,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Channel.messages/3` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate get_channel_messages(channel_id, limit, locator \\ {}),
     to: Nostrum.Api.Channel,
@@ -502,6 +520,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Message.get/2` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate get_channel_message(channel_id, message_id),
     to: Nostrum.Api.Message,
@@ -520,6 +539,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Channel.bulk_delete_messages/3` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate bulk_delete_messages(channel_id, messages, filter),
     to: Nostrum.Api.Channel
@@ -538,6 +558,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Channel.edit_permissions/4` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate edit_channel_permissions(channel_id, overwrite_id, permission_info, reason \\ nil),
     to: Nostrum.Api.Channel,
@@ -565,6 +586,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Channel.delete_permissions/3` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate delete_channel_permissions(channel_id, overwrite_id, reason \\ nil),
     to: Nostrum.Api.Channel,
@@ -573,6 +595,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Invite.channel_invites/1` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate get_channel_invites(channel_id),
     to: Nostrum.Api.Invite,
@@ -591,6 +614,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Invite.create/3` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate create_channel_invite(channel_id, options \\ [], reason \\ nil),
     to: Nostrum.Api.Invite,
@@ -610,6 +634,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Channel.start_typing/1` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate start_typing(channel_id),
     to: Nostrum.Api.Channel
@@ -627,6 +652,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Channel.pinned_messages/1` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate get_pinned_messages(channel_id),
     to: Nostrum.Api.Channel,
@@ -645,6 +671,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Channel.pin_message/2` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate add_pinned_channel_message(channel_id, message_id),
     to: Nostrum.Api.Channel,
@@ -663,6 +690,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Channel.unpin_message/2` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate delete_pinned_channel_message(channel_id, message_id),
     to: Nostrum.Api.Channel,
@@ -681,6 +709,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Guild.emojis/1` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate list_guild_emojis(guild_id),
     to: Nostrum.Api.Guild,
@@ -699,6 +728,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Guild.emoji/2` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate get_guild_emoji(guild_id, emoji_id),
     to: Nostrum.Api.Guild,
@@ -717,6 +747,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Guild.create_emoji/3` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate create_guild_emoji(guild_id, options, reason \\ nil),
     to: Nostrum.Api.Guild,
@@ -735,6 +766,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Guild.modify_emoji/4` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate modify_guild_emoji(guild_id, emoji_id, options \\ %{}, reason \\ nil),
     to: Nostrum.Api.Guild,
@@ -754,6 +786,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Guild.delete_emoji/3` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate delete_guild_emoji(guild_id, emoji_id, reason \\ nil),
     to: Nostrum.Api.Guild,
@@ -772,6 +805,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Sticker.get/1` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate get_sticker(sticker_id),
     to: Nostrum.Api.Sticker,
@@ -780,6 +814,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Sticker.list/1` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate list_guild_stickers(guild_id),
     to: Nostrum.Api.Sticker,
@@ -788,6 +823,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Sticker.get/2` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate get_guild_sticker(guild_id, sticker_id),
     to: Nostrum.Api.Sticker,
@@ -796,6 +832,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Sticker.create/6` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate create_guild_sticker(guild_id, name, description, tags, file, reason \\ nil),
     to: Nostrum.Api.Sticker,
@@ -804,6 +841,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Sticker.modify/3` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate modify_guild_sticker(guild_id, sticker_id, options),
     to: Nostrum.Api.Sticker,
@@ -812,6 +850,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Sticker.delete/2` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate delete_guild_sticker(guild_id, sticker_id),
     to: Nostrum.Api.Sticker,
@@ -820,6 +859,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Sticker.packs/0` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate get_sticker_packs,
     to: Nostrum.Api.Sticker,
@@ -828,6 +868,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Guild.audit_log/2` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate get_guild_audit_log(guild_id, options \\ []),
     to: Nostrum.Api.Guild,
@@ -836,6 +877,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Guild.get/1` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate get_guild(guild_id),
     to: Nostrum.Api.Guild,
@@ -854,6 +896,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Guild.modify/3` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate modify_guild(guild_id, options \\ [], reason \\ nil),
     to: Nostrum.Api.Guild,
@@ -872,6 +915,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Guild.delete/1` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate delete_guild(guild_id),
     to: Nostrum.Api.Guild,
@@ -890,6 +934,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Guild.channels/1` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate get_guild_channels(guild_id),
     to: Nostrum.Api.Guild,
@@ -908,6 +953,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Channel.create/2` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate create_guild_channel(guild_id, options),
     to: Nostrum.Api.Channel,
@@ -926,6 +972,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Guild.modify_channel_positions/2` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate modify_guild_channel_positions(guild_id, positions),
     to: Nostrum.Api.Guild,
@@ -945,6 +992,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Guild.member/2` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate get_guild_member(guild_id, user_id),
     to: Nostrum.Api.Guild,
@@ -963,6 +1011,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Guild.members/2` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate list_guild_members(guild_id, options \\ %{}),
     to: Nostrum.Api.Guild,
@@ -981,6 +1030,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Guild.add_member/3` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate add_guild_member(guild_id, user_id, options),
     to: Nostrum.Api.Guild,
@@ -999,6 +1049,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Guild.modify_member/4` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate modify_guild_member(guild_id, user_id, options \\ %{}, reason \\ nil),
     to: Nostrum.Api.Guild,
@@ -1018,6 +1069,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Guild.modify_self_nick/2` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate modify_current_user_nick(guild_id, options \\ %{}),
     to: Nostrum.Api.Guild,
@@ -1036,6 +1088,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Guild.add_member_role/4` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate add_guild_member_role(guild_id, user_id, role_id, reason \\ nil),
     to: Nostrum.Api.Guild,
@@ -1044,6 +1097,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Guild.remove_member_role/4` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate remove_guild_member_role(guild_id, user_id, role_id, reason \\ nil),
     to: Nostrum.Api.Guild,
@@ -1052,6 +1106,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Guild.kick_member/3` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate remove_guild_member(guild_id, user_id, reason \\ nil),
     to: Nostrum.Api.Guild,
@@ -1070,6 +1125,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Guild.ban/2` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate get_guild_ban(guild_id, user_id),
     to: Nostrum.Api.Guild,
@@ -1078,6 +1134,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Guild.bans/1` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate get_guild_bans(guild_id),
     to: Nostrum.Api.Guild,
@@ -1086,6 +1143,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Guild.ban_member/4` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate create_guild_ban(guild_id, user_id, days_to_delete, reason \\ nil),
     to: Nostrum.Api.Guild,
@@ -1094,6 +1152,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Guild.unban_member/3` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate remove_guild_ban(guild_id, user_id, reason \\ nil),
     to: Nostrum.Api.Guild,
@@ -1102,6 +1161,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Guild.roles/1` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate get_guild_roles(guild_id),
     to: Nostrum.Api.Guild,
@@ -1120,6 +1180,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Guild.create_role/3` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate create_guild_role(guild_id, options, reason \\ nil),
     to: Nostrum.Api.Guild,
@@ -1138,6 +1199,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Guild.modify_role_positions/3` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate modify_guild_role_positions(guild_id, positions, reason \\ nil),
     to: Nostrum.Api.Guild,
@@ -1160,6 +1222,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Guild.modify_role/4` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate modify_guild_role(guild_id, role_id, options, reason \\ nil),
     to: Nostrum.Api.Guild,
@@ -1179,6 +1242,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Guild.delete_role/3` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate delete_guild_role(guild_id, role_id, reason \\ nil),
     to: Nostrum.Api.Guild,
@@ -1197,6 +1261,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Guild.estimate_prune_count/2` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate get_guild_prune_count(guild_id, days),
     to: Nostrum.Api.Guild,
@@ -1215,6 +1280,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Guild.begin_prune/3` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate begin_guild_prune(guild_id, days, reason \\ nil),
     to: Nostrum.Api.Guild,
@@ -1234,6 +1300,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Guild.voice_region/1` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate get_voice_region(guild_id),
     to: Nostrum.Api.Guild,
@@ -1242,6 +1309,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Invite.guild_invites/1` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate get_guild_invites(guild_id),
     to: Nostrum.Api.Invite,
@@ -1260,6 +1328,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Guild.integrations/1` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate get_guild_integrations(guild_id),
     to: Nostrum.Api.Guild,
@@ -1268,6 +1337,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Guild.create_integration/2` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate create_guild_integrations(guild_id, options),
     to: Nostrum.Api.Guild,
@@ -1276,6 +1346,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Guild.modify_integration/3` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate modify_guild_integrations(guild_id, integration_id, options),
     to: Nostrum.Api.Guild,
@@ -1284,6 +1355,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Guild.delete_integration/2` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate delete_guild_integrations(guild_id, integration_id),
     to: Nostrum.Api.Guild,
@@ -1292,6 +1364,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Guild.sync_integration/2` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate sync_guild_integrations(guild_id, integration_id),
     to: Nostrum.Api.Guild,
@@ -1300,6 +1373,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Guild.widget/1` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate get_guild_widget(guild_id),
     to: Nostrum.Api.Guild,
@@ -1308,6 +1382,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Guild.modify_widget/2` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate modify_guild_widget(guild_id, options),
     to: Nostrum.Api.Guild,
@@ -1316,6 +1391,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.ScheduledEvent.create/3` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate create_guild_scheduled_event(guild_id, reason \\ nil, options),
     to: Nostrum.Api.ScheduledEvent,
@@ -1324,6 +1400,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Guild.scheduled_events/1` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate get_guild_scheduled_events(guild_id),
     to: Nostrum.Api.Guild,
@@ -1332,6 +1409,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.ScheduledEvent.get/2` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate get_guild_scheduled_event(guild_id, event_id),
     to: Nostrum.Api.ScheduledEvent,
@@ -1340,6 +1418,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.ScheduledEvent.delete/2` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate delete_guild_scheduled_event(guild_id, event_id),
     to: Nostrum.Api.ScheduledEvent,
@@ -1348,6 +1427,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.ScheduledEvent.modify/4` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate modify_guild_scheduled_event(guild_id, event_id, reason \\ nil, options),
     to: Nostrum.Api.ScheduledEvent,
@@ -1356,6 +1436,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.ScheduledEvent.users/3` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate get_guild_scheduled_event_users(guild_id, event_id, params \\ []),
     to: Nostrum.Api.ScheduledEvent,
@@ -1364,6 +1445,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Invite.get/2` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate get_invite(invite_code, options \\ []),
     to: Nostrum.Api.Invite,
@@ -1382,6 +1464,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Invite.delete/1` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate delete_invite(invite_code),
     to: Nostrum.Api.Invite,
@@ -1400,6 +1483,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.User.get/1` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate get_user(user_id),
     to: Nostrum.Api.User,
@@ -1418,6 +1502,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Self.get/0` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate get_current_user,
     to: Nostrum.Api.Self,
@@ -1436,6 +1521,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Self.modify/1` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate modify_current_user(options),
     to: Nostrum.Api.Self,
@@ -1454,6 +1540,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Self.guilds/1` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate get_current_user_guilds(options \\ []),
     to: Nostrum.Api.Self,
@@ -1472,6 +1559,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Guild.leave/1` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate leave_guild(guild_id),
     to: Nostrum.Api.Guild,
@@ -1480,6 +1568,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Self.dms/0` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate get_user_dms,
     to: Nostrum.Api.Self,
@@ -1498,6 +1587,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.User.create_dm/1` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate create_dm(user_id),
     to: Nostrum.Api.User
@@ -1515,6 +1605,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.User.create_group_dm/2` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate create_group_dm(access_tokens, nicks),
     to: Nostrum.Api.User
@@ -1533,6 +1624,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Self.connections/0` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate get_user_connections,
     to: Nostrum.Api.Self,
@@ -1541,6 +1633,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Guild.voice_regions/0` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate list_voice_regions,
     to: Nostrum.Api.Guild,
@@ -1549,6 +1642,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Webhook.create/3` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate create_webhook(channel_id, args, reason \\ nil),
     to: Nostrum.Api.Webhook,
@@ -1557,6 +1651,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Webhook.get_message/2` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate get_webhook_message(webhook, message_id),
     to: Nostrum.Api.Webhook,
@@ -1565,6 +1660,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Channel.webhooks/1` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate get_channel_webhooks(channel_id),
     to: Nostrum.Api.Channel,
@@ -1573,6 +1669,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Guild.webhooks/1` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate get_guild_webhooks(guild_id),
     to: Nostrum.Api.Guild,
@@ -1581,6 +1678,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Webhook.get/1` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate get_webhook(webhook_id),
     to: Nostrum.Api.Webhook,
@@ -1589,6 +1687,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Webhook.get_with_token/2` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate get_webhook_with_token(webhook_id, webhook_token),
     to: Nostrum.Api.Webhook,
@@ -1597,6 +1696,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Webhook.modify/3` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate modify_webhook(webhook_id, args, reason \\ nil),
     to: Nostrum.Api.Webhook,
@@ -1605,6 +1705,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Webhook.modify_with_token/4` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate modify_webhook_with_token(webhook_id, webhook_token, args, reason \\ nil),
     to: Nostrum.Api.Webhook,
@@ -1613,6 +1714,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Webhook.delete/2` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate delete_webhook(webhook_id, reason \\ nil),
     to: Nostrum.Api.Webhook,
@@ -1621,6 +1723,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Webhook.execute/4` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate execute_webhook(webhook_id, webhook_token, args, wait \\ false),
     to: Nostrum.Api.Webhook,
@@ -1629,6 +1732,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Webhook.edit_message/4` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate edit_webhook_message(webhook_id, webhook_token, message_id, args),
     to: Nostrum.Api.Webhook,
@@ -1637,6 +1741,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Webhook.execute_slack/3` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate execute_slack_webhook(webhook_id, webhook_token, wait \\ false),
     to: Nostrum.Api.Webhook,
@@ -1645,6 +1750,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Webhook.execute_git/3` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate execute_git_webhook(webhook_id, webhook_token, wait \\ false),
     to: Nostrum.Api.Webhook,
@@ -1653,6 +1759,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Self.application_information/0` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate get_application_information,
     to: Nostrum.Api.Self,
@@ -1661,6 +1768,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.ApplicationCommand.global_commands/1` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate get_global_application_commands(application_id \\ Me.get().id),
     to: Nostrum.Api.ApplicationCommand,
@@ -1669,6 +1777,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.ApplicationCommand.create_global_command/2` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate create_global_application_command(application_id \\ Me.get().id, command),
     to: Nostrum.Api.ApplicationCommand,
@@ -1677,6 +1786,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.ApplicationCommand.edit_global_command/3` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate edit_global_application_command(application_id \\ Me.get().id, command_id, command),
     to: Nostrum.Api.ApplicationCommand,
@@ -1685,6 +1795,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.ApplicationCommand.delete_global_command/2` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate delete_global_application_command(application_id \\ Me.get().id, command_id),
     to: Nostrum.Api.ApplicationCommand,
@@ -1693,6 +1804,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.ApplicationCommand.bulk_overwrite_global_commands/2` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate bulk_overwrite_global_application_commands(application_id \\ Me.get().id, commands),
     to: Nostrum.Api.ApplicationCommand,
@@ -1701,6 +1813,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.ApplicationCommand.guild_commands/2` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate get_guild_application_commands(application_id \\ Me.get().id, guild_id),
     to: Nostrum.Api.ApplicationCommand,
@@ -1709,6 +1822,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.ApplicationCommand.create_guild_command/3` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate create_guild_application_command(application_id \\ Me.get().id, guild_id, command),
     to: Nostrum.Api.ApplicationCommand,
@@ -1717,6 +1831,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.ApplicationCommand.edit_guild_command/4` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate edit_guild_application_command(
                 application_id \\ Me.get().id,
@@ -1730,6 +1845,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.ApplicationCommand.delete_guild_command/3` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate delete_guild_application_command(
                 application_id \\ Me.get().id,
@@ -1742,6 +1858,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.ApplicationCommand.bulk_overwrite_guild_commands/3` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate bulk_overwrite_guild_application_commands(
                 application_id \\ Me.get().id,
@@ -1779,6 +1896,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Interaction.create_response/3` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate create_interaction_response(id, token, response),
     to: Nostrum.Api.Interaction,
@@ -1793,6 +1911,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Interaction.original_response/2` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate get_original_interaction_response(interaction),
     to: Nostrum.Api.Interaction,
@@ -1821,6 +1940,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Interaction.edit_response/3` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate edit_interaction_response(id \\ Me.get().id, token, response),
     to: Nostrum.Api.Interaction,
@@ -1859,6 +1979,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Interaction.delete_response/2` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate delete_interaction_response(id \\ Me.get().id, token),
     to: Nostrum.Api.Interaction,
@@ -1878,6 +1999,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Interaction.create_followup_message/3` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate create_followup_message(application_id \\ Me.get().id, token, webhook_payload),
     to: Nostrum.Api.Interaction,
@@ -1898,6 +2020,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Interaction.delete_followup_message/3` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate delete_interaction_followup_message(
                 application_id \\ Me.get().id,
@@ -1926,6 +2049,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.ApplicationCommand.guild_permissions/2` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate get_guild_application_command_permissions(application_id \\ Me.get().id, guild_id),
     to: Nostrum.Api.ApplicationCommand,
@@ -1934,6 +2058,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.ApplicationCommand.permissions/3` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate get_application_command_permissions(
                 application_id \\ Me.get().id,
@@ -1946,6 +2071,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.ApplicationCommand.edit_command_permissions/4` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate edit_application_command_permissions(
                 application_id \\ Me.get().id,
@@ -1959,6 +2085,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.ApplicationCommand.batch_edit_permissions/3` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate batch_edit_application_command_permissions(
                 application_id \\ Me.get().id,
@@ -1971,6 +2098,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Thread.create_with_message/4` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate start_thread_with_message(channel_id, message_id, options, reason \\ nil),
     to: Nostrum.Api.Thread,
@@ -1979,6 +2107,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Thread.create_in_forum/3` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate start_thread_in_forum_channel(channel_id, options, reason \\ nil),
     to: Nostrum.Api.Thread,
@@ -1987,6 +2116,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Thread.member/2` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate get_thread_member(thread_id, user_id),
     to: Nostrum.Api.Thread,
@@ -1995,6 +2125,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Thread.members/1` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate get_thread_members(thread_id),
     to: Nostrum.Api.Thread,
@@ -2003,6 +2134,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Thread.list/1` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate list_guild_threads(guild_id),
     to: Nostrum.Api.Thread,
@@ -2011,6 +2143,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Thread.public_archived_threads/2` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate list_public_archived_threads(channel_id, options \\ []),
     to: Nostrum.Api.Thread,
@@ -2019,6 +2152,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Thread.private_archived_threads/2` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate list_private_archived_threads(channel_id, options \\ []),
     to: Nostrum.Api.Thread,
@@ -2027,6 +2161,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Thread.joined_private_archived_threads/2` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate list_joined_private_archived_threads(channel_id, options \\ []),
     to: Nostrum.Api.Thread,
@@ -2035,6 +2170,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Thread.join/1` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate join_thread(thread_id),
     to: Nostrum.Api.Thread,
@@ -2043,6 +2179,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Thread.add_member/2` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate add_thread_member(thread_id, user_id),
     to: Nostrum.Api.Thread,
@@ -2051,6 +2188,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Thread.leave/1` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate leave_thread(thread_id),
     to: Nostrum.Api.Thread,
@@ -2059,6 +2197,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.Thread.remove_member/2` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate remove_thread_member(thread_id, user_id),
     to: Nostrum.Api.Thread,
@@ -2067,6 +2206,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.AutoModeration.rules/1` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate get_guild_auto_moderation_rules(guild_id),
     to: Nostrum.Api.AutoModeration,
@@ -2075,6 +2215,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.AutoModeration.rule/2` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate get_guild_auto_moderation_rule(guild_id, rule_id),
     to: Nostrum.Api.AutoModeration,
@@ -2083,6 +2224,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.AutoModeration.create_rule/2` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate create_guild_auto_moderation_rule(guild_id, options),
     to: Nostrum.Api.AutoModeration,
@@ -2091,6 +2233,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.AutoModeration.modify_rule/3` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate modify_guild_auto_moderation_rule(guild_id, rule_id, options),
     to: Nostrum.Api.AutoModeration,
@@ -2099,6 +2242,7 @@ defmodule Nostrum.Api do
   @deprecated """
   Calling `Nostrum.Api` functions directly will be removed in v1.0
   Use `Nostrum.Api.AutoModeration.delete_rule/2` directly instead.
+  For partially automated migration, please see `mix help nostrum.update_api_functions`.
   """
   defdelegate delete_guild_auto_moderation_rule(guild_id, rule_id),
     to: Nostrum.Api.AutoModeration,
