@@ -8,7 +8,7 @@
     <meta name="project" content="Nostrum v0.11.0-dev">
 
 
-    <title>Nostrum.Struct.Guild.Integration.Account — Nostrum v0.11.0-dev</title>
+    <title>mix nostrum.update_api_functions — Nostrum v0.11.0-dev</title>
 
     <link rel="stylesheet" href="dist/html-elixir-6X3L5KMG.css" />
 
@@ -51,7 +51,7 @@ Nostrum
 
 <output role="status" id="toast"></output>
 
-<main class="content page-module" id="main" data-type="modules">
+<main class="content page-task" id="main" data-type="tasks">
   <div id="content" class="content-inner">
     <div class="top-search">
       <div class="search-settings">
@@ -79,12 +79,12 @@ Nostrum
 <div id="top-content">
   <div class="heading-with-actions top-heading">
     <h1>
-      <span translate="no">Nostrum.Struct.Guild.Integration.Account</span> 
+      <span translate="no">mix nostrum.update_api_functions</span> 
       <small class="app-vsn" translate="no">(Nostrum v0.11.0-dev)</small>
 
     </h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/guild/integration/account.ex#L1" title="View Source" class="icon-action" rel="help">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/mix/tasks/nostrum/update_api_functions.ex#L1" title="View Source" class="icon-action" rel="help">
         <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         <span class="sr-only">View Source</span>
       </a>
@@ -93,7 +93,11 @@ Nostrum
 
 
     <section id="moduledoc">
-<p>Struct representing a Discord guild's integration account.</p>
+<p>Update all calls to deprecated <a href="Nostrum.Api.html"><code class="inline">Nostrum.Api</code></a> functions.</p><p><strong>Please either use source control or have some other backup of your data
+before running this task.</strong></p><p>Please note that this task does not currently update the module aliases as
+required to have the new calls work.</p><p>This may eat your data and cause irrecovable data loss. Please see nostrum's
+user manual, p. 512, &quot;Musings on data safety outside of distributed mnesia
+databases&quot; for more details.</p>
     </section>
 
 </div>
@@ -105,36 +109,18 @@ Nostrum
       </a>
       <span class="text">Summary</span>
     </h1>
-<div class="summary-types summary">
+<div class="summary-functions summary">
   <h2>
-    <a href="#types">Types</a>
+    <a href="#functions">Functions</a>
   </h2>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#t:id/0" data-no-tooltip="" translate="no">id()</a>
+        <a href="#run/1" data-no-tooltip="" translate="no">run(_)</a>
 
       </div>
 
-        <div class="summary-synopsis"><p>The id of the account</p></div>
-
-    </div>
-
-    <div class="summary-row">
-      <div class="summary-signature">
-        <a href="#t:name/0" data-no-tooltip="" translate="no">name()</a>
-
-      </div>
-
-        <div class="summary-synopsis"><p>The name of the account</p></div>
-
-    </div>
-
-    <div class="summary-row">
-      <div class="summary-signature">
-        <a href="#t:t/0" data-no-tooltip="" translate="no">t()</a>
-
-      </div>
+        <div class="summary-synopsis"><p>Callback implementation for <a href="https://hexdocs.pm/mix/Mix.Task.html#c:run/1"><code class="inline">Mix.Task.run/1</code></a>.</p></div>
 
     </div>
 
@@ -143,27 +129,25 @@ Nostrum
   </section>
 
 
-  <section id="types" class="details-list">
+  <section id="functions" class="details-list">
     <h1 class="section-heading">
-      <a class="hover-link" href="#types">
+      <a class="hover-link" href="#functions">
         <i class="ri-link-m" aria-hidden="true"></i>
       </a>
-      <span class="text">Types</span>
+      <span class="text">Functions</span>
     </h1>
-    <div class="types-list">
-<section class="detail" id="t:id/0">
+    <div class="functions-list">
+<section class="detail" id="run/1">
 
   <div class="detail-header">
-    <a href="#t:id/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
+    <a href="#run/1" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
     </a>
     <div class="heading-with-actions">
-      <h1 class="signature" translate="no">id()</h1>
-
-        <span class="note">(since 0.5.1)</span>
+      <h1 class="signature" translate="no">run(_)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/guild/integration/account.ex#L14" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/mix/tasks/nostrum/update_api_functions.ex#L19" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -172,73 +156,7 @@ Nostrum
 
   <section class="docstring">
 
-      <div class="specs">
-
-          <pre translate="no"><span class="attribute">@type</span> id() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()</pre>
-
-      </div>
-
-<p>The id of the account</p>
-  </section>
-</section>
-<section class="detail" id="t:name/0">
-
-  <div class="detail-header">
-    <a href="#t:name/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
-      <i class="ri-link-m" aria-hidden="true"></i>
-    </a>
-    <div class="heading-with-actions">
-      <h1 class="signature" translate="no">name()</h1>
-
-        <span class="note">(since 0.5.1)</span>
-
-
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/guild/integration/account.ex#L19" class="icon-action" rel="help" aria-label="View Source">
-          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-        </a>
-
-    </div>
-  </div>
-
-  <section class="docstring">
-
-      <div class="specs">
-
-          <pre translate="no"><span class="attribute">@type</span> name() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()</pre>
-
-      </div>
-
-<p>The name of the account</p>
-  </section>
-</section>
-<section class="detail" id="t:t/0">
-
-  <div class="detail-header">
-    <a href="#t:t/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
-      <i class="ri-link-m" aria-hidden="true"></i>
-    </a>
-    <div class="heading-with-actions">
-      <h1 class="signature" translate="no">t()</h1>
-
-        <span class="note">(since 0.5.1)</span>
-
-
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/guild/integration/account.ex#L21" class="icon-action" rel="help" aria-label="View Source">
-          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-        </a>
-
-    </div>
-  </div>
-
-  <section class="docstring">
-
-      <div class="specs">
-
-          <pre translate="no"><span class="attribute">@type</span> t() :: %Nostrum.Struct.Guild.Integration.Account{id: <a href="#t:id/0">id</a>(), name: <a href="#t:name/0">name</a>()}</pre>
-
-      </div>
-
-
+<p>Callback implementation for <a href="https://hexdocs.pm/mix/Mix.Task.html#c:run/1"><code class="inline">Mix.Task.run/1</code></a>.</p>
   </section>
 </section>
 
