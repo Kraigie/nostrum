@@ -15,8 +15,9 @@ defmodule DummySupervisor do
     bot_options = %{
       consumer: DummyConsumer,
       intents: [:direct_messages, :guild_messages, :message_content],
-      wrapped_token: fn -> System.fetch_env!("BOT_TOKEN") end,
+      wrapped_token: fn -> System.fetch_env!("BOT_TOKEN") end
     }
+
     children = [
       {Nostrum.Bot, {bot_options, []}}
     ]

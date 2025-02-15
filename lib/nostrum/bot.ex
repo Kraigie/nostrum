@@ -72,6 +72,7 @@ defmodule Nostrum.Bot do
   @behaviour Supervisor
 
   alias Nostrum.Token
+  alias Nostrum.Util
 
   @typedoc """
   Options to start a bot with.
@@ -106,7 +107,8 @@ defmodule Nostrum.Bot do
   @typedoc """
   Options to pass to the bot's supervisor.
 
-  By default, we set the `strategy: :one_for_one`. No other options are set.
+  By default, we set the `strategy: :one_for_one`. No other options are set by
+  nostrum.
   """
   @type supervisor_options :: [Supervisor.init_option()]
 
@@ -120,7 +122,9 @@ defmodule Nostrum.Bot do
   def init(
         {%{consumer: _consumer, wrapped_token: wrapped_token} = bot_options, supervisor_options}
       ) do
-    Token.check_token!(wrapped_token.())
+    user_id = Token.check_token!(wrapped_token.())
+    name = {__MODULE__, user_id}
+    Util.set_process_label(name)
 
     children = [
       Nostrum.Store.Supervisor,

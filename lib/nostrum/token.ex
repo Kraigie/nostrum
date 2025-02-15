@@ -21,20 +21,23 @@ defmodule Nostrum.Token do
   The first part is the Base64 encoded user_id which we decode and parse into as integer.
   The second part is an encoded timestamp, and the last part an arbitrary cryptographic signature.
 
+  Returns the user ID in the token.
+
   Raises on failure.
 
   ## Examples
 
       iex> token = "OTY4NTU2MzQ4MzkwMzkxODU5.G49NjP.pD8PLpKp-Xx8sr-8m1DCxSPTJZdcpcJZOExc1c"
       iex> Nostrum.Token.check_token!(token)
-      :ok
+      968556348390391859
 
       iex> token = "ODY4MDcxODUzMDMyMzU3OTc4.YPqU6Q.jNJcq1daGG3otexX3c1LcxCpgpQ"
       iex> Nostrum.Token.check_token!(token)
-      :ok
+      868071853032357978
   """
   def check_token!(nil), do: raise(@no_token_error_message)
 
+  @spec check_token!(binary()) :: pos_integer()
   def check_token!(<<user_id::binary-size(24), 46, _ts::binary-size(6), 46, _hmac_auth::binary>>) do
     decode_user_id!(user_id)
   end
@@ -47,12 +50,9 @@ defmodule Nostrum.Token do
   end
 
   defp decode_user_id!(user_id) do
-    _user_id =
-      user_id
-      |> Base.decode64!(padding: false)
-      |> String.to_integer()
-
-    :ok
+    user_id
+    |> Base.decode64!(padding: false)
+    |> String.to_integer()
   rescue
     exception ->
       reraise(

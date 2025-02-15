@@ -422,4 +422,10 @@ defmodule Nostrum.Util do
       :visibility
     ]
   end
+
+  if function_exported?(:proc_lib, :set_label, 1) do
+    defdelegate set_process_label(term), to: :proc_lib, as: :set_label
+  else
+    def set_process_label(_term), do: :ok
+  end
 end
