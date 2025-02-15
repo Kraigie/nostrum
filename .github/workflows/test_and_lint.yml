@@ -31,7 +31,13 @@ jobs:
           restore-keys: ${{ env.base-key }}-mix
 
       - run: mix deps.get
-        name: Fetch Dependencies
+        name: Fetch dependencies
+
+      - run: mix deps.compile
+        name: Compile dependencies
+
+      - run: mix compile --strict
+        name: Compile nostrum
 
       - run: mix credo --strict
         name: Lint (credo)
