@@ -10,11 +10,30 @@ the following:
 * [Events](event_handling.html) - Handling events from Discord as they come in.
 * [Voice](voice-2.html) - Playing audio through Discord voice channels.
 
-## Setup
+This introductory document assumes some basic familarity with Elixir, although
+we aim to make it easy to understand for newcomers as well.
 
-There are two versions of nostrum, a stable version released on Hex and a dev
-version on GitHub. The dev version will be more up to date but will likely
-have more errors.
+## Project setup
+
+If you are starting out on a completely new project, please [install
+Elixir](https://elixir-lang.org/install.html) first. Once you have Elixir
+installed, run the following to set up your bot repository:
+
+```elixir
+mix new my_bot --sup
+```
+
+Give it any name you like. `--sup` is needed to generate a supervisor, more on
+this in a moment.
+
+Head to the project directory. `mix new` has generated a basic structure for
+your bot for you.
+
+## Adding the dependency
+
+We need to add nostrum as a dependency to be able to use it. Dependencies are
+tracked in `mix.exs`. Open this file with your favourite text editor, and head
+down to the `def deps do` function. Update it as follows:
 
 ```elixir
 def deps do
@@ -24,11 +43,26 @@ def deps do
 end
 ```
 
+Afterwards, run `mix deps.get` to fetch dependencies.
+
+> #### Stable and development versions
+>
+> There are two versions of nostrum, a stable version released on Hex and a dev
+> version on GitHub. The development version will be more up to date but might
+> suffer from some bugs - we generally patch them quickly if you report them on
+> the issue tracker. It's appreciated if you can use the development version to
+> help test nostrum.
+
+## Consumer setup
+
 Next up, you need to define a consumer - a module which handles events, see the
-`Nostrum.Consumer` docs. A basic consumer could look like the following:
+`Nostrum.Consumer` docs. In `lib/my_bot/example_consumer.ex`, define the
+following:
+
+A basic consumer could look like the following:
 
 ```elixir
-defmodule MyBot.ExampleConsumer do
+defmodule MyBot.Consumer do
   @behaviour Nostrum.Consumer
 
   alias Nostrum.Api.Message
@@ -36,7 +70,7 @@ defmodule MyBot.ExampleConsumer do
   def handle_event({:MESSAGE_CREATE, msg, _ws_state}) do
     case msg.content do
       "!hello" ->
-        Message.create(msg.channel_id, "Hello, world!")
+        {:ok, _message} = Message.create(msg.channel_id, "Hello, world!")
 
       _ ->
         :ignore
@@ -48,8 +82,8 @@ defmodule MyBot.ExampleConsumer do
 end
 ```
 
-Finally, you need to add `Nostrum.Bot` to your app's supervisor tree to start
-the bot as part of your app's startup:
+Finally, you need to add `Nostrum.Bot` to your app's supervisor tree in
+`lib/my_bot/application.ex` to start the bot as part of your app's startup:
 
 ```elixir
 defmodule MyBot.Application do
@@ -59,6 +93,7 @@ defmodule MyBot.Application do
   def start(_init_arg) do
     bot_options = %{
       consumer: MyBot.Consumer,
+      intents: [:direct_messages, :guild_messages, :message_content],
       wrapped_token: fn -> System.fetch_env!("BOT_TOKEN") end,
     }
     children = [
@@ -70,9 +105,9 @@ defmodule MyBot.Application do
 end
 ```
 
-Note that this assumes you set the environment variable `$BOT_TOKEN` to your
-bot token. Feel free to use another way to configure it, although this is
-the recommended approach.
+Note that this assumes you set the environment variable `$BOT_TOKEN` to your bot
+token, for example via `export BOT_TOKEN=my-bot-token`. This is recommended, but
+feel free to use any other configuration method you like.
 
 > #### Message intents {: .info}
 >

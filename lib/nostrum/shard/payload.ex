@@ -25,7 +25,7 @@ defmodule Nostrum.Shard.Payload do
       "compress" => false,
       "large_threshold" => @large_threshold,
       "shard" => [state.shard_num, state.total_shards],
-      "intents" => Intents.get_enabled_intents()
+      "intents" => Intents.get_enabled_intents(state.intents)
     }
     |> build_payload("IDENTIFY")
   end

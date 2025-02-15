@@ -3,6 +3,8 @@ defmodule Nostrum.Struct.WSState do
   Struct representing the current WS state.
   """
 
+  alias Nostrum.Bot
+
   defstruct [
     :shard_num,
     :total_shards,
@@ -20,7 +22,8 @@ defmodule Nostrum.Struct.WSState do
     :compress_ctx,
     # XXX: I'm not sure I like this being here.
     :wrapped_token,
-    :consumer
+    :consumer,
+    :intents
   ]
 
   @typedoc "The shard number"
@@ -103,6 +106,7 @@ defmodule Nostrum.Struct.WSState do
           heartbeat_interval: heartbeat_interval,
           compress_ctx: compress_ctx,
           wrapped_token: wrapped_token,
-          consumer: consumer
+          consumer: consumer,
+          intents: Bot.intents()
         }
 end

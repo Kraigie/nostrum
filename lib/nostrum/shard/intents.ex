@@ -1,6 +1,8 @@
 defmodule Nostrum.Shard.Intents do
   @moduledoc false
 
+  alias Nostrum.Bot
+
   import Bitwise
 
   @privileged_intents [
@@ -38,10 +40,10 @@ defmodule Nostrum.Shard.Intents do
     ]
   end
 
-  @spec get_enabled_intents :: integer()
-  def get_enabled_intents do
+  @spec get_enabled_intents(Bot.intents()) :: integer()
+  def get_enabled_intents(configured_intents) do
     # If no intents are passed in config, default to non-privileged being enabled.
-    enabled_intents = Application.get_env(:nostrum, :gateway_intents, :nonprivileged)
+    enabled_intents = configured_intents || :nonprivileged
 
     case enabled_intents do
       :all ->
@@ -65,9 +67,9 @@ defmodule Nostrum.Shard.Intents do
     end)
   end
 
-  @spec has_intent?(atom()) :: boolean
-  def has_intent?(requested_intent) do
-    enabled_integer = get_enabled_intents()
+  @spec has_intent?(Bot.intents(), atom()) :: boolean
+  def has_intent?(configured_intents, requested_intent) do
+    enabled_integer = get_enabled_intents(configured_intents)
     intent_integer = intent_values()[requested_intent]
 
     (enabled_integer &&& intent_integer) == intent_integer

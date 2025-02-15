@@ -6,15 +6,8 @@ When connecting to Discord you can instruct Discord on which events you want to 
 
 Nostrum allows you to set these intents within your configuration, **by default all non-privileged intents are enabled**.
 
-To pass intents you should use the following configuration:
-```elixir
-config :nostrum,
-  token: "bot_token",
-  gateway_intents: [
-    :guilds,
-    # other gateway intents
-  ]
-```
+To pass intents, configure them in your supervisor tree as part of
+`t:Nostrum.Bot.bot_options/0`, via the `:intents` field.
 
 Possible intents (and the gateway events they correspond to) are:
 

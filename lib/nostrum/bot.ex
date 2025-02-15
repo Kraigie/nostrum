@@ -9,6 +9,18 @@ defmodule Nostrum.Bot do
   ```elixir
   bot_options = %{
     consumer: MyBot.Consumer,
+    # This is an example and includes privileged intents, but
+    # should provide a useful set of intents for bots. Feel
+    # free to adjust this as you see fit.
+    intents: [
+      :direct_messages,
+      :guild_bans,
+      :guild_members,
+      :guild_message_reactions,
+      :guild_messages,
+      :guilds,
+      :message_content
+    ],
     wrapped_token: fn -> System.fetch_env!("BOT_TOKEN") end,
   }
   children = [
@@ -31,7 +43,9 @@ defmodule Nostrum.Bot do
   2. Remove your consumer from your application supervisor tree.
 
   3. In your supervisor tree, add the `bot_options` described above, and add
-  `Nostrum.Bot` to your supervisor tree as described above.
+  `Nostrum.Bot` to your supervisor tree as described above. For the `:intents`
+  setting, cut the value you previously had in your `config.exs` and use it
+  here. You can then remove the config value.
 
   4. In your consumer, change `use Nostrum.Consumer` to `@behaviour Nostrum.Consumer`.
 
@@ -62,18 +76,32 @@ defmodule Nostrum.Bot do
   @typedoc """
   Options to start a bot with.
 
-  ## Fields
+  ## Required fields
 
   - `:consumer`: A module implementing the `Nostrum.Consumer` behaviour that
   should be called for each event.
+
+  - `:intents`: Which gateway intents to request. See the [Gateway
+  Intents](gateway_intents.html) documentation for more details.
+
   - `:wrapped_token`: A function that takes no arguments and returns the bot
   token to use. This is wrapped to prevent exposure of the token in
   stacktraces.
   """
   @type bot_options :: %{
           required(:consumer) => module(),
-          required(:wrapped_token) => (-> String.t())
+          required(:wrapped_token) => (-> String.t()),
+          required(:intents) => :all | :nonprivileged | [atom()]
         }
+
+  @typedoc """
+  Which gateway intents to request.
+
+  A full reference can be found either [on
+  Discord](https://discord.com/developers/docs/events/gateway#gateway-intents)
+  or on our [Gateway Intents](gateway_intents.html) documentation.
+  """
+  @type intents :: :all | :nonprivileged | [atom()]
 
   @typedoc """
   Options to pass to the bot's supervisor.

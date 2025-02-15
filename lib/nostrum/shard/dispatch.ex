@@ -174,8 +174,8 @@ defmodule Nostrum.Shard.Dispatch do
       ChannelGuildMapping.create(channel.id, guild.id)
     end)
 
-    has_members = Intents.has_intent?(:guild_members)
-    has_presences = Intents.has_intent?(:guild_presences)
+    has_members = Intents.has_intent?(state.intents, :guild_members)
+    has_presences = Intents.has_intent?(state.intents, :guild_presences)
 
     intents_should_request? = has_members and not has_presences
     large_server? = guild.member_count >= @large_threshold
