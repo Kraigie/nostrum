@@ -19,7 +19,7 @@ end
 
 defmodule DummyConsumer do
   @moduledoc false
-  use Nostrum.Consumer
+  @behaviour Nostrum.Consumer
 
   require Logger
 
@@ -30,4 +30,6 @@ defmodule DummyConsumer do
   def handle_event({event_name, _, _}) do
     Logger.debug(fn -> "User would handle #{event_name} here" end)
   end
+
+  def handle_event(_), do: :ok
 end

@@ -19,7 +19,8 @@ defmodule Nostrum.Struct.WSState do
     :heartbeat_interval,
     :compress_ctx,
     # XXX: I'm not sure I like this being here.
-    :wrapped_token
+    :wrapped_token,
+    :consumer
   ]
 
   @typedoc "The shard number"
@@ -82,6 +83,10 @@ defmodule Nostrum.Struct.WSState do
   @typedoc since: "0.11.0"
   @type wrapped_token :: (-> String.t())
 
+  @typedoc "The consumer callback module. See `Nostrum.Consumer`."
+  @typedoc since: "0.11.0"
+  @type consumer :: module()
+
   @type t :: %__MODULE__{
           shard_num: shard_num,
           total_shards: total_shards,
@@ -97,6 +102,7 @@ defmodule Nostrum.Struct.WSState do
           heartbeat_ack: heartbeat_ack,
           heartbeat_interval: heartbeat_interval,
           compress_ctx: compress_ctx,
-          wrapped_token: wrapped_token
+          wrapped_token: wrapped_token,
+          consumer: consumer
         }
 end

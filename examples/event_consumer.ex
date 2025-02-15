@@ -7,14 +7,21 @@ defmodule ExampleSupervisor do
 
   @impl true
   def init(_init_arg) do
-    children = [ExampleConsumer]
+    bot_options = %{
+      consumer: MyBot.Consumer,
+      wrapped_token: fn -> System.fetch_env!("BOT_TOKEN") end
+    }
+
+    children = [
+      {Nostrum.Bot, {bot_options, []}}
+    ]
 
     Supervisor.init(children, strategy: :one_for_one)
   end
 end
 
-defmodule ExampleConsumer do
-  use Nostrum.Consumer
+defmodule MyBot.Consumer do
+  @behaviour Nostrum.Consumer
 
   alias Nostrum.Api.Message
 
@@ -36,4 +43,7 @@ defmodule ExampleConsumer do
         :ignore
     end
   end
+
+  # Ignore any other events
+  def handle_event(_), do: :ok
 end

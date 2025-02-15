@@ -1,38 +1,18 @@
 defmodule Nostrum.Consumer do
   @moduledoc """
-  Consumer process for gateway event handling.
+  Consumer behaviour for gateway event handling.
 
   ## Consuming gateway events
 
-  Events are first ingested by nostrum's cache. Afterwards, they are sent to
-  any subscribed consumers via `Nostrum.ConsumerGroup`.
+  Events are first ingested by nostrum's cache. Afterwards, a new process is
+  spawned to handle each event, which then calls the consumer callback module
+  configured via `t:Nostrum.Bot.bot_options/0`.
 
-  By default, nostrum will start a process for each event. This gives us free
-  parallelism and isolation. You therefore do not need to start more than one
-  consumer in your supervision tree. If you want to override this behaviour,
-  implement the `handle_info/2` function in your consumer. For reference, this
-  is the default implementation:
+  Each event will be started in a separate task, outside of the shard session.
 
-  ```elixir
-    def handle_info({:event, event}, state) do
-      Task.start(fn ->
-        try do
-          __MODULE__.handle_event(event)
-        rescue
-          e ->
-            Logger.error("Error in event handler: \#{Exception.format(:error, e, __STACKTRACE__)}")
-        end
-      end)
+  ## Listening to events
 
-      {:noreply, state}
-    end
-  ```
-
-  ## Running multiple consumers
-
-  **Every process that is in a `Nostrum.ConsumerGroup` receives every event**:
-  it is therefore not recommended to create multiple consumers if a single one
-  could accomplish the job.
+  See the `Nostrum.ConsumerGroup` module if you wish to listen to events.
 
   ## Example consumer
 
@@ -42,22 +22,8 @@ defmodule Nostrum.Consumer do
   # Sourced from examples/event_consumer.ex
   #{File.read!("examples/event_consumer.ex")}
   ```
-
-  > ### `use Nostrum.Consumer` {: .info}
-  >
-  > Using `Nostrum.Consumer` will:
-  >
-  > - `use GenServer` (as the consumer is built on `GenServer`)
-  > - set the behaviour to `Nostrum.Consumer`
-  > - define `child_spec/1`, `start_link/1` and `init/1` for the `GenServer` to
-  > automatically join the `Nostrum.ConsumerGroup` on boot
-  > - define `handle_info/2` to automatically dispatch any events to your
-  > `c:handle_event/1` via a `Task`
-  > - inject a default `handle_event/1` clause to ignore any unhandled events.
   """
   @external_resource "examples/event_consumer.ex"
-
-  alias Nostrum.ConsumerGroup
 
   alias Nostrum.Struct.{
     AutoModerationRule,
@@ -408,63 +374,4 @@ defmodule Nostrum.Consumer do
           | voice_state_update
           | voice_server_update
           | webhooks_update
-
-  defmacro __using__(_opts) do
-    quote location: :keep do
-      use GenServer
-
-      require Logger
-
-      @behaviour Nostrum.Consumer
-
-      @before_compile Nostrum.Consumer
-
-      def child_spec(opts) do
-        %{
-          id: __MODULE__,
-          start: {__MODULE__, :start_link, [opts]},
-          type: :worker,
-          restart: :permanent,
-          max_restarts: 0,
-          shutdown: 500
-        }
-      end
-
-      def start_link(opts) do
-        GenServer.start_link(__MODULE__, [], opts)
-      end
-
-      @impl GenServer
-      def init([]) do
-        ConsumerGroup.join(self())
-        {:ok, nil}
-      end
-
-      @impl GenServer
-      def handle_info({:event, event}, state) do
-        {:ok, _pid} =
-          Task.start(fn ->
-            try do
-              __MODULE__.handle_event(event)
-            rescue
-              e ->
-                Logger.error(
-                  "Error in event handler: #{Exception.format(:error, e, __STACKTRACE__)}"
-                )
-            end
-          end)
-
-        {:noreply, state}
-      end
-
-      defoverridable GenServer
-    end
-  end
-
-  defmacro __before_compile__(_env) do
-    quote location: :keep do
-      @impl Nostrum.Consumer
-      def handle_event(_), do: :noop
-    end
-  end
 end

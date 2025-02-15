@@ -59,6 +59,7 @@ defmodule Nostrum.Shard.Dispatch do
     payload.t
     |> handle_event(payload.d, state)
     |> format_event
+    |> send_events(state.consumer)
   end
 
   defp format_event(events) when is_list(events),
@@ -69,6 +70,30 @@ defmodule Nostrum.Shard.Dispatch do
   defp format_event({_name, event_info, _state} = event) when is_tuple(event_info), do: event
   defp format_event({name, event_info, state}), do: {name, event_info, state}
   defp format_event(:noop), do: :noop
+
+  defp send_events([], _consumer_module), do: []
+
+  defp send_events([event | events], consumer_module) do
+    [send_event(event, consumer_module) | send_events(events, consumer_module)]
+  end
+
+  defp send_events(event, consumer_module), do: send_event(event, consumer_module)
+
+  defp send_event(event, consumer_module) do
+    # TODO: This should probably be supervised via `Task.Supervisor.start_child`,
+    # because otherwise on shutdown they just, sort of, well, die.
+    {:ok, _pid} =
+      Task.start(fn ->
+        try do
+          consumer_module.handle_event(event)
+        rescue
+          e ->
+            Logger.error("Error in event handler: #{Exception.format(:error, e, __STACKTRACE__)}")
+        end
+      end)
+
+    event
+  end
 
   defp check_new_or_unavailable(guild_id) do
     if UnavailableGuildStore.is?(guild_id) do

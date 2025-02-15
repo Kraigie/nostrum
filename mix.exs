@@ -14,7 +14,7 @@ defmodule Nostrum.Mixfile do
       start_permanent: Mix.env() == :prod,
       description: "An Elixir Discord library",
       package: package(),
-      name: "Nostrum",
+      name: "nostrum",
       source_url: "https://github.com/Kraigie/nostrum",
       homepage_url: "https://github.com/Kraigie/nostrum",
       deps: deps(),
@@ -79,6 +79,9 @@ defmodule Nostrum.Mixfile do
 
   def groups_for_modules do
     [
+      "Bot management": [
+        ~r/Nostrum.Bot/
+      ],
       Api: [
         ~r/Nostrum.Api/,
         ~r/Nostrum.Consumer/,

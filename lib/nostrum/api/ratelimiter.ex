@@ -311,13 +311,13 @@ defmodule Nostrum.Api.Ratelimiter do
     :gen_statem.start_link({:local, @registered_name}, __MODULE__, token, opts)
   end
 
-  def init(token) when is_binary(token) do
+  def init(wrapped_token) when is_function(wrapped_token, 0) do
     :ok = RatelimiterGroup.join(self())
     # Uncomment the following to trace everything the ratelimiter is doing:
     #   me = self()
     #   spawn(fn -> :sys.trace(me, true) end)
     # See more examples in the `sys` docs.
-    {:ok, :disconnected, empty_state(token)}
+    {:ok, :disconnected, empty_state(wrapped_token)}
   end
 
   def callback_mode, do: :state_functions
@@ -892,7 +892,7 @@ defmodule Nostrum.Api.Ratelimiter do
         {:reply, client, {:error, {:connection_died, reason}}}
       end)
 
-    {:next_state, :disconnected, empty_state(wrapped_token.()), replies}
+    {:next_state, :disconnected, empty_state(wrapped_token), replies}
   end
 
   def global_limit(:state_timeout, next, data) do
@@ -962,15 +962,15 @@ defmodule Nostrum.Api.Ratelimiter do
   defp parse_response(status, headers, buffer),
     do: {:ok, {status, headers, buffer}}
 
-  @spec empty_state(String.t()) :: state()
-  defp empty_state(token),
+  @spec empty_state((-> String.t())) :: state()
+  defp empty_state(wrapped_token),
     do: %{
       outstanding: %{},
       running: %{},
       inflight: %{},
       conn: nil,
       remaining_in_window: @bot_calls_per_window,
-      wrapped_token: fn -> token end
+      wrapped_token: wrapped_token
     }
 
   # Helper functions

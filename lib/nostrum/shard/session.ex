@@ -42,7 +42,7 @@ defmodule Nostrum.Shard.Session do
   to re-establish and resume events.
   """
 
-  alias Nostrum.{Constants, ConsumerGroup, Util}
+  alias Nostrum.{Constants, Util}
   alias Nostrum.Shard.{Connector, Event, Payload}
   alias Nostrum.Struct.WSState
 
@@ -131,7 +131,7 @@ defmodule Nostrum.Shard.Session do
 
   # State machine API
 
-  def start_link({:connect, [_gateway, _shard_num, _total, _wrapped_token]} = opts, statem_opts) do
+  def start_link({:connect, [_gateway, _shard_num, _total, _bot_options]} = opts, statem_opts) do
     :gen_statem.start_link(__MODULE__, opts, statem_opts)
   end
 
@@ -151,11 +151,11 @@ defmodule Nostrum.Shard.Session do
     :gen_statem.start_link(__MODULE__, opts, statem_opts)
   end
 
-  def start_link([_gateway, _shard_num, _total, _wrapped_token] = shard_opts, statem_opts) do
+  def start_link([_gateway, _shard_num, _total, _bot_options] = shard_opts, statem_opts) do
     :gen_statem.start_link(__MODULE__, shard_opts, statem_opts)
   end
 
-  def init({:connect, [gateway, shard_num, total, wrapped_token]}) do
+  def init({:connect, [gateway, shard_num, total, bot_options]}) do
     Logger.metadata(shard: shard_num)
 
     state = %WSState{
@@ -164,7 +164,8 @@ defmodule Nostrum.Shard.Session do
       total_shards: total,
       gateway: gateway,
       # XXX: Do we want to send this to users, too? I feel it is an internal detail.
-      wrapped_token: wrapped_token
+      wrapped_token: bot_options.wrapped_token,
+      consumer: bot_options.consumer
     }
 
     connect = {:next_event, :internal, :connect}
@@ -174,6 +175,7 @@ defmodule Nostrum.Shard.Session do
   def init(
         {:reconnect,
          %{
+           consumer: consumer,
            shard_num: shard_num,
            total_shards: total_shards,
            gateway: gateway,
@@ -186,6 +188,7 @@ defmodule Nostrum.Shard.Session do
     Logger.metadata(shard: shard_num)
 
     state = %WSState{
+      consumer: consumer,
       conn_pid: self(),
       shard_num: shard_num,
       total_shards: total_shards,
@@ -200,7 +203,7 @@ defmodule Nostrum.Shard.Session do
     {:ok, :disconnected, state, connect}
   end
 
-  def init([_gateway, _shard_num, _total, _wrapped_token] = args) do
+  def init([_gateway, _shard_num, _total, _bot_options] = args) do
     init({:connect, args})
   end
 
@@ -336,19 +339,6 @@ defmodule Nostrum.Shard.Session do
   # We don't need to specially handle resuming here, because Shard.Event will
   # adjust our initial payload accordingly.
   def connected(:enter, _from, _data) do
-    {reference, consumers} = ConsumerGroup.monitor()
-
-    case consumers do
-      [] ->
-        Logger.debug("Shard connection up, waiting for consumers to boot")
-        :ok = wait_for_consumer_boot(reference, :timer.seconds(5))
-        Logger.debug("Consumer up, we are ready to rumble")
-
-      _consumers ->
-        Logger.info("Shard connection armed and ready")
-    end
-
-    :ok = ConsumerGroup.demonitor(reference)
     :keep_state_and_data
   end
 
@@ -499,23 +489,6 @@ defmodule Nostrum.Shard.Session do
       end)
 
     %{state | queue: queue}
-  end
-
-  # Internal helper. Wait for consumers to start up.
-  defp wait_for_consumer_boot(reference, timeout) do
-    receive do
-      {^reference, :join, _group, _who} ->
-        :ok
-    after
-      timeout ->
-        Logger.error(
-          "No consumers were running nor did any start up in time " <>
-            "for shard session startup. Is a consumer started as " <>
-            "part of your supervision tree?"
-        )
-
-        :timeout
-    end
   end
 
   defp compression_qs do

@@ -24,65 +24,6 @@ proper fault tolerance you will want to use multiple hosts with `--name`. Let's
 assume we name our nodes `joe`, `robert`, and `mike`.
 
 
-### Bundling nostrum with our app
-
-We want to colocate nostrum with our app to allow it to move around as our
-application is moved around. For this, utilize OTP's [included
-applications](https://www.erlang.org/doc/design_principles/included_applications.html)
-feature to include nostrum into our supervision tree. You also need to
-explicitly include nostrum's dependencies to ensure they are started, as the
-regular nostrum application startup won't handle it for you. This can be done by
-changing your application definition in `mix.exs` as follows:
-
-```elixir
-  def application do
-    [
-      mod: {MyBot.Application, []},
-      included_applications: [:nostrum],
-      # You can see this with `mix app.tree nostrum`
-      extra_applications: [:certifi, :gun, :inets, :jason, :mime]
-      # ...
-    ]
-  end
-```
-
-You also need to set `runtime: false` for `:nostrum` itself in your
-dependencies, and any dependencies of your app that depend on `:nostrum`, such
-as command frameworks like `:nosedrum`:
-
-```elixir
-  defp deps do
-    [
-      {:nostrum, "~> 0.10", runtime: false},
-      # {:nosedrum, "~> 0.6", runtime: false},
-    ]
-  end
-```
-
-You now need to add nostrum to your applications' children to start it as part
-of your app:
-
-```elixir
-  def start(type, args) do
-    children = [
-      Nostrum.Application,
-      # ...
-    ]
-  end
-```
-
-If you want to run some logic ahead of starting nostrum, you can naturally also
-put it later into the list.
-
-You can start your bot now, and it's going to run. If you look at your
-bot's application in `:observer`, you will see that nostrum has now become one
-with your bot. We call that integration engineering.
-
-Now that our app bundles everything it needs with itself, this means starting
-our app will also starting nostrum, and stopping will also stop nostrum. We need
-this for step two.
-
-
 ### Setting up distribution
 
 The avid reader will probably know that starting with the same `--cookie` and

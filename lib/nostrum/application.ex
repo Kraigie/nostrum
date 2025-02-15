@@ -3,7 +3,6 @@ defmodule Nostrum.Application do
 
   use Application
 
-  alias Nostrum.Token
   alias Nostrum.Voice
 
   require Logger
@@ -21,26 +20,25 @@ defmodule Nostrum.Application do
 
   @doc false
   def start(_type, _args) do
-    token = Application.fetch_env!(:nostrum, :token)
-    Token.check_token!(token)
     check_executables()
     check_otp_version()
     Logger.add_translator({Nostrum.StateMachineTranslator, :translate})
 
-    children = [
-      Nostrum.Store.Supervisor,
-      Nostrum.ConsumerGroup,
-      Nostrum.Api.RatelimiterGroup,
-      {Nostrum.Api.Ratelimiter, {token, []}},
-      Nostrum.Shard.Connector,
-      Nostrum.Cache.CacheSupervisor,
-      {Nostrum.Shard.Supervisor, {token, []}},
-      Nostrum.Voice.Supervisor
-    ]
+    if Application.fetch_env(:nostrum, :token) != :error do
+      raise RuntimeError, """
+      Using nostrum via old-style application configuration (`:nostrum, :token`).
+
+      Please migrate to using the `Nostrum.Bot` module by including it in
+      your supervisor tree, and move the token configuration to your bot's
+      application environment.
+
+      See the migration guide in the `Nostrum.Bot` module for more information.
+      """
+    end
 
     if Application.get_env(:nostrum, :dev),
-      do: Supervisor.start_link(children ++ [DummySupervisor], strategy: :one_for_one),
-      else: Supervisor.start_link(children, strategy: :one_for_one, name: Nostrum.Supervisor)
+      do: Supervisor.start_link([DummySupervisor], strategy: :one_for_one),
+      else: Supervisor.start_link([], strategy: :one_for_one, name: Nostrum.Supervisor)
   end
 
   defp check_executables do

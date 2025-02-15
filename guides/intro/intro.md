@@ -24,18 +24,60 @@ def deps do
 end
 ```
 
-Next up, you need to configure nostrum. The most basic configuration is simply
-setting a token to log in with:
+Next up, you need to define a consumer - a module which handles events, see the
+`Nostrum.Consumer` docs. A basic consumer could look like the following:
 
 ```elixir
-config :nostrum,
-  token: "666"  # The token of your bot as a string
+defmodule MyBot.ExampleConsumer do
+  @behaviour Nostrum.Consumer
+
+  alias Nostrum.Api.Message
+
+  def handle_event({:MESSAGE_CREATE, msg, _ws_state}) do
+    case msg.content do
+      "!hello" ->
+        Message.create(msg.channel_id, "Hello, world!")
+
+      _ ->
+        :ignore
+    end
+  end
+
+  # Ignore any other events
+  def handle_event(_), do: :ok
+end
 ```
+
+Finally, you need to add `Nostrum.Bot` to your app's supervisor tree to start
+the bot as part of your app's startup:
+
+```elixir
+defmodule MyBot.Application do
+  use Application
+
+  @impl true
+  def start(_init_arg) do
+    bot_options = %{
+      consumer: MyBot.Consumer,
+      wrapped_token: fn -> System.fetch_env!("BOT_TOKEN") end,
+    }
+    children = [
+      {Nostrum.Bot, {bot_options, []}}
+    ]
+
+    Supervisor.init(children, strategy: :one_for_one)
+  end
+end
+```
+
+Note that this assumes you set the environment variable `$BOT_TOKEN` to your
+bot token. Feel free to use another way to configure it, although this is
+the recommended approach.
 
 
 ## Configuration options
 
-Apart from the `token` field mentioned above, the following fields are also supported:
+nostrum supports the following global configuration options:
 
 - `num_shards` - the amount of shards to run. Can be one of the following:
   - `:auto`: use the suggested amount of shards as provided by Discord.
