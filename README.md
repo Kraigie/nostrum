@@ -53,8 +53,7 @@ to learn how to get started with your bot.
 for non-slash commands or moderation tools), you need to have the "Message
 Content Intent" enabled on your [Bot's application
 settings](https://discord.com/developers/applications/), and the
-`:message_content` intent specified in the `[:nostrum, :gateway_intents]`
-configuration key.
+`:message_content` intent specified in the `:intents` bot option.
 
 For more information about the differences between dev and stable as well as
 additional config parameters, please see the
