@@ -8,7 +8,7 @@
     <meta name="project" content="nostrum v0.11.0-dev">
 
 
-    <title>Nostrum.Struct.Message.Activity — nostrum v0.11.0-dev</title>
+    <title>Nostrum.Struct.BotInfo — nostrum v0.11.0-dev</title>
 
     <link rel="stylesheet" href="dist/html-elixir-6X3L5KMG.css" />
 
@@ -79,12 +79,12 @@ nostrum
 <div id="top-content">
   <div class="heading-with-actions top-heading">
     <h1>
-      <span translate="no">Nostrum.Struct.Message.Activity</span> 
+      <span translate="no">Nostrum.Struct.BotInfo</span> 
       <small class="app-vsn" translate="no">(nostrum v0.11.0-dev)</small>
 
     </h1>
 
-      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/message/activity.ex#L1" title="View Source" class="icon-action" rel="help">
+      <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/bot_info.ex#L1" title="View Source" class="icon-action" rel="help">
         <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         <span class="sr-only">View Source</span>
       </a>
@@ -93,7 +93,7 @@ nostrum
 
 
     <section id="moduledoc">
-<p>Struct representing a Discord message activity.</p>
+<p>Represents metadata about a bot, passed as part of consumer events.</p>
     </section>
 
 </div>
@@ -112,11 +112,11 @@ nostrum
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#t:party_id/0" data-no-tooltip="" translate="no">party_id()</a>
+        <a href="#t:shard_session/0" data-no-tooltip="" translate="no">shard_session()</a>
 
       </div>
 
-        <div class="summary-synopsis"><p>The party id from a <a href="https://discord.com/developers/docs/rich-presence/how-to">rich presence event</a>.</p></div>
+        <div class="summary-synopsis"><p>Process that is handling this shard.</p></div>
 
     </div>
 
@@ -126,15 +126,7 @@ nostrum
 
       </div>
 
-    </div>
-
-    <div class="summary-row">
-      <div class="summary-signature">
-        <a href="#t:type/0" data-no-tooltip="" translate="no">type()</a>
-
-      </div>
-
-        <div class="summary-synopsis"><p><a href="https://discord.com/developers/docs/resources/channel#message-object-message-activity-types">Type of message activity</a>.</p></div>
+        <div class="summary-synopsis"><p>Metadata about a nostrum bot.</p></div>
 
     </div>
 
@@ -151,17 +143,19 @@ nostrum
       <span class="text">Types</span>
     </h1>
     <div class="types-list">
-<section class="detail" id="t:party_id/0">
+<section class="detail" id="t:shard_session/0">
 
   <div class="detail-header">
-    <a href="#t:party_id/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
+    <a href="#t:shard_session/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
       <i class="ri-link-m" aria-hidden="true"></i>
     </a>
     <div class="heading-with-actions">
-      <h1 class="signature" translate="no">party_id()</h1>
+      <h1 class="signature" translate="no">shard_session()</h1>
+
+        <span class="note">(since 0.11.0)</span>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/message/activity.ex#L21" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/bot_info.ex#L10" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -172,11 +166,11 @@ nostrum
 
       <div class="specs">
 
-          <pre translate="no"><span class="attribute">@type</span> party_id() :: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>() | nil</pre>
+          <pre translate="no"><span class="attribute">@type</span> shard_session() :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pid</a>()</pre>
 
       </div>
 
-<p>The party id from a <a href="https://discord.com/developers/docs/rich-presence/how-to">rich presence event</a>.</p>
+<p>Process that is handling this shard.</p>
   </section>
 </section>
 <section class="detail" id="t:t/0">
@@ -188,8 +182,10 @@ nostrum
     <div class="heading-with-actions">
       <h1 class="signature" translate="no">t()</h1>
 
+        <span class="note">(since 0.11.0)</span>
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/message/activity.ex#L23" class="icon-action" rel="help" aria-label="View Source">
+
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/bot_info.ex#L15" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -200,39 +196,11 @@ nostrum
 
       <div class="specs">
 
-          <pre translate="no"><span class="attribute">@type</span> t() :: %Nostrum.Struct.Message.Activity{party_id: <a href="#t:party_id/0">party_id</a>(), type: <a href="#t:type/0">type</a>()}</pre>
+          <pre translate="no"><span class="attribute">@type</span> t() :: %Nostrum.Struct.BotInfo{shard_session: <a href="#t:shard_session/0">shard_session</a>()}</pre>
 
       </div>
 
-
-  </section>
-</section>
-<section class="detail" id="t:type/0">
-
-  <div class="detail-header">
-    <a href="#t:type/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
-      <i class="ri-link-m" aria-hidden="true"></i>
-    </a>
-    <div class="heading-with-actions">
-      <h1 class="signature" translate="no">type()</h1>
-
-
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/struct/message/activity.ex#L16" class="icon-action" rel="help" aria-label="View Source">
-          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-        </a>
-
-    </div>
-  </div>
-
-  <section class="docstring">
-
-      <div class="specs">
-
-          <pre translate="no"><span class="attribute">@type</span> type() :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>()</pre>
-
-      </div>
-
-<p><a href="https://discord.com/developers/docs/resources/channel#message-object-message-activity-types">Type of message activity</a>.</p>
+<p>Metadata about a nostrum bot.</p>
   </section>
 </section>
 

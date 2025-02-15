@@ -12,7 +12,7 @@
 
     <link rel="stylesheet" href="dist/html-elixir-6X3L5KMG.css" />
 
-    <script defer src="dist/sidebar_items-6FBF593A.js"></script>
+    <script defer src="dist/sidebar_items-C9FF73B4.js"></script>
     <script defer src="docs_config.js"></script>
     <script defer src="dist/html-6VTPNSGQ.js"></script>
 
@@ -184,9 +184,10 @@ nostrum
 
 </span><span class="ss">direct_message_polls</span><span class="p">:</span><span class="w">
   </span><span class="o">-</span><span class="w"> </span><span class="nc">MESSAGE_POLL_VOTE_ADD</span><span class="w">
-  </span><span class="o">-</span><span class="w"> </span><span class="nc">MESSAGE_POLL_VOTE_REMOVE</span></code></pre><p>Besides an explicit list of atoms, acceptable configuration values are <code class="inline">:all</code> and <code class="inline">:nonprivileged</code>.</p><p>Note that intents marked with <code class="inline">*</code> are <strong>privileged</strong> intents. You must enable these intents by visiting the Discord Developer portal.</p><p>Once your bot passes 100 servers Discord will force you to <strong>verify your bot</strong>. If you require privileged intents you may need to write additional information on your usage of them.</p><p>Nostrum's default value for <code class="inline">gateway_intents</code> is <code class="inline">:nonprivileged</code>, which enables all non-privileged intents.
-This is equivalent to setting <code class="inline">gateway_intents</code> to the above list without the <strong>privileged</strong> intents.
-If you require all intents, including privileged ones, set <code class="inline">gateway_intents</code> to <code class="inline">:all</code>.</p><p>More information on gateway intents can be found in the <a href="https://discord.com/developers/docs/topics/gateway#gateway-intents">Discord Developer documentation</a>.</p>
+  </span><span class="o">-</span><span class="w"> </span><span class="nc">MESSAGE_POLL_VOTE_REMOVE</span></code></pre><p>Besides an explicit list of atoms, acceptable configuration values are <code class="inline">:all</code> and <code class="inline">:nonprivileged</code>.</p><p>Note that intents marked with <code class="inline">*</code> are <strong>privileged</strong> intents. You must enable these intents by visiting the Discord Developer portal.</p><p>Once your bot passes 100 servers Discord will force you to <strong>verify your bot</strong>. If you require privileged intents you may need to write additional information on your usage of them.</p><p>Nostrum's default value is <code class="inline">:nonprivileged</code>, which enables all non-privileged
+intents.  This is equivalent to setting the bot's <code class="inline">:intents</code> option to the above
+list without the <strong>privileged</strong> intents.  If you require all intents, including
+privileged ones, set <code class="inline">intents</code> to <code class="inline">:all</code>.</p><p>More information on gateway intents can be found in the <a href="https://discord.com/developers/docs/topics/gateway#gateway-intents">Discord Developer documentation</a>.</p>
 </div>
 
 <div class="bottom-actions" id="bottom-actions">
