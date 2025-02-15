@@ -80,12 +80,18 @@ defmodule Nostrum.Consumer do
   {:MESSAGE_CREATE, Nostrum.Struct.Message.t, BotInfo.t}
   ```
 
-  In some cases there will be multiple payloads when something is updated, so as
-  to include the new and the old versions. In the event of there being two payloads,
-  the old payload will always be first, followed by the new payload.
+  In some cases there will be multiple payloads when something is
+  updated, so as to include the new and the old versions. In the event
+  of there being two payloads, the old payload will always be first,
+  followed by the new payload.
+
   ```elixir
   {:USER_UPDATE, {old_user :: Nostrum.Struct.User.t, new_user :: Nostrum.Struct.User.t}, BotInfo.t()}
   ```
+
+  Note that the availability of the old data depends on how nostrum's
+  caching is configured. If the updated object cannot be found in the cache
+  before the update, you will receive nothing.
 
   For a full listing of events, please see `t:Nostrum.Consumer.event/0`.
   """
