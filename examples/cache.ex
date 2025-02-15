@@ -9,7 +9,15 @@ defmodule CacheExampleSupervisor do
 
   @impl true
   def init(_init_arg) do
-    children = [CacheExampleConsumer]
+    bot_options = %{
+      consumer: CacheExampleConsumer,
+      intents: [:direct_messages, :guild_messages, :message_content],
+      wrapped_token: fn -> System.fetch_env!("BOT_TOKEN") end
+    }
+
+    children = [
+      {Nostrum.Bot, {bot_options, []}}
+    ]
 
     Supervisor.init(children, strategy: :one_for_one)
   end
@@ -17,11 +25,11 @@ end
 
 # The event consumer that will be handling all incoming events.
 defmodule CacheExampleConsumer do
-  use Nostrum.Consumer
+  @behaviour Nostrum.Consumer
 
   # We only need to write event handlers for the events we are interested in,
   # the rest will go to the catch-all case to be ignored.
-  def handle_event({:MESSAGE_CREATE, message, _ws_state}) do
+  def handle_event({:MESSAGE_CREATE, message, _bot_info}) do
     ExampleCommands.command(message)
   end
 end
