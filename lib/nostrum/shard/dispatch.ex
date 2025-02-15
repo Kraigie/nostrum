@@ -11,6 +11,7 @@ defmodule Nostrum.Shard.Dispatch do
   }
 
   alias Nostrum.Cache.Me
+  alias Nostrum.Consumer
   alias Nostrum.Shard.{Intents, Session}
   alias Nostrum.Store.GuildShardMapping
   alias Nostrum.Store.UnavailableGuild, as: UnavailableGuildStore
@@ -43,7 +44,15 @@ defmodule Nostrum.Shard.Dispatch do
     VoiceState
   }
 
-  alias Nostrum.Struct.{AutoModerationRule, Interaction, ThreadMember, User}
+  alias Nostrum.Struct.{
+    AutoModerationRule,
+    Interaction,
+    ThreadMember,
+    User,
+    VoiceWSState,
+    WSState
+  }
+
   alias Nostrum.Struct.Guild.{AuditLogEntry, Integration, ScheduledEvent, UnavailableGuild}
   alias Nostrum.Util
   alias Nostrum.Voice
@@ -52,6 +61,7 @@ defmodule Nostrum.Shard.Dispatch do
 
   @large_threshold 250
 
+  @spec handle({map(), WSState.t() | VoiceWSState.t()}) :: [Consumer.event()]
   def handle({payload, state}) do
     if Application.get_env(:nostrum, :log_full_events),
       do: Logger.debug(inspect(payload.d, pretty: true))
@@ -71,6 +81,7 @@ defmodule Nostrum.Shard.Dispatch do
   defp format_event({name, event_info, state}), do: {name, event_info, state}
   defp format_event(:noop), do: :noop
 
+  @spec send_events([event], module()) :: [event] when event: Consumer.event()
   defp send_events([], _consumer_module), do: []
 
   defp send_events([event | events], consumer_module) do
@@ -79,6 +90,7 @@ defmodule Nostrum.Shard.Dispatch do
 
   defp send_events(event, consumer_module), do: send_event(event, consumer_module)
 
+  @spec send_event(event, module()) :: event when event: Consumer.event()
   defp send_event(event, consumer_module) do
     # TODO: This should probably be supervised via `Task.Supervisor.start_child`,
     # because otherwise on shutdown they just, sort of, well, die.
