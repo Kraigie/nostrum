@@ -74,6 +74,15 @@ Note that this assumes you set the environment variable `$BOT_TOKEN` to your
 bot token. Feel free to use another way to configure it, although this is
 the recommended approach.
 
+> #### Message intents {: .info}
+>
+> Due to Discord API changes, _in order to receive message content_ (e.g.  for
+> non-slash commands or moderation tools), you need to have the "Message Content
+> Intent" enabled on your [Bot's application
+> settings](https://discord.com/developers/applications/), and the
+> `:message_content` intent specified in the `[:nostrum, :gateway_intents]`
+> configuration key.
+
 
 ## Configuration options
 

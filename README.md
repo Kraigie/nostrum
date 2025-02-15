@@ -45,13 +45,9 @@ end
 
 Documentation for master can be found at https://kraigie.github.io/nostrum/.
 
-Edit or create your config file at `/config/config.exs`. To run Nostrum you
-need the following two fields:
-
-```elixir
-config :nostrum,
-  token: "666" # The token of your bot as a string
-```
+See the [intro guide (master)](https://kraigie.github.io/nostrum/intro.html) or
+the [intro guide for the stable release](https://hexdocs.pm/nostrum/intro.html)
+to learn how to get started with your bot.
 
 > **Note:** Due to Discord API changes, _in order to receive message content_ (e.g.
 for non-slash commands or moderation tools), you need to have the "Message
