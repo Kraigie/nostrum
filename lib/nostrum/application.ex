@@ -21,7 +21,8 @@ defmodule Nostrum.Application do
 
   @doc false
   def start(_type, _args) do
-    Token.check_token!()
+    token = Application.fetch_env!(:nostrum, :token)
+    Token.check_token!(token)
     check_executables()
     check_otp_version()
     Logger.add_translator({Nostrum.StateMachineTranslator, :translate})
@@ -30,10 +31,10 @@ defmodule Nostrum.Application do
       Nostrum.Store.Supervisor,
       Nostrum.ConsumerGroup,
       Nostrum.Api.RatelimiterGroup,
-      {Nostrum.Api.Ratelimiter, {Application.fetch_env!(:nostrum, :token), []}},
+      {Nostrum.Api.Ratelimiter, {token, []}},
       Nostrum.Shard.Connector,
       Nostrum.Cache.CacheSupervisor,
-      Nostrum.Shard.Supervisor,
+      {Nostrum.Shard.Supervisor, {token, []}},
       Nostrum.Voice.Supervisor
     ]
 

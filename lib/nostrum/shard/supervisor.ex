@@ -82,7 +82,8 @@ defmodule Nostrum.Shard.Supervisor do
     range
   end
 
-  def start_link(_args) do
+  def start_link({token, _opts}) do
+    wrapped_token = fn -> token end
     {_url, gateway_shard_count} = Util.gateway()
 
     on_start =
@@ -101,7 +102,7 @@ defmodule Nostrum.Shard.Supervisor do
 
         shard_range = lowest..highest
 
-        for num <- shard_range, do: {:ok, _pid} = connect(num - 1, total)
+        for num <- shard_range, do: {:ok, _pid} = connect(num - 1, total, wrapped_token)
     end
 
     on_start
@@ -138,9 +139,9 @@ defmodule Nostrum.Shard.Supervisor do
   end
 
   @doc false
-  def create_worker(shard_num, total) do
+  def create_worker(shard_num, total, wrapped_token) do
     {gateway, _gateway_shard_count} = Util.gateway()
-    {Shard, [gateway, shard_num, total]}
+    {Shard, [gateway, shard_num, total, wrapped_token]}
   end
 
   @doc """
@@ -170,9 +171,10 @@ defmodule Nostrum.Shard.Supervisor do
   @doc """
   Spawns a shard with the specified number and connects it to the discord gateway.
   """
-  @spec connect(shard_num(), total_shards()) :: DynamicSupervisor.on_start_child()
-  def connect(shard_num, total_shards) do
-    DynamicSupervisor.start_child(__MODULE__, create_worker(shard_num, total_shards))
+  @spec connect(shard_num(), total_shards(), (-> String.t())) ::
+          DynamicSupervisor.on_start_child()
+  def connect(shard_num, total_shards, token) do
+    DynamicSupervisor.start_child(__MODULE__, create_worker(shard_num, total_shards, token))
   end
 
   @doc """

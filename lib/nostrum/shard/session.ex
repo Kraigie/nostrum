@@ -131,7 +131,7 @@ defmodule Nostrum.Shard.Session do
 
   # State machine API
 
-  def start_link({:connect, [_gateway, _shard_num, _total]} = opts, statem_opts) do
+  def start_link({:connect, [_gateway, _shard_num, _total, _wrapped_token]} = opts, statem_opts) do
     :gen_statem.start_link(__MODULE__, opts, statem_opts)
   end
 
@@ -151,18 +151,20 @@ defmodule Nostrum.Shard.Session do
     :gen_statem.start_link(__MODULE__, opts, statem_opts)
   end
 
-  def start_link([_gateway, _shard_num, _total] = shard_opts, statem_opts) do
+  def start_link([_gateway, _shard_num, _total, _wrapped_token] = shard_opts, statem_opts) do
     :gen_statem.start_link(__MODULE__, shard_opts, statem_opts)
   end
 
-  def init({:connect, [gateway, shard_num, total]}) do
+  def init({:connect, [gateway, shard_num, total, wrapped_token]}) do
     Logger.metadata(shard: shard_num)
 
     state = %WSState{
       conn_pid: self(),
       shard_num: shard_num,
       total_shards: total,
-      gateway: gateway
+      gateway: gateway,
+      # XXX: Do we want to send this to users, too? I feel it is an internal detail.
+      wrapped_token: wrapped_token
     }
 
     connect = {:next_event, :internal, :connect}
@@ -177,7 +179,8 @@ defmodule Nostrum.Shard.Session do
            gateway: gateway,
            resume_gateway: resume_gateway,
            seq: seq,
-           session: session
+           session: session,
+           wrapped_token: wrapped_token
          }}
       ) do
     Logger.metadata(shard: shard_num)
@@ -189,15 +192,16 @@ defmodule Nostrum.Shard.Session do
       gateway: gateway,
       resume_gateway: resume_gateway,
       session: session,
-      seq: seq
+      seq: seq,
+      wrapped_token: wrapped_token
     }
 
     connect = {:next_event, :internal, :connect}
     {:ok, :disconnected, state, connect}
   end
 
-  def init([gateway, shard_num, total]) do
-    init({:connect, [gateway, shard_num, total]})
+  def init([_gateway, _shard_num, _total, _wrapped_token] = args) do
+    init({:connect, args})
   end
 
   def callback_mode, do: [:state_functions, :state_enter]

@@ -17,7 +17,9 @@ defmodule Nostrum.Struct.WSState do
     :last_heartbeat_ack,
     :heartbeat_ack,
     :heartbeat_interval,
-    :compress_ctx
+    :compress_ctx,
+    # XXX: I'm not sure I like this being here.
+    :wrapped_token
   ]
 
   @typedoc "The shard number"
@@ -76,6 +78,10 @@ defmodule Nostrum.Struct.WSState do
   @typedoc "Reference to the current compression context"
   @type compress_ctx :: reference | nil
 
+  @typedoc "The bot token that this shard is running with, wrapped in a function."
+  @typedoc since: "0.11.0"
+  @type wrapped_token :: (-> String.t())
+
   @type t :: %__MODULE__{
           shard_num: shard_num,
           total_shards: total_shards,
@@ -90,6 +96,7 @@ defmodule Nostrum.Struct.WSState do
           last_heartbeat_ack: last_heartbeat_ack,
           heartbeat_ack: heartbeat_ack,
           heartbeat_interval: heartbeat_interval,
-          compress_ctx: compress_ctx
+          compress_ctx: compress_ctx,
+          wrapped_token: wrapped_token
         }
 end

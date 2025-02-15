@@ -5,7 +5,7 @@ defmodule Nostrum.Shard do
 
   alias Nostrum.Shard.Session
 
-  def start_link({:connect, [_, shard_num, _total]} = opts) do
+  def start_link({:connect, [_, shard_num, _total, _wrapped_token]} = opts) do
     Supervisor.start_link(__MODULE__, opts, name: :"Nostrum.Shard-#{shard_num}")
   end
 
@@ -17,14 +17,15 @@ defmodule Nostrum.Shard do
            gateway: _gateway,
            resume_gateway: _resume_gateway,
            seq: _seq,
-           session: _session
+           session: _session,
+           wrapped_token: _wrapped_token
          }} =
           opts
       ) do
     Supervisor.start_link(__MODULE__, opts, name: :"Nostrum.Shard-#{shard_num}")
   end
 
-  def start_link([_, _shard_num, _total] = opts) do
+  def start_link([_, _shard_num, _total, _wrapped_token] = opts) do
     start_link({:connect, opts})
   end
 

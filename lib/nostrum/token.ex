@@ -33,7 +33,6 @@ defmodule Nostrum.Token do
       iex> Nostrum.Token.check_token!(token)
       :ok
   """
-  def check_token!, do: check_token!(Application.get_env(:nostrum, :token))
   def check_token!(nil), do: raise(@no_token_error_message)
 
   def check_token!(<<user_id::binary-size(24), 46, _ts::binary-size(6), 46, _hmac_auth::binary>>) do

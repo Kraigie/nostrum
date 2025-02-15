@@ -16,7 +16,7 @@ defmodule Nostrum.Shard.Payload do
     {os, name} = :os.type()
 
     %{
-      "token" => Application.get_env(:nostrum, :token),
+      "token" => state.wrapped_token.(),
       "properties" => %{
         "os" => Atom.to_string(os) <> " " <> Atom.to_string(name),
         "browser" => "Nostrum",
@@ -33,7 +33,7 @@ defmodule Nostrum.Shard.Payload do
   @doc false
   def resume_payload(state) do
     %{
-      "token" => Application.get_env(:nostrum, :token),
+      "token" => state.wrapped_token.(),
       "session_id" => state.session,
       "seq" => state.seq
     }
