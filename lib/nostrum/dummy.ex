@@ -12,7 +12,15 @@ defmodule DummySupervisor do
   end
 
   def init(_args) do
-    children = [DummyConsumer]
+    bot_options = %{
+      consumer: DummyConsumer,
+      intents: [:direct_messages, :guild_messages, :message_content],
+      wrapped_token: fn -> System.fetch_env!("BOT_TOKEN") end,
+    }
+    children = [
+      {Nostrum.Bot, {bot_options, []}}
+    ]
+
     Supervisor.init(children, strategy: :one_for_one)
   end
 end
