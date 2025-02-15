@@ -122,8 +122,8 @@ defmodule Nostrum.Bot do
   def init(
         {%{consumer: _consumer, wrapped_token: wrapped_token} = bot_options, supervisor_options}
       ) do
-    user_id = Token.check_token!(wrapped_token.())
-    name = {__MODULE__, user_id}
+    bot_id = Token.check_token!(wrapped_token.())
+    name = {__MODULE__, bot_id}
     Util.set_process_label(name)
 
     children = [
