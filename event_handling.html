@@ -5,14 +5,14 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="ExDoc v0.37.0">
-    <meta name="project" content="Nostrum v0.11.0-dev">
+    <meta name="project" content="nostrum v0.11.0-dev">
 
 
-    <title>Event handling — Nostrum v0.11.0-dev</title>
+    <title>Event handling — nostrum v0.11.0-dev</title>
 
     <link rel="stylesheet" href="dist/html-elixir-6X3L5KMG.css" />
 
-    <script defer src="dist/sidebar_items-7D20BE16.js"></script>
+    <script defer src="dist/sidebar_items-0C536BCE.js"></script>
     <script defer src="docs_config.js"></script>
     <script defer src="dist/html-6VTPNSGQ.js"></script>
 
@@ -33,12 +33,12 @@
     <div class="sidebar-projectInfo">
 
         <a href="https://github.com/Kraigie/nostrum" class="sidebar-projectImage">
-          <img src="assets/logo.png" alt="Nostrum" />
+          <img src="assets/logo.png" alt="nostrum" />
         </a>
 
       <div>
         <a href="https://github.com/Kraigie/nostrum" class="sidebar-projectName" translate="no">
-Nostrum
+nostrum
         </a>
         <div class="sidebar-projectVersion" translate="no">
           v0.11.0-dev
@@ -57,7 +57,7 @@ Nostrum
       <div class="search-settings">
         <form class="search-bar" action="search.html">
           <label class="search-label">
-            <span class="sr-only">Search documentation of Nostrum</span>
+            <span class="sr-only">Search documentation of nostrum</span>
             <input name="q" type="text" class="search-input" placeholder="Press / to search" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
           </label>
           <button type="submit" class="search-button" aria-label="Submit Search" tabindex="-1">
@@ -91,11 +91,11 @@ Nostrum
 <p>Event handling is how your bot application will interact with the information
 sent from Discord over a websocket connection. By defining an event handler for
 an event, when something like a message is created or a channel is deleted, your
-application can perform an action as a result of that event.</p><p>Nostrum uses <a href="https://www.erlang.org/doc/man/pg.html">Erlang's <code class="inline">:pg</code> module</a> to
-determine which consumers are interested in events, via
-<a href="Nostrum.ConsumerGroup.html"><code class="inline">Nostrum.ConsumerGroup</code></a>. This allows dynamic subscriptions at runtime, even
-across nodes. Events are dispatched to group members as they appear from the
-Discord Gateway after ingestion into the cache.</p><p>To see the documentation on handling events of provided consumers, please see
+application can perform an action as a result of that event.</p><p>nostrum will dispatch all events on your bot to the consumer configured via
+<code class="inline">t:Nostrum.Bot.bot_optins/0</code>. Furthermore, nostrum supports listening to events
+via <a href="Nostrum.ConsumerGroup.html"><code class="inline">Nostrum.ConsumerGroup</code></a>.  This allows dynamic subscriptions at runtime, even
+across nodes. Events are dispatched to the configured consumer and any listening
+processes from the Discord Gateway after they are ingested into the cache.</p><p>To see the documentation on handling events of provided consumers, please see
 <a href="Nostrum.Consumer.html"><code class="inline">Nostrum.Consumer</code></a>.</p><!-- vim: set textwidth=80 sw=2 ts=2: -->
 </div>
 
@@ -142,7 +142,7 @@ State
             Search HexDocs
           </button>
 
-            <a href="Nostrum.epub" title="ePub version">
+            <a href="nostrum.epub" title="ePub version">
               Download ePub version
             </a>
 

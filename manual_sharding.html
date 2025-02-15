@@ -5,14 +5,14 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="ExDoc v0.37.0">
-    <meta name="project" content="Nostrum v0.11.0-dev">
+    <meta name="project" content="nostrum v0.11.0-dev">
 
 
-    <title>Manual Sharding — Nostrum v0.11.0-dev</title>
+    <title>Manual Sharding — nostrum v0.11.0-dev</title>
 
     <link rel="stylesheet" href="dist/html-elixir-6X3L5KMG.css" />
 
-    <script defer src="dist/sidebar_items-7D20BE16.js"></script>
+    <script defer src="dist/sidebar_items-0C536BCE.js"></script>
     <script defer src="docs_config.js"></script>
     <script defer src="dist/html-6VTPNSGQ.js"></script>
 
@@ -33,12 +33,12 @@
     <div class="sidebar-projectInfo">
 
         <a href="https://github.com/Kraigie/nostrum" class="sidebar-projectImage">
-          <img src="assets/logo.png" alt="Nostrum" />
+          <img src="assets/logo.png" alt="nostrum" />
         </a>
 
       <div>
         <a href="https://github.com/Kraigie/nostrum" class="sidebar-projectName" translate="no">
-Nostrum
+nostrum
         </a>
         <div class="sidebar-projectVersion" translate="no">
           v0.11.0-dev
@@ -57,7 +57,7 @@ Nostrum
       <div class="search-settings">
         <form class="search-bar" action="search.html">
           <label class="search-label">
-            <span class="sr-only">Search documentation of Nostrum</span>
+            <span class="sr-only">Search documentation of nostrum</span>
             <input name="q" type="text" class="search-input" placeholder="Press / to search" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
           </label>
           <button type="submit" class="search-button" aria-label="Submit Search" tabindex="-1">
@@ -92,7 +92,7 @@ Nostrum
 to manually connect shards to the gateway as well as initiate manual disconnect
 and reconnects (attempting to <code class="inline">RESUME</code> sessions where possible).</p><p>You can set the <code class="inline">num_shards</code> option in your <code class="inline">nostrum</code> application config to
 <code class="inline">:manual</code> to prevent Nostrum from automatically starting shards. You should use
-the methods in the shard supervisor such as <a href="Nostrum.Shard.Supervisor.html#connect/2"><code class="inline">Nostrum.Shard.Supervisor.connect/2</code></a>
+the methods in the shard supervisor such as <a href="Nostrum.Shard.Supervisor.html#connect/3"><code class="inline">Nostrum.Shard.Supervisor.connect/3</code></a>
 to manually start shards if using this configuration option.</p><h2 id="reconnection-example" class="section-heading">
   <a href="#reconnection-example" class="hover-link">
     <i class="ri-link-m" aria-hidden="true"></i>
@@ -100,12 +100,16 @@ to manually start shards if using this configuration option.</p><h2 id="reconnec
   <span class="text">Reconnection example</span>
 </h2>
 <pre><code class="makeup elixir" translate="no"><span class="c1"># On Node A</span><span class="w">
-</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Shard.Supervisor</span><span class="o">.</span><span class="n">connect</span><span class="p" data-group-id="8883206890-1">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p" data-group-id="8883206890-1">)</span><span class="w">
-</span><span class="gp unselectable">iex&gt; </span><span class="n">resume_info</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Nostrum.Shard.Supervisor</span><span class="o">.</span><span class="n">disconnect</span><span class="p" data-group-id="8883206890-2">(</span><span class="mi">0</span><span class="p" data-group-id="8883206890-2">)</span><span class="w">
-</span><span class="p" data-group-id="8883206890-3">%{</span><span class="ss">shard_num</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">...</span><span class="p" data-group-id="8883206890-3">}</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="n">bot_options</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="1419776380-1">%{</span><span class="w">
+</span><span class="gp unselectable">...&gt; </span><span class="w">  </span><span class="ss">consumer</span><span class="p">:</span><span class="w"> </span><span class="nc">MyBot.Consumer</span><span class="p">,</span><span class="w">
+</span><span class="gp unselectable">...&gt; </span><span class="w">  </span><span class="ss">wrapped_token</span><span class="p">:</span><span class="w"> </span><span class="k" data-group-id="1419776380-2">fn</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="nc">System</span><span class="o">.</span><span class="n">get_env!</span><span class="p" data-group-id="1419776380-3">(</span><span class="s">&quot;BOT_TOKEN&quot;</span><span class="p" data-group-id="1419776380-3">)</span><span class="w"> </span><span class="k" data-group-id="1419776380-2">end</span><span class="w">
+</span><span class="gp unselectable">...&gt; </span><span class="p" data-group-id="1419776380-1">}</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Shard.Supervisor</span><span class="o">.</span><span class="n">connect</span><span class="p" data-group-id="1419776380-4">(</span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">bot_options</span><span class="p" data-group-id="1419776380-4">)</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="n">resume_info</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Nostrum.Shard.Supervisor</span><span class="o">.</span><span class="n">disconnect</span><span class="p" data-group-id="1419776380-5">(</span><span class="mi">0</span><span class="p" data-group-id="1419776380-5">)</span><span class="w">
+</span><span class="p" data-group-id="1419776380-6">%{</span><span class="ss">shard_num</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">...</span><span class="p" data-group-id="1419776380-6">}</span><span class="w">
 
 </span><span class="c1"># On another node</span><span class="w">
-</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Shard.Supervisor</span><span class="o">.</span><span class="n">reconnect</span><span class="p" data-group-id="8883206890-4">(</span><span class="n">resume_info</span><span class="p" data-group-id="8883206890-4">)</span></code></pre><p>Discord will perform a best effort attempt to resume the gateway from the time
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Shard.Supervisor</span><span class="o">.</span><span class="n">reconnect</span><span class="p" data-group-id="1419776380-7">(</span><span class="n">resume_info</span><span class="p" data-group-id="1419776380-7">)</span></code></pre><p>Discord will perform a best effort attempt to resume the gateway from the time
 of disconnection, relaying any missed events. Resumption is not guaranteed to
 work, in the event it fails Nostrum will reconnect the shard from scratch,
 though this may mean some events are missed.</p>
@@ -154,7 +158,7 @@ Multi-node
             Search HexDocs
           </button>
 
-            <a href="Nostrum.epub" title="ePub version">
+            <a href="nostrum.epub" title="ePub version">
               Download ePub version
             </a>
 

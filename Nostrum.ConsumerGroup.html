@@ -5,14 +5,14 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="ExDoc v0.37.0">
-    <meta name="project" content="Nostrum v0.11.0-dev">
+    <meta name="project" content="nostrum v0.11.0-dev">
 
 
-    <title>Nostrum.ConsumerGroup — Nostrum v0.11.0-dev</title>
+    <title>Nostrum.ConsumerGroup — nostrum v0.11.0-dev</title>
 
     <link rel="stylesheet" href="dist/html-elixir-6X3L5KMG.css" />
 
-    <script defer src="dist/sidebar_items-7D20BE16.js"></script>
+    <script defer src="dist/sidebar_items-0C536BCE.js"></script>
     <script defer src="docs_config.js"></script>
     <script defer src="dist/html-6VTPNSGQ.js"></script>
 
@@ -33,12 +33,12 @@
     <div class="sidebar-projectInfo">
 
         <a href="https://github.com/Kraigie/nostrum" class="sidebar-projectImage">
-          <img src="assets/logo.png" alt="Nostrum" />
+          <img src="assets/logo.png" alt="nostrum" />
         </a>
 
       <div>
         <a href="https://github.com/Kraigie/nostrum" class="sidebar-projectName" translate="no">
-Nostrum
+nostrum
         </a>
         <div class="sidebar-projectVersion" translate="no">
           v0.11.0-dev
@@ -57,7 +57,7 @@ Nostrum
       <div class="search-settings">
         <form class="search-bar" action="search.html">
           <label class="search-label">
-            <span class="sr-only">Search documentation of Nostrum</span>
+            <span class="sr-only">Search documentation of nostrum</span>
             <input name="q" type="text" class="search-input" placeholder="Press / to search" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
           </label>
           <button type="submit" class="search-button" aria-label="Submit Search" tabindex="-1">
@@ -80,7 +80,7 @@ Nostrum
   <div class="heading-with-actions top-heading">
     <h1>
       <span translate="no">Nostrum.ConsumerGroup</span> 
-      <small class="app-vsn" translate="no">(Nostrum v0.11.0-dev)</small>
+      <small class="app-vsn" translate="no">(nostrum v0.11.0-dev)</small>
 
     </h1>
 
@@ -351,17 +351,17 @@ awaiting:</p><pre><code class="makeup elixir" translate="no"><span class="kd">de
   </span><span class="kn">alias</span><span class="w"> </span><span class="nc">Nostrum.Struct.Message</span><span class="w">
   </span><span class="kn">alias</span><span class="w"> </span><span class="nc">Nostrum.Struct.User</span><span class="w">
 
-  </span><span class="kd">def</span><span class="w"> </span><span class="nf">command</span><span class="p" data-group-id="9989295897-1">(</span><span class="p" data-group-id="9989295897-2">%</span><span class="nc" data-group-id="9989295897-2">Message</span><span class="p" data-group-id="9989295897-2">{</span><span class="ss">author</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="9989295897-3">%</span><span class="nc" data-group-id="9989295897-3">User</span><span class="p" data-group-id="9989295897-3">{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="n">author_id</span><span class="p" data-group-id="9989295897-3">}</span><span class="p" data-group-id="9989295897-2">}</span><span class="p" data-group-id="9989295897-1">)</span><span class="w"> </span><span class="k" data-group-id="9989295897-4">do</span><span class="w">
-    </span><span class="nc">Message</span><span class="o">.</span><span class="n">create</span><span class="p" data-group-id="9989295897-5">(</span><span class="n">msg</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Reply &#39;y&#39; in 5 seconds to confirm ordering a large burger menu.&quot;</span><span class="p" data-group-id="9989295897-5">)</span><span class="w">
-    </span><span class="nc">ConsumerGroup</span><span class="o">.</span><span class="n">join</span><span class="p" data-group-id="9989295897-6">(</span><span class="p" data-group-id="9989295897-6">)</span><span class="w">
-    </span><span class="k">receive</span><span class="w"> </span><span class="k" data-group-id="9989295897-7">do</span><span class="w">
-      </span><span class="p" data-group-id="9989295897-8">{</span><span class="ss">:event</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="9989295897-9">{</span><span class="ss">:MESSAGE_CREATE</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="9989295897-10">%</span><span class="nc" data-group-id="9989295897-10">Message</span><span class="p" data-group-id="9989295897-10">{</span><span class="ss">author</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="9989295897-11">%</span><span class="nc" data-group-id="9989295897-11">User</span><span class="p" data-group-id="9989295897-11">{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="n">author_id</span><span class="p" data-group-id="9989295897-11">}</span><span class="p">,</span><span class="w"> </span><span class="ss">content</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;y&quot;</span><span class="p" data-group-id="9989295897-10">}</span><span class="p">,</span><span class="w"> </span><span class="bp">_</span><span class="p" data-group-id="9989295897-9">}</span><span class="p" data-group-id="9989295897-8">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
-        </span><span class="nc">Message</span><span class="o">.</span><span class="n">create</span><span class="p" data-group-id="9989295897-12">(</span><span class="n">msg</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;The large burger menu is coming.&quot;</span><span class="p" data-group-id="9989295897-12">)</span><span class="w">
-    </span><span class="k" data-group-id="9989295897-7">after</span><span class="w">
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">command</span><span class="p" data-group-id="9590210493-1">(</span><span class="p" data-group-id="9590210493-2">%</span><span class="nc" data-group-id="9590210493-2">Message</span><span class="p" data-group-id="9590210493-2">{</span><span class="ss">author</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="9590210493-3">%</span><span class="nc" data-group-id="9590210493-3">User</span><span class="p" data-group-id="9590210493-3">{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="n">author_id</span><span class="p" data-group-id="9590210493-3">}</span><span class="p" data-group-id="9590210493-2">}</span><span class="p" data-group-id="9590210493-1">)</span><span class="w"> </span><span class="k" data-group-id="9590210493-4">do</span><span class="w">
+    </span><span class="nc">Message</span><span class="o">.</span><span class="n">create</span><span class="p" data-group-id="9590210493-5">(</span><span class="n">msg</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Reply &#39;y&#39; in 5 seconds to confirm ordering a large burger menu.&quot;</span><span class="p" data-group-id="9590210493-5">)</span><span class="w">
+    </span><span class="nc">ConsumerGroup</span><span class="o">.</span><span class="n">join</span><span class="p" data-group-id="9590210493-6">(</span><span class="p" data-group-id="9590210493-6">)</span><span class="w">
+    </span><span class="k">receive</span><span class="w"> </span><span class="k" data-group-id="9590210493-7">do</span><span class="w">
+      </span><span class="p" data-group-id="9590210493-8">{</span><span class="ss">:event</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="9590210493-9">{</span><span class="ss">:MESSAGE_CREATE</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="9590210493-10">%</span><span class="nc" data-group-id="9590210493-10">Message</span><span class="p" data-group-id="9590210493-10">{</span><span class="ss">author</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="9590210493-11">%</span><span class="nc" data-group-id="9590210493-11">User</span><span class="p" data-group-id="9590210493-11">{</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="n">author_id</span><span class="p" data-group-id="9590210493-11">}</span><span class="p">,</span><span class="w"> </span><span class="ss">content</span><span class="p">:</span><span class="w"> </span><span class="s">&quot;y&quot;</span><span class="p" data-group-id="9590210493-10">}</span><span class="p">,</span><span class="w"> </span><span class="bp">_</span><span class="p" data-group-id="9590210493-9">}</span><span class="p" data-group-id="9590210493-8">}</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+        </span><span class="nc">Message</span><span class="o">.</span><span class="n">create</span><span class="p" data-group-id="9590210493-12">(</span><span class="n">msg</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;The large burger menu is coming.&quot;</span><span class="p" data-group-id="9590210493-12">)</span><span class="w">
+    </span><span class="k" data-group-id="9590210493-7">after</span><span class="w">
       </span><span class="mi">5_000</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
-        </span><span class="nc">Message</span><span class="o">.</span><span class="n">create</span><span class="p" data-group-id="9989295897-13">(</span><span class="n">msg</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Too slow!&quot;</span><span class="p" data-group-id="9989295897-13">)</span><span class="w">
-    </span><span class="k" data-group-id="9989295897-7">end</span><span class="w">
-  </span><span class="k" data-group-id="9989295897-4">end</span><span class="w">
+        </span><span class="nc">Message</span><span class="o">.</span><span class="n">create</span><span class="p" data-group-id="9590210493-13">(</span><span class="n">msg</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Too slow!&quot;</span><span class="p" data-group-id="9590210493-13">)</span><span class="w">
+    </span><span class="k" data-group-id="9590210493-7">end</span><span class="w">
+  </span><span class="k" data-group-id="9590210493-4">end</span><span class="w">
 </span><span class="k">end</span></code></pre>
   </section>
 </section>
@@ -441,7 +441,7 @@ details. The returned <a href="https://hexdocs.pm/elixir/typespecs.html#basic-ty
             Search HexDocs
           </button>
 
-            <a href="Nostrum.epub" title="ePub version">
+            <a href="nostrum.epub" title="ePub version">
               Download ePub version
             </a>
 

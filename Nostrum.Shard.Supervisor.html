@@ -5,14 +5,14 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="generator" content="ExDoc v0.37.0">
-    <meta name="project" content="Nostrum v0.11.0-dev">
+    <meta name="project" content="nostrum v0.11.0-dev">
 
 
-    <title>Nostrum.Shard.Supervisor — Nostrum v0.11.0-dev</title>
+    <title>Nostrum.Shard.Supervisor — nostrum v0.11.0-dev</title>
 
     <link rel="stylesheet" href="dist/html-elixir-6X3L5KMG.css" />
 
-    <script defer src="dist/sidebar_items-7D20BE16.js"></script>
+    <script defer src="dist/sidebar_items-0C536BCE.js"></script>
     <script defer src="docs_config.js"></script>
     <script defer src="dist/html-6VTPNSGQ.js"></script>
 
@@ -33,12 +33,12 @@
     <div class="sidebar-projectInfo">
 
         <a href="https://github.com/Kraigie/nostrum" class="sidebar-projectImage">
-          <img src="assets/logo.png" alt="Nostrum" />
+          <img src="assets/logo.png" alt="nostrum" />
         </a>
 
       <div>
         <a href="https://github.com/Kraigie/nostrum" class="sidebar-projectName" translate="no">
-Nostrum
+nostrum
         </a>
         <div class="sidebar-projectVersion" translate="no">
           v0.11.0-dev
@@ -57,7 +57,7 @@ Nostrum
       <div class="search-settings">
         <form class="search-bar" action="search.html">
           <label class="search-label">
-            <span class="sr-only">Search documentation of Nostrum</span>
+            <span class="sr-only">Search documentation of nostrum</span>
             <input name="q" type="text" class="search-input" placeholder="Press / to search" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
           </label>
           <button type="submit" class="search-button" aria-label="Submit Search" tabindex="-1">
@@ -80,7 +80,7 @@ Nostrum
   <div class="heading-with-actions top-heading">
     <h1>
       <span translate="no">Nostrum.Shard.Supervisor</span> 
-      <small class="app-vsn" translate="no">(Nostrum v0.11.0-dev)</small>
+      <small class="app-vsn" translate="no">(nostrum v0.11.0-dev)</small>
 
     </h1>
 
@@ -179,7 +179,7 @@ handle yet, thus growing the message queue and the memory usage.</p></li></ol>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#connect/2" data-no-tooltip="" translate="no">connect(shard_num, total_shards)</a>
+        <a href="#connect/3" data-no-tooltip="" translate="no">connect(shard_num, total_shards, bot_options)</a>
 
       </div>
 
@@ -209,7 +209,7 @@ handle yet, thus growing the message queue and the memory usage.</p></li></ol>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#start_link/1" data-no-tooltip="" translate="no">start_link(args)</a>
+        <a href="#start_link/1" data-no-tooltip="" translate="no">start_link(arg)</a>
 
       </div>
 
@@ -369,17 +369,17 @@ handle yet, thus growing the message queue and the memory usage.</p></li></ol>
 <p>Returns a specification to start this module under a supervisor.</p><p>See <a href="https://hexdocs.pm/elixir/Supervisor.html"><code class="inline">Supervisor</code></a>.</p>
   </section>
 </section>
-<section class="detail" id="connect/2">
+<section class="detail" id="connect/3">
 
   <div class="detail-header">
-    <a href="#connect/2" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+    <a href="#connect/3" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
       <i class="ri-link-m" aria-hidden="true"></i>
     </a>
     <div class="heading-with-actions">
-      <h1 class="signature" translate="no">connect(shard_num, total_shards)</h1>
+      <h1 class="signature" translate="no">connect(shard_num, total_shards, bot_options)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/supervisor.ex#L174" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/supervisor.ex#L175" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -390,7 +390,8 @@ handle yet, thus growing the message queue and the memory usage.</p></li></ol>
 
       <div class="specs">
 
-          <pre translate="no"><span class="attribute">@spec</span> connect(<a href="#t:shard_num/0">shard_num</a>(), <a href="#t:total_shards/0">total_shards</a>()) :: <a href="https://hexdocs.pm/elixir/DynamicSupervisor.html#t:on_start_child/0">DynamicSupervisor.on_start_child</a>()</pre>
+          <pre translate="no"><span class="attribute">@spec</span> connect(<a href="#t:shard_num/0">shard_num</a>(), <a href="#t:total_shards/0">total_shards</a>(), <a href="Nostrum.Bot.html#t:bot_options/0">Nostrum.Bot.bot_options</a>()) ::
+  <a href="https://hexdocs.pm/elixir/DynamicSupervisor.html#t:on_start_child/0">DynamicSupervisor.on_start_child</a>()</pre>
 
       </div>
 
@@ -432,8 +433,8 @@ catch up on any missed events.</p><h3 id="disconnect/1-examples" class="section-
   </a>
   <span class="text">Examples</span>
 </h3>
-<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Shard.Supervisor</span><span class="o">.</span><span class="n">disconnect</span><span class="p" data-group-id="1203064777-1">(</span><span class="mi">4</span><span class="p" data-group-id="1203064777-1">)</span><span class="w">
-</span><span class="p" data-group-id="1203064777-2">%{</span><span class="ss">shard_num</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="n">...</span><span class="p" data-group-id="1203064777-2">}</span></code></pre>
+<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Shard.Supervisor</span><span class="o">.</span><span class="n">disconnect</span><span class="p" data-group-id="0749921623-1">(</span><span class="mi">4</span><span class="p" data-group-id="0749921623-1">)</span><span class="w">
+</span><span class="p" data-group-id="0749921623-2">%{</span><span class="ss">shard_num</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="n">...</span><span class="p" data-group-id="0749921623-2">}</span></code></pre>
   </section>
 </section>
 <section class="detail" id="reconnect/1">
@@ -448,7 +449,7 @@ catch up on any missed events.</p><h3 id="disconnect/1-examples" class="section-
         <span class="note">(since 0.10.0)</span>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/supervisor.ex#L200" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/supervisor.ex#L201" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -474,9 +475,9 @@ received between the disconnect and re-authentication may be lost.</p><p>For mor
   </a>
   <span class="text">Examples</span>
 </h3>
-<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="n">resume</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Nostrum.Shard.Supervisor</span><span class="o">.</span><span class="n">disconnect</span><span class="p" data-group-id="0401430763-1">(</span><span class="mi">4</span><span class="p" data-group-id="0401430763-1">)</span><span class="w">
-</span><span class="p" data-group-id="0401430763-2">%{</span><span class="ss">shard_num</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="n">...</span><span class="p" data-group-id="0401430763-2">}</span><span class="w">
-</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Shard.Supervisor</span><span class="o">.</span><span class="n">reconnect</span><span class="p" data-group-id="0401430763-3">(</span><span class="n">resume</span><span class="p" data-group-id="0401430763-3">)</span></code></pre>
+<pre><code class="makeup elixir" translate="no"><span class="gp unselectable">iex&gt; </span><span class="n">resume</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Nostrum.Shard.Supervisor</span><span class="o">.</span><span class="n">disconnect</span><span class="p" data-group-id="5865818897-1">(</span><span class="mi">4</span><span class="p" data-group-id="5865818897-1">)</span><span class="w">
+</span><span class="p" data-group-id="5865818897-2">%{</span><span class="ss">shard_num</span><span class="p">:</span><span class="w"> </span><span class="mi">4</span><span class="p">,</span><span class="w"> </span><span class="n">...</span><span class="p" data-group-id="5865818897-2">}</span><span class="w">
+</span><span class="gp unselectable">iex&gt; </span><span class="nc">Nostrum.Shard.Supervisor</span><span class="o">.</span><span class="n">reconnect</span><span class="p" data-group-id="5865818897-3">(</span><span class="n">resume</span><span class="p" data-group-id="5865818897-3">)</span></code></pre>
   </section>
 </section>
 <section class="detail" id="start_link/1">
@@ -486,7 +487,7 @@ received between the disconnect and re-authentication may be lost.</p><p>For mor
       <i class="ri-link-m" aria-hidden="true"></i>
     </a>
     <div class="heading-with-actions">
-      <h1 class="signature" translate="no">start_link(args)</h1>
+      <h1 class="signature" translate="no">start_link(arg)</h1>
 
 
         <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/shard/supervisor.ex#L85" class="icon-action" rel="help" aria-label="View Source">
@@ -564,7 +565,7 @@ received between the disconnect and re-authentication may be lost.</p><p>For mor
             Search HexDocs
           </button>
 
-            <a href="Nostrum.epub" title="ePub version">
+            <a href="nostrum.epub" title="ePub version">
               Download ePub version
             </a>
 
