@@ -42,6 +42,14 @@ defmodule Nostrum.Shard.Session do
   to re-establish and resume events.
   """
 
+  # TODO: Add ratelimiting, as per
+  # https://discord.com/developers/docs/events/gateway#rate-limiting. Possible
+  # implementation: When sending out the first request over the gateway, keep
+  # an internal count of how many requests we have remaining. When it's at 0,
+  # put it at the end of a queue. When we send out the first request, start a
+  # timer. When it expires, send out requests from the queue again. The same
+  # logic is used in the ratelimiter already.
+
   alias Nostrum.{Constants, Util}
   alias Nostrum.Shard.{Connector, Event, Payload}
   alias Nostrum.Struct.WSState
