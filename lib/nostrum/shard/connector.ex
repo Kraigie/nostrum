@@ -7,6 +7,8 @@ defmodule Nostrum.Shard.Connector do
 
   require Logger
 
+  # See the `max_concurrency` field at
+  # https://discord.com/developers/docs/events/gateway#session-start-limit-object.
   @wait_time 5500
 
   def start_link([]) do
