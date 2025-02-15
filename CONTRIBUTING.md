@@ -29,16 +29,17 @@ Before you submit any code, please run the following commands from your terminal
 - `mix compile --force`
 - `mix format`
 - `mix credo --strict --ignore 'TagTODO'`
-- `mix test --no-start`
 - `mix dialyzer`
+- `mix test --no-start`
 
 or simply:
 
 ```sh
-mix compile --force && mix format && mix credo --strict --ignore 'TagTODO' && mix test --no-start && mix dialyzer
+mix check
 ```
 
-Please fix any warnings that appear.
+Please fix any warnings that appear. You can also use `mix lint` to run
+everything except unit tests.
 
 If you want to go the extra mile for your pull request (and save the
 maintainers some work), you can update the [`appup` file](./appup.ex) according

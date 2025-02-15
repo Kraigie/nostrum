@@ -120,8 +120,18 @@ defmodule Nostrum.Mixfile do
 
   def aliases do
     [
-      lint: ["format --check-formatted", "credo --strict"]
+      lint: [
+        "compile --force",
+        "format --check-formatted",
+        "credo --strict --ignore 'TagTODO'",
+        "dialyzer"
+      ],
+      check: ["lint", "test --no-start"]
     ]
+  end
+
+  def cli do
+    [preferred_envs: [check: :test]]
   end
 
   def package do
@@ -156,7 +166,7 @@ defmodule Nostrum.Mixfile do
       {:castle, "~> 0.3.0", runtime: false},
       {:ex_doc, "~> 0.37", only: :dev, runtime: false},
       {:credo, "~> 1.7.7", only: [:dev, :test], runtime: false},
-      {:dialyxir, "~> 1.4", only: [:dev], runtime: false},
+      {:dialyxir, "~> 1.4", only: [:dev, :test], runtime: false},
       {:benchee, "~> 1.1", only: :dev, runtime: false},
       {:recon, "~> 2.5", only: :dev, optional: true},
       # Temporary dependency for the source code migration tool.
