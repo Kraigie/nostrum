@@ -114,9 +114,11 @@ defmodule Nostrum.Bot do
           required(:intents) => :all | :nonprivileged | [atom()],
           required(:wrapped_token) => (-> String.t()),
           optional(:shards) =>
-            :auto | :manual | num_shards ::
-              pos_integer()
-              | {lowest :: pos_integer(), highest :: pos_integer(), total :: pos_integer()}
+            :auto
+            | :manual
+            | (num_shards ::
+                 pos_integer())
+            | {lowest :: pos_integer(), highest :: pos_integer(), total :: pos_integer()}
         }
 
   @typedoc """
