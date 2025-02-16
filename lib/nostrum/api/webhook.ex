@@ -246,17 +246,25 @@ defmodule Nostrum.Api.Webhook do
   Modifies a webhook.
 
   ## Parameters
-    - `webhook_id` - Id of the webhook to modify.
-    - `args` - Map with the following *optional* keys:
-      - `name` - Name of the webhook.
-      - `avatar` - Base64 128x128 jpeg image for the default avatar.
-    - `reason` - An optional reason for the guild audit log.
+
+  - `webhook_id` - Id of the webhook to modify.
+  - `args` - Map with the following *optional* keys:
+    - `name` - Name of the webhook.
+    - `avatar` - Base64 128x128 jpeg image for the default avatar.
+    - `channel_id` - The new channel this webhook should be moved to.
+  - `reason` - An optional reason for the guild audit log.
+
+  ## Reference
+
+  See the [Discord developer
+  docs](https://discord.com/developers/docs/resources/webhook#modify-webhook).
   """
   @spec modify(
           Webhook.id(),
           %{
-            name: String.t(),
-            avatar: String.t()
+            optional(:name) => String.t(),
+            optional(:avatar) => String.t() | nil,
+            optional(:channel_id) => Channel.id()
           },
           AuditLogEntry.reason()
         ) :: Api.error() | {:ok, Webhook.t()}
@@ -279,19 +287,26 @@ defmodule Nostrum.Api.Webhook do
   authentication.
 
   ## Parameters
-    - `webhook_id` - Id of the webhook to modify.
-    - `webhook_token` - Token of the webhook to get.
-    - `args` - Map with the following *optional* keys:
-      - `name` - Name of the webhook.
-      - `avatar` - Base64 128x128 jpeg image for the default avatar.
-    - `reason` - An optional reason for the guild audit log.
+  - `webhook_id` - Id of the webhook to modify.
+  - `webhook_token` - Token of the webhook to get.
+  - `args` - Map with the following *optional* keys:
+    - `name` - Name of the webhook.
+    - `avatar` - Base64 128x128 jpeg image for the default avatar.
+    - `channel_id` - The new channel this webhook should be moved to.
+  - `reason` - An optional reason for the guild audit log.
+
+  ## Reference
+
+  See the [Discord developer
+  docs](https://discord.com/developers/docs/resources/webhook#modify-webhook).
   """
   @spec modify_with_token(
           Webhook.id(),
           Webhook.token(),
           %{
-            name: String.t(),
-            avatar: String.t()
+            optional(:name) => String.t(),
+            optional(:avatar) => String.t() | nil,
+            optional(:channel_id) => Channel.id()
           },
           AuditLogEntry.reason()
         ) :: Api.error() | {:ok, Webhook.t()}
