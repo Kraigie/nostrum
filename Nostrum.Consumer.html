@@ -12,7 +12,7 @@
 
     <link rel="stylesheet" href="dist/html-elixir-6X3L5KMG.css" />
 
-    <script defer src="dist/sidebar_items-C9FF73B4.js"></script>
+    <script defer src="dist/sidebar_items-6FBF593A.js"></script>
     <script defer src="docs_config.js"></script>
     <script defer src="dist/html-6VTPNSGQ.js"></script>
 
@@ -114,43 +114,43 @@ configured via <a href="Nostrum.Bot.html#t:bot_options/0"><code class="inline">N
   <span class="text">Example consumer</span>
 </h2>
 <p>An example consumer could look as follows:</p><pre><code class="makeup elixir" translate="no"><span class="c1"># Sourced from examples/event_consumer.ex</span><span class="w">
-</span><span class="kd">defmodule</span><span class="w"> </span><span class="nc">ExampleSupervisor</span><span class="w"> </span><span class="k" data-group-id="7162070152-1">do</span><span class="w">
+</span><span class="kd">defmodule</span><span class="w"> </span><span class="nc">ExampleSupervisor</span><span class="w"> </span><span class="k" data-group-id="1373977402-1">do</span><span class="w">
   </span><span class="kn">use</span><span class="w"> </span><span class="nc">Supervisor</span><span class="w">
 
-  </span><span class="kd">def</span><span class="w"> </span><span class="nf">start_link</span><span class="p" data-group-id="7162070152-2">(</span><span class="n">args</span><span class="p" data-group-id="7162070152-2">)</span><span class="w"> </span><span class="k" data-group-id="7162070152-3">do</span><span class="w">
-    </span><span class="nc">Supervisor</span><span class="o">.</span><span class="n">start_link</span><span class="p" data-group-id="7162070152-4">(</span><span class="bp">__MODULE__</span><span class="p">,</span><span class="w"> </span><span class="n">args</span><span class="p">,</span><span class="w"> </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="bp">__MODULE__</span><span class="p" data-group-id="7162070152-4">)</span><span class="w">
-  </span><span class="k" data-group-id="7162070152-3">end</span><span class="w">
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">start_link</span><span class="p" data-group-id="1373977402-2">(</span><span class="n">args</span><span class="p" data-group-id="1373977402-2">)</span><span class="w"> </span><span class="k" data-group-id="1373977402-3">do</span><span class="w">
+    </span><span class="nc">Supervisor</span><span class="o">.</span><span class="n">start_link</span><span class="p" data-group-id="1373977402-4">(</span><span class="bp">__MODULE__</span><span class="p">,</span><span class="w"> </span><span class="n">args</span><span class="p">,</span><span class="w"> </span><span class="ss">name</span><span class="p">:</span><span class="w"> </span><span class="bp">__MODULE__</span><span class="p" data-group-id="1373977402-4">)</span><span class="w">
+  </span><span class="k" data-group-id="1373977402-3">end</span><span class="w">
 
   </span><span class="na">@impl</span><span class="w"> </span><span class="no">true</span><span class="w">
-  </span><span class="kd">def</span><span class="w"> </span><span class="nf">init</span><span class="p" data-group-id="7162070152-5">(</span><span class="c">_init_arg</span><span class="p" data-group-id="7162070152-5">)</span><span class="w"> </span><span class="k" data-group-id="7162070152-6">do</span><span class="w">
-    </span><span class="n">bot_options</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="7162070152-7">%{</span><span class="w">
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">init</span><span class="p" data-group-id="1373977402-5">(</span><span class="c">_init_arg</span><span class="p" data-group-id="1373977402-5">)</span><span class="w"> </span><span class="k" data-group-id="1373977402-6">do</span><span class="w">
+    </span><span class="n">bot_options</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="1373977402-7">%{</span><span class="w">
       </span><span class="ss">consumer</span><span class="p">:</span><span class="w"> </span><span class="nc">MyBot.Consumer</span><span class="p">,</span><span class="w">
-      </span><span class="ss">intents</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="7162070152-8">[</span><span class="ss">:direct_messages</span><span class="p">,</span><span class="w"> </span><span class="ss">:guild_messages</span><span class="p">,</span><span class="w"> </span><span class="ss">:message_content</span><span class="p" data-group-id="7162070152-8">]</span><span class="p">,</span><span class="w">
-      </span><span class="ss">wrapped_token</span><span class="p">:</span><span class="w"> </span><span class="k" data-group-id="7162070152-9">fn</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="nc">System</span><span class="o">.</span><span class="n">fetch_env!</span><span class="p" data-group-id="7162070152-10">(</span><span class="s">&quot;BOT_TOKEN&quot;</span><span class="p" data-group-id="7162070152-10">)</span><span class="w"> </span><span class="k" data-group-id="7162070152-9">end</span><span class="w">
-    </span><span class="p" data-group-id="7162070152-7">}</span><span class="w">
+      </span><span class="ss">intents</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="1373977402-8">[</span><span class="ss">:direct_messages</span><span class="p">,</span><span class="w"> </span><span class="ss">:guild_messages</span><span class="p">,</span><span class="w"> </span><span class="ss">:message_content</span><span class="p" data-group-id="1373977402-8">]</span><span class="p">,</span><span class="w">
+      </span><span class="ss">wrapped_token</span><span class="p">:</span><span class="w"> </span><span class="k" data-group-id="1373977402-9">fn</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="nc">System</span><span class="o">.</span><span class="n">fetch_env!</span><span class="p" data-group-id="1373977402-10">(</span><span class="s">&quot;BOT_TOKEN&quot;</span><span class="p" data-group-id="1373977402-10">)</span><span class="w"> </span><span class="k" data-group-id="1373977402-9">end</span><span class="w">
+    </span><span class="p" data-group-id="1373977402-7">}</span><span class="w">
 
-    </span><span class="n">children</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="7162070152-11">[</span><span class="w">
-      </span><span class="p" data-group-id="7162070152-12">{</span><span class="nc">Nostrum.Bot</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="7162070152-13">{</span><span class="n">bot_options</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="7162070152-14">[</span><span class="p" data-group-id="7162070152-14">]</span><span class="p" data-group-id="7162070152-13">}</span><span class="p" data-group-id="7162070152-12">}</span><span class="w">
-    </span><span class="p" data-group-id="7162070152-11">]</span><span class="w">
+    </span><span class="n">children</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="1373977402-11">[</span><span class="w">
+      </span><span class="p" data-group-id="1373977402-12">{</span><span class="nc">Nostrum.Bot</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="1373977402-13">{</span><span class="n">bot_options</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="1373977402-14">[</span><span class="p" data-group-id="1373977402-14">]</span><span class="p" data-group-id="1373977402-13">}</span><span class="p" data-group-id="1373977402-12">}</span><span class="w">
+    </span><span class="p" data-group-id="1373977402-11">]</span><span class="w">
 
-    </span><span class="nc">Supervisor</span><span class="o">.</span><span class="n">init</span><span class="p" data-group-id="7162070152-15">(</span><span class="n">children</span><span class="p">,</span><span class="w"> </span><span class="ss">strategy</span><span class="p">:</span><span class="w"> </span><span class="ss">:one_for_one</span><span class="p" data-group-id="7162070152-15">)</span><span class="w">
-  </span><span class="k" data-group-id="7162070152-6">end</span><span class="w">
-</span><span class="k" data-group-id="7162070152-1">end</span><span class="w">
+    </span><span class="nc">Supervisor</span><span class="o">.</span><span class="n">init</span><span class="p" data-group-id="1373977402-15">(</span><span class="n">children</span><span class="p">,</span><span class="w"> </span><span class="ss">strategy</span><span class="p">:</span><span class="w"> </span><span class="ss">:one_for_one</span><span class="p" data-group-id="1373977402-15">)</span><span class="w">
+  </span><span class="k" data-group-id="1373977402-6">end</span><span class="w">
+</span><span class="k" data-group-id="1373977402-1">end</span><span class="w">
 
-</span><span class="kd">defmodule</span><span class="w"> </span><span class="nc">MyBot.Consumer</span><span class="w"> </span><span class="k" data-group-id="7162070152-16">do</span><span class="w">
+</span><span class="kd">defmodule</span><span class="w"> </span><span class="nc">MyBot.Consumer</span><span class="w"> </span><span class="k" data-group-id="1373977402-16">do</span><span class="w">
   </span><span class="na">@behaviour</span><span class="w"> </span><span class="nc">Nostrum.Consumer</span><span class="w">
 
   </span><span class="kn">alias</span><span class="w"> </span><span class="nc">Nostrum.Api.Message</span><span class="w">
 
-  </span><span class="kd">def</span><span class="w"> </span><span class="nf">handle_event</span><span class="p" data-group-id="7162070152-17">(</span><span class="p" data-group-id="7162070152-18">{</span><span class="ss">:MESSAGE_CREATE</span><span class="p">,</span><span class="w"> </span><span class="n">msg</span><span class="p">,</span><span class="w"> </span><span class="c">_bot_info</span><span class="p" data-group-id="7162070152-18">}</span><span class="p" data-group-id="7162070152-17">)</span><span class="w"> </span><span class="k" data-group-id="7162070152-19">do</span><span class="w">
-    </span><span class="k">case</span><span class="w"> </span><span class="n">msg</span><span class="o">.</span><span class="n">content</span><span class="w"> </span><span class="k" data-group-id="7162070152-20">do</span><span class="w">
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">handle_event</span><span class="p" data-group-id="1373977402-17">(</span><span class="p" data-group-id="1373977402-18">{</span><span class="ss">:MESSAGE_CREATE</span><span class="p">,</span><span class="w"> </span><span class="n">msg</span><span class="p">,</span><span class="w"> </span><span class="c">_ws_state</span><span class="p" data-group-id="1373977402-18">}</span><span class="p" data-group-id="1373977402-17">)</span><span class="w"> </span><span class="k" data-group-id="1373977402-19">do</span><span class="w">
+    </span><span class="k">case</span><span class="w"> </span><span class="n">msg</span><span class="o">.</span><span class="n">content</span><span class="w"> </span><span class="k" data-group-id="1373977402-20">do</span><span class="w">
       </span><span class="s">&quot;!sleep&quot;</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
-        </span><span class="nc">Message</span><span class="o">.</span><span class="n">create</span><span class="p" data-group-id="7162070152-21">(</span><span class="n">msg</span><span class="o">.</span><span class="n">channel_id</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Going to sleep...&quot;</span><span class="p" data-group-id="7162070152-21">)</span><span class="w">
+        </span><span class="nc">Message</span><span class="o">.</span><span class="n">create</span><span class="p" data-group-id="1373977402-21">(</span><span class="n">msg</span><span class="o">.</span><span class="n">channel_id</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;Going to sleep...&quot;</span><span class="p" data-group-id="1373977402-21">)</span><span class="w">
         </span><span class="c1"># This won&#39;t stop other events from being handled.</span><span class="w">
-        </span><span class="nc">Process</span><span class="o">.</span><span class="n">sleep</span><span class="p" data-group-id="7162070152-22">(</span><span class="mi">3000</span><span class="p" data-group-id="7162070152-22">)</span><span class="w">
+        </span><span class="nc">Process</span><span class="o">.</span><span class="n">sleep</span><span class="p" data-group-id="1373977402-22">(</span><span class="mi">3000</span><span class="p" data-group-id="1373977402-22">)</span><span class="w">
 
       </span><span class="s">&quot;!ping&quot;</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
-        </span><span class="nc">Message</span><span class="o">.</span><span class="n">create</span><span class="p" data-group-id="7162070152-23">(</span><span class="n">msg</span><span class="o">.</span><span class="n">channel_id</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;pyongyang!&quot;</span><span class="p" data-group-id="7162070152-23">)</span><span class="w">
+        </span><span class="nc">Message</span><span class="o">.</span><span class="n">create</span><span class="p" data-group-id="1373977402-23">(</span><span class="n">msg</span><span class="o">.</span><span class="n">channel_id</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;pyongyang!&quot;</span><span class="p" data-group-id="1373977402-23">)</span><span class="w">
 
       </span><span class="s">&quot;!raise&quot;</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
         </span><span class="c1"># This won&#39;t crash the entire Consumer.</span><span class="w">
@@ -158,12 +158,12 @@ configured via <a href="Nostrum.Bot.html#t:bot_options/0"><code class="inline">N
 
       </span><span class="bp">_</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
         </span><span class="ss">:ignore</span><span class="w">
-    </span><span class="k" data-group-id="7162070152-20">end</span><span class="w">
-  </span><span class="k" data-group-id="7162070152-19">end</span><span class="w">
+    </span><span class="k" data-group-id="1373977402-20">end</span><span class="w">
+  </span><span class="k" data-group-id="1373977402-19">end</span><span class="w">
 
   </span><span class="c1"># Ignore any other events</span><span class="w">
-  </span><span class="kd">def</span><span class="w"> </span><span class="nf">handle_event</span><span class="p" data-group-id="7162070152-24">(</span><span class="bp">_</span><span class="p" data-group-id="7162070152-24">)</span><span class="p">,</span><span class="w"> </span><span class="ss">do</span><span class="p">:</span><span class="w"> </span><span class="ss">:ok</span><span class="w">
-</span><span class="k" data-group-id="7162070152-16">end</span><span class="w">
+  </span><span class="kd">def</span><span class="w"> </span><span class="nf">handle_event</span><span class="p" data-group-id="1373977402-24">(</span><span class="bp">_</span><span class="p" data-group-id="1373977402-24">)</span><span class="p">,</span><span class="w"> </span><span class="ss">do</span><span class="p">:</span><span class="w"> </span><span class="ss">:ok</span><span class="w">
+</span><span class="k" data-group-id="1373977402-16">end</span><span class="w">
 </span></code></pre>
     </section>
 
@@ -797,7 +797,7 @@ configured via <a href="Nostrum.Bot.html#t:bot_options/0"><code class="inline">N
 
           <pre translate="no"><span class="attribute">@type</span> auto_moderation_rule_create() ::
   {:AUTO_MODERATION_RULE_CREATE, <a href="Nostrum.Struct.AutoModerationRule.html#t:t/0">Nostrum.Struct.AutoModerationRule.t</a>(),
-   <a href="Nostrum.Struct.BotInfo.html#t:t/0">Nostrum.Struct.BotInfo.t</a>()}</pre>
+   <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
 
       </div>
 
@@ -827,7 +827,7 @@ configured via <a href="Nostrum.Bot.html#t:bot_options/0"><code class="inline">N
 
           <pre translate="no"><span class="attribute">@type</span> auto_moderation_rule_delete() ::
   {:AUTO_MODERATION_RULE_DELETE, <a href="Nostrum.Struct.AutoModerationRule.html#t:t/0">Nostrum.Struct.AutoModerationRule.t</a>(),
-   <a href="Nostrum.Struct.BotInfo.html#t:t/0">Nostrum.Struct.BotInfo.t</a>()}</pre>
+   <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
 
       </div>
 
@@ -858,7 +858,7 @@ configured via <a href="Nostrum.Bot.html#t:bot_options/0"><code class="inline">N
           <pre translate="no"><span class="attribute">@type</span> auto_moderation_rule_execute() ::
   {:AUTO_MODERATION_RULE_EXECUTE,
    <a href="Nostrum.Struct.Event.AutoModerationRuleExecute.html#t:t/0">Nostrum.Struct.Event.AutoModerationRuleExecute.t</a>(),
-   <a href="Nostrum.Struct.BotInfo.html#t:t/0">Nostrum.Struct.BotInfo.t</a>()}</pre>
+   <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
 
       </div>
 
@@ -888,7 +888,7 @@ configured via <a href="Nostrum.Bot.html#t:bot_options/0"><code class="inline">N
 
           <pre translate="no"><span class="attribute">@type</span> auto_moderation_rule_update() ::
   {:AUTO_MODERATION_RULE_UPDATE, <a href="Nostrum.Struct.AutoModerationRule.html#t:t/0">Nostrum.Struct.AutoModerationRule.t</a>(),
-   <a href="Nostrum.Struct.BotInfo.html#t:t/0">Nostrum.Struct.BotInfo.t</a>()}</pre>
+   <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
 
       </div>
 
@@ -917,7 +917,7 @@ configured via <a href="Nostrum.Bot.html#t:bot_options/0"><code class="inline">N
       <div class="specs">
 
           <pre translate="no"><span class="attribute">@type</span> channel_create() ::
-  {:CHANNEL_CREATE, <a href="Nostrum.Struct.Channel.html#t:t/0">Nostrum.Struct.Channel.t</a>(), <a href="Nostrum.Struct.BotInfo.html#t:t/0">Nostrum.Struct.BotInfo.t</a>()}</pre>
+  {:CHANNEL_CREATE, <a href="Nostrum.Struct.Channel.html#t:t/0">Nostrum.Struct.Channel.t</a>(), <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
 
       </div>
 
@@ -947,7 +947,7 @@ this will never be sent for a DM.</p>
       <div class="specs">
 
           <pre translate="no"><span class="attribute">@type</span> channel_delete() ::
-  {:CHANNEL_DELETE, <a href="Nostrum.Struct.Channel.html#t:t/0">Nostrum.Struct.Channel.t</a>(), <a href="Nostrum.Struct.BotInfo.html#t:t/0">Nostrum.Struct.BotInfo.t</a>()}</pre>
+  {:CHANNEL_DELETE, <a href="Nostrum.Struct.Channel.html#t:t/0">Nostrum.Struct.Channel.t</a>(), <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
 
       </div>
 
@@ -975,7 +975,7 @@ this will never be sent for a DM.</p>
 
       <div class="specs">
 
-          <pre translate="no"><span class="attribute">@type</span> channel_pins_ack() :: {:CHANNEL_PINS_ACK, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>(), <a href="Nostrum.Struct.BotInfo.html#t:t/0">Nostrum.Struct.BotInfo.t</a>()}</pre>
+          <pre translate="no"><span class="attribute">@type</span> channel_pins_ack() :: {:CHANNEL_PINS_ACK, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>(), <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
 
       </div>
 
@@ -1005,7 +1005,7 @@ this will never be sent for a DM.</p>
 
           <pre translate="no"><span class="attribute">@type</span> channel_pins_update() ::
   {:CHANNEL_PINS_UPDATE, <a href="Nostrum.Struct.Event.ChannelPinsUpdate.html#t:t/0">Nostrum.Struct.Event.ChannelPinsUpdate.t</a>(),
-   <a href="Nostrum.Struct.BotInfo.html#t:t/0">Nostrum.Struct.BotInfo.t</a>()}</pre>
+   <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
 
       </div>
 
@@ -1036,7 +1036,7 @@ this will never be sent for a DM.</p>
           <pre translate="no"><span class="attribute">@type</span> channel_update() ::
   {:CHANNEL_UPDATE,
    {old_channel :: <a href="Nostrum.Struct.Channel.html#t:t/0">Nostrum.Struct.Channel.t</a>() | nil,
-    new_channel :: <a href="Nostrum.Struct.Channel.html#t:t/0">Nostrum.Struct.Channel.t</a>()}, <a href="Nostrum.Struct.BotInfo.html#t:t/0">Nostrum.Struct.BotInfo.t</a>()}</pre>
+    new_channel :: <a href="Nostrum.Struct.Channel.html#t:t/0">Nostrum.Struct.Channel.t</a>()}, <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
 
       </div>
 
@@ -1153,7 +1153,7 @@ this will never be sent for a DM.</p>
 
           <pre translate="no"><span class="attribute">@type</span> guild_audit_log_entry_create() ::
   {:GUILD_AUDIT_LOG_ENTRY_CREATE, <a href="Nostrum.Struct.Guild.AuditLogEntry.html#t:t/0">Nostrum.Struct.Guild.AuditLogEntry.t</a>(),
-   <a href="Nostrum.Struct.BotInfo.html#t:t/0">Nostrum.Struct.BotInfo.t</a>()}</pre>
+   <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
 
       </div>
 
@@ -1183,7 +1183,7 @@ this will never be sent for a DM.</p>
 
           <pre translate="no"><span class="attribute">@type</span> guild_available() ::
   {:GUILD_AVAILABLE, new_guild :: <a href="Nostrum.Struct.Guild.html#t:t/0">Nostrum.Struct.Guild.t</a>(),
-   <a href="Nostrum.Struct.BotInfo.html#t:t/0">Nostrum.Struct.BotInfo.t</a>()}</pre>
+   <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
 
       </div>
 
@@ -1213,7 +1213,7 @@ this will never be sent for a DM.</p>
 
           <pre translate="no"><span class="attribute">@type</span> guild_ban_add() ::
   {:GUILD_BAN_ADD, <a href="Nostrum.Struct.Event.GuildBanAdd.html#t:t/0">Nostrum.Struct.Event.GuildBanAdd.t</a>(),
-   <a href="Nostrum.Struct.BotInfo.html#t:t/0">Nostrum.Struct.BotInfo.t</a>()}</pre>
+   <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
 
       </div>
 
@@ -1243,7 +1243,7 @@ this will never be sent for a DM.</p>
 
           <pre translate="no"><span class="attribute">@type</span> guild_ban_remove() ::
   {:GUILD_BAN_REMOVE, <a href="Nostrum.Struct.Event.GuildBanRemove.html#t:t/0">Nostrum.Struct.Event.GuildBanRemove.t</a>(),
-   <a href="Nostrum.Struct.BotInfo.html#t:t/0">Nostrum.Struct.BotInfo.t</a>()}</pre>
+   <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
 
       </div>
 
@@ -1273,7 +1273,7 @@ this will never be sent for a DM.</p>
 
           <pre translate="no"><span class="attribute">@type</span> guild_create() ::
   {:GUILD_CREATE, new_guild :: <a href="Nostrum.Struct.Guild.html#t:t/0">Nostrum.Struct.Guild.t</a>(),
-   <a href="Nostrum.Struct.BotInfo.html#t:t/0">Nostrum.Struct.BotInfo.t</a>()}</pre>
+   <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
 
       </div>
 
@@ -1304,7 +1304,7 @@ this will never be sent for a DM.</p>
           <pre translate="no"><span class="attribute">@type</span> guild_delete() ::
   {:GUILD_DELETE,
    {old_guild :: <a href="Nostrum.Struct.Guild.html#t:t/0">Nostrum.Struct.Guild.t</a>(), unavailable :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">boolean</a>()},
-   <a href="Nostrum.Struct.BotInfo.html#t:t/0">Nostrum.Struct.BotInfo.t</a>()}</pre>
+   <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
 
       </div>
 
@@ -1335,7 +1335,7 @@ this will never be sent for a DM.</p>
           <pre translate="no"><span class="attribute">@type</span> guild_emojis_update() ::
   {:GUILD_EMOJIS_UPDATE,
    {guild_id :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>(), old_emojis :: [<a href="Nostrum.Struct.Emoji.html#t:t/0">Nostrum.Struct.Emoji.t</a>()],
-    new_emojis :: [<a href="Nostrum.Struct.Emoji.html#t:t/0">Nostrum.Struct.Emoji.t</a>()]}, <a href="Nostrum.Struct.BotInfo.html#t:t/0">Nostrum.Struct.BotInfo.t</a>()}</pre>
+    new_emojis :: [<a href="Nostrum.Struct.Emoji.html#t:t/0">Nostrum.Struct.Emoji.t</a>()]}, <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
 
       </div>
 
@@ -1365,7 +1365,7 @@ this will never be sent for a DM.</p>
 
           <pre translate="no"><span class="attribute">@type</span> guild_integrations_update() ::
   {:GUILD_INTEGRATIONS_UPDATE, <a href="Nostrum.Struct.Event.GuildIntegrationsUpdate.html#t:t/0">Nostrum.Struct.Event.GuildIntegrationsUpdate.t</a>(),
-   <a href="Nostrum.Struct.BotInfo.html#t:t/0">Nostrum.Struct.BotInfo.t</a>()}</pre>
+   <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
 
       </div>
 
@@ -1396,7 +1396,7 @@ this will never be sent for a DM.</p>
           <pre translate="no"><span class="attribute">@type</span> guild_member_add() ::
   {:GUILD_MEMBER_ADD,
    {guild_id :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>(), new_member :: <a href="Nostrum.Struct.Guild.Member.html#t:t/0">Nostrum.Struct.Guild.Member.t</a>()},
-   <a href="Nostrum.Struct.BotInfo.html#t:t/0">Nostrum.Struct.BotInfo.t</a>()}</pre>
+   <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
 
       </div>
 
@@ -1427,7 +1427,7 @@ this will never be sent for a DM.</p>
           <pre translate="no"><span class="attribute">@type</span> guild_member_remove() ::
   {:GUILD_MEMBER_REMOVE,
    {guild_id :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>(), old_member :: <a href="Nostrum.Struct.Guild.Member.html#t:t/0">Nostrum.Struct.Guild.Member.t</a>()},
-   <a href="Nostrum.Struct.BotInfo.html#t:t/0">Nostrum.Struct.BotInfo.t</a>()}</pre>
+   <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
 
       </div>
 
@@ -1462,7 +1462,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
           <pre translate="no"><span class="attribute">@type</span> guild_member_update() ::
   {:GUILD_MEMBER_UPDATE,
    {guild_id :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>(), old_member :: <a href="Nostrum.Struct.Guild.Member.html#t:t/0">Nostrum.Struct.Guild.Member.t</a>() | nil,
-    new_member :: <a href="Nostrum.Struct.Guild.Member.html#t:t/0">Nostrum.Struct.Guild.Member.t</a>()}, <a href="Nostrum.Struct.BotInfo.html#t:t/0">Nostrum.Struct.BotInfo.t</a>()}</pre>
+    new_member :: <a href="Nostrum.Struct.Guild.Member.html#t:t/0">Nostrum.Struct.Guild.Member.t</a>()}, <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
 
       </div>
 
@@ -1491,7 +1491,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
       <div class="specs">
 
           <pre translate="no"><span class="attribute">@type</span> guild_members_chunk() ::
-  {:GUILD_MEMBERS_CHUNK, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>(), <a href="Nostrum.Struct.BotInfo.html#t:t/0">Nostrum.Struct.BotInfo.t</a>()}</pre>
+  {:GUILD_MEMBERS_CHUNK, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>(), <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
 
       </div>
 
@@ -1522,7 +1522,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
           <pre translate="no"><span class="attribute">@type</span> guild_role_create() ::
   {:GUILD_ROLE_CREATE,
    {guild_id :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>(), new_role :: <a href="Nostrum.Struct.Guild.Role.html#t:t/0">Nostrum.Struct.Guild.Role.t</a>()},
-   <a href="Nostrum.Struct.BotInfo.html#t:t/0">Nostrum.Struct.BotInfo.t</a>()}</pre>
+   <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
 
       </div>
 
@@ -1553,7 +1553,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
           <pre translate="no"><span class="attribute">@type</span> guild_role_delete() ::
   {:GUILD_ROLE_DELETE,
    {guild_id :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>(), old_role :: <a href="Nostrum.Struct.Guild.Role.html#t:t/0">Nostrum.Struct.Guild.Role.t</a>()},
-   <a href="Nostrum.Struct.BotInfo.html#t:t/0">Nostrum.Struct.BotInfo.t</a>()}</pre>
+   <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
 
       </div>
 
@@ -1584,7 +1584,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
           <pre translate="no"><span class="attribute">@type</span> guild_role_update() ::
   {:GUILD_ROLE_UPDATE,
    {guild_id :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>(), old_role :: <a href="Nostrum.Struct.Guild.Role.html#t:t/0">Nostrum.Struct.Guild.Role.t</a>() | nil,
-    new_role :: <a href="Nostrum.Struct.Guild.Role.html#t:t/0">Nostrum.Struct.Guild.Role.t</a>()}, <a href="Nostrum.Struct.BotInfo.html#t:t/0">Nostrum.Struct.BotInfo.t</a>()}</pre>
+    new_role :: <a href="Nostrum.Struct.Guild.Role.html#t:t/0">Nostrum.Struct.Guild.Role.t</a>()}, <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
 
       </div>
 
@@ -1614,7 +1614,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
 
           <pre translate="no"><span class="attribute">@type</span> guild_scheduled_event_create() ::
   {:GUILD_SCHEDULED_EVENT_CREATE, <a href="Nostrum.Struct.Guild.ScheduledEvent.html#t:t/0">Nostrum.Struct.Guild.ScheduledEvent.t</a>(),
-   <a href="Nostrum.Struct.BotInfo.html#t:t/0">Nostrum.Struct.BotInfo.t</a>()}</pre>
+   <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
 
       </div>
 
@@ -1644,7 +1644,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
 
           <pre translate="no"><span class="attribute">@type</span> guild_scheduled_event_delete() ::
   {:GUILD_SCHEDULED_EVENT_DELETE, <a href="Nostrum.Struct.Guild.ScheduledEvent.html#t:t/0">Nostrum.Struct.Guild.ScheduledEvent.t</a>(),
-   <a href="Nostrum.Struct.BotInfo.html#t:t/0">Nostrum.Struct.BotInfo.t</a>()}</pre>
+   <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
 
       </div>
 
@@ -1674,7 +1674,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
 
           <pre translate="no"><span class="attribute">@type</span> guild_scheduled_event_update() ::
   {:GUILD_SCHEDULED_EVENT_UPDATE, <a href="Nostrum.Struct.Guild.ScheduledEvent.html#t:t/0">Nostrum.Struct.Guild.ScheduledEvent.t</a>(),
-   <a href="Nostrum.Struct.BotInfo.html#t:t/0">Nostrum.Struct.BotInfo.t</a>()}</pre>
+   <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
 
       </div>
 
@@ -1705,7 +1705,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
           <pre translate="no"><span class="attribute">@type</span> guild_scheduled_event_user_add() ::
   {:GUILD_SCHEDULED_EVENT_USER_ADD,
    <a href="Nostrum.Struct.Event.GuildScheduledEventUserAdd.html#t:t/0">Nostrum.Struct.Event.GuildScheduledEventUserAdd.t</a>(),
-   <a href="Nostrum.Struct.BotInfo.html#t:t/0">Nostrum.Struct.BotInfo.t</a>()}</pre>
+   <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
 
       </div>
 
@@ -1736,7 +1736,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
           <pre translate="no"><span class="attribute">@type</span> guild_scheduled_event_user_remove() ::
   {:GUILD_SCHEDULED_EVENT_USER_REMOVE,
    <a href="Nostrum.Struct.Event.GuildScheduledEventUserRemove.html#t:t/0">Nostrum.Struct.Event.GuildScheduledEventUserRemove.t</a>(),
-   <a href="Nostrum.Struct.BotInfo.html#t:t/0">Nostrum.Struct.BotInfo.t</a>()}</pre>
+   <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
 
       </div>
 
@@ -1767,7 +1767,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
           <pre translate="no"><span class="attribute">@type</span> guild_stickers_update() ::
   {:GUILD_STICKERS_UPDATE,
    {guild_id :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>(), old_stickers :: [<a href="Nostrum.Struct.Sticker.html#t:t/0">Nostrum.Struct.Sticker.t</a>()],
-    new_stickers :: [<a href="Nostrum.Struct.Sticker.html#t:t/0">Nostrum.Struct.Sticker.t</a>()]}, <a href="Nostrum.Struct.BotInfo.html#t:t/0">Nostrum.Struct.BotInfo.t</a>()}</pre>
+    new_stickers :: [<a href="Nostrum.Struct.Sticker.html#t:t/0">Nostrum.Struct.Sticker.t</a>()]}, <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
 
       </div>
 
@@ -1798,7 +1798,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
           <pre translate="no"><span class="attribute">@type</span> guild_unavailable() ::
   {:GUILD_UNAVAILABLE,
    unavailable_guild :: <a href="Nostrum.Struct.Guild.UnavailableGuild.html#t:t/0">Nostrum.Struct.Guild.UnavailableGuild.t</a>(),
-   <a href="Nostrum.Struct.BotInfo.html#t:t/0">Nostrum.Struct.BotInfo.t</a>()}</pre>
+   <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
 
       </div>
 
@@ -1829,7 +1829,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
           <pre translate="no"><span class="attribute">@type</span> guild_update() ::
   {:GUILD_UPDATE,
    {old_guild :: <a href="Nostrum.Struct.Guild.html#t:t/0">Nostrum.Struct.Guild.t</a>(),
-    new_guild :: <a href="Nostrum.Struct.Guild.html#t:t/0">Nostrum.Struct.Guild.t</a>()}, <a href="Nostrum.Struct.BotInfo.html#t:t/0">Nostrum.Struct.BotInfo.t</a>()}</pre>
+    new_guild :: <a href="Nostrum.Struct.Guild.html#t:t/0">Nostrum.Struct.Guild.t</a>()}, <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
 
       </div>
 
@@ -1861,7 +1861,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
 
           <pre translate="no"><span class="attribute">@type</span> integration_create() ::
   {:INTEGRATION_CREATE, <a href="Nostrum.Struct.Guild.Integration.html#t:t/0">Nostrum.Struct.Guild.Integration.t</a>(),
-   <a href="Nostrum.Struct.BotInfo.html#t:t/0">Nostrum.Struct.BotInfo.t</a>()}</pre>
+   <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
 
       </div>
 
@@ -1893,7 +1893,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
 
           <pre translate="no"><span class="attribute">@type</span> integration_delete() ::
   {:INTEGRATION_DELETE, <a href="Nostrum.Struct.Event.GuildIntegrationDelete.html#t:t/0">Nostrum.Struct.Event.GuildIntegrationDelete.t</a>(),
-   <a href="Nostrum.Struct.BotInfo.html#t:t/0">Nostrum.Struct.BotInfo.t</a>()}</pre>
+   <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
 
       </div>
 
@@ -1925,7 +1925,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
 
           <pre translate="no"><span class="attribute">@type</span> integration_update() ::
   {:INTEGRATION_UPDATE, <a href="Nostrum.Struct.Guild.Integration.html#t:t/0">Nostrum.Struct.Guild.Integration.t</a>(),
-   <a href="Nostrum.Struct.BotInfo.html#t:t/0">Nostrum.Struct.BotInfo.t</a>()}</pre>
+   <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
 
       </div>
 
@@ -1955,7 +1955,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
 
           <pre translate="no"><span class="attribute">@type</span> interaction_create() ::
   {:INTERACTION_CREATE, <a href="Nostrum.Struct.Interaction.html#t:t/0">Nostrum.Struct.Interaction.t</a>(),
-   <a href="Nostrum.Struct.BotInfo.html#t:t/0">Nostrum.Struct.BotInfo.t</a>()}</pre>
+   <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
 
       </div>
 
@@ -1983,7 +1983,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
 
       <div class="specs">
 
-          <pre translate="no"><span class="attribute">@type</span> message_ack() :: {:MESSAGE_ACK, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>(), <a href="Nostrum.Struct.BotInfo.html#t:t/0">Nostrum.Struct.BotInfo.t</a>()}</pre>
+          <pre translate="no"><span class="attribute">@type</span> message_ack() :: {:MESSAGE_ACK, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>(), <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
 
       </div>
 
@@ -2013,7 +2013,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
 
           <pre translate="no"><span class="attribute">@type</span> message_create() ::
   {:MESSAGE_CREATE, message :: <a href="Nostrum.Struct.Message.html#t:t/0">Nostrum.Struct.Message.t</a>(),
-   <a href="Nostrum.Struct.BotInfo.html#t:t/0">Nostrum.Struct.BotInfo.t</a>()}</pre>
+   <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
 
       </div>
 
@@ -2043,7 +2043,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
 
           <pre translate="no"><span class="attribute">@type</span> message_delete() ::
   {:MESSAGE_DELETE, <a href="Nostrum.Struct.Event.MessageDelete.html#t:t/0">Nostrum.Struct.Event.MessageDelete.t</a>(),
-   <a href="Nostrum.Struct.BotInfo.html#t:t/0">Nostrum.Struct.BotInfo.t</a>()}</pre>
+   <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
 
       </div>
 
@@ -2073,7 +2073,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
 
           <pre translate="no"><span class="attribute">@type</span> message_delete_bulk() ::
   {:MESSAGE_DELETE_BULK, <a href="Nostrum.Struct.Event.MessageDeleteBulk.html#t:t/0">Nostrum.Struct.Event.MessageDeleteBulk.t</a>(),
-   <a href="Nostrum.Struct.BotInfo.html#t:t/0">Nostrum.Struct.BotInfo.t</a>()}</pre>
+   <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
 
       </div>
 
@@ -2103,7 +2103,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
 
           <pre translate="no"><span class="attribute">@type</span> message_poll_vote_add() ::
   {:MESSAGE_POLL_VOTE_ADD, <a href="Nostrum.Struct.Event.PollVoteChange.html#t:t/0">Nostrum.Struct.Event.PollVoteChange.t</a>(),
-   <a href="Nostrum.Struct.BotInfo.html#t:t/0">Nostrum.Struct.BotInfo.t</a>()}</pre>
+   <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
 
       </div>
 
@@ -2133,7 +2133,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
 
           <pre translate="no"><span class="attribute">@type</span> message_poll_vote_remove() ::
   {:MESSAGE_POLL_VOTE_REMOVE, <a href="Nostrum.Struct.Event.PollVoteChange.html#t:t/0">Nostrum.Struct.Event.PollVoteChange.t</a>(),
-   <a href="Nostrum.Struct.BotInfo.html#t:t/0">Nostrum.Struct.BotInfo.t</a>()}</pre>
+   <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
 
       </div>
 
@@ -2163,7 +2163,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
 
           <pre translate="no"><span class="attribute">@type</span> message_reaction_add() ::
   {:MESSAGE_REACTION_ADD, <a href="Nostrum.Struct.Event.MessageReactionAdd.html#t:t/0">Nostrum.Struct.Event.MessageReactionAdd.t</a>(),
-   <a href="Nostrum.Struct.BotInfo.html#t:t/0">Nostrum.Struct.BotInfo.t</a>()}</pre>
+   <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
 
       </div>
 
@@ -2193,7 +2193,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
 
           <pre translate="no"><span class="attribute">@type</span> message_reaction_remove() ::
   {:MESSAGE_REACTION_REMOVE, <a href="Nostrum.Struct.Event.MessageReactionRemove.html#t:t/0">Nostrum.Struct.Event.MessageReactionRemove.t</a>(),
-   <a href="Nostrum.Struct.BotInfo.html#t:t/0">Nostrum.Struct.BotInfo.t</a>()}</pre>
+   <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
 
       </div>
 
@@ -2224,7 +2224,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
           <pre translate="no"><span class="attribute">@type</span> message_reaction_remove_all() ::
   {:MESSAGE_REACTION_REMOVE_ALL,
    <a href="Nostrum.Struct.Event.MessageReactionRemoveAll.html#t:t/0">Nostrum.Struct.Event.MessageReactionRemoveAll.t</a>(),
-   <a href="Nostrum.Struct.BotInfo.html#t:t/0">Nostrum.Struct.BotInfo.t</a>()}</pre>
+   <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
 
       </div>
 
@@ -2255,7 +2255,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
           <pre translate="no"><span class="attribute">@type</span> message_reaction_remove_emoji() ::
   {:MESSAGE_REACTION_REMOVE_EMOJI,
    <a href="Nostrum.Struct.Event.MessageReactionRemoveEmoji.html#t:t/0">Nostrum.Struct.Event.MessageReactionRemoveEmoji.t</a>(),
-   <a href="Nostrum.Struct.BotInfo.html#t:t/0">Nostrum.Struct.BotInfo.t</a>()}</pre>
+   <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
 
       </div>
 
@@ -2286,7 +2286,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
           <pre translate="no"><span class="attribute">@type</span> message_update() ::
   {:MESSAGE_UPDATE,
    {old_message :: <a href="Nostrum.Struct.Message.html#t:t/0">Nostrum.Struct.Message.t</a>() | nil,
-    updated_message :: <a href="Nostrum.Struct.Message.html#t:t/0">Nostrum.Struct.Message.t</a>()}, <a href="Nostrum.Struct.BotInfo.html#t:t/0">Nostrum.Struct.BotInfo.t</a>()}</pre>
+    updated_message :: <a href="Nostrum.Struct.Message.html#t:t/0">Nostrum.Struct.Message.t</a>()}, <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
 
       </div>
 
@@ -2317,7 +2317,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
           <pre translate="no"><span class="attribute">@type</span> presence_update() ::
   {:PRESENCE_UPDATE,
    {guild_id :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>(), old_presence :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>() | nil, new_presence :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()},
-   <a href="Nostrum.Struct.BotInfo.html#t:t/0">Nostrum.Struct.BotInfo.t</a>()}</pre>
+   <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
 
       </div>
 
@@ -2345,7 +2345,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
 
       <div class="specs">
 
-          <pre translate="no"><span class="attribute">@type</span> ready() :: {:READY, <a href="Nostrum.Struct.Event.Ready.html#t:t/0">Nostrum.Struct.Event.Ready.t</a>(), <a href="Nostrum.Struct.BotInfo.html#t:t/0">Nostrum.Struct.BotInfo.t</a>()}</pre>
+          <pre translate="no"><span class="attribute">@type</span> ready() :: {:READY, <a href="Nostrum.Struct.Event.Ready.html#t:t/0">Nostrum.Struct.Event.Ready.t</a>(), <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
 
       </div>
 
@@ -2373,7 +2373,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
 
       <div class="specs">
 
-          <pre translate="no"><span class="attribute">@type</span> resumed() :: {:RESUMED, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>(), <a href="Nostrum.Struct.BotInfo.html#t:t/0">Nostrum.Struct.BotInfo.t</a>()}</pre>
+          <pre translate="no"><span class="attribute">@type</span> resumed() :: {:RESUMED, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>(), <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
 
       </div>
 
@@ -2402,7 +2402,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
       <div class="specs">
 
           <pre translate="no"><span class="attribute">@type</span> thread_create() ::
-  {:THREAD_CREATE, <a href="Nostrum.Struct.Channel.html#t:t/0">Nostrum.Struct.Channel.t</a>(), <a href="Nostrum.Struct.BotInfo.html#t:t/0">Nostrum.Struct.BotInfo.t</a>()}</pre>
+  {:THREAD_CREATE, <a href="Nostrum.Struct.Channel.html#t:t/0">Nostrum.Struct.Channel.t</a>(), <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
 
       </div>
 
@@ -2432,7 +2432,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
 
           <pre translate="no"><span class="attribute">@type</span> thread_delete() ::
   {:THREAD_DELETE, <a href="Nostrum.Struct.Channel.html#t:t/0">Nostrum.Struct.Channel.t</a>() | :noop,
-   <a href="Nostrum.Struct.BotInfo.html#t:t/0">Nostrum.Struct.BotInfo.t</a>()}</pre>
+   <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
 
       </div>
 
@@ -2462,7 +2462,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
 
           <pre translate="no"><span class="attribute">@type</span> thread_list_sync() ::
   {:THREAD_LIST_SYNC, <a href="Nostrum.Struct.Event.ThreadListSync.html#t:t/0">Nostrum.Struct.Event.ThreadListSync.t</a>(),
-   <a href="Nostrum.Struct.BotInfo.html#t:t/0">Nostrum.Struct.BotInfo.t</a>()}</pre>
+   <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
 
       </div>
 
@@ -2492,7 +2492,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
 
           <pre translate="no"><span class="attribute">@type</span> thread_member_update() ::
   {:THREAD_MEMBER_UPDATE, <a href="Nostrum.Struct.ThreadMember.html#t:t/0">Nostrum.Struct.ThreadMember.t</a>(),
-   <a href="Nostrum.Struct.BotInfo.html#t:t/0">Nostrum.Struct.BotInfo.t</a>()}</pre>
+   <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
 
       </div>
 
@@ -2522,7 +2522,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
 
           <pre translate="no"><span class="attribute">@type</span> thread_members_update() ::
   {:THREAD_MEMBERS_UPDATE, <a href="Nostrum.Struct.Event.ThreadMembersUpdate.html#t:t/0">Nostrum.Struct.Event.ThreadMembersUpdate.t</a>(),
-   <a href="Nostrum.Struct.BotInfo.html#t:t/0">Nostrum.Struct.BotInfo.t</a>()}</pre>
+   <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
 
       </div>
 
@@ -2553,7 +2553,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
           <pre translate="no"><span class="attribute">@type</span> thread_update() ::
   {:THREAD_UPDATE,
    {old_thread :: <a href="Nostrum.Struct.Channel.html#t:t/0">Nostrum.Struct.Channel.t</a>() | nil,
-    new_thread :: <a href="Nostrum.Struct.Channel.html#t:t/0">Nostrum.Struct.Channel.t</a>()}, <a href="Nostrum.Struct.BotInfo.html#t:t/0">Nostrum.Struct.BotInfo.t</a>()}</pre>
+    new_thread :: <a href="Nostrum.Struct.Channel.html#t:t/0">Nostrum.Struct.Channel.t</a>()}, <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
 
       </div>
 
@@ -2583,7 +2583,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
 
           <pre translate="no"><span class="attribute">@type</span> typing_start() ::
   {:TYPING_START, <a href="Nostrum.Struct.Event.TypingStart.html#t:t/0">Nostrum.Struct.Event.TypingStart.t</a>(),
-   <a href="Nostrum.Struct.BotInfo.html#t:t/0">Nostrum.Struct.BotInfo.t</a>()}</pre>
+   <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
 
       </div>
 
@@ -2642,7 +2642,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
           <pre translate="no"><span class="attribute">@type</span> user_update() ::
   {:USER_UPDATE,
    {old_user :: <a href="Nostrum.Struct.User.html#t:t/0">Nostrum.Struct.User.t</a>() | nil,
-    new_user :: <a href="Nostrum.Struct.User.html#t:t/0">Nostrum.Struct.User.t</a>()}, <a href="Nostrum.Struct.BotInfo.html#t:t/0">Nostrum.Struct.BotInfo.t</a>()}</pre>
+    new_user :: <a href="Nostrum.Struct.User.html#t:t/0">Nostrum.Struct.User.t</a>()}, <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
 
       </div>
 
@@ -2680,7 +2680,7 @@ provided by Discord, but no information about the user's state on the guild.</p>
 
 <p>Dispatched when async listening is enabled and another user is actively speaking</p><p>The second tuple element is an <a href="Nostrum.Voice.html#t:rtp_opus/0"><code class="inline">Nostrum.Voice.rtp_opus/0</code></a>, which is a tuple with
 RTP header information and an opus packet. While someone is actively talking, you can
-expect about 50 events per second per speaking user.</p><p>Note that the third tuple element is of type <a href="Nostrum.Struct.VoiceWSState.html#t:t/0"><code class="inline">Nostrum.Struct.VoiceWSState.t/0</code></a> instead of <a href="Nostrum.Struct.BotInfo.html#t:t/0"><code class="inline">Nostrum.Struct.BotInfo.t/0</code></a>.
+expect about 50 events per second per speaking user.</p><p>Note that the third tuple element is of type <a href="Nostrum.Struct.VoiceWSState.html#t:t/0"><code class="inline">Nostrum.Struct.VoiceWSState.t/0</code></a> instead of <a href="Nostrum.Struct.WSState.html#t:t/0"><code class="inline">Nostrum.Struct.WSState.t/0</code></a>.
 That struct contains a <a href="Nostrum.Struct.VoiceWSState.html#t:ssrc_map/0"><code class="inline">Nostrum.Struct.VoiceWSState.ssrc_map/0</code></a> that can determine the speaking user based
 on the SSRC.</p>
   </section>
@@ -2714,7 +2714,7 @@ on the SSRC.</p>
 
       </div>
 
-<p>Dispatched when the bot is ready to begin sending audio after joining a voice channel</p><p>Note that the third tuple element is of type <a href="Nostrum.Struct.VoiceWSState.html#t:t/0"><code class="inline">Nostrum.Struct.VoiceWSState.t/0</code></a> instead of <a href="Nostrum.Struct.BotInfo.html#t:t/0"><code class="inline">Nostrum.Struct.BotInfo.t/0</code></a>.</p>
+<p>Dispatched when the bot is ready to begin sending audio after joining a voice channel</p><p>Note that the third tuple element is of type <a href="Nostrum.Struct.VoiceWSState.html#t:t/0"><code class="inline">Nostrum.Struct.VoiceWSState.t/0</code></a> instead of <a href="Nostrum.Struct.WSState.html#t:t/0"><code class="inline">Nostrum.Struct.WSState.t/0</code></a>.</p>
   </section>
 </section>
 <section class="detail" id="t:voice_server_update/0">
@@ -2740,7 +2740,7 @@ on the SSRC.</p>
 
           <pre translate="no"><span class="attribute">@type</span> voice_server_update() ::
   {:VOICE_SERVER_UPDATE, <a href="Nostrum.Struct.Event.VoiceServerUpdate.html#t:t/0">Nostrum.Struct.Event.VoiceServerUpdate.t</a>(),
-   <a href="Nostrum.Struct.BotInfo.html#t:t/0">Nostrum.Struct.BotInfo.t</a>()}</pre>
+   <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
 
       </div>
 
@@ -2774,7 +2774,7 @@ on the SSRC.</p>
 
       </div>
 
-<p>Dispatched when the bot starts or stops speaking</p><p>Note that the third tuple element is of type <a href="Nostrum.Struct.VoiceWSState.html#t:t/0"><code class="inline">Nostrum.Struct.VoiceWSState.t/0</code></a> instead of <a href="Nostrum.Struct.BotInfo.html#t:t/0"><code class="inline">Nostrum.Struct.BotInfo.t/0</code></a>.</p>
+<p>Dispatched when the bot starts or stops speaking</p><p>Note that the third tuple element is of type <a href="Nostrum.Struct.VoiceWSState.html#t:t/0"><code class="inline">Nostrum.Struct.VoiceWSState.t/0</code></a> instead of <a href="Nostrum.Struct.WSState.html#t:t/0"><code class="inline">Nostrum.Struct.WSState.t/0</code></a>.</p>
   </section>
 </section>
 <section class="detail" id="t:voice_state_update/0">
@@ -2800,7 +2800,7 @@ on the SSRC.</p>
 
           <pre translate="no"><span class="attribute">@type</span> voice_state_update() ::
   {:VOICE_STATE_UPDATE, <a href="Nostrum.Struct.Event.VoiceState.html#t:t/0">Nostrum.Struct.Event.VoiceState.t</a>(),
-   <a href="Nostrum.Struct.BotInfo.html#t:t/0">Nostrum.Struct.BotInfo.t</a>()}</pre>
+   <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
 
       </div>
 
@@ -2828,7 +2828,7 @@ on the SSRC.</p>
 
       <div class="specs">
 
-          <pre translate="no"><span class="attribute">@type</span> webhooks_update() :: {:WEBHOOKS_UPDATE, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>(), <a href="Nostrum.Struct.BotInfo.html#t:t/0">Nostrum.Struct.BotInfo.t</a>()}</pre>
+          <pre translate="no"><span class="attribute">@type</span> webhooks_update() :: {:WEBHOOKS_UPDATE, <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>(), <a href="Nostrum.Struct.WSState.html#t:t/0">Nostrum.Struct.WSState.t</a>()}</pre>
 
       </div>
 
@@ -2879,10 +2879,10 @@ on the SSRC.</p>
   <span class="text">Event</span>
 </h2>
 <p><code class="inline">event</code> is a tuple describing the event. The tuple will include information in
-the following format:</p><pre><code class="makeup elixir" translate="no"><span class="p" data-group-id="7497436958-1">{</span><span class="n">event_name</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="7497436958-2">{</span><span class="n">event_payload</span><span class="p" data-group-id="7497436958-3">(</span><span class="n">s</span><span class="p" data-group-id="7497436958-3">)</span><span class="p" data-group-id="7497436958-2">}</span><span class="p">,</span><span class="w"> </span><span class="nc">BotInfo</span><span class="o">.</span><span class="n">t</span><span class="p" data-group-id="7497436958-1">}</span></code></pre><p>For example, a message create will look like this</p><pre><code class="makeup elixir" translate="no"><span class="p" data-group-id="5021788554-1">{</span><span class="ss">:MESSAGE_CREATE</span><span class="p">,</span><span class="w"> </span><span class="nc">Nostrum.Struct.Message</span><span class="o">.</span><span class="n">t</span><span class="p">,</span><span class="w"> </span><span class="nc">BotInfo</span><span class="o">.</span><span class="n">t</span><span class="p" data-group-id="5021788554-1">}</span></code></pre><p>In some cases there will be multiple payloads when something is
+the following format:</p><pre><code class="makeup elixir" translate="no"><span class="p" data-group-id="5560817658-1">{</span><span class="n">event_name</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="5560817658-2">{</span><span class="n">event_payload</span><span class="p" data-group-id="5560817658-3">(</span><span class="n">s</span><span class="p" data-group-id="5560817658-3">)</span><span class="p" data-group-id="5560817658-2">}</span><span class="p">,</span><span class="w"> </span><span class="nc">WSState</span><span class="o">.</span><span class="n">t</span><span class="p" data-group-id="5560817658-1">}</span></code></pre><p>For example, a message create will look like this</p><pre><code class="makeup elixir" translate="no"><span class="p" data-group-id="2894895438-1">{</span><span class="ss">:MESSAGE_CREATE</span><span class="p">,</span><span class="w"> </span><span class="nc">Nostrum.Struct.Message</span><span class="o">.</span><span class="n">t</span><span class="p">,</span><span class="w"> </span><span class="nc">WSState</span><span class="o">.</span><span class="n">t</span><span class="p" data-group-id="2894895438-1">}</span></code></pre><p>In some cases there will be multiple payloads when something is
 updated, so as to include the new and the old versions. In the event
 of there being two payloads, the old payload will always be first,
-followed by the new payload.</p><pre><code class="makeup elixir" translate="no"><span class="p" data-group-id="4306355721-1">{</span><span class="ss">:USER_UPDATE</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="4306355721-2">{</span><span class="n">old_user</span><span class="w"> </span><span class="o">::</span><span class="w"> </span><span class="nc">Nostrum.Struct.User</span><span class="o">.</span><span class="n">t</span><span class="p">,</span><span class="w"> </span><span class="n">new_user</span><span class="w"> </span><span class="o">::</span><span class="w"> </span><span class="nc">Nostrum.Struct.User</span><span class="o">.</span><span class="n">t</span><span class="p" data-group-id="4306355721-2">}</span><span class="p">,</span><span class="w"> </span><span class="nc">BotInfo</span><span class="o">.</span><span class="n">t</span><span class="p" data-group-id="4306355721-3">(</span><span class="p" data-group-id="4306355721-3">)</span><span class="p" data-group-id="4306355721-1">}</span></code></pre><p>Note that the availability of the old data depends on how nostrum's
+followed by the new payload.</p><pre><code class="makeup elixir" translate="no"><span class="p" data-group-id="3061321769-1">{</span><span class="ss">:USER_UPDATE</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="3061321769-2">{</span><span class="n">old_user</span><span class="w"> </span><span class="o">::</span><span class="w"> </span><span class="nc">Nostrum.Struct.User</span><span class="o">.</span><span class="n">t</span><span class="p">,</span><span class="w"> </span><span class="n">new_user</span><span class="w"> </span><span class="o">::</span><span class="w"> </span><span class="nc">Nostrum.Struct.User</span><span class="o">.</span><span class="n">t</span><span class="p" data-group-id="3061321769-2">}</span><span class="p">,</span><span class="w"> </span><span class="nc">WSState</span><span class="o">.</span><span class="n">t</span><span class="p" data-group-id="3061321769-3">(</span><span class="p" data-group-id="3061321769-3">)</span><span class="p" data-group-id="3061321769-1">}</span></code></pre><p>Note that the availability of the old data depends on how nostrum's
 caching is configured. If the updated object cannot be found in the cache
 before the update, you will receive nothing.</p><p>For a full listing of events, please see <a href="#t:event/0"><code class="inline">Nostrum.Consumer.event/0</code></a>.</p>
   </section>
