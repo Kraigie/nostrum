@@ -658,7 +658,7 @@ authentication.</p><h2 id="get_with_token/2-parameters" class="section-heading">
         <span class="note">(since 0.10.1)</span>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/webhook.ex#L263" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/webhook.ex#L271" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -671,7 +671,11 @@ authentication.</p><h2 id="get_with_token/2-parameters" class="section-heading">
 
           <pre translate="no"><span class="attribute">@spec</span> modify(
   <a href="Nostrum.Struct.Webhook.html#t:id/0">Nostrum.Struct.Webhook.id</a>(),
-  %{name: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>(), avatar: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()},
+  %{
+    optional(:name) =&gt; <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>(),
+    optional(:avatar) =&gt; <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>() | nil,
+    optional(:channel_id) =&gt; <a href="Nostrum.Struct.Channel.html#t:id/0">Nostrum.Struct.Channel.id</a>()
+  },
   <a href="Nostrum.Struct.Guild.AuditLogEntry.html#t:reason/0">Nostrum.Struct.Guild.AuditLogEntry.reason</a>()
 ) :: <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>() | {:ok, <a href="Nostrum.Struct.Webhook.html#t:t/0">Nostrum.Struct.Webhook.t</a>()}</pre>
 
@@ -683,7 +687,14 @@ authentication.</p><h2 id="get_with_token/2-parameters" class="section-heading">
   </a>
   <span class="text">Parameters</span>
 </h2>
-<ul><li><code class="inline">webhook_id</code> - Id of the webhook to modify.</li><li><code class="inline">args</code> - Map with the following <em>optional</em> keys:<ul><li><code class="inline">name</code> - Name of the webhook.</li><li><code class="inline">avatar</code> - Base64 128x128 jpeg image for the default avatar.</li></ul></li><li><code class="inline">reason</code> - An optional reason for the guild audit log.</li></ul>
+<ul><li><code class="inline">webhook_id</code> - Id of the webhook to modify.</li><li><code class="inline">args</code> - Map with the following <em>optional</em> keys:<ul><li><code class="inline">name</code> - Name of the webhook.</li><li><code class="inline">avatar</code> - Base64 128x128 jpeg image for the default avatar.</li><li><code class="inline">channel_id</code> - The new channel this webhook should be moved to.</li></ul></li><li><code class="inline">reason</code> - An optional reason for the guild audit log.</li></ul><h2 id="modify/3-reference" class="section-heading">
+  <a href="#modify/3-reference" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Reference</span>
+</h2>
+<p>See the <a href="https://discord.com/developers/docs/resources/webhook#modify-webhook">Discord developer
+docs</a>.</p>
   </section>
 </section>
 <section class="detail" id="modify_with_token/4">
@@ -700,7 +711,7 @@ authentication.</p><h2 id="get_with_token/2-parameters" class="section-heading">
         <span class="note">(since 0.10.1)</span>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/webhook.ex#L298" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/webhook.ex#L313" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -714,7 +725,11 @@ authentication.</p><h2 id="get_with_token/2-parameters" class="section-heading">
           <pre translate="no"><span class="attribute">@spec</span> modify_with_token(
   <a href="Nostrum.Struct.Webhook.html#t:id/0">Nostrum.Struct.Webhook.id</a>(),
   <a href="Nostrum.Struct.Webhook.html#t:token/0">Nostrum.Struct.Webhook.token</a>(),
-  %{name: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>(), avatar: <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()},
+  %{
+    optional(:name) =&gt; <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>(),
+    optional(:avatar) =&gt; <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>() | nil,
+    optional(:channel_id) =&gt; <a href="Nostrum.Struct.Channel.html#t:id/0">Nostrum.Struct.Channel.id</a>()
+  },
   <a href="Nostrum.Struct.Guild.AuditLogEntry.html#t:reason/0">Nostrum.Struct.Guild.AuditLogEntry.reason</a>()
 ) :: <a href="Nostrum.Api.html#t:error/0">Nostrum.Api.error</a>() | {:ok, <a href="Nostrum.Struct.Webhook.html#t:t/0">Nostrum.Struct.Webhook.t</a>()}</pre>
 
@@ -727,7 +742,14 @@ authentication.</p><h2 id="modify_with_token/4-parameters" class="section-headin
   </a>
   <span class="text">Parameters</span>
 </h2>
-<ul><li><code class="inline">webhook_id</code> - Id of the webhook to modify.</li><li><code class="inline">webhook_token</code> - Token of the webhook to get.</li><li><code class="inline">args</code> - Map with the following <em>optional</em> keys:<ul><li><code class="inline">name</code> - Name of the webhook.</li><li><code class="inline">avatar</code> - Base64 128x128 jpeg image for the default avatar.</li></ul></li><li><code class="inline">reason</code> - An optional reason for the guild audit log.</li></ul>
+<ul><li><code class="inline">webhook_id</code> - Id of the webhook to modify.</li><li><code class="inline">webhook_token</code> - Token of the webhook to get.</li><li><code class="inline">args</code> - Map with the following <em>optional</em> keys:<ul><li><code class="inline">name</code> - Name of the webhook.</li><li><code class="inline">avatar</code> - Base64 128x128 jpeg image for the default avatar.</li><li><code class="inline">channel_id</code> - The new channel this webhook should be moved to.</li></ul></li><li><code class="inline">reason</code> - An optional reason for the guild audit log.</li></ul><h2 id="modify_with_token/4-reference" class="section-heading">
+  <a href="#modify_with_token/4-reference" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Reference</span>
+</h2>
+<p>See the <a href="https://discord.com/developers/docs/resources/webhook#modify-webhook">Discord developer
+docs</a>.</p>
   </section>
 </section>
 
