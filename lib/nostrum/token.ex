@@ -15,7 +15,7 @@ defmodule Nostrum.Token do
   @no_token_error_message "A bot token needs to be supplied in your config file"
 
   @doc """
-  Checks if the Discord bot token has the correct format.
+  Decode the given Discord bot token.
 
   We check if the token is a binary followed by splitting it into 3 parts separated by a dot `"."`.
   The first part is the Base64 encoded user_id which we decode and parse into as integer.
@@ -28,21 +28,21 @@ defmodule Nostrum.Token do
   ## Examples
 
       iex> token = "OTY4NTU2MzQ4MzkwMzkxODU5.G49NjP.pD8PLpKp-Xx8sr-8m1DCxSPTJZdcpcJZOExc1c"
-      iex> Nostrum.Token.check_token!(token)
+      iex> Nostrum.Token.decode_token!(token)
       968556348390391859
 
       iex> token = "ODY4MDcxODUzMDMyMzU3OTc4.YPqU6Q.jNJcq1daGG3otexX3c1LcxCpgpQ"
-      iex> Nostrum.Token.check_token!(token)
+      iex> Nostrum.Token.decode_token!(token)
       868071853032357978
   """
-  def check_token!(nil), do: raise(@no_token_error_message)
+  def decode_token!(nil), do: raise(@no_token_error_message)
 
-  @spec check_token!(binary()) :: pos_integer()
-  def check_token!(<<user_id::binary-size(24), 46, _ts::binary-size(6), 46, _hmac_auth::binary>>) do
+  @spec decode_token!(binary()) :: pos_integer()
+  def decode_token!(<<user_id::binary-size(24), 46, _ts::binary-size(6), 46, _hmac_auth::binary>>) do
     decode_user_id!(user_id)
   end
 
-  def check_token!(token) when is_binary(token) do
+  def decode_token!(token) when is_binary(token) do
     case String.split(token, ".") do
       [user_id, _timestamp, _hmac_auth] -> decode_user_id!(user_id)
       _ -> raise(@invalid_token_error_message)

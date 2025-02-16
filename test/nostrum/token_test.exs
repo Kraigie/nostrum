@@ -5,10 +5,10 @@ defmodule Nostrum.TokenTest do
 
   doctest Token
 
-  describe "check_token!/1" do
+  describe "decode_token!/1" do
     test "raises on non set token" do
       assert_raise RuntimeError, "A bot token needs to be supplied in your config file", fn ->
-        Token.check_token!(nil)
+        Token.decode_token!(nil)
       end
     end
 
@@ -16,7 +16,7 @@ defmodule Nostrum.TokenTest do
       assert_raise RuntimeError,
                    ~S[Invalid token format. Copy it again from the "Bot" tab of your Application in the Discord Developer Portal.],
                    fn ->
-                     Token.check_token!("666")
+                     Token.decode_token!("666")
                    end
     end
   end
