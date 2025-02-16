@@ -70,7 +70,7 @@ defmodule Nostrum.Shard.Supervisor do
     Logger.warning(
       "Configured shard count (#{count}) " <>
         "differs from Discord Gateway's recommended shard count (#{gateway_shards}). " <>
-        "Consider using `num_shards: :auto` option in your Nostrum config."
+        "Consider using `num_shards: :auto` option in your bot options."
     )
 
     {1, count, count}
