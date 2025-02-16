@@ -30,7 +30,18 @@ defmodule Nostrum.Voice do
       - Provide a stateful enumerable of opus frames as input (think GenServer wrapped in `Stream.unfold/2`)
     - Use lower level functions to send opus frames at your leisure
       - Send packets on your own time using `send_frames/2`
+
+  # Voice example
+
+  The following example bot plays audio through voice channels:
+
+  ```elixir
+  # Sourced from examples/audio_player_example.ex
+  #{File.read!("examples/audio_player_example.ex")}
+  ```
   """
+
+  @external_resource "examples/audio_player_example.ex"
 
   alias Nostrum.Api.Self
   alias Nostrum.Struct.Channel
