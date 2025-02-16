@@ -68,36 +68,36 @@ defmodule Nostrum.Shard.Dispatch do
 
     payload.t
     |> handle_event(payload.d, state)
-    |> format_event
-    |> send_events(state.consumer)
+    |> filter_events()
+    |> send_events()
   end
 
-  defp format_event(events) when is_list(events),
-    do: for(event <- events, do: format_event(event))
+  defp filter_events(events) do
+    events
+    |> List.wrap()
+    |> Enum.filter(&(format_event(&1) != :noop))
+  end
 
   # Handles the case of not finding users in the user cache
   defp format_event({_name, :noop, _state}), do: :noop
-  defp format_event({_name, event_info, _state} = event) when is_tuple(event_info), do: event
   defp format_event({name, event_info, state}), do: {name, event_info, state}
   defp format_event(:noop), do: :noop
 
-  @spec send_events([event], module()) :: [event] when event: Consumer.event()
-  defp send_events([], _consumer_module), do: []
+  @spec send_events([event]) :: [event] when event: Consumer.event()
+  defp send_events([]), do: []
 
-  defp send_events([event | events], consumer_module) do
-    [send_event(event, consumer_module) | send_events(events, consumer_module)]
+  defp send_events([event | events]) do
+    [send_event(event) | send_events(events)]
   end
 
-  defp send_events(event, consumer_module), do: send_event(event, consumer_module)
-
-  @spec send_event(event, module()) :: event when event: Consumer.event()
-  defp send_event(event, consumer_module) do
+  @spec send_event(event) :: event when event: Consumer.event()
+  defp send_event({_name, _event_info, _state = %{consumer: consumer}} = event) do
     # TODO: This should probably be supervised via `Task.Supervisor.start_child`,
     # because otherwise on shutdown they just, sort of, well, die.
     {:ok, _pid} =
       Task.start(fn ->
         try do
-          consumer_module.handle_event(event)
+          consumer.handle_event(event)
         rescue
           e ->
             Logger.error("Error in event handler: #{Exception.format(:error, e, __STACKTRACE__)}")
