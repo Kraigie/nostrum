@@ -240,11 +240,11 @@ From the Elixir website -
 
 ## Example bots
 
-- A simple bot that consumes events from the gateway can be found [at
-  `examples/event_consumer.ex`](https://github.com/Kraigie/nostrum/blob/master/examples/event_consumer.ex).
+- A simple bot that consumes events from the gateway can be found in the docs of
+  the `Nostrum.Consumer` module.
 
-- An example bot that plays audio through voice channels can be found [at
-  `examples/audio_player_example.ex`](https://github.com/Kraigie/nostrum/blob/master/examples/audio_player_example.ex).
+- An example bot that plays audio through voice channels can be found in the
+  docs of the `Nostrum.Voice` module.
 
 - A properly structured bot with commands utilizing
   [nosedrum](https://github.com/jchristgit/nosedrum) can be found [in this
