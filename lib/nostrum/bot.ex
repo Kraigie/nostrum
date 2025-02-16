@@ -45,7 +45,8 @@ defmodule Nostrum.Bot do
   3. In your supervisor tree, add the `bot_options` described above, and add
   `Nostrum.Bot` to your supervisor tree as described above. For the `:intents`
   setting, cut the value you previously had in your `config.exs` and use it
-  here. You can then remove the config value.
+  here. Do the same with `:num_shards`, renaming it to `:shards` on the
+  `bot_options` map. You can then remove the old config values.
 
   4. In your consumer, change `use Nostrum.Consumer` to `@behaviour Nostrum.Consumer`.
 
@@ -88,11 +89,34 @@ defmodule Nostrum.Bot do
   - `:wrapped_token`: A function that takes no arguments and returns the bot
   token to use. This is wrapped to prevent exposure of the token in
   stacktraces.
+
+  ## Optional fields
+
+  - `:shards`: Shards that should be started with this bot. Possible values:
+
+    - `:auto` uses the suggested amount of shards as provided by Discord. This
+    value is the default.
+
+    - `:manual` do not automatically spawn shards. In this case, it is your
+    responsibility to spawn shards manually, see [the manual sharding
+    documentation](./manual_sharding.html).
+
+    - `pos_integer()`: A number of shards to run. nostrum will warn if this is
+    not the recommended amount.
+
+    - `{lowest, highest, total}` starts shards `lowest` to `highest`. `total`
+    should contain the total amount of shards that your bot is expected to
+    have. Useful for splitting a single bot across multiple nodes, see the
+    [multi-node documentation](./multi_node.html) for further information.
   """
   @type bot_options :: %{
           required(:consumer) => module(),
+          required(:intents) => :all | :nonprivileged | [atom()],
           required(:wrapped_token) => (-> String.t()),
-          required(:intents) => :all | :nonprivileged | [atom()]
+          optional(:shards) =>
+            :auto | :manual | num_shards ::
+              pos_integer()
+              | {lowest :: pos_integer(), highest :: pos_integer(), total :: pos_integer()}
         }
 
   @typedoc """

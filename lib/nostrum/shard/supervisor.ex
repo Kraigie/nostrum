@@ -92,7 +92,7 @@ defmodule Nostrum.Shard.Supervisor do
         name: __MODULE__
       )
 
-    case Application.get_env(:nostrum, :num_shards, :auto) do
+    case Map.get(bot_options, :shards, :auto) do
       :manual ->
         on_start
 

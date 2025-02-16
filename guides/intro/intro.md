@@ -123,16 +123,6 @@ feel free to use any other configuration method you like.
 
 nostrum supports the following global configuration options:
 
-- `num_shards` - the amount of shards to run. Can be one of the following:
-  - `:auto`: use the suggested amount of shards as provided by Discord.
-  - *`num`*: a number of shards to run. nostrum will warn if this is not the
-    recommended amount.
-  - `{lowest, highest, total}`: start shards `lowest` to `highest`. `total`
-    should contain the total amount of shards that your bot is expected to have.
-    Useful for splitting a single bot across multiple servers, but see also [the
-    multi-node documentation](../advanced/multi_node.md).
-  - `:manual`: nostrum does not automatically spawn shards. See the [Manual
-    Sharding](../advanced/manual_sharding.md) guide for more information.
 - `request_guild_members` - perform member chunking to retrieve a complete list
   of members for all guilds at startup. Depending on your [cache
   backend](../advanced/pluggable_caching.md), this may increase startup time

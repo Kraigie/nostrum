@@ -56,7 +56,9 @@ defmodule Nostrum.Api.Ratelimiter do
 
   ### Connection setup
 
-  If the state machine is not connected to the HTTP endpoint, it will
+  The state machine begins its life in the `:disconnected` state. The state
+  represents wheher the state machine is connected to the HTTP endpoint,
+  connections are kept open for some time. If a request comes in, it will
   transition to the `:connecting` state and try to open the connection. If this
   succeeds, it transitions to the `:connected` state.
 
@@ -643,7 +645,7 @@ defmodule Nostrum.Api.Ratelimiter do
   # bot requests.
   def connected({:timeout, bucket}, :expired, %{remaining_in_window: 0}) do
     Logger.debug(
-      "Ratelimits on #{inspect(bucket)} have expired but we may not queue more requests due to the bot user limit."
+      "Ratelimits on #{inspect(bucket)} have reset but we may not queue more requests due to the bot user limit."
     )
 
     :keep_state_and_data
