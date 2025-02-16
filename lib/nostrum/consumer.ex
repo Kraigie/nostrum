@@ -27,11 +27,11 @@ defmodule Nostrum.Consumer do
 
   alias Nostrum.Struct.{
     AutoModerationRule,
-    BotInfo,
     Channel,
     Interaction,
     ThreadMember,
-    VoiceWSState
+    VoiceWSState,
+    WSState
   }
 
   alias Nostrum.Struct.Guild.{
@@ -72,12 +72,12 @@ defmodule Nostrum.Consumer do
   `event` is a tuple describing the event. The tuple will include information in
   the following format:
   ```elixir
-  {event_name, {event_payload(s)}, BotInfo.t}
+  {event_name, {event_payload(s)}, WSState.t}
   ```
 
   For example, a message create will look like this
   ```elixir
-  {:MESSAGE_CREATE, Nostrum.Struct.Message.t, BotInfo.t}
+  {:MESSAGE_CREATE, Nostrum.Struct.Message.t, WSState.t}
   ```
 
   In some cases there will be multiple payloads when something is
@@ -86,7 +86,7 @@ defmodule Nostrum.Consumer do
   followed by the new payload.
 
   ```elixir
-  {:USER_UPDATE, {old_user :: Nostrum.Struct.User.t, new_user :: Nostrum.Struct.User.t}, BotInfo.t()}
+  {:USER_UPDATE, {old_user :: Nostrum.Struct.User.t, new_user :: Nostrum.Struct.User.t}, WSState.t()}
   ```
 
   Note that the availability of the old data depends on how nostrum's
@@ -98,14 +98,14 @@ defmodule Nostrum.Consumer do
   @callback handle_event(event) :: any
 
   @type auto_moderation_rule_create ::
-          {:AUTO_MODERATION_RULE_CREATE, AutoModerationRule.t(), BotInfo.t()}
+          {:AUTO_MODERATION_RULE_CREATE, AutoModerationRule.t(), WSState.t()}
   @type auto_moderation_rule_delete ::
-          {:AUTO_MODERATION_RULE_DELETE, AutoModerationRule.t(), BotInfo.t()}
+          {:AUTO_MODERATION_RULE_DELETE, AutoModerationRule.t(), WSState.t()}
   @type auto_moderation_rule_update ::
-          {:AUTO_MODERATION_RULE_UPDATE, AutoModerationRule.t(), BotInfo.t()}
+          {:AUTO_MODERATION_RULE_UPDATE, AutoModerationRule.t(), WSState.t()}
 
   @type auto_moderation_rule_execute ::
-          {:AUTO_MODERATION_RULE_EXECUTE, AutoModerationRuleExecute.t(), BotInfo.t()}
+          {:AUTO_MODERATION_RULE_EXECUTE, AutoModerationRuleExecute.t(), WSState.t()}
 
   @typedoc """
   Dispatched when a channel is created.
@@ -113,8 +113,8 @@ defmodule Nostrum.Consumer do
   Starting from [API and Gateway V8](https://discord.com/developers/docs/change-log#api-and-gateway-v8),
   this will never be sent for a DM.
   """
-  @type channel_create :: {:CHANNEL_CREATE, Channel.t(), BotInfo.t()}
-  @type channel_delete :: {:CHANNEL_DELETE, Channel.t(), BotInfo.t()}
+  @type channel_create :: {:CHANNEL_CREATE, Channel.t(), WSState.t()}
+  @type channel_delete :: {:CHANNEL_DELETE, Channel.t(), WSState.t()}
   @typedoc """
   Dispatched when a channel is updated.
 
@@ -122,41 +122,41 @@ defmodule Nostrum.Consumer do
   """
   @type channel_update ::
           {:CHANNEL_UPDATE, {old_channel :: Channel.t() | nil, new_channel :: Channel.t()},
-           BotInfo.t()}
-  @type channel_pins_ack :: {:CHANNEL_PINS_ACK, map, BotInfo.t()}
-  @type channel_pins_update :: {:CHANNEL_PINS_UPDATE, ChannelPinsUpdate.t(), BotInfo.t()}
+           WSState.t()}
+  @type channel_pins_ack :: {:CHANNEL_PINS_ACK, map, WSState.t()}
+  @type channel_pins_update :: {:CHANNEL_PINS_UPDATE, ChannelPinsUpdate.t(), WSState.t()}
   @type guild_audit_log_entry_create ::
-          {:GUILD_AUDIT_LOG_ENTRY_CREATE, AuditLogEntry.t(), BotInfo.t()}
+          {:GUILD_AUDIT_LOG_ENTRY_CREATE, AuditLogEntry.t(), WSState.t()}
   @type guild_ban_add ::
-          {:GUILD_BAN_ADD, GuildBanAdd.t(), BotInfo.t()}
+          {:GUILD_BAN_ADD, GuildBanAdd.t(), WSState.t()}
   @type guild_ban_remove ::
-          {:GUILD_BAN_REMOVE, GuildBanRemove.t(), BotInfo.t()}
-  @type guild_create :: {:GUILD_CREATE, new_guild :: Nostrum.Struct.Guild.t(), BotInfo.t()}
-  @type guild_available :: {:GUILD_AVAILABLE, new_guild :: Nostrum.Struct.Guild.t(), BotInfo.t()}
+          {:GUILD_BAN_REMOVE, GuildBanRemove.t(), WSState.t()}
+  @type guild_create :: {:GUILD_CREATE, new_guild :: Nostrum.Struct.Guild.t(), WSState.t()}
+  @type guild_available :: {:GUILD_AVAILABLE, new_guild :: Nostrum.Struct.Guild.t(), WSState.t()}
   @type guild_unavailable ::
           {:GUILD_UNAVAILABLE, unavailable_guild :: Nostrum.Struct.Guild.UnavailableGuild.t(),
-           BotInfo.t()}
+           WSState.t()}
   @type guild_update ::
           {:GUILD_UPDATE,
            {old_guild :: Nostrum.Struct.Guild.t(), new_guild :: Nostrum.Struct.Guild.t()},
-           BotInfo.t()}
+           WSState.t()}
   @type guild_delete ::
           {:GUILD_DELETE, {old_guild :: Nostrum.Struct.Guild.t(), unavailable :: boolean},
-           BotInfo.t()}
+           WSState.t()}
   @type guild_emojis_update ::
           {:GUILD_EMOJIS_UPDATE,
            {guild_id :: integer, old_emojis :: [Nostrum.Struct.Emoji.t()],
-            new_emojis :: [Nostrum.Struct.Emoji.t()]}, BotInfo.t()}
+            new_emojis :: [Nostrum.Struct.Emoji.t()]}, WSState.t()}
   @type guild_stickers_update ::
           {:GUILD_STICKERS_UPDATE,
            {guild_id :: integer, old_stickers :: [Nostrum.Struct.Sticker.t()],
-            new_stickers :: [Nostrum.Struct.Sticker.t()]}, BotInfo.t()}
+            new_stickers :: [Nostrum.Struct.Sticker.t()]}, WSState.t()}
   @type guild_integrations_update ::
-          {:GUILD_INTEGRATIONS_UPDATE, GuildIntegrationsUpdate.t(), BotInfo.t()}
+          {:GUILD_INTEGRATIONS_UPDATE, GuildIntegrationsUpdate.t(), WSState.t()}
   @type guild_member_add ::
           {:GUILD_MEMBER_ADD,
-           {guild_id :: integer, new_member :: Nostrum.Struct.Guild.Member.t()}, BotInfo.t()}
-  @type guild_members_chunk :: {:GUILD_MEMBERS_CHUNK, map, BotInfo.t()}
+           {guild_id :: integer, new_member :: Nostrum.Struct.Guild.Member.t()}, WSState.t()}
+  @type guild_members_chunk :: {:GUILD_MEMBERS_CHUNK, map, WSState.t()}
   @typedoc """
   Dispatched when somebody leaves a guild.
 
@@ -168,7 +168,7 @@ defmodule Nostrum.Consumer do
   """
   @type guild_member_remove ::
           {:GUILD_MEMBER_REMOVE,
-           {guild_id :: integer, old_member :: Nostrum.Struct.Guild.Member.t()}, BotInfo.t()}
+           {guild_id :: integer, old_member :: Nostrum.Struct.Guild.Member.t()}, WSState.t()}
   @typedoc """
   Dispatched when a guild member is updated.
 
@@ -177,13 +177,13 @@ defmodule Nostrum.Consumer do
   @type guild_member_update ::
           {:GUILD_MEMBER_UPDATE,
            {guild_id :: integer, old_member :: Nostrum.Struct.Guild.Member.t() | nil,
-            new_member :: Nostrum.Struct.Guild.Member.t()}, BotInfo.t()}
+            new_member :: Nostrum.Struct.Guild.Member.t()}, WSState.t()}
   @type guild_role_create ::
           {:GUILD_ROLE_CREATE, {guild_id :: integer, new_role :: Nostrum.Struct.Guild.Role.t()},
-           BotInfo.t()}
+           WSState.t()}
   @type guild_role_delete ::
           {:GUILD_ROLE_DELETE, {guild_id :: integer, old_role :: Nostrum.Struct.Guild.Role.t()},
-           BotInfo.t()}
+           WSState.t()}
   @typedoc """
   Dispatched when a role on a guild is updated.
 
@@ -192,44 +192,44 @@ defmodule Nostrum.Consumer do
   @type guild_role_update ::
           {:GUILD_ROLE_UPDATE,
            {guild_id :: integer, old_role :: Nostrum.Struct.Guild.Role.t() | nil,
-            new_role :: Nostrum.Struct.Guild.Role.t()}, BotInfo.t()}
+            new_role :: Nostrum.Struct.Guild.Role.t()}, WSState.t()}
   @type guild_scheduled_event_create ::
-          {:GUILD_SCHEDULED_EVENT_CREATE, Nostrum.Struct.Guild.ScheduledEvent.t(), BotInfo.t()}
+          {:GUILD_SCHEDULED_EVENT_CREATE, Nostrum.Struct.Guild.ScheduledEvent.t(), WSState.t()}
   @type guild_scheduled_event_delete ::
-          {:GUILD_SCHEDULED_EVENT_DELETE, Nostrum.Struct.Guild.ScheduledEvent.t(), BotInfo.t()}
+          {:GUILD_SCHEDULED_EVENT_DELETE, Nostrum.Struct.Guild.ScheduledEvent.t(), WSState.t()}
   @type guild_scheduled_event_update ::
-          {:GUILD_SCHEDULED_EVENT_UPDATE, Nostrum.Struct.Guild.ScheduledEvent.t(), BotInfo.t()}
+          {:GUILD_SCHEDULED_EVENT_UPDATE, Nostrum.Struct.Guild.ScheduledEvent.t(), WSState.t()}
   @type guild_scheduled_event_user_add ::
-          {:GUILD_SCHEDULED_EVENT_USER_ADD, GuildScheduledEventUserAdd.t(), BotInfo.t()}
+          {:GUILD_SCHEDULED_EVENT_USER_ADD, GuildScheduledEventUserAdd.t(), WSState.t()}
   @type guild_scheduled_event_user_remove ::
-          {:GUILD_SCHEDULED_EVENT_USER_REMOVE, GuildScheduledEventUserRemove.t(), BotInfo.t()}
+          {:GUILD_SCHEDULED_EVENT_USER_REMOVE, GuildScheduledEventUserRemove.t(), WSState.t()}
 
   @typedoc since: "0.5.1"
-  @type integration_create :: {:INTEGRATION_CREATE, Integration.t(), BotInfo.t()}
+  @type integration_create :: {:INTEGRATION_CREATE, Integration.t(), WSState.t()}
 
   @typedoc """
   Different from `t:guild_integrations_update/0` in that more than only the `guild_id` is provided
   """
   @typedoc since: "0.5.1"
-  @type integration_update :: {:INTEGRATION_UPDATE, Integration.t(), BotInfo.t()}
+  @type integration_update :: {:INTEGRATION_UPDATE, Integration.t(), WSState.t()}
   @typedoc since: "0.5.1"
-  @type integration_delete :: {:INTEGRATION_DELETE, GuildIntegrationDelete.t(), BotInfo.t()}
-  @type interaction_create :: {:INTERACTION_CREATE, Interaction.t(), BotInfo.t()}
-  @type message_create :: {:MESSAGE_CREATE, message :: Nostrum.Struct.Message.t(), BotInfo.t()}
-  @type message_delete :: {:MESSAGE_DELETE, MessageDelete.t(), BotInfo.t()}
-  @type message_delete_bulk :: {:MESSAGE_DELETE_BULK, MessageDeleteBulk.t(), BotInfo.t()}
+  @type integration_delete :: {:INTEGRATION_DELETE, GuildIntegrationDelete.t(), WSState.t()}
+  @type interaction_create :: {:INTERACTION_CREATE, Interaction.t(), WSState.t()}
+  @type message_create :: {:MESSAGE_CREATE, message :: Nostrum.Struct.Message.t(), WSState.t()}
+  @type message_delete :: {:MESSAGE_DELETE, MessageDelete.t(), WSState.t()}
+  @type message_delete_bulk :: {:MESSAGE_DELETE_BULK, MessageDeleteBulk.t(), WSState.t()}
   @type message_update ::
           {:MESSAGE_UPDATE,
            {old_message :: Nostrum.Struct.Message.t() | nil,
-            updated_message :: Nostrum.Struct.Message.t()}, BotInfo.t()}
-  @type message_reaction_add :: {:MESSAGE_REACTION_ADD, MessageReactionAdd.t(), BotInfo.t()}
+            updated_message :: Nostrum.Struct.Message.t()}, WSState.t()}
+  @type message_reaction_add :: {:MESSAGE_REACTION_ADD, MessageReactionAdd.t(), WSState.t()}
   @type message_reaction_remove ::
-          {:MESSAGE_REACTION_REMOVE, MessageReactionRemove.t(), BotInfo.t()}
+          {:MESSAGE_REACTION_REMOVE, MessageReactionRemove.t(), WSState.t()}
   @type message_reaction_remove_all ::
-          {:MESSAGE_REACTION_REMOVE_ALL, MessageReactionRemoveAll.t(), BotInfo.t()}
+          {:MESSAGE_REACTION_REMOVE_ALL, MessageReactionRemoveAll.t(), WSState.t()}
   @type message_reaction_remove_emoji ::
-          {:MESSAGE_REACTION_REMOVE_EMOJI, MessageReactionRemoveEmoji.t(), BotInfo.t()}
-  @type message_ack :: {:MESSAGE_ACK, map, BotInfo.t()}
+          {:MESSAGE_REACTION_REMOVE_EMOJI, MessageReactionRemoveEmoji.t(), WSState.t()}
+  @type message_ack :: {:MESSAGE_ACK, map, WSState.t()}
   @typedoc """
   Dispatched when a user's presence is updated.
 
@@ -237,10 +237,10 @@ defmodule Nostrum.Consumer do
   """
   @type presence_update ::
           {:PRESENCE_UPDATE,
-           {guild_id :: integer, old_presence :: map | nil, new_presence :: map}, BotInfo.t()}
-  @type ready :: {:READY, Ready.t(), BotInfo.t()}
-  @type resumed :: {:RESUMED, map, BotInfo.t()}
-  @type typing_start :: {:TYPING_START, TypingStart.t(), BotInfo.t()}
+           {guild_id :: integer, old_presence :: map | nil, new_presence :: map}, WSState.t()}
+  @type ready :: {:READY, Ready.t(), WSState.t()}
+  @type resumed :: {:RESUMED, map, WSState.t()}
+  @type typing_start :: {:TYPING_START, TypingStart.t(), WSState.t()}
   @type user_settings_update :: no_return
   @typedoc """
   Dispatched when a user is updated.
@@ -250,18 +250,18 @@ defmodule Nostrum.Consumer do
   @type user_update ::
           {:USER_UPDATE,
            {old_user :: Nostrum.Struct.User.t() | nil, new_user :: Nostrum.Struct.User.t()},
-           BotInfo.t()}
+           WSState.t()}
   @typedoc """
   Dispatched when the bot is ready to begin sending audio after joining a voice channel
 
-  Note that the third tuple element is of type `t:Nostrum.Struct.VoiceWSState.t/0` instead of `t:Nostrum.Struct.BotInfo.t/0`.
+  Note that the third tuple element is of type `t:Nostrum.Struct.VoiceWSState.t/0` instead of `t:Nostrum.Struct.WSState.t/0`.
   """
   @typedoc since: "0.5.0"
   @type voice_ready :: {:VOICE_READY, VoiceReady.t(), VoiceWSState.t()}
   @typedoc """
   Dispatched when the bot starts or stops speaking
 
-  Note that the third tuple element is of type `t:Nostrum.Struct.VoiceWSState.t/0` instead of `t:Nostrum.Struct.BotInfo.t/0`.
+  Note that the third tuple element is of type `t:Nostrum.Struct.VoiceWSState.t/0` instead of `t:Nostrum.Struct.WSState.t/0`.
   """
   @type voice_speaking_update :: {:VOICE_SPEAKING_UPDATE, SpeakingUpdate.t(), VoiceWSState.t()}
   @typedoc """
@@ -271,54 +271,54 @@ defmodule Nostrum.Consumer do
   RTP header information and an opus packet. While someone is actively talking, you can
   expect about 50 events per second per speaking user.
 
-  Note that the third tuple element is of type `t:Nostrum.Struct.VoiceWSState.t/0` instead of `t:Nostrum.Struct.BotInfo.t/0`.
+  Note that the third tuple element is of type `t:Nostrum.Struct.VoiceWSState.t/0` instead of `t:Nostrum.Struct.WSState.t/0`.
   That struct contains a `t:Nostrum.Struct.VoiceWSState.ssrc_map/0` that can determine the speaking user based
   on the SSRC.
   """
   @typedoc since: "0.6.0"
   @type voice_incoming_packet ::
           {:VOICE_INCOMING_PACKET, Nostrum.Voice.rtp_opus(), VoiceWSState.t()}
-  @type voice_state_update :: {:VOICE_STATE_UPDATE, VoiceState.t(), BotInfo.t()}
-  @type voice_server_update :: {:VOICE_SERVER_UPDATE, VoiceServerUpdate.t(), BotInfo.t()}
-  @type webhooks_update :: {:WEBHOOKS_UPDATE, map, BotInfo.t()}
+  @type voice_state_update :: {:VOICE_STATE_UPDATE, VoiceState.t(), WSState.t()}
+  @type voice_server_update :: {:VOICE_SERVER_UPDATE, VoiceServerUpdate.t(), WSState.t()}
+  @type webhooks_update :: {:WEBHOOKS_UPDATE, map, WSState.t()}
 
   @typedoc """
   Dispatched when a thread is created or when added to a private thread
   """
-  @type thread_create :: {:THREAD_CREATE, Channel.t(), BotInfo.t()}
+  @type thread_create :: {:THREAD_CREATE, Channel.t(), WSState.t()}
 
   @typedoc """
   Dispatched when a thread is deleted, if the thread was cached, contains the original thread, otherwise contains `:noop`
   """
-  @type thread_delete :: {:THREAD_DELETE, Channel.t() | :noop, BotInfo.t()}
+  @type thread_delete :: {:THREAD_DELETE, Channel.t() | :noop, WSState.t()}
   @type thread_update ::
           {:THREAD_UPDATE, {old_thread :: Channel.t() | nil, new_thread :: Channel.t()},
-           BotInfo.t()}
+           WSState.t()}
 
   @typedoc """
   Dispatched when gaining access to a channel
   """
-  @type thread_list_sync :: {:THREAD_LIST_SYNC, ThreadListSync.t(), BotInfo.t()}
+  @type thread_list_sync :: {:THREAD_LIST_SYNC, ThreadListSync.t(), WSState.t()}
 
   @typedoc """
   Dispatched when a `ThreadMember` for the current user is updated
   """
-  @type thread_member_update :: {:THREAD_MEMBER_UPDATE, ThreadMember.t(), BotInfo.t()}
+  @type thread_member_update :: {:THREAD_MEMBER_UPDATE, ThreadMember.t(), WSState.t()}
 
   @typedoc """
   Dispatched when member(s) are added or removed from a thread
   """
-  @type thread_members_update :: {:THREAD_MEMBERS_UPDATE, ThreadMembersUpdate.t(), BotInfo.t()}
+  @type thread_members_update :: {:THREAD_MEMBERS_UPDATE, ThreadMembersUpdate.t(), WSState.t()}
 
   @typedoc """
   Dispatched when a user adds a vote to a poll.
   """
-  @type message_poll_vote_add :: {:MESSAGE_POLL_VOTE_ADD, PollVoteChange.t(), BotInfo.t()}
+  @type message_poll_vote_add :: {:MESSAGE_POLL_VOTE_ADD, PollVoteChange.t(), WSState.t()}
 
   @typedoc """
   Dispatched when a user removes a vote from a poll.
   """
-  @type message_poll_vote_remove :: {:MESSAGE_POLL_VOTE_REMOVE, PollVoteChange.t(), BotInfo.t()}
+  @type message_poll_vote_remove :: {:MESSAGE_POLL_VOTE_REMOVE, PollVoteChange.t(), WSState.t()}
 
   @type event ::
           auto_moderation_rule_create

@@ -9,22 +9,14 @@ defmodule AudioPlayerSupervisor do
 
   @impl true
   def init(_init_arg) do
-    bot_options = %{
-      consumer: AudioPlayerConsumer,
-      intents: [:direct_messages, :guild_messages, :guild_voice_states, :message_content],
-      wrapped_token: fn -> System.fetch_env!("BOT_TOKEN") end
-    }
-
-    children = [
-      {Nostrum.Bot, {bot_options, []}}
-    ]
+    children = [AudioPlayerConsumer]
 
     Supervisor.init(children, strategy: :one_for_one)
   end
 end
 
 defmodule AudioPlayerConsumer do
-  @behaviour Nostrum.Consumer
+  use Nostrum.Consumer
 
   alias Nostrum.Api.ApplicationCommand
   alias Nostrum.Api.Interaction
@@ -83,13 +75,13 @@ defmodule AudioPlayerConsumer do
     end)
   end
 
-  def handle_event({:READY, %{guilds: guilds} = _event, _bot_info}) do
+  def handle_event({:READY, %{guilds: guilds} = _event, _ws_state}) do
     guilds
     |> Enum.map(fn guild -> guild.id end)
     |> Enum.each(&create_guild_commands/1)
   end
 
-  def handle_event({:INTERACTION_CREATE, interaction, _bot_info}) do
+  def handle_event({:INTERACTION_CREATE, interaction, _ws_state}) do
     # Run the command, and check for a response message, or default to a checkmark emoji
     message =
       case do_command(interaction) do
@@ -100,7 +92,7 @@ defmodule AudioPlayerConsumer do
     Interaction.create_response(interaction, %{type: 4, data: %{content: message}})
   end
 
-  def handle_event({:VOICE_SPEAKING_UPDATE, payload, _bot_info}) do
+  def handle_event({:VOICE_SPEAKING_UPDATE, payload, _ws_state}) do
     Logger.debug("VOICE SPEAKING UPDATE #{inspect(payload)}")
   end
 

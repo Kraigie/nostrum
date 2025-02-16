@@ -9,7 +9,6 @@ defmodule ExampleSupervisor do
   def init(_init_arg) do
     bot_options = %{
       consumer: MyBot.Consumer,
-      intents: [:direct_messages, :guild_messages, :message_content],
       wrapped_token: fn -> System.fetch_env!("BOT_TOKEN") end
     }
 
@@ -26,7 +25,7 @@ defmodule MyBot.Consumer do
 
   alias Nostrum.Api.Message
 
-  def handle_event({:MESSAGE_CREATE, msg, _bot_info}) do
+  def handle_event({:MESSAGE_CREATE, msg, _ws_state}) do
     case msg.content do
       "!sleep" ->
         Message.create(msg.channel_id, "Going to sleep...")
