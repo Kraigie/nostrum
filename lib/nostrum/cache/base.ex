@@ -33,7 +33,7 @@ defmodule Nostrum.Cache.Base do
     To retrieve the table name used by this cache, use `table/0`.
     """
 
-  @moduledoc since: "0.10.0"
+  @doc since: "0.10.0"
   def get_cache_module(cache_name, default) do
     case @cache_map do
       %{^cache_name => nil} -> default
@@ -42,7 +42,7 @@ defmodule Nostrum.Cache.Base do
     end
   end
 
-  @moduledoc since: "0.10.0"
+  @doc since: "0.10.0"
   def get_cache_options(cache_name) do
     case @cache_map do
       %{^cache_name => nil} -> []
