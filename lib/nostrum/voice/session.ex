@@ -23,15 +23,15 @@ defmodule Nostrum.Voice.Session do
 
   @timeout_ws_upgrade 10_000
 
-  def start_link(%VoiceState{} = vs) do
-    GenServer.start_link(__MODULE__, vs)
+  def start_link(%VoiceState{} = vs, %{} = bot_options) do
+    GenServer.start_link(__MODULE__, {vs, bot_options})
   end
 
   def init(args) do
     {:ok, nil, {:continue, args}}
   end
 
-  def handle_continue(%VoiceState{channel_id: channel_id, guild_id: guild_id} = voice, nil) do
+  def handle_continue({%VoiceState{channel_id: channel_id, guild_id: guild_id} = voice, %{consumer: consumer} = _bot_options}, nil) do
     case GuildCache.get(guild_id) do
       {:ok, %{name: guild_name, channels: %{^channel_id => %{name: channel_name}}}} ->
         Logger.metadata(guild: ~s|"#{guild_name}"|, channel: ~s|"#{channel_name}"|)
@@ -61,7 +61,8 @@ defmodule Nostrum.Voice.Session do
       seq: -1,
       stream: stream,
       last_heartbeat_ack: DateTime.utc_now(),
-      heartbeat_ack: true
+      heartbeat_ack: true,
+      consumer: consumer
     }
 
     Logger.debug(fn -> "Voice Websocket connection up on worker #{inspect(worker)}" end)

@@ -21,7 +21,8 @@ defmodule Nostrum.Struct.VoiceWSState do
     :last_heartbeat_ack,
     :heartbeat_ack,
     :heartbeat_interval,
-    :heartbeat_ref
+    :heartbeat_ref,
+    :consumer
   ]
 
   @typedoc "The guild id that this voice websocket state applies to"
@@ -92,6 +93,10 @@ defmodule Nostrum.Struct.VoiceWSState do
   @typedoc "Time ref for the heartbeat"
   @type heartbeat_ref :: :timer.tref() | nil
 
+  @typedoc "The consumer callback module. See `Nostrum.Consumer`."
+  @typedoc since: "0.11.0"
+  @type consumer :: module()
+
   @type t :: %__MODULE__{
           guild_id: guild_id,
           channel_id: channel_id,
@@ -110,6 +115,7 @@ defmodule Nostrum.Struct.VoiceWSState do
           last_heartbeat_ack: last_heartbeat_ack,
           heartbeat_ack: heartbeat_ack,
           heartbeat_interval: heartbeat_interval,
-          heartbeat_ref: heartbeat_ref
+          heartbeat_ref: heartbeat_ref,
+          consumer: consumer
         }
 end
