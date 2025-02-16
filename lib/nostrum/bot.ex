@@ -148,7 +148,9 @@ defmodule Nostrum.Bot do
   def init(
         {%{consumer: _consumer, wrapped_token: wrapped_token} = bot_options, supervisor_options}
       ) do
-    bot_id = Token.decode_token!(wrapped_token.())
+    token = wrapped_token.()
+    wrapped_token = fn -> token end
+    bot_id = Token.decode_token!(token)
     name = {__MODULE__, bot_id}
     Util.set_process_label(name)
 
@@ -160,7 +162,7 @@ defmodule Nostrum.Bot do
       Nostrum.Shard.Connector,
       Nostrum.Cache.CacheSupervisor,
       {Nostrum.Shard.Supervisor, {bot_options, []}},
-      Nostrum.Voice.Supervisor
+      {Nostrum.Voice.Supervisor, bot_options}
     ]
 
     Supervisor.start_link(children, supervisor_options)

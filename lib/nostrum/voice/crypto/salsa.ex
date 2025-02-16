@@ -1,6 +1,6 @@
 defmodule Nostrum.Voice.Crypto.Salsa do
   @moduledoc """
-  Handles encryption and decryption of outgoing and incoming voice data when a ChaCha encryption mode is selected
+  Handles encryption and decryption of outgoing and incoming voice data when a Salsa encryption mode is selected
 
   > ### Internal module {: .info}
   >

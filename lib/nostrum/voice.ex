@@ -100,13 +100,13 @@ defmodule Nostrum.Voice do
   @url_types [:url, :ytdl, :stream]
 
   @doc false
-  def start_link(_args) do
-    GenServer.start_link(__MODULE__, %{}, name: Nostrum.VoiceStateMap)
+  def start_link(%{consumer: _consumer} = bot_options) do
+    GenServer.start_link(__MODULE__, bot_options, name: Nostrum.VoiceStateMap)
   end
 
   @doc false
-  def init(args) do
-    {:ok, args}
+  def init(bot_options) do
+    {:ok, %{:bot_options => bot_options}}
   end
 
   @doc false
@@ -122,6 +122,10 @@ defmodule Nostrum.Voice do
   @doc false
   def remove_voice(guild_id, pre_cleanup_args \\ []) do
     GenServer.cast(Nostrum.VoiceStateMap, {:remove, guild_id, pre_cleanup_args})
+  end
+
+  defp get_bot_options do
+    GenServer.call(Nostrum.VoiceStateMap, :options)
   end
 
   @doc false
@@ -582,10 +586,11 @@ defmodule Nostrum.Voice do
   @spec connect_to_gateway(Guild.id()) :: :ok | {:error, String.t()}
   def connect_to_gateway(guild_id) do
     voice = get_voice(guild_id)
+    options = get_bot_options()
 
     cond do
       VoiceState.ready_for_ws?(voice) ->
-        {:ok, _pid} = VoiceSupervisor.create_session(voice)
+        {:ok, _pid} = VoiceSupervisor.create_session(voice, options)
         :ok
 
       is_nil(voice) ->
@@ -763,9 +768,10 @@ defmodule Nostrum.Voice do
       |> Map.merge(Map.new(args))
 
     state = Map.put(state, guild_id, voice)
+    bot_options = state[:bot_options]
 
     if Application.get_env(:nostrum, :voice_auto_connect, true),
-      do: _result = start_if_ready(voice)
+      do: _result = start_if_ready(voice, bot_options)
 
     {:reply, voice, state}
   end
@@ -773,6 +779,11 @@ defmodule Nostrum.Voice do
   @doc false
   def handle_call({:get, guild_id}, _from, state) do
     {:reply, Map.get(state, guild_id), state}
+  end
+
+  @doc false
+  def handle_call(:options, _from, state) do
+    {:reply, Map.get(state, :bot_options), state}
   end
 
   @doc false
@@ -791,9 +802,9 @@ defmodule Nostrum.Voice do
   end
 
   @doc false
-  def start_if_ready(%VoiceState{} = voice) do
+  def start_if_ready(%VoiceState{} = voice, bot_options) do
     if VoiceState.ready_for_ws?(voice) do
-      VoiceSupervisor.create_session(voice)
+      VoiceSupervisor.create_session(voice, bot_options)
     end
   end
 

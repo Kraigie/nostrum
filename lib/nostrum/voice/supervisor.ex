@@ -25,10 +25,10 @@ defmodule Nostrum.Voice.Supervisor do
     Supervisor.init(children, options)
   end
 
-  def create_session(%VoiceState{} = voice) do
+  def create_session(%VoiceState{} = voice, %{consumer: _consumer} = bot_options) do
     child = %{
       id: voice.guild_id,
-      start: {Session, :start_link, [voice]},
+      start: {Session, :start_link, [voice, bot_options]},
       restart: :transient
     }
 
