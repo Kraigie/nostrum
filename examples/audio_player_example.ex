@@ -9,14 +9,22 @@ defmodule AudioPlayerSupervisor do
 
   @impl true
   def init(_init_arg) do
-    children = [AudioPlayerConsumer]
+    bot_options = %{
+      consumer: AudioPlayerConsumer,
+      intents: [:direct_messages, :guild_messages, :guild_voice_states, :message_content],
+      wrapped_token: fn -> System.fetch_env!("BOT_TOKEN") end
+    }
+
+    children = [
+      {Nostrum.Bot, {bot_options, []}}
+    ]
 
     Supervisor.init(children, strategy: :one_for_one)
   end
 end
 
 defmodule AudioPlayerConsumer do
-  use Nostrum.Consumer
+  @behaviour Nostrum.Consumer
 
   alias Nostrum.Api.ApplicationCommand
   alias Nostrum.Api.Interaction
