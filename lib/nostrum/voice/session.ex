@@ -31,7 +31,11 @@ defmodule Nostrum.Voice.Session do
     {:ok, nil, {:continue, args}}
   end
 
-  def handle_continue({%VoiceState{channel_id: channel_id, guild_id: guild_id} = voice, %{consumer: consumer} = _bot_options}, nil) do
+  def handle_continue(
+        {%VoiceState{channel_id: channel_id, guild_id: guild_id} = voice,
+         %{consumer: consumer} = _bot_options},
+        _init_state
+      ) do
     case GuildCache.get(guild_id) do
       {:ok, %{name: guild_name, channels: %{^channel_id => %{name: channel_name}}}} ->
         Logger.metadata(guild: ~s|"#{guild_name}"|, channel: ~s|"#{channel_name}"|)
