@@ -173,6 +173,10 @@ defmodule Nostrum.Shard.Supervisor do
   @spec connect(shard_num(), total_shards(), Nostrum.Bot.bot_options()) ::
           DynamicSupervisor.on_start_child()
   def connect(shard_num, total_shards, bot_options) do
+    # XXX: This currently relies on the module being registered under that name.
+    # We need to name it according to the bot, but that's not enough either,
+    # because we also need to name it according to the shards that are being
+    # started, otherwise we could have conflicts.
     DynamicSupervisor.start_child(__MODULE__, create_worker(shard_num, total_shards, bot_options))
   end
 
