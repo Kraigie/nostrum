@@ -87,11 +87,12 @@ defmodule Nostrum.Bot do
 
   - `:wrapped_token`: A function that takes no arguments and returns the bot
   token to use. This is wrapped to prevent exposure of the token in
-  stacktraces.
+  stacktraces. You may also provide the token as string, which will be wrapped
+  in an anonymous function.
   """
   @type bot_options :: %{
           required(:consumer) => module(),
-          required(:wrapped_token) => (-> String.t()),
+          required(:wrapped_token) => (-> String.t()) | String.t(),
           required(:intents) => :all | :nonprivileged | [atom()]
         }
 
@@ -122,6 +123,12 @@ defmodule Nostrum.Bot do
   def init(
         {%{consumer: _consumer, wrapped_token: wrapped_token} = bot_options, supervisor_options}
       ) do
+    wrapped_token =
+      case wrapped_token do
+        func when is_function(func, 0) -> func
+        token when is_binary(token) -> fn -> token end
+      end
+
     bot_id = Token.check_token!(wrapped_token.())
     name = {__MODULE__, bot_id}
     Util.set_process_label(name)
@@ -134,7 +141,7 @@ defmodule Nostrum.Bot do
       Nostrum.Shard.Connector,
       Nostrum.Cache.CacheSupervisor,
       {Nostrum.Shard.Supervisor, {bot_options, []}},
-      Nostrum.Voice.Supervisor
+      {Nostrum.Voice.Supervisor, bot_options}
     ]
 
     Supervisor.start_link(children, supervisor_options)
