@@ -12,7 +12,7 @@
 
     <link rel="stylesheet" href="dist/html-elixir-6X3L5KMG.css" />
 
-    <script defer src="dist/sidebar_items-6FBF593A.js"></script>
+    <script defer src="dist/sidebar_items-DBE17C49.js"></script>
     <script defer src="docs_config.js"></script>
     <script defer src="dist/html-6VTPNSGQ.js"></script>
 
@@ -99,12 +99,12 @@ nostrum
   </a>
   <span class="text">Usage</span>
 </h2>
-<p>In your supervisor tree, write:</p><pre><code class="makeup elixir" translate="no"><span class="n">bot_options</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="3758195822-1">%{</span><span class="w">
+<p>In your supervisor tree, write:</p><pre><code class="makeup elixir" translate="no"><span class="n">bot_options</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="4928098889-1">%{</span><span class="w">
   </span><span class="ss">consumer</span><span class="p">:</span><span class="w"> </span><span class="nc">MyBot.Consumer</span><span class="p">,</span><span class="w">
   </span><span class="c1"># This is an example and includes privileged intents, but</span><span class="w">
   </span><span class="c1"># should provide a useful set of intents for bots. Feel</span><span class="w">
   </span><span class="c1"># free to adjust this as you see fit.</span><span class="w">
-  </span><span class="ss">intents</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="3758195822-2">[</span><span class="w">
+  </span><span class="ss">intents</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="4928098889-2">[</span><span class="w">
     </span><span class="ss">:direct_messages</span><span class="p">,</span><span class="w">
     </span><span class="ss">:guild_bans</span><span class="p">,</span><span class="w">
     </span><span class="ss">:guild_members</span><span class="p">,</span><span class="w">
@@ -112,12 +112,12 @@ nostrum
     </span><span class="ss">:guild_messages</span><span class="p">,</span><span class="w">
     </span><span class="ss">:guilds</span><span class="p">,</span><span class="w">
     </span><span class="ss">:message_content</span><span class="w">
-  </span><span class="p" data-group-id="3758195822-2">]</span><span class="p">,</span><span class="w">
-  </span><span class="ss">wrapped_token</span><span class="p">:</span><span class="w"> </span><span class="k" data-group-id="3758195822-3">fn</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="nc">System</span><span class="o">.</span><span class="n">fetch_env!</span><span class="p" data-group-id="3758195822-4">(</span><span class="s">&quot;BOT_TOKEN&quot;</span><span class="p" data-group-id="3758195822-4">)</span><span class="w"> </span><span class="k" data-group-id="3758195822-3">end</span><span class="p">,</span><span class="w">
-</span><span class="p" data-group-id="3758195822-1">}</span><span class="w">
-</span><span class="n">children</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="3758195822-5">[</span><span class="w">
-  </span><span class="p" data-group-id="3758195822-6">{</span><span class="nc">Nostrum.Bot</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="3758195822-7">{</span><span class="n">bot_options</span><span class="p">,</span><span class="w"> </span><span class="n">supervisor_options</span><span class="p" data-group-id="3758195822-7">}</span><span class="p" data-group-id="3758195822-6">}</span><span class="w">
-</span><span class="p" data-group-id="3758195822-5">]</span></code></pre><p>See <a href="#t:bot_options/0"><code class="inline">bot_options/0</code></a> for which options you can configure here.
+  </span><span class="p" data-group-id="4928098889-2">]</span><span class="p">,</span><span class="w">
+  </span><span class="ss">wrapped_token</span><span class="p">:</span><span class="w"> </span><span class="k" data-group-id="4928098889-3">fn</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="nc">System</span><span class="o">.</span><span class="n">fetch_env!</span><span class="p" data-group-id="4928098889-4">(</span><span class="s">&quot;BOT_TOKEN&quot;</span><span class="p" data-group-id="4928098889-4">)</span><span class="w"> </span><span class="k" data-group-id="4928098889-3">end</span><span class="p">,</span><span class="w">
+</span><span class="p" data-group-id="4928098889-1">}</span><span class="w">
+</span><span class="n">children</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="4928098889-5">[</span><span class="w">
+  </span><span class="p" data-group-id="4928098889-6">{</span><span class="nc">Nostrum.Bot</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="4928098889-7">{</span><span class="n">bot_options</span><span class="p">,</span><span class="w"> </span><span class="n">supervisor_options</span><span class="p" data-group-id="4928098889-7">}</span><span class="p" data-group-id="4928098889-6">}</span><span class="w">
+</span><span class="p" data-group-id="4928098889-5">]</span></code></pre><p>See <a href="#t:bot_options/0"><code class="inline">bot_options/0</code></a> for which options you can configure here.
 <a href="#t:supervisor_options/0"><code class="inline">supervisor_options/0</code></a> allow you to customize the options we start the
 <a href="https://hexdocs.pm/elixir/Supervisor.html"><code class="inline">Supervisor</code></a> with.</p><h2 id="module-migration-guide" class="section-heading">
   <a href="#module-migration-guide" class="hover-link">
@@ -132,7 +132,7 @@ automatic startup via the application is disabled.</p></li><li><p>Remove your co
 setting, cut the value you previously had in your <code class="inline">config.exs</code> and use it
 here. Do the same with <code class="inline">:num_shards</code>, renaming it to <code class="inline">:shards</code> on the
 <code class="inline">bot_options</code> map. You can then remove the old config values.</p></li><li><p>In your consumer, change <code class="inline">use Nostrum.Consumer</code> to <code class="inline">@behaviour Nostrum.Consumer</code>.</p></li><li><p>In your consumer, add a default event handling clause for unmatched events
-at the end of the module, such as:</p></li></ol><pre><code class="makeup elixir" translate="no"><span class="w">  </span><span class="kd">def</span><span class="w"> </span><span class="nf">handle_event</span><span class="p" data-group-id="9715502215-1">(</span><span class="bp">_</span><span class="p" data-group-id="9715502215-1">)</span><span class="p">,</span><span class="w"> </span><span class="ss">do</span><span class="p">:</span><span class="w"> </span><span class="ss">:ok</span></code></pre><h2 id="module-limitations" class="section-heading">
+at the end of the module, such as:</p></li></ol><pre><code class="makeup elixir" translate="no"><span class="w">  </span><span class="kd">def</span><span class="w"> </span><span class="nf">handle_event</span><span class="p" data-group-id="5997327982-1">(</span><span class="bp">_</span><span class="p" data-group-id="5997327982-1">)</span><span class="p">,</span><span class="w"> </span><span class="ss">do</span><span class="p">:</span><span class="w"> </span><span class="ss">:ok</span></code></pre><h2 id="module-limitations" class="section-heading">
   <a href="#module-limitations" class="hover-link">
     <i class="ri-link-m" aria-hidden="true"></i>
   </a>
@@ -245,10 +245,11 @@ update from you.</p>
   :intents =&gt; :all | :nonprivileged | [<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">atom</a>()],
   :wrapped_token =&gt; (-&gt; <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()),
   optional(:shards) =&gt;
-    :auto | :manual | num_shards() ::
-      <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pos_integer</a>()
-      | {lowest :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pos_integer</a>(), highest :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pos_integer</a>(),
-         total :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pos_integer</a>()}
+    :auto
+    | :manual
+    | (num_shards :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pos_integer</a>())
+    | {lowest :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pos_integer</a>(), highest :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pos_integer</a>(),
+       total :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pos_integer</a>()}
 }</pre>
 
       </div>
@@ -291,7 +292,7 @@ have. Useful for splitting a single bot across multiple nodes, see the
         <span class="note">(since 0.11.0)</span>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/bot.ex#L129" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/bot.ex#L131" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -323,7 +324,7 @@ or on our <a href="gateway_intents.html">Gateway Intents</a> documentation.</p>
         <span class="note">(since 0.11.0)</span>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/bot.ex#L137" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/bot.ex#L139" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -366,7 +367,7 @@ nostrum.</p>
         <span class="note">(since 0.11.0)</span>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/bot.ex#L168" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/bot.ex#L170" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
