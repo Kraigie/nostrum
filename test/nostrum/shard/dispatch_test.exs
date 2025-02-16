@@ -3,6 +3,7 @@ defmodule Nostrum.Shard.DispatchTest do
 
   alias Nostrum.Shard.Dispatch
   alias Nostrum.Struct.Event.{MessageDelete, MessageDeleteBulk}
+  alias NostrumTest.Stubs
 
   describe "handle_event/1" do
     test "returns `MessageDelete.t()` given Message Delete event" do

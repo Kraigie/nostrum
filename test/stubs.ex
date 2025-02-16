@@ -1,4 +1,4 @@
-defmodule Stubs do
+defmodule NostrumTest.Stubs do
   @moduledoc false
 
   def gateway_message_delete_payload,
