@@ -45,7 +45,8 @@ defmodule Nostrum.Bot do
   3. In your supervisor tree, add the `bot_options` described above, and add
   `Nostrum.Bot` to your supervisor tree as described above. For the `:intents`
   setting, cut the value you previously had in your `config.exs` and use it
-  here. You can then remove the config value.
+  here. Do the same with `:num_shards`, renaming it to `:shards` on the
+  `bot_options` map. You can then remove the old config values.
 
   4. In your consumer, change `use Nostrum.Consumer` to `@behaviour Nostrum.Consumer`.
 
@@ -87,13 +88,37 @@ defmodule Nostrum.Bot do
 
   - `:wrapped_token`: A function that takes no arguments and returns the bot
   token to use. This is wrapped to prevent exposure of the token in
-  stacktraces. You may also provide the token as string, which will be wrapped
-  in an anonymous function.
+  stacktraces.
+
+  ## Optional fields
+
+  - `:shards`: Shards that should be started with this bot. Possible values:
+
+    - `:auto` uses the suggested amount of shards as provided by Discord. This
+    value is the default.
+
+    - `:manual` do not automatically spawn shards. In this case, it is your
+    responsibility to spawn shards manually, see [the manual sharding
+    documentation](./manual_sharding.html).
+
+    - `pos_integer()`: A number of shards to run. nostrum will warn if this is
+    not the recommended amount.
+
+    - `{lowest, highest, total}` starts shards `lowest` to `highest`. `total`
+    should contain the total amount of shards that your bot is expected to
+    have. Useful for splitting a single bot across multiple nodes, see the
+    [multi-node documentation](./multi_node.html) for further information.
   """
   @type bot_options :: %{
           required(:consumer) => module(),
-          required(:wrapped_token) => (-> String.t()) | String.t(),
-          required(:intents) => :all | :nonprivileged | [atom()]
+          required(:intents) => :all | :nonprivileged | [atom()],
+          required(:wrapped_token) => (-> String.t()),
+          optional(:shards) =>
+            :auto
+            | :manual
+            | (num_shards ::
+                 pos_integer())
+            | {lowest :: pos_integer(), highest :: pos_integer(), total :: pos_integer()}
         }
 
   @typedoc """
@@ -123,13 +148,9 @@ defmodule Nostrum.Bot do
   def init(
         {%{consumer: _consumer, wrapped_token: wrapped_token} = bot_options, supervisor_options}
       ) do
-    wrapped_token =
-      case wrapped_token do
-        func when is_function(func, 0) -> func
-        token when is_binary(token) -> fn -> token end
-      end
-
-    bot_id = Token.check_token!(wrapped_token.())
+    token = wrapped_token.()
+    wrapped_token = fn -> token end
+    bot_id = Token.decode_token!(token)
     name = {__MODULE__, bot_id}
     Util.set_process_label(name)
 

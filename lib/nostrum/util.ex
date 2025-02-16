@@ -52,42 +52,6 @@ defmodule Nostrum.Util do
     end
   end
 
-  @doc """
-  Returns the total amount of shards as per the configuration.
-
-  ## Return value
-
-  - If you specified your shards as `:auto`, the return value will be the
-  recommended number of shards as given by the gateway.
-
-  - If you explicitly specified your shard numbers as an integer, it will be
-  the given number.
-
-  - If you specified your shards in the form `{lowest, highest, total}` to
-  start a specific range of the total shards you want to start, this will be
-  the `total` value.
-
-  Should Discord not supply us with any shard information, this will return
-  `1`.
-
-  Note that this is not the number of currently active shards, but the number
-  of shards specified in your config.
-  """
-  @spec num_shards() :: pos_integer()
-  def num_shards do
-    num =
-      with :auto <- Application.get_env(:nostrum, :num_shards, :auto),
-           {_url, shards} <- gateway() do
-        shards
-      end
-
-    case num do
-      {_lowest, _highest, total} -> total
-      :manual -> 0
-      nil -> 1
-    end
-  end
-
   @doc false
   def bangify_find(to_bang, find, cache_name) do
     case to_bang do

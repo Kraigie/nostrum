@@ -26,7 +26,7 @@ defmodule MyBot.Consumer do
 
   alias Nostrum.Api.Message
 
-  def handle_event({:MESSAGE_CREATE, msg, _bot_info}) do
+  def handle_event({:MESSAGE_CREATE, msg, _ws_state}) do
     case msg.content do
       "!sleep" ->
         Message.create(msg.channel_id, "Going to sleep...")

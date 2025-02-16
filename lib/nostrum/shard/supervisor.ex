@@ -70,7 +70,7 @@ defmodule Nostrum.Shard.Supervisor do
     Logger.warning(
       "Configured shard count (#{count}) " <>
         "differs from Discord Gateway's recommended shard count (#{gateway_shards}). " <>
-        "Consider using `num_shards: :auto` option in your Nostrum config."
+        "Consider using `num_shards: :auto` option in your bot options."
     )
 
     {1, count, count}
@@ -92,7 +92,7 @@ defmodule Nostrum.Shard.Supervisor do
         name: __MODULE__
       )
 
-    case Application.get_env(:nostrum, :num_shards, :auto) do
+    case Map.get(bot_options, :shards, :auto) do
       :manual ->
         on_start
 
@@ -173,6 +173,10 @@ defmodule Nostrum.Shard.Supervisor do
   @spec connect(shard_num(), total_shards(), Nostrum.Bot.bot_options()) ::
           DynamicSupervisor.on_start_child()
   def connect(shard_num, total_shards, bot_options) do
+    # XXX: This currently relies on the module being registered under that name.
+    # We need to name it according to the bot, but that's not enough either,
+    # because we also need to name it according to the shards that are being
+    # started, otherwise we could have conflicts.
     DynamicSupervisor.start_child(__MODULE__, create_worker(shard_num, total_shards, bot_options))
   end
 

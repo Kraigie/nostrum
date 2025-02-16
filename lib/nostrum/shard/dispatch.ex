@@ -46,7 +46,6 @@ defmodule Nostrum.Shard.Dispatch do
 
   alias Nostrum.Struct.{
     AutoModerationRule,
-    BotInfo,
     Interaction,
     ThreadMember,
     User,
@@ -78,10 +77,8 @@ defmodule Nostrum.Shard.Dispatch do
 
   # Handles the case of not finding users in the user cache
   defp format_event({_name, :noop, _state}), do: :noop
-
-  defp format_event({name, event_info, _state}),
-    do: {name, event_info, %BotInfo{shard_session: self()}}
-
+  defp format_event({_name, event_info, _state} = event) when is_tuple(event_info), do: event
+  defp format_event({name, event_info, state}), do: {name, event_info, state}
   defp format_event(:noop), do: :noop
 
   @spec send_events([event], module()) :: [event] when event: Consumer.event()

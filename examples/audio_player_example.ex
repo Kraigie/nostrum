@@ -83,13 +83,13 @@ defmodule AudioPlayerConsumer do
     end)
   end
 
-  def handle_event({:READY, %{guilds: guilds} = _event, _bot_info}) do
+  def handle_event({:READY, %{guilds: guilds} = _event, _ws_state}) do
     guilds
     |> Enum.map(fn guild -> guild.id end)
     |> Enum.each(&create_guild_commands/1)
   end
 
-  def handle_event({:INTERACTION_CREATE, interaction, _bot_info}) do
+  def handle_event({:INTERACTION_CREATE, interaction, _ws_state}) do
     # Run the command, and check for a response message, or default to a checkmark emoji
     message =
       case do_command(interaction) do
@@ -100,7 +100,7 @@ defmodule AudioPlayerConsumer do
     Interaction.create_response(interaction, %{type: 4, data: %{content: message}})
   end
 
-  def handle_event({:VOICE_SPEAKING_UPDATE, payload, _bot_info}) do
+  def handle_event({:VOICE_SPEAKING_UPDATE, payload, _ws_state}) do
     Logger.debug("VOICE SPEAKING UPDATE #{inspect(payload)}")
   end
 

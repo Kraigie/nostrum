@@ -29,7 +29,7 @@ defmodule CacheExampleConsumer do
 
   # We only need to write event handlers for the events we are interested in,
   # the rest will go to the catch-all case to be ignored.
-  def handle_event({:MESSAGE_CREATE, message, _bot_info}) do
+  def handle_event({:MESSAGE_CREATE, message, _ws_state}) do
     ExampleCommands.command(message)
   end
 end
