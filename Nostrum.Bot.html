@@ -12,7 +12,7 @@
 
     <link rel="stylesheet" href="dist/html-elixir-6X3L5KMG.css" />
 
-    <script defer src="dist/sidebar_items-D8DFC9B2.js"></script>
+    <script defer src="dist/sidebar_items-EC032187.js"></script>
     <script defer src="docs_config.js"></script>
     <script defer src="dist/html-6VTPNSGQ.js"></script>
 
@@ -99,12 +99,12 @@ nostrum
   </a>
   <span class="text">Usage</span>
 </h2>
-<p>In your supervisor tree, write:</p><pre><code class="makeup elixir" translate="no"><span class="n">bot_options</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="2593407322-1">%{</span><span class="w">
+<p>In your supervisor tree, write:</p><pre><code class="makeup elixir" translate="no"><span class="n">bot_options</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="6796617252-1">%{</span><span class="w">
   </span><span class="ss">consumer</span><span class="p">:</span><span class="w"> </span><span class="nc">MyBot.Consumer</span><span class="p">,</span><span class="w">
   </span><span class="c1"># This is an example and includes privileged intents, but</span><span class="w">
   </span><span class="c1"># should provide a useful set of intents for bots. Feel</span><span class="w">
   </span><span class="c1"># free to adjust this as you see fit.</span><span class="w">
-  </span><span class="ss">intents</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="2593407322-2">[</span><span class="w">
+  </span><span class="ss">intents</span><span class="p">:</span><span class="w"> </span><span class="p" data-group-id="6796617252-2">[</span><span class="w">
     </span><span class="ss">:direct_messages</span><span class="p">,</span><span class="w">
     </span><span class="ss">:guild_bans</span><span class="p">,</span><span class="w">
     </span><span class="ss">:guild_members</span><span class="p">,</span><span class="w">
@@ -112,14 +112,16 @@ nostrum
     </span><span class="ss">:guild_messages</span><span class="p">,</span><span class="w">
     </span><span class="ss">:guilds</span><span class="p">,</span><span class="w">
     </span><span class="ss">:message_content</span><span class="w">
-  </span><span class="p" data-group-id="2593407322-2">]</span><span class="p">,</span><span class="w">
-  </span><span class="ss">wrapped_token</span><span class="p">:</span><span class="w"> </span><span class="k" data-group-id="2593407322-3">fn</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="nc">System</span><span class="o">.</span><span class="n">fetch_env!</span><span class="p" data-group-id="2593407322-4">(</span><span class="s">&quot;BOT_TOKEN&quot;</span><span class="p" data-group-id="2593407322-4">)</span><span class="w"> </span><span class="k" data-group-id="2593407322-3">end</span><span class="p">,</span><span class="w">
-</span><span class="p" data-group-id="2593407322-1">}</span><span class="w">
-</span><span class="n">children</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="2593407322-5">[</span><span class="w">
-  </span><span class="p" data-group-id="2593407322-6">{</span><span class="nc">Nostrum.Bot</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="2593407322-7">{</span><span class="n">bot_options</span><span class="p">,</span><span class="w"> </span><span class="n">supervisor_options</span><span class="p" data-group-id="2593407322-7">}</span><span class="p" data-group-id="2593407322-6">}</span><span class="w">
-</span><span class="p" data-group-id="2593407322-5">]</span></code></pre><p>See <a href="#t:bot_options/0"><code class="inline">bot_options/0</code></a> for which options you can configure here.
-<a href="#t:supervisor_options/0"><code class="inline">supervisor_options/0</code></a> allow you to customize the options we start the
-<a href="https://hexdocs.pm/elixir/Supervisor.html"><code class="inline">Supervisor</code></a> with.</p><h2 id="module-migration-guide" class="section-heading">
+  </span><span class="p" data-group-id="6796617252-2">]</span><span class="p">,</span><span class="w">
+  </span><span class="ss">wrapped_token</span><span class="p">:</span><span class="w"> </span><span class="k" data-group-id="6796617252-3">fn</span><span class="w"> </span><span class="o">-&gt;</span><span class="w"> </span><span class="nc">System</span><span class="o">.</span><span class="n">fetch_env!</span><span class="p" data-group-id="6796617252-4">(</span><span class="s">&quot;BOT_TOKEN&quot;</span><span class="p" data-group-id="6796617252-4">)</span><span class="w"> </span><span class="k" data-group-id="6796617252-3">end</span><span class="p">,</span><span class="w">
+</span><span class="p" data-group-id="6796617252-1">}</span><span class="w">
+</span><span class="n">children</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="6796617252-5">[</span><span class="w">
+  </span><span class="p" data-group-id="6796617252-6">{</span><span class="nc">Nostrum.Bot</span><span class="p">,</span><span class="w"> </span><span class="n">bot_options</span><span class="p" data-group-id="6796617252-6">}</span><span class="w">
+</span><span class="p" data-group-id="6796617252-5">]</span></code></pre><p>See <a href="#t:bot_options/0"><code class="inline">bot_options/0</code></a> for which options you can configure here.
+You may also configure <a href="#t:supervisor_options/0"><code class="inline">supervisor_options/0</code></a>, which allow you
+to customize the options we start the <a href="https://hexdocs.pm/elixir/Supervisor.html"><code class="inline">Supervisor</code></a> with by defining
+your child in the form <code class="inline">{Nostrum.Bot, {bot_options, supervisor_options}}</code>,
+but the default <a href="#t:supervisor_options/0"><code class="inline">supervisor_options/0</code></a> should suit most needs.</p><h2 id="module-migration-guide" class="section-heading">
   <a href="#module-migration-guide" class="hover-link">
     <i class="ri-link-m" aria-hidden="true"></i>
   </a>
@@ -132,7 +134,7 @@ automatic startup via the application is disabled.</p></li><li><p>Remove your co
 setting, cut the value you previously had in your <code class="inline">config.exs</code> and use it
 here. Do the same with <code class="inline">:num_shards</code>, renaming it to <code class="inline">:shards</code> on the
 <code class="inline">bot_options</code> map. You can then remove the old config values.</p></li><li><p>In your consumer, change <code class="inline">use Nostrum.Consumer</code> to <code class="inline">@behaviour Nostrum.Consumer</code>.</p></li><li><p>In your consumer, add a default event handling clause for unmatched events
-at the end of the module, such as:</p></li></ol><pre><code class="makeup elixir" translate="no"><span class="w">  </span><span class="kd">def</span><span class="w"> </span><span class="nf">handle_event</span><span class="p" data-group-id="1986283889-1">(</span><span class="bp">_</span><span class="p" data-group-id="1986283889-1">)</span><span class="p">,</span><span class="w"> </span><span class="ss">do</span><span class="p">:</span><span class="w"> </span><span class="ss">:ok</span></code></pre><h2 id="module-limitations" class="section-heading">
+at the end of the module, such as:</p></li></ol><pre><code class="makeup elixir" translate="no"><span class="w">  </span><span class="kd">def</span><span class="w"> </span><span class="nf">handle_event</span><span class="p" data-group-id="4142323870-1">(</span><span class="bp">_</span><span class="p" data-group-id="4142323870-1">)</span><span class="p">,</span><span class="w"> </span><span class="ss">do</span><span class="p">:</span><span class="w"> </span><span class="ss">:ok</span></code></pre><h2 id="module-limitations" class="section-heading">
   <a href="#module-limitations" class="hover-link">
     <i class="ri-link-m" aria-hidden="true"></i>
   </a>
@@ -198,7 +200,7 @@ update from you.</p>
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#child_spec/1" data-no-tooltip="" translate="no">child_spec(arg)</a>
+        <a href="#child_spec/1" data-no-tooltip="" translate="no">child_spec(nostrum_options)</a>
 
       </div>
 
@@ -229,7 +231,7 @@ update from you.</p>
         <span class="note">(since 0.11.0)</span>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/bot.ex#L112" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/bot.ex#L114" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -292,7 +294,7 @@ have. Useful for splitting a single bot across multiple nodes, see the
         <span class="note">(since 0.11.0)</span>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/bot.ex#L131" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/bot.ex#L133" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -324,7 +326,7 @@ or on our <a href="gateway_intents.html">Gateway Intents</a> documentation.</p>
         <span class="note">(since 0.11.0)</span>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/bot.ex#L139" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/bot.ex#L141" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -362,12 +364,12 @@ nostrum.</p>
       <i class="ri-link-m" aria-hidden="true"></i>
     </a>
     <div class="heading-with-actions">
-      <h1 class="signature" translate="no">child_spec(arg)</h1>
+      <h1 class="signature" translate="no">child_spec(nostrum_options)</h1>
 
         <span class="note">(since 0.11.0)</span>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/bot.ex#L172" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/bot.ex#L174" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -378,7 +380,7 @@ nostrum.</p>
 
       <div class="specs">
 
-          <pre translate="no"><span class="attribute">@spec</span> child_spec(options()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()</pre>
+          <pre translate="no"><span class="attribute">@spec</span> child_spec(options()) :: <a href="https://hexdocs.pm/elixir/Supervisor.html#t:child_spec/0">Supervisor.child_spec</a>()</pre>
 
       </div>
 
