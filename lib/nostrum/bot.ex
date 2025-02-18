@@ -24,13 +24,15 @@ defmodule Nostrum.Bot do
     wrapped_token: fn -> System.fetch_env!("BOT_TOKEN") end,
   }
   children = [
-    {Nostrum.Bot, {bot_options, supervisor_options}}
+    {Nostrum.Bot, bot_options}
   ]
   ```
 
   See `t:bot_options/0` for which options you can configure here.
-  `t:supervisor_options/0` allow you to customize the options we start the
-  `Supervisor` with.
+  You may also configure `t:supervisor_options/0`, which allow you
+  to customize the options we start the `Supervisor` with by defining
+  your child in the form `{Nostrum.Bot, {bot_options, supervisor_options}}`,
+  but the default `t:supervisor_options/0` should suit most needs.
 
   ## Migration guide
 
@@ -139,7 +141,7 @@ defmodule Nostrum.Bot do
   @type supervisor_options :: [Supervisor.init_option()]
 
   @typedoc false
-  @type options :: {bot_options(), supervisor_options()}
+  @type options :: bot_options() | {bot_options(), supervisor_options()}
 
   # Token is passed wrapped in an anonymous function to prevent exposing it in stacktraces.
   # https://erlef.github.io/security-wg/secure_coding_and_deployment_hardening/sensitive_data#wrapping
@@ -168,10 +170,11 @@ defmodule Nostrum.Bot do
     Supervisor.start_link(children, supervisor_options)
   end
 
-  @spec child_spec(options()) :: map()
-  def child_spec({nostrum_options, supervisor_options}) do
-    supervisor_options = Keyword.put_new(supervisor_options, :strategy, :one_for_one)
+  @spec child_spec(options()) :: Supervisor.child_spec()
+  def child_spec(%{} = nostrum_options),
+    do: child_spec({nostrum_options, [strategy: :one_for_one]})
 
+  def child_spec({nostrum_options, supervisor_options}) do
     %{
       id: __MODULE__,
       start: {__MODULE__, :init, [{nostrum_options, supervisor_options}]},
