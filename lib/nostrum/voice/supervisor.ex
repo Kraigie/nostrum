@@ -8,14 +8,14 @@ defmodule Nostrum.Voice.Supervisor do
 
   require Logger
 
-  def start_link(_opts) do
-    Supervisor.start_link(__MODULE__, [], name: __MODULE__)
+  def start_link(bot_options) do
+    Supervisor.start_link(__MODULE__, bot_options, name: __MODULE__)
   end
 
-  def init(_opts) do
+  def init(bot_options) do
     children = [
       {DynamicSupervisor, strategy: :one_for_one, name: Nostrum.Voice.SessionSupervisor},
-      Nostrum.Voice
+      {Nostrum.Voice, bot_options}
     ]
 
     options = [
