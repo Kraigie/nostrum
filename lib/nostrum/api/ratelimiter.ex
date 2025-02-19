@@ -791,8 +791,6 @@ defmodule Nostrum.Api.Ratelimiter do
         %{outstanding: outstanding} = data
       )
       when remaining >= 0 do
-    expire_bucket = {{:timeout, bucket}, reset_after, :expired}
-
     case Map.fetch(outstanding, bucket) do
       # This is the first response we got for the absolute initial call.
       # Update the remaining value to the reported value.
@@ -801,7 +799,7 @@ defmodule Nostrum.Api.Ratelimiter do
 
         {:keep_state, %{data | outstanding: updated_outstanding},
          [
-           expire_bucket,
+           {{:timeout, bucket}, reset_after, :expired},
            {:next_event, :internal, {:next, remaining, bucket}}
          ]}
 
@@ -820,7 +818,6 @@ defmodule Nostrum.Api.Ratelimiter do
       {:ok, {stored_remaining, _queue}} ->
         {:keep_state_and_data,
          [
-           expire_bucket,
            {:next_event, :internal, {:next, stored_remaining, bucket}}
          ]}
 
