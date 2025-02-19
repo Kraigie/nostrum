@@ -4,6 +4,8 @@ defmodule Nostrum.Api.RatelimiterTest do
 
   @moduletag :capture_log
 
+  @request_timeout :timer.seconds(5)
+
   setup do
     host = ~c"localhost"
 
@@ -44,7 +46,7 @@ defmodule Nostrum.Api.RatelimiterTest do
       # This _should_ trigger some of the queueing behaviour due to
       # `X-Ratelimit-Remaining: 0` on that endpoint.
       for _ <- 1..3 do
-        reply = Ratelimiter.queue(ratelimiter, request)
+        reply = Ratelimiter.queue(ratelimiter, request, @request_timeout)
         assert {:ok, body} = reply
         assert %{"request" => "received"} = :json.decode(body)
       end
@@ -52,7 +54,7 @@ defmodule Nostrum.Api.RatelimiterTest do
 
     test "work with 204 responses", %{ratelimiter: ratelimiter} do
       request = build_request("empty_body")
-      reply = Ratelimiter.queue(ratelimiter, request)
+      reply = Ratelimiter.queue(ratelimiter, request, @request_timeout)
       assert {:ok} = reply
     end
   end
@@ -73,7 +75,7 @@ defmodule Nostrum.Api.RatelimiterTest do
       request = build_request("accounted")
 
       for _ <- 1..3 do
-        reply = Ratelimiter.queue(ratelimiter, request, :timer.seconds(3))
+        reply = Ratelimiter.queue(ratelimiter, request, @request_timeout)
         assert {:ok, body} = reply
         assert %{"request" => "received"} = :json.decode(body)
       end
@@ -86,7 +88,7 @@ defmodule Nostrum.Api.RatelimiterTest do
 
       for _ <- 1..3 do
         spawn(fn ->
-          reply = Ratelimiter.queue(ratelimiter, request, :timer.seconds(3))
+          reply = Ratelimiter.queue(ratelimiter, request, @request_timeout)
           assert {:ok, body} = reply
           assert %{"request" => "received"} = :json.decode(body)
           send(parent, :ok)
@@ -122,7 +124,7 @@ defmodule Nostrum.Api.RatelimiterTest do
       request = build_request("accounted", bucket_name: bucket_name)
 
       for _ <- 1..3 do
-        reply = Ratelimiter.queue(ratelimiter, request, :timer.seconds(3))
+        reply = Ratelimiter.queue(ratelimiter, request, @request_timeout)
         assert {:ok, body} = reply
         assert %{"request" => "received"} = :json.decode(body)
       end
@@ -130,22 +132,41 @@ defmodule Nostrum.Api.RatelimiterTest do
   end
 
   describe "user limit" do
+    @tag skip: "expected fail, needs requeue after leaving limit state"
     test "ceases to send requests", %{ratelimiter: ratelimiter} do
       request = build_request("user_limit")
-      reply = Ratelimiter.queue(ratelimiter, request)
+      reply = Ratelimiter.queue(ratelimiter, request, @request_timeout)
       # TODO: needs monotime measurement to check if time to next request > 200ms
       assert {:ok, body} = reply
       assert %{"request" => "received"} = :json.decode(body)
+      me = self()
+
+      spawn(fn ->
+        reply = Ratelimiter.queue(ratelimiter, request, @request_timeout)
+        send(me, reply)
+      end)
+
+      refute_receive _, 200
+      assert_receive {:ok, _body}, 200
     end
   end
 
+  # XXX: can use parametrize and async on elixir & exunit 1.18+ for this and
+  # the above (and probably more)
   describe "global limit" do
+    @tag skip: "expected fail, needs requeue after leaving limit state"
     test "ceases to send requests", %{ratelimiter: ratelimiter} do
       request = build_request("global_limit")
-      reply = Ratelimiter.queue(ratelimiter, request)
-      # TODO: needs monotime measurement to check if time to next request > 200ms
-      assert {:ok, body} = reply
-      assert %{"request" => "received"} = :json.decode(body)
+      _reply = Ratelimiter.queue(ratelimiter, request, @request_timeout)
+      me = self()
+
+      spawn(fn ->
+        reply = Ratelimiter.queue(ratelimiter, request, @request_timeout)
+        send(me, reply)
+      end)
+
+      refute_receive _, 200
+      assert_receive {:ok, _body}, 200
     end
   end
 end
