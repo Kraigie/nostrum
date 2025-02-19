@@ -638,7 +638,7 @@ defmodule Nostrum.Api.Ratelimiter do
   # start scheduling, unless we are out of requests for this time window on all
   # bot requests.
   def connected({:timeout, bucket}, :expired, %{remaining_in_window: 0}) do
-    Logger.debug(
+    Logger.warning(
       "Ratelimits on #{inspect(bucket)} have expired but we may not queue more requests due to the bot user limit."
     )
 
