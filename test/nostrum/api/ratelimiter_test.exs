@@ -4,7 +4,7 @@ defmodule Nostrum.Api.RatelimiterTest do
 
   @moduletag :capture_log
 
-  setup_all do
+  setup do
     host = ~c"localhost"
 
     {:ok, server} =
@@ -49,6 +49,12 @@ defmodule Nostrum.Api.RatelimiterTest do
         assert %{"request" => "received"} = :json.decode(body)
       end
     end
+
+    test "work with 204 responses", %{ratelimiter: ratelimiter} do
+      request = build_request("empty_body")
+      reply = Ratelimiter.queue(ratelimiter, request)
+      assert {:ok} = reply
+    end
   end
 
   describe "accounted requests" do
@@ -71,6 +77,26 @@ defmodule Nostrum.Api.RatelimiterTest do
         assert {:ok, body} = reply
         assert %{"request" => "received"} = :json.decode(body)
       end
+    end
+
+    test "do not run into the request limit with parallel requests", %{ratelimiter: ratelimiter} do
+      request = build_request("accounted")
+
+      parent = self()
+
+      for _ <- 1..3 do
+        spawn(fn ->
+          reply = Ratelimiter.queue(ratelimiter, request, :timer.seconds(3))
+          assert {:ok, body} = reply
+          assert %{"request" => "received"} = :json.decode(body)
+          send(parent, :ok)
+        end)
+      end
+
+      # XXX: This takes longer than it should. Why?
+      assert_receive :ok, :timer.seconds(5)
+      assert_receive :ok, :timer.seconds(5)
+      assert_receive :ok, :timer.seconds(5)
     end
   end
 
@@ -221,19 +247,15 @@ defmodule :nostrum_test_api_server do
       )
   end
 
-  def slowpoke(session, _env, _input) do
-    Process.sleep(500)
-
+  def empty_body(session, _env, _input) do
     :ok =
       :mod_esi.deliver(
         session,
         ~c"""
-        status: 200 OK\r
-        Content-Type: application/json\r
-        x-ratelimit-remaining: 1\r
+        status: 204 No Content\r
+        x-ratelimit-remaining: 50\r
         x-ratelimit-reset-after: 0.2\r
         \r
-        {"napped": "a bit"}
         """
       )
   end
