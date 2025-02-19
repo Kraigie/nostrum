@@ -1006,8 +1006,8 @@ defmodule Nostrum.Api.Ratelimiter do
   @doc since: "0.11.0"
   # TODO: This causes Dialyzer to, uh, well, it's not happy.
   # @spec queue(:gen_statem.server_ref(), request()) :: term()
-  def queue(limiter, request) do
-    :gen_statem.call(limiter, {:queue, request})
+  def queue(limiter, request, timeout \\ :infinity) do
+    :gen_statem.call(limiter, {:queue, request}, timeout)
   end
 
   @spec value_from_rltuple({String.t(), String.t()}) :: String.t() | nil
