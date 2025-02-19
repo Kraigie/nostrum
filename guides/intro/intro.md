@@ -97,7 +97,7 @@ defmodule MyBot.Application do
       wrapped_token: fn -> System.fetch_env!("BOT_TOKEN") end,
     }
     children = [
-      {Nostrum.Bot, {bot_options, []}}
+      {Nostrum.Bot, bot_options}
     ]
 
     Supervisor.init(children, strategy: :one_for_one)

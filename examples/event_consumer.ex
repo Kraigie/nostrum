@@ -14,7 +14,7 @@ defmodule ExampleSupervisor do
     }
 
     children = [
-      {Nostrum.Bot, {bot_options, []}}
+      {Nostrum.Bot, bot_options}
     ]
 
     Supervisor.init(children, strategy: :one_for_one)
