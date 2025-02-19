@@ -48,7 +48,7 @@ defmodule Nostrum.Api.RatelimiterTest do
       for _ <- 1..3 do
         reply = Ratelimiter.queue(ratelimiter, request, @request_timeout)
         assert {:ok, body} = reply
-        assert %{"request" => "received"} = :json.decode(body)
+        assert %{"request" => "received"} = Jason.decode!(body)
       end
     end
 
@@ -77,7 +77,7 @@ defmodule Nostrum.Api.RatelimiterTest do
       for _ <- 1..3 do
         reply = Ratelimiter.queue(ratelimiter, request, @request_timeout)
         assert {:ok, body} = reply
-        assert %{"request" => "received"} = :json.decode(body)
+        assert %{"request" => "received"} = Jason.decode!(body)
       end
     end
 
@@ -90,7 +90,7 @@ defmodule Nostrum.Api.RatelimiterTest do
         spawn(fn ->
           reply = Ratelimiter.queue(ratelimiter, request, @request_timeout)
           assert {:ok, body} = reply
-          assert %{"request" => "received"} = :json.decode(body)
+          assert %{"request" => "received"} = Jason.decode!(body)
           send(parent, :ok)
         end)
       end
@@ -126,7 +126,7 @@ defmodule Nostrum.Api.RatelimiterTest do
       for _ <- 1..3 do
         reply = Ratelimiter.queue(ratelimiter, request, @request_timeout)
         assert {:ok, body} = reply
-        assert %{"request" => "received"} = :json.decode(body)
+        assert %{"request" => "received"} = Jason.decode!(body)
       end
     end
   end
@@ -138,7 +138,7 @@ defmodule Nostrum.Api.RatelimiterTest do
       reply = Ratelimiter.queue(ratelimiter, request, @request_timeout)
       # TODO: needs monotime measurement to check if time to next request > 200ms
       assert {:ok, body} = reply
-      assert %{"request" => "received"} = :json.decode(body)
+      assert %{"request" => "received"} = Jason.decode!(body)
       me = self()
 
       spawn(fn ->

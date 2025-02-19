@@ -158,10 +158,12 @@ defmodule Nostrum.Mixfile do
 
   defp deps do
     [
-      # Please cease usage of this library if writing new nostrum code
+      # Please cease usage of this library if writing new nostrum code,
+      # we should use json_polyfill, but mix doesn't quite seem to be
+      # able to work with the `beam` file? Or is it my old rebar version?
       {:jason, "~> 1.4"},
       # Replacement for Jason, remove once we required OTP 27+
-      {:json_polyfill, "~> 0.2"},
+      # {:json_polyfill, "~> 0.2"},
       {:gun, "~> 2.0"},
       {:certifi, "~> 2.13"},
       {:mime, "~> 1.6 or ~> 2.0"},
