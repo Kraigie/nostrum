@@ -160,7 +160,7 @@ defmodule Nostrum.Bot do
       Nostrum.Store.Supervisor,
       Nostrum.ConsumerGroup,
       Nostrum.Api.RatelimiterGroup,
-      {Nostrum.Api.Ratelimiter, {wrapped_token, []}},
+      {Nostrum.Api.Ratelimiter, {%{wrapped_token: wrapped_token}, []}},
       Nostrum.Shard.Connector,
       Nostrum.Cache.CacheSupervisor,
       {Nostrum.Shard.Supervisor, {bot_options, []}},

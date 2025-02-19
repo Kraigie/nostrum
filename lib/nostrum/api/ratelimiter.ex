@@ -255,9 +255,25 @@ defmodule Nostrum.Api.Ratelimiter do
   @typedoc since: "0.9.0"
   @type remaining :: non_neg_integer() | :initial
 
-  @typedoc "An anonymous function that returns the bot token."
+  @typedoc """
+  Configuration for the ratelimiter.
+
+  ## Required fields
+
+  - `:wrapped_token`: An anonymous function that returns the bot token. This is
+  wrapped to ensure that ti is not accidentally exposed in stacktraces.
+
+  ## Optional fields
+
+  - `:host`: The remote host to connect to.
+  - `:port`: The remote port to connect to.
+  """
   @typedoc since: "0.11.0"
-  @type wrapped_token :: (-> String.t())
+  @type config :: %{
+          required(:wrapped_token) => (-> String.t()),
+          optional(:host) => String.t(),
+          optional(:port) => :inet.port_number()
+        }
 
   @typedoc """
   The state of the ratelimiter.
@@ -283,9 +299,7 @@ defmodule Nostrum.Api.Ratelimiter do
   - `:remaining_in_window`: How many calls we may still make to the API during
   this time window. Reset automatically via timeouts.
 
-  - `:wrapped_token`: An anonymous function that is internally used to retrieve
-  the token. This is wrapped to ensure that it is not accidentally exposed in
-  stacktraces.
+  - `:config`: Configuration of the ratelimiter. See `t:config/0` for details.
   """
   @typedoc since: "0.9.0"
   @type state :: %{
@@ -302,7 +316,7 @@ defmodule Nostrum.Api.Ratelimiter do
           },
           conn: pid() | nil,
           remaining_in_window: non_neg_integer(),
-          wrapped_token: wrapped_token()
+          config: config()
         }
 
   @doc """
@@ -313,13 +327,13 @@ defmodule Nostrum.Api.Ratelimiter do
     :gen_statem.start_link({:local, @registered_name}, __MODULE__, token, opts)
   end
 
-  def init(wrapped_token) when is_function(wrapped_token, 0) do
+  def init(%{} = options) do
     :ok = RatelimiterGroup.join(self())
     # Uncomment the following to trace everything the ratelimiter is doing:
     #   me = self()
     #   spawn(fn -> :sys.trace(me, true) end)
     # See more examples in the `sys` docs.
-    {:ok, :disconnected, empty_state(wrapped_token)}
+    {:ok, :disconnected, empty_state(options)}
   end
 
   def callback_mode, do: :state_functions
@@ -367,12 +381,12 @@ defmodule Nostrum.Api.Ratelimiter do
     :keep_state_and_data
   end
 
-  def connecting(:internal, :open, data) do
-    domain = to_charlist(Constants.domain())
-
+  def connecting(:internal, :open, %{config: config} = data) do
     open_opts = get_open_opts()
+    host = to_charlist(Map.get(config, :host, Constants.domain()))
+    port = Map.get(config, :port, 443)
 
-    {:ok, conn_pid} = :gun.open(domain, 443, open_opts)
+    {:ok, conn_pid} = :gun.open(host, port, open_opts)
     {:keep_state, %{data | conn: conn_pid}}
   end
 
@@ -472,7 +486,7 @@ defmodule Nostrum.Api.Ratelimiter do
           conn: conn,
           outstanding: outstanding,
           remaining_in_window: remaining_for_user,
-          wrapped_token: wrapped_token
+          config: %{wrapped_token: wrapped_token}
         } = data
       )
       when remaining_for_user > 0 and is_map_key(outstanding, bucket) do
@@ -872,7 +886,7 @@ defmodule Nostrum.Api.Ratelimiter do
 
   def connected(:info, {:gun_down, conn, _, reason, killed_streams}, %{
         running: running,
-        wrapped_token: wrapped_token
+        options: options
       }) do
     # Even with `retry: 0`, gun seems to try and reconnect, potentially because
     # of WebSocket. Force the connection to die.
@@ -894,7 +908,7 @@ defmodule Nostrum.Api.Ratelimiter do
         {:reply, client, {:error, {:connection_died, reason}}}
       end)
 
-    {:next_state, :disconnected, empty_state(wrapped_token), replies}
+    {:next_state, :disconnected, empty_state(options), replies}
   end
 
   def global_limit(:state_timeout, next, data) do
@@ -964,15 +978,15 @@ defmodule Nostrum.Api.Ratelimiter do
   defp parse_response(status, headers, buffer),
     do: {:ok, {status, headers, buffer}}
 
-  @spec empty_state((-> String.t())) :: state()
-  defp empty_state(wrapped_token),
+  @spec empty_state(config()) :: state()
+  defp empty_state(%{wrapped_token: _wrapped_token} = config),
     do: %{
       outstanding: %{},
       running: %{},
       inflight: %{},
       conn: nil,
       remaining_in_window: @bot_calls_per_window,
-      wrapped_token: wrapped_token
+      config: config
     }
 
   # Helper functions
@@ -986,6 +1000,16 @@ defmodule Nostrum.Api.Ratelimiter do
   def queue(request) do
     bucket = get_endpoint(request.route, request.method)
     limiter = RatelimiterGroup.limiter_for_bucket(bucket)
+    queue(limiter, request)
+  end
+
+  @doc """
+  Queue the given request on the given ratelimiter.
+  """
+  @doc since: "0.11.0"
+  # TODO: This causes Dialyzer to, uh, well, it's not happy.
+  # @spec queue(:gen_statem.server_ref(), request()) :: term()
+  def queue(limiter, request) do
     :gen_statem.call(limiter, {:queue, request})
   end
 

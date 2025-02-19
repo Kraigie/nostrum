@@ -15,7 +15,7 @@ defmodule Nostrum.Api.Adapter do
           iodata(),
           [{String.t(), String.t()}],
           Enum.t(),
-          Nostrum.Api.Ratelimiter.wrapped_token()
+          (-> String.t())
         ) ::
           :gun.stream_ref()
   def request(conn, method, route, body, raw_headers, params, wrapped_token) do
