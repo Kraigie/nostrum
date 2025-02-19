@@ -12,7 +12,7 @@
 
     <link rel="stylesheet" href="dist/html-elixir-6X3L5KMG.css" />
 
-    <script defer src="dist/sidebar_items-EC032187.js"></script>
+    <script defer src="dist/sidebar_items-35D5AD02.js"></script>
     <script defer src="docs_config.js"></script>
     <script defer src="dist/html-6VTPNSGQ.js"></script>
 
@@ -118,9 +118,9 @@ documented for completeness and people curious to look behind the covers.</p></s
 <p>The ratelimiter is fully asynchronous internally. In theory, it also supports
 queueing requests in an asynchronous manner. However, support for this is
 currently not implemented in <a href="Nostrum.Api.html"><code class="inline">Nostrum.Api</code></a>.</p><p>If you want to make one or multiple asynchronous requests manually, you can
-use the following pattern:</p><pre><code class="makeup elixir" translate="no"><span class="n">req</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">:gen_statem</span><span class="o">.</span><span class="n">send_request</span><span class="p" data-group-id="5451038444-1">(</span><span class="nc">Nostrum.Api.Ratelimiter</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="5451038444-2">{</span><span class="ss">:queue</span><span class="p">,</span><span class="w"> </span><span class="n">request</span><span class="p" data-group-id="5451038444-2">}</span><span class="p" data-group-id="5451038444-1">)</span><span class="w">
+use the following pattern:</p><pre><code class="makeup elixir" translate="no"><span class="n">req</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">:gen_statem</span><span class="o">.</span><span class="n">send_request</span><span class="p" data-group-id="0493659318-1">(</span><span class="nc">Nostrum.Api.Ratelimiter</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="0493659318-2">{</span><span class="ss">:queue</span><span class="p">,</span><span class="w"> </span><span class="n">request</span><span class="p" data-group-id="0493659318-2">}</span><span class="p" data-group-id="0493659318-1">)</span><span class="w">
 </span><span class="c1"># ...</span><span class="w">
-</span><span class="n">response</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">:gen_statem</span><span class="o">.</span><span class="n">receive_response</span><span class="p" data-group-id="5451038444-3">(</span><span class="n">req</span><span class="p">,</span><span class="w"> </span><span class="n">timeout</span><span class="p" data-group-id="5451038444-3">)</span></code></pre><p>where <code class="inline">request</code> is a map describing the request to run - see <a href="Nostrum.Api.html"><code class="inline">Nostrum.Api</code></a>
+</span><span class="n">response</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">:gen_statem</span><span class="o">.</span><span class="n">receive_response</span><span class="p" data-group-id="0493659318-3">(</span><span class="n">req</span><span class="p">,</span><span class="w"> </span><span class="n">timeout</span><span class="p" data-group-id="0493659318-3">)</span></code></pre><p>where <code class="inline">request</code> is a map describing the request to run - see <a href="Nostrum.Api.html"><code class="inline">Nostrum.Api</code></a>
 for more information. You can also send multiple requests at the same time
 and wait for their response: see <a href="https://www.erlang.org/doc/apps/stdlib/gen_statem.html#reqids_add/3"><code class="inline">:gen_statem.reqids_add/3</code></a> and
 <a href="https://www.erlang.org/doc/apps/stdlib/gen_statem.html#wait_response/3"><code class="inline">:gen_statem.wait_response/3</code></a> for more information.</p><h2 id="module-multi-node" class="section-heading">
@@ -263,6 +263,16 @@ handle this explicitly via <code class="inline">handle_info</code>.</p></li></ul
 
     <div class="summary-row">
       <div class="summary-signature">
+        <a href="#t:config/0" data-no-tooltip="" translate="no">config()</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Configuration for the ratelimiter.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
         <a href="#t:queued_request/0" data-no-tooltip="" translate="no">queued_request()</a>
 
       </div>
@@ -298,16 +308,6 @@ handle this explicitly via <code class="inline">handle_info</code>.</p></li></ul
       </div>
 
         <div class="summary-synopsis"><p>The state of the ratelimiter.</p></div>
-
-    </div>
-
-    <div class="summary-row">
-      <div class="summary-signature">
-        <a href="#t:wrapped_token/0" data-no-tooltip="" translate="no">wrapped_token()</a>
-
-      </div>
-
-        <div class="summary-synopsis"><p>An anonymous function that returns the bot token.</p></div>
 
     </div>
 
@@ -389,7 +389,7 @@ handle this explicitly via <code class="inline">handle_info</code>.</p></li></ul
 
     <div class="summary-row">
       <div class="summary-signature">
-        <a href="#init/1" data-no-tooltip="" translate="no">init(wrapped_token)</a>
+        <a href="#init/1" data-no-tooltip="" translate="no">init(options)</a>
 
       </div>
 
@@ -404,6 +404,16 @@ handle this explicitly via <code class="inline">handle_info</code>.</p></li></ul
       </div>
 
         <div class="summary-synopsis"><p>Queue the given request and wait for the response synchronously.</p></div>
+
+    </div>
+
+    <div class="summary-row">
+      <div class="summary-signature">
+        <a href="#queue/3" data-no-tooltip="" translate="no">queue(limiter, request, timeout \\ :infinity)</a>
+
+      </div>
+
+        <div class="summary-synopsis"><p>Queue the given request on the given ratelimiter.</p></div>
 
     </div>
 
@@ -458,6 +468,53 @@ handle this explicitly via <code class="inline">handle_info</code>.</p></li></ul
       </div>
 
 <p>A bucket for endpoints unter the same ratelimit.</p>
+  </section>
+</section>
+<section class="detail" id="t:config/0">
+
+  <div class="detail-header">
+    <a href="#t:config/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">config()</h1>
+
+        <span class="note">(since 0.11.0)</span>
+
+
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L272" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+      <div class="specs">
+
+          <pre translate="no"><span class="attribute">@type</span> config() :: %{
+  :wrapped_token =&gt; (-&gt; <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()),
+  optional(:host) =&gt; <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>(),
+  optional(:port) =&gt; <a href="https://www.erlang.org/doc/apps/kernel/inet.html#t:port_number/0">:inet.port_number</a>()
+}</pre>
+
+      </div>
+
+<p>Configuration for the ratelimiter.</p><h2 id="t:config/0-required-fields" class="section-heading">
+  <a href="#t:config/0-required-fields" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Required fields</span>
+</h2>
+<ul><li><code class="inline">:wrapped_token</code>: An anonymous function that returns the bot token. This is
+wrapped to ensure that ti is not accidentally exposed in stacktraces.</li></ul><h2 id="t:config/0-optional-fields" class="section-heading">
+  <a href="#t:config/0-optional-fields" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Optional fields</span>
+</h2>
+<ul><li><code class="inline">:host</code>: The remote host to connect to.</li><li><code class="inline">:port</code>: The remote port to connect to.</li></ul>
   </section>
 </section>
 <section class="detail" id="t:queued_request/0">
@@ -573,7 +630,7 @@ otherwise, the value won't represent the truth anymore.</p>
         <span class="note">(since 0.9.0)</span>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L291" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L305" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -598,7 +655,7 @@ otherwise, the value won't represent the truth anymore.</p>
   },
   conn: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">pid</a>() | nil,
   remaining_in_window: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">non_neg_integer</a>(),
-  wrapped_token: <a href="#t:wrapped_token/0">wrapped_token</a>()
+  config: <a href="#t:config/0">config</a>()
 }</pre>
 
       </div>
@@ -616,39 +673,7 @@ client with a request when the response comes in.</p></li><li><p><code class="in
 have not fully received it yet. For responses that have a body, this will
 buffer their body until we can send it back to the client.</p></li><li><p><code class="inline">:conn</code>: The <code class="inline">:gun</code> connection backing the server. Used for making new
 requests, and updated as the state changes.</p></li><li><p><code class="inline">:remaining_in_window</code>: How many calls we may still make to the API during
-this time window. Reset automatically via timeouts.</p></li><li><p><code class="inline">:wrapped_token</code>: An anonymous function that is internally used to retrieve
-the token. This is wrapped to ensure that it is not accidentally exposed in
-stacktraces.</p></li></ul>
-  </section>
-</section>
-<section class="detail" id="t:wrapped_token/0">
-
-  <div class="detail-header">
-    <a href="#t:wrapped_token/0" class="detail-link" data-no-tooltip="" aria-label="Link to this type">
-      <i class="ri-link-m" aria-hidden="true"></i>
-    </a>
-    <div class="heading-with-actions">
-      <h1 class="signature" translate="no">wrapped_token()</h1>
-
-        <span class="note">(since 0.11.0)</span>
-
-
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L260" class="icon-action" rel="help" aria-label="View Source">
-          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
-        </a>
-
-    </div>
-  </div>
-
-  <section class="docstring">
-
-      <div class="specs">
-
-          <pre translate="no"><span class="attribute">@type</span> wrapped_token() :: (-&gt; <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>())</pre>
-
-      </div>
-
-<p>An anonymous function that returns the bot token.</p>
+this time window. Reset automatically via timeouts.</p></li><li><p><code class="inline">:config</code>: Configuration of the ratelimiter. See <a href="#t:config/0"><code class="inline">config/0</code></a> for details.</p></li></ul>
   </section>
 </section>
 
@@ -673,7 +698,7 @@ stacktraces.</p></li></ul>
       <h1 class="signature" translate="no">callback_mode()</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L325" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L339" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -695,7 +720,7 @@ stacktraces.</p></li></ul>
       <h1 class="signature" translate="no">child_spec(opts)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L327" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L341" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -717,7 +742,7 @@ stacktraces.</p></li></ul>
       <h1 class="signature" translate="no">code_change(version, state, data, extra)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L936" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L947" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -739,7 +764,7 @@ stacktraces.</p></li></ul>
       <h1 class="signature" translate="no">connected(arg1, request, data)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L396" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L410" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -761,7 +786,7 @@ stacktraces.</p></li></ul>
       <h1 class="signature" translate="no">connecting(arg1, arg2, data)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L370" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L384" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -783,7 +808,7 @@ stacktraces.</p></li></ul>
       <h1 class="signature" translate="no">disconnected(arg, arg2, data)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L341" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L355" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -805,7 +830,7 @@ stacktraces.</p></li></ul>
       <h1 class="signature" translate="no">get_endpoint(route, method)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L1037" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L1058" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -833,7 +858,7 @@ stacktraces.</p></li></ul>
       <h1 class="signature" translate="no">global_limit(arg1, next, data)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L900" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L911" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -852,10 +877,10 @@ stacktraces.</p></li></ul>
       <i class="ri-link-m" aria-hidden="true"></i>
     </a>
     <div class="heading-with-actions">
-      <h1 class="signature" translate="no">init(wrapped_token)</h1>
+      <h1 class="signature" translate="no">init(options)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L316" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L330" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -877,7 +902,7 @@ stacktraces.</p></li></ul>
       <h1 class="signature" translate="no">queue(request)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L986" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L997" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -890,6 +915,32 @@ stacktraces.</p></li></ul>
 will cause this to return an error.</p>
   </section>
 </section>
+<section class="detail" id="queue/3">
+
+    <span id="queue/2"></span>
+
+  <div class="detail-header">
+    <a href="#queue/3" class="detail-link" data-no-tooltip="" aria-label="Link to this function">
+      <i class="ri-link-m" aria-hidden="true"></i>
+    </a>
+    <div class="heading-with-actions">
+      <h1 class="signature" translate="no">queue(limiter, request, timeout \\ :infinity)</h1>
+
+        <span class="note">(since 0.11.0)</span>
+
+
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L1009" class="icon-action" rel="help" aria-label="View Source">
+          <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        </a>
+
+    </div>
+  </div>
+
+  <section class="docstring">
+
+<p>Queue the given request on the given ratelimiter.</p>
+  </section>
+</section>
 <section class="detail" id="start_link/1">
 
   <div class="detail-header">
@@ -900,7 +951,7 @@ will cause this to return an error.</p>
       <h1 class="signature" translate="no">start_link(arg)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L312" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L326" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
