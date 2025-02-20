@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="generator" content="ExDoc v0.37.0">
+    <meta name="generator" content="ExDoc v0.37.2">
     <meta name="project" content="nostrum v0.11.0-dev">
 
 
@@ -14,7 +14,7 @@
 
     <script defer src="dist/sidebar_items-35D5AD02.js"></script>
     <script defer src="docs_config.js"></script>
-    <script defer src="dist/html-6VTPNSGQ.js"></script>
+    <script defer src="dist/html-6XHBGSGW.js"></script>
 
   </head>
   <body>
@@ -118,9 +118,9 @@ documented for completeness and people curious to look behind the covers.</p></s
 <p>The ratelimiter is fully asynchronous internally. In theory, it also supports
 queueing requests in an asynchronous manner. However, support for this is
 currently not implemented in <a href="Nostrum.Api.html"><code class="inline">Nostrum.Api</code></a>.</p><p>If you want to make one or multiple asynchronous requests manually, you can
-use the following pattern:</p><pre><code class="makeup elixir" translate="no"><span class="n">req</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">:gen_statem</span><span class="o">.</span><span class="n">send_request</span><span class="p" data-group-id="0424530701-1">(</span><span class="nc">Nostrum.Api.Ratelimiter</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="0424530701-2">{</span><span class="ss">:queue</span><span class="p">,</span><span class="w"> </span><span class="n">request</span><span class="p" data-group-id="0424530701-2">}</span><span class="p" data-group-id="0424530701-1">)</span><span class="w">
+use the following pattern:</p><pre><code class="makeup elixir" translate="no"><span class="n">req</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">:gen_statem</span><span class="o">.</span><span class="n">send_request</span><span class="p" data-group-id="3500708743-1">(</span><span class="nc">Nostrum.Api.Ratelimiter</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="3500708743-2">{</span><span class="ss">:queue</span><span class="p">,</span><span class="w"> </span><span class="n">request</span><span class="p" data-group-id="3500708743-2">}</span><span class="p" data-group-id="3500708743-1">)</span><span class="w">
 </span><span class="c1"># ...</span><span class="w">
-</span><span class="n">response</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">:gen_statem</span><span class="o">.</span><span class="n">receive_response</span><span class="p" data-group-id="0424530701-3">(</span><span class="n">req</span><span class="p">,</span><span class="w"> </span><span class="n">timeout</span><span class="p" data-group-id="0424530701-3">)</span></code></pre><p>where <code class="inline">request</code> is a map describing the request to run - see <a href="Nostrum.Api.html"><code class="inline">Nostrum.Api</code></a>
+</span><span class="n">response</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">:gen_statem</span><span class="o">.</span><span class="n">receive_response</span><span class="p" data-group-id="3500708743-3">(</span><span class="n">req</span><span class="p">,</span><span class="w"> </span><span class="n">timeout</span><span class="p" data-group-id="3500708743-3">)</span></code></pre><p>where <code class="inline">request</code> is a map describing the request to run - see <a href="Nostrum.Api.html"><code class="inline">Nostrum.Api</code></a>
 for more information. You can also send multiple requests at the same time
 and wait for their response: see <a href="https://www.erlang.org/doc/apps/stdlib/gen_statem.html#reqids_add/3"><code class="inline">:gen_statem.reqids_add/3</code></a> and
 <a href="https://www.erlang.org/doc/apps/stdlib/gen_statem.html#wait_response/3"><code class="inline">:gen_statem.wait_response/3</code></a> for more information.</p><h2 id="module-multi-node" class="section-heading">
@@ -172,7 +172,7 @@ rqeuest marked as the <code class="inline">:initial</code> request. It will be r
 global limit limit expires.</p></li></ul><p>The request starting function, <code class="inline">:next</code>, will start new requests from the
 queue as long as more calls are possible in the timeframe. Any requests are
 then started asynchronously. Bookkeeping is set up to associate the resulting
-<a href="https://hexdocs.pm/gun/2.1.0/gun.html#t:stream_ref/0"><code class="inline">:gun.stream_ref/0</code></a> with the original client along with its request and the
+<code class="inline">t:gun.stream_ref/0</code> with the original client along with its request and the
 ratelimiter bucket.</p><p>Results from the HTTP connection are delivered non-blocking: simple responses
 with purely status codes and no body (code <code class="inline">204</code>) will be sent in a single
 message, other requests will be sent to us incrementally. To finally deliver
@@ -207,7 +207,10 @@ shut down - for instance, because we simply reached the maximum idle time on
 the HTTP/2 connection - we will simply move on.</p><h4>Upstream errors</h4><p>The ratelimiter works by queueing requests aggressively as soon as it has
 ratelimit information to do so. If no ratelimit information is available, for
 instance, because Discord returned us a 502 status code, the ratelimiter will
-not automatically kick the queue to start further running requests.</p><h4>Other internal issues</h4><p>Any other internal problems that are not handled appropriately in the
+check if better ratelimiting information was already parsed for said endpoint
+(and as such, new requests will be sent off when the time comes) from
+previous requests, and otherwise wait 1 second before sending further
+requests there.</p><h4>Other internal issues</h4><p>Any other internal problems that are not handled appropriately in the
 ratelimiter will crash it, effectively resulting in the complete loss of any
 queued requests.</p><h3 id="module-implementation-benefits-drawbacks" class="section-heading">
   <a href="#module-implementation-benefits-drawbacks" class="hover-link">
@@ -452,7 +455,7 @@ handle this explicitly via <code class="inline">handle_info</code>.</p></li></ul
         <span class="note">(since 0.9.0)</span>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L223" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L226" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -482,7 +485,7 @@ handle this explicitly via <code class="inline">handle_info</code>.</p></li></ul
         <span class="note">(since 0.11.0)</span>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L272" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L275" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -529,7 +532,7 @@ wrapped to ensure that ti is not accidentally exposed in stacktraces.</li></ul><
         <span class="note">(since 0.9.0)</span>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L241" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L244" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -559,7 +562,7 @@ wrapped to ensure that ti is not accidentally exposed in stacktraces.</li></ul><
         <span class="note">(since 0.9.0)</span>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L256" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L259" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -594,7 +597,7 @@ otherwise, the value won't represent the truth anymore.</p>
         <span class="note">(since 0.9.0)</span>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L229" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L232" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -630,7 +633,7 @@ otherwise, the value won't represent the truth anymore.</p>
         <span class="note">(since 0.9.0)</span>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L305" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L308" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -698,7 +701,7 @@ this time window. Reset automatically via timeouts.</p></li><li><p><code class="
       <h1 class="signature" translate="no">callback_mode()</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L339" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L342" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -720,7 +723,7 @@ this time window. Reset automatically via timeouts.</p></li><li><p><code class="
       <h1 class="signature" translate="no">child_spec(opts)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L341" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L344" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -742,7 +745,7 @@ this time window. Reset automatically via timeouts.</p></li><li><p><code class="
       <h1 class="signature" translate="no">code_change(version, state, data, extra)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L947" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L971" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -764,7 +767,7 @@ this time window. Reset automatically via timeouts.</p></li><li><p><code class="
       <h1 class="signature" translate="no">connected(arg1, request, data)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L410" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L413" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -786,7 +789,7 @@ this time window. Reset automatically via timeouts.</p></li><li><p><code class="
       <h1 class="signature" translate="no">connecting(arg1, arg2, data)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L384" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L387" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -808,7 +811,7 @@ this time window. Reset automatically via timeouts.</p></li><li><p><code class="
       <h1 class="signature" translate="no">disconnected(arg, arg2, data)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L355" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L358" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -830,7 +833,7 @@ this time window. Reset automatically via timeouts.</p></li><li><p><code class="
       <h1 class="signature" translate="no">get_endpoint(route, method)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L1058" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L1082" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -858,7 +861,7 @@ this time window. Reset automatically via timeouts.</p></li><li><p><code class="
       <h1 class="signature" translate="no">global_limit(arg1, next, data)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L911" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L929" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -880,7 +883,7 @@ this time window. Reset automatically via timeouts.</p></li><li><p><code class="
       <h1 class="signature" translate="no">init(options)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L330" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L333" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -902,7 +905,7 @@ this time window. Reset automatically via timeouts.</p></li><li><p><code class="
       <h1 class="signature" translate="no">queue(request)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L997" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L1021" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -929,7 +932,7 @@ will cause this to return an error.</p>
         <span class="note">(since 0.11.0)</span>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L1009" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L1033" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -951,7 +954,7 @@ will cause this to return an error.</p>
       <h1 class="signature" translate="no">start_link(arg)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L326" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api/ratelimiter.ex#L329" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -997,7 +1000,7 @@ will cause this to return an error.</p>
 
       <p class="built-using">
         Built using
-        <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.37.0) for the
+        <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.37.2) for the
 
           <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
 
