@@ -1,4 +1,4 @@
-defmodule NostrumTest do
+defmodule Nostrum.AppupTest do
   use ExUnit.Case, async: true
 
   @raw_version Nostrum.Mixfile.project()[:version]

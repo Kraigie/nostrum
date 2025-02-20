@@ -30,6 +30,21 @@ defmodule Nostrum.Api.RatelimiterTest do
     [ratelimiter: ratelimiter, server: server]
   end
 
+  defp run_request!(ratelimiter, type, query_params \\ []) do
+    request = build_request(type, query_params)
+    reply = Ratelimiter.queue(ratelimiter, request, @request_timeout)
+    assert {:ok, body} = reply
+    assert %{"request" => "received"} = Jason.decode!(body)
+    reply
+  end
+
+  defp run_failing_request!(ratelimiter, type, expected_status, query_params) do
+    request = build_request(type, query_params)
+    reply = Ratelimiter.queue(ratelimiter, request, @request_timeout)
+    assert {:error, %{status_code: ^expected_status}} = reply
+    reply
+  end
+
   defp build_request(function, query_params \\ []) do
     %{
       method: :get,
@@ -72,25 +87,17 @@ defmodule Nostrum.Api.RatelimiterTest do
 
     # These would cause the GenServer that checks the ratelimits to crash
     test "do not run into the request limit", %{ratelimiter: ratelimiter} do
-      request = build_request("accounted")
-
       for _ <- 1..3 do
-        reply = Ratelimiter.queue(ratelimiter, request, @request_timeout)
-        assert {:ok, body} = reply
-        assert %{"request" => "received"} = Jason.decode!(body)
+        run_request!(ratelimiter, "accounted")
       end
     end
 
     test "do not run into the request limit with parallel requests", %{ratelimiter: ratelimiter} do
-      request = build_request("accounted")
-
       parent = self()
 
       for _ <- 1..3 do
         spawn(fn ->
-          reply = Ratelimiter.queue(ratelimiter, request, @request_timeout)
-          assert {:ok, body} = reply
-          assert %{"request" => "received"} = Jason.decode!(body)
+          run_request!(ratelimiter, "accounted")
           send(parent, :ok)
         end)
       end
@@ -109,40 +116,34 @@ defmodule Nostrum.Api.RatelimiterTest do
       buckets = %{bucket_name => bucket}
       server = start_supervised!({:nostrum_test_api_server, buckets})
 
-      # The server normally starts this on its own when remaining drops to 0.
-      # But because we start out with 0, we gotta start the reset manually.
-      {:ok, _timer} =
+      # The server normally starts this on its own when the initial request is
+      # sent. But because we start out with 0 in `remaining` instead of the 2
+      # in `total`, we gotta start the reset manually.
+      {:ok, timer} =
         :timer.apply_after(bucket.reset_after, :nostrum_test_api_server, :reset_bucket, [
           bucket_name
         ])
+
+      on_exit(fn -> {:ok, :cancel} = :timer.cancel(timer) end)
 
       [accountant: server, bucket_name: bucket_name]
     end
 
     # These would cause the GenServer that checks the ratelimits to crash
     test "wait their turn", %{bucket_name: bucket_name, ratelimiter: ratelimiter} do
-      request = build_request("accounted", bucket_name: bucket_name)
-
       for _ <- 1..3 do
-        reply = Ratelimiter.queue(ratelimiter, request, @request_timeout)
-        assert {:ok, body} = reply
-        assert %{"request" => "received"} = Jason.decode!(body)
+        run_request!(ratelimiter, "accounted", bucket_name: bucket_name)
       end
     end
   end
 
   describe "user limit" do
-    @tag skip: "expected fail, needs requeue after leaving limit state"
     test "ceases to send requests", %{ratelimiter: ratelimiter} do
-      request = build_request("user_limit")
-      reply = Ratelimiter.queue(ratelimiter, request, @request_timeout)
-      # TODO: needs monotime measurement to check if time to next request > 200ms
-      assert {:ok, body} = reply
-      assert %{"request" => "received"} = Jason.decode!(body)
+      run_request!(ratelimiter, "user_limit")
       me = self()
 
       spawn(fn ->
-        reply = Ratelimiter.queue(ratelimiter, request, @request_timeout)
+        reply = run_request!(ratelimiter, "user_limit")
         send(me, reply)
       end)
 
@@ -154,14 +155,12 @@ defmodule Nostrum.Api.RatelimiterTest do
   # XXX: can use parametrize and async on elixir & exunit 1.18+ for this and
   # the above (and probably more)
   describe "global limit" do
-    @tag skip: "expected fail, needs requeue after leaving limit state"
     test "ceases to send requests", %{ratelimiter: ratelimiter} do
-      request = build_request("global_limit")
-      _reply = Ratelimiter.queue(ratelimiter, request, @request_timeout)
+      run_request!(ratelimiter, "global_limit")
       me = self()
 
       spawn(fn ->
-        reply = Ratelimiter.queue(ratelimiter, request, @request_timeout)
+        reply = run_request!(ratelimiter, "global_limit")
         send(me, reply)
       end)
 
@@ -169,170 +168,36 @@ defmodule Nostrum.Api.RatelimiterTest do
       assert_receive {:ok, _body}, 200
     end
   end
-end
 
-defmodule :nostrum_test_api_server do
-  use GenServer
+  describe "transient upstream errors" do
+    test "won't stop future requests", %{ratelimiter: ratelimiter} do
+      run_failing_request!(ratelimiter, "maybe_crash", 502, crash: "yes")
+      run_request!(ratelimiter, "maybe_crash", crash: "no")
+    end
 
-  ## normal exports
-
-  def remaining_calls(bucket) do
-    GenServer.call(__MODULE__, {:check_limits, bucket})
-  end
-
-  def reset_bucket(bucket) do
-    :ok = GenServer.call(__MODULE__, {:reset_bucket, bucket})
-  end
-
-  ## mod_esi API
-
-  defp decode_opts([]), do: %{}
-  defp decode_opts(query), do: URI.decode_query(to_string(query))
-
-  def accounted(session, _env, input) do
-    opts = decode_opts(input)
-    remaining = remaining_calls(Map.get(opts, "bucket_name", "accounted"))
-
-    response =
-      if remaining < 0 do
-        """
-        status: 429 Too Many Requests\r
-        Content-Type: application/json\r
-        x-ratelimit-remaining: 0\r
-        x-ratelimit-reset-after: 0.5\r
-        \r
-        {"YOU HAVE BEEN BANNED": "FOREVER!"}
-        """
-      else
-        """
-        status: 200 OK\r
-        Content-Type: application/json\r
-        x-ratelimit-remaining: #{remaining}\r
-        x-ratelimit-reset-after: 0.5\r
-        \r
-        {"request": "received"}
-        """
-      end
-
-    :ok =
-      :mod_esi.deliver(
-        session,
-        to_charlist(response)
-      )
-  end
-
-  def endpoint(session, _env, _input) do
-    :ok =
-      :mod_esi.deliver(
-        session,
-        ~c"""
-        status: 200 OK\r
-        Content-Type: application/json\r
-        x-ratelimit-remaining: 1\r
-        x-ratelimit-reset-after: 0.2\r
-        \r
-        {"request": "received"}
-        """
-      )
-  end
-
-  def global_limit(session, _env, _input) do
-    :ok =
-      :mod_esi.deliver(
-        session,
-        ~c"""
-        status: 200 OK\r
-        Content-Type: application/json\r
-        x-ratelimit-scope: global\r
-        x-ratelimit-remaining: 0\r
-        x-ratelimit-reset-after: 0.2\r
-        \r
-        {"request": "received"}
-        """
-      )
-  end
-
-  def user_limit(session, _env, _input) do
-    :ok =
-      :mod_esi.deliver(
-        session,
-        ~c"""
-        status: 200 OK\r
-        Content-Type: application/json\r
-        x-ratelimit-scope: user\r
-        x-ratelimit-remaining: 0\r
-        x-ratelimit-reset-after: 0.2\r
-        \r
-        {"request": "received"}
-        """
-      )
-  end
-
-  def empty_body(session, _env, _input) do
-    :ok =
-      :mod_esi.deliver(
-        session,
-        ~c"""
-        status: 204 No Content\r
-        x-ratelimit-remaining: 50\r
-        x-ratelimit-reset-after: 0.2\r
-        \r
-        """
-      )
-  end
-
-  ## GenServer API
-
-  def child_spec(buckets) do
-    %{
-      id: __MODULE__,
-      start: {__MODULE__, :start_link, [buckets]},
-      type: :worker,
-      restart: :permanent,
-      shutdown: 500
-    }
-  end
-
-  def start_link(buckets) do
-    GenServer.start_link(__MODULE__, buckets, name: __MODULE__)
-  end
-
-  @impl true
-  def init(buckets) do
-    # Needed for cleanup.
-    Process.flag(:trap_exit, true)
-    {:ok, buckets}
-  end
-
-  @impl true
-  def handle_call({:check_limits, bucket}, _from, buckets) do
-    case Map.get(buckets, bucket) do
-      %{remaining: count, reset_after: interval, timer: nil} = match ->
-        {:ok, timer} = :timer.apply_after(interval, __MODULE__, :reset_bucket, [bucket])
-        remaining = count - 1
-        state = Map.put(buckets, bucket, %{match | remaining: remaining, timer: timer})
-        {:reply, remaining, state}
-
-      %{remaining: count, reset_after: _interval, timer: timer} = match ->
-        remaining = count - 1
-        state = Map.put(buckets, bucket, %{match | remaining: remaining, timer: timer})
-        {:reply, remaining, state}
-
-      nil ->
-        {:reply, nil, buckets}
+    test "won't stop pipelining of future requests", %{ratelimiter: ratelimiter} do
+      # X-Ratelimit-Remaining is "1" on that endpoint
+      run_request!(ratelimiter, "maybe_crash", crash: "no", remaining: 2)
+      run_failing_request!(ratelimiter, "maybe_crash", 502, crash: "yes")
+      run_request!(ratelimiter, "maybe_crash", crash: "no")
     end
   end
 
-  def handle_call({:reset_bucket, bucket}, _from, buckets) do
-    match = Map.fetch!(buckets, bucket)
-    buckets = Map.put(buckets, bucket, %{match | remaining: match.total, timer: nil})
-    {:reply, :ok, buckets}
-  end
+  describe "hitting the bot call limit" do
+    test "pauses requests temporarily if we can send the remaining requests in the next window",
+         %{ratelimiter: ratelimiter} do
+      request = build_request("maybe_crash", remaining: 60)
 
-  @impl true
-  def terminate(_reason, buckets) do
-    buckets
-    |> Stream.filter(fn {_key, %{timer: timer}} -> not is_nil(timer) end)
-    |> Enum.each(fn {_key, %{timer: timer}} -> {:ok, :cancel} = :timer.cancel(timer) end)
+      reqids =
+        Enum.reduce(1..52, :gen_statem.reqids_new(), fn n, acc ->
+          :gen_statem.send_request(ratelimiter, {:queue, request}, n, acc)
+        end)
+
+      Enum.map(1..52, fn n ->
+        result = :gen_statem.wait_response(reqids, @request_timeout, _delete = false)
+        # `n` is just added here to help figure out which request failed
+        assert {^n, {_response, _label, _new_collection}} = {n, result}
+      end)
+    end
   end
 end
