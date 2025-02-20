@@ -91,7 +91,7 @@ defmodule Nostrum.Api.Ratelimiter do
   The request starting function, `:next`, will start new requests from the
   queue as long as more calls are possible in the timeframe. Any requests are
   then started asynchronously. Bookkeeping is set up to associate the resulting
-  `t::gun.stream_ref/0` with the original client along with its request and the
+  `t:gun.stream_ref/0` with the original client along with its request and the
   ratelimiter bucket.
 
   Results from the HTTP connection are delivered non-blocking: simple responses
@@ -545,8 +545,9 @@ defmodule Nostrum.Api.Ratelimiter do
 
   # `:next` will run the next `remaining` requests for the given bucket's
   # queue, and stop as soon as no more entries are found, or the user limit has
-  # been reached for this window.
-  def connected(:internal, {:next, 0, _bucket}, _data) do
+  # been reached for this window. When `remaining` is `0`, it's the bucket
+  # timeout's duty to requeue requests on this bucket.
+  def connected(:internal, {:next, 0 = _remaining, _bucket}, _data) do
     :keep_state_and_data
   end
 
