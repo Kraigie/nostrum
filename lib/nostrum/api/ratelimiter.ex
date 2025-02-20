@@ -143,7 +143,10 @@ defmodule Nostrum.Api.Ratelimiter do
   The ratelimiter works by queueing requests aggressively as soon as it has
   ratelimit information to do so. If no ratelimit information is available, for
   instance, because Discord returned us a 502 status code, the ratelimiter will
-  not automatically kick the queue to start further running requests.
+  check if better ratelimiting information was already parsed for said endpoint
+  (and as such, new requests will be sent off when the time comes) from
+  previous requests, and otherwise wait 1 second before sending further
+  requests there.
 
   #### Other internal issues
 
@@ -834,20 +837,34 @@ defmodule Nostrum.Api.Ratelimiter do
     end
   end
 
-  def connected(:internal, {:parse_limits, {:user_limit, retry_after}, _bucket}, data) do
+  def connected(
+        :internal,
+        {:parse_limits, {limit_type, retry_after}, bucket},
+        %{outstanding: outstanding} = data
+      )
+      when limit_type in [:user_limit, :global_limit] do
     Logger.warning(
-      "Hit user limit, transitioning into global limit state for #{retry_after / 1000} seconds"
+      "Hit #{limit_type}, transitioning into global limit state for #{retry_after / 1000} seconds"
     )
 
-    {:next_state, :global_limit, data, [{:state_timeout, retry_after, :connected}]}
-  end
+    # The bucket _may_ be tagged with `:initial`, in which case we need to
+    # expire it manually.  This happens when the first request to the remote
+    # endpoint returns a user or global limit, in which case we might not get
+    # ratelimit information for this bucket. We will therefore retry it later.
+    expirers =
+      case Map.get(outstanding, bucket) do
+        {:initial, _queue} ->
+          [{{:timeout, bucket}, retry_after, :expired}]
 
-  def connected(:internal, {:parse_limits, {:global_limit, retry_after}, _bucket}, data) do
-    Logger.warning(
-      "Hit global limit, transitioning into global limit state for #{retry_after / 1000} seconds"
-    )
+        _ ->
+          []
+      end
 
-    {:next_state, :global_limit, data, [{:state_timeout, retry_after, :connected}]}
+    {:next_state, :global_limit, data,
+     [
+       {:state_timeout, retry_after, :connected},
+       {:next_event, :internal, {:unpause_requests, Map.keys(outstanding)}} | expirers
+     ]}
   end
 
   # If we did not get any ratelimit headers let's not send further requests to
@@ -936,6 +953,12 @@ defmodule Nostrum.Api.Ratelimiter do
   # returning an error to the client we postpone it until we can deal with it
   # again.
   def global_limit(:internal, {:requeue, {_request, _from}}, _data) do
+    {:keep_state_and_data, :postpone}
+  end
+
+  # This is scheduled as soon as we enter the global limit, but we won't do
+  # anything with it. It's up for the connected state to handle.
+  def global_limit(:internal, {:unpause_requests, _buckets}, _data) do
     {:keep_state_and_data, :postpone}
   end
 
