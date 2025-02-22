@@ -32,8 +32,7 @@ defmodule Nostrum.Voice.Session do
   end
 
   def handle_continue(
-        {%VoiceState{channel_id: channel_id, guild_id: guild_id} = voice,
-         %{consumer: consumer} = _bot_options},
+        {%VoiceState{channel_id: channel_id, guild_id: guild_id} = voice, %{} = bot_options},
         _init_state
       ) do
     case GuildCache.get(guild_id) do
@@ -55,6 +54,7 @@ defmodule Nostrum.Voice.Session do
 
     state = %VoiceWSState{
       conn_pid: self(),
+      voice_pid: voice.voice_pid,
       conn: worker,
       guild_id: voice.guild_id,
       channel_id: voice.channel_id,
@@ -66,11 +66,11 @@ defmodule Nostrum.Voice.Session do
       stream: stream,
       last_heartbeat_ack: DateTime.utc_now(),
       heartbeat_ack: true,
-      consumer: consumer
+      bot_options: bot_options
     }
 
     Logger.debug(fn -> "Voice Websocket connection up on worker #{inspect(worker)}" end)
-    Voice.update_voice(voice.guild_id, session_pid: self())
+    Voice.update_voice(voice, session_pid: self())
     {:noreply, state}
   end
 
@@ -185,7 +185,7 @@ defmodule Nostrum.Voice.Session do
   end
 
   def handle_cast(:voice_ready, state) do
-    voice = Voice.get_voice(state.guild_id)
+    voice = Voice.get_voice(state.voice_pid, state.guild_id)
     voice_ready = Payload.voice_ready_payload(voice)
 
     {voice_ready, state}
@@ -196,7 +196,7 @@ defmodule Nostrum.Voice.Session do
   end
 
   def handle_cast({:speaking, speaking, timed_out}, state) do
-    voice = Voice.update_voice(state.guild_id, speaking: speaking)
+    voice = Voice.update_voice(state.voice_pid, state.guild_id, speaking: speaking)
     speaking_update = Payload.speaking_update_payload(voice, timed_out)
     payload = Payload.speaking_payload(voice)
 
@@ -233,7 +233,7 @@ defmodule Nostrum.Voice.Session do
     spawn(fn ->
       Process.monitor(state.conn_pid)
 
-      %VoiceState{} = voice = Voice.get_voice(state.guild_id)
+      %VoiceState{} = voice = Voice.get_voice(state.voice_pid, state.guild_id)
 
       receive do
         _ -> Voice.restart_session(voice)

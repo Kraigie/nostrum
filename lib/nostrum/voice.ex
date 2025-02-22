@@ -44,6 +44,7 @@ defmodule Nostrum.Voice do
   @external_resource "examples/audio_player_example.ex"
 
   alias Nostrum.Api.Self
+  alias Nostrum.Bot
   alias Nostrum.Struct.Channel
   alias Nostrum.Struct.Guild
   alias Nostrum.Struct.VoiceState
@@ -53,6 +54,7 @@ defmodule Nostrum.Voice do
   alias Nostrum.Voice.Ports
   alias Nostrum.Voice.Session
   alias Nostrum.Voice.Supervisor, as: VoiceSupervisor
+  alias Nostrum.Util
 
   require Logger
 
@@ -112,7 +114,7 @@ defmodule Nostrum.Voice do
 
   @doc false
   def start_link(%{consumer: _consumer} = bot_options) do
-    GenServer.start_link(__MODULE__, bot_options, name: Nostrum.VoiceStateMap)
+    GenServer.start_link(__MODULE__, bot_options)
   end
 
   @doc false
@@ -120,23 +122,66 @@ defmodule Nostrum.Voice do
     {:ok, %{:bot_options => bot_options}}
   end
 
-  @doc false
-  def update_voice(guild_id, args \\ []) do
-    GenServer.call(Nostrum.VoiceStateMap, {:update, guild_id, args})
+  defp fetch_voice_pid do
+    Bot.get_bot_pid()
+    |> Util.get_child_pid(Nostrum.Voice.Supervisor)
+    |> Util.get_child_pid(Nostrum.Voice)
+  end
+
+  defp fetch_session_supervisor(%VoiceState{voice_pid: voice_pid}) do
+    voice_pid
+    |> Process.info(:links)
+    |> elem(1)
+    |> Enum.find(fn pid ->
+      pid |> Process.info(:dictionary) |> elem(1) |> Keyword.get(:"$initial_call") ==
+        {:supervisor, Nostrum.Voice.Supervisor, 1}
+    end)
+    |> Util.get_child_pid(DynamicSupervisor)
   end
 
   @doc false
+  def update_voice(%VoiceState{voice_pid: pid, guild_id: guild_id}, args) do
+    update_voice(pid, guild_id, args)
+  end
+
+  def update_voice(guild_id, args) do
+    update_voice(fetch_voice_pid(), guild_id, args)
+  end
+
+  def update_voice(pid, guild_id, args) do
+    GenServer.call(pid, {:update, guild_id, args})
+  end
+
+  @doc false
+  def get_voice(%VoiceState{voice_pid: pid, guild_id: guild_id}) do
+    get_voice(pid, guild_id)
+  end
+
   def get_voice(guild_id) do
-    GenServer.call(Nostrum.VoiceStateMap, {:get, guild_id})
+    get_voice(fetch_voice_pid(), guild_id)
+  end
+
+  def get_voice(pid, guild_id) do
+    GenServer.call(pid, {:get, guild_id})
   end
 
   @doc false
-  def remove_voice(guild_id, pre_cleanup_args \\ []) do
-    GenServer.cast(Nostrum.VoiceStateMap, {:remove, guild_id, pre_cleanup_args})
+  def remove_voice(voice_state_or_guild_id, pre_cleanup_args \\ [])
+
+  def remove_voice(%VoiceState{voice_pid: pid, guild_id: guild_id}, pre_cleanup_args) do
+    remove_voice(pid, guild_id, pre_cleanup_args)
   end
 
-  defp get_bot_options do
-    GenServer.call(Nostrum.VoiceStateMap, :options)
+  def remove_voice(guild_id, pre_cleanup_args) do
+    remove_voice(fetch_voice_pid(), guild_id, pre_cleanup_args)
+  end
+
+  def remove_voice(pid, guild_id, pre_cleanup_args) do
+    GenServer.cast(pid, {:remove, guild_id, pre_cleanup_args})
+  end
+
+  defp get_bot_options(%VoiceState{voice_pid: pid}) do
+    GenServer.call(pid, :options)
   end
 
   @doc false
@@ -170,7 +215,7 @@ defmodule Nostrum.Voice do
         persist \\ true
       ) do
     with %VoiceState{} = voice <- get_voice(guild_id) do
-      update_voice(guild_id,
+      update_voice(voice,
         persist_source: persist,
         persist_playback: persist and VoiceState.playing?(voice)
       )
@@ -282,7 +327,7 @@ defmodule Nostrum.Voice do
         if is_pid(voice.ffmpeg_proc), do: Ports.close(voice.ffmpeg_proc)
 
         voice =
-          update_voice(guild_id,
+          update_voice(voice,
             current_url: if(type in @url_types, do: input),
             ffmpeg_proc: if(type in @ffm_types, do: Audio.spawn_ffmpeg(input, type, options)),
             raw_audio: if(type in @raw_types, do: input),
@@ -290,7 +335,7 @@ defmodule Nostrum.Voice do
           )
 
         set_speaking(voice, true)
-        update_voice(guild_id, player_pid: spawn(Audio, :start_player, [voice]))
+        update_voice(voice, player_pid: spawn(Audio, :start_player, [voice]))
         :ok
     end
   end
@@ -418,7 +463,7 @@ defmodule Nostrum.Voice do
 
       true ->
         set_speaking(voice, true)
-        update_voice(guild_id, player_pid: spawn(Audio, :resume_player, [voice]))
+        update_voice(voice, player_pid: spawn(Audio, :resume_player, [voice]))
         :ok
     end
   end
@@ -596,19 +641,15 @@ defmodule Nostrum.Voice do
   @doc since: "0.5.0"
   @spec connect_to_gateway(Guild.id()) :: :ok | {:error, String.t()}
   def connect_to_gateway(guild_id) do
-    voice = get_voice(guild_id)
-    options = get_bot_options()
-
-    cond do
-      VoiceState.ready_for_ws?(voice) ->
-        {:ok, _pid} = VoiceSupervisor.create_session(voice, options)
-        :ok
-
-      is_nil(voice) ->
-        {:error, "Must be in voice channel to connect to gateway."}
-
-      true ->
-        {:error, "Voice gateway connection already open."}
+    with %VoiceState{} = voice <- get_voice(guild_id),
+         true <- VoiceState.ready_for_ws?(voice),
+         %{} = options <- get_bot_options(voice),
+         sup when is_pid(sup) <- fetch_session_supervisor(voice) do
+      {:ok, _pid} = VoiceSupervisor.create_session(sup, voice, options)
+      :ok
+    else
+      nil -> {:error, "Must be in voice channel to connect to gateway."}
+      _ -> {:error, "Voice gateway connection already open."}
     end
   end
 
@@ -775,7 +816,7 @@ defmodule Nostrum.Voice do
   def handle_call({:update, guild_id, args}, _from, state) do
     voice =
       state
-      |> Map.get(guild_id, VoiceState.new(guild_id: guild_id))
+      |> Map.get(guild_id, VoiceState.new(guild_id: guild_id, voice_pid: self()))
       |> Map.merge(Map.new(args))
 
     state = Map.put(state, guild_id, voice)
@@ -815,7 +856,7 @@ defmodule Nostrum.Voice do
   @doc false
   def start_if_ready(%VoiceState{} = voice, bot_options) do
     if VoiceState.ready_for_ws?(voice) do
-      VoiceSupervisor.create_session(voice, bot_options)
+      VoiceSupervisor.create_session(fetch_session_supervisor(voice), voice, bot_options)
     end
   end
 
@@ -833,13 +874,13 @@ defmodule Nostrum.Voice do
   def on_channel_join_change(p, voice) do
     # Nil-ify ffmpeg_proc so it doesn't get closed when cleanup is called
     if voice.persist_source do
-      remove_voice(p.guild_id, ffmpeg_proc: nil)
+      remove_voice(voice, ffmpeg_proc: nil)
     else
-      remove_voice(p.guild_id)
+      remove_voice(voice)
     end
 
     update_voice(
-      p.guild_id,
+      voice,
       [
         channel_id: p.channel_id,
         session: p.session_id,
@@ -869,7 +910,7 @@ defmodule Nostrum.Voice do
 
   defp persistent_args(_voice), do: []
 
-  unless Application.compile_env(:nostrum, :suppress_youtubedl_version, false) do
+  if not Application.compile_env(:nostrum, :suppress_youtubedl_version, false) do
     @ytdl_old_version "2021.12.17"
 
     defp check_youtubedl_version do
@@ -890,7 +931,7 @@ defmodule Nostrum.Voice do
     end
 
     defp maybe_warn(:ytdl) do
-      unless :persistent_term.get(:nostrum_has_checked_youtubedl_version, false) do
+      if not :persistent_term.get(:nostrum_has_checked_youtubedl_version, false) do
         :persistent_term.put(:nostrum_has_checked_youtubedl_version, true)
         {:ok, _pid} = Task.start(fn -> check_youtubedl_version() end)
       end

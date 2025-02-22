@@ -1,6 +1,8 @@
 defmodule Nostrum.Shard.Dispatch do
   @moduledoc false
 
+  alias Nostrum.Bot
+
   alias Nostrum.Cache.{
     ChannelGuildMapping,
     GuildCache,
@@ -91,13 +93,14 @@ defmodule Nostrum.Shard.Dispatch do
   end
 
   @spec send_event(event) :: event when event: Consumer.event()
-  defp send_event({_name, _event_info, _state = %{consumer: consumer}} = event) do
+  defp send_event({_name, _event_info, %{bot_options: bot_options} = _state} = event) do
     # TODO: This should probably be supervised via `Task.Supervisor.start_child`,
     # because otherwise on shutdown they just, sort of, well, die.
     {:ok, _pid} =
       Task.start(fn ->
         try do
-          consumer.handle_event(event)
+          Bot.set_bot_options(bot_options)
+          bot_options.consumer.handle_event(event)
         rescue
           e ->
             Logger.error("Error in event handler: #{Exception.format(:error, e, __STACKTRACE__)}")
@@ -186,8 +189,8 @@ defmodule Nostrum.Shard.Dispatch do
       ChannelGuildMapping.create(channel.id, guild.id)
     end)
 
-    has_members = Intents.has_intent?(state.intents, :guild_members)
-    has_presences = Intents.has_intent?(state.intents, :guild_presences)
+    has_members = Intents.has_intent?(state.bot_options.intents, :guild_members)
+    has_presences = Intents.has_intent?(state.bot_options.intents, :guild_presences)
 
     intents_should_request? = has_members and not has_presences
     large_server? = guild.member_count >= @large_threshold

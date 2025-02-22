@@ -82,7 +82,7 @@ defmodule Nostrum.Shard.Supervisor do
     range
   end
 
-  def start_link({bot_options, _opts}) do
+  def start_link(bot_options) do
     {_url, gateway_shard_count} = Util.gateway()
 
     on_start =

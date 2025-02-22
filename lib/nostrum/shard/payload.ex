@@ -16,7 +16,7 @@ defmodule Nostrum.Shard.Payload do
     {os, name} = :os.type()
 
     %{
-      "token" => state.wrapped_token.(),
+      "token" => state.bot_options.wrapped_token.(),
       "properties" => %{
         "os" => Atom.to_string(os) <> " " <> Atom.to_string(name),
         "browser" => "Nostrum",
@@ -25,7 +25,7 @@ defmodule Nostrum.Shard.Payload do
       "compress" => false,
       "large_threshold" => @large_threshold,
       "shard" => [state.shard_num, state.total_shards],
-      "intents" => Intents.get_enabled_intents(state.intents)
+      "intents" => Intents.get_enabled_intents(state.bot_options.intents)
     }
     |> build_payload("IDENTIFY")
   end
@@ -33,7 +33,7 @@ defmodule Nostrum.Shard.Payload do
   @doc false
   def resume_payload(state) do
     %{
-      "token" => state.wrapped_token.(),
+      "token" => state.bot_options.wrapped_token.(),
       "session_id" => state.session,
       "seq" => state.seq
     }

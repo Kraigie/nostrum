@@ -19,7 +19,7 @@ defmodule Nostrum.Shard do
            resume_gateway: _resume_gateway,
            seq: _seq,
            session: _session,
-           wrapped_token: _wrapped_token
+           bot_options: _bot_options
          }} =
           opts
       ) do

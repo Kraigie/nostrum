@@ -296,6 +296,15 @@ defmodule Nostrum.Util do
     |> Enum.reduce(%{}, fn {_, s}, m -> Map.put(m, s.shard_num, get_shard_latency(s)) end)
   end
 
+  @doc false
+  @spec get_child_pid(Supervisor.supervisor(), atom()) :: pid()
+  def get_child_pid(supervisor, child) do
+    supervisor
+    |> Supervisor.which_children()
+    |> Enum.find(fn {id, _pid, _type, mods} -> child in [id | mods] end)
+    |> elem(1)
+  end
+
   @doc """
   Helper function for converting a DateTime to a Snowflake.
   While allowing Snowflakes to be returned as-is and `:infinity`

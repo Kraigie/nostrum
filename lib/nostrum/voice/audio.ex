@@ -144,7 +144,7 @@ defmodule Nostrum.Voice.Audio do
         }
       end)
 
-    {Voice.update_voice(voice.guild_id,
+    {Voice.update_voice(voice,
        rtp_sequence: voice.rtp_sequence,
        rtp_timestamp: voice.rtp_timestamp,
        # If using raw audio and it isn't stateful, update its state manually
@@ -286,7 +286,7 @@ defmodule Nostrum.Voice.Audio do
   # Allow to exit here
   @dialyzer {:nowarn_function, on_complete: 2}
   def on_complete(%VoiceState{} = voice, timed_out) do
-    voice = Voice.update_voice(voice.guild_id, ffmpeg_proc: nil, raw_audio: nil)
+    voice = Voice.update_voice(voice, ffmpeg_proc: nil, raw_audio: nil)
     Opus.generate_silence(5) |> send_frames(voice)
     Voice.set_speaking(voice, false, timed_out)
     exit(:normal)

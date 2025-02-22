@@ -110,11 +110,14 @@ defmodule Nostrum.Bot do
     should contain the total amount of shards that your bot is expected to
     have. Useful for splitting a single bot across multiple nodes, see the
     [multi-node documentation](./multi_node.html) for further information.
+
+  - `:name`: Unique name for your bot. Defaults to the bot_id encoded into the token.
   """
   @type bot_options :: %{
           required(:consumer) => module(),
           required(:intents) => :all | :nonprivileged | [atom()],
           required(:wrapped_token) => (-> String.t()),
+          optional(:name) => term(),
           optional(:shards) =>
             :auto
             | :manual
@@ -151,23 +154,24 @@ defmodule Nostrum.Bot do
         {%{consumer: _consumer, wrapped_token: wrapped_token} = bot_options, supervisor_options}
       ) do
     token = wrapped_token.()
-    wrapped_token = fn -> token end
+    bot_options = %{bot_options | wrapped_token: fn -> token end}
     bot_id = Token.decode_token!(token)
-    name = {__MODULE__, bot_id}
-    Util.set_process_label(name)
+    name = bot_options[:name] || bot_id
+    Util.set_process_label({__MODULE__, name})
+    name = {:via, Registry, {Nostrum.Bot.Registry, name, bot_options}}
 
     children = [
       Nostrum.Store.Supervisor,
       Nostrum.ConsumerGroup,
       Nostrum.Api.RatelimiterGroup,
-      {Nostrum.Api.Ratelimiter, {%{wrapped_token: wrapped_token}, []}},
+      {Nostrum.Api.Ratelimiter, bot_options},
       Nostrum.Shard.Connector,
       Nostrum.Cache.CacheSupervisor,
-      {Nostrum.Shard.Supervisor, {bot_options, []}},
+      {Nostrum.Shard.Supervisor, bot_options},
       {Nostrum.Voice.Supervisor, bot_options}
     ]
 
-    Supervisor.start_link(children, supervisor_options)
+    Supervisor.start_link(children, supervisor_options ++ [name: name])
   end
 
   @spec child_spec(options()) :: Supervisor.child_spec()
@@ -182,5 +186,69 @@ defmodule Nostrum.Bot do
       restart: :permanent,
       shutdown: 500
     }
+  end
+
+  defmacro __using__(opts) do
+    bot_name = opts[:name] || raise "Must define name when invoking `use #{__MODULE__}`"
+
+    quote do
+      defp name, do: unquote(bot_name)
+    end
+  end
+
+  def fetch_all_bots do
+    Registry.select(Nostrum.Bot.Registry, [
+      {{:"$1", :"$2", :"$3"}, [], [%{name: :"$1", pid: :"$2", bot_options: :"$3"}]}
+    ])
+  end
+
+  def get_bot_pid do
+    with nil <- get_bot_pid_from_process(),
+         nil <- get_bot_pid_from_options(),
+         nil <- get_bot_pid_from_all() do
+      IO.puts("Could not find PID!!!")
+      nil
+    else
+      pid -> pid
+    end
+  end
+
+  def get_bot_pid(name) do
+    case Registry.lookup(Nostrum.Bot.Registry, name) do
+      [{pid, _bot_options}] -> pid
+      _ -> nil
+    end
+  end
+
+  def get_bot_options do
+    Process.get(:nostrum_bot_options)
+  end
+
+  defp get_bot_pid_from_process do
+    Process.get(:nostrum_bot_pid)
+  end
+
+  defp get_bot_pid_from_options do
+    with %{name: name} <- get_bot_options(),
+         [{pid, _bot_options}] <- Registry.lookup(Nostrum.Bot.Registry, name) do
+      pid
+    else
+      _ -> nil
+    end
+  end
+
+  defp get_bot_pid_from_all do
+    case fetch_all_bots() do
+      [%{pid: pid, bot_options: bot_options}] ->
+        set_bot_options(bot_options)
+        pid
+
+      _zero_or_multiple_bots ->
+        nil
+    end
+  end
+
+  def set_bot_options(options) do
+    Process.put(:nostrum_bot_options, options)
   end
 end

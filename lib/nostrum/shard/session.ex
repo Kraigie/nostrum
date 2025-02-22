@@ -170,13 +170,10 @@ defmodule Nostrum.Shard.Session do
 
     state = %WSState{
       conn_pid: self(),
-      consumer: bot_options.consumer,
       gateway: gateway,
-      intents: bot_options.intents,
       shard_num: shard_num,
       total_shards: total,
-      # XXX: Do we want to send this to users, too? I feel it is an internal detail.
-      wrapped_token: bot_options.wrapped_token
+      bot_options: bot_options
     }
 
     connect = {:next_event, :internal, :connect}
@@ -186,30 +183,26 @@ defmodule Nostrum.Shard.Session do
   def init(
         {:reconnect,
          %{
-           consumer: consumer,
            gateway: gateway,
-           intents: intents,
            resume_gateway: resume_gateway,
            seq: seq,
            session: session,
            shard_num: shard_num,
            total_shards: total_shards,
-           wrapped_token: wrapped_token
+           bot_options: bot_options
          }}
       ) do
     Logger.metadata(shard: shard_num)
 
     state = %WSState{
       conn_pid: self(),
-      consumer: consumer,
       gateway: gateway,
-      intents: intents,
       resume_gateway: resume_gateway,
       seq: seq,
       session: session,
       shard_num: shard_num,
       total_shards: total_shards,
-      wrapped_token: wrapped_token
+      bot_options: bot_options
     }
 
     connect = {:next_event, :internal, :connect}

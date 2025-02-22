@@ -14,6 +14,7 @@ defmodule Nostrum.Struct.VoiceState do
     :token,
     :secret_key,
     :session_pid,
+    :voice_pid,
     :ssrc,
     :speaking,
     :ip,

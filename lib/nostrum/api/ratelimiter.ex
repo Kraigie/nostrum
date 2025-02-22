@@ -326,9 +326,9 @@ defmodule Nostrum.Api.Ratelimiter do
   @doc """
   Starts the ratelimiter.
   """
-  @spec start_link({String.t(), [:gen_statem.start_opt()]}) :: :gen_statem.start_ret()
-  def start_link({token, opts}) do
-    :gen_statem.start_link(__MODULE__, token, opts)
+  @spec start_link(Nostrum.Bot.bot_options()) :: :gen_statem.start_ret()
+  def start_link(%{wrapped_token: _, name: _} = bot_options) do
+    :gen_statem.start_link(__MODULE__, bot_options, [])
   end
 
   def init(%{} = options) do

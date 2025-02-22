@@ -36,9 +36,13 @@ defmodule Nostrum.Application do
       """
     end
 
+    children = [
+      {Registry, keys: :unique, name: Nostrum.Bot.Registry}
+    ]
+
     if Application.get_env(:nostrum, :dev),
-      do: Supervisor.start_link([DummySupervisor], strategy: :one_for_one),
-      else: Supervisor.start_link([], strategy: :one_for_one, name: Nostrum.Supervisor)
+      do: Supervisor.start_link(children ++ [DummySupervisor], strategy: :one_for_one),
+      else: Supervisor.start_link(children, strategy: :one_for_one, name: Nostrum.Supervisor)
   end
 
   defp check_executables do
