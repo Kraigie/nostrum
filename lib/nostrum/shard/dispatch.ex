@@ -93,19 +93,28 @@ defmodule Nostrum.Shard.Dispatch do
   end
 
   @spec send_event(event) :: event when event: Consumer.event()
-  defp send_event({_name, _event_info, %{bot_options: bot_options} = _state} = event) do
-    # TODO: This should probably be supervised via `Task.Supervisor.start_child`,
-    # because otherwise on shutdown they just, sort of, well, die.
+  defp send_event({_name, _event_info, %{bot_options: bot_options, seq: seq} = _state} = event) do
+    # By setting these to variables, we reduce
+    # how much copying needs to be done when spawning the task
+    bot_name = bot_options.name
+    consumer = bot_options.consumer
+
+    task_func = fn ->
+      try do
+        Bot.set_bot_name(bot_name)
+        consumer.handle_event(event)
+      rescue
+        e ->
+          Logger.error("Error in event handler: #{Exception.format(:error, e, __STACKTRACE__)}")
+      end
+    end
+
     {:ok, _pid} =
-      Task.start(fn ->
-        try do
-          Bot.set_bot_name(bot_options.name)
-          bot_options.consumer.handle_event(event)
-        rescue
-          e ->
-            Logger.error("Error in event handler: #{Exception.format(:error, e, __STACKTRACE__)}")
-        end
-      end)
+      Bot.spawn_task(
+        task_func,
+        bot_name,
+        seq
+      )
 
     event
   end
@@ -140,7 +149,14 @@ defmodule Nostrum.Shard.Dispatch do
 
     # Starting this as a task to avoid blocking the dispatch process
     # since this is a potentially long operation
-    Task.start(fn -> MessageCache.channel_delete(channel_id) end)
+    bot_name = state.bot_options.name
+
+    func = fn ->
+      Bot.set_bot_name(bot_name)
+      MessageCache.channel_delete(channel_id)
+    end
+
+    {:ok, _pid} = Bot.spawn_task(func, bot_name, state.seq)
 
     ChannelGuildMapping.delete(channel_id)
     {event, GuildCache.channel_delete(p.guild_id, p.id), state}
