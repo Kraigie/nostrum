@@ -40,7 +40,7 @@ defmodule Nostrum.Api.Ratelimiter do
 
   ## Multi-node
 
-  nostrum will transparently distribute client requests across all ratelimiter
+  nostrum will transparently distribute client requests across all ratelimiters
   running in the cluster. This allows us to account for per-route ratelimits
   whilst still distributing work across cluster nodes. **Note that the API
   enforces a global user ratelimit across all requests**, which we cannot
@@ -212,7 +212,6 @@ defmodule Nostrum.Api.Ratelimiter do
   require Logger
 
   @major_parameters ["channels", "guilds", "webhooks"]
-  @registered_name __MODULE__
   # Discord mandates a specific number of API calls we may make across (almost)
   # all endpoints per second. See the "global rate limit" documentation for
   # more information:
@@ -329,7 +328,7 @@ defmodule Nostrum.Api.Ratelimiter do
   """
   @spec start_link({String.t(), [:gen_statem.start_opt()]}) :: :gen_statem.start_ret()
   def start_link({token, opts}) do
-    :gen_statem.start_link({:local, @registered_name}, __MODULE__, token, opts)
+    :gen_statem.start_link(__MODULE__, token, opts)
   end
 
   def init(%{} = options) do
