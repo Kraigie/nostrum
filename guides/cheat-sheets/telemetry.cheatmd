@@ -1,0 +1,49 @@
+# Telemetry Events
+
+If you have the `:telemetry` library as a dependency,
+Nostrum will emit the below events for you to subscribe to.
+
+## API Request
+Any requests made through the `Nostrum.Api` module will emit the
+below telemetry events.
+
+|event | measurements | metadata |
+|------|--------------|----------|
+| `[:nostrum, :api, :request, :start]` | `:system_time` | `:method`, `:route` |
+| `[:nostrum, :api, :request, :stop]` | `:duration` | `:method`, `:route`, `:status` |
+| `[:nostrum, :api, :request, :exception]` | `:duration` | `:method`, `:route`, `:kind`, `:reason`, `:stacktrace` |
+
+### Metadata
+* `:method` - A lowercase atom representing the HTTP method used for the request. E.g. `:get`, `:post`.
+* `:route` - The route used for the request.
+* `:status` - one of the atoms `:ok` or `:error`.
+
+See `:telemetry.span/3` for more information on the measurements and metadata.
+
+## Ratelimiter
+
+Nostrum's Ratelimiter will emit the below telemetry events.
+
+|event | measurements | metadata |
+|------|--------------|----------|
+| `[:nostrum, :ratelimiter, :connected]` | - | - |
+| `[:nostrum, :ratelimiter, :connect_timeout]` | - | - |
+| `[:nostrum, :ratelimiter, :disconnected]` | - | - |
+| `[:nostrum, :ratelimiter, :postponed]` | - | `:major_route`, `:global` |
+
+### Metadata
+* `:major_route` - A String that is Nostrum's internal representation of how it keys request paths for rate limits.
+* `:global` - A boolean indicating whether the request was delayed due to a global ratelimit.
+
+## Gateway
+Nostrum's Gateway will emit the below telemetry events.
+|event | measurements | metadata |
+|------|--------------|----------|
+| `[:nostrum, :gateway, :shard, :connected]` | - | `:shard_number` |
+| `[:nostrum, :gateway, :shard, :disconnected]` | - | `:shard_number`, `:reason` |
+| `[:nostrum, :gateway, :shard, :heartbeat]` | `:seq` | `:shard_number` |
+
+### Metadata
+* `:shard_number` - The shard number of the shard which connected or disconnected.
+* `:reason` - The reason for the disconnection, for example `:reconnect`.
+* `:seq` - The sequence number of the heartbeat.

@@ -207,6 +207,8 @@ defmodule Nostrum.Api.Ratelimiter do
   alias Nostrum.Constants
   alias Nostrum.Error.ApiError
 
+  alias Nostrum.TelemetryShim
+
   require Logger
 
   @major_parameters ["channels", "guilds", "webhooks"]
@@ -393,7 +395,8 @@ defmodule Nostrum.Api.Ratelimiter do
     {:keep_state, %{data | conn: conn_pid}}
   end
 
-  def connecting(:info, {:gun_up, conn_pid, _}, %{conn: conn_pid} = data) do
+  def connecting(:info, {:gun_up, conn_pid, _protocol}, %{conn: conn_pid} = data) do
+    TelemetryShim.execute(~w[nostrum ratelimiter connected]a, %{}, %{})
     {:next_state, :connected, data}
   end
 
@@ -406,6 +409,7 @@ defmodule Nostrum.Api.Ratelimiter do
   end
 
   def connecting(:state_timeout, :connect_timeout, _data) do
+    TelemetryShim.execute(~w[nostrum ratelimiter connect_timeout]a, %{})
     {:stop, :connect_timeout}
   end
 
@@ -433,6 +437,12 @@ defmodule Nostrum.Api.Ratelimiter do
       # the waiting line.
       {remaining, queue} when remaining in [0, :initial] or remaining_in_window == 0 ->
         entry = {payload, from}
+
+        TelemetryShim.execute(
+          ~w[nostrum ratelimiter postponed]a,
+          %{},
+          %{major_route: bucket, global: false}
+        )
 
         data_with_this_queued =
           put_in(data, [:outstanding, bucket], {remaining, :queue.in(entry, queue)})
@@ -468,6 +478,12 @@ defmodule Nostrum.Api.Ratelimiter do
         entry = {payload, from}
 
         queue = :queue.new()
+
+        TelemetryShim.execute(
+          ~w[nostrum ratelimiter postponed]a,
+          %{},
+          %{major_route: bucket, global: true}
+        )
 
         data_with_this_queued =
           put_in(data, [:outstanding, bucket], {:initial, :queue.in(entry, queue)})
@@ -907,6 +923,11 @@ defmodule Nostrum.Api.Ratelimiter do
     # of WebSocket. Force the connection to die.
     :ok = :gun.close(conn)
     :ok = :gun.flush(conn)
+
+    TelemetryShim.execute(
+      ~w[nostrum ratelimiter disconnected]a,
+      %{}
+    )
 
     # Streams that we previously received `:gun_error` notifications for have
     # been requeued already, and we won't find them in the `running` list.
