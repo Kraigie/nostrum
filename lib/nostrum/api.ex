@@ -258,7 +258,7 @@ defmodule Nostrum.Api do
   Same as `delete_message/2`, but takes a `Nostrum.Struct.Message` instead of a
   `channel_id` and `message_id`.
   """
-  @spec delete_message(Message.t()) :: error | {:ok}
+  @spec delete_message(Message.t()) :: error | :ok
   def delete_message(%Message{id: id, channel_id: c_id}) do
     delete_message(c_id, id)
   end
@@ -276,7 +276,7 @@ defmodule Nostrum.Api do
   Same as `delete_message/1`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
   @deprecated "Bang functions will be removed in v1.0"
-  @spec delete_message!(Message.t()) :: error | {:ok}
+  @spec delete_message!(Message.t()) :: error | :ok
   def delete_message!(%Message{id: id, channel_id: c_id}) do
     delete_message(c_id, id)
     |> bangify
@@ -286,7 +286,7 @@ defmodule Nostrum.Api do
   Same as `delete_message/2`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
   @deprecated "Bang functions will be removed in v1.0"
-  @spec delete_message!(Channel.id(), Message.id()) :: no_return | {:ok}
+  @spec delete_message!(Channel.id(), Message.id()) :: no_return | :ok
   def delete_message!(channel_id, message_id) do
     delete_message(channel_id, message_id)
     |> bangify
@@ -305,7 +305,7 @@ defmodule Nostrum.Api do
   Same as `create_reaction/3`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
   @deprecated "Bang functions will be removed in v1.0"
-  @spec create_reaction!(Channel.id(), Message.id(), emoji) :: no_return | {:ok}
+  @spec create_reaction!(Channel.id(), Message.id(), emoji) :: no_return | :ok
   def create_reaction!(channel_id, message_id, emoji) do
     create_reaction(channel_id, message_id, emoji)
     |> bangify
@@ -324,7 +324,7 @@ defmodule Nostrum.Api do
   Same as `delete_own_reaction/3`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
   @deprecated "Bang functions will be removed in v1.0"
-  @spec delete_own_reaction!(Channel.id(), Message.id(), emoji) :: no_return | {:ok}
+  @spec delete_own_reaction!(Channel.id(), Message.id(), emoji) :: no_return | :ok
   def delete_own_reaction!(channel_id, message_id, emoji) do
     delete_own_reaction(channel_id, message_id, emoji)
     |> bangify
@@ -342,7 +342,7 @@ defmodule Nostrum.Api do
   Same as `delete_user_reaction/4`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
   @deprecated "Bang functions will be removed in v1.0"
-  @spec delete_user_reaction!(Channel.id(), Message.id(), emoji, User.id()) :: no_return | {:ok}
+  @spec delete_user_reaction!(Channel.id(), Message.id(), emoji, User.id()) :: no_return | :ok
   def delete_user_reaction!(channel_id, message_id, emoji, user_id) do
     delete_user_reaction(channel_id, message_id, emoji, user_id)
     |> bangify
@@ -361,7 +361,7 @@ defmodule Nostrum.Api do
   Same as `delete_reaction/3`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
   @deprecated "Bang functions will be removed in v1.0"
-  @spec delete_reaction!(Channel.id(), Message.id(), emoji) :: no_return | {:ok}
+  @spec delete_reaction!(Channel.id(), Message.id(), emoji) :: no_return | :ok
   def delete_reaction!(channel_id, message_id, emoji) do
     delete_reaction(channel_id, message_id, emoji)
     |> bangify
@@ -399,7 +399,7 @@ defmodule Nostrum.Api do
   Same as `delete_all_reactions/2`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
   @deprecated "Bang functions will be removed in v1.0"
-  @spec delete_all_reactions!(Channel.id(), Message.id()) :: no_return | {:ok}
+  @spec delete_all_reactions!(Channel.id(), Message.id()) :: no_return | :ok
   def delete_all_reactions!(channel_id, message_id) do
     delete_all_reactions(channel_id, message_id)
     |> bangify
@@ -551,7 +551,7 @@ defmodule Nostrum.Api do
   """
   @deprecated "Bang functions will be removed in v1.0"
   @spec bulk_delete_messages!(integer, [Nostrum.Struct.Message.id()], boolean) ::
-          no_return | {:ok}
+          no_return | :ok
   def bulk_delete_messages!(channel_id, messages, filter \\ true) do
     bulk_delete_messages(channel_id, messages, filter)
     |> bangify
@@ -579,7 +579,7 @@ defmodule Nostrum.Api do
             optional(:deny) => integer
           },
           AuditLogEntry.reason()
-        ) :: no_return | {:ok}
+        ) :: no_return | :ok
   def edit_channel_permissions!(channel_id, overwrite_id, permission_info, reason \\ nil) do
     edit_channel_permissions(channel_id, overwrite_id, permission_info, reason)
     |> bangify
@@ -645,7 +645,7 @@ defmodule Nostrum.Api do
   Same as `start_typing/1`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
   @deprecated "Bang functions will be removed in v1.0"
-  @spec start_typing!(integer) :: no_return | {:ok}
+  @spec start_typing!(integer) :: no_return | :ok
   def start_typing!(channel_id) do
     start_typing(channel_id)
     |> bangify
@@ -683,7 +683,7 @@ defmodule Nostrum.Api do
   Same as `add_pinned_channel_message/2`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
   @deprecated "Bang functions will be removed in v1.0"
-  @spec add_pinned_channel_message!(Channel.id(), Message.id()) :: no_return | {:ok}
+  @spec add_pinned_channel_message!(Channel.id(), Message.id()) :: no_return | :ok
   def add_pinned_channel_message!(channel_id, message_id) do
     add_pinned_channel_message(channel_id, message_id)
     |> bangify
@@ -702,7 +702,7 @@ defmodule Nostrum.Api do
   Same as `delete_pinned_channel_message/2`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
   @deprecated "Bang functions will be removed in v1.0"
-  @spec delete_pinned_channel_message!(Channel.id(), Message.id()) :: no_return | {:ok}
+  @spec delete_pinned_channel_message!(Channel.id(), Message.id()) :: no_return | :ok
   def delete_pinned_channel_message!(channel_id, message_id) do
     delete_pinned_channel_message(channel_id, message_id)
     |> bangify
@@ -798,7 +798,7 @@ defmodule Nostrum.Api do
   Same as `delete_guild_emoji/2`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
   @deprecated "Bang functions will be removed in v1.0"
-  @spec delete_guild_emoji!(Guild.id(), Emoji.id(), AuditLogEntry.reason()) :: no_return | {:ok}
+  @spec delete_guild_emoji!(Guild.id(), Emoji.id(), AuditLogEntry.reason()) :: no_return | :ok
   def delete_guild_emoji!(guild_id, emoji_id, reason \\ nil) do
     delete_guild_emoji(guild_id, emoji_id, reason)
     |> bangify
@@ -927,7 +927,7 @@ defmodule Nostrum.Api do
   Same as `delete_guild/1`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
   @deprecated "Bang functions will be removed in v1.0"
-  @spec delete_guild!(Guild.id()) :: no_return | {:ok}
+  @spec delete_guild!(Guild.id()) :: no_return | :ok
   def delete_guild!(guild_id) do
     delete_guild(guild_id)
     |> bangify
@@ -985,7 +985,7 @@ defmodule Nostrum.Api do
   """
   @deprecated "Bang functions will be removed in v1.0"
   @spec modify_guild_channel_positions!(Guild.id(), [%{id: integer, position: integer}]) ::
-          no_return | {:ok}
+          no_return | :ok
   def modify_guild_channel_positions!(guild_id, positions) do
     modify_guild_channel_positions(guild_id, positions)
     |> bangify
@@ -1042,7 +1042,7 @@ defmodule Nostrum.Api do
   Same as `add_guild_member/3`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
   @deprecated "Bang functions will be removed in v1.0"
-  @spec add_guild_member!(Guild.id(), User.id(), options) :: no_return | Member.t() | {:ok}
+  @spec add_guild_member!(Guild.id(), User.id(), options) :: no_return | Member.t() | :ok
   def add_guild_member!(guild_id, user_id, options) do
     add_guild_member(guild_id, user_id, options)
     |> bangify
@@ -1062,7 +1062,7 @@ defmodule Nostrum.Api do
   """
   @deprecated "Bang functions will be removed in v1.0"
   @spec modify_guild_member!(Guild.id(), User.id(), options, AuditLogEntry.reason()) ::
-          error | {:ok}
+          error | :ok
   def modify_guild_member!(guild_id, user_id, options \\ %{}, reason \\ nil) do
     modify_guild_member(guild_id, user_id, options, reason)
     |> bangify
@@ -1118,7 +1118,7 @@ defmodule Nostrum.Api do
   Same as `remove_guild_member/2`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
   @deprecated "Bang functions will be removed in v1.0"
-  @spec remove_guild_member!(Guild.id(), User.id(), AuditLogEntry.reason()) :: no_return | {:ok}
+  @spec remove_guild_member!(Guild.id(), User.id(), AuditLogEntry.reason()) :: no_return | :ok
   def remove_guild_member!(guild_id, user_id, reason \\ nil) do
     remove_guild_member(guild_id, user_id, reason)
     |> bangify
@@ -1254,7 +1254,7 @@ defmodule Nostrum.Api do
   Same as `delete_guild_role/2`, but raises `Nostrum.Error.ApiError` in case of failure.
   """
   @deprecated "Bang functions will be removed in v1.0"
-  @spec delete_guild_role!(Guild.id(), Role.id(), AuditLogEntry.reason()) :: no_return | {:ok}
+  @spec delete_guild_role!(Guild.id(), Role.id(), AuditLogEntry.reason()) :: no_return | :ok
   def delete_guild_role!(guild_id, role_id, reason \\ nil) do
     delete_guild_role(guild_id, role_id, reason)
     |> bangify
@@ -1880,7 +1880,7 @@ defmodule Nostrum.Api do
   Same as `create_interaction_response/3`, but directly takes the
   `t:Nostrum.Struct.Interaction.t/0` received from the gateway.
   """
-  @spec create_interaction_response(Interaction.t(), map()) :: {:ok} | error
+  @spec create_interaction_response(Interaction.t(), map()) :: :ok | error
   def create_interaction_response(interaction, response) do
     create_interaction_response(interaction.id, interaction.token, response)
   end
@@ -1890,7 +1890,7 @@ defmodule Nostrum.Api do
   """
   @doc since: "0.5.0"
   @deprecated "Bang functions will be removed in v1.0"
-  @spec create_interaction_response!(Interaction.t(), map()) :: no_return() | {:ok}
+  @spec create_interaction_response!(Interaction.t(), map()) :: no_return() | :ok
   def create_interaction_response!(interaction, response) do
     create_interaction_response!(interaction.id, interaction.token, response)
   end
@@ -1965,14 +1965,14 @@ defmodule Nostrum.Api do
   `t:Nostrum.Struct.Interaction.t/0` received from the gateway.
   """
   @doc since: "0.5.0"
-  @spec delete_interaction_response(Interaction.t()) :: {:ok} | error
+  @spec delete_interaction_response(Interaction.t()) :: :ok | error
   def delete_interaction_response(%Interaction{} = interaction) do
     delete_interaction_response(interaction.application_id, interaction.token)
   end
 
   @doc since: "0.5.0"
   @deprecated "Bang functions will be removed in v1.0"
-  @spec delete_interaction_response!(Interaction.t()) :: no_return() | {:ok}
+  @spec delete_interaction_response!(Interaction.t()) :: no_return() | :ok
   def delete_interaction_response!(%Interaction{} = interaction) do
     delete_interaction_response(interaction.application_id, interaction.token)
     |> bangify
@@ -1992,7 +1992,7 @@ defmodule Nostrum.Api do
   """
   @doc since: "0.5.0"
   @deprecated "Bang functions will be removed in v1.0"
-  @spec delete_interaction_response!(User.id(), Interaction.token()) :: no_return() | {:ok}
+  @spec delete_interaction_response!(User.id(), Interaction.token()) :: no_return() | :ok
   def delete_interaction_response!(id \\ Me.get().id, token) do
     delete_interaction_response(id, token)
     |> bangify
@@ -2038,7 +2038,7 @@ defmodule Nostrum.Api do
   @doc since: "0.5.0"
   @deprecated "Bang functions will be removed in v1.0"
   @spec delete_interaction_followup_message!(User.id(), Interaction.token(), Message.id()) ::
-          no_return() | {:ok}
+          no_return() | :ok
   def delete_interaction_followup_message!(
         application_id \\ Me.get().id,
         token,
@@ -2250,14 +2250,14 @@ defmodule Nostrum.Api do
     to: Nostrum.Api.AutoModeration,
     as: :delete_rule
 
-  @spec request(map()) :: {:ok} | {:ok, String.t()} | error
+  @spec request(map()) :: :ok | {:ok, String.t()} | error
   def request(request) do
     TelemetryShim.span(
       ~w[nostrum api request]a,
       %{method: request.method, route: request.route},
       fn ->
         case Ratelimiter.queue(request) do
-          {:ok} = result ->
+          :ok = result ->
             {result, %{status: :ok}}
 
           {:ok, _response} = result ->
@@ -2271,7 +2271,7 @@ defmodule Nostrum.Api do
   end
 
   @spec request(atom(), String.t(), any, keyword() | map()) ::
-          {:ok} | {:ok, String.t()} | error
+          :ok | {:ok, String.t()} | error
   def request(method, route, body \\ "", params \\ [])
 
   def request(method, route, %{} = body, params) when has_files(body),
@@ -2292,7 +2292,7 @@ defmodule Nostrum.Api do
   end
 
   @spec request_multipart(atom(), String.t(), any, keyword() | map()) ::
-          {:ok} | {:ok, String.t()} | error
+          :ok | {:ok, String.t()} | error
   def request_multipart(method, route, body, params \\ []) do
     boundary = Helpers.generate_boundary()
 
@@ -2318,7 +2318,7 @@ defmodule Nostrum.Api do
   @doc false
   def bangify({:error, error}), do: raise(error)
   def bangify({:ok, body}), do: body
-  def bangify({:ok}), do: {:ok}
+  def bangify(:ok), do: :ok
 
   def create_multipart(files, json, boundary) do
     json_mime = MIME.type("json")

@@ -54,7 +54,7 @@ defmodule Nostrum.Api.Webhook do
     - `webhook_id` - Id of webhook to delete.
     - `reason` - An optional reason for the guild audit log.
   """
-  @spec delete(Webhook.id(), AuditLogEntry.reason()) :: Api.error() | {:ok}
+  @spec delete(Webhook.id(), AuditLogEntry.reason()) :: Api.error() | :ok
   def delete(webhook_id, reason \\ nil) do
     Api.request(%{
       method: :delete,
@@ -95,7 +95,7 @@ defmodule Nostrum.Api.Webhook do
     - `webhook_id` - Id of the webhook to execute.
     - `webhook_token` - Token of the webhook to execute.
   """
-  @spec execute_git(Webhook.id(), Webhook.token(), boolean) :: Api.error() | {:ok}
+  @spec execute_git(Webhook.id(), Webhook.token(), boolean) :: Api.error() | :ok
   def execute_git(webhook_id, webhook_token, wait \\ false) do
     Api.request(:post, Constants.webhook_git(webhook_id, webhook_token), wait: wait)
   end
@@ -107,7 +107,7 @@ defmodule Nostrum.Api.Webhook do
     - `webhook_id` - Id of the webhook to execute.
     - `webhook_token` - Token of the webhook to execute.
   """
-  @spec execute_slack(Webhook.id(), Webhook.token(), boolean) :: Api.error() | {:ok}
+  @spec execute_slack(Webhook.id(), Webhook.token(), boolean) :: Api.error() | :ok
   def execute_slack(webhook_id, webhook_token, wait \\ false) do
     Api.request(:post, Constants.webhook_slack(webhook_id, webhook_token), wait: wait)
   end
@@ -180,7 +180,7 @@ defmodule Nostrum.Api.Webhook do
           matrix,
           boolean
         ) ::
-          Api.error() | {:ok} | {:ok, Message.t()}
+          Api.error() | :ok | {:ok, Message.t()}
   def execute(webhook_id, webhook_token, args, wait \\ false)
 
   def execute(webhook_id, webhook_token, args, wait) do

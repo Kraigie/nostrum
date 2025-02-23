@@ -88,7 +88,7 @@ defmodule Nostrum.Api.Sticker do
   Delete a guild sticker with the specified ID.
   """
   @doc since: "1.x.x"
-  @spec delete(Guild.id(), Sticker.id()) :: {:ok} | Api.error()
+  @spec delete(Guild.id(), Sticker.id()) :: :ok | Api.error()
   def delete(guild_id, sticker_id) do
     Api.request(:delete, Constants.guild_sticker(guild_id, sticker_id))
   end

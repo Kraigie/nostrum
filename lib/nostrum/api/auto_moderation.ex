@@ -44,7 +44,7 @@ defmodule Nostrum.Api.AutoModeration do
   """
   @doc since: "1.x.x"
   @spec delete_rule(Guild.id(), AutoModerationRule.id()) ::
-          {:ok} | Api.error()
+          :ok | Api.error()
   def delete_rule(guild_id, rule_id) do
     Api.request(:delete, Constants.guild_auto_moderation_rule(guild_id, rule_id))
   end

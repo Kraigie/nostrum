@@ -119,7 +119,7 @@ defmodule Nostrum.Api.Message do
   the `emoji`, this endpoint requires the `ADD_REACTIONS` permission. It
   fires a `t:Nostrum.Consumer.message_reaction_add/0` event.
 
-  If successful, returns `{:ok}`. Otherwise, returns `t:Nostrum.Api.error/0`.
+  If successful, returns `:ok`. Otherwise, returns `t:Nostrum.Api.error/0`.
 
   ## Examples
 
@@ -135,7 +135,7 @@ defmodule Nostrum.Api.Message do
 
   For other emoji string examples, see `t:Nostrum.Struct.Emoji.api_name/0`.
   """
-  @spec react(Channel.id(), Message.id(), Api.emoji()) :: Api.error() | {:ok}
+  @spec react(Channel.id(), Message.id(), Api.emoji()) :: Api.error() | :ok
   def react(channel_id, message_id, emoji)
 
   def react(channel_id, message_id, %Emoji{} = emoji),
@@ -151,9 +151,9 @@ defmodule Nostrum.Api.Message do
   This endpoint requires the `VIEW_CHANNEL`, `READ_MESSAGE_HISTORY`, and
   `MANAGE_MESSAGES` permissions. It fires a `t:Nostrum.Consumer.message_reaction_remove_all/0` event.
 
-  If successful, returns `{:ok}`. Otherwise, return `t:Nostrum.Api.error/0`.
+  If successful, returns `:ok`. Otherwise, return `t:Nostrum.Api.error/0`.
   """
-  @spec clear_reactions(Channel.id(), Message.id()) :: Api.error() | {:ok}
+  @spec clear_reactions(Channel.id(), Message.id()) :: Api.error() | :ok
   def clear_reactions(channel_id, message_id) do
     Api.request(:delete, Constants.channel_reactions_delete(channel_id, message_id))
   end
@@ -162,7 +162,7 @@ defmodule Nostrum.Api.Message do
   Same as `delete/2`, but takes a `Nostrum.Struct.Message` instead of a
   `channel_id` and `message_id`.
   """
-  @spec delete(Message.t()) :: Api.error() | {:ok}
+  @spec delete(Message.t()) :: Api.error() | :ok
   def delete(%Message{id: id, channel_id: c_id}) do
     delete(c_id, id)
   end
@@ -173,7 +173,7 @@ defmodule Nostrum.Api.Message do
   This endpoint requires the 'VIEW_CHANNEL' and 'MANAGE_MESSAGES' permission. It
   fires the `MESSAGE_DELETE` event.
 
-  If successful, returns `{:ok}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
+  If successful, returns `:ok`. Otherwise, returns a `t:Nostrum.Api.error/0`.
 
   ## Examples
 
@@ -181,7 +181,7 @@ defmodule Nostrum.Api.Message do
   Nostrum.Api.Message.delete(43189401384091, 43189401384091)
   ```
   """
-  @spec delete(Channel.id(), Message.id()) :: Api.error() | {:ok}
+  @spec delete(Channel.id(), Message.id()) :: Api.error() | :ok
   def delete(channel_id, message_id)
       when is_snowflake(channel_id) and is_snowflake(message_id) do
     Api.request(:delete, Constants.channel_message(channel_id, message_id))
@@ -193,11 +193,11 @@ defmodule Nostrum.Api.Message do
   This endpoint requires the `VIEW_CHANNEL` and `READ_MESSAGE_HISTORY`
   permissions. It fires a `t:Nostrum.Consumer.message_reaction_remove/0` event.
 
-  If successful, returns `{:ok}`. Otherwise, returns `t:Nostrum.Api.error/0`.
+  If successful, returns `:ok`. Otherwise, returns `t:Nostrum.Api.error/0`.
 
   See `react/3` for similar examples.
   """
-  @spec unreact(Channel.id(), Message.id(), Api.emoji()) :: Api.error() | {:ok}
+  @spec unreact(Channel.id(), Message.id(), Api.emoji()) :: Api.error() | :ok
   def unreact(channel_id, message_id, emoji)
 
   def unreact(channel_id, message_id, %Emoji{} = emoji),
@@ -212,11 +212,11 @@ defmodule Nostrum.Api.Message do
 
   This endpoint requires the `MANAGE_MESSAGES` permissions. It fires a `t:Nostrum.Consumer.message_reaction_remove_emoji/0` event.
 
-  If successful, returns `{:ok}`. Otherwise, returns `t:Nostrum.Api.error/0`.
+  If successful, returns `:ok`. Otherwise, returns `t:Nostrum.Api.error/0`.
 
   See `react/3` for similar examples.
   """
-  @spec delete_emoji_reactions(Channel.id(), Message.id(), Api.emoji()) :: Api.error() | {:ok}
+  @spec delete_emoji_reactions(Channel.id(), Message.id(), Api.emoji()) :: Api.error() | :ok
   def delete_emoji_reactions(channel_id, message_id, emoji)
 
   def delete_emoji_reactions(channel_id, message_id, %Emoji{} = emoji),
@@ -235,12 +235,12 @@ defmodule Nostrum.Api.Message do
   This endpoint requires the `VIEW_CHANNEL`, `READ_MESSAGE_HISTORY`, and
   `MANAGE_MESSAGES` permissions. It fires a `t:Nostrum.Consumer.message_reaction_remove/0` event.
 
-  If successful, returns `{:ok}`. Otherwise, returns `t:Nostrum.Api.error/0`.
+  If successful, returns `:ok`. Otherwise, returns `t:Nostrum.Api.error/0`.
 
   See `react/3` for similar examples.
   """
   @spec delete_user_reaction(Channel.id(), Message.id(), Api.emoji(), User.id()) ::
-          Api.error() | {:ok}
+          Api.error() | :ok
   def delete_user_reaction(channel_id, message_id, emoji, user_id)
 
   def delete_user_reaction(channel_id, message_id, %Emoji{} = emoji, user_id),

@@ -29,7 +29,7 @@ defmodule Nostrum.Api.Interaction do
   Same as `create_response/3`, but directly takes the
   `t:Nostrum.Struct.Interaction.t/0` received from the gateway.
   """
-  @spec create_response(Interaction.t(), map()) :: {:ok} | Api.error()
+  @spec create_response(Interaction.t(), map()) :: :ok | Api.error()
   def create_response(interaction, response) do
     create_response(interaction.id, interaction.token, response)
   end
@@ -68,7 +68,7 @@ defmodule Nostrum.Api.Interaction do
   original `t:Nostrum.Struct.Interaction.t/0` can also be passed
   directly. See `create_response/2`.
   """
-  @spec create_response(Interaction.id(), Interaction.token(), map()) :: {:ok} | Api.error()
+  @spec create_response(Interaction.id(), Interaction.token(), map()) :: :ok | Api.error()
   def create_response(id, token, response) do
     Api.request(
       :post,
@@ -88,7 +88,7 @@ defmodule Nostrum.Api.Interaction do
   - `message_id`: Followup message ID.
   """
   @spec delete_followup_message(User.id(), Interaction.token(), Message.id()) ::
-          {:ok} | Api.error()
+          :ok | Api.error()
   def delete_followup_message(
         application_id \\ Me.get().id,
         token,
@@ -105,7 +105,7 @@ defmodule Nostrum.Api.Interaction do
   `t:Nostrum.Struct.Interaction.t/0` received from the gateway.
   """
   @doc since: "1.x.x"
-  @spec delete_response(Interaction.t()) :: {:ok} | Api.error()
+  @spec delete_response(Interaction.t()) :: :ok | Api.error()
   def delete_response(%Interaction{application_id: application_id, token: token}) do
     delete_response(application_id, token)
   end
@@ -114,7 +114,7 @@ defmodule Nostrum.Api.Interaction do
   Deletes the original interaction response.
   """
   @doc since: "1.x.x"
-  @spec delete_response(User.id(), Interaction.token()) :: {:ok} | Api.error()
+  @spec delete_response(User.id(), Interaction.token()) :: :ok | Api.error()
   def delete_response(id \\ Me.get().id, token) do
     Api.request(:delete, Constants.interaction_callback_original(id, token))
   end

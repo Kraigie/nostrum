@@ -199,8 +199,8 @@ defmodule Nostrum.Api.ApplicationCommand do
     If not given, this will be fetched from `Me`.
   - `command_id`: The current snowflake of the command.
   """
-  @spec delete_global_command(Snowflake.t()) :: {:ok} | Api.error()
-  @spec delete_global_command(User.id(), Snowflake.t()) :: {:ok} | Api.error()
+  @spec delete_global_command(Snowflake.t()) :: :ok | Api.error()
+  @spec delete_global_command(User.id(), Snowflake.t()) :: :ok | Api.error()
   def delete_global_command(application_id \\ Me.get().id, command_id) do
     Api.request(:delete, Constants.global_application_command(application_id, command_id))
   end
@@ -214,9 +214,9 @@ defmodule Nostrum.Api.ApplicationCommand do
   - `guild_id`: The guild on which the command exists.
   - `command_id`: The current snowflake of the command.
   """
-  @spec delete_guild_command(Guild.id(), Snowflake.t()) :: {:ok} | Api.error()
+  @spec delete_guild_command(Guild.id(), Snowflake.t()) :: :ok | Api.error()
   @spec delete_guild_command(User.id(), Guild.id(), Snowflake.t()) ::
-          {:ok} | Api.error()
+          :ok | Api.error()
   def delete_guild_command(
         application_id \\ Me.get().id,
         guild_id,

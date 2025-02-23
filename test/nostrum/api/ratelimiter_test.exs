@@ -70,7 +70,7 @@ defmodule Nostrum.Api.RatelimiterTest do
     test "work with 204 responses", %{ratelimiter: ratelimiter} do
       request = build_request("empty_body")
       reply = Ratelimiter.queue(ratelimiter, request, @request_timeout)
-      assert {:ok} = reply
+      assert :ok = reply
     end
   end
 
