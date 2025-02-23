@@ -168,6 +168,7 @@ defmodule Nostrum.Mixfile do
       {:certifi, "~> 2.13"},
       {:mime, "~> 1.6 or ~> 2.0"},
       {:ezstd, "~> 1.1", optional: true},
+      {:telemetry, "~> 1.0", optional: true},
       {:castle, "~> 0.3.0", runtime: false},
       {:ex_doc, "~> 0.37", only: :dev, runtime: false},
       {:credo, "~> 1.7.7", only: [:dev, :test], runtime: false},

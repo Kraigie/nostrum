@@ -64,6 +64,8 @@ defmodule Nostrum.Api do
 
   alias Nostrum.Struct.Guild.{AuditLogEntry, Member, Role}
 
+  alias Nostrum.TelemetryShim
+
   @typedoc """
   Represents a failed response from the API.
 
@@ -2250,7 +2252,22 @@ defmodule Nostrum.Api do
 
   @spec request(map()) :: {:ok} | {:ok, String.t()} | error
   def request(request) do
-    Ratelimiter.queue(request)
+    TelemetryShim.span(
+      ~w[nostrum api request]a,
+      %{method: request.method, route: request.route},
+      fn ->
+        case Ratelimiter.queue(request) do
+          {:ok} = result ->
+            {result, %{status: :ok}}
+
+          {:ok, _response} = result ->
+            {result, %{status: :ok}}
+
+          {:error, _error} = err ->
+            {err, %{status: :error}}
+        end
+      end
+    )
   end
 
   @spec request(atom(), String.t(), any, keyword() | map()) ::
