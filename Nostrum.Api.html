@@ -12,7 +12,7 @@
 
     <link rel="stylesheet" href="dist/html-elixir-6X3L5KMG.css" />
 
-    <script defer src="dist/sidebar_items-35D5AD02.js"></script>
+    <script defer src="dist/sidebar_items-C709D224.js"></script>
     <script defer src="docs_config.js"></script>
     <script defer src="dist/html-6XHBGSGW.js"></script>
 
@@ -96,25 +96,25 @@ nostrum
 <p>Interface for Discord's rest API.</p><p>By default all methods in this module are ran synchronously. If you wish to
 have async rest operations I recommend you execute these functions inside of a
 task.</p><p><strong>Examples</strong></p><pre><code class="makeup elixir" translate="no"><span class="c1"># Async Task</span><span class="w">
-</span><span class="n">t</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Task</span><span class="o">.</span><span class="n">async</span><span class="w"> </span><span class="k" data-group-id="6164409250-1">fn</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
-  </span><span class="nc">Nostrum.Api.Channel</span><span class="o">.</span><span class="n">messages</span><span class="p" data-group-id="6164409250-2">(</span><span class="mi">12345678912345</span><span class="p">,</span><span class="w"> </span><span class="ss">:infinity</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="6164409250-3">{</span><span class="p" data-group-id="6164409250-3">}</span><span class="p" data-group-id="6164409250-2">)</span><span class="w">
-</span><span class="k" data-group-id="6164409250-1">end</span><span class="w">
+</span><span class="n">t</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Task</span><span class="o">.</span><span class="n">async</span><span class="w"> </span><span class="k" data-group-id="1536248301-1">fn</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+  </span><span class="nc">Nostrum.Api.Channel</span><span class="o">.</span><span class="n">messages</span><span class="p" data-group-id="1536248301-2">(</span><span class="mi">12345678912345</span><span class="p">,</span><span class="w"> </span><span class="ss">:infinity</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="1536248301-3">{</span><span class="p" data-group-id="1536248301-3">}</span><span class="p" data-group-id="1536248301-2">)</span><span class="w">
+</span><span class="k" data-group-id="1536248301-1">end</span><span class="w">
 </span><span class="n">messages</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Task</span><span class="o">.</span><span class="n">await</span><span class="w"> </span><span class="n">t</span><span class="w">
 
 </span><span class="c1"># A lot of times we don&#39;t care about the return value of the function</span><span class="w">
-</span><span class="nc">Task</span><span class="o">.</span><span class="n">start</span><span class="w"> </span><span class="k" data-group-id="6164409250-4">fn</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
-  </span><span class="n">messages</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="6164409250-5">[</span><span class="s">&quot;in&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;the&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;end&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;it&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;doesn&#39;t&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;even&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;matter&quot;</span><span class="p" data-group-id="6164409250-5">]</span><span class="w">
-  </span><span class="nc">Enum</span><span class="o">.</span><span class="n">each</span><span class="w"> </span><span class="n">messages</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="nc">Nostrum.Api.Message</span><span class="o">.</span><span class="n">create</span><span class="p" data-group-id="6164409250-6">(</span><span class="mi">12345678912345</span><span class="p">,</span><span class="w"> </span><span class="ni">&amp;1</span><span class="p" data-group-id="6164409250-6">)</span><span class="w">
-</span><span class="k" data-group-id="6164409250-4">end</span></code></pre><h4>A note about Strings and Ints</h4><p>Currently, responses from the REST api will have <code class="inline">id</code> fields as <code class="inline">string</code>.
+</span><span class="nc">Task</span><span class="o">.</span><span class="n">start</span><span class="w"> </span><span class="k" data-group-id="1536248301-4">fn</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+  </span><span class="n">messages</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="1536248301-5">[</span><span class="s">&quot;in&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;the&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;end&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;it&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;doesn&#39;t&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;even&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;matter&quot;</span><span class="p" data-group-id="1536248301-5">]</span><span class="w">
+  </span><span class="nc">Enum</span><span class="o">.</span><span class="n">each</span><span class="w"> </span><span class="n">messages</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="nc">Nostrum.Api.Message</span><span class="o">.</span><span class="n">create</span><span class="p" data-group-id="1536248301-6">(</span><span class="mi">12345678912345</span><span class="p">,</span><span class="w"> </span><span class="ni">&amp;1</span><span class="p" data-group-id="1536248301-6">)</span><span class="w">
+</span><span class="k" data-group-id="1536248301-4">end</span></code></pre><h4>A note about Strings and Ints</h4><p>Currently, responses from the REST api will have <code class="inline">id</code> fields as <code class="inline">string</code>.
 Everything received from the WS connection will have <code class="inline">id</code> fields as <code class="inline">int</code>.</p><p>If you're processing a response from the API and trying to access something in the cache
 based off of an <code class="inline">id</code> in the response, you will need to convert it to an <code class="inline">int</code> using
-<a href="https://hexdocs.pm/elixir/String.html#to_integer/1"><code class="inline">String.to_integer/1</code></a>. I'm open to suggestions for how this should be handled going forward.</p><p><strong>Example</strong></p><pre><code class="makeup elixir" translate="no"><span class="n">messages</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Nostrum.Api.Channel</span><span class="o">.</span><span class="n">pinned_messages!</span><span class="p" data-group-id="0591881055-1">(</span><span class="mi">12345678912345</span><span class="p" data-group-id="0591881055-1">)</span><span class="w">
+<a href="https://hexdocs.pm/elixir/String.html#to_integer/1"><code class="inline">String.to_integer/1</code></a>. I'm open to suggestions for how this should be handled going forward.</p><p><strong>Example</strong></p><pre><code class="makeup elixir" translate="no"><span class="n">messages</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Nostrum.Api.Channel</span><span class="o">.</span><span class="n">pinned_messages!</span><span class="p" data-group-id="3832301001-1">(</span><span class="mi">12345678912345</span><span class="p" data-group-id="3832301001-1">)</span><span class="w">
 
 </span><span class="n">authors</span><span class="w"> </span><span class="o">=</span><span class="w">
-  </span><span class="nc">Enum</span><span class="o">.</span><span class="n">map</span><span class="w"> </span><span class="n">messages</span><span class="p">,</span><span class="w"> </span><span class="k" data-group-id="0591881055-2">fn</span><span class="w"> </span><span class="n">msg</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
-    </span><span class="n">author_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">String</span><span class="o">.</span><span class="n">to_integer</span><span class="p" data-group-id="0591881055-3">(</span><span class="n">msg</span><span class="o">.</span><span class="n">author</span><span class="o">.</span><span class="n">id</span><span class="p" data-group-id="0591881055-3">)</span><span class="w">
-    </span><span class="nc">Nostrum.Cache.User</span><span class="o">.</span><span class="n">get!</span><span class="p" data-group-id="0591881055-4">(</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="n">author_id</span><span class="p" data-group-id="0591881055-4">)</span><span class="w">
-  </span><span class="k" data-group-id="0591881055-2">end</span></code></pre>
+  </span><span class="nc">Enum</span><span class="o">.</span><span class="n">map</span><span class="w"> </span><span class="n">messages</span><span class="p">,</span><span class="w"> </span><span class="k" data-group-id="3832301001-2">fn</span><span class="w"> </span><span class="n">msg</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+    </span><span class="n">author_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">String</span><span class="o">.</span><span class="n">to_integer</span><span class="p" data-group-id="3832301001-3">(</span><span class="n">msg</span><span class="o">.</span><span class="n">author</span><span class="o">.</span><span class="n">id</span><span class="p" data-group-id="3832301001-3">)</span><span class="w">
+    </span><span class="nc">Nostrum.Cache.User</span><span class="o">.</span><span class="n">get!</span><span class="p" data-group-id="3832301001-4">(</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="n">author_id</span><span class="p" data-group-id="3832301001-4">)</span><span class="w">
+  </span><span class="k" data-group-id="3832301001-2">end</span></code></pre>
     </section>
 
 </div>
@@ -3319,7 +3319,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
         <span class="note">(since 0.11.0)</span>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L117" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L119" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -3361,7 +3361,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
         <span class="note">(since 0.7.0)</span>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L145" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L147" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -3399,7 +3399,7 @@ mentions in a message, see <a href="#t:allowed_mentions/0"><code class="inline">
         <span class="note">(since 0.7.0)</span>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L171" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L173" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -3434,7 +3434,7 @@ Consider using this option when you are going to display user generated content.
       <h1 class="signature" translate="no">emoji()</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L128" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L130" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -3462,7 +3462,7 @@ Consider using this option when you are going to display user generated content.
       <h1 class="signature" translate="no">error()</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L72" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L74" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -3490,7 +3490,7 @@ Consider using this option when you are going to display user generated content.
       <h1 class="signature" translate="no">limit()</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L79" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L81" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -3518,7 +3518,7 @@ Consider using this option when you are going to display user generated content.
       <h1 class="signature" translate="no">locator()</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L88" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L90" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -3549,7 +3549,7 @@ The tuple can also be empty to search from the most recent message in the channe
       <h1 class="signature" translate="no">options()</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L136" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L138" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -3578,7 +3578,7 @@ supports or needs.</p>
       <h1 class="signature" translate="no">status()</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L102" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L104" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -3618,7 +3618,7 @@ supports or needs.</p>
       <h1 class="signature" translate="no">add_guild_member(guild_id, user_id, options)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1035" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1037" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -3647,7 +3647,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">add_guild_member!(guild_id, user_id, options)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1044" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1046" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -3686,7 +3686,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">add_guild_member_role(guild_id, user_id, role_id, reason \\ nil)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1093" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1095" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -3715,7 +3715,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">add_pinned_channel_message(channel_id, message_id)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L676" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L678" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -3744,7 +3744,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">add_pinned_channel_message!(channel_id, message_id)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L685" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L687" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -3780,7 +3780,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">add_thread_member(thread_id, user_id)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2184" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2186" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -3811,7 +3811,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">batch_edit_application_command_permissions(application_id \\ Me.get().id, guild_id, permissions)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2090" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2092" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -3842,7 +3842,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">begin_guild_prune(guild_id, days, reason \\ nil)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1285" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1287" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -3871,7 +3871,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">begin_guild_prune!(guild_id, days, reason)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1295" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1297" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -3908,7 +3908,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">bulk_delete_messages(channel_id, messages, filter)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L544" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L546" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -3939,7 +3939,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">bulk_delete_messages!(channel_id, messages, filter \\ true)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L553" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L555" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -3974,7 +3974,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">bulk_overwrite_global_application_commands(application_id \\ Me.get().id, commands)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1809" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1811" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -4005,7 +4005,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">bulk_overwrite_guild_application_commands(application_id \\ Me.get().id, guild_id, commands)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1863" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1865" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -4038,7 +4038,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">create_channel_invite(channel_id, options \\ [], reason \\ nil)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L619" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L621" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -4071,7 +4071,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">create_channel_invite!(channel_id, options \\ [], reason \\ nil)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L629" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L631" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -4107,7 +4107,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">create_dm(user_id)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1592" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1594" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -4136,7 +4136,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">create_dm!(user_id)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1600" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1602" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -4171,7 +4171,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">create_file_part_for_multipart(file, index, boundary, name_override \\ nil)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2328" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2345" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -4195,7 +4195,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">create_followup_message(application_id \\ Me.get().id, token, webhook_payload)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2004" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2006" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -4228,7 +4228,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
         <span class="note">(since 0.5.0)</span>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2015" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2017" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -4267,7 +4267,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">create_global_application_command(application_id \\ Me.get().id, command)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1782" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1784" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -4296,7 +4296,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">create_group_dm(access_tokens, nicks)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1610" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1612" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -4325,7 +4325,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">create_group_dm!(access_tokens, nicks)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1619" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1621" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -4362,7 +4362,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">create_guild_application_command(application_id \\ Me.get().id, guild_id, command)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1827" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1829" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -4391,7 +4391,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">create_guild_auto_moderation_rule(guild_id, options)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2229" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2231" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -4422,7 +4422,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">create_guild_ban(guild_id, user_id, days_to_delete, reason \\ nil)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1148" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1150" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -4451,7 +4451,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">create_guild_channel(guild_id, options)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L958" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L960" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -4480,7 +4480,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">create_guild_channel!(guild_id, options)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L967" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L969" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -4515,7 +4515,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">create_guild_emoji(guild_id, options, reason \\ nil)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L752" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L754" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -4546,7 +4546,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">create_guild_emoji!(guild_id, params, reason \\ nil)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L761" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L763" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -4582,7 +4582,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">create_guild_integrations(guild_id, options)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1342" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1344" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -4613,7 +4613,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">create_guild_role(guild_id, options, reason \\ nil)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1185" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1187" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -4644,7 +4644,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">create_guild_role!(guild_id, options, reason \\ nil)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1194" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1196" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -4682,7 +4682,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">create_guild_scheduled_event(guild_id, reason \\ nil, options)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1396" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1398" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -4713,7 +4713,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">create_guild_sticker(guild_id, name, description, tags, file, reason \\ nil)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L837" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L839" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -4742,7 +4742,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">create_interaction_response(interaction, response)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1882" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1884" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -4772,7 +4772,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">create_interaction_response(id, token, response)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1901" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1903" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -4803,7 +4803,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
         <span class="note">(since 0.5.0)</span>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1892" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1894" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -4836,7 +4836,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">create_interaction_response!(id, token, response)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1906" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1908" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -4862,7 +4862,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">create_message(channel_id, options)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L202" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L204" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -4891,7 +4891,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">create_message!(channel_id, options)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L212" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L214" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -4927,7 +4927,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">create_multipart(files, json, boundary)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2306" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2323" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -4949,7 +4949,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">create_reaction(channel_id, message_id, emoji)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L298" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L300" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -4978,7 +4978,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">create_reaction!(channel_id, message_id, emoji)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L307" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L309" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -5017,7 +5017,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">create_webhook(channel_id, args, reason \\ nil)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1647" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1649" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -5046,7 +5046,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">delete_all_reactions(channel_id, message_id)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L392" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L394" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -5075,7 +5075,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">delete_all_reactions!(channel_id, message_id)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L401" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L403" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -5110,7 +5110,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">delete_channel(channel_id, reason \\ nil)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L487" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L489" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -5141,7 +5141,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">delete_channel!(channel_id, reason \\ nil)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L496" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L498" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -5179,7 +5179,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">delete_channel_permissions(channel_id, overwrite_id, reason \\ nil)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L591" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L593" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -5210,7 +5210,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">delete_global_application_command(application_id \\ Me.get().id, command_id)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1800" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1802" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -5239,7 +5239,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">delete_guild(guild_id)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L920" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L922" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -5268,7 +5268,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">delete_guild!(guild_id)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L929" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L931" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -5302,7 +5302,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">delete_guild_application_command(application_id \\ Me.get().id, guild_id, command_id)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1850" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1852" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -5331,7 +5331,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">delete_guild_auto_moderation_rule(guild_id, rule_id)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2247" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2249" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -5362,7 +5362,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">delete_guild_emoji(guild_id, emoji_id, reason \\ nil)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L791" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L793" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -5393,7 +5393,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">delete_guild_emoji!(guild_id, emoji_id, reason \\ nil)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L800" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L802" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -5429,7 +5429,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">delete_guild_integrations(guild_id, integration_id)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1360" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1362" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -5460,7 +5460,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">delete_guild_role(guild_id, role_id, reason \\ nil)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1247" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1249" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -5491,7 +5491,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">delete_guild_role!(guild_id, role_id, reason \\ nil)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1256" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1258" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -5527,7 +5527,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">delete_guild_scheduled_event(guild_id, event_id)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1423" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1425" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -5556,7 +5556,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">delete_guild_sticker(guild_id, sticker_id)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L855" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L857" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -5587,7 +5587,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">delete_interaction_followup_message(application_id \\ Me.get().id, token, message_id)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2025" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2027" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -5620,7 +5620,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
         <span class="note">(since 0.5.0)</span>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2040" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2042" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -5658,7 +5658,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
         <span class="note">(since 0.5.0)</span>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1967" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1969" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -5687,7 +5687,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">delete_interaction_response(id \\ Me.get().id, token)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1984" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1986" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -5718,7 +5718,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
         <span class="note">(since 0.5.0)</span>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1974" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1976" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -5753,7 +5753,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
         <span class="note">(since 0.5.0)</span>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1994" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1996" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -5789,7 +5789,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">delete_invite(invite_code)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1469" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1471" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -5818,7 +5818,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">delete_invite!(invite_code)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1478" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1480" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -5851,7 +5851,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">delete_message(message)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L260" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L262" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -5880,7 +5880,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">delete_message(channel_id, message_id)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L269" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L271" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -5909,7 +5909,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">delete_message!(message)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L278" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L280" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -5941,7 +5941,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">delete_message!(channel_id, message_id)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L288" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L290" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -5974,7 +5974,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">delete_own_reaction(channel_id, message_id, emoji)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L317" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L319" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -6003,7 +6003,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">delete_own_reaction!(channel_id, message_id, emoji)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L326" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L328" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -6040,7 +6040,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">delete_pinned_channel_message(channel_id, message_id)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L695" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L697" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -6069,7 +6069,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">delete_pinned_channel_message!(channel_id, message_id)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L704" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L706" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -6105,7 +6105,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">delete_reaction(channel_id, message_id, emoji)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L354" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L356" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -6134,7 +6134,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">delete_reaction!(channel_id, message_id, emoji)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L363" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L365" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -6171,7 +6171,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">delete_user_reaction(channel_id, message_id, emoji, user_id)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L336" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L338" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -6200,7 +6200,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">delete_user_reaction!(channel_id, message_id, emoji, user_id)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L344" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L346" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -6239,7 +6239,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">delete_webhook(webhook_id, reason \\ nil)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1719" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1721" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -6270,7 +6270,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">edit_application_command_permissions(application_id \\ Me.get().id, guild_id, command_id, permissions)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2076" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2078" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -6301,7 +6301,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">edit_channel_permissions(channel_id, overwrite_id, permission_info, reason \\ nil)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L563" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L565" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -6332,7 +6332,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">edit_channel_permissions!(channel_id, overwrite_id, permission_info, reason \\ nil)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L581" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L583" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -6375,7 +6375,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">edit_global_application_command(application_id \\ Me.get().id, command_id, command)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1791" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1793" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -6406,7 +6406,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">edit_guild_application_command(application_id \\ Me.get().id, guild_id, command_id, command)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1836" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1838" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -6437,7 +6437,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
         <span class="note">(since 0.5.0)</span>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1926" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1928" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -6467,7 +6467,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">edit_interaction_response(id \\ Me.get().id, token, response)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1945" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1947" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -6498,7 +6498,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
         <span class="note">(since 0.5.0)</span>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1936" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1938" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -6533,7 +6533,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
         <span class="note">(since 0.5.0)</span>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1956" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1958" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -6570,7 +6570,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">edit_message(message, options)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L241" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L243" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -6600,7 +6600,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">edit_message(channel_id, message_id, options)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L222" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L224" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -6629,7 +6629,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">edit_message!(message, options)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L250" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L252" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -6662,7 +6662,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">edit_message!(channel_id, message_id, options)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L231" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L233" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -6699,7 +6699,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">edit_webhook_message(webhook_id, webhook_token, message_id, args)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1737" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1739" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -6730,7 +6730,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">execute_git_webhook(webhook_id, webhook_token, wait \\ false)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1755" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1757" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -6761,7 +6761,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">execute_slack_webhook(webhook_id, webhook_token, wait \\ false)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1746" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1748" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -6792,7 +6792,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">execute_webhook(webhook_id, webhook_token, args, wait \\ false)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1728" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1730" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -6821,7 +6821,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">expire_poll(channel_id, message_id)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L430" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L432" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -6850,7 +6850,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">expire_poll!(channel_id, message_id)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L439" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L441" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -6885,7 +6885,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">get_application_command_permissions(application_id \\ Me.get().id, guild_id, command_id)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2063" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2065" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -6914,7 +6914,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">get_application_information()</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1764" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1766" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -6943,7 +6943,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">get_channel(channel_id)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L449" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L451" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -6972,7 +6972,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">get_channel!(channel_id)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L458" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L460" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -7005,7 +7005,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">get_channel_invites(channel_id)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L600" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L602" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -7034,7 +7034,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">get_channel_invites!(channel_id)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L609" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L611" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -7067,7 +7067,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">get_channel_message(channel_id, message_id)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L525" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L527" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -7096,7 +7096,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">get_channel_message!(channel_id, message_id)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L534" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L536" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -7131,7 +7131,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">get_channel_messages(channel_id, limit, locator \\ {})</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L506" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L508" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -7162,7 +7162,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">get_channel_messages!(channel_id, limit, locator \\ {})</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L515" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L517" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -7195,7 +7195,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">get_channel_webhooks(channel_id)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1665" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1667" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -7224,7 +7224,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">get_current_user()</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1507" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1509" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -7253,7 +7253,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">get_current_user!()</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1516" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1518" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -7287,7 +7287,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">get_current_user_guilds(options \\ [])</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1545" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1547" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -7318,7 +7318,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">get_current_user_guilds!(options \\ [])</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1554" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1556" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -7353,7 +7353,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">get_global_application_commands(application_id \\ Me.get().id)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1773" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1775" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -7382,7 +7382,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">get_guild(guild_id)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L882" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L884" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -7411,7 +7411,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">get_guild!(guild_id)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L891" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L893" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -7446,7 +7446,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">get_guild_application_command_permissions(application_id \\ Me.get().id, guild_id)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2054" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2056" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -7477,7 +7477,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">get_guild_application_commands(application_id \\ Me.get().id, guild_id)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1818" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1820" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -7508,7 +7508,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">get_guild_audit_log(guild_id, options \\ [])</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L873" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L875" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -7537,7 +7537,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">get_guild_auto_moderation_rule(guild_id, rule_id)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2220" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2222" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -7566,7 +7566,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">get_guild_auto_moderation_rules(guild_id)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2211" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2213" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -7595,7 +7595,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">get_guild_ban(guild_id, user_id)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1130" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1132" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -7624,7 +7624,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">get_guild_bans(guild_id)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1139" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1141" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -7653,7 +7653,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">get_guild_channels(guild_id)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L939" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L941" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -7682,7 +7682,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">get_guild_channels!(guild_id)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L948" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L950" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -7715,7 +7715,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">get_guild_emoji(guild_id, emoji_id)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L733" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L735" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -7744,7 +7744,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">get_guild_emoji!(guild_id, emoji_id)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L742" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L744" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -7777,7 +7777,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">get_guild_integrations(guild_id)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1333" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1335" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -7806,7 +7806,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">get_guild_invites(guild_id)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1314" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1316" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -7835,7 +7835,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">get_guild_invites!(guild_id)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1323" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1325" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -7868,7 +7868,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">get_guild_member(guild_id, user_id)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L997" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L999" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -7897,7 +7897,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">get_guild_member!(guild_id, user_id)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1006" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1008" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -7930,7 +7930,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">get_guild_prune_count(guild_id, days)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1266" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1268" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -7959,7 +7959,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">get_guild_prune_count!(guild_id, days)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1275" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1277" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -7992,7 +7992,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">get_guild_roles(guild_id)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1166" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1168" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -8021,7 +8021,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">get_guild_roles!(guild_id)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1175" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1177" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -8054,7 +8054,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">get_guild_scheduled_event(guild_id, event_id)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1414" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1416" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -8085,7 +8085,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">get_guild_scheduled_event_users(guild_id, event_id, params \\ [])</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1441" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1443" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -8114,7 +8114,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">get_guild_scheduled_events(guild_id)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1405" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1407" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -8143,7 +8143,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">get_guild_sticker(guild_id, sticker_id)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L828" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L830" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -8172,7 +8172,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">get_guild_webhooks(guild_id)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1674" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1676" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -8201,7 +8201,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">get_guild_widget(guild_id)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1378" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1380" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -8232,7 +8232,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">get_invite(invite_code, options \\ [])</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1450" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1452" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -8263,7 +8263,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">get_invite!(invite_code, options \\ [])</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1459" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1461" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -8296,7 +8296,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">get_original_interaction_response(interaction)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1916" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1918" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -8325,7 +8325,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">get_pinned_messages(channel_id)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L657" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L659" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -8354,7 +8354,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">get_pinned_messages!(channel_id)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L666" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L668" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -8389,7 +8389,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">get_poll_answer_voters(channel_id, message_id, answer_id, params \\ [])</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L411" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L413" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -8420,7 +8420,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">get_poll_answer_voters!(channel_id, message_id, answer_id, params \\ [])</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L420" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L422" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -8448,7 +8448,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">get_reactions(channel_id, message_id, emoji, params \\ [])</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L373" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L375" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -8479,7 +8479,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">get_reactions!(channel_id, message_id, emoji, params \\ [])</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L382" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L384" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -8517,7 +8517,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">get_sticker(sticker_id)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L810" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L812" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -8546,7 +8546,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">get_sticker_packs()</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L864" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L866" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -8575,7 +8575,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">get_thread_member(thread_id, user_id)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2121" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2123" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -8604,7 +8604,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">get_thread_members(thread_id)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2130" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2132" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -8633,7 +8633,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">get_user(user_id)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1488" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1490" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -8662,7 +8662,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">get_user!(user_id)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1497" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1499" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -8694,7 +8694,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">get_user_connections()</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1629" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1631" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -8723,7 +8723,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">get_user_dms()</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1573" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1575" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -8752,7 +8752,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">get_user_dms!()</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1582" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1584" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -8784,7 +8784,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">get_voice_region(guild_id)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1305" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1307" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -8813,7 +8813,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">get_webhook(webhook_id)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1683" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1685" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -8842,7 +8842,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">get_webhook_message(webhook, message_id)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1656" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1658" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -8871,7 +8871,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">get_webhook_with_token(webhook_id, webhook_token)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1692" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1694" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -8900,7 +8900,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">join_thread(thread_id)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2175" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2177" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -8929,7 +8929,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">leave_guild(guild_id)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1564" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1566" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -8958,7 +8958,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">leave_thread(thread_id)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2193" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2195" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -8987,7 +8987,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">list_guild_emojis(guild_id)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L714" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L716" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -9016,7 +9016,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">list_guild_emojis!(guild_id)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L723" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L725" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -9051,7 +9051,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">list_guild_members(guild_id, options \\ %{})</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1016" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1018" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -9082,7 +9082,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">list_guild_members!(guild_id, options \\ %{})</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1025" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1027" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -9115,7 +9115,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">list_guild_stickers(guild_id)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L819" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L821" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -9144,7 +9144,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">list_guild_threads(guild_id)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2139" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2141" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -9175,7 +9175,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">list_joined_private_archived_threads(channel_id, options \\ [])</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2166" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2168" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -9206,7 +9206,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">list_private_archived_threads(channel_id, options \\ [])</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2157" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2159" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -9237,7 +9237,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">list_public_archived_threads(channel_id, options \\ [])</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2148" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2150" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -9266,7 +9266,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">list_voice_regions()</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1638" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1640" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -9297,7 +9297,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">modify_channel(channel_id, options, reason \\ nil)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L468" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L470" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -9328,7 +9328,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">modify_channel!(channel_id, options, reason \\ nil)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L477" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L479" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -9364,7 +9364,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">modify_current_user(options)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1526" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1528" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -9393,7 +9393,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">modify_current_user!(options)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1535" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1537" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -9427,7 +9427,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">modify_current_user_nick(guild_id, options \\ %{})</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1074" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1076" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -9458,7 +9458,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">modify_current_user_nick!(guild_id, options \\ %{})</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1083" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1085" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -9495,7 +9495,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">modify_guild(guild_id, options \\ [], reason \\ nil)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L901" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L903" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -9526,7 +9526,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">modify_guild!(guild_id, options \\ [])</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L910" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L912" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -9559,7 +9559,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">modify_guild_auto_moderation_rule(guild_id, rule_id, options)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2238" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2240" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -9588,7 +9588,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">modify_guild_channel_positions(guild_id, positions)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L977" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L979" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -9617,7 +9617,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">modify_guild_channel_positions!(guild_id, positions)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L987" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L989" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -9656,7 +9656,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">modify_guild_emoji(guild_id, emoji_id, options \\ %{}, reason \\ nil)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L771" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L773" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -9687,7 +9687,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">modify_guild_emoji!(guild_id, emoji_id, options, reason \\ nil)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L781" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L783" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -9724,7 +9724,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">modify_guild_integrations(guild_id, integration_id, options)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1351" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1353" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -9757,7 +9757,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">modify_guild_member(guild_id, user_id, options \\ %{}, reason \\ nil)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1054" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1056" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -9790,7 +9790,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">modify_guild_member!(guild_id, user_id, options \\ %{}, reason \\ nil)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1064" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1066" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -9829,7 +9829,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">modify_guild_role(guild_id, role_id, options, reason \\ nil)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1227" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1229" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -9860,7 +9860,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">modify_guild_role!(guild_id, role_id, options, reason \\ nil)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1237" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1239" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -9899,7 +9899,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">modify_guild_role_positions(guild_id, positions, reason \\ nil)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1204" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1206" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -9930,7 +9930,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">modify_guild_role_positions!(guild_id, positions, reason \\ nil)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1217" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1219" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -9968,7 +9968,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">modify_guild_scheduled_event(guild_id, event_id, reason \\ nil, options)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1432" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1434" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -9997,7 +9997,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">modify_guild_sticker(guild_id, sticker_id, options)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L846" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L848" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -10026,7 +10026,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">modify_guild_widget(guild_id, options)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1387" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1389" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -10057,7 +10057,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">modify_webhook(webhook_id, args, reason \\ nil)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1701" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1703" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -10088,7 +10088,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">modify_webhook_with_token(webhook_id, webhook_token, args, reason \\ nil)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1710" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1712" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -10119,7 +10119,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">remove_guild_ban(guild_id, user_id, reason \\ nil)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1157" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1159" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -10150,7 +10150,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">remove_guild_member(guild_id, user_id, reason \\ nil)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1111" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1113" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -10181,7 +10181,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">remove_guild_member!(guild_id, user_id, reason \\ nil)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1120" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1122" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -10219,7 +10219,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">remove_guild_member_role(guild_id, user_id, role_id, reason \\ nil)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1102" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1104" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -10248,7 +10248,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">remove_thread_member(thread_id, user_id)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2202" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2204" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -10277,7 +10277,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">request(request)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2252" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2254" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -10309,7 +10309,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">request(method, route, body \\ &quot;&quot;, params \\ [])</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2258" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2275" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -10340,7 +10340,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">request_multipart(method, route, body, params \\ [])</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2279" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2296" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -10371,7 +10371,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">start_thread_in_forum_channel(channel_id, options, reason \\ nil)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2112" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2114" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -10402,7 +10402,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">start_thread_with_message(channel_id, message_id, options, reason \\ nil)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2103" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L2105" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -10431,7 +10431,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">start_typing(channel_id)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L639" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L641" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -10460,7 +10460,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">start_typing!(channel_id)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L647" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L649" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -10492,7 +10492,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">sync_guild_integrations(guild_id, integration_id)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1369" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L1371" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -10521,7 +10521,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">update_shard_status(pid, status, activity)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L178" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L180" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -10550,7 +10550,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">update_status(status, activity)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L186" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L188" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 
@@ -10583,7 +10583,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <h1 class="signature" translate="no">update_voice_state(guild_id, channel_id, self_mute \\ false, self_deaf \\ false)</h1>
 
 
-        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L194" class="icon-action" rel="help" aria-label="View Source">
+        <a href="https://github.com/Kraigie/nostrum/blob/master/lib/nostrum/api.ex#L196" class="icon-action" rel="help" aria-label="View Source">
           <i class="ri-code-s-slash-line" aria-hidden="true"></i>
         </a>
 

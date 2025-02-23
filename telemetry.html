@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="ExDoc v0.37.2">
+    <meta name="project" content="nostrum v0.11.0-dev">
+
+
+    <title>Telemetry Events — nostrum v0.11.0-dev</title>
+
+    <link rel="stylesheet" href="dist/html-elixir-6X3L5KMG.css" />
+
+    <script defer src="dist/sidebar_items-C709D224.js"></script>
+    <script defer src="docs_config.js"></script>
+    <script defer src="dist/html-6XHBGSGW.js"></script>
+
+  </head>
+  <body>
+    <script>(()=>{var t="ex_doc:settings",e="dark";var o="dark",s="light";var E="sidebar_state",n="closed";var r="sidebar_width";var a="sidebar-open";var i=new URLSearchParams(window.location.search),S=i.get("theme")||JSON.parse(localStorage.getItem(t)||"{}").theme;(S===o||S!==s&&window.matchMedia("(prefers-color-scheme: dark)").matches)&&document.body.classList.add(e);var d=sessionStorage.getItem(E),A=d!==n&&!window.matchMedia(`screen and (max-width: ${768}px)`).matches;document.body.classList.toggle(a,A);var c=sessionStorage.getItem(r);c&&document.body.style.setProperty("--sidebarWidth",`${c}px`);var p=/(Macintosh|iPhone|iPad|iPod)/.test(window.navigator.userAgent);document.documentElement.classList.toggle("apple-os",p);})();
+</script>
+
+<div class="body-wrapper">
+
+<button id="sidebar-menu" class="sidebar-button sidebar-toggle" aria-label="toggle sidebar" aria-controls="sidebar">
+  <i class="ri-menu-line ri-lg" title="Collapse/expand sidebar"></i>
+</button>
+
+<nav id="sidebar" class="sidebar">
+
+  <div class="sidebar-header">
+    <div class="sidebar-projectInfo">
+
+        <a href="https://github.com/Kraigie/nostrum" class="sidebar-projectImage">
+          <img src="assets/logo.png" alt="nostrum" />
+        </a>
+
+      <div>
+        <a href="https://github.com/Kraigie/nostrum" class="sidebar-projectName" translate="no">
+nostrum
+        </a>
+        <div class="sidebar-projectVersion" translate="no">
+          v0.11.0-dev
+        </div>
+      </div>
+    </div>
+    <ul id="sidebar-list-nav" class="sidebar-list-nav" role="tablist" data-extras=""></ul>
+  </div>
+</nav>
+
+<output role="status" id="toast"></output>
+
+<main class="content page-cheatmd" id="main" data-type="extras">
+  <div id="content" class="content-inner">
+    <div class="top-search">
+      <div class="search-settings">
+        <form class="search-bar" action="search.html">
+          <label class="search-label">
+            <span class="sr-only">Search documentation of nostrum</span>
+            <input name="q" type="text" class="search-input" placeholder="Press / to search" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+          </label>
+          <button type="submit" class="search-button" aria-label="Submit Search" tabindex="-1">
+            <i class="ri-search-2-line ri-lg" aria-hidden="true"></i>
+          </button>
+          <button type="button" tabindex="-1" class="search-close-button" aria-hidden="true">
+            <i class="ri-close-line ri-lg" title="Cancel search"></i>
+          </button>
+        </form>
+        <div class="autocomplete">
+        </div>
+        <button class="icon-settings display-settings">
+          <i class="ri-settings-3-line"></i>
+          <span class="sr-only">Settings</span>
+        </button>
+      </div>
+    </div>
+
+<div id="top-content">
+  <div class="heading-with-actions top-heading">
+    <h1>Telemetry Events</h1>
+
+      <button onclick="window.print()" title="Print Cheatsheet" class="icon-action" rel="print">
+        <i class="ri-printer-line" aria-hidden="true"></i>
+        <span class="sr-only">Print Cheatsheet</span>
+      </button>
+
+
+      <a href="https://github.com/Kraigie/nostrum/blob/master/guides/cheat-sheets/telemetry.cheatmd#L1" title="View Source" class="icon-action" rel="help">
+        <i class="ri-code-s-slash-line" aria-hidden="true"></i>
+        <span class="sr-only">View Source</span>
+      </a>
+
+  </div>
+
+<p>If you have the <code class="inline">:telemetry</code> library as a dependency,
+Nostrum will emit the below events for you to subscribe to.</p><section class="h2"><h2 id="api-request" class="section-heading">
+  <a href="#api-request" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">API Request</span>
+</h2>
+<p>Any requests made through the <a href="Nostrum.Api.html"><code class="inline">Nostrum.Api</code></a> module will emit the
+below telemetry events.</p><table><thead><tr><th style="text-align: left;">event</th><th style="text-align: left;">measurements</th><th style="text-align: left;">metadata</th></tr></thead><tbody><tr><td style="text-align: left;"><code class="inline">[:nostrum, :api, :request, :start]</code></td><td style="text-align: left;"><code class="inline">:system_time</code></td><td style="text-align: left;"><code class="inline">:method</code>, <code class="inline">:route</code></td></tr><tr><td style="text-align: left;"><code class="inline">[:nostrum, :api, :request, :stop]</code></td><td style="text-align: left;"><code class="inline">:duration</code></td><td style="text-align: left;"><code class="inline">:method</code>, <code class="inline">:route</code>, <code class="inline">:status</code></td></tr><tr><td style="text-align: left;"><code class="inline">[:nostrum, :api, :request, :exception]</code></td><td style="text-align: left;"><code class="inline">:duration</code></td><td style="text-align: left;"><code class="inline">:method</code>, <code class="inline">:route</code>, <code class="inline">:kind</code>, <code class="inline">:reason</code>, <code class="inline">:stacktrace</code></td></tr></tbody></table><section class="h3"><h3 id="metadata" class="section-heading">
+  <a href="#metadata" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Metadata</span>
+</h3>
+<ul><li><code class="inline">:method</code> - A lowercase atom representing the HTTP method used for the request. E.g. <code class="inline">:get</code>, <code class="inline">:post</code>.</li><li><code class="inline">:route</code> - The route used for the request.</li><li><code class="inline">:status</code> - one of the atoms <code class="inline">:ok</code> or <code class="inline">:error</code>.</li></ul><p>See <a href="https://hexdocs.pm/telemetry/1.3.0/telemetry.html#span/3"><code class="inline">:telemetry.span/3</code></a> for more information on the measurements and metadata.</p></section></section><section class="h2"><h2 id="ratelimiter" class="section-heading">
+  <a href="#ratelimiter" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Ratelimiter</span>
+</h2>
+<p>Nostrum's Ratelimiter will emit the below telemetry events.</p><table><thead><tr><th style="text-align: left;">event</th><th style="text-align: left;">measurements</th><th style="text-align: left;">metadata</th></tr></thead><tbody><tr><td style="text-align: left;"><code class="inline">[:nostrum, :ratelimiter, :connected]</code></td><td style="text-align: left;">-</td><td style="text-align: left;">-</td></tr><tr><td style="text-align: left;"><code class="inline">[:nostrum, :ratelimiter, :connect_timeout]</code></td><td style="text-align: left;">-</td><td style="text-align: left;">-</td></tr><tr><td style="text-align: left;"><code class="inline">[:nostrum, :ratelimiter, :disconnected]</code></td><td style="text-align: left;">-</td><td style="text-align: left;">-</td></tr><tr><td style="text-align: left;"><code class="inline">[:nostrum, :ratelimiter, :postponed]</code></td><td style="text-align: left;">-</td><td style="text-align: left;"><code class="inline">:major_route</code>, <code class="inline">:global</code></td></tr></tbody></table><section class="h3"><h3 id="metadata-1" class="section-heading">
+  <a href="#metadata-1" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Metadata</span>
+</h3>
+<ul><li><code class="inline">:major_route</code> - A String that is Nostrum's internal representation of how it keys request paths for rate limits.</li><li><code class="inline">:global</code> - A boolean indicating whether the request was delayed due to a global ratelimit.</li></ul></section></section><section class="h2"><h2 id="gateway" class="section-heading">
+  <a href="#gateway" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Gateway</span>
+</h2>
+<p>Nostrum's Gateway will emit the below telemetry events.
+|event | measurements | metadata |
+|------|--------------|----------|
+| <code class="inline">[:nostrum, :gateway, :shard, :connected]</code> | - | <code class="inline">:shard_number</code> |
+| <code class="inline">[:nostrum, :gateway, :shard, :disconnected]</code> | - | <code class="inline">:shard_number</code>, <code class="inline">:reason</code> |
+| <code class="inline">[:nostrum, :gateway, :shard, :heartbeat]</code> | <code class="inline">:seq</code> | <code class="inline">:shard_number</code> |</p><section class="h3"><h3 id="metadata-2" class="section-heading">
+  <a href="#metadata-2" class="hover-link">
+    <i class="ri-link-m" aria-hidden="true"></i>
+  </a>
+  <span class="text">Metadata</span>
+</h3>
+<ul><li><code class="inline">:shard_number</code> - The shard number of the shard which connected or disconnected.</li><li><code class="inline">:reason</code> - The reason for the disconnection, for example <code class="inline">:reconnect</code>.</li><li><code class="inline">:seq</code> - The sequence number of the heartbeat.</li></ul></section></section>
+</div>
+
+<div class="bottom-actions" id="bottom-actions">
+  <div class="bottom-actions-item">
+
+      <a href="api-1.html" class="bottom-actions-button" rel="prev">
+        <span class="subheader">
+          ← Previous Page
+        </span>
+        <span class="title">
+API Usage
+        </span>
+      </a>
+
+  </div>
+  <div class="bottom-actions-item">
+
+      <a href="voice-2.html" class="bottom-actions-button" rel="next">
+        <span class="subheader">
+          Next Page →
+        </span>
+        <span class="title">
+Voice Usage
+        </span>
+      </a>
+
+  </div>
+</div>
+    <footer class="footer">
+      <p>
+
+          <span class="line">
+            <a href="https://hex.pm/packages/nostrum/0.11.0-dev" class="footer-hex-package">Hex Package</a>
+
+            <a href="https://preview.hex.pm/preview/nostrum/0.11.0-dev">Hex Preview</a>
+
+              (<a href="https://preview.hex.pm/preview/nostrum/0.11.0-dev/show/guides/cheat-sheets/telemetry.cheatmd">current file</a>)
+
+          </span>
+
+        <span class="line">
+          <button class="a-main footer-button display-quick-switch" title="Search HexDocs packages">
+            Search HexDocs
+          </button>
+
+            <a href="nostrum.epub" title="ePub version">
+              Download ePub version
+            </a>
+
+        </span>
+      </p>
+
+      <p class="built-using">
+        Built using
+        <a href="https://github.com/elixir-lang/ex_doc" title="ExDoc" target="_blank" rel="help noopener" translate="no">ExDoc</a> (v0.37.2) for the
+
+          <a href="https://elixir-lang.org" title="Elixir" target="_blank" translate="no">Elixir programming language</a>
+
+      </p>
+
+    </footer>
+  </div>
+</main>
+</div>
+
+  </body>
+</html>
