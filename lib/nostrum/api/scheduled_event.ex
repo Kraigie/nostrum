@@ -62,7 +62,7 @@ defmodule Nostrum.Api.ScheduledEvent do
   """
   @doc since: "1.x.x"
   @spec delete(Guild.id(), ScheduledEvent.id()) ::
-          Api.error() | {:ok}
+          Api.error() | :ok
   def delete(guild_id, event_id) do
     Api.request(:delete, Constants.guild_scheduled_event(guild_id, event_id))
   end

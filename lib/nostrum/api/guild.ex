@@ -32,7 +32,7 @@ defmodule Nostrum.Api.Guild do
   situationally requires the `MANAGE_NICKNAMES`, `MANAGE_ROLES`,
   `MUTE_MEMBERS`, and `DEAFEN_MEMBERS` permissions.
 
-  If successful, returns `{:ok, member}` or `{:ok}` if the user was already a member of the
+  If successful, returns `{:ok, member}` or `:ok` if the user was already a member of the
   guild. Otherwise, returns a `t:Nostrum.Api.error/0`.
 
   ## Options
@@ -58,7 +58,7 @@ defmodule Nostrum.Api.Guild do
   ```
   """
   @spec add_member(Guild.id(), User.id(), Api.options()) ::
-          Api.error() | {:ok, Member.t()} | {:ok}
+          Api.error() | {:ok, Member.t()} | :ok
   def add_member(guild_id, user_id, options)
 
   def add_member(guild_id, user_id, options) when is_list(options),
@@ -78,7 +78,7 @@ defmodule Nostrum.Api.Guild do
   An optional `reason` can be given for the audit log.
   """
   @spec add_member_role(Guild.id(), User.id(), Role.id(), AuditLogEntry.reason()) ::
-          Api.error() | {:ok}
+          Api.error() | :ok
   def add_member_role(guild_id, user_id, role_id, reason \\ nil) do
     Api.request(%{
       method: :put,
@@ -128,7 +128,7 @@ defmodule Nostrum.Api.Guild do
   An optional `reason` can be specified for the audit log.
   """
   @spec ban_member(Guild.id(), User.id(), integer, AuditLogEntry.reason()) ::
-          Api.error() | {:ok}
+          Api.error() | :ok
   def ban_member(guild_id, user_id, days_to_delete, reason \\ nil) do
     Api.request(%{
       method: :put,
@@ -197,7 +197,7 @@ defmodule Nostrum.Api.Guild do
   @spec create_integration(integer, %{
           type: String.t(),
           id: integer
-        }) :: Api.error() | {:ok}
+        }) :: Api.error() | :ok
   def create_integration(guild_id, options) do
     Api.request(:post, Constants.guild_integrations(guild_id), options)
   end
@@ -253,16 +253,16 @@ defmodule Nostrum.Api.Guild do
   This endpoint requires that the current user is the owner of the guild.
   It fires the `t:Nostrum.Consumer.guild_delete/0` event.
 
-  If successful, returns `{:ok}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
+  If successful, returns `:ok`. Otherwise, returns a `t:Nostrum.Api.error/0`.
 
   ## Examples
 
   ```elixir
   Nostrum.Api.Guild.delete(81384788765712384)
-  {:ok}
+  :ok
   ```
   """
-  @spec delete(Guild.id()) :: Api.error() | {:ok}
+  @spec delete(Guild.id()) :: Api.error() | :ok
   def delete(guild_id) when is_snowflake(guild_id) do
     Api.request(:delete, Constants.guild(guild_id))
   end
@@ -275,10 +275,10 @@ defmodule Nostrum.Api.Guild do
   This endpoint requires the `MANAGE_EMOJIS` permission. It fires a
   `t:Nostrum.Consumer.guild_emojis_update/0` event.
 
-  If successful, returns `{:ok}`. Otherwise, returns `t:Nostrum.Api.error/0`.
+  If successful, returns `:ok`. Otherwise, returns `t:Nostrum.Api.error/0`.
   """
   @spec delete_emoji(Guild.id(), Emoji.id(), AuditLogEntry.reason()) ::
-          Api.error() | {:ok}
+          Api.error() | :ok
   def delete_emoji(guild_id, emoji_id, reason \\ nil) do
     Api.request(%{
       method: :delete,
@@ -294,7 +294,7 @@ defmodule Nostrum.Api.Guild do
 
   Integration to delete is specified by `guild_id` and `integeration_id`.
   """
-  @spec delete_integration(Guild.id(), integer) :: Api.error() | {:ok}
+  @spec delete_integration(Guild.id(), integer) :: Api.error() | :ok
   def delete_integration(guild_id, integration_id) do
     Api.request(:delete, Constants.guild_integration(guild_id, integration_id))
   end
@@ -307,7 +307,7 @@ defmodule Nostrum.Api.Guild do
   This endpoint requires the `MANAGE_ROLES` permission. It fires a
   `t:Nostrum.Consumer.guild_role_delete/0` event.
 
-  If successful, returns `{:ok}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
+  If successful, returns `:ok`. Otherwise, returns a `t:Nostrum.Api.error/0`.
 
   ## Examples
 
@@ -315,7 +315,7 @@ defmodule Nostrum.Api.Guild do
   Nostrum.Api.Guild.delete_role(41771983423143937, 392817238471936)
   ```
   """
-  @spec delete_role(Guild.id(), Role.id(), AuditLogEntry.reason()) :: Api.error() | {:ok}
+  @spec delete_role(Guild.id(), Role.id(), AuditLogEntry.reason()) :: Api.error() | :ok
   def delete_role(guild_id, role_id, reason \\ nil)
       when is_snowflake(guild_id) and is_snowflake(role_id) do
     Api.request(%{
@@ -514,7 +514,7 @@ defmodule Nostrum.Api.Guild do
   An optional `reason` can be given for the audit log.
   """
   @spec remove_member_role(Guild.id(), User.id(), Role.id(), AuditLogEntry.reason()) ::
-          Api.error() | {:ok}
+          Api.error() | :ok
   def remove_member_role(guild_id, user_id, role_id, reason \\ nil) do
     Api.request(%{
       method: :delete,
@@ -589,7 +589,7 @@ defmodule Nostrum.Api.Guild do
 
   Guild to leave is specified by `guild_id`.
   """
-  @spec leave(Guild.id()) :: Api.error() | {:ok}
+  @spec leave(Guild.id()) :: Api.error() | :ok
   def leave(guild_id) do
     Api.request(%{
       method: :delete,
@@ -743,11 +743,11 @@ defmodule Nostrum.Api.Guild do
 
   ```elixir
   Nostrum.Api.Guild.modify_channel_positions(279093381723062272, [%{id: 351500354581692420, position: 2}])
-  {:ok}
+  :ok
   ```
   """
   @spec modify_channel_positions(Guild.id(), [%{id: Channel.id(), position: integer}]) ::
-          Api.error() | {:ok}
+          Api.error() | :ok
   def modify_channel_positions(guild_id, positions)
       when is_snowflake(guild_id) and is_list(positions) do
     Api.request(:patch, Constants.guild_channels(guild_id), positions)
@@ -807,7 +807,7 @@ defmodule Nostrum.Api.Guild do
           expire_behaviour: integer,
           expire_grace_period: integer,
           enable_emoticons: boolean
-        }) :: Api.error() | {:ok}
+        }) :: Api.error() | :ok
   def modify_integration(guild_id, integration_id, options) do
     Api.request(:patch, Constants.guild_integration(guild_id, integration_id), options)
   end
@@ -911,7 +911,7 @@ defmodule Nostrum.Api.Guild do
   User to unban is specified by `guild_id` and `user_id`.
   An optional `reason` can be specified for the audit log.
   """
-  @spec unban_member(Guild.id(), User.id(), AuditLogEntry.reason()) :: Api.error() | {:ok}
+  @spec unban_member(Guild.id(), User.id(), AuditLogEntry.reason()) :: Api.error() | :ok
   def unban_member(guild_id, user_id, reason \\ nil) do
     Api.request(%{
       method: :delete,
@@ -930,16 +930,16 @@ defmodule Nostrum.Api.Guild do
 
   An optional reason can be provided for the audit log with `reason`.
 
-  If successful, returns `{:ok}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
+  If successful, returns `:ok`. Otherwise, returns a `t:Nostrum.Api.error/0`.
 
   ## Examples
 
   ```elixir
   iex> Nostrum.Api.Guild.kick_member(1453827904102291, 18739485766253)
-  {:ok}
+  :ok
   ```
   """
-  @spec kick_member(Guild.id(), User.id(), AuditLogEntry.reason()) :: Api.error() | {:ok}
+  @spec kick_member(Guild.id(), User.id(), AuditLogEntry.reason()) :: Api.error() | :ok
   def kick_member(guild_id, user_id, reason \\ nil)
       when is_snowflake(guild_id) and is_snowflake(user_id) do
     Api.request(%{
@@ -956,7 +956,7 @@ defmodule Nostrum.Api.Guild do
 
   Integration to sync is specified by `guild_id` and `integeration_id`.
   """
-  @spec sync_integration(Guild.id(), Integration.id()) :: Api.error() | {:ok}
+  @spec sync_integration(Guild.id(), Integration.id()) :: Api.error() | :ok
   def sync_integration(guild_id, integration_id) do
     Api.request(:post, Constants.guild_integration_sync(guild_id, integration_id))
   end

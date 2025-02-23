@@ -22,7 +22,7 @@ defmodule Nostrum.Api.Thread do
   Add a user to a thread, requires the ability to send messages in the thread.
   """
   @doc since: "1.x.x"
-  @spec add_member(Channel.id(), User.id()) :: {:ok} | Api.error()
+  @spec add_member(Channel.id(), User.id()) :: :ok | Api.error()
   def add_member(thread_id, user_id) do
     Api.request(:put, Constants.thread_member(thread_id, user_id))
   end
@@ -53,7 +53,7 @@ defmodule Nostrum.Api.Thread do
   Join an existing thread, requires that the thread is not archived.
   """
   @doc since: "1.x.x"
-  @spec join(Channel.id()) :: {:ok} | Api.error()
+  @spec join(Channel.id()) :: :ok | Api.error()
   def join(thread_id) do
     Api.request(:put, Constants.thread_member_me(thread_id))
   end
@@ -62,7 +62,7 @@ defmodule Nostrum.Api.Thread do
   Leave a thread, requires that the thread is not archived.
   """
   @doc since: "1.x.x"
-  @spec leave(Channel.id()) :: {:ok} | Api.error()
+  @spec leave(Channel.id()) :: :ok | Api.error()
   def leave(thread_id) do
     Api.request(:delete, Constants.thread_member_me(thread_id))
   end
@@ -199,7 +199,7 @@ defmodule Nostrum.Api.Thread do
   Also requires the `MANAGE_THREADS` permission, or the creator of the thread if the thread is private.
   """
   @doc since: "1.x.x"
-  @spec remove_member(Channel.id(), User.id()) :: {:ok} | Api.error()
+  @spec remove_member(Channel.id(), User.id()) :: :ok | Api.error()
   def remove_member(thread_id, user_id) do
     Api.request(:delete, Constants.thread_member(thread_id, user_id))
   end

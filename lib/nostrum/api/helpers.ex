@@ -11,7 +11,7 @@ defmodule Nostrum.Api.Helpers do
 
   def handle_request_with_decode(response, type)
   # add_guild_member/3 can return both a 201 and a 204
-  def handle_request_with_decode({:ok}, _type), do: {:ok}
+  def handle_request_with_decode(:ok, _type), do: :ok
   def handle_request_with_decode({:error, _} = error, _type), do: error
 
   def handle_request_with_decode({:ok, body}, type) do

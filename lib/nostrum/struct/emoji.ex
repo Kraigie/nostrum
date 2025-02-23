@@ -25,11 +25,11 @@ defmodule Nostrum.Struct.Emoji do
   ```elixir
   emoji = %Nostrum.Struct.Emoji{id: 436885297037312001, name: "tealixir"}
   Nostrum.Api.Message.react(381889573426429952, 436247584349356032, Nostrum.Struct.Emoji.api_name(emoji))
-  {:ok}
+  :ok
 
   emoji = %Nostrum.Struct.Emoji{id: 436189601820966923, name: "elixir"}
   Nostrum.Api.Message.react(381889573426429952, 436247584349356032, emoji)
-  {:ok}
+  :ok
   ```
 
   See `t:Nostrum.Struct.Emoji.api_name/0` for more information.

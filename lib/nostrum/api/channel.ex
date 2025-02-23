@@ -25,7 +25,7 @@ defmodule Nostrum.Api.Channel do
   `t:Nostrum.Consumer.message_update/0` and
   `t:Nostrum.Consumer.channel_pins_update/0` events.
 
-  If successful, returns `{:ok}`. Otherwise, returns a `t:Nostrum.Api.error/0`.
+  If successful, returns `:ok`. Otherwise, returns a `t:Nostrum.Api.error/0`.
 
   ## Examples
 
@@ -33,7 +33,7 @@ defmodule Nostrum.Api.Channel do
   Nostrum.Api.Channel.pin_message(43189401384091, 18743893102394)
   ```
   """
-  @spec pin_message(Channel.id(), Message.id()) :: Api.error() | {:ok}
+  @spec pin_message(Channel.id(), Message.id()) :: Api.error() | :ok
   def pin_message(channel_id, message_id)
       when is_snowflake(channel_id) and is_snowflake(message_id) do
     Api.request(:put, Constants.channel_pin(channel_id, message_id))
@@ -53,7 +53,7 @@ defmodule Nostrum.Api.Channel do
   `Filter` is an optional parameter that specifies whether messages sent over
   two weeks ago should be filtered out; defaults to `true`.
   """
-  @spec bulk_delete_messages(Channel.id(), [Message.id()], boolean) :: Api.error() | {:ok}
+  @spec bulk_delete_messages(Channel.id(), [Message.id()], boolean) :: Api.error() | :ok
   def bulk_delete_messages(channel_id, messages, filter \\ true)
 
   def bulk_delete_messages(channel_id, messages, false),
@@ -76,7 +76,7 @@ defmodule Nostrum.Api.Channel do
   @spec send_chunked_delete(
           [Message.id()] | Enum.t(),
           Snowflake.t()
-        ) :: Api.error() | {:ok}
+        ) :: Api.error() | :ok
   defp send_chunked_delete(messages, channel_id) do
     messages
     |> Stream.chunk_every(100)
@@ -87,7 +87,7 @@ defmodule Nostrum.Api.Channel do
         %{messages: message_chunk}
       )
     end)
-    |> Enum.find({:ok}, &match?({:error, _}, &1))
+    |> Enum.find(:ok, &match?({:error, _}, &1))
   end
 
   @doc """
@@ -169,7 +169,7 @@ defmodule Nostrum.Api.Channel do
   Role or user overwrite to delete is specified by `channel_id` and `overwrite_id`.
   An optional `reason` can be given for the audit log.
   """
-  @spec delete_permissions(Channel.id(), integer, AuditLogEntry.reason()) :: Api.error() | {:ok}
+  @spec delete_permissions(Channel.id(), integer, AuditLogEntry.reason()) :: Api.error() | :ok
   def delete_permissions(channel_id, overwrite_id, reason \\ nil) do
     Api.request(%{
       method: :delete,
@@ -188,9 +188,9 @@ defmodule Nostrum.Api.Channel do
   `t:Nostrum.Consumer.message_update/0` and
   `t:Nostrum.Consumer.channel_pins_update/0` events.
 
-  Returns `{:ok}` if successful. `error` otherwise.
+  Returns `:ok` if successful. `error` otherwise.
   """
-  @spec unpin_message(Channel.id(), Message.id()) :: Api.error() | {:ok}
+  @spec unpin_message(Channel.id(), Message.id()) :: Api.error() | :ok
   def unpin_message(channel_id, message_id)
       when is_snowflake(channel_id) and is_snowflake(message_id) do
     Api.request(:delete, Constants.channel_pin(channel_id, message_id))
@@ -222,7 +222,7 @@ defmodule Nostrum.Api.Channel do
             optional(:deny) => integer
           },
           AuditLogEntry.reason()
-        ) :: Api.error() | {:ok}
+        ) :: Api.error() | :ok
   def edit_permissions(channel_id, overwrite_id, permission_info, reason \\ nil) do
     Api.request(%{
       method: :put,
@@ -409,9 +409,9 @@ defmodule Nostrum.Api.Channel do
   Triggers the typing indicator in the channel specified by `channel_id`.
   The typing indicator lasts for about 8 seconds and then automatically stops.
 
-  Returns `{:ok}` if successful. `error` otherwise.
+  Returns `:ok` if successful. `error` otherwise.
   """
-  @spec start_typing(integer) :: Api.error() | {:ok}
+  @spec start_typing(integer) :: Api.error() | :ok
   def start_typing(channel_id) do
     Api.request(:post, Constants.channel_typing(channel_id))
   end
