@@ -96,25 +96,25 @@ nostrum
 <p>Interface for Discord's rest API.</p><p>By default all methods in this module are ran synchronously. If you wish to
 have async rest operations I recommend you execute these functions inside of a
 task.</p><p><strong>Examples</strong></p><pre><code class="makeup elixir" translate="no"><span class="c1"># Async Task</span><span class="w">
-</span><span class="n">t</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Task</span><span class="o">.</span><span class="n">async</span><span class="w"> </span><span class="k" data-group-id="4948728612-1">fn</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
-  </span><span class="nc">Nostrum.Api.Channel</span><span class="o">.</span><span class="n">messages</span><span class="p" data-group-id="4948728612-2">(</span><span class="mi">12345678912345</span><span class="p">,</span><span class="w"> </span><span class="ss">:infinity</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="4948728612-3">{</span><span class="p" data-group-id="4948728612-3">}</span><span class="p" data-group-id="4948728612-2">)</span><span class="w">
-</span><span class="k" data-group-id="4948728612-1">end</span><span class="w">
+</span><span class="n">t</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Task</span><span class="o">.</span><span class="n">async</span><span class="w"> </span><span class="k" data-group-id="8696831736-1">fn</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+  </span><span class="nc">Nostrum.Api.Channel</span><span class="o">.</span><span class="n">messages</span><span class="p" data-group-id="8696831736-2">(</span><span class="mi">12345678912345</span><span class="p">,</span><span class="w"> </span><span class="ss">:infinity</span><span class="p">,</span><span class="w"> </span><span class="p" data-group-id="8696831736-3">{</span><span class="p" data-group-id="8696831736-3">}</span><span class="p" data-group-id="8696831736-2">)</span><span class="w">
+</span><span class="k" data-group-id="8696831736-1">end</span><span class="w">
 </span><span class="n">messages</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Task</span><span class="o">.</span><span class="n">await</span><span class="w"> </span><span class="n">t</span><span class="w">
 
 </span><span class="c1"># A lot of times we don&#39;t care about the return value of the function</span><span class="w">
-</span><span class="nc">Task</span><span class="o">.</span><span class="n">start</span><span class="w"> </span><span class="k" data-group-id="4948728612-4">fn</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
-  </span><span class="n">messages</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="4948728612-5">[</span><span class="s">&quot;in&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;the&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;end&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;it&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;doesn&#39;t&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;even&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;matter&quot;</span><span class="p" data-group-id="4948728612-5">]</span><span class="w">
-  </span><span class="nc">Enum</span><span class="o">.</span><span class="n">each</span><span class="w"> </span><span class="n">messages</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="nc">Nostrum.Api.Message</span><span class="o">.</span><span class="n">create</span><span class="p" data-group-id="4948728612-6">(</span><span class="mi">12345678912345</span><span class="p">,</span><span class="w"> </span><span class="ni">&amp;1</span><span class="p" data-group-id="4948728612-6">)</span><span class="w">
-</span><span class="k" data-group-id="4948728612-4">end</span></code></pre><h4>A note about Strings and Ints</h4><p>Currently, responses from the REST api will have <code class="inline">id</code> fields as <code class="inline">string</code>.
+</span><span class="nc">Task</span><span class="o">.</span><span class="n">start</span><span class="w"> </span><span class="k" data-group-id="8696831736-4">fn</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+  </span><span class="n">messages</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p" data-group-id="8696831736-5">[</span><span class="s">&quot;in&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;the&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;end&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;it&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;doesn&#39;t&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;even&quot;</span><span class="p">,</span><span class="w"> </span><span class="s">&quot;matter&quot;</span><span class="p" data-group-id="8696831736-5">]</span><span class="w">
+  </span><span class="nc">Enum</span><span class="o">.</span><span class="n">each</span><span class="w"> </span><span class="n">messages</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="nc">Nostrum.Api.Message</span><span class="o">.</span><span class="n">create</span><span class="p" data-group-id="8696831736-6">(</span><span class="mi">12345678912345</span><span class="p">,</span><span class="w"> </span><span class="ni">&amp;1</span><span class="p" data-group-id="8696831736-6">)</span><span class="w">
+</span><span class="k" data-group-id="8696831736-4">end</span></code></pre><h4>A note about Strings and Ints</h4><p>Currently, responses from the REST api will have <code class="inline">id</code> fields as <code class="inline">string</code>.
 Everything received from the WS connection will have <code class="inline">id</code> fields as <code class="inline">int</code>.</p><p>If you're processing a response from the API and trying to access something in the cache
 based off of an <code class="inline">id</code> in the response, you will need to convert it to an <code class="inline">int</code> using
-<a href="https://hexdocs.pm/elixir/String.html#to_integer/1"><code class="inline">String.to_integer/1</code></a>. I'm open to suggestions for how this should be handled going forward.</p><p><strong>Example</strong></p><pre><code class="makeup elixir" translate="no"><span class="n">messages</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Nostrum.Api.Channel</span><span class="o">.</span><span class="n">pinned_messages!</span><span class="p" data-group-id="6360624252-1">(</span><span class="mi">12345678912345</span><span class="p" data-group-id="6360624252-1">)</span><span class="w">
+<a href="https://hexdocs.pm/elixir/String.html#to_integer/1"><code class="inline">String.to_integer/1</code></a>. I'm open to suggestions for how this should be handled going forward.</p><p><strong>Example</strong></p><pre><code class="makeup elixir" translate="no"><span class="n">messages</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">Nostrum.Api.Channel</span><span class="o">.</span><span class="n">pinned_messages!</span><span class="p" data-group-id="2574890588-1">(</span><span class="mi">12345678912345</span><span class="p" data-group-id="2574890588-1">)</span><span class="w">
 
 </span><span class="n">authors</span><span class="w"> </span><span class="o">=</span><span class="w">
-  </span><span class="nc">Enum</span><span class="o">.</span><span class="n">map</span><span class="w"> </span><span class="n">messages</span><span class="p">,</span><span class="w"> </span><span class="k" data-group-id="6360624252-2">fn</span><span class="w"> </span><span class="n">msg</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
-    </span><span class="n">author_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">String</span><span class="o">.</span><span class="n">to_integer</span><span class="p" data-group-id="6360624252-3">(</span><span class="n">msg</span><span class="o">.</span><span class="n">author</span><span class="o">.</span><span class="n">id</span><span class="p" data-group-id="6360624252-3">)</span><span class="w">
-    </span><span class="nc">Nostrum.Cache.User</span><span class="o">.</span><span class="n">get!</span><span class="p" data-group-id="6360624252-4">(</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="n">author_id</span><span class="p" data-group-id="6360624252-4">)</span><span class="w">
-  </span><span class="k" data-group-id="6360624252-2">end</span></code></pre>
+  </span><span class="nc">Enum</span><span class="o">.</span><span class="n">map</span><span class="w"> </span><span class="n">messages</span><span class="p">,</span><span class="w"> </span><span class="k" data-group-id="2574890588-2">fn</span><span class="w"> </span><span class="n">msg</span><span class="w"> </span><span class="o">-&gt;</span><span class="w">
+    </span><span class="n">author_id</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nc">String</span><span class="o">.</span><span class="n">to_integer</span><span class="p" data-group-id="2574890588-3">(</span><span class="n">msg</span><span class="o">.</span><span class="n">author</span><span class="o">.</span><span class="n">id</span><span class="p" data-group-id="2574890588-3">)</span><span class="w">
+    </span><span class="nc">Nostrum.Cache.User</span><span class="o">.</span><span class="n">get!</span><span class="p" data-group-id="2574890588-4">(</span><span class="ss">id</span><span class="p">:</span><span class="w"> </span><span class="n">author_id</span><span class="p" data-group-id="2574890588-4">)</span><span class="w">
+  </span><span class="k" data-group-id="2574890588-2">end</span></code></pre>
     </section>
 
 </div>
@@ -3667,7 +3667,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
   <a href="Nostrum.Struct.User.html#t:id/0">Nostrum.Struct.User.id</a>(),
   <a href="#t:options/0">options</a>()
 ) ::
-  <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">no_return</a>() | <a href="Nostrum.Struct.Guild.Member.html#t:t/0">Nostrum.Struct.Guild.Member.t</a>() | {:ok}</pre>
+  <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">no_return</a>() | <a href="Nostrum.Struct.Guild.Member.html#t:t/0">Nostrum.Struct.Guild.Member.t</a>() | :ok</pre>
 
       </div>
 
@@ -3763,7 +3763,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
   <a href="Nostrum.Struct.Channel.html#t:id/0">Nostrum.Struct.Channel.id</a>(),
   <a href="Nostrum.Struct.Message.html#t:id/0">Nostrum.Struct.Message.id</a>()
 ) ::
-  <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">no_return</a>() | {:ok}</pre>
+  <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">no_return</a>() | :ok</pre>
 
       </div>
 
@@ -3955,7 +3955,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <div class="specs">
 
           <pre translate="no"><span class="attribute">@spec</span> bulk_delete_messages!(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>(), [<a href="Nostrum.Struct.Message.html#t:id/0">Nostrum.Struct.Message.id</a>()], <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">boolean</a>()) ::
-  <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">no_return</a>() | {:ok}</pre>
+  <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">no_return</a>() | :ok</pre>
 
       </div>
 
@@ -4754,7 +4754,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <div class="specs">
 
           <pre translate="no"><span class="attribute">@spec</span> create_interaction_response(<a href="Nostrum.Struct.Interaction.html#t:t/0">Nostrum.Struct.Interaction.t</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()) ::
-  {:ok} | <a href="#t:error/0">error</a>()</pre>
+  :ok | <a href="#t:error/0">error</a>()</pre>
 
       </div>
 
@@ -4819,7 +4819,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <div class="specs">
 
           <pre translate="no"><span class="attribute">@spec</span> create_interaction_response!(<a href="Nostrum.Struct.Interaction.html#t:t/0">Nostrum.Struct.Interaction.t</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()) ::
-  <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">no_return</a>() | {:ok}</pre>
+  <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">no_return</a>() | :ok</pre>
 
       </div>
 
@@ -4998,7 +4998,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
   <a href="Nostrum.Struct.Message.html#t:id/0">Nostrum.Struct.Message.id</a>(),
   <a href="#t:emoji/0">emoji</a>()
 ) ::
-  <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">no_return</a>() | {:ok}</pre>
+  <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">no_return</a>() | :ok</pre>
 
       </div>
 
@@ -5091,7 +5091,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <div class="specs">
 
           <pre translate="no"><span class="attribute">@spec</span> delete_all_reactions!(<a href="Nostrum.Struct.Channel.html#t:id/0">Nostrum.Struct.Channel.id</a>(), <a href="Nostrum.Struct.Message.html#t:id/0">Nostrum.Struct.Message.id</a>()) ::
-  <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">no_return</a>() | {:ok}</pre>
+  <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">no_return</a>() | :ok</pre>
 
       </div>
 
@@ -5283,7 +5283,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
 
       <div class="specs">
 
-          <pre translate="no"><span class="attribute">@spec</span> delete_guild!(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">no_return</a>() | {:ok}</pre>
+          <pre translate="no"><span class="attribute">@spec</span> delete_guild!(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">no_return</a>() | :ok</pre>
 
       </div>
 
@@ -5412,7 +5412,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
   <a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(),
   <a href="Nostrum.Struct.Emoji.html#t:id/0">Nostrum.Struct.Emoji.id</a>(),
   <a href="Nostrum.Struct.Guild.AuditLogEntry.html#t:reason/0">Nostrum.Struct.Guild.AuditLogEntry.reason</a>()
-) :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">no_return</a>() | {:ok}</pre>
+) :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">no_return</a>() | :ok</pre>
 
       </div>
 
@@ -5510,7 +5510,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
   <a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(),
   <a href="Nostrum.Struct.Guild.Role.html#t:id/0">Nostrum.Struct.Guild.Role.id</a>(),
   <a href="Nostrum.Struct.Guild.AuditLogEntry.html#t:reason/0">Nostrum.Struct.Guild.AuditLogEntry.reason</a>()
-) :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">no_return</a>() | {:ok}</pre>
+) :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">no_return</a>() | :ok</pre>
 
       </div>
 
@@ -5639,7 +5639,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
   <a href="Nostrum.Struct.User.html#t:id/0">Nostrum.Struct.User.id</a>(),
   <a href="Nostrum.Struct.Interaction.html#t:token/0">Nostrum.Struct.Interaction.token</a>(),
   <a href="Nostrum.Struct.Message.html#t:id/0">Nostrum.Struct.Message.id</a>()
-) :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">no_return</a>() | {:ok}</pre>
+) :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">no_return</a>() | :ok</pre>
 
       </div>
 
@@ -5669,7 +5669,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
 
       <div class="specs">
 
-          <pre translate="no"><span class="attribute">@spec</span> delete_interaction_response(<a href="Nostrum.Struct.Interaction.html#t:t/0">Nostrum.Struct.Interaction.t</a>()) :: {:ok} | <a href="#t:error/0">error</a>()</pre>
+          <pre translate="no"><span class="attribute">@spec</span> delete_interaction_response(<a href="Nostrum.Struct.Interaction.html#t:t/0">Nostrum.Struct.Interaction.t</a>()) :: :ok | <a href="#t:error/0">error</a>()</pre>
 
       </div>
 
@@ -5734,7 +5734,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <div class="specs">
 
           <pre translate="no"><span class="attribute">@spec</span> delete_interaction_response!(<a href="Nostrum.Struct.Interaction.html#t:t/0">Nostrum.Struct.Interaction.t</a>()) ::
-  <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">no_return</a>() | {:ok}</pre>
+  <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">no_return</a>() | :ok</pre>
 
       </div>
 
@@ -5772,7 +5772,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
   <a href="Nostrum.Struct.User.html#t:id/0">Nostrum.Struct.User.id</a>(),
   <a href="Nostrum.Struct.Interaction.html#t:token/0">Nostrum.Struct.Interaction.token</a>()
 ) ::
-  <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">no_return</a>() | {:ok}</pre>
+  <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">no_return</a>() | :ok</pre>
 
       </div>
 
@@ -5862,7 +5862,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
 
       <div class="specs">
 
-          <pre translate="no"><span class="attribute">@spec</span> delete_message(<a href="Nostrum.Struct.Message.html#t:t/0">Nostrum.Struct.Message.t</a>()) :: <a href="#t:error/0">error</a>() | {:ok}</pre>
+          <pre translate="no"><span class="attribute">@spec</span> delete_message(<a href="Nostrum.Struct.Message.html#t:t/0">Nostrum.Struct.Message.t</a>()) :: <a href="#t:error/0">error</a>() | :ok</pre>
 
       </div>
 
@@ -5924,7 +5924,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
 
       <div class="specs">
 
-          <pre translate="no"><span class="attribute">@spec</span> delete_message!(<a href="Nostrum.Struct.Message.html#t:t/0">Nostrum.Struct.Message.t</a>()) :: <a href="#t:error/0">error</a>() | {:ok}</pre>
+          <pre translate="no"><span class="attribute">@spec</span> delete_message!(<a href="Nostrum.Struct.Message.html#t:t/0">Nostrum.Struct.Message.t</a>()) :: <a href="#t:error/0">error</a>() | :ok</pre>
 
       </div>
 
@@ -5957,7 +5957,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <div class="specs">
 
           <pre translate="no"><span class="attribute">@spec</span> delete_message!(<a href="Nostrum.Struct.Channel.html#t:id/0">Nostrum.Struct.Channel.id</a>(), <a href="Nostrum.Struct.Message.html#t:id/0">Nostrum.Struct.Message.id</a>()) ::
-  <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">no_return</a>() | {:ok}</pre>
+  <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">no_return</a>() | :ok</pre>
 
       </div>
 
@@ -6023,7 +6023,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
   <a href="Nostrum.Struct.Message.html#t:id/0">Nostrum.Struct.Message.id</a>(),
   <a href="#t:emoji/0">emoji</a>()
 ) ::
-  <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">no_return</a>() | {:ok}</pre>
+  <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">no_return</a>() | :ok</pre>
 
       </div>
 
@@ -6088,7 +6088,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
   <a href="Nostrum.Struct.Channel.html#t:id/0">Nostrum.Struct.Channel.id</a>(),
   <a href="Nostrum.Struct.Message.html#t:id/0">Nostrum.Struct.Message.id</a>()
 ) ::
-  <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">no_return</a>() | {:ok}</pre>
+  <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">no_return</a>() | :ok</pre>
 
       </div>
 
@@ -6154,7 +6154,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
   <a href="Nostrum.Struct.Message.html#t:id/0">Nostrum.Struct.Message.id</a>(),
   <a href="#t:emoji/0">emoji</a>()
 ) ::
-  <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">no_return</a>() | {:ok}</pre>
+  <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">no_return</a>() | :ok</pre>
 
       </div>
 
@@ -6220,7 +6220,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
   <a href="Nostrum.Struct.Message.html#t:id/0">Nostrum.Struct.Message.id</a>(),
   <a href="#t:emoji/0">emoji</a>(),
   <a href="Nostrum.Struct.User.html#t:id/0">Nostrum.Struct.User.id</a>()
-) :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">no_return</a>() | {:ok}</pre>
+) :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">no_return</a>() | :ok</pre>
 
       </div>
 
@@ -6356,7 +6356,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
     optional(:deny) =&gt; <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>()
   },
   <a href="Nostrum.Struct.Guild.AuditLogEntry.html#t:reason/0">Nostrum.Struct.Guild.AuditLogEntry.reason</a>()
-) :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">no_return</a>() | {:ok}</pre>
+) :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">no_return</a>() | :ok</pre>
 
       </div>
 
@@ -9635,7 +9635,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
           <pre translate="no"><span class="attribute">@spec</span> modify_guild_channel_positions!(<a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(), [
   %{id: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>(), position: <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>()}
 ]) ::
-  <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">no_return</a>() | {:ok}</pre>
+  <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">no_return</a>() | :ok</pre>
 
       </div>
 
@@ -9810,7 +9810,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
   <a href="Nostrum.Struct.User.html#t:id/0">Nostrum.Struct.User.id</a>(),
   <a href="#t:options/0">options</a>(),
   <a href="Nostrum.Struct.Guild.AuditLogEntry.html#t:reason/0">Nostrum.Struct.Guild.AuditLogEntry.reason</a>()
-) :: <a href="#t:error/0">error</a>() | {:ok}</pre>
+) :: <a href="#t:error/0">error</a>() | :ok</pre>
 
       </div>
 
@@ -10200,7 +10200,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
   <a href="Nostrum.Struct.Guild.html#t:id/0">Nostrum.Struct.Guild.id</a>(),
   <a href="Nostrum.Struct.User.html#t:id/0">Nostrum.Struct.User.id</a>(),
   <a href="Nostrum.Struct.Guild.AuditLogEntry.html#t:reason/0">Nostrum.Struct.Guild.AuditLogEntry.reason</a>()
-) :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">no_return</a>() | {:ok}</pre>
+) :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">no_return</a>() | :ok</pre>
 
       </div>
 
@@ -10288,7 +10288,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
 
       <div class="specs">
 
-          <pre translate="no"><span class="attribute">@spec</span> request(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()) :: {:ok} | {:ok, <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()} | <a href="#t:error/0">error</a>()</pre>
+          <pre translate="no"><span class="attribute">@spec</span> request(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()) :: :ok | {:ok, <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()} | <a href="#t:error/0">error</a>()</pre>
 
       </div>
 
@@ -10321,7 +10321,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <div class="specs">
 
           <pre translate="no"><span class="attribute">@spec</span> request(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">atom</a>(), <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">any</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">keyword</a>() | <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()) ::
-  {:ok} | {:ok, <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()} | <a href="#t:error/0">error</a>()</pre>
+  :ok | {:ok, <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()} | <a href="#t:error/0">error</a>()</pre>
 
       </div>
 
@@ -10352,7 +10352,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
       <div class="specs">
 
           <pre translate="no"><span class="attribute">@spec</span> request_multipart(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">atom</a>(), <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">any</a>(), <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">keyword</a>() | <a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">map</a>()) ::
-  {:ok} | {:ok, <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()} | <a href="#t:error/0">error</a>()</pre>
+  :ok | {:ok, <a href="https://hexdocs.pm/elixir/String.html#t:t/0">String.t</a>()} | <a href="#t:error/0">error</a>()</pre>
 
       </div>
 
@@ -10475,7 +10475,7 @@ For partially automated migration, please see `mix help nostrum.update_api_funct
 
       <div class="specs">
 
-          <pre translate="no"><span class="attribute">@spec</span> start_typing!(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">no_return</a>() | {:ok}</pre>
+          <pre translate="no"><span class="attribute">@spec</span> start_typing!(<a href="https://hexdocs.pm/elixir/typespecs.html#basic-types">integer</a>()) :: <a href="https://hexdocs.pm/elixir/typespecs.html#built-in-types">no_return</a>() | :ok</pre>
 
       </div>
 
